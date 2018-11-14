@@ -15,6 +15,21 @@ require 'capybara'
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
+  # register around filter that captures stdout and stderr
+  config.around(:each) do |example|
+    $stdout = StringIO.new
+    $stderr = StringIO.new
+
+    example.run
+
+    example.metadata[:stdout] = $stdout.string
+    example.metadata[:stderr] = $stderr.string
+
+    $stdout = STDOUT
+    $stderr = STDERR
+  end
+
+
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
