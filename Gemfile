@@ -15,7 +15,7 @@ gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'mini_racer', platforms: :ruby
+gem 'mini_racer', platforms: :ruby
 
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
@@ -40,7 +40,11 @@ gem 'bootsnap', '>= 1.1.0', require: false
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-
+  gem 'rspec'
+  gem 'rspec-rails'
+  gem 'database_cleaner'
+  gem 'capybara'
+  # gem 'capybara-webkit'
 end
 
 group :development do
@@ -53,6 +57,15 @@ group :development do
   gem 'rails-erd'
   gem 'letter_opener'
   gem 'figaro'
+
+  # To be able to automagically generate domain model ER diagrams, https://github.com/amatsuda/erd
+  # Requires graphviz installed locally
+  # Use this to create and update models and migrations
+  # Use: localhost:3000/erd
+  # gem 'erd'
+
+  ###
+
 end
 
 
@@ -60,3 +73,5 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'uswds-rails', '~> 1.4'
+
+gem 'activerecord-nulldb-adapter'

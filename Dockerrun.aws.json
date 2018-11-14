@@ -1,0 +1,85 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "volumes": [
+    {
+      "name": "run_folder",
+      "host": {
+        "sourcePath": "/home/ec2-user/run"
+      }
+    },
+    {
+      "name": "assets_folder",
+      "host": {
+        "sourcePath": "/home/ec2-user/assets"
+      }
+    },
+    {
+      "name": "log_folder",
+      "host": {
+        "sourcePath": "/home/ec2-user/log"
+      }
+    }
+  ],
+  "containerDefinitions": [
+    {
+      "name": "proxy",
+      "image": "agilesix/nginx:v1",
+      "essential": true,
+      "memory": 300,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "mountPoints": [
+        {
+          "sourceVolume": "run_folder",
+          "containerPath": "/var/run"
+        },
+        {
+          "sourceVolume": "assets_folder",
+          "containerPath": "/var/www"
+        },
+        {
+          "sourceVolume": "log_folder",
+          "containerPath": "/var/log"
+        }
+      ]
+    },
+    {
+      "name": "web",
+      "image": "agilesix/va-diffusion-marketplace:latest",
+      "essential": true,
+      "memory": 300,
+      "mountPoints": [
+        {
+          "sourceVolume": "run_folder",
+          "containerPath": "/var/run"
+        },
+        {
+          "sourceVolume": "assets_folder",
+          "containerPath": "/var/www"
+        },
+        {
+          "sourceVolume": "log_folder",
+          "containerPath": "/app/log"
+        }
+      ],
+      "environment": [
+        {
+          "name": "CONTAINER_ROLE",
+          "value": "app_server"
+        },
+        {
+          "name": "MAX_THREADS",
+          "value": 2
+        },
+        {
+          "name": "WEB_CONCURRENCY",
+          "value": 1
+        }
+      ]
+    }
+  ]
+}
