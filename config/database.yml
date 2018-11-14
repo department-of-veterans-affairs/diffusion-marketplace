@@ -82,6 +82,8 @@ test:
 #
 production:
   <<: *default
-  database: diffusion-marketplace_production
-  username: diffusion-marketplace
-  password: <%= ENV['DIFFUSION-MARKETPLACE_DATABASE_PASSWORD'] %>
+  database: <%= ENV['POSTGRES_DB'] %>
+  username: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
+  host: <%= ENV['POSTGRES_HOST'] %>
+  port: <%= ENV['POSTGRES_PORT'] %>
