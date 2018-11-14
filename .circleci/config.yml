@@ -8,11 +8,34 @@ jobs:
     docker:
       # specify the version you desire here
        - image: circleci/ruby:2.5.3-node-browsers
+          environment:
+            RAILS_ENV: test
+            MAX_THREADS: 2
+            WEB_CONCURRENCY: 1
+            SECRET_KEY_BASE: 19d07059ab81ff584bd8fd7be03ed765c63f5f4c3518d05f39b41c7152134e294b2f09cbf5d925045caab0ef6475862fc42c8e6b35d63e353a1472057e90f8c4
+
+            POSTGRES_PASSWORD: mysecretlocalpassword
+            POSTGRES_USER: postgres
+            POSTGRES_DB: web_app
+            POSTGRES_HOST: 127.0.0.1
+            POSTGRES_PORT: 5432
+
+            REDIS_HOST: redis_test
+            REDIS_PORT: 6379
+            REDIS_DB_ID: 0
+
+            BUNDLE_JOBS: 3
+            BUNDLE_RETRY: 3
+            BUNDLE_PATH: vendor/bundle
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
-       - image: circleci/postgres:9.4
+       - image: circleci/postgres:9.5-alpine
+          environment:
+            POSTGRES_PASSWORD: mysecretlocalpassword
+            POSTGRES_USER: postgres
+            POSTGRES_DB: web_app
 
     working_directory: ~/repo
 
