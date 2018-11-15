@@ -67,4 +67,5 @@ module "db" {
 
   # Database Deletion Protection
   deletion_protection = true
+  publicly_accessible = "${var.db_publicly_accessible}"
 }

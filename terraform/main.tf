@@ -94,6 +94,16 @@ resource "aws_elastic_beanstalk_environment" "ng_beanstalk_application_environme
     name      = "POSTGRES_PORT"
     value     = "${module.db.this_db_instance_port}"
   }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "SECRET_BASE_KEY"
+    value     = "${var.application_secret_base_key}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "RAILS_ENV"
+    value     = "${var.application_rails_env}"
+  }
   ###===================== ======================= ======================###
 
   setting {

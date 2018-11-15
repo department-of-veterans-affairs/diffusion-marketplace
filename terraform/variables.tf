@@ -8,6 +8,15 @@ variable "application_name" {
   description = "Name of your application"
 }
 
+variable "application_secret_base_key" {
+  description = "Run `rake secret` to get a random key"
+}
+
+variable "application_rails_env" {
+  default = "production"
+  description = "The value of RAILS_ENV"
+}
+
 variable "application_description" {
   default = "A pretty awesome application"
   description = "Sample application based on Elastic Beanstalk & Docker"
@@ -92,4 +101,9 @@ variable "db_family" {
 variable "db_major_engine_version" {
   default     = "10.1"
   description = "Database major engine version"
+}
+
+variable "db_publicly_accessible" {
+  default = false
+  description = "Availablity for the database"
 }
