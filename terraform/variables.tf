@@ -37,3 +37,44 @@ variable "instance_type" {
   default     = "t2.micro"
   description = "Defines how what type of instance(s) should be created"
 }
+
+## DB ##
+
+variable "db_engine" {
+  default     = "PostgreSQL"
+  description = "The database engine"
+}
+
+variable "db_engine_version" {
+  default     = "10.1-R1"
+  description = "Version number of the database engine to be used for this instance."
+}
+
+variable "db_password" {
+  description = "Password for the database"
+}
+
+variable "db_port" {
+  default     = "5432"
+  description = "Port for the database"
+}
+
+variable "db_instance_class" {
+  default     = "db.t2.micro"
+  description = "Choose the DB instance class that allocates the computational, network, and memory capacity required by planned workload of this DB instance."
+}
+
+variable "db_allocated_storage" {
+  default     = 20
+  description = "(Minimum: 20 GiB, Maximum: 32768 GiB) Higher allocated storage may improve IOPS performance."
+}
+
+variable "db_family" {
+  default     = "postgres10.1-R1"
+  description = "Database family"
+}
+
+variable "db_major_engine_version" {
+  default     = "10.1-R1"
+  description = "Database major engine version"
+}

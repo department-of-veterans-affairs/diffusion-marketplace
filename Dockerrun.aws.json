@@ -49,7 +49,7 @@
     },
     {
       "name": "web",
-      "image": "<ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/<NAME>:<VERSION>",
+      "image": "<AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/<NAME>:<TAG>",
       "essential": true,
       "memory": 300,
       "mountPoints": [
