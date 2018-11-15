@@ -38,20 +38,35 @@ variable "instance_type" {
   description = "Defines how what type of instance(s) should be created"
 }
 
+variable "env_default_key" {
+  default     = "DEFAULT_ENV_%d"
+  description = "Default ENV variable key for Elastic Beanstalk `aws:elasticbeanstalk:application:environment` setting"
+}
+
+variable "env_default_value" {
+  default     = "UNSET"
+  description = "Default ENV variable value for Elastic Beanstalk `aws:elasticbeanstalk:application:environment` setting"
+}
+
 ## DB ##
 
+variable "db_name" {
+  default = "vadiffusionmarketplacestaging"
+  description = "Name of the database and the database's user. Must begin with a letter and contain only alphanumeric characters."
+}
+
 variable "db_engine" {
-  default     = "PostgreSQL"
+  default     = "postgres"
   description = "The database engine"
 }
 
 variable "db_engine_version" {
-  default     = "10.1-R1"
+  default     = "10.1"
   description = "Version number of the database engine to be used for this instance."
 }
 
 variable "db_password" {
-  description = "Password for the database"
+  description = "Password for the database. Only printable ASCII characters besides '/', '@', '\"', ' ' may be used."
 }
 
 variable "db_port" {
@@ -70,11 +85,11 @@ variable "db_allocated_storage" {
 }
 
 variable "db_family" {
-  default     = "postgres10.1-R1"
+  default     = "postgres10"
   description = "Database family"
 }
 
 variable "db_major_engine_version" {
-  default     = "10.1-R1"
+  default     = "10.1"
   description = "Database major engine version"
 }

@@ -68,13 +68,33 @@ resource "aws_elastic_beanstalk_environment" "ng_beanstalk_application_environme
   solution_stack_name = "${var.solution_stack_name}"
   tier                = "WebServer"
 
-  env_vars = {
-    POSTGRES_DB = "${module.db.this_db_instance_name}"
-    POSTGRES_USER = "${module.db.this_db_instance_username}"
-    POSTGRES_PASSWORD = "${module.db.this_db_instance_password}"
-    POSTGRES_HOST = "${module.db.this_db_instance_endpoint}"
-    POSTGRES_PORT = "${module.db.this_db_instance_port}"
+  ###===================== Application ENV vars ======================###
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "POSTGRES_DB"
+    value     = "${module.db.this_db_instance_name}"
   }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "POSTGRES_USER"
+    value     = "${module.db.this_db_instance_username}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "POSTGRES_PASSWORD"
+    value     = "${module.db.this_db_instance_password}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "POSTGRES_HOST"
+    value     = "${module.db.this_db_instance_address}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "POSTGRES_PORT"
+    value     = "${module.db.this_db_instance_port}"
+  }
+  ###===================== ======================= ======================###
 
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
