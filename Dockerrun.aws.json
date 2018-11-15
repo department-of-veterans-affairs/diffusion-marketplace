@@ -49,7 +49,7 @@
     },
     {
       "name": "web",
-      "image": "agilesix/va-diffusion-marketplace:latest",
+      "image": "<ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/<NAME>:<VERSION>",
       "essential": true,
       "memory": 300,
       "mountPoints": [
