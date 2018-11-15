@@ -1,43 +1,90 @@
+# Configure AWS Credentials & Region
 provider "aws" {
-  region = "us-west-2"
+  profile = "${var.profile}"
+  region  = "${var.region}"
 }
 
-resource "aws_instance" "example" {
-  ami = "ami-09bfeda7337019518"
-  instance_type = "t2.micro"
+# S3 Bucket for storing Elastic Beanstalk task definitions
+resource "aws_s3_bucket" "ng_beanstalk_deploys" {
+  bucket = "${var.application_name}-deployments"
+}
 
-  user_data = <<-EOF
-              #!/bin/bash
-              echo "Hello, World" > index.html
-              nohup busybox httpd -f -p "${var.server_port}" &
-              EOF
+# Elastic Container Repository for Docker images
+resource "aws_ecr_repository" "ng_container_repository" {
+  name = "${var.application_name}"
+}
 
-  tags {
-    Name = "terraform-example"
+# Beanstalk instance profile
+resource "aws_iam_instance_profile" "ng_beanstalk_ec2" {
+  name  = "ng-beanstalk-ec2-user"
+  role = "${aws_iam_role.ng_beanstalk_ec2.name}"
+}
+
+resource "aws_iam_role" "ng_beanstalk_ec2" {
+  name = "ng-beanstalk-ec2-role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "eb-ecr-readonly-attach" {
+  role = "${aws_iam_role.ng_beanstalk_ec2.name}"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+}
+
+resource "aws_iam_role_policy_attachment" "eb-web-tier-attach" {
+  role = "${aws_iam_role.ng_beanstalk_ec2.name}"
+  policy_arn = "arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier"
+}
+
+resource "aws_iam_role_policy_attachment" "eb-ecs-attach" {
+  role = "${aws_iam_role.ng_beanstalk_ec2.name}"
+  policy_arn = "arn:aws:iam::aws:policy/AWSElasticBeanstalkMulticontainerDocker"
+}
+
+# Beanstalk Application
+resource "aws_elastic_beanstalk_application" "ng_beanstalk_application" {
+  name        = "${var.application_name}"
+  description = "${var.application_description}"
+}
+
+# Beanstalk Environment
+resource "aws_elastic_beanstalk_environment" "ng_beanstalk_application_environment" {
+  name                = "${var.application_name}-${var.application_environment}"
+  application         = "${aws_elastic_beanstalk_application.ng_beanstalk_application.name}"
+  solution_stack_name = "${var.solution_stack_name}"
+  tier                = "WebServer"
+
+  setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "InstanceType"
+
+    value = "${var.instance_type}"
   }
 
-  vpc_security_group_ids = ["${aws_security_group.instance.id}"]
-}
+  setting {
+    namespace = "aws:autoscaling:asg"
+    name      = "MaxSize"
 
-resource "aws_security_group" "instance" {
-  name = "terraform-example-instance"
-  ingress {
-    from_port = "${var.server_port}"
-    to_port = "${var.server_port}"
-    protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    value = "${var.max_autoscaling_size}"
   }
-}
 
-output "public_ip" {
-  value = "${aws_instance.example.public_ip}"
-}
-
-output "public_dns" {
-  value = "${aws_instance.example.public_dns}"
-}
-
-variable "server_port" {
-  description = "The port the server will use for HTTP requests"
-  default = 8080
+  setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "IamInstanceProfile"
+    value     = "${aws_iam_instance_profile.ng_beanstalk_ec2.name}"
+  }
 }
