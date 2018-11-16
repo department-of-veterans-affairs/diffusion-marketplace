@@ -33,7 +33,7 @@ variable "region" {
 }
 
 variable "solution_stack_name" {
-  default     = "arn:aws:elasticbeanstalk:us-west-2::platform/Multi-container Docker running on 64bit Amazon Linux/2.11.4"
+  default     = "64bit Amazon Linux 2018.03 v2.11.4 running Multi-container Docker 18.06.1-ce (Generic)"
   description = "Defines the stack"
 }
 
@@ -104,6 +104,5 @@ variable "db_major_engine_version" {
 }
 
 variable "db_publicly_accessible" {
-  default = false
-  description = "Availablity for the database"
+  description = "Availablity for the database. Should it be public?"
 }

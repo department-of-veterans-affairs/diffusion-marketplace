@@ -1,6 +1,6 @@
-output "elb_instances" {
-  description = "DNS of the ELB instance"
-  value = "${aws_elastic_beanstalk_environment.ng_beanstalk_application_environment.instances}"
+output "eb_dns" {
+  description = "DNS of the EB instance"
+  value = "${aws_elastic_beanstalk_environment.ng_beanstalk_application_environment.cname}"
 }
 
 ## DB ##
