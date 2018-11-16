@@ -33,13 +33,7 @@ Be sure to create that user/role in the local postgres instance
 
 - `rspec`
 
-#### Services (job queues, cache servers, search engines, etc.)
-
-- `coming soon`
-
-#### Deployment instructions
-
-- `coming soon`
+[Here are our builds on CircleCi](https://circleci.com/gh/agilesix/diffusion-marketplace/tree/master)
 
 ## Development Environment Setup Instructions
 
@@ -72,3 +66,77 @@ Be sure to create that user/role in the local postgres instance
     `rails s`
 
 6. In a browser, browse to `http://localhost:3000` to make sure everything built correctly.
+
+## Infrastructure  
+
+This application is hosted on Amazon Web Services (AWS) Elastic Beanstalk (EB)
+and Relational Database Services (RDS). 
+
+To recreate our environment easily, 
+we use Terraform to create our infrastructure.
+
+### Terraform sets up:
+1. an Elastic Beanstalk Application that uses Multi-container Docker
+2. an Elastic Beanstalk Environment within the created application from step 1
+3. a Postgresql database within RDS
+
+### Pre-requisites
+- AWS Account with EB permissions and credentials stored in `~/.aws/credentials` file
+- terraform (`brew install terraform` for mac users)
+- please check out the `terraform/variables.tf` file to update any variables such as the database user
+
+### Set up
+1. `terraform init`
+
+2. `terraform plan -out plan.tfplan` 
+
+    >This step will ask for a database password that is used
+     to set up the database, whether the database should be publicly accessible
+     or not, and a secret 
+     access key that is used for the rails application. Use a strong
+     password for the database password and `rake secret` to generate
+     a strong secret base key. 
+
+3. `terraform apply plan.tfplan`
+
+Once this is complete, terraform will output information about what was created
+such as the database instance address and the EB DNS, of which you should be able to browse to!
+
+#### Note:
+> You may need to open port 5432 on the default security group in AWS in order for 
+the postgres instance to work
+
+### Teardown
+`terraform destroy` 
+
+## Deployment Instructions
+
+This application uses Docker with docker-compose to build the application.
+The deploy script builds and deploys the Docker image(s).
+
+### Pre-requisites
+- Docker/docker-compose
+- awscli
+
+### Manually deploy
+#### Pre-requisites
+- AWS environment variables set up: AWS_ACCOUNT_ID AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
+- <sha> commit sha (can get from git)
+- <aws-region> aws region (e.g. us-west-2)
+- <application-name> name of application that matches the EB application created (va-diffusion-marketplace)
+- <application-environment> name of environment that matches the EB environment created within the application (staging/production)
+
+`./scripts/deploy.sh <application-name> <application-environment> <aws-region> <sha>`
+
+e.g.
+
+`./scripts/deploy.sh va-diffusion-marketplace staging us-west-2 abd6bed7af25731713a5330aeabcbd37d8125990`
+
+if the AWS environment variables are not set up:
+
+```bash
+AWS_ACCOUNT_ID=XX677677XXXX \
+AWS_ACCESS_KEY_ID=AKIAIXEXIX5JW5XM6XXX \
+AWS_SECRET_ACCESS_KEY=XXXxmxxXlxxbA3vgOxxxxCk+uXXXXOrdmpC/oXxx \
+./scripts/deploy.sh va-diffusion-marketplace staging us-west-2 abd6bed7af25731713a5330aeabcbd37d8125990
+```
