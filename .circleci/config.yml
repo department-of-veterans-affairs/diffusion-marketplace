@@ -98,7 +98,7 @@ jobs:
           destination: coverage
   deploy:
     docker:
-      - image: circleci/ruby:2.5.3-node-browsers
+      - image: docker:17.05.0-ce-git
     working_directory: ~/deploy
     steps:
       - checkout
