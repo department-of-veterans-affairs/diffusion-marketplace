@@ -98,7 +98,7 @@ jobs:
           destination: coverage
   deploy:
     docker:
-      - image: docker:17.05.0-ce-git
+      - image: circleci/build-image
     working_directory: ~/deploy
     steps:
       - checkout
@@ -113,5 +113,4 @@ jobs:
       - run:
           name: Build && Deploy
           command: |
-            cd deploy
             ./scripts/deploy.sh va-diffusion-marketplace staging us-west-2 $CIRCLE_SHA1
