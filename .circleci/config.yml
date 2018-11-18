@@ -3,6 +3,17 @@
 # Check https://circleci.com/docs/2.0/language-ruby/ for more details
 #
 version: 2
+workflows:
+    version: 2
+    build-deploy:
+      jobs:
+        - build
+        - deploy:
+            requires:
+              - build
+            filters:
+              branches:
+                only: master
 jobs:
   build:
     docker:
@@ -103,14 +114,3 @@ jobs:
           name: Build && Deploy
           command: |
             ./scripts/deploy.sh va-diffusion-marketplace staging us-west-2 $CIRCLE_SHA1
-  workflows:
-    version: 2
-    build-deploy:
-      jobs:
-        - build
-        - deploy:
-            requires:
-              - build
-            filters:
-              branches:
-                only: master
