@@ -89,20 +89,20 @@ jobs:
     docker:
       - image: circleci/ruby:2.5.3-node-browsers
     working_directory: ~/deploy
-      steps:
-        - checkout
-        - setup_remote_docker
+    steps:
+      - checkout
+      - setup_remote_docker
 
-        - run:
-            name: Install dependencies
-            command: |
-              apk add --no-cache py-pip=9.0.0-r1
-              pip install docker-compose
-              pip install awsebcli
-        - run:
-            name: Build && Deploy
-            command: |
-              ./scripts/deploy.sh va-diffusion-marketplace staging us-west-2 $CIRCLE_SHA1
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --no-cache py-pip=9.0.0-r1
+            pip install docker-compose
+            pip install awsebcli
+      - run:
+          name: Build && Deploy
+          command: |
+            ./scripts/deploy.sh va-diffusion-marketplace staging us-west-2 $CIRCLE_SHA1
   workflows:
     version: 2
     build-deploy:
