@@ -23,7 +23,6 @@ jobs:
           RAILS_ENV: test
           MAX_THREADS: 2
           WEB_CONCURRENCY: 1
-          SECRET_KEY_BASE: 19d07059ab81ff584bd8fd7be03ed765c63f5f4c3518d05f39b41c7152134e294b2f09cbf5d925045caab0ef6475862fc42c8e6b35d63e353a1472057e90f8c4
 
           POSTGRES_PASSWORD: mysecretlocalpassword
           POSTGRES_USER: postgres
@@ -104,12 +103,37 @@ jobs:
       - checkout
       - setup_remote_docker
 
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "Gemfile.lock" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run:
+          name: install dependencies
+          command: |
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
+
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+
       - run:
           name: Install dependencies
           command: |
             sudo apt-get update
             sudo apt-get install python-pip python-dev jq
             sudo pip install awscli
+
+      - run:
+          name: Prepare Rails secrets
+          command: |
+            rm -rf config/credentials.yml.enc
+            rm -rf config/master.key
+            export RAILS_SECRET_BASE_KEY=`rails secret`
+            EDITOR=vim bundle exec rails credentials:edit
+
       - run:
           name: Build && Deploy
           command: |
