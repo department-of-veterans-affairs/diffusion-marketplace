@@ -107,11 +107,9 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            sudo apt-get -y -qq update
-            sudo apt-get -y -qq install python3-dev
-            curl -O https://bootstrap.pypa.io/get-pip.py
-            python3 get-pip.py --user
-            pip install awscli --upgrade --user
+            sudo apt-get update
+            sudo apt-get install python-pip python-dev jq
+            sudo pip install awscli
       - run:
           name: Build && Deploy
           command: |
