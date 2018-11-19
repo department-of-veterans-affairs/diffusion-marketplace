@@ -8,10 +8,6 @@ variable "application_name" {
   description = "Name of your application"
 }
 
-variable "application_secret_base_key" {
-  description = "Run `rake secret` to get a random key"
-}
-
 variable "application_rails_env" {
   default = "production"
   description = "The value of RAILS_ENV"
@@ -19,7 +15,7 @@ variable "application_rails_env" {
 
 variable "application_description" {
   default = "A pretty awesome application"
-  description = "Sample application based on Elastic Beanstalk & Docker"
+  description = "A description of your application"
 }
 
 variable "application_environment" {
