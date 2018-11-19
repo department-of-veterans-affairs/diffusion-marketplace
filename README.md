@@ -91,11 +91,9 @@ we use Terraform to create our infrastructure.
 2. `terraform plan -out plan.tfplan` 
 
     >This step will ask for a database password that is used
-     to set up the database, whether the database should be publicly accessible
-     or not, and a secret 
-     access key that is used for the rails application. Use a strong
-     password for the database password and `rake secret` to generate
-     a strong secret base key. 
+     to set up the database and whether the database should be publicly accessible
+     or not (enter `true` or `false`). Use a strong
+     password for the database password. 
 
 3. `terraform apply plan.tfplan`
 
