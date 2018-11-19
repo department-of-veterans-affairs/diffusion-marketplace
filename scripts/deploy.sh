@@ -103,7 +103,7 @@ aws s3 cp $ZIP s3://$EB_BUCKET/$ZIP
 aws elasticbeanstalk create-application-version --application-name $NAME --version-label $VERSION --source-bundle S3Bucket=$EB_BUCKET,S3Key=$ZIP
 
 # Update the environment to use the new application version
-aws elasticbeanstalk update-environment --environment-name $ENV --version-label $VERSION --option-settings Namespace=aws:elasticbeanstalk:application:environment,OptionName=RAILS_SECRET_BASE_KEY,Value=$RAILS_SECRET_BASE_KEY
+aws elasticbeanstalk update-environment --environment-name $ENV --version-label $VERSION
 
 end=`date +%s`
 

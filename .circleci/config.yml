@@ -131,7 +131,6 @@ jobs:
           command: |
             rm -rf config/credentials.yml.enc
             rm -rf config/master.key
-            export RAILS_SECRET_BASE_KEY=`rails secret`
             EDITOR=vim bundle exec rails credentials:edit
 
       - run:
