@@ -101,6 +101,7 @@ jobs:
     working_directory: ~/deploy
     steps:
       - checkout
+      - setup_remote_docker
 
       - restore_cache:
           keys:
@@ -109,7 +110,7 @@ jobs:
           - v1-dependencies-
 
       - run:
-          name: install dependencies
+          name: Install Rails dependencies
           command: |
             bundle install --jobs=4 --retry=3 --path vendor/bundle
 
