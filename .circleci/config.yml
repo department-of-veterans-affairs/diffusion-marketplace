@@ -116,6 +116,7 @@ jobs:
             rm -rf config/credentials.yml.enc
             rm -rf config/master.key
             gem install rails
+            gem install rake
             EDITOR=vim bundle exec rails credentials:edit
 
       - run:
