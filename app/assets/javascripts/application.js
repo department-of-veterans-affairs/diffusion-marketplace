@@ -15,4 +15,3 @@
 //= require turbolinks
 //= require uswds/uswds
 //= require_tree .
-
