@@ -1,0 +1,77 @@
+<%= form_with(model: practice, local: true) do |form| %>
+  <% if practice.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(practice.errors.count, "error") %> prohibited this practice from being saved:</h2>
+
+      <ul>
+      <% practice.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :short_name %>
+    <%= form.text_field :short_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_area :description %>
+  </div>
+
+  <div class="field">
+    <%= form.label :position %>
+    <%= form.number_field :position %>
+  </div>
+
+  <div class="field">
+    <%= form.label :is_vha_field %>
+    <%= form.check_box :is_vha_field %>
+  </div>
+
+  <div class="field">
+    <%= form.label :is_program_office %>
+    <%= form.check_box :is_program_office %>
+  </div>
+
+  <div class="field">
+    <%= form.label :vha_visn %>
+    <%= form.text_field :vha_visn %>
+  </div>
+
+  <div class="field">
+    <%= form.label :medical_center %>
+    <%= form.text_field :medical_center %>
+  </div>
+
+  <div class="field">
+    <%= form.label :business_case_summary %>
+    <%= form.text_area :business_case_summary %>
+  </div>
+
+  <div class="field">
+    <%= form.label :support_network_email %>
+    <%= form.text_field :support_network_email %>
+  </div>
+
+  <div class="field">
+    <%= form.label :va_pulse_link %>
+    <%= form.text_field :va_pulse_link %>
+  </div>
+
+  <div class="field">
+    <%= form.label :additional_notes %>
+    <%= form.text_area :additional_notes %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

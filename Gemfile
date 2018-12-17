@@ -64,7 +64,7 @@ group :development do
   # Requires graphviz installed locally
   # Use this to create and update models and migrations
   # Use: localhost:3000/erd
-  # gem 'erd'
+  gem 'erd'
 
   ###
 
@@ -73,7 +73,9 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-
+gem 'jquery-rails'
 gem 'uswds-rails', '~> 1.4'
 
 gem 'activerecord-nulldb-adapter'
+gem 'acts_as_list'
+gem 'paperclip', '~> 6.0.0'

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  risk: MyString
+  mitigation: MyString
+  position: 1
+  description: MyText
+  practice: one
+
+two:
+  risk: MyString
+  mitigation: MyString
+  position: 1
+  description: MyText
+  practice: two

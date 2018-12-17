@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  clinical_condition: one
+  practice: one
+
+two:
+  clinical_condition: two
+  practice: two
