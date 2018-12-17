@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  impact: one
+  practice: one
+
+two:
+  impact: two
+  practice: two

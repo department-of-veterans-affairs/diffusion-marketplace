@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  strategic_sponsor: one
+  practice: one
+
+two:
+  strategic_sponsor: two
+  practice: two

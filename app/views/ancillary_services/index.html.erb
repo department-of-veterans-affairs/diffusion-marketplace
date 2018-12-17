@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Ancillary Services</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Short name</th>
+      <th>Description</th>
+      <th>Position</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @ancillary_services.each do |ancillary_service| %>
+      <tr>
+        <td><%= ancillary_service.name %></td>
+        <td><%= ancillary_service.short_name %></td>
+        <td><%= ancillary_service.description %></td>
+        <td><%= ancillary_service.position %></td>
+        <td><%= link_to 'Show', ancillary_service %></td>
+        <td><%= link_to 'Edit', edit_ancillary_service_path(ancillary_service) %></td>
+        <td><%= link_to 'Destroy', ancillary_service, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Ancillary Service', new_ancillary_service_path %>

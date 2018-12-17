@@ -1,0 +1,64 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @practice.name %>
+</p>
+
+<p>
+  <strong>Short name:</strong>
+  <%= @practice.short_name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @practice.description %>
+</p>
+
+<p>
+  <strong>Position:</strong>
+  <%= @practice.position %>
+</p>
+
+<p>
+  <strong>Is vha field:</strong>
+  <%= @practice.is_vha_field %>
+</p>
+
+<p>
+  <strong>Is program office:</strong>
+  <%= @practice.is_program_office %>
+</p>
+
+<p>
+  <strong>Vha visn:</strong>
+  <%= @practice.vha_visn %>
+</p>
+
+<p>
+  <strong>Medical center:</strong>
+  <%= @practice.medical_center %>
+</p>
+
+<p>
+  <strong>Business case summary:</strong>
+  <%= @practice.business_case_summary %>
+</p>
+
+<p>
+  <strong>Support network email:</strong>
+  <%= @practice.support_network_email %>
+</p>
+
+<p>
+  <strong>Va pulse link:</strong>
+  <%= @practice.va_pulse_link %>
+</p>
+
+<p>
+  <strong>Additional notes:</strong>
+  <%= @practice.additional_notes %>
+</p>
+
+<%= link_to 'Edit', edit_practice_path(@practice) %> |
+<%= link_to 'Back', practices_path %>
