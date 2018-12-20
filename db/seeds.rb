@@ -10,7 +10,7 @@
 if StrategicSponsor.all.blank?
   puts 'Seeding Database...'
   sponsors = [
-      StrategicSponsor.create!(name: 'VISIN', short_name: 'visin', description: 'Sponsored by a VISIN'),
+      StrategicSponsor.create!(name: 'VISN', short_name: 'visn', description: 'Sponsored by at least one VISN'),
       StrategicSponsor.create!(name: 'Diffusion of Excellence', short_name: 'diffusion_of_excellence', description: 'Sponsored by Diffusion of Excellence'),
       StrategicSponsor.create!(name: 'Office of Rural Health', short_name: 'office_of_rural_heath', description: 'Sponsored by the Office of Rural Health'),
       StrategicSponsor.create!(name: 'HSR&D', short_name: 'hsrd', description: 'Sponsored by HASR&D'),
@@ -23,7 +23,7 @@ if StrategicSponsor.all.blank?
 
   unless Badge.all.present?
     badges = [
-        Badge.create!(name: 'VISIN', short_name: 'visin', description: 'Vetted by the VISIN', strategic_sponsor: sponsors[0]),
+        Badge.create!(name: 'VISN', short_name: 'visn', description: 'Vetted by at least one VISN', strategic_sponsor: sponsors[0]),
         Badge.create!(name: 'VHA System Redesign', short_name: 'vha_system_redesign', description: 'Vetted by VHA System Redesign', strategic_sponsor: sponsors[4]),
         Badge.create!(name: 'VHA Office of Connected Care', short_name: 'vha_office_of_connected_care', description: 'Vetted by the VHA Office of Connected Care', strategic_sponsor: sponsors[5]),
         Badge.create!(name: 'HSR&D', short_name: 'hsrd', description: 'Vetted by HSR&D', strategic_sponsor: sponsors[3]),
@@ -33,7 +33,7 @@ if StrategicSponsor.all.blank?
         Badge.create!(name: 'Top 100 Shark Tank', short_name: 'shark_tank_100', description: 'Top 100 Shark Tank finisher', strategic_sponsor: sponsors[1]),
         Badge.create!(name: 'Top 20 Shark Tank', short_name: 'shark_tank_20', description: 'Top 20 Shark Tank finisher', strategic_sponsor: sponsors[1]),
         Badge.create!(name: 'Gold Status', short_name: 'gold_status', description: 'Gold Status Practice', strategic_sponsor: sponsors[1]),
-        Badge.create!(name: 'Authority to Operate (ATO)', short_name: 'ato', description: 'Authority to Operate (ATO)', strategic_sponsor: sponsors.last),
+        Badge.create!(name: 'Authority to Operate (ATO)', short_name: 'ato', description: 'Authority to Operate (ATO) - applies to OIT projects', strategic_sponsor: sponsors.last),
     ]
   end
 
@@ -73,6 +73,7 @@ if StrategicSponsor.all.blank?
         Impact.create!(name: 'Pediatrics', short_name: 'pediatrics', description: 'Pediatrics', impact_category: impact_categories[0]),
         Impact.create!(name: 'Primary Care / Preventive Medicine', short_name: 'primary_care_preventive_medicine', description: 'Primary Care / Preventive Medicine', impact_category: impact_categories[0]),
         Impact.create!(name: 'Pulmonology / Respiratory', short_name: 'pulmonology_respiratory', description: 'Pulmonology / Respiratory', impact_category: impact_categories[0]),
+        Impact.create!(name: 'Rehab Medicine', short_name: 'rehab_medicine', description: 'Rehab Medicine', impact_category: impact_categories[0]),
         Impact.create!(name: 'Renal / Nephrology', short_name: 'renal_nephrology', description: 'Renal / Nephrology', impact_category: impact_categories[0]),
         Impact.create!(name: 'Rheumatology', short_name: 'rheumatology', description: 'Rheumatology', impact_category: impact_categories[0]),
         Impact.create!(name: 'Specialty Care (outside of VA)', short_name: 'specialty_care_outside_of_va)', description: 'Specialty Care (outside of VA)', impact_category: impact_categories[0]),
@@ -110,7 +111,6 @@ if StrategicSponsor.all.blank?
         Impact.create!(name: 'Contracting & Purchasing', short_name: 'contracting_purchasing', description: 'Contracting & Purchasing', impact_category: impact_categories[1]),
         Impact.create!(name: 'None', short_name: 'none', description: 'No clinical impact', impact_category: impact_categories[1]),
     ]
-
   end
 
   unless JobPosition.all.present?
@@ -179,7 +179,18 @@ if StrategicSponsor.all.blank?
         ClinicalLocation.create!(name: 'Outpatient Surgery Center', short_name: 'outpatient_surgery_center', description: 'Outpatient Surgery Center'),
         ClinicalLocation.create!(name: 'Pain Clinic', short_name: 'pain_clinic', description: 'Pain Clinic'),
         ClinicalLocation.create!(name: 'Skilled Nursing Facility (SNF)', short_name: 'snf', description: 'Skilled Nursing Facility (SNF)'),
+    ]
+  end
 
+  unless DevelopingFacilityType.all.present?
+    developing_facilities = [
+        DevelopingFacilityType.create!(name: 'CBOC', short_name: 'cboc'),
+        DevelopingFacilityType.create!(name: 'VA Medical Center', short_name: 'va_medical_center'),
+        DevelopingFacilityType.create!(name: 'VA Program Office', short_name: 'va_program_office'),
+        DevelopingFacilityType.create!(name: 'Outside of VA', short_name: 'outside_of_va'),
+        DevelopingFacilityType.create!(name: 'Vendor', short_name: 'vendor'),
+        DevelopingFacilityType.create!(name: 'Community Living Center', short_name: 'clc'),
+        DevelopingFacilityType.create!(name: 'Office of Mental Health', short_name: 'office_of_mental_health'),
     ]
   end
 
@@ -189,9 +200,9 @@ if StrategicSponsor.all.blank?
         short_name: 'flow3',
         description: 'FLOW3 improves the Prosthetic Limb Acquisition time by more than half.',
         date_initiated: DateTime.now,
-        vha_visin: 'n/a',
+        vha_visn: 'Not Applicable',
         medical_center: 'Pudget Sound Health Care System',
-        cboc: 'n/a',
+        cboc: 'Not Applicable',
         impact_veteran_experience: 'Reduces wait time for Prosthetic limbs by more than half',
         impact_veteran_satisfaction: 'Improved communication, patient engagement and continuity of care.  More Veterans are returning to clinic, excited to receive their prosthetic limbs.',
         impact_other_veteran_experience: 'Greater transparency and accuracy with data mining related to: Prosthetics, Veterans with Limb Loss, Current VA Services and need for new ones.',
@@ -208,6 +219,86 @@ if StrategicSponsor.all.blank?
         support_network_email: 'FLOW3@va.gov',
         va_pulse_link: 'https://www.vapulse.net/groups/flow3'
     )
+
+    flow3_strategic_sponsors = [
+        StrategicSponsorPractice.create!(practice: flow3, strategic_sponsor: sponsors[1]),
+        StrategicSponsorPractice.create!(practice: flow3, strategic_sponsor: sponsors[7]),
+    ]
+
+    flow3_va_employees = [
+        VaEmployee.create!(name: 'Jefferey T. Heckman', prefix: 'Dr.'),
+        VaEmployee.create!(name: 'Jeff Bott', prefix: 'Mr.'),
+        VaEmployee.create!(name: 'Wayne Biggs', prefix: 'Mr.'),
+    ]
+
+    flow3_va_employees.each {|vae|
+      VaEmployeePractice.create!(va_employee: vae, practice: flow3)
+    }
+
+    flow3_developing_facilities = [
+        DevelopingFacilityTypePractice.create!(practice: flow3, developing_facility_type: developing_facilities[1]),
+        DevelopingFacilityTypePractice.create!(practice: flow3, developing_facility_type: developing_facilities[2]),
+    ]
+
+    flow3_va_secretary_priorities = [
+        VaSecretaryPriorityPractice.create!(practice: flow3, va_secretary_priority: va_secretary_priorities[1]),
+        VaSecretaryPriorityPractice.create!(practice: flow3, va_secretary_priority: va_secretary_priorities[2]),
+        VaSecretaryPriorityPractice.create!(practice: flow3, va_secretary_priority: va_secretary_priorities[3]),
+    ]
+
+    flow3_clinical_impacts = [
+        ImpactPractice.create!(practice: flow3, impact: clinical_impacts.find {|ci| ci.name == 'Rehab Medicine'}),
+        ImpactPractice.create!(practice: flow3, impact: clinical_impacts.find {|ci| ci.name == 'Prosthetics and Rehabilitation'}),
+    ]
+
+    flow3_clinical_conditions = [
+        ClinicalConditionPractice.create!(practice: flow3, clinical_condition: clinical_conditions.find {|cc| cc.name == 'Prosthetic Limbs'}),
+        ClinicalConditionPractice.create!(practice: flow3, clinical_condition: clinical_conditions.find {|cc| cc.name == 'Sensory Aids'}),
+        ClinicalConditionPractice.create!(practice: flow3, clinical_condition: clinical_conditions.find {|cc| cc.name == 'Amputation'}),
+    ]
+
+    flow3_operational_impacts = [
+        ImpactPractice.create!(practice: flow3, impact: operational_impacts.find {|oi| oi.name == 'Administration'}),
+        ImpactPractice.create!(practice: flow3, impact: operational_impacts.find {|oi| oi.name == 'Billing'}),
+        ImpactPractice.create!(practice: flow3, impact: operational_impacts.find {|oi| oi.name == 'Education and Training'}),
+        ImpactPractice.create!(practice: flow3, impact: operational_impacts.find {|oi| oi.name == 'Information Technology'}),
+        ImpactPractice.create!(practice: flow3, impact: operational_impacts.find {|oi| oi.name == 'Logistics'}),
+        ImpactPractice.create!(practice: flow3, impact: operational_impacts.find {|oi| oi.name == 'Medical Records'}),
+        ImpactPractice.create!(practice: flow3, impact: operational_impacts.find {|oi| oi.name == 'Contracting & Purchasing'}),
+    ]
+
+    flow3_job_titles = [
+        JobPositionPractice.create!(practice: flow3, job_position: job_positions.find {|jp| jp.name == 'Clinic based physician'}),
+        JobPositionPractice.create!(practice: flow3, job_position: job_positions.find {|jp| jp.name == 'Prosthetist'}),
+        JobPositionPractice.create!(practice: flow3, job_position: job_positions.find {|jp| jp.name == 'Purchasing Agent'}),
+    ]
+
+    flow3_ancillary_services = [
+        AncillaryServicePractice.create!(practice: flow3, ancillary_service: ancillary_services.find {|as| as.name == 'Rehabilitation & Prosthetics'}),
+    ]
+
+    flow3_clinical_locations = [
+        ClinicalLocationPractice.create!(practice: flow3, clinical_location: clinical_locations.find {|cl| cl.name == 'Community Based Outpatient Clinic (CBOC)'}),
+        ClinicalLocationPractice.create!(practice: flow3, clinical_location: clinical_locations.find {|cl| cl.name == 'Inpatient Hospital'}),
+        ClinicalLocationPractice.create!(practice: flow3, clinical_location: clinical_locations.find {|cl| cl.name == 'Outpatient Surgery Center'}),
+    ]
+
+    flow3_risks_and_mitigations = [
+        RiskAndMitigation.create!(practice: flow3, risk: 'Minor App ATO under a VA GSS', mitigation: 'Currently traversing the appropriate process and protocols within OIT to achieve EOY 19 diffusion objectives.'),
+    ]
+
+    flow3_publications = [
+        Publication.create!(practice: flow3, title: 'OIG Inspection')
+    ]
+
+    flow3_badges = [
+        BadgePractice.create!(practice: flow3, badge: badges.find {|b| b.name == 'VISN'}),
+        BadgePractice.create!(practice: flow3, badge: badges.find {|b| b.name == 'Diffusion of Excellence'}),
+        BadgePractice.create!(practice: flow3, badge: badges.find {|b| b.name == 'Shark Tank Approved'}),
+        BadgePractice.create!(practice: flow3, badge: badges.find {|b| b.name == 'Gold Status'}),
+        BadgePractice.create!(practice: flow3, badge: badges.find {|b| b.name == 'Authority to Operate (ATO)'}),
+    ]
+
   end
 else
   puts 'Database already seeded... Nothing to do.'

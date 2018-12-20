@@ -5,10 +5,9 @@ class CreatePractices < ActiveRecord::Migration[5.2]
       t.string :short_name
       t.text :description
       t.integer :position
-      t.string :va_medical_center
       t.string :cboc
       t.string :program_office
-      t.string :vha_visin
+      t.string :vha_visn
       t.string :medical_center
       t.text :business_case_summary
       t.string :support_network_email
