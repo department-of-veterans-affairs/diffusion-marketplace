@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_14_180708) do
+ActiveRecord::Schema.define(version: 2018_12_20_211309) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -121,6 +121,24 @@ ActiveRecord::Schema.define(version: 2018_12_14_180708) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "developing_facility_type_practices", force: :cascade do |t|
+    t.bigint "practice_id"
+    t.bigint "developing_facility_type_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["developing_facility_type_id"], name: "idx_developing_facility_practice_id"
+    t.index ["practice_id"], name: "index_developing_facility_type_practices_on_practice_id"
+  end
+
+  create_table "developing_facility_types", force: :cascade do |t|
+    t.string "name"
+    t.string "short_name"
+    t.integer "position"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "impact_categories", force: :cascade do |t|
     t.string "name"
     t.string "short_name"
@@ -214,10 +232,9 @@ ActiveRecord::Schema.define(version: 2018_12_14_180708) do
     t.string "short_name"
     t.text "description"
     t.integer "position"
-    t.string "va_medical_center"
     t.string "cboc"
     t.string "program_office"
-    t.string "vha_visin"
+    t.string "vha_visn"
     t.string "medical_center"
     t.text "business_case_summary"
     t.string "support_network_email"
@@ -326,6 +343,28 @@ ActiveRecord::Schema.define(version: 2018_12_14_180708) do
     t.index ["practice_id"], name: "index_toolkit_files_on_practice_id"
   end
 
+  create_table "va_employee_practices", force: :cascade do |t|
+    t.integer "position"
+    t.bigint "practice_id"
+    t.bigint "va_employee_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["practice_id"], name: "index_va_employee_practices_on_practice_id"
+    t.index ["va_employee_id"], name: "index_va_employee_practices_on_va_employee_id"
+  end
+
+  create_table "va_employees", force: :cascade do |t|
+    t.string "name"
+    t.string "prefix"
+    t.string "suffix"
+    t.string "email"
+    t.text "bio"
+    t.string "job_title"
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "va_secretary_priorities", force: :cascade do |t|
     t.string "name"
     t.string "short_name"
@@ -369,6 +408,8 @@ ActiveRecord::Schema.define(version: 2018_12_14_180708) do
   add_foreign_key "clinical_condition_practices", "practices"
   add_foreign_key "clinical_location_practices", "clinical_locations"
   add_foreign_key "clinical_location_practices", "practices"
+  add_foreign_key "developing_facility_type_practices", "developing_facility_types"
+  add_foreign_key "developing_facility_type_practices", "practices"
   add_foreign_key "impact_practices", "impacts"
   add_foreign_key "impact_practices", "practices"
   add_foreign_key "impacts", "impact_categories"
@@ -384,6 +425,8 @@ ActiveRecord::Schema.define(version: 2018_12_14_180708) do
   add_foreign_key "strategic_sponsor_practices", "strategic_sponsors"
   add_foreign_key "survey_result_files", "practices"
   add_foreign_key "toolkit_files", "practices"
+  add_foreign_key "va_employee_practices", "practices"
+  add_foreign_key "va_employee_practices", "va_employees"
   add_foreign_key "va_secretary_priority_practices", "practices"
   add_foreign_key "va_secretary_priority_practices", "va_secretary_priorities"
   add_foreign_key "video_files", "practices"

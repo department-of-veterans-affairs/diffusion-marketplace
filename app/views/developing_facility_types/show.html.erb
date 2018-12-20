@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @developing_facility_type.name %>
+</p>
+
+<p>
+  <strong>Short name:</strong>
+  <%= @developing_facility_type.short_name %>
+</p>
+
+<p>
+  <strong>Position:</strong>
+  <%= @developing_facility_type.position %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @developing_facility_type.description %>
+</p>
+
+<%= link_to 'Edit', edit_developing_facility_type_path(@developing_facility_type) %> |
+<%= link_to 'Back', developing_facility_types_path %>

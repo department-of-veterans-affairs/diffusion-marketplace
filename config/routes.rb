@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :developing_facility_types
+  resources :va_employees
   resources :practices
   resources :badges
   resources :job_positions
