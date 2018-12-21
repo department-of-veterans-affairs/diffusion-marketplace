@@ -15,7 +15,7 @@
         </button>
       </div>
     </header>
-    <div class="usa-banner-content usa-accordion-content" id="gov-banner" hidden>
+    <div class="usa-banner-content usa-accordion-content" id="gov-banner" hidden="hidden">
       <div class="grid-row grid-gap-lg">
         <div class="usa-banner-guidance-gov tablet:grid-col-6">
           <img class="usa-banner-icon usa-media_block-img" src="<%= image_url 'uswds/icon-dot-gov.svg' %>" alt="Dot gov">
@@ -54,5 +54,19 @@
     </div>
     <button class="usa-menu-btn">Menu</button>
   </div>
+  <nav role="navigation" class="usa-nav">
+    <div class="usa-nav-inner">
+      <button class="usa-nav-close"><img src="<%= image_url 'uswds/close.svg' %>" alt="close"></button>
+      <div class="usa-nav-secondary bottom-2rem">
+        <ul class="usa-nav-secondary-links">
+          <li class="usa-nav-secondary-item">
+            <a href=""><img src="<%= image_url 'plus-square.svg' %>" alt="plus icon">Add a practice</a>
+          </li>
+          <li class="usa-nav-secondary-item">
+            <a href=""><img src="<%= image_url 'user.svg' %>" alt="user icon">VISN/Username</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 </header>
-<main id="main-content"></main>
