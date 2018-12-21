@@ -78,4 +78,5 @@ gem 'uswds-rails', '~> 1.4'
 
 gem 'activerecord-nulldb-adapter'
 gem 'acts_as_list'
+gem 'aws-sdk', '~> 2.3'
 gem 'paperclip', '~> 6.0.0'

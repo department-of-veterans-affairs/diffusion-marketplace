@@ -1,6 +1,7 @@
 class Practice < ApplicationRecord
   acts_as_list
-  has_attached_file :main_display_image, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/:style/missing.png"
+  # has_attached_file :main_display_image, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/:style/missing.png"
+  has_attached_file :main_display_image, default_url: "/images/:style/missing.png"
   validates_attachment_content_type :main_display_image, content_type: /\Aimage\/.*\z/
 
   has_many :ancillary_service_practices

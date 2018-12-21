@@ -195,6 +195,9 @@ if StrategicSponsor.all.blank?
   end
 
   unless Practice.all.present?
+    flow3_image_path = "#{Rails.root}/db/seed_images/flow3.jpg"
+    flow3_image_file = File.new(flow3_image_path)
+
     flow3 = Practice.create!(
         name: 'FLOW3',
         short_name: 'flow3',
@@ -217,7 +220,13 @@ if StrategicSponsor.all.blank?
         target_success: '2',
         implementation_time_estimate: '3 months',
         support_network_email: 'FLOW3@va.gov',
-        va_pulse_link: 'https://www.vapulse.net/groups/flow3'
+        va_pulse_link: 'https://www.vapulse.net/groups/flow3',
+        main_display_image: ActionDispatch::Http::UploadedFile.new(
+            filename: File.basename(flow3_image_file),
+            tempfile: flow3_image_file,
+            # detect the image's mime type with MIME if you can't provide it yourself.
+            type: MIME::Types.type_for(flow3_image_path).first.content_type
+        )
     )
 
     flow3_strategic_sponsors = [
@@ -298,7 +307,6 @@ if StrategicSponsor.all.blank?
         BadgePractice.create!(practice: flow3, badge: badges.find {|b| b.name == 'Gold Status'}),
         BadgePractice.create!(practice: flow3, badge: badges.find {|b| b.name == 'Authority to Operate (ATO)'}),
     ]
-
   end
 else
   puts 'Database already seeded... Nothing to do.'
