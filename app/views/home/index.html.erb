@@ -34,7 +34,6 @@
   </section>
 
   <section class="usa-section usa-section-dark padding-y-4">
-
     <div class="grid-container margin-bottom-3">
       <form class="usa-form maxw-none">
         <div class="grid-row flex-row">
@@ -91,37 +90,19 @@
         </div>
       </div>
     </div>
-
   </section>
 
   <section class="usa-section grid-container">
+    <% @practices.each do |practice| %>
     <div class="grid-row padding-2" style="background:#e7f6f8">
       <div class="grid-col-2 padding-1" style="background:#9ddfeb">[image]</div>
       <div class="grid-col-fill padding-1" style="background:#00bde3">
-        <h1 class="margin-0">FLOW3</h1>
-        <p class="margin-0">$$ | 50 health centers have adopted this practice</p>
-        <p class="margin-0">Enable 53% faster delivery of prosthetic limbs to Veterans</p>
+        <h1 class="margin-0"><%= link_to practice.name, practice %></h1>
+        <p class="margin-0"><%= practice.description %></p>
       </div>
       <div class="grid-col-2 padding-1" style="background:#009ec1">⭐️ Gold status practice</div>
     </div>
-    <div class="grid-row padding-2" style="background:#e7f6f8">
-      <div class="grid-col-2 padding-1" style="background:#9ddfeb">[image]</div>
-      <div class="grid-col-fill padding-1" style="background:#00bde3">
-        <h1 class="margin-0">Project HAPPEN</h1>
-        <p class="margin-0">$$$ | 50 health centers have adopted this practice</p>
-        <p class="margin-0">Prevent non-ventilator acquired pneumonia with better oral care to save lives</p>
-      </div>
-      <div class="grid-col-2 padding-1" style="background:#009ec1">⭐️ Gold status VISN</div>
-    </div>
-    <div class="grid-row padding-2" style="background:#e7f6f8">
-      <div class="grid-col-2 padding-1" style="background:#9ddfeb">[image]</div>
-      <div class="grid-col-fill padding-1" style="background:#00bde3">
-        <h1 class="margin-0">VHA Rapid Naloxone Initiative</h1>
-        <p class="margin-0">$ | 50 health centers have adopted this practice</p>
-        <p class="margin-0">Improve access to life-saving naloxone in your hospital and community</p>
-      </div>
-      <div class="grid-col-2 padding-1" style="background:#009ec1">⭐️ VISN endorsed best practice</div>
-    </div>
+    <% end %>
     <div class="grid-row flex-justify-center padding-2" style="background:#e7f6f8">
       <button class="usa-button usa-button-big">View more</button>
     </div>

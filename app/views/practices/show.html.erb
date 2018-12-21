@@ -1,3 +1,70 @@
+<main id="main-content">
+
+  <section class="usa-section grid-container">
+    <h2 class="font-heading-xl"><%= @practice.name %></h2>
+    <p class="measure-none">$$$ | 50 health centers have adopted this practice</p>
+  </section>
+
+  <section class="usa-hero">
+    <div class="grid-container height-card-lg">
+      <div class="grid-row flex-justify-end">
+        <button class="usa-button">Share this initiative</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="usa-section grid-container">
+    <h2 class="font-heading-xl">Practice details</h2>
+    <p class="measure-none"><%= @practice.description %></p>
+  </section>
+
+  <section class="usa-section grid-container">
+    <table class="usa-table width-full">
+      <thead>
+        <tr>
+          <th scope="col">Cost</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="height-card-lg">
+          <td>[Cost content]</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="usa-section grid-container">
+    <p class="measure-none">THIS PRACTICE WAS STARTED BY</p>
+    <h2 class="font-heading-xl">Dr. Jane Doe - Greater Los Angeles VA Health Center</h2>
+    <p class="measure-none">About Andy and his involvement Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur</p>
+    <button class="usa-button">Contact VHA Rapid Nalaxone initiative</button>
+    <button class="usa-button">Bring this practice to your facility</button>
+  </section>
+
+  <section class="usa-section grid-container">
+    <div class="height-card-lg" style="background:#9ddfeb">
+      [map]
+    </div>
+  </section>
+
+  <section class="usa-section usa-section-dark">
+    <div class="grid-container">
+      <p class="measure-none">If you have any questions about the Changing Lives, Saving Lives campaign or about Diffusion of Excellence and VHA Innovators Network, please contact VAInnovation@atlasresearch.us.</p>
+    </div>
+  </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
 <p id="notice"><%= notice %></p>
 
 <p>
@@ -22,12 +89,12 @@
 
 <p>
   <strong>Is vha field:</strong>
-  <%= @practice.is_vha_field %>
+  @practice.is_vha_field
 </p>
 
 <p>
   <strong>Is program office:</strong>
-  <%= @practice.is_program_office %>
+  @practice.is_program_office
 </p>
 
 <p>

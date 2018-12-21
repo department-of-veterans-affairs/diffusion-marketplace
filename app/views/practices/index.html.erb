@@ -1,55 +1,49 @@
 <main id="main-content">
 
   <section class="usa-section grid-container">
-    <h2 class="font-heading-xl">VHA Rapid Naloxone Initiative</h2>
-    <p class="measure-none">$$$ | 50 health centers have adopted this practice</p>
-  </section>
+    <h1>All practices</h1>
 
-  <section class="usa-hero">
-    <div class="grid-container height-card-lg">
-      <div class="grid-row flex-justify-end">
-        <button class="usa-button">Share this initiative</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="usa-section grid-container">
-    <h2 class="font-heading-xl">Practice details</h2>
-    <p class="measure-none">Since the VA Boston Healthcare System introduced a program to make naloxone doses more available around the facility in 2015, 128 opioid overdoses have been successfully reversed from intranasal naloxone made available through the program.</p>
-  </section>
-
-  <section class="usa-section grid-container">
-    <table class="usa-table width-full">
+    <table class="usa-table">
       <thead>
         <tr>
-          <th scope="col">Cost</th>
+          <th>Name</th>
+          <th>Short name</th>
+          <th>Description</th>
+          <th>Position</th>
+          <th>Is vha field</th>
+          <th>Is program office</th>
+          <th>Vha visn</th>
+          <th>Medical center</th>
+          <th>Business case summary</th>
+          <th>Support network email</th>
+          <th>Va pulse link</th>
+          <th>Additional notes</th>
+          <th colspan="3"></th>
         </tr>
       </thead>
       <tbody>
-        <tr class="height-card-lg">
-          <td>[Cost content]</td>
-        </tr>
+        <% @practices.each do |practice| %>
+          <tr>
+            <td><%= practice.name %></td>
+            <td><%= practice.short_name %></td>
+            <td><%= practice.description %></td>
+            <td><%= practice.position %></td>
+            <td>practice.is_vha_field</td>
+            <td>practice.is_program_office</td>
+            <td><%= practice.vha_visn %></td>
+            <td><%= practice.medical_center %></td>
+            <td><%= practice.business_case_summary %></td>
+            <td><%= practice.support_network_email %></td>
+            <td><%= practice.va_pulse_link %></td>
+            <td><%= practice.additional_notes %></td>
+            <td><%= link_to 'Show', practice %></td>
+            <td><%= link_to 'Edit', edit_practice_path(practice) %></td>
+            <td><%= link_to 'Destroy', practice, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+        <% end %>
       </tbody>
     </table>
+    <%= link_to 'New Practice', new_practice_path %>
   </section>
 
-  <section class="usa-section grid-container">
-    <p class="measure-none">THIS PRACTICE WAS STARTED BY</p>
-    <h2 class="font-heading-xl">Dr. Jane Doe - Greater Los Angeles VA Health Center</h2>
-    <p class="measure-none">About Andy and his involvement Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur</p>
-    <button class="usa-button">Contact VHA Rapid Nalaxone initiative</button>
-    <button class="usa-button">Bring this practice to your facility</button>
-  </section>
-
-  <section class="usa-section grid-container">
-    <div class="height-card-lg" style="background:#9ddfeb">
-      [map]
-    </div>
-  </section>
-
-  <section class="usa-section usa-section-dark">
-    <div class="grid-container">
-      <p class="measure-none">If you have any questions about the Changing Lives, Saving Lives campaign or about Diffusion of Excellence and VHA Innovators Network, please contact VAInnovation@atlasresearch.us.</p>
-    </div>
-  </section>
 </main>
