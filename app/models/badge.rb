@@ -4,5 +4,6 @@ class Badge < ApplicationRecord
   validates_attachment_content_type :badge_image, content_type: /\Aimage\/.*\z/
 
   belongs_to :strategic_sponsor, optional: true
+  has_many :badge_practices
   has_many :practices, through: :badge_practices
 end

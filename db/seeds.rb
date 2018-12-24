@@ -195,6 +195,11 @@ if StrategicSponsor.all.blank?
   end
 
   unless Practice.all.present?
+    ############################################################################################################
+    ############################################################################################################
+    #############
+    # FLOW3     #
+    #############
     flow3_image_path = "#{Rails.root}/db/seed_images/flow3.jpg"
     flow3_image_file = File.new(flow3_image_path)
 
@@ -307,6 +312,245 @@ if StrategicSponsor.all.blank?
         BadgePractice.create!(practice: flow3, badge: badges.find {|b| b.name == 'Gold Status'}),
         BadgePractice.create!(practice: flow3, badge: badges.find {|b| b.name == 'Authority to Operate (ATO)'}),
     ]
+
+    ############################################################################################################
+    ############################################################################################################
+    #############
+    # Naloxone  #
+    #############
+    naloxone_image_path = "#{Rails.root}/db/seed_images/naloxone.jpg"
+    naloxone_image_file = File.new(naloxone_image_path)
+
+    naloxone = Practice.create!(
+        name: 'VHA Rapid Naloxone',
+        short_name: 'vha_rapid_naloxone',
+        description: 'Ensuring rapid availability of naloxone through AED cabinets, Police, OEND',
+        date_initiated: DateTime.strptime('1/1/2016', '%m/%d/%Y'),
+        vha_visn: 'VISN 1',
+        medical_center: 'Boston HCS',
+        cboc: 'Not Applicable',
+        impact_veteran_experience: '',
+        impact_veteran_satisfaction: '',
+        impact_other_veteran_experience: 'saves lives',
+        impact_financial_estimate_saved: '0',
+        impact_financial_per_veteran: '0',
+        impact_financial_roi: '0',
+        business_case_summary: 'Veterans are twice as likely to die from opioid overdoses and these overdoses are occurring at VAMCs where naloxone is infrequently available. Equipping AED cabinets and VA police with naloxone to provide naloxone quickly will save lives.',
+        impact_financial_other: 'Time based Metrics + # of Veterans impacted.',
+        phase_gate: 'National Diffusion',
+        successful_implementation: 'Implementation in 168 facilities',
+        target_measures: 'self reports',
+        target_success: '148',
+        implementation_time_estimate: '4-6 months',
+        support_network_email: 'vharapidnalocone@va.gov',
+        va_pulse_link: 'https://www.vapulse.net/groups/naloxone',
+        main_display_image: ActionDispatch::Http::UploadedFile.new(
+            filename: File.basename(naloxone_image_file),
+            tempfile: naloxone_image_file,
+            # detect the image's mime type with MIME if you can't provide it yourself.
+            type: MIME::Types.type_for(naloxone_image_path).first.content_type
+        )
+    )
+
+    naloxone_strategic_sponsors = [
+        StrategicSponsorPractice.create!(practice: naloxone, strategic_sponsor: sponsors.find {|s| s.name == 'Office of Mental Health'}),
+    ]
+
+    naloxone_va_employees = [
+        VaEmployee.create!(name: 'Pam Bellino'),
+    ]
+
+    naloxone_va_employees.each {|vae|
+      VaEmployeePractice.create!(va_employee: vae, practice: naloxone)
+    }
+
+    naloxone_developing_facilities = [
+        DevelopingFacilityTypePractice.create!(practice: naloxone, developing_facility_type: developing_facilities[1]),
+    ]
+
+    naloxone_va_secretary_priorities = [
+        VaSecretaryPriorityPractice.create!(practice: naloxone, va_secretary_priority: va_secretary_priorities[2]),
+    ]
+
+    naloxone_clinical_impacts = [
+        ImpactPractice.create!(practice: naloxone, impact: clinical_impacts.find {|ci| ci.name == 'Mental Health / Psychiatry'}),
+        ImpactPractice.create!(practice: naloxone, impact: clinical_impacts.find {|ci| ci.name == 'Primary Care / Preventive Medicine'}),
+        ImpactPractice.create!(practice: naloxone, impact: clinical_impacts.find {|ci| ci.name == 'Homeless services'}),
+        ImpactPractice.create!(practice: naloxone, impact: clinical_impacts.find {|ci| ci.name == 'Social workers'}),
+    ]
+
+    naloxone_clinical_conditions = [
+        ClinicalConditionPractice.create!(practice: naloxone, clinical_condition: clinical_conditions.find {|cc| cc.name == 'Chronic Pain'}),
+        ClinicalConditionPractice.create!(practice: naloxone, clinical_condition: clinical_conditions.find {|cc| cc.name == 'Addiction'}),
+        ClinicalConditionPractice.create!(practice: naloxone, clinical_condition: clinical_conditions.find {|cc| cc.name == 'Accidental Overdose'}),
+    ]
+
+    naloxone_operational_impacts = [
+        ImpactPractice.create!(practice: naloxone, impact: operational_impacts.find {|oi| oi.name == 'Education and Training'}),
+        ImpactPractice.create!(practice: naloxone, impact: operational_impacts.find {|oi| oi.name == 'Social Services'}),
+    ]
+
+    naloxone_job_titles = [
+        JobPositionPractice.create!(practice: naloxone, job_position: job_positions.find {|jp| jp.name == 'Clinic based nurse'}),
+        JobPositionPractice.create!(practice: naloxone, job_position: job_positions.find {|jp| jp.name == 'Clinic based physician'}),
+        JobPositionPractice.create!(practice: naloxone, job_position: job_positions.find {|jp| jp.name == 'Hospital based nurse'}),
+        JobPositionPractice.create!(practice: naloxone, job_position: job_positions.find {|jp| jp.name == 'Hospital based physician'}),
+        JobPositionPractice.create!(practice: naloxone, job_position: job_positions.find {|jp| jp.name == 'Hospital based physician'}),
+        JobPositionPractice.create!(practice: naloxone, job_position: job_positions.find {|jp| jp.name == 'Nursing Assistant'}),
+        JobPositionPractice.create!(practice: naloxone, job_position: job_positions.find {|jp| jp.name == 'Pharmacist'}),
+        JobPositionPractice.create!(practice: naloxone, job_position: job_positions.find {|jp| jp.name == 'Pharmacy Tech'}),
+    ]
+
+    naloxone_ancillary_services = [
+        AncillaryServicePractice.create!(practice: naloxone, ancillary_service: ancillary_services.find {|as| as.name == 'Pharmacy'}),
+        AncillaryServicePractice.create!(practice: naloxone, ancillary_service: ancillary_services.find {|as| as.name == 'Social Work'}),
+    ]
+
+    naloxone_clinical_locations = [
+        ClinicalLocationPractice.create!(practice: naloxone, clinical_location: clinical_locations.find {|cl| cl.name == 'Alcohol and Other Drug Abuse (AODA) treatment center'}),
+        ClinicalLocationPractice.create!(practice: naloxone, clinical_location: clinical_locations.find {|cl| cl.name == 'Assisted Living Facility'}),
+        ClinicalLocationPractice.create!(practice: naloxone, clinical_location: clinical_locations.find {|cl| cl.name == 'Community Based Outpatient Clinic (CBOC)'}),
+        ClinicalLocationPractice.create!(practice: naloxone, clinical_location: clinical_locations.find {|cl| cl.name == 'Community Living Centers (CLC)'}),
+        ClinicalLocationPractice.create!(practice: naloxone, clinical_location: clinical_locations.find {|cl| cl.name == 'Home Health'}),
+        ClinicalLocationPractice.create!(practice: naloxone, clinical_location: clinical_locations.find {|cl| cl.name == 'Inpatient Hospital'}),
+        ClinicalLocationPractice.create!(practice: naloxone, clinical_location: clinical_locations.find {|cl| cl.name == 'Outpatient Surgery Center'}),
+        ClinicalLocationPractice.create!(practice: naloxone, clinical_location: clinical_locations.find {|cl| cl.name == 'Pain Clinic'}),
+        ClinicalLocationPractice.create!(practice: naloxone, clinical_location: clinical_locations.find {|cl| cl.name == 'Skilled Nursing Facility (SNF)'}),
+    ]
+
+    naloxone_risks_and_mitigations = [
+        RiskAndMitigation.create!(practice: naloxone, risk: 'Unwillingness to participate', mitigation: ' mitigate through targeted comms and education'),
+    ]
+
+    naloxone_publications = [
+        # Publication.create!(practice: naloxone, title: 'OIG Inspection')
+    ]
+
+    naloxone_badges = [
+        BadgePractice.create!(practice: naloxone, badge: badges.find {|b| b.name == 'Diffusion of Excellence'}),
+        BadgePractice.create!(practice: naloxone, badge: badges.find {|b| b.name == 'Shark Tank Approved'}),
+        BadgePractice.create!(practice: naloxone, badge: badges.find {|b| b.name == 'Gold Status'}),
+    ]
+
+    ############################################################################################################
+    ############################################################################################################
+    #############
+    # HAPPEN  #
+    #############
+    happen_image_path = "#{Rails.root}/db/seed_images/happen.jpg"
+    happen_image_file = File.new(happen_image_path)
+
+    happen = Practice.create!(
+        name: 'VA Project HAPPEN ',
+        short_name: 'va_project_happen',
+        description: 'Non Ventilator Hospital Acquired Pneumonia Prevention by Engaging Nursing Staff to Complete Inpatient Oral Care. ',
+        date_initiated: DateTime.strptime('1/1/2016', '%m/%d/%Y'),
+        vha_visn: 'VISN 1',
+        medical_center: 'Boston HCS',
+        cboc: 'Not Applicable',
+        impact_veteran_experience: '',
+        impact_veteran_satisfaction: '',
+        impact_other_veteran_experience: 'saves lives',
+        impact_financial_estimate_saved: '0',
+        impact_financial_per_veteran: '0',
+        impact_financial_roi: '0',
+        business_case_summary: 'Veterans are twice as likely to die from opioid overdoses and these overdoses are occurring at VAMCs where happen is infrequently available. Equipping AED cabinets and VA police with happen to provide happen quickly will save lives.',
+        impact_financial_other: 'Time based Metrics + # of Veterans impacted.',
+        phase_gate: 'National Diffusion',
+        successful_implementation: 'Implementation in 168 facilities',
+        target_measures: 'self reports',
+        target_success: '148',
+        implementation_time_estimate: '4-6 months',
+        support_network_email: 'vharapidnalocone@va.gov',
+        va_pulse_link: 'https://www.vapulse.net/groups/happen',
+        main_display_image: ActionDispatch::Http::UploadedFile.new(
+            filename: File.basename(happen_image_file),
+            tempfile: happen_image_file,
+            # detect the image's mime type with MIME if you can't provide it yourself.
+            type: MIME::Types.type_for(happen_image_path).first.content_type
+        )
+    )
+
+    happen_strategic_sponsors = [
+        StrategicSponsorPractice.create!(practice: happen, strategic_sponsor: sponsors.find {|s| s.name == 'Diffusion of Excellence'}),
+    ]
+
+    happen_va_employees = [
+        VaEmployee.create!(name: 'Pam Bellino'),
+    ]
+
+    happen_va_employees.each {|vae|
+      VaEmployeePractice.create!(va_employee: vae, practice: happen)
+    }
+
+    happen_developing_facilities = [
+        DevelopingFacilityTypePractice.create!(practice: happen, developing_facility_type: developing_facilities[1]),
+    ]
+
+    happen_va_secretary_priorities = [
+        VaSecretaryPriorityPractice.create!(practice: happen, va_secretary_priority: va_secretary_priorities[2]),
+    ]
+
+    happen_clinical_impacts = [
+        ImpactPractice.create!(practice: happen, impact: clinical_impacts.find {|ci| ci.name == 'Mental Health / Psychiatry'}),
+        ImpactPractice.create!(practice: happen, impact: clinical_impacts.find {|ci| ci.name == 'Primary Care / Preventive Medicine'}),
+        ImpactPractice.create!(practice: happen, impact: clinical_impacts.find {|ci| ci.name == 'Homeless services'}),
+        ImpactPractice.create!(practice: happen, impact: clinical_impacts.find {|ci| ci.name == 'Social workers'}),
+    ]
+
+    happen_clinical_conditions = [
+        ClinicalConditionPractice.create!(practice: happen, clinical_condition: clinical_conditions.find {|cc| cc.name == 'Chronic Pain'}),
+        ClinicalConditionPractice.create!(practice: happen, clinical_condition: clinical_conditions.find {|cc| cc.name == 'Addiction'}),
+        ClinicalConditionPractice.create!(practice: happen, clinical_condition: clinical_conditions.find {|cc| cc.name == 'Accidental Overdose'}),
+    ]
+
+    happen_operational_impacts = [
+        ImpactPractice.create!(practice: happen, impact: operational_impacts.find {|oi| oi.name == 'Education and Training'}),
+        ImpactPractice.create!(practice: happen, impact: operational_impacts.find {|oi| oi.name == 'Social Services'}),
+    ]
+
+    happen_job_titles = [
+        JobPositionPractice.create!(practice: happen, job_position: job_positions.find {|jp| jp.name == 'Clinic based nurse'}),
+        JobPositionPractice.create!(practice: happen, job_position: job_positions.find {|jp| jp.name == 'Clinic based physician'}),
+        JobPositionPractice.create!(practice: happen, job_position: job_positions.find {|jp| jp.name == 'Hospital based nurse'}),
+        JobPositionPractice.create!(practice: happen, job_position: job_positions.find {|jp| jp.name == 'Hospital based physician'}),
+        JobPositionPractice.create!(practice: happen, job_position: job_positions.find {|jp| jp.name == 'Hospital based physician'}),
+        JobPositionPractice.create!(practice: happen, job_position: job_positions.find {|jp| jp.name == 'Nursing Assistant'}),
+        JobPositionPractice.create!(practice: happen, job_position: job_positions.find {|jp| jp.name == 'Pharmacist'}),
+        JobPositionPractice.create!(practice: happen, job_position: job_positions.find {|jp| jp.name == 'Pharmacy Tech'}),
+    ]
+
+    happen_ancillary_services = [
+        AncillaryServicePractice.create!(practice: happen, ancillary_service: ancillary_services.find {|as| as.name == 'Pharmacy'}),
+        AncillaryServicePractice.create!(practice: happen, ancillary_service: ancillary_services.find {|as| as.name == 'Social Work'}),
+    ]
+
+    happen_clinical_locations = [
+        ClinicalLocationPractice.create!(practice: happen, clinical_location: clinical_locations.find {|cl| cl.name == 'Alcohol and Other Drug Abuse (AODA) treatment center'}),
+        ClinicalLocationPractice.create!(practice: happen, clinical_location: clinical_locations.find {|cl| cl.name == 'Assisted Living Facility'}),
+        ClinicalLocationPractice.create!(practice: happen, clinical_location: clinical_locations.find {|cl| cl.name == 'Community Based Outpatient Clinic (CBOC)'}),
+        ClinicalLocationPractice.create!(practice: happen, clinical_location: clinical_locations.find {|cl| cl.name == 'Community Living Centers (CLC)'}),
+        ClinicalLocationPractice.create!(practice: happen, clinical_location: clinical_locations.find {|cl| cl.name == 'Home Health'}),
+        ClinicalLocationPractice.create!(practice: happen, clinical_location: clinical_locations.find {|cl| cl.name == 'Inpatient Hospital'}),
+        ClinicalLocationPractice.create!(practice: happen, clinical_location: clinical_locations.find {|cl| cl.name == 'Outpatient Surgery Center'}),
+        ClinicalLocationPractice.create!(practice: happen, clinical_location: clinical_locations.find {|cl| cl.name == 'Pain Clinic'}),
+        ClinicalLocationPractice.create!(practice: happen, clinical_location: clinical_locations.find {|cl| cl.name == 'Skilled Nursing Facility (SNF)'}),
+    ]
+
+    happen_risks_and_mitigations = [
+        RiskAndMitigation.create!(practice: happen, risk: 'Unwillingness to participate', mitigation: ' mitigate through targeted comms and education'),
+    ]
+
+    happen_publications = [
+        # Publication.create!(practice: happen, title: 'OIG Inspection')
+    ]
+
+    happen_badges = [
+        BadgePractice.create!(practice: happen, badge: badges.find {|b| b.name == 'Diffusion of Excellence'}),
+        BadgePractice.create!(practice: happen, badge: badges.find {|b| b.name == 'Shark Tank Approved'}),
+        BadgePractice.create!(practice: happen, badge: badges.find {|b| b.name == 'Gold Status'}),
+    ]
+    
   end
 else
   puts 'Database already seeded... Nothing to do.'
