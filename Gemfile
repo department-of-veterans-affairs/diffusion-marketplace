@@ -47,6 +47,7 @@ group :development, :test do
   # gem 'capybara-webkit'
   gem 'rspec_junit_formatter'
   gem 'simplecov'
+  gem 'shoulda-matchers', require: false
 end
 
 group :development do
