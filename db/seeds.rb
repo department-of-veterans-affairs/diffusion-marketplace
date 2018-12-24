@@ -86,6 +86,7 @@ if StrategicSponsor.all.blank?
         Impact.create!(name: 'Herbal Remedies', short_name: 'herbal_remedies', description: 'Herbal Remedies', impact_category: impact_categories[0]),
         Impact.create!(name: 'Acupuncture', short_name: 'acupuncture', description: 'Acupuncture', impact_category: impact_categories[0]),
         Impact.create!(name: 'Dental', short_name: 'dental', description: 'Dental', impact_category: impact_categories[0]),
+        Impact.create!(name: 'Oral care', short_name: 'oral_care', description: 'Oral care', impact_category: impact_categories[0]),
         Impact.create!(name: 'Homeless services', short_name: 'homeless_services', description: 'Homeless services', impact_category: impact_categories[0]),
         Impact.create!(name: 'Social workers', short_name: 'social_workers', description: 'Social workers', impact_category: impact_categories[0]),
         Impact.create!(name: 'None', short_name: 'none', description: 'No clinical impact', impact_category: impact_categories[0]),
@@ -150,7 +151,8 @@ if StrategicSponsor.all.blank?
         ClinicalCondition.create!(name: 'Amputation', short_name: 'amputation', description: 'Amputation'),
         ClinicalCondition.create!(name: 'Hospital acquired pneumonia', short_name: 'hospital_acquired_pneumonia', description: 'Hospital acquired pneumonia'),
         ClinicalCondition.create!(name: 'Addiction', short_name: 'addiction', description: 'Addiction'),
-        ClinicalCondition.create!(name: 'Accidental overdose', short_name: 'accidental_overdose', description: 'Accidental Overdose'),
+        ClinicalCondition.create!(name: 'Accidental overdose', short_name: 'accidental_overdose', description: 'Accidental overdose'),
+        ClinicalCondition.create!(name: 'Hospital acquired pneumonia', short_name: 'hospital_acquired_pneumonia', description: 'Hospital acquired pneumonia'),
     ]
   end
 
@@ -164,6 +166,7 @@ if StrategicSponsor.all.blank?
         AncillaryService.create!(name: 'Rehabilitation & Prosthetics', short_name: 'rehabilitation_prosthetics', description: 'Rehabilitation & Prosthetics'),
         AncillaryService.create!(name: 'Social Work', short_name: 'social_work', description: 'Social Work'),
         AncillaryService.create!(name: 'Spiritual Services', short_name: 'spiritual_services', description: 'Spiritual Services'),
+        AncillaryService.create!(name: 'Pharmacy', short_name: 'pharmacy', description: 'Pharmacy'),
     ]
   end
 
@@ -189,7 +192,7 @@ if StrategicSponsor.all.blank?
         DevelopingFacilityType.create!(name: 'VA Program Office', short_name: 'va_program_office'),
         DevelopingFacilityType.create!(name: 'Outside of VA', short_name: 'outside_of_va'),
         DevelopingFacilityType.create!(name: 'Vendor', short_name: 'vendor'),
-        DevelopingFacilityType.create!(name: 'Community Living Center', short_name: 'clc'),
+        DevelopingFacilityType.create!(name: 'Community Living Center (CLC)', short_name: 'clc'),
         DevelopingFacilityType.create!(name: 'Office of Mental Health', short_name: 'office_of_mental_health'),
     ]
   end
@@ -382,7 +385,7 @@ if StrategicSponsor.all.blank?
     naloxone_clinical_conditions = [
         ClinicalConditionPractice.create!(practice: naloxone, clinical_condition: clinical_conditions.find {|cc| cc.name == 'Chronic Pain'}),
         ClinicalConditionPractice.create!(practice: naloxone, clinical_condition: clinical_conditions.find {|cc| cc.name == 'Addiction'}),
-        ClinicalConditionPractice.create!(practice: naloxone, clinical_condition: clinical_conditions.find {|cc| cc.name == 'Accidental Overdose'}),
+        ClinicalConditionPractice.create!(practice: naloxone, clinical_condition: clinical_conditions.find {|cc| cc.name == 'Accidental overdose'}),
     ]
 
     naloxone_operational_impacts = [
@@ -394,7 +397,6 @@ if StrategicSponsor.all.blank?
         JobPositionPractice.create!(practice: naloxone, job_position: job_positions.find {|jp| jp.name == 'Clinic based nurse'}),
         JobPositionPractice.create!(practice: naloxone, job_position: job_positions.find {|jp| jp.name == 'Clinic based physician'}),
         JobPositionPractice.create!(practice: naloxone, job_position: job_positions.find {|jp| jp.name == 'Hospital based nurse'}),
-        JobPositionPractice.create!(practice: naloxone, job_position: job_positions.find {|jp| jp.name == 'Hospital based physician'}),
         JobPositionPractice.create!(practice: naloxone, job_position: job_positions.find {|jp| jp.name == 'Hospital based physician'}),
         JobPositionPractice.create!(practice: naloxone, job_position: job_positions.find {|jp| jp.name == 'Nursing Assistant'}),
         JobPositionPractice.create!(practice: naloxone, job_position: job_positions.find {|jp| jp.name == 'Pharmacist'}),
@@ -444,24 +446,30 @@ if StrategicSponsor.all.blank?
         name: 'VA Project HAPPEN ',
         short_name: 'va_project_happen',
         description: 'Non Ventilator Hospital Acquired Pneumonia Prevention by Engaging Nursing Staff to Complete Inpatient Oral Care. ',
-        date_initiated: DateTime.strptime('1/1/2016', '%m/%d/%Y'),
-        vha_visn: 'VISN 1',
-        medical_center: 'Boston HCS',
+        date_initiated: DateTime.strptime('5/1/2016', '%m/%d/%Y'),
+        vha_visn: 'VISN 6',
+        medical_center: 'Salem VAMC',
         cboc: 'Not Applicable',
         impact_veteran_experience: '',
-        impact_veteran_satisfaction: '',
-        impact_other_veteran_experience: 'saves lives',
-        impact_financial_estimate_saved: '0',
-        impact_financial_per_veteran: '0',
+        impact_veteran_satisfaction: 'Approximately 24 lives have been saved since implementing the Project Happen initiative',
+        impact_other_veteran_experience: 'Only 34.5% of veterans who develop NV-HAP (Non Ventilator Hospital Acquired Pneumonia) return home after admission impacting the quality of life of patients, their families, and the larger community.
+
+By working with engaged nurses to provide oral care to veterans, a 92% decrease in NV-HAP and a reduced cost of $40,000 per case was accomplished. ',
+        impact_financial_estimate_saved: '$5.46 million ',
+        impact_financial_per_veteran: '$40,000',
         impact_financial_roi: '0',
-        business_case_summary: 'Veterans are twice as likely to die from opioid overdoses and these overdoses are occurring at VAMCs where happen is infrequently available. Equipping AED cabinets and VA police with happen to provide happen quickly will save lives.',
-        impact_financial_other: 'Time based Metrics + # of Veterans impacted.',
+        business_case_summary: 'Regard dental care supplies:
+
+Pneumonia is a substantial health risk for patients during their hospital stay.
+The average cost of one case of NV-HAP is $40,000. Mortality rates for NV-HAP range from 18-30%. Procuring ADA approved, high-quality toothbrushes, toothpaste, and other oral hygiene supplies such as alcohol-free mouthwash, denture cleansers, and lip moisturizers is critical to successful inpatient oral care implementation. Average cost to the VA for oral care supplies is $3.00 per patient.  The inpatient oral care intervention in VISN 6 and Houston VAMC saved an estimated $5.462M and 24 Veteran lives (October 2016- September 2018).
+Oral care reduces the risk of developing pneumonia and lowers health care costs by avoiding long hospital stays.',
+        impact_financial_other: '',
         phase_gate: 'National Diffusion',
-        successful_implementation: 'Implementation in 168 facilities',
-        target_measures: 'self reports',
-        target_success: '148',
-        implementation_time_estimate: '4-6 months',
-        support_network_email: 'vharapidnalocone@va.gov',
+        successful_implementation: 'Implementation of HAPPEN in 40+ facilities in 2019. ',
+        target_measures: 'Zero cases on HV-HAP within hospital settings ',
+        target_success: '8',
+        implementation_time_estimate: '3 months',
+        support_network_email: 'VAHAPPEN@va.gov',
         va_pulse_link: 'https://www.vapulse.net/groups/happen',
         main_display_image: ActionDispatch::Http::UploadedFile.new(
             filename: File.basename(happen_image_file),
@@ -475,70 +483,60 @@ if StrategicSponsor.all.blank?
         StrategicSponsorPractice.create!(practice: happen, strategic_sponsor: sponsors.find {|s| s.name == 'Diffusion of Excellence'}),
     ]
 
-    happen_va_employees = [
-        VaEmployee.create!(name: 'Pam Bellino'),
-    ]
-
-    happen_va_employees.each {|vae|
-      VaEmployeePractice.create!(va_employee: vae, practice: happen)
-    }
+    # happen_va_employees = [
+    #     VaEmployee.create!(name: 'Pam Bellino'),
+    # ]
+    #
+    # happen_va_employees.each {|vae|
+    #   VaEmployeePractice.create!(va_employee: vae, practice: happen)
+    # }
 
     happen_developing_facilities = [
-        DevelopingFacilityTypePractice.create!(practice: happen, developing_facility_type: developing_facilities[1]),
+        DevelopingFacilityTypePractice.create!(practice: happen, developing_facility_type: developing_facilities.find {|df| df.name == 'Community Living Center (CLC)'}),
+        DevelopingFacilityTypePractice.create!(practice: happen, developing_facility_type: developing_facilities.find {|df| df.name == 'VA Medical Center'}),
     ]
 
     happen_va_secretary_priorities = [
-        VaSecretaryPriorityPractice.create!(practice: happen, va_secretary_priority: va_secretary_priorities[2]),
+        VaSecretaryPriorityPractice.create!(practice: happen, va_secretary_priority: va_secretary_priorities.find {|sp| sp.name == 'Focusing resources based on importance'}),
     ]
 
     happen_clinical_impacts = [
-        ImpactPractice.create!(practice: happen, impact: clinical_impacts.find {|ci| ci.name == 'Mental Health / Psychiatry'}),
+        ImpactPractice.create!(practice: happen, impact: clinical_impacts.find {|ci| ci.name == 'Infectious Disease'}),
         ImpactPractice.create!(practice: happen, impact: clinical_impacts.find {|ci| ci.name == 'Primary Care / Preventive Medicine'}),
-        ImpactPractice.create!(practice: happen, impact: clinical_impacts.find {|ci| ci.name == 'Homeless services'}),
-        ImpactPractice.create!(practice: happen, impact: clinical_impacts.find {|ci| ci.name == 'Social workers'}),
+        ImpactPractice.create!(practice: happen, impact: clinical_impacts.find {|ci| ci.name == 'Dental'}),
+        ImpactPractice.create!(practice: happen, impact: clinical_impacts.find {|ci| ci.name == 'Oral care'}),
     ]
 
     happen_clinical_conditions = [
-        ClinicalConditionPractice.create!(practice: happen, clinical_condition: clinical_conditions.find {|cc| cc.name == 'Chronic Pain'}),
-        ClinicalConditionPractice.create!(practice: happen, clinical_condition: clinical_conditions.find {|cc| cc.name == 'Addiction'}),
-        ClinicalConditionPractice.create!(practice: happen, clinical_condition: clinical_conditions.find {|cc| cc.name == 'Accidental Overdose'}),
+        ClinicalConditionPractice.create!(practice: happen, clinical_condition: clinical_conditions.find {|cc| cc.name == 'Hospital acquired pneumonia'}),
     ]
 
     happen_operational_impacts = [
+        ImpactPractice.create!(practice: happen, impact: operational_impacts.find {|oi| oi.name == 'Administration'}),
         ImpactPractice.create!(practice: happen, impact: operational_impacts.find {|oi| oi.name == 'Education and Training'}),
-        ImpactPractice.create!(practice: happen, impact: operational_impacts.find {|oi| oi.name == 'Social Services'}),
+        ImpactPractice.create!(practice: happen, impact: operational_impacts.find {|oi| oi.name == 'Logistics'}),
     ]
 
     happen_job_titles = [
         JobPositionPractice.create!(practice: happen, job_position: job_positions.find {|jp| jp.name == 'Clinic based nurse'}),
-        JobPositionPractice.create!(practice: happen, job_position: job_positions.find {|jp| jp.name == 'Clinic based physician'}),
-        JobPositionPractice.create!(practice: happen, job_position: job_positions.find {|jp| jp.name == 'Hospital based nurse'}),
-        JobPositionPractice.create!(practice: happen, job_position: job_positions.find {|jp| jp.name == 'Hospital based physician'}),
         JobPositionPractice.create!(practice: happen, job_position: job_positions.find {|jp| jp.name == 'Hospital based physician'}),
         JobPositionPractice.create!(practice: happen, job_position: job_positions.find {|jp| jp.name == 'Nursing Assistant'}),
-        JobPositionPractice.create!(practice: happen, job_position: job_positions.find {|jp| jp.name == 'Pharmacist'}),
-        JobPositionPractice.create!(practice: happen, job_position: job_positions.find {|jp| jp.name == 'Pharmacy Tech'}),
+        JobPositionPractice.create!(practice: happen, job_position: job_positions.find {|jp| jp.name == 'Dentist'}),
     ]
 
     happen_ancillary_services = [
-        AncillaryServicePractice.create!(practice: happen, ancillary_service: ancillary_services.find {|as| as.name == 'Pharmacy'}),
-        AncillaryServicePractice.create!(practice: happen, ancillary_service: ancillary_services.find {|as| as.name == 'Social Work'}),
+
     ]
 
     happen_clinical_locations = [
-        ClinicalLocationPractice.create!(practice: happen, clinical_location: clinical_locations.find {|cl| cl.name == 'Alcohol and Other Drug Abuse (AODA) treatment center'}),
-        ClinicalLocationPractice.create!(practice: happen, clinical_location: clinical_locations.find {|cl| cl.name == 'Assisted Living Facility'}),
-        ClinicalLocationPractice.create!(practice: happen, clinical_location: clinical_locations.find {|cl| cl.name == 'Community Based Outpatient Clinic (CBOC)'}),
         ClinicalLocationPractice.create!(practice: happen, clinical_location: clinical_locations.find {|cl| cl.name == 'Community Living Centers (CLC)'}),
-        ClinicalLocationPractice.create!(practice: happen, clinical_location: clinical_locations.find {|cl| cl.name == 'Home Health'}),
         ClinicalLocationPractice.create!(practice: happen, clinical_location: clinical_locations.find {|cl| cl.name == 'Inpatient Hospital'}),
-        ClinicalLocationPractice.create!(practice: happen, clinical_location: clinical_locations.find {|cl| cl.name == 'Outpatient Surgery Center'}),
-        ClinicalLocationPractice.create!(practice: happen, clinical_location: clinical_locations.find {|cl| cl.name == 'Pain Clinic'}),
-        ClinicalLocationPractice.create!(practice: happen, clinical_location: clinical_locations.find {|cl| cl.name == 'Skilled Nursing Facility (SNF)'}),
     ]
 
     happen_risks_and_mitigations = [
-        RiskAndMitigation.create!(practice: happen, risk: 'Unwillingness to participate', mitigation: ' mitigate through targeted comms and education'),
+        RiskAndMitigation.create!(practice: happen, risk: 'Facility buy in', mitigation: ''),
+        RiskAndMitigation.create!(practice: happen, risk: 'Continued monitoring of HV-HAP cases from month to month.', mitigation: ''),
+        RiskAndMitigation.create!(practice: happen, risk: 'Efficient data collection.', mitigation: ''),
     ]
 
     happen_publications = [
@@ -547,10 +545,10 @@ if StrategicSponsor.all.blank?
 
     happen_badges = [
         BadgePractice.create!(practice: happen, badge: badges.find {|b| b.name == 'Diffusion of Excellence'}),
-        BadgePractice.create!(practice: happen, badge: badges.find {|b| b.name == 'Shark Tank Approved'}),
+        BadgePractice.create!(practice: happen, badge: badges.find {|b| b.name == 'VISN'}),
         BadgePractice.create!(practice: happen, badge: badges.find {|b| b.name == 'Gold Status'}),
     ]
-    
+
   end
 else
   puts 'Database already seeded... Nothing to do.'
