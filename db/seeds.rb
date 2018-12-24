@@ -21,22 +21,83 @@ if StrategicSponsor.all.blank?
       StrategicSponsor.create!(name: 'None', short_name: 'none', description: 'Not Sponsored'),
   ]
 
-  unless Badge.all.present?
-    badges = [
-        Badge.create!(name: 'VISN', short_name: 'visn', description: 'Vetted by at least one VISN', strategic_sponsor: sponsors[0]),
-        Badge.create!(name: 'VHA System Redesign', short_name: 'vha_system_redesign', description: 'Vetted by VHA System Redesign', strategic_sponsor: sponsors[4]),
-        Badge.create!(name: 'VHA Office of Connected Care', short_name: 'vha_office_of_connected_care', description: 'Vetted by the VHA Office of Connected Care', strategic_sponsor: sponsors[5]),
-        Badge.create!(name: 'HSR&D', short_name: 'hsrd', description: 'Vetted by HSR&D', strategic_sponsor: sponsors[3]),
-        Badge.create!(name: 'Office of Rural Health', short_name: 'office_of_rural_health', description: 'Vetted by the Office of Rural Health', strategic_sponsor: sponsors[2]),
-        Badge.create!(name: 'Diffusion of Excellence', short_name: 'diffusion_of_excellence', description: 'Vetted by Diffusion of Excellence', strategic_sponsor: sponsors[1]),
-        Badge.create!(name: 'Shark Tank Approved', short_name: 'shark_tank_approved', description: 'Shark Tank Approved', strategic_sponsor: sponsors[1]),
-        Badge.create!(name: 'Top 100 Shark Tank', short_name: 'shark_tank_100', description: 'Top 100 Shark Tank finisher', strategic_sponsor: sponsors[1]),
-        Badge.create!(name: 'Top 20 Shark Tank', short_name: 'shark_tank_20', description: 'Top 20 Shark Tank finisher', strategic_sponsor: sponsors[1]),
-        Badge.create!(name: 'Gold Status', short_name: 'gold_status', description: 'Gold Status Practice', strategic_sponsor: sponsors[1]),
-        Badge.create!(name: 'Authority to Operate (ATO)', short_name: 'ato', description: 'Authority to Operate (ATO) - applies to OIT projects', strategic_sponsor: sponsors.last),
-    ]
+  23.times do |t|
+    StrategicSponsor.create!(name: "VISN #{t}", short_name: "visn_#{t}", description: "Vetted by VISN #{t}")
   end
 
+  unless Badge.all.present?
+    badge_image_base_path = "#{Rails.root}/db/seed_images/badges"
+    badges = [
+        Badge.create!(name: 'VHA System Redesign', short_name: 'vha_system_redesign', description: 'Vetted by VHA System Redesign', strategic_sponsor: sponsors[4],
+                      badge_image: ActionDispatch::Http::UploadedFile.new(
+                          filename: File.basename("#{badge_image_base_path}/system_redesign.svg"),
+                          tempfile: File.new("#{badge_image_base_path}/system_redesign.svg"),
+                          # detect the image's mime type with MIME if you can't provide it yourself.
+                          type: MIME::Types.type_for("#{badge_image_base_path}/system_redesign.svg").first.content_type)),
+        Badge.create!(name: 'VHA Office of Connected Care', short_name: 'vha_office_of_connected_care', description: 'Vetted by the VHA Office of Connected Care', strategic_sponsor: sponsors[5],
+                      badge_image: ActionDispatch::Http::UploadedFile.new(
+                          filename: File.basename("#{badge_image_base_path}/connected_care.svg"),
+                          tempfile: File.new("#{badge_image_base_path}/connected_care.svg"),
+                          # detect the image's mime type with MIME if you can't provide it yourself.
+                          type: MIME::Types.type_for("#{badge_image_base_path}/connected_care.svg").first.content_type)),
+        Badge.create!(name: 'HSR&D', short_name: 'hsrd', description: 'Vetted by HSR&D', strategic_sponsor: sponsors[3],
+                      badge_image: ActionDispatch::Http::UploadedFile.new(
+                          filename: File.basename("#{badge_image_base_path}/health_systems_r&d.svg"),
+                          tempfile: File.new("#{badge_image_base_path}/health_systems_r&d.svg"),
+                          # detect the image's mime type with MIME if you can't provide it yourself.
+                          type: MIME::Types.type_for("#{badge_image_base_path}/health_systems_r&d.svg").first.content_type)),
+        Badge.create!(name: 'Office of Rural Health', short_name: 'office_of_rural_health', description: 'Vetted by the Office of Rural Health', strategic_sponsor: sponsors[2],
+                      badge_image: ActionDispatch::Http::UploadedFile.new(
+                          filename: File.basename("#{badge_image_base_path}/office_rural_health.svg"),
+                          tempfile: File.new("#{badge_image_base_path}/office_rural_health.svg"),
+                          # detect the image's mime type with MIME if you can't provide it yourself.
+                          type: MIME::Types.type_for("#{badge_image_base_path}/office_rural_health.svg").first.content_type)),
+        Badge.create!(name: 'Diffusion of Excellence', short_name: 'diffusion_of_excellence', description: 'Vetted by Diffusion of Excellence', strategic_sponsor: sponsors[1],
+                      badge_image: ActionDispatch::Http::UploadedFile.new(
+                          filename: File.basename("#{badge_image_base_path}/doe.svg"),
+                          tempfile: File.new("#{badge_image_base_path}/doe.svg"),
+                          # detect the image's mime type with MIME if you can't provide it yourself.
+                          type: MIME::Types.type_for("#{badge_image_base_path}/doe.svg").first.content_type)),
+        Badge.create!(name: 'Shark Tank Approved', short_name: 'shark_tank_approved', description: 'Shark Tank Approved', strategic_sponsor: sponsors[1],
+                      badge_image: ActionDispatch::Http::UploadedFile.new(
+                          filename: File.basename("#{badge_image_base_path}/doe.svg"),
+                          tempfile: File.new("#{badge_image_base_path}/doe.svg"),
+                          # detect the image's mime type with MIME if you can't provide it yourself.
+                          type: MIME::Types.type_for("#{badge_image_base_path}/doe.svg").first.content_type)),
+        Badge.create!(name: 'Top 100 Shark Tank', short_name: 'shark_tank_100', description: 'Top 100 Shark Tank finisher', strategic_sponsor: sponsors[1],
+                      badge_image: ActionDispatch::Http::UploadedFile.new(
+                          filename: File.basename("#{badge_image_base_path}/doe.svg"),
+                          tempfile: File.new("#{badge_image_base_path}/doe.svg"),
+                          # detect the image's mime type with MIME if you can't provide it yourself.
+                          type: MIME::Types.type_for("#{badge_image_base_path}/doe.svg").first.content_type)),
+        Badge.create!(name: 'Top 20 Shark Tank', short_name: 'shark_tank_20', description: 'Top 20 Shark Tank finisher', strategic_sponsor: sponsors[1],
+                      badge_image: ActionDispatch::Http::UploadedFile.new(
+                          filename: File.basename("#{badge_image_base_path}/doe.svg"),
+                          tempfile: File.new("#{badge_image_base_path}/doe.svg"),
+                          # detect the image's mime type with MIME if you can't provide it yourself.
+                          type: MIME::Types.type_for("#{badge_image_base_path}/doe.svg").first.content_type)),
+        Badge.create!(name: 'Gold Status', short_name: 'gold_status', description: 'Gold Status Practice', strategic_sponsor: sponsors[1],
+                      badge_image: ActionDispatch::Http::UploadedFile.new(
+                          filename: File.basename("#{badge_image_base_path}/chart_badge.svg"),
+                          tempfile: File.new("#{badge_image_base_path}/chart_badge.svg"),
+                          # detect the image's mime type with MIME if you can't provide it yourself.
+                          type: MIME::Types.type_for("#{badge_image_base_path}/chart_badge.svg").first.content_type)),
+        Badge.create!(name: 'Authority to Operate (ATO)', short_name: 'ato', description: 'Authority to Operate (ATO) - applies to OIT projects', strategic_sponsor: sponsors.last),
+    ]
+
+    23.times do |t|
+      i = t + 1
+      badge_image_path = "#{Rails.root}/db/seed_images/badges/hospital_badge.svg"
+      badge_image_file = File.new(badge_image_path)
+      badges << Badge.create!(name: "VISN #{i}", short_name: "visn_#{i}", description: "Vetted by VISN #{i}", strategic_sponsor: sponsors.find {|s| s.name == "VISN #{i}"},
+                              badge_image: ActionDispatch::Http::UploadedFile.new(
+                                  filename: File.basename(badge_image_file),
+                                  tempfile: badge_image_file,
+                                  # detect the image's mime type with MIME if you can't provide it yourself.
+                                  type: MIME::Types.type_for(badge_image_path).first.content_type)
+      )
+    end
+  end
 
   unless VaSecretaryPriority.all.present?
     va_secretary_priorities = [
@@ -86,7 +147,6 @@ if StrategicSponsor.all.blank?
         Impact.create!(name: 'Herbal Remedies', short_name: 'herbal_remedies', description: 'Herbal Remedies', impact_category: impact_categories[0]),
         Impact.create!(name: 'Acupuncture', short_name: 'acupuncture', description: 'Acupuncture', impact_category: impact_categories[0]),
         Impact.create!(name: 'Dental', short_name: 'dental', description: 'Dental', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Oral care', short_name: 'oral_care', description: 'Oral care', impact_category: impact_categories[0]),
         Impact.create!(name: 'Homeless services', short_name: 'homeless_services', description: 'Homeless services', impact_category: impact_categories[0]),
         Impact.create!(name: 'Social workers', short_name: 'social_workers', description: 'Social workers', impact_category: impact_categories[0]),
         Impact.create!(name: 'None', short_name: 'none', description: 'No clinical impact', impact_category: impact_categories[0]),
@@ -203,7 +263,7 @@ if StrategicSponsor.all.blank?
     #############
     # FLOW3     #
     #############
-    flow3_image_path = "#{Rails.root}/db/seed_images/flow3.jpg"
+    flow3_image_path = "#{Rails.root}/db/seed_images/practices/flow3.jpg"
     flow3_image_file = File.new(flow3_image_path)
 
     flow3 = Practice.create!(
@@ -213,6 +273,8 @@ if StrategicSponsor.all.blank?
         date_initiated: DateTime.now,
         vha_visn: 'Not Applicable',
         medical_center: 'Pudget Sound Health Care System',
+        initiating_facility: 'Pudget Sound Health Care System',
+        number_adopted: 10,
         cboc: 'Not Applicable',
         impact_veteran_experience: 'Reduces wait time for Prosthetic limbs by more than half',
         impact_veteran_satisfaction: 'Improved communication, patient engagement and continuity of care.  More Veterans are returning to clinic, excited to receive their prosthetic limbs.',
@@ -309,7 +371,7 @@ if StrategicSponsor.all.blank?
     ]
 
     flow3_badges = [
-        BadgePractice.create!(practice: flow3, badge: badges.find {|b| b.name == 'VISN'}),
+        BadgePractice.create!(practice: flow3, badge: badges.find {|b| b.name == 'VISN 1'}),
         BadgePractice.create!(practice: flow3, badge: badges.find {|b| b.name == 'Diffusion of Excellence'}),
         BadgePractice.create!(practice: flow3, badge: badges.find {|b| b.name == 'Shark Tank Approved'}),
         BadgePractice.create!(practice: flow3, badge: badges.find {|b| b.name == 'Gold Status'}),
@@ -321,7 +383,7 @@ if StrategicSponsor.all.blank?
     #############
     # Naloxone  #
     #############
-    naloxone_image_path = "#{Rails.root}/db/seed_images/naloxone.jpg"
+    naloxone_image_path = "#{Rails.root}/db/seed_images/practices/naloxone.jpg"
     naloxone_image_file = File.new(naloxone_image_path)
 
     naloxone = Practice.create!(
@@ -330,6 +392,8 @@ if StrategicSponsor.all.blank?
         description: 'Ensuring rapid availability of naloxone through AED cabinets, Police, OEND',
         date_initiated: DateTime.strptime('1/1/2016', '%m/%d/%Y'),
         vha_visn: 'VISN 1',
+        initiating_facility: 'Boston HCS',
+        number_adopted: 4,
         medical_center: 'Boston HCS',
         cboc: 'Not Applicable',
         impact_veteran_experience: '',
@@ -439,7 +503,7 @@ if StrategicSponsor.all.blank?
     #############
     # HAPPEN  #
     #############
-    happen_image_path = "#{Rails.root}/db/seed_images/happen.jpg"
+    happen_image_path = "#{Rails.root}/db/seed_images/practices/happen.jpg"
     happen_image_file = File.new(happen_image_path)
 
     happen = Practice.create!(
@@ -448,6 +512,8 @@ if StrategicSponsor.all.blank?
         description: 'Non Ventilator Hospital Acquired Pneumonia Prevention by Engaging Nursing Staff to Complete Inpatient Oral Care. ',
         date_initiated: DateTime.strptime('5/1/2016', '%m/%d/%Y'),
         vha_visn: 'VISN 6',
+        initiating_facility: 'Salem VAMC',
+        number_adopted: 2,
         medical_center: 'Salem VAMC',
         cboc: 'Not Applicable',
         impact_veteran_experience: '',
@@ -483,13 +549,13 @@ Oral care reduces the risk of developing pneumonia and lowers health care costs 
         StrategicSponsorPractice.create!(practice: happen, strategic_sponsor: sponsors.find {|s| s.name == 'Diffusion of Excellence'}),
     ]
 
-    # happen_va_employees = [
-    #     VaEmployee.create!(name: 'Pam Bellino'),
-    # ]
-    #
-    # happen_va_employees.each {|vae|
-    #   VaEmployeePractice.create!(va_employee: vae, practice: happen)
-    # }
+    happen_va_employees = [
+        VaEmployee.create!(name: 'Devin Harrison'),
+    ]
+
+    happen_va_employees.each {|vae|
+      VaEmployeePractice.create!(va_employee: vae, practice: happen)
+    }
 
     happen_developing_facilities = [
         DevelopingFacilityTypePractice.create!(practice: happen, developing_facility_type: developing_facilities.find {|df| df.name == 'Community Living Center (CLC)'}),
@@ -504,7 +570,6 @@ Oral care reduces the risk of developing pneumonia and lowers health care costs 
         ImpactPractice.create!(practice: happen, impact: clinical_impacts.find {|ci| ci.name == 'Infectious Disease'}),
         ImpactPractice.create!(practice: happen, impact: clinical_impacts.find {|ci| ci.name == 'Primary Care / Preventive Medicine'}),
         ImpactPractice.create!(practice: happen, impact: clinical_impacts.find {|ci| ci.name == 'Dental'}),
-        ImpactPractice.create!(practice: happen, impact: clinical_impacts.find {|ci| ci.name == 'Oral care'}),
     ]
 
     happen_clinical_conditions = [
@@ -534,9 +599,7 @@ Oral care reduces the risk of developing pneumonia and lowers health care costs 
     ]
 
     happen_risks_and_mitigations = [
-        RiskAndMitigation.create!(practice: happen, risk: 'Facility buy in', mitigation: ''),
-        RiskAndMitigation.create!(practice: happen, risk: 'Continued monitoring of HV-HAP cases from month to month.', mitigation: ''),
-        RiskAndMitigation.create!(practice: happen, risk: 'Efficient data collection.', mitigation: ''),
+        RiskAndMitigation.create!(practice: happen, risk: 'Facility buy in and continued monitoring of HV-HAP cases from month to month.', mitigation: 'Efficient data collection.'),
     ]
 
     happen_publications = [
@@ -545,7 +608,7 @@ Oral care reduces the risk of developing pneumonia and lowers health care costs 
 
     happen_badges = [
         BadgePractice.create!(practice: happen, badge: badges.find {|b| b.name == 'Diffusion of Excellence'}),
-        BadgePractice.create!(practice: happen, badge: badges.find {|b| b.name == 'VISN'}),
+        BadgePractice.create!(practice: happen, badge: badges.find {|b| b.name == 'VISN 6'}),
         BadgePractice.create!(practice: happen, badge: badges.find {|b| b.name == 'Gold Status'}),
     ]
 

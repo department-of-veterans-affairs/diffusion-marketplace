@@ -7,8 +7,10 @@ class CreatePractices < ActiveRecord::Migration[5.2]
       t.integer :position
       t.string :cboc
       t.string :program_office
+      t.string :initiating_facility
       t.string :vha_visn
       t.string :medical_center
+      t.integer :number_adopted, default: 0
       t.text :business_case_summary
       t.string :support_network_email
       t.string :va_pulse_link
