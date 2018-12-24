@@ -4,12 +4,14 @@
     <title>Diffusion Marketplace</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
     <%= render 'shared/header' %>
-    <%= yield %>
+    <main id="main-content" class="<%= params[:controller] %>">
+      <%= yield %>
+    </main>
     <%= render 'shared/footer' %>
   </body>
 
