@@ -82,7 +82,12 @@ if StrategicSponsor.all.blank?
                           tempfile: File.new("#{badge_image_base_path}/chart_badge.svg"),
                           # detect the image's mime type with MIME if you can't provide it yourself.
                           type: MIME::Types.type_for("#{badge_image_base_path}/chart_badge.svg").first.content_type)),
-        Badge.create!(name: 'Authority to Operate (ATO)', short_name: 'ato', description: 'Authority to Operate (ATO) - applies to OIT projects', strategic_sponsor: sponsors.last),
+        Badge.create!(name: 'Authority to Operate (ATO)', short_name: 'ato', description: 'Authority to Operate (ATO) - applies to OIT projects', strategic_sponsor: sponsors.last,
+                      badge_image: ActionDispatch::Http::UploadedFile.new(
+                          filename: File.basename("#{badge_image_base_path}/doe.svg"),
+                          tempfile: File.new("#{badge_image_base_path}/doe.svg"),
+                          # detect the image's mime type with MIME if you can't provide it yourself.
+                          type: MIME::Types.type_for("#{badge_image_base_path}/doe.svg").first.content_type)),
     ]
 
     23.times do |t|
