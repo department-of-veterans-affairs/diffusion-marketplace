@@ -1,3 +1,91 @@
+<!-- "Practice name" section -->
+
+<section class="usa-section grid-container">
+  <h1 class="font-heading-2xl"><%= @practice.name %></h1>
+</section>
+
+<!-- Practice hero image section -->
+
+<section class="usa-hero">
+  <div class="grid-container height-card-lg" style="padding-top:10rem">
+    <div class="grid-row flex-justify-end margin-bottom-1">
+      <button class="usa-button">Bring this practice to your facility</button>
+    </div>
+    <div class="grid-row flex-justify-end">
+      <button class="usa-button">Share this initiative</button>
+    </div>
+  </div>
+</section>
+
+<!-- "Designed to" section -->
+
+<section class="usa-section grid-container">
+  <h2 class="margin-y-0 font-sans-xl">Designed to</h2>
+  <div class="grid-row">
+    <div class="grid-col-fill">
+      <img class="icon-large" src="<%= image_url 'check-square.svg' %>" alt="check icon">
+      <p class="font-sans-md">Effectively address diabetes that is refractory to standard care</p>
+    </div>
+    <div class="grid-col-fill">
+      <img class="icon-large" src="<%= image_url 'user-check.svg' %>" alt="user check icon">
+      <p class="font-sans-md">Be suitable for practical delivery by existing HT nurses using standard HT equipment</p>
+    </div>
+  </div>
+</section>
+
+<!-- "Practice overview" section -->
+
+<section class="usa-section bg-accent-cool">
+  <div class="grid-container">
+    <h2 class="margin-y-0 font-sans-xl">Practice overview</h2>
+    <p class="measure-none"><%= @practice.description %></p>
+  </div>
+</section>
+
+<!-- "Positive outcomes" section -->
+
+<section class="usa-section grid-container">
+  <h2 class="margin-y-0 font-sans-xl">Positive outcomes</h2>
+  <div class="grid-row">
+    <img class="icon-large" src="<%= image_url 'trending-down.svg' %>" alt="trending down icon">
+    <p class="font-sans-md">Improve patient HbA1c levels in cohort by 1% at MTVAHCS</p>
+  </div>
+  <div class="grid-row">
+    <img class="icon-large" src="<%= image_url 'trending-up.svg' %>" alt="trending up icon">
+    <p class="font-sans-md">Increase percentage of Veterans with HbA1c levels &#60;8% within cohort
+by 50% at MTVAHCS</p>
+  </div>
+  <div class="grid-row">
+    <img class="icon-large" src="<%= image_url 'thumbs-up.svg' %>" alt="thumbs up icon">
+    <p class="font-sans-md">Increase patient and clinician satisfaction measures by a statistically significant measure</p>
+  </div>
+</section>
+
+<!-- "Cost" section -->
+
+<section class="usa-section grid-container">
+  <h2 class="margin-y-0 font-sans-xl">Cost</h2>
+</section>
+
+<!-- "Team" section -->
+
+<section class="usa-section grid-container">
+  <h2 class="margin-y-0 font-sans-xl">Team</h2>
+</section>
+
+<hr>
+<hr>
+<hr>
+
+
+
+
+
+
+
+
+
+
 <p id="notice"><%= notice %></p>
 
 <p>
@@ -22,12 +110,12 @@
 
 <p>
   <strong>Is vha field:</strong>
-  <%= @practice.is_vha_field %>
+  @practice.is_vha_field
 </p>
 
 <p>
   <strong>Is program office:</strong>
-  <%= @practice.is_program_office %>
+  @practice.is_program_office
 </p>
 
 <p>

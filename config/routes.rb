@@ -13,4 +13,5 @@ Rails.application.routes.draw do
   resources :va_secretary_priorities
   resources :strategic_sponsors
   root 'home#index'
+  get '/practices' => 'practices#index'
 end
