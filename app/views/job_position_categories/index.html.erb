@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Job Position Categories</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Short name</th>
+      <th>Description</th>
+      <th>Position</th>
+      <th>Parent category</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @job_position_categories.each do |job_position_category| %>
+      <tr>
+        <td><%= job_position_category.name %></td>
+        <td><%= job_position_category.short_name %></td>
+        <td><%= job_position_category.description %></td>
+        <td><%= job_position_category.position %></td>
+        <td><%= job_position_category.parent_category_id %></td>
+        <td><%= link_to 'Show', job_position_category %></td>
+        <td><%= link_to 'Edit', edit_job_position_category_path(job_position_category) %></td>
+        <td><%= link_to 'Destroy', job_position_category, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Job Position Category', new_job_position_category_path %>

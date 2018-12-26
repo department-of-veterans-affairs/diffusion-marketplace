@@ -1,0 +1,2 @@
+module ClinicalConditionsHelper
+end

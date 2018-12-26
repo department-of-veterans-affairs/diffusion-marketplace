@@ -47,6 +47,7 @@ group :development, :test do
   # gem 'capybara-webkit'
   gem 'rspec_junit_formatter'
   gem 'simplecov'
+  gem 'shoulda-matchers', require: false
 end
 
 group :development do
@@ -64,7 +65,7 @@ group :development do
   # Requires graphviz installed locally
   # Use this to create and update models and migrations
   # Use: localhost:3000/erd
-  # gem 'erd'
+  gem 'erd'
 
   ###
 
@@ -73,7 +74,10 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-
-gem 'uswds-rails', '~> 1.4'
+gem 'jquery-rails'
+gem 'uswds-rails', github: 'blacktm/uswds-rails', branch: 'update-2.0.0-beta-4'
 
 gem 'activerecord-nulldb-adapter'
+gem 'acts_as_list'
+gem 'aws-sdk', '~> 2.3'
+gem 'paperclip', '~> 6.0.0'

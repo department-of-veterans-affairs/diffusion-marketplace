@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @job_position_category.name %>
+</p>
+
+<p>
+  <strong>Short name:</strong>
+  <%= @job_position_category.short_name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @job_position_category.description %>
+</p>
+
+<p>
+  <strong>Position:</strong>
+  <%= @job_position_category.position %>
+</p>
+
+<p>
+  <strong>Parent category:</strong>
+  <%= @job_position_category.parent_category_id %>
+</p>
+
+<%= link_to 'Edit', edit_job_position_category_path(@job_position_category) %> |
+<%= link_to 'Back', job_position_categories_path %>

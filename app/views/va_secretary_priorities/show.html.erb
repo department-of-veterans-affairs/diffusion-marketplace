@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @va_secretary_priority.name %>
+</p>
+
+<p>
+  <strong>Short name:</strong>
+  <%= @va_secretary_priority.short_name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @va_secretary_priority.description %>
+</p>
+
+<p>
+  <strong>Position:</strong>
+  <%= @va_secretary_priority.position %>
+</p>
+
+<%= link_to 'Edit', edit_va_secretary_priority_path(@va_secretary_priority) %> |
+<%= link_to 'Back', va_secretary_priorities_path %>
