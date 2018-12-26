@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Developing Facility Types</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Short name</th>
+      <th>Position</th>
+      <th>Description</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @developing_facility_types.each do |developing_facility_type| %>
+      <tr>
+        <td><%= developing_facility_type.name %></td>
+        <td><%= developing_facility_type.short_name %></td>
+        <td><%= developing_facility_type.position %></td>
+        <td><%= developing_facility_type.description %></td>
+        <td><%= link_to 'Show', developing_facility_type %></td>
+        <td><%= link_to 'Edit', edit_developing_facility_type_path(developing_facility_type) %></td>
+        <td><%= link_to 'Destroy', developing_facility_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Developing Facility Type', new_developing_facility_type_path %>

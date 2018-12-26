@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @clinical_condition.name %>
+</p>
+
+<p>
+  <strong>Short name:</strong>
+  <%= @clinical_condition.short_name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @clinical_condition.description %>
+</p>
+
+<p>
+  <strong>Position:</strong>
+  <%= @clinical_condition.position %>
+</p>
+
+<%= link_to 'Edit', edit_clinical_condition_path(@clinical_condition) %> |
+<%= link_to 'Back', clinical_conditions_path %>

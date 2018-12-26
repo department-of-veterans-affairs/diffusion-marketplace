@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Strategic Sponsors</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Short name</th>
+      <th>Description</th>
+      <th>Position</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @strategic_sponsors.each do |strategic_sponsor| %>
+      <tr>
+        <td><%= strategic_sponsor.name %></td>
+        <td><%= strategic_sponsor.short_name %></td>
+        <td><%= strategic_sponsor.description %></td>
+        <td><%= strategic_sponsor.position %></td>
+        <td><%= link_to 'Show', strategic_sponsor %></td>
+        <td><%= link_to 'Edit', edit_strategic_sponsor_path(strategic_sponsor) %></td>
+        <td><%= link_to 'Destroy', strategic_sponsor, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Strategic Sponsor', new_strategic_sponsor_path %>
