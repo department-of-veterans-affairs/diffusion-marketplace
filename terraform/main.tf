@@ -99,6 +99,26 @@ resource "aws_elastic_beanstalk_environment" "ng_beanstalk_application_environme
     name      = "RAILS_ENV"
     value     = "${var.application_rails_env}"
   }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "S3_BUCKET_NAME"
+    value     = "${var.application_s3_bucket_name}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "AWS_ACCESS_KEY_ID"
+    value     = "${var.application_aws_access_key_id}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "AWS_SECRET_ACCESS_KEY"
+    value     = "${var.application_aws_secret_access_key}"
+  }
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "AWS_REGION"
+    value     = "${var.application_aws_region}"
+  }
   ###===================== ======================= ======================###
 
   setting {

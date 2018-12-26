@@ -23,6 +23,24 @@ variable "application_environment" {
   description = "Deployment stage e.g. 'staging', 'production', 'test', 'integration'"
 }
 
+variable "application_s3_bucket_name" {
+  default     = "va-diffusion-marketplace-stg"
+  description = "Name of the S3 bucket"
+}
+
+variable "application_aws_access_key_id" {
+  description = "S3 bucket AWS user's access key id"
+}
+
+variable "application_aws_secret_access_key" {
+  description = "S3 bucket AWS user's secret access key"
+}
+
+variable "application_aws_region" {
+  default     = "us-west-2"
+  description = "S3 bucket region"
+}
+
 variable "region" {
   default     = "us-west-2"
   description = "Defines where your app should be deployed"
