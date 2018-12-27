@@ -46,6 +46,10 @@ button.appearance-none {
 
 // Custom styles
 
+p {
+  @extend .measure-none;
+}
+
 .icon {
   position: relative;
   top: 6px;
