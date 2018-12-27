@@ -78,7 +78,7 @@ aws configure set default.output json
 eval $(aws ecr get-login --no-include-email --region ${REGION})
 
 # Build the image
-docker build -t $NAME:$VERSION .
+docker build -t $NAME:$VERSION --build-arg S3_BUCKET_NAME=$S3_BUCKET_NAME --build-arg AWS_ACCESS_KEY_ID=AWS_ACCESS_KEY_ID --build-arg AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY --build-arg AWS_REGION=$REGION .
 # Tag it
 docker tag $NAME:$VERSION $AWS_ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$NAME:$VERSION
 # Push to AWS Elastic Container Registry
