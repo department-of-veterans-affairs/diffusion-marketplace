@@ -16,6 +16,12 @@
 
 @import "uswds/uswds";
 
+// USWDS utility extensions
+
+.display-none {
+  display: none;
+}
+
 .bottom-2rem {
   bottom: 2rem;
 }
@@ -23,6 +29,22 @@
 .margin-auto {
   margin: auto;
 }
+
+.maxw-675px {
+  max-width: 675px;
+}
+
+button.appearance-none {
+  appearance: none;
+  background: none;
+  border: none;
+}
+
+.link-dark, .link-dark:visited {
+  @extend .text-base-darkest;
+}
+
+// Custom styles
 
 .icon {
   position: relative;
@@ -38,11 +60,24 @@
   height: 50px;
 }
 
-.link-dark, .link-dark:visited {
-  @extend .text-base-darkest;
+.icon-positive-outcomes {
+  float: left;
+  margin-right: 15px;
+  position: relative;
+  top: 13px;
+  height: 35px;
 }
 
-section.usa-section {
-  padding-bottom: 1rem;
-  padding-top: 1rem;
+.icon-highlights {
+  width: 35px;
+}
+
+.badge {
+  position: relative;
+  top: 15px;
+  width: 40px;
+}
+
+.section-selected {
+  border-bottom: solid 6px color('accent-cool-dark');
 }
