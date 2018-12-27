@@ -1,3 +1,5 @@
+<!-- "Welcome" section -->
+
 <section class="usa-section grid-container">
   <h1 class="font-heading-2xl">Welcome</h1>
   <p class="measure-none">VHA’s new Changing Lives, Saving Lives (CLSL) campaign aims to raise awareness of how frontline driven innovation is changing the lives of Veterans, caregivers, and employees — and in some instances saving Veteran lives. Dr.
@@ -5,26 +7,28 @@
     employees to improve the health care experience, with demonstrable outcomes, for all Veterans.</p>
 </section>
 
+<!-- "Featured practices" section -->
+
 <section class="usa-section grid-container">
   <div class="grid-row grid-gap-lg">
-    <div class="grid-col-4">
-      <a href="/practices" class="text-no-underline">
+    <div class="grid-col-fill">
+      <a href="" class="text-no-underline">
         <div class="text-base-darkest padding-4 text-center bg-accent-cool">
           <h1>Vione</h1>
           <p>Saved 1000 lives</p>
         </div>
       </a>
     </div>
-    <div class="grid-col-4">
-      <a href="/practices" class="text-no-underline">
+    <div class="grid-col-fill">
+      <a href="" class="text-no-underline">
         <div class="text-base-darkest padding-4 text-center bg-accent-cool">
           <h1>Rapid Naxalone</h1>
           <p>358 lives saved</p>
         </div>
       </a>
     </div>
-    <div class="grid-col-4">
-      <a href="/practices" class="text-no-underline">
+    <div class="grid-col-fill">
+      <a href="" class="text-no-underline">
         <div class="text-base-darkest padding-4 text-center bg-accent-cool">
           <h1>Project HAPPEN</h1>
           <p>Saved $2.6 million</p>
@@ -41,6 +45,8 @@ for="search-field-big">Search</label> <input class="usa-input maxw-none" id="sea
 </button> </div> </form> </div> <div class="grid-container margin-bottom-2"> <label class="usa-label font-heading-xl margin-top-0" for="view-by-filters">View by</label> </div> <div class="grid-container"> <div id="view-by-filters" class="grid-row
 grid-gap"> <div class="grid-col-2"> <div class="circle">Lives Saved</div> </div> <div class="grid-col-2"> <div class="circle">Veteran Experience</div> </div> <div class="grid-col-2"> <div class="circle">Financial Impact</div> </div> <div
 class="grid-col-2"> <div class="circle">Operational</div> </div> <div class="grid-col-2"> <div class="circle">Clinical Outcome</div> </div> <div class="grid-col-2"> <div class="circle">Ease of Implementation</div> </div> </div> </div> </section> -->
+
+<!-- Search section -->
 
 <section class="usa-section grid-container">
   <div class="grid-row">
@@ -61,25 +67,21 @@ class="grid-col-2"> <div class="circle">Operational</div> </div> <div class="gri
   </div>
 </section>
 
+<!-- Practice list section -->
+
 <section class="usa-section grid-container">
   <% @practices.each do |practice| %>
-    <div class="grid-row padding-2" style="background:#e7f6f8">
+    <div class="grid-row margin-1 padding-1 bg-accent-cool-lighter">
       <div class="grid-col-4">
         <img src="<%= practice.main_display_image.url %>" alt="practice image">
       </div>
-      <div class="grid-col-fill padding-1" style="background:#00bde3">
-        <h1 class="margin-0"><%= link_to practice.name, practice, class: 'link-dark' %></h1>
+      <div class="grid-col-fill padding-2">
+        <h1 class="margin-top-0"><%= link_to practice.name, practice, class: 'link-dark' %></h1>
         <p class="margin-0">$$$ | 50 health centers have adopted this practice</p>
         <p class="margin-0"><%= practice.description %></p>
         <% practice.badges.each do |badge| %>
-          <p class="margin-0"><%= badge.badge_image.url %></p>
-          <p class="margin-0"><%= badge.name %></p>
-        <% end %>
-      </div>
-      <div class="grid-col-2">
-        <% practice.badges.each do |badge| %>
-          <p class="margin-0"><%= badge.badge_image.url %></p>
-          <p class="margin-0"><%= badge.name %></p>
+          <img class="badge" src="<%= badge.badge_image.url %>" alt="practice badge">
+          <span><%= badge.name %></span>
         <% end %>
       </div>
       <!-- <div class="grid-col-2 padding-1" style="background:#009ec1">⭐️ Gold status practice</div> -->

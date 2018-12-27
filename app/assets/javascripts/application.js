@@ -15,3 +15,32 @@
 //= require turbolinks
 //= require uswds/uswds
 //= require_tree .
+
+
+document.addEventListener('turbolinks:load', function() {
+
+  document.getElementById('risks-mitigations-toggle').onclick = function() {
+    var el = document.querySelector('#risks-mitigations-toggle h3');
+    el.classList.add('section-selected');
+    el = document.querySelector('#cost-difficulty-toggle h3');
+    el.classList.remove('section-selected');
+
+    el = document.getElementById('risks-mitigations');
+    el.style.display = 'block';
+    el = document.getElementById('cost-difficulty');
+    el.style.display = 'none';
+  }
+
+  document.getElementById('cost-difficulty-toggle').onclick = function() {
+    var el = document.querySelector('#cost-difficulty-toggle h3');
+    el.classList.add('section-selected');
+    el = document.querySelector('#risks-mitigations-toggle h3');
+    el.classList.remove('section-selected');
+
+    el = document.getElementById('cost-difficulty');
+    el.style.display = 'block';
+    el = document.getElementById('risks-mitigations');
+    el.style.display = 'none';
+  }
+
+}, false);
