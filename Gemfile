@@ -79,5 +79,5 @@ gem 'uswds-rails', github: 'blacktm/uswds-rails', branch: 'update-2.0.0-beta-4'
 
 gem 'activerecord-nulldb-adapter'
 gem 'acts_as_list'
-gem 'aws-sdk', '~> 2.3'
+gem 'aws-sdk-s3'
 gem 'paperclip', '~> 6.0.0'
