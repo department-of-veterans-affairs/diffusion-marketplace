@@ -75,7 +75,7 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'jquery-rails'
-gem 'uswds-rails', github: 'blacktm/uswds-rails', branch: 'update-2.0.0-beta-4'
+gem 'uswds-rails', github: 'ahay-agile6/uswds-rails', branch: 'fonts'
 
 gem 'activerecord-nulldb-adapter'
 gem 'acts_as_list'
