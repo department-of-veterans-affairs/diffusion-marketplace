@@ -2,8 +2,12 @@
 
 <section class="usa-section grid-container">
   <h1 class="font-heading-2xl">Welcome</h1>
-  <p class="measure-none">VHA’s new Changing Lives, Saving Lives (CLSL) campaign aims to raise awareness of how frontline driven innovation is changing the lives of Veterans, caregivers, and employees — and in some instances saving Veteran lives. Dr.
-    Ryan Vega, Director, Diffusion of Excellence Initiative, will formally launch the 12-month campaign at the VHA Innovation Experience, a two-day event taking place in Washington, D.C. August 29–30, 2018, to showcase the continued commitment by VHA
+  <p class="measure-none">VHA’s new Changing Lives, Saving Lives (CLSL) campaign aims to raise awareness of how
+    frontline driven innovation is changing the lives of Veterans, caregivers, and employees — and in some instances
+    saving Veteran lives. Dr.
+    Ryan Vega, Director, Diffusion of Excellence Initiative, will formally launch the 12-month campaign at the VHA
+    Innovation Experience, a two-day event taking place in Washington, D.C. August 29–30, 2018, to showcase the
+    continued commitment by VHA
     employees to improve the health care experience, with demonstrable outcomes, for all Veterans.</p>
 </section>
 
@@ -77,9 +81,10 @@ class="grid-col-2"> <div class="circle">Operational</div> </div> <div class="gri
       </div>
       <div class="grid-col-fill padding-2">
         <h1 class="margin-top-0"><%= link_to practice.name, practice, class: 'link-dark' %></h1>
-        <p class="margin-0">$$$ | 50 health centers have adopted this practice</p>
+        <p class="margin-0">$$$ | <%= practice.number_adopted %> health centers have adopted this practice</p>
         <p class="margin-0"><%= practice.description %></p>
-        <% practice.badges.each do |badge| %>
+        <% practice_badges = practice.badges.limit(3) %>
+        <% practice_badges do |badge| %>
           <img class="badge" src="<%= badge.badge_image.url %>" alt="practice badge">
           <span><%= badge.name %></span>
         <% end %>

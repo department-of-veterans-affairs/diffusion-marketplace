@@ -1,7 +1,7 @@
 GIT
-  remote: https://github.com/blacktm/uswds-rails.git
-  revision: 7c5f09e44e7136103a915cf932744ae519d5c46d
-  branch: update-2.0.0-beta-4
+  remote: https://github.com/ahay-agile6/uswds-rails.git
+  revision: 8570358bdb70b02473024b9ae7e7c4a9a0685066
+  branch: fonts
   specs:
     uswds-rails (2.0.0.pre.beta.4)
       autoprefixer-rails (~> 9.4)
