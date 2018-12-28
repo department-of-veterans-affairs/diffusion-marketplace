@@ -48,39 +48,46 @@
 <section class="usa-section grid-container">
   <h2 class="margin-top-0 margin-bottom-2 font-sans-xl">Positive outcomes</h2>
 
-  <div class="grid-row padding-bottom-2">
+  <% unless @practice.impact_veteran_experience.empty? %>
+  <div class="grid-row display-block padding-bottom-2">
     <img class="icon-positive-outcomes" src="<%= image_url 'clipboard.svg' %>" alt="clipboard icon">
-    <p class="font-sans-md"><%= @practice.impact_veteran_experience %></p>
+    <p class="margin-left-6 font-sans-md"><%= @practice.impact_veteran_experience %></p>
   </div>
+  <% end %>
 
-  <div class="grid-row padding-bottom-2">
+  <% unless @practice.impact_veteran_satisfaction.empty? %>
+  <div class="grid-row display-block padding-bottom-2">
     <img class="icon-positive-outcomes" src="<%= image_url 'doctor.svg' %>" alt="doctor icon">
-    <p class="font-sans-md"><%= @practice.impact_veteran_satisfaction %></p>
+    <p class="margin-left-6 font-sans-md"><%= @practice.impact_veteran_satisfaction %></p>
   </div>
+  <% end %>
 
-  <div class="grid-row padding-bottom-2">
+  <% unless @practice.impact_other_veteran_experience.empty? %>
+  <div class="grid-row display-block padding-bottom-2">
     <img class="icon-positive-outcomes" src="<%= image_url 'saluting-vet.png' %>" alt="saluting vet icon">
-    <p class="font-sans-md"><%= @practice.impact_other_veteran_experience %></p>
+    <p class="margin-left-6 font-sans-md"><%= @practice.impact_other_veteran_experience %></p>
   </div>
+  <% end %>
 
-  <div class="grid-row padding-bottom-2">
+  <div class="grid-row display-block padding-bottom-2">
     <img class="icon-positive-outcomes" src="<%= image_url 'dollar-sign.svg' %>" alt="dollar sign icon">
-    <p class="font-sans-md"><%= @practice.impact_financial_estimate_saved %></p>
-  </div>
 
-  <div class="grid-row padding-bottom-2">
-    <img class="icon-positive-outcomes" src="<%= image_url 'dollar-sign.svg' %>" alt="dollar sign icon">
-    <p class="font-sans-md"><%= @practice.impact_financial_per_veteran %></p>
-  </div>
+    <% unless @practice.impact_financial_estimate_saved == '0' %>
+    <p class="margin-left-6 font-sans-md"><%= @practice.impact_financial_estimate_saved %></p>
+    <% end %>
 
-  <div class="grid-row padding-bottom-2">
-    <img class="icon-positive-outcomes" src="<%= image_url 'dollar-sign.svg' %>" alt="dollar sign icon">
-    <p class="font-sans-md"><%= @practice.impact_financial_roi %></p>
-  </div>
+    <% unless @practice.impact_financial_per_veteran == '0' %>
+    <p class="margin-left-6 font-sans-md"><%= @practice.impact_financial_per_veteran %></p>
+    <% end %>
 
-  <div class="grid-row">
-    <img class="icon-positive-outcomes" src="<%= image_url 'dollar-sign.svg' %>" alt="dollar sign icon">
-    <p class="font-sans-md"><%= @practice.impact_financial_other %></p>
+    <% unless @practice.impact_financial_roi == '0' %>
+    <p class="margin-left-6 font-sans-md"><%= @practice.impact_financial_roi %></p>
+    <% end %>
+
+    <% unless @practice.impact_financial_other == 0 %>
+    <p class="margin-left-6 font-sans-md"><%= @practice.impact_financial_other %></p>
+    <% end %>
+
   </div>
 
   <div class="bg-accent-cool-light margin-x-auto margin-top-6 padding-3 maxw-675px">
