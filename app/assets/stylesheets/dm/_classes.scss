@@ -1,0 +1,198 @@
+/*
+* * * * * ==============================
+* * * * * ==============================
+* * * * * ==============================
+* * * * * ==============================
+========================================
+========================================
+========================================
+----------------------------------------
+DM COMMONLY USED CLASSES - use these if you really mean it!
+----------------------------------------
+*/
+@import "variables/colors";
+
+/* Background Colors */
+
+.dm-background-light-black {
+  background-color: $dm-color-light-black !important;
+}
+
+.dm-background-primary-blue {
+  background-color: $dm-color-primary-blue !important;
+}
+
+.dm-font-color-primary-blue {
+  color: $dm-color-primary-blue !important;
+}
+
+.dm-font-color-black {
+  color: #000000 !important;
+}
+
+.dm-font-color-white {
+  color: #FFFFFF !important;
+}
+
+.dm-background-linear-gradient-cool {
+  background: linear-gradient(180deg, rgba(0, 150, 246, 0.35) 0%, rgba(255, 255, 255, 0) 100%) !important;
+}
+
+/* Font Weight */
+
+.normal {
+  font-weight: normal !important;
+}
+
+.bold {
+  font-weight: bold !important;
+}
+
+/* Text Align */
+
+.text-center {
+  text-align: center !important;
+}
+
+/* Display */
+
+.hidden {
+  visibility: hidden !important;
+}
+
+.display-none {
+  display: none !important;
+}
+
+.display-inline {
+  display: inline !important;
+}
+
+.display-inline-block {
+  display: inline-block !important;
+}
+
+.display-block {
+  display: block !important;
+}
+
+.display-grid,
+.display-grid-align-items-center {
+  display: grid;
+}
+
+.display-grid-align-items-center {
+  align-items: center;
+}
+
+.display-flex,
+.display-flex-align-items-center {
+  display: flex;
+}
+
+.display-flex-align-items-center {
+  align-items: center;
+}
+
+.bottom-1-and-half-rem {
+  bottom: 1.5rem !important;
+}
+
+.bottom-2rem {
+  bottom: 2rem !important;
+}
+
+.margin-auto {
+  margin: auto !important;
+}
+
+.maxw-675px {
+  max-width: 675px !important;
+}
+
+/* Float */
+
+.left {
+  float: left !important;
+}
+
+.right {
+  float: right !important;
+}
+
+/* Margin */
+.x0 {
+  margin: 0;
+}
+
+/* Margin Left */
+
+.x0-left {
+ margin-left: 0;
+}
+
+.x1-left {
+  margin-left: 1rem;
+}
+
+.x2-left {
+  margin-left: 2rem;
+}
+
+.x3-left {
+  margin-left: 3rem;
+}
+
+.x4-left {
+  margin-left: 4rem;
+}
+
+.x5-left {
+  margin-left: 5rem;
+}
+
+.x6-left {
+  margin-left: 6rem;
+}
+.x7-left {
+  margin-left: 7rem
+}
+
+/* Padding */
+.p0 {
+  padding: 0;
+}
+
+/* Padding Left */
+
+.p0-left {
+  padding-left: 0;
+}
+
+.p1-left {
+  padding-left: 1rem;
+}
+
+.p2-left {
+  padding-left: 2rem;
+}
+
+.p3-left {
+  padding-left: 3rem;
+}
+
+.p4-left {
+  padding-left: 4rem;
+}
+
+.p5-left {
+  padding-left: 5rem;
+}
+
+.p6-left {
+  padding-left: 6rem;
+}
+.p7-left {
+  padding-left: 7rem
+}
+

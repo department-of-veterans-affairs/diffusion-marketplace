@@ -57,19 +57,28 @@
   <nav role="navigation" class="usa-nav">
     <div class="usa-nav-inner">
       <button class="usa-nav-close"><img src="<%= image_url 'uswds/close.svg' %>" alt="close"></button>
-      <div class="usa-nav-secondary bottom-2rem">
+      <div class="usa-nav-secondary bottom-1-and-half-rem">
         <ul class="usa-nav-secondary-links">
           <li class="usa-nav-secondary-item">
-            <a href=""><img class="icon" src="<%= image_url 'users.svg' %>" alt="partners icon">Practice Partners</a>
+            <a href="#">Practice Partners</a>
           </li>
           <li class="usa-nav-secondary-item">
-            <a href=""><img class="icon" src="<%= image_url 'shopping-bag.svg' %>" alt="shopping icon">VISN Marketplace</a>
+            <a href="#">VISN Marketplace</a>
           </li>
           <li class="usa-nav-secondary-item">
-            <a href="/practices/new"><img class="icon" src="<%= image_url 'plus-square.svg' %>" alt="plus icon">Add a Practice</a>
+            <a href="/practices/new">Add a Practice</a>
           </li>
           <li class="usa-nav-secondary-item">
-            <a href=""><img class="icon" src="<%= image_url 'user.svg' %>" alt="user icon">VISN/Username</a>
+            <a href="#"><%= icon('fas', 'search')%></a>
+          </li>
+          <li class="usa-nav-secondary-item">
+            <a class="dm-font-color-primary-blue" href="#">Sign up</a>
+          </li>
+          <li class="usa-nav-secondary-item">
+            <a class="dm-font-color-primary-blue" href="#">|</a>
+          </li>
+          <li class="usa-nav-secondary-item dm-font-color-primary-blue">
+            <a class="dm-font-color-primary-blue" href="#">Login</a>
           </li>
         </ul>
       </div>
