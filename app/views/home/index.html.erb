@@ -3,17 +3,13 @@
 <section class="usa-section grid-container">
   <div class="grid-row grid-gap">
     <h1 class="font-heading-2xl">Saving lives by diffusing best practices</h1>
+    <p class="measure-none">VHA’s new Changing Lives, Saving Lives (CLSL) campaign aims to raise awareness of how
+      frontline driven innovation is changing the lives of Veterans, caregivers, and employees — and in some instances
+      saving Veteran lives. </p>
   </div>
 
-  <div class="grid-row">
-    <div class="grid-col-10">
-      <p class="measure-none">VHA’s new Changing Lives, Saving Lives (CLSL) campaign aims to raise awareness of how
-        frontline driven innovation is changing the lives of Veterans, caregivers, and employees — and in some instances
-        saving Veteran lives. </p>
-    </div>
-    <div class="grid-col-2">
+  <div class="grid-row display-grid-justify-items-end">
       <button class="dm-button-primary">Sign up</button>
-    </div>
   </div>
 </section>
 <section id="diffusion-animation-section" class="diffusion-animation-section">
@@ -48,23 +44,25 @@
       <style>
         .dm-background-gradient-cool-<%= practice.id %> {
           background: linear-gradient(180deg, rgba(0, 150, 246, 0.35) 0%, rgba(255, 255, 255, 0) 100%);
-          width: 100%;
+          border-radius: 20px;
           display: block;
+          width: 100%;
         }
 
         .dm-background-gradient-cool-<%= practice.id %>:after {
           background: url(<%= practice.main_display_image.url %>);
           background-size: cover;
-          opacity: 0.25;
-          width: 304px;
-          height: inherit;
-          margin: auto 0;
-          padding: inherit;
-          top: 0;
-          left: 11px;
-          position: absolute;
-          z-index: -1;
+          border-radius: 20px;
           content: "";
+          height: inherit;
+          left: 11px;
+          margin: auto 0;
+          opacity: 0.25;
+          padding: inherit;
+          position: absolute;
+          top: 0;
+          width: 304px;
+          z-index: -1;
         }
       </style>
       <div class="grid-col-fill home-tile">
