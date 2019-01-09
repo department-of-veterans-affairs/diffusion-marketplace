@@ -48,6 +48,8 @@ group :development, :test do
   gem 'rspec_junit_formatter'
   gem 'simplecov'
   gem 'shoulda-matchers', require: false
+
+  gem 'sniffybara', git: 'https://github.com/department-of-veterans-affairs/sniffybara.git'
 end
 
 group :development do
