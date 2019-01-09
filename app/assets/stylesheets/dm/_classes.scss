@@ -77,21 +77,26 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 }
 
 .display-grid,
-.display-grid-align-items-center {
-  display: grid;
+.display-grid-align-items-center,
+.display-grid-justify-items-end {
+  display: grid !important;
 }
 
 .display-grid-align-items-center {
-  align-items: center;
+  align-items: center !important;
 }
 
 .display-flex,
 .display-flex-align-items-center {
-  display: flex;
+  display: flex !important;
 }
 
 .display-flex-align-items-center {
-  align-items: center;
+  align-items: center !important;
+}
+
+.display-grid-justify-items-end {
+  justify-items: end !important;
 }
 
 .bottom-1-and-half-rem {
