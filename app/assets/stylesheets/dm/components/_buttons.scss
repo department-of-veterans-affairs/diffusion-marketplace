@@ -20,8 +20,8 @@ DM BUTTON CLASSES
   font-size: .9em;
   font-weight: normal;
   height: 54px;
-  text-align: center;
   max-width: 222px;
+  text-align: center;
   width: 100%;
 }
 
@@ -33,6 +33,7 @@ DM BUTTON CLASSES
   font-size: .9em;
   font-weight: normal;
   height: 54px;
+  max-width: 222px;
   text-align: center;
   width: 222px;
 }
@@ -46,9 +47,10 @@ DM BUTTON CLASSES
   font-size: .9em;
   font-weight: normal;
   height: 54px;
+  max-width: 222px;
   padding: 1em;
   text-align: center;
-  width: 222px;
+  width: 100%;
 
   &:visited {
     color: #FFFFFF;
@@ -64,9 +66,10 @@ DM BUTTON CLASSES
   font-size: .9em;
   font-weight: normal;
   height: 54px;
+  max-width: 222px;
   padding: 1em;
   text-align: center;
-  width: 222px;
+  width: 100%;
 
   &:visited {
     color: $dm-color-primary-blue;

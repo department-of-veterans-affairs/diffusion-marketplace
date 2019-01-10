@@ -59,26 +59,24 @@
           background-size: cover;
           border-radius: 20px;
           content: "";
-          height: inherit;
+          height: 100%;
           left: 11px;
           margin: auto 0;
+          max-width: calc(100% - 22px);
           opacity: 0.25;
           padding: inherit;
           position: absolute;
           top: 0;
-          width: 304px;
+          width: 100%;
           z-index: -1;
         }
       </style>
-      <div class="tablet:grid-col-4 home-tile">
-        <a href="" class="text-no-underline">
-
-          <div class="featured-practice text-base-darkest padding-4 text-center dm-background-gradient-cool-<%= practice.id %>">
-            <h1><%= link_to practice.name, practice, class: 'link-dark' %></h1>
-            <p class="margin-0"><%= practice.description.truncate(50, {ommision: '...'}) %></p>
-            <%= link_to 'Learn More', practice, class: 'dm-button-link-secondary' %>
-          </div>
-        </a>
+      <div class="tablet:grid-col-4 home-tile x2-bottom">
+        <div class="featured-practice text-base-darkest padding-4 text-center dm-background-gradient-cool-<%= practice.id %>">
+          <h1><%= link_to practice.name, practice, class: 'link-dark' %></h1>
+          <p class="x2-bottom"><%= practice.description.truncate(50, {ommision: '...'}) %></p>
+          <%= link_to 'Learn More', practice, class: 'dm-button-link-secondary margin-0-auto responsive-100-percent-width px900' %>
+        </div>
       </div>
     <% end %>
   </div>

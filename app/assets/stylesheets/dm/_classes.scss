@@ -107,10 +107,6 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   bottom: 2rem !important;
 }
 
-.margin-auto {
-  margin: auto !important;
-}
-
 .maxw-675px {
   max-width: 675px !important;
 }
@@ -159,6 +155,15 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   float: right !important;
 }
 
+/* Margin Center Elements */
+.margin-0-auto {
+  margin: 0 auto !important;
+}
+
+.margin-auto {
+  margin: auto !important;
+}
+
 /* Margin */
 .x0 {
   margin: 0;
@@ -193,6 +198,7 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 .x6-bottom {
   margin-bottom: 6rem;
 }
+
 .x7-bottom {
   margin-bottom: 7rem
 }
@@ -200,7 +206,7 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 /* Margin Left */
 
 .x0-left {
- margin-left: 0;
+  margin-left: 0;
 }
 
 .x1-left {
@@ -226,6 +232,7 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 .x6-left {
   margin-left: 6rem;
 }
+
 .x7-left {
   margin-left: 7rem
 }
@@ -264,7 +271,21 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 .p6-left {
   padding-left: 6rem;
 }
+
 .p7-left {
   padding-left: 7rem
 }
 
+/* Responsive Utils */
+
+.responsive-100-percent-width {
+  &.px900 {
+    @media screen and (min-width: 900px) {
+      width: 100% !important;
+    }
+  }
+
+  &.max-width {
+    max-width: 100% !important;
+  }
+}
