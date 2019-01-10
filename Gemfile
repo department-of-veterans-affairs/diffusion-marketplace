@@ -50,6 +50,8 @@ group :development, :test do
   gem 'shoulda-matchers', require: false
 
   gem 'sniffybara', git: 'https://github.com/department-of-veterans-affairs/sniffybara.git'
+
+  gem 'rspec-retry'
 end
 
 group :development do
