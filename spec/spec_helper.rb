@@ -1,5 +1,6 @@
 require 'capybara'
 require 'simplecov'
+require 'rspec/retry'
 
 if ENV['CIRCLE_ARTIFACTS']
   dir = File.join(ENV['CIRCLE_ARTIFACTS'], 'coverage')
@@ -26,6 +27,13 @@ end
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
+  # show retry status in spec process
+  config.verbose_retry = true
+  # Try twice (retry once)
+  config.default_retry_count = 2
+  # Only retry when Selenium raises Net::ReadTimeout
+  config.exceptions_to_retry = [Net::ReadTimeout]
+
   # register around filter that captures stdout and stderr
   config.around(:each) do |example|
     $stdout = StringIO.new
@@ -71,8 +79,8 @@ RSpec.configure do |config|
   # triggering implicit auto-inclusion in groups with matching metadata.
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
-# The settings below are suggested to provide a good initial experience
-# with RSpec, but feel free to customize to your heart's content.
+  # The settings below are suggested to provide a good initial experience
+  # with RSpec, but feel free to customize to your heart's content.
 =begin
   # This allows you to limit a spec run to individual examples or groups
   # you care about by tagging them with `:focus` metadata. When nothing
