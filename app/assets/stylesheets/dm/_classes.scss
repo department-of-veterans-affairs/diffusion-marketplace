@@ -115,6 +115,40 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   max-width: 675px !important;
 }
 
+/* Desktop */
+// Only hide on desktop
+.desktop-hide {
+  display: block !important;
+  @media screen and (min-width: 1024px) {
+    display: none !important;
+  }
+}
+
+// Only show on desktop
+.desktop-show {
+  display: none !important;
+  @media screen and (min-width: 1024px) {
+    display: block !important;
+  }
+}
+
+/* Mobile */
+// Only hide on mobile
+.mobile-hide {
+  display: none !important;
+  @media screen and (min-width: 1024px) {
+    display: block !important;
+  }
+}
+
+// Only show on mobile
+.mobile-show {
+  display: block !important;
+  @media screen and (min-width: 1024px) {
+    display: none !important;
+  }
+}
+
 /* Float */
 
 .left {
@@ -128,6 +162,39 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 /* Margin */
 .x0 {
   margin: 0;
+}
+
+/* Margin Bottom */
+
+.x0-bottom {
+  margin-bottom: 0;
+}
+
+.x1-bottom {
+  margin-bottom: 1rem;
+}
+
+.x2-bottom {
+  margin-bottom: 2rem;
+}
+
+.x3-bottom {
+  margin-bottom: 3rem;
+}
+
+.x4-bottom {
+  margin-bottom: 4rem;
+}
+
+.x5-bottom {
+  margin-bottom: 5rem;
+}
+
+.x6-bottom {
+  margin-bottom: 6rem;
+}
+.x7-bottom {
+  margin-bottom: 7rem
 }
 
 /* Margin Left */

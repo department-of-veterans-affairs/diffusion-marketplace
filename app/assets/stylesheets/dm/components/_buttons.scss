@@ -21,7 +21,8 @@ DM BUTTON CLASSES
   font-weight: normal;
   height: 54px;
   text-align: center;
-  width: 222px;
+  max-width: 222px;
+  width: 100%;
 }
 
 .dm-button-secondary {
