@@ -1,6 +1,6 @@
 class Badge < ApplicationRecord
   acts_as_list
-  has_attached_file :badge_image
+  has_attached_file :badge_image, validate_media_type: false
   do_not_validate_attachment_file_type :badge_image
 
   belongs_to :strategic_sponsor, optional: true
