@@ -7,23 +7,27 @@
       frontline driven innovation is changing the lives of Veterans, caregivers, and employees — and in some instances
       saving Veteran lives. </p>
   </div>
-
-  <div class="grid-row display-grid-justify-items-end">
+  <div class="grid-row">
+    <div class="tablet:grid-col-8 x1-bottom">
+      &nbsp;
+    </div>
+    <div class="tablet:grid-col-4 display-grid-align-items-center">
       <button class="dm-button-primary">Sign up</button>
+    </div>
   </div>
 </section>
-<section id="diffusion-animation-section" class="diffusion-animation-section">
+<section id="diffusion-animation-section" class="diffusion-animation-section desktop-show">
 
 </section>
 
 <section class="usa-section section-worth-spreading dm-background-primary-blue dm-font-color-white">
   <div class="grid-container">
     <div class="grid-row">
-      <div class="grid-col-10">
+      <div class="tablet:grid-col-8 x1-bottom">
         <h2>Do you have a best practice worth spreading?</h2>
         <p>You can submit a practice to the diffusion marketplace and help save lives.</p>
       </div>
-      <div class="grid-col-2 display-grid-align-items-center">
+      <div class="tablet:grid-col-4 display-grid-align-items-center">
         <button class="dm-button-secondary">Learn More</button>
       </div>
     </div>
@@ -32,7 +36,8 @@
 
 <section class="usa-section section-top-gold-status-intro">
   <div class="grid-container display-flex-align-items-center">
-    <%= image_tag 'heart_badge.svg' %> <h2 class="bold display-inline-block p1-left x0">Current Top 3 Gold Status Practices</h2>
+    <%= image_tag 'heart_badge.svg' %>
+    <h2 class="bold display-inline-block p1-left x0">Current Top 3 Gold Status Practices</h2>
   </div>
 </section>
 
@@ -65,7 +70,7 @@
           z-index: -1;
         }
       </style>
-      <div class="grid-col-fill home-tile">
+      <div class="tablet:grid-col-4 home-tile">
         <a href="" class="text-no-underline">
 
           <div class="featured-practice text-base-darkest padding-4 text-center dm-background-gradient-cool-<%= practice.id %>">
