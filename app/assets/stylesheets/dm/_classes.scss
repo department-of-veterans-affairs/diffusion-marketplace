@@ -22,9 +22,54 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   background-color: $dm-color-primary-blue !important;
 }
 
-.dm-font-color-primary-blue {
-  color: $dm-color-primary-blue !important;
+.dm-background-light-blue {
+  color: $dm-color-light-blue !important;
 }
+
+/* Linear Gradient backgrounds */
+
+.dm-background-linear-gradient-down-cool {
+  background: linear-gradient(180deg, rgba(0, 150, 246, 0.35) 0%, rgba(255, 255, 255, 0) 100%) !important;
+}
+
+// fades from the bottom from a darker blue to clear
+.dm-background-linear-gradient-up-dark-blue {
+  background: linear-gradient(180deg, #E7F6F8 8.75%, rgba(255, 255, 255, 0) 100%), #0076D6;
+}
+
+/* encompassing backgrounds - use these to fill the entire page */
+
+// fades top down from white to light blue to white again
+.dm-background-half-and-half {
+  position: relative;
+
+  &:after {
+    background: linear-gradient(0.5turn, #FFFFFF, #E7F6F8, #FFFFFF);
+    content: '';
+    height: 100%;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: -10;
+  }
+}
+
+// fades from the bottom from light blue to white
+.dm-background-linear-up-lightblue-to-white {
+  position: relative;
+
+  &:after {
+    background: linear-gradient(to top, #E7F6F8 50%, #FFFFFF);
+    content: '';
+    height: 100%;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: -10;
+  }
+}
+
+/* Font colors */
 
 .dm-font-color-black {
   color: #000000 !important;
@@ -34,8 +79,8 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   color: #FFFFFF !important;
 }
 
-.dm-background-linear-gradient-cool {
-  background: linear-gradient(180deg, rgba(0, 150, 246, 0.35) 0%, rgba(255, 255, 255, 0) 100%) !important;
+.dm-font-color-primary-blue {
+  color: $dm-color-primary-blue !important;
 }
 
 /* Font Weight */
@@ -52,6 +97,19 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .text-center {
   text-align: center !important;
+}
+
+/* Position */
+.absolute {
+  position: absolute !important;
+}
+
+.relative {
+  position: relative !important;
+}
+
+.static {
+  position: static !important;
 }
 
 /* Display */

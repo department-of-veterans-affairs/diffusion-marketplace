@@ -1,83 +1,83 @@
-<!-- "Welcome" section -->
-
-<section class="usa-section grid-container">
-  <div class="grid-row grid-gap">
-    <h1 class="font-heading-2xl">Saving lives by diffusing best practices</h1>
-    <p class="measure-none">VHA’s new Changing Lives, Saving Lives (CLSL) campaign aims to raise awareness of how
-      frontline driven innovation is changing the lives of Veterans, caregivers, and employees — and in some instances
-      saving Veteran lives. </p>
-  </div>
-  <div class="grid-row">
-    <div class="tablet:grid-col-8 x1-bottom">
-      &nbsp;
+<div class="dm-background-linear-up-lightblue-to-white">
+  <!-- "Welcome" section -->
+  <section class="usa-section grid-container hero">
+    <div class="grid-row grid-gap">
+      <h1 class="font-heading-2xl">Saving lives by diffusing best practices</h1>
+      <p class="measure-none">VHA’s new Changing Lives, Saving Lives (CLSL) campaign aims to raise awareness of how
+        frontline driven innovation is changing the lives of Veterans, caregivers, and employees — and in some instances
+        saving Veteran lives. </p>
     </div>
-    <div class="tablet:grid-col-4 display-grid-align-items-center">
-      <button class="dm-button-primary">Sign up</button>
-    </div>
-  </div>
-</section>
-<section id="diffusion-animation-section" class="diffusion-animation-section desktop-show">
-
-</section>
-
-<section class="usa-section section-worth-spreading dm-background-primary-blue dm-font-color-white">
-  <div class="grid-container">
     <div class="grid-row">
       <div class="tablet:grid-col-8 x1-bottom">
-        <h2>Do you have a best practice worth spreading?</h2>
-        <p>You can submit a practice to the diffusion marketplace and help save lives.</p>
+        &nbsp;
       </div>
       <div class="tablet:grid-col-4 display-grid-align-items-center">
-        <button class="dm-button-secondary">Learn More</button>
+        <button class="dm-button-primary">Sign up</button>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+  <section id="diffusion-animation-section" class="diffusion-animation-section">
+  </section>
 
-<section class="usa-section section-top-gold-status-intro">
-  <div class="grid-container display-flex-align-items-center">
-    <%= image_tag 'heart_badge.svg', alt: 'Heart' %>
-    <h2 class="bold display-inline-block p1-left x0">Current Top 3 Gold Status Practices</h2>
-  </div>
-</section>
-
-<!-- "Featured practices" section -->
-
-<section class="usa-section grid-container home-tiles">
-  <div class="grid-row grid-gap-lg">
-    <% @practices.each do |practice| %>
-      <style>
-        .dm-background-gradient-cool-<%= practice.id %> {
-          background: linear-gradient(180deg, rgba(0, 150, 246, 0.35) 0%, rgba(255, 255, 255, 0) 100%);
-          border-radius: 20px;
-          display: block;
-          width: 100%;
-        }
-
-        .dm-background-gradient-cool-<%= practice.id %>:after {
-          background: url(<%= practice.main_display_image.url %>);
-          background-size: cover;
-          border-radius: 20px;
-          content: "";
-          height: 100%;
-          left: 11px;
-          margin: auto 0;
-          max-width: calc(100% - 23px);
-          opacity: 0.25;
-          padding: inherit;
-          position: absolute;
-          top: 0;
-          width: 100%;
-          z-index: -1;
-        }
-      </style>
-      <div class="tablet:grid-col-4 home-tile x2-bottom">
-        <div class="featured-practice text-base-darkest padding-4 text-center dm-background-gradient-cool-<%= practice.id %>">
-          <h1><%= link_to practice.name, practice, class: 'link-dark' %></h1>
-          <p class="x2-bottom"><%= practice.description.truncate(50, {ommision: '...'}) %></p>
-          <%= link_to 'Learn More', practice, class: 'dm-button-link-secondary margin-0-auto responsive-100-percent-width px900' %>
+  <section class="usa-section section-worth-spreading dm-background-primary-blue dm-font-color-white">
+    <div class="grid-container">
+      <div class="grid-row">
+        <div class="tablet:grid-col-8 x1-bottom">
+          <h2>Do you have a best practice worth spreading?</h2>
+          <p>You can submit a practice to the diffusion marketplace and help save lives.</p>
+        </div>
+        <div class="tablet:grid-col-4 display-grid-align-items-center">
+          <button class="dm-button-secondary">Learn More</button>
         </div>
       </div>
-    <% end %>
-  </div>
-</section>
+    </div>
+  </section>
+
+  <section class="usa-section section-top-gold-status-intro">
+    <div class="grid-container display-flex-align-items-center">
+      <%= image_tag 'heart_badge.svg', alt: 'Heart' %>
+      <h2 class="bold display-inline-block p1-left x0">Current Top 3 Gold Status Practices</h2>
+    </div>
+  </section>
+
+  <!-- "Featured practices" section -->
+
+  <section class="usa-section grid-container home-tiles">
+    <div class="grid-row grid-gap-lg">
+      <% @practices.each do |practice| %>
+        <style>
+          .dm-background-gradient-cool-<%= practice.id %> {
+            background: linear-gradient(180deg, rgba(0, 150, 246, 0.35) 0%, rgba(255, 255, 255, 0) 100%);
+            border-radius: 20px;
+            display: block;
+            width: 100%;
+          }
+
+          .dm-background-gradient-cool-<%= practice.id %>:after {
+            background: url(<%= practice.main_display_image.url %>);
+            background-size: cover;
+            border-radius: 20px;
+            content: "";
+            height: 100%;
+            left: 11px;
+            margin: auto 0;
+            max-width: calc(100% - 23px);
+            opacity: 0.25;
+            padding: inherit;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            z-index: -1;
+          }
+        </style>
+        <div class="tablet:grid-col-4 home-tile x2-bottom">
+          <div class="featured-practice text-base-darkest padding-4 text-center dm-background-gradient-cool-<%= practice.id %>">
+            <h1><%= link_to practice.name, practice, class: 'link-dark' %></h1>
+            <p class="x2-bottom"><%= practice.description.truncate(50, {ommision: '...'}) %></p>
+            <%= link_to 'Learn More', practice, class: 'dm-button-link-secondary margin-0-auto responsive-100-percent-width px900' %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </section>
+</div>
