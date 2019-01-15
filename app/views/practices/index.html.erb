@@ -1,45 +1,43 @@
-<section class="usa-section grid-container">
-  <h1>All practices</h1>
+<div class="dm-background-linear-up-lightblue-to-white full-view-height">
+  <section class="grid-container p2-top p2-bottom">
+    <div class="grid-row">
+      <div class="mobile-lg:grid-col-2">
+        <a class="dm" href="#">Lives Saved</a>
+      </div>
+      <div class="mobile-lg:grid-col-2">
+        <a class="dm" href="#">Veteran Experience</a>
+      </div>
+      <div class="mobile-lg:grid-col-2">
+        <a class="dm" href="#">Financial Impact</a>
+      </div>
+      <div class="mobile-lg:grid-col-2">
+        <a class="dm" href="#">Operational</a>
+      </div>
+      <div class="mobile-lg:grid-col-2">
+        <a class="dm" href="#">Clinical Outcome</a>
+      </div>
+      <div class="mobile-lg:grid-col-2">
+        <a class="dm" href="#">Ease of Implementation</a>
+      </div>
+    </div>
+  </section>
 
-  <table class="usa-table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Short name</th>
-        <th>Description</th>
-        <th>Position</th>
-        <th>Is vha field</th>
-        <th>Is program office</th>
-        <th>Vha visn</th>
-        <th>Medical center</th>
-        <th>Business case summary</th>
-        <th>Support network email</th>
-        <th>Va pulse link</th>
-        <th>Additional notes</th>
-        <th colspan="3"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @practices.each do |practice| %>
-        <tr>
-          <td><%= practice.name %></td>
-          <td><%= practice.short_name %></td>
-          <td><%= practice.description %></td>
-          <td><%= practice.position %></td>
-          <td>practice.is_vha_field</td>
-          <td>practice.is_program_office</td>
-          <td><%= practice.vha_visn %></td>
-          <td><%= practice.medical_center %></td>
-          <td><%= practice.business_case_summary %></td>
-          <td><%= practice.support_network_email %></td>
-          <td><%= practice.va_pulse_link %></td>
-          <td><%= practice.additional_notes %></td>
-          <td><%= link_to 'Show', practice %></td>
-          <td><%= link_to 'Edit', edit_practice_path(practice) %></td>
-          <td><%= link_to 'Destroy', practice, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-  <%= link_to 'New Practice', new_practice_path %>
-</section>
+  <section class="promo dismissible grid-container dm-background-primary-blue promo-primary promo-rounded-corners-20 dm-font-color-white">
+    <div class="diffusion-background-circles-promo-translucent"></div>
+    <div class="grid-row flex-direction-row-reverse dismiss-row p1">
+      <button type="button" class="dismiss-cross dismiss-button z-index-10"><%= icon('fas', 'times') %></button>
+    </div>
+    <section class="promo-body p2">
+      <div class="grid-row">
+        <div class="tablet:grid-col-8 x1-bottom">
+          <h2>Do you have a best practice worth spreading?</h2>
+          <p>You can submit a practice to the diffusion marketplace and help save lives.</p>
+        </div>
+        <div class="tablet:grid-col-4 display-grid-align-items-center">
+          <button class="dm-button-secondary x1-bottom dismiss-button">Maybe Later</button>
+          <button class="dm-button-secondary">Learn More</button>
+        </div>
+      </div>
+    </section>
+  </section>
+</div>

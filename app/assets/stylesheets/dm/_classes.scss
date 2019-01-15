@@ -12,6 +12,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 */
 @import "variables/colors";
 
+.full-view-height {
+  min-height: 100vh;
+}
+
 /* Background Colors */
 
 .dm-background-light-black {
@@ -178,11 +182,39 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   }
 }
 
+.desktop-hide-inline-block {
+  display: inline-block !important;
+  @media screen and (min-width: 1024px) {
+    display: none !important;
+  }
+}
+
+.desktop-hide-inline {
+  display: inline !important;
+  @media screen and (min-width: 1024px) {
+    display: none !important;
+  }
+}
+
 // Only show on desktop
 .desktop-show {
   display: none !important;
   @media screen and (min-width: 1024px) {
     display: block !important;
+  }
+}
+
+.desktop-show-inline {
+  display: none !important;
+  @media screen and (min-width: 1024px) {
+    display: inline !important;
+  }
+}
+
+.desktop-show-inline-block {
+  display: none !important;
+  @media screen and (min-width: 1024px) {
+    display: inline-block !important;
   }
 }
 
@@ -195,8 +227,36 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   }
 }
 
+.mobile-hide-inline {
+  display: none !important;
+  @media screen and (min-width: 1024px) {
+    display: block !important;
+  }
+}
+
+.mobile-hide-inline-block {
+  display: none !important;
+  @media screen and (min-width: 1024px) {
+    display: block !important;
+  }
+}
+
 // Only show on mobile
 .mobile-show {
+  display: block !important;
+  @media screen and (min-width: 1024px) {
+    display: none !important;
+  }
+}
+
+.mobile-show-inline {
+  display: block !important;
+  @media screen and (min-width: 1024px) {
+    display: none !important;
+  }
+}
+
+.mobile-show-inline-block {
   display: block !important;
   @media screen and (min-width: 1024px) {
     display: none !important;
@@ -222,7 +282,7 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   margin: auto !important;
 }
 
-/* Margin */
+/* Margin None */
 .x0 {
   margin: 0;
 }
@@ -295,9 +355,39 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   margin-left: 7rem
 }
 
-/* Padding */
+/* Padding None */
 .p0 {
   padding: 0;
+}
+
+/* Padding All */
+
+.p1 {
+  padding: 1rem;
+}
+
+.p2 {
+  padding: 2rem;
+}
+
+.p3 {
+  padding: 3rem;
+}
+
+.p4 {
+  padding: 4rem;
+}
+
+.p5 {
+  padding: 5rem;
+}
+
+.p6 {
+  padding: 6rem;
+}
+
+.p7 {
+  padding: 7rem
 }
 
 /* Padding Left */
@@ -334,6 +424,74 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   padding-left: 7rem
 }
 
+/* Padding Bottom */
+
+.p0-bottom {
+  padding-bottom: 0;
+}
+
+.p1-bottom {
+  padding-bottom: 1rem;
+}
+
+.p2-bottom {
+  padding-bottom: 2rem;
+}
+
+.p3-bottom {
+  padding-bottom: 3rem;
+}
+
+.p4-bottom {
+  padding-bottom: 4rem;
+}
+
+.p5-bottom {
+  padding-bottom: 5rem;
+}
+
+.p6-bottom {
+  padding-bottom: 6rem;
+}
+
+.p7-bottom {
+  padding-bottom: 7rem
+}
+
+/* Padding Top */
+
+.p0-top {
+  padding-top: 0;
+}
+
+.p1-top {
+  padding-top: 1rem;
+}
+
+.p2-top {
+  padding-top: 2rem;
+}
+
+.p3-top {
+  padding-top: 3rem;
+}
+
+.p4-top {
+  padding-top: 4rem;
+}
+
+.p5-top {
+  padding-top: 5rem;
+}
+
+.p6-top {
+  padding-top: 6rem;
+}
+
+.p7-top {
+  padding-top: 7rem
+}
+
 /* Responsive Utils */
 
 .responsive-100-percent-width {
@@ -345,5 +503,50 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
   &.max-width {
     max-width: 100% !important;
+  }
+}
+
+/* z-index */
+.z-index-negative {
+  z-index: -1;
+}
+
+.z-index-0 {
+  z-index: 10;
+}
+
+.z-index-10 {
+  z-index: 10;
+}
+
+.z-index-10 {
+  z-index: 10;
+}
+
+.z-index-1000 {
+  z-index: 1000;
+}
+
+/* FLEXBOX */
+// CAUTION: Element must have display: flex;
+
+// easy way to put things on the end of a row
+.flex-direction-row-reverse {
+  flex-direction: row-reverse !important;
+}
+
+.space-around {
+  justify-content: space-around;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+/* unordered lists <ul><li></li></ul> */
+
+ul.no-list-style {
+  li {
+    list-style-type: none;
   }
 }
