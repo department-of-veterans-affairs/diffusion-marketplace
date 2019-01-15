@@ -29,3 +29,54 @@ DM TILES ON THE HOME PAGE
     }
   }
 }
+
+.dm-background-gold-tile-1,
+.dm-background-gold-tile-2,
+.dm-background-gold-tile-3 {
+  background: rgba(26, 68, 128, 0.5);
+  display: block;
+  margin: 0 auto;
+  max-width: calc(100% - 22px);
+  width: 100%;
+}
+
+.dm-background-gold-tile-1 {
+  border-radius: 20px 20px 0 0;
+}
+
+.dm-background-gold-tile-2 {
+  border-radius: 0;
+}
+
+.dm-background-gold-tile-3 {
+  border-radius: 0 0 20px 20px;
+}
+
+.dm-background-gold-tile-1:after,
+.dm-background-gold-tile-2:after,
+.dm-background-gold-tile-3:after {
+  background-size: cover;
+  content: "";
+  height: 100%;
+  left: 11px;
+  margin: auto 0;
+  max-width: calc(100% - 23px);
+  opacity: 1;
+  padding: inherit;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: -1;
+}
+
+.dm-background-gold-tile-1:after {
+  border-radius: 20px 20px 0 0;
+}
+
+.dm-background-gold-tile-2:after {
+  border-radius: 0;
+}
+
+.dm-background-gold-tile-3:after {
+  border-radius: 0 0 20px 20px;
+}
