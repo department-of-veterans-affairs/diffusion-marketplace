@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
 
   def index
-    @practices = Practice.all
+    @top_three_gold_practices = Practice.limit(3)
   end
 
 end

@@ -41,43 +41,25 @@
   </section>
 
   <!-- "Featured practices" section -->
-
-  <section class="usa-section grid-container home-tiles">
-    <div class="grid-row grid-gap-lg">
-      <% @practices.each do |practice| %>
+  <!-- TODO: Hover state -->
+  <section id="gold-practice-tiles" class="usa-section grid-container home-tiles">
+    <div class="grid-row">
+      <% @top_three_gold_practices.each_with_index do |practice, i| %>
+        <% index = i + 1 %>
         <style>
-          .dm-background-gradient-cool-<%= practice.id %> {
-            background: linear-gradient(180deg, rgba(0, 150, 246, 0.35) 0%, rgba(255, 255, 255, 0) 100%);
-            border-radius: 20px;
-            display: block;
-            width: 100%;
-          }
-
-          .dm-background-gradient-cool-<%= practice.id %>:after {
-            background: url(<%= practice.main_display_image.url %>);
-            background-size: cover;
-            border-radius: 20px;
-            content: "";
-            height: 100%;
-            left: 11px;
-            margin: auto 0;
-            max-width: calc(100% - 23px);
-            opacity: 0.25;
-            padding: inherit;
-            position: absolute;
-            top: 0;
-            width: 100%;
-            z-index: -1;
+          .dm-background-gold-tile-<%= index %>:after {
+            background-image: url(<%= practice.main_display_image.url %>);
           }
         </style>
-        <div class="tablet:grid-col-4 home-tile x2-bottom">
-          <div class="featured-practice text-base-darkest padding-4 text-center dm-background-gradient-cool-<%= practice.id %>">
-            <h1><%= link_to practice.name, practice, class: 'link-dark' %></h1>
-            <p class="x2-bottom"><%= practice.description.truncate(50, {ommision: '...'}) %></p>
-            <%= link_to 'Learn More', practice, class: 'dm-button-link-secondary margin-0-auto responsive-100-percent-width px900' %>
+        <div class="grid-col-12 home-tile x0">
+          <div class="featured-practice text-base-darkest p1 text-center dm-background-gold-tile-<%= index %>">
+            <%= image_tag "#{index}-badge.svg", class: 'center' %>
+            <h1 class=""><%= link_to practice.name, practice, class: 'dm-font-color-white' %></h1>
+            <p class="dm-font-color-white x0"><%= practice.description.truncate(50, {ommision: '...'}) %></p>
           </div>
         </div>
       <% end %>
     </div>
   </section>
+
 </div>
