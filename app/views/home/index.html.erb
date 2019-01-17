@@ -52,10 +52,13 @@
           }
         </style>
         <div class="grid-col-12 home-tile x0">
-          <div class="featured-practice text-base-darkest p1 text-center dm-background-gold-tile-<%= index %>">
-            <%= image_tag "#{index}-badge.svg", class: 'center' %>
-            <h1 class=""><%= link_to practice.name, practice, class: 'dm-font-color-white' %></h1>
-            <p class="dm-font-color-white x0"><%= practice.description.truncate(50, {ommision: '...'}) %></p>
+          <div class="featured-practice p1 text-center dm-background-gold-tile-<%= index %>">
+            <%= image_tag "#{index}-badge.svg", class: 'center x1-top' %>
+            <p class="x0">
+              <span class="gold-status-first dm-font-color-white fw-100"><%= practice.name %> <%= practice.gold_status_first_line %></span>
+              <br>
+              <span class="gold-status-second dm-font-color-white fw-100"><%= practice.gold_status_second_line %></span>
+            </p>
           </div>
         </div>
       <% end %>
