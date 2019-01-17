@@ -634,7 +634,8 @@ Oral care reduces the risk of developing pneumonia and lowers health care costs 
     ]
 
     happen_va_employees = [
-        VaEmployee.create!(name: 'Devin Harrison'),
+        VaEmployee.create!(name: 'Dr. Shannon Munro', job_title: 'Gold Status Fellow'),
+        VaEmployee.create!(name: 'Devin Harrison', job_title: 'Diffusion Specialist'),
     ]
 
     happen_va_employees.each {|vae|
