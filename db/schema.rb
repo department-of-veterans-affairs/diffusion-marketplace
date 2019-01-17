@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_20_211309) do
+ActiveRecord::Schema.define(version: 2019_01_17_181321) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,12 +62,10 @@ ActiveRecord::Schema.define(version: 2018_12_20_211309) do
     t.text "description"
     t.integer "position"
     t.bigint "strategic_sponsor_id"
+    t.string "color"
+    t.string "icon"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "badge_image_file_name"
-    t.string "badge_image_content_type"
-    t.integer "badge_image_file_size"
-    t.datetime "badge_image_updated_at"
     t.index ["strategic_sponsor_id"], name: "index_badges_on_strategic_sponsor_id"
   end
 
@@ -121,6 +119,15 @@ ActiveRecord::Schema.define(version: 2018_12_20_211309) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "costs", force: :cascade do |t|
+    t.string "description"
+    t.integer "position"
+    t.bigint "practice_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["practice_id"], name: "index_costs_on_practice_id"
+  end
+
   create_table "developing_facility_type_practices", force: :cascade do |t|
     t.bigint "practice_id"
     t.bigint "developing_facility_type_id"
@@ -137,6 +144,15 @@ ActiveRecord::Schema.define(version: 2018_12_20_211309) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "difficulties", force: :cascade do |t|
+    t.string "description"
+    t.integer "position"
+    t.bigint "practice_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["practice_id"], name: "index_difficulties_on_practice_id"
   end
 
   create_table "impact_categories", force: :cascade do |t|
@@ -213,6 +229,13 @@ ActiveRecord::Schema.define(version: 2018_12_20_211309) do
     t.index ["job_position_category_id"], name: "index_job_positions_on_job_position_category_id"
   end
 
+  create_table "mitigations", force: :cascade do |t|
+    t.string "description"
+    t.integer "position"
+    t.bigint "risk_mitigation_id"
+    t.index ["risk_mitigation_id"], name: "index_mitigations_on_risk_mitigation_id"
+  end
+
   create_table "photo_files", force: :cascade do |t|
     t.string "title"
     t.integer "position"
@@ -255,12 +278,26 @@ ActiveRecord::Schema.define(version: 2018_12_20_211309) do
     t.string "target_measures"
     t.integer "target_success"
     t.string "implementation_time_estimate"
+    t.string "tagline"
+    t.string "gold_status_tagline"
+    t.string "summary"
+    t.integer "risk_level_aggregate"
+    t.integer "cost_savings_aggregate"
+    t.integer "cost_to_implement_aggregate"
+    t.integer "veteran_satisfaction_aggregate"
+    t.integer "difficulty_aggregate"
+    t.string "origin_title"
+    t.string "origin_story"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "main_display_image_file_name"
     t.string "main_display_image_content_type"
     t.integer "main_display_image_file_size"
     t.datetime "main_display_image_updated_at"
+    t.string "origin_picture_file_name"
+    t.string "origin_picture_content_type"
+    t.integer "origin_picture_file_size"
+    t.datetime "origin_picture_updated_at"
   end
 
   create_table "publication_files", force: :cascade do |t|
@@ -288,15 +325,19 @@ ActiveRecord::Schema.define(version: 2018_12_20_211309) do
     t.index ["practice_id"], name: "index_publications_on_practice_id"
   end
 
-  create_table "risk_and_mitigations", force: :cascade do |t|
-    t.string "risk"
-    t.string "mitigation"
+  create_table "risk_mitigations", force: :cascade do |t|
     t.integer "position"
-    t.text "description"
     t.bigint "practice_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["practice_id"], name: "index_risk_and_mitigations_on_practice_id"
+    t.index ["practice_id"], name: "index_risk_mitigations_on_practice_id"
+  end
+
+  create_table "risks", force: :cascade do |t|
+    t.string "description"
+    t.integer "position"
+    t.bigint "risk_mitigation_id"
+    t.index ["risk_mitigation_id"], name: "index_risks_on_risk_mitigation_id"
   end
 
   create_table "strategic_sponsor_practices", force: :cascade do |t|
@@ -365,6 +406,10 @@ ActiveRecord::Schema.define(version: 2018_12_20_211309) do
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "avatar_file_name"
+    t.string "avatar_content_type"
+    t.integer "avatar_file_size"
+    t.datetime "avatar_updated_at"
   end
 
   create_table "va_secretary_priorities", force: :cascade do |t|
@@ -410,8 +455,10 @@ ActiveRecord::Schema.define(version: 2018_12_20_211309) do
   add_foreign_key "clinical_condition_practices", "practices"
   add_foreign_key "clinical_location_practices", "clinical_locations"
   add_foreign_key "clinical_location_practices", "practices"
+  add_foreign_key "costs", "practices"
   add_foreign_key "developing_facility_type_practices", "developing_facility_types"
   add_foreign_key "developing_facility_type_practices", "practices"
+  add_foreign_key "difficulties", "practices"
   add_foreign_key "impact_practices", "impacts"
   add_foreign_key "impact_practices", "practices"
   add_foreign_key "impacts", "impact_categories"
@@ -419,10 +466,12 @@ ActiveRecord::Schema.define(version: 2018_12_20_211309) do
   add_foreign_key "job_position_practices", "job_positions"
   add_foreign_key "job_position_practices", "practices"
   add_foreign_key "job_positions", "job_position_categories"
+  add_foreign_key "mitigations", "risk_mitigations"
   add_foreign_key "photo_files", "practices"
   add_foreign_key "publication_files", "practices"
   add_foreign_key "publications", "practices"
-  add_foreign_key "risk_and_mitigations", "practices"
+  add_foreign_key "risk_mitigations", "practices"
+  add_foreign_key "risks", "risk_mitigations"
   add_foreign_key "strategic_sponsor_practices", "practices"
   add_foreign_key "strategic_sponsor_practices", "strategic_sponsors"
   add_foreign_key "survey_result_files", "practices"

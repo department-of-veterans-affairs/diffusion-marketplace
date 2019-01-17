@@ -17,7 +17,12 @@ if StrategicSponsor.all.blank?
       StrategicSponsor.create!(name: 'VHA System Redesign', short_name: 'vha_system_redesign', description: 'Sponsored by VHA System Redesign'),
       StrategicSponsor.create!(name: 'VHA Office of Connected Care', short_name: 'vha_office_of_connected_care', description: 'Sponsored by the VHA Office of Connected Care'),
       StrategicSponsor.create!(name: 'Office of Prosthetics and Rehabilitation', short_name: 'office_of_prosthetics_and_rehabilitation', description: 'Sponsored by the Office of Prosthetics and Rehabilitation'),
-      StrategicSponsor.create!(name: 'Office of Mental Health', short_name: 'office_of_mental_health', description: 'Sponsored by the Office of Mental Health'),
+      StrategicSponsor.create!(name: 'Office of Mental Health and Suicide Prevention (OMHSP)', short_name: 'omhsp', description: 'Sponsored by the Office of Mental Health and Suicide Prevention (OMHSP)'),
+      StrategicSponsor.create!(name: 'National Opioid Overdose Education Naloxone Distribution (OEND) Program Office', short_name: 'oend', description: 'Sponsored by the National Opioid Overdose Education Naloxone Distribution Program Office'),
+      StrategicSponsor.create!(name: 'Pharmacy Benefits Management (PBM)', short_name: 'pbm', description: 'Sponsored by the Pharmacy Benefits Management (PBM)'),
+      StrategicSponsor.create!(name: 'Academic Detailing Service', short_name: 'ads', description: 'Sponsored by the Academic Detailing Service'),
+      StrategicSponsor.create!(name: 'National Center for Patient Safety (NCPS)', short_name: 'ncps', description: 'Sponsored by the National Center for Patient Safety (NCPS)'),
+      StrategicSponsor.create!(name: 'VA Police', short_name: 'va_police', description: 'Sponsored by the VA Police'),
       StrategicSponsor.create!(name: 'None', short_name: 'none', description: 'Not Sponsored'),
   ]
 
@@ -29,65 +34,25 @@ if StrategicSponsor.all.blank?
     badge_image_base_path = "#{Rails.root}/db/seed_images/badges"
     badges = [
         Badge.create!(name: 'VHA System Redesign', short_name: 'vha_system_redesign', description: 'Vetted by VHA System Redesign', strategic_sponsor: sponsors[4],
-                      badge_image: ActionDispatch::Http::UploadedFile.new(
-                          filename: File.basename("#{badge_image_base_path}/system_redesign.svg"),
-                          tempfile: File.new("#{badge_image_base_path}/system_redesign.svg"),
-                          # detect the image's mime type with MIME if you can't provide it yourself.
-                          type: MIME::Types.type_for("#{badge_image_base_path}/system_redesign.svg").first.content_type)),
+                      icon: 'fas fas-cogs', color: '#FE4497'),
         Badge.create!(name: 'VHA Office of Connected Care', short_name: 'vha_office_of_connected_care', description: 'Vetted by the VHA Office of Connected Care', strategic_sponsor: sponsors[5],
-                      badge_image: ActionDispatch::Http::UploadedFile.new(
-                          filename: File.basename("#{badge_image_base_path}/connected_care.svg"),
-                          tempfile: File.new("#{badge_image_base_path}/connected_care.svg"),
-                          # detect the image's mime type with MIME if you can't provide it yourself.
-                          type: MIME::Types.type_for("#{badge_image_base_path}/connected_care.svg").first.content_type)),
-        Badge.create!(name: 'HSR&D', short_name: 'hsrd', description: 'Vetted by HSR&D', strategic_sponsor: sponsors[3],
-                      badge_image: ActionDispatch::Http::UploadedFile.new(
-                          filename: File.basename("#{badge_image_base_path}/health_systems_r&d.svg"),
-                          tempfile: File.new("#{badge_image_base_path}/health_systems_r&d.svg"),
-                          # detect the image's mime type with MIME if you can't provide it yourself.
-                          type: MIME::Types.type_for("#{badge_image_base_path}/health_systems_r&d.svg").first.content_type)),
+                      icon: 'fas fas-hand-holding-heart', color: '#E52107'),
+        Badge.create!(name: 'Health Systems Research & Design', short_name: 'hsrd', description: 'Vetted by Health Systems Research & Design', strategic_sponsor: sponsors[3],
+                      icon: 'fas fas-microscope', color: '#9058D3'),
         Badge.create!(name: 'Office of Rural Health', short_name: 'office_of_rural_health', description: 'Vetted by the Office of Rural Health', strategic_sponsor: sponsors[2],
-                      badge_image: ActionDispatch::Http::UploadedFile.new(
-                          filename: File.basename("#{badge_image_base_path}/office_rural_health.svg"),
-                          tempfile: File.new("#{badge_image_base_path}/office_rural_health.svg"),
-                          # detect the image's mime type with MIME if you can't provide it yourself.
-                          type: MIME::Types.type_for("#{badge_image_base_path}/office_rural_health.svg").first.content_type)),
+                      icon: 'fas fas-mountain', color: '#1CC2AE'),
         Badge.create!(name: 'Diffusion of Excellence', short_name: 'diffusion_of_excellence', description: 'Vetted by Diffusion of Excellence', strategic_sponsor: sponsors[1],
-                      badge_image: ActionDispatch::Http::UploadedFile.new(
-                          filename: File.basename("#{badge_image_base_path}/doe.svg"),
-                          tempfile: File.new("#{badge_image_base_path}/doe.svg"),
-                          # detect the image's mime type with MIME if you can't provide it yourself.
-                          type: MIME::Types.type_for("#{badge_image_base_path}/doe.svg").first.content_type)),
+                      icon: 'fas fas-certificate', color: '#0076D6'),
         Badge.create!(name: 'Shark Tank Approved', short_name: 'shark_tank_approved', description: 'Shark Tank Approved', strategic_sponsor: sponsors[1],
-                      badge_image: ActionDispatch::Http::UploadedFile.new(
-                          filename: File.basename("#{badge_image_base_path}/doe.svg"),
-                          tempfile: File.new("#{badge_image_base_path}/doe.svg"),
-                          # detect the image's mime type with MIME if you can't provide it yourself.
-                          type: MIME::Types.type_for("#{badge_image_base_path}/doe.svg").first.content_type)),
+                      icon: 'fas fas-fish', color: '#0076D6'),
         Badge.create!(name: 'Top 100 Shark Tank', short_name: 'shark_tank_100', description: 'Top 100 Shark Tank finisher', strategic_sponsor: sponsors[1],
-                      badge_image: ActionDispatch::Http::UploadedFile.new(
-                          filename: File.basename("#{badge_image_base_path}/doe.svg"),
-                          tempfile: File.new("#{badge_image_base_path}/doe.svg"),
-                          # detect the image's mime type with MIME if you can't provide it yourself.
-                          type: MIME::Types.type_for("#{badge_image_base_path}/doe.svg").first.content_type)),
+                      icon: 'fas fas-fish', color: '#0076D6'),
         Badge.create!(name: 'Top 20 Shark Tank', short_name: 'shark_tank_20', description: 'Top 20 Shark Tank finisher', strategic_sponsor: sponsors[1],
-                      badge_image: ActionDispatch::Http::UploadedFile.new(
-                          filename: File.basename("#{badge_image_base_path}/doe.svg"),
-                          tempfile: File.new("#{badge_image_base_path}/doe.svg"),
-                          # detect the image's mime type with MIME if you can't provide it yourself.
-                          type: MIME::Types.type_for("#{badge_image_base_path}/doe.svg").first.content_type)),
+                      icon: 'fas fas-fish', color: '#0076D6'),
         Badge.create!(name: 'Gold Status', short_name: 'gold_status', description: 'Gold Status Practice', strategic_sponsor: sponsors[1],
-                      badge_image: ActionDispatch::Http::UploadedFile.new(
-                          filename: File.basename("#{badge_image_base_path}/chart_badge.svg"),
-                          tempfile: File.new("#{badge_image_base_path}/chart_badge.svg"),
-                          # detect the image's mime type with MIME if you can't provide it yourself.
-                          type: MIME::Types.type_for("#{badge_image_base_path}/chart_badge.svg").first.content_type)),
+                      icon: 'fas fas-heart', color: '#E4A002'),
         Badge.create!(name: 'Authority to Operate (ATO)', short_name: 'ato', description: 'Authority to Operate (ATO) - applies to OIT projects', strategic_sponsor: sponsors.last,
-                      badge_image: ActionDispatch::Http::UploadedFile.new(
-                          filename: File.basename("#{badge_image_base_path}/doe.svg"),
-                          tempfile: File.new("#{badge_image_base_path}/doe.svg"),
-                          # detect the image's mime type with MIME if you can't provide it yourself.
-                          type: MIME::Types.type_for("#{badge_image_base_path}/doe.svg").first.content_type)),
+                      icon: 'fas fas-check-mark', color: '#E52107'),
     ]
 
     23.times do |t|
@@ -95,11 +60,7 @@ if StrategicSponsor.all.blank?
       badge_image_path = "#{Rails.root}/db/seed_images/badges/hospital_badge.svg"
       badge_image_file = File.new(badge_image_path)
       badges << Badge.create!(name: "VISN #{i}", short_name: "visn_#{i}", description: "Vetted by VISN #{i}", strategic_sponsor: sponsors.find {|s| s.name == "VISN #{i}"},
-                              badge_image: ActionDispatch::Http::UploadedFile.new(
-                                  filename: File.basename(badge_image_file),
-                                  tempfile: badge_image_file,
-                                  # detect the image's mime type with MIME if you can't provide it yourself.
-                                  type: MIME::Types.type_for(badge_image_path).first.content_type)
+                              icon: 'fas fas-hospital', color: '#E4A002'
       )
     end
   end
@@ -271,14 +232,20 @@ if StrategicSponsor.all.blank?
     flow3_image_path = "#{Rails.root}/db/seed_images/practices/flow3.jpg"
     flow3_image_file = File.new(flow3_image_path)
 
+    flow3_origin_image_path = "#{Rails.root}/db/seed_images/practices/origins/flow3_heckman.png"
+    flow3_origin_image_file = File.new(flow3_origin_image_path)
+
     flow3 = Practice.create!(
         name: 'FLOW3',
         short_name: 'flow3',
-        description: 'FLOW3 improves the Prosthetic Limb Acquisition time by more than half.',
+        tagline: 'Delivery of prosthetic limbs to Veterans in less than ½ the time',
+        gold_status_tagline: 'has saved over 1000 lives \n by helping to prevent suicide',
+        description: 'Enable 53% faster delivery of prosthetic limbs to Veterans',
+        summary: 'FLOW3 is a system of three interrelated software platforms that automate, standardize, and provide transparency into the limb acquisition process. FLOW3 begins in-clinic with physician entry of a prosthesis prescription using the FLOW Consult Templates. The order then moves to the prosthetist, who enters the appropriate codes using the Consult Comment Tool. Then, purchasing agents use the Web-based App to generate the quote for force entry, which contracting staff can access the very next day.',
         date_initiated: DateTime.now,
         vha_visn: 'Not Applicable',
-        medical_center: 'Pudget Sound Health Care System',
-        initiating_facility: 'Pudget Sound Health Care System',
+        medical_center: 'Puget Sound Medical Center',
+        initiating_facility: 'Puget Sound Medical Center',
         number_adopted: 10,
         cboc: 'Not Applicable',
         impact_veteran_experience: 'Reduces wait time for Prosthetic limbs by more than half',
@@ -301,6 +268,30 @@ if StrategicSponsor.all.blank?
             tempfile: flow3_image_file,
             # detect the image's mime type with MIME if you can't provide it yourself.
             type: MIME::Types.type_for(flow3_image_path).first.content_type
+        ),
+        cost_savings_aggregate: 2,
+        cost_to_implement_aggregate: 1,
+        difficulty_aggregate: 1,
+        veteran_satisfaction_aggregate: 4,
+        risk_level_aggregate: 1,
+        origin_title: 'Innovation - Dr Jeffrey Heckman',
+        origin_story: 'Dr. Jeffrey Heckman, a physician in the VA Puget Sound Health Care System,
+                        treated many Veterans frustrated by the lengthy process of receiving their
+                        prosthetic limbs. Motivated by one such Veteran, who offered his own
+                        technical services to improve the process, Dr. Heckman gathered a team,
+                        consisting of prosthetist Wayne Biggs and data system expert Jeffrey Bott,
+                        to overhaul and automate the prosthetic limb acquisition process. The result
+                        was a system of three interrelated software platforms, known as FLOW3, that
+                        streamlines and provides transparency into the acquisition flow.
+                        After successful implementation at Puget Sound, the team spread their
+                        innovation through the Diffusion of Excellence program, beginning with a
+                        partnership with Dawn Schwarten at the Milwaukee VA Medical Center and
+                        ultimately rolling FLOW3 out across VISN 12.',
+        origin_picture: ActionDispatch::Http::UploadedFile.new(
+            filename: File.basename(flow3_origin_image_file),
+            tempfile: flow3_origin_image_file,
+            # detect the image's mime type with MIME if you can't provide it yourself.
+            type: MIME::Types.type_for(flow3_origin_image_path).first.content_type
         )
     )
 
@@ -310,9 +301,10 @@ if StrategicSponsor.all.blank?
     ]
 
     flow3_va_employees = [
-        VaEmployee.create!(name: 'Jefferey T. Heckman', prefix: 'Dr.'),
-        VaEmployee.create!(name: 'Jeff Bott', prefix: 'Mr.'),
-        VaEmployee.create!(name: 'Wayne Biggs', prefix: 'Mr.'),
+        VaEmployee.create!(name: 'Dr. Jeffrey T. Heckman', job_title: 'Clinical Lead and Gold Status Fellow', prefix: 'Dr.', email: 'jeffrey.heckman@va.gov'),
+        VaEmployee.create!(name: 'Jeff Bott', job_title: 'Technical Lead', prefix: 'Mr.', email: 'jeff.bott@va.gov'),
+        VaEmployee.create!(name: 'Wayne Biggs', job_title: 'Coding and Template Lead', prefix: 'Mr.', email: 'wayne.biggs@va.gov'),
+        VaEmployee.create!(name: 'Brian Stevenson', job_title: 'Diffusion Specialist', prefix: 'Mr.', email: 'brian.stevenson@va.gov')
     ]
 
     flow3_va_employees.each {|vae|
@@ -367,8 +359,15 @@ if StrategicSponsor.all.blank?
         ClinicalLocationPractice.create!(practice: flow3, clinical_location: clinical_locations.find {|cl| cl.name == 'Outpatient Surgery Center'}),
     ]
 
-    flow3_risks_and_mitigations = [
-        RiskAndMitigation.create!(practice: flow3, risk: 'Minor App ATO under a VA GSS', mitigation: 'Currently traversing the appropriate process and protocols within OIT to achieve EOY 19 diffusion objectives.'),
+    flow3_risk_mitigations = [
+        RiskMitigation.create!(practice: flow3)
+    ]
+    flow3_risks = [
+        Risk.create!(description: 'If FLOW3 champions do not allocate sufficient time to training their site the implementation process will be slow and time savings will not be achieved.', risk_mitigation: flow3_risk_mitigations[0]),
+    ]
+    flow3_mitigations = [
+        Mitigation.create!(description: 'Support Champions with a pre-implementation readiness checklist to help identify pitfalls in their planning.', risk_mitigation: flow3_risk_mitigations[0]),
+        Mitigation.create!(description: ' Empower and Support Champions with official training materials.', risk_mitigation: flow3_risk_mitigations[0]),
     ]
 
     flow3_publications = [
@@ -383,6 +382,16 @@ if StrategicSponsor.all.blank?
         BadgePractice.create!(practice: flow3, badge: badges.find {|b| b.name == 'Authority to Operate (ATO)'}),
     ]
 
+    flow3_costs = [
+        Cost.create!(practice: flow3, description: 'Minimal FTE'),
+        Cost.create!(practice: flow3, description: 'Minimal Sustainment Cost')
+    ]
+
+    flow3_difficulties = [
+        Difficulty.create!(practice: flow3, description: 'Champion training: 30 days'),
+        Difficulty.create!(practice: flow3, description: 'Oversee staff training: 60 days')
+    ]
+
     ############################################################################################################
     ############################################################################################################
     #############
@@ -391,14 +400,22 @@ if StrategicSponsor.all.blank?
     naloxone_image_path = "#{Rails.root}/db/seed_images/practices/naloxone.jpg"
     naloxone_image_file = File.new(naloxone_image_path)
 
+    naloxone_origin_image_path = "#{Rails.root}/db/seed_images/practices/origins/naloxone_bellino.png"
+    naloxone_origin_image_file = File.new(naloxone_origin_image_path)
+
     naloxone = Practice.create!(
         name: 'VHA Rapid Naloxone',
         short_name: 'vha_rapid_naloxone',
-        description: 'Ensuring rapid availability of naloxone through AED cabinets, Police, OEND',
+        tagline: 'Rapid naloxone',
+        gold_status_tagline: 'saved 358 lives \n by improving access to life-saving naloxone',
+        description: 'Enable 53% faster delivery of prosthetic limbs to Veterans',
+        summary: 'The VHA Rapid Naloxone Initiative acts as a safety belt in case of an overdose and saves the lives of our Veterans which creates a safer environment around the veteran on VA campuses. Since the adoption of at least one element in the Initiative within at least 43 facilities, there have been at least 44 successful overdose reversals within FY2018. The Initiative’s plan to spread across the nation has the potential to drastically increase the number of successful reversals within FY2019, improving patient safety across the VA.
+
+The Initiative has a significant impact on the patient safety within VA medical facilities and patient experience. First responders have testified about the positive impact of the Initiative and the role it played in saving their lives and creating a safer environment. One such rescue was a 27-year-old male Veteran who experienced an overdose at a Substance Abuse Residential Rehabilitation Treatment Program (SARRTP), which is located on hospital grounds but some distance from the main building. Because of the availability of naloxone in the AED cabinet, the initial dose was administered to the Veteran before VA police arrived on the scene. The Veteran survived the overdose and was transported to the Critical Care Unit (CCU) for further treatment. Without the quick access of naloxone, this Veteran could have lost his life. His story, as well as many other many Veteran overdose survival stories, has pushed this Initiative into the national spotlight and sparked a flame for action to implement around the nation. ',
         date_initiated: DateTime.strptime('1/1/2016', '%m/%d/%Y'),
         vha_visn: 'VISN 1',
-        initiating_facility: 'Boston HCS',
-        number_adopted: 4,
+        initiating_facility: 'Boston Health Care System',
+        number_adopted: 50,
         medical_center: 'Boston HCS',
         cboc: 'Not Applicable',
         impact_veteran_experience: '',
@@ -421,15 +438,43 @@ if StrategicSponsor.all.blank?
             tempfile: naloxone_image_file,
             # detect the image's mime type with MIME if you can't provide it yourself.
             type: MIME::Types.type_for(naloxone_image_path).first.content_type
+        ),
+        cost_savings_aggregate: 1,
+        cost_to_implement_aggregate: 1,
+        difficulty_aggregate: 1,
+        veteran_satisfaction_aggregate: 4,
+        risk_level_aggregate: 1,
+        origin_title: 'Innovation - Pamela Bellino',
+        origin_story: 'Begun by Pamela Bellino, Patient Safety Manager at the VA Boston Healthcare
+                        System, the Opioid Overdose Reversal Program is a practice to increase the
+                        availability of IN naloxone to prevent overdose fatalities among Veterans at VA
+                        facilities. The program increases the likelihood of preventing these fatalities
+                        by equipping AED cabinets, VA police officers, and at-risk patients with IN
+                        naloxone. After successfully piloting the practice at the VA Boston Healthcare
+                        System, facilitated implementation of the innovation began in VISN 8 through
+                        the Diffusion of Excellence initiative.',
+        origin_picture: ActionDispatch::Http::UploadedFile.new(
+            filename: File.basename(naloxone_origin_image_file),
+            tempfile: naloxone_origin_image_file,
+            # detect the image's mime type with MIME if you can't provide it yourself.
+            type: MIME::Types.type_for(naloxone_origin_image_path).first.content_type
         )
     )
 
     naloxone_strategic_sponsors = [
-        StrategicSponsorPractice.create!(practice: naloxone, strategic_sponsor: sponsors.find {|s| s.name == 'Office of Mental Health'}),
+        StrategicSponsorPractice.create!(practice: naloxone, strategic_sponsor: sponsors.find {|s| s.name == 'Office of Mental Health and Suicide Prevention (OMHSP)'}),
+        StrategicSponsorPractice.create!(practice: naloxone, strategic_sponsor: sponsors.find {|s| s.name == 'National Opioid Overdose Education Naloxone Distribution (OEND) Program Office'}),
+        StrategicSponsorPractice.create!(practice: naloxone, strategic_sponsor: sponsors.find {|s| s.name == 'Academic Detailing Service'}),
+        StrategicSponsorPractice.create!(practice: naloxone, strategic_sponsor: sponsors.find {|s| s.name == 'National Center for Patient Safety (NCPS)'}),
+        StrategicSponsorPractice.create!(practice: naloxone, strategic_sponsor: sponsors.find {|s| s.name == 'VA Police'}),
     ]
 
     naloxone_va_employees = [
-        VaEmployee.create!(name: 'Pam Bellino'),
+        VaEmployee.create!(name: 'Pam Bellino', job_title: 'Founder, Gold Status Fellow, Safety Manager VA Boston', email: 'pam.bellino@va.gov'),
+        VaEmployee.create!(name: 'Dr. Elizabeth Oliva', job_title: 'National OEND Coordinator', email: 'elizabeth.oliva@va.gov'),
+        VaEmployee.create!(name: 'Mary Burkhardt', job_title: 'Pharmacy Executive, National Center for Patient Safety', email: 'mary.burkhardt@va.gov'),
+        VaEmployee.create!(name: 'Carl McCoy', job_title: 'Diffusion Specialist', email: 'carl.mccoy@va.gov'),
+        VaEmployee.create!(name: 'Mollie Brick', job_title: 'Senior Consultant (Atlas)', email: 'mollie.brick@va.gov'),
     ]
 
     naloxone_va_employees.each {|vae|
@@ -489,8 +534,14 @@ if StrategicSponsor.all.blank?
         ClinicalLocationPractice.create!(practice: naloxone, clinical_location: clinical_locations.find {|cl| cl.name == 'Skilled Nursing Facility (SNF)'}),
     ]
 
-    naloxone_risks_and_mitigations = [
-        RiskAndMitigation.create!(practice: naloxone, risk: 'Unwillingness to participate', mitigation: ' mitigate through targeted comms and education'),
+    naloxone_risk_mitigations = [
+        RiskMitigation.create!(practice: naloxone)
+    ]
+    naloxone_risks = [
+        Risk.create!(description: 'Leadership needs to choose to change policy.', risk_mitigation: naloxone_risk_mitigations[0]),
+    ]
+    naloxone_mitigations = [
+        Mitigation.create!(description: 'Example policies included in toolkit.', risk_mitigation: naloxone_risk_mitigations[0])
     ]
 
     naloxone_publications = [
@@ -501,6 +552,16 @@ if StrategicSponsor.all.blank?
         BadgePractice.create!(practice: naloxone, badge: badges.find {|b| b.name == 'Diffusion of Excellence'}),
         BadgePractice.create!(practice: naloxone, badge: badges.find {|b| b.name == 'Shark Tank Approved'}),
         BadgePractice.create!(practice: naloxone, badge: badges.find {|b| b.name == 'Gold Status'}),
+    ]
+    
+    naloxone_costs = [
+        Cost.create!(practice: naloxone, description: 'Minimal FTE'),
+        Cost.create!(practice: naloxone, description: 'Need to buy Naloxone for AED cabinets and police')
+    ]
+    
+    naloxone_difficulties= [
+        Difficulty.create!(practice: naloxone, description: 'Minimal training'),
+        Difficulty.create!(practice: naloxone, description: '~4 months to completely implement'),
     ]
 
     ############################################################################################################
@@ -514,12 +575,17 @@ if StrategicSponsor.all.blank?
     happen = Practice.create!(
         name: 'VA Project HAPPEN ',
         short_name: 'va_project_happen',
-        description: 'Non Ventilator Hospital Acquired Pneumonia Prevention by Engaging Nursing Staff to Complete Inpatient Oral Care. ',
+        summary: 'Pneumonia is a substantial health risk for patients during their hospital stay.
+The average cost of one case of NV-HAP is $40,000. Mortality rates for NV-HAP range from 18-30%. Procuring ADA approved, high-quality toothbrushes, toothpaste, and other oral hygiene supplies such as alcohol-free mouthwash, denture cleansers, and lip moisturizers is critical to successful inpatient oral care implementation. Average cost to the VA for oral care supplies is $3.00 per patient.  The inpatient oral care intervention in VISN 6 and Houston VAMC saved an estimated $5.462M and 24 Veteran lives (October 2016- September 2018).
+Oral care reduces the risk of developing pneumonia and lowers health care costs by avoiding long hospital stays.',
+        tagline: 'Prevent pneumonia',
+        gold_status_tagline: 'Non-ventilator hospital acquired pneumonia prevention \n by engaging nursing staff to complete inpatient oral care',
+        description: 'Prevent non ventilator acquired pneumonia with better oral care',
         date_initiated: DateTime.strptime('5/1/2016', '%m/%d/%Y'),
         vha_visn: 'VISN 6',
-        initiating_facility: 'Salem VAMC',
+        initiating_facility: 'Salem VA Medical Center',
         number_adopted: 2,
-        medical_center: 'Salem VAMC',
+        medical_center: 'Salem VA Medical Center',
         cboc: 'Not Applicable',
         impact_veteran_experience: '',
         impact_veteran_satisfaction: 'Approximately 24 lives have been saved since implementing the Project Happen initiative',
@@ -547,6 +613,19 @@ Oral care reduces the risk of developing pneumonia and lowers health care costs 
             tempfile: happen_image_file,
             # detect the image's mime type with MIME if you can't provide it yourself.
             type: MIME::Types.type_for(happen_image_path).first.content_type
+        ),
+        cost_savings_aggregate: 1,
+        cost_to_implement_aggregate: 1,
+        difficulty_aggregate: 1,
+        veteran_satisfaction_aggregate: 1,
+        risk_level_aggregate: 1,
+        origin_title: 'Innovation - Devin Harrison',
+        origin_story: 'TBD',
+        origin_picture: ActionDispatch::Http::UploadedFile.new(
+            filename: File.basename(naloxone_origin_image_file),
+            tempfile: naloxone_origin_image_file,
+            # detect the image's mime type with MIME if you can't provide it yourself.
+            type: MIME::Types.type_for(naloxone_origin_image_path).first.content_type
         )
     )
 
@@ -603,8 +682,14 @@ Oral care reduces the risk of developing pneumonia and lowers health care costs 
         ClinicalLocationPractice.create!(practice: happen, clinical_location: clinical_locations.find {|cl| cl.name == 'Inpatient Hospital'}),
     ]
 
-    happen_risks_and_mitigations = [
-        RiskAndMitigation.create!(practice: happen, risk: 'Facility buy in and continued monitoring of HV-HAP cases from month to month.', mitigation: 'Efficient data collection.'),
+    happen_risk_mitigations = [
+        RiskMitigation.create!(practice: happen)
+    ]
+    happen_risks = [
+        Risk.create!(description: 'Facility buy in and continued monitoring of HV-HAP cases from month to month.', risk_mitigation: happen_risk_mitigations[0]),
+    ]
+    happen_mitigations = [
+        Mitigation.create!(description: 'Efficient data collection.', risk_mitigation: happen_risk_mitigations[0])
     ]
 
     happen_publications = [
