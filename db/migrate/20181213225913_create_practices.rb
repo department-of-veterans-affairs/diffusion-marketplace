@@ -34,9 +34,23 @@ class CreatePractices < ActiveRecord::Migration[5.2]
 
       t.string :implementation_time_estimate
 
+      t.string :tagline
+      t.string :gold_status_tagline
+      t.string :summary
+
+      t.integer :risk_level_aggregate
+      t.integer :cost_savings_aggregate
+      t.integer :cost_to_implement_aggregate
+      t.integer :veteran_satisfaction_aggregate
+      t.integer :difficulty_aggregate
+
+      t.string :origin_title
+      t.string :origin_story
+
       t.timestamps
     end
 
     add_attachment :practices, :main_display_image
+    add_attachment :practices, :origin_picture
   end
 end
