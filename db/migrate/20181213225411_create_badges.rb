@@ -6,10 +6,10 @@ class CreateBadges < ActiveRecord::Migration[5.2]
       t.text :description
       t.integer :position
       t.belongs_to :strategic_sponsor, foreign_key: true
+      t.string :color
+      t.string :icon
 
       t.timestamps
     end
-
-    add_attachment :badges, :badge_image
   end
 end

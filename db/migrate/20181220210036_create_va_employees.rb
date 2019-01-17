@@ -14,5 +14,7 @@ class CreateVaEmployees < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
+
+    add_attachment :va_employees, :avatar
   end
 end
