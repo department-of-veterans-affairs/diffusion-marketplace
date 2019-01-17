@@ -89,11 +89,19 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 /* Font Weight */
 
-.normal {
+.fw-100 {
+  font-weight: 100;
+}
+
+.fw-200 {
+  font-weight: 200;
+}
+
+.fw-normal {
   font-weight: normal !important;
 }
 
-.bold {
+.fw-bold {
   font-weight: bold !important;
 }
 
@@ -285,6 +293,40 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 /* Margin None */
 .x0 {
   margin: 0;
+}
+
+/* Margin top */
+
+.x0-top {
+  margin-top: 0;
+}
+
+.x1-top {
+  margin-top: 1rem;
+}
+
+.x2-top {
+  margin-top: 2rem;
+}
+
+.x3-top {
+  margin-top: 3rem;
+}
+
+.x4-top {
+  margin-top: 4rem;
+}
+
+.x5-top {
+  margin-top: 5rem;
+}
+
+.x6-top {
+  margin-top: 6rem;
+}
+
+.x7-top {
+  margin-top: 7rem
 }
 
 /* Margin Bottom */

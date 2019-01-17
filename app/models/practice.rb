@@ -34,4 +34,12 @@ class Practice < ApplicationRecord
   has_many :va_secretary_priorities, through: :va_secretary_priority_practices
   has_many :video_files
 
+  def gold_status_first_line
+    gold_status_tagline.split('\n')[0]
+  end
+
+  def gold_status_second_line
+    gold_status_tagline.split('\n')[1]
+  end
+
 end

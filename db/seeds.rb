@@ -445,14 +445,7 @@ The Initiative has a significant impact on the patient safety within VA medical 
         veteran_satisfaction_aggregate: 4,
         risk_level_aggregate: 1,
         origin_title: 'Innovation - Pamela Bellino',
-        origin_story: 'Begun by Pamela Bellino, Patient Safety Manager at the VA Boston Healthcare
-                        System, the Opioid Overdose Reversal Program is a practice to increase the
-                        availability of IN naloxone to prevent overdose fatalities among Veterans at VA
-                        facilities. The program increases the likelihood of preventing these fatalities
-                        by equipping AED cabinets, VA police officers, and at-risk patients with IN
-                        naloxone. After successfully piloting the practice at the VA Boston Healthcare
-                        System, facilitated implementation of the innovation began in VISN 8 through
-                        the Diffusion of Excellence initiative.',
+        origin_story: 'Begun by Pamela Bellino, Patient Safety Manager at the VA Boston Healthcare System, the Opioid Overdose Reversal Program is a practice to increase the availability of IN naloxone to prevent overdose fatalities among Veterans at VA facilities. The program increases the likelihood of preventing these fatalities by equipping AED cabinets, VA police officers, and at-risk patients with naloxone. After successfully piloting the practice at the VA Boston Healthcare System, facilitated implementation of the innovation began in VISN 8 through the Diffusion of Excellence initiative.',
         origin_picture: ActionDispatch::Http::UploadedFile.new(
             filename: File.basename(naloxone_origin_image_file),
             tempfile: naloxone_origin_image_file,
@@ -575,11 +568,14 @@ The Initiative has a significant impact on the patient safety within VA medical 
     happen = Practice.create!(
         name: 'VA Project HAPPEN ',
         short_name: 'va_project_happen',
-        summary: 'Pneumonia is a substantial health risk for patients during their hospital stay.
-The average cost of one case of NV-HAP is $40,000. Mortality rates for NV-HAP range from 18-30%. Procuring ADA approved, high-quality toothbrushes, toothpaste, and other oral hygiene supplies such as alcohol-free mouthwash, denture cleansers, and lip moisturizers is critical to successful inpatient oral care implementation. Average cost to the VA for oral care supplies is $3.00 per patient.  The inpatient oral care intervention in VISN 6 and Houston VAMC saved an estimated $5.462M and 24 Veteran lives (October 2016- September 2018).
-Oral care reduces the risk of developing pneumonia and lowers health care costs by avoiding long hospital stays.',
+        summary: 'Hospital-acquired pneumonia (HAP) is a substantial health risk for patients during their hospital stays. Anywhere from 15-31% of patients who contract HAP die from the disease or related complications, like sepsis. Until now, prevention efforts have focused on ventilated patients due to their increased risk of contracting pneumonia, with non-ventilated patients largely overlooked.
+
+Poor oral hygiene increases the risk of HAP, with germs in the mouth rapidly multiplying and frequently aspirating into the lungs during sleep. Regular tooth brushing aids in removing these germs. By engaging Veterans in proper oral care practices, nurses teach the importance of good oral hygiene and its ability to reduce pneumonia rates and length of hospital stays. Project HAPPEN is a nurse-driven intervention; with nurses in charge of patient care, they must own and drive the practice. Garnering buy-in from nursing staff and nursing executives is essential. Tracking cases and sharing results demonstrate that oral care is not simply a comfort measure, but essential patient care.
+
+Project HAPPEN supports the Department’s Priorities by focusing on things that matter—in addition to reducing the risk of NV-HAP, Veterans feel better and see improvement in their quality of life; modernizing systems/processes with a focus on preventive care; and improving access and timeliness of service by reducing patient length of stays and freeing up bed space for other patients. Every facility that has implemented this practice has seen immediate drops in pneumonia rates (of at least 40-60%) and associated costs (an average of $40,000 per case), easily recouping oral care supply costs within three months. News media is paying attention, too, with word getting out through over 60 media outlets, including the Wall Street Journal.
+',
         tagline: 'Prevent pneumonia',
-        gold_status_tagline: 'Non-ventilator hospital acquired pneumonia prevention \n by engaging nursing staff to complete inpatient oral care',
+        gold_status_tagline: '- prevent non ventilator acquired pneumonia \n by engaging nursing staff to complete inpatient oral care',
         description: 'Prevent non ventilator acquired pneumonia with better oral care',
         date_initiated: DateTime.strptime('5/1/2016', '%m/%d/%Y'),
         vha_visn: 'VISN 6',
@@ -619,8 +615,8 @@ Oral care reduces the risk of developing pneumonia and lowers health care costs 
         difficulty_aggregate: 1,
         veteran_satisfaction_aggregate: 1,
         risk_level_aggregate: 1,
-        origin_title: 'Innovation - Devin Harrison',
-        origin_story: 'TBD',
+        origin_title: 'Innovation - Dr. Shannon Munro',
+        origin_story: 'When VA Nurse Researcher and Nurse Practitioner Dr. Shannon Munro learned from nursing professor and researcher Dr. Dian Baker about the dramatic reduction in non-ventilator hospital-acquired pneumonia (NV-HAP) through a simple, low-cost, low-risk intervention—brushing teeth—she decided to bring the practice to VA.',
         origin_picture: ActionDispatch::Http::UploadedFile.new(
             filename: File.basename(naloxone_origin_image_file),
             tempfile: naloxone_origin_image_file,
