@@ -13,8 +13,10 @@ class Practice < ApplicationRecord
   has_many :clinical_conditions, through: :clinical_condition_practices
   has_many :clinical_location_practices
   has_many :clinical_locations, through: :clinical_location_practices
+  has_many :costs
   has_many :developing_facility_type_practices
   has_many :developing_facility_types, through: :developing_facility_type_practices
+  has_many :difficulties
   has_many :impact_practices
   has_many :impacts, through: :impact_practices
   has_many :implementation_timeline_files

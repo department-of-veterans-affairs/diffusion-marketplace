@@ -8,6 +8,7 @@ $dm-color-alpha-blue-6: rgba($dm-color-primary-blue, 0.6);
 $dm-color-alpha-blue-5: rgba($dm-color-primary-blue, 0.5);
 $dm-color-alpha-blue-3: rgba($dm-color-primary-blue, 0.3);
 $dm-color-alpha-blue-1: rgba($dm-color-primary-blue, 0.1);
+$dm-color-alpha-blue-0: rgba($dm-color-primary-blue, 0);
 $dm-color-light-blue: #E7F6F8;
 $dm-color-gold: #E4A002;
 $dm-color-pink: #FE4497;
@@ -21,3 +22,9 @@ $dm-color-dark-brown: #585858;
 $dm-color-dark-black: #171717;
 $dm-color-white: #FFFFFF;
 $dm-color-black: #000000;
+$dm-color-dark-blue-gray: #002A5C;
+$dm-color-light-blue-gray: rgba(0, 42, 92, 0.6);
+
+$dm-color-low-green: #1CC2AE;
+$dm-color-medium-yellow: #FBC036;
+$dm-color-high-red: $dm-color-red;

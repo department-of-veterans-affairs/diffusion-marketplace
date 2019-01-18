@@ -14,4 +14,6 @@ Rails.application.routes.draw do
   resources :strategic_sponsors
   root 'home#index'
   get '/practices' => 'practices#index'
+  # Adding this for the Download Toolkit button on practice page. Though we don't have any uploaded yet so I'm not using it.
+  get 'practices/download_toolkit' => 'practices#download_toolkit'
 end
