@@ -50,10 +50,16 @@ DM BUTTON CLASSES
   max-width: 222px;
   padding: 1em;
   text-align: center;
+  text-decoration: none;
   width: 100%;
 
   &:visited {
     color: #FFFFFF;
+  }
+
+  &:hover {
+    color: #FFFFFF;
+    text-decoration: underline;
   }
 }
 

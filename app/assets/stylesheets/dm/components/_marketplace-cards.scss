@@ -45,7 +45,7 @@
   .marketplace-footer {}
 
   .marketplace-card-middle {
-    background-color: rgba($dm-color-pastel-blue, .75);
+    background-color: rgba($dm-color-pastel-blue, .95);
     border-radius: 20px;
     height: calc(100% + 1px);
     left: 50%;
@@ -70,5 +70,7 @@
       text-decoration: underline;
     }
   }
+
+  .marketplace-card-middle-content-position { }
 
 }
