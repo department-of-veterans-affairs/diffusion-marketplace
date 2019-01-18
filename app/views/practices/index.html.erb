@@ -1,45 +1,65 @@
-<section class="usa-section grid-container">
-  <h1>All practices</h1>
+<div class="dm-background-linear-up-lightblue-to-white full-view-height">
+  <%= render 'shared/sub_search_nav' %>
+  <section class="promo dismissible grid-container dm-background-primary-blue promo-primary promo-rounded-corners-20 dm-font-color-white">
+    <div class="diffusion-background-circles-promo-translucent"></div>
+    <div class="grid-row flex-direction-row-reverse dismiss-row p1">
+      <button type="button" class="dismiss-cross dismiss-button z-index-10"><%= icon('fas', 'times') %></button>
+    </div>
+    <section class="promo-body p2 x1-bottom">
+      <div class="grid-row">
+        <div class="tablet:grid-col-8 x1-bottom">
+          <h2>Do you have a best practice worth spreading?</h2>
+          <p>You can submit a practice to the diffusion marketplace and help save lives.</p>
+        </div>
+        <div class="tablet:grid-col-4 display-grid-align-items-center">
+          <button class="dm-button-secondary x1-bottom dismiss-button">Maybe Later</button>
+          <button class="dm-button-secondary">Learn More</button>
+        </div>
+      </div>
+    </section>
+  </section>
 
-  <table class="usa-table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Short name</th>
-        <th>Description</th>
-        <th>Position</th>
-        <th>Is vha field</th>
-        <th>Is program office</th>
-        <th>Vha visn</th>
-        <th>Medical center</th>
-        <th>Business case summary</th>
-        <th>Support network email</th>
-        <th>Va pulse link</th>
-        <th>Additional notes</th>
-        <th colspan="3"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @practices.each do |practice| %>
-        <tr>
-          <td><%= practice.name %></td>
-          <td><%= practice.short_name %></td>
-          <td><%= practice.description %></td>
-          <td><%= practice.position %></td>
-          <td>practice.is_vha_field</td>
-          <td>practice.is_program_office</td>
-          <td><%= practice.vha_visn %></td>
-          <td><%= practice.medical_center %></td>
-          <td><%= practice.business_case_summary %></td>
-          <td><%= practice.support_network_email %></td>
-          <td><%= practice.va_pulse_link %></td>
-          <td><%= practice.additional_notes %></td>
-          <td><%= link_to 'Show', practice %></td>
-          <td><%= link_to 'Edit', edit_practice_path(practice) %></td>
-          <td><%= link_to 'Destroy', practice, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        </tr>
+  <!-- Marketplace -->
+  <section class="grid-container">
+    <div class="grid-row grid-gap-lg">
+      <% @practices.each_with_index do |practice, i| %>
+        <% index = i + 1 %>
+        <style>
+          .marketplace-card-header-<%= index %> {
+            background: linear-gradient(rgba(0, 42, 92, 0.59), rgba(0, 42, 92, 0.59)), url(<%= practice.main_display_image.url %>);
+          }
+        </style>
+        <div class="tablet:grid-col-4 x1-bottom">
+          <div class="marketplace-card">
+            <div class="marketplace-card-header marketplace-card-header-<%= index %> p2">
+              <h2 class="x0 fw-100 dm-font-color-white"><%= practice.tagline %></h2>
+            </div>
+            <div class="marketplace-card-body p2">
+              <div class="marketplace-card-description dm-font-dark-black fw-100 x1-bottom">
+                <%= practice.description %>
+              </div>
+              <div class="marketplace-card-name-location dm-font-dark-black fw-100 x1-bottom">
+                <%= practice.name %> | <span class="uppercase"><%= practice.initiating_facility %></span>
+              </div>
+              <div class="marketplace-card-adoption dm-font-color-dark-brown display-flex-align-items-center">
+                <div class="marketplace-card-number-adopted x1-right"><%= practice.number_adopted %></div>
+                <div><%= "#{practice.number_adopted == 1 ? 'Facility has' : 'Facilities have'}" %> adopted this
+                  practice
+                </div>
+              </div>
+            </div>
+            <div class="marketplace-footer p1">
+              <% practice.badges.each do |badge| %>
+                <div class="marketplace-card-badge"><%= badge.name %></div>
+              <% end %>
+            </div>
+            <div class="marketplace-card-middle display-flex-align-items-center">
+              <%= link_to 'Learn More', practice, class: 'dm-button-link display-inline-block margin-0-auto' %>
+            </div>
+          </div>
+        </div>
       <% end %>
-    </tbody>
-  </table>
-  <%= link_to 'New Practice', new_practice_path %>
-</section>
+    </div>
+  </section>
+
+</div>

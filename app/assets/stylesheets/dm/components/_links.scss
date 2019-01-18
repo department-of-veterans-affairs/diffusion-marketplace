@@ -1,0 +1,14 @@
+@import "../variables/colors";
+
+a.dm {
+  color: #000000;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:visited {
+    color: #000000;
+  }
+}

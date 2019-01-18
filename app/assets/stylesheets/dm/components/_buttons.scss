@@ -1,0 +1,83 @@
+/*
+* * * * * ==============================
+* * * * * ==============================
+* * * * * ==============================
+* * * * * ==============================
+========================================
+========================================
+========================================
+----------------------------------------
+DM BUTTON CLASSES
+----------------------------------------
+*/
+@import "../variables/colors";
+
+.dm-button-primary {
+  background-color: $dm-color-primary-blue;
+  border: none;
+  border-radius: 100px;
+  color: #FFFFFF;
+  font-size: .9em;
+  font-weight: normal;
+  height: 54px;
+  max-width: 222px;
+  text-align: center;
+  width: 100%;
+}
+
+.dm-button-secondary {
+  background-color: #FFFFFF;
+  border: 1px solid $dm-color-primary-blue;
+  border-radius: 100px;
+  color: $dm-color-primary-blue;
+  font-size: .9em;
+  font-weight: normal;
+  height: 54px;
+  max-width: 222px;
+  text-align: center;
+  width: 222px;
+}
+
+.dm-button-link {
+  background-color: $dm-color-primary-blue;
+  border: none;
+  border-radius: 100px;
+  color: #FFFFFF;
+  display: block;
+  font-size: .9em;
+  font-weight: normal;
+  height: 54px;
+  max-width: 222px;
+  padding: 1em;
+  text-align: center;
+  width: 100%;
+
+  &:visited {
+    color: #FFFFFF;
+  }
+}
+
+.dm-button-link-secondary {
+  background-color: #FFFFFF;
+  border: 1px solid $dm-color-primary-blue;
+  border-radius: 100px;
+  display: block;
+  color: $dm-color-primary-blue;
+  font-size: .9em;
+  font-weight: normal;
+  height: 54px;
+  max-width: 222px;
+  padding: 1em;
+  text-align: center;
+  width: 100%;
+
+  &:visited {
+    color: $dm-color-primary-blue;
+  }
+}
+
+.dismiss-cross {
+  background: none;
+  border: none;
+  cursor: pointer;
+}

@@ -14,72 +14,7 @@
  *= require_self
  */
 
-@import "uswds/uswds";
-
-// USWDS utility extensions
-
-.display-none {
-  display: none;
-}
-
-.bottom-2rem {
-  bottom: 2rem;
-}
-
-.margin-auto {
-  margin: auto;
-}
-
-.maxw-675px {
-  max-width: 675px;
-}
-
-button.appearance-none {
-  appearance: none;
-  background: none;
-  border: none;
-}
-
-.link-dark, .link-dark:visited {
-  @extend .text-base-darkest;
-}
-
-// Custom styles
-
-p {
-  @extend .measure-none;
-}
-
-.icon {
-  position: relative;
-  top: 6px;
-  margin-right: 6px;
-}
-
-.icon-large {
-  float: left;
-  margin-right: 15px;
-  position: relative;
-  top: 20px;
-  height: 50px;
-}
-
-.icon-positive-outcomes {
-  float: left;
-  margin-right: 15px;
-  height: 35px;
-}
-
-.icon-highlights {
-  width: 35px;
-}
-
-.badge {
-  position: relative;
-  top: 15px;
-  width: 40px;
-}
-
-.section-selected {
-  border-bottom: solid 6px color('accent-cool-dark');
-}
+@import 'dm_uswds/theme/uswds-theme-typography';
+@import 'dm_uswds/theme/_uswds-theme-custom-styles';
+@import "font-awesome-sprockets";
+@import "font-awesome";
