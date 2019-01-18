@@ -27,13 +27,17 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 }
 
 .dm-background-light-blue {
-  color: $dm-color-light-blue !important;
+  background-color: $dm-color-light-blue !important;
 }
 
 /* Linear Gradient backgrounds */
 
 .dm-background-linear-gradient-down-cool {
   background: linear-gradient(180deg, rgba(0, 150, 246, 0.35) 0%, rgba(255, 255, 255, 0) 100%) !important;
+}
+
+.dm-background-linear-gradient-up-cool {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 150, 246, 0.35) 100%) !important;
 }
 
 // fades from the bottom from a darker blue to clear
@@ -315,31 +319,31 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 }
 
 .x1-top {
-  margin-top: 1rem;
+  margin-top: 1rem !important;
 }
 
 .x2-top {
-  margin-top: 2rem;
+  margin-top: 2rem !important;
 }
 
 .x3-top {
-  margin-top: 3rem;
+  margin-top: 3rem !important;
 }
 
 .x4-top {
-  margin-top: 4rem;
+  margin-top: 4rem !important;
 }
 
 .x5-top {
-  margin-top: 5rem;
+  margin-top: 5rem !important;
 }
 
 .x6-top {
-  margin-top: 6rem;
+  margin-top: 6rem !important;
 }
 
 .x7-top {
-  margin-top: 7rem
+  margin-top: 7rem !important
 }
 
 /* Margin Bottom */
@@ -349,31 +353,31 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 }
 
 .x1-bottom {
-  margin-bottom: 1rem;
+  margin-bottom: 1rem !important;
 }
 
 .x2-bottom {
-  margin-bottom: 2rem;
+  margin-bottom: 2rem !important;
 }
 
 .x3-bottom {
-  margin-bottom: 3rem;
+  margin-bottom: 3rem !important;
 }
 
 .x4-bottom {
-  margin-bottom: 4rem;
+  margin-bottom: 4rem !important;
 }
 
 .x5-bottom {
-  margin-bottom: 5rem;
+  margin-bottom: 5rem !important;
 }
 
 .x6-bottom {
-  margin-bottom: 6rem;
+  margin-bottom: 6rem !important;
 }
 
 .x7-bottom {
-  margin-bottom: 7rem
+  margin-bottom: 7rem !important
 }
 
 /* Margin Left */
@@ -383,31 +387,31 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 }
 
 .x1-left {
-  margin-left: 1rem;
+  margin-left: 1rem !important;
 }
 
 .x2-left {
-  margin-left: 2rem;
+  margin-left: 2rem !important;
 }
 
 .x3-left {
-  margin-left: 3rem;
+  margin-left: 3rem !important;
 }
 
 .x4-left {
-  margin-left: 4rem;
+  margin-left: 4rem !important;
 }
 
 .x5-left {
-  margin-left: 5rem;
+  margin-left: 5rem !important;
 }
 
 .x6-left {
-  margin-left: 6rem;
+  margin-left: 6rem !important;
 }
 
 .x7-left {
-  margin-left: 7rem
+  margin-left: 7rem !important
 }
 
 /* Margin Right */
@@ -417,31 +421,31 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 }
 
 .x1-right {
-  margin-right: 1rem;
+  margin-right: 1rem !important;
 }
 
 .x2-right {
-  margin-right: 2rem;
+  margin-right: 2rem !important;
 }
 
 .x3-right {
-  margin-right: 3rem;
+  margin-right: 3rem !important;
 }
 
 .x4-right {
-  margin-right: 4rem;
+  margin-right: 4rem !important;
 }
 
 .x5-right {
-  margin-right: 5rem;
+  margin-right: 5rem !important;
 }
 
 .x6-right {
-  margin-right: 6rem;
+  margin-right: 6rem !important;
 }
 
 .x7-right {
-  margin-right: 7rem
+  margin-right: 7rem !important
 }
 
 /* Padding None */
@@ -452,31 +456,35 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 /* Padding All */
 
 .p1 {
-  padding: 1rem;
+  padding: 1rem !important;
+}
+
+.p1-5 {
+  padding: 1.5rem !important
 }
 
 .p2 {
-  padding: 2rem;
+  padding: 2rem !important;
 }
 
 .p3 {
-  padding: 3rem;
+  padding: 3rem !important;
 }
 
 .p4 {
-  padding: 4rem;
+  padding: 4rem !important;
 }
 
 .p5 {
-  padding: 5rem;
+  padding: 5rem !important;
 }
 
 .p6 {
-  padding: 6rem;
+  padding: 6rem !important;
 }
 
 .p7 {
-  padding: 7rem
+  padding: 7rem !important
 }
 
 /* Padding Left */
@@ -486,99 +494,149 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 }
 
 .p1-left {
-  padding-left: 1rem;
+  padding-left: 1rem !important;
+}
+
+.p1-5-left {
+  padding-left: 1.5rem !important;
 }
 
 .p2-left {
-  padding-left: 2rem;
+  padding-left: 2rem !important;
 }
 
 .p3-left {
-  padding-left: 3rem;
+  padding-left: 3rem !important !important;
 }
 
 .p4-left {
-  padding-left: 4rem;
+  padding-left: 4rem !important;
 }
 
 .p5-left {
-  padding-left: 5rem;
+  padding-left: 5rem !important;
 }
 
 .p6-left {
-  padding-left: 6rem;
+  padding-left: 6rem !important;
 }
 
 .p7-left {
-  padding-left: 7rem
+  padding-left: 7rem !important;
+}
+
+/* Padding Right */
+
+.p0-right {
+  padding-right: 0;
+}
+
+.p1-right {
+  padding-right: 1rem !important;
+}
+
+.p1-5-right {
+  padding-right: 1.5rem !important
+}
+
+.p2-right {
+  padding-right: 2rem !important;
+}
+
+.p3-right {
+  padding-right: 3rem !important;
+}
+
+.p4-right {
+  padding-right: 4rem !important;
+}
+
+.p5-right {
+  padding-right: 5rem !important;
+}
+
+.p6-right {
+  padding-right: 6rem !important;
+}
+
+.p7-right {
+  padding-right: 7rem !important
 }
 
 /* Padding Bottom */
 
 .p0-bottom {
-  padding-bottom: 0;
+  padding-bottom: 0 !important;
 }
 
 .p1-bottom {
-  padding-bottom: 1rem;
+  padding-bottom: 1rem !important;
+}
+
+.p1-5-bottom {
+  padding-bottom: 1.5rem !important
 }
 
 .p2-bottom {
-  padding-bottom: 2rem;
+  padding-bottom: 2rem !important;
 }
 
 .p3-bottom {
-  padding-bottom: 3rem;
+  padding-bottom: 3rem !important;
 }
 
 .p4-bottom {
-  padding-bottom: 4rem;
+  padding-bottom: 4rem !important;
 }
 
 .p5-bottom {
-  padding-bottom: 5rem;
+  padding-bottom: 5rem !important;
 }
 
 .p6-bottom {
-  padding-bottom: 6rem;
+  padding-bottom: 6rem !important;
 }
 
 .p7-bottom {
-  padding-bottom: 7rem
+  padding-bottom: 7rem !important
 }
 
 /* Padding Top */
 
 .p0-top {
-  padding-top: 0;
+  padding-top: 0 !important;
 }
 
 .p1-top {
-  padding-top: 1rem;
+  padding-top: 1rem !important;
+}
+
+.p1-5-top {
+  padding-top: 1.5rem !important
 }
 
 .p2-top {
-  padding-top: 2rem;
+  padding-top: 2rem !important;
 }
 
 .p3-top {
-  padding-top: 3rem;
+  padding-top: 3rem !important;
 }
 
 .p4-top {
-  padding-top: 4rem;
+  padding-top: 4rem !important;
 }
 
 .p5-top {
-  padding-top: 5rem;
+  padding-top: 5rem !important;
 }
 
 .p6-top {
-  padding-top: 6rem;
+  padding-top: 6rem !important;
 }
 
 .p7-top {
-  padding-top: 7rem
+  padding-top: 7rem !important
 }
 
 /* Responsive Utils */
@@ -638,4 +696,13 @@ ul.no-list-style {
   li {
     list-style-type: none;
   }
+}
+
+/* Height and width setters */
+.height-100 {
+  height: 100%;
+}
+
+.width-100 {
+  width: 100%;
 }

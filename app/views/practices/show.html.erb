@@ -1,216 +1,145 @@
 <!-- "Practice name" section -->
 
-<section class="usa-section grid-container padding-y-0">
-  <h1 class="font-heading-2xl"><%= @practice.name %></h1>
+<section class="usa-section grid-container padding-0 dm-background-linear-up-lightblue-to-white">
+  <div class="diffusion-background-circles"></div>
+  <h1 class="font-heading-2xl x2-top x4-left"><%= @practice.name %></h1>
+  <p class="x4-left"><%= @practice.tagline %></p>
+
+  <div class='grid-row flex-row flex-justify flex-align-center x1-top'>
+    <h5 class='flex-1 practice-facility'><%= @practice.name %> | <%= @practice.initiating_facility %></h5>
+    <div class='flex-2'>
+      <div class='grid-row flex-row flex-align-center flex-justify-end'>
+        <% @practice.badges.last(2).each do |badge|%>
+          <div class='badge-container' style='background-color: <%= badge.color %>;'><i class="<%= badge.icon %>"></i><span class='x1-left'><%= badge.name %></div>
+        <% end %>
+        <% if ((extra_badges = @practice.badges.count - 2) > 0) %>
+          <div class='extra-badge'><i class="fas fa-plus"></i><span class='x1-left'><%= extra_badges %> more</div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class='grid-row practice-aggregate-container'>
+    <div class="tablet:grid-col-fill text-center">
+      <% (0..3).each do |index| %>
+        <% if index < @practice.cost_savings_aggregate %>
+          <i class="fas fa-dollar-sign large-icon-dark aggregate-icon"></i>
+        <% else %>
+          <i class="fas fa-dollar-sign large-icon-light aggregate-icon"></i>
+        <% end %>
+      <% end %>
+      <p>Cost Savings</p>
+    </div>
+    <div class="tablet:grid-col-fill" style='text-align: center'>
+      <% (0..3).each do |index| %>
+        <% if index < @practice.veteran_satisfaction_aggregate %>
+          <i class="fas fa-smile-beam large-icon-dark aggregate-icon"></i>
+        <% else %>
+          <i class="fas fa-smile-beam large-icon-light aggregate-icon"></i>
+        <% end %>
+      <% end %>
+      <p>Patient Satisfaction</p>
+    </div>
+    <div class="tablet:grid-col-fill" style='text-align: center'>
+      <% (0..3).each do |index| %>
+        <% if index < @practice.difficulty_aggregate %>
+          <i class="fas fa-wrench large-icon-dark aggregate-icon"></i>
+        <% else %>
+          <i class="fas fa-wrench large-icon-light aggregate-icon"></i>
+        <% end %>
+      <% end %>
+      <p>Difficulty</p>
+    </div>
+  </div>
 </section>
 
 <!-- Practice hero image section -->
 
-<section class="usa-hero" style="background-image:url('<%= image_url 'practice-hero.jpg' %>'); background-position:0 -330px;">
-  <div class="grid-container height-card-lg" style="padding-top:10rem">
-    <div class="grid-row flex-justify-end margin-bottom-1">
-      <button class="usa-button">Bring this practice to your facility</button>
-    </div>
-    <div class="grid-row flex-justify-end">
-      <button class="usa-button">Share this initiative</button>
-    </div>
+<section class="usa-section padding-0">
+  <div class="grid-container practice-image">
+    <p><%= @practice.summary %></p>
   </div>
 </section>
 
-<!-- "Designed to" section -->
+<!-- "Practice tabs" section -->
 
-<section class="usa-section grid-container">
-  <h2 class="margin-y-0 font-sans-xl">Designed to</h2>
-  <div class="grid-row">
-    <div class="grid-col-fill">
-      <img class="icon-large" src="<%= image_url 'check-square.svg' %>" alt="check icon">
-      <p class="font-sans-md">Effectively address diabetes that is refractory to standard care</p>
+<section class="usa-section grid-container dm-background-linear-gradient-up-dark-blue" style='position: relative'>
+  <div class="diffusion-background-circles-offset-translucent" style='bottom: 0'></div>
+  <div class='grid-row'>
+    <div class='tablet:grid-col-4 p3-left p2-right'>
+      <ul class='usa-sidenav dm-tabnav'>
+        <li class='usa-sidenav-item>'>
+          <a href='#' class="usa-current dm-tab" data-target='#risks_and_mitigations'>Risks & Mitigation</a>
+        </li>
+        <li class='usa-sidenav-item>'>
+          <a href='#' class='dm-tab' data-target='#cost_and_difficulty'>Cost & Difficulty</a>
+        </li>
+        <li class='usa-sidenav-item>'>
+          <a href='#' class='dm-tab' data-target='#timeline_and_toolkit'>Timeline & Toolkit</a>
+        </li>
+        <li class='usa-sidenav-item>'>
+          <a href='#' class='dm-tab' data-target='#origin'>Origin of this practice</a>
+        </li>
+      </ul>
     </div>
-    <div class="grid-col-fill">
-      <img class="icon-large" src="<%= image_url 'user-check.svg' %>" alt="user check icon">
-      <p class="font-sans-md">Be suitable for practical delivery by existing HT nurses using standard HT equipment</p>
-    </div>
-  </div>
-</section>
-
-<!-- "Practice overview" section -->
-
-<section class="usa-section usa-section-dark">
-  <div class="grid-container">
-    <h2 class="margin-y-0 font-sans-xl">Practice overview</h2>
-    <p class="measure-none"><%= @practice.business_case_summary %></p>
-  </div>
-</section>
-
-<!-- "Positive outcomes" section -->
-
-<section class="usa-section grid-container">
-  <h2 class="margin-top-0 margin-bottom-2 font-sans-xl">Positive outcomes</h2>
-
-  <% unless @practice.impact_veteran_experience.empty? %>
-    <div class="grid-row display-block padding-bottom-2">
-      <img class="icon-positive-outcomes" src="<%= image_url 'clipboard.svg' %>" alt="clipboard icon">
-      <p class="margin-left-6 font-sans-md"><%= @practice.impact_veteran_experience %></p>
-    </div>
-  <% end %>
-
-  <% unless @practice.impact_veteran_satisfaction.empty? %>
-    <div class="grid-row display-block padding-bottom-2">
-      <img class="icon-positive-outcomes" src="<%= image_url 'doctor.svg' %>" alt="doctor icon">
-      <p class="margin-left-6 font-sans-md"><%= @practice.impact_veteran_satisfaction %></p>
-    </div>
-  <% end %>
-
-  <% unless @practice.impact_other_veteran_experience.empty? %>
-    <div class="grid-row display-block padding-bottom-2">
-      <img class="icon-positive-outcomes" src="<%= image_url 'saluting-vet.png' %>" alt="saluting vet icon">
-      <p class="margin-left-6 font-sans-md"><%= @practice.impact_other_veteran_experience %></p>
-    </div>
-  <% end %>
-
-  <div class="grid-row display-block padding-bottom-2">
-    <img class="icon-positive-outcomes" src="<%= image_url 'dollar-sign.svg' %>" alt="dollar sign icon">
-
-    <% unless @practice.impact_financial_estimate_saved == '0' %>
-      <p class="margin-left-6 font-sans-md"><%= @practice.impact_financial_estimate_saved %></p>
-    <% end %>
-
-    <% unless @practice.impact_financial_per_veteran == '0' %>
-      <p class="margin-left-6 font-sans-md"><%= @practice.impact_financial_per_veteran %></p>
-    <% end %>
-
-    <% unless @practice.impact_financial_roi == '0' %>
-      <p class="margin-left-6 font-sans-md"><%= @practice.impact_financial_roi %></p>
-    <% end %>
-
-    <% unless @practice.impact_financial_other == 0 %>
-      <p class="margin-left-6 font-sans-md"><%= @practice.impact_financial_other %></p>
-    <% end %>
-
-  </div>
-
-  <div class="bg-accent-cool-light margin-x-auto margin-top-6 padding-3 maxw-675px">
-    <h2 class="margin-0">Data Sources</h2>
-    <ol>
-      <li>Corporate Data Warehouse (CDW); data manually pulled by ORH-funded
-        statisticians
-      </li>
-      <li>CDW; data manually pulled by ORH-funded statisticians</li>
-      <li>Home Telehealth patient and clinician satisfaction surveys</li>
-    </ol>
-  </div>
-
-</section>
-
-<!-- Practice highlights section -->
-
-<section class="usa-section padding-y-3 bg-accent-cool-light">
-  <div class="grid-container grid-row text-center">
-    <div class="tablet:grid-col-2">
-      <h2 class="margin-top-0"><%= @practice.number_adopted %></h2>
-      <p class="maxw-none">Health centers have adopted this practice</p>
-    </div>
-    <div class="tablet:grid-col-2">
-      <h2 class="margin-top-0">LOW</h2>
-      <p class="maxw-none">Risk level</p>
-    </div>
-    <div class="tablet:grid-col-2">
-      <h2 class="margin-top-0">$$$</h2>
-      <p class="maxw-none">Cost</p>
-    </div>
-    <div class="tablet:grid-col-2">
-      <img class="icon-highlights" src="<%= image_url 'hospital.svg' %>" alt="hospital icon">
-      <p class="maxw-none"><%= @practice.initiating_facility %></p>
-    </div>
-    <div class="tablet:grid-col-2">
-      <img class="icon-highlights" src="<%= @practice.badges.first.badge_image.url %>" alt="badge icon">
-      <p class="maxw-none"><%= @practice.badges.first.name %></p>
-    </div>
-    <div class="tablet:grid-col-2">
-      <img class="icon-highlights" src="<%= image_url 'flag.svg' %>" alt="flag icon">
-      <p class="maxw-none"><%= @practice.strategic_sponsors.first.name %></p>
-    </div>
-  </div>
-</section>
-
-<!-- "Risks & Mitigations" / "Cost & Difficulty" toggle -->
-
-<section class="usa-section grid-container padding-bottom-4">
-  <div class="grid-row">
-    <div class="grid-col-auto margin-right-4">
-      <button id="risks-mitigations-toggle" class="appearance-none margin-0">
-        <h3 class="margin-0 section-selected">Risks & Mitigations</h3>
-      </button>
-    </div>
-    <div class="grid-col-auto">
-      <button id="cost-difficulty-toggle" class="appearance-none margin-0">
-        <h3 class="margin-0">Cost & Difficulty</h3>
-      </button>
-    </div>
-  </div>
-
-</section>
-
-<!-- "Risks & Mitigations" section -->
-
-<section id="risks-mitigations" class="usa-section grid-container padding-top-0 padding-x-7">
-  <% @practice.risk_and_mitigations.each do |rm| %>
-    <div class="grid-row grid-gap margin-bottom-3">
-      <div class="tablet:grid-col-2">
-        <h3 class="margin-0">Risk</h3>
-      </div>
-      <div class="tablet:grid-col-fill">
-        <p><%= rm.risk %></p>
+    <div class='tablet:grid-col-8 p0 p1-5-right p1-5-left'>
+      <div class='practice-tab-container'>
+        <div id="risks_and_mitigations" class="practice-tab-content tab-active">
+          <%= render partial: 'risks_and_mitigations' %>
+        </div>
+        <div id="cost_and_difficulty" class="practice-tab-content tab-inactive">
+          <%= render partial: 'cost_and_difficulty' %>
+        </div>
+        <div id="timeline_and_toolkit" class="practice-tab-content tab-inactive">
+          <%= render partial: 'timeline_and_toolkit' %>
+        </div>
+        <div id="origin" class="practice-tab-content tab-inactive">
+          <%= render partial: 'origin' %>
+        </div>
       </div>
     </div>
-    <div class="grid-row grid-gap">
-      <div class="tablet:grid-col-2">
-        <h3 class="margin-0">Mitigation</h3>
-      </div>
-      <div class="tablet:grid-col-fill">
-        <p><%= rm.mitigation %></p>
+  </div>
+  <div class='grid-row x3-top'>
+    <div class='grid-col-8 grid-offset-1'>
+      <div class='grid-row flex-column flex-justify flex-align-start dm-font-color-white'>
+        <div class='grid-auto'>
+          <h3>Ready to Commit?</h3>
+        </div>
+        <div class='grid-auto'>
+          <p>You can submit a practice to the diffusion marketplace to help save lives</p>
+        </div>
       </div>
     </div>
-  <% end %>
-</section>
-
-<!-- "Cost & Difficulty" section -->
-
-<section id="cost-difficulty" class="usa-section grid-container padding-top-0 padding-x-7 display-none">
-  <div class="grid-row grid-gap">
-    <div class="tablet:grid-col-fill">
-      <h2 class="margin-0">$$$</h2>
-      <p>cost</p>
-      <p>Some cost to Implement. Modest FTE or capital investment required.</p>
-      <h3>FTE</h3>
-      <h3>Supplies</h3>
-      <h3>Licenses</h3>
-      <h3>Money</h3>
-    </div>
-    <div class="tablet:grid-col-fill">
-      <h2 class="margin-0">🔧🔧🔧</h2>
-      <p>Difficulty</p>
-      <p>Some change management and system redesign to operationalize</p>
-      <h3>Oversight</h3>
-      <h3>Staff Training</h3>
-      <h3>Buy in</h3>
+    <div class='grid-col-3 p1-5-right'>
+      <div class='grid-row flex-column flex-justify-center flex-align-center height-100'>
+        <button class='usa-button usa-button-outline practice-learn-more'>Learn More</button>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- "Team" section -->
 
-<section class="usa-section bg-accent-cool-light">
-  <div class="grid-container">
-    <h2 class="margin-y-0 font-sans-xl">Team</h2>
-    <% @practice.va_employees.each do |employee| %>
-      <h3><%= employee.name %></h3>
-    <% end %>
-    <div class="margin-top-4">
-      <a href="mailto:<%= @practice.support_network_email %>">
-        <button class="usa-button">Contact <%= @practice.support_network_email %></button>
-      </a>
-      <button class="usa-button margin-top-1">Bring this practice to your facility</button>
+<section class="usa-section margin-y-0 p0">
+  <div class="grid-container dm-background-light-blue p4-left p3-top">
+    <p class="font-sans-lg fw-bold">Support Team</p>
+    <div class='grid-row flex-row flex-wrap'>
+      <% @practice.va_employees.each do |employee| %>
+        <div class='tablet:grid-col-4 x2-bottom'>
+          <div class='grid-row flex-row flex-align-center'>
+            <div class='grid-col-2'>
+              <%= image_tag employee.avatar_file_name.present? ? employee.avatar_file_name : @practice.origin_picture.url  %>
+            </div>
+            <div class='grid-col-9 grid-offset-1'>
+              <h4 class='margin-y-0'><%= employee.name %></h4>
+              <p class='margin-y-0'><%= employee.job_title %></p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class='grid-row flex-row flex-justify-center flex-align-center'>
+      <button class='usa-button usa-button-primary x3-bottom'>Contact</button>
     </div>
   </div>
 </section>
