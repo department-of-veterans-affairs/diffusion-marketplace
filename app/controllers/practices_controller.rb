@@ -61,6 +61,14 @@ class PracticesController < ApplicationController
     end
   end
 
+  # def download_toolkit
+  #   send_file(
+  #     "#{Rails.root}/public/your_file.pdf",
+  #     filename: "your_custom_file_name.pdf",
+  #     type: "application/pdf"
+  #   )
+  # end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_practice

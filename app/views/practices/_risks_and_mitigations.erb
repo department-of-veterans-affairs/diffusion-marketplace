@@ -1,0 +1,48 @@
+<!-- Risk level Circle -->
+<div class='grid-row'>
+  <div class='tablet:grid-col-4.grid-offset-4'>
+    <div class='grid-row flex-column flex-align-center flex-justify-center level-aggregate-circle'>
+      <div class='grid-auto'><h1 class='margin-0'>Low</h1></div>
+      <div class='grid-auto'><h4 class='margin-0 fw-100'>Risk level</h4></div>
+    </div>
+  </div>
+</div>
+
+<!-- Risk and mitigations list -->
+<div class='grid-row'>
+  <div class='tablet:grid-col-10 grid-offset-1'>
+    <div class='grid-row flex-column flex-align-center'>
+      <div class='grid-col-12'>
+        <div class='grid-row'>
+          <div class='grid-col-5 text-center'>
+            <h3>Risks</h3>
+          </div>
+          <div class='grid-col-5 grid-offset-2 text-center'>
+            <h3>Mitigations</h3>
+          </div>
+        </div>
+      </div>
+    <% @practice.risk_mitigations.each_with_index do |rm, index| %>
+      <% if index > 0 %>
+        <div class='risk-border'></div>
+      <% end %>
+      <div class='grid-row'>
+        <div class='grid-col-5'>
+          <div class='grid-row flex-column flex-justify-start flex-align-start'>
+            <% rm.risks.each do |risk| %>
+              <p><%= risk.description %></p>
+            <% end %>
+          </div>
+        </div>
+        <div class='grid-col-5 grid-offset-2'>
+          <div class='grid-row flex-column flex-justify-start flex-align-start'>
+            <% rm.mitigations.each do |mitigation| %>
+              <p><%= mitigation.description %></p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    </div>
+  </div>
+</div>
