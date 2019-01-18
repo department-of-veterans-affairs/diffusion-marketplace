@@ -76,15 +76,23 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 /* Font colors */
 
 .dm-font-color-black {
-  color: #000000 !important;
+  color: $dm-color-black !important;
+}
+
+.dm-font-dark-black {
+  color: $dm-color-dark-black !important;
 }
 
 .dm-font-color-white {
-  color: #FFFFFF !important;
+  color: $dm-color-white !important;
 }
 
 .dm-font-color-primary-blue {
   color: $dm-color-primary-blue !important;
+}
+
+.dm-font-color-dark-brown {
+  color: $dm-color-dark-brown !important;
 }
 
 /* Font Weight */
@@ -103,6 +111,11 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .fw-bold {
   font-weight: bold !important;
+}
+
+/* Text style */
+.uppercase {
+  text-transform: uppercase;
 }
 
 /* Text Align */
@@ -397,9 +410,43 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   margin-left: 7rem
 }
 
+/* Margin Right */
+
+.x0-right {
+  margin-right: 0;
+}
+
+.x1-right {
+  margin-right: 1rem;
+}
+
+.x2-right {
+  margin-right: 2rem;
+}
+
+.x3-right {
+  margin-right: 3rem;
+}
+
+.x4-right {
+  margin-right: 4rem;
+}
+
+.x5-right {
+  margin-right: 5rem;
+}
+
+.x6-right {
+  margin-right: 6rem;
+}
+
+.x7-right {
+  margin-right: 7rem
+}
+
 /* Padding None */
 .p0 {
-  padding: 0;
+  padding: 0 !important;
 }
 
 /* Padding All */
