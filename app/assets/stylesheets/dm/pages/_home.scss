@@ -2,13 +2,28 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+@import '../variables/colors';
+
 .home section.usa-section {
   padding-bottom: 1rem;
   padding-top: 1rem;
+
+  &.section-worth-spreading {
+    padding-bottom: 3em;
+    padding-top: 2em;
+  }
+
 }
 
 .home .featured-practice {
-  height: 13rem;
+  //height: 14rem;
+}
+
+.hero {
+  h1 {
+    font-weight: normal;
+    font-size: 3.5rem;
+  }
 }
 
 .home .circle {
@@ -23,3 +38,6 @@
   justify-content: center;
   float: left;
 }
+
+
+

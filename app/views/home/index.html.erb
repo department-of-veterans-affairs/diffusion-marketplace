@@ -1,91 +1,70 @@
-<!-- "Welcome" section -->
-
-<section class="usa-section grid-container">
-  <h1 class="font-heading-2xl">Welcome</h1>
-  <p class="measure-none">VHA’s new Changing Lives, Saving Lives (CLSL) campaign aims to raise awareness of how frontline driven innovation is changing the lives of Veterans, caregivers, and employees — and in some instances saving Veteran lives. Dr.
-    Ryan Vega, Director, Diffusion of Excellence Initiative, will formally launch the 12-month campaign at the VHA Innovation Experience, a two-day event taking place in Washington, D.C. August 29–30, 2018, to showcase the continued commitment by VHA
-    employees to improve the health care experience, with demonstrable outcomes, for all Veterans.</p>
-</section>
-
-<!-- "Featured practices" section -->
-
-<section class="usa-section grid-container">
-  <div class="grid-row grid-gap-lg">
-    <div class="grid-col-fill">
-      <a href="" class="text-no-underline">
-        <div class="featured-practice text-base-darkest padding-4 text-center bg-accent-cool">
-          <h1>Vione</h1>
-          <p>Saved 1000 lives</p>
-        </div>
-      </a>
+<div class="dm-background-linear-up-lightblue-to-white">
+  <!-- "Welcome" section -->
+  <section class="usa-section grid-container hero">
+    <div class="grid-row grid-gap">
+      <h1 class="font-heading-2xl">Saving lives by diffusing best practices</h1>
+      <p class="measure-none">VHA’s new Changing Lives, Saving Lives (CLSL) campaign aims to raise awareness of how
+        frontline driven innovation is changing the lives of Veterans, caregivers, and employees — and in some instances
+        saving Veteran lives. </p>
     </div>
-    <div class="grid-col-fill">
-      <a href="" class="text-no-underline">
-        <div class="featured-practice text-base-darkest padding-4 text-center bg-accent-cool">
-          <h1>Rapid Naloxone</h1>
-          <p>358 lives saved</p>
-        </div>
-      </a>
-    </div>
-    <div class="grid-col-fill">
-      <a href="" class="text-no-underline">
-        <div class="featured-practice text-base-darkest padding-4 text-center bg-accent-cool">
-          <h1>Project HAPPEN</h1>
-          <p>Saved $2.6 million</p>
-        </div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- <section class="usa-section usa-section-dark padding-y-4"> <div class="grid-container margin-bottom-3"> <form class="usa-form maxw-none"> <div class="grid-row flex-row"> <div class="grid-col"> <label class="usa-label font-heading-xl
-margin-top-0" for="options">Show practices for</label> </div> <div class="grid-col"> <select class="usa-select" name="options" id="options"> <option value="visn-all">All VISNs</option> <option value="visn-1">VISN 1</option> <option
-value="visn-2">VISN 2</option> <option value="visn-3">VISN 3</option> </select> </div> </div> </form> </div> <div class="grid-container margin-bottom-3"> <form class="usa-search usa-search-big"> <div role="search"> <label class="usa-sr-only"
-for="search-field-big">Search</label> <input class="usa-input maxw-none" id="search-field-big" type="search" name="search" placeholder="Type Search"> <button class="usa-button" type="submit"> <span class="usa-search-submit-text">Search</span>
-</button> </div> </form> </div> <div class="grid-container margin-bottom-2"> <label class="usa-label font-heading-xl margin-top-0" for="view-by-filters">View by</label> </div> <div class="grid-container"> <div id="view-by-filters" class="grid-row
-grid-gap"> <div class="grid-col-2"> <div class="circle">Lives Saved</div> </div> <div class="grid-col-2"> <div class="circle">Veteran Experience</div> </div> <div class="grid-col-2"> <div class="circle">Financial Impact</div> </div> <div
-class="grid-col-2"> <div class="circle">Operational</div> </div> <div class="grid-col-2"> <div class="circle">Clinical Outcome</div> </div> <div class="grid-col-2"> <div class="circle">Ease of Implementation</div> </div> </div> </div> </section> -->
-
-<!-- Search section -->
-
-<section class="usa-section grid-container">
-  <div class="grid-row">
-    <div class="grid-col-fill">
-      <form class="usa-search usa-search-big">
-        <div role="search">
-          <label class="usa-sr-only" for="search-field-big">Search</label>
-          <input class="usa-input maxw-none" id="search-field-big" type="search" name="search">
-          <button class="usa-button" type="submit">
-            <span class="usa-search-submit-text">Search</span>
-          </button>
-        </div>
-      </form>
-    </div>
-    <div class="grid-col-2 text-center margin-auto">
-      <a class="link-dark" href=""><img class="icon" src="<%= image_url 'filter.svg' %>" alt="filter icon">Filter</a>
-    </div>
-  </div>
-</section>
-
-<!-- Practice list section -->
-
-<section class="usa-section grid-container">
-  <% @practices.each do |practice| %>
-    <div class="grid-row margin-1 padding-1 bg-accent-cool-lighter">
-      <div class="grid-col-4">
-        <img src="<%= practice.main_display_image.url %>" alt="practice image">
+    <div class="grid-row">
+      <div class="tablet:grid-col-8 x1-bottom">
+        &nbsp;
       </div>
-      <div class="grid-col-fill padding-2">
-        <h1 class="margin-top-0"><%= link_to practice.name, practice, class: 'link-dark' %></h1>
-        <p class="margin-0">$$$ | <%= practice.number_adopted %> health centers have adopted this practice</p>
-        <p class="margin-0"><%= practice.description %></p>
-        <% practice.badges.each do |badge| %>
-          <img class="badge" src="<%= badge.badge_image.url %>" alt="practice badge">
-          <span><%= badge.name %></span>
-        <% end %>
+      <div class="tablet:grid-col-4 display-grid-align-items-center">
+        <button class="dm-button-primary">Sign up</button>
       </div>
-      <!-- <div class="grid-col-2 padding-1" style="background:#009ec1">⭐️ Gold status practice</div> -->
     </div>
-  <% end %>
-  <!-- <div class="grid-row flex-justify-center padding-2" style="background:#e7f6f8"> <button class="usa-button usa-button-big">View more</button> </div> -->
-</section>
+  </section>
+  <section id="diffusion-animation-section" class="diffusion-animation-section">
+  </section>
+
+  <section class="usa-section section-worth-spreading dm-background-primary-blue dm-font-color-white">
+    <div class="grid-container">
+      <div class="grid-row">
+        <div class="tablet:grid-col-8 x1-bottom">
+          <h2>Do you have a best practice worth spreading?</h2>
+          <p>You can submit a practice to the diffusion marketplace and help save lives.</p>
+        </div>
+        <div class="tablet:grid-col-4 display-grid-align-items-center">
+          <button class="dm-button-secondary">Learn More</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="usa-section section-top-gold-status-intro">
+    <div class="grid-container display-flex-align-items-center">
+      <%= image_tag 'heart_badge.svg', alt: 'Heart' %>
+      <h2 class="bold display-inline-block p1-left x0">Current Top 3 Gold Status Practices</h2>
+    </div>
+  </section>
+
+  <!-- "Featured practices" section -->
+  <!-- TODO: Hover state -->
+  <section id="gold-practice-tiles" class="usa-section grid-container home-tiles">
+    <div class="grid-row">
+      <% @top_three_gold_practices.each_with_index do |practice, i| %>
+        <% index = i + 1 %>
+        <style>
+          .dm-background-gold-tile-<%= index %>:after {
+            background-image: url(<%= practice.main_display_image.url %>);
+          }
+        </style>
+        <div class="grid-col-12 home-tile x0">
+          <div class="featured-practice p1 text-center dm-background-gold-tile dm-background-gold-tile-<%= index %>">
+            <%= image_tag "#{index}-badge.svg", class: 'center x1-top' %>
+            <p class="x0">
+              <span class="gold-status-first dm-font-color-white fw-100"><%= practice.name %> <%= practice.gold_status_first_line %></span>
+              <br>
+              <span class="gold-status-second dm-font-color-white fw-100"><%= practice.gold_status_second_line %></span>
+            </p>
+          </div>
+          <div class="middle middle-<%= index %>">
+            <%= link_to 'Learn More', practice, class: 'dm-button-link display-inline-block' %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </section>
+</div>

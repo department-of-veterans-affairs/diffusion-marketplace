@@ -19,7 +19,7 @@ RSpec.describe Practice, type: :model do
     it { should have_many(:photo_files) }
     it { should have_many(:publications) }
     it { should have_many(:publication_files) }
-    it { should have_many(:risk_and_mitigations) }
+    it { should have_many(:risk_mitigations) }
     it { should have_many(:strategic_sponsor_practices) }
     it { should have_many(:strategic_sponsors) }
     it { should have_many(:survey_result_files) }

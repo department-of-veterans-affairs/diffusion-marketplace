@@ -1,4 +1,3 @@
-
 <!-- "Practice name" section -->
 
 <section class="usa-section grid-container padding-y-0">
@@ -49,43 +48,43 @@
   <h2 class="margin-top-0 margin-bottom-2 font-sans-xl">Positive outcomes</h2>
 
   <% unless @practice.impact_veteran_experience.empty? %>
-  <div class="grid-row display-block padding-bottom-2">
-    <img class="icon-positive-outcomes" src="<%= image_url 'clipboard.svg' %>" alt="clipboard icon">
-    <p class="margin-left-6 font-sans-md"><%= @practice.impact_veteran_experience %></p>
-  </div>
+    <div class="grid-row display-block padding-bottom-2">
+      <img class="icon-positive-outcomes" src="<%= image_url 'clipboard.svg' %>" alt="clipboard icon">
+      <p class="margin-left-6 font-sans-md"><%= @practice.impact_veteran_experience %></p>
+    </div>
   <% end %>
 
   <% unless @practice.impact_veteran_satisfaction.empty? %>
-  <div class="grid-row display-block padding-bottom-2">
-    <img class="icon-positive-outcomes" src="<%= image_url 'doctor.svg' %>" alt="doctor icon">
-    <p class="margin-left-6 font-sans-md"><%= @practice.impact_veteran_satisfaction %></p>
-  </div>
+    <div class="grid-row display-block padding-bottom-2">
+      <img class="icon-positive-outcomes" src="<%= image_url 'doctor.svg' %>" alt="doctor icon">
+      <p class="margin-left-6 font-sans-md"><%= @practice.impact_veteran_satisfaction %></p>
+    </div>
   <% end %>
 
   <% unless @practice.impact_other_veteran_experience.empty? %>
-  <div class="grid-row display-block padding-bottom-2">
-    <img class="icon-positive-outcomes" src="<%= image_url 'saluting-vet.png' %>" alt="saluting vet icon">
-    <p class="margin-left-6 font-sans-md"><%= @practice.impact_other_veteran_experience %></p>
-  </div>
+    <div class="grid-row display-block padding-bottom-2">
+      <img class="icon-positive-outcomes" src="<%= image_url 'saluting-vet.png' %>" alt="saluting vet icon">
+      <p class="margin-left-6 font-sans-md"><%= @practice.impact_other_veteran_experience %></p>
+    </div>
   <% end %>
 
   <div class="grid-row display-block padding-bottom-2">
     <img class="icon-positive-outcomes" src="<%= image_url 'dollar-sign.svg' %>" alt="dollar sign icon">
 
     <% unless @practice.impact_financial_estimate_saved == '0' %>
-    <p class="margin-left-6 font-sans-md"><%= @practice.impact_financial_estimate_saved %></p>
+      <p class="margin-left-6 font-sans-md"><%= @practice.impact_financial_estimate_saved %></p>
     <% end %>
 
     <% unless @practice.impact_financial_per_veteran == '0' %>
-    <p class="margin-left-6 font-sans-md"><%= @practice.impact_financial_per_veteran %></p>
+      <p class="margin-left-6 font-sans-md"><%= @practice.impact_financial_per_veteran %></p>
     <% end %>
 
     <% unless @practice.impact_financial_roi == '0' %>
-    <p class="margin-left-6 font-sans-md"><%= @practice.impact_financial_roi %></p>
+      <p class="margin-left-6 font-sans-md"><%= @practice.impact_financial_roi %></p>
     <% end %>
 
     <% unless @practice.impact_financial_other == 0 %>
-    <p class="margin-left-6 font-sans-md"><%= @practice.impact_financial_other %></p>
+      <p class="margin-left-6 font-sans-md"><%= @practice.impact_financial_other %></p>
     <% end %>
 
   </div>
@@ -94,7 +93,8 @@
     <h2 class="margin-0">Data Sources</h2>
     <ol>
       <li>Corporate Data Warehouse (CDW); data manually pulled by ORH-funded
-      statisticians</li>
+        statisticians
+      </li>
       <li>CDW; data manually pulled by ORH-funded statisticians</li>
       <li>Home Telehealth patient and clinician satisfaction surveys</li>
     </ol>
@@ -155,22 +155,22 @@
 
 <section id="risks-mitigations" class="usa-section grid-container padding-top-0 padding-x-7">
   <% @practice.risk_and_mitigations.each do |rm| %>
-  <div class="grid-row grid-gap margin-bottom-3">
-    <div class="tablet:grid-col-2">
-      <h3 class="margin-0">Risk</h3>
+    <div class="grid-row grid-gap margin-bottom-3">
+      <div class="tablet:grid-col-2">
+        <h3 class="margin-0">Risk</h3>
+      </div>
+      <div class="tablet:grid-col-fill">
+        <p><%= rm.risk %></p>
+      </div>
     </div>
-    <div class="tablet:grid-col-fill">
-      <p><%= rm.risk %></p>
+    <div class="grid-row grid-gap">
+      <div class="tablet:grid-col-2">
+        <h3 class="margin-0">Mitigation</h3>
+      </div>
+      <div class="tablet:grid-col-fill">
+        <p><%= rm.mitigation %></p>
+      </div>
     </div>
-  </div>
-  <div class="grid-row grid-gap">
-    <div class="tablet:grid-col-2">
-      <h3 class="margin-0">Mitigation</h3>
-    </div>
-    <div class="tablet:grid-col-fill">
-      <p><%= rm.mitigation %></p>
-    </div>
-  </div>
   <% end %>
 </section>
 
@@ -207,7 +207,9 @@
       <h3><%= employee.name %></h3>
     <% end %>
     <div class="margin-top-4">
-      <a href="mailto:<%= @practice.support_network_email %>"><button class="usa-button">Contact <%= @practice.support_network_email %></button></a>
+      <a href="mailto:<%= @practice.support_network_email %>">
+        <button class="usa-button">Contact <%= @practice.support_network_email %></button>
+      </a>
       <button class="usa-button margin-top-1">Bring this practice to your facility</button>
     </div>
   </div>

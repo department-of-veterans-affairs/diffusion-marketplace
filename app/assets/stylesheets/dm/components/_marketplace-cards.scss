@@ -1,0 +1,74 @@
+@import '../variables/colors';
+
+.marketplace-card {
+  background-color: $dm-color-white;
+  border-radius: 20px;
+  transform: translateX(0) translateY(0);
+  transition: .25s ease;
+
+  &:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    transform: translateX(3px) translateY(-3px);
+    transition: .25s ease;
+  }
+
+  .marketplace-card-header {
+    background-size: cover;
+    border-radius: 20px 20px 0 0;
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+
+    h2 {
+      font-size: 2rem;
+    }
+  }
+
+  .marketplace-card-body {}
+
+  .marketplace-card-description {
+    font-size: 1.2rem;
+  }
+
+  .marketplace-card-name-location {
+    font-size: .85rem;
+  }
+
+  .marketplace-card-adoption {
+    padding: 0 1em;
+
+    .marketplace-card-number-adopted {
+      font-size: 3rem;
+    }
+  }
+
+  .marketplace-footer {}
+
+  .marketplace-card-middle {
+    background-color: rgba($dm-color-pastel-blue, .75);
+    border-radius: 20px;
+    height: calc(100% + 1px);
+    left: 50%;
+    opacity: 0;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    transition: .5s ease;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    width: 100%;
+  }
+
+  &:hover .marketplace-card-middle {
+    opacity: 1;
+  }
+
+  a {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+}

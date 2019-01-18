@@ -50,6 +50,8 @@ group :development, :test do
   gem 'shoulda-matchers', require: false
 
   gem 'sniffybara', git: 'https://github.com/department-of-veterans-affairs/sniffybara.git'
+
+  gem 'rspec-retry'
 end
 
 group :development do
@@ -83,3 +85,4 @@ gem 'activerecord-nulldb-adapter'
 gem 'acts_as_list'
 gem 'aws-sdk-s3'
 gem 'paperclip', '~> 6.0.0'
+gem 'font-awesome-sass', '~> 5.6.1'
