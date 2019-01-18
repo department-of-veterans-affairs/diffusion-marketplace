@@ -1,0 +1,28 @@
+@import "../variables/colors";
+
+.large-icon-dark {
+  color: $dm-color-dark-blue-gray;
+}
+
+.large-icon-light {
+  color: $dm-color-light-blue-gray;
+}
+
+.badge-container {
+  margin: 4px;
+  padding: 5px 15px;
+  border-radius: 15px;
+  color: white;
+}
+
+.extra-badge {
+  background-color: $dm-color-primary-blue;
+  border-radius: 15px;
+  color: white;
+  cursor: pointer;
+  margin: 4px;
+  padding: 5px 15px;
+  &:hover {
+    background-color: $dm-color-dark-blue-gray;
+  }
+}

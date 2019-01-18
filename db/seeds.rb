@@ -34,25 +34,25 @@ if StrategicSponsor.all.blank?
     badge_image_base_path = "#{Rails.root}/db/seed_images/badges"
     badges = [
         Badge.create!(name: 'VHA System Redesign', short_name: 'vha_system_redesign', description: 'Vetted by VHA System Redesign', strategic_sponsor: sponsors[4],
-                      icon: 'fas fas-cogs', color: '#FE4497'),
+                      icon: 'fas fa-cogs', color: '#FE4497'),
         Badge.create!(name: 'VHA Office of Connected Care', short_name: 'vha_office_of_connected_care', description: 'Vetted by the VHA Office of Connected Care', strategic_sponsor: sponsors[5],
-                      icon: 'fas fas-hand-holding-heart', color: '#E52107'),
+                      icon: 'fas fa-hand-holding-heart', color: '#E52107'),
         Badge.create!(name: 'Health Systems Research & Design', short_name: 'hsrd', description: 'Vetted by Health Systems Research & Design', strategic_sponsor: sponsors[3],
-                      icon: 'fas fas-microscope', color: '#9058D3'),
+                      icon: 'fas fa-microscope', color: '#9058D3'),
         Badge.create!(name: 'Office of Rural Health', short_name: 'office_of_rural_health', description: 'Vetted by the Office of Rural Health', strategic_sponsor: sponsors[2],
-                      icon: 'fas fas-mountain', color: '#1CC2AE'),
+                      icon: 'fas fa-mountain', color: '#1CC2AE'),
         Badge.create!(name: 'Diffusion of Excellence', short_name: 'diffusion_of_excellence', description: 'Vetted by Diffusion of Excellence', strategic_sponsor: sponsors[1],
-                      icon: 'fas fas-certificate', color: '#0076D6'),
+                      icon: 'fas fa-certificate', color: '#0076D6'),
         Badge.create!(name: 'Shark Tank Approved', short_name: 'shark_tank_approved', description: 'Shark Tank Approved', strategic_sponsor: sponsors[1],
-                      icon: 'fas fas-fish', color: '#0076D6'),
+                      icon: 'fas fa-fish', color: '#0076D6'),
         Badge.create!(name: 'Top 100 Shark Tank', short_name: 'shark_tank_100', description: 'Top 100 Shark Tank finisher', strategic_sponsor: sponsors[1],
-                      icon: 'fas fas-fish', color: '#0076D6'),
+                      icon: 'fas fa-fish', color: '#0076D6'),
         Badge.create!(name: 'Top 20 Shark Tank', short_name: 'shark_tank_20', description: 'Top 20 Shark Tank finisher', strategic_sponsor: sponsors[1],
-                      icon: 'fas fas-fish', color: '#0076D6'),
+                      icon: 'fas fa-fish', color: '#0076D6'),
         Badge.create!(name: 'Gold Status', short_name: 'gold_status', description: 'Gold Status Practice', strategic_sponsor: sponsors[1],
-                      icon: 'fas fas-heart', color: '#E4A002'),
+                      icon: 'fas fa-heart', color: '#E4A002'),
         Badge.create!(name: 'Authority to Operate (ATO)', short_name: 'ato', description: 'Authority to Operate (ATO) - applies to OIT projects', strategic_sponsor: sponsors.last,
-                      icon: 'fas fas-check-mark', color: '#E52107'),
+                      icon: 'fas fa-check', color: '#E52107'),
     ]
 
     23.times do |t|
@@ -60,7 +60,7 @@ if StrategicSponsor.all.blank?
       badge_image_path = "#{Rails.root}/db/seed_images/badges/hospital_badge.svg"
       badge_image_file = File.new(badge_image_path)
       badges << Badge.create!(name: "VISN #{i}", short_name: "visn_#{i}", description: "Vetted by VISN #{i}", strategic_sponsor: sponsors.find {|s| s.name == "VISN #{i}"},
-                              icon: 'fas fas-hospital', color: '#E4A002'
+                              icon: 'fas fa-hospital', color: '#E4A002'
       )
     end
   end
@@ -535,12 +535,12 @@ The Initiative has a significant impact on the patient safety within VA medical 
         BadgePractice.create!(practice: naloxone, badge: badges.find {|b| b.name == 'Shark Tank Approved'}),
         BadgePractice.create!(practice: naloxone, badge: badges.find {|b| b.name == 'Gold Status'}),
     ]
-    
+
     naloxone_costs = [
         Cost.create!(practice: naloxone, description: 'Minimal FTE'),
         Cost.create!(practice: naloxone, description: 'Need to buy Naloxone for AED cabinets and police')
     ]
-    
+
     naloxone_difficulties= [
         Difficulty.create!(practice: naloxone, description: 'Minimal training'),
         Difficulty.create!(practice: naloxone, description: '~4 months to completely implement'),
