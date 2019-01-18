@@ -49,13 +49,63 @@
               </div>
             </div>
             <div class="marketplace-footer p1">
-              <% practice.badges.each do |badge| %>
-                <div class="marketplace-card-badge"><%= badge.name %></div>
-              <% end %>
+              <div class=''>
+                <% practice.badges.last(2).each do |badge| %>
+                  <div class='badge-container' style='background-color: <%= badge.color %>;'>
+                    <i class="<%= badge.icon %>"></i><span class='x1-left'><%= badge.name %></span>
+                  </div>
+                <% end %>
+                <% if ((extra_badges = practice.badges.count - 2) > 0) %>
+                  <div class='extra-badge'><i class="fas fa-plus"></i><span class='x1-left'><%= extra_badges %>
+                    more</span>
+                  </div>
+                <% end %>
+              </div>
+              <%# practice.badges.each do |badge| %>
+              <!--                <div class="marketplace-card-badge"><%#= badge.name %></div>-->
+              <%# end %>
             </div>
-            <div class="marketplace-card-middle display-flex-align-items-center">
-              <%= link_to 'Learn More', practice, class: 'dm-button-link display-inline-block margin-0-auto' %>
+            <div class="marketplace-card-middle display-grid">
+              <div class="marketplace-card-middle-content-position margin-auto">
+                <div class="x2-bottom">
+                  <div class="text-center">
+                    <% (0..3).each do |index| %>
+                      <% if index < practice.cost_savings_aggregate %>
+                        <i class="fas fa-dollar-sign large-icon-dark aggregate-icon"></i>
+                      <% else %>
+                        <i class="fas fa-dollar-sign large-icon-light aggregate-icon"></i>
+                      <% end %>
+                    <% end %>
+                    <p class="fw-100">Cost Savings</p>
+                  </div>
+                  <div class="text-center">
+                    <% (0..3).each do |index| %>
+                      <% if index < practice.veteran_satisfaction_aggregate %>
+                        <i class="fas fa-smile-beam large-icon-dark aggregate-icon"></i>
+                      <% else %>
+                        <i class="fas fa-smile-beam large-icon-light aggregate-icon"></i>
+                      <% end %>
+                    <% end %>
+                    <p class="fw-100">Patient Satisfaction</p>
+                  </div>
+                  <div class="text-center">
+                    <% (0..3).each do |index| %>
+                      <% if index < practice.difficulty_aggregate %>
+                        <i class="fas fa-wrench large-icon-dark aggregate-icon"></i>
+                      <% else %>
+                        <i class="fas fa-wrench large-icon-light aggregate-icon"></i>
+                      <% end %>
+                    <% end %>
+                    <p class="fw-100">Difficulty</p>
+                  </div>
+                </div>
+                <div>
+                  <%= link_to 'Learn More', practice, class: 'dm-button-link display-inline-block margin-0-auto' %>
+                </div>
+              </div>
             </div>
+
+
           </div>
         </div>
       <% end %>

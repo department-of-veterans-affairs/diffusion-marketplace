@@ -462,6 +462,7 @@ $class-slug: background-circle !default;
   @media screen and (min-width: 1024px) {
     left: 50%;
     margin-left: -512px;
+    overflow: initial;
   }
 
   .background-circle-offset-translucent-1 {

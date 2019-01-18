@@ -19,7 +19,7 @@ i.e.
 @include u-padding-right('05');
 ----------------------------------------
 */
-@import 'uswds-theme-color';
+@import "uswds-theme-color";
 @import "uswds/uswds";
 
 * {
@@ -164,5 +164,21 @@ p {
   border-bottom: solid 6px color('accent-cool-dark');
 }
 
+.usa-sidenav .usa-current {
+  color: #000000;
+  font-weight: 600;
+}
 
+.usa-sidenav a {
+  color: #000000;
+  font-weight: 100;
+  padding: 1rem;
+}
+
+.usa-sidenav .usa-current::after {
+  background-color: #0076d6;
+  border-radius: 0;
+  height: 100%;
+  top: 0;
+}
 
