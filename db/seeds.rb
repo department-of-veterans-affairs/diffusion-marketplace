@@ -240,7 +240,7 @@ if StrategicSponsor.all.blank?
         short_name: 'flow3',
         tagline: 'Delivery of prosthetic limbs to Veterans in less than ½ the time',
         gold_status_tagline: 'has saved over 1000 lives \n by helping to prevent suicide',
-        description: 'Enable 53% faster delivery of prosthetic limbs to Veterans',
+        description: 'Enable 53% faster delivery of prosthetic limbs to Veterans. Automating the prosthetic limb procurement process to improve continuity of care for Veterans.',
         summary: 'FLOW3 is a system of three interrelated software platforms that automate, standardize, and provide transparency into the limb acquisition process. FLOW3 begins in-clinic with physician entry of a prosthesis prescription using the FLOW Consult Templates. The order then moves to the prosthetist, who enters the appropriate codes using the Consult Comment Tool. Then, purchasing agents use the Web-based App to generate the quote for force entry, which contracting staff can access the very next day.',
         date_initiated: DateTime.now,
         vha_visn: 'Not Applicable',
@@ -275,18 +275,7 @@ if StrategicSponsor.all.blank?
         veteran_satisfaction_aggregate: 4,
         risk_level_aggregate: 1,
         origin_title: 'Innovation - Dr Jeffrey Heckman',
-        origin_story: 'Dr. Jeffrey Heckman, a physician in the VA Puget Sound Health Care System,
-                        treated many Veterans frustrated by the lengthy process of receiving their
-                        prosthetic limbs. Motivated by one such Veteran, who offered his own
-                        technical services to improve the process, Dr. Heckman gathered a team,
-                        consisting of prosthetist Wayne Biggs and data system expert Jeffrey Bott,
-                        to overhaul and automate the prosthetic limb acquisition process. The result
-                        was a system of three interrelated software platforms, known as FLOW3, that
-                        streamlines and provides transparency into the acquisition flow.
-                        After successful implementation at Puget Sound, the team spread their
-                        innovation through the Diffusion of Excellence program, beginning with a
-                        partnership with Dawn Schwarten at the Milwaukee VA Medical Center and
-                        ultimately rolling FLOW3 out across VISN 12.',
+        origin_story: 'Dr. Jeffrey Heckman, a physician in the VA Puget Sound Health Care System, treated many Veterans frustrated by the lengthy process of receiving their prosthetic limbs. Motivated by one such Veteran, who offered his own technical services to improve the process, Dr. Heckman gathered a team, consisting of prosthetist Wayne Biggs and data system expert Jeffrey Bott, to overhaul and automate the prosthetic limb acquisition process. The result was a system of three interrelated software platforms, known as FLOW3, that streamlines and provides transparency into the acquisition flow. After successful implementation at Puget Sound, the team spread their innovation through the Diffusion of Excellence program, beginning with a partnership with Dawn Schwarten at the Milwaukee VA Medical Center and ultimately rolling FLOW3 out across VISN 12.',
         origin_picture: ActionDispatch::Http::UploadedFile.new(
             filename: File.basename(flow3_origin_image_file),
             tempfile: flow3_origin_image_file,
@@ -408,7 +397,7 @@ if StrategicSponsor.all.blank?
         short_name: 'vha_rapid_naloxone',
         tagline: 'Rapid naloxone',
         gold_status_tagline: 'saved 358 lives \n by improving access to life-saving naloxone',
-        description: 'Enable 53% faster delivery of prosthetic limbs to Veterans',
+        description: 'A safety belt in case of an overdose and saves the lives of our Veterans',
         summary: 'The VHA Rapid Naloxone Initiative acts as a safety belt in case of an overdose and saves the lives of our Veterans which creates a safer environment around the veteran on VA campuses. Since the adoption of at least one element in the Initiative within at least 43 facilities, there have been at least 44 successful overdose reversals within FY2018. The Initiative’s plan to spread across the nation has the potential to drastically increase the number of successful reversals within FY2019, improving patient safety across the VA.
 
 The Initiative has a significant impact on the patient safety within VA medical facilities and patient experience. First responders have testified about the positive impact of the Initiative and the role it played in saving their lives and creating a safer environment. One such rescue was a 27-year-old male Veteran who experienced an overdose at a Substance Abuse Residential Rehabilitation Treatment Program (SARRTP), which is located on hospital grounds but some distance from the main building. Because of the availability of naloxone in the AED cabinet, the initial dose was administered to the Veteran before VA police arrived on the scene. The Veteran survived the overdose and was transported to the Critical Care Unit (CCU) for further treatment. Without the quick access of naloxone, this Veteran could have lost his life. His story, as well as many other many Veteran overdose survival stories, has pushed this Initiative into the national spotlight and sparked a flame for action to implement around the nation. ',

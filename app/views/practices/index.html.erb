@@ -5,7 +5,7 @@
     <div class="grid-row flex-direction-row-reverse dismiss-row p1">
       <button type="button" class="dismiss-cross dismiss-button z-index-10"><%= icon('fas', 'times') %></button>
     </div>
-    <section class="promo-body p2">
+    <section class="promo-body p2 x1-bottom">
       <div class="grid-row">
         <div class="tablet:grid-col-8 x1-bottom">
           <h2>Do you have a best practice worth spreading?</h2>
@@ -18,4 +18,48 @@
       </div>
     </section>
   </section>
+
+  <!-- Marketplace -->
+  <section class="grid-container">
+    <div class="grid-row grid-gap-lg">
+      <% @practices.each_with_index do |practice, i| %>
+        <% index = i + 1 %>
+        <style>
+          .marketplace-card-header-<%= index %> {
+            background: linear-gradient(rgba(0, 42, 92, 0.59), rgba(0, 42, 92, 0.59)), url(<%= practice.main_display_image.url %>);
+          }
+        </style>
+        <div class="tablet:grid-col-4 x1-bottom">
+          <div class="marketplace-card">
+            <div class="marketplace-card-header marketplace-card-header-<%= index %> p2">
+              <h2 class="x0 fw-100 dm-font-color-white"><%= practice.tagline %></h2>
+            </div>
+            <div class="marketplace-card-body p2">
+              <div class="marketplace-card-description dm-font-dark-black fw-100 x1-bottom">
+                <%= practice.description %>
+              </div>
+              <div class="marketplace-card-name-location dm-font-dark-black fw-100 x1-bottom">
+                <%= practice.name %> | <span class="uppercase"><%= practice.initiating_facility %></span>
+              </div>
+              <div class="marketplace-card-adoption dm-font-color-dark-brown display-flex-align-items-center">
+                <div class="marketplace-card-number-adopted x1-right"><%= practice.number_adopted %></div>
+                <div><%= "#{practice.number_adopted == 1 ? 'Facility has' : 'Facilities have'}" %> adopted this
+                  practice
+                </div>
+              </div>
+            </div>
+            <div class="marketplace-footer p1">
+              <% practice.badges.each do |badge| %>
+                <div class="marketplace-card-badge"><%= badge.name %></div>
+              <% end %>
+            </div>
+            <div class="marketplace-card-middle display-flex-align-items-center">
+              <%= link_to 'Learn More', practice, class: 'dm-button-link display-inline-block margin-0-auto' %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
 </div>
