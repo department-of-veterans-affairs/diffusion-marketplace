@@ -1,58 +1,63 @@
 <!-- "Practice name" section -->
-<div class="dm-background-linear-up-lightblue-to-white">
+<div>
   <%= render 'shared/sub_search_nav' %>
-  <section class="usa-section grid-container padding-0">
-    <h1 class="font-heading-2xl x4-left x0-top fw-100"><%= @practice.tagline %></h1>
-    <p class="x4-left fw-100"><%= @practice.description %></p>
+  <section class="usa-section padding-0 dm-background-linear-up-lightblue-to-white">
+    <div class='grid-container'>
+      <h1 class="font-heading-2xl x4-left x0-top fw-100"><%= @practice.tagline %></h1>
+      <p class="x4-left"><%= @practice.description %></p>
 
-    <div class='grid-row flex-row flex-justify flex-align-center x1-top'>
-      <h5 class='flex-1 practice-facility'><%= @practice.name %> |
-        <span class="uppercase"><%= @practice.initiating_facility %></span></h5>
-      <div class='flex-2'>
-        <div class='grid-row flex-row flex-align-center flex-justify-end'>
-          <% @practice.badges.last(2).each do |badge| %>
-            <div class='badge-container' style='background-color: <%= badge.color %>;'><i class="<%= badge.icon %>"></i><span class='x1-left'><%= badge.name %></span>
-            </div>
-          <% end %>
-          <% if ((extra_badges = @practice.badges.count - 2) > 0) %>
-            <div class='extra-badge'><i class="fas fa-plus"></i><span class='x1-left'><%= extra_badges %> more</span>
-            </div>
-          <% end %>
+      <div class='grid-row'>
+        <p class='x4-left fw-100'><%= @practice.strategic_sponsors.map(&:name).join(', ') %></p>
+      </div>
+      <div class='grid-row flex-row flex-justify flex-align-center x1-top'>
+        <h5 class='flex-1 practice-facility'><%= @practice.name %> |
+          <span class="uppercase"><%= @practice.initiating_facility %></span></h5>
+        <div class='flex-2'>
+          <div class='grid-row flex-row flex-align-center flex-justify-end'>
+            <% @practice.badges.last(2).each do |badge| %>
+              <div class='badge-container' style='background-color: <%= badge.color %>;'><i class="<%= badge.icon %>"></i><span class='x1-left'><%= badge.name %></span>
+              </div>
+            <% end %>
+            <% if ((extra_badges = @practice.badges.count - 2) > 0) %>
+              <div class='extra-badge'><i class="fas fa-plus"></i><span class='x1-left'><%= extra_badges %> more</span>
+              </div>
+            <% end %>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class='grid-row practice-aggregate-container x2-bottom'>
-      <div class="diffusion-background-circles"></div>
-      <div class="tablet:grid-col-fill text-center">
-        <% (0..3).each do |index| %>
-          <% if index < @practice.cost_savings_aggregate %>
-            <i class="fas fa-dollar-sign large-icon-dark aggregate-icon"></i>
-          <% else %>
-            <i class="fas fa-dollar-sign large-icon-light aggregate-icon"></i>
+      <div class='grid-row practice-aggregate-container'>
+        <div class="diffusion-background-circles"></div>
+        <div class="tablet:grid-col-fill text-center">
+          <% (0..3).each do |index| %>
+            <% if index < @practice.cost_savings_aggregate %>
+              <i class="fas fa-dollar-sign large-icon-dark aggregate-icon"></i>
+            <% else %>
+              <i class="fas fa-dollar-sign large-icon-light aggregate-icon"></i>
+            <% end %>
           <% end %>
-        <% end %>
         <p class="fw-100">Cost Savings</p>
-      </div>
-      <div class="tablet:grid-col-fill text-center">
-        <% (0..3).each do |index| %>
-          <% if index < @practice.veteran_satisfaction_aggregate %>
-            <i class="fas fa-smile-beam large-icon-dark aggregate-icon"></i>
-          <% else %>
-            <i class="fas fa-smile-beam large-icon-light aggregate-icon"></i>
+        </div>
+        <div class="tablet:grid-col-fill text-center">
+          <% (0..3).each do |index| %>
+            <% if index < @practice.veteran_satisfaction_aggregate %>
+              <i class="dm dm-saluting-veteran large-icon-dark aggregate-icon"></i>
+            <% else %>
+              <i class="dm dm-saluting-veteran large-icon-light aggregate-icon"></i>
+            <% end %>
           <% end %>
-        <% end %>
-        <p class="fw-100">Patient Satisfaction</p>
-      </div>
-      <div class="tablet:grid-col-fill text-center">
-        <% (0..3).each do |index| %>
-          <% if index < @practice.difficulty_aggregate %>
-            <i class="fas fa-wrench large-icon-dark aggregate-icon"></i>
-          <% else %>
-            <i class="fas fa-wrench large-icon-light aggregate-icon"></i>
+          <p class="fw-100">Veteran Satisfaction</p>
+        </div>
+        <div class="tablet:grid-col-fill text-center">
+          <% (0..3).each do |index| %>
+            <% if index < @practice.difficulty_aggregate %>
+              <i class="fas fa-wrench large-icon-dark aggregate-icon"></i>
+            <% else %>
+              <i class="fas fa-wrench large-icon-light aggregate-icon"></i>
+            <% end %>
           <% end %>
-        <% end %>
-        <p class="fw-100">Difficulty</p>
+          <p class="fw-100">Difficulty</p>
+        </div>
       </div>
     </div>
   </section>
@@ -137,15 +142,19 @@
 
   <!-- "Team" section -->
 
-  <section class="usa-section margin-y-0 p0">
-    <div class="grid-container dm-background-light-blue p4-left p3-top">
+  <section class="usa-section margin-y-0 p0 dm-background-light-blue">
+    <div class="grid-container p4-left p3-top">
       <p class="font-sans-lg fw-bold">Support Team</p>
       <div class='grid-row flex-row flex-wrap'>
         <% @practice.va_employees.each do |employee| %>
           <div class='tablet:grid-col-4 x2-bottom'>
             <div class='grid-row flex-row flex-align-center'>
               <div class='grid-col-2'>
-                <%= image_tag employee.avatar_file_name.present? ? employee.avatar_file_name : @practice.origin_picture.url %>
+                <% if employee.avatar_file_name.present? %>
+                  <%= image_tag employee.avatar_file_name %>
+                <% else %>
+                  <i class='fas fa-user fa-3x'></i>
+                <% end %>
               </div>
               <div class='grid-col-9 grid-offset-1'>
                 <h4 class='margin-y-0'><%= employee.name %></h4>
