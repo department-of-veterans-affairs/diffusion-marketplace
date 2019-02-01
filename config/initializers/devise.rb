@@ -9,7 +9,7 @@ Devise.setup do |config|
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
   # config.secret_key = 'b27c79e257e4466c1d4da7542d147072e607c26b75ee614cf0422c8773fc5a412e4f6a1d8fbcb75b2630b4c0c9d4a3a9f5d5f12ab90e93a8bd74ca2e003ba676'
-  
+
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
   # config.parent_controller = 'DeviseController'
@@ -163,7 +163,7 @@ Devise.setup do |config|
 
   # ==> Configuration for :validatable
   # Range for password length.
-  config.password_length = 6..128
+  config.password_length = 8..100
 
   # Email regex used to validate email formats. It simply asserts that
   # one (and only one) @ exists in the given string. This is mainly
@@ -287,4 +287,50 @@ Devise.setup do |config|
   # ActiveSupport.on_load(:devise_failure_app) do
   #   include Turbolinks::Controller
   # end
+
+  # ==> Security Extension
+  # Configure security extension for devise
+
+  # Password expires after a configurable time (in seconds).
+  # Or expire passwords on demand by setting this configuration to `true`
+  # Use `user.need_password_change!` to expire a password.
+  # Setting the configuration to `false` will completely disable expiration checks.
+  config.expire_password_after = 90.days
+
+  # Need 1 char each of: A-Z, a-z, 0-9, and a punctuation mark or symbol
+  # config.password_complexity = { digit: 1, lower: 1, symbol: 1, upper: 1 }
+
+  # Number of old passwords in archive
+  config.password_archiving_count = 8
+
+  # Deny old password (true, false, count)
+  config.deny_old_passwords = 8
+
+  # captcha integration for recover form
+  # config.captcha_for_recover = true
+
+  # captcha integration for sign up form
+  # config.captcha_for_sign_up = true
+
+  # captcha integration for sign in form
+  # config.captcha_for_sign_in = true
+
+  # captcha integration for unlock form
+  # config.captcha_for_unlock = true
+
+  # security_question integration for recover form
+  # this automatically enables captchas (captcha_for_recover, as fallback)
+  # config.security_question_for_recover = false
+
+  # security_question integration for unlock form
+  # this automatically enables captchas (captcha_for_unlock, as fallback)
+  # config.security_question_for_unlock = false
+
+  # security_question integration for confirmation form
+  # this automatically enables captchas (captcha_for_confirmation, as fallback)
+  # config.security_question_for_confirmation = false
+
+  # ==> Configuration for :expirable
+  # Time period for account expiry from last_activity_at
+  # config.expire_after = 90.days
 end
