@@ -1,15 +1,15 @@
 <!-- Login Page -->
 <div class='x0-top'>
-  <section class="usa-section dm-background-linear-gradient-up-dark-blue" style='min-height: calc(100vh - 286px)'>
-    <div class='grid-container'>
-      <div class='login-card'>
-        <div class='login-header'>
-          <div class='login-header-overlay'>
-            <h2 class='x0'> Diffusion Marketplace</h2>
+  <section class="usa-section dm-background-linear-gradient-up-dark-blue" style="min-height: calc(100vh - 286px)">
+    <div class="grid-container">
+      <div class="login-card box-shadow-card">
+        <div class="login-header">
+          <div class="login-header-overlay">
+            <h2 class="x0"> Diffusion Marketplace</h2>
             <p class="fw-100">Saving lives by diffusing best practices.</p>
           </div>
         </div>
-        <div class='login-body'>
+        <div class="login-body">
           <p class="notice"><%= notice %></p>
           <p class="alert"><%= alert %></p>
           <%= form_for(resource, as: resource_name, url: registration_path(resource_name), class: 'usa-form') do |f| %>
@@ -31,6 +31,7 @@
             <%= render "devise/shared/links" %>
           <% end %>
         </div>
+      </div>
     </div>
   </section>
 </div>
