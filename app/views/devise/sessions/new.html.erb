@@ -6,10 +6,12 @@
         <div class='login-header'>
           <div class='login-header-overlay'>
             <h2 class='x0'> Diffusion Marketplace</h2>
-            <p> Saving lived by diffusing best pratices</p>
+            <p> Saving lives by diffusing best practices.</p>
           </div>
         </div>
         <div class='login-body'>
+          <p class="notice"><%= notice %></p>
+          <p class="alert"><%= alert %></p>
           <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: 'usa-form') do |f| %>
             <%= f.label :email, class: 'usa-label x0' %>
             <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'usa-input' %>
@@ -25,7 +27,7 @@
             <% end -%>
 
             <div class="actions display-flex justify-center x1-top">
-              <%= f.submit "Log in", class: 'usa-button usa-button-primary', style: 'border-radius: 20px; padding: 1rem 3rem' %>
+              <%= f.submit "Log in", class: 'dm-button-primary' %>
             </div>
             <%= render "devise/shared/links" %>
           <% end %>
