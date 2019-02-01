@@ -309,13 +309,13 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 /* Margin None */
 .x0 {
-  margin: 0;
+  margin: 0 !important;
 }
 
 /* Margin top */
 
 .x0-top {
-  margin-top: 0;
+  margin-top: 0 !important;
 }
 
 .x1-top {
@@ -349,7 +349,7 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 /* Margin Bottom */
 
 .x0-bottom {
-  margin-bottom: 0;
+  margin-bottom: 0 !important;
 }
 
 .x1-bottom {
@@ -383,7 +383,7 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 /* Margin Left */
 
 .x0-left {
-  margin-left: 0;
+  margin-left: 0 !important;
 }
 
 .x1-left {
@@ -417,7 +417,7 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 /* Margin Right */
 
 .x0-right {
-  margin-right: 0;
+  margin-right: 0 !important;
 }
 
 .x1-right {
@@ -490,7 +490,7 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 /* Padding Left */
 
 .p0-left {
-  padding-left: 0;
+  padding-left: 0 !important;
 }
 
 .p1-left {
@@ -528,7 +528,7 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 /* Padding Right */
 
 .p0-right {
-  padding-right: 0;
+  padding-right: 0 !important;
 }
 
 .p1-right {
@@ -688,6 +688,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .space-between {
   justify-content: space-between;
+}
+
+.justify-center {
+  justify-content: center;
 }
 
 /* unordered lists <ul><li></li></ul> */

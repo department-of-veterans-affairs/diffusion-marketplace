@@ -236,6 +236,15 @@ ActiveRecord::Schema.define(version: 2019_01_23_205910) do
     t.index ["risk_mitigation_id"], name: "index_mitigations_on_risk_mitigation_id"
   end
 
+  create_table "old_passwords", force: :cascade do |t|
+    t.string "encrypted_password", null: false
+    t.string "password_archivable_type", null: false
+    t.integer "password_archivable_id", null: false
+    t.string "password_salt"
+    t.datetime "created_at"
+    t.index ["password_archivable_type", "password_archivable_id"], name: "index_password_archivable"
+  end
+
   create_table "photo_files", force: :cascade do |t|
     t.string "title"
     t.integer "position"
@@ -399,7 +408,10 @@ ActiveRecord::Schema.define(version: 2019_01_23_205910) do
     t.string "last_name"
     t.string "phone_number"
     t.integer "visn"
+    t.datetime "password_changed_at"
+    t.boolean "admin", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["password_changed_at"], name: "index_users_on_password_changed_at"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
