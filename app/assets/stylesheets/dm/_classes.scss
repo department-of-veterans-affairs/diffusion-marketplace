@@ -12,11 +12,18 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 */
 @import "variables/colors";
 
+.rounded {
+  border-radius: 50%;
+}
+
 .full-view-height {
   min-height: 100vh;
 }
 
 /* Background Colors */
+.dm-background-white {
+  background-color: $dm-color-white;
+}
 
 .dm-background-light-black {
   background-color: $dm-color-light-black !important;
@@ -139,6 +146,27 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .static {
   position: static !important;
+}
+
+.bottom {
+  bottom: 0;
+}
+
+.top {
+  top: 0;
+}
+
+.left {
+  left: 0;
+}
+
+.right {
+  right: 0;
+}
+
+/* Overflow */
+.overflow-hidden {
+  overflow: hidden;
 }
 
 /* Display */
@@ -659,7 +687,7 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 }
 
 .z-index-0 {
-  z-index: 0;
+  z-index: 0 !important;
 }
 
 .z-index-10 {

@@ -9,6 +9,7 @@ class CreateVaEmployees < ActiveRecord::Migration[5.2]
       t.text :bio
 
       t.string :job_title
+      t.string :role
 
       t.integer :position
 

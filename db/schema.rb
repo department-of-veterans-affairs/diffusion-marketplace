@@ -403,6 +403,7 @@ ActiveRecord::Schema.define(version: 2019_01_17_181321) do
     t.string "email"
     t.text "bio"
     t.string "job_title"
+    t.string "role"
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
