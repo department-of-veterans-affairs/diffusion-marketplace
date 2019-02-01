@@ -1,9 +1,22 @@
 @import "../variables/colors";
 
+.dm-tabnav {
+  border: none !important;
+}
+
 .dm-tab {
   padding: 16px 24px;
   border-bottom: 1px solid #D8D8D8;
   background-color: white;
+  overflow: hidden;
+
+  &.top-tab {
+    border-radius: 20px 0 0 0;
+  }
+
+  &.bottom-tab {
+    border-radius: 0 0 0 20px;
+  }
 }
 
 .tab-inactive {
@@ -25,11 +38,7 @@
 
 .practice-tab-container {
   background-color: #FFFFFF;
-  border-radius: 20px;
-}
-
-.practice-tab-content {
-  padding: 0 0 100px;
+  border-radius: 0 20px 20px 20px;
 }
 
 .practice-learn-more {
@@ -41,17 +50,15 @@
   background-color: rgba(255, 255, 255, 0.8);
   width: 75%;
   margin: auto;
-  padding: 50px;
 }
 
 .aggregate-icon {
   font-size: 2rem;
-  margin-top: 0.83em;
 }
 
 .practice-facility {
   padding-left: 4rem;
-  font-weight: 100
+  font-weight: 100;
 }
 
 .risk-border {
@@ -62,4 +69,13 @@
 
 .practice-summary {
   line-height: 39px !important;
+}
+
+.aggregate-circles-position {
+  top: -165px;
+}
+
+.avatar-container {
+  width: 65px;
+  height: 65px;
 }

@@ -229,10 +229,10 @@ if StrategicSponsor.all.blank?
     #############
     # FLOW3     #
     #############
-    flow3_image_path = "#{Rails.root}/db/seed_images/practices/flow3.jpg"
+    flow3_image_path = "#{Rails.root}/db/seed_images/practices/flow3/flow3.jpg"
     flow3_image_file = File.new(flow3_image_path)
 
-    flow3_origin_image_path = "#{Rails.root}/db/seed_images/practices/origins/flow3_heckman.png"
+    flow3_origin_image_path = "#{Rails.root}/db/seed_images/practices/flow3/origins/flow3_heckman.png"
     flow3_origin_image_file = File.new(flow3_origin_image_path)
 
     flow3 = Practice.create!(
@@ -289,11 +289,69 @@ if StrategicSponsor.all.blank?
         StrategicSponsorPractice.create!(practice: flow3, strategic_sponsor: sponsors[7]),
     ]
 
+    flow3_team_image_path = "#{Rails.root}/db/seed_images/practices/flow3/team"
+    flow3_team_heckman_image_path = "#{flow3_team_image_path}/heckman_jeff.jpg"
+    flow3_team_heckman_image_file = File.new("#{flow3_team_heckman_image_path}")
+    flow3_team_bott_image_path = "#{flow3_team_image_path}/bott_jeffrey.jpg"
+    flow3_team_bott_image_file = File.new(flow3_team_bott_image_path)
+    flow3_team_stevenson_image_path = "#{flow3_team_image_path}/stevenson_brian.jpg"
+    flow3_team_stevenson_image_file = File.new(flow3_team_stevenson_image_path)
+    flow3_team_biggs_path = "#{flow3_team_image_path}/biggs_wayne.jpg"
+    flow3_team_biggs_image_file = File.new(flow3_team_biggs_path)
+
     flow3_va_employees = [
-        VaEmployee.create!(name: 'Dr. Jeffrey T. Heckman', job_title: 'Clinical Lead and Gold Status Fellow', prefix: 'Dr.', email: 'jeffrey.heckman@va.gov'),
-        VaEmployee.create!(name: 'Jeff Bott', job_title: 'Technical Lead', prefix: 'Mr.', email: 'jeff.bott@va.gov'),
-        VaEmployee.create!(name: 'Wayne Biggs', job_title: 'Coding and Template Lead', prefix: 'Mr.', email: 'wayne.biggs@va.gov'),
-        VaEmployee.create!(name: 'Brian Stevenson', job_title: 'Diffusion Specialist', prefix: 'Mr.', email: 'brian.stevenson@va.gov')
+        VaEmployee.create!(
+            name: 'Dr. Jeffrey T. Heckman',
+            job_title: 'DO, Medical Director, Regional Amputation Center – Seattle, VA Puget Sound Health Care System; Associate Professor, Department of Rehabilitation Medicine, University of Washington School of Medicine',
+            role: 'Clinical Lead and Gold Status Fellow',
+            prefix: 'Dr.',
+            email: 'jeffrey.heckman@va.gov',
+            avatar: ActionDispatch::Http::UploadedFile.new(
+                filename: File.basename(flow3_team_heckman_image_file),
+                tempfile: flow3_team_heckman_image_file,
+                # detect the image's mime type with MIME if you can't provide it yourself.
+                type: MIME::Types.type_for(flow3_team_heckman_image_path).first.content_type
+            )
+        ),
+        VaEmployee.create!(
+            name: 'Jeff Bott',
+            job_title: 'Management & Program Analyst',
+            role: 'Technical Lead',
+            prefix: 'Mr.',
+            email: 'jeff.bott@va.gov',
+            avatar: ActionDispatch::Http::UploadedFile.new(
+                filename: File.basename(flow3_team_bott_image_file),
+                tempfile: flow3_team_bott_image_file,
+                # detect the image's mime type with MIME if you can't provide it yourself.
+                type: MIME::Types.type_for(flow3_team_bott_image_path).first.content_type
+            )
+        ),
+        VaEmployee.create!(
+            name: 'Wayne Biggs',
+            job_title: 'Prosthetist Orthotist Regional Clinical Director – Seattle, VA Puget Sound Health Care System',
+            role: 'Coding and Template Lead',
+            prefix: 'Mr.',
+            email: 'wayne.biggs@va.gov',
+            avatar: ActionDispatch::Http::UploadedFile.new(
+                filename: File.basename(flow3_team_biggs_image_file),
+                tempfile: flow3_team_biggs_image_file,
+                # detect the image's mime type with MIME if you can't provide it yourself.
+                type: MIME::Types.type_for(flow3_team_biggs_path).first.content_type
+            )
+        ),
+        VaEmployee.create!(
+            name: 'Brian Stevenson',
+            job_title: 'Diffusion of Excellence',
+            role: 'Diffusion Specialist',
+            prefix: 'Mr.',
+            email: 'brian.stevenson@va.gov',
+            avatar: ActionDispatch::Http::UploadedFile.new(
+                filename: File.basename(flow3_team_stevenson_image_file),
+                tempfile: flow3_team_stevenson_image_file,
+                # detect the image's mime type with MIME if you can't provide it yourself.
+                type: MIME::Types.type_for(flow3_team_stevenson_image_path).first.content_type
+            )
+        )
     ]
 
     flow3_va_employees.each {|vae|
@@ -386,10 +444,10 @@ if StrategicSponsor.all.blank?
     #############
     # Naloxone  #
     #############
-    naloxone_image_path = "#{Rails.root}/db/seed_images/practices/naloxone.jpg"
+    naloxone_image_path = "#{Rails.root}/db/seed_images/practices/naloxone/naloxone.jpg"
     naloxone_image_file = File.new(naloxone_image_path)
 
-    naloxone_origin_image_path = "#{Rails.root}/db/seed_images/practices/origins/naloxone_bellino.png"
+    naloxone_origin_image_path = "#{Rails.root}/db/seed_images/practices/naloxone/origins/naloxone_bellino.png"
     naloxone_origin_image_file = File.new(naloxone_origin_image_path)
 
     naloxone = Practice.create!(
@@ -451,12 +509,75 @@ The Initiative has a significant impact on the patient safety within VA medical 
         StrategicSponsorPractice.create!(practice: naloxone, strategic_sponsor: sponsors.find {|s| s.name == 'VA Police'}),
     ]
 
+    naloxone_team_image_path = "#{Rails.root}/db/seed_images/practices/naloxone/team"
+    naloxone_team_bellino_image_path = "#{naloxone_team_image_path}/bellino.png"
+    naloxone_team_bellino_image_file = File.new("#{naloxone_team_bellino_image_path}")
+    naloxone_team_olivia_image_path = "#{naloxone_team_image_path}/olivia.jpeg"
+    naloxone_team_olivia_image_file = File.new(naloxone_team_olivia_image_path)
+    naloxone_team_burkhardt_image_path = "#{naloxone_team_image_path}/burkhardt.jpeg"
+    naloxone_team_burkdart_image_file = File.new(naloxone_team_burkhardt_image_path)
+    naloxone_team_brick_image_path = "#{naloxone_team_image_path}/brick.jpeg"
+    naloxone_team_brick_image_file = File.new(naloxone_team_brick_image_path)
+
+    # TODO: find Carl McCoy!
+    # naloxone_team_mccoy_path = "#{naloxone_team_image_path}/mccoy.jpg"
+    # naloxone_team_mccoy_image_file = File.new(naloxone_team_mccoy_path)
+
     naloxone_va_employees = [
-        VaEmployee.create!(name: 'Pam Bellino', job_title: 'Founder, Gold Status Fellow, Safety Manager VA Boston', email: 'pam.bellino@va.gov'),
-        VaEmployee.create!(name: 'Dr. Elizabeth Oliva', job_title: 'National OEND Coordinator', email: 'elizabeth.oliva@va.gov'),
-        VaEmployee.create!(name: 'Mary Burkhardt', job_title: 'Pharmacy Executive, National Center for Patient Safety', email: 'mary.burkhardt@va.gov'),
-        VaEmployee.create!(name: 'Carl McCoy', job_title: 'Diffusion Specialist', email: 'carl.mccoy@va.gov'),
-        VaEmployee.create!(name: 'Mollie Brick', job_title: 'Senior Consultant (Atlas)', email: 'mollie.brick@va.gov'),
+        VaEmployee.create!(
+            name: 'Pam Bellino',
+            job_title: 'Safety Manager VA Boston',
+            role: 'Founder, Gold Status Fellow, Safety Manager VA Boston',
+            email: 'pam.bellino@va.gov',
+            avatar: ActionDispatch::Http::UploadedFile.new(
+                filename: File.basename(naloxone_team_bellino_image_file),
+                tempfile: naloxone_team_bellino_image_file,
+                # detect the image's mime type with MIME if you can't provide it yourself.
+                type: MIME::Types.type_for(naloxone_team_bellino_image_path).first.content_type
+            )
+        ),
+        VaEmployee.create!(
+            name: 'Dr. Elizabeth Oliva',
+            job_title: 'National OEND Coordinator',
+            role: 'National OEND Coordinator',
+            email: 'elizabeth.oliva@va.gov',
+            avatar: ActionDispatch::Http::UploadedFile.new(
+                filename: File.basename(naloxone_team_olivia_image_file),
+                tempfile: naloxone_team_olivia_image_file,
+                # detect the image's mime type with MIME if you can't provide it yourself.
+                type: MIME::Types.type_for(naloxone_team_olivia_image_path).first.content_type
+            )
+        ),
+        VaEmployee.create!(
+            name: 'Mary Burkhardt',
+            job_title: 'Pharmacy Executive, National Center for Patient Safety',
+            role: 'Pharmacy Executive, National Center for Patient Safety',
+            email: 'mary.burkhardt@va.gov',
+            avatar: ActionDispatch::Http::UploadedFile.new(
+                filename: File.basename(naloxone_team_burkdart_image_file),
+                tempfile: naloxone_team_burkdart_image_file,
+                # detect the image's mime type with MIME if you can't provide it yourself.
+                type: MIME::Types.type_for(naloxone_team_burkhardt_image_path).first.content_type
+            )
+        ),
+        VaEmployee.create!(
+            name: 'Carl McCoy',
+            job_title: 'Diffusion Specialist',
+            role: 'Diffusion Specialist',
+            email: 'carl.mccoy@va.gov'
+        ),
+        VaEmployee.create!(
+            name: 'Mollie Brick',
+            job_title: 'Senior Consultant (Atlas)',
+            role: 'Senior Consultant (Atlas)',
+            email: 'mollie.brick@va.gov',
+            avatar: ActionDispatch::Http::UploadedFile.new(
+                filename: File.basename(naloxone_team_brick_image_file),
+                tempfile: naloxone_team_brick_image_file,
+                # detect the image's mime type with MIME if you can't provide it yourself.
+                type: MIME::Types.type_for(naloxone_team_brick_image_path).first.content_type
+            )
+        ),
     ]
 
     naloxone_va_employees.each {|vae|
@@ -541,7 +662,7 @@ The Initiative has a significant impact on the patient safety within VA medical 
         Cost.create!(practice: naloxone, description: 'Need to buy Naloxone for AED cabinets and police')
     ]
 
-    naloxone_difficulties= [
+    naloxone_difficulties = [
         Difficulty.create!(practice: naloxone, description: 'Minimal training'),
         Difficulty.create!(practice: naloxone, description: '~4 months to completely implement'),
     ]
@@ -551,8 +672,11 @@ The Initiative has a significant impact on the patient safety within VA medical 
     #############
     # HAPPEN  #
     #############
-    happen_image_path = "#{Rails.root}/db/seed_images/practices/happen.jpg"
+    happen_image_path = "#{Rails.root}/db/seed_images/practices/happen/happen.jpg"
     happen_image_file = File.new(happen_image_path)
+
+    happen_origins_image_path = "#{Rails.root}/db/seed_images/practices/happen/origins/munro.jpg"
+    happen_origins_image_file = File.new(happen_origins_image_path)
 
     happen = Practice.create!(
         name: 'VA Project HAPPEN ',
@@ -604,13 +728,17 @@ Oral care reduces the risk of developing pneumonia and lowers health care costs 
         difficulty_aggregate: 1,
         veteran_satisfaction_aggregate: 1,
         risk_level_aggregate: 1,
-        origin_title: 'Innovation - Dr. Shannon Munro',
-        origin_story: 'When VA Nurse Researcher and Nurse Practitioner Dr. Shannon Munro learned from nursing professor and researcher Dr. Dian Baker about the dramatic reduction in non-ventilator hospital-acquired pneumonia (NV-HAP) through a simple, low-cost, low-risk intervention—brushing teeth—she decided to bring the practice to VA.',
+        origin_title: 'Innovation - About Shannon Munro, PhD, APRN, BC, FNP',
+        origin_story: 'When VA Nurse Researcher and Nurse Practitioner Dr. Shannon Munro learned from nursing professor and researcher Dr. Dian Baker about the dramatic reduction in non-ventilator hospital-acquired pneumonia (NV-HAP) through a simple, low-cost, low-risk intervention—brushing teeth—she decided to bring the practice to VA. 
+
+Project HAPPEN started at the Salem VAMC (Salem, VA) and has been replicated at the Michael E. DeBakey VAMC (Houston, TX) through facilitated implementation with the Diffusion of Excellence. It is currently being implemented across VISN 6 Community Living Center (CLC) and medical-surgical inpatient units.  
+
+Shannon Munro is a Nurse Researcher and Family Nurse Practitioner at Salem VAMC. She’s been with VA for over 15 years, caring for Veterans and conducting research directed toward the improvement of Veteran healthcare.',
         origin_picture: ActionDispatch::Http::UploadedFile.new(
-            filename: File.basename(naloxone_origin_image_file),
-            tempfile: naloxone_origin_image_file,
+            filename: File.basename(happen_origins_image_file),
+            tempfile: happen_origins_image_file,
             # detect the image's mime type with MIME if you can't provide it yourself.
-            type: MIME::Types.type_for(naloxone_origin_image_path).first.content_type
+            type: MIME::Types.type_for(happen_origins_image_path).first.content_type
         )
     )
 
@@ -618,9 +746,31 @@ Oral care reduces the risk of developing pneumonia and lowers health care costs 
         StrategicSponsorPractice.create!(practice: happen, strategic_sponsor: sponsors.find {|s| s.name == 'Diffusion of Excellence'}),
     ]
 
+    happen_team_image_path = "#{Rails.root}/db/seed_images/practices/happen/team"
+    happen_team_munro_image_path = "#{happen_team_image_path}/munro.jpg"
+    happen_team_munro_image_file = File.new("#{happen_team_munro_image_path}")
+
+    # TODO: find Devin Harrision!
+    # happen_team_harrison_image_path = "#{happen_team_image_path}/harrison.jpg"
+    # happen_team_harrison_image_file = File.new("#{happen_team_munro_image_path}")
+
     happen_va_employees = [
-        VaEmployee.create!(name: 'Dr. Shannon Munro', job_title: 'Gold Status Fellow'),
-        VaEmployee.create!(name: 'Devin Harrison', job_title: 'Diffusion Specialist'),
+        VaEmployee.create!(
+            name: 'Dr. Shannon Munro',
+            job_title: 'Nurse Researcher at Department of Veterans Affairs Medical Center',
+            role: 'Gold Status Fellow',
+            avatar: ActionDispatch::Http::UploadedFile.new(
+                filename: File.basename(happen_team_munro_image_file),
+                tempfile: happen_team_munro_image_file,
+                # detect the image's mime type with MIME if you can't provide it yourself.
+                type: MIME::Types.type_for(happen_team_munro_image_path).first.content_type
+            )
+        ),
+        VaEmployee.create!(
+            name: 'Devin Harrison',
+            job_title: 'Diffusion Specialist',
+            role: 'Diffusion Specialist'
+        ),
     ]
 
     happen_va_employees.each {|vae|
