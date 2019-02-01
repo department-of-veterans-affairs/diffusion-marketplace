@@ -12,8 +12,6 @@
   <body>
     <%= render 'shared/header' %>
     <main id="main-content" class="<%= params[:controller] %>">
-      <p class="notice"><%= notice %></p>
-      <p class="alert"><%= alert %></p>
       <%= yield %>
     </main>
     <%= render 'shared/footer' %>
