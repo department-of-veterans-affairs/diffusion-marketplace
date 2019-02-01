@@ -71,15 +71,23 @@
           <li class="usa-nav-secondary-item">
             <a href="#"><%= icon('fas', 'search')%><span class="usa-sr-only">Search</span></a>
           </li>
-          <li class="usa-nav-secondary-item">
-            <a class="dm-font-color-primary-blue" href="#"><%= icon('fas', 'user-circle')%> Sign up</a>
-          </li>
-          <li class="usa-nav-secondary-item">
-            <a class="dm-font-color-primary-blue desktop-show-inline-block" href="#">|</a>
-          </li>
-          <li class="usa-nav-secondary-item dm-font-color-primary-blue">
-            <a class="dm-font-color-primary-blue" href="#">Login</a>
-          </li>
+          <% if user_signed_in? %>
+            <li class="usa-nav-secondary-item">
+            <%= link_to('Logout', destroy_user_session_path, class: 'dm-font-color-primary-blue', method: :delete) %>
+            </li>
+          <% else %>
+            <li class="usa-nav-secondary-item">
+              <%= link_to new_user_registration_path, class: 'dm-font-color-primary-blue' do %>
+                <%= icon('fas', 'user-circle')%> Register
+              <% end %>
+            </li>
+            <li class="usa-nav-secondary-item">
+              <a class="dm-font-color-primary-blue desktop-show-inline-block" href="#">|</a>
+            </li>
+            <li class="usa-nav-secondary-item dm-font-color-primary-blue">
+              <%= link_to 'Login', new_user_session_path, class: 'dm-font-color-primary-blue' %>
+            </li>
+          <% end %>
         </ul>
       </div>
     </div>
