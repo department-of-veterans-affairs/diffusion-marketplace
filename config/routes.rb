@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   resources :developing_facility_types
   resources :va_employees
   resources :practices
