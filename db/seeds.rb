@@ -223,6 +223,11 @@ if StrategicSponsor.all.blank?
     ]
   end
 
+  ### USERS ###
+  User.create!(email: 'tom.black@agile6.com', password: 'Password123', password_confirmation: 'Password123').add_role(User::USER_ROLES[3].to_sym)
+  User.create!(email: 'aurora.hay@agile6.com', password: 'Password123', password_confirmation: 'Password123').add_role(User::USER_ROLES[3].to_sym)
+  User.create!(email: 'jake.holzhauer@agile6.com', password: 'Password123', password_confirmation: 'Password123').add_role(User::USER_ROLES[3].to_sym)
+
   unless Practice.all.present?
     ############################################################################################################
     ############################################################################################################
@@ -729,7 +734,7 @@ Oral care reduces the risk of developing pneumonia and lowers health care costs 
         veteran_satisfaction_aggregate: 1,
         risk_level_aggregate: 1,
         origin_title: 'Innovation - About Shannon Munro, PhD, APRN, BC, FNP',
-        origin_story: 'When VA Nurse Researcher and Nurse Practitioner Dr. Shannon Munro learned from nursing professor and researcher Dr. Dian Baker about the dramatic reduction in non-ventilator hospital-acquired pneumonia (NV-HAP) through a simple, low-cost, low-risk intervention—brushing teeth—she decided to bring the practice to VA. 
+        origin_story: 'When VA Nurse Researcher and Nurse Practitioner Dr. Shannon Munro learned from nursing professor and researcher Dr. Dian Baker about the dramatic reduction in non-ventilator hospital-acquired pneumonia (NV-HAP) through a simple, low-cost, low-risk intervention—brushing teeth—she decided to bring the practice to VA.
 
 Project HAPPEN started at the Salem VAMC (Salem, VA) and has been replicated at the Michael E. DeBakey VAMC (Houston, TX) through facilitated implementation with the Diffusion of Excellence. It is currently being implemented across VISN 6 Community Living Center (CLC) and medical-surgical inpatient units.  
 
