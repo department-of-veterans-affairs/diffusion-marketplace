@@ -1,9 +1,13 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  # :lockable, :timeoutable, :trackable and :omniauthable
+  devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :validatable,
          :password_expirable, :password_archivable
+
+  rolify before_add: :remove_unauthenticated
+
+  USER_ROLES = %w[unauthenticated authenticated approver_editor admin].freeze
 
   validate :valid_email
   validate :password_complexity
@@ -35,5 +39,24 @@ class User < ApplicationRecord
     return true if /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i.match?(email)
 
     errors.add :email, 'invalid'
+  end
+
+  def self.confirm_by_token(confirmation_token)
+    confirmable = find_first_by_auth_conditions(confirmation_token: confirmation_token)
+    unless confirmable
+      confirmation_digest = Devise.token_generator.digest(self, :confirmation_token, confirmation_token)
+      confirmable = find_or_initialize_with_error_by(:confirmation_token, confirmation_digest)
+    end
+
+    # TODO: replace above lines with
+    # confirmable = find_or_initialize_with_error_by(:confirmation_token, confirmation_token)
+    # after enough time has passed that Devise clients do not use digested tokens
+    confirmable.add_role USER_ROLES[1] if confirmable.persisted?
+    confirmable.confirm if confirmable.persisted?
+    confirmable
+  end
+
+  def remove_unauthenticated(role)
+    remove_role self.class::USER_ROLES[0] if role != self.class::USER_ROLES[0]
   end
 end
