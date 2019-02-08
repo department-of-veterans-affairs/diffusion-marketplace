@@ -12,6 +12,7 @@ class User < ApplicationRecord
   validate :valid_email
   validate :password_complexity
   validate :password_uniqueness
+  validate :va_email
 
   def password_complexity
     return if password.blank?
@@ -39,6 +40,12 @@ class User < ApplicationRecord
     return true if /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i.match?(email)
 
     errors.add :email, 'invalid'
+  end
+
+  def va_email
+    return true if skip_va_validation || email.split('@').last == 'va.gov'
+
+    errors.add :email, 'must use @va.gov email address'
   end
 
   def self.confirm_by_token(confirmation_token)
