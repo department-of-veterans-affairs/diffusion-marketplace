@@ -224,9 +224,12 @@ if StrategicSponsor.all.blank?
   end
 
   ### USERS ###
-  User.create!(email: 'tom.black@agile6.com', password: 'Password123', password_confirmation: 'Password123').add_role(User::USER_ROLES[3].to_sym)
-  User.create!(email: 'aurora.hay@agile6.com', password: 'Password123', password_confirmation: 'Password123').add_role(User::USER_ROLES[3].to_sym)
-  User.create!(email: 'jake.holzhauer@agile6.com', password: 'Password123', password_confirmation: 'Password123').add_role(User::USER_ROLES[3].to_sym)
+  User.create!(email: 'tom.black@agile6.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now).add_role(User::USER_ROLES[3].to_sym)
+  User.create!(email: 'aurora.hay@agile6.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now).add_role(User::USER_ROLES[3].to_sym)
+  User.create!(email: 'jake.holzhauer@agile6.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now).add_role(User::USER_ROLES[3].to_sym)
+  User::USER_ROLES.each_with_index do |role, index|
+    User.create!(email: "A6test#{index}@agile6.com", password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now).add_role(User::USER_ROLES[index].to_sym)
+  end
 
   unless Practice.all.present?
     ############################################################################################################

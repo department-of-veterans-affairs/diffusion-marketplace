@@ -423,6 +423,7 @@ ActiveRecord::Schema.define(version: 2019_02_07_204747) do
     t.string "phone_number"
     t.integer "visn"
     t.datetime "password_changed_at"
+    t.boolean "skip_va_validation", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["password_changed_at"], name: "index_users_on_password_changed_at"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
