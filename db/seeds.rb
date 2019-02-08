@@ -224,9 +224,9 @@ if StrategicSponsor.all.blank?
   end
 
   ### USERS ###
-  User.create!(email: 'tom.black@agile6.com', password: 'Password123', password_confirmation: 'Password123').add_role(User::USER_ROLES[3].to_sym)
-  User.create!(email: 'aurora.hay@agile6.com', password: 'Password123', password_confirmation: 'Password123').add_role(User::USER_ROLES[3].to_sym)
-  User.create!(email: 'jake.holzhauer@agile6.com', password: 'Password123', password_confirmation: 'Password123').add_role(User::USER_ROLES[3].to_sym)
+  User.create!(email: 'tom.black@agile6.com', password: 'Password123', password_confirmation: 'Password123').add_role(User::USER_ROLES[1].to_sym)
+  User.create!(email: 'aurora.hay@agile6.com', password: 'Password123', password_confirmation: 'Password123').add_role(User::USER_ROLES[1].to_sym)
+  User.create!(email: 'jake.holzhauer@agile6.com', password: 'Password123', password_confirmation: 'Password123').add_role(User::USER_ROLES[1].to_sym)
 
   unless Practice.all.present?
     ############################################################################################################
