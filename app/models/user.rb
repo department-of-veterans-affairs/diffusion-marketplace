@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :password_expirable, :password_archivable
 
-  rolify
+  rolify before_add: :remove_all_roles
 
   USER_ROLES = %w[approver_editor admin].freeze
 
@@ -39,5 +39,11 @@ class User < ApplicationRecord
     return true if /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i.match?(email)
 
     errors.add :email, 'invalid'
+  end
+
+  def remove_all_roles
+    self.class::USER_ROLES.each do |r|
+      remove_role r
+    end
   end
 end
