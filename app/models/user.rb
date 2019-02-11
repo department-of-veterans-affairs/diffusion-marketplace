@@ -41,7 +41,7 @@ class User < ApplicationRecord
     errors.add :email, 'invalid'
   end
 
-  def remove_all_roles
+  def remove_all_roles(role)
     self.class::USER_ROLES.each do |r|
       remove_role r
     end
