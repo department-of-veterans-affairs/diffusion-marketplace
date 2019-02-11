@@ -5,9 +5,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :password_expirable, :password_archivable
 
-  rolify before_add: :remove_unauthenticated
+  rolify before_add: :remove_all_roles
 
-  USER_ROLES = %w[unauthenticated authenticated approver_editor admin].freeze
+  USER_ROLES = %w[approver_editor admin].freeze
 
   validate :valid_email
   validate :password_complexity
@@ -48,22 +48,9 @@ class User < ApplicationRecord
     errors.add :email, 'must use @va.gov email address'
   end
 
-  def self.confirm_by_token(confirmation_token)
-    confirmable = find_first_by_auth_conditions(confirmation_token: confirmation_token)
-    unless confirmable
-      confirmation_digest = Devise.token_generator.digest(self, :confirmation_token, confirmation_token)
-      confirmable = find_or_initialize_with_error_by(:confirmation_token, confirmation_digest)
+  def remove_all_roles(role)
+    self.class::USER_ROLES.each do |r|
+      remove_role r
     end
-
-    # TODO: replace above lines with
-    # confirmable = find_or_initialize_with_error_by(:confirmation_token, confirmation_token)
-    # after enough time has passed that Devise clients do not use digested tokens
-    confirmable.add_role USER_ROLES[1] if confirmable.persisted?
-    confirmable.confirm if confirmable.persisted?
-    confirmable
-  end
-
-  def remove_unauthenticated(role)
-    remove_role self.class::USER_ROLES[0] if role != self.class::USER_ROLES[0]
   end
 end
