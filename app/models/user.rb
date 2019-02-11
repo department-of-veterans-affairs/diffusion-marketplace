@@ -1,9 +1,13 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  # :lockable, :timeoutable, :trackable and :omniauthable
+  devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :validatable,
          :password_expirable, :password_archivable
+
+  rolify before_add: :remove_all_roles
+
+  USER_ROLES = %w[approver_editor admin].freeze
 
   validate :valid_email
   validate :password_complexity
@@ -35,5 +39,11 @@ class User < ApplicationRecord
     return true if /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i.match?(email)
 
     errors.add :email, 'invalid'
+  end
+
+  def remove_all_roles(role)
+    self.class::USER_ROLES.each do |r|
+      remove_role r
+    end
   end
 end
