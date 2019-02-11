@@ -41,7 +41,8 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.2]
       t.string  :phone_number
       t.integer :visn
 
-      t.datetime :password_changed_at
+      t.datetime  :password_changed_at
+      t.boolean   :skip_va_validation, null: false, default: false
     end
 
     add_index :users, :email,                unique: true
@@ -49,6 +50,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.2]
     add_index :users, :password_changed_at
     # add_index :users, :confirmation_token,   unique: true
     # add_index :users, :unlock_token,         unique: true
+
 
     create_table :old_passwords do |t|
       t.string :encrypted_password, null: false
