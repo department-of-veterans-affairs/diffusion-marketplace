@@ -5,8 +5,9 @@
         <!-- Cost level Circle -->
         <div class='grid-row flex-column flex-align-center flex-justify-center level-aggregate-circle'>
           <div class='grid-col-12'>
+            <% cost_to_implement_aggregate = @practice.cost_to_implement_aggregate || 0 %>
             <% (0..3).each do |index| %>
-              <% if index < @practice.cost_to_implement_aggregate %>
+              <% if index < cost_to_implement_aggregate %>
                 <i class="fas fa-dollar-sign large-icon-dark aggregate-icon"></i>
               <% else %>
                 <i class="fas fa-dollar-sign large-icon-light aggregate-icon"></i>
@@ -30,8 +31,9 @@
         <!-- Difficulty level Circle -->
         <div class='grid-row flex-column flex-align-center flex-justify-center level-aggregate-circle'>
           <div class='grid-col-12'>
+            <% difficulty_aggregate = @practice.difficulty_aggregate || 0 %>
             <% (0..3).each do |index| %>
-              <% if index < @practice.difficulty_aggregate %>
+              <% if index < difficulty_aggregate %>
                 <i class="fas fa-wrench large-icon-dark aggregate-icon"></i>
               <% else %>
                 <i class="fas fa-wrench large-icon-light aggregate-icon"></i>
