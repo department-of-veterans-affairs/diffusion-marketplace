@@ -3,7 +3,7 @@
   <section class="promo dismissible grid-container dm-background-primary-blue promo-primary promo-rounded-corners-20 dm-font-color-white">
     <div class="diffusion-background-circles-promo-translucent"></div>
     <div class="grid-row flex-direction-row-reverse dismiss-row p1">
-      <button type="button" class="dismiss-cross dismiss-button z-index-10"><%= icon('fas', 'times') %></button>
+      <button type="button" class="dismiss-cross dismiss-button z-index-10"><%= icon('fas', 'times') %><span class="usa-sr-only">Close</span></button>
     </div>
     <section class="promo-body p2 x1-bottom">
       <div class="grid-row">
@@ -26,13 +26,19 @@
         <% index = i + 1 %>
         <style>
           .marketplace-card-header-<%= index %> {
-            background: linear-gradient(rgba(0, 42, 92, 0.59), rgba(0, 42, 92, 0.59)), url(<%= practice.main_display_image.url %>);
+            <% if practice.main_display_image.present? %>
+              background: linear-gradient(rgba(0, 42, 92, 0.59), rgba(0, 42, 92, 0.59)), url(<%= practice.main_display_image.url %>);
+            <% else %>
+              background: rgba(26, 68, 128, 1);
+            <% end %>
           }
         </style>
         <div class="tablet:grid-col-4 x1-bottom">
           <div class="marketplace-card">
             <div class="marketplace-card-header marketplace-card-header-<%= index %> p2">
-              <h2 class="x0 fw-100 dm-font-color-white"><%= practice.tagline %></h2>
+              <% if practice.tagline.present? %>
+                <h2 class="x0 fw-100 dm-font-color-white"><%= practice.tagline %></h2>
+              <% end %>
             </div>
             <div class="marketplace-card-body p2">
               <div class="marketplace-card-description dm-font-dark-black fw-100 x1-bottom">

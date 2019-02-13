@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_07_204747) do
+ActiveRecord::Schema.define(version: 2019_02_11_180055) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -290,11 +290,11 @@ ActiveRecord::Schema.define(version: 2019_02_07_204747) do
     t.string "tagline"
     t.string "gold_status_tagline"
     t.string "summary"
-    t.integer "risk_level_aggregate"
-    t.integer "cost_savings_aggregate"
-    t.integer "cost_to_implement_aggregate"
-    t.integer "veteran_satisfaction_aggregate"
-    t.integer "difficulty_aggregate"
+    t.integer "risk_level_aggregate", default: 0
+    t.integer "cost_savings_aggregate", default: 0
+    t.integer "cost_to_implement_aggregate", default: 0
+    t.integer "veteran_satisfaction_aggregate", default: 0
+    t.integer "difficulty_aggregate", default: 0
     t.string "origin_title"
     t.string "origin_story"
     t.datetime "created_at", null: false
@@ -307,6 +307,10 @@ ActiveRecord::Schema.define(version: 2019_02_07_204747) do
     t.string "origin_picture_content_type"
     t.integer "origin_picture_file_size"
     t.datetime "origin_picture_updated_at"
+    t.bigint "user_id"
+    t.boolean "published", default: false
+    t.boolean "approved", default: false
+    t.index ["user_id"], name: "index_practices_on_user_id"
   end
 
   create_table "publication_files", force: :cascade do |t|
@@ -520,6 +524,7 @@ ActiveRecord::Schema.define(version: 2019_02_07_204747) do
   add_foreign_key "job_positions", "job_position_categories"
   add_foreign_key "mitigations", "risk_mitigations"
   add_foreign_key "photo_files", "practices"
+  add_foreign_key "practices", "users"
   add_foreign_key "publication_files", "practices"
   add_foreign_key "publications", "practices"
   add_foreign_key "risk_mitigations", "practices"
