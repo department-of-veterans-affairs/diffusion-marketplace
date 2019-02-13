@@ -3,11 +3,31 @@
   <%= render 'shared/sub_search_nav' %>
   <section class="usa-section p2-top p2-bottom dm-background-linear-up-lightblue-to-white">
     <div class="grid-container">
-      <h1 class="font-heading-2xl x4-left x0-top fw-100"><%= @practice.tagline %></h1>
-      <p class="x4-left"><%= @practice.description %></p>
+      <% unless @practice.published && @practice.approved %>
+      <div class="usa-alert usa-alert-warning" >
+        <div class="usa-alert-body">
+          <h3 class="usa-alert-heading">This practice will not be shown in the marketplace because it is:</h3>
+          <% unless @practice.published %>
+            <div class="badge-container un-published-practice">
+              Not Published
+            </div>
+          <% end %>
+          <% unless @practice.approved %>
+            <div class="badge-container un-approved-practice">
+              Not Approved
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <% end %>
+
+      <% if @practice.tagline.present? %>
+        <h1 class="font-heading-2xl x0-top fw-100"><%= @practice.tagline %></h1>
+      <% end %>
+      <p><%= @practice.description %></p>
 
       <div class="grid-row">
-        <p class="x4-left fw-100"><%= @practice.strategic_sponsors.map(&:name).join(", ") %></p>
+        <p class="fw-100"><%= @practice.strategic_sponsors.map(&:name).join(", ") %></p>
       </div>
       <div class="grid-row flex-row flex-justify flex-align-center x1-top">
         <h5 class="flex-1 practice-facility"><%= @practice.name %> |
@@ -36,7 +56,11 @@
       .practice-image {
         color: white;
         padding: 3rem 6rem;
-        background: linear-gradient(180deg, rgba(0, 42, 92, 0) 0%, rgba(0, 42, 92, 0.8) 0.01%), url(<%= @practice.main_display_image.url %>);
+        <% if @practice.main_display_image.present? %>
+          background: linear-gradient(180deg, rgba(0, 42, 92, 0) 0%, rgba(0, 42, 92, 0.8) 0.01%), url(<%= @practice.main_display_image.url %>);
+        <% else %>
+          background: rgba(26, 68, 128, 1);
+        <% end %>
         background-position: center;
         background-size: cover;
       }
@@ -55,8 +79,9 @@
     <div class="grid-container x2-bottom">
       <div class="grid-row practice-aggregate-container p2">
         <div class="tablet:grid-col-fill text-center">
+          <% cost_aggregate = @practice.cost_savings_aggregate || 0 %>
           <% (0..3).each do |index| %>
-            <% if index < @practice.cost_savings_aggregate %>
+            <% if index < cost_aggregate %>
               <i class="fas fa-dollar-sign large-icon-dark aggregate-icon"></i>
             <% else %>
               <i class="fas fa-dollar-sign large-icon-light aggregate-icon"></i>
@@ -65,8 +90,9 @@
           <p class="fw-100">Cost Avoidance</p>
         </div>
         <div class="tablet:grid-col-fill text-center">
+          <% veteran_satisfaction_aggregate = @practice.veteran_satisfaction_aggregate || 0 %>
           <% (0..3).each do |index| %>
-            <% if index < @practice.veteran_satisfaction_aggregate %>
+            <% if index < veteran_satisfaction_aggregate %>
               <i class="dm dm-saluting-veteran large-icon-dark aggregate-icon"></i>
             <% else %>
               <i class="dm dm-saluting-veteran large-icon-light aggregate-icon"></i>
@@ -75,8 +101,9 @@
           <p class="fw-100">Veteran Satisfaction</p>
         </div>
         <div class="tablet:grid-col-fill text-center">
+          <% difficulty_aggregate = @practice.difficulty_aggregate || 0 %>
           <% (0..3).each do |index| %>
-            <% if index < @practice.difficulty_aggregate %>
+            <% if index < difficulty_aggregate %>
               <i class="fas fa-wrench large-icon-dark aggregate-icon"></i>
             <% else %>
               <i class="fas fa-wrench large-icon-light aggregate-icon"></i>

@@ -1,3 +1,4 @@
+require 'devise'
 require 'capybara'
 require 'simplecov'
 require 'rspec/retry'
@@ -27,6 +28,13 @@ end
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
+  Warden.test_mode!
+
+  config.after do
+    Warden.test_reset!
+  end
+
+
   # show retry status in spec process
   config.verbose_retry = true
   # Try twice (retry once)

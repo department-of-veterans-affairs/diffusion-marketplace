@@ -289,7 +289,9 @@ if StrategicSponsor.all.blank?
             tempfile: flow3_origin_image_file,
             # detect the image's mime type with MIME if you can't provide it yourself.
             type: MIME::Types.type_for(flow3_origin_image_path).first.content_type
-        )
+        ),
+        published: true,
+        approved: true
     )
 
     flow3_strategic_sponsors = [
@@ -506,7 +508,9 @@ The Initiative has a significant impact on the patient safety within VA medical 
             tempfile: naloxone_origin_image_file,
             # detect the image's mime type with MIME if you can't provide it yourself.
             type: MIME::Types.type_for(naloxone_origin_image_path).first.content_type
-        )
+        ),
+        published: true,
+        approved: true
     )
 
     naloxone_strategic_sponsors = [
@@ -747,7 +751,9 @@ Shannon Munro is a Nurse Researcher and Family Nurse Practitioner at Salem VAMC.
             tempfile: happen_origins_image_file,
             # detect the image's mime type with MIME if you can't provide it yourself.
             type: MIME::Types.type_for(happen_origins_image_path).first.content_type
-        )
+        ),
+        published: true,
+        approved: true
     )
 
     happen_strategic_sponsors = [

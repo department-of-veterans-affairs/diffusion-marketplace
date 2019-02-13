@@ -1,10 +1,12 @@
 class PracticesController < ApplicationController
   before_action :set_practice, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
+  before_action :can_view_practice, only: [:show, :edit, :update, :destroy]
 
   # GET /practices
   # GET /practices.json
   def index
-    @practices = Practice.all
+    @practices = Practice.where(approved: true, published: true)
   end
 
   # GET /practices/1
@@ -79,4 +81,25 @@ class PracticesController < ApplicationController
     def practice_params
       params.require(:practice).permit(:name, :short_name, :description, :position, :is_vha_field, :is_program_office, :vha_visn, :medical_center, :business_case_summary, :support_network_email, :va_pulse_link, :additional_notes)
     end
+
+  def can_view_practice
+    # if practice is published
+    unless @practice.published && @practice.approved
+      prevent_practice_permissions
+    end
+  end
+
+  def can_edit_practice
+    prevent_practice_permissions
+  end
+
+  def prevent_practice_permissions
+    # if the user is the practice owner or the user is an admin or approver/editor
+    unless @practice.user_id == current_user.id || current_user.roles.any?
+      respond_to do |format|
+        format.html { redirect_to '/', notice: 'You are not authorized to view this content.' }
+        format.json { render notice: 'You are not authorized to view this content.' }
+      end
+    end
+  end
 end
