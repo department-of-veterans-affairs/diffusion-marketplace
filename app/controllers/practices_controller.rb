@@ -97,7 +97,7 @@ class PracticesController < ApplicationController
     # if the user is the practice owner or the user is an admin or approver/editor
     unless @practice.user_id == current_user.id || current_user.roles.any?
       respond_to do |format|
-        format.html { redirect_to new_user_session_path, notice: 'Please login to view this content.' }
+        format.html { redirect_to '/', notice: 'You are not authorized to view this content.' }
         format.json { render notice: 'You are not authorized to view this content.' }
       end
     end
