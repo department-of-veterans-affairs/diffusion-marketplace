@@ -340,6 +340,36 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   margin: 0 !important;
 }
 
+/* Margin all */
+
+.x0 {
+  margin: 0 !important;
+}
+
+.x1 {
+  margin: 1rem !important;
+}
+
+.x2 {
+  margin: 2rem !important;
+}
+
+.x3 {
+  margin: 3rem !important;
+}
+
+.x4 {
+  margin: 4rem !important;
+}
+
+.x5 {
+  margin: 5rem !important;
+}
+
+.x6 {
+  margin: 6rem !important;
+}
+
 /* Margin top */
 
 .x0-top {
@@ -716,6 +746,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .space-between {
   justify-content: space-between;
+}
+
+.space-evenly {
+  justify-content: space-evenly;
 }
 
 .justify-center {
