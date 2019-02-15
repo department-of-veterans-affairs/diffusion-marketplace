@@ -12,71 +12,57 @@ DM BUTTON CLASSES
 */
 @import "../variables/colors";
 
-.dm-button-primary {
-  background-color: $dm-color-primary-blue;
-  border: none;
+.dm-button-primary,
+.dm-button-secondary,
+.dm-button-link,
+.dm-button-link-secondary,
+.dm-button-danger {
   border-radius: 100px;
-  color: #FFFFFF;
   font-size: .9em;
   font-weight: normal;
   height: 54px;
-  max-width: 222px;
+  max-width: 230px;
   text-align: center;
   width: 100%;
 }
 
-.dm-button-secondary {
-  background-color: #FFFFFF;
-  border: 1px solid $dm-color-primary-blue;
-  border-radius: 100px;
-  color: $dm-color-primary-blue;
-  font-size: .9em;
-  font-weight: normal;
-  height: 54px;
-  max-width: 222px;
-  text-align: center;
-  width: 222px;
-}
-
+.dm-button-primary,
 .dm-button-link {
   background-color: $dm-color-primary-blue;
   border: none;
-  border-radius: 100px;
-  color: #FFFFFF;
-  display: block;
-  font-size: .9em;
-  font-weight: normal;
-  height: 54px;
-  max-width: 222px;
-  padding: 1em;
-  text-align: center;
-  text-decoration: none;
-  width: 100%;
+  color: $dm-color-white;
+}
 
+.dm-button-secondary,
+.dm-button-link-secondary {
+  background-color: $dm-color-white;
+  border: 1px solid $dm-color-primary-blue;
+  color: $dm-color-primary-blue;
+}
+
+.dm-button-danger {
+  background-color: $dm-color-secondary-red;
+}
+
+.dm-button-link,
+.dm-button-link-secondary {
+  display: block;
+  text-decoration: none;
+  padding: 1em;
+}
+
+.dm-button-link {
   &:visited {
-    color: #FFFFFF;
+    color: $dm-color-white;
   }
 
   &:hover {
-    color: #FFFFFF;
+    color: $dm-color-white;
     text-decoration: underline;
   }
 }
 
 .dm-button-link-secondary {
-  background-color: #FFFFFF;
-  border: 1px solid $dm-color-primary-blue;
-  border-radius: 100px;
-  display: block;
-  color: $dm-color-primary-blue;
-  font-size: .9em;
-  font-weight: normal;
-  height: 54px;
-  max-width: 222px;
-  padding: 1em;
-  text-align: center;
-  width: 100%;
-
   &:visited {
     color: $dm-color-primary-blue;
   }
