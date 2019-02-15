@@ -2,10 +2,13 @@
   <%= form_for(user) do |f| %>
     <div class='grid-row flex-justify'>
       <div class='grid-col flex-2'>
-        <%= select_tag 'user[role]', "<option value='user'>User</option>".html_safe + options_for_select(User::USER_ROLES.map{|role| [role.split('_').map(&:capitalize).join('/'), role]}, (user.roles.first.name if user.roles.present?)), class: 'usa-select x0-top' %>
+        <%= select_tag 'user[role]', "<option value='user'>User</option>".html_safe +
+            options_for_select(User::USER_ROLES.map{|role| [role.split('_').map(&:capitalize).join('/'), role]},
+            (user.roles.first.name if user.roles.present?)), class: 'usa-select x0-top', id: "user_#{user.id}_role", aria:
+            { label: 'User role' } %>
       </div>
       <div class='grid-col x1-left'>
-        <%= f.submit 'Assign', class: 'dm-button dm-button-primary' %>
+        <%= f.submit 'Assign', class: 'dm-button dm-button-primary', id: "edit_user_#{user.id}_submit" %>
       </div>
     </div>
   <% end %>
