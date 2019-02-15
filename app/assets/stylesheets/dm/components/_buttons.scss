@@ -42,6 +42,8 @@ DM BUTTON CLASSES
 
 .dm-button-danger {
   background-color: $dm-color-secondary-red;
+  border: none;
+  color: $dm-color-white;
 }
 
 .dm-button-link,

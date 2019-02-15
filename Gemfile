@@ -39,6 +39,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 gem 'devise'
 gem 'devise-security'
+gem 'kaminari'
 
 gem 'rolify'
 

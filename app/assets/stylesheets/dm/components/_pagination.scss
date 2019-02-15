@@ -1,0 +1,26 @@
+@import '../variables/colors';
+
+.pagination {
+  padding-bottom: 3rem;
+
+  .page {
+    color: $dm-color-dark-blue;
+    padding: .5rem .75rem;
+    border: 1px solid $dm-color-light-black;
+    background-color: $dm-color-white;
+
+    a {
+      text-decoration: none;
+    }
+  }
+
+  .first {
+    border-top-left-radius: .2rem;
+    border-bottom-left-radius: .2rem;
+  }
+
+  .last {
+    border-top-right-radius: .2rem;
+    border-bottom-right-radius: .2rem;
+  }
+}

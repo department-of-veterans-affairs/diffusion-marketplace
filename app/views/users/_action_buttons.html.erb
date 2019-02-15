@@ -1,0 +1,19 @@
+<td>
+  <%= form_for(user) do |f| %>
+    <div class='grid-row flex-justify'>
+      <div class='grid-col flex-2'>
+        <%= select_tag 'user[role]', "<option value='user'>User</option>".html_safe + options_for_select(User::USER_ROLES.map{|role| [role.split('_').map(&:capitalize).join('/'), role]}, (user.roles.first.name if user.roles.present?)), class: 'usa-select x0-top' %>
+      </div>
+      <div class='grid-col x1-left'>
+        <%= f.submit 'Assign', class: 'dm-button dm-button-primary' %>
+      </div>
+    </div>
+  <% end %>
+</td>
+<td>
+  <% unless user.disabled %>
+    <%= button_to 'Delete', user, method: :delete, class: 'dm-button dm-button-danger' %>
+  <% else %>
+    <%= button_to 'Un-delete', user_un_delete_path(user), method: :patch, class: 'dm-button dm-button-primary' %>
+  <% end %>
+</td>

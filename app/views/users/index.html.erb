@@ -1,0 +1,26 @@
+<div class="dm-background-linear-up-lightblue-to-white full-view-height">
+  <section class="grid-container x3-top">
+    <fieldset class="usa-fieldset">
+      <input type="checkbox" name="show_disabled" id='show_disabled_users' class='usa-checkbox-input' value='show'>
+      <label class='usa-checkbox-label' for='show_disabled_users'>Show disabled users</label>
+    </fieldset>
+    <table class="usa-table" style='width: 100%;'>
+      <thead>
+        <tr>
+          <th scope="col">Email</th>
+          <th scope="col">Role</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <tr class="<%= 'hide' if user.disabled %>">
+            <th scope="row"><%= user.email %></th>
+            <%= render partial: 'action_buttons', locals: { user: user } %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= paginate @users %>
+  </section>
+</div>
