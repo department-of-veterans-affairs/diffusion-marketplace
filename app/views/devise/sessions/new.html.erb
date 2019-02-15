@@ -10,14 +10,14 @@
           </div>
         </div>
         <div class="login-body">
-          <p class="notice"><%= notice %></p>
-          <p class="alert"><%= alert %></p>
-          <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: 'usa-form') do |f| %>
+          <h2>Login</h2>
+          <%= render "shared/messages" %>
+          <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: 'usa-form x1-top'}) do |f| %>
             <%= f.label :email, class: 'usa-label x0' %>
-            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'usa-input' %>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'usa-input', required: true %>
 
             <%= f.label :password, class: 'usa-label' %>
-            <%= f.password_field :password, autocomplete: "current-password", class: 'usa-input' %>
+            <%= f.password_field :password, autocomplete: "current-password", class: 'usa-input', required: true %>
 
             <% if devise_mapping.rememberable? -%>
               <fieldset class="usa-fieldset x1-top">
@@ -29,8 +29,8 @@
             <div class="actions display-flex justify-center x1-top">
               <%= f.submit "Log in", class: 'dm-button-primary' %>
             </div>
-            <%= render "devise/shared/links" %>
           <% end %>
+          <%= render "devise/shared/links" %>
         </div>
       </div>
     </div>

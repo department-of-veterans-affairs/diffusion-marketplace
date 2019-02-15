@@ -1,5 +1,6 @@
 require 'devise'
 require 'capybara'
+require 'capybara-webkit'
 require 'simplecov'
 require 'rspec/retry'
 
@@ -140,3 +141,5 @@ end
 
 # Capybara.javascript_driver = :webkit
 Capybara.default_driver = :sniffybara
+
+Capybara.javascript_driver = :webkit
