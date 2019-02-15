@@ -42,7 +42,8 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.2]
       t.integer :visn
 
       t.datetime  :password_changed_at
-      t.boolean   :skip_va_validation, null: false, default: false
+      t.boolean   :skip_va_validation,  null: false, default: false
+      t.boolean   :disabled,            null: false, default: false
     end
 
     add_index :users, :email,                unique: true

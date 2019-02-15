@@ -13,6 +13,9 @@ Rails.application.routes.draw do
   resources :ancillary_services
   resources :va_secretary_priorities
   resources :strategic_sponsors
+  resources :users, except: [:show, :new, :edit] do
+    patch :un_delete
+  end
   root 'home#index'
   get '/practices' => 'practices#index'
   # Adding this for the Download Toolkit button on practice page. Though we don't have any uploaded yet so I'm not using it.

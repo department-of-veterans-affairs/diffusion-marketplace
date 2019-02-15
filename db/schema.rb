@@ -290,11 +290,11 @@ ActiveRecord::Schema.define(version: 2019_02_11_180055) do
     t.string "tagline"
     t.string "gold_status_tagline"
     t.string "summary"
-    t.integer "risk_level_aggregate", default: 0
-    t.integer "cost_savings_aggregate", default: 0
-    t.integer "cost_to_implement_aggregate", default: 0
-    t.integer "veteran_satisfaction_aggregate", default: 0
-    t.integer "difficulty_aggregate", default: 0
+    t.integer "risk_level_aggregate"
+    t.integer "cost_savings_aggregate"
+    t.integer "cost_to_implement_aggregate"
+    t.integer "veteran_satisfaction_aggregate"
+    t.integer "difficulty_aggregate"
     t.string "origin_title"
     t.string "origin_story"
     t.datetime "created_at", null: false
@@ -428,6 +428,7 @@ ActiveRecord::Schema.define(version: 2019_02_11_180055) do
     t.integer "visn"
     t.datetime "password_changed_at"
     t.boolean "skip_va_validation", default: false, null: false
+    t.boolean "disabled", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["password_changed_at"], name: "index_users_on_password_changed_at"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
