@@ -4,7 +4,7 @@
       <input type="checkbox" name="show_disabled" id='show_disabled_users' class='usa-checkbox-input' value='show'>
       <label class='usa-checkbox-label' for='show_disabled_users'>Show disabled users</label>
     </fieldset>
-    <table class="usa-table" style='width: 100%;'>
+    <table name='Users' class="usa-table" style='width: 100%;'>
       <thead>
         <tr>
           <th scope="col">Email</th>
@@ -14,7 +14,7 @@
       </thead>
       <tbody>
         <% @users.each do |user| %>
-          <tr class="<%= 'hide' if user.disabled %>">
+          <tr class="<%= 'hide' if user.disabled %>" id="user_row_<%= user.id %>">
             <th scope="row"><%= user.email %></th>
             <%= render partial: 'action_buttons', locals: { user: user } %>
           </tr>
