@@ -12,12 +12,18 @@
         <div class="login-body">
           <h2>Resend confirmation instructions</h2>
 
-          <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: {method: :post}) do |f| %>
-            <%= devise_error_messages! %>
+          <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: {method: :post, class: 'usa-form x1-top'}) do |f| %>
+            <% if devise_error_messages!.present? %>
+              <div class="usa-alert usa-alert-error" >
+                <div class="usa-alert-body">
+                  <%= devise_error_messages! %>
+                </div>
+              </div>
+            <% end %>
 
             <div class="field">
               <%= f.label :email, class: 'usa-label x0 x1-top' %><br/>
-              <%= f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: 'usa-input' %>
+              <%= f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: 'usa-input', required: true %>
             </div>
 
             <div class="actions display-flex justify-center x1-top">

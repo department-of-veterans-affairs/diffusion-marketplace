@@ -15,7 +15,8 @@ DM BUTTON CLASSES
 .dm-button-primary,
 .dm-button-secondary,
 .dm-button-link,
-.dm-button-link-secondary {
+.dm-button-link-secondary,
+.dm-button-danger {
   border-radius: 100px;
   font-size: .9em;
   font-weight: normal;
@@ -37,6 +38,10 @@ DM BUTTON CLASSES
   background-color: $dm-color-white;
   border: 1px solid $dm-color-primary-blue;
   color: $dm-color-primary-blue;
+}
+
+.dm-button-danger {
+  background-color: $dm-color-secondary-red;
 }
 
 .dm-button-link,
