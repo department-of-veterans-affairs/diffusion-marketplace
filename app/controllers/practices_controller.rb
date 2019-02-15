@@ -97,8 +97,10 @@ class PracticesController < ApplicationController
     # if the user is the practice owner or the user is an admin or approver/editor
     unless @practice.user_id == current_user.id || current_user.roles.any?
       respond_to do |format|
-        format.html { redirect_to '/', notice: 'You are not authorized to view this content.' }
-        format.json { render notice: 'You are not authorized to view this content.' }
+        warning = 'You are not authorized to view this content.'
+        flash[:warning] = warning
+        format.html { redirect_to '/', warning: warning }
+        format.json { render warning: warning }
       end
     end
   end
