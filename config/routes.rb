@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   resources :va_secretary_priorities
   resources :strategic_sponsors
   resources :users, except: [:show, :new, :edit] do
-    patch :un_delete
+    patch :re_enable
   end
   root 'home#index'
   get '/practices' => 'practices#index'

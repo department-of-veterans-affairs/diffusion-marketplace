@@ -55,7 +55,7 @@ describe 'The user index', js: true, type: :feature do
     expect(page).to have_css('tbody tr', count: 4)
 
     within("tr#user_row_#{User.first.id}") do
-      click_button('Delete')
+      click_button('Disable')
     end
 
     expect(page).not_to have_content('spongebob.squarepants@bikinibottom.net')
