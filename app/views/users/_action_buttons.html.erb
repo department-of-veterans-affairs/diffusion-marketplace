@@ -1,0 +1,22 @@
+<td>
+  <%= form_for(user) do |f| %>
+    <div class="grid-row flex-justify">
+      <div class="grid-col flex-2">
+        <%= select_tag 'user[role]', "<option value='user'>User</option>".html_safe +
+            options_for_select(User::USER_ROLES.map{|role| [role.split('_').map(&:capitalize).join('/'), role]},
+            (user.roles.first.name if user.roles.present?)), class: 'usa-select x0-top', id: "user_#{user.id}_role", aria:
+            { label: 'User role' } %>
+      </div>
+      <div class="grid-col x1-left">
+        <%= f.submit 'Assign', class: 'dm-button dm-button-primary', id: "edit_user_#{user.id}_submit" %>
+      </div>
+    </div>
+  <% end %>
+</td>
+<td>
+  <% unless user.disabled %>
+    <%= button_to 'Disable', user, method: :delete, class: 'dm-button dm-button-danger', data: {confirm: "Are you sure you wish to disable this user: #{user.email}?"} %>
+  <% else %>
+    <%= button_to 'Re-enable', user_re_enable_path(user), method: :patch, class: 'dm-button dm-button-primary', data: {confirm: "Are you sure you wish to re-enable this user: #{user.email}?"} %>
+  <% end %>
+</td>
