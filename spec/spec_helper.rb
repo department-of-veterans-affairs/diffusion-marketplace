@@ -35,7 +35,6 @@ RSpec.configure do |config|
     Warden.test_reset!
   end
 
-
   # show retry status in spec process
   config.verbose_retry = true
   # Try twice (retry once)
@@ -44,19 +43,18 @@ RSpec.configure do |config|
   config.exceptions_to_retry = [Net::ReadTimeout]
 
   # register around filter that captures stdout and stderr
-  config.around(:each) do |example|
-    $stdout = StringIO.new
-    $stderr = StringIO.new
+  # config.around(:each) do |example|
+  #   $stdout = StringIO.new
+  #   $stderr = StringIO.new
 
-    example.run
+  #   example.run
 
-    example.metadata[:stdout] = $stdout.string
-    example.metadata[:stderr] = $stderr.string
+  #   example.metadata[:stdout] = $stdout.string
+  #   example.metadata[:stderr] = $stderr.string
 
-    $stdout = STDOUT
-    $stderr = STDERR
-  end
-
+  #   $stdout = STDOUT
+  #   $stderr = STDERR
+  # end
 
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest

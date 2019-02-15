@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+### This is the base class for our Users. ^^ Above comment is for Rubocop
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable, :trackable and :omniauthable
@@ -16,7 +19,13 @@ class User < ApplicationRecord
   validate :password_uniqueness
   validate :va_email
 
+  scope :enabled,   -> { where(disabled: false) }
+  scope :disabled,  -> { where(disabled: true) }
+
+  paginates_per 50
+
   def password_complexity
+    return true unless encrypted_password_changed?
     return if password.blank?
 
     pw_strength = 0
@@ -33,18 +42,21 @@ class User < ApplicationRecord
   end
 
   def password_uniqueness
+    return true unless encrypted_password_changed?
     return true if password.split('').uniq.length > 6
 
     errors.add :password, 'must include 6 unique characters'
   end
 
   def valid_email
+    return true unless email_changed?
     return true if /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i.match?(email)
 
     errors.add :email, 'invalid'
   end
 
   def va_email
+    return true unless email_changed?
     return true if skip_va_validation || email.split('@').last == 'va.gov'
 
     errors.add :email, 'must use @va.gov email address'
