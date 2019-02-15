@@ -12,8 +12,14 @@
         <div class="login-body">
           <h2>Change your password</h2>
 
-          <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: {method: :put}) do |f| %>
-            <%= devise_error_messages! %>
+          <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: {method: :put, class: 'usa-form x1-top'}) do |f| %>
+            <% if devise_error_messages!.present? %>
+              <div class="usa-alert usa-alert-error" >
+                <div class="usa-alert-body">
+                  <%= devise_error_messages! %>
+                </div>
+              </div>
+            <% end %>
             <%= f.hidden_field :reset_password_token %>
 
             <div class="field">
@@ -21,12 +27,12 @@
               <% if @minimum_password_length %>
                 <em>(<%= @minimum_password_length %> characters minimum)</em><br/>
               <% end %>
-              <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
+              <%= f.password_field :password, autofocus: true, autocomplete: "new-password", required: true %>
             </div>
 
             <div class="field">
               <%= f.label :password_confirmation, "Confirm new password", class: 'usa-label x0 x1-top' %><br/>
-              <%= f.password_field :password_confirmation, autocomplete: "off", class: 'dm-button-primary' %>
+              <%= f.password_field :password_confirmation, autocomplete: "off", class: 'dm-button-primary', required: true %>
             </div>
 
             <div class="actions display-flex justify-center x1-top">
