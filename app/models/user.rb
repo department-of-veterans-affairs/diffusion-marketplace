@@ -67,4 +67,9 @@ class User < ApplicationRecord
       remove_role r
     end
   end
+
+  def password_required?
+    return false if skip_password_validation
+    super
+  end
 end
