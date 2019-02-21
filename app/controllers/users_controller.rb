@@ -6,7 +6,6 @@ class UsersController < ApplicationController
   before_action :require_admin, only: %i[index update destroy re_enable]
   before_action :require_user_or_admin, only: :update
   before_action :final_admin, only: :update
-  before_action :require_no_password, only: :set_password
 
   def index
     @users = User.all.order(:email).page(params[:page])
@@ -33,9 +32,6 @@ class UsersController < ApplicationController
   def re_enable
     @user.update_attributes disabled: false
     redirect_to users_path
-  end
-
-  def set_password
   end
 
   private
@@ -67,9 +63,5 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:email, :password, :password_confirmation, :job_title, :first_name, :last_name, :phone_number, :visn, :skip_va_validation, :skip_password_validation)
-  end
-
-  def require_no_password
-    @user.encrypted_password.blank?
   end
 end
