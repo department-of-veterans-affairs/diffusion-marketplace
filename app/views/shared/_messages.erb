@@ -6,9 +6,16 @@
     </div>
 <% end %>
 <% if notice.present? %>
-    <div class="usa-alert usa-alert-info x1-bottom" >
-      <div class="usa-alert-body">
-        <p class="usa-alert-heading"><%= notice %></p>
-      </div>
+  <div class="usa-alert usa-alert-info x1-bottom" >
+    <div class="usa-alert-body">
+      <p class="usa-alert-heading"><%= notice %></p>
     </div>
+  </div>
+<% end %>
+<% if flash[:warning].present? %>
+  <div class="usa-alert usa-alert-warning x1-bottom" >
+    <div class="usa-alert-body">
+      <p class="usa-alert-heading"><%= flash[:warning] %></p>
+    </div>
+  </div>
 <% end %>
