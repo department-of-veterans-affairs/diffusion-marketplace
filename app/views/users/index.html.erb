@@ -21,6 +21,19 @@
         <% end %>
       </tbody>
     </table>
-    <%= paginate @users %>
+    <div class='grid-row space-between'>
+      <div class='grid-col flex-1'>
+        <%= paginate @users %>
+      </div>
+      <div class='grid-col flex-1 x4-bottom'>
+        <%= form_tag controller: :admin, action: :create_user, class: 'usa-form' do |f| %>
+          <div class='grid-row '>
+            <div class='x1-right'><%= label_tag 'user[email]', 'New user email:', class: 'usa-label' %></div>
+            <div class='grid-col flex-2'><%= text_field_tag 'user[email]', nil, placeholder: 'New user email', required: true, class: 'usa-input' %></div>
+            <%= hidden_field_tag 'user[skip_va_validation]', value: true %>
+            <%= hidden_field_tag 'user[confirmed_at]', value: Time.now %>
+            <div class='grid-col x1-left'><%= submit_tag 'Create User', class: 'dm-button dm-button-primary' %></div>
+        <% end %>
+      </div>
   </section>
 </div>

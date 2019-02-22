@@ -61,4 +61,18 @@ describe 'The user index', js: true, type: :feature do
     expect(page).not_to have_content('spongebob.squarepants@bikinibottom.net')
     expect(page).to have_css('tbody tr', count: 3)
   end
+
+  it 'should create a new user' do
+    login_as(@admin, scope: :user, run_callbacks: false)
+    visit '/users'
+
+    expect(page).to have_button('Create User')
+    expect(page).to have_css('tbody tr', count: 4)
+
+    fill_in('New user email:', with: 'Dummy@email.com')
+    click_button('Create User')
+
+    expect(page).to have_css('tbody tr', count: 5)
+    expect(page).to have_content('dummy@email.com')
+  end
 end
