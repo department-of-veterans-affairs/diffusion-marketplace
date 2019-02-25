@@ -18,6 +18,6 @@ ADD . /app
 WORKDIR /app
 RUN (bundle check || bundle install --without development test)
 
-RUN DB_ADAPTER=nulldb RAILS_ENV=production SES_SMTP_USERNAME=diffusion_marketplace SES_SMTP_PASSWORD=diffusion_marketplace bundle exec rake assets:precompile
+RUN DB_ADAPTER=nulldb RAILS_ENV=production SES_SMTP_USERNAME=diffusion_marketplace SES_SMTP_PASSWORD=diffusion_marketplace bundle exec rake assets:precompile HOSTNAME=diffusion-marketplace.va.gov
 
 CMD bash scripts/start_server.sh
