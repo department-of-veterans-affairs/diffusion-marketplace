@@ -1,6 +1,6 @@
 # Mailer for form emails.
 class AdminMailer < ApplicationMailer
-  default from: 'do_not_reply@va.gov'
+  default from: ENV['DO_NOT_REPLY_MAILER_SENDER'] || 'do_not_reply@va.gov'
   layout 'mailer'
 
   def send_set_password(options = {})
