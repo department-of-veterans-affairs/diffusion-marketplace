@@ -47,6 +47,14 @@ class CreatePractices < ActiveRecord::Migration[5.2]
       t.string :origin_title
       t.string :origin_story
 
+      t.boolean :need_additional_staff
+      t.boolean :need_training
+      t.boolean :need_policy_change
+      t.boolean :need_new_license
+
+      t.string :training_provider
+      t.text :required_training_summary
+
       t.timestamps
     end
 

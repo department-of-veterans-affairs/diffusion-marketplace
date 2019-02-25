@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Area Of Affects</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Short name</th>
+      <th>Description</th>
+      <th>Position</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @area_of_affects.each do |area_of_affect| %>
+      <tr>
+        <td><%= area_of_affect.name %></td>
+        <td><%= area_of_affect.short_name %></td>
+        <td><%= area_of_affect.description %></td>
+        <td><%= area_of_affect.position %></td>
+        <td><%= link_to 'Show', area_of_affect %></td>
+        <td><%= link_to 'Edit', edit_area_of_affect_path(area_of_affect) %></td>
+        <td><%= link_to 'Destroy', area_of_affect, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Area Of Affect', new_area_of_affect_path %>
