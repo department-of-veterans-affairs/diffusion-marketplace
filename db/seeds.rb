@@ -223,6 +223,62 @@ if StrategicSponsor.all.blank?
     ]
   end
 
+  unless PracticeManagement.all.present?
+    area_of_affects = [
+        PracticeManagement.create!(name: 'Wait time to be seen'),
+        PracticeManagement.create!(name: 'Doctor to patient time'),
+        PracticeManagement.create!(name: 'Throughput'),
+        PracticeManagement.create!(name: 'Discharge process'),
+        PracticeManagement.create!(name: 'Discharge planning'),
+        PracticeManagement.create!(name: 'Patient satisfaction'),
+        PracticeManagement.create!(name: 'Provider/Staff retention'),
+        PracticeManagement.create!(name: 'Provider/Staff satisfaction'),
+        PracticeManagement.create!(name: 'Efficiency'),
+        PracticeManagement.create!(name: 'Cost avoidance'),
+        PracticeManagement.create!(name: 'Management'),
+        PracticeManagement.create!(name: 'None')
+    ]
+  end
+
+  unless Department.all.present?
+    departments = [
+        Department.create!(name: 'Admissions', short_name: 'admissions'),
+        Department.create!(name: 'Anesthetics', short_name: 'anesthetics'),
+        Department.create!(name: 'Center Supply', short_name: 'center_supply'),
+        Department.create!(name: 'Chaplaincy', short_name: 'chaplaincy'),
+        Department.create!(name: 'Coronary Care Unit', short_name: 'coronary_care_unit'),
+        Department.create!(name: 'Critical Care', short_name: 'critical_care'),
+        Department.create!(name: 'Diagnostic Imaging/X-ray/Radiology', short_name: 'diagnostic _imaging_x-ray_Radiology'),
+        Department.create!(name: 'Discharge Planning', short_name: 'discharge_planning'),
+        Department.create!(name: 'Elderly Services', short_name: 'elderly_services'),
+        Department.create!(name: 'Emergency Services', short_name: 'emergency_services'),
+        Department.create!(name: 'Finance Department', short_name: 'finance_department'),
+        Department.create!(name: 'House Keeping', short_name: 'house_keeping'),
+        Department.create!(name: 'Security', short_name: 'security'),
+        Department.create!(name: 'Laundry', short_name: 'laundry'),
+        Department.create!(name: 'Parking', short_name: 'parking'),
+        Department.create!(name: 'General Surgery', short_name: 'general_surgery'),
+        Department.create!(name: 'Occupational Health and Safety', short_name: 'occupational_health_and_safety'),
+        Department.create!(name: 'Intensive Care Unit', short_name: 'intensive_care_unit'),
+        Department.create!(name: 'Human Resources', short_name: 'human_resources'),
+        Department.create!(name: 'Infection Control', short_name: 'infection_control'),
+        Department.create!(name: 'Information Management', short_name: 'information_management'),
+        Department.create!(name: 'Maternity', short_name: 'maternity'),
+        Department.create!(name: 'Medical Records', short_name: 'medical_records'),
+        Department.create!(name: 'Microbiology', short_name: 'microbiology'),
+        Department.create!(name: 'Nutrition and Dietetics', short_name: 'nutrition_and_dietetics'),
+        Department.create!(name: 'Patient Accounts', short_name: 'patient_accounts'),
+        Department.create!(name: 'Patient Services', short_name: 'patient_services'),
+        Department.create!(name: 'Pharmacy', short_name: 'pharmacy'),
+        Department.create!(name: 'Physiotherapy', short_name: 'physiotherapy'),
+        Department.create!(name: 'Purchasing and Supplies', short_name: 'purchasing_and_supplies'),
+        Department.create!(name: 'Radiology', short_name: 'radiology'),
+        Department.create!(name: 'Radiotherapy', short_name: 'radiotherapy'),
+        Department.create!(name: 'Social Work', short_name: 'social_work'),
+        Department.create!(name: 'None', short_name: 'none'),
+    ]
+  end
+
   ### USERS ###
   User.create!(email: 'demo@va.gov', password: 'Demo#123', password_confirmation: 'Demo#123', skip_va_validation: true, confirmed_at: Time.now)
   User.create!(email: 'tom@skylight.digital', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now).add_role(User::USER_ROLES[1].to_sym)

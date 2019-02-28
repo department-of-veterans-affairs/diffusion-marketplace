@@ -55,6 +55,8 @@ class CreatePractices < ActiveRecord::Migration[5.2]
       t.string :training_provider
       t.text :required_training_summary
 
+      t.string :facility_complexity_level
+
       t.timestamps
     end
 

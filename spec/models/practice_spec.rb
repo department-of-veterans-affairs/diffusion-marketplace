@@ -7,8 +7,6 @@ RSpec.describe Practice, type: :model do
     it { should have_many(:additional_resources) }
     it { should have_many(:ancillary_service_practices) }
     it { should have_many(:ancillary_services) }
-    it { should have_many(:area_of_affect_practices) }
-    it { should have_many(:area_of_affects) }
     it { should have_many(:badge_practices) }
     it { should have_many(:badges) }
     it { should have_many(:business_case_files) }
@@ -30,6 +28,8 @@ RSpec.describe Practice, type: :model do
     it { should have_many(:job_position_practices) }
     it { should have_many(:job_positions) }
     it { should have_many(:photo_files) }
+    it { should have_many(:practice_management_practices) }
+    it { should have_many(:practice_managements) }
     it { should have_many(:publications) }
     it { should have_many(:publication_files) }
     it { should have_many(:required_staff_trainings) }

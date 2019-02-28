@@ -1,6 +1,6 @@
-class CreateAreaOfAffects < ActiveRecord::Migration[5.2]
+class CreatePracticeManagements < ActiveRecord::Migration[5.2]
   def change
-    create_table :area_of_affects do |t|
+    create_table :practice_managements do |t|
       t.string :name
       t.string :short_name
       t.text :description

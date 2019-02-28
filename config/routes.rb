@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :departments
-  resources :area_of_affects
+  resources :practice_managements
   devise_for :users, controllers: { registrations: 'registrations' }
   resources :developing_facility_types
   resources :va_employees

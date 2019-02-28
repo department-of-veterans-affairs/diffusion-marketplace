@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe AreaOfAffect, type: :model do
+RSpec.describe PracticeManagement, type: :model do
   describe 'associations' do
     it { should have_many(:practices) }
   end

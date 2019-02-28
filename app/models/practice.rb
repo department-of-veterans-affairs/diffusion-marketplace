@@ -12,8 +12,6 @@ class Practice < ApplicationRecord
   has_many :additional_staffs
   has_many :ancillary_service_practices
   has_many :ancillary_services, through: :ancillary_service_practices
-  has_many :area_of_affect_practices
-  has_many :area_of_affects, through: :area_of_affect_practices
   has_many :badge_practices
   has_many :badges, through: :badge_practices
   has_many :business_case_files
@@ -36,6 +34,8 @@ class Practice < ApplicationRecord
   has_many :job_position_practices
   has_many :job_positions, through: :job_position_practices
   has_many :photo_files
+  has_many :practice_management_practices
+  has_many :practice_managements, through: :practice_management_practices
   has_many :publications
   has_many :publication_files
   has_many :required_staff_trainings
