@@ -8,6 +8,7 @@ namespace :importer do
 
     (3..last_row).each do |row_num|
       @answers = sheet.sheet(0).row(row_num)
+      @respondant_id = @answers[0]
 
       @name = @answers[@questions.index('What is the name of your practice?')]
       next if @name.blank?
@@ -101,7 +102,7 @@ def strategic_sponsors
       next if sp_name.blank?
 
       strategic_sponsor = StrategicSponsor.find_by(name: sp_name) || StrategicSponsor.create(name: sp_name)
-      StrategicSponsorPractice.create strategic_sponsor: strategic_sponsor, practice: @practice
+      StrategicSponsorPractice.create strategic_sponsor: strategic_sponsor, practice: @practice unless StrategicSponsorPractice.where(strategic_sponsor: strategic_sponsor, practice: @practice).any?
     end
   end
 end
@@ -110,8 +111,16 @@ def va_employees
   question_fields = {
     "What VA employee(s) were responsible for the development of this Practice? (Innovation Team)Please separate the person's Name from their Role with a backslash (\\)": 5
   }
-
+  avatars = [
+    'Please upload a headshot of Support Team Person 1',
+    'Please upload a headshot of Support Team Person 2',
+    'Please upload a headshot of Support Team Person 3',
+    'Please upload a headshot of Support Team Person 4',
+    'Please upload a headshot of Support Team Person 5',
+  ]
+  index = -1
   question_fields.each do |key, value|
+    index += 1
     q_index = @questions.index(key.to_s)
     end_index = q_index + value - 1
     (q_index..end_index).each do |i|
@@ -121,22 +130,22 @@ def va_employees
       vae = vae.split(/\\|\//)
       vae_name = vae[0]
       vae_role = vae[1]
-      va_employee = VaEmployee.find_by(name: vae_name, role: vae_role) || VaEmployee.create(name: vae_name, role: vae_role)
-      VaEmployeePractice.create va_employee: va_employee, practice: @practice
+      if @answers[@questions.index(avatars[index].to_s)].present?
+        image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondant_id}/#{@answers[@questions.index(avatars[index].to_s)]}"
+        image_file = File.new(image_path)
+        va_employee = VaEmployee.find_by(name: vae_name, role: vae_role) || VaEmployee.create(name: vae_name, role: vae_role,
+                                                                                              avatar: ActionDispatch::Http::UploadedFile.new(
+                                                                                              filename: File.basename(image_file),
+                                                                                              tempfile: image_file,
+                                                                                              # detect the image's mime type with MIME if you can't provide it yourself.
+                                                                                              type: MIME::Types.type_for(image_path).first.content_type
+                                                                                              ))
+      else
+        va_employee = VaEmployee.find_by(name: vae_name, role: vae_role) || VaEmployee.create(name: vae_name, role: vae_role)
+      end
+      VaEmployeePractice.create va_employee: va_employee, practice: @practice unless VaEmployeePractice.where(va_employee: va_employee, practice: @practice).any?
     end
   end
-  va_employees_upload
-end
-
-def va_employees_upload
-  question_fields = {
-    'Please upload a headshot of Support Team Person 1': :avatar,
-    'Please upload a headshot of Support Team Person 2': :avatar,
-    'Please upload a headshot of Support Team Person 3': :avatar,
-    'Please upload a headshot of Support Team Person 4': :avatar,
-    'Please upload a headshot of Support Team Person 5': :avatar,
-  }
-  ### DO uploady things here
 end
 
 def developing_facility_types
@@ -152,7 +161,7 @@ def developing_facility_types
       next if answer.blank?
 
       developing_facility = DevelopingFacilityType.find_by(name: answer) || DevelopingFacilityType.create(name: answer)
-      DevelopingFacilityTypePractice.create developing_facility_type: developing_facility, practice: @practice
+      DevelopingFacilityTypePractice.create developing_facility_type: developing_facility, practice: @practice unless DevelopingFacilityTypePractice.where(developing_facility_type: developing_facility, practice: @practice).any?
     end
   end
 end
@@ -170,7 +179,7 @@ def va_secretary_priorities
       next if answer.blank?
 
       secretary_priority = VaSecretaryPriority.find_by(name: answer) || VaSecretaryPriority.create(name: answer)
-      VaSecretaryPriorityPractice.create va_secretary_priority: secretary_priority, practice: @practice
+      VaSecretaryPriorityPractice.create va_secretary_priority: secretary_priority, practice: @practice unless VaSecretaryPriorityPractice.where(va_secretary_priority: secretary_priority, practice: @practice).any?
     end
   end
 end
@@ -188,7 +197,7 @@ def practice_managements
       next if answer.blank?
 
       practice_management = PracticeManagement.find_by(name: answer) || PracticeManagement.create(name: answer)
-      PracticeManagementPractice.create practice_management: practice_management, practice: @practice
+      PracticeManagementPractice.create practice_management: practice_management, practice: @practice unless PracticeManagementPractice.where(practice_management: practice_management, practice: @practice).any?
     end
   end
 end
@@ -208,7 +217,7 @@ def impact
       next if answer.blank?
 
       impact = Impact.find_by(name: answer) || Impact.create(name: answer)
-      ImpactPractice.create impact: impact, practice: @practice
+      ImpactPractice.create impact: impact, practice: @practice unless ImpactPractice.where( impact: impact, practice: @practice).any?
     end
   end
 end
@@ -226,7 +235,7 @@ def clinical_conditions
       next if answer.blank?
 
       condition = ClinicalCondition.find_by(name: answer) || ClinicalCondition.create(name: answer)
-      ClinicalConditionPractice.create clinical_condition: condition, practice: @practice
+      ClinicalConditionPractice.create clinical_condition: condition, practice: @practice unless ClinicalConditionPractice.where(clinical_condition: condition, practice: @practice).any?
     end
   end
 end
@@ -235,10 +244,9 @@ def financial_files
   question_fields = {
     "Please upload applicable financial information.": 1
   }
-  respondant_id = @answers[0]
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{respondant_id}/#{@answers[@questions.index(key.to_s)]}"
+    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondant_id}/#{@answers[@questions.index(key.to_s)]}"
     image_file = File.new(image_path)
 
     FinancialFile.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
@@ -263,7 +271,7 @@ def job_positions
       next if answer.blank?
 
       job_position = JobPosition.find_by(name: answer) || JobPosition.create(name: answer)
-      JobPositionPractice.create job_position: job_position, practice: @practice
+      JobPositionPractice.create job_position: job_position, practice: @practice unless JobPositionPractice.where(job_position: job_position, practice: @practice).any?
     end
   end
 end
@@ -281,7 +289,7 @@ def ancillary_services
       next if answer.blank?
 
       ancillary_service = AncillaryService.find_by(name: answer) || AncillaryService.create(name: answer)
-      AncillaryServicePractice.create ancillary_service: ancillary_service, practice: @practice
+      AncillaryServicePractice.create ancillary_service: ancillary_service, practice: @practice unless AncillaryServicePractice.where(ancillary_service: ancillary_service, practice: @practice).any?
     end
   end
 end
@@ -299,7 +307,7 @@ def clinical_locations
       next if answer.blank?
 
       clinical_location = ClinicalLocation.find_by(name: answer) || ClinicalLocation.create(name: answer)
-      ClinicalLocationPractice.create clinical_location: clinical_location, practice: @practice
+      ClinicalLocationPractice.create clinical_location: clinical_location, practice: @practice unless ClinicalLocationPractice.where(clinical_location: clinical_location, practice: @practice).any?
     end
   end
 end
@@ -318,7 +326,7 @@ def departments
       next if answer.blank?
 
       department = Department.find_by(name: answer) || Department.create(name: answer)
-      DepartmentPractice.create department: department, practice: @practice
+      DepartmentPractice.create department: department, practice: @practice unless DepartmentPractice.where(department: department, practice: @practice).any?
     end
   end
 end
@@ -336,7 +344,7 @@ def video_files
     answer = @answers[q_index]
     next if answer.blank?
 
-    VideoFile.create(practice: @practice, url: answer)
+    VideoFile.create(practice: @practice, url: answer) unless VideoFile.where(url: answer, practice: @practice).any?
   end
 end
 
@@ -346,10 +354,9 @@ def additional_documents
     'Additional practice information 1': :attachment,
     'Additional practice information 2': :attachment,
   }
-  respondant_id = @answers[0]
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{respondant_id}/#{@answers[@questions.index(key.to_s)]}"
+    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondant_id}/#{@answers[@questions.index(key.to_s)]}"
     image_file = File.new(image_path)
 
     AdditionalDocument.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
@@ -365,10 +372,9 @@ def business_case_files
   question_fields = {
     'Does your practice have a formal business case?': :attachment
   }
-  respondant_id = @answers[0]
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{respondant_id}/#{@answers[@questions.index(key.to_s)]}"
+    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondant_id}/#{@answers[@questions.index(key.to_s)]}"
     image_file = File.new(image_path)
 
     BusinessCaseFile.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
@@ -384,10 +390,9 @@ def toolkit_files
   question_fields = {
     'Does your practice have an implementation toolkit?': :attachment
   }
-  respondant_id = @answers[0]
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{respondant_id}/#{@answers[@questions.index(key.to_s)]}"
+    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondant_id}/#{@answers[@questions.index(key.to_s)]}"
     image_file = File.new(image_path)
 
     ToolkitFile.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
@@ -403,10 +408,9 @@ def checklist_files
   question_fields = {
     'Does your practice have a pre-implementation checklist?': :attachment
   }
-  respondant_id = @answers[0]
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{respondant_id}/#{@answers[@questions.index(key.to_s)]}"
+    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondant_id}/#{@answers[@questions.index(key.to_s)]}"
     image_file = File.new(image_path)
 
     ChecklistFile.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
@@ -423,10 +427,9 @@ def publication_files
     'Does your practice have peer-reviewed publications associated with it?': :attachment,
     'Additional publication upload 1': :attachment
   }
-  respondant_id = @answers[0]
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{respondant_id}/#{@answers[@questions.index(key.to_s)]}"
+    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondant_id}/#{@answers[@questions.index(key.to_s)]}"
     image_file = File.new(image_path)
 
     PublicationFiles.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
@@ -450,7 +453,7 @@ def publications
       answer = @answers[i]
       next if answer.blank?
 
-      Publication.create(practice: @practice, link: answer)
+      Publication.create(practice: @practice, link: answer) unless Publication.where(link: answer, practice: @practice).any?
     end
   end
 end
@@ -468,7 +471,7 @@ def badges
       next if answer.blank?
 
       badge = Badge.find_by(name: answer) || Badge.create(name: answer)
-      BadgePractice.create badge: badge, practice: @practice
+      BadgePractice.create badge: badge, practice: @practice unless BadgePractice.where(badge: badge, practice: @practice).any?
     end
   end
 end
@@ -477,10 +480,9 @@ def implementation_timeline
   question_fields = {
     'Do you have a diffusion timeline regarding the steps to implement your practice?': :attachment
   }
-  respondant_id = @answers[0]
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{respondant_id}/#{@answers[@questions.index(key.to_s)]}"
+    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondant_id}/#{@answers[@questions.index(key.to_s)]}"
     image_file = File.new(image_path)
 
     ImplementationTimelineFiles.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
@@ -521,7 +523,7 @@ def additional_staff
     duration_in_weeks = @answers[@questions.index(question_fields[2].keys[0].to_s) + i]
     next if title.blank?
 
-    AdditionalStaff.create(practice: @practice, title: title, hours_per_week: hours_per_week, duration_in_weeks: duration_in_weeks)
+    AdditionalStaff.create(practice: @practice, title: title, hours_per_week: hours_per_week, duration_in_weeks: duration_in_weeks) unless AdditionalStaff.where(title: title, hours_per_week: hours_per_week, duration_in_weeks: duration_in_weeks, practice: @practice).any?
   end
 end
 
@@ -536,7 +538,7 @@ def additional_resources
     answer = @answers[q_index]
     next if answer.blank?
 
-    AdditionalResource.create(practice: @practice, description: answer)
+    AdditionalResource.create(practice: @practice, description: answer) unless AdditionalResource.where(description: answer, practice: @practice).any?
   end
 end
 
@@ -551,7 +553,7 @@ def required_training_staff
     answer = @answers[q_index]
     next if answer.blank?
 
-    RequiredStaffTraining.create(practice: @practice, title: answer)
+    RequiredStaffTraining.create(practice: @practice, title: answer) unless RequiredStaffTraining.where(title: answer, practice: @practice).any?
   end
 end
 
@@ -566,8 +568,8 @@ def costs_difficulties
     (q_index..end_index).each do |i|
       next if @answers[i].blank?
 
-      Cost.create practice: @practice, description: @answers[i]
-      Difficulty.create practice: @practice, description: @answers[i + 3]
+      Cost.create practice: @practice, description: @answers[i] unless Cost.where(description: @answers[i], practice: @practice).any?
+      Difficulty.create practice: @practice, description: @answers[i + 3] unless Difficulty.where(description: @answers[i + 3], practice: @practice).any?
     end
   end
 end
@@ -588,11 +590,10 @@ def human_impact_photos
   ]]
   question_fields.each do |fields|
     description_indices = @questions.each_index.select { |i| @questions[i] == fields[2] }
-    respondant_id = @answers[0]
 
     next if @answers[@questions.index(fields[0])].blank?
 
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{respondant_id}/#{@answers[@questions.index(key.to_s)]}"
+    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondant_id}/#{@answers[@questions.index(key.to_s)]}"
     image_file = File.new(image_path)
     title = @answers[@questions.index(fields[1])]
     description = @answers[@questions.index(description_indices[i])]
@@ -611,11 +612,10 @@ def file_uploads
     'Under the side navigation "Origin of this practice" tab, please provide a photo of the individual who initiated the practice.': :origin_picture,
     'Upload a Display Image for your practice. This image will be used for the main title page and marketplace tile.': :main_display_image
   }
-  respondant_id = @answers[0]
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
 
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{respondant_id}/#{@answers[@questions.index(key.to_s)]}"
+    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondant_id}/#{@answers[@questions.index(key.to_s)]}"
     image_file = File.new(image_path)
 
     @practice.send("#{value.to_sym}=", ActionDispatch::Http::UploadedFile.new(
