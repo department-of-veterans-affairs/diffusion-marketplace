@@ -80,7 +80,7 @@ namespace :surveymonkey do
         # If the URL is good, download the file
         if url
           file = agent.get(url)
-          file.save(respondent_dir + '/' + file.filename)
+          file.save(respondent_dir + '/' + URI.decode(file.filename))
         end
 
         puts "done"
