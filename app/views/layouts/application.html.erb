@@ -12,6 +12,7 @@
   <body>
     <%= render 'shared/header' %>
     <main id="main-content" class="<%= params[:controller] %>">
+      <%= render 'shared/messages' %>
       <%= yield %>
     </main>
     <%= render 'shared/footer' %>

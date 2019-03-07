@@ -12,10 +12,13 @@
     </div>
   </div>
 <% end %>
-<% if flash[:warning].present? %>
-  <div class="usa-alert usa-alert-warning x1-bottom" >
-    <div class="usa-alert-body">
-      <p class="usa-alert-heading"><%= flash[:warning] %></p>
+<% if flash.present? %>
+  <% flash.each do |key, value| %>
+    <div class="grid-container usa-alert usa-alert-<%= key %>">
+      <div class="usa-alert-body">
+        <h3 class="usa-alert-heading"><%= key.capitalize %></h3>
+        <p class="usa-alert-text"><%= value %></p>
+      </div>
     </div>
-  </div>
+  <% end %>
 <% end %>

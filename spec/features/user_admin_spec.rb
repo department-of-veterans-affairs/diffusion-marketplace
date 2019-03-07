@@ -58,7 +58,7 @@ describe 'The user index', js: true, type: :feature do
       click_button('Disable')
     end
 
-    expect(page).not_to have_content('spongebob.squarepants@bikinibottom.net')
+    expect(page).to have_content("Disabled user \"spongebob.squarepants@bikinibottom.net\"")
     expect(page).to have_css('tbody tr', count: 3)
   end
 
