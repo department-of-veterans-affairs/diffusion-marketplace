@@ -106,6 +106,18 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   color: $dm-color-dark-brown !important;
 }
 
+.dm-font-color-blue-black {
+  color: $dm-color-blue-black !important;
+}
+
+.dm-font-color-super-grey {
+  color: $dm-color-super-grey !important;
+}
+
+.dm-font-color-super-violet-ish {
+  color: $dm-color-super-violet-ish !important;
+}
+
 /* Font Weight */
 
 .fw-100 {
@@ -122,6 +134,45 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .fw-bold {
   font-weight: bold !important;
+}
+
+/* Font Size */
+
+.fs0-5 {
+  font-size: 0.5em;
+}
+
+.fs1 {
+  font-size: 1em;
+}
+
+/* 18px font size */
+.fs1-125 {
+  font-size: 1.125em;
+}
+
+.fs1-5 {
+  font-size: 1.5em !important;
+}
+
+.fs2 {
+  font-size: 2em !important;
+}
+
+.fs2-5 {
+  font-size: 2.5em !important;
+}
+
+.fs3 {
+  font-size: 3em !important;
+}
+
+.fs3-5 {
+  font-size: 3.5em !important;
+}
+
+.fs4 {
+  font-size: 4em !important;
 }
 
 /* Text style */
@@ -421,6 +472,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 .x3-bottom {
   margin-bottom: 3rem !important;
 }
+/* 60px */
+.x3-75-bottom {
+  margin-bottom: 3.75rem !important;
+}
 
 .x4-bottom {
   margin-bottom: 4rem !important;
@@ -442,6 +497,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .x0-left {
   margin-left: 0 !important;
+}
+
+.x0-5-left {
+  margin-left: 0.5em !important;
 }
 
 .x1-left {
@@ -476,6 +535,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .x0-right {
   margin-right: 0 !important;
+}
+
+.x0-5-right {
+  margin-right: 0.5em !important;
 }
 
 .x1-right {
