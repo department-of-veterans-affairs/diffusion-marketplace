@@ -62,6 +62,23 @@ describe 'The user index', js: true, type: :feature do
     expect(page).to have_css('tbody tr', count: 3)
   end
 
+  it 'should re-enable the user' do
+    login_as(@admin, scope: :user, run_callbacks: false)
+    visit '/users'
+
+    expect(page).to have_content('spongebob.squarepants@bikinibottom.net')
+
+    within("tr#user_row_#{User.first.id}") do
+      click_button('Disable')
+    end
+
+    visit current_path
+    expect(page).to_not have_content('spongebob.squarepants@bikinibottom.net')
+
+    find("input[value='Re-enable']", visible: false).trigger('click')
+    expect(page).to have_content("Re-enabled user \"spongebob.squarepants@bikinibottom.net\"")
+  end
+
   it 'should create a new user' do
     login_as(@admin, scope: :user, run_callbacks: false)
     visit '/users'

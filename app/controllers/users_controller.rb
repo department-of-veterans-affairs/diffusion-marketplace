@@ -2,7 +2,7 @@
 
 # Users controller, primarily for user admin management
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[show edit update destroy re_enable, set_password]
+  before_action :set_user, only: %i[show edit update destroy re_enable set_password]
   before_action :require_admin, only: %i[index update destroy re_enable]
   before_action :require_user_or_admin, only: :update
   before_action :final_admin, only: :update
@@ -34,7 +34,7 @@ class UsersController < ApplicationController
 
   def re_enable
     @user.update_attributes disabled: false
-    flash[:success] = "Re-enabled user \"#{user.email}\""
+    flash[:success] = "Re-enabled user \"#{@user.email}\""
     redirect_to users_path
   end
 
