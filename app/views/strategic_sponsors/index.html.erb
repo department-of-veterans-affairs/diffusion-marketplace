@@ -1,33 +1,15 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Strategic Sponsors</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Short name</th>
-      <th>Description</th>
-      <th>Position</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @strategic_sponsors.each do |strategic_sponsor| %>
-      <tr>
-        <td><%= strategic_sponsor.name %></td>
-        <td><%= strategic_sponsor.short_name %></td>
-        <td><%= strategic_sponsor.description %></td>
-        <td><%= strategic_sponsor.position %></td>
-        <td><%= link_to 'Show', strategic_sponsor %></td>
-        <td><%= link_to 'Edit', edit_strategic_sponsor_path(strategic_sponsor) %></td>
-        <td><%= link_to 'Destroy', strategic_sponsor, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Strategic Sponsor', new_strategic_sponsor_path %>
+<div>
+  <section class="grid-container ">
+    <%= render "shared/messages" %>
+  </section>
+  <section class="grid-container practice-partners-background">
+    <div class="dm-font-color-primary-blue p1-top breadcrumbs dm-font-color-super-violet-ish">
+      <a href="/">Home</a>
+      <span class="x0-5-left x0-5-right">›</span>
+      <span>Practice Partners</span>
+    </div>
+    <h1 class="dm-font-color-blue-black fw-normal fs3-5">Practice Partners</h1>
+    <p class="dm-font-color-blue-black fs1-125 x3-75-bottom">Best practices are being developed, vetted, and promoted by multiple offices within VA. The combined efforts of each office enable VA as a whole to advance the mission to fulfill President Lincoln's promise: "To care for him who shall have borne the battle, and for his widow, and his orphan" by serving and honoring the men and women who are America's Veterans. Veterans deserve access to the best health care providers, state-of-art facilities, and cutting-edge technology.</p>
+    <p class="text-center dm-font-color-super-grey p2-bottom">Please select a VA Office below to be directed to the practices they are offering.</p>
+  </section>
+</div>
