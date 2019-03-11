@@ -4,6 +4,7 @@ namespace :importer do
   task import_answers: :environment do
     sheet = Roo::Excelx.new('./public/Diffusion Marketplace.xlsx')
     @questions = sheet.sheet(0).row(1)
+    @given_answers = sheet.sheet(0).row(2)
     last_row = sheet.last_row
 
     (3..last_row).each do |row_num|
@@ -22,7 +23,7 @@ namespace :importer do
       # sort all of the relational questions into their own methods for clarity.
       strategic_sponsors
       va_employees
-      developing_facility_types
+      # developing_facility_types
       va_secretary_priorities
       practice_managements
       impact
@@ -39,7 +40,7 @@ namespace :importer do
       checklist_files
       publication_files
       publications
-      badges
+      # badges
       implementation_timeline
       risk_mitigations
       additional_staff
@@ -53,17 +54,13 @@ end
 
 def basic_answers
   question_fields = {
-    'When was this practice initiated?': :date_initiated,
+    'When was this practice initiated? If day is unknown, use the first of the month': :date_initiated,
     # The below question's text needs to be changed when a new sheet can be provided.
-    'Please list the name of the facility that initiated this Practice (Medical Center, CBOC, or other facility. Type in "None" if appropriate).': :initiating_facility,
+    'Please list the station id of the facility that initiated this Practice. Please reference: https://www.va.gov/directory/guide/rpt_fac_list.cfm?sort=Sta&list_by=all&oid=all': :initiating_facility,
     'Please enter an estimate in dollars of the cost avoidance per facility (Medical Center, CBOC, or applicable institution).': :impact_financial_estimate_saved,
-    'Please enter an estimate in dollars of the cost avoidance per veteran.': :impact_financial_per_veteran,
     'Please enter relevant financial data regarding this practice such as ROI, a business case summary, or other financial analysis.': :impact_financial_roi,
     "Please supply an email address for this practice's support network in order to direct interested parties. (e.g. HAPPEN@va.gov)": :support_network_email,
     "Please identify where your practice falls currently in VHA’s Phase Gate Model of Innovation. (Add a 10 word definition of each stage.)": :phase_gate,
-    'What objective measure do you use to define a successful implementation? (For example 10 patients complete the clinical protocol.)': :successful_implementation,
-    'What target measure(s) do you use to show success?': :target_measures,
-    'How many did it take to be considered a successful "launch"?': :target_success,
     "Do you have a link to your practice's VA Pulse Group?": :va_pulse_link,
     'How long does it usually take a group to implement your practice? How long do you expect it to take?': :implementation_time_estimate,
     'Do you have anything else you would like to share regarding your practice?': :additional_notes,
@@ -72,10 +69,9 @@ def basic_answers
     'Please provide a 50-100 word descriptive paragraph for your Practice. ': :summary,
     'Eventually, your Practice will be rated on Cost Avoidance, Human Impact, and Implementation Difficulty based on feedback from individuals who implement your Practice.For now, please provide your best estimate rating of your Practice with regards to Cost Avoidance on a scale of 1 - 4.': :cost_savings_aggregate,
     'Please provide your best estimate rating of your Practice with regards to Human Impact on health/care experience on a scale of 1 - 4.': :veteran_satisfaction_aggregate,
-    'Based on the risks and mitigations you provided, how would you rate your Practice overall with regards to risk level?': :risk_level_aggregate,
     'Under the side navigation "Resources Required" tab, the "Cost of Resources to Implement" rating will eventually be provided by individuals who have implemented this practice.For now, please provide your best estimate of the Cost of Resources to Implement your Practice on a scale of 1 - 4': :cost_to_implement_aggregate,
     'Under the side navigation "Resources Required" tab, the "Difficulty of Implementation" rating will eventually be provided by individuals who have implemented this practice.For now, please provide your best estimate of the Difficulty of Implementation your Practice on a scale of 1 - 4': :difficulty_aggregate,
-    'Will additional staff be required to implement or sustain this practice?': :need_additional_staff,
+    'Did your institution have to hire additional staff to implement this Practice?': :need_additional_staff,
     'Is there training required?': :need_training,
     'If there is training, please list who provides the training.': :training_provider,
     'How long is the training? What is required (such as 5 20 minute videos and then take a quiz vs. attend 2 meetings)? Is there a test involved?': :required_training_summary,
@@ -91,8 +87,9 @@ end
 
 def strategic_sponsors
   question_fields = {
-    'Who are the Practice Partners responsible for this practice? (Please select all that apply.)': 10,
-    'This practice was developed in which VISN? (Please select all that apply.)': 19
+    'Who is the primary sponsor responsible for creating this practice and bringing it to national awareness?': 2,
+    'What organizations have funded this Practice?': 10,
+    'What organizations are affiliated or partnered with this Practice?': 10
   }
   question_fields.each do |key, value|
     q_index = @questions.index(key.to_s)
@@ -101,15 +98,23 @@ def strategic_sponsors
       sp_name = @answers[i]
       next if sp_name.blank?
 
-      strategic_sponsor = StrategicSponsor.find_by(name: sp_name) || StrategicSponsor.create(name: sp_name)
-      StrategicSponsorPractice.create strategic_sponsor: strategic_sponsor, practice: @practice unless StrategicSponsorPractice.where(strategic_sponsor: strategic_sponsor, practice: @practice).any?
+      if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
+        split_answer = sp_name.split(/\\|\//)
+        split_answer.each do |ans|
+          strategic_sponsor = StrategicSponsor.find_by(name: ans) || StrategicSponsor.create(name: ans)
+          StrategicSponsorPractice.create strategic_sponsor: strategic_sponsor, practice: @practice unless StrategicSponsorPractice.where(strategic_sponsor: strategic_sponsor, practice: @practice).any?
+        end
+      else
+        strategic_sponsor = StrategicSponsor.find_by(name: sp_name) || StrategicSponsor.create(name: sp_name)
+        StrategicSponsorPractice.create strategic_sponsor: strategic_sponsor, practice: @practice unless StrategicSponsorPractice.where(strategic_sponsor: strategic_sponsor, practice: @practice).any?
+      end
     end
   end
 end
 
 def va_employees
   question_fields = {
-    "What VA employee(s) were responsible for the development of this Practice? (Innovation Team)Please separate the person's Name from their Role with a backslash (\\)": 5
+    "Who are the VA employee(s) responsible for the support of this Practice? (SupportTeam)Please separate the person's Name from their Role with a backslash (\\).": 5
   }
   avatars = [
     'Please upload a headshot of Support Team Person 1',
@@ -148,23 +153,30 @@ def va_employees
   end
 end
 
-def developing_facility_types
-  question_fields = {
-    "Where was this practice initially developed? (Please select all that apply.)": 6
-  }
+# def developing_facility_types
+#   question_fields = {
+#   }
 
-  question_fields.each do |key, value|
-    q_index = @questions.index(key.to_s)
-    end_index = q_index + value - 1
-    (q_index..end_index).each do |i|
-      answer = @answers[i]
-      next if answer.blank?
+#   question_fields.each do |key, value|
+#     q_index = @questions.index(key.to_s)
+#     end_index = q_index + value - 1
+#     (q_index..end_index).each do |i|
+#       answer = @answers[i]
+#       next if answer.blank?
 
-      developing_facility = DevelopingFacilityType.find_by(name: answer) || DevelopingFacilityType.create(name: answer)
-      DevelopingFacilityTypePractice.create developing_facility_type: developing_facility, practice: @practice unless DevelopingFacilityTypePractice.where(developing_facility_type: developing_facility, practice: @practice).any?
-    end
-  end
-end
+#       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
+#         split_answer = answer.split(/\\|\//)
+#         split_answer.each do |ans|
+#           developing_facility = DevelopingFacilityType.find_by(name: ans) || DevelopingFacilityType.create(name: ans)
+#           DevelopingFacilityTypePractice.create developing_facility_type: developing_facility, practice: @practice unless DevelopingFacilityTypePractice.where(developing_facility_type: developing_facility, practice: @practice).any?
+#         end
+#       else
+#         developing_facility = DevelopingFacilityType.find_by(name: answer) || DevelopingFacilityType.create(name: answer)
+#         DevelopingFacilityTypePractice.create developing_facility_type: developing_facility, practice: @practice unless DevelopingFacilityTypePractice.where(developing_facility_type: developing_facility, practice: @practice).any?
+#       end
+#     end
+#   end
+# end
 
 def va_secretary_priorities
   question_fields = {
@@ -178,8 +190,16 @@ def va_secretary_priorities
       answer = @answers[i]
       next if answer.blank?
 
-      secretary_priority = VaSecretaryPriority.find_by(name: answer) || VaSecretaryPriority.create(name: answer)
-      VaSecretaryPriorityPractice.create va_secretary_priority: secretary_priority, practice: @practice unless VaSecretaryPriorityPractice.where(va_secretary_priority: secretary_priority, practice: @practice).any?
+      if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
+        split_answer = answer.split(/\\|\//)
+        split_answer.each do |ans|
+          secretary_priority = VaSecretaryPriority.find_by(name: ans) || VaSecretaryPriority.create(name: ans)
+          VaSecretaryPriorityPractice.create va_secretary_priority: secretary_priority, practice: @practice unless VaSecretaryPriorityPractice.where(va_secretary_priority: secretary_priority, practice: @practice).any?
+        end
+      else
+        secretary_priority = VaSecretaryPriority.find_by(name: answer) || VaSecretaryPriority.create(name: answer)
+        VaSecretaryPriorityPractice.create va_secretary_priority: secretary_priority, practice: @practice unless VaSecretaryPriorityPractice.where(va_secretary_priority: secretary_priority, practice: @practice).any?
+      end
     end
   end
 end
@@ -196,17 +216,25 @@ def practice_managements
       answer = @answers[i]
       next if answer.blank?
 
-      practice_management = PracticeManagement.find_by(name: answer) || PracticeManagement.create(name: answer)
-      PracticeManagementPractice.create practice_management: practice_management, practice: @practice unless PracticeManagementPractice.where(practice_management: practice_management, practice: @practice).any?
+      if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
+        split_answer = answer.split(/\\|\//)
+        split_answer.each do |ans|
+          practice_management = PracticeManagement.find_by(name: answer) || PracticeManagement.create(name: answer)
+          PracticeManagementPractice.create practice_management: practice_management, practice: @practice unless PracticeManagementPractice.where(practice_management: practice_management, practice: @practice).any?
+        end
+      else
+        practice_management = PracticeManagement.find_by(name: answer) || PracticeManagement.create(name: answer)
+        PracticeManagementPractice.create practice_management: practice_management, practice: @practice unless PracticeManagementPractice.where(practice_management: practice_management, practice: @practice).any?
+      end
     end
   end
 end
 
 def impact
   question_fields = {
-    'What are the impacts of this practice clinically? Please select all clinical domains this practice impacts.': 26,
-    'Additional clinical impacts of this practice? (Please select all that apply.)': 6,
-    'Which of the following operational domains does the practice impact? (Please select all that apply.)': 18,
+    'What medical specialties does this Practice impact? Please select all all that apply.': 31,
+    'What are the whole health impacts of this practice? (Please select all that apply.)': 6,
+    'Which of the following clinical conditions does this practice affect? (Please select all that apply.)': 16,
   }
 
   question_fields.each do |key, value|
@@ -216,8 +244,16 @@ def impact
       answer = @answers[i]
       next if answer.blank?
 
-      impact = Impact.find_by(name: answer) || Impact.create(name: answer)
-      ImpactPractice.create impact: impact, practice: @practice unless ImpactPractice.where( impact: impact, practice: @practice).any?
+      if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
+        split_answer = answer.split(/\\|\//)
+        split_answer.each do |ans|
+          impact = Impact.find_by(name: answer) || Impact.create(name: answer)
+          ImpactPractice.create impact: impact, practice: @practice unless ImpactPractice.where( impact: impact, practice: @practice).any?
+        end
+      else
+        impact = Impact.find_by(name: answer) || Impact.create(name: answer)
+        ImpactPractice.create impact: impact, practice: @practice unless ImpactPractice.where( impact: impact, practice: @practice).any?
+      end
     end
   end
 end
@@ -234,8 +270,16 @@ def clinical_conditions
       answer = @answers[i]
       next if answer.blank?
 
-      condition = ClinicalCondition.find_by(name: answer) || ClinicalCondition.create(name: answer)
-      ClinicalConditionPractice.create clinical_condition: condition, practice: @practice unless ClinicalConditionPractice.where(clinical_condition: condition, practice: @practice).any?
+      if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
+        split_answer = answer.split(/\\|\//)
+        split_answer.each do |ans|
+          condition = ClinicalCondition.find_by(name: answer) || ClinicalCondition.create(name: answer)
+          ClinicalConditionPractice.create clinical_condition: condition, practice: @practice unless ClinicalConditionPractice.where(clinical_condition: condition, practice: @practice).any?
+        end
+      else
+        condition = ClinicalCondition.find_by(name: answer) || ClinicalCondition.create(name: answer)
+        ClinicalConditionPractice.create clinical_condition: condition, practice: @practice unless ClinicalConditionPractice.where(clinical_condition: condition, practice: @practice).any?
+      end
     end
   end
 end
@@ -270,8 +314,16 @@ def job_positions
       answer = @answers[i]
       next if answer.blank?
 
-      job_position = JobPosition.find_by(name: answer) || JobPosition.create(name: answer)
-      JobPositionPractice.create job_position: job_position, practice: @practice unless JobPositionPractice.where(job_position: job_position, practice: @practice).any?
+      if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
+        split_answer = answer.split(/\\|\//)
+        split_answer.each do |ans|
+          job_position = JobPosition.find_by(name: answer) || JobPosition.create(name: answer)
+          JobPositionPractice.create job_position: job_position, practice: @practice unless JobPositionPractice.where(job_position: job_position, practice: @practice).any?
+        end
+      else
+        job_position = JobPosition.find_by(name: answer) || JobPosition.create(name: answer)
+        JobPositionPractice.create job_position: job_position, practice: @practice unless JobPositionPractice.where(job_position: job_position, practice: @practice).any?
+      end
     end
   end
 end
@@ -288,8 +340,16 @@ def ancillary_services
       answer = @answers[i]
       next if answer.blank?
 
-      ancillary_service = AncillaryService.find_by(name: answer) || AncillaryService.create(name: answer)
-      AncillaryServicePractice.create ancillary_service: ancillary_service, practice: @practice unless AncillaryServicePractice.where(ancillary_service: ancillary_service, practice: @practice).any?
+      if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
+        split_answer = answer.split(/\\|\//)
+        split_answer.each do |ans|
+          ancillary_service = AncillaryService.find_by(name: answer) || AncillaryService.create(name: answer)
+          AncillaryServicePractice.create ancillary_service: ancillary_service, practice: @practice unless AncillaryServicePractice.where(ancillary_service: ancillary_service, practice: @practice).any?
+        end
+      else
+        ancillary_service = AncillaryService.find_by(name: answer) || AncillaryService.create(name: answer)
+        AncillaryServicePractice.create ancillary_service: ancillary_service, practice: @practice unless AncillaryServicePractice.where(ancillary_service: ancillary_service, practice: @practice).any?
+      end
     end
   end
 end
@@ -306,16 +366,23 @@ def clinical_locations
       answer = @answers[i]
       next if answer.blank?
 
-      clinical_location = ClinicalLocation.find_by(name: answer) || ClinicalLocation.create(name: answer)
-      ClinicalLocationPractice.create clinical_location: clinical_location, practice: @practice unless ClinicalLocationPractice.where(clinical_location: clinical_location, practice: @practice).any?
+      if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
+        split_answer = answer.split(/\\|\//)
+        split_answer.each do |ans|
+          clinical_location = ClinicalLocation.find_by(name: answer) || ClinicalLocation.create(name: answer)
+          ClinicalLocationPractice.create clinical_location: clinical_location, practice: @practice unless ClinicalLocationPractice.where(clinical_location: clinical_location, practice: @practice).any?
+        end
+      else
+        clinical_location = ClinicalLocation.find_by(name: answer) || ClinicalLocation.create(name: answer)
+        ClinicalLocationPractice.create clinical_location: clinical_location, practice: @practice unless ClinicalLocationPractice.where(clinical_location: clinical_location, practice: @practice).any?
+      end
     end
   end
 end
 
 def departments
   question_fields = {
-    'Which department does this primarily impact?': 2,
-    'Which other department(s) does this impact? Please mark all departments that will need to have buy-in or will need to participate in implementation.': 35
+    'Which departments or operational domains does this Practice impact?': 49,
   }
 
   question_fields.each do |key, value|
@@ -325,8 +392,16 @@ def departments
       answer = @answers[i]
       next if answer.blank?
 
-      department = Department.find_by(name: answer) || Department.create(name: answer)
-      DepartmentPractice.create department: department, practice: @practice unless DepartmentPractice.where(department: department, practice: @practice).any?
+      if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
+        split_answer = answer.split(/\\|\//)
+        split_answer.each do |ans|
+          department = Department.find_by(name: answer) || Department.create(name: answer)
+          DepartmentPractice.create department: department, practice: @practice unless DepartmentPractice.where(department: department, practice: @practice).any?
+        end
+      else
+        department = Department.find_by(name: answer) || Department.create(name: answer)
+        DepartmentPractice.create department: department, practice: @practice unless DepartmentPractice.where(department: department, practice: @practice).any?
+      end
     end
   end
 end
@@ -453,28 +528,42 @@ def publications
       answer = @answers[i]
       next if answer.blank?
 
-      Publication.create(practice: @practice, link: answer) unless Publication.where(link: answer, practice: @practice).any?
+      if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
+        split_answer = answer.split(/\\|\//)
+        split_answer.each do |ans|
+          Publication.create(practice: @practice, link: answer) unless Publication.where(link: answer, practice: @practice).any?
+        end
+      else
+        Publication.create(practice: @practice, link: answer) unless Publication.where(link: answer, practice: @practice).any?
+      end
     end
   end
 end
 
-def badges
-  question_fields = {
-    'Has your practice been vetted? Has the practice been reviewed and approved by any of the following groups and qualify for badging? (Please select all that apply.)': 9
-  }
+# def badges
+#   question_fields = {
+#   }
 
-  question_fields.each do |key, value|
-    q_index = @questions.index(key.to_s)
-    end_index = q_index + value - 1
-    (q_index..end_index).each do |i|
-      answer = @answers[i]
-      next if answer.blank?
+#   question_fields.each do |key, value|
+#     q_index = @questions.index(key.to_s)
+#     end_index = q_index + value - 1
+#     (q_index..end_index).each do |i|
+#       answer = @answers[i]
+#       next if answer.blank?
 
-      badge = Badge.find_by(name: answer) || Badge.create(name: answer)
-      BadgePractice.create badge: badge, practice: @practice unless BadgePractice.where(badge: badge, practice: @practice).any?
-    end
-  end
-end
+#       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
+#         split_answer = answer.split(/\\|\//)
+#         split_answer.each do |ans|
+#           badge = Badge.find_by(name: answer) || Badge.create(name: answer)
+#           BadgePractice.create badge: badge, practice: @practice unless BadgePractice.where(badge: badge, practice: @practice).any?
+#         end
+#       else
+#         badge = Badge.find_by(name: answer) || Badge.create(name: answer)
+#         BadgePractice.create badge: badge, practice: @practice unless BadgePractice.where(badge: badge, practice: @practice).any?
+#       end
+#     end
+#   end
+# end
 
 def implementation_timeline
   question_fields = {
@@ -512,7 +601,7 @@ end
 
 def additional_staff
   question_fields = [
-      {'For the staff members that need to be added in the previous question, what job titles are required to implement your Practice?': 5},
+      {'What job titles are required to implement this Practice?': 5},
       {'For the job titles listed, how many hours are required per week?': 5},
       {'For the job titles listed, what is the duration of the job? Please indicate the number of weeks or type in "Permanent"': 5}
     ]
@@ -559,7 +648,7 @@ end
 
 def costs_difficulties
   question_fields = {
-    'List other Costs and Difficulties of Implementation that are unique to your Practice.': 6
+    'List other Costs of Implementation that are unique to your Practice.': 6
   }
   question_fields.each do |key, value|
     q_index = @questions.index(key.to_s)
@@ -568,8 +657,16 @@ def costs_difficulties
     (q_index..end_index).each do |i|
       next if @answers[i].blank?
 
-      Cost.create practice: @practice, description: @answers[i] unless Cost.where(description: @answers[i], practice: @practice).any?
-      Difficulty.create practice: @practice, description: @answers[i + 3] unless Difficulty.where(description: @answers[i + 3], practice: @practice).any?
+      if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
+        split_answer = answer.split(/\\|\//)
+        split_answer.each do |ans|
+          Cost.create practice: @practice, description: @answers[i] unless Cost.where(description: @answers[i], practice: @practice).any?
+          Difficulty.create practice: @practice, description: @answers[i + 3] unless Difficulty.where(description: @answers[i + 3], practice: @practice).any?
+        end
+      else
+        Cost.create practice: @practice, description: @answers[i] unless Cost.where(description: @answers[i], practice: @practice).any?
+        Difficulty.create practice: @practice, description: @answers[i + 3] unless Difficulty.where(description: @answers[i + 3], practice: @practice).any?
+      end
     end
   end
 end
