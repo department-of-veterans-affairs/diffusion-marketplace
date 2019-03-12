@@ -101,11 +101,11 @@ def strategic_sponsors
       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
         split_answer = sp_name.split(/\\|\//)
         split_answer.each do |ans|
-          strategic_sponsor = StrategicSponsor.find_by(name: ans) || StrategicSponsor.create(name: ans)
+          strategic_sponsor = StrategicSponsor.find_or_create_by(name: ans)
           StrategicSponsorPractice.create strategic_sponsor: strategic_sponsor, practice: @practice unless StrategicSponsorPractice.where(strategic_sponsor: strategic_sponsor, practice: @practice).any?
         end
       else
-        strategic_sponsor = StrategicSponsor.find_by(name: sp_name) || StrategicSponsor.create(name: sp_name)
+        strategic_sponsor = StrategicSponsor.find_or_create_by(name: sp_name)
         StrategicSponsorPractice.create strategic_sponsor: strategic_sponsor, practice: @practice unless StrategicSponsorPractice.where(strategic_sponsor: strategic_sponsor, practice: @practice).any?
       end
     end
@@ -146,7 +146,7 @@ def va_employees
                                                                                               type: MIME::Types.type_for(image_path).first.content_type
                                                                                               ))
       else
-        va_employee = VaEmployee.find_by(name: vae_name, role: vae_role) || VaEmployee.create(name: vae_name, role: vae_role)
+        va_employee = VaEmployee.find_or_create_by(name: vae_name, role: vae_role)
       end
       VaEmployeePractice.create va_employee: va_employee, practice: @practice unless VaEmployeePractice.where(va_employee: va_employee, practice: @practice).any?
     end
@@ -193,11 +193,11 @@ def va_secretary_priorities
       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
         split_answer = answer.split(/\\|\//)
         split_answer.each do |ans|
-          secretary_priority = VaSecretaryPriority.find_by(name: ans) || VaSecretaryPriority.create(name: ans)
+          secretary_priority = VaSecretaryPriority.find_or_create_by(name: ans)
           VaSecretaryPriorityPractice.create va_secretary_priority: secretary_priority, practice: @practice unless VaSecretaryPriorityPractice.where(va_secretary_priority: secretary_priority, practice: @practice).any?
         end
       else
-        secretary_priority = VaSecretaryPriority.find_by(name: answer) || VaSecretaryPriority.create(name: answer)
+        secretary_priority = VaSecretaryPriority.find_or_create_by(name: answer)
         VaSecretaryPriorityPractice.create va_secretary_priority: secretary_priority, practice: @practice unless VaSecretaryPriorityPractice.where(va_secretary_priority: secretary_priority, practice: @practice).any?
       end
     end
@@ -219,11 +219,11 @@ def practice_managements
       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
         split_answer = answer.split(/\\|\//)
         split_answer.each do |ans|
-          practice_management = PracticeManagement.find_by(name: answer) || PracticeManagement.create(name: answer)
+          practice_management = PracticeManagement.find_or_create_by(name: answer)
           PracticeManagementPractice.create practice_management: practice_management, practice: @practice unless PracticeManagementPractice.where(practice_management: practice_management, practice: @practice).any?
         end
       else
-        practice_management = PracticeManagement.find_by(name: answer) || PracticeManagement.create(name: answer)
+        practice_management = PracticeManagement.find_or_create_by(name: answer)
         PracticeManagementPractice.create practice_management: practice_management, practice: @practice unless PracticeManagementPractice.where(practice_management: practice_management, practice: @practice).any?
       end
     end
@@ -247,11 +247,11 @@ def impact
       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
         split_answer = answer.split(/\\|\//)
         split_answer.each do |ans|
-          impact = Impact.find_by(name: answer) || Impact.create(name: answer)
+          impact = Impact.find_or_create_by(name: answer)
           ImpactPractice.create impact: impact, practice: @practice unless ImpactPractice.where( impact: impact, practice: @practice).any?
         end
       else
-        impact = Impact.find_by(name: answer) || Impact.create(name: answer)
+        impact = Impact.find_or_create_by(name: answer)
         ImpactPractice.create impact: impact, practice: @practice unless ImpactPractice.where( impact: impact, practice: @practice).any?
       end
     end
@@ -273,11 +273,11 @@ def clinical_conditions
       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
         split_answer = answer.split(/\\|\//)
         split_answer.each do |ans|
-          condition = ClinicalCondition.find_by(name: answer) || ClinicalCondition.create(name: answer)
+          condition = ClinicalCondition.find_or_create_by(name: answer)
           ClinicalConditionPractice.create clinical_condition: condition, practice: @practice unless ClinicalConditionPractice.where(clinical_condition: condition, practice: @practice).any?
         end
       else
-        condition = ClinicalCondition.find_by(name: answer) || ClinicalCondition.create(name: answer)
+        condition = ClinicalCondition.find_or_create_by(name: answer)
         ClinicalConditionPractice.create clinical_condition: condition, practice: @practice unless ClinicalConditionPractice.where(clinical_condition: condition, practice: @practice).any?
       end
     end
@@ -317,11 +317,11 @@ def job_positions
       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
         split_answer = answer.split(/\\|\//)
         split_answer.each do |ans|
-          job_position = JobPosition.find_by(name: answer) || JobPosition.create(name: answer)
+          job_position = JobPosition.find_or_create_by(name: answer)
           JobPositionPractice.create job_position: job_position, practice: @practice unless JobPositionPractice.where(job_position: job_position, practice: @practice).any?
         end
       else
-        job_position = JobPosition.find_by(name: answer) || JobPosition.create(name: answer)
+        job_position = JobPosition.find_or_create_by(name: answer)
         JobPositionPractice.create job_position: job_position, practice: @practice unless JobPositionPractice.where(job_position: job_position, practice: @practice).any?
       end
     end
@@ -343,11 +343,11 @@ def ancillary_services
       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
         split_answer = answer.split(/\\|\//)
         split_answer.each do |ans|
-          ancillary_service = AncillaryService.find_by(name: answer) || AncillaryService.create(name: answer)
+          ancillary_service = AncillaryService.find_or_create_by(name: answer)
           AncillaryServicePractice.create ancillary_service: ancillary_service, practice: @practice unless AncillaryServicePractice.where(ancillary_service: ancillary_service, practice: @practice).any?
         end
       else
-        ancillary_service = AncillaryService.find_by(name: answer) || AncillaryService.create(name: answer)
+        ancillary_service = AncillaryService.find_or_create_by(name: answer)
         AncillaryServicePractice.create ancillary_service: ancillary_service, practice: @practice unless AncillaryServicePractice.where(ancillary_service: ancillary_service, practice: @practice).any?
       end
     end
@@ -369,11 +369,11 @@ def clinical_locations
       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
         split_answer = answer.split(/\\|\//)
         split_answer.each do |ans|
-          clinical_location = ClinicalLocation.find_by(name: answer) || ClinicalLocation.create(name: answer)
+          clinical_location = ClinicalLocation.find_or_create_by(name: answer)
           ClinicalLocationPractice.create clinical_location: clinical_location, practice: @practice unless ClinicalLocationPractice.where(clinical_location: clinical_location, practice: @practice).any?
         end
       else
-        clinical_location = ClinicalLocation.find_by(name: answer) || ClinicalLocation.create(name: answer)
+        clinical_location = ClinicalLocation.find_or_create_by(name: answer)
         ClinicalLocationPractice.create clinical_location: clinical_location, practice: @practice unless ClinicalLocationPractice.where(clinical_location: clinical_location, practice: @practice).any?
       end
     end
@@ -395,11 +395,11 @@ def departments
       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
         split_answer = answer.split(/\\|\//)
         split_answer.each do |ans|
-          department = Department.find_by(name: answer) || Department.create(name: answer)
+          department = Department.find_or_create_by(name: answer)
           DepartmentPractice.create department: department, practice: @practice unless DepartmentPractice.where(department: department, practice: @practice).any?
         end
       else
-        department = Department.find_by(name: answer) || Department.create(name: answer)
+        department = Department.find_or_create_by(name: answer)
         DepartmentPractice.create department: department, practice: @practice unless DepartmentPractice.where(department: department, practice: @practice).any?
       end
     end
