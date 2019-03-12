@@ -9,15 +9,25 @@ namespace :importer do
 
     (3..last_row).each do |row_num|
       @answers = sheet.sheet(0).row(row_num)
-      @respondant_id = @answers[0]
+      @respondent_id = @answers[0]
 
       @name = @answers[@questions.index('What is the name of your practice?')]
-      next if @name.blank?
+
+      if @name.blank?
+        puts "==> Aborting importing Respondent #{@respondent_id}'s answers - no name for the practice supplied."
+        next
+      end
+
+      puts "==> Importing Respondent: #{@respondent_id}"
+      puts "==> Importing Practice: #{@name}"
       @practice = Practice.find_by_name(@name) || Practice.create(name: @name)
 
       # Basic Practice related questions first
       basic_answers
       file_uploads
+      # TODO: Ask Andy if this needs to be dynamic
+      @practice.approved = true
+      @practice.published = true
       @practice.save!
 
       # sort all of the relational questions into their own methods for clarity.
@@ -53,6 +63,7 @@ namespace :importer do
 end
 
 def basic_answers
+  puts "==> Importing Practice: #{@name} basic answers"
   question_fields = {
     'When was this practice initiated? If day is unknown, use the first of the month': :date_initiated,
     # The below question's text needs to be changed when a new sheet can be provided.
@@ -81,11 +92,13 @@ def basic_answers
     'Please provide a 50 - 100 word paragraph sharing the story of the origin of this practice': :origin_story
   }
   question_fields.each do |key, value|
+    # debugger if value.to_sym == :cost_savings_aggregate
     @practice.send("#{value.to_sym}=", @answers[@questions.index(key.to_s)])
   end
 end
 
 def strategic_sponsors
+  puts "==> Importing Practice: #{@name} Strategic Sponsors"
   question_fields = {
     'Who is the primary sponsor responsible for creating this practice and bringing it to national awareness?': 2,
     'What organizations have funded this Practice?': 10,
@@ -113,6 +126,8 @@ def strategic_sponsors
 end
 
 def va_employees
+  puts "==> Importing Practice: #{@name} Support Team"
+  # TODO: Innovation team
   question_fields = {
     "Who are the VA employee(s) responsible for the support of this Practice? (SupportTeam)Please separate the person's Name from their Role with a backslash (\\).": 5
   }
@@ -123,9 +138,8 @@ def va_employees
     'Please upload a headshot of Support Team Person 4',
     'Please upload a headshot of Support Team Person 5',
   ]
-  index = -1
+  index = 0
   question_fields.each do |key, value|
-    index += 1
     q_index = @questions.index(key.to_s)
     end_index = q_index + value - 1
     (q_index..end_index).each do |i|
@@ -136,7 +150,7 @@ def va_employees
       vae_name = vae[0]
       vae_role = vae[1]
       if @answers[@questions.index(avatars[index].to_s)].present?
-        image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondant_id}/#{@answers[@questions.index(avatars[index].to_s)]}"
+        image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(avatars[index].to_s)]}"
         image_file = File.new(image_path)
         va_employee = VaEmployee.find_by(name: vae_name, role: vae_role) || VaEmployee.create(name: vae_name, role: vae_role,
                                                                                               avatar: ActionDispatch::Http::UploadedFile.new(
@@ -145,6 +159,7 @@ def va_employees
                                                                                               # detect the image's mime type with MIME if you can't provide it yourself.
                                                                                               type: MIME::Types.type_for(image_path).first.content_type
                                                                                               ))
+        index += 1
       else
         va_employee = VaEmployee.find_or_create_by(name: vae_name, role: vae_role)
       end
@@ -154,6 +169,7 @@ def va_employees
 end
 
 # def developing_facility_types
+#   puts "==> Importing Practice: #{@name} Developing Facility Types"
 #   question_fields = {
 #   }
 
@@ -179,6 +195,7 @@ end
 # end
 
 def va_secretary_priorities
+  puts "==> Importing Practice: #{@name} VA Secretary Priorities"
   question_fields = {
     "Which of the VA Secretary’s Priorities does this practice Address? (Please select all that apply.)": 7
   }
@@ -205,6 +222,7 @@ def va_secretary_priorities
 end
 
 def practice_managements
+  puts "==> Importing Practice: #{@name} Practice Managements"
   question_fields = {
     "Which of the following areas does this practice affect? (Please select all that apply.)": 13
   }
@@ -231,6 +249,7 @@ def practice_managements
 end
 
 def impact
+  puts "==> Importing Practice: #{@name} Impacts"
   question_fields = {
     'What medical specialties does this Practice impact? Please select all all that apply.': 31,
     'What are the whole health impacts of this practice? (Please select all that apply.)': 6,
@@ -259,6 +278,7 @@ def impact
 end
 
 def clinical_conditions
+  puts "==> Importing Practice: #{@name} Clinical Conditions"
   question_fields = {
     'Which of the following clinical conditions does this practice affect? (Please select all that apply.)': 16
   }
@@ -285,12 +305,13 @@ def clinical_conditions
 end
 
 def financial_files
+  puts "==> Importing Practice: #{@name} Financial Files"
   question_fields = {
     "Please upload applicable financial information.": 1
   }
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondant_id}/#{@answers[@questions.index(key.to_s)]}"
+    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(key.to_s)]}"
     image_file = File.new(image_path)
 
     FinancialFile.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
@@ -303,6 +324,7 @@ def financial_files
 end
 
 def job_positions
+  puts "==> Importing Practice: #{@name} Job Positions"
   question_fields = {
     "Which of the following job titles or positions does this practice impact? (Please select all that apply.)": 10
   }
@@ -329,6 +351,7 @@ def job_positions
 end
 
 def ancillary_services
+  puts "==> Importing Practice: #{@name} Ancillary Services"
   question_fields = {
     'Which of the following ancillary services does this practice impact? (Please select all that apply.)': 11
   }
@@ -355,6 +378,7 @@ def ancillary_services
 end
 
 def clinical_locations
+  puts "==> Importing Practice: #{@name} Clinical Locations"
   question_fields = {
     'Which of the following clinical locations does this practice impact? (Please select all that apply.)': 12
   }
@@ -381,6 +405,7 @@ def clinical_locations
 end
 
 def departments
+  puts "==> Importing Practice: #{@name} Departments"
   question_fields = {
     'Which departments or operational domains does this Practice impact?': 49,
   }
@@ -407,6 +432,7 @@ def departments
 end
 
 def video_files
+  puts "==> Importing Practice: #{@name} Video Files"
   question_fields = {
     'Do you have a short video that provides an explanation, summary, or testimonial about your practice? (Please paste YouTube url or other link)': :url,
     'Additional Video 1 (Please paste YouTube url or other link)': :url,
@@ -424,6 +450,7 @@ def video_files
 end
 
 def additional_documents
+  puts "==> Importing Practice: #{@name} Additional Documents"
   question_fields = {
     'Do you have survey results, verifiable testimonials, press releases, news articles regarding your practice that you would like to share?': :attachment,
     'Additional practice information 1': :attachment,
@@ -431,7 +458,7 @@ def additional_documents
   }
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondant_id}/#{@answers[@questions.index(key.to_s)]}"
+    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(key.to_s)]}"
     image_file = File.new(image_path)
 
     AdditionalDocument.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
@@ -444,12 +471,13 @@ def additional_documents
 end
 
 def business_case_files
+  puts "==> Importing Practice: #{@name} Business Case Files"
   question_fields = {
     'Does your practice have a formal business case?': :attachment
   }
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondant_id}/#{@answers[@questions.index(key.to_s)]}"
+    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(key.to_s)]}"
     image_file = File.new(image_path)
 
     BusinessCaseFile.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
@@ -462,12 +490,13 @@ def business_case_files
 end
 
 def toolkit_files
+  puts "==> Importing Practice: #{@name} Toolkit Files"
   question_fields = {
     'Does your practice have an implementation toolkit?': :attachment
   }
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondant_id}/#{@answers[@questions.index(key.to_s)]}"
+    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(key.to_s)]}"
     image_file = File.new(image_path)
 
     ToolkitFile.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
@@ -480,12 +509,13 @@ def toolkit_files
 end
 
 def checklist_files
+  puts "==> Importing Practice: #{@name} Checklist Files"
   question_fields = {
     'Does your practice have a pre-implementation checklist?': :attachment
   }
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondant_id}/#{@answers[@questions.index(key.to_s)]}"
+    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(key.to_s)]}"
     image_file = File.new(image_path)
 
     ChecklistFile.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
@@ -498,16 +528,17 @@ def checklist_files
 end
 
 def publication_files
+  puts "==> Importing Practice: #{@name} Publication Files"
   question_fields = {
     'Does your practice have peer-reviewed publications associated with it?': :attachment,
     'Additional publication upload 1': :attachment
   }
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondant_id}/#{@answers[@questions.index(key.to_s)]}"
+    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(key.to_s)]}"
     image_file = File.new(image_path)
 
-    PublicationFiles.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
+    PublicationFile.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
                                                            filename: File.basename(image_file),
                                                            tempfile: image_file,
                                                            # detect the image's mime type with MIME if you can't provide it yourself.
@@ -517,6 +548,7 @@ def publication_files
 end
 
 def publications
+  puts "==> Importing Practice: #{@name} Publications"
   question_fields = {
     'Does your practice have peer-reviewed publications associated with it online? Enter url(s) if so.': 3
   }
@@ -541,6 +573,7 @@ def publications
 end
 
 # def badges
+#   puts "==> Importing Practice: #{@name} Badges"
 #   question_fields = {
 #   }
 
@@ -566,15 +599,16 @@ end
 # end
 
 def implementation_timeline
+  puts "==> Importing Practice: #{@name} Implementation Timeline"
   question_fields = {
     'Do you have a diffusion timeline regarding the steps to implement your practice?': :attachment
   }
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondant_id}/#{@answers[@questions.index(key.to_s)]}"
+    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(key.to_s)]}"
     image_file = File.new(image_path)
 
-    ImplementationTimelineFiles.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
+    ImplementationTimelineFile.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
                                                            filename: File.basename(image_file),
                                                            tempfile: image_file,
                                                            # detect the image's mime type with MIME if you can't provide it yourself.
@@ -584,6 +618,7 @@ def implementation_timeline
 end
 
 def risk_mitigations
+  puts "==> Importing Practice: #{@name} Risks and Mitigations"
   question_fields = {
     'Under the side navigation "Risks & Mitigations" tab, the "Risk" rating will eventually be provided by individuals who have implemented this practice.What is the primary risk to implementation? Please describe how you would mitigate it.': 2,
     'What is the second risk to implementation? Please describe how you would mitigate it.': 2,
@@ -600,6 +635,7 @@ def risk_mitigations
 end
 
 def additional_staff
+  puts "==> Importing Practice: #{@name} Additional Staff"
   question_fields = [
       {'What job titles are required to implement this Practice?': 5},
       {'For the job titles listed, how many hours are required per week?': 5},
@@ -617,6 +653,7 @@ def additional_staff
 end
 
 def additional_resources
+  puts "==> Importing Practice: #{@name} Additional Resources"
   question_fields = {
     'What other resources and supplies are needed for this Practice?': 5
   }
@@ -632,6 +669,7 @@ def additional_resources
 end
 
 def required_training_staff
+  puts "==> Importing Practice: #{@name} Required Training Staff"
   question_fields = {
     'Who is required to take the training?': 5
   }
@@ -647,6 +685,7 @@ def required_training_staff
 end
 
 def costs_difficulties
+  puts "==> Importing Practice: #{@name} Costs and Difficulties"
   question_fields = {
     'List other Costs of Implementation that are unique to your Practice.': 6
   }
@@ -672,6 +711,7 @@ def costs_difficulties
 end
 
 def human_impact_photos
+  puts "==> Importing Practice: #{@name} Human Impact Photos"
   question_fields = [[
     'Human Impact Photo 1',
     'Please provide a title for Human Impact Picture 1',
@@ -690,7 +730,7 @@ def human_impact_photos
 
     next if @answers[@questions.index(fields[0])].blank?
 
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondant_id}/#{@answers[@questions.index(key.to_s)]}"
+    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(key.to_s)]}"
     image_file = File.new(image_path)
     title = @answers[@questions.index(fields[1])]
     description = @answers[@questions.index(description_indices[i])]
@@ -705,6 +745,7 @@ def human_impact_photos
 end
 
 def file_uploads
+  puts "==> Importing Practice: #{@name} File Uploads"
   question_fields = {
     'Under the side navigation "Origin of this practice" tab, please provide a photo of the individual who initiated the practice.': :origin_picture,
     'Upload a Display Image for your practice. This image will be used for the main title page and marketplace tile.': :main_display_image
@@ -712,7 +753,7 @@ def file_uploads
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
 
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondant_id}/#{@answers[@questions.index(key.to_s)]}"
+    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(key.to_s)]}"
     image_file = File.new(image_path)
 
     @practice.send("#{value.to_sym}=", ActionDispatch::Http::UploadedFile.new(
