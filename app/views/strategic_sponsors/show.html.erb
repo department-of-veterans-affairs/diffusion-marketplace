@@ -1,24 +1,36 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Name:</strong>
-  <%= @strategic_sponsor.name %>
-</p>
-
-<p>
-  <strong>Short name:</strong>
-  <%= @strategic_sponsor.short_name %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @strategic_sponsor.description %>
-</p>
-
-<p>
-  <strong>Position:</strong>
-  <%= @strategic_sponsor.position %>
-</p>
-
-<%= link_to 'Edit', edit_strategic_sponsor_path(@strategic_sponsor) %> |
-<%= link_to 'Back', strategic_sponsors_path %>
+<div>
+  <section class="grid-container ">
+    <%= render "shared/messages" %>
+  </section>
+  <section class="grid-container practice-partners-background">
+    <div class="dm-font-color-primary-blue p1-top breadcrumbs dm-font-color-super-violet-ish">
+      <a href="/">Home</a>
+      <span class="x0-5-left x0-5-right">›</span>
+      <span><%=link_to'Practice Partners', strategic_sponsor_path%></span>
+      <span class="x0-5-left x0-5-right">›</span>
+      <span><%=@strategic_sponsor.short_name%></span>
+    </div>
+  </section>
+  <section class="dm-background-royal-blue dm-font-color-white text-center fw-normal fs1-5 box-shadow-bottom p0-75-top p0-75-bottom"><%=@strategic_sponsor.short_name%> List of Practices</section>
+  <section class="dm-background-light-blue p3 practice-partner-list diffusion-background-circles-translucent-blue-height">
+    <div class="grid-container">
+      <div class="diffusion-background-circles-translucent-blue"></div>
+      <% @strategic_sponsor.practices.each do |p| %>
+        <div class="practice-partner-card box-shadow-all x2-bottom">
+          <div class="grid-row">
+            <div class="grid-col-2">&nbsp;</div>
+            <div class="grid-col-10 p1-left">
+              <div class="fs1-5 dm-font-color-super-grey fw-bold"><%= p.name %></div>
+            </div>
+          </div>
+          <div class="grid-row">
+            <div class="grid-col-10">
+              <div class="dm-font-color-steel-grey fs1 fw-normal p1-top p3-right p1-left"><%= p.description %></div>
+              <div class="right dm-font-color-super-violet-ish fs1 fw-normal p2-right p1-bottom"><%= link_to 'See Practice', p %> </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </section>
+</div>
