@@ -37,6 +37,13 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   background-color: $dm-color-light-blue !important;
 }
 
+.dm-background-royal-blue {
+  background-color: $dm-color-royal-blue !important;
+}
+
+.dm-background-grey-white {
+  background-color: $dm-color-grey-white !important;
+}
 /* Linear Gradient backgrounds */
 
 .dm-background-linear-gradient-down-cool {
@@ -118,6 +125,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   color: $dm-color-super-violet-ish !important;
 }
 
+.dm-font-color-steel-grey {
+  color: $dm-color-steel-grey !important;
+}
+
 /* Font Weight */
 
 .fw-100 {
@@ -157,6 +168,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .fs2 {
   font-size: 2em !important;
+}
+
+.fs2-25 {
+  font-size: 2.25em !important;
 }
 
 .fs2-5 {
@@ -690,6 +705,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   padding-bottom: 0 !important;
 }
 
+.p0-75-bottom {
+  padding-bottom: 0.75rem !important;
+}
+
 .p1-bottom {
   padding-bottom: 1rem !important;
 }
@@ -726,6 +745,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .p0-top {
   padding-top: 0 !important;
+}
+
+.p0-75-top {
+  padding-top: 0.75rem !important;
 }
 
 .p1-top {
@@ -841,6 +864,15 @@ ul.no-list-style {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
 }
 
+.box-shadow-bottom {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.box-shadow-all {
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+}
+
 .hide {
   display: none;
 }
+
