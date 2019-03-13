@@ -964,24 +964,23 @@ $class-slug: background-circle !default;
     }
   }
 }
-.diffusion-background-circles-translucent-blue-height {
-}
+
 .diffusion-background-circles-translucent-blue {
-  min-height: 1069px;
+  min-height: 1120px;
   max-width: 1024px;
   left: 0;
   position: absolute;
   margin-bottom: 0;
   margin-left: 0;
   margin-top: 0;
-  overflow: hidden;
+  overflow-x: hidden;
   width: 100%;
 
 
   @media screen and (min-width: 1024px) {
     left: 50%;
     margin-left: -512px;
-    overflow: initial;
+    overflow-x: initial;
   }
 
   .background-circle-translucent-blue-1 {
