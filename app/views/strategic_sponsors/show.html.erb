@@ -2,7 +2,7 @@
   <section class="grid-container ">
     <%= render "shared/messages" %>
   </section>
-  <section class="grid-container practice-partners-background">
+  <section class="grid-container">
     <div class="dm-font-color-primary-blue p1-top breadcrumbs dm-font-color-super-violet-ish">
       <a href="/">Home</a>
       <span class="x0-5-left x0-5-right">›</span>
@@ -14,7 +14,6 @@
   <section class="dm-background-royal-blue dm-font-color-white text-center fw-normal fs1-5 box-shadow-bottom p0-75-top p0-75-bottom"><%=@strategic_sponsor.short_name%> List of Practices</section>
   <section class="dm-background-light-blue p3 practice-partner-list diffusion-background-circles-translucent-blue-height">
     <div class="grid-container">
-      <div class="diffusion-background-circles-translucent-blue"></div>
       <% @strategic_sponsor.practices.each do |p| %>
         <div class="practice-partner-card box-shadow-all x2-bottom">
           <div class="grid-row">
