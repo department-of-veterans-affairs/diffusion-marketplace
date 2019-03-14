@@ -15,8 +15,10 @@ class UsersController < ApplicationController
     if params[:user][:role].present?
       if params[:user][:role] == 'user'
         @user.remove_all_roles('user')
+        flash[:success] = "Basic \"user\" role assigned to \"#{@user.email}\""
       else
         @user.add_role(params[:user][:role])
+        flash[:success] = "Added \"#{params[:user][:role]}\" role to user \"#{@user.email}\""
       end
     else
       @user.update_attributes user_params
@@ -26,11 +28,13 @@ class UsersController < ApplicationController
 
   def destroy
     @user.update_attributes disabled: true
+    flash[:success] = "Disabled user \"#{@user.email}\""
     redirect_to users_path
   end
 
   def re_enable
     @user.update_attributes disabled: false
+    flash[:success] = "Re-enabled user \"#{user.email}\""
     redirect_to users_path
   end
 
