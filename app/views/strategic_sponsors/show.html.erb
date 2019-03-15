@@ -2,7 +2,7 @@
   <section class="grid-container ">
     <%= render "shared/messages" %>
   </section>
-  <section class="grid-container">
+  <section class="grid-container x1-5-bottom">
     <div class="dm-font-color-primary-blue p1-top breadcrumbs dm-font-color-super-violet-ish">
       <a href="/">Home</a>
       <span class="x0-5-left x0-5-right">›</span>
@@ -10,6 +10,19 @@
       <span class="x0-5-left x0-5-right">›</span>
       <span><%= @strategic_sponsor.short_name %></span>
     </div>
+  </section>
+  <style>
+    .practice-partner-title-background {
+      background: linear-gradient(0deg, rgba(0, 118, 214, 0.11), rgba(0, 118, 214, 0.11)), url("<%=asset_url('jumbotron-img.jpg') %>");
+    }
+  </style>
+  <section class="practice-partner-title-background p5-top p5-bottom">
+    <div class="fw-bold fs6 dm-font-color-royal-blue text-center"><%=@strategic_sponsor.short_name %></div>
+    <div class="fs2-25 dm-font-color-royal-blue text-center"><%=@strategic_sponsor.name %></div>
+  </section>
+  <section class="grid-container p3">
+    <div class="dm-font-color-midnight-black fs1-5 fw-bold x1-bottom"><%=@strategic_sponsor.short_name %> Mission</div>
+    <div class="dm-font-color-steel-grey fs1-125"><%=@strategic_sponsor.description %></div>
   </section>
   <section class="dm-background-royal-blue dm-font-color-white text-center fw-normal fs1-5 box-shadow-bottom p0-75-top p0-75-bottom"><%= @strategic_sponsor.short_name %>
     List of Practices
@@ -20,7 +33,7 @@
         <div class="practice-card x2-bottom">
 <!--          <div class="grid-container-full-width">-->
             <div class="grid-row">
-              <div class="grid-col-2">
+              <div class="grid-col-3">
                 <style>
                   .practice-card-background-<%=p.id %> {
                     color: white;
@@ -46,7 +59,7 @@
                     <%= "#{p.number_adopted == 1 ? 'Facility has' : 'Facilities have'}" %> adopted this practice</div>
                 </div>
               </div>
-              <div class="grid-col-10 p1-left">
+              <div class="grid-col-9 p1-left">
                 <div class="practice-card-badgerow">
                   <div class="grid-row">
                     <% p.badges.last(2).each do |badge| %>

@@ -41,8 +41,8 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   background-color: $dm-color-royal-blue !important;
 }
 
-.dm-background-grey-white {
-  background-color: $dm-color-grey-white !important;
+.dm-background-steel-grey {
+  background-color: $dm-color-steel-grey !important;
 }
 /* Linear Gradient backgrounds */
 
@@ -129,6 +129,14 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   color: $dm-color-steel-grey !important;
 }
 
+.dm-font-color-royal-blue {
+  color: $dm-color-royal-blue !important;
+}
+
+.dm-font-color-midnight-black {
+  color: $dm-color-midnight-black !important;
+}
+
 /* Font Weight */
 
 .fw-100 {
@@ -188,6 +196,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .fs4 {
   font-size: 4em !important;
+}
+
+.fs6 {
+  font-size: 6em !important;
 }
 
 /* Text style */
@@ -478,6 +490,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .x1-bottom {
   margin-bottom: 1rem !important;
+}
+
+.x1-5-bottom {
+  margin-bottom: 1.5em !important;
 }
 
 .x2-bottom {
