@@ -22,7 +22,7 @@
   </section>
   <section class="grid-container p3">
     <div class="dm-font-color-midnight-black fs1-5 fw-bold x1-bottom"><%=@strategic_sponsor.short_name %> Mission</div>
-    <div class="dm-font-color-steel-grey fs1-125"><%=@strategic_sponsor.description %></div>
+    <div class="dm-font-color-steel-grey fs1-125 "><%=@strategic_sponsor.description %></div>
   </section>
   <section class="dm-background-royal-blue dm-font-color-white text-center fw-normal fs1-5 box-shadow-bottom p0-75-top p0-75-bottom"><%= @strategic_sponsor.short_name %>
     List of Practices
@@ -73,9 +73,9 @@
                     <% end %>
                   </div>
                 </div>
-                <div class="practice-card-tagline"><%= p.tagline %></div>
-                <div class="practice-card-description"><%= p.description %></div>
-                <div class="practice-card-tiny-details"><%= p.name %> |
+                <div class="practice-card-tagline fs3"><%= p.tagline %></div>
+                <div class="practice-card-description fs1 dm-font-color-steel-grey fw-300"><%= p.description %></div>
+                <div class="practice-card-tiny-details dm-font-color-steel-grey fs1"><%= p.name %> |
                   <span class="uppercase"><%= p.initiating_facility %></span></div>
                 <div class="practice-card-aggregates">
                   <div class="grid-row practice-aggregate-container p1">
