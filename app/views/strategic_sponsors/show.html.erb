@@ -55,12 +55,12 @@
                 </style>
                 <div class="practice-card-background-<%= p.id %>">
                   <div class="contents">
-                    <div class="practice-number-adopted"><%= p.number_adopted%></div>
-                    <%= "#{p.number_adopted == 1 ? 'Facility has' : 'Facilities have'}" %> adopted this practice</div>
+                    <div class="practice-number-adopted dm-font-color-white fw-normal fs3-5"><%= p.number_adopted%></div>
+                    <div class="dm-font-color-white fs1-125 fw-normal"><%= "#{p.number_adopted == 1 ? 'Facility has' : 'Facilities have'}" %> adopted this practice</div></div>
                 </div>
               </div>
               <div class="grid-col-9 p1-left">
-                <div class="practice-card-badgerow">
+                <div class="practice-card-badgerow p1-5-top">
                   <div class="grid-row">
                     <% p.badges.last(2).each do |badge| %>
                       <div class="badge-container" style="background-color: <%= badge.color %>;">
@@ -74,10 +74,10 @@
                   </div>
                 </div>
                 <div class="practice-card-tagline fs3"><%= p.tagline %></div>
-                <div class="practice-card-description fs1 dm-font-color-steel-grey fw-300"><%= p.description %></div>
+                <div class="practice-card-description fs1 dm-font-color-steel-grey fw-300 p0-75-bottom"><%= p.description %></div>
                 <div class="practice-card-tiny-details dm-font-color-steel-grey fs1"><%= p.name %> |
                   <span class="uppercase"><%= p.initiating_facility %></span></div>
-                <div class="practice-card-aggregates">
+                <div class="practice-card-aggregates practice-card-aggregates-background">
                   <div class="grid-row practice-aggregate-container p1">
                     <div class="tablet:grid-col-fill text-center">
                       <% cost_aggregate = p.cost_savings_aggregate || 0 %>
