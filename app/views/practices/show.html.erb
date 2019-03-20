@@ -80,17 +80,6 @@
     <div class="grid-container x2-bottom">
       <div class="grid-row practice-aggregate-container p2">
         <div class="tablet:grid-col-fill text-center">
-          <% cost_aggregate = @practice.cost_savings_aggregate || 0 %>
-          <% (0..3).each do |index| %>
-            <% if index < cost_aggregate %>
-              <i class="fas fa-dollar-sign large-icon-dark aggregate-icon"></i>
-            <% else %>
-              <i class="fas fa-dollar-sign large-icon-light aggregate-icon"></i>
-            <% end %>
-          <% end %>
-          <p class="fw-100">Cost Avoidance</p>
-        </div>
-        <div class="tablet:grid-col-fill text-center">
           <% veteran_satisfaction_aggregate = @practice.veteran_satisfaction_aggregate || 0 %>
           <% (0..3).each do |index| %>
             <% if index < veteran_satisfaction_aggregate %>
