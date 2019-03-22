@@ -108,19 +108,19 @@
         <div class="tablet:grid-col-4 p3-left">
           <ul class="usa-sidenav dm-tabnav">
             <li class="usa-sidenav-item>">
-              <a href="#" class="usa-current dm-tab top-tab" data-target="#resources_required">Resources Required</a>
+              <a href="#" class="dm-tab usa-current top-tab" data-target="#resources_required">Resources Required</a>
             </li>
             <li class="usa-sidenav-item>">
               <a href="#" class="dm-tab" data-target="#impact">Impact</a>
             </li>
             <li class="usa-sidenav-item>">
+              <a href="#" class="dm-tab" data-target="#origin">Origin of this practice</a>
+            </li>
+            <li class="usa-sidenav-item>">
               <a href="#" class="dm-tab" data-target="#risks_and_mitigations">Risks & Mitigations</a>
             </li>
             <li class="usa-sidenav-item>">
-              <a href="#" class="dm-tab" data-target="#timeline_and_checklist">Timeline & Checklist</a>
-            </li>
-            <li class="usa-sidenav-item>">
-              <a href="#" class="dm-tab bottom-tab" data-target="#origin">Origin of this practice</a>
+              <a href="#" class="dm-tab bottom-tab" data-target="#timeline_and_checklist">Timeline & Checklist</a>
             </li>
           </ul>
         </div>
@@ -132,14 +132,14 @@
             <div id="impact" class="practice-tab-content tab-inactive">
               <%= render partial: 'impact' %>
             </div>
+            <div id="origin" class="practice-tab-content tab-inactive">
+              <%= render partial: 'origin' %>
+            </div>
             <div id="risks_and_mitigations" class="practice-tab-content tab-inactive">
               <%= render partial: 'risks_and_mitigations' %>
             </div>
             <div id="timeline_and_checklist" class="practice-tab-content tab-inactive">
               <%= render partial: 'timeline_and_checklist' %>
-            </div>
-            <div id="origin" class="practice-tab-content tab-inactive">
-              <%= render partial: 'origin' %>
             </div>
           </div>
         </div>
