@@ -26,4 +26,6 @@ Rails.application.routes.draw do
   get '/practices' => 'practices#index'
   # Adding this for the View Toolkit button on practice page. Though we don't have any uploaded yet so I'm not using it.
   get 'practices/view_toolkit' => 'practices#view_toolkit'
+  # Ditto for "Planning Checklist"
+  get 'practices/planning_checklist' => 'practices#planning_checklist'
 end
