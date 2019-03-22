@@ -111,8 +111,10 @@
               <a href="#" class="usa-current dm-tab top-tab" data-target="#resources_required">Resources Required</a>
             </li>
             <li class="usa-sidenav-item>">
-              <a href="#" class="dm-tab" data-target="#risks_and_mitigations">Risks &
-                Mitigations</a>
+              <a href="#" class="dm-tab" data-target="#impact">Impact</a>
+            </li>
+            <li class="usa-sidenav-item>">
+              <a href="#" class="dm-tab" data-target="#risks_and_mitigations">Risks & Mitigations</a>
             </li>
             <li class="usa-sidenav-item>">
               <a href="#" class="dm-tab" data-target="#timeline_and_checklist">Timeline & Checklist</a>
@@ -126,6 +128,9 @@
           <div class="practice-tab-container p4-bottom">
             <div id="resources_required" class="practice-tab-content tab-active top-tab">
               <%= render partial: 'resources_required' %>
+            </div>
+            <div id="impact" class="practice-tab-content tab-inactive">
+              <%= render partial: 'impact' %>
             </div>
             <div id="risks_and_mitigations" class="practice-tab-content tab-inactive">
               <%= render partial: 'risks_and_mitigations' %>
