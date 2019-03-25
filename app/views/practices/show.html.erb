@@ -35,15 +35,7 @@
           <span class="uppercase"><%= @practice.initiating_facility %></span></h5>
         <div class="flex-2">
           <div class="grid-row flex-row flex-align-center flex-justify-end">
-            <% @practice.strategic_sponsors.last(2).each do |sponsor| %>
-              <div class="badge-container" style="background-color: <%= sponsor.color %>;">
-                <i class="<%= sponsor.icon %>"></i><span class="x1-left"><%= sponsor.name %></span>
-              </div>
-            <% end %>
-            <% if ((extra_badges = @practice.strategic_sponsors.count - 2) > 0) %>
-              <div class="extra-badge"><i class="fas fa-plus"></i><span class="x1-left"><%= extra_badges %> more</span>
-              </div>
-            <% end %>
+            <%= render partial: 'badge', locals: { badges: @practice.strategic_sponsors } %>
           </div>
         </div>
       </div>
