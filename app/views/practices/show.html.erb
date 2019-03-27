@@ -29,10 +29,10 @@
       <div class="grid-row">
         <p class="fw-100"><%= @practice.strategic_sponsors.map(&:name).join(", ") %></p>
       </div>
-      <div class="grid-row flex-row flex-justify flex-align-center x1-top">
-        <h5 class="flex-1 practice-facility"><%= @practice.name %> |
+      <div class="grid-row flex-row flex-justify flex-align-center">
+        <h5 class="practice-facility"><%= @practice.name %> |
           <span class="uppercase"><%= @practice.initiating_facility %></span></h5>
-        <div class="flex-2">
+        <div>
           <div class="grid-row flex-row flex-align-center flex-justify-end">
             <% @practice.badges.last(2).each do |badge| %>
               <div class="badge-container" style="background-color: <%= badge.color %>;">
