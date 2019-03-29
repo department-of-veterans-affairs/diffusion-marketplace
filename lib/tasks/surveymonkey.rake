@@ -11,26 +11,26 @@ namespace :surveymonkey do
     # Questions in the form:
     #   page / question id / question heading
     questions = [
-      [1, 226709158, "Please upload applicable financial information."],
-      [2, 226724568, "Upload a Display Image for your practice. This image will be used for the main title page and marketplace tile."],
-      [2, 226730310, "Do you have survey results, verifiable testimonials, press releases, news articles regarding your practice that you would like to share?"],
-      [2, 226730361, "Additional practice information 1"],
-      [2, 226730732, "Additional practice information 2"],
-      [2, 226731325, "Does your practice have a formal business case?"],
-      [2, 226731349, "Does your practice have an implementation toolkit?"],
-      [2, 227449385, "Does your practice have a pre-implementation checklist?*"],
-      [2, 226731863, "Does your practice have peer-reviewed publications associated with it?"],
-      [2, 226732296, "Additional publication upload 1"],
-      [2, 226738172, "Do you have a diffusion timeline regarding the steps to implement your practice?"],
-      [3, 227451866, "Under the side navigation \"Origin of this practice\" tab, please provide a photo of the individual who initiated the practice"],
-      [3, 226726658, "Human Impact Photo 1"],
-      [3, 226726701, "Human Impact Photo 2"],
-      [3, 226726752, "Human Impact Photo 3"],
-      [3, 227470937, "Please upload a headshot of Support Team Person 1"],
-      [3, 227470976, "Please upload a headshot of Support Team Person 2"],
-      [3, 227471097, "Please upload a headshot of Support Team Person 3"],
-      [3, 227471145, "Please upload a headshot of Support Team Person 4"],
-      [3, 227471236, "Please upload a headshot of Support Team Person 5"]
+      [4, 226709158, "Please upload applicable financial information."],
+      [4, 226724568, "Upload a Display Image for your practice. This image will be used for the main title page and marketplace tile."],
+      [4, 226730310, "Do you have survey results, verifiable testimonials, press releases, news articles regarding your practice that you would like to share?"],
+      [4, 226730361, "Additional practice information 1"],
+      [4, 226730732, "Additional practice information 2"],
+      [4, 226731325, "Does your practice have a formal business case?"],
+      [4, 226731349, "Does your practice have an implementation toolkit?"],
+      [4, 227449385, "Does your practice have a pre-implementation checklist?*"],
+      [4, 226731863, "Does your practice have peer-reviewed publications associated with it?"],
+      [4, 226732296, "Additional publication upload 1"],
+      [4, 226738172, "Do you have an implementation timeline for your practice?"],
+      [2, 227451866, "Under the side navigation \"Origin of this practice\" tab, please provide a photo of the individual who initiated the practice"],
+      [2, 226726658, "Impact Photo 1"],
+      [2, 226726701, "Impact Photo 2"],
+      [2, 226726752, "Impact Photo 3"],
+      [2, 227470937, "Please upload a headshot of Support Team Person 1"],
+      [2, 227470976, "Please upload a headshot of Support Team Person 2"],
+      [2, 227471097, "Please upload a headshot of Support Team Person 3"],
+      [2, 227471145, "Please upload a headshot of Support Team Person 4"],
+      [2, 227471236, "Please upload a headshot of Support Team Person 5"]
     ]
 
     # Set the file download path
@@ -79,6 +79,7 @@ namespace :surveymonkey do
 
         # If the URL is good, download the file
         if url
+          puts " - Saving \"#{q[2]}\"..."
           file = agent.get(url)
           file.save(respondent_dir + '/' + URI.decode(file.filename))
         end
