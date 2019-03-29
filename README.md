@@ -1,5 +1,12 @@
 # Diffusion Marketplace
 
+### Environments:
+| Environment  | url  |
+|---|---|
+| development  | http://localhost:3200  |  
+| staging  | http://va-diffusion-marketplace-staging.efgnfj8pjn.us-west-2.elasticbeanstalk.com/  |  
+
+
 #### Ruby version
 
 - `ruby 2.5.3`
@@ -65,7 +72,7 @@ Be sure to create that user/role in the local postgres instance
 
     `rails s`
 
-6. In a browser, browse to `http://localhost:3000` to make sure everything built correctly.
+6. In a browser, browse to `http://localhost:3200` to make sure everything built correctly.
 
 ## Infrastructure  
 
