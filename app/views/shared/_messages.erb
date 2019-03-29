@@ -5,17 +5,13 @@
       </div>
     </div>
 <% end %>
-<% if notice.present? %>
-  <div class="usa-alert usa-alert-info x1-bottom" >
-    <div class="usa-alert-body">
-      <p class="usa-alert-heading"><%= notice %></p>
+<% if flash.present? %>
+  <% flash.each do |key, value| %>
+    <% if key == 'notice' then key = 'info' end %>
+    <div class="grid-container usa-alert usa-alert-<%= key %> margin-bottom-2">
+      <div class="usa-alert-body">
+        <h3 class="usa-alert-heading"><%= value %></h3>
+      </div>
     </div>
-  </div>
-<% end %>
-<% if flash[:warning].present? %>
-  <div class="usa-alert usa-alert-warning x1-bottom" >
-    <div class="usa-alert-body">
-      <p class="usa-alert-heading"><%= flash[:warning] %></p>
-    </div>
-  </div>
+  <% end %>
 <% end %>
