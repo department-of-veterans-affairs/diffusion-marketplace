@@ -62,15 +62,7 @@
               <div class="grid-col-9 p1-left">
                 <div class="practice-card-badgerow p1-5-top">
                   <div class="grid-row">
-                    <% p.badges.last(2).each do |badge| %>
-                      <div class="badge-container" style="background-color: <%= badge.color %>;">
-                        <i class="<%= badge.icon %>"></i><span class="x1-left"><%= badge.name %></span>
-                      </div>
-                    <% end %>
-                    <% if ((extra_badges = p.badges.count - 2) > 0) %>
-                      <div class="extra-badge"><i class="fas fa-plus"></i><span class="x1-left"><%= extra_badges %> more</span>
-                      </div>
-                    <% end %>
+                    <%= render partial: 'shared/badge', locals: { badges: p.strategic_sponsors } %>
                   </div>
                 </div>
                 <div class="practice-card-tagline fs3"><%= p.tagline %></div>
