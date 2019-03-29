@@ -1,24 +1,116 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Name:</strong>
-  <%= @strategic_sponsor.name %>
-</p>
-
-<p>
-  <strong>Short name:</strong>
-  <%= @strategic_sponsor.short_name %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @strategic_sponsor.description %>
-</p>
-
-<p>
-  <strong>Position:</strong>
-  <%= @strategic_sponsor.position %>
-</p>
-
-<%= link_to 'Edit', edit_strategic_sponsor_path(@strategic_sponsor) %> |
-<%= link_to 'Back', strategic_sponsors_path %>
+<div>
+  <section class="grid-container ">
+    <%= render "shared/messages" %>
+  </section>
+  <section class="grid-container x1-5-bottom">
+    <div class="dm-font-color-primary-blue p1-top breadcrumbs dm-font-color-super-violet-ish">
+      <a href="/">Home</a>
+      <span class="x0-5-left x0-5-right">›</span>
+      <span><%= link_to 'Practice Partners', strategic_sponsors_path %></span>
+      <span class="x0-5-left x0-5-right">›</span>
+      <span><%= @strategic_sponsor.short_name %></span>
+    </div>
+  </section>
+  <style>
+    .practice-partner-title-background {
+      background: linear-gradient(0deg, rgba(0, 118, 214, 0.11), rgba(0, 118, 214, 0.11)), url("<%=asset_url('jumbotron-img.jpg') %>");
+    }
+  </style>
+  <section class="practice-partner-title-background p5-top p5-bottom">
+    <div class="fw-bold fs6 dm-font-color-royal-blue text-center"><%=@strategic_sponsor.short_name %></div>
+    <div class="fs2-25 dm-font-color-royal-blue text-center"><%=@strategic_sponsor.name %></div>
+  </section>
+  <section class="grid-container p3">
+    <div class="dm-font-color-midnight-black fs1-5 fw-bold x1-bottom"><%=@strategic_sponsor.short_name %> Mission</div>
+    <div class="dm-font-color-steel-grey fs1-125 "><%=@strategic_sponsor.description %></div>
+  </section>
+  <section class="dm-background-royal-blue dm-font-color-white text-center fw-normal fs1-5 box-shadow-bottom p0-75-top p0-75-bottom"><%= @strategic_sponsor.short_name %>
+    List of Practices
+  </section>
+  <section class="dm-background-light-blue p3 practice-partner-list diffusion-background-circles-translucent-blue-height">
+    <div class="grid-container">
+      <% @strategic_sponsor.practices.each do |p| %>
+        <div class="practice-card x2-bottom">
+<!--          <div class="grid-container-full-width">-->
+            <div class="grid-row">
+              <div class="grid-col-3">
+                <style>
+                  .practice-card-background-<%=p.id %> {
+                    color: white;
+                  <%if p.main_display_image.present? %> background: linear-gradient(180deg, rgba(0, 0, 0, 0) 3.33%, rgba(0, 42, 92, 0.86) 103.33%), url(<%= p.main_display_image.url %>);
+                  <%else %> background: rgba(26, 28, 128, 1);
+                  <%end %> background-position: center;
+                    background-size: cover;
+                    height: 100%;
+                    width: 100%;
+                    border-radius: 20px 0 0 20px;
+                    padding: 2em;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: end;
+                  }
+                    .practice-card-background-<%=p.id %> .contents {
+                      margin-top: auto;
+                    }
+                </style>
+                <div class="practice-card-background-<%= p.id %>">
+                  <div class="contents">
+                    <div class="practice-number-adopted dm-font-color-white fw-normal fs3-5"><%= p.number_adopted%></div>
+                    <div class="dm-font-color-white fs1-125 fw-normal"><%= "#{p.number_adopted == 1 ? 'Facility has' : 'Facilities have'}" %> adopted this practice</div></div>
+                </div>
+              </div>
+              <div class="grid-col-9">
+                <div class="practice-card-badgerow p1-5-top p1-left">
+                  <div class="grid-row">
+                    <%= render partial: 'shared/badge', locals: { badges: p.strategic_sponsors } %>
+                  </div>
+                </div>
+                <div class="practice-card-tagline fs3 p1-left"><%= p.tagline %></div>
+                <div class="practice-card-description fs1 dm-font-color-steel-grey fw-300 p0-75-bottom p1-left"><%= p.description %></div>
+                <div class="practice-card-tiny-details dm-font-color-steel-grey fs1 p1-left x1-bottom"><%= p.name %> |
+                  <span class="uppercase"><%= p.initiating_facility %></span></div>
+                <div class="practice-card-aggregates practice-card-aggregates-background">
+                  <div class="grid-row p1">
+                    <div class="tablet:grid-col-fill text-center">
+                      <% cost_aggregate = p.cost_savings_aggregate || 0 %>
+                      <% (0..3).each do |index| %>
+                        <% if index < cost_aggregate %>
+                          <i class="fas fa-dollar-sign large-icon-dark practice-card-aggregate-icon"></i>
+                        <% else %>
+                          <i class="fas fa-dollar-sign large-icon-light practice-card-aggregate-icon"></i>
+                        <% end %>
+                      <% end %>
+                      <p class="fw-100 x0-top">Cost Avoidance</p>
+                    </div>
+                    <div class="tablet:grid-col-fill text-center">
+                      <% veteran_satisfaction_aggregate = p.veteran_satisfaction_aggregate || 0 %>
+                      <% (0..3).each do |index| %>
+                        <% if index < veteran_satisfaction_aggregate %>
+                          <i class="dm dm-saluting-veteran large-icon-dark practice-card-aggregate-icon"></i>
+                        <% else %>
+                          <i class="dm dm-saluting-veteran large-icon-light practice-card-aggregate-icon"></i>
+                        <% end %>
+                      <% end %>
+                      <p class="fw-100 x0-top">Human Impact</p>
+                    </div>
+                    <div class="tablet:grid-col-fill text-center">
+                      <% difficulty_aggregate = p.difficulty_aggregate || 0 %>
+                      <% (0..3).each do |index| %>
+                        <% if index < difficulty_aggregate %>
+                          <i class="fas fa-wrench large-icon-dark practice-card-aggregate-icon"></i>
+                        <% else %>
+                          <i class="fas fa-wrench large-icon-light practice-card-aggregate-icon"></i>
+                        <% end %>
+                      <% end %>
+                      <p class="fw-100 x0-top">Implementation Difficulty</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+<!--          </div>-->
+        </div>
+      <% end %>
+    </div>
+  </section>
+</div>
