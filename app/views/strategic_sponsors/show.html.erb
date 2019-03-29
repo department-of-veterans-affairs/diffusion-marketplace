@@ -37,7 +37,7 @@
                 <style>
                   .practice-card-background-<%=p.id %> {
                     color: white;
-                  <%if p.main_display_image.present? %> background: linear-gradient(180deg, rgba(0, 42, 92, 0) 0%, rgba(0, 42, 92, 0.8) 0.01%), url(<%= p.main_display_image.url %>);
+                  <%if p.main_display_image.present? %> background: linear-gradient(180deg, rgba(0, 0, 0, 0) 3.33%, rgba(0, 42, 92, 0.86) 103.33%), url(<%= p.main_display_image.url %>);
                   <%else %> background: rgba(26, 28, 128, 1);
                   <%end %> background-position: center;
                     background-size: cover;
@@ -59,8 +59,8 @@
                     <div class="dm-font-color-white fs1-125 fw-normal"><%= "#{p.number_adopted == 1 ? 'Facility has' : 'Facilities have'}" %> adopted this practice</div></div>
                 </div>
               </div>
-              <div class="grid-col-9 p1-left">
-                <div class="practice-card-badgerow p1-5-top">
+              <div class="grid-col-9">
+                <div class="practice-card-badgerow p1-5-top p1-left">
                   <div class="grid-row">
                     <% p.badges.last(2).each do |badge| %>
                       <div class="badge-container" style="background-color: <%= badge.color %>;">
@@ -73,12 +73,12 @@
                     <% end %>
                   </div>
                 </div>
-                <div class="practice-card-tagline fs3"><%= p.tagline %></div>
-                <div class="practice-card-description fs1 dm-font-color-steel-grey fw-300 p0-75-bottom"><%= p.description %></div>
-                <div class="practice-card-tiny-details dm-font-color-steel-grey fs1"><%= p.name %> |
+                <div class="practice-card-tagline fs3 p1-left"><%= p.tagline %></div>
+                <div class="practice-card-description fs1 dm-font-color-steel-grey fw-300 p0-75-bottom p1-left"><%= p.description %></div>
+                <div class="practice-card-tiny-details dm-font-color-steel-grey fs1 p1-left x1-bottom"><%= p.name %> |
                   <span class="uppercase"><%= p.initiating_facility %></span></div>
                 <div class="practice-card-aggregates practice-card-aggregates-background">
-                  <div class="grid-row practice-aggregate-container p1">
+                  <div class="grid-row p1">
                     <div class="tablet:grid-col-fill text-center">
                       <% cost_aggregate = p.cost_savings_aggregate || 0 %>
                       <% (0..3).each do |index| %>
