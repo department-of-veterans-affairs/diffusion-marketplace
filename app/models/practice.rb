@@ -7,26 +7,38 @@ class Practice < ApplicationRecord
 
   belongs_to :user, optional: true
 
+  has_many :additional_documents
+  has_many :additional_resources
+  has_many :additional_staffs
   has_many :ancillary_service_practices
   has_many :ancillary_services, through: :ancillary_service_practices
   has_many :badge_practices
   has_many :badges, through: :badge_practices
+  has_many :business_case_files
+  has_many :checklist_files
   has_many :clinical_condition_practices
   has_many :clinical_conditions, through: :clinical_condition_practices
   has_many :clinical_location_practices
   has_many :clinical_locations, through: :clinical_location_practices
   has_many :costs
+  has_many :department_practices
+  has_many :departments, through: :department_practices
   has_many :developing_facility_type_practices
   has_many :developing_facility_types, through: :developing_facility_type_practices
   has_many :difficulties
+  has_many :financial_files
+  has_many :human_impact_photos
   has_many :impact_practices
   has_many :impacts, through: :impact_practices
   has_many :implementation_timeline_files
   has_many :job_position_practices
   has_many :job_positions, through: :job_position_practices
   has_many :photo_files
+  has_many :practice_management_practices
+  has_many :practice_managements, through: :practice_management_practices
   has_many :publications
   has_many :publication_files
+  has_many :required_staff_trainings
   has_many :risk_mitigations
   has_many :strategic_sponsor_practices
   has_many :strategic_sponsors, through: :strategic_sponsor_practices

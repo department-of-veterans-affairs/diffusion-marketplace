@@ -3,6 +3,7 @@ class CreateVideoFiles < ActiveRecord::Migration[5.2]
     create_table :video_files do |t|
       t.string :title
       t.integer :position
+      t.string :url
       t.text :description
       t.belongs_to :practice, foreign_key: true
 

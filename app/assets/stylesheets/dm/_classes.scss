@@ -862,6 +862,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   justify-content: center;
 }
 
+.justify-end {
+  justify-content: flex-end;
+}
+
 /* unordered lists <ul><li></li></ul> */
 
 ul.no-list-style {
