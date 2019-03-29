@@ -18,7 +18,7 @@ namespace :dm do
     Rake::Task['importer:import_answers'].execute
   end
 
-  #rails dm:reset_up
+  # rails dm:reset_up
   desc 'Resets up database and imports all data from the full flow of the importer'
   task reset_up: :environment do
     Rake::Task['db:drop'].execute
