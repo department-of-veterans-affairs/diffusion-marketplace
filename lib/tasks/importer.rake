@@ -2,7 +2,7 @@
 namespace :importer do
   desc 'import an xlsx and create practices'
   task import_answers: :environment do
-    sheet = Roo::Excelx.new('./public/Diffusion Marketplace.xlsx')
+    sheet = Roo::Excelx.new('../lib/Diffusion Marketplace.xlsx')
     @questions = sheet.sheet(0).row(1)
     @given_answers = sheet.sheet(0).row(2)
     last_row = sheet.last_row
