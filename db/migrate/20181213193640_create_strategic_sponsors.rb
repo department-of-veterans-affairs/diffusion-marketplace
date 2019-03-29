@@ -5,6 +5,8 @@ class CreateStrategicSponsors < ActiveRecord::Migration[5.2]
       t.string :short_name
       t.text :description
       t.integer :position
+      t.string :color
+      t.string :icon
 
       t.timestamps
     end

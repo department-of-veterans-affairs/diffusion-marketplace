@@ -58,16 +58,7 @@
             </div>
             <div class="marketplace-footer p1">
               <div class=''>
-                <% practice.badges.last(2).each do |badge| %>
-                  <div class='badge-container' style='background-color: <%= badge.color %>;'>
-                    <i class="<%= badge.icon %>"></i><span class='x1-left'><%= badge.name %></span>
-                  </div>
-                <% end %>
-                <% if ((extra_badges = practice.badges.count - 2) > 0) %>
-                  <div class='extra-badge'><i class="fas fa-plus"></i><span class='x1-left'><%= extra_badges %>
-                    more</span>
-                  </div>
-                <% end %>
+                <%= render partial: 'shared/badge', locals: { badges: practice.strategic_sponsors } %>
               </div>
               <%# practice.badges.each do |badge| %>
               <!--                <div class="marketplace-card-badge"><%#= badge.name %></div>-->
