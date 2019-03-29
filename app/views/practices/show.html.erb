@@ -123,6 +123,11 @@
               <a href="#" class="usa-current dm-tab top-tab" data-target="#risks_and_mitigations">Risks &
                 Mitigations</a>
             </li>
+            <% if @practice.human_impact_photos.present? %>
+              <li class="usa-sidenav-item>">
+                <a href="#" class="dm-tab" data-target="#impact">Impact</a>
+              </li>
+            <% end %>
             <li class="usa-sidenav-item>">
               <a href="#" class="dm-tab" data-target="#cost_and_difficulty">Cost & Difficulty</a>
             </li>
@@ -141,6 +146,9 @@
             </div>
             <div id="cost_and_difficulty" class="practice-tab-content tab-inactive">
               <%= render partial: 'cost_and_difficulty' %>
+            </div>
+            <div id="impact" class="practice-tab-content tab-inactive">
+              <%= render partial: 'impact' %>
             </div>
             <div id="timeline_and_toolkit" class="practice-tab-content tab-inactive">
               <%= render partial: 'timeline_and_toolkit' %>
