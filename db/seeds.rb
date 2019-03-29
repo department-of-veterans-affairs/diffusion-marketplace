@@ -10,19 +10,21 @@
 if StrategicSponsor.all.blank?
   puts 'Seeding Database...'
   sponsors = [
-      StrategicSponsor.create!(name: 'VISN', short_name: 'visn', description: 'Sponsored by at least one VISN'),
-      StrategicSponsor.create!(name: 'Diffusion of Excellence', short_name: 'diffusion_of_excellence', description: 'Sponsored by Diffusion of Excellence'),
-      StrategicSponsor.create!(name: 'Office of Rural Health', short_name: 'office_of_rural_heath', description: 'Sponsored by the Office of Rural Health'),
-      StrategicSponsor.create!(name: 'HSR&D', short_name: 'hsrd', description: 'Sponsored by HASR&D'),
-      StrategicSponsor.create!(name: 'VHA System Redesign', short_name: 'vha_system_redesign', description: 'Sponsored by VHA System Redesign'),
-      StrategicSponsor.create!(name: 'VHA Office of Connected Care', short_name: 'vha_office_of_connected_care', description: 'Sponsored by the VHA Office of Connected Care'),
-      StrategicSponsor.create!(name: 'Office of Prosthetics and Rehabilitation', short_name: 'office_of_prosthetics_and_rehabilitation', description: 'Sponsored by the Office of Prosthetics and Rehabilitation'),
-      StrategicSponsor.create!(name: 'Office of Mental Health and Suicide Prevention (OMHSP)', short_name: 'omhsp', description: 'Sponsored by the Office of Mental Health and Suicide Prevention (OMHSP)'),
-      StrategicSponsor.create!(name: 'National Opioid Overdose Education Naloxone Distribution (OEND) Program Office', short_name: 'oend', description: 'Sponsored by the National Opioid Overdose Education Naloxone Distribution Program Office'),
-      StrategicSponsor.create!(name: 'Pharmacy Benefits Management (PBM)', short_name: 'pbm', description: 'Sponsored by the Pharmacy Benefits Management (PBM)'),
-      StrategicSponsor.create!(name: 'Academic Detailing Service', short_name: 'ads', description: 'Sponsored by the Academic Detailing Service'),
-      StrategicSponsor.create!(name: 'National Center for Patient Safety (NCPS)', short_name: 'ncps', description: 'Sponsored by the National Center for Patient Safety (NCPS)'),
-      StrategicSponsor.create!(name: 'VA Police', short_name: 'va_police', description: 'Sponsored by the VA Police'),
+      StrategicSponsor.create!(name: 'VISN', short_name: 'visn', description: 'Sponsored by at least one VISN', icon: 'fas fa-certificate', color: '#0076D6'),
+      StrategicSponsor.create!(name: 'Diffusion of Excellence', short_name: 'diffusion_of_excellence', description: 'Sponsored by Diffusion of Excellence', icon: 'fas fa-heart', color: '#E4A002'),
+      StrategicSponsor.create!(name: 'Office of Rural Health', short_name: 'ORH', description: 'ORH fulfills its mission by supporting targeted research, developing innovative programs, and identifying new care models in order to break down the barriers separating rural Veterans from quality care.', icon: 'fas fa-mountain', color: '#1CC2AE'),
+      StrategicSponsor.create!(name: 'Health Systems Research & Design', short_name: 'HSR&D', description: 'The HSR&D pursues research that underscores all aspects of VA healthcare: patient care, care delivery, health outcomes, cost, and quality. Within VA HSR&D, researchers focus on identifying and evaluating innovative strategies that lead to accessible, high quality, cost-effective care for Veterans and the nation.', icon: 'fas fa-microscope', color: '#9058D3'),
+      StrategicSponsor.create!(name: 'VHA System Redesign', short_name: 'VHASR', description: 'The Office of Connected Care brings VA digital technology to Veterans and health care professionals, extending access to care beyond the traditional office visit.', icon: 'fas fa-cogs', color: '#FE4497'),
+      StrategicSponsor.create!(name: 'VHA Office of Connected Care', short_name: 'OCC', description: 'The Office of Connected Care brings VA digital technology to Veterans and health care professionals, extending access to care beyond the traditional office visit. Through virtual technology, VA is able to deliver care to patients where and when they need it.', icon: 'fas fa-hand-holding-heart', color: '#E52107'),
+      StrategicSponsor.create!(name: 'Office of Prosthetics and Rehabilitation', short_name: 'office_of_prosthetics_and_rehabilitation', description: 'Sponsored by the Office of Prosthetics and Rehabilitation', icon: 'fas fa-certificate', color: '#0076D6'),
+      StrategicSponsor.create!(name: 'Office of Mental Health and Suicide Prevention (OMHSP)', short_name: 'omhsp', description: 'Sponsored by the Office of Mental Health and Suicide Prevention (OMHSP)', icon: 'fas fa-certificate', color: '#0076D6'),
+      StrategicSponsor.create!(name: 'National Opioid Overdose Education Naloxone Distribution (OEND) Program Office', short_name: 'oend', description: 'Sponsored by the National Opioid Overdose Education Naloxone Distribution Program Office', icon: 'fas fa-certificate', color: '#0076D6'),
+      StrategicSponsor.create!(name: 'Pharmacy Benefits Management (PBM)', short_name: 'pbm', description: 'Sponsored by the Pharmacy Benefits Management (PBM)', icon: 'fas fa-certificate', color: '#0076D6'),
+      StrategicSponsor.create!(name: 'Academic Detailing Service', short_name: 'ads', description: 'Sponsored by the Academic Detailing Service', icon: 'fas fa-certificate', color: '#0076D6'),
+      StrategicSponsor.create!(name: 'National Center for Patient Safety (NCPS)', short_name: 'ncps', description: 'Sponsored by the National Center for Patient Safety (NCPS)', icon: 'fas fa-certificate', color: '#0076D6'),
+      StrategicSponsor.create!(name: 'VA Police', short_name: 'va_police', description: 'Sponsored by the VA Police', icon: 'fas fa-certificate', color: '#0076D6'),
+      StrategicSponsor.create!(name: 'Veterans Experience Office', short_name: 'VEO', description: 'The VEO’s goal is to enable VA to be the leading customer service organization in government so that Veterans, their families, caregivers, and survivors Choose VA. VEO implements solutions based on Veteran-centered designs and industry best practices.', icon: 'fas fa-certificate', color: '#0076D6'),
+      StrategicSponsor.create!(name: 'Quality Enhancement Research Initiative', short_name: 'QUERI', description: 'QUERI is committed to ensuring that research gets used effectively to ultimately sustain improvements in care for Veterans.', icon: 'fas fa-certificate', color: '#0076D6'),
       StrategicSponsor.create!(name: 'None', short_name: 'none', description: 'Not Sponsored'),
   ]
 
@@ -284,6 +286,7 @@ if StrategicSponsor.all.blank?
   User.create!(email: 'tom@skylight.digital', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now).add_role(User::USER_ROLES[1].to_sym)
   User.create!(email: 'aurora.hay@agile6.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now).add_role(User::USER_ROLES[1].to_sym)
   User.create!(email: 'jake.holzhauer@agile6.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now).add_role(User::USER_ROLES[1].to_sym)
+  User.create!(email: 'jackson.wilke@agile6.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now).add_role(User::USER_ROLES[1].to_sym)
   User::USER_ROLES.each_with_index do |role, index|
     User.create!(email: "A6test#{index}@agile6.com", password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now).add_role(User::USER_ROLES[index].to_sym)
   end

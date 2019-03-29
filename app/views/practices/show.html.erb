@@ -1,6 +1,5 @@
 <!-- "Practice name" section -->
 <div>
-  <%= render 'shared/sub_search_nav' %>
   <section class="usa-section p2-top p2-bottom dm-background-linear-up-lightblue-to-white">
     <div class="grid-container">
       <%= render "shared/messages" %>
@@ -27,23 +26,15 @@
       <% end %>
       <p><%= @practice.description %></p>
 
-      <div class="grid-row">
+      <!-- <div class="grid-row">
         <p class="fw-100"><%= @practice.strategic_sponsors.map(&:name).join(", ") %></p>
-      </div>
+      </div> -->
       <div class="grid-row flex-row flex-justify flex-align-center x1-top">
         <h5 class="flex-1 practice-facility"><%= @practice.name %> |
           <span class="uppercase"><%= @practice.initiating_facility %></span></h5>
-        <div class="flex-2">
+        <div>
           <div class="grid-row flex-row flex-align-center flex-justify-end">
-            <% @practice.badges.last(2).each do |badge| %>
-              <div class="badge-container" style="background-color: <%= badge.color %>;">
-                <i class="<%= badge.icon %>"></i><span class="x1-left"><%= badge.name %></span>
-              </div>
-            <% end %>
-            <% if ((extra_badges = @practice.badges.count - 2) > 0) %>
-              <div class="extra-badge"><i class="fas fa-plus"></i><span class="x1-left"><%= extra_badges %> more</span>
-              </div>
-            <% end %>
+            <%= render partial: 'shared/badge', locals: { badges: @practice.strategic_sponsors } %>
           </div>
         </div>
       </div>
@@ -56,7 +47,7 @@
     <style>
       .practice-image {
         color: white;
-        padding: 3rem 6rem;
+        padding: 2rem 0;
         <% if @practice.main_display_image.present? %>
           background: linear-gradient(180deg, rgba(0, 42, 92, 0) 0%, rgba(0, 42, 92, 0.8) 0.01%), url(<%= @practice.main_display_image.url %>);
         <% else %>
@@ -77,84 +68,44 @@
 
   <section class="p3-top p5-bottom dm-background-linear-gradient-up-dark-blue relative overflow-hidden">
     <div class="diffusion-background-circles aggregate-circles-position z-index-0"></div>
-    <div class="grid-container x2-bottom">
-      <div class="grid-row practice-aggregate-container p2">
-        <div class="tablet:grid-col-fill text-center">
-          <% cost_aggregate = @practice.cost_savings_aggregate || 0 %>
-          <% (0..3).each do |index| %>
-            <% if index < cost_aggregate %>
-              <i class="fas fa-dollar-sign large-icon-dark aggregate-icon"></i>
-            <% else %>
-              <i class="fas fa-dollar-sign large-icon-light aggregate-icon"></i>
-            <% end %>
-          <% end %>
-          <p class="fw-100">Cost Avoidance</p>
-        </div>
-        <div class="tablet:grid-col-fill text-center">
-          <% veteran_satisfaction_aggregate = @practice.veteran_satisfaction_aggregate || 0 %>
-          <% (0..3).each do |index| %>
-            <% if index < veteran_satisfaction_aggregate %>
-              <i class="dm dm-saluting-veteran large-icon-dark aggregate-icon"></i>
-            <% else %>
-              <i class="dm dm-saluting-veteran large-icon-light aggregate-icon"></i>
-            <% end %>
-          <% end %>
-          <p class="fw-100">Veteran Satisfaction</p>
-        </div>
-        <div class="tablet:grid-col-fill text-center">
-          <% difficulty_aggregate = @practice.difficulty_aggregate || 0 %>
-          <% (0..3).each do |index| %>
-            <% if index < difficulty_aggregate %>
-              <i class="fas fa-wrench large-icon-dark aggregate-icon"></i>
-            <% else %>
-              <i class="fas fa-wrench large-icon-light aggregate-icon"></i>
-            <% end %>
-          <% end %>
-          <p class="fw-100">Implementation Difficulty</p>
-        </div>
-      </div>
-    </div>
     <div class="grid-container">
       <div class="diffusion-background-circles-offset-translucent bottom"></div>
       <div class="grid-row">
         <div class="tablet:grid-col-4 p3-left">
           <ul class="usa-sidenav dm-tabnav">
             <li class="usa-sidenav-item>">
-              <a href="#" class="usa-current dm-tab top-tab" data-target="#risks_and_mitigations">Risks &
-                Mitigations</a>
-            </li>
-            <% if @practice.human_impact_photos.present? %>
-              <li class="usa-sidenav-item>">
-                <a href="#" class="dm-tab" data-target="#impact">Impact</a>
-              </li>
-            <% end %>
-            <li class="usa-sidenav-item>">
-              <a href="#" class="dm-tab" data-target="#cost_and_difficulty">Cost & Difficulty</a>
+              <a href="#" class="dm-tab usa-current top-tab" data-target="#resources_required">Resources Required</a>
             </li>
             <li class="usa-sidenav-item>">
-              <a href="#" class="dm-tab" data-target="#timeline_and_toolkit">Timeline & Toolkit</a>
+              <a href="#" class="dm-tab" data-target="#impact">Impact</a>
             </li>
             <li class="usa-sidenav-item>">
-              <a href="#" class="dm-tab bottom-tab" data-target="#origin">Origin of this practice</a>
+              <a href="#" class="dm-tab" data-target="#origin">Origin of this practice</a>
+            </li>
+            <li class="usa-sidenav-item>">
+              <a href="#" class="dm-tab" data-target="#risks_and_mitigations">Risks & Mitigations</a>
+            </li>
+            <li class="usa-sidenav-item>">
+              <a href="#" class="dm-tab bottom-tab" data-target="#timeline_and_checklist">Timeline & Checklist</a>
             </li>
           </ul>
         </div>
         <div class="tablet:grid-col-8 p0 p1-5-right">
           <div class="practice-tab-container p4-bottom">
-            <div id="risks_and_mitigations" class="practice-tab-content tab-active top-tab">
-              <%= render partial: 'risks_and_mitigations' %>
-            </div>
-            <div id="cost_and_difficulty" class="practice-tab-content tab-inactive">
-              <%= render partial: 'cost_and_difficulty' %>
+            <div id="resources_required" class="practice-tab-content tab-active top-tab">
+              <%= render partial: 'resources_required' %>
             </div>
             <div id="impact" class="practice-tab-content tab-inactive">
               <%= render partial: 'impact' %>
             </div>
-            <div id="timeline_and_toolkit" class="practice-tab-content tab-inactive">
-              <%= render partial: 'timeline_and_toolkit' %>
-            </div>
             <div id="origin" class="practice-tab-content tab-inactive">
               <%= render partial: 'origin' %>
+            </div>
+            <div id="risks_and_mitigations" class="practice-tab-content tab-inactive">
+              <%= render partial: 'risks_and_mitigations' %>
+            </div>
+            <div id="timeline_and_checklist" class="practice-tab-content tab-inactive">
+              <%= render partial: 'timeline_and_checklist' %>
             </div>
           </div>
         </div>
@@ -182,32 +133,31 @@
   <!-- "Team" section -->
 
   <section class="usa-section margin-y-0 p0 dm-background-light-blue">
-    <div class="grid-container p4-left p3-top">
+    <div class="grid-container p3-top">
       <p class="font-sans-lg fw-bold">Support Team</p>
-      <div class="grid-row flex-row flex-wrap">
+
+      <div class="grid-row grid-gap-lg margin-top-4 margin-bottom-2">
         <% @practice.va_employees.each do |employee| %>
-          <div class="tablet:grid-col-4 x2-bottom">
-            <div class="grid-row flex-row flex-align-center">
-              <div class="grid-col-2">
-                <div class="avatar-container rounded display-flex-align-items-center dm-background-white overflow-hidden dm-font-color-primary-blue flex-justify-center">
-                  <% if employee.avatar.present? %>
-                    <%= image_tag employee.avatar.url, alt: employee.name %>
-                  <% else %>
-                    <span class="fas fa-user-circle fa-3x"></span>
-                  <% end %>
-                </div>
-              </div>
-              <div class="grid-col-9 grid-offset-1">
-                <h4 class="margin-y-0"><%= employee.name %></h4>
-                <p class="margin-y-0"><%= employee.role %></p>
-              </div>
+          <div class="grid-row width-mobile x2-bottom">
+            <div class="avatar-container rounded display-flex-align-items-center flex-justify-center dm-background-white overflow-hidden margin-right-105">
+              <% if employee.avatar.present? %>
+                <%= image_tag employee.avatar.url, alt: employee.name %>
+              <% else %>
+                <span class="fas fa-user-circle fa-3x dm-font-color-primary-blue"></span>
+              <% end %>
+            </div>
+            <div class="grid-col-fill margin-auto">
+              <h4 class="margin-y-0"><%= employee.name %></h4>
+              <p class="margin-y-0"><%= employee.role %></p>
             </div>
           </div>
         <% end %>
       </div>
+
       <div class="grid-row flex-row flex-justify-center flex-align-center ">
         <a href="mailto:<%= @practice.support_network_email %>" class="dm-button-link x3-bottom">Contact</a>
       </div>
+
     </div>
   </section>
 </div>

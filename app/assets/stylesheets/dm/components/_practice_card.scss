@@ -1,0 +1,13 @@
+@import "../variables/colors";
+.practice-card {
+  border-radius: 20px;
+  box-shadow: 0 4px 4px rgba(0,0,0,0.25);
+  background-color: $dm-color-white;
+  .practice-card-aggregate-icon {
+    font-size: 1.5em;
+  }
+}
+.practice-card-aggregates-background {
+  background: linear-gradient(0deg, #ECECEC, #ECECEC);
+  border-radius: 0px 0px 20px 0px;
+}

@@ -494,6 +494,8 @@ ActiveRecord::Schema.define(version: 2019_02_25_215005) do
     t.string "short_name"
     t.text "description"
     t.integer "position"
+    t.string "color"
+    t.string "icon"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
