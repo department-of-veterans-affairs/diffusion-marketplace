@@ -18,3 +18,7 @@
 @import 'dm_uswds/theme/_uswds-theme-custom-styles';
 @import "font-awesome-sprockets";
 @import "font-awesome";
+
+html, body {
+  height: 100%;
+}
