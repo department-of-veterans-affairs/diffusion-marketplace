@@ -1,8 +1,8 @@
-# A task setup for importing survery monkey questionairre answers
+# A task setup for importing survey monkey questionnaire answers
 namespace :importer do
   desc 'import an xlsx and create practices'
-  task import_answers: :environment do
-    sheet = Roo::Excelx.new('../lib/Diffusion Marketplace.xlsx')
+  task import_answers: :environment do |t, args|
+    sheet = Roo::Excelx.new(File.join(Rails.root, '/lib/assets/Diffusion Marketplace.xlsx'))
     @questions = sheet.sheet(0).row(1)
     @given_answers = sheet.sheet(0).row(2)
     last_row = sheet.last_row
