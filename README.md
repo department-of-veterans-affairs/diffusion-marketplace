@@ -6,6 +6,14 @@
 | development  | http://localhost:3200  |  
 | staging  | http://va-diffusion-marketplace-staging.efgnfj8pjn.us-west-2.elasticbeanstalk.com/  |  
 
+### Custom Rails Tasks:
+| Task command  | description  |
+|---|---|
+| `rails dm:db_setup` |  Set up database |  
+| `rails dm:full_import` | Set up data using the full flow of the importer  |  
+| `rails dm:reset_up` | Re-sets up database and imports all data from the full flow of the importer  |  
+| `rails importer:import_answers` | import an xlsx and create practices  | 
+| `rails surveymonkey:download_response_files` | Rake task to download files from our SurveyMonkey practice submission form  | 
 
 #### Ruby version
 
