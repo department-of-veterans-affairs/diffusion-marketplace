@@ -7,65 +7,27 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 #
 
-if StrategicSponsor.all.blank?
+if PracticePartner.all.blank?
   puts 'Seeding Database...'
+
   sponsors = [
-      StrategicSponsor.create!(name: 'VISN', short_name: 'visn', description: 'Sponsored by at least one VISN', icon: 'fas fa-certificate', color: '#0076D6'),
-      StrategicSponsor.create!(name: 'Diffusion of Excellence', short_name: 'diffusion_of_excellence', description: 'Sponsored by Diffusion of Excellence', icon: 'fas fa-heart', color: '#E4A002'),
-      StrategicSponsor.create!(name: 'Office of Rural Health', short_name: 'ORH', description: 'ORH fulfills its mission by supporting targeted research, developing innovative programs, and identifying new care models in order to break down the barriers separating rural Veterans from quality care.', icon: 'fas fa-mountain', color: '#1CC2AE'),
-      StrategicSponsor.create!(name: 'Health Systems Research & Design', short_name: 'HSR&D', description: 'The HSR&D pursues research that underscores all aspects of VA healthcare: patient care, care delivery, health outcomes, cost, and quality. Within VA HSR&D, researchers focus on identifying and evaluating innovative strategies that lead to accessible, high quality, cost-effective care for Veterans and the nation.', icon: 'fas fa-microscope', color: '#9058D3'),
-      StrategicSponsor.create!(name: 'VHA System Redesign', short_name: 'VHASR', description: 'The Office of Connected Care brings VA digital technology to Veterans and health care professionals, extending access to care beyond the traditional office visit.', icon: 'fas fa-cogs', color: '#FE4497'),
-      StrategicSponsor.create!(name: 'VHA Office of Connected Care', short_name: 'OCC', description: 'The Office of Connected Care brings VA digital technology to Veterans and health care professionals, extending access to care beyond the traditional office visit. Through virtual technology, VA is able to deliver care to patients where and when they need it.', icon: 'fas fa-hand-holding-heart', color: '#E52107'),
-      StrategicSponsor.create!(name: 'Office of Prosthetics and Rehabilitation', short_name: 'office_of_prosthetics_and_rehabilitation', description: 'Sponsored by the Office of Prosthetics and Rehabilitation', icon: 'fas fa-certificate', color: '#0076D6'),
-      StrategicSponsor.create!(name: 'Office of Mental Health and Suicide Prevention (OMHSP)', short_name: 'omhsp', description: 'Sponsored by the Office of Mental Health and Suicide Prevention (OMHSP)', icon: 'fas fa-certificate', color: '#0076D6'),
-      StrategicSponsor.create!(name: 'National Opioid Overdose Education Naloxone Distribution (OEND) Program Office', short_name: 'oend', description: 'Sponsored by the National Opioid Overdose Education Naloxone Distribution Program Office', icon: 'fas fa-certificate', color: '#0076D6'),
-      StrategicSponsor.create!(name: 'Pharmacy Benefits Management (PBM)', short_name: 'pbm', description: 'Sponsored by the Pharmacy Benefits Management (PBM)', icon: 'fas fa-certificate', color: '#0076D6'),
-      StrategicSponsor.create!(name: 'Academic Detailing Service', short_name: 'ads', description: 'Sponsored by the Academic Detailing Service', icon: 'fas fa-certificate', color: '#0076D6'),
-      StrategicSponsor.create!(name: 'National Center for Patient Safety (NCPS)', short_name: 'ncps', description: 'Sponsored by the National Center for Patient Safety (NCPS)', icon: 'fas fa-certificate', color: '#0076D6'),
-      StrategicSponsor.create!(name: 'VA Police', short_name: 'va_police', description: 'Sponsored by the VA Police', icon: 'fas fa-certificate', color: '#0076D6'),
-      StrategicSponsor.create!(name: 'Veterans Experience Office', short_name: 'VEO', description: 'The VEO’s goal is to enable VA to be the leading customer service organization in government so that Veterans, their families, caregivers, and survivors Choose VA. VEO implements solutions based on Veteran-centered designs and industry best practices.', icon: 'fas fa-certificate', color: '#0076D6'),
-      StrategicSponsor.create!(name: 'Quality Enhancement Research Initiative', short_name: 'QUERI', description: 'QUERI is committed to ensuring that research gets used effectively to ultimately sustain improvements in care for Veterans.', icon: 'fas fa-certificate', color: '#0076D6'),
-      StrategicSponsor.create!(name: 'None', short_name: 'none', description: 'Not Sponsored'),
+      PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative helps to identify and disseminate clinical and administrative best practices through a learning environment that empowers its top performers to apply their innovative ideas throughout the system — further establishing VA as a leader in health care while promoting positive outcomes for Veterans.', icon: 'fas fa-heart', color: '#E4A002'),
+      PracticePartner.create!(name: 'Office of Rural Health', short_name: 'ORH', description: 'ORH fulfills its mission by supporting targeted research, developing innovative programs, and identifying new care models in order to break down the barriers separating rural Veterans from quality care.', icon: 'fas fa-mountain', color: '#1CC2AE'),
+      PracticePartner.create!(name: 'Health Services Research & Development', short_name: 'HSR&D', description: 'The HSR&D pursues research that underscores all aspects of VA healthcare: patient care, care delivery, health outcomes, cost, and quality. Within VA HSR&D, researchers focus on identifying and evaluating innovative strategies that lead to accessible, high quality, cost-effective care for Veterans and the nation.', icon: 'fas fa-microscope', color: '#9058D3'),
+      PracticePartner.create!(name: 'VHA System Redesign', short_name: 'SR', description: 'The Office of Connected Care brings VA digital technology to Veterans and health care professionals, extending access to care beyond the traditional office visit.', icon: 'fas fa-cogs', color: '#FE4497'),
+      PracticePartner.create!(name: 'VHA Office of Connected Care', short_name: 'OCC', description: 'The Office of Connected Care brings VA digital technology to Veterans and health care professionals, extending access to care beyond the traditional office visit. Through virtual technology, VA is able to deliver care to patients where and when they need it.', icon: 'fas fa-hand-holding-heart', color: '#E52107'),
+      PracticePartner.create!(name: 'Office of Prosthetics and Rehabilitation', short_name: '', description: 'Rehabilitation and Prosthetic Services is committed to providing the highest quality, comprehensive, interdisciplinary care; the most advanced medical devices and products that are commercially available; and, promoting advancements in rehabilitative care and evidence-based treatment.', icon: 'fas fa-certificate', color: '#0076D6'),
+      PracticePartner.create!(name: 'Office of Mental Health and Suicide Prevention', short_name: 'OMHSP', description: 'For the U.S. Department of Veterans Affairs (VA), nothing is more important than supporting the health and well-being of the Nation’s Veterans and their families. A major part of that support is providing timely access to high-quality, evidence-based mental health care. VA aims to address Veterans’ needs, during Service members’ reintegration into civilian life and beyond.', icon: 'fas fa-certificate', color: '#0076D6'),
+      PracticePartner.create!(name: 'National Opioid Overdose Education Naloxone Distribution (OEND) Program Office', short_name: 'oend', description: 'Sponsored by the National Opioid Overdose Education Naloxone Distribution Program Office', icon: 'fas fa-certificate', color: '#0076D6'),
+      PracticePartner.create!(name: 'Pharmacy Benefits Management (PBM)', short_name: 'pbm', description: 'Sponsored by the Pharmacy Benefits Management (PBM)', icon: 'fas fa-certificate', color: '#0076D6'),
+      PracticePartner.create!(name: 'Academic Detailing Service', short_name: 'ads', description: 'Sponsored by the Academic Detailing Service', icon: 'fas fa-certificate', color: '#0076D6'),
+      PracticePartner.create!(name: 'National Center for Patient Safety (NCPS)', short_name: 'ncps', description: 'Sponsored by the National Center for Patient Safety (NCPS)', icon: 'fas fa-certificate', color: '#0076D6'),
+      PracticePartner.create!(name: 'VA Police', short_name: 'va_police', description: 'Sponsored by the VA Police', icon: 'fas fa-certificate', color: '#0076D6'),
+      PracticePartner.create!(name: 'Veterans Experience Office', short_name: 'VEO', description: 'The VEO’s goal is to enable VA to be the leading customer service organization in government so that Veterans, their families, caregivers, and survivors Choose VA. VEO implements solutions based on Veteran-centered designs and industry best practices.', icon: 'fas fa-certificate', color: '#0076D6'),
+      PracticePartner.create!(name: 'Quality Enhancement Research Initiative', short_name: 'QUERI', description: 'QUERI is committed to ensuring that research gets used effectively to ultimately sustain improvements in care for Veterans.', icon: 'fas fa-certificate', color: '#0076D6'),
+      PracticePartner.create!(name: 'Office of Information and Technology', short_name: 'OIT', description: '', icon: 'fas fa-certificate', color: '#0076D6'),
+      PracticePartner.create!(name: 'VHA Innovators Network', short_name: 'INET', description: '', icon: 'fas fa-certificate', color: '#0076D6'),
   ]
-
-  23.times do |t|
-    StrategicSponsor.create!(name: "VISN #{t}", short_name: "visn_#{t}", description: "Vetted by VISN #{t}")
-  end
-
-  unless Badge.all.present?
-    badge_image_base_path = "#{Rails.root}/db/seed_images/badges"
-    badges = [
-        Badge.create!(name: 'VHA System Redesign', short_name: 'vha_system_redesign', description: 'Vetted by VHA System Redesign', strategic_sponsor: sponsors[4],
-                      icon: 'fas fa-cogs', color: '#FE4497'),
-        Badge.create!(name: 'VHA Office of Connected Care', short_name: 'vha_office_of_connected_care', description: 'Vetted by the VHA Office of Connected Care', strategic_sponsor: sponsors[5],
-                      icon: 'fas fa-hand-holding-heart', color: '#E52107'),
-        Badge.create!(name: 'Health Systems Research & Design', short_name: 'hsrd', description: 'Vetted by Health Systems Research & Design', strategic_sponsor: sponsors[3],
-                      icon: 'fas fa-microscope', color: '#9058D3'),
-        Badge.create!(name: 'Office of Rural Health', short_name: 'office_of_rural_health', description: 'Vetted by the Office of Rural Health', strategic_sponsor: sponsors[2],
-                      icon: 'fas fa-mountain', color: '#1CC2AE'),
-        Badge.create!(name: 'Diffusion of Excellence', short_name: 'diffusion_of_excellence', description: 'Vetted by Diffusion of Excellence', strategic_sponsor: sponsors[1],
-                      icon: 'fas fa-certificate', color: '#0076D6'),
-        Badge.create!(name: 'Shark Tank Approved', short_name: 'shark_tank_approved', description: 'Shark Tank Approved', strategic_sponsor: sponsors[1],
-                      icon: 'fas fa-fish', color: '#0076D6'),
-        Badge.create!(name: 'Top 100 Shark Tank', short_name: 'shark_tank_100', description: 'Top 100 Shark Tank finisher', strategic_sponsor: sponsors[1],
-                      icon: 'fas fa-fish', color: '#0076D6'),
-        Badge.create!(name: 'Top 20 Shark Tank', short_name: 'shark_tank_20', description: 'Top 20 Shark Tank finisher', strategic_sponsor: sponsors[1],
-                      icon: 'fas fa-fish', color: '#0076D6'),
-        Badge.create!(name: 'Gold Status Practice', short_name: 'gold_status', description: 'Gold Status Practice', strategic_sponsor: sponsors[1],
-                      icon: 'fas fa-heart', color: '#E4A002'),
-        Badge.create!(name: 'Authority to Operate (ATO)', short_name: 'ato', description: 'Authority to Operate (ATO) - applies to OIT projects', strategic_sponsor: sponsors.last,
-                      icon: 'fas fa-check', color: '#E52107'),
-        Badge.create!(name: 'VISN', short_name: 'visn', description: 'Vetted by at least one VISN', strategic_sponsor: sponsors.find {|s| s.name == 'VISN'},
-                      icon: 'fas fa-hospital-alt', color: '#E4A002'),
-    ]
-
-    23.times do |t|
-      i = t + 1
-      badges << Badge.create!(name: "VISN #{i}", short_name: "visn_#{i}", description: "Vetted by VISN #{i}", strategic_sponsor: sponsors.find {|s| s.name == "VISN #{i}"},
-                              icon: 'fas fa-hospital', color: '#E4A002'
-      )
-    end
-  end
 
   unless VaSecretaryPriority.all.present?
     va_secretary_priorities = [
@@ -77,68 +39,78 @@ if StrategicSponsor.all.blank?
     ]
   end
 
-  unless ImpactCategory.all.present?
+  unless Domain.all.present?
+    domains = [
+        Domain.create!(name: 'Veteran', description: 'Enables an improvement in satisfaction or customer experience for Veterans'),
+        Domain.create!(name: 'Clinical', description: 'Produces an improvement in health outcomes'),
+        Domain.create!(name: 'Financial', description: 'Generates cost savings or enables cost avoidance'),
+        Domain.create!(name: 'Operational', description: 'Delivers a measure of increased efficiency or productivity in operational activities'),
+        Domain.create!(name: 'Societal', description: 'Delivers a collective benefit to society or healthcare community as a whole'),
+    ]
+  end
+
+  unless Category.all.present?
     impact_categories = [
-        ImpactCategory.create!(name: 'Clinical', short_name: 'clinical', description: 'Impacts on clinical domains'),
-        ImpactCategory.create!(name: 'Operational', short_name: 'operational', description: 'Impacts on operational domains'),
+        Category.create!(name: 'Clinical', short_name: 'clinical', description: 'Categorys on clinical domains'),
+        Category.create!(name: 'Operational', short_name: 'operational', description: 'Categorys on operational domains'),
     ]
 
     clinical_impacts = [
-        Impact.create!(name: 'Allergy and Immunology', short_name: 'allergy_and_immunology', description: 'Allergy and Immunology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Cardiology', short_name: 'cardiology', description: 'Cardiology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Critical Care (ICU)', short_name: 'icu', description: 'Critical Care (ICU)', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Dermatology', short_name: 'dermatology', description: 'Dermatology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Endocrinology', short_name: 'endocrinology', description: 'Endocrinology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Hematology', short_name: 'hematology', description: 'Hematology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Infectious Disease', short_name: 'infectious_disease', description: 'Infectious Disease', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Mental Health / Psychiatry', short_name: 'mental_health_psychiatry', description: 'Mental Health / Psychiatry', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Neurology', short_name: 'neurology', description: 'Neurology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Obstetrics & Gynecology', short_name: 'obstetrics_gynecology', description: 'Obstetrics & Gynecology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Oncology', short_name: 'oncology', description: 'Oncology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Ophthalmology', short_name: 'ophthalmology', description: 'Ophthalmology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Orthopedic Surgery', short_name: 'orthopedic_surgery', description: 'Orthopedic Surgery', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Otolaryngology (ENT)', short_name: 'ent', description: 'Otolaryngology (ENT)', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Pathology', short_name: 'pathology', description: 'Pathology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Pediatrics', short_name: 'pediatrics', description: 'Pediatrics', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Primary Care / Preventive Medicine', short_name: 'primary_care_preventive_medicine', description: 'Primary Care / Preventive Medicine', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Pulmonology / Respiratory', short_name: 'pulmonology_respiratory', description: 'Pulmonology / Respiratory', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Rehab Medicine', short_name: 'rehab_medicine', description: 'Rehab Medicine', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Renal / Nephrology', short_name: 'renal_nephrology', description: 'Renal / Nephrology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Rheumatology', short_name: 'rheumatology', description: 'Rheumatology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Specialty Care (outside of VA)', short_name: 'specialty_care_outside_of_va)', description: 'Specialty Care (outside of VA)', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Surgery', short_name: 'surgery', description: 'Surgery', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Toxicology', short_name: 'toxicology', description: 'Toxicology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Urology', short_name: 'urology', description: 'Urology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Prosthetics and Rehabilitation', short_name: 'prosthetics_and_rehabilitation', description: 'Prosthetics and Rehabilitation', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Alternative Therapies', short_name: 'alternative_therapies', description: 'Alternative Therapies', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Massage', short_name: 'massage', description: 'Massage', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Herbal Remedies', short_name: 'herbal_remedies', description: 'Herbal Remedies', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Acupuncture', short_name: 'acupuncture', description: 'Acupuncture', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Dental', short_name: 'dental', description: 'Dental', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Homeless services', short_name: 'homeless_services', description: 'Homeless services', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Social workers', short_name: 'social_workers', description: 'Social workers', impact_category: impact_categories[0]),
-        Impact.create!(name: 'None', short_name: 'none', description: 'No clinical impact', impact_category: impact_categories[0]),
+        Category.create!(name: 'Allergy and Immunology', short_name: 'allergy_and_immunology', description: 'Allergy and Immunology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Cardiology', short_name: 'cardiology', description: 'Cardiology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Critical Care (ICU)', short_name: 'icu', description: 'Critical Care (ICU)', parent_category: impact_categories[0]),
+        Category.create!(name: 'Dermatology', short_name: 'dermatology', description: 'Dermatology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Endocrinology', short_name: 'endocrinology', description: 'Endocrinology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Hematology', short_name: 'hematology', description: 'Hematology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Infectious Disease', short_name: 'infectious_disease', description: 'Infectious Disease', parent_category: impact_categories[0]),
+        Category.create!(name: 'Mental Health / Psychiatry', short_name: 'mental_health_psychiatry', description: 'Mental Health / Psychiatry', parent_category: impact_categories[0]),
+        Category.create!(name: 'Neurology', short_name: 'neurology', description: 'Neurology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Obstetrics & Gynecology', short_name: 'obstetrics_gynecology', description: 'Obstetrics & Gynecology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Oncology', short_name: 'oncology', description: 'Oncology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Ophthalmology', short_name: 'ophthalmology', description: 'Ophthalmology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Orthopedic Surgery', short_name: 'orthopedic_surgery', description: 'Orthopedic Surgery', parent_category: impact_categories[0]),
+        Category.create!(name: 'Otolaryngology (ENT)', short_name: 'ent', description: 'Otolaryngology (ENT)', parent_category: impact_categories[0]),
+        Category.create!(name: 'Pathology', short_name: 'pathology', description: 'Pathology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Pediatrics', short_name: 'pediatrics', description: 'Pediatrics', parent_category: impact_categories[0]),
+        Category.create!(name: 'Primary Care / Preventive Medicine', short_name: 'primary_care_preventive_medicine', description: 'Primary Care / Preventive Medicine', parent_category: impact_categories[0]),
+        Category.create!(name: 'Pulmonology / Respiratory', short_name: 'pulmonology_respiratory', description: 'Pulmonology / Respiratory', parent_category: impact_categories[0]),
+        Category.create!(name: 'Rehab Medicine', short_name: 'rehab_medicine', description: 'Rehab Medicine', parent_category: impact_categories[0]),
+        Category.create!(name: 'Renal / Nephrology', short_name: 'renal_nephrology', description: 'Renal / Nephrology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Rheumatology', short_name: 'rheumatology', description: 'Rheumatology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Specialty Care (outside of VA)', short_name: 'specialty_care_outside_of_va)', description: 'Specialty Care (outside of VA)', parent_category: impact_categories[0]),
+        Category.create!(name: 'Surgery', short_name: 'surgery', description: 'Surgery', parent_category: impact_categories[0]),
+        Category.create!(name: 'Toxicology', short_name: 'toxicology', description: 'Toxicology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Urology', short_name: 'urology', description: 'Urology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Prosthetics and Rehabilitation', short_name: 'prosthetics_and_rehabilitation', description: 'Prosthetics and Rehabilitation', parent_category: impact_categories[0]),
+        Category.create!(name: 'Alternative Therapies', short_name: 'alternative_therapies', description: 'Alternative Therapies', parent_category: impact_categories[0]),
+        Category.create!(name: 'Massage', short_name: 'massage', description: 'Massage', parent_category: impact_categories[0]),
+        Category.create!(name: 'Herbal Remedies', short_name: 'herbal_remedies', description: 'Herbal Remedies', parent_category: impact_categories[0]),
+        Category.create!(name: 'Acupuncture', short_name: 'acupuncture', description: 'Acupuncture', parent_category: impact_categories[0]),
+        Category.create!(name: 'Dental', short_name: 'dental', description: 'Dental', parent_category: impact_categories[0]),
+        Category.create!(name: 'Homeless services', short_name: 'homeless_services', description: 'Homeless services', parent_category: impact_categories[0]),
+        Category.create!(name: 'Social workers', short_name: 'social_workers', description: 'Social workers', parent_category: impact_categories[0]),
+        Category.create!(name: 'None', short_name: 'none', description: 'No clinical impact', parent_category: impact_categories[0]),
     ]
 
     operational_impacts = [
-        Impact.create!(name: 'Administration', short_name: 'administration', description: 'Administration', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Billing', short_name: 'billing', description: 'Billing', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Biomed', short_name: 'biomed', description: 'Biomed', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Building Management', short_name: 'building_management', description: 'Building Management', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Education and Training', short_name: 'education_and_training', description: 'Education and Training', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Food Service', short_name: 'food_service', description: 'Food Service', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Human Resources', short_name: 'human_resources', description: 'Human Resources', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Information Technology', short_name: 'information_technology', description: 'Information Technology', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Logistics', short_name: 'logistics', description: 'Logistics', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Maintenance', short_name: 'maintenance', description: 'Maintenance', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Marketing', short_name: 'marketing', description: 'Marketing', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Medical Records', short_name: 'medical_records', description: 'Medical Records', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Occupational Health', short_name: 'occupational_health', description: 'Occupational Health', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Quality Control', short_name: 'quality_control', description: 'Quality Control', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Risk Management', short_name: 'risk_management', description: 'Risk Management', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Social Services', short_name: 'social_services', description: 'Social Services', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Contracting & Purchasing', short_name: 'contracting_purchasing', description: 'Contracting & Purchasing', impact_category: impact_categories[1]),
-        Impact.create!(name: 'None', short_name: 'none', description: 'No clinical impact', impact_category: impact_categories[1]),
+        Category.create!(name: 'Administration', short_name: 'administration', description: 'Administration', parent_category: impact_categories[1]),
+        Category.create!(name: 'Billing', short_name: 'billing', description: 'Billing', parent_category: impact_categories[1]),
+        Category.create!(name: 'Biomed', short_name: 'biomed', description: 'Biomed', parent_category: impact_categories[1]),
+        Category.create!(name: 'Building Management', short_name: 'building_management', description: 'Building Management', parent_category: impact_categories[1]),
+        Category.create!(name: 'Education and Training', short_name: 'education_and_training', description: 'Education and Training', parent_category: impact_categories[1]),
+        Category.create!(name: 'Food Service', short_name: 'food_service', description: 'Food Service', parent_category: impact_categories[1]),
+        Category.create!(name: 'Human Resources', short_name: 'human_resources', description: 'Human Resources', parent_category: impact_categories[1]),
+        Category.create!(name: 'Information Technology', short_name: 'information_technology', description: 'Information Technology', parent_category: impact_categories[1]),
+        Category.create!(name: 'Logistics', short_name: 'logistics', description: 'Logistics', parent_category: impact_categories[1]),
+        Category.create!(name: 'Maintenance', short_name: 'maintenance', description: 'Maintenance', parent_category: impact_categories[1]),
+        Category.create!(name: 'Marketing', short_name: 'marketing', description: 'Marketing', parent_category: impact_categories[1]),
+        Category.create!(name: 'Medical Records', short_name: 'medical_records', description: 'Medical Records', parent_category: impact_categories[1]),
+        Category.create!(name: 'Occupational Health', short_name: 'occupational_health', description: 'Occupational Health', parent_category: impact_categories[1]),
+        Category.create!(name: 'Quality Control', short_name: 'quality_control', description: 'Quality Control', parent_category: impact_categories[1]),
+        Category.create!(name: 'Risk Management', short_name: 'risk_management', description: 'Risk Management', parent_category: impact_categories[1]),
+        Category.create!(name: 'Social Services', short_name: 'social_services', description: 'Social Services', parent_category: impact_categories[1]),
+        Category.create!(name: 'Contracting & Purchasing', short_name: 'contracting_purchasing', description: 'Contracting & Purchasing', parent_category: impact_categories[1]),
+        Category.create!(name: 'None', short_name: 'none', description: 'No clinical impact', parent_category: impact_categories[1]),
     ]
   end
 

@@ -1,10 +1,10 @@
-<%= form_with(model: impact, local: true) do |form| %>
-  <% if impact.errors.any? %>
+<%= form_with(model: categories, local: true) do |form| %>
+  <% if categories.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(impact.errors.count, "error") %> prohibited this impact from being saved:</h2>
+      <h2><%= pluralize(categories.errors.count, "error") %> prohibited this impact from being saved:</h2>
 
       <ul>
-      <% impact.errors.full_messages.each do |message| %>
+      <% categories.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
       </ul>
@@ -32,8 +32,8 @@
   </div>
 
   <div class="field">
-    <%= form.label :impact_category %>
-    <%= form.number_field :impact_category %>
+    <%= form.label :category %>
+    <%= form.number_field :category %>
   </div>
 
   <div class="actions">

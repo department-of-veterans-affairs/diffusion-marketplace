@@ -9,7 +9,7 @@ namespace :importer do
 
     (3..last_row).each do |row_num|
       @answers = sheet.sheet(0).row(row_num)
-      @respondent_id = @answers[0]
+      @respondent_id = @answers[0].to_i
 
       @name = @answers[@questions.index('What is the name of your practice?')]
 
@@ -31,13 +31,13 @@ namespace :importer do
       @practice.save!
 
       # sort all of the relational questions into their own methods for clarity.
-      strategic_sponsors
+      practice_partners
       va_employees
       # developing_facility_types
-      va_secretary_priorities
-      practice_managements
-      impact
-      clinical_conditions
+      # va_secretary_priorities
+      # practice_managements
+      categories
+      # clinical_conditions
       financial_files
       job_positions
       ancillary_services
@@ -45,7 +45,7 @@ namespace :importer do
       departments
       video_files
       additional_documents
-      business_case_files
+      # business_case_files
       toolkit_files
       checklist_files
       publication_files
@@ -57,8 +57,10 @@ namespace :importer do
       additional_resources
       required_training_staff
       costs_difficulties
-      human_impact_photos
+      impact_photos
+      domains
     end
+    puts "*********** Completed Importing Practices! ***********"
   end
 end
 
@@ -68,58 +70,63 @@ def basic_answers
     'When was this practice initiated? If day is unknown, use the first of the month': :date_initiated,
     # The below question's text needs to be changed when a new sheet can be provided.
     'Please list the station id of the facility that initiated this Practice. Please reference: https://www.va.gov/directory/guide/rpt_fac_list.cfm?sort=Sta&list_by=all&oid=all': :initiating_facility,
-    'Please enter an estimate in dollars of the cost avoidance per facility (Medical Center, CBOC, or applicable institution).': :impact_financial_estimate_saved,
-    'Please enter relevant financial data regarding this practice such as ROI, a business case summary, or other financial analysis.': :impact_financial_roi,
+    # 'Please enter an estimate in dollars of the cost avoidance per facility (Medical Center, CBOC, or applicable institution).': :impact_financial_estimate_saved,
+    # 'Please enter relevant financial data regarding this practice such as ROI, a business case summary, or other financial analysis.': :impact_financial_roi,
     "Please supply an email address for this practice's support network in order to direct interested parties. (e.g. HAPPEN@va.gov)": :support_network_email,
-    "Please identify where your practice falls currently in VHA’s Phase Gate Model of Innovation. (Add a 10 word definition of each stage.)": :phase_gate,
+    "Please identify where your practice falls currently in VHA’s Phase Gate Model of Innovation.": :phase_gate,
     "Do you have a link to your practice's VA Pulse Group?": :va_pulse_link,
     'How long does it usually take a group to implement your practice? How long do you expect it to take?': :implementation_time_estimate,
     'Do you have anything else you would like to share regarding your practice?': :additional_notes,
     'On the Practice page, we often use a descriptive tagline as the functional title. For example: the FLOW3 Practice is not well described by the title, and we therefor use the tagline: "Delivery of prosthetic limbs to Veterans in less than ½ the time".Please provide a 5-10 word descriptive tagline for your Practice. This will be used as the functional title.': :tagline,
     'On the Practice page, under the tagline/functional title you just provided, we would like a longer descriptive tagline to further explain your practice. For example, for FLOW3: "Enable 53% faster delivery of prosthetic limbs to Veterans. Automating the prosthetic limb procurement process to improve continuity of care for Veterans."Please provide a 1-2 line descriptive tagline for your Practice. This will be used below the functional title.': :description,
     'Please provide a 50-100 word descriptive paragraph for your Practice. ': :summary,
-    'Eventually, your Practice will be rated on Cost Avoidance, Human Impact, and Implementation Difficulty based on feedback from individuals who implement your Practice.For now, please provide your best estimate rating of your Practice with regards to Cost Avoidance on a scale of 1 - 4.': :cost_savings_aggregate,
-    'Please provide your best estimate rating of your Practice with regards to Human Impact on health/care experience on a scale of 1 - 4.': :veteran_satisfaction_aggregate,
-    'Under the side navigation "Resources Required" tab, the "Cost of Resources to Implement" rating will eventually be provided by individuals who have implemented this practice.For now, please provide your best estimate of the Cost of Resources to Implement your Practice on a scale of 1 - 4': :cost_to_implement_aggregate,
-    'Under the side navigation "Resources Required" tab, the "Difficulty of Implementation" rating will eventually be provided by individuals who have implemented this practice.For now, please provide your best estimate of the Difficulty of Implementation your Practice on a scale of 1 - 4': :difficulty_aggregate,
-    'Did your institution have to hire additional staff to implement this Practice?': :need_additional_staff,
-    'Is there training required?': :need_training,
-    'If there is training, please list who provides the training.': :training_provider,
-    'How long is the training? What is required (such as 5 20 minute videos and then take a quiz vs. attend 2 meetings)? Is there a test involved?': :required_training_summary,
-    'Will a policy change be required?': :need_policy_change,
+    # 'Please provide your best estimate rating of your Practice with regards to Cost Avoidance on a scale of 1 - 4.': :cost_savings_aggregate,
+    'Please provide your best estimate rating of your Practice with regards to Impact on health/care experience on a scale of 1 - 4.': :veteran_satisfaction_aggregate,
+    'Please provide your best estimate of the Cost to Implement your Practice on a scale of 1 - 4': :cost_to_implement_aggregate,
+    'Please provide your best estimate of the Difficulty of Implementation your Practice on a scale of 1 - 4': :difficulty_aggregate,
+    # 'Did your institution have to hire additional staff to implement this Practice?': :need_additional_staff,
+    # 'Is there training required?': :need_training,
+    'Please list who provides the training.': :training_provider,
+    'Training details:': :required_training_summary,
+    # 'Will a policy change be required?': :need_policy_change,
     'Will a new license or certification be required?': :need_new_license,
     'Please enter a 10-20 word title for the origin story of this Practice': :origin_title,
-    'Please provide a 50 - 100 word paragraph sharing the story of the origin of this practice': :origin_story
+    'Please provide a 50 - 100 word paragraph sharing the story of the origin of this practice': :origin_story,
+    'Number of facilities that have successfully implemented the Practice (Please enter a whole number):': :number_adopted,
   }
   question_fields.each do |key, value|
-    # debugger if value.to_sym == :cost_savings_aggregate
     @practice.send("#{value.to_sym}=", @answers[@questions.index(key.to_s)])
   end
+  @practice.phase_gate = @practice.phase_gate.split('.')[1].split('-')[0].squish
+  @practice.save
 end
 
-def strategic_sponsors
-  puts "==> Importing Practice: #{@name} Strategic Sponsors"
+def practice_partners
+  puts "==> Importing Practice: #{@name} StratePractice Partners"
   question_fields = {
-    'Who is the primary sponsor responsible for creating this practice and bringing it to national awareness?': 2,
-    'What organizations have funded this Practice?': 10,
-    'What organizations are affiliated or partnered with this Practice?': 10
+    'Which of the following statements regarding Partners apply to this Practice? (Mark all that apply)': 13
   }
   question_fields.each do |key, value|
     q_index = @questions.index(key.to_s)
     end_index = q_index + value - 1
     (q_index..end_index).each do |i|
-      sp_name = @answers[i]
-      next if sp_name.blank?
+      pp_name = @answers[i]
+      next if pp_name.blank?
 
       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-        split_answer = sp_name.split(/\\|\//)
+        split_answer = pp_name.split(/\\|\//)
         split_answer.each do |ans|
-          strategic_sponsor = StrategicSponsor.find_or_create_by(name: ans)
-          StrategicSponsorPractice.create strategic_sponsor: strategic_sponsor, practice: @practice unless StrategicSponsorPractice.where(strategic_sponsor: strategic_sponsor, practice: @practice).any?
+          formatted_ans = ans.split(':')[0].squish
+          practice_partner = PracticePartner.find_by(name: formatted_ans)
+          practice_partner = PracticePartner.find_or_create_by(name: formatted_ans, icon: 'fas fa-circle', color: '#36383f') if practice_partner.nil?
+          PracticePartnerPractice.create practice_partner: practice_partner, practice: @practice unless PracticePartnerPractice.where(practice_partner: practice_partner, practice: @practice).any?
         end
       else
-        strategic_sponsor = StrategicSponsor.find_or_create_by(name: sp_name)
-        StrategicSponsorPractice.create strategic_sponsor: strategic_sponsor, practice: @practice unless StrategicSponsorPractice.where(strategic_sponsor: strategic_sponsor, practice: @practice).any?
+        formatted_pp_name = pp_name.split(':')[0].squish
+        practice_partner = PracticePartner.find_by(name: formatted_pp_name)
+        practice_partner = PracticePartner.create!(name: formatted_pp_name, icon: 'fas fa-circle', color: '#36383f') if practice_partner.nil?
+
+        PracticePartnerPractice.create practice_partner: practice_partner, practice: @practice unless PracticePartnerPractice.where(practice_partner: practice_partner, practice: @practice).any?
       end
     end
   end
@@ -194,10 +201,69 @@ end
 #   end
 # end
 
-def va_secretary_priorities
-  puts "==> Importing Practice: #{@name} VA Secretary Priorities"
+# def va_secretary_priorities
+#   puts "==> Importing Practice: #{@name} VA Secretary Priorities"
+#   question_fields = {
+#     "Which of the VA Secretary’s Priorities does this practice Address? (Please select all that apply.)": 7
+#   }
+#
+#   question_fields.each do |key, value|
+#     q_index = @questions.index(key.to_s)
+#     end_index = q_index + value - 1
+#     (q_index..end_index).each do |i|
+#       answer = @answers[i]
+#       next if answer.blank?
+#
+#       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
+#         split_answer = answer.split(/\\|\//)
+#         split_answer.each do |ans|
+#           secretary_priority = VaSecretaryPriority.find_or_create_by(name: ans)
+#           VaSecretaryPriorityPractice.create va_secretary_priority: secretary_priority, practice: @practice unless VaSecretaryPriorityPractice.where(va_secretary_priority: secretary_priority, practice: @practice).any?
+#         end
+#       else
+#         secretary_priority = VaSecretaryPriority.find_or_create_by(name: answer)
+#         VaSecretaryPriorityPractice.create va_secretary_priority: secretary_priority, practice: @practice unless VaSecretaryPriorityPractice.where(va_secretary_priority: secretary_priority, practice: @practice).any?
+#       end
+#     end
+#   end
+# end
+
+# def practice_managements
+#   puts "==> Importing Practice: #{@name} Practice Managements"
+#   question_fields = {
+#     "Which of the following areas does this practice affect? (Please select all that apply.)": 13
+#   }
+#
+#   question_fields.each do |key, value|
+#     q_index = @questions.index(key.to_s)
+#     end_index = q_index + value - 1
+#     (q_index..end_index).each do |i|
+#       answer = @answers[i]
+#       next if answer.blank?
+#
+#       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
+#         split_answer = answer.split(/\\|\//)
+#         split_answer.each do |ans|
+#           practice_management = PracticeManagement.find_or_create_by(name: answer)
+#           PracticeManagementPractice.create practice_management: practice_management, practice: @practice unless PracticeManagementPractice.where(practice_management: practice_management, practice: @practice).any?
+#         end
+#       else
+#         practice_management = PracticeManagement.find_or_create_by(name: answer)
+#         PracticeManagementPractice.create practice_management: practice_management, practice: @practice unless PracticeManagementPractice.where(practice_management: practice_management, practice: @practice).any?
+#       end
+#     end
+#   end
+# end
+
+def categories
+  puts "==> Importing Practice: #{@name} Categories"
   question_fields = {
-    "Which of the VA Secretary’s Priorities does this practice Address? (Please select all that apply.)": 7
+    'What Primary care specialties does this Practice impact? Please mark all that apply.': 33,
+    'What medical sub-specialties does this Practice impact? Please select all all that apply.': 23,
+    'What surgical specialties does this Practice impact? Please select all all that apply.': 14,
+    'What are the whole health impacts of this practice? (Please select all that apply.)': 8,
+    "This question will allow the user to find your Practice by a medical complaint, clinical condition, or system of the body.\u2028\u2028 We are going to divide complaints, conditions, and systems anatomically.": 36,
+    'Please enter one condition per line': 5
   }
 
   question_fields.each do |key, value|
@@ -210,68 +276,12 @@ def va_secretary_priorities
       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
         split_answer = answer.split(/\\|\//)
         split_answer.each do |ans|
-          secretary_priority = VaSecretaryPriority.find_or_create_by(name: ans)
-          VaSecretaryPriorityPractice.create va_secretary_priority: secretary_priority, practice: @practice unless VaSecretaryPriorityPractice.where(va_secretary_priority: secretary_priority, practice: @practice).any?
+          category = Category.find_or_create_by(name: ans)
+          CategoryPractice.create category: category, practice: @practice unless CategoryPractice.where(category: category, practice: @practice).any?
         end
       else
-        secretary_priority = VaSecretaryPriority.find_or_create_by(name: answer)
-        VaSecretaryPriorityPractice.create va_secretary_priority: secretary_priority, practice: @practice unless VaSecretaryPriorityPractice.where(va_secretary_priority: secretary_priority, practice: @practice).any?
-      end
-    end
-  end
-end
-
-def practice_managements
-  puts "==> Importing Practice: #{@name} Practice Managements"
-  question_fields = {
-    "Which of the following areas does this practice affect? (Please select all that apply.)": 13
-  }
-
-  question_fields.each do |key, value|
-    q_index = @questions.index(key.to_s)
-    end_index = q_index + value - 1
-    (q_index..end_index).each do |i|
-      answer = @answers[i]
-      next if answer.blank?
-
-      if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-        split_answer = answer.split(/\\|\//)
-        split_answer.each do |ans|
-          practice_management = PracticeManagement.find_or_create_by(name: answer)
-          PracticeManagementPractice.create practice_management: practice_management, practice: @practice unless PracticeManagementPractice.where(practice_management: practice_management, practice: @practice).any?
-        end
-      else
-        practice_management = PracticeManagement.find_or_create_by(name: answer)
-        PracticeManagementPractice.create practice_management: practice_management, practice: @practice unless PracticeManagementPractice.where(practice_management: practice_management, practice: @practice).any?
-      end
-    end
-  end
-end
-
-def impact
-  puts "==> Importing Practice: #{@name} Impacts"
-  question_fields = {
-    'What medical specialties does this Practice impact? Please select all all that apply.': 31,
-    'What are the whole health impacts of this practice? (Please select all that apply.)': 6,
-    'Which of the following clinical conditions does this practice affect? (Please select all that apply.)': 16,
-  }
-
-  question_fields.each do |key, value|
-    q_index = @questions.index(key.to_s)
-    end_index = q_index + value - 1
-    (q_index..end_index).each do |i|
-      answer = @answers[i]
-      next if answer.blank?
-
-      if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-        split_answer = answer.split(/\\|\//)
-        split_answer.each do |ans|
-          impact = Impact.find_or_create_by(name: answer)
-          ImpactPractice.create impact: impact, practice: @practice unless ImpactPractice.where( impact: impact, practice: @practice).any?
-        end
-      else
-        impact = Impact.find_or_create_by(name: answer)
-        ImpactPractice.create impact: impact, practice: @practice unless ImpactPractice.where( impact: impact, practice: @practice).any?
+        category = Category.find_or_create_by(name: answer)
+        CategoryPractice.create category: category, practice: @practice unless CategoryPractice.where(category: category, practice: @practice).any?
       end
     end
   end
@@ -307,7 +317,7 @@ end
 def financial_files
   puts "==> Importing Practice: #{@name} Financial Files"
   question_fields = {
-    "Please upload applicable financial information.": 1
+    "Please upload applicable financial information such as a formal business case/return on investment (ROI).": 1
   }
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
@@ -407,7 +417,7 @@ end
 def departments
   puts "==> Importing Practice: #{@name} Departments"
   question_fields = {
-    'Which departments or operational domains does this Practice impact?': 49,
+      'Which departments or operational domains does this Practice impact?': 50,
   }
 
   question_fields.each do |key, value|
@@ -431,12 +441,29 @@ def departments
   end
 end
 
+def domains
+  puts "==> Importing Practice: #{@name} Domains"
+  question_fields = {
+      'How does this practice deliver value? Please select all that apply of the five value delivery domains below:': 5,
+  }
+
+  question_fields.each do |key, value|
+    q_index = @questions.index(key.to_s)
+    end_index = q_index + value - 1
+    (q_index..end_index).each do |i|
+      answer = @answers[i]
+      next if answer.blank?
+      answer = answer.split('-')[0].squish
+      department = Domain.find_by(name: answer)
+      DomainPractice.create domain: department, practice: @practice unless DomainPractice.where(domain: department, practice: @practice).any?
+    end
+  end
+end
+
 def video_files
   puts "==> Importing Practice: #{@name} Video Files"
   question_fields = {
     'Do you have a short video that provides an explanation, summary, or testimonial about your practice? (Please paste YouTube url or other link)': :url,
-    'Additional Video 1 (Please paste YouTube url or other link)': :url,
-    'Additional Video 2 (Please paste YouTube url or other link)': :url
   }
 
   question_fields.each do |key, value|
@@ -470,24 +497,24 @@ def additional_documents
   end
 end
 
-def business_case_files
-  puts "==> Importing Practice: #{@name} Business Case Files"
-  question_fields = {
-    'Does your practice have a formal business case?': :attachment
-  }
-  question_fields.each do |key, value|
-    next if @answers[@questions.index(key.to_s)].blank?
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(key.to_s)]}"
-    image_file = File.new(image_path)
-
-    BusinessCaseFile.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
-                                                           filename: File.basename(image_file),
-                                                           tempfile: image_file,
-                                                           # detect the image's mime type with MIME if you can't provide it yourself.
-                                                           type: MIME::Types.type_for(image_path).first.content_type
-                                                           )
-  end
-end
+# def business_case_files
+#   puts "==> Importing Practice: #{@name} Business Case Files"
+#   question_fields = {
+#     'Does your practice have a formal business case?': :attachment
+#   }
+#   question_fields.each do |key, value|
+#     next if @answers[@questions.index(key.to_s)].blank?
+#     image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(key.to_s)]}"
+#     image_file = File.new(image_path)
+#
+#     BusinessCaseFile.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
+#                                                            filename: File.basename(image_file),
+#                                                            tempfile: image_file,
+#                                                            # detect the image's mime type with MIME if you can't provide it yourself.
+#                                                            type: MIME::Types.type_for(image_path).first.content_type
+#                                                            )
+#   end
+# end
 
 def toolkit_files
   puts "==> Importing Practice: #{@name} Toolkit Files"
@@ -601,7 +628,7 @@ end
 def implementation_timeline
   puts "==> Importing Practice: #{@name} Implementation Timeline"
   question_fields = {
-    'Do you have a diffusion timeline regarding the steps to implement your practice?': :attachment
+    'Do you have an implementation timeline for your practice?': :attachment
   }
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
@@ -620,7 +647,7 @@ end
 def risk_mitigations
   puts "==> Importing Practice: #{@name} Risks and Mitigations"
   question_fields = {
-    'Under the side navigation "Risks & Mitigations" tab, the "Risk" rating will eventually be provided by individuals who have implemented this practice.What is the primary risk to implementation? Please describe how you would mitigate it.': 2,
+    'What is the primary risk to implementation? Please describe how you would mitigate it.': 2,
     'What is the second risk to implementation? Please describe how you would mitigate it.': 2,
     'What is the third risk to implementation? Please describe how you would mitigate it.': 2,
   }
@@ -710,32 +737,31 @@ def costs_difficulties
   end
 end
 
-def human_impact_photos
+def impact_photos
   puts "==> Importing Practice: #{@name} Human Impact Photos"
   question_fields = [[
-    'Human Impact Photo 1',
-    'Please provide a title for Human Impact Picture 1',
-    'Please provide a brief paragraph describing the photo and the Human Impact.'
+    'Impact Photo 1',
+    'Please provide a title for Impact Picture 1',
+    'Please provide a brief paragraph describing the photo and the Impact.'
   ], [
-    'Human Impact Photo 2',
-    'Please provide a title for Human Impact Picture 2',
-    'Please provide a brief paragraph describing the photo and the Human Impact.'
+    'Impact Photo 2',
+    'Please provide a title for Impact Picture 2',
+    'Please provide a brief paragraph describing the photo and the Impact.'
   ], [
-    'Human Impact Photo 3',
-    'Please provide a title for Human Impact Picture 3',
-    'Please provide a brief paragraph describing the photo and the Human Impact.'
+    'Impact Photo 3',
+    'Please provide a title for Impact Picture 3',
+    'Please provide a brief paragraph describing the photo and the Impact.'
   ]]
-  question_fields.each do |fields|
+  question_fields.each_with_index do |fields, index|
     description_indices = @questions.each_index.select { |i| @questions[i] == fields[2] }
-
     next if @answers[@questions.index(fields[0])].blank?
 
-    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(key.to_s)]}"
+    image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(fields[0])]}"
     image_file = File.new(image_path)
     title = @answers[@questions.index(fields[1])]
-    description = @answers[@questions.index(description_indices[i])]
+    description = @answers[description_indices[index]]
 
-    HumanImpactPhoto.create(practice: @practice, title: title, description: description, attachment: ActionDispatch::Http::UploadedFile.new(
+    ImpactPhoto.create(practice: @practice, title: title, description: description, attachment: ActionDispatch::Http::UploadedFile.new(
                             filename: File.basename(image_file),
                             tempfile: image_file,
                             # detect the image's mime type with MIME if you can't provide it yourself.
@@ -747,7 +773,7 @@ end
 def file_uploads
   puts "==> Importing Practice: #{@name} File Uploads"
   question_fields = {
-    'Under the side navigation "Origin of this practice" tab, please provide a photo of the individual who initiated the practice.': :origin_picture,
+    'Under the side navigation "Origin" tab, please provide a photo of the individual who initiated the practice.': :origin_picture,
     'Upload a Display Image for your practice. This image will be used for the main title page and marketplace tile.': :main_display_image
   }
   question_fields.each do |key, value|

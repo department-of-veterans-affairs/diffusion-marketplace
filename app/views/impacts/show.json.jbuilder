@@ -1,1 +1,1 @@
-json.partial! "impacts/impact", impact: @impact
+json.partial! "impacts/impact", categories: @impact

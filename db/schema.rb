@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_25_215005) do
+ActiveRecord::Schema.define(version: 2019_04_03_034806) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,12 +82,12 @@ ActiveRecord::Schema.define(version: 2019_02_25_215005) do
     t.string "short_name"
     t.text "description"
     t.integer "position"
-    t.bigint "strategic_sponsor_id"
+    t.bigint "practice_partner_id"
     t.string "color"
     t.string "icon"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["strategic_sponsor_id"], name: "index_badges_on_strategic_sponsor_id"
+    t.index ["practice_partner_id"], name: "index_badges_on_practice_partner_id"
   end
 
   create_table "business_case_files", force: :cascade do |t|
@@ -102,6 +102,25 @@ ActiveRecord::Schema.define(version: 2019_02_25_215005) do
     t.integer "attachment_file_size"
     t.datetime "attachment_updated_at"
     t.index ["practice_id"], name: "index_business_case_files_on_practice_id"
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.string "short_name"
+    t.text "description"
+    t.integer "position"
+    t.integer "parent_category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "category_practices", force: :cascade do |t|
+    t.bigint "category_id"
+    t.bigint "practice_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_category_practices_on_category_id"
+    t.index ["practice_id"], name: "index_category_practices_on_practice_id"
   end
 
   create_table "checklist_files", force: :cascade do |t|
@@ -209,6 +228,24 @@ ActiveRecord::Schema.define(version: 2019_02_25_215005) do
     t.index ["practice_id"], name: "index_difficulties_on_practice_id"
   end
 
+  create_table "domain_practices", force: :cascade do |t|
+    t.bigint "domain_id"
+    t.bigint "practice_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["domain_id"], name: "index_domain_practices_on_domain_id"
+    t.index ["practice_id"], name: "index_domain_practices_on_practice_id"
+  end
+
+  create_table "domains", force: :cascade do |t|
+    t.string "name"
+    t.string "short_name"
+    t.text "description"
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "financial_files", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -223,7 +260,18 @@ ActiveRecord::Schema.define(version: 2019_02_25_215005) do
     t.index ["practice_id"], name: "index_financial_files_on_practice_id"
   end
 
-  create_table "human_impact_photos", force: :cascade do |t|
+  create_table "friendly_id_slugs", force: :cascade do |t|
+    t.string "slug", null: false
+    t.integer "sluggable_id", null: false
+    t.string "sluggable_type", limit: 50
+    t.string "scope"
+    t.datetime "created_at"
+    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
+    t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
+  end
+
+  create_table "impact_photos", force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.integer "position"
@@ -234,37 +282,7 @@ ActiveRecord::Schema.define(version: 2019_02_25_215005) do
     t.string "attachment_content_type"
     t.integer "attachment_file_size"
     t.datetime "attachment_updated_at"
-    t.index ["practice_id"], name: "index_human_impact_photos_on_practice_id"
-  end
-
-  create_table "impact_categories", force: :cascade do |t|
-    t.string "name"
-    t.string "short_name"
-    t.text "description"
-    t.integer "position"
-    t.integer "parent_category_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "impact_practices", force: :cascade do |t|
-    t.bigint "impact_id"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["impact_id"], name: "index_impact_practices_on_impact_id"
-    t.index ["practice_id"], name: "index_impact_practices_on_practice_id"
-  end
-
-  create_table "impacts", force: :cascade do |t|
-    t.string "name"
-    t.string "short_name"
-    t.text "description"
-    t.integer "position"
-    t.bigint "impact_category_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["impact_category_id"], name: "index_impacts_on_impact_category_id"
+    t.index ["practice_id"], name: "index_impact_photos_on_practice_id"
   end
 
   create_table "implementation_timeline_files", force: :cascade do |t|
@@ -359,6 +377,28 @@ ActiveRecord::Schema.define(version: 2019_02_25_215005) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "practice_partner_practices", force: :cascade do |t|
+    t.bigint "practice_partner_id"
+    t.bigint "practice_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["practice_id"], name: "index_practice_partner_practices_on_practice_id"
+    t.index ["practice_partner_id"], name: "index_practice_partner_practices_on_practice_partner_id"
+  end
+
+  create_table "practice_partners", force: :cascade do |t|
+    t.string "name"
+    t.string "short_name"
+    t.text "description"
+    t.integer "position"
+    t.string "color"
+    t.string "icon"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "slug"
+    t.index ["slug"], name: "index_practice_partners_on_slug", unique: true
+  end
+
   create_table "practices", force: :cascade do |t|
     t.string "name"
     t.string "short_name"
@@ -417,6 +457,8 @@ ActiveRecord::Schema.define(version: 2019_02_25_215005) do
     t.bigint "user_id"
     t.boolean "published", default: false
     t.boolean "approved", default: false
+    t.string "slug"
+    t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
   end
 
@@ -478,26 +520,6 @@ ActiveRecord::Schema.define(version: 2019_02_25_215005) do
     t.datetime "updated_at", null: false
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
-  end
-
-  create_table "strategic_sponsor_practices", force: :cascade do |t|
-    t.bigint "strategic_sponsor_id"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["practice_id"], name: "index_strategic_sponsor_practices_on_practice_id"
-    t.index ["strategic_sponsor_id"], name: "index_strategic_sponsor_practices_on_strategic_sponsor_id"
-  end
-
-  create_table "strategic_sponsors", force: :cascade do |t|
-    t.string "name"
-    t.string "short_name"
-    t.text "description"
-    t.integer "position"
-    t.string "color"
-    t.string "icon"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "survey_result_files", force: :cascade do |t|
@@ -628,8 +650,10 @@ ActiveRecord::Schema.define(version: 2019_02_25_215005) do
   add_foreign_key "ancillary_service_practices", "practices"
   add_foreign_key "badge_practices", "badges"
   add_foreign_key "badge_practices", "practices"
-  add_foreign_key "badges", "strategic_sponsors"
+  add_foreign_key "badges", "practice_partners"
   add_foreign_key "business_case_files", "practices"
+  add_foreign_key "category_practices", "categories"
+  add_foreign_key "category_practices", "practices"
   add_foreign_key "checklist_files", "practices"
   add_foreign_key "clinical_condition_practices", "clinical_conditions"
   add_foreign_key "clinical_condition_practices", "practices"
@@ -641,11 +665,10 @@ ActiveRecord::Schema.define(version: 2019_02_25_215005) do
   add_foreign_key "developing_facility_type_practices", "developing_facility_types"
   add_foreign_key "developing_facility_type_practices", "practices"
   add_foreign_key "difficulties", "practices"
+  add_foreign_key "domain_practices", "domains"
+  add_foreign_key "domain_practices", "practices"
   add_foreign_key "financial_files", "practices"
-  add_foreign_key "human_impact_photos", "practices"
-  add_foreign_key "impact_practices", "impacts"
-  add_foreign_key "impact_practices", "practices"
-  add_foreign_key "impacts", "impact_categories"
+  add_foreign_key "impact_photos", "practices"
   add_foreign_key "implementation_timeline_files", "practices"
   add_foreign_key "job_position_practices", "job_positions"
   add_foreign_key "job_position_practices", "practices"
@@ -654,14 +677,14 @@ ActiveRecord::Schema.define(version: 2019_02_25_215005) do
   add_foreign_key "photo_files", "practices"
   add_foreign_key "practice_management_practices", "practice_managements"
   add_foreign_key "practice_management_practices", "practices"
+  add_foreign_key "practice_partner_practices", "practice_partners"
+  add_foreign_key "practice_partner_practices", "practices"
   add_foreign_key "practices", "users"
   add_foreign_key "publication_files", "practices"
   add_foreign_key "publications", "practices"
   add_foreign_key "required_staff_trainings", "practices"
   add_foreign_key "risk_mitigations", "practices"
   add_foreign_key "risks", "risk_mitigations"
-  add_foreign_key "strategic_sponsor_practices", "practices"
-  add_foreign_key "strategic_sponsor_practices", "strategic_sponsors"
   add_foreign_key "survey_result_files", "practices"
   add_foreign_key "toolkit_files", "practices"
   add_foreign_key "va_employee_practices", "practices"

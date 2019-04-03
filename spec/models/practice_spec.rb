@@ -10,6 +10,8 @@ RSpec.describe Practice, type: :model do
     it { should have_many(:badge_practices) }
     it { should have_many(:badges) }
     it { should have_many(:business_case_files) }
+    it { should have_many(:category_practices) }
+    it { should have_many(:categories) }
     it { should have_many(:checklist_files) }
     it { should have_many(:clinical_condition_practices) }
     it { should have_many(:clinical_conditions) }
@@ -22,9 +24,7 @@ RSpec.describe Practice, type: :model do
     it { should have_many(:developing_facility_types) }
     it { should have_many(:difficulties) }
     it { should have_many(:financial_files) }
-    it { should have_many(:human_impact_photos) }
-    it { should have_many(:impact_practices) }
-    it { should have_many(:impacts) }
+    it { should have_many(:impact_photos) }
     it { should have_many(:job_position_practices) }
     it { should have_many(:job_positions) }
     it { should have_many(:photo_files) }
@@ -34,8 +34,8 @@ RSpec.describe Practice, type: :model do
     it { should have_many(:publication_files) }
     it { should have_many(:required_staff_trainings) }
     it { should have_many(:risk_mitigations) }
-    it { should have_many(:strategic_sponsor_practices) }
-    it { should have_many(:strategic_sponsors) }
+    it { should have_many(:practice_partner_practices) }
+    it { should have_many(:practice_partners) }
     it { should have_many(:survey_result_files) }
     it { should have_many(:toolkit_files) }
     it { should have_many(:va_employee_practices) }

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :domains
   resources :departments
   resources :practice_managements
   devise_for :users, controllers: { registrations: 'registrations' }
@@ -8,13 +9,12 @@ Rails.application.routes.draw do
   resources :badges
   resources :job_positions
   resources :job_position_categories
-  resources :impacts
-  resources :impact_categories
+  resources :categories
   resources :clinical_locations
   resources :clinical_conditions
   resources :ancillary_services
   resources :va_secretary_priorities
-  resources :strategic_sponsors
+  resources :practice_partners
   resources :users, except: [:show, :create, :new, :edit] do
     patch :re_enable
   end
