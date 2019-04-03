@@ -5,7 +5,7 @@ class CreateBadges < ActiveRecord::Migration[5.2]
       t.string :short_name
       t.text :description
       t.integer :position
-      t.belongs_to :strategic_sponsor, foreign_key: true
+      t.belongs_to :practice_partner, foreign_key: true
       t.string :color
       t.string :icon
 

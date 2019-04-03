@@ -1,1 +1,1 @@
-json.array! @impacts, partial: 'impacts/impact', as: :impact
+json.array! @impacts, partial: 'impacts/impact', as: :categories

@@ -1,0 +1,2 @@
+module PracticePartnersHelper
+end

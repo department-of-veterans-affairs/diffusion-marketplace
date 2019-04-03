@@ -1,0 +1,14 @@
+<div class='grid-container p3-top'>
+  <% if @practice.origin_picture.present? %>
+    <div class='grid-row flex-row flex-justify-center flex-align-center origin-picture-container overflow-hidden margin-0-auto rounded'>
+      <%= image_tag @practice.origin_picture.url, class: '', alt: "#{@practice.name} origins" %>
+    </div>
+  <% end %>
+
+  <div class='x4-top'>
+    <h3><%= @practice.origin_title %></h3>
+  </div>
+  <div>
+    <p><%= @practice.origin_story %></p>
+  </div>
+</div>

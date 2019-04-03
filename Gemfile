@@ -95,3 +95,5 @@ gem 'survey_monkey_api', github: 'agilesix/surveymonkey'
 gem 'mechanize'
 
 gem 'roo', '~> 2.8.0'
+
+gem 'friendly_id', '~> 5.2.4'
