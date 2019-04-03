@@ -57,7 +57,7 @@
             </div>
             <div class="marketplace-footer p1">
               <div class=''>
-                <%= render partial: 'shared/badge', locals: { badges: practice.strategic_sponsors } %>
+                <%= render partial: 'shared/badge', locals: { badges: practice.practice_partners } %>
               </div>
               <%# practice.badges.each do |badge| %>
               <!--                <div class="marketplace-card-badge"><%#= badge.name %></div>-->
@@ -68,7 +68,7 @@
                 <div class="x2-bottom">
                   <div class="text-center">
                     <% (0..3).each do |index| %>
-                      <% if index < practice.cost_savings_aggregate %>
+                      <% if practice.cost_savings_aggregate.present? && index < practice.cost_savings_aggregate %>
                         <i class="fas fa-dollar-sign large-icon-dark aggregate-icon"></i>
                       <% else %>
                         <i class="fas fa-dollar-sign large-icon-light aggregate-icon"></i>
@@ -78,7 +78,7 @@
                   </div>
                   <div class="text-center">
                     <% (0..3).each do |index| %>
-                      <% if index < practice.veteran_satisfaction_aggregate %>
+                      <% if practice.veteran_satisfaction_aggregate.present? && index < practice.veteran_satisfaction_aggregate %>
                         <i class="dm dm-saluting-veteran large-icon-dark aggregate-icon"></i>
                       <% else %>
                         <i class="dm dm-saluting-veteran large-icon-light aggregate-icon"></i>
@@ -88,7 +88,7 @@
                   </div>
                   <div class="text-center">
                     <% (0..3).each do |index| %>
-                      <% if index < practice.difficulty_aggregate %>
+                      <% if practice.difficulty_aggregate.present? && index < practice.difficulty_aggregate %>
                         <i class="fas fa-wrench large-icon-dark aggregate-icon"></i>
                       <% else %>
                         <i class="fas fa-wrench large-icon-light aggregate-icon"></i>

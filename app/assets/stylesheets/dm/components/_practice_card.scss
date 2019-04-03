@@ -9,5 +9,18 @@
 }
 .practice-card-aggregates-background {
   background: linear-gradient(0deg, #ECECEC, #ECECEC);
-  border-radius: 0px 0px 20px 0px;
+  border-radius: 0 0 20px 0;
+}
+
+.practice-card-tagline-link {
+  color: $dm-color-black !important;
+  text-decoration: none !important;
+
+  &:focus {
+    color: $dm-color-black !important;
+  }
+
+  &:hover {
+    text-decoration: underline !important;
+  }
 }

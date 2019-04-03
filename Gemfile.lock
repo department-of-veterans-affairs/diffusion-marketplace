@@ -151,6 +151,8 @@ GEM
       thor (~> 0.14)
     font-awesome-sass (5.6.1)
       sassc (>= 1.11)
+    friendly_id (5.2.5)
+      activerecord (>= 4.0.0)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     http-cookie (1.0.3)
@@ -396,6 +398,7 @@ DEPENDENCIES
   erd
   figaro
   font-awesome-sass (~> 5.6.1)
+  friendly_id (~> 5.2.4)
   jbuilder (~> 2.5)
   jquery-rails
   kaminari
