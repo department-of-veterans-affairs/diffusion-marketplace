@@ -1,0 +1,57 @@
+<section class="grid-container">
+
+<h1>Search for a practice</h1>
+
+<input class="usa-input" id="practice-search-field" placeholder="Start typing to search..." autocomplete="off" style="margin-bottom: 2rem">
+
+<div id="search-results" style="margin-bottom: 5rem"></div>
+
+</section>
+
+
+<!-- JavaScript for search -->
+
+<script>
+
+var practices = <%= @practices %>;
+
+var options = {
+  keys: ['name', 'description'],
+  minMatchCharLength: 3,
+  threshold: 0.3,
+  location: 0,
+  distance: 100,
+  tokenize: true,
+  matchAllTokens: true,
+  findAllMatches: true
+}
+
+var fuse = new Fuse(practices, options)
+
+function search(e) {
+  const query = e.target.value.trim();
+  var resultsHTML = '';
+  const searchResults = document.querySelector('#search-results');
+
+  if (e.target.value === '') {
+    searchResults.innerHTML = '';
+    return;
+  }
+
+  if (e.target.value.length < 3) {
+    searchResults.innerHTML = '';
+    return;
+  }
+
+  var results = fuse.search(query);
+
+  results.forEach(function(result) {
+    resultsHTML += `<h2><a href='/practices/${result.id}'>${result.name}</a></h2><p>${result.description}</p>`;
+  });
+
+  searchResults.innerHTML = resultsHTML;
+}
+
+document.querySelector('#practice-search-field').addEventListener('input', search);
+
+</script>

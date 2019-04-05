@@ -71,6 +71,10 @@ class PracticesController < ApplicationController
   #   )
   # end
 
+  def search
+    @practices = Practice.where(approved: true, published: true).select(:id, :name, :description).to_json.html_safe
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_practice
