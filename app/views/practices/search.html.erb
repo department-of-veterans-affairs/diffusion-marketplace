@@ -1,0 +1,17 @@
+<section class="search-practices grid-container">
+  <h1>Find a practice</h1>
+
+  <div id="practice-search-form">
+    <input id="practice-search-field" class="usa-input" autocomplete="off">
+    <button id="practice-search-button" class="usa-button">Search</button>
+    <div style="clear:both"></div>
+  </div>
+
+  <p id="results-summary"></p>
+  <div id="search-results"></div>
+</section>
+
+<!-- Inject practices JSON into page via template -->
+<script>
+  var practices = <%= @practices_json %>;
+</script>

@@ -30,4 +30,5 @@ Rails.application.routes.draw do
   get 'practices/view_toolkit' => 'practices#view_toolkit'
   # Ditto for "Planning Checklist"
   get 'practices/planning_checklist' => 'practices#planning_checklist'
+  get '/search' => 'practices#search'
 end
