@@ -1,6 +1,6 @@
 <% if alert.present? %>
-    <div class="usa-alert usa-alert-error x1-bottom">
-      <div class="usa-alert-body">
+    <div class="usa-alert usa-alert--error x1-bottom">
+      <div class="usa-alert__body">
         <p><%= alert %></p>
       </div>
     </div>
@@ -8,9 +8,9 @@
 <% if flash.present? %>
   <% flash.each do |key, value| %>
     <% if key == 'notice' then key = 'info' end %>
-    <div class="grid-container usa-alert usa-alert-<%= key %> margin-bottom-2">
-      <div class="usa-alert-body">
-        <h3 class="usa-alert-heading"><%= value %></h3>
+    <div class="grid-container usa-alert usa-alert--<%= key %> margin-bottom-2">
+      <div class="usa-alert__body">
+        <h3 class="usa-alert__heading"><%= value %></h3>
       </div>
     </div>
   <% end %>

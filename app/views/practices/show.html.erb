@@ -4,9 +4,9 @@
     <div class="grid-container">
       <%= render "shared/messages" %>
       <% unless @practice.published && @practice.approved %>
-      <div class="usa-alert usa-alert-warning" >
-        <div class="usa-alert-body">
-          <h3 class="usa-alert-heading">This practice will not be shown in the marketplace because it is:</h3>
+      <div class="usa-alert usa-alert--warning" >
+        <div class="usa-alert__body">
+          <h3 class="usa-alert__heading">This practice will not be shown in the marketplace because it is:</h3>
           <% unless @practice.published %>
             <div class="badge-container un-published-practice">
               Not Published
@@ -73,19 +73,19 @@
       <div class="grid-row">
         <div class="tablet:grid-col-4 p3-left">
           <ul class="usa-sidenav dm-tabnav">
-            <li class="usa-sidenav-item>">
+            <li class="usa-sidenav__item">
               <a href="#" class="dm-tab usa-current top-tab" data-target="#resources_required">Resources Required</a>
             </li>
-            <li class="usa-sidenav-item>">
+            <li class="usa-sidenav__item">
               <a href="#" class="dm-tab" data-target="#impact">Impact</a>
             </li>
-            <li class="usa-sidenav-item>">
+            <li class="usa-sidenav__item">
               <a href="#" class="dm-tab" data-target="#origin">Origin of this practice</a>
             </li>
-            <li class="usa-sidenav-item>">
+            <li class="usa-sidenav__item">
               <a href="#" class="dm-tab" data-target="#risks_and_mitigations">Risks & Mitigations</a>
             </li>
-            <li class="usa-sidenav-item>">
+            <li class="usa-sidenav__item">
               <a href="#" class="dm-tab bottom-tab" data-target="#timeline_and_checklist">Timeline & Checklist</a>
             </li>
           </ul>
