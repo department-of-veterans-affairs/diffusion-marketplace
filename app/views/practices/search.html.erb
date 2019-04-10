@@ -1,22 +1,59 @@
 <section class="grid-container">
 
-<h1>Search for a practice</h1>
+<h1>Find a practice</h1>
 
 <input class="usa-input" id="practice-search-field" placeholder="Start typing to search..." autocomplete="off" style="margin-bottom: 2rem">
+
+<p id="results-summary" style="font-style: italic"></p>
 
 <div id="search-results" style="margin-bottom: 5rem"></div>
 
 </section>
 
 
+<!-- Page Styles -->
+
+<style>
+#search-results a:visited {
+  color: #0076D6;
+}
+
+.truncate-text {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+}
+
+/* Set 1:1 aspect ratio for image */
+/* http://www.mademyday.de/css-height-equals-width-with-pure-css.html */
+.img-box {
+  position: relative;
+  width: 100%;   /* desired width */
+}
+.img-box:before {
+  content: "";
+  display: block;
+  padding-top: 100%;  /* initial ratio of 1:1*/
+}
+.img-box-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+</style>
+
+
 <!-- JavaScript for search -->
 
 <script>
 
-const practices = <%= @practices %>;
+console.log(<%= @practices_json %>);
 
-const options = {
-  keys: ['name', 'description'],
+var search_options = {
+  keys: ['name', 'tagline', 'description', 'summary', 'initiating_facility'],
   minMatchCharLength: 3,
   threshold: 0.3,
   location: 0,
@@ -26,27 +63,46 @@ const options = {
   findAllMatches: true
 }
 
-const fuse = new Fuse(practices, options)
+var fuse = new Fuse(<%= @practices_json %>, search_options)
 
 function search(e) {
   const query = e.target.value.trim();
   let resultsHTML = '';
+  const resultsSummary = document.querySelector('#results-summary');
   const searchResults = document.querySelector('#search-results');
 
-  if (e.target.value === '') {
-    searchResults.innerHTML = '';
-    return;
-  }
-
-  if (e.target.value.length < 3) {
+  if (e.target.value === '' || e.target.value.length < 3) {
+    resultsSummary.innerHTML = '';
     searchResults.innerHTML = '';
     return;
   }
 
   const results = fuse.search(query);
 
+  resultsSummary.innerHTML = `${results.length} result(s) for "${query}"`;
+
+  resultsHTML += "<hr style='border: none; height: 3px; background: #dcdee0'>";
+
+  // <img src="${result.image}" style="width: auto; height: 100%; border-radius: 20px"></img>
+
   results.forEach(function(result) {
-    resultsHTML += `<h2><a href='/practices/${result.id}'>${result.name}</a></h2><p>${result.description}</p>`;
+    resultsHTML +=
+    `
+    <div class="grid-row margin-bottom-3">
+      <div class="grid-col flex-1 margin-right-3">
+        <div class="img-box margin-top-2">
+          <div class="img-box-content" style="background: url('${result.image}') no-repeat; background-size: cover; border-radius: 20px; background-color: #97d4ea"></div>
+        </div>
+      </div>
+      <div class="grid-col flex-2">
+        <h2><a href="/practices/${result.id}">${result.tagline}</a></h2> \
+         <h3>${result.description}</h3>\
+         <p style="color: #71767a">${result.name} | ${result.date_initiated} | ${result.initiating_facility}</p>\
+         <p class="truncate-text">${result.summary}</p>
+      </div>
+    </div>
+    `;
+
   });
 
   searchResults.innerHTML = resultsHTML;

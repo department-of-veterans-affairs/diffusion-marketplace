@@ -72,7 +72,22 @@ class PracticesController < ApplicationController
   # end
 
   def search
-    @practices = Practice.where(approved: true, published: true).select(:id, :name, :description).to_json.html_safe
+    # practices = Practice.where(approved: true, published: true).select(:id, :name, :short_name, :description, :summary, :initiating_facility, :date_initiated)
+    practices = Practice.where(approved: true, published: true)
+    practices_array = []
+
+    practices.each do |practice|
+      practice_hash = JSON.parse(practice.to_json)  # convert to hash
+      practice_hash['image'] = practice.main_display_image.url
+      if practice.date_initiated
+        practice_hash['date_initiated'] = practice.date_initiated.strftime("%B %Y")
+      else
+        practice_hash['date_initiated'] = '(start date unknown)'
+      end
+      practices_array.push practice_hash
+    end
+
+    @practices_json = practices_array.to_json.html_safe
   end
 
   private
