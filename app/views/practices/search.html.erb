@@ -1,113 +1,197 @@
-<section class="grid-container">
-
-<h1>Find a practice</h1>
-
-<input class="usa-input" id="practice-search-field" placeholder="Start typing to search..." autocomplete="off" style="margin-bottom: 2rem">
-
-<p id="results-summary" style="font-style: italic"></p>
-
-<div id="search-results" style="margin-bottom: 5rem"></div>
-
-</section>
-
-
 <!-- Page Styles -->
 
 <style>
-#search-results a:visited {
-  color: #0076D6;
-}
+  hr {
+    border: none;
+    height: 3px;
+    background: #dcdee0;
+  }
 
-.truncate-text {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 5;
-  -webkit-box-orient: vertical;
-}
+  #results-summary {
+    font-style: italic;
+  }
 
-/* Set 1:1 aspect ratio for image */
-/* http://www.mademyday.de/css-height-equals-width-with-pure-css.html */
-.img-box {
-  position: relative;
-  width: 100%;   /* desired width */
-}
-.img-box:before {
-  content: "";
-  display: block;
-  padding-top: 100%;  /* initial ratio of 1:1*/
-}
-.img-box-content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}
+  #practice-search-field {
+    margin-bottom: 2rem;
+  }
+
+  #search-results {
+    margin-bottom: 5rem
+  }
+
+  #search-results a:visited {
+    color: #0076d6;
+  }
+
+  p.practice-details {
+    color: #71767a;
+  }
+
+  /* Truncate text a given line amount */
+  .truncate-text {
+    display: block;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    position: relative;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 !important;
+  }
+  .one-line {
+    -webkit-line-clamp: 1;
+    height: calc(1em * 1.2 * 1);
+  }
+  .two-lines {
+    -webkit-line-clamp: 2;
+    height: calc(1em * 1.2 * 2);
+  }
+  .three-lines {
+    -webkit-line-clamp : 3;
+    height: calc(1em * 1.2 * 3);
+  }
+  .four-lines {
+    -webkit-line-clamp: 4;
+    height: calc(1em * 1.2 * 4);
+  }
+  .five-lines {
+    -webkit-line-clamp: 5;
+    height: calc(1em * 1.2 * 5);
+  }
+
+  /* Set 1:1 aspect ratio for image */
+  /* Adapted from: http://www.mademyday.de/css-height-equals-width-with-pure-css.html */
+  .img-box {
+    position: relative;
+    width: 100%;  /* desired width */
+  }
+  .img-box:before {
+    content: "";
+    display: block;
+    padding-top: 100%;  /* initial ratio of 1:1 */
+  }
+  .img-box-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    border-radius: 20px;
+    background-repeat: no-repeat;
+  }
 </style>
 
 
-<!-- JavaScript for search -->
+<!-- Page HTML -->
+
+<section class="grid-container">
+  <h1>Find a practice</h1>
+  <input id="practice-search-field" class="usa-input" placeholder="Start typing to search..." autocomplete="off">
+  <p id="results-summary"></p>
+  <div id="search-results"></div>
+</section>
+
+
+<!-- JavaScript for Search -->
 
 <script>
 
-console.log(<%= @practices_json %>);
+  console.log(<%= @practices_json %>);
 
-var search_options = {
-  keys: ['name', 'tagline', 'description', 'summary', 'initiating_facility'],
-  minMatchCharLength: 3,
-  threshold: 0.3,
-  location: 0,
-  distance: 100,
-  tokenize: true,
-  matchAllTokens: true,
-  findAllMatches: true
-}
+  var search_options = {
+    keys: ['name', 'tagline', 'description', 'summary', 'initiating_facility'],
+    minMatchCharLength: 3,
+    tokenize: true,
+    shouldSort: true,
+    threshold: 0.3,
+    location: 0,
+    distance: 100,
+    maxPatternLength: 32,
+    matchAllTokens: true,
+    findAllMatches: true,
+    includeMatches: true
+  };
 
-var fuse = new Fuse(<%= @practices_json %>, search_options)
+  var fuse = new Fuse(<%= @practices_json %>, search_options);
 
-function search(e) {
-  const query = e.target.value.trim();
-  let resultsHTML = '';
-  const resultsSummary = document.querySelector('#results-summary');
-  const searchResults = document.querySelector('#search-results');
 
-  if (e.target.value === '' || e.target.value.length < 3) {
-    resultsSummary.innerHTML = '';
-    searchResults.innerHTML = '';
-    return;
+  // Search handler
+  function search(e) {
+    const query = e.target.value.trim();
+    let resultsHTML = '';
+    const resultsSummary = document.querySelector('#results-summary');
+    const searchResults = document.querySelector('#search-results');
+
+    if (e.target.value === '' || e.target.value.length < 3) {
+      resultsSummary.innerHTML = '';
+      searchResults.innerHTML = '';
+      return;
+    }
+
+    const results = fuse.search(query);
+
+    resultsSummary.innerHTML = `${results.length} result(s) for "${query}"`;
+
+    resultsHTML += "<hr>";
+
+    // Highlight results
+    results.forEach((result) => {
+      highlighter(result);
+    });
+
+    results.forEach((result) => {
+      resultsHTML +=
+       `<div class="grid-row margin-bottom-3">
+          <div class="grid-col flex-1 margin-right-3">
+            <div class="img-box margin-top-2">
+              <div class="img-box-content" style="background: url('${result.item.image}') #97d4ea; background-size: cover"></div>
+            </div>
+          </div>
+          <div class="grid-col flex-2">
+            <h2><a href="/practices/${result.item.id}">${result.item.tagline}</a></h2>
+              <h3 class="truncate-text two-lines">${result.item.description}</h3>
+              <p class="practice-details">${result.item.name} | ${result.item.date_initiated} | ${result.item.initiating_facility}</p>
+              <!-- <p class="truncate-text five-lines">${result.item.summary}</p> -->
+              <p class="truncate-text five-lines">${result.highlight}</p>
+          </div>
+        </div>`;
+    });
+
+    searchResults.innerHTML = resultsHTML;
   }
 
-  const results = fuse.search(query);
 
-  resultsSummary.innerHTML = `${results.length} result(s) for "${query}"`;
+  // Highlight Fuse.js results
+  // Adapted from: https://github.com/brunocechet/Fuse.js-with-highlight
+  function highlighter(resultItem) {
+    resultItem.matches.forEach((matchItem) => {
+      let text = resultItem.item[matchItem.key];
+      let result = []
+      let matches = [].concat(matchItem.indices); // limpar referencia
+      let pair = matches.shift()
 
-  resultsHTML += "<hr style='border: none; height: 3px; background: #dcdee0'>";
+      for (let i = 0; i < text.length; i++) {
+        let char = text.charAt(i)
+        if (pair && i == pair[0]) {
+          result.push('<mark>')
+        }
+        result.push(char)
+        if (pair && i == pair[1]) {
+          result.push('</mark>')
+          pair = matches.shift()
+        }
+      }
+      resultItem.highlight = result.join('');
 
-  // <img src="${result.image}" style="width: auto; height: 100%; border-radius: 20px"></img>
+      if(resultItem.children && resultItem.children.length > 0){
+        resultItem.children.forEach((child) => {
+          highlighter(child);
+        });
+      }
+    });
+  };
 
-  results.forEach(function(result) {
-    resultsHTML +=
-    `
-    <div class="grid-row margin-bottom-3">
-      <div class="grid-col flex-1 margin-right-3">
-        <div class="img-box margin-top-2">
-          <div class="img-box-content" style="background: url('${result.image}') no-repeat; background-size: cover; border-radius: 20px; background-color: #97d4ea"></div>
-        </div>
-      </div>
-      <div class="grid-col flex-2">
-        <h2><a href="/practices/${result.id}">${result.tagline}</a></h2> \
-         <h3>${result.description}</h3>\
-         <p style="color: #71767a">${result.name} | ${result.date_initiated} | ${result.initiating_facility}</p>\
-         <p class="truncate-text">${result.summary}</p>
-      </div>
-    </div>
-    `;
 
-  });
-
-  searchResults.innerHTML = resultsHTML;
-}
-
-document.querySelector('#practice-search-field').addEventListener('input', search);
+  document.querySelector('#practice-search-field').addEventListener('input', search);
 
 </script>
