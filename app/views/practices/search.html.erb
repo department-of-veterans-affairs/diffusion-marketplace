@@ -7,16 +7,61 @@
     background: #dcdee0;
   }
 
-  #results-summary {
-    font-style: italic;
+  mark {
+    background: #fff46b;
   }
 
-  #practice-search-field {
+  #practice-search-form {
     margin-bottom: 2rem;
   }
 
+  #practice-search-field {
+    margin: 0;
+    float: left;
+    height: 3rem;
+  }
+
+  #practice-search-button {
+    float: left;
+    height: 3rem;
+    font-size: 1.3rem;
+  }
+
+  /* Wider than 650px */
+  @media all and (min-width: 650px) {
+    #practice-search-field {
+      border-right: none;
+      /*background: red;*/
+    }
+
+    #practice-search-button {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
+  /* Narrower than 650px */
+  @media all and (max-width: 650px) {
+    #practice-search-field {
+      border-bottom: none;
+      /*background: blue;*/
+    }
+
+    #practice-search-button {
+      width: 100%;
+      max-width: 30rem;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+  }
+
+  #results-summary {
+    font-style: italic;
+    clear: both;
+  }
+
   #search-results {
-    margin-bottom: 5rem
+    margin-bottom: 10rem
   }
 
   #search-results a:visited {
@@ -86,7 +131,13 @@
 
 <section class="grid-container">
   <h1>Find a practice</h1>
-  <input id="practice-search-field" class="usa-input" placeholder="Start typing to search..." autocomplete="off">
+
+  <div id="practice-search-form">
+    <input id="practice-search-field" class="usa-input" autocomplete="off">
+    <button id="practice-search-button" class="usa-button">Search</button>
+    <div style="clear:both"></div>
+  </div>
+
   <p id="results-summary"></p>
   <div id="search-results"></div>
 </section>
@@ -96,49 +147,39 @@
 
 <script>
 
-  console.log(<%= @practices_json %>);
+  // Search helper functions
 
-  var search_options = {
-    keys: ['name', 'tagline', 'description', 'summary', 'initiating_facility'],
-    minMatchCharLength: 3,
-    tokenize: true,
-    shouldSort: true,
-    threshold: 0.3,
-    location: 0,
-    distance: 100,
-    maxPatternLength: 32,
-    matchAllTokens: true,
-    findAllMatches: true,
-    includeMatches: true
-  };
+  // Search practices and populate the page
+  function search(query) {
 
-  var fuse = new Fuse(<%= @practices_json %>, search_options);
+    // Trim whitespace from the query (can cause matching problems)
+    query = query.trim();
 
-
-  // Search handler
-  function search(e) {
-    const query = e.target.value.trim();
+    // Set variables
     let resultsHTML = '';
     const resultsSummary = document.querySelector('#results-summary');
     const searchResults = document.querySelector('#search-results');
 
-    if (e.target.value === '' || e.target.value.length < 3) {
+    // If the query is empty or less than three characters, remove any previous results from page
+    if (query === '' || query < 3) {
       resultsSummary.innerHTML = '';
       searchResults.innerHTML = '';
       return;
     }
 
+    // Run the search query
     const results = fuse.search(query);
 
+    // Print the number of results for the query
     resultsSummary.innerHTML = `${results.length} result(s) for "${query}"`;
+    resultsHTML += '<hr>';
 
-    resultsHTML += "<hr>";
-
-    // Highlight results
+    // Highlight results (only Fuse.js matching)
     results.forEach((result) => {
       highlighter(result);
     });
 
+    // Template out the search results
     results.forEach((result) => {
       resultsHTML +=
        `<div class="grid-row margin-bottom-3">
@@ -151,13 +192,25 @@
             <h2><a href="/practices/${result.item.id}">${result.item.tagline}</a></h2>
               <h3 class="truncate-text two-lines">${result.item.description}</h3>
               <p class="practice-details">${result.item.name} | ${result.item.date_initiated} | ${result.item.initiating_facility}</p>
-              <!-- <p class="truncate-text five-lines">${result.item.summary}</p> -->
-              <p class="truncate-text five-lines">${result.highlight}</p>
+              <p class="truncate-text five-lines">${result.item.summary}</p>
+
+              <!-- Uncomment to show Fuse.js diagnostics -->
+              <!--
+                <h3>Fuse.js highlighted character matching</h3>
+                <p class="">${result.highlight}</p>
+                <p><b>Score: ${result.score}</b></p>
+              -->
+
           </div>
         </div>`;
     });
 
+    // Print results to the page
     searchResults.innerHTML = resultsHTML;
+
+    // Highlight search results where exact keyword matches
+    const mark = new Mark('#search-results');
+    mark.mark(query);
   }
 
 
@@ -192,6 +245,39 @@
   };
 
 
-  document.querySelector('#practice-search-field').addEventListener('input', search);
+  // Set up search
+
+  // Set Fuse.js search options
+  var search_options = {
+    keys: ['name', 'tagline', 'description', 'summary', 'initiating_facility'],
+    minMatchCharLength: 3,
+    tokenize: true,
+    shouldSort: true,
+    threshold: 0.2,
+    location: 0,
+    distance: 100,
+    maxPatternLength: 32,
+    matchAllTokens: true,
+    findAllMatches: true,
+    includeMatches: true,
+    includeScore: true
+  };
+
+  // Create a search context with practices and search options
+  var fuse = new Fuse(<%= @practices_json %>, search_options);
+
+  // Search bar elements
+  var searchField = document.querySelector('#practice-search-field');
+  var searchButton = document.querySelector('#practice-search-button');
+
+  // Set up "enter" event handler for search field
+  searchField.addEventListener('keypress', (e) => {
+    if (e.keyCode === 13) search(searchField.value);
+  });
+
+  // Set up search button click
+  searchButton.addEventListener('click', (e) => {
+    search(searchField.value);
+  });
 
 </script>
