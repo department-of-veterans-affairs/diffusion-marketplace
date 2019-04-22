@@ -161,8 +161,8 @@
     const searchResults = document.querySelector('#search-results');
 
     // If the query is empty or less than three characters, remove any previous results from page
-    if (query === '' || query < 3) {
-      resultsSummary.innerHTML = '';
+    if (query === '' || query.length < 3) {
+      resultsSummary.innerHTML = '<p><i>Type at least three characters to search.</i></p>';
       searchResults.innerHTML = '';
       return;
     }
