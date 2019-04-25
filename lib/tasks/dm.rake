@@ -25,4 +25,26 @@ namespace :dm do
     Rake::Task['dm:full_import'].execute
   end
 
+  # rails dm:dummy_data
+  desc 'Import dummy data'
+  task :dummy_data => :environment do
+    puts '==> Importing dummy data'
+
+    dummy_data = "#{Rails.root}/tmp/practices_dummy_data.csv"
+
+    CSV.foreach(dummy_data, headers: true) do |row|
+      puts "==> Importing practice '#{row['project_name']}'"
+      Practice.create!(
+        name: row['project_name'],
+        tagline: row['project_name'],
+        date_initiated: row['start_date'],
+        description: row['purpose'],
+        summary: row['approach'],
+        initiating_facility: row['business_office_sponsor'],
+        approved: true,
+        published: true
+      )
+    end
+  end
+
 end
