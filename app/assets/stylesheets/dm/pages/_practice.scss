@@ -57,7 +57,6 @@
 }
 
 .practice-facility {
-  padding-left: 4rem;
   font-weight: 100;
 }
 
@@ -86,4 +85,9 @@
 
 .un-approved-practice {
   background-color: $dm-color-light-black;
+}
+
+.origin-picture-container {
+  width: 150px;
+  height: 150px;
 }

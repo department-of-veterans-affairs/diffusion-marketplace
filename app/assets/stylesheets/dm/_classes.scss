@@ -37,6 +37,13 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   background-color: $dm-color-light-blue !important;
 }
 
+.dm-background-royal-blue {
+  background-color: $dm-color-royal-blue !important;
+}
+
+.dm-background-steel-grey {
+  background-color: $dm-color-steel-grey !important;
+}
 /* Linear Gradient backgrounds */
 
 .dm-background-linear-gradient-down-cool {
@@ -106,6 +113,30 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   color: $dm-color-dark-brown !important;
 }
 
+.dm-font-color-blue-black {
+  color: $dm-color-blue-black !important;
+}
+
+.dm-font-color-super-grey {
+  color: $dm-color-super-grey !important;
+}
+
+.dm-font-color-super-violet-ish {
+  color: $dm-color-super-violet-ish !important;
+}
+
+.dm-font-color-steel-grey {
+  color: $dm-color-steel-grey !important;
+}
+
+.dm-font-color-royal-blue {
+  color: $dm-color-royal-blue !important;
+}
+
+.dm-font-color-midnight-black {
+  color: $dm-color-midnight-black !important;
+}
+
 /* Font Weight */
 
 .fw-100 {
@@ -116,12 +147,63 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   font-weight: 200;
 }
 
+.fw-300 {
+  font-weight: 300;
+}
+
 .fw-normal {
   font-weight: normal !important;
 }
 
 .fw-bold {
   font-weight: bold !important;
+}
+
+/* Font Size */
+
+.fs0-5 {
+  font-size: 0.5em;
+}
+
+.fs1 {
+  font-size: 1em;
+}
+
+/* 18px font size */
+.fs1-125 {
+  font-size: 1.125em;
+}
+
+.fs1-5 {
+  font-size: 1.5em !important;
+}
+
+.fs2 {
+  font-size: 2em !important;
+}
+
+.fs2-25 {
+  font-size: 2.25em !important;
+}
+
+.fs2-5 {
+  font-size: 2.5em !important;
+}
+
+.fs3 {
+  font-size: 3em !important;
+}
+
+.fs3-5 {
+  font-size: 3.5em !important;
+}
+
+.fs4 {
+  font-size: 4em !important;
+}
+
+.fs6 {
+  font-size: 6em !important;
 }
 
 /* Text style */
@@ -414,12 +496,20 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   margin-bottom: 1rem !important;
 }
 
+.x1-5-bottom {
+  margin-bottom: 1.5em !important;
+}
+
 .x2-bottom {
   margin-bottom: 2rem !important;
 }
 
 .x3-bottom {
   margin-bottom: 3rem !important;
+}
+/* 60px */
+.x3-75-bottom {
+  margin-bottom: 3.75rem !important;
 }
 
 .x4-bottom {
@@ -442,6 +532,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .x0-left {
   margin-left: 0 !important;
+}
+
+.x0-5-left {
+  margin-left: 0.5em !important;
 }
 
 .x1-left {
@@ -476,6 +570,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .x0-right {
   margin-right: 0 !important;
+}
+
+.x0-5-right {
+  margin-right: 0.5em !important;
 }
 
 .x1-right {
@@ -627,6 +725,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   padding-bottom: 0 !important;
 }
 
+.p0-75-bottom {
+  padding-bottom: 0.75rem !important;
+}
+
 .p1-bottom {
   padding-bottom: 1rem !important;
 }
@@ -663,6 +765,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .p0-top {
   padding-top: 0 !important;
+}
+
+.p0-75-top {
+  padding-top: 0.75rem !important;
 }
 
 .p1-top {
@@ -756,6 +862,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   justify-content: center;
 }
 
+.justify-end {
+  justify-content: flex-end;
+}
+
 /* unordered lists <ul><li></li></ul> */
 
 ul.no-list-style {
@@ -778,6 +888,15 @@ ul.no-list-style {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
 }
 
+.box-shadow-bottom {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.box-shadow-all {
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+}
+
 .hide {
   display: none;
 }
+

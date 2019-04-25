@@ -7,63 +7,27 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 #
 
-if StrategicSponsor.all.blank?
+if PracticePartner.all.blank?
   puts 'Seeding Database...'
+
   sponsors = [
-      StrategicSponsor.create!(name: 'VISN', short_name: 'visn', description: 'Sponsored by at least one VISN'),
-      StrategicSponsor.create!(name: 'Diffusion of Excellence', short_name: 'diffusion_of_excellence', description: 'Sponsored by Diffusion of Excellence'),
-      StrategicSponsor.create!(name: 'Office of Rural Health', short_name: 'office_of_rural_heath', description: 'Sponsored by the Office of Rural Health'),
-      StrategicSponsor.create!(name: 'HSR&D', short_name: 'hsrd', description: 'Sponsored by HASR&D'),
-      StrategicSponsor.create!(name: 'VHA System Redesign', short_name: 'vha_system_redesign', description: 'Sponsored by VHA System Redesign'),
-      StrategicSponsor.create!(name: 'VHA Office of Connected Care', short_name: 'vha_office_of_connected_care', description: 'Sponsored by the VHA Office of Connected Care'),
-      StrategicSponsor.create!(name: 'Office of Prosthetics and Rehabilitation', short_name: 'office_of_prosthetics_and_rehabilitation', description: 'Sponsored by the Office of Prosthetics and Rehabilitation'),
-      StrategicSponsor.create!(name: 'Office of Mental Health and Suicide Prevention (OMHSP)', short_name: 'omhsp', description: 'Sponsored by the Office of Mental Health and Suicide Prevention (OMHSP)'),
-      StrategicSponsor.create!(name: 'National Opioid Overdose Education Naloxone Distribution (OEND) Program Office', short_name: 'oend', description: 'Sponsored by the National Opioid Overdose Education Naloxone Distribution Program Office'),
-      StrategicSponsor.create!(name: 'Pharmacy Benefits Management (PBM)', short_name: 'pbm', description: 'Sponsored by the Pharmacy Benefits Management (PBM)'),
-      StrategicSponsor.create!(name: 'Academic Detailing Service', short_name: 'ads', description: 'Sponsored by the Academic Detailing Service'),
-      StrategicSponsor.create!(name: 'National Center for Patient Safety (NCPS)', short_name: 'ncps', description: 'Sponsored by the National Center for Patient Safety (NCPS)'),
-      StrategicSponsor.create!(name: 'VA Police', short_name: 'va_police', description: 'Sponsored by the VA Police'),
-      StrategicSponsor.create!(name: 'None', short_name: 'none', description: 'Not Sponsored'),
+      PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative helps to identify and disseminate clinical and administrative best practices through a learning environment that empowers its top performers to apply their innovative ideas throughout the system — further establishing VA as a leader in health care while promoting positive outcomes for Veterans.', icon: 'fas fa-heart', color: '#E4A002'),
+      PracticePartner.create!(name: 'Office of Rural Health', short_name: 'ORH', description: 'ORH fulfills its mission by supporting targeted research, developing innovative programs, and identifying new care models in order to break down the barriers separating rural Veterans from quality care.', icon: 'fas fa-mountain', color: '#1CC2AE'),
+      PracticePartner.create!(name: 'Health Services Research & Development', short_name: 'HSR&D', description: 'The HSR&D pursues research that underscores all aspects of VA healthcare: patient care, care delivery, health outcomes, cost, and quality. Within VA HSR&D, researchers focus on identifying and evaluating innovative strategies that lead to accessible, high quality, cost-effective care for Veterans and the nation.', icon: 'fas fa-microscope', color: '#9058D3'),
+      PracticePartner.create!(name: 'VHA System Redesign', short_name: 'SR', description: 'The Office of Connected Care brings VA digital technology to Veterans and health care professionals, extending access to care beyond the traditional office visit.', icon: 'fas fa-cogs', color: '#FE4497'),
+      PracticePartner.create!(name: 'VHA Office of Connected Care', short_name: 'OCC', description: 'The Office of Connected Care brings VA digital technology to Veterans and health care professionals, extending access to care beyond the traditional office visit. Through virtual technology, VA is able to deliver care to patients where and when they need it.', icon: 'fas fa-hand-holding-heart', color: '#E52107'),
+      PracticePartner.create!(name: 'Office of Prosthetics and Rehabilitation', short_name: '', description: 'Rehabilitation and Prosthetic Services is committed to providing the highest quality, comprehensive, interdisciplinary care; the most advanced medical devices and products that are commercially available; and, promoting advancements in rehabilitative care and evidence-based treatment.', icon: 'fas fa-certificate', color: '#0076D6'),
+      PracticePartner.create!(name: 'Office of Mental Health and Suicide Prevention', short_name: 'OMHSP', description: 'For the U.S. Department of Veterans Affairs (VA), nothing is more important than supporting the health and well-being of the Nation’s Veterans and their families. A major part of that support is providing timely access to high-quality, evidence-based mental health care. VA aims to address Veterans’ needs, during Service members’ reintegration into civilian life and beyond.', icon: 'fas fa-certificate', color: '#0076D6'),
+      PracticePartner.create!(name: 'National Opioid Overdose Education Naloxone Distribution (OEND) Program Office', short_name: 'oend', description: 'Sponsored by the National Opioid Overdose Education Naloxone Distribution Program Office', icon: 'fas fa-certificate', color: '#0076D6'),
+      PracticePartner.create!(name: 'Pharmacy Benefits Management (PBM)', short_name: 'pbm', description: 'Sponsored by the Pharmacy Benefits Management (PBM)', icon: 'fas fa-certificate', color: '#0076D6'),
+      PracticePartner.create!(name: 'Academic Detailing Service', short_name: 'ads', description: 'Sponsored by the Academic Detailing Service', icon: 'fas fa-certificate', color: '#0076D6'),
+      PracticePartner.create!(name: 'National Center for Patient Safety (NCPS)', short_name: 'ncps', description: 'Sponsored by the National Center for Patient Safety (NCPS)', icon: 'fas fa-certificate', color: '#0076D6'),
+      PracticePartner.create!(name: 'VA Police', short_name: 'va_police', description: 'Sponsored by the VA Police', icon: 'fas fa-certificate', color: '#0076D6'),
+      PracticePartner.create!(name: 'Veterans Experience Office', short_name: 'VEO', description: 'The VEO’s goal is to enable VA to be the leading customer service organization in government so that Veterans, their families, caregivers, and survivors Choose VA. VEO implements solutions based on Veteran-centered designs and industry best practices.', icon: 'fas fa-certificate', color: '#0076D6'),
+      PracticePartner.create!(name: 'Quality Enhancement Research Initiative', short_name: 'QUERI', description: 'QUERI is committed to ensuring that research gets used effectively to ultimately sustain improvements in care for Veterans.', icon: 'fas fa-certificate', color: '#0076D6'),
+      PracticePartner.create!(name: 'Office of Information and Technology', short_name: 'OIT', description: '', icon: 'fas fa-certificate', color: '#0076D6'),
+      PracticePartner.create!(name: 'VHA Innovators Network', short_name: 'INET', description: '', icon: 'fas fa-certificate', color: '#0076D6'),
   ]
-
-  23.times do |t|
-    StrategicSponsor.create!(name: "VISN #{t}", short_name: "visn_#{t}", description: "Vetted by VISN #{t}")
-  end
-
-  unless Badge.all.present?
-    badge_image_base_path = "#{Rails.root}/db/seed_images/badges"
-    badges = [
-        Badge.create!(name: 'VHA System Redesign', short_name: 'vha_system_redesign', description: 'Vetted by VHA System Redesign', strategic_sponsor: sponsors[4],
-                      icon: 'fas fa-cogs', color: '#FE4497'),
-        Badge.create!(name: 'VHA Office of Connected Care', short_name: 'vha_office_of_connected_care', description: 'Vetted by the VHA Office of Connected Care', strategic_sponsor: sponsors[5],
-                      icon: 'fas fa-hand-holding-heart', color: '#E52107'),
-        Badge.create!(name: 'Health Systems Research & Design', short_name: 'hsrd', description: 'Vetted by Health Systems Research & Design', strategic_sponsor: sponsors[3],
-                      icon: 'fas fa-microscope', color: '#9058D3'),
-        Badge.create!(name: 'Office of Rural Health', short_name: 'office_of_rural_health', description: 'Vetted by the Office of Rural Health', strategic_sponsor: sponsors[2],
-                      icon: 'fas fa-mountain', color: '#1CC2AE'),
-        Badge.create!(name: 'Diffusion of Excellence', short_name: 'diffusion_of_excellence', description: 'Vetted by Diffusion of Excellence', strategic_sponsor: sponsors[1],
-                      icon: 'fas fa-certificate', color: '#0076D6'),
-        Badge.create!(name: 'Shark Tank Approved', short_name: 'shark_tank_approved', description: 'Shark Tank Approved', strategic_sponsor: sponsors[1],
-                      icon: 'fas fa-fish', color: '#0076D6'),
-        Badge.create!(name: 'Top 100 Shark Tank', short_name: 'shark_tank_100', description: 'Top 100 Shark Tank finisher', strategic_sponsor: sponsors[1],
-                      icon: 'fas fa-fish', color: '#0076D6'),
-        Badge.create!(name: 'Top 20 Shark Tank', short_name: 'shark_tank_20', description: 'Top 20 Shark Tank finisher', strategic_sponsor: sponsors[1],
-                      icon: 'fas fa-fish', color: '#0076D6'),
-        Badge.create!(name: 'Gold Status', short_name: 'gold_status', description: 'Gold Status Practice', strategic_sponsor: sponsors[1],
-                      icon: 'fas fa-heart', color: '#E4A002'),
-        Badge.create!(name: 'Authority to Operate (ATO)', short_name: 'ato', description: 'Authority to Operate (ATO) - applies to OIT projects', strategic_sponsor: sponsors.last,
-                      icon: 'fas fa-check', color: '#E52107'),
-    ]
-
-    23.times do |t|
-      i = t + 1
-      badge_image_path = "#{Rails.root}/db/seed_images/badges/hospital_badge.svg"
-      badge_image_file = File.new(badge_image_path)
-      badges << Badge.create!(name: "VISN #{i}", short_name: "visn_#{i}", description: "Vetted by VISN #{i}", strategic_sponsor: sponsors.find {|s| s.name == "VISN #{i}"},
-                              icon: 'fas fa-hospital', color: '#E4A002'
-      )
-    end
-  end
 
   unless VaSecretaryPriority.all.present?
     va_secretary_priorities = [
@@ -75,68 +39,78 @@ if StrategicSponsor.all.blank?
     ]
   end
 
-  unless ImpactCategory.all.present?
+  unless Domain.all.present?
+    domains = [
+        Domain.create!(name: 'Veteran', description: 'Enables an improvement in satisfaction or customer experience for Veterans'),
+        Domain.create!(name: 'Clinical', description: 'Produces an improvement in health outcomes'),
+        Domain.create!(name: 'Financial', description: 'Generates cost savings or enables cost avoidance'),
+        Domain.create!(name: 'Operational', description: 'Delivers a measure of increased efficiency or productivity in operational activities'),
+        Domain.create!(name: 'Societal', description: 'Delivers a collective benefit to society or healthcare community as a whole'),
+    ]
+  end
+
+  unless Category.all.present?
     impact_categories = [
-        ImpactCategory.create!(name: 'Clinical', short_name: 'clinical', description: 'Impacts on clinical domains'),
-        ImpactCategory.create!(name: 'Operational', short_name: 'operational', description: 'Impacts on operational domains'),
+        Category.create!(name: 'Clinical', short_name: 'clinical', description: 'Categorys on clinical domains'),
+        Category.create!(name: 'Operational', short_name: 'operational', description: 'Categorys on operational domains'),
     ]
 
     clinical_impacts = [
-        Impact.create!(name: 'Allergy and Immunology', short_name: 'allergy_and_immunology', description: 'Allergy and Immunology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Cardiology', short_name: 'cardiology', description: 'Cardiology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Critical Care (ICU)', short_name: 'icu', description: 'Critical Care (ICU)', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Dermatology', short_name: 'dermatology', description: 'Dermatology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Endocrinology', short_name: 'endocrinology', description: 'Endocrinology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Hematology', short_name: 'hematology', description: 'Hematology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Infectious Disease', short_name: 'infectious_disease', description: 'Infectious Disease', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Mental Health / Psychiatry', short_name: 'mental_health_psychiatry', description: 'Mental Health / Psychiatry', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Neurology', short_name: 'neurology', description: 'Neurology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Obstetrics & Gynecology', short_name: 'obstetrics_gynecology', description: 'Obstetrics & Gynecology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Oncology', short_name: 'oncology', description: 'Oncology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Ophthalmology', short_name: 'ophthalmology', description: 'Ophthalmology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Orthopedic Surgery', short_name: 'orthopedic_surgery', description: 'Orthopedic Surgery', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Otolaryngology (ENT)', short_name: 'ent', description: 'Otolaryngology (ENT)', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Pathology', short_name: 'pathology', description: 'Pathology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Pediatrics', short_name: 'pediatrics', description: 'Pediatrics', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Primary Care / Preventive Medicine', short_name: 'primary_care_preventive_medicine', description: 'Primary Care / Preventive Medicine', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Pulmonology / Respiratory', short_name: 'pulmonology_respiratory', description: 'Pulmonology / Respiratory', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Rehab Medicine', short_name: 'rehab_medicine', description: 'Rehab Medicine', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Renal / Nephrology', short_name: 'renal_nephrology', description: 'Renal / Nephrology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Rheumatology', short_name: 'rheumatology', description: 'Rheumatology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Specialty Care (outside of VA)', short_name: 'specialty_care_outside_of_va)', description: 'Specialty Care (outside of VA)', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Surgery', short_name: 'surgery', description: 'Surgery', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Toxicology', short_name: 'toxicology', description: 'Toxicology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Urology', short_name: 'urology', description: 'Urology', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Prosthetics and Rehabilitation', short_name: 'prosthetics_and_rehabilitation', description: 'Prosthetics and Rehabilitation', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Alternative Therapies', short_name: 'alternative_therapies', description: 'Alternative Therapies', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Massage', short_name: 'massage', description: 'Massage', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Herbal Remedies', short_name: 'herbal_remedies', description: 'Herbal Remedies', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Acupuncture', short_name: 'acupuncture', description: 'Acupuncture', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Dental', short_name: 'dental', description: 'Dental', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Homeless services', short_name: 'homeless_services', description: 'Homeless services', impact_category: impact_categories[0]),
-        Impact.create!(name: 'Social workers', short_name: 'social_workers', description: 'Social workers', impact_category: impact_categories[0]),
-        Impact.create!(name: 'None', short_name: 'none', description: 'No clinical impact', impact_category: impact_categories[0]),
+        Category.create!(name: 'Allergy and Immunology', short_name: 'allergy_and_immunology', description: 'Allergy and Immunology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Cardiology', short_name: 'cardiology', description: 'Cardiology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Critical Care (ICU)', short_name: 'icu', description: 'Critical Care (ICU)', parent_category: impact_categories[0]),
+        Category.create!(name: 'Dermatology', short_name: 'dermatology', description: 'Dermatology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Endocrinology', short_name: 'endocrinology', description: 'Endocrinology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Hematology', short_name: 'hematology', description: 'Hematology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Infectious Disease', short_name: 'infectious_disease', description: 'Infectious Disease', parent_category: impact_categories[0]),
+        Category.create!(name: 'Mental Health / Psychiatry', short_name: 'mental_health_psychiatry', description: 'Mental Health / Psychiatry', parent_category: impact_categories[0]),
+        Category.create!(name: 'Neurology', short_name: 'neurology', description: 'Neurology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Obstetrics & Gynecology', short_name: 'obstetrics_gynecology', description: 'Obstetrics & Gynecology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Oncology', short_name: 'oncology', description: 'Oncology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Ophthalmology', short_name: 'ophthalmology', description: 'Ophthalmology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Orthopedic Surgery', short_name: 'orthopedic_surgery', description: 'Orthopedic Surgery', parent_category: impact_categories[0]),
+        Category.create!(name: 'Otolaryngology (ENT)', short_name: 'ent', description: 'Otolaryngology (ENT)', parent_category: impact_categories[0]),
+        Category.create!(name: 'Pathology', short_name: 'pathology', description: 'Pathology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Pediatrics', short_name: 'pediatrics', description: 'Pediatrics', parent_category: impact_categories[0]),
+        Category.create!(name: 'Primary Care / Preventive Medicine', short_name: 'primary_care_preventive_medicine', description: 'Primary Care / Preventive Medicine', parent_category: impact_categories[0]),
+        Category.create!(name: 'Pulmonology / Respiratory', short_name: 'pulmonology_respiratory', description: 'Pulmonology / Respiratory', parent_category: impact_categories[0]),
+        Category.create!(name: 'Rehab Medicine', short_name: 'rehab_medicine', description: 'Rehab Medicine', parent_category: impact_categories[0]),
+        Category.create!(name: 'Renal / Nephrology', short_name: 'renal_nephrology', description: 'Renal / Nephrology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Rheumatology', short_name: 'rheumatology', description: 'Rheumatology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Specialty Care (outside of VA)', short_name: 'specialty_care_outside_of_va)', description: 'Specialty Care (outside of VA)', parent_category: impact_categories[0]),
+        Category.create!(name: 'Surgery', short_name: 'surgery', description: 'Surgery', parent_category: impact_categories[0]),
+        Category.create!(name: 'Toxicology', short_name: 'toxicology', description: 'Toxicology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Urology', short_name: 'urology', description: 'Urology', parent_category: impact_categories[0]),
+        Category.create!(name: 'Prosthetics and Rehabilitation', short_name: 'prosthetics_and_rehabilitation', description: 'Prosthetics and Rehabilitation', parent_category: impact_categories[0]),
+        Category.create!(name: 'Alternative Therapies', short_name: 'alternative_therapies', description: 'Alternative Therapies', parent_category: impact_categories[0]),
+        Category.create!(name: 'Massage', short_name: 'massage', description: 'Massage', parent_category: impact_categories[0]),
+        Category.create!(name: 'Herbal Remedies', short_name: 'herbal_remedies', description: 'Herbal Remedies', parent_category: impact_categories[0]),
+        Category.create!(name: 'Acupuncture', short_name: 'acupuncture', description: 'Acupuncture', parent_category: impact_categories[0]),
+        Category.create!(name: 'Dental', short_name: 'dental', description: 'Dental', parent_category: impact_categories[0]),
+        Category.create!(name: 'Homeless services', short_name: 'homeless_services', description: 'Homeless services', parent_category: impact_categories[0]),
+        Category.create!(name: 'Social workers', short_name: 'social_workers', description: 'Social workers', parent_category: impact_categories[0]),
+        Category.create!(name: 'None', short_name: 'none', description: 'No clinical impact', parent_category: impact_categories[0]),
     ]
 
     operational_impacts = [
-        Impact.create!(name: 'Administration', short_name: 'administration', description: 'Administration', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Billing', short_name: 'billing', description: 'Billing', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Biomed', short_name: 'biomed', description: 'Biomed', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Building Management', short_name: 'building_management', description: 'Building Management', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Education and Training', short_name: 'education_and_training', description: 'Education and Training', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Food Service', short_name: 'food_service', description: 'Food Service', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Human Resources', short_name: 'human_resources', description: 'Human Resources', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Information Technology', short_name: 'information_technology', description: 'Information Technology', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Logistics', short_name: 'logistics', description: 'Logistics', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Maintenance', short_name: 'maintenance', description: 'Maintenance', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Marketing', short_name: 'marketing', description: 'Marketing', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Medical Records', short_name: 'medical_records', description: 'Medical Records', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Occupational Health', short_name: 'occupational_health', description: 'Occupational Health', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Quality Control', short_name: 'quality_control', description: 'Quality Control', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Risk Management', short_name: 'risk_management', description: 'Risk Management', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Social Services', short_name: 'social_services', description: 'Social Services', impact_category: impact_categories[1]),
-        Impact.create!(name: 'Contracting & Purchasing', short_name: 'contracting_purchasing', description: 'Contracting & Purchasing', impact_category: impact_categories[1]),
-        Impact.create!(name: 'None', short_name: 'none', description: 'No clinical impact', impact_category: impact_categories[1]),
+        Category.create!(name: 'Administration', short_name: 'administration', description: 'Administration', parent_category: impact_categories[1]),
+        Category.create!(name: 'Billing', short_name: 'billing', description: 'Billing', parent_category: impact_categories[1]),
+        Category.create!(name: 'Biomed', short_name: 'biomed', description: 'Biomed', parent_category: impact_categories[1]),
+        Category.create!(name: 'Building Management', short_name: 'building_management', description: 'Building Management', parent_category: impact_categories[1]),
+        Category.create!(name: 'Education and Training', short_name: 'education_and_training', description: 'Education and Training', parent_category: impact_categories[1]),
+        Category.create!(name: 'Food Service', short_name: 'food_service', description: 'Food Service', parent_category: impact_categories[1]),
+        Category.create!(name: 'Human Resources', short_name: 'human_resources', description: 'Human Resources', parent_category: impact_categories[1]),
+        Category.create!(name: 'Information Technology', short_name: 'information_technology', description: 'Information Technology', parent_category: impact_categories[1]),
+        Category.create!(name: 'Logistics', short_name: 'logistics', description: 'Logistics', parent_category: impact_categories[1]),
+        Category.create!(name: 'Maintenance', short_name: 'maintenance', description: 'Maintenance', parent_category: impact_categories[1]),
+        Category.create!(name: 'Marketing', short_name: 'marketing', description: 'Marketing', parent_category: impact_categories[1]),
+        Category.create!(name: 'Medical Records', short_name: 'medical_records', description: 'Medical Records', parent_category: impact_categories[1]),
+        Category.create!(name: 'Occupational Health', short_name: 'occupational_health', description: 'Occupational Health', parent_category: impact_categories[1]),
+        Category.create!(name: 'Quality Control', short_name: 'quality_control', description: 'Quality Control', parent_category: impact_categories[1]),
+        Category.create!(name: 'Risk Management', short_name: 'risk_management', description: 'Risk Management', parent_category: impact_categories[1]),
+        Category.create!(name: 'Social Services', short_name: 'social_services', description: 'Social Services', parent_category: impact_categories[1]),
+        Category.create!(name: 'Contracting & Purchasing', short_name: 'contracting_purchasing', description: 'Contracting & Purchasing', parent_category: impact_categories[1]),
+        Category.create!(name: 'None', short_name: 'none', description: 'No clinical impact', parent_category: impact_categories[1]),
     ]
   end
 
@@ -223,637 +197,72 @@ if StrategicSponsor.all.blank?
     ]
   end
 
+  unless PracticeManagement.all.present?
+    area_of_affects = [
+        PracticeManagement.create!(name: 'Wait time to be seen'),
+        PracticeManagement.create!(name: 'Doctor to patient time'),
+        PracticeManagement.create!(name: 'Throughput'),
+        PracticeManagement.create!(name: 'Discharge process'),
+        PracticeManagement.create!(name: 'Discharge planning'),
+        PracticeManagement.create!(name: 'Patient satisfaction'),
+        PracticeManagement.create!(name: 'Provider/Staff retention'),
+        PracticeManagement.create!(name: 'Provider/Staff satisfaction'),
+        PracticeManagement.create!(name: 'Efficiency'),
+        PracticeManagement.create!(name: 'Cost avoidance'),
+        PracticeManagement.create!(name: 'Management'),
+        PracticeManagement.create!(name: 'None')
+    ]
+  end
+
+  unless Department.all.present?
+    departments = [
+        Department.create!(name: 'Admissions', short_name: 'admissions'),
+        Department.create!(name: 'Anesthetics', short_name: 'anesthetics'),
+        Department.create!(name: 'Center Supply', short_name: 'center_supply'),
+        Department.create!(name: 'Chaplaincy', short_name: 'chaplaincy'),
+        Department.create!(name: 'Coronary Care Unit', short_name: 'coronary_care_unit'),
+        Department.create!(name: 'Critical Care', short_name: 'critical_care'),
+        Department.create!(name: 'Diagnostic Imaging/X-ray/Radiology', short_name: 'diagnostic _imaging_x-ray_Radiology'),
+        Department.create!(name: 'Discharge Planning', short_name: 'discharge_planning'),
+        Department.create!(name: 'Elderly Services', short_name: 'elderly_services'),
+        Department.create!(name: 'Emergency Services', short_name: 'emergency_services'),
+        Department.create!(name: 'Finance Department', short_name: 'finance_department'),
+        Department.create!(name: 'House Keeping', short_name: 'house_keeping'),
+        Department.create!(name: 'Security', short_name: 'security'),
+        Department.create!(name: 'Laundry', short_name: 'laundry'),
+        Department.create!(name: 'Parking', short_name: 'parking'),
+        Department.create!(name: 'General Surgery', short_name: 'general_surgery'),
+        Department.create!(name: 'Occupational Health and Safety', short_name: 'occupational_health_and_safety'),
+        Department.create!(name: 'Intensive Care Unit', short_name: 'intensive_care_unit'),
+        Department.create!(name: 'Human Resources', short_name: 'human_resources'),
+        Department.create!(name: 'Infection Control', short_name: 'infection_control'),
+        Department.create!(name: 'Information Management', short_name: 'information_management'),
+        Department.create!(name: 'Maternity', short_name: 'maternity'),
+        Department.create!(name: 'Medical Records', short_name: 'medical_records'),
+        Department.create!(name: 'Microbiology', short_name: 'microbiology'),
+        Department.create!(name: 'Nutrition and Dietetics', short_name: 'nutrition_and_dietetics'),
+        Department.create!(name: 'Patient Accounts', short_name: 'patient_accounts'),
+        Department.create!(name: 'Patient Services', short_name: 'patient_services'),
+        Department.create!(name: 'Pharmacy', short_name: 'pharmacy'),
+        Department.create!(name: 'Physiotherapy', short_name: 'physiotherapy'),
+        Department.create!(name: 'Purchasing and Supplies', short_name: 'purchasing_and_supplies'),
+        Department.create!(name: 'Radiology', short_name: 'radiology'),
+        Department.create!(name: 'Radiotherapy', short_name: 'radiotherapy'),
+        Department.create!(name: 'Social Work', short_name: 'social_work'),
+        Department.create!(name: 'None', short_name: 'none'),
+    ]
+  end
+
   ### USERS ###
   User.create!(email: 'demo@va.gov', password: 'Demo#123', password_confirmation: 'Demo#123', skip_va_validation: true, confirmed_at: Time.now)
   User.create!(email: 'tom@skylight.digital', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now).add_role(User::USER_ROLES[1].to_sym)
   User.create!(email: 'aurora.hay@agile6.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now).add_role(User::USER_ROLES[1].to_sym)
   User.create!(email: 'jake.holzhauer@agile6.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now).add_role(User::USER_ROLES[1].to_sym)
+  User.create!(email: 'jackson.wilke@agile6.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now).add_role(User::USER_ROLES[1].to_sym)
   User::USER_ROLES.each_with_index do |role, index|
     User.create!(email: "A6test#{index}@agile6.com", password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now).add_role(User::USER_ROLES[index].to_sym)
   end
 
-  unless Practice.all.present?
-    ############################################################################################################
-    ############################################################################################################
-    #############
-    # FLOW3     #
-    #############
-    flow3_image_path = "#{Rails.root}/db/seed_images/practices/flow3/flow3.jpg"
-    flow3_image_file = File.new(flow3_image_path)
-
-    flow3_origin_image_path = "#{Rails.root}/db/seed_images/practices/flow3/origins/flow3_heckman.png"
-    flow3_origin_image_file = File.new(flow3_origin_image_path)
-
-    flow3 = Practice.create!(
-        name: 'FLOW3',
-        short_name: 'flow3',
-        tagline: 'Delivery of prosthetic limbs to Veterans in less than ½ the time',
-        gold_status_tagline: 'has saved over 1000 lives \n by helping to prevent suicide',
-        description: 'Enable 53% faster delivery of prosthetic limbs to Veterans. Automating the prosthetic limb procurement process to improve continuity of care for Veterans.',
-        summary: 'FLOW3 is a system of three interrelated software platforms that automate, standardize, and provide transparency into the limb acquisition process. FLOW3 begins in-clinic with physician entry of a prosthesis prescription using the FLOW Consult Templates. The order then moves to the prosthetist, who enters the appropriate codes using the Consult Comment Tool. Then, purchasing agents use the Web-based App to generate the quote for force entry, which contracting staff can access the very next day.',
-        date_initiated: DateTime.now,
-        vha_visn: 'Not Applicable',
-        medical_center: 'Puget Sound Medical Center',
-        initiating_facility: 'Puget Sound Medical Center',
-        number_adopted: 10,
-        cboc: 'Not Applicable',
-        impact_veteran_experience: 'Reduces wait time for Prosthetic limbs by more than half',
-        impact_veteran_satisfaction: 'Improved communication, patient engagement and continuity of care.  More Veterans are returning to clinic, excited to receive their prosthetic limbs.',
-        impact_other_veteran_experience: 'Greater transparency and accuracy with data mining related to: Prosthetics, Veterans with Limb Loss, Current VA Services and need for new ones.',
-        impact_financial_estimate_saved: '52% improvement in timeliness of delivery of prosthetic limbs',
-        impact_financial_per_veteran: '1000 Veterans impacted',
-        impact_financial_roi: '1000 Veterans received Prosthetic Limbs in less than half the time',
-        business_case_summary: 'FLOW3 offers a faster process from prescription to purchase order to prosthetic limb delivery.  The System improves communication, patient engagement and continuity of care.  It provides greater data transparency and accuracy with data mining.',
-        impact_financial_other: 'Time based Metrics + # of Veterans impacted.',
-        phase_gate: 'Initial Diffusion',
-        successful_implementation: '1 additional VISN and 7 Regional Amputee Clinics (RACs), Appx 8000 patients impacted',
-        target_measures: 'FLOW3 Dashboard shows implementation phases of readiness and completion for all sites',
-        target_success: '2',
-        implementation_time_estimate: '3 months',
-        support_network_email: 'FLOW3@va.gov',
-        va_pulse_link: 'https://www.vapulse.net/groups/flow3',
-        main_display_image: ActionDispatch::Http::UploadedFile.new(
-            filename: File.basename(flow3_image_file),
-            tempfile: flow3_image_file,
-            # detect the image's mime type with MIME if you can't provide it yourself.
-            type: MIME::Types.type_for(flow3_image_path).first.content_type
-        ),
-        cost_savings_aggregate: 2,
-        cost_to_implement_aggregate: 1,
-        difficulty_aggregate: 1,
-        veteran_satisfaction_aggregate: 4,
-        risk_level_aggregate: 1,
-        origin_title: 'Innovation - Dr Jeffrey Heckman',
-        origin_story: 'Dr. Jeffrey Heckman, a physician in the VA Puget Sound Health Care System, treated many Veterans frustrated by the lengthy process of receiving their prosthetic limbs. Motivated by one such Veteran, who offered his own technical services to improve the process, Dr. Heckman gathered a team, consisting of prosthetist Wayne Biggs and data system expert Jeffrey Bott, to overhaul and automate the prosthetic limb acquisition process. The result was a system of three interrelated software platforms, known as FLOW3, that streamlines and provides transparency into the acquisition flow. After successful implementation at Puget Sound, the team spread their innovation through the Diffusion of Excellence program, beginning with a partnership with Dawn Schwarten at the Milwaukee VA Medical Center and ultimately rolling FLOW3 out across VISN 12.',
-        origin_picture: ActionDispatch::Http::UploadedFile.new(
-            filename: File.basename(flow3_origin_image_file),
-            tempfile: flow3_origin_image_file,
-            # detect the image's mime type with MIME if you can't provide it yourself.
-            type: MIME::Types.type_for(flow3_origin_image_path).first.content_type
-        ),
-        published: true,
-        approved: true
-    )
-
-    flow3_strategic_sponsors = [
-        StrategicSponsorPractice.create!(practice: flow3, strategic_sponsor: sponsors[1]),
-        StrategicSponsorPractice.create!(practice: flow3, strategic_sponsor: sponsors[7]),
-    ]
-
-    flow3_team_image_path = "#{Rails.root}/db/seed_images/practices/flow3/team"
-    flow3_team_heckman_image_path = "#{flow3_team_image_path}/heckman_jeff.jpg"
-    flow3_team_heckman_image_file = File.new("#{flow3_team_heckman_image_path}")
-    flow3_team_bott_image_path = "#{flow3_team_image_path}/bott_jeffrey.jpg"
-    flow3_team_bott_image_file = File.new(flow3_team_bott_image_path)
-    flow3_team_stevenson_image_path = "#{flow3_team_image_path}/stevenson_brian.jpg"
-    flow3_team_stevenson_image_file = File.new(flow3_team_stevenson_image_path)
-    flow3_team_biggs_path = "#{flow3_team_image_path}/biggs_wayne.jpg"
-    flow3_team_biggs_image_file = File.new(flow3_team_biggs_path)
-
-    flow3_va_employees = [
-        VaEmployee.create!(
-            name: 'Dr. Jeffrey T. Heckman',
-            job_title: 'DO, Medical Director, Regional Amputation Center – Seattle, VA Puget Sound Health Care System; Associate Professor, Department of Rehabilitation Medicine, University of Washington School of Medicine',
-            role: 'Clinical Lead and Gold Status Fellow',
-            prefix: 'Dr.',
-            email: 'jeffrey.heckman@va.gov',
-            avatar: ActionDispatch::Http::UploadedFile.new(
-                filename: File.basename(flow3_team_heckman_image_file),
-                tempfile: flow3_team_heckman_image_file,
-                # detect the image's mime type with MIME if you can't provide it yourself.
-                type: MIME::Types.type_for(flow3_team_heckman_image_path).first.content_type
-            )
-        ),
-        VaEmployee.create!(
-            name: 'Jeff Bott',
-            job_title: 'Management & Program Analyst',
-            role: 'Technical Lead',
-            prefix: 'Mr.',
-            email: 'jeff.bott@va.gov',
-            avatar: ActionDispatch::Http::UploadedFile.new(
-                filename: File.basename(flow3_team_bott_image_file),
-                tempfile: flow3_team_bott_image_file,
-                # detect the image's mime type with MIME if you can't provide it yourself.
-                type: MIME::Types.type_for(flow3_team_bott_image_path).first.content_type
-            )
-        ),
-        VaEmployee.create!(
-            name: 'Wayne Biggs',
-            job_title: 'Prosthetist Orthotist Regional Clinical Director – Seattle, VA Puget Sound Health Care System',
-            role: 'Coding and Template Lead',
-            prefix: 'Mr.',
-            email: 'wayne.biggs@va.gov',
-            avatar: ActionDispatch::Http::UploadedFile.new(
-                filename: File.basename(flow3_team_biggs_image_file),
-                tempfile: flow3_team_biggs_image_file,
-                # detect the image's mime type with MIME if you can't provide it yourself.
-                type: MIME::Types.type_for(flow3_team_biggs_path).first.content_type
-            )
-        ),
-        VaEmployee.create!(
-            name: 'Brian Stevenson',
-            job_title: 'Diffusion of Excellence',
-            role: 'Diffusion Specialist',
-            prefix: 'Mr.',
-            email: 'brian.stevenson@va.gov',
-            avatar: ActionDispatch::Http::UploadedFile.new(
-                filename: File.basename(flow3_team_stevenson_image_file),
-                tempfile: flow3_team_stevenson_image_file,
-                # detect the image's mime type with MIME if you can't provide it yourself.
-                type: MIME::Types.type_for(flow3_team_stevenson_image_path).first.content_type
-            )
-        )
-    ]
-
-    flow3_va_employees.each {|vae|
-      VaEmployeePractice.create!(va_employee: vae, practice: flow3)
-    }
-
-    flow3_developing_facilities = [
-        DevelopingFacilityTypePractice.create!(practice: flow3, developing_facility_type: developing_facilities[1]),
-        DevelopingFacilityTypePractice.create!(practice: flow3, developing_facility_type: developing_facilities[2]),
-    ]
-
-    flow3_va_secretary_priorities = [
-        VaSecretaryPriorityPractice.create!(practice: flow3, va_secretary_priority: va_secretary_priorities[1]),
-        VaSecretaryPriorityPractice.create!(practice: flow3, va_secretary_priority: va_secretary_priorities[2]),
-        VaSecretaryPriorityPractice.create!(practice: flow3, va_secretary_priority: va_secretary_priorities[3]),
-    ]
-
-    flow3_clinical_impacts = [
-        ImpactPractice.create!(practice: flow3, impact: clinical_impacts.find {|ci| ci.name == 'Rehab Medicine'}),
-        ImpactPractice.create!(practice: flow3, impact: clinical_impacts.find {|ci| ci.name == 'Prosthetics and Rehabilitation'}),
-    ]
-
-    flow3_clinical_conditions = [
-        ClinicalConditionPractice.create!(practice: flow3, clinical_condition: clinical_conditions.find {|cc| cc.name == 'Prosthetic Limbs'}),
-        ClinicalConditionPractice.create!(practice: flow3, clinical_condition: clinical_conditions.find {|cc| cc.name == 'Sensory Aids'}),
-        ClinicalConditionPractice.create!(practice: flow3, clinical_condition: clinical_conditions.find {|cc| cc.name == 'Amputation'}),
-    ]
-
-    flow3_operational_impacts = [
-        ImpactPractice.create!(practice: flow3, impact: operational_impacts.find {|oi| oi.name == 'Administration'}),
-        ImpactPractice.create!(practice: flow3, impact: operational_impacts.find {|oi| oi.name == 'Billing'}),
-        ImpactPractice.create!(practice: flow3, impact: operational_impacts.find {|oi| oi.name == 'Education and Training'}),
-        ImpactPractice.create!(practice: flow3, impact: operational_impacts.find {|oi| oi.name == 'Information Technology'}),
-        ImpactPractice.create!(practice: flow3, impact: operational_impacts.find {|oi| oi.name == 'Logistics'}),
-        ImpactPractice.create!(practice: flow3, impact: operational_impacts.find {|oi| oi.name == 'Medical Records'}),
-        ImpactPractice.create!(practice: flow3, impact: operational_impacts.find {|oi| oi.name == 'Contracting & Purchasing'}),
-    ]
-
-    flow3_job_titles = [
-        JobPositionPractice.create!(practice: flow3, job_position: job_positions.find {|jp| jp.name == 'Clinic based physician'}),
-        JobPositionPractice.create!(practice: flow3, job_position: job_positions.find {|jp| jp.name == 'Prosthetist'}),
-        JobPositionPractice.create!(practice: flow3, job_position: job_positions.find {|jp| jp.name == 'Purchasing Agent'}),
-    ]
-
-    flow3_ancillary_services = [
-        AncillaryServicePractice.create!(practice: flow3, ancillary_service: ancillary_services.find {|as| as.name == 'Rehabilitation & Prosthetics'}),
-    ]
-
-    flow3_clinical_locations = [
-        ClinicalLocationPractice.create!(practice: flow3, clinical_location: clinical_locations.find {|cl| cl.name == 'Community Based Outpatient Clinic (CBOC)'}),
-        ClinicalLocationPractice.create!(practice: flow3, clinical_location: clinical_locations.find {|cl| cl.name == 'Inpatient Hospital'}),
-        ClinicalLocationPractice.create!(practice: flow3, clinical_location: clinical_locations.find {|cl| cl.name == 'Outpatient Surgery Center'}),
-    ]
-
-    flow3_risk_mitigations = [
-        RiskMitigation.create!(practice: flow3)
-    ]
-    flow3_risks = [
-        Risk.create!(description: 'If FLOW3 champions do not allocate sufficient time to training their site the implementation process will be slow and time savings will not be achieved.', risk_mitigation: flow3_risk_mitigations[0]),
-    ]
-    flow3_mitigations = [
-        Mitigation.create!(description: 'Support Champions with a pre-implementation readiness checklist to help identify pitfalls in their planning.', risk_mitigation: flow3_risk_mitigations[0]),
-        Mitigation.create!(description: ' Empower and Support Champions with official training materials.', risk_mitigation: flow3_risk_mitigations[0]),
-    ]
-
-    flow3_publications = [
-        Publication.create!(practice: flow3, title: 'OIG Inspection')
-    ]
-
-    flow3_badges = [
-        BadgePractice.create!(practice: flow3, badge: badges.find {|b| b.name == 'VISN 1'}),
-        BadgePractice.create!(practice: flow3, badge: badges.find {|b| b.name == 'Diffusion of Excellence'}),
-        BadgePractice.create!(practice: flow3, badge: badges.find {|b| b.name == 'Shark Tank Approved'}),
-        BadgePractice.create!(practice: flow3, badge: badges.find {|b| b.name == 'Gold Status'}),
-        BadgePractice.create!(practice: flow3, badge: badges.find {|b| b.name == 'Authority to Operate (ATO)'}),
-    ]
-
-    flow3_costs = [
-        Cost.create!(practice: flow3, description: 'Minimal FTE'),
-        Cost.create!(practice: flow3, description: 'Minimal Sustainment Cost')
-    ]
-
-    flow3_difficulties = [
-        Difficulty.create!(practice: flow3, description: 'Champion training: 30 days'),
-        Difficulty.create!(practice: flow3, description: 'Oversee staff training: 60 days')
-    ]
-
-    ############################################################################################################
-    ############################################################################################################
-    #############
-    # Naloxone  #
-    #############
-    naloxone_image_path = "#{Rails.root}/db/seed_images/practices/naloxone/naloxone.jpg"
-    naloxone_image_file = File.new(naloxone_image_path)
-
-    naloxone_origin_image_path = "#{Rails.root}/db/seed_images/practices/naloxone/origins/naloxone_bellino.png"
-    naloxone_origin_image_file = File.new(naloxone_origin_image_path)
-
-    naloxone = Practice.create!(
-        name: 'VHA Rapid Naloxone',
-        short_name: 'vha_rapid_naloxone',
-        tagline: 'Rapid naloxone',
-        gold_status_tagline: 'saved 358 lives \n by improving access to life-saving naloxone',
-        description: 'A safety belt in case of an overdose and saves the lives of our Veterans',
-        summary: 'The VHA Rapid Naloxone Initiative acts as a safety belt in case of an overdose and saves the lives of our Veterans which creates a safer environment around the veteran on VA campuses. Since the adoption of at least one element in the Initiative within at least 43 facilities, there have been at least 44 successful overdose reversals within FY2018. The Initiative’s plan to spread across the nation has the potential to drastically increase the number of successful reversals within FY2019, improving patient safety across the VA.
-
-The Initiative has a significant impact on the patient safety within VA medical facilities and patient experience. First responders have testified about the positive impact of the Initiative and the role it played in saving their lives and creating a safer environment. One such rescue was a 27-year-old male Veteran who experienced an overdose at a Substance Abuse Residential Rehabilitation Treatment Program (SARRTP), which is located on hospital grounds but some distance from the main building. Because of the availability of naloxone in the AED cabinet, the initial dose was administered to the Veteran before VA police arrived on the scene. The Veteran survived the overdose and was transported to the Critical Care Unit (CCU) for further treatment. Without the quick access of naloxone, this Veteran could have lost his life. His story, as well as many other many Veteran overdose survival stories, has pushed this Initiative into the national spotlight and sparked a flame for action to implement around the nation. ',
-        date_initiated: DateTime.strptime('1/1/2016', '%m/%d/%Y'),
-        vha_visn: 'VISN 1',
-        initiating_facility: 'Boston Health Care System',
-        number_adopted: 50,
-        medical_center: 'Boston HCS',
-        cboc: 'Not Applicable',
-        impact_veteran_experience: '',
-        impact_veteran_satisfaction: '',
-        impact_other_veteran_experience: 'saves lives',
-        impact_financial_estimate_saved: '0',
-        impact_financial_per_veteran: '0',
-        impact_financial_roi: '0',
-        business_case_summary: 'Veterans are twice as likely to die from opioid overdoses and these overdoses are occurring at VAMCs where naloxone is infrequently available. Equipping AED cabinets and VA police with naloxone to provide naloxone quickly will save lives.',
-        impact_financial_other: 'Time based Metrics + # of Veterans impacted.',
-        phase_gate: 'National Diffusion',
-        successful_implementation: 'Implementation in 168 facilities',
-        target_measures: 'self reports',
-        target_success: '148',
-        implementation_time_estimate: '4-6 months',
-        support_network_email: 'vharapidnalocone@va.gov',
-        va_pulse_link: 'https://www.vapulse.net/groups/naloxone',
-        main_display_image: ActionDispatch::Http::UploadedFile.new(
-            filename: File.basename(naloxone_image_file),
-            tempfile: naloxone_image_file,
-            # detect the image's mime type with MIME if you can't provide it yourself.
-            type: MIME::Types.type_for(naloxone_image_path).first.content_type
-        ),
-        cost_savings_aggregate: 1,
-        cost_to_implement_aggregate: 1,
-        difficulty_aggregate: 1,
-        veteran_satisfaction_aggregate: 4,
-        risk_level_aggregate: 1,
-        origin_title: 'Innovation - Pamela Bellino',
-        origin_story: 'Begun by Pamela Bellino, Patient Safety Manager at the VA Boston Healthcare System, the Opioid Overdose Reversal Program is a practice to increase the availability of IN naloxone to prevent overdose fatalities among Veterans at VA facilities. The program increases the likelihood of preventing these fatalities by equipping AED cabinets, VA police officers, and at-risk patients with naloxone. After successfully piloting the practice at the VA Boston Healthcare System, facilitated implementation of the innovation began in VISN 8 through the Diffusion of Excellence initiative.',
-        origin_picture: ActionDispatch::Http::UploadedFile.new(
-            filename: File.basename(naloxone_origin_image_file),
-            tempfile: naloxone_origin_image_file,
-            # detect the image's mime type with MIME if you can't provide it yourself.
-            type: MIME::Types.type_for(naloxone_origin_image_path).first.content_type
-        ),
-        published: true,
-        approved: true
-    )
-
-    naloxone_strategic_sponsors = [
-        StrategicSponsorPractice.create!(practice: naloxone, strategic_sponsor: sponsors.find {|s| s.name == 'Office of Mental Health and Suicide Prevention (OMHSP)'}),
-        StrategicSponsorPractice.create!(practice: naloxone, strategic_sponsor: sponsors.find {|s| s.name == 'National Opioid Overdose Education Naloxone Distribution (OEND) Program Office'}),
-        StrategicSponsorPractice.create!(practice: naloxone, strategic_sponsor: sponsors.find {|s| s.name == 'Academic Detailing Service'}),
-        StrategicSponsorPractice.create!(practice: naloxone, strategic_sponsor: sponsors.find {|s| s.name == 'National Center for Patient Safety (NCPS)'}),
-        StrategicSponsorPractice.create!(practice: naloxone, strategic_sponsor: sponsors.find {|s| s.name == 'VA Police'}),
-    ]
-
-    naloxone_team_image_path = "#{Rails.root}/db/seed_images/practices/naloxone/team"
-    naloxone_team_bellino_image_path = "#{naloxone_team_image_path}/bellino.png"
-    naloxone_team_bellino_image_file = File.new("#{naloxone_team_bellino_image_path}")
-    naloxone_team_olivia_image_path = "#{naloxone_team_image_path}/olivia.jpeg"
-    naloxone_team_olivia_image_file = File.new(naloxone_team_olivia_image_path)
-    naloxone_team_burkhardt_image_path = "#{naloxone_team_image_path}/burkhardt.jpeg"
-    naloxone_team_burkdart_image_file = File.new(naloxone_team_burkhardt_image_path)
-    naloxone_team_brick_image_path = "#{naloxone_team_image_path}/brick.jpeg"
-    naloxone_team_brick_image_file = File.new(naloxone_team_brick_image_path)
-
-    # TODO: find Carl McCoy!
-    # naloxone_team_mccoy_path = "#{naloxone_team_image_path}/mccoy.jpg"
-    # naloxone_team_mccoy_image_file = File.new(naloxone_team_mccoy_path)
-
-    naloxone_va_employees = [
-        VaEmployee.create!(
-            name: 'Pam Bellino',
-            job_title: 'Safety Manager VA Boston',
-            role: 'Founder, Gold Status Fellow, Safety Manager VA Boston',
-            email: 'pam.bellino@va.gov',
-            avatar: ActionDispatch::Http::UploadedFile.new(
-                filename: File.basename(naloxone_team_bellino_image_file),
-                tempfile: naloxone_team_bellino_image_file,
-                # detect the image's mime type with MIME if you can't provide it yourself.
-                type: MIME::Types.type_for(naloxone_team_bellino_image_path).first.content_type
-            )
-        ),
-        VaEmployee.create!(
-            name: 'Dr. Elizabeth Oliva',
-            job_title: 'National OEND Coordinator',
-            role: 'National OEND Coordinator',
-            email: 'elizabeth.oliva@va.gov',
-            avatar: ActionDispatch::Http::UploadedFile.new(
-                filename: File.basename(naloxone_team_olivia_image_file),
-                tempfile: naloxone_team_olivia_image_file,
-                # detect the image's mime type with MIME if you can't provide it yourself.
-                type: MIME::Types.type_for(naloxone_team_olivia_image_path).first.content_type
-            )
-        ),
-        VaEmployee.create!(
-            name: 'Mary Burkhardt',
-            job_title: 'Pharmacy Executive, National Center for Patient Safety',
-            role: 'Pharmacy Executive, National Center for Patient Safety',
-            email: 'mary.burkhardt@va.gov',
-            avatar: ActionDispatch::Http::UploadedFile.new(
-                filename: File.basename(naloxone_team_burkdart_image_file),
-                tempfile: naloxone_team_burkdart_image_file,
-                # detect the image's mime type with MIME if you can't provide it yourself.
-                type: MIME::Types.type_for(naloxone_team_burkhardt_image_path).first.content_type
-            )
-        ),
-        VaEmployee.create!(
-            name: 'Carl McCoy',
-            job_title: 'Diffusion Specialist',
-            role: 'Diffusion Specialist',
-            email: 'carl.mccoy@va.gov'
-        ),
-        VaEmployee.create!(
-            name: 'Mollie Brick',
-            job_title: 'Senior Consultant (Atlas)',
-            role: 'Senior Consultant (Atlas)',
-            email: 'mollie.brick@va.gov',
-            avatar: ActionDispatch::Http::UploadedFile.new(
-                filename: File.basename(naloxone_team_brick_image_file),
-                tempfile: naloxone_team_brick_image_file,
-                # detect the image's mime type with MIME if you can't provide it yourself.
-                type: MIME::Types.type_for(naloxone_team_brick_image_path).first.content_type
-            )
-        ),
-    ]
-
-    naloxone_va_employees.each {|vae|
-      VaEmployeePractice.create!(va_employee: vae, practice: naloxone)
-    }
-
-    naloxone_developing_facilities = [
-        DevelopingFacilityTypePractice.create!(practice: naloxone, developing_facility_type: developing_facilities[1]),
-    ]
-
-    naloxone_va_secretary_priorities = [
-        VaSecretaryPriorityPractice.create!(practice: naloxone, va_secretary_priority: va_secretary_priorities[2]),
-    ]
-
-    naloxone_clinical_impacts = [
-        ImpactPractice.create!(practice: naloxone, impact: clinical_impacts.find {|ci| ci.name == 'Mental Health / Psychiatry'}),
-        ImpactPractice.create!(practice: naloxone, impact: clinical_impacts.find {|ci| ci.name == 'Primary Care / Preventive Medicine'}),
-        ImpactPractice.create!(practice: naloxone, impact: clinical_impacts.find {|ci| ci.name == 'Homeless services'}),
-        ImpactPractice.create!(practice: naloxone, impact: clinical_impacts.find {|ci| ci.name == 'Social workers'}),
-    ]
-
-    naloxone_clinical_conditions = [
-        ClinicalConditionPractice.create!(practice: naloxone, clinical_condition: clinical_conditions.find {|cc| cc.name == 'Chronic Pain'}),
-        ClinicalConditionPractice.create!(practice: naloxone, clinical_condition: clinical_conditions.find {|cc| cc.name == 'Addiction'}),
-        ClinicalConditionPractice.create!(practice: naloxone, clinical_condition: clinical_conditions.find {|cc| cc.name == 'Accidental overdose'}),
-    ]
-
-    naloxone_operational_impacts = [
-        ImpactPractice.create!(practice: naloxone, impact: operational_impacts.find {|oi| oi.name == 'Education and Training'}),
-        ImpactPractice.create!(practice: naloxone, impact: operational_impacts.find {|oi| oi.name == 'Social Services'}),
-    ]
-
-    naloxone_job_titles = [
-        JobPositionPractice.create!(practice: naloxone, job_position: job_positions.find {|jp| jp.name == 'Clinic based nurse'}),
-        JobPositionPractice.create!(practice: naloxone, job_position: job_positions.find {|jp| jp.name == 'Clinic based physician'}),
-        JobPositionPractice.create!(practice: naloxone, job_position: job_positions.find {|jp| jp.name == 'Hospital based nurse'}),
-        JobPositionPractice.create!(practice: naloxone, job_position: job_positions.find {|jp| jp.name == 'Hospital based physician'}),
-        JobPositionPractice.create!(practice: naloxone, job_position: job_positions.find {|jp| jp.name == 'Nursing Assistant'}),
-        JobPositionPractice.create!(practice: naloxone, job_position: job_positions.find {|jp| jp.name == 'Pharmacist'}),
-        JobPositionPractice.create!(practice: naloxone, job_position: job_positions.find {|jp| jp.name == 'Pharmacy Tech'}),
-    ]
-
-    naloxone_ancillary_services = [
-        AncillaryServicePractice.create!(practice: naloxone, ancillary_service: ancillary_services.find {|as| as.name == 'Pharmacy'}),
-        AncillaryServicePractice.create!(practice: naloxone, ancillary_service: ancillary_services.find {|as| as.name == 'Social Work'}),
-    ]
-
-    naloxone_clinical_locations = [
-        ClinicalLocationPractice.create!(practice: naloxone, clinical_location: clinical_locations.find {|cl| cl.name == 'Alcohol and Other Drug Abuse (AODA) treatment center'}),
-        ClinicalLocationPractice.create!(practice: naloxone, clinical_location: clinical_locations.find {|cl| cl.name == 'Assisted Living Facility'}),
-        ClinicalLocationPractice.create!(practice: naloxone, clinical_location: clinical_locations.find {|cl| cl.name == 'Community Based Outpatient Clinic (CBOC)'}),
-        ClinicalLocationPractice.create!(practice: naloxone, clinical_location: clinical_locations.find {|cl| cl.name == 'Community Living Centers (CLC)'}),
-        ClinicalLocationPractice.create!(practice: naloxone, clinical_location: clinical_locations.find {|cl| cl.name == 'Home Health'}),
-        ClinicalLocationPractice.create!(practice: naloxone, clinical_location: clinical_locations.find {|cl| cl.name == 'Inpatient Hospital'}),
-        ClinicalLocationPractice.create!(practice: naloxone, clinical_location: clinical_locations.find {|cl| cl.name == 'Outpatient Surgery Center'}),
-        ClinicalLocationPractice.create!(practice: naloxone, clinical_location: clinical_locations.find {|cl| cl.name == 'Pain Clinic'}),
-        ClinicalLocationPractice.create!(practice: naloxone, clinical_location: clinical_locations.find {|cl| cl.name == 'Skilled Nursing Facility (SNF)'}),
-    ]
-
-    naloxone_risk_mitigations = [
-        RiskMitigation.create!(practice: naloxone)
-    ]
-    naloxone_risks = [
-        Risk.create!(description: 'Leadership needs to choose to change policy.', risk_mitigation: naloxone_risk_mitigations[0]),
-    ]
-    naloxone_mitigations = [
-        Mitigation.create!(description: 'Example policies included in toolkit.', risk_mitigation: naloxone_risk_mitigations[0])
-    ]
-
-    naloxone_publications = [
-        # Publication.create!(practice: naloxone, title: 'OIG Inspection')
-    ]
-
-    naloxone_badges = [
-        BadgePractice.create!(practice: naloxone, badge: badges.find {|b| b.name == 'Diffusion of Excellence'}),
-        BadgePractice.create!(practice: naloxone, badge: badges.find {|b| b.name == 'Shark Tank Approved'}),
-        BadgePractice.create!(practice: naloxone, badge: badges.find {|b| b.name == 'Gold Status'}),
-    ]
-
-    naloxone_costs = [
-        Cost.create!(practice: naloxone, description: 'Minimal FTE'),
-        Cost.create!(practice: naloxone, description: 'Need to buy Naloxone for AED cabinets and police')
-    ]
-
-    naloxone_difficulties = [
-        Difficulty.create!(practice: naloxone, description: 'Minimal training'),
-        Difficulty.create!(practice: naloxone, description: '~4 months to completely implement'),
-    ]
-
-    ############################################################################################################
-    ############################################################################################################
-    #############
-    # HAPPEN  #
-    #############
-    happen_image_path = "#{Rails.root}/db/seed_images/practices/happen/happen.jpg"
-    happen_image_file = File.new(happen_image_path)
-
-    happen_origins_image_path = "#{Rails.root}/db/seed_images/practices/happen/origins/munro.jpg"
-    happen_origins_image_file = File.new(happen_origins_image_path)
-
-    happen = Practice.create!(
-        name: 'VA Project HAPPEN ',
-        short_name: 'va_project_happen',
-        summary: 'Hospital-acquired pneumonia (HAP) is a substantial health risk for patients during their hospital stays. Anywhere from 15-31% of patients who contract HAP die from the disease or related complications, like sepsis. Until now, prevention efforts have focused on ventilated patients due to their increased risk of contracting pneumonia, with non-ventilated patients largely overlooked.
-
-Poor oral hygiene increases the risk of HAP, with germs in the mouth rapidly multiplying and frequently aspirating into the lungs during sleep. Regular tooth brushing aids in removing these germs. By engaging Veterans in proper oral care practices, nurses teach the importance of good oral hygiene and its ability to reduce pneumonia rates and length of hospital stays. Project HAPPEN is a nurse-driven intervention; with nurses in charge of patient care, they must own and drive the practice. Garnering buy-in from nursing staff and nursing executives is essential. Tracking cases and sharing results demonstrate that oral care is not simply a comfort measure, but essential patient care.
-
-Project HAPPEN supports the Department’s Priorities by focusing on things that matter—in addition to reducing the risk of NV-HAP, Veterans feel better and see improvement in their quality of life; modernizing systems/processes with a focus on preventive care; and improving access and timeliness of service by reducing patient length of stays and freeing up bed space for other patients. Every facility that has implemented this practice has seen immediate drops in pneumonia rates (of at least 40-60%) and associated costs (an average of $40,000 per case), easily recouping oral care supply costs within three months. News media is paying attention, too, with word getting out through over 60 media outlets, including the Wall Street Journal.
-',
-        tagline: 'Prevent pneumonia',
-        gold_status_tagline: '- prevent non ventilator acquired pneumonia \n by engaging nursing staff to complete inpatient oral care',
-        description: 'Prevent non ventilator acquired pneumonia with better oral care',
-        date_initiated: DateTime.strptime('5/1/2016', '%m/%d/%Y'),
-        vha_visn: 'VISN 6',
-        initiating_facility: 'Salem VA Medical Center',
-        number_adopted: 2,
-        medical_center: 'Salem VA Medical Center',
-        cboc: 'Not Applicable',
-        impact_veteran_experience: '',
-        impact_veteran_satisfaction: 'Approximately 24 lives have been saved since implementing the Project Happen initiative',
-        impact_other_veteran_experience: 'Only 34.5% of veterans who develop NV-HAP (Non Ventilator Hospital Acquired Pneumonia) return home after admission impacting the quality of life of patients, their families, and the larger community.
-
-By working with engaged nurses to provide oral care to veterans, a 92% decrease in NV-HAP and a reduced cost of $40,000 per case was accomplished. ',
-        impact_financial_estimate_saved: '$5.46 million ',
-        impact_financial_per_veteran: '$40,000',
-        impact_financial_roi: '0',
-        business_case_summary: 'Regard dental care supplies:
-
-Pneumonia is a substantial health risk for patients during their hospital stay.
-The average cost of one case of NV-HAP is $40,000. Mortality rates for NV-HAP range from 18-30%. Procuring ADA approved, high-quality toothbrushes, toothpaste, and other oral hygiene supplies such as alcohol-free mouthwash, denture cleansers, and lip moisturizers is critical to successful inpatient oral care implementation. Average cost to the VA for oral care supplies is $3.00 per patient.  The inpatient oral care intervention in VISN 6 and Houston VAMC saved an estimated $5.462M and 24 Veteran lives (October 2016- September 2018).
-Oral care reduces the risk of developing pneumonia and lowers health care costs by avoiding long hospital stays.',
-        impact_financial_other: '',
-        phase_gate: 'National Diffusion',
-        successful_implementation: 'Implementation of HAPPEN in 40+ facilities in 2019. ',
-        target_measures: 'Zero cases on HV-HAP within hospital settings ',
-        target_success: '8',
-        implementation_time_estimate: '3 months',
-        support_network_email: 'VAHAPPEN@va.gov',
-        va_pulse_link: 'https://www.vapulse.net/groups/happen',
-        main_display_image: ActionDispatch::Http::UploadedFile.new(
-            filename: File.basename(happen_image_file),
-            tempfile: happen_image_file,
-            # detect the image's mime type with MIME if you can't provide it yourself.
-            type: MIME::Types.type_for(happen_image_path).first.content_type
-        ),
-        cost_savings_aggregate: 1,
-        cost_to_implement_aggregate: 1,
-        difficulty_aggregate: 1,
-        veteran_satisfaction_aggregate: 1,
-        risk_level_aggregate: 1,
-        origin_title: 'Innovation - About Shannon Munro, PhD, APRN, BC, FNP',
-        origin_story: 'When VA Nurse Researcher and Nurse Practitioner Dr. Shannon Munro learned from nursing professor and researcher Dr. Dian Baker about the dramatic reduction in non-ventilator hospital-acquired pneumonia (NV-HAP) through a simple, low-cost, low-risk intervention—brushing teeth—she decided to bring the practice to VA.
-
-Project HAPPEN started at the Salem VAMC (Salem, VA) and has been replicated at the Michael E. DeBakey VAMC (Houston, TX) through facilitated implementation with the Diffusion of Excellence. It is currently being implemented across VISN 6 Community Living Center (CLC) and medical-surgical inpatient units.  
-
-Shannon Munro is a Nurse Researcher and Family Nurse Practitioner at Salem VAMC. She’s been with VA for over 15 years, caring for Veterans and conducting research directed toward the improvement of Veteran healthcare.',
-        origin_picture: ActionDispatch::Http::UploadedFile.new(
-            filename: File.basename(happen_origins_image_file),
-            tempfile: happen_origins_image_file,
-            # detect the image's mime type with MIME if you can't provide it yourself.
-            type: MIME::Types.type_for(happen_origins_image_path).first.content_type
-        ),
-        published: true,
-        approved: true
-    )
-
-    happen_strategic_sponsors = [
-        StrategicSponsorPractice.create!(practice: happen, strategic_sponsor: sponsors.find {|s| s.name == 'Diffusion of Excellence'}),
-    ]
-
-    happen_team_image_path = "#{Rails.root}/db/seed_images/practices/happen/team"
-    happen_team_munro_image_path = "#{happen_team_image_path}/munro.jpg"
-    happen_team_munro_image_file = File.new("#{happen_team_munro_image_path}")
-
-    # TODO: find Devin Harrision!
-    # happen_team_harrison_image_path = "#{happen_team_image_path}/harrison.jpg"
-    # happen_team_harrison_image_file = File.new("#{happen_team_munro_image_path}")
-
-    happen_va_employees = [
-        VaEmployee.create!(
-            name: 'Dr. Shannon Munro',
-            job_title: 'Nurse Researcher at Department of Veterans Affairs Medical Center',
-            role: 'Gold Status Fellow',
-            avatar: ActionDispatch::Http::UploadedFile.new(
-                filename: File.basename(happen_team_munro_image_file),
-                tempfile: happen_team_munro_image_file,
-                # detect the image's mime type with MIME if you can't provide it yourself.
-                type: MIME::Types.type_for(happen_team_munro_image_path).first.content_type
-            )
-        ),
-        VaEmployee.create!(
-            name: 'Devin Harrison',
-            job_title: 'Diffusion Specialist',
-            role: 'Diffusion Specialist'
-        ),
-    ]
-
-    happen_va_employees.each {|vae|
-      VaEmployeePractice.create!(va_employee: vae, practice: happen)
-    }
-
-    happen_developing_facilities = [
-        DevelopingFacilityTypePractice.create!(practice: happen, developing_facility_type: developing_facilities.find {|df| df.name == 'Community Living Center (CLC)'}),
-        DevelopingFacilityTypePractice.create!(practice: happen, developing_facility_type: developing_facilities.find {|df| df.name == 'VA Medical Center'}),
-    ]
-
-    happen_va_secretary_priorities = [
-        VaSecretaryPriorityPractice.create!(practice: happen, va_secretary_priority: va_secretary_priorities.find {|sp| sp.name == 'Focusing resources based on importance'}),
-    ]
-
-    happen_clinical_impacts = [
-        ImpactPractice.create!(practice: happen, impact: clinical_impacts.find {|ci| ci.name == 'Infectious Disease'}),
-        ImpactPractice.create!(practice: happen, impact: clinical_impacts.find {|ci| ci.name == 'Primary Care / Preventive Medicine'}),
-        ImpactPractice.create!(practice: happen, impact: clinical_impacts.find {|ci| ci.name == 'Dental'}),
-    ]
-
-    happen_clinical_conditions = [
-        ClinicalConditionPractice.create!(practice: happen, clinical_condition: clinical_conditions.find {|cc| cc.name == 'Hospital acquired pneumonia'}),
-    ]
-
-    happen_operational_impacts = [
-        ImpactPractice.create!(practice: happen, impact: operational_impacts.find {|oi| oi.name == 'Administration'}),
-        ImpactPractice.create!(practice: happen, impact: operational_impacts.find {|oi| oi.name == 'Education and Training'}),
-        ImpactPractice.create!(practice: happen, impact: operational_impacts.find {|oi| oi.name == 'Logistics'}),
-    ]
-
-    happen_job_titles = [
-        JobPositionPractice.create!(practice: happen, job_position: job_positions.find {|jp| jp.name == 'Clinic based nurse'}),
-        JobPositionPractice.create!(practice: happen, job_position: job_positions.find {|jp| jp.name == 'Hospital based physician'}),
-        JobPositionPractice.create!(practice: happen, job_position: job_positions.find {|jp| jp.name == 'Nursing Assistant'}),
-        JobPositionPractice.create!(practice: happen, job_position: job_positions.find {|jp| jp.name == 'Dentist'}),
-    ]
-
-    happen_ancillary_services = [
-
-    ]
-
-    happen_clinical_locations = [
-        ClinicalLocationPractice.create!(practice: happen, clinical_location: clinical_locations.find {|cl| cl.name == 'Community Living Centers (CLC)'}),
-        ClinicalLocationPractice.create!(practice: happen, clinical_location: clinical_locations.find {|cl| cl.name == 'Inpatient Hospital'}),
-    ]
-
-    happen_risk_mitigations = [
-        RiskMitigation.create!(practice: happen)
-    ]
-    happen_risks = [
-        Risk.create!(description: 'Facility buy in and continued monitoring of HV-HAP cases from month to month.', risk_mitigation: happen_risk_mitigations[0]),
-    ]
-    happen_mitigations = [
-        Mitigation.create!(description: 'Efficient data collection.', risk_mitigation: happen_risk_mitigations[0])
-    ]
-
-    happen_publications = [
-        # Publication.create!(practice: happen, title: 'OIG Inspection')
-    ]
-
-    happen_badges = [
-        BadgePractice.create!(practice: happen, badge: badges.find {|b| b.name == 'Diffusion of Excellence'}),
-        BadgePractice.create!(practice: happen, badge: badges.find {|b| b.name == 'VISN 6'}),
-        BadgePractice.create!(practice: happen, badge: badges.find {|b| b.name == 'Gold Status'}),
-    ]
-
-  end
 else
   puts 'Database already seeded... Nothing to do.'
 end

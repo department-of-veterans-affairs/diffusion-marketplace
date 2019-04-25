@@ -37,7 +37,7 @@ gem 'jbuilder', '~> 2.5'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 
-gem 'devise'
+gem 'devise', '>= 4.6.0'
 gem 'devise-security'
 gem 'kaminari'
 
@@ -83,7 +83,7 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'jquery-rails'
-gem 'uswds-rails', github: 'blacktm/uswds-rails', branch: 'update-2.0.0-beta-4'
+gem 'uswds-rails', github: 'agilesix/uswds-rails', branch: 'update-2.0.1'
 
 gem 'activerecord-nulldb-adapter'
 gem 'acts_as_list'
@@ -91,3 +91,10 @@ gem 'aws-sdk-s3'
 gem 'paperclip', '~> 6.0.0'
 gem 'font-awesome-sass', '~> 5.6.1'
 gem 'sidekiq'
+
+gem 'survey_monkey_api', github: 'agilesix/surveymonkey'
+gem 'mechanize'
+
+gem 'roo', '~> 2.8.0'
+
+gem 'friendly_id', '~> 5.2.4'

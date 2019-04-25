@@ -1,0 +1,32 @@
+@import "../variables/colors";
+
+.practice-partners-background {
+  height: 100%;
+
+  &:after {
+    background: $dm-color-white image-url('practice-partners-background.png') no-repeat center;
+    content: "";
+    height: inherit;
+    opacity: 0.6;
+    left: 0;
+    margin: auto 0;
+    min-height: inherit;
+    padding: inherit;
+    position: absolute;
+    top: -35px;
+    transform: rotate(-3.11deg);
+    width: 100%;
+    z-index: -1;
+  }
+}
+
+.practice-partner-card {
+  background-color: $dm-color-white;
+  border-radius: 20px;
+}
+
+.practice-partner-short-name {
+  background-color:$dm-color-royal-blue;
+  border-radius: 0 20px 20px 0;
+  height: 60px;
+}

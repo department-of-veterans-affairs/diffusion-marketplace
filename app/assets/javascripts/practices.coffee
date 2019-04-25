@@ -11,3 +11,8 @@ $(document).on 'click', '.dm-tab', (e) ->
     target = $($(this).data('target'))
     target.siblings('.tab-active').removeClass('tab-active').addClass('tab-inactive')
     target.removeClass('tab-inactive').addClass('tab-active')
+
+$(document).on 'click', '.dm-carousel-nav', (e) ->
+  e.preventDefault()
+  $(this).parents('.dm-carousel').toggle('slide')
+  $($(this).data('target')).toggle('slide')

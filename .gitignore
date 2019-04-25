@@ -50,3 +50,5 @@ public/system
 /config/application.yml
 
 .rubocop.yml
+
+.DS_Store

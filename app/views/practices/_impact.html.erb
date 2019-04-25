@@ -1,0 +1,22 @@
+<% @practice.impact_photos.each_with_index do |impact, ind| %>
+  <div class='grid-container p3-top dm-carousel <%= ind == 0 ? 'show' : 'hide' %>' id='impact-photo-<%= ind %>'>
+    <div class='grid-row flex-row flex-justify-center flex-align-center'>
+      <%= image_tag impact.attachment.url %>
+    </div>
+
+    <div class='x4-top'>
+      <h3><%= impact.title %></h3>
+    </div>
+    <div>
+      <p><%= impact.description %></p>
+    </div>
+    <div class='grid-row x2-top <%= ind == 0 ? 'justify-end' : 'space-between'%>'>
+      <% if ind > 0 %>
+        <a class='dm-carousel-nav' href='#' data-target='#impact-photo-<%= ind - 1 %>'>Prev</a>
+      <% end %>
+      <% if @practice.impact_photos.length > ( ind + 1 ) %>
+        <a class='dm-carousel-nav' href='#' data-target='#impact-photo-<%= ind + 1 %>'>Next</a>
+      <% end %>
+    </div>
+  </div>
+<% end %>
