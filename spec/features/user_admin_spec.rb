@@ -75,4 +75,14 @@ describe 'The user index', js: true, type: :feature do
     expect(page).to have_css('tbody tr', count: 5)
     expect(page).to have_content('dummy@email.com')
   end
+
+  it 'should not try to create a user that aleady exists' do
+    login_as(@admin, scope: :user, run_callbacks: false)
+    visit '/users'
+
+    fill_in('New user email:', with: 'spongebob.squarepants@bikinibottom.net')
+    click_button('Create User')
+
+    expect(page).to have_content("User with email \"spongebob.squarepants@bikinibottom.net\" already exists")
+  end
 end

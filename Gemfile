@@ -90,6 +90,7 @@ gem 'acts_as_list'
 gem 'aws-sdk-s3'
 gem 'paperclip', '~> 6.0.0'
 gem 'font-awesome-sass', '~> 5.6.1'
+gem 'sidekiq'
 
 gem 'survey_monkey_api', github: 'agilesix/surveymonkey'
 gem 'mechanize'
