@@ -1,10 +1,16 @@
 class AdminController < ApplicationController
   def create_user
-    password = generate_password
-    user = User.create! user_params.merge(password: password, password_confirmation: password)
-    AdminMailer.send_set_password(user_id: user.id, password: password).deliver
-    flash[:success] = "Created user \"#{user.email}\""
-    redirect_to controller: :users, action: :index
+    # Check if user already exists
+    if User.find_by_email(user_params['email'])
+      flash[:error] = "User with email \"#{user_params['email']}\" already exists"
+      redirect_to controller: :users, action: :index
+    else
+      password = generate_password
+      user = User.create! user_params.merge(password: password, password_confirmation: password)
+      AdminMailer.send_set_password(user_id: user.id, password: password).deliver_later
+      flash[:success] = "Created user \"#{user.email}\""
+      redirect_to controller: :users, action: :index
+    end
   end
 
   def user_params

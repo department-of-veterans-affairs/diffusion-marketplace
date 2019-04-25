@@ -47,6 +47,8 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_DB: web_app
 
+      - image: redis
+
     working_directory: ~/repo
 
     steps:
