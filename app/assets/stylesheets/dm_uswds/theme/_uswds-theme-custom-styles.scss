@@ -29,54 +29,54 @@ i.e.
 /* Override usa-banner */
 .usa-banner {
   background-color: color($theme-color-base-darkest);
-  color: color($theme-color-base-lightest);
 
-  .usa-accordion {
-    color: color($theme-color-base-lightest);
-
-    .usa-banner-button {
-      color: color($theme-color-base-lightest);
-    }
-  }
-
-  .usa-banner-header-expanded {
+  .usa-banner__header {
     color: color($theme-color-base-lightest);
   }
 
-  .usa-banner-header-action {
+  .usa-banner__content {
+    color: color($theme-color-base-lightest);
+  }
+
+  .usa-banner__button-text, .usa-banner__header-action {
+    color: color($theme-color-primary-light);
+  }
+
+  .usa-banner__header-action {
     color: color($theme-color-base-lightest);
 
     &:after {
       background-image: none;
-      color: color($theme-color-base-lightest);
       content: '\f078';
       font-family: 'Font Awesome 5 Free';
       font-weight: 900;
     }
   }
 
-  .usa-banner-button[aria-expanded=false]::after {
+  .usa-banner__button[aria-expanded=false]::after {
     background-image: none;
-    color: color($theme-color-base-lightest);
     content: '\f078';
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     left: -999em;
     position: absolute;
+    width: 12px;
+    color: color($theme-color-primary-light);
 
     @media screen and (min-width: 40em) {
       position: static;
     }
   }
 
-  .usa-banner-button[aria-expanded=true]::after {
+  .usa-banner__button[aria-expanded=true]::after {
     background-image: none;
-    color: color($theme-color-base-lightest);
     content: '\f077';
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     left: -999em;
     position: absolute;
+    width: 12px;
+    color: color($theme-color-primary-light);
 
     @media screen and (min-width: 40em) {
       position: static;
@@ -86,17 +86,17 @@ i.e.
 
 /* Override usa-logo */
 @media screen and (min-width: 64em) {
-  .usa-header-extended .usa-logo {
+  .usa-header--extended .usa-logo {
     font-size: 1.5rem;
   }
 }
 
 /* Override .usa-nav*/
-.usa-nav-secondary-links .usa-nav-secondary-item + .usa-nav-secondary-item::before {
+.usa-nav__secondary-links .usa-nav__secondary-item + .usa-nav__secondary-item::before {
   color: transparent;
 }
 
-.usa-header-extended .usa-nav {
+.usa-header--extended .usa-nav {
   border-top: none;
   border-right: none;
   border-bottom: 3px solid #F3F3F3;
@@ -107,8 +107,8 @@ i.e.
   border: none;
 }
 
-.usa-nav-secondary-links .usa-nav-secondary-item,
-.usa-nav-secondary-links a {
+.usa-nav__secondary-links .usa-nav__secondary-item,
+.usa-nav__secondary-links a {
   color: #000000;
 }
 
@@ -182,4 +182,3 @@ p {
   top: 0;
   width: 0.5rem;
 }
-

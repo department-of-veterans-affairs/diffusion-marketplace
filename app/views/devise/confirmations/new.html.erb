@@ -14,8 +14,8 @@
 
           <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: {method: :post, class: 'usa-form x1-top'}) do |f| %>
             <% if devise_error_messages!.present? %>
-              <div class="usa-alert usa-alert-error" >
-                <div class="usa-alert-body">
+              <div class="usa-alert usa-alert--error" >
+                <div class="usa-alert__body">
                   <%= devise_error_messages! %>
                 </div>
               </div>

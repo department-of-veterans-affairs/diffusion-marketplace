@@ -1,25 +1,26 @@
 <a class="usa-skipnav" href="#main-content">Skip to main content</a>
 <div class="usa-banner">
   <div class="usa-accordion">
-    <header class="usa-banner-header">
-      <div class="usa-banner-inner">
+    <header class="usa-banner__header">
+      <div class="usa-banner__inner">
         <div class="grid-col-auto">
-          <img class="usa-banner-header-flag" src="<%= image_url 'uswds/favicons/favicon-57.png' %>" alt="U.S. flag">
+          <img class="usa-banner__header-flag" src="<%= image_url 'uswds/us_flag_small.png' %>" alt="U.S. flag">
         </div>
         <div class="grid-col-fill tablet:grid-col-auto">
-          <p class="usa-banner-header-text">An official website of the United States government</p>
-          <p class="usa-banner-header-action" aria-hidden="true">Here’s how you know</p>
+          <p class="usa-banner__header-text">An official website of the United States government</p>
+          <p class="usa-banner__header-action" aria-hidden="true">Here’s how you know</p>
         </div>
-        <button class="usa-accordion-button usa-banner-button" aria-expanded="false" aria-controls="gov-banner">
-          <span class="usa-banner-button-text">Here's how you know</span>
+        <button class="usa-accordion__button usa-banner__button"
+          aria-expanded="false" aria-controls="gov-banner">
+          <span class="usa-banner__button-text">Here’s how you know</span>
         </button>
       </div>
     </header>
-    <div class="usa-banner-content usa-accordion-content" id="gov-banner" hidden="hidden">
+    <div class="usa-banner__content usa-accordion__content" id="gov-banner" hidden>
       <div class="grid-row grid-gap-lg">
-        <div class="usa-banner-guidance-gov tablet:grid-col-6">
-          <img class="usa-banner-icon usa-media_block-img" src="<%= image_url 'uswds/icon-dot-gov.svg' %>" alt="Dot gov">
-          <div class="usa-media_block-body">
+        <div class="usa-banner__guidance tablet:grid-col-6">
+          <img class="usa-banner__icon usa-media-block__img" src="<%= image_url 'uswds/icon-dot-gov.svg' %>" alt="Dot gov">
+          <div class="usa-media-block__body">
             <p>
               <strong>The .gov means it’s official.</strong>
               <br>
@@ -27,15 +28,13 @@
             </p>
           </div>
         </div>
-        <div class="usa-banner-guidance-ssl tablet:grid-col-6">
-          <img class="usa-banner-icon usa-media_block-img" src="<%= image_url 'uswds/icon-https.svg' %>" alt="Https">
-          <div class="usa-media_block-body">
+        <div class="usa-banner__guidance tablet:grid-col-6">
+          <img class="usa-banner__icon usa-media-block__img" src="<%= image_url 'uswds/icon-https.svg' %>" alt="Https">
+          <div class="usa-media-block__body">
             <p>
               <strong>The site is secure.</strong>
               <br>
-              The
-              <strong>https://</strong>
-              ensures that you are connecting to the official website and that any information you provide is encrypted and transmitted securely.
+              The <strong>https://</strong> ensures that you are connecting to the official website and that any information you provide is encrypted and transmitted securely.
             </p>
           </div>
         </div>
@@ -45,46 +44,46 @@
 </div>
 
 <div class="usa-overlay"></div>
-<header class="usa-header usa-header-extended" role="banner">
+<header class="usa-header usa-header--extended" role="banner">
   <div class="usa-navbar">
     <div class="usa-logo" id="extended-logo">
-      <em class="usa-logo-text">
+      <em class="usa-logo__text">
         <a href="/" title="Home" aria-label="Home">Diffusion Marketplace</a>
       </em>
     </div>
     <button class="usa-menu-btn">Menu</button>
   </div>
   <nav role="navigation" class="usa-nav">
-    <div class="usa-nav-inner">
-      <button class="usa-nav-close"><img src="<%= image_url 'uswds/close.svg' %>" alt="close"></button>
-      <div class="usa-nav-secondary bottom-1-and-half-rem">
-        <ul class="usa-nav-secondary-links">
-          <li class="usa-nav-secondary-item">
+    <div class="usa-nav__inner">
+      <button class="usa-nav__close"><img src="<%= image_url 'uswds/close.svg' %>" alt="close"></button>
+      <div class="usa-nav__secondary bottom-1-and-half-rem">
+        <ul class="usa-nav__secondary-links">
+          <li class="usa-nav__secondary-item">
             <a href="/practice_partners">Practice Partners</a>
           </li>
-          <li class="usa-nav-secondary-item">
+          <li class="usa-nav__secondary-item">
             <a href="/practices">Marketplace</a>
           </li>
-          <li class="usa-nav-secondary-item">
+          <li class="usa-nav__secondary-item">
             <a href="#">Search Options</a>
           </li>
-          <li class="usa-nav-secondary-item">
+          <li class="usa-nav__secondary-item">
             <a href="#"><%= icon('fas', 'search')%><span class="usa-sr-only">Search</span></a>
           </li>
           <% if user_signed_in? %>
-            <li class="usa-nav-secondary-item">
+            <li class="usa-nav__secondary-item">
             <%= link_to('Logout', destroy_user_session_path, class: 'dm-font-color-primary-blue', method: :delete) %>
             </li>
           <% else %>
-            <li class="usa-nav-secondary-item">
+            <li class="usa-nav__secondary-item">
               <%= link_to new_user_registration_path, class: 'dm-font-color-primary-blue' do %>
                 <%= icon('fas', 'user-circle')%> Register
               <% end %>
             </li>
-            <li class="usa-nav-secondary-item">
+            <li class="usa-nav__secondary-item">
               <a class="dm-font-color-primary-blue desktop-show-inline-block" href="#">|</a>
             </li>
-            <li class="usa-nav-secondary-item dm-font-color-primary-blue">
+            <li class="usa-nav__secondary-item dm-font-color-primary-blue">
               <%= link_to 'Login', new_user_session_path, class: 'dm-font-color-primary-blue' %>
             </li>
           <% end %>
