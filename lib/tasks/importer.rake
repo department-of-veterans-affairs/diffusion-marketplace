@@ -81,9 +81,12 @@ def basic_answers
     'On the Practice page, under the tagline/functional title you just provided, we would like a longer descriptive tagline to further explain your practice. For example, for FLOW3: "Enable 53% faster delivery of prosthetic limbs to Veterans. Automating the prosthetic limb procurement process to improve continuity of care for Veterans."Please provide a 1-2 line descriptive tagline for your Practice. This will be used below the functional title.': :description,
     'Please provide a 50-100 word descriptive paragraph for your Practice. ': :summary,
     # 'Please provide your best estimate rating of your Practice with regards to Cost Avoidance on a scale of 1 - 4.': :cost_savings_aggregate,
-    'Please provide your best estimate rating of your Practice with regards to Impact on health/care experience on a scale of 1 - 4.': :veteran_satisfaction_aggregate,
+    # 'Please provide your best estimate rating of your Practice with regards to Impact on health/care experience on a scale of 1 - 4.': :veteran_satisfaction_aggregate,
     'Please provide your best estimate of the Cost to Implement your Practice on a scale of 1 - 4': :cost_to_implement_aggregate,
-    'Please provide your best estimate of the Difficulty of Implementation your Practice on a scale of 1 - 4': :difficulty_aggregate,
+    'Please provide your best estimate of the Complexity of Implementation of your Practice on a scale of 1 - 4 (Complexity of getting the practice started.)': :difficulty_aggregate,
+    'Please provide your best estimate of the Complexity of Maintenance and Sustainability of your Practice on a scale of 1 - 4': :sustainability_aggregate,
+    'Is Information Technology (IT) required to implement the practice?': :it_required,
+    'Is this practice a New Clinical Approach or New Process? Or is this practice a process change of something already being done? (Choose one of the following.)': :process,
     # 'Did your institution have to hire additional staff to implement this Practice?': :need_additional_staff,
     # 'Is there training required?': :need_training,
     'Please list who provides the training.': :training_provider,
@@ -93,9 +96,10 @@ def basic_answers
     'Please enter a 10-20 word title for the origin story of this Practice': :origin_title,
     'Please provide a 50 - 100 word paragraph sharing the story of the origin of this practice': :origin_story,
     'Number of facilities that have successfully implemented the Practice (Please enter a whole number):': :number_adopted,
+    'Number of Departments required to implement the practice?': :number_departments,
   }
   question_fields.each do |key, value|
-    @practice.send("#{value.to_sym}=", @answers[@questions.index(key.to_s)])
+    @practice.send("#{value.to_sym}=", @answers[@questions.index(key.to_s)]) if value.present?
   end
   @practice.phase_gate = @practice.phase_gate.split('.')[1].split('-')[0].squish
   @practice.save
@@ -773,7 +777,7 @@ end
 def file_uploads
   puts "==> Importing Practice: #{@name} File Uploads"
   question_fields = {
-    'Under the side navigation "Origin" tab, please provide a photo of the individual who initiated the practice.': :origin_picture,
+      "Please provide a photo of the individual who initiated the practice. (This will be displayed under \"Origin of the practice\")": :origin_picture,
     'Upload a Display Image for your practice. This image will be used for the main title page and marketplace tile.': :main_display_image
   }
   question_fields.each do |key, value|
