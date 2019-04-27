@@ -2,8 +2,12 @@
   "name": "diffusion-marketplace",
   "private": true,
   "dependencies": {},
+  "scripts": {
+    "test": "testcafe chrome:headless spec/e2e/* -r xunit:/tmp/test-results/res.xml"
+  },
   "devDependencies": {
     "axe-testcafe": "^1.1.0",
-    "testcafe": "^1.1.3"
+    "testcafe": "^1.1.3",
+    "testcafe-reporter-xunit": "^2.1.0"
   }
 }
