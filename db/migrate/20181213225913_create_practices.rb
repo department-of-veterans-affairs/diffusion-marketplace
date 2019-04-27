@@ -43,6 +43,7 @@ class CreatePractices < ActiveRecord::Migration[5.2]
       t.integer :cost_to_implement_aggregate, default: 0
       t.integer :veteran_satisfaction_aggregate, default: 0
       t.integer :difficulty_aggregate, default: 0
+      t.integer :sustainability_aggregate, default: 0
 
       t.string :origin_title
       t.string :origin_story
@@ -56,6 +57,10 @@ class CreatePractices < ActiveRecord::Migration[5.2]
       t.text :required_training_summary
 
       t.string :facility_complexity_level
+
+      t.integer :number_departments, default: 0
+      t.boolean :it_required
+      t.string :process
 
       t.timestamps
     end
