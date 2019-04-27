@@ -8,9 +8,11 @@ workflows:
     build-deploy:
       jobs:
         - build
+        - e2e
         - deploy:
             requires:
               - build
+              - e2e
             filters:
               branches:
                 only: master
@@ -99,6 +101,80 @@ jobs:
       - store_artifacts:
           path: coverage
           destination: coverage
+  e2e:
+    docker:
+      # specify the version you desire here
+      - image: circleci/ruby:2.5.3-node-browsers
+        environment:
+          RAILS_ENV: development
+          MAX_THREADS: 2
+          WEB_CONCURRENCY: 1
+
+          POSTGRES_PASSWORD: mysecretlocalpassword
+          POSTGRES_USER: postgres
+          POSTGRES_DB: web_app
+          POSTGRES_HOST: 127.0.0.1
+          POSTGRES_PORT: 5432
+
+          REDIS_HOST: redis_test
+          REDIS_PORT: 6379
+          REDIS_DB_ID: 0
+
+          BUNDLE_JOBS: 3
+          BUNDLE_RETRY: 3
+          BUNDLE_PATH: vendor/bundle
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      - image: circleci/postgres:9.5-alpine
+        environment:
+          POSTGRES_PASSWORD: mysecretlocalpassword
+          POSTGRES_USER: postgres
+          POSTGRES_DB: web_app
+
+      - image: redis
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "Gemfile.lock" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run:
+          name: install dependencies
+          command: |
+            sudo apt-get update
+            sudo apt-get install qt5-default libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
+            npm install
+
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+
+      # Database setup
+      - run: bundle exec rails dm:db_setup
+
+      # run rails server
+      - run:
+          name: Rails Server
+          command: bundle exec rails s
+          background: true
+
+      # run tests!
+      - run:
+          name: run e2e tests with accessibility
+          command: |
+            testcafe chrome spec/e2e/*
+
   deploy:
     docker:
       - image: circleci/ruby:2.5.3-node-browsers
