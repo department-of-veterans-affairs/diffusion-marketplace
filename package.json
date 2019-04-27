@@ -1,5 +1,9 @@
 {
   "name": "diffusion-marketplace",
   "private": true,
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "axe-testcafe": "^1.1.0",
+    "testcafe": "^1.1.3"
+  }
 }
