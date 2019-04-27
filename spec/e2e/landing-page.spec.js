@@ -3,7 +3,7 @@ import {Selector} from 'testcafe';
 import LoginPage from './pages/login-page';
 
 fixture(`The landing page`)
-    .page(`http://localhost:3300`);
+    .page(`http://localhost:3200`);
 
 test('if not logged in, should have the "Register" button', async t => {
     const logo = Selector('.usa-logo__text');
