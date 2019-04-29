@@ -3,6 +3,7 @@ require 'capybara'
 require 'capybara-webkit'
 require 'simplecov'
 require 'rspec/retry'
+require 'axe/rspec'
 
 if ENV['CIRCLE_ARTIFACTS']
   dir = File.join(ENV['CIRCLE_ARTIFACTS'], 'coverage')
@@ -138,6 +139,7 @@ RSpec.configure do |config|
 end
 
 # Capybara.javascript_driver = :webkit
-Capybara.default_driver = :sniffybara
+# Capybara.default_driver = :sniffybara
+Capybara.default_driver = :selenium_chrome
 
-Capybara.javascript_driver = :webkit
+# Capybara.javascript_driver = :chrome
