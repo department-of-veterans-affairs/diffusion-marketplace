@@ -3,7 +3,7 @@
 # User admin specs
 require 'rails_helper'
 
-describe 'The user index', js: true, type: :feature do
+describe 'The user index', type: :feature do
   before do
     @user = User.create!(email: 'spongebob.squarepants@bikinibottom.net', password: 'Password123',
                          password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now)
@@ -19,12 +19,16 @@ describe 'The user index', js: true, type: :feature do
 
   it 'if not logged in, should be redirected to landing page' do
     visit '/users'
+
+    expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content('Diffusion Marketplace')
   end
 
   it 'if logged in as a non-admin, should be redirected to landing page' do
     login_as(@user, scope: :user, run_callbacks: false)
     visit '/users'
+
+    expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content('Diffusion Marketplace')
   end
 
@@ -32,6 +36,7 @@ describe 'The user index', js: true, type: :feature do
     login_as(@admin, scope: :user, run_callbacks: false)
     visit '/users'
 
+    expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content('Show disabled users')
   end
 
@@ -44,6 +49,7 @@ describe 'The user index', js: true, type: :feature do
       click_button('Assign')
     end
 
+    expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_select("user_#{User.first.id}_role", selected: 'Admin')
   end
 
@@ -54,10 +60,13 @@ describe 'The user index', js: true, type: :feature do
     expect(page).to have_content('spongebob.squarepants@bikinibottom.net')
     expect(page).to have_css('tbody tr', count: 4)
 
-    within("tr#user_row_#{User.first.id}") do
-      click_button('Disable')
+    accept_alert do
+      within("tr#user_row_#{User.first.id}") do
+        click_button('Disable')
+      end
     end
 
+    expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content("Disabled user \"spongebob.squarepants@bikinibottom.net\"")
     expect(page).to have_css('tbody tr', count: 3)
   end
@@ -72,6 +81,7 @@ describe 'The user index', js: true, type: :feature do
     fill_in('New user email:', with: 'Dummy@email.com')
     click_button('Create User')
 
+    expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_css('tbody tr', count: 5)
     expect(page).to have_content('dummy@email.com')
   end
@@ -83,6 +93,7 @@ describe 'The user index', js: true, type: :feature do
     fill_in('New user email:', with: 'spongebob.squarepants@bikinibottom.net')
     click_button('Create User')
 
+    expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content("User with email \"spongebob.squarepants@bikinibottom.net\" already exists")
   end
 end
