@@ -1,5 +1,7 @@
 {
   "name": "diffusion-marketplace",
   "private": true,
-  "dependencies": {}
+  "dependencies": {},
+  "scripts": {},
+  "devDependencies": {}
 }
