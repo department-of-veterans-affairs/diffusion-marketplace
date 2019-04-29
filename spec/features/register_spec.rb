@@ -1,12 +1,13 @@
 require 'rails_helper'
 
-describe 'Register', js:true, type: :feature do
+describe 'Register', type: :feature do
   it 'should not let the user sign up with a weak password or without a va.gov email address' do
 
     visit '/'
     expect(page).to have_content('Diffusion Marketplace')
 
     find(:css, '#register-button-link').click
+    expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(current_path).to eq('/users/sign_up')
     expect(page).to have_content('Register')
 
@@ -16,6 +17,7 @@ describe 'Register', js:true, type: :feature do
     fill_in('Password confirmation', with: 'Passwrrd')
     click_button('Register')
 
+    expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content('Email must use @va.gov email address')
     expect(page).to have_content('Email invalid')
     expect(page).to have_content('Password must include 6 unique characters')
