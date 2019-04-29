@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'The landing page', type: :feature do
   it 'if not logged in, should have the "Register" button' do
     visit '/'
-    expect(page).to be_accessible
+    expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content('Diffusion Marketplace')
 
     expect(page).to have_selector('a#register-button-link', visible: true)
@@ -14,7 +14,7 @@ describe 'The landing page', type: :feature do
     login_as(user, :scope => :user, :run_callbacks => false)
 
     visit '/'
-    expect(page).to be_accessible
+    expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content('Diffusion Marketplace')
 
     expect(page).not_to have_selector('a#register-button-link')
