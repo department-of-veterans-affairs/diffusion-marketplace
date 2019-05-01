@@ -1,6 +1,8 @@
-<h1>Editing Practice</h1>
+<div style='position:relative'>
+  <%= render 'edit_nav' %>
+  <%= render 'form', practice: @practice %>
+</div>
 
-<%= render 'form', practice: @practice %>
 
-<%= link_to 'Show', @practice %> |
-<%= link_to 'Back', practices_path %>
+<!--<%= link_to 'Show', @practice %> |
+<%= link_to 'Back', practices_path %> -->

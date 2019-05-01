@@ -98,3 +98,7 @@ gem 'mechanize'
 gem 'roo', '~> 2.8.0'
 
 gem 'friendly_id', '~> 5.2.4'
+
+gem 'papercrop'
+gem 'rails-assets-sticky', source: 'https://rails-assets.org'
+gem 'rails-assets-jquery.scrollTo', source: 'https://rails-assets.org'
