@@ -16,3 +16,20 @@
 //= require turbolinks
 //= require uswds/uswds
 //= require_tree .
+
+document.addEventListener('turbolinks:click', function (event) {
+    let anchorElement = event.target;
+    let isSamePageAnchor = (
+        anchorElement.hash &&
+        anchorElement.origin === window.location.origin &&
+        anchorElement.pathname === window.location.pathname
+    );
+
+    if (isSamePageAnchor) {
+        Turbolinks.controller.pushHistoryWithLocationAndRestorationIdentifier(
+            event.data.url,
+            Turbolinks.uuid()
+        );
+        event.preventDefault()
+    }
+});

@@ -1,53 +1,76 @@
-<div class="grid-row">
-  <div class="tablet:grid-col-6 p2-left p2-right">
-    <div class="grid-row flex-column flex-align-center">
-      <div class="grid-auto">
-        <!-- Cost level Circle -->
-        <div class="grid-row flex-column flex-align-center flex-justify-center level-aggregate-circle">
-          <div class="grid-col-12">
-            <% cost_to_implement_aggregate = @practice.cost_to_implement_aggregate || 0 %>
-            <% (0..3).each do |index| %>
-              <% if index < cost_to_implement_aggregate %>
-                <i class="fas fa-dollar-sign large-icon-dark aggregate-icon"></i>
-              <% else %>
-                <i class="fas fa-dollar-sign large-icon-light aggregate-icon"></i>
-              <% end %>
-            <% end %>
-          </div>
-          <div class="grid-auto"><h4 class="margin-0 fw-100">Cost to Implement</h4></div>
-        </div>
+
+<div class="grid-container-full margin-bottom-4">
+  <div class="grid-row">
+    <div class="tablet:grid-col-6 text-center">
+      <h3 id="resources_required" class="font-sans-xl text-bold margin-0">Resources Required</h3>
+    </div>
+  </div>
+  <div class="grid-row">
+    <!-- Cost level Circle -->
+    <div class="grid-row flex-column flex-align-center flex-justify-center level-aggregate-circle">
+      <div class="tablet:grid-col-12 margin-y-2">
+        <% cost_to_implement_aggregate = @practice.cost_to_implement_aggregate || 0 %>
+        <% (0..3).each do |index| %>
+          <% if index < cost_to_implement_aggregate %>
+            <i class="fas fa-dollar-sign large-icon-dark aggregate-icon"></i>
+          <% else %>
+            <i class="fas fa-dollar-sign large-icon-light aggregate-icon"></i>
+          <% end %>
+        <% end %>
       </div>
+      <div class="grid-auto">
+        <h4 class="margin-0 fw-100">Cost</h4>
+      </div>
+    </div>
+
+    <div class="tablet:grid-col-6 display-flex flex-column">
       <% @practice.costs.each do |cost| %>
-        <div class="grid-auto">
-          <h3><%= cost.description %></h3>
-        </div>
+        <p class="text-bold font-ui-md"><%= cost.description %></p>
+      <% end %>
+    </div>
+  </div>
+  <div class="grid-row">
+    <div class="tablet:grid-col-6 text-center">
+      <p>Just sustainment. No development cost</p>
+    </div>
+  </div>
+</div>
+
+
+<div class="grid-container-full">
+  <div class="grid-row">
+    <div class="tablet:grid-col-6 text-center">
+      <h3 id="complexity" class="font-sans-xl text-bold margin-0">Complexity</h3>
+    </div>
+  </div>
+  <div class="grid-row ">
+    <!-- Complexity level Circle -->
+    <div class="grid-row flex-column flex-align-center flex-justify-center level-aggregate-circle">
+      <div class="tablet:grid-col-12 margin-y-2">
+        <% difficulty_aggregate = @practice.difficulty_aggregate || 0 %>
+        <% (0..3).each do |index| %>
+          <% if index < difficulty_aggregate %>
+            <i class="fas fa-wrench large-icon-dark aggregate-icon"></i>
+          <% else %>
+            <i class="fas fa-wrench large-icon-light aggregate-icon"></i>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="grid-auto">
+        <h4 class="margin-0 fw-100">Complexity</h4>
+      </div>
+    </div>
+    <div class="tablet:grid-col-6 display-flex flex-column">
+      <% @practice.difficulties.each do |difficulty| %>
+        <h3><%= difficulty.description %></h3>
       <% end %>
     </div>
   </div>
 
-  <div class="tablet:grid-col-6 p2-left p2-right">
-    <div class="grid-row flex-column flex-align-center">
-      <div class="grid-auto">
-        <!-- Difficulty level Circle -->
-        <div class="grid-row flex-column flex-align-center flex-justify-center level-aggregate-circle">
-          <div class="grid-col-12">
-            <% difficulty_aggregate = @practice.difficulty_aggregate || 0 %>
-            <% (0..3).each do |index| %>
-              <% if index < difficulty_aggregate %>
-                <i class="fas fa-wrench large-icon-dark aggregate-icon"></i>
-              <% else %>
-                <i class="fas fa-wrench large-icon-light aggregate-icon"></i>
-              <% end %>
-            <% end %>
-          </div>
-          <div class="grid-auto"><h4 class="margin-0 fw-100">Difficulty</h4></div>
-        </div>
-      </div>
-      <% @practice.difficulties.each do |difficulty| %>
-        <div class="grid-auto">
-          <h3><%= difficulty.description %></h3>
-        </div>
-      <% end %>
+
+  <div class="grid-row">
+    <div class="tablet:grid-col-6 text-center">
+      <p>Some change management and system redesign to operationalize</p>
     </div>
   </div>
 </div>

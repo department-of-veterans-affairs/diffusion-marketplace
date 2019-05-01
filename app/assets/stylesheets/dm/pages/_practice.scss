@@ -1,23 +1,52 @@
 @import "../variables/colors";
 
-.dm-tabnav {
+#dm-tabnav {
+  background-color: $dm-color-blue-black;
   border: none !important;
-}
+  border-radius: 20px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+  color: $dm-color-white;
 
-.dm-tab {
-  padding: 16px 24px;
-  border-bottom: 1px solid #D8D8D8;
-  background-color: white;
-  overflow: hidden;
-
-  &.top-tab {
-    border-radius: 20px 0 0 0;
+  .usa-sidenav__item {
+    border-top: none !important;
   }
 
-  &.bottom-tab {
-    border-radius: 0 0 0 20px;
+  .usa-sidenav {
+    a {
+      color: $dm-color-white !important;
+    }
   }
+
+  .dm-tab {
+    border-bottom: 1px solid rgba(229, 229, 229, 0.2);;
+    background-color: transparent;
+    color: $dm-color-white;
+    font-weight: 500;
+    padding: 16px 24px;
+    overflow: hidden;
+
+    &.top-tab {
+      border-radius: 20px 20px 0 0;
+    }
+
+    &.bottom-tab {
+      border-radius: 0 0 20px 20px;
+    }
+
+    &.active, &.tab-active, &:hover {
+      background-color: $dm-color-white;
+      color: $dm-color-primary-blue;
+    }
+
+    &.active, &.tab-active {
+      border-left: 6px solid $dm-color-primary-blue;
+    }
+
+  }
+
 }
+
+
 
 .tab-inactive {
   display: none;
@@ -67,7 +96,7 @@
 }
 
 .practice-summary {
-  line-height: 39px !important;
+  line-height: 33px !important;
 }
 
 .aggregate-circles-position {
