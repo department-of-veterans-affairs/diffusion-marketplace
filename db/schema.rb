@@ -451,6 +451,12 @@ ActiveRecord::Schema.define(version: 2019_04_03_034806) do
     t.integer "main_display_image_crop_y"
     t.integer "main_display_image_crop_w"
     t.integer "main_display_image_crop_h"
+    t.integer "origin_picture_original_w"
+    t.integer "origin_picture_original_h"
+    t.integer "origin_picture_crop_x"
+    t.integer "origin_picture_crop_y"
+    t.integer "origin_picture_crop_w"
+    t.integer "origin_picture_crop_h"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "main_display_image_file_name"
