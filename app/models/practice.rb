@@ -3,7 +3,7 @@ class Practice < ApplicationRecord
   friendly_id :name, use: :slugged
   acts_as_list
   # has_attached_file :main_display_image, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/:style/missing.png"
-  has_attached_file :main_display_image
+  has_attached_file :main_display_image, styles: { medium: "300x300>", thumb: "100x100>", practice_show: "412x307" }
   has_attached_file :origin_picture
   validates_attachment_content_type :main_display_image, content_type: /\Aimage\/.*\z/
 

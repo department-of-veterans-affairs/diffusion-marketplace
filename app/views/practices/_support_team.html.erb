@@ -1,0 +1,30 @@
+<!-- "Team" section -->
+
+<section class="usa-section margin-y-0 p0">
+  <div class="grid-container p3-top">
+    <h3 id="support_team" class="font-sans-lg fw-bold">Contact our support team for inquiries</h3>
+
+    <div class="grid-row grid-gap-lg margin-top-4 margin-bottom-2">
+      <% @practice.va_employees.each do |employee| %>
+        <div class="grid-row width-mobile x2-bottom">
+          <div class="avatar-container rounded display-flex-align-items-center flex-justify-center dm-background-white overflow-hidden margin-right-105">
+            <% if employee.avatar.present? %>
+              <%= image_tag employee.avatar.url, alt: employee.name %>
+            <% else %>
+              <span class="fas fa-user-circle fa-3x dm-font-color-primary-blue"></span>
+            <% end %>
+          </div>
+          <div class="grid-col-fill margin-auto">
+            <h4 class="margin-y-0"><%= employee.name %></h4>
+            <p class="margin-y-0"><%= employee.role %></p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="grid-row flex-row flex-justify-center flex-align-center ">
+      <a href="mailto:<%= @practice.support_network_email %>" class="dm-button-link x3-bottom">Contact</a>
+    </div>
+
+  </div>
+</section>

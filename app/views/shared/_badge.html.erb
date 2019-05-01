@@ -1,9 +1,12 @@
-<% badges.last(2).each do |badge| %>
-  <div class="badge-container" style="background-color: <%= badge.color %>;">
-    <i class="<%= badge.icon %>"></i><span class="x1-left"><%= badge.name %></span>
-  </div>
-<% end %>
-<% if ((extra_badges = badges.count - 2) > 0) %>
-  <div class="extra-badge"><i class="fas fa-plus"></i><span class="x1-left"><%= extra_badges %> more</span>
-  </div>
+<%# badges.last(2).each do |badge| %>
+<!--  <div class="badge-container" style="background-color: <%#= badge.color %>;">-->
+<!--    <i class="<%#= badge.icon %>"></i><span class="x1-left"><%#= badge.name %></span>-->
+<!--  </div>-->
+<%# end %>
+<%# if ((extra_badges = badges.count - 2) > 0) %>
+<!--  <div class="extra-badge"><i class="fas fa-plus"></i><span class="x1-left"><%#= extra_badges %> more</span>-->
+<!--  </div>-->
+<%# end %>
+<% if badges.any? %>
+  <p class="uppercase x0"><i class="fas fa-users"></i> Practice Partners</p>
 <% end %>
