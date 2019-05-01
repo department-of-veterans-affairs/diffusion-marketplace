@@ -1,0 +1,66 @@
+<div class='dm-sidenav sticky' style=''>
+  <div style='padding: .5rem 1rem;'
+    <p>
+      <b>Publishing Options</b></br>
+      <span>Last Saved: <%= @practice.updated_at.strftime('%m/%d/%Y') %></span>
+    </p>
+    <p>
+      <span>Last edited by:</span></br>
+      <span><i>Username</i> on <%= @practice.updated_at.strftime('%m/%d/%Y') %></span>
+    </p>
+  </div>
+  <div class='nav-divider'></div>
+
+  <!-- Navigational buttons -->
+  <ul class='usa-sidenav'>
+    <li class='usa-sidenav__item practice-nav'>
+      <div class='nav-button scroll-to' data-target='#introduction'>Practice Introduction</a>
+    </li>
+    <li class='usa-sidenav__item practice-nav'>
+      <div class='nav-button scroll-to' data-target='#impact'>Impact</a>
+    </li>
+    <li class='usa-sidenav__item practice-nav'>
+      <div class='nav-button scroll-to' data-target='#origin'>Origin of Practice</a>
+    </li>
+    <li class='usa-sidenav__item practice-nav'>
+      <div class='nav-button scroll-to' data-target='#resources'>Resources Required</a>
+    </li>
+    <li class='usa-sidenav__item practice-nav'>
+      <div class='nav-button scroll-to' data-target='#difficulty'>Difficulty</a>
+    </li>
+    <li class='usa-sidenav__item practice-nav'>
+      <div class='nav-button scroll-to' data-target='#risks'>Risks & Mitigation</a>
+    </li>
+    <li class='usa-sidenav__item practice-nav'>
+      <div class='nav-button scroll-to' data-target='#timeline'>Timeline & Checklist</a>
+    </li>
+    <li class='usa-sidenav__item practice-nav'>
+      <div class='nav-button scroll-to' data-target='#support'>Support Team</a>
+    </li>
+
+    <div class='nav-divider'></div>
+
+    <!-- Functional nav buttons -->
+    <li class='usa-sidenav__item practice-nav'>
+      <div class='nav-button'>EDIT SEARCH CRITERIA</a>
+    </li>
+    <li class='usa-sidenav__item practice-nav'>
+      <div class='nav-button'>PREVIEW ON MARKETPLACE</a>
+    </li>
+    <li class='usa-sidenav__item practice-nav'>
+      <div class='nav-button'>SUBMIT FOR APPROVAL</a>
+    </li>
+    <% if @practice.published %>
+      <li class='usa-sidenav__item practice-nav'>
+        <div class='nav-button'>UN-PUBLISH</a>
+      </li>
+    <% else %>
+      <li class='usa-sidenav__item practice-nav'>
+        <div class='nav-button'>PUBLISH</a>
+      </li>
+    <% end %>
+    <li class='usa-sidenav__item practice-nav'>
+      <div class='nav-button practice-form-submit'>SAVE ALL CHANGES</a>
+    </li>
+  </ul>
+</div>

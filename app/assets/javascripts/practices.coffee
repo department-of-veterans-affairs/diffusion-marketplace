@@ -16,3 +16,6 @@ $(document).on 'click', '.dm-carousel-nav', (e) ->
   e.preventDefault()
   $(this).parents('.dm-carousel').toggle('slide')
   $($(this).data('target')).toggle('slide')
+
+$(document).on 'click', '.practice-form-submit', (e) ->
+  $('form.usa-form').submit();

@@ -410,6 +410,7 @@ ActiveRecord::Schema.define(version: 2019_04_03_034806) do
     t.string "vha_visn"
     t.string "medical_center"
     t.integer "number_adopted", default: 0
+    t.integer "number_failed", default: 0
     t.text "business_case_summary"
     t.string "support_network_email"
     t.string "va_pulse_link"
@@ -444,6 +445,12 @@ ActiveRecord::Schema.define(version: 2019_04_03_034806) do
     t.string "training_provider"
     t.text "required_training_summary"
     t.string "facility_complexity_level"
+    t.integer "main_display_image_original_w"
+    t.integer "main_display_image_original_h"
+    t.integer "main_display_image_crop_x"
+    t.integer "main_display_image_crop_y"
+    t.integer "main_display_image_crop_w"
+    t.integer "main_display_image_crop_h"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "main_display_image_file_name"

@@ -12,6 +12,10 @@
 //
 //= require rails-ujs
 //= require jquery
+//= require jquery.jcrop
+//= require sticky
+//= require jquery.scrollTo
+//= require papercrop
 //= require activestorage
 //= require turbolinks
 //= require uswds/uswds
