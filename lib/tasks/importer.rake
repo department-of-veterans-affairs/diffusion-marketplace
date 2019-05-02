@@ -67,7 +67,7 @@ end
 def basic_answers
   puts "==> Importing Practice: #{@name} basic answers"
   question_fields = {
-    'When was this practice initiated? If day is unknown, use the first of the month': :date_initiated,
+    # 'When was this practice initiated? If day is unknown, use the first of the month': :date_initiated,
     # The below question's text needs to be changed when a new sheet can be provided.
     'Please list the station id of the facility that initiated this Practice. Please reference: https://www.va.gov/directory/guide/rpt_fac_list.cfm?sort=Sta&list_by=all&oid=all': :initiating_facility,
     # 'Please enter an estimate in dollars of the cost avoidance per facility (Medical Center, CBOC, or applicable institution).': :impact_financial_estimate_saved,
@@ -101,6 +101,7 @@ def basic_answers
   question_fields.each do |key, value|
     @practice.send("#{value.to_sym}=", @answers[@questions.index(key.to_s)]) if value.present?
   end
+  @practice.date_initiated = DateTime.strptime(@answers[@questions.index('When was this practice initiated? If day is unknown, use the first of the month'.to_s)], "%m/%d/%Y") if @answers[@questions.index('When was this practice initiated? If day is unknown, use the first of the month'.to_s)].present?
   @practice.phase_gate = @practice.phase_gate.split('.')[1].split('-')[0].squish
   @practice.save
 end
