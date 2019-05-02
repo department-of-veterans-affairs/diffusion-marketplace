@@ -46,8 +46,6 @@
 
 }
 
-
-
 .tab-inactive {
   display: none;
 }
@@ -63,6 +61,14 @@
   margin: 3rem auto;
   text-align: center;
   width: 12rem;
+
+  &.medium {
+    border-color: $dm-color-medium-yellow;
+  }
+
+  &.high {
+    border-color: $dm-color-high-red;
+  }
 }
 
 .practice-tab-container {
@@ -119,4 +125,9 @@
 .origin-picture-container {
   width: 150px;
   height: 150px;
+}
+
+.practice-divider {
+  height: 2px;
+  background-color: $dm-color-light-grey;
 }
