@@ -10,16 +10,16 @@
         <div class='grid-row'>
           <div class='grid-col-5'>
             <div class='grid-row flex-column flex-justify-start flex-align-start'>
+              <h4 class="margin-0">Risk</h4>
               <% rm.risks.each do |risk| %>
-                <h4 class="margin-0">Risk</h4>
                 <p><%= risk.description %></p>
               <% end %>
             </div>
           </div>
           <div class='grid-col-5 grid-offset-2'>
             <div class='grid-row flex-column flex-justify-start flex-align-start'>
+              <h4 class="margin-0">Mitigation</h4>
               <% rm.mitigations.each do |mitigation| %>
-                <h4 class="margin-0">Mitigation</h4>
                 <p><%= mitigation.description %></p>
               <% end %>
             </div>
