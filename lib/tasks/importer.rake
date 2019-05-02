@@ -661,8 +661,20 @@ def risk_mitigations
     next if @answers[q_index].blank?
 
     rm = RiskMitigation.create practice: @practice
-    risk = Risk.create risk_mitigation: rm, description: @answers[q_index]
-    mitigation = Mitigation.create risk_mitigation: rm, description: @answers[q_index + 1]
+
+
+
+    split_risk_answer = @answers[q_index].split(/\\/)
+
+    split_risk_answer.each do |a|
+      risk = Risk.create risk_mitigation: rm, description: a
+    end
+
+    split_mitigation_answer = @answers[q_index + 1].split(/\\/)
+
+    split_mitigation_answer.each do |a|
+      mitigation = Mitigation.create risk_mitigation: rm, description: a
+    end
   end
 end
 
