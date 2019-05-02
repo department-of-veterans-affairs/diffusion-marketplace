@@ -1,4 +1,4 @@
-$(document).ready ->
+$(document).on 'turbolinks:load', (e) ->
   $('.sticky').sticky topSpacing: 45
 
 $(document).on 'click', '.scroll-to', (e) ->

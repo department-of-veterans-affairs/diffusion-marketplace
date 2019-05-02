@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_03_034806) do
+ActiveRecord::Schema.define(version: 2019_05_02_153523) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -276,6 +276,12 @@ ActiveRecord::Schema.define(version: 2019_04_03_034806) do
     t.text "description"
     t.integer "position"
     t.bigint "practice_id"
+    t.integer "attachment_original_w"
+    t.integer "attachment_original_h"
+    t.integer "attachment_crop_x"
+    t.integer "attachment_crop_y"
+    t.integer "attachment_crop_w"
+    t.integer "attachment_crop_h"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "attachment_file_name"
@@ -549,6 +555,15 @@ ActiveRecord::Schema.define(version: 2019_04_03_034806) do
     t.index ["practice_id"], name: "index_survey_result_files_on_practice_id"
   end
 
+  create_table "timelines", force: :cascade do |t|
+    t.string "description"
+    t.integer "position"
+    t.bigint "practice_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["practice_id"], name: "index_timelines_on_practice_id"
+  end
+
   create_table "toolkit_files", force: :cascade do |t|
     t.string "title"
     t.integer "position"
@@ -699,6 +714,7 @@ ActiveRecord::Schema.define(version: 2019_04_03_034806) do
   add_foreign_key "risk_mitigations", "practices"
   add_foreign_key "risks", "risk_mitigations"
   add_foreign_key "survey_result_files", "practices"
+  add_foreign_key "timelines", "practices"
   add_foreign_key "toolkit_files", "practices"
   add_foreign_key "va_employee_practices", "practices"
   add_foreign_key "va_employee_practices", "va_employees"

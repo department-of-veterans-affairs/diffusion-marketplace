@@ -91,15 +91,23 @@ class PracticesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_practice
-      @practice = Practice.friendly.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def practice_params
-      params.require(:practice).permit(:name, :short_name, :description, :position, :is_vha_field, :is_program_office, :vha_visn, :medical_center, :business_case_summary, :support_network_email, :va_pulse_link, :additional_notes)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_practice
+    @practice = Practice.friendly.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def practice_params
+    params.require(:practice).permit(:tagline, :description, :name, :initiating_facility, :origin_title, :origin_story,
+                                     :main_display_image, :main_display_image_original_w, :main_display_image_original_h, :main_display_image_crop_x, :main_display_image_crop_y, :main_display_image_crop_w, :main_display_image_crop_h,
+                                     :origin_picture, :origin_picture_original_w, :origin_picture_original_h, :origin_picture_crop_x, :origin_picture_crop_y, :origin_picture_crop_w, :origin_picture_crop_h,
+                                     impact_photos_attributes: [:id, :title, :description, :attachment, :attachment_original_w, :attachment_original_h, :attachment_crop_x, :attachment_crop_y,
+                                                                :attachment_crop_w, :attachment_crop_h, :_destroy],
+                                     difficulties_attributes: [:id, :description, :_destroy],
+                                     risk_mitigations_attributes: [:id, :_destroy, risks_attributes: [:id, :description, :_destroy], mitigations_attributes: [:id, :description, :_destroy]],
+                                     timelines_attributes: [:id, :description, :_destroy], va_employees_attributes: [:id, :name, :role, :_destroy, :avatar, :avatar_original_w, :avatar_original_h, :avatar_crop_x, :avatar_crop_y, :avatar_crop_w, :avatar_crop_h])
+  end
 
   def can_view_practice
     # if practice is published
@@ -122,5 +130,5 @@ class PracticesController < ApplicationController
         format.json { render warning: warning }
       end
     end
-  end
+end
 end
