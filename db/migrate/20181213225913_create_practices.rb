@@ -34,6 +34,9 @@ class CreatePractices < ActiveRecord::Migration[5.2]
       t.integer :target_success
 
       t.string :implementation_time_estimate
+      t.string :implementation_time_estimate_description
+      t.text :implentation_summary
+      t.text :implementation_fte
 
       t.string :tagline
       t.string :gold_status_tagline
@@ -53,6 +56,7 @@ class CreatePractices < ActiveRecord::Migration[5.2]
       t.boolean :need_policy_change
       t.boolean :need_new_license
 
+      t.boolean :training_test
       t.string :training_provider
       t.text :required_training_summary
 

@@ -18,39 +18,51 @@
 
       <section class='usa-section'>
         <h2 id='introduction'>Practice Introduction</h2>
-        <div class="field">
-          <%= form.label :tagline, 'Descriptive Title for Practice', class: 'usa-label' %>
-          <%= form.text_field :tagline, class: 'usa-input practice-input' %>
-        </div>
+        <fieldset class='usa-fieldset'>
+          <div class="field">
+            <%= form.label :tagline, 'Descriptive Title for Practice', class: 'usa-label' %>
+            <%= form.text_field :tagline, class: 'usa-input practice-input' %>
+          </div>
+        </fieldset>
 
-        <div class="field">
-          <%= form.label :description, 'Descriptive Tagline', class: 'usa-label' %>
-          <%= form.text_field :description, class: 'usa-input practice-input' %>
-        </div>
+        <fieldset class='usa-fieldset'>
+          <div class="field">
+            <%= form.label :description, 'Descriptive Tagline', class: 'usa-label' %>
+            <%= form.text_field :description, class: 'usa-input practice-input' %>
+          </div>
+        </fieldset>
 
-        <div class="field">
-          <%= form.label :name, 'Official Practice Name', class: 'usa-label' %>
-          <%= form.text_field :name, class: 'usa-input practice-input' %>
-        </div>
+        <fieldset class='usa-fieldset'>
+          <div class="field">
+            <%= form.label :name, 'Official Practice Name', class: 'usa-label' %>
+            <%= form.text_field :name, class: 'usa-input practice-input' %>
+          </div>
+        </fieldset>
 
-        <div class="field">
-          <%= form.label :initiating_facility, 'Practice origin location', class: 'usa-label' %>
-          <%= form.text_field :initiating_facility, class: 'usa-input practice-input' %>
-        </div>
+        <fieldset class='usa-fieldset'>
+          <div class="field">
+            <%= form.label :initiating_facility, 'Practice origin location', class: 'usa-label' %>
+            <%= form.text_field :initiating_facility, class: 'usa-input practice-input' %>
+          </div>
+        </fieldset>
 
-        <div class="field">
-          <%= form.label :main_display_image, 'Project Image', class: 'usa-label' %>
-          <% if @practice.main_display_image.present? %>
-            <%= form.cropbox :main_display_image %>
-          <% end %>
-          <%= form.file_field :main_display_image, class: 'hidden-upload' %>
-          <%= form.label :main_display_image, 'Upload Image', class: 'usa-button usa-button--outline' %>
-        </div>
+        <fieldset class='usa-fieldset'>
+          <div class="field">
+            <%= form.label :main_display_image, 'Project Image', class: 'usa-label' %>
+            <% if @practice.main_display_image.present? %>
+              <%= form.cropbox :main_display_image %>
+            <% end %>
+            <%= form.file_field :main_display_image, class: 'hidden-upload' %>
+            <%= form.label :main_display_image, 'Upload Image', class: 'usa-button usa-button--outline' %>
+          </div>
+        </fieldset>
 
-        <div class="field">
-          <%= form.label :summary, 'Short Practice Summary', class: 'usa-label' %>
-          <%= form.text_area :summary, class: 'usa-input practice-input', style: 'height: 10rem;' %>
-        </div>
+        <fieldset class='usa-fieldset'>
+          <div class="field">
+            <%= form.label :summary, 'Short Practice Summary', class: 'usa-label' %>
+            <%= form.text_area :summary, class: 'usa-input practice-input', style: 'height: 10rem;' %>
+          </div>
+        </fieldset>
       </section>
 
       <section class='usa-section'>
@@ -91,7 +103,7 @@
         </fieldset>
 
         <fieldset class='usa-fieldset'>
-          <div style='background-color: white; border-radius: 2rem; padding: 1px 2rem 2rem margin-top: 2rem;'>
+          <div style='background-color: white; border-radius: 2rem; padding: 1px 2rem 2rem; margin-top: 2rem;'>
             <%= form.fields_for :impact_photos do |ip| %>
               <%= ip.hidden_field :id %>
               <%= ip.link_to_remove "Remove this Story", class: 'usa-button usa-button--secondary', style: 'color: white; text-decoration: none; float: right' %>
@@ -141,7 +153,7 @@
       <section class='usa-section'>
         <h2 id='resources'>Resources Required</h2>
         <fieldset class='usa-fieldset'>
-          <p>Cost to Implement</p>
+          <p>So Implement</p>
           <div class='grid-row'>
             <% (1..4).each do |index| %>
               <div class='grid-col usa-radio'>
@@ -153,14 +165,112 @@
         </fieldset>
 
         <fieldset class='usa-fieldset'>
-          <p>how long does it usually take a group to implement your practice? How long do you expect it to take?</p>
+          <p>How long does it usually take a group to implement your practice? How long do you expect it to take?</p>
           <% Practice::TIME_ESTIMATE_OPTIONS.each do |label| %>
             <div class='grid-col usa-radio'>
               <%= radio_button('practice', 'implementation_time_estimate', label, class: 'usa-radio__input') %>
-              <label class='usa-radio__label' for='practice_implementation_time_estimate'><%= label %></label>
+              <label class='usa-radio__label' for='practice_implementation_time_estimate_<%= label.split(' ').join('_').tr('()', '').downcase %>'><%= label %></label>
             </div>
-            <% end %>
+          <% end %>
+          <%= form.text_field :implementation_time_estimate_description, class: 'usa-input' %>
         </fieldset>
+
+
+        <div style='background-color: white; border-radius: 2rem; padding: 1px 2rem 2rem; margin-top: 2rem;'>
+          <h2>Cost to Implement</h2>
+          <fieldset class='usa-fieldset'>
+            <div class="field">
+              <%= form.label :implentation_summary, 'Summary', class: 'usa-label' %>
+              <%= form.text_area :implentation_summary, class: 'usa-input practice-input', style: 'height: 10rem;' %>
+            </div>
+          </fieldset>
+          <fieldset class='usa-fieldset'>
+            <div class="field">
+              <%= form.label :implementation_fte, 'FTE', class: 'usa-label' %>
+              <%= form.text_area :implementation_fte, class: 'usa-input practice-input', style: 'height: 10rem;' %>
+            </div>
+          </fieldset>
+
+          <span><h2>Departments affected</h2> (Mark all that apply)</span>
+          <fieldset class='field usa-fieldset'>
+            <% Department.all.each do |dept| %>
+              <div class='usa-checkbox'>
+                <input type='checkbox' class='usa-checkbox__input' id="practice_department_<%= dept.id %>" name='practice[practice_department][<%= dept.id %>][value]' <%= @practice.departments.include?(dept) ? "checked= 'true'" : "" %>>
+                <label class='usa-checkbox__label' for="practice_department_<%= dept.id %>"><%= dept.name %></label>
+              </div>
+            <% end %>
+          </fieldset>
+
+          <fieldset class='usa-fieldset'>
+            <h2>Additional Staff</h2>
+            <%= form.fields_for :additional_staffs do |diff| %>
+              <%= diff.hidden_field :id %>
+              <%= diff.link_to_remove "Remove", class: 'usa-button usa-button--secondary', style: 'color: white; text-decoration: none; float: right' %>
+              <%= diff.label :title, 'Title of position', class: 'usa-label', style: 'padding-top: 2.5rem' %>
+              <%= diff.text_field :title, class: 'usa-input practice-input' %>
+              <%= diff.label :hours_per_week, 'Estimated Required Hours per Week', class: 'usa-label' %>
+              <%= diff.text_field :hours_per_week, class: 'usa-input practice-input' %>
+              <div class='grid-row' style='align-items:flex-end'>
+                <div class='grid-col'>
+                  <%= diff.label :duration_in_weeks, 'Estimated Duration in Weeks', class: 'usa-label' %>
+                  <%= diff.text_field :duration_in_weeks, class: 'usa-input practice-input' %>
+                </div>
+                <p class='grid-col' style='text-align: center;'>Or</p>
+                <div class='grid-col'>
+                  <%= diff.check_box :permanent, class: 'usa-checkbox__input' %>
+                  <%= diff.label :permanent, 'Permanent', class: 'usa-checkbox__label' %>
+                </div>
+              </div>
+
+            <% end %>
+            <p><%= form.link_to_add "Add Staff Position", :additional_staffs, class: 'usa-button usa-button--outline', style: 'text-decoration: none; right: 0;' %></p>
+          </fieldset>
+
+          <fieldset class='usa-fieldset'>
+            <h2>Additional Resources and Supplies</h2>
+            <%= form.fields_for :additional_resources do |diff| %>
+              <%= diff.hidden_field :id %>
+              <%= diff.link_to_remove "Remove", class: 'usa-button usa-button--secondary', style: 'color: white; text-decoration: none; float: right' %>
+              <%= diff.label :description, class: 'usa-label', style: 'padding-top: 2.5rem' %>
+              <%= diff.text_field :description, class: 'usa-input practice-input' %>
+            <% end %>
+            <p><%= form.link_to_add "Add Resource or Supply", :additional_resources, class: 'usa-button usa-button--outline', style: 'text-decoration: none; right: 0;' %></p>
+          </fieldset>
+
+          <fieldset class='usa-fieldset'>
+            <h2>Training</h2>
+            <%= form.label :training_provider, 'If there is traning, please list who provides the training', class: 'usa-label'%>
+            <%= form.text_field :training_provider, class: 'usa-input practice-input' %>
+            <p>Who is required to take the training?</p>
+            <%= form.fields_for :required_staff_trainings do |diff| %>
+              <%= diff.hidden_field :id %>
+              <%= diff.link_to_remove "Remove", class: 'usa-button usa-button--secondary', style: 'color: white; text-decoration: none; float: right' %>
+              <%= diff.label :title, 'Job Title', class: 'usa-label', style: 'padding-top: 2.5rem' %>
+              <%= diff.text_field :title, class: 'usa-input practice-input' %>
+              <%= diff.label :description, class: 'usa-label' %>
+              <%= diff.text_area :description, class: 'usa-input practice-input', style: 'height: 4rem' %>
+            <% end %>
+            <p><%= form.link_to_add "Add Trainee", :required_staff_trainings, class: 'usa-button usa-button--outline', style: 'text-decoration: none; right: 0;' %></p>
+          </fieldset>
+
+          <fieldset class='usa-fieldset'>
+            <h2>Training</h2>
+            <%= form.label :required_training_summary, 'how long is the training? What is required?', class: 'usa-label'%>
+            <%= form.text_area :required_training_summary, class: 'usa-input practice-input', style: 'height: 5rem;' %>
+
+            <p>Is there a test involved?</p>
+            <div class='grid-row'>
+              <div class='grid-col usa-radio'>
+                <%= radio_button('practice', 'training_test', 'true', class: 'usa-radio__input') %>
+                <label class='usa-radio__label' for='practice_training_test_true'>Yes</label>
+
+                <%= radio_button('practice', 'training_test', 'false', class: 'usa-radio__input') %>
+                <label class='usa-radio__label' for='practice_training_test_false'>No</label>
+              </div>
+            </div>
+          </fieldset>
+
+        </div>
       </section>
 
       <section class='usa-section'>
