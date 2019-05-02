@@ -1,15 +1,17 @@
 <h3 id="impact" class="font-sans-xl text-bold">Impact</h3>
-<% @practice.impact_photos.each_with_index do |impact, ind| %>
-  <div class='grid-container p3-top' id='impact-photo-<%= ind %>'>
-    <div class='grid-row flex-row flex-justify-center flex-align-center'>
-      <%= image_tag impact.attachment.url %>
-    </div>
+<div class="margin-bottom-9">
+  <% @practice.impact_photos.each_with_index do |impact, ind| %>
+    <div class='grid-container-full p3-top' id='impact-photo-<%= ind %>'>
+      <div class='grid-row flex-row flex-justify-center flex-align-center'>
+        <%= image_tag impact.attachment.url %>
+      </div>
 
-    <div class='x4-top'>
-      <h3><%= impact.title %></h3>
+      <div class='x4-top'>
+        <h3><%= impact.title %></h3>
+      </div>
+      <div>
+        <p><%= impact.description %></p>
+      </div>
     </div>
-    <div>
-      <p><%= impact.description %></p>
-    </div>
-  </div>
-<% end %>
+  <% end %>
+</div>
