@@ -19,3 +19,6 @@ $(document).on 'click', '.dm-carousel-nav', (e) ->
 
 $(document).on 'click', '.practice-form-submit', (e) ->
   $('form.usa-form').submit();
+
+# $(document).on 'turbolinks:load', (e) ->
+#   init_papercrop();
