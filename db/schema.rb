@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_03_034806) do
+ActiveRecord::Schema.define(version: 2019_05_02_153523) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 2019_04_03_034806) do
     t.string "title"
     t.string "hours_per_week"
     t.string "duration_in_weeks"
+    t.boolean "permanent"
     t.text "description"
     t.integer "position"
     t.bigint "practice_id"
@@ -276,6 +277,12 @@ ActiveRecord::Schema.define(version: 2019_04_03_034806) do
     t.text "description"
     t.integer "position"
     t.bigint "practice_id"
+    t.integer "attachment_original_w"
+    t.integer "attachment_original_h"
+    t.integer "attachment_crop_x"
+    t.integer "attachment_crop_y"
+    t.integer "attachment_crop_w"
+    t.integer "attachment_crop_h"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "attachment_file_name"
@@ -410,6 +417,7 @@ ActiveRecord::Schema.define(version: 2019_04_03_034806) do
     t.string "vha_visn"
     t.string "medical_center"
     t.integer "number_adopted", default: 0
+    t.integer "number_failed", default: 0
     t.text "business_case_summary"
     t.string "support_network_email"
     t.string "va_pulse_link"
@@ -427,6 +435,9 @@ ActiveRecord::Schema.define(version: 2019_04_03_034806) do
     t.string "target_measures"
     t.integer "target_success"
     t.string "implementation_time_estimate"
+    t.string "implementation_time_estimate_description"
+    t.text "implentation_summary"
+    t.text "implementation_fte"
     t.string "tagline"
     t.string "gold_status_tagline"
     t.string "summary"
@@ -442,9 +453,22 @@ ActiveRecord::Schema.define(version: 2019_04_03_034806) do
     t.boolean "need_training"
     t.boolean "need_policy_change"
     t.boolean "need_new_license"
+    t.boolean "training_test"
     t.string "training_provider"
     t.text "required_training_summary"
     t.string "facility_complexity_level"
+    t.integer "main_display_image_original_w"
+    t.integer "main_display_image_original_h"
+    t.integer "main_display_image_crop_x"
+    t.integer "main_display_image_crop_y"
+    t.integer "main_display_image_crop_w"
+    t.integer "main_display_image_crop_h"
+    t.integer "origin_picture_original_w"
+    t.integer "origin_picture_original_h"
+    t.integer "origin_picture_crop_x"
+    t.integer "origin_picture_crop_y"
+    t.integer "origin_picture_crop_w"
+    t.integer "origin_picture_crop_h"
     t.integer "number_departments", default: 0
     t.boolean "it_required"
     t.string "process"
@@ -538,6 +562,15 @@ ActiveRecord::Schema.define(version: 2019_04_03_034806) do
     t.integer "attachment_file_size"
     t.datetime "attachment_updated_at"
     t.index ["practice_id"], name: "index_survey_result_files_on_practice_id"
+  end
+
+  create_table "timelines", force: :cascade do |t|
+    t.string "description"
+    t.integer "position"
+    t.bigint "practice_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["practice_id"], name: "index_timelines_on_practice_id"
   end
 
   create_table "toolkit_files", force: :cascade do |t|
@@ -690,6 +723,7 @@ ActiveRecord::Schema.define(version: 2019_04_03_034806) do
   add_foreign_key "risk_mitigations", "practices"
   add_foreign_key "risks", "risk_mitigations"
   add_foreign_key "survey_result_files", "practices"
+  add_foreign_key "timelines", "practices"
   add_foreign_key "toolkit_files", "practices"
   add_foreign_key "va_employee_practices", "practices"
   add_foreign_key "va_employee_practices", "va_employees"

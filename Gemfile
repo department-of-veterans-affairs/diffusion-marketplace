@@ -85,6 +85,7 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 gem 'uswds-rails', github: 'agilesix/uswds-rails', branch: 'update-2.0.1'
 
 gem 'activerecord-nulldb-adapter'
@@ -100,3 +101,8 @@ gem 'mechanize'
 gem 'roo', '~> 2.8.0'
 
 gem 'friendly_id', '~> 5.2.4'
+
+gem 'papercrop'
+gem 'rails-assets-sticky', source: 'https://rails-assets.org'
+gem 'rails-assets-jquery.scrollTo', source: 'https://rails-assets.org'
+gem "nested_form"
