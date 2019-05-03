@@ -17,6 +17,8 @@
 - [ ]
 
 ## Definition of done
+- [ ] Unit tests written (if applicable)
+- [ ] e2e/accessibility tests written (if applicable)
 - [ ] Events are logged appropriately
 - [ ] Documentation has been updated, if applicable
 - [ ] A link has been provided to the originating JIRA issue
