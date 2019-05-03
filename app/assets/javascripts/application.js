@@ -20,4 +20,5 @@
 //= require turbolinks
 //= require uswds/uswds
 //= require jquery_nested_form
+//= require jquery-ui/widgets/tooltip
 //= require_tree .

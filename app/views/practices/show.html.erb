@@ -21,8 +21,8 @@
       </div>
       <% end %>
       <% if current_user.has_role?(:admin) %>
-        <div class='pull-right'>
-          <%= link_to 'Edit', edit_practice_path(@practice), class: 'usa-button-primary' %>
+        <div style='float: right;'>
+          <%= link_to 'Edit', edit_practice_path(@practice), class: 'usa-button usa-button--outline' %>
         </div>
       <% end %>
       <% if @practice.tagline.present? %>

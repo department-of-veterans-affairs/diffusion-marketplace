@@ -1,6 +1,16 @@
 <div style='position:relative'>
-  <%= render 'edit_nav' %>
-  <%= render 'form', practice: @practice %>
+  <section class="usa-section p2-top p2-bottom" style='background: #F5F5F5'>
+    <div class='grid-container' style='position: relative;'>
+      <div class='grid-row'>
+        <div class='grid-col-3'>
+          <%= render 'edit_nav' %>
+        </div>
+        <div class='grid-col-9'>
+          <%= render 'form', practice: @practice %>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>
 
 
