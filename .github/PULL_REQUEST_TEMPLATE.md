@@ -7,7 +7,10 @@
 ## Testing done - how did you test it/steps on how can another person can test it 
 
 
-## Screenshots, Gifs, Videos (if applicable)
+## Screenshots, Gifs, Videos from application (if applicable)
+
+
+## Link to mock-ups/mock ups (image file if you have it) (if applicable)
 
 
 ## Acceptance criteria
