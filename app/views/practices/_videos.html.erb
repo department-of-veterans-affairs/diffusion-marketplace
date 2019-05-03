@@ -1,0 +1,7 @@
+<% @practice.video_files.each do |vf| %>
+  <div class="margin-y-3">
+    <%= youtube_embed(vf.url) if vf.url.present? %>
+    <h3><%= vf.title %></h3>
+    <p><%= vf.description %></p>
+  </div>
+<% end %>

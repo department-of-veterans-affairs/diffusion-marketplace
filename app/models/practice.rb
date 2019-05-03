@@ -57,11 +57,15 @@ class Practice < ApplicationRecord
   has_many :va_secretary_priorities, through: :va_secretary_priority_practices
   has_many :video_files
 
+  accepts_nested_attributes_for :practice_partner_practices, allow_destroy: true
   accepts_nested_attributes_for :impact_photos, allow_destroy: true
   accepts_nested_attributes_for :difficulties, allow_destroy: true
   accepts_nested_attributes_for :risk_mitigations, allow_destroy: true
   accepts_nested_attributes_for :timelines, allow_destroy: true
   accepts_nested_attributes_for :va_employees, allow_destroy: true
+  accepts_nested_attributes_for :additional_staffs, allow_destroy: true
+  accepts_nested_attributes_for :additional_resources, allow_destroy: true
+  accepts_nested_attributes_for :required_staff_trainings, allow_destroy: true
 
   SATISFACTION_LABELS = ['Little or no impact', 'Some impact', 'Significant impact', 'High or large impact'].freeze
   COST_LABELS = ['0-$10,000', '$10,000-$50,000', '$50,000-$250,000', 'Over $250,000'].freeze

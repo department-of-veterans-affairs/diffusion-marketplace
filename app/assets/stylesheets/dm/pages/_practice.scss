@@ -1,22 +1,59 @@
 @import "../variables/colors";
 
-.dm-tabnav {
-  border: none !important;
+#dm-practice-nav {
+  width: 207px !important;
+  left: 17.25px;
 }
 
-.dm-tab {
-  padding: 16px 24px;
-  border-bottom: 1px solid #D8D8D8;
-  background-color: white;
-  overflow: hidden;
+#dm-practice-nav-sticky-wrapper {
+  //position: relative;
+  //left: -8px;
+}
 
-  &.top-tab {
-    border-radius: 20px 0 0 0;
+#dm-tabnav {
+  background-color: $dm-color-blue-black;
+  border: none !important;
+  border-radius: 20px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+  color: $dm-color-white;
+
+  .usa-sidenav__item {
+    border-top: none !important;
   }
 
-  &.bottom-tab {
-    border-radius: 0 0 0 20px;
+  .usa-sidenav {
+    a {
+      color: $dm-color-white !important;
+    }
   }
+
+  .dm-tab {
+    border-bottom: 1px solid rgba(229, 229, 229, 0.2);;
+    background-color: transparent;
+    color: $dm-color-white;
+    font-weight: 500;
+    padding: 16px 24px;
+    overflow: hidden;
+
+    &.top-tab {
+      border-radius: 20px 20px 0 0;
+    }
+
+    &.bottom-tab {
+      border-radius: 0 0 20px 20px;
+    }
+
+    &.active, &.tab-active, &:hover {
+      background-color: $dm-color-white;
+      color: $dm-color-primary-blue;
+    }
+
+    &.active, &.tab-active {
+      border-left: 6px solid $dm-color-primary-blue;
+    }
+
+  }
+
 }
 
 .tab-inactive {
@@ -34,6 +71,18 @@
   margin: 3rem auto;
   text-align: center;
   width: 12rem;
+
+  &.medium {
+    border-color: $dm-color-medium-yellow;
+  }
+
+  &.medium-high {
+    border-color: $dm-color-medium-high-yellow;
+  }
+
+  &.high {
+    border-color: $dm-color-high-red;
+  }
 }
 
 .practice-tab-container {
@@ -67,7 +116,7 @@
 }
 
 .practice-summary {
-  line-height: 39px !important;
+  line-height: 33px !important;
 }
 
 .aggregate-circles-position {
@@ -92,6 +141,37 @@
   height: 150px;
 }
 
+.practice-divider {
+  height: 2px;
+  background-color: $dm-color-light-grey;
+}
+
 .practice-input {
   max-width: 100% !important;
+}
+
+.hidden-upload {
+  width: 1px;
+  height: 1px;
+  padding: 1px 0 0 1px;
+}
+
+.practice-edit-nav {
+  width: 14rem !important;
+}
+
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  padding-top: 30px; height: 0; overflow: hidden;
+}
+
+.video-container iframe,
+.video-container object,
+.video-container embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }

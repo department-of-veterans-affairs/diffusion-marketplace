@@ -34,6 +34,9 @@ class CreatePractices < ActiveRecord::Migration[5.2]
       t.integer :target_success
 
       t.string :implementation_time_estimate
+      t.string :implementation_time_estimate_description
+      t.text :implentation_summary
+      t.text :implementation_fte
 
       t.string :tagline
       t.string :gold_status_tagline
@@ -44,6 +47,7 @@ class CreatePractices < ActiveRecord::Migration[5.2]
       t.integer :cost_to_implement_aggregate, default: 0
       t.integer :veteran_satisfaction_aggregate, default: 0
       t.integer :difficulty_aggregate, default: 0
+      t.integer :sustainability_aggregate, default: 0
 
       t.string :origin_title
       t.string :origin_story
@@ -53,6 +57,7 @@ class CreatePractices < ActiveRecord::Migration[5.2]
       t.boolean :need_policy_change
       t.boolean :need_new_license
 
+      t.boolean :training_test
       t.string :training_provider
       t.text :required_training_summary
 
@@ -71,6 +76,10 @@ class CreatePractices < ActiveRecord::Migration[5.2]
       t.integer :origin_picture_crop_y
       t.integer :origin_picture_crop_w
       t.integer :origin_picture_crop_h
+
+      t.integer :number_departments, default: 0
+      t.boolean :it_required
+      t.string :process
 
       t.timestamps
     end

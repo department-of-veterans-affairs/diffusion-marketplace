@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 2019_05_02_153523) do
     t.string "title"
     t.string "hours_per_week"
     t.string "duration_in_weeks"
+    t.boolean "permanent"
     t.text "description"
     t.integer "position"
     t.bigint "practice_id"
@@ -434,6 +435,9 @@ ActiveRecord::Schema.define(version: 2019_05_02_153523) do
     t.string "target_measures"
     t.integer "target_success"
     t.string "implementation_time_estimate"
+    t.string "implementation_time_estimate_description"
+    t.text "implentation_summary"
+    t.text "implementation_fte"
     t.string "tagline"
     t.string "gold_status_tagline"
     t.string "summary"
@@ -442,12 +446,14 @@ ActiveRecord::Schema.define(version: 2019_05_02_153523) do
     t.integer "cost_to_implement_aggregate", default: 0
     t.integer "veteran_satisfaction_aggregate", default: 0
     t.integer "difficulty_aggregate", default: 0
+    t.integer "sustainability_aggregate", default: 0
     t.string "origin_title"
     t.string "origin_story"
     t.boolean "need_additional_staff"
     t.boolean "need_training"
     t.boolean "need_policy_change"
     t.boolean "need_new_license"
+    t.boolean "training_test"
     t.string "training_provider"
     t.text "required_training_summary"
     t.string "facility_complexity_level"
@@ -463,6 +469,9 @@ ActiveRecord::Schema.define(version: 2019_05_02_153523) do
     t.integer "origin_picture_crop_y"
     t.integer "origin_picture_crop_w"
     t.integer "origin_picture_crop_h"
+    t.integer "number_departments", default: 0
+    t.boolean "it_required"
+    t.string "process"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "main_display_image_file_name"

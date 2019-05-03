@@ -14,11 +14,13 @@ describe 'Practices', type: :feature do
   it 'should not let unauthenticated users interact with practices' do
     # Visit an individual Practice
     visit '/practices/1'
+    expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content('You need to sign in or sign up before continuing.')
     expect(page).to have_current_path('/users/sign_in')
 
     # Visit the Marketplace
     visit '/practices'
+    expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content('You need to sign in or sign up before continuing.')
     expect(page).to have_current_path('/users/sign_in')
   end
@@ -29,11 +31,13 @@ describe 'Practices', type: :feature do
     # Visit an individual Practice that is approved and published
     practice = Practice.create!(name: 'A public practice', approved: true, published: true)
     visit practice_path(practice)
+    expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content(practice.name)
     expect(page).to have_current_path(practice_path(practice))
 
     # Visit the Marketplace
     visit '/practices'
+    expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content(practice.name)
   end
 
@@ -42,6 +46,7 @@ describe 'Practices', type: :feature do
 
     # Visit user's own practice that is not approved or published
     visit practice_path(@user_practice)
+    expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content(@user_practice.name)
     expect(page).to have_current_path(practice_path(@user_practice))
   end
@@ -50,6 +55,7 @@ describe 'Practices', type: :feature do
     login_as(@user2, :scope => :user, :run_callbacks => false)
     # Visit a user's practice that is not approved or published
     visit practice_path(@user_practice)
+    expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content('Saving lives by diffusing best practices')
     expect(page).to have_current_path('/')
   end
@@ -59,6 +65,7 @@ describe 'Practices', type: :feature do
 
     # Visit a user's practice that is not approved or published
     visit practice_path(@user_practice)
+    expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content(@user_practice.name)
     expect(page).to have_current_path(practice_path(@user_practice))
   end
@@ -68,6 +75,7 @@ describe 'Practices', type: :feature do
 
     # Visit a user's practice that is not approved or published
     visit practice_path(@user_practice)
+    expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content(@user_practice.name)
     expect(page).to have_current_path(practice_path(@user_practice))
   end
