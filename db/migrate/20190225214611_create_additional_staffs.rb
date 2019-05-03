@@ -4,6 +4,7 @@ class CreateAdditionalStaffs < ActiveRecord::Migration[5.2]
       t.string :title
       t.string :hours_per_week
       t.string :duration_in_weeks
+      t.boolean :permanent
       t.text :description
       t.integer :position
       t.belongs_to :practice, foreign_key: true

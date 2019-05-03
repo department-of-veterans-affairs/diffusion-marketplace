@@ -6,6 +6,13 @@ class CreateImpactPhotos < ActiveRecord::Migration[5.2]
       t.integer :position
       t.belongs_to :practice, foreign_key: true
 
+      t.integer :attachment_original_w
+      t.integer :attachment_original_h
+      t.integer :attachment_crop_x
+      t.integer :attachment_crop_y
+      t.integer :attachment_crop_w
+      t.integer :attachment_crop_h
+
       t.timestamps
     end
 
