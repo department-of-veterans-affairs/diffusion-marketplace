@@ -59,7 +59,7 @@ module ApplicationHelper
     when 2
       return 'medium'
     when 3
-      return 'medium'
+      return 'medium-high'
     when 4
       return 'high'
     else
