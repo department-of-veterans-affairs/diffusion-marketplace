@@ -82,47 +82,43 @@
 </section>
 <div class="dm-background-triangle-bottom "></div>
 
-<!-- "Practice nav" section -->
-<!-- Impact Origin Resources Required Complexity Timeline Risks & Mitigation Support Team -->
-<div class="grid-container">
-  <div class="grid-row">
-    <div class="tablet:grid-col-3">
-      <ul id="dm-tabnav" class="usa-sidenav dm-tabnav margin-bottom-4">
-        <li class="usa-sidenav__item">
-          <a href="#impact" class="dm-tab top-tab">Impact</a>
-        </li>
-        <li class="usa-sidenav__item">
-          <a href="#origin" class="dm-tab" data-target="#origin">Origin</a>
-        </li>
-        <li class="usa-sidenav__item">
-          <a href="#resources_required" class="dm-tab" data-target="#resources_required">Resources
-            Required</a>
-        </li>
-        <li class="usa-sidenav__item">
-          <a href="#complexity" class="dm-tab " data-target="#complexity">Complexity</a>
-        </li>
-        <li class="usa-sidenav__item">
-          <a href="#risks_and_mitigations" class="dm-tab" data-target="#risks_and_mitigations">Risks & Mitigation</a>
-        </li>
-        <li class="usa-sidenav__item">
-          <a href="#timeline_and_checklist" class="dm-tab" data-target="#timeline_and_checklist">Timeline</a>
-        </li>
-        <li class="usa-sidenav__item">
-          <a href="#support_team" class="dm-tab bottom-tab" data-target="#support_team">Support Team</a>
-        </li>
-      </ul>
-      <button type="button" role="button" class="dm-button-primary">Next Step</button>
-    </div>
-  </div>
-</div>
-
 <!-- "Practice content" section -->
 <!-- "Impact" section -->
 <section class="p3-top margin-y-2">
-  <div class="grid-container">
+  <div class="grid-container position-relative">
     <div class="grid-row">
-      <div class="tablet:grid-col-3">&nbsp;</div>
-      <div class="tablet:grid-col-9 p0 p1-5-right">
+      <div class="tablet:grid-col-3 mobile-hide">
+        <!-- "Practice nav" section -->
+        <!-- Impact Origin Resources Required Complexity Timeline Risks & Mitigation Support Team -->
+        <div id="dm-practice-nav" class="z-top">
+          <ul id="dm-tabnav" class="usa-sidenav dm-tabnav margin-bottom-4">
+            <li class="usa-sidenav__item">
+              <a href="#impact" class="dm-tab top-tab scroll-to" data-target="#impact">Impact</a>
+            </li>
+            <li class="usa-sidenav__item">
+              <a href="#origin" class="dm-tab scroll-to" data-target="#origin">Origin</a>
+            </li>
+            <li class="usa-sidenav__item">
+              <a href="#resources_required" class="dm-tab scroll-to" data-target="#resources_required">Resources
+                Required</a>
+            </li>
+            <li class="usa-sidenav__item">
+              <a href="#complexity" class="dm-tab scroll-to" data-target="#complexity">Complexity</a>
+            </li>
+            <li class="usa-sidenav__item">
+              <a href="#risks_and_mitigation" class="dm-tab scroll-to" data-target="#risks_and_mitigation">Risks & Mitigation</a>
+            </li>
+            <li class="usa-sidenav__item">
+              <a href="#timeline_and_checklist" class="dm-tab scroll-to" data-target="#timeline_and_checklist">Timeline</a>
+            </li>
+            <li class="usa-sidenav__item">
+              <a href="#support_team" class="dm-tab bottom-tab scroll-to" data-target="#support_team">Support Team</a>
+            </li>
+          </ul>
+          <button type="button" role="button" class="dm-button-primary shadow-1">Next Step</button>
+        </div>
+      </div>
+      <div class="tablet:grid-col-9 mobile:grid-col-12 p0 p1-5-right">
         <div class="p4-bottom">
           <%= render partial: 'impact' %>
           <%= render partial: 'videos' %>
@@ -141,7 +137,7 @@
 <section class="p3-top margin-y-2 dm-background-light-blue">
   <div class="grid-container">
     <div class="grid-row">
-      <div class="tablet:grid-col-3">&nbsp;</div>
+      <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
       <div class="tablet:grid-col-9 p0 p1-5-right">
         <div class="p4-bottom">
           <%= render partial: 'origin' %>
@@ -155,7 +151,7 @@
 <section class="p3-top margin-y-2">
   <div class="grid-container">
     <div class="grid-row">
-      <div class="tablet:grid-col-3">&nbsp;</div>
+      <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
       <div class="tablet:grid-col-9 p0 p1-5-right">
         <div class="p4-bottom">
           <%= render partial: 'resources_required' %>
@@ -169,7 +165,7 @@
 <section class="p3-top margin-y-2 dm-background-light-blue">
   <div class="grid-container">
     <div class="grid-row">
-      <div class="tablet:grid-col-3">&nbsp;</div>
+      <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
       <div class="tablet:grid-col-9 p0 p1-5-right">
         <div class="p4-bottom">
           <%= render partial: 'risks_and_mitigations' %>
@@ -183,7 +179,7 @@
 <section class="p3-top margin-y-2">
   <div class="grid-container">
     <div class="grid-row">
-      <div class="tablet:grid-col-3">&nbsp;</div>
+      <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
       <div class="tablet:grid-col-9 p0 p1-5-right">
         <div class="p4-bottom">
           <%= render partial: 'timeline_and_checklist' %>
@@ -196,7 +192,7 @@
 <section class="dm-background-primary-blue">
   <div class="grid-container">
     <div class="grid-row padding-y-9">
-      <div class="tablet:grid-col-3">&nbsp;</div>
+      <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
       <div class="tablet:grid-col-9">
         <div class="grid-container-full">
           <div class="grid-row">
@@ -226,7 +222,7 @@
 <section class="p3-top dm-background-light-blue">
   <div class="grid-container">
     <div class="grid-row">
-      <div class="tablet:grid-col-3">&nbsp;</div>
+      <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
       <div class="tablet:grid-col-9 p0 p1-5-right">
         <div class="p4-bottom">
           <%= render partial: 'support_team' %>
