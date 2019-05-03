@@ -16,3 +16,10 @@
 #  e.preventDefault()
 #  $(this).parents('.dm-carousel').toggle('slide')
 #  $($(this).data('target')).toggle('slide')
+
+$(document).on 'click', '.practice-form-submit', (e) ->
+  $('form.usa-form').submit();
+
+$(document).on 'turbolinks:load', (e) ->
+  $('.tooltip').tooltip();
+#   init_papercrop();

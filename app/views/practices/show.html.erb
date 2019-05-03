@@ -18,7 +18,12 @@
           <% end %>
         </div>
       </div>
-    <% end %>
+      <% end %>
+      <% if current_user.has_role?(:admin) %>
+        <div style='float: right;'>
+          <%= link_to 'Edit', edit_practice_path(@practice), class: 'usa-button usa-button--outline' %>
+        </div>
+      <% end %>
 
     <div class="bg-white padding-5">
 
@@ -62,7 +67,7 @@
     <div class="grid-row">
       <div class="tablet:grid-col-5 padding-x-1">
         <% if @practice.main_display_image.present? %>
-          <%= image_tag @practice.main_display_image.url(:practice_show), alt: "#{@practice.name} display image" %>
+          <%= image_tag @practice.main_display_image.url(:thumb), alt: "#{@practice.name} display image" %>
         <% end %>
       </div>
       <div class="tablet:grid-col-7 padding-x-1">

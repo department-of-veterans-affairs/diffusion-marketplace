@@ -12,9 +12,15 @@
 //
 //= require rails-ujs
 //= require jquery
+//= require jquery.jcrop
+//= require sticky
+//= require jquery.scrollTo
+//= require papercrop
 //= require activestorage
 //= require turbolinks
 //= require uswds/uswds
+//= require jquery_nested_form
+//= require jquery-ui/widgets/tooltip
 //= require_tree .
 
 document.addEventListener('turbolinks:click', function (event) {

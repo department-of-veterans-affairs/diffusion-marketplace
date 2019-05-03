@@ -131,3 +131,17 @@
   height: 2px;
   background-color: $dm-color-light-grey;
 }
+
+.practice-input {
+  max-width: 100% !important;
+}
+
+.hidden-upload {
+  width: 1px;
+  height: 1px;
+  padding: 1px 0 0 1px;
+}
+
+.practice-edit-nav {
+  width: 14rem !important;
+}
