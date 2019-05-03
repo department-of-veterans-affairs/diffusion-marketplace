@@ -1,0 +1,10 @@
+<% @practice.additional_documents.each do |ad| %>
+  <div class="display-flex flex-justify margin-bottom-2">
+    <span><%= ad.title.present? ? ad.title : ad.attachment_file_name %></span>
+    <span>
+      <%= link_to ad.attachment.url, class: 'dm-font-color-pale-blue', download: ad.attachment_file_name do %>
+        <span class="fas fa-download dm-font-color-black"></span> Download (<%= content_type(ad.attachment) %>)
+      <% end %>
+    </span>
+  </div>
+<% end %>

@@ -1,0 +1,82 @@
+
+<div class="grid-container-full margin-bottom-4">
+  <div class="grid-row">
+    <div class="tablet:grid-col-6 text-center">
+      <h3 id="resources_required" class="font-sans-xl text-bold margin-0">Resources Required</h3>
+    </div>
+  </div>
+  <div class="grid-row">
+    <!-- Cost level Circle -->
+    <div class="grid-row flex-column flex-align-center flex-justify-center level-aggregate-circle <%= level_aggregate_style(@practice.cost_to_implement_aggregate) %>">
+      <div class="tablet:grid-col-12 margin-y-2">
+        <% cost_to_implement_aggregate = @practice.cost_to_implement_aggregate || 0 %>
+        <% (0..3).each do |index| %>
+          <% if index < cost_to_implement_aggregate %>
+            <i class="fas fa-dollar-sign large-icon-dark aggregate-icon"></i>
+          <% else %>
+            <i class="fas fa-dollar-sign large-icon-light aggregate-icon"></i>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="grid-auto">
+        <h4 class="margin-0 fw-100">Cost</h4>
+      </div>
+    </div>
+    <div class="tablet:grid-col-6 text-center mobile-show">
+      <p><%= cost_aggregate_description(@practice.cost_to_implement_aggregate) %></p>
+    </div>
+    <div class="tablet:grid-col-6 display-flex flex-column">
+      <% @practice.costs.each do |cost| %>
+        <p class="text-bold font-ui-md"><%= cost.description %></p>
+      <% end %>
+    </div>
+  </div>
+  <div class="grid-row mobile-hide">
+    <div class="tablet:grid-col-6 text-center">
+      <p><%= cost_aggregate_description(@practice.cost_to_implement_aggregate) %></p>
+    </div>
+  </div>
+</div>
+
+
+<div class="grid-container-full">
+  <div class="grid-row">
+    <div class="tablet:grid-col-6 text-center">
+      <h3 id="complexity" class="font-sans-xl text-bold margin-0">Complexity</h3>
+    </div>
+  </div>
+  <div class="grid-row ">
+    <!-- Complexity level Circle -->
+    <div class="grid-row flex-column flex-align-center flex-justify-center level-aggregate-circle <%= level_aggregate_style(@practice.difficulty_aggregate) %>">
+      <div class="tablet:grid-col-12 margin-y-2">
+        <% difficulty_aggregate = @practice.difficulty_aggregate || 0 %>
+        <% (0..3).each do |index| %>
+          <% if index < difficulty_aggregate %>
+            <i class="fas fa-wrench large-icon-dark aggregate-icon"></i>
+          <% else %>
+            <i class="fas fa-wrench large-icon-light aggregate-icon"></i>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="grid-auto">
+        <h4 class="margin-0 fw-100">Complexity</h4>
+      </div>
+    </div>
+
+    <div class="tablet:grid-col-6 text-center mobile-show">
+      <p><%= complexity_aggregate_description(@practice.difficulty_aggregate) %></p>
+    </div>
+
+    <div class="tablet:grid-col-6 display-flex flex-column">
+      <% @practice.difficulties.each do |difficulty| %>
+        <h3><%= difficulty.description %></h3>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="grid-row mobile-hide">
+    <div class="tablet:grid-col-6 text-center">
+      <p><%= complexity_aggregate_description(@practice.difficulty_aggregate) %></p>
+    </div>
+  </div>
+</div>

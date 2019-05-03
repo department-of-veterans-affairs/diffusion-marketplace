@@ -55,9 +55,11 @@ group :development, :test do
   gem 'simplecov'
   gem 'shoulda-matchers', require: false
 
-  gem 'sniffybara', git: 'https://github.com/department-of-veterans-affairs/sniffybara.git'
+  # gem 'sniffybara', git: 'https://github.com/department-of-veterans-affairs/sniffybara.git'
 
   gem 'rspec-retry'
+  gem 'axe-matchers'
+  gem 'webdrivers'
 end
 
 group :development do
@@ -83,6 +85,7 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 gem 'uswds-rails', github: 'agilesix/uswds-rails', branch: 'update-2.0.1'
 
 gem 'activerecord-nulldb-adapter'
