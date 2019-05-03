@@ -55,9 +55,11 @@ group :development, :test do
   gem 'simplecov'
   gem 'shoulda-matchers', require: false
 
-  gem 'sniffybara', git: 'https://github.com/department-of-veterans-affairs/sniffybara.git'
+  # gem 'sniffybara', git: 'https://github.com/department-of-veterans-affairs/sniffybara.git'
 
   gem 'rspec-retry'
+  gem 'axe-matchers'
+  gem 'webdrivers'
 end
 
 group :development do

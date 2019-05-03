@@ -446,6 +446,7 @@ ActiveRecord::Schema.define(version: 2019_05_02_153523) do
     t.integer "cost_to_implement_aggregate", default: 0
     t.integer "veteran_satisfaction_aggregate", default: 0
     t.integer "difficulty_aggregate", default: 0
+    t.integer "sustainability_aggregate", default: 0
     t.string "origin_title"
     t.string "origin_story"
     t.boolean "need_additional_staff"
@@ -468,6 +469,9 @@ ActiveRecord::Schema.define(version: 2019_05_02_153523) do
     t.integer "origin_picture_crop_y"
     t.integer "origin_picture_crop_w"
     t.integer "origin_picture_crop_h"
+    t.integer "number_departments", default: 0
+    t.boolean "it_required"
+    t.string "process"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "main_display_image_file_name"

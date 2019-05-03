@@ -22,7 +22,7 @@ namespace :surveymonkey do
       [4, 226731863, "Does your practice have peer-reviewed publications associated with it?"],
       [4, 226732296, "Additional publication upload 1"],
       [4, 226738172, "Do you have an implementation timeline for your practice?"],
-      [2, 227451866, "Under the side navigation \"Origin of this practice\" tab, please provide a photo of the individual who initiated the practice"],
+      [2, 227451866, "Please provide a photo of the individual who initiated the practice. (This will be displayed under \"Origin of the practice\")"],
       [2, 226726658, "Impact Photo 1"],
       [2, 226726701, "Impact Photo 2"],
       [2, 226726752, "Impact Photo 3"],
