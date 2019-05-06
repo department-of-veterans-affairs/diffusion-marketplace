@@ -2,6 +2,11 @@
 <section class="usa-section p2-top p2-bottom  dm-background-light-blue">
   <div class="grid-container">
     <%= render "shared/messages" %>
+    <% if current_user.has_role?(:admin) %>
+      <div style='float: right;'>
+        <%= link_to 'Edit', edit_practice_path(@practice), class: 'usa-button usa-button--outline' %>
+      </div>
+    <% end %>
     <% unless @practice.published && @practice.approved %>
       <div class="usa-alert usa-alert--warning">
         <div class="usa-alert__body">
@@ -18,11 +23,6 @@
           <% end %>
         </div>
       </div>
-      <% end %>
-      <% if current_user.has_role?(:admin) %>
-        <div style='float: right;'>
-          <%= link_to 'Edit', edit_practice_path(@practice), class: 'usa-button usa-button--outline' %>
-        </div>
       <% end %>
 
     <div class="bg-white padding-5">
