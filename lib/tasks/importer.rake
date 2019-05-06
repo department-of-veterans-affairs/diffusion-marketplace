@@ -59,6 +59,8 @@ namespace :importer do
       costs_difficulties
       impact_photos
       domains
+      practice_permissions
+      timelines
     end
     puts "*********** Completed Importing Practices! ***********"
   end
@@ -67,36 +69,37 @@ end
 def basic_answers
   puts "==> Importing Practice: #{@name} basic answers"
   question_fields = {
-    # 'When was this practice initiated? If day is unknown, use the first of the month': :date_initiated,
-    # The below question's text needs to be changed when a new sheet can be provided.
-    'Please list the station id of the facility that initiated this Practice. Please reference: https://www.va.gov/directory/guide/rpt_fac_list.cfm?sort=Sta&list_by=all&oid=all': :initiating_facility,
-    # 'Please enter an estimate in dollars of the cost avoidance per facility (Medical Center, CBOC, or applicable institution).': :impact_financial_estimate_saved,
-    # 'Please enter relevant financial data regarding this practice such as ROI, a business case summary, or other financial analysis.': :impact_financial_roi,
-    "Please supply an email address for this practice's support network in order to direct interested parties. (e.g. HAPPEN@va.gov)": :support_network_email,
-    "Please identify where your practice falls currently in VHA’s Phase Gate Model of Innovation.": :phase_gate,
-    "Do you have a link to your practice's VA Pulse Group?": :va_pulse_link,
-    'How long does it usually take a group to implement your practice? How long do you expect it to take?': :implementation_time_estimate,
-    'Do you have anything else you would like to share regarding your practice?': :additional_notes,
-    'On the Practice page, we often use a descriptive tagline as the functional title. For example: the FLOW3 Practice is not well described by the title, and we therefor use the tagline: "Delivery of prosthetic limbs to Veterans in less than ½ the time".Please provide a 5-10 word descriptive tagline for your Practice. This will be used as the functional title.': :tagline,
-    'On the Practice page, under the tagline/functional title you just provided, we would like a longer descriptive tagline to further explain your practice. For example, for FLOW3: "Enable 53% faster delivery of prosthetic limbs to Veterans. Automating the prosthetic limb procurement process to improve continuity of care for Veterans."Please provide a 1-2 line descriptive tagline for your Practice. This will be used below the functional title.': :description,
-    'Please provide a 50-100 word descriptive paragraph for your Practice. ': :summary,
-    # 'Please provide your best estimate rating of your Practice with regards to Cost Avoidance on a scale of 1 - 4.': :cost_savings_aggregate,
-    # 'Please provide your best estimate rating of your Practice with regards to Impact on health/care experience on a scale of 1 - 4.': :veteran_satisfaction_aggregate,
-    'Please provide your best estimate of the Cost to Implement your Practice on a scale of 1 - 4': :cost_to_implement_aggregate,
-    'Please provide your best estimate of the Complexity of Implementation of your Practice on a scale of 1 - 4 (Complexity of getting the practice started.)': :difficulty_aggregate,
-    'Please provide your best estimate of the Complexity of Maintenance and Sustainability of your Practice on a scale of 1 - 4': :sustainability_aggregate,
-    'Is Information Technology (IT) required to implement the practice?': :it_required,
-    'Is this practice a New Clinical Approach or New Process? Or is this practice a process change of something already being done? (Choose one of the following.)': :process,
-    # 'Did your institution have to hire additional staff to implement this Practice?': :need_additional_staff,
-    # 'Is there training required?': :need_training,
-    'Please list who provides the training.': :training_provider,
-    'Training details:': :required_training_summary,
-    # 'Will a policy change be required?': :need_policy_change,
-    'Will a new license or certification be required?': :need_new_license,
-    'Please enter a 10-20 word title for the origin story of this Practice': :origin_title,
-    'Please provide a 50 - 100 word paragraph sharing the story of the origin of this practice': :origin_story,
-    'Number of facilities that have successfully implemented the Practice (Please enter a whole number):': :number_adopted,
-    'Number of Departments required to implement the practice?': :number_departments,
+      # 'When was this practice initiated? If day is unknown, use the first of the month': :date_initiated,
+      # The below question's text needs to be changed when a new sheet can be provided.
+      'Please list the station id of the facility that initiated this Practice. Please reference: https://www.va.gov/directory/guide/rpt_fac_list.cfm?sort=Sta&list_by=all&oid=all': :initiating_facility,
+      # 'Please enter an estimate in dollars of the cost avoidance per facility (Medical Center, CBOC, or applicable institution).': :impact_financial_estimate_saved,
+      # 'Please enter relevant financial data regarding this practice such as ROI, a business case summary, or other financial analysis.': :impact_financial_roi,
+      "Please supply an email address for this practice's support network in order to direct interested parties. (e.g. HAPPEN@va.gov)": :support_network_email,
+      "Please identify where your practice falls currently in VHA’s Phase Gate Model of Innovation.": :phase_gate,
+      "Do you have a link to your practice's VA Pulse Group?": :va_pulse_link,
+      'How long does it usually take a group to implement your practice? How long do you expect it to take?': :implementation_time_estimate,
+      'Do you have anything else you would like to share regarding your practice?': :additional_notes,
+      'On the Practice page, we often use a descriptive tagline as the functional title. For example: the FLOW3 Practice is not well described by the title, and we therefor use the tagline: "Delivery of prosthetic limbs to Veterans in less than ½ the time".Please provide a 5-10 word descriptive tagline for your Practice. This will be used as the functional title.': :tagline,
+      'On the Practice page, under the tagline/functional title you just provided, we would like a longer descriptive tagline to further explain your practice. For example, for FLOW3: "Enable 53% faster delivery of prosthetic limbs to Veterans. Automating the prosthetic limb procurement process to improve continuity of care for Veterans."Please provide a 1-2 line descriptive tagline for your Practice. This will be used below the functional title.': :description,
+      'Please provide a 50-100 word descriptive paragraph for your Practice. ': :summary,
+      # 'Please provide your best estimate rating of your Practice with regards to Cost Avoidance on a scale of 1 - 4.': :cost_savings_aggregate,
+      # 'Please provide your best estimate rating of your Practice with regards to Impact on health/care experience on a scale of 1 - 4.': :veteran_satisfaction_aggregate,
+      'Please provide your best estimate of the Cost to Implement your Practice on a scale of 1 - 4': :cost_to_implement_aggregate,
+      'Please provide your best estimate of the Complexity of Implementation of your Practice on a scale of 1 - 4 (Complexity of getting the practice started.)': :difficulty_aggregate,
+      'Please provide your best estimate of the Complexity of Maintenance and Sustainability of your Practice on a scale of 1 - 4': :sustainability_aggregate,
+      'Is Information Technology (IT) required to implement the practice?': :it_required,
+      'Is this practice a New Clinical Approach or New Process? Or is this practice a process change of something already being done? (Choose one of the following.)': :process,
+      # 'Did your institution have to hire additional staff to implement this Practice?': :need_additional_staff,
+      # 'Is there training required?': :need_training,
+      'Please list who provides the training.': :training_provider,
+      'Training details:': :required_training_summary,
+      # 'Will a policy change be required?': :need_policy_change,
+      'Will a new license or certification be required?': :need_new_license,
+      'Please enter a 10-20 word title for the origin story of this Practice': :origin_title,
+      'Please provide a 50 - 100 word paragraph sharing the story of the origin of this practice': :origin_story,
+      'Number of facilities that have successfully implemented the Practice (Please enter a whole number):': :number_adopted,
+      'Number of Departments required to implement the practice?': :number_departments,
+      'Number of facilities that have attempted to implement the Practice and have NOT been successful (Please enter a whole number):': :number_failed,
   }
   question_fields.each do |key, value|
     @practice.send("#{value.to_sym}=", @answers[@questions.index(key.to_s)]) if value.present?
@@ -109,7 +112,7 @@ end
 def practice_partners
   puts "==> Importing Practice: #{@name} StratePractice Partners"
   question_fields = {
-    'Which of the following statements regarding Partners apply to this Practice? (Mark all that apply)': 13
+      'Which of the following statements regarding Partners apply to this Practice? (Mark all that apply)': 13
   }
   question_fields.each do |key, value|
     q_index = @questions.index(key.to_s)
@@ -141,14 +144,14 @@ def va_employees
   puts "==> Importing Practice: #{@name} Support Team"
   # TODO: Innovation team
   question_fields = {
-    "Who are the VA employee(s) responsible for the support of this Practice? (SupportTeam)Please separate the person's Name from their Role with a backslash (\\).": 5
+      "Who are the VA employee(s) responsible for the support of this Practice? (SupportTeam)Please separate the person's Name from their Role with a backslash (\\).": 5
   }
   avatars = [
-    'Please upload a headshot of Support Team Person 1',
-    'Please upload a headshot of Support Team Person 2',
-    'Please upload a headshot of Support Team Person 3',
-    'Please upload a headshot of Support Team Person 4',
-    'Please upload a headshot of Support Team Person 5',
+      'Please upload a headshot of Support Team Person 1',
+      'Please upload a headshot of Support Team Person 2',
+      'Please upload a headshot of Support Team Person 3',
+      'Please upload a headshot of Support Team Person 4',
+      'Please upload a headshot of Support Team Person 5',
   ]
   index = 0
   question_fields.each do |key, value|
@@ -166,10 +169,10 @@ def va_employees
         image_file = File.new(image_path)
         va_employee = VaEmployee.find_by(name: vae_name, role: vae_role) || VaEmployee.create(name: vae_name, role: vae_role,
                                                                                               avatar: ActionDispatch::Http::UploadedFile.new(
-                                                                                              filename: File.basename(image_file),
-                                                                                              tempfile: image_file,
-                                                                                              # detect the image's mime type with MIME if you can't provide it yourself.
-                                                                                              type: MIME::Types.type_for(image_path).first.content_type
+                                                                                                  filename: File.basename(image_file),
+                                                                                                  tempfile: image_file,
+                                                                                                  # detect the image's mime type with MIME if you can't provide it yourself.
+                                                                                                  type: MIME::Types.type_for(image_path).first.content_type
                                                                                               ))
         index += 1
       else
@@ -263,12 +266,12 @@ end
 def categories
   puts "==> Importing Practice: #{@name} Categories"
   question_fields = {
-    'What Primary care specialties does this Practice impact? Please mark all that apply.': 33,
-    'What medical sub-specialties does this Practice impact? Please select all all that apply.': 23,
-    'What surgical specialties does this Practice impact? Please select all all that apply.': 14,
-    'What are the whole health impacts of this practice? (Please select all that apply.)': 8,
-    "This question will allow the user to find your Practice by a medical complaint, clinical condition, or system of the body.\u2028\u2028 We are going to divide complaints, conditions, and systems anatomically.": 36,
-    'Please enter one condition per line': 5
+      'What Primary care specialties does this Practice impact? Please mark all that apply.': 33,
+      'What medical sub-specialties does this Practice impact? Please select all all that apply.': 23,
+      'What surgical specialties does this Practice impact? Please select all all that apply.': 14,
+      'What are the whole health impacts of this practice? (Please select all that apply.)': 8,
+      "This question will allow the user to find your Practice by a medical complaint, clinical condition, or system of the body.\u2028\u2028 We are going to divide complaints, conditions, and systems anatomically.": 36,
+      'Please enter one condition per line': 5
   }
 
   question_fields.each do |key, value|
@@ -295,7 +298,7 @@ end
 def clinical_conditions
   puts "==> Importing Practice: #{@name} Clinical Conditions"
   question_fields = {
-    'Which of the following clinical conditions does this practice affect? (Please select all that apply.)': 16
+      'Which of the following clinical conditions does this practice affect? (Please select all that apply.)': 16
   }
 
   question_fields.each do |key, value|
@@ -322,7 +325,7 @@ end
 def financial_files
   puts "==> Importing Practice: #{@name} Financial Files"
   question_fields = {
-    "Please upload applicable financial information such as a formal business case/return on investment (ROI).": 1
+      "Please upload applicable financial information such as a formal business case/return on investment (ROI).": 1
   }
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
@@ -330,18 +333,18 @@ def financial_files
     image_file = File.new(image_path)
 
     FinancialFile.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
-                                                           filename: File.basename(image_file),
-                                                           tempfile: image_file,
-                                                           # detect the image's mime type with MIME if you can't provide it yourself.
-                                                           type: MIME::Types.type_for(image_path).first.content_type
-                                                           )
+        filename: File.basename(image_file),
+        tempfile: image_file,
+        # detect the image's mime type with MIME if you can't provide it yourself.
+        type: MIME::Types.type_for(image_path).first.content_type
+    )
   end
 end
 
 def job_positions
   puts "==> Importing Practice: #{@name} Job Positions"
   question_fields = {
-    "Which of the following job titles or positions does this practice impact? (Please select all that apply.)": 10
+      "Which of the following job titles or positions does this practice impact? (Please select all that apply.)": 10
   }
 
   question_fields.each do |key, value|
@@ -368,7 +371,7 @@ end
 def ancillary_services
   puts "==> Importing Practice: #{@name} Ancillary Services"
   question_fields = {
-    'Which of the following ancillary services does this practice impact? (Please select all that apply.)': 11
+      'Which of the following ancillary services does this practice impact? (Please select all that apply.)': 11
   }
 
   question_fields.each do |key, value|
@@ -395,7 +398,7 @@ end
 def clinical_locations
   puts "==> Importing Practice: #{@name} Clinical Locations"
   question_fields = {
-    'Which of the following clinical locations does this practice impact? (Please select all that apply.)': 12
+      'Which of the following clinical locations does this practice impact? (Please select all that apply.)': 12
   }
 
   question_fields.each do |key, value|
@@ -467,26 +470,32 @@ end
 
 def video_files
   puts "==> Importing Practice: #{@name} Video Files"
-  question_fields = {
-    'Do you have a short video that provides an explanation, summary, or testimonial about your practice? (Please paste YouTube url or other link)': :url,
-  }
+  question_fields = [
+      'Do you have a short video that provides an explanation, summary, or testimonial about your practice? (Please paste YouTube url or other link)',
+      'Enter title and description for video'
+  ]
 
-  question_fields.each do |key, value|
-    q_index = @questions.index(key.to_s)
+  # question_fields.each do |key, value|
+  url_q_index = @questions.index(question_fields[0])
 
-    answer = @answers[q_index]
-    next if answer.blank?
+  url_answer = @answers[url_q_index]
+  # next if answer.blank?
+  return if url_answer.blank?
 
-    VideoFile.create(practice: @practice, url: answer) unless VideoFile.where(url: answer, practice: @practice).any?
-  end
+  title_and_description_q_index = @questions.index(question_fields[1].to_s)
+  title_answer = @answers[title_and_description_q_index]
+  description_answer = @answers[title_and_description_q_index + 1]
+
+  VideoFile.create(practice: @practice, url: url_answer, title: title_answer, description: description_answer) unless VideoFile.where(url: url_answer, practice: @practice).any?
+  # end
 end
 
 def additional_documents
   puts "==> Importing Practice: #{@name} Additional Documents"
   question_fields = {
-    'Do you have survey results, verifiable testimonials, press releases, news articles regarding your practice that you would like to share?': :attachment,
-    'Additional practice information 1': :attachment,
-    'Additional practice information 2': :attachment,
+      'Do you have survey results, verifiable testimonials, press releases, news articles regarding your practice that you would like to share?': :attachment,
+      'Additional practice information 1': :attachment,
+      'Additional practice information 2': :attachment,
   }
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
@@ -494,11 +503,11 @@ def additional_documents
     image_file = File.new(image_path)
 
     AdditionalDocument.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
-                                                           filename: File.basename(image_file),
-                                                           tempfile: image_file,
-                                                           # detect the image's mime type with MIME if you can't provide it yourself.
-                                                           type: MIME::Types.type_for(image_path).first.content_type
-                                                           )
+        filename: File.basename(image_file),
+        tempfile: image_file,
+        # detect the image's mime type with MIME if you can't provide it yourself.
+        type: MIME::Types.type_for(image_path).first.content_type
+    )
   end
 end
 
@@ -524,7 +533,7 @@ end
 def toolkit_files
   puts "==> Importing Practice: #{@name} Toolkit Files"
   question_fields = {
-    'Does your practice have an implementation toolkit?': :attachment
+      'Does your practice have an implementation toolkit?': :attachment
   }
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
@@ -532,18 +541,18 @@ def toolkit_files
     image_file = File.new(image_path)
 
     ToolkitFile.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
-                                                           filename: File.basename(image_file),
-                                                           tempfile: image_file,
-                                                           # detect the image's mime type with MIME if you can't provide it yourself.
-                                                           type: MIME::Types.type_for(image_path).first.content_type
-                                                           )
+        filename: File.basename(image_file),
+        tempfile: image_file,
+        # detect the image's mime type with MIME if you can't provide it yourself.
+        type: MIME::Types.type_for(image_path).first.content_type
+    )
   end
 end
 
 def checklist_files
   puts "==> Importing Practice: #{@name} Checklist Files"
   question_fields = {
-    'Does your practice have a pre-implementation checklist?': :attachment
+      'Does your practice have a pre-implementation checklist?': :attachment
   }
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
@@ -551,19 +560,19 @@ def checklist_files
     image_file = File.new(image_path)
 
     ChecklistFile.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
-                                                           filename: File.basename(image_file),
-                                                           tempfile: image_file,
-                                                           # detect the image's mime type with MIME if you can't provide it yourself.
-                                                           type: MIME::Types.type_for(image_path).first.content_type
-                                                           )
+        filename: File.basename(image_file),
+        tempfile: image_file,
+        # detect the image's mime type with MIME if you can't provide it yourself.
+        type: MIME::Types.type_for(image_path).first.content_type
+    )
   end
 end
 
 def publication_files
   puts "==> Importing Practice: #{@name} Publication Files"
   question_fields = {
-    'Does your practice have peer-reviewed publications associated with it?': :attachment,
-    'Additional publication upload 1': :attachment
+      'Does your practice have peer-reviewed publications associated with it?': :attachment,
+      'Additional publication upload 1': :attachment
   }
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
@@ -571,18 +580,18 @@ def publication_files
     image_file = File.new(image_path)
 
     PublicationFile.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
-                                                           filename: File.basename(image_file),
-                                                           tempfile: image_file,
-                                                           # detect the image's mime type with MIME if you can't provide it yourself.
-                                                           type: MIME::Types.type_for(image_path).first.content_type
-                                                           )
+        filename: File.basename(image_file),
+        tempfile: image_file,
+        # detect the image's mime type with MIME if you can't provide it yourself.
+        type: MIME::Types.type_for(image_path).first.content_type
+    )
   end
 end
 
 def publications
   puts "==> Importing Practice: #{@name} Publications"
   question_fields = {
-    'Does your practice have peer-reviewed publications associated with it online? Enter url(s) if so.': 3
+      'Does your practice have peer-reviewed publications associated with it online? Enter url(s) if so.': 3
   }
 
   question_fields.each do |key, value|
@@ -633,7 +642,7 @@ end
 def implementation_timeline
   puts "==> Importing Practice: #{@name} Implementation Timeline"
   question_fields = {
-    'Do you have an implementation timeline for your practice?': :attachment
+      'Do you have an implementation timeline for your practice?': :attachment
   }
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
@@ -641,27 +650,26 @@ def implementation_timeline
     image_file = File.new(image_path)
 
     ImplementationTimelineFile.create practice: @practice, attachment: ActionDispatch::Http::UploadedFile.new(
-                                                           filename: File.basename(image_file),
-                                                           tempfile: image_file,
-                                                           # detect the image's mime type with MIME if you can't provide it yourself.
-                                                           type: MIME::Types.type_for(image_path).first.content_type
-                                                           )
+        filename: File.basename(image_file),
+        tempfile: image_file,
+        # detect the image's mime type with MIME if you can't provide it yourself.
+        type: MIME::Types.type_for(image_path).first.content_type
+    )
   end
 end
 
 def risk_mitigations
   puts "==> Importing Practice: #{@name} Risks and Mitigations"
   question_fields = {
-    'What is the primary risk to implementation? Please describe how you would mitigate it.': 2,
-    'What is the second risk to implementation? Please describe how you would mitigate it.': 2,
-    'What is the third risk to implementation? Please describe how you would mitigate it.': 2,
+      'What is the primary risk to implementation? Please describe how you would mitigate it.': 2,
+      'What is the second risk to implementation? Please describe how you would mitigate it.': 2,
+      'What is the third risk to implementation? Please describe how you would mitigate it.': 2,
   }
   question_fields.each do |key, value|
     q_index = @questions.index(key.to_s)
     next if @answers[q_index].blank?
 
     rm = RiskMitigation.create practice: @practice
-
 
 
     split_risk_answer = @answers[q_index].split(/\\/)
@@ -684,7 +692,7 @@ def additional_staff
       {'What job titles are required to implement this Practice?': 5},
       {'For the job titles listed, how many hours are required per week?': 5},
       {'For the job titles listed, what is the duration of the job? Please indicate the number of weeks or type in "Permanent"': 5}
-    ]
+  ]
 
   (0..4).each do |i|
     title = @answers[@questions.index(question_fields[0].keys[0].to_s) + i]
@@ -699,7 +707,7 @@ end
 def additional_resources
   puts "==> Importing Practice: #{@name} Additional Resources"
   question_fields = {
-    'What other resources and supplies are needed for this Practice?': 5
+      'What other resources and supplies are needed for this Practice?': 5
   }
 
   question_fields.each do |key, value|
@@ -715,7 +723,7 @@ end
 def required_training_staff
   puts "==> Importing Practice: #{@name} Required Training Staff"
   question_fields = {
-    'Who is required to take the training?': 5
+      'Who is required to take the training?': 5
   }
 
   question_fields.each do |key, value|
@@ -731,7 +739,7 @@ end
 def costs_difficulties
   puts "==> Importing Practice: #{@name} Costs and Difficulties"
   question_fields = {
-    'List other Costs of Implementation that are unique to your Practice.': 6
+      'List other Costs of Implementation that are unique to your Practice.': 6
   }
   question_fields.each do |key, value|
     q_index = @questions.index(key.to_s)
@@ -757,20 +765,20 @@ end
 def impact_photos
   puts "==> Importing Practice: #{@name} Human Impact Photos"
   question_fields = [[
-    'Impact Photo 1',
-    'Please provide a title for Impact Picture 1',
-    'Please provide a brief paragraph describing the photo and the Impact.'
-  ], [
-    'Impact Photo 2',
-    'Please provide a title for Impact Picture 2',
-    'Please provide a brief paragraph describing the photo and the Impact.'
-  ], [
-    'Impact Photo 3',
-    'Please provide a title for Impact Picture 3',
-    'Please provide a brief paragraph describing the photo and the Impact.'
-  ]]
+                         'Impact Photo 1',
+                         'Please provide a title for Impact Picture 1',
+                         'Please provide a brief paragraph describing the photo and the Impact.'
+                     ], [
+                         'Impact Photo 2',
+                         'Please provide a title for Impact Picture 2',
+                         'Please provide a brief paragraph describing the photo and the Impact.'
+                     ], [
+                         'Impact Photo 3',
+                         'Please provide a title for Impact Picture 3',
+                         'Please provide a brief paragraph describing the photo and the Impact.'
+                     ]]
   question_fields.each_with_index do |fields, index|
-    description_indices = @questions.each_index.select { |i| @questions[i] == fields[2] }
+    description_indices = @questions.each_index.select {|i| @questions[i] == fields[2]}
     next if @answers[@questions.index(fields[0])].blank?
 
     image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(fields[0])]}"
@@ -779,11 +787,11 @@ def impact_photos
     description = @answers[description_indices[index]]
 
     ImpactPhoto.create(practice: @practice, title: title, description: description, attachment: ActionDispatch::Http::UploadedFile.new(
-                            filename: File.basename(image_file),
-                            tempfile: image_file,
-                            # detect the image's mime type with MIME if you can't provide it yourself.
-                            type: MIME::Types.type_for(image_path).first.content_type
-                           ))
+        filename: File.basename(image_file),
+        tempfile: image_file,
+        # detect the image's mime type with MIME if you can't provide it yourself.
+        type: MIME::Types.type_for(image_path).first.content_type
+    ))
   end
 end
 
@@ -791,7 +799,7 @@ def file_uploads
   puts "==> Importing Practice: #{@name} File Uploads"
   question_fields = {
       "Please provide a photo of the individual who initiated the practice. (This will be displayed under \"Origin of the practice\")": :origin_picture,
-    'Upload a Display Image for your practice. This image will be used for the main title page and marketplace tile.': :main_display_image
+      'Upload a Display Image for your practice. This image will be used for the main title page and marketplace tile.': :main_display_image
   }
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
@@ -800,10 +808,45 @@ def file_uploads
     image_file = File.new(image_path)
 
     @practice.send("#{value.to_sym}=", ActionDispatch::Http::UploadedFile.new(
-                                       filename: File.basename(image_file),
-                                       tempfile: image_file,
-                                       # detect the image's mime type with MIME if you can't provide it yourself.
-                                       type: MIME::Types.type_for(image_path).first.content_type
-                                       ))
+        filename: File.basename(image_file),
+        tempfile: image_file,
+        # detect the image's mime type with MIME if you can't provide it yourself.
+        type: MIME::Types.type_for(image_path).first.content_type
+    ))
   end
+end
+
+def practice_permissions
+  puts "==> Importing Practice: #{@name} Practice Permissions"
+  question_fields = {
+      "Are any permissions required for this practice? (e.g. \"Letters of Understanding,\" \"Proof of Funding,\" \"Written Permission from Department Heads,\" etc). Please list.": 5
+  }
+
+  question_fields.each do |key, value|
+    q_index = @questions.index(key.to_s)
+    end_index = q_index + value
+
+    (q_index..end_index).each do |i|
+      next if @answers[i].blank?
+      PracticePermission.find_or_create_by!(description: @answers[i], practice: @practice)
+    end
+  end
+end
+
+def timelines
+  puts "==> Importing Practice: #{@name} Timelines"
+  question_fields = {
+      "During the time you just listed, what are 3 to 7 milestones that should be met during implementation? Please list with the corresponding time frame.": 14
+  }
+
+  question_fields.each do |key, value|
+    q_index = @questions.index(key.to_s)
+    end_index = q_index + 13
+
+    (q_index..end_index).step(2) do |i|
+      next if @answers[i].blank?
+      Timeline.find_or_create_by!(milestone: @answers[i], timeline: @answers[i + 1], practice: @practice)
+    end
+  end
+
 end

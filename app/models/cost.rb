@@ -1,4 +1,4 @@
 class Cost < ApplicationRecord
-  acts_as_list
+  acts_as_list scope: :practice
   belongs_to :practice
 end
