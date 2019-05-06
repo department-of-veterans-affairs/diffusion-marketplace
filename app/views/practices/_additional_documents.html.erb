@@ -1,5 +1,5 @@
 <% @practice.additional_documents.each do |ad| %>
-  <div class="display-flex flex-justify margin-bottom-2">
+  <div class="display-flex flex-justify margin-bottom-2 hyphens-auto word-break-break-word">
     <span><%= ad.title.present? ? ad.title : ad.attachment_file_name %></span>
     <span>
       <%= link_to ad.attachment.url, class: 'dm-font-color-pale-blue', download: ad.attachment_file_name do %>

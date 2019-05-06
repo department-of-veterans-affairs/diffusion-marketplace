@@ -1,5 +1,5 @@
 <% @practice.publications.each do |p| %>
-  <div class="display-flex flex-justify margin-bottom-2">
+  <div class="display-flex flex-justify margin-bottom-2 hyphens-auto word-break-break-word">
     <span><%= p.title %></span>
     <span>
       <%= link_to p.link, class: 'dm-font-color-pale-blue', target: '_blank' do %>
