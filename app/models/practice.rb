@@ -42,6 +42,7 @@ class Practice < ApplicationRecord
   has_many :photo_files
   has_many :practice_management_practices
   has_many :practice_managements, through: :practice_management_practices
+  has_many :practice_permissions
   has_many :publications
   has_many :publication_files
   has_many :required_staff_trainings
