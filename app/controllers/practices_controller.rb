@@ -110,8 +110,7 @@ class PracticesController < ApplicationController
       end
 
       # display initiating facility
-      facility_data = facilities_json['features'].find { |f| f['properties']['id'] == practice.initiating_facility }
-      practice_hash['initiating_facility'] = facility_data.present? ? facility_data['properties']['name'] : practice.initiating_facility
+      practice_hash['initiating_facility'] = helpers.facility_name(practice.initiating_facility, facilities_json['features'])
 
       practices_array.push practice_hash
     end

@@ -48,8 +48,7 @@
               <div class="marketplace-card-name-location dm-font-dark-black fw-100 x1-bottom">
                 <%= practice.name %> |
                 <span class="uppercase">
-                  <% facility_data = @facilities_data.find { |f| f['properties']['id'] == practice.initiating_facility } %>
-                  <%= facility_data.present? ? facility_data['properties']['name'] : practice.initiating_facility %>
+                  <%= facility_name(practice.initiating_facility) %>
                 </span>
               </div>
               <div class="marketplace-card-adoption dm-font-color-dark-brown display-flex-align-items-center">

@@ -67,4 +67,10 @@ module ApplicationHelper
     end
   end
 
+  def facility_name(facility_id, facilities_data = nil)
+    facilities_data = facilities_data || @facilities_data
+    facility_data = facilities_data.find { |f| f['properties']['id'] == facility_id }
+    facility_data.present? ? facility_data['properties']['name'] : facility_id
+  end
+
 end
