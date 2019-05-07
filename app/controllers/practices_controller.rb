@@ -7,11 +7,13 @@ class PracticesController < ApplicationController
   # GET /practices.json
   def index
     @practices = Practice.where(approved: true, published: true)
+    @facilities_data = facilities_json['features']
   end
 
   # GET /practices/1
   # GET /practices/1.json
   def show
+    @facility_data = facilities_json['features'].find { |f| f['properties']['id'] == @practice.initiating_facility }
   end
 
   # GET /practices/new
@@ -67,7 +69,7 @@ class PracticesController < ApplicationController
     respond_to do |format|
       if updated
         format.html { redirect_to @practice, notice: 'Practice was successfully updated.' }
-        format.json { render :show, status: :ok, location: @practice }
+        format.json { render :show, status: :ok, location: @practice}
       else
         format.html { render :edit }
         format.json { render json: @practice.errors, status: :unprocessable_entity }
@@ -99,7 +101,7 @@ class PracticesController < ApplicationController
     practices_array = []
 
     practices.each do |practice|
-      practice_hash = JSON.parse(practice.to_json)  # convert to hash
+      practice_hash = JSON.parse(practice.to_json) # convert to hash
       practice_hash['image'] = practice.main_display_image.url
       if practice.date_initiated
         practice_hash['date_initiated'] = practice.date_initiated.strftime("%B %Y")
@@ -153,9 +155,13 @@ class PracticesController < ApplicationController
       respond_to do |format|
         warning = 'You are not authorized to view this content.'
         flash[:warning] = warning
-        format.html { redirect_to '/', warning: warning }
-        format.json { render warning: warning }
+        format.html {redirect_to '/', warning: warning}
+        format.json {render warning: warning}
       end
     end
-end
+  end
+
+  def facilities_json
+    JSON.parse(File.read("#{Rails.root}/lib/assets/va_gov_facilities_all_response.json"))
+  end
 end
