@@ -1,14 +1,20 @@
-<div class='grid-container p3-top'>
-  <% if @practice.origin_picture.present? %>
-    <div class='grid-row flex-row flex-justify-center flex-align-center origin-picture-container overflow-hidden margin-0-auto rounded'>
-      <%= image_tag @practice.origin_picture.url(:thumb), class: '', alt: "#{@practice.name} origins" %>
+<h3 id="origin" class="font-sans-xl text-bold margin-0">Origin of the Practice</h3>
+<div class='grid-container-full'>
+  <div class='grid-row'>
+    <div class="tablet:grid-col-8">
+      <div class="">
+        <h4 class="margin-y-105"><%= @practice.origin_title %></h4>
+      </div>
+      <div>
+        <p class="margin-0 hyphens-auto word-break-break-word"><%= @practice.origin_story %></p>
+      </div>
     </div>
-  <% end %>
-
-  <div class='x4-top'>
-    <h3><%= @practice.origin_title %></h3>
-  </div>
-  <div>
-    <p><%= @practice.origin_story %></p>
+    <div class="tablet:grid-col-4 display-flex flex-align-center">
+      <% if @practice.origin_picture.present? %>
+        <div class='margin-y-2 grid-row flex-row flex-justify-center flex-align-center origin-picture-container overflow-hidden margin-x-auto rounded'>
+          <%= image_tag @practice.origin_picture.url(:thumb), class: '', alt: "#{@practice.name} origins" %>
+        </div>
+      <% end %>
+    </div>
   </div>
 </div>

@@ -42,12 +42,13 @@ class Practice < ApplicationRecord
   has_many :photo_files
   has_many :practice_management_practices
   has_many :practice_managements, through: :practice_management_practices
+  has_many :practice_partner_practices
+  has_many :practice_partners, through: :practice_partner_practices
+  has_many :practice_permissions
   has_many :publications
   has_many :publication_files
   has_many :required_staff_trainings
   has_many :risk_mitigations
-  has_many :practice_partner_practices
-  has_many :practice_partners, through: :practice_partner_practices
   has_many :survey_result_files
   has_many :timelines
   has_many :toolkit_files

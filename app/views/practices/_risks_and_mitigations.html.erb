@@ -1,0 +1,31 @@
+<!-- Risk and mitigations list -->
+<h3 id="risks_and_mitigation" class="font-sans-xl text-bold margin-0 margin-bottom-6">Risks & Mitigation</h3>
+<div class="grid-container-full">
+  <div class='grid-row'>
+    <div class='tablet:grid-col-12'>
+      <% @practice.risk_mitigations.each_with_index do |rm, index| %>
+        <% if index > 0 %>
+          <div class='risk-border'></div>
+        <% end %>
+        <div class='grid-row'>
+          <div class='grid-col-5'>
+            <div class='grid-row flex-column flex-justify-start flex-align-start'>
+              <h4 class="margin-0">Risk</h4>
+              <% rm.risks.each do |risk| %>
+                <p><%= risk.description %></p>
+              <% end %>
+            </div>
+          </div>
+          <div class='grid-col-5 grid-offset-2'>
+            <div class='grid-row flex-column flex-justify-start flex-align-start'>
+              <h4 class="margin-0">Mitigation</h4>
+              <% rm.mitigations.each do |mitigation| %>
+                <p><%= mitigation.description %></p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

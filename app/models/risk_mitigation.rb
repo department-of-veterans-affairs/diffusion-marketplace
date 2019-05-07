@@ -1,5 +1,5 @@
 class RiskMitigation < ApplicationRecord
-  acts_as_list
+  acts_as_list scope: :practice
   belongs_to :practice
   has_many :risks, dependent: :destroy
   has_many :mitigations, dependent: :destroy
