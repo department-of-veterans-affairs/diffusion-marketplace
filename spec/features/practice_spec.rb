@@ -8,7 +8,7 @@ describe 'Practices', type: :feature do
     @approver = User.create!(email: 'squidward.tentacles@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now)
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
-    @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user)
+    @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name')
   end
 
   it 'should not let unauthenticated users interact with practices' do
@@ -78,6 +78,41 @@ describe 'Practices', type: :feature do
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content(@user_practice.name)
     expect(page).to have_current_path(practice_path(@user_practice))
+  end
+
+  it 'should display the initiating facility\'s name' do
+    login_as(@user, :scope => :user, :run_callbacks => false)
+
+    # Visit an individual Practice that is approved and published
+    practice = Practice.create!(name: 'A public practice', approved: true, published: true, initiating_facility: 'vc_0508V')
+    visit practice_path(practice)
+    expect(page).to be_accessible.according_to :wcag2a, :section508
+    expect(page).to have_content(practice.name)
+    expect(page).to have_content('TACOMA VET CENTER')
+    expect(page).to have_current_path(practice_path(practice))
+
+    # Visit the Marketplace
+    visit '/practices'
+    expect(page).to be_accessible.according_to :wcag2a, :section508
+    expect(page).to have_content(practice.name)
+    expect(page).to have_content('TACOMA VET CENTER')
+  end
+
+  it 'should display the initiating facility\'s initiating facility property if it is not found in the map' do
+    login_as(@user, :scope => :user, :run_callbacks => false)
+    @user_practice.update(published: true, approved: true)
+    # Visit an individual Practice that is approved and published
+    visit practice_path(@user_practice)
+    expect(page).to be_accessible.according_to :wcag2a, :section508
+    expect(page).to have_content(@user_practice.name)
+    expect(page).to have_content(@user_practice.initiating_facility.upcase)
+    expect(page).to have_current_path(practice_path(@user_practice))
+
+    # Visit the Marketplace
+    visit '/practices'
+    expect(page).to be_accessible.according_to :wcag2a, :section508
+    expect(page).to have_content(@user_practice.name)
+    expect(page).to have_content(@user_practice.initiating_facility.upcase)
   end
 
 end

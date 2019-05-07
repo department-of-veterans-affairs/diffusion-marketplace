@@ -41,7 +41,7 @@ document.addEventListener('turbolinks:load', () => {
        `<div class="grid-row margin-bottom-3">
           <div class="grid-col flex-1 margin-right-3">
             <div class="img-box margin-top-2">
-              <div class="img-box-content" style="background: url('${result.item.image}') #97d4ea; background-size: cover"></div>
+              <div class="img-box-content" style="${result.item.image ? `background: url('${result.item.image}') #97d4ea` : `background: #97d4ea`}; background-size: cover"></div>
             </div>
           </div>
           <div class="grid-col flex-2">
