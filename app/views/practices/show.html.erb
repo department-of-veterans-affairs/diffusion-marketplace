@@ -42,7 +42,9 @@
           <span class="margin-x-05">|</span>
           <span class="uppercase"><%= @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)' %></span>
           <span class="margin-x-05">|</span>
-          <span class="uppercase"><%= @facility_data.present? ? @facility_data['properties']['name'] : @practice.initiating_facility %></span>
+          <span class="uppercase">
+            <%= @facility_data.present? ? @facility_data['properties']['name'] : @practice.initiating_facility %>
+          </span>
         </h5>
 
       </div>

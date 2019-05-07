@@ -69,8 +69,7 @@
                 <div class="practice-card-description fs1 dm-font-color-steel-grey fw-300 p0-75-bottom p1-left"><%= p.description %></div>
                 <div class="practice-card-tiny-details dm-font-color-steel-grey fs1 p1-left x1-bottom"><%= p.name %> |
                   <span class="uppercase">
-                    <% facility_data = @facilities_data.find { |f| f['properties']['id'] == p.initiating_facility } %>
-                    <%= facility_data.present? ? facility_data['properties']['name'] : p.initiating_facility %>
+                    <%= facility_name(p.initiating_facility) %>
                   </span>
                 </div>
                 <div class="practice-card-aggregates practice-card-aggregates-background">
