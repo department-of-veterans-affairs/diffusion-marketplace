@@ -1,6 +1,5 @@
 require 'devise'
 require 'capybara'
-require 'capybara-webkit'
 require 'simplecov'
 require 'rspec/retry'
 require 'axe/rspec'
