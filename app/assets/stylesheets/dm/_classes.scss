@@ -41,6 +41,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   background-color: $dm-color-royal-blue !important;
 }
 
+.dm-background-pale-blue {
+  background-color: $dm-color-pale-blue !important;
+}
+
 .dm-background-steel-grey {
   background-color: $dm-color-steel-grey !important;
 }
@@ -131,6 +135,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .dm-font-color-royal-blue {
   color: $dm-color-royal-blue !important;
+}
+
+.dm-font-color-pale-blue {
+  color: $dm-color-pale-blue !important;
 }
 
 .dm-font-color-midnight-black {
@@ -415,6 +423,11 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .margin-auto {
   margin: auto !important;
+}
+
+.margin-x-auto {
+  margin-right: auto !important;
+  margin-left: auto !important;
 }
 
 /* Margin None */
@@ -900,3 +913,12 @@ ul.no-list-style {
   display: none;
 }
 
+/* Breaking/Truncating lines */
+
+.hyphens-auto {
+  hyphens: auto;
+}
+
+.word-break-break-word {
+  word-break: break-word;
+}

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_02_153523) do
+ActiveRecord::Schema.define(version: 2019_05_06_062319) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -406,6 +406,15 @@ ActiveRecord::Schema.define(version: 2019_05_02_153523) do
     t.index ["slug"], name: "index_practice_partners_on_slug", unique: true
   end
 
+  create_table "practice_permissions", force: :cascade do |t|
+    t.integer "position"
+    t.string "description"
+    t.bigint "practice_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["practice_id"], name: "index_practice_permissions_on_practice_id"
+  end
+
   create_table "practices", force: :cascade do |t|
     t.string "name"
     t.string "short_name"
@@ -566,6 +575,8 @@ ActiveRecord::Schema.define(version: 2019_05_02_153523) do
 
   create_table "timelines", force: :cascade do |t|
     t.string "description"
+    t.string "milestone"
+    t.string "timeline"
     t.integer "position"
     t.bigint "practice_id"
     t.datetime "created_at", null: false
@@ -716,6 +727,7 @@ ActiveRecord::Schema.define(version: 2019_05_02_153523) do
   add_foreign_key "practice_management_practices", "practices"
   add_foreign_key "practice_partner_practices", "practice_partners"
   add_foreign_key "practice_partner_practices", "practices"
+  add_foreign_key "practice_permissions", "practices"
   add_foreign_key "practices", "users"
   add_foreign_key "publication_files", "practices"
   add_foreign_key "publications", "practices"
