@@ -68,7 +68,10 @@
                 <div class="practice-card-tagline fs3 p1-left"><%= link_to p.tagline, p, class: 'practice-card-tagline-link' %></div>
                 <div class="practice-card-description fs1 dm-font-color-steel-grey fw-300 p0-75-bottom p1-left"><%= p.description %></div>
                 <div class="practice-card-tiny-details dm-font-color-steel-grey fs1 p1-left x1-bottom"><%= p.name %> |
-                  <span class="uppercase"><%= p.initiating_facility %></span></div>
+                  <span class="uppercase">
+                    <%= facility_name(p.initiating_facility) %>
+                  </span>
+                </div>
                 <div class="practice-card-aggregates practice-card-aggregates-background">
                   <div class="grid-row p1">
                     <div class="tablet:grid-col-fill text-center">

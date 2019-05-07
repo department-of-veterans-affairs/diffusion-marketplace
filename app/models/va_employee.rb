@@ -1,5 +1,5 @@
 class VaEmployee < ApplicationRecord
-  acts_as_list scope: :practice
+  acts_as_list
   has_attached_file :avatar, styles: { thumb: '200x200#' }
   crop_attached_file :avatar, aspect: '1:1'
   do_not_validate_attachment_file_type :avatar

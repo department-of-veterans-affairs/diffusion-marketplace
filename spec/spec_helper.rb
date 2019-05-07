@@ -140,5 +140,6 @@ end
 # Capybara.javascript_driver = :webkit
 # Capybara.default_driver = :sniffybara
 Capybara.default_driver = :selenium_chrome
+Capybara.enable_aria_label = true
 
 # Capybara.javascript_driver = :chrome
