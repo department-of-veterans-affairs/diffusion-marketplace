@@ -46,7 +46,10 @@
                 <%= practice.description %>
               </div>
               <div class="marketplace-card-name-location dm-font-dark-black fw-100 x1-bottom">
-                <%= practice.name %> | <span class="uppercase"><%= practice.initiating_facility %></span>
+                <%= practice.name %> |
+                <span class="uppercase">
+                  <%= facility_name(practice.initiating_facility) %>
+                </span>
               </div>
               <div class="marketplace-card-adoption dm-font-color-dark-brown display-flex-align-items-center">
                 <div class="marketplace-card-number-adopted x1-right"><%= practice.number_adopted %></div>
