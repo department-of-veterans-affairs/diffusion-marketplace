@@ -108,6 +108,11 @@ class PracticesController < ApplicationController
       else
         practice_hash['date_initiated'] = '(start date unknown)'
       end
+
+      # display initiating facility
+      facility_data = facilities_json['features'].find { |f| f['properties']['id'] == practice.initiating_facility }
+      practice_hash['initiating_facility'] = facility_data.present? ? facility_data['properties']['name'] : practice.initiating_facility
+
       practices_array.push practice_hash
     end
 
@@ -159,9 +164,5 @@ class PracticesController < ApplicationController
         format.json {render warning: warning}
       end
     end
-  end
-
-  def facilities_json
-    JSON.parse(File.read("#{Rails.root}/lib/assets/va_gov_facilities_all_response.json"))
   end
 end
