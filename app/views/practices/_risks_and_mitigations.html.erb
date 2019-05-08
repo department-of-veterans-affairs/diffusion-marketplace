@@ -4,10 +4,7 @@
   <div class='grid-row'>
     <div class='tablet:grid-col-12'>
       <% @practice.risk_mitigations.each_with_index do |rm, index| %>
-        <% if index > 0 %>
-          <div class='risk-border'></div>
-        <% end %>
-        <div class='grid-row'>
+        <div class='grid-row  margin-bottom-5'>
           <div class='grid-col-5'>
             <div class='grid-row flex-column flex-justify-start flex-align-start'>
               <h4 class="margin-0">Risk</h4>
