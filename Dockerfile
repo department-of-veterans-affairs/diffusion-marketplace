@@ -1,7 +1,6 @@
-FROM ruby:2.5.3
+FROM agilesix/ruby:2.5.3
 
 RUN gem install bundler
-RUN apt update && apt-get install --only-upgrade imagemagick
 
 # Preinstall gems. This will ensure that Gem Cache wont drop on code change
 WORKDIR /tmp
