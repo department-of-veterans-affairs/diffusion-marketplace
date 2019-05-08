@@ -103,7 +103,7 @@ Rails.application.configure do
           secret_access_key: ENV.fetch('AWS_SECRET_ACCESS_KEY'),
           s3_region: region,
       },
-      s3_protocol: 'http'
+      s3_protocol: 'https'
   }
 
   config.action_mailer.smtp_settings = {
