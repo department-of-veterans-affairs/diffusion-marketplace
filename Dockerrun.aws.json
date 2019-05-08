@@ -25,7 +25,7 @@
       "name": "proxy",
       "image": "agilesix/nginx:v1",
       "essential": true,
-      "memory": 300,
+      "memory": 128,
       "portMappings": [
         {
           "hostPort": 80,
@@ -51,7 +51,7 @@
       "name": "web",
       "image": "<AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/<NAME>:<TAG>",
       "essential": true,
-      "memory": 300,
+      "memory": 644,
       "mountPoints": [
         {
           "sourceVolume": "run_folder",
