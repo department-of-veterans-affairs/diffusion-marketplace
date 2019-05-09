@@ -73,4 +73,20 @@ module ApplicationHelper
     facility_data.present? ? facility_data['properties']['name'] : facility_id
   end
 
+  def email_practice_subject(practice)
+    URI.encode("VA Diffusion Marketplace - #{practice.name} summary")
+  end
+
+  def email_practice_body(practice)
+    raw("Check out this practice, #{practice.name}: #{practice.tagline}, on the VA Diffusion Marketplace: %0D%0A%0D%0A#{ENV['HOSTNAME']}/practice/#{practice.slug}%0D%0A%0D%0AAbout #{practice.name}: %0D%0A%0D%0A#{practice.description}%0D%0A%0D%0A#{practice.summary}%0D%0A%0D%0AIf you have any questions about the Changing Lives, Saving Lives campaign or about Diffusion of Excellence and VHA Innovators Network, please contact VAInnovation@atlasresearch.us.")
+  end
+
+  def email_checklist_subject(practice)
+    URI.encode("VA Diffusion Marketplace - #{practice.name} checklist")
+  end
+
+  def email_checklist_body(practice)
+    raw("Let's take the next steps to implement #{practice.name}: #{practice.tagline}, from the VA Diffusion Marketplace: %0D%0A%0D%0A#{ENV['HOSTNAME']}/practice/#{practice.slug}/next-steps%0D%0A%0D%0AAbout #{practice.name}: %0D%0A%0D%0A#{practice.description}%0D%0A%0D%0A#{practice.summary}%0D%0A%0D%0AIf you have any questions about the Changing Lives, Saving Lives campaign or about Diffusion of Excellence and VHA Innovators Network, please contact VAInnovation@atlasresearch.us.")
+  end
+
 end

@@ -24,15 +24,22 @@
   </div>
 </section>
 
-<section class="margin-bottom-6">
-  <div class="grid-container margin-bottom-6 padding-x-9">
+<section id="share-practice">
+  <div class="grid-container padding-x-9">
     <h2 class="font-sans-xl margin-bottom-205">Share</h2>
     <div class="grid-row">
-      <div class="tablet:grid-col-3 padding-right-2 margin-bottom-5">
-        <button role="button" class="dm-button-secondary">Email Summary</button>
+      <div class="tablet:grid-col-3 margin-right-4 margin-bottom-5">
+        <a target="_blank"
+          href="mailto:?subject=<%= email_practice_subject(@practice) %>&body=<%= email_practice_body(@practice) %>" class="dm-button-link-secondary">
+          Email Summary
+        </a>
       </div>
-      <div class="tablet:grid-col-3 padding-left-2">
-        <button role="button" class="dm-button-secondary">Email Checklist</button>
+      <div class="tablet:grid-col-3">
+        <a target="_blank"
+          href="mailto:?subject=<%= email_checklist_subject(@practice) %>&body=<%= email_checklist_body(@practice) %>"
+           class="dm-button-link-secondary">
+          Email Checklist
+        </a>
       </div>
     </div>
   </div>
@@ -42,7 +49,7 @@
 <section class="margin-bottom-6">
   <div class="grid-container margin-bottom-6 padding-x-9">
     <h2 class="font-sans-xl margin-bottom-205">Checklist</h2>
-
+    <button id="print-checklist-button" role="button" class="dm-button-secondary margin-bottom-205">Print Checklist</button>
     <form class="usa-form-large">
       <fieldset class="usa-fieldset">
         <legend class="usa-sr-only">Implementation checklist</legend>
@@ -62,9 +69,7 @@
             <% @practice.additional_staffs.each do |as| %>
               <div class="usa-checkbox margin-bottom-205">
                 <input class="usa-checkbox__input" id="additional-staff-<%= as.id %>" type="checkbox" name="checklist" value="additional-staff-<%= as.id %>">
-                <label class="usa-checkbox__label margin-bottom-1" for="additional-staff-<%= as.id %>"><span class="fw-bold"><%= as.title %>
-                  , <%= as.hours_per_week %> hours/week
-                  <% unless as.duration_in_weeks == 'Permanent' %> for <%= as.duration_in_weeks %> weeks <% end %></span></label>
+                <label class="usa-checkbox__label margin-bottom-1" for="additional-staff-<%= as.id %>"><span class="fw-bold"><%= as.title %></span></label>
               </div>
             <% end %>
           </div>
@@ -102,7 +107,23 @@
           <div id="it-department" class="margin-bottom-3">
             <div class="usa-checkbox">
               <input class="usa-checkbox__input" id="information-technology" type="checkbox" name="checklist" value="it">
-              <label class="usa-checkbox__label margin-bottom-1" for="information-technology"><span class="fw-bold">Information technology department</span></label>
+              <label class="usa-checkbox__label margin-bottom-1" for="information-technology"><span class="fw-bold">Information technology department required</span></label>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- Departments impacted -->
+        <% if @practice.departments.any? && @practice.departments.find_by(name: 'All departments equally - not a search differentiator').blank? && @practice.departments.find_by(name: 'None').blank?
+        %>
+          <div id="departments-impacted" class="margin-bottom-3">
+            <div class="usa-checkbox">
+              <input class="usa-checkbox__input" id="departments" type="checkbox" name="checklist" value="departments">
+              <label class="usa-checkbox__label margin-bottom-1" for="departments"><span class="fw-bold">Departments:</span></label>
+              <ul class="margin-top-0 padding-left-6">
+                <% @practice.departments.each do |d| %>
+                  <li><%= d.name %></li>
+                <% end %>
+              </ul>
             </div>
           </div>
         <% end %>
@@ -112,7 +133,7 @@
           <div id="resource-capabilities" class="margin-bottom-3">
             <div class="usa-checkbox">
               <input class="usa-checkbox__input" id="resources" type="checkbox" name="checklist" value="resources">
-              <label class="usa-checkbox__label margin-bottom-1" for="resources"><span class="fw-bold">Resource capabilities</span></label>
+              <label class="usa-checkbox__label margin-bottom-1" for="resources"><span class="fw-bold">Resources:</span></label>
               <ul class="margin-top-0 padding-left-6">
                 <% @practice.additional_resources.each do |r| %>
                   <li><%= r.description %></li>
@@ -127,7 +148,7 @@
           <div id="costs-list" class="margin-bottom-3">
             <div class="usa-checkbox">
               <input class="usa-checkbox__input" id="costs" type="checkbox" name="checklist" value="costs">
-              <label class="usa-checkbox__label margin-bottom-1" for="costs"><span class="fw-bold">Costs</span></label>
+              <label class="usa-checkbox__label margin-bottom-1" for="costs"><span class="fw-bold">Cost:</span></label>
               <ul class="margin-top-0 padding-left-6">
                 <% @practice.costs.each do |c| %>
                   <li><%= c.description %></li>
