@@ -31,10 +31,31 @@
 
 - `postgresql`
 
+- ImageMagick 7+
+
 #### Configuration
 
 Check out `database.yml` to change the `username`/`password` for the database user. 
 Be sure to create that user/role in the local postgres instance
+
+#### Development Environment Variables
+
+- run `figaro install` to get the "application.yml" file in your config folder
+
+Please ask an engineer on the team for credentials to various APIs that we use.
+
+```
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+AWS_REGION
+S3_BUCKET_NAME
+
+MAILER_SENDER
+
+SURVEY_MONKEY_TOKEN
+SURVEY_MONKEY_USERNAME
+SURVEY_MONKEY_PASSWORD
+```  
 
 #### Database creation
 
