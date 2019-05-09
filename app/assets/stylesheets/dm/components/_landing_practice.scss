@@ -1,0 +1,12 @@
+@import "../variables/colors";
+
+.landing-practice-card {
+  background-color: $dm-color-white;
+  border-radius: 5px;
+}
+
+.landing-practice-name {
+  background-color:$dm-color-royal-blue;
+  border-radius: 0 20px 20px 0;
+  height: 60px;
+}
