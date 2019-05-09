@@ -25,10 +25,10 @@
 </section>
 
 <section class="margin-bottom-6">
-  <div class="grid-container margin-bottom-6 padding-x-6">
+  <div class="grid-container margin-bottom-6 padding-x-9">
     <h2 class="font-sans-xl margin-bottom-205">Share</h2>
     <div class="grid-row">
-      <div class="tablet:grid-col-3 padding-right-2">
+      <div class="tablet:grid-col-3 padding-right-2 margin-bottom-5">
         <button role="button" class="dm-button-secondary">Email Summary</button>
       </div>
       <div class="tablet:grid-col-3 padding-left-2">
@@ -40,23 +40,33 @@
 
 <!-- Checklist -->
 <section class="margin-bottom-6">
-  <div class="grid-container margin-bottom-6 padding-x-6">
+  <div class="grid-container margin-bottom-6 padding-x-9">
     <h2 class="font-sans-xl margin-bottom-205">Checklist</h2>
 
     <form class="usa-form-large">
       <fieldset class="usa-fieldset">
         <legend class="usa-sr-only">Implementation checklist</legend>
+
         <!-- Implementation team -->
         <div id="implementation-team" class="margin-bottom-3">
           <div class="usa-checkbox">
             <input class="usa-checkbox__input" id="team" type="checkbox" name="checklist" value="implementation team">
             <label class="usa-checkbox__label margin-bottom-1" for="team"><span class="fw-bold">Implementation team:</span></label>
-            <p class="padding-left-4 margin-0">
+            <p class="padding-left-4 margin-top-0 margin-bottom-4">
               You can’t do this alone! A team is needed to get it done. Here are the departments and titles of specific
               individuals that are needed to work together to implement the practice successfully. Ideal team size is 5
-              to
-              10 members.
+              to 10 members.
             </p>
+          </div>
+          <div class="padding-left-9">
+            <% @practice.additional_staffs.each do |as| %>
+              <div class="usa-checkbox margin-bottom-205">
+                <input class="usa-checkbox__input" id="additional-staff-<%= as.id %>" type="checkbox" name="checklist" value="additional-staff-<%= as.id %>">
+                <label class="usa-checkbox__label margin-bottom-1" for="additional-staff-<%= as.id %>"><span class="fw-bold"><%= as.title %>
+                  , <%= as.hours_per_week %> hours/week
+                  <% unless as.duration_in_weeks == 'Permanent' %> for <%= as.duration_in_weeks %> weeks <% end %></span></label>
+              </div>
+            <% end %>
           </div>
         </div>
 
@@ -73,45 +83,59 @@
         </div>
 
         <!-- Permissions required -->
-        <div id="permissions-required" class="margin-bottom-3">
-          <div class="usa-checkbox">
-            <input class="usa-checkbox__input" id="permissions" type="checkbox" name="checklist" value="permissions">
-            <label class="usa-checkbox__label margin-bottom-1" for="permissions"><span class="fw-bold">Permissions required:</span></label>
-            <ul class="margin-top-0 padding-left-6">
-              <li>add list items here</li>
-            </ul>
+        <% if @practice.practice_permissions.any? %>
+          <div id="permissions-required" class="margin-bottom-3">
+            <div class="usa-checkbox">
+              <input class="usa-checkbox__input" id="permissions" type="checkbox" name="checklist" value="permissions">
+              <label class="usa-checkbox__label margin-bottom-1" for="permissions"><span class="fw-bold">Permissions required:</span></label>
+              <ul class="margin-top-0 padding-left-6">
+                <% @practice.practice_permissions.each do |permission| %>
+                  <li><%= permission.description %></li>
+                <% end %>
+              </ul>
+            </div>
           </div>
-        </div>
+        <% end %>
 
         <!-- IT required -->
-        <div id="it-department" class="margin-bottom-3">
-          <div class="usa-checkbox">
-            <input class="usa-checkbox__input" id="information-technology" type="checkbox" name="checklist" value="it">
-            <label class="usa-checkbox__label margin-bottom-1" for="information-technology"><span class="fw-bold">Information technology department</span></label>
+        <% if @practice.it_required %>
+          <div id="it-department" class="margin-bottom-3">
+            <div class="usa-checkbox">
+              <input class="usa-checkbox__input" id="information-technology" type="checkbox" name="checklist" value="it">
+              <label class="usa-checkbox__label margin-bottom-1" for="information-technology"><span class="fw-bold">Information technology department</span></label>
+            </div>
           </div>
-        </div>
+        <% end %>
 
         <!-- Resource capabilities -->
-        <div id="resource-capabilities" class="margin-bottom-3">
-          <div class="usa-checkbox">
-            <input class="usa-checkbox__input" id="resources" type="checkbox" name="checklist" value="resources">
-            <label class="usa-checkbox__label margin-bottom-1" for="resources"><span class="fw-bold">Resource capabilities</span></label>
-            <ul class="margin-top-0 padding-left-6">
-              <li>add list items here</li>
-            </ul>
+        <% if @practice.additional_resources.any? %>
+          <div id="resource-capabilities" class="margin-bottom-3">
+            <div class="usa-checkbox">
+              <input class="usa-checkbox__input" id="resources" type="checkbox" name="checklist" value="resources">
+              <label class="usa-checkbox__label margin-bottom-1" for="resources"><span class="fw-bold">Resource capabilities</span></label>
+              <ul class="margin-top-0 padding-left-6">
+                <% @practice.additional_resources.each do |r| %>
+                  <li><%= r.description %></li>
+                <% end %>
+              </ul>
+            </div>
           </div>
-        </div>
+        <% end %>
 
         <!-- Costs list -->
-        <div id="costs-list" class="margin-bottom-3">
-          <div class="usa-checkbox">
-            <input class="usa-checkbox__input" id="costs" type="checkbox" name="checklist" value="costs">
-            <label class="usa-checkbox__label margin-bottom-1" for="costs"><span class="fw-bold">Costs</span></label>
-            <ul class="margin-top-0 padding-left-6">
-              <li>add list items here</li>
-            </ul>
+        <% if @practice.costs.any? %>
+          <div id="costs-list" class="margin-bottom-3">
+            <div class="usa-checkbox">
+              <input class="usa-checkbox__input" id="costs" type="checkbox" name="checklist" value="costs">
+              <label class="usa-checkbox__label margin-bottom-1" for="costs"><span class="fw-bold">Costs</span></label>
+              <ul class="margin-top-0 padding-left-6">
+                <% @practice.costs.each do |c| %>
+                  <li><%= c.description %></li>
+                <% end %>
+              </ul>
+            </div>
           </div>
-        </div>
+        <% end %>
 
         <!-- Willing to provide feedback -->
         <div id="feedback-section" class="margin-bottom-3">
@@ -130,7 +154,7 @@
 </section>
 
 <section class="dm-background-light-blue">
-  <div class="grid-container padding-y-8">
+  <div class="grid-container padding-y-8 padding-x-9">
     <p>By choosing to Commit to practice you are:</p>
     <ul class="margin-bottom-7">
       <li>Signifying your team's readiness after completing the above checklist.</li>
