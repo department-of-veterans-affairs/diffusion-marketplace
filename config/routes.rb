@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: 'registrations' }
   resources :developing_facility_types
   resources :va_employees
-  resources :practices
+  resources :practices do
+    get '/next-steps', action: 'next_steps', as: 'next_steps'
+  end
   resources :badges
   resources :job_positions
   resources :job_position_categories
