@@ -1,5 +1,6 @@
 class PracticesController < ApplicationController
-  before_action :set_practice, only: [:show, :edit, :update, :destroy]
+  before_action :set_practice, only: [:show, :edit, :update, :destroy, :next_steps]
+  before_action :set_facility_data, only: [:show, :next_steps]
   before_action :authenticate_user!
   before_action :can_view_practice, only: [:show, :edit, :update, :destroy]
 
@@ -13,7 +14,6 @@ class PracticesController < ApplicationController
   # GET /practices/1
   # GET /practices/1.json
   def show
-    @facility_data = facilities_json['features'].find { |f| f['properties']['id'] == @practice.initiating_facility }
   end
 
   # GET /practices/new
@@ -87,14 +87,6 @@ class PracticesController < ApplicationController
     end
   end
 
-  # def download_toolkit
-  #   send_file(
-  #     "#{Rails.root}/public/your_file.pdf",
-  #     filename: "your_custom_file_name.pdf",
-  #     type: "application/pdf"
-  #   )
-  # end
-
   def search
     # practices = Practice.where(approved: true, published: true).select(:id, :name, :short_name, :description, :summary, :initiating_facility, :date_initiated)
     practices = Practice.where(approved: true, published: true)
@@ -118,11 +110,16 @@ class PracticesController < ApplicationController
     @practices_json = practices_array.to_json.html_safe
   end
 
+  def next_steps
+
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
   def set_practice
-    @practice = Practice.friendly.find(params[:id])
+    id = params[:id] || params[:practice_id]
+    @practice = Practice.friendly.find(id)
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
@@ -163,5 +160,9 @@ class PracticesController < ApplicationController
         format.json {render warning: warning}
       end
     end
+  end
+
+  def set_facility_data
+    @facility_data = facilities_json['features'].find { |f| f['properties']['id'] == @practice.initiating_facility }
   end
 end
