@@ -113,7 +113,7 @@
         <% end %>
 
         <!-- Departments impacted -->
-        <% if @practice.departments.any? && @practice.departments.find_by(name: 'All departments equally - not a search differentiator').blank? && @practice.departments.find_by(name: 'None').blank?
+        <% if @practice.departments.any? && @practice.departments.find_by(short_name: 'all').blank? && @practice.departments.find_by(short_name: 'none').blank?
         %>
           <div id="departments-impacted" class="margin-bottom-3">
             <div class="usa-checkbox">
