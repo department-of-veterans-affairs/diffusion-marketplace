@@ -79,7 +79,7 @@
   </div>
 
   <div class="text-center">
-    <button role="button" class="dm-button-primary">Next Step</button>
+    <%= link_to 'Next Steps', practice_next_steps_url(practice_id: @practice.slug), id: 'next-steps-link-in-summary', class: 'dm-button-link display-inline-block' %>
   </div>
 </section>
 <div class="dm-background-triangle-bottom "></div>
@@ -117,7 +117,7 @@
               <a href="#support_team" class="dm-tab bottom-tab scroll-to" data-target="#support_team">Support Team</a>
             </li>
           </ul>
-          <button type="button" role="button" class="dm-button-primary shadow-1">Next Step</button>
+          <%= link_to 'Next Steps', practice_next_steps_url(practice_id: @practice.slug), id: 'next-steps-link-in-nav', class: 'dm-button-link shadow-1' %>
         </div>
       </div>
       <div class="tablet:grid-col-9 p0 p1-5-right">

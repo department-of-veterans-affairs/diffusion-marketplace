@@ -9,6 +9,11 @@ describe 'Practices', type: :feature do
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
     @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name')
+    @departments = [
+        Department.create!(name: 'Admissions', short_name: 'admissions'),
+        Department.create!(name: 'None', short_name: 'none'),
+        Department.create!(name: 'All departments equally - not a search differentiator', short_name: 'all'),
+    ]
   end
 
   it 'should not let unauthenticated users interact with practices' do
@@ -113,6 +118,143 @@ describe 'Practices', type: :feature do
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content(@user_practice.name)
     expect(page).to have_content(@user_practice.initiating_facility.upcase)
+  end
+
+  describe 'Next Steps' do
+    describe 'flow' do
+      it 'should not let the user go to the "Next Steps" page if the Practice is not approved/published' do
+        visit practice_next_steps_path(practice_id: @user_practice.slug)
+        expect(page).to be_accessible.according_to :wcag2a, :section508
+        expect(page).to have_content('You need to sign in or sign up before continuing.')
+        expect(page).to have_current_path('/users/sign_in')
+      end
+
+      it 'should lead the user to the "Next Steps" page' do
+        login_as(@user, :scope => :user, :run_callbacks => false)
+        @user_practice.update(published: true, approved: true)
+        # Visit an individual Practice that is approved and published
+        visit practice_path(@user_practice)
+        expect(page).to be_accessible.according_to :wcag2a, :section508
+        expect(page).to have_content(@user_practice.name)
+        expect(page).to have_content(@user_practice.initiating_facility.upcase)
+        expect(page).to have_current_path(practice_path(@user_practice))
+
+        # click on next steps link in the summary section
+        find(:css, '#next-steps-link-in-summary').click
+
+        expect(page).to be_accessible.according_to :wcag2a, :section508
+        expect(page).to have_content(@user_practice.name)
+        expect(page).to have_content(@user_practice.initiating_facility.upcase)
+        expect(page).to have_current_path(practice_next_steps_path(practice_id: @user_practice.slug))
+
+
+        visit practice_path(@user_practice)
+
+        # click on next steps link in sticky nav section
+        find(:css, '#next-steps-link-in-nav').click
+
+        expect(page).to be_accessible.according_to :wcag2a, :section508
+        expect(page).to have_content(@user_practice.name)
+        expect(page).to have_content(@user_practice.initiating_facility.upcase)
+        expect(page).to have_current_path(practice_next_steps_path(practice_id: @user_practice.slug))
+      end
+    end
+
+    describe 'checklist' do
+      it 'should have a list of certain items' do
+        login_as(@user, :scope => :user, :run_callbacks => false)
+        @user_practice.update(published: true, approved: true)
+        # Visit an individual Practice that is approved and published
+        visit practice_next_steps_path(practice_id: @user_practice.slug)
+        expect(page).to be_accessible.according_to :wcag2a, :section508
+        expect(page).to have_content(@user_practice.name)
+        expect(page).to have_content(@user_practice.initiating_facility.upcase)
+        expect(page).to have_current_path(practice_next_steps_path(@user_practice))
+
+        # implementation team checkbox
+        expect(page).to have_selector('#implementation-team')
+        find(:css, 'label[for="team"]').set(true)
+        expect(page).to have_content('You can’t do this alone! A team is needed to get it done. Here are the departments and titles of specific individuals that are needed to work together to implement the practice successfully. Ideal team size is 5 to 10 members.')
+
+        # practice champion checkbox
+        expect(page).to have_selector('#practice-champion')
+        find(:css, 'label[for="champion"]').click
+        expect(page).to have_content('Working Group needs to select a dynamic, charismatic individual who will be able to promote the practice, recruit additional team members, and illicit administrative support.')
+
+        # feedback checkbox
+        expect(page).to have_selector('#feedback-section')
+        find(:css, 'label[for="feedback"]').click
+        expect(page).to have_content('Feedback on the implementation process and sharing the resulting data once the practice is implemented are a requirement/expected.')
+
+        expect(page).not_to have_selector('#permissions-required')
+        expect(page).not_to have_selector('#it-department')
+        expect(page).not_to have_selector('#departments-impacted')
+        expect(page).not_to have_selector('#resource-capabilities')
+        expect(page).not_to have_selector('#costs-list')
+
+        # Add the rest of the checkboxes
+
+        as = AdditionalStaff.create!(title: 'ACOS of Mental Health', practice: @user_practice)
+        pp = PracticePermission.create!(description: 'Licensing', practice: @user_practice)
+        @user_practice.update(it_required: true)
+        dp = DepartmentPractice.create!(department: @departments[0], practice: @user_practice)
+        ar = AdditionalResource.create!(description: 'Access to Government Car for IPS Specialist', practice: @user_practice)
+        c = Cost.create!(description: 'IPS Supervision and Fidelity Monitoring (Toscano) Travel costs.', practice: @user_practice)
+
+        visit practice_next_steps_path(practice_id: @user_practice.slug)
+        expect(page).to be_accessible.according_to :wcag2a, :section508
+        expect(page).to have_content(@user_practice.name)
+        expect(page).to have_content(@user_practice.initiating_facility.upcase)
+        expect(page).to have_current_path(practice_next_steps_path(@user_practice))
+
+        expect(page).to have_selector('#permissions-required')
+        expect(page).to have_selector('#it-department')
+        expect(page).to have_selector('#departments-impacted')
+        expect(page).to have_selector('#resource-capabilities')
+        expect(page).to have_selector('#costs-list')
+
+        expect(page).to have_content(as.title)
+        expect(page).to have_content(pp.description)
+        expect(page).to have_content('Information technology department required')
+        expect(page).to have_content(dp.department.name)
+        expect(page).to have_content(ar.description)
+        expect(page).to have_content(c.description)
+
+        find(:css, "label[for='additional-staff-#{as.id}']").click
+        find(:css, 'label[for="permissions"]').click
+        find(:css, 'label[for="information-technology"]').click
+        find(:css, 'label[for="departments"]').click
+        find(:css, 'label[for="resources"]').click
+        find(:css, 'label[for="costs"]').click
+      end
+
+      it 'should not render departments if all or none are selected' do
+        login_as(@user, :scope => :user, :run_callbacks => false)
+        @user_practice.update(published: true, approved: true)
+        
+        # none
+        dp = DepartmentPractice.create!(department: @departments[1], practice: @user_practice)
+
+        visit practice_next_steps_path(practice_id: @user_practice.slug)
+        expect(page).to be_accessible.according_to :wcag2a, :section508
+        expect(page).to have_content(@user_practice.name)
+        expect(page).to have_content(@user_practice.initiating_facility.upcase)
+        expect(page).to have_current_path(practice_next_steps_path(@user_practice))
+
+        expect(page).not_to have_selector('#departments-impacted')
+
+        # all
+        dp = DepartmentPractice.create!(department: @departments[2], practice: @user_practice)
+
+        visit practice_next_steps_path(practice_id: @user_practice.slug)
+        expect(page).to be_accessible.according_to :wcag2a, :section508
+        expect(page).to have_content(@user_practice.name)
+        expect(page).to have_content(@user_practice.initiating_facility.upcase)
+        expect(page).to have_current_path(practice_next_steps_path(@user_practice))
+        
+        expect(page).not_to have_selector('#departments-impacted')
+      end
+    end
   end
 
 end
