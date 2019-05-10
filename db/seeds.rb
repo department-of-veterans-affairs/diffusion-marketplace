@@ -250,6 +250,7 @@ if PracticePartner.all.blank?
         Department.create!(name: 'Radiotherapy', short_name: 'radiotherapy'),
         Department.create!(name: 'Social Work', short_name: 'social_work'),
         Department.create!(name: 'None', short_name: 'none'),
+        Department.create!(name: 'All departments equally - not a search differentiator', short_name: 'all'),
     ]
   end
 
