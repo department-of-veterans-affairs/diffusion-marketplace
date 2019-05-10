@@ -127,13 +127,43 @@ document.addEventListener('turbolinks:load', () => {
   const searchButton = document.querySelector('#practice-search-button');
 
   // Set up "enter" event handler for search field
-  searchField.addEventListener('keypress', (e) => {
-    if (e.keyCode === 13) search(searchField.value);
+  var timeout = null;
+  searchField.addEventListener('keyup', (e) => {
+    clearTimeout(timeout);
+
+    // Make a new timeout set to go off in 500ms
+    timeout = setTimeout(function () {
+      search(searchField.value);
+      window.history.pushState("", "", '/search?query=' + searchField.value);
+      if (typeof ga === 'function') {
+        ga('send', {
+          hitType: 'event',
+          eventCategory: 'search',
+          eventAction: 'search',
+          location: '/search?query=' + searchField.value
+        });
+      }
+    }, 500);
   });
 
   // Set up search button click
   searchButton.addEventListener('click', (e) => {
+    clearTimeout(timeout);
     search(searchField.value);
+    window.history.pushState("", "", '/search?query=' + searchField.value);
+    if (typeof ga === 'function') {
+      ga('send', {
+        hitType: 'event',
+        eventCategory: 'search',
+        eventAction: 'search',
+        location: '/search?query=' + searchField.value
+      });
+    }
   });
 
+  if(window.location.pathname == '/search' && window.location.search != ''){
+    query = window.location.search.split('=')[1]
+    search(decodeURI(query));
+    searchField.value = decodeURI(query)
+  }
 });
