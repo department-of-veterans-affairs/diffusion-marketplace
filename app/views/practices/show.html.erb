@@ -210,7 +210,7 @@
             </div>
             <div class="tablet:grid-col-5 p1-5-right">
               <div class="display-flex flex-justify-center flex-align-center height-100">
-                <button type="button" class="dm-button-secondary">Next Step</button>
+                <%= link_to 'Next Steps', practice_next_steps_url(practice_id: @practice.slug), id: 'next-steps-link-in-body', class: 'dm-button-link-secondary' %>
               </div>
             </div>
           </div>
