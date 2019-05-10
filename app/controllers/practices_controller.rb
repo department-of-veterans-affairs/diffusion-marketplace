@@ -48,20 +48,20 @@ class PracticesController < ApplicationController
     if updated
       partner_keys = params[:practice][:practice_partner].keys
       @practice.practice_partner_practices.each do |partner|
-        partner.destroy unless partner_keys.include? partner.id.to_s
+        partner.destroy unless partner_keys.include? partner.practice_partner_id.to_s
       end
       partner_keys.each do |key|
-        next if @practice.practice_partners.ids.include? key
+        next if @practice.practice_partners.ids.include? key.to_i
 
         @practice.practice_partner_practices.create practice_partner_id: key.to_i
       end
 
       dept_keys = params[:practice][:practice_department].keys
-      @practice.department_practices.each do |partner|
-        partner.destroy unless dept_keys.include? partner.id.to_s
+      @practice.department_practices.each do |department|
+        department.destroy unless dept_keys.include? department.department_id.to_s
       end
       dept_keys.each do |key|
-        next if @practice.departments.ids.include? key
+        next if @practice.departments.ids.include? key.to_i
 
         @practice.department_practices.create department_id: key.to_i
       end
