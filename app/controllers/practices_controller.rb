@@ -2,7 +2,7 @@ class PracticesController < ApplicationController
   before_action :set_practice, only: [:show, :edit, :update, :destroy, :next_steps]
   before_action :set_facility_data, only: [:show, :next_steps]
   before_action :authenticate_user!
-  before_action :can_view_practice, only: [:show, :edit, :update, :destroy]
+  before_action :can_view_practice, only: [:show, :edit, :update, :destroy, :next_steps]
 
   # GET /practices
   # GET /practices.json
