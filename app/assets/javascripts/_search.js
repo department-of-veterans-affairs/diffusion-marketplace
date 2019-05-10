@@ -129,8 +129,6 @@ document.addEventListener('turbolinks:load', () => {
   // Set up "enter" event handler for search field
   var timeout = null;
   searchField.addEventListener('keyup', (e) => {
-    // Clear the timeout if it has already been set.
-    // This will prevent search functions from executing if it has been less than 500 ms
     clearTimeout(timeout);
 
     // Make a new timeout set to go off in 500ms
@@ -150,10 +148,22 @@ document.addEventListener('turbolinks:load', () => {
 
   // Set up search button click
   searchButton.addEventListener('click', (e) => {
+    clearTimeout(timeout);
     search(searchField.value);
+    window.history.pushState("", "", '/search?query=' + searchField.value);
+    if (typeof ga === 'function') {
+      ga('send', {
+        hitType: 'event',
+        eventCategory: 'search',
+        eventAction: 'search',
+        location: '/search?query=' + searchField.value
+      });
+    }
   });
 
   if(window.location.pathname == '/search' && window.location.search != ''){
-    search(window.location.search.split('=')[1]);
+    query = window.location.search.split('=')[1]
+    search(decodeURI(query));
+    searchField.value = decodeURI(query)
   }
 });
