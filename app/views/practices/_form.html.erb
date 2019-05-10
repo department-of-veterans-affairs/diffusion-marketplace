@@ -48,7 +48,7 @@
       <div class="field">
         <%= form.label :main_display_image, 'Project Image', class: 'usa-label' %>
         <% if @practice.main_display_image.present? %>
-          <%= form.cropbox :main_display_image %>
+          <%= form.cropbox :main_display_image, index: 0 %>
         <% end %>
         <%= form.file_field :main_display_image, class: 'hidden-upload' %>
         <%= form.label :main_display_image, 'Upload Image', class: 'usa-button usa-button--outline' %>
@@ -107,7 +107,7 @@
           <%= ip.link_to_remove "Remove this Story", class: 'usa-button usa-button--secondary', style: 'color: white; text-decoration: none; float: right' %>
           <h2 style='padding-top: 1.5rem'>Impact Story</h2>
           <% if ip.object.attachment.present? %>
-            <%= ip.cropbox :attachment %>
+            <%= ip.cropbox :attachment, index: ip.index %>
           <% end %>
           <%= ip.file_field :attachment, class: 'hidden-upload' %>
           <%= ip.label :attachment, 'Upload Image', class: 'usa-button usa-button--outline' %>
@@ -129,7 +129,7 @@
         <div class="field">
           <%= form.label :origin_picture, 'Portrait Image', class: 'usa-label' %>
           <% if @practice.origin_picture.present? %>
-            <%= form.cropbox :origin_picture, max_size: [200, 200] %>
+            <%= form.cropbox :origin_picture, max_size: [200, 200], index: 0 %>
           <% end %>
           <%= form.file_field :origin_picture, class: 'hidden-upload' %>
           <%= form.label :origin_picture, 'Upload Image', class: 'usa-button usa-button--outline' %>
@@ -357,7 +357,7 @@
           <div class='grid-row'>
             <div class='grid-col'>
               <% if vae.object.avatar.present? %>
-                <%= vae.cropbox :avatar, width: 200 %>
+                <%= vae.cropbox :avatar, width: 200, index: vae.index %>
               <% end %>
               <%= vae.file_field :avatar, class: 'hidden-upload' %>
               <%= vae.label :avatar, 'Upload Image', class: 'usa-button usa-button--outline' %>

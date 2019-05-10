@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/agilesix/papercrop.git
-  revision: 884d6b6e909a146ac1593efe585e67a497f37432
-  branch: turbolink-fix
+  revision: e5e8b1fa37a07d8c59e88a05ec99b9577790c67e
+  ref: turbolink-fix
   specs:
     papercrop (0.3.0)
       jquery-rails
