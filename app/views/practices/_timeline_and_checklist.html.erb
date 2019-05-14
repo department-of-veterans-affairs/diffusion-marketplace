@@ -3,7 +3,7 @@
   <div class="timeline">
     <% @practice.timelines.each_with_index do |t, i| %>
       <div class="timeline-container timeline-<%= i.even? ? 'left' : 'right' %>">
-        <div class="timeline-content">
+        <div class="timeline-content hyphens-auto word-break-break-word">
           <p><%= t.milestone %></p>
           <h2><%= t.timeline %></h2>
         </div>
