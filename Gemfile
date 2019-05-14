@@ -106,3 +106,4 @@ gem 'papercrop', github: 'agilesix/papercrop', ref: 'turbolink-fix'
 gem 'rails-assets-sticky', source: 'https://rails-assets.org'
 gem 'rails-assets-jquery.scrollTo', source: 'https://rails-assets.org'
 gem "nested_form"
+gem 'colorize'
