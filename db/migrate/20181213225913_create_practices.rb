@@ -58,8 +58,10 @@ class CreatePractices < ActiveRecord::Migration[5.2]
       t.boolean :need_new_license
 
       t.boolean :training_test
+      t.boolean :training_test_details
       t.string :training_provider
       t.text :required_training_summary
+      t.string :training_length
 
       t.string :facility_complexity_level
 
