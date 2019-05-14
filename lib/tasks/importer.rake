@@ -4,7 +4,7 @@ namespace :importer do
   task import_answers: :environment do |t, args|
 
     # TODO: pass in named arguments
-    # options = {}
+    options = {}
     # OptionParser.new do |opts|
     #   opts.banner = "Usage: rails importer:import_answers [options]"
     #   opts.on("-f", "--file_path", String) {|file| options[:file] = file}
