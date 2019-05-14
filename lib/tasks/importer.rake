@@ -2,7 +2,23 @@
 namespace :importer do
   desc 'import an xlsx and create practices'
   task import_answers: :environment do |t, args|
-    sheet = Roo::Excelx.new(File.join(Rails.root, '/lib/assets/Diffusion Marketplace.xlsx'))
+
+    # TODO: pass in named arguments
+    # options = {}
+    # OptionParser.new do |opts|
+    #   opts.banner = "Usage: rails importer:import_answers [options]"
+    #   opts.on("-f", "--file_path", String) {|file| options[:file] = file}
+    #   opts.on('-b NUM', Integer)
+    #   opts.on('-v', '--verbose')
+    #   debugger
+    # end.parse!
+
+    puts "*********** Importing practices from: #{options[:file]} ***********".light_blue if options[:file].present?
+    puts "!!!!!! No file path provided !!!!!!".yellow if options[:file].blank?
+    puts "*********** Importing practices from: /lib/assets/Diffusion Marketplace.xlsx ***********".light_blue if options[:file].blank?
+    import_file_path = options[:file].present? ? options[:file] : File.join(Rails.root, '/lib/assets/Diffusion Marketplace.xlsx')
+
+    sheet = Roo::Excelx.new(import_file_path)
     @questions = sheet.sheet(0).row(1)
     @given_answers = sheet.sheet(0).row(2)
     last_row = sheet.last_row
@@ -14,13 +30,54 @@ namespace :importer do
       @name = @answers[@questions.index('What is the name of your practice?')]
 
       if @name.blank?
-        puts "==> Aborting importing Respondent #{@respondent_id}'s answers - no name for the practice supplied."
+        puts "==> Aborting importing Respondent #{@respondent_id}'s answers - no name for the practice supplied.".red.bold
         next
       end
 
-      puts "==> Importing Respondent: #{@respondent_id}"
-      puts "==> Importing Practice: #{@name}"
-      @practice = Practice.find_by_name(@name) || Practice.create(name: @name)
+      puts "==> Importing Respondent: #{@respondent_id}".light_blue.on_white
+      puts "==> Importing Practice: #{@name}".light_blue
+      @practice = Practice.find_by_name(@name)
+
+      if @practice.present?
+        puts "This practice already exists in the system.".white.on_blue
+        puts "Would you like to destroy and re-import this practice?. [Y/N]".white.on_blue
+        answer = STDIN.gets.chomp
+        case answer.downcase
+        when 'y'
+          destroy_practice
+        when 'yes'
+          destroy_practice
+        when 'n'
+          puts "Would you like to update/re-import this practice?. [Y/N]".white.on_blue
+          puts "WARNING: this may duplicate files, pictures, risk and mitigation pairs, etc. to the practice that were already on there. Use wisely!".yellow
+          ans = STDIN.gets.chomp
+          case ans.downcase
+          when 'y'
+            puts "Updating/importing practice: #{@name}".light_blue
+          when 'yes'
+            puts "Updating/importing practice: #{@name}".light_blue
+          when 'n'
+            puts "Skipping practice #{@name} entirely!".yellow
+            next
+          when 'no'
+            puts "Skipping practice #{@name} entirely!".yellow
+            next
+          else
+            puts "Skipping practice #{@name} entirely!".yellow
+            next
+          end
+        when 'yes'
+          puts "Updating/re-importing practice: #{@name}".light_blue
+        when 'n'
+          puts "Updating/re-importing practice: #{@name}".light_blue
+        else
+          puts "Skipping practice #{@name} entirely!".yellow
+          next
+        end
+      else
+        @practice = Practice.create(name: @name)
+      end
+
 
       # Basic Practice related questions first
       basic_answers
@@ -61,13 +118,21 @@ namespace :importer do
       domains
       practice_permissions
       timelines
+      training_details
+      it_required
     end
-    puts "*********** Completed Importing Practices! ***********"
+    puts "*********** Completed Importing Practices! ***********".green
   end
 end
 
+def destroy_practice
+  puts "\n Destroying and re-importing practice: #{@name}".white.on_red
+  @practice.destroy
+  @practice = Practice.create(name: @name)
+end
+
 def basic_answers
-  puts "==> Importing Practice: #{@name} basic answers"
+  puts "==> Importing Practice: #{@name} basic answers".light_blue
   question_fields = {
       # 'When was this practice initiated? If day is unknown, use the first of the month': :date_initiated,
       # The below question's text needs to be changed when a new sheet can be provided.
@@ -110,7 +175,7 @@ def basic_answers
 end
 
 def practice_partners
-  puts "==> Importing Practice: #{@name} StratePractice Partners"
+  puts "==> Importing Practice: #{@name} Practice Partners".light_blue
   question_fields = {
       'Which of the following statements regarding Partners apply to this Practice? (Mark all that apply)': 13
   }
@@ -122,7 +187,7 @@ def practice_partners
       next if pp_name.blank?
 
       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-        split_answer = pp_name.split(/\\|\//)
+        split_answer = pp_name.split(/\\/)
         split_answer.each do |ans|
           formatted_ans = ans.split(':')[0].squish
           practice_partner = PracticePartner.find_by(name: formatted_ans)
@@ -141,7 +206,7 @@ def practice_partners
 end
 
 def va_employees
-  puts "==> Importing Practice: #{@name} Support Team"
+  puts "==> Importing Practice: #{@name} Support Team".light_blue
   # TODO: Innovation team
   question_fields = {
       "Who are the VA employee(s) responsible for the support of this Practice? (SupportTeam)Please separate the person's Name from their Role with a backslash (\\).": 5
@@ -161,7 +226,7 @@ def va_employees
       vae = @answers[i]
       next if vae.blank?
 
-      vae = vae.split(/\\|\//)
+      vae = vae.split(/\\/)
       vae_name = vae[0]
       vae_role = vae[1]
       if @answers[@questions.index(avatars[index].to_s)].present?
@@ -196,7 +261,7 @@ end
 #       next if answer.blank?
 
 #       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-#         split_answer = answer.split(/\\|\//)
+#         split_answer = answer.split(/\\/)
 #         split_answer.each do |ans|
 #           developing_facility = DevelopingFacilityType.find_by(name: ans) || DevelopingFacilityType.create(name: ans)
 #           DevelopingFacilityTypePractice.create developing_facility_type: developing_facility, practice: @practice unless DevelopingFacilityTypePractice.where(developing_facility_type: developing_facility, practice: @practice).any?
@@ -223,7 +288,7 @@ end
 #       next if answer.blank?
 #
 #       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-#         split_answer = answer.split(/\\|\//)
+#         split_answer = answer.split(/\\/)
 #         split_answer.each do |ans|
 #           secretary_priority = VaSecretaryPriority.find_or_create_by(name: ans)
 #           VaSecretaryPriorityPractice.create va_secretary_priority: secretary_priority, practice: @practice unless VaSecretaryPriorityPractice.where(va_secretary_priority: secretary_priority, practice: @practice).any?
@@ -250,7 +315,7 @@ end
 #       next if answer.blank?
 #
 #       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-#         split_answer = answer.split(/\\|\//)
+#         split_answer = answer.split(/\\/)
 #         split_answer.each do |ans|
 #           practice_management = PracticeManagement.find_or_create_by(name: answer)
 #           PracticeManagementPractice.create practice_management: practice_management, practice: @practice unless PracticeManagementPractice.where(practice_management: practice_management, practice: @practice).any?
@@ -264,7 +329,7 @@ end
 # end
 
 def categories
-  puts "==> Importing Practice: #{@name} Categories"
+  puts "==> Importing Practice: #{@name} Categories".light_blue
   question_fields = {
       'What Primary care specialties does this Practice impact? Please mark all that apply.': 33,
       'What medical sub-specialties does this Practice impact? Please select all all that apply.': 23,
@@ -282,7 +347,7 @@ def categories
       next if answer.blank?
 
       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-        split_answer = answer.split(/\\|\//)
+        split_answer = answer.split(/\\/)
         split_answer.each do |ans|
           category = Category.find_or_create_by(name: ans)
           CategoryPractice.create category: category, practice: @practice unless CategoryPractice.where(category: category, practice: @practice).any?
@@ -296,7 +361,7 @@ def categories
 end
 
 def clinical_conditions
-  puts "==> Importing Practice: #{@name} Clinical Conditions"
+  puts "==> Importing Practice: #{@name} Clinical Conditions".light_blue
   question_fields = {
       'Which of the following clinical conditions does this practice affect? (Please select all that apply.)': 16
   }
@@ -309,9 +374,9 @@ def clinical_conditions
       next if answer.blank?
 
       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-        split_answer = answer.split(/\\|\//)
+        split_answer = answer.split(/\\/)
         split_answer.each do |ans|
-          condition = ClinicalCondition.find_or_create_by(name: answer)
+          condition = ClinicalCondition.find_or_create_by(name: ans)
           ClinicalConditionPractice.create clinical_condition: condition, practice: @practice unless ClinicalConditionPractice.where(clinical_condition: condition, practice: @practice).any?
         end
       else
@@ -323,7 +388,7 @@ def clinical_conditions
 end
 
 def financial_files
-  puts "==> Importing Practice: #{@name} Financial Files"
+  puts "==> Importing Practice: #{@name} Financial Files".light_blue
   question_fields = {
       "Please upload applicable financial information such as a formal business case/return on investment (ROI).": 1
   }
@@ -342,7 +407,7 @@ def financial_files
 end
 
 def job_positions
-  puts "==> Importing Practice: #{@name} Job Positions"
+  puts "==> Importing Practice: #{@name} Job Positions".light_blue
   question_fields = {
       "Which of the following job titles or positions does this practice impact? (Please select all that apply.)": 10
   }
@@ -355,9 +420,9 @@ def job_positions
       next if answer.blank?
 
       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-        split_answer = answer.split(/\\|\//)
+        split_answer = answer.split(/\\/)
         split_answer.each do |ans|
-          job_position = JobPosition.find_or_create_by(name: answer)
+          job_position = JobPosition.find_or_create_by(name: ans)
           JobPositionPractice.create job_position: job_position, practice: @practice unless JobPositionPractice.where(job_position: job_position, practice: @practice).any?
         end
       else
@@ -369,7 +434,7 @@ def job_positions
 end
 
 def ancillary_services
-  puts "==> Importing Practice: #{@name} Ancillary Services"
+  puts "==> Importing Practice: #{@name} Ancillary Services".light_blue
   question_fields = {
       'Which of the following ancillary services does this practice impact? (Please select all that apply.)': 11
   }
@@ -382,9 +447,9 @@ def ancillary_services
       next if answer.blank?
 
       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-        split_answer = answer.split(/\\|\//)
+        split_answer = answer.split(/\\/)
         split_answer.each do |ans|
-          ancillary_service = AncillaryService.find_or_create_by(name: answer)
+          ancillary_service = AncillaryService.find_or_create_by(name: ans)
           AncillaryServicePractice.create ancillary_service: ancillary_service, practice: @practice unless AncillaryServicePractice.where(ancillary_service: ancillary_service, practice: @practice).any?
         end
       else
@@ -396,7 +461,7 @@ def ancillary_services
 end
 
 def clinical_locations
-  puts "==> Importing Practice: #{@name} Clinical Locations"
+  puts "==> Importing Practice: #{@name} Clinical Locations".light_blue
   question_fields = {
       'Which of the following clinical locations does this practice impact? (Please select all that apply.)': 12
   }
@@ -409,9 +474,9 @@ def clinical_locations
       next if answer.blank?
 
       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-        split_answer = answer.split(/\\|\//)
+        split_answer = answer.split(/\\/)
         split_answer.each do |ans|
-          clinical_location = ClinicalLocation.find_or_create_by(name: answer)
+          clinical_location = ClinicalLocation.find_or_create_by(name: ans)
           ClinicalLocationPractice.create clinical_location: clinical_location, practice: @practice unless ClinicalLocationPractice.where(clinical_location: clinical_location, practice: @practice).any?
         end
       else
@@ -423,7 +488,7 @@ def clinical_locations
 end
 
 def departments
-  puts "==> Importing Practice: #{@name} Departments"
+  puts "==> Importing Practice: #{@name} Departments".light_blue
   question_fields = {
       'Which departments or operational domains does this Practice impact?': 50,
   }
@@ -436,9 +501,9 @@ def departments
       next if answer.blank?
 
       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-        split_answer = answer.split(/\\|\//)
+        split_answer = answer.split(/\\/)
         split_answer.each do |ans|
-          department = Department.find_or_create_by(name: answer)
+          department = Department.find_or_create_by(name: ans)
           DepartmentPractice.create department: department, practice: @practice unless DepartmentPractice.where(department: department, practice: @practice).any?
         end
       else
@@ -450,7 +515,7 @@ def departments
 end
 
 def domains
-  puts "==> Importing Practice: #{@name} Domains"
+  puts "==> Importing Practice: #{@name} Domains".light_blue
   question_fields = {
       'How does this practice deliver value? Please select all that apply of the five value delivery domains below:': 5,
   }
@@ -469,7 +534,7 @@ def domains
 end
 
 def video_files
-  puts "==> Importing Practice: #{@name} Video Files"
+  puts "==> Importing Practice: #{@name} Video Files".light_blue
   question_fields = [
       'Do you have a short video that provides an explanation, summary, or testimonial about your practice? (Please paste YouTube url or other link)',
       'Enter title and description for video'
@@ -491,7 +556,7 @@ def video_files
 end
 
 def additional_documents
-  puts "==> Importing Practice: #{@name} Additional Documents"
+  puts "==> Importing Practice: #{@name} Additional Documents".light_blue
   question_fields = {
       'Do you have survey results, verifiable testimonials, press releases, news articles regarding your practice that you would like to share?': :attachment,
       'Additional practice information 1': :attachment,
@@ -531,7 +596,7 @@ end
 # end
 
 def toolkit_files
-  puts "==> Importing Practice: #{@name} Toolkit Files"
+  puts "==> Importing Practice: #{@name} Toolkit Files".light_blue
   question_fields = {
       'Does your practice have an implementation toolkit?': :attachment
   }
@@ -550,7 +615,7 @@ def toolkit_files
 end
 
 def checklist_files
-  puts "==> Importing Practice: #{@name} Checklist Files"
+  puts "==> Importing Practice: #{@name} Checklist Files".light_blue
   question_fields = {
       'Does your practice have a pre-implementation checklist?': :attachment
   }
@@ -569,7 +634,7 @@ def checklist_files
 end
 
 def publication_files
-  puts "==> Importing Practice: #{@name} Publication Files"
+  puts "==> Importing Practice: #{@name} Publication Files".light_blue
   question_fields = {
       'Does your practice have peer-reviewed publications associated with it?': :attachment,
       'Additional publication upload 1': :attachment
@@ -589,7 +654,7 @@ def publication_files
 end
 
 def publications
-  puts "==> Importing Practice: #{@name} Publications"
+  puts "==> Importing Practice: #{@name} Publications".light_blue
   question_fields = {
       'Does your practice have peer-reviewed publications associated with it online? Enter url(s) if so.': 3
   }
@@ -602,7 +667,7 @@ def publications
       next if answer.blank?
 
       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-        split_answer = answer.split(/\\|\//)
+        split_answer = answer.split(/\\/)
         split_answer.each do |ans|
           Publication.create(practice: @practice, link: answer) unless Publication.where(link: answer, practice: @practice).any?
         end
@@ -626,7 +691,7 @@ end
 #       next if answer.blank?
 
 #       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-#         split_answer = answer.split(/\\|\//)
+#         split_answer = answer.split(/\\/)
 #         split_answer.each do |ans|
 #           badge = Badge.find_by(name: answer) || Badge.create(name: answer)
 #           BadgePractice.create badge: badge, practice: @practice unless BadgePractice.where(badge: badge, practice: @practice).any?
@@ -640,7 +705,7 @@ end
 # end
 
 def implementation_timeline
-  puts "==> Importing Practice: #{@name} Implementation Timeline"
+  puts "==> Importing Practice: #{@name} Implementation Timeline".light_blue
   question_fields = {
       'Do you have an implementation timeline for your practice?': :attachment
   }
@@ -659,7 +724,7 @@ def implementation_timeline
 end
 
 def risk_mitigations
-  puts "==> Importing Practice: #{@name} Risks and Mitigations"
+  puts "==> Importing Practice: #{@name} Risks and Mitigations".light_blue
   question_fields = {
       'What is the primary risk to implementation? Please describe how you would mitigate it.': 2,
       'What is the second risk to implementation? Please describe how you would mitigate it.': 2,
@@ -687,7 +752,7 @@ def risk_mitigations
 end
 
 def additional_staff
-  puts "==> Importing Practice: #{@name} Additional Staff"
+  puts "==> Importing Practice: #{@name} Additional Staff".light_blue
   question_fields = [
       {'What job titles are required to implement this Practice?': 5},
       {'For the job titles listed, how many hours are required per week?': 5},
@@ -705,7 +770,7 @@ def additional_staff
 end
 
 def additional_resources
-  puts "==> Importing Practice: #{@name} Additional Resources"
+  puts "==> Importing Practice: #{@name} Additional Resources".light_blue
   question_fields = {
       'What other resources and supplies are needed for this Practice?': 5
   }
@@ -721,7 +786,7 @@ def additional_resources
 end
 
 def required_training_staff
-  puts "==> Importing Practice: #{@name} Required Training Staff"
+  puts "==> Importing Practice: #{@name} Required Training Staff".light_blue
   question_fields = {
       'Who is required to take the training?': 5
   }
@@ -737,7 +802,7 @@ def required_training_staff
 end
 
 def costs_difficulties
-  puts "==> Importing Practice: #{@name} Costs and Difficulties"
+  puts "==> Importing Practice: #{@name} Costs and Difficulties".light_blue
   question_fields = {
       'List other Costs of Implementation that are unique to your Practice.': 6
   }
@@ -749,7 +814,7 @@ def costs_difficulties
       next if @answers[i].blank?
 
       if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-        split_answer = answer.split(/\\|\//)
+        split_answer = answer.split(/\\/)
         split_answer.each do |ans|
           Cost.create practice: @practice, description: @answers[i] unless Cost.where(description: @answers[i], practice: @practice).any?
           Difficulty.create practice: @practice, description: @answers[i + 3] unless Difficulty.where(description: @answers[i + 3], practice: @practice).any?
@@ -763,7 +828,7 @@ def costs_difficulties
 end
 
 def impact_photos
-  puts "==> Importing Practice: #{@name} Human Impact Photos"
+  puts "==> Importing Practice: #{@name} Human Impact Photos".light_blue
   question_fields = [[
                          'Impact Photo 1',
                          'Please provide a title for Impact Picture 1',
@@ -796,7 +861,7 @@ def impact_photos
 end
 
 def file_uploads
-  puts "==> Importing Practice: #{@name} File Uploads"
+  puts "==> Importing Practice: #{@name} File Uploads".light_blue
   question_fields = {
       "Please provide a photo of the individual who initiated the practice. (This will be displayed under \"Origin of the practice\")": :origin_picture,
       'Upload a Display Image for your practice. This image will be used for the main title page and marketplace tile.': :main_display_image
@@ -804,6 +869,7 @@ def file_uploads
   question_fields.each do |key, value|
     next if @answers[@questions.index(key.to_s)].blank?
 
+    next if @answers[@questions.index(key.to_s)].include?('.pdf')
     image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(key.to_s)]}"
     image_file = File.new(image_path)
 
@@ -817,9 +883,9 @@ def file_uploads
 end
 
 def practice_permissions
-  puts "==> Importing Practice: #{@name} Practice Permissions"
+  puts "==> Importing Practice: #{@name} Practice Permissions".light_blue
   question_fields = {
-      "Are any permissions required for this practice? (e.g. \"Letters of Understanding,\" \"Proof of Funding,\" \"Written Permission from Department Heads,\" etc). Please list.": 5
+      "Are any permissions required for this practice? (e.g. \"Letters of Understanding,\" \"Proof of Funding,\" \"Written Permission from Department Heads,\" etc). Please list.": 4
   }
 
   question_fields.each do |key, value|
@@ -833,8 +899,42 @@ def practice_permissions
   end
 end
 
+def training_details
+  puts "==> Importing Practice: #{@name} Training Details".light_blue
+  question_fields = {
+      "Training details:": 3
+  }
+
+  question_fields.each do |key, value|
+    q_index = @questions.index(key.to_s)
+
+    @practice.training_length = @answers[q_index]
+    @practice.required_training_summary = @answers[q_index + 1]
+    @practice.training_test = @answers[q_index + 2]
+    @practice.training_test_details = @answers[q_index + 2]
+    @practice.save
+  end
+end
+
+def it_required
+  puts "==> Importing Practice: #{@name} It Required".light_blue
+  question_fields = {
+      "Is Information Technology (IT) required to implement the practice?": 1
+  }
+
+  question_fields.each do |key, value|
+    next if @answers[@questions.index(key.to_s)].blank?
+
+    answer = @answers[@questions.index(key.to_s)]
+
+    @practice.it_required = true if answer.downcase == 'yes'
+    @practice.it_required = false if answer.downcase == 'no'
+    @practice.save
+  end
+end
+
 def timelines
-  puts "==> Importing Practice: #{@name} Timelines"
+  puts "==> Importing Practice: #{@name} Timelines".light_blue
   question_fields = {
       "During the time you just listed, what are 3 to 7 milestones that should be met during implementation? Please list with the corresponding time frame.": 14
   }
