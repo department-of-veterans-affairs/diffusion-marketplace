@@ -183,3 +183,19 @@ p {
   top: 0;
   width: 0.5rem;
 }
+
+a {
+  color: black;
+
+  &:visited {
+    color:black;
+  }
+
+  &:hover {
+    text-decoration: underline;
+
+    > * {
+      text-decoration: underline;
+    }
+  }
+}
