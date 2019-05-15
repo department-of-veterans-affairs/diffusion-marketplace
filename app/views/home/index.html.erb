@@ -14,16 +14,36 @@
       <div class="tablet:grid-col-8 x1-bottom">
         &nbsp;
       </div>
-      <% unless current_user.present? %>
-        <div class="tablet:grid-col-4 display-grid-align-items-center">
-          <%= link_to new_user_registration_path, class: 'dm-button-link', id: 'register-button-link' do %>
-            Register
+      <% @top_three_gold_practices.each_with_index do |s, i| %>
+        <% if i == 0 %>
+          <div class="landing-practice-card box-shadow-all">
+            <div class="grid-row grid-gap">
+              <div class="grid-col-5 p1-bottom">
+                <%= image_tag s.main_display_image.url, alt: '' %>
+              </div>
+              <div class="grid-col-7">
+                <div class="grid-row grid-gap p1-top">
+                  <h2 class="bold display-inline-block p1-left x0"><%= s.tagline %></h2>
+                </div>
+                <div class="grid-row">
+                  <%= s.description %>
+                </div>
+                <div class="grid-row p1-bottom">
+                  <%= s.name  %> | <%= date_format(s.date_initiated) %> |  <%= s.initiating_facility  %>
+                </div>
+               <div class="grid-row">
+                  <div class="tablet:grid-col-3">
+                  </div>
+                  <div class="tablet:grid-col-4 display-grid-align-items-center">
+                    <%= link_to 'Learn More', s, class: 'dm-button-link-secondary  display-inline-block' %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <% end %>
-        </div>
       <% end %>
     </div>
-  </section>
-  <section id="diffusion-animation-section" class="diffusion-animation-section">
   </section>
 
   <section class="usa-section section-worth-spreading dm-background-primary-blue dm-font-color-white">
