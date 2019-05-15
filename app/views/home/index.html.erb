@@ -1,110 +1,72 @@
-<div class="dm-background-linear-up-lightblue-to-white">
-  <!-- "Welcome" section -->
-  <section class="usa-section grid-container hero">
-    <%= render "shared/messages" %>
+<div class="full-view-height">
+  <div class="dm-background-light-blue">
+    <!-- "Welcome" section -->
+    <section class="grid-container hero padding-y-205 margin-bottom-2">
+      <%= render "shared/messages" %>
 
-    <div class="grid-row grid-gap">
-      <h1 class="font-heading-2xl">Saving lives by diffusing best practices</h1>
-      <p class="measure-none">VHA’s new Changing Lives, Saving Lives (CLSL) campaign aims to raise awareness of how
-        front line driven innovation is changing the lives of Veterans, caregivers, and employees — and in some
-        instances
-        saving Veteran lives. </p>
-    </div>
-    <div class="grid-row">
-      <div class="tablet:grid-col-8 x1-bottom">
-        &nbsp;
+      <div class="padding-x-7 padding-y-5 dm-background-white grid-row">
+        <h1 class="bold font-sans-2xl margin-0 margin-bottom-1">Saving lives by diffusing best practices</h1>
+        <p class="measure-none margin-0">Supporting a High Reliability and Learning Organization by Diffusing Best
+          Practices.</p>
       </div>
-      <% @top_three_gold_practices.each_with_index do |s, i| %>
-        <% if i == 0 %>
-          <div class="landing-practice-card box-shadow-all">
-            <div class="grid-row grid-gap">
-              <div class="grid-col-5 p1-bottom">
-                <%= image_tag s.main_display_image.url, alt: '' %>
-              </div>
-              <div class="grid-col-7">
-                <div class="grid-row grid-gap p1-top">
-                  <h2 class="bold display-inline-block p1-left x0"><%= s.tagline %></h2>
+
+      <% if @top_practice %>
+        <div class="margin-top-105">
+          <div class="dm-background-white">
+            <div class="grid-row">
+              <style>
+                .top-practice-img {
+                  background: url('<%= @top_practice.main_display_image.url %>');
+                  background-size: cover;
+                }
+              </style>
+              <div class="grid-col-5 top-practice-img"></div>
+              <div class="grid-col-7 padding-x-205 padding-y-4">
+                <div class="grid-row margin-bottom-2">
+                  <%= link_to @top_practice do %>
+                    <h2 class="bold display-inline-block x0 font-sans-xl"><%= @top_practice.tagline %></h2>
+                  <% end %>
                 </div>
                 <div class="grid-row">
-                  <%= s.description %>
+                  <p class="margin-top-0 margin-bottom-1"><%= @top_practice.description %></p>
                 </div>
                 <div class="grid-row p1-bottom">
-                  <%= s.name  %> | <%= date_format(s.date_initiated) %> |  <%= s.initiating_facility  %>
+                  <h5 class="flex-1 x0 text-normal"><%= @top_practice.name %>
+                    <span class="margin-x-05">|</span>
+                    <span class="uppercase"><%= @top_practice.date_initiated.present? ? date_format(@top_practice.date_initiated) : '(start date unknown)' %></span>
+                    <span class="margin-x-05">|</span>
+                    <span class="uppercase">
+                  <%= facility_name(@top_practice.initiating_facility) %>
+                  </span>
+                  </h5>
                 </div>
-               <div class="grid-row">
-                  <div class="tablet:grid-col-3">
-                  </div>
+                <div class="grid-row justify-center">
                   <div class="tablet:grid-col-4 display-grid-align-items-center">
-                    <%= link_to 'Learn More', s, class: 'dm-button-link-secondary  display-inline-block' %>
+                    <%= link_to 'Learn More', @top_practice, class: 'dm-button-link-secondary  display-inline-block' %>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <% end %>
+        </div>
       <% end %>
-    </div>
-  </section>
-
-  <section class="usa-section section-worth-spreading dm-background-primary-blue dm-font-color-white">
-    <div class="grid-container">
-      <div class="grid-row">
-        <div class="tablet:grid-col-8 x1-bottom">
-          <h2>Do you have a best practice worth spreading?</h2>
-          <p>You can submit a practice to the diffusion marketplace and help save lives.</p>
-        </div>
-        <div class="tablet:grid-col-4 display-grid-align-items-center">
-          <button class="dm-button-secondary">Learn More</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <% if @top_three_gold_practices.any? %>
-    <section class="usa-section section-top-gold-status-intro">
-      <div class="grid-container display-flex-align-items-center">
-        <%= image_tag 'heart_badge.svg', alt: 'Heart' %>
-        <h2 class="bold display-inline-block p1-left x0">Current Top 3 Gold Status Practices</h2>
-      </div>
     </section>
 
-    <!-- "Featured practices" section -->
-    <!-- TODO: Hover state -->
-    <section id="gold-practice-tiles" class="usa-section grid-container home-tiles">
-      <div class="grid-row">
-        <% @top_three_gold_practices.each_with_index do |practice, i| %>
-          <% index = i + 1 %>
-          <style>
-            .dm-background-gold-tile-<%= index %>:after {
-            <% if practice.main_display_image.present? %>
-              background-image: url(<%= practice.main_display_image.url %>);
-            <% else %>
-              background: rgba(26, 68, 128, 1);
+    <% if @featured_practices.any? %>
+      <section class="dm-background-white margin-bottom-105 padding-top-2">
+        <div class="grid-container">
+          <div class="grid-row">
+            <% @featured_practices.each do |p| %>
+              <% if p.present? %>
+                <div class="tablet:grid-col-4 padding-105">
+                  <%= render partial: 'practices/marketplace_card', locals: {practice: p} %>
+                </div>
+              <% end %>
             <% end %>
-            }
-          </style>
-          <div class="grid-col-12 home-tile x0">
-            <div class="featured-practice p1 text-center dm-background-gold-tile dm-background-gold-tile-<%= index %>">
-              <%= image_tag "#{index}-badge.svg", class: 'center x1-top', alt: "#{index}-badge.svg" %>
-              <p class="x0">
-                <span class="gold-status-first dm-font-color-white fw-100">
-                  <%= practice.name %>
-                  <% if practice.gold_status_tagline.present? %>
-                    <%= practice.gold_status_first_line %>
-                  <% end %>
-                </span>
-                <% if practice.gold_status_tagline.present? %>
-                  <br>
-                  <span class="gold-status-second dm-font-color-white fw-100"><%= practice.gold_status_second_line %></span>
-                <% end %>
-              </p>
-            </div>
-            <div class="middle middle-<%= index %>">
-              <%= link_to 'Learn More', practice, class: 'dm-button-link display-inline-block' %>
-            </div>
           </div>
-        <% end %>
-      </div>
-    </section>
-  <% end %>
+        </div>
+      </section>
+    <% end %>
+  </div>
+
 </div>
