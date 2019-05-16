@@ -54,7 +54,7 @@ async function searchPracticesPage() {
             </div>             
           </div>
           <div class="grid-col flex-2">
-            <h2 class="margin-top-1"><a href="/practices/${result.item.id}">${result.item.tagline}</a></h2>
+            <h2 class="margin-top-1"><a href="/practices/${result.item.slug}">${result.item.tagline}</a></h2>
               <h3 class="truncate-text two-lines">${result.item.description}</h3>
               <p class="practice-details">${result.item.name} | <span class="uppercase">${result.item.date_initiated}</span> | <span class="uppercase">${result.item.initiating_facility}</span></p>
               <p class="truncate-text five-lines">${result.item.summary}</p>
