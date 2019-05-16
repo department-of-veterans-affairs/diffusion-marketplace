@@ -19,7 +19,7 @@ describe 'Search', type: :feature do
       visit '/search'
       expect(page).to be_accessible.according_to :wcag2a, :section508
 
-      fill_in('Search term', with: 'Test')
+      fill_in('Type keywords to find a practice', with: 'Test')
       click_button('Search')
 
       expect(page).to be_accessible.according_to :wcag2a, :section508
@@ -27,26 +27,26 @@ describe 'Search', type: :feature do
       # test facility data map for name, negative case
       expect(page).to have_content(@user_practice.name)
       expect(page).to have_content(@user_practice.initiating_facility)
-      expect(page).to have_content('1 result(s) for "Test"')
+      expect(page).to have_content('1 result for "Test"')
 
       # do not show a practice that is not approved/published
-      fill_in('Search term', with: 'practice')
+      fill_in('Type keywords to find a practice', with: 'practice')
       click_button('Search')
 
-      expect(page).to have_content('1 result(s) for "practice"')
+      expect(page).to have_content('1 result for "practice"')
 
       # show practices that are approved/published
       @user_practice2.update(published: true, approved: true)
       visit '/search'
 
-      fill_in('Search term', with: 'practice')
+      fill_in('Type keywords to find a practice', with: 'practice')
       click_button('Search')
 
       expect(page).to be_accessible.according_to :wcag2a, :section508
 
       expect(page).to have_content(@user_practice.name)
       expect(page).to have_content(@user_practice2.name)
-      expect(page).to have_content('2 result(s) for "practice"')
+      expect(page).to have_content('2 results for "practice"')
 
       # test facility data map for name, positive case
       expect(page).to have_content('Tacoma Vet Center')

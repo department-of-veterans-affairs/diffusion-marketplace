@@ -1,23 +1,30 @@
-<div class="dm-background-white full-view-height padding-top-9">
+<div class="dm-background-white full-view-height padding-top-1">
+
+  <section class="grid-container x1-5-bottom">
+    <div class="dm-font-color-primary-blue p1-top breadcrumbs dm-font-color-super-violet-ish">
+      <a href="/">Home</a>
+      <span class="x0-5-left x0-5-right">›</span>
+      <span>Marketplace</span>
+    </div>
+  </section>
+
   <section class="grid-container margin-bottom-8">
     <%= render "shared/messages" %>
     <h1 class="font-sans-3xl margin-top-0 margin-bottom-205">Discover your new best practice!</h1>
-    <h2 class="margin-0">Search by Practice name, facility location, condition, or keyword.</h2>
+    <h2 class="margin-0">Search by Practice name, facility location, condition, or keyword</h2>
   </section>
 
   <section class="dm-background-light-blue margin-bottom-6">
     <div class="grid-container padding-y-4">
-      <form class="usa-search display-flex justify-center">
+      <form id="marketplaceSearchForm" name="marketplaceSearchForm" class="usa-search display-flex justify-center">
         <div role="search" class="flex-column">
-<!--          <div class="display-flex flex-column">-->
-            <label class="" for="practice-search-field">Find a Practice</label>
+            <label for="practice-search-field">Find a Practice</label>
             <div class="display-flex">
-              <input class="usa-input" id="practice-search-field" autocomplete="off" type="search" name="search">
+              <input class="usa-input" pattern=".{3,}" required title="Type at least three characters to search." id="practice-search-field" autocomplete="off" type="search" name="search">
               <button id="practice-search-button" class="usa-button" type="submit">
                 <span class="usa-search__submit-text">Search</span>
               </button>
             </div>
-<!--          </div>-->
         </div>
       </form>
     </div>

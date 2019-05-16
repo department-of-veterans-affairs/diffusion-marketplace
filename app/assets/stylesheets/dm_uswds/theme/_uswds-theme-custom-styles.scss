@@ -186,6 +186,7 @@ p {
 
 a {
   color: black;
+  text-decoration: none;
 
   &:visited {
     color:black;
@@ -199,8 +200,8 @@ a {
     }
 
     img, .img {
-      opacity: .9;
       cursor: pointer;
+      opacity: .9;
     }
 
   }
