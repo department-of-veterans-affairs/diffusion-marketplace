@@ -46,7 +46,7 @@ async function searchPracticesPage() {
                 `<div class="grid-row search-row">
           <div class="grid-col flex-1">
             <div class="img-box margin-top-2">
-              <a href="/practices/${result.item.slug}">
+              <a href="/practices/${result.item.slug}" aria-label="Go to ${result.item.name}">
               <div class="img img-box-content" style="${result.item.image ? `background: url('${result.item.image}') #97d4ea` : `background: #97d4ea`}; background-size: cover">
               
                 </div>
