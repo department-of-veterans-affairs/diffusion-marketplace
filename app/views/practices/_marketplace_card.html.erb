@@ -7,7 +7,9 @@
   }
 </style>
 <% if practice.main_display_image.present? %>
-  <div class="grid-row margin-bottom-2 marketplace-card-header-<%= practice.id %>"></div>
+  <%= link_to practice do %>
+    <div class="img grid-row margin-bottom-2 marketplace-card-header-<%= practice.id %>"></div>
+  <% end %>
 <% end %>
 <div class="grid-row margin-bottom-2">
   <%= link_to practice do %>
