@@ -1,17 +1,30 @@
-<section class="search-practices grid-container full-view-height">
-  <h1>Find a practice</h1>
+<div class="dm-background-white full-view-height padding-top-1">
+  <section class="grid-container x1-5-bottom">
+    <div class="dm-font-color-primary-blue p1-top breadcrumbs dm-font-color-super-violet-ish">
+      <a href="/">Home</a>
+      <span class="x0-5-left x0-5-right">›</span>
+      <span>Search</span>
+    </div>
+  </section>
 
-  <div id="practice-search-form">
-    <input id="practice-search-field" class="usa-input" autocomplete="off" aria-label="Search term">
-    <button id="practice-search-button" class="usa-button">Search</button>
-    <div style="clear:both"></div>
-  </div>
+  <section class="grid-container margin-bottom-3">
+    <%= render "shared/messages" %>
+    <h1 class="font-sans-3xl margin-top-0 margin-bottom-205">Find a Practice</h1>
+    <form id="searchForm" name="searchForm"  class="usa-search">
+      <div role="search" class="flex-column">
+        <label class="margin-bottom-5" for="practice-search-field">Type keywords to find a practice</label>
+        <div class="display-flex">
+          <input class="usa-input" id="practice-search-field" required title="Type at least three characters to search." autocomplete="off" type="search" name="search">
+          <button id="practice-search-button" class="usa-button" type="submit">
+            <span class="usa-search__submit-text">Search</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </section>
 
-  <p id="results-summary"></p>
-  <div id="search-results"></div>
-</section>
-
-<!-- Inject practices JSON into page via template -->
-<script>
-  var practices = <%= @practices_json %>;
-</script>
+  <section class="search-practices grid-container">
+    <p id="results-summary"></p>
+    <div id="search-results"></div>
+  </section>
+</div>

@@ -33,4 +33,6 @@ Rails.application.routes.draw do
   # Ditto for "Planning Checklist"
   get 'practices/planning_checklist' => 'practices#planning_checklist'
   get '/search' => 'practices#search'
+  get '/practices_json' => 'practices#practices_json'
+  get '/marketplace' => 'practices#index'
 end

@@ -14,13 +14,19 @@
         <div class="margin-top-105">
           <div class="dm-background-white">
             <div class="grid-row">
-              <style>
-                .top-practice-img {
-                  background: url('<%= @top_practice.main_display_image.url %>');
-                  background-size: cover;
-                }
-              </style>
-              <div class="grid-col-5 top-practice-img"></div>
+              <% if @top_practice.main_display_image.present? %>
+                <style>
+                  .top-practice-img {
+                    background: url('<%= @top_practice.main_display_image.url %>');
+                    background-size: cover;
+                  }
+                </style>
+                <%= link_to @top_practice, class: 'display-block' do %>
+                  <div class="img grid-col-5 top-practice-img"></div>
+                <% end %>
+              <% else %>
+                <div class="grid-col-5"></div>
+              <% end %>
               <div class="grid-col-7 padding-x-205 padding-y-4">
                 <div class="grid-row margin-bottom-2">
                   <%= link_to @top_practice do %>

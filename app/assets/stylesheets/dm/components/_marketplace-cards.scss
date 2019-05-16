@@ -75,3 +75,16 @@
   .marketplace-card-middle-content-position { }
 
 }
+
+.marketplace-card-border-bottom {
+
+  &:after {
+    border-bottom: 2px solid $dm-color-light-grey;
+    content: "";
+    display: block;
+    margin: 0 auto;
+    padding-top: 20px;
+    width: 95%;
+  }
+
+}

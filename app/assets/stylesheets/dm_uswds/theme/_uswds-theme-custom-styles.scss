@@ -186,6 +186,7 @@ p {
 
 a {
   color: black;
+  text-decoration: none;
 
   &:visited {
     color:black;
@@ -197,5 +198,11 @@ a {
     > * {
       text-decoration: underline;
     }
+
+    img, .img {
+      cursor: pointer;
+      opacity: .9;
+    }
+
   }
 }
