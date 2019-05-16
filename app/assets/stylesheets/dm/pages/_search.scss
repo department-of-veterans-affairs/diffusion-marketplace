@@ -1,5 +1,5 @@
 // Styles for the practice search page
-
+@import '../variables/colors';
 .search-practices {
 
   hr {
@@ -66,11 +66,7 @@
   }
 
   #search-results a:visited {
-    color: #0076d6;
-  }
-
-  p.practice-details {
-    color: #71767a;
+    color: $dm-color-black;
   }
 
   /* Truncate text a given line amount */
@@ -111,19 +107,24 @@
     position: relative;
     width: 100%;  /* desired width */
   }
-  .img-box:before {
-    content: "";
-    display: block;
-    padding-top: 100%;  /* initial ratio of 1:1 */
-  }
+  //.img-box:before {
+  //  content: "";
+  //  display: block;
+  //  padding-top: 100%;  /* initial ratio of 1:1 */
+  //}
   .img-box-content {
     position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
     right: 0;
-    border-radius: 20px;
     background-repeat: no-repeat;
+    height: 271px;
+    width: 271px;
+  }
+
+  .search-row {
+    min-height: 300px;
   }
 
 }

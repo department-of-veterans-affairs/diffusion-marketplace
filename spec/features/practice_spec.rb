@@ -8,7 +8,7 @@ describe 'Practices', type: :feature do
     @approver = User.create!(email: 'squidward.tentacles@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now)
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
-    @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name')
+    @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline')
     @departments = [
         Department.create!(name: 'Admissions', short_name: 'admissions'),
         Department.create!(name: 'None', short_name: 'none'),
@@ -34,7 +34,7 @@ describe 'Practices', type: :feature do
     login_as(@user, :scope => :user, :run_callbacks => false)
 
     # Visit an individual Practice that is approved and published
-    practice = Practice.create!(name: 'A public practice', approved: true, published: true)
+    practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline')
     visit practice_path(practice)
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content(practice.name)
@@ -89,7 +89,7 @@ describe 'Practices', type: :feature do
     login_as(@user, :scope => :user, :run_callbacks => false)
 
     # Visit an individual Practice that is approved and published
-    practice = Practice.create!(name: 'A public practice', approved: true, published: true, initiating_facility: 'vc_0508V')
+    practice = Practice.create!(name: 'A public practice', approved: true, published: true, initiating_facility: 'vc_0508V', tagline: 'Test tagline')
     visit practice_path(practice)
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content(practice.name)
