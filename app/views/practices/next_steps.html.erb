@@ -10,6 +10,7 @@
 
 <section class="margin-top-7 margin-bottom-6">
   <div class="grid-container">
+    <%= render "shared/messages" %>
     <h1 class="font-sans-3xl margin-bottom-205">Next Steps</h1>
     <h2 class="margin-0">Build a team and implement this practice</h2>
   </div>
@@ -40,13 +41,13 @@
     <div class="grid-row">
       <div class="tablet:grid-col-3 margin-right-4 margin-bottom-5">
         <a target="_blank"
-          href="mailto:?subject=<%= email_practice_subject(@practice) %>&body=<%= email_practice_body(@practice) %>" class="dm-button-link-secondary">
+           href="mailto:?subject=<%= email_practice_subject(@practice) %>&body=<%= email_practice_body(@practice) %>" class="dm-button-link-secondary">
           Email Summary
         </a>
       </div>
       <div class="tablet:grid-col-3">
         <a target="_blank"
-          href="mailto:?subject=<%= email_checklist_subject(@practice) %>&body=<%= email_checklist_body(@practice) %>"
+           href="mailto:?subject=<%= email_checklist_subject(@practice) %>&body=<%= email_checklist_body(@practice) %>"
            class="dm-button-link-secondary">
           Email Checklist
         </a>
@@ -56,11 +57,15 @@
 </section>
 
 <!-- Checklist -->
-<section class="margin-bottom-6">
-  <div class="grid-container margin-bottom-6 padding-x-9">
-    <h2 class="font-sans-xl margin-bottom-205">Checklist</h2>
-    <button id="print-checklist-button" role="button" class="dm-button-secondary margin-bottom-205">Print Checklist</button>
-    <form class="usa-form-large">
+
+<section>
+  <%= form_for :commit, url: {action: :commit }, method: :post do %>
+    <!--  <form class="usa-form-large" action="<%#= practice_commit_path(practice_id: @practice.slug) %>" method="post">-->
+    <div class="grid-container margin-bottom-6 padding-x-9">
+      <h2 class="font-sans-xl margin-bottom-205">Checklist</h2>
+      <button type="button" id="print-checklist-button" role="button" class="dm-button-secondary margin-bottom-205">Print Checklist
+      </button>
+
       <fieldset class="usa-fieldset">
         <legend class="usa-sr-only">Implementation checklist</legend>
 
@@ -180,18 +185,21 @@
           </div>
         </div>
       </fieldset>
-    </form>
-  </div>
+
+    </div>
+    <div class="dm-background-light-blue">
+      <div class="grid-container padding-y-8 padding-x-9">
+        <p>By choosing to Commit to practice you are:</p>
+        <ul class="margin-bottom-7">
+          <li>Signifying your team's readiness after completing the above checklist.</li>
+          <li>Notifying VA of your plan to implement the practice.</li>
+          <li>Messaging the support team to start working with you to implement the practice.</li>
+        </ul>
+        <button role="button" class="dm-button-primary">Commit to this practice</button>
+      </div>
+    </div>
+  <% end %>
+  <!--  </form>-->
 </section>
 
-<section class="dm-background-light-blue">
-  <div class="grid-container padding-y-8 padding-x-9">
-    <p>By choosing to Commit to practice you are:</p>
-    <ul class="margin-bottom-7">
-      <li>Signifying your team's readiness after completing the above checklist.</li>
-      <li>Notifying VA of your plan to implement the practice.</li>
-      <li>Messaging the support team to start working with you to implement the practice.</li>
-    </ul>
-    <button role="button" class="dm-button-primary">Commit to this practice</button>
-  </div>
-</section>
+

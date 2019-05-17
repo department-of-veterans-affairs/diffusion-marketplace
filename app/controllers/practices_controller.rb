@@ -1,7 +1,8 @@
 class PracticesController < ApplicationController
-  before_action :set_practice, only: [:show, :edit, :update, :destroy, :next_steps]
+  before_action :set_practice, only: [:show, :edit, :update, :destroy, :next_steps, :commit, :committed]
   before_action :set_facility_data, only: [:show, :next_steps]
   before_action :authenticate_user!
+  before_action :can_view_committed_view, only: [:committed]
   before_action :can_view_practice, only: [:show, :edit, :update, :destroy, :next_steps]
 
   # GET /practices
@@ -69,7 +70,7 @@ class PracticesController < ApplicationController
     respond_to do |format|
       if updated
         format.html { redirect_to @practice, notice: 'Practice was successfully updated.' }
-        format.json { render :show, status: :ok, location: @practice}
+        format.json { render :show, status: :ok, location: @practice }
       else
         format.html { render :edit }
         format.json { render json: @practice.errors, status: :unprocessable_entity }
@@ -116,6 +117,36 @@ class PracticesController < ApplicationController
 
   end
 
+  # GET /practices/1/committed
+  def committed
+    render 'committed'
+  end
+
+  # POST /practices/1/commit
+  # POST /practices/1/commit.json
+  def commit
+    user_practice = UserPractice.find_by(user: current_user, practice: @practice, committed: true)
+
+    if user_practice.present?
+      flash[:notice] = "You have already committed to this practice. If you did not receive a follow-up email from the practice support team yet, please contact them at #{@practice.support_network_email}"
+    else
+      user_practice = UserPractice.new(user: current_user, practice: @practice, committed: true)
+      PracticeMailer.commitment_response_email(user: current_user, practice: @practice).deliver_now
+      PracticeMailer.support_team_notification_of_commitment(user: current_user, practice: @practice).deliver_now
+    end
+
+    respond_to do |format|
+      if user_practice.save
+        format.html { redirect_to practice_committed_path(practice_id: @practice.slug), notice: flash[:notice] } if flash[:notice].present?
+        format.html { redirect_to practice_committed_path(practice_id: @practice.slug) } if flash[:notice].blank?
+        format.json { render :show, status: :created, location: practice_committed_path }
+      else
+        format.html { render :next_steps, error: user_practice.errors }
+        format.json { render json: user_practice.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -158,13 +189,22 @@ class PracticesController < ApplicationController
       respond_to do |format|
         warning = 'You are not authorized to view this content.'
         flash[:warning] = warning
-        format.html {redirect_to '/', warning: warning}
-        format.json {render warning: warning}
+        format.html { redirect_to '/', warning: warning }
+        format.json { render warning: warning }
       end
     end
   end
 
   def set_facility_data
     @facility_data = facilities_json['features'].find { |f| f['properties']['id'] == @practice.initiating_facility }
+  end
+
+  def can_view_committed_view
+    unless UserPractice.find_by(user: current_user, practice: @practice, committed: true)
+      warning = 'You must commit to this practice first!'
+      flash[:warning] = warning
+
+      redirect_to(practice_next_steps_path(practice_id: @practice.slug), warning: warning)
+    end
   end
 end

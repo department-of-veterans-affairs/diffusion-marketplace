@@ -53,6 +53,8 @@ class Practice < ApplicationRecord
   has_many :survey_result_files, dependent: :destroy
   has_many :timelines, dependent: :destroy
   has_many :toolkit_files, dependent: :destroy
+  has_many :user_practices, dependent: :destroy
+  has_many :users, through: :user_practices, dependent: :destroy
   has_many :va_employee_practices, dependent: :destroy
   has_many :va_employees, through: :va_employee_practices
   has_many :va_secretary_priority_practices, dependent: :destroy
