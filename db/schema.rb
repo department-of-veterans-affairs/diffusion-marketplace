@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_06_062319) do
+ActiveRecord::Schema.define(version: 2019_05_17_052133) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -600,6 +600,16 @@ ActiveRecord::Schema.define(version: 2019_05_06_062319) do
     t.index ["practice_id"], name: "index_toolkit_files_on_practice_id"
   end
 
+  create_table "user_practices", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "practice_id"
+    t.boolean "committed"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["practice_id"], name: "index_user_practices_on_practice_id"
+    t.index ["user_id"], name: "index_user_practices_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -739,6 +749,7 @@ ActiveRecord::Schema.define(version: 2019_05_06_062319) do
   add_foreign_key "survey_result_files", "practices"
   add_foreign_key "timelines", "practices"
   add_foreign_key "toolkit_files", "practices"
+  add_foreign_key "user_practices", "practices"
   add_foreign_key "va_employee_practices", "practices"
   add_foreign_key "va_employee_practices", "va_employees"
   add_foreign_key "va_secretary_priority_practices", "practices"

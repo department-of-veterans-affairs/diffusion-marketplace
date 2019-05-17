@@ -231,7 +231,7 @@ describe 'Practices', type: :feature do
       it 'should not render departments if all or none are selected' do
         login_as(@user, :scope => :user, :run_callbacks => false)
         @user_practice.update(published: true, approved: true)
-        
+
         # none
         dp = DepartmentPractice.create!(department: @departments[1], practice: @user_practice)
 
@@ -251,8 +251,48 @@ describe 'Practices', type: :feature do
         expect(page).to have_content(@user_practice.name)
         expect(page).to have_content(@user_practice.initiating_facility.upcase)
         expect(page).to have_current_path(practice_next_steps_path(@user_practice))
-        
+
         expect(page).not_to have_selector('#departments-impacted')
+      end
+    end
+
+    describe 'commit to practice' do
+      it 'should let a user commit to a practice' do
+        login_as(@user, :scope => :user, :run_callbacks => false)
+        @user_practice.update(published: true, approved: true, support_network_email: 'test@va.gov')
+        # Visit an individual Practice that is approved and published
+        visit practice_next_steps_path(practice_id: @user_practice.slug)
+        expect(page).to be_accessible.according_to :wcag2a, :section508
+        expect(page).to have_content(@user_practice.name)
+        expect(page).to have_content(@user_practice.initiating_facility.upcase)
+        expect(page).to have_current_path(practice_next_steps_path(@user_practice))
+
+        click_on('Commit to this practice')
+        expect(page).to have_current_path(practice_committed_path(@user_practice))
+        expect(page).to be_accessible.according_to :wcag2a, :section508
+        expect(page).to have_content('Thank you!')
+        expect(page).to have_content('You\'ve completed the checklist for this practice. A member of the practice support team will follow up with you shortly.')
+      end
+
+      it 'should not let a user commit to a practice' do
+        login_as(@user, :scope => :user, :run_callbacks => false)
+        @user_practice.update(published: true, approved: true, support_network_email: 'test@va.gov')
+        # Visit an individual Practice that is approved and published
+        visit practice_committed_path(practice_id: @user_practice.slug)
+        expect(page).to be_accessible.according_to :wcag2a, :section508
+        expect(page).to have_content('You must commit to this practice first!')
+      end
+
+      it 'should let the user know they already committed to a practice' do
+        login_as(@user, :scope => :user, :run_callbacks => false)
+        @user_practice.update(published: true, approved: true, support_network_email: 'test@va.gov')
+        UserPractice.create!(user:@user, practice:@user_practice, committed: true)
+        # Visit an individual Practice that is approved and published
+        visit practice_next_steps_path(practice_id: @user_practice.slug)
+        expect(page).to be_accessible.according_to :wcag2a, :section508
+        click_on('Commit to this practice')
+        expect(page).to have_current_path(practice_committed_path(@user_practice))
+        expect(page).to have_content("You have already committed to this practice. If you did not receive a follow-up email from the practice support team yet, please contact them at #{@user_practice.support_network_email}")
       end
     end
   end

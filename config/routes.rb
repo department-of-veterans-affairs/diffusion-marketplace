@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   resources :va_employees
   resources :practices do
     get '/next-steps', action: 'next_steps', as: 'next_steps'
+    get '/committed', action: 'committed', as: 'committed'
+    post '/commit', action: 'commit', as: 'commit'
   end
   resources :badges
   resources :job_positions
