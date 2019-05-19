@@ -1,4 +1,3 @@
-
 <div class="grid-container-full margin-bottom-4">
   <div class="grid-row">
     <div class="tablet:grid-col-6 text-center">
@@ -47,11 +46,12 @@
   </div>
   <div class="grid-row ">
     <!-- Complexity level Circle -->
-    <div class="grid-row flex-column flex-align-center flex-justify-center level-aggregate-circle <%= level_aggregate_style(@practice.difficulty_aggregate) %>">
+    <% complexity_aggregate = complexity_aggregate(@practice) || 0 %>
+    <div class="grid-row flex-column flex-align-center flex-justify-center level-aggregate-circle <%= level_aggregate_style(complexity_aggregate) %>">
       <div class="tablet:grid-col-12 margin-y-2">
-        <% difficulty_aggregate = @practice.difficulty_aggregate || 0 %>
+
         <% (0..3).each do |index| %>
-          <% if index < difficulty_aggregate %>
+          <% if index < complexity_aggregate %>
             <i class="fas fa-wrench large-icon-dark aggregate-icon"></i>
           <% else %>
             <i class="fas fa-wrench large-icon-light aggregate-icon"></i>
@@ -64,7 +64,7 @@
     </div>
 
     <div class="tablet:grid-col-6 text-center mobile-show">
-      <p><%= complexity_aggregate_description(@practice.difficulty_aggregate) %></p>
+      <p><%= complexity_aggregate_description(complexity_aggregate) %></p>
     </div>
 
     <div class="tablet:grid-col-6 display-flex flex-column">
@@ -76,7 +76,7 @@
 
   <div class="grid-row mobile-hide">
     <div class="tablet:grid-col-6 text-center">
-      <p><%= complexity_aggregate_description(@practice.difficulty_aggregate) %></p>
+      <p><%= complexity_aggregate_description(complexity_aggregate) %></p>
     </div>
   </div>
 </div>

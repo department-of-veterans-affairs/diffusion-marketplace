@@ -1,0 +1,118 @@
+
+<div class="grid-row word-break-break-word hyphens-auto">
+  <!------ start left side ------>
+  <div class="tablet:grid-col-6 position-relative practice-complexity-triangle-top practice-complexity-divider padding-x-2">
+    <div class="grid-row">
+      <div class="tablet:grid-col-6">
+        <p class="text-bold padding-right-1">Implementation</p>
+      </div>
+      <div class="tablet:grid-col-6">
+        <p><%= PracticesHelper::COMPLEXITY_LABELS[@practice.difficulty_aggregate - 1] %></p>
+      </div>
+    </div>
+    <div class="grid-row">
+      <div class="tablet:grid-col-6">
+        <p class="text-bold padding-right-1">Maintenance & Sustainability</p>
+      </div>
+      <div class="tablet:grid-col-6">
+        <p><%= PracticesHelper::COMPLEXITY_LABELS[@practice.sustainability_aggregate - 1] %></p>
+      </div>
+    </div>
+    <div class="grid-row">
+      <div class="tablet:grid-col-6">
+        <p class="text-bold padding-right-1">Departments Required</p>
+      </div>
+      <div class="tablet:grid-col-6">
+        <p><%= departments_required_display(@practice) %> </p>
+      </div>
+    </div>
+    <div class="grid-row">
+      <div class="tablet:grid-col-6">
+        <p class="text-bold padding-right-1">Involvement of IT</p>
+      </div>
+      <div class="tablet:grid-col-6">
+        <p><%= @practice.it_required ? 'yes' : 'no' %></p>
+      </div>
+    </div>
+    <div class="grid-row">
+      <div class="tablet:grid-col-6">
+        <p class="text-bold padding-right-1">Job titles required</p>
+      </div>
+      <div class="tablet:grid-col-6">
+        <p><%= @practice.additional_staffs.map(&:title).join(', ') %></p>
+      </div>
+    </div>
+    <div class="grid-row">
+      <div class="tablet:grid-col-6">
+        <p class="text-bold padding-right-1">Hours required per week</p>
+      </div>
+      <div class="tablet:grid-col-6">
+        <% hpw =  @practice.additional_staffs.map { |as| as.hours_per_week.to_i }.sum %>
+        <p><%= hpw %> hour<%= hpw == 1 ? '' : 's' %> per week</p>
+      </div>
+    </div>
+    <div class="grid-row">
+      <div class="tablet:grid-col-6">
+        <p class="text-bold padding-right-1">Duration of job</p>
+      </div>
+      <div class="tablet:grid-col-6">
+        <p><%= duration_of_job_display(@practice) %></p>
+      </div>
+    </div>
+<!--    <div class="practice-complexity-divider mobile-hide margin-top-auto"></div>-->
+  </div>
+  <!------ end left side ------>
+
+  <!------ start right side ------>
+  <div class="tablet:grid-col-6">
+    <div class="grid-row">
+      <div class="tablet:grid-col-6">
+        <p class="text-bold padding-right-1">New or modified approach?</p>
+      </div>
+      <div class="tablet:grid-col-6">
+        <p><%= @practice.process %></p>
+      </div>
+    </div>
+    <div class="grid-row">
+      <div class="tablet:grid-col-6">
+        <p class="text-bold padding-right-1">Expected length of implementation</p>
+      </div>
+      <div class="tablet:grid-col-6">
+        <p><%= @practice.implementation_time_estimate %></p>
+      </div>
+    </div>
+    <div class="grid-row">
+      <div class="tablet:grid-col-6">
+        <p class="text-bold padding-right-1">Length of training</p>
+      </div>
+      <div class="tablet:grid-col-6">
+        <p><%= @practice.training_length %></p>
+      </div>
+    </div>
+    <div class="grid-row">
+      <div class="tablet:grid-col-6">
+        <p class="text-bold padding-right-1">Who provides the training?</p>
+      </div>
+      <div class="tablet:grid-col-6">
+        <p><%= @practice.training_provider %></p>
+      </div>
+    </div>
+    <div class="grid-row">
+      <div class="tablet:grid-col-6">
+        <p class="text-bold padding-right-1">Test required?</p>
+      </div>
+      <div class="tablet:grid-col-6">
+        <p><%= @practice.training_test ? 'yes' : 'no' %></p>
+      </div>
+    </div>
+    <div class="grid-row">
+      <div class="tablet:grid-col-6">
+        <p class="text-bold padding-right-1">License/certification required?</p>
+      </div>
+      <div class="tablet:grid-col-6">
+        <p><%= @practice.need_new_license ? 'yes' : 'no' %></p>
+      </div>
+    </div>
+  </div>
+  <!------ end right side ------>
+</div>
