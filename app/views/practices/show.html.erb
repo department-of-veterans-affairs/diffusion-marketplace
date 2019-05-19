@@ -1,8 +1,8 @@
 <!-- "Practice name" section -->
-<section class="usa-section p2-top p2-bottom  dm-background-light-blue">
+<section class="usa-section p2-top p2-bottom dm-background-light-blue">
   <div class="grid-container">
     <%= render "shared/messages" %>
-    <% if current_user.has_role?(:admin) %>
+    <% if current_user&.has_role?(:admin) %>
       <div style='float: right;'>
         <%= link_to 'Edit', edit_practice_path(@practice), class: 'usa-button usa-button--outline' %>
       </div>
@@ -62,7 +62,7 @@
 <!-- Practice hero image section -->
 
 <section class="usa-section padding-0 dm-background-light-blue">
-  <div class="grid-container margin-bottom-6">
+  <div class="grid-container">
     <div class="grid-row">
       <div class="tablet:grid-col-5 padding-x-1">
         <% if @practice.main_display_image.present? %>
@@ -75,176 +75,175 @@
     </div>
   </div>
 
-  <div class="text-center">
-    <%= link_to 'Next Steps', practice_next_steps_url(practice_id: @practice.slug), id: 'next-steps-link-in-summary', class: 'dm-button-link display-inline-block' %>
-  </div>
+  <% if current_user.blank? %>
+    <div class="text-center padding-top-6">
+      <%= link_to 'Login to see more', new_user_session_path, id: 'practice-page-login-link', class: 'dm-button-link display-inline-block' %>
+    </div>
+  <% end %>
 </section>
 <div class="dm-background-triangle-bottom "></div>
 
-<!-- "Practice content" section -->
-<!-- "Impact" section -->
-<section class="p3-top margin-y-2">
-  <div class="grid-container position-relative">
-    <div class="grid-row">
-      <div class="tablet:grid-col-3">
-        <!-- "Practice nav" section -->
-        <!-- Impact Origin Resources Required Complexity Timeline Risks & Mitigation Support Team -->
-        <div id="dm-practice-nav" class="z-top mobile-hide">
-          <ul id="dm-tabnav" class="usa-sidenav dm-tabnav margin-bottom-4">
-            <li class="usa-sidenav__item">
-              <a href="#impact" class="dm-tab top-tab scroll-to" data-target="#impact">Impact</a>
-            </li>
-            <li class="usa-sidenav__item">
-              <a href="#origin" class="dm-tab scroll-to" data-target="#origin">Origin</a>
-            </li>
-            <li class="usa-sidenav__item">
-              <a href="#resources_required" class="dm-tab scroll-to" data-target="#resources_required">Resources
-                Required</a>
-            </li>
-            <li class="usa-sidenav__item">
-              <a href="#complexity" class="dm-tab scroll-to" data-target="#complexity">Complexity</a>
-            </li>
-            <li class="usa-sidenav__item">
-              <a href="#timeline_and_checklist" class="dm-tab scroll-to" data-target="#timeline_and_checklist">Timeline</a>
-            </li>
-            <li class="usa-sidenav__item">
-              <a href="#risks_and_mitigation" class="dm-tab scroll-to" data-target="#risks_and_mitigation">Risks &
-                Mitigation</a>
-            </li>
-            <li class="usa-sidenav__item">
-              <a href="#support_team" class="dm-tab bottom-tab scroll-to" data-target="#support_team">Support Team</a>
-            </li>
-          </ul>
-          <%= link_to 'Next Steps', practice_next_steps_url(practice_id: @practice.slug), id: 'next-steps-link-in-nav', class: 'dm-button-link shadow-1' %>
+<% if current_user.present? %>
+  <!-- "Practice content" section -->
+  <!-- "Impact" section -->
+  <section class="p3-top margin-y-2">
+    <div class="grid-container position-relative">
+      <div class="grid-row">
+        <div class="tablet:grid-col-3">
+          <!-- "Practice nav" section -->
+          <!-- Impact Origin Resources Required Complexity Timeline Risks & Mitigation Support Team -->
+          <div id="dm-practice-nav" class="z-top mobile-hide">
+            <ul id="dm-tabnav" class="usa-sidenav dm-tabnav margin-bottom-4">
+              <li class="usa-sidenav__item">
+                <a href="#impact" class="dm-tab top-tab scroll-to" data-target="#impact">Impact</a>
+              </li>
+              <li class="usa-sidenav__item">
+                <a href="#origin" class="dm-tab scroll-to" data-target="#origin">Origin</a>
+              </li>
+              <li class="usa-sidenav__item">
+                <a href="#resources_required" class="dm-tab scroll-to" data-target="#resources_required">Resources
+                  Required</a>
+              </li>
+              <li class="usa-sidenav__item">
+                <a href="#complexity" class="dm-tab scroll-to" data-target="#complexity">Complexity</a>
+              </li>
+              <li class="usa-sidenav__item">
+                <a href="#timeline_and_checklist" class="dm-tab scroll-to" data-target="#timeline_and_checklist">Timeline</a>
+              </li>
+              <li class="usa-sidenav__item">
+                <a href="#risks_and_mitigation" class="dm-tab scroll-to" data-target="#risks_and_mitigation">Risks &
+                  Mitigation</a>
+              </li>
+              <li class="usa-sidenav__item">
+                <a href="#support_team" class="dm-tab bottom-tab scroll-to" data-target="#support_team">Support Team</a>
+              </li>
+            </ul>
+            <%= link_to 'Next Steps', practice_next_steps_url(practice_id: @practice.slug), id: 'next-steps-link-in-nav', class: 'dm-button-link shadow-1' %>
+          </div>
         </div>
-      </div>
-      <div class="tablet:grid-col-9 p0 p1-5-right">
-        <div class="p4-bottom">
-          <%= render partial: 'impact' %>
-          <%= render partial: 'videos' %>
-          <div class="practice-divider margin-y-6"></div>
-          <h2 class="margin-y-6">Download additional information related to our practice</h2>
-          <%= render partial: 'additional_documents' %>
-          <%= render partial: 'publication_files' %>
-          <%= render partial: 'publications' %>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- "Origin of this Practice" section -->
-<section class="p3-top margin-y-2 dm-background-light-blue">
-  <div class="grid-container">
-    <div class="grid-row">
-      <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
-      <div class="tablet:grid-col-9 p0 p1-5-right">
-        <div class="p4-bottom">
-          <%= render partial: 'origin' %>
+        <div class="tablet:grid-col-9 p0 p1-5-right">
+          <div class="p4-bottom">
+            <%= render partial: 'impact' %>
+            <%= render partial: 'videos' %>
+            <div class="practice-divider margin-y-6"></div>
+            <h2 class="margin-y-6">Download additional information related to our practice</h2>
+            <%= render partial: 'additional_documents' %>
+            <%= render partial: 'publication_files' %>
+            <%= render partial: 'publications' %>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- "Resources Required" section -->
-<section class="p3-top margin-y-2">
-  <div class="grid-container">
-    <div class="grid-row">
-      <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
-      <div class="tablet:grid-col-9 p0 p1-5-right">
-        <div class="p4-bottom">
-          <%= render partial: 'resources_required' %>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- "Complexity" section -->
-<section>
-  <div class="dm-background-light-blue">
-    <div class="grid-container padding-y-7 position-relative">
+  <!-- "Origin of this Practice" section -->
+  <section class="p3-top margin-y-2 dm-background-light-blue">
+    <div class="grid-container">
       <div class="grid-row">
         <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
         <div class="tablet:grid-col-9 p0 p1-5-right">
-          <div class="">
-            <%= render partial: 'complexity' %>
+          <div class="p4-bottom">
+            <%= render partial: 'origin' %>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- "Timeline and Checklist" section -->
-<section class="p3-top">
-  <div class="grid-container">
-    <div class="grid-row">
-      <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
-      <div class="tablet:grid-col-9 p0 p1-5-right">
-        <div class="p4-bottom">
-          <%= render partial: 'timeline_and_checklist' %>
+  <!-- "Resources Required" section -->
+  <section class="p3-top margin-y-2">
+    <div class="grid-container">
+      <div class="grid-row">
+        <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
+        <div class="tablet:grid-col-9 p0 p1-5-right">
+          <div class="p4-bottom">
+            <%= render partial: 'resources_required' %>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- "Risks & Mitigations" section -->
-<section class="p3-top dm-background-light-blue">
-  <div class="grid-container">
-    <div class="grid-row">
-      <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
-      <div class="tablet:grid-col-9 p0 p1-5-right">
-        <div class="p4-bottom">
-          <%= render partial: 'risks_and_mitigations' %>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="dm-background-primary-blue">
-  <div class="grid-container">
-    <div class="grid-row padding-y-9">
-      <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
-      <div class="tablet:grid-col-9">
-        <div class="grid-container-full">
-          <div class="grid-row">
-            <div class="tablet:grid-col-7">
-              <div class="flex-column flex-justify flex-align-start dm-font-color-white">
-                <div class="grid-auto">
-                  <h3 class="font-ui-xl margin-0">Ready to get started?</h3>
-                </div>
-                <div class="grid-auto">
-                  <p>By committing to this practice you can save lives.</p>
-                </div>
-              </div>
-            </div>
-            <div class="tablet:grid-col-5 p1-5-right">
-              <div class="display-flex flex-justify-center flex-align-center height-100">
-                <%= link_to 'Next Steps', practice_next_steps_url(practice_id: @practice.slug), id: 'next-steps-link-in-body', class: 'dm-button-link-secondary' %>
-              </div>
+  <!-- "Complexity" section -->
+  <section>
+    <div class="dm-background-light-blue">
+      <div class="grid-container padding-y-7 position-relative">
+        <div class="grid-row">
+          <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
+          <div class="tablet:grid-col-9 p0 p1-5-right">
+            <div class="">
+              <%= render partial: 'complexity' %>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- "Support Team" section -->
-<section class="p3-top dm-background-light-blue">
-  <div class="grid-container">
-    <div class="grid-row">
-      <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
-      <div class="tablet:grid-col-9 p0 p1-5-right">
-        <div class="p4-bottom">
-          <%= render partial: 'support_team' %>
+  <!-- "Timeline and Checklist" section -->
+  <section class="p3-top">
+    <div class="grid-container">
+      <div class="grid-row">
+        <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
+        <div class="tablet:grid-col-9 p0 p1-5-right">
+          <div class="p4-bottom">
+            <%= render partial: 'timeline_and_checklist' %>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+
+  <!-- "Risks & Mitigations" section -->
+  <section class="p3-top dm-background-light-blue">
+    <div class="grid-container">
+      <div class="grid-row">
+        <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
+        <div class="tablet:grid-col-9 p0 p1-5-right">
+          <div class="p4-bottom">
+            <%= render partial: 'risks_and_mitigations' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dm-background-primary-blue">
+    <div class="grid-container">
+      <div class="grid-row padding-y-9">
+        <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
+        <div class="tablet:grid-col-9">
+          <div class="grid-container-full">
+            <div class="grid-row">
+              <div class="tablet:grid-col-12">
+                <div class="flex-column flex-justify flex-align-start dm-font-color-white">
+                  <div class="grid-auto">
+                    <h3 class="font-ui-xl margin-0">Ready to get started?</h3>
+                  </div>
+                  <div class="grid-auto">
+                    <p>By committing to this practice you can save lives.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- "Support Team" section -->
+  <section class="p3-top dm-background-light-blue">
+    <div class="grid-container">
+      <div class="grid-row">
+        <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
+        <div class="tablet:grid-col-9 p0 p1-5-right">
+          <div class="p4-bottom">
+            <%= render partial: 'support_team' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<% end %>
 
