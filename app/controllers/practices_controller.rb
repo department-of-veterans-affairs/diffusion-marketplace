@@ -173,9 +173,10 @@ class PracticesController < ApplicationController
   end
 
   def can_view_practice
-    # if practice is published
+    # if practice is not published
     unless @practice.published && @practice.approved
-      prevent_practice_permissions
+      unauthorized_response if current_user.blank?
+      prevent_practice_permissions if current_user.present?
     end
   end
 
@@ -186,12 +187,16 @@ class PracticesController < ApplicationController
   def prevent_practice_permissions
     # if the user is the practice owner or the user is an admin or approver/editor
     unless @practice.user_id == current_user.id || current_user.roles.any?
-      respond_to do |format|
-        warning = 'You are not authorized to view this content.'
-        flash[:warning] = warning
-        format.html { redirect_to '/', warning: warning }
-        format.json { render warning: warning }
-      end
+      unauthorized_response
+    end
+  end
+
+  def unauthorized_response
+    respond_to do |format|
+      warning = 'You are not authorized to view this content.'
+      flash[:warning] = warning
+      format.html { redirect_to '/', warning: warning }
+      format.json { render warning: warning }
     end
   end
 
