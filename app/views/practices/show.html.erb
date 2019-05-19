@@ -23,7 +23,7 @@
           <% end %>
         </div>
       </div>
-      <% end %>
+    <% end %>
 
     <div class="bg-white padding-5">
 
@@ -105,10 +105,11 @@
               <a href="#complexity" class="dm-tab scroll-to" data-target="#complexity">Complexity</a>
             </li>
             <li class="usa-sidenav__item">
-              <a href="#risks_and_mitigation" class="dm-tab scroll-to" data-target="#risks_and_mitigation">Risks & Mitigation</a>
+              <a href="#timeline_and_checklist" class="dm-tab scroll-to" data-target="#timeline_and_checklist">Timeline</a>
             </li>
             <li class="usa-sidenav__item">
-              <a href="#timeline_and_checklist" class="dm-tab scroll-to" data-target="#timeline_and_checklist">Timeline</a>
+              <a href="#risks_and_mitigation" class="dm-tab scroll-to" data-target="#risks_and_mitigation">Risks &
+                Mitigation</a>
             </li>
             <li class="usa-sidenav__item">
               <a href="#support_team" class="dm-tab bottom-tab scroll-to" data-target="#support_team">Support Team</a>
@@ -160,14 +161,16 @@
   </div>
 </section>
 
-<!-- "Risks & Mitigations" section -->
-<section class="p3-top margin-y-2 dm-background-light-blue">
-  <div class="grid-container">
-    <div class="grid-row">
-      <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
-      <div class="tablet:grid-col-9 p0 p1-5-right">
-        <div class="p4-bottom">
-          <%= render partial: 'risks_and_mitigations' %>
+<!-- "Complexity" section -->
+<section>
+  <div class="dm-background-light-blue">
+    <div class="grid-container padding-y-7 position-relative">
+      <div class="grid-row">
+        <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
+        <div class="tablet:grid-col-9 p0 p1-5-right">
+          <div class="">
+            <%= render partial: 'complexity' %>
+          </div>
         </div>
       </div>
     </div>
@@ -175,13 +178,27 @@
 </section>
 
 <!-- "Timeline and Checklist" section -->
-<section class="p3-top margin-y-2">
+<section class="p3-top">
   <div class="grid-container">
     <div class="grid-row">
       <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
       <div class="tablet:grid-col-9 p0 p1-5-right">
         <div class="p4-bottom">
           <%= render partial: 'timeline_and_checklist' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- "Risks & Mitigations" section -->
+<section class="p3-top dm-background-light-blue">
+  <div class="grid-container">
+    <div class="grid-row">
+      <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
+      <div class="tablet:grid-col-9 p0 p1-5-right">
+        <div class="p4-bottom">
+          <%= render partial: 'risks_and_mitigations' %>
         </div>
       </div>
     </div>

@@ -18,13 +18,13 @@ describe 'Practices', type: :feature do
 
   it 'should not let unauthenticated users interact with practices' do
     # Visit an individual Practice
-    visit '/practices/1'
+    visit '/practices/the-best-practice-ever'
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content('You need to sign in or sign up before continuing.')
     expect(page).to have_current_path('/users/sign_in')
 
     # Visit the Marketplace
-    visit '/practices'
+    visit '/marketplace'
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content('You need to sign in or sign up before continuing.')
     expect(page).to have_current_path('/users/sign_in')
@@ -41,7 +41,7 @@ describe 'Practices', type: :feature do
     expect(page).to have_current_path(practice_path(practice))
 
     # Visit the Marketplace
-    visit '/practices'
+    visit '/marketplace'
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content(practice.name)
   end
@@ -97,27 +97,71 @@ describe 'Practices', type: :feature do
     expect(page).to have_current_path(practice_path(practice))
 
     # Visit the Marketplace
-    visit '/practices'
+    visit '/marketplace'
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content(practice.name)
     expect(page).to have_content('TACOMA VET CENTER')
   end
 
-  it 'should display the initiating facility\'s initiating facility property if it is not found in the map' do
-    login_as(@user, :scope => :user, :run_callbacks => false)
-    @user_practice.update(published: true, approved: true)
-    # Visit an individual Practice that is approved and published
-    visit practice_path(@user_practice)
-    expect(page).to be_accessible.according_to :wcag2a, :section508
-    expect(page).to have_content(@user_practice.name)
-    expect(page).to have_content(@user_practice.initiating_facility.upcase)
-    expect(page).to have_current_path(practice_path(@user_practice))
+  describe 'show page' do
+    it 'should display the initiating facility\'s initiating facility property if it is not found in the map' do
+      login_as(@user, :scope => :user, :run_callbacks => false)
+      @user_practice.update(published: true, approved: true)
+      # Visit an individual Practice that is approved and published
+      visit practice_path(@user_practice)
+      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to have_content(@user_practice.name)
+      expect(page).to have_content(@user_practice.initiating_facility.upcase)
+      expect(page).to have_current_path(practice_path(@user_practice))
 
-    # Visit the Marketplace
-    visit '/practices'
-    expect(page).to be_accessible.according_to :wcag2a, :section508
-    expect(page).to have_content(@user_practice.name)
-    expect(page).to have_content(@user_practice.initiating_facility.upcase)
+      # Visit the Marketplace
+      visit '/marketplace'
+      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to have_content(@user_practice.name)
+      expect(page).to have_content(@user_practice.initiating_facility.upcase)
+    end
+
+    it 'should display the practice complexity section' do
+      login_as(@user, :scope => :user, :run_callbacks => false)
+      @user_practice.update(published: true, approved: true, difficulty_aggregate: 1, sustainability_aggregate: 2, number_departments: 3, it_required: true, process: 'New approach', implementation_time_estimate: '6 months', training_provider: 'Practice champion', training_test: true, need_new_license: true, training_length: '1 month')
+      AdditionalStaff.create!(title: 'Nurse', hours_per_week: '10', duration_in_weeks: '7', practice: @user_practice)
+      AdditionalStaff.create!(title: 'Doctor', hours_per_week: '30', duration_in_weeks: '12', practice: @user_practice)
+      visit practice_path(@user_practice)
+
+      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to have_content(@user_practice.name)
+      expect(page).to have_content(@user_practice.initiating_facility.upcase)
+      expect(page).to have_current_path(practice_path(@user_practice))
+      expect(page).to have_content('Significant complexity to implement')
+      expect(page).to have_content('Implementation
+Little or no complexity')
+      expect(page).to have_content('Maintenance & Sustainability
+Some complexity')
+      expect(page).to have_content('Departments Required
+Three departments')
+      expect(page).to have_content('Involvement of IT
+yes')
+      expect(page).to have_content('Job titles required
+Nurse, Doctor')
+      expect(page).to have_content('Hours required per week
+40 hours per week')
+      expect(page).to have_content('Duration of job
+19 weeks')
+      expect(page).to have_content('New or modified approach?
+New approach')
+      expect(page).to have_content('Expected length of implementation
+6 months')
+      expect(page).to have_content('Length of training
+1 month')
+      expect(page).to have_content('Who provides the training?
+Practice champion')
+      expect(page).to have_content('Test required?
+yes')
+      expect(page).to have_content('License/certification required?
+yes')
+
+    end
+
   end
 
   describe 'Next Steps' do
@@ -286,7 +330,7 @@ describe 'Practices', type: :feature do
       it 'should let the user know they already committed to a practice' do
         login_as(@user, :scope => :user, :run_callbacks => false)
         @user_practice.update(published: true, approved: true, support_network_email: 'test@va.gov')
-        UserPractice.create!(user:@user, practice:@user_practice, committed: true)
+        UserPractice.create!(user: @user, practice: @user_practice, committed: true)
         # Visit an individual Practice that is approved and published
         visit practice_next_steps_path(practice_id: @user_practice.slug)
         expect(page).to be_accessible.according_to :wcag2a, :section508
