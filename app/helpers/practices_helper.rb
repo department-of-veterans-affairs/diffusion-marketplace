@@ -30,7 +30,7 @@ module PracticesHelper
   end
 
   def duration_of_job_display(practice)
-    durations = practice.additional_staffs.map { |as| as.duration_in_weeks.downcase }
-    durations.include?('permanent') ? 'Permanent' : "#{durations.map { |d| d.to_i }.sum} weeks"
+    durations = practice.additional_staffs.map { |as| as.duration_in_weeks&.downcase }
+    durations.include?('permanent') ? 'Permanent' : "#{durations.map { |d| d.to_i }.sum} weeks" if durations.any?
   end
 end

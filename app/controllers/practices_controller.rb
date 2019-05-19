@@ -1,7 +1,7 @@
 class PracticesController < ApplicationController
   before_action :set_practice, only: [:show, :edit, :update, :destroy, :next_steps, :commit, :committed]
   before_action :set_facility_data, only: [:show, :next_steps]
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:show]
   before_action :can_view_committed_view, only: [:committed]
   before_action :can_view_practice, only: [:show, :edit, :update, :destroy, :next_steps]
 
