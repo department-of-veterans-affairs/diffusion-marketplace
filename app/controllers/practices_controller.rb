@@ -89,6 +89,9 @@ class PracticesController < ApplicationController
   end
 
   def search
+    @practices = Practice.where(approved: true, published: true)
+    @facilities_data = facilities_json['features']
+    @practices_json = practices_json
   end
 
   def practices_json
@@ -110,7 +113,7 @@ class PracticesController < ApplicationController
       practices_array.push practice_hash
     end
 
-    render json: practices_array.to_json
+    practices_array.to_json.html_safe
   end
 
   def next_steps

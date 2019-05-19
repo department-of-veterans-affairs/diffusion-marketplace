@@ -1,12 +1,6 @@
-async function getPractices() {
-    return await (await fetch('/practices_json')).json();
-}
-
 async function searchPracticesPage() {
     // Skip if not the search page
     if (location.pathname !== '/search') return;
-
-    let practices = await getPractices().then(data => data);
 
     // Search helper functions
 
