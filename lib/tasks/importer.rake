@@ -119,6 +119,7 @@ namespace :importer do
       practice_permissions
       timelines
       training_details
+      license_required
       it_required
     end
     puts "*********** Completed Importing Practices! ***********".green
@@ -159,7 +160,7 @@ def basic_answers
       'Please list who provides the training.': :training_provider,
       'Training details:': :required_training_summary,
       # 'Will a policy change be required?': :need_policy_change,
-      'Will a new license or certification be required?': :need_new_license,
+      # 'Will a new license or certification be required?': :need_new_license,
       'Please enter a 10-20 word title for the origin story of this Practice': :origin_title,
       'Please provide a 50 - 100 word paragraph sharing the story of the origin of this practice': :origin_story,
       'Number of facilities that have successfully implemented the Practice (Please enter a whole number):': :number_adopted,
@@ -910,14 +911,32 @@ def training_details
 
     @practice.training_length = @answers[q_index]
     @practice.required_training_summary = @answers[q_index + 1]
-    @practice.training_test = @answers[q_index + 2]
     @practice.training_test_details = @answers[q_index + 2]
+    training_test = @answers[q_index + 2]
+    next if training_test.blank?
+    @practice.training_test = training_test.downcase == 'yes' ? true : false
+  end
+  @practice.save
+end
+
+def license_required
+  puts "==> Importing Practice: #{@name} License Details".light_blue
+  question_fields = {
+      'Will a new license or certification be required?': 1
+  }
+  question_fields.each do |key, value|
+    next if @answers[@questions.index(key.to_s)].blank?
+
+    answer = @answers[@questions.index(key.to_s)]
+
+    @practice.need_new_license = true if answer.downcase == 'yes'
+    @practice.need_new_license = false if answer.downcase == 'no'
     @practice.save
   end
 end
 
 def it_required
-  puts "==> Importing Practice: #{@name} It Required".light_blue
+  puts "==> Importing Practice: #{@name} IT Required".light_blue
   question_fields = {
       "Is Information Technology (IT) required to implement the practice?": 1
   }
