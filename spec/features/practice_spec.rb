@@ -20,7 +20,14 @@ describe 'Practices', type: :feature do
     # Visit an individual Practice
     visit '/practices/the-best-practice-ever'
     expect(page).to be_accessible.according_to :wcag2a, :section508
-    expect(page).to have_content('You need to sign in or sign up before continuing.')
+    expect(page).to have_content('You are not authorized to view this content.')
+
+    @user_practice.update(approved: true, published: true)
+    # Visit an individual Practice
+    visit '/practices/the-best-practice-ever'
+    expect(page).to be_accessible.according_to :wcag2a, :section508
+    expect(page).to have_content('Login to see more')
+    click_on('Login to see more')
     expect(page).to have_current_path('/users/sign_in')
 
     # Visit the Marketplace
@@ -182,17 +189,6 @@ yes')
         expect(page).to have_content(@user_practice.name)
         expect(page).to have_content(@user_practice.initiating_facility.upcase)
         expect(page).to have_current_path(practice_path(@user_practice))
-
-        # click on next steps link in the summary section
-        find(:css, '#next-steps-link-in-summary').click
-
-        expect(page).to be_accessible.according_to :wcag2a, :section508
-        expect(page).to have_content(@user_practice.name)
-        expect(page).to have_content(@user_practice.initiating_facility.upcase)
-        expect(page).to have_current_path(practice_next_steps_path(practice_id: @user_practice.slug))
-
-
-        visit practice_path(@user_practice)
 
         # click on next steps link in sticky nav section
         find(:css, '#next-steps-link-in-nav').click
