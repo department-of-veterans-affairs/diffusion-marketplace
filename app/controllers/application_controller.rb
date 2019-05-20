@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
     end
 
     # replace the search crumb path with the query if the user came from search
-    if params[:action] == 'show' && params[:controller] == 'practices' && request.referrer.include?('search')
+    if params[:action] == 'show' && params[:controller] == 'practices' && url.path.include?('search')
       bc = session[:breadcrumbs].find {|b| b['display'] == 'Search'}
       bc['path'] = "#{url.path}?#{url.query}"
     end
