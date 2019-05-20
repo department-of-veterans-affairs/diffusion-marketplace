@@ -4,7 +4,7 @@
   <div class="grid-container">
     <%= render "shared/messages" %>
     <% if current_user&.has_role?(:admin) %>
-      <div style='float: right;'>
+      <div class="right">
         <%= link_to 'Edit', edit_practice_path(@practice), class: 'usa-button usa-button--outline' %>
       </div>
     <% end %>
