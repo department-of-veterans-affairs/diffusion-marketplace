@@ -16,11 +16,22 @@
 
   <section class="dm-background-light-blue margin-bottom-6">
     <div class="grid-container padding-y-4">
-      <form id="marketplaceSearchForm" name="marketplaceSearchForm" class="usa-search display-flex justify-center">
+<!--      <form id="marketplaceSearchForm" name="marketplaceSearchForm" class="usa-search display-flex justify-center">-->
+<!--        <div role="search" class="flex-column">-->
+<!--          <label for="practice-search-field">Find a Practice</label>-->
+<!--          <div class="display-flex">-->
+<!--            <input class="usa-input" pattern=".{3,}" required title="Type at least three characters to search." id="practice-search-field" autocomplete="off" type="search" name="search">-->
+<!--            <button id="practice-search-button" class="usa-button" type="submit">-->
+<!--              <span class="usa-search__submit-text">Search</span>-->
+<!--            </button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </form>-->
+      <form id="searchForm" name="searchForm"  class="usa-search">
         <div role="search" class="flex-column">
-          <label for="practice-search-field">Find a Practice</label>
-          <div class="display-flex">
-            <input class="usa-input" pattern=".{3,}" required title="Type at least three characters to search." id="practice-search-field" autocomplete="off" type="search" name="search">
+          <label class="margin-bottom-5" for="practice-search-field">Type keywords to find a practice</label>
+          <div id="search-bar-container" class="display-flex">
+            <input class="usa-input" id="practice-search-field" required title="Type at least three characters to search." autocomplete="off" type="search" name="search">
             <button id="practice-search-button" class="usa-button" type="submit">
               <span class="usa-search__submit-text">Search</span>
             </button>
@@ -31,16 +42,35 @@
   </section>
 
   <!-- Marketplace -->
-  <section class="grid-container">
-    <div class="grid-row grid-gap-lg ">
-      <% @practices.each_with_index do |practice, i| %>
-        <% index = i + 1 %>
-        <div class="tablet:grid-col-4 flex-column display-flex margin-bottom-8 ">
-          <%= render partial: 'marketplace_card', locals: {practice: practice} %>
-          <div class="marketplace-card-border-bottom margin-top-auto"></div>
-        </div>
-      <% end %>
+<!--  <section class="grid-container">-->
+<!--    <div class="grid-row grid-gap-lg ">-->
+      <%# @practices.each_with_index do |practice, i| %>
+        <%# index = i + 1 %>
+<!--        <div class="tablet:grid-col-4 flex-column display-flex margin-bottom-8 ">-->
+          <%#= render partial: 'marketplace_card', locals: {practice: practice} %>
+<!--          <div class="marketplace-card-border-bottom margin-top-auto"></div>-->
+<!--        </div>-->
+      <%# end %>
+<!--    </div>-->
+<!--  </section>-->
+
+  <section class="search-practices grid-container">
+    <p id="results-summary"></p>
+    <div id="search-results">
+      <h2 class="font-sans-xl">Browse Practices</h2>
+      <div class="grid-row grid-gap-lg ">
+        <% @practices.each_with_index do |practice, i| %>
+          <% index = i + 1 %>
+          <div class="tablet:grid-col-4 flex-column display-flex margin-bottom-8 ">
+            <%= render partial: 'marketplace_card', locals: {practice: practice} %>
+            <div class="marketplace-card-border-bottom margin-top-auto"></div>
+          </div>
+        <% end %>
+      </div>
     </div>
   </section>
+  <script>
+      var practices = <%= @practices_json %>;
+  </script>
 
 </div>

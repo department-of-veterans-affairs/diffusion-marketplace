@@ -18,7 +18,7 @@ async function searchPracticesPage() {
         // If the query is empty or less than three characters, remove any previous results from page
         if (query === '' || query.length < 3) {
             resultsSummary.innerHTML = '<p><i>Type at least three characters to search.</i></p>';
-            searchResults.innerHTML = '';
+            // searchResults.innerHTML = '';
             return;
         }
 
@@ -71,6 +71,7 @@ async function searchPracticesPage() {
         // Highlight search results where exact keyword matches
         const mark = new Mark('#search-results');
         mark.mark(query);
+        $('#search-bar-container').append('<a href="/search" class="margin-left-2">&times; Clear search</a>');
     }
 
 

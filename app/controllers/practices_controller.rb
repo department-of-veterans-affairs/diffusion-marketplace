@@ -89,31 +89,9 @@ class PracticesController < ApplicationController
   end
 
   def search
-    @practices = Practice.where(approved: true, published: true)
+    @practices = Practice.where(approved: true, published: true).order(name: :asc)
     @facilities_data = facilities_json['features']
-    @practices_json = practices_json
-  end
-
-  def practices_json
-    practices = Practice.where(approved: true, published: true)
-    practices_array = []
-
-    practices.each do |practice|
-      practice_hash = JSON.parse(practice.to_json) # convert to hash
-      practice_hash['image'] = practice.main_display_image.present? ? practice.main_display_image.url : ''
-      if practice.date_initiated
-        practice_hash['date_initiated'] = practice.date_initiated.strftime("%B %Y")
-      else
-        practice_hash['date_initiated'] = '(start date unknown)'
-      end
-
-      # display initiating facility
-      practice_hash['initiating_facility'] = helpers.facility_name(practice.initiating_facility, facilities_json['features'])
-
-      practices_array.push practice_hash
-    end
-
-    practices_array.to_json.html_safe
+    @practices_json = practices_json(@practices)
   end
 
   def next_steps
@@ -214,5 +192,27 @@ class PracticesController < ApplicationController
 
       redirect_to(practice_next_steps_path(practice_id: @practice.slug), warning: warning)
     end
+  end
+
+  def practices_json(practices)
+    # practices = Practice.where(approved: true, published: true)
+    practices_array = []
+
+    practices.each do |practice|
+      practice_hash = JSON.parse(practice.to_json) # convert to hash
+      practice_hash['image'] = practice.main_display_image.present? ? practice.main_display_image.url : ''
+      if practice.date_initiated
+        practice_hash['date_initiated'] = practice.date_initiated.strftime("%B %Y")
+      else
+        practice_hash['date_initiated'] = '(start date unknown)'
+      end
+
+      # display initiating facility
+      practice_hash['initiating_facility'] = helpers.facility_name(practice.initiating_facility, facilities_json['features'])
+
+      practices_array.push practice_hash
+    end
+
+    practices_array.to_json.html_safe
   end
 end
