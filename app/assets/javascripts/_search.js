@@ -72,12 +72,8 @@ async function searchPracticesPage() {
         const mark = new Mark('#search-results');
         mark.mark(query);
 
-        if (!$('#clear-search-term').length) {
-            $('#search-bar-container').append('<button type="button" id="clear-search-term" class="margin-left-2 dm-button-secondary ">&times; Clear search term</a>');
-        }
-
-        if (!$('#back-to-browse').length) {
-            $('#searchForm').after('<a id="back-to-browse" href="/search" class="margin-left-2">&leftarrow; Back to browse</a>');
+        if (!$('#results-breadcrumb').length) {
+            addResultsBreadcrumb();
         }
     }
 
@@ -161,16 +157,19 @@ async function searchPracticesPage() {
 
     });
 
-    $(document).on('click', '#clear-search-term', function(e) {
-        e.preventDefault();
-        $('#practice-search-field').val('');
-    });
-
     if (window.location.pathname === '/search' && window.location.search !== '') {
         const query = window.location.search.split('=')[1];
         search(decodeURI(query));
         searchField.value = decodeURI(query);
     }
+}
+
+function addResultsBreadcrumb() {
+    $('#search-breadcrumb').html('<a href="/search">Search</a>');
+    $('#breadcrumbs').append(`
+        <span class="x0-5-left x0-5-right">›</span>
+        <span id="results-breadcrumb">Results</span>
+    `);
 }
 
 document.addEventListener('turbolinks:load', () => {

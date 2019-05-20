@@ -2,8 +2,9 @@
   <div class="dm-font-color-primary-blue p1-top breadcrumbs dm-font-color-super-violet-ish">
     <a href="/">Home</a>
     <span class="x0-5-left x0-5-right">›</span>
+
     <% session[:breadcrumbs].each do |b| %>
-      <span><%= link_to b['display'], b['path'] %></span>
+      <span><%= link_to b['display'] || b[:display], b['path'] || b[:path] %></span>
       <span class="x0-5-left x0-5-right">›</span>
     <% end %>
 

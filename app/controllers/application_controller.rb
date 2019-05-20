@@ -13,24 +13,23 @@ class ApplicationController < ActionController::Base
     end
 
     url = URI::parse(request.referer || '')
-    # search path
+    # search 'path'
     if params[:action] == 'search' && params[:controller] == 'practices'
       # empty the bread crumbs and start a new path
       session[:breadcrumbs] = []
-      session[:breadcrumbs] << {display: 'Search', path: url.path}
+      session[:breadcrumbs] << {'display': 'Search', 'path': '/search'}
     end
 
-    # replace the search crumb path with the query if the user came from search
-    if params[:action] == 'show' && params[:controller] == 'practices' && url.path.include?('search')
-      bc = session[:breadcrumbs].find {|b| b['display'] == 'Search'}
-      bc['path'] = "#{url.path}?#{url.query}"
+    # add the results breadcrumb if there is a search query going to the practice page
+    if params[:action] == 'show' && params[:controller] == 'practices' && url.path.include?('search') && (url.query.present? && url.query.include?('query='))
+      session[:breadcrumbs] << {'display': 'Results', 'path': "#{url.path}?#{url.query}"}
     end
 
     # practice partners path
     if params[:action] == 'index' && params[:controller] == 'practice_partners'
-      # empty the bread crumbs and start a new path
+      # empty the bread crumbs and start a new 'path'
       session[:breadcrumbs] = []
-      session[:breadcrumbs] << {display: 'Practice Partners', path: practice_partners_path}
+      session[:breadcrumbs] << {'display': 'Practice Partners', 'path': practice_partners_path}
     end
 
     # practice partner show path
@@ -38,7 +37,7 @@ class ApplicationController < ActionController::Base
       # add the practice partner to the crumbs if it's not there already
       @practice_partner = PracticePartner.friendly.find(params[:id])
       unless session[:breadcrumbs].find {|b| b['display'] == @practice_partner.name}.present?
-        session[:breadcrumbs] << {display: @practice_partner.name, path: practice_partner_path(@practice_partner)}
+        session[:breadcrumbs] << {'display': @practice_partner.name, 'path': practice_partner_path(@practice_partner)}
       end
     end
 
