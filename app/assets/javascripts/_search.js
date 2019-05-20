@@ -71,7 +71,14 @@ async function searchPracticesPage() {
         // Highlight search results where exact keyword matches
         const mark = new Mark('#search-results');
         mark.mark(query);
-        $('#search-bar-container').append('<a href="/search" class="margin-left-2">&times; Clear search</a>');
+
+        if (!$('#clear-search-term').length) {
+            $('#search-bar-container').append('<button type="button" id="clear-search-term" class="margin-left-2 dm-button-secondary ">&times; Clear search term</a>');
+        }
+
+        if (!$('#back-to-browse').length) {
+            $('#searchForm').after('<a id="back-to-browse" href="/search" class="margin-left-2">&leftarrow; Back to browse</a>');
+        }
     }
 
 
@@ -152,6 +159,11 @@ async function searchPracticesPage() {
             }
         }, 500);
 
+    });
+
+    $(document).on('click', '#clear-search-term', function(e) {
+        e.preventDefault();
+        $('#practice-search-field').val('');
     });
 
     if (window.location.pathname === '/search' && window.location.search !== '') {
