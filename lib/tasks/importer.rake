@@ -15,8 +15,8 @@ namespace :importer do
 
     puts "*********** Importing practices from: #{options[:file]} ***********".light_blue if options[:file].present?
     puts "!!!!!! No file path provided !!!!!!".yellow if options[:file].blank?
-    puts "*********** Importing practices from: /lib/assets/Diffusion Marketplace.xlsx ***********".light_blue if options[:file].blank?
-    import_file_path = options[:file].present? ? options[:file] : File.join(Rails.root, '/lib/assets/Diffusion Marketplace.xlsx')
+    puts "*********** Importing practices from: /lib/assets/Diffusion_Marketplace.xlsx ***********".light_blue if options[:file].blank?
+    import_file_path = options[:file].present? ? options[:file] : File.join(Rails.root, '/lib/assets/Diffusion_Marketplace.xlsx')
 
     sheet = Roo::Excelx.new(import_file_path)
     @questions = sheet.sheet(0).row(1)
@@ -744,10 +744,12 @@ def risk_mitigations
       risk = Risk.create risk_mitigation: rm, description: a
     end
 
-    split_mitigation_answer = @answers[q_index + 1].split(/\\/)
+    if @answers[q_index + 1].present?
+      split_mitigation_answer = @answers[q_index + 1].split(/\\/)
 
-    split_mitigation_answer.each do |a|
-      mitigation = Mitigation.create risk_mitigation: rm, description: a
+      split_mitigation_answer.each do |a|
+        mitigation = Mitigation.create risk_mitigation: rm, description: a
+      end
     end
   end
 end
