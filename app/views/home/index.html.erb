@@ -37,14 +37,14 @@
                   <p class="margin-top-0 margin-bottom-1"><%= @top_practice.description %></p>
                 </div>
                 <div class="grid-row p1-bottom">
-                  <h5 class="flex-1 x0 text-normal"><%= @top_practice.name %>
+                  <h3 class="flex-1 fs-h5 x0 text-normal"><%= @top_practice.name %>
                     <span class="margin-x-05">|</span>
                     <span class="uppercase"><%= @top_practice.date_initiated.present? ? date_format(@top_practice.date_initiated) : '(start date unknown)' %></span>
                     <span class="margin-x-05">|</span>
                     <span class="uppercase">
                   <%= facility_name(@top_practice.initiating_facility) %>
                   </span>
-                  </h5>
+                  </h3>
                 </div>
                 <div class="grid-row justify-center">
                   <div class="tablet:grid-col-4 display-grid-align-items-center">
