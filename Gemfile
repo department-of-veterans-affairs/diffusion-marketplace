@@ -71,6 +71,7 @@ group :development do
   gem 'rails-erd'
   gem 'letter_opener'
   gem 'figaro'
+  gem 'pry', '~> 0.12.2'
 
   # To be able to automagically generate domain model ER diagrams, https://github.com/amatsuda/erd
   # Requires graphviz installed locally
