@@ -1,9 +1,10 @@
+<%= render 'breadcrumbs' %>
 <!-- "Practice name" section -->
 <section class="usa-section p2-top p2-bottom dm-background-light-blue">
   <div class="grid-container">
     <%= render "shared/messages" %>
     <% if current_user&.has_role?(:admin) %>
-      <div style='float: right;'>
+      <div class="right">
         <%= link_to 'Edit', edit_practice_path(@practice), class: 'usa-button usa-button--outline' %>
       </div>
     <% end %>
@@ -28,7 +29,7 @@
     <div class="bg-white padding-5">
 
       <% if @practice.tagline.present? %>
-        <h1 class="font-sans-3xl x0-top margin-bottom-2 font-family-sans text-heavy ">
+        <h1 class="font-sans-3xl x0-top margin-bottom-2 font-family-sans text-heavy word-break-break-word hyphens-auto">
           <%= @practice.tagline %>
         </h1>
       <% end %>
@@ -208,7 +209,7 @@
     </div>
   </section>
 
-  <section class="dm-background-primary-blue">
+  <section>
     <div class="grid-container">
       <div class="grid-row padding-y-9">
         <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
@@ -216,7 +217,7 @@
           <div class="grid-container-full">
             <div class="grid-row">
               <div class="tablet:grid-col-12">
-                <div class="flex-column flex-justify flex-align-start dm-font-color-white">
+                <div class="flex-column flex-justify flex-align-start">
                   <div class="grid-auto">
                     <h3 class="font-ui-xl margin-0">Ready to get started?</h3>
                   </div>

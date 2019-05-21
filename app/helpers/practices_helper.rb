@@ -25,7 +25,7 @@ module PracticesHelper
     when 4
       return 'Four or more departments'
     else
-      return "#{practice.number_departments.humanize} departments".humanize
+      return "#{practice.number_departments.humanize} department#{practice.number_departments == 1 ? '' : 's'}".humanize
     end
   end
 
