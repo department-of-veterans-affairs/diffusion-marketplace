@@ -47,7 +47,9 @@
     <meta name="turbolinks-cache-control" content="no-preview">
   </head>
 
-  <body>
+  <body <% if content_for?(:body_attributes) %>
+        <%= yield(:body_attributes) %>
+        <% end %>>
     <%= render 'shared/header' %>
     <main id="main-content" class="<%= params[:controller] %>">
       <%= yield %>

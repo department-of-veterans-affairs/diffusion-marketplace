@@ -14,22 +14,24 @@ class ApplicationController < ActionController::Base
 
     url = URI::parse(request.referer || '')
     # search 'path'
-    if params[:action] == 'search' && params[:controller] == 'practices'
+    if params[:action] == 'index' && params[:controller] == 'practices'
       # empty the bread crumbs and start a new path
       session[:breadcrumbs] = []
-      session[:breadcrumbs] << {'display': 'Search', 'path': '/search'}
+      session[:breadcrumbs] << {'display': 'Practices', 'path': '/practices'}
     end
 
-    # add the results breadcrumb if there is a search query going to the practice page
+    # add the search breadcrumb if there is a search query going to the practice page
     if params[:action] == 'show' && params[:controller] == 'practices' && url.path.include?('search') && (url.query.present? && url.query.include?('query='))
-      session[:breadcrumbs] << {'display': 'Results', 'path': "#{url.path}?#{url.query}"}
+      search_breadcrumb = session[:breadcrumbs].find { |bc| bc['display'] == 'Search' || bc[:display] == 'Search'}
+      search_breadcrumb['path'] = "#{url.path}?#{url.query}" if search_breadcrumb.present?
+      session[:breadcrumbs] << {'display': 'Search', 'path': "#{url.path}?#{url.query}"} if search_breadcrumb.blank?
     end
 
     # practice partners path
     if params[:action] == 'index' && params[:controller] == 'practice_partners'
       # empty the bread crumbs and start a new 'path'
       session[:breadcrumbs] = []
-      session[:breadcrumbs] << {'display': 'Practice Partners', 'path': practice_partners_path}
+      session[:breadcrumbs] << {'display': 'Practice partners', 'path': practice_partners_path}
     end
 
     # practice partner show path

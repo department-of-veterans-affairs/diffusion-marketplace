@@ -41,7 +41,7 @@ async function searchPracticesPage() {
           <div class="grid-col flex-1">
             <div class="img-box margin-top-2">
               <a href="/practices/${result.item.slug}" aria-label="Go to ${result.item.name}">
-              <div class="img img-box-content" style="${result.item.image ? `background: url('${result.item.image}') #97d4ea` : `background: #97d4ea`}; background-size: cover">
+              <div class="img img-box-content" style="${result.item.image ? `background: url('${result.item.image}') transparent` : `background: transparent`}; background-size: cover">
               
                 </div>
                 </a>
@@ -165,10 +165,10 @@ async function searchPracticesPage() {
 }
 
 function addResultsBreadcrumb() {
-    $('#search-breadcrumb').html('<a href="/search">Search</a>');
+    $('#search-breadcrumb').html('<a href="/practices">Practices</a>');
     $('#breadcrumbs').append(`
         <span class="x0-5-left x0-5-right">›</span>
-        <span id="results-breadcrumb">Results</span>
+        <span id="results-breadcrumb">Search</span>
     `);
 }
 

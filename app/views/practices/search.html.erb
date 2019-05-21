@@ -1,3 +1,4 @@
+
 <div id="search-page">
 
   <div class="dm-background-white full-view-height padding-top-1">
@@ -6,7 +7,7 @@
       <div id="breadcrumbs" class="dm-font-color-primary-blue p1-top breadcrumbs dm-font-color-super-violet-ish">
         <a href="/">Home</a>
         <span class="x0-5-left x0-5-right">›</span>
-        <span id="search-breadcrumb">Search</span>
+        <span id="search-breadcrumb">Practices</span>
       </div>
     </section>
 
@@ -18,7 +19,7 @@
 
     <section class="dm-background-light-blue margin-bottom-6">
       <div class="grid-container padding-y-4">
-        <form id="searchForm" name="searchForm"  class="usa-search margin-bottom-3">
+        <form id="searchForm" name="searchForm" class="usa-search margin-bottom-3">
           <div role="search" class="flex-column">
             <label class="margin-bottom-5" for="practice-search-field">Type keywords to find a practice</label>
             <div id="search-bar-container" class="display-flex">
@@ -34,18 +35,7 @@
 
     <section class="search-practices grid-container">
       <p id="results-summary"></p>
-      <div id="search-results">
-        <h2 class="font-sans-xl">Browse Practices</h2>
-        <div class="grid-row grid-gap-lg ">
-          <% @practices.each_with_index do |practice, i| %>
-            <% index = i + 1 %>
-            <div class="tablet:grid-col-4 flex-column display-flex margin-bottom-8 ">
-              <%= render partial: 'marketplace_card', locals: {practice: practice} %>
-              <div class="marketplace-card-border-bottom margin-top-auto"></div>
-            </div>
-          <% end %>
-        </div>
-      </div>
+      <div id="search-results"></div>
     </section>
 
     <script>

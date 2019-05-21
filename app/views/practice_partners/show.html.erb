@@ -3,10 +3,10 @@
     <%= render "shared/messages" %>
   </section>
   <section class="grid-container">
-    <div class="dm-font-color-primary-blue p1-top breadcrumbs dm-font-color-super-violet-ish">
+    <div class="dm-font-color-primary-blue p1-top breadcrumbs dm-font-color-super-violet-ish" id="breadcrumbs">
       <a href="/">Home</a>
       <span class="x0-5-left x0-5-right">›</span>
-      <span><%= link_to 'Practice Partners', practice_partners_path %></span>
+      <span><%= link_to 'Practice partners', practice_partners_path %></span>
       <span class="x0-5-left x0-5-right">›</span>
       <span><%= @practice_partner.short_name.present? ? @practice_partner.short_name : @practice_partner.name %></span>
     </div>
