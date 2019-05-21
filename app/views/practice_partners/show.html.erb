@@ -32,7 +32,7 @@
         <div class="grid-row search-row margin-bottom-3">
           <div class="grid-col flex-1">
             <div class="img-box margin-top-2">
-              <%= link_to p do %>
+              <%= link_to p, 'aria-label': "Go to #{p.name}"  do %>
                 <div class="img img-box-content" style="<%= p.main_display_image.present? ? "background: url('#{p.main_display_image.url}') transparent" : 'background: transparent' %>; background-size: cover">
 
                 </div>
@@ -40,7 +40,7 @@
             </div>
           </div>
           <div class="grid-col flex-2">
-            <h2 class="margin-top-1"><%= link_to p.tagline, practice_path(p), 'aria-label': "Go to #{p.name}" %></h2>
+            <h2 class="margin-top-1"><%= link_to p.tagline, practice_path(p) %></h2>
             <h3 class="truncate-text two-lines"><%= p.description %></h3>
             <p class="practice-details"><%= p.name %> | <span class="uppercase"><%= p.date_initiated.present? ? date_format(p.date_initiated) : '(start date unknown)' %></span> | <span class="uppercase"><%= facility_name(p.initiating_facility) %></span></p>
             <p class="truncate-text five-lines"><%= p.summary %></p>
