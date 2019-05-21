@@ -6,7 +6,7 @@ class User < ApplicationRecord
   # :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :validatable,
-         :password_expirable, :password_archivable
+         :password_expirable, :password_archivable, :trackable
 
   rolify before_add: :remove_all_roles
 
