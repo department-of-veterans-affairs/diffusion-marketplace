@@ -3,4 +3,4 @@ $(document).on 'turbolinks:load', (e) ->
   $('#dm-practice-nav').sticky topSpacing: 45
 
 $(document).on 'click', '.scroll-to', (e) ->
-  $.scrollTo($(this).data('target'), 500)
+  $.scrollTo($(this).data('target'), 500, {offset: {top: -45}})
