@@ -31,7 +31,7 @@ describe 'Practices', type: :feature do
     expect(page).to have_current_path('/users/sign_in')
 
     # Visit the Marketplace
-    visit '/marketplace'
+    visit '/practices'
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content('You need to sign in or sign up before continuing.')
     expect(page).to have_current_path('/users/sign_in')
@@ -48,7 +48,7 @@ describe 'Practices', type: :feature do
     expect(page).to have_current_path(practice_path(practice))
 
     # Visit the Marketplace
-    visit '/marketplace'
+    visit '/practices'
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content(practice.name)
   end
@@ -104,7 +104,7 @@ describe 'Practices', type: :feature do
     expect(page).to have_current_path(practice_path(practice))
 
     # Visit the Marketplace
-    visit '/marketplace'
+    visit '/practices'
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content(practice.name)
     expect(page).to have_content('TACOMA VET CENTER')
@@ -122,7 +122,7 @@ describe 'Practices', type: :feature do
       expect(page).to have_current_path(practice_path(@user_practice))
 
       # Visit the Marketplace
-      visit '/marketplace'
+      visit '/practices'
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@user_practice.name)
       expect(page).to have_content(@user_practice.initiating_facility.upcase)

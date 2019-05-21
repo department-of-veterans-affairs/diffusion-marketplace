@@ -1,12 +1,4 @@
-<section class="grid-container x1-5-bottom">
-  <div class="dm-font-color-primary-blue p1-top breadcrumbs dm-font-color-super-violet-ish">
-    <a href="/">Home</a>
-    <span class="x0-5-left x0-5-right">›</span>
-    <span><%= link_to @practice.name, practice_path(@practice) %></span>
-    <span class="x0-5-left x0-5-right">›</span>
-    <span>Next Steps</span>
-  </div>
-</section>
+<%= render 'breadcrumbs' %>
 
 <section class="margin-top-7 margin-bottom-6">
   <div class="grid-container">
