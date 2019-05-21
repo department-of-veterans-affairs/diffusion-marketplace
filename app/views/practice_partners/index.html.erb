@@ -2,41 +2,44 @@
   <section class="grid-container ">
     <%= render "shared/messages" %>
   </section>
-  <section class="grid-container practice-partners-background">
+  <section class="grid-container">
     <div class="dm-font-color-primary-blue p1-top breadcrumbs dm-font-color-super-violet-ish">
       <a href="/">Home</a>
       <span class="x0-5-left x0-5-right">›</span>
-      <span>Practice Partners</span>
+      <span>Practice partners</span>
     </div>
-    <h1 class="dm-font-color-blue-black fw-normal fs3-5">Practice Partners</h1>
-    <p class="dm-font-color-blue-black fs1-125 x3-75-bottom">Best practices are being developed, vetted, and promoted by
-      multiple offices within VA. The combined efforts of each office enable VA as a whole to advance the mission to
-      fulfill President Lincoln's promise: "To care for him who shall have borne the battle, and for his widow, and his
-      orphan" by serving and honoring the men and women who are America's Veterans. Veterans deserve access to the best
-      health care providers, state-of-art facilities, and cutting-edge technology.</p>
-    <p class="text-center dm-font-color-super-grey p2-bottom">Please select a VA Office below to be directed to the
-      practices they are offering.</p>
+    <h1 class="font-sans-3xl">Practice partners</h1>
   </section>
-  <section class="dm-background-royal-blue dm-font-color-white text-center fw-normal fs1-5 box-shadow-bottom p0-75-top p0-75-bottom">Partners</section>
-  <section class="dm-background-light-blue p3 practice-partner-list">
+
+  <section class="dm-background-light-blue padding-y-5 margin-bottom-8">
     <div class="grid-container">
-      <div class="diffusion-background-circles-translucent-blue"></div>
+      <p>Best practices are being developed, vetted, and promoted
+        by multiple offices within VA. The combined efforts of each office enable VA as a whole to advance the mission to
+        fulfill President Lincoln's promise: "To care for him who shall have borne the battle, and for his widow, and his
+        orphan" by serving and honoring the men and women who are America's Veterans. Veterans deserve access to the best
+        health care providers, state-of-art facilities, and cutting-edge technology.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="grid-container">
+      <p>Please select a VA Office below to be directed to the
+        practices they are offering.</p>
+      <div class="practice-divider"></div>
+    </div>
+  </section>
+
+  <section class="practice-partner-list">
+    <div class="grid-container">
       <% @practice_partners.each do |ss| %>
-        <div class="practice-partner-card box-shadow-all x2-bottom">
           <div class="grid-row">
-            <div class="grid-col-2">&nbsp;</div>
-            <div class="grid-col-10 p1-left">
-              <div class="fs1-5 dm-font-color-super-grey fw-bold"><%= ss.name %></div>
+            <div class="grid-col-12 margin-bottom-4">
+              <h2 class="font-sans-xl margin-top-4 margin-bottom-2"><%= link_to "#{ss.name}#{ss.short_name.present? ? " (#{ss.short_name.upcase})" : ''}", practice_partner_path(ss) %></h2>
+              <p><%= ss.description %></p>
             </div>
           </div>
-          <div class="grid-row">
-            <div class="grid-col-2 fs2-25 fw-bold practice-partner-short-name dm-font-color-white display-grid-align-items-center text-center"><%= ss.short_name %></div>
-            <div class="grid-col-10">
-              <div class="dm-font-color-steel-grey fs1 fw-normal p1-top p3-right p1-left"><%= ss.description %></div>
-              <div class="right dm-font-color-super-violet-ish fs1 fw-normal p2-right p1-bottom"><%= link_to 'See Practices', ss %> </div>
-            </div>
-          </div>
-        </div>
+        <div class="practice-divider"></div>
       <% end %>
     </div>
   </section>
