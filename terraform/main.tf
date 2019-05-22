@@ -6,22 +6,22 @@ provider "aws" {
 
 # S3 Bucket for storing Elastic Beanstalk task definitions
 resource "aws_s3_bucket" "ng_beanstalk_deploys" {
-  bucket = "${var.application_name}-deployments"
+  bucket = "${var.application_name}-${var.application_environment}-deployments"
 }
 
 # Elastic Container Repository for Docker images
 resource "aws_ecr_repository" "ng_container_repository" {
-  name = "${var.application_name}"
+  name = "${var.application_name}-${var.application_environment}"
 }
 
 # Beanstalk instance profile
 resource "aws_iam_instance_profile" "ng_beanstalk_ec2" {
-  name  = "ng-beanstalk-ec2-user"
+  name  = "ng-beanstalk-ec2-user-${var.application_name}-${var.application_environment}"
   role = "${aws_iam_role.ng_beanstalk_ec2.name}"
 }
 
 resource "aws_iam_role" "ng_beanstalk_ec2" {
-  name = "ng-beanstalk-ec2-role"
+  name = "ng-beanstalk-ec2-role-${var.application_environment}"
 
   assume_role_policy = <<EOF
 {
@@ -57,7 +57,7 @@ resource "aws_iam_role_policy_attachment" "eb-ecs-attach" {
 
 # Beanstalk Application
 resource "aws_elastic_beanstalk_application" "ng_beanstalk_application" {
-  name        = "${var.application_name}"
+  name        = "${var.application_name}-${var.application_environment}"
   description = "${var.application_description}"
 }
 
