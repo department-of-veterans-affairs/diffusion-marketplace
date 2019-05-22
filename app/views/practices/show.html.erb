@@ -36,14 +36,14 @@
       <p><%= @practice.description %></p>
 
       <div class="grid-row margin-bottom-2">
-        <h5 class="flex-1 x0 text-normal"><%= @practice.name %>
+        <h2 class="flex-1 x0 fs-h5 text-normal"><%= @practice.name %>
           <span class="margin-x-05">|</span>
           <span class="uppercase"><%= @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)' %></span>
           <span class="margin-x-05">|</span>
           <span class="uppercase">
             <%= @facility_data.present? ? @facility_data['properties']['name'] : @practice.initiating_facility %>
           </span>
-        </h5>
+        </h2>
 
       </div>
       <div class="grid-row">
