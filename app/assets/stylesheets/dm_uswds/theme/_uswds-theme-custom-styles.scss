@@ -206,4 +206,13 @@ a {
     }
 
   }
+
+  &.beta-banner-link {
+    color: #8ccee7;
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
 }
