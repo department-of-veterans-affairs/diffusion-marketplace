@@ -36,7 +36,7 @@
                     background-size: cover;
                   }
                 </style>
-                <%= link_to @top_practice, class: 'display-block', 'aria-label': "Go to #{@top_practice.name}" do %>
+                <%= link_to @top_practice, class: 'display-block', 'aria-label': "Go to #{@top_practice.name}", 'tabindex': '-1', 'aria-hidden': 'true' do %>
                   <div class="img grid-col-5 top-practice-img"></div>
                 <% end %>
               <% else %>
