@@ -68,7 +68,7 @@ describe 'Practices', type: :feature do
     # Visit a user's practice that is not approved or published
     visit practice_path(@user_practice)
     expect(page).to be_accessible.according_to :wcag2a, :section508
-    expect(page).to have_content('Saving lives by diffusing best practices')
+    expect(page).to have_content('Saving lives by sharing best practices')
     expect(page).to have_current_path('/')
   end
 
