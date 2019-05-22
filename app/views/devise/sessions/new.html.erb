@@ -21,8 +21,12 @@
 
             <% if devise_mapping.rememberable? -%>
               <fieldset class="usa-fieldset x1-top">
-                <%= f.check_box :remember_me, class: 'usa-checkbox-input' %>
-                <%= f.label :remember_me, class: 'usa-checkbox-label' %>
+                <div class="usa-checkbox">
+                  <%= f.check_box :remember_me, class: 'usa-checkbox__input' %>
+                  <%= f.label :remember_me, class: 'usa-checkbox__label' do %>
+                    Remember me (Only check on a secure computer)
+                  <% end %>
+                </div>
               </fieldset>
             <% end -%>
 

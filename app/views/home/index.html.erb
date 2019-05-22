@@ -34,10 +34,14 @@
                   .top-practice-img {
                     background: url('<%= @top_practice.main_display_image.url %>');
                     background-size: cover;
+                    min-height: 216px;
+                    height: 100%;
                   }
                 </style>
-                <%= link_to @top_practice, class: 'display-block', 'aria-label': "Go to #{@top_practice.name}" do %>
-                  <div class="img grid-col-5 top-practice-img"></div>
+                <%= link_to @top_practice, class: 'display-flex flex-fill', 'aria-label': "Go to #{@top_practice.name}" do %>
+                  <div class="grid-col-12">
+                    <div class="img top-practice-img"></div>
+                  </div>
                 <% end %>
               <% else %>
                 <div class="grid-col-5"></div>
