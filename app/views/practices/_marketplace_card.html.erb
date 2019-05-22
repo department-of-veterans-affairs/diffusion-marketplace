@@ -7,7 +7,7 @@
   }
 </style>
 <% if practice.main_display_image.present? %>
-  <%= link_to practice, 'aria-label': "Go to #{practice.name}" do %>
+  <%= link_to practice, 'aria-label': "Go to #{practice.name}", 'tabindex': '-1', 'aria-hidden': 'true' do %>
     <div class="img grid-row margin-bottom-2 marketplace-card-header-<%= practice.id %>"></div>
   <% end %>
 <% end %>
