@@ -15,16 +15,16 @@ variable "application_rails_env" {
 
 variable "application_description" {
   default = "A pretty awesome application"
-  description = "A description of your application"
+  description = "The Diffusion Marketplace supports a high reliability and learning organization by diffusing best practices."
 }
 
 variable "application_environment" {
-  default = "staging"
+  default = "production"
   description = "Deployment stage e.g. 'staging', 'production', 'test', 'integration'"
 }
 
 variable "application_s3_bucket_name" {
-  default     = "va-diffusion-marketplace-stg"
+  default     = "va-diffusion-marketplace-prod"
   description = "Name of the S3 bucket"
 }
 
@@ -47,12 +47,12 @@ variable "region" {
 }
 
 variable "solution_stack_name" {
-  default     = "64bit Amazon Linux 2018.03 v2.11.4 running Multi-container Docker 18.06.1-ce (Generic)"
+  default     = "64bit Amazon Linux 2018.03 v2.13.0 running Multi-container Docker 18.06.1-ce (Generic)"
   description = "Defines the stack"
 }
 
 variable "max_autoscaling_size" {
-  default     = "1"
+  default     = "2"
   description = "Defines how many instances can be in an autoscaling group at a time"
 }
 
@@ -74,7 +74,7 @@ variable "env_default_value" {
 ## DB ##
 
 variable "db_name" {
-  default = "vadiffusionmarketplacestaging"
+  default = "vadiffusionmarketplaceproduction"
   description = "Name of the database and the database's user. Must begin with a letter and contain only alphanumeric characters."
 }
 
@@ -84,7 +84,7 @@ variable "db_engine" {
 }
 
 variable "db_engine_version" {
-  default     = "10.1"
+  default     = "10.6"
   description = "Version number of the database engine to be used for this instance."
 }
 
@@ -113,7 +113,7 @@ variable "db_family" {
 }
 
 variable "db_major_engine_version" {
-  default     = "10.1"
+  default     = "10.6"
   description = "Database major engine version"
 }
 
