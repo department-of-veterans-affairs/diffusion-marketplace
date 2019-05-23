@@ -36,6 +36,16 @@
               g.clearUserCookie=function(){};
           })(window,document,window['_fs_namespace'],'script','user');
       </script>
+
+      <% if current_user.present? && ENV['FULLSTORY_IDENTIFY'] %>
+        <script>
+          FS.identify('<%= current_user.id %>', {
+            displayName: '<%= current_user.email %>',
+            email: '<%= current_user.email %>'
+          });
+        </script>
+      <% end %>
+
     <% end %>
 
     <title>Diffusion Marketplace</title>
