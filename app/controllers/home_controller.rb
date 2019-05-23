@@ -8,8 +8,8 @@ class HomeController < ApplicationController
     # display the "Terrible Trio"
     # TODO: make configurable
     naloxone = Practice.find_by(name: 'VHA Rapid Naloxone')
-    my_life_my_story = Practice.find_by(name: 'My Life, My Story')
-    stride = Practice.find_by(name: 'Getting Hospitalized Veterans Back on Their Feet: The STRIDE Program')
+    my_life_my_story = Practice.find_by(name: 'FLOW3')
+    stride = Practice.find_by(name: 'VIONE')
 
     @featured_practices = [naloxone, my_life_my_story, stride]
 
