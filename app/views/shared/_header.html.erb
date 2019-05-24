@@ -11,7 +11,7 @@
             <p class="usa-banner__header-text">An official website of the United States government</p>
             <p class="usa-banner__header-action" aria-hidden="true">Here’s how you know</p>
           </div>
-          <button class="usa-accordion__button usa-banner__button"
+          <button id="banner-button" class="usa-accordion__button usa-banner__button"
                   aria-expanded="false" aria-controls="gov-banner">
             <span class="usa-banner__button-text">Here’s how you know</span>
           </button>
@@ -63,10 +63,10 @@
       <div class="usa-nav__secondary bottom-1-and-half-rem">
         <ul class="usa-nav__secondary-links">
           <li class="usa-nav__secondary-item">
-            <a href="/practice_partners">Practice partners</a>
+            <a href="/partners">Partners</a>
           </li>
           <li class="usa-nav__secondary-item">
-            <a href="/practices">Practices <%= icon('fas', 'search') %><span class="usa-sr-only">Practices</span></a>
+            <a href="/practices">Practices<span class="usa-sr-only">Practices</span></a>
           </li>
           <% if user_signed_in? %>
             <li class="usa-nav__secondary-item">
