@@ -10,6 +10,9 @@ class Practice < ApplicationRecord
   validates_attachment_content_type :main_display_image, content_type: /\Aimage\/.*\z/
   validates_attachment_content_type :origin_picture, content_type: /\Aimage\/.*\z/
 
+  scope :published,   -> { where(published: true) }
+  scope :unpublished,  -> { where(published: false) }
+
   belongs_to :user, optional: true
 
   has_many :additional_documents, dependent: :destroy
