@@ -14,7 +14,7 @@ describe 'Practice partners pages', type: :feature do
 
   it 'should navigate to strategic sponsors list page' do
     visit '/'
-    find(:css, 'a', text: 'Practice partners').click
+    find(:css, 'a', text: 'Partners').click
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(current_path).to eq('/partners')
   end
