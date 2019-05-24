@@ -1,4 +1,4 @@
-async function searchPracticesPage() {
+function searchPracticesPage() {
     // Skip if not the search page
     if (location.pathname !== '/search') return;
 
