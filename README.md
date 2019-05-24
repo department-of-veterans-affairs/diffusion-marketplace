@@ -57,6 +57,10 @@ SURVEY_MONKEY_USERNAME
 SURVEY_MONKEY_PASSWORD
 
 GA_TRACKING_ID (prod only)
+
+# Optional
+SESSION_REMEMBER_FOR_IN_DAYS # how long to remember the user for if they check the "Remember me" checkbox. default is 1 day
+SESSION_TIMEOUT_IN_MINUTES # without checking the checkbox, how long the user's session stays alive if they are active. default is 15 minutes
 ```  
 
 #### Database creation
