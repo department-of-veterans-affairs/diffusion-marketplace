@@ -265,6 +265,10 @@ if PracticePartner.all.blank?
     end
   end
 
+  ### Admin Users ###
+  # TODO: Remove this as soon as normal "admin" users can be used for admin pages.
+  AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
+
 else
   puts 'Database already seeded... Nothing to do.'
 end
