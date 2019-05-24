@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
     if params[:action] == 'index' && params[:controller] == 'practice_partners'
       # empty the bread crumbs and start a new 'path'
       session[:breadcrumbs] = []
-      session[:breadcrumbs] << {'display': 'Practice partners', 'path': practice_partners_path}
+      session[:breadcrumbs] << {'display': 'Partners', 'path': practice_partners_path}
     end
 
     # practice partner show path
