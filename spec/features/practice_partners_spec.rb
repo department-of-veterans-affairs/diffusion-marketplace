@@ -21,7 +21,7 @@ describe 'Practice partners pages', type: :feature do
 
   it 'should show the initiating facility\'s name' do
     @user_practice.update(initiating_facility: 'vc_0508V')
-    visit '/practice_partners/diffusion-of-excellence'
+    visit '/partners/diffusion-of-excellence'
 
     expect(page).to be_accessible.according_to :wcag2a, :section508
 
@@ -31,7 +31,7 @@ describe 'Practice partners pages', type: :feature do
 
   it 'should display the initiating facility\'s initiating facility property if it is not found in the map' do
     @user_practice.update(initiating_facility: 'Test facility name')
-    visit '/practice_partners/diffusion-of-excellence'
+    visit '/partners/diffusion-of-excellence'
 
     expect(page).to be_accessible.according_to :wcag2a, :section508
 
