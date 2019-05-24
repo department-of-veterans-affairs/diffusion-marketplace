@@ -149,7 +149,7 @@ Devise.setup do |config|
 
   # ==> Configuration for :rememberable
   # The time the user will be remembered without asking for credentials again.
-  config.remember_for = ENV["SESSION_REMEMBER_FOR_IN_DAYS"].present? ? ENV["SESSION_REMEMBER_FOR_IN_DAYS"].days : 1.day if Rails.env.production?
+  config.remember_for = ENV["SESSION_REMEMBER_FOR_IN_DAYS"].present? ? ENV["SESSION_REMEMBER_FOR_IN_DAYS"].to_i.days : 1.day if Rails.env.production?
 
   # Invalidates all the remember me tokens when the user signs out.
   config.expire_all_remember_me_on_sign_out = true
@@ -173,7 +173,7 @@ Devise.setup do |config|
   # ==> Configuration for :timeoutable
   # The time you want to timeout the user session without activity. After this
   # time the user will be asked for credentials again. Default is 30 minutes.
-  config.timeout_in = ENV["SESSION_TIMEOUT_IN_MINUTES"].present? ? ENV["SESSION_TIMEOUT_IN_MINUTES"].minutes : 15.minutes if Rails.env.production?
+  config.timeout_in = ENV["SESSION_TIMEOUT_IN_MINUTES"].present? ? ENV["SESSION_TIMEOUT_IN_MINUTES"].to_i.minutes : 15.minutes if Rails.env.production?
 
   # ==> Configuration for :lockable
   # Defines which strategy will be used to lock an account.
