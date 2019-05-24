@@ -16,7 +16,7 @@ describe 'Practice partners pages', type: :feature do
     visit '/'
     find(:css, 'a', text: 'Practice partners').click
     expect(page).to be_accessible.according_to :wcag2a, :section508
-    expect(current_path).to eq('/practice_partners')
+    expect(current_path).to eq('/partners')
   end
 
   it 'should show the initiating facility\'s name' do
