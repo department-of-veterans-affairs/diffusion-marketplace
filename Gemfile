@@ -109,3 +109,9 @@ gem 'rails-assets-jquery.scrollTo', source: 'https://rails-assets.org'
 gem "nested_form"
 gem 'colorize'
 gem 'humanize'
+
+# Active Admin
+gem 'activeadmin'
+gem 'activeadmin_addons'
+gem 'active_skin'
+gem 'active_admin_theme'
