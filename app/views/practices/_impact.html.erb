@@ -7,7 +7,9 @@
       </div>
 
       <div class='x4-top'>
-        <h3><%= impact.title %></h3>
+        <% if impact.title.present? %>
+          <h4><%= impact.title %></h4>
+        <% end %>
       </div>
       <div>
         <p class="hyphens-auto word-break-break-word"><%= impact.description %></p>
