@@ -3,11 +3,13 @@
   <% @practice.impact_photos.each_with_index do |impact, ind| %>
     <div class='grid-container-full p3-top' id='impact-photo-<%= ind %>'>
       <div class='grid-row flex-row flex-justify-center flex-align-center'>
-        <%= image_tag impact.attachment.url(:thumb) %>
+        <%= image_tag impact.attachment.url(:thumb), alt: '' %>
       </div>
 
       <div class='x4-top'>
-        <h3><%= impact.title %></h3>
+        <% if impact.title.present? %>
+          <h4><%= impact.title %></h4>
+        <% end %>
       </div>
       <div>
         <p class="hyphens-auto word-break-break-word"><%= impact.description %></p>
