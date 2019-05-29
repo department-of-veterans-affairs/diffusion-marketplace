@@ -15,7 +15,7 @@
     <% unless value.to_s.downcase.include?('session expired') || value.to_s.downcase == 'true' %>
       <div class="grid-container usa-alert usa-alert--<%= key %> margin-bottom-2">
         <div class="usa-alert__body">
-          <h3 class="usa-alert__heading"><%= value %></h3>
+          <div class="usa-alert__heading fw-bold" role="alert"><%= value %></div>
         </div>
       </div>
     <% end %>

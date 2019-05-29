@@ -3,12 +3,7 @@
   <section class="usa-section dm-background-linear-gradient-up-dark-blue" style="min-height: calc(100vh - 286px)">
     <div class="grid-container">
       <div class="login-card box-shadow-card">
-        <div class="login-header">
-          <div class="login-header-overlay">
-            <h2 class="x0"> Diffusion Marketplace</h2>
-            <p class="fw-100">Saving lives by diffusing best practices.</p>
-          </div>
-        </div>
+        <%= render "devise/shared/login_header" %>
         <div class="login-body">
           <h2>Register</h2>
 
@@ -25,15 +20,15 @@
 
             <div class="usa-alert usa-alert--info" >
               <div class="usa-alert__body">
-                <p class="usa-alert__heading">To register, use your @va.gov email address.</p>
+                <p class="usa-alert__heading" id="email-help">To register, use your @va.gov email address.</p>
               </div>
             </div>
 
             <%= f.label :email, class: 'usa-label x0 x1-top' %>
-            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'usa-input', required: true %>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'usa-input', required: true, 'aria-describedby': 'email-help' %>
 
             <div class="usa-alert usa-alert--info" >
-              <div class="usa-alert__body">
+              <div class="usa-alert__body" id="password-help">
                 <p class="usa-alert__heading">Password must include 3 of the following:</p>
                 <ul>
                   <li>1 uppercase</li>
@@ -44,7 +39,7 @@
               </div>
             </div>
             <%= f.label :password, class: 'usa-label x0 x1-top' %>
-            <%= f.password_field :password, autocomplete: "new-password", class: 'usa-input', required: true %>
+            <%= f.password_field :password, autocomplete: "new-password", class: 'usa-input', required: true, 'aria-describedby': 'password-help' %>
 
             <%= f.label :password_confirmation, class: 'usa-label x0 x1-top' %>
             <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'usa-input', required: true %>
