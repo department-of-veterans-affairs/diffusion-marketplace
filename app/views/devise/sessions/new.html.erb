@@ -3,12 +3,7 @@
   <section class="usa-section dm-background-linear-gradient-up-dark-blue" style="min-height: calc(100vh - 286px)">
     <div class="grid-container">
       <div class="login-card box-shadow-card">
-        <div class="login-header">
-          <div class="login-header-overlay">
-            <h2 class="x0"> Diffusion Marketplace</h2>
-            <p> Saving lives by diffusing best practices.</p>
-          </div>
-        </div>
+        <%= render "devise/shared/login_header" %>
         <div class="login-body">
           <h2>Login</h2>
           <%= render "shared/messages" %>
@@ -20,14 +15,14 @@
             <%= f.password_field :password, autocomplete: "current-password", class: 'usa-input', required: true %>
 
             <% if devise_mapping.rememberable? -%>
-              <fieldset class="usa-fieldset x1-top">
+              <div class="usa-fieldset x1-top">
                 <div class="usa-checkbox">
                   <%= f.check_box :remember_me, class: 'usa-checkbox__input' %>
                   <%= f.label :remember_me, class: 'usa-checkbox__label' do %>
                     Remember me (Only check on a secure computer)
                   <% end %>
                 </div>
-              </fieldset>
+              </div>
             <% end -%>
 
             <div class="actions display-flex justify-center x1-top">

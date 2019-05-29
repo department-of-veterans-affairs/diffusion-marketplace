@@ -69,7 +69,9 @@
 
     <div class="tablet:grid-col-6 display-flex flex-column">
       <% @practice.difficulties.each do |difficulty| %>
-        <h3><%= difficulty.description %></h3>
+        <% if difficulty.description.present? %>
+          <h3><%= difficulty.description %></h3>
+        <% end %>
       <% end %>
     </div>
   </div>
