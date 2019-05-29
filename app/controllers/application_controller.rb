@@ -1,6 +1,18 @@
 class ApplicationController < ActionController::Base
   before_action :setup_breadcrumb_navigation
 
+    def authenticate_active_admin_user!
+    authenticate_user!
+    unless current_user.has_role?(:admin)
+      flash[:alert] = "Unauthorized Access!"
+      redirect_to root_path
+    end
+  end
+
+  def access_denied(exception)
+    redirect_to root_path, alert: exception.message
+  end
+
   protected
 
   def setup_breadcrumb_navigation
@@ -42,7 +54,6 @@ class ApplicationController < ActionController::Base
         session[:breadcrumbs] << {'display': @practice_partner.name, 'path': practice_partner_path(@practice_partner)}
       end
     end
-
   end
 
   private

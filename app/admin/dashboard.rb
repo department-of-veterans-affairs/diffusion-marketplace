@@ -16,7 +16,7 @@ ActiveAdmin.register_page "Dashboard" do
       column do
         panel "Recent Customers" do
           table_for User.order("id desc").limit(10).each do |_user|
-            column(:email)    { |user| link_to(user.email, admin_user_path(user)) }
+            column(:email)    { |user| link_to(user.email, user_path(user)) }
           end
         end
       end
