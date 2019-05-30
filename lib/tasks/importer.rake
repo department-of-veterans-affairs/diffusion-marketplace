@@ -145,8 +145,8 @@ def basic_answers
       "Do you have a link to your practice's VA Pulse Group?": :va_pulse_link,
       'How long does it usually take a group to implement your practice? How long do you expect it to take?': :implementation_time_estimate,
       'Do you have anything else you would like to share regarding your practice?': :additional_notes,
-      'On the Practice page, we often use a descriptive tagline as the functional title. For example: the FLOW3 Practice is not well described by the title, and we therefor use the tagline: "Delivery of prosthetic limbs to Veterans in less than ½ the time".Please provide a 5-10 word descriptive tagline for your Practice. This will be used as the functional title.': :tagline,
-      'On the Practice page, under the tagline/functional title you just provided, we would like a longer descriptive tagline to further explain your practice. For example, for FLOW3: "Enable 53% faster delivery of prosthetic limbs to Veterans. Automating the prosthetic limb procurement process to improve continuity of care for Veterans."Please provide a 1-2 line descriptive tagline for your Practice. This will be used below the functional title.': :description,
+      "On the Practice page, we often use a descriptive tagline as the functional title. For example: the FLOW3 Practice is not well described by the title, and we therefore use the tagline: \"Delivery of prosthetic limbs to Veterans in less than ½ the time\".Please provide a 5-10 word descriptive tagline for your Practice. This will be used as the functional title.": :tagline,
+      "On the Practice page, under the tagline/functional title you just provided, we would like a longer descriptive tagline to further explain your practice. For example, for FLOW3: \"Enable 53% faster delivery of prosthetic limbs to Veterans. Automating the prosthetic limb procurement process to improve continuity of care for Veterans.\"Please provide a 1-2 line descriptive tagline for your Practice. This will be used below the functional title.": :description,
       'Please provide a 50-100 word descriptive paragraph for your Practice. ': :summary,
       # 'Please provide your best estimate rating of your Practice with regards to Cost Avoidance on a scale of 1 - 4.': :cost_savings_aggregate,
       # 'Please provide your best estimate rating of your Practice with regards to Impact on health/care experience on a scale of 1 - 4.': :veteran_satisfaction_aggregate,
@@ -957,7 +957,7 @@ end
 def timelines
   puts "==> Importing Practice: #{@name} Timelines".light_blue
   question_fields = {
-      "During the time you just listed, what are 3 to 7 milestones that should be met during implementation? Please list with the corresponding time frame.": 14
+      "During the time you just listed, what are 3 to 7 milestones that should be met during implementation? Please list with the corresponding time frame. (Note: your answers to this question will build a timeline--a key portion of the practice page for your practice.)": 14
   }
 
   question_fields.each do |key, value|
