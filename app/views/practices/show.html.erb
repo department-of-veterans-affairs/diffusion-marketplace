@@ -90,7 +90,7 @@
   <section class="p3-top margin-y-2">
     <div class="grid-container position-relative">
       <div class="grid-row">
-        <div class="tablet:grid-col-3">
+        <div class="desktop:grid-col-3 grid-col-auto">
           <!-- "Practice nav" section -->
           <!-- Impact Origin Resources Required Complexity Timeline Risks & Mitigation Support Team -->
           <div id="dm-practice-nav" class="z-top mobile-hide">
@@ -122,41 +122,48 @@
             <%= link_to 'Next Steps', practice_next_steps_url(practice_id: @practice.slug), id: 'next-steps-link-in-nav', class: 'dm-button-link shadow-1' %>
           </div>
         </div>
-        <div class="tablet:grid-col-9 p0 p1-5-right">
+        <div class="desktop:grid-col-9 grid-col-12 p0 p1-5-right">
           <div class="p4-bottom">
             <%= render partial: 'impact' %>
             <%= render partial: 'videos' %>
             <div class="practice-divider margin-y-6"></div>
-            <h2 class="margin-y-6">Download additional information related to our practice</h2>
-            <%= render partial: 'additional_documents' %>
-            <%= render partial: 'publication_files' %>
-            <%= render partial: 'publications' %>
+            <% unless !@practice.additional_documents.any? || !@practice.publication_files.any? || !@practice.publications %>
+              <h2 class="margin-y-6">Download additional information related to our practice</h2>
+              <%= render partial: 'additional_documents' %>
+              <%= render partial: 'publication_files' %>
+              <%= render partial: 'publications' %>
+            <% end %>
           </div>
+        </div>
+        <div class="practice-mobile-nav padding-1 z-top desktop:display-none display-flex justify-center">
+          <%= link_to 'Next Steps', practice_next_steps_url(practice_id: @practice.slug), id: 'next-steps-link-in-nav', class: 'dm-button-link shadow-1' %>
         </div>
       </div>
     </div>
   </section>
 
   <!-- "Origin of this Practice" section -->
-  <section class="p3-top margin-y-2 dm-background-light-blue">
-    <div class="grid-container">
-      <div class="grid-row">
-        <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
-        <div class="tablet:grid-col-9 p0 p1-5-right">
-          <div class="p4-bottom">
-            <%= render partial: 'origin' %>
+  <% if @practice.origin_story %>
+    <section class="p3-top margin-y-2 dm-background-light-blue">
+      <div class="grid-container">
+        <div class="grid-row">
+          <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+          <div class="desktop:grid-col-9 grid-col-12 p0 p1-5-right">
+            <div class="p4-bottom">
+              <%= render partial: 'origin' %>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  <% end %>
 
   <!-- "Resources Required" section -->
   <section class="p3-top margin-y-2">
     <div class="grid-container">
       <div class="grid-row">
-        <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
-        <div class="tablet:grid-col-9 p0 p1-5-right">
+        <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+        <div class="desktop:grid-col-9 grid-col-12 p0 p1-5-right">
           <div class="p4-bottom">
             <%= render partial: 'resources_required' %>
           </div>
@@ -170,8 +177,8 @@
     <div class="dm-background-light-blue">
       <div class="grid-container padding-y-7 position-relative">
         <div class="grid-row">
-          <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
-          <div class="tablet:grid-col-9 p0 p1-5-right">
+          <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+          <div class="desktop:grid-col-9 grid-col-12 p0 p1-5-right">
             <div class="">
               <%= render partial: 'complexity' %>
             </div>
@@ -182,69 +189,51 @@
   </section>
 
   <!-- "Timeline and Checklist" section -->
-  <section class="p3-top">
-    <div class="grid-container">
-      <div class="grid-row">
-        <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
-        <div class="tablet:grid-col-9 p0 p1-5-right">
-          <div class="p4-bottom">
-            <%= render partial: 'timeline_and_checklist' %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- "Risks & Mitigations" section -->
-  <section class="p3-top dm-background-light-blue">
-    <div class="grid-container">
-      <div class="grid-row">
-        <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
-        <div class="tablet:grid-col-9 p0 p1-5-right">
-          <div class="p4-bottom">
-            <%= render partial: 'risks_and_mitigations' %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="grid-container">
-      <div class="grid-row padding-y-9">
-        <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
-        <div class="tablet:grid-col-9">
-          <div class="grid-container-full">
-            <div class="grid-row">
-              <div class="tablet:grid-col-12">
-                <div class="flex-column flex-justify flex-align-start">
-                  <div class="grid-auto">
-                    <h3 class="font-ui-xl margin-0">Ready to get started?</h3>
-                  </div>
-                  <div class="grid-auto">
-                    <p>By committing to this practice you can save lives.</p>
-                  </div>
-                </div>
-              </div>
+  <% if @practice.timelines.any? %>
+    <section class="p3-top">
+      <div class="grid-container">
+        <div class="grid-row">
+          <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+          <div class="desktop:grid-col-9 grid-col-12 p0 p1-5-right">
+            <div class="p4-bottom">
+              <%= render partial: 'timeline_and_checklist' %>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  <% end %>
 
-  <!-- "Support Team" section -->
-  <section class="p3-top dm-background-light-blue">
-    <div class="grid-container">
-      <div class="grid-row">
-        <div class="tablet:grid-col-3 z-bottom">&nbsp;</div>
-        <div class="tablet:grid-col-9 p0 p1-5-right">
-          <div class="p4-bottom">
-            <%= render partial: 'support_team' %>
+  <!-- "Risks & Mitigations" section -->
+  <% if @practice.risk_mitigations.any? %>
+    <section class="p3-top dm-background-light-blue">
+      <div class="grid-container">
+        <div class="grid-row">
+          <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+          <div class="desktop:grid-col-9 grid-col-12 p0 p1-5-right">
+            <div class="p4-bottom">
+              <%= render partial: 'risks_and_mitigations' %>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  <% end %>
+
+  <!-- "Support Team" section -->
+  <% if @practice.va_employees.any? %>
+    <section class="p3-top dm-background-white">
+      <div class="grid-container">
+        <div class="grid-row">
+          <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+          <div class="desktop:grid-col-9 grid-col-12 p0 p1-5-right">
+            <div class="p4-bottom">
+              <%= render partial: 'support_team' %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  <% end %>
 <% end %>
 

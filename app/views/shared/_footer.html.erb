@@ -1,6 +1,26 @@
-
-<footer class="usa-section dm-background-light-black dm-font-color-white">
-  <div class="grid-container">
-    <p class="measure-none">If you have any questions about the Changing Lives, Saving Lives campaign or about Diffusion of Excellence and VHA Innovators Network, please contact VAInnovation@atlasresearch.us.</p>
+<footer class="<% if params[:controller] == 'practices' && params[:action] == 'show' %>desktop:padding-bottom-0 padding-bottom-9<% end %>">
+  <div class="bg-base-lightest">
+    <div class="grid-container padding-y-2">
+      <div class="grid-row flex-justify font-sans-sm text-bold">
+        <div class="display-flex flex-row tablet-lg:grid-col-4 grid-col-7">
+          <div class="grid-col-4"><a href="/partners">Partners</a></div>
+          <div class="grid-col-4"><a href="/practices">Practices</a></div>
+          <div class="grid-col-4"><a href="/privacy-policy">Privacy policy</a></div>
+        </div>
+        <div class="display-flex flex-row flex-justify-end grid-col-5 text-right">
+          <div class="grid-col-4">
+            <a target="_blank" href="mailto:dm@agile6.com?subject=<%= URI.encode('Bug report for Diffusion Marketplace') %>&body=<%= URI.encode('Please be sure to include a step-by-step list to reproduce the error, if applicable.') %>">Report a bug</a>
+          </div>
+          <div class="grid-col-5"><a href="#" class="feedback-survey-popup">Give us feedback</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bg-primary-darker text-white padding-y-4">
+    <div class="grid-container">
+      <div class="grid-row">
+        <p class="font-sans-lg text-bold margin-0">U.S. Department of Veteran Affairs | Diffusion Marketplace</p>
+      </div>
+    </div>
   </div>
 </footer>
