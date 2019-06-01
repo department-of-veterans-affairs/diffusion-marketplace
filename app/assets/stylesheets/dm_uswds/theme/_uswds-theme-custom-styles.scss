@@ -217,3 +217,17 @@ a {
     }
   }
 }
+
+@media all and (min-width: 40em) {
+  /* line 68, uswds-rails-029b4d4c92fc/app/assets/stylesheets/uswds/core/mixins/_utility-builder.scss */
+  .tablet\:display-block {
+    display: block;
+  }
+}
+
+@media all and (min-width: 40em) {
+  /* line 68, uswds-rails-029b4d4c92fc/app/assets/stylesheets/uswds/core/mixins/_utility-builder.scss */
+  .tablet\:display-flex {
+    display: flex;
+  }
+}

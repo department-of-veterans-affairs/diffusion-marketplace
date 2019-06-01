@@ -53,6 +53,14 @@
   }
 }
 
+.practice-mobile-nav {
+  background: $dm-color-white;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
 .tab-inactive {
   display: none;
 }

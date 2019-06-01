@@ -2,7 +2,9 @@
   .marketplace-card-header-<%= practice.id %> {
   <% if practice.main_display_image.present? %> background: url(<%= practice.main_display_image.url %>);
   <% else %> background: rgba(26, 68, 128, 1);
-  <% end %> background-size: cover;
+  <% end %> background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     height: 150px;
   }
 </style>
