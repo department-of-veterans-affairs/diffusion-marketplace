@@ -18,7 +18,13 @@
         <% end %>
       </div>
       <div class="grid-auto">
-        <h4 class="margin-0 fw-100">Cost</h4>
+        <h4 class="margin-0 fw-100">
+          Cost
+          <span class="sr-only">
+            <%= pluralize(cost_to_implement_aggregate, 'dollar')%>
+            out of four.
+          </span>
+        </h4>
       </div>
     </div>
     <div class="tablet:grid-col-6 text-center tablet:display-none">
@@ -59,7 +65,13 @@
         <% end %>
       </div>
       <div class="grid-auto">
-        <h4 class="margin-0 fw-100">Complexity</h4>
+        <h4 class="margin-0 fw-100">
+          Complexity
+          <span class="sr-only">
+            <%= pluralize(complexity_aggregate, 'wrench')%> 
+            out of four.
+          </span>
+        </h4>
       </div>
     </div>
 
