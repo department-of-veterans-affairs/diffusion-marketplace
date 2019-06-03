@@ -65,7 +65,6 @@ namespace :surveymonkey do
     survey_responses = client.responses_with_details(167278708)
 
     # Download files for each respondent
-    debugger
     survey_responses['data'].each do |response|
       puts "==> Downloading files for Respondent #{response['id']}"
 
