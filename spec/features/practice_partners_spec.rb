@@ -14,14 +14,16 @@ describe 'Practice partners pages', type: :feature do
 
   it 'should navigate to strategic sponsors list page' do
     visit '/'
-    find(:css, 'a', text: 'Practice partners').click
+    within(:css, 'header') do
+      find(:css, 'a', text: 'Partners').click
+    end
     expect(page).to be_accessible.according_to :wcag2a, :section508
-    expect(current_path).to eq('/practice_partners')
+    expect(current_path).to eq('/partners')
   end
 
   it 'should show the initiating facility\'s name' do
     @user_practice.update(initiating_facility: 'vc_0508V')
-    visit '/practice_partners/diffusion-of-excellence'
+    visit '/partners/diffusion-of-excellence'
 
     expect(page).to be_accessible.according_to :wcag2a, :section508
 
@@ -31,7 +33,7 @@ describe 'Practice partners pages', type: :feature do
 
   it 'should display the initiating facility\'s initiating facility property if it is not found in the map' do
     @user_practice.update(initiating_facility: 'Test facility name')
-    visit '/practice_partners/diffusion-of-excellence'
+    visit '/partners/diffusion-of-excellence'
 
     expect(page).to be_accessible.according_to :wcag2a, :section508
 

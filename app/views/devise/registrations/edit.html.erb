@@ -3,12 +3,7 @@
   <section class="usa-section dm-background-linear-gradient-up-dark-blue" style="min-height: calc(100vh - 286px)">
     <div class="grid-container">
       <div class="login-card box-shadow-card">
-        <div class="login-header">
-          <div class="login-header-overlay">
-            <h2 class="x0"> Diffusion Marketplace</h2>
-            <p> Saving lives by diffusing best practices.</p>
-          </div>
-        </div>
+        <%= render "devise/shared/login_header" %>
         <div class="login-body">
           <h2>Edit <%= resource_name.to_s.humanize %></h2>
 

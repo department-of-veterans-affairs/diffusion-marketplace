@@ -18,19 +18,19 @@ describe 'Breadcrumbs', type: :feature do
   describe 'Practice partners flow' do
     it 'should show Practice partners' do
       @user_practice.update(published: true, approved: true)
-      visit '/practice_partners'
+      visit '/partners'
       expect(page).to be_accessible.according_to :wcag2a, :section508
 
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
-        expect(page).to have_content('Practice partners')
+        expect(page).to have_content('Partners')
       end
 
       click_on('Diffusion of Excellence')
       expect(page).to be_accessible.according_to :wcag2a, :section508
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
-        expect(page).to have_content('Practice partners')
+        expect(page).to have_content('Partners')
         expect(page).to have_content('Diffusion of Excellence')
       end
 
@@ -39,7 +39,7 @@ describe 'Breadcrumbs', type: :feature do
 
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
-        expect(page).to have_content('Practice partners')
+        expect(page).to have_content('Partners')
         expect(page).to have_content('Diffusion of Excellence')
         expect(page).to have_content('The Best Practice Ever!')
       end

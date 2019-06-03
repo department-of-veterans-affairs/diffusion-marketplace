@@ -20,8 +20,8 @@ start=`date +%s`
 # Name of your application, should be the same as in setup
 NAME=$1
 
-# Stage/environment e.g. `staging`, `test`, `production``
-STAGE=$2
+# Environment name e.g. `application-name-staging`, `application-name-test`, `application-name-production``
+ENVNAME=$2
 
 # AWS Region where app should be deployed e.g. `us-east-1`, `eu-central-1`
 REGION=$3
@@ -30,46 +30,94 @@ REGION=$3
 SHA1=$4
 
 if [ -z "$NAME" ]; then
-  echo "Application NAME was not provided, aborting deploy!"
-  exit 1
+  echo -n "You did not supply an AWS Elastic Beanstalk Application name. Please enter one here:"
+  read answer
+  if [ -z "$answer" ]; then
+    echo "Application NAME was not provided, aborting deploy!"
+    exit 1
+  else
+    NAME=$answer
+    echo Application Name: $NAME
+  fi
 fi
 
-if [ -z "$STAGE" ]; then
-  echo "Application STAGE was not provided, aborting deploy!"
-  exit 1
+if [ -z "$ENVNAME" ]; then
+  echo -n "You did not supply an AWS Elastic Beanstalk Application Environment name. Please enter one here:"
+  read answer
+  if [ -z "$answer" ]; then
+    echo "Application ENVNAME was not provided, aborting deploy!"
+    exit 1
+  else
+    ENVNAME=$answer
+    echo Application Environment Name: $ENVNAME
+  fi
 fi
 
 if [ -z "$REGION" ]; then
-  echo "Application REGION was not provided, aborting deploy!"
-  exit 1
+  echo -n "You did not supply an AWS Region name. Please enter one here:"
+  read answer
+  if [ -z "$answer" ]; then
+    echo "Application REGION was not provided, aborting deploy!"
+    exit 1
+  else
+    REGION=$answer
+    echo Application AWS Region: $REGION
+  fi
 fi
 
 if [ -z "$SHA1" ]; then
-  echo "Application SHA1 was not provided, aborting deploy!"
-  exit 1
+  echo -n "You did not supply a SHA1 to identify this build. Please enter one here:"
+  read answer
+  if [ -z "$answer" ]; then
+    echo "Application SHA1 was not provided, aborting deploy!"
+    exit 1
+  else
+    SHA1=$answer
+    echo Application SHA1: $SHA1
+  fi
 fi
 
 if [ -z "$AWS_ACCOUNT_ID" ]; then
-  echo "AWS_ACCOUNT_ID was not provided, aborting deploy!"
-  exit 1
+  echo -n "You did not supply an AWS Account ID. Please enter one here:"
+  read answer
+  if [ -z "$answer" ]; then
+    echo "AWS_ACCOUNT_ID was not provided, aborting deploy!"
+    exit 1
+  else
+    AWS_ACCOUNT_ID=$answer
+    echo Application AWS_ACCOUNT_ID: $AWS_ACCOUNT_ID
+  fi
 fi
 
 if [ -z "$AWS_ACCESS_KEY_ID" ]; then
-  echo "AWS_ACCESS_KEY_ID was not provided, aborting deploy!"
-  exit 1
+  echo -n "You did not supply an AWS Access Key ID. Please enter one here:"
+  read answer
+  if [ -z "$answer" ]; then
+    echo "AWS_ACCESS_KEY_ID was not provided, aborting deploy!"
+    exit 1
+  else
+    AWS_ACCESS_KEY_ID=$answer
+    echo Application AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+  fi
 fi
 
 if [ -z "$AWS_SECRET_ACCESS_KEY" ]; then
-  echo "AWS_SECRET_ACCESS_KEY was not provided, aborting deploy!"
-  exit 1
+  echo -n "You did not supply an AWS Secret Access Key. Please enter one here:"
+  read answer
+  if [ -z "$answer" ]; then
+    echo "AWS_SECRET_ACCESS_KEY was not provided, aborting deploy!"
+    exit 1
+  else
+    AWS_SECRET_ACCESS_KEY=$answer
+    echo Application AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+  fi
 fi
 
 EB_BUCKET=$NAME-deployments
-ENV=$NAME-$STAGE
-VERSION=$STAGE-$SHA1-$(date +%s)
+VERSION=$ENVNAME-$SHA1-$(date +%s)
 ZIP=$VERSION.zip
 
-echo Deploying $NAME to environment $STAGE, region: $REGION, version: $VERSION, bucket: $EB_BUCKET
+echo Deploying $NAME to environment $ENVNAME, region: $REGION, version: $VERSION, bucket: $EB_BUCKET
 
 aws configure set default.region $REGION
 aws configure set default.output json
@@ -103,7 +151,7 @@ aws s3 cp $ZIP s3://$EB_BUCKET/$ZIP
 aws elasticbeanstalk create-application-version --application-name $NAME --version-label $VERSION --source-bundle S3Bucket=$EB_BUCKET,S3Key=$ZIP
 
 # Update the environment to use the new application version
-aws elasticbeanstalk update-environment --environment-name $ENV --version-label $VERSION
+aws elasticbeanstalk update-environment --environment-name $ENVNAME --version-label $VERSION
 
 end=`date +%s`
 

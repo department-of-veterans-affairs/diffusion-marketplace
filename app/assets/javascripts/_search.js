@@ -1,4 +1,4 @@
-async function searchPracticesPage() {
+function searchPracticesPage() {
     // Skip if not the search page
     if (location.pathname !== '/search') return;
 
@@ -41,7 +41,7 @@ async function searchPracticesPage() {
           <div class="grid-col flex-1">
             <div class="img-box margin-top-2">
               <a href="/practices/${result.item.slug}" aria-label="Go to ${result.item.name}">
-              <div class="img img-box-content" style="${result.item.image ? `background: url('${result.item.image}') transparent` : `background: transparent`}; background-size: cover">
+              <div class="img img-box-content" style="${result.item.image ? `background: url('${result.item.image}') transparent` : `background: transparent`}; background-size: contain; background-repeat: no-repeat; background-position: center;">
               
                 </div>
                 </a>

@@ -3,7 +3,9 @@
   <div class='grid-row'>
     <div class="tablet:grid-col-8">
       <div class="">
-        <h4 class="margin-y-105"><%= @practice.origin_title %></h4>
+        <% if @practice.origin_title.present? %>
+          <h4 class="margin-y-105"><%= @practice.origin_title %></h4>
+        <% end %>
       </div>
       <div>
         <p class="margin-0 hyphens-auto word-break-break-word"><%= @practice.origin_story %></p>

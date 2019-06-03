@@ -57,6 +57,10 @@ SURVEY_MONKEY_USERNAME
 SURVEY_MONKEY_PASSWORD
 
 GA_TRACKING_ID (prod only)
+
+# Optional
+SESSION_REMEMBER_FOR_IN_DAYS # how long to remember the user for if they check the "Remember me" checkbox. default is 1 day
+SESSION_TIMEOUT_IN_MINUTES # without checking the checkbox, how long the user's session stays alive if they are active. default is 15 minutes
 ```  
 
 #### Database creation
@@ -162,7 +166,7 @@ The deploy script builds and deploys the Docker image(s).
 - <application-name> name of application that matches the EB application created (va-diffusion-marketplace)
 - <application-environment> name of environment that matches the EB environment created within the application (staging/production)
 
-`./scripts/deploy.sh <application-name> <application-environment> <aws-region> <sha>`
+`./scripts/deploy.sh <application-name> <application-environment-name> <aws-region> <sha>`
 
 e.g.
 
@@ -174,5 +178,7 @@ if the AWS environment variables are not set up:
 AWS_ACCOUNT_ID=XX677677XXXX \
 AWS_ACCESS_KEY_ID=AKIAIXEXIX5JW5XM6XXX \
 AWS_SECRET_ACCESS_KEY=XXXxmxxXlxxbA3vgOxxxxCk+uXXXXOrdmpC/oXxx \
-./scripts/deploy.sh va-diffusion-marketplace staging us-west-2 abd6bed7af25731713a5330aeabcbd37d8125990
+./scripts/deploy.sh va-diffusion-marketplace va-diffusion-marketplace-staging us-west-2 abd6bed7af25731713a5330aeabcbd37d8125990
 ```
+
+if nothing is provided, the deploy script will ask for the essential variables that it needs and you can provide them interactively. 

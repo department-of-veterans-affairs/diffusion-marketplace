@@ -269,10 +269,6 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   visibility: hidden !important;
 }
 
-.display-none {
-  display: none !important;
-}
-
 .display-inline {
   display: inline !important;
 }
@@ -295,7 +291,7 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   align-items: center !important;
 }
 
-.display-flex,
+//.display-flex,
 .display-flex-align-items-center {
   display: flex !important;
 }

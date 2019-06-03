@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   resources :clinical_conditions
   resources :ancillary_services
   resources :va_secretary_priorities
-  resources :practice_partners
+  resources :practice_partners, path: :partners
   resources :users, except: [:show, :create, :new, :edit] do
     patch :re_enable
   end
@@ -32,6 +32,7 @@ Rails.application.routes.draw do
 
   root 'home#index'
   get '/practices' => 'practices#index'
+  get '/partners' => 'practice_partners#index'
   # Adding this for the View Toolkit button on practice page. Though we don't have any uploaded yet so I'm not using it.
   get 'practices/view_toolkit' => 'practices#view_toolkit'
   # Ditto for "Planning Checklist"

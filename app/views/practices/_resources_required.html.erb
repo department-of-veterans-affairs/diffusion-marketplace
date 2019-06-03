@@ -6,7 +6,7 @@
   </div>
   <div class="grid-row">
     <!-- Cost level Circle -->
-    <div class="grid-row flex-column flex-align-center flex-justify-center level-aggregate-circle <%= level_aggregate_style(@practice.cost_to_implement_aggregate) %>">
+    <div class="order-first grid-row flex-column flex-align-center flex-justify-center level-aggregate-circle <%= level_aggregate_style(@practice.cost_to_implement_aggregate) %>">
       <div class="tablet:grid-col-12 margin-y-2">
         <% cost_to_implement_aggregate = @practice.cost_to_implement_aggregate || 0 %>
         <% (0..3).each do |index| %>
@@ -21,7 +21,7 @@
         <h4 class="margin-0 fw-100">Cost</h4>
       </div>
     </div>
-    <div class="tablet:grid-col-6 text-center mobile-show">
+    <div class="tablet:grid-col-6 text-center tablet:display-none">
       <p><%= cost_aggregate_description(@practice.cost_to_implement_aggregate) %></p>
     </div>
     <div class="tablet:grid-col-6 display-flex flex-column">
@@ -30,7 +30,7 @@
       <% end %>
     </div>
   </div>
-  <div class="grid-row mobile-hide">
+  <div class="grid-row tablet:display-block display-none">
     <div class="tablet:grid-col-6 text-center">
       <p><%= cost_aggregate_description(@practice.cost_to_implement_aggregate) %></p>
     </div>
@@ -63,18 +63,20 @@
       </div>
     </div>
 
-    <div class="tablet:grid-col-6 text-center mobile-show">
+    <div class="tablet:grid-col-6 text-center tablet:display-none">
       <p><%= complexity_aggregate_description(complexity_aggregate) %></p>
     </div>
 
     <div class="tablet:grid-col-6 display-flex flex-column">
       <% @practice.difficulties.each do |difficulty| %>
-        <h3><%= difficulty.description %></h3>
+        <% if difficulty.description.present? %>
+          <h3><%= difficulty.description %></h3>
+        <% end %>
       <% end %>
     </div>
   </div>
 
-  <div class="grid-row mobile-hide">
+  <div class="grid-row tablet:display-block display-none">
     <div class="tablet:grid-col-6 text-center">
       <p><%= complexity_aggregate_description(complexity_aggregate) %></p>
     </div>
