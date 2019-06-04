@@ -109,7 +109,7 @@ class PracticesController < ApplicationController
     user_practice = UserPractice.find_by(user: current_user, practice: @practice, committed: true)
 
     if user_practice.present?
-      flash[:notice] = "You have already committed to this practice. If you did not receive a follow-up email from the practice support team yet, please contact them at #{@practice.support_network_email}"
+      flash[:notice] = "You have already committed to this practice. If you did not receive a follow-up email from the practice support team yet, please contact them at #{@practice.support_network_email || ENV['MAILER_SENDER']}"
     else
       user_practice = UserPractice.new(user: current_user, practice: @practice, committed: true)
       PracticeMailer.commitment_response_email(user: current_user, practice: @practice).deliver_now

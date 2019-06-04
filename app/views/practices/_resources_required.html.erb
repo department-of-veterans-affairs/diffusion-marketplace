@@ -7,7 +7,7 @@
   <div class="grid-row">
     <!-- Cost level Circle -->
     <div class="order-first grid-row flex-column flex-align-center flex-justify-center level-aggregate-circle <%= level_aggregate_style(@practice.cost_to_implement_aggregate) %>">
-      <div class="tablet:grid-col-12 margin-y-2">
+      <div id="cost-aggregate" class="tablet:grid-col-12 margin-y-2">
         <% cost_to_implement_aggregate = @practice.cost_to_implement_aggregate || 0 %>
         <% (0..3).each do |index| %>
           <% if index < cost_to_implement_aggregate %>
@@ -16,9 +16,6 @@
             <i class="fas fa-dollar-sign large-icon-light aggregate-icon"></i>
           <% end %>
         <% end %>
-        <!--[if lte IE 11]>
-            <div class="display-inline-block"><%= cost_to_implement_aggregate %></div>
-        <![endif]-->
       </div>
       <div class="grid-auto">
         <h4 class="margin-0 fw-100">
@@ -57,8 +54,7 @@
     <!-- Complexity level Circle -->
     <% complexity_aggregate = complexity_aggregate(@practice) || 0 %>
     <div class="grid-row flex-column flex-align-center flex-justify-center level-aggregate-circle <%= level_aggregate_style(complexity_aggregate) %>">
-      <div class="tablet:grid-col-12 margin-y-2">
-
+      <div id="complexity-aggregate" class="tablet:grid-col-12 margin-y-2">
         <% (0..3).each do |index| %>
           <% if index < complexity_aggregate %>
             <i class="fas fa-wrench large-icon-dark aggregate-icon"></i>
@@ -66,9 +62,6 @@
             <i class="fas fa-wrench large-icon-light aggregate-icon"></i>
           <% end %>
         <% end %>
-        <!--[if lte IE 11]>
-            <div class="display-inline-block"><%= complexity_aggregate %></div>
-        <![endif]-->
       </div>
       <div class="grid-auto">
         <h4 class="margin-0 fw-100">

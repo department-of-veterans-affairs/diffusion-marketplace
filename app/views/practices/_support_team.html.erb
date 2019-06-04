@@ -22,7 +22,7 @@
     </div>
 
     <div class="grid-row flex-row flex-justify-center flex-align-center ">
-      <a href="mailto:<%= @practice.support_network_email %>" class="dm-button-link-secondary x3-bottom">Contact</a>
+      <a href="mailto:<%= @practice.support_network_email || ENV['MAILER_SENDER'] %>" class="dm-button-link-secondary x3-bottom">Contact</a>
     </div>
 
   </div>
