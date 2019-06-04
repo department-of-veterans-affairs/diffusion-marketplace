@@ -11,41 +11,42 @@
             <p class="usa-banner__header-text">An official website of the United States government</p>
             <p class="usa-banner__header-action" aria-hidden="true">Here’s how you know</p>
           </div>
-          <button id="banner-button" class="usa-accordion__button usa-banner__button"
-                  aria-expanded="false" aria-controls="gov-banner">
-            <span class="usa-banner__button-text">Here’s how you know</span>
-          </button>
+<!--          <button id="banner-button" class="usa-accordion__button usa-banner__button"-->
+<!--                  aria-expanded="false" aria-controls="gov-banner">-->
+<!--            <span class="usa-banner__button-text">Here’s how you know</span>-->
+<!--          </button>-->
         </div>
       </div>
-      <div class="usa-banner__content usa-accordion__content" id="gov-banner" hidden>
-        <div class="grid-row grid-gap-lg">
-          <div class="usa-banner__guidance tablet:grid-col-6">
-            <img class="usa-banner__icon usa-media-block__img" src="<%= image_url 'uswds/icon-dot-gov.svg' %>" alt="Dot gov">
-            <div class="usa-media-block__body">
-              <p>
-                <strong>The .gov means it’s official.</strong>
-                <br>
-                Federal government websites often end in .gov or .mil. Before sharing sensitive information, make sure
-                you’re on a federal government site.
-              </p>
-            </div>
-          </div>
-          <div class="usa-banner__guidance tablet:grid-col-6">
-            <img class="usa-banner__icon usa-media-block__img" src="<%= image_url 'uswds/icon-https.svg' %>" alt="Https">
-            <div class="usa-media-block__body">
-              <p>
-                <strong>The site is secure.</strong>
-                <br>
-                The <strong>https://</strong> ensures that you are connecting to the official website and that any
-                information you provide is encrypted and transmitted securely.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+<!--      <div class="usa-banner__content usa-accordion__content" id="gov-banner" hidden>-->
+<!--        <div class="grid-row grid-gap-lg">-->
+<!--          <div class="usa-banner__guidance tablet:grid-col-6">-->
+<!--            <img class="usa-banner__icon usa-media-block__img" src="<%#= image_url 'uswds/icon-dot-gov.svg' %>" alt="Dot gov">-->
+<!--            <div class="usa-media-block__body">-->
+<!--              <p>-->
+<!--                <strong>The .gov means it’s official.</strong>-->
+<!--                <br>-->
+<!--                Federal government websites often end in .gov or .mil. Before sharing sensitive information, make sure-->
+<!--                you’re on a federal government site.-->
+<!--              </p>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="usa-banner__guidance tablet:grid-col-6">-->
+<!--            <img class="usa-banner__icon usa-media-block__img" src="<%#= image_url 'uswds/icon-https.svg' %>" alt="Https">-->
+<!--            <div class="usa-media-block__body">-->
+<!--              <p>-->
+<!--                <strong>The site is secure.</strong>-->
+<!--                <br>-->
+<!--                The <strong>https://</strong> ensures that you are connecting to the official website and that any-->
+<!--                information you provide is encrypted and transmitted securely.-->
+<!--              </p>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
   </div>
   <%= render partial: 'shared/beta_banner' %>
+  <%= render partial: 'shared/browsehappy' %>
 
   <div class="usa-overlay"></div>
 

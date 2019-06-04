@@ -2,7 +2,7 @@
 <div class="margin-bottom-9">
   <% @practice.impact_photos.each_with_index do |impact, ind| %>
     <div class='grid-container-full p3-top' id='impact-photo-<%= ind %>'>
-      <div class='grid-row flex-row flex-justify-center flex-align-center'>
+      <div>
         <%= image_tag impact.attachment.url(:thumb), alt: '' %>
       </div>
 

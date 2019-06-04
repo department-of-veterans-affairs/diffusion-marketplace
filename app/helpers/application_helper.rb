@@ -25,7 +25,7 @@ module ApplicationHelper
       youtube_id = $5
     end
 
-    %Q{<div class="video-container"><iframe title="YouTube video player" width="700" height="405" src="http://www.youtube.com/embed/#{ youtube_id }" frameborder="0" allowfullscreen></iframe></div>}.html_safe
+    %Q{<div class="video-container"><iframe title="YouTube video player" width="700" height="405" src="https://www.youtube.com/embed/#{ youtube_id }" frameborder="0" allowfullscreen></iframe></div>}.html_safe
   end
 
   def cost_aggregate_description(aggregate)
@@ -78,7 +78,7 @@ module ApplicationHelper
   end
 
   def email_practice_body(practice)
-    raw("Check out this practice, #{practice.name}: #{practice.tagline}, on the VA Diffusion Marketplace: %0D%0A%0D%0A#{ENV['HOSTNAME']}/practice/#{practice.slug}%0D%0A%0D%0AAbout #{practice.name}: %0D%0A%0D%0A#{practice.description}%0D%0A%0D%0A#{practice.summary}%0D%0A%0D%0AIf you have any questions about the Changing Lives, Saving Lives campaign or about Diffusion of Excellence and VHA Innovators Network, please contact VAInnovation@atlasresearch.us.")
+    raw("Check out this practice, #{practice.name}: #{practice.tagline}, on the VA Diffusion Marketplace: %0D%0A%0D%0A#{ENV['HOSTNAME']}/practices/#{practice.slug}%0D%0A%0D%0AAbout #{practice.name}: %0D%0A%0D%0A#{practice.description}%0D%0A%0D%0A#{practice.summary}%0D%0A%0D%0AIf you have any questions about the Changing Lives, Saving Lives campaign or about Diffusion of Excellence and VHA Innovators Network, please contact VAInnovation@atlasresearch.us.")
   end
 
   def email_checklist_subject(practice)
@@ -86,7 +86,7 @@ module ApplicationHelper
   end
 
   def email_checklist_body(practice)
-    raw("Let's take the next steps to implement #{practice.name}: #{practice.tagline}, from the VA Diffusion Marketplace: %0D%0A%0D%0A#{ENV['HOSTNAME']}/practice/#{practice.slug}/next-steps%0D%0A%0D%0AAbout #{practice.name}: %0D%0A%0D%0A#{practice.description}%0D%0A%0D%0A#{practice.summary}%0D%0A%0D%0AIf you have any questions about the Changing Lives, Saving Lives campaign or about Diffusion of Excellence and VHA Innovators Network, please contact VAInnovation@atlasresearch.us.")
+    raw("Let's take the next steps to implement #{practice.name}: #{practice.tagline}, from the VA Diffusion Marketplace: %0D%0A%0D%0A#{ENV['HOSTNAME']}/practices/#{practice.slug}/next-steps%0D%0A%0D%0AAbout #{practice.name}: %0D%0A%0D%0A#{practice.description}%0D%0A%0D%0A#{practice.summary}%0D%0A%0D%0AIf you have any questions about the Changing Lives, Saving Lives campaign or about Diffusion of Excellence and VHA Innovators Network, please contact VAInnovation@atlasresearch.us.")
   end
 
 end
