@@ -6,7 +6,7 @@ ActiveAdmin.register_page "Dashboard" do
     columns do
       column do
         panel 'New user signups' do
-          column_chart User.where('created_at >= ?', 1.week.ago).group_by_day(:created_at).count
+          column_chart User.where('created_at >= ?', 1.week.ago).group_by_day(:created_at, format: '%b %e').count, ytitle: 'Users'
         end
       end # column
 
