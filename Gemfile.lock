@@ -142,6 +142,7 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (~> 1.2)
       xpath (~> 3.2)
+    chartkick (3.2.0)
     childprocess (1.0.1)
       rake (< 13.0)
     choice (0.2.0)
@@ -195,6 +196,8 @@ GEM
       activerecord (>= 4.0.0)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
+    groupdate (4.1.2)
+      activesupport (>= 4.2)
     has_scope (0.7.2)
       actionpack (>= 4.1)
       activesupport (>= 4.1)
@@ -282,6 +285,9 @@ GEM
       mini_portile2 (~> 2.4.0)
     ntlm-http (0.1.1)
     orm_adapter (0.5.0)
+    paper_trail (10.3.0)
+      activerecord (>= 4.2, < 6.1)
+      request_store (~> 1.1)
     paperclip (6.0.0)
       activemodel (>= 4.2.0)
       activesupport (>= 4.2.0)
@@ -345,6 +351,8 @@ GEM
       ffi (~> 1.0)
     redis (4.0.3)
     regexp_parser (1.4.0)
+    request_store (1.4.1)
+      rack (>= 1.4)
     require_all (1.5.0)
     responders (2.4.1)
       actionpack (>= 4.2.0, < 6.0)
@@ -483,6 +491,7 @@ DEPENDENCIES
   bootsnap (>= 1.1.0)
   byebug
   capybara
+  chartkick
   coffee-rails (~> 4.2)
   colorize
   database_cleaner
@@ -492,6 +501,7 @@ DEPENDENCIES
   figaro
   font-awesome-sass (~> 5.6.1)
   friendly_id (~> 5.2.4)
+  groupdate
   humanize
   jbuilder (~> 2.5)
   jquery-rails
@@ -502,6 +512,7 @@ DEPENDENCIES
   mechanize
   mini_racer
   nested_form
+  paper_trail
   paperclip (~> 6.0.0)
   papercrop!
   pg (>= 0.18, < 2.0)

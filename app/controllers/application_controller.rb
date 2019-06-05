@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :setup_breadcrumb_navigation
+  before_action :set_paper_trail_whodunnit
 
     def authenticate_active_admin_user!
     authenticate_user!
