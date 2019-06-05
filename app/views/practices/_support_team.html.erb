@@ -10,7 +10,7 @@
             <% if employee.avatar.present? %>
               <%= image_tag employee.avatar.url, alt: employee.name %>
             <% else %>
-              <span class="fas fa-user-circle fa-3x dm-font-color-primary-blue"></span>
+              <%= image_tag 'user.svg', alt: employee.name %>
             <% end %>
           </div>
           <div class="grid-col-fill margin-auto">

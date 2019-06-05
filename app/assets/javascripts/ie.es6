@@ -21,14 +21,5 @@ function detectIE() {
 
     }
 
-    function replaceIcons() {
-        // TODO: detect if font awesome is supported?
-        if (detectIE()) {
-            $('.fa-dollar-sign').text('$');
-            $('.fa-wrench').text('Y');
-        }
-    }
-
     $document.on('turbolinks:load', browseHappy);
-    $document.on('turbolinks:load', replaceIcons);
 })(window.jQuery);

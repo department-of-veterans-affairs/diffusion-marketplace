@@ -11,38 +11,38 @@
             <p class="usa-banner__header-text">An official website of the United States government</p>
             <p class="usa-banner__header-action" aria-hidden="true">Here’s how you know</p>
           </div>
-<!--          <button id="banner-button" class="usa-accordion__button usa-banner__button"-->
-<!--                  aria-expanded="false" aria-controls="gov-banner">-->
-<!--            <span class="usa-banner__button-text">Here’s how you know</span>-->
-<!--          </button>-->
+          <!--          <button id="banner-button" class="usa-accordion__button usa-banner__button"-->
+          <!--                  aria-expanded="false" aria-controls="gov-banner">-->
+          <!--            <span class="usa-banner__button-text">Here’s how you know</span>-->
+          <!--          </button>-->
         </div>
       </div>
-<!--      <div class="usa-banner__content usa-accordion__content" id="gov-banner" hidden>-->
-<!--        <div class="grid-row grid-gap-lg">-->
-<!--          <div class="usa-banner__guidance tablet:grid-col-6">-->
-<!--            <img class="usa-banner__icon usa-media-block__img" src="<%#= image_url 'uswds/icon-dot-gov.svg' %>" alt="Dot gov">-->
-<!--            <div class="usa-media-block__body">-->
-<!--              <p>-->
-<!--                <strong>The .gov means it’s official.</strong>-->
-<!--                <br>-->
-<!--                Federal government websites often end in .gov or .mil. Before sharing sensitive information, make sure-->
-<!--                you’re on a federal government site.-->
-<!--              </p>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="usa-banner__guidance tablet:grid-col-6">-->
-<!--            <img class="usa-banner__icon usa-media-block__img" src="<%#= image_url 'uswds/icon-https.svg' %>" alt="Https">-->
-<!--            <div class="usa-media-block__body">-->
-<!--              <p>-->
-<!--                <strong>The site is secure.</strong>-->
-<!--                <br>-->
-<!--                The <strong>https://</strong> ensures that you are connecting to the official website and that any-->
-<!--                information you provide is encrypted and transmitted securely.-->
-<!--              </p>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
+      <!--      <div class="usa-banner__content usa-accordion__content" id="gov-banner" hidden>-->
+      <!--        <div class="grid-row grid-gap-lg">-->
+      <!--          <div class="usa-banner__guidance tablet:grid-col-6">-->
+      <!--            <img class="usa-banner__icon usa-media-block__img" src="<%#= image_url 'uswds/icon-dot-gov.svg' %>" alt="Dot gov">-->
+      <!--            <div class="usa-media-block__body">-->
+      <!--              <p>-->
+      <!--                <strong>The .gov means it’s official.</strong>-->
+      <!--                <br>-->
+      <!--                Federal government websites often end in .gov or .mil. Before sharing sensitive information, make sure-->
+      <!--                you’re on a federal government site.-->
+      <!--              </p>-->
+      <!--            </div>-->
+      <!--          </div>-->
+      <!--          <div class="usa-banner__guidance tablet:grid-col-6">-->
+      <!--            <img class="usa-banner__icon usa-media-block__img" src="<%#= image_url 'uswds/icon-https.svg' %>" alt="Https">-->
+      <!--            <div class="usa-media-block__body">-->
+      <!--              <p>-->
+      <!--                <strong>The site is secure.</strong>-->
+      <!--                <br>-->
+      <!--                The <strong>https://</strong> ensures that you are connecting to the official website and that any-->
+      <!--                information you provide is encrypted and transmitted securely.-->
+      <!--              </p>-->
+      <!--            </div>-->
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--      </div>-->
     </div>
   </div>
   <%= render partial: 'shared/beta_banner' %>
@@ -73,10 +73,13 @@
               <%= link_to('Logout', destroy_user_session_path, class: 'dm-font-color-primary-blue', method: :delete) %>
             </li>
           <% else %>
-            <li class="usa-nav__secondary-item">
-              <%= link_to new_user_registration_path, class: 'dm-font-color-primary-blue' do %>
-                <%= icon('fas', 'user-circle') %> Register
-              <% end %>
+            <li class="usa-nav__secondary-item display-inline-flex vertical-align-middle">
+              <div class="display-inline-flex">
+                <img src="<%= image_path('tiny_user.svg') %>"/>
+                <%= link_to new_user_registration_path, class: 'dm-font-color-primary-blue padding-left-05' do %>
+                  Register
+                <% end %>
+              </div>
             </li>
             <li class="usa-nav__secondary-item">
               <a class="dm-font-color-primary-blue desktop-show-inline-block" href="#">|</a>

@@ -11,9 +11,9 @@
         <% cost_to_implement_aggregate = @practice.cost_to_implement_aggregate || 0 %>
         <% (0..3).each do |index| %>
           <% if index < cost_to_implement_aggregate %>
-            <i class="fas fa-dollar-sign large-icon-dark aggregate-icon"></i>
+            <%= image_tag 'dollar_dark.svg', alt: "Dollar dark #{index + 1}" %>
           <% else %>
-            <i class="fas fa-dollar-sign large-icon-light aggregate-icon"></i>
+            <%= image_tag 'dollar_light.svg', alt: "Dollar light #{index + 1}" %>
           <% end %>
         <% end %>
       </div>
@@ -57,9 +57,9 @@
       <div id="complexity-aggregate" class="tablet:grid-col-12 margin-y-2">
         <% (0..3).each do |index| %>
           <% if index < complexity_aggregate %>
-            <i class="fas fa-wrench large-icon-dark aggregate-icon"></i>
+            <%= image_tag 'wrench_dark.svg', alt: "Wrench dark #{index + 1}" %>
           <% else %>
-            <i class="fas fa-wrench large-icon-light aggregate-icon"></i>
+            <%= image_tag 'wrench_light.svg', alt: "Wrench light #{index + 1}" %>
           <% end %>
         <% end %>
       </div>
