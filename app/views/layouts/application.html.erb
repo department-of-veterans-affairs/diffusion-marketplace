@@ -12,7 +12,7 @@
 
         ga('create', '<%= ENV['GA_TRACKING_ID'] %>', 'auto');
 
-        document.addEventListener('turbolinks:load', event => {
+        document.addEventListener('turbolinks:load', function() {
           if (typeof ga === 'function') {
             ga('send', 'pageview');
           }

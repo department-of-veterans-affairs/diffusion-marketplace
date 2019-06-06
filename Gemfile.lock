@@ -480,6 +480,7 @@ DEPENDENCIES
   acts_as_list
   aws-sdk-s3
   axe-matchers
+  babel-transpiler
   bootsnap (>= 1.1.0)
   byebug
   capybara

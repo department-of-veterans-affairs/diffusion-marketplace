@@ -85,65 +85,83 @@
 <div class="dm-background-triangle-bottom "></div>
 
 <% if current_user.present? %>
+  <!-- "Practice nav" section -->
+  <!-- Impact Origin Resources Required Complexity Timeline Risks & Mitigation Support Team -->
+  <div class="grid-container position-relative z-top">
+    <div id="dm-practice-nav" class="z-top mobile-hide">
+      <ul id="dm-tabnav" class="usa-sidenav dm-tabnav margin-bottom-4">
+        <% if @practice.impact_photos.any? || @practice.video_files.any? || @practice.additional_documents.any? || @practice.publication_files.any? || @practice.publications.any? %>
+          <li class="usa-sidenav__item">
+            <a href="#impact" class="dm-tab top-tab scroll-to" data-target="#impact">Impact</a>
+          </li>
+        <% end %>
+        <% unless !@practice.origin_story || !@practice.origin_title %>
+          <li class="usa-sidenav__item">
+            <a href="#origin" class="dm-tab scroll-to" data-target="#origin">Origin</a>
+          </li>
+        <% end %>
+        <li class="usa-sidenav__item">
+          <a href="#resources_required" class="dm-tab scroll-to" data-target="#resources_required">Resources
+            Required</a>
+        </li>
+        <li class="usa-sidenav__item">
+          <a href="#complexity" class="dm-tab scroll-to" data-target="#complexity">Complexity</a>
+        </li>
+        <% unless @practice.timelines.blank? %>
+          <li class="usa-sidenav__item">
+            <a href="#timeline_and_checklist" class="dm-tab scroll-to" data-target="#timeline_and_checklist">Timeline</a>
+          </li>
+        <% end %>
+        <li class="usa-sidenav__item">
+          <a href="#risks_and_mitigation" class="dm-tab scroll-to" data-target="#risks_and_mitigation">Risks &
+            Mitigation</a>
+        </li>
+        <li class="usa-sidenav__item">
+          <a href="#support_team" class="dm-tab bottom-tab scroll-to" data-target="#support_team">Support Team</a>
+        </li>
+      </ul>
+      <%= link_to 'Next Steps', practice_next_steps_url(practice_id: @practice.slug), id: 'next-steps-link-in-nav', class: 'dm-button-link shadow-1' %>
+    </div>
+  </div>
+  <div class="practice-mobile-nav padding-1 z-top desktop:display-none display-flex justify-center">
+    <%= link_to 'Next Steps', practice_next_steps_url(practice_id: @practice.slug), id: 'next-steps-link-in-mobile-nav', class: 'dm-button-link shadow-1' %>
+  </div>
+
   <!-- "Practice content" section -->
   <!-- "Impact" section -->
-  <section class="p3-top margin-y-2">
-    <div class="grid-container position-relative">
-      <div class="grid-row">
-        <div class="desktop:grid-col-3 grid-col-auto">
-          <!-- "Practice nav" section -->
-          <!-- Impact Origin Resources Required Complexity Timeline Risks & Mitigation Support Team -->
-          <div id="dm-practice-nav" class="z-top mobile-hide">
-            <ul id="dm-tabnav" class="usa-sidenav dm-tabnav margin-bottom-4">
-              <li class="usa-sidenav__item">
-                <a href="#impact" class="dm-tab top-tab scroll-to" data-target="#impact">Impact</a>
-              </li>
-              <li class="usa-sidenav__item">
-                <a href="#origin" class="dm-tab scroll-to" data-target="#origin">Origin</a>
-              </li>
-              <li class="usa-sidenav__item">
-                <a href="#resources_required" class="dm-tab scroll-to" data-target="#resources_required">Resources
-                  Required</a>
-              </li>
-              <li class="usa-sidenav__item">
-                <a href="#complexity" class="dm-tab scroll-to" data-target="#complexity">Complexity</a>
-              </li>
-              <li class="usa-sidenav__item">
-                <a href="#timeline_and_checklist" class="dm-tab scroll-to" data-target="#timeline_and_checklist">Timeline</a>
-              </li>
-              <li class="usa-sidenav__item">
-                <a href="#risks_and_mitigation" class="dm-tab scroll-to" data-target="#risks_and_mitigation">Risks &
-                  Mitigation</a>
-              </li>
-              <li class="usa-sidenav__item">
-                <a href="#support_team" class="dm-tab bottom-tab scroll-to" data-target="#support_team">Support Team</a>
-              </li>
-            </ul>
-            <%= link_to 'Next Steps', practice_next_steps_url(practice_id: @practice.slug), id: 'next-steps-link-in-nav', class: 'dm-button-link shadow-1' %>
+  <% if @practice.impact_photos.any? || @practice.video_files.any? || @practice.additional_documents.any? || @practice.publication_files.any? || @practice.publications.any? %>
+    <section class="p3-top margin-y-2">
+      <div class="grid-container position-relative">
+        <div class="grid-row">
+          <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+
+          <div class="desktop:grid-col-9 grid-col-12 p0 p1-5-right">
+            <div class="p4-bottom">
+              <h3 id="impact" class="font-sans-xl text-bold">Impact</h3>
+              <% if @practice.impact_photos.any? %>
+                <%= render partial: 'impact' %>
+              <% end %>
+              <% if @practice.video_files.any? %>
+                <%= render partial: 'videos' %>
+                <div class="practice-divider margin-y-6"></div>
+              <% end %>
+              <% unless !@practice.additional_documents.any? || !@practice.publication_files.any? || !@practice.publications %>
+                <h2 class="margin-y-6">Download additional information related to our practice</h2>
+                <%= render partial: 'additional_documents' %>
+                <%= render partial: 'publication_files' %>
+                <%= render partial: 'publications' %>
+              <% end %>
+            </div>
           </div>
-        </div>
-        <div class="desktop:grid-col-9 grid-col-12 p0 p1-5-right">
-          <div class="p4-bottom">
-            <%= render partial: 'impact' %>
-            <%= render partial: 'videos' %>
-            <div class="practice-divider margin-y-6"></div>
-            <% unless !@practice.additional_documents.any? || !@practice.publication_files.any? || !@practice.publications %>
-              <h2 class="margin-y-6">Download additional information related to our practice</h2>
-              <%= render partial: 'additional_documents' %>
-              <%= render partial: 'publication_files' %>
-              <%= render partial: 'publications' %>
-            <% end %>
-          </div>
-        </div>
-        <div class="practice-mobile-nav padding-1 z-top desktop:display-none display-flex justify-center">
-          <%= link_to 'Next Steps', practice_next_steps_url(practice_id: @practice.slug), id: 'next-steps-link-in-mobile-nav', class: 'dm-button-link shadow-1' %>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  <% end %>
+
+
 
   <!-- "Origin of this Practice" section -->
-  <% if @practice.origin_story %>
+  <% unless !@practice.origin_story || !@practice.origin_title %>
     <section class="p3-top margin-y-2 dm-background-light-blue">
       <div class="grid-container">
         <div class="grid-row">
