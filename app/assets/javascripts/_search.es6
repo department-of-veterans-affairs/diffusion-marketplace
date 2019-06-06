@@ -38,7 +38,7 @@ function searchPracticesPage() {
         results.forEach((result) => {
             resultsHTML +=
                 `<div class="grid-row search-row">
-          <div class="grid-col flex-1">
+          <div class="tablet:grid-col-4">
             <div class="img-box margin-top-2">
               <a href="/practices/${result.item.slug}" aria-label="Go to ${result.item.name}">
               <div class="img img-box-content" style="${result.item.image ? `background: url('${result.item.image}') transparent` : `background: transparent`}; background-size: contain; background-repeat: no-repeat; background-position: center;">
@@ -47,7 +47,7 @@ function searchPracticesPage() {
                 </a>
             </div>             
           </div>
-          <div class="grid-col flex-2">
+          <div class="tablet:grid-col-8">
             <h2 class="margin-top-1"><a href="/practices/${result.item.slug}">${result.item.tagline}</a></h2>
               <h3 class="truncate-text two-lines">${result.item.description}</h3>
               <p class="practice-details">${result.item.name} | <span class="uppercase">${result.item.date_initiated}</span> | <span class="uppercase">${result.item.initiating_facility}</span></p>
