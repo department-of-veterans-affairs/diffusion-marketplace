@@ -92,7 +92,7 @@ jobs:
       - run:
           name: run security scanner
           command: |
-            bundle exec brakeman --exit-on-warn -f markdown --quiet --export $CIRCLE_ARTIFACTS/security-scan
+            bundle exec brakeman --exit-on-warn -f markdown -o $CIRCLE_ARTIFACTS/security-report
 
       # collect reports
       - store_test_results:
