@@ -89,13 +89,23 @@ jobs:
                             --out /tmp/test-results/rspec.xml \
                             --format progress \
                             $TEST_FILES
+      - run:
+          name: run security scanner
+          command: |
+            mkdir /tmp/security-report
+            bundle exec brakeman --exit-on-warn -o /tmp/security-report/report.json
 
       # collect reports
       - store_test_results:
           path: /tmp/test-results
+      - store_test_results:
+          path: /tmp/security-report
       - store_artifacts:
           path: /tmp/test-results
           destination: test-results
+      - store_artifacts:
+          path: /tmp/security-report
+          destination: security-report
       - store_artifacts:
           path: coverage
           destination: coverage
