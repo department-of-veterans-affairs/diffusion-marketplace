@@ -1,5 +1,5 @@
 ActiveAdmin.register Practice do
-  actions :all
+  actions :all, except: [:new, :create, :destroy]
 
   scope :published
   scope :unpublished
