@@ -92,14 +92,20 @@ jobs:
       - run:
           name: run security scanner
           command: |
-            bundle exec brakeman --exit-on-warn -f markdown -o $CIRCLE_ARTIFACTS/security-report
+            mkdir /tmp/security-report
+            bundle exec brakeman --exit-on-warn -f markdown -o /tmp/security-report/report
 
       # collect reports
       - store_test_results:
           path: /tmp/test-results
+      - store_test_results:
+          path: /tmp/security-report
       - store_artifacts:
           path: /tmp/test-results
           destination: test-results
+      - store_artifacts:
+          path: /tmp/security-report
+          destination: security-report
       - store_artifacts:
           path: coverage
           destination: coverage
