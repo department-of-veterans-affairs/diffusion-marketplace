@@ -90,9 +90,9 @@ jobs:
                             --format progress \
                             $TEST_FILES
       - run:
-          - name: run security scanner
-          - command: |
-              - bundle exec brakeman --exit-on-warn -f markdown --quiet --export $CIRCLE_ARTIFACTS/security-scan
+          name: run security scanner
+          command: |
+            bundle exec brakeman --exit-on-warn -f markdown --quiet --export $CIRCLE_ARTIFACTS/security-scan
 
       # collect reports
       - store_test_results:
