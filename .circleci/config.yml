@@ -93,7 +93,7 @@ jobs:
           name: run security scanner
           command: |
             mkdir /tmp/security-report
-            bundle exec brakeman --exit-on-warn -f markdown -o /tmp/security-report/report
+            bundle exec brakeman --exit-on-warn -o /tmp/security-report/report.json
 
       # collect reports
       - store_test_results:
