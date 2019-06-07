@@ -61,6 +61,8 @@ group :development, :test do
   gem 'rspec-retry'
   gem 'axe-matchers'
   gem 'webdrivers'
+
+  gem 'brakeman'
 end
 
 group :development do
