@@ -187,21 +187,21 @@ def practice_partners
       pp_name = @answers[i]
       next if pp_name.blank?
 
-      if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
-        split_answer = pp_name.split(/\\/)
-        split_answer.each do |ans|
-          formatted_ans = ans.split(':')[0].squish
-          practice_partner = PracticePartner.find_by(name: formatted_ans)
-          practice_partner = PracticePartner.find_or_create_by(name: formatted_ans, icon: 'fas fa-circle', color: '#36383f') if practice_partner.nil?
-          PracticePartnerPractice.create practice_partner: practice_partner, practice: @practice unless PracticePartnerPractice.where(practice_partner: practice_partner, practice: @practice).any?
-        end
-      else
+      # if i == end_index && @given_answers[i] == 'Other (please specify) If more than one answer, please separate with a backslash ("\")'
+      #   split_answer = pp_name.split(/\\/)
+      #   split_answer.each do |ans|
+      #     formatted_ans = ans.split(':')[0].squish
+      #     practice_partner = PracticePartner.find_by(name: formatted_ans)
+      #     practice_partner = PracticePartner.find_or_create_by(name: formatted_ans, icon: 'fas fa-circle', color: '#36383f') if practice_partner.nil?
+      #     PracticePartnerPractice.create practice_partner: practice_partner, practice: @practice unless PracticePartnerPractice.where(practice_partner: practice_partner, practice: @practice).any?
+      #   end
+      # else
         formatted_pp_name = pp_name.split(':')[0].squish
         practice_partner = PracticePartner.find_by(name: formatted_pp_name)
-        practice_partner = PracticePartner.create!(name: formatted_pp_name, icon: 'fas fa-circle', color: '#36383f') if practice_partner.nil?
+        # practice_partner = PracticePartner.create!(name: formatted_pp_name, icon: 'fas fa-circle', color: '#36383f') if practice_partner.nil?
 
-        PracticePartnerPractice.create practice_partner: practice_partner, practice: @practice unless PracticePartnerPractice.where(practice_partner: practice_partner, practice: @practice).any?
-      end
+        PracticePartnerPractice.create practice_partner: practice_partner, practice: @practice unless PracticePartnerPractice.where(practice_partner: practice_partner, practice: @practice).any? || practice_partner.blank?
+      # end
     end
   end
 end
