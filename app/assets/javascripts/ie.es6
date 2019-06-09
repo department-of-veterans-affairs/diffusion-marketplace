@@ -7,12 +7,15 @@ function detectIE() {
 
     function browseHappy() {
         if (detectIE()) {
-        $('#beta-banner').after(`
+            $('#beta-banner').after(`
                 <div class="grid-container">
                     <div class="usa-alert usa-alert--warning x1-bottom">
                       <div class="usa-alert__body">
-                        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Some features may not be available.
-                          To have the best experience, please use <strong>Microsoft Edge</strong>, <strong>Google Chrome</strong>, or <strong>Mozilla Firefox</strong> to browse the Diffusion Marketplace.</p>
+                        <p class="browsehappy">
+                            Diffusion Marketplace is not optimized for this browser. 
+                            Some features may not be available. For the best experience, please use the latest versions of 
+                            Microsoft Edge, Google Chrome, or Mozilla Firefox.
+                        </p>
                       </div>
                     </div>
                 </div>
