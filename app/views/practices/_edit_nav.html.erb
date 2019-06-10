@@ -59,7 +59,7 @@
         <div class='nav-button'>PUBLISH</a>
       </li>
     <% end %>
-    <% if @practice.published %>
+    <% if @practice.published && current_user.has_role?(:admin) %>
       <% if @practice.highlight && !@practice.featured %>
         <li class='usa-sidenav__item practice-nav'>
           <%= link_to 'REMOVE HIGHLIGHT', un_highlight_practice_path(@practice), method: :post, class: 'nav-button', data: { confirm: 'Are you sure you wish to remove this as the highlighted practice? This may have adverse affects on the landing page.' } %>

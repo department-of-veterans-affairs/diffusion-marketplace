@@ -128,7 +128,7 @@ namespace :importer do
   task initial_featured: :environment do |t, args|
     puts "*********** Initializing Featured Practices **********".green
     options = {}
-    highlighted = Practice.find_by_slug('happen')
+    highlighted = Practice.find_by_slug('project-happen')
     features = []
     features << Practice.find_by_slug('flow3')
     features << Practice.find_by_slug('vione')
