@@ -7,18 +7,24 @@
   <div class="grid-row">
     <!-- Cost level Circle -->
     <div class="order-first grid-row flex-column flex-align-center flex-justify-center level-aggregate-circle <%= level_aggregate_style(@practice.cost_to_implement_aggregate) %>">
-      <div class="tablet:grid-col-12 margin-y-2">
+      <div id="cost-aggregate" class="tablet:grid-col-12 margin-y-2">
         <% cost_to_implement_aggregate = @practice.cost_to_implement_aggregate || 0 %>
         <% (0..3).each do |index| %>
           <% if index < cost_to_implement_aggregate %>
-            <i class="fas fa-dollar-sign large-icon-dark aggregate-icon"></i>
+            <%= image_tag 'dollar_dark.svg', alt: "Dollar dark #{index + 1}" %>
           <% else %>
-            <i class="fas fa-dollar-sign large-icon-light aggregate-icon"></i>
+            <%= image_tag 'dollar_light.svg', alt: "Dollar light #{index + 1}" %>
           <% end %>
         <% end %>
       </div>
       <div class="grid-auto">
-        <h4 class="margin-0 fw-100">Cost</h4>
+        <h4 class="margin-0 fw-100">
+          Cost
+          <span class="sr-only">
+            <%= pluralize(cost_to_implement_aggregate, 'dollar')%>
+            out of four.
+          </span>
+        </h4>
       </div>
     </div>
     <div class="tablet:grid-col-6 text-center tablet:display-none">
@@ -48,18 +54,23 @@
     <!-- Complexity level Circle -->
     <% complexity_aggregate = complexity_aggregate(@practice) || 0 %>
     <div class="grid-row flex-column flex-align-center flex-justify-center level-aggregate-circle <%= level_aggregate_style(complexity_aggregate) %>">
-      <div class="tablet:grid-col-12 margin-y-2">
-
+      <div id="complexity-aggregate" class="tablet:grid-col-12 margin-y-2">
         <% (0..3).each do |index| %>
           <% if index < complexity_aggregate %>
-            <i class="fas fa-wrench large-icon-dark aggregate-icon"></i>
+            <%= image_tag 'wrench_dark.svg', alt: "Wrench dark #{index + 1}" %>
           <% else %>
-            <i class="fas fa-wrench large-icon-light aggregate-icon"></i>
+            <%= image_tag 'wrench_light.svg', alt: "Wrench light #{index + 1}" %>
           <% end %>
         <% end %>
       </div>
       <div class="grid-auto">
-        <h4 class="margin-0 fw-100">Complexity</h4>
+        <h4 class="margin-0 fw-100">
+          Complexity
+          <span class="sr-only">
+            <%= pluralize(complexity_aggregate, 'wrench')%> 
+            out of four.
+          </span>
+        </h4>
       </div>
     </div>
 

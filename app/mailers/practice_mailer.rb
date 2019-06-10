@@ -16,6 +16,6 @@ class PracticeMailer < ApplicationMailer
     @practice = options[:practice]
     subject = "There is interest in implementing your practice!"
 
-    mail(to: @practice.support_network_email, subject: subject)
+    mail(to: @practice.support_network_email || ENV['MAILER_SENDER'], subject: subject)
   end
 end

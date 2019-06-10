@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :setup_breadcrumb_navigation
+  before_action :store_user_location!, if: :storable_location?
   before_action :set_paper_trail_whodunnit
 
     def authenticate_active_admin_user!
@@ -61,6 +62,20 @@ class ApplicationController < ActionController::Base
 
   def facilities_json
     JSON.parse(File.read("#{Rails.root}/lib/assets/va_gov_facilities_all_response.json"))
+  end
+
+  # Its important that the location is NOT stored if:
+  # - The request method is not GET (non idempotent)
+  # - The request is handled by a Devise controller such as Devise::SessionsController as that could cause an
+  #    infinite redirect loop.
+  # - The request is an Ajax request as this can lead to very unexpected behaviour.
+  def storable_location?
+    request.get? && is_navigational_format? && !devise_controller? && !request.xhr?
+  end
+
+  def store_user_location!
+    # :user is the scope we are authenticating
+    store_location_for(:user, request.fullpath)
   end
 
 end
