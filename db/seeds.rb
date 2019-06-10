@@ -265,11 +265,6 @@ if PracticePartner.all.blank?
       User.create!(email: "A6test#{index}@agile6.com", password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now).add_role(User::USER_ROLES[index].to_sym)
     end
   end
-
-  ### Admin Users ###
-  # TODO: Remove this as soon as normal "admin" users can be used for admin pages.
-  AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
-
 else
   puts 'Database already seeded... Nothing to do.'
 end
