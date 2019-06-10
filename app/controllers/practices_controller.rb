@@ -1,5 +1,5 @@
 class PracticesController < ApplicationController
-  before_action :set_practice, only: [:show, :edit, :update, :destroy, :next_steps, :commit, :committed]
+  before_action :set_practice, only: [:show, :edit, :update, :destroy, :next_steps, :commit, :committed, :highlight, :un_highlight, :feature, :un_feature]
   before_action :set_facility_data, only: [:show, :next_steps]
   before_action :authenticate_user!, except: [:show]
   before_action :can_view_committed_view, only: [:committed]
@@ -126,6 +126,28 @@ class PracticesController < ApplicationController
         format.json { render json: user_practice.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def highlight
+    old_highlight = Practice.find_by_highlight(true)
+    old_highlight.update_attributes(highlight: false) if old_highlight.present?
+    @practice.update_attributes highlight: true, featured: false
+    redirect_to edit_practice_path(@practice)
+  end
+
+  def un_highlight
+    @practice.update_attributes highlight: false
+    redirect_to edit_practice_path(@practice)
+  end
+
+  def feature
+    @practice.update_attributes featured: true
+    redirect_to edit_practice_path(@practice)
+  end
+
+  def un_feature
+    @practice.update_attributes featured: false
+    redirect_to edit_practice_path(@practice)
   end
 
   private

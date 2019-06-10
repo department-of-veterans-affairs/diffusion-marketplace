@@ -124,6 +124,22 @@ namespace :importer do
     end
     puts "*********** Completed Importing Practices! ***********".green
   end
+
+  task initial_featured: :environment do |t, args|
+    puts "*********** Initializing Featured Practices **********".green
+    options = {}
+    highlighted = Practice.find_by_slug('happen')
+    features = []
+    features << Practice.find_by_slug('flow3')
+    features << Practice.find_by_slug('vione')
+    features << Practice.find_by_slug('vha-rapid-naloxone')
+
+    highlighted.update_attributes(highlight: true) if highlighted.present?
+    features.each do |f|
+      f.update_attributes(featured: true)
+    end
+    puts "*********** Completing Featured Practices **********".green
+  end
 end
 
 def destroy_practice

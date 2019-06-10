@@ -59,6 +59,26 @@
         <div class='nav-button'>PUBLISH</a>
       </li>
     <% end %>
+    <% if @practice.published %>
+      <% if @practice.highlight && !@practice.featured %>
+        <li class='usa-sidenav__item practice-nav'>
+          <%= link_to 'REMOVE HIGHLIGHT', un_highlight_practice_path(@practice), method: :post, class: 'nav-button', data: { confirm: 'Are you sure you wish to remove this as the highlighted practice? This may have adverse affects on the landing page.' } %>
+        </li>
+      <% elsif !@practice.highlight %>
+        <li class='usa-sidenav__item practice-nav'>
+          <%= link_to 'HIGHLIGHT', highlight_practice_path(@practice), method: :post, class: 'nav-button', data: { confirm: 'Are you sure you wish to highlight this practice? There can only be one highlighted practice.' } %>
+        </li>
+      <% end %>
+      <% if !@practice.highlight && @practice.featured %>
+        <li class='usa-sidenav__item practice-nav'>
+          <%= link_to 'REMOVE FEATURE', un_feature_practice_path(@practice), method: :post, class: 'nav-button' %>
+        </li>
+      <% elsif !@practice.highlight && !@practice.featured %>
+        <li class='usa-sidenav__item practice-nav'>
+          <%= link_to 'FEATURE', feature_practice_path(@practice), method: :post, class: 'nav-button' %>
+        </li>
+      <% end %>
+    <% end %>
     <li class='usa-sidenav__item practice-nav'>
       <div class='nav-button practice-form-submit'>SAVE ALL CHANGES</a>
     </li>
