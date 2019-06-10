@@ -1,6 +1,19 @@
 class ApplicationController < ActionController::Base
   before_action :setup_breadcrumb_navigation
   before_action :store_user_location!, if: :storable_location?
+  before_action :set_paper_trail_whodunnit
+
+    def authenticate_active_admin_user!
+    authenticate_user!
+    unless current_user.has_role?(:admin)
+      flash[:alert] = "Unauthorized Access!"
+      redirect_to root_path
+    end
+  end
+
+  def access_denied(exception)
+    redirect_to root_path, alert: exception.message
+  end
 
   protected
 
