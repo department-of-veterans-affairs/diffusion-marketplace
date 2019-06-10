@@ -5,11 +5,11 @@
 |---|---|
 | development  | http://localhost:3200  |  
 | staging  | http://va-diffusion-marketplace-staging.efgnfj8pjn.us-west-2.elasticbeanstalk.com/  |  
-
+| ftl production | https://marketplace.vaftl.us |
 ### Custom Rails Tasks:
 | Task command  | description  |
 |---|---|
-| `rails dm:db_setup` |  Set up database |  
+| `rails dm:db_setup` |  Set up database. Runs `rails db:create` `rails db:migrate` `rails db:seed`  |  
 | `rails dm:full_import` | Set up data using the full flow of the importer  |  
 | `rails dm:reset_up` | Re-sets up database and imports all data from the full flow of the importer  |  
 | `rails importer:import_answers` | import an xlsx and create practices  | 
@@ -182,3 +182,26 @@ AWS_SECRET_ACCESS_KEY=XXXxmxxXlxxbA3vgOxxxxCk+uXXXXOrdmpC/oXxx \
 ```
 
 if nothing is provided, the deploy script will ask for the essential variables that it needs and you can provide them interactively. 
+
+## Changelog for releases
+We use the [git-release-notes](https://github.com/ariatemplates/git-release-notes) library to track our changes for production builds. 
+
+### Please only run this on the `production` branch
+
+Requires: 
+- npm (NodeJS)
+
+1. First, install `git-release-notes` via `npm`: ```
+                                                npm install -g git-release-notes
+                                                ```
+
+2. Make sure you are in the project folder
+
+3. Find the two git commit sha1s you would like to record the changes from - referred to as `<from sha1>` and `<to sha1>` below
+
+4. Run the `git-release-notes` command using the two git sha1s you want the changelog to record
+
+```
+git-release-notes <from sha1>..<to sha1> markdown > changelog.md
+```
+5. Push the updates to `changelog.md` to the `production` branch
