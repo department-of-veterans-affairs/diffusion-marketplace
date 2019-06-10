@@ -2,6 +2,7 @@ class Practice < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged
   acts_as_list
+  has_paper_trail
   # has_attached_file :main_display_image, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/:style/missing.png"
   has_attached_file :main_display_image, styles: { thumb: '1280x720#' }
   has_attached_file :origin_picture, styles: { thumb: '200x200#' }
@@ -79,4 +80,11 @@ class Practice < ApplicationRecord
   DIFFICULTY_LABELS = ['Little or no difficulty to implement', 'Some difficulty to implement', 'Significant difficulty to implement', 'High or large difficulty to implement'].freeze
   TIME_ESTIMATE_OPTIONS =['1 week', '1 month', '3 months', '6 months', '1 year', 'longer than 1 year', 'Other (Please specify)']
 
+  def comitted_user_count
+    users.count
+  end
+
+  def number_of_adopted_facilities
+    number_adopted
+  end
 end

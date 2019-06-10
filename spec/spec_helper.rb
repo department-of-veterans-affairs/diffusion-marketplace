@@ -135,6 +135,10 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+
+  config.before(:all) do
+    Capybara.page.driver.browser.manage.window.resize_to(1920, 1080)
+  end
 end
 
 # Capybara.javascript_driver = :webkit
