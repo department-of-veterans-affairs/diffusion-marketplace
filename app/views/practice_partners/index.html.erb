@@ -13,19 +13,15 @@
 
   <section class="dm-background-light-blue padding-y-5 margin-bottom-8">
     <div class="grid-container">
-      <p>Best practices are being developed, vetted, and promoted
-        by multiple offices within VA. The combined efforts of each office enable VA as a whole to advance the mission to
-        fulfill President Lincoln's promise: "To care for him who shall have borne the battle, and for his widow, and his
-        orphan" by serving and honoring the men and women who are America's Veterans. Veterans deserve access to the best
-        health care providers, state-of-art facilities, and cutting-edge technology.
+      <p>Best practices are constantly being developed, vetted, and promoted by offices within the VA. Below is a list
+        of some of the organizations creating and implementing best practices.
       </p>
     </div>
   </section>
 
   <section>
     <div class="grid-container">
-      <p>Please select a VA Office below to be directed to the
-        practices they are offering.</p>
+      <p>Select an office below to view their practice partnerships.</p>
       <div class="practice-divider"></div>
     </div>
   </section>
@@ -33,12 +29,12 @@
   <section class="practice-partner-list">
     <div class="grid-container">
       <% @practice_partners.each do |ss| %>
-          <div class="grid-row">
-            <div class="grid-col-12 margin-bottom-4">
-              <h2 class="font-sans-xl margin-top-4 margin-bottom-2"><%= link_to "#{ss.name}#{ss.short_name.present? ? " (#{ss.short_name.upcase})" : ''}", practice_partner_path(ss) %></h2>
-              <p><%= ss.description %></p>
-            </div>
+        <div class="grid-row">
+          <div class="grid-col-12 margin-bottom-4">
+            <h2 class="font-sans-xl margin-top-4 margin-bottom-2"><%= link_to "#{ss.name}#{ss.short_name.present? ? " (#{ss.short_name.upcase})" : ''}", practice_partner_path(ss) %></h2>
+            <p><%= ss.description %></p>
           </div>
+        </div>
         <div class="practice-divider"></div>
       <% end %>
     </div>

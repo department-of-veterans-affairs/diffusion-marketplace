@@ -4,7 +4,7 @@ class PracticePartnersController < ApplicationController
   # GET /practice_partners
   # GET /practice_partners.json
   def index
-    @practice_partners = PracticePartner.all
+    @practice_partners = PracticePartner.all.order(name: :asc)
   end
 
   # GET /practice_partners/1
