@@ -27,7 +27,7 @@ if PracticePartner.all.blank?
       PracticePartner.create!(name: 'Quality Enhancement Research Initiative', short_name: 'QUERI', description: 'QUERI leverages scientifically-supported quality improvement (QI) methods, paired with a deep understanding of Veterans’ preferences and needs, to implement evidence-based practices (EBPs) rapidly into routine care and improve the quality and safety of care delivered to Veterans.', icon: 'fas fa-certificate', color: '#0076D6'),
       # PracticePartner.create!(name: 'Office of Information and Technology', short_name: 'OIT', description: '', icon: 'fas fa-certificate', color: '#0076D6'),
       # PracticePartner.create!(name: 'VHA Innovators Network', short_name: 'INET', description: '', icon: 'fas fa-certificate', color: '#0076D6'),
-      PracticePartner.create!(name: 'Office of Veterans Access to Care', short_name: 'OVAC', description: 'The purpose of OVAC is to grow and sustain VHA as the most accessible health care system in the U.S. by providing oversight and accountability for access improvement solutions. OVAC continues the VA mission to offer Veterans timely and quality access to care.', icon: 'fas fa-certificate', color: '#0076D6'),
+      PracticePartner.create!(name: 'Office of Veterans Access to Care', short_name: 'OVAC', description: 'The purpose of OVAC is to grow and sustain the Veterans Health Administration (VHA) as the most accessible health care system in the U.S. by providing oversight and accountability for improvement solutions. OVAC continues the VA mission to offer Veterans timely and quality access to care.', icon: 'fas fa-certificate', color: '#0076D6'),
   ]
 
   unless VaSecretaryPriority.all.present?
