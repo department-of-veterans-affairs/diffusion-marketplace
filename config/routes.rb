@@ -10,6 +10,12 @@ Rails.application.routes.draw do
     get '/next-steps', action: 'next_steps', as: 'next_steps'
     get '/committed', action: 'committed', as: 'committed'
     post '/commit', action: 'commit', as: 'commit'
+    member do
+      post :highlight
+      post :un_highlight
+      post :feature
+      post :un_feature
+    end
   end
   resources :badges
   resources :job_positions
