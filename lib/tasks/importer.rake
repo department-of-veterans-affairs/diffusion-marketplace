@@ -138,7 +138,7 @@ namespace :importer do
     features.each do |f|
       f.update_attributes(featured: true)
     end
-    puts "*********** Completing Featured Practices **********".green
+    puts "*********** Completed Featured Practices **********".green
   end
 end
 
