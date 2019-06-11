@@ -13,6 +13,7 @@
 | `rails dm:full_import` | Set up data using the full flow of the importer  |  
 | `rails dm:reset_up` | Re-sets up database and imports all data from the full flow of the importer  |  
 | `rails importer:import_answers` | import an xlsx and create practices  | 
+| `rails importer:initial_featured` | sets up the "original" featured practices to show up on the landing page - depends on spreadsheet being imported | 
 | `rails surveymonkey:download_response_files` | Rake task to download files from our SurveyMonkey practice submission form  | 
 
 #### Ruby version
