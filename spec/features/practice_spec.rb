@@ -16,7 +16,7 @@ describe 'Practices', type: :feature do
     ]
   end
 
-  it 'should not let unauthenticated users interact with practices' do
+  it 'should let unauthenticated users interact with practices' do
     # Visit an individual Practice
     visit '/practices/the-best-practice-ever'
     expect(page).to be_accessible.according_to :wcag2a, :section508
@@ -33,8 +33,8 @@ describe 'Practices', type: :feature do
     # Visit the Marketplace
     visit '/practices'
     expect(page).to be_accessible.according_to :wcag2a, :section508
-    expect(page).to have_content('You need to sign in or sign up before continuing.')
-    expect(page).to have_current_path('/users/sign_in')
+    expect(page).to have_content('The Best Practice Ever!')
+    expect(page).to have_current_path('/practices')
   end
 
   it 'should let authenticated users interact with the marketplace' do
@@ -147,7 +147,7 @@ Some complexity')
       expect(page).to have_content('Departments Required
 Three departments')
       expect(page).to have_content('Involvement of IT
-yes')
+Yes')
       expect(page).to have_content('Job titles required
 Nurse, Doctor')
       expect(page).to have_content('Hours required per week
@@ -163,9 +163,9 @@ New approach')
       expect(page).to have_content('Who provides the training?
 Practice champion')
       expect(page).to have_content('Test required?
-yes')
+Yes')
       expect(page).to have_content('License/certification required?
-yes')
+Yes')
 
     end
 
