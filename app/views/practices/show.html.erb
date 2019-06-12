@@ -145,7 +145,7 @@
                 <%= render partial: 'videos' %>
                 <div class="practice-divider margin-y-6"></div>
               <% end %>
-              <% unless !@practice.additional_documents.any? || !@practice.publication_files.any? || !@practice.publications %>
+              <% if @practice.additional_documents.any? || @practice.publication_files.any? || @practice.publications.any? %>
                 <h2 class="margin-y-6">Download additional information related to our practice</h2>
                 <%= render partial: 'additional_documents' %>
                 <%= render partial: 'publication_files' %>
