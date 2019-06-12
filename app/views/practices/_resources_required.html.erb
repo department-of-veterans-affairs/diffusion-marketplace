@@ -30,9 +30,9 @@
     <div class="tablet:grid-col-6 text-center tablet:display-none">
       <p><%= cost_aggregate_description(@practice.cost_to_implement_aggregate) %></p>
     </div>
-    <div class="tablet:grid-col-6 display-flex flex-column">
+    <div class="tablet:grid-col-6 display-flex flex-column tablet:margin-top-6">
       <% @practice.costs.each do |cost| %>
-        <p class="text-bold font-ui-md"><%= cost.description %></p>
+        <p class="text-bold font-ui-md margin-top-0"><%= cost.description %></p>
       <% end %>
     </div>
   </div>
