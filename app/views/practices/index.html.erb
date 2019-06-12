@@ -33,18 +33,15 @@
     </section>
 
     <section class="search-practices grid-container">
-      <p id="results-summary"></p>
-      <div id="search-results">
-        <h2 class="font-sans-xl">Browse Practices</h2>
-        <div class="grid-row grid-gap-lg ">
-          <% @practices.each_with_index do |practice, i| %>
-            <% index = i + 1 %>
-            <div class="tablet:grid-col-4 flex-column display-flex margin-bottom-8 ">
-              <%= render partial: 'marketplace_card', locals: {practice: practice} %>
-              <div class="marketplace-card-border-bottom margin-top-auto"></div>
-            </div>
-          <% end %>
-        </div>
+      <h2 class="font-sans-xl">Browse Practices</h2>
+      <div class="grid-row grid-gap-lg ">
+        <% @practices.each_with_index do |practice, i| %>
+          <% index = i + 1 %>
+          <div class="tablet:grid-col-4 flex-column display-flex margin-bottom-8 ">
+            <%= render partial: 'marketplace_card', locals: {practice: practice} %>
+            <div class="marketplace-card-border-bottom margin-top-auto"></div>
+          </div>
+        <% end %>
       </div>
     </section>
 
