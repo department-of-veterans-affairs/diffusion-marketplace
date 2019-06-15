@@ -9,105 +9,108 @@ describe 'Practices', type: :feature do
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
     @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline')
+    @practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline')
     @departments = [
         Department.create!(name: 'Admissions', short_name: 'admissions'),
         Department.create!(name: 'None', short_name: 'none'),
         Department.create!(name: 'All departments equally - not a search differentiator', short_name: 'all'),
     ]
+    @practice_partner = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative', icon: 'fas fa-heart', color: '#E4A002')
   end
 
-  it 'should let unauthenticated users interact with practices' do
-    # Visit an individual Practice
-    visit '/practices/the-best-practice-ever'
-    expect(page).to be_accessible.according_to :wcag2a, :section508
-    expect(page).to have_content('You are not authorized to view this content.')
+  describe 'Authorization' do
+    it 'should let unauthenticated users interact with practices' do
+      # Visit an individual Practice
+      visit '/practices/the-best-practice-ever'
+      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to have_content('You are not authorized to view this content.')
 
-    @user_practice.update(approved: true, published: true)
-    # Visit an individual Practice
-    visit '/practices/the-best-practice-ever'
-    expect(page).to be_accessible.according_to :wcag2a, :section508
-    expect(page).to have_content('Login to see more')
-    click_on('Login to see more')
-    expect(page).to have_current_path('/users/sign_in')
+      @user_practice.update(approved: true, published: true)
+      # Visit an individual Practice
+      visit '/practices/the-best-practice-ever'
+      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to have_content('Login to see more')
+      click_on('Login to see more')
+      expect(page).to have_current_path('/users/sign_in')
 
-    # Visit the Marketplace
-    visit '/practices'
-    expect(page).to be_accessible.according_to :wcag2a, :section508
-    expect(page).to have_content('The Best Practice Ever!')
-    expect(page).to have_current_path('/practices')
-  end
+      # Visit the Marketplace
+      visit '/practices'
+      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to have_content('The Best Practice Ever!')
+      expect(page).to have_current_path('/practices')
+    end
 
-  it 'should let authenticated users interact with the marketplace' do
-    login_as(@user, :scope => :user, :run_callbacks => false)
+    it 'should let authenticated users interact with the marketplace' do
+      login_as(@user, :scope => :user, :run_callbacks => false)
 
-    # Visit an individual Practice that is approved and published
-    practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline')
-    visit practice_path(practice)
-    expect(page).to be_accessible.according_to :wcag2a, :section508
-    expect(page).to have_content(practice.name)
-    expect(page).to have_current_path(practice_path(practice))
+      # Visit an individual Practice that is approved and published
+      visit practice_path(@practice)
+      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to have_content(@practice.name)
+      expect(page).to have_current_path(practice_path(@practice))
 
-    # Visit the Marketplace
-    visit '/practices'
-    expect(page).to be_accessible.according_to :wcag2a, :section508
-    expect(page).to have_content(practice.name)
-  end
+      # Visit the Marketplace
+      visit '/practices'
+      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to have_content(@practice.name)
+    end
 
-  it 'should let the practice owner interact with their practice if not approved or published' do
-    login_as(@user, :scope => :user, :run_callbacks => false)
+    it 'should let the practice owner interact with their practice if not approved or published' do
+      login_as(@user, :scope => :user, :run_callbacks => false)
 
-    # Visit user's own practice that is not approved or published
-    visit practice_path(@user_practice)
-    expect(page).to be_accessible.according_to :wcag2a, :section508
-    expect(page).to have_content(@user_practice.name)
-    expect(page).to have_current_path(practice_path(@user_practice))
-  end
+      # Visit user's own practice that is not approved or published
+      visit practice_path(@user_practice)
+      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to have_current_path(practice_path(@user_practice))
+      expect(page).to have_content(@user_practice.name)
+    end
 
-  it 'should not let a user view the practice if the practice is not approved or published' do
-    login_as(@user2, :scope => :user, :run_callbacks => false)
-    # Visit a user's practice that is not approved or published
-    visit practice_path(@user_practice)
-    expect(page).to be_accessible.according_to :wcag2a, :section508
-    expect(page).to have_content('Saving lives by sharing best practices')
-    expect(page).to have_current_path('/')
-  end
+    it 'should not let a user view the practice if the practice is not approved or published' do
+      login_as(@user2, :scope => :user, :run_callbacks => false)
+      # Visit a user's practice that is not approved or published
+      visit practice_path(@user_practice)
+      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to have_content('Saving lives by sharing best practices')
+      expect(page).to have_current_path('/')
+    end
 
-  it 'should let an approver/editor user view the practice if the practice is not approved or published' do
-    login_as(@approver, :scope => :user, :run_callbacks => false)
+    it 'should let an approver/editor user view the practice if the practice is not approved or published' do
+      login_as(@approver, :scope => :user, :run_callbacks => false)
 
-    # Visit a user's practice that is not approved or published
-    visit practice_path(@user_practice)
-    expect(page).to be_accessible.according_to :wcag2a, :section508
-    expect(page).to have_content(@user_practice.name)
-    expect(page).to have_current_path(practice_path(@user_practice))
-  end
+      # Visit a user's practice that is not approved or published
+      visit practice_path(@user_practice)
+      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to have_content(@user_practice.name)
+      expect(page).to have_current_path(practice_path(@user_practice))
+    end
 
-  it 'should let an admin user view the practice if the practice is not approved or published' do
-    login_as(@admin, :scope => :user, :run_callbacks => false)
+    it 'should let an admin user view the practice if the practice is not approved or published' do
+      login_as(@admin, :scope => :user, :run_callbacks => false)
 
-    # Visit a user's practice that is not approved or published
-    visit practice_path(@user_practice)
-    expect(page).to be_accessible.according_to :wcag2a, :section508
-    expect(page).to have_content(@user_practice.name)
-    expect(page).to have_current_path(practice_path(@user_practice))
-  end
+      # Visit a user's practice that is not approved or published
+      visit practice_path(@user_practice)
+      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to have_content(@user_practice.name)
+      expect(page).to have_current_path(practice_path(@user_practice))
+    end
 
-  it 'should display the initiating facility\'s name' do
-    login_as(@user, :scope => :user, :run_callbacks => false)
+    it 'should display the initiating facility\'s name' do
+      login_as(@user, :scope => :user, :run_callbacks => false)
 
-    # Visit an individual Practice that is approved and published
-    practice = Practice.create!(name: 'A public practice', approved: true, published: true, initiating_facility: 'vc_0508V', tagline: 'Test tagline')
-    visit practice_path(practice)
-    expect(page).to be_accessible.according_to :wcag2a, :section508
-    expect(page).to have_content(practice.name)
-    expect(page).to have_content('TACOMA VET CENTER')
-    expect(page).to have_current_path(practice_path(practice))
+      # Visit an individual Practice that is approved and published
+      practice = Practice.create!(name: 'A public practice', approved: true, published: true, initiating_facility: 'vc_0508V', tagline: 'Test tagline')
+      visit practice_path(practice)
+      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to have_content(practice.name)
+      expect(page).to have_content('TACOMA VET CENTER')
+      expect(page).to have_current_path(practice_path(practice))
 
-    # Visit the Marketplace
-    visit '/practices'
-    expect(page).to be_accessible.according_to :wcag2a, :section508
-    expect(page).to have_content(practice.name)
-    expect(page).to have_content('TACOMA VET CENTER')
+      # Visit the Marketplace
+      visit '/practices'
+      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to have_content(practice.name)
+      expect(page).to have_content('TACOMA VET CENTER')
+    end
   end
 
   describe 'show page' do
@@ -166,7 +169,6 @@ Practice champion')
 Yes')
       expect(page).to have_content('License/certification required?
 Yes')
-
     end
 
   end
@@ -337,4 +339,143 @@ Yes')
     end
   end
 
+  ########## Practice Edit ############
+  describe 'Practice Edit' do
+    describe 'practice edit authorization' do
+      it 'should not let a non-admin user edit a practice' do
+        login_as(@user2, :scope => :user, :run_callbacks => false)
+        @user_practice.update(approved: true, published: true)
+        visit practice_path(@user_practice)
+        expect(page).to have_no_link('Edit')
+
+        visit edit_practice_path(@user_practice)
+        expect(page).to have_current_path(root_path)
+        expect(page).to be_accessible.according_to :wcag2a, :section508
+        expect(page).to have_content('You are not authorized to view this content.')
+      end
+
+      it 'should let an editor user edit a practice' do
+        login_as(@approver, :scope => :user, :run_callbacks => false)
+        @user_practice.update(approved: true, published: true)
+        visit practice_path(@user_practice)
+        expect(page).to be_accessible.according_to :wcag2a, :section508
+        expect(page).to have_link('Edit')
+      end
+
+      it 'should let an admin user edit a practice' do
+        login_as(@admin, :scope => :user, :run_callbacks => false)
+        @user_practice.update(approved: true, published: true)
+        visit practice_path(@user_practice)
+        expect(page).to be_accessible.according_to :wcag2a, :section508
+        expect(page).to have_link('Edit')
+      end
+    end
+
+    describe 'editting a practice' do
+      it 'should update the practice' do
+        login_as(@admin, :scope => :user, :run_callbacks => false)
+        @user_practice.update(approved: true, published: true)
+        visit practice_path(@user_practice)
+        expect(page).to have_link('Edit')
+        click_link('Edit')
+
+        fill_in 'Descriptive Title for Practice', with: 'The Coolest Practice Ever!'
+        execute_script("$('.practice-form-submit').click()")
+
+        expect(page).to have_current_path(practice_path(@user_practice))
+        expect(page).to have_content('The Coolest Practice Ever!')
+      end
+
+      it 'should add a practice_parter to the practice', js: true do
+        login_as(@admin, :scope => :user, :run_callbacks => false)
+        @practice.update(approved: true, published: true)
+        # Practice should have no practice_partners
+        expect(@practice.practice_partners.count).to eq(0)
+        visit practice_path(@practice)
+        expect(page).to have_link('Edit')
+        click_link('Edit')
+
+        expect(page).to have_current_path(edit_practice_path(@practice))
+        execute_script("$('body').scrollTo($('h2:contains(Practice Partners)'))")
+        execute_script("$('#practice_partner_1').click()")
+        click_link('SAVE ALL CHANGES')
+
+        expect(page).to have_current_path(practice_path(@practice))
+        # Practice should have now have 1 practice_partner
+        expect(@practice.practice_partners.count).to eq(1)
+      end
+
+      it 'should add a department to the practice', js: true do
+        login_as(@admin, :scope => :user, :run_callbacks => false)
+        @user_practice.update(approved: true, published: true)
+        # Practice should have no departments
+        expect(@user_practice.departments.count).to eq(0)
+        visit practice_path(@user_practice)
+        expect(page).to have_link('Edit')
+        click_link('Edit')
+
+        execute_script("$('body').scrollTo($('h2:contains(Departments affected)'))")
+        execute_script("$('#practice_department_1').click()")
+        click_link('SAVE ALL CHANGES')
+
+        expect(page).to have_current_path(practice_path(@user_practice))
+        # Practice should have now have 1 department
+        expect(@user_practice.departments.count).to eq(1)
+      end
+    end
+
+    describe 'highlight and featured practices' do
+      it 'should highlight and un-highlight a practice' do
+        login_as(@admin, :scope => :user, :run_callbacks => false)
+        @user_practice.update(approved: true, published: true)
+        visit practice_path(@user_practice)
+        expect(page).to have_link('Edit')
+        click_link('Edit')
+
+        page.accept_confirm do
+          click_link('HIGHLIGHT')
+        end
+        expect(page).to have_current_path(edit_practice_path(@user_practice))
+        expect(page).to have_content('REMOVE HIGHLIGHT')
+
+        visit root_path
+        within '.highlighted-practice' do
+          expect(page).to have_content('The Best Practice Ever!')
+        end
+
+        visit(edit_practice_path(@user_practice))
+        page.accept_confirm do
+          click_link('REMOVE HIGHLIGHT')
+        end
+        expect(page).to have_current_path(edit_practice_path(@user_practice))
+        expect(page).to have_content('HIGHLIGHT')
+        expect(page).to have_content('HIGHLIGHT')
+      end
+
+      it 'should feature and un-feature a practice' do
+        login_as(@admin, :scope => :user, :run_callbacks => false)
+        @user_practice.update(approved: true, published: true)
+        visit practice_path(@user_practice)
+        expect(page).to have_link('Edit')
+        click_link('Edit')
+
+        click_link('FEATURE')
+        expect(page).to have_current_path(edit_practice_path(@user_practice))
+        expect(page).to have_content('REMOVE FEATURE')
+        expect(page).to have_content('HIGHLIGHT')
+
+        visit root_path
+        within '.featured-practices' do
+          expect(page).to have_content('The Best Practice Ever!')
+        end
+
+        visit(edit_practice_path(@user_practice))
+
+        click_link('REMOVE FEATURE')
+        expect(page).to have_current_path(edit_practice_path(@user_practice))
+        expect(page).to have_content('FEATURE')
+        expect(page).to have_content('HIGHLIGHT')
+      end
+    end
+  end
 end
