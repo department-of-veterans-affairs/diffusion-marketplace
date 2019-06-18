@@ -18,7 +18,7 @@
 //= require papercrop
 //= require activestorage
 //= require turbolinks
-//= require uswds/uswds
+//= require uswds_local
 //= require jquery_nested_form
 //= require jquery-ui/widgets/tooltip
 //= require_tree .
