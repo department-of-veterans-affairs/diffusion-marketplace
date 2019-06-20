@@ -1,6 +1,6 @@
 ActiveAdmin.register User do
   permit_params :email, :password, :password_confirmation, :disabled, role_ids: []
-  actions :all, except: [:destroy, :edit]
+  actions :all, except: [:destroy]
 
   scope :enabled
   scope :disabled
@@ -28,6 +28,7 @@ ActiveAdmin.register User do
       row :visn
       row :created_at
       row :confirmed_at
+      row :roles
       row :disabled
     end
     active_admin_comments
