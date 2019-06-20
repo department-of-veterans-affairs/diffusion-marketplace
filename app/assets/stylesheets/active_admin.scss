@@ -57,3 +57,11 @@ table.index_table {
     margin-top: 0;
   }
 }
+
+form fieldset legend {
+  width: 10%;
+}
+
+form fieldset.inputs legend {
+  border: none;
+}
