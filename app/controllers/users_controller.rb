@@ -2,7 +2,7 @@
 
 # Users controller, primarily for user admin management
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[show edit update destroy re_enable, set_password]
+  before_action :set_user, only: %i[show edit update destroy re_enable set_password]
   before_action :require_admin, only: %i[index update destroy re_enable]
   before_action :require_user_or_admin, only: :update
   before_action :final_admin, only: :update
@@ -20,8 +20,6 @@ class UsersController < ApplicationController
         @user.add_role(params[:user][:role])
         flash[:success] = "Added \"#{params[:user][:role]}\" role to user \"#{@user.email}\""
       end
-    else
-      @user.update_attributes user_params
     end
     redirect_to users_path
   end
@@ -34,7 +32,7 @@ class UsersController < ApplicationController
 
   def re_enable
     @user.update_attributes disabled: false
-    flash[:success] = "Re-enabled user \"#{user.email}\""
+    flash[:success] = "Re-enabled user \"#{@user.email}\""
     redirect_to users_path
   end
 
@@ -54,8 +52,7 @@ class UsersController < ApplicationController
   end
 
   def final_admin
-    if User.with_role(:admin).count == 1 && @user == current_user.id && params[:user][:role].present? &&
-       params[:user][:role] != 'admin'
+    if User.with_role(:admin).count == 1 && @user == current_user && params[:user][:role].present? && params[:user][:role] != 'admin'
       flash[:error] = 'There must always be at least 1 admin.'
       redirect_to users_path
     end

@@ -28,7 +28,7 @@
       <% if @top_practice %>
         <div class="margin-top-105">
           <div class="dm-background-white">
-            <div class="grid-row">
+            <div class="grid-row highlighted-practice">
               <% if @top_practice.main_display_image.present? %>
                 <style>
                   .top-practice-img {
@@ -80,7 +80,7 @@
     <% if @featured_practices.any? %>
       <section class="dm-background-white margin-bottom-105 padding-top-2">
         <div class="grid-container">
-          <div class="grid-row">
+          <div class="grid-row featured-practices">
             <% @featured_practices.each do |p| %>
               <% if p.present? %>
                 <div class="tablet:grid-col-4 padding-105">

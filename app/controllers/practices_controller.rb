@@ -4,6 +4,7 @@ class PracticesController < ApplicationController
   before_action :authenticate_user!, except: [:show, :search, :index]
   before_action :can_view_committed_view, only: [:committed]
   before_action :can_view_practice, only: [:show, :edit, :update, :destroy, :next_steps]
+  before_action :can_edit_practice, only: [:edit]
 
   # GET /practices
   # GET /practices.json
@@ -17,37 +18,33 @@ class PracticesController < ApplicationController
   def show
   end
 
-  # GET /practices/new
-  def new
-    @practice = Practice.new
-  end
-
   # GET /practices/1/edit
   def edit
   end
 
-  # POST /practices
-  # POST /practices.json
-  def create
-    @practice = Practice.new(practice_params)
+  # # POST /practices
+  # # POST /practices.json
+  # def create
+  #   @practice = Practice.new(practice_params)
 
-    respond_to do |format|
-      if @practice.save
-        format.html { redirect_to @practice, notice: 'Practice was successfully created.' }
-        format.json { render :show, status: :created, location: @practice }
-      else
-        format.html { render :new }
-        format.json { render json: @practice.errors, status: :unprocessable_entity }
-      end
-    end
-  end
+  #   respond_to do |format|
+  #     if @practice.save
+  #       format.html { redirect_to @practice, notice: 'Practice was successfully created.' }
+  #       format.json { render :show, status: :created, location: @practice }
+  #     else
+  #       format.html { render :new }
+  #       format.json { render json: @practice.errors, status: :unprocessable_entity }
+  #     end
+  #   end
+  # end
 
   # PATCH/PUT /practices/1
   # PATCH/PUT /practices/1.json
   def update
     updated = @practice.update(practice_params)
     if updated
-      partner_keys = params[:practice][:practice_partner].keys
+      partner_keys = []
+      partner_keys = params[:practice][:practice_partner].keys if params[:practice][:practice_partner].present?
       @practice.practice_partner_practices.each do |partner|
         partner.destroy unless partner_keys.include? partner.practice_partner_id.to_s
       end
@@ -57,7 +54,8 @@ class PracticesController < ApplicationController
         @practice.practice_partner_practices.create practice_partner_id: key.to_i
       end
 
-      dept_keys = params[:practice][:practice_department].keys
+      dept_keys = []
+      dept_keys = params[:practice][:practice_department].keys if params[:practice][:practice_department].present?
       @practice.department_practices.each do |department|
         department.destroy unless dept_keys.include? department.department_id.to_s
       end
@@ -75,16 +73,6 @@ class PracticesController < ApplicationController
         format.html { render :edit }
         format.json { render json: @practice.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  # DELETE /practices/1
-  # DELETE /practices/1.json
-  def destroy
-    @practice.destroy
-    respond_to do |format|
-      format.html { redirect_to practices_url, notice: 'Practice was successfully destroyed.' }
-      format.json { head :no_content }
     end
   end
 
