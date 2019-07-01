@@ -1,5 +1,5 @@
 ActiveAdmin.register User do
-  permit_params :email, :password, :password_confirmation, :disabled, role_ids: []
+  permit_params :email, :password, :password_confirmation, :disabled, :skip_va_validation, role_ids: []
   actions :all, except: [:destroy]
 
   scope :enabled
@@ -37,6 +37,7 @@ ActiveAdmin.register User do
   form do |f|
     f.inputs do
       f.input :email
+      f.input :skip_va_validation
       f.input :password
       f.input :password_confirmation
       f.input :roles, as: :check_boxes
