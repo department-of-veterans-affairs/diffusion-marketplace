@@ -17,7 +17,7 @@ GIT
 
 GIT
   remote: https://github.com/agilesix/uswds-rails.git
-  revision: 029b4d4c92fce07dcfbda2f649f3c121db9f0f42
+  revision: 642a358220dc998ae871421726e24781533c3a39
   branch: update-2.0.1
   specs:
     uswds-rails (2.0.1)
@@ -100,7 +100,7 @@ GEM
     arbre (1.2.1)
       activesupport (>= 3.0.0)
     arel (9.0.0)
-    autoprefixer-rails (9.5.1)
+    autoprefixer-rails (9.6.0)
       execjs
     aws-eventstream (1.0.1)
     aws-partitions (1.127.0)
