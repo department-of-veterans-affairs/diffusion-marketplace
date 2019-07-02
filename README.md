@@ -1,4 +1,5 @@
 # Diffusion Marketplace
+[![CircleCI](https://circleci.com/gh/agilesix/diffusion-marketplace.svg?style=svg)](https://circleci.com/gh/agilesix/diffusion-marketplace)
 
 ### Environments:
 | Environment  | url  |
