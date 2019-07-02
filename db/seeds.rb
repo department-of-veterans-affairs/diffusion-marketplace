@@ -40,15 +40,15 @@ if PracticePartner.all.blank?
     ]
   end
 
-  # unless Domain.all.present?
-  #   domains = [
-  #       Domain.create!(name: 'Veteran', description: 'Enables an improvement in satisfaction or customer experience for Veterans'),
-  #       Domain.create!(name: 'Clinical', description: 'Produces an improvement in health outcomes'),
-  #       Domain.create!(name: 'Financial', description: 'Generates cost savings or enables cost avoidance'),
-  #       Domain.create!(name: 'Operational', description: 'Delivers a measure of increased efficiency or productivity in operational activities'),
-  #       Domain.create!(name: 'Societal', description: 'Delivers a collective benefit to society or healthcare community as a whole'),
-  #   ]
-  # end
+  unless Domain.all.present?
+    domains = [
+        Domain.create!(name: 'Veteran', description: 'Enables an improvement in satisfaction or customer experience for Veterans'),
+        Domain.create!(name: 'Clinical', description: 'Produces an improvement in health outcomes'),
+        Domain.create!(name: 'Financial', description: 'Generates cost savings or enables cost avoidance'),
+        Domain.create!(name: 'Operational', description: 'Delivers a measure of increased efficiency or productivity in operational activities'),
+        Domain.create!(name: 'Societal', description: 'Delivers a collective benefit to society or healthcare community as a whole'),
+    ]
+  end
 
   unless Category.all.present?
     impact_categories = [
