@@ -6,7 +6,7 @@ function detectIE() {
     const $document = $(document);
 
     function browseHappy() {
-        if (detectIE()) {
+        if (detectIE() && !$('.browsehappy').length) {
             $('#beta-banner').after(`
                 <div class="grid-container">
                     <div class="usa-alert usa-alert--warning x1-bottom">
