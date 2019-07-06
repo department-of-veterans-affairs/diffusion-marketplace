@@ -12,13 +12,15 @@ namespace :importer do
     #   opts.on('-v', '--verbose')
     #   debugger
     # end.parse!
+    sheet = Roo::Excelx.new(File.join(Rails.root, '/lib/assets/TEST_Diffusion_Marketplace.xlsx'))
+    unless Rails.env.test?
+      puts "*********** Importing practices from: #{options[:file]} ***********".light_blue if options[:file].present?
+      puts "!!!!!! No file path provided !!!!!!".yellow if options[:file].blank?
+      puts "*********** Importing practices from: /lib/assets/Diffusion_Marketplace.xlsx ***********".light_blue if options[:file].blank?
+      import_file_path = options[:file].present? ? options[:file] : File.join(Rails.root, '/lib/assets/Diffusion_Marketplace.xlsx')
 
-    puts "*********** Importing practices from: #{options[:file]} ***********".light_blue if options[:file].present?
-    puts "!!!!!! No file path provided !!!!!!".yellow if options[:file].blank?
-    puts "*********** Importing practices from: /lib/assets/Diffusion_Marketplace.xlsx ***********".light_blue if options[:file].blank?
-    import_file_path = options[:file].present? ? options[:file] : File.join(Rails.root, '/lib/assets/Diffusion_Marketplace.xlsx')
-
-    sheet = Roo::Excelx.new(import_file_path)
+      sheet = Roo::Excelx.new(import_file_path)
+    end
     @questions = sheet.sheet(0).row(1)
     @given_answers = sheet.sheet(0).row(2)
     last_row = sheet.last_row
@@ -94,7 +96,7 @@ namespace :importer do
       # va_secretary_priorities
       # practice_managements
       categories
-      # clinical_conditions
+      clinical_conditions
       financial_files
       job_positions
       ancillary_services
@@ -212,11 +214,11 @@ def practice_partners
       #     PracticePartnerPractice.create practice_partner: practice_partner, practice: @practice unless PracticePartnerPractice.where(practice_partner: practice_partner, practice: @practice).any?
       #   end
       # else
-        formatted_pp_name = pp_name.split(':')[0].squish
-        practice_partner = PracticePartner.find_by(name: formatted_pp_name)
-        # practice_partner = PracticePartner.create!(name: formatted_pp_name, icon: 'fas fa-circle', color: '#36383f') if practice_partner.nil?
+      formatted_pp_name = pp_name.split(':')[0].squish
+      practice_partner = PracticePartner.find_by(name: formatted_pp_name)
+      # practice_partner = PracticePartner.create!(name: formatted_pp_name, icon: 'fas fa-circle', color: '#36383f') if practice_partner.nil?
 
-        PracticePartnerPractice.create practice_partner: practice_partner, practice: @practice unless PracticePartnerPractice.where(practice_partner: practice_partner, practice: @practice).any? || practice_partner.blank?
+      PracticePartnerPractice.create practice_partner: practice_partner, practice: @practice unless PracticePartnerPractice.where(practice_partner: practice_partner, practice: @practice).any? || practice_partner.blank?
       # end
     end
   end
@@ -379,11 +381,11 @@ end
 
 def clinical_conditions
   puts "==> Importing Practice: #{@name} Clinical Conditions".light_blue
-  question_fields = {
-      'Which of the following clinical conditions does this practice affect? (Please select all that apply.)': 16
+  question_fields_1 = {
+      'This question will allow the user to find your Practice by a medical complaint, clinical condition, or system of the body.   We are going to divide complaints, conditions, and systems anatomically.': 36
   }
 
-  question_fields.each do |key, value|
+  question_fields_1.each do |key, value|
     q_index = @questions.index(key.to_s)
     end_index = q_index + value - 1
     (q_index..end_index).each do |i|
@@ -398,10 +400,28 @@ def clinical_conditions
         end
       else
         condition = ClinicalCondition.find_or_create_by(name: answer)
+        next if condition.name == 'None'
         ClinicalConditionPractice.create clinical_condition: condition, practice: @practice unless ClinicalConditionPractice.where(clinical_condition: condition, practice: @practice).any?
       end
     end
   end
+
+  question_fields_2 = {
+      'Please enter one condition per line': 5
+  }
+
+  question_fields_2.each do |key, value|
+    q_index = @questions.index(key.to_s)
+    end_index = q_index + value - 1
+    (q_index..end_index).each do |i|
+      answer = @answers[i]
+      next if answer.blank?
+      condition = ClinicalCondition.find_or_create_by(name: answer)
+      ClinicalConditionPractice.create clinical_condition: condition, practice: @practice unless ClinicalConditionPractice.where(clinical_condition: condition, practice: @practice).any?
+
+    end
+  end
+
 end
 
 def financial_files
@@ -932,7 +952,7 @@ def training_details
     @practice.training_test_details = @answers[q_index + 2]
     training_test = @answers[q_index + 2]
     next if training_test.blank?
-    @practice.training_test = training_test.downcase == 'yes' ? true : false
+    @practice.training_test = training_test.downcase.include?('yes') ? true : false
   end
   @practice.save
 end
