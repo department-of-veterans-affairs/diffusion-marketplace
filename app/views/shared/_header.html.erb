@@ -70,7 +70,12 @@
           </li>
           <% if user_signed_in? %>
             <li class="usa-nav__secondary-item">
+              <span class="user-icon"></span>
               <%= link_to('Logout', destroy_user_session_path, class: 'dm-font-color-primary-blue', method: :delete) %>
+            </li>
+            <li class="usa-nav__secondary-item">
+              <span class="user-icon"></span>
+              <%= link_to(current_user.full_name, edit_user_registration_path, class: 'dm-font-color-primary-blue') %>
             </li>
           <% else %>
             <li class="usa-nav__secondary-item display-inline-flex vertical-align-middle">
