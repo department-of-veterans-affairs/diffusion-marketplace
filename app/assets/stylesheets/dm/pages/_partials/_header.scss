@@ -1,6 +1,14 @@
 @import "../../variables/colors";
 header {
   .usa-navbar {
-    background-color: $dm-color-white;
+    background-color: $dm-color-darker-blue;
+    color: $dm-color-white;
   }
+}
+.text-white-important {
+  color: $dm-color-white !important;
+}
+
+.beta-banner {
+  background-color: $dm-color-medium-yellow;
 }
