@@ -77,22 +77,11 @@
                 <% end %>
             </li>
             <li class="usa-nav__secondary-item">
-              <%= link_to('Logout', destroy_user_session_path, class: 'usa-button usa-button--outline text-white-important', method: :delete) %>
+              <%= link_to('Sign out', destroy_user_session_path, class: 'usa-button usa-button-outline-white', method: :delete) %>
             </li>
           <% else %>
-            <li class="usa-nav__secondary-item display-inline-flex vertical-align-middle">
-              <div class="display-inline-flex">
-                <img src="<%= image_path('tiny_user.svg') %>" alt="user icon"/>
-                <%= link_to new_user_registration_path, class: 'dm-font-color-primary-blue padding-left-05' do %>
-                  Register
-                <% end %>
-              </div>
-            </li>
             <li class="usa-nav__secondary-item">
-              <a class="dm-font-color-primary-blue desktop-show-inline-block" href="#">|</a>
-            </li>
-            <li class="usa-nav__secondary-item dm-font-color-primary-blue">
-              <%= link_to 'Login', new_user_session_path, class: 'usa-button', id: 'header-login-link' %>
+              <%= link_to 'Sign in', new_user_session_path, class: 'usa-button usa-button-white', id: 'header-login-link' %>
             </li>
           <% end %>
         </ul>

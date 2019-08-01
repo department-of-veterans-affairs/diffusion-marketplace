@@ -114,6 +114,17 @@ i.e.
   color: #000000;
 }
 
+.usa-button-outline-white {
+  @extend .usa-button--outline;
+  color: #FFFFFF !important;
+  box-shadow: inset 0 0 0 2px #FFFFFF !important;
+}
+
+.usa-button-white {
+  background-color: #FFFFFF !important;
+  color: $dm-color-darker-blue !important;
+}
+
 // USWDS utility extensions
 
 button.appearance-none {
