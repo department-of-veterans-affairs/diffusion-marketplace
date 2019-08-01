@@ -117,7 +117,7 @@ namespace :importer do
       required_training_staff
       costs_difficulties
       impact_photos
-      # domains
+      domains
       practice_permissions
       timelines
       training_details
