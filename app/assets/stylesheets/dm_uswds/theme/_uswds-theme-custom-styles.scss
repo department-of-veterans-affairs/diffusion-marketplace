@@ -77,6 +77,10 @@ i.e.
   }
 }
 
+.usa-nav {
+  background-color: $dm-color-darker-blue !important;
+}
+
 /* Override .usa-nav*/
 .usa-nav__secondary-links .usa-nav__secondary-item + .usa-nav__secondary-item::before {
   color: transparent;

@@ -70,7 +70,7 @@
           <% if user_signed_in? %>
             <li class="usa-nav__secondary-item">
                 <%= link_to(edit_user_registration_path) do %>
-                  <%= image_tag('empty-profile-header.svg', class: 'dm-user') %>
+                  <%= image_tag('empty-profile-header.svg', class: 'dm-user display-none desktop:display-inline-block', alt: '') %>
                   <span class='text-white-important'>
                     <%= current_user.full_name %>
                   </span>
