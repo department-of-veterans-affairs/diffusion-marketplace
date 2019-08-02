@@ -55,7 +55,6 @@ group :development, :test do
   gem 'rspec_junit_formatter'
   gem 'simplecov'
   gem 'shoulda-matchers', require: false
-  gem 'dotenv-rails'
 
   # gem 'sniffybara', git: 'https://github.com/department-of-veterans-affairs/sniffybara.git'
 
