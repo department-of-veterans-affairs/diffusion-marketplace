@@ -18,7 +18,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/ruby:2.5.3-node-browsers
+      - image: circleci/ruby:2.6.3-node-browsers
         environment:
           RAILS_ENV: test
           MAX_THREADS: 2
@@ -111,7 +111,7 @@ jobs:
           destination: coverage
   deploy:
     docker:
-      - image: circleci/ruby:2.5.3-node-browsers
+      - image: circleci/ruby:2.6.3-node-browsers
     working_directory: ~/deploy
     steps:
       - checkout

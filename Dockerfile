@@ -1,4 +1,4 @@
-FROM agilesix/ruby:2.5.3
+FROM agilesix/ruby:2.6.3
 
 RUN gem install bundler
 
