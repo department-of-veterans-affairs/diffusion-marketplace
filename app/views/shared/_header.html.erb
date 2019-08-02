@@ -69,8 +69,8 @@
           </li>
           <% if user_signed_in? %>
             <li class="usa-nav__secondary-item">
-                <%= link_to(edit_user_registration_path) do %>
-                  <%= image_tag('empty-profile-header.svg', class: 'dm-user display-none desktop:display-inline-block', alt: '') %>
+                <%= link_to(edit_user_registration_path, class: 'text-white-important') do %>
+                  <i class="fas fa-user-circle text-white-important empty-user-icon display-none-important desktop:display-inline-block"></i>
                   <span class='text-white-important'>
                     <%= current_user.full_name %>
                   </span>
