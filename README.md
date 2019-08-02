@@ -19,13 +19,13 @@
 
 #### Ruby version
 
-- `ruby 2.5.3`
+- `ruby 2.6.3`
 
 - `rails 5.2.1`
 
 #### System dependencies
 
-- `ruby 2.5.3`
+- `ruby 2.6.3`
 
 - `bundler`
 
