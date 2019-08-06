@@ -68,4 +68,9 @@ class User < ApplicationRecord
       remove_role r
     end
   end
+
+  def full_name
+    return 'User' unless last_name || first_name
+    "#{first_name} #{last_name}"
+  end
 end

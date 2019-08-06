@@ -6,6 +6,7 @@ describe 'Register', type: :feature do
     visit '/'
     expect(page).to have_content('Diffusion Marketplace')
 
+    click_on('Sign in')
     click_on('Register')
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(current_path).to eq('/users/sign_up')
