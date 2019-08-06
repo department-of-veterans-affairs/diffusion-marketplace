@@ -2,6 +2,8 @@
 # Run with: bin/rails surveymonkey:download_response_files
 
 namespace :surveymonkey do
+
+  # rails surveymonkey:download_response_files
   desc 'Downloads response files'
   task :download_response_files => :environment do
 
@@ -42,6 +44,21 @@ namespace :surveymonkey do
     # Log into SurveyMonkey
     puts "==> Logging into SurveyMonkey"
     agent = Mechanize.new
+
+    registered_devices_cookies = [
+        {name: 'ep201', value: ENV['SURVEY_MONKEY_EP201']},
+        {name: 'ep202', value: ENV['SURVEY_MONKEY_EP202']},
+        {name: 'ep203', value: ENV['SURVEY_MONKEY_EP203']}
+    ]
+
+    registered_devices_cookies.each { |c|
+      cookie = Mechanize::Cookie.new(c[:name], c[:value])
+      cookie.domain = '.surveymonkey.com'
+      cookie.expires = '2019-11-04T04:04:32.306Z'
+      cookie.path = '/'
+      agent.cookie_jar.add(cookie)
+    }
+
     page = agent.get 'https://www.surveymonkey.com/user/sign-in'
     form = page.form
     username = form.field_with name: 'username'
