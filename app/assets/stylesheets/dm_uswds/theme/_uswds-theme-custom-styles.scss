@@ -29,23 +29,7 @@ i.e.
 
 /* Override usa-banner */
 .usa-banner {
-  background-color: color($theme-color-base-darkest);
-
-  .usa-banner__header {
-    color: color($theme-color-base-lightest);
-  }
-
-  .usa-banner__content {
-    color: color($theme-color-base-lightest);
-  }
-
-  .usa-banner__button-text, .usa-banner__header-action {
-    color: color($theme-color-primary-light);
-  }
-
   .usa-banner__header-action {
-    color: color($theme-color-base-lightest);
-
     &:after {
       background-image: none;
       content: '\f078';
@@ -93,6 +77,10 @@ i.e.
   }
 }
 
+.usa-nav {
+  background-color: $dm-color-darker-blue !important;
+}
+
 /* Override .usa-nav*/
 .usa-nav__secondary-links .usa-nav__secondary-item + .usa-nav__secondary-item::before {
   color: transparent;
@@ -101,7 +89,7 @@ i.e.
 .usa-header--extended .usa-nav {
   border-top: none;
   border-right: none;
-  border-bottom: 3px solid #F3F3F3;
+  border-bottom: 3px solid $dm-color-darker-blue;
   border-left: none;
 }
 
@@ -112,6 +100,17 @@ i.e.
 .usa-nav__secondary-links .usa-nav__secondary-item,
 .usa-nav__secondary-links a {
   color: #000000;
+}
+
+.usa-button-outline-white {
+  @extend .usa-button--outline;
+  color: #FFFFFF !important;
+  box-shadow: inset 0 0 0 2px #FFFFFF !important;
+}
+
+.usa-button-white {
+  background-color: #FFFFFF !important;
+  color: $dm-color-darker-blue !important;
 }
 
 // USWDS utility extensions
@@ -209,7 +208,7 @@ a {
   }
 
   &.beta-banner-link {
-    color: #8ccee7;
+    color: black;
     text-decoration: underline;
 
     &:hover {
