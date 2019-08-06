@@ -4,7 +4,8 @@ class PracticesController < ApplicationController
   before_action :authenticate_user!, except: [:show, :search, :index]
   before_action :can_view_committed_view, only: [:committed]
   before_action :can_view_practice, only: [:show, :edit, :update, :destroy, :next_steps]
-  before_action :can_edit_practice, only: [:edit]
+  before_action :can_create_practice, only: [:new, :create]
+  before_action :can_edit_practice, only: [:edit, :update]
 
   # GET /practices
   # GET /practices.json
@@ -22,21 +23,25 @@ class PracticesController < ApplicationController
   def edit
   end
 
-  # # POST /practices
-  # # POST /practices.json
-  # def create
-  #   @practice = Practice.new(practice_params)
+  def new
+    @practice = Practice.new
+  end
 
-  #   respond_to do |format|
-  #     if @practice.save
-  #       format.html { redirect_to @practice, notice: 'Practice was successfully created.' }
-  #       format.json { render :show, status: :created, location: @practice }
-  #     else
-  #       format.html { render :new }
-  #       format.json { render json: @practice.errors, status: :unprocessable_entity }
-  #     end
-  #   end
-  # end
+  # POST /practices
+  # POST /practices.json
+  def create
+    @practice = Practice.new(practice_params)
+
+    respond_to do |format|
+      if @practice.save
+        format.html { redirect_to @practice, notice: 'Practice was successfully created.' }
+        format.json { render :show, status: :created, location: @practice }
+      else
+        format.html { render :new }
+        format.json { render json: @practice.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 
   # PATCH/PUT /practices/1
   # PATCH/PUT /practices/1.json
@@ -148,8 +153,8 @@ class PracticesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def practice_params
-    params.require(:practice).permit(:tagline, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :cost_to_implement_aggregate, :veteran_satisfaction_aggregate, :difficulty_aggregate,
-                                     :number_adopted, :number_failed, :implementation_time_estimate, :implementation_time_estimate_description, :implentation_summary, :implentation_fte,
+    params.require(:practice).permit(:tagline, :process, :it_required, :need_new_license, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :cost_to_implement_aggregate, :sustainability_aggregate, :veteran_satisfaction_aggregate, :difficulty_aggregate,
+                                     :number_adopted, :number_departments, :number_failed, :implementation_time_estimate, :implementation_time_estimate_description, :implentation_summary, :implentation_fte,
                                      :training_provider, :required_training_summary, :support_network_email,
                                      :main_display_image, :main_display_image_original_w, :main_display_image_original_h, :main_display_image_crop_x, :main_display_image_crop_y, :main_display_image_crop_w, :main_display_image_crop_h,
                                      :origin_picture, :origin_picture_original_w, :origin_picture_original_h, :origin_picture_crop_x, :origin_picture_crop_y, :origin_picture_crop_w, :origin_picture_crop_h,
@@ -173,6 +178,10 @@ class PracticesController < ApplicationController
 
   def can_edit_practice
     prevent_practice_permissions
+  end
+
+  def can_create_practice
+    current_user.has_role? :admin
   end
 
   def prevent_practice_permissions
