@@ -384,7 +384,7 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 .mobile-hide-inline-block {
   display: none !important;
   @media screen and (min-width: 1024px) {
-    display: block !important;
+    display: inline-block !important;
   }
 }
 
