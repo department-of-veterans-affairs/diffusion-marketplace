@@ -1,6 +1,28 @@
 @import "../../variables/colors";
+@import "../../../dm_uswds/theme/uswds-theme-components";
+
 header {
   .usa-navbar {
-    background-color: $dm-color-white;
+    background-color: $dm-color-darker-blue;
+    color: $dm-color-white;
+  }
+}
+.text-white-important {
+  color: $dm-color-white !important;
+}
+
+.beta-banner {
+  background-color: $dm-color-medium-yellow;
+}
+
+.empty-user-icon {
+  background-color: $dm-color-primary-blue;
+  border-radius: 50%;
+  font-size: 2rem;
+  bottom: -0.5rem;
+  position: relative;
+  text-decoration: none !important;
+  @media screen and (max-width: 1024px) {
+    display: none !important;
   }
 }

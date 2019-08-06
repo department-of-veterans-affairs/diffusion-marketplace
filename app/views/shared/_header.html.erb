@@ -1,4 +1,4 @@
-<header class="usa-header usa-header--extended">
+<header class="usa-header usa-header--extended bg-primary-darker">
   <a class="usa-skipnav" href="#main-content">Skip to main content</a>
   <div class="usa-banner">
     <div class="usa-accordion">
@@ -45,14 +45,13 @@
             </div>
     </div>
   </div>
-  <%= render partial: 'shared/beta_banner' %>
 
   <div class="usa-overlay"></div>
 
-  <div class="usa-navbar">
-    <div class="usa-logo" id="extended-logo">
+  <div class="usa-navbar bg-primary-darker text-white">
+    <div class="usa-logo text-white" id="extended-logo">
       <em class="usa-logo__text">
-        <a href="/" title="Home" aria-label="Home">Diffusion Marketplace</a>
+        <a href="/" title="Home" aria-label="Home" class='text-white-important'>VA<span class='text-normal'> | Diffusion Marketplace</span></a>
       </em>
     </div>
     <button class="usa-menu-btn">Menu</button>
@@ -63,33 +62,31 @@
       <div class="usa-nav__secondary bottom-1-and-half-rem">
         <ul class="usa-nav__secondary-links">
           <li class="usa-nav__secondary-item">
-            <a href="/partners">Partners</a>
+            <a href="/partners" class="text-white-important">Partners</a>
           </li>
           <li class="usa-nav__secondary-item">
-            <a href="/practices">Practices<span class="usa-sr-only">Practices</span></a>
+            <a href="/practices" class="text-white-important">Practices<span class="usa-sr-only">Practices</span></a>
           </li>
           <% if user_signed_in? %>
             <li class="usa-nav__secondary-item">
-              <%= link_to('Logout', destroy_user_session_path, class: 'dm-font-color-primary-blue', method: :delete) %>
-            </li>
-          <% else %>
-            <li class="usa-nav__secondary-item display-inline-flex vertical-align-middle">
-              <div class="display-inline-flex">
-                <img src="<%= image_path('tiny_user.svg') %>" alt="user icon"/>
-                <%= link_to new_user_registration_path, class: 'dm-font-color-primary-blue padding-left-05' do %>
-                  Register
+                <%= link_to(edit_user_registration_path, class: 'text-white-important') do %>
+                  <i class="fas fa-user-circle text-white-important empty-user-icon display-none-important desktop:display-inline-block"></i>
+                  <span class='text-white-important'>
+                    <%= current_user.full_name %>
+                  </span>
                 <% end %>
-              </div>
             </li>
             <li class="usa-nav__secondary-item">
-              <a class="dm-font-color-primary-blue desktop-show-inline-block" href="#">|</a>
+              <%= link_to('Sign out', destroy_user_session_path, class: 'usa-button usa-button-outline-white', method: :delete) %>
             </li>
-            <li class="usa-nav__secondary-item dm-font-color-primary-blue">
-              <%= link_to 'Login', new_user_session_path, class: 'dm-font-color-primary-blue', id: 'header-login-link' %>
+          <% else %>
+            <li class="usa-nav__secondary-item">
+              <%= link_to 'Sign in', new_user_session_path, class: 'usa-button usa-button-white', id: 'header-login-link' %>
             </li>
           <% end %>
         </ul>
       </div>
     </div>
   </nav>
+  <%= render partial: 'shared/beta_banner' %>
 </header>
