@@ -1,4 +1,4 @@
-<h1>Edit Practice : <span style='font-weight: normal'><%= @practice.tagline %></span></h1>
+
 <p>Note: Please do not enter Personally Identifying Information (PII) or Personal Health Information (PHI) for any individuals, veterans, or patients into the Diffusion Marketplace. All research, data, findings, examples, and illustrations should be displayed in a general format that is ready to be shown to the public. Do not include specific data such as name, age, date of birth, social security number, etc.</p>
 
 <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form'}) do |form| %>
@@ -48,7 +48,8 @@
       <div class="field">
         <%= form.label :main_display_image, 'Project Image', class: 'usa-label' %>
         <% if @practice.main_display_image.present? %>
-          <%= form.cropbox :main_display_image, index: 0 %>
+          <%= image_tag @practice.main_display_image.url, alt: "#{@practice.name} main image" %>
+          <%#= form.cropbox :main_display_image, index: 0 %>
         <% end %>
         <%= form.file_field :main_display_image, class: 'hidden-upload' %>
         <%= form.label :main_display_image, 'Upload Image', class: 'usa-button usa-button--outline' %>
@@ -102,12 +103,14 @@
 
     <fieldset class='usa-fieldset'>
       <div style='background-color: white; border-radius: 2rem; padding: 1px 2rem 2rem; margin-top: 2rem;'>
+        <h2 style='padding-top: 1.5rem'>Impact Story</h2>
         <%= form.fields_for :impact_photos do |ip| %>
           <%= ip.hidden_field :id %>
-          <%= ip.link_to_remove "Remove this Story", class: 'usa-button usa-button--secondary', style: 'color: white; text-decoration: none; float: right' %>
-          <h2 style='padding-top: 1.5rem'>Impact Story</h2>
+          <%= ip.link_to_remove "Remove this impact", class: 'usa-button usa-button--secondary', style: 'color: white; text-decoration: none; float: right' %>
+
           <% if ip.object.attachment.present? %>
-            <%= ip.cropbox :attachment, index: ip.index %>
+            <%= image_tag ip.object.attachment.url, alt: "Impact story picture #{ip.index}" %>
+            <%#= ip.cropbox :attachment, index: ip.index %>
           <% end %>
           <%= ip.file_field :attachment, class: 'hidden-upload' %>
           <%= ip.label :attachment, 'Upload Image', class: 'usa-button usa-button--outline' %>
@@ -129,7 +132,8 @@
         <div class="field">
           <%= form.label :origin_picture, 'Portrait Image', class: 'usa-label' %>
           <% if @practice.origin_picture.present? %>
-            <%= form.cropbox :origin_picture, max_size: [200, 200], index: 0 %>
+            <%= image_tag @practice.origin_picture.url, alt: "Practice's origin picture" %>
+            <%#= form.cropbox :origin_picture, max_size: [200, 200], index: 0 %>
           <% end %>
           <%= form.file_field :origin_picture, class: 'hidden-upload' %>
           <%= form.label :origin_picture, 'Upload Image', class: 'usa-button usa-button--outline' %>
@@ -142,7 +146,7 @@
 
         <div class="field">
           <%= form.label :origin_story, 'Content', class: 'usa-label' %>
-          <%= form.text_area :origin_story, class: 'usa-input practice-input' %>
+          <%= form.text_area :origin_story, class: 'usa-input practice-input tall-practice-input' %>
         </div>
       </div>
     </fieldset>
@@ -189,8 +193,21 @@
         </div>
       </fieldset>
 
-      <span><h2>Departments affected</h2> (Mark all that apply)</span>
+
+      <h2>Departments </h2>
+      <fieldset class='usa-fieldset'>
+        <p>Number of Departments required to implement the practice?</p>
+        <% Practice::NUMBER_DEPARTMENTS_OPTIONS.each_with_index do |label, i| %>
+          <div class='grid-col usa-radio'>
+            <%= label.inspect %>
+            <%= radio_button('practice', 'number_departments', i + 1, class: 'usa-radio__input') %>
+            <label class='usa-radio__label' for='practice_number_departments_<%= i + 1 %>'><%= label %></label>
+          </div>
+        <% end %>
+      </fieldset>
+
       <fieldset class='field usa-fieldset'>
+        <p>Departments affected <span>(Mark all that apply)</span></p>
         <% Department.all.each do |dept| %>
           <div class='usa-checkbox'>
             <input type='checkbox' class='usa-checkbox__input' id="practice_department_<%= dept.id %>" name='practice[practice_department][<%= dept.id %>][value]' <%= @practice.departments.include?(dept) ? "checked= 'true'" : "" %>>
@@ -237,24 +254,14 @@
 
       <fieldset class='usa-fieldset'>
         <h2>Training</h2>
-        <%= form.label :training_provider, 'If there is traning, please list who provides the training', class: 'usa-label'%>
+        <%= form.label :training_provider, 'If there is training, please list who provides the training', class: 'usa-label'%>
         <%= form.text_field :training_provider, class: 'usa-input practice-input' %>
-        <p>Who is required to take the training?</p>
-        <%= form.fields_for :required_staff_trainings do |diff| %>
-          <%= diff.hidden_field :id %>
-          <%= diff.link_to_remove "Remove", class: 'usa-button usa-button--secondary', style: 'color: white; text-decoration: none; float: right' %>
-          <%= diff.label :title, 'Job Title', class: 'usa-label', style: 'padding-top: 2.5rem' %>
-          <%= diff.text_field :title, class: 'usa-input practice-input' %>
-          <%= diff.label :description, class: 'usa-label' %>
-          <%= diff.text_area :description, class: 'usa-input practice-input', style: 'height: 4rem' %>
-        <% end %>
-        <p><%= form.link_to_add "Add Trainee", :required_staff_trainings, class: 'usa-button usa-button--outline', style: 'text-decoration: none; right: 0;' %></p>
-      </fieldset>
 
-      <fieldset class='usa-fieldset'>
-        <h2>Training</h2>
-        <%= form.label :required_training_summary, 'how long is the training? What is required?', class: 'usa-label'%>
-        <%= form.text_area :required_training_summary, class: 'usa-input practice-input', style: 'height: 5rem;' %>
+        <%= form.label :training_length, 'How long is the training?', class: 'usa-label'%>
+        <%= form.text_field :training_length, class: 'usa-input practice-input' %>
+
+        <%= form.label :required_training_summary, 'What is required (such as five videos that are 20 minutes each or attend 2 meetings)?', class: 'usa-label'%>
+        <%= form.text_area :required_training_summary, class: 'usa-input practice-input tall-practice-input' %>
 
         <p>Is there a test involved?</p>
         <div class='grid-row'>
@@ -266,22 +273,115 @@
             <label class='usa-radio__label' for='practice_training_test_false'>No</label>
           </div>
         </div>
-      </fieldset>
 
+        <p>Will a new license or certification be required?</p>
+        <div class='grid-row'>
+          <div class='grid-col usa-radio'>
+            <%= radio_button('practice', 'need_new_license', 'true', class: 'usa-radio__input') %>
+            <label class='usa-radio__label' for='practice_need_new_license_true'>Yes</label>
+
+            <%= radio_button('practice', 'need_new_license', 'false', class: 'usa-radio__input') %>
+            <label class='usa-radio__label' for='practice_need_new_license_false'>No</label>
+          </div>
+        </div>
+
+        <p>Who is required to take the training?</p>
+        <%= form.fields_for :required_staff_trainings do |diff| %>
+          <%= diff.hidden_field :id %>
+          <%= diff.link_to_remove "Remove", class: 'usa-button usa-button--secondary', style: 'color: white; text-decoration: none; float: right' %>
+          <%= diff.label :title, 'Job Title', class: 'usa-label', style: 'padding-top: 2.5rem' %>
+          <%= diff.text_field :title, class: 'usa-input practice-input' %>
+          <%= diff.label :description, class: 'usa-label' %>
+          <%= diff.text_area :description, class: 'usa-input practice-input', style: 'height: 4rem' %>
+        <% end %>
+        <p><%= form.link_to_add "Add Trainee", :required_staff_trainings, class: 'usa-button usa-button--outline', style: 'text-decoration: none; right: 0;' %></p>
+      </fieldset>
     </div>
   </section>
 
   <section class='usa-section'>
     <h2 id='difficulty'>Difficulty</h2>
     <fieldset class='usa-fieldset'>
-      <p>Difficulty of Implementation</p>
+      <p>Please provide your best estimate of the Complexity of Implementation of your Practice on a scale of 1 - 4 (Complexity of getting the practice started.)</p>
       <div class='grid-row'>
         <% (1..4).each do |index| %>
           <div class='grid-col usa-radio'>
             <%= radio_button('practice', 'difficulty_aggregate', index.to_s, class: 'usa-radio__input') %>
-            <label class='usa-radio__label' for='practice_difficulty_aggregate_<%= index %>'><%= Practice::DIFFICULTY_LABELS[index-1] %></label>
+            <label class='usa-radio__label' for='practice_difficulty_aggregate_<%= index %>'><%= Practice::COMPLEXITY_LABELS[index-1] %></label>
           </div>
         <% end %>
+      </div>
+    </fieldset>
+
+    <fieldset class='usa-fieldset'>
+      <p>Please provide your best estimate of the Complexity of Maintenance and Sustainability of your Practice on a scale of 1 - 4</p>
+      <div class='grid-row'>
+        <% (1..4).each do |index| %>
+          <div class='grid-col usa-radio'>
+            <%= radio_button('practice', 'sustainability_aggregate', index.to_s, class: 'usa-radio__input') %>
+            <label class='usa-radio__label' for='practice_sustainability_aggregate_<%= index %>'><%= Practice::COMPLEXITY_LABELS[index-1] %></label>
+          </div>
+        <% end %>
+      </div>
+    </fieldset>
+
+    <fieldset class='usa-fieldset'>
+      <div style='background-color: white; border-radius: 2rem; padding: 1px 2rem 2rem; margin-top: 2rem;'>
+        <p style='padding-top: 1.5rem'>In as few words as possible describe some difficulties you may encounter when implementing this practice.</p>
+        <%= form.fields_for :difficulties do |diff| %>
+          <%= diff.hidden_field :id %>
+          <%= diff.link_to_remove "Remove", class: 'usa-button usa-button--secondary', style: 'color: white; text-decoration: none; float: right' %>
+          <%= diff.label :description, class: 'usa-label', style: 'padding-top: 2.5rem' %>
+          <%= diff.text_field :description, class: 'usa-input practice-input' %>
+        <% end %>
+        <p><%= form.link_to_add "Add another Difficulty", :difficulties, class: 'usa-button usa-button--outline', style: 'text-decoration: none; right: 0;' %></p>
+      </div>
+    </fieldset>
+  </section>
+
+  <section class='usa-section'>
+    <h2 id='new-or-modified-approach'>New or modified approach?</h2>
+    <fieldset class='usa-fieldset'>
+      <p>Is this practice a New Clinical Approach or New Process? Or is this practice a process change of something already being done? (Choose one of the following.)</p>
+      <div class='grid-row'>
+        <div class='grid-col usa-radio'>
+          <%= radio_button('practice', 'process', 'New Clinical Approach or New Process', class: 'usa-radio__input') %>
+          <label class='usa-radio__label' for='practice_process_new_clinical_approach_or_new_process'>New Clinical Approach or New Process</label>
+        </div>
+        <div class='grid-col usa-radio'>
+          <%= radio_button('practice', 'process', 'Modification of an established process', class: 'usa-radio__input') %>
+          <label class='usa-radio__label' for='practice_process_modification_of_an_established_process'>Modification of an established process</label>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class='usa-fieldset'>
+      <div style='background-color: white; border-radius: 2rem; padding: 1px 2rem 2rem; margin-top: 2rem;'>
+        <p style='padding-top: 1.5rem'>In as few words as possible describe some difficulties you may encounter when implementing this practice.</p>
+        <%= form.fields_for :difficulties do |diff| %>
+          <%= diff.hidden_field :id %>
+          <%= diff.link_to_remove "Remove", class: 'usa-button usa-button--secondary', style: 'color: white; text-decoration: none; float: right' %>
+          <%= diff.label :description, class: 'usa-label', style: 'padding-top: 2.5rem' %>
+          <%= diff.text_field :description, class: 'usa-input practice-input' %>
+        <% end %>
+        <p><%= form.link_to_add "Add another Difficulty", :difficulties, class: 'usa-button usa-button--outline', style: 'text-decoration: none; right: 0;' %></p>
+      </div>
+    </fieldset>
+  </section>
+
+  <section class='usa-section'>
+    <h2 id='new-or-modified-approach'>IT Required?</h2>
+    <fieldset class='usa-fieldset'>
+      <p>Is Information Technology (IT) required to implement the practice?</p>
+      <div class='grid-row'>
+        <div class='grid-col usa-radio'>
+          <%= radio_button('practice', 'it_required', true, class: 'usa-radio__input') %>
+          <label class='usa-radio__label' for='practice_it_required_true'>Yes</label>
+        </div>
+        <div class='grid-col usa-radio'>
+          <%= radio_button('practice', 'it_required', false, class: 'usa-radio__input') %>
+          <label class='usa-radio__label' for='practice_it_required_false'>No</label>
+        </div>
       </div>
     </fieldset>
 
@@ -335,8 +435,10 @@
         <%= form.fields_for :timelines do |tl| %>
           <%= tl.hidden_field :id %>
           <%= tl.link_to_remove "Remove", class: 'usa-button usa-button--secondary', style: 'color: white; text-decoration: none; float: right' %>
-          <%= tl.label :description, class: 'usa-label', style: 'padding-top: 2.5rem' %>
-          <%= tl.text_area :description, class: 'usa-input practice-input', style: 'height: 4rem' %>
+          <%= tl.label :timeline, class: 'usa-label', style: 'padding-top: 2.5rem' %>
+          <%= tl.text_field :timeline, class: 'usa-input practice-input' %>
+          <%= tl.label :milestone, class: 'usa-label', style: 'padding-top: 2.5rem' %>
+          <%= tl.text_area :milestone, class: 'usa-input practice-input tall-practice-input' %>
         <% end %>
         <p><%= form.link_to_add "Add another step", :timelines, class: 'usa-button usa-button--outline', style: 'text-decoration: none; right: 0;' %></p>
       </div>
@@ -352,12 +454,13 @@
         <%= form.text_field :support_network_email, class: 'usa-input practice-input' %>
         <%= form.fields_for :va_employees do |vae| %>
           <%= vae.hidden_field :id %>
-          <%= vae.link_to_remove "Remove this Story", class: 'usa-button usa-button--secondary', style: 'color: white; text-decoration: none; float: right' %>
+          <%= vae.link_to_remove "Remove this team member", class: 'usa-button usa-button--secondary', style: 'color: white; text-decoration: none; float: right' %>
           <h2 style='padding-top: 1.5rem'>Team member</h2>
           <div class='grid-row'>
             <div class='grid-col'>
               <% if vae.object.avatar.present? %>
-                <%= vae.cropbox :avatar, width: 200, index: vae.index %>
+                <%= image_tag vae.object.avatar.url, alt: vae.object.name %>
+                <%#= vae.cropbox :avatar, width: 200, index: vae.index %>
               <% end %>
               <%= vae.file_field :avatar, class: 'hidden-upload' %>
               <%= vae.label :avatar, 'Upload Image', class: 'usa-button usa-button--outline' %>

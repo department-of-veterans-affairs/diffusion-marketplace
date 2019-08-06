@@ -1,15 +1,18 @@
 <div class='dm-sidenav practice-edit-nav sticky' style=''>
-  <div style='padding: .5rem 1rem;'
+  <% unless @practice.new_record? %>
+    <div style='padding: .5rem 1rem;'
     <p>
       <b>Publishing Options</b></br>
+
       <span>Last Saved: <%= @practice.updated_at.strftime('%m/%d/%Y') %></span>
     </p>
     <p>
       <span>Last edited by:</span></br>
       <span><i>Username</i> on <%= @practice.updated_at.strftime('%m/%d/%Y') %></span>
     </p>
-  </div>
-  <div class='nav-divider'></div>
+    </div>
+    <div class='nav-divider'></div>
+  <% end %>
 
   <!-- Navigational buttons -->
   <ul class='usa-sidenav'>
@@ -62,11 +65,11 @@
     <% if @practice.published && current_user.has_role?(:admin) %>
       <% if @practice.highlight && !@practice.featured %>
         <li class='usa-sidenav__item practice-nav'>
-          <%= link_to 'REMOVE HIGHLIGHT', un_highlight_practice_path(@practice), method: :post, class: 'nav-button', data: { confirm: 'Are you sure you wish to remove this as the highlighted practice? This may have adverse affects on the landing page.' } %>
+          <%= link_to 'REMOVE HIGHLIGHT', un_highlight_practice_path(@practice), method: :post, class: 'nav-button', data: {confirm: 'Are you sure you wish to remove this as the highlighted practice? This may have adverse affects on the landing page.'} %>
         </li>
       <% elsif !@practice.highlight %>
         <li class='usa-sidenav__item practice-nav'>
-          <%= link_to 'HIGHLIGHT', highlight_practice_path(@practice), method: :post, class: 'nav-button', data: { confirm: 'Are you sure you wish to highlight this practice? There can only be one highlighted practice.' } %>
+          <%= link_to 'HIGHLIGHT', highlight_practice_path(@practice), method: :post, class: 'nav-button', data: {confirm: 'Are you sure you wish to highlight this practice? There can only be one highlighted practice.'} %>
         </li>
       <% end %>
       <% if !@practice.highlight && @practice.featured %>
@@ -83,4 +86,4 @@
       <a href='' class='nav-button practice-form-submit'>SAVE ALL CHANGES</a>
     </li>
   </ul>
-</div>
+  </div>
