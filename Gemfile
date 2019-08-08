@@ -7,7 +7,8 @@ ruby '2.6.3'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.1'
 # Use postgresql as the database for Active Record
-gem 'pg', '>= 0.18', '< 2.0'
+gem 'pg', '1.1.4'
+# gem 'pg', '1.1.4',  platforms: [:mingw, :x64_mingw]
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 # Use SCSS for stylesheets
@@ -37,7 +38,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '>= 1.1.0', require: false
+gem 'bootsnap', '1.4.4', require: false
 
 gem 'devise', '>= 4.6.0'
 gem 'devise-security'
@@ -68,7 +69,7 @@ end
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 3.3.0'
-  gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'listen', '3.1.5'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
@@ -85,7 +86,7 @@ group :development do
 
   ###
 end
-
+gem 'ffi', '1.11.1'
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'jquery-rails'
@@ -96,11 +97,11 @@ gem 'activerecord-nulldb-adapter'
 gem 'acts_as_list'
 gem 'aws-sdk-s3'
 gem 'paperclip', '~> 6.0.0'
-gem 'font-awesome-sass', '~> 5.6.1'
+gem 'font-awesome-sass', '~> 5.9.0'
 gem 'sidekiq'
 
 gem 'survey_monkey_api', github: 'agilesix/surveymonkey'
-gem 'mechanize'
+gem 'mechanize', '2.7.6'
 
 gem 'roo', '~> 2.8.0'
 
