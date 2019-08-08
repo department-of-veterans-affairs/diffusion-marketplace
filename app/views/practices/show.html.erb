@@ -92,32 +92,32 @@
       <ul id="dm-tabnav" class="usa-sidenav dm-tabnav margin-bottom-4">
         <% if @practice.impact_photos.any? || @practice.video_files.any? || @practice.additional_documents.any? || @practice.publication_files.any? || @practice.publications.any? %>
           <li class="usa-sidenav__item">
-            <a href="#impact" class="dm-tab top-tab scroll-to" data-target="#impact">Impact</a>
+            <a href="#impact" class="dm-tab top-tab scroll-to" data-target="#impact" data-turbolinks="false">Impact</a>
           </li>
         <% end %>
         <% unless !@practice.origin_story || !@practice.origin_title %>
           <li class="usa-sidenav__item">
-            <a href="#origin" class="dm-tab scroll-to" data-target="#origin">Origin</a>
+            <a href="#origin" class="dm-tab scroll-to" data-target="#origin" data-turbolinks="false">Origin</a>
           </li>
         <% end %>
         <li class="usa-sidenav__item">
-          <a href="#resources_required" class="dm-tab scroll-to" data-target="#resources_required">Resources
+          <a href="#resources_required" class="dm-tab scroll-to" data-target="#resources_required" data-turbolinks="false">Resources
             Required</a>
         </li>
         <li class="usa-sidenav__item">
-          <a href="#complexity" class="dm-tab scroll-to" data-target="#complexity">Complexity</a>
+          <a href="#complexity" class="dm-tab scroll-to" data-target="#complexity" data-turbolinks="false">Complexity</a>
         </li>
         <% unless @practice.timelines.blank? %>
           <li class="usa-sidenav__item">
-            <a href="#timeline_and_checklist" class="dm-tab scroll-to" data-target="#timeline_and_checklist">Timeline</a>
+            <a href="#timeline_and_checklist" class="dm-tab scroll-to" data-target="#timeline_and_checklist" data-turbolinks="false">Timeline</a>
           </li>
         <% end %>
         <li class="usa-sidenav__item">
-          <a href="#risks_and_mitigation" class="dm-tab scroll-to" data-target="#risks_and_mitigation">Risks &
+          <a href="#risks_and_mitigation" class="dm-tab scroll-to" data-target="#risks_and_mitigation" data-turbolinks="false">Risks &
             Mitigation</a>
         </li>
         <li class="usa-sidenav__item">
-          <a href="#support_team" class="dm-tab bottom-tab scroll-to" data-target="#support_team">Support Team</a>
+          <a href="#support_team" class="dm-tab bottom-tab scroll-to" data-target="#support_team" data-turbolinks="false">Support Team</a>
         </li>
       </ul>
       <%= link_to 'Next Steps', practice_next_steps_url(practice_id: @practice.slug), id: 'next-steps-link-in-nav', class: 'dm-button-link shadow-1' %>
