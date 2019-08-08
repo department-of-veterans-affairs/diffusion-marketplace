@@ -1,4 +1,4 @@
-// This is a manifest file that'll be compiled into application.js, which will include all the files
+// This is a manifest file that'll be compiled into application.es6, which will include all the files
 // listed below.
 //
 // Any JavaScript/Coffee file within this directory, lib/assets/javascripts, or any plugin's
@@ -22,20 +22,3 @@
 //= require jquery_nested_form
 //= require jquery-ui/widgets/tooltip
 //= require_tree .
-
-document.addEventListener('turbolinks:click', function (event) {
-    let anchorElement = event.target;
-    let isSamePageAnchor = (
-        anchorElement.hash &&
-        anchorElement.origin === window.location.origin &&
-        anchorElement.pathname === window.location.pathname
-    );
-
-    if (isSamePageAnchor) {
-        Turbolinks.controller.pushHistoryWithLocationAndRestorationIdentifier(
-            event.data.url,
-            Turbolinks.uuid()
-        );
-        event.preventDefault()
-    }
-});

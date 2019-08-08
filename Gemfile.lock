@@ -128,8 +128,7 @@ GEM
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
-    bcrypt (3.1.12)
-    bcrypt (3.1.12-x64-mingw32)
+    bcrypt (3.1.13)
     bindex (0.5.0)
     bootsnap (1.4.4)
       msgpack (~> 1.0)
@@ -499,6 +498,7 @@ DEPENDENCIES
   aws-sdk-s3
   axe-matchers
   babel-transpiler
+  bcrypt (~> 3.1.13)
   bootsnap (= 1.4.4)
   brakeman
   byebug
