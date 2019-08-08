@@ -124,3 +124,6 @@ gem 'active_admin_theme'
 
 gem "chartkick"
 gem 'groupdate'
+
+gem 'ntlm-sso', '~> 0.0.1'
+gem 'net-ldap'

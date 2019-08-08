@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'net/ldap'
+
 ### This is the base class for our Users. ^^ Above comment is for Rubocop
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
@@ -73,4 +75,59 @@ class User < ApplicationRecord
     return 'User' unless last_name || first_name
     "#{first_name} #{last_name}"
   end
+
+  # Authenticates the User via LDAP and saves their LDAP photo if they have one
+  def self.authenticate_ldap(domain_username)
+    # raise ArgumentError, 'domain is nil' if domain.nil? or domain.blank?
+    # raise ArgumentError, 'password is nil' if password.nil? or password.blank?
+
+    # ldap      = Net::LDAP.new
+    # ldap.host = LDAP_CONFIG['host']
+    # ldap.port = LDAP_CONFIG['port']
+    # ldap.auth "#{domain}\\#{login}", password
+    # bound = ldap.bind
+    ldap = Net::LDAP.new(
+        host: LDAP_CONFIG['host'],    # Thankfully this is a standard name
+        post: LDAP_CONFIG['port'],
+        # auth: { method: :simple, username: domain, password: nil }
+    )
+
+    # if ldap.bind
+    #   logger.info "LDAP bind: #{ldap.inspect}"
+      # Yay, the login credentials were valid!
+      # Get the user's full name and return it
+      ldap.search(
+          base:         LDAP_CONFIG['base'],
+          filter:       Net::LDAP::Filter.eq( "sAMAccountName", domain_username ),
+          attributes:   %w[ displayName mail ],
+          return_result:true
+      )
+      get_ldap_response(ldap)
+    # end
+    # if bound
+
+    # photo_path = "#{Rails.public_path}/images/avatars/#{id}.jpg"
+    # unless File.exists?(photo_path)
+    #   base   = LDAP_CONFIG['base']
+    #   filter = Net::LDAP::Filter.eq('sAMAccountName', login)
+    #   ldap.search(:base => base, :filter => filter, :return_result => true) do |entry|
+    #     [:thumbnailphoto, :jpegphoto, :photo].each do |photo_key|
+    #       if entry.attribute_names.include?(photo_key)
+    #         @ldap_photo = entry[photo_key][0]
+    #         File.open(photo_path, 'wb') { |f| f.write(@ldap_photo) }
+    #         break
+    #       end
+    #     end
+    #   end
+    # end
+    # end
+    # bound
+  end
+
+  def self.get_ldap_response(ldap)
+    msg = "Response Code: #{ ldap.get_operation_result.code }, Message: #{ ldap.get_operation_result.message }"
+
+    raise msg unless ldap.get_operation_result.code == 0
+  end
+
 end

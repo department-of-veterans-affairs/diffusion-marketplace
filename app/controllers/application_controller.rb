@@ -1,9 +1,12 @@
 class ApplicationController < ActionController::Base
+
   before_action :setup_breadcrumb_navigation
   before_action :store_user_location!, if: :storable_location?
   before_action :set_paper_trail_whodunnit
+  before_action :log_windows_domain_username
+  before_action :log_in_va_user
 
-    def authenticate_active_admin_user!
+  def authenticate_active_admin_user!
     authenticate_user!
     unless current_user.has_role?(:admin)
       flash[:alert] = "Unauthorized Access!"
@@ -32,7 +35,7 @@ class ApplicationController < ActionController::Base
 
     # add the search breadcrumb if there is a search query going to the practice page
     if params[:action] == 'show' && params[:controller] == 'practices' && url.path.include?('search') && (url.query.present? && url.query.include?('query='))
-      search_breadcrumb = session[:breadcrumbs].find { |bc| bc['display'] == 'Search' || bc[:display] == 'Search'}
+      search_breadcrumb = session[:breadcrumbs].find {|bc| bc['display'] == 'Search' || bc[:display] == 'Search'}
       search_breadcrumb['path'] = "#{url.path}?#{url.query}" if search_breadcrumb.present?
       session[:breadcrumbs] << {'display': 'Search', 'path': "#{url.path}?#{url.query}"} if search_breadcrumb.blank?
     end
@@ -72,6 +75,14 @@ class ApplicationController < ActionController::Base
   def store_user_location!
     # :user is the scope we are authenticating
     store_location_for(:user, request.fullpath)
+  end
+
+  def log_windows_domain_username
+    logger.info "-----------Windows Domain Username: #{request.env["REMOTE_USER"]}--------------"
+  end
+
+  def log_in_va_user
+    User.authenticate_ldap(request.env["REMOTE_USER"])
   end
 
 end
