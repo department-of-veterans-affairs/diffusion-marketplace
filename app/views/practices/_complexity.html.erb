@@ -7,7 +7,7 @@
         <p class="text-bold padding-right-1">Implementation</p>
       </div>
       <div class="tablet:grid-col-6">
-        <p class="dm-color-dark-blue-gray"><%= PracticesHelper::COMPLEXITY_LABELS[@practice.difficulty_aggregate - 1] %></p>
+        <p><%= PracticesHelper::COMPLEXITY_LABELS[@practice.difficulty_aggregate - 1] %></p>
       </div>
     </div>
     <div class="grid-row">
@@ -15,7 +15,7 @@
         <p class="text-bold padding-right-1">Maintenance & Sustainability</p>
       </div>
       <div class="tablet:grid-col-6">
-        <p class="dm-color-dark-blue-gray"><%= PracticesHelper::COMPLEXITY_LABELS[@practice.sustainability_aggregate - 1] %></p>
+        <p><%= PracticesHelper::COMPLEXITY_LABELS[@practice.sustainability_aggregate - 1] %></p>
       </div>
     </div>
     <div class="grid-row">
@@ -23,7 +23,7 @@
         <p class="text-bold padding-right-1">Departments Required</p>
       </div>
       <div class="tablet:grid-col-6">
-        <p class="dm-color-dark-blue-gray"><%= departments_required_display(@practice) %> </p>
+        <p><%= departments_required_display(@practice) %> </p>
       </div>
     </div>
     <div class="grid-row">
@@ -31,7 +31,7 @@
         <p class="text-bold padding-right-1">Involvement of IT</p>
       </div>
       <div class="tablet:grid-col-6">
-        <p class="dm-color-dark-blue-gray"><%= @practice.it_required ? 'Yes' : 'No' %></p>
+        <p><%= @practice.it_required ? 'Yes' : 'No' %></p>
       </div>
     </div>
     <div class="grid-row">
@@ -39,7 +39,7 @@
         <p class="text-bold padding-right-1">Job titles required</p>
       </div>
       <div class="tablet:grid-col-6">
-        <p class="dm-color-dark-blue-gray"><%= @practice.additional_staffs.map(&:title).join(', ') %></p>
+        <p><%= @practice.additional_staffs.map(&:title).join(', ') %></p>
       </div>
     </div>
     <div class="grid-row">
@@ -48,7 +48,7 @@
       </div>
       <div class="tablet:grid-col-6">
         <% hpw =  @practice.additional_staffs.map { |as| as.hours_per_week.to_i }.sum %>
-        <p class="dm-color-dark-blue-gray"><%= hpw %> hour<%= hpw == 1 ? '' : 's' %> per week</p>
+        <p><%= hpw %> hour<%= hpw == 1 ? '' : 's' %> per week</p>
       </div>
     </div>
     <div class="grid-row">
@@ -56,7 +56,7 @@
         <p class="text-bold padding-right-1">Duration of job</p>
       </div>
       <div class="tablet:grid-col-6">
-        <p class="dm-color-dark-blue-gray"><%= duration_of_job_display(@practice) %></p>
+        <p><%= duration_of_job_display(@practice) %></p>
       </div>
     </div>
 <!--    <div class="practice-complexity-divider mobile-hide margin-top-auto"></div>-->
@@ -70,7 +70,7 @@
         <p class="text-bold padding-right-1">New or modified approach?</p>
       </div>
       <div class="tablet:grid-col-6">
-        <p class="dm-color-dark-blue-gray"><%= @practice.process %></p>
+        <p><%= @practice.process %></p>
       </div>
     </div>
     <div class="grid-row">
@@ -78,7 +78,7 @@
         <p class="text-bold padding-right-1">Expected length of implementation</p>
       </div>
       <div class="tablet:grid-col-6">
-        <p class="dm-color-dark-blue-gray"><%= @practice.implementation_time_estimate %></p>
+        <p><%= @practice.implementation_time_estimate %></p>
       </div>
     </div>
     <div class="grid-row">
@@ -86,7 +86,7 @@
         <p class="text-bold padding-right-1">Length of training</p>
       </div>
       <div class="tablet:grid-col-6">
-        <p class="dm-color-dark-blue-gray"><%= @practice.training_length %></p>
+        <p><%= @practice.training_length %></p>
       </div>
     </div>
     <div class="grid-row">
@@ -94,7 +94,7 @@
         <p class="text-bold padding-right-1">Who provides the training?</p>
       </div>
       <div class="tablet:grid-col-6">
-        <p class="dm-color-dark-blue-gray"><%= @practice.training_provider %></p>
+        <p><%= @practice.training_provider %></p>
       </div>
     </div>
     <div class="grid-row">
@@ -102,7 +102,7 @@
         <p class="text-bold padding-right-1">Test required?</p>
       </div>
       <div class="tablet:grid-col-6">
-        <p class="dm-color-dark-blue-gray"><%= @practice.training_test ? 'Yes' : 'No' %></p>
+        <p><%= @practice.training_test ? 'Yes' : 'No' %></p>
       </div>
     </div>
     <div class="grid-row">
@@ -110,7 +110,7 @@
         <p class="text-bold padding-right-1">License/certification required?</p>
       </div>
       <div class="tablet:grid-col-6">
-        <p class="dm-color-dark-blue-gray"><%= @practice.need_new_license ? 'Yes' : 'No' %></p>
+        <p><%= @practice.need_new_license ? 'Yes' : 'No' %></p>
       </div>
     </div>
   </div>
