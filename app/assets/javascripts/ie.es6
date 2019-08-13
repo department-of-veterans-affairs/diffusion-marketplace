@@ -9,7 +9,7 @@ function detectIE() {
         if (detectIE() && !$('.browsehappy').length) {
             $('#beta-banner').after(`
                 <div class="grid-container">
-                    <div class="usa-alert usa-alert--warning x1-bottom">
+                    <div class="usa-alert usa-alert--warning">
                       <div class="usa-alert__body">
                         <p class="browsehappy">
                             Diffusion Marketplace is not optimized for this browser. 
