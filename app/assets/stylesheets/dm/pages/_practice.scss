@@ -10,45 +10,43 @@
 }
 
 #dm-tabnav {
-  background-color: $dm-color-blue-black;
+
   border: none !important;
-  border-radius: 20px;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
-  color: $dm-color-white;
 
   .usa-sidenav__item {
-    border-top: none !important;
+    border: none !important;
   }
 
-  .usa-sidenav {
-    a {
-      color: $dm-color-white !important;
-    }
-  }
+  //.usa-sidenav {
+  //  a {
+  //    //color: $dm-color-white !important;
+  //    font-weight: normal !important;
+  //  }
+  //}
 
   .dm-tab {
-    border-bottom: 1px solid rgba(229, 229, 229, 0.2);;
-    background-color: transparent;
-    color: $dm-color-white;
-    font-weight: 500;
-    padding: 16px 24px;
-    overflow: hidden;
+    border-bottom: 1px solid #F0F0F0;
+    font-weight: normal;
 
     &.top-tab {
-      border-radius: 20px 20px 0 0;
+      border-top: 1px solid #F0F0F0;
     }
 
     &.bottom-tab {
-      border-radius: 0 0 20px 20px;
     }
 
     &.active, &.tab-active, &:hover {
-      background-color: $dm-color-white;
-      color: $dm-color-primary-blue;
+      font-weight: bold;
+      border-left: 4px solid $dm-color-primary-blue;
+      color: black;
+      background-color: transparent;
     }
 
     &.active, &.tab-active {
-      border-left: 6px solid $dm-color-primary-blue;
+      font-weight: bold;
+      border-left: 4px solid $dm-color-primary-blue;
+      color: black;
+      background-color: transparent;
     }
 
   }
@@ -122,7 +120,7 @@
 }
 
 .practice-summary {
-  line-height: 33px !important;
+  line-height: 26px !important;
 }
 
 .aggregate-circles-position {

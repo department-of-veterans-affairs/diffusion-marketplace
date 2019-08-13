@@ -2,13 +2,13 @@
 <!-- Impact Origin Resources Required Complexity Timeline Risks & Mitigation Support Team -->
 <div class="grid-container position-relative z-top">
   <div id="dm-practice-nav" class="z-top mobile-hide">
-    <ul id="dm-tabnav" class="usa-sidenav dm-tabnav margin-bottom-4">
+    <ul id="dm-tabnav" class="usa-sidenav dm-tabnav margin-bottom-1">
       <li class="usa-sidenav__item">
-        <a href="#overview" class="dm-tab top-tab scroll-to" data-target="#overview" data-turbolinks="false">Impact</a>
+        <a href="#overview" class="dm-tab top-tab scroll-to" data-target="#overview" data-turbolinks="false">Overview</a>
       </li>
       <% if @practice.impact_photos.any? || @practice.video_files.any? || @practice.additional_documents.any? || @practice.publication_files.any? || @practice.publications.any? %>
         <li class="usa-sidenav__item">
-          <a href="#impact" class="dm-tab top-tab scroll-to" data-target="#impact" data-turbolinks="false">Impact</a>
+          <a href="#impact" class="dm-tab scroll-to" data-target="#impact" data-turbolinks="false">Impact</a>
         </li>
       <% end %>
       <% unless !@practice.origin_story || !@practice.origin_title %>
@@ -17,8 +17,7 @@
         </li>
       <% end %>
       <li class="usa-sidenav__item">
-        <a href="#resources_required" class="dm-tab scroll-to" data-target="#resources_required" data-turbolinks="false">Resources
-          Required</a>
+        <a href="#resources_required" class="dm-tab scroll-to" data-target="#resources_required" data-turbolinks="false">Resources</a>
       </li>
       <li class="usa-sidenav__item">
         <a href="#complexity" class="dm-tab scroll-to" data-target="#complexity" data-turbolinks="false">Complexity</a>
@@ -29,18 +28,25 @@
         </li>
       <% end %>
       <li class="usa-sidenav__item">
-        <a href="#risks_and_mitigation" class="dm-tab scroll-to" data-target="#risks_and_mitigation" data-turbolinks="false">Risks &
-          Mitigation</a>
+        <a href="#risk_and_mitigation" class="dm-tab scroll-to" data-target="#risk_and_mitigation" data-turbolinks="false">Risk
+          and
+          mitigation</a>
       </li>
       <li class="usa-sidenav__item">
-        <a href="#support_team" class="dm-tab bottom-tab scroll-to" data-target="#support_team" data-turbolinks="false">Support Team</a>
+        <a href="#contact" class="dm-tab bottom-tab scroll-to" data-target="#contact" data-turbolinks="false">Contact</a>
       </li>
     </ul>
-    <%= link_to 'Take the next step', practice_next_steps_url(practice_id: @practice.slug), id: 'next-steps-link-in-nav', class: 'dm-button-link shadow-1' %>
+    <div class="text-center">
+      <a target="_blank"
+         href="mailto:?subject=<%= email_practice_subject(@practice) %>&body=<%= email_practice_body(@practice) %>" class="usa-button usa-button--outline width-full margin-bottom-1">
+        Share summary
+      </a>
+      <%= link_to 'Take the next step', practice_next_steps_url(practice_id: @practice.slug), id: 'next-steps-link-in-nav', class: 'usa-button width-full' %>
+    </div>
   </div>
 </div>
 <div class="practice-mobile-nav padding-1 z-top desktop:display-none display-flex justify-center">
-  <%= link_to 'Take the next step', practice_next_steps_url(practice_id: @practice.slug), id: 'next-steps-link-in-mobile-nav', class: 'dm-button-link shadow-1' %>
+  <%= link_to 'Take the next step', practice_next_steps_url(practice_id: @practice.slug), id: 'next-steps-link-in-mobile-nav', class: 'usa-button' %>
 </div>
 
 <section class="usa-section p2-top p2-bottom dm-background-light-blue">
@@ -48,7 +54,7 @@
     <div class="grid-row">
       <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
-      <div class="desktop:grid-col-9 grid-col-12 p0 p1-5-right">
+      <div id="overview" class="desktop:grid-col-9 grid-col-12 p0 p1-5-right">
         <%= render "shared/messages" %>
         <% if current_user&.has_role?(:approver_editor) || current_user&.has_role?(:admin) %>
           <div class="right">
@@ -115,13 +121,15 @@
       <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
       <div class="desktop:grid-col-9 grid-col-12 p0 p1-5-right">
-        <div class="tablet:grid-col-5 padding-x-1 padding-top-1">
-          <% if @practice.main_display_image.present? %>
-            <%= image_tag @practice.main_display_image.url(:thumb), alt: "#{@practice.name} display image" %>
-          <% end %>
-        </div>
-        <div class="tablet:grid-col-7 padding-x-1">
-          <p class="practice-summary margin-0 font-ui-md"><%= @practice.summary %></p>
+        <div class="grid-row">
+          <div class="tablet:grid-col-5 padding-x-1 padding-top-1">
+            <% if @practice.main_display_image.present? %>
+              <%= image_tag @practice.main_display_image.url(:thumb), alt: "#{@practice.name} display image" %>
+            <% end %>
+          </div>
+          <div class="tablet:grid-col-7 padding-x-1">
+            <p class="practice-summary margin-0 font-ui-md"><%= @practice.summary %></p>
+          </div>
         </div>
       </div>
     </div>
@@ -241,7 +249,7 @@
   </section>
 <% end %>
 
-<!-- "Support Team" section -->
+<!-- "Support Team" || "Contact" section -->
 <% if @practice.va_employees.any? %>
   <section class="p3-top dm-background-white">
     <div class="grid-container">
