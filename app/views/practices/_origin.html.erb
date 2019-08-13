@@ -8,10 +8,10 @@
         <% end %>
       </div>
       <div>
-        <p class="margin-0 hyphens-auto word-break-break-word"><%= @practice.origin_story %></p>
+        <p class="practice-summary margin-0 hyphens-auto word-break-break-word"><%= @practice.origin_story %></p>
       </div>
     </div>
-    <div class="tablet:grid-col-4 display-flex flex-align-center">
+    <div class="tablet:grid-col-4 display-flex">
       <% if @practice.origin_picture.present? %>
         <div class='margin-y-2 origin-picture-container overflow-hidden margin-x-auto rounded'>
           <%= image_tag @practice.origin_picture.url(:thumb), class: '', alt: "#{@practice.name} origins" %>
