@@ -21,4 +21,13 @@
 //= require uswds/uswds
 //= require jquery_nested_form
 //= require jquery-ui/widgets/tooltip
-//= require_tree .
+//= require ahoy
+//= require cable
+//= require fuse-3.4.4
+//= require mark
+//= require ie
+//= require next-steps
+//= require practices
+//= require _feedback_survey
+//= require _search
+//= require _side_nav

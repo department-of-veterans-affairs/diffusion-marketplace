@@ -17,6 +17,7 @@ class PracticesController < ApplicationController
   # GET /practices/1
   # GET /practices/1.json
   def show
+    ahoy.track "Practice show", {practice_id: @practice.id} if current_user.present? && Ahoy::Event.where(user_id: current_user.id, name: 'Practice show').where_props(practice_id: @practice.id).blank?
   end
 
   # GET /practices/1/edit
@@ -82,6 +83,7 @@ class PracticesController < ApplicationController
   end
 
   def search
+    ahoy.track "Practice search", {search_term: request.params[:query]} if request.params[:query].present?
     @practices = Practice.where(approved: true, published: true).order(name: :asc)
     @facilities_data = facilities_json['features']
     @practices_json = practices_json(@practices)

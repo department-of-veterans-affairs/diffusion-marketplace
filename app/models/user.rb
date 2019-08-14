@@ -11,6 +11,8 @@ class User < ApplicationRecord
 
   rolify before_add: :remove_all_roles
 
+  has_many :visits, class_name: 'Ahoy::Visit'
+
   has_many :practices
 
   USER_ROLES = %w[approver_editor admin].freeze
