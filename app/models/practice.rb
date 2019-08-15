@@ -2,6 +2,54 @@ class Practice < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged
   acts_as_list
+  visitable :ahoy_visit
+
+  attr_accessor :views
+  attr_accessor :current_month_views
+  attr_accessor :last_month_views
+  attr_accessor :two_months_ago_views
+  attr_accessor :three_months_ago_views
+  attr_accessor :current_month_commits
+  attr_accessor :last_month_commits
+  attr_accessor :two_months_ago_commits
+  attr_accessor :three_months_ago_commits
+
+  def views
+    Ahoy::Event.where_props(practice_id: id).count
+  end
+
+  def current_month_views
+    date_range_views(Date.today.beginning_of_month, Date.today.end_of_month)
+  end
+
+  def last_month_views
+    date_range_views((Date.today - 1.months).at_beginning_of_month, (Date.today - 1.months).at_end_of_month)
+  end
+
+  def two_months_ago_views
+    date_range_views((Date.today - 2.months).at_beginning_of_month, (Date.today - 2.months).at_end_of_month)
+  end
+
+  def three_months_ago_views
+    date_range_views((Date.today - 3.months).at_beginning_of_month, (Date.today - 3.months).at_end_of_month)
+  end
+
+  def current_month_commits
+    committed_user_count_by_range(Date.today.beginning_of_month, Date.today.end_of_month)
+  end
+
+  def last_month_commits
+    committed_user_count_by_range((Date.today - 1.months).at_beginning_of_month, (Date.today - 1.months).at_end_of_month)
+  end
+
+  def two_months_ago_commits
+    committed_user_count_by_range((Date.today - 2.months).at_beginning_of_month, (Date.today - 2.months).at_end_of_month)
+  end
+
+  def three_months_ago_commits
+    committed_user_count_by_range((Date.today - 3.months).at_beginning_of_month, (Date.today - 3.months).at_end_of_month)
+  end
+
   has_paper_trail
   # has_attached_file :main_display_image, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/:style/missing.png"
   has_attached_file :main_display_image, styles: { thumb: '1280x720#' }
@@ -82,11 +130,19 @@ class Practice < ApplicationRecord
   TIME_ESTIMATE_OPTIONS =['1 week', '1 month', '3 months', '6 months', '1 year', 'longer than 1 year', 'Other (Please specify)']
   NUMBER_DEPARTMENTS_OPTIONS =['1. Single department', '2. Two departments', '3. Three departments', '4. Four or more departments']
 
-  def comitted_user_count
+  def committed_user_count
     users.count
+  end
+
+  def committed_user_count_by_range(start_date, end_date)
+    users.where(created_at:start_date..end_date).count
   end
 
   def number_of_adopted_facilities
     number_adopted
+  end
+
+  def date_range_views(start_date, end_date)
+    Ahoy::Event.where_props(practice_id: id).where(time: start_date..end_date).count
   end
 end
