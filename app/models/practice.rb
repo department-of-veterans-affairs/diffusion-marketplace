@@ -9,6 +9,10 @@ class Practice < ApplicationRecord
   attr_accessor :last_month_views
   attr_accessor :two_months_ago_views
   attr_accessor :three_months_ago_views
+  attr_accessor :current_month_commits
+  attr_accessor :last_month_commits
+  attr_accessor :two_months_ago_commits
+  attr_accessor :three_months_ago_commits
 
   def views
     Ahoy::Event.where_props(practice_id: id).count
@@ -28,6 +32,22 @@ class Practice < ApplicationRecord
 
   def three_months_ago_views
     date_range_views((Date.today - 3.months).at_beginning_of_month, (Date.today - 3.months).at_end_of_month)
+  end
+
+  def current_month_commits
+    committed_user_count_by_range(Date.today.beginning_of_month, Date.today.end_of_month)
+  end
+
+  def last_month_commits
+    committed_user_count_by_range((Date.today - 1.months).at_beginning_of_month, (Date.today - 1.months).at_end_of_month)
+  end
+
+  def two_months_ago_commits
+    committed_user_count_by_range((Date.today - 2.months).at_beginning_of_month, (Date.today - 2.months).at_end_of_month)
+  end
+
+  def three_months_ago_commits
+    committed_user_count_by_range((Date.today - 3.months).at_beginning_of_month, (Date.today - 3.months).at_end_of_month)
   end
 
   has_paper_trail
