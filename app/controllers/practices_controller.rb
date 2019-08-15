@@ -17,7 +17,7 @@ class PracticesController < ApplicationController
   # GET /practices/1
   # GET /practices/1.json
   def show
-    ahoy.track "Practice show", {practice_id: @practice.id} if current_user.present? && Ahoy::Event.where(user_id: current_user.id, name: 'Practice show').where_props(practice_id: @practice.id).blank?
+    ahoy.track "Practice show", {practice_id: @practice.id} if current_user.present?
   end
 
   # GET /practices/1/edit
