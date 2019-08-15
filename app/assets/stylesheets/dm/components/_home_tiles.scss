@@ -41,7 +41,7 @@ DM TILES ON THE HOME PAGE
     }
 
     .middle {
-      background-color: rgba($dm-color-pastel-blue, .75);
+      background-color: $dm-color-pastel-blue;
       height: calc(100% + 1px);
       left: 50%;
       opacity: 0;

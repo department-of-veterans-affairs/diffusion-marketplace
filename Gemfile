@@ -124,3 +124,5 @@ gem 'active_admin_theme'
 
 gem "chartkick"
 gem 'groupdate'
+
+gem 'ahoy_matey'

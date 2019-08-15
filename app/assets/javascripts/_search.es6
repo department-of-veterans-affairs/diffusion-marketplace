@@ -145,6 +145,7 @@ function searchPracticesPage() {
         timeout = setTimeout(function () {
             search(searchField.value);
             window.history.pushState("", "", '/search?query=' + searchField.value);
+            ahoy.track('Practice search', {search_term: searchField.value});
             if (typeof ga === 'function') {
                 ga('send', {
                     hitType: 'event',

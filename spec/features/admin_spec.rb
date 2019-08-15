@@ -46,6 +46,27 @@ describe 'The admin dashboard', type: :feature do
 
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_current_path(admin_root_path)
+
+    expect(page).to have_selector('#users-information', visible: true)
+    expect(page).to have_selector('#practice-leaderboards', visible: false)
+    expect(page).to have_selector('#practice-search-terms-table', visible: false)
+
+    within(:css, '.tabs.ui-tabs') do
+      click_link('Practice Leaderboards')
+      expect(page).to have_selector('#users-information', visible: false)
+      expect(page).to have_selector('#practice-leaderboards', visible: true)
+      expect(page).to have_selector('#practice-search-terms-table', visible: false)
+
+      click_link('Practice Search Terms')
+      expect(page).to have_selector('#users-information', visible: false)
+      expect(page).to have_selector('#practice-leaderboards', visible: false)
+      expect(page).to have_selector('#practice-search-terms-table', visible: true)
+
+      click_link('Users Information')
+      expect(page).to have_selector('#users-information', visible: true)
+      expect(page).to have_selector('#practice-leaderboards', visible: false)
+      expect(page).to have_selector('#practice-search-terms-table', visible: false)
+    end
   end
 
   it 'should have several tabs that allow navigation' do
@@ -55,26 +76,28 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_current_path(admin_root_path)
 
-    click_link('Dashboard')
-    expect(page).to have_current_path(admin_dashboard_path)
+    within(:css, '#header') do
+      click_link('Dashboard')
+      expect(page).to have_current_path(admin_dashboard_path)
 
-    click_link('Comments')
-    expect(page).to have_current_path(admin_comments_path)
+      click_link('Comments')
+      expect(page).to have_current_path(admin_comments_path)
 
-    click_link('Departments')
-    expect(page).to have_current_path(admin_departments_path)
+      click_link('Departments')
+      expect(page).to have_current_path(admin_departments_path)
 
-    click_link('Practice Partners')
-    expect(page).to have_current_path(admin_practice_partners_path)
+      click_link('Practice Partners')
+      expect(page).to have_current_path(admin_practice_partners_path)
 
-    click_link('Practices')
-    expect(page).to have_current_path(admin_practices_path)
+      click_link('Practices')
+      expect(page).to have_current_path(admin_practices_path)
 
-    click_link('Users')
-    expect(page).to have_current_path(admin_users_path)
+      click_link('Users')
+      expect(page).to have_current_path(admin_users_path)
 
-    click_link('Versions')
-    expect(page).to have_current_path(admin_versions_path)
+      click_link('Versions')
+      expect(page).to have_current_path(admin_versions_path)
+    end
   end
 
   it 'should be able to view and update departments' do
@@ -123,8 +146,10 @@ describe 'The admin dashboard', type: :feature do
     login_as(@admin, scope: :user, run_callbacks: false)
     visit '/admin'
 
-    click_link('Practices')
-    expect(page).to have_current_path(admin_practices_path)
+    within(:css, '#header') do
+      click_link('Practices')
+      expect(page).to have_current_path(admin_practices_path)
+    end
 
     within_table('index_table_practices') do
       first('.table_actions').click_link('View')
@@ -135,12 +160,14 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_current_path(edit_practice_path(@practice))
   end
 
-  it 'should be able to view, create, and update Users', js: true do
+  it 'should be able to view, create, and update Users' do
     login_as(@admin, scope: :user, run_callbacks: false)
     visit '/admin'
 
-    click_link('Users')
-    expect(page).to have_current_path(admin_users_path)
+    within(:css, '#header') do
+      click_link('Users')
+      expect(page).to have_current_path(admin_users_path)
+    end
 
     click_link('New User')
     expect(page).to have_current_path(new_admin_user_path)
