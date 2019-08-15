@@ -36,13 +36,13 @@
             if (event.target == modal) {
                 modal.style.display = "none";
             }
-        }
+        };
 
         // When the user shift tabs to the first element in the modal, close it
 
         $firstEl.on('focus', function(e){
           modal.style.display = "none";
-        })
+        });
 
         // When the user focuses on the last element in the modal, close it
         $lastEl.on('focus', function(e){

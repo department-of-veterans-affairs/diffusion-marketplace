@@ -46,7 +46,7 @@
   .marketplace-footer {}
 
   .marketplace-card-middle {
-    background-color: rgba($dm-color-pastel-blue, .95);
+    background-color: $dm-color-pastel-blue;
     border-radius: 20px;
     height: calc(100% + 1px);
     left: 50%;
