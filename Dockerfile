@@ -1,6 +1,6 @@
 FROM agilesix/ruby:2.6.3-centos7.6
 
-RUN gem install bundler
+RUN gem install bundler --force
 
 # Preinstall gems. This will ensure that Gem Cache wont drop on code change
 WORKDIR /tmp
