@@ -1,0 +1,77 @@
+<div class="x0-top">
+  <section class="usa-section" style="min-height: calc(100vh - 286px)">
+    <div class="grid-container">
+      <div class="grid-row grid-gap">
+        <%= render partial: 'side_nav' %>
+        <div class="usa-layout-docs__main desktop:grid-col-9 usa-prose">
+          <div class="login-header">
+            <div class="login-header-overlay">
+              <h1 class="x0">Your Profile</h1>
+              <p class="fs1-125">Instructions about editing profile. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+          </div>
+          <div class="login-body">
+            <%= form_for(current_user, url: edit_profile_path, html: {method: :post, class: 'x1-top'}) do |f| %>
+              <span>Photo</span><br/>
+              <div class="grid-container p0">
+                <div class="grid-row">
+                  <div class="grid-col-5">
+                    <% if current_user.avatar.attached? %>
+                      <img src="<%= (url_for(current_user.avatar)) %>" class="avatar-profile-photo"/>
+                    <% end %>
+                  </div>
+                  <div class="grid-col-7">
+                    <p>
+                      Blurb about photo requirements such as size, that it should be a headshot, any tips on how to take a good photo, or if they have an existing VA photo they should use here.
+                    </p>
+                    <p>
+                      <div class='usa-button usa-button--outline' aria-expanded='false' id='toggle-photo'>Edit photo</div>
+                    </p>
+                    <div class="usa-accordion__content" id='photo-file-upload' aria-hidden="true">
+                      <%= f.label 'Avatar' %>
+                      <%= f.file_field :avatar %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="usa-form">
+                <div class="field">
+                  <%= f.label :first_name, class: 'x1-top x1-bottom' %><br/>
+                  <%= f.text_field :first_name, autofocus: true, class: 'usa-input' %>
+                </div>
+
+                <div class="field x1-top">
+                  <%= f.label :last_name, class: 'x0 x1-top' %><br/>
+                  <%= f.text_field :last_name, class: 'usa-input' %>
+                </div>
+
+                <div class="field x1-top">
+                  <%= f.label :phone_number, 'Work phone number', class: 'x0 x1-top' %><br/>
+                  <%= f.phone_field :phone_number, autofocus: true, class: 'usa-input' %>
+                </div>
+
+                <div class="field x1-top">
+                  <%= f.label :job_title, class: 'x0 x1-top' %><br/>
+                  <%= f.text_field :job_title, class: 'usa-input' %>
+                </div>
+              </div>
+              <div class="field x1-top">
+                <%= f.label :bio, class: 'x0 x1-top' do %>
+                  <span>Biography</span> <span class='dm-font-color-steel-grey'>(250 character limit)</span>
+                  <p class='maxw-30rem'>Instructions about how to write bio/description, wordcount, what type of information to include</p>
+                <% end %>
+                <%= f.text_area :bio, class: 'usa-input height-200px' %>
+                <br />
+              </div>
+
+              <div class="actions">
+                <%= f.submit "Update", class: 'usa-button usa-button-primary' %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

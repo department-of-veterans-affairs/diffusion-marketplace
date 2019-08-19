@@ -13,6 +13,8 @@ class User < ApplicationRecord
 
   has_many :practices
 
+  has_one_attached :avatar
+
   USER_ROLES = %w[approver_editor admin].freeze
 
   validate :valid_email

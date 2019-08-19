@@ -11,6 +11,17 @@ class UsersController < ApplicationController
     @users = User.all.order(:email).page(params[:page])
   end
 
+  def edit_profile
+    redirect_to users_path unless current_user.present?
+  end
+
+  def update_profile
+    redirect_to users_path unless current_user.present?
+    current_user.update(user_params)
+    flash[:success] = "Your profile has been updated."
+    redirect_to edit_profile_path
+  end
+
   def update
     if params[:user][:role].present?
       if params[:user][:role] == 'user'
@@ -63,6 +74,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation, :job_title, :first_name, :last_name, :phone_number, :visn, :skip_va_validation, :skip_password_validation)
+    params.require(:user).permit(:avatar, :email, :password, :password_confirmation, :job_title, :first_name, :last_name, :phone_number, :visn, :skip_va_validation, :skip_password_validation, :bio)
   end
 end
