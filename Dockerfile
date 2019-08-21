@@ -20,7 +20,7 @@ RUN (bundle check || bundle install --without development test)
 
 RUN rm -rf config/credentials.yml.enc
 RUN rm -rf config/master.key
-RUN EDITOR=vim bundle exec rails credentials:edit
+RUN EDITOR="vim --wait" bundle exec rails credentials:edit
 
 RUN DB_ADAPTER=nulldb RAILS_ENV=production SES_SMTP_USERNAME=diffusion_marketplace SES_SMTP_PASSWORD=diffusion_marketplace bundle exec rake assets:precompile HOSTNAME=diffusion-marketplace.va.gov
 
