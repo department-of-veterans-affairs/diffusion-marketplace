@@ -52,3 +52,4 @@ public/system
 .rubocop.yml
 
 .DS_Store
+.env

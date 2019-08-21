@@ -1,65 +1,48 @@
-version: '2'
+version: '3'
 services:
-  db:
-    image: postgres:latest
-    environment:
-      POSTGRES_PASSWORD: mysecretlocalpassword
-      POSTGRES_USER: postgres
-      POSTGRES_DB: web_app
-  sharedbox:
-    image: busybox
-    volumes:
-      - /var/www
-      - /var/run
   proxy:
-    image: agilesix/nginx:v1
+    image: dm-proxy
+    build:
+      context: .
+      dockerfile: ./proxy/Dockerfile
     volumes:
       - ./logs:/var/log
-    volumes_from:
-      - sharedbox
     ports:
-      - "8080:80"
+      - "80:80"
     depends_on:
-      - web
-  web:
-    image: agilesix/va-diffusion-marketplace:latest
+      - app
+  app:
+    image: dm:vaec
     build:
       context: .
       dockerfile: Dockerfile
       args:
-         DEVISE_SECRET_KEY: 50739611fb998e73b639c302fa88344a32bd17dc62b7e88749aa8a6cecf97780627be4b52544c6fafc1777826a53d8e10b3e93de3e9ae710037525e7c2d57a1d
-         PAPER_CLIP_S3_HOST_NAME: PAPER_CLIP_S3_HOST_NAME
-         PAPER_CLIP_S3_BUCKET_NAME: PAPER_CLIP_S3_BUCKET_NAME
-         PAPER_CLIP_AWS_ACCESS_KEY_ID: PAPER_CLIP_AWS_ACCESS_KEY_ID
-         PAPER_CLIP_AWS_SECRET_ACCESS_KEY: PAPER_CLIP_AWS_SECRET_ACCESS_KEY
-         PAPER_CLIP_AWS_REGION: PAPER_CLIP_AWS_REGION
+        S3_BUCKET_NAME: dev-dm
+        AWS_ACCESS_KEY_ID: ABCD
+        AWS_SECRET_ACCESS_KEY: 1234
+        AWS_REGION: us-gov-west-1
     environment: &app_server_enviroment_vars
-      CONTAINER_ROLE: 'app_server'
-      RAILS_ENV: production
-      MAX_THREADS: 2     # Puma threads,  watch out so you don't run out of DB connection pool
-      WEB_CONCURRENCY: 1 # should match CPU of server
-      SECRET_KEY_BASE: 19d07059ab81ff584bd8fd7be03ed765c63f5f4c3518d05f39b41c7152134e294b2f09cbf5d925045caab0ef6475862fc42c8e6b35d63e353a1472057e90f8c4
-      DEVISE_SECRET_KEY: 50739611fb998e73b639c302fa88344a32bd17dc62b7e88749aa8a6cecf97780627be4b52544c6fafc1777826a53d8e10b3e93de3e9ae710037525e7c2d57a1d
-
-      POSTGRES_PASSWORD: mysecretlocalpassword
-      POSTGRES_USER: postgres
-      POSTGRES_DB: web_app
-      POSTGRES_HOST: db
-      POSTGRES_PORT: 5432
-
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      REDIS_DB_ID: 0 # id of redis db
-
-      S3_BUCKET_NAME: PAPER_CLIP_S3_BUCKET_NAME
-      AWS_ACCESS_KEY_ID: PAPER_CLIP_AWS_ACCESS_KEY_ID
-      AWS_SECRET_ACCESS_KEY: PAPER_CLIP_AWS_SECRET_ACCESS_KEY
-      AWS_REGION: PAPER_CLIP_AWS_REGION
+      # The AWS key and secret access key refer to the S3 bucket user
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_REGION: ${AWS_REGION}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      CONTAINER_ROLE: app_server
+      DO_NOT_REPLY_MAILER_SENDER: ${DO_NOT_REPLY_MAILER_SENDER}
+      GA_TRACKING_ID: ${GA_TRACKING_ID}
+      HOSTNAME: ${HOSTNAME}
+      MAILER_SENDER: ${MAILER_SENDER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_USER: ${POSTGRES_USER}
+      RAILS_ENV: ${RAILS_ENV}
+      REDIS_URL: ${REDIS_URL}
+      S3_BUCKET_NAME: ${S3_BUCKET_NAME}
+      SES_SMTP_PASSWORD: ${SES_SMTP_PASSWORD}
+      SES_SMTP_USERNAME: ${SES_SMTP_USERNAME}
+      SURVEY_MONKEY_PASSWORD: ${SURVEY_MONKEY_PASSWORD}
+      SURVEY_MONKEY_TOKEN: ${SURVEY_MONKEY_TOKEN}
+      SURVEY_MONKEY_USERNAME: ${SURVEY_MONKEY_USERNAME}
     volumes:
       - ./logs:/app/log
-    volumes_from:
-      - sharedbox
-    links:
-      - db
-    depends_on:
-      - db

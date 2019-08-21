@@ -1,21 +1,22 @@
-# if ENV['RAILS_ENV'] == 'production'
-#   threads_count = ENV.fetch("MAX_THREADS") { 5 }.to_i
-#   threads threads_count, threads_count
-#
-#   bind "unix:///var/run/web-puma-app.sock?umask=0000"
-#
-#   stdout_redirect "/var/log/web-puma.stdout.log", "/var/log/web-puma.stderr.log", true
-#
-#   environment ENV.fetch("RAILS_ENV") { "development" }
-#
-#   workers ENV.fetch("WEB_CONCURRENCY") { 2 }
-#
-#   preload_app!
-#
-#   on_worker_boot do
-#     ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
-#   end
-# else
+if ENV['RAILS_ENV'] == 'production'
+  threads_count = ENV.fetch("MAX_THREADS") { 5 }.to_i
+  threads threads_count, threads_count
+
+  # bind "unix:///var/run/web-puma-app.sock?umask=0000"
+  port ENV.fetch("PORT") { 3000 }
+
+  stdout_redirect "/var/log/web-puma.stdout.log", "/var/log/web-puma.stderr.log", true
+
+  environment ENV.fetch("RAILS_ENV") { "development" }
+
+  workers ENV.fetch("WEB_CONCURRENCY") { 2 }
+
+  preload_app!
+
+  on_worker_boot do
+    ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
+  end
+else
 #comment the above and uncomment this section if using `rails s`. do not check in
 # Puma can serve each request in a thread from an internal thread pool.
 # The `threads` method setting takes two numbers a minimum and maximum.
@@ -40,7 +41,7 @@
 # Workers do not work on JRuby or Windows (both of which do not support
 # processes).
 #
-workers ENV.fetch("WEB_CONCURRENCY") { 2 }
+# workers ENV.fetch("WEB_CONCURRENCY") { 2 }
 
 # Use the `preload_app!` method when specifying a `workers` number.
 # This directive tells Puma to first boot the application and load code
@@ -49,7 +50,7 @@ workers ENV.fetch("WEB_CONCURRENCY") { 2 }
 # you need to make sure to reconnect any threads in the `on_worker_boot`
 # block.
 #
-preload_app!
+# preload_app!
 
 # The code in the `on_worker_boot` will be called if you are using
 # clustered mode by specifying a number of `workers`. After each worker
@@ -58,10 +59,10 @@ preload_app!
 # or connections that may have been created at application boot, Ruby
 # cannot share connections between processes.
 #
-on_worker_boot do
-  ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
-end
+# on_worker_boot do
+#   ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
+# end
 
 # Allow puma to be restarted by `rails restart` command.
   plugin :tmp_restart
-# end
+end
