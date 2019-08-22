@@ -53,3 +53,5 @@ public/system
 
 .DS_Store
 .env
+
+*.pem
