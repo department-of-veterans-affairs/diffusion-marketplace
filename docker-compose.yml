@@ -11,6 +11,11 @@ services:
       - "80:80"
     depends_on:
       - app
+    networks:
+      default:
+      proxy_default:
+        aliases:
+          - DIFFUSION_MARKETPLACE
   app:
     image: dm:vaec
     build:
@@ -46,3 +51,8 @@ services:
       SURVEY_MONKEY_USERNAME: ${SURVEY_MONKEY_USERNAME}
     volumes:
       - ./logs:/app/log
+      - assets:/app/public/assets/
+volumes:
+  assets:
+networks:
+  proxy_default:
