@@ -18,7 +18,6 @@ ENV RACK_ENV='production'
 COPY Gemfile Gemfile
 COPY Gemfile.lock Gemfile.lock
 RUN bundle install --jobs 20 --retry 5 --without development test
-
 COPY . .
 
 RUN rm -rf config/credentials.yml.enc

@@ -7,9 +7,9 @@ services:
       dockerfile: ./proxy/Dockerfile
     volumes:
       - ./logs:/var/log
-      - webapp:/var/www
+      - app:/var/www
     ports:
-      - "8080:80"
+      - "80:80"
     depends_on:
       - app
     links:
@@ -17,7 +17,8 @@ services:
   app:
     image: dm:vaec
     volumes:
-      - webapp:/var/www
+      - ./logs:/app/log
+      - app:/var/www
     build:
       context: .
       dockerfile: Dockerfile
@@ -50,5 +51,8 @@ services:
       SURVEY_MONKEY_TOKEN: ${SURVEY_MONKEY_TOKEN}
       SURVEY_MONKEY_USERNAME: ${SURVEY_MONKEY_USERNAME}
 volumes:
-  webapp:
+  app:
+    external: false
+#  configs:
+#    external: false
 
