@@ -22,7 +22,7 @@ WORKDIR $RAILS_ROOT
 # create log directory
 RUN mkdir log
 # copy over static assets
-COPY public public/
+#COPY public public/
 # Copy Nginx config template
 #COPY proxy/nginx.conf /tmp/docker.nginx
 COPY proxy/nginx.conf /etc/nginx/nginx.conf
