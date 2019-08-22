@@ -7,6 +7,7 @@ then
 elif [ "$CONTAINER_ROLE" == "app_server" ]
 then
   echo "web start: bundle exec rails db:migrate && bundle exec puma -C config/puma.rb"
+  bundle exec rails assets:precompile
   cp -R /app/public /var/www/
   bundle exec rails db:migrate && bundle exec puma -C config/puma.rb
 else
