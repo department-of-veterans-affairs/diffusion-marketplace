@@ -7,6 +7,8 @@ ENV nginxversion="1.17.3-1" \
     osversion="7" \
     elversion="7"
 
+RUN yum install -y yum-plugin-ovl
+
 RUN yum install -y wget openssl sed &&\
     yum -y autoremove &&\
     yum clean all &&\
