@@ -1,21 +1,16 @@
 version: '3'
 services:
   proxy:
-    image: dm-proxy
+    image: proxy
     build:
       context: .
       dockerfile: ./proxy/Dockerfile
     volumes:
       - ./logs:/var/log
     ports:
-      - "80:80"
+      - "8080:80"
     depends_on:
       - app
-    networks:
-      default:
-      proxy_default:
-        aliases:
-          - DIFFUSION_MARKETPLACE
   app:
     image: dm:vaec
     build:
@@ -49,10 +44,3 @@ services:
       SURVEY_MONKEY_PASSWORD: ${SURVEY_MONKEY_PASSWORD}
       SURVEY_MONKEY_TOKEN: ${SURVEY_MONKEY_TOKEN}
       SURVEY_MONKEY_USERNAME: ${SURVEY_MONKEY_USERNAME}
-    volumes:
-      - ./logs:/app/log
-      - assets:/app/public/assets/
-volumes:
-  assets:
-networks:
-  proxy_default:
