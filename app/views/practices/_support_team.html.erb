@@ -1,7 +1,7 @@
 <!-- "Team" section -->
 <section class="usa-section margin-y-0 p0">
   <div class="grid-container">
-    <h3 id="support_team" class="font-sans-lg fw-bold margin-top-0 margin-bottom-6 font-ui-xl">Contact our support team for inquiries</h3>
+    <h3 id="contact" class="font-sans-lg fw-bold margin-top-0 margin-bottom-6 font-ui-xl">Contact our support team for inquiries</h3>
 
     <div class="grid-row grid-gap-lg margin-top-4 margin-bottom-2 justify-center">
       <% @practice.va_employees.each do |employee| %>
@@ -13,7 +13,7 @@
               <%= image_tag 'user.svg', alt: employee.name %>
             <% end %>
           </div>
-          <div class="grid-col-fill margin-auto">
+          <div class="grid-col-fill">
             <h4 class="margin-y-0"><%= employee.name %></h4>
             <p class="margin-y-0"><%= employee.role %></p>
           </div>
