@@ -16,9 +16,9 @@ RUN yum install -y wget openssl sed gettext &&\
     rpm -iv nginx-$nginxversion.el$elversion.ngx.x86_64.rpm
 
 # establish where Nginx should look for files
-ENV RAILS_ROOT /var/www
+ENV PROXY_ROOT /var/www
 # Set our working directory inside the image
-WORKDIR $RAILS_ROOT
+WORKDIR $PROXY_ROOT
 # create log directory
 RUN mkdir log
 # copy over static assets
@@ -26,9 +26,6 @@ COPY public public/
 # Copy Nginx config template
 #COPY proxy/nginx.conf /tmp/docker.nginx
 COPY proxy/nginx.conf /etc/nginx/nginx.conf
-# substitute variable references in the Nginx config template for real values from the environment
-# put the final config in its place
-#RUN envsubst '$RAILS_ROOT' < /tmp/docker.nginx > /etc/nginx/conf.d/default.conf
 
 RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
     ln -sf /dev/stderr /var/log/nginx/error.log

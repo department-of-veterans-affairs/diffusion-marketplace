@@ -16,6 +16,8 @@ services:
       - app
   app:
     image: dm:vaec
+    env_file:
+      - .env
     volumes:
       - ./logs:/app/log
       - app:/var/www
@@ -53,6 +55,4 @@ services:
 volumes:
   app:
     external: false
-#  configs:
-#    external: false
 

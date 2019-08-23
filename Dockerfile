@@ -7,7 +7,7 @@ ARG AWS_REGION
 
 RUN gem install bundler --force
 
-ENV RAILS_ROOT /var/www
+ENV RAILS_ROOT /app
 RUN mkdir -p $RAILS_ROOT
 # Set working directory
 WORKDIR $RAILS_ROOT
