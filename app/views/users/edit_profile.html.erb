@@ -18,6 +18,10 @@
                   <div class="grid-col-5">
                     <% if current_user.avatar.attached? %>
                       <img src="<%= (url_for(current_user.avatar)) %>" class="avatar-profile-photo"/>
+                    <% else %>
+                      <!-- <i class="fas fa-user-circle text-blue-important  -->
+                      <!-- empty-user-avatar display-none-important desktop:display-inline-block"></i> -->
+                      <i class="fas fa-user empty-user-avatar"></i>
                     <% end %>
                   </div>
                   <div class="grid-col-7">
@@ -25,12 +29,22 @@
                       Blurb about photo requirements such as size, that it should be a headshot, any tips on how to take a good photo, or if they have an existing VA photo they should use here.
                     </p>
                     <p>
-                      <div class='usa-button usa-button--outline' aria-expanded='false' id='toggle-photo'>Edit photo</div>
+                      <a class='usa-button usa-button--outline' aria-controls='photo-file-upload' aria-expanded='false' id='toggle-photo' href='#'>Edit photo</a>
                     </p>
-                    <div class="usa-accordion__content" id='photo-file-upload' aria-hidden="true">
-                      <%= f.label 'Avatar' %>
+                  </div>
+                </div>
+                <div class=" grid-row usa-accordion__content p0 x1-bottom" id='photo-file-upload' aria-hidden="true">
+                  <div class="grid-col-5">
+                    <div>
+                      <%= f.label 'Photo' %>
                       <%= f.file_field :avatar %>
+                      <br />
                     </div>
+                  </div>
+                  <div class='grid-col-7'>
+                    <% if current_user.avatar.attached? %>
+                      <%= link_to "Remove photo", edit_profile_photo_path, data: { confirm: "Are you sure?" }, method: :delete, class: 'usa-button usa-button--secondary' %>
+                    <% end %>
                   </div>
                 </div>
               </div>
@@ -75,3 +89,10 @@
     </div>
   </section>
 </div>
+
+<script type="text/javascript"> 
+  document.getElementById("toggle-photo").onclick = function(event) {
+    event.preventDefault();
+    document.getElementById("photo-file-upload").setAttribute("aria-hidden", 'false');
+  } 
+</script> 

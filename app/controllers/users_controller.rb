@@ -22,6 +22,12 @@ class UsersController < ApplicationController
     redirect_to edit_profile_path
   end
 
+  def delete_photo
+    redirect_to edit_profile_path unless current_user.present? && current_user.avatar.attached?
+    current_user.avatar.purge
+    redirect_to edit_profile_path
+  end
+
   def update
     if params[:user][:role].present?
       if params[:user][:role] == 'user'
