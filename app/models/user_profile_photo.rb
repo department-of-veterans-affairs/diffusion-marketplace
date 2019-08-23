@@ -1,2 +1,0 @@
-class UserProfilePhoto < ApplicationRecord
-end
