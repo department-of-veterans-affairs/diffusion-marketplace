@@ -10,8 +10,21 @@
               <p class="fs1-125">Instructions about editing profile. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
           </div>
+          <% @user = current_user %>
           <div class="login-body">
-            <%= form_for(current_user, url: edit_profile_path, html: {method: :post, class: 'x1-top'}) do |f| %>
+            <%= form_for(@user, url: edit_profile_path, html: {method: :post, class: 'x1-top'}) do |f| %>
+              <% binding.pry %>
+              <% if f.object.errors.any? %>
+                <div id="error_explanation">
+                  <h2><%= pluralize(f.object.errors.count, "error") %> prohibited this impact_category from being saved:</h2>
+
+                  <ul>
+                  <% f.object.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                  </ul>
+                </div>
+              <% end %>
               <span>Photo</span><br/>
               <div class="grid-container p0">
                 <div class="grid-row">

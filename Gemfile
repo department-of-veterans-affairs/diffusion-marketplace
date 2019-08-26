@@ -46,6 +46,8 @@ gem 'kaminari'
 
 gem 'rolify'
 
+gem 'file_validators'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -58,7 +60,7 @@ group :development, :test do
   gem 'shoulda-matchers', require: false
 
   # gem 'sniffybara', git: 'https://github.com/department-of-veterans-affairs/sniffybara.git'
-
+  gem 'figaro'
   gem 'rspec-retry'
   gem 'axe-matchers'
   gem 'webdrivers'
@@ -75,7 +77,6 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'rails-erd'
   gem 'letter_opener'
-  gem 'figaro'
   gem 'pry', '~> 0.12.2'
 
   # To be able to automagically generate domain model ER diagrams, https://github.com/amatsuda/erd
