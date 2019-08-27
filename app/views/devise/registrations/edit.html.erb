@@ -1,59 +1,63 @@
 <!-- Resend confirmation instructions Page -->
 <div class="x0-top">
-  <section class="usa-section dm-background-linear-gradient-up-dark-blue" style="min-height: calc(100vh - 286px)">
+  <section class="usa-section" style="min-height: calc(100vh - 286px)">
     <div class="grid-container">
-      <div class="login-card box-shadow-card">
-        <%= render "devise/shared/login_header" %>
-        <div class="login-body">
-          <h2>Edit <%= resource_name.to_s.humanize %></h2>
-
-          <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: {method: :put, class: 'usa-form x1-top'}) do |f| %>
-            <% if devise_error_messages!.present? %>
-              <div class="usa-alert usa-alert--error" >
-                <div class="usa-alert__body">
-                  <%= devise_error_messages! %>
+      <div class="grid-row grid-gap">
+        <%= render partial: 'users/side_nav' %>
+        <div class="usa-layout-docs__main desktop:grid-col-9 usa-prose">
+          <div class="login-header">
+            <div class="login-header-overlay">
+              <h1 class="x0">Your Account</h1>
+              <p>Instructions about account settings (Changes need to be verified via email, update current flow email address...</p>
+            </div>
+          </div>
+          <div class="login-body">
+            <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: {method: :put, class: 'usa-form x1-top'}) do |f| %>
+              <% if devise_error_messages!.present? %>
+                <div class="usa-alert usa-alert--error" >
+                  <div class="usa-alert__body">
+                    <%= devise_error_messages! %>
+                  </div>
                 </div>
+              <% end %>
+
+              <div class="field">
+                <%= f.label :email, class: 'x1-top' %><br/>
+                <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'usa-input', disabled: 'true' %>
+              </div>
+
+              <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+                <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+              <% end %>
+
+              <div class="field">
+                <%= f.label :current_password, class: 'usa-label x0 x1-top' %> <i>(we need your current password to confirm your changes)</i><br/>
+                <%= f.password_field :current_password, autocomplete: "current-password", class: 'usa-input' %>
+              </div>
+
+              <div class="field">
+                <%= f.label :password, class: 'usa-label x0 x1-top' %> <i>(leave blank if you don't want to change it)</i><br/>
+                <%= f.password_field :password, autocomplete: "new-password", class: 'usa-input', required: true %>
+                <% if @minimum_password_length %>
+                  <br/>
+                  <em><%= @minimum_password_length %> characters minimum</em>
+                <% end %>
+              </div>
+
+              <div class="field">
+                <%= f.label :password_confirmation %><br/>
+                <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'usa-input' %>
+              </div>
+
+              <div class="actions">
+                <%= f.submit "Update", class: 'usa-button usa-button-primary' %>
               </div>
             <% end %>
 
-            <div class="field">
-              <%= f.label :email, class: 'usa-label x0 x1-top' %><br/>
-              <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'usa-input x1-top' %>
-            </div>
+            <h3>Cancel my account</h3>
 
-            <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-              <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-            <% end %>
-
-            <div class="field">
-              <%= f.label :password, class: 'usa-label x0 x1-top' %> <i>(leave blank if you don't want to change it)</i><br/>
-              <%= f.password_field :password, autocomplete: "new-password", class: 'usa-input', required: true %>
-              <% if @minimum_password_length %>
-                <br/>
-                <em><%= @minimum_password_length %> characters minimum</em>
-              <% end %>
-            </div>
-
-            <div class="field">
-              <%= f.label :password_confirmation %><br/>
-              <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'usa-input' %>
-            </div>
-
-            <div class="field">
-              <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br/>
-              <%= f.password_field :current_password, autocomplete: "current-password", class: 'usa-input' %>
-            </div>
-
-            <div class="actions">
-              <%= f.submit "Update", class: 'dm-button-primary' %>
-            </div>
-          <% end %>
-
-          <h3>Cancel my account</h3>
-
-          <p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: {confirm: "Are you sure?"}, method: :delete, class: 'dm-button-danger' %></p>
-
-          <%= link_to "Back", :back %>
+            <p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: {confirm: "Are you sure?"}, method: :delete, class: 'usa-button usa-button--secondary' %></p>
+          </div>
         </div>
       </div>
     </div>

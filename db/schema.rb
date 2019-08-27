@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_13_231535) do
+ActiveRecord::Schema.define(version: 2019_08_26_193138) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -697,6 +697,11 @@ ActiveRecord::Schema.define(version: 2019_08_13_231535) do
     t.datetime "password_changed_at"
     t.boolean "skip_va_validation", default: false, null: false
     t.boolean "disabled", default: false, null: false
+    t.text "bio"
+    t.string "avatar_file_name"
+    t.string "avatar_content_type"
+    t.integer "avatar_file_size"
+    t.datetime "avatar_updated_at"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["password_changed_at"], name: "index_users_on_password_changed_at"

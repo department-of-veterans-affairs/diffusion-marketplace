@@ -320,6 +320,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   max-width: 675px !important;
 }
 
+.maxw-30rem {
+  max-width: 30rem !important;
+}
+
 .vertical-align-middle {
   vertical-align: middle;
 }
@@ -898,6 +902,10 @@ ul.no-list-style {
 /* Height and width setters */
 .height-100 {
   height: 100%;
+}
+
+.height-200px {
+  height: 200px !important;
 }
 
 .width-100 {
