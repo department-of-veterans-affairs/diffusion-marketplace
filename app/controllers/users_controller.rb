@@ -13,18 +13,27 @@ class UsersController < ApplicationController
 
   def edit_profile
     redirect_to users_path unless current_user.present?
+    @user = current_user
   end
 
   def update_profile
     redirect_to users_path unless current_user.present?
-    current_user.update(user_params)
-    flash[:success] = "Your profile has been updated."
-    redirect_to edit_profile_path
+    @user = current_user
+    if @user.update(user_params)
+      flash[:success] = "Your profile has been updated."
+      redirect_to edit_profile_path
+    else
+      render 'edit_profile'
+    end
   end
 
   def delete_photo
-    redirect_to edit_profile_path unless current_user.present? && current_user.avatar.attached?
-    current_user.avatar.purge
+    if current_user.present? && current_user.avatar.present?
+      user = current_user
+      user.avatar = nil
+      user.save
+    end
+
     redirect_to edit_profile_path
   end
 

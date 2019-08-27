@@ -15,7 +15,7 @@ class User < ApplicationRecord
 
   has_many :practices
 
-  has_one_attached :avatar
+  has_attached_file :avatar
 
   USER_ROLES = %w[approver_editor admin].freeze
 
@@ -23,14 +23,8 @@ class User < ApplicationRecord
   validate :password_complexity
   validate :password_uniqueness
   validate :va_email
-  validates :avatar, file_size: { 
-                      less_than_or_equal_to: 2000.kilobytes,
-                      message: 'Image must be less than 2MB.'
-                    },
-                     file_content_type: { 
-                      allow: ['image/jpeg', 'image/png', 'image/jpg'],
-                      message: 'only %{types} are allowed'
-                    }
+  validates :bio, length: { minimum: 20 }
+  validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
 
   scope :enabled,   -> { where(disabled: false) }
   scope :disabled,  -> { where(disabled: true) }
