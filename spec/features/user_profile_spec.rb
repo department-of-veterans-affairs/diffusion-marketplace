@@ -28,7 +28,7 @@ describe 'The user index', type: :feature do
   it 'should show the current users email' do
     login_as(@user, scope: :user, run_callbacks: false)
     visit '/users/edit'
-    
+
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_selector("input[value='#{@user.email}']")
   end
@@ -61,7 +61,7 @@ describe 'The user index', type: :feature do
     expect(page).to be_accessible.according_to :wcag2a, :section508
     click_on('Edit photo')
 
-    attach_file('Photo', Rails.root + "spec/fixtures/SpongeBob.png")
+    attach_file('Photo', Rails.root + 'spec/fixtures/SpongeBob.png')
 
     click_button('Update')
 
@@ -72,7 +72,7 @@ describe 'The user index', type: :feature do
     click_on('Remove photo')
     page.driver.browser.switch_to.alert.accept
 
-    expect(page).to have_selector(".empty-user-avatar")
+    expect(page).to have_selector('.empty-user-avatar')
     sb = User.find(@user.id)
     expect(sb.avatar.present?).to be(false)
   end
@@ -84,11 +84,11 @@ describe 'The user index', type: :feature do
     expect(page).to be_accessible.according_to :wcag2a, :section508
     click_on('Edit photo')
 
-    attach_file('Photo', Rails.root + "spec/fixtures/SpongeBob.txt")
+    attach_file('Photo', Rails.root + 'spec/fixtures/SpongeBob.txt')
 
     click_button('Update')
 
-    expect(page).to have_content("Avatar content type is invalid")
-    expect(page).to have_selector(".empty-user-avatar")
+    expect(page).to have_content('Avatar content type is invalid')
+    expect(page).to have_selector('.empty-user-avatar')
   end
 end

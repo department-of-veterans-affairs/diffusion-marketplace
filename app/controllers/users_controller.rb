@@ -20,7 +20,7 @@ class UsersController < ApplicationController
     redirect_to users_path unless current_user.present?
     @user = current_user
     if @user.update(user_params)
-      flash[:success] = "Your profile has been updated."
+      flash[:success] = 'Your profile has been updated.'
       redirect_to edit_profile_path
     else
       @user.avatar = nil if @user.errors.messages.include?(:avatar)

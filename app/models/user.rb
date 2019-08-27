@@ -24,7 +24,7 @@ class User < ApplicationRecord
   validate :password_uniqueness
   validate :va_email
 
-  validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
+  validates_attachment_content_type :avatar, content_type: %r{\Aimage/.*\z}
 
   scope :enabled,   -> { where(disabled: false) }
   scope :disabled,  -> { where(disabled: true) }
@@ -69,7 +69,7 @@ class User < ApplicationRecord
     errors.add :email, 'must use @va.gov email address'
   end
 
-  def remove_all_roles(role)
+  def remove_all_roles(_role)
     self.class::USER_ROLES.each do |r|
       remove_role r
     end
@@ -77,6 +77,7 @@ class User < ApplicationRecord
 
   def full_name
     return 'User' unless last_name || first_name
+
     "#{first_name} #{last_name}"
   end
 end
