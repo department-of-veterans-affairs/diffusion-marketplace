@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateAncillaryServices < ActiveRecord::Migration[5.2]
   def change
     create_table :ancillary_services do |t|

@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class PracticePartnersController < ApplicationController
-  before_action :set_practice_partner, only: [:show, :edit, :update, :destroy]
+  before_action :set_practice_partner, only: %i[show edit update destroy]
 
   # GET /practice_partners
   # GET /practice_partners.json

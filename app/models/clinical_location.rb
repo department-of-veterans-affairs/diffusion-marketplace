@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ClinicalLocation < ApplicationRecord
   acts_as_list
   has_many :clinical_location_practices

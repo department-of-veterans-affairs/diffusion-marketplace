@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateRequiredStaffTrainings < ActiveRecord::Migration[5.2]
   def change
     create_table :required_staff_trainings do |t|

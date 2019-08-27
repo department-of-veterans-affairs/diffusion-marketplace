@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AdditionalStaff < ApplicationRecord
   acts_as_list scope: :practice
   belongs_to :practice

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class JobPositionCategory < ApplicationRecord
   acts_as_list
   has_many :job_positions

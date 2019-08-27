@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register PracticePartner do
   permit_params :position, :name, :short_name, :description, :id, :color, :icon
 

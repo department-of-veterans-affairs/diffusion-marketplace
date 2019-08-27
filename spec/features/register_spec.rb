@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Register', type: :feature do
   it 'should not let the user sign up with a weak password or without a va.gov email address' do
-
     visit '/'
     expect(page).to have_content('Diffusion Marketplace')
 
@@ -11,7 +12,6 @@ describe 'Register', type: :feature do
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(current_path).to eq('/users/sign_up')
     expect(page).to have_content('Register')
-
 
     fill_in('Email', with: 'test@agile6')
     fill_in('Password', with: 'Passwrrd')

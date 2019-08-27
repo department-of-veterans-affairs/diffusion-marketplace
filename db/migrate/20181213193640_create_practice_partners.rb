@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreatePracticePartners < ActiveRecord::Migration[5.2]
   def change
     create_table :practice_partners do |t|

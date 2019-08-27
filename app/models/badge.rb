@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Badge < ApplicationRecord
   acts_as_list
   has_attached_file :badge_image, validate_media_type: false

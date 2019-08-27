@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Domain < ApplicationRecord
   acts_as_list
   has_many :domain_practices

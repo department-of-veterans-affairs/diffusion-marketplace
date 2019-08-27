@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Breadcrumbs', type: :feature do
@@ -11,7 +13,7 @@ describe 'Breadcrumbs', type: :feature do
     @approver.add_role(User::USER_ROLES[0].to_sym)
     @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline')
     @user_practice2 = Practice.create!(name: 'Another Best Practice', user: @user, initiating_facility: 'vc_0508V', tagline: 'Test tagline 2')
-    login_as(@user, :scope => :user, :run_callbacks => false)
+    login_as(@user, scope: :user, run_callbacks: false)
     PracticePartnerPractice.create!(practice_partner: @pp, practice: @user_practice)
   end
 
@@ -115,8 +117,7 @@ describe 'Breadcrumbs', type: :feature do
       fill_in('Type keywords to find a practice', with: 'test')
       click_on('Search')
       expect(page).to have_current_path('/search?query=test')
-      expect(page).to have_field("search", with: "test")
+      expect(page).to have_field('search', with: 'test')
     end
   end
-
 end

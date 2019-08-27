@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateVaSecretaryPriorities < ActiveRecord::Migration[5.2]
   def change
     create_table :va_secretary_priorities do |t|

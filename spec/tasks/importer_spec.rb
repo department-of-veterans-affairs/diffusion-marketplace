@@ -18,7 +18,7 @@ describe 'Importer' do
       expect(flow3.name).to eq('FLOW3')
       expect(flow3.description).to eq('Enabling a 53% faster delivery of prosthetic limbs and automating prosthetic limb procurement processes improves the continuity of care for Veterans.')
       expect(flow3.initiating_facility).to eq('vha_663')
-      expect(flow3.date_initiated).to eq(DateTime.strptime('2/22/2019', "%m/%d/%Y"))
+      expect(flow3.date_initiated).to eq(DateTime.strptime('2/22/2019', '%m/%d/%Y'))
       expect(flow3.number_adopted).to be(25)
       expect(flow3.support_network_email).to eq('FLOW3@va.gov')
       expect(flow3.va_pulse_link).to eq('https://www.vapulse.net/groups/flow3')

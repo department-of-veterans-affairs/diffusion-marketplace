@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Practice do
-  actions :all, except: [:new, :create, :destroy]
+  actions :all, except: %i[new create destroy]
 
   scope :published
   scope :unpublished
@@ -14,9 +16,9 @@ ActiveAdmin.register Practice do
   end
 
   show do
-    attributes_table  do
+    attributes_table do
       row :id
-      row(:name)    { |practice| link_to(practice.name, practice_path(practice)) }
+      row(:name) { |practice| link_to(practice.name, practice_path(practice)) }
       row :slug
       row :short_name
       row :description
@@ -99,12 +101,12 @@ ActiveAdmin.register Practice do
       row :approved
     end
     h3 'Versions'
-    table_for practice.versions.order(created_at: :desc) do |version|
+    table_for practice.versions.order(created_at: :desc) do |_version|
       column :event
       column :whodunnit
       column :created_at
-      column do |v| link_to 'View', admin_version_path(v.id) end
-      column do |v| link_to('Revert', revert_admin_version_path(v.id), method: :put, data: {confirm: 'Are you sure you want to do this? This will override the practice with the specified version.'}) end
+      column { |v| link_to 'View', admin_version_path(v.id) }
+      column { |v| link_to('Revert', revert_admin_version_path(v.id), method: :put, data: { confirm: 'Are you sure you want to do this? This will override the practice with the specified version.' }) }
     end
   end
 
@@ -121,4 +123,3 @@ ActiveAdmin.register Practice do
     end
   end
 end
-

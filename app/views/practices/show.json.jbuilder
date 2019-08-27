@@ -1,1 +1,3 @@
-json.partial! "practices/practice", practice: @practice
+# frozen_string_literal: true
+
+json.partial! 'practices/practice', practice: @practice

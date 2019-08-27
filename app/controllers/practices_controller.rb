@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 class PracticesController < ApplicationController
-  before_action :set_practice, only: [:show, :edit, :update, :destroy, :next_steps, :commit, :committed, :highlight, :un_highlight, :feature, :un_feature]
-  before_action :set_facility_data, only: [:show, :next_steps]
-  before_action :authenticate_user!, except: [:show, :search, :index]
+  before_action :set_practice, only: %i[show edit update destroy next_steps commit committed highlight un_highlight feature un_feature]
+  before_action :set_facility_data, only: %i[show next_steps]
+  before_action :authenticate_user!, except: %i[show search index]
   before_action :can_view_committed_view, only: [:committed]
-  before_action :can_view_practice, only: [:show, :edit, :update, :destroy, :next_steps]
-  before_action :can_create_practice, only: [:new, :create]
-  before_action :can_edit_practice, only: [:edit, :update]
+  before_action :can_view_practice, only: %i[show edit update destroy next_steps]
+  before_action :can_create_practice, only: %i[new create]
+  before_action :can_edit_practice, only: %i[edit update]
 
   # GET /practices
   # GET /practices.json
@@ -17,12 +19,11 @@ class PracticesController < ApplicationController
   # GET /practices/1
   # GET /practices/1.json
   def show
-    ahoy.track "Practice show", {practice_id: @practice.id} if current_user.present?
+    ahoy.track 'Practice show', practice_id: @practice.id if current_user.present?
   end
 
   # GET /practices/1/edit
-  def edit
-  end
+  def edit; end
 
   def new
     @practice = Practice.new
@@ -83,15 +84,13 @@ class PracticesController < ApplicationController
   end
 
   def search
-    ahoy.track "Practice search", {search_term: request.params[:query]} if request.params[:query].present?
+    ahoy.track 'Practice search', search_term: request.params[:query] if request.params[:query].present?
     @practices = Practice.where(approved: true, published: true).order(name: :asc)
     @facilities_data = facilities_json['features']
     @practices_json = practices_json(@practices)
   end
 
-  def next_steps
-
-  end
+  def next_steps; end
 
   # GET /practices/1/committed
   def committed
@@ -160,14 +159,14 @@ class PracticesController < ApplicationController
                                      :training_provider, :required_training_summary, :support_network_email,
                                      :main_display_image, :main_display_image_original_w, :main_display_image_original_h, :main_display_image_crop_x, :main_display_image_crop_y, :main_display_image_crop_w, :main_display_image_crop_h,
                                      :origin_picture, :origin_picture_original_w, :origin_picture_original_h, :origin_picture_crop_x, :origin_picture_crop_y, :origin_picture_crop_w, :origin_picture_crop_h,
-                                     impact_photos_attributes: [:id, :title, :description, :attachment, :attachment_original_w, :attachment_original_h, :attachment_crop_x, :attachment_crop_y,
-                                                                :attachment_crop_w, :attachment_crop_h, :_destroy],
-                                     difficulties_attributes: [:id, :description, :_destroy],
-                                     risk_mitigations_attributes: [:id, :_destroy, risks_attributes: [:id, :description, :_destroy], mitigations_attributes: [:id, :description, :_destroy]],
-                                     timelines_attributes: [:id, :description, :_destroy],
-                                     va_employees_attributes: [:id, :name, :role, :_destroy, :avatar, :avatar_original_w, :avatar_original_h, :avatar_crop_x, :avatar_crop_y, :avatar_crop_w, :avatar_crop_h],
-                                     additional_staffs_attributes: [:id, :_destroy, :title, :hours_per_week, :duration_in_weeks, :permanent],
-                                     additional_resources_attributes: [:id, :_destroy, :description], required_staff_training: [:id, :_destroy, :title, :description])
+                                     impact_photos_attributes: %i[id title description attachment attachment_original_w attachment_original_h attachment_crop_x attachment_crop_y
+                                                                  attachment_crop_w attachment_crop_h _destroy],
+                                     difficulties_attributes: %i[id description _destroy],
+                                     risk_mitigations_attributes: [:id, :_destroy, risks_attributes: %i[id description _destroy], mitigations_attributes: %i[id description _destroy]],
+                                     timelines_attributes: %i[id description _destroy],
+                                     va_employees_attributes: %i[id name role _destroy avatar avatar_original_w avatar_original_h avatar_crop_x avatar_crop_y avatar_crop_w avatar_crop_h],
+                                     additional_staffs_attributes: %i[id _destroy title hours_per_week duration_in_weeks permanent],
+                                     additional_resources_attributes: %i[id _destroy description], required_staff_training: %i[id _destroy title description])
   end
 
   def can_view_practice
@@ -222,11 +221,11 @@ class PracticesController < ApplicationController
     practices.each do |practice|
       practice_hash = JSON.parse(practice.to_json) # convert to hash
       practice_hash['image'] = practice.main_display_image.present? ? practice.main_display_image.url : ''
-      if practice.date_initiated
-        practice_hash['date_initiated'] = practice.date_initiated.strftime("%B %Y")
-      else
-        practice_hash['date_initiated'] = '(start date unknown)'
-      end
+      practice_hash['date_initiated'] = if practice.date_initiated
+                                          practice.date_initiated.strftime('%B %Y')
+                                        else
+                                          '(start date unknown)'
+                                        end
 
       # display initiating facility
       practice_hash['initiating_facility'] = helpers.facility_name(practice.initiating_facility, facilities_json['features'])

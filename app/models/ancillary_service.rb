@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AncillaryService < ApplicationRecord
   acts_as_list
   has_many :ancillary_service_practices

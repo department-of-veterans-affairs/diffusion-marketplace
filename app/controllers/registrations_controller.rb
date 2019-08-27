@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Override the devise registrations controller
 class RegistrationsController < Devise::RegistrationsController
   def create

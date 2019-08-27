@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreatePublicationFiles < ActiveRecord::Migration[5.2]
   def change
     create_table :publication_files do |t|

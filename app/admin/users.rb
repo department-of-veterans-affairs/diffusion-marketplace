@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register User do
   permit_params :email, :password, :password_confirmation, :disabled, :skip_va_validation, role_ids: []
   actions :all, except: [:destroy]
@@ -49,8 +51,8 @@ ActiveAdmin.register User do
   controller do
     def update
       if params[:user][:password].blank?
-        params[:user].delete "password"
-        params[:user].delete "password_confirmation"
+        params[:user].delete 'password'
+        params[:user].delete 'password_confirmation'
       end
 
       super

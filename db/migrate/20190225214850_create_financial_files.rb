@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateFinancialFiles < ActiveRecord::Migration[5.2]
   def change
     create_table :financial_files do |t|

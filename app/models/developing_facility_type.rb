@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DevelopingFacilityType < ApplicationRecord
   acts_as_list
   has_many :developing_facility_type_practices

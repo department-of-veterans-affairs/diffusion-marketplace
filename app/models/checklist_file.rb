@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChecklistFile < ApplicationRecord
   acts_as_list scope: :practice
   has_attached_file :attachment

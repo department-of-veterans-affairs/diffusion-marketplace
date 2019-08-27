@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -54,7 +56,7 @@ Rails.application.configure do
   config.log_level = :debug
 
   # Prepend all log lines with the following tags.
-  config.log_tags = [ :request_id ]
+  config.log_tags = [:request_id]
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
@@ -83,7 +85,7 @@ Rails.application.configure do
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
-  if ENV["RAILS_LOG_TO_STDOUT"].present?
+  if ENV['RAILS_LOG_TO_STDOUT'].present?
     logger           = ActiveSupport::Logger.new(STDOUT)
     logger.formatter = config.log_formatter
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
@@ -95,24 +97,24 @@ Rails.application.configure do
   region = ENV.fetch('AWS_REGION')
 
   config.paperclip_defaults = {
-      storage: :s3,
-      s3_credentials: {
-          s3_host_name: "s3-#{region}.amazonaws.com",
-          bucket: ENV.fetch('S3_BUCKET_NAME'),
-          access_key_id: ENV.fetch('AWS_ACCESS_KEY_ID'),
-          secret_access_key: ENV.fetch('AWS_SECRET_ACCESS_KEY'),
-          s3_region: region,
-      },
-      s3_protocol: 'https'
+    storage: :s3,
+    s3_credentials: {
+      s3_host_name: "s3-#{region}.amazonaws.com",
+      bucket: ENV.fetch('S3_BUCKET_NAME'),
+      access_key_id: ENV.fetch('AWS_ACCESS_KEY_ID'),
+      secret_access_key: ENV.fetch('AWS_SECRET_ACCESS_KEY'),
+      s3_region: region
+    },
+    s3_protocol: 'https'
   }
 
   config.action_mailer.smtp_settings = {
-      :address => 'email-smtp.us-west-2.amazonaws.com',
-      :port => 587,
-      :user_name => ENV.fetch('SES_SMTP_USERNAME'),
-      :password => ENV.fetch('SES_SMTP_PASSWORD'),
-      :authentication => :login,
-      :enable_starttls_auto => true
+    address: 'email-smtp.us-west-2.amazonaws.com',
+    port: 587,
+    user_name: ENV.fetch('SES_SMTP_USERNAME'),
+    password: ENV.fetch('SES_SMTP_PASSWORD'),
+    authentication: :login,
+    enable_starttls_auto: true
   }
 
   config.action_mailer.default_url_options = { host: ENV.fetch('HOSTNAME') }

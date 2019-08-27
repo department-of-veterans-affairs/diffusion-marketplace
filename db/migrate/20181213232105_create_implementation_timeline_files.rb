@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateImplementationTimelineFiles < ActiveRecord::Migration[5.2]
   def change
     create_table :implementation_timeline_files do |t|

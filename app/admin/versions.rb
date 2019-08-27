@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Version do
   actions :index, :show, :revert
   index do
@@ -16,7 +18,6 @@ ActiveAdmin.register Version do
       panel "View #{resource.item_type}" do
         if resource.item_type == 'Practice'
           link_to "View #{resource.item.name}", admin_practice_path(resource.item)
-        else
         end
       end
     end
@@ -36,7 +37,7 @@ ActiveAdmin.register Version do
   end
 
   action_item :revert, only: :show do
-    link_to 'Revert to this version', revert_admin_version_path(resource.id), method: :put, data: {confirm: "Are you sure you want to do this? This will override the #{resource.item_type} with the specified version."}
+    link_to 'Revert to this version', revert_admin_version_path(resource.id), method: :put, data: { confirm: "Are you sure you want to do this? This will override the #{resource.item_type} with the specified version." }
   end
 
   controller do

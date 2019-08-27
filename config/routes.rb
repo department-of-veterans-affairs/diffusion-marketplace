@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   devise_for :users, controllers: { registrations: 'registrations' }
-  mount Ahoy::Engine => "/ahoy", as: :dm_ahoy
+  mount Ahoy::Engine => '/ahoy', as: :dm_ahoy
 
   resources :practices do
     get '/next-steps', action: 'next_steps', as: 'next_steps'
@@ -15,7 +17,7 @@ Rails.application.routes.draw do
     end
   end
   resources :practice_partners, path: :partners
-  resources :users, except: [:show, :create, :new, :edit] do
+  resources :users, except: %i[show create new edit] do
     patch :re_enable
   end
   resources :admin, only: [] do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateVaEmployees < ActiveRecord::Migration[5.2]
   def change
     create_table :va_employees do |t|

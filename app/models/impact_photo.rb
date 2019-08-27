@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ImpactPhoto < ApplicationRecord
   acts_as_list scope: :practice
   has_paper_trail

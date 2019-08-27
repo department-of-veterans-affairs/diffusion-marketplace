@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddFeaturedToPractices < ActiveRecord::Migration[5.2]
   def change
     add_column :practices, :highlight, :boolean, null: false, default: false

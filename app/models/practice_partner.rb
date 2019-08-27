@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PracticePartner < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged
@@ -6,5 +8,4 @@ class PracticePartner < ApplicationRecord
   has_many :badges
   has_many :practice_partner_practices, dependent: :destroy
   has_many :practices, through: :practice_partner_practices
-
 end

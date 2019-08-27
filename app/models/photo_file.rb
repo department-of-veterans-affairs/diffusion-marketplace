@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PhotoFile < ApplicationRecord
   acts_as_list
   has_attached_file :attachment

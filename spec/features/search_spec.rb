@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Search', type: :feature do
@@ -10,11 +12,11 @@ describe 'Search', type: :feature do
     @approver.add_role(User::USER_ROLES[0].to_sym)
     @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline')
     @user_practice2 = Practice.create!(name: 'Another Best Practice', user: @user, initiating_facility: 'vc_0508V', tagline: 'Test tagline 2')
-    login_as(@user, :scope => :user, :run_callbacks => false)
+    login_as(@user, scope: :user, run_callbacks: false)
   end
 
   describe 'results' do
-    it 'should show practices that are approved and published'do
+    it 'should show practices that are approved and published' do
       @user_practice.update(published: true, approved: true)
       visit '/search'
       expect(page).to be_accessible.according_to :wcag2a, :section508
@@ -50,9 +52,6 @@ describe 'Search', type: :feature do
 
       # test facility data map for name, positive case
       expect(page).to have_content('Tacoma Vet Center'.upcase)
-
     end
-
   end
-
 end

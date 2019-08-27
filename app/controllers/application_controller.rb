@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   before_action :setup_breadcrumb_navigation
   before_action :store_user_location!, if: :storable_location?
@@ -8,7 +10,7 @@ class ApplicationController < ActionController::Base
   def authenticate_active_admin_user!
     authenticate_user!
     unless current_user.has_role?(:admin)
-      flash[:alert] = "Unauthorized Access!"
+      flash[:alert] = 'Unauthorized Access!'
       redirect_to root_path
     end
   end
@@ -24,34 +26,34 @@ class ApplicationController < ActionController::Base
       return
     end
 
-    url = URI::parse(request.referer || '')
+    url = URI.parse(request.referer || '')
     # search 'path'
     if params[:action] == 'index' && params[:controller] == 'practices'
       # empty the bread crumbs and start a new path
       session[:breadcrumbs] = []
-      session[:breadcrumbs] << {'display': 'Practices', 'path': '/practices'}
+      session[:breadcrumbs] << { 'display': 'Practices', 'path': '/practices' }
     end
 
     # add the search breadcrumb if there is a search query going to the practice page
     if params[:action] == 'show' && params[:controller] == 'practices' && url.path.include?('search') && (url.query.present? && url.query.include?('query='))
-      search_breadcrumb = session[:breadcrumbs].find { |bc| bc['display'] == 'Search' || bc[:display] == 'Search'}
+      search_breadcrumb = session[:breadcrumbs].find { |bc| bc['display'] == 'Search' || bc[:display] == 'Search' }
       search_breadcrumb['path'] = "#{url.path}?#{url.query}" if search_breadcrumb.present?
-      session[:breadcrumbs] << {'display': 'Search', 'path': "#{url.path}?#{url.query}"} if search_breadcrumb.blank?
+      session[:breadcrumbs] << { 'display': 'Search', 'path': "#{url.path}?#{url.query}" } if search_breadcrumb.blank?
     end
 
     # practice partners path
     if params[:action] == 'index' && params[:controller] == 'practice_partners'
       # empty the bread crumbs and start a new 'path'
       session[:breadcrumbs] = []
-      session[:breadcrumbs] << {'display': 'Partners', 'path': practice_partners_path}
+      session[:breadcrumbs] << { 'display': 'Partners', 'path': practice_partners_path }
     end
 
     # practice partner show path
     if params[:action] == 'show' && params[:controller] == 'practice_partners'
       # add the practice partner to the crumbs if it's not there already
       @practice_partner = PracticePartner.friendly.find(params[:id])
-      unless session[:breadcrumbs].find {|b| b['display'] == @practice_partner.name}.present?
-        session[:breadcrumbs] << {'display': @practice_partner.name, 'path': practice_partner_path(@practice_partner)}
+      unless session[:breadcrumbs].find { |b| b['display'] == @practice_partner.name }.present?
+        session[:breadcrumbs] << { 'display': @practice_partner.name, 'path': practice_partner_path(@practice_partner) }
       end
     end
   end
@@ -75,5 +77,4 @@ class ApplicationController < ActionController::Base
     # :user is the scope we are authenticating
     store_location_for(:user, request.fullpath)
   end
-
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Practices', type: :feature do
@@ -11,9 +13,9 @@ describe 'Practices', type: :feature do
     @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline')
     @practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline')
     @departments = [
-        Department.create!(name: 'Admissions', short_name: 'admissions'),
-        Department.create!(name: 'None', short_name: 'none'),
-        Department.create!(name: 'All departments equally - not a search differentiator', short_name: 'all'),
+      Department.create!(name: 'Admissions', short_name: 'admissions'),
+      Department.create!(name: 'None', short_name: 'none'),
+      Department.create!(name: 'All departments equally - not a search differentiator', short_name: 'all')
     ]
     @practice_partner = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative', icon: 'fas fa-heart', color: '#E4A002')
   end
@@ -41,7 +43,7 @@ describe 'Practices', type: :feature do
     end
 
     it 'should let authenticated users interact with the marketplace' do
-      login_as(@user, :scope => :user, :run_callbacks => false)
+      login_as(@user, scope: :user, run_callbacks: false)
 
       # Visit an individual Practice that is approved and published
       visit practice_path(@practice)
@@ -56,7 +58,7 @@ describe 'Practices', type: :feature do
     end
 
     it 'should let the practice owner interact with their practice if not approved or published' do
-      login_as(@user, :scope => :user, :run_callbacks => false)
+      login_as(@user, scope: :user, run_callbacks: false)
 
       # Visit user's own practice that is not approved or published
       visit practice_path(@user_practice)
@@ -66,7 +68,7 @@ describe 'Practices', type: :feature do
     end
 
     it 'should not let a user view the practice if the practice is not approved or published' do
-      login_as(@user2, :scope => :user, :run_callbacks => false)
+      login_as(@user2, scope: :user, run_callbacks: false)
       # Visit a user's practice that is not approved or published
       visit practice_path(@user_practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
@@ -75,7 +77,7 @@ describe 'Practices', type: :feature do
     end
 
     it 'should let an approver/editor user view the practice if the practice is not approved or published' do
-      login_as(@approver, :scope => :user, :run_callbacks => false)
+      login_as(@approver, scope: :user, run_callbacks: false)
 
       # Visit a user's practice that is not approved or published
       visit practice_path(@user_practice)
@@ -85,7 +87,7 @@ describe 'Practices', type: :feature do
     end
 
     it 'should let an admin user view the practice if the practice is not approved or published' do
-      login_as(@admin, :scope => :user, :run_callbacks => false)
+      login_as(@admin, scope: :user, run_callbacks: false)
 
       # Visit a user's practice that is not approved or published
       visit practice_path(@user_practice)
@@ -95,7 +97,7 @@ describe 'Practices', type: :feature do
     end
 
     it 'should display the initiating facility\'s name' do
-      login_as(@user, :scope => :user, :run_callbacks => false)
+      login_as(@user, scope: :user, run_callbacks: false)
 
       # Visit an individual Practice that is approved and published
       practice = Practice.create!(name: 'A public practice', approved: true, published: true, initiating_facility: 'vc_0508V', tagline: 'Test tagline')
@@ -115,7 +117,7 @@ describe 'Practices', type: :feature do
 
   describe 'show page' do
     it 'should display the initiating facility\'s initiating facility property if it is not found in the map' do
-      login_as(@user, :scope => :user, :run_callbacks => false)
+      login_as(@user, scope: :user, run_callbacks: false)
       @user_practice.update(published: true, approved: true)
       # Visit an individual Practice that is approved and published
       visit practice_path(@user_practice)
@@ -132,7 +134,7 @@ describe 'Practices', type: :feature do
     end
 
     it 'should display the practice complexity section' do
-      login_as(@user, :scope => :user, :run_callbacks => false)
+      login_as(@user, scope: :user, run_callbacks: false)
       @user_practice.update(published: true, approved: true, difficulty_aggregate: 1, sustainability_aggregate: 2, number_departments: 3, it_required: true, process: 'New approach', implementation_time_estimate: '6 months', training_provider: 'Practice champion', training_test: true, need_new_license: true, training_length: '1 month')
       AdditionalStaff.create!(title: 'Nurse', hours_per_week: '10', duration_in_weeks: '7', practice: @user_practice)
       AdditionalStaff.create!(title: 'Doctor', hours_per_week: '30', duration_in_weeks: '12', practice: @user_practice)
@@ -170,7 +172,6 @@ Yes')
       expect(page).to have_content('License/certification required?
 Yes')
     end
-
   end
 
   describe 'Next Steps' do
@@ -183,7 +184,7 @@ Yes')
       end
 
       it 'should lead the user to the "Next Steps" page' do
-        login_as(@user, :scope => :user, :run_callbacks => false)
+        login_as(@user, scope: :user, run_callbacks: false)
         @user_practice.update(published: true, approved: true)
         # Visit an individual Practice that is approved and published
         visit practice_path(@user_practice)
@@ -204,7 +205,7 @@ Yes')
 
     describe 'checklist' do
       it 'should have a list of certain items' do
-        login_as(@user, :scope => :user, :run_callbacks => false)
+        login_as(@user, scope: :user, run_callbacks: false)
         @user_practice.update(published: true, approved: true)
         # Visit an individual Practice that is approved and published
         visit practice_next_steps_path(practice_id: @user_practice.slug)
@@ -271,7 +272,7 @@ Yes')
       end
 
       it 'should not render departments if all or none are selected' do
-        login_as(@user, :scope => :user, :run_callbacks => false)
+        login_as(@user, scope: :user, run_callbacks: false)
         @user_practice.update(published: true, approved: true)
 
         # none
@@ -300,7 +301,7 @@ Yes')
 
     describe 'commit to practice' do
       it 'should let a user commit to a practice' do
-        login_as(@user, :scope => :user, :run_callbacks => false)
+        login_as(@user, scope: :user, run_callbacks: false)
         @user_practice.update(published: true, approved: true, support_network_email: 'test@va.gov')
         # Visit an individual Practice that is approved and published
         visit practice_next_steps_path(practice_id: @user_practice.slug)
@@ -317,7 +318,7 @@ Yes')
       end
 
       it 'should not let a user commit to a practice' do
-        login_as(@user, :scope => :user, :run_callbacks => false)
+        login_as(@user, scope: :user, run_callbacks: false)
         @user_practice.update(published: true, approved: true, support_network_email: 'test@va.gov')
         # Visit an individual Practice that is approved and published
         visit practice_committed_path(practice_id: @user_practice.slug)
@@ -326,7 +327,7 @@ Yes')
       end
 
       it 'should let the user know they already committed to a practice' do
-        login_as(@user, :scope => :user, :run_callbacks => false)
+        login_as(@user, scope: :user, run_callbacks: false)
         @user_practice.update(published: true, approved: true, support_network_email: 'test@va.gov')
         UserPractice.create!(user: @user, practice: @user_practice, committed: true)
         # Visit an individual Practice that is approved and published
@@ -343,7 +344,7 @@ Yes')
   describe 'Practice Edit' do
     describe 'practice edit authorization' do
       it 'should not let a non-admin user edit a practice' do
-        login_as(@user2, :scope => :user, :run_callbacks => false)
+        login_as(@user2, scope: :user, run_callbacks: false)
         @user_practice.update(approved: true, published: true)
         visit practice_path(@user_practice)
         expect(page).to have_no_link('Edit')
@@ -355,7 +356,7 @@ Yes')
       end
 
       it 'should let an editor user edit a practice' do
-        login_as(@approver, :scope => :user, :run_callbacks => false)
+        login_as(@approver, scope: :user, run_callbacks: false)
         @user_practice.update(approved: true, published: true)
         visit practice_path(@user_practice)
         expect(page).to be_accessible.according_to :wcag2a, :section508
@@ -363,7 +364,7 @@ Yes')
       end
 
       it 'should let an admin user edit a practice' do
-        login_as(@admin, :scope => :user, :run_callbacks => false)
+        login_as(@admin, scope: :user, run_callbacks: false)
         @user_practice.update(approved: true, published: true)
         visit practice_path(@user_practice)
         expect(page).to be_accessible.according_to :wcag2a, :section508
@@ -373,7 +374,7 @@ Yes')
 
     describe 'editting a practice' do
       it 'should update the practice' do
-        login_as(@admin, :scope => :user, :run_callbacks => false)
+        login_as(@admin, scope: :user, run_callbacks: false)
         @user_practice.update(approved: true, published: true)
         visit practice_path(@user_practice)
         expect(page).to have_link('Edit')
@@ -387,7 +388,7 @@ Yes')
       end
 
       it 'should add a practice_parter to the practice', js: true do
-        login_as(@admin, :scope => :user, :run_callbacks => false)
+        login_as(@admin, scope: :user, run_callbacks: false)
         @practice.update(approved: true, published: true)
         # Practice should have no practice_partners
         expect(@practice.practice_partners.count).to eq(0)
@@ -406,7 +407,7 @@ Yes')
       end
 
       it 'should add a department to the practice', js: true do
-        login_as(@admin, :scope => :user, :run_callbacks => false)
+        login_as(@admin, scope: :user, run_callbacks: false)
         @user_practice.update(approved: true, published: true)
         # Practice should have no departments
         expect(@user_practice.departments.count).to eq(0)
@@ -426,7 +427,7 @@ Yes')
 
     describe 'highlight and featured practices' do
       it 'should highlight and un-highlight a practice' do
-        login_as(@admin, :scope => :user, :run_callbacks => false)
+        login_as(@admin, scope: :user, run_callbacks: false)
         @user_practice.update(approved: true, published: true)
         visit practice_path(@user_practice)
         expect(page).to have_link('Edit')
@@ -453,7 +454,7 @@ Yes')
       end
 
       it 'should feature and un-feature a practice' do
-        login_as(@admin, :scope => :user, :run_callbacks => false)
+        login_as(@admin, scope: :user, run_callbacks: false)
         @user_practice.update(approved: true, published: true)
         visit practice_path(@user_practice)
         expect(page).to have_link('Edit')

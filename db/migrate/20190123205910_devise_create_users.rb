@@ -52,7 +52,6 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.2]
     add_index :users, :confirmation_token,   unique: true
     add_index :users, :unlock_token,         unique: true
 
-
     create_table :old_passwords do |t|
       t.string :encrypted_password, null: false
       t.string :password_archivable_type, null: false
@@ -61,6 +60,6 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.2]
       t.datetime :created_at
     end
 
-    add_index :old_passwords, [:password_archivable_type, :password_archivable_id], name: :index_password_archivable
+    add_index :old_passwords, %i[password_archivable_type password_archivable_id], name: :index_password_archivable
   end
 end

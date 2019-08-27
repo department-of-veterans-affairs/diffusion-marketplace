@@ -17,9 +17,9 @@ describe 'The admin dashboard', type: :feature do
     @approver.add_role(User::USER_ROLES[0].to_sym)
     @practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline')
     @departments = [
-        Department.create!(name: 'Admissions', short_name: 'admissions'),
-        Department.create!(name: 'None', short_name: 'none'),
-        Department.create!(name: 'All departments equally - not a search differentiator', short_name: 'all'),
+      Department.create!(name: 'Admissions', short_name: 'admissions'),
+      Department.create!(name: 'None', short_name: 'none'),
+      Department.create!(name: 'All departments equally - not a search differentiator', short_name: 'all')
     ]
     @practice_partner = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative', icon: 'fas fa-heart', color: '#E4A002')
   end

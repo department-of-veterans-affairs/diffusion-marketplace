@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PracticeManagement < ApplicationRecord
   acts_as_list
   has_many :practice_management_practices

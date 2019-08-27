@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Practice < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged
@@ -56,11 +58,11 @@ class Practice < ApplicationRecord
   has_attached_file :origin_picture, styles: { thumb: '200x200#' }
   crop_attached_file :main_display_image, aspect: '16:9'
   crop_attached_file :origin_picture, aspect: '1:1'
-  validates_attachment_content_type :main_display_image, content_type: /\Aimage\/.*\z/
-  validates_attachment_content_type :origin_picture, content_type: /\Aimage\/.*\z/
+  validates_attachment_content_type :main_display_image, content_type: %r{\Aimage/.*\z}
+  validates_attachment_content_type :origin_picture, content_type: %r{\Aimage/.*\z}
 
-  scope :published,   -> { where(published: true) }
-  scope :unpublished,  -> { where(published: false) }
+  scope :published, -> { where(published: true) }
+  scope :unpublished, -> { where(published: false) }
 
   belongs_to :user, optional: true
 
@@ -127,15 +129,15 @@ class Practice < ApplicationRecord
   COST_LABELS = ['0-$10,000', '$10,000-$50,000', '$50,000-$250,000', 'Over $250,000'].freeze
   # also known as "Difficulty"
   COMPLEXITY_LABELS = ['Little or no complexity', 'Some complexity', 'Significant complexity', 'High or large complexity'].freeze
-  TIME_ESTIMATE_OPTIONS =['1 week', '1 month', '3 months', '6 months', '1 year', 'longer than 1 year', 'Other (Please specify)']
-  NUMBER_DEPARTMENTS_OPTIONS =['1. Single department', '2. Two departments', '3. Three departments', '4. Four or more departments']
+  TIME_ESTIMATE_OPTIONS = ['1 week', '1 month', '3 months', '6 months', '1 year', 'longer than 1 year', 'Other (Please specify)'].freeze
+  NUMBER_DEPARTMENTS_OPTIONS = ['1. Single department', '2. Two departments', '3. Three departments', '4. Four or more departments'].freeze
 
   def committed_user_count
     users.count
   end
 
   def committed_user_count_by_range(start_date, end_date)
-    users.where(created_at:start_date..end_date).count
+    users.where(created_at: start_date..end_date).count
   end
 
   def number_of_adopted_facilities

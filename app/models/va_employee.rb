@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class VaEmployee < ApplicationRecord
   acts_as_list
   has_paper_trail

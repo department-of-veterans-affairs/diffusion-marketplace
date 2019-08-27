@@ -74,7 +74,7 @@ describe 'The user index', type: :feature do
     end
 
     expect(page).to be_accessible.according_to :wcag2a, :section508
-    expect(page).to have_content("Disabled user \"spongebob.squarepants@bikinibottom.net\"")
+    expect(page).to have_content('Disabled user "spongebob.squarepants@bikinibottom.net"')
     expect(page).to have_css('tbody tr', count: 3)
   end
 
@@ -92,7 +92,7 @@ describe 'The user index', type: :feature do
     end
 
     expect(page).to be_accessible.according_to :wcag2a, :section508
-    expect(page).to have_content("Disabled user \"spongebob.squarepants@bikinibottom.net\"")
+    expect(page).to have_content('Disabled user "spongebob.squarepants@bikinibottom.net"')
     expect(page).to have_css('tbody tr', count: 3)
 
     execute_script("$('#show_disabled_users').click()")
@@ -129,7 +129,7 @@ describe 'The user index', type: :feature do
     click_button('Create User')
 
     expect(page).to be_accessible.according_to :wcag2a, :section508
-    expect(page).to have_content("User with email \"spongebob.squarepants@bikinibottom.net\" already exists")
+    expect(page).to have_content('User with email "spongebob.squarepants@bikinibottom.net" already exists')
   end
 
   it 'should prevent the last admin from being changed' do

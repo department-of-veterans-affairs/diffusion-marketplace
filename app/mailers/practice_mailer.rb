@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Mailer for form emails.
 class PracticeMailer < ApplicationMailer
   default from: ENV['DO_NOT_REPLY_MAILER_SENDER'] || 'do_not_reply@va.gov'
@@ -14,7 +16,7 @@ class PracticeMailer < ApplicationMailer
   def support_team_notification_of_commitment(options = {})
     @user = options[:user]
     @practice = options[:practice]
-    subject = "There is interest in implementing your practice!"
+    subject = 'There is interest in implementing your practice!'
 
     mail(to: @practice.support_network_email || ENV['MAILER_SENDER'], subject: subject)
   end

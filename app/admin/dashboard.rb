@@ -1,8 +1,9 @@
-ActiveAdmin.register_page "Dashboard" do
-  menu priority: 1, label: proc {I18n.t("active_admin.dashboard")}
+# frozen_string_literal: true
 
-  content title: proc {I18n.t("active_admin.dashboard")} do
+ActiveAdmin.register_page 'Dashboard' do
+  menu priority: 1, label: proc { I18n.t('active_admin.dashboard') }
 
+  content title: proc { I18n.t('active_admin.dashboard') } do
     @beginning_of_current_month = Date.today.at_beginning_of_month
     @end_of_current_month = Date.today.at_end_of_month
     @beginning_of_last_month = (Date.today - 1.months).at_beginning_of_month
@@ -26,20 +27,20 @@ ActiveAdmin.register_page "Dashboard" do
           end # column
         end # columns
         user_info = [{
-                         in_the_last: 'New user signups',
-                         '24_hours': User.where('created_at >= ?', 1.day.ago).count,
-                         week: User.where('created_at >= ?', 1.week.ago).count,
-                         month: User.where('created_at >= ?', 1.month.ago).count,
-                         three_months: User.where('created_at >= ?', 3.months.ago).count,
-                         year: User.where('created_at >= ?', 1.year.ago).count
-                     }, {
-                         in_the_last: 'Users signed in',
-                         '24_hours': User.where('current_sign_in_at >= ?', 1.day.ago).count,
-                         week: User.where('current_sign_in_at >= ?', 1.week.ago).count,
-                         month: User.where('current_sign_in_at >= ?', 1.month.ago).count,
-                         three_months: User.where('current_sign_in_at >= ?', 3.months.ago).count,
-                         year: User.where('current_sign_in_at >= ?', 1.year.ago).count
-                     }]
+          in_the_last: 'New user signups',
+          '24_hours': User.where('created_at >= ?', 1.day.ago).count,
+          week: User.where('created_at >= ?', 1.week.ago).count,
+          month: User.where('created_at >= ?', 1.month.ago).count,
+          three_months: User.where('created_at >= ?', 3.months.ago).count,
+          year: User.where('created_at >= ?', 1.year.ago).count
+        }, {
+          in_the_last: 'Users signed in',
+          '24_hours': User.where('current_sign_in_at >= ?', 1.day.ago).count,
+          week: User.where('current_sign_in_at >= ?', 1.week.ago).count,
+          month: User.where('current_sign_in_at >= ?', 1.month.ago).count,
+          three_months: User.where('current_sign_in_at >= ?', 3.months.ago).count,
+          year: User.where('current_sign_in_at >= ?', 1.year.ago).count
+        }]
         columns do
           column do
             panel 'User statistics' do
@@ -59,16 +60,16 @@ ActiveAdmin.register_page "Dashboard" do
       tab :practice_leaderboards do
         columns do
           column do
-            panel "Practice Views Leaderboard" do
+            panel 'Practice Views Leaderboard' do
               practice_views = Practice.all.sort_by(&:current_month_views).reverse!
 
               table_for practice_views.each, id: 'practice-views-table' do
-                column(:name) {|practice| link_to(practice.name, admin_practice_path(practice))}
-                column("#{@beginning_of_current_month.strftime('%B %Y')} - current month") {|practice| practice.current_month_views}
-                column("#{@beginning_of_last_month.strftime('%B %Y')} - last month") {|practice| practice.last_month_views}
-                column("#{@beginning_of_two_months_ago.strftime('%B %Y')} - 2 months ago") {|practice| practice.two_months_ago_views}
-                column("#{@beginning_of_three_months_ago.strftime('%B %Y')} - 3 months ago") {|practice| practice.three_months_ago_views}
-                column("Total lifetime views") {|practice| practice.views}
+                column(:name) { |practice| link_to(practice.name, admin_practice_path(practice)) }
+                column("#{@beginning_of_current_month.strftime('%B %Y')} - current month", &:current_month_views)
+                column("#{@beginning_of_last_month.strftime('%B %Y')} - last month", &:last_month_views)
+                column("#{@beginning_of_two_months_ago.strftime('%B %Y')} - 2 months ago", &:two_months_ago_views)
+                column("#{@beginning_of_three_months_ago.strftime('%B %Y')} - 3 months ago", &:three_months_ago_views)
+                column('Total lifetime views', &:views)
               end
 
               script do
@@ -82,19 +83,18 @@ ActiveAdmin.register_page "Dashboard" do
                       });
                     "
               end
-
             end
 
-            panel "Practice Commits Leaderboard" do
+            panel 'Practice Commits Leaderboard' do
               practice_commits = Practice.all.sort_by(&:current_month_views).reverse!
 
               table_for practice_commits.each, id: 'practice-commits-table' do
-                column(:name) {|practice| link_to(practice.name, admin_practice_path(practice))}
-                column("#{@beginning_of_current_month.strftime('%B %Y')} - current month") {|practice| practice.committed_user_count_by_range(@beginning_of_current_month, @end_of_current_month)}
-                column("#{@beginning_of_last_month.strftime('%B %Y')} - last month") {|practice| practice.committed_user_count_by_range(@beginning_of_last_month, @end_of_last_month)}
-                column("#{@beginning_of_two_months_ago.strftime('%B %Y')} - 2 months ago") {|practice| practice.committed_user_count_by_range(@beginning_of_two_months_ago, @end_of_two_months_ago)}
-                column("#{@beginning_of_three_months_ago.strftime('%B %Y')} - 3 months ago") {|practice| practice.committed_user_count_by_range(@beginning_of_three_months_ago, @end_of_three_months_ago)}
-                column("Total lifetime commits") {|practice| practice.committed_user_count}
+                column(:name) { |practice| link_to(practice.name, admin_practice_path(practice)) }
+                column("#{@beginning_of_current_month.strftime('%B %Y')} - current month") { |practice| practice.committed_user_count_by_range(@beginning_of_current_month, @end_of_current_month) }
+                column("#{@beginning_of_last_month.strftime('%B %Y')} - last month") { |practice| practice.committed_user_count_by_range(@beginning_of_last_month, @end_of_last_month) }
+                column("#{@beginning_of_two_months_ago.strftime('%B %Y')} - 2 months ago") { |practice| practice.committed_user_count_by_range(@beginning_of_two_months_ago, @end_of_two_months_ago) }
+                column("#{@beginning_of_three_months_ago.strftime('%B %Y')} - 3 months ago") { |practice| practice.committed_user_count_by_range(@beginning_of_three_months_ago, @end_of_three_months_ago) }
+                column('Total lifetime commits', &:committed_user_count)
               end
 
               script do
@@ -122,36 +122,36 @@ ActiveAdmin.register_page "Dashboard" do
         events = Ahoy::Event.where(name: 'Practice search').where("properties->>'search_term' is not null").group("properties->>'search_term'").order('count_all desc').count
         events.each do |e|
           search_terms << {
-              query: e[0],
-              lifetime_count: e[1],
-              current_month_count: Ahoy::Event.count_for_range(@beginning_of_current_month, @end_of_current_month, e[0]),
-              last_month_count: Ahoy::Event.count_for_range(@beginning_of_last_month, @end_of_last_month, e[0]),
-              two_months_ago_count: Ahoy::Event.count_for_range(@beginning_of_two_months_ago, @end_of_two_months_ago, e[0]),
-              three_months_ago_count: Ahoy::Event.count_for_range(@beginning_of_three_months_ago, @end_of_three_months_ago, e[0]),
+            query: e[0],
+            lifetime_count: e[1],
+            current_month_count: Ahoy::Event.count_for_range(@beginning_of_current_month, @end_of_current_month, e[0]),
+            last_month_count: Ahoy::Event.count_for_range(@beginning_of_last_month, @end_of_last_month, e[0]),
+            two_months_ago_count: Ahoy::Event.count_for_range(@beginning_of_two_months_ago, @end_of_two_months_ago, e[0]),
+            three_months_ago_count: Ahoy::Event.count_for_range(@beginning_of_three_months_ago, @end_of_three_months_ago, e[0])
           }
         end
 
-        search_terms.sort_by {|k| k["current_month_count"]}.reverse!
+        search_terms.sort_by { |k| k['current_month_count'] }.reverse!
 
         columns do
           column do
             table_for search_terms.each, id: 'practice-search-terms-table' do
-              column('Term') {|st| st[:query]}
-              column("#{@beginning_of_current_month.strftime('%B %Y')} - current month") {|st| st[:current_month_count]}
-              column("#{@beginning_of_last_month.strftime('%B %Y')} - last month") {|st| st[:last_month_count]}
-              column("#{@beginning_of_two_months_ago.strftime('%B %Y')} - 2 months ago") {|st| st[:two_months_ago_count]}
-              column("#{@beginning_of_three_months_ago.strftime('%B %Y')} - 3 months ago") {|st| st[:three_months_ago_count]}
-              column("Lifetime") {|st| st[:lifetime_count]}
+              column('Term') { |st| st[:query] }
+              column("#{@beginning_of_current_month.strftime('%B %Y')} - current month") { |st| st[:current_month_count] }
+              column("#{@beginning_of_last_month.strftime('%B %Y')} - last month") { |st| st[:last_month_count] }
+              column("#{@beginning_of_two_months_ago.strftime('%B %Y')} - 2 months ago") { |st| st[:two_months_ago_count] }
+              column("#{@beginning_of_three_months_ago.strftime('%B %Y')} - 3 months ago") { |st| st[:three_months_ago_count] }
+              column('Lifetime') { |st| st[:lifetime_count] }
             end
           end
         end
 
         script do
-          total_current_month_searches = search_terms.sum {|st| st[:current_month_count] }
-          total_last_month_searches = search_terms.sum {|st| st[:last_month_count]}
-          total_two_months_ago_searches = search_terms.sum {|st| st[:two_months_ago_count]}
-          total_three_months_ago_searches = search_terms.sum {|st| st[:three_months_ago_count]}
-          total_lifetime_searches = search_terms.sum {|st| st[:lifetime_count]}
+          total_current_month_searches = search_terms.sum { |st| st[:current_month_count] }
+          total_last_month_searches = search_terms.sum { |st| st[:last_month_count] }
+          total_two_months_ago_searches = search_terms.sum { |st| st[:two_months_ago_count] }
+          total_three_months_ago_searches = search_terms.sum { |st| st[:three_months_ago_count] }
+          total_lifetime_searches = search_terms.sum { |st| st[:lifetime_count] }
           raw "$(document).ready(function($) {
                         $('#practice-search-terms-table').append('<tr><td><b>Totals</b></td><td><b>#{total_current_month_searches}</b></td><td><b>#{total_last_month_searches}</b></td><td><b>#{total_two_months_ago_searches}</b></td><td><b>#{total_three_months_ago_searches}</b></td><td><b>#{total_lifetime_searches}</b></td></tr>');
                       });
@@ -161,9 +161,7 @@ ActiveAdmin.register_page "Dashboard" do
         script do
           raw "$(document).ready(function(){$('tr').attr('id', '')});"
         end
-
       end # tab
     end # tabs
   end # content
 end # register_page
-
