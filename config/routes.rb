@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   devise_for :users, controllers: { registrations: 'registrations' }
-  mount Ahoy::Engine => "/ahoy", as: :dm_ahoy
+  mount Ahoy::Engine => '/ahoy', as: :dm_ahoy
 
   resources :practices do
     get '/next-steps', action: 'next_steps', as: 'next_steps'
@@ -15,7 +17,7 @@ Rails.application.routes.draw do
     end
   end
   resources :practice_partners, path: :partners
-  resources :users, except: [:show, :create, :new, :edit] do
+  resources :users, except: %i[show create new edit] do
     patch :re_enable
   end
   resources :admin, only: [] do
@@ -32,4 +34,8 @@ Rails.application.routes.draw do
   # Ditto for "Planning Checklist"
   get 'practices/planning_checklist' => 'practices#planning_checklist'
   get '/search' => 'practices#search'
+
+  get '/edit-profile' => 'users#edit_profile'
+  post '/edit-profile' => 'users#update_profile'
+  delete '/edit-profile-photo' => 'users#delete_photo'
 end

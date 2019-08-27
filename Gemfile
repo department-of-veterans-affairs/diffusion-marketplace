@@ -56,9 +56,10 @@ group :development, :test do
   gem 'rspec_junit_formatter'
   gem 'simplecov'
   gem 'shoulda-matchers', require: false
+  gem 'pry', '~> 0.12.2'
 
   # gem 'sniffybara', git: 'https://github.com/department-of-veterans-affairs/sniffybara.git'
-
+  gem 'figaro'
   gem 'rspec-retry'
   gem 'axe-matchers'
   gem 'webdrivers'
@@ -75,8 +76,6 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'rails-erd'
   gem 'letter_opener'
-  gem 'figaro'
-  gem 'pry', '~> 0.12.2'
 
   # To be able to automagically generate domain model ER diagrams, https://github.com/amatsuda/erd
   # Requires graphviz installed locally
