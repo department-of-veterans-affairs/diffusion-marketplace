@@ -23,7 +23,7 @@ class User < ApplicationRecord
   validate :password_complexity
   validate :password_uniqueness
   validate :va_email
-  validates :bio, length: { minimum: 20 }
+
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
 
   scope :enabled,   -> { where(disabled: false) }

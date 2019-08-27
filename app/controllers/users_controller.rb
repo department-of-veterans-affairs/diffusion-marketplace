@@ -12,7 +12,7 @@ class UsersController < ApplicationController
   end
 
   def edit_profile
-    redirect_to users_path unless current_user.present?
+    redirect_to new_user_session_path unless current_user.present?
     @user = current_user
   end
 
@@ -23,6 +23,7 @@ class UsersController < ApplicationController
       flash[:success] = "Your profile has been updated."
       redirect_to edit_profile_path
     else
+      @user.avatar = nil if @user.errors.messages.include?(:avatar)
       render 'edit_profile'
     end
   end
