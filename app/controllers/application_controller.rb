@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   before_action :store_user_location!, if: :storable_location?
   before_action :set_paper_trail_whodunnit
 
-  protect_from_forgery with: :exception
+  protect_from_forgery with: :exception, prepend: true
 
   def authenticate_active_admin_user!
     authenticate_user!

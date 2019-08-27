@@ -15,6 +15,9 @@ class User < ApplicationRecord
 
   has_many :practices
 
+  # This allows users to post comments with the use of the Commontator gem
+  acts_as_commontator
+
   USER_ROLES = %w[approver_editor admin].freeze
 
   validate :valid_email

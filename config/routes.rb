@@ -2,7 +2,8 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   devise_for :users, controllers: { registrations: 'registrations' }
   mount Ahoy::Engine => "/ahoy", as: :dm_ahoy
-
+  mount Commontator::Engine => '/commontator' #, as: :dm_commontator
+  
   resources :practices do
     get '/next-steps', action: 'next_steps', as: 'next_steps'
     get '/committed', action: 'committed', as: 'committed'

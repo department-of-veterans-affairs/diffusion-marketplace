@@ -18,6 +18,8 @@ class PracticesController < ApplicationController
   # GET /practices/1.json
   def show
     ahoy.track "Practice show", {practice_id: @practice.id} if current_user.present?
+    # This allows comments thread to show up without the need to click a link
+    commontator_thread_show(@practice)
   end
 
   # GET /practices/1/edit

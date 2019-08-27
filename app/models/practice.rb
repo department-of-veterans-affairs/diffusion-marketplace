@@ -113,6 +113,9 @@ class Practice < ApplicationRecord
   has_many :va_secretary_priorities, through: :va_secretary_priority_practices
   has_many :video_files, dependent: :destroy
 
+  # This allows the practice model to be commented on with the use of the Commontator gem
+  acts_as_commontable dependent: :destroy
+
   accepts_nested_attributes_for :practice_partner_practices, allow_destroy: true
   accepts_nested_attributes_for :impact_photos, allow_destroy: true
   accepts_nested_attributes_for :difficulties, allow_destroy: true

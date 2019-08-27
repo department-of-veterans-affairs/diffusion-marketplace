@@ -115,6 +115,7 @@ gem "nested_form"
 gem 'colorize'
 gem 'humanize'
 gem 'paper_trail'
+gem 'commontator'
 
 # Active Admin
 gem 'activeadmin'

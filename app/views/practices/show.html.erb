@@ -8,5 +8,12 @@
 
 <%= render partial: 'show_authenticated' if current_user.present? %>
 
+<div>
+    <h2>Join the conversation</h2>
+    <%= @practice.thread.comments.count %>
+    <%= commontator_thread(@practice) %>
+</div>
+
+
 
 
