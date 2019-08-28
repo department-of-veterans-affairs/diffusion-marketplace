@@ -5,6 +5,8 @@ ARG AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
 ARG AWS_REGION
 
+RUN git config --global http.sslVerify false
+
 RUN gem install bundler --force
 
 ENV RAILS_ROOT /app
