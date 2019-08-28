@@ -3,8 +3,6 @@ FROM agilesix/centos:7.6
 MAINTAINER Agile Six Applications, Inc. <contact@agile6.com>
 
 ENV nginxversion="1.17.3-1" \
-    os="centos" \
-    osversion="7" \
     elversion="7"
 
 RUN yum install -y yum-plugin-ovl
@@ -12,7 +10,7 @@ RUN yum install -y yum-plugin-ovl
 RUN yum install -y wget openssl sed gettext &&\
     yum -y autoremove &&\
     yum clean all &&\
-    wget http://nginx.org/packages/mainline/centos/7/x86_64/RPMS/nginx-1.17.3-1.el7.ngx.x86_64.rpm &&\
+    wget http://nginx.org/packages/mainline/centos/7/x86_64/RPMS/nginx-$nginxversion.el$elversion.ngx.x86_64.rpm &&\
     rpm -iv nginx-$nginxversion.el$elversion.ngx.x86_64.rpm
 
 # establish where Nginx should look for files
