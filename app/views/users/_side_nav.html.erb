@@ -1,0 +1,14 @@
+<aside class="usa-layout-docs__sidenav desktop:grid-col-3">
+  <nav>
+    <ul class="usa-sidenav">
+      <li class="usa-sidenav__item">
+        <%= link_to('Profile', edit_profile_path,
+          class: "#{'usa-current' if current_page?(edit_profile_path)}"
+        ) %>
+      </li>
+      <li class="usa-sidenav__item">
+        <%= link_to('Account', edit_user_registration_path, class: "#{'usa-current' if current_page?(edit_user_registration_path)}") %>
+      </li>
+    </ul>
+  </nav>
+</aside>
