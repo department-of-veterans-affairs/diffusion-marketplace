@@ -11,6 +11,33 @@ class UsersController < ApplicationController
     @users = User.all.order(:email).page(params[:page])
   end
 
+  def edit_profile
+    redirect_to new_user_session_path unless current_user.present?
+    @user = current_user
+  end
+
+  def update_profile
+    redirect_to users_path unless current_user.present?
+    @user = current_user
+    if @user.update(user_params)
+      flash[:success] = 'Your profile has been updated.'
+      redirect_to edit_profile_path
+    else
+      @user.avatar = nil if @user.errors.messages.include?(:avatar)
+      render 'edit_profile'
+    end
+  end
+
+  def delete_photo
+    if current_user.present? && current_user.avatar.present?
+      user = current_user
+      user.avatar = nil
+      user.save
+    end
+
+    redirect_to edit_profile_path
+  end
+
   def update
     if params[:user][:role].present?
       if params[:user][:role] == 'user'
@@ -63,6 +90,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation, :job_title, :first_name, :last_name, :phone_number, :visn, :skip_va_validation, :skip_password_validation)
+    params.require(:user).permit(:avatar, :email, :password, :password_confirmation, :job_title, :first_name, :last_name, :phone_number, :visn, :skip_va_validation, :skip_password_validation, :bio)
   end
 end

@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  
   before_action :setup_breadcrumb_navigation
   before_action :store_user_location!, if: :storable_location?
   before_action :set_paper_trail_whodunnit
