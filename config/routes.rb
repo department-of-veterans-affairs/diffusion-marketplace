@@ -16,6 +16,11 @@ Rails.application.routes.draw do
       post :feature
       post :un_feature
     end
+    resources :comments do      
+      member do
+          put 'like' => 'commontator/comments#upvote'
+      end
+    end
   end
   resources :practice_partners, path: :partners
   resources :users, except: %i[show create new edit] do

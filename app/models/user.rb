@@ -17,6 +17,8 @@ class User < ApplicationRecord
 
   # This allows users to post comments with the use of the Commontator gem
   acts_as_commontator
+  
+  acts_as_voter
 
   has_attached_file :avatar
 

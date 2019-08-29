@@ -3,6 +3,7 @@ module Commontator
     belongs_to :creator, polymorphic: true
     belongs_to :editor, polymorphic: true, optional: true
     belongs_to :thread
+    acts_as_votable
 
     validates_presence_of :creator, on: :create
     validates_presence_of :editor, on: :update
@@ -51,14 +52,14 @@ module Commontator
     def delete_by(user)
       return false if is_deleted?
       self.deleted_at = Time.now
-      self.editor = user
+      self.editor = "#{user.first_name} #{user.last_name}"
       self.save
     end
 
     def undelete_by(user)
       return false unless is_deleted?
       self.deleted_at = nil
-      self.editor = user
+      self.editor = "#{user.first_name} #{user.last_name}"
       self.save
     end
 

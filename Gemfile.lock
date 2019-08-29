@@ -95,6 +95,7 @@ GEM
       tzinfo (~> 1.1)
     acts_as_list (0.9.19)
       activerecord (>= 3.0)
+    acts_as_votable (0.12.1)
     addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
     ahoy_matey (3.0.0)
@@ -165,9 +166,9 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     colorize (0.8.1)
-    commontator (5.1.0)
-      jquery-rails
+    commontator (6.0.0.pre.2)
       rails (>= 5.0)
+      will_paginate
     concurrent-ruby (1.1.5)
     connection_pool (2.2.2)
     crass (1.0.4)
@@ -291,7 +292,7 @@ GEM
     net-http-digest_auth (1.4.1)
     net-http-persistent (3.1.0)
       connection_pool (~> 2.2)
-    nio4r (2.4.0)
+    nio4r (2.5.1)
     nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     ntlm-http (0.1.1)
@@ -489,6 +490,7 @@ GEM
     websocket-driver (0.7.1)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.4)
+    will_paginate (3.1.8)
     xdan-datetimepicker-rails (2.5.4)
       jquery-rails
       rails (>= 3.2.16)
@@ -505,6 +507,7 @@ DEPENDENCIES
   activeadmin_addons
   activerecord-nulldb-adapter
   acts_as_list
+  acts_as_votable
   ahoy_matey
   aws-sdk-s3
   axe-matchers
@@ -517,7 +520,7 @@ DEPENDENCIES
   chartkick
   coffee-rails (~> 4.2)
   colorize
-  commontator
+  commontator (~> 6.0.0.pre.2)
   database_cleaner
   devise (>= 4.6.0)
   devise-security

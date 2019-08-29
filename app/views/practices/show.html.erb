@@ -11,7 +11,7 @@
 <div>
     <h2>Join the conversation</h2>
     <span><%= @practice.thread.comments.count %></span> <span><%= @practice.thread.comments.count > 1 || @practice.thread.comments.count == 0 ? 'comments' : 'comment' %></span>
-</div>    
+</div>  %>  
 <%= commontator_thread(@practice) %>
 
 
