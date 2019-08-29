@@ -62,8 +62,11 @@ Commontator.configure do |config|
   # Default: ->(user, view) {
   #   view.commontator_gravatar_image_tag(user, 1, s: 60, d: 'mm')
   # }
+  # config.user_avatar_proc = ->(user, view) {
+  #   view.commontator_gravatar_image_tag(user, 1, s: 60, d: 'mm')
+  # }
   config.user_avatar_proc = ->(user, view) {
-    view.commontator_gravatar_image_tag(user, 1, s: 60, d: 'mm')
+    view.show_user_avatar(user)
   }
 
   # user_email_proc
@@ -190,7 +193,7 @@ Commontator.configure do |config|
   # Not yet implemented:
   #   :n (link to the form; opens in a new window)
   # Default: :l
-  config.new_comment_style = :l
+  config.new_comment_style = :t
 
   # comments_per_page
   # Type: Fixnum or nil

@@ -83,12 +83,4 @@ class User < ApplicationRecord
 
     "#{first_name} #{last_name}"
   end
-
-  def avatar_show(classes)
-    if self.avatar.exists?
-      image_tag(self.avatar.url, alt: 'Profile Avatar') # add class when applicable
-    else
-      content_tag(:span, class: 'fas fa-user-circle')
-    end
-  end
 end

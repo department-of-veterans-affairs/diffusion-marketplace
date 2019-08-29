@@ -10,6 +10,11 @@
 <% can_subscribe = thread.can_subscribe?(user)
    can_edit = thread.can_be_edited_by?(user) %>
 
+<% if thread.config.comment_order != :l %>
+  <%= render partial: 'commontator/threads/reply',
+             locals: { thread: thread, user: user, per_page: per_page } %>
+<% end %>
+
 <span id="thread_<%= thread.id.to_s %>_show_span" class="thread_show commontator_hidden">
   <%= link_to t('commontator.thread.actions.show'),
               '#',
@@ -63,11 +68,6 @@
     <% end %>
   </span>
 
-  <span id="thread_<%= thread.id.to_s %>_header_span" class="thread_header">
-    <%= t "commontator.thread.status.#{thread.is_closed? ? 'closed' : 'open'}",
-          closer_name: (thread.is_closed? ? Commontator.commontator_name(thread.closer) : '') %>
-  </span>
-
   <% if thread.config.comment_order == :l %>
     <%= render partial: 'commontator/threads/reply',
                locals: { thread: thread, user: user, per_page: per_page } %>
@@ -104,11 +104,6 @@
                                        per_page: per_page } %>
       </div>
     </div>
-  <% end %>
-
-  <% if thread.config.comment_order != :l %>
-    <%= render partial: 'commontator/threads/reply',
-               locals: { thread: thread, user: user, per_page: per_page } %>
   <% end %>
 </span>
 

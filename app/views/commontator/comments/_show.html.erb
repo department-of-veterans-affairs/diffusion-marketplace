@@ -4,7 +4,7 @@
 %>
 
 <% creator = comment.creator
-   name = Commontator.commontator_name(creator) || ''
+   name = "#{creator.first_name} #{creator.last_name}"
    link = Commontator.commontator_link(creator, main_app) || ''
    avatar = Commontator.commontator_avatar(creator, self) || ''
 %>
