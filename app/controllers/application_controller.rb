@@ -78,7 +78,7 @@ class ApplicationController < ActionController::Base
   end
 
   def log_in_va_user
-    unless current_user.present? && ENV['USE_NTLM'] != 'true'
+    if current_user.blank? && ENV['USE_NTLM'] == 'true'
       user = User.authenticate_ldap(request.env["REMOTE_USER"])
       sign_in(user) unless user.blank?
     end
