@@ -91,6 +91,6 @@ class UsersController < ApplicationController
 
   def user_params
     return params.require(:user).permit(:avatar, :bio) if ENV['USE_NTLM'] == 'true'
-    params.require(:user).permit(:avatar, :email, :password, :password_confirmation, :job_title, :first_name, :last_name, :phone_number, :visn, :skip_va_validation, :skip_password_validation, :bio)
+    params.require(:user).permit(:avatar, :email, :password, :password_confirmation, :job_title, :first_name, :last_name, :phone_number, :visn, :skip_va_validation, :skip_password_validation, :bio, :location)
   end
 end

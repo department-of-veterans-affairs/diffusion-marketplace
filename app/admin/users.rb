@@ -32,6 +32,12 @@ ActiveAdmin.register User do
       row :disabled
     end
     active_admin_comments
+    h3 'Versions'
+    table_for user.versions.order(created_at: :desc) do |version|
+      column :event
+      column :whodunnit
+      column :created_at
+     end
   end
 
   form do |f|

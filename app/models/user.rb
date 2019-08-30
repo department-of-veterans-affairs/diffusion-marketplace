@@ -4,6 +4,7 @@ require 'net/ldap'
 
 ### This is the base class for our Users. ^^ Above comment is for Rubocop
 class User < ApplicationRecord
+  has_paper_trail
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable, #:confirmable,
@@ -86,7 +87,7 @@ class User < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
-  # Authenticates the User via LDAP
+  # Authenticates and signs in the User via LDAP
   def self.authenticate_ldap(domain_username)
     user = nil
     ldap = Net::LDAP.new(
@@ -101,7 +102,7 @@ class User < ApplicationRecord
       # Get the user's full name and return it
       ldap.search(
           filter: Net::LDAP::Filter.eq("sAMAccountName", domain_username),
-          attributes: %w[ displayName mail givenName sn title photo jpegphoto thumbnailphoto telephoneNumber ],
+          attributes: %w[ displayName mail givenName sn title photo jpegphoto thumbnailphoto telephoneNumber postalCode physicalDeliveryOffice streetAddress ],
           return_result: true
       ) do |entry|
 
@@ -123,6 +124,27 @@ class User < ApplicationRecord
         user.job_title = entry[:title][0]
         user.phone_number = entry[:telephoneNumber][0]
 
+        # attempt to resolve where the User is VA facility wise
+        facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
+        logger.info facilities.inspect
+        address = entry[:streetAddress][0]
+        postal_code = entry[:postalCode][0]
+        # Underscore for _location variable to not get confused with the User attribute location
+        _location = entry[:physicalDeliveryOffice][0]
+        facility = nil
+        if address.present?
+          # Find the facility by the street address
+          facility = facilities.find { |f| f['StreetAddress'] == address }
+          # If the address doesn't match, find it by the postal code
+          facility = facilities.find { |f| f['StreetAddressZipCode'] == postal_code } if facility.blank?
+        else
+          # If the address is not prsent, find the facility by the postal code
+          facility = facilities.find { |f| f['StreetAddressZipCode'] == postal_code }
+        end
+
+        # If we found the facility, use it as the location, otherwise, use the physicalDeliveryOffice attribute from AD
+        user.facility = facility['StationNumber'] if facility.present?
+        user.location = facility.present? ? facility['OfficialStationName'] : _location
         user.save
       end
     end

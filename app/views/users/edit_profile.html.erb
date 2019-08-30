@@ -75,6 +75,11 @@
                 </div>
 
                 <div class="field x1-top">
+                  <%= f.label :location, 'Facility', class: 'x0 x1-top' %><br/>
+                  <%= f.text_field :location, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
+                </div>
+
+                <div class="field x1-top">
                   <%= f.label :phone_number, 'Work phone number', class: 'x0 x1-top' %><br/>
                   <%= f.phone_field :phone_number, autofocus: true, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
                 </div>
