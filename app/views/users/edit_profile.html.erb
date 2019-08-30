@@ -1,6 +1,7 @@
 <div class="x0-top">
   <section class="usa-section" style="min-height: calc(100vh - 286px)">
     <div class="grid-container">
+      <%= render partial: 'shared/messages' %>
       <div class="grid-row grid-gap">
         <%= render partial: 'side_nav' %>
         <div class="usa-layout-docs__main desktop:grid-col-9 usa-prose">
@@ -65,22 +66,27 @@
               <div class="usa-form">
                 <div class="field">
                   <%= f.label :first_name, class: 'x1-top x1-bottom' %><br/>
-                  <%= f.text_field :first_name, autofocus: true, class: 'usa-input' %>
+                  <%= f.text_field :first_name, autofocus: true, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
                 </div>
 
                 <div class="field x1-top">
                   <%= f.label :last_name, class: 'x0 x1-top' %><br/>
-                  <%= f.text_field :last_name, class: 'usa-input' %>
+                  <%= f.text_field :last_name, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
+                </div>
+
+                <div class="field x1-top">
+                  <%= f.label :location, 'Facility', class: 'x0 x1-top' %><br/>
+                  <%= f.text_field :location, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
                 </div>
 
                 <div class="field x1-top">
                   <%= f.label :phone_number, 'Work phone number', class: 'x0 x1-top' %><br/>
-                  <%= f.phone_field :phone_number, autofocus: true, class: 'usa-input' %>
+                  <%= f.phone_field :phone_number, autofocus: true, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
                 </div>
 
                 <div class="field x1-top">
                   <%= f.label :job_title, class: 'x0 x1-top' %><br/>
-                  <%= f.text_field :job_title, class: 'usa-input' %>
+                  <%= f.text_field :job_title, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
                 </div>
               </div>
               <div class="field x1-top">
