@@ -2,10 +2,10 @@
 # Host is a Windows Domain Controller
 
 development:
-  host: va.gov
-  port: 389
-  default_domain: va
-  base: va.gov
+  host: gc.vha.med.va.gov #VHALON3DC4.v22.med.va.gov #VAISH1DC1.va.gov gc.vha.med.va.gov
+  port: 3268 #389 #3268 global catalog server?
+  default_domain: va.gov
+  base: DC=va,DC=gov
 
 test:
   host: examplehost

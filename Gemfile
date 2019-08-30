@@ -127,3 +127,5 @@ gem 'groupdate'
 
 gem 'ntlm-sso', '~> 0.0.1'
 gem 'net-ldap'
+
+gem 'wdm', '>= 0.1.0' if Gem.win_platform?
