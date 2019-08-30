@@ -4,7 +4,6 @@ class ApplicationController < ActionController::Base
   before_action :setup_breadcrumb_navigation
   before_action :store_user_location!, if: :storable_location?
   before_action :set_paper_trail_whodunnit
-  before_action :log_windows_domain_username
   before_action :log_in_va_user
 
   def authenticate_active_admin_user!
@@ -78,12 +77,8 @@ class ApplicationController < ActionController::Base
     store_location_for(:user, request.fullpath)
   end
 
-  def log_windows_domain_username
-    logger.info "-----------Windows Domain Username: #{request.env["REMOTE_USER"]}--------------"
-  end
-
   def log_in_va_user
-    unless current_user.present?
+    unless current_user.present? && ENV['USE_NTLM'] != 'true'
       user = User.authenticate_ldap(request.env["REMOTE_USER"])
       sign_in(user) unless user.blank?
     end

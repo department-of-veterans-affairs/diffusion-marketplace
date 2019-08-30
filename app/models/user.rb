@@ -8,8 +8,11 @@ class User < ApplicationRecord
   # :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable, #:confirmable,
          :recoverable, :rememberable, :validatable,
-         :password_expirable, :password_archivable, :trackable,
-         :timeoutable
+         :password_expirable, :password_archivable, :trackable
+  #:timeoutable
+
+  devise :timeoutable unless ENV['USE_NTLM'] == 'true'
+  devise :confirmable unless ENV['USE_NTLM'] == 'true'
 
   rolify before_add: :remove_all_roles
 
@@ -28,8 +31,8 @@ class User < ApplicationRecord
 
   validates_attachment_content_type :avatar, content_type: %r{\Aimage/.*\z}
 
-  scope :enabled,   -> { where(disabled: false) }
-  scope :disabled,  -> { where(disabled: true) }
+  scope :enabled, -> {where(disabled: false)}
+  scope :disabled, -> {where(disabled: true)}
 
   paginates_per 50
 
@@ -83,39 +86,24 @@ class User < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
-  # Authenticates the User via LDAP and saves their LDAP photo if they have one
+  # Authenticates the User via LDAP
   def self.authenticate_ldap(domain_username)
     user = nil
-    # raise ArgumentError, 'domain is nil' if domain.nil? or domain.blank?
-    # raise ArgumentError, 'password is nil' if password.nil? or password.blank?
-
-    # ldap      = Net::LDAP.new
-    # ldap.host = LDAP_CONFIG['host']
-    # ldap.port = LDAP_CONFIG['port']
-    # ldap.auth "#{domain}\\#{login}", password
-    # bound = ldap.bind
     ldap = Net::LDAP.new(
-        host: LDAP_CONFIG['host'],    # Thankfully this is a standard name
+        host: LDAP_CONFIG['host'], # Thankfully this is a standard name
         port: LDAP_CONFIG['port'],
-        auth: { method: :simple, username: ENV['LDAP_USERNAME'], password: ENV['LDAP_PASSWORD'] },
+        auth: {method: :simple, username: ENV['LDAP_USERNAME'], password: ENV['LDAP_PASSWORD']},
         base: LDAP_CONFIG['base']
     )
-    # ldap.auth(ENV['LDAP_USERNAME'], ENV['LDAP_PASSWORD'])
-    # logger.info "#{ENV['LDAP_USERNAME']}, #{ENV['LDAP_PASSWORD']}"
     if ldap.bind
       logger.info "LDAP bind: #{ldap.inspect}"
       # Yay, the login credentials were valid!
       # Get the user's full name and return it
       ldap.search(
-          # base:         LDAP_CONFIG['base'],
-          filter:       Net::LDAP::Filter.eq( "sAMAccountName", domain_username ),
-          attributes:   %w[ displayName mail givenName sn ],
-          return_result:true
+          filter: Net::LDAP::Filter.eq("sAMAccountName", domain_username),
+          attributes: %w[ displayName mail givenName sn title photo jpegphoto thumbnailphoto telephoneNumber ],
+          return_result: true
       ) do |entry|
-        logger.info "-----LDAP user inspect:-----"
-        logger.info "#{entry.inspect} "
-        # logger.info "#{entry.attribute_names} "
-        # logger.info "#{entry[:mail]}"
 
         return nil if entry[:mail].blank?
         email = entry[:mail][0].downcase
@@ -123,43 +111,26 @@ class User < ApplicationRecord
 
         logger.info "user: #{user.inspect}"
 
-        if user.blank?
-          # create the user
-          user = User.new(email: email)
-          user.skip_password_validation = true
-          user.skip_va_validation = true
-          user.save
-          logger.info "#{user.email}"
-          logger.info "#{user.errors.inspect}"
-        else
-          # update user attributes
-        end
+        # create a new user if they do not exist
+        user = User.new(email: email) if user.blank?
+
+        # set the user's attributes based on ldap entry
+        user.skip_password_validation = true
+        user.skip_va_validation = true
+
+        user.first_name = entry[:givenName][0]
+        user.last_name = entry[:sn][0]
+        user.job_title = entry[:title][0]
+        user.phone_number = entry[:telephoneNumber][0]
+
+        user.save
       end
     end
     get_ldap_response(ldap)
-    # if bound
-
-    # photo_path = "#{Rails.public_path}/images/avatars/#{id}.jpg"
-    # unless File.exists?(photo_path)
-    #   base   = LDAP_CONFIG['base']
-    #   filter = Net::LDAP::Filter.eq('sAMAccountName', login)
-    #   ldap.search(:base => base, :filter => filter, :return_result => true) do |entry|
-    #     [:thumbnailphoto, :jpegphoto, :photo].each do |photo_key|
-    #       if entry.attribute_names.include?(photo_key)
-    #         @ldap_photo = entry[photo_key][0]
-    #         File.open(photo_path, 'wb') { |f| f.write(@ldap_photo) }
-    #         break
-    #       end
-    #     end
-    #   end
-    # end
-    # end
-    # bound
-    #
     user
   end
 
-  attr_accessor :skip_password_validation  # virtual attribute to skip password validation while saving
+  attr_accessor :skip_password_validation # virtual attribute to skip password validation while saving
 
   protected
 

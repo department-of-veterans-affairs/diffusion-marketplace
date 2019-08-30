@@ -17,32 +17,32 @@
           </button>
         </div>
       </div>
-            <div class="usa-banner__content usa-accordion__content" id="gov-banner" hidden>
-              <div class="grid-row grid-gap-lg">
-                <div class="usa-banner__guidance tablet:grid-col-6">
-                  <img class="usa-banner__icon usa-media-block__img" src="<%= image_url 'uswds/icon-dot-gov.svg' %>" alt="Dot gov">
-                  <div class="usa-media-block__body">
-                    <p>
-                      <strong>The .gov means it’s official.</strong>
-                      <br>
-                      Federal government websites often end in .gov or .mil. Before sharing sensitive information, make sure
-                      you’re on a federal government site.
-                    </p>
-                  </div>
-                </div>
-                <div class="usa-banner__guidance tablet:grid-col-6">
-                  <img class="usa-banner__icon usa-media-block__img" src="<%= image_url 'uswds/icon-https.svg' %>" alt="Https">
-                  <div class="usa-media-block__body">
-                    <p>
-                      <strong>The site is secure.</strong>
-                      <br>
-                      The <strong>https://</strong> ensures that you are connecting to the official website and that any
-                      information you provide is encrypted and transmitted securely.
-                    </p>
-                  </div>
-                </div>
-              </div>
+      <div class="usa-banner__content usa-accordion__content" id="gov-banner" hidden>
+        <div class="grid-row grid-gap-lg">
+          <div class="usa-banner__guidance tablet:grid-col-6">
+            <img class="usa-banner__icon usa-media-block__img" src="<%= image_url 'uswds/icon-dot-gov.svg' %>" alt="Dot gov">
+            <div class="usa-media-block__body">
+              <p>
+                <strong>The .gov means it’s official.</strong>
+                <br>
+                Federal government websites often end in .gov or .mil. Before sharing sensitive information, make sure
+                you’re on a federal government site.
+              </p>
             </div>
+          </div>
+          <div class="usa-banner__guidance tablet:grid-col-6">
+            <img class="usa-banner__icon usa-media-block__img" src="<%= image_url 'uswds/icon-https.svg' %>" alt="Https">
+            <div class="usa-media-block__body">
+              <p>
+                <strong>The site is secure.</strong>
+                <br>
+                The <strong>https://</strong> ensures that you are connecting to the official website and that any
+                information you provide is encrypted and transmitted securely.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -69,22 +69,24 @@
           </li>
           <% if user_signed_in? %>
             <li class="usa-nav__secondary-item">
-                <%= link_to(edit_user_registration_path, class: 'text-white-important') do %>
-                  <% if current_user.avatar.present? %>
+              <%= link_to(edit_profile_path, class: 'text-white-important') do %>
+                <% if current_user.avatar.present? %>
                   <div style="width:30px;height:30px;overflow:hidden" class="empty-user-icon image-container display-none-important desktop:display-inline-block">
-                    <img src="<%= current_user.avatar.url %>" class="avatar-header-photo"/>
+                    <img src="<%= current_user.avatar.url %>" class="avatar-header-photo" alt="<%= current_user.full_name %>"/>
                   </div>
-                  <% else %>
-                    <i class="fas fa-user-circle text-white-important empty-user-icon display-none-important desktop:display-inline-block"></i>
-                  <% end %>
-                  <span class='text-white-important'>
+                <% else %>
+                  <i class="fas fa-user-circle text-white-important empty-user-icon display-none-important desktop:display-inline-block"></i>
+                <% end %>
+                <span class='text-white-important'>
                     <%= current_user.full_name %>
                   </span>
-                <% end %>
+              <% end %>
             </li>
-            <li class="usa-nav__secondary-item">
-              <%= link_to('Sign out', destroy_user_session_path, class: 'usa-button usa-button-outline-white', method: :delete) %>
-            </li>
+            <% unless ENV['USE_NTLM'] == 'true' %>
+              <li class="usa-nav__secondary-item">
+                <%= link_to('Sign out', destroy_user_session_path, class: 'usa-button usa-button-outline-white', method: :delete) %>
+              </li>
+            <% end %>
           <% else %>
             <li class="usa-nav__secondary-item">
               <%= link_to 'Sign in', new_user_session_path, class: 'usa-button usa-button-white', id: 'header-login-link' %>
