@@ -149,6 +149,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   color: $dm-color-midnight-black !important;
 }
 
+.dm-font-color-base-dark {
+  color: $dm-color-base-dark !important;
+}
+
 /* Font Weight */
 
 .fw-100 {
@@ -318,6 +322,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .maxw-675px {
   max-width: 675px !important;
+}
+
+.maxw-30rem {
+  max-width: 30rem !important;
 }
 
 .vertical-align-middle {
@@ -898,6 +906,10 @@ ul.no-list-style {
 /* Height and width setters */
 .height-100 {
   height: 100%;
+}
+
+.height-200px {
+  height: 200px !important;
 }
 
 .width-100 {

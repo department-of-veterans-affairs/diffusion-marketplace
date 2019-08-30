@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  protect_from_forgery with: :exception
 
   before_action :setup_breadcrumb_navigation
   before_action :store_user_location!, if: :storable_location?
@@ -35,7 +36,7 @@ class ApplicationController < ActionController::Base
 
     # add the search breadcrumb if there is a search query going to the practice page
     if params[:action] == 'show' && params[:controller] == 'practices' && url.path.include?('search') && (url.query.present? && url.query.include?('query='))
-      search_breadcrumb = session[:breadcrumbs].find {|bc| bc['display'] == 'Search' || bc[:display] == 'Search'}
+      search_breadcrumb = session[:breadcrumbs].find { |bc| bc['display'] == 'Search' || bc[:display] == 'Search'}
       search_breadcrumb['path'] = "#{url.path}?#{url.query}" if search_breadcrumb.present?
       session[:breadcrumbs] << {'display': 'Search', 'path': "#{url.path}?#{url.query}"} if search_breadcrumb.blank?
     end

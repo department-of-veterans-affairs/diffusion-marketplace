@@ -9,3 +9,29 @@
   bottom: -15px;
   position: relative;
 }
+
+.avatar-profile-photo {
+  max-width: 224px;
+  width: 100%;
+  padding: -5px;
+}
+
+.avatar-header-photo {
+  max-width: 55px;
+  max-height: 55px;
+  /*border-radius: 50%;*/
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translate(-50%)
+}
+
+.empty-user-avatar {
+  background-color: #F0F0F0;
+  color: #DADADA !important;
+  border-radius: 4px;
+  font-size: 10rem;
+  padding: 1.25rem 1.25rem 0 1.25rem;
+  position: relative;
+  text-decoration: none !important;
+}
