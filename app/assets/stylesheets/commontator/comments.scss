@@ -1,0 +1,143 @@
+.commontator .comment {
+  &, .body blockquote {
+    border: none;
+
+    font-weight: normal;
+    color: #000;
+  }
+
+  & {
+    clear: both;
+    margin: 0;
+    padding: 0;
+
+    font-style: normal;
+  }
+
+  .section {
+  	clear: both;
+  }
+
+  .middle, .top {
+    margin: 0;
+  }
+
+  .bottom {
+    margin-top: 10px;
+  }
+
+  .author {
+    font-size: 110%;
+    font-weight: bold;
+  }
+
+  .actions {
+    font-size: 90%;
+  }
+
+  .avatar {
+    margin-right: 7px;
+
+    .fa-user-circle::before {
+      font-size: 40px;
+    }
+  }
+
+  .votes {
+
+    text-align: center;
+
+    input, img {
+      background-color: transparent;
+    }
+  }
+
+  .upvote, .downvote {
+    display: block;
+
+    height: 18px;
+
+    margin: 5px 0;
+  }
+
+  .like {
+
+    margin-right: 5px;
+  }
+
+  .vote-count {
+    font-size: 100%;
+    margin-right: 9px;
+  }
+
+  .body {
+    overflow: hidden;
+
+    blockquote {
+      border-color: #CCC;
+      padding: 5px 7px;
+
+      background-color: #EEE;
+
+      font-style: italic;
+    }
+  }
+
+  .reply, .timestamp {
+    font-size: 90%;
+  }
+
+  .timestamp {
+    color: #666;
+  }
+
+  .error-explanation {
+    margin-bottom: 10px;
+
+    h3 {
+      margin-top: 5px;
+    }
+
+    ul {
+      list-style-position: inside;
+    }
+  }
+
+  .pagination {
+    margin: 10px 7px;
+  }
+}
+
+h2 {
+  margin-bottom: 0;
+}
+
+h4 {
+  margin: 10px 0 16px 0;
+}
+
+.comment-author-job-title {
+  font-size: 16.96px;
+  line-height: 26px;
+  color: gray;
+}
+
+.fa-thumbs-up::before {
+  height: 20px;
+  width: 20px;
+}
+
+.fa-edit {
+  margin-right: 10.5px;
+  text-decoration: none;
+}
+
+.fa-trash-alt {
+  margin-right: 11.67px;
+}
+
+body {
+  p {
+    margin: 0
+  }
+}

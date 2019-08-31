@@ -1,0 +1,11 @@
+<% if @comment.nil? || !@comment.persisted? %>
+  $("#commontator-thread-<%= @commontator_thread.id %>-new-comment").hide();
+
+  $("#commontator-thread-<%= @commontator_thread.id %>-new-comment-link").fadeIn();
+<% else %>
+  $("#commontator-comment-<%= @comment.id %>-body").html("<%= escape_javascript(
+    render partial: 'body', locals: { comment: @comment }
+  ) %>");
+<% end %>
+
+<%= javascript_proc %>
