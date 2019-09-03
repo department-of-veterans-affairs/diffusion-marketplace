@@ -14,7 +14,7 @@ test:
   base: examplebase # OU=US-Tampa Bay,OU=North America,OU=Accounts,DC=ourdomain,DC=org
 
 production:
-  host: examplehost
-  port: 389
-  default_domain: EXAMPLEDOMAIN
-  base: examplebase # OU=US-Tampa Bay,OU=North America,OU=Accounts,DC=ourdomain,DC=org
+  host: gc.vha.med.va.gov
+  port: 3268 
+  default_domain: va.gov
+  base: DC=va,DC=gov
