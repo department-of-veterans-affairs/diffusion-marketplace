@@ -166,7 +166,7 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     colorize (0.8.1)
-    commontator (6.0.0.pre.2)
+    commontator (6.0.1)
       rails (>= 5.0)
       will_paginate
     concurrent-ruby (1.1.5)
@@ -520,7 +520,7 @@ DEPENDENCIES
   chartkick
   coffee-rails (~> 4.2)
   colorize
-  commontator (~> 6.0.0.pre.2)
+  commontator (~> 6.0.1)
   database_cleaner
   devise (>= 4.6.0)
   devise-security

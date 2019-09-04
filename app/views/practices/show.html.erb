@@ -20,7 +20,9 @@
                         <span><%= @practice.commontator_thread.comments.count %></span> <span><%= @practice.commontator_thread.comments.count > 1 || @practice.commontator_thread.comments.count == 0 ? 'comments' : 'comment' %></span>
                     </h4>
                 </div>
-                <%= commontator_thread(@practice) %>
+                <div>
+                    <%= commontator_thread(@practice) %>
+                </div>
             </div>
         </div>
     </div>

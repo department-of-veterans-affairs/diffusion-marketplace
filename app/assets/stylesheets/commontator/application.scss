@@ -4,7 +4,7 @@
  *= require_tree .
  */
 
-.commontator {
+ .commontator {
   *:not(input):not(textarea) {
     border: none;
     padding: 0;
@@ -41,17 +41,17 @@
 
   /* Modified from: https://www.strangerstudios.com/sandbox/pagination/diggstyle.php */
   .page-entries-info, .will-paginate {
-  	margin: 10px 0;
+      margin: 10px 0;
   }
 
   .pagination {
     a {
-    	margin-right: 4px;
-    	padding: 2px 5px 2px 5px;
-    	border: 1px solid #999;
+        margin-right: 4px;
+        padding: 2px 5px 2px 5px;
+        border: 1px solid #999;
 
-    	color: #666;
-    	text-decoration: none;
+        color: #666;
+        text-decoration: none;
 
       &:hover, &:active {
         border: 1px solid #555;
@@ -61,9 +61,9 @@
     }
 
     em {
-    	margin-right: 4px;
+        margin-right: 4px;
       border: 1px solid #555;
-    	padding: 2px 5px 2px 5px;
+        padding: 2px 5px 2px 5px;
 
       background-color: #555;
 
@@ -72,11 +72,11 @@
     }
 
     .name {
-    	margin: 2px 9px 2px 0;
+        margin: 2px 9px 2px 0;
     }
 
     .disabled {
-    	margin-right: 4px;
+        margin-right: 4px;
       border: 1px solid #EEE;
       padding: 2px 5px 2px 5px;
 
@@ -109,10 +109,17 @@
     width: 100%;
 
     .cancel-comment, .post-comment{
-      margin-right: 8px;
       padding: 16px;
       border: 2px solid #565C65;
       border-radius: 4px;
+    }
+
+    .cancel-comment {
+      margin-right: 8px;
+    }
+
+    .post-comment {
+      margin-right: 0;
     }
   }
 }

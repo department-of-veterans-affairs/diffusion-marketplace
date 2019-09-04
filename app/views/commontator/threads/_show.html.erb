@@ -74,17 +74,6 @@
     <%= render partial: 'commontator/threads/reply', locals: { thread: thread, user: user } %>
   <% end %>
 
-  <div id="commontator-thread-<%= thread.id %>-new-comment" class="new-comment<%=
-    @commontator_new_comment.nil? ? ' hidden' : '' %>">
-      <% unless @commontator_new_comment.nil? %>
-        <%=
-          render partial: 'commontator/comments/form', locals: {
-            comment: @commontator_new_comment, thread: thread
-          }
-        %>
-      <% end %>
-    </div>
-
   <div id="commontator-thread-<%= thread.id %>-comment-list" class="comment-list">
     <%=
       render partial: 'commontator/comments/list', locals: {
@@ -94,11 +83,11 @@
   </div>
 
   <div id="commontator-thread-<%= thread.id %>-pagination" class="pagination">
-    <%#<div id="commontator-thread-<%= thread.id %><%#-page-entries-info" class="page-entries-info">
+    <div id="commontator-thread-<%= thread.id %>-page-entries-info" class="page-entries-info">
       <%=
         page_entries_info(comments) unless [ :i, :b ].include? thread.config.comment_reply_style
       %>
-    <%#</div> %>
+    </div>
 
     <div id="commontator-thread-<%= thread.id %>-will-paginate" class="will-paginate">
       <%=

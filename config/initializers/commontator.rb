@@ -140,7 +140,7 @@ Commontator.configure do |config|
   #   :l (only if it's the latest comment)
   #   :n (never)
   # Default: :l
-  config.comment_editing = :l
+  config.comment_editing = :a
 
   # comment_deletion
   # Type: Symbol
@@ -151,7 +151,7 @@ Commontator.configure do |config|
   #   :n (never)
   # Note: For moderators, see the next option
   # Default: :l
-  config.comment_deletion = :l
+  config.comment_deletion = :a
 
   # moderator_permissions
   # Type: Symbol
@@ -226,7 +226,7 @@ Commontator.configure do |config|
   #   :b (both <blockquote> the original comment and indent replies)
   # It might be a good idea to add some CSS to hide <blockquote>s when converting from :q to :i
   # Default: :n
-  config.comment_reply_style = :q
+  config.comment_reply_style = :i
 
   # comments_per_page
   # Type: Array
@@ -234,7 +234,7 @@ Commontator.configure do |config|
   # The array represents how many comments to load at each nesting level, with the
   # first number corresponding to the current level, the second number to the next level, etc
   # Note: large values WILL cause performance and memory issues with many nested comments
-  # The maximum number of comments loaded at once is for the default setting is:
+  # The maximum number of comments loaded at once for the default setting is:
   # 20 + 20*5 + 20*5*2 == 320
   # Default: [ 20, 5, 2 ]
   config.comments_per_page = [ 20, 5, 2 ]
