@@ -38,6 +38,10 @@
   .avatar {
     margin-right: 7px;
 
+    .fa-user-circle {
+      color: #162E51;
+    }
+
     .fa-user-circle::before {
       font-size: 40px;
     }
@@ -87,6 +91,12 @@
     font-size: 90%;
   }
 
+  .reply {
+    a:hover {
+      color: #005EA2;
+    }
+  }
+
   .timestamp {
     color: #666;
   }
@@ -122,6 +132,15 @@ h4 {
   color: gray;
 }
 
+.fa-thumbs-up {
+  color: #71767A;
+}
+
+.fa-thumbs-up:hover {
+  color: #005EA2;
+  cursor: pointer;
+}
+
 .fa-thumbs-up::before {
   height: 20px;
   width: 20px;
@@ -140,4 +159,8 @@ body {
   p {
     margin: 0
   }
+}
+
+.comment-container {
+  margin-bottom: 31px;
 }

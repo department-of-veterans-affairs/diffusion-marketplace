@@ -116,6 +116,7 @@ gem 'humanize'
 gem 'paper_trail'
 gem 'commontator', '~> 6.0.1'
 gem 'acts_as_votable'
+gem 'jquery-timeago-rails', github: 'agilesix/jquery-timeago-rails'
 
 # Active Admin
 gem 'activeadmin'

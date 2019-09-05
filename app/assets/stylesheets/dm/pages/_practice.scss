@@ -32,8 +32,8 @@
       border-top: 1px solid #F0F0F0;
     }
 
-    &.bottom-tab {
-    }
+    // &.bottom-tab {
+    // }
 
     &.active, &.tab-active, &:hover {
       font-weight: bold;
@@ -182,6 +182,16 @@
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+.conversation-h2 {
+  margin-top: 0;
+  margin-right: 8px;
+}
+
+.conversation-line {
+  height: 2px;
+  border: 2px solid #F0F0F0;
 }
 
 .practice-complexity-divider {

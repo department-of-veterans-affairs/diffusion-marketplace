@@ -20,7 +20,7 @@
   <%= avatar %>
 </div>
 
-<div class="grid-col-fill">
+<div class="comment-container grid-col-fill">
   <div id="commontator-comment-<%= comment.id %>-section-top" class="section top">
     <span id="commontator-comment-<%= comment.id %>-author" class="author">
       <%= link.blank? ? name : link_to(name, link) %>
@@ -50,13 +50,17 @@
       <% end %>
     </span>
 
-    <span id="commontator-comment-<%= comment.id %>-created-timestamp" class="timestamp">
-      <%= comment.created_timestamp %>
-    </span>
+    <% if comment.created_at == comment.updated_at %>
+      <span id="commontator-comment-<%= comment.id %>-created-timestamp" class="timestamp">
+        Posted <%= timeago(comment.created_at) %>
+      </span>
+    <% end %>
 
-    <span id="commontator-comment-<%= comment.id %>-updated-timestamp" class="timestamp">
-      <%= comment.updated_timestamp if comment.is_modified? %>
-    </span>
+    <% if comment.created_at != comment.updated_at %>
+      <span id="commontator-comment-<%= comment.id %>-updated-timestamp" class="timestamp">
+        Edited <%= timeago(comment.updated_at) %>
+      </span>
+    <% end %>
 
     <div class="comment-author-job-title">
       <%= title %>

@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/agilesix/jquery-timeago-rails.git
+  revision: d9d47263ae05bd6a710ddee58d49eb594e9023e4
+  specs:
+    jquery-timeago-rails (1.6.7)
+      rails (~> 5)
+
+GIT
   remote: https://github.com/agilesix/papercrop.git
   revision: e5e8b1fa37a07d8c59e88a05ec99b9577790c67e
   ref: turbolink-fix
@@ -533,6 +540,7 @@ DEPENDENCIES
   humanize
   jbuilder (~> 2.5)
   jquery-rails
+  jquery-timeago-rails!
   jquery-ui-rails
   kaminari
   letter_opener
