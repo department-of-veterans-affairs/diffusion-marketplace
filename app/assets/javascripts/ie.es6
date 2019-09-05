@@ -14,7 +14,7 @@ function detectIE() {
                         <p class="browsehappy">
                             Diffusion Marketplace is not optimized for this browser. 
                             Some features may not be available. For the best experience, please use the latest versions of 
-                            Microsoft Edge, Google Chrome, or Mozilla Firefox.
+                            Microsoft Edge or Google Chrome.
                         </p>
                       </div>
                     </div>
