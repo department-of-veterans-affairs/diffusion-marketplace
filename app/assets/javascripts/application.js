@@ -35,3 +35,4 @@
 //= require commontator/application
 //= require jquery.timeago
 //= require timeago
+//= require replies

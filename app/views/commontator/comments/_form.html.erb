@@ -42,7 +42,7 @@
 
   <div class="submit">
     <%= form.submit 'Cancel', name: 'cancel', class: 'cancel-comment' %>
-    <% if comment.parent_id? && %>
+    <% if comment.parent_id? %>
       <%= form.submit "#{comment.id.blank? ? 'Reply' : 'Edit'}", class: 'reply-comment' %>
     <% else %>
       <%= form.submit "#{comment.id.blank? ? 'Comment' : 'Edit'}", class: 'post-comment' %>

@@ -12,13 +12,11 @@
 %>
 
 <div id="commontator-thread-<%= thread.id %>-new-comment" class="new-comment">
-  <% unless @commontator_new_comment.nil? %>
-    <%=
-      render partial: 'commontator/comments/form', locals: {
-        comment: @commontator_new_comment, thread: thread
-      }
-    %>
-  <% end %>
+  <%=
+    render partial: 'commontator/comments/form', locals: {
+      comment: @commontator_new_comment, thread: thread
+    }
+  %>
 </div>
 
 <div id="commontator-thread-<%= thread.id %>-show" class="show hidden">

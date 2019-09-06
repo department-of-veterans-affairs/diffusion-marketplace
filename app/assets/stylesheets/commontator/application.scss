@@ -4,10 +4,10 @@
  *= require_tree .
  */
 
- .commontator {
+.commontator {
   *:not(input):not(textarea) {
     border: none;
-    padding: 0;
+    // padding: 0;
   }
 
   .hidden {
@@ -20,8 +20,7 @@
   }
 
   .actions {
-
-    margin-left: 13px;
+    margin-left: 14px;
   }
 
   .status {
@@ -111,6 +110,13 @@
       padding: 16px;
       border: 2px solid #565C65;
       border-radius: 4px;
+      font-weight: bold;
+      color: #565C65;
+
+      &:hover {
+        color: #005EA2;
+        border-color: #005EA2;
+      }
     }
 
     .cancel-comment {
@@ -119,6 +125,16 @@
 
     .post-comment {
       margin-right: 0;
+    }
+  }
+
+  .edit:hover {
+    text-decoration: none;
+  }
+
+  .actions {
+    .fa-edit:hover {
+      text-decoration: none;
     }
   }
 }

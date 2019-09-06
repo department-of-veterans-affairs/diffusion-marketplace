@@ -76,6 +76,7 @@
   .vote-count {
     font-size: 100%;
     margin-right: 9px;
+    color: #71767A;
   }
 
   .blocked {
@@ -100,6 +101,9 @@
   }
 
   .reply {
+    a {
+      color: #71767A;
+    }
     .new-comment {
       width: 100%;
       margin-top: 18px;
@@ -161,20 +165,20 @@ h4 {
   width: 20px;
 }
 
-.fa-edit, .fa-trash-alt {
-  color: #DADADA;
+.edit, .delete, .undelete {
+  margin-right: 11px;
 }
 
-.fa-edit {
-  margin-right: 10.5px;
+.fa-edit, .fa-trash-alt, .fa-trash-restore-alt {
+  color: #71767A;
   text-decoration: none;
 }
 
-.fa-trash-alt {
-  margin-right: 11.67px;
+.fa-edit {
+  text-decoration: none;
 }
 
-.fa-edit:hover, .fa-trash-alt:hover {
+.fa-edit:hover, .fa-trash-alt:hover, .fa-trash-restore-alt:hover {
   color: #005EA2;
 }
 
@@ -187,4 +191,15 @@ body {
 .comment-container {
   margin-top: 29px;
   width: 100%;
+}
+
+.association-with-practice-container {
+  display: inline-block;
+  margin-left: 14px;
+
+  .association-with-practice {
+    background: #FFBE2E;
+    border-radius: 16px;
+    padding: 0 10px;
+  }
 }

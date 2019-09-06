@@ -14,6 +14,7 @@
   name = Commontator.commontator_name(creator) || ''
   title = creator.job_title
   avatar = show_user_avatar(user)
+  association_with_practice = 'Placeholder'
 %>
 
 <div class="comment-container grid-row">
@@ -26,11 +27,16 @@
       <span id="commontator-comment-<%= comment.id %>-author" class="author">
         <%= link.blank? ? name : link_to(name, link) %>
       </span>
+
+      <div class="association-with-practice-container">
+        <span class="association-with-practice">
+          <%= association_with_practice %>
+        </span>
+      </div>
       
-      <span id="commontator-comment-<%= comment.id %>-actions" class="actions">
-        <%=
+      <span id="commontator-comment-<%= comment.id %>-actions" class="actions"><%=
           link_to(
-            content_tag(:span, '', class: "fas fa-edit"),
+            content_tag(:span, '', class: 'fas fa-edit fa-lg'),
             commontator.edit_comment_path(comment),
             id: "commontator-comment-#{comment.id}-edit",
             class: 'edit',
@@ -41,9 +47,9 @@
         <% if comment.can_be_deleted_by?(user) %>
           <% is_deleted = comment.is_deleted? %>
           <% del_string = is_deleted ? 'undelete' : 'delete' %>
-          <%= link_to content_tag(:span, '', class: "fas fa-trash-alt"),
+          <%= link_to content_tag(:span, '', class: "#{comment.is_deleted? ? 'fas fa-trash-restore-alt fa-lg' : 'fas fa-trash-alt fa-lg'}"),
                       commontator.polymorphic_path([del_string, comment]),
-                      data: is_deleted ? {} : { confirm: t('commontator.comment.actions.confirm_delete') },
+                      data: is_deleted ? { confirm: 'Are you sure you want to restore this comment?' } : { confirm: t('commontator.comment.actions.confirm_delete') },
                       method: :put,
                       id: "commontator-comment-#{comment.id}-#{del_string}",
                       class: del_string,
@@ -55,11 +61,13 @@
         <span id="commontator-comment-<%= comment.id %>-created-timestamp" class="timestamp">
           Posted <%= timeago(comment.created_at) %>
         </span>
-      <% end %>
-
-      <% if comment.created_at != comment.updated_at %>
+      <% elsif comment.created_at != comment.updated_at && !comment.deleted_at%>
         <span id="commontator-comment-<%= comment.id %>-updated-timestamp" class="timestamp">
           Edited <%= timeago(comment.updated_at) %>
+        </span>
+      <% else %>
+        <span class="timestamp">
+          Deleted <%= timeago(comment.deleted_at) %>
         </span>
       <% end %>
 
@@ -79,12 +87,12 @@
         <%= render partial: 'commontator/comments/votes', locals: { comment: comment, user: user } %>
       </span>
 
-      <% if !comment.parent_id? %>
-        <% unless comment.is_deleted? %>
+      
+      <% unless comment.is_deleted? %>
+        <% if !comment.parent_id? %>
           <span id="commontator-comment-<%= comment.id %>-reply" class="reply">
             <%=
-              link_to(
-                t('Reply'),
+              link_to('Reply',
                 commontator.new_thread_comment_path(thread, comment: { parent_id: comment.id }),
                 remote: true
               ) if thread.config.comment_reply_style != :n && !thread.is_closed?
