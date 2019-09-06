@@ -12,7 +12,7 @@
   <% else %>
     <div id="commontator-thread-<%= thread.id %>-new-comment" class="new-comment<%=
     @commontator_new_comment.nil? ? ' hidden' : '' %>">
-      <% unless @commontator_new_comment.nil? %>
+      <% unless @commontator_new_comment %> <%# Took out .nil? form this line %>
         <%=
           render partial: 'commontator/comments/form', locals: {
             comment: @commontator_new_comment, thread: thread

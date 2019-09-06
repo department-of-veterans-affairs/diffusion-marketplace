@@ -24,11 +24,11 @@
 <%= form_for([commontator, thread, comment], remote: !no_remote) do |form| %>
   <%= form.hidden_field :parent_id %>
 
-  <% unless comment.parent.nil? %>
-    <div class="replying">
+  <%#<% unless comment.parent.nil? %>
+    <%#<div class="replying">
       <%= t('commontator.comment.status.replying',
             creator_name: Commontator.commontator_name(comment.parent.creator)) %>
-    </div>
+    <%#</div>
   <% end %>
 
   <div class="field">
@@ -41,7 +41,11 @@
   </div>
 
   <div class="submit">
-    <%= form.submit t('commontator.comment.actions.cancel'), name: 'cancel', class: 'cancel-comment' %>
-    <%= form.submit t("commontator.comment.actions.#{comment.id.blank? ? 'create' : 'update'}"), class: 'post-comment' %>
+    <%= form.submit 'Cancel', name: 'cancel', class: 'cancel-comment' %>
+    <% if comment.parent_id? && %>
+      <%= form.submit "#{comment.id.blank? ? 'Reply' : 'Edit'}", class: 'reply-comment' %>
+    <% else %>
+      <%= form.submit "#{comment.id.blank? ? 'Comment' : 'Edit'}", class: 'post-comment' %>
+    <% end %>
   </div>
 <% end %>

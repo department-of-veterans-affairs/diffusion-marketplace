@@ -11,6 +11,16 @@
   nested_comments = thread.nested_comments_for(user, comments, show_all)
 %>
 
+<div id="commontator-thread-<%= thread.id %>-new-comment" class="new-comment">
+  <% unless @commontator_new_comment.nil? %>
+    <%=
+      render partial: 'commontator/comments/form', locals: {
+        comment: @commontator_new_comment, thread: thread
+      }
+    %>
+  <% end %>
+</div>
+
 <div id="commontator-thread-<%= thread.id %>-show" class="show hidden">
   <%= link_to t('commontator.thread.actions.show'),
               '#',
@@ -104,11 +114,11 @@
     </div>
   </div>
 
-  <% if thread.config.comment_order != :l %>
-    <%= render partial: 'commontator/threads/reply', locals: { thread: thread, user: user } %>
-  <% end %>
-</div>
+<%#  <% if thread.config.comment_order != :l %>
+<%#    <%= render partial: 'commontator/threads/reply', locals: { thread: thread, user: user } %>
+<%#  <% end %>
+<%#</div>
 
 <script type="text/javascript">
   <%= render partial: 'commontator/threads/hide_show_links.js', locals: { thread: thread } %>
-</script>
+<%#</script>%>
