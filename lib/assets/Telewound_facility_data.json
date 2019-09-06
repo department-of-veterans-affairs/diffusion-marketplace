@@ -1,0 +1,52 @@
+﻿[
+  {
+    "StationNumber": "621",
+    "Status": "Implemented",
+    "DateImplemented": "2016-05-31"
+  },
+  {
+    "StationNumber": "589",
+    "Status": "Planning",
+    "DateImplemented": "2019-05-09"
+  },
+  {
+    "StationNumber": "589A4",
+    "Status": "Planning",
+    "DateImplemented": "2019-05-09"
+  },
+  {
+    "StationNumber": "589A5",
+    "Status": "Planning",
+    "DateImplemented": "2019-05-09"
+  },
+  {
+    "StationNumber": "589A6",
+    "Status": "Planning",
+    "DateImplemented": "2019-05-09"
+  },
+  {
+    "StationNumber": "657",
+    "Status": "Planning",
+    "DateImplemented": "2019-05-09"
+  },
+  {
+    "StationNumber": "657A0",
+    "Status": "Planning",
+    "DateImplemented": "2019-05-09"
+  },
+  {
+    "StationNumber": "657A5",
+    "Status": "Implemented",
+    "DateImplemented": "2019-02-16"
+  },
+  {
+    "StationNumber": "436",
+    "Status": "Implemented",
+    "DateImplemented": "2017-07-31"
+  },
+  {
+    "StationNumber": "653",
+    "Status": "Implemented",
+    "DateImplemented": "2017-07-31"
+  }
+]

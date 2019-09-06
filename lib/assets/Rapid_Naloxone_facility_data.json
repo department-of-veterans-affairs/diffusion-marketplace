@@ -1,0 +1,353 @@
+﻿[
+  {
+    "StationNumber": "402",
+    "DateImplemented": "2017-02-01"
+  },
+  {
+    "StationNumber": "405",
+    "DateImplemented": "2018-01-15"
+  },
+  {
+    "StationNumber": "518",
+    "DateImplemented": "2015-08-03"
+  },
+  {
+    "StationNumber": "523",
+    "DateImplemented": "2015-03-24"
+  },
+  {
+    "StationNumber": "523A4"
+  },
+  {
+    "StationNumber": "523A5",
+    "DateImplemented": "2015-03-24"
+  },
+  {
+    "StationNumber": "608",
+    "DateImplemented": "2017-03-31"
+  },
+  {
+    "StationNumber": "631",
+    "DateImplemented": "2017-06-01"
+  },
+  {
+    "StationNumber": "650",
+    "DateImplemented": "2016-10-26"
+  },
+  {
+    "StationNumber": "689",
+    "DateImplemented": "2017-08-11"
+  },
+  {
+    "StationNumber": "528",
+    "DateImplemented": "2018-08-01"
+  },
+  {
+    "StationNumber": "528A4",
+    "DateImplemented": "2018-08-01"
+  },
+  {
+    "StationNumber": "528A5",
+    "DateImplemented": "2017-11-01"
+  },
+  {
+    "StationNumber": "528A6",
+    "DateImplemented": "2018-11-01"
+  },
+  {
+    "StationNumber": "528A7",
+    "DateImplemented": "2018-12-01"
+  },
+  {
+    "StationNumber": "528A8",
+    "DateImplemented": "2018-02-01"
+  },
+  {
+    "StationNumber": "561",
+    "DateImplemented": "2018-09-14"
+  },
+  {
+    "StationNumber": "561A4",
+    "DateImplemented": "2018-09-14"
+  },
+  {
+    "StationNumber": "620",
+    "DateImplemented": "2017-05-31"
+  },
+  {
+    "StationNumber": "620A4",
+    "DateImplemented": "2017-05-31"
+  },
+  {
+    "StationNumber": "630",
+    "DateImplemented": "2018-05-31"
+  },
+  {
+    "StationNumber": "630A4",
+    "DateImplemented": "2018-05-31"
+  },
+  {
+    "StationNumber": "632",
+    "DateImplemented": "2017-01-31"
+  },
+  {
+    "StationNumber": "503",
+    "DateImplemented": "2018-01-31"
+  },
+  {
+    "StationNumber": "529A4",
+    "DateImplemented": "2018-01-10"
+  },
+  {
+    "StationNumber": "542",
+    "DateImplemented": "2019-01-01"
+  },
+  {
+    "StationNumber": "562",
+    "DateImplemented": "2018-04-25"
+  },
+  {
+    "StationNumber": "646",
+    "DateImplemented": "2019-02-22"
+  },
+  {
+    "StationNumber": "646A4",
+    "DateImplemented": "2019-02-22"
+  },
+  {
+    "StationNumber": "693",
+    "DateImplemented": "2019-04-01"
+  },
+  {
+    "StationNumber": "512",
+    "DateImplemented": "2019-03-01"
+  },
+  {
+    "StationNumber": "517",
+    "DateImplemented": "2018-11-01"
+  },
+  {
+    "StationNumber": "540",
+    "DateImplemented": "2018-11-30"
+  },
+  {
+    "StationNumber": "613",
+    "DateImplemented": "2018-11-26"
+  },
+  {
+    "StationNumber": "558",
+    "DateImplemented": "2017-12-31"
+  },
+  {
+    "StationNumber": "565",
+    "DateImplemented": "2018-10-01"
+  },
+  {
+    "StationNumber": "590",
+    "DateImplemented": "2018-03-01"
+  },
+  {
+    "StationNumber": "637",
+    "DateImplemented": "2018-09-11"
+  },
+  {
+    "StationNumber": "652",
+    "DateImplemented": "2019-03-26"
+  },
+  {
+    "StationNumber": "658",
+    "DateImplemented": "2018-11-16"
+  },
+  {
+    "StationNumber": "508",
+    "DateImplemented": "2019-04-12"
+  },
+  {
+    "StationNumber": "509",
+    "DateImplemented": "2019-01-29"
+  },
+  {
+    "StationNumber": "521",
+    "DateImplemented": "2018-11-01"
+  },
+  {
+    "StationNumber": "544",
+    "DateImplemented": "2019-01-25"
+  },
+  {
+    "StationNumber": "516",
+    "DateImplemented": "2017-06-30"
+  },
+  {
+    "StationNumber": "546",
+    "DateImplemented": "2019-01-24"
+  },
+  {
+    "StationNumber": "673",
+    "DateImplemented": "2017-01-31"
+  },
+  {
+    "StationNumber": "603",
+    "DateImplemented": "2018-11-30"
+  },
+  {
+    "StationNumber": "626",
+    "DateImplemented": "2019-03-06"
+  },
+  {
+    "StationNumber": "506",
+    "DateImplemented": "2018-12-04"
+  },
+  {
+    "StationNumber": "515",
+    "DateImplemented": "2018-10-01"
+  },
+  {
+    "StationNumber": "541",
+    "DateImplemented": "2018-08-01"
+  },
+  {
+    "StationNumber": "553",
+    "DateImplemented": "2018-09-17"
+  },
+  {
+    "StationNumber": "655",
+    "DateImplemented": "2018-11-30"
+  },
+  {
+    "StationNumber": "537",
+    "DateImplemented": "2018-12-31"
+  },
+  {
+    "StationNumber": "550",
+    "DateImplemented": "2018-12-01"
+  },
+  {
+    "StationNumber": "556",
+    "DateImplemented": "2018-12-04"
+  },
+  {
+    "StationNumber": "578",
+    "DateImplemented": "2018-11-30"
+  },
+  {
+    "StationNumber": "585",
+    "DateImplemented": "2018-10-26"
+  },
+  {
+    "StationNumber": "607",
+    "DateImplemented": "2019-03-04"
+  },
+  {
+    "StationNumber": "695",
+    "DateImplemented": "2018-10-26"
+  },
+  {
+    "StationNumber": "589A5",
+    "DateImplemented": "2018-07-15"
+  },
+  {
+    "StationNumber": "589A6",
+    "DateImplemented": "2018-07-15"
+  },
+  {
+    "StationNumber": "589A7",
+    "DateImplemented": "2019-01-31"
+  },
+  {
+    "StationNumber": "657A5",
+    "DateImplemented": "2018-12-03"
+  },
+  {
+    "StationNumber": "520",
+    "DateImplemented": "2019-02-01"
+  },
+  {
+    "StationNumber": "598",
+    "DateImplemented": "2018-11-01"
+  },
+  {
+    "StationNumber": "598A0",
+    "DateImplemented": "2018-11-01"
+  },
+  {
+    "StationNumber": "674",
+    "DateImplemented": "2018-12-31"
+  },
+  {
+    "StationNumber": "436",
+    "DateImplemented": "2018-12-08"
+  },
+  {
+    "StationNumber": "436A4",
+    "DateImplemented": "2018-12-08"
+  },
+  {
+    "StationNumber": "442",
+    "DateImplemented": "2019-03-01"
+  },
+  {
+    "StationNumber": "623",
+    "DateImplemented": "2019-04-01"
+  },
+  {
+    "StationNumber": "635",
+    "DateImplemented": "2018-10-01"
+  },
+  {
+    "StationNumber": "660",
+    "DateImplemented": "2019-01-01"
+  },
+  {
+    "StationNumber": "666",
+    "DateImplemented": "2018-12-31"
+  },
+  {
+    "StationNumber": "463",
+    "DateImplemented": "2017-12-01"
+  },
+  {
+    "StationNumber": "531",
+    "DateImplemented": "2018-11-01"
+  },
+  {
+    "StationNumber": "648",
+    "DateImplemented": "2018-11-01"
+  },
+  {
+    "StationNumber": "663",
+    "DateImplemented": "2018-06-01"
+  },
+  {
+    "StationNumber": "668",
+    "DateImplemented": "2018-09-11"
+  },
+  {
+    "StationNumber": "687",
+    "DateImplemented": "2018-12-01"
+  },
+  {
+    "StationNumber": "692",
+    "DateImplemented": "2017-09-29"
+  },
+  {
+    "StationNumber": "459",
+    "DateImplemented": "2018-12-13"
+  },
+  {
+    "StationNumber": "593",
+    "DateImplemented": "2019-01-01"
+  },
+  {
+    "StationNumber": "437",
+    "DateImplemented": "2019-01-07"
+  },
+  {
+    "StationNumber": "636A6",
+    "DateImplemented": "2019-02-01"
+  },
+  {
+    "StationNumber": "656",
+    "DateImplemented": "2019-03-29"
+  }
+]
