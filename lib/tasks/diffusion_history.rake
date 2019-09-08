@@ -65,9 +65,8 @@ namespace :diffusion_history do |diffusion_history_namespace|
       facility_id = facilities.find {|f| f['StationNumber'] == pf['StationNumber']}['StationNumber']
       status = pf['Status'].present? ? pf['Status'] : 'Implemented'
       start_time = DateTime.parse(pf['DateImplemented'])
-      end_time = status == 'Implemented' ? DateTime.parse(pf['DateImplemented']) : nil
       dh = DiffusionHistory.find_or_create_by!(practice: practice, facility_id: facility_id)
-      DiffusionHistoryStatus.find_or_create_by!(diffusion_history: dh, status: status, start_time: start_time, end_time: end_time)
+      DiffusionHistoryStatus.find_or_create_by!(diffusion_history: dh, status: status, start_time: start_time)
     end
     puts "==> Completed importing Diffusion History for Practice: #{practice.name}!".green
   end
