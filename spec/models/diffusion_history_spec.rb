@@ -1,5 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe DiffusionHistory, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it { should belong_to(:practice) }
+  it { should have_many(:diffusion_history_statuses) }
 end
