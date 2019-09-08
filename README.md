@@ -16,7 +16,7 @@
 | `rails importer:import_answers` | import an xlsx and create practices  | 
 | `rails importer:initial_featured` | sets up the "original" featured practices to show up on the landing page - depends on spreadsheet being imported | 
 | `rails surveymonkey:download_response_files` | Rake task to download files from our SurveyMonkey practice submission form  | 
-
+| `rails diffusion_history:all`| Imports all of the diffusion history we have so far for practices - used to populate the geolocation feature (Practice <-> Facility mappings) |
 #### Ruby version
 
 - `ruby 2.6.3`
