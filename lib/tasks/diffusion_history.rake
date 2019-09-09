@@ -37,13 +37,13 @@ namespace :diffusion_history do |diffusion_history_namespace|
   end
 
   # rails diffusion_history:vione
-  # desc 'Create diffusion history for Vione'
-  # task :vione => :environment do
-  #   # find VIONE
-  #   vione = Practice.find_by_slug('vione')
-  #
-  #   load_practice_facilities_data(vione, 'VIONE_facility_data')
-  # end
+  desc 'Create diffusion history for VIONE'
+  task :vione => :environment do
+    # find VIONE
+    vione = Practice.find_by_slug('vione')
+
+    load_practice_facilities_data(vione, 'VIONE_facility_data')
+  end
 
   # rails diffusion_history:all
   desc 'Run all of the tasks within the diffusion_history namespace'
