@@ -21,7 +21,7 @@
 
 - `ruby 2.6.3`
 
-- `rails 5.2.1`
+- `rails ~> 5.2.1`
 
 #### System dependencies
 
@@ -57,8 +57,12 @@ MAILER_SENDER
 SURVEY_MONKEY_TOKEN
 SURVEY_MONKEY_USERNAME
 SURVEY_MONKEY_PASSWORD
+SURVEY_MONKEY_EP201
+SURVEY_MONKEY_EP202
+SURVEY_MONKEY_EP203
 
-GA_TRACKING_ID (prod only)
+GA_TRACKING_ID  # (prod only)
+GOOGLE_API_KEY
 
 # Optional
 SESSION_REMEMBER_FOR_IN_DAYS # how long to remember the user for if they check the "Remember me" checkbox. default is 1 day
