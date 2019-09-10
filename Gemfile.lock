@@ -207,6 +207,7 @@ GEM
     geocoder (1.5.1)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+    gmaps4rails (2.1.2)
     groupdate (4.1.2)
       activesupport (>= 4.2)
     has_scope (0.7.2)
@@ -257,6 +258,8 @@ GEM
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
+    lodash-rails (4.17.14)
+      railties (>= 3.1)
     loofah (2.2.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -534,6 +537,7 @@ DEPENDENCIES
   figaro
   font-awesome-sass (~> 5.9.0)
   friendly_id (~> 5.2.4)
+  gmaps4rails
   groupdate
   humanize
   jbuilder (~> 2.5)
@@ -542,6 +546,7 @@ DEPENDENCIES
   kaminari
   letter_opener
   listen (= 3.1.5)
+  lodash-rails
   mechanize (= 2.7.6)
   mini_racer
   nested_form
