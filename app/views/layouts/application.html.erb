@@ -61,6 +61,7 @@
         <%= yield(:body_attributes) %>
         <% end %>>
     <%= render 'shared/header' %>
+    <%= render 'shared/breadcrumbs' %>
     <main id="main-content" class="<%= params[:controller] %>">
       <%= yield %>
     </main>
