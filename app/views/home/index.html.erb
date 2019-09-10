@@ -101,7 +101,7 @@
             document.addEventListener("DOMContentLoaded", function () {
                 const handler = Gmaps.build('Google');
                 handler.buildMap({provider: {}, internal: {id: 'map'}}, function () {
-                    handler.addMarkers(<%= raw @diffusion_histories.to_json %>);
+                    const markers = handler.addMarkers(<%= raw @diffusion_histories.to_json %>);
                     handler.bounds.extendWith(markers);
                     handler.fitMapToBounds();
                 });
