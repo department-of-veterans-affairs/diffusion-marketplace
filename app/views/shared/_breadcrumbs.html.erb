@@ -1,0 +1,16 @@
+<% if @breadcrumbs %>
+<div class="grid-container p2-top">
+  <div class="grid-row">
+    <div class="grid-col-auto">
+      <% @breadcrumbs.each do |crumb| %>
+        <% if crumb[:path] %>
+          <%= link_to(crumb[:text], crumb[:path], class: 'dm-font-color-primary-blue') %>
+          <span class='dm-font-color-primary-blue x0-5-right x0-5-left'>></span>
+        <% else %>
+          <%= crumb[:text] %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% end %>
