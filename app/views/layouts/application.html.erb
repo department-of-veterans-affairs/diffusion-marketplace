@@ -48,24 +48,34 @@
 
     <% end %>
 
+
+
     <title>Diffusion Marketplace</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <meta name="viewport" content= "width=device-width, initial-scale=1.0">
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}", 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag "//cdn.rawgit.com/mahnunchik/markerclustererplus/master/dist/markerclusterer.min.js", 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag "//cdn.rawgit.com/printercu/google-maps-utility-library-v3-read-only/master/infobox/src/infobox_packed.js", 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <meta name="turbolinks-cache-control" content="no-preview">
+    <%= yield(:head_tags) %>
+    <%= yield(:top_practice_img_styles) %>
   </head>
+
 
   <body <% if content_for?(:body_attributes) %>
         <%= yield(:body_attributes) %>
         <% end %>>
     <%= render 'shared/header' %>
+    <%= render 'shared/breadcrumbs' %>
     <main id="main-content" class="<%= params[:controller] %>">
       <%= yield %>
     </main>
     <%= render 'shared/footer' %>
-  <%= render 'shared/feedback_survey' %>
+    <%= render 'shared/feedback_survey' %>
+
   </body>
 
 </html>

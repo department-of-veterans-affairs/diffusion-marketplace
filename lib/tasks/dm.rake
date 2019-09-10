@@ -17,6 +17,7 @@ namespace :dm do
     Rake::Task['surveymonkey:download_response_files'].execute
     Rake::Task['importer:import_answers'].execute
     Rake::Task['importer:initial_featured'].execute
+    Rake::Task['diffusion_history:all'].execute
   end
 
   # rails dm:reset_up
