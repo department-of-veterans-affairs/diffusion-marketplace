@@ -1,0 +1,12 @@
+<p><b><%= facility['OfficialStationName'] %></b></p>
+<p><%= facility['StreetAddress'] %></p>
+<p><%= facility['StreetAddressCity'] %>, <%= facility['StreetAddressState'] %> <%= facility['StreetAddressZipCode'] %> </p>
+<p><b>Complexity Level:</b> <%= facility['FY17ParentStationComplexityLevel'] %></p>
+<p><b>Rurality:</b> <%= facility['Rurality'] %></p>
+<p><b>Practices</b></p>
+<% diffusion_histories.sort_by {|dh| dh.practice.name }.each_with_index do |dh, i| %>
+  <p><%= link_to dh.practice.name, practice_path(dh.practice) %></p>
+  <p><b>Status: </b> <%= dh.diffusion_history_statuses.last.status %></p>
+  <p><b>Since: </b> <%= dh.diffusion_history_statuses.last.start_time.strftime('%m/%d/%Y') %></p>
+  <% unless i == diffusion_histories.length - 1  %><hr><% end %>
+<% end %>
