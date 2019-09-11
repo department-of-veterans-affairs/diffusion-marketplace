@@ -69,7 +69,7 @@
           </li>
           <% if user_signed_in? %>
             <li class="usa-nav__secondary-item">
-              <%= link_to(edit_profile_path, class: 'text-white-important') do %>
+              <%= link_to(user_path(current_user), class: 'text-white-important') do %>
                 <% if current_user.avatar.present? %>
                   <div style="width:30px;height:30px;overflow:hidden" class="empty-user-icon image-container display-none-important desktop:display-inline-block">
                     <img src="<%= current_user.avatar.url %>" class="avatar-header-photo" alt="<%= current_user.full_name %>"/>

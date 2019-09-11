@@ -1,0 +1,48 @@
+<div class="x0-top">
+  <section class="usa-section" style="min-height: calc(100vh - 286px)">
+    <div class="grid-container">
+      <div class="grid-row grid-gap">
+        <div class="usa-layout-docs__sidenav desktop:grid-col-3">
+          <% if @user.avatar.present? && @user.avatar.exists? %>
+            <img src="<%= @user.avatar.url %>" class="avatar-profile-photo"/>
+          <% else %>
+            <i class="fas fa-user empty-user-avatar"></i>
+          <% end %>
+        </div>
+        <div class="usa-layout-docs__main desktop:grid-col-9 usa-prose">
+          <h1 class='profile-h1'><%= @user.full_name %></h1>
+          <div class='profile-job-title'><%= @user.job_title %></div>
+          <% unless @user.location.blank? %>
+            <p>
+              <i class="fa fa-map-marker fa-2" aria-hidden="true"></i>
+              <span class='x0-5-left'>
+                <%= @user.location %>
+              </span>
+            </p>
+          <% end %>
+          <p>
+            <i class="fas fa-envelope"></i>
+            <span class='x0-5-left'>
+              <%= @user.email %>
+            </span>
+          </p>
+          <p>
+            <i class="fa fa-phone" aria-hidden="true"></i>
+            <span class='x0-5-left'>
+              <%= @user.phone_number %>
+            </span>
+          </p>
+
+          <p class="fs1-125"><%= @user.bio %></p>
+
+          <p>
+          <% if current_user == @user %>
+            <%= link_to 'Edit profile', edit_profile_path, class:'usa-button usa-button--outline' %>
+          <% end %>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+

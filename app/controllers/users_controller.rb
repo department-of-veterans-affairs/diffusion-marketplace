@@ -11,6 +11,10 @@ class UsersController < ApplicationController
     @users = User.all.order(:email).page(params[:page])
   end
 
+  def show
+    @user = User.find(params[:id])
+  end
+
   def edit_profile
     redirect_to new_user_session_path unless current_user.present?
     @user = current_user
