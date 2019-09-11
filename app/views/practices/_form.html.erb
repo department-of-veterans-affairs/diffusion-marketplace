@@ -48,7 +48,7 @@
       <div class="field">
         <%= form.label :main_display_image, 'Project Image', class: 'usa-label' %>
         <% if @practice.main_display_image.present? %>
-          <%= image_tag @practice.main_display_image.url, alt: "#{@practice.name} main image" %>
+          <%= image_tag @practice.main_display_image_s3_presigned_url, alt: "#{@practice.name} main image" %>
           <%#= form.cropbox :main_display_image, index: 0 %>
         <% end %>
         <%= form.file_field :main_display_image, class: 'hidden-upload' %>
@@ -109,7 +109,7 @@
           <%= ip.link_to_remove "Remove this impact", class: 'usa-button usa-button--secondary', style: 'color: white; text-decoration: none; float: right' %>
 
           <% if ip.object.attachment.present? %>
-            <%= image_tag ip.object.attachment.url, alt: "Impact story picture #{ip.index}" %>
+            <%= image_tag ip.object.attachment_s3_presigned_url, alt: "Impact story picture #{ip.index}" %>
             <%#= ip.cropbox :attachment, index: ip.index %>
           <% end %>
           <%= ip.file_field :attachment, class: 'hidden-upload' %>
@@ -132,7 +132,7 @@
         <div class="field">
           <%= form.label :origin_picture, 'Portrait Image', class: 'usa-label' %>
           <% if @practice.origin_picture.present? %>
-            <%= image_tag @practice.origin_picture.url, alt: "Practice's origin picture" %>
+            <%= image_tag @practice.origin_picture_s3_presigned_url, alt: "Practice's origin picture" %>
             <%#= form.cropbox :origin_picture, max_size: [200, 200], index: 0 %>
           <% end %>
           <%= form.file_field :origin_picture, class: 'hidden-upload' %>
@@ -459,7 +459,7 @@
           <div class='grid-row'>
             <div class='grid-col'>
               <% if vae.object.avatar.present? %>
-                <%= image_tag vae.object.avatar.url, alt: vae.object.name %>
+                <%= image_tag vae.object.attachment_s3_presigned_url, alt: vae.object.name %>
                 <%#= vae.cropbox :avatar, width: 200, index: vae.index %>
               <% end %>
               <%= vae.file_field :avatar, class: 'hidden-upload' %>
