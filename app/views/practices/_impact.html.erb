@@ -2,7 +2,7 @@
   <% @practice.impact_photos.each_with_index do |impact, ind| %>
     <div class='grid-container-full p3-top' id='impact-photo-<%= ind %>'>
       <div>
-        <%= image_tag impact.attachment.url(:thumb), alt: '' %>
+        <%= image_tag impact.attachment_s3_presigned_url(:thumb), alt: '' %>
       </div>
 
       <div class='x4-top'>

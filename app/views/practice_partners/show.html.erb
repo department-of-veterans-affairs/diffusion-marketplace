@@ -33,7 +33,7 @@
           <div class="tablet:grid-col-4">
             <div class="img-box margin-top-2">
               <%= link_to p, 'aria-label': "Go to #{p.name}"  do %>
-                <div class="img img-box-content" style="<%= p.main_display_image.present? ? "background: url('#{p.main_display_image.url}') transparent" : 'background: transparent' %>; background-size: contain; background-repeat: no-repeat; background-position: center;">
+                <div class="img img-box-content" style="<%= p.main_display_image.present? ? "background: url('#{p.main_display_image_s3_presigned_url}') transparent" : 'background: transparent' %>; background-size: contain; background-repeat: no-repeat; background-position: center;">
 
                 </div>
               <% end %>
