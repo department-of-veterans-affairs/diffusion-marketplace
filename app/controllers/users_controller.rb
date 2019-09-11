@@ -17,6 +17,11 @@ class UsersController < ApplicationController
 
   def edit_profile
     redirect_to new_user_session_path unless current_user.present?
+    @breadcrumbs = [
+      { text: 'Home', path: root_path },
+      { text: 'Profile', path: edit_profile_path},
+      { text: 'Edit' }
+    ]
     @user = current_user
   end
 
