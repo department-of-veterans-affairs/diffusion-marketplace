@@ -1,13 +1,16 @@
-<style>
-  .marketplace-card-header-<%= practice.id %> {
-  <% if practice.main_display_image.present? %> background: url(<%= practice.main_display_image.url %>);
-  <% else %> background: rgba(26, 68, 128, 1);
-  <% end %> background-size: contain;
+<%
+  provide(:styles, raw("<style>
+  .marketplace-card-header-#{practice.id}  {
+   #{practice.main_display_image.present? ? "background: url(#{practice.main_display_image_s3_presigned_url});"
+                                                                : "background: rgba(26, 68, 128, 1);"}
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     height: 150px;
   }
-</style>
+</style>"))
+%>
+
 <% if practice.main_display_image.present? %>
   <%= link_to practice, 'aria-label': "Go to #{practice.name}", 'tabindex': '-1', 'aria-hidden': 'true' do %>
     <div class="img grid-row margin-bottom-2 marketplace-card-header-<%= practice.id %>"></div>

@@ -23,6 +23,10 @@ class User < ApplicationRecord
 
   has_attached_file :avatar
 
+  def avatar_s3_presigned_url(style = nil)
+    object_presigned_url(avatar, style)
+  end
+
   USER_ROLES = %w[approver_editor admin].freeze
 
   validate :valid_email
