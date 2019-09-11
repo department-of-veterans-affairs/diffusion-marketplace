@@ -1,4 +1,4 @@
-<div class="full-view-height">
+<div class="full-view-height dm-background-white">
   <div <%#class="dm-background-light-blue"%>>
     <!-- "Welcome" section -->
     <section class="grid-container hero padding-y-205 margin-bottom-2">
@@ -41,7 +41,7 @@
     </section>
 
     <% if @featured_practices.any? %>
-      <section class="dm-background-white margin-bottom-105 padding-top-2">
+      <section class="margin-bottom-105 padding-top-2">
         <div class="grid-container">
           <div class="grid-row featured-practices">
             <% @featured_practices.each do |p| %>
@@ -56,27 +56,39 @@
       </section>
     <% end %>
   </div>
-
-  <% if ENV['GOOGLE_API_KEY'].present? %>
-    <% provide :head_tags do %>
-      <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-            document.addEventListener("DOMContentLoaded", function () {
-                const handler = Gmaps.build('Google');
-                handler.buildMap({provider: {}, internal: {id: 'map'}}, function () {
-                    const markers = handler.addMarkers(<%= raw @diffusion_histories.to_json %>);
-                    handler.bounds.extendWith(markers);
-                    handler.fitMapToBounds();
+  <section class="grid-container margin-bottom-6" id="map-of-diffusion">
+    <h4 class="font-sans-xl">Map of diffusion</h4>
+    <p class="font-sans-lg">Map of diffusion Explore how practices are being adopted across the country.</p>
+    <div class="width-full">
+      <div id="map" style="width: 100%; height: 432px;">
+        <% if ENV['GOOGLE_API_KEY'].present? %>
+          <% provide :head_tags do %>
+            <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const handler = Gmaps.build('Google');
+                    handler.buildMap({provider: {}, internal: {id: 'map'}}, function () {
+                        const markers = handler.addMarkers(<%= raw @diffusion_histories.to_json %>);
+                        handler.bounds.extendWith(markers);
+                        handler.fitMapToBounds();
+                    });
                 });
-            });
-      <% end %>
-    <% end %>
-    <section class="grid-container margin-bottom-6" id="map-of-diffusion">
-      <h2>Map of diffusion</h2>
-      <div class="width-full">
-        <div id="map" style="width: 100%; height: 432px;"></div>
+            <% end %>
+          <% end %>
+        <% end %>
       </div>
-    </section>
-
-  <% end %>
-
+    </div>
+  </section>
+  <section class="margin-bottom-105 padding-top-2">
+    <div class="grid-container">
+      <div class="grid-row featured-practices">
+        <% @featured_practices.each do |p| %>
+          <% if p.present? %>
+            <div class="tablet:grid-col-4 padding-105">
+              <%= render partial: 'practices/marketplace_card', locals: {practice: p} %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </section>
 </div>
