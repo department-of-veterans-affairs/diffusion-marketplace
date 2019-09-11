@@ -35,6 +35,7 @@ Rails.application.routes.draw do
   get 'practices/planning_checklist' => 'practices#planning_checklist'
   get '/search' => 'practices#search'
 
+  get '/users/:id' => 'users#show'
   get '/edit-profile' => 'users#edit_profile'
   post '/edit-profile' => 'users#update_profile'
   delete '/edit-profile-photo' => 'users#delete_photo'
