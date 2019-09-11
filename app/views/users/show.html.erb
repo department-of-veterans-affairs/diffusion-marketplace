@@ -20,19 +20,22 @@
               </span>
             </p>
           <% end %>
-          <p>
-            <i class="fas fa-envelope"></i>
-            <span class='x0-5-left'>
-              <%= @user.email %>
-            </span>
-          </p>
-          <p>
-            <i class="fa fa-phone" aria-hidden="true"></i>
-            <span class='x0-5-left'>
-              <%= @user.phone_number %>
-            </span>
-          </p>
-
+          <% unless @user.email.blank? %>
+            <p>
+              <i class="fas fa-envelope"></i>
+              <span class='x0-5-left'>
+                <%= @user.email %>
+              </span>
+            </p>
+          <% end %>
+          <% unless @user.phone_number.blank? %>
+            <p>
+              <i class="fa fa-phone" aria-hidden="true"></i>
+              <span class='x0-5-left'>
+                <%= @user.phone_number %>
+              </span>
+            </p>
+          <% end %>
           <p class="fs1-125"><%= @user.bio %></p>
 
           <p>
