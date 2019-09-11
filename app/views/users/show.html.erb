@@ -10,8 +10,8 @@
           <% end %>
         </div>
         <div class="usa-layout-docs__main desktop:grid-col-9 usa-prose">
-          <h1 class='profile-h1'><%= @user.full_name %></h1>
-          <div class='profile-job-title'><%= @user.job_title %></div>
+          <h1 class='profile-h1 font-sans-2xl'><%= @user.full_name %></h1>
+          <div class='profile-job-title font-sans-xl'><%= @user.job_title %></div>
           <% unless @user.location.blank? %>
             <p>
               <i class="fa fa-map-marker-alt fa-2" aria-hidden="true"></i>
