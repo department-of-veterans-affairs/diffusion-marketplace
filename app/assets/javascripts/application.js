@@ -11,6 +11,7 @@
 // about supported directives.
 //
 //= require rails-ujs
+//= require lodash
 //= require jquery
 //= require jquery.jcrop
 //= require sticky
@@ -36,3 +37,5 @@
 //= require jquery.timeago
 //= require timeago
 //= require replies
+//= require gmaps/google
+//= require home_page_map

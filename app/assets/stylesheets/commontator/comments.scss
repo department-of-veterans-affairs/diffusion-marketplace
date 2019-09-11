@@ -153,6 +153,7 @@ h4 {
 
 .fa-thumbs-up {
   color: #71767A;
+  padding: 0;
 }
 
 .fa-thumbs-up:hover, .fa-thumbs-up:active, .active {
@@ -165,7 +166,7 @@ h4 {
   width: 20px;
 }
 
-.edit, .delete, .undelete {
+.fa-edit, .delete, .undelete {
   margin-right: 11px;
 }
 
@@ -201,5 +202,16 @@ body {
     background: #FFBE2E;
     border-radius: 16px;
     padding: 0 10px;
+  }
+}
+
+h5 {
+  margin-top: 15px;
+  font-size: 16.96px;
+  cursor: pointer;
+
+  &:hover {
+    color: #005EA2;
+    text-decoration: underline;
   }
 }

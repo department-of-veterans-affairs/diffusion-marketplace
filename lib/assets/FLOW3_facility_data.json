@@ -1,0 +1,127 @@
+[
+  {
+    "StationNumber": "596",
+    "Status": "Planning",
+    "DateImplemented": "2019-05-01"
+  },
+  {
+    "StationNumber": "596A4",
+    "Status": "Planning",
+    "DateImplemented": "2019-05-01"
+  },
+  {
+    "StationNumber": "603",
+    "Status": "Planning",
+    "DateImplemented": "2019-05-01"
+  },
+  {
+    "StationNumber": "614",
+    "Status": "Planning",
+    "DateImplemented": "2019-05-01"
+  },
+  {
+    "StationNumber": "621",
+    "Status": "Planning",
+    "DateImplemented": "2019-05-01"
+  },
+  {
+    "StationNumber": "626",
+    "Status": "Planning",
+    "DateImplemented": "2019-05-01"
+  },
+  {
+    "StationNumber": "626A4",
+    "Status": "Planning",
+    "DateImplemented": "2019-05-01"
+  },
+  {
+    "StationNumber": "537",
+    "Status": "Implemented",
+    "DateImplemented": "2017-05-31"
+  },
+  {
+    "StationNumber": "550",
+    "Status": "Implemented",
+    "DateImplemented": "2017-05-31"
+  },
+  {
+    "StationNumber": "556",
+    "Status": "Implemented",
+    "DateImplemented": "2017-05-31"
+  },
+  {
+    "StationNumber": "578",
+    "Status": "Implemented",
+    "DateImplemented": "2017-05-31"
+  },
+  {
+    "StationNumber": "585",
+    "Status": "Implemented",
+    "DateImplemented": "2017-05-31"
+  },
+  {
+    "StationNumber": "607",
+    "Status": "Implemented",
+    "DateImplemented": "2017-05-31"
+  },
+  {
+    "StationNumber": "676",
+    "Status": "Implemented",
+    "DateImplemented": "2017-05-31"
+  },
+  {
+    "StationNumber": "695",
+    "Status": "Implemented",
+    "DateImplemented": "2017-05-31"
+  },
+  {
+    "StationNumber": "663",
+    "Status": "Implemented",
+    "DateImplemented": "2016-05-31"
+  },
+  {
+    "StationNumber": "501",
+    "Status": "Implemented",
+    "DateImplemented": "2019-04-30"
+  },
+  {
+    "StationNumber": "600",
+    "Status": "Implemented",
+    "DateImplemented": "2019-04-30"
+  },
+  {
+    "StationNumber": "605",
+    "Status": "Implemented",
+    "DateImplemented": "2019-04-30"
+  },
+  {
+    "StationNumber": "644",
+    "Status": "Implemented",
+    "DateImplemented": "2019-04-30"
+  },
+  {
+    "StationNumber": "649",
+    "Status": "Implemented",
+    "DateImplemented": "2019-04-30"
+  },
+  {
+    "StationNumber": "664",
+    "Status": "Implemented",
+    "DateImplemented": "2019-04-30"
+  },
+  {
+    "StationNumber": "678",
+    "Status": "Implemented",
+    "DateImplemented": "2019-04-30"
+  },
+  {
+    "StationNumber": "691",
+    "Status": "Implemented",
+    "DateImplemented": "2019-04-30"
+  },
+  {
+    "StationNumber": "691A4",
+    "Status": "Implemented",
+    "DateImplemented": "2019-04-30"
+  }
+]

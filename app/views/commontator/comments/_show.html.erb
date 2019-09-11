@@ -36,10 +36,10 @@
       
       <span id="commontator-comment-<%= comment.id %>-actions" class="actions"><%=
           link_to(
-            content_tag(:span, '', class: 'fas fa-edit fa-lg'),
+            '',
             commontator.edit_comment_path(comment),
             id: "commontator-comment-#{comment.id}-edit",
-            class: 'edit',
+            class: 'fas fa-edit fa-lg',
             remote: true
           ) if comment.can_be_edited_by?(user)
         %>
@@ -101,6 +101,7 @@
         <% end %>
       <% end %>
     </div>
+
     <% if thread.config.comment_order != :l %>
       <%= render partial: 'commontator/threads/reply', locals: { thread: thread, user: user } %>
     <% end %>
@@ -108,10 +109,18 @@
 </div>
 
 <% if !comment.parent_id? %>
-  <div id="commontator-comment-<%= comment.id %>-children" class="children">
-    <%= render partial: 'commontator/comments/list',
-              locals: { user: user, nested_comments: nested_children } %>
+  <div class="replies-container">View <%= nested_children.count %> Replies >
+    <div id="commontator-comment-<%= comment.id %>-children" class="children hidden">
+      <%= render partial: 'commontator/comments/list',
+                locals: { user: user, nested_comments: nested_children } %>
+    </div>
   </div>
+<%#  <div id="commontator-comment-<%= comment.id %><%#-children" class="children">
+    <h5>
+      <%= link_to "View #{nested_children.count} Replies >", partial: 'commontator/comments/list', 
+        remote: true, locals: { user: user, nested_comments: nested_children } %>
+<%#    </h5>
+  </div>%>
 <% end %>
 
 

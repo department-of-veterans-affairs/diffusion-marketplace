@@ -13,6 +13,11 @@ class UsersController < ApplicationController
 
   def edit_profile
     redirect_to new_user_session_path unless current_user.present?
+    @breadcrumbs = [
+      { text: 'Home', path: root_path },
+      { text: 'Profile', path: edit_profile_path},
+      { text: 'Edit' }
+    ]
     @user = current_user
   end
 
@@ -90,6 +95,7 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:avatar, :email, :password, :password_confirmation, :job_title, :first_name, :last_name, :phone_number, :visn, :skip_va_validation, :skip_password_validation, :bio)
+    return params.require(:user).permit(:avatar, :bio) if ENV['USE_NTLM'] == 'true'
+    params.require(:user).permit(:avatar, :email, :password, :password_confirmation, :job_title, :first_name, :last_name, :phone_number, :visn, :skip_va_validation, :skip_password_validation, :bio, :location)
   end
 end

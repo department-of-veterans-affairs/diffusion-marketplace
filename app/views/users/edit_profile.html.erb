@@ -1,6 +1,7 @@
 <div class="x0-top">
-  <section class="usa-section" style="min-height: calc(100vh - 286px)">
+  <section class="usa-section p2-top" style="min-height: calc(100vh - 286px)">
     <div class="grid-container">
+      <%= render partial: 'shared/messages' %>
       <div class="grid-row grid-gap">
         <%= render partial: 'side_nav' %>
         <div class="usa-layout-docs__main desktop:grid-col-9 usa-prose">
@@ -27,7 +28,6 @@
                 </div>
               </div>
               <% end %>
-              <span>Photo</span><br/>
               <div class="grid-container p0">
                 <div class="grid-row">
                   <div class="grid-col-5">
@@ -38,7 +38,8 @@
                     <% end %>
                   </div>
                   <div class="grid-col-7">
-                    <p>
+                    <span>Photo</span><br/>
+                    <p class='dm-font-color-base-dark'>
                       Blurb about photo requirements such as size, that it should be a headshot, any tips on how to take a good photo, or if they have an existing VA photo they should use here.
                     </p>
                     <p>
@@ -48,13 +49,13 @@
                 </div>
                 <div class=" grid-row usa-accordion__content p0 x1-bottom" id='photo-file-upload' aria-hidden="true">
                   <div class="grid-col-5">
-                    <div>
+                  </div>
+                  <div class='grid-col-7'>
+                    <div class='x1-bottom'>
                       <%= f.label :avatar, 'Photo' %>
                       <%= f.file_field :avatar %>
                       <br />
                     </div>
-                  </div>
-                  <div class='grid-col-7'>
                     <% if @user.avatar.present? && @user.avatar.exists? %>
                       <%= link_to "Remove photo", edit_profile_photo_path, data: { confirm: "Are you sure?" }, method: :delete, class: 'usa-button usa-button--secondary' %>
                     <% end %>
@@ -65,28 +66,33 @@
               <div class="usa-form">
                 <div class="field">
                   <%= f.label :first_name, class: 'x1-top x1-bottom' %><br/>
-                  <%= f.text_field :first_name, autofocus: true, class: 'usa-input' %>
+                  <%= f.text_field :first_name, autofocus: true, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
                 </div>
 
                 <div class="field x1-top">
                   <%= f.label :last_name, class: 'x0 x1-top' %><br/>
-                  <%= f.text_field :last_name, class: 'usa-input' %>
+                  <%= f.text_field :last_name, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
+                </div>
+
+                <div class="field x1-top">
+                  <%= f.label :location, 'Facility', class: 'x0 x1-top' %><br/>
+                  <%= f.text_field :location, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
                 </div>
 
                 <div class="field x1-top">
                   <%= f.label :phone_number, 'Work phone number', class: 'x0 x1-top' %><br/>
-                  <%= f.phone_field :phone_number, autofocus: true, class: 'usa-input' %>
+                  <%= f.phone_field :phone_number, autofocus: true, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
                 </div>
 
                 <div class="field x1-top">
                   <%= f.label :job_title, class: 'x0 x1-top' %><br/>
-                  <%= f.text_field :job_title, class: 'usa-input' %>
+                  <%= f.text_field :job_title, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
                 </div>
               </div>
               <div class="field x1-top">
                 <%= f.label :bio, class: 'x0 x1-top' do %>
                   <span>Biography</span> <span class='dm-font-color-steel-grey'>(250 character limit)</span>
-                  <p class='maxw-30rem'>Instructions about how to write bio/description, wordcount, what type of information to include</p>
+                  <p class='maxw-30rem dm-font-color-base-dark'>Instructions about how to write bio/description, wordcount, what type of information to include</p>
                 <% end %>
                 <%= f.text_area :bio, class: 'usa-input height-200px' %>
                 <br />

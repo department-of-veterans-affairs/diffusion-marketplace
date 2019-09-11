@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_03_170718) do
+ActiveRecord::Schema.define(version: 2019_09_08_033821) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -326,6 +326,24 @@ ActiveRecord::Schema.define(version: 2019_09_03_170718) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["practice_id"], name: "index_difficulties_on_practice_id"
+  end
+
+  create_table "diffusion_histories", force: :cascade do |t|
+    t.bigint "practice_id"
+    t.string "facility_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["practice_id"], name: "index_diffusion_histories_on_practice_id"
+  end
+
+  create_table "diffusion_history_statuses", force: :cascade do |t|
+    t.bigint "diffusion_history_id"
+    t.string "status"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["diffusion_history_id"], name: "index_diffusion_history_statuses_on_diffusion_history_id"
   end
 
   create_table "domain_practices", force: :cascade do |t|
@@ -745,6 +763,8 @@ ActiveRecord::Schema.define(version: 2019_09_03_170718) do
     t.string "avatar_content_type"
     t.integer "avatar_file_size"
     t.datetime "avatar_updated_at"
+    t.string "location"
+    t.string "facility"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["password_changed_at"], name: "index_users_on_password_changed_at"
@@ -870,6 +890,8 @@ ActiveRecord::Schema.define(version: 2019_09_03_170718) do
   add_foreign_key "developing_facility_type_practices", "developing_facility_types"
   add_foreign_key "developing_facility_type_practices", "practices"
   add_foreign_key "difficulties", "practices"
+  add_foreign_key "diffusion_histories", "practices"
+  add_foreign_key "diffusion_history_statuses", "diffusion_histories"
   add_foreign_key "domain_practices", "domains"
   add_foreign_key "domain_practices", "practices"
   add_foreign_key "financial_files", "practices"

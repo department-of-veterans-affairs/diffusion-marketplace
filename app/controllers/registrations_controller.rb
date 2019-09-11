@@ -1,5 +1,15 @@
 # Override the devise registrations controller
 class RegistrationsController < Devise::RegistrationsController
+  
+  def edit
+    @breadcrumbs = [
+      { text: 'Home', path: root_path },
+      { text: 'Profile', path: edit_profile_path},
+      { text: 'Edit' }
+    ]
+    super
+  end
+
   def create
     build_resource(sign_up_params)
 
