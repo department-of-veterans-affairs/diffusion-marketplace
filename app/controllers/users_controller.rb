@@ -12,6 +12,10 @@ class UsersController < ApplicationController
   end
 
   def show
+    @breadcrumbs = [
+      { text: 'Home', path: root_path },
+      { text: 'Profile'}
+    ]
     @user = User.find(params[:id])
   end
 
@@ -19,9 +23,9 @@ class UsersController < ApplicationController
     redirect_to new_user_session_path unless current_user.present?
     @breadcrumbs = [
       { text: 'Home', path: root_path },
-      { text: 'Profile', path: edit_profile_path},
+      { text: 'Profile', path: user_path(current_user)},
       { text: 'Edit' }
-    ]
+    ] if current_user.present?
     @user = current_user
   end
 
