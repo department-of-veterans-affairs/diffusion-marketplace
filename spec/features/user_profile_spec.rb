@@ -7,6 +7,25 @@ describe 'The user index', type: :feature do
   before do
     @user = User.create!(email: 'spongebob.squarepants@bikinibottom.net', password: 'Password123',
                          password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now)
+    @user2 = User.create!(email: 'patrick@bikinibottom.net', password: 'Password123',
+                         password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now)
+  end
+
+  it 'should not show edit profile button for a different users show page' do
+    visit "/users/#{@user.id}"
+
+    expect(page).to be_accessible.according_to :wcag2a, :section508
+    expect(page).to_not have_content('Edit profile')
+
+    login_as(@user2, scope: :user, run_callbacks: false)
+    visit "/users/#{@user.id}"
+    expect(page).to_not have_content('Edit profile')    
+  end
+
+  it 'should have edit profile button for logged in user' do
+    login_as(@user, scope: :user, run_callbacks: false)
+    visit "/users/#{@user.id}"
+    expect(page).to have_content('Edit profile')
   end
 
   it 'if not logged in, should be redirected to landing page when accessing account edit' do
