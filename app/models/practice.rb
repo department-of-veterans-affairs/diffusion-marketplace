@@ -53,7 +53,17 @@ class Practice < ApplicationRecord
   has_paper_trail
   # has_attached_file :main_display_image, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/:style/missing.png"
   has_attached_file :main_display_image, styles: { thumb: '1280x720#' }
+
+  def main_display_image_s3_presigned_url(style = nil)
+    object_presigned_url(main_display_image, style)
+  end
+
   has_attached_file :origin_picture, styles: { thumb: '200x200#' }
+
+  def origin_picture_s3_presigned_url(style = nil)
+    object_presigned_url(origin_picture, style)
+  end
+
   crop_attached_file :main_display_image, aspect: '16:9'
   crop_attached_file :origin_picture, aspect: '1:1'
   validates_attachment_content_type :main_display_image, content_type: /\Aimage\/.*\z/

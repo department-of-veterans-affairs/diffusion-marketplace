@@ -3,6 +3,7 @@ class HomeController < ApplicationController
   def index
     @top_practice = Practice.find_by_highlight true
     @featured_practices = Practice.where featured: true
+    @practices = Practice.where(approved: true, published: true).order(name: :asc)
 
     @facilities_data = facilities_json['features']
 
