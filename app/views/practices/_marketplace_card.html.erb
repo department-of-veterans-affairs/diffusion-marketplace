@@ -1,54 +1,43 @@
-<div class="border-2px border-base-lighter height-full">
-  <% @featured_practices.each do |p| %>
-    <%
-      provide(:styles, raw("<style>
-      .marketplace-card-header-#{practice.id}  {
-      #{practice.main_display_image.present? ? "background: url(#{practice.main_display_image_s3_presigned_url});"
-                                                                    : "background: rgba(26, 68, 128, 1);"}
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-        height: 309px;
-      }
-    </style>"))
-    %>
-  <% end %>
+<div class="radius-sm">
   <%
     provide(:styles, raw("<style>
-    .marketplace-card-header-#{practice.id}  {
-    #{practice.main_display_image.present? ? "background: url(#{practice.main_display_image_s3_presigned_url});"
-                                                                  : "background: rgba(26, 68, 128, 1);"}
+    .#{featured ? "featured-" : ''}marketplace-card-header-#{practice.id}  {
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
-      height: 227px;
+      #{featured ? "height: 309px" : "height: 227px"};
+      object-fit: cover;
     }
   </style>"))
   %>
-
   <% if practice.main_display_image.present? %>
     <%= link_to practice, 'aria-label': "Go to #{practice.name}", 'tabindex': '-1', 'aria-hidden': 'true' do %>
-      <div class="border-bottom-2px border-base-lighter img grid-row marketplace-card-header-<%= practice.id %>"></div>
+      <img class="img grid-row <%= featured ? "featured-" : '' %>marketplace-card-header-<%= practice.id %> radius-top-sm" src="<%= practice.main_display_image_s3_presigned_url %>">
     <% end %>
   <% else %>
-    <div style="height: 227px" class="border-bottom-2px border-base-lighter"></div>
+    <div style="<%= featured ? 'height: 309px' : 'height: 227px' %>"></div>
   <% end %>
-  <div class="padding-2">
-    <div class="grid-row margin-bottom-2 flex-align-center">
-      <%= link_to practice do %>
-        <h4 class="grid-col-auto bold display-inline-block font-sans-md margin-y-0 margin-left-0 margin-right-105"><%= practice.name %></h4>
-      <% end %>
-      <% if practice.practice_partners.any? %>
-        <span class="grid-col-auto display-inline-block radius-pill padding-y-1px padding-x-2 bg-base-lighter font-sans-3xs">
-          Sponsored
-        </span>
-      <% end %>
-    </div>
+
+  <div class="padding-2 height-card-mobile border-x-2px border-bottom-2px radius-sm border-base-lighter">
+    <%= link_to practice, class: 'multiline-ellipses-2 margin-bottom-1' do %>
+      <h4 class="grid-col-auto bold font-sans-md">
+        <%= practice.name %>
+      </h4>
+    <% end %>
+    <% if practice.practice_partners.any? %>
+      <div class="grid-row">
+      <span class="display-block text-center radius-pill padding-y-1px padding-x-2 bg-base-lighter font-sans-3xs margin-bottom-1">
+        Sponsored
+      </span>
+      </div>
+    <% else %>
+    <div style="height: 28px"></div>
+    <% end %>
     <div class="grid-row margin-bottom-1">
-      <p class="margin-top-0 margin-bottom-1 multiline-ellipses line-height-sans-6 font-sans-sm"><%= practice.description %></p>
+      <p class="margin-top-0 margin-bottom-1 multiline-ellipses-1 line-height-sans-6 font-sans-sm"><%= practice.description %></p>
     </div>
-    <div class="grid-row p0">
-      <span class="font-sans-3xs">
+    <div class="grid-row p0 flex-align-end">
+      <span class="font-sans-3xs multiline-ellipses-3">
         Created in <%= practice.date_initiated.present? ? date_format(practice.date_initiated) : '(start date unknown)' %> by the <%= facility_name(practice.initiating_facility) %>
       </span>
     </div>

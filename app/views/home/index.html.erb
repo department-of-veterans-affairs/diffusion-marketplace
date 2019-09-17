@@ -43,10 +43,10 @@
         <% if @featured_practices.any? %>
           <section class="margin-bottom-4 padding-top-2">
             <div class="grid-row grid-gap-2">
-              <% @featured_practices.each do |p| %>
-                <% if p.present? %>
+              <% @featured_practices.each do |fp| %>
+                <% if fp.present? %>
                     <div class="tablet:grid-col-4">
-                      <%= render partial: 'practices/marketplace_card', locals: {practice: p} %>
+                      <%= render partial: 'practices/marketplace_card', locals: {practice: fp, featured: true} %>
                     </div>
                 <% end %>
               <% end %>
@@ -78,17 +78,23 @@
       </div>
     </div>
   </section>
-  <section class="margin-bottom-105 padding-top-2">
+  <section class="margin-bottom-105 padding-top-2 margin-bottom-6">
     <div class="grid-container">
+      <h4 class="font-sans-xl">All practices</h4>
+      <p class="font-sans-lg margin-bottom-1">View all submitted and accepted practices.</p>
       <div class="grid-row grid-gap-2">
         <% @practices.each do |p| %>
           <% if p.present? %>
-            <div class="tablet:grid-col-3">
-              <%= render partial: 'practices/marketplace_card', locals: {practice: p} %>
+            <div class="tablet:grid-col-3 padding-y-1">
+              <%= render partial: 'practices/marketplace_card', locals: {practice: p, featured: false} %>
             </div>
           <% end %>
         <% end %>
       </div>
     </div>
   </section>
+
+  <div class="grid-container margin-bottom-105">
+    <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
+  </div>
 </div>

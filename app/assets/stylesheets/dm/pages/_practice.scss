@@ -211,14 +211,27 @@
     }
   }
 }
-.multiline-ellipses {
+.multiline-ellipses-1, .multiline-ellipses-2, .multiline-ellipses-3 {
   display: block; /* Fallback for non-webkit */
   display: -webkit-box;
   max-width: 400px;
-  height: 85px; /* Fallback for non-webkit */
   margin: 0 auto;
-  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.multiline-ellipses-1 {
+  height: 85px; /* Fallback for non-webkit */
+  -webkit-line-clamp: 3;
+}
+
+.multiline-ellipses-2 {
+  height: 55px; /* Fallback for non-webkit */
+  -webkit-line-clamp: 2;
+}
+
+.multiline-ellipses-3 {
+  height: 35px; /* Fallback for non-webkit */
+  -webkit-line-clamp: 2;
 }

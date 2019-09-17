@@ -8,7 +8,7 @@
         <div class="grid-row width-mobile margin-bottom-9">
           <div class="avatar-container rounded display-flex-align-items-center flex-justify-center dm-background-white overflow-hidden margin-right-105">
             <% if employee.avatar.present? %>
-              <%= image_tag employee.attachment_s3_presigned_url, alt: employee.name %>
+              <%= image_tag employee.avatar_s3_presigned_url, alt: employee.name %>
             <% else %>
               <%= image_tag 'user.svg', alt: employee.name %>
             <% end %>
