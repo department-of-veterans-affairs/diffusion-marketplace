@@ -36,10 +36,10 @@
   }
 
   .avatar {
-    margin-right: 7px;
-
     .fa-user-circle {
       color: #162E51;
+      width: 40px;
+      text-align: center;
     }
 
     .fa-user-circle::before {
@@ -206,7 +206,7 @@ body {
 }
 
 h5 {
-  margin-top: 15px;
+  margin-top: 0;
   font-size: 16.96px;
   cursor: pointer;
 

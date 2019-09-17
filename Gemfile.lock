@@ -31,6 +31,15 @@ GIT
       autoprefixer-rails (~> 9.5)
       rails-assets-normalize-css (= 3.0.3)
 
+GIT
+  remote: https://github.com/lml/commontator.git
+  revision: 9586885c2420d481c887c0893395f081b2c3fb38
+  ref: new_comment_style_improvements
+  specs:
+    commontator (6.1.0)
+      rails (>= 5.0)
+      will_paginate
+
 GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
@@ -173,9 +182,6 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     colorize (0.8.1)
-    commontator (6.0.1)
-      rails (>= 5.0)
-      will_paginate
     concurrent-ruby (1.1.5)
     connection_pool (2.2.2)
     crass (1.0.4)
@@ -542,7 +548,7 @@ DEPENDENCIES
   chartkick
   coffee-rails (~> 4.2)
   colorize
-  commontator (~> 6.0.1)
+  commontator!
   database_cleaner
   devise (>= 4.6.0)
   devise-security

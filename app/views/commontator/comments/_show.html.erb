@@ -13,13 +13,13 @@
   link = Commontator.commontator_link(creator, main_app)
   name = Commontator.commontator_name(creator) || ''
   title = creator.job_title
-  avatar = show_user_avatar(user)
+  # avatar = show_user_avatar(user)
   association_with_practice = 'Placeholder'
 %>
 
 <div class="comment-container grid-row">
-  <div id="commontator-comment-<%= comment.id %>-avatar" class="avatar grid-col flex-auto">
-    <%= avatar %>
+  <div id="commontator-comment-<%= comment.id %>-avatar" class="avatar grid-col flex-auto margin-right-1">
+    <%= Commontator.commontator_avatar(creator, self) %>
   </div>
 
   <div class="grid-col flex-fill">
@@ -63,11 +63,11 @@
         </span>
       <% elsif comment.created_at != comment.updated_at && !comment.deleted_at%>
         <span id="commontator-comment-<%= comment.id %>-updated-timestamp" class="timestamp">
-          Edited <%= timeago(comment.updated_at) %>
+          Edited <%= timeago(comment.updated_at) %>, originally posted <%= timeago(comment.created_at) %>
         </span>
       <% else %>
         <span class="timestamp">
-          Deleted <%= timeago(comment.deleted_at) %>
+          Deleted <%= timeago(comment.deleted_at) %>, originally posted <%= timeago(comment.created_at) %>
         </span>
       <% end %>
 
@@ -90,7 +90,7 @@
       
       <% unless comment.is_deleted? %>
         <% if !comment.parent_id? %>
-          <span id="commontator-comment-<%= comment.id %>-reply" class="reply">
+          <span id="commontator-comment-<%= comment.id %>-reply-link" class="reply">
             <%=
               link_to('Reply',
                 commontator.new_thread_comment_path(thread, comment: { parent_id: comment.id }),
@@ -109,8 +109,16 @@
 </div>
 
 <% if !comment.parent_id? %>
-  <div class="replies-container">View <%= nested_children.count %> Replies >
-    <div id="commontator-comment-<%= comment.id %>-children" class="children hidden">
+  <div class="replies-container margin-left-6 ">
+    <% if nested_children.any? %>
+      <h5 class="margin-bottom-0 replies-header">
+        <%= nested_children.count > 1 ? "View #{nested_children.count} replies >" : "View #{nested_children.count} reply >"%>
+      </h5>
+      <h5 class="margin-bottom-0 hide-replies-header hidden">
+        <%= nested_children.count > 1 ? "Hide replies >" : "Hide reply >"%>
+      </h5>
+    <% end %>
+    <div id="commontator-comment-<%= comment.id %>-children" class="margin-left-3 children hidden">
       <%= render partial: 'commontator/comments/list',
                 locals: { user: user, nested_comments: nested_children } %>
     </div>

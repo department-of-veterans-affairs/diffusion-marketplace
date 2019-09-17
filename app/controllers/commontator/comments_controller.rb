@@ -51,6 +51,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
           @commontator_page = @commontator_thread.new_comment_page(
             @comment.parent_id, @commontator_show_all
           )
+          @comment = Commontator::Comment.new(thread: @commontator_thread, creator: @commontator_user)
 
           format.js
         else
