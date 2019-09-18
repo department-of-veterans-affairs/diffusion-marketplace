@@ -74,6 +74,7 @@ i.e.
 @media screen and (min-width: 64em) {
   .usa-header--extended .usa-logo {
     font-size: 1.5rem;
+    margin: 0;
   }
 }
 
@@ -100,6 +101,10 @@ i.e.
 .usa-nav__secondary-links .usa-nav__secondary-item,
 .usa-nav__secondary-links a {
   color: #000000;
+}
+
+.usa-nav__secondary {
+  position: unset;
 }
 
 .usa-button-outline-white {

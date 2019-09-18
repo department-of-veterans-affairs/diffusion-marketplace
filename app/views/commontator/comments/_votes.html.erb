@@ -2,6 +2,7 @@
   # Controllers that use this partial must provide the following variables:
   # comment
   # user
+
   thread = comment.thread
 %>
 
@@ -16,19 +17,22 @@
     <% if can_vote && (vote.blank? || !vote.vote_flag) %>
       <%= form_tag commontator.upvote_comment_path(comment),
             method: :put,
-            class: 'vote-form',
             remote: true do %>
-        <button class="fas fa-thumbs-up" type="submit"></button>
+        <%= image_submit_tag "commontator/upvote.png",
+              onmouseover: "this.src='#{image_path("commontator/upvote_hover.png")}'",
+              onmouseout: "this.src='#{image_path("commontator/upvote.png")}'" %>
       <% end %>
     <% elsif can_vote %>
       <%= form_tag commontator.unvote_comment_path(comment),
             method: :put,
-            class: 'vote-form',
             remote: true do %>
-        <button class="fas fa-thumbs-up active" type="submit"></button>
+        <%= image_submit_tag "commontator/upvote_active.png",
+              onmouseover: "this.src='#{image_path("commontator/upvote.png")}'",
+              onmouseout: "this.src='#{image_path("commontator/upvote_active.png")}'"
+        %>
       <% end %>
     <% else %>
-      <i class="fas fa-thumbs-up blocked"></i>
+      <%= image_tag "commontator/upvote_disabled.png" %>
     <% end %>
   </span>
   <% end %>

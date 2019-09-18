@@ -1,4 +1,6 @@
 class Commontator::CommentsController < Commontator::ApplicationController
+  include TimeHelper
+  
   before_action :set_thread, only: [ :new, :create ]
   before_action :set_comment_and_thread, except: [ :new, :create ]
   before_action :commontator_set_thread_variables, only: [ :show, :update, :delete, :undelete ]
@@ -51,7 +53,6 @@ class Commontator::CommentsController < Commontator::ApplicationController
           @commontator_page = @commontator_thread.new_comment_page(
             @comment.parent_id, @commontator_show_all
           )
-          @comment = Commontator::Comment.new(thread: @commontator_thread, creator: @commontator_user)
 
           format.js
         else

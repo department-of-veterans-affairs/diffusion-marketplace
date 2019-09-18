@@ -1,11 +1,12 @@
 <%
-  # Views that use this partial must provide the following variables:
+  # Views that use this partial must provide the following variable:
   # comment
   #
-  # Optionally, they can also supply the following variables:
-  comment ||= @comment
+
   new_record = comment.new_record?
-  thread ||= new_record ? nil : comment.thread
+
+  # Optionally, they can also supply the following variables:
+  thread ||= new_record ? comment.thread : nil
   no_remote ||= false
 %>
 
@@ -22,14 +23,15 @@
     </ul>
   </div>
 <% end %>
+
 <%= form_for([commontator, thread, comment], remote: !no_remote) do |form| %>
   <%= form.hidden_field :parent_id %>
 
-  <%#<% unless comment.parent.nil? %>
-    <%#<div class="replying">
+  <% unless comment.parent.nil? %>
+    <div class="replying">
       <%= t('commontator.comment.status.replying',
             creator_name: Commontator.commontator_name(comment.parent.creator)) %>
-    <%#</div>
+    </div>
   <% end %>
 
   <div class="field">
@@ -37,22 +39,12 @@
       form.text_area :body, rows: '7', id: new_record ?
         comment.parent.nil? ? "commontator-thread-#{@commontator_thread.id}-new-comment-body" :
                               "commontator-comment-#{comment.parent.id}-reply" :
-        "commontator-comment-#{comment.id}-edit-body",
-        "aria_label": new_record ? comment.parent.nil? ? "commontator-thread-#{@commontator_thread.id}-new-comment-body" :
-                              "commontator-comment-#{comment.parent.id}-reply" :
-                              "commontator-comment-#{comment.id}-edit-body"
+        "commontator-comment-#{comment.id}-edit-body"
     %>
     <%= javascript_tag('Commontator.initMentions();') if config.mentions_enabled %>
   </div>
 
   <div class="submit">
-<%#    <%= form.submit 'Cancel', name: 'cancel', class: 'cancel-comment' %>
-<%#    <% if comment.parent_id? %>
-<%#      <%= form.submit "#{comment.id.blank? ? 'Reply' : 'Edit'}", class: 'reply-comment' %>
-<%#    <% else %>
-<%#     <%= form.submit "#{comment.id.blank? ? 'Comment' : 'Edit'}", class: 'post-comment' %>
-<%#    <% end %>
-    <%# New version %>
     <%= form.submit t("commontator.comment.actions.#{new_record ? 'create' : 'update'}") %>
     <%=
       form.submit(
