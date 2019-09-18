@@ -48,15 +48,16 @@
 
   <div class="usa-overlay"></div>
 
-  <div class="usa-navbar bg-primary-darker text-white">
-    <div class="usa-logo text-white" id="extended-logo">
+  <div class="usa-navbar bg-primary-darker text-white grid-container">
+    <div class="grid-row flex-align-center height-10">
+    <div class="usa-logo text-white grid-col-fill" id="extended-logo">
       <em class="usa-logo__text">
         <a href="/" title="Home" aria-label="Home" class='text-white-important'>VA<span class='text-normal'> | Diffusion Marketplace</span></a>
       </em>
     </div>
     <button class="usa-menu-btn">Menu</button>
-  </div>
-  <nav class="usa-nav">
+  <%# </div> %>
+  <nav class="usa-nav grid-col-fill">
     <div class="usa-nav__inner">
       <button class="usa-nav__close"><img src="<%= image_url 'uswds/close.svg' %>" alt="close"></button>
       <div class="usa-nav__secondary bottom-1-and-half-rem">
@@ -96,5 +97,7 @@
       </div>
     </div>
   </nav>
-  <%= render partial: 'shared/beta_banner' %>
+  </div>
+  </div>
+  <%# <%= render partial: 'shared/beta_banner' %>
 </header>
