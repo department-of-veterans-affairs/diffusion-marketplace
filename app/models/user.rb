@@ -19,7 +19,8 @@ class User < ApplicationRecord
 
   has_many :visits, class_name: 'Ahoy::Visit'
 
-  has_many :practices
+  has_many :user_practices
+  has_many :practices, through: :user_practices
 
   has_attached_file :avatar
 
@@ -85,6 +86,14 @@ class User < ApplicationRecord
     return 'User' unless last_name || first_name
 
     "#{first_name} #{last_name}"
+  end
+
+  def favorite_practices
+    user_practices.select(&:favorited).map(&:practice)
+  end
+
+  def favorite_practice_ids
+    user_practices.select(&:favorited).map(&:practice_id)
   end
 
   # Authenticates and signs in the User via LDAP

@@ -1,5 +1,5 @@
 class PracticesController < ApplicationController
-  before_action :set_practice, only: [:show, :edit, :update, :destroy, :next_steps, :commit, :committed, :highlight, :un_highlight, :feature, :un_feature]
+  before_action :set_practice, only: [:show, :edit, :update, :destroy, :next_steps, :commit, :committed, :highlight, :un_highlight, :feature, :un_feature, :favorite]
   before_action :set_facility_data, only: [:show, :next_steps]
   before_action :authenticate_user!, except: [:show, :search, :index]
   before_action :can_view_committed_view, only: [:committed]
@@ -106,7 +106,8 @@ class PracticesController < ApplicationController
     if user_practice.present?
       flash[:notice] = "You have already committed to this practice. If you did not receive a follow-up email from the practice support team yet, please contact them at #{@practice.support_network_email || ENV['MAILER_SENDER']}"
     else
-      user_practice = UserPractice.new(user: current_user, practice: @practice, committed: true)
+      user_practice = UserPractice.find_or_initialize_by(user: current_user, practice: @practice)
+      user_practice.committed = true
       PracticeMailer.commitment_response_email(user: current_user, practice: @practice).deliver_now
       PracticeMailer.support_team_notification_of_commitment(user: current_user, practice: @practice).deliver_now
     end
@@ -118,6 +119,30 @@ class PracticesController < ApplicationController
         format.json { render :show, status: :created, location: practice_committed_path }
       else
         format.html { render :next_steps, error: user_practice.errors }
+        format.json { render json: user_practice.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # POST /practices/1/favorite.js
+  # POST /practices/1/favorite.json
+  def favorite
+    user_practice = UserPractice.find_by(user: current_user, practice: @practice)
+
+    if user_practice.present?
+      user_practice.toggle(:favorited)
+    else
+      user_practice = UserPractice.new(user: current_user, practice: @practice, favorited: true)
+    end
+
+    @favorited = user_practice.favorited
+
+    respond_to do |format|
+      if user_practice.save
+        format.js
+        format.json { render json: { favorited: user_practice.favorited }, status: :success }
+      else
+        format.js { redirect_back fallback_location: root_path, error: user_practice.errors }
         format.json { render json: user_practice.errors, status: :unprocessable_entity }
       end
     end
