@@ -246,7 +246,7 @@ class PracticesController < ApplicationController
 
     practices.each do |practice|
       practice_hash = JSON.parse(practice.to_json) # convert to hash
-      practice_hash['image'] = practice.main_display_image.present? ? practice.main_display_image.url : ''
+      practice_hash['image'] = practice.main_display_image.present? ? practice.main_display_image_s3_presigned_url : ''
       if practice.date_initiated
         practice_hash['date_initiated'] = practice.date_initiated.strftime("%B %Y")
       else

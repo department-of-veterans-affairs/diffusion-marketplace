@@ -8,7 +8,7 @@
           <div class="login-header">
             <div class="login-header-overlay">
               <h1 class="x0">Your Profile</h1>
-              <p class="fs1-125">Instructions about editing profile. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              <p class="fs1-125">People on the Diffusion Marketplace will get to know you with the information you enter below.</p>
             </div>
           </div>
           <div class="login-body">
@@ -32,7 +32,7 @@
                 <div class="grid-row">
                   <div class="grid-col-5">
                     <% if @user.avatar.present? && @user.avatar.exists? %>
-                      <img src="<%= @user.avatar.url %>" class="avatar-profile-photo"/>
+                      <img src="<%= @user.avatar_s3_presigned_url %>" class="avatar-profile-photo"/>
                     <% else %>
                       <i class="fas fa-user empty-user-avatar"></i>
                     <% end %>

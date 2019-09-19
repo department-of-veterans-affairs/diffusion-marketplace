@@ -14,7 +14,7 @@
     <div class="tablet:grid-col-4 display-flex">
       <% if @practice.origin_picture.present? %>
         <div class='margin-y-2 origin-picture-container overflow-hidden margin-x-auto rounded'>
-          <%= image_tag @practice.origin_picture.url(:thumb), class: '', alt: "#{@practice.name} origins" %>
+          <%= image_tag @practice.origin_picture_s3_presigned_url(:thumb), class: '', alt: "#{@practice.name} origins" %>
         </div>
       <% end %>
     </div>

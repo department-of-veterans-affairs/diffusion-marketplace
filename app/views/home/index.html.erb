@@ -32,7 +32,7 @@
               <% if @top_practice.main_display_image.present? %>
                 <% provide(:top_practice_img_styles, raw("<style>
                   .top-practice-img {
-                    background: url('#{@top_practice.main_display_image.url}');
+                    background: url('#{@top_practice.main_display_image_s3_presigned_url}');
                     background-size: cover;
                     min-height: 216px;
                     height: 100%;
