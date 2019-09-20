@@ -1,20 +1,7 @@
-<div class="grid-container position-relative z-top">
-  <div id="dm-practice-nav" class="z-top mobile-hide">
-    <div class="text-center">
-      <a target="_blank"
-         href="mailto:?subject=<%= email_practice_subject(@practice) %>&body=<%= email_practice_body(@practice) %>" class="usa-button usa-button--outline width-full margin-bottom-1">
-        Share summary
-      </a>
-    </div>
-  </div>
-</div>
-
 <section class="usa-section p2-top p2-bottom">
-  <div class="grid-container position-relative">
-    <div class="grid-row">
-      <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-
-      <div id="overview" class="desktop:grid-col-9 grid-col-12 p0 p1-5-right">
+  <div class="grid-container position-relative padding-x-9">
+    <div class="grid-row padding-x-9">
+      <div id="overview" class="grid-col-12">
         <%= render "shared/messages" %>
 
         <div class="bg-white">
@@ -24,8 +11,11 @@
               <%# <%= @practice.tagline %>
               <%= @practice.name %>
             </h1>
+            <div class="margin-bottom-2">
+              <span class="font-sans-xs"><i class="fas fa-external-link-alt margin-right-105"></i>Share link</span>
+            </div>
           <%# <% end %>
-          <p class="font-sans-xl"><%= @practice.description %></p>
+          <p class="font-sans-xl line-height-sans-5"><%= @practice.description %></p>
 
           <%#<div class="grid-row margin-bottom-2">
             <h2 class="flex-1 x0 fs-h5 text-normal"><%= @practice.name %>
@@ -55,11 +45,9 @@
 </section>
 
 <section class="usa-section padding-0">
-  <div class="grid-container position-relative">
-    <div class="grid-row">
-      <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-
-      <div class="desktop:grid-col-9 grid-col-12 p0 p1-5-right">
+  <div class="grid-container position-relative padding-x-9">
+    <div class="grid-row padding-x-9">
+      <div class="grid-col-12">
         <div class="grid-row">
           <%#<div class="tablet:grid-col-5 padding-x-1 padding-top-1">
             <% if @practice.main_display_image.present? %>
@@ -74,8 +62,11 @@
       </div>
     </div>
   </div>
-  <div class="text-center padding-top-6">
-    <%= link_to 'Login to see more', new_user_session_path, id: 'practice-page-login-link', class: 'dm-button-link display-inline-block' %>
-  </div> %>
+  <div class="text-center padding-top-6 margin-bottom-6">
+    <%= link_to 'Login to see full practice', new_user_session_path, id: 'practice-page-login-link', class: 'dm-button-link display-inline-block font-sans-md line-height-sans-2' %>
+  </div>
+  <div class="grid-container margin-bottom-105">
+    <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
+  </div>
 </section>
 <%# <div class="dm-background-triangle-bottom "></div> %>

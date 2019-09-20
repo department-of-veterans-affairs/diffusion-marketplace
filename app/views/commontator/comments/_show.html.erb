@@ -77,15 +77,15 @@
 
   <% if comment.created_at == comment.updated_at %>
     <span id="commontator-comment-<%= comment.id %>-created-timestamp" class="timestamp">
-      Posted <%= helper.timeago(comment.created_at) %>
+      Posted <%= timeago(comment.created_at) %>
     </span>
   <% elsif comment.created_at != comment.updated_at && !comment.deleted_at%>
     <span id="commontator-comment-<%= comment.id %>-updated-timestamp" class="timestamp">
-      Edited <%= helper.timeago(comment.updated_at) %>, originally posted <%= helper.timeago(comment.created_at) %>
+      Edited <%= timeago(comment.updated_at) %>, originally posted <%= timeago(comment.created_at) %>
     </span>
   <% else %>
     <span class="timestamp">
-      Deleted <%= helper.timeago(comment.deleted_at) %>, originally posted <%= helper.timeago(comment.created_at) %>
+      Deleted <%= timeago(comment.deleted_at) %>, originally posted <%= timeago(comment.created_at) %>
     </span>
   <% end %>
 

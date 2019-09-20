@@ -118,7 +118,7 @@
   </div>
 </section>
 
-<section class="usa-section padding-0">
+<section class="usa-section padding-0 margin-bottom-7">
   <div class="grid-container position-relative">
     <div class="grid-row">
       <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
@@ -132,7 +132,7 @@
         <%#    <% end %>
         <%#  </div>%>
           <div <%#class="tablet:grid-col-7 padding-x-1"%>>
-            <p class="practice-summary margin-0 font-ui-md"><%= @practice.summary %></p>
+            <p class="practice-summary margin-0"><%= @practice.summary %></p>
           </div>
         </div>
       </div>
@@ -166,19 +166,27 @@
         <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
         <div class="desktop:grid-col-9 grid-col-12 p0">
-          <div class="p4-bottom">
+          <div class="margin-bottom-7">
             <% if @practice.impact_photos.any? %>
               <%= render partial: 'impact' %>
             <% end %>
             <% if @practice.video_files.any? %>
               <%= render partial: 'videos' %>
-              <div class="practice-divider margin-y-6"></div>
             <% end %>
             <% if @practice.additional_documents.any? || @practice.publication_files.any? || @practice.publications.any? %>
-              <h2 class="margin-y-6">Download additional information related to our practice</h2>
-              <%= render partial: 'additional_documents' %>
-              <%= render partial: 'publication_files' %>
-              <%= render partial: 'publications' %>
+              <div class="grid-row flex-align-center margin-bottom-4">
+                <h2 class="font-sans-xl text-bold margin-0 flex-auto margin-right-205">Documentation</h2>
+                <div class="height-2px border border-base-lightest flex-fill"></div>
+              </div>
+              <h3 class="font-sans-lg margin-top-0 margin-bottom-1">Downloads</h3>
+              <div class="padding-bottom-1">
+                <%= render partial: 'additional_documents' %>
+                <%= render partial: 'publication_files' %>
+              </div>
+              <h3 class="font-sans-lg margin-top-0 margin-bottom-1">Links</h3>
+              <div>
+                <%= render partial: 'publications' %>
+              </div>
             <% end %>
           </div>
         </div>
@@ -188,12 +196,12 @@
 <% end %>
 
 <!-- "Resources Required" section -->
-<section class="p3-top margin-y-2">
+<section>
   <div class="grid-container">
     <div class="grid-row">
       <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-      <div class="desktop:grid-col-9 grid-col-12 p0 p1-5-right">
-        <div class="p4-bottom">
+      <div class="desktop:grid-col-9 grid-col-12 p0">
+        <div>
           <%= render partial: 'resources_required' %>
         </div>
       </div>
@@ -202,13 +210,13 @@
 </section>
 
 <!-- "Complexity" section -->
-<section>
-  <div class="dm-background-light-blue">
-    <div class="grid-container padding-y-7 position-relative">
+<section class="margin-bottom-7">
+  <div>
+    <div class="grid-container">
       <div class="grid-row">
         <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-        <div class="desktop:grid-col-9 grid-col-12 p0 p1-5-right">
-          <div class="">
+        <div class="desktop:grid-col-9 grid-col-12 p0">
+          <div>
             <%= render partial: 'complexity' %>
           </div>
         </div>
@@ -219,12 +227,12 @@
 
 <!-- "Timeline and Checklist" section -->
 <% if @practice.timelines.any? %>
-  <section class="p3-top">
+  <section class="timeline-section">
     <div class="grid-container">
       <div class="grid-row">
         <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-        <div class="desktop:grid-col-9 grid-col-12 p0 p1-5-right">
-          <div class="p4-bottom">
+        <div class="desktop:grid-col-9 grid-col-12 p0">
+          <div>
             <%= render partial: 'timeline_and_checklist' %>
           </div>
         </div>
@@ -235,12 +243,12 @@
 
 <!-- "Risks & Mitigations" section -->
 <% if @practice.risk_mitigations.any? %>
-  <section class="p3-top dm-background-light-blue">
+  <section class="margin-bottom-7">
     <div class="grid-container">
       <div class="grid-row">
         <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-        <div class="desktop:grid-col-9 grid-col-12 p0 p1-5-right">
-          <div class="p4-bottom">
+        <div class="desktop:grid-col-9 grid-col-12 p0">
+          <div>
             <%= render partial: 'risks_and_mitigations' %>
           </div>
         </div>
@@ -251,12 +259,12 @@
 
 <!-- "Support Team" || "Contact" section -->
 <% if @practice.va_employees.any? %>
-  <section class="p3-top dm-background-white">
+  <section class="margin-bottom-7">
     <div class="grid-container">
       <div class="grid-row">
         <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-        <div class="desktop:grid-col-9 grid-col-12 p0 p1-5-right">
-          <div class="p4-bottom">
+        <div class="desktop:grid-col-9 grid-col-12 p0">
+          <div>
             <%= render partial: 'support_team' %>
           </div>
         </div>

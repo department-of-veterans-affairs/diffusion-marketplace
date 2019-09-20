@@ -120,7 +120,7 @@
 }
 
 .practice-summary {
-  line-height: 26px !important;
+  line-height: 30px !important;
 }
 
 .aggregate-circles-position {
@@ -171,7 +171,11 @@
 .video-container {
   position: relative;
   padding-bottom: 56.25%;
-  padding-top: 30px; height: 0; overflow: hidden;
+  padding-top: 30px;
+  // height: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
 }
 
 .video-container iframe,
@@ -227,7 +231,7 @@
 }
 
 .multiline-ellipses-2 {
-  height: 55px; /* Fallback for non-webkit */
+  height: 45px; /* Fallback for non-webkit */
   -webkit-line-clamp: 2;
 }
 
@@ -235,3 +239,24 @@
   height: 35px; /* Fallback for non-webkit */
   -webkit-line-clamp: 2;
 }
+
+.impact-image {
+  height: 263px; 
+  width: 393px; 
+  object-fit: cover;
+}
+
+.practice-video-container {
+  height: 263px; 
+  width: 393px;
+}
+
+.practice-title {
+  margin: 0;
+}
+
+.fa-circle {
+  vertical-align: top;
+}
+
+
