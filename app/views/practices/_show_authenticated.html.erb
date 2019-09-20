@@ -86,6 +86,12 @@
               <%= @practice.tagline %>
             </h1>
           <% end %>
+          <% if current_user %>
+            <a href="<%= practice_favorite_path(@practice, format: :js) %>" data-method="post" data-remote="true" rel="nofollow" aria-label="Favorite <%= @practice.name %>" tabindex="-1" aria-hidden="true" class="favorite-practice-link text-no-underline">
+              <i class="<% if current_user.favorite_practice_ids.include?(@practice.id) %>fas text-secondary<% else %>far text-primary<% end %> fa-heart favorite-icon-<%= @practice.id %> text-no-underline"></i>
+              <span class="text-primary text-no-underline padding-left-1 favorite-practice-link-text"><% if current_user.favorite_practice_ids.include?(@practice.id) %>Remove from your favorites<% else %>Add to your favorites<% end %></span>
+            </a>
+          <% end %>
           <p><%= @practice.description %></p>
 
           <div class="grid-row margin-bottom-2">
@@ -122,7 +128,7 @@
 
       <div class="desktop:grid-col-9 grid-col-12 p0 p1-5-right">
         <div class="grid-row">
-          <div class="tablet:grid-col-5 padding-x-1 padding-top-1">
+          <div class="tablet:grid-col-5 padding-x-1 padding-top-1 practice-show-image-column">
             <% if @practice.main_display_image.present? %>
               <%#= image_tag @practice.main_display_image.url(:thumb), alt: "#{@practice.name} display image" %>
               <%= image_tag @practice.main_display_image_s3_presigned_url(:thumb), alt: "#{@practice.name} display image" %>
