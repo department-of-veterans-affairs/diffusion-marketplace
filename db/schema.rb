@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_08_033821) do
+ActiveRecord::Schema.define(version: 2019_09_10_185301) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -683,6 +683,7 @@ ActiveRecord::Schema.define(version: 2019_09_08_033821) do
     t.boolean "committed"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "favorited", default: false
     t.index ["practice_id"], name: "index_user_practices_on_practice_id"
     t.index ["user_id"], name: "index_user_practices_on_user_id"
   end
