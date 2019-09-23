@@ -236,7 +236,7 @@ a {
   }
 }
 
-.favorite-practice-button {
+.favorite-practice-button, .featured-favorite-practice-button {
   position: absolute;
   width: 28px;
   height: 28px;
@@ -244,6 +244,17 @@ a {
   background-color: white;
   padding: 5px;
   border-radius: 50%;
+  z-index: 2;
+}
+
+.featured-favorite-practice-button {
+  right: 14px;
+  top: 5px;
+}
+
+.favorite-practice-button {
+  right: 13px;
+  top: 13px;
 }
 
 .highlighted-practice > .favorite-practice-button {

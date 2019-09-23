@@ -17,7 +17,6 @@
   <% else %>
     <div style="<%= featured ? 'height: 309px' : 'height: 227px' %>"></div>
   <% end %>
-  <%= render partial: 'practices/favorite_button', locals: {practice: practice} %>
 
   <div class="padding-2 height-card-mobile border-x-2px border-bottom-2px radius-sm border-base-lighter">
     <%= link_to practice, class: 'multiline-ellipses-2 margin-bottom-1' do %>

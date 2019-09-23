@@ -45,6 +45,7 @@
               <% @featured_practices.each do |fp| %>
                 <% if fp.present? %>
                     <div class="tablet:grid-col-4">
+                    <%= render partial: 'practices/favorite_button', locals: {practice: fp, featured: true } %>
                       <%= render partial: 'practices/marketplace_card', locals: {practice: fp, featured: true} %>
                     </div>
                 <% end %>
@@ -85,6 +86,7 @@
         <% @practices.each do |p| %>
           <% if p.present? %>
             <div class="tablet:grid-col-3 padding-y-1">
+              <%= render partial: 'practices/favorite_button', locals: {practice: p, featured: false } %>
               <%= render partial: 'practices/marketplace_card', locals: {practice: p, featured: false} %>
             </div>
           <% end %>
