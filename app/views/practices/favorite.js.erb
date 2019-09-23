@@ -1,0 +1,9 @@
+<% if @favorited %>
+  $('.favorite-icon-<%= @practice.id %>').removeClass('far text-base');
+  $('.favorite-icon-<%= @practice.id %>').addClass('fas text-secondary');
+  $('.favorite-practice-link-text').text('Remove from your favorites');
+<% else %>
+  $('.favorite-icon-<%= @practice.id %>').removeClass('fas text-secondary');
+  $('.favorite-icon-<%= @practice.id %>').addClass('far text-base');
+  $('.favorite-practice-link-text').text('Add to your favorites');
+<% end %>

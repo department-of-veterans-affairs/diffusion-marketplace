@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     get '/next-steps', action: 'next_steps', as: 'next_steps'
     get '/committed', action: 'committed', as: 'committed'
     post '/commit', action: 'commit', as: 'commit'
+    post '/favorite', action: 'favorite', as: 'favorite'
     member do
       post :highlight
       post :un_highlight
@@ -41,6 +42,7 @@ Rails.application.routes.draw do
   get 'practices/planning_checklist' => 'practices#planning_checklist'
   get '/search' => 'practices#search'
 
+  get '/users/:id' => 'users#show'
   get '/edit-profile' => 'users#edit_profile'
   post '/edit-profile' => 'users#update_profile'
   delete '/edit-profile-photo' => 'users#delete_photo'

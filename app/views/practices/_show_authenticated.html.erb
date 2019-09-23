@@ -37,10 +37,6 @@
       </li>
     </ul>
     <div class="text-center">
-      <a target="_blank"
-         href="mailto:?subject=<%= email_practice_subject(@practice) %>&body=<%= email_practice_body(@practice) %>" class="usa-button usa-button--outline width-full margin-bottom-1">
-        Share summary
-      </a>
       <%= link_to 'Take the next step', practice_next_steps_url(practice_id: @practice.slug), id: 'next-steps-link-in-nav', class: 'usa-button width-full' %>
     </div>
   </div>
@@ -51,15 +47,15 @@
 
 <section class="usa-section p2-top p2-bottom">
   <div class="grid-container position-relative">
-    <div class="grid-row">
+    <div class="grid-row grid-gap">
       <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
-      <div id="overview" class="desktop:grid-col-9 grid-col-12 p0 p1-5-right">
+      <div id="overview" class="desktop:grid-col-6 grid-col-12 p0">
         <%= render "shared/messages" %>
-        <% if current_user&.has_role?(:approver_editor) || current_user&.has_role?(:admin) %>
-          <div class="right">
+        <%#<% if current_user&.has_role?(:approver_editor) || current_user&.has_role?(:admin) %>
+        <%#  <div class="right">
             <%= link_to 'Edit', edit_practice_path(@practice), class: 'usa-button usa-button--outline' %>
-          </div>
+        <%#  </div>
         <% end %>
         <% unless @practice.published && @practice.approved %>
           <div class="usa-alert usa-alert--warning">
@@ -81,51 +77,32 @@
 
         <div class="bg-white<%#padding-5%>">
 
-          <%#<% if @practice.tagline.present? %>
+          <% if @practice.tagline.present? %>
             <h1 class="font-sans-3xl x0-top margin-bottom-2 font-family-sans text-heavy word-break-break-word hyphens-auto">
               <%= @practice.name %>
             </h1>
-          <%#<% end %>
-          <div class="margin-bottom-2">
-            <span class="margin-right-3 font-sans-xs"><i class="far fa-heart margin-right-105"></i> Add to your favorites</span><span class="font-sans-xs"><i class="fas fa-external-link-alt margin-right-105"></i>Share link</span>
-          </div>
-          <p class="font-sans-xl"><%= @practice.description %></p>
-
-          <%#<div class="grid-row margin-bottom-2">
-            <h2 class="flex-1 x0 fs-h5 text-normal"><%= @practice.name %>
-          <%#    <span class="margin-x-05">|</span>
-              <span class="uppercase"><%= @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)' %></span>
-          <%#    <span class="margin-x-05">|</span>
-              <span class="uppercase">
-            <%= @facility_data.present? ? @facility_data['properties']['name'] : @practice.initiating_facility %>
-          <%#</span>
-            </h2>
-
-          </div>%>
-          <%#<div class="grid-row">
-            <div class="grid-auto margin-right-2 display-flex-align-items-center">
-              <%= render partial: 'shared/badge', locals: {badges: @practice.practice_partners} %>
-          <%#  </div>
-            <div class="grid-auto">
-              <p class="margin-0">
-                <span class="text-bold font-ui-md"><%= @practice.number_adopted.present? ? @practice.number_adopted : '0' %><%#</span>
-                Facilit<%= @practice.number_adopted == 1 ? 'y' : 'ies' %><%# have adopted this practice</p>
+          <% end %>
+          <% if current_user %>
+            <div class="margin-bottom-2">
+              <a href="<%= practice_favorite_path(@practice, format: :js) %>" data-method="post" data-remote="true" rel="nofollow" aria-label="Favorite <%= @practice.name %>" tabindex="-1" aria-hidden="true" class="favorite-practice-link text-no-underline margin-right-3 font-sans-xs">
+                <i class="<% if current_user.favorite_practice_ids.include?(@practice.id) %>fas text-secondary<% else %>far text-primary<% end %> fa-heart favorite-icon-<%= @practice.id %> text-no-underline padding-right-105"></i>
+                <span class="text-primary text-no-underline favorite-practice-link-text"><% if current_user.favorite_practice_ids.include?(@practice.id) %>Remove from your favorites<% else %>Add to your favorites<% end %></span>
+              </a>
+              <a target="_blank" aria-label="Share <%= @practice.name %>" aria-hidden="true" href="mailto:?subject=<%= email_practice_subject(@practice) %>&body=<%= email_practice_body(@practice) %>" class="text-no-underline">
+                <span class="text-no-underline text-primary"><i class="fas fa-external-link-alt padding-right-105"></i>Share link</span>
+              </a>
+              <%# <div class="margin-bottom-2"> %>
+              <%#  <span class="margin-right-3 font-sans-xs"><i class="far fa-heart margin-right-105"></i> Add to your favorites</span>%><%#<span class="font-sans-xs"><i class="fas fa-external-link-alt margin-right-105"></i>Share link</span>
+              <%#</div>%>
             </div>
-          </div>%>
+          <% end %>
+          <p class="font-sans-lg line-height-sans-5 margin-bottom-4"><%= @practice.description %></p>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
+      
 
-<section class="usa-section padding-0 margin-bottom-7">
-  <div class="grid-container position-relative">
-    <div class="grid-row">
-      <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-
-      <div class="desktop:grid-col-9 grid-col-12 p0 p1-5-right">
-        <div class="grid-row">
+      
         <%#  <div class="tablet:grid-col-5 padding-x-1 padding-top-1">
+          <div class="tablet:grid-col-5 padding-x-1 padding-top-1 practice-show-image-column">
             <% if @practice.main_display_image.present? %>
               <%#= image_tag @practice.main_display_image.url(:thumb), alt: "#{@practice.name} display image" %>
         <%#      <%= image_tag @practice.main_display_image_s3_presigned_url(:thumb), alt: "#{@practice.name} display image" %>
@@ -135,10 +112,41 @@
             <p class="practice-summary margin-0"><%= @practice.summary %></p>
           </div>
         </div>
+  <div class="desktop:grid-col-3 grid-col-auto z-bottom margin-top-8">
+  <div class="height-auto padding-2 bg-base-lightest radius-md">
+      <h4 class="margin-top-0 margin-bottom-1">Origin</h4>
+      <p class="line-height-sans-5 margin-bottom-3">
+        Created by the <%= @facility_data.present? ? @facility_data['properties']['name'] : @practice.initiating_facility %> in <span><%= @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)' %></span>
+      </p>
+      <%# <div class="margin-right-2 display-flex-align-items-center">
+        <%= render partial: 'shared/badge', locals: {badges: @practice.practice_partners} %>
+      <%# </div> %>
+      <% if @practice.practice_partners.any? %>
+        <h4 class="margin-top-0 margin-bottom-1">Sponsors</h4>
+        <div class="margin-bottom-3">
+          <% @practice.practice_partners.each do |partner| %>
+            <p class="line-height-sans-5">
+              <%#<% if partner.short_name? %>
+              <%#  <%= partner.short_name %>
+              <%#<% else %>
+                <%= partner.name %>
+              <%#<% end %>
+            </p>
+          <% end %>
+      <% end %>
       </div>
-    </div>
+      <div>
+      <h4 class="margin-top-0 margin-bottom-1">Adoptions</h4>
+        <%# <p><%= @practice.number_failed %> <%#unsuccessful</p> %>
+        <p class="margin-0 line-height-sans-5">
+          <span><%= @practice.number_adopted.present? ? @practice.number_adopted : '0' %></span>
+          facilit<%= @practice.number_adopted == 1 ? 'y' : 'ies' %> have adopted this practice</p>
+      </div>
   </div>
-</section>
+  </div>
+  </div>
+  </div>
+  </section>
 <%#<div class="dm-background-triangle-bottom "></div>%>
 
 <!-- "Origin of this Practice" section -->

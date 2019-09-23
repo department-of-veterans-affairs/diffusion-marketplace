@@ -4,6 +4,7 @@ class HomeController < ApplicationController
     @top_practice = Practice.find_by_highlight true
     @featured_practices = Practice.where featured: true
     @practices = Practice.where(approved: true, published: true).order(name: :asc)
+    @favorite_practices = current_user&.favorite_practices || []
 
     @facilities_data = facilities_json['features']
 

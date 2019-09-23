@@ -1,13 +1,13 @@
 <!-- "Team" section -->
 <section class="usa-section margin-y-0 p0">
-    <div class="grid-row flex-align-center margin-bottom-4">
-      <h2 id="contact" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205">Contact</h2>
+    <div class="grid-row flex-align-center margin-bottom-3">
+      <h2 id="impact" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205">Contact</h2>
       <div class="height-2px border border-base-lightest flex-fill"></div>
     </div>
-    <div class="grid-row grid-gap-lg margin-top-4 margin-bottom-2 justify-center">
+    <div class="grid-row margin-top-4">
       <% @practice.va_employees.each do |employee| %>
-        <div class="grid-row width-mobile margin-bottom-9">
-          <div class="avatar-container rounded display-flex-align-items-center flex-justify-center dm-background-white overflow-hidden margin-right-105">
+        <div class="grid-row width-mobile margin-bottom-4">
+          <div class="avatar-container display-flex-align-items-center flex-justify-center dm-background-white overflow-hidden margin-right-105">
             <% if employee.avatar.present? %>
               <%= image_tag employee.avatar_s3_presigned_url, alt: employee.name %>
             <% else %>
@@ -22,7 +22,7 @@
       <% end %>
     </div>
 
-    <div class="grid-row flex-row flex-justify-center flex-align-center ">
-      <a href="mailto:<%= @practice.support_network_email || ENV['MAILER_SENDER'] %>" class="dm-button-link-secondary x3-bottom">Contact</a>
+    <div class="grid-row">
+      <a href="mailto:<%= @practice.support_network_email || ENV['MAILER_SENDER'] %>" class="dm-button-link-secondary text-bold border-2px">Email this support team</a>
     </div>
 </section>

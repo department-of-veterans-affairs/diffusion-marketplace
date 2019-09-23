@@ -235,3 +235,27 @@ a {
     display: flex;
   }
 }
+
+.favorite-practice-button {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  text-align: center;
+  background-color: white;
+  padding: 5px;
+  border-radius: 50%;
+}
+
+.highlighted-practice > .favorite-practice-button {
+  top: 2%;
+  right: 2%;
+}
+
+.practice-card-list > .favorite-practice-button {
+  top: 1%;
+  right: 11%;
+}
+
+.text-no-underline {
+  @include u-text('no-underline', !important)
+}
