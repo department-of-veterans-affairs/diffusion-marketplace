@@ -15,10 +15,20 @@ class HomeController < ApplicationController
       marker.lng facility['Longitude']
 
       marker.picture({
-                         url: view_context.image_path('fa-map-marker.png'),
-                         width: 16,
-                         height: 24
+                         url: view_context.image_path('map-marker-default.svg'),
+                         width: 31,
+                         height: 44
                      })
+
+      marker.json({
+                      id: facility["StationNumber"],
+                      practices: dhg[1],
+                      name: facility["OfficialStationName"],
+                      complexity: facility["FY17ParentStationComplexityLevel"],
+                      visn: facility["VISN"],
+                      rurality: facility["Rurality"]
+                  })
+      marker.label('1')
 
 
       marker.infowindow render_to_string(partial: 'maps/marker', locals: {diffusion_histories: dhg[1], facility: facility})
