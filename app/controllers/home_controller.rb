@@ -19,6 +19,19 @@ class HomeController < ApplicationController
                          width: 31,
                          height: 44
                      })
+      # marker.picture({
+      #                    rich_marker: "<div class='my-marker'>It works!<img height='30' width='30' src='http://farm4.static.flickr.com/3212/3012579547_097e27ced9_m.jpg'/></div>"
+      #                })
+
+      marker.shadow nil
+      completed = 0
+      in_progress = 0
+
+      dhg[1].each do |dh|
+        dh_status = dh.diffusion_history_statuses.where(end_time: nil).first
+        completed += 1 if dh_status.status == 'Completed' || 'Implemented'
+        in_progress += 1 if dh_status.status == 'In progress' || 'Planning'
+      end
 
       marker.json({
                       id: facility["StationNumber"],
@@ -26,13 +39,15 @@ class HomeController < ApplicationController
                       name: facility["OfficialStationName"],
                       complexity: facility["FY17ParentStationComplexityLevel"],
                       visn: facility["VISN"],
-                      rurality: facility["Rurality"]
+                      rurality: facility["Rurality"],
+                      completed: completed,
+                      in_progress: in_progress,
+                      # custom_marker: render_to_string(partial: 'maps/marker', locals: {diffusion_histories: dhg[1], completed: completed, in_progress: in_progress, facility: facility})
                   })
-      marker.label('1')
 
-
-      marker.infowindow render_to_string(partial: 'maps/marker', locals: {diffusion_histories: dhg[1], facility: facility})
+      marker.infowindow render_to_string(partial: 'maps/infowindow', locals: {diffusion_histories: dhg[1], completed: completed, in_progress: in_progress, facility: facility})
     end
   end
+
 
 end

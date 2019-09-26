@@ -1,0 +1,20 @@
+.map-marker {
+  -webkit-text-stroke: 3px #FFFFFF;
+  color: #1a4480;
+  //text-shadow:
+  //3px 3px 0 #FFFFFF,
+  //-1px -1px 0 #FFFFFF,
+  //1px -1px 0 #FFFFFF,
+  //-1px 1px 0 #FFFFFF,
+  //1px 1px 0 #FFFFFF;
+
+  &:hover {
+    color: #162E51;
+  }
+}
+
+.marker_container {
+  background-color: #FFFFFF;
+  border-radius: 4px;
+  padding: 8px 15px;
+}
