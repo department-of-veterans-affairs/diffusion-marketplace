@@ -151,24 +151,9 @@ h2 {
   color: gray;
 }
 
-.fa-thumbs-up {
-  color: #71767A;
-  padding: 0;
-}
-
-.fa-thumbs-up:hover, .fa-thumbs-up:active, .active {
-  color: #005EA2;
-  cursor: pointer;
-}
-
-.fa-thumbs-up::before {
-  height: 20px;
-  width: 20px;
-}
-
-.fa-edit, .delete, .undelete {
-  margin-right: 11px;
-}
+// .fa-edit, .delete, .undelete {
+//   margin-right: 11px;
+// }
 
 .fa-edit, .fa-trash-alt, .fa-trash-restore-alt {
   color: #71767A;
@@ -214,4 +199,28 @@ h5 {
     color: #005EA2;
     text-decoration: underline;
   }
+}
+
+.vote-disabled:hover {
+  color: #71767A;
+}
+
+.comment-radio {
+  display: none;
+}
+
+.fa-thumbs-up {
+  padding: 0;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.empty-vote, .vote-disabled {
+  color: #71767A;
+}
+
+.voted {
+  color: #005EA2;
 }

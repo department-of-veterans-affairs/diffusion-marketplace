@@ -1,4 +1,4 @@
-<div class="radius-sm">
+<div class="radius-sm border-2px border-base-lightest">
   <%
     provide(:styles, raw("<style>
     .#{featured ? "featured-" : ''}marketplace-card-header-#{practice.id}  {
@@ -15,10 +15,12 @@
       <img class="img grid-row <%= featured ? "featured-" : '' %>marketplace-card-header-<%= practice.id %> radius-top-sm" src="<%= practice.main_display_image_s3_presigned_url %>">
     <% end %>
   <% else %>
-    <div style="<%= featured ? 'height: 309px' : 'height: 227px' %>"></div>
+    <div class="bg-base-lightest" style="<%= featured ? 'height: 309px' : 'height: 227px' %>">
+      <i class="fas fa-images fa-3x text-base-lighter <%= featured ? 'tall' : '' %>"></i>
+    </div>
   <% end %>
 
-  <div class="padding-2 height-card-mobile border-x-2px border-bottom-2px radius-sm border-base-lighter">
+  <div class="padding-2 height-card-mobile">
     <%= link_to practice, class: 'multiline-ellipses-2 margin-bottom-1' do %>
       <h4 class="grid-col-auto bold font-sans-md practice-title">
         <%= practice.name %>

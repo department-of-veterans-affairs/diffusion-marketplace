@@ -27,16 +27,17 @@
 <%= form_for([commontator, thread, comment], remote: !no_remote) do |form| %>
   <%= form.hidden_field :parent_id %>
 
-  <% unless comment.parent.nil? %>
-    <div class="replying">
+<%#  <% unless comment.parent.nil? %>
+<%#    <div class="replying">
       <%= t('commontator.comment.status.replying',
             creator_name: Commontator.commontator_name(comment.parent.creator)) %>
-    </div>
+<%#    </div>
   <% end %>
 
   <div class="field">
     <%=
-      form.text_area :body, rows: '7', id: new_record ?
+      form.text_area :body, rows: '7', placeholder: 'Type your comment here', 
+        class: comment.parent.nil? && new_record ? 'comment-textarea' : '', id: new_record ?
         comment.parent.nil? ? "commontator-thread-#{@commontator_thread.id}-new-comment-body" :
                               "commontator-comment-#{comment.parent.id}-reply" :
         "commontator-comment-#{comment.id}-edit-body"
@@ -44,12 +45,39 @@
     <%= javascript_tag('Commontator.initMentions();') if config.mentions_enabled %>
   </div>
 
-  <div class="submit">
-    <%= form.submit t("commontator.comment.actions.#{new_record ? 'create' : 'update'}") %>
-    <%=
-      form.submit(
-        t('commontator.comment.actions.cancel'), name: 'cancel'
-      ) unless config.new_comment_style == :t && new_record && comment.parent.nil?
-    %>
+  <div class="submit grid-row flex-align-center">
+    <div class="tablet:grid-col-6 text-left">
+      <% if !comment.parent.nil? %>
+        <div>
+          <%= form.radio_button :parent_id, 0 %>
+          <%= form.label :parent_id, "I am currently implementing this practice", class: 'padding-left-1'  %>
+        </div>
+        <div>
+          <%= form.radio_button :parent_id, 1 %>
+          <%= form.label :parent_id, "I am a member of this practice team", class: 'padding-left-1' %>
+        </div>
+      <% end %>
+    </div>
+    <div class="tablet:grid-col-6">
+      <% if config.new_comment_style == :t && new_record && comment.parent.nil? %>
+        <%=
+          form.submit(
+            t('commontator.comment.actions.cancel'), name: 'cancel', class: 'text-bold border-2px padding-y-105 padding-x-2 radius-md text-base-dark comment-cancel',
+              id: "commontator-thread-#{@commontator_thread.id}-new-comment-body"
+          )
+        %>
+      <% else %>
+        <%=
+          form.submit(
+            t('commontator.comment.actions.cancel'), name: 'cancel', class: 'text-bold border-2px padding-y-105 padding-x-2 radius-md text-base-dark'
+          )
+        %>
+      <% end %>
+        <% if comment.parent %>
+          <%= form.submit t("commontator.comment.actions.#{new_record ? 'reply' : 'update'}"), class: 'text-bold border-2px padding-y-105 padding-x-4 radius-md text-primary' %>
+        <% else %>
+          <%= form.submit t("commontator.comment.actions.#{new_record ? 'create' : 'update'}"), class: "text-bold border-2px padding-y-105 #{comment.parent || !new_record ? 'padding-x-4' : 'padding-x-2'} radius-md text-primary" %>
+        <% end %>
+    </div>
   </div>
 <% end %>

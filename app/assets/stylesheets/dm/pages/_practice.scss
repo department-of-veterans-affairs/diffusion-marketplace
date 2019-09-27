@@ -259,4 +259,18 @@
   vertical-align: top;
 }
 
+.fa-images {
+  position: absolute;
+  top: 19%;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+
+  &.tall {
+    top: 23%;
+  }
+}
+
+
+
 

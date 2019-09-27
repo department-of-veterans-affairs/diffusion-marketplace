@@ -6,8 +6,8 @@
     </div>
     <div class="grid-row margin-top-4">
       <% @practice.va_employees.each do |employee| %>
-        <div class="grid-row width-mobile margin-bottom-4">
-          <div class="avatar-container display-flex-align-items-center flex-justify-center dm-background-white overflow-hidden margin-right-105">
+        <div class="grid-row width-mobile margin-bottom-4 flex-align-center">
+          <div class="avatar-container display-flex-align-items-center flex-justify-center dm-background-white overflow-hidden margin-right-105 <%= employee.avatar.present? ? '' : 'width-auto' %>">
             <% if employee.avatar.present? %>
               <%= image_tag employee.avatar_s3_presigned_url, alt: employee.name %>
             <% else %>
