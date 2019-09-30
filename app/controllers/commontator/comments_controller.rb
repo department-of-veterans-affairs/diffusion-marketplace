@@ -51,6 +51,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
           @commontator_page = @commontator_thread.new_comment_page(
             @comment.parent_id, @commontator_show_all
           )
+          user_practice = @user_practices.find_or_create_by(practice: , user: current_user)
 
           format.js
         else

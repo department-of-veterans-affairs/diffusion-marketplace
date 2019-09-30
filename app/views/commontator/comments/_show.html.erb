@@ -14,7 +14,6 @@
   creator = comment.creator
   link = Commontator.commontator_link(creator, main_app)
   name = Commontator.commontator_name(creator) || ''
-  placeholder = 'Practice team member'
   job_title = creator.job_title
 %>
 <div class="grid-row margin-bottom-4">
@@ -52,9 +51,19 @@
                       remote: true %>
         <% end %>
       </span>
-      <span class="radius-pill font-sans-2xs bg-gold padding-y-1px padding-x-1 margin-right-105">
-        <%= placeholder %>
-      </span>
+      
+      <%#<% if creator.team_member == true %>
+      <%#  <span class="radius-pill font-sans-2xs bg-gold padding-y-1px padding-x-1 margin-right-105">
+          Practice team member
+        </span>
+      <% elsif creator.currently_implementing_practice == true %>
+      <%#  <span class="radius-pill font-sans-2xs bg-gold padding-y-1px padding-x-1 margin-right-105">
+          Verified implementer
+        </span>
+      <% else %>
+      <%#  <span class="hidden"></span>
+      <% end %>
+
       <% if comment.created_at == comment.updated_at %>
         <span id="commontator-comment-<%= comment.id %>-created-timestamp" class="timestamp">
           Posted <%= timeago(comment.created_at) %>
@@ -74,6 +83,10 @@
       <div class="text-base margin-bottom-05">
         <%= job_title %>
       </div>
+      
+      <div>Practice ID: <span class="text-bold"><%= comment.creator.user_practices.to_ary[3].practice_id %></span></div>
+      <div>Thread ID: <span class="text-bold"><%= comment.thread.id %></span></div>
+
       <div id="commontator-comment-<%= comment.id %>-body" class="body">
         <%= render partial: 'commontator/comments/body', locals: { comment: comment } %>
       </div>
@@ -122,8 +135,8 @@
 
 
 
-<%#<div id="commontator-comment-<%= comment.id %><%#-pagination" class="pagination">
-  <div id="commontator-comment-<%= comment.id %><%#-will-paginate" class="will-paginate">
+<div id="commontator-comment-<%= comment.id %>-pagination" class="comments-pagination">
+  <div id="commontator-comment-<%= comment.id %>-will-paginate" class="will-paginate">
     <%= will_paginate nested_children,
                       renderer: Commontator::LinkRenderer,
                       name: t('commontator.comment.status.reply_pages'),
@@ -131,5 +144,5 @@
                       params: { controller: 'commontator/comments',
                                 action: 'show',
                                 id: comment.id } %>
-<%#  </div>
-</div>%>
+  </div>
+</div>

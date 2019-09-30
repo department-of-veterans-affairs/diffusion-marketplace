@@ -6,14 +6,14 @@
       <li class="usa-sidenav__item">
         <a href="#overview" class="dm-tab top-tab scroll-to" data-target="#overview" data-turbolinks="false">Overview</a>
       </li>
-      <% if @practice.impact_photos.any? || @practice.video_files.any? || @practice.additional_documents.any? || @practice.publication_files.any? || @practice.publications.any? %>
-        <li class="usa-sidenav__item">
-          <a href="#impact" class="dm-tab scroll-to" data-target="#impact" data-turbolinks="false">Impact</a>
-        </li>
-      <% end %>
       <% unless !@practice.origin_story || !@practice.origin_title %>
         <li class="usa-sidenav__item">
           <a href="#origin" class="dm-tab scroll-to" data-target="#origin" data-turbolinks="false">Origin</a>
+        </li>
+      <% end %>
+      <% if @practice.impact_photos.any? || @practice.video_files.any? || @practice.additional_documents.any? || @practice.publication_files.any? || @practice.publications.any? %>
+        <li class="usa-sidenav__item">
+          <a href="#impact" class="dm-tab scroll-to" data-target="#impact" data-turbolinks="false">Impact</a>
         </li>
       <% end %>
       <li class="usa-sidenav__item">
@@ -34,6 +34,9 @@
       </li>
       <li class="usa-sidenav__item">
         <a href="#contact" class="dm-tab bottom-tab scroll-to" data-target="#contact" data-turbolinks="false">Contact</a>
+      </li>
+      <li class="usa-sidenav__item">
+        <a href="#comments" class="dm-tab bottom-tab scroll-to" data-target="#comments" data-turbolinks="false">Comments</a>
       </li>
     </ul>
     <div class="text-center">
@@ -257,7 +260,7 @@
 
 <!-- "Support Team" || "Contact" section -->
 <% if @practice.va_employees.any? %>
-  <section class="margin-bottom-7">
+  <section class="margin-bottom-7" id="contact">
     <div class="grid-container">
       <div class="grid-row">
         <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>

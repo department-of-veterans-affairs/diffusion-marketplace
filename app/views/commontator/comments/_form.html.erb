@@ -27,13 +27,6 @@
 <%= form_for([commontator, thread, comment], remote: !no_remote) do |form| %>
   <%= form.hidden_field :parent_id %>
 
-<%#  <% unless comment.parent.nil? %>
-<%#    <div class="replying">
-      <%= t('commontator.comment.status.replying',
-            creator_name: Commontator.commontator_name(comment.parent.creator)) %>
-<%#    </div>
-  <% end %>
-
   <div class="field">
     <%=
       form.text_area :body, rows: '7', placeholder: 'Type your comment here', 
@@ -47,16 +40,14 @@
 
   <div class="submit grid-row flex-align-center">
     <div class="tablet:grid-col-6 text-left">
-      <% if !comment.parent.nil? %>
-        <div>
-          <%= form.radio_button :parent_id, 0 %>
-          <%= form.label :parent_id, "I am currently implementing this practice", class: 'padding-left-1'  %>
-        </div>
-        <div>
-          <%= form.radio_button :parent_id, 1 %>
-          <%= form.label :parent_id, "I am a member of this practice team", class: 'padding-left-1' %>
-        </div>
+      <%# Radio buttons go here %>
+      <% if new_record %>
+        <%= radio_button_tag :practice_implementer, checked: false %>
       <% end %>
+      <% if !new_record %>
+        <%= radio_button_tag :practice_implementer, checked: current_user.user_practices.find_by(practice_id: comment.thread.id, user: current_user).implementer == true ? true : false %>
+      <% end %>
+
     </div>
     <div class="tablet:grid-col-6">
       <% if config.new_comment_style == :t && new_record && comment.parent.nil? %>
