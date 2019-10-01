@@ -19,7 +19,7 @@
         <div class="grid-row">
           <div class="grid-col-12 margin-bottom-3">
             <h3 class="font-sans-lg margin-top-0 margin-bottom-05"><%= link_to "#{ss.name}#{ss.short_name.present? ? " (#{ss.short_name.upcase})" : ''}", practice_partner_path(ss) %></h3>
-            <p><%= ss.description %></p>
+            <p class="font-sans-md"><%= ss.description %></p>
           </div>
         </div>
       <% end %>
