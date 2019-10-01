@@ -14,7 +14,7 @@
         <div class="practice-list">
           <% diffusion_histories.sort_by {|dh| dh.practice.name}.each_with_index do |dh, i| %>
             <a href="<%= practice_path(dh.practice) %>" class="display-block padding-y-105 padding-x-2 map-marker-practice margin-bottom-1">
-              <p class="margin-0 map-marker-practice-name"><%= dh.practice.name %></p>
+              <p class="margin-0 map-marker-practice-name margin-bottom-1"><%= dh.practice.name %></p>
 
               <%
                 dh_status = dh.diffusion_history_statuses.where(end_time: nil).first
@@ -25,13 +25,15 @@
                 formatted_start_date = start_date.strftime('%B %Y') if start_date.present?
                 end_date = completed ? dh_status.start_time : nil
                 formatted_end_date = end_date.strftime('%B %Y') if end_date.present?
+                # TODO: Unsuccessful practices
               %>
 
               <div class="map-marker-practice-content">
-                <p class="margin-0">
-                  <span class="far fa-calendar"></span> <%= completed ? "Started #{formatted_start_date}, completed  #{formatted_end_date}" : "(started #{formatted_start_date})" %>
+                <p class="margin-top-0 margin-bottom-105">
+                  <%# TODO: Unsuccessful status %>
+                  <span class="far fa-calendar"></span> <%= completed ? "Completed  #{formatted_end_date}" : "In-progress (started #{formatted_start_date})" %>
                 </p>
-                <p class="margin-0 truncate-text one-line"><%= dh.practice.description %></p>
+                <p class="margin-top-0 margin-bottom-05 truncate-text one-line"><%= dh.practice.description %></p>
               </div>
             </a>
           <% end %>
