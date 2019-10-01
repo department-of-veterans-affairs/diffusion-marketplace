@@ -1,20 +1,69 @@
-.map-marker {
-  -webkit-text-stroke: 3px #FFFFFF;
-  color: #1a4480;
-  //text-shadow:
-  //3px 3px 0 #FFFFFF,
-  //-1px -1px 0 #FFFFFF,
-  //1px -1px 0 #FFFFFF,
-  //-1px 1px 0 #FFFFFF,
-  //1px 1px 0 #FFFFFF;
-
-  &:hover {
-    color: #162E51;
-  }
-}
-
 .marker_container {
   background-color: #FFFFFF;
   border-radius: 4px;
   padding: 8px 15px;
+}
+
+.infowindow-link {
+  color: #1a4480 !important;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.home-marker-modal {
+  .modal-content {
+    border-radius: 4px;
+  }
+
+  .practice-list {
+    height: 263px;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    .map-marker-practice {
+      border: 2px solid #DCDEE0;
+      box-sizing: border-box;
+      border-radius: 4px;
+
+      &:hover {
+        border: 2px solid #005EA2;
+      }
+    }
+
+    a {
+
+      .map-marker-practice-content {
+        text-decoration: none;
+        font-size: 16.96px;
+        color: #171717;
+      }
+
+      .map-marker-practice-name {
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 16.96px;
+        color: #171717;
+      }
+
+      &:hover {
+        text-decoration: none;
+
+        .map-marker-practice-name {
+          text-decoration: underline;
+          color: #005ea2;
+        }
+
+        .map-marker-practice-content {
+          p {
+            text-decoration: none !important;
+            font-size: 16.96px;
+            color: #171717;
+          }
+        }
+      }
+    }
+  }
+
 }

@@ -19,18 +19,16 @@ class HomeController < ApplicationController
                          width: 31,
                          height: 44
                      })
-      # marker.picture({
-      #                    rich_marker: "<div class='my-marker'>It works!<img height='30' width='30' src='http://farm4.static.flickr.com/3212/3012579547_097e27ced9_m.jpg'/></div>"
-      #                })
 
       marker.shadow nil
       completed = 0
       in_progress = 0
 
+
       dhg[1].each do |dh|
         dh_status = dh.diffusion_history_statuses.where(end_time: nil).first
-        completed += 1 if dh_status.status == 'Completed' || 'Implemented'
-        in_progress += 1 if dh_status.status == 'In progress' || 'Planning'
+        in_progress += 1 if dh_status.status == 'In progress' || dh_status.status ==  'Planning'
+        completed += 1 if dh_status.status == 'Completed' || dh_status.status ==  'Implemented'
       end
 
       marker.json({
@@ -42,7 +40,14 @@ class HomeController < ApplicationController
                       rurality: facility["Rurality"],
                       completed: completed,
                       in_progress: in_progress,
-                      # custom_marker: render_to_string(partial: 'maps/marker', locals: {diffusion_histories: dhg[1], completed: completed, in_progress: in_progress, facility: facility})
+                      modal: render_to_string(partial: "maps/home_map_marker_modal",
+                                              locals: {
+                                                  diffusion_histories: dhg[1],
+                                                  completed: completed,
+                                                  in_progress: in_progress,
+                                                  facility: facility
+                                              }
+                      )
                   })
 
       marker.infowindow render_to_string(partial: 'maps/infowindow', locals: {diffusion_histories: dhg[1], completed: completed, in_progress: in_progress, facility: facility})
