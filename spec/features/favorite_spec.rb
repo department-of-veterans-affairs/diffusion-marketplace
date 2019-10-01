@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Favorites', type: :feature, focus: true do
+describe 'Favorites', type: :feature do
   before do
     @user = User.create!(email: 'spongebob.squarepants@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now)
     @practice1 = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', featured: true)
@@ -32,7 +32,7 @@ describe 'Favorites', type: :feature, focus: true do
         expect(favorite_button).to have_selector('.fas')
       end
 
-      fit 'should allow removing a favorite' do
+      it 'should allow removing a favorite' do
         favorite_button = first(:css, "#favorite-button-#{@practice2.id}")
         favorite_button.click
         expect(favorite_button).to have_selector('.far')
