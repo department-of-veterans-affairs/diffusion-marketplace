@@ -16,7 +16,7 @@
   name = Commontator.commontator_name(creator) || ''
   job_title = creator.job_title
 %>
-<div class="grid-row margin-bottom-4">
+<div class="grid-row margin-bottom-0 padding-top-4">
   <div class="grid-col-auto margin-right-1">
     <span id="commontator-comment-<%= comment.id %>-avatar" class="avatar">
       <%= Commontator.commontator_avatar(creator, self) %>
@@ -52,11 +52,11 @@
         <% end %>
       </span>
       
-      <% if creator.user_practices.find_by(practice_id: comment.thread.id, user: creator).team_member == true %>
+      <% if creator.user_practices.find_by(practice_id: comment.thread.id, user: creator).team_member %>
         <span class="radius-pill font-sans-2xs bg-gold padding-y-1px padding-x-1 margin-right-105">
           Practice team member
         </span>
-      <% elsif creator.user_practices.find_by(practice_id: comment.thread.id, user: creator).verified_implementer == true %>
+      <% elsif creator.user_practices.find_by(practice_id: comment.thread.id, user: creator).verified_implementer %>
         <span class="radius-pill font-sans-2xs bg-gold padding-y-1px padding-x-1 margin-right-105">
           Verified implementer
         </span>
@@ -83,8 +83,6 @@
       <div class="text-base margin-bottom-05">
         <%= job_title %>
       </div>
-
-      <div><%= comment.thread.id %></div>
 
       <div id="commontator-comment-<%= comment.id %>-body" class="body">
         <%= render partial: 'commontator/comments/body', locals: { comment: comment } %>
@@ -119,7 +117,7 @@
   <% end %>
 <%#</div>%>
 
-<div id="commontator-comment-<%= comment.id %>-children" class="commontator-comment-<%= comment.id %>-children padding-left-9 margin-bottom-4">
+<div id="commontator-comment-<%= comment.id %>-children" class="commontator-comment-<%= comment.id %>-children padding-left-9 margin-bottom-0">
   <% if thread.config.comment_order == :l %>
     <div id="commontator-comment-<%= comment.id %>-reply" class="reply margin-0"></div>
   <% end %>
