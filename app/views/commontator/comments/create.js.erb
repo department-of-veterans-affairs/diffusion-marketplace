@@ -33,5 +33,6 @@ var commontatorComment = $("#commontator-comment-<%= @comment.id %>").hide().fad
 $('html, body').animate(
   { scrollTop: commontatorComment.offset().top - window.innerHeight/2 }, 'fast'
 );
+$('.timeago').timeago();
 
 <%= javascript_proc %>

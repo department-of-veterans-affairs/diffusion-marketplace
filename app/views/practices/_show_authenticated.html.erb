@@ -104,7 +104,7 @@
       <div class="desktop:grid-col-3 grid-col-auto z-bottom margin-top-8">
         <div class="height-auto padding-2 bg-base-lightest radius-md">
           <h4 class="margin-top-0 margin-bottom-1">Origin</h4>
-            <p class="line-height-sans-5 <%= @practice.practice_partners.any? ? 'margin-bottom-3' : '' %>">
+            <p class="line-height-sans-5 margin-bottom-3">
               Created by the <%= @facility_data.present? ? @facility_data['properties']['name'] : @practice.initiating_facility %> in <span><%= @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)' %></span>
             </p>
       <%# <div class="margin-right-2 display-flex-align-items-center">

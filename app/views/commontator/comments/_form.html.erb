@@ -42,10 +42,24 @@
     <div class="tablet:grid-col-6 text-left">
       <%# Radio buttons go here %>
       <% if new_record %>
-        <%= radio_button_tag :practice_implementer, checked: false %>
+        <div>
+          <%= radio_button_tag 'user_practice_status', :verified_implementer, false %>
+          <%= label_tag '', 'I am currently implementing this practice'%>
+        </div>
+        <div>
+          <%= radio_button_tag 'user_practice_status', :team_member, false %>
+          <%= label_tag '', 'I am a member of this practice team' %>
+        </div>
       <% end %>
       <% if !new_record %>
-        <%= radio_button_tag :practice_implementer, checked: current_user.user_practices.find_by(practice_id: comment.thread.id, user: current_user).implementer == true ? true : false %>
+        <div>
+          <%= radio_button_tag 'user_practice_status', :verified_implementer, current_user.user_practices.find_by(practice_id: comment.thread.id, user: current_user).verified_implementer ? true : false %>
+          <%= label_tag '', 'I am currently implementing this practice' %>
+        </div>
+        <div>
+          <%= radio_button_tag 'user_practice_status', :team_member, current_user.user_practices.find_by(practice_id: comment.thread.id, user: current_user).team_member ? true : false %>
+          <%= label_tag '', 'I am a member of this practice team' %>
+        </div>
       <% end %>
 
     </div>

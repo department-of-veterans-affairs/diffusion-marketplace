@@ -51,7 +51,12 @@ class Commontator::CommentsController < Commontator::ApplicationController
           @commontator_page = @commontator_thread.new_comment_page(
             @comment.parent_id, @commontator_show_all
           )
-          user_practice = @user_practices.find_or_create_by(practice: , user: current_user)
+          user_practice = UserPractice.find_or_create_by(practice_id: @comment.thread.id, user: current_user)
+
+          user_practice.update_attributes(verified_implementer: true, team_member: false) if params[:user_practice_status] == 'verified_implementer'
+          user_practice.update_attributes(verified_implementer: false, team_member: true) if params[:user_practice_status] == 'team_member'
+
+          @comment.save
 
           format.js
         else
@@ -86,8 +91,15 @@ class Commontator::CommentsController < Commontator::ApplicationController
       if params[:cancel].blank?
         if @comment.save
           subscribe_mentioned if @commontator_thread.config.mentions_enabled
+          user_practice = UserPractice.find_or_create_by(practice_id: @comment.thread.id, user: current_user)
+          
+          user_practice.update_attributes(verified_implementer: true, team_member: false) if params[:user_practice_status] == 'verified_implementer'
+          user_practice.update_attributes(verified_implementer: false, team_member: true) if params[:user_practice_status] == 'team_member'
 
+          @comment.save
+          # debugger
           format.js
+          # format.html { redirect_to commontable_url }
         else
           format.js { render :edit }
         end
