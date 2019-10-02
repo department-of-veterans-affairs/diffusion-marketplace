@@ -2,6 +2,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
   before_action :set_thread, only: [ :new, :create ]
   before_action :set_comment_and_thread, except: [ :new, :create ]
   before_action :commontator_set_thread_variables, only: [ :show, :update, :delete, :undelete ]
+  before_action :commontator_set_new_comment, only: [ :create ]
 
   # GET /comments/1
   def show
@@ -92,7 +93,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
         if @comment.save
           subscribe_mentioned if @commontator_thread.config.mentions_enabled
           user_practice = UserPractice.find_or_create_by(practice_id: @comment.thread.id, user: current_user)
-          
+
           user_practice.update_attributes(verified_implementer: true, team_member: false) if params[:user_practice_status] == 'verified_implementer'
           user_practice.update_attributes(verified_implementer: false, team_member: true) if params[:user_practice_status] == 'team_member'
 
