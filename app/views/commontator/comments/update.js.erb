@@ -10,10 +10,6 @@
 
 $('.timeago').timeago();
 
-<% if @comment.id == @commontator_thread.comments.order('created_at').first.id %>
-  Turbolinks.visit('#commontator-thread-<%= @commontator_thread.id %>-new-comment-body', { action: 'replace' })
-<% else %> 
   Turbolinks.visit('#commontator-comment-<%= @comment.id.ord - 1 %>', { action: 'replace' })
-<% end %>
 
 <%= javascript_proc %>
