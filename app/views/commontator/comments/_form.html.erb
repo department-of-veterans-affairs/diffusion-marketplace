@@ -27,10 +27,10 @@
 <%= form_for([commontator, thread, comment], remote: !no_remote) do |form| %>
   <%= form.hidden_field :parent_id %>
 
-  <div class="field">
+  <div class="field <%= comment.parent.nil? && new_record ? 'comment-field' : 'reply-field' %>">
     <%=
       form.text_area :body, rows: '7', placeholder: 'Type your comment here', 
-        class: comment.parent.nil? && new_record ? 'comment-textarea' : '', id: new_record ?
+        class: comment.parent.nil? && new_record ? 'comment-textarea' : 'reply-textarea', id: new_record ?
         comment.parent.nil? ? "commontator-thread-#{@commontator_thread.id}-new-comment-body" :
                               "commontator-comment-#{comment.parent.id}-reply" :
         "commontator-comment-#{comment.id}-edit-body"
@@ -39,31 +39,31 @@
   </div>
 
   <div class="submit grid-row flex-align-center">
-    <div class="tablet:grid-col-6 text-left">
+    <div class="tablet:grid-col-7 text-left">
       <%# Radio buttons go here %>
       <% if new_record %>
         <div>
-          <%= radio_button_tag 'user_practice_status', :verified_implementer, false %>
-          <%= label_tag '', 'I am currently implementing this practice'%>
+          <%= radio_button_tag 'user_practice_status', :verified_implementer, false, class: 'margin-right-1' %>
+          <%= label_tag '', 'I am currently implementing this practice', class: 'font-sans-sm text-middle' %>
         </div>
         <div>
-          <%= radio_button_tag 'user_practice_status', :team_member, false %>
-          <%= label_tag '', 'I am a member of this practice team' %>
+          <%= radio_button_tag 'user_practice_status', :team_member, false, class: 'margin-right-1' %>
+          <%= label_tag '', 'I am a member of this practice team', class: 'font-sans-sm text-middle' %>
         </div>
       <% end %>
       <% if !new_record %>
         <div>
-          <%= radio_button_tag 'user_practice_status', :verified_implementer, current_user.user_practices.find_by(practice_id: comment.thread.id, user: current_user).verified_implementer ? true : false %>
-          <%= label_tag '', 'I am currently implementing this practice' %>
+          <%= radio_button_tag 'user_practice_status', :verified_implementer, current_user.user_practices.find_by(practice_id: comment.thread.id, user: current_user).verified_implementer ? true : false, class: 'margin-right-1' %>
+          <%= label_tag '', 'I am currently implementing this practice', class: 'font-sans-sm text-middle' %>
         </div>
         <div>
-          <%= radio_button_tag 'user_practice_status', :team_member, current_user.user_practices.find_by(practice_id: comment.thread.id, user: current_user).team_member ? true : false %>
-          <%= label_tag '', 'I am a member of this practice team' %>
+          <%= radio_button_tag 'user_practice_status', :team_member, current_user.user_practices.find_by(practice_id: comment.thread.id, user: current_user).team_member ? true : false, class: 'margin-right-1' %>
+          <%= label_tag '', 'I am a member of this practice team', class: 'font-sans-sm text-middle' %>
         </div>
       <% end %>
 
     </div>
-    <div class="tablet:grid-col-6">
+    <div class="tablet:grid-col-5">
       <% if config.new_comment_style == :t && new_record && comment.parent.nil? %>
         <%=
           form.submit(

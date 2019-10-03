@@ -18,7 +18,7 @@
       clear: both;
   }
 
-  .middle, .top {
+  .middle {
     margin: 0;
   }
 
@@ -38,7 +38,7 @@
   .avatar {
     .fa-user-circle {
       color: #162E51;
-      width: 40px;
+      // width: 40px;
       text-align: center;
     }
 
@@ -117,7 +117,7 @@
   }
 
   .timestamp {
-    color: #666;
+    color: black;
   }
 
   .error-explanation {
