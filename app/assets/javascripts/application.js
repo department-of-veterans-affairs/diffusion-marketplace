@@ -34,4 +34,5 @@
 //= require _side_nav
 //= require admin
 //= require gmaps/google
-//= require home_page_map
+//= require richmarker
+//= require infowindow

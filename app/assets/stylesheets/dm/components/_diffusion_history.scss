@@ -1,0 +1,123 @@
+.marker_container {
+  background-color: #FFFFFF;
+  border-radius: 4px;
+  padding: 8px 15px;
+}
+
+.infowindow-link {
+  color: #1a4480 !important;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.home-marker-modal {
+  .modal-content {
+    border-radius: 4px;
+  }
+
+  .practice-list {
+    height: 263px;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    .map-marker-practice {
+      border: 2px solid #DCDEE0;
+      box-sizing: border-box;
+      border-radius: 4px;
+
+      &:hover {
+        border: 2px solid #005EA2;
+      }
+    }
+
+    a {
+
+      .map-marker-practice-content {
+        text-decoration: none;
+        font-size: 16.96px;
+        color: #171717;
+      }
+
+      .map-marker-practice-name {
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 16.96px;
+        color: #171717;
+      }
+
+      &:hover {
+        text-decoration: none;
+
+        .map-marker-practice-name {
+          text-decoration: underline;
+          color: #005ea2;
+        }
+
+        .map-marker-practice-content {
+          p {
+            text-decoration: none !important;
+            font-size: 16.96px;
+            color: #171717;
+          }
+        }
+      }
+    }
+  }
+
+}
+
+.map-filters-trigger {
+  background: #FFFFFF !important;
+  border-radius: 4px !important;
+  height: 48px;
+  font-size: 16.9px;
+  overflow: hidden;
+  position: absolute;
+  text-align: center !important;
+  text-decoration: none !important;
+  top: 8px;
+  left: 8px;
+  width: 135px;
+}
+
+.map-filters {
+  background: #FFFFFF;
+  border: 2px solid #DCDEE0;
+  border-radius: 4px;
+  height: 617px;
+  overflow: hidden;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 309px;
+
+  fieldset {
+    padding: 0;
+    border: 0;
+  }
+
+  .close {
+    font-size: 17.5px;
+  }
+
+  .usa-input {
+    width: 98%;
+  }
+
+  .map-filters-content {
+    height: 413px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .map-filters-list {
+    border: 1px solid #000000;
+    box-sizing: border-box;
+    height: 147px;
+    padding: 14px 12px;
+    overflow-y: scroll;
+    width: 275px;
+  }
+}

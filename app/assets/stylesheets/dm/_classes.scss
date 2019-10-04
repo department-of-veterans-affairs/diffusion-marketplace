@@ -950,3 +950,35 @@ ul.no-list-style {
 .margin-bottom-auto {
   margin-bottom: auto;
 }
+
+/* Truncate text a given line amount */
+.truncate-text {
+  display: block;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  position: relative;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 !important;
+}
+.one-line {
+  -webkit-line-clamp: 1;
+  height: calc(1em * 1.2 * 1);
+}
+.two-lines {
+  -webkit-line-clamp: 2;
+  height: calc(1em * 1.2 * 2);
+}
+.three-lines {
+  -webkit-line-clamp : 3;
+  height: calc(1em * 1.2 * 3);
+}
+.four-lines {
+  -webkit-line-clamp: 4;
+  height: calc(1em * 1.2 * 4);
+}
+.five-lines {
+  -webkit-line-clamp: 5;
+  height: calc(1em * 1.2 * 5);
+}
