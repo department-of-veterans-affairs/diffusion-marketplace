@@ -63,7 +63,11 @@ namespace :diffusion_history do |diffusion_history_namespace|
     # create diffusion histories with matching facilities to practice's data
     practice_facilities.each do |pf|
       facility_id = facilities.find {|f| f['StationNumber'] == pf['StationNumber']}['StationNumber']
-      status = pf['Status'].present? ? pf['Status'] : 'Implemented'
+      status = if pf['Status'].present?
+                 pf['Status'] == 'Planning' ? 'In progress' : 'Complete'
+               else
+                 'Complete'
+               end
       start_time = DateTime.parse(pf['DateImplemented'])
       dh = DiffusionHistory.find_or_create_by!(practice: practice, facility_id: facility_id)
       DiffusionHistoryStatus.find_or_create_by!(diffusion_history: dh, status: status, start_time: start_time)

@@ -1,0 +1,45 @@
+<div id="homeMapMarkerViewMoreModal-<%= facility["StationNumber"] %>" class="modal home-marker-modal">
+  <div class="modal-content width-tablet padding-y-205 padding-x-3">
+    <div class="first_el" tabindex="0" aria-label="Closing feedback form"></div>
+    <div class="modal-body padding-0">
+      <div>
+        <span class="close text-base-darkest" tabindex="0" role="button" aria-label="Close modal"><span class="fas fa-times"></span></span>
+        <div class="margin-bottom-2">
+          <h2 class="margin-top-0 margin-bottom-1"><%= facility['OfficialStationName'] %></h2>
+          <p class="margin-top-1 margin-bottom-0"><%= completed %> completed
+            implementation<%= completed == 1 ? '' : 's' %></p>
+          <p class="margin-top-1 margin-bottom-0"><%= in_progress %> in-progress
+            implementation<%= in_progress == 1 ? '' : 's' %></p>
+        </div>
+        <div class="practice-list">
+          <% diffusion_histories.sort_by {|dh| dh.practice.name}.each_with_index do |dh, i| %>
+            <a href="<%= practice_path(dh.practice) %>" class="display-block padding-y-105 padding-x-2 map-marker-practice margin-bottom-1">
+              <p class="margin-0 map-marker-practice-name margin-bottom-1"><%= dh.practice.name %></p>
+
+              <%
+                dh_status = dh.diffusion_history_statuses.where(end_time: nil).first
+                completed = dh_status.status == 'Implemented' || dh_status.status == 'Complete'
+                # TODO: there is no start time at the moment for diffusion histories
+                # start_date = completed ? dh.diffusion_history_statuses.where(status: 'In progress').first.start_time : dh_status.start_time
+                start_date = completed ? nil : dh_status.start_time
+                formatted_start_date = start_date.strftime('%B %Y') if start_date.present?
+                end_date = completed ? dh_status.start_time : nil
+                formatted_end_date = end_date.strftime('%B %Y') if end_date.present?
+                # TODO: Unsuccessful practices
+              %>
+
+              <div class="map-marker-practice-content">
+                <p class="margin-top-0 margin-bottom-105">
+                  <%# TODO: Unsuccessful status %>
+                  <span class="far fa-calendar"></span> <%= completed ? "Completed  #{formatted_end_date}" : "In-progress (started #{formatted_start_date})" %>
+                </p>
+                <p class="margin-top-0 margin-bottom-05 truncate-text one-line"><%= dh.practice.description %></p>
+              </div>
+            </a>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="last_el" tabindex="0" aria-label="Closing modal"></div>
+  </div>
+</div>
