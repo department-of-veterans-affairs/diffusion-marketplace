@@ -6,6 +6,9 @@ require 'rake'
 Rails.application.load_tasks
 
 describe 'Importer' do
+  after do
+    Practice.find_by(slug: 'flow3').destroy
+  end
   context 'when running import_answers task' do
     it 'creates Practices with the correct fields filled out' do
       Rake::Task['db:seed'].execute

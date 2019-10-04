@@ -12,6 +12,10 @@ describe 'HomeMap', type: :feature do
     ENV['GOOGLE_API_KEY'] = ENV['GOOGLE_TEST_API_KEY']
   end
 
+  after do
+    Practice.find_by(slug: 'flow3').destroy
+  end
+
   context 'when visiting the homepage' do
     it 'the map shows up and filters are working' do
       visit '/'
