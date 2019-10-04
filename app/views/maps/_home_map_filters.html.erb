@@ -1,0 +1,144 @@
+<% diffused_practices = @diffused_practices.map(&:practice).uniq.sort_by(&:name) %>
+<button id="filterResultsTrigger" class="map-filters-trigger usa-button--unstyled position-absolute text-bold display-block">
+  Filter results
+</button>
+<div id="filterResults" class="map-filters padding-y-0 padding-left-1 position-absolute display-none">
+  <div class="margin-top-2 margin-bottom-105">
+    <span id="filterClose" class="close text-base-darkest" tabindex="0" role="button" aria-label="Close map filters"><span class="fas fa-times"></span></span>
+    <h3 class="font-sans-lg bold-height-2 margin-0 ">Filter results</h3>
+  </div>
+  <div class="margin-bottom-1">
+    <p class="margin-bottom-1 margin-top-0"><span id="facility-results-count"><%= @diffusion_histories.length %></span>
+      facility matches (of <%= @vamc_facilities.length %>)</p>
+    <p class="margin-0">
+      <span id="practice-results-count">
+        <%= diffused_practices.length %>
+      </span>
+      practice matched (of <%= diffused_practices.length %>)
+    </p>
+  </div>
+  <button type="button" class="usa-button--unstyled margin-bottom-105" id="allMarkersButton">Reset filters</button>
+
+  <form id="mapFilters" name="mapFilters" class="">
+    <div class="map-filters-content">
+      <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0">Practices</h4>
+      <div id="practice-list-container" class="margin-bottom-2">
+        <fieldset>
+          <legend class="usa-sr-only">Practices</legend>
+          <%= collection_check_boxes(:practice, :ids, diffused_practices, :id, :name) do |p| %>
+            <%= p.check_box class: 'usa-checkbox__input' %> <%= p.label class: 'usa-checkbox__label' %>
+          <% end %>
+        </fieldset>
+      </div>
+
+      <div class="margin-bottom-2">
+        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0">Practice status</h4>
+        <% statuses = ['Complete', 'In progress', 'Unsuccessful'] %>
+        <fieldset>
+          <legend class="usa-sr-only">Statuses</legend>
+          <% statuses.each do |v| %>
+            <input id="status_<%= v.underscore %>" name="statuses" type="checkbox" value="<%= v %>" class="usa-checkbox__input">
+            <label for="status_<%= v.underscore %>" class="usa-checkbox__label">
+              <%= v %>
+            </label>
+          <% end %>
+        </fieldset>
+      </div>
+      <div class="margin-bottom-2">
+        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0">Practice complexity</h4>
+        <% complexities = {'No complexity': 0, 'Low complexity': 1, 'Moderate complexity': 2, 'High complexity': 3} %>
+        <fieldset>
+          <legend class="usa-sr-only">Complexity</legend>
+          <% complexities.each do |k, v| %>
+            <input id="complexity_<%= k.to_s.underscore %>" name="complexities" type="checkbox" value="<%= v %>" class="usa-checkbox__input">
+            <label for="complexity_<%= k.to_s.underscore %>" class="usa-checkbox__label">
+              <%= k %>
+            </label>
+          <% end %>
+        </fieldset>
+      </div>
+      <div class="margin-bottom-2">
+        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0">Practice cost</h4>
+
+        <% costs = {'No cost': 0, 'Low cost': 1, 'Moderate cost': 2, 'High cost': 3} %>
+        <fieldset>
+          <legend class="usa-sr-only">Costs</legend>
+          <% costs.each do |k, v| %>
+            <input id="costs_<%= k.to_s.underscore %>" name="costs" type="checkbox" value="<%= v %>" class="usa-checkbox__input">
+            <label for="costs_<%= k.to_s.underscore %>" class="usa-checkbox__label">
+              <%= k %>
+            </label>
+          <% end %>
+        </fieldset>
+      </div>
+      <div class="margin-bottom-2">
+        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0">Facility VISN</h4>
+        <div id="visn-list-container" class="map-filters-list">
+          <% visns = @vamc_facilities.map {|f| f["VISN"]}.uniq %>
+          <fieldset>
+            <legend class="usa-sr-only">VISNs</legend>
+            <% visns.each do |v| %>
+              <input id="VISN<%= v %>" name="visns" type="checkbox" value="<%= v %>" class="usa-checkbox__input">
+              <label for="VISN<%= v %>" class="usa-checkbox__label">
+                VISN <%= v %>
+              </label>
+            <% end %>
+          </fieldset>
+        </div>
+      </div>
+
+      <div class="margin-bottom-2 clearfix">
+        <div class="usa-search usa-search--small">
+          <label class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0 text-bold" for="facility_name">Facility
+            name</label>
+          <input class="usa-input" id="facility_name" name="facility_name">
+        </div>
+        <button type="button" class="usa-button--unstyled float-right padding-top-1 padding-bottom-05 padding-right-1" id="practiceListTrigger">
+          View list of facilities
+        </button>
+        <div id="practiceListContainer" class="map-filters-list display-none">
+          <fieldset>
+            <legend class="usa-sr-only">Facilities</legend>
+            <% @vamc_facilities.sort_by {|f| f["OfficialStationName"]}.sort_by {|f| f["StreetAddressState"]}.each do |f| %>
+              <input id="<%= f["StationNumber"] %>" name="facilities" type="checkbox" value="<%= f["StationNumber"] %>" class="usa-checkbox__input">
+              <label for="<%= f["StationNumber"] %>" class="usa-checkbox__label">
+                <%= f["StreetAddressState"] %>: <%= f["OfficialStationName"] %>
+              </label>
+            <% end %>
+          </fieldset>
+        </div>
+      </div>
+
+      <div class="margin-bottom-2">
+        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0">Facility type</h4>
+        <% complexity_levels = @vamc_facilities.map {|f| f["FY17ParentStationComplexityLevel"]}.uniq.sort %>
+        <fieldset>
+          <legend class="usa-sr-only">Facility Complexity Levels</legend>
+          <% complexity_levels.each do |c| %>
+            <input id="<%= c.gsub(' ', '').underscore %>" name="facility_complexities" type="checkbox" value="<%= c %>" class="usa-checkbox__input">
+            <label for="<%= c.gsub(' ', '').underscore %>" class="usa-checkbox__label">
+              <%= c %>
+            </label>
+          <% end %>
+        </fieldset>
+      </div>
+
+      <div class="margin-bottom-2">
+        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0">Facility rurality</h4>
+        <% ruralities = {R: "Rural", U: "Urban"} %>
+        <fieldset>
+          <legend class="usa-sr-only">Ruralities</legend>
+          <% ruralities.each do |k, v| %>
+            <input id="rurality_<%= k %>" name="ruralities" type="checkbox" value="<%= k %>" class="usa-checkbox__input">
+            <label for="rurality_<%= k %>" class="usa-checkbox__label">
+              <%= v %>
+            </label>
+          <% end %>
+        </fieldset>
+      </div>
+    </div>
+    <div class="text-center padding-y-1">
+      <button type="submit" class="usa-button usa-button-primary">Update results</button>
+    </div>
+  </form>
+</div>
