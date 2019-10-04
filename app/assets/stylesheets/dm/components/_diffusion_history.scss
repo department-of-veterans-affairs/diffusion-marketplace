@@ -93,6 +93,11 @@
   left: 8px;
   width: 309px;
 
+  fieldset {
+    padding: 0;
+    border: 0;
+  }
+
   .close {
     font-size: 17.5px;
   }

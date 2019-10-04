@@ -29,8 +29,8 @@ class HomeController < ApplicationController
       unsuccessful = 0
       dhg[1].each do |dh|
         dh_status = dh.diffusion_history_statuses.where(end_time: nil).first
-        in_progress += 1 if dh_status.status == 'In progress' || dh_status.status ==  'Planning'
-        completed += 1 if dh_status.status == 'Completed' || dh_status.status ==  'Implemented'
+        in_progress += 1 if dh_status.status == 'In progress' || dh_status.status ==  'Planning' || dh_status.status == 'Implementing'
+        completed += 1 if dh_status.status == 'Completed' || dh_status.status ==  'Implemented' || dh_status.status == 'Complete'
         unsuccessful += 1 if dh_status.status == 'Unsuccessful'
       end
       practices = dhg[1].map(&:practice)
