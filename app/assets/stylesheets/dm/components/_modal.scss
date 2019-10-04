@@ -46,8 +46,11 @@
 .close {
   color: white;
   float: right;
-  font-size: 28px;
+  font-size: 23.3px;
   font-weight: bold;
+  position: absolute;
+  right: 8px;
+  top: 4px;
 }
 
 .close:hover,
@@ -69,4 +72,15 @@
   padding: 2px 16px;
   background-color: $dm-color-primary-blue;
   color: white;
+}
+
+/* map marker modal */
+.home-marker-modal {
+  position: absolute;
+  background-color: transparent;
+
+  .modal-content {
+    border: none;
+    box-shadow: none;
+  }
 }

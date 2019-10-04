@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/agilesix/Google-Maps-for-Rails.git
+  revision: b75a989aa3fb187cfd945a40b139d22d6ac672bf
+  ref: master
+  specs:
+    gmaps4rails (2.1.2)
+
+GIT
   remote: https://github.com/agilesix/jquery-timeago-rails.git
   revision: d9d47263ae05bd6a710ddee58d49eb594e9023e4
   specs:
@@ -224,7 +231,6 @@ GEM
     geocoder (1.5.1)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
-    gmaps4rails (2.1.2)
     groupdate (4.1.2)
       activesupport (>= 4.2)
     has_scope (0.7.2)
@@ -557,7 +563,7 @@ DEPENDENCIES
   figaro
   font-awesome-sass (~> 5.9.0)
   friendly_id (~> 5.2.4)
-  gmaps4rails
+  gmaps4rails!
   groupdate
   humanize
   jbuilder (~> 2.5)

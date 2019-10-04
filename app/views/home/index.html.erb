@@ -1,86 +1,83 @@
 <div class="full-view-height dm-background-white">
-  <div <%#class="dm-background-light-blue"%>>
-    <!-- "Welcome" section -->
-    <section class="grid-container hero padding-y-205 margin-bottom-2">
-      <%= render "shared/messages" %>
+  <!-- "Welcome" section -->
+  <section class="grid-container hero padding-y-205 margin-bottom-2">
+    <%= render "shared/messages" %>
 
-      <div class="padding-x-9 padding-y-9 dm-background-white grid-row">
-        <div class="tablet:grid-col-fill">
-          <div class="tablet:grid-col-auto text-center">
-            <h1 class="bold font-sans-2xl margin-0 margin-bottom-1">Welcome to the Diffusion Marketplace</h1>
-          </div>
-        </div>
-        <div class="grid-row padding-x-9">
-          <div class="tablet:grid-col-fill text-center">
-            <p class="measure-none margin-bottom-3 font-sans-lg padding-x-4">
-              This site is designed to help spread important and life-saving  best practices throughout the VA Healthcare System.
-            </p>
-          </div>
-        </div>
-        <div class="flex-fill">
-        <form class="usa-search usa-search--big">
-          <div role="search">
-            <input class="usa-input" id="search-field-big" type="search" name="search">
-            <button class="usa-button" type="submit">
-              <span class="usa-search__submit-text">Search</span>
-            </button>
-          </div>
-          <label for="search-field-big font-sans-xs text-left">
-            Search by practice name, facility name, clinical condition, or keyword
-          </label>
-        </form>
+    <div class="padding-x-9 padding-y-9 dm-background-white grid-row">
+      <div class="tablet:grid-col-fill">
+        <div class="tablet:grid-col-auto text-center">
+          <h1 class="bold font-sans-2xl margin-0 margin-bottom-1">Welcome to the Diffusion Marketplace</h1>
         </div>
       </div>
-    </section>
-
-    <div class="grid-container">
-      <div class="grid-row">
-        <div class="grid-col-auto margin-bottom-2">
-          <h4 class="font-sans-xl">Promising practices</h4>
-          <p class="font-sans-lg">Here are a few featured practices from across the VA.</p>
+      <div class="grid-row padding-x-9">
+        <div class="tablet:grid-col-fill text-center">
+          <p class="measure-none margin-bottom-3 font-sans-lg padding-x-4">
+            This site is designed to help spread important and life-saving  best practices throughout the VA Healthcare System.
+          </p>
         </div>
-        <% if @featured_practices.any? %>
-          <section class="margin-bottom-4 padding-top-2">
-            <div class="grid-row grid-gap-2">
-              <% @featured_practices.each do |fp| %>
-                <% if fp.present? %>
-                    <div class="tablet:grid-col-4">
-                    <%= render partial: 'practices/favorite_button', locals: {practice: fp, featured: true } %>
-                      <%= render partial: 'practices/marketplace_card', locals: {practice: fp, featured: true} %>
-                    </div>
-                <% end %>
-              <% end %>
-            </div>
-          </section>
-        <% end %>
       </div>
-    </div>
-    
-  <section class="grid-container margin-bottom-6" id="map-of-diffusion">
-    <h4 class="font-sans-xl">Map of diffusion</h4>
-    <p class="font-sans-lg margin-bottom-2">Map of diffusion Explore how practices are being adopted across the country.</p>
-    <div class="width-full">
-      <div id="map" style="width: 100%; height: 432px;">
-        <% if ENV['GOOGLE_API_KEY'].present? %>
-          <% provide :head_tags do %>
-            <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                document.addEventListener("DOMContentLoaded", function () {
-                    const handler = Gmaps.build('Google');
-                    handler.buildMap({provider: {}, internal: {id: 'map'}}, function () {
-                        const markers = handler.addMarkers(<%= raw @diffusion_histories.to_json %>);
-                        handler.bounds.extendWith(markers);
-                        handler.fitMapToBounds();
-                    });
-                });
-            <% end %>
-          <% end %>
-        <% end %>
+      <div class="flex-fill">
+      <form class="usa-search usa-search--big">
+        <div role="search">
+          <input class="usa-input" id="search-field-big" type="search" name="search">
+          <button class="usa-button" type="submit">
+            <span class="usa-search__submit-text">Search</span>
+          </button>
+        </div>
+        <label for="search-field-big font-sans-xs text-left">
+          Search by practice name, facility name, clinical condition, or keyword
+        </label>
+      </form>
       </div>
     </div>
   </section>
+
+  <div class="grid-container">
+    <div class="grid-row">
+      <div class="grid-col-auto margin-bottom-2">
+        <h4 class="font-sans-xl margin-bottom-2 margin-top-0">Promising practices</h4>
+        <p class="font-sans-lg">Here are a few featured practices from across the VA.</p>
+      </div>
+      <% if @featured_practices.any? %>
+        <section class="margin-bottom-4 padding-top-2">
+          <div class="grid-row grid-gap-2">
+            <% @featured_practices.each do |fp| %>
+              <% if fp.present? %>
+                  <div class="tablet:grid-col-4">
+                  <%= render partial: 'practices/favorite_button', locals: {practice: fp, featured: true } %>
+                    <%= render partial: 'practices/marketplace_card', locals: {practice: fp, featured: true} %>
+                  </div>
+              <% end %>
+            <% end %>
+          </div>
+        </section>
+      <% end %>
+    </div>
+  </div>
+  
+
+  <% if ENV['GOOGLE_API_KEY'].present? %>
+    <% provide :head_tags do %>
+      <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+        <%= render partial: 'maps/marker_icons', formats: [:js] %>
+        <%= render partial: 'maps/home_map_data', formats: [:js] %>
+      <% end %>
+      <%= javascript_include_tag 'diffusion_history/home_map', 'data-turbolinks-track': 'reload' %>
+    <% end %>
+      <section class="grid-container margin-bottom-4" id="map-of-diffusion">
+        <h4 class="font-sans-xl margin-bottom-2 margin-top-0">Map of diffusion</h4>
+        <p class="font-sans-lg margin-bottom-2">Explore how practices are being adopted across the country.</p>
+        <div class="width-full position-relative">
+          <div id="map" style="width: 100%; height: 633px;"></div>
+          <%= render 'maps/home_map_filters' %>
+        </div>
+      </div>
+    </section>
+  <% end %>
+
   <section class="margin-bottom-105 padding-top-2 margin-bottom-6">
     <div class="grid-container">
-      <h4 class="font-sans-xl">All practices</h4>
+      <h4 class="font-sans-xl margin-bottom-2 margin-top-0">All practices</h4>
       <p class="font-sans-lg margin-bottom-1">View all submitted and accepted practices.</p>
       <div class="grid-row grid-gap-2">
         <% @practices.each do |p| %>
