@@ -1,42 +1,31 @@
 <div>
-  <section class="grid-container ">
+  <section class="grid-container margin-bottom-5">
     <%= render "shared/messages" %>
-  </section>
-  <section class="grid-container">
     <div class="dm-font-color-primary-blue p1-top breadcrumbs dm-font-color-super-violet-ish" id="breadcrumbs">
       <a href="/">Home</a>
       <span class="x0-5-left x0-5-right">›</span>
       <span>Partners</span>
     </div>
-    <h1 class="font-sans-3xl">Partners</h1>
+    <h1 class="font-sans-3xl margin-top-5 margin-bottom-05">Partners</h1>
+    <p class="font-sans-lg">
+      Partners Best practices are constantly being developed, vetted, and promoted by offices within the VA. 
+      Select an organization below to view their practice partnerships.
+    </p>
   </section>
 
-  <section class="dm-background-light-blue padding-y-5 margin-bottom-8">
-    <div class="grid-container">
-      <p>Best practices are constantly being developed, vetted, and promoted by offices within the VA. Below is a list
-        of some of the organizations creating and implementing best practices.
-      </p>
-    </div>
-  </section>
-
-  <section>
-    <div class="grid-container">
-      <p>Select an office below to view their practice partnerships.</p>
-      <div class="practice-divider"></div>
-    </div>
-  </section>
-
-  <section class="practice-partner-list">
+  <section class="practice-partner-list margin-bottom-2">
     <div class="grid-container">
       <% @practice_partners.each do |ss| %>
         <div class="grid-row">
-          <div class="grid-col-12 margin-bottom-4">
-            <h2 class="font-sans-xl margin-top-4 margin-bottom-2"><%= link_to "#{ss.name}#{ss.short_name.present? ? " (#{ss.short_name.upcase})" : ''}", practice_partner_path(ss) %></h2>
-            <p><%= ss.description %></p>
+          <div class="grid-col-12 margin-bottom-3">
+            <h3 class="font-sans-lg margin-top-0 margin-bottom-05"><%= link_to "#{ss.name}#{ss.short_name.present? ? " (#{ss.short_name.upcase})" : ''}", practice_partner_path(ss) %></h3>
+            <p class="font-sans-md"><%= ss.description %></p>
           </div>
         </div>
-        <div class="practice-divider"></div>
       <% end %>
     </div>
   </section>
+  <div class="grid-container margin-bottom-105">
+    <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
+  </div>
 </div>

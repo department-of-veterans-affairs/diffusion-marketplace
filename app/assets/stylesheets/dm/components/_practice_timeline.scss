@@ -1,22 +1,51 @@
 @import '../variables/colors';
 
+.timeline-section {
+  margin-bottom: 36px;
+}
+
+.timeline-and-milestone-container {
+  margin-top: -35px;
+}
+
+.timeline-number {
+  display: inline-block;
+  vertical-align: -webkit-baseline-middle;
+  margin-left: -21px;
+  color: white;
+  font-size: 19px;
+  font-weight: bold;
+}
+
+// .timeline:last-child:after {
+//   height: 0;
+// }
+
 /* The actual timeline (the vertical ruler) */
 .timeline {
   margin: 0 auto;
   max-width: 100%;
   position: relative;
 
+  &:last-child:after {
+    height: 0;
+  }
+
   /* The actual timeline (the vertical ruler) */
   &:after {
-    background-color: $dm-color-cool-gray-30;
-    bottom: 0;
+    background-color: $dm-color-darker-blue;
     content: '';
-    left: 50%;
-    margin-left: -3px;
+    // left: 50%;
+    // margin-left: -3px;
+    z-index: -1;
+    margin-left: 12.7px;
     position: absolute;
     top: 0;
     width: 6px;
+    height: 100%;
   }
+
+
 
 
   /* Container around content */

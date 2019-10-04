@@ -1,123 +1,60 @@
-<div class="full-view-height">
-  <div class="dm-background-light-blue">
-    <!-- "Welcome" section -->
-    <section class="grid-container hero padding-y-205 margin-bottom-2">
-      <%= render "shared/messages" %>
+<div class="full-view-height dm-background-white">
+  <!-- "Welcome" section -->
+  <section class="grid-container hero padding-y-205 margin-bottom-2">
+    <%= render "shared/messages" %>
 
-      <div class="padding-x-4 padding-y-4 dm-background-white grid-row">
-        <div class="grid-row">
-          <div class="tablet:grid-col-12">
-            <h1 class="bold font-sans-2xl margin-0 margin-bottom-1">Saving lives by sharing best practices</h1>
-          </div>
-        </div>
-        <div class="grid-row">
-          <div class="tablet:grid-col-9">
-            <p class="measure-none margin-0 margin-bottom-205 font-sans-lg">
-              The Diffusion Marketplace supports a high reliability and learning organization by diffusing best
-              practices.
-            </p>
-            <p class="margin-0">
-              Welcome to a preview of the new VA Diffusion Marketplace website. This site is designed to help spread
-              important and life-saving best practices throughout the VA Healthcare System. Below are some key practices
-              highlighted by the VA.
-            </p>
-          </div>
+    <div class="padding-x-9 padding-y-9 dm-background-white grid-row">
+      <div class="tablet:grid-col-fill">
+        <div class="tablet:grid-col-auto text-center">
+          <h1 class="bold font-sans-2xl margin-0 margin-bottom-1">Welcome to the Diffusion Marketplace</h1>
         </div>
       </div>
+      <div class="grid-row padding-x-9">
+        <div class="tablet:grid-col-fill text-center">
+          <p class="measure-none margin-bottom-3 font-sans-lg padding-x-4">
+            This site is designed to help spread important and life-saving  best practices throughout the VA Healthcare System.
+          </p>
+        </div>
+      </div>
+      <div class="flex-fill">
+      <form class="usa-search usa-search--big">
+        <div role="search">
+          <input class="usa-input" id="search-field-big" type="search" name="search">
+          <button class="usa-button" type="submit">
+            <span class="usa-search__submit-text">Search</span>
+          </button>
+        </div>
+        <label for="search-field-big font-sans-xs text-left">
+          Search by practice name, facility name, clinical condition, or keyword
+        </label>
+      </form>
+      </div>
+    </div>
+  </section>
 
-      <% if @top_practice %>
-        <div class="margin-top-105">
-          <div class="dm-background-white">
-            <div class="grid-row highlighted-practice">
-              <% if @top_practice.main_display_image.present? %>
-                <% provide(:top_practice_img_styles, raw("<style>
-                  .top-practice-img {
-                    background: url('#{@top_practice.main_display_image_s3_presigned_url}');
-                    background-size: cover;
-                    min-height: 216px;
-                    height: 100%;
-                  }
-                </style>")) %>
-                <div class='display-flex grid-col-5 highlighted-practice'>
-                  <%= link_to @top_practice, class: 'grid-col-12', 'aria-label': "Go to #{@top_practice.name}", 'tabindex': '-1', 'aria-hidden': 'true' do %>
-                    <div class="img top-practice-img"></div>
-                  <% end %>
-                  <%= render partial: 'practices/favorite_button', locals: {practice: @top_practice} %>
-                </div>
-              <% else %>
-                <div class="grid-col-5">
-                  <%= render partial: 'practices/favorite_button', locals: {practice: @top_practice} %>
-                </div>
-              <% end %>
-              <div class="grid-col-7 padding-x-205 padding-y-4">
-                <div class="grid-row margin-bottom-2">
-                  <%= link_to @top_practice do %>
-                    <h2 class="bold display-inline-block x0 font-sans-xl"><%= @top_practice.tagline %></h2>
-                  <% end %>
-                </div>
-                <div class="grid-row">
-                  <p class="margin-top-0 margin-bottom-1"><%= @top_practice.description %></p>
-                </div>
-                <div class="grid-row p1-bottom">
-                  <h3 class="flex-1 fs-h5 x0 text-normal"><%= @top_practice.name %>
-                    <span class="margin-x-05">|</span>
-                    <span class="uppercase"><%= @top_practice.date_initiated.present? ? date_format(@top_practice.date_initiated) : '(start date unknown)' %></span>
-                    <span class="margin-x-05">|</span>
-                    <span class="uppercase">
-                  <%= facility_name(@top_practice.initiating_facility) %>
-                  </span>
-                  </h3>
-                </div>
-                <div class="grid-row justify-center">
-                  <div class="tablet:grid-col-4 display-grid-align-items-center">
-                    <%= link_to 'Learn More', @top_practice, class: 'dm-button-link-secondary  display-inline-block', 'aria-label': "Learn more about #{@top_practice.name}" %>
+  <div class="grid-container">
+    <div class="grid-row">
+      <div class="grid-col-auto margin-bottom-2">
+        <h4 class="font-sans-xl margin-bottom-2 margin-top-0">Promising practices</h4>
+        <p class="font-sans-lg">Here are a few featured practices from across the VA.</p>
+      </div>
+      <% if @featured_practices.any? %>
+        <section class="margin-bottom-4 padding-top-2">
+          <div class="grid-row grid-gap-2">
+            <% @featured_practices.each do |fp| %>
+              <% if fp.present? %>
+                  <div class="tablet:grid-col-4">
+                  <%= render partial: 'practices/favorite_button', locals: {practice: fp, featured: true } %>
+                    <%= render partial: 'practices/marketplace_card', locals: {practice: fp, featured: true} %>
                   </div>
-                </div>
-              </div>
-            </div>
+              <% end %>
+            <% end %>
           </div>
-        </div>
+        </section>
       <% end %>
-    </section>
-
-    <% if @favorite_practices.any? %>
-      <section class="dm-background-white margin-bottom-105 padding-top-2">
-        <div class="grid-container">
-          <div class="grid-row">
-            <h2 class="text-normal">Favorited Practices</h2>
-          </div>
-          <div class="grid-row grid-gap-lg featured-practices">
-            <% @favorite_practices.each do |p| %>
-              <% if p.present? %>
-                <div class="tablet:grid-col-4 margin-y-105 padding-x-105 practice-card-list">
-                  <%= render partial: 'practices/marketplace_card', locals: {practice: p} %>
-                </div>
-              <% end %>
-            <% end %>
-          </div>
-        </div>
-      </section>
-    <% end %>
-
-    <% if @featured_practices.any? %>
-      <section class="dm-background-white margin-bottom-105 padding-top-2">
-        <div class="grid-container">
-          <div class="grid-row">
-            <h2 class="text-normal">Featured Practices</h2>
-          </div>
-          <div class="grid-row grid-gap-lg featured-practices">
-            <% @featured_practices.each do |p| %>
-              <% if p.present? %>
-                <div class="tablet:grid-col-4 margin-y-105 padding-x-105 practice-card-list">
-                  <%= render partial: 'practices/marketplace_card', locals: {practice: p} %>
-                </div>
-              <% end %>
-            <% end %>
-          </div>
-        </div>
-      </section>
-    <% end %>
+    </div>
   </div>
+  
 
   <% if ENV['GOOGLE_API_KEY'].present? %>
     <% provide :head_tags do %>
@@ -127,14 +64,35 @@
       <% end %>
       <%= javascript_include_tag 'diffusion_history/home_map', 'data-turbolinks-track': 'reload' %>
     <% end %>
-    <section class="grid-container margin-bottom-6" id="map-of-diffusion">
-      <h2>Map of diffusion</h2>
-      <div class="width-full position-relative">
-        <div id="map" style="width: 100%; height: 633px;"></div>
-        <%= render 'maps/home_map_filters' %>
+      <section class="grid-container margin-bottom-4" id="map-of-diffusion">
+        <h4 class="font-sans-xl margin-bottom-2 margin-top-0">Map of diffusion</h4>
+        <p class="font-sans-lg margin-bottom-2">Explore how practices are being adopted across the country.</p>
+        <div class="width-full position-relative">
+          <div id="map" style="width: 100%; height: 633px;"></div>
+          <%= render 'maps/home_map_filters' %>
+        </div>
       </div>
     </section>
-
   <% end %>
 
+  <section class="margin-bottom-105 padding-top-2 margin-bottom-6">
+    <div class="grid-container">
+      <h4 class="font-sans-xl margin-bottom-2 margin-top-0">All practices</h4>
+      <p class="font-sans-lg margin-bottom-1">View all submitted and accepted practices.</p>
+      <div class="grid-row grid-gap-2">
+        <% @practices.each do |p| %>
+          <% if p.present? %>
+            <div class="tablet:grid-col-3 padding-y-1">
+              <%= render partial: 'practices/favorite_button', locals: {practice: p, featured: false } %>
+              <%= render partial: 'practices/marketplace_card', locals: {practice: p, featured: false} %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </section>
+
+  <div class="grid-container margin-bottom-105">
+    <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
+  </div>
 </div>

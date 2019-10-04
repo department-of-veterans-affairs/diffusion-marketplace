@@ -14,3 +14,5 @@ Rails.application.config.assets.precompile += %w( diffusion_history/home_map.js 
 # application.es6, application.scss, and all non-JS/CSS in the app/assets
 # folder are already added.
 # Rails.application.config.assets.precompile += %w( admin.js admin.css )
+
+Rails.application.config.assets.precompile += %w( commontator/* )

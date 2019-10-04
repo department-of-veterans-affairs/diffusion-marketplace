@@ -6,6 +6,13 @@ GIT
     gmaps4rails (2.1.2)
 
 GIT
+  remote: https://github.com/agilesix/jquery-timeago-rails.git
+  revision: d9d47263ae05bd6a710ddee58d49eb594e9023e4
+  specs:
+    jquery-timeago-rails (1.6.7)
+      rails (~> 5)
+
+GIT
   remote: https://github.com/agilesix/papercrop.git
   revision: e5e8b1fa37a07d8c59e88a05ec99b9577790c67e
   ref: turbolink-fix
@@ -30,6 +37,15 @@ GIT
     uswds-rails (2.0.1)
       autoprefixer-rails (~> 9.5)
       rails-assets-normalize-css (= 3.0.3)
+
+GIT
+  remote: https://github.com/lml/commontator.git
+  revision: 9586885c2420d481c887c0893395f081b2c3fb38
+  ref: new_comment_style_improvements
+  specs:
+    commontator (6.1.0)
+      rails (>= 5.0)
+      will_paginate
 
 GEM
   remote: https://rubygems.org/
@@ -102,6 +118,7 @@ GEM
       tzinfo (~> 1.1)
     acts_as_list (0.9.19)
       activerecord (>= 3.0)
+    acts_as_votable (0.12.1)
     addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
     ahoy_matey (3.0.0)
@@ -300,7 +317,7 @@ GEM
     net-http-persistent (3.1.0)
       connection_pool (~> 2.2)
     net-ldap (0.16.1)
-    nio4r (2.4.0)
+    nio4r (2.5.1)
     nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     nokogiri (1.10.4-x64-mingw32)
@@ -506,6 +523,7 @@ GEM
     websocket-driver (0.7.1)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.4)
+    will_paginate (3.1.8)
     xdan-datetimepicker-rails (2.5.4)
       jquery-rails
       rails (>= 3.2.16)
@@ -523,6 +541,7 @@ DEPENDENCIES
   activeadmin_addons
   activerecord-nulldb-adapter
   acts_as_list
+  acts_as_votable
   ahoy_matey
   aws-sdk-s3
   axe-matchers
@@ -535,6 +554,7 @@ DEPENDENCIES
   chartkick
   coffee-rails (~> 4.2)
   colorize
+  commontator!
   database_cleaner
   devise (>= 4.6.0)
   devise-security
@@ -548,6 +568,7 @@ DEPENDENCIES
   humanize
   jbuilder (~> 2.5)
   jquery-rails
+  jquery-timeago-rails!
   jquery-ui-rails
   kaminari
   letter_opener

@@ -1,24 +1,22 @@
 <footer class="<% if current_user.present? && params[:controller] == 'practices' && params[:action] == 'show' %>desktop:padding-bottom-0 padding-bottom-9<% end %>">
   <div class="bg-base-lightest">
     <div class="grid-container padding-y-2">
-      <div class="grid-row flex-justify font-sans-sm text-bold">
-        <div class="display-flex flex-row grid-col-5">
-          <div class="grid-col-4"><a href="/partners">Partners</a></div>
-          <div class="grid-col-4"><a href="/practices">Practices</a></div>
+      <div class="grid-row flex-align-center font-sans-sm text-bold">
+        <div class="grid-col flex-auto margin-right-4"><a href="/partners">Partners</a></div>
+        <div class="grid-col flex-auto margin-right-4"><a href="/practices">Practices</a></div>
+      
+      
+        <div class="grid-col flex-auto margin-right-4">
+          <a target="_blank" href="mailto:dm@agile6.com?subject=<%= URI.encode('Bug report for Diffusion Marketplace') %>&body=<%= URI.encode('Please be sure to include a step-by-step list to reproduce the error, if applicable.') %>">Report a bug</a>
         </div>
-        <div class="display-flex flex-row flex-justify-end grid-col-5 text-right">
-          <div class="grid-col-4">
-            <a target="_blank" href="mailto:dm@agile6.com?subject=<%= URI.encode('Bug report for Diffusion Marketplace') %>&body=<%= URI.encode('Please be sure to include a step-by-step list to reproduce the error, if applicable.') %>">Report a bug</a>
-          </div>
-          <div class="grid-col-5"><a href="#" class="feedback-survey-popup">Give us feedback</a></div>
-        </div>
+        <div class="grid-col flex-auto margin-right-4"><a href="#" class="feedback-survey-popup">Give us feedback</a></div>
       </div>
     </div>
   </div>
-  <div class="bg-primary-darker text-white padding-y-4">
+  <div class="bg-base-lighter text-white padding-y-4">
     <div class="grid-container">
       <div class="grid-row">
-        <p class="font-sans-lg text-bold margin-0">U.S. Department of Veteran Affairs | Diffusion Marketplace</p>
+        <p class="font-sans-lg text-ink text-bold margin-0">Department of Veteran Affairs</p>
       </div>
     </div>
   </div>

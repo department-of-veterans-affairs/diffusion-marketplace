@@ -1,23 +1,33 @@
 <!-- Risk and mitigations list -->
-<h3 id="risk_and_mitigation" class="font-sans-xl text-bold margin-0 margin-bottom-6">Risks & Mitigation</h3>
-  <div class='grid-row'>
-    <div class='tablet:grid-col-12'>
-      <% @practice.risk_mitigations.each_with_index do |rm, index| %>
-        <div class='grid-row  margin-bottom-5'>
-          <div class='grid-col-6 padding-right-1'>
-            <h4 class="margin-0">Risk</h4>
-            <% rm.risks.each do |risk| %>
-              <p><%= risk.description %></p>
-            <% end %>
-          </div>
-          <div class='grid-col-6 padding-right-1'>
-            <h4 class="margin-0">Mitigation</h4>
-            <% rm.mitigations.each do |mitigation| %>
-              <p><%= mitigation.description %></p>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
+<div class="grid-row flex-align-center margin-bottom-4">
+  <h2 id="risk_and_mitigation" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205">Risk and mitigation</h2>
+  <div class="height-2px border border-base-lightest flex-fill"></div>
+</div>
+<div class='tablet:grid-col-12'>
+  <div class="grid-row padding-bottom-105 border-bottom-1px border-black">
+    <div class='grid-col-6 padding-right-1'>
+      <h5 class="margin-0 mitigation-header">Mitigation</h5>
     </div>
+    <div class='grid-col-6 padding-right-1'>
+      <h5 class="margin-0 risk-header">Risk</h5>
+    </div>
+  </div>
+</div>
+<div class='grid-row'>
+  <div class='tablet:grid-col-12'>
+    <% @practice.risk_mitigations.each_with_index do |rm, index| %>
+      <div class='grid-row padding-y-105 border-bottom-1px border-black risk-and-mitigation-row'>
+        <div class='grid-col-6 padding-right-2'>
+          <% rm.risks.each do |risk| %>
+            <p><%= risk.description %></p>
+          <% end %>
+        </div>
+        <div class='grid-col-6 padding-right-2'>
+          <% rm.mitigations.each do |mitigation| %>
+            <p><%= mitigation.description %></p>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>

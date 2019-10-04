@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   devise_for :users, controllers: { registrations: 'registrations' }
   mount Ahoy::Engine => '/ahoy', as: :dm_ahoy
+  mount Commontator::Engine => '/commontator' #, as: :dm_commontator
 
   resources :practices do
     get '/next-steps', action: 'next_steps', as: 'next_steps'
@@ -15,6 +16,11 @@ Rails.application.routes.draw do
       post :un_highlight
       post :feature
       post :un_feature
+    end
+    resources :comments do      
+      member do
+          put 'like' => 'commontator/comments#upvote'
+      end
     end
   end
   resources :practice_partners, path: :partners

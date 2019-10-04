@@ -1,48 +1,48 @@
-<%
-  provide(:styles, raw("<style>
-  .marketplace-card-header-#{practice.id}  {
-   #{practice.main_display_image.present? ? "background: url(#{practice.main_display_image_s3_presigned_url});"
-                                                                : "background: rgba(26, 68, 128, 1);"}
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 150px;
-  }
-</style>"))
-%>
+<div class="radius-sm border-2px border-base-lightest">
+  <%
+    provide(:styles, raw("<style>
+    .#{featured ? "featured-" : ''}marketplace-card-header-#{practice.id}  {
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      #{featured ? "height: 309px" : "height: 227px"};
+      object-fit: cover;
+    }
+  </style>"))
+  %>
+  <% if practice.main_display_image.present? %>
+    <%= link_to practice, 'aria-label': "Go to #{practice.name}", 'tabindex': '-1', 'aria-hidden': 'true' do %>
+      <img class="img grid-row <%= featured ? "featured-" : '' %>marketplace-card-header-<%= practice.id %> radius-top-sm" src="<%= practice.main_display_image_s3_presigned_url %>">
+    <% end %>
+  <% else %>
+    <div class="bg-base-lightest" style="<%= featured ? 'height: 309px' : 'height: 227px' %>">
+      <i class="fas fa-images fa-3x text-base-lighter <%= featured ? 'tall' : '' %>"></i>
+    </div>
+  <% end %>
 
-<% if practice.main_display_image.present? %>
-  <%= link_to practice, 'aria-label': "Go to #{practice.name}", 'tabindex': '-1', 'aria-hidden': 'true', 'class': 'marketplace-card-image' do %>
-    <div class="img grid-row margin-bottom-2 marketplace-card-header-<%= practice.id %>"></div>
-  <% end %>
-<% end %>
-<%= render partial: 'practices/favorite_button', locals: {practice: practice} %>
-<div class="grid-row margin-bottom-2 <% if !practice.main_display_image.present? %>margin-top-4<% end %>">
-  <%= link_to practice do %>
-    <h2 class="bold display-inline-block x0 font-sans-lg"><%= practice.tagline %></h2>
-  <% end %>
+  <div class="padding-2 height-card-mobile">
+    <%= link_to practice, class: 'multiline-ellipses-2 margin-bottom-1' do %>
+      <h4 class="grid-col-auto bold font-sans-md practice-title">
+        <%= practice.name %>
+      </h4>
+    <% end %>
+    <% if practice.practice_partners.any? %>
+      <div class="grid-row">
+      <span class="display-block text-center radius-pill padding-y-1px padding-x-2 bg-base-lighter font-sans-3xs margin-bottom-1">
+        Sponsored
+      </span>
+      </div>
+    <% else %>
+    <div style="height: 28px"></div>
+    <% end %>
+    <div class="grid-row margin-bottom-1">
+      <p class="margin-top-0 margin-bottom-1 multiline-ellipses-1 line-height-sans-6 font-sans-sm"><%= practice.description %></p>
+    </div>
+    <div class="grid-row p0 flex-align-end">
+      <span class="font-sans-3xs multiline-ellipses-3">
+        Created in <%= practice.date_initiated.present? ? date_format(practice.date_initiated) : '(start date unknown)' %> by the <%= facility_name(practice.initiating_facility) %>
+      </span>
+    </div>
+  </div>
 </div>
-<div class="grid-row margin-bottom-2">
-  <p class="margin-top-0 margin-bottom-1"><%= practice.description %></p>
-</div>
-<div class="grid-row p0">
-  <h3 class="flex-1 x0 fs-h5 text-normal"><%= practice.name %>
-    <span class="margin-x-05">|</span>
-    <span class="uppercase"><%= practice.date_initiated.present? ? date_format(practice.date_initiated) : '(start date unknown)' %></span>
-  </h3>
-</div>
-<div class="grid-row margin-bottom-205">
-  <h4 class="flex-1 x0 fs-h5 text-normal">
-    <span class="uppercase">
-      <%= facility_name(practice.initiating_facility) %>
-    </span>
-  </h4>
-</div>
-<div class="grid-row p1-bottom">
-  <%= render partial: 'shared/badge', locals: {badges: practice.practice_partners} %>
-</div>
-<div class="grid-row p1-bottom">
-  <p class="margin-0">
-    <span class="text-bold font-ui-md"><%= practice.number_adopted.present? ? practice.number_adopted : '0' %></span>
-    Facilit<%= practice.number_adopted == 1 ? 'y' : 'ies' %> have adopted this practice</p>
-</div>
+

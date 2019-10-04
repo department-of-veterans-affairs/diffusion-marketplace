@@ -74,6 +74,7 @@ i.e.
 @media screen and (min-width: 64em) {
   .usa-header--extended .usa-logo {
     font-size: 1.5rem;
+    margin: 0;
   }
 }
 
@@ -100,6 +101,10 @@ i.e.
 .usa-nav__secondary-links .usa-nav__secondary-item,
 .usa-nav__secondary-links a {
   color: #000000;
+}
+
+.usa-nav__secondary {
+  position: unset;
 }
 
 .usa-button-outline-white {
@@ -231,7 +236,7 @@ a {
   }
 }
 
-.favorite-practice-button {
+.favorite-practice-button, .featured-favorite-practice-button {
   position: absolute;
   width: 28px;
   height: 28px;
@@ -239,6 +244,17 @@ a {
   background-color: white;
   padding: 5px;
   border-radius: 50%;
+  z-index: 2;
+}
+
+.featured-favorite-practice-button {
+  right: 14px;
+  top: 5px;
+}
+
+.favorite-practice-button {
+  right: 13px;
+  top: 13px;
 }
 
 .highlighted-practice > .favorite-practice-button {

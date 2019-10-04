@@ -32,8 +32,8 @@
       border-top: 1px solid #F0F0F0;
     }
 
-    &.bottom-tab {
-    }
+    // &.bottom-tab {
+    // }
 
     &.active, &.tab-active, &:hover {
       font-weight: bold;
@@ -120,7 +120,7 @@
 }
 
 .practice-summary {
-  line-height: 26px !important;
+  line-height: 30px !important;
 }
 
 .aggregate-circles-position {
@@ -128,7 +128,7 @@
 }
 
 .avatar-container {
-  width: 65px;
+  width: 65px !important;
   height: 65px;
 }
 
@@ -171,7 +171,11 @@
 .video-container {
   position: relative;
   padding-bottom: 56.25%;
-  padding-top: 30px; height: 0; overflow: hidden;
+  padding-top: 30px;
+  // height: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
 }
 
 .video-container iframe,
@@ -182,6 +186,16 @@
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+.conversation-h2 {
+  margin-top: 0;
+  margin-right: 8px;
+}
+
+.conversation-line {
+  height: 2px;
+  border: 2px solid #F0F0F0;
 }
 
 .practice-complexity-divider {
@@ -201,3 +215,62 @@
     }
   }
 }
+.multiline-ellipses-1, .multiline-ellipses-2, .multiline-ellipses-3 {
+  display: block; /* Fallback for non-webkit */
+  display: -webkit-box;
+  max-width: 400px;
+  margin: 0 auto;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.multiline-ellipses-1 {
+  height: 85px; /* Fallback for non-webkit */
+  -webkit-line-clamp: 3;
+}
+
+.multiline-ellipses-2 {
+  height: 45px; /* Fallback for non-webkit */
+  -webkit-line-clamp: 2;
+}
+
+.multiline-ellipses-3 {
+  height: 35px; /* Fallback for non-webkit */
+  -webkit-line-clamp: 2;
+}
+
+.impact-image {
+  height: 263px; 
+  width: 393px; 
+  object-fit: cover;
+}
+
+.practice-video-container {
+  height: 263px; 
+  width: 393px;
+}
+
+.practice-title {
+  margin: 0;
+}
+
+.fa-circle {
+  vertical-align: top;
+}
+
+.fa-images {
+  position: absolute;
+  top: 19%;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+
+  &.tall {
+    top: 23%;
+  }
+}
+
+
+
+

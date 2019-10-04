@@ -33,6 +33,12 @@
 //= require _search
 //= require _side_nav
 //= require admin
+//= require commontator/application
+//= require jquery.timeago
+//= require timeago
+//= require replies
 //= require gmaps/google
+//= require homepage
+//= require comment
 //= require richmarker
 //= require infowindow

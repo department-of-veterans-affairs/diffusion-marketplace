@@ -1,5 +1,5 @@
 <% if current_user %>
-  <%= link_to practice_favorite_path(practice, format: :js), method: :post, remote: true, 'aria-label': "Favorite #{practice.name}", 'tabindex': '-1', 'aria-hidden': 'true', 'class': "favorite-practice-button", 'id': "favorite-button-#{practice.id}" do %>
+  <%= link_to practice_favorite_path(practice, format: :js), method: :post, remote: true, 'aria-label': "Favorite #{practice.name}", 'tabindex': '-1', 'aria-hidden': 'true', 'class': "#{featured ? "featured-" : ''}favorite-practice-button", 'id': "favorite-button-#{practice.id}" do %>
     <i class="<% if current_user.favorite_practice_ids.include?(practice.id) %>fas text-secondary<% else %>far text-base<% end %> fa-heart favorite-icon-<%= practice.id %> text-no-underline"></i>
   <% end %>
 <% end %>
