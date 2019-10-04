@@ -179,15 +179,29 @@
                 <h2 class="font-sans-xl text-bold margin-bottom-3 flex-auto margin-right-205">Documentation</h2>
                 <div class="height-2px border border-base-lightest flex-fill"></div>
               </div>
-              <h3 class="font-sans-lg margin-top-0 margin-bottom-1">Downloads</h3>
-              <div class="padding-bottom-1">
-                <%= render partial: 'additional_documents' %>
-                <%= render partial: 'publication_files' %>
-              </div>
-              <h3 class="font-sans-lg margin-top-0 margin-bottom-1">Links</h3>
-              <div>
-                <%= render partial: 'publications' %>
-              </div>
+              <% if @practice.additional_documents.any? || @practice.publication_files.any? %>
+                <h3 class="font-sans-lg margin-top-0 margin-bottom-1">Downloads</h3>
+                <div class="padding-bottom-1">
+                  <% if @practice.additional_documents.any? %>
+                    <%= render partial: 'additional_documents' %>
+                  <% else %>
+                  <div class="hidden"></div>
+                  <% end %>
+                  <% if @practice.publication_files.any? %>
+                    <%= render partial: 'publication_files' %>
+                  <% else %>
+                    <div class="hidden"></div>
+                  <% end %>
+                </div>
+              <% end %>
+              <% if @practice.publications.any? %>
+                <h3 class="font-sans-lg margin-top-0 margin-bottom-1">Links</h3>
+                <div>
+                  <%= render partial: 'publications' %>
+                </div>
+              <% else %>
+                <div class="hidden"></div>
+              <% end %>
             <% end %>
           </div>
         </div>

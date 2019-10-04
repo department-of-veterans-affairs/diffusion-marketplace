@@ -46,7 +46,7 @@ describe 'Comments', type: :feature do
             expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).to have_content(@practice.name)
             expect(page).to have_current_path(practice_path(@practice))
-            expect(page).to have_content('Login to see more')
+            expect(page).to have_content('Login to see full practice')
         end
     end
 end

@@ -37,7 +37,7 @@
   </div>
 
   <div class="submit grid-row flex-align-center">
-    <div class="tablet:grid-col-7 text-left">
+    <div class="tablet:grid-col-7 text-left" role="radiogroup">
       <%# Radio buttons go here %>
       <% if new_record %>
         <div>
@@ -59,7 +59,6 @@
           <%= label_tag '', 'I am a member of this practice team', class: 'font-sans-sm text-middle' %>
         </div>
       <% end %>
-
     </div>
     <div class="tablet:grid-col-5">
       <% if config.new_comment_style == :t && new_record && comment.parent.nil? %>
