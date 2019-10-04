@@ -2,9 +2,7 @@
   # Views that use this partial must provide the following variable:
   # comment
   #
-
   new_record = comment.new_record?
-
   # Optionally, they can also supply the following variables:
   thread ||= new_record ? comment.thread : nil
   no_remote ||= false
@@ -43,21 +41,21 @@
       <%# Radio buttons go here %>
       <% if new_record %>
         <div>
-          <%= radio_button_tag 'user_practice_status', :verified_implementer, false, class: 'margin-right-1' %>
+          <%= radio_button_tag 'user_practice_status', :verified_implementer, false, class: 'margin-right-1 margin-left-1px' %>
           <%= label_tag '', 'I am currently implementing this practice', class: 'font-sans-sm text-middle' %>
         </div>
         <div>
-          <%= radio_button_tag 'user_practice_status', :team_member, false, class: 'margin-right-1' %>
+          <%= radio_button_tag 'user_practice_status', :team_member, false, class: 'margin-right-1 margin-left-1px' %>
           <%= label_tag '', 'I am a member of this practice team', class: 'font-sans-sm text-middle' %>
         </div>
       <% end %>
       <% if !new_record %>
         <div>
-          <%= radio_button_tag 'user_practice_status', :verified_implementer, current_user.user_practices.find_by(practice_id: comment.thread.id, user: current_user).verified_implementer ? true : false, class: 'margin-right-1' %>
+          <%= radio_button_tag 'user_practice_status', :verified_implementer, current_user.user_practices.find_by(practice_id: comment.thread.id, user: current_user).verified_implementer ? true : false, class: 'margin-right-1 margin-left-1px' %>
           <%= label_tag '', 'I am currently implementing this practice', class: 'font-sans-sm text-middle' %>
         </div>
         <div>
-          <%= radio_button_tag 'user_practice_status', :team_member, current_user.user_practices.find_by(practice_id: comment.thread.id, user: current_user).team_member ? true : false, class: 'margin-right-1' %>
+          <%= radio_button_tag 'user_practice_status', :team_member, current_user.user_practices.find_by(practice_id: comment.thread.id, user: current_user).team_member ? true : false, class: 'margin-right-1 margin-left-1px' %>
           <%= label_tag '', 'I am a member of this practice team', class: 'font-sans-sm text-middle' %>
         </div>
       <% end %>
@@ -79,9 +77,9 @@
         %>
       <% end %>
         <% if comment.parent %>
-          <%= form.submit t("commontator.comment.actions.#{new_record ? 'reply' : 'update'}"), class: 'text-bold border-2px padding-y-105 padding-x-4 radius-md text-primary' %>
+          <%= form.submit t("commontator.comment.actions.#{new_record ? 'reply' : 'update'}"), class: 'comment-submit text-bold border-2px padding-y-105 padding-x-4 radius-md text-primary' %>
         <% else %>
-          <%= form.submit t("commontator.comment.actions.#{new_record ? 'create' : 'update'}"), class: "text-bold border-2px padding-y-105 #{comment.parent || !new_record ? 'padding-x-4' : 'padding-x-2'} radius-md text-primary" %>
+          <%= form.submit t("commontator.comment.actions.#{new_record ? 'create' : 'update'}"), class: "comment-submit text-bold border-2px padding-y-105 #{comment.parent || !new_record ? 'padding-x-4' : 'padding-x-2'} radius-md text-primary" %>
         <% end %>
     </div>
   </div>

@@ -29,13 +29,13 @@
   ) %>");
 <% end %>
 
-Turbolinks.visit('#commontator-comment-<%= @comment.id %>', { action: 'replace' })
+$('.timeago').timeago();
 
-var commontatorComment = $("#commontator-comment-<%= @comment.id %>").hide().fadeIn();
+<%#var commontatorComment = $("#commontator-comment-<%= @comment.id %><%#").hide().fadeIn();
 $('html, body').animate(
   { scrollTop: commontatorComment.offset().top - window.innerHeight/2 }, 'fast'
-);
+);%>
 
-$('.timeago').timeago();
+Turbolinks.visit('#commontator-comment-<%= @comment.id %>')
 
 <%= javascript_proc %>
