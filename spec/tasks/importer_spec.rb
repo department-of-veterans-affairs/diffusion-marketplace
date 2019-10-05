@@ -6,9 +6,16 @@ require 'rake'
 Rails.application.load_tasks
 
 describe 'Importer' do
-  after do
-    Practice.find_by(slug: 'flow3').destroy
+  before do
+    flow3 = Practice.find_by(slug: 'flow3')
+    Practice.find_by(slug: 'flow3').destroy if flow3.present?
   end
+
+  after do
+    flow3 = Practice.find_by(slug: 'flow3')
+    Practice.find_by(slug: 'flow3').destroy if flow3.present?
+  end
+
   context 'when running import_answers task' do
     it 'creates Practices with the correct fields filled out' do
       Rake::Task['db:seed'].execute
