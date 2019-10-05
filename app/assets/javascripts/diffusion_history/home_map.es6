@@ -259,6 +259,10 @@ function initialize() {
         closeInfoWindow();
     });
 
+    $(document).on('click', 'label', function (e) {
+        e.target.focus({preventScroll: true});
+    });
+
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
