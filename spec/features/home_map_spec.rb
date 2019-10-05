@@ -2,12 +2,9 @@
 
 require 'rails_helper'
 require 'rake'
-Rails.application.load_tasks
 
 describe 'HomeMap', type: :feature do
   before do
-    flow3 = Practice.find_by(slug: 'flow3')
-    Practice.find_by(slug: 'flow3').destroy if flow3.present?
     Rake::Task['db:seed'].execute
     Rake::Task['importer:import_answers'].execute
     Rake::Task['diffusion_history:flow3'].execute
@@ -15,8 +12,7 @@ describe 'HomeMap', type: :feature do
   end
 
   after do
-    flow3 = Practice.find_by(slug: 'flow3')
-    Practice.find_by(slug: 'flow3').destroy if flow3.present?
+    ENV['GOOGLE_API_KEY'] = nil
   end
 
   context 'when visiting the homepage' do
