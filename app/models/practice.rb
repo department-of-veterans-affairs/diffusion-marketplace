@@ -95,6 +95,7 @@ class Practice < ApplicationRecord
   has_many :developing_facility_type_practices, dependent: :destroy
   has_many :developing_facility_types, through: :developing_facility_type_practices
   has_many :difficulties, dependent: :destroy
+  has_many :diffusion_histories, dependent: :destroy
   has_many :domain_practices, dependent: :destroy
   has_many :domains, through: :domain_practices
   has_many :financial_files, dependent: :destroy
