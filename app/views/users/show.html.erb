@@ -1,5 +1,5 @@
 <div class="x0-top">
-  <section class="usa-section p2-top" style="min-height: calc(100vh - 286px)">
+  <section class="usa-section p2-top padding-bottom-0" style="min-height: calc(100vh - 286px)">
     <div class="grid-container">
       <div class="grid-row grid-gap">
         <div class="usa-layout-docs__sidenav desktop:grid-col-3">
@@ -47,5 +47,23 @@
       </div>
     </div>
   </section>
-</div>
 
+  <% if @favorite_practices.any? %>
+    <section class="dm-background-white margin-bottom-105">
+      <div class="grid-container">
+        <div class="grid-row">
+          <h2 class="profile-h2 font-sans-xl">Favorited Practices</h2>
+        </div>
+        <div class="grid-row grid-gap-lg featured-practices">
+          <% @favorite_practices.each do |p| %>
+            <% if p.present? %>
+              <div class="tablet:grid-col-4 margin-y-105 padding-x-105 practice-card-list">
+                <%= render partial: 'practices/marketplace_card', locals: {practice: p} %>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </section>
+  <% end %>
+</div>
