@@ -11,46 +11,69 @@
       <span><%= @practice_partner.short_name.present? ? @practice_partner.short_name : @practice_partner.name %></span>
     </div>
   </section>
-  <section class="margin-top-5 margin-bottom-4">
-    <div class="grid-container">
-      <h1 class="font-sans-xl margin-top-4 margin-bottom-2"><%= "#{@practice_partner.name}#{@practice_partner.short_name.present? ? " (#{@practice_partner.short_name.upcase})" : ''}"%></h1>
-    </div>
-  </section>
-  <section class="dm-background-light-blue padding-y-2 margin-bottom-8">
-    <div class="grid-container">
-      <h2 class="font-sans-sm text-normal margin-top-0 margin-bottom-2">Mission</h2>
-      <p class="margin-0"><%= @practice_partner.description %></p>
-    </div>
-  </section>
-
-  <section>
-    <div class="grid-container search-practices">
-      <h3 class="font-sans-md">List of Practices</h3>
-      <hr>
-      <% if @practice_partner.practices.any? %>
-      <% @practice_partner.practices.order(name: :asc).each do |p| %>
-        <div class="grid-row search-row margin-bottom-3">
-          <div class="tablet:grid-col-4">
-            <div class="img-box margin-top-2">
-              <%= link_to p, 'aria-label': "Go to #{p.name}"  do %>
-                <div class="img img-box-content" style="<%= p.main_display_image.present? ? "background: url('#{p.main_display_image_s3_presigned_url}') transparent" : 'background: transparent' %>; background-size: contain; background-repeat: no-repeat; background-position: center;">
-                </div>
-              <% end %>
-            </div>
-          </div>
-          <div class="tablet:grid-col-8">
-            <h2 class="margin-top-1"><%= link_to p.tagline, practice_path(p) %></h2>
-            <h3 class="truncate-text two-lines"><%= p.description %></h3>
-            <p class="practice-details"><%= p.name %> | <span class="uppercase"><%= p.date_initiated.present? ? date_format(p.date_initiated) : '(start date unknown)' %></span> | <span class="uppercase"><%= facility_name(p.initiating_facility) %></span></p>
-            <p class="truncate-text five-lines"><%= p.summary %></p>
-            <%= render partial: 'shared/badge', locals: {badges: p.practice_partners} %>
-          </div>
-        </div>
-        <hr>
+  <div class="grid-container margin-top-3 margin-bottom-205">
+      <%= link_to practice_partners_path(@practices), class: 'back-to-partners-link' do %>
+          <span class="fas fa-chevron-left"></span>&nbsp;&nbsp;<span class="font-sans-md">Return to all practices</span>
       <% end %>
+  </div>
+  <section class="margin-bottom-4 grid-container">
+    <div class="grid-row">
+      <div class="grid-col-10">
+        <h1 class="font-sans-2xl margin-top-0 margin-bottom-0"><%= "#{@practice_partner.name}#{@practice_partner.short_name.present? ? " (#{@practice_partner.short_name.upcase})" : ''}"%></h1>
+        <p class="margin-0 font-sans-lg line-height-sans-6"><%= @practice_partner.description %></p>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="grid-container margin-bottom-9">
+      <% if @practice_partner.practices.any? %>
+        <div class="grid-row grid-gap-2">
+          <% @practice_partner.practices.order(name: :asc).each do |p| %>
+            <div class="tablet:grid-col-3 padding-y-1">
+              <%= render partial: 'practices/favorite_button', locals: {practice: p, featured: false } %>
+              <%= render partial: 'practices/marketplace_card', locals: {practice: p, featured: false} %>
+            </div>
+          <% end %>
+        </div>
       <% else %>
-        <p>There are no practices at this time.</p>
+        <p></p>
       <% end %>
     </div>
   </section>
 </div>
+
+
+
+
+
+
+
+<%#    <div class="grid-container search-practices">
+      <hr>
+      <% if @practice_partner.practices.any? %>
+<%#      <% @practice_partner.practices.order(name: :asc).each do |p| %>
+<%#        <div class="grid-row search-row margin-bottom-3">
+          <div class="tablet:grid-col-4">
+            <div class="img-box margin-top-2">
+              <%= link_to p, 'aria-label': "Go to #{p.name}"  do %>
+<%#                <div class="img img-box-content" style="<%= p.main_display_image.present? ? "background: url('#{p.main_display_image_s3_presigned_url}') transparent" : 'background: transparent' %><%#; background-size: contain; background-repeat: no-repeat; background-position: center;">
+<%#                </div>
+              <% end %>
+<%#            </div>
+          </div>
+          <div class="tablet:grid-col-8">
+            <h2 class="margin-top-1"><%= link_to p.tagline, practice_path(p) %><%#</h2>
+            <h3 class="truncate-text two-lines"><%= p.description %><%#</h3>
+            <p class="practice-details"><%= p.name %><%# | <span class="uppercase"><%= p.date_initiated.present? ? date_format(p.date_initiated) : '(start date unknown)' %><%#</span> | <span class="uppercase"><%= facility_name(p.initiating_facility) %><%#</span></p>
+            <p class="truncate-text five-lines"><%= p.summary %><%#</p>
+            <%= render partial: 'shared/badge', locals: {badges: p.practice_partners} %>
+<%#          </div>
+        </div>
+        <hr>
+      <% end %>
+<%#      <% else %>
+<%#        <p>There are no practices at this time.</p>
+      <% end %>
+<%#    </div>
+  </section>
+</div>%>
