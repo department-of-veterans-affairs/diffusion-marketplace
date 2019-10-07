@@ -19,7 +19,7 @@ describe 'The user index', type: :feature do
 
     login_as(@user2, scope: :user, run_callbacks: false)
     visit "/users/#{@user.id}"
-    expect(page).to_not have_content('Edit profile')    
+    expect(page).to_not have_content('Edit profile')
   end
 
   it 'should have edit profile button for logged in user' do
