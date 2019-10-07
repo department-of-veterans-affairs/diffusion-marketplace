@@ -13,8 +13,9 @@
   link = Commontator.commontator_link(creator, main_app)
   name = Commontator.commontator_name(creator) || ''
   job_title = creator.job_title
-  practice_team_member = creator.user_practices.find_by(practice_id: comment.thread.id, user: creator).team_member
-  verified_practice_implementer = creator.user_practices.find_by(practice_id: comment.thread.id, user: creator).verified_implementer
+  creator_practice = creator.user_practices.find_by(practice_id: comment.thread.commontable_id, user: creator)
+  practice_team_member = creator_practice.team_member
+  verified_practice_implementer = creator_practice.verified_implementer
 %>
 
 <div class="grid-row margin-bottom-0 margin-top-4">
