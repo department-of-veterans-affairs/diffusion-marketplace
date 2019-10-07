@@ -109,4 +109,41 @@ describe 'Favorites', type: :feature do
       end
     end
   end
+
+  describe 'User show page' do
+    describe 'logged out' do
+      before do
+        visit "/users/#{@user.id}"
+      end
+
+      it 'should have a favorites section' do
+        expect(page).to have_content('Favorited Practices')
+      end
+
+      it 'should not show a favorite button' do
+        expect(page).not_to have_selector('.favorite-practice-button')
+      end
+    end
+
+    describe 'logged in' do
+      before do
+        login_as(@user, :scope => :user, :run_callbacks => false)
+        visit "/users/#{@user.id}"
+      end
+
+      it 'should have a favorites section' do
+        expect(page).to have_content('Favorited Practices')
+      end
+
+      it 'should not show a favorite button' do
+        expect(page).to have_selector('.favorite-practice-button')
+      end
+
+      it 'should allow removing a favorite' do
+        favorite_button = first(:css, "#favorite-button-#{@practice2.id}")
+        favorite_button.click
+        expect(favorite_button).to have_selector('.far')
+      end
+    end
+  end
 end
