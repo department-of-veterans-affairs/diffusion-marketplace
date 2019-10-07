@@ -13,15 +13,11 @@
 
     <section class="grid-container margin-bottom-8">
       <%= render "shared/messages" %>
-      <h1 class="font-sans-3xl margin-top-0 margin-bottom-205">Discover your new best practice!</h1>
-      <h2 class="margin-0">Search by Practice name, facility location, condition, or keyword</h2>
-    </section>
-
-    <section class="dm-background-light-blue margin-bottom-6">
-      <div class="grid-container padding-y-4">
+      <h1 class="font-sans-2xl margin-top-0 margin-bottom-0">Find a practice</h1>
+      <p class="margin-0 font-sans-md">Search by practice name, facility name, clinical condition, or keyword</p>
         <form id="searchForm" name="searchForm" class="usa-search margin-bottom-3">
           <div role="search" class="flex-column">
-            <label class="margin-bottom-5" for="practice-search-field">Type keywords to find a practice</label>
+            <label class="margin-bottom-1" for="practice-search-field"></label>
             <div id="search-bar-container" class="display-flex">
               <input class="usa-input" id="practice-search-field" required title="Type at least three characters to search." autocomplete="off" type="search" name="search">
               <button id="practice-search-button" class="usa-button" type="submit">
@@ -30,11 +26,10 @@
             </div>
           </div>
         </form>
-      </div>
     </section>
 
     <section class="search-practices grid-container">
-      <p id="results-summary"></p>
+      <p class="margin-bottom-2" id="results-summary"></p>
       <div id="search-results"></div>
     </section>
 
