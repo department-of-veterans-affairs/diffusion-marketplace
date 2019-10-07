@@ -25,7 +25,7 @@
     </div>
   </section>
   <section>
-    <div class="grid-container margin-bottom-9">
+    <div class="grid-container margin-bottom-6">
       <% if @practice_partner.practices.any? %>
         <div class="grid-row grid-gap-2">
           <% @practice_partner.practices.order(name: :asc).each do |p| %>
@@ -40,7 +40,13 @@
       <% end %>
     </div>
   </section>
+
+  <div class="grid-container margin-bottom-105">
+    <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
+  </div>
 </div>
+
+
 
 
 
