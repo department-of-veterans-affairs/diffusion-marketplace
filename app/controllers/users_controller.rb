@@ -17,6 +17,8 @@ class UsersController < ApplicationController
       { text: 'Profile'}
     ]
     @user = User.find(params[:id])
+    @favorite_practices = @user&.favorite_practices || []
+    @facilities_data = facilities_json['features']
   end
 
   def edit_profile
