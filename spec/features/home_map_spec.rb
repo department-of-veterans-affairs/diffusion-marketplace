@@ -2,7 +2,6 @@
 
 require 'rails_helper'
 require 'rake'
-Rails.application.load_tasks
 
 describe 'HomeMap', type: :feature do
   before do
@@ -13,7 +12,7 @@ describe 'HomeMap', type: :feature do
   end
 
   after do
-    Practice.find_by(slug: 'flow3').destroy
+    ENV['GOOGLE_API_KEY'] = nil
   end
 
   context 'when visiting the homepage' do

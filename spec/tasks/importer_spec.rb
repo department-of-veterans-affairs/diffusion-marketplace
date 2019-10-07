@@ -3,17 +3,14 @@
 # Importer specs
 require 'rails_helper'
 require 'rake'
-Rails.application.load_tasks
 
 describe 'Importer' do
-  after do
-    Practice.find_by(slug: 'flow3').destroy
-  end
   context 'when running import_answers task' do
-    it 'creates Practices with the correct fields filled out' do
+    before do
       Rake::Task['db:seed'].execute
       Rake::Task['importer:import_answers'].execute
-
+    end
+    it 'creates Practices with the correct fields filled out' do
       expect(Practice.count).to be(1)
 
       flow3 = Practice.first
