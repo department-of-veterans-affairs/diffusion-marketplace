@@ -302,17 +302,20 @@ $(window).on('click', function (event) {
 
 // When the user shift tabs to the first element in the modal, close it
 $(document).on('focus', '.first_el', function (e) {
+    e.target.focus({preventScroll: true});
     const modal = $(e.target).closest('.modal');
     modal.hide();
 });
 
 // When the user focuses on the last element in the modal, close it
 $(document).on('focus', '.last_el', function (e) {
+    e.target.focus({preventScroll: true});
     const modal = $(e.target).closest('.modal');
     modal.hide();
 });
 
-function openMarkerModal(id) {
+function openMarkerModal(e, id) {
+    e.target.focus({preventScroll: true});
     // Get the <span> element that closes the modal
     const $span = $(".close");
     const modal = document.getElementById(id);
