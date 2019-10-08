@@ -314,10 +314,10 @@ $(document).on('focus', '.last_el', function (e) {
 
 function openMarkerModal(id) {
     // Get the <span> element that closes the modal
-    const $span = $(".close");
+    const $span = $(`#${id} .close`)[0];
     const modal = document.getElementById(id);
     modal.style.display = "block";
-    $span.focus();
+    $span.focus({preventScroll: true});
 }
 
 $(document).on('submit', '#mapFilters', function (e) {
