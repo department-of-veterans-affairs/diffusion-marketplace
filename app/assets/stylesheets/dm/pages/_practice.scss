@@ -271,6 +271,15 @@
   }
 }
 
+.back-to-partners-link {
+  color: $dm-color-primary-blue !important;
+  font-weight: normal !important;
+
+  &:before {
+    font-weight: bold;
+  }
+}
+
 
 
 

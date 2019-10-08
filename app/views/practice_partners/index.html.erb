@@ -7,7 +7,7 @@
       <span>Partners</span>
     </div>
     <h1 class="font-sans-3xl margin-top-5 margin-bottom-05">Partners</h1>
-    <p class="font-sans-lg">
+    <p class="font-sans-lg line-height-sans-6">
       Partners Best practices are constantly being developed, vetted, and promoted by offices within the VA. 
       Select an organization below to view their practice partnerships.
     </p>
@@ -19,7 +19,7 @@
         <div class="grid-row">
           <div class="grid-col-12 margin-bottom-3">
             <h3 class="font-sans-lg margin-top-0 margin-bottom-05"><%= link_to "#{ss.name}#{ss.short_name.present? ? " (#{ss.short_name.upcase})" : ''}", practice_partner_path(ss) %></h3>
-            <p class="font-sans-md"><%= ss.description %></p>
+            <p class="font-sans-md line-height-sans-6"><%= ss.description %></p>
           </div>
         </div>
       <% end %>

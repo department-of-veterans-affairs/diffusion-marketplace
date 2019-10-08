@@ -13,6 +13,9 @@
   link = Commontator.commontator_link(creator, main_app)
   name = Commontator.commontator_name(creator) || ''
   job_title = creator.job_title
+  creator_practice = creator.user_practices.find_by(practice_id: comment.thread.commontable_id, user: creator)
+  practice_team_member = creator_practice.team_member
+  verified_practice_implementer = creator_practice.verified_implementer
 %>
 
 <div class="grid-row margin-bottom-0 margin-top-4">
@@ -46,16 +49,16 @@
                       data: is_deleted ? { confirm: "Are you sure you want to restore this #{comment.parent.nil? ? 'comment' : 'reply'}?"} : { confirm: "Are you sure you want to delete this #{comment.parent.nil? ? 'comment' : 'reply'}?" },
                       method: :put,
                       id: "commontator-comment-#{comment.id}-#{del_string}",
-                      class: is_deleted ? 'fas fa-trash-restore-alt fa-lg margin-x-105' : "fas fa-trash-alt fa-lg #{creator.user_practices.find_by(practice_id: comment.thread.id, user: creator).team_member || creator.user_practices.find_by(practice_id: comment.thread.id, user: creator).verified_implementer ? 'margin-left-105' : 'margin-x-105'}",
+                      class: is_deleted ? "fas fa-trash-restore-alt fa-lg #{practice_team_member || verified_practice_implementer ? 'margin-left-105' : 'margin-x-105'}" : "fas fa-trash-alt fa-lg #{practice_team_member || verified_practice_implementer ? 'margin-left-105' : ''} #{practice_team_member || verified_practice_implementer ? '' : 'margin-right-105'}",
                       remote: true %>
         <% end %>
       </span>
       
-      <% if creator.user_practices.find_by(practice_id: comment.thread.id, user: creator).team_member %>
+      <% if practice_team_member %>
         <span class="radius-pill font-sans-2xs bg-gold padding-y-1px padding-x-1 margin-x-105">
           Practice team member
         </span>
-      <% elsif creator.user_practices.find_by(practice_id: comment.thread.id, user: creator).verified_implementer %>
+      <% elsif practice_team_member %>
         <span class="radius-pill font-sans-2xs bg-gold padding-y-1px padding-x-1 margin-x-105">
           Verified implementer
         </span>
@@ -64,11 +67,11 @@
       <% end %>
 
       <% if comment.created_at == comment.updated_at %>
-        <span id="commontator-comment-<%= comment.id %>-created-timestamp" class="timestamp <%= creator.user_practices.find_by(practice_id: comment.thread.id, user: creator).team_member || creator.user_practices.find_by(practice_id: comment.thread.id, user: creator).verified_implementer || comment.can_be_deleted_by?(user) ? '' : 'margin-left-105' %>">
+        <span id="commontator-comment-<%= comment.id %>-created-timestamp" class="timestamp <%= practice_team_member || verified_practice_implementer || comment.can_be_deleted_by?(user) ? '' : 'margin-left-105' %>">
           posted <%= timeago(comment.created_at) %>
         </span>
       <% elsif comment.created_at != comment.updated_at && !comment.deleted_at %>
-        <span id="commontator-comment-<%= comment.id %>-updated-timestamp" class="timestamp <%= creator.user_practices.find_by(practice_id: comment.thread.id, user: creator).team_member || creator.user_practices.find_by(practice_id: comment.thread.id, user: creator).verified_implementer || comment.can_be_deleted_by?(user) ? '' : 'margin-left-105' %>">
+        <span id="commontator-comment-<%= comment.id %>-updated-timestamp" class="timestamp <%= practice_team_member || verified_practice_implementer || comment.can_be_deleted_by?(user) ? '' : 'margin-left-105' %>">
           edited <%= timeago(comment.updated_at) %> (originally posted <%= timeago(comment.created_at) %>)
         </span>
       <% else %>

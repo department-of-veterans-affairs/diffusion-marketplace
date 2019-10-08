@@ -2,7 +2,6 @@
 
 require 'rails_helper'
 require 'rake'
-Rails.application.load_tasks
 
 describe 'HomeMap', type: :feature do
   before do
@@ -10,6 +9,10 @@ describe 'HomeMap', type: :feature do
     Rake::Task['importer:import_answers'].execute
     Rake::Task['diffusion_history:flow3'].execute
     ENV['GOOGLE_API_KEY'] = ENV['GOOGLE_TEST_API_KEY']
+  end
+
+  after do
+    ENV['GOOGLE_API_KEY'] = nil
   end
 
   context 'when visiting the homepage' do
