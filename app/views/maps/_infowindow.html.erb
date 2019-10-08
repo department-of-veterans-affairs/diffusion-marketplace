@@ -2,7 +2,11 @@
   <p class="margin-top-1p5"><b><%= facility['OfficialStationName'] %></b></p>
   <p class="margin-top-1"><%= completed %> completed implementation<%= completed == 1 ? '' : 's' %></p>
   <p class="margin-top-1"><%= in_progress %> in-progress implementation<%= in_progress == 1 ? '' : 's' %></p>
-  <button type="button" onclick="openMarkerModal('homeMapMarkerViewMoreModal-<%= facility["StationNumber"] %>')" id="homeMapMarkerViewMoreTrigger-<%= facility["StationNumber"] %>" data-marker-id="<%= facility["StationNumber"] %>" class="margin-bottom-2 display-block text-primary-dark text-underline usa-button--unstyled">View
-    more
+  <button
+    type="button"
+    onclick="openMarkerModal('homeMapMarkerViewMoreModal-<%= facility["StationNumber"] %>')"
+    id="homeMapMarkerViewMoreTrigger-<%= facility["StationNumber"] %>" data-marker-id="<%= facility["StationNumber"] %>"
+    class="margin-bottom-2 display-block text-primary-dark text-underline usa-button--unstyled">
+    View more
   </button>
 </div>
