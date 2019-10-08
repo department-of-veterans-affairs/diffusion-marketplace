@@ -31,11 +31,7 @@
 
 *.zip
 *=
-terraform/.terraform/*
-terraform/*.tfstate.backup
-terraform/*.tfstate
-terraform/*.tfplan
-terraform/terraform.tfstate.d/*
+terraform
 
 rspec.xml
 
