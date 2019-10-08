@@ -33,6 +33,7 @@ $('.timeago').timeago();
 reloadWithTurbolinks();
 
 $(document).on('turbolinks:load', () => {
-  
+  $('#commontator-comment-<%= @comment.id %>').parent().find('button:nth-child(1)').addClass('hidden');
+  $('#commontator-comment-<%= @comment.id %>').parent().find('button:nth-child(2)').removeClass('hidden');
   $('#commontator-comment-<%= @comment.id %>').parent().removeClass('hidden');
 })
