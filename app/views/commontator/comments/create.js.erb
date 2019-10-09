@@ -31,8 +31,10 @@
 
 $('.timeago').timeago();
 
-Turbolinks.visit('#commontator-comment-<%= @comment.id %>')
-
-$('#commontator-comment-<%= @comment.id %>').parent().removeClass('hidden')
-
 <%= javascript_proc %>
+
+<% if !@comment.parent_id %>
+  Turbolinks.visit('#commontator-comment-<%= @comment.id %>')
+<% end %>
+
+

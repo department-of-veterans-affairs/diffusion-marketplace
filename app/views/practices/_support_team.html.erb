@@ -4,7 +4,7 @@
       <h2 id="impact" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205">Contact</h2>
       <div class="height-2px border border-base-lightest flex-fill"></div>
     </div>
-    <div class="grid-row margin-top-4">
+    <div class="grid-row margin-top-4 grid-gap">
       <% @practice.va_employees.each do |employee| %>
         <div class="grid-row width-mobile margin-bottom-4 flex-align-center">
           <div class="avatar-container display-flex-align-items-center flex-justify-center dm-background-white overflow-hidden margin-right-105 <%= employee.avatar.present? ? '' : 'width-auto' %>">

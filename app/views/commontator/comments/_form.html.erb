@@ -51,11 +51,11 @@
       <% end %>
       <% if !new_record %>
         <div>
-          <%= radio_button_tag 'user_practice_status', :verified_implementer, current_user.user_practices.find_by(practice_id: comment.thread.id, user: current_user).verified_implementer ? true : false, class: 'margin-right-1 margin-left-1px' %>
+          <%= radio_button_tag 'user_practice_status', :verified_implementer, current_user.user_practices.find_by(practice_id: comment.thread.commontable_id, user: current_user).verified_implementer ? true : false, class: 'margin-right-1 margin-left-1px' %>
           <%= label_tag '', 'I am currently implementing this practice', class: 'font-sans-sm text-middle' %>
         </div>
         <div>
-          <%= radio_button_tag 'user_practice_status', :team_member, current_user.user_practices.find_by(practice_id: comment.thread.id, user: current_user).team_member ? true : false, class: 'margin-right-1 margin-left-1px' %>
+          <%= radio_button_tag 'user_practice_status', :team_member, current_user.user_practices.find_by(practice_id: comment.thread.commontable_id, user: current_user).team_member ? true : false, class: 'margin-right-1 margin-left-1px' %>
           <%= label_tag '', 'I am a member of this practice team', class: 'font-sans-sm text-middle' %>
         </div>
       <% end %>
