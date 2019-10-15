@@ -30,12 +30,12 @@ $('.timeago').timeago();
 
 <%= javascript_proc %>
 
-reloadWithTurbolinks();
+<% if params[:refresh_page] %>
+  reloadWithTurbolinks();
 
-<% if @comment.parent_id %>
-$(document).on('turbolinks:load', () => {
-  $('#commontator-comment-<%= @comment.id %>').parent().removeClass('hidden');
-  $('#commontator-comment-<%= @comment.id %>').parent().parent().find('button:nth-child(1)').addClass('hidden');
-  $('#commontator-comment-<%= @comment.id %>').parent().parent().find('button:nth-child(2)').removeClass('hidden');
-})
+  <% if @comment.parent_id %>
+  $(document).on('turbolinks:load', () => {
+    $('#commontator-comment-<%= @comment.id %>').parent().removeClass('hidden');
+  })
+  <% end %>
 <% end %>

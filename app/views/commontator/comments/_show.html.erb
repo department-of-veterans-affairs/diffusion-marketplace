@@ -16,6 +16,7 @@
   creator_practice = creator.user_practices.find_by(practice_id: comment.thread.commontable_id, user: creator)
   practice_team_member = creator_practice.team_member
   verified_practice_implementer = creator_practice.verified_implementer
+  show_children = params[:show_children] == 'true'
 %>
 
 <div class="grid-row margin-bottom-0 margin-top-4">
@@ -49,7 +50,7 @@
                       data: is_deleted ? { confirm: "Are you sure you want to restore this #{comment.parent.nil? ? 'comment' : 'reply'}?"} : { confirm: "Are you sure you want to delete this #{comment.parent.nil? ? 'comment' : 'reply'}?" },
                       method: :put,
                       id: "commontator-comment-#{comment.id}-#{del_string}",
-                      class: is_deleted ? "fas fa-trash-restore-alt fa-lg #{practice_team_member || verified_practice_implementer ? 'margin-left-105' : 'margin-x-105'}" : "fas fa-trash-alt fa-lg #{practice_team_member || verified_practice_implementer ? '' : 'margin-left-105'} #{practice_team_member || verified_practice_implementer ? '' : 'margin-right-105'}",
+                      class: is_deleted ? "fas fa-trash-restore-alt fa-lg #{practice_team_member || verified_practice_implementer ? 'margin-left-105' : 'margin-x-105'}" : "fas fa-trash-alt fa-lg #{practice_team_member || verified_practice_implementer ? 'margin-left-105' : 'margin-x-105'} #{practice_team_member || verified_practice_implementer ? '' : 'margin-right-105'}",
                       remote: true %>
         <% end %>
       </span>
@@ -58,7 +59,7 @@
         <span class="radius-pill font-sans-2xs bg-gold padding-y-1px padding-x-1 margin-x-105">
           Practice team member
         </span>
-      <% elsif practice_team_member %>
+      <% elsif verified_practice_implementer %>
         <span class="radius-pill font-sans-2xs bg-gold padding-y-1px padding-x-1 margin-x-105">
           Verified implementer
         </span>
@@ -84,7 +85,6 @@
     <div id="commontator-comment-<%= comment.id %>-section-middle" class="section middle">
       <div class="text-base margin-bottom-1">
         <%= job_title %>
-        <%= comment.parent_id %>
       </div>
 
       <div id="commontator-comment-<%= comment.id %>-body" class="body">
@@ -116,13 +116,11 @@
 <div class="replies-container margin-left-9 grid-row">
   <% if nested_children.count > 0 %>
     <div class="show-hide-buttons-container grid-col-auto margin-top-2 text-bold" id="comment-<%= comment.id %>-button-container">
-      <button class="show-hide-button padding-0"><%= "View #{nested_children.count} #{nested_children.count == 1 ? 'reply' : 'replies'} >" %></button>
-      <button class="show-hide-button hidden padding-0"><%= "Hide #{nested_children.count == 1 ? 'reply' : 'replies'} >" %></button>
+      <button data-number-replies="<%= nested_children.count %>" <%= 'disabled' if comment.is_deleted? %> class="usa-button comments-show-hide-button usa-button--unstyled show-hide-button padding-0"><%= !show_children ? "View #{nested_children.count} #{nested_children.count == 1 ? 'reply' : 'replies'} >" : "Hide #{nested_children.count == 1 ? 'reply' : 'replies'} >" %></button>
     </div>
   <% end %>
 
-
-  <div id="commontator-comment-<%= comment.id %>-children" class="commontator-comment-<%= comment.id %>-children padding-left-3 margin-bottom-0 children hidden">
+  <div id="commontator-comment-<%= comment.id %>-children" class="commontator-comment-<%= comment.id %>-children padding-left-3 margin-bottom-0 children <%= 'hidden' unless show_children %>">
     <% if thread.config.comment_order == :l %>
       <div id="commontator-comment-<%= comment.id %>-reply" class="reply margin-0"></div>
     <% end %>

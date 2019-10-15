@@ -226,8 +226,21 @@ h5 {
 }
 
 .show-hide-button {
+  text-decoration: none;
+  font-weight: bold;
+  color: black;
+  
   &:hover {
     text-decoration: underline;
     color: #005EA2;
+  }
+}
+
+.comment-cancel {
+  box-shadow: inset 0 0 0 2px #565C65;
+
+  &:hover {
+    box-shadow: inset 0 0 0 2px #3d4551;
+    color: #3d4551;
   }
 }

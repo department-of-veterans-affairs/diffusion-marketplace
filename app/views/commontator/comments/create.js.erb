@@ -1,3 +1,52 @@
+                          console.log('Mutation Observer');
+                          window.MutationObserver = window.MutationObserver
+                            || window.WebKitMutationObserver
+                            || window.MozMutationObserver;
+<%#                          // Find the element that you want to "watch"%>
+                          var target = document.getElementById('commontator-comment-<%= @comment.parent_id %>-children'),
+<%#// create an observer instance%>
+                            observer = new MutationObserver(function(mutation) {
+<%#                              /** this is the callback where you
+                               do what you need to do.
+                               The argument is an array of MutationRecords where the affected attribute is
+                               named "attributeName". There is a few other properties in a record
+                               but I'll let you work it out yourself.
+                               **/%>
+                              console.log('mutation', mutation)
+                            }),
+<%#// configuration of the observer:%>
+                            config = {
+                              attributes: true <%#// this is to watch for attribute changes.%>
+                            };
+<%#                          // pass in the element you wanna watch as well as the options
+                          observer.observe(target, config);
+                          // later, you can stop observing
+                          // observer.disconnect();%>
+                          console.log('target', target);
+
+
+
+var showChildren = <%= @comment.parent_id.present? && params[:show_children] == 'true' %>;
+
+console.log('show children', showChildren)
+
+var reloadWithTurbolinks = (function () {
+  var scrollPosition;
+
+  function reload () {
+    scrollPosition = [window.scrollX, window.scrollY];
+    Turbolinks.visit(window.location.toString(), { action: 'replace' });
+  }
+
+  document.addEventListener('turbolinks:load', function () {
+    if (scrollPosition) {
+      window.scrollTo.apply(window, scrollPosition);
+      scrollPosition = null;
+    }
+  })
+
+  return reload
+})()
 <%=
   if @comment.parent.nil?
     partial = 'threads'
@@ -18,8 +67,6 @@
 %>
 
 <% if @commontator_new_comment.nil? %>
-  $("#<%= id %>").hide();
-
   $("#<%= id %>-link").fadeIn();
 <% else %>
   $("#<%= id %>").html("<%= escape_javascript(
@@ -33,7 +80,22 @@ $('.timeago').timeago();
 
 <%= javascript_proc %>
 
-Turbolinks.visit('#commontator-comment-<%= @comment.id %>')
+<% if params[:refresh_page] %>
+  reloadWithTurbolinks();
+
+  <% if @comment.parent_id %>
+    if (showChildren) {
+      console.log('In show children callback')
+      $(document).on('turbolinks:load', () => {
+        $('#commontator-comment-<%= @comment.id %>').parent().removeClass('hidden');
+      })
+    }
+  <% end %>
+<% end %>
+
+
+
+
 
 
 
