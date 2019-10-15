@@ -41,12 +41,12 @@
          href="mailto:?subject=<%= email_practice_subject(@practice) %>&body=<%= email_practice_body(@practice) %>" class="usa-button usa-button--outline width-full margin-bottom-1">
         Share summary
       </a>
-      <%= link_to 'Take the next step', practice_next_steps_url(practice_id: @practice.slug), id: 'next-steps-link-in-nav', class: 'usa-button width-full' %>
+      <%= link_to 'Take the next step', practice_planning_checklist_url(practice_id: @practice.slug), id: 'next-steps-link-in-nav', class: 'usa-button width-full' %>
     </div>
   </div>
 </div>
 <div class="practice-mobile-nav padding-1 z-top desktop:display-none display-flex justify-center">
-  <%= link_to 'Take the next step', practice_next_steps_url(practice_id: @practice.slug), id: 'next-steps-link-in-mobile-nav', class: 'usa-button' %>
+  <%= link_to 'Take the next step', practice_planning_checklist_url(practice_id: @practice.slug), id: 'next-steps-link-in-mobile-nav', class: 'usa-button' %>
 </div>
 
 <section class="usa-section p2-top p2-bottom dm-background-light-blue">
