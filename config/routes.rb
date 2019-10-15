@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   mount Ahoy::Engine => '/ahoy', as: :dm_ahoy
 
   resources :practices do
-    get '/next-steps', action: 'next_steps', as: 'next_steps'
+    get '/planning-checklist', action: 'planning_checklist', as: 'planning_checklist'
     get '/committed', action: 'committed', as: 'committed'
     post '/commit', action: 'commit', as: 'commit'
     post '/favorite', action: 'favorite', as: 'favorite'
