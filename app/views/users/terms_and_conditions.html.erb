@@ -1,0 +1,24 @@
+<div id="termsAndConditionsModal" class="bg-base-light">
+    <%= render 'shared/messages' %>
+    <div class="padding-y-9">
+        <div class="width-tablet margin-x-auto bg-white radius-md">
+            <div class="bg-primary-darker text-white">
+                <h2 class="margin-0 padding-3">Terms and conditions</h2>
+            </div>
+            <div class="modal-body padding-3 font-sans-md line-height-sans-5">
+            VA systems are intended to be used by authorized VA network users for viewing and retrieving information; 
+            except as otherwise authorized for official business and limited personal use under VA policy. Information from 
+            this system resides on and transmits through computer systems and networks funded by VA. Access or use 
+            constitutes understanding and acceptance that there is no reasonable expectation of privacy in the use of 
+            Government networks or systems. Access or use of this system constitutes user understanding and acceptance of 
+            these terms and constitutes unconditional consent to review and action includes but is not limited to: monitoring; 
+            recording; copying; auditing; inspecting;
+            </div>
+            <div class="margin-bottom-4 padding-x-3 text-right">
+            <%= form_tag({action: 'accept_terms', controller: 'users'}, method: :post) do |f| %>
+                <%= submit_tag 'I acknowledge the terms' %>
+            <% end %>
+            </div>
+        </div>
+    </div>
+</div>

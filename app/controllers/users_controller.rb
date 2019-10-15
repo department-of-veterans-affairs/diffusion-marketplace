@@ -54,6 +54,7 @@ class UsersController < ApplicationController
   end
 
   def update
+    @user = current_user
     if params[:user][:role].present?
       if params[:user][:role] == 'user'
         @user.remove_all_roles('user')
@@ -62,7 +63,13 @@ class UsersController < ApplicationController
         @user.add_role(params[:user][:role])
         flash[:success] = "Added \"#{params[:user][:role]}\" role to user \"#{@user.email}\""
       end
+      # redirect_to users_path # Add this here, but was originally not in this location
     end
+    # if @user.save
+    #   @user.update_attribute(:accepted_terms, true)
+
+    #   redirect_back(fallback_location: root_path)
+    # end
     redirect_to users_path
   end
 
@@ -76,6 +83,18 @@ class UsersController < ApplicationController
     @user.update_attributes disabled: false
     flash[:success] = "Re-enabled user \"#{@user.email}\""
     redirect_to users_path
+  end
+
+  def accept_terms
+    if current_user.update_attribute(:accepted_terms, true)
+      redirect_to root_path
+    else 
+      flash[:error] = 'Something went wrong. Please contact us marketplace@va.gov for assistance.'
+      redirect_to terms_and_conditions_path
+    end
+  end
+
+  def terms_and_conditions
   end
 
   private
@@ -106,6 +125,6 @@ class UsersController < ApplicationController
 
   def user_params
     return params.require(:user).permit(:avatar, :bio) if ENV['USE_NTLM'] == 'true'
-    params.require(:user).permit(:avatar, :email, :password, :password_confirmation, :job_title, :first_name, :last_name, :phone_number, :visn, :skip_va_validation, :skip_password_validation, :bio, :location)
+    params.require(:user).permit(:avatar, :email, :password, :password_confirmation, :job_title, :first_name, :last_name, :phone_number, :visn, :skip_va_validation, :skip_password_validation, :bio, :location, :accepted_terms)
   end
 end

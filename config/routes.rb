@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   mount Ahoy::Engine => '/ahoy', as: :dm_ahoy
   mount Commontator::Engine => '/commontator' #, as: :dm_commontator
 
+  get '/terms_and_conditions' => 'users#terms_and_conditions'
+  post '/accept_terms', action: 'accept_terms', controller: 'users', as: 'accept_terms'
+
   resources :practices do
     get '/next-steps', action: 'next_steps', as: 'next_steps'
     get '/committed', action: 'committed', as: 'committed'
