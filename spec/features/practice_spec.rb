@@ -220,12 +220,12 @@ Yes')
 
         # practice champion checkbox
         expect(page).to have_selector('#practice-champion')
-        find(:css, 'label[for="champion"]').click
+        find(:css, 'label[for="practice-champion-input"]').click
         expect(page).to have_content('Working Group needs to select a dynamic, charismatic individual who will be able to promote the practice, recruit additional team members, and illicit administrative support.')
 
         # feedback checkbox
         expect(page).to have_selector('#feedback-section')
-        find(:css, 'label[for="feedback"]').click
+        find(:css, 'label[for="feedback-section-input"]').click
         expect(page).to have_content('Feedback on the implementation process and sharing the resulting data once the practice is implemented are a requirement/expected.')
 
         expect(page).not_to have_selector('#permissions-required')
@@ -263,11 +263,11 @@ Yes')
         expect(page).to have_content(c.description)
 
         find(:css, "label[for='additional-staff-#{as.id}']").click
-        find(:css, 'label[for="permissions"]').click
-        find(:css, 'label[for="information-technology"]').click
-        find(:css, 'label[for="departments"]').click
-        find(:css, 'label[for="resources"]').click
-        find(:css, 'label[for="costs"]').click
+        find(:css, 'label[for="permissions-required-input"]').click
+        find(:css, 'label[for="it-department-input"]').click
+        find(:css, 'label[for="departments-impacted-input"]').click
+        find(:css, 'label[for="resource-capabilities-input"]').click
+        find(:css, 'label[for="costs-list-input"]').click
       end
 
       it 'should not render departments if all or none are selected' do
@@ -298,8 +298,8 @@ Yes')
       end
     end
 
-    describe 'commit to practice' do
-      it 'should let a user commit to a practice' do
+    describe 'adopt to practice' do
+      it 'should let a user adopt a practice' do
         login_as(@user, :scope => :user, :run_callbacks => false)
         @user_practice.update(published: true, approved: true, support_network_email: 'test@va.gov')
         # Visit an individual Practice that is approved and published
@@ -309,7 +309,7 @@ Yes')
         expect(page).to have_content(@user_practice.initiating_facility.upcase)
         expect(page).to have_current_path(practice_planning_checklist_path(@user_practice))
 
-        click_on('Commit to this practice')
+        click_on('Adopt this practice')
         expect(page).to have_current_path(practice_committed_path(@user_practice))
         expect(page).to be_accessible.according_to :wcag2a, :section508
         expect(page).to have_content('Thank you!')
@@ -332,7 +332,7 @@ Yes')
         # Visit an individual Practice that is approved and published
         visit practice_planning_checklist_path(practice_id: @user_practice.slug)
         expect(page).to be_accessible.according_to :wcag2a, :section508
-        click_on('Commit to this practice')
+        click_on('Adopt this practice')
         expect(page).to have_current_path(practice_committed_path(@user_practice))
         expect(page).to have_content("You have already committed to this practice. If you did not receive a follow-up email from the practice support team yet, please contact them at #{@user_practice.support_network_email}")
       end

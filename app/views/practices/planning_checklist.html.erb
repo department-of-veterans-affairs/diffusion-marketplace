@@ -67,7 +67,7 @@
             </div>
 
             <!-- Practice champion -->
-            <%= render 'next_steps_checkbox', label: 'Practice champion', noList: true do %>
+            <%= render 'next_steps_checkbox', label: 'Practice champion', sectionId: 'practice-champion', noList: true do %>
               <p class="padding-left-4 margin-0">
                 Working Group needs to select a dynamic, charismatic individual who will be able to promote the practice,
                 recruit additional team members, and illicit administrative support.
@@ -77,7 +77,7 @@
 
             <!-- Permissions required -->
             <% if @practice.practice_permissions.any? %>
-              <%= render 'next_steps_checkbox', label: 'Permissions required' do %>
+              <%= render 'next_steps_checkbox', label: 'Permissions required', sectionId: 'permissions-required' do %>
                 <% @practice.practice_permissions.each do |permission| %>
                   <li><%= permission.description %></li>
                 <% end %>
@@ -87,14 +87,14 @@
 
             <!-- IT required -->
             <% if @practice.it_required %>
-            <%= render 'next_steps_checkbox', label: 'Information technology department required', noList: true %>
+            <%= render 'next_steps_checkbox', label: 'Information technology department required', noList: true, sectionId: 'it-department' %>
             <% end %>
             <!-- -->
 
             <!-- Departments impacted -->
             <% if @practice.departments.any? && @practice.departments.find_by(short_name: 'all').blank? && @practice.departments.find_by(short_name: 'none').blank?
             %>
-              <%= render 'next_steps_checkbox', label: 'Departments' do %>
+              <%= render 'next_steps_checkbox', label: 'Departments', sectionId: 'departments-impacted' do %>
                 <% @practice.departments.each do |d| %>
                       <li><%= d.name %></li>
                     <% end %>
@@ -104,7 +104,7 @@
 
             <!-- Resource capabilities -->
             <% if @practice.additional_resources.any? %>
-              <%= render 'next_steps_checkbox', label: 'Resources' do %>
+              <%= render 'next_steps_checkbox', label: 'Resources', sectionId: 'resource-capabilities' do %>
                 <% @practice.additional_resources.each do |r| %>
                   <li><%= r.description %></li>
                 <% end %>
@@ -114,7 +114,7 @@
 
             <!-- Costs list -->
             <% if @practice.costs.any? %>
-              <%= render 'next_steps_checkbox', label: 'Cost' do %>
+              <%= render 'next_steps_checkbox', label: 'Cost', sectionId: 'costs-list' do %>
                 <% @practice.costs.each do |c| %>
                   <li><%= c.description %></li>
                 <% end %>
@@ -123,7 +123,7 @@
             <!-- -->
 
             <!-- Willing to provide feedback -->
-            <%= render 'next_steps_checkbox', label: 'Willing to provide feedback', noList: true do %>
+            <%= render 'next_steps_checkbox', label: 'Willing to provide feedback', sectionId: 'feedback-section', noList: true do %>
               <p class="padding-left-4 margin-0">
                 Feedback on the implementation process and sharing the resulting data once the practice is implemented are
                 a requirement/expected.
