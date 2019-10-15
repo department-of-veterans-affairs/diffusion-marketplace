@@ -125,6 +125,13 @@ button.appearance-none {
   @extend .text-base-darkest;
 }
 
+.link-primary, .link-primary:visited {
+  @extend .text-primary;
+  &:hover {
+    @extend .text-base-darkest;
+  } 
+}
+
 // Custom styles
 
 p {
@@ -253,4 +260,11 @@ a {
 
 .text-no-underline {
   @include u-text('no-underline', !important)
+}
+
+.practice-card-outline {
+  border: 2px solid #DCDEE0;
+  box-sizing: border-box;
+  border-radius: 2px;
+  
 }

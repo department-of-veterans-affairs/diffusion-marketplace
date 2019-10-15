@@ -1,6 +1,6 @@
 <%= render 'breadcrumbs' %>
 
-<section class="margin-top-7 margin-bottom-6">
+<section class="margin-top-7 margin-bottom-6" id="next-steps-top">
   <div class="grid-container">
     <%= render "shared/messages" %>
     <h1 class="font-sans-3xl margin-bottom-205">Plan my practice adoption</h1>
@@ -10,57 +10,37 @@
   </div>
 </section>
 
-<section class="dm-background-light-blue margin-bottom-6">
-  <div class="grid-container padding-y-3 text-center">
-    <% if @practice.tagline.present? %>
-      <h3 class="margin-top-0 margin-bottom-3 font-sans-lg">
-        <%= @practice.tagline %>
-      </h3>
-    <% end %>
-    <h5 class="flex-1 x0 text-normal">
-      <%= @practice.name %>
-      <span class="margin-x-05">|</span>
-      <span class="uppercase"><%= @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)' %></span>
-      <span class="margin-x-05">|</span>
-      <span class="uppercase">
-            <%= @facility_data.present? ? @facility_data['properties']['name'] : @practice.initiating_facility %>
-          </span>
-    </h5>
-  </div>
-</section>
-
-<section id="share-practice">
-  <div class="grid-container padding-x-9">
-    <h2 class="font-sans-xl margin-bottom-205">Share</h2>
-    <div class="grid-row">
-      <div class="tablet:grid-col-3 margin-right-4 margin-bottom-5">
-        <a target="_blank"
-           href="mailto:?subject=<%= email_practice_subject(@practice) %>&body=<%= email_practice_body(@practice) %>" class="dm-button-link-secondary">
-          Email Summary
-        </a>
-      </div>
-      <div class="tablet:grid-col-3">
-        <a target="_blank"
-           href="mailto:?subject=<%= email_checklist_subject(@practice) %>&body=<%= email_checklist_body(@practice) %>"
-           class="dm-button-link-secondary">
-          Email Checklist
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- Checklist -->
 
 <section>
   <%= form_for :commit, url: {action: :commit }, method: :post do %>
     <!--  <form class="usa-form-large" action="<%#= practice_commit_path(practice_id: @practice.slug) %>" method="post">-->
-    <div class="grid-container margin-bottom-6 padding-x-9">
+    <div class="grid-container margin-bottom-6">
       <div class="grid-row">
-        <div class="grid-col-8">
-          <h2 class="font-sans-xl margin-bottom-205">Checklist</h2>
-          <button type="button" id="print-checklist-button" role="button" class="dm-button-secondary margin-bottom-205">Print Checklist
-          </button>
+        <div class="grid-col-7 margin-right-6">
+          <div class="grid-container padding-x-0">
+            <div class="grid-row">
+              <div class="grid-col-3">
+                <h2 class="font-sans-xl margin-bottom-6 margin-top-0 margin-left-0">
+                  Checklist
+                </h2>
+              </div>
+              <div class="grid-col-9">
+                <div class="margin-bottom-6 margin-top-0 margin-left-2" style="line-height: 3rem;">
+                  <a target="_blank"
+                     href="mailto:?subject=<%= email_checklist_subject(@practice) %>&body=<%= email_checklist_body(@practice) %>" class="link-primary">
+                    <i class="fas fa-external-link-alt"></i>
+                    Share Checklist
+                  </a>
+                </div>
+                
+              </div>
+            </div>
+            
+          </div>
+          <!-- <button type="button" id="print-checklist-button" role="button" class="dm-button-secondary margin-bottom-205">Print Checklist
+          </button> -->
 
           <fieldset class="usa-fieldset">
             <legend class="usa-sr-only">Implementation checklist</legend>
@@ -151,22 +131,41 @@
             <% end %>
             <!-- -->
           </fieldset>
+
+          <h2 class="font-sans-xl margin-bottom-205">Agree to terms</h2>
+          <p>
+            By clicking the button below, you agree:
+            <ul>
+              <li>to signify the checklist is complete and your team is ready to adopt the practice</li>
+              <li>to provide feedback on the practice adoption process</li>
+              <li>to share result data after the practice is implemented</li>
+            </ul>
+          </p>
+          <p>
+            <button role="button" class="usa-button-primary">Adopt this practice</button>
+          </p>
+          <p>
+            The VA will be notified of your plan to implement this practice and the practice support team will message you to start working on the next implementation steps.
+          </p>
         </div>
-      <div>
-    </div>
-    <div class="dm-background-light-blue">
-      <div class="grid-container padding-y-8 padding-x-9">
-        <p>By choosing to Commit to practice you are:</p>
-        <ul class="margin-bottom-7">
-          <li>Signifying your team's readiness after completing the above checklist.</li>
-          <li>Notifying VA of your plan to implement the practice.</li>
-          <li>Messaging the support team to start working with you to implement the practice.</li>
-        </ul>
-        <button role="button" class="dm-button-primary">Commit to this practice</button>
+        <div class="tablet:grid-col-4">
+          Selected practice:
+          <div class='practice-card-outline'>
+            <div class='flex-column display-flex practice-card-list padding-x-105 padding-y-2' style='position: relative;'>
+              <%= render partial: 'marketplace_card', locals: {practice: @practice} %>
+            </div>
+          </div>
+          <div class="margin-top-auto"></div>
+        </div>
       </div>
     </div>
   <% end %>
   <!--  </form>-->
+  <div class="grid-container">
+    <p>
+      <a href="#next-steps-top" class='link-primary'>Return to top</a>
+    </p>
+  </div>
 </section>
 
 
