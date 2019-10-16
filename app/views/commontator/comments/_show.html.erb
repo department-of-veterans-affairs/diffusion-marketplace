@@ -116,7 +116,7 @@
 <div class="replies-container margin-left-9 grid-row">
   <% if nested_children.count > 0 %>
     <div class="show-hide-buttons-container grid-col-auto margin-top-2 text-bold" id="comment-<%= comment.id %>-button-container">
-      <button data-number-replies="<%= nested_children.count %>" <%= 'disabled' if comment.is_deleted? %> class="usa-button comments-show-hide-button usa-button--unstyled show-hide-button padding-0"><%= !show_children ? "View #{nested_children.count} #{nested_children.count == 1 ? 'reply' : 'replies'} >" : "Hide #{nested_children.count == 1 ? 'reply' : 'replies'} >" %></button>
+      <button id="comments-show-hide-button-<%= comment.id %>" data-number-replies="<%= nested_children.count %>" <%= 'disabled' if comment.is_deleted? %> class="usa-button comments-show-hide-button usa-button--unstyled show-hide-button padding-0"><%= !show_children ? "View #{nested_children.count} #{nested_children.count == 1 ? 'reply' : 'replies'} >" : "Hide #{nested_children.count == 1 ? 'reply' : 'replies'} >" %></button>
     </div>
   <% end %>
 

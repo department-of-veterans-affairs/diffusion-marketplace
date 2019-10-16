@@ -7,34 +7,12 @@
         <div class="bg-white">
 
           <%# <% if @practice.tagline.present? %>
-            <h1 class="font-sans-3xl x0-top margin-bottom-2 font-family-sans text-heavy word-break-break-word hyphens-auto">
-              <%# <%= @practice.tagline %>
-              <%= @practice.name %>
-            </h1>
+          <h1 class="font-sans-3xl x0-top margin-bottom-2 font-family-sans text-heavy word-break-break-word hyphens-auto">
+            <%# <%= @practice.tagline %>
+            <%= @practice.name %>
+          </h1>
           <%# <% end %>
           <p class="font-sans-xl line-height-sans-5"><%= @practice.description %></p>
-
-          <%#<div class="grid-row margin-bottom-2">
-            <h2 class="flex-1 x0 fs-h5 text-normal"><%= @practice.name %>
-          <%#    <span class="margin-x-05">|</span>
-              <span class="uppercase"><%= @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)' %></span>
-          <%#    <span class="margin-x-05">|</span>
-              <span class="uppercase">
-            <%= @facility_data.present? ? @facility_data['properties']['name'] : @practice.initiating_facility %>
-          <%#</span>
-            </h2>
-
-          </div>%>
-          <%#<div class="grid-row">
-            <div class="grid-auto margin-right-2 display-flex-align-items-center">
-              <%= render partial: 'shared/badge', locals: {badges: @practice.practice_partners} %>
-          <%#  </div>
-            <div class="grid-auto">
-              <p class="margin-0">
-                <span class="text-bold font-ui-md"><%= @practice.number_adopted.present? ? @practice.number_adopted : '0' %></span>
-          <%#      Facilit<%= @practice.number_adopted == 1 ? 'y' : 'ies' %> <%#have adopted this practice</p>
-            </div>%>
-          </div>
         </div>
       </div>
     </div>
@@ -48,7 +26,7 @@
         <div class="grid-row">
           <%#<div class="tablet:grid-col-5 padding-x-1 padding-top-1">
             <% if @practice.main_display_image.present? %>
-              <%#= image_tag @practice.main_display_image.url(:thumb), alt: "#{@practice.name} display image" %>
+          <%#= image_tag @practice.main_display_image.url(:thumb), alt: "#{@practice.name} display image" %>
           <%#    <%= image_tag @practice.main_display_image_s3_presigned_url(:thumb), alt: "#{@practice.name} display image" %>
           <%#  <% end %>
           <%#</div>%>
