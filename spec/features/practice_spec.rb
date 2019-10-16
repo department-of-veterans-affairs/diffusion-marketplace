@@ -176,7 +176,7 @@ Yes')
   describe 'Next Steps' do
     describe 'flow' do
       it 'should not let the user go to the "Next Steps" page if the Practice is not approved/published' do
-        visit practice_next_steps_path(practice_id: @user_practice.slug)
+        visit practice_planning_checklist_path(practice_id: @user_practice.slug)
         expect(page).to be_accessible.according_to :wcag2a, :section508
         expect(page).to have_content('You need to sign in or sign up before continuing.')
         expect(page).to have_current_path('/users/sign_in')
@@ -198,7 +198,7 @@ Yes')
         expect(page).to be_accessible.according_to :wcag2a, :section508
         expect(page).to have_content(@user_practice.name)
         expect(page).to have_content(@user_practice.initiating_facility.upcase)
-        expect(page).to have_current_path(practice_next_steps_path(practice_id: @user_practice.slug))
+        expect(page).to have_current_path(practice_planning_checklist_path(practice_id: @user_practice.slug))
       end
     end
 
@@ -207,11 +207,11 @@ Yes')
         login_as(@user, :scope => :user, :run_callbacks => false)
         @user_practice.update(published: true, approved: true)
         # Visit an individual Practice that is approved and published
-        visit practice_next_steps_path(practice_id: @user_practice.slug)
+        visit practice_planning_checklist_path(practice_id: @user_practice.slug)
         expect(page).to be_accessible.according_to :wcag2a, :section508
         expect(page).to have_content(@user_practice.name)
         expect(page).to have_content(@user_practice.initiating_facility.upcase)
-        expect(page).to have_current_path(practice_next_steps_path(@user_practice))
+        expect(page).to have_current_path(practice_planning_checklist_path(@user_practice))
 
         # implementation team checkbox
         expect(page).to have_selector('#implementation-team')
@@ -220,12 +220,12 @@ Yes')
 
         # practice champion checkbox
         expect(page).to have_selector('#practice-champion')
-        find(:css, 'label[for="champion"]').click
+        find(:css, 'label[for="practice-champion-input"]').click
         expect(page).to have_content('Working Group needs to select a dynamic, charismatic individual who will be able to promote the practice, recruit additional team members, and illicit administrative support.')
 
         # feedback checkbox
         expect(page).to have_selector('#feedback-section')
-        find(:css, 'label[for="feedback"]').click
+        find(:css, 'label[for="feedback-section-input"]').click
         expect(page).to have_content('Feedback on the implementation process and sharing the resulting data once the practice is implemented are a requirement/expected.')
 
         expect(page).not_to have_selector('#permissions-required')
@@ -243,11 +243,11 @@ Yes')
         ar = AdditionalResource.create!(description: 'Access to Government Car for IPS Specialist', practice: @user_practice)
         c = Cost.create!(description: 'IPS Supervision and Fidelity Monitoring (Toscano) Travel costs.', practice: @user_practice)
 
-        visit practice_next_steps_path(practice_id: @user_practice.slug)
+        visit practice_planning_checklist_path(practice_id: @user_practice.slug)
         expect(page).to be_accessible.according_to :wcag2a, :section508
         expect(page).to have_content(@user_practice.name)
         expect(page).to have_content(@user_practice.initiating_facility.upcase)
-        expect(page).to have_current_path(practice_next_steps_path(@user_practice))
+        expect(page).to have_current_path(practice_planning_checklist_path(@user_practice))
 
         expect(page).to have_selector('#permissions-required')
         expect(page).to have_selector('#it-department')
@@ -263,11 +263,11 @@ Yes')
         expect(page).to have_content(c.description)
 
         find(:css, "label[for='additional-staff-#{as.id}']").click
-        find(:css, 'label[for="permissions"]').click
-        find(:css, 'label[for="information-technology"]').click
-        find(:css, 'label[for="departments"]').click
-        find(:css, 'label[for="resources"]').click
-        find(:css, 'label[for="costs"]').click
+        find(:css, 'label[for="permissions-required-input"]').click
+        find(:css, 'label[for="it-department-input"]').click
+        find(:css, 'label[for="departments-impacted-input"]').click
+        find(:css, 'label[for="resource-capabilities-input"]').click
+        find(:css, 'label[for="costs-list-input"]').click
       end
 
       it 'should not render departments if all or none are selected' do
@@ -277,39 +277,39 @@ Yes')
         # none
         dp = DepartmentPractice.create!(department: @departments[1], practice: @user_practice)
 
-        visit practice_next_steps_path(practice_id: @user_practice.slug)
+        visit practice_planning_checklist_path(practice_id: @user_practice.slug)
         expect(page).to be_accessible.according_to :wcag2a, :section508
         expect(page).to have_content(@user_practice.name)
         expect(page).to have_content(@user_practice.initiating_facility.upcase)
-        expect(page).to have_current_path(practice_next_steps_path(@user_practice))
+        expect(page).to have_current_path(practice_planning_checklist_path(@user_practice))
 
         expect(page).not_to have_selector('#departments-impacted')
 
         # all
         dp = DepartmentPractice.create!(department: @departments[2], practice: @user_practice)
 
-        visit practice_next_steps_path(practice_id: @user_practice.slug)
+        visit practice_planning_checklist_path(practice_id: @user_practice.slug)
         expect(page).to be_accessible.according_to :wcag2a, :section508
         expect(page).to have_content(@user_practice.name)
         expect(page).to have_content(@user_practice.initiating_facility.upcase)
-        expect(page).to have_current_path(practice_next_steps_path(@user_practice))
+        expect(page).to have_current_path(practice_planning_checklist_path(@user_practice))
 
         expect(page).not_to have_selector('#departments-impacted')
       end
     end
 
-    describe 'commit to practice' do
-      it 'should let a user commit to a practice' do
+    describe 'adopt to practice' do
+      it 'should let a user adopt a practice' do
         login_as(@user, :scope => :user, :run_callbacks => false)
         @user_practice.update(published: true, approved: true, support_network_email: 'test@va.gov')
         # Visit an individual Practice that is approved and published
-        visit practice_next_steps_path(practice_id: @user_practice.slug)
+        visit practice_planning_checklist_path(practice_id: @user_practice.slug)
         expect(page).to be_accessible.according_to :wcag2a, :section508
         expect(page).to have_content(@user_practice.name)
         expect(page).to have_content(@user_practice.initiating_facility.upcase)
-        expect(page).to have_current_path(practice_next_steps_path(@user_practice))
+        expect(page).to have_current_path(practice_planning_checklist_path(@user_practice))
 
-        click_on('Commit to this practice')
+        click_on('Adopt this practice')
         expect(page).to have_current_path(practice_committed_path(@user_practice))
         expect(page).to be_accessible.according_to :wcag2a, :section508
         expect(page).to have_content('Thank you!')
@@ -330,9 +330,9 @@ Yes')
         @user_practice.update(published: true, approved: true, support_network_email: 'test@va.gov')
         UserPractice.create!(user: @user, practice: @user_practice, committed: true)
         # Visit an individual Practice that is approved and published
-        visit practice_next_steps_path(practice_id: @user_practice.slug)
+        visit practice_planning_checklist_path(practice_id: @user_practice.slug)
         expect(page).to be_accessible.according_to :wcag2a, :section508
-        click_on('Commit to this practice')
+        click_on('Adopt this practice')
         expect(page).to have_current_path(practice_committed_path(@user_practice))
         expect(page).to have_content("You have already committed to this practice. If you did not receive a follow-up email from the practice support team yet, please contact them at #{@user_practice.support_network_email}")
       end
