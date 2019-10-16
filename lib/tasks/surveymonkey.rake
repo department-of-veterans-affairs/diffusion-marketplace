@@ -79,7 +79,7 @@ namespace :surveymonkey do
     # Create the SurveyMonkey API client and get survey responses
     puts "==> Getting survey responses"
     client = SurveyMonkeyApi::Client.new
-    survey_responses = client.responses_with_details(167278708)
+    survey_responses = client.responses_with_details(167278708, {per_page: 100})
 
     # Download files for each respondent
     survey_responses['data'].each do |response|
@@ -104,6 +104,8 @@ namespace :surveymonkey do
         puts "done"
       end
     end
+
+    puts '***** Completed downloading survey response files *****'
 
   end
 end
