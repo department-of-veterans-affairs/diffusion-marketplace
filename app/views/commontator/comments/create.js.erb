@@ -54,7 +54,7 @@ $('.timeago').timeago();
 <% if !@comment.parent_id %>
   $('html, body').animate({
       scrollTop: $('#commontator-comment-<%= @comment.id %>').offset().top
-  }, 2000);
+  }, 500);
 <% end %>
 
 <% if params[:refresh_page] %>
