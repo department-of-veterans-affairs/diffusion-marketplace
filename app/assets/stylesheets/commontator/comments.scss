@@ -244,3 +244,12 @@ h5 {
     color: #3d4551;
   }
 }
+
+.comments-show-hide-button {
+
+  &:disabled {
+    color: #71767A;
+    background-color: initial;
+    text-decoration: line-through;
+  }
+}
