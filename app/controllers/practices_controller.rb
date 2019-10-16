@@ -1,9 +1,9 @@
 class PracticesController < ApplicationController
-  before_action :set_practice, only: [:show, :edit, :update, :destroy, :next_steps, :commit, :committed, :highlight, :un_highlight, :feature, :un_feature, :favorite]
-  before_action :set_facility_data, only: [:show, :next_steps]
+  before_action :set_practice, only: [:show, :edit, :update, :destroy, :planning_checklist, :commit, :committed, :highlight, :un_highlight, :feature, :un_feature, :favorite]
+  before_action :set_facility_data, only: [:show, :planning_checklist]
   before_action :authenticate_user!, except: [:show, :search, :index]
   before_action :can_view_committed_view, only: [:committed]
-  before_action :can_view_practice, only: [:show, :edit, :update, :destroy, :next_steps]
+  before_action :can_view_practice, only: [:show, :edit, :update, :destroy, :planning_checklist]
   before_action :can_create_practice, only: [:new, :create]
   before_action :can_edit_practice, only: [:edit, :update]
 
@@ -91,8 +91,8 @@ class PracticesController < ApplicationController
     @practices_json = practices_json(@practices)
   end
 
-  def next_steps
-
+  def planning_checklist
+    @facilities_data = facilities_json['features']
   end
 
   # GET /practices/1/committed
@@ -120,7 +120,7 @@ class PracticesController < ApplicationController
         format.html { redirect_to practice_committed_path(practice_id: @practice.slug) } if flash[:notice].blank?
         format.json { render :show, status: :created, location: practice_committed_path }
       else
-        format.html { render :next_steps, error: user_practice.errors }
+        format.html { render :planning_checklist, error: user_practice.errors }
         format.json { render json: user_practice.errors, status: :unprocessable_entity }
       end
     end
@@ -238,7 +238,7 @@ class PracticesController < ApplicationController
       warning = 'You must commit to this practice first!'
       flash[:warning] = warning
 
-      redirect_to(practice_next_steps_path(practice_id: @practice.slug), warning: warning)
+      redirect_to(practice_planning_checklist_path(practice_id: @practice.slug), warning: warning)
     end
   end
 

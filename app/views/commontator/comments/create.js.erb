@@ -11,6 +11,9 @@ var reloadWithTurbolinks = (function () {
       window.scrollTo.apply(window, scrollPosition);
       scrollPosition = null;
     }
+
+    $('.timeago').timeago();
+    $('#dm-practice-nav').sticky( {topSpacing: 56, zIndex: 10000, bottomSpacing: 200});
   })
 
   return reload

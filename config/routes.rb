@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   post '/accept_terms', action: 'accept_terms', controller: 'users', as: 'accept_terms'
 
   resources :practices do
-    get '/next-steps', action: 'next_steps', as: 'next_steps'
+    get '/planning-checklist', action: 'planning_checklist', as: 'planning_checklist'
     get '/committed', action: 'committed', as: 'committed'
     post '/commit', action: 'commit', as: 'commit'
     post '/favorite', action: 'favorite', as: 'favorite'
