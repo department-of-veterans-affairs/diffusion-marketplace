@@ -1,23 +1,28 @@
 function getEvents(element) {
-    let elemEvents = $._data(element, "events") || {};
-    const allDocEvnts = $._data(document, "events") || {};
-    for (let evntType in allDocEvnts) {
-        if (allDocEvnts.hasOwnProperty(evntType)) {
-            const evts = allDocEvnts[evntType];
-            for (let i = 0; i < evts.length; i++) {
-                if ($(element).is(evts[i].selector)) {
-                    if (elemEvents == null || elemEvents == undefined) {
-                        elemEvents = {};
+    try {
+        let elemEvents = $._data(element, "events") || {};
+        const allDocEvnts = $._data(document, "events") || {};
+        for (let evntType in allDocEvnts) {
+            if (allDocEvnts.hasOwnProperty(evntType)) {
+                const evts = allDocEvnts[evntType];
+                for (let i = 0; i < evts.length; i++) {
+                    if ($(element).is(evts[i].selector)) {
+                        if (elemEvents == null || elemEvents == undefined) {
+                            elemEvents = {};
+                        }
+                        if (!elemEvents.hasOwnProperty(evntType)) {
+                            elemEvents[evntType] = [];
+                        }
+                        elemEvents[evntType].push(evts[i]);
                     }
-                    if (!elemEvents.hasOwnProperty(evntType)) {
-                        elemEvents[evntType] = [];
-                    }
-                    elemEvents[evntType].push(evts[i]);
                 }
             }
         }
+        return elemEvents;
+    } catch(err) {
+        // this usually happens if there are no comments on the page
+        return {};
     }
-    return elemEvents;
 }
 
 $(document).on('turbolinks:load', () => {
@@ -44,13 +49,10 @@ $(document).on('turbolinks:load', () => {
 });
 
 $(document).on('ajax:before', '.new_comment', (e) => {
-    // e.preventDefault();
     const formData = $(e.target).serializeArray();
     const parentId = formData.find((d) => {
         return d.name === 'comment[parent_id]';
     }).value;
     const showChildren = !$(`#commontator-comment-${parentId}-children`).hasClass('hidden');
     $(e.target).find('input[name="show_children"]').val(showChildren);
-    console.log('here');
-    // $(e.target).submit();
 });

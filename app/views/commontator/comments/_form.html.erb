@@ -27,7 +27,9 @@
 
 <%= form_for([commontator, thread, comment], html: { id: comment.parent_id.present? ? "new_comment_#{comment.parent_id}" : 'new_comment'}, remote: !no_remote) do |form| %>
   <%= form.hidden_field :parent_id %>
-  <%= hidden_field_tag :show_children %>
+  <% if comment.parent_id.present? %>
+    <%= hidden_field_tag :show_children %>
+  <% end %>
 
   <div class="field <%= comment.parent.nil? && new_record ? 'comment-field' : 'reply-field' %>">
     <%=

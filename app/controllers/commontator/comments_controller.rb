@@ -59,8 +59,6 @@ class Commontator::CommentsController < Commontator::ApplicationController
           user_practice.update_attributes(verified_implementer: true, team_member: false) if params[:user_practice_status] == 'verified_implementer'
           user_practice.update_attributes(verified_implementer: false, team_member: true) if params[:user_practice_status] == 'team_member'
 
-          
-
           @comment.save
 
           format.js
