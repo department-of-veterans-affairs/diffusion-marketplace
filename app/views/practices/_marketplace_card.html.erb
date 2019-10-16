@@ -1,5 +1,6 @@
 <div class="radius-sm border-2px border-base-lightest">
   <%
+    featured ||= false
     provide(:styles, raw("<style>
     .#{featured ? "featured-" : ''}marketplace-card-header-#{practice.id}  {
       background-size: contain;
