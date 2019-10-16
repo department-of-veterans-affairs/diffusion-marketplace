@@ -42,106 +42,106 @@ namespace :importer do
 
       if @practice.present?
         puts "This practice already exists in the system.".white.on_blue
-        puts "Would you like to destroy and re-import this practice?. [Y/N]".white.on_blue
-        answer = STDIN.gets.chomp
-        case answer.downcase
-        when 'y'
-          destroy_practice
-        when 'yes'
-          destroy_practice
-        when 'n'
-          puts "Would you like to update/re-import this practice?. [Y/N]".white.on_blue
-          puts "WARNING: this may duplicate files, pictures, risk and mitigation pairs, etc. to the practice that were already on there. Use wisely!".yellow
-          ans = STDIN.gets.chomp
+        # puts "Would you like to destroy and re-import this practice?. [Y/N]".white.on_blue
+        # answer = STDIN.gets.chomp
+        # case answer.downcase
+        #   when 'y'
+        #     destroy_practice
+        #   when 'yes'
+        #     destroy_practice
+        #   when 'n'
+            puts "Would you like to update/re-import this practice?. [Y/N]".white.on_blue
+            puts "WARNING: this may duplicate files, pictures, risk and mitigation pairs, etc. to the practice that were already on there. Use wisely!".yellow
+            ans = STDIN.gets.chomp
           case ans.downcase
-          when 'y'
-            puts "Updating/importing practice: #{@name}".light_blue
-          when 'yes'
-            puts "Updating/importing practice: #{@name}".light_blue
-          when 'n'
-            puts "Skipping practice #{@name} entirely!".yellow
-            next
-          when 'no'
-            puts "Skipping practice #{@name} entirely!".yellow
-            next
-          else
-            puts "Skipping practice #{@name} entirely!".yellow
-            next
-          end
-        when 'yes'
-          puts "Updating/re-importing practice: #{@name}".light_blue
-        when 'n'
-          puts "Updating/re-importing practice: #{@name}".light_blue
-        else
-          puts "Skipping practice #{@name} entirely!".yellow
-          next
-        end
-      else
-        @practice = Practice.create(name: @name)
-      end
-
-
-      # Basic Practice related questions first
-      basic_answers
-      file_uploads
-      # TODO: Ask Andy if this needs to be dynamic
-      @practice.approved = true
-      @practice.published = true
-      @practice.save!
-
-      # sort all of the relational questions into their own methods for clarity.
-      practice_partners
-      va_employees
-      # developing_facility_types
-      # va_secretary_priorities
-      # practice_managements
-      categories
-      clinical_conditions
-      financial_files
-      job_positions
-      ancillary_services
-      clinical_locations
-      departments
-      video_files
-      additional_documents
-      # business_case_files
-      toolkit_files
-      checklist_files
-      publication_files
-      publications
-      # badges
-      implementation_timeline
-      risk_mitigations
-      additional_staff
-      additional_resources
-      required_training_staff
-      costs_difficulties
-      impact_photos
-      domains
-      practice_permissions
-      timelines
-      training_details
-      license_required
-      it_required
+            when 'y'
+              puts "Updating/importing practice: #{@name}".light_blue
+            when 'yes'
+              puts "Updating/importing practice: #{@name}".light_blue
+            when 'n'
+              puts "Skipping practice #{@name} entirely!".yellow
+              next
+            when 'no'
+              puts "Skipping practice #{@name} entirely!".yellow
+              next
+            else
+              puts "Skipping practice #{@name} entirely!".yellow
+              next
+           end
+        # when 'yes'
+        #   puts "Updating/re-importing practice: #{@name}".light_blue
+        # when 'n'
+        #   puts "Updating/re-importing practice: #{@name}".light_blue
+      # else
+      #   puts "Skipping practice #{@name} entirely!".yellow
+      #   next
+      # end
+    else
+      @practice = Practice.create(name: @name)
     end
-    puts "*********** Completed Importing Practices! ***********".green
-  end
 
-  task initial_featured: :environment do |t, args|
-    puts "*********** Initializing Featured Practices **********".green
-    options = {}
-    highlighted = Practice.find_by_slug('project-happen')
-    features = []
-    features << Practice.find_by_slug('flow3')
-    features << Practice.find_by_slug('vione')
-    features << Practice.find_by_slug('vha-rapid-naloxone')
 
-    highlighted.update_attributes(highlight: true) if highlighted.present?
-    features.each do |f|
-      f.update_attributes(featured: true)
-    end
-    puts "*********** Completed Featured Practices **********".green
+    # Basic Practice related questions first
+    basic_answers
+    file_uploads
+    # TODO: Ask Andy if this needs to be dynamic
+    @practice.approved = true
+    @practice.published = true
+    @practice.save!
+
+    # sort all of the relational questions into their own methods for clarity.
+    practice_partners
+    va_employees
+    # developing_facility_types
+    # va_secretary_priorities
+    # practice_managements
+    categories
+    clinical_conditions
+    financial_files
+    job_positions
+    ancillary_services
+    clinical_locations
+    departments
+    video_files
+    additional_documents
+    # business_case_files
+    toolkit_files
+    checklist_files
+    publication_files
+    publications
+    # badges
+    implementation_timeline
+    risk_mitigations
+    additional_staff
+    additional_resources
+    required_training_staff
+    costs_difficulties
+    impact_photos
+    domains
+    practice_permissions
+    timelines
+    training_details
+    license_required
+    it_required
   end
+  puts "*********** Completed Importing Practices! ***********".green
+end
+
+task initial_featured: :environment do |t, args|
+  puts "*********** Initializing Featured Practices **********".green
+  options = {}
+  highlighted = Practice.find_by_slug('project-happen')
+  features = []
+  features << Practice.find_by_slug('flow3')
+  features << Practice.find_by_slug('vione')
+  features << Practice.find_by_slug('vha-rapid-naloxone')
+
+  highlighted.update_attributes(highlight: true) if highlighted.present?
+  features.each do |f|
+    f.update_attributes(featured: true)
+  end
+  puts "*********** Completed Featured Practices **********".green
+end
 end
 
 def destroy_practice
@@ -195,6 +195,7 @@ end
 
 def practice_partners
   puts "==> Importing Practice: #{@name} Practice Partners".light_blue
+  @practice.practice_partner_practices.each(&:destroy)
   question_fields = {
       'Which of the following statements regarding Partners apply to this Practice? (Mark all that apply)': 13
   }
@@ -226,6 +227,7 @@ end
 
 def va_employees
   puts "==> Importing Practice: #{@name} Support Team".light_blue
+  @practice.va_employee_practices.each(&:destroy)
   # TODO: Innovation team
   question_fields = {
       "Who are the VA employee(s) responsible for the support of this Practice? (SupportTeam)Please separate the person's Name from their Role with a backslash (\\).": 5
@@ -349,6 +351,7 @@ end
 
 def categories
   puts "==> Importing Practice: #{@name} Categories".light_blue
+  @practice.category_practices.each(&:destroy)
   question_fields = {
       'What Primary care specialties does this Practice impact? Please mark all that apply.': 33,
       'What medical sub-specialties does this Practice impact? Please select all all that apply.': 23,
@@ -381,6 +384,7 @@ end
 
 def clinical_conditions
   puts "==> Importing Practice: #{@name} Clinical Conditions".light_blue
+  @practice.clinical_condition_practices.each(&:destroy)
   question_fields_1 = {
       'This question will allow the user to find your Practice by a medical complaint, clinical condition, or system of the body.   We are going to divide complaints, conditions, and systems anatomically.': 36
   }
@@ -426,6 +430,7 @@ end
 
 def financial_files
   puts "==> Importing Practice: #{@name} Financial Files".light_blue
+  @practice.financial_files.each(&:destroy)
   question_fields = {
       "Please upload applicable financial information such as a formal business case/return on investment (ROI).": 1
   }
@@ -445,6 +450,7 @@ end
 
 def job_positions
   puts "==> Importing Practice: #{@name} Job Positions".light_blue
+  @practice.job_position_practices.each(&:destroy)
   question_fields = {
       "Which of the following job titles or positions does this practice impact? (Please select all that apply.)": 10
   }
@@ -472,6 +478,7 @@ end
 
 def ancillary_services
   puts "==> Importing Practice: #{@name} Ancillary Services".light_blue
+  @practice.ancillary_service_practices.each(&:destroy)
   question_fields = {
       'Which of the following ancillary services does this practice impact? (Please select all that apply.)': 11
   }
@@ -499,6 +506,7 @@ end
 
 def clinical_locations
   puts "==> Importing Practice: #{@name} Clinical Locations".light_blue
+  @practice.clinical_location_practices.each(&:destroy)
   question_fields = {
       'Which of the following clinical locations does this practice impact? (Please select all that apply.)': 12
   }
@@ -526,6 +534,7 @@ end
 
 def departments
   puts "==> Importing Practice: #{@name} Departments".light_blue
+  @practice.department_practices.each(&:destroy)
   question_fields = {
       'Which departments or operational domains does this Practice impact?': 50,
   }
@@ -553,6 +562,7 @@ end
 
 def domains
   puts "==> Importing Practice: #{@name} Domains".light_blue
+  @practice.domain_practices.each(&:destroy)
   question_fields = {
       'How does this practice deliver value? Please select all that apply of the five value delivery domains below:': 5,
   }
@@ -572,6 +582,7 @@ end
 
 def video_files
   puts "==> Importing Practice: #{@name} Video Files".light_blue
+  @practice.video_files.each(&:destroy)
   question_fields = [
       'Do you have a short video that provides an explanation, summary, or testimonial about your practice? (Please paste YouTube url or other link)',
       'Enter title and description for video'
@@ -594,6 +605,7 @@ end
 
 def additional_documents
   puts "==> Importing Practice: #{@name} Additional Documents".light_blue
+  @practice.additional_documents.each(&:destroy)
   question_fields = {
       'Do you have survey results, verifiable testimonials, press releases, news articles regarding your practice that you would like to share?': :attachment,
       'Additional practice information 1': :attachment,
@@ -634,6 +646,7 @@ end
 
 def toolkit_files
   puts "==> Importing Practice: #{@name} Toolkit Files".light_blue
+  @practice.toolkit_files.each(&:destroy)
   question_fields = {
       'Does your practice have an implementation toolkit?': :attachment
   }
@@ -653,6 +666,7 @@ end
 
 def checklist_files
   puts "==> Importing Practice: #{@name} Checklist Files".light_blue
+  @practice.checklist_files.each(&:destroy)
   question_fields = {
       'Does your practice have a pre-implementation checklist?': :attachment
   }
@@ -672,6 +686,7 @@ end
 
 def publication_files
   puts "==> Importing Practice: #{@name} Publication Files".light_blue
+  @practice.publication_files.each(&:destroy)
   question_fields = {
       'Does your practice have peer-reviewed publications associated with it?': :attachment,
       'Additional publication upload 1': :attachment
@@ -692,6 +707,7 @@ end
 
 def publications
   puts "==> Importing Practice: #{@name} Publications".light_blue
+  @practice.publications.each(&:destroy)
   question_fields = {
       'Does your practice have peer-reviewed publications associated with it online? Enter url(s) if so.': 3
   }
@@ -743,6 +759,7 @@ end
 
 def implementation_timeline
   puts "==> Importing Practice: #{@name} Implementation Timeline".light_blue
+  @practice.implementation_timeline_files.each(&:destroy)
   question_fields = {
       'Do you have an implementation timeline for your practice?': :attachment
   }
@@ -762,6 +779,7 @@ end
 
 def risk_mitigations
   puts "==> Importing Practice: #{@name} Risks and Mitigations".light_blue
+  @practice.risk_mitigations.each(&:destroy)
   question_fields = {
       'What is the primary risk to implementation? Please describe how you would mitigate it.': 2,
       'What is the second risk to implementation? Please describe how you would mitigate it.': 2,
@@ -792,6 +810,7 @@ end
 
 def additional_staff
   puts "==> Importing Practice: #{@name} Additional Staff".light_blue
+  @practice.additional_staffs.each(&:destroy)
   question_fields = [
       {'What job titles are required to implement this Practice?': 5},
       {'For the job titles listed, how many hours are required per week?': 5},
@@ -810,6 +829,7 @@ end
 
 def additional_resources
   puts "==> Importing Practice: #{@name} Additional Resources".light_blue
+  @practice.additional_resources.each(&:destroy)
   question_fields = {
       'What other resources and supplies are needed for this Practice?': 5
   }
@@ -826,6 +846,7 @@ end
 
 def required_training_staff
   puts "==> Importing Practice: #{@name} Required Training Staff".light_blue
+  @practice.required_staff_trainings.each(&:destroy)
   question_fields = {
       'Who is required to take the training?': 5
   }
@@ -842,6 +863,8 @@ end
 
 def costs_difficulties
   puts "==> Importing Practice: #{@name} Costs and Difficulties".light_blue
+  @practice.costs.each(&:destroy)
+  @practice.difficulties.each(&:destroy)
   question_fields = {
       'List other Costs of Implementation that are unique to your Practice.': 6
   }
@@ -868,6 +891,9 @@ end
 
 def impact_photos
   puts "==> Importing Practice: #{@name} Human Impact Photos".light_blue
+
+  @practice.impact_photos.each(&:destroy)
+
   question_fields = [[
                          'Impact Photo 1',
                          'Please provide a title for Impact Picture 1',
@@ -992,6 +1018,7 @@ end
 
 def timelines
   puts "==> Importing Practice: #{@name} Timelines".light_blue
+  @practice.timelines.each(&:destroy)
   question_fields = {
       "During the time you just listed, what are 3 to 7 milestones that should be met during implementation? Please list with the corresponding time frame. (Note: your answers to this question will build a timeline--a key portion of the practice page for your practice.)": 14
   }
