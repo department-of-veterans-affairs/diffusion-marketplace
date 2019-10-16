@@ -49,11 +49,13 @@ var reloadWithTurbolinks = (function () {
 
 $('.timeago').timeago();
 
-<% if !@comment.parent_id %>
-  Turbolinks.visit('#commontator-comment-<%= @comment.id %>')
-<% end %>
-
 <%= javascript_proc %>
+
+<% if !@comment.parent_id %>
+  $('html, body').animate({
+      scrollTop: $('#commontator-comment-<%= @comment.id %>').offset().top
+  }, 2000);
+<% end %>
 
 <% if params[:refresh_page] %>
   reloadWithTurbolinks();
