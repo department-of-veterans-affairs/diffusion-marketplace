@@ -1,0 +1,171 @@
+<%= render 'breadcrumbs' %>
+
+<section class="margin-top-7 margin-bottom-6" id="next-steps-top">
+  <div class="grid-container">
+    <%= render "shared/messages" %>
+    <h1 class="font-sans-3xl margin-bottom-205">Plan my practice adoption</h1>
+    <p class="margin-0">
+      Are you ready to build a team and adopt this practice at your facility? Here is a step-by-step checklist to lead you through the process and give you the best chance of success.
+    </p>
+  </div>
+</section>
+
+
+<!-- Checklist -->
+
+<section>
+  <%= form_for :commit, url: {action: :commit }, method: :post do %>
+    <!--  <form class="usa-form-large" action="<%#= practice_commit_path(practice_id: @practice.slug) %>" method="post">-->
+    <div class="grid-container margin-bottom-6">
+      <div class="grid-row">
+        <div class="grid-col-7 margin-right-6">
+          <div class="grid-container padding-x-0">
+            <div class="grid-row">
+              <div class="grid-col-3">
+                <h2 class="font-sans-xl margin-bottom-6 margin-top-0 margin-left-0">
+                  Checklist
+                </h2>
+              </div>
+              <div class="grid-col-9">
+                <div class="margin-bottom-6 margin-top-0 margin-left-2" style="line-height: 3rem;">
+                  <a target="_blank"
+                     href="mailto:?subject=<%= email_checklist_subject(@practice) %>&body=<%= email_checklist_body(@practice) %>" class="link-primary">
+                    <i class="fas fa-external-link-alt"></i>
+                    Share Checklist
+                  </a>
+                </div>
+                
+              </div>
+            </div>
+            
+          </div>
+          <!-- <button type="button" id="print-checklist-button" role="button" class="dm-button-secondary margin-bottom-205">Print Checklist
+          </button> -->
+
+          <fieldset class="usa-fieldset">
+            <legend class="usa-sr-only">Implementation checklist</legend>
+
+            <!-- Implementation team -->
+            <div id="implementation-team" class="margin-bottom-3">
+              <div class="usa-checkbox">
+                <input class="usa-checkbox__input" id="team" type="checkbox" name="checklist" value="implementation team">
+                <label class="usa-checkbox__label margin-bottom-1" for="team"><span class="fw-bold">Implementation team:</span></label>
+                <p class="padding-left-4 margin-top-0 margin-bottom-4">
+                  You can’t do this alone! A team is needed to get it done. Here are the departments and titles of specific
+                  individuals that are needed to work together to implement the practice successfully. Ideal team size is 5
+                  to 10 members.
+                </p>
+              </div>
+              <div class="padding-left-9">
+                <% @practice.additional_staffs.each do |as| %>
+                  <div class="usa-checkbox margin-bottom-205">
+                    <input class="usa-checkbox__input" id="additional-staff-<%= as.id %>" type="checkbox" name="checklist" value="additional-staff-<%= as.id %>">
+                    <label class="usa-checkbox__label margin-bottom-1" for="additional-staff-<%= as.id %>"><span class="fw-bold"><%= as.title %></span></label>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+
+            <!-- Practice champion -->
+            <%= render 'next_steps_checkbox', label: 'Practice champion', sectionId: 'practice-champion', noList: true do %>
+              <p class="padding-left-4 margin-0">
+                Working Group needs to select a dynamic, charismatic individual who will be able to promote the practice,
+                recruit additional team members, and illicit administrative support.
+              </p>
+            <% end %>
+            <!-- -->
+
+            <!-- Permissions required -->
+            <% if @practice.practice_permissions.any? %>
+              <%= render 'next_steps_checkbox', label: 'Permissions required', sectionId: 'permissions-required' do %>
+                <% @practice.practice_permissions.each do |permission| %>
+                  <li><%= permission.description %></li>
+                <% end %>
+              <% end %>
+            <% end %>
+            <!-- -->
+
+            <!-- IT required -->
+            <% if @practice.it_required %>
+            <%= render 'next_steps_checkbox', label: 'Information technology department required', noList: true, sectionId: 'it-department' %>
+            <% end %>
+            <!-- -->
+
+            <!-- Departments impacted -->
+            <% if @practice.departments.any? && @practice.departments.find_by(short_name: 'all').blank? && @practice.departments.find_by(short_name: 'none').blank?
+            %>
+              <%= render 'next_steps_checkbox', label: 'Departments', sectionId: 'departments-impacted' do %>
+                <% @practice.departments.each do |d| %>
+                      <li><%= d.name %></li>
+                    <% end %>
+              <% end %>
+            <% end %>
+            <!-- -->
+
+            <!-- Resource capabilities -->
+            <% if @practice.additional_resources.any? %>
+              <%= render 'next_steps_checkbox', label: 'Resources', sectionId: 'resource-capabilities' do %>
+                <% @practice.additional_resources.each do |r| %>
+                  <li><%= r.description %></li>
+                <% end %>
+              <% end %>
+            <% end %>
+            <!-- -->
+
+            <!-- Costs list -->
+            <% if @practice.costs.any? %>
+              <%= render 'next_steps_checkbox', label: 'Cost', sectionId: 'costs-list' do %>
+                <% @practice.costs.each do |c| %>
+                  <li><%= c.description %></li>
+                <% end %>
+              <% end %>
+            <% end %>
+            <!-- -->
+
+            <!-- Willing to provide feedback -->
+            <%= render 'next_steps_checkbox', label: 'Willing to provide feedback', sectionId: 'feedback-section', noList: true do %>
+              <p class="padding-left-4 margin-0">
+                Feedback on the implementation process and sharing the resulting data once the practice is implemented are
+                a requirement/expected.
+              </p>
+            <% end %>
+            <!-- -->
+          </fieldset>
+
+          <h2 class="font-sans-xl margin-bottom-205">Agree to terms</h2>
+          <p>
+            By clicking the button below, you agree:
+            <ul>
+              <li>to signify the checklist is complete and your team is ready to adopt the practice</li>
+              <li>to provide feedback on the practice adoption process</li>
+              <li>to share result data after the practice is implemented</li>
+            </ul>
+          </p>
+          <p>
+            <button role="button" class="usa-button-primary">Adopt this practice</button>
+          </p>
+          <p>
+            The VA will be notified of your plan to implement this practice and the practice support team will message you to start working on the next implementation steps.
+          </p>
+        </div>
+        <div class="tablet:grid-col-4">
+          Selected practice:
+          <div class='practice-card-outline'>
+            <div class='flex-column display-flex practice-card-list padding-x-105 padding-y-2' style='position: relative;'>
+              <%= render partial: 'marketplace_card', locals: {practice: @practice} %>
+            </div>
+          </div>
+          <div class="margin-top-auto"></div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <!--  </form>-->
+  <div class="grid-container">
+    <p>
+      <a href="#next-steps-top" class='link-primary'>Return to top</a>
+    </p>
+  </div>
+</section>
+
+
