@@ -299,7 +299,7 @@ Yes')
     end
 
     describe 'adopt to practice' do
-      it 'should let a user adopt a practice' do
+      fit 'should let a user adopt a practice' do
         login_as(@user, :scope => :user, :run_callbacks => false)
         @user_practice.update(published: true, approved: true, support_network_email: 'test@va.gov')
         # Visit an individual Practice that is approved and published
@@ -313,7 +313,7 @@ Yes')
         expect(page).to have_current_path(practice_committed_path(@user_practice))
         expect(page).to be_accessible.according_to :wcag2a, :section508
         expect(page).to have_content('Thank you!')
-        expect(page).to have_content('You\'ve completed the checklist for this practice. A member of the practice support team will follow up with you shortly.')
+        expect(page).to have_content('A member of the practice support team will follow up with you shortly.')
       end
 
       it 'should not let a user commit to a practice' do
