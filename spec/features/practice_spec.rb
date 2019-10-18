@@ -313,7 +313,7 @@ Yes')
         expect(page).to have_current_path(practice_committed_path(@user_practice))
         expect(page).to be_accessible.according_to :wcag2a, :section508
         expect(page).to have_content('Thank you!')
-        expect(page).to have_content('You\'ve completed the checklist for this practice. A member of the practice support team will follow up with you shortly.')
+        expect(page).to have_content('A member of the practice support team will follow up with you shortly.')
       end
 
       it 'should not let a user commit to a practice' do

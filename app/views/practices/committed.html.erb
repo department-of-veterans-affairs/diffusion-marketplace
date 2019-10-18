@@ -4,10 +4,9 @@
   <section class="margin-top-7 margin-bottom-6">
     <div class="grid-container">
       <%= render "shared/messages" %>
-      <h1 class="font-sans-lg margin-bottom-205">Thank you!</h1>
-      <p class="margin-0 margin-bottom-9">You've completed the checklist for this practice. A member of the practice support team will
-        follow up with you shortly.</p>
-      <%= link_to 'Return to practice', practice_path(@practice), class: 'dm-button-link' %>
+      <h1 class="font-sans-2xl margin-bottom-205">Thank you!</h1>
+      <p class="margin-0 margin-bottom-9 font-ui-md">A member of the practice support team will follow up with you shortly.</p>
+      <%= link_to 'Return to practice page', practice_path(@practice), class: 'usa-button usa-button--big' %>
     </div>
   </section>
 </div>
