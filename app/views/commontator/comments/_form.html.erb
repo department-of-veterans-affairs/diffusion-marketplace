@@ -33,7 +33,7 @@
 
   <div class="field <%= comment.parent.nil? && new_record ? 'comment-field' : 'reply-field' %>">
     <%=
-      form.text_area :body, rows: '7', placeholder: 'Type your comment here', 
+      form.text_area :body, rows: '7', aria: { label: 'comment text area' }, placeholder: 'Type your comment here', 
         class: comment.parent.nil? && new_record ? 'comment-textarea' : 'reply-textarea', id: new_record ?
         comment.parent.nil? ? "commontator-thread-#{@commontator_thread.id}-new-comment-body" :
                               "commontator-comment-#{comment.parent.id}-reply" :
