@@ -13,7 +13,7 @@ describe 'Comments', type: :feature do
             # Login as an authenticated user and visit the practice page
             login_as(@user1, :scope => :user, :run_callbacks => false)
             visit practice_path(@practice)
-            # expect(page).to be_accessible.according_to :wcag2a, :section508
+            expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).to have_content(@practice.name)
             expect(page).to have_current_path(practice_path(@practice))
             expect(page).to have_css('.commontator')
@@ -23,7 +23,7 @@ describe 'Comments', type: :feature do
             #Login as an authenticated user, visit the practice page, and create a comment
             login_as(@user2, :scope => :user, :run_callbacks => false)
             visit practice_path(@practice)
-            # expect(page).to be_accessible.according_to :wcag2a, :section508
+            expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).to have_content(@practice.name)
             expect(page).to have_css('.commontator')
             fill_in('comment[body]', with: 'Hello world')
@@ -35,24 +35,57 @@ describe 'Comments', type: :feature do
         it 'Should not allow unauthenticated users to view or post comments' do
             # Try to visit a practice page without being logged in
             visit practice_path(@practice)
-            # expect(page).to be_accessible.according_to :wcag2a, :section508
+            expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).to have_content(@practice.name)
             expect(page).to have_current_path(practice_path(@practice))
             expect(page).to have_content('Login to see full practice')
         end
     end
 
-    # describe 'Commenting flow' do
-    #     before do
-    #         login_as(@user2, :scope => :user, :run_callbacks => false)
-    #         visit practice_path(@practice)
-    #         expect(page).to have_content(@practice.name)
-    #         expect(page).to have_current_path(practice_path(@practice))
-    #         expect(page).to have_css('.commontator')
-    #     end
+    describe 'Commenting flow' do
+        before do
+            login_as(@user2, :scope => :user, :run_callbacks => false)
+            visit practice_path(@practice)
+            expect(page).to have_content(@practice.name)
+            expect(page).to have_current_path(practice_path(@practice))
+            expect(page).to have_css('.commontator')
+        end
 
-    #     it 'Should allow a user to edit their existing comment' do
+        it 'Should allow a user to edit their existing comment' do
+            fill_in('comment[body]', with: 'Hello world')
+            click_button('commit')
+            visit practice_path(@practice)
+            find("#commontator-comment-1-edit").click
+            fill_in('commontator-comment-1-edit-body', with: 'This is a test.')
+            click_button('Edit')
+            expect(page).to have_content('edited')
+        end
 
-    #     end
-    # end
+        it 'Should allow a user to delete their existing comment' do
+            fill_in('comment[body]', with: 'Hello world')
+            click_button('commit')
+            visit practice_path(@practice)
+            find("#commontator-comment-1-delete").click
+            page.accept_alert
+            expect(page).to have_content('deleted')
+        end
+
+        it 'Should allow a user to reply to an existing comment' do
+            fill_in('comment[body]', with: 'Hello world')
+            click_button('commit')
+            visit practice_path(@practice)
+            click_link('Reply')
+            fill_in('commontator-comment-1-reply', with: 'Hey!')
+            click_button('Reply')
+            expect(page).to have_content('View 1 reply')
+        end
+
+        it 'Should display the verified implementer tag if the user selects the "I am currently implementing this practice" radio button' do
+            
+            find('label', text: 'I am currently implementing this practice').click
+            fill_in('comment[body]', with: 'Hello world')
+            click_button('commit')
+            expect(page).to have_content('Verified implementer')
+        end
+    end
 end
