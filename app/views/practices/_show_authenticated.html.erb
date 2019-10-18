@@ -94,7 +94,7 @@
                 <i class="<% if current_user.favorite_practice_ids.include?(@practice.id) %>fas text-secondary<% else %>far text-primary<% end %> fa-heart favorite-icon-<%= @practice.id %> text-no-underline padding-right-105"></i>
                 <span class="text-primary text-no-underline favorite-practice-link-text"><% if current_user.favorite_practice_ids.include?(@practice.id) %>Remove from your favorites<% else %>Add to your favorites<% end %></span>
               </a>
-              <a target="_blank" aria-label="Share <%= @practice.name %>" aria-hidden="true" href="mailto:?subject=<%= email_practice_subject(@practice) %>&body=<%= email_practice_body(@practice) %>" class="text-no-underline">
+              <a target="_blank" aria-label="Share <%= @practice.name %>" tabindex="-1" aria-hidden="true" href="mailto:?subject=<%= email_practice_subject(@practice) %>&body=<%= email_practice_body(@practice) %>" class="text-no-underline">
                 <span class="text-no-underline text-primary"><i class="fas fa-external-link-alt padding-right-105"></i>Share link</span>
               </a>
             </div>
