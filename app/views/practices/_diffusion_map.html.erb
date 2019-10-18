@@ -1,0 +1,16 @@
+<% if ENV['GOOGLE_API_KEY'].present? %>
+  <% provide :head_tags do %>
+    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+      <%= render partial: 'maps/marker_icons', formats: [:js] %>
+      <%= render partial: 'maps/practice_map_data', formats: [:js] %>
+    <% end %>
+    <%= javascript_include_tag 'diffusion_history/practice_map', 'data-turbolinks-track': 'reload' %>
+  <% end %>
+  <section class="grid-container margin-bottom-6" id="map-of-diffusion">
+    <h2>Map of diffusion</h2>
+    <div class="width-full position-relative">
+      <div id="map" style="width: 100%; height: 364px;"></div>
+    </div>
+  </section>
+
+<% end %>
