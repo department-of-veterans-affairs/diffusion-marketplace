@@ -299,7 +299,7 @@ Yes')
     end
 
     describe 'adopt to practice' do
-      fit 'should let a user adopt a practice' do
+      it 'should let a user adopt a practice' do
         login_as(@user, :scope => :user, :run_callbacks => false)
         @user_practice.update(published: true, approved: true, support_network_email: 'test@va.gov')
         # Visit an individual Practice that is approved and published
