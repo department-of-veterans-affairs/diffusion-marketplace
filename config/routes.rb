@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   get '/terms_and_conditions' => 'users#terms_and_conditions'
   post '/accept_terms', action: 'accept_terms', controller: 'users', as: 'accept_terms'
 
-  resources :practices do
+  resources :practices, except: :index do
     get '/planning-checklist', action: 'planning_checklist', as: 'planning_checklist'
     get '/committed', action: 'committed', as: 'committed'
     post '/commit', action: 'commit', as: 'commit'

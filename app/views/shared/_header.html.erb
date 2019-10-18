@@ -65,9 +65,6 @@
           <li class="usa-nav__secondary-item">
             <a href="/partners" class="text-white-important">Partners</a>
           </li>
-          <li class="usa-nav__secondary-item">
-            <a href="/practices" class="text-white-important">Practices<span class="usa-sr-only">Practices</span></a>
-          </li>
           <% if user_signed_in? %>
             <li class="usa-nav__secondary-item">
               <%= link_to(user_path(current_user), class: 'text-white-important') do %>

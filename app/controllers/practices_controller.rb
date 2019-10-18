@@ -10,8 +10,9 @@ class PracticesController < ApplicationController
   # GET /practices
   # GET /practices.json
   def index
-    @practices = Practice.where(approved: true, published: true).order(name: :asc)
-    @facilities_data = facilities_json['features']
+    # @practices = Practice.where(approved: true, published: true).order(name: :asc)
+    # @facilities_data = facilities_json['features']
+    redirect_to root_path
   end
 
   # GET /practices/1
