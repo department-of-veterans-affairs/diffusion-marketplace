@@ -5,8 +5,10 @@
 | Environment  | url  |
 |---|---|
 | development  | http://localhost:3200  |  
-| staging  | http://va-diffusion-marketplace-staging.efgnfj8pjn.us-west-2.elasticbeanstalk.com/  |  
+| ftl staging  | http://va-diffusion-marketplace-staging.efgnfj8pjn.us-west-2.elasticbeanstalk.com/  |  
 | ftl production | https://marketplace.vaftl.us |
+| vaec staging | https://staging.marketplace.va.gov |
+| vaec production | https://marketplace.va.gov |
 ### Custom Rails Tasks:
 | Task command  | description  |
 |---|---|
