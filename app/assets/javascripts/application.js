@@ -42,3 +42,4 @@
 //= require comment
 //= require richmarker
 //= require infowindow
+//= require reportAbuse

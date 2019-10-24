@@ -111,6 +111,58 @@
       <% end %>
     </div>
   </div>
+  <%# Div used to make modal background dark %>
+  <div id="report-abuse-modal-background" class="hidden"></div>
+  <div class="grid-col-auto">
+    <div class="fas fa-chevron-down padding-y-2px padding-x-1 text-middle report-abuse-container" id="comment-<%= comment.id %>-report-abuse-container">
+      <div class="report-abuse-modal width-mobile-lg hidden padding-top-1 font-family-sans" id="comment-<%= comment.id %>-report-abuse-modal">
+        <div class="bg-white radius-md">
+          <div class="bg-secondary text-white radius-top-md">
+              <h2 class="margin-0 padding-3">Report this comment</h2>
+          </div>
+          <div <%#form%>class="padding-3">
+            <div class="usa-fieldset" role="radiogroup">
+              <legend class="usa-legend font-sans-md text-normal margin-bottom-2">I am reporting this comment because it:</legend>
+              <div class="usa-radio">
+                <%= radio_button_tag 'report_abuse_option', :_1, true, class: 'usa-radio__input', id: 'option_1' %>
+                <%= label_tag 'report_abuse_option_1', 'Text for selected button', class: 'usa-radio__label', for: 'option_1' %>
+              </div>
+              <div class="usa-radio">
+                <%= radio_button_tag 'report_abuse_option', :_2, false, class: 'usa-radio__input', id: 'option_2' %>
+                <%= label_tag 'report_abuse_option_2', 'Text for unselected button', class: 'usa-radio__label', for: 'option_2' %>
+              </div>
+              <div class="usa-radio">
+                <%= radio_button_tag 'report_abuse_option', :_3, false, class: 'usa-radio__input', id: 'option_3' %>
+                <%= label_tag 'report_abuse_option_3', 'Text for unselected button', class: 'usa-radio__label', for: 'option_3' %>
+              </div>
+              <div class="usa-radio">
+                <%= radio_button_tag 'report_abuse_option', :_4, false, class: 'usa-radio__input', id: 'option_4' %>
+                <%= label_tag 'report_abuse_option_4', 'Text for unselected button', class: 'usa-radio__label', for: 'option_4' %>
+              </div>
+            </div>
+            <div class="text-right">
+              <button class="usa-button usa-button--outline margin-0 padding-2 margin-top-3 margin-right-05 report-abuse-cancel">Cancel</button>
+              <button type="submit" class="usa-button margin-0 padding-2 report-abuse-submit">Submit report</button>
+            </div>
+          </<%#form%>div>
+          <%#<%= form_tag('', method: :post) do |f| %>
+          <%#  <div class="usa-fieldset" role="radiogroup">
+              <div class="usa-radio">
+                <%= f.radio_button_tag 'comment-abuse-option', class: 'usa-radio__input', id: "" %>
+          <%#      <%= f.label_tag '', 'option 1', class: 'usa-radio__label', for: "" %>
+          <%#    </div>
+              <div class="usa-radio">
+                <%= f.radio_button_tag 'comment-abuse-option', class: 'usa-radio__input', id: "" %>
+          <%#      <%= f.label_tag '', 'option 2', class: 'usa-radio__label', for: "" %>
+          <%#    </div>
+            </div>
+            <%= f.button_tag 'Cancel', class: 'usa-button usa-button--outline margin-0 padding-2 margin-bottom-4 report-abuse-cancel ' %>
+          <%#  <%= f.submit_tag 'Submit report', class: 'usa-button margin-0 padding-2 margin-bottom-4 ' %>
+          <%#<% end %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="replies-container margin-left-9 grid-row">
