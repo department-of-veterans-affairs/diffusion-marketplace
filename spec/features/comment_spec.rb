@@ -75,17 +75,29 @@ describe 'Comments', type: :feature do
             click_button('commit')
             visit practice_path(@practice)
             click_link('Reply')
-            fill_in('commontator-comment-1-reply', with: 'Hey!')
-            click_button('Reply')
+            fill_in('commontator-comment-1-reply', with: 'Hey, how are you?')
+            find("#submit-reply").click
+            visit practice_path(@practice)
             expect(page).to have_content('View 1 reply')
+            expect(page).to have_content('2 comments')
         end
 
         it 'Should display the verified implementer tag if the user selects the "I am currently implementing this practice" radio button' do
-            
             find('label', text: 'I am currently implementing this practice').click
             fill_in('comment[body]', with: 'Hello world')
             click_button('commit')
             expect(page).to have_content('Verified implementer')
+        end
+
+        it 'Should show the amount of likes each comment or reply has' do
+            fill_in('comment[body]', with: 'Hello world')
+            click_button('commit')
+            visit practice_path(@practice)
+            logout(@user2)
+            login_as(@user1, :scope => :user, :run_callbacks => false)
+            visit practice_path(@practice)
+            find(".like").click
+            expect(page).to have_css('.comment-1-1-vote')
         end
     end
 end

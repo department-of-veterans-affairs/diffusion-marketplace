@@ -1,3 +1,5 @@
+<%= comments_count = @practice.commontator_thread.comments.count %>
+
 <%= render 'breadcrumbs' %>
 <!-- "Practice name" section -->
 
@@ -20,7 +22,7 @@
                             <div class="height-2px border border-base-lightest flex-fill"></div>
                         </div>
                         <h4 class="font-body-md">
-                            <span><%= @practice.commontator_thread.comments.count %></span> <span><%= @practice.commontator_thread.comments.count > 1 || @practice.commontator_thread.comments.count == 0 ? 'comments' : 'comment' %></span>
+                            <span><%= comments_count %></span> <span><%= comments_count > 1 || comments_count == 0 ? 'comments' : 'comment' %></span>
                         </h4>
                     </div>
                     <div>

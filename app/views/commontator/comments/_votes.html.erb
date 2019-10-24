@@ -34,7 +34,7 @@
   </span>
   <% end %>
 
-  <span id="commontator-comment-<%= comment.id %>-vote-count" class="vote-count">
+  <span id="commontator-comment-<%= comment.id %>-vote-count" class="vote-count comment-<%= comment.id %>-<%= comment.cached_votes_up %>-vote<%=comment.cached_votes_up == 1 ? '' : 's' %>">
     <% config = thread.config %>
     <%= config.vote_count_proc.call(thread, comment.cached_votes_up, comment.cached_votes_down) %>
   </span>
