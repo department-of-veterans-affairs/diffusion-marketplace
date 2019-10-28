@@ -1,7 +1,7 @@
 @import "../variables/colors";
 
 /* The Modal (background) */
-.modal, .terms-modal {
+.modal, .terms-modal, .report-abuse-modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 100000; /* Sit on top */
@@ -16,7 +16,7 @@
 }
 
 /* Modal Content */
-.modal-content, .terms-modal-content {
+.modal-content, .terms-modal-content, .report-abuse-modal-content {
   position: relative;
   background-color: #fefefe;
   margin: auto;
@@ -30,7 +30,7 @@
   animation-duration: 0.4s
 }
 
-.terms-modal {
+.terms-modal, .report-abuse-modal {
   display: block;
   padding-top: 120px;
 

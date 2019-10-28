@@ -61,6 +61,8 @@ $('.timeago').timeago();
   }, 500);
 <% end %>
 
+$('#practice-comment-count').text(<%= @comment.thread.comments.count %>)
+
 <%= javascript_proc %>
 
 <% if params[:refresh_page] %>

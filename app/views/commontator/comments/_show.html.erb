@@ -111,37 +111,18 @@
       <% end %>
     </div>
   </div>
-  <%# Div used to make modal background dark %>
-  <div id="report-abuse-modal-background" class="report-abuse-modal-background hidden"></div>
   <div class="grid-col-auto">
     <div class="fas fa-chevron-down padding-y-2px padding-x-1 text-middle report-abuse-container" id="comment-<%= comment.id %>-report-abuse-container">
-      <div class="report-abuse-modal width-mobile-lg hidden padding-top-1 font-family-sans" id="comment-<%= comment.id %>-report-abuse-modal">
-        <div class="bg-white radius-md">
+      <div class="report-abuse-modal hidden font-family-sans" id="comment-<%= comment.id %>-report-abuse-modal">
+        <div class="bg-white radius-md report-abuse-modal-content width-tablet">
           <div class="bg-secondary text-white radius-top-md">
-              <h2 class="margin-0 padding-3">Report this comment</h2>
+              <h2 class="margin-0 padding-3">Report a comment</h2>
           </div>
           <div <%#form%>class="padding-3">
-            <div class="usa-fieldset" role="radiogroup">
-              <legend class="usa-legend font-sans-md text-normal margin-bottom-2">I am reporting this comment because it:</legend>
-              <div class="usa-radio">
-                <%= radio_button_tag 'report_abuse_option', :_1, true, class: 'usa-radio__input', id: 'option_1' %>
-                <%= label_tag 'report_abuse_option_1', 'Text for selected button', class: 'usa-radio__label', for: 'option_1' %>
-              </div>
-              <div class="usa-radio">
-                <%= radio_button_tag 'report_abuse_option', :_2, false, class: 'usa-radio__input', id: 'option_2' %>
-                <%= label_tag 'report_abuse_option_2', 'Text for unselected button', class: 'usa-radio__label', for: 'option_2' %>
-              </div>
-              <div class="usa-radio">
-                <%= radio_button_tag 'report_abuse_option', :_3, false, class: 'usa-radio__input', id: 'option_3' %>
-                <%= label_tag 'report_abuse_option_3', 'Text for unselected button', class: 'usa-radio__label', for: 'option_3' %>
-              </div>
-              <div class="usa-radio">
-                <%= radio_button_tag 'report_abuse_option', :_4, false, class: 'usa-radio__input', id: 'option_4' %>
-                <%= label_tag 'report_abuse_option_4', 'Text for unselected button', class: 'usa-radio__label', for: 'option_4' %>
-              </div>
-            </div>
+            <legend class="usa-legend font-sans-md text-normal margin-bottom-2">I am reporting the following comment for being inappropriate:</legend>
+            <p class="text-normal text-base">"<%= comment.body %>"</p>
             <div class="text-right">
-              <button class="usa-button usa-button--outline margin-0 padding-2 margin-top-3 margin-right-05 report-abuse-cancel">Cancel</button>
+              <button class="usa-button usa-button--outline margin-0 padding-2 margin-top-5 margin-right-05 report-abuse-cancel">Cancel</button>
               <button type="submit" class="usa-button margin-0 padding-2 report-abuse-submit">Submit report</button>
             </div>
           </<%#form%>div>
