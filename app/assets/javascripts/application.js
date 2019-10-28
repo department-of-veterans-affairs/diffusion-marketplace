@@ -42,3 +42,4 @@
 //= require richmarker
 //= require infowindow
 //= require reportAbuse
+//= require turbolinksScrollTop
