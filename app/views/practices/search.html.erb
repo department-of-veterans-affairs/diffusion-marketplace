@@ -1,3 +1,8 @@
+<% provide :head_tags do %>
+  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    <%= render partial: 'search', formats: [:js] %>
+  <% end %>
+<% end %>
 
 <div id="search-page">
 
@@ -32,11 +37,6 @@
       <p class="margin-bottom-2" id="results-summary"></p>
       <div id="search-results" class="margin-bottom-6"></div>
     </section>
-
-    <script>
-        var practices = <%= @practices_json %>;
-    </script>
-
   </div>
 
   <div class="grid-container margin-bottom-105">

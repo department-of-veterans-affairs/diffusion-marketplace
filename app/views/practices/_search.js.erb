@@ -1,3 +1,6 @@
+var practices = <%= @practices_json %>;
+var results = null;
+
 function searchPracticesPage() {
     // Skip if not the search page
     if (location.pathname !== '/search') return;
@@ -11,9 +14,9 @@ function searchPracticesPage() {
         query = query.trim();
 
         // Set variables
-        let resultsHTML = '';
-        const resultsSummary = document.querySelector('#results-summary');
-        const searchResults = document.querySelector('#search-results');
+        var resultsHTML = '';
+        var resultsSummary = document.querySelector('#results-summary');
+        var searchResults = document.querySelector('#search-results');
 
         // If the query is empty or less than three characters, remove any previous results from page
         if (query === '' || query.length < 3) {
@@ -23,53 +26,61 @@ function searchPracticesPage() {
         }
 
         // Run the search query
-        const results = fuse.search(query);
+        results = fuse.search(query);
+
+        console.log(results.length)
 
         // Print the number of results for the query
-        resultsSummary.innerHTML = `${results.length} result${results.length === 1 ? '' : 's'} for "${query}":`;
+        resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? '' : 's') + ' for ' + query + ':';
         resultsHTML += '<hr>';
 
         // Highlight results (only Fuse.js matching)
-        results.forEach((result) => {
+        results.forEach(function(result) {
             highlighter(result);
         });
 
         // Template out the search results
-        results.forEach((result) => {
-            resultsHTML +=
-                `<div class="grid-row search-row">
-          <div class="tablet:grid-col-4">
-            <div class="img-box margin-top-2">
-              <a href="/practices/${result.item.slug}" aria-label="Go to ${result.item.name}">
-              <div class="img img-box-content" style="${result.item.image ? `background: url('${result.item.image}') transparent` : `background: transparent`}; background-size: contain; background-repeat: no-repeat; background-position: center;">
-              
-                </div>
-                </a>
-            </div>             
-          </div>
-          <div class="tablet:grid-col-8">
-            <h2 class="margin-top-1"><a href="/practices/${result.item.slug}">${result.item.tagline}</a></h2>
-              <h3 class="truncate-text two-lines">${result.item.description}</h3>
-              <p class="practice-details">${result.item.name} | <span class="uppercase">${result.item.date_initiated}</span> | <span class="uppercase">${result.item.initiating_facility}</span></p>
-              <p class="truncate-text five-lines">${result.item.summary}</p>
+        results.forEach(function(result) {
+            var background = result.item.image ? 'background: url(' + result.item.image + ')' + ' transparent; background-repeat: no-repeat; background-position: center;' : 'background: transparent; background-size: contain; background-repeat: no-repeat; background-position: center; ';
+            var favoriteButtonIcon = result.item.user_favorited ? 'fas text-secondary' : 'far text-base';
+            var favoriteButton = 
+                '<a aria-label="Favorite ' + result.item.name + '" tabindex="-1" aria-hidden="true" class="featured-favorite-practice-button" id="favorite-button-' + result.item.id +'" data-remote="true" rel="nofollow" data-method="post" href="/practices/' + result.item.slug + '/favorite.js">' +
+                    '<i class="' + favoriteButtonIcon + ' fa-heart favorite-icon-' + result.item.id + ' text-no-underline"></i>' +
+                '</a>';
+            resultsHTML += 
+            '<div class="grid-row search-row">' +
+            '<div class="tablet:grid-col-4">' +
+                '<div class="img-box margin-top-2">' +
+                favoriteButton +
+                '<a href="/practices/' + result.item.slug + '" aria-label="Go to ' + result.item.name + '">' +
+                '<div class="img img-box-content" style="' + background + '">' + 
+                    '</div>' +
+                    '</a>' +
+                '</div>' +            
+            '</div>' +
+            '<div class="tablet:grid-col-8">' +
+                '<h2 class="margin-top-1"><a href="/practices/' + result.item.slug + '">' + result.item.tagline + '</a></h2>' +
+                '<h3 class="truncate-text two-lines">' + result.item.description + '</h3>' +
+                '<p class="practice-details">' + result.item.name + ' | <span class="uppercase">' + result.item.date_initiated + '</span> | <span class="uppercase">' + result.item.initiating_facility + '</span></p>' +
+                '<p class="truncate-text five-lines">' + result.item.summary + '</p>' +
 
-              <!-- Uncomment to show Fuse.js diagnostics -->
-              <!--
-                <h3>Fuse.js highlighted character matching</h3>
-                <p class="">${result.highlight}</p>
-                <p><b>Score: ${result.score}</b></p>
-              -->
+                '<!-- Uncomment to show Fuse.js diagnostics -->' +
+                '<!--' +
+                    '<h3>Fuse.js highlighted character matching</h3>' +
+                    '<p class="">' + result.highlight + '</p>' +
+                    '<p><b>Score: ' + result.score + '</b></p>' +
+                '-->' +
 
-          </div>
-        </div>
-        <hr>`;
+            '</div>' +
+            '</div>' +
+            '<hr>';
         });
 
         // Print results to the page
         searchResults.innerHTML = resultsHTML;
 
         // Highlight search results where exact keyword matches
-        const mark = new Mark('#search-results');
+        var mark = new Mark('#search-results');
         mark.mark(query);
 
         if (!$('#results-breadcrumb').length) {
@@ -82,13 +93,13 @@ function searchPracticesPage() {
     // Adapted from: https://github.com/brunocechet/Fuse.js-with-highlight
     function highlighter(resultItem) {
         resultItem.matches.forEach((matchItem) => {
-            let text = resultItem.item[matchItem.key];
-            let result = [];
-            let matches = [].concat(matchItem.indices); // limpar referencia
-            let pair = matches.shift();
+            var text = resultItem.item[matchItem.key];
+            var result = [];
+            var matches = [].concat(matchItem.indices); // limpar referencia
+            var pair = matches.shift();
 
-            for (let i = 0; i < text.length; i++) {
-                let char = text.charAt(i);
+            for (var i = 0; i < text.length; i++) {
+                var char = text.charAt(i);
                 if (pair && i === pair[0]) {
                     result.push('<mark>')
                 }
@@ -112,7 +123,7 @@ function searchPracticesPage() {
     // Set up search
 
     // Set Fuse.js search options
-    const search_options = {
+    var search_options = {
         keys: ['name', 'tagline', 'description', 'summary', 'initiating_facility'],
         minMatchCharLength: 3,
         tokenize: true,
@@ -128,14 +139,14 @@ function searchPracticesPage() {
     };
 
     // Create a search context with practices and search options
-    const fuse = new Fuse(practices, search_options);
+    var fuse = new Fuse(practices, search_options);
 
     // Search bar elements
-    const searchField = document.querySelector('#practice-search-field');
-    const searchButton = document.querySelector('#practice-search-button');
+    var searchField = document.querySelector('#practice-search-field');
+    var searchButton = document.querySelector('#practice-search-button');
 
     // Set up "enter" event handler for search field
-    let timeout = null;
+    var timeout = null;
 
     $(document).on('submit', '#searchForm', function (e) {
         e.preventDefault();
@@ -167,12 +178,11 @@ function searchPracticesPage() {
 
 function addResultsBreadcrumb() {
     $('#search-breadcrumb').html('<a href="/practices">Practices</a>');
-    $('#breadcrumbs').append(`
-        <span class="x0-5-left x0-5-right">›</span>
-        <span id="results-breadcrumb">Search</span>
-    `);
+    $('#breadcrumbs').append('<span class="x0-5-left x0-5-right">›</span>' +
+        '<span id="results-breadcrumb">Search</span>'
+    );
 }
 
-document.addEventListener('turbolinks:load', () => {
+document.addEventListener('turbolinks:load', function() {
     searchPracticesPage();
 });

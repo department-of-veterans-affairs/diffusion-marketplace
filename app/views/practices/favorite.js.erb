@@ -7,3 +7,11 @@
   $('.favorite-icon-<%= @practice.id %>').addClass('far text-base');
   $('.favorite-practice-link-text').text('Add to your favorites');
 <% end %>
+
+if (results) {
+  console.log('results', results);
+  var r = results.find(function(p) {
+    return p.item.id === <%= @practice.id %>;
+  });
+  r.item.user_favorited = <%= @favorited %>;
+}

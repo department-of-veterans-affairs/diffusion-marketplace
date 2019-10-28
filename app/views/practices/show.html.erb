@@ -20,7 +20,7 @@
                             <div class="height-2px border border-base-lightest flex-fill"></div>
                         </div>
                         <h4 class="font-body-md">
-                            <span><%= @practice.commontator_thread.comments.count  %></span> <span><%= @practice.commontator_thread.comments.count  > 1 || @practice.commontator_thread.comments.count  == 0 ? 'comments' : 'comment' %></span>
+                            <span id="practice-comment-count"><%= @practice.commontator_thread.comments.count  %></span> <span><%= @practice.commontator_thread.comments.count  > 1 || @practice.commontator_thread.comments.count  == 0 ? 'comments' : 'comment' %></span>
                         </h4>
                     </div>
                     <div>

@@ -30,7 +30,6 @@
 //= require next-steps
 //= require practices
 //= require _feedback_survey
-//= require _search
 //= require _side_nav
 //= require admin
 //= require commontator/application

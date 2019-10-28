@@ -6,13 +6,13 @@ require 'rails_helper'
 describe 'The user index', type: :feature do
   before do
     @user = User.create!(email: 'spongebob.squarepants@bikinibottom.net', password: 'Password123',
-                         password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now)
+                         password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @user2 = User.create!(email: 'patrick.star@bikinibottom.net', password: 'Password123',
-                          password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now)
+                          password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin = User.create!(email: 'sandy.cheeks@bikinibottom.net', password: 'Password123',
-                          password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now)
+                          password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @approver = User.create!(email: 'squidward.tentacles@bikinibottom.net', password: 'Password123',
-                             password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now)
+                             password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
   end
