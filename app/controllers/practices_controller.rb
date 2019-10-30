@@ -21,7 +21,7 @@ class PracticesController < ApplicationController
 
     @vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
 
-    @diffused_practices = DiffusionHistory.where(practice: @practice)
+    @diffused_practices = @practice.diffusion_histories
     @diffusion_histories = Gmaps4rails.build_markers(@diffused_practices.group_by(&:facility_id)) do |dhg, marker|
 
       facility = @vamc_facilities.find {|f| f['StationNumber'] == dhg[0]}

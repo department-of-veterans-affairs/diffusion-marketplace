@@ -37,8 +37,8 @@
         <fieldset>
           <legend class="usa-sr-only">Statuses</legend>
           <% statuses.each do |v| %>
-            <input id="status_<%= v.underscore %>" name="statuses" type="checkbox" value="<%= v %>" class="usa-checkbox__input">
-            <label for="status_<%= v.underscore %>" class="usa-checkbox__label">
+            <input id="status_<%= v.downcase.gsub(' ', '_') %>" name="statuses" type="checkbox" value="<%= v %>" class="usa-checkbox__input">
+            <label for="status_<%= v.downcase.gsub(' ', '_') %>" class="usa-checkbox__label">
               <%= v %>
             </label>
           <% end %>
@@ -50,8 +50,8 @@
         <fieldset>
           <legend class="usa-sr-only">Complexity</legend>
           <% complexities.each do |k, v| %>
-            <input id="complexity_<%= k.to_s.underscore %>" name="complexities" type="checkbox" value="<%= v %>" class="usa-checkbox__input">
-            <label for="complexity_<%= k.to_s.underscore %>" class="usa-checkbox__label">
+            <input id="complexity_<%= k.to_s.downcase.gsub(' ', '_') %>" name="complexities" type="checkbox" value="<%= v %>" class="usa-checkbox__input">
+            <label for="complexity_<%= k.to_s.downcase.gsub(' ', '_') %>" class="usa-checkbox__label">
               <%= k %>
             </label>
           <% end %>
@@ -64,8 +64,8 @@
         <fieldset>
           <legend class="usa-sr-only">Costs</legend>
           <% costs.each do |k, v| %>
-            <input id="costs_<%= k.to_s.underscore %>" name="costs" type="checkbox" value="<%= v %>" class="usa-checkbox__input">
-            <label for="costs_<%= k.to_s.underscore %>" class="usa-checkbox__label">
+            <input id="costs_<%= k.to_s.downcase.gsub(' ', '_') %>" name="costs" type="checkbox" value="<%= v %>" class="usa-checkbox__input">
+            <label for="costs_<%= k.to_s.downcase.gsub(' ', '_') %>" class="usa-checkbox__label">
               <%= k %>
             </label>
           <% end %>

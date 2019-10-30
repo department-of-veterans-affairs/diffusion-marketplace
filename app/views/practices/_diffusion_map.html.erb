@@ -5,11 +5,28 @@
       <%= render partial: 'maps/practice_map_data', formats: [:js] %>
     <% end %>
     <%= javascript_include_tag 'diffusion_history/practice_map', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'diffusion_history/_map_utilities', 'data-turbolinks-track': 'reload' %>
   <% end %>
-  <section class="grid-container margin-bottom-6" id="map-of-diffusion">
+  <section class="margin-bottom-6 padding-0" id="map-of-diffusion">
     <h2>Map of diffusion</h2>
-    <div class="width-full position-relative">
-      <div id="map" style="width: 100%; height: 364px;"></div>
+    <div class="width-full position-relative grid-row">
+      <div id="map" class="display-inline-block tablet:grid-col-8" style="width:559px; height: 364px;"></div>
+      <div style="width:130px;" class="display-inline-block tablet:grid-col-3 tablet:margin-left-3">
+        <h3 class="margin-top-0 margin-bottom-205">Filter by status</h3>
+        <% statuses = ['Complete', 'In progress', 'Unsuccessful'] %>
+        <form id="mapFilters" name="mapFilters" class="practice-map-filters">
+          <fieldset>
+            <legend class="usa-sr-only">Statuses</legend>
+            <% statuses.each do |v| %>
+              <% id = v.downcase.gsub(' ', '_') %>
+              <input id="status_<%= id %>" name="statuses" type="checkbox" value="<%= v %>" class="usa-checkbox__input" checked>
+              <label for="status_<%= id %>" class="usa-checkbox__label <%= id %>">
+                <%= v %>
+              </label>
+            <% end %>
+          </fieldset>
+        </form>
+      </div>
     </div>
   </section>
 
