@@ -73,13 +73,30 @@
         </span>
       <% elsif comment.created_at != comment.updated_at && !comment.deleted_at %>
         <span id="commontator-comment-<%= comment.id %>-updated-timestamp" class="timestamp <%= practice_team_member || verified_practice_implementer || comment.can_be_deleted_by?(user) ? '' : 'margin-left-105' %>">
-          edited <%= timeago(comment.updated_at) %> (originally posted <%= timeago(comment.created_at) %>)
+          edited <%= timeago(comment.updated_at) %> <%#(originally posted <%= timeago(comment.created_at) %><%#)%>
         </span>
       <% else %>
         <span class="timestamp">
-          deleted <%= timeago(comment.deleted_at) %> (originally posted <%= timeago(comment.created_at) %>)
+          deleted <%= timeago(comment.deleted_at) %> <%#(originally posted <%= timeago(comment.created_at) %><%#)%>
         </span>
       <% end %>
+      <div class="fas fa-flag margin-left-1 text-base padding-x-1 text-middle report-abuse-container" id="comment-<%= comment.id %>-report-abuse-container">
+        <div class="report-abuse-modal hidden font-family-sans" id="comment-<%= comment.id %>-report-abuse-modal">
+          <div class="bg-white radius-md report-abuse-modal-content width-tablet">
+            <div class="bg-secondary text-white radius-top-md">
+                <h2 class="margin-0 padding-3">Report a comment</h2>
+            </div>
+            <div <%#form%>class="padding-3">
+              <legend class="usa-legend font-sans-md text-normal text-black margin-bottom-2">I am reporting the following comment for being inappropriate:</legend>
+              <p class="text-normal text-base">"<%= comment.body %>"</p>
+              <div class="text-right">
+                <button class="usa-button usa-button--outline margin-0 padding-2 margin-top-5 margin-right-05 report-abuse-cancel">Cancel</button>
+                <button type="submit" class="usa-button margin-0 padding-2 report-abuse-submit">Submit report</button>
+              </div>
+            </<%#form%>div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="commontator-comment-<%= comment.id %>-section-middle" class="section middle">
@@ -111,40 +128,8 @@
       <% end %>
     </div>
   </div>
-  <div class="grid-col-auto">
-    <div class="fas fa-chevron-down padding-y-2px padding-x-1 text-middle report-abuse-container" id="comment-<%= comment.id %>-report-abuse-container">
-      <div class="report-abuse-modal hidden font-family-sans" id="comment-<%= comment.id %>-report-abuse-modal">
-        <div class="bg-white radius-md report-abuse-modal-content width-tablet">
-          <div class="bg-secondary text-white radius-top-md">
-              <h2 class="margin-0 padding-3">Report a comment</h2>
-          </div>
-          <div <%#form%>class="padding-3">
-            <legend class="usa-legend font-sans-md text-normal margin-bottom-2">I am reporting the following comment for being inappropriate:</legend>
-            <p class="text-normal text-base">"<%= comment.body %>"</p>
-            <div class="text-right">
-              <button class="usa-button usa-button--outline margin-0 padding-2 margin-top-5 margin-right-05 report-abuse-cancel">Cancel</button>
-              <button type="submit" class="usa-button margin-0 padding-2 report-abuse-submit">Submit report</button>
-            </div>
-          </<%#form%>div>
-          <%#<%= form_tag('', method: :post) do |f| %>
-          <%#  <div class="usa-fieldset" role="radiogroup">
-              <div class="usa-radio">
-                <%= f.radio_button_tag 'comment-abuse-option', class: 'usa-radio__input', id: "" %>
-          <%#      <%= f.label_tag '', 'option 1', class: 'usa-radio__label', for: "" %>
-          <%#    </div>
-              <div class="usa-radio">
-                <%= f.radio_button_tag 'comment-abuse-option', class: 'usa-radio__input', id: "" %>
-          <%#      <%= f.label_tag '', 'option 2', class: 'usa-radio__label', for: "" %>
-          <%#    </div>
-            </div>
-            <%= f.button_tag 'Cancel', class: 'usa-button usa-button--outline margin-0 padding-2 margin-bottom-4 report-abuse-cancel ' %>
-          <%#  <%= f.submit_tag 'Submit report', class: 'usa-button margin-0 padding-2 margin-bottom-4 ' %>
-          <%#<% end %>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
+
 
 <div class="replies-container margin-left-9 grid-row">
   <% if nested_children.count > 0 %>

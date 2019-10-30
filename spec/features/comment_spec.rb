@@ -28,7 +28,6 @@ describe 'Comments', type: :feature do
             expect(page).to have_css('.commontator')
             fill_in('comment[body]', with: 'Hello world')
             click_button('commit')
-            visit practice_path(@practice)
             expect(page).to have_css('#commontator-comment-1')
         end
 
@@ -98,6 +97,35 @@ describe 'Comments', type: :feature do
             visit practice_path(@practice)
             find(".like").click
             expect(page).to have_css('.comment-1-1-vote')
+        end
+    end
+
+    describe 'Reporting a comment' do
+        before do
+            login_as(@user2, :scope => :user, :run_callbacks => false)
+            visit practice_path(@practice)
+            expect(page).to have_content(@practice.name)
+            expect(page).to have_current_path(practice_path(@practice))
+            expect(page).to have_css('.commontator')
+            fill_in('comment[body]', with: 'Hello world')
+            click_button('commit')
+        end
+
+        it 'should display the report abuse modal if the user clicks on the flag icon' do
+            visit practice_path(@practice)
+            find(".report-abuse-container").click
+            expect(page).to have_content('Report a comment')
+            expect(page).to have_css('.report-abuse-submit')
+        end
+
+        it 'should hide the report abuse modal if the user clicks the cancel button' do
+            visit practice_path(@practice)
+            find(".report-abuse-container").click
+            expect(page).to have_content('Report a comment')
+            expect(page).to have_css('.report-abuse-cancel')
+
+            find(".report-abuse-cancel").click
+            expect(page).to_not have_content('Report a comment')
         end
     end
 end
