@@ -31,7 +31,7 @@ function searchPracticesPage() {
         console.log(results.length)
 
         // Print the number of results for the query
-        resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? '' : 's') + ' for ' + query + ':';
+        resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? '' : 's') + ' for "' + query + '":';
         resultsHTML += '<hr>';
 
         // Highlight results (only Fuse.js matching)

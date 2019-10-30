@@ -29,15 +29,15 @@ describe 'Practices', type: :feature do
       # Visit an individual Practice
       visit '/practices/the-best-practice-ever'
       expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_content('Login to see more')
-      click_on('Login to see more')
+      expect(page).to have_content('Login to see full practice')
+      click_on('Login to see full practice')
       expect(page).to have_current_path('/users/sign_in')
 
       # Visit the Marketplace
-      visit '/practices'
+      visit '/'
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content('The Best Practice Ever!')
-      expect(page).to have_current_path('/practices')
+      expect(page).to have_current_path('/')
     end
 
     it 'should let authenticated users interact with the marketplace' do
@@ -50,7 +50,7 @@ describe 'Practices', type: :feature do
       expect(page).to have_current_path(practice_path(@practice))
 
       # Visit the Marketplace
-      visit '/practices'
+      visit '/'
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@practice.name)
     end
@@ -70,7 +70,7 @@ describe 'Practices', type: :feature do
       # Visit a user's practice that is not approved or published
       visit practice_path(@user_practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_content('Saving lives by sharing best practices')
+      expect(page).to have_content('This site is designed to help spread important and life-saving promising practices throughout the VA Healthcare System.')
       expect(page).to have_current_path('/')
     end
 
@@ -102,14 +102,14 @@ describe 'Practices', type: :feature do
       visit practice_path(practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(practice.name)
-      expect(page).to have_content('TACOMA VET CENTER')
+      expect(page).to have_content('Tacoma Vet Center')
       expect(page).to have_current_path(practice_path(practice))
 
       # Visit the Marketplace
       visit '/practices'
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(practice.name)
-      expect(page).to have_content('TACOMA VET CENTER')
+      expect(page).to have_content('Tacoma Vet Center')
     end
   end
 
@@ -121,14 +121,14 @@ describe 'Practices', type: :feature do
       visit practice_path(@user_practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@user_practice.name)
-      expect(page).to have_content(@user_practice.initiating_facility.upcase)
+      expect(page).to have_content(@user_practice.initiating_facility)
       expect(page).to have_current_path(practice_path(@user_practice))
 
       # Visit the Marketplace
       visit '/practices'
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@user_practice.name)
-      expect(page).to have_content(@user_practice.initiating_facility.upcase)
+      expect(page).to have_content(@user_practice.initiating_facility)
     end
 
     it 'should display the practice complexity section' do
@@ -140,34 +140,34 @@ describe 'Practices', type: :feature do
 
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@user_practice.name)
-      expect(page).to have_content(@user_practice.initiating_facility.upcase)
+      expect(page).to have_content(@user_practice.initiating_facility)
       expect(page).to have_current_path(practice_path(@user_practice))
       expect(page).to have_content('Significant complexity to implement')
       expect(page).to have_content('Implementation
 Little or no complexity')
-      expect(page).to have_content('Maintenance & Sustainability
+      expect(page).to have_content('Maintenance and sustainability
 Some complexity')
-      expect(page).to have_content('Departments Required
+      expect(page).to have_content('Departments required
 Three departments')
-      expect(page).to have_content('Involvement of IT
+      expect(page).to have_content('IT Involvement
 Yes')
       expect(page).to have_content('Job titles required
 Nurse, Doctor')
-      expect(page).to have_content('Hours required per week
+      expect(page).to have_content('Hours per week
 40 hours per week')
       expect(page).to have_content('Duration of job
 19 weeks')
-      expect(page).to have_content('New or modified approach?
+      expect(page).to have_content('New or modified approach
 New approach')
       expect(page).to have_content('Expected length of implementation
 6 months')
       expect(page).to have_content('Length of training
 1 month')
-      expect(page).to have_content('Who provides the training?
+      expect(page).to have_content('Training provider
 Practice champion')
-      expect(page).to have_content('Test required?
+      expect(page).to have_content('Required test
 Yes')
-      expect(page).to have_content('License/certification required?
+      expect(page).to have_content('Required license or certification
 Yes')
     end
 
@@ -189,7 +189,7 @@ Yes')
         visit practice_path(@user_practice)
         expect(page).to be_accessible.according_to :wcag2a, :section508
         expect(page).to have_content(@user_practice.name)
-        expect(page).to have_content(@user_practice.initiating_facility.upcase)
+        expect(page).to have_content(@user_practice.initiating_facility)
         expect(page).to have_current_path(practice_path(@user_practice))
 
         # click on next steps link in sticky nav section
@@ -197,7 +197,7 @@ Yes')
 
         expect(page).to be_accessible.according_to :wcag2a, :section508
         expect(page).to have_content(@user_practice.name)
-        expect(page).to have_content(@user_practice.initiating_facility.upcase)
+        expect(page).to have_content(@user_practice.initiating_facility)
         expect(page).to have_current_path(practice_planning_checklist_path(practice_id: @user_practice.slug))
       end
     end
@@ -210,7 +210,7 @@ Yes')
         visit practice_planning_checklist_path(practice_id: @user_practice.slug)
         expect(page).to be_accessible.according_to :wcag2a, :section508
         expect(page).to have_content(@user_practice.name)
-        expect(page).to have_content(@user_practice.initiating_facility.upcase)
+        expect(page).to have_content(@user_practice.initiating_facility)
         expect(page).to have_current_path(practice_planning_checklist_path(@user_practice))
 
         # implementation team checkbox
@@ -246,7 +246,7 @@ Yes')
         visit practice_planning_checklist_path(practice_id: @user_practice.slug)
         expect(page).to be_accessible.according_to :wcag2a, :section508
         expect(page).to have_content(@user_practice.name)
-        expect(page).to have_content(@user_practice.initiating_facility.upcase)
+        expect(page).to have_content(@user_practice.initiating_facility)
         expect(page).to have_current_path(practice_planning_checklist_path(@user_practice))
 
         expect(page).to have_selector('#permissions-required')
@@ -280,7 +280,7 @@ Yes')
         visit practice_planning_checklist_path(practice_id: @user_practice.slug)
         expect(page).to be_accessible.according_to :wcag2a, :section508
         expect(page).to have_content(@user_practice.name)
-        expect(page).to have_content(@user_practice.initiating_facility.upcase)
+        expect(page).to have_content(@user_practice.initiating_facility)
         expect(page).to have_current_path(practice_planning_checklist_path(@user_practice))
 
         expect(page).not_to have_selector('#departments-impacted')
@@ -291,7 +291,7 @@ Yes')
         visit practice_planning_checklist_path(practice_id: @user_practice.slug)
         expect(page).to be_accessible.according_to :wcag2a, :section508
         expect(page).to have_content(@user_practice.name)
-        expect(page).to have_content(@user_practice.initiating_facility.upcase)
+        expect(page).to have_content(@user_practice.initiating_facility)
         expect(page).to have_current_path(practice_planning_checklist_path(@user_practice))
 
         expect(page).not_to have_selector('#departments-impacted')
@@ -306,7 +306,7 @@ Yes')
         visit practice_planning_checklist_path(practice_id: @user_practice.slug)
         expect(page).to be_accessible.according_to :wcag2a, :section508
         expect(page).to have_content(@user_practice.name)
-        expect(page).to have_content(@user_practice.initiating_facility.upcase)
+        expect(page).to have_content(@user_practice.initiating_facility)
         expect(page).to have_current_path(practice_planning_checklist_path(@user_practice))
 
         click_on('Adopt this practice')
@@ -371,14 +371,13 @@ Yes')
       end
     end
 
-    describe 'editting a practice' do
+    describe 'editing a practice' do
       it 'should update the practice' do
         login_as(@admin, :scope => :user, :run_callbacks => false)
         @user_practice.update(approved: true, published: true)
         visit practice_path(@user_practice)
         expect(page).to have_link('Edit')
         click_link('Edit')
-
         fill_in 'Descriptive Title for Practice', with: 'The Coolest Practice Ever!'
         execute_script("$('.practice-form-submit').click()")
 
@@ -437,12 +436,7 @@ Yes')
         end
         expect(page).to have_current_path(edit_practice_path(@user_practice))
         expect(page).to have_content('REMOVE HIGHLIGHT')
-
-        visit root_path
-        within '.highlighted-practice' do
-          expect(page).to have_content('The Best Practice Ever!')
-        end
-
+  
         visit(edit_practice_path(@user_practice))
         page.accept_confirm do
           click_link('REMOVE HIGHLIGHT')

@@ -54,11 +54,12 @@
         <div class="grid-row">
           <h2 class="profile-h2 font-sans-xl">Favorited Practices</h2>
         </div>
-        <div class="grid-row grid-gap-lg featured-practices">
+        <div class="grid-row grid-gap-2 featured-practices">
           <% @favorite_practices.each do |p| %>
             <% if p.present? %>
               <div class="tablet:grid-col-4 margin-y-105 padding-x-105 practice-card-list">
-                <%= render partial: 'practices/marketplace_card', locals: {practice: p} %>
+                <%= render partial: 'practices/favorite_button', locals: { practice: p, featured: true } %>
+                <%= render partial: 'practices/marketplace_card', locals: { practice: p, featured: true } %>
               </div>
             <% end %>
           <% end %>

@@ -258,7 +258,7 @@ class PracticesController < ApplicationController
 
       # display initiating facility
       practice_hash['initiating_facility'] = helpers.facility_name(practice.initiating_facility, facilities_json['features'])
-      practice_hash['user_favorited'] = current_user.favorite_practice_ids.include?(practice.id)
+      practice_hash['user_favorited'] = current_user.favorite_practice_ids.include?(practice.id) if current_user
       practices_array.push practice_hash
     end
 

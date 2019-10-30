@@ -47,44 +47,35 @@ describe 'Breadcrumbs', type: :feature do
   end
 
   describe 'Practices flow' do
-    it 'should show Practice partners' do
+    it 'should show proper breadcrumbs when a user visits a practice\'s "next steps"' do
       @user_practice.update(published: true, approved: true)
-      visit '/practices'
+      visit practice_path(@user_practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
 
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
-        expect(page).to have_content('Practices')
+        expect(page).to have_content('The Best Practice Ever!')
       end
 
-      click_on('Test tagline')
+      click_on('Take the next step')
       expect(page).to be_accessible.according_to :wcag2a, :section508
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
-        expect(page).to have_content('Practices')
         expect(page).to have_content('The Best Practice Ever!')
+        expect(page).to have_content('Planning checklist')
       end
     end
   end
 
   describe 'Practice Search flow' do
-    it 'should show Practice partners' do
+    it 'should show proper breadcrumbs when a user searches for a practice and then visits that practice\'s page' do
       @user_practice.update(published: true, approved: true)
-      visit '/practices'
-      debugger
-      expect(page).to be_accessible.according_to :wcag2a, :section508
-
-      within(:css, '#breadcrumbs') do
-        expect(page).to have_content('Home')
-        expect(page).to have_content('Practices')
-      end
-
-      fill_in('Type keywords to find a practice', with: 'best')
-      click_on('Search')
+      visit '/'
+      fill_in('Search by practice name, facility name, clinical condition, or keyword', with: 'best')
+      click_button('homepage-search-button')
       expect(page).to be_accessible.according_to :wcag2a, :section508
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
-        expect(page).to have_content('Practices')
         expect(page).to have_content('Search')
       end
 
@@ -92,7 +83,6 @@ describe 'Breadcrumbs', type: :feature do
       expect(page).to be_accessible.according_to :wcag2a, :section508
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
-        expect(page).to have_content('Practices')
         expect(page).to have_content('Search')
         expect(page).to have_content('The Best Practice Ever!')
 
@@ -103,17 +93,16 @@ describe 'Breadcrumbs', type: :feature do
 
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
-        expect(page).to have_content('Practices')
         expect(page).to have_content('Search')
 
-        # go back to search page
-        click_on('Practices')
+        # go back to homepage
+        click_on('Home')
       end
 
-      expect(page).to have_current_path('/practices')
+      expect(page).to have_current_path('/')
 
       # make sure that bug doesn't show up
-      fill_in('Type keywords to find a practice', with: 'test')
+      fill_in('Search by practice name, facility name, clinical condition, or keyword', with: 'test')
       click_on('Search')
       expect(page).to have_current_path('/search?query=test')
       expect(page).to have_field("search", with: "test")

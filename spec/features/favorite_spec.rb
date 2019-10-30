@@ -37,10 +37,6 @@ describe 'Favorites', type: :feature do
         favorite_button.click
         expect(favorite_button).to have_selector('.far')
       end
-
-      it 'should have a favorites section' do
-        expect(page).to have_content('Favorited Practices')
-      end
     end
   end
 
@@ -135,12 +131,12 @@ describe 'Favorites', type: :feature do
         expect(page).to have_content('Favorited Practices')
       end
 
-      it 'should not show a favorite button' do
-        expect(page).to have_selector('.favorite-practice-button')
+      it 'should show a favorite button' do
+        expect(page).to have_selector('.featured-favorite-practice-button')
       end
 
       it 'should allow removing a favorite' do
-        favorite_button = first(:css, "#favorite-button-#{@practice2.id}")
+        favorite_button = first(:css, "#featured-favorite-button-#{@practice2.id}")
         favorite_button.click
         expect(favorite_button).to have_selector('.far')
       end

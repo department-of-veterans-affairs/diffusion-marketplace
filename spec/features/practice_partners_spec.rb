@@ -26,9 +26,8 @@ describe 'Practice partners pages', type: :feature do
     visit '/partners/diffusion-of-excellence'
 
     expect(page).to be_accessible.according_to :wcag2a, :section508
-
     expect(page).to have_content(@user_practice.name)
-    expect(page).to have_content('TACOMA VET CENTER')
+    expect(page).to have_content('Tacoma Vet Center')
   end
 
   it 'should display the initiating facility\'s initiating facility property if it is not found in the map' do
@@ -38,6 +37,6 @@ describe 'Practice partners pages', type: :feature do
     expect(page).to be_accessible.according_to :wcag2a, :section508
 
     expect(page).to have_content(@user_practice.name)
-    expect(page).to have_content(@user_practice.initiating_facility.upcase)
+    expect(page).to have_content(@user_practice.initiating_facility)
   end
 end

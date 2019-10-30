@@ -50,16 +50,16 @@
 
 <section class="usa-section p2-top p2-bottom">
   <div class="grid-container position-relative">
+    <% if current_user&.has_role?(:approver_editor) || current_user&.has_role?(:admin) %>
+      <div class="text-right">
+        <%= link_to 'Edit', edit_practice_path(@practice), class: 'usa-button usa-button--outline margin-right-0' %>
+      </div>
+    <% end %>
     <div class="grid-row grid-gap">
       <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
       <div id="overview" class="desktop:grid-col-6 grid-col-12 p0">
         <%= render "shared/messages" %>
-        <%#<% if current_user&.has_role?(:approver_editor) || current_user&.has_role?(:admin) %>
-        <%#  <div class="right">
-            <%= link_to 'Edit', edit_practice_path(@practice), class: 'usa-button usa-button--outline' %>
-        <%#  </div>
-        <% end %>
         <% unless @practice.published && @practice.approved %>
           <div class="usa-alert usa-alert--warning">
             <div class="usa-alert__body">

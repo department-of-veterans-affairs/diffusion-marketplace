@@ -43,12 +43,11 @@ describe 'The user index', type: :feature do
   it 'should change the users role' do
     login_as(@admin, scope: :user, run_callbacks: false)
     visit '/users'
-
     within("form#edit_user_#{User.first.id}") do
       select('Admin', from: "user_#{User.first.id}_role")
       click_button('Assign')
     end
-
+    
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_select("user_#{User.first.id}_role", selected: 'Admin')
 
@@ -56,7 +55,7 @@ describe 'The user index', type: :feature do
       select('User', from: "user_#{User.first.id}_role")
       click_button('Assign')
     end
-
+    visit '/users'
     expect(page).to have_select("user_#{User.first.id}_role", selected: 'User')
   end
 
