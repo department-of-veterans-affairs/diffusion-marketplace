@@ -54,7 +54,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user = current_user
+    # @user = current_user
     if params[:user][:role].present?
       if params[:user][:role] == 'user'
         @user.remove_all_roles('user')
