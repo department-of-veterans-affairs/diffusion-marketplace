@@ -126,6 +126,7 @@
         <%= render partial: 'maps/home_map_data', formats: [:js] %>
       <% end %>
       <%= javascript_include_tag 'diffusion_history/home_map', 'data-turbolinks-track': 'reload' %>
+      <%= javascript_include_tag 'diffusion_history/_map_utilities', 'data-turbolinks-track': 'reload' %>
     <% end %>
     <section class="grid-container margin-bottom-6" id="map-of-diffusion">
       <h2>Map of diffusion</h2>
