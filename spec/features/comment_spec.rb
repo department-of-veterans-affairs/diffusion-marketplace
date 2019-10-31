@@ -76,7 +76,6 @@ describe 'Comments', type: :feature do
             click_link('Reply')
             fill_in('commontator-comment-1-reply', with: 'Hey, how are you?')
             find('#submit-reply').click
-            visit practice_path(@practice)
             expect(page).to have_content('View 1 reply')
             expect(page).to have_content('2 comments')
         end

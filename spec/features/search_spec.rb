@@ -26,7 +26,7 @@ describe 'Search', type: :feature do
 
       # test facility data map for name, negative case
       expect(page).to have_content(@user_practice.name)
-      expect(page).to have_content(@user_practice.initiating_facility.upcase)
+      expect(page).to have_content(@user_practice.initiating_facility)
       expect(page).to have_content('1 result for "Test"')
 
       # do not show a practice that is not approved/published
@@ -49,7 +49,7 @@ describe 'Search', type: :feature do
       expect(page).to have_content('2 results for "practice"')
 
       # test facility data map for name, positive case
-      expect(page).to have_content('TACOMA VET CENTER')
+      expect(page).to have_content('Tacoma Vet Center')
 
     end
 
