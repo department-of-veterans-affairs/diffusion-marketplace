@@ -378,8 +378,8 @@ Yes')
         visit practice_path(@user_practice)
         expect(page).to have_link('Edit')
         click_link('Edit')
-        fill_in 'Descriptive Title for Practice', with: 'The Coolest Practice Ever!'
-        execute_script("$('.practice-form-submit').click()")
+        fill_in 'Official Practice Name', with: 'The Coolest Practice Ever!'
+        click_link('SAVE ALL CHANGES')
 
         expect(page).to have_current_path(practice_path(@user_practice))
         expect(page).to have_content('The Coolest Practice Ever!')
