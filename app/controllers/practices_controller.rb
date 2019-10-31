@@ -250,6 +250,7 @@ class PracticesController < ApplicationController
     practices.each do |practice|
       practice_hash = JSON.parse(practice.to_json) # convert to hash
       practice_hash['image'] = practice.main_display_image.present? ? practice.main_display_image_s3_presigned_url : ''
+      practice_hash['sponsored_practice'] = practice.practice_partners.any?
       if practice.date_initiated
         practice_hash['date_initiated'] = practice.date_initiated.strftime("%B %Y")
       else
@@ -258,7 +259,7 @@ class PracticesController < ApplicationController
 
       # display initiating facility
       practice_hash['initiating_facility'] = helpers.facility_name(practice.initiating_facility, facilities_json['features'])
-      practice_hash['user_favorited'] = current_user.favorite_practice_ids.include?(practice.id) if current_user
+      practice_hash['user_favorited'] = current_user.favorite_practice_ids.include?(practice.id) if current_user.present?
       practices_array.push practice_hash
     end
 

@@ -243,7 +243,7 @@ a {
   }
 }
 
-.favorite-practice-button, .featured-favorite-practice-button {
+.favorite-practice-button, .featured-favorite-practice-button, .search-favorite-practice-button {
   position: absolute;
   width: 28px;
   height: 28px;
@@ -262,6 +262,11 @@ a {
 .favorite-practice-button {
   right: 15px;
   top: 15px;
+}
+
+.search-favorite-practice-button {
+  right: -8px;
+  top: 4.5px;
 }
 
 .highlighted-practice > .favorite-practice-button {

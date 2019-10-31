@@ -9,7 +9,8 @@
   }
 
   mark {
-    background: #fff46b;
+    background: #ffbe2e;
+    font-weight: bold;
   }
 
   #practice-search-form {
@@ -70,35 +71,35 @@
   }
 
   /* Truncate text a given line amount */
-  .truncate-text {
+  .truncate-text-search {
     display: block;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     position: relative;
-    line-height: 1.2;
+    line-height: 1.5;
     overflow: hidden;
     text-overflow: ellipsis;
     padding: 0 !important;
   }
   .one-line {
     -webkit-line-clamp: 1;
-    height: calc(1em * 1.2 * 1);
+    height: calc(1em * 1.5 * 1);
   }
   .two-lines {
     -webkit-line-clamp: 2;
-    height: calc(1em * 1.2 * 2);
+    height: calc(1em * 1.5 * 2);
   }
   .three-lines {
     -webkit-line-clamp : 3;
-    height: calc(1em * 1.2 * 3);
+    height: calc(1em * 1.5 * 3);
   }
   .four-lines {
     -webkit-line-clamp: 4;
-    height: calc(1em * 1.2 * 4);
+    height: calc(1em * 1.5 * 4);
   }
   .five-lines {
     -webkit-line-clamp: 5;
-    height: calc(1em * 1.2 * 5);
+    height: calc(1em * 1.5 * 5);
   }
 
   /* Set 1:1 aspect ratio for image */
@@ -123,13 +124,17 @@
     }
 
     @media all and (min-width: 870px){
-      width: 271px;
-      height: 271px;
+      width: 254px;
+      height: 257px;
     }
   }
 
-  .search-row {
-    min-height: 300px;
+  .search-no-image {
+    top: 36%;
   }
+
+  // .search-row {
+  //   height: 227px;
+  // }
 
 }
