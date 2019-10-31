@@ -168,6 +168,7 @@
 
         <div class="desktop:grid-col-9 grid-col-12 p0">
           <div class="margin-bottom-7">
+            <%= render partial: 'diffusion_map' %>
             <% if @practice.impact_photos.any? %>
               <%= render partial: 'impact' %>
             <% end %>

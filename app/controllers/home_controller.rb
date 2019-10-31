@@ -56,7 +56,7 @@ class HomeController < ApplicationController
                       facility: facility
                   })
 
-      marker.infowindow render_to_string(partial: 'maps/infowindow', locals: {diffusion_histories: dhg[1], completed: completed, in_progress: in_progress, facility: facility})
+      marker.infowindow render_to_string(partial: 'maps/infowindow', locals: {diffusion_histories: dhg[1], completed: completed, in_progress: in_progress, facility: facility, home_page: true})
     end
   end
 
