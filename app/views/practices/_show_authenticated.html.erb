@@ -153,8 +153,10 @@
       <div class="grid-row">
         <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
-        <div class="desktop:grid-col-9 grid-col-12 p0 p1-5-right">
+        <div class="desktop:grid-col-9 grid-col-12 p0">
           <div class="p4-bottom">
+            <%= render partial: 'diffusion_map' %>
+
             <h3 id="impact" class="font-sans-xl text-bold">Impact</h3>
             <% if @practice.impact_photos.any? %>
               <%= render partial: 'impact' %>

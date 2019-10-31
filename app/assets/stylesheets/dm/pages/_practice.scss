@@ -201,3 +201,29 @@
     }
   }
 }
+
+.practice-map-filters {
+  fieldset {
+    padding: 0;
+    border: 0;
+  }
+
+  .usa-checkbox__input:checked + .usa-checkbox__label.complete::before, .usa-radio__input:checked + .usa-radio__label.complete::before {
+    background-color: #162E51;
+    box-shadow: 0 0 0 2px #162E51;
+  }
+
+  .usa-checkbox__input:checked + .usa-checkbox__label.in_progress::before, .usa-radio__input:checked + .usa-radio__label.in_progress::before {
+    background-color: #FFBE2E;
+    box-shadow: 0 0 0 2px #FFBE2E;
+  }
+
+  .usa-checkbox__input:checked + .usa-checkbox__label.in_progress::before, .usa-checkbox__input:checked:disabled + .usa-checkbox__label.in_progress::before {
+    background-image: asset-url('uswds/correct8-alt.svg')
+  }
+
+  .usa-checkbox__input:checked + .usa-checkbox__label.unsuccessful::before, .usa-radio__input:checked + .usa-radio__label.unsuccessful::before {
+    background-color: #D83933;
+    box-shadow: 0 0 0 2px #D83933;
+  }
+}

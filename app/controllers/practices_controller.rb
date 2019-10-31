@@ -18,6 +18,60 @@ class PracticesController < ApplicationController
   # GET /practices/1.json
   def show
     ahoy.track "Practice show", {practice_id: @practice.id} if current_user.present?
+
+    @vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
+
+    @diffused_practices = @practice.diffusion_histories
+    @diffusion_histories = Gmaps4rails.build_markers(@diffused_practices.group_by(&:facility_id)) do |dhg, marker|
+
+      facility = @vamc_facilities.find {|f| f['StationNumber'] == dhg[0]}
+      marker.lat facility['Latitude']
+      marker.lng facility['Longitude']
+
+      current_diffusion_status = dhg[1][0].diffusion_history_statuses.find_by(end_time: nil)
+      marker_url = view_context.image_path('map-marker-default.svg')
+      status = 'Complete'
+      if current_diffusion_status.status == 'In progress' || current_diffusion_status.status == 'Planning' || current_diffusion_status.status == 'Implementing'
+        marker_url = view_context.image_path('map-marker-in-progress.svg')
+        status = 'In progress'
+      elsif current_diffusion_status.status == 'Unsuccessful'
+        marker_url = view_context.image_path('map-marker-unsuccessful.svg')
+        status = 'Unsuccessful'
+      end
+
+      marker.picture({
+                         url: marker_url,
+                         width: 31,
+                         height: 44
+                     })
+
+      marker.shadow nil
+      completed = 0
+      in_progress = 0
+      unsuccessful = 0
+      dhg[1].each do |dh|
+        dh_status = dh.diffusion_history_statuses.where(end_time: nil).first
+        in_progress += 1 if dh_status.status == 'In progress' || dh_status.status == 'Planning' || dh_status.status == 'Implementing'
+        completed += 1 if dh_status.status == 'Completed' || dh_status.status == 'Implemented' || dh_status.status == 'Complete'
+        unsuccessful += 1 if dh_status.status == 'Unsuccessful'
+      end
+      practices = dhg[1].map(&:practice)
+      marker.json({
+                      id: facility["StationNumber"],
+                      practices: practices,
+                      name: facility["OfficialStationName"],
+                      complexity: facility["FY17ParentStationComplexityLevel"],
+                      visn: facility["VISN"],
+                      rurality: facility["Rurality"],
+                      completed: completed,
+                      in_progress: in_progress,
+                      unsuccessful: unsuccessful,
+                      facility: facility,
+                      status: status
+                  })
+
+      marker.infowindow render_to_string(partial: 'maps/infowindow', locals: {diffusion_histories: dhg[1], completed: completed, in_progress: in_progress, facility: facility})
+    end
   end
 
   # GET /practices/1/edit
@@ -35,11 +89,11 @@ class PracticesController < ApplicationController
 
     respond_to do |format|
       if @practice.save
-        format.html { redirect_to @practice, notice: 'Practice was successfully created.' }
-        format.json { render :show, status: :created, location: @practice }
+        format.html {redirect_to @practice, notice: 'Practice was successfully created.'}
+        format.json {render :show, status: :created, location: @practice}
       else
-        format.html { render :new }
-        format.json { render json: @practice.errors, status: :unprocessable_entity }
+        format.html {render :new}
+        format.json {render json: @practice.errors, status: :unprocessable_entity}
       end
     end
   end
@@ -73,11 +127,11 @@ class PracticesController < ApplicationController
     end
     respond_to do |format|
       if updated
-        format.html { redirect_to @practice, notice: 'Practice was successfully updated.' }
-        format.json { render :show, status: :ok, location: @practice }
+        format.html {redirect_to @practice, notice: 'Practice was successfully updated.'}
+        format.json {render :show, status: :ok, location: @practice}
       else
-        format.html { render :edit }
-        format.json { render json: @practice.errors, status: :unprocessable_entity }
+        format.html {render :edit}
+        format.json {render json: @practice.errors, status: :unprocessable_entity}
       end
     end
   end
@@ -114,12 +168,12 @@ class PracticesController < ApplicationController
 
     respond_to do |format|
       if user_practice.save
-        format.html { redirect_to practice_committed_path(practice_id: @practice.slug), notice: flash[:notice] } if flash[:notice].present?
-        format.html { redirect_to practice_committed_path(practice_id: @practice.slug) } if flash[:notice].blank?
-        format.json { render :show, status: :created, location: practice_committed_path }
+        format.html {redirect_to practice_committed_path(practice_id: @practice.slug), notice: flash[:notice]} if flash[:notice].present?
+        format.html {redirect_to practice_committed_path(practice_id: @practice.slug)} if flash[:notice].blank?
+        format.json {render :show, status: :created, location: practice_committed_path}
       else
-        format.html { render :planning_checklist, error: user_practice.errors }
-        format.json { render json: user_practice.errors, status: :unprocessable_entity }
+        format.html {render :planning_checklist, error: user_practice.errors}
+        format.json {render json: user_practice.errors, status: :unprocessable_entity}
       end
     end
   end
@@ -140,10 +194,10 @@ class PracticesController < ApplicationController
     respond_to do |format|
       if user_practice.save
         format.js
-        format.json { render json: { favorited: user_practice.favorited }, status: :success }
+        format.json {render json: {favorited: user_practice.favorited}, status: :success}
       else
-        format.js { redirect_back fallback_location: root_path, error: user_practice.errors }
-        format.json { render json: user_practice.errors, status: :unprocessable_entity }
+        format.js {redirect_back fallback_location: root_path, error: user_practice.errors}
+        format.json {render json: user_practice.errors, status: :unprocessable_entity}
       end
     end
   end
@@ -222,13 +276,13 @@ class PracticesController < ApplicationController
     respond_to do |format|
       warning = 'You are not authorized to view this content.'
       flash[:warning] = warning
-      format.html { redirect_to '/', warning: warning }
-      format.json { render warning: warning }
+      format.html {redirect_to '/', warning: warning}
+      format.json {render warning: warning}
     end
   end
 
   def set_facility_data
-    @facility_data = facilities_json['features'].find { |f| f['properties']['id'] == @practice.initiating_facility }
+    @facility_data = facilities_json['features'].find {|f| f['properties']['id'] == @practice.initiating_facility}
   end
 
   def can_view_committed_view
