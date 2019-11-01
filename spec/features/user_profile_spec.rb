@@ -6,9 +6,9 @@ require 'rails_helper'
 describe 'The user index', type: :feature do
   before do
     @user = User.create!(email: 'spongebob.squarepants@bikinibottom.net', password: 'Password123',
-                         password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now)
+                         password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @user2 = User.create!(email: 'patrick@bikinibottom.net', password: 'Password123',
-                         password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now)
+                         password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
   end
 
   it 'should not show edit profile button for a different users show page' do

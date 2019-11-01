@@ -1,7 +1,7 @@
 @import "../variables/colors";
 
 /* The Modal (background) */
-.modal {
+.modal, .terms-modal, .report-abuse-modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 100000; /* Sit on top */
@@ -15,9 +15,8 @@
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-
 /* Modal Content */
-.modal-content {
+.modal-content, .terms-modal-content, .report-abuse-modal-content {
   position: relative;
   background-color: #fefefe;
   margin: auto;
@@ -29,6 +28,15 @@
   -webkit-animation-duration: 0.4s;
   animation-name: animatetop;
   animation-duration: 0.4s
+}
+
+.terms-modal, .report-abuse-modal {
+  display: block;
+  padding-top: 120px;
+
+  .terms-modal-content {
+    border: none
+  }
 }
 
 /* Add Animation */

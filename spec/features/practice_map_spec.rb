@@ -10,7 +10,7 @@ describe 'HomeMap', type: :feature do
     Rake::Task['diffusion_history:flow3'].execute
     ENV['GOOGLE_API_KEY'] = ENV['GOOGLE_TEST_API_KEY']
     DiffusionHistory.last.diffusion_history_statuses.find_by(end_time: nil).update_attributes(status: 'Unsuccessful')
-    @user = User.create!(email: 'spongebob.squarepants@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now)
+    @user = User.create!(email: 'spongebob.squarepants@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     login_as(@user, :scope => :user, :run_callbacks => false)
   end
 

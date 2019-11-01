@@ -30,9 +30,16 @@
 //= require next-steps
 //= require practices
 //= require _feedback_survey
-//= require _search
 //= require _side_nav
 //= require admin
+//= require commontator/application
+//= require jquery.timeago
+//= require timeago
+//= require replies
 //= require gmaps/google
+//= require return-to-top
+//= require comment
 //= require richmarker
 //= require infowindow
+//= require reportAbuse
+//= require turbolinksScrollTop

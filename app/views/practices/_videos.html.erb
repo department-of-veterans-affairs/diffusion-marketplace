@@ -1,7 +1,16 @@
 <% @practice.video_files.each do |vf| %>
-  <div class="margin-y-3">
-    <%= youtube_embed(vf.url) if vf.url.present? %>
-    <h3><%= vf.title %></h3>
-    <p><%= vf.description %></p>
+  <div class="grid-container-full padding-top-3 padding-bottom-2 margin-bottom-5">
+    <div class="grid-row grid-gap">
+      <div class="grid-col-7">
+        <div class="practice-video-container">
+          <%= youtube_embed(vf.url) if vf.url.present? %>
+        </div>
+      </div>
+      <div class="grid-col-fill">
+        <h4 class="margin-top-0 margin-bottom-1"><%= vf.title %></h4>
+        <p class="hyphens-auto word-break-break-word line-height-sans-5"><%= vf.description %></p>
+      </div>
+    </div>
   </div>
 <% end %>
+

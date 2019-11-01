@@ -114,6 +114,9 @@ gem "nested_form"
 gem 'colorize'
 gem 'humanize'
 gem 'paper_trail'
+gem 'commontator'
+gem 'acts_as_votable'
+gem 'jquery-timeago-rails', github: 'agilesix/jquery-timeago-rails'
 
 # Active Admin
 gem 'activeadmin'

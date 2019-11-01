@@ -10,14 +10,17 @@ class PracticesController < ApplicationController
   # GET /practices
   # GET /practices.json
   def index
-    @practices = Practice.where(approved: true, published: true).order(name: :asc)
-    @facilities_data = facilities_json['features']
+    # @practices = Practice.where(approved: true, published: true).order(name: :asc)
+    # @facilities_data = facilities_json['features']
+    redirect_to root_path
   end
 
   # GET /practices/1
   # GET /practices/1.json
   def show
     ahoy.track "Practice show", {practice_id: @practice.id} if current_user.present?
+    # This allows comments thread to show up without the need to click a link
+    commontator_thread_show(@practice)
 
     @vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
 
@@ -301,6 +304,7 @@ class PracticesController < ApplicationController
     practices.each do |practice|
       practice_hash = JSON.parse(practice.to_json) # convert to hash
       practice_hash['image'] = practice.main_display_image.present? ? practice.main_display_image_s3_presigned_url : ''
+      practice_hash['sponsored_practice'] = practice.practice_partners.any?
       if practice.date_initiated
         practice_hash['date_initiated'] = practice.date_initiated.strftime("%B %Y")
       else
@@ -309,7 +313,7 @@ class PracticesController < ApplicationController
 
       # display initiating facility
       practice_hash['initiating_facility'] = helpers.facility_name(practice.initiating_facility, facilities_json['features'])
-
+      practice_hash['user_favorited'] = current_user.favorite_practice_ids.include?(practice.id) if current_user.present?
       practices_array.push practice_hash
     end
 

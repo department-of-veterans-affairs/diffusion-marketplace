@@ -6,6 +6,13 @@ GIT
     gmaps4rails (2.1.2)
 
 GIT
+  remote: https://github.com/agilesix/jquery-timeago-rails.git
+  revision: d9d47263ae05bd6a710ddee58d49eb594e9023e4
+  specs:
+    jquery-timeago-rails (1.6.7)
+      rails (~> 5)
+
+GIT
   remote: https://github.com/agilesix/papercrop.git
   revision: e5e8b1fa37a07d8c59e88a05ec99b9577790c67e
   ref: turbolink-fix
@@ -102,6 +109,7 @@ GEM
       tzinfo (~> 1.1)
     acts_as_list (0.9.19)
       activerecord (>= 3.0)
+    acts_as_votable (0.12.1)
     addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
     ahoy_matey (3.0.0)
@@ -172,9 +180,12 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     colorize (0.8.1)
+    commontator (6.1.1)
+      rails (>= 5.0)
+      will_paginate
     concurrent-ruby (1.1.5)
     connection_pool (2.2.2)
-    crass (1.0.4)
+    crass (1.0.5)
     database_cleaner (1.7.0)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
@@ -198,7 +209,7 @@ GEM
       nokogiri
       rails-erd (>= 0.4.5)
     errbase (0.1.1)
-    erubi (1.8.0)
+    erubi (1.9.0)
     execjs (2.7.0)
     ffi (1.11.1)
     ffi (1.11.1-x64-mingw32)
@@ -225,7 +236,7 @@ GEM
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
     humanize (2.1.1)
-    i18n (1.6.0)
+    i18n (1.7.0)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
     inherited_resources (1.11.0)
@@ -266,7 +277,7 @@ GEM
       ruby_dep (~> 1.2)
     lodash-rails (4.17.14)
       railties (>= 3.1)
-    loofah (2.2.3)
+    loofah (2.3.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -291,7 +302,7 @@ GEM
     mini_portile2 (2.4.0)
     mini_racer (0.2.6)
       libv8 (>= 6.9.411)
-    minitest (5.11.3)
+    minitest (5.13.0)
     msgpack (1.3.1)
     msgpack (1.3.1-x64-mingw32)
     multi_xml (0.6.0)
@@ -300,7 +311,7 @@ GEM
     net-http-persistent (3.1.0)
       connection_pool (~> 2.2)
     net-ldap (0.16.1)
-    nio4r (2.4.0)
+    nio4r (2.5.2)
     nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     nokogiri (1.10.4-x64-mingw32)
@@ -357,8 +368,8 @@ GEM
       activesupport (>= 4.2)
       choice (~> 0.2.0)
       ruby-graphviz (~> 1.2)
-    rails-html-sanitizer (1.2.0)
-      loofah (~> 2.2, >= 2.2.2)
+    rails-html-sanitizer (1.3.0)
+      loofah (~> 2.3)
     railties (5.2.3)
       actionpack (= 5.2.3)
       activesupport (= 5.2.3)
@@ -506,6 +517,7 @@ GEM
     websocket-driver (0.7.1)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.4)
+    will_paginate (3.2.1)
     xdan-datetimepicker-rails (2.5.4)
       jquery-rails
       rails (>= 3.2.16)
@@ -523,6 +535,7 @@ DEPENDENCIES
   activeadmin_addons
   activerecord-nulldb-adapter
   acts_as_list
+  acts_as_votable
   ahoy_matey
   aws-sdk-s3
   axe-matchers
@@ -535,6 +548,7 @@ DEPENDENCIES
   chartkick
   coffee-rails (~> 4.2)
   colorize
+  commontator
   database_cleaner
   devise (>= 4.6.0)
   devise-security
@@ -548,6 +562,7 @@ DEPENDENCIES
   humanize
   jbuilder (~> 2.5)
   jquery-rails
+  jquery-timeago-rails!
   jquery-ui-rails
   kaminari
   letter_opener

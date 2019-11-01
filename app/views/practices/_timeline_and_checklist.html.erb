@@ -1,13 +1,32 @@
-<div class="grid-container">
+<div class="grid-row flex-align-center margin-bottom-4">
+  <h2 id="timeline_and_checklist" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205">Timeline</h2>
+  <div class="height-2px border border-base-lightest flex-fill"></div>
+</div>
+<% @practice.timelines.order(position: :asc).each_with_index do |t, i| %>
+  <div>
+    <div class="timeline">
+    <div class="bg-white padding-y-2px"><i class="fas fa-circle fa-2x text-primary-darker"></i><span class="timeline-number"><%= i + 1 %></span></div>
+    <div class="hyphens-auto word-break-break-word padding-bottom-205 timeline-and-milestone-container">
+      <h2 class="margin-top-0 margin-left-6"><%= t.timeline %></h2>
+      <ul class="margin-left-6 padding-0 margin-y-1">
+        <li class="margin-left-3"><%= t.milestone %></li>
+      </ul>
+    </div>
+  </div>
+<% end %>
+
+<%#<div class="grid-container">
   <h3 id="timeline_and_checklist" class="font-sans-xl text-bold margin-0 margin-bottom-9">Timeline</h3>
   <div class="timeline">
     <% @practice.timelines.order(position: :asc).each_with_index do |t, i| %>
-      <div class="timeline-container timeline-<%= i.even? ? 'left' : 'right' %>">
+<%#      <div class="timeline-container timeline-<%= i.even? ? 'left' : 'right' %><%#%">
         <div class="timeline-content hyphens-auto word-break-break-word">
-          <h2><%= t.timeline %></h2>
-          <p><%= t.milestone %></p>
+          <h2><%= t.timeline %><%#</h2>
+          <p><%= t.milestone %><%#</p>
         </div>
       </div>
     <% end %>
-  </div>
-</div>
+<%#  </div>
+</div>%>
+
+

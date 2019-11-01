@@ -1,10 +1,14 @@
 class ApplicationController < ActionController::Base
+  
   protect_from_forgery with: :exception
 
   before_action :setup_breadcrumb_navigation
   before_action :store_user_location!, if: :storable_location?
   before_action :set_paper_trail_whodunnit
   before_action :log_in_va_user
+  before_action :user_accepted_terms?
+
+  protect_from_forgery with: :exception, prepend: true
 
   def authenticate_active_admin_user!
     authenticate_user!
@@ -61,6 +65,12 @@ class ApplicationController < ActionController::Base
 
   def facilities_json
     JSON.parse(File.read("#{Rails.root}/lib/assets/va_gov_facilities_all_response.json"))
+  end
+
+  def user_accepted_terms?
+    if current_user.present? && !current_user.accepted_terms && params[:controller] != 'users' && params[:action] != 'terms_and_conditions'
+      redirect_to terms_and_conditions_path
+    end
   end
 
   # Its important that the location is NOT stored if:

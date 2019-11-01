@@ -1,18 +1,23 @@
-<div class="margin-bottom-9">
-  <% @practice.impact_photos.each_with_index do |impact, ind| %>
-    <div class='grid-container-full p3-top' id='impact-photo-<%= ind %>'>
-      <div>
-        <%= image_tag impact.attachment_s3_presigned_url(:thumb), alt: '' %>
-      </div>
 
-      <div class='x4-top'>
-        <% if impact.title.present? %>
-          <h4><%= impact.title %></h4>
-        <% end %>
+<% @practice.impact_photos.each_with_index do |impact, ind| %>
+  <div class='grid-container-full padding-top-3' id='impact-photo-<%= ind %>'>
+    <div class="grid-row grid-gap">
+      <div class="grid-col-7">
+        <div>
+          <%= image_tag impact.attachment_s3_presigned_url(:thumb), class: 'impact-image', alt: '' %>
+        </div>
       </div>
-      <div>
-        <p class="hyphens-auto word-break-break-word"><%= impact.description %></p>
+      <div class="grid-col-fill">
+        <div>
+          <% if impact.title.present? %>
+            <h4 class="margin-top-0 margin-bottom-1"><%= impact.title %></h4>
+          <% end %>
+        </div>
+        <div>
+          <p class="hyphens-auto word-break-break-word line-height-sans-5"><%= impact.description %></p>
+        </div>
       </div>
     </div>
-  <% end %>
-</div>
+  </div>
+<% end %>
+

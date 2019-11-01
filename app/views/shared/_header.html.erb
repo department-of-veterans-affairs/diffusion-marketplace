@@ -9,12 +9,12 @@
           </div>
           <div class="grid-col-fill tablet:grid-col-auto">
             <p class="usa-banner__header-text">An official website of the United States government</p>
-            <p class="usa-banner__header-action" aria-hidden="true">Here’s how you know</p>
+          <%#  <p class="usa-banner__header-action" aria-hidden="true">Here’s how you know</p>%>
           </div>
-          <button id="banner-button" class="usa-accordion__button usa-banner__button"
+          <%#<button id="banner-button" class="usa-accordion__button usa-banner__button"
                   aria-expanded="false" aria-controls="gov-banner">
             <span class="usa-banner__button-text">Here’s how you know</span>
-          </button>
+          </button>%>
         </div>
       </div>
       <div class="usa-banner__content usa-accordion__content" id="gov-banner" hidden>
@@ -48,24 +48,22 @@
 
   <div class="usa-overlay"></div>
 
-  <div class="usa-navbar bg-primary-darker text-white">
-    <div class="usa-logo text-white" id="extended-logo">
+  <div class="usa-navbar bg-primary-darker text-white grid-container">
+    <div class="grid-row flex-align-center height-10">
+    <div class="usa-logo text-white grid-col-fill" id="extended-logo">
       <em class="usa-logo__text">
         <a href="/" title="Home" aria-label="Home" class='text-white-important'>VA<span class='text-normal'> | Diffusion Marketplace</span></a>
       </em>
     </div>
     <button class="usa-menu-btn">Menu</button>
-  </div>
-  <nav class="usa-nav">
+  <%# </div> %>
+  <nav class="usa-nav grid-col-fill">
     <div class="usa-nav__inner">
       <button class="usa-nav__close"><img src="<%= image_url 'uswds/close.svg' %>" alt="close"></button>
       <div class="usa-nav__secondary bottom-1-and-half-rem">
         <ul class="usa-nav__secondary-links">
           <li class="usa-nav__secondary-item">
             <a href="/partners" class="text-white-important">Partners</a>
-          </li>
-          <li class="usa-nav__secondary-item">
-            <a href="/practices" class="text-white-important">Practices<span class="usa-sr-only">Practices</span></a>
           </li>
           <% if user_signed_in? %>
             <li class="usa-nav__secondary-item">
@@ -96,5 +94,7 @@
       </div>
     </div>
   </nav>
+  </div>
+  </div>
   <%= render partial: 'shared/beta_banner' %>
 </header>

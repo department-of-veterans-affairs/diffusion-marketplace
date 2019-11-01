@@ -1,0 +1,97 @@
+var reloadWithTurbolinks = (function () {
+  var scrollPosition;
+
+  function reload () {
+    scrollPosition = [window.scrollX, window.scrollY];
+    Turbolinks.visit(window.location.toString(), { action: 'replace' });
+  }
+
+  document.addEventListener('turbolinks:load', function () {
+    if (scrollPosition) {
+      window.scrollTo.apply(window, scrollPosition);
+      scrollPosition = null;
+    }
+
+    $('.timeago').timeago();
+    $('#dm-practice-nav').sticky( {topSpacing: 56, zIndex: 10000, bottomSpacing: 200});
+    <% if !@comment.parent_id %>
+      console.log('in here');
+      $('html, body').animate({
+          scrollTop: $('#commontator-comment-<%= @comment.id %>').offset().top
+      }, 500);
+    <% end %>
+  })
+
+  return reload
+})()
+<%=
+  if @comment.parent.nil?
+    partial = 'threads'
+    extra_locals = {}
+    id = "commontator-thread-#{@commontator_thread.id}-new-comment"
+  else
+    partial = 'comments'
+    extra_locals = { comment: @comment.parent }
+    id = "commontator-comment-#{@comment.parent.id}-reply"
+  end
+
+  render partial: "commontator/#{partial}/show", locals: extra_locals.merge(
+    user: @commontator_user,
+    thread: @commontator_thread,
+    page: @commontator_page,
+    show_all: @commontator_show_all
+  )
+%>
+
+<% if @commontator_new_comment.nil? %>
+  $("#<%= id %>-link").fadeIn();
+<% else %>
+  $("#<%= id %>").html("<%= escape_javascript(
+    render partial: 'form', locals: {
+      comment: @commontator_new_comment, thread: @commontator_thread
+    }
+  ) %>");
+<% end %>
+
+$('.timeago').timeago();
+
+<% if !@comment.parent_id  && !params[:refresh_page] %>
+  $('html, body').animate({
+      scrollTop: $('#commontator-comment-<%= @comment.id %>').offset().top
+  }, 500);
+<% end %>
+
+$('#practice-comment-count').text(<%= @comment.thread.comments.count %>)
+
+$('#practice-comment-label').text('<%= @comment.thread.comments.count == 1 ? 'comment' : 'comments' %>')
+
+<%= javascript_proc %>
+
+<% if params[:refresh_page] %>
+  reloadWithTurbolinks();
+
+  <% if @comment.parent_id %>
+    var showChildren = false || <%= @comment.parent_id.present? && params[:show_children] == 'true' %>;
+    $(document).off('turbolinks:load', showReplies);
+    if (showChildren) {
+      function showReplies() {
+          $('#commontator-comment-<%= @comment.id %>').parent().removeClass('hidden');
+
+          <%
+            thread = @comment.thread
+            nested_children ||= begin
+              children = thread.paginated_comments(@commontator_page, @comment.id, @commontator_show_all)
+              thread.nested_comments_for(@commontator_user, children, @commontator_show_all)
+            end
+           %>
+
+          var numReplies = <%= nested_children.present? ? nested_children.count : 0 %>;
+          var repliesText = numReplies === 1 ? 'reply' : 'replies';
+
+          $('#comments-show-hide-button-<%= @comment.parent_id %>').text('Hide ' + repliesText + ' >');
+      }
+
+      $(document).on('turbolinks:load', showReplies);
+    }
+  <% end %>
+<% end %>
