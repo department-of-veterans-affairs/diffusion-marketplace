@@ -63,7 +63,7 @@ $('.timeago').timeago();
 
 $('#practice-comment-count').text(<%= @comment.thread.comments.count %>)
 
-$('#practice-comment-label').text(<%= @comment.thread.comments.count == 1 ? 'comment' : 'comments' %>)
+$('#practice-comment-label').text('<%= @comment.thread.comments.count == 1 ? 'comment' : 'comments' %>')
 
 <%= javascript_proc %>
 
