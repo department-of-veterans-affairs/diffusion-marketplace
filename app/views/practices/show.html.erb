@@ -24,7 +24,7 @@
                               <%= @practice.commontator_thread.comments.count  %>
                             </span>
                           <span id="practice-comment-label">
-                            <%= @practice.commontator_thread.comments.count  > 1 || @practice.commontator_thread.comments.count  == 0 ? 'comments' : 'comment' %>
+                            <%= @practice.commontator_thread.comments.count == 1  ? 'comment' : 'comments' %>
                           </span>
                         </h4>
                     </div>
