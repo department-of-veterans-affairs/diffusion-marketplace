@@ -53,7 +53,7 @@
     <% provide :head_tags do %>
       <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
         <%= render partial: 'maps/marker_icons', formats: [:js] %>
-        <%= render partial: 'maps/home_map_data', formats: [:js] %>
+        <%= render partial: 'maps/map_data', formats: [:js] %>
       <% end %>
       <%= javascript_include_tag 'diffusion_history/home_map', 'data-turbolinks-track': 'reload' %>
       <%= javascript_include_tag 'diffusion_history/_map_utilities', 'data-turbolinks-track': 'reload' %>

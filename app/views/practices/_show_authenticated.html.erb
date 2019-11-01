@@ -87,7 +87,12 @@
           <% if current_user %>
             <div class="margin-bottom-2">
               <a href="<%= practice_favorite_path(@practice, format: :js) %>" data-method="post" data-remote="true" rel="nofollow" aria-label="Favorite <%= @practice.name %>" tabindex="-1" aria-hidden="true" class="favorite-practice-link text-no-underline margin-right-3 font-sans-xs">
-                <i class="<% if current_user.favorite_practice_ids.include?(@practice.id) %>fas text-secondary<% else %>far text-primary<% end %> fa-heart favorite-icon-<%= @practice.id %> text-no-underline padding-right-105"></i>
+                <i class="
+                  <% if current_user.favorite_practice_ids.include?(@practice.id) %>fas text-secondary
+                  <% else %>far text-primary
+                  <% end %> fa-heart favorite-icon-<%= @practice.id %> text-no-underline padding-right-105
+                  ">
+                </i>
                 <span class="text-primary text-no-underline favorite-practice-link-text"><% if current_user.favorite_practice_ids.include?(@practice.id) %>Remove from your favorites<% else %>Add to your favorites<% end %></span>
               </a>
               <a target="_blank" aria-label="Share <%= @practice.name %>" tabindex="-1" aria-hidden="true" href="mailto:?subject=<%= email_practice_subject(@practice) %>&body=<%= email_practice_body(@practice) %>" class="text-no-underline">
@@ -104,40 +109,42 @@
       <div class="desktop:grid-col-3 grid-col-auto z-bottom margin-top-8">
         <div class="height-auto padding-2 bg-base-lightest radius-md">
           <h4 class="margin-top-0 margin-bottom-1">Origin</h4>
-            <p class="line-height-sans-5 margin-bottom-3">
-              Created by the <%= @facility_data.present? ? @facility_data['properties']['name'] : @practice.initiating_facility %> in <span><%= @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)' %></span>
-            </p>
-      <%# <div class="margin-right-2 display-flex-align-items-center">
+          <p class="line-height-sans-5 margin-bottom-3">
+            Created by
+            the <%= @facility_data.present? ? @facility_data['properties']['name'] : @practice.initiating_facility %> in
+            <span><%= @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)' %></span>
+          </p>
+          <%# <div class="margin-right-2 display-flex-align-items-center">
         <%= render partial: 'shared/badge', locals: {badges: @practice.practice_partners} %>
-      <%# </div> %>
-            <% if @practice.practice_partners.any? %>
-              <h4 class="margin-top-0 margin-bottom-1">Sponsors</h4>
-              <div class="<%= @practice.number_adopted.present? ? 'margin-bottom-3' : '' %>">
-                <% @practice.practice_partners.each_with_index do |partner, index| %>
-                  <p class="line-height-sans-5">
-                    <%= partner.name %><%= "," if @practice.practice_partners.size != index + 1 && @practice.practice_partners.size > 2 %>
-                    <% concat ('and') if index == @practice.practice_partners.size - 2 && @practice.practice_partners.size >= 2 %>
-                  </p>
-                <% end %>
-              </div>
-            <% else %>
-              <div class="hidden"></div>
-            <% end %>
+          <%# </div> %>
+          <% if @practice.practice_partners.any? %>
+            <h4 class="margin-top-0 margin-bottom-1">Sponsors</h4>
+            <div class="<%= @practice.number_adopted.present? ? 'margin-bottom-3' : '' %>">
+              <% @practice.practice_partners.each_with_index do |partner, index| %>
+                <p class="line-height-sans-5">
+                  <%= partner.name %><%= "," if @practice.practice_partners.size != index + 1 && @practice.practice_partners.size > 2 %>
+                  <% concat ('and') if index == @practice.practice_partners.size - 2 && @practice.practice_partners.size >= 2 %>
+                </p>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="hidden"></div>
+          <% end %>
 
-            <% if @practice.number_adopted.present? %>
-              <div>
-                <h4 class="margin-top-0 margin-bottom-1">Adoptions</h4>
-                <%# <p><%= @practice.number_failed %> <%#unsuccessful</p> %>
-                <p class="margin-0 line-height-sans-5">
-                  <span><%= @practice.number_adopted.present? ? @practice.number_adopted : '0' %></span>
-                  facilit<%= @practice.number_adopted == 1 ? 'y' : 'ies' %> have adopted this practice</p>
-              </div>
-            <% else %>
-              <div class="hidden"></div>
-            <% end %>
-          </div>
+          <% if @practice.number_adopted.present? %>
+            <div>
+              <h4 class="margin-top-0 margin-bottom-1">Adoptions</h4>
+              <%# <p><%= @practice.number_failed %> <%#unsuccessful</p> %>
+              <p class="margin-0 line-height-sans-5">
+                <span><%= @practice.number_adopted.present? ? @practice.number_adopted : '0' %></span>
+                facilit<%= @practice.number_adopted == 1 ? 'y' : 'ies' %> have adopted this practice</p>
+            </div>
+          <% else %>
+            <div class="hidden"></div>
+          <% end %>
         </div>
       </div>
+    </div>
   </div>
 </section>
 <%#<div class="dm-background-triangle-bottom "></div>%>
@@ -168,9 +175,17 @@
 
         <div class="desktop:grid-col-9 grid-col-12 p0">
           <div class="margin-bottom-7">
-            <%= render partial: 'diffusion_map' %>
-            <% if @practice.impact_photos.any? %>
-              <%= render partial: 'impact' %>
+            <% if @practice.diffusion_histories.any? || @practice.impact_photos.any? %>
+              <div class="grid-row flex-align-center">
+                <h2 id="impact" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205 margin-bottom-3">Impact</h2>
+                <div class="height-2px border border-base-lightest flex-fill"></div>
+              </div>
+              <% if @practice.diffusion_histories.any? %>
+                <%= render partial: 'diffusion_map' %>
+              <% end %>
+              <% if @practice.impact_photos.any? %>
+                <%= render partial: 'impact' %>
+              <% end %>
             <% end %>
             <% if @practice.video_files.any? %>
               <%= render partial: 'videos' %>
@@ -186,7 +201,7 @@
                   <% if @practice.additional_documents.any? %>
                     <%= render partial: 'additional_documents' %>
                   <% else %>
-                  <div class="hidden"></div>
+                    <div class="hidden"></div>
                   <% end %>
                   <% if @practice.publication_files.any? %>
                     <%= render partial: 'publication_files' %>
