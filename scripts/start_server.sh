@@ -6,9 +6,9 @@ then
   bundle exec sidekiq
 elif [ "$CONTAINER_ROLE" == "app_server" ]
 then
-  echo "web start: bundle exec rake db:migrate && bundle exec puma -C /app/config/puma.rb"
+  echo "web start: bundle exec rails db:migrate && bundle exec puma -C config/puma.rb"
   cp -R /app/public /var/www/
-  bundle exec rails db:migrate && bundle exec puma -C /app/config/puma.rb
+  bundle exec rails db:migrate && bundle exec puma -C config/puma.rb
 else
   echo "Error: unknown CONTAINER_ROLE"
   exit 125

@@ -22,6 +22,11 @@ class User < ApplicationRecord
   has_many :user_practices
   has_many :practices, through: :user_practices
 
+  # This allows users to post comments with the use of the Commontator gem
+  acts_as_commontator
+  
+  acts_as_voter
+
   has_attached_file :avatar
 
   def avatar_s3_presigned_url(style = nil)

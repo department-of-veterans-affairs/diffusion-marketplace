@@ -1,0 +1,7 @@
+var id = <%= @comment.id %>;
+
+$(document).on('turbolinks:load', function() {
+    $(`#comment-${id}-report-abuse-container`).on('click', function(e) {
+        $(e.target).find(`#comment-${id}-report-abuse-modal`).removeClass('hidden');
+    })
+})

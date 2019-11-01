@@ -257,12 +257,12 @@ if PracticePartner.all.blank?
 
   ### USERS ###
   unless Rails.env.production?
-    User.create!(email: 'demo@va.gov', password: 'Demo#123', password_confirmation: 'Demo#123', skip_va_validation: true, confirmed_at: Time.now)
-    User.create!(email: 'aurora.hay@agile6.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now).add_role(User::USER_ROLES[1].to_sym)
-    User.create!(email: 'jake.holzhauer@agile6.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now).add_role(User::USER_ROLES[1].to_sym)
-    User.create!(email: 'jackson.wilke@agile6.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now).add_role(User::USER_ROLES[1].to_sym)
+    User.create!(email: 'demo@va.gov', password: 'Demo#123', password_confirmation: 'Demo#123', first_name: 'Demo', last_name: 'Demonstration', job_title: 'Head Demonstrator', phone_number: '123-456-7890', visn: 8, bio: 'I\'m a demo. What else is there to say?', skip_va_validation: true, confirmed_at: Time.now)
+    User.create!(email: 'aurora.hay@agile6.com', password: 'Password123', password_confirmation: 'Password123', first_name: 'Aurora', last_name: 'Hampton', job_title: 'Head Honcho', phone_number: '987-654-3210', visn: 21, bio: 'Don\'t start nothin\' and there won\'t be nothin\'.', skip_va_validation: true, confirmed_at: Time.now).add_role(User::USER_ROLES[1].to_sym)
+    User.create!(email: 'jake.holzhauer@agile6.com', password: 'Password123', password_confirmation: 'Password123', first_name: 'Jake', last_name: 'Holzhauer', job_title: 'Software Engineer', phone_number: '111-111-1111', visn: 16, bio: 'Living life to the fullest!', skip_va_validation: true, confirmed_at: Time.now).add_role(User::USER_ROLES[1].to_sym)
+    User.create!(email: 'jackson.wilke@agile6.com', password: 'Password123', password_confirmation: 'Password123', first_name: 'Jackson', last_name: 'Wilke', job_title: 'Lead Designer', phone_number: '222-222-2222', visn: 19, bio: 'It\'s five o\'clock somewhere.', skip_va_validation: true, confirmed_at: Time.now).add_role(User::USER_ROLES[1].to_sym)
     User::USER_ROLES.each_with_index do |role, index|
-      User.create!(email: "A6test#{index}@agile6.com", password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now).add_role(User::USER_ROLES[index].to_sym)
+      User.create!(email: "A6test#{index}@agile6.com", password: 'Password123', password_confirmation: 'Password123', first_name: "A6test#{index}", last_name: "Test", job_title: "Developer #{index}", phone_number: '333-333-3333', visn: 21, bio: "I\'m number #{index}!", skip_va_validation: true, confirmed_at: Time.now).add_role(User::USER_ROLES[index].to_sym)
     end
   end
 else

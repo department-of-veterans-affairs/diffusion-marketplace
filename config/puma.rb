@@ -2,7 +2,8 @@ if ENV['RAILS_ENV'] == 'production'
   threads_count = ENV.fetch("MAX_THREADS") { 5 }.to_i
   threads threads_count, threads_count
 
-  bind "unix:///var/run/web-puma-app.sock?umask=0000"
+  # bind "unix:///var/run/web-puma-app.sock?umask=0000"
+  port ENV.fetch("PORT") { 3000 }
 
   stdout_redirect "/var/log/web-puma.stdout.log", "/var/log/web-puma.stderr.log", true
 

@@ -1,0 +1,192 @@
+var practices = <%= @practices_json %>;
+var results = null;
+
+function searchPracticesPage() {
+    // Skip if not the search page
+    if (location.pathname !== '/search') return;
+
+    // Search helper functions
+
+    // Search practices and populate the page
+    function search(query) {
+
+        // Trim whitespace from the query (can cause matching problems)
+        query = query.trim();
+
+        // Set variables
+        var resultsHTML = '';
+        var resultsSummary = document.querySelector('#results-summary');
+        var searchResults = document.querySelector('#search-results');
+
+        // If the query is empty or less than three characters, remove any previous results from page
+        if (query === '' || query.length < 3) {
+            resultsSummary.innerHTML = '<p><i>Type at least three characters to search.</i></p>';
+            // searchResults.innerHTML = '';
+            return;
+        }
+
+        // Run the search query
+        results = fuse.search(query);
+
+        console.log(results.length)
+
+        // Print the number of results for the query
+        resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? '' : 's') + ' for "' + query + '":';
+
+        // Highlight results (only Fuse.js matching)
+        results.forEach(function(result) {
+            highlighter(result);
+        });
+
+        // Template out the search results
+        results.forEach(function(result) {
+            var noBackgroundImage = result.item.image ? '' : 'class: fas fa-images fa-3x text-base-lighter search-no-image';
+            var background = result.item.image ? 'background: url(' + result.item.image + ')' + ' transparent; background-repeat: no-repeat; background-position: center; background-size: cover;' : 'background-color: #f0f0f0; transparent; background-size: contain; background-repeat: no-repeat; background-position: center; ';
+            var favoriteButtonIcon = result.item.user_favorited ? 'fas text-secondary' : 'far text-base';
+            var sponsoredPractice = result.item.sponsored_practice ? '<div class="grid-row margin-top-1"><span class="display-block text-center radius-pill padding-y-1px padding-x-2 bg-base-lighter font-sans-3xs">Sponsored</span></div>' : '<div class="hidden"></div>';
+            var favoriteButton =
+                '<a aria-label="Favorite ' + result.item.name + '" tabindex="-1" aria-hidden="true" class="search-favorite-practice-button" id="favorite-button-' + result.item.id +'" data-remote="true" rel="nofollow" data-method="post" href="/practices/' + result.item.slug + '/favorite.js">' +
+                    '<i class="' + favoriteButtonIcon + ' fa-heart favorite-icon-' + result.item.id + ' text-no-underline"></i>' +
+                '</a>';
+            resultsHTML += 
+            '<div class="grid-row search-row radius-sm border-2px border-base-lightest margin-bottom-105 flex-align-center">' +
+            '<div class="tablet:grid-col-3">' +
+                '<div class="img-box">' +
+                <% if current_user.present? %>
+                    favoriteButton +
+                <% end %>
+                '<a href="/practices/' + result.item.slug + '" aria-label="Go to ' + result.item.name + '">' +
+                '<div class="img img-box-content border-right border-right-width-2px border-base-lightest position-relative" style="' + background + '">' +
+                    '<i class="' + noBackgroundImage + '"></i>' +
+                    '</div>' +
+                    '</a>' +
+                '</div>' +            
+            '</div>' +
+            '<div class="tablet:grid-col-9 padding-y-105 padding-right-105 padding-left-4">' +
+                '<h2 class="margin-0 truncate-text-search one-line"><a href="/practices/' + result.item.slug + '">' + result.item.name + '</a></h2>' +
+                sponsoredPractice + 
+                '<h4 class="truncate-text-search two-lines text-normal margin-y-1">' + result.item.description + '</h4>' +
+                '<p class="practice-details margin-y-1 font-sans-3xs">Created in ' + result.item.date_initiated + ' by the ' + result.item.initiating_facility + '</p>' +
+                '<p class="truncate-text-search three-lines">' + result.item.summary + '</p>' +
+
+                '<!-- Uncomment to show Fuse.js diagnostics -->' +
+                '<!--' +
+                    '<h3>Fuse.js highlighted character matching</h3>' +
+                    '<p class="">' + result.highlight + '</p>' +
+                    '<p><b>Score: ' + result.score + '</b></p>' +
+                '-->' +
+
+            '</div>' +
+            '</div>';
+        });
+
+        // Print results to the page
+        searchResults.innerHTML = resultsHTML;
+
+        // Highlight search results where exact keyword matches
+        var mark = new Mark('#search-results');
+        mark.mark(query);
+
+        if (!$('#results-breadcrumb').length) {
+            addResultsBreadcrumb();
+        }
+    }
+
+
+    // Highlight Fuse.js results
+    // Adapted from: https://github.com/brunocechet/Fuse.js-with-highlight
+    function highlighter(resultItem) {
+        resultItem.matches.forEach((matchItem) => {
+            var text = resultItem.item[matchItem.key];
+            var result = [];
+            var matches = [].concat(matchItem.indices); // limpar referencia
+            var pair = matches.shift();
+
+            for (var i = 0; i < text.length; i++) {
+                var char = text.charAt(i);
+                if (pair && i === pair[0]) {
+                    result.push('<mark>')
+                }
+                result.push(char);
+                if (pair && i === pair[1]) {
+                    result.push('</mark>');
+                    pair = matches.shift()
+                }
+            }
+            resultItem.highlight = result.join('');
+
+            if (resultItem.children && resultItem.children.length > 0) {
+                resultItem.children.forEach((child) => {
+                    highlighter(child);
+                });
+            }
+        });
+    }
+
+
+    // Set up search
+
+    // Set Fuse.js search options
+    var search_options = {
+        keys: ['name', 'tagline', 'description', 'summary', 'initiating_facility'],
+        minMatchCharLength: 3,
+        tokenize: true,
+        shouldSort: true,
+        threshold: 0.2,
+        location: 0,
+        distance: 100,
+        maxPatternLength: 32,
+        matchAllTokens: true,
+        findAllMatches: true,
+        includeMatches: true,
+        includeScore: true
+    };
+
+    // Create a search context with practices and search options
+    var fuse = new Fuse(practices, search_options);
+
+    // Search bar elements
+    var searchField = document.querySelector('#practice-search-field');
+    var searchButton = document.querySelector('#practice-search-button');
+
+    // Set up "enter" event handler for search field
+    var timeout = null;
+
+    $(document).on('submit', '#searchForm', function (e) {
+        e.preventDefault();
+        // const $searchQuery = $('#practice-search-field').val();
+
+        // Make a new timeout set to go off in 500ms
+        timeout = setTimeout(function () {
+            search(searchField.value);
+            window.history.pushState("", "", '/search?query=' + searchField.value);
+            ahoy.track('Practice search', {search_term: searchField.value});
+            if (typeof ga === 'function') {
+                ga('send', {
+                    hitType: 'event',
+                    eventCategory: 'search',
+                    eventAction: 'search',
+                    location: '/search?query=' + searchField.value
+                });
+            }
+        }, 500);
+
+    });
+
+    if (window.location.pathname === '/search' && window.location.search !== '') {
+        const query = window.location.search.split('=')[1];
+        search(decodeURI(query));
+        searchField.value = decodeURI(query);
+    }
+}
+
+function addResultsBreadcrumb() {
+    $('#search-breadcrumb').html('<a href="/practices">Practices</a>');
+    $('#breadcrumbs').append('<span class="x0-5-left x0-5-right">›</span>' +
+        '<span id="results-breadcrumb">Search</span>'
+    );
+}
+
+document.addEventListener('turbolinks:load', function() {
+    searchPracticesPage();
+});

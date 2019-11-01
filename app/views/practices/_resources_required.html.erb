@@ -1,76 +1,67 @@
-<div class="grid-container-full margin-bottom-6">
-  <div class="grid-row">
-    <div class="tablet:grid-col-6 text-center">
-      <h3 id="resources_required" class="font-sans-xl text-bold margin-0">Resources Required</h3>
-    </div>
+<div class="grid-container-full margin-bottom-7" id="resources_required">
+  <div class="grid-row flex-align-center margin-bottom-4">
+    <h2 class="font-sans-xl text-bold margin-0 flex-auto margin-right-205">Resources</h2>
+    <div class="height-2px border border-base-lightest flex-fill"></div>
   </div>
-  <div class="grid-row">
+  <div class="grid-row grid-gap">
     <!-- Cost level Circle -->
-    <div class="order-first grid-row flex-column flex-align-center flex-justify-center level-aggregate-circle <%= level_aggregate_style(@practice.cost_to_implement_aggregate) %>">
-      <div id="cost-aggregate" class="tablet:grid-col-12 margin-y-2">
+    <div class="flex-align-center <%= level_aggregate_style(@practice.cost_to_implement_aggregate) %>">
+      <div id="cost-aggregate">
         <% cost_to_implement_aggregate = @practice.cost_to_implement_aggregate || 0 %>
         <% (0..3).each do |index| %>
           <% if index < cost_to_implement_aggregate %>
-            <%= image_tag 'dollar_dark.svg', alt: "Dollar dark #{index + 1}" %>
+            <%= image_tag 'dollar_dark.svg', alt: "Dollar dark #{index + 1}", class: 'height-205' %>
           <% else %>
-            <%= image_tag 'dollar_light.svg', alt: "Dollar light #{index + 1}" %>
+            <%= image_tag 'dollar_light.svg', alt: "Dollar light #{index + 1}", class: 'height-205' %>
           <% end %>
         <% end %>
-      </div>
-      <div class="grid-auto">
-        <h4 class="margin-0 fw-100">
-          Cost
-          <span class="sr-only">
-            <%= pluralize(cost_to_implement_aggregate, 'dollar')%>
-            out of four.
-          </span>
-        </h4>
       </div>
     </div>
     <div class="tablet:grid-col-6 text-center tablet:display-none">
       <p><%= cost_aggregate_description(@practice.cost_to_implement_aggregate) %></p>
     </div>
-    <div class="tablet:grid-col-6 display-flex flex-column tablet:margin-top-6">
+    <%#<div class="tablet:grid-col-6 display-flex flex-column tablet:margin-top-6">
       <% @practice.costs.each do |cost| %>
-        <p class="text-bold font-ui-md margin-top-0"><%= cost.description %></p>
+    <%#    <p class="text-bold font-ui-md margin-top-0"><%= cost.description %><%#</p>
       <% end %>
-    </div>
-  </div>
-  <div class="grid-row tablet:display-block display-none">
-    <div class="tablet:grid-col-6 text-center">
-      <p><%= cost_aggregate_description(@practice.cost_to_implement_aggregate) %></p>
+    <%#</div>%>
+    <div class="tablet:grid-col-fill">
+      <div class="margin-0">
+        Cost:
+        <span class="sr-only">
+          <%= pluralize(cost_to_implement_aggregate, 'dollar')%>
+          out of four.
+        </span>
+        <span><%= cost_aggregate_description(@practice.cost_to_implement_aggregate) %></span>
+      </div>
     </div>
   </div>
 </div>
 
 
-<div class="grid-container-full">
-  <div class="grid-row">
-    <div class="tablet:grid-col-6 text-center">
-      <h3 id="complexity" class="font-sans-xl text-bold margin-0">Complexity</h3>
-    </div>
+<div class="grid-container-full margin-bottom-105" id="complexity">
+  <div class="grid-row flex-align-center margin-bottom-4">
+    <h2 class="font-sans-xl text-bold margin-0 flex-auto margin-right-205">Complexity</h2>
+    <div class="height-2px border border-base-lightest flex-fill"></div>
   </div>
-  <div class="grid-row ">
+  <div class="grid-row grid-gap">
     <!-- Complexity level Circle -->
     <% complexity_aggregate = complexity_aggregate(@practice) || 0 %>
-    <div class="grid-row flex-column flex-align-center flex-justify-center level-aggregate-circle <%= level_aggregate_style(complexity_aggregate) %>">
-      <div id="complexity-aggregate" class="tablet:grid-col-12 margin-y-2">
+    <div class="flex-align-center <%= level_aggregate_style(complexity_aggregate) %>">
+      <div id="complexity-aggregate" class="tablet:grid-col-12">
         <% (0..3).each do |index| %>
           <% if index < complexity_aggregate %>
-            <%= image_tag 'wrench_dark.svg', alt: "Wrench dark #{index + 1}" %>
+            <%= image_tag 'wrench_dark.svg', alt: "Wrench dark #{index + 1}", class: 'height-205' %>
           <% else %>
-            <%= image_tag 'wrench_light.svg', alt: "Wrench light #{index + 1}" %>
+            <%= image_tag 'wrench_light.svg', alt: "Wrench light #{index + 1}", class: 'height-205' %>
           <% end %>
         <% end %>
       </div>
       <div class="grid-auto">
-        <h4 class="margin-0 fw-100">
-          Complexity
-          <span class="sr-only">
-            <%= pluralize(complexity_aggregate, 'wrench')%> 
-            out of four.
-          </span>
-        </h4>
+        <span class="sr-only">
+          <%= pluralize(complexity_aggregate, 'wrench')%> 
+          out of four.
+        </span>
       </div>
     </div>
 
@@ -78,18 +69,18 @@
       <p><%= complexity_aggregate_description(complexity_aggregate) %></p>
     </div>
 
-    <div class="tablet:grid-col-6 display-flex flex-column">
+    <%#<div class="tablet:grid-col-6 display-flex flex-column">
       <% @practice.difficulties.each do |difficulty| %>
-        <% if difficulty.description.present? %>
-          <h3><%= difficulty.description %></h3>
+      <%#  <% if difficulty.description.present? %>
+      <%#    <h3><%= difficulty.description %><%#</h3>
         <% end %>
-      <% end %>
-    </div>
-  </div>
+      <%#<% end %>
+    <%#</div>%>
 
-  <div class="grid-row tablet:display-block display-none">
-    <div class="tablet:grid-col-6 text-center">
-      <p><%= complexity_aggregate_description(complexity_aggregate) %></p>
+    <div class="tablet:display-block display-none">
+      <div class="tablet:grid-col-fill">
+        <p><%= complexity_aggregate_description(complexity_aggregate) %></p>
+      </div>
     </div>
   </div>
 </div>

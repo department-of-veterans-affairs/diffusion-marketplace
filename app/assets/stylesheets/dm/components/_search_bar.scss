@@ -2,6 +2,10 @@
   width: 100%;
 }
 
+#homepage-search-field {
+  max-width: unset !important;
+}
+
 @media screen and (min-width: 425px) {
   #practice-search-field {
     width: 350px;

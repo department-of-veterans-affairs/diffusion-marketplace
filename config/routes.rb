@@ -4,8 +4,12 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   devise_for :users, controllers: { registrations: 'registrations' }
   mount Ahoy::Engine => '/ahoy', as: :dm_ahoy
+  mount Commontator::Engine => '/commontator' #, as: :dm_commontator
 
-  resources :practices do
+  get '/terms_and_conditions' => 'users#terms_and_conditions'
+  post '/accept_terms', action: 'accept_terms', controller: 'users', as: 'accept_terms'
+
+  resources :practices, except: :index do
     get '/planning-checklist', action: 'planning_checklist', as: 'planning_checklist'
     get '/committed', action: 'committed', as: 'committed'
     post '/commit', action: 'commit', as: 'commit'
@@ -15,6 +19,11 @@ Rails.application.routes.draw do
       post :un_highlight
       post :feature
       post :un_feature
+    end
+    resources :comments do      
+      member do
+          put 'like' => 'commontator/comments#upvote'
+      end
     end
   end
   resources :practice_partners, path: :partners
