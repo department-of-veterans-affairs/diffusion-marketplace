@@ -69,13 +69,13 @@ describe 'Comments', type: :feature do
             expect(page).to have_content('deleted')
         end
 
-        it 'Should allow a user to reply to an existing comment' do
+        it 'Should allow a user to reply to an existing comment', js: true do
             fill_in('comment[body]', with: 'Hello world')
             click_button('commit')
             visit practice_path(@practice)
             click_link('Reply')
             fill_in('commontator-comment-1-reply', with: 'Hey, how are you?')
-            find('#submit-reply').click
+            click_button('reply')
             expect(page).to have_content('View 1 reply')
             expect(page).to have_content('2 comments')
         end
