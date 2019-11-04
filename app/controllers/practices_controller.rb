@@ -229,6 +229,10 @@ class PracticesController < ApplicationController
 
   def overview
   end
+  
+  # GET /practices/1/instructions
+  def instructions
+  end
 
   private
 

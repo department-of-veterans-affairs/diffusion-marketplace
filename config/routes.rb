@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   resources :practices, except: :index do
     get '/planning-checklist', action: 'planning_checklist', as: 'planning_checklist'
     get '/committed', action: 'committed', as: 'committed'
+    get '/instructions', action: 'instructions', as: 'instructions'
     post '/commit', action: 'commit', as: 'commit'
     post '/favorite', action: 'favorite', as: 'favorite'
     member do
