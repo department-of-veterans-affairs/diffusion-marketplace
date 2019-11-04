@@ -1,0 +1,58 @@
+<%
+    partners = [
+        'Diffusion of Excellence',
+        'Quality Enhancement Research Initiative (QUERI)',
+        'Office of Connected Care (OCC)',
+        'Office of Rural Health (ORH)',
+        'Office of Veterans'
+
+    ]               
+%>
+
+<%= render 'shared/practice_editor_sidenav' %>
+<div class="grid-container position-relative">
+    <div class="grid-row grid-gap">
+        <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+
+        <div id="overview" class="desktop:grid-col-9 grid-col-12 p0">
+            <section class="usa-section p2-top p2-bottom introduction">
+                <h1 class="font-sans-2xl">Overview</h1>
+                <h2 class="text-normal">Introduce your practice and provide a clear overview to people who may be unfamiliar with it.</h3>
+
+                <%= form_for :practice do |f| %>
+                    <div>
+                        <%= f.label :name, 'Practice name: ', class: 'text-bold display-block' %><span>Type the official name of your practice. (0/50 characters)</span>
+                        <%= f.text_field :name, class: 'display-block' %>
+                    </div>
+                    <div>
+                        <%= f.label :tagline, 'Practice tagline: ', class: 'text-bold display-block' %><span>Type a short sentence summarizing the key outcomes of your practice. (0/150 characters)</span>
+                        <%= f.text_area :tagline, class: 'display-block' %>
+                    </div>
+                    <p><span class="text-bold">Practice origin:</span>&nbsp;<span>Select the state and facility where this practice originated</span>
+                    <%#<div>
+                        <%= f.label '', 'State:' %>
+                    <%#    <%= f.select() %>
+                    <%#<div>
+                    <div>
+                        <%= f.label '', 'Facility:' %>
+                    <%#    <%= f.select() %>
+                    <%#</div>%>
+                    <div>
+                        <%= f.label :summary, 'Practice summary: ', class: 'text-bold display-block' %><span>Type a brief summary of your practice’s mission. (0/400 characters)</span>
+                        <%= f.text_area :summary, class: 'display-block' %>
+                    </div>
+                    <p><span class="text-bold">Partners: </span><span>Select any of the following partners your practice is associated with.</span>
+
+                <% end %>
+                <div>
+                    <%= link_to '' 'example' do %>
+                        <div class="usa-button usa-button--outline padding-2"><i class="fas fa-chevron-left fa-sm">&nbsp;&nbsp;</i>Back</div>
+                    <% end %>
+                    <%= link_to '' 'example' do %>
+                        <div class="usa-button padding-2">Continue&nbsp;&nbsp;<i class="fas fa-chevron-right fa-sm"></i></div>
+                    <% end %>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

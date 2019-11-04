@@ -49,4 +49,5 @@ Rails.application.routes.draw do
   get '/edit-profile' => 'users#edit_profile'
   post '/edit-profile' => 'users#update_profile'
   delete '/edit-profile-photo' => 'users#delete_photo'
+  get '/practice-overview' => 'practices#practice_editor_overview'
 end

@@ -215,6 +215,7 @@
     }
   }
 }
+
 .multiline-ellipses-1, .multiline-ellipses-2, .multiline-ellipses-3 {
   display: block; /* Fallback for non-webkit */
   display: -webkit-box;
@@ -280,10 +281,6 @@
   }
 }
 
-
-
-
-
 .practice-map-filters {
   fieldset {
     padding: 0;
@@ -308,4 +305,8 @@
     background-color: #D83933;
     box-shadow: 0 0 0 2px #D83933;
   }
+}
+
+.practice-editor-link {
+  padding-left: 3.5rem !important;
 }
