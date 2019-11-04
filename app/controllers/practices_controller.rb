@@ -227,6 +227,10 @@ class PracticesController < ApplicationController
     redirect_to edit_practice_path(@practice)
   end
 
+  # GET /practices/1/instructions
+  def instructions
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.

@@ -459,7 +459,7 @@
           <div class='grid-row'>
             <div class='grid-col'>
               <% if vae.object.avatar.present? %>
-                <%= image_tag vae.object.attachment_s3_presigned_url, alt: vae.object.name %>
+                <%= image_tag vae.object.avatar.url, alt: vae.object.name %>
                 <%#= vae.cropbox :avatar, width: 200, index: vae.index %>
               <% end %>
               <%= vae.file_field :avatar, class: 'hidden-upload' %>
