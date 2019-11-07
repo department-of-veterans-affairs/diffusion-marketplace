@@ -308,5 +308,49 @@
 }
 
 .practice-editor-link {
-  padding-left: 3.5rem !important;
+  padding-left: 1rem !important;
+}
+
+.editor-back-to-button, .editor-continue-button {
+  margin: 0 !important;
+}
+
+.editor-back-to-link, .editor-continue-link {
+  width: auto;
+  display: inline-block;
+}
+
+.practice-editor-name-input, .practice-editor-tagline-textarea, .practice-editor-summary-textarea {
+  max-width: 100% !important;
+}
+
+.practice-editor-tagline-textarea {
+  resize: none;
+  height: 72px !important;
+}
+
+.practice-editor-summary-textarea {
+  resize: none;
+  height: 142px !important;
+}
+
+.usa-checkbox:last-child {
+  margin-bottom: 44px;
+}
+
+.instructions-list {
+  padding-left: 20px;
+
+  li {
+    margin-bottom: 30px;
+
+    &:last-child {
+      margin-bottom: 42px;
+    }
+  }
+}
+
+.fa-check-circle {
+  text-decoration: none !important;
+  color: #DADADA;
 }

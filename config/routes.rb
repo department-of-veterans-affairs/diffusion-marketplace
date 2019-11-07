@@ -12,7 +12,10 @@ Rails.application.routes.draw do
   resources :practices, except: :index do
     get '/planning-checklist', action: 'planning_checklist', as: 'planning_checklist'
     get '/committed', action: 'committed', as: 'committed'
-    get '/instructions', action: 'instructions', as: 'instructions'
+    get '/edit/instructions', action: 'instructions', as: 'instructions'
+    get '/edit/overview', action: 'overview', as: 'overview'
+    get '/edit/collaborators', action: 'collaborators', as: 'collaborators'
+    get '/edit/impact', action: 'impact', as: 'impact'
     post '/commit', action: 'commit', as: 'commit'
     post '/favorite', action: 'favorite', as: 'favorite'
     member do
@@ -50,5 +53,4 @@ Rails.application.routes.draw do
   get '/edit-profile' => 'users#edit_profile'
   post '/edit-profile' => 'users#update_profile'
   delete '/edit-profile-photo' => 'users#delete_photo'
-  get '/practice-overview' => 'practices#practice_editor_overview'
 end

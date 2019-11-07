@@ -52,7 +52,7 @@
   <div class="grid-container position-relative">
     <% if current_user&.has_role?(:approver_editor) || current_user&.has_role?(:admin) %>
       <div class="text-right">
-        <%= link_to 'Edit', edit_practice_path(@practice), class: 'usa-button usa-button--outline margin-right-0' %>
+        <%= link_to 'Edit', practice_instructions_path(@practice), class: 'usa-button usa-button--outline margin-right-0' %>
       </div>
     <% end %>
     <div class="grid-row grid-gap">

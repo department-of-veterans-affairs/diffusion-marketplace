@@ -1,0 +1,40 @@
+<div class="grid-container position-relative z-top">
+    <div id="dm-practice-nav" class="z-top mobile-hide">
+        <ul id="dm-tabnav" class="usa-sidenav dm-tabnav margin-bottom-1">
+            <li class="usa-sidenav__item">
+                <%= link_to 'Instructions', practice_instructions_path(@practice), class: 'dm-tab top-tab' %>
+            </li>
+            <li class="usa-sidenav__item">
+                <%= link_to 'Collaborators', practice_collaborators_path(@practice), class: 'dm-tab' %>
+            </li>
+            <li class="usa-sidenav__item">
+                <%= link_to practice_overview_path(@practice), class: 'width-full dm-tab scroll-to practice-editor-link text-middle display-inline-block' do %>
+                    <i class="fas fa-check-circle font-code-xl display-inline-block text-middle padding-right-105"></i>Overview
+                <% end %>
+            </li>
+            <li class="usa-sidenav__item">
+                <%= link_to practice_impact_path(@practice), class: 'width-full dm-tab scroll-to practice-editor-link text-middle display-inline-block' do %>
+                    <i class="fas fa-check-circle font-code-xl display-inline-block text-middle padding-right-105"></i>Impact
+                <% end %>
+            </li>
+            <li class="usa-sidenav__item">
+                <a href="#contact" class="dm-tab bottom-tab scroll-to practice-editor-link" data-target="#contact" data-turbolinks="false"><i class="fas fa-check-circle font-code-xl display-inline-block text-middle padding-right-105"></i>Resources</a>
+            </li>
+            <li class="usa-sidenav__item">
+                <a href="#comments" class="dm-tab bottom-tab scroll-to practice-editor-link" data-target="#comments" data-turbolinks="false"><i class="fas fa-check-circle font-code-xl display-inline-block text-middle padding-right-105"></i>Difficulty</a>
+            </li>
+            <li class="usa-sidenav__item">
+                <a href="#comments" class="dm-tab bottom-tab scroll-to practice-editor-link" data-target="#comments" data-turbolinks="false"><i class="fas fa-check-circle font-code-xl display-inline-block text-middle padding-right-105"></i>Timeline</a>
+            </li>
+            <li class="usa-sidenav__item">
+                <a href="#comments" class="dm-tab bottom-tab scroll-to practice-editor-link" data-target="#comments" data-turbolinks="false"><i class="fas fa-check-circle font-code-xl display-inline-block text-middle padding-right-105"></i>Contact</a>
+            </li>
+            <div class="text-center">
+                <%= button_to('Save your progress', practice_path(@practice), method: :put, class: 'usa-button usa-button--outline width-full padding-y-2 margin-top-1') %>
+            </div>
+            <div class="text-center">
+                <%= button_tag 'Publish your progress', class: 'usa-button width-full padding-y-2 margin-top-1', disabled: 'disabled' %>
+            </div>
+        </ul>
+    </div>
+</div>

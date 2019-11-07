@@ -1,5 +1,5 @@
 class PracticesController < ApplicationController
-  before_action :set_practice, only: [:show, :edit, :update, :destroy, :planning_checklist, :commit, :committed, :highlight, :un_highlight, :feature, :un_feature, :favorite]
+  before_action :set_practice, only: [:show, :edit, :update, :destroy, :planning_checklist, :commit, :committed, :highlight, :un_highlight, :feature, :un_feature, :favorite, :instructions, :overview, :collaborators, :impact]
   before_action :set_facility_data, only: [:show, :planning_checklist]
   before_action :authenticate_user!, except: [:show, :search, :index]
   before_action :can_view_committed_view, only: [:committed]
@@ -227,7 +227,16 @@ class PracticesController < ApplicationController
     redirect_to edit_practice_path(@practice)
   end
 
+  # /practices/slug/overview
   def overview
+  end
+
+  # /practices/slug/collaborators
+  def collaborators
+  end
+
+  # /practices/slug/impact
+  def impact
   end
   
   # GET /practices/1/instructions
