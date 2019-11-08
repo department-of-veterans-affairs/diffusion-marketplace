@@ -1,1 +1,50 @@
-<h1>Collaborators Page</h1>
+<%= render 'breadcrumbs' %>
+<%= render 'practice_editor_sidenav' %>
+<div class="grid-container position-relative">
+    <div class="grid-row grid-gap">
+        <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+
+        <div id="collaborators" class="desktop:grid-col-9 grid-col-12 p0">
+            <section class="usa-section padding-top-0 p2-bottom collaborators">
+                <h1 class="font-sans-3xl">Collaborators</h1>
+                <h2 class="text-normal">Here you can add people at your facility who can help you complete this practice page.</h2>
+                <%#<%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form'}) do |f| %>
+                <form class="usa-form collaborators-form">
+                    <fieldset class="usa-fieldset">
+                        <legend class="usa-sr-only">Practice Collaborators</legend>
+                        <div class="width-mobile-lg">
+                            <label class="usa-label text-bold" for="collaborator-name">Name: </label><span>Type the name of the person.</span>
+                            <input class="usa-input" id="collaborator-name" type="text">
+
+                            <label class="usa-label text-bold" for="collaborator-email">Email: </label><span>Type their email address.</span>
+                            <input class="usa-input" id="collaborator-email" type="text">
+                        </div>
+                        <div class='usa-checkbox margin-top-3'>
+                            <input type='checkbox' class='usa-checkbox__input' id="administrator-rights" name="administrator-rights-checkbox">
+                            <label class='usa-checkbox__label' for="administrator-rights">Grant administrator rights</label>
+                        </div>
+                        <button class="usa-button padding-y-2 margin-y-3">Send email invite</button>
+                        <button class="usa-button usa-button--unstyled text-secondary clear-collaborator-button display-block">
+                            <i class="fas fa-trash-alt collab-trash padding-right-105"></i>Clear
+                        </button>
+                        <div class="height-2px border border-base-light flex-fill display-block"></div>
+                        <button class="usa-button usa-button--unstyled text-primary add-collaborator-button">
+                            <i class="fas fa-plus padding-right-105"></i>Add another
+                        </button>
+                <%#<% end %>
+                </form>
+                <div class="grid-row margin-bottom-8">
+                    <%= link_to practice_instructions_path(@practice), class: 'editor-back-to-link margin-right-1' do %>
+                        <button class="usa-button usa-button--outline padding-2 editor-back-to-button"><i class="fas fa-chevron-left fa-sm">&nbsp;&nbsp;</i>Back</button>
+                    <% end %>
+                    <%= link_to practice_overview_path(@practice), class: 'editor-continue-link' do %>
+                        <button class="usa-button padding-2 editor-continue-button">Continue&nbsp;&nbsp;<i class="fas fa-chevron-right fa-sm"></i></button>
+                    <% end %>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="margin-bottom-105">
+        <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
+    </div>
+</div>

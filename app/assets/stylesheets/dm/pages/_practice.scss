@@ -354,3 +354,33 @@
   text-decoration: none !important;
   color: #DADADA;
 }
+
+.collaborators-form {
+  max-width: 100% !important;
+}
+
+.collab-trash {
+  color: #D83933 !important;
+}
+
+.clear-collaborator-button, .add-collaborator-button {
+  text-decoration: none !important;
+}
+
+.clear-collaborator-button {
+  margin-bottom: 28px !important;
+  margin-top: 4px !important;
+}
+
+.add-collaborator-button {
+  margin-top: 28px !important;
+  margin-bottom: 44px !important;
+}
+
+.clear-collaborator-button:hover {
+  color: #D83933 !important;
+}
+
+.add-collaborator-button:hover {
+  color: #005EA2 !important;
+}

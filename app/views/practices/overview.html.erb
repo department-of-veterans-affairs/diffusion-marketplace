@@ -18,7 +18,7 @@
         <div id="overview" class="desktop:grid-col-9 grid-col-12 p0">
             <section class="usa-section padding-top-0 p2-bottom introduction">
                 <h1 class="font-sans-3xl">Overview</h1>
-                <h2 class="text-normal">Introduce your practice and provide a clear overview to people who may be unfamiliar with it.</h3>
+                <h2 class="text-normal">Introduce your practice and provide a clear overview to people who may be unfamiliar with it.</h2>
                 <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form'}) do |f| %>
                     <fieldset class="usa-fieldset">
                         <legend class="usa-sr-only">Practice Information</legend>
@@ -54,7 +54,7 @@
                         <% end %>
                     </fieldset>
                 <% end %>
-                <div class="grid-row">
+                <div class="grid-row margin-bottom-8">
                     <%= link_to practice_collaborators_path(@practice), class: 'editor-back-to-link margin-right-1' do %>
                         <button class="usa-button usa-button--outline padding-2 editor-back-to-button"><i class="fas fa-chevron-left fa-sm">&nbsp;&nbsp;</i>Back</button>
                     <% end %>
