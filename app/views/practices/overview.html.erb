@@ -34,11 +34,11 @@
                         <div class="grid-row grid-gap-4">
                             <div>
                                 <%= label_tag '', 'State', class: 'usa-label' %>
-                                <%= select_tag('', options_for_select(us_states), id: 'editor_state_select', class: 'width-card-lg height-5')  %>
+                                <%= select_tag('', options_for_select(us_states), id: 'editor_state_select', class: 'width-card-lg height-5 usa-select')  %>
                             </div>
                             <div class="grid-col-fill">
                                 <%= f.label :initiating_facility, 'Facility', class: 'usa-label' %>
-                                <%= f.select(:initiating_facility, options_for_select(['-Select-'], {selected: '-Select-', disabled: '-Select-'}), {}, {id: 'editor_facility_select', class: 'width-full height-5'}) %>
+                                <%= f.select(:initiating_facility, options_for_select(['-Select-'], {selected: '-Select-', disabled: '-Select-'}), {}, {id: 'editor_facility_select', class: 'width-full height-5 usa-select'}) %>
                             </div>
                         </div>
                         <div>
