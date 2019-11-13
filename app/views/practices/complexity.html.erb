@@ -22,24 +22,25 @@
                     </p>
                 </div>
                 <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form'}) do |f| %>
+                    <p>
+                        <span class="text-bold">Departments:&nbsp;</span>
+                        <span>Which departments may be affected during implementation of your practice?</span>
+                    </p>
                     <fieldset class="usa-fieldset">
-                        <legend class="usa-sr-only">Complexity Information</legend>
-                        <p>
-                            <span class="text-bold">Departments:&nbsp;</span>
-                            <span>Which departments may be affected during implementation of your practice?</span>
-                        </p>
-                        <div class="grid-row grid-gap margin-top-105">
-                            <% @practice.departments.each do |department| %>
+                        <div class="grid-row grid-gap margin-top-105 margin-bottom-3">
+                            <% Department.order(:name).all.each do |department| %>
                                 <div class='usa-checkbox grid-col-6'>
                                     <input type='checkbox' class='usa-checkbox__input' id="practice_department_<%= department.id %>" name='practice[department][<%= department.id %>][value]' <%= @practice.departments.include?(department) ? "checked= 'true'" : "" %>>
                                     <label class='usa-checkbox__label' for="practice_department_<%= department.id %>"><%= department.name %></label>
                                 </div>
                             <% end %>
                         </div>
-                        <p>
-                            <span class="text-bold">IT:&nbsp;</span>
-                            <span>Will Information Technology (IT) be required to implement your practice?</span>
-                        </p>
+                    </fieldset>
+                    <p>
+                        <span class="text-bold">IT:&nbsp;</span>
+                        <span>Will Information Technology (IT) be required to implement your practice?</span>
+                    </p>
+                    <fieldset class="usa-fieldset">
                         <div class='margin-top-105 margin-bottom-4'>
                             <div class="usa-radio">
                                 <%= radio_button_tag 'practice_it', :it_required, it_required ? true : false, class: 'usa-radio__input', id: "it_required_radio" %>
@@ -50,11 +51,13 @@
                                 <%= label_tag 'practice_it_it_required', 'No', class: 'usa-radio__label', for: "it_not_required_radio" %>
                             </div>
                         </div>
-                        <p>
-                            <span class="text-bold">Approach and process:&nbsp;</span>
-                            <span>Which of the following best describes your practice?</span>
-                        </p>
-                        <div class='grid-row margin-top-105'>
+                    </fieldset>
+                    <p>
+                        <span class="text-bold">Approach and process:&nbsp;</span>
+                        <span>Which of the following best describes your practice?</span>
+                    </p>
+                    <fieldset class="usa-fieldset">
+                        <div class="grid-row margin-top-105 margin-bottom-4">
                             <div class="usa-radio">
                                 <%= radio_button_tag 'practice_', :process, process == 'New Clinical Approach or New Process' ? true : false, class: 'usa-radio__input', id: "new_process" %>
                                 <%= label_tag 'practice_process', 'A new clinical approach or new process to the VA', class: 'usa-radio__label', for: "new_process" %>
@@ -65,7 +68,46 @@
                             </div>
                         </div>
                     </fieldset>
+                    <p>
+                        <span class="text-bold">Time:&nbsp;</span>
+                        <span>Estimate how long it would take another group to implement your practice.</span>
+                    </p>
+                    <fieldset class="usa-fieldset margin-bottom-5">
+                        <% Practice::TIME_ESTIMATE_OPTIONS.each do |label| %>
+                            <div class="grid-col usa-radio margin-top-105">
+                                <%= radio_button('practice', 'implementation_time_estimate', label, class: 'usa-radio__input') %>
+                                <label class="usa-radio__label" for='practice_implementation_time_estimate_<%= label.split(' ').join('_').tr('()', '').downcase %>'><%= label %></label>
+                            </div>
+                        <% end %>
+                        <%= f.text_field :implementation_time_estimate, class: 'usa-input width-mobile-lg' %>
+                    </fieldset>
+                    <h2 class="font-sans-xl">Staff</h2>
+                    <fieldset class='usa-fieldset'>
+        <h2>Additional Staff</h2>
+        <%= f.fields_for :additional_staffs do |diff| %>
+          <%= diff.hidden_field :id %>
+          <%= diff.link_to_remove "Remove", class: 'usa-button usa-button--secondary', style: 'color: white; text-decoration: none; float: right' %>
+          <%= diff.label :title, 'Title of position', class: 'usa-label', style: 'padding-top: 2.5rem' %>
+          <%= diff.text_field :title, class: 'usa-input practice-input' %>
+          <%= diff.label :hours_per_week, 'Estimated Required Hours per Week', class: 'usa-label' %>
+          <%= diff.text_field :hours_per_week, class: 'usa-input practice-input' %>
+          <div class='grid-row' style='align-items:flex-end'>
+            <div class='grid-col'>
+              <%= diff.label :duration_in_weeks, 'Estimated Duration in Weeks', class: 'usa-label' %>
+              <%= diff.text_field :duration_in_weeks, class: 'usa-input practice-input' %>
+            </div>
+            <p class='grid-col' style='text-align: center;'>Or</p>
+            <div class='grid-col'>
+              <%= diff.check_box :permanent, class: 'usa-checkbox__input' %>
+              <%= diff.label :permanent, 'Permanent', class: 'usa-checkbox__label' %>
+            </div>
+          </div>
+
+        <% end %>
+        <p><%= f.link_to_add "Add Staff Position", :additional_staffs, class: 'usa-button usa-button--outline', style: 'text-decoration: none; right: 0;' %></p>
+      </fieldset>
                 <% end %>
+            </section>
         </div>
     </div>
 </div>
