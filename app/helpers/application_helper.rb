@@ -35,7 +35,7 @@ module ApplicationHelper
     when 3
       return '$50,000-$250,000'
     when 4
-      return 'Over $250,000'
+      return 'More than $250,000'
     else
       return '$0-$10,000'
     end

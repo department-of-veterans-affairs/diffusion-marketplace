@@ -138,7 +138,7 @@ class Practice < ApplicationRecord
   accepts_nested_attributes_for :required_staff_trainings, allow_destroy: true
 
   SATISFACTION_LABELS = ['Little or no impact', 'Some impact', 'Significant impact', 'High or large impact'].freeze
-  COST_LABELS = ['0-$10,000', '$10,000-$50,000', '$50,000-$250,000', 'Over $250,000'].freeze
+  COST_LABELS = ['0-$10,000', '$10,000-$50,000', '$50,000-$250,000', 'More than $250,000'].freeze
   # also known as "Difficulty"
   COMPLEXITY_LABELS = ['Little or no complexity', 'Some complexity', 'Significant complexity', 'High or large complexity'].freeze
   TIME_ESTIMATE_OPTIONS =['1 week', '1 month', '3 months', '6 months', '1 year', 'longer than 1 year', 'Other (Please specify)']
