@@ -2,6 +2,10 @@
     const $document = $(document);
     const CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
     const CHARACTER_COUNTER_VALID_COLOR =  '#a9aeb1';
+    
+    const NAME_CHARACTER_COUNT = 50;
+    const TAGLINE_CHARACTER_COUNT = 150;
+    const SUMMARY_CHARACTER_COUNT = 400;
 
     // select the state and facility if the practice already has one
     function selectFacility() {
@@ -52,34 +56,27 @@
         let practiceTaglineCurrentLength = $('.practice-editor-tagline-textarea').val().length;
         let practiceSummaryCurrentLength = $('.practice-editor-summary-textarea').val().length;
 
-        let maxPracticeNamelength = 50;
-        let maxPracticeTaglineLength = 150;
-        let maxPracticeSummaryLength = 400;
+        let practiceNameCharacterCounter = `(${practiceNameCurrentLength}/${NAME_CHARACTER_COUNT} characters)`;
+        let practiceTaglineCharacterCounter = `(${practiceTaglineCurrentLength}/${TAGLINE_CHARACTER_COUNT} characters)`;
+        let practiceSummaryCharacterCounter = `(${practiceSummaryCurrentLength}/${SUMMARY_CHARACTER_COUNT} characters)`;
 
-        let practiceNamecharacterCounter = `(${practiceNameCurrentLength}/${maxPracticeNamelength} characters)`;
-        let practiceTaglinecharacterCounter = `(${practiceTaglineCurrentLength}/${maxPracticeTaglineLength} characters)`;
-        let practiceSummarycharacterCounter = `(${practiceSummaryCurrentLength}/${maxPracticeSummaryLength} characters)`;
-
-        $('#practice-editor-name-character-counter').text(practiceNamecharacterCounter);
-        $('#practice-editor-tagline-character-counter').text(practiceTaglinecharacterCounter);
-        $('#practice-editor-summary-character-counter').text(practiceSummarycharacterCounter);
+        $('#practice-editor-name-character-counter').text(practiceNameCharacterCounter);
+        $('#practice-editor-tagline-character-counter').text(practiceTaglineCharacterCounter);
+        $('#practice-editor-summary-character-counter').text(practiceSummaryCharacterCounter);
         
-        
-
-        if (practiceNameCurrentLength >= maxPracticeNamelength) {
+        if (practiceNameCurrentLength >= NAME_CHARACTER_COUNT) {
             $('#practice-editor-name-character-counter').css('color', CHARACTER_COUNTER_INVALID_COLOR);
         }
-        if (practiceTaglineCurrentLength >= maxPracticeTaglineLength) {
+        if (practiceTaglineCurrentLength >= TAGLINE_CHARACTER_COUNT) {
             $('#practice-editor-tagline-character-counter').css('color', CHARACTER_COUNTER_INVALID_COLOR);
         }
-        if (practiceSummaryCurrentLength >= maxPracticeSummaryLength) {
+        if (practiceSummaryCurrentLength >= SUMMARY_CHARACTER_COUNT) {
             $('#practice-editor-summary-character-counter').css('color', CHARACTER_COUNTER_INVALID_COLOR);
         }
     }
 
-    function characterCounter(e, $element) {
+    function characterCounter(e, $element, maxlength) {
         const t = e.target;
-        let maxlength = 50;
         let currentLength = $(t).val().length;
 
         let characterCounter = `(${currentLength}/${maxlength} characters)`;
@@ -94,15 +91,15 @@
 
     function maxCharacters() {
         $('.practice-editor-name-input').on('input', (e) => {
-            characterCounter(e, $('#practice-editor-name-character-counter'));
+            characterCounter(e, $('#practice-editor-name-character-counter'), NAME_CHARACTER_COUNT);
         });
 
         $('.practice-editor-tagline-textarea').on('input', (e) => {
-            characterCounter(e, $('#practice-editor-tagline-character-counter'));
+            characterCounter(e, $('#practice-editor-tagline-character-counter'), TAGLINE_CHARACTER_COUNT);
         });
 
         $('.practice-editor-summary-textarea').on('input', (e) => {
-            characterCounter(e, $('#practice-editor-summary-character-counter'));
+            characterCounter(e, $('#practice-editor-summary-character-counter'), SUMMARY_CHARACTER_COUNT);
         });
     }
 
