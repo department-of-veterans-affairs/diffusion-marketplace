@@ -3,6 +3,7 @@
     var facilityData = <%= raw JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json")).to_json %>;
     var selectedFacility = <%= @practice.initiating_facility || false %>;
   <% end %>
+  <%= javascript_include_tag 'practice_editor_overview', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <%

@@ -77,50 +77,32 @@
         }
     }
 
+    function characterCounter(e, $element) {
+        const t = e.target;
+        let maxlength = 50;
+        let currentLength = $(t).val().length;
+
+        let characterCounter = `(${currentLength}/${maxlength} characters)`;
+
+        $element.css('color', CHARACTER_COUNTER_VALID_COLOR);
+        $element.text(characterCounter);
+
+        if (currentLength >= maxlength) {
+            $element.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+        }
+    }
+
     function maxCharacters() {
         $('.practice-editor-name-input').on('input', (e) => {
-            const t = e.target
-            let maxlength = 50;
-            let currentLength = $(t).val().length;
-
-            let characterCounter = `(${currentLength}/${maxlength} characters)`;
-
-            $('#practice-editor-name-character-counter').css('color', CHARACTER_COUNTER_VALID_COLOR);
-            $('#practice-editor-name-character-counter').text(characterCounter);
-
-            if (currentLength >= maxlength) {
-                $('#practice-editor-name-character-counter').css('color', CHARACTER_COUNTER_INVALID_COLOR);
-            }
+            characterCounter(e, $('#practice-editor-name-character-counter'));
         });
 
         $('.practice-editor-tagline-textarea').on('input', (e) => {
-            const t = e.target
-            let maxlength = 150;
-            let currentLength = $(t).val().length;
-
-            let characterCounter = `(${currentLength}/${maxlength} characters)`;
-
-            $('#practice-editor-tagline-character-counter').css('color', CHARACTER_COUNTER_VALID_COLOR);
-            $('#practice-editor-tagline-character-counter').text(characterCounter);
-
-            if (currentLength >= maxlength) {
-                $('#practice-editor-tagline-character-counter').css('color', CHARACTER_COUNTER_INVALID_COLOR);
-            }
+            characterCounter(e, $('#practice-editor-tagline-character-counter'));
         });
 
         $('.practice-editor-summary-textarea').on('input', (e) => {
-            const t = e.target
-            let maxlength = 400;
-            let currentLength = $(t).val().length;
-
-            let characterCounter = `(${currentLength}/${maxlength} characters)`;
-
-            $('#practice-editor-summary-character-counter').css('color', CHARACTER_COUNTER_VALID_COLOR);
-            $('#practice-editor-summary-character-counter').text(characterCounter);
-
-            if (currentLength >= maxlength) {
-                $('#practice-editor-summary-character-counter').css('color', CHARACTER_COUNTER_INVALID_COLOR);
-            }
+            characterCounter(e, $('#practice-editor-summary-character-counter'));
         });
     }
 
