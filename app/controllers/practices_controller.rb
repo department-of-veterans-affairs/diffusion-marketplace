@@ -142,7 +142,7 @@ class PracticesController < ApplicationController
   def search
     ahoy.track "Practice search", {search_term: request.params[:query]} if request.params[:query].present?
     @practices = Practice.where(approved: true, published: true).order(name: :asc)
-    @facilities_data = facilities_json['features']
+    @facilities_data = facilities_json
     @practices_json = practices_json(@practices)
   end
 
@@ -313,7 +313,7 @@ class PracticesController < ApplicationController
   end
 
   def set_facility_data
-    @facility_data = facilities_json['features'].find {|f| f['properties']['id'] == @practice.initiating_facility}
+    @facility_data = facilities_json.find {|f| f['StationNumber'] == @practice.initiating_facility}
   end
 
   def can_view_committed_view
@@ -340,7 +340,7 @@ class PracticesController < ApplicationController
       end
 
       # display initiating facility
-      practice_hash['initiating_facility'] = helpers.facility_name(practice.initiating_facility, facilities_json['features'])
+      practice_hash['initiating_facility'] = helpers.facility_name(practice.initiating_facility, facilities_json)
       practice_hash['user_favorited'] = current_user.favorite_practice_ids.include?(practice.id) if current_user.present?
       practices_array.push practice_hash
     end

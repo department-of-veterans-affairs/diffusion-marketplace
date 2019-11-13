@@ -69,8 +69,8 @@ module ApplicationHelper
 
   def facility_name(facility_id, facilities_data = nil)
     facilities_data = facilities_data || @facilities_data
-    facility_data = facilities_data.find { |f| f['properties']['id'] == facility_id }
-    facility_data.present? ? facility_data['properties']['name'] : facility_id
+    facility_data = facilities_data.find {|f| f['StationNumber'] == facility_id }
+    facility_data.present? ? facility_data['OfficialStationName'] : facility_id
   end
 
   def email_practice_subject(practice)
