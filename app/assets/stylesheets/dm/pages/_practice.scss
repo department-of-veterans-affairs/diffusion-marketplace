@@ -220,7 +220,6 @@
   display: block; /* Fallback for non-webkit */
   display: -webkit-box;
   max-width: 400px;
-  margin: 0 auto;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -359,8 +358,12 @@
   max-width: 100% !important;
 }
 
-.collab-trash {
+.collab-trash, .staff-trash {
   color: #D83933 !important;
+
+  &:hover {
+    color: #b51d09 !important;
+  }
 }
 
 .clear-collaborator-button, .add-collaborator-button {
@@ -387,4 +390,26 @@
 
 .green-check {
   color: limegreen;
+}
+
+.clear-additional-staff-link, .clear-required-staff-link {
+  margin-top: 0 !important;
+  margin-bottom: 24px !important;
+  color: #D83933 !important;
+
+  &:hover {
+    color: #b51d09 !important;
+  }
+}
+
+.add-additional-staff-link, .add-required-staff-link {
+  margin-top: 24px !important;
+}
+
+.add-required-staff-link {
+  margin-bottom: 44px;
+}
+
+#required-training-container {
+  display: none;
 }

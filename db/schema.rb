@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_10_162249) do
+ActiveRecord::Schema.define(version: 2019_11_15_194428) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -617,6 +617,7 @@ ActiveRecord::Schema.define(version: 2019_10_10_162249) do
     t.boolean "highlight", default: false, null: false
     t.boolean "featured", default: false, null: false
     t.integer "ahoy_visit_id"
+    t.string "training_provider_role"
     t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
   end

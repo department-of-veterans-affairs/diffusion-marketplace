@@ -1,5 +1,5 @@
 class PracticesController < ApplicationController
-  before_action :set_practice, only: [:show, :edit, :update, :destroy, :planning_checklist, :commit, :committed, :highlight, :un_highlight, :feature, :un_feature, :favorite, :instructions, :overview, :collaborators, :impact, :resources, :documentation, :complexity]
+  before_action :set_practice, only: [:show, :edit, :update, :destroy, :planning_checklist, :commit, :committed, :highlight, :un_highlight, :feature, :un_feature, :favorite, :instructions, :overview, :collaborators, :impact, :resources, :documentation, :complexity, :timeline]
   before_action :set_facility_data, only: [:show, :planning_checklist]
   before_action :authenticate_user!, except: [:show, :search, :index]
   before_action :can_view_committed_view, only: [:committed]
@@ -229,6 +229,10 @@ class PracticesController < ApplicationController
 
   # /practices/slug/documentation
   def documentation
+  end
+
+  # /practices/slug/timeline
+  def timeline
   end
 
   # /practices/slug/complexity
