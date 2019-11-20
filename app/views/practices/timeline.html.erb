@@ -1,0 +1,77 @@
+<% provide :head_tags do %>
+    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+        <%= render partial: 'timeline', formats: [:js] %>
+    <% end %>
+<% end %>
+
+<%
+    last_timeline_id = @practice.timelines.last.id
+%>
+
+<%= render 'breadcrumbs' %>
+<%= render 'practice_editor_sidenav' %>
+<div class="grid-container position-relative">
+    <div class="grid-row grid-gap">
+        <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+
+        <div id="timeline" class="desktop:grid-col-9 grid-col-12 p0">
+            <section class="usa-section padding-top-0 p2-bottom timeline">
+                <h1 class="font-sans-3xl">Timeline</h1>
+                <h2 class="text-normal">
+                    This section details the estimated timeline for another facility to implement your practice.
+                </h2>
+                <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form'}) do |f| %>
+                    <fieldset class="usa-fieldset">
+                        <div style='margin-top: 2rem;'>
+                            <%= f.fields_for :timelines, wrapper: false do |tl| %>
+                                <% 
+                                    tl_id = tl.object.id
+                                    tl_position = tl.object.position
+                                %>
+                                <%= tl.hidden_field :id %>
+                                <div id="milestone_<%= tl_id %>_container">
+                                    <div>
+                                        <%= tl.label :timeline, 'Time frame:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type the time frame as Month # (e.g. Month 1, Months 2-3)</span>
+                                        <%= tl.text_field :timeline, class: 'usa-input practice-input width-card' %>
+                                    </div>
+                                    <div>
+                                        <%= tl.label :milestone, 'Milestone:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type a description of the milestone.</span>&nbsp;<span class="text-base-light milestone-character-count" id="milestone_<%= tl_id %>_character_count">(0/150 characters)</span>
+                                        <%= tl.text_area :milestone, class: 'usa-input practice-input height-15 milestone-textarea', id: "milestone_#{tl_id}_textarea" %>
+                                    </div>
+                                    <div class="grid-row flex-align-center">
+                                        <div class="grid-col-auto <%= last_timeline_id == tl_id || tl_position != 1 ? '' : 'hidden-timeline' %>">
+                                            <button class="usa-button usa-button--unstyled text-no-underline text-base-dark move-timeline-button" id="move_timeline_<%= tl_id %>_up"><span class="fas fa-chevron-up"></span>&nbsp;&nbsp;<span>Move up</span></button>
+                                        </div>
+                                        <div class="grid-col-auto <%= last_timeline_id != tl_id || tl_position == 1 ? '' : 'hidden-timeline' %>">
+                                            <button class="usa-button usa-button--unstyled text-no-underline text-base-dark move-timeline-button" id="move_timeline_<%= tl_id %>_down"><span class="fas fa-chevron-down"></span>&nbsp;&nbsp;<span>Move down</span></button>
+                                        </div>
+                                        <div class="grid-col-fill">
+                                            <%= tl.link_to_remove class: 'fas fa-trash-alt timeline-trash text-no-underline clear-timeline-link float-right' do %>
+                                                    <span class="padding-left-1 font-sans-md text-normal text-no-underline">Remove</span>
+                                            <% end %>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="height-2px border border-base-light flex-fill display-block"></div>
+                            <% end %>
+                            <%= f.link_to_add :timelines, class: 'fas fa-plus text-no-underline add-timeline-link' do %>
+                                <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add another</span>
+                            <% end %>
+                        </div>
+                    </fieldset>
+                <% end %>
+                <div class="grid-row margin-bottom-8">
+                    <%= link_to practice_complexity_path(@practice), class: 'editor-back-to-link margin-right-1' do %>
+                        <button class="usa-button usa-button--outline padding-2 editor-back-to-button">
+                        <i class="fas fa-chevron-left fa-sm">&nbsp;&nbsp;</i>Back
+                        </button>
+                    <% end %>
+                    <%= link_to practice_risk_and_mitigation_path(@practice), class: 'editor-continue-link' do %>
+                        <button class="usa-button padding-2 editor-continue-button">Continue&nbsp;&nbsp;<i class="fas fa-chevron-right fa-sm"></i>
+                        </button>
+                    <% end %>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

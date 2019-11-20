@@ -20,6 +20,10 @@ Rails.application.routes.draw do
     get '/edit/documentation', action: 'documentation', as: 'documentation'
     get '/edit/complexity', action: 'complexity', as: 'complexity'
     get '/edit/timeline', action: 'timeline', as: 'timeline'
+    get '/edit/risk_and_mitigation', action: 'risk_and_mitigation', as: 'risk_and_mitigation'
+    get '/edit/contact', action: 'contact', as: 'contact'
+    get '/edit/checklist', action: 'checklist', as: 'checklist'
+    get '/edit/origin', action: 'origin', as: 'origin'
     post '/commit', action: 'commit', as: 'commit'
     post '/favorite', action: 'favorite', as: 'favorite'
     member do

@@ -358,7 +358,7 @@
   max-width: 100% !important;
 }
 
-.collab-trash, .staff-trash {
+.collab-trash, .staff-trash, .timeline-trash {
   color: #D83933 !important;
 
   &:hover {
@@ -402,14 +402,45 @@
   }
 }
 
-.add-additional-staff-link, .add-required-staff-link {
+.clear-timeline-link {
+  margin-top: 24px !important;
+  margin-bottom: 24px !important;
+  color: #D83933 !important;
+
+  &:hover {
+    color: #b51d09 !important;
+  }
+}
+
+.add-additional-staff-link, .add-required-staff-link, .add-timeline-link {
   margin-top: 24px !important;
 }
 
-.add-required-staff-link {
+.add-required-staff-link, .add-timeline-link {
   margin-bottom: 44px;
 }
 
 #required-training-container {
   display: none;
+}
+
+.milestone-textarea {
+  resize: none;
+}
+
+.move-timeline-button {
+  margin-top: 0 !important;
+  margin-right: 21px !important;
+
+  &:hover {
+    color: #565c65 !important;
+  }
+}
+
+.hidden-timeline {
+  display: none;
+}
+
+.editor-sidenav-link {
+  padding: 0.6rem !important;
 }
