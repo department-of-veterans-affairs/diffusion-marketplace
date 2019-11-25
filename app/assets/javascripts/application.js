@@ -43,3 +43,4 @@
 //= require infowindow
 //= require reportAbuse
 //= require turbolinksScrollTop
+//= require save-editor-progress

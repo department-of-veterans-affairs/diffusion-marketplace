@@ -1,0 +1,57 @@
+var CHARACTER_COUNTER_VALID_COLOR =  '#a9aeb1';
+var CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
+var RISK_AND_MITIGATION_MAX_LENGTH = 150;
+
+function getRiskAndMitigationCharacterCountOnPageLoad() {
+
+    <% @practice.risk_mitigations.each do |rm| %>
+        <% rm.risks.each do |r| %>
+            var riskTextarea = $("#risk_<%= r.id %>_description_textarea");
+            var riskCharacterSpan = $("#risk_<%= r.id %>_character_count");
+            var riskCurrentLength = riskTextarea.val().length;
+            var riskCharacterCounter = '(' + riskCurrentLength + '/' + RISK_AND_MITIGATION_MAX_LENGTH + ' characters)';
+
+            riskCharacterSpan.text(riskCharacterCounter);
+
+            if (riskCurrentLength >= RISK_AND_MITIGATION_MAX_LENGTH) {
+                riskCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+            }
+        <% end %>
+        <% rm.mitigations.each do |m| %>
+            var mitigationTextarea = $("#mitigation_<%= m.id %>_description_textarea");
+            var mitigationCharacterSpan = $("#mitigation_<%= m.id %>_character_count");
+            var mitigationCurrentLength = mitigationTextarea.val().length;
+            var mitigationCharacterCounter = '(' + mitigationCurrentLength + '/' + RISK_AND_MITIGATION_MAX_LENGTH + ' characters)';
+
+            mitigationCharacterSpan.text(mitigationCharacterCounter);
+
+            if (mitigationCurrentLength >= RISK_AND_MITIGATION_MAX_LENGTH) {
+                mitigationCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+            }
+        <% end %>
+    <% end %>
+}
+
+function riskMitigationCharacterCounter() {
+    $('.practice-input').on('input', function(e) {
+        var t = e.target;
+        var currentLength = $(t).val().length;
+
+        var textareaCharacterSpan = $(t).closest('div').find('.text-base-light');
+        var characterCounter = '(' + currentLength + '/' + RISK_AND_MITIGATION_MAX_LENGTH + ' characters)';
+
+        textareaCharacterSpan.css('color', CHARACTER_COUNTER_VALID_COLOR);
+        textareaCharacterSpan.text(characterCounter);
+
+        if (currentLength >= RISK_AND_MITIGATION_MAX_LENGTH) {
+            textareaCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+        }
+    });
+}
+
+function executeRiskMitigationFunctions() {
+    getRiskAndMitigationCharacterCountOnPageLoad();
+    riskMitigationCharacterCounter();
+}
+
+$(document).on('turbolinks:load', executeRiskMitigationFunctions);

@@ -358,7 +358,7 @@
   max-width: 100% !important;
 }
 
-.collab-trash, .staff-trash, .timeline-trash {
+.collab-trash, .staff-trash, .timeline-trash, .risk-mitigation-trash {
   color: #D83933 !important;
 
   &:hover {
@@ -402,7 +402,7 @@
   }
 }
 
-.clear-timeline-link {
+.clear-timeline-link, .clear-risk-mitigation-link {
   margin-top: 24px !important;
   margin-bottom: 24px !important;
   color: #D83933 !important;
@@ -412,11 +412,11 @@
   }
 }
 
-.add-additional-staff-link, .add-required-staff-link, .add-timeline-link {
+.add-additional-staff-link, .add-required-staff-link, .add-timeline-link, .add-risk-mitigation-link {
   margin-top: 24px !important;
 }
 
-.add-required-staff-link, .add-timeline-link {
+.add-required-staff-link, .add-timeline-link, .add-risk-mitigation-link {
   margin-bottom: 44px;
 }
 
@@ -424,11 +424,11 @@
   display: none;
 }
 
-.milestone-textarea {
+.milestone-textarea, .risk-description, .mitigation-description {
   resize: none;
 }
 
-.move-timeline-button {
+.move-timeline-button, .move-risk-mitigation-button {
   margin-top: 0 !important;
   margin-right: 21px !important;
 
@@ -437,7 +437,7 @@
   }
 }
 
-.hidden-timeline {
+.hidden-timeline, .hidden-risk-mitigation {
   display: none;
 }
 

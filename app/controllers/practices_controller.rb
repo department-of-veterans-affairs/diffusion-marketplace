@@ -118,7 +118,7 @@ class PracticesController < ApplicationController
       end
 
       dept_keys = []
-      dept_keys = params[:practice][:practice_department].keys if params[:practice][:practice_department].present?
+      dept_keys = params[:practice][:department].keys if params[:practice][:department].present?
       @practice.department_practices.each do |department|
         department.destroy unless dept_keys.include? department.department_id.to_s
       end
@@ -285,19 +285,19 @@ class PracticesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def practice_params
-    params.require(:practice).permit(:tagline, :process, :it_required, :need_new_license, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :cost_to_implement_aggregate, :sustainability_aggregate, :veteran_satisfaction_aggregate, :difficulty_aggregate,
+    params.require(:practice).permit(:need_training, :tagline, :process, :it_required, :need_new_license, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :cost_to_implement_aggregate, :sustainability_aggregate, :veteran_satisfaction_aggregate, :difficulty_aggregate,
                                      :number_adopted, :number_departments, :number_failed, :implementation_time_estimate, :implementation_time_estimate_description, :implentation_summary, :implentation_fte,
-                                     :training_provider, :required_training_summary, :support_network_email,
+                                     :training_provider, :training_provider_role, :required_training_summary, :support_network_email,
                                      :main_display_image, :main_display_image_original_w, :main_display_image_original_h, :main_display_image_crop_x, :main_display_image_crop_y, :main_display_image_crop_w, :main_display_image_crop_h,
                                      :origin_picture, :origin_picture_original_w, :origin_picture_original_h, :origin_picture_crop_x, :origin_picture_crop_y, :origin_picture_crop_w, :origin_picture_crop_h,
                                      impact_photos_attributes: [:id, :title, :description, :attachment, :attachment_original_w, :attachment_original_h, :attachment_crop_x, :attachment_crop_y,
                                                                 :attachment_crop_w, :attachment_crop_h, :_destroy],
                                      difficulties_attributes: [:id, :description, :_destroy],
                                      risk_mitigations_attributes: [:id, :_destroy, risks_attributes: [:id, :description, :_destroy], mitigations_attributes: [:id, :description, :_destroy]],
-                                     timelines_attributes: [:id, :description, :_destroy],
+                                     timelines_attributes: [:id, :description, :timeline, :milestone, :_destroy],
                                      va_employees_attributes: [:id, :name, :role, :_destroy, :avatar, :avatar_original_w, :avatar_original_h, :avatar_crop_x, :avatar_crop_y, :avatar_crop_w, :avatar_crop_h],
                                      additional_staffs_attributes: [:id, :_destroy, :title, :hours_per_week, :duration_in_weeks, :permanent],
-                                     additional_resources_attributes: [:id, :_destroy, :description], required_staff_training: [:id, :_destroy, :title, :description])
+                                     additional_resources_attributes: [:id, :_destroy, :description], required_staff_trainings_attributes: [:id, :_destroy, :title, :description])
   end
 
   def can_view_practice

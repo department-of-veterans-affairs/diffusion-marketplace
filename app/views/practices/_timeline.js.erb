@@ -18,7 +18,7 @@ function getMilestoneCharacterCountOnPageLoad() {
     <% end %>
 }
 
-function characterCounter() {
+function milestoneCharacterCounter() {
     $('.milestone-textarea').on('input', function(e) {
         var t = e.target;
         var currentLength = $(t).val().length;
@@ -37,7 +37,7 @@ function characterCounter() {
 
 function executeMilestoneFunctions() {
     getMilestoneCharacterCountOnPageLoad();
-    characterCounter();
+    milestoneCharacterCounter();
 }
 
 $(document).on('turbolinks:load', executeMilestoneFunctions);

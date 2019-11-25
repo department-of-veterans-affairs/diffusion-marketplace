@@ -104,12 +104,12 @@
                             <div class="margin-bottom-3">
                                 <p class="text-bold margin-bottom-105">Role type</p>
                                 <div class='usa-radio'>
-                                    <%= diff.radio_button :permanent, true, { class: 'usa-radio__input', checked: diff.object.permanent == true ? 'checked' : 'false' } %>
-                                    <label class='usa-radio__label' for='additonal_staffs_permanent_true'>Permanent</label>
+                                    <%= diff.radio_button :permanent, true, { id: "addtional_staffs_#{diff.object.id}_permanent_true", class: 'usa-radio__input', checked: diff.object.permanent == true ? 'checked' : 'false' } %>
+                                    <label class='usa-radio__label' for="addtional_staffs_<%= diff.object.id %>_permanent_true">Permanent</label>
                                 </div>
                                 <div class='usa-radio'>
-                                    <%= diff.radio_button :permanent, false, { class: 'usa-radio__input', checked: diff.object.permanent == false ? 'checked' : 'false'  } %>
-                                    <label class='usa-radio__label' for='additional_staffs_permanent_false'>Temporary</label>
+                                    <%= diff.radio_button :permanent, false, { id: "addtional_staffs_#{diff.object.id}_permanent_false", class: 'usa-radio__input', checked: diff.object.permanent == false ? 'checked' : 'false'  } %>
+                                    <label class='usa-radio__label' for="addtional_staffs_<%= diff.object.id %>_permanent_false">Temporary</label>
                                 </div>
                             </div>
                             <div class="margin-bottom-3">
@@ -130,7 +130,7 @@
                     <fieldset class="usa-fieldset">
                         <h2 class="font-sans-xl margin-top-5">Training</h2>
                         <p class="margin-top-2">Is training required</p>
-                        <div class="margin-bottom-3 margin-top-105 need-training-radio-container">
+                        <div class="margin-top-105 need-training-radio-container", style="<%= training == true ? '' : 'margin-bottom: 44px;' %>">
                             <div class='usa-radio'>
                                 <%= radio_button('practice', 'need_training', true, class: 'usa-radio__input', checked: training == true ? 'checked' : false) %>
                                 <label class='usa-radio__label need_training_true_label' for='practice_need_training_true'>Yes</label>
@@ -141,7 +141,7 @@
                             </div>
                         </div>
                     </fieldset>
-                    <div id="required-training-container">
+                    <div id="required-training-container" class="<%= training == true ? 'required-training-container-open' : 'required-training-container-closed' %>">
                         <fieldset class="usa-fieldset">
                             <div class="margin-bottom-3 margin-top-105">
                                 <%= f.label :training_length, 'Training length:', class: 'usa-label text-bold display-inline-block margin-top-0' %>&nbsp;<span>Type the duration of training in hours.</span>
@@ -188,6 +188,7 @@
                                 </div>
                             </div>
                             <div>
+                                <p class="margin-bottom-105">For each given role, who would be required to take the training?</p>
                                 <%= f.fields_for :required_staff_trainings do |diff| %>
                                     <%= diff.hidden_field :id %>
                                     <div class="margin-bottom-3">

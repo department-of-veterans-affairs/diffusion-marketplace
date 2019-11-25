@@ -6,6 +6,7 @@
 
 <%
     last_timeline_id = @practice.timelines.last.id
+    timeline_length = @practice.timelines.length
 %>
 
 <%= render 'breadcrumbs' %>
@@ -23,7 +24,7 @@
                 <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form'}) do |f| %>
                     <fieldset class="usa-fieldset">
                         <div style='margin-top: 2rem;'>
-                            <%= f.fields_for :timelines, wrapper: false do |tl| %>
+                            <%= f.fields_for :timelines do |tl| %>
                                 <% 
                                     tl_id = tl.object.id
                                     tl_position = tl.object.position
@@ -39,15 +40,15 @@
                                         <%= tl.text_area :milestone, class: 'usa-input practice-input height-15 milestone-textarea', id: "milestone_#{tl_id}_textarea" %>
                                     </div>
                                     <div class="grid-row flex-align-center">
-                                        <div class="grid-col-auto <%= last_timeline_id == tl_id || tl_position != 1 ? '' : 'hidden-timeline' %>">
+                                        <div class="grid-col-auto <%= tl_position != 1 && timeline_length > 1 ? '' : 'hidden-timeline' %>">
                                             <button class="usa-button usa-button--unstyled text-no-underline text-base-dark move-timeline-button" id="move_timeline_<%= tl_id %>_up"><span class="fas fa-chevron-up"></span>&nbsp;&nbsp;<span>Move up</span></button>
                                         </div>
-                                        <div class="grid-col-auto <%= last_timeline_id != tl_id || tl_position == 1 ? '' : 'hidden-timeline' %>">
+                                        <div class="grid-col-auto <%= last_timeline_id != tl_id || tl_position == 1 && timeline_length != 1 ? '' : 'hidden-timeline' %>">
                                             <button class="usa-button usa-button--unstyled text-no-underline text-base-dark move-timeline-button" id="move_timeline_<%= tl_id %>_down"><span class="fas fa-chevron-down"></span>&nbsp;&nbsp;<span>Move down</span></button>
                                         </div>
                                         <div class="grid-col-fill">
-                                            <%= tl.link_to_remove class: 'fas fa-trash-alt timeline-trash text-no-underline clear-timeline-link float-right' do %>
-                                                    <span class="padding-left-1 font-sans-md text-normal text-no-underline">Remove</span>
+                                            <%= tl.link_to_remove class: "fas fa-trash-alt timeline-trash text-no-underline clear-timeline-link #{timeline_length == 1 ? '' : 'float-right'}" do %>
+                                                    <span class="padding-left-1 font-sans-md text-normal text-no-underline"><%= timeline_length == 1 ? 'Clear' : 'Remove' %></span>
                                             <% end %>
                                         </div>
                                     </div>

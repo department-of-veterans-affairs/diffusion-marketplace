@@ -44,7 +44,7 @@
             </li>
             <li class="usa-sidenav__item">
                 <%= link_to practice_risk_and_mitigation_path(@practice), class: 'width-full dm-tab scroll-to practice-editor-link text-middle display-inline-block editor-sidenav-link' do %>
-                    <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105"></i>Risk and mitigation
+                    <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%= @practice.risk_mitigations ? 'green-check' : '' %>"></i>Risk and mitigation
                 <% end %>
             </li>
             <li class="usa-sidenav__item">
@@ -57,12 +57,12 @@
                     <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105"></i>Checklist
                 <% end %>
             </li>
-            <div class="text-center">
-                <%= button_to('Save your progress', practice_path(@practice), method: :put, class: 'usa-button usa-button--outline width-full padding-y-2 margin-top-1') %>
-            </div>
-            <div class="text-center">
-                <%= button_tag 'Publish your progress', class: 'usa-button width-full padding-y-2 margin-top-1', disabled: 'disabled' %>
-            </div>
         </ul>
+        <div class="text-center">
+                <%= button_tag 'Save your progress', class: 'usa-button usa-button--outline width-full padding-y-2 margin-top-1', id: 'practice-editor-save-button' %>
+        </div>
+        <div class="text-center">
+            <%= button_tag 'Publish your progress', class: 'usa-button width-full padding-y-2 margin-top-1', disabled: 'disabled' %>
+        </div>
     </div>
 </div>

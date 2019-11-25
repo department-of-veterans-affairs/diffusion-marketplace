@@ -4,7 +4,8 @@
     function trainingDropdown() {
         const container = $('#required-training-container');
         const radioContainer = $('.need-training-radio-container');
-        radioContainer.css('margin-bottom', '44px');
+
+        container.hasClass('required-training-container-open') ? container.css('display', 'block') : container.css('display', 'none');
 
         $('.need_training_true_label').on('click', () => {
             container.css('display', 'block')
