@@ -49,9 +49,16 @@ function riskMitigationCharacterCounter() {
     });
 }
 
+function hideAddLinksAndShowRiskMitiFields() {
+    $('.add-risk-mitigation-link').on('click', function() {
+        $('.add-risk-link').css('display', 'none');
+    })
+}
+
 function executeRiskMitigationFunctions() {
     getRiskAndMitigationCharacterCountOnPageLoad();
     riskMitigationCharacterCounter();
+    hideAddLinksAndShowRiskMitiFields();
 }
 
 $(document).on('turbolinks:load', executeRiskMitigationFunctions);

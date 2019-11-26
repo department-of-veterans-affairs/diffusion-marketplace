@@ -32,9 +32,10 @@ Rails.application.routes.draw do
       post :feature
       post :un_feature
     end
-    resources :comments do      
+    resources :comments do
       member do
           put 'like' => 'commontator/comments#upvote'
+          get 'report' => 'commontator/comments#report_comment'
       end
     end
   end
@@ -61,4 +62,6 @@ Rails.application.routes.draw do
   get '/edit-profile' => 'users#edit_profile'
   post '/edit-profile' => 'users#update_profile'
   delete '/edit-profile-photo' => 'users#delete_photo'
+  # Custom route for reporting a comment
+  # get '/practices/:practice_id/comments/:comment_id/report', action: 'report_comment', controller: 'commontator/comments', as: 'report_comment'
 end

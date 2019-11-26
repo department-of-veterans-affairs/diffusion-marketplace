@@ -17,6 +17,7 @@
   practice_team_member = creator_practice.team_member
   verified_practice_implementer = creator_practice.verified_implementer
   show_children = params[:show_children] == 'true'
+  practice = Practice.find_by(id: comment.thread.commontable_id)
 %>
 
 <div class="grid-row margin-bottom-0 margin-top-4">
@@ -91,7 +92,7 @@
               <p class="text-normal text-base">"<%= comment.body %>"</p>
               <div class="text-right">
                 <button class="usa-button usa-button--outline margin-0 padding-2 margin-top-5 margin-right-05 report-abuse-cancel">Cancel</button>
-                <button type="submit" class="usa-button margin-0 padding-2 report-abuse-submit">Submit report</button>
+                <%= link_to 'Submit Report', report_practice_comment_path(practice_id: practice.id, comment_id: comment.id), class: 'usa-button margin-0 padding-2 report-abuse-submit', data: {confirm: 'Are you sure you want to report this comment?'} %>
               </div>
             </div>
           </div>

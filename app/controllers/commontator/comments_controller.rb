@@ -1,6 +1,6 @@
 class Commontator::CommentsController < Commontator::ApplicationController
   before_action :set_thread, only: [ :new, :create ]
-  before_action :set_comment_and_thread, except: [ :new, :create ]
+  before_action :set_comment_and_thread, except: [ :new, :create, :report_comment ]
   before_action :commontator_set_thread_variables, only: [ :show, :update, :delete, :undelete ]
   before_action :commontator_set_new_comment, only: [ :create ], unless: proc { params[:comment].present? && params[:comment][:parent_id].present? }
 
@@ -178,6 +178,16 @@ class Commontator::CommentsController < Commontator::ApplicationController
     respond_to do |format|
       format.html { redirect_to commontable_url }
       format.js { render :vote }
+    end
+  end
+
+  def report_comment
+    CommentMailer.report_comment_email(id: params[:comment_id]).deliver_now
+    success = 'Comment has been reported and will be reviewed shortly'
+    flash[:success] = success
+
+    respond_to do |format|
+      format.html {redirect_to comment_path(id: params[:comment_id]), success: flash[:success]}
     end
   end
 
