@@ -1,0 +1,80 @@
+(($) => {
+    const $document = $(document);
+    const CHARACTER_COUNTER_VALID_COLOR =  '#a9aeb1';
+    const CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
+    const RISK_AND_MITIGATION_MAX_LENGTH = 150;
+
+    function createUniqueRiskMitiId() {
+        var d = new Date().getTime();//Timestamp
+        var d2 = (performance && performance.now && (performance.now()*1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
+        return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16;//random number between 0 and 16
+            if(d > 0){//Use timestamp until depleted
+                r = (d + r)%16 | 0;
+                d = Math.floor(d/16);
+            } else {//Use microseconds since page-load if supported
+                r = (d2 + r)%16 | 0;
+                d2 = Math.floor(d2/16);
+            }
+            return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+        });
+    }
+
+    function hideAddLinksAndShowRiskMitiFields() {
+        $('.add-risk-mitigation-link').on('click', () => {
+            $document.arrive('.fields', (newElement) => {
+            
+                const riskUuid = createUniqueRiskMitiId();
+                const mitiUuid = createUniqueRiskMitiId();
+                const riskMitiId = newElement.firstElementChild.name.split('[')[2].replace(']', '');
+                $(newElement).prepend(`
+                    <div class="fields">
+                    <input type="hidden" name="practice[risk_mitigations_attributes][${riskMitiId}][risks_attributes][0][id]" id="practice_risk_mitigations_attributes_${riskMitiId}_risks_attributes_0_id">
+                        <div class="risk_container">
+                            <label class="usa-label text-bold display-inline-block" for="practice_risk_mitigations_attributes_${riskMitiId}_description">Risk:</label>&nbsp;<span>Type the name or description of the risk.</span>&nbsp;<span class="text-base-light risk-character-count risk_0_character_count" id="risk_${riskMitiId}_character_count">(0/150 characters)</span>
+                            <textarea class="usa-input practice-input risk-description-textarea height-15 risk_0_description_textarea" name="practice[risk_mitigations_attributes][${riskMitiId}][risks_attributes][0][description]"></textarea>
+                        </div>
+                    </div>
+        
+                    <div class="fields">
+                    <input type="hidden" name="practice[risk_mitigations_attributes][${riskMitiId}][mitigations_attributes][0][id]" id="practice_risk_mitigations_attributes_${riskMitiId}_mitigations_attributes_0_id">
+                        <div class="mitigation_container">
+                            <label class="usa-label text-bold display-inline-block" for="practice_risk_mitigations_attributes_${riskMitiId}_mitigations_attributes_0_description">Mitigation:</label>&nbsp;<span>Type the corresponding mitigation to the risk.</span>&nbsp;<span class="text-base-light mitigation-character-count" id="mitigation_${riskMitiId}_character_count">(0/150 characters)</span>
+                            <textarea class="usa-input practice-input mitigation-description-textarea height-15" name="practice[risk_mitigations_attributes][${riskMitiId}][mitigations_attributes][0][description]"></textarea>
+                        </div>
+                    </div>`)
+
+                $document.unbindArrive('.fields');
+            })
+        });
+    }
+
+    function newRiskMitigationCharacterCounter() {
+        $document.arrive('.practice-input', (newElem) => {
+            $(newElem).on('input', (e) => {
+                let t = e.target;
+                let currentLength = $(t).val().length;
+
+                let textareaCharacterSpan = $(t).closest('div').find('.text-base-light');
+                let characterCounter = `(${currentLength}/${RISK_AND_MITIGATION_MAX_LENGTH} characters)`;
+        
+                textareaCharacterSpan.css('color', CHARACTER_COUNTER_VALID_COLOR);
+                textareaCharacterSpan.text(characterCounter);
+        
+                if (currentLength >= RISK_AND_MITIGATION_MAX_LENGTH) {
+                    textareaCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+                }
+            });
+
+            $document.unbindArrive('.practice-input', newElem);
+        });
+    }
+
+    function loadPracticeEditorRiskMitiFunctions() {
+        hideAddLinksAndShowRiskMitiFields();
+        createUniqueRiskMitiId();
+        newRiskMitigationCharacterCounter();
+    }
+
+    $document.on('turbolinks:load', loadPracticeEditorRiskMitiFunctions);
+})(window.jQuery);

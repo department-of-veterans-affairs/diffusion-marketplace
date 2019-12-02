@@ -44,3 +44,4 @@
 //= require reportAbuse
 //= require turbolinksScrollTop
 //= require save-editor-progress
+//= require arrive.min

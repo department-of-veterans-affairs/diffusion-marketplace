@@ -104,7 +104,8 @@ class PracticesController < ApplicationController
   # PATCH/PUT /practices/1
   # PATCH/PUT /practices/1.json
   def update
-    updated = @practice.update(practice_params)
+    strong_params = practice_params
+    updated = @practice.update(strong_params)
     if updated
       partner_keys = []
       partner_keys = params[:practice][:practice_partner].keys if params[:practice][:practice_partner].present?
@@ -130,7 +131,7 @@ class PracticesController < ApplicationController
     end
     respond_to do |format|
       if updated
-        format.html {redirect_to @practice, notice: 'Practice was successfully updated.'}
+        format.html {redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.'}
         format.json {render :show, status: :ok, location: @practice}
       else
         format.html {render :edit}

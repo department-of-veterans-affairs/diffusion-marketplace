@@ -1,1 +1,50 @@
-<h1>Impact Page</h1>
+<%= render 'breadcrumbs' %>
+<%= render 'practice_editor_sidenav' %>
+<div class="grid-container position-relative">
+    <div class="grid-row grid-gap">
+        <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+
+        <div id="impact" class="desktop:grid-col-9 grid-col-12 p0">
+            <%= render "shared/messages" %>
+            <section class="usa-section padding-top-0 p2-bottom impact">
+                <h1 class="font-sans-3xl">Impact</h1>
+                <h2 class="text-normal">
+                    Showcase real stories of how your practice is making an impact.
+                </h2>
+                <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form'}) do |f| %>
+                    <fieldset class="usa-fieldset">
+                        <legend class="usa-sr-only">Impact</legend>
+
+                        <div>
+                            <h2 style='padding-top: 1.5rem'>Impact Story</h2>
+                            <%= f.fields_for :impact_photos do |ip| %>
+                                <%= ip.hidden_field :id %>
+                                <%= ip.link_to_remove "Remove this impact", class: 'usa-button usa-button--secondary', style: 'color: white; text-decoration: none; float: right' %>
+
+                                <% if ip.object.attachment.present? %>
+                                    <%= image_tag ip.object.attachment_s3_presigned_url, alt: "Impact story picture #{ip.index}", class: 'height-mobile width practice-editor-impact-photo' %>
+                                    <%#= ip.cropbox :attachment, index: ip.index %>
+                                <% end %>
+                                <%= ip.file_field :attachment, class: 'hidden-upload' %>
+                                <%= ip.label :attachment, 'Upload Image', class: 'usa-button usa-button--outline' %>
+
+                                <%= ip.label :title, class: 'usa-label' %>
+                                <%= ip.text_field :title, class: 'usa-input practice-input' %>
+
+                                <%= ip.label :description, class: 'usa-label' %>
+                                <%= ip.text_area :description, class: 'usa-input practice-input', style: 'height: 10rem' %>
+                            <% end %>
+                            <%= f.fields_for :video_files do |v| %>
+                                <div>
+                                    <%= v.label :url, 'Link:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type the link to the video.</span>
+                                    <%= v.text_field :url, class: 'usa-input practice-input' %>
+                                </div>
+                            <% end %>
+                            <p><%= f.link_to_add "Add another Story", :impact_photos, class: 'usa-button usa-button--outline', style: 'text-decoration: none; right: 0;' %></p>
+                        </div>
+                    </fieldset>
+                <% end %>
+            </section>
+        </div>
+    </div>
+</div>
