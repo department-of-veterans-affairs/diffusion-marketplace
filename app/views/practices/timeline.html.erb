@@ -25,6 +25,7 @@
                 </h2>
                 <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form'}) do |f| %>
                     <fieldset class="usa-fieldset">
+                        <legend class="usa-sr-only">Timeline</legend>
                         <div style='margin-top: 2rem;'>
                             <%= f.fields_for :timelines do |tl| %>
                                 <% 
@@ -76,5 +77,8 @@
                 </div>
             </section>
         </div>
+    </div>
+    <div class="margin-bottom-105">
+        <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
     </div>
 </div>

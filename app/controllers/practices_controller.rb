@@ -112,6 +112,23 @@ class PracticesController < ApplicationController
       @practice.practice_partner_practices.each do |partner|
         partner.destroy unless partner_keys.include? partner.practice_partner_id.to_s
       end
+
+      if params[:practice][:impact_photos_attributes].present?
+        params[:practice][:impact_photos_attributes].each do |key, photo|
+          if photo['delete_attachment'] == 'true'
+            
+            @practice.impact_photos.find(photo[:id]).update_attributes(attachment: nil)
+          end
+        end
+      end
+
+      params[:practice][:va_employees_attributes].each do |key, e|
+        if e['delete_avatar'] == 'true'
+          
+          @practice.va_employees.find(e[:id]).update_attributes(avatar: nil)
+        end
+      end
+      
       partner_keys.each do |key|
         next if @practice.practice_partners.ids.include? key.to_i
 

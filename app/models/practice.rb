@@ -99,7 +99,7 @@ class Practice < ApplicationRecord
   has_many :domain_practices, dependent: :destroy
   has_many :domains, through: :domain_practices
   has_many :financial_files, dependent: :destroy
-  has_many :impact_photos, dependent: :destroy
+  has_many :impact_photos, -> {order(position: :asc)}, dependent: :destroy
   has_many :implementation_timeline_files, dependent: :destroy
   has_many :job_position_practices, dependent: :destroy
   has_many :job_positions, through: :job_position_practices
@@ -119,7 +119,7 @@ class Practice < ApplicationRecord
   has_many :user_practices, dependent: :destroy
   has_many :users, through: :user_practices, dependent: :destroy
   has_many :va_employee_practices, dependent: :destroy
-  has_many :va_employees, through: :va_employee_practices
+  has_many :va_employees, -> {order(position: :asc)}, through: :va_employee_practices
   has_many :va_secretary_priority_practices, dependent: :destroy
   has_many :va_secretary_priorities, through: :va_secretary_priority_practices
   has_many :video_files, dependent: :destroy

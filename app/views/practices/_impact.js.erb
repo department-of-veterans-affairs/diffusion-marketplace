@@ -1,0 +1,43 @@
+var CHARACTER_COUNTER_VALID_COLOR =  '#a9aeb1';
+var CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
+var IMPACT_CAPTION_MAX_LENGTH = 300;
+
+function getImpactCaptionCharacterCountOnPageLoad() {
+
+    <% @practice.impact_photos.each do |ip| %>
+        var impactCaptionTextarea = $("#impact_photo_<%= ip.id %>_caption");
+        var impactCaptionCharacterSpan = $("#impact_caption_<%= ip.id %>_character_count");
+        var impactCaptionCurrentLength = impactCaptionTextarea.val().length;
+        var impactCaptionCharacterCounter = '(' + impactCaptionCurrentLength + '/' + IMPACT_CAPTION_MAX_LENGTH + ' characters)';
+
+        impactCaptionCharacterSpan.text(impactCaptionCharacterCounter);
+
+        if (impactCaptionCurrentLength >= IMPACT_CAPTION_MAX_LENGTH) {
+            impactCaptionCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+        }
+    <% end %>
+}
+
+function impactCaptionCharacterCounter() {
+    $('.practice-editor-image-caption').on('input', function(e) {
+        var t = e.target;
+        var currentLength = $(t).val().length;
+
+        var impactCaptionCharacterSpan = $(t).closest('div').find('.impact-caption-character-count');
+        var characterCounter = '(' + currentLength + '/' + IMPACT_CAPTION_MAX_LENGTH + ' characters)';
+
+        impactCaptionCharacterSpan.css('color', CHARACTER_COUNTER_VALID_COLOR);
+        impactCaptionCharacterSpan.text(characterCounter);
+
+        if (currentLength >= IMPACT_CAPTION_MAX_LENGTH) {
+            impactCaptionCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+        }
+    });
+}
+
+function executeImpactFunctions() {
+    getImpactCaptionCharacterCountOnPageLoad();
+    impactCaptionCharacterCounter();
+}
+
+$(document).on('turbolinks:load', executeImpactFunctions);

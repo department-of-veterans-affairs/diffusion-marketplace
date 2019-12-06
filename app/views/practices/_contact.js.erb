@@ -1,0 +1,43 @@
+var CHARACTER_COUNTER_VALID_COLOR =  '#a9aeb1';
+var CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
+var EMPLOYEE_ROLE_MAX_LENGTH = 50;
+
+function getEmployeeRoleCharacterCountOnPageLoad() {
+
+    <% @practice.va_employees.each do |e| %>
+        var employeeInput = $("#va_employee_<%= e.id %>_role");
+        var employeeRoleCharacterSpan = $("#va_employee_<%= e.id %>_role_character_count");
+        var employeeRoleCurrentLength = employeeInput.val().length;
+        var employeeRoleCharacterCount = '(' + employeeRoleCurrentLength + '/' + EMPLOYEE_ROLE_MAX_LENGTH + ' characters)';
+
+        employeeRoleCharacterSpan.text(employeeRoleCharacterCount);
+
+        if (employeeRoleCurrentLength >= EMPLOYEE_ROLE_MAX_LENGTH) {
+            employeeRoleCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+        }
+    <% end %>
+}
+
+function employeeRoleCharacterCounter() {
+    $('.va-employee-role').on('input', function(e) {
+        var t = e.target;
+        var currentLength = $(t).val().length;
+
+        var employeeRoleCharacterSpan = $(t).closest('div').find('.va-employee-role-character-count');
+        var characterCounter = '(' + currentLength + '/' + EMPLOYEE_ROLE_MAX_LENGTH + ' characters)';
+
+        employeeRoleCharacterSpan.css('color', CHARACTER_COUNTER_VALID_COLOR);
+        employeeRoleCharacterSpan.text(characterCounter);
+
+        if (currentLength >= EMPLOYEE_ROLE_MAX_LENGTH) {
+            employeeRoleCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+        }
+    });
+}
+
+function executeVaEmployeeFunctions() {
+    getEmployeeRoleCharacterCountOnPageLoad();
+    employeeRoleCharacterCounter();
+}
+
+$(document).on('turbolinks:load', executeVaEmployeeFunctions);

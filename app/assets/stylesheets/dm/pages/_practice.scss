@@ -159,9 +159,12 @@
 }
 
 .hidden-upload {
-  width: 1px;
   height: 1px;
   padding: 1px 0 0 1px;
+
+  &:focus {
+    outline: none !important;
+  }
 }
 
 .practice-edit-nav {
@@ -271,6 +274,13 @@
   }
 }
 
+.no-impact-image {
+  top: 34%;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
 .back-to-partners-link {
   color: $dm-color-primary-blue !important;
   font-weight: normal !important;
@@ -358,7 +368,7 @@
   max-width: 100% !important;
 }
 
-.collab-trash, .staff-trash, .timeline-trash, .risk-mitigation-trash {
+.collab-trash, .staff-trash, .timeline-trash, .risk-mitigation-trash, .impact-trash, .va-employee-trash {
   color: #D83933 !important;
 
   &:hover {
@@ -402,7 +412,7 @@
   }
 }
 
-.clear-timeline-link, .clear-risk-mitigation-link {
+.clear-timeline-link, .clear-risk-mitigation-link, .clear-impact-link, .clear-va-employee-link {
   margin-top: 24px !important;
   margin-bottom: 24px !important;
   color: #D83933 !important;
@@ -412,11 +422,12 @@
   }
 }
 
-.add-additional-staff-link, .add-required-staff-link, .add-timeline-link, .add-risk-mitigation-link {
+.add-required-staff-link {
   margin-top: 24px !important;
 }
 
-.add-required-staff-link, .add-timeline-link, .add-risk-mitigation-link {
+.add-additional-staff-link, .add-required-staff-link, .add-timeline-link, .add-risk-mitigation-link, .add-impact-photo-link, .add-va-employee-link {
+  margin-top: 24px !important;
   margin-bottom: 44px;
 }
 
@@ -424,11 +435,12 @@
   display: none;
 }
 
-.milestone-textarea, .risk-description, .mitigation-description {
+.milestone-textarea, .risk-description, .mitigation-description, 
+.practice-editor-video-caption, .practice-editor-image-caption, .risk-description-textarea, .mitigation-description-textarea {
   resize: none;
 }
 
-.move-timeline-button, .move-risk-mitigation-button {
+.move-timeline-button, .move-risk-mitigation-button, .move-impact-button, .move-va-employee-button {
   margin-top: 0 !important;
   margin-right: 21px !important;
 
@@ -437,7 +449,7 @@
   }
 }
 
-.hidden-timeline, .hidden-risk-mitigation {
+.hidden-timeline, .hidden-risk-mitigation, .hidden-impact, .hidden-va-employee {
   display: none;
 }
 
@@ -448,4 +460,42 @@
 .practice-editor-impact-photo {
   max-width: 392px !important;
   object-fit: cover;
+}
+
+.fields {
+  width: 100%;
+}
+
+.add-impact-photo-label {
+  margin-top: 0 !important;
+}
+
+.impact-p, .va-employee-headshot-p {
+  margin-top: 24px;
+}
+
+.support-network-email-input {
+  width: 393px !important;
+}
+
+.va-employee-headshot-container {
+  width: 65px;
+  height: 65px;
+  position: relative;
+}
+
+.va-employee-headshot-filler {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+.va-employee-headshot-col {
+  margin-right: 24px;
+}
+
+.add-va-employee-headshot-label {
+  margin-top: 12px !important;
 }
