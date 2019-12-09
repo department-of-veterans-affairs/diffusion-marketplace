@@ -368,7 +368,7 @@
   max-width: 100% !important;
 }
 
-.collab-trash, .staff-trash, .timeline-trash, .risk-mitigation-trash, .impact-trash, .va-employee-trash {
+.collab-trash, .staff-trash, .timeline-trash, .risk-mitigation-trash, .impact-trash, .va-employee-trash, .practice-creator-trash {
   color: #D83933 !important;
 
   &:hover {
@@ -412,7 +412,7 @@
   }
 }
 
-.clear-timeline-link, .clear-risk-mitigation-link, .clear-impact-link, .clear-va-employee-link {
+.clear-timeline-link, .clear-risk-mitigation-link, .clear-impact-link, .clear-va-employee-link, .clear-practice-creator-link {
   margin-top: 24px !important;
   margin-bottom: 24px !important;
   color: #D83933 !important;
@@ -426,7 +426,8 @@
   margin-top: 24px !important;
 }
 
-.add-additional-staff-link, .add-required-staff-link, .add-timeline-link, .add-risk-mitigation-link, .add-impact-photo-link, .add-va-employee-link {
+.add-additional-staff-link, .add-required-staff-link, .add-timeline-link, .add-risk-mitigation-link, 
+.add-impact-photo-link, .add-va-employee-link, .add-practice-creator-link {
   margin-top: 24px !important;
   margin-bottom: 44px;
 }
@@ -440,7 +441,7 @@
   resize: none;
 }
 
-.move-timeline-button, .move-risk-mitigation-button, .move-impact-button, .move-va-employee-button {
+.move-timeline-button, .move-risk-mitigation-button, .move-impact-button, .move-va-employee-button, .move-practice-creator-button {
   margin-top: 0 !important;
   margin-right: 21px !important;
 
@@ -449,7 +450,7 @@
   }
 }
 
-.hidden-timeline, .hidden-risk-mitigation, .hidden-impact, .hidden-va-employee {
+.hidden-timeline, .hidden-risk-mitigation, .hidden-impact, .hidden-va-employee, .hidden-practice-creator {
   display: none;
 }
 
@@ -470,7 +471,7 @@
   margin-top: 0 !important;
 }
 
-.impact-p, .va-employee-headshot-p {
+.impact-p, .va-employee-headshot-p, .practice-creator-headshot-p {
   margin-top: 24px;
 }
 
@@ -478,13 +479,13 @@
   width: 393px !important;
 }
 
-.va-employee-headshot-container {
+.va-employee-headshot-container, .practice-creator-headshot-container {
   width: 65px;
   height: 65px;
   position: relative;
 }
 
-.va-employee-headshot-filler {
+.va-employee-headshot-filler, .practice-creator-headshot-filler {
   position: absolute;
   bottom: 0;
   left: 50%;
@@ -492,10 +493,10 @@
   transform: translateX(-50%);
 }
 
-.va-employee-headshot-col {
+.va-employee-headshot-col, .practice-creator-headshot-col {
   margin-right: 24px;
 }
 
-.add-va-employee-headshot-label {
+.add-va-employee-headshot-label, .add-practice-creator-headshot-label {
   margin-top: 12px !important;
 }

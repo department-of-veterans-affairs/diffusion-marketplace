@@ -1,0 +1,155 @@
+<% provide :head_tags do %>
+    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+        <%= render partial: 'origin', formats: [:js] %>
+    <% end %>
+<% end %>
+
+<%= render 'breadcrumbs' %>
+<%= render 'practice_editor_sidenav' %>
+<div class="grid-container position-relative">
+    <div class="grid-row grid-gap">
+        <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+
+        <div id="origin" class="desktop:grid-col-9 grid-col-12 p0">
+            <%= render "shared/messages" %>
+            <section class="usa-section padding-top-0 p2-bottom origin">
+                <h1 class="font-sans-3xl">Origin</h1>
+                <h2 class="text-normal margin-bottom-2">
+                    Tell the story of how your practice was started.
+                </h2>
+                <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form'}) do |f| %>
+                    <fieldset class="usa-fieldset">
+                        <legend class="usa-sr-only">Origin Information</legend>
+                        <div>
+                            <h2 class="font-sans-xl">Story</h2>
+                            <%= f.label :origin_story, 'Origin story:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type a short story describing how your practice started.</span>&nbsp;<span class="text-base-light origin-story-character-count" id="practice_<%= @practice.id %>_origin_story_character_count">(0/400 characters)</span>
+                            <%= f.text_area :origin_story, class: 'usa-input practice-input height-card origin-story-textarea', id: "practice_#{@practice.id}_origin_story_textarea" %>
+                        </div>
+                        <div>
+                            <h2 class="font-sans-xl">Creators</h2>
+                            <% if @practice.practice_creators.empty? %>
+                                <%= f.fields_for :practice_creators, @practice.practice_creators.build do |pc| %>
+                                    <div>
+                                        <%= pc.label :name, 'Name:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type the name of the person who created this practice.</span>
+                                        <%= pc.text_field :name, class: 'usa-input practice-input width-mobile-lg' %>
+                                    </div>
+                                    <div>
+                                        <%= pc.label :role, 'Role:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type their title or position name.</span>
+                                        <%= pc.text_field :role, class: 'usa-input practice-input width-mobile-lg' %>
+                                    </div>
+
+                                    <p class="text-bold va-employee-headshot-p margin-bottom-05">Headshot</p>
+                                    <p>• Guidelines for uploading a good headshot</p>
+                                    <p>• Guidelines for uploading a good headshot</p>
+                                    <p>• Guidelines for uploading a good headshot</p>
+
+                                    <div class="grid-row">
+                                        <div class="grid-col-auto practice-creator-headshot-col margin-top-105">
+                                            <div class="practice-creator-headshot-container bg-base-lightest radius-md">
+                                                <i class="fas fa-user fa-3x practice-creator-headshot-filler text-base-lighter"></i>
+                                            </div>
+                                        </div>
+                                        <div class="grid-col-fill practice-creator-file-col">
+                                            <div class="margin-bottom-1">
+                                                <%= pc.label :avatar, 'Upload photo', class: "usa-button add-practice-creator-headshot-label" %>
+                                                <%= pc.file_field :avatar, class: 'hidden-upload' %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="grid-col-fill">
+                                        <%= pc.link_to_remove class: "fas fa-trash-alt practice-creator-trash text-no-underline clear-practice-creator-link" do %>
+                                                <span class="padding-left-1 font-sans-md text-normal text-no-underline">Clear</span>
+                                        <% end %>
+                                    </div>
+                                    <div class="height-2px border border-base-light flex-fill display-block"></div>
+                                <% end %>
+                            <% else %>
+                                <%= f.fields_for :practice_creators do |pc| %>
+                                    <%
+                                        last_pc_id = @practice.practice_creators.last.id
+                                        first_pc_id = @practice.practice_creators.first.id
+                                        pc_length = @practice.practice_creators.length
+                                        pc_id = pc.object.id
+                                        pc_avatar = pc.object.avatar
+                                        pc_position = pc.object.position
+                                    %>
+                                    <div>
+                                        <%= pc.label :name, 'Name:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type the name of the person who created this practice.</span>
+                                        <%= pc.text_field :name, class: 'usa-input practice-input width-mobile-lg' %>
+                                    </div>
+                                    <div>
+                                        <%= pc.label :role, 'Role:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type their title or position name.</span>
+                                        <%= pc.text_field :role, class: 'usa-input practice-input width-mobile-lg' %>
+                                    </div>
+
+                                    <p class="text-bold va-employee-headshot-p margin-bottom-05">Headshot</p>
+                                    <p>• Guidelines for uploading a good headshot</p>
+                                    <p>• Guidelines for uploading a good headshot</p>
+                                    <p>• Guidelines for uploading a good headshot</p>
+
+                                    <div class="grid-row">
+                                        <div class="grid-col-auto practice-creator-headshot-col margin-top-105">
+                                            <% if pc_avatar.present? %>
+                                                <div class="practice-creator-headshot-container">
+                                                    <%= image_tag pc.object.avatar.url, alt: pc.object.name %>
+                                                <%#= vae.cropbox :avatar, width: 200, index: vae.index %>
+                                                </div>
+                                            <% else %>
+                                                <div class="practice-creator-headshot-container bg-base-lightest radius-md">
+                                                    <i class="fas fa-user fa-3x practice-creator-headshot-filler text-base-lighter"></i>
+                                                </div>
+                                            <% end %>
+                                        </div>
+                                        <div class="grid-col-fill practice-creator-file-col">
+                                            <div class="margin-bottom-1">
+                                                <%= pc.label :avatar, "#{pc_avatar.present? ? 'Upload new photo' : 'Upload photo'}", class: "usa-button #{ pc_avatar.present? ? 'usa-button--unstyled' : '' } add-practice-creator-headshot-label" %>
+                                                <%= pc.file_field :avatar, class: 'hidden-upload' %>
+                                            </div>
+                                            <% if pc_avatar.present? %>
+                                                <div>
+                                                    <%= pc.check_box :delete_avatar, { class: 'usa-checkbox__input practice-input'}, 'true', 'false' %>
+                                                    <%= pc.label :delete_avatar, 'Remove photo', class: 'usa-checkbox__label display-inline-block' %>
+                                                </div>
+                                            <% end %>
+                                        </div>
+                                    </div>
+                                    <div class="grid-row flex-align-center width-full">  
+                                        <div class="grid-col-auto <%= pc_position == 1 && pc_length >= 1 && first_pc_id == pc_id ? 'hidden-practice-creator' : '' %>">
+                                            <button class="usa-button usa-button--unstyled text-no-underline text-base-dark move-practice-creator-button" id="move_practice_creator_<%= pc_id %>_up"><span class="fas fa-chevron-up"></span>&nbsp;&nbsp;<span>Move up</span></button>
+                                        </div>
+                                        <div class="grid-col-auto <%= last_pc_id == pc_id || pc_position != 1 && pc_length == 1 ? 'hidden-practice-creator' : '' %>">
+                                            <button class="usa-button usa-button--unstyled text-no-underline text-base-dark move-practice-creator-button" id="move_practice_creator_<%= pc_id %>_down"><span class="fas fa-chevron-down"></span>&nbsp;&nbsp;<span>Move down</span></button>
+                                        </div>
+                                        <div class="grid-col-fill">
+                                            <%= pc.link_to_remove class: "fas fa-trash-alt practice-creator-trash text-no-underline clear-practice-creator-link #{pc_length == 1 ? '' : 'float-right'}" do %>
+                                                    <span class="padding-left-1 font-sans-md text-normal text-no-underline"><%= pc_length == 1 ? 'Clear' : 'Remove' %></span>
+                                            <% end %>
+                                        </div>
+                                    </div>
+                                    <div class="height-2px border border-base-light flex-fill display-block"></div>
+                                <% end %>
+                            </div>
+                        <% end %>
+                        <%= f.link_to_add :practice_creators, class: 'fas fa-plus text-no-underline add-practice-creator-link' do %>
+                            <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add another</span>
+                        <% end %>
+                    </fieldset>
+                <% end %>
+                <div class="grid-row margin-bottom-8">
+                    <%= link_to practice_overview_path(@practice), class: 'editor-back-to-link margin-right-1' do %>
+                        <button class="usa-button usa-button--outline padding-2 editor-back-to-button">
+                        <i class="fas fa-chevron-left fa-sm">&nbsp;&nbsp;</i>Back
+                        </button>
+                    <% end %>
+                    <%= link_to practice_impact_path(@practice), class: 'editor-continue-link' do %>
+                        <button class="usa-button padding-2 editor-continue-button">Continue&nbsp;&nbsp;<i class="fas fa-chevron-right fa-sm"></i>
+                        </button>
+                    <% end %>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="margin-bottom-105">
+        <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
+    </div>
+</div>

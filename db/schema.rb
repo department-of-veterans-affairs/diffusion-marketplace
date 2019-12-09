@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_15_194428) do
+ActiveRecord::Schema.define(version: 2019_12_06_173946) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -483,6 +483,22 @@ ActiveRecord::Schema.define(version: 2019_11_15_194428) do
     t.index ["practice_id"], name: "index_photo_files_on_practice_id"
   end
 
+  create_table "practice_creators", force: :cascade do |t|
+    t.bigint "practice_id"
+    t.bigint "user_id"
+    t.string "role"
+    t.string "name"
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "avatar_file_name"
+    t.string "avatar_content_type"
+    t.integer "avatar_file_size"
+    t.datetime "avatar_updated_at"
+    t.index ["practice_id"], name: "index_practice_creators_on_practice_id"
+    t.index ["user_id"], name: "index_practice_creators_on_user_id"
+  end
+
   create_table "practice_management_practices", force: :cascade do |t|
     t.bigint "practice_id"
     t.bigint "practice_management_id"
@@ -907,6 +923,8 @@ ActiveRecord::Schema.define(version: 2019_11_15_194428) do
   add_foreign_key "job_positions", "job_position_categories"
   add_foreign_key "mitigations", "risk_mitigations"
   add_foreign_key "photo_files", "practices"
+  add_foreign_key "practice_creators", "practices"
+  add_foreign_key "practice_creators", "users"
   add_foreign_key "practice_management_practices", "practice_managements"
   add_foreign_key "practice_management_practices", "practices"
   add_foreign_key "practice_partner_practices", "practice_partners"

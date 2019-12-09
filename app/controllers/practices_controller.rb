@@ -1,5 +1,5 @@
 class PracticesController < ApplicationController
-  before_action :set_practice, only: [:show, :edit, :update, :destroy, :planning_checklist, :commit, :committed, :highlight, :un_highlight, :feature, :un_feature, :favorite, :instructions, :overview, :collaborators, :impact, :resources, :documentation, :complexity, :timeline, :risk_and_mitigation, :contact, :checklist]
+  before_action :set_practice, only: [:show, :edit, :update, :destroy, :planning_checklist, :commit, :committed, :highlight, :un_highlight, :feature, :un_feature, :favorite, :instructions, :overview, :origin, :collaborators, :impact, :resources, :documentation, :complexity, :timeline, :risk_and_mitigation, :contact, :checklist]
   before_action :set_facility_data, only: [:show, :planning_checklist]
   before_action :authenticate_user!, except: [:show, :search, :index]
   before_action :can_view_committed_view, only: [:committed]
@@ -113,6 +113,7 @@ class PracticesController < ApplicationController
         partner.destroy unless partner_keys.include? partner.practice_partner_id.to_s
       end
 
+      # Remove impact photo
       if params[:practice][:impact_photos_attributes].present?
         params[:practice][:impact_photos_attributes].each do |key, photo|
           if photo['delete_attachment'] == 'true'
@@ -122,10 +123,23 @@ class PracticesController < ApplicationController
         end
       end
 
-      params[:practice][:va_employees_attributes].each do |key, e|
-        if e['delete_avatar'] == 'true'
-          
-          @practice.va_employees.find(e[:id]).update_attributes(avatar: nil)
+      # Remove VA employee avatar
+      if params[:practice][:va_employees_attributes].present?
+        params[:practice][:va_employees_attributes].each do |key, e|
+          if e['delete_avatar'] == 'true'
+            
+            @practice.va_employees.find(e[:id]).update_attributes(avatar: nil)
+          end
+        end
+      end
+
+      # Remove practice creator avatar
+      if params[:practice][:practice_creators_attributes].present?
+        params[:practice][:practice_creators_attributes].each do |key, pc|
+          if pc['delete_avatar'] == 'true'
+            
+            @practice.practice_creators.find(pc[:id]).update_attributes(avatar: nil)
+          end
         end
       end
       
@@ -315,7 +329,7 @@ class PracticesController < ApplicationController
                                      timelines_attributes: [:id, :description, :timeline, :milestone, :_destroy],
                                      va_employees_attributes: [:id, :name, :role, :_destroy, :avatar, :avatar_original_w, :avatar_original_h, :avatar_crop_x, :avatar_crop_y, :avatar_crop_w, :avatar_crop_h],
                                      additional_staffs_attributes: [:id, :_destroy, :title, :hours_per_week, :duration_in_weeks, :permanent],
-                                     additional_resources_attributes: [:id, :_destroy, :description], required_staff_trainings_attributes: [:id, :_destroy, :title, :description])
+                                     additional_resources_attributes: [:id, :_destroy, :description], required_staff_trainings_attributes: [:id, :_destroy, :title, :description], practice_creators_attributes: [:id, :_destroy, :name, :role, :avatar])
   end
 
   def can_view_practice

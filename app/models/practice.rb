@@ -123,6 +123,7 @@ class Practice < ApplicationRecord
   has_many :va_secretary_priority_practices, dependent: :destroy
   has_many :va_secretary_priorities, through: :va_secretary_priority_practices
   has_many :video_files, dependent: :destroy
+  has_many :practice_creators, -> {order(position: :asc)}, dependent: :destroy
 
   # This allows the practice model to be commented on with the use of the Commontator gem
   acts_as_commontable dependent: :destroy
@@ -136,6 +137,7 @@ class Practice < ApplicationRecord
   accepts_nested_attributes_for :additional_staffs, allow_destroy: true
   accepts_nested_attributes_for :additional_resources, allow_destroy: true
   accepts_nested_attributes_for :required_staff_trainings, allow_destroy: true
+  accepts_nested_attributes_for :practice_creators, allow_destroy: true
 
   SATISFACTION_LABELS = ['Little or no impact', 'Some impact', 'Significant impact', 'High or large impact'].freeze
   COST_LABELS = ['0-$10,000', '$10,000-$50,000', '$50,000-$250,000', 'More than $250,000'].freeze
