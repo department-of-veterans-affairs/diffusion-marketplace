@@ -49,31 +49,9 @@
         });
     }
 
-    function newRiskMitigationCharacterCounter() {
-        $document.arrive('.practice-input', (newElem) => {
-            $(newElem).on('input', (e) => {
-                let t = e.target;
-                let currentLength = $(t).val().length;
-
-                let textareaCharacterSpan = $(t).closest('div').find('.text-base-light');
-                let characterCounter = `(${currentLength}/${RISK_AND_MITIGATION_MAX_LENGTH} characters)`;
-        
-                textareaCharacterSpan.css('color', CHARACTER_COUNTER_VALID_COLOR);
-                textareaCharacterSpan.text(characterCounter);
-        
-                if (currentLength >= RISK_AND_MITIGATION_MAX_LENGTH) {
-                    textareaCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
-                }
-            });
-
-            $document.unbindArrive('.practice-input', newElem);
-        });
-    }
-
     function loadPracticeEditorRiskMitiFunctions() {
         hideAddLinksAndShowRiskMitiFields();
         createUniqueRiskMitiId();
-        newRiskMitigationCharacterCounter();
     }
 
     $document.on('turbolinks:load', loadPracticeEditorRiskMitiFunctions);

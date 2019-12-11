@@ -33,7 +33,7 @@ function getRiskAndMitigationCharacterCountOnPageLoad() {
 }
 
 function riskMitigationCharacterCounter() {
-    $('.practice-input').on('input', function(e) {
+    $(document).on('input', '.practice-input', function(e) {
         var t = e.target;
         var currentLength = $(t).val().length;
 

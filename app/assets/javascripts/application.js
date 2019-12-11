@@ -45,3 +45,4 @@
 //= require turbolinksScrollTop
 //= require save-editor-progress
 //= require arrive.min
+//= require html5sortable.js

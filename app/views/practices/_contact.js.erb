@@ -19,7 +19,7 @@ function getEmployeeRoleCharacterCountOnPageLoad() {
 }
 
 function employeeRoleCharacterCounter() {
-    $('.va-employee-role').on('input', function(e) {
+    $(document).on('input', '.va-employee-role', function(e) {
         var t = e.target;
         var currentLength = $(t).val().length;
 

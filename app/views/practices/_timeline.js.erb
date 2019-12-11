@@ -19,7 +19,7 @@ function getMilestoneCharacterCountOnPageLoad() {
 }
 
 function milestoneCharacterCounter() {
-    $('.milestone-textarea').on('input', function(e) {
+    $(document).on('input', '.milestone-textarea', function(e) {
         var t = e.target;
         var currentLength = $(t).val().length;
 
