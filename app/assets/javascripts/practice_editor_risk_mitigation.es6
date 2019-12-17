@@ -1,8 +1,5 @@
 (($) => {
     const $document = $(document);
-    const CHARACTER_COUNTER_VALID_COLOR =  '#a9aeb1';
-    const CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
-    const RISK_AND_MITIGATION_MAX_LENGTH = 150;
 
     function createUniqueRiskMitiId() {
         var d = new Date().getTime();//Timestamp
@@ -49,9 +46,44 @@
         });
     }
 
+    function removeBulletPointFromNewLi() {
+        $document.arrive('.practice-editor-risk-mitigation-li', (newElem) => {
+            $(newElem).css('list-style', 'none')
+            $document.unbindArrive('.practice-editor-risk-mitigation-li', newElem);
+        });
+    }
+
+    function dragAndDropRiskMitigationListItems() {
+        sortable('.sortable');
+        sortable('#sortable_risk_mitigations', {
+            forcePlaceholderSize: true,
+            placeholder: '<div></div>'
+        });
+            
+        if (typeof sortable('#sortable_risk_mitigations')[0] != 'undefined'){
+            sortable('#sortable_risk_mitigations')[0].addEventListener('sortstart', function(e) {
+                console.log('starting sort', e)
+            });
+
+            sortable('#sortable_risk_mitigations')[0].addEventListener('sortupdate', function(e) {
+                var dataIDList = $(this).children('li').map(function(index){
+                    $(this).find( '.risk-mitigation-position' ).val(index + 1)
+                    return "risk_mitigations[]=" + $(this).data("id");
+                }).get().join("&");
+                // Rails.ajax({
+                //     url: $(this).data("url"),
+                //     type: "PATCH",
+                //     data: dataIDList,
+                // });
+            });
+        }
+    }
+
     function loadPracticeEditorRiskMitiFunctions() {
         hideAddLinksAndShowRiskMitiFields();
         createUniqueRiskMitiId();
+        removeBulletPointFromNewLi();
+        dragAndDropRiskMitigationListItems();
     }
 
     $document.on('turbolinks:load', loadPracticeEditorRiskMitiFunctions);

@@ -1,0 +1,18 @@
+function showAdditionalDocumentsFieldsOnPageLoad() {
+    <% if @practice.additional_documents.empty? %>
+        $('.add-additional-document-link').click();
+    <% end %>
+}
+
+function showPublicationsFieldsOnPageLoad() {
+    <% if @practice.publications.empty? %>
+        $('.add-publication-link').click();
+    <% end %>
+}
+
+function executeDocumentationFunctions() {
+    showAdditionalDocumentsFieldsOnPageLoad();
+    showPublicationsFieldsOnPageLoad();
+}
+
+$(document).on('turbolinks:load', executeDocumentationFunctions);

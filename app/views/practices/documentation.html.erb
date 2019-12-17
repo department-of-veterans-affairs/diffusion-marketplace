@@ -1,3 +1,10 @@
+<% provide :head_tags do %>
+    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+        <%= render partial: 'documentation', formats: [:js] %>
+    <% end %>
+    <%= javascript_include_tag 'practice_editor_documentation', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
 <%= render 'breadcrumbs' %>
 <%= render 'practice_editor_sidenav' %>
 <div class="grid-container position-relative">
@@ -8,15 +15,109 @@
             <%= render "shared/messages" %>
             <section class="usa-section padding-top-0 p2-bottom documentation">
                 <h1 class="font-sans-3xl">Documentation&nbsp;<span class="text-base">(optional)</span></h1>
-                <h2 class="text-normal">
+                <h2 class="text-normal margin-bottom-5">
                     Instructional text is needed here
                 </h2>
                 <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form'}) do |f| %>
                     <fieldset class="usa-fieldset">
                         <legend class="usa-sr-only">Documentation</legend>
+
+                        <h2 class="font-sans-xl">File upload</h2>
+
+                        <ul class="practice-editor-additional-document-ul" id="sortable_additional_documents">
+                        <%= f.fields_for :additional_documents, wrapper: false do |ad| %>
+                            <%
+                                ad_id = ad.object.id
+                                attachment = ad.object.attachment
+                            %>
+
+                            <li class="practice-editor-additional-document-li fields" data-id="<%= ad_id %>">
+                                <%= ad.hidden_field :position, class: 'additional-document-position' %>
+                                <div>
+                                    <%= ad.label :title, 'Title:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type the title of the file.</span>
+                                    <%= ad.text_field :title, class: 'usa-input practice-input width-mobile-lg' %>
+                                </div>
+            
+                                <div class="margin-bottom-1">
+                                    <p class="text-bold margin-top-3 <%= attachment.present? ? 'margin-bottom-05' : '' %>" %>File:&nbsp;<span class="text-normal">choose a pdf or docx or word document (type of file info goes here)</span></p>
+
+                                    <% if attachment.present? %>
+                                        <i class="fas fa-file"></i>
+                                        <%= link_to ad.object.attachment_s3_presigned_url, target: :_blank, class: 'text-primary margin-top-1 margin-left-05' do %>
+                                            <%= ad.object.attachment_file_name %>
+                                        <% end %>
+                                    <% end %>
+                                    <div>
+                                        <%= ad.label :attachment, "#{attachment.present? ? 'Upload new file' : 'Upload file'}", class: 'usa-button usa-button--unstyled add-documentation-label' %>
+                                        <%= ad.file_field :attachment, class: 'hidden-upload' %>
+                                    </div>
+                                    <% if attachment.present? %>
+                                        <div class="margin-top-105">
+                                            <%= ad.check_box :delete_attachment, { class: 'usa-checkbox__input practice-input delete-attachment-input'}, 'true', 'false' %>
+                                            <%= ad.label :delete_attachment, 'Remove file', class: 'usa-checkbox__label display-inline-block text-secondary' %>
+                                        </div>
+                                    <% end %>
+                                </div>
+                                <div class="grid-col-fill">
+                                    <%= ad.link_to_remove class: "fas fa-trash-alt documentation-trash text-no-underline clear-documentation-link" do %>
+                                            <span class="padding-left-1 font-sans-md text-normal text-no-underline">Clear</span>
+                                    <% end %>
+                                </div>
+                                <div class="height-2px border border-base-light flex-fill display-block"></div>
+                            </li>
+                        <% end %>
+                        </ul>
+                        <%= f.link_to_add :additional_documents, class: 'fas fa-plus text-no-underline add-additional-document-link' do %>
+                            <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add file</span>
+                        <% end %>
+
+                        <h2 class="font-sans-xl margin-top-0">Link attachment</h2>
+
+                        <ul class="practice-editor-publication-ul" id="sortable_publications">
+                        <%= f.fields_for :publications, wrapper: false do |pub| %>
+                            <%
+                                pub_id = pub.object.id
+                            %>
+
+                            <li class="practice-editor-publication-li fields" data-id="<%= pub_id %>">
+                                <%= pub.hidden_field :position, class: 'publication-position' %>
+                                <div>
+                                    <%= pub.label :title, 'Title:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type the title of the web link.</span>
+                                    <%= pub.text_field :title, class: 'usa-input practice-input width-mobile-lg' %>
+                                </div>
+                                <div class="margin-bottom-1">
+                                    <%= pub.label :link, 'Link:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Paste the full web address.</span>
+                                    <%= pub.text_field :link, class: 'usa-input practice-input width-tablet' %>
+                                </div>
+                                <div class="grid-col-fill">
+                                    <%= pub.link_to_remove class: "fas fa-trash-alt documentation-trash text-no-underline clear-documentation-link" do %>
+                                            <span class="padding-left-1 font-sans-md text-normal text-no-underline">Clear</span>
+                                    <% end %>
+                                </div>
+                                <div class="height-2px border border-base-light flex-fill display-block"></div>
+                            </li>
+                        <% end %>
+                        </ul>
+                        <%= f.link_to_add :publications, class: 'fas fa-plus text-no-underline add-publication-link' do %>
+                            <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add link</span>
+                        <% end %>
                     </fieldset>
                 <% end %>
+                <div class="grid-row margin-bottom-8">
+                    <%= link_to practice_impact_path(@practice), class: 'editor-back-to-link margin-right-1' do %>
+                        <button class="usa-button usa-button--outline padding-2 editor-back-to-button">
+                        <i class="fas fa-chevron-left fa-sm">&nbsp;&nbsp;</i>Back
+                        </button>
+                    <% end %>
+                    <%= link_to practice_resources_path(@practice), class: 'editor-continue-link' do %>
+                        <button class="usa-button padding-2 editor-continue-button">Continue&nbsp;&nbsp;<i class="fas fa-chevron-right fa-sm"></i>
+                        </button>
+                    <% end %>
+                </div>
             </section>
         </div>
+    </div>
+    <div class="margin-bottom-105">
+        <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
     </div>
 </div>

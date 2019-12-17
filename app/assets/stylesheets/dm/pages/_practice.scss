@@ -368,7 +368,8 @@
   max-width: 100% !important;
 }
 
-.collab-trash, .staff-trash, .timeline-trash, .risk-mitigation-trash, .impact-trash, .va-employee-trash, .practice-creator-trash {
+.collab-trash, .staff-trash, .timeline-trash, .risk-mitigation-trash, .impact-trash, 
+.va-employee-trash, .practice-creator-trash, .documentation-trash {
   color: #D83933 !important;
 
   &:hover {
@@ -412,7 +413,8 @@
   }
 }
 
-.clear-timeline-link, .clear-risk-mitigation-link, .clear-impact-link, .clear-va-employee-link, .clear-practice-creator-link {
+.clear-timeline-link, .clear-risk-mitigation-link, .clear-impact-link, .clear-va-employee-link,
+.clear-practice-creator-link, .clear-documentation-link {
   margin-top: 24px !important;
   margin-bottom: 24px !important;
   color: #D83933 !important;
@@ -427,7 +429,7 @@
 }
 
 .add-additional-staff-link, .add-required-staff-link, .add-timeline-link, .add-risk-mitigation-link, 
-.add-impact-photo-link, .add-va-employee-link, .add-practice-creator-link {
+.add-impact-photo-link, .add-va-employee-link, .add-practice-creator-link, .add-additional-document-link, .add-publication-link {
   margin-top: 24px !important;
   margin-bottom: 44px;
 }
@@ -501,10 +503,15 @@
   margin-top: 12px !important;
 }
 
-.practice-editor-origin-ul {
-  list-style: none;
+.practice-editor-origin-ul, .practice-editor-timeline-ul, .practice-editor-risk-mitigation-ul, .practice-editor-contact-ul,
+.practice-editor-additional-document-ul, .practice-editor-publication-ul {
   margin: 0;
   padding: 0;
+}
+
+.practice-editor-origin-li, .practice-editor-timeline-li, .practice-editor-risk-mitigation-li, .practice-editor-contact-li,
+.practice-editor-additional-document-li, .practice-editor-publication-li {
+  list-style: none;
 }
 
 .sortable-dragging {
@@ -519,4 +526,12 @@
   height: 250px !important;
   border: 2px solid #005ea2;
   border-radius: 4px;
+}
+
+.add-documentation-label {
+  margin-top: 12px !important;
+}
+
+.delete-avatar-input, .delete-attachment-input {
+  left: 2px !important;
 }

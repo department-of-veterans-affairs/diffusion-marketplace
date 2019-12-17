@@ -142,6 +142,16 @@ class PracticesController < ApplicationController
           end
         end
       end
+
+      # Remove additional document file
+      if params[:practice][:additional_documents_attributes].present?
+        params[:practice][:additional_documents_attributes].each do |key, ad|
+          if ad['delete_attachment'] == 'true'
+            
+            @practice.additional_documents.find(ad[:id]).update_attributes(attachment: nil)
+          end
+        end
+      end
       
       partner_keys.each do |key|
         next if @practice.practice_partners.ids.include? key.to_i
@@ -325,11 +335,12 @@ class PracticesController < ApplicationController
                                      impact_photos_attributes: [:id, :title, :description, :attachment, :attachment_original_w, :attachment_original_h, :attachment_crop_x, :attachment_crop_y,
                                                                 :attachment_crop_w, :attachment_crop_h, :_destroy],
                                      difficulties_attributes: [:id, :description, :_destroy],
-                                     risk_mitigations_attributes: [:id, :_destroy, risks_attributes: [:id, :description, :_destroy], mitigations_attributes: [:id, :description, :_destroy]],
-                                     timelines_attributes: [:id, :description, :timeline, :milestone, :_destroy],
-                                     va_employees_attributes: [:id, :name, :role, :_destroy, :avatar, :avatar_original_w, :avatar_original_h, :avatar_crop_x, :avatar_crop_y, :avatar_crop_w, :avatar_crop_h],
+                                     risk_mitigations_attributes: [:id, :_destroy, :position, risks_attributes: [:id, :description, :_destroy], mitigations_attributes: [:id, :description, :_destroy]],
+                                     timelines_attributes: [:id, :description, :timeline, :milestone, :_destroy, :position],
+                                     va_employees_attributes: [:id, :name, :role, :position, :_destroy, :avatar, :avatar_original_w, :avatar_original_h, :avatar_crop_x, :avatar_crop_y, :avatar_crop_w, :avatar_crop_h],
                                      additional_staffs_attributes: [:id, :_destroy, :title, :hours_per_week, :duration_in_weeks, :permanent],
-                                     additional_resources_attributes: [:id, :_destroy, :description], required_staff_trainings_attributes: [:id, :_destroy, :title, :description], practice_creators_attributes: [:id, :_destroy, :name, :role, :avatar, :position])
+                                     additional_resources_attributes: [:id, :_destroy, :description], required_staff_trainings_attributes: [:id, :_destroy, :title, :description], practice_creators_attributes: [:id, :_destroy, :name, :role, :avatar, :position],
+                                     publications_attributes: [:id, :_destroy, :title, :link, :position], additional_documents_attributes: [:id, :_destroy, :attachment, :title, :position])
   end
 
   def can_view_practice

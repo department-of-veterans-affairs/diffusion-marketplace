@@ -22,7 +22,7 @@
 
             sortable('#sortable_origins')[0].addEventListener('sortupdate', function(e) {
                 var dataIDList = $(this).children('li').map(function(index){
-                    $(this).find( '.position' ).val(index + 1)
+                    $(this).find( '.origin-position' ).val(index + 1)
                     return "practice_creators[]=" + $(this).data("id");
                 }).get().join("&");
                 // Rails.ajax({

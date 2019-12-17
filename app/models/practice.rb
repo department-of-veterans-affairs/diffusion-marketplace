@@ -74,7 +74,7 @@ class Practice < ApplicationRecord
 
   belongs_to :user, optional: true
 
-  has_many :additional_documents, dependent: :destroy
+  has_many :additional_documents, -> {order(position: :asc)}, dependent: :destroy
   has_many :additional_resources, dependent: :destroy
   has_many :additional_staffs, dependent: :destroy
   has_many :ancillary_service_practices, dependent: :destroy
@@ -109,12 +109,12 @@ class Practice < ApplicationRecord
   has_many :practice_partner_practices, dependent: :destroy
   has_many :practice_partners, through: :practice_partner_practices
   has_many :practice_permissions, dependent: :destroy
-  has_many :publications, dependent: :destroy
+  has_many :publications, -> {order(position: :asc)}, dependent: :destroy
   has_many :publication_files, dependent: :destroy
   has_many :required_staff_trainings, dependent: :destroy
-  has_many :risk_mitigations, dependent: :destroy
+  has_many :risk_mitigations, -> {order(position: :asc)}, dependent: :destroy
   has_many :survey_result_files, dependent: :destroy
-  has_many :timelines, dependent: :destroy
+  has_many :timelines, -> {order(position: :asc)}, dependent: :destroy
   has_many :toolkit_files, dependent: :destroy
   has_many :user_practices, dependent: :destroy
   has_many :users, through: :user_practices, dependent: :destroy
@@ -138,6 +138,8 @@ class Practice < ApplicationRecord
   accepts_nested_attributes_for :additional_resources, allow_destroy: true
   accepts_nested_attributes_for :required_staff_trainings, allow_destroy: true
   accepts_nested_attributes_for :practice_creators, allow_destroy: true
+  accepts_nested_attributes_for :additional_documents, allow_destroy: true
+  accepts_nested_attributes_for :publications, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? }
 
   SATISFACTION_LABELS = ['Little or no impact', 'Some impact', 'Significant impact', 'High or large impact'].freeze
   COST_LABELS = ['0-$10,000', '$10,000-$50,000', '$50,000-$250,000', 'More than $250,000'].freeze

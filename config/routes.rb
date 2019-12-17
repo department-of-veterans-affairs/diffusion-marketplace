@@ -38,13 +38,8 @@ Rails.application.routes.draw do
           get 'report' => 'commontator/comments#report_comment'
       end
     end
-
-    resources :practice_creators do
-      collection do
-        patch :sort
-      end
-    end
   end
+
   resources :practice_partners, path: :partners
   resources :users, except: %i[show create new edit] do
     patch :re_enable

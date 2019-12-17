@@ -1,7 +1,7 @@
 <% @practice.additional_documents.each do |ad| %>
   <div class="display-flex flex-justify margin-bottom-2 hyphens-auto word-break-break-word">
     <%= link_to ad.attachment_s3_presigned_url, class: 'dm-font-color-pale-blue', download: ad.attachment_file_name do %>
-      <%= ad.attachment_file_name %>
+      <%= ad.title %>
     <% end %>
   </div>
 <% end %>

@@ -1,6 +1,7 @@
 var CHARACTER_COUNTER_VALID_COLOR =  '#a9aeb1';
 var CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
 var ORIGIN_STORY_MAX_LENGTH = 400;
+var PRACTICE_CREATOR_ROLE_MAX_LENGTH = 50;
 
 function getOriginStoryCharacterCountOnPageLoad() {
 
@@ -36,9 +37,51 @@ function originStoryCharacterCounter() {
     });
 }
 
+function getPracticeCreatorRoleCharacterCountOnPageLoad() {
+
+    <% @practice.practice_creators.each do |pc| %>
+        var practiceCreatorInput = $("#practice_creator_<%= pc.id %>_role");
+        var practiceCreatorRoleCharacterSpan = $("#practice_creator_<%= pc.id %>_role_character_count");
+        var practiceCreatorRoleCurrentLength = practiceCreatorInput.val().length;
+        var practiceCreatorRoleCharacterCount = '(' + practiceCreatorRoleCurrentLength + '/' + PRACTICE_CREATOR_ROLE_MAX_LENGTH + ' characters)';
+
+        practiceCreatorRoleCharacterSpan.text(practiceCreatorRoleCharacterCount);
+
+        if (practiceCreatorRoleCharacterCount >= PRACTICE_CREATOR_ROLE_MAX_LENGTH) {
+            practiceCreatorRoleCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+        }
+    <% end %>
+}
+
+function practiceCreatorRoleCharacterCounter() {
+    $(document).on('input', '.practice-creator-role', function(e) {
+        var t = e.target;
+        var currentLength = $(t).val().length;
+
+        var practiceCreatorRoleCharacterSpan = $(t).closest('div').find('.practice-creator-role-character-count');
+        var characterCounter = '(' + currentLength + '/' + PRACTICE_CREATOR_ROLE_MAX_LENGTH + ' characters)';
+
+        practiceCreatorRoleCharacterSpan.css('color', CHARACTER_COUNTER_VALID_COLOR);
+        practiceCreatorRoleCharacterSpan.text(characterCounter);
+
+        if (currentLength >= PRACTICE_CREATOR_ROLE_MAX_LENGTH) {
+            practiceCreatorRoleCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+        }
+    });
+}
+
+function showFieldsOnPageLoad() {
+    <% if @practice.practice_creators.empty? %>
+        $('.add-practice-creator-link').click();
+    <% end %>
+}
+
 function executeOriginFunctions() {
     getOriginStoryCharacterCountOnPageLoad();
     originStoryCharacterCounter();
+    showFieldsOnPageLoad();
+    getPracticeCreatorRoleCharacterCountOnPageLoad();
+    practiceCreatorRoleCharacterCounter();
 }
 
 $(document).on('turbolinks:load', executeOriginFunctions);
