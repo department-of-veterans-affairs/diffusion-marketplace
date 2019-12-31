@@ -1,5 +1,5 @@
 class PracticesController < ApplicationController
-  before_action :set_practice, only: [:show, :edit, :update, :destroy, :planning_checklist, :commit, :committed, :highlight, :un_highlight, :feature, :un_feature, :favorite, :instructions, :overview, :origin, :collaborators, :impact, :resources, :documentation, :complexity, :timeline, :risk_and_mitigation, :contact, :checklist]
+  before_action :set_practice, only: [:show, :edit, :update, :destroy, :planning_checklist, :commit, :committed, :highlight, :un_highlight, :feature, :un_feature, :favorite, :instructions, :overview, :origin, :collaborators, :impact, :resources, :documentation, :complexity, :timeline, :risk_and_mitigation, :contact, :checklist, :publication_validation]
   before_action :set_facility_data, only: [:show, :planning_checklist]
   before_action :authenticate_user!, except: [:show, :search, :index]
   before_action :can_view_committed_view, only: [:committed]
@@ -170,6 +170,7 @@ class PracticesController < ApplicationController
         @practice.department_practices.create department_id: key.to_i
       end
     end
+
     respond_to do |format|
       if updated
         format.html {redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.'}
@@ -315,6 +316,21 @@ class PracticesController < ApplicationController
 
   # /practices/slug/checklist
   def checklist
+  end
+
+  def published
+  end
+
+  def publication_validation
+    respond_to do |format|
+      if @practice.origin_story
+        flash[:notice] = "#{@practice.name} has been successfully published to the Diffusion Marketplace"
+        # format.html { redirect_to practice_path(@practice), notice: flash[:notice] }
+        format.js {render js: "window.location='#{practice_path(@practice)}'"}
+      else
+        format.js
+      end
+    end
   end
 
   private

@@ -1,0 +1,29 @@
+<div id="practiceEditorPublicationModal" class="bg-base-light publication-modal-hidden">
+    <div class="padding-y-9 publication-modal">
+        <div class="width-tablet margin-x-auto bg-white radius-md publication-modal-content">
+            <div class="bg-primary-darker text-white radius-top-md">
+                <h2 class="margin-0 padding-3">Cannot publish yet</h2>
+            </div>
+            <div class="publication-modal-body padding-3">
+                <div>
+                    <p>This is what you need to do before publishing your practice to the Diffusion Marketplace</p>
+                </div>
+                <div class="padding-3 font-sans-md line-height-sans-5">
+                    <% if @practice %>
+                        <div class="practice-editor-publication-error-container">
+                            <p class="text-bold">Origin</p>
+                            <ul class="origin-errors-ul">
+                                <% if @practice.origin_story %>
+                                    <li>You must have an origin story</li>
+                                <% end %>
+                            </ul>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+            <div class="padding-x-3 text-right">
+                <button class="usa-button usa-button--outline margin-0 padding-2 margin-top-5 margin-right-05 back-to-editor-button">Return to editor</button>
+            </div>
+        </div>
+    </div>
+</div>

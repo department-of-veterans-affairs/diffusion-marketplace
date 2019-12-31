@@ -182,12 +182,12 @@ class Commontator::CommentsController < Commontator::ApplicationController
   end
 
   def report_comment
-    CommentMailer.report_comment_email(id: params[:comment_id]).deliver_now
+    CommentMailer.report_comment_email(id: params[:id]).deliver_now
     notice = 'Comment has been reported and will be reviewed shortly'
     flash[:notice] = notice
 
     respond_to do |format|
-      format.html {redirect_to comment_path(id: params[:comment_id]), notice: flash[:notice]}
+      format.html {redirect_to comment_path(id: params[:id]), notice: flash[:notice]}
     end
   end
 

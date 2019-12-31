@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Comments', type: :feature do
+describe 'Comments', type: :feature, js: true do
     before do
         @user1 = User.create!(email: 'hisagi.shuhei@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
         @user2 = User.create!(email: 'momo.hinamori@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
@@ -69,7 +69,7 @@ describe 'Comments', type: :feature do
             expect(page).to have_content('deleted')
         end
 
-        it 'Should allow a user to reply to an existing comment', js: true do
+        it 'Should allow a user to reply to an existing comment' do
             fill_in('comment[body]', with: 'Hello world')
             click_button('commit')
             visit practice_path(@practice)
@@ -124,7 +124,19 @@ describe 'Comments', type: :feature do
             expect(page).to have_css('.report-abuse-cancel')
 
             find(".report-abuse-cancel").click
+            page.accept_alert
             expect(page).to_not have_content('Report a comment')
+        end
+
+        it 'should show a success banner after the user successfully reports a comment' do
+            visit practice_path(@practice)
+            find(".report-abuse-container").click
+            expect(page).to have_content('Report a comment')
+            expect(page).to have_css('.report-abuse-cancel')
+
+            find(".report-abuse-submit").click
+            page.accept_alert
+            expect(page).to have_content('Comment has been reported and will be reviewed shortly')
         end
     end
 end

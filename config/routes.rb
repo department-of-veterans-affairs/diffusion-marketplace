@@ -24,6 +24,8 @@ Rails.application.routes.draw do
     get '/edit/contact', action: 'contact', as: 'contact'
     get '/edit/checklist', action: 'checklist', as: 'checklist'
     get '/edit/origin', action: 'origin', as: 'origin'
+    post '/publication_validation', action: 'publication_validation', as: 'publication_validation'
+    get '/published', action: 'published', as: 'published'
     post '/commit', action: 'commit', as: 'commit'
     post '/favorite', action: 'favorite', as: 'favorite'
     member do
@@ -35,7 +37,7 @@ Rails.application.routes.draw do
     resources :comments do
       member do
           put 'like' => 'commontator/comments#upvote'
-          get 'report' => 'commontator/comments#report_comment'
+          get 'report', to: 'commontator/comments#report_comment', as: 'report'
       end
     end
   end

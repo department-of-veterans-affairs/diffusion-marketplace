@@ -3,7 +3,7 @@
 
     function submitPracticeEditorSaveForm() {
         $('#practice-editor-save-button').on('click', () => {
-            $('.usa-form').submit();
+            $('#form').submit();
         });
     }
 

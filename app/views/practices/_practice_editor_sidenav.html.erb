@@ -59,10 +59,13 @@
             </li>
         </ul>
         <div class="text-center">
-                <%= button_tag 'Save your progress', class: 'usa-button usa-button--outline width-full padding-y-2 margin-top-1', id: 'practice-editor-save-button' %>
+            <%= button_tag 'Save your progress', class: 'usa-button usa-button--outline width-full padding-y-2 margin-top-1', id: 'practice-editor-save-button' %>
         </div>
         <div class="text-center">
-            <%= button_tag 'Publish your progress', class: 'usa-button width-full padding-y-2 margin-top-1', disabled: 'disabled' %>
+            <%= link_to practice_publication_validation_path(@practice), class: 'usa-button width-full padding-y-2 margin-top-1', remote: true, method: :post do %>
+                Publish practice
+            <% end %>
+            <%# <%= button_tag 'Publish your progress', class: 'usa-button width-full padding-y-2 margin-top-1', disabled: 'disabled' %>
         </div>
     </div>
 </div>

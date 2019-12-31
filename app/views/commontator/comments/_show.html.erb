@@ -88,11 +88,11 @@
                 <h2 class="margin-0 padding-3">Report a comment</h2>
             </div>
             <div class="padding-3">
-              <legend class="usa-legend font-sans-md text-normal text-black margin-bottom-2">I am reporting the following comment for being inappropriate:</legend>
+              <p class="font-sans-md text-normal text-black margin-bottom-2">I am reporting the following comment for being inappropriate:</p>
               <p class="text-normal text-base">"<%= comment.body %>"</p>
               <div class="text-right">
                 <button class="usa-button usa-button--outline margin-0 padding-2 margin-top-5 margin-right-05 report-abuse-cancel">Cancel</button>
-                <%= link_to 'Submit Report', report_practice_comment_path(practice_id: practice.id, comment_id: comment.id), class: 'usa-button margin-0 padding-2 report-abuse-submit', data: {confirm: 'Are you sure you want to report this comment?'} %>
+                <%= link_to 'Submit Report', "/practices/#{practice.id}/comments/#{comment.id}/report", class: 'usa-button margin-0 padding-2 report-abuse-submit', data: {confirm: 'Are you sure you want to report this comment?'} %>
               </div>
             </div>
           </div>
