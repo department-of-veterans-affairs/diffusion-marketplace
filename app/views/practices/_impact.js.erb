@@ -6,7 +6,20 @@ function getImpactCaptionCharacterCountOnPageLoad() {
 
     <% @practice.impact_photos.each do |ip| %>
         var impactCaptionTextarea = $("#impact_photo_<%= ip.id %>_caption");
-        var impactCaptionCharacterSpan = $("#impact_caption_<%= ip.id %>_character_count");
+        var impactCaptionCharacterSpan = $("#impact_photo_<%= ip.id %>_caption_character_count");
+        var impactCaptionCurrentLength = impactCaptionTextarea.val().length;
+        var impactCaptionCharacterCounter = '(' + impactCaptionCurrentLength + '/' + IMPACT_CAPTION_MAX_LENGTH + ' characters)';
+
+        impactCaptionCharacterSpan.text(impactCaptionCharacterCounter);
+
+        if (impactCaptionCurrentLength >= IMPACT_CAPTION_MAX_LENGTH) {
+            impactCaptionCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+        }
+    <% end %>
+
+    <% @practice.video_files.each do |vf| %>
+        var impactCaptionTextarea = $("#video_file_<%= vf.id %>_caption");
+        var impactCaptionCharacterSpan = $("#video_file_<%= vf.id %>_caption_character_count");
         var impactCaptionCurrentLength = impactCaptionTextarea.val().length;
         var impactCaptionCharacterCounter = '(' + impactCaptionCurrentLength + '/' + IMPACT_CAPTION_MAX_LENGTH + ' characters)';
 
@@ -19,11 +32,26 @@ function getImpactCaptionCharacterCountOnPageLoad() {
 }
 
 function impactCaptionCharacterCounter() {
-    $('.practice-editor-image-caption').on('input', function(e) {
+    $(document).on('input', '.practice-editor-image-caption', function(e) {
         var t = e.target;
         var currentLength = $(t).val().length;
 
-        var impactCaptionCharacterSpan = $(t).closest('div').find('.impact-caption-character-count');
+        var impactCaptionCharacterSpan = $(t).closest('div').find('.impact-photo-caption-character-count');
+        var characterCounter = '(' + currentLength + '/' + IMPACT_CAPTION_MAX_LENGTH + ' characters)';
+
+        impactCaptionCharacterSpan.css('color', CHARACTER_COUNTER_VALID_COLOR);
+        impactCaptionCharacterSpan.text(characterCounter);
+
+        if (currentLength >= IMPACT_CAPTION_MAX_LENGTH) {
+            impactCaptionCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+        }
+    });
+
+    $(document).on('input', '.practice-editor-video-caption', function(e) {
+        var t = e.target;
+        var currentLength = $(t).val().length;
+
+        var impactCaptionCharacterSpan = $(t).closest('div').find('.video-file-caption-character-count');
         var characterCounter = '(' + currentLength + '/' + IMPACT_CAPTION_MAX_LENGTH + ' characters)';
 
         impactCaptionCharacterSpan.css('color', CHARACTER_COUNTER_VALID_COLOR);
@@ -35,9 +63,21 @@ function impactCaptionCharacterCounter() {
     });
 }
 
+function showFieldsOnPageLoad() {
+    <% if @practice.impact_photos.empty? %>
+        $('.add-impact-photo-link').click();
+    <% end %>
+
+    <% if @practice.video_files.empty? %>
+        $('.add-video-file-link').click();
+    <% end %>
+}
+
+
 function executeImpactFunctions() {
     getImpactCaptionCharacterCountOnPageLoad();
     impactCaptionCharacterCounter();
+    showFieldsOnPageLoad();
 }
 
 $(document).on('turbolinks:load', executeImpactFunctions);

@@ -2,13 +2,8 @@
     <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
         <%= render partial: 'impact', formats: [:js] %>
     <% end %>
-    <%# <%= javascript_include_tag 'practice_editor_impact', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'practice_editor_impact', 'data-turbolinks-track': 'reload' %>
 <% end %>
-
-<%
-    last_impact_photo_id = @practice.impact_photos.last.id
-    impact_photos_length = @practice.impact_photos.length
-%>
 
 <%= render 'breadcrumbs' %>
 <%= render 'practice_editor_sidenav' %>
@@ -23,95 +18,150 @@
                 <h2 class="text-normal margin-bottom-2">
                     Showcase real stories of how your practice is making an impact.
                 </h2>
-                <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form'}) do |f| %>
+                <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
                     <fieldset class="usa-fieldset">
                         <legend class="usa-sr-only">Impact</legend>
-                        <div class="impact-container">
-                            <%= f.fields_for :impact_photos do |ip| %>
-                                <div>
-                                    <p class="text-bold impact-p margin-bottom-1">Media</p>
-                                    <div class='margin-bottom-1'>
-                                        <div class='usa-radio'>
-                                            <%= radio_button('practice', 'it_required', true, class: 'usa-radio__input') %>
-                                            <label class='usa-radio__label' for='practice_it_required_true'>Upload image</label>
-                                        </div>
-                                        <div class='usa-radio'>
-                                            <%= radio_button('practice', 'it_required', false, class: 'usa-radio__input') %>
-                                            <label class='usa-radio__label' for='practice_it_required_false'>Attach video link</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="grid-row">
+                        <h2 class="font-sans-xl margin-bottom-2">Image upload</h2>
+                        <ul class="practice-editor-impact-photo-ul" id="sortable_impact_photos">
+                            <%= f.fields_for :impact_photos, wrapper: false do |ip| %>
                                 <%
                                     photo_id = ip.object.id
                                     attachment = ip.object.attachment
                                     photo_position = ip.object.position
                                 %>
-                                    <%= ip.hidden_field :id %>
+                                <li class="practice-editor-impact-photo-li fields" data-id="<%= photo_id %>">
+                                    <%= ip.hidden_field :position, class: 'impact-photo-position' %>
+                                    <div class="impact-container padding-205 border border-width-1px border-base-lighter radius-sm margin-top-3">
+                                        <div class="grid-row">
+                                            <%= ip.hidden_field :id %>
 
-                                    <div class="grid-col-7">
-                                        <% if attachment.present? %>
-                                            <%= image_tag ip.object.attachment_s3_presigned_url, alt: "Impact story picture #{ip.index}", class: 'height-mobile practice-editor-impact-photo' %>
-                                            <%#= ip.cropbox :attachment, index: ip.index %>
-                                        <% else %>
-                                            <div class="bg-base-lightest position-relative" style="height: 263px; width: 393px;">
-                                                <i class="fas fa-images fa-4x text-base-lighter no-impact-image"></i>
+                                            <div class="grid-col-6">
+                                                <% if attachment.present? %>
+                                                    <%= image_tag ip.object.attachment_s3_presigned_url, alt: "Impact story picture #{ip.index}", class: 'height-mobile practice-editor-impact-photo radius-md' %>
+                                                    <%#= ip.cropbox :attachment, index: ip.index %>
+                                                <% else %>
+                                                    <div class="bg-base-lightest position-relative radius-md" style="height: 300px; width: 350px;">
+                                                        <i class="fas fa-images fa-4x text-base-lighter no-impact-image"></i>
+                                                    </div>
+                                                <% end %>
                                             </div>
-                                        <% end %>
-                                    </div>
-                                    <div class="grid-col-5">
-                                        <div>
-                                            <p>• Guidelines for uploading a good image</p>
-                                            <p>• Guidelines for uploading a good image</p>
-                                            <p>• Guidelines for uploading a good image</p>
-                                        </div>
-                                        <div class="margin-bottom-1">
-                                            <%= ip.file_field :attachment, class: 'hidden-upload' %>
-                                            <%= ip.label :attachment, "#{attachment.present? ? 'Upload new photo' : 'Upload photo'}", class: "usa-button #{ attachment.present? ? 'usa-button--unstyled' : '' } add-impact-photo-label" %>
-                                        </div>
-                                        <% if attachment.present? %>
+                                            <div class="grid-col-6">
+                                                <div class="margin-bottom-205 margin-left-2 margin-top-1">
+                                                    <p>• Guidelines for uploading a good image</p>
+                                                    <p>• Guidelines for uploading a good image</p>
+                                                    <p>• Guidelines for uploading a good image</p>
+                                                </div>
+                                                
+                                                <i class="fas fa-arrows-alt font-sans-lg position-arrows text-base"></i>
+                    
+                                                <div class="grid-row margin-left-2 flex-align-start">
+                                                    <% if attachment.present? %>
+                                                        <div class="grid-col-5">
+                                                            <button class="usa-button usa-button--outline padding-2 edit-impact-photo-button">Edit photo</button>
+                                                        </div>
+                                                    <% end %>
+                                                    <div class="grid-col-fill">
+                                                        <div class="margin-bottom-1">
+                                                            <%= ip.file_field :attachment, class: 'hidden-upload' %>
+                                                            <%= ip.label :attachment, "#{attachment.present? ? 'Upload new photo' : 'Upload a photo'}", class: "usa-button #{ attachment.present? ? 'usa-button--unstyled' : 'padding-2' } add-impact-photo-label" %>
+                                                        </div>
+                                                        <% if attachment.present? %>
+                                                            <div>
+                                                                <%= ip.check_box :delete_attachment, { class: 'usa-checkbox__input practice-input delete-impact-attachment-input'}, 'true', 'false' %>
+                                                                <%= ip.label :delete_attachment, 'Remove photo', class: 'usa-checkbox__label display-inline-block' %>
+                                                            </div>
+                                                        <% end %>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class='usa-radio margin-top-3'>
+                                                <%= ip.radio_button :save_as_main_display_image, nil, class: "usa-radio__input impact-radio impact_photo_#{photo_id}_radio_input", checked: "#{@practice.main_display_image == attachment.url ? 'checked' : false }" %>
+                                                <%= ip.label :save_as_main_display_image, 'Selected as thumbnail', class: 'usa-radio__label display-inline-block' %>
+                                                
+                                            </div>
                                             <div>
-                                                <%= ip.check_box :delete_attachment, { class: 'usa-checkbox__input practice-input'}, 'true', 'false' %>
-                                                <%= ip.label :delete_attachment, 'Remove photo', class: 'usa-checkbox__label display-inline-block' %>
+                                                <%= @practice.main_display_image %>
+                                                <%= @practice.impact_photos.each do |i| %>
+                                                    <% if i.attachment %>
+                                                        <p><%= i.attachment %></p>
+                                                    <% end %>
+                                                <% end %>
                                             </div>
-                                        <% end %>
-                                    </div>
-                                    
-                                    <div class="grid-col-12">
-                                        <%= ip.label :description, 'Caption:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Share how your practice is making a real-life impact.</span>&nbsp;<span class="text-base-light impact-caption-character-count" id="impact_caption_<%= photo_id %>_character_count">(0/300 characters)</span>
-                                        <%= ip.text_area :description, class: 'usa-input practice-input practice-editor-image-caption height-15', id: "impact_photo_#{photo_id}_caption" %>
-                                    </div>
-                                    <div class="grid-row flex-align-center width-full">
-                                        <div class="grid-col-auto <%= photo_position != 1 && impact_photos_length > 1 ? '' : 'hidden-impact' %>">
-                                            <button class="usa-button usa-button--unstyled text-no-underline text-base-dark move-impact-button" id="move_impact_<%= photo_id %>_up"><span class="fas fa-chevron-up"></span>&nbsp;&nbsp;<span>Move up</span></button>
+                                            <div class="grid-row width-full">
+                                                <div class="grid-col-11">
+                                                    <%= ip.label :description, 'Caption:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Share how your practice is making a real-life impact.</span>&nbsp;<span class="text-base-light impact-photo-caption-character-count" id="impact_photo_<%= photo_id %>_caption_character_count">(0/300 characters)</span>
+                                                    <%= ip.text_area :description, class: 'usa-input practice-input practice-editor-image-caption height-15', id: "impact_photo_#{photo_id}_caption" %>
+                                                </div>
+                                                
+                                                <div class="grid-col-fill flex-align-end impact-trash-container">
+                                                    <%= ip.link_to_remove '', class: "fas fa-trash-alt impact-trash text-no-underline margin-left-2" %>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="grid-col-auto <%= last_impact_photo_id != photo_id || photo_position == 1 && impact_photos_length != 1 ? '' : 'hidden-impact' %>">
-                                            <button class="usa-button usa-button--unstyled text-no-underline text-base-dark move-impact-button" id="move_impact_<%= photo_id %>_down"><span class="fas fa-chevron-down"></span>&nbsp;&nbsp;<span>Move down</span></button>
-                                        </div>
-                                        <div class="grid-col-fill">
-                                            <%= ip.link_to_remove class: "fas fa-trash-alt impact-trash text-no-underline clear-impact-link #{impact_photos_length == 1 ? '' : 'float-right'}" do %>
-                                                    <span class="padding-left-1 font-sans-md text-normal text-no-underline"><%= impact_photos_length == 1 ? 'Clear' : 'Remove' %></span>
-                                            <% end %>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="height-2px border border-base-light flex-fill display-block"></div>
+                                    </li>
+                                <% end %>
+                            </ul>
+                            <%= f.link_to_add :impact_photos, class: 'fas fa-plus text-no-underline add-impact-photo-link' do %>
+                                <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add another</span>
                             <% end %>
-                        <%#<div>
-                            <%= f.fields_for :video_files do |v| %>
-                        <%#        <div>
-                                    <%= v.label :url, 'Link:', class: 'usa-label text-bold display-inline-block' %><%#&nbsp;<span>Type the link to the video.</span>
-                                    <%= v.text_field :url, class: 'usa-input practice-input' %>
-                        <%#        </div>
-                                <div>
-                                    <%= v.label :description, 'Caption:', class: 'usa-label text-bold display-inline-block' %><%#&nbsp;<span>Share how your practice is making a real-life impact.</span>&nbsp;<span class="text-base-light risk-character-count">(0/300 characters)</span>
-                                    <%= v.text_area :description, class: 'usa-input practice-input practice-editor-video-caption height-15' %>
-                        <%#        </div>
+                            
+                            <h2 class="font-sans-xl margin-bottom-2 margin-top-1">Video attachment</h2>
+                            <ul class="practice-editor-video-file-ul" id="sortable_video_files">
+                                <%= f.fields_for :video_files, wrapper: false do |vf| %>
+                                    <%
+                                        video_file_id = vf.object.id
+                                        video_attachment = vf.object.attachment
+                                        video_file_position = vf.object.position
+                                        video_url = vf.object.url
+                                    %>
+                                    <li class="practice-editor-video-file-li fields" data-id="<%= video_file_id %>">
+                                        <%= vf.hidden_field :position, class: 'video-file-position' %>
+                                        <div class="impact-container padding-205 border border-width-1px border-base-lighter radius-sm margin-top-3">
+                                            <div class="grid-row">
+                                                <%= vf.hidden_field :id %>
+
+                                                <div class="grid-col-5">
+                                                    <% if video_url.present? %>
+                                                        <%= youtube_embed(video_url) %>
+                                                    <% else %>
+                                                        <div class="bg-base-lightest position-relative" style="height: 225px; width: 284px;">
+                                                            <i class="fas fa-play fa-3x text-base-lighter video-file-placeholder"></i>
+                                                        </div>
+                                                    <% end %>
+                                                </div>
+                                                <div class="grid-col-7">
+                                                    <div class="margin-left-2">
+                                                        <p>• Guidelines for uploading a good image</p>
+                                                        <p>• Guidelines for uploading a good image</p>
+                                                        <p>• Guidelines for uploading a good image</p>
+                                                    </div>
+
+                                                    <i class="fas fa-arrows-alt font-sans-lg position-arrows text-base"></i>
+
+                                                    <div class="margin-left-2">
+                                                        <%= vf.label :url, 'Link:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type the link to the video.</span>
+                                                        <%= vf.text_field :url, class: 'usa-input practice-input video-file-url-input' %>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="grid-row width-full">
+                                                <div class="grid-col-11">
+                                                    <%= vf.label :description, 'Caption:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Share how your practice is making a real-life impact.</span>&nbsp;<span class="text-base-light video-file-caption-character-count" id="video_file_<%= video_file_id %>_caption_character_count">(0/300 characters)</span>
+                                                    <%= vf.text_area :description, class: 'usa-input practice-input practice-editor-video-caption height-15', id: "video_file_#{video_file_id}_caption" %>
+                                                </div>
+                                                <div class="grid-col-fill flex-align-end impact-trash-container">
+                                                    <%= vf.link_to_remove '', class: "fas fa-trash-alt impact-trash text-no-underline margin-left-2" %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                <% end %>
+                            </ul>
+                            <%= f.link_to_add :video_files, class: 'fas fa-plus text-no-underline add-video-file-link' do %>
+                                <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add another</span>
                             <% end %>
-                        <%#</div>%>
-                        <%= f.link_to_add :impact_photos, class: 'fas fa-plus text-no-underline add-impact-photo-link' do %>
-                            <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add another</span>
-                        <% end %>
                     </fieldset>
                 <% end %>
                 <div class="grid-row margin-bottom-8">

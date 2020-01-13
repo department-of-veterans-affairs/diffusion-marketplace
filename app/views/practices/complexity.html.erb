@@ -29,7 +29,7 @@
                         <span>Due to differences across facility levels and resources, the following estimates should be based on a 1A facility.</span>
                     </p>
                 </div>
-                <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form'}) do |f| %>
+                <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
                     <p>
                         <span class="text-bold">Departments:&nbsp;</span>
                         <span>Which departments may be affected during implementation of your practice?</span>
@@ -38,7 +38,7 @@
                         <div class="grid-row grid-gap margin-top-105 margin-bottom-3">
                             <% Department.order(:name).all.each do |department| %>
                                 <div class='usa-checkbox grid-col-6'>
-                                    <input type='checkbox' class='usa-checkbox__input' id="practice_department_<%= department.id %>" name='practice[department][<%= department.id %>][value]' <%= @practice.departments.include?(department) ? "checked= 'true'" : "" %>>
+                                    <input type='checkbox' class='usa-checkbox__input department-input' id="practice_department_<%= department.id %>" name='practice[department][<%= department.id %>][value]' <%= @practice.departments.include?(department) ? "checked= 'true'" : "" %>>
                                     <label class='usa-checkbox__label' for="practice_department_<%= department.id %>"><%= department.name %></label>
                                 </div>
                             <% end %>

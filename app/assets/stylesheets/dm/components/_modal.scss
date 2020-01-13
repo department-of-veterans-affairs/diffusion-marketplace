@@ -39,6 +39,10 @@
   }
 }
 
+.publication-modal-content {
+  width: 524px;
+}
+
 /* Add Animation */
 @-webkit-keyframes animatetop {
   from {top:-300px; opacity:0}
@@ -96,3 +100,4 @@
 .publication-modal-hidden {
   display: none;
 }
+

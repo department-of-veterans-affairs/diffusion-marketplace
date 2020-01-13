@@ -1,28 +1,123 @@
 <div id="practiceEditorPublicationModal" class="bg-base-light publication-modal-hidden">
     <div class="padding-y-9 publication-modal">
-        <div class="width-tablet margin-x-auto bg-white radius-md publication-modal-content">
-            <div class="bg-primary-darker text-white radius-top-md">
-                <h2 class="margin-0 padding-3">Cannot publish yet</h2>
+        <div class="margin-x-auto bg-white radius-md publication-modal-content">
+            <div class="bg-secondary text-white radius-top-md">
+                <h2 class="margin-0 padding-205 font-sans-lg">Cannot publish yet</h2>
             </div>
-            <div class="publication-modal-body padding-3">
-                <div>
+            <div class="publication-modal-body font-sans-md">
+                <div class="padding-2">
                     <p>This is what you need to do before publishing your practice to the Diffusion Marketplace</p>
                 </div>
-                <div class="padding-3 font-sans-md line-height-sans-5">
+                <div class="font-sans-md line-height-sans-5 practice-editor-publication-error-container padding-2 border-top-2px border-bottom-2px border-base-lightest">
                     <% if @practice %>
-                        <div class="practice-editor-publication-error-container">
-                            <p class="text-bold">Origin</p>
-                            <ul class="origin-errors-ul">
-                                <% if @practice.origin_story %>
-                                    <li>You must have an origin story</li>
+                        <%# Complexity errors %>
+                        <%
+                            departments = @practice.departments
+                            implementation_time = @practice.implementation_time_estimate
+                            required_training = @practice.need_training
+                            training_length = @practice.training_length
+                            staff_trainings = @practice.required_staff_trainings
+                            process = @practice.process
+                            it = @practice.it_required
+                        %>
+
+                        <% if required_training && training_length.nil? || required_training && staff_trainings.empty? || departments.empty? || implementation_time.nil? || required_training.nil? || process.nil? || it.nil? %>
+                            <p class="text-bold">Complexity</p>
+                            <ul class="complexity-errors-ul">
+                                <% if departments.empty? %>
+                                    <li>You must include the departments affected by implementing your practice</li>
+                                <% end %>
+                                <% if implementation_time.nil? %>
+                                    <li>You must include the estimated it will take to implement your practice</li>
+                                <% end %>
+                                <% if training_length.nil? %>
+                                    <li>You must include the duration of training</li>
+                                <% end %>
+                                <% if staff_trainings.empty? %>
+                                    <li>You must include the staff member(s) required to take the training</li>
+                                <% end %>
+                                <% if process.nil? %>
+                                    <li>You must include the approach and process of your practice</li>
+                                <% end %>
+                                <% if it.nil? %>
+                                    <li>You must include whether or not it will be required for your practice</li>
                                 <% end %>
                             </ul>
-                        </div>
+                        <% end %>
+                        <%# Contact errors %>
+                        <%
+                            email = @practice.support_network_email
+                            team_members = @practice.va_employees
+                        %>
+
+                        <% if email.nil? || team_members.empty? %>
+                            <p class="text-bold">Contact</p>
+                            <ul class="contact-errors-ul">
+                                <% if email.nil? %>
+                                    <li>You must include a support network email</li>
+                                <% end %>
+                                <% if team_members.empty? %>
+                                    <li>You must include at least one support team member</li>
+                                <% end %>
+                            </ul>
+                        <% end %>
+                        <%# Origin errors %>
+                        <%
+                            creators = @practice.practice_creators
+                            origin_story = @practice.origin_story
+                        %>
+                        <% if creators.empty? || origin_story.nil? %>
+                            <p class="text-bold">Origin</p>
+                            <ul class="origin-errors-ul">
+                                <% if creators.empty? %>
+                                    <li>You must include at least one practice creator</li>
+                                <% end %>
+                                <% if origin_story.nil? %>
+                                    <li>You must include an origin story</li>
+                                <% end %>
+                            </ul>
+                        <% end %>
+                        <%# Overview errors %>
+                        <%
+                            name = @practice.name
+                            tagline = @practice.tagline
+                            initiating_facility = @practice.initiating_facility
+                            summary = @practice.summary
+                            partners = @practice.practice_partners
+                        %>
+
+                        <% if name.nil? || tagline.nil? || initiating_facility.nil? || summary.nil? || partners.empty? %>
+                            <p class="text-bold">Overview</p>
+                            <ul class="overview-errors-ul">
+                                <% if name.nil? %>
+                                    <li>You must include a practice name</li>
+                                <% end %>
+                                <% if tagline.nil? %>
+                                    <li>You must include a practice tagline</li>
+                                <% end %>
+                                <% if initiating_facility.nil? %>
+                                    <li>You must include the initiating facility for your practice</li>
+                                <% end %>
+                                <% if summary.nil? %>
+                                    <li>You must include a practice summary</li>
+                                <% end %>
+                                <% if partners.empty? %>
+                                    <li>You must include at least one practice partner</li>
+                                <% end %>
+                            </ul>
+                        <% end %>
+                        <%# Resources errors %>
+                        <% if @practice.cost_to_implement_aggregate.nil? %>
+                            <p class="text-bold">Resources</p>
+                            <ul class="resources-errors-ul">
+                                <li>You must include the cost to implement your practice</li>
+                            </ul>
+                        <% end %>
                     <% end %>
                 </div>
             </div>
-            <div class="padding-x-3 text-right">
-                <button class="usa-button usa-button--outline margin-0 padding-2 margin-top-5 margin-right-05 back-to-editor-button">Return to editor</button>
+            <div class="padding-2 text-right">
+                <button class="usa-button margin-0 padding-2 back-to-editor-button">Return to editor</button>
             </div>
         </div>
     </div>

@@ -18,7 +18,7 @@
                 <h2 class="text-normal">
                     This section details the difficulties and risks a facility may face when implementing your practice.
                 </h2>
-                <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form'}) do |f| %>
+                <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
                     <fieldset class="usa-fieldset">
                         <legend class="usa-sr-only">Risks and Mitigations</legend>
                         <ul class="practice-editor-risk-mitigation-ul" id="sortable_risk_mitigations">

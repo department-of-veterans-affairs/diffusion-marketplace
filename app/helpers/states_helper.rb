@@ -1,7 +1,7 @@
 module StatesHelper
     def us_states
         [
-            ['-Select-', selected: true, disabled: true, class: 'usa-select'],
+            ['-Select-', nil, selected: true, disabled: true, class: 'usa-select'],
             ['Alabama', 'AL', class: 'usa-select'],
             ['Alaska', 'AK', class: 'usa-select'],
             ['Arizona', 'AZ', class: 'usa-select'],

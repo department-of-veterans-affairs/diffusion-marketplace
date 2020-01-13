@@ -18,7 +18,7 @@
                 <h2 class="text-normal margin-bottom-5">
                     Instructional text is needed here
                 </h2>
-                <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form'}) do |f| %>
+                <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
                     <fieldset class="usa-fieldset">
                         <legend class="usa-sr-only">Documentation</legend>
 

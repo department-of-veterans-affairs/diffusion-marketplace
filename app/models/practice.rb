@@ -68,6 +68,8 @@ class Practice < ApplicationRecord
   crop_attached_file :origin_picture, aspect: '1:1'
   validates_attachment_content_type :main_display_image, content_type: /\Aimage\/.*\z/
   validates_attachment_content_type :origin_picture, content_type: /\Aimage\/.*\z/
+  validates :name, presence: { message: 'Practice name can\'t be blank'}
+  validates :tagline, presence: { message: 'Practice tagline can\'t be blank'}
 
   scope :published,   -> { where(published: true) }
   scope :unpublished,  -> { where(published: false) }
@@ -122,7 +124,7 @@ class Practice < ApplicationRecord
   has_many :va_employees, -> {order(position: :asc)}, through: :va_employee_practices
   has_many :va_secretary_priority_practices, dependent: :destroy
   has_many :va_secretary_priorities, through: :va_secretary_priority_practices
-  has_many :video_files, dependent: :destroy
+  has_many :video_files, -> {order(position: :asc)}, dependent: :destroy
   has_many :practice_creators, -> {order(position: :asc)}, dependent: :destroy
 
   # This allows the practice model to be commented on with the use of the Commontator gem
@@ -130,6 +132,7 @@ class Practice < ApplicationRecord
 
   accepts_nested_attributes_for :practice_partner_practices, allow_destroy: true
   accepts_nested_attributes_for :impact_photos, allow_destroy: true
+  accepts_nested_attributes_for :video_files, allow_destroy: true
   accepts_nested_attributes_for :difficulties, allow_destroy: true
   accepts_nested_attributes_for :risk_mitigations, allow_destroy: true
   accepts_nested_attributes_for :timelines, allow_destroy: true

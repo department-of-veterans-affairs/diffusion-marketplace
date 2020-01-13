@@ -21,13 +21,13 @@
                     <span class="text-bold">Cost:&nbsp;</span>
                     <span>Estimate the cost for another group to implement your practice. Your estimate should include costs related to physical, technological, and staff.</span>
                 </p>
-                <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form margin-top-105 margin-bottom-6'}) do |f| %>
+                <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form margin-top-105 margin-bottom-6', id: 'form'}) do |f| %>
                     <fieldset class="usa-fieldset">
                         <legend class="usa-sr-only">Resource Information</legend>
                         <% (1..4).each do |index| %>
                             <div class='grid-row'>
                                 <div class='grid-col usa-radio'>
-                                    <%= radio_button('practice', 'cost_to_implement_aggregate', index.to_s, class: 'usa-radio__input') %>
+                                    <%= radio_button('practice', 'cost_to_implement_aggregate', index.to_s, {required: true, class: 'usa-radio__input resource-radio'}) %>
                                     <label class='usa-radio__label' for='practice_cost_to_implement_aggregate_<%= index %>'><%= Practice::COST_LABELS[index-1] %></label>
                                 </div>
                             </div>

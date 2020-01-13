@@ -105,6 +105,7 @@ class PracticesController < ApplicationController
   # PATCH/PUT /practices/1.json
   def update
     strong_params = practice_params
+    debugger
     updated = @practice.update(strong_params)
     if updated
       partner_keys = []
@@ -152,6 +153,27 @@ class PracticesController < ApplicationController
           end
         end
       end
+
+      # Change impact photo to main display image
+      # if params[:practice][:impact_photos_attributes].present?
+      #   params[:practice][:impact_photos_attributes].each do |key, ip|
+      #     if ip['save_as_main_display_image'] == 'on'
+            
+      #       selected_impact_photo = @practice.impact_photos.find(ip[:id]).attachment
+      #       @practice.update_attributes(main_display_image: selected_impact_photo)
+            
+      #     end
+      #   end
+      # end
+
+      # Aurora's code
+      if params[:practice][:impact_photos_attributes].present?
+        save_as_main_display_image = strong_params[:impact_photos_attributes].to_hash.find{|ip| ip['save_as_main_display_image'].present? ? ip['save_as_main_display_image']  == 'on' : false }
+        if save_as_main_display_image.present?
+          selected_impact_photo = @practice.impact_photos.find(save_as_main_display_image[:id])
+          @practice.update_attributes(main_display_image: selected_impact_photo.attachment) if selected_impact_photo.present?
+        end
+      end
       
       partner_keys.each do |key|
         next if @practice.practice_partners.ids.include? key.to_i
@@ -176,7 +198,6 @@ class PracticesController < ApplicationController
         format.html {redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.'}
         format.json {render :show, status: :ok, location: @practice}
       else
-        format.html {render :edit}
         format.json {render json: @practice.errors, status: :unprocessable_entity}
       end
     end
@@ -323,7 +344,7 @@ class PracticesController < ApplicationController
 
   def publication_validation
     respond_to do |format|
-      if @practice.origin_story
+      if @practice.origin_story.nil?
         flash[:notice] = "#{@practice.name} has been successfully published to the Diffusion Marketplace"
         # format.html { redirect_to practice_path(@practice), notice: flash[:notice] }
         format.js {render js: "window.location='#{practice_path(@practice)}'"}
@@ -348,7 +369,9 @@ class PracticesController < ApplicationController
                                      :training_provider, :training_provider_role, :required_training_summary, :support_network_email,
                                      :main_display_image, :main_display_image_original_w, :main_display_image_original_h, :main_display_image_crop_x, :main_display_image_crop_y, :main_display_image_crop_w, :main_display_image_crop_h,
                                      :origin_picture, :origin_picture_original_w, :origin_picture_original_h, :origin_picture_crop_x, :origin_picture_crop_y, :origin_picture_crop_w, :origin_picture_crop_h,
-                                     impact_photos_attributes: [:id, :title, :description, :attachment, :attachment_original_w, :attachment_original_h, :attachment_crop_x, :attachment_crop_y,
+                                     impact_photos_attributes: [:id, :title, :description, :position, :attachment, :attachment_original_w, :attachment_original_h, :attachment_crop_x, :attachment_crop_y,
+                                                                :attachment_crop_w, :attachment_crop_h, :_destroy, :save_as_main_display_image],
+                                     video_files_attributes: [:id, :title, :description, :url, :position, :attachment, :attachment_original_w, :attachment_original_h, :attachment_crop_x, :attachment_crop_y,
                                                                 :attachment_crop_w, :attachment_crop_h, :_destroy],
                                      difficulties_attributes: [:id, :description, :_destroy],
                                      risk_mitigations_attributes: [:id, :_destroy, :position, risks_attributes: [:id, :description, :_destroy], mitigations_attributes: [:id, :description, :_destroy]],
