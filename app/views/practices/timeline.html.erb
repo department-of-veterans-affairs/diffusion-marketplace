@@ -3,6 +3,7 @@
         <%= render partial: 'timeline', formats: [:js] %>
     <% end %>
     <%= javascript_include_tag 'practice_editor_timeline', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <%= render 'breadcrumbs' %>
@@ -31,24 +32,24 @@
                                 <li class="practice-editor-timeline-li fields" data-id="<%= tl_id %>">
                                     <%= tl.hidden_field :position, class: 'timeline-position' %>
                                     <%= tl.hidden_field :id %>
-                                    <div id="milestone_<%= tl_id %>_container">
-                                        <div>
-                                            <%= tl.label :timeline, 'Time frame:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type the time frame as Month # (e.g. Month 1, Months 2-3)</span>
-                                            <%= tl.text_field :timeline, class: 'usa-input practice-input width-card' %>
+                                    <div id="milestone_<%= tl_id %>_container"  class="padding-205 border border-width-1px border-base-lighter radius-sm margin-top-3">
+                                        <div class="position-relative">
+                                            <div class="fas fa-arrows-alt font-sans-lg position-arrows timeline-arrows text-base arrows-tooltip">
+                                                <span class="usa-tag tooltip-text">Drag and drop to change order</span>
+                                            </div>
+                                            <%= tl.label :timeline, 'Time frame:', class: 'usa-label text-bold display-inline-block timeline-duration' %>&nbsp;<span>Type the time frame as Month # (e.g. Month 1, Months 2-3)</span>
+                                            <%= tl.text_field :timeline, required: true, class: 'usa-input practice-input width-card' %>
                                         </div>
-                                        <div>
-                                            <%= tl.label :milestone, 'Milestone:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type a description of the milestone.</span>&nbsp;<span class="text-base-light milestone-character-count" id="milestone_<%= tl_id %>_character_count">(0/150 characters)</span>
-                                            <%= tl.text_area :milestone, class: 'usa-input practice-input height-15 milestone-textarea', id: "milestone_#{tl_id}_textarea" %>
-                                        </div>
-                                        <div class="grid-row flex-align-center">
-                                            <div class="grid-col-fill">
-                                                <%= tl.link_to_remove class: "fas fa-trash-alt timeline-trash text-no-underline clear-timeline-link" do %>
-                                                        <span class="padding-left-1 font-sans-md text-normal text-no-underline">Clear</span>
-                                                <% end %>
+                                        <div class="grid-row width-full">
+                                            <div class="grid-col-11">
+                                                <%= tl.label :milestone, 'Milestone:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type a description of the milestone.</span>&nbsp;<span class="text-base-light milestone-character-count" id="milestone_<%= tl_id %>_character_count">(0/150 characters)</span>
+                                                <%= tl.text_area :milestone, required: true, class: 'usa-input practice-input height-15 milestone-textarea', id: "milestone_#{tl_id}_textarea" %>
+                                            </div>
+                                            <div class="grid-col-fill flex-align-end timeline-trash-container">
+                                                <%= tl.link_to_remove '', class: "fas fa-trash-alt timeline-trash text-no-underline" %>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="height-2px border border-base-light flex-fill display-block"></div>
                                 </li>
                             <% end %>
                             </ul>

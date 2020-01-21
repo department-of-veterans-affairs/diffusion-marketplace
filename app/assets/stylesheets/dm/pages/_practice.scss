@@ -378,7 +378,7 @@
 }
 
 .collab-trash, .staff-trash, .timeline-trash, .risk-mitigation-trash, .impact-trash, 
-.va-employee-trash, .practice-creator-trash, .documentation-trash {
+.va-employee-trash, .origin-trash, .documentation-trash {
   color: #D83933 !important;
 
   &:hover {
@@ -386,13 +386,18 @@
   }
 }
 
-.impact-trash {
+.impact-trash, .origin-trash, .documentation-trash, .timeline-trash, .risk-mitigation-trash, .va-employee-trash {
   font-size: 22px;
 }
 
-.impact-trash-container, .impact-arrows-container {
+.impact-trash-container, .origin-trash-container, .documentation-trash-container, .timeline-trash-container,
+.risk-miti-trash-container, .va-employee-trash-container {
   align-self: flex-end;
   text-align: center;
+}
+
+.documentation-trash-container, .timeline-trash-container, .risk-miti-trash-container, .contact-trash-container {
+  margin-left: 33px;
 }
 
 .clear-collaborator-button, .add-collaborator-button {
@@ -431,8 +436,7 @@
   }
 }
 
-.clear-timeline-link, .clear-risk-mitigation-link, .clear-impact-link, .clear-va-employee-link,
-.clear-practice-creator-link, .clear-documentation-link {
+.clear-timeline-link, .clear-risk-mitigation-link, .clear-va-employee-link {
   margin-top: 24px !important;
   margin-bottom: 24px !important;
   color: #D83933 !important;
@@ -496,10 +500,6 @@
   margin-top: 24px;
 }
 
-.support-network-email-input {
-  width: 393px !important;
-}
-
 .va-employee-headshot-container, .practice-creator-headshot-container {
   width: 65px;
   height: 65px;
@@ -535,12 +535,6 @@
   list-style: none;
 }
 
-.sortable-dragging {
-  border: 2px solid #a9aeb1;
-  border-radius: 4px;
-  padding: 10px;
-}
-
 .sortable-placeholder {
   margin-top: 24px;
   display: block !important;
@@ -553,8 +547,16 @@
   margin-top: 12px !important;
 }
 
-.delete-avatar-input, .delete-attachment-input, .partner-input {
+.partner-input {
   left: 2px !important;
+}
+
+.delete-avatar-input, .delete-attachment-input {
+  left: 145px !important;
+}
+
+.delete-documentation-attachment-input {
+  left: 8px !important;
 }
 
 .resource-radio {
@@ -571,7 +573,15 @@
   margin-top: 5px;
 }
 
-.origin-errors-ul, .contact-errors-ul, .complexity-errors-ul, .complexity-errors-ul, .resources-errors-ul, .overview-errors-ul {
+.complexity-radio {
+  left: 12px !important;
+  height: 1px;
+  width: 1px;
+  margin-top: 11px;
+}
+
+.origin-errors-ul, .contact-errors-ul, .complexity-errors-ul, .complexity-errors-ul, .resources-errors-ul, .overview-errors-ul,
+.impact-errors-ul {
   padding-left: 20px;
   margin-top: 5px;
 
@@ -592,8 +602,13 @@
   right: 10px;
 }
 
-.edit-impact-photo-button {
+.documentation-arrows, .timeline-arrows, .origin-arrows, .risk-miti-arrows, .contact-arrows {
+  right: 1px;
+}
+
+.edit-impact-photo-button, .edit-origin-photo-button {
   margin-top: 3px !important;
+  margin-right: 24px !important;
 }
 
 .delete-impact-attachment-input {
@@ -602,4 +617,48 @@
 
 .video-file-url-input {
   width: 335px !important;
+}
+
+.hidden-radio {
+  display: none !important;
+}
+
+.hidden-documentation-field {
+  margin-top: 30px;
+  margin-left: -120px;
+}
+
+.hidden-impact-field {
+  margin-top: 45px;
+  margin-left: -10px;
+}
+
+.pub-title, .add-doc-title, .practice-creator-name, .timeline-duration, .risk-description, .vae-name {
+  margin-top: 0 !important;
+}
+
+.arrows-tooltip {
+
+  &:hover .tooltip-text {
+    visibility: visible;
+  }
+
+  .tooltip-text {
+    visibility: hidden;
+    width: 230px;
+    text-align: center;
+    text-transform: none !important;
+    padding: 5px;
+    
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    right: -105px;
+    margin-bottom: 5px;
+  }
+}
+
+.documentation-check, .risk-miti-check {
+  visibility: hidden;
 }

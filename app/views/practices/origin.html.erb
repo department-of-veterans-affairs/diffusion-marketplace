@@ -3,6 +3,7 @@
         <%= render partial: 'origin', formats: [:js] %>
     <% end %>
     <%= javascript_include_tag 'practice_editor_origin', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <%= render 'breadcrumbs' %>
@@ -38,59 +39,64 @@
                                 
                                 <li class="practice-editor-origin-li fields" data-id="<%= pc_id %>">
                                     <%= pc.hidden_field :position, class: 'origin-position' %>
-                                    <div>
-                                        <%= pc.label :name, 'Name:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type the name of the person who created this practice.</span>
-                                        <%= pc.text_field :name, required: true, class: 'usa-input practice-input width-mobile-lg' %>
-                                    </div>
-                                    <div>
-                                        <%= pc.label :role, 'Role:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type their title or position name.</span>&nbsp;<span class="text-base-light practice-creator-role-character-count" id="practice_creator_<%= pc_id %>_role_character_count">(0/50 characters)</span>
-                                        <%= pc.text_field :role, required: true, class: 'usa-input practice-input width-mobile-lg practice-creator-role', id: "practice_creator_#{pc_id}_role" %>
-                                    </div>
+                                    <div class="origin-container padding-205 border border-width-1px border-base-lighter radius-sm margin-top-3">
+                                        <div class="position-relative">
+                                            <div class="fas fa-arrows-alt font-sans-lg position-arrows origin-arrows text-base arrows-tooltip">
+                                                <span class="usa-tag tooltip-text">Drag and drop to change order</span>
+                                            </div>
+                                            <%= pc.label :name, 'Name:', class: 'usa-label practice-creator-name text-bold display-inline-block' %>&nbsp;<span>Type the name of the person who created this practice.</span>&nbsp;<span class="text-base-light practice-creator-name-character-count" id="practice_creator_<%= pc_id %>_name_character_count">(0/50 characters)</span>
+                                            <%= pc.text_field :name, required: true, class: 'usa-input practice-input width-tablet practice-creator-name-input', id: "practice_creator_#{pc_id}_name" %>
+                                        </div>
+                                        <div>
+                                            <%= pc.label :role, 'Role:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type their title or position name.</span>&nbsp;<span class="text-base-light practice-creator-role-character-count" id="practice_creator_<%= pc_id %>_role_character_count">(0/50 characters)</span>
+                                            <%= pc.text_field :role, required: true, class: 'usa-input practice-input width-tablet practice-creator-role', id: "practice_creator_#{pc_id}_role" %>
+                                        </div>
 
-                                    <p class="text-bold va-employee-headshot-p margin-bottom-05">Headshot</p>
-                                    <p>• Guidelines for uploading a good headshot</p>
-                                    <p>• Guidelines for uploading a good headshot</p>
-                                    <p>• Guidelines for uploading a good headshot</p>
+                                        <p class="text-bold va-employee-headshot-p margin-bottom-05">Headshot</p>
+                                        <p class="width-tablet margin-bottom-05">
+                                            Guidelines for a good headshot will go here. Perhaps a sentence or two that might go to the next line.
+                                        </p>
 
-                                    <div class="grid-row">
-                                        <div class="grid-col-auto practice-creator-headshot-col margin-top-105">
-                                            <% if pc_avatar.present? %>
-                                                <div class="practice-creator-headshot-container">
-                                                    <%= image_tag pc.object.avatar.url, alt: pc.object.name %>
-                                                <%#= vae.cropbox :avatar, width: 200, index: vae.index %>
-                                                </div>
-                                            <% else %>
-                                                <div class="practice-creator-headshot-container bg-base-lightest radius-md">
-                                                    <i class="fas fa-user fa-3x practice-creator-headshot-filler text-base-lighter"></i>
-                                                </div>
-                                            <% end %>
-                                        </div>
-                                        <div class="grid-col-fill practice-creator-file-col">
-                                            <% if pc_avatar.present? %>
-                                                <div class="margin-bottom-1">
-                                                    <%= pc.label :avatar, 'Upload new photo', class: "usa-button usa-button--unstyled add-practice-creator-headshot-label" %>
-                                                    <%= pc.file_field :avatar, class: 'hidden-upload' %>
-                                                </div>
-                                                <div>
-                                                    <%= pc.check_box :delete_avatar, { class: 'usa-checkbox__input practice-input delete-avatar-input'}, 'true', 'false' %>
-                                                    <%= pc.label :delete_avatar, 'Remove photo', class: 'usa-checkbox__label display-inline-block' %>
-                                                </div>
-                                            <% else %>
-                                                <div class="margin-bottom-1">
-                                                    <%= pc.label :avatar, 'Upload photo', class: "usa-button add-practice-creator-headshot-label" %>
-                                                    <%= pc.file_field :avatar, required: true, class: 'hidden-upload' %>
-                                                </div>
-                                            <% end %>
+                                        <div class="grid-row">
+                                            <div class="grid-col-auto practice-creator-headshot-col margin-top-105">
+                                                <% if pc_avatar.present? %>
+                                                    <div class="practice-creator-headshot-container">
+                                                        <%= image_tag pc.object.avatar.url, alt: pc.object.name %>
+                                                    <%#= vae.cropbox :avatar, width: 200, index: vae.index %>
+                                                    </div>
+                                                <% else %>
+                                                    <div class="practice-creator-headshot-container bg-base-lightest radius-md">
+                                                        <i class="fas fa-user fa-3x practice-creator-headshot-filler text-base-lighter"></i>
+                                                    </div>
+                                                <% end %>
+                                            </div>
+                                            <div class="grid-col-10 practice-creator-file-col">
+                                                <% if pc_avatar.present? %>
+                                                    <div class="display-inline-block text-tbottom">
+                                                        <button class="usa-button usa-button--outline padding-2 edit-origin-photo-button">Edit photo</button>
+                                                    </div>
+                                                    <div class="display-inline-block">
+                                                        <div class="margin-bottom-1">
+                                                            <%= pc.label :avatar, 'Upload new photo', class: "usa-button usa-button--unstyled add-practice-creator-headshot-label" %>
+                                                            <%= pc.file_field :avatar, class: 'hidden-upload' %>
+                                                        </div>
+                                                        <div>
+                                                            <%= pc.check_box :delete_avatar, { class: 'usa-checkbox__input practice-input delete-avatar-input'}, 'true', 'false' %>
+                                                            <%= pc.label :delete_avatar, 'Remove photo', class: 'usa-checkbox__label display-inline-block' %>
+                                                        </div>
+                                                    </div>
+                                                <% else %>
+                                                    <div class="margin-bottom-1">
+                                                        <%= pc.label :avatar, 'Upload photo', class: "usa-button add-practice-creator-headshot-label" %>
+                                                        <%= pc.file_field :avatar, required: true, class: 'hidden-upload' %>
+                                                    </div>
+                                                <% end %>
+                                            </div>
+                                            <div class="grid-col-fill flex-align-end origin-trash-container">
+                                                <%= pc.link_to_remove '', class: "fas fa-trash-alt origin-trash text-no-underline" %>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="grid-row flex-align-center width-full">  
-                                        <div class="grid-col-fill">
-                                            <%= pc.link_to_remove class: "fas fa-trash-alt practice-creator-trash text-no-underline clear-practice-creator-link" do %>
-                                                    <span class="padding-left-1 font-sans-md text-normal text-no-underline">Clear</span>
-                                            <% end %>
-                                        </div>
-                                    </div>
-                                    <div class="height-2px border border-base-light flex-fill display-block"></div>
                                 </li>
                             <% end %>
                         </ul>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_06_173946) do
+ActiveRecord::Schema.define(version: 2020_01_13_195954) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -406,6 +406,7 @@ ActiveRecord::Schema.define(version: 2019_12_06_173946) do
     t.string "attachment_content_type"
     t.integer "attachment_file_size"
     t.datetime "attachment_updated_at"
+    t.boolean "is_main_display_image", default: false
     t.index ["practice_id"], name: "index_impact_photos_on_practice_id"
   end
 

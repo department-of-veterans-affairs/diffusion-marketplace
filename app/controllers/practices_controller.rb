@@ -105,8 +105,8 @@ class PracticesController < ApplicationController
   # PATCH/PUT /practices/1.json
   def update
     strong_params = practice_params
-    debugger
     updated = @practice.update(strong_params)
+    
     if updated
       partner_keys = []
       partner_keys = params[:practice][:practice_partner].keys if params[:practice][:practice_partner].present?
@@ -154,26 +154,29 @@ class PracticesController < ApplicationController
         end
       end
 
-      # Change impact photo to main display image
-      # if params[:practice][:impact_photos_attributes].present?
-      #   params[:practice][:impact_photos_attributes].each do |key, ip|
-      #     if ip['save_as_main_display_image'] == 'on'
-            
-      #       selected_impact_photo = @practice.impact_photos.find(ip[:id]).attachment
-      #       @practice.update_attributes(main_display_image: selected_impact_photo)
-            
-      #     end
-      #   end
-      # end
 
-      # Aurora's code
-      if params[:practice][:impact_photos_attributes].present?
-        save_as_main_display_image = strong_params[:impact_photos_attributes].to_hash.find{|ip| ip['save_as_main_display_image'].present? ? ip['save_as_main_display_image']  == 'on' : false }
-        if save_as_main_display_image.present?
-          selected_impact_photo = @practice.impact_photos.find(save_as_main_display_image[:id])
-          @practice.update_attributes(main_display_image: selected_impact_photo.attachment) if selected_impact_photo.present?
+      # Change impact photo to main display image
+      @practice.impact_photos.each do |ip|
+        if ip.is_main_display_image
+          
+          selected_impact_photo = @practice.impact_photos.find(ip[:id]).attachment
+          @practice.update_attributes(main_display_image: selected_impact_photo)
+          
         end
       end
+
+      if @practice.impact_photos.where(is_main_display_image: true).empty? || @practice.impact_photos.empty?
+        @practice.update_attributes(main_display_image: nil)
+      end
+
+      # Aurora's code
+      # if params[:practice][:impact_photos_attributes].present?
+      #   save_as_main_display_image = strong_params[:impact_photos_attributes].to_hash.find{|key, hash| hash["save_as_main_display_image"] == 'on'}
+      #   if save_as_main_display_image.present?
+      #     selected_impact_photo = @practice.impact_photos.find(strong_params[:save_as_main_display_image][:id])
+      #     @practice.update_attributes(main_display_image: selected_impact_photo.attachment) if selected_impact_photo.present?
+      #   end
+      # end
       
       partner_keys.each do |key|
         next if @practice.practice_partners.ids.include? key.to_i
@@ -369,8 +372,8 @@ class PracticesController < ApplicationController
                                      :training_provider, :training_provider_role, :required_training_summary, :support_network_email,
                                      :main_display_image, :main_display_image_original_w, :main_display_image_original_h, :main_display_image_crop_x, :main_display_image_crop_y, :main_display_image_crop_w, :main_display_image_crop_h,
                                      :origin_picture, :origin_picture_original_w, :origin_picture_original_h, :origin_picture_crop_x, :origin_picture_crop_y, :origin_picture_crop_w, :origin_picture_crop_h,
-                                     impact_photos_attributes: [:id, :title, :description, :position, :attachment, :attachment_original_w, :attachment_original_h, :attachment_crop_x, :attachment_crop_y,
-                                                                :attachment_crop_w, :attachment_crop_h, :_destroy, :save_as_main_display_image],
+                                     impact_photos_attributes: [:id, :title, :is_main_display_image, :description, :position, :attachment, :attachment_original_w, :attachment_original_h, :attachment_crop_x, :attachment_crop_y,
+                                                                :attachment_crop_w, :attachment_crop_h, :_destroy],
                                      video_files_attributes: [:id, :title, :description, :url, :position, :attachment, :attachment_original_w, :attachment_original_h, :attachment_crop_x, :attachment_crop_y,
                                                                 :attachment_crop_w, :attachment_crop_h, :_destroy],
                                      difficulties_attributes: [:id, :description, :_destroy],

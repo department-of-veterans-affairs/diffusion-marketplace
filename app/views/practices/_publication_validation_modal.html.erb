@@ -61,6 +61,24 @@
                                 <% end %>
                             </ul>
                         <% end %>
+
+                        <%# Impact errors %>
+                        <%
+                            impact_photos = @practice.impact_photos
+                            main_image = @practice.main_display_image
+                        %>
+                        <% if impact_photos.empty? || main_image.nil? %>
+                            <p class="text-bold">Origin</p>
+                            <ul class="impact-errors-ul">
+                                <% if impact_photos.empty? %>
+                                    <li>You must upload at least one image</li>
+                                <% end %>
+                                <% if main_image.nil? %>
+                                    <li>You must select one of your images to be your practice's thumbnail</li>
+                                <% end %>
+                            </ul>
+                        <% end %>
+
                         <%# Origin errors %>
                         <%
                             creators = @practice.practice_creators

@@ -1,6 +1,7 @@
 var CHARACTER_COUNTER_VALID_COLOR =  '#a9aeb1';
 var CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
 var EMPLOYEE_ROLE_MAX_LENGTH = 50;
+EMPLOYEE_NAME_MAX_LENGTH = 50;
 
 function getEmployeeRoleCharacterCountOnPageLoad() {
 
@@ -35,9 +36,44 @@ function employeeRoleCharacterCounter() {
     });
 }
 
+function getEmployeeNameCharacterCountOnPageLoad() {
+
+    <% @practice.va_employees.each do |e| %>
+        var employeeInput = $("#va_employee_<%= e.id %>_name");
+        var employeeNameCharacterSpan = $("#va_employee_<%= e.id %>_name_character_count");
+        var employeeNameCurrentLength = employeeInput.val().length;
+        var employeeNameCharacterCount = '(' + employeeNameCurrentLength + '/' + EMPLOYEE_NAME_MAX_LENGTH + ' characters)';
+
+        employeeNameCharacterSpan.text(employeeNameCharacterCount);
+
+        if (employeeNameCurrentLength >= EMPLOYEE_NAME_MAX_LENGTH) {
+            employeeNameCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+        }
+    <% end %>
+}
+
+function employeeNameCharacterCounter() {
+    $(document).on('input', '.va-employee-name-input', function(e) {
+        var t = e.target;
+        var currentLength = $(t).val().length;
+
+        var employeeNameCharacterSpan = $(t).closest('div').find('.va-employee-name-character-count');
+        var characterCounter = '(' + currentLength + '/' + EMPLOYEE_NAME_MAX_LENGTH + ' characters)';
+
+        employeeNameCharacterSpan.css('color', CHARACTER_COUNTER_VALID_COLOR);
+        employeeNameCharacterSpan.text(characterCounter);
+
+        if (currentLength >= EMPLOYEE_NAME_MAX_LENGTH) {
+            employeeNameCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+        }
+    });
+}
+
 function executeVaEmployeeFunctions() {
     getEmployeeRoleCharacterCountOnPageLoad();
     employeeRoleCharacterCounter();
+    getEmployeeNameCharacterCountOnPageLoad();
+    employeeNameCharacterCounter();
 }
 
 $(document).on('turbolinks:load', executeVaEmployeeFunctions);

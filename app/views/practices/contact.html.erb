@@ -3,6 +3,7 @@
         <%= render partial: 'contact', formats: [:js] %>
     <% end %>
     <%= javascript_include_tag 'practice_editor_contact', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <%= render 'breadcrumbs' %>
@@ -23,7 +24,7 @@
                         <legend class="usa-sr-only">Practice Information</legend>
                         <div>
                             <%= f.label :support_network_email, 'Email:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type the email address dedicated to responding to messages for this practice.</span>
-                            <%= f.text_field :support_network_email, class: 'usa-input practice-input support-network-email-input' %>
+                            <%= f.text_field :support_network_email, required: true, class: 'usa-input practice-input width-tablet' %>
                         </div>
 
                         <h2 class="font-sans-xl margin-top-5">Team</h2>
@@ -38,56 +39,67 @@
                             <li class="practice-editor-contact-li fields" data-id="<%= vae_id %>">
                                 <%= vae.hidden_field :id %>
                                 <%= vae.hidden_field :position, class: 'contact-position' %>
-                            
-                                <div>
-                                    <%= vae.label :name, 'Name:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type the name of the person who created this practice.</span>
-                                    <%= vae.text_field :name, class: 'usa-input practice-input width-mobile-lg' %>
-                                </div>
-
-                                <div>
-                                    <%= vae.label :role, 'Role:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type their title or position name.</span>&nbsp;<span class="text-base-light va-employee-role-character-count" id="va_employee_<%= vae_id %>_role_character_count">(0/50 characters)</span>
-                                    <%= vae.text_field :role, class: 'usa-input practice-input width-mobile-lg va-employee-role', id: "va_employee_#{vae_id}_role" %>
-                                </div>
-                                
-                                <p class="text-bold va-employee-headshot-p margin-bottom-05">Headshot&nbsp;<span class="text-base">(optional)</span></p>
-                                <p>• Guidelines for uploading a good headshot</p>
-                                <p>• Guidelines for uploading a good headshot</p>
-                                <p>• Guidelines for uploading a good headshot</p>
-
-                                <div class="grid-row">
-                                    <div class="grid-col-auto va-employee-headshot-col margin-top-105">
-                                        <% if vae_avatar.present? %>
-                                            <div class="va-employee-headshot-container">
-                                                <%= image_tag vae.object.avatar.url, alt: vae.object.name %>
-                                            <%#= vae.cropbox :avatar, width: 200, index: vae.index %>
-                                            </div>
-                                        <% else %>
-                                            <div class="va-employee-headshot-container bg-base-lightest radius-md">
-                                                <i class="fas fa-user fa-3x va-employee-headshot-filler text-base-lighter"></i>
-                                            </div>
-                                        <% end %>
-                                    </div>
-                                    <div class="grid-col-fill va-employee-file-col">
-                                        <div class="margin-bottom-1">
-                                            <%= vae.label :avatar, "#{vae_avatar.present? ? 'Upload new photo' : 'Upload photo'}", class: "usa-button #{ vae_avatar.present? ? 'usa-button--unstyled' : '' } add-va-employee-headshot-label" %>
-                                            <%= vae.file_field :avatar, class: 'hidden-upload' %>
+                                <div class="contact-container padding-205 border border-width-1px border-base-lighter radius-sm margin-top-3">
+                                    <div class="position-relative">
+                                        <div class="fas fa-arrows-alt font-sans-lg position-arrows contact-arrows text-base arrows-tooltip">
+                                            <span class="usa-tag tooltip-text">Drag and drop to change order</span>
                                         </div>
-                                        <% if vae_avatar.present? %>
-                                            <div>
-                                                <%= vae.check_box :delete_avatar, { class: 'usa-checkbox__input practice-input delete-avatar-input'}, 'true', 'false' %>
-                                                <%= vae.label :delete_avatar, 'Remove photo', class: 'usa-checkbox__label display-inline-block' %>
-                                            </div>
-                                        <% end %>
+                                    </div>
+                                    <div>
+                                        <%= vae.label :name, 'Name:', class: 'usa-label text-bold display-inline-block vae-name' %>&nbsp;<span>Type the name of the person who created this practice.</span>&nbsp;<span class="text-base-light va-employee-name-character-count" id="va_employee_<%= vae_id %>_name_character_count">(0/50 characters)</span>
+                                        <%= vae.text_field :name, required: true, class: 'usa-input practice-input width-tablet va-employee-name-input', id: "va_employee_#{vae_id}_name" %>
+                                    </div>
+
+                                    <div>
+                                        <%= vae.label :role, 'Role:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type their title or position name.</span>&nbsp;<span class="text-base-light va-employee-role-character-count" id="va_employee_<%= vae_id %>_role_character_count">(0/50 characters)</span>
+                                        <%= vae.text_field :role, class: 'usa-input practice-input width-tablet va-employee-role', id: "va_employee_#{vae_id}_role" %>
+                                    </div>
+                                    
+                                    <p class="text-bold va-employee-headshot-p margin-bottom-05">Headshot&nbsp;<span class="text-base">(optional)</span></p>
+                                    <p class="width-tablet margin-bottom-05">
+                                        Guidelines for a good headshot will go here. Perhaps a sentence or two that might go to the next line.
+                                    </p>
+
+                                    <div class="grid-row">
+                                        <div class="grid-col-auto va-employee-headshot-col margin-top-105">
+                                            <% if vae_avatar.present? %>
+                                                <div class="va-employee-headshot-container">
+                                                    <%= image_tag vae.object.avatar.url, alt: vae.object.name %>
+                                                <%#= vae.cropbox :avatar, width: 200, index: vae.index %>
+                                                </div>
+                                            <% else %>
+                                                <div class="va-employee-headshot-container bg-base-lightest radius-md">
+                                                    <i class="fas fa-user fa-3x va-employee-headshot-filler text-base-lighter"></i>
+                                                </div>
+                                            <% end %>
+                                        </div>
+                                        <div class="grid-col-10 va-employee-file-col">
+                                            <% if vae_avatar.present? %>
+                                                <div class="display-inline-block text-tbottom">
+                                                    <button class="usa-button usa-button--outline padding-2 edit-origin-photo-button">Edit photo</button>
+                                                </div>
+                                                <div class="display-inline-block">
+                                                    <div class="margin-bottom-1">
+                                                        <%= vae.label :avatar, 'Upload new photo', class: "usa-button usa-button--unstyled add-va-employee-headshot-label" %>
+                                                        <%= vae.file_field :avatar, class: 'hidden-upload' %>
+                                                    </div>
+                                                    <div>
+                                                        <%= vae.check_box :delete_avatar, { class: 'usa-checkbox__input practice-input delete-avatar-input'}, 'true', 'false' %>
+                                                        <%= vae.label :delete_avatar, 'Remove photo', class: 'usa-checkbox__label display-inline-block' %>
+                                                    </div>
+                                                </div>
+                                            <% else %>
+                                                <div class="margin-bottom-1">
+                                                    <%= vae.label :avatar, 'Upload photo', class: "usa-button add-va-employee-headshot-label" %>
+                                                    <%= vae.file_field :avatar, class: 'hidden-upload' %>
+                                                </div>
+                                            <% end %>
+                                        </div>
+                                        <div class="grid-col-fill flex-align-end va-employee-trash-container">
+                                            <%= vae.link_to_remove '', class: "fas fa-trash-alt va-employee-trash text-no-underline" %>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="grid-row flex-align-center width-full">  
-                                    <div class="grid-col-fill">
-                                        <%= vae.link_to_remove class: "fas fa-trash-alt va-employee-trash text-no-underline clear-va-employee-link" do %>
-                                                <span class="padding-left-1 font-sans-md text-normal text-no-underline">Clear</span>
-                                        <% end %>
-                                    </div>
-                                </div>
-                                <div class="height-2px border border-base-light flex-fill display-block"></div>
                             </li>
                         <% end %>
                         </ul>

@@ -2,7 +2,8 @@
     <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
         <%= render partial: 'risk_and_mitigation', formats: [:js] %>
     <% end %>
-    <%= javascript_include_tag 'practice_editor_risk_mitigation', 'data-turbolinks-track': 'reload' %> 
+    <%= javascript_include_tag 'practice_editor_risk_mitigation', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <%= render 'breadcrumbs' %>
@@ -30,43 +31,41 @@
                             <li class="practice-editor-risk-mitigation-li fields" data-id="<%= rm_id %>">
                                 <%= rm.hidden_field :id %>
                                 <%= rm.hidden_field :position, class: 'risk-mitigation-position' %>
-                                <%= rm.fields_for :risks do |risk| %>
-                                    <%
-                                        risk_id = risk.object.id
-                                    %>
-                                    <%= rm.hidden_field :id %>
-                                    <div id="risk_<%= risk_id %>_container" class="risk_<%= risk_id %>_container">
-                                        <%= rm.label :description, 'Risk:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type the name or description of the risk.</span>&nbsp;<span class="text-base-light risk-character-count risk_<%= risk_id %>_character_count" id="risk_<%= risk_id %>_character_count">(0/150 characters)</span>
-                                        <%= risk.text_area :description, class: "usa-input practice-input risk-description-textarea height-15 risk_#{risk_id}_description_textarea", id: "risk_#{risk_id}_description_textarea" %>
-                                    </div>
-                                <% end %>
-                        
-                                <%= rm.fields_for :mitigations, wrapper: false do |miti| %>
-                                    <%
-                                        mitigation_id = miti.object.id
-                                    %>
-                                    <%= rm.hidden_field :id %>
-                                    <div id="mitigation_<%= mitigation_id %>_container">
-                                        <%= miti.label :description, 'Mitigation:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type the corresponding mitigation to the risk.</span>&nbsp;<span class="text-base-light mitigation-character-count" id="mitigation_<%= mitigation_id %>_character_count">(0/150 characters)</span>
-                                        <%= miti.text_area :description, class: 'usa-input practice-input mitigation-description-textarea height-15', id: "mitigation_#{mitigation_id}_description_textarea" %>
-                                    </div>
-                                <% end %>
-                                
-                                <div class="grid-row flex-align-center">
-                                    <%#<div class="grid-col-auto <%= rm_position != 1 && risk_mitigation_length > 1 ? '' : 'hidden-risk-mitigation' %><%#">
-                                        <button class="usa-button usa-button--unstyled text-no-underline text-base-dark move-risk-mitigation-button" id="move_risk_mitigation_<%= rm_id %><%#_up"><span class="fas fa-chevron-up"></span>&nbsp;&nbsp;<span>Move up</span></button>
-                                    </div>
-                                    <div class="grid-col-auto <%= last_risk_mitigation_id != rm_id || rm_position == 1 && risk_mitigation_length != 1 ? '' : 'hidden-risk-mitigation' %><%#">
-                                        <button class="usa-button usa-button--unstyled text-no-underline text-base-dark move-risk-mitigation-button" id="move_risk_mitigation_<%= rm_id %><%#_down"><span class="fas fa-chevron-down"></span>&nbsp;&nbsp;<span>Move down</span></button>
-                                    </div>%>
-                                    <div class="grid-col-fill">
-                                        <%#<%= rm.link_to_remove class: "fas fa-trash-alt risk-mitigation-trash text-no-underline clear-risk-mitigation-link #{risk_mitigation_length == 1 ? '' : 'float-right'}" do %>
-                                        <%= rm.link_to_remove class: "fas fa-trash-alt risk-mitigation-trash text-no-underline clear-risk-mitigation-link" do %>
-                                                <span class="padding-left-1 font-sans-md text-normal text-no-underline"><%#<%= risk_mitigation_length == 1 ? 'Clear' : 'Remove' %>Clear</span>
-                                        <% end %>
+                                <div class="padding-205 border border-width-1px border-base-lighter radius-sm margin-top-3">
+                                    
+                                    <%= rm.fields_for :risks, wrapper: false do |risk| %>
+                                        <%
+                                            risk_id = risk.object.id
+                                        %>
+                                        <%= rm.hidden_field :id %>
+                                        <div class="position-relative">
+                                            <div class="fas fa-arrows-alt font-sans-lg position-arrows risk-miti-arrows text-base arrows-tooltip">
+                                                <span class="usa-tag tooltip-text">Drag and drop to change order</span>
+                                            </div>
+                                        </div>
+                                        <div id="risk_<%= risk_id %>_container" class="risk_<%= risk_id %>_container grid-col-11">
+                                            <%= rm.label :description, 'Risk:', class: 'usa-label text-bold display-inline-block risk-description' %>&nbsp;<span>Type the name or description of the risk.</span>&nbsp;<span class="text-base-light risk-character-count risk_<%= risk_id %>_character_count" id="risk_<%= risk_id %>_character_count">(0/150 characters)</span>
+                                            <%= risk.text_area :description, required: true, class: "usa-input practice-input risk-description-textarea height-15 risk_#{risk_id}_description_textarea", id: "risk_#{risk_id}_description_textarea" %>
+                                        </div>
+                                    <% end %>
+                                    <div class="grid-row width-full">
+                                        <div class="grid-col-11">
+                                            <%= rm.fields_for :mitigations, wrapper: false do |miti| %>
+                                                <%
+                                                    mitigation_id = miti.object.id
+                                                %>
+                                                <%= rm.hidden_field :id %>
+                                                <div id="mitigation_<%= mitigation_id %>_container" class="mitigation_<%= mitigation_id %>_container">
+                                                    <%= miti.label :description, 'Mitigation:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type the corresponding mitigation to the risk.</span>&nbsp;<span class="text-base-light mitigation-character-count" id="mitigation_<%= mitigation_id %>_character_count">(0/150 characters)</span>
+                                                    <%= miti.text_area :description, required: true, class: 'usa-input practice-input mitigation-description-textarea height-15', id: "mitigation_#{mitigation_id}_description_textarea" %>
+                                                </div>
+                                            <% end %>
+                                        </div>
+                                        <div class="grid-col-fill flex-align-end risk-miti-trash-container">
+                                            <%= rm.link_to_remove '', class: "fas fa-trash-alt risk-mitigation-trash text-no-underline" %>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="height-2px border border-base-light flex-fill display-block"></div>
                             </li>
                         <% end %>
                         </ul>

@@ -2,6 +2,7 @@ var CHARACTER_COUNTER_VALID_COLOR =  '#a9aeb1';
 var CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
 var ORIGIN_STORY_MAX_LENGTH = 400;
 var PRACTICE_CREATOR_ROLE_MAX_LENGTH = 50;
+var PRACTICE_CREATOR_NAME_MAX_LENGTH = 50;
 
 function getOriginStoryCharacterCountOnPageLoad() {
 
@@ -70,6 +71,39 @@ function practiceCreatorRoleCharacterCounter() {
     });
 }
 
+function getPracticeCreatorNameCharacterCountOnPageLoad() {
+
+    <% @practice.practice_creators.each do |pc| %>
+        var practiceCreatorInput = $("#practice_creator_<%= pc.id %>_name");
+        var practiceCreatorNameCharacterSpan = $("#practice_creator_<%= pc.id %>_name_character_count");
+        var practiceCreatorNameCurrentLength = practiceCreatorInput.val().length;
+        var practiceCreatorNameCharacterCount = '(' + practiceCreatorNameCurrentLength + '/' + PRACTICE_CREATOR_NAME_MAX_LENGTH + ' characters)';
+
+        practiceCreatorNameCharacterSpan.text(practiceCreatorNameCharacterCount);
+
+        if (practiceCreatorNameCharacterCount >= PRACTICE_CREATOR_NAME_MAX_LENGTH) {
+            practiceCreatorNameCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+        }
+    <% end %>
+}
+
+function practiceCreatorNameCharacterCounter() {
+    $(document).on('input', '.practice-creator-name-input', function(e) {
+        var t = e.target;
+        var currentLength = $(t).val().length;
+
+        var practiceCreatorNameCharacterSpan = $(t).closest('div').find('.practice-creator-name-character-count');
+        var characterCounter = '(' + currentLength + '/' + PRACTICE_CREATOR_NAME_MAX_LENGTH + ' characters)';
+
+        practiceCreatorNameCharacterSpan.css('color', CHARACTER_COUNTER_VALID_COLOR);
+        practiceCreatorNameCharacterSpan.text(characterCounter);
+
+        if (currentLength >= PRACTICE_CREATOR_NAME_MAX_LENGTH) {
+            practiceCreatorNameCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+        }
+    });
+}
+
 function showFieldsOnPageLoad() {
     <% if @practice.practice_creators.empty? %>
         $('.add-practice-creator-link').click();
@@ -82,6 +116,8 @@ function executeOriginFunctions() {
     showFieldsOnPageLoad();
     getPracticeCreatorRoleCharacterCountOnPageLoad();
     practiceCreatorRoleCharacterCounter();
+    getPracticeCreatorNameCharacterCountOnPageLoad();
+    practiceCreatorNameCharacterCounter();
 }
 
 $(document).on('turbolinks:load', executeOriginFunctions);

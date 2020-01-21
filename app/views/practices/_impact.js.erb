@@ -63,6 +63,14 @@ function impactCaptionCharacterCounter() {
     });
 }
 
+function denyMultipleMainDisplayImageSelections() {
+    $(document).on('click', '.impact-radio', function(e) {
+        <%# $('.impact-radio').prop('checked', false); %>
+        $('.impact-radio.false').prop('checked', true);
+        $(e.target).prop('checked', true);    
+    });
+}
+
 function showFieldsOnPageLoad() {
     <% if @practice.impact_photos.empty? %>
         $('.add-impact-photo-link').click();
@@ -78,6 +86,7 @@ function executeImpactFunctions() {
     getImpactCaptionCharacterCountOnPageLoad();
     impactCaptionCharacterCounter();
     showFieldsOnPageLoad();
+    denyMultipleMainDisplayImageSelections();
 }
 
 $(document).on('turbolinks:load', executeImpactFunctions);

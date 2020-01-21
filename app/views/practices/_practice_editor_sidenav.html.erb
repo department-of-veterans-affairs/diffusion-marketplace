@@ -9,7 +9,7 @@
             </li>
             <li class="usa-sidenav__item">
                 <%= link_to practice_overview_path(@practice), class: 'width-full dm-tab scroll-to practice-editor-link text-middle display-inline-block editor-sidenav-link' do %>
-                    <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%= @practice.name && @practice.tagline && @practice.summary ? 'green-check' : '' %>"></i>Overview
+                    <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%= @practice.name && @practice.tagline && @practice.summary && @practice.practice_partners.any? ? 'green-check' : '' %>"></i>Overview
                 <% end %>
             </li>
             <li class="usa-sidenav__item">
@@ -24,7 +24,7 @@
             </li>
             <li class="usa-sidenav__item">
                 <%= link_to practice_documentation_path(@practice), class: 'width-full dm-tab scroll-to practice-editor-link text-middle display-inline-block editor-sidenav-link' do %>
-                    <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%= @practice.additional_documents.any? || @practice.publications.any? ? 'green-check' : '' %>"></i>Documentation
+                    <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 documentation-check"></i>Documentation
                 <% end %>
             </li>
             <li class="usa-sidenav__item">
@@ -34,7 +34,7 @@
             </li>
             <li class="usa-sidenav__item">
                 <%= link_to practice_complexity_path(@practice), class: 'width-full dm-tab scroll-to practice-editor-link text-middle display-inline-block editor-sidenav-link' do %>
-                    <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%= @practice.additional_staffs.any? ? 'green-check' : '' %>"></i>Complexity
+                    <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%= @practice.additional_staffs.any? && @practice.departments.any? && @practice.training_length ? 'green-check' : '' %>"></i>Complexity
                 <% end %>
             </li>
             <li class="usa-sidenav__item">
@@ -44,7 +44,7 @@
             </li>
             <li class="usa-sidenav__item">
                 <%= link_to practice_risk_and_mitigation_path(@practice), class: 'width-full dm-tab scroll-to practice-editor-link text-middle display-inline-block editor-sidenav-link' do %>
-                    <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%= @practice.risk_mitigations ? 'green-check' : '' %>"></i>Risk and mitigation
+                    <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 risk-miti-check"></i>Risk and mitigation
                 <% end %>
             </li>
             <li class="usa-sidenav__item">
@@ -65,7 +65,6 @@
             <%= link_to practice_publication_validation_path(@practice), class: 'usa-button width-full padding-y-2 margin-top-1', remote: true, method: :post do %>
                 Publish practice
             <% end %>
-            <%# <%= button_tag 'Publish your progress', class: 'usa-button width-full padding-y-2 margin-top-1', disabled: 'disabled' %>
         </div>
     </div>
 </div>

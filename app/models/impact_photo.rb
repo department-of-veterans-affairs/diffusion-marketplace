@@ -7,7 +7,6 @@ class ImpactPhoto < ApplicationRecord
   belongs_to :practice
 
   attr_accessor :delete_attachment
-  attr_accessor :save_as_main_display_image
 
   def attachment_s3_presigned_url(style = nil)
     object_presigned_url(attachment, style)

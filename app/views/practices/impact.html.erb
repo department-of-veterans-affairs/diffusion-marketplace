@@ -32,6 +32,7 @@
                                 <li class="practice-editor-impact-photo-li fields" data-id="<%= photo_id %>">
                                     <%= ip.hidden_field :position, class: 'impact-photo-position' %>
                                     <div class="impact-container padding-205 border border-width-1px border-base-lighter radius-sm margin-top-3">
+                                        
                                         <div class="grid-row">
                                             <%= ip.hidden_field :id %>
 
@@ -46,13 +47,16 @@
                                                 <% end %>
                                             </div>
                                             <div class="grid-col-6">
+                                                <div class="position-relative">
+                                                    <div class="fas fa-arrows-alt font-sans-lg position-arrows impact-arrows text-base arrows-tooltip">
+                                                        <span class="usa-tag tooltip-text">Drag and drop to change order</span>
+                                                    </div>
+                                                </div>
                                                 <div class="margin-bottom-205 margin-left-2 margin-top-1">
                                                     <p>• Guidelines for uploading a good image</p>
                                                     <p>• Guidelines for uploading a good image</p>
                                                     <p>• Guidelines for uploading a good image</p>
                                                 </div>
-                                                
-                                                <i class="fas fa-arrows-alt font-sans-lg position-arrows text-base"></i>
                     
                                                 <div class="grid-row margin-left-2 flex-align-start">
                                                     <% if attachment.present? %>
@@ -61,14 +65,19 @@
                                                         </div>
                                                     <% end %>
                                                     <div class="grid-col-fill">
-                                                        <div class="margin-bottom-1">
-                                                            <%= ip.file_field :attachment, class: 'hidden-upload' %>
-                                                            <%= ip.label :attachment, "#{attachment.present? ? 'Upload new photo' : 'Upload a photo'}", class: "usa-button #{ attachment.present? ? 'usa-button--unstyled' : 'padding-2' } add-impact-photo-label" %>
-                                                        </div>
                                                         <% if attachment.present? %>
+                                                            <div class="margin-bottom-1">
+                                                                <%= ip.file_field :attachment, class: 'hidden-upload' %>
+                                                                <%= ip.label :attachment, 'Upload new photo', class: "usa-button usa-button--unstyled add-impact-photo-label" %>
+                                                            </div>
                                                             <div>
                                                                 <%= ip.check_box :delete_attachment, { class: 'usa-checkbox__input practice-input delete-impact-attachment-input'}, 'true', 'false' %>
                                                                 <%= ip.label :delete_attachment, 'Remove photo', class: 'usa-checkbox__label display-inline-block' %>
+                                                            </div>
+                                                        <% else %>
+                                                            <div class="margin-bottom-1">
+                                                                <%= ip.file_field :attachment, required: true, class: 'hidden-upload hidden-impact-field' %>
+                                                                <%= ip.label :attachment, 'Upload a photo', class: "usa-button padding-2 add-impact-photo-label" %>
                                                             </div>
                                                         <% end %>
                                                     </div>
@@ -76,18 +85,13 @@
                                             </div>
 
                                             <div class='usa-radio margin-top-3'>
-                                                <%= ip.radio_button :save_as_main_display_image, nil, class: "usa-radio__input impact-radio impact_photo_#{photo_id}_radio_input", checked: "#{@practice.main_display_image == attachment.url ? 'checked' : false }" %>
-                                                <%= ip.label :save_as_main_display_image, 'Selected as thumbnail', class: 'usa-radio__label display-inline-block' %>
-                                                
+                                                <%= ip.radio_button('is_main_display_image', true, class: "usa-radio__input impact-radio impact_photo_#{photo_id}_radio_input", checked: "#{ip.object.is_main_display_image == true ? 'checked' : false }") %>
+                                                <%= ip.label 'is_main_display_image_true', 'Selected as thumbnail image', class: 'usa-radio__label display-inline-block' %>
+
+                                                <%= ip.radio_button('is_main_display_image', false, class: "usa-radio__input impact-radio impact_photo_#{photo_id}_radio_input false hidden-radio", checked: false) %>
+                                                <%= ip.label 'is_main_display_image_true', 'Selected as thumbnail image', class: 'usa-radio__label hidden-radio' %>
                                             </div>
-                                            <div>
-                                                <%= @practice.main_display_image %>
-                                                <%= @practice.impact_photos.each do |i| %>
-                                                    <% if i.attachment %>
-                                                        <p><%= i.attachment %></p>
-                                                    <% end %>
-                                                <% end %>
-                                            </div>
+                                
                                             <div class="grid-row width-full">
                                                 <div class="grid-col-11">
                                                     <%= ip.label :description, 'Caption:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Share how your practice is making a real-life impact.</span>&nbsp;<span class="text-base-light impact-photo-caption-character-count" id="impact_photo_<%= photo_id %>_caption_character_count">(0/300 characters)</span>
@@ -118,6 +122,11 @@
                                     <li class="practice-editor-video-file-li fields" data-id="<%= video_file_id %>">
                                         <%= vf.hidden_field :position, class: 'video-file-position' %>
                                         <div class="impact-container padding-205 border border-width-1px border-base-lighter radius-sm margin-top-3">
+                                            <div class="position-relative">
+                                                <div class="fas fa-arrows-alt font-sans-lg position-arrows impact-arrows text-base arrows-tooltip">
+                                                    <span class="usa-tag tooltip-text">Drag and drop to change order</span>
+                                                </div>
+                                            </div>
                                             <div class="grid-row">
                                                 <%= vf.hidden_field :id %>
 
@@ -131,13 +140,16 @@
                                                     <% end %>
                                                 </div>
                                                 <div class="grid-col-7">
-                                                    <div class="margin-left-2">
-                                                        <p>• Guidelines for uploading a good image</p>
-                                                        <p>• Guidelines for uploading a good image</p>
-                                                        <p>• Guidelines for uploading a good image</p>
+                                                    <div class="position-relative">
+                                                        <div class="fas fa-arrows-alt font-sans-lg position-arrows impact-arrows text-base arrows-tooltip">
+                                                            <span class="usa-tag tooltip-text">Drag and drop to change order</span>
+                                                        </div>
                                                     </div>
-
-                                                    <i class="fas fa-arrows-alt font-sans-lg position-arrows text-base"></i>
+                                                    <div class="margin-left-2">
+                                                        <p>• Guidelines for attaching video link</p>
+                                                        <p>• Guidelines for attaching video link</p>
+                                                        <p>• Guidelines for attaching video link</p>
+                                                    </div>
 
                                                     <div class="margin-left-2">
                                                         <%= vf.label :url, 'Link:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type the link to the video.</span>

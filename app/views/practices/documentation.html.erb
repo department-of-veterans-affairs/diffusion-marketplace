@@ -3,6 +3,7 @@
         <%= render partial: 'documentation', formats: [:js] %>
     <% end %>
     <%= javascript_include_tag 'practice_editor_documentation', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <%= render 'breadcrumbs' %>
@@ -33,37 +34,43 @@
 
                             <li class="practice-editor-additional-document-li fields" data-id="<%= ad_id %>">
                                 <%= ad.hidden_field :position, class: 'additional-document-position' %>
-                                <div>
-                                    <%= ad.label :title, 'Title:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type the title of the file.</span>
-                                    <%= ad.text_field :title, class: 'usa-input practice-input width-mobile-lg' %>
-                                </div>
-            
-                                <div class="margin-bottom-1">
-                                    <p class="text-bold margin-top-3 <%= attachment.present? ? 'margin-bottom-05' : '' %>" %>File:&nbsp;<span class="text-normal">choose a pdf or docx or word document (type of file info goes here)</span></p>
-
-                                    <% if attachment.present? %>
-                                        <i class="fas fa-file"></i>
-                                        <%= link_to ad.object.attachment_s3_presigned_url, target: :_blank, class: 'text-primary margin-top-1 margin-left-05' do %>
-                                            <%= ad.object.attachment_file_name %>
-                                        <% end %>
-                                    <% end %>
-                                    <div>
-                                        <%= ad.label :attachment, "#{attachment.present? ? 'Upload new file' : 'Upload file'}", class: 'usa-button usa-button--unstyled add-documentation-label' %>
-                                        <%= ad.file_field :attachment, class: 'hidden-upload' %>
-                                    </div>
-                                    <% if attachment.present? %>
-                                        <div class="margin-top-105">
-                                            <%= ad.check_box :delete_attachment, { class: 'usa-checkbox__input practice-input delete-attachment-input'}, 'true', 'false' %>
-                                            <%= ad.label :delete_attachment, 'Remove file', class: 'usa-checkbox__label display-inline-block text-secondary' %>
+                                <div class="documentation-container padding-205 border border-width-1px border-base-lighter radius-sm margin-top-3">
+                                    <div class="position-relative">
+                                        <div class="fas fa-arrows-alt font-sans-lg position-arrows documentation-arrows text-base arrows-tooltip">
+                                            <span class="usa-tag tooltip-text">Drag and drop to change order</span>
                                         </div>
-                                    <% end %>
+                                        <%= ad.label :title, 'Title:', class: 'usa-label add-doc-title text-bold display-inline-block' %>&nbsp;<span>Type the title of the file.</span>
+                                        <%= ad.text_field :title, required: true, class: 'usa-input practice-input width-tablet' %>
+                                    </div>
+                                    <div class="grid-row width-full">
+                                        <div class="grid-col-11">
+                                            <p class="text-bold margin-top-3 <%= attachment.present? ? 'margin-bottom-1' : '' %>" %>File:&nbsp;<span class="text-normal">choose a pdf or docx or word document (type of file info goes here)</span></p>
+
+                                            <% if attachment.present? %>
+                                                <i class="fas fa-file"></i>
+                                                <%= link_to ad.object.attachment_s3_presigned_url, target: :_blank, class: 'text-primary margin-top-1 margin-left-05' do %>
+                                                    <%= ad.object.attachment_file_name %>
+                                                <% end %>
+                                                <div>
+                                                    <%= ad.label :attachment, 'Upload new file', class: 'usa-button usa-button--unstyled add-documentation-label' %>
+                                                    <%= ad.file_field :attachment, class: 'hidden-upload' %>
+                                                </div>
+                                                <div class="margin-top-105">
+                                                    <%= ad.check_box :delete_attachment, { class: 'usa-checkbox__input practice-input delete-documentation-attachment-input'}, 'true', 'false' %>
+                                                    <%= ad.label :delete_attachment, 'Remove file', class: 'usa-checkbox__label display-inline-block text-secondary' %>
+                                                </div>
+                                            <% else %>
+                                                <div>
+                                                    <%= ad.label :attachment, 'Upload file', class: 'usa-button usa-button--unstyled add-documentation-label' %>
+                                                    <%= ad.file_field :attachment, required: true, class: 'hidden-upload hidden-documentation-field' %>
+                                                </div>
+                                            <% end %>
+                                        </div>
+                                        <div class="grid-col-fill flex-align-end documentation-trash-container">
+                                            <%= ad.link_to_remove '', class: "fas fa-trash-alt documentation-trash text-no-underline" %>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="grid-col-fill">
-                                    <%= ad.link_to_remove class: "fas fa-trash-alt documentation-trash text-no-underline clear-documentation-link" do %>
-                                            <span class="padding-left-1 font-sans-md text-normal text-no-underline">Clear</span>
-                                    <% end %>
-                                </div>
-                                <div class="height-2px border border-base-light flex-fill display-block"></div>
                             </li>
                         <% end %>
                         </ul>
@@ -81,20 +88,26 @@
 
                             <li class="practice-editor-publication-li fields" data-id="<%= pub_id %>">
                                 <%= pub.hidden_field :position, class: 'publication-position' %>
-                                <div>
-                                    <%= pub.label :title, 'Title:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type the title of the web link.</span>
-                                    <%= pub.text_field :title, class: 'usa-input practice-input width-mobile-lg' %>
+                                <div class="documentation-container padding-205 border border-width-1px border-base-lighter radius-sm margin-top-3">
+                                    <div class="position-relative">
+                                        <div class="position-relative">
+                                            <div class="fas fa-arrows-alt font-sans-lg position-arrows documentation-arrows text-base arrows-tooltip">
+                                                <span class="usa-tag tooltip-text">Drag and drop to change order</span>
+                                            </div>
+                                            <%= pub.label :title, 'Title:', class: 'usa-label pub-title text-bold display-inline-block' %>&nbsp;<span>Type the title of the web link.</span>
+                                            <%= pub.text_field :title, required: true, class: 'usa-input practice-input width-tablet' %>
+                                        </div>
+                                    </div>
+                                    <div class="grid-row">
+                                        <div class="margin-bottom-1">
+                                            <%= pub.label :link, 'Link:', class: 'usa-label pub-link text-bold display-inline-block' %>&nbsp;<span>Paste the full web address.</span>
+                                            <%= pub.text_field :link, required: true, class: 'usa-input practice-input width-tablet' %>
+                                        </div>
+                                        <div class="grid-col-fill flex-align-end documentation-trash-container">
+                                            <%= pub.link_to_remove '', class: "fas fa-trash-alt documentation-trash text-no-underline" %>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="margin-bottom-1">
-                                    <%= pub.label :link, 'Link:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Paste the full web address.</span>
-                                    <%= pub.text_field :link, class: 'usa-input practice-input width-tablet' %>
-                                </div>
-                                <div class="grid-col-fill">
-                                    <%= pub.link_to_remove class: "fas fa-trash-alt documentation-trash text-no-underline clear-documentation-link" do %>
-                                            <span class="padding-left-1 font-sans-md text-normal text-no-underline">Clear</span>
-                                    <% end %>
-                                </div>
-                                <div class="height-2px border border-base-light flex-fill display-block"></div>
                             </li>
                         <% end %>
                         </ul>

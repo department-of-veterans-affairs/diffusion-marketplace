@@ -1,0 +1,33 @@
+<%#<% provide :head_tags do %>
+<%#    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+<%#        <%= render partial: 'contact', formats: [:js] %>
+<%#    <% end %>
+<%#    <%= javascript_include_tag 'practice_editor_contact', 'data-turbolinks-track': 'reload' %>
+<%#    <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+<%#<% end %>
+
+<%= render 'breadcrumbs' %>
+<%= render 'practice_editor_sidenav' %>
+<div class="grid-container position-relative">
+    <div class="grid-row grid-gap">
+        <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+
+        <div id="checklist" class="desktop:grid-col-9 grid-col-12 p0">
+            <%= render "shared/messages" %>
+            <section class="usa-section padding-top-0 p2-bottom checklist">
+                <h1 class="font-sans-3xl">Checklist</h1>
+                <h2 class="text-normal margin-bottom-2">
+                    Upload steps that will help another team prepare for adopting your practice. 
+                    After a facility completes this checklist, you will be notified.
+                </h2>
+                <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
+                    <fieldset class="usa-fieldset">
+                        <legend class="usa-sr-only">Checklist</legend>
+
+                        <h2 class="font-sans-xl">Gain permissions</h2>
+                    </fieldset>
+                <% end %>
+            </section>
+        </div>
+    </div>
+</div>
