@@ -68,11 +68,12 @@ describe 'Breadcrumbs', type: :feature do
   end
 
   describe 'Practice Search flow' do
-    it 'should show proper breadcrumbs when a user searches for a practice and then visits that practice\'s page' do
+    fit 'should show proper breadcrumbs when a user searches for a practice and then visits that practice\'s page' do
       @user_practice.update(published: true, approved: true)
       visit '/'
-      fill_in('Search by practice name, facility name, clinical condition, or keyword', with: 'best')
+      fill_in('Search by practice name, facility name, clinical condition, or keyword', with: 'the best')
       click_button('homepage-search-button')
+      expect(page).to have_content('The Best')
       expect(page).to be_accessible.according_to :wcag2a, :section508
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
@@ -88,7 +89,7 @@ describe 'Breadcrumbs', type: :feature do
         # go back to search page
         click_on('Search')
       end
-      expect(page).to have_current_path('/search?query=best')
+      expect(page).to have_current_path('/search?query=the%20best')
 
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
@@ -103,6 +104,7 @@ describe 'Breadcrumbs', type: :feature do
       # make sure that bug doesn't show up
       fill_in('Search by practice name, facility name, clinical condition, or keyword', with: 'test')
       click_on('Search')
+      expect(page).to have_content('test')
       expect(page).to have_current_path('/search?query=test')
       expect(page).to have_field("search", with: "test")
     end
