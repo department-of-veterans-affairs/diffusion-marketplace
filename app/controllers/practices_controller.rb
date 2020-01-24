@@ -214,7 +214,7 @@ class PracticesController < ApplicationController
   end
 
   def planning_checklist
-    @facilities_data = facilities_json['features']
+    @facilities_data = facilities_json
   end
 
   # GET /practices/1/committed
@@ -381,8 +381,8 @@ class PracticesController < ApplicationController
                                      timelines_attributes: [:id, :description, :timeline, :milestone, :_destroy, :position],
                                      va_employees_attributes: [:id, :name, :role, :position, :_destroy, :avatar, :avatar_original_w, :avatar_original_h, :avatar_crop_x, :avatar_crop_y, :avatar_crop_w, :avatar_crop_h],
                                      additional_staffs_attributes: [:id, :_destroy, :title, :hours_per_week, :duration_in_weeks, :permanent],
-                                     additional_resources_attributes: [:id, :_destroy, :description], required_staff_trainings_attributes: [:id, :_destroy, :title, :description], practice_creators_attributes: [:id, :_destroy, :name, :role, :avatar, :position],
-                                     publications_attributes: [:id, :_destroy, :title, :link, :position], additional_documents_attributes: [:id, :_destroy, :attachment, :title, :position])
+                                     additional_resources_attributes: [:id, :_destroy, :name, :position, :description], required_staff_trainings_attributes: [:id, :_destroy, :title, :description], practice_creators_attributes: [:id, :_destroy, :name, :role, :avatar, :position],
+                                     publications_attributes: [:id, :_destroy, :title, :link, :position], additional_documents_attributes: [:id, :_destroy, :attachment, :title, :position], practice_permissions_attributes: [:id, :_destroy, :position, :name, :description])
   end
 
   def can_view_practice

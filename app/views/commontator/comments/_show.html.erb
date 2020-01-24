@@ -38,7 +38,7 @@
             '',
             commontator.edit_comment_path(comment),
             id: "commontator-comment-#{comment.id}-edit",
-            class: 'fas fa-edit fa-lg margin-left-105',
+            class: 'fas fa-edit fa-lg edit-comment-icon margin-left-105',
             remote: true
           ) if comment.can_be_edited_by?(user)
         %>

@@ -1,7 +1,6 @@
 var CHARACTER_COUNTER_VALID_COLOR =  '#a9aeb1';
 var CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
-var EMPLOYEE_ROLE_MAX_LENGTH = 50;
-EMPLOYEE_NAME_MAX_LENGTH = 50;
+var MAX_LENGTH = 50;
 
 function getEmployeeRoleCharacterCountOnPageLoad() {
 
@@ -9,11 +8,11 @@ function getEmployeeRoleCharacterCountOnPageLoad() {
         var employeeInput = $("#va_employee_<%= e.id %>_role");
         var employeeRoleCharacterSpan = $("#va_employee_<%= e.id %>_role_character_count");
         var employeeRoleCurrentLength = employeeInput.val().length;
-        var employeeRoleCharacterCount = '(' + employeeRoleCurrentLength + '/' + EMPLOYEE_ROLE_MAX_LENGTH + ' characters)';
+        var employeeRoleCharacterCount = '(' + employeeRoleCurrentLength + '/' + MAX_LENGTH + ' characters)';
 
         employeeRoleCharacterSpan.text(employeeRoleCharacterCount);
 
-        if (employeeRoleCurrentLength >= EMPLOYEE_ROLE_MAX_LENGTH) {
+        if (employeeRoleCurrentLength >= MAX_LENGTH) {
             employeeRoleCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
         }
     <% end %>
@@ -25,12 +24,12 @@ function employeeRoleCharacterCounter() {
         var currentLength = $(t).val().length;
 
         var employeeRoleCharacterSpan = $(t).closest('div').find('.va-employee-role-character-count');
-        var characterCounter = '(' + currentLength + '/' + EMPLOYEE_ROLE_MAX_LENGTH + ' characters)';
+        var characterCounter = '(' + currentLength + '/' + MAX_LENGTH + ' characters)';
 
         employeeRoleCharacterSpan.css('color', CHARACTER_COUNTER_VALID_COLOR);
         employeeRoleCharacterSpan.text(characterCounter);
 
-        if (currentLength >= EMPLOYEE_ROLE_MAX_LENGTH) {
+        if (currentLength >= MAX_LENGTH) {
             employeeRoleCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
         }
     });
@@ -42,11 +41,11 @@ function getEmployeeNameCharacterCountOnPageLoad() {
         var employeeInput = $("#va_employee_<%= e.id %>_name");
         var employeeNameCharacterSpan = $("#va_employee_<%= e.id %>_name_character_count");
         var employeeNameCurrentLength = employeeInput.val().length;
-        var employeeNameCharacterCount = '(' + employeeNameCurrentLength + '/' + EMPLOYEE_NAME_MAX_LENGTH + ' characters)';
+        var employeeNameCharacterCount = '(' + employeeNameCurrentLength + '/' + MAX_LENGTH + ' characters)';
 
         employeeNameCharacterSpan.text(employeeNameCharacterCount);
 
-        if (employeeNameCurrentLength >= EMPLOYEE_NAME_MAX_LENGTH) {
+        if (employeeNameCurrentLength >= MAX_LENGTH) {
             employeeNameCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
         }
     <% end %>
@@ -58,12 +57,12 @@ function employeeNameCharacterCounter() {
         var currentLength = $(t).val().length;
 
         var employeeNameCharacterSpan = $(t).closest('div').find('.va-employee-name-character-count');
-        var characterCounter = '(' + currentLength + '/' + EMPLOYEE_NAME_MAX_LENGTH + ' characters)';
+        var characterCounter = '(' + currentLength + '/' + MAX_LENGTH + ' characters)';
 
         employeeNameCharacterSpan.css('color', CHARACTER_COUNTER_VALID_COLOR);
         employeeNameCharacterSpan.text(characterCounter);
 
-        if (currentLength >= EMPLOYEE_NAME_MAX_LENGTH) {
+        if (currentLength >= MAX_LENGTH) {
             employeeNameCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
         }
     });

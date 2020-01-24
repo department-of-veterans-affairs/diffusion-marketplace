@@ -72,12 +72,12 @@
                                             </div>
                                             <div class="grid-col-10 practice-creator-file-col">
                                                 <% if pc_avatar.present? %>
-                                                    <div class="display-inline-block text-tbottom">
+                                                    <%# <div class="display-inline-block text-tbottom">
                                                         <button class="usa-button usa-button--outline padding-2 edit-origin-photo-button">Edit photo</button>
-                                                    </div>
+                                                    </div> %>
                                                     <div class="display-inline-block">
                                                         <div class="margin-bottom-1">
-                                                            <%= pc.label :avatar, 'Upload new photo', class: "usa-button usa-button--unstyled add-practice-creator-headshot-label" %>
+                                                            <%= pc.label :avatar, 'Upload photo', class: "usa-button usa-button--unstyled add-practice-creator-headshot-label" %>
                                                             <%= pc.file_field :avatar, class: 'hidden-upload' %>
                                                         </div>
                                                         <div>

@@ -155,16 +155,12 @@ h2 {
 //   margin-right: 11px;
 // }
 
-.fa-edit, .fa-trash-alt, .fa-trash-restore-alt {
+.edit-comment-icon, .fa-trash-alt, .fa-trash-restore-alt {
   color: #71767A;
   text-decoration: none;
 }
 
-.fa-edit {
-  text-decoration: none;
-}
-
-.fa-edit:hover, .fa-trash-alt:hover, .fa-trash-restore-alt:hover {
+.edit-comment-icon:hover, .fa-trash-alt:hover, .fa-trash-restore-alt:hover {
   color: #005EA2;
 }
 

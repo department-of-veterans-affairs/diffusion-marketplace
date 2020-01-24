@@ -1,3 +1,9 @@
+<% provide :head_tags do %>
+    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+        <%= render partial: 'edit_profile', formats: [:js] %>
+    <% end %>
+<% end %>
+
 <div class="x0-top">
   <section class="usa-section p2-top" style="min-height: calc(100vh - 286px)">
     <div class="grid-container">
@@ -7,12 +13,22 @@
         <div class="usa-layout-docs__main desktop:grid-col-9 usa-prose">
           <div class="login-header">
             <div class="login-header-overlay">
-              <h1 class="x0">Your Profile</h1>
-              <p class="fs1-125">People on the Diffusion Marketplace will get to know you with the information you enter below.</p>
+              <h1 class="x0">Edit Profile</h1>
+              <p class="font-sans-lg">People on the Diffusion Marketplace will get to know you with the information below.</p>
             </div>
           </div>
           <div class="login-body">
             <%= form_for(@user, url: edit_profile_path, html: {method: :post, class: 'x1-top'}) do |f| %>
+              <div class="actions margin-bottom-4 display-inline-block">
+                <%= f.submit "Save changes", class: 'usa-button usa-button-primary padding-2' %>
+              </div>
+              <div class="display-inline-block ">
+                <%= link_to "/users/#{@user.id}", class: 'cancel-edit-profile-link' do %>
+                  <button class="usa-button usa-button--base text-ink bg-base-lighter padding-2 cancel-edit-profile-button margin-right-0">
+                    Cancel
+                  </button>
+                <% end %>
+              </div>
               <% if @user.errors.any? %>
               <div class="usa-alert usa-alert--error" >
                 <div class="usa-alert__body">
@@ -29,77 +45,81 @@
               </div>
               <% end %>
               <div class="grid-container p0">
-                <div class="grid-row">
-                  <div class="grid-col-5">
+                <div class="grid-row margin-bottom-3">
+                  <div class="grid-col-4 margin-right-1">
                     <% if @user.avatar.present? && @user.avatar.exists? %>
                       <img src="<%= @user.avatar_s3_presigned_url %>" class="avatar-profile-photo"/>
                     <% else %>
-                      <i class="fas fa-user empty-user-avatar"></i>
+                      <div class="profile-avatar-container bg-base-lightest radius-md">
+                        <i class="fas fa-user empty-user-avatar text-base-lighter"></i>
+                      </div>
                     <% end %>
                   </div>
-                  <div class="grid-col-7">
+                  <div class="grid-col-fill">
                     <span>Photo</span><br/>
-                    <p class='dm-font-color-base-dark'>
+                    <p class='dm-font-color-base-dark margin-bottom-2 display-inline-block'>
                       Upload a photo of yourself so other users know what you look like. We recommend a medium-to-high quality picture of your face.
                     </p>
-                    <p>
-                      <a class='usa-button usa-button--outline' aria-controls='photo-file-upload' aria-expanded='false' id='toggle-photo' href='#'>Edit photo</a>
-                    </p>
-                  </div>
-                </div>
-                <div class=" grid-row usa-accordion__content p0 x1-bottom" id='photo-file-upload' aria-hidden="true">
-                  <div class="grid-col-5">
-                  </div>
-                  <div class='grid-col-7'>
-                    <div class='x1-bottom'>
-                      <%= f.label :avatar, 'Photo' %>
-                      <%= f.file_field :avatar %>
-                      <br />
+                    <div class="margin-bottom-1 display-inline-block">
+                        <%= f.label :avatar, 'Upload photo', class: "usa-button usa-button--outline padding-2" %>
+                        <%= f.file_field :avatar, class: 'hidden-upload' %>
                     </div>
-                    <% if @user.avatar.present? && @user.avatar.exists? %>
-                      <%= link_to "Remove photo", edit_profile_photo_path, data: { confirm: "Are you sure?" }, method: :delete, class: 'usa-button usa-button--secondary' %>
-                    <% end %>
+                    <div class="display-inline-block">
+                      <% if @user.avatar.present? && @user.avatar.exists? %>
+                        <%= link_to "Remove photo", edit_profile_photo_path, data: { confirm: "Are you sure?" }, method: :delete, class: 'usa-button usa-button--secondary usa-button--unstyled text-secondary delete-profile-avatar' %>
+                      <% end %>
+                    </div>
+                  </div>
+                    <%#<p>
+                      <a class='usa-button usa-button--outline' aria-controls='photo-file-upload' aria-expanded='false' id='toggle-photo' href='#'>Edit photo</a>
+                    </p>%>
+                </div>
+              </div>
+            </div>
+
+              <div class="usa-form edit-profile-form">
+                <div class="grid-row width-full">
+                  <div class="field grid-col-9">
+                    <%= f.label :first_name, class: 'x1-top x1-bottom' %><br/>
+                    <%= f.text_field :first_name, autofocus: true, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
+                  </div>
+                </div>
+
+                <div class="grid-row width-full">
+                  <div class="field margin-top-3 grid-col-9">
+                    <%= f.label :last_name, class: 'x0 x1-top' %><br/>
+                    <%= f.text_field :last_name, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
+                  </div>
+                </div>
+
+                <div class="grid-row width-full">
+                  <div class="field margin-top-3 grid-col-9">
+                    <%= f.label :location, 'Facility', class: 'x0 x1-top' %><br/>
+                    <%= f.text_field :location, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
+                  </div>
+                </div>
+
+                <div class="grid-row width-full">
+                  <div class="field margin-top-3 grid-col-9">
+                    <%= f.label :phone_number, 'Work phone number', class: 'x0 x1-top' %><br/>
+                    <%= f.phone_field :phone_number, autofocus: true, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
+                  </div>
+                </div>
+
+                <div class="grid-row width-full">
+                  <div class="field margin-top-3 grid-col-9">
+                    <%= f.label :job_title, class: 'x0 x1-top' %><br/>
+                    <%= f.text_field :job_title, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
                   </div>
                 </div>
               </div>
-
-              <div class="usa-form">
-                <div class="field">
-                  <%= f.label :first_name, class: 'x1-top x1-bottom' %><br/>
-                  <%= f.text_field :first_name, autofocus: true, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
-                </div>
-
-                <div class="field x1-top">
-                  <%= f.label :last_name, class: 'x0 x1-top' %><br/>
-                  <%= f.text_field :last_name, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
-                </div>
-
-                <div class="field x1-top">
-                  <%= f.label :location, 'Facility', class: 'x0 x1-top' %><br/>
-                  <%= f.text_field :location, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
-                </div>
-
-                <div class="field x1-top">
-                  <%= f.label :phone_number, 'Work phone number', class: 'x0 x1-top' %><br/>
-                  <%= f.phone_field :phone_number, autofocus: true, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
-                </div>
-
-                <div class="field x1-top">
-                  <%= f.label :job_title, class: 'x0 x1-top' %><br/>
-                  <%= f.text_field :job_title, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
-                </div>
-              </div>
-              <div class="field x1-top">
+              <div class="field margin-top-3 grid-col-9">
                 <%= f.label :bio, class: 'x0 x1-top' do %>
-                  <span>Biography</span> <span class='dm-font-color-steel-grey'>(250 character limit)</span>
-                  <p class='maxw-30rem dm-font-color-base-dark'>Instructions about how to write bio/description, wordcount, what type of information to include</p>
+                  <span>Bio</span>&nbsp;<span class="text-base-light profile-bio-character-count" id="user_<%= @user.id %>_profile_bio_character_count">(0/50 characters)</span>
+                  <p>Tell other users about yourself and your professional background.</p>
                 <% end %>
-                <%= f.text_area :bio, class: 'usa-input height-200px' %>
+                <%= f.text_area :bio, class: 'usa-input height-200px profile-bio', id: 'profile_bio_textarea' %>
                 <br />
-              </div>
-
-              <div class="actions">
-                <%= f.submit "Update", class: 'usa-button usa-button-primary' %>
               </div>
             <% end %>
           </div>
@@ -107,11 +127,16 @@
       </div>
     </div>
   </section>
+  <div class="grid-container">
+    <div class="margin-bottom-105">
+        <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
+    </div>
+  </div>
 </div>
 
-<script type="text/javascript"> 
+<%# <script type="text/javascript"> 
   document.getElementById("toggle-photo").onclick = function(event) {
     event.preventDefault();
     document.getElementById("photo-file-upload").setAttribute("aria-hidden", 'false');
   } 
-</script> 
+</script>  %>

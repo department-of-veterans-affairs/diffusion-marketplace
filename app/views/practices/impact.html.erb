@@ -59,8 +59,8 @@
                                                 </div>
                     
                                                 <div class="grid-row margin-left-2 flex-align-start">
-                                                    <% if attachment.present? %>
-                                                        <div class="grid-col-5">
+                                                    <%#<% if attachment.present? %>
+                                                    <%#    <div class="grid-col-5">
                                                             <button class="usa-button usa-button--outline padding-2 edit-impact-photo-button">Edit photo</button>
                                                         </div>
                                                     <% end %>
@@ -68,7 +68,7 @@
                                                         <% if attachment.present? %>
                                                             <div class="margin-bottom-1">
                                                                 <%= ip.file_field :attachment, class: 'hidden-upload' %>
-                                                                <%= ip.label :attachment, 'Upload new photo', class: "usa-button usa-button--unstyled add-impact-photo-label" %>
+                                                                <%= ip.label :attachment, 'Upload photo', class: "usa-button usa-button--unstyled add-impact-photo-label" %>
                                                             </div>
                                                             <div>
                                                                 <%= ip.check_box :delete_attachment, { class: 'usa-checkbox__input practice-input delete-impact-attachment-input'}, 'true', 'false' %>
@@ -77,7 +77,7 @@
                                                         <% else %>
                                                             <div class="margin-bottom-1">
                                                                 <%= ip.file_field :attachment, required: true, class: 'hidden-upload hidden-impact-field' %>
-                                                                <%= ip.label :attachment, 'Upload a photo', class: "usa-button padding-2 add-impact-photo-label" %>
+                                                                <%= ip.label :attachment, 'Upload photo', class: "usa-button padding-2 add-impact-photo-label" %>
                                                             </div>
                                                         <% end %>
                                                     </div>

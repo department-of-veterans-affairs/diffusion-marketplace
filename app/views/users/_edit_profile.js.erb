@@ -1,0 +1,40 @@
+var CHARACTER_COUNTER_VALID_COLOR =  '#a9aeb1';
+var CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
+var MAX_LENGTH = 500;
+
+function getBioCharacterCountOnPageLoad() {
+    var bioTextarea = $("#profile_bio_textarea");
+    var bioCharacterSpan = $("#user_<%= @user.id %>_profile_bio_character_count");
+    var bioCurrentLength = bioTextarea.val().length;
+    var bioCharacterCounter = '(' + bioCurrentLength + '/' + MAX_LENGTH + ' characters)';
+
+    bioCharacterSpan.text(bioCharacterCounter);
+
+    if (bioCurrentLength >= MAX_LENGTH) {
+        bioCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+    }
+}
+
+function bioCharacterCounter() {
+    $(document).on('input', '.profile-bio', function(e) {
+        var t = e.target;
+        var currentLength = $(t).val().length;
+
+        var bioCharacterSpan = $(t).closest('div').find('.profile-bio-character-count');
+        var characterCounter = '(' + currentLength + '/' + MAX_LENGTH + ' characters)';
+
+        bioCharacterSpan.css('color', CHARACTER_COUNTER_VALID_COLOR);
+        bioCharacterSpan.text(characterCounter);
+
+        if (currentLength >= MAX_LENGTH) {
+            bioCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+        }
+    });
+}
+
+function executeProfileFunctions() {
+    getBioCharacterCountOnPageLoad();
+    bioCharacterCounter();
+}
+
+$(document).on('turbolinks:load', executeProfileFunctions);

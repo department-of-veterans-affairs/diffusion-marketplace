@@ -110,7 +110,7 @@ class Practice < ApplicationRecord
   has_many :practice_managements, through: :practice_management_practices
   has_many :practice_partner_practices, dependent: :destroy
   has_many :practice_partners, through: :practice_partner_practices
-  has_many :practice_permissions, dependent: :destroy
+  has_many :practice_permissions, -> {order(position: :asc)}, dependent: :destroy
   has_many :publications, -> {order(position: :asc)}, dependent: :destroy
   has_many :publication_files, dependent: :destroy
   has_many :required_staff_trainings, dependent: :destroy
@@ -141,6 +141,7 @@ class Practice < ApplicationRecord
   accepts_nested_attributes_for :additional_resources, allow_destroy: true
   accepts_nested_attributes_for :required_staff_trainings, allow_destroy: true
   accepts_nested_attributes_for :practice_creators, allow_destroy: true
+  accepts_nested_attributes_for :practice_permissions, allow_destroy: true
   accepts_nested_attributes_for :additional_documents, allow_destroy: true
   accepts_nested_attributes_for :publications, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? }
 

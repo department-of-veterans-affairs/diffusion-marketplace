@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_13_195954) do
+ActiveRecord::Schema.define(version: 2020_01_21_231329) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 2020_01_13_195954) do
     t.bigint "practice_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
     t.index ["practice_id"], name: "index_additional_resources_on_practice_id"
   end
 
@@ -546,6 +547,7 @@ ActiveRecord::Schema.define(version: 2020_01_13_195954) do
     t.bigint "practice_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
     t.index ["practice_id"], name: "index_practice_permissions_on_practice_id"
   end
 
