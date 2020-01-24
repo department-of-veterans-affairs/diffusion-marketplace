@@ -68,7 +68,7 @@ describe 'Breadcrumbs', type: :feature do
   end
 
   describe 'Practice Search flow' do
-    fit 'should show proper breadcrumbs when a user searches for a practice and then visits that practice\'s page' do
+    it 'should show proper breadcrumbs when a user searches for a practice and then visits that practice\'s page' do
       @user_practice.update(published: true, approved: true)
       visit '/'
       fill_in('Search by practice name, facility name, clinical condition, or keyword', with: 'the best')
