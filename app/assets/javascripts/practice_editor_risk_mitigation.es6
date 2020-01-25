@@ -54,7 +54,6 @@
     }
 
     function dragAndDropRiskMitigationListItems() {
-        sortable('.sortable');
         sortable('#sortable_risk_mitigations', {
             forcePlaceholderSize: true,
             placeholder: '<div></div>'

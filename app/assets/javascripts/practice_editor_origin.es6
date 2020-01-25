@@ -9,7 +9,6 @@
     }
 
     function dragAndDropOriginListItems() {
-        sortable('.sortable');
         sortable('#sortable_origins', {
             forcePlaceholderSize: true,
             placeholder: '<div></div>'

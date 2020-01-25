@@ -16,7 +16,6 @@
     }
 
     function dragAndDropAdditionalResourceListItems() {
-        sortable('.sortable');
         sortable('#sortable_resources', {
             forcePlaceholderSize: true,
             placeholder: '<div></div>'
@@ -42,7 +41,6 @@
     }
 
     function dragAndDropPermissionListItems() {
-        sortable('.sortable');
         sortable('#sortable_permissions', {
             forcePlaceholderSize: true,
             placeholder: '<div></div>'

@@ -16,7 +16,6 @@
     }
 
     function dragAndDropAdditionalDocumentListItems() {
-        sortable('.sortable');
         sortable('#sortable_additional_documents', {
             forcePlaceholderSize: true,
             placeholder: '<div></div>'
@@ -42,7 +41,6 @@
     }
 
     function dragAndDropPublicationListItems() {
-        sortable('.sortable');
         sortable('#sortable_publications', {
             forcePlaceholderSize: true,
             placeholder: '<div></div>'

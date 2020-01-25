@@ -9,7 +9,6 @@
     }
 
     function dragAndDropContactListItems() {
-        sortable('.sortable');
         sortable('#sortable_contacts', {
             forcePlaceholderSize: true,
             placeholder: '<div></div>'

@@ -22,14 +22,14 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         it 'should allow the user to update the data on the page' do
-            fill_in('.practice-editor-name-input', with: 'A super practice')
-            fill_in('.practice-editor-tagline-textarea', with: 'Super duper')
-            select('Alabama', :from => '#editor_state_select')
-            select('Birmingham VA Medical Center', :from => '#editor_facility_select')
+            fill_in('practice-editor-name-input', with: 'A super practice')
+            fill_in('practice-editor-tagline-textarea', with: 'Super duper')
+            select('Alabama', :from => 'editor_state_select')
+            select('Birmingham VA Medical Center', :from => 'editor_facility_select')
             fill_in('practice-editor-summary-textarea', with: 'This is the most super practice ever made')
-            check('#practice_partner_1')
+            check('practice_partner_1')
             click_button('Save your progress')
-            expect()
+            expect(page).to have_field('practice-editor-name-input', with: 'A super practice')
         end
     end
 end

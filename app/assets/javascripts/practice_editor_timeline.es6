@@ -3,13 +3,14 @@
 
     function removeBulletPointFromNewLi() {
         $document.arrive('.practice-editor-timeline-li', (newElem) => {
+            sortable('#sortable_timelines')
+                
             $(newElem).css('list-style', 'none')
             $document.unbindArrive('.practice-editor-timeline-li', newElem);
         });
     }
 
     function dragAndDropTimelineListItems() {
-        sortable('.sortable');
         sortable('#sortable_timelines', {
             forcePlaceholderSize: true,
             placeholder: '<div></div>'

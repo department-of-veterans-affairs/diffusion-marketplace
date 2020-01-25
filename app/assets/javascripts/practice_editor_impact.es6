@@ -16,7 +16,6 @@
     }
 
     function dragAndDropImpactPhotoListItems() {
-        sortable('.sortable');
         sortable('#sortable_impact_photos', {
             forcePlaceholderSize: true,
             placeholder: '<div></div>'
@@ -42,7 +41,6 @@
     }
 
     function dragAndDropVideoFileListItems() {
-        sortable('.sortable');
         sortable('#sortable_video_files', {
             forcePlaceholderSize: true,
             placeholder: '<div></div>'
