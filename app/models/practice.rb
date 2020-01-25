@@ -77,7 +77,7 @@ class Practice < ApplicationRecord
   belongs_to :user, optional: true
 
   has_many :additional_documents, -> {order(position: :asc)}, dependent: :destroy
-  has_many :additional_resources, dependent: :destroy
+  has_many :additional_resources, -> {order(position: :asc)}, dependent: :destroy
   has_many :additional_staffs, dependent: :destroy
   has_many :ancillary_service_practices, dependent: :destroy
   has_many :ancillary_services, through: :ancillary_service_practices

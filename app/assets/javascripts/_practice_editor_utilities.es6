@@ -12,9 +12,15 @@ $(document).arrive('.fields', (newElem) => {
                                named "attributeName". There is a few other properties in a record
                                but I'll let you work it out yourself.
                                **/
-                              if (mutation[0].target.style.display === 'none' && mutation[0].target.draggable != true) {
-                                  $(newElem).remove();
+                              if (mutation[0].target.style.display === 'none' && !mutation[0].target.classList.value.includes('sortable-dragging')) {
+                                  let $parent = $(newElem).parent();
+                                  $(newElem).appendTo('ul.trash-can');
+                                  $(newElem).find('input').prop('required', false);
                                   $(document).unbindArrive('.fields', newElem);
+                                  $parent.children('li').map(function(index){
+                                      $(this).find( 'input[class*="position"]' ).val(index + 1);
+                                      return "resources[]=" + $(this).data("id");
+                                  }).get().join("&");
                                   observer.disconnect();
                               }
                             }),
@@ -27,3 +33,11 @@ $(document).arrive('.fields', (newElem) => {
                           // later, you can stop observing
                           // observer.disconnect();
 });
+
+function initSortable(ulId) {
+    sortable(ulId, {
+        forcePlaceholderSize: true,
+        placeholder: '<div></div>',
+        handle: '.position-arrows'
+    });
+}

@@ -137,12 +137,16 @@ function permissionDescriptionCharacterCounter() {
 function showAdditionalResourcesFieldsOnPageLoad() {
     <% if @practice.additional_resources.empty? %>
         $('.add-resource-link').click();
+        $('.practice-editor-resource-li ').appendTo('#sortable_resources');
+        initSortable('#sortable_resources');
     <% end %>
 }
 
 function showPermissionsFieldsOnPageLoad() {
     <% if @practice.practice_permissions.empty? %>
         $('.add-permission-link').click();
+        $('.practice-editor-permission-li ').appendTo('#sortable_permissions');
+        initSortable('#sortable_permissions');
     <% end %>
 }
 

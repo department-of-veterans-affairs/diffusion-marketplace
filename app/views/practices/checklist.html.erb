@@ -17,7 +17,7 @@
             <section class="usa-section padding-top-0 p2-bottom checklist">
                 <h1 class="font-sans-3xl">Checklist</h1>
                 <h2 class="text-normal margin-bottom-2">
-                    Upload steps that will help another team prepare for adopting your practice. 
+                    Upload steps that will help another team prepare for adopting your practice.
                     After a facility completes this checklist, you will be notified.
                 </h2>
                 <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
@@ -60,9 +60,9 @@
                                 </li>
                             <% end %>
                         </ul>
-                        <%= f.link_to_add :practice_permissions, class: 'fas fa-plus text-no-underline add-permission-link' do %>
-                            <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add another</span>
-                        <% end %>
+                      <%= f.link_to_add :practice_permissions, class: 'fas fa-plus text-no-underline add-permission-link' do %>
+                        <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add another</span>
+                      <% end %>
 
                         <h2 class="font-sans-xl">Gather resources</h2>
                         <ul class="practice-editor-resource-ul" id="sortable_resources">
@@ -100,9 +100,11 @@
                                 </li>
                             <% end %>
                         </ul>
-                        <%= f.link_to_add :additional_resources, class: 'fas fa-plus text-no-underline add-resource-link' do %>
-                            <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add another</span>
-                        <% end %>
+                      <%= f.link_to_add :additional_resources, class: 'fas fa-plus text-no-underline add-resource-link' do %>
+                        <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add another</span>
+                      <% end %>
+                      <ul class="trash-can display-none"></ul>
+
                     </fieldset>
                 <% end %>
                 <div class="grid-row margin-bottom-8">
