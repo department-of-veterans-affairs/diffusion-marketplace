@@ -5,7 +5,7 @@ var MAX_LENGTH = 50;
 function getResourceNameCharacterCountOnPageLoad() {
 
     <% @practice.additional_resources.each do |ar| %>
-        var resourceInput = $("#resource_<%= ar.id %>_name");
+        var resourceInput = $("input[counter-id='resource_<%= ar.id %>_name']");
         var resourceNameCharacterSpan = $("#resource_<%= ar.id %>_name_character_count");
         var resourceNameCurrentLength = resourceInput.val().length;
         var resourceNameCharacterCount = '(' + resourceNameCurrentLength + '/' + MAX_LENGTH + ' characters)';
@@ -38,7 +38,7 @@ function resourceNameCharacterCounter() {
 function getResourceDescriptionCharacterCountOnPageLoad() {
 
     <% @practice.additional_resources.each do |ar| %>
-        var resourceInput = $("#resource_<%= ar.id %>_description");
+        var resourceInput = $("input[counter-id='resource_<%= ar.id %>_description']");
         var resourceDescriptionCharacterSpan = $("#resource_<%= ar.id %>_description_character_count");
         var resourceDescriptionCurrentLength = resourceInput.val().length;
         var resourceDescriptionCharacterCount = '(' + resourceDescriptionCurrentLength + '/' + MAX_LENGTH + ' characters)';
@@ -71,7 +71,7 @@ function resourceDescriptionCharacterCounter() {
 function getPermissionNameCharacterCountOnPageLoad() {
 
     <% @practice.practice_permissions.each do |pp| %>
-        var permissionInput = $("#permission_<%= pp.id %>_name");
+        var permissionInput = $("input[counter-id='permission_<%= pp.id %>_name']");
         var permissionNameCharacterSpan = $("#permission_<%= pp.id %>_name_character_count");
         var permissionNameCurrentLength = permissionInput.val().length;
         var permissionNameCharacterCount = '(' + permissionNameCurrentLength + '/' + MAX_LENGTH + ' characters)';
@@ -104,7 +104,7 @@ function permissionNameCharacterCounter() {
 function getPermissionDescriptionCharacterCountOnPageLoad() {
 
     <% @practice.practice_permissions.each do |pp| %>
-        var permissionInput = $("#permission_<%= pp.id %>_description");
+        var permissionInput = $("input[counter-id='permission_<%= pp.id %>_description']");
         var permissionDescriptionCharacterSpan = $("#permission_<%= pp.id %>_description_character_count");
         var permissionDescriptionCurrentLength = permissionInput.val().length;
         var permissionDescriptionCharacterCount = '(' + permissionDescriptionCurrentLength + '/' + MAX_LENGTH + ' characters)';

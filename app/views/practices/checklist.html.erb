@@ -25,7 +25,7 @@
                         <legend class="usa-sr-only">Checklist</legend>
 
                         <h2 class="font-sans-xl">Gain permissions</h2>
-                        <ul class="practice-editor-permission-ul" id="sortable_permissions">
+                        <ul class="practice-editor-permission-ul" id="sortable_permissions" role="listbox" aria-label="Practice editor permission list">
                             <%= f.fields_for :practice_permissions, wrapper: false do |pp| %>
                                 <%
                                     permission_id = pp.object.id
@@ -42,18 +42,18 @@
                                         </div>
 
                                         <div>
-                                            <%= pp.label :name, 'Step:', class: 'usa-label text-bold display-inline-block permission-name' %>&nbsp;<span>Type the type of permissions required for this practice.</span>&nbsp;<span class="text-base-light permission-name-character-count" id="permission_<%= permission_id %>_name_character_count">(0/50 characters)</span>
-                                            <%= pp.text_field :name, required: true, class: 'usa-input practice-input width-tablet permission-name-input', id: "permission_#{permission_id}_name" %>
+                                            <%= pp.label :name, 'Step:', class: 'usa-label text-bold display-inline-block permission-name' %>&nbsp;<span>Type the type of permissions required for this practice.</span>&nbsp;<span class="text-base-light permission-name-character-count" <% if permission_id.present? %>id="permission_<%= permission_id %>_name_character_count"<% end %>>(0/50 characters)</span>
+                                            <%= pp.text_field :name, required: true, class: 'usa-input practice-input width-tablet permission-name-input', 'counter-id': "permission_#{permission_id}_name" %>
                                         </div>
 
                                         <div class="grid-row width-full">
                                             <div class="grid-col-11">
-                                                <%= pp.label :description, 'Description (optional):', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type any details about the permissions here.</span>&nbsp;<span class="text-base-light permission-description-character-count" id="permission_<%= permission_id %>_description_character_count">(0/50 characters)</span>
-                                                <%= pp.text_field :description, class: 'usa-input practice-input width-tablet permission-description', id: "permission_#{permission_id}_description" %>
+                                                <%= pp.label :description, 'Description (optional):', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type any details about the permissions here.</span>&nbsp;<span class="text-base-light permission-description-character-count" <% if permission_id.present? %>id="permission_<%= permission_id %>_description_character_count"<% end %>>(0/50 characters)</span>
+                                                <%= pp.text_field :description, class: 'usa-input practice-input width-tablet permission-description', 'counter-id': "permission_#{permission_id}_description" %>
                                             </div>
 
                                             <div class="grid-col-fill flex-align-end permission-trash-container">
-                                                <%= pp.link_to_remove '', class: "fas fa-trash-alt permission-trash text-no-underline" %>
+                                                <%= pp.link_to_remove '', class: "fas fa-trash-alt permission-trash text-no-underline", 'aria-label': 'Remove' %>
                                             </div>
                                         </div>
                                     </div>
@@ -65,7 +65,7 @@
                       <% end %>
 
                         <h2 class="font-sans-xl">Gather resources</h2>
-                        <ul class="practice-editor-resource-ul" id="sortable_resources">
+                        <ul class="practice-editor-resource-ul" id="sortable_resources" role="listbox" aria-label="Practice editor resource list">
                             <%= f.fields_for :additional_resources, wrapper: false do |ar| %>
                                 <%
                                     resource_id = ar.object.id
@@ -82,18 +82,18 @@
                                         </div>
 
                                         <div>
-                                            <%= ar.label :name, 'Step:', class: 'usa-label text-bold display-inline-block resource-name' %>&nbsp;<span>Separately list the resources required.</span>&nbsp;<span class="text-base-light resource-name-character-count" id="resource_<%= resource_id %>_name_character_count">(0/50 characters)</span>
-                                            <%= ar.text_field :name, required: true, class: 'usa-input practice-input width-tablet resource-name-input', id: "resource_#{resource_id}_name" %>
+                                            <%= ar.label :name, 'Step:', class: 'usa-label text-bold display-inline-block resource-name' %>&nbsp;<span>Separately list the resources required.</span>&nbsp;<span class="text-base-light resource-name-character-count" <% if resource_id.present? %>id="resource_<%= resource_id %>_name_character_count"<% end %>>(0/50 characters)</span>
+                                            <%= ar.text_field :name, required: true, class: 'usa-input practice-input width-tablet resource-name-input', 'counter-id': "resource_#{resource_id}_name" %>
                                         </div>
 
                                         <div class="grid-row width-full">
                                             <div class="grid-col-11">
-                                                <%= ar.label :description, 'Description (optional):', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type any details about the resource here.</span>&nbsp;<span class="text-base-light resource-description-character-count" id="resource_<%= resource_id %>_description_character_count">(0/50 characters)</span>
-                                                <%= ar.text_field :description, class: 'usa-input practice-input width-tablet resource-description', id: "resource_#{resource_id}_description" %>
+                                                <%= ar.label :description, 'Description (optional):', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type any details about the resource here.</span>&nbsp;<span class="text-base-light resource-description-character-count" <% if resource_id.present? %>id="resource_<%= resource_id %>_description_character_count"<% end %>>(0/50 characters)</span>
+                                                <%= ar.text_field :description, class: 'usa-input practice-input width-tablet resource-description', 'counter-id': "resource_#{resource_id}_description" %>
                                             </div>
 
                                             <div class="grid-col-fill flex-align-end resource-trash-container">
-                                                <%= ar.link_to_remove '', class: "fas fa-trash-alt resource-trash text-no-underline" %>
+                                                <%= ar.link_to_remove '', class: "fas fa-trash-alt resource-trash text-no-underline", 'aria-label': 'Remove' %>
                                             </div>
                                         </div>
                                     </div>
@@ -108,13 +108,11 @@
                     </fieldset>
                 <% end %>
                 <div class="grid-row margin-bottom-8">
-                    <%= link_to practice_contact_path(@practice), class: 'editor-back-to-link margin-right-1' do %>
-                        <button class="usa-button usa-button--outline padding-2 editor-back-to-button">
-                        <i class="fas fa-chevron-left fa-sm">&nbsp;&nbsp;</i>Back
-                        </button>
+                    <%= link_to practice_contact_path(@practice), class: 'editor-back-to-link margin-right-1 usa-button usa-button--outline padding-2' do %>
+                        <i class="fas fa-chevron-left fa-sm text-no-underline margin-right-1"></i>Back
                     <% end %>
-                    <%= link_to practice_publication_validation_path(@practice), remote: true, method: :post do %>
-                        <button class="usa-button padding-2 editor-continue-button">Publish</button>
+                    <%= link_to practice_publication_validation_path(@practice), class: 'usa-button padding-2 editor-continue-link', remote: true, method: :post do %>
+                        Publish
                     <% end %>
                 </div>
             </section>
