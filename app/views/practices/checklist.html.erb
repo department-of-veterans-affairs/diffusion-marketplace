@@ -17,7 +17,7 @@
             <section class="usa-section padding-top-0 p2-bottom checklist">
                 <h1 class="font-sans-3xl">Checklist</h1>
                 <h2 class="text-normal margin-bottom-2">
-                    Upload steps that will help another team prepare for adopting your practice. 
+                    Upload steps that will help another team prepare for adopting your practice.
                     After a facility completes this checklist, you will be notified.
                 </h2>
                 <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
@@ -60,9 +60,9 @@
                                 </li>
                             <% end %>
                         </ul>
-                        <%= f.link_to_add :practice_permissions, class: 'fas fa-plus text-no-underline add-permission-link' do %>
-                            <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add another</span>
-                        <% end %>
+                      <%= f.link_to_add :practice_permissions, class: 'fas fa-plus text-no-underline add-permission-link' do %>
+                        <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add another</span>
+                      <% end %>
 
                         <h2 class="font-sans-xl">Gather resources</h2>
                         <ul class="practice-editor-resource-ul" id="sortable_resources">
@@ -100,19 +100,19 @@
                                 </li>
                             <% end %>
                         </ul>
-                        <%= f.link_to_add :additional_resources, class: 'fas fa-plus text-no-underline add-resource-link' do %>
-                            <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add another</span>
-                        <% end %>
+                      <%= f.link_to_add :additional_resources, class: 'fas fa-plus text-no-underline add-resource-link' do %>
+                        <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add another</span>
+                      <% end %>
+                      <ul class="trash-can display-none"></ul>
+
                     </fieldset>
                 <% end %>
                 <div class="grid-row margin-bottom-8">
-                    <%= link_to practice_contact_path(@practice), class: 'editor-back-to-link margin-right-1' do %>
-                        <button class="usa-button usa-button--outline padding-2 editor-back-to-button">
-                        <i class="fas fa-chevron-left fa-sm">&nbsp;&nbsp;</i>Back
-                        </button>
+                    <%= link_to practice_contact_path(@practice), class: 'usa-button usa-button--outline editor-back-to-link margin-right-1 padding-2 margin-bottom-5 text-no-underline' do %>
+                        <i class="fas fa-chevron-left fa-sm text-no-underline margin-right-1"></i>Back
                     <% end %>
-                    <%= link_to practice_publication_validation_path(@practice), remote: true, method: :post do %>
-                        <button class="usa-button padding-2 editor-continue-button">Publish</button>
+                    <%= link_to practice_publication_validation_path(@practice), remote: true, method: :post, class: 'usa-button padding-2 editor-continue-link margin-right-1 margin-bottom-5' do %>
+                        Publish
                     <% end %>
                 </div>
             </section>

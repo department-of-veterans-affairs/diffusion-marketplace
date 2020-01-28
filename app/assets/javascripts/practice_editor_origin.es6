@@ -3,16 +3,15 @@
 
     function removeBulletPointFromNewLi() {
         $document.arrive('.practice-editor-origin-li', (newElem) => {
-            $(newElem).css('list-style', 'none')
+            $(newElem).appendTo('#sortable_origins');
+            initSortable('#sortable_origins');
+            $(newElem).css('list-style', 'none');
             $document.unbindArrive('.practice-editor-origin-li', newElem);
         });
     }
 
     function dragAndDropOriginListItems() {
-        sortable('#sortable_origins', {
-            forcePlaceholderSize: true,
-            placeholder: '<div></div>'
-        });
+        initSortable('#sortable_origins');
             
         if (typeof sortable('#sortable_origins')[0] != 'undefined'){
             sortable('#sortable_origins')[0].addEventListener('sortstart', function(e) {

@@ -3,6 +3,7 @@
         <%= render partial: 'impact', formats: [:js] %>
     <% end %>
     <%= javascript_include_tag 'practice_editor_impact', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <%= render 'breadcrumbs' %>
@@ -122,11 +123,6 @@
                                     <li class="practice-editor-video-file-li fields" data-id="<%= video_file_id %>">
                                         <%= vf.hidden_field :position, class: 'video-file-position' %>
                                         <div class="impact-container padding-205 border border-width-1px border-base-lighter radius-sm margin-top-3">
-                                            <div class="position-relative">
-                                                <div class="fas fa-arrows-alt font-sans-lg position-arrows impact-arrows text-base arrows-tooltip">
-                                                    <span class="usa-tag tooltip-text">Drag and drop to change order</span>
-                                                </div>
-                                            </div>
                                             <div class="grid-row">
                                                 <%= vf.hidden_field :id %>
 
@@ -177,14 +173,11 @@
                     </fieldset>
                 <% end %>
                 <div class="grid-row margin-bottom-8">
-                    <%= link_to practice_origin_path(@practice), class: 'editor-back-to-link margin-right-1' do %>
-                        <button class="usa-button usa-button--outline padding-2 editor-back-to-button">
-                        <i class="fas fa-chevron-left fa-sm">&nbsp;&nbsp;</i>Back
-                        </button>
+                    <%= link_to practice_origin_path(@practice), class: 'usa-button usa-button--outline editor-back-to-link margin-right-1 padding-2 margin-bottom-5 text-no-underline' do %>
+                        <i class="fas fa-chevron-left fa-sm text-no-underline margin-right-1"></i>Back
                     <% end %>
-                    <%= link_to practice_documentation_path(@practice), class: 'editor-continue-link' do %>
-                        <button class="usa-button padding-2 editor-continue-button">Continue&nbsp;&nbsp;<i class="fas fa-chevron-right fa-sm"></i>
-                        </button>
+                    <%= link_to practice_documentation_path(@practice), class: 'usa-button padding-2 editor-continue-link margin-right-1 margin-bottom-5' do %>
+                        Continue<i class="fas fa-chevron-right fa-sm margin-left-1 text-no-underline"></i>
                     <% end %>
                 </div>
             </section>

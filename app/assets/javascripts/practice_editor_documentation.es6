@@ -3,6 +3,8 @@
 
     function removeBulletPointFromNewAdditionalDocumentLi() {
         $document.arrive('.practice-editor-additional-document-li', (newElem) => {
+            $(newElem).appendTo('#sortable_additional_documents');
+            initSortable('#sortable_additional_documents');
             $(newElem).css('list-style', 'none');
             $document.unbindArrive('.practice-editor-additional-document-li', newElem);
         });
@@ -10,16 +12,15 @@
 
     function removeBulletPointFromNewPublicationLi() {
         $document.arrive('.practice-editor-publication-li', (newElem) => {
+            $(newElem).appendTo('#sortable_publications');
+            initSortable('#sortable_publications');
             $(newElem).css('list-style', 'none');
             $document.unbindArrive('.practice-editor-publication-li', newElem);
         });
     }
 
     function dragAndDropAdditionalDocumentListItems() {
-        sortable('#sortable_additional_documents', {
-            forcePlaceholderSize: true,
-            placeholder: '<div></div>'
-        });
+        initSortable('#sortable_additional_documents');
             
         if (typeof sortable('#sortable_additional_documents')[0] != 'undefined'){
             sortable('#sortable_additional_documents')[0].addEventListener('sortstart', function(e) {
@@ -41,10 +42,7 @@
     }
 
     function dragAndDropPublicationListItems() {
-        sortable('#sortable_publications', {
-            forcePlaceholderSize: true,
-            placeholder: '<div></div>'
-        });
+        initSortable('#sortable_publications');
             
         if (typeof sortable('#sortable_publications')[0] != 'undefined'){
             sortable('#sortable_publications')[0].addEventListener('sortstart', function(e) {

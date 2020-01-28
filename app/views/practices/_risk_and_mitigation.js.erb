@@ -49,9 +49,18 @@ function riskMitigationCharacterCounter() {
     });
 }
 
+function showFieldsOnPageLoad() {
+    <% if @practice.risk_mitigations.empty? %>
+        $('.add-risk-mitigation-link').click();
+        $('.practice-editor-risk-mitigation-li').appendTo('#sortable_risk_mitigations');
+        initSortable('#sortable_risk_mitigations');
+    <% end %>
+}
+
 function executeRiskMitigationFunctions() {
     getRiskAndMitigationCharacterCountOnPageLoad();
     riskMitigationCharacterCounter();
+    showFieldsOnPageLoad();
 }
 
 $(document).on('turbolinks:load', executeRiskMitigationFunctions);

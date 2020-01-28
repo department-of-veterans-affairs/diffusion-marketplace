@@ -22,14 +22,41 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         it 'should allow the user to update the data on the page' do
-            fill_in('practice-editor-name-input', with: 'A super practice')
-            fill_in('practice-editor-tagline-textarea', with: 'Super duper')
+            fill_in('practice_name', with: 'A super practice')
+            fill_in('practice_tagline', with: 'Super duper')
             select('Alabama', :from => 'editor_state_select')
             select('Birmingham VA Medical Center', :from => 'editor_facility_select')
-            fill_in('practice-editor-summary-textarea', with: 'This is the most super practice ever made')
-            check('practice_partner_1')
-            click_button('Save your progress')
-            expect(page).to have_field('practice-editor-name-input', with: 'A super practice')
+            fill_in('practice_summary', with: 'This is the most super practice ever made')
+            find('#practice_partner_1_label').click
+            find('#practice-editor-save-button').click
+            expect(page).to have_field('practice_name', with: 'A super practice')
+            expect(page).to have_field('practice_tagline', with: 'Super duper')
+            expect(page).to have_field('practice_summary', with: 'This is the most super practice ever made')
+        end
+
+        it 'should show an alert window if no practice partners were chosen' do
+            select('Alabama', :from => 'editor_state_select')
+            select('Birmingham VA Medical Center', :from => 'editor_facility_select')
+            fill_in('practice_summary', with: 'This is the most super practice ever made')
+            find('#practice-editor-save-button').click
+            expect(accept_alert).to eq('Please choose at least one of the partners listed')
+        end
+
+        it 'should require the user to fill out the fields that are marked as required' do
+            find('#practice_partner_1_label').click
+            fill_in('practice_name', with: nil)
+            find('#practice-editor-save-button').click
+            name_message = page.find("#practice_name").native.attribute("validationMessage")
+            expect(name_message).to eq('Please fill out this field.')
+            fill_in('practice_name', with: 'A public practice')
+            find('#practice-editor-save-button').click
+            state_message = page.find("#editor_state_select").native.attribute("validationMessage")
+            expect(state_message).to eq('Please select an item in the list.')
+            select('Alabama', :from => 'editor_state_select')
+            select('Birmingham VA Medical Center', :from => 'editor_facility_select')
+            find('#practice-editor-save-button').click
+            summary_message = page.find("#practice_summary").native.attribute("validationMessage")
+            expect(summary_message).to eq('Please fill out this field.')
         end
     end
 end

@@ -25,20 +25,26 @@
                 const mitiUuid = createUniqueRiskMitiId();
                 const riskMitiId = newElement.firstElementChild.name.split('[')[2].replace(']', '');
                 $(newElement).prepend(`
-                    
-                    <input type="hidden" name="practice[risk_mitigations_attributes][${riskMitiId}][risks_attributes][0][id]" id="practice_risk_mitigations_attributes_${riskMitiId}_risks_attributes_0_id">
-                        <div class="risk_container">
-                            <label class="usa-label text-bold display-inline-block" for="practice_risk_mitigations_attributes_${riskMitiId}_description">Risk:</label>&nbsp;<span>Type the name or description of the risk.</span>&nbsp;<span class="text-base-light risk-character-count risk_0_character_count" id="risk_${riskMitiId}_character_count">(0/150 characters)</span>
-                            <textarea class="usa-input practice-input risk-description-textarea height-15 risk_0_description_textarea" name="practice[risk_mitigations_attributes][${riskMitiId}][risks_attributes][0][description]" required></textarea>
+                    <div class="padding-205 border border-width-1px border-base-lighter radius-sm margin-top-3">
+                        <div class="position-relative">
+                            <div class="fas fa-arrows-alt font-sans-lg position-arrows risk-miti-arrows text-base arrows-tooltip">
+                                <span class="usa-tag tooltip-text">Drag and drop to change order</span>
+                            </div>
                         </div>
-                    
-        
-                    
-                    <input type="hidden" name="practice[risk_mitigations_attributes][${riskMitiId}][mitigations_attributes][0][id]" id="practice_risk_mitigations_attributes_${riskMitiId}_mitigations_attributes_0_id">
-                        <div class="mitigation_container">
-                            <label class="usa-label text-bold display-inline-block" for="practice_risk_mitigations_attributes_${riskMitiId}_mitigations_attributes_0_description">Mitigation:</label>&nbsp;<span>Type the corresponding mitigation to the risk.</span>&nbsp;<span class="text-base-light mitigation-character-count" id="mitigation_${riskMitiId}_character_count">(0/150 characters)</span>
-                            <textarea class="usa-input practice-input mitigation-description-textarea height-15" name="practice[risk_mitigations_attributes][${riskMitiId}][mitigations_attributes][0][description]" required></textarea>
-                        </div>
+                        <input type="hidden" name="practice[risk_mitigations_attributes][${riskMitiId}][risks_attributes][0][id]" id="practice_risk_mitigations_attributes_${riskMitiId}_risks_attributes_0_id">
+                            <div class="risk_container grid-col-11">
+                                <label class="usa-label text-bold display-inline-block risk-description" for="practice_risk_mitigations_attributes_${riskMitiId}_description">Risk:</label>&nbsp;<span>Type the name or description of the risk.</span>&nbsp;<span class="text-base-light risk-character-count risk_0_character_count" id="risk_${riskMitiId}_character_count">(0/150 characters)</span>
+                                <textarea class="usa-input practice-input risk-description-textarea height-15 risk_0_description_textarea" name="practice[risk_mitigations_attributes][${riskMitiId}][risks_attributes][0][description]" required></textarea>
+                            </div>
+                        
+            
+                        
+                            <input type="hidden" name="practice[risk_mitigations_attributes][${riskMitiId}][mitigations_attributes][0][id]" id="practice_risk_mitigations_attributes_${riskMitiId}_mitigations_attributes_0_id">
+                                <div class="mitigation_container grid-col-11">
+                                    <label class="usa-label text-bold display-inline-block" for="practice_risk_mitigations_attributes_${riskMitiId}_mitigations_attributes_0_description">Mitigation:</label>&nbsp;<span>Type the corresponding mitigation to the risk.</span>&nbsp;<span class="text-base-light mitigation-character-count" id="mitigation_${riskMitiId}_character_count">(0/150 characters)</span>
+                                    <textarea class="usa-input practice-input mitigation-description-textarea height-15" name="practice[risk_mitigations_attributes][${riskMitiId}][mitigations_attributes][0][description]" required></textarea>
+                                </div>
+                    </div>
                     `)
 
                 $document.unbindArrive('.fields');
@@ -48,16 +54,15 @@
 
     function removeBulletPointFromNewLi() {
         $document.arrive('.practice-editor-risk-mitigation-li', (newElem) => {
+            $(newElem).appendTo('#sortable_risk_mitigations');
+            initSortable('#sortable_risk_mitigations');
             $(newElem).css('list-style', 'none')
             $document.unbindArrive('.practice-editor-risk-mitigation-li', newElem);
         });
     }
 
     function dragAndDropRiskMitigationListItems() {
-        sortable('#sortable_risk_mitigations', {
-            forcePlaceholderSize: true,
-            placeholder: '<div></div>'
-        });
+        initSortable('#sortable_risk_mitigations');
             
         if (typeof sortable('#sortable_risk_mitigations')[0] != 'undefined'){
             sortable('#sortable_risk_mitigations')[0].addEventListener('sortstart', function(e) {

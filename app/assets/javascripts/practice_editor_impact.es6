@@ -3,6 +3,8 @@
 
     function removeBulletPointFromNewImpactPhotoLi() {
         $document.arrive('.practice-editor-impact-photo-li', (newElem) => {
+            $(newElem).appendTo('#sortable_impact_photos');
+            initSortable('#sortable_impact_photos');
             $(newElem).css('list-style', 'none')
             $document.unbindArrive('.practice-editor-impact-photo-li', newElem);
         });
@@ -10,16 +12,15 @@
 
     function removeBulletPointFromNewVideoFileLi() {
         $document.arrive('.practice-editor-video-file-li', (newElem) => {
-            $(newElem).css('list-style', 'none')
+            $(newElem).appendTo('#sortable_video_files');
+            initSortable('#sortable_video_files');
+            $(newElem).css('list-style', 'none');
             $document.unbindArrive('.practice-editor-video-file-li', newElem);
         });
     }
 
     function dragAndDropImpactPhotoListItems() {
-        sortable('#sortable_impact_photos', {
-            forcePlaceholderSize: true,
-            placeholder: '<div></div>'
-        });
+        initSortable('#sortable_impact_photos');
             
         if (typeof sortable('#sortable_impact_photos')[0] != 'undefined'){
             sortable('#sortable_impact_photos')[0].addEventListener('sortstart', function(e) {
@@ -41,10 +42,7 @@
     }
 
     function dragAndDropVideoFileListItems() {
-        sortable('#sortable_video_files', {
-            forcePlaceholderSize: true,
-            placeholder: '<div></div>'
-        });
+        initSortable('#sortable_video_files');
             
         if (typeof sortable('#sortable_video_files')[0] != 'undefined'){
             sortable('#sortable_video_files')[0].addEventListener('sortstart', function(e) {

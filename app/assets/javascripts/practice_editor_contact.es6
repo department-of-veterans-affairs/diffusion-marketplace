@@ -3,16 +3,15 @@
 
     function removeBulletPointFromNewLi() {
         $document.arrive('.practice-editor-contact-li', (newElem) => {
-            $(newElem).css('list-style', 'none')
+            $(newElem).appendTo('#sortable_contacts');
+            initSortable('#sortable_contacts');
+            $(newElem).css('list-style', 'none');
             $document.unbindArrive('.practice-editor-contact-li', newElem);
         });
     }
 
     function dragAndDropContactListItems() {
-        sortable('#sortable_contacts', {
-            forcePlaceholderSize: true,
-            placeholder: '<div></div>'
-        });
+        initSortable('#sortable_contacts');
             
         if (typeof sortable('#sortable_contacts')[0] != 'undefined'){
             sortable('#sortable_contacts')[0].addEventListener('sortstart', function(e) {

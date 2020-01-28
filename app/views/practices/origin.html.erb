@@ -25,11 +25,11 @@
                         <legend class="usa-sr-only">Origin Information</legend>
                         <div>
                             <h2 class="font-sans-xl">Story</h2>
-                            <%= f.label :origin_story, 'Origin story:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type a short story describing how your practice started.</span>&nbsp;<span class="text-base-light origin-story-character-count" id="practice_<%= @practice.id %>_origin_story_character_count">(0/400 characters)</span>
-                            <%= f.text_area :origin_story, required: true, class: 'usa-input practice-input height-card origin-story-textarea', id: "practice_#{@practice.id}_origin_story_textarea" %>
+                            <%= f.label :origin_story, class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type a short story describing how your practice started.</span>&nbsp;<span class="text-base-light origin-story-character-count" <% if @practice.origin_story.present? %>id="practice_<%= @practice.id %>_origin_story_character_count"<% end %>></span>>(0/400 characters)</span>
+                            <%= f.text_area :origin_story, required: true, class: 'usa-input practice-input height-card origin-story-textarea', 'counter-id': "practice_#{@practice.id}_origin_story_textarea" %>
                         </div>
                         <h2 class="font-sans-xl">Creators</h2>
-                        <ul class="practice-editor-origin-ul" id="sortable_origins">
+                        <ul class="practice-editor-origin-ul" id="sortable_origins" role="listbox" title="Practice creators">
                             <%= f.fields_for :practice_creators, wrapper: false do |pc| %>
                                 <%
                                     pc_id = pc.object.id
@@ -44,12 +44,12 @@
                                             <div class="fas fa-arrows-alt font-sans-lg position-arrows origin-arrows text-base arrows-tooltip">
                                                 <span class="usa-tag tooltip-text">Drag and drop to change order</span>
                                             </div>
-                                            <%= pc.label :name, 'Name:', class: 'usa-label practice-creator-name text-bold display-inline-block' %>&nbsp;<span>Type the name of the person who created this practice.</span>&nbsp;<span class="text-base-light practice-creator-name-character-count" id="practice_creator_<%= pc_id %>_name_character_count">(0/50 characters)</span>
-                                            <%= pc.text_field :name, required: true, class: 'usa-input practice-input width-tablet practice-creator-name-input', id: "practice_creator_#{pc_id}_name" %>
+                                            <%= pc.label :name, class: 'usa-label practice-creator-name text-bold display-inline-block' %>&nbsp;<span>Type the name of the person who created this practice.</span>&nbsp;<span class="text-base-light practice-creator-name-character-count" <% if pc_id.present? %>id="practice_creator_<%= pc_id %>_name_character_count"<% end %>>(0/50 characters)</span>
+                                            <%= pc.text_field :name, required: true, class: 'usa-input practice-input width-tablet practice-creator-name-input', 'counter-id': "practice_creator_#{pc_id}_name" %>
                                         </div>
                                         <div>
-                                            <%= pc.label :role, 'Role:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type their title or position name.</span>&nbsp;<span class="text-base-light practice-creator-role-character-count" id="practice_creator_<%= pc_id %>_role_character_count">(0/50 characters)</span>
-                                            <%= pc.text_field :role, required: true, class: 'usa-input practice-input width-tablet practice-creator-role', id: "practice_creator_#{pc_id}_role" %>
+                                            <%= pc.label :role, class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type their title or position name.</span>&nbsp;<span class="text-base-light practice-creator-role-character-count" <% if pc_id.present? %>id="practice_creator_<%= pc_id %>_role_character_count"<% end %>>(0/50 characters)</span>
+                                            <%= pc.text_field :role, required: true, class: 'usa-input practice-input width-tablet practice-creator-role', 'counter-id': "practice_creator_#{pc_id}_role" %>
                                         </div>
 
                                         <p class="text-bold va-employee-headshot-p margin-bottom-05">Headshot</p>
@@ -71,29 +71,24 @@
                                                 <% end %>
                                             </div>
                                             <div class="grid-col-10 practice-creator-file-col">
-                                                <% if pc_avatar.present? %>
-                                                    <%# <div class="display-inline-block text-tbottom">
-                                                        <button class="usa-button usa-button--outline padding-2 edit-origin-photo-button">Edit photo</button>
-                                                    </div> %>
-                                                    <div class="display-inline-block">
-                                                        <div class="margin-bottom-1">
-                                                            <%= pc.label :avatar, 'Upload photo', class: "usa-button usa-button--unstyled add-practice-creator-headshot-label" %>
-                                                            <%= pc.file_field :avatar, class: 'hidden-upload' %>
-                                                        </div>
+                                                <%# <div class="display-inline-block text-tbottom">
+                                                    <button class="usa-button usa-button--outline padding-2 edit-origin-photo-button">Edit photo</button>
+                                                </div> %>
+                                                <div class="display-inline-block">
+                                                    <div class="margin-bottom-1">
+                                                        <%= pc.label :avatar, 'Upload photo', class: "usa-button usa-button--unstyled add-practice-creator-headshot-label" %>
+                                                        <%= pc.file_field :avatar, class: 'hidden-upload' %>
+                                                    </div>
+                                                    <% if pc_avatar.present? %>
                                                         <div>
                                                             <%= pc.check_box :delete_avatar, { class: 'usa-checkbox__input practice-input delete-avatar-input'}, 'true', 'false' %>
                                                             <%= pc.label :delete_avatar, 'Remove photo', class: 'usa-checkbox__label display-inline-block' %>
                                                         </div>
-                                                    </div>
-                                                <% else %>
-                                                    <div class="margin-bottom-1">
-                                                        <%= pc.label :avatar, 'Upload photo', class: "usa-button add-practice-creator-headshot-label" %>
-                                                        <%= pc.file_field :avatar, required: true, class: 'hidden-upload' %>
-                                                    </div>
-                                                <% end %>
+                                                    <% end %>
+                                                </div>
                                             </div>
                                             <div class="grid-col-fill flex-align-end origin-trash-container">
-                                                <%= pc.link_to_remove '', class: "fas fa-trash-alt origin-trash text-no-underline" %>
+                                                <%= pc.link_to_remove '', class: "fas fa-trash-alt origin-trash text-no-underline", title: 'remove practice creator' %>
                                             </div>
                                         </div>
                                     </div>
@@ -106,14 +101,11 @@
                     </fieldset>
                 <% end %>
                 <div class="grid-row margin-bottom-8">
-                    <%= link_to practice_overview_path(@practice), class: 'editor-back-to-link margin-right-1' do %>
-                        <button class="usa-button usa-button--outline padding-2 editor-back-to-button">
-                        <i class="fas fa-chevron-left fa-sm">&nbsp;&nbsp;</i>Back
-                        </button>
+                    <%= link_to practice_overview_path(@practice), class: 'usa-button usa-button--outline editor-back-to-link margin-right-1 padding-2 margin-bottom-5 text-no-underline' do %>
+                        <i class="fas fa-chevron-left fa-sm text-no-underline margin-right-1"></i>Back
                     <% end %>
-                    <%= link_to practice_impact_path(@practice), class: 'editor-continue-link' do %>
-                        <button class="usa-button padding-2 editor-continue-button">Continue&nbsp;&nbsp;<i class="fas fa-chevron-right fa-sm"></i>
-                        </button>
+                    <%= link_to practice_impact_path(@practice), class: 'usa-button padding-2 editor-continue-link margin-right-1 margin-bottom-5' do %>
+                        Continue<i class="fas fa-chevron-right fa-sm margin-left-1 text-no-underline"></i>
                     <% end %>
                 </div>
             </section>

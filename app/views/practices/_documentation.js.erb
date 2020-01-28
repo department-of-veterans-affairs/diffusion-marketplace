@@ -1,12 +1,16 @@
 function showAdditionalDocumentsFieldsOnPageLoad() {
     <% if @practice.additional_documents.empty? %>
         $('.add-additional-document-link').click();
+        $('.practice-editor-additional-document-li').appendTo('#sortable_additional_documents');
+        initSortable('#sortable_additional_documents');
     <% end %>
 }
 
 function showPublicationsFieldsOnPageLoad() {
     <% if @practice.publications.empty? %>
         $('.add-publication-link').click();
+        $('.practice-editor-publication-li').appendTo('#sortable_publications');
+        initSortable('#sortable_publications');
     <% end %>
 }
 

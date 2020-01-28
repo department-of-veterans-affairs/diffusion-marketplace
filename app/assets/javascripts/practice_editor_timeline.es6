@@ -3,18 +3,15 @@
 
     function removeBulletPointFromNewLi() {
         $document.arrive('.practice-editor-timeline-li', (newElem) => {
-            sortable('#sortable_timelines')
-                
+            $(newElem).appendTo('#sortable_timelines');
+            initSortable('#sortable_timelines');
             $(newElem).css('list-style', 'none')
             $document.unbindArrive('.practice-editor-timeline-li', newElem);
         });
     }
 
     function dragAndDropTimelineListItems() {
-        sortable('#sortable_timelines', {
-            forcePlaceholderSize: true,
-            placeholder: '<div></div>'
-        });
+        initSortable('#sortable_timelines');
             
         if (typeof sortable('#sortable_timelines')[0] != 'undefined'){
             sortable('#sortable_timelines')[0].addEventListener('sortstart', function(e) {

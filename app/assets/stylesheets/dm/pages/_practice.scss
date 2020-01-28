@@ -336,6 +336,29 @@
 .editor-back-to-link, .editor-continue-link {
   width: auto;
   display: inline-block;
+  text-decoration: none !important;
+}
+
+.editor-back-to-link {
+  &:visited {
+    color: $dm-color-primary-blue !important;
+  }
+
+  &:hover {
+    text-decoration: none !important;
+    color: #1a4480 !important
+  }
+}
+
+.editor-continue-link {
+  &:visited {
+    color: white !important;
+  }
+
+  &:hover {
+    text-decoration: none !important;
+    color: white !important
+  }
 }
 
 .practice-editor-name-input, .practice-editor-tagline-textarea, .practice-editor-summary-textarea {
@@ -554,7 +577,7 @@
 }
 
 .delete-avatar-input, .delete-attachment-input {
-  left: 145px !important;
+  left: 5px !important;
 }
 
 .delete-documentation-attachment-input {

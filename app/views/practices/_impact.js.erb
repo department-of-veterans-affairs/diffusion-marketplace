@@ -74,10 +74,14 @@ function denyMultipleMainDisplayImageSelections() {
 function showFieldsOnPageLoad() {
     <% if @practice.impact_photos.empty? %>
         $('.add-impact-photo-link').click();
+        $('.practice-editor-impact-photo-li').appendTo('#sortable_impact_photos');
+        initSortable('#sortable_impact_photos');
     <% end %>
 
     <% if @practice.video_files.empty? %>
         $('.add-video-file-link').click();
+        $('.practice-editor-video-file-li').appendTo('#sortable_video_files');
+        initSortable('#sortable_video_files');
     <% end %>
 }
 

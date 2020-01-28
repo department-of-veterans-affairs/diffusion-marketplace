@@ -35,9 +35,18 @@ function milestoneCharacterCounter() {
     });
 }
 
+function showFieldsOnPageLoad() {
+    <% if @practice.timelines.empty? %>
+        $('.add-timeline-link').click();
+        $('.practice-editor-timeline-li ').appendTo('#sortable_timelines');
+        initSortable('#sortable_timelines');
+    <% end %>
+}
+
 function executeMilestoneFunctions() {
     getMilestoneCharacterCountOnPageLoad();
     milestoneCharacterCounter();
+    showFieldsOnPageLoad();
 }
 
 $(document).on('turbolinks:load', executeMilestoneFunctions);

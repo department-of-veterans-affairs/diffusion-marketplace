@@ -32,9 +32,11 @@
             </ul>
           </div>
       </section>
-      <%= link_to practice_collaborators_path(@practice), class: 'editor-continue-link margin-right-1 margin-bottom-5' do %>
-        <button class="usa-button padding-2 editor-continue-button">Continue&nbsp;&nbsp;<i class="fas fa-chevron-right fa-sm"></i></button>
+      <div>
+      <%= link_to practice_collaborators_path(@practice), class: 'usa-button padding-2 editor-continue-link margin-right-1 margin-bottom-5' do %>
+        Continue<i class="fas fa-chevron-right fa-sm margin-left-1 text-no-underline"></i>
       <% end %>
+      </div>
       <div class="grid-row flex-auto">
         <div class="bg-gold padding-2 radius-md margin-bottom-8">
           <p class="text-bold margin-bottom-1">Need help along the way?<p>

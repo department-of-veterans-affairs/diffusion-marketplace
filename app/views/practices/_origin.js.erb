@@ -107,6 +107,8 @@ function practiceCreatorNameCharacterCounter() {
 function showFieldsOnPageLoad() {
     <% if @practice.practice_creators.empty? %>
         $('.add-practice-creator-link').click();
+        $('.practice-editor-origin-li ').appendTo('#sortable_origins');
+        initSortable('#sortable_origins');
     <% end %>
 }
 
