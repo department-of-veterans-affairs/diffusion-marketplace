@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-fdescribe 'Practice editor', type: :feature do
+describe 'Practice editor', type: :feature do
   before do
     @admin = User.create!(email: 'toshiro.hitsugaya@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @approver = User.create!(email: 'tosen.kaname@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
@@ -103,7 +103,7 @@ fdescribe 'Practice editor', type: :feature do
       find('.permission-trash').click
       find('.resource-trash').click
       @save_progress.click
-      
+
       within(:css, '#sortable_permissions') do
         expect(page).to have_field('Step', with: nil)
         expect(page).to have_field('Description', with: nil)
