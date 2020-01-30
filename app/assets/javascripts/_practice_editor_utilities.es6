@@ -16,9 +16,10 @@ $(document).arrive('.fields', (newElem) => {
                                   let $parent = $(newElem).parent();
                                   $(newElem).appendTo('ul.trash-can');
                                   $(newElem).find('input').prop('required', false);
+                                  $(newElem).find('textarea').prop('required', false);
                                   $(document).unbindArrive('.fields', newElem);
                                   $parent.children('li').map(function(index){
-                                      $(this).find( 'input[class*="position"]' ).val(index + 1);
+                                      $(this).find('input[class*="position"]').val(index + 1);
                                       return "resources[]=" + $(this).data("id");
                                   }).get().join("&");
                                   observer.disconnect();
