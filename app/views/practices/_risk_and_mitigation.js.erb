@@ -49,18 +49,17 @@ function riskMitigationCharacterCounter() {
     });
 }
 
-function showFieldsOnPageLoad() {
-    <% if @practice.risk_mitigations.empty? %>
-        $('.add-risk-mitigation-link').click();
-        $('.practice-editor-risk-mitigation-li').appendTo('#sortable_risk_mitigations');
-        initSortable('#sortable_risk_mitigations');
-    <% end %>
+function initRiskMitigationsOnPageLoad() {
+    $('.add-risk-mitigation-link').click();
+    $('.practice-editor-resource-li ').appendTo('#sortable_risk_mitigations');
+    // Added $('.practice-editor-risk-mitigation-li').appendTo('#sortable_risk_mitigations');
+    initSortable('#sortable_risk_mitigations');
 }
 
 function executeRiskMitigationFunctions() {
     getRiskAndMitigationCharacterCountOnPageLoad();
     riskMitigationCharacterCounter();
-    showFieldsOnPageLoad();
+    initRiskMitigationsOnPageLoad();
 }
 
 $(document).on('turbolinks:load', executeRiskMitigationFunctions);

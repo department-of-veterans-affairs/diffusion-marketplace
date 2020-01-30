@@ -13,6 +13,7 @@ describe 'Practice editor', type: :feature, js: true do
             login_as(@admin, :scope => :user, :run_callbacks => false)
             visit practice_overview_path(@practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508
+            @save_button = find('#practice-editor-save-button')
         end
 
         it 'should be there' do
@@ -28,7 +29,7 @@ describe 'Practice editor', type: :feature, js: true do
             select('Birmingham VA Medical Center', :from => 'editor_facility_select')
             fill_in('practice_summary', with: 'This is the most super practice ever made')
             find('#practice_partner_1_label').click
-            find('#practice-editor-save-button').click
+            @save_button.click
             expect(page).to have_field('practice_name', with: 'A super practice')
             expect(page).to have_field('practice_tagline', with: 'Super duper')
             expect(page).to have_field('practice_summary', with: 'This is the most super practice ever made')
@@ -38,23 +39,23 @@ describe 'Practice editor', type: :feature, js: true do
             select('Alabama', :from => 'editor_state_select')
             select('Birmingham VA Medical Center', :from => 'editor_facility_select')
             fill_in('practice_summary', with: 'This is the most super practice ever made')
-            find('#practice-editor-save-button').click
+            @save_button.click
             expect(accept_alert).to eq('Please choose at least one of the partners listed')
         end
 
         it 'should require the user to fill out the fields that are marked as required' do
             find('#practice_partner_1_label').click
             fill_in('practice_name', with: nil)
-            find('#practice-editor-save-button').click
+            @save_button.click
             name_message = page.find("#practice_name").native.attribute("validationMessage")
             expect(name_message).to eq('Please fill out this field.')
             fill_in('practice_name', with: 'A public practice')
-            find('#practice-editor-save-button').click
+            @save_button.click
             state_message = page.find("#editor_state_select").native.attribute("validationMessage")
             expect(state_message).to eq('Please select an item in the list.')
             select('Alabama', :from => 'editor_state_select')
             select('Birmingham VA Medical Center', :from => 'editor_facility_select')
-            find('#practice-editor-save-button').click
+            @save_button.click
             summary_message = page.find("#practice_summary").native.attribute("validationMessage")
             expect(summary_message).to eq('Please fill out this field.')
         end
