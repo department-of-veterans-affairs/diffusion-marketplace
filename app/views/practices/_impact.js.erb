@@ -5,7 +5,7 @@ var IMPACT_CAPTION_MAX_LENGTH = 300;
 function getImpactCaptionCharacterCountOnPageLoad() {
 
     <% @practice.impact_photos.each do |ip| %>
-        var impactCaptionTextarea = $("#impact_photo_<%= ip.id %>_caption");
+        var impactCaptionTextarea = $("textarea[counter-id='impact_photo_<%= ip.id %>_caption']");
         var impactCaptionCharacterSpan = $("#impact_photo_<%= ip.id %>_caption_character_count");
         var impactCaptionCurrentLength = impactCaptionTextarea.val().length;
         var impactCaptionCharacterCounter = '(' + impactCaptionCurrentLength + '/' + IMPACT_CAPTION_MAX_LENGTH + ' characters)';
@@ -18,7 +18,7 @@ function getImpactCaptionCharacterCountOnPageLoad() {
     <% end %>
 
     <% @practice.video_files.each do |vf| %>
-        var impactCaptionTextarea = $("#video_file_<%= vf.id %>_caption");
+        var impactCaptionTextarea = $("textarea[counter-id='video_file_<%= vf.id %>_caption']");
         var impactCaptionCharacterSpan = $("#video_file_<%= vf.id %>_caption_character_count");
         var impactCaptionCurrentLength = impactCaptionTextarea.val().length;
         var impactCaptionCharacterCounter = '(' + impactCaptionCurrentLength + '/' + IMPACT_CAPTION_MAX_LENGTH + ' characters)';
@@ -71,6 +71,13 @@ function denyMultipleMainDisplayImageSelections() {
     });
 }
 
+function makeVideoFileFieldsRequiredIfUsed() {
+    $(document).on('input', 'input.video-file-url-input, textarea.practice-editor-video-caption', function() {
+        var $inputs = $('input.video-file-url-input, textarea.practice-editor-video-caption');
+        $inputs.not(this).prop('required', $(this).val().length);
+    });
+}
+
 function showFieldsOnPageLoad() {
     <% if @practice.impact_photos.empty? %>
         $('.add-impact-photo-link').click();
@@ -91,6 +98,7 @@ function executeImpactFunctions() {
     impactCaptionCharacterCounter();
     showFieldsOnPageLoad();
     denyMultipleMainDisplayImageSelections();
+    makeVideoFileFieldsRequiredIfUsed();
 }
 
 $(document).on('turbolinks:load', executeImpactFunctions);

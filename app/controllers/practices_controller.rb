@@ -164,7 +164,7 @@ class PracticesController < ApplicationController
           
         end
       end
-
+      
       if @practice.impact_photos.where(is_main_display_image: true).empty? || @practice.impact_photos.empty?
         @practice.update_attributes(main_display_image: nil)
       end

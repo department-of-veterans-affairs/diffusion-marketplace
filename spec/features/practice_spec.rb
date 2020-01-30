@@ -339,53 +339,52 @@ Yes')
     end
   end
 
-    describe 'highlight and featured practices' do
-      it 'should highlight and un-highlight a practice' do
-        login_as(@admin, :scope => :user, :run_callbacks => false)
-        @user_practice.update(approved: true, published: true)
-        visit practice_path(@user_practice)
-        expect(page).to have_link('Edit')
-        click_link('Edit')
+  describe 'highlight and featured practices' do
+    it 'should highlight and un-highlight a practice' do
+      login_as(@admin, :scope => :user, :run_callbacks => false)
+      @user_practice.update(approved: true, published: true)
+      visit practice_path(@user_practice)
+      expect(page).to have_link('Edit')
+      click_link('Edit')
 
-        page.accept_confirm do
-          click_link('HIGHLIGHT')
-        end
-        expect(page).to have_current_path(edit_practice_path(@user_practice))
-        expect(page).to have_content('REMOVE HIGHLIGHT')
-  
-        visit(edit_practice_path(@user_practice))
-        page.accept_confirm do
-          click_link('REMOVE HIGHLIGHT')
-        end
-        expect(page).to have_current_path(edit_practice_path(@user_practice))
-        expect(page).to have_content('HIGHLIGHT')
-        expect(page).to have_content('HIGHLIGHT')
+      page.accept_confirm do
+        click_link('HIGHLIGHT')
+      end
+      expect(page).to have_current_path(edit_practice_path(@user_practice))
+      expect(page).to have_content('REMOVE HIGHLIGHT')
+
+      visit(edit_practice_path(@user_practice))
+      page.accept_confirm do
+        click_link('REMOVE HIGHLIGHT')
+      end
+      expect(page).to have_current_path(edit_practice_path(@user_practice))
+      expect(page).to have_content('HIGHLIGHT')
+      expect(page).to have_content('HIGHLIGHT')
+    end
+
+    it 'should feature and un-feature a practice' do
+      login_as(@admin, :scope => :user, :run_callbacks => false)
+      @user_practice.update(approved: true, published: true)
+      visit practice_path(@user_practice)
+      expect(page).to have_link('Edit')
+      click_link('Edit')
+
+      click_link('FEATURE')
+      expect(page).to have_current_path(edit_practice_path(@user_practice))
+      expect(page).to have_content('REMOVE FEATURE')
+      expect(page).to have_content('HIGHLIGHT')
+
+      visit root_path
+      within '.featured-practices' do
+        expect(page).to have_content('The Best Practice Ever!')
       end
 
-      it 'should feature and un-feature a practice' do
-        login_as(@admin, :scope => :user, :run_callbacks => false)
-        @user_practice.update(approved: true, published: true)
-        visit practice_path(@user_practice)
-        expect(page).to have_link('Edit')
-        click_link('Edit')
+      visit(edit_practice_path(@user_practice))
 
-        click_link('FEATURE')
-        expect(page).to have_current_path(edit_practice_path(@user_practice))
-        expect(page).to have_content('REMOVE FEATURE')
-        expect(page).to have_content('HIGHLIGHT')
-
-        visit root_path
-        within '.featured-practices' do
-          expect(page).to have_content('The Best Practice Ever!')
-        end
-
-        visit(edit_practice_path(@user_practice))
-
-        click_link('REMOVE FEATURE')
-        expect(page).to have_current_path(edit_practice_path(@user_practice))
-        expect(page).to have_content('FEATURE')
-        expect(page).to have_content('HIGHLIGHT')
-      end
+      click_link('REMOVE FEATURE')
+      expect(page).to have_current_path(edit_practice_path(@user_practice))
+      expect(page).to have_content('FEATURE')
+      expect(page).to have_content('HIGHLIGHT')
     end
   end
 end

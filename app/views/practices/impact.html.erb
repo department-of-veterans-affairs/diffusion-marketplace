@@ -23,7 +23,7 @@
                     <fieldset class="usa-fieldset">
                         <legend class="usa-sr-only">Impact</legend>
                         <h2 class="font-sans-xl margin-bottom-2">Image upload</h2>
-                        <ul class="practice-editor-impact-photo-ul" id="sortable_impact_photos">
+                        <ul class="practice-editor-impact-photo-ul" id="sortable_impact_photos" role="listbox" aria-label="Practice editor impact photo list">
                             <%= f.fields_for :impact_photos, wrapper: false do |ip| %>
                                 <%
                                     photo_id = ip.object.id
@@ -39,7 +39,7 @@
 
                                             <div class="grid-col-6">
                                                 <% if attachment.present? %>
-                                                    <%= image_tag ip.object.attachment_s3_presigned_url, alt: "Impact story picture #{ip.index}", class: 'height-mobile practice-editor-impact-photo radius-md' %>
+                                                    <%= image_tag ip.object.attachment_s3_presigned_url, alt: "Impact story picture #{ip.index + 1}", class: 'height-mobile practice-editor-impact-photo radius-md' %>
                                                     <%#= ip.cropbox :attachment, index: ip.index %>
                                                 <% else %>
                                                     <div class="bg-base-lightest position-relative radius-md" style="height: 300px; width: 350px;">
@@ -66,19 +66,18 @@
                                                         </div>
                                                     <% end %>
                                                     <div class="grid-col-fill">
-                                                        <% if attachment.present? %>
-                                                            <div class="margin-bottom-1">
+                                                        <div class="margin-bottom-1">
+                                                            <% if @practice.impact_photos.empty? %>
+                                                                <%= ip.file_field :attachment, required: true, class: 'hidden-upload hidden-impact-photo-upload', accept: 'image/*' %>
+                                                            <% else %>
                                                                 <%= ip.file_field :attachment, class: 'hidden-upload' %>
-                                                                <%= ip.label :attachment, 'Upload photo', class: "usa-button usa-button--unstyled add-impact-photo-label" %>
-                                                            </div>
+                                                            <% end %>
+                                                            <%= ip.label :attachment, 'Upload photo', class: "usa-button usa-button--unstyled add-impact-photo-label", accept: 'image/*' %>
+                                                        </div>
+                                                        <% if attachment.present? %>
                                                             <div>
                                                                 <%= ip.check_box :delete_attachment, { class: 'usa-checkbox__input practice-input delete-impact-attachment-input'}, 'true', 'false' %>
                                                                 <%= ip.label :delete_attachment, 'Remove photo', class: 'usa-checkbox__label display-inline-block' %>
-                                                            </div>
-                                                        <% else %>
-                                                            <div class="margin-bottom-1">
-                                                                <%= ip.file_field :attachment, required: true, class: 'hidden-upload hidden-impact-field' %>
-                                                                <%= ip.label :attachment, 'Upload photo', class: "usa-button padding-2 add-impact-photo-label" %>
                                                             </div>
                                                         <% end %>
                                                     </div>
@@ -86,21 +85,21 @@
                                             </div>
 
                                             <div class='usa-radio margin-top-3'>
-                                                <%= ip.radio_button('is_main_display_image', true, class: "usa-radio__input impact-radio impact_photo_#{photo_id}_radio_input", checked: "#{ip.object.is_main_display_image == true ? 'checked' : false }") %>
+                                                <%= ip.radio_button('is_main_display_image', true, class: "usa-radio__input impact-radio", checked: "#{ip.object.is_main_display_image == true ? 'checked' : false }") %>
                                                 <%= ip.label 'is_main_display_image_true', 'Selected as thumbnail image', class: 'usa-radio__label display-inline-block' %>
 
-                                                <%= ip.radio_button('is_main_display_image', false, class: "usa-radio__input impact-radio impact_photo_#{photo_id}_radio_input false hidden-radio", checked: false) %>
+                                                <%= ip.radio_button('is_main_display_image', false, class: "usa-radio__input false hidden-radio", checked: false) %>
                                                 <%= ip.label 'is_main_display_image_true', 'Selected as thumbnail image', class: 'usa-radio__label hidden-radio' %>
                                             </div>
                                 
                                             <div class="grid-row width-full">
                                                 <div class="grid-col-11">
-                                                    <%= ip.label :description, 'Caption:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Share how your practice is making a real-life impact.</span>&nbsp;<span class="text-base-light impact-photo-caption-character-count" id="impact_photo_<%= photo_id %>_caption_character_count">(0/300 characters)</span>
-                                                    <%= ip.text_area :description, class: 'usa-input practice-input practice-editor-image-caption height-15', id: "impact_photo_#{photo_id}_caption" %>
+                                                    <%= ip.label :description, 'Caption:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Share how your practice is making a real-life impact.</span>&nbsp;<span class="text-base-light impact-photo-caption-character-count" <% if photo_id.present? %>id="impact_photo_<%= photo_id %>_caption_character_count"<% end %>>(0/300 characters)</span>
+                                                    <%= ip.text_area :description, required: true, class: 'usa-input practice-input practice-editor-image-caption height-15', 'counter-id': "impact_photo_#{photo_id}_caption" %>
                                                 </div>
                                                 
                                                 <div class="grid-col-fill flex-align-end impact-trash-container">
-                                                    <%= ip.link_to_remove '', class: "fas fa-trash-alt impact-trash text-no-underline margin-left-2" %>
+                                                    <%= ip.link_to_remove '', class: "fas fa-trash-alt impact-trash text-no-underline margin-left-2", title: 'remove impact photo' %>
                                                 </div>
                                             </div>
                                         </div>
@@ -112,7 +111,7 @@
                             <% end %>
                             
                             <h2 class="font-sans-xl margin-bottom-2 margin-top-1">Video attachment</h2>
-                            <ul class="practice-editor-video-file-ul" id="sortable_video_files">
+                            <ul class="practice-editor-video-file-ul" id="sortable_video_files" role="listbox" aria-label="Practice editor video file list">
                                 <%= f.fields_for :video_files, wrapper: false do |vf| %>
                                     <%
                                         video_file_id = vf.object.id
@@ -156,11 +155,11 @@
 
                                             <div class="grid-row width-full">
                                                 <div class="grid-col-11">
-                                                    <%= vf.label :description, 'Caption:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Share how your practice is making a real-life impact.</span>&nbsp;<span class="text-base-light video-file-caption-character-count" id="video_file_<%= video_file_id %>_caption_character_count">(0/300 characters)</span>
-                                                    <%= vf.text_area :description, class: 'usa-input practice-input practice-editor-video-caption height-15', id: "video_file_#{video_file_id}_caption" %>
+                                                    <%= vf.label :description, 'Caption:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Share how your practice is making a real-life impact.</span>&nbsp;<span class="text-base-light video-file-caption-character-count" <% if video_file_id.present? %>id="video_file_<%= video_file_id %>_caption_character_count"<% end %>>(0/300 characters)</span>
+                                                    <%= vf.text_area :description, class: 'usa-input practice-input practice-editor-video-caption height-15', 'counter-id': "video_file_#{video_file_id}_caption" %>
                                                 </div>
                                                 <div class="grid-col-fill flex-align-end impact-trash-container">
-                                                    <%= vf.link_to_remove '', class: "fas fa-trash-alt impact-trash text-no-underline margin-left-2" %>
+                                                    <%= vf.link_to_remove '', class: "fas fa-trash-alt impact-trash text-no-underline margin-left-2", title: 'remove video file' %>
                                                 </div>
                                             </div>
                                         </div>
@@ -170,6 +169,7 @@
                             <%= f.link_to_add :video_files, class: 'fas fa-plus text-no-underline add-video-file-link' do %>
                                 <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add another</span>
                             <% end %>
+                            <ul class="trash-can display-none"></ul>
                     </fieldset>
                 <% end %>
                 <div class="grid-row margin-bottom-8">
