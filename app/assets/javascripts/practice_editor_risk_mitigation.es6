@@ -33,7 +33,6 @@
                         </div>
                         <div class="grid-row width-full">
                             <div class="grid-col-11">
-                                <input class="risk-mitigation-position" type="hidden" name="practice[risk_mitigations_attributes][${riskMitiId}][position]" id="practice_risk_mitigations_attributes_${riskMitiId}_position">
                                 <input type="hidden" name="practice[risk_mitigations_attributes][${riskMitiId}][risks_attributes][0][id]" id="practice_risk_mitigations_attributes_${riskMitiId}_risks_attributes_0_id">
                                 <div class="risk_container">
                                     <label class="usa-label text-bold display-inline-block risk-description" for="practice_risk_mitigations_attributes_${riskMitiId}_description">Risk:</label>&nbsp;<span>Type the name or description of the risk.</span>&nbsp;<span class="text-base-light risk-character-count risk_0_character_count" id="risk_${riskMitiId}_character_count">(0/150 characters)</span>
