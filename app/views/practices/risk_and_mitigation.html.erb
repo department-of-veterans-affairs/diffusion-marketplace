@@ -22,7 +22,7 @@
                 <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
                     <fieldset class="usa-fieldset">
                         <legend class="usa-sr-only">Risks and Mitigations</legend>
-                        <ul class="practice-editor-risk-mitigation-ul" id="sortable_risk_mitigations">
+                        <ul class="practice-editor-risk-mitigation-ul" id="sortable_risk_mitigations" role="listbox" aria-label="Practice editor risk and mitigation pair list">
                         <%= f.fields_for :risk_mitigations, wrapper: false do |rm| %>
                             <%
                                 rm_id = rm.object.id
@@ -37,15 +37,15 @@
                                         <%
                                             risk_id = risk.object.id
                                         %>
-                                        <%= rm.hidden_field :id %>
+                                        <%= risk.hidden_field :id %>
                                         <div class="position-relative">
                                             <div class="fas fa-arrows-alt font-sans-lg position-arrows risk-miti-arrows text-base arrows-tooltip">
                                                 <span class="usa-tag tooltip-text">Drag and drop to change order</span>
                                             </div>
                                         </div>
                                         <div id="risk_<%= risk_id %>_container" class="risk_<%= risk_id %>_container grid-col-11">
-                                            <%= rm.label :description, 'Risk:', class: 'usa-label text-bold display-inline-block risk-description' %>&nbsp;<span>Type the name or description of the risk.</span>&nbsp;<span class="text-base-light risk-character-count risk_<%= risk_id %>_character_count" id="risk_<%= risk_id %>_character_count">(0/150 characters)</span>
-                                            <%= risk.text_area :description, required: true, class: "usa-input practice-input risk-description-textarea height-15 risk_#{risk_id}_description_textarea", id: "risk_#{risk_id}_description_textarea" %>
+                                            <%= risk.label :description, 'Risk:', class: 'usa-label text-bold display-inline-block risk-description' %>&nbsp;<span>Type the name or description of the risk.</span>&nbsp;<span class="text-base-light risk-character-count risk_<%= risk_id %>_character_count" <% if risk_id.present? %> id="risk_<%= risk_id %>_character_count"<% end %>>(0/150 characters)</span>
+                                            <%= risk.text_area :description, required: true, class: "usa-input practice-input risk-description-textarea height-15 risk_#{risk_id}_description_textarea", 'counter-id': "risk_#{risk_id}_description_textarea" %>
                                         </div>
                                     <% end %>
                                     <div class="grid-row width-full">
@@ -54,15 +54,15 @@
                                                 <%
                                                     mitigation_id = miti.object.id
                                                 %>
-                                                <%= rm.hidden_field :id %>
+                                                <%= miti.hidden_field :id %>
                                                 <div id="mitigation_<%= mitigation_id %>_container" class="mitigation_<%= mitigation_id %>_container">
-                                                    <%= miti.label :description, 'Mitigation:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type the corresponding mitigation to the risk.</span>&nbsp;<span class="text-base-light mitigation-character-count" id="mitigation_<%= mitigation_id %>_character_count">(0/150 characters)</span>
-                                                    <%= miti.text_area :description, required: true, class: 'usa-input practice-input mitigation-description-textarea height-15', id: "mitigation_#{mitigation_id}_description_textarea" %>
+                                                    <%= miti.label :description, 'Mitigation:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type the corresponding mitigation to the risk.</span>&nbsp;<span class="text-base-light mitigation-character-count" <% if mitigation_id.present? %> id="mitigation_<%= mitigation_id %>_character_count"<% end %>>(0/150 characters)</span>
+                                                    <%= miti.text_area :description, required: true, class: 'usa-input practice-input mitigation-description-textarea height-15', 'counter-id': "mitigation_#{mitigation_id}_description_textarea" %>
                                                 </div>
                                             <% end %>
                                         </div>
                                         <div class="grid-col-fill flex-align-end risk-miti-trash-container">
-                                            <%= rm.link_to_remove '', class: "fas fa-trash-alt risk-mitigation-trash text-no-underline" %>
+                                            <%= rm.link_to_remove '', class: "fas fa-trash-alt risk-mitigation-trash text-no-underline", 'aria-label': 'Remove' %>
                                         </div>
                                     </div>
                                 </div>

@@ -6,7 +6,7 @@ function getRiskAndMitigationCharacterCountOnPageLoad() {
 
     <% @practice.risk_mitigations.each do |rm| %>
         <% rm.risks.each do |r| %>
-            var riskTextarea = $("#risk_<%= r.id %>_description_textarea");
+            var riskTextarea = $("textarea[counter-id='risk_<%= r.id %>_description_textarea']");
             var riskCharacterSpan = $("#risk_<%= r.id %>_character_count");
             var riskCurrentLength = riskTextarea.val().length;
             var riskCharacterCounter = '(' + riskCurrentLength + '/' + RISK_AND_MITIGATION_MAX_LENGTH + ' characters)';
@@ -18,7 +18,7 @@ function getRiskAndMitigationCharacterCountOnPageLoad() {
             }
         <% end %>
         <% rm.mitigations.each do |m| %>
-            var mitigationTextarea = $("#mitigation_<%= m.id %>_description_textarea");
+            var mitigationTextarea = $("textarea[counter-id='mitigation_<%= m.id %>_description_textarea']");
             var mitigationCharacterSpan = $("#mitigation_<%= m.id %>_character_count");
             var mitigationCurrentLength = mitigationTextarea.val().length;
             var mitigationCharacterCounter = '(' + mitigationCurrentLength + '/' + RISK_AND_MITIGATION_MAX_LENGTH + ' characters)';

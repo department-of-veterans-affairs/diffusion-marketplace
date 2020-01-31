@@ -35,7 +35,6 @@ describe 'Practice editor', type: :feature do
       @save_progress.click
       resource_name_message = page.find('.resource-name-input').native.attribute('validationMessage')
       expect(resource_name_message).to eq('Please fill out this field.')
-      find('#practice-editor-save-button').click
     end
 
     it 'when no data is present, should allow the user to add a practice permission and additional resource' do
