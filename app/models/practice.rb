@@ -142,8 +142,8 @@ class Practice < ApplicationRecord
   accepts_nested_attributes_for :required_staff_trainings, allow_destroy: true
   accepts_nested_attributes_for :practice_creators, allow_destroy: true
   accepts_nested_attributes_for :practice_permissions, allow_destroy: true
-  accepts_nested_attributes_for :additional_documents, allow_destroy: true
-  accepts_nested_attributes_for :publications, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? }
+  accepts_nested_attributes_for :additional_documents, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['attachment'].nil? }
+  accepts_nested_attributes_for :publications, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['link'].blank? }
 
   SATISFACTION_LABELS = ['Little or no impact', 'Some impact', 'Significant impact', 'High or large impact'].freeze
   COST_LABELS = ['0-$10,000', '$10,000-$50,000', '$50,000-$250,000', 'More than $250,000'].freeze

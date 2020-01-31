@@ -2,7 +2,7 @@ var CHARACTER_COUNTER_VALID_COLOR =  '#a9aeb1';
 var CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
 var IMPACT_CAPTION_MAX_LENGTH = 300;
 
-function getImpactCaptionCharacterCountOnPageLoad() {
+function getPhotoCaptionCharacterCountOnPageLoad() {
 
     <% @practice.impact_photos.each do |ip| %>
         var impactCaptionTextarea = $("textarea[counter-id='impact_photo_<%= ip.id %>_caption']");
@@ -16,7 +16,9 @@ function getImpactCaptionCharacterCountOnPageLoad() {
             impactCaptionCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
         }
     <% end %>
+}
 
+function getVideoCaptionCharacterCountOnPageLoad() {
     <% @practice.video_files.each do |vf| %>
         var impactCaptionTextarea = $("textarea[counter-id='video_file_<%= vf.id %>_caption']");
         var impactCaptionCharacterSpan = $("#video_file_<%= vf.id %>_caption_character_count");
@@ -31,7 +33,7 @@ function getImpactCaptionCharacterCountOnPageLoad() {
     <% end %>
 }
 
-function impactCaptionCharacterCounter() {
+function photoCaptionCharacterCounter() {
     $(document).on('input', '.practice-editor-image-caption', function(e) {
         var t = e.target;
         var currentLength = $(t).val().length;
@@ -46,7 +48,9 @@ function impactCaptionCharacterCounter() {
             impactCaptionCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
         }
     });
+}
 
+function videoCaptionCharacterCounter() {
     $(document).on('input', '.practice-editor-video-caption', function(e) {
         var t = e.target;
         var currentLength = $(t).val().length;
@@ -94,8 +98,10 @@ function showFieldsOnPageLoad() {
 
 
 function executeImpactFunctions() {
-    getImpactCaptionCharacterCountOnPageLoad();
-    impactCaptionCharacterCounter();
+    getPhotoCaptionCharacterCountOnPageLoad();
+    getVideoCaptionCharacterCountOnPageLoad();
+    photoCaptionCharacterCounter();
+    videoCaptionCharacterCounter();
     showFieldsOnPageLoad();
     denyMultipleMainDisplayImageSelections();
     makeVideoFileFieldsRequiredIfUsed();

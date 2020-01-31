@@ -77,7 +77,7 @@ describe 'Practice editor', type: :feature, js: true do
             end
 
             it 'should require the user to fill out both fields if at least one field is filled out' do
-                all('.video-file-url-input').first.set('www.awesomewebsite.com')
+                all('.video-file-url-input').first.set('www.youtube.com/awesome-and-random-video')
                 @save_button.click
                 caption_message = page.find('.practice-editor-video-caption').native.attribute('validationMessage')
                 expect(caption_message).to eq('Please fill out this field.')
@@ -88,27 +88,27 @@ describe 'Practice editor', type: :feature, js: true do
             end
 
             it 'should allow the user to add a video file' do
-                all('.video-file-url-input').first.set('www.awesomewebsite.com')
+                all('.video-file-url-input').first.set('www.youtube.com/awesome-and-random-video')
                 all('.practice-editor-video-caption').first.set('This is the most awesome video ever')
                 @save_button.click
                 expect(page).to have_content('Practice was successfully updated')
                 expect(page).to have_selector('iframe')
-                expect(page).to have_field('practice[video_files_attributes][0][url]', with: 'www.awesomewebsite.com')
+                expect(page).to have_field('practice[video_files_attributes][0][url]', with: 'www.youtube.com/awesome-and-random-video')
                 expect(page).to have_field('practice[video_files_attributes][0][description]', with: 'This is the most awesome video ever')
             end
 
             it 'should allow the user to add multiple video files' do
-                all('.video-file-url-input').first.set('www.awesomewebsite.com')
+                all('.video-file-url-input').first.set('www.youtube.com/awesome-and-random-video')
                 all('.practice-editor-video-caption').first.set('This is the most awesome video ever')
                 find('.add-video-file-link').click
-                all('.video-file-url-input').last.set('www.awesomewebsite2.com')
+                all('.video-file-url-input').last.set('www.youtube.com/awesome-and-random-video-2')
                 all('.practice-editor-video-caption').last.set('This is the second most awesome video ever')
                 @save_button.click
                 expect(page).to have_selector('iframe', count: 2)
                 expect(page).to have_content('Practice was successfully updated')
-                expect(page).to have_field('practice[video_files_attributes][0][url]', with: 'www.awesomewebsite.com')
+                expect(page).to have_field('practice[video_files_attributes][0][url]', with: 'www.youtube.com/awesome-and-random-video')
                 expect(page).to have_field('practice[video_files_attributes][0][description]', with: 'This is the most awesome video ever')
-                expect(page).to have_field('practice[video_files_attributes][1][url]', with: 'www.awesomewebsite2.com')
+                expect(page).to have_field('practice[video_files_attributes][1][url]', with: 'www.youtube.com/awesome-and-random-video-2')
                 expect(page).to have_field('practice[video_files_attributes][1][description]', with: 'This is the second most awesome video ever')
             end
 

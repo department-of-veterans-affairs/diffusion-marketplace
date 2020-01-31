@@ -25,7 +25,7 @@
 
                         <h2 class="font-sans-xl">File upload</h2>
 
-                        <ul class="practice-editor-additional-document-ul" id="sortable_additional_documents">
+                        <ul class="practice-editor-additional-document-ul" id="sortable_additional_documents" role="listbox" aria-label="Practice editor additional document list">
                         <%= f.fields_for :additional_documents, wrapper: false do |ad| %>
                             <%
                                 ad_id = ad.object.id
@@ -39,8 +39,8 @@
                                         <div class="fas fa-arrows-alt font-sans-lg position-arrows documentation-arrows text-base arrows-tooltip">
                                             <span class="usa-tag tooltip-text">Drag and drop to change order</span>
                                         </div>
-                                        <%= ad.label :title, 'Title:', class: 'usa-label add-doc-title text-bold display-inline-block' %>&nbsp;<span>Type the title of the file.</span>
-                                        <%= ad.text_field :title, required: true, class: 'usa-input practice-input width-tablet' %>
+                                        <%= ad.label :title, 'Title:', class: 'usa-label add-doc-title text-bold display-inline-block' %>&nbsp;<span>Type the name of the file.</span>&nbsp;<span class="text-base-light additional-document-title-character-count" <% if ad_id.present? %>id="additional_document_<%= ad_id %>_title_character_count"<% end %>>(0/50 characters)</span>
+                                        <%= ad.text_field :title, class: 'usa-input practice-input width-tablet additional-document-title-input', 'counter-id': "additional_document_#{ad_id}_title" %>
                                     </div>
                                     <div class="grid-row width-full">
                                         <div class="grid-col-11">
@@ -53,7 +53,7 @@
                                                 <% end %>
                                                 <div>
                                                     <%= ad.label :attachment, 'Upload new file', class: 'usa-button usa-button--unstyled add-documentation-label' %>
-                                                    <%= ad.file_field :attachment, class: 'hidden-upload' %>
+                                                    <%= ad.file_field :attachment, class: 'hidden-upload hidden-new-documentation-field', accept: '.pdf,.doc,.docx' %>
                                                 </div>
                                                 <div class="margin-top-105">
                                                     <%= ad.check_box :delete_attachment, { class: 'usa-checkbox__input practice-input delete-documentation-attachment-input'}, 'true', 'false' %>
@@ -62,12 +62,12 @@
                                             <% else %>
                                                 <div>
                                                     <%= ad.label :attachment, 'Upload file', class: 'usa-button usa-button--unstyled add-documentation-label' %>
-                                                    <%= ad.file_field :attachment, required: true, class: 'hidden-upload hidden-documentation-field' %>
+                                                    <%= ad.file_field :attachment, class: 'hidden-upload hidden-documentation-field', accept: '.pdf,.doc,.docx' %>
                                                 </div>
                                             <% end %>
                                         </div>
                                         <div class="grid-col-fill flex-align-end documentation-trash-container">
-                                            <%= ad.link_to_remove '', class: "fas fa-trash-alt documentation-trash text-no-underline" %>
+                                            <%= ad.link_to_remove '', class: "fas fa-trash-alt documentation-trash text-no-underline", title: 'remove additional document' %>
                                         </div>
                                     </div>
                                 </div>
@@ -80,7 +80,7 @@
 
                         <h2 class="font-sans-xl margin-top-0">Link attachment</h2>
 
-                        <ul class="practice-editor-publication-ul" id="sortable_publications">
+                        <ul class="practice-editor-publication-ul" id="sortable_publications" role="listbox" aria-label="Practice editor publication list">
                         <%= f.fields_for :publications, wrapper: false do |pub| %>
                             <%
                                 pub_id = pub.object.id
@@ -94,17 +94,17 @@
                                             <div class="fas fa-arrows-alt font-sans-lg position-arrows documentation-arrows text-base arrows-tooltip">
                                                 <span class="usa-tag tooltip-text">Drag and drop to change order</span>
                                             </div>
-                                            <%= pub.label :title, 'Title:', class: 'usa-label pub-title text-bold display-inline-block' %>&nbsp;<span>Type the title of the web link.</span>
-                                            <%= pub.text_field :title, required: true, class: 'usa-input practice-input width-tablet' %>
+                                            <%= pub.label :title, 'Title:', class: 'usa-label pub-title text-bold display-inline-block' %>&nbsp;<span>Type the name of the web link.</span>&nbsp;<span class="text-base-light publication-title-character-count" <% if pub_id.present? %>id="publication_<%= pub_id %>_title_character_count"<% end %>>(0/50 characters)</span>
+                                            <%= pub.text_field :title, class: 'usa-input practice-input width-tablet publication-title-input', 'counter-id': "publication_#{pub_id}_title" %>
                                         </div>
                                     </div>
                                     <div class="grid-row">
                                         <div class="margin-bottom-1">
                                             <%= pub.label :link, 'Link:', class: 'usa-label pub-link text-bold display-inline-block' %>&nbsp;<span>Paste the full web address.</span>
-                                            <%= pub.text_field :link, required: true, class: 'usa-input practice-input width-tablet' %>
+                                            <%= pub.text_field :link, class: 'usa-input practice-input width-tablet publication-link-input' %>
                                         </div>
                                         <div class="grid-col-fill flex-align-end documentation-trash-container">
-                                            <%= pub.link_to_remove '', class: "fas fa-trash-alt documentation-trash text-no-underline" %>
+                                            <%= pub.link_to_remove '', class: "fas fa-trash-alt documentation-trash text-no-underline", title: 'remove publication' %>
                                         </div>
                                     </div>
                                 </div>
@@ -114,6 +114,8 @@
                         <%= f.link_to_add :publications, class: 'fas fa-plus text-no-underline add-publication-link' do %>
                             <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add link</span>
                         <% end %>
+                        <ul class="trash-can display-none"></ul>
+
                     </fieldset>
                 <% end %>
                 <div class="grid-row margin-bottom-8">
