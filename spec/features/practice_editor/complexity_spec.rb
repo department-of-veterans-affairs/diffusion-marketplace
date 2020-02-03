@@ -22,7 +22,11 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         it 'should require the user to fill out the fields that are marked as required' do
-            
+            all('.usa-checkbox__label').first.click
+            @save_button.click
+            expect(accept_alert).to eq('Please choose at least one of the department options listed')
+            it_message = all('.it-radio').first.native.attribute('validationMessage')
+            expect(it_message).to eq('Please select one of these options.')
         end
     end
 end

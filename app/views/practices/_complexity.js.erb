@@ -40,10 +40,10 @@ function showStaffTrainingFieldsOnPageLoad() {
 }
 
 function removeRequiredAttrFromStaffTrainingFieldsWhenHidden() {
-    $(document).on('change', '.training-required-radio', function() {
+    $(document).on('change', '.training-required-radio, .usa-checkbox__input', function() {
         var trainingTitle = $('.staff-training-title');
         var trainingDescription = $('.staff-training-description');
-        if ($('#practice_need_training_false').prop('checked') == true) {
+        if ($('#practice_need_training_false').prop('checked') == true && $('.usa-checkbox__input:checked').length > 0) {
             trainingTitle.prop('required', false);
             trainingDescription.prop('required', false);
         } else {

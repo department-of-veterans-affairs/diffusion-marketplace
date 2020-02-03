@@ -42,7 +42,7 @@
                     <fieldset class="usa-fieldset">
                         <div class="grid-row grid-gap margin-top-105 margin-bottom-3">
                             <div class='usa-checkbox grid-col-6'>
-                                <input type='checkbox' class='usa-checkbox__input no-department-input' id="no_practice_department">
+                                <input type='checkbox' class='usa-checkbox__input no-department-input' id="no_practice_department" <%= @practice.departments.empty? ? "checked= 'true'" : "" %>>
                                 <label class='usa-checkbox__label' for="no_practice_department">None</label>
                             </div>
                             <div class='usa-checkbox grid-col-6'>
@@ -64,11 +64,11 @@
                         </p>
                         <div class='margin-top-105 margin-bottom-4'>
                             <div class='grid-col usa-radio'>
-                                <%= radio_button('practice', 'it_required', true, class: 'usa-radio__input complexity-radio', checked: it_required == true ? 'checked' : false, required: true) %>
+                                <%= radio_button('practice', 'it_required', true, class: 'usa-radio__input complexity-radio it-radio', checked: it_required == true ? 'checked' : false, required: true) %>
                                 <label class='usa-radio__label' for='practice_it_required_true'>Yes</label>
                             </div>
                             <div class='grid-col usa-radio'>
-                                <%= radio_button('practice', 'it_required', false, class: 'usa-radio__input complexity-radio', checked: it_required == false ? 'checked' : false) %>
+                                <%= radio_button('practice', 'it_required', false, class: 'usa-radio__input complexity-radio it-radio', checked: it_required == false ? 'checked' : false) %>
                                 <label class='usa-radio__label' for='practice_it_required_false'>No</label>
                             </div>
                         </div>
