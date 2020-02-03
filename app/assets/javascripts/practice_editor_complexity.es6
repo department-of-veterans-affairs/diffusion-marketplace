@@ -18,5 +18,37 @@
         })
     }
 
-    $document.on('turbolinks:load', trainingDropdown);
+    function checkAllDepartmentBoxes() {
+        $('#all_practice_departments').click(function(event) {   
+            if(this.checked) {
+                $('.department-input').each(function() {
+                    this.checked = true;                        
+                });
+                $('#no_practice_department').prop('checked', false);
+            } else {
+                $('.department-input').each(function() {
+                    this.checked = false;                        
+                });
+            }
+        });
+    }
+
+    function uncheckAllDepartmentBoxes() {
+        $('#no_practice_department').click(function(event) {   
+            if(this.checked) {
+                $('#all_practice_departments').prop('checked', false);
+                $('.department-input').each(function() {
+                    this.checked = false;                        
+                });
+            }
+        });
+    }
+
+    function initComplexityFunctions() {
+        trainingDropdown();
+        checkAllDepartmentBoxes();
+        uncheckAllDepartmentBoxes();
+    }
+
+    $document.on('turbolinks:load', initComplexityFunctions);
 })(window.jQuery);

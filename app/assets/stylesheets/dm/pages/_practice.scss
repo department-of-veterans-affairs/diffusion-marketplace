@@ -492,7 +492,8 @@
 }
 
 .milestone-textarea, .risk-description, .mitigation-description, 
-.practice-editor-video-caption, .practice-editor-image-caption, .risk-description-textarea, .mitigation-description-textarea {
+.practice-editor-video-caption, .practice-editor-image-caption, .risk-description-textarea, .mitigation-description-textarea,
+.staff-training-description {
   resize: none;
 }
 
@@ -604,7 +605,7 @@
 }
 
 .complexity-radio {
-  left: 12px !important;
+  left: 10px !important;
   height: 1px;
   width: 1px;
   margin-top: 11px;
@@ -695,4 +696,15 @@
 
 .practice-editor-min-height {
   min-height: 700px;
+}
+
+.hidden-estimate-label {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
 }

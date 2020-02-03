@@ -99,7 +99,7 @@ function makePublicationFieldsRequiredIfUsed() {
 function requireAdditionalDocumentAttachment() {
     <% @practice.additional_documents.each do |ad| %>
         if (<%= ad.attachment_content_type.nil? %>) {
-            $('#practice_additional_documents_attributes_<%= ad.position - 1 %>_attachment').attr("required")
+            $('#practice_additional_documents_attributes_<%= ad.position - 1 %>_attachment').prop("required", true)
         }
     <% end %>
 }

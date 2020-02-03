@@ -1,4 +1,7 @@
 <% provide :head_tags do %>
+    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+        <%= render partial: 'complexity', formats: [:js] %>
+    <% end %>
   <%= javascript_include_tag 'practice_editor_complexity', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
@@ -9,6 +12,7 @@
     training = @practice.need_training
     training_test = @practice.training_test
     need_new_license = @practice.need_new_license
+    time_estimate = @practice.implementation_time_estimate
 %>
 
 <%= render 'breadcrumbs' %>
@@ -37,6 +41,14 @@
                     </p>
                     <fieldset class="usa-fieldset">
                         <div class="grid-row grid-gap margin-top-105 margin-bottom-3">
+                            <div class='usa-checkbox grid-col-6'>
+                                <input type='checkbox' class='usa-checkbox__input no-department-input' id="no_practice_department">
+                                <label class='usa-checkbox__label' for="no_practice_department">None</label>
+                            </div>
+                            <div class='usa-checkbox grid-col-6'>
+                                <input type='checkbox' class='usa-checkbox__input all-departments-input' id="all_practice_departments" <%= @practice.departments.include?(Department.all) ? "checked= 'true'" : "" %>>
+                                <label class='usa-checkbox__label' for="all_practice_departments">All</label>
+                            </div>
                             <% Department.order(:name).all.each do |department| %>
                                 <div class='usa-checkbox grid-col-6'>
                                     <input type='checkbox' class='usa-checkbox__input department-input' id="practice_department_<%= department.id %>" name='practice[department][<%= department.id %>][value]' <%= @practice.departments.include?(department) ? "checked= 'true'" : "" %>>
@@ -52,7 +64,7 @@
                         </p>
                         <div class='margin-top-105 margin-bottom-4'>
                             <div class='grid-col usa-radio'>
-                                <%= radio_button('practice', 'it_required', true, class: 'usa-radio__input complexity-radio', checked: it_required == true ? 'checked' : false) %>
+                                <%= radio_button('practice', 'it_required', true, class: 'usa-radio__input complexity-radio', checked: it_required == true ? 'checked' : false, required: true) %>
                                 <label class='usa-radio__label' for='practice_it_required_true'>Yes</label>
                             </div>
                             <div class='grid-col usa-radio'>
@@ -68,7 +80,7 @@
                         </p>
                         <div class="margin-top-105 margin-bottom-4">
                             <div class='usa-radio'>
-                                <%= radio_button('practice', 'process', 'New clinical approach or new process', class: 'usa-radio__input complexity-radio', checked: process == 'New Clinical Approach or New Process' ? 'checked' : false ) %>
+                                <%= radio_button('practice', 'process', 'New clinical approach or new process', class: 'usa-radio__input complexity-radio', checked: process == 'New clinical approach or new process' ? 'checked' : false, required: true) %>
                                 <label class='usa-radio__label' for='practice_process_new_clinical_approach_or_new_process'>A new clinical approach or new process to the VA</label>
                             </div>
                             <div class='usa-radio'>
@@ -84,11 +96,12 @@
                         </p>
                         <% Practice::TIME_ESTIMATE_OPTIONS.each do |label| %>
                             <div class="grid-col usa-radio margin-top-105">
-                                <%= radio_button('practice', 'implementation_time_estimate', label, class: 'usa-radio__input complexity-radio') %>
-                                <label class="usa-radio__label" for='practice_implementation_time_estimate_<%= label.split(' ').join('_').tr('()', '').downcase %>'><%= label %></label>
+                                <%= radio_button('practice', 'implementation_time_estimate', label, class: 'usa-radio__input complexity-radio time-estimate-radio', checked: time_estimate.include?(label) ? 'checked' : false, required: true) %>
+                                <label class="usa-radio__label time-estimate-label" for='practice_implementation_time_estimate_<%= label.split(' ').join('_').tr('()', '').downcase %>'><%= label %></label>
                             </div>
                         <% end %>
-                        <%= f.text_field :implementation_time_estimate, class: 'usa-input width-mobile-lg' %>
+                        <%= f.label :implementation_time_estimate_description, class:"usa-label hidden-estimate-label" %>
+                        <%= f.text_field :implementation_time_estimate_description, class: 'usa-input width-mobile-lg time-estimate-description-input' %>
                     </fieldset>
                     <fieldset class='usa-fieldset'>
                         <h2 class="font-sans-xl">Staff</h2>
@@ -97,29 +110,29 @@
 
                             <div class="margin-bottom-3">
                                 <%= diff.label :title, 'Role:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type the title or position name</span>
-                                <%= diff.text_field :title, required: true, class: 'usa-input practice-input width-tablet' %>
+                                <%= diff.text_field :title, class: 'usa-input practice-input width-tablet staff-title-input' %>
                             </div>
                             <div class="margin-bottom-3 width-tablet">
                                 <%= diff.label :hours_per_week, 'Hours per week:', class: 'usa-label text-bold display-inline-block margin-top-0' %>&nbsp;<span>Type the number of hours per week this person would dedicate to this practice</span>
-                                <%= diff.text_field :hours_per_week, required: true, class: 'usa-input practice-input width-8' %>
+                                <%= diff.text_field :hours_per_week, class: 'usa-input practice-input width-8 staff-hours-input' %>
                             </div>
                             <div class="margin-bottom-3">
                                 <p class="text-bold margin-bottom-105">Role type</p>
                                 <div class='usa-radio'>
-                                    <%= diff.radio_button :permanent, true, { id: "addtional_staffs_#{diff.object.id}_permanent_true", class: 'usa-radio__input complexity-radio', checked: diff.object.permanent == true ? 'checked' : 'false' } %>
+                                    <%= diff.radio_button :permanent, true, { id: "addtional_staffs_#{diff.object.id}_permanent_true", class: 'usa-radio__input complexity-radio permanent-radio', checked: diff.object.permanent == true ? 'checked' : 'false' } %>
                                     <label class='usa-radio__label' for="addtional_staffs_<%= diff.object.id %>_permanent_true">Permanent</label>
                                 </div>
                                 <div class='usa-radio'>
-                                    <%= diff.radio_button :permanent, false, { id: "addtional_staffs_#{diff.object.id}_permanent_false", class: 'usa-radio__input complexity-radio', required: true, checked: diff.object.permanent == false ? 'checked' : 'false'  } %>
+                                    <%= diff.radio_button :permanent, false, { id: "addtional_staffs_#{diff.object.id}_permanent_false", class: 'usa-radio__input complexity-radio permanent-radio', checked: diff.object.permanent == false ? 'checked' : 'false'  } %>
                                     <label class='usa-radio__label' for="addtional_staffs_<%= diff.object.id %>_permanent_false">Temporary</label>
                                 </div>
                             </div>
                             <div>
                                 <%= diff.label :duration_in_weeks, 'Role duration:', class: 'usa-label text-bold display-inline-block margin-top-0' %>&nbsp;<span>Type the duration of this role in months</span>
-                                <%= diff.text_field :duration_in_weeks, required: true, class: 'usa-input practice-input width-8' %>
+                                <%= diff.text_field :duration_in_weeks, class: 'usa-input practice-input width-8 staff-duration-input' %>
                             </div>
                             <div class="grid-row flex-justify-end margin-right-2">
-                               <%= diff.link_to_remove '', class: 'fas fa-trash-alt staff-trash text-no-underline clear-additional-staff-link' %>
+                               <%= diff.link_to_remove '', class: 'fas fa-trash-alt staff-trash text-no-underline clear-additional-staff-link', title: 'remove additional staff' %>
                             </div>
                             <div class="height-1px bg-base-lighter flex-fill display-block"></div>
                         <% end %>
@@ -132,11 +145,11 @@
                         <p class="margin-top-2">Is training required</p>
                         <div class="margin-top-105 need-training-radio-container", style="<%= training == true ? '' : 'margin-bottom: 44px;' %>">
                             <div class='usa-radio'>
-                                <%= radio_button('practice', 'need_training', true, class: 'usa-radio__input complexity-radio', checked: training == true ? 'checked' : false) %>
+                                <%= radio_button('practice', 'need_training', true, class: 'usa-radio__input complexity-radio training-required-radio', checked: training == true ? 'checked' : false) %>
                                 <label class='usa-radio__label need_training_true_label' for='practice_need_training_true'>Yes</label>
                             </div>
                             <div class='usa-radio'>
-                                <%= radio_button('practice', 'need_training', false, class: 'usa-radio__input complexity-radio', checked: training == false ? 'checked' : false) %>
+                                <%= radio_button('practice', 'need_training', false, class: 'usa-radio__input complexity-radio training-required-radio', checked: training == false ? 'checked' : false, required: true,) %>
                                 <label class='usa-radio__label need_training_false_label' for='practice_need_training_false'>No</label>
                             </div>
                         </div>
@@ -145,7 +158,7 @@
                         <fieldset class="usa-fieldset">
                             <div class="margin-bottom-3 margin-top-105">
                                 <%= f.label :training_length, 'Training length:', class: 'usa-label text-bold display-inline-block margin-top-0' %>&nbsp;<span>Type the duration of training in hours.</span>
-                                <%= f.text_field :training_length, class: 'usa-input practice-input width-10' %>
+                                <%= f.text_field :training_length, class: 'usa-input practice-input width-10 training-length-input' %>
                             </div>
                             <p class="margin-bottom-3">
                                 <span class="text-bold">Trainer(s)&nbsp;</span>
@@ -193,14 +206,14 @@
                                     <%= diff.hidden_field :id %>
                                     <div class="margin-bottom-3">
                                         <%= diff.label :title, 'Job Title', class: 'usa-label' %>
-                                        <%= diff.text_field :title, required: true, class: 'usa-input practice-input width-tablet' %>
+                                        <%= diff.text_field :title, required: true, class: 'usa-input practice-input width-tablet staff-training-title' %>
                                     </div>
                                     <div>
                                         <%= diff.label :description, class: 'usa-label' %>
-                                        <%= diff.text_area :description, required: true, class: 'usa-input practice-input width-tablet', style: 'height: 4rem' %>
+                                        <%= diff.text_area :description, required: true, class: 'usa-input practice-input width-tablet staff-training-description', style: 'height: 4rem' %>
                                     </div>
                                     <div class="grid-row flex-justify-end margin-right-2">
-                                        <%= diff.link_to_remove '', class: 'fas fa-trash-alt staff-trash text-no-underline clear-required-staff-link' %>
+                                        <%= diff.link_to_remove '', class: 'fas fa-trash-alt staff-trash text-no-underline clear-required-staff-link', title: 'remove required staff training' %>
                                     </div>
                                     <div class="height-1px bg-base-lighter flex-fill display-block"></div>
                                 <% end %>
@@ -208,6 +221,8 @@
                                     <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add another</span>
                                 <% end %>
                             </div>
+                            <ul class="trash-can display-none"></ul>
+
                         </fieldset>
                     </div>
                 <% end %>

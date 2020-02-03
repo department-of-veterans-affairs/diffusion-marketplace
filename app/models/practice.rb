@@ -137,7 +137,7 @@ class Practice < ApplicationRecord
   accepts_nested_attributes_for :risk_mitigations, allow_destroy: true
   accepts_nested_attributes_for :timelines, allow_destroy: true
   accepts_nested_attributes_for :va_employees, allow_destroy: true
-  accepts_nested_attributes_for :additional_staffs, allow_destroy: true
+  accepts_nested_attributes_for :additional_staffs, allow_destroy: true, reject_if: :all_blank
   accepts_nested_attributes_for :additional_resources, allow_destroy: true
   accepts_nested_attributes_for :required_staff_trainings, allow_destroy: true
   accepts_nested_attributes_for :practice_creators, allow_destroy: true

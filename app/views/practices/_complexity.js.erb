@@ -1,0 +1,67 @@
+function makeImplementationTimeFieldRequiredIfOtherOptionChosen() {
+    $(document).on('change', '.time-estimate-radio', function() {
+        var timeEstimateDescription = $('.time-estimate-description-input');
+        if ($('#practice_implementation_time_estimate_other_please_specify').prop('checked') == true) {
+            timeEstimateDescription.prop('required', true);
+        } else {
+            timeEstimateDescription.prop('required', false);
+        }
+    });
+}
+
+function makeAdditionalStaffFieldsRequiredIfUsed() {
+    $(document).on('input', 'input.staff-title-input, input.staff-hours-input, input.permanent-radio, input.staff-duration-input', function() {
+        var $inputs = $('input.staff-title-input, input.staff-hours-input, input.permanent-radio, input.staff-duration-input');
+        $inputs.not(this).prop('required', $(this).val().length);
+    });
+}
+
+function makeTrainingLengthRequiredIfTrainingRequiredIsChosen() {
+    $(document).on('change', '.training-required-radio', function() {
+        var trainingLengthDescription = $('.training-length-input');
+        if ($('#practice_need_training_true').prop('checked') == true) {
+            trainingLengthDescription.prop('required', true);
+        } else {
+            trainingLengthDescription.prop('required', false);
+        }
+    });
+}
+
+function showAdditionalStaffFieldsOnPageLoad() {
+    <% if @practice.additional_staffs.empty? %>
+        $('.add-additional-staff-link').click();
+    <% end %>
+}
+
+function showStaffTrainingFieldsOnPageLoad() {
+    <% if @practice.required_staff_trainings.empty? %>
+        $('.add-required-staff-link').click();
+    <% end %>
+}
+
+function removeRequiredAttrFromStaffTrainingFieldsWhenHidden() {
+    $(document).on('change', '.training-required-radio', function() {
+        var trainingTitle = $('.staff-training-title');
+        var trainingDescription = $('.staff-training-description');
+        if ($('#practice_need_training_false').prop('checked') == true) {
+            trainingTitle.prop('required', false);
+            trainingDescription.prop('required', false);
+        } else {
+            trainingTitle.prop('required', true);
+            trainingDescription.prop('required', true);
+        }
+    });
+}
+
+function initComplexityFunctions() {
+    makeImplementationTimeFieldRequiredIfOtherOptionChosen();
+    makeAdditionalStaffFieldsRequiredIfUsed();
+    makeTrainingLengthRequiredIfTrainingRequiredIsChosen();
+    showAdditionalStaffFieldsOnPageLoad();
+    showStaffTrainingFieldsOnPageLoad();
+    removeRequiredAttrFromStaffTrainingFieldsWhenHidden();
+}
+
+
+
+$(document).on('turbolinks:load', initComplexityFunctions);
