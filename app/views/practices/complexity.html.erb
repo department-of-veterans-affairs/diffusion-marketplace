@@ -65,11 +65,11 @@
                         <div class='margin-top-105 margin-bottom-4'>
                             <div class='grid-col usa-radio'>
                                 <%= radio_button('practice', 'it_required', true, class: 'usa-radio__input complexity-radio it-radio', checked: it_required == true ? 'checked' : false, required: true) %>
-                                <label class='usa-radio__label' for='practice_it_required_true'>Yes</label>
+                                <label class='usa-radio__label complexity-it-label' for='practice_it_required_true'>Yes</label>
                             </div>
                             <div class='grid-col usa-radio'>
                                 <%= radio_button('practice', 'it_required', false, class: 'usa-radio__input complexity-radio it-radio', checked: it_required == false ? 'checked' : false) %>
-                                <label class='usa-radio__label' for='practice_it_required_false'>No</label>
+                                <label class='usa-radio__label complexity-it-label' for='practice_it_required_false'>No</label>
                             </div>
                         </div>
                     </fieldset>
@@ -80,12 +80,12 @@
                         </p>
                         <div class="margin-top-105 margin-bottom-4">
                             <div class='usa-radio'>
-                                <%= radio_button('practice', 'process', 'New clinical approach or new process', class: 'usa-radio__input complexity-radio', checked: process == 'New clinical approach or new process' ? 'checked' : false, required: true) %>
-                                <label class='usa-radio__label' for='practice_process_new_clinical_approach_or_new_process'>A new clinical approach or new process to the VA</label>
+                                <%= radio_button('practice', 'process', 'New clinical approach or new process', class: 'usa-radio__input complexity-radio process-radio', checked: process == 'New clinical approach or new process' ? 'checked' : false, required: true) %>
+                                <label class='usa-radio__label complexity-process-label' for='practice_process_new_clinical_approach_or_new_process'>A new clinical approach or new process to the VA</label>
                             </div>
                             <div class='usa-radio'>
-                                <%= radio_button('practice', 'process', 'Modification of an established process', class: 'usa-radio__input complexity-radio', checked: process == 'Modification of an established process' ? 'checked' : false) %>
-                                <label class='usa-radio__label' for='practice_process_modification_of_an_established_process'>A modification of an existing VA approach or process</label>
+                                <%= radio_button('practice', 'process', 'Modification of an established process', class: 'usa-radio__input complexity-radio process-radio', checked: process == 'Modification of an established process' ? 'checked' : false) %>
+                                <label class='usa-radio__label complexity-process-label' for='practice_process_modification_of_an_established_process'>A modification of an existing VA approach or process</label>
                             </div>
                         </div>
                     </fieldset>

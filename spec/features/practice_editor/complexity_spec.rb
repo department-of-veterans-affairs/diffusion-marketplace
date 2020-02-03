@@ -27,6 +27,10 @@ describe 'Practice editor', type: :feature, js: true do
             expect(accept_alert).to eq('Please choose at least one of the department options listed')
             it_message = all('.it-radio').first.native.attribute('validationMessage')
             expect(it_message).to eq('Please select one of these options.')
+            all('.complexity-it-label').first.click
+            @save_button
+            process_message = all('.process-radio').first.native.attribute('validationMessage')
+            expect(process_message).to eq('Please select one of these options.')
         end
     end
 end
