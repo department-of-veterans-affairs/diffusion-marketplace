@@ -50,7 +50,7 @@
 
 <section class="usa-section p2-top p2-bottom">
   <div class="grid-container position-relative">
-    <% if current_user&.has_role?(:approver_editor) || current_user&.has_role?(:admin) %>
+    <% if @practice.user_id == current_user.id || current_user.roles.any? %>
       <div class="text-right">
         <%= link_to 'Edit', practice_instructions_path(@practice), class: 'usa-button usa-button--outline margin-right-0' %>
       </div>
