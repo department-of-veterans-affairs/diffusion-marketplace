@@ -164,7 +164,7 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (~> 1.5)
       xpath (~> 3.2)
-    chartkick (3.2.1)
+    chartkick (3.3.0)
     childprocess (1.0.1)
       rake (< 13.0)
     choice (0.2.0)
@@ -335,8 +335,8 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
     public_suffix (3.1.1)
-    puma (3.12.1)
-    rack (2.0.7)
+    puma (3.12.2)
+    rack (2.0.8)
     rack-protection (2.0.5)
       rack
     rack-test (1.1.0)
@@ -578,7 +578,7 @@ DEPENDENCIES
   papercrop!
   pg (= 1.1.4)
   pry (~> 0.12.2)
-  puma (~> 3.11)
+  puma (~> 3.12)
   rails (~> 5.2.1)
   rails-assets-jquery.scrollTo!
   rails-assets-sticky!
