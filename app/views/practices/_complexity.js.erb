@@ -43,7 +43,7 @@ function removeRequiredAttrFromStaffTrainingFieldsWhenHidden() {
     $(document).on('input', '.training-required-radio, .usa-checkbox__input', function() {
         var trainingTitle = $('.staff-training-title');
         var trainingDescription = $('.staff-training-description');
-        if ($('#practice_need_training_false').prop('checked') == true && $('.usa-checkbox__input:checked').length > 0) {
+        if ($('#practice_need_training_false').prop('checked') == true) {
             trainingTitle.prop('required', false);
             trainingDescription.prop('required', false);
         } else {
@@ -58,7 +58,7 @@ function evaluateRequiredFieldsOnPageLoad() {
         var trainingDescription = $('.staff-training-description');
         var trainingLengthDescription = $('.training-length-input');
 
-        if ($('#practice_need_training_false').prop('checked') == true && $('.usa-checkbox__input:checked').length > 0) {
+        if ($('#practice_need_training_false').prop('checked') == true) {
             trainingTitle.prop('required', false);
             trainingDescription.prop('required', false);
         } else {
@@ -72,8 +72,6 @@ function evaluateRequiredFieldsOnPageLoad() {
             trainingLengthDescription.prop('required', false);
         }
 }
-
-
 
 function initComplexityFunctions() {
     makeImplementationTimeFieldRequiredIfOtherOptionChosen();

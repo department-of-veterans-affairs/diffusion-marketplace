@@ -42,11 +42,11 @@
                     <fieldset class="usa-fieldset">
                         <div class="grid-row grid-gap margin-top-105 margin-bottom-3">
                             <div class='usa-checkbox grid-col-6'>
-                                <input type='checkbox' class='usa-checkbox__input no-department-input' id="no_practice_department" <%= @practice.departments.present? && @practice.departments.empty? ? "checked= 'true'" : "" %>>
+                                <input type='checkbox' class='usa-checkbox__input no-department-input' id="no_practice_department" <%= @practice.departments.empty? ? "checked= 'true'" : "" %>>
                                 <label class='usa-checkbox__label' for="no_practice_department">None</label>
                             </div>
                             <div class='usa-checkbox grid-col-6'>
-                                <input type='checkbox' class='usa-checkbox__input all-departments-input' id="all_practice_departments" <%= @practice.departments.include?(Department.all) ? "checked= 'true'" : "" %>>
+                                <input type='checkbox' class='usa-checkbox__input all-departments-input' id="all_practice_departments" <%= @practice.departments == Department.all ? "checked= 'true'" : "" %>>
                                 <label class='usa-checkbox__label' for="all_practice_departments">All</label>
                             </div>
                             <% Department.order(:name).all.each do |department| %>

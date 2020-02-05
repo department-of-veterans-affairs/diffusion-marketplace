@@ -14,12 +14,21 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to be_accessible.according_to :wcag2a, :section508
             @save_button = find('#practice-editor-save-button')
             @image_path = File.join(Rails.root, '/spec/assets/charmander.png')
+            @photo_caption = 'This is the cutest charmander image ever'
+            @video_file = 'www.youtube.com/awesome-and-random-video'
+            @video_caption = 'This is the most awesome video ever'
         end
 
         it 'should be there' do
             expect(page).to have_content('Origin')
             expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/origin")
             expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/documentation")
+        end
+        
+        def fill_in_impact_photo_fields
+            attach_file('Upload photo', @image_path)
+            find('.usa-radio__label').click
+            all('.practice-editor-image-caption').first.set(@photo_caption)
         end
 
         describe 'Impact photos' do
@@ -34,34 +43,30 @@ describe 'Practice editor', type: :feature, js: true do
             end
 
             it 'should allow the user to add an impact photo and set it as the practice\'s main display image' do
-                attach_file('Upload photo', @image_path)
-                find('.usa-radio__label').click
-                all('.practice-editor-image-caption').first.set('This is the cutest charmander image ever')
+                fill_in_impact_photo_fields
                 @save_button.click
                 expect(page).to have_content('Practice was successfully updated')
-                expect(page).to have_field('practice[impact_photos_attributes][0][description]', with: 'This is the cutest charmander image ever')
+                expect(page).to have_field('practice[impact_photos_attributes][0][description]', with: @photo_caption)
                 expect(page).to have_selector('.practice-editor-impact-photo')
                 expect(find_field('practice[impact_photos_attributes][0][is_main_display_image]')).to be_checked
             end
 
             it 'should allow the user to add multiple impact photos' do
-                attach_file('Upload photo', @image_path)
-                find('.usa-radio__label').click
-                all('.practice-editor-image-caption').first.set('This is the cutest charmander image ever')
+                fill_in_impact_photo_fields
                 find('.add-impact-photo-link').click
                 all('.hidden-upload').last.attach_file(@image_path)
                 all('.practice-editor-image-caption').last.set('This is the second cutest charmander image ever')
                 @save_button.click
+
                 expect(page).to have_content('Practice was successfully updated')
                 expect(page).to have_selector('.practice-editor-impact-photo', count: 2)
-                expect(page).to have_field('practice[impact_photos_attributes][0][description]', with: 'This is the cutest charmander image ever')
+                expect(page).to have_field('practice[impact_photos_attributes][0][description]', with: @photo_caption)
                 expect(page).to have_field('practice[impact_photos_attributes][1][description]', with: 'This is the second cutest charmander image ever')
                 expect(find_field('practice[impact_photos_attributes][0][is_main_display_image]')).to be_checked
             end
 
             it 'should allow the user to delete impact photos' do
-                attach_file('Upload photo', @image_path)
-                all('.practice-editor-image-caption').first.set('This is the cutest charmander image ever')
+                fill_in_impact_photo_fields
                 all('.impact-trash').first.click
                 @save_button.click
                 expect(page).to_not have_selector('.practice-editor-impact-photo')
@@ -71,50 +76,52 @@ describe 'Practice editor', type: :feature, js: true do
 
         describe 'Video files' do
             before do
-                attach_file('Upload photo', @image_path)
-                find('.usa-radio__label').click
-                all('.practice-editor-image-caption').first.set('This is the cutest charmander image ever')
+                fill_in_impact_photo_fields
+            end
+
+            def fill_in_video_file_fields
+                all('.video-file-url-input').first.set(@video_file)
+                all('.practice-editor-video-caption').first.set(@video_caption)
             end
 
             it 'should require the user to fill out both fields if at least one field is filled out' do
-                all('.video-file-url-input').first.set('www.youtube.com/awesome-and-random-video')
+                all('.video-file-url-input').first.set(@video_file)
                 @save_button.click
                 caption_message = page.find('.practice-editor-video-caption').native.attribute('validationMessage')
                 expect(caption_message).to eq('Please fill out this field.')
                 all('.video-file-url-input').first.set(nil)
-                all('.practice-editor-video-caption').first.set('This is the most awesome video ever')
+                all('.practice-editor-video-caption').first.set(@video_caption)
                 link_message = page.find('.video-file-url-input').native.attribute('validationMessage')
                 expect(caption_message).to eq('Please fill out this field.')
             end
 
             it 'should allow the user to add a video file' do
-                all('.video-file-url-input').first.set('www.youtube.com/awesome-and-random-video')
-                all('.practice-editor-video-caption').first.set('This is the most awesome video ever')
+                fill_in_video_file_fields
                 @save_button.click
                 expect(page).to have_content('Practice was successfully updated')
                 expect(page).to have_selector('iframe')
-                expect(page).to have_field('practice[video_files_attributes][0][url]', with: 'www.youtube.com/awesome-and-random-video')
-                expect(page).to have_field('practice[video_files_attributes][0][description]', with: 'This is the most awesome video ever')
+                expect(page).to have_field('practice[video_files_attributes][0][url]', with: @video_file)
+                expect(page).to have_field('practice[video_files_attributes][0][description]', with: @video_caption)
             end
 
             it 'should allow the user to add multiple video files' do
-                all('.video-file-url-input').first.set('www.youtube.com/awesome-and-random-video')
-                all('.practice-editor-video-caption').first.set('This is the most awesome video ever')
+                fill_in_video_file_fields
                 find('.add-video-file-link').click
+
                 all('.video-file-url-input').last.set('www.youtube.com/awesome-and-random-video-2')
                 all('.practice-editor-video-caption').last.set('This is the second most awesome video ever')
                 @save_button.click
+
                 expect(page).to have_selector('iframe', count: 2)
                 expect(page).to have_content('Practice was successfully updated')
-                expect(page).to have_field('practice[video_files_attributes][0][url]', with: 'www.youtube.com/awesome-and-random-video')
-                expect(page).to have_field('practice[video_files_attributes][0][description]', with: 'This is the most awesome video ever')
+                expect(page).to have_field('practice[video_files_attributes][0][url]', with: @video_file)
+                expect(page).to have_field('practice[video_files_attributes][0][description]', with: @video_caption)
                 expect(page).to have_field('practice[video_files_attributes][1][url]', with: 'www.youtube.com/awesome-and-random-video-2')
                 expect(page).to have_field('practice[video_files_attributes][1][description]', with: 'This is the second most awesome video ever')
             end
 
             it 'should allow the user to delete video files' do
-                all('.video-file-url-input').first.set('www.awesomewebsite.com')
-                all('.practice-editor-video-caption').first.set('This is the most awesome video ever')
+                fill_in_video_file_fields
                 @save_button.click
                 all('.impact-trash').last.click
                 @save_button.click

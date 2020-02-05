@@ -14,6 +14,9 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to be_accessible.according_to :wcag2a, :section508
             @save_button = find('#practice-editor-save-button')
             @image_path = File.join(Rails.root, '/spec/assets/charmander.png')
+            @practice_email = 'test@mail.com'
+            @employee_name = 'Test name'
+            @employee_role = 'Test role'
         end
 
         it 'should be there' do
@@ -26,51 +29,56 @@ describe 'Practice editor', type: :feature, js: true do
             @save_button.click
             email_message = page.find('.contact-email-input').native.attribute('validationMessage')
             expect(email_message).to eq('Please fill out this field.')
-            fill_in('Email:', with: 'test@mail.com')
+            fill_in('Email:', with: @practice_email)
             @save_button.click
             contact_name_message = page.find('.va-employee-name-input').native.attribute('validationMessage')
             expect(contact_name_message).to eq('Please fill out this field.')
-            fill_in('Name:', with: 'Test name')
+            fill_in('Name:', with: @employee_name)
             contact_role_message = page.find('.va-employee-role').native.attribute('validationMessage')
             expect(contact_role_message).to eq('Please fill out this field.')
         end
 
-        it 'should allow the user to add a new contact' do
-            fill_in('Email:', with: 'test@mail.com')
+        def fill_in_email_field
+            fill_in('Email:', with: @practice_email)
+        end
+
+        def fill_in_contact_fields
             fill_in('Name:', with: 'Test name')
             fill_in('Role:', with: 'Test role')
             attach_file('Upload photo', @image_path)
+        end
+
+        it 'should allow the user to add a new contact' do
+            fill_in_email_field
+            fill_in_contact_fields
             @save_button.click
 
             expect(page).to have_content('Practice was successfully updated')
             expect(page).to have_css("img.va-employee-img")
-            expect(page).to have_field('practice[va_employees_attributes][0][name]', with: 'Test name')
-            expect(page).to have_field('practice[va_employees_attributes][0][role]', with: 'Test role')
+            expect(page).to have_field('Name:', with: @employee_name)
+            expect(page).to have_field('Role:', with: @employee_role)
         end
 
         it 'should allow the user to add multiple new contacts' do
-            fill_in('Email:', with: 'test@mail.com')
-            fill_in('Name:', with: 'Test name')
-            fill_in('Role:', with: 'Test role')
-            attach_file('Upload photo', @image_path)
+            fill_in_email_field
+            fill_in_contact_fields
             find('.add-va-employee-link').click
+
             all('.va-employee-name-input').last.set('Test name 2')
             all('.va-employee-role').last.set('Test role 2')
             @save_button.click
 
             expect(page).to have_content('Practice was successfully updated')
             expect(page).to have_css("img.va-employee-img")
-            expect(page).to have_field('practice[va_employees_attributes][0][name]', with: 'Test name')
-            expect(page).to have_field('practice[va_employees_attributes][0][role]', with: 'Test role')
+            expect(page).to have_field('practice[va_employees_attributes][0][name]', with: @employee_name)
+            expect(page).to have_field('practice[va_employees_attributes][0][role]', with: @employee_role)
             expect(page).to have_field('practice[va_employees_attributes][1][name]', with: 'Test name 2')
             expect(page).to have_field('practice[va_employees_attributes][1][role]', with: 'Test role 2')
         end
 
         it 'should allow the user to delete contacts' do
-            fill_in('Email:', with: 'test@mail.com')
-            fill_in('Name:', with: 'Test name')
-            fill_in('Role:', with: 'Test role')
-            attach_file('Upload photo', @image_path)
+            fill_in_email_field
+            fill_in_contact_fields
             @save_button.click
 
             find('.va-employee-trash').click
