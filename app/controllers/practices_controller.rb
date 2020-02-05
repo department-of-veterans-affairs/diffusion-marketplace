@@ -5,7 +5,13 @@ class PracticesController < ApplicationController
   before_action :can_view_committed_view, only: [:committed]
   before_action :can_view_practice, only: [:show, :edit, :update, :destroy, :planning_checklist]
   before_action :can_create_practice, only: [:new, :create]
-  before_action :can_edit_practice, only: [:edit, :update]
+  before_action :can_edit_practice, only: [:edit, :update, :instructions,
+                                           :overview, :origin, :impact,
+                                           :documentation, :resources, :complexity,
+                                           :timeline, :risk_and_mitigation,
+                                           :contact, :checklist, :published,
+                                           :publication_validation
+  ]
 
   # GET /practices
   # GET /practices.json
@@ -403,7 +409,7 @@ class PracticesController < ApplicationController
 
   def prevent_practice_permissions
     # if the user is the practice owner or the user is an admin or approver/editor
-    unless @practice.user_id == current_user.id || current_user.roles.any?
+    unless @practice.user_id == current_user.id || current_user&.roles.any?
       unauthorized_response
     end
   end
