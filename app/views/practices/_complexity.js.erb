@@ -40,7 +40,7 @@ function showStaffTrainingFieldsOnPageLoad() {
 }
 
 function removeRequiredAttrFromStaffTrainingFieldsWhenHidden() {
-    $(document).on('change', '.training-required-radio, .usa-checkbox__input', function() {
+    $(document).on('input', '.training-required-radio, .usa-checkbox__input', function() {
         var trainingTitle = $('.staff-training-title');
         var trainingDescription = $('.staff-training-description');
         if ($('#practice_need_training_false').prop('checked') == true && $('.usa-checkbox__input:checked').length > 0) {
@@ -53,6 +53,28 @@ function removeRequiredAttrFromStaffTrainingFieldsWhenHidden() {
     });
 }
 
+function evaluateRequiredFieldsOnPageLoad() {
+        var trainingTitle = $('.staff-training-title');
+        var trainingDescription = $('.staff-training-description');
+        var trainingLengthDescription = $('.training-length-input');
+
+        if ($('#practice_need_training_false').prop('checked') == true && $('.usa-checkbox__input:checked').length > 0) {
+            trainingTitle.prop('required', false);
+            trainingDescription.prop('required', false);
+        } else {
+            trainingTitle.prop('required', true);
+            trainingDescription.prop('required', true);
+        }
+
+        if ($('#practice_need_training_true').prop('checked') == true) {
+            trainingLengthDescription.prop('required', true);
+        } else {
+            trainingLengthDescription.prop('required', false);
+        }
+}
+
+
+
 function initComplexityFunctions() {
     makeImplementationTimeFieldRequiredIfOtherOptionChosen();
     makeAdditionalStaffFieldsRequiredIfUsed();
@@ -60,6 +82,7 @@ function initComplexityFunctions() {
     showAdditionalStaffFieldsOnPageLoad();
     showStaffTrainingFieldsOnPageLoad();
     removeRequiredAttrFromStaffTrainingFieldsWhenHidden();
+    evaluateRequiredFieldsOnPageLoad();
 }
 
 

@@ -49,7 +49,7 @@
                                         </div>
                                     <% end %>
                                     <div class="grid-row width-full">
-                                        <div class="grid-col-11">
+                                        <div class="grid-col-11 mitigation-container">
                                             <%= rm.fields_for :mitigations, wrapper: false do |miti| %>
                                                 <%
                                                     mitigation_id = miti.object.id
