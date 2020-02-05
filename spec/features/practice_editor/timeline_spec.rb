@@ -13,6 +13,8 @@ describe 'Practice editor', type: :feature, js: true do
             visit practice_timeline_path(@practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508
             @save_button = find('#practice-editor-save-button')
+            @time_frame = 'Test time frame'
+            @milestone = 'Test milestone'
         end
 
         it 'should be there' do
@@ -25,41 +27,47 @@ describe 'Practice editor', type: :feature, js: true do
             @save_button.click
             timeline_message = page.find('.timeline-input').native.attribute('validationMessage')
             expect(timeline_message).to eq('Please fill out this field.')
-            fill_in('Time frame:', with: 'Test timeline')
+            fill_in('Time frame:', with: @time_frame)
             @save_button.click
             milestone_message = page.find('.milestone-textarea').native.attribute('validationMessage')
             expect(milestone_message).to eq('Please fill out this field.')
         end
 
+        def fill_in_timeline_fields
+            fill_in('Time frame:', with: @time_frame)
+            fill_in('Milestone:', with: @milestone)
+        end
+
         it 'should allow the user to add a timeline entry' do
-            fill_in('Time frame:', with: 'Test timeline')
-            fill_in('Milestone:', with: 'Test milestone')
+            fill_in_timeline_fields
             @save_button.click
             expect(page).to have_content('Practice was successfully updated')
-            expect(page).to have_field('practice[timelines_attributes][0][timeline]', with: 'Test timeline')
-            expect(page).to have_field('practice[timelines_attributes][0][milestone]', with: 'Test milestone')
+            expect(page).to have_field('practice[timelines_attributes][0][timeline]', with: @time_frame)
+            expect(page).to have_field('practice[timelines_attributes][0][milestone]', with: @milestone)
         end
 
         it 'should allow the user to add multiple timeline entries' do
-            fill_in('Time frame:', with: 'Test timeline')
-            fill_in('Milestone:', with: 'Test milestone')
+            fill_in_timeline_fields
             find('.add-timeline-link').click
+
             all('.timeline-input').last.set('Test timeline 2')
             all('.milestone-textarea').last.set('Test milestone 2')
             @save_button.click
+
             expect(page).to have_content('Practice was successfully updated')
-            expect(page).to have_field('practice[timelines_attributes][0][timeline]', with: 'Test timeline')
-            expect(page).to have_field('practice[timelines_attributes][0][milestone]', with: 'Test milestone')
+            expect(page).to have_field('practice[timelines_attributes][0][timeline]', with: @time_frame)
+            expect(page).to have_field('practice[timelines_attributes][0][milestone]', with: @milestone)
             expect(page).to have_field('practice[timelines_attributes][1][timeline]', with: 'Test timeline 2')
             expect(page).to have_field('practice[timelines_attributes][1][milestone]', with: 'Test milestone 2')
         end
 
         it 'should allow the user to delete timeline entries' do
-            fill_in('Time frame:', with: 'Test timeline')
-            fill_in('Milestone:', with: 'Test milestone')
+            fill_in_timeline_fields
             @save_button.click
+
             find('.timeline-trash').click
             @save_button.click
+            
             expect(page).to have_content('Practice was successfully updated')
             expect(page).to have_field('Time frame:', with: nil)
             expect(page).to have_field('Milestone:', with: nil)

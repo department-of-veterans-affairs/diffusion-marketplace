@@ -65,7 +65,7 @@
         $document.arrive('.staff-training-container', (newElem) => {
             let trainingTitle = $('.staff-training-title');
             let trainingDescription = $('.staff-training-description');
-            if ($('#practice_need_training_false').prop('checked') == true && $('.usa-checkbox__input:checked').length > 0) {
+            if ($('#practice_need_training_false').prop('checked') == true) {
                 trainingTitle.prop('required', false);
                 trainingDescription.prop('required', false);
             } else {
