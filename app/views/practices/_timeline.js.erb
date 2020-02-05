@@ -5,7 +5,7 @@ var MILESTONE_MAX_LENGTH = 100;
 function getMilestoneCharacterCountOnPageLoad() {
 
     <% @practice.timelines.each do |t| %>
-        var milestoneTextarea = $("#milestone_<%= t.id %>_textarea");
+        var milestoneTextarea = $("textarea[counter-id='milestone_<%= t.id %>_textarea']");
         var milestoneCharacterSpan = $("#milestone_<%= t.id %>_character_count");
         var milestoneCurrentLength = milestoneTextarea.val().length;
         var milestoneCharacterCounter = '(' + milestoneCurrentLength + '/' + MILESTONE_MAX_LENGTH + ' characters)';

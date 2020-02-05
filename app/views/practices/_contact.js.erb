@@ -5,7 +5,7 @@ var MAX_LENGTH = 50;
 function getEmployeeRoleCharacterCountOnPageLoad() {
 
     <% @practice.va_employees.each do |e| %>
-        var employeeInput = $("#va_employee_<%= e.id %>_role");
+        var employeeInput = $("input[counter-id='va_employee_<%= e.id %>_role']");
         var employeeRoleCharacterSpan = $("#va_employee_<%= e.id %>_role_character_count");
         var employeeRoleCurrentLength = employeeInput.val().length;
         var employeeRoleCharacterCount = '(' + employeeRoleCurrentLength + '/' + MAX_LENGTH + ' characters)';
@@ -38,7 +38,7 @@ function employeeRoleCharacterCounter() {
 function getEmployeeNameCharacterCountOnPageLoad() {
 
     <% @practice.va_employees.each do |e| %>
-        var employeeInput = $("#va_employee_<%= e.id %>_name");
+        var employeeInput = $("input[counter-id='va_employee_<%= e.id %>_name']");
         var employeeNameCharacterSpan = $("#va_employee_<%= e.id %>_name_character_count");
         var employeeNameCurrentLength = employeeInput.val().length;
         var employeeNameCharacterCount = '(' + employeeNameCurrentLength + '/' + MAX_LENGTH + ' characters)';
