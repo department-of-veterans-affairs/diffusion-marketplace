@@ -42,7 +42,7 @@
                     <fieldset class="usa-fieldset">
                         <div class="grid-row grid-gap margin-top-105 margin-bottom-3">
                             <div class='usa-checkbox grid-col-6'>
-                                <input type='checkbox' class='usa-checkbox__input no-department-input' id="no_practice_department" <%= @practice.departments.empty? ? "checked= 'true'" : "" %>>
+                                <input type='checkbox' class='usa-checkbox__input no-department-input' id="no_practice_department" <%= @practice.departments.present? && @practice.departments.empty? ? "checked= 'true'" : "" %>>
                                 <label class='usa-checkbox__label' for="no_practice_department">None</label>
                             </div>
                             <div class='usa-checkbox grid-col-6'>
@@ -96,7 +96,7 @@
                         </p>
                         <% Practice::TIME_ESTIMATE_OPTIONS.each do |label| %>
                             <div class="grid-col usa-radio margin-top-105">
-                                <%= radio_button('practice', 'implementation_time_estimate', label, class: 'usa-radio__input complexity-radio time-estimate-radio', checked: time_estimate.include?(label) ? 'checked' : false, required: true) %>
+                                <%= radio_button('practice', 'implementation_time_estimate', label, class: 'usa-radio__input complexity-radio time-estimate-radio', checked: time_estimate == label ? 'checked' : false, required: true) %>
                                 <label class="usa-radio__label time-estimate-label" for='practice_implementation_time_estimate_<%= label.split(' ').join('_').tr('()', '').downcase %>'><%= label %></label>
                             </div>
                         <% end %>
@@ -119,12 +119,12 @@
                             <div class="margin-bottom-3">
                                 <p class="text-bold margin-bottom-105">Role type</p>
                                 <div class='usa-radio'>
-                                    <%= diff.radio_button :permanent, true, { id: "addtional_staffs_#{diff.object.id}_permanent_true", class: 'usa-radio__input complexity-radio permanent-radio', checked: diff.object.permanent == true ? 'checked' : 'false' } %>
-                                    <label class='usa-radio__label' for="addtional_staffs_<%= diff.object.id %>_permanent_true">Permanent</label>
+                                    <%= diff.radio_button :permanent, true, { class: 'usa-radio__input complexity-radio permanent-radio', checked: diff.object.permanent == true ? 'checked' : 'false' } %>
+                                    <%= diff.label :permanent, 'Permanent', class: 'usa-radio__label permanent-staff-label', value: true %>
                                 </div>
                                 <div class='usa-radio'>
-                                    <%= diff.radio_button :permanent, false, { id: "addtional_staffs_#{diff.object.id}_permanent_false", class: 'usa-radio__input complexity-radio permanent-radio', checked: diff.object.permanent == false ? 'checked' : 'false'  } %>
-                                    <label class='usa-radio__label' for="addtional_staffs_<%= diff.object.id %>_permanent_false">Temporary</label>
+                                    <%= diff.radio_button :permanent, false, { class: 'usa-radio__input complexity-radio permanent-radio', checked: diff.object.permanent == false ? 'checked' : 'false'  } %>
+                                    <%= diff.label :permanent, 'Temporary', class: 'usa-radio__label permanent-staff-label', value: false %>
                                 </div>
                             </div>
                             <div>
@@ -139,6 +139,7 @@
                         <%= f.link_to_add :additional_staffs, class: 'fas fa-plus text-no-underline add-additional-staff-link' do %>
                             <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add another</span>
                         <% end %>
+                        <ul class="trash-can display-none"></ul>
                     </fieldset>
                     <fieldset class="usa-fieldset">
                         <h2 class="font-sans-xl margin-top-5">Training</h2>
@@ -204,16 +205,18 @@
                                 <p class="margin-bottom-105">For each given role, who would be required to take the training?</p>
                                 <%= f.fields_for :required_staff_trainings do |diff| %>
                                     <%= diff.hidden_field :id %>
-                                    <div class="margin-bottom-3">
-                                        <%= diff.label :title, 'Job Title', class: 'usa-label' %>
-                                        <%= diff.text_field :title, required: true, class: 'usa-input practice-input width-tablet staff-training-title' %>
-                                    </div>
-                                    <div>
-                                        <%= diff.label :description, class: 'usa-label' %>
-                                        <%= diff.text_area :description, required: true, class: 'usa-input practice-input width-tablet staff-training-description', style: 'height: 4rem' %>
-                                    </div>
-                                    <div class="grid-row flex-justify-end margin-right-2">
-                                        <%= diff.link_to_remove '', class: 'fas fa-trash-alt staff-trash text-no-underline clear-required-staff-link', title: 'remove required staff training' %>
+                                    <div class="staff-training-container">
+                                        <div class="margin-bottom-3">
+                                            <%= diff.label :title, 'Job Title', class: 'usa-label' %>
+                                            <%= diff.text_field :title, required: true, class: 'usa-input practice-input width-tablet staff-training-title' %>
+                                        </div>
+                                        <div>
+                                            <%= diff.label :description, class: 'usa-label' %>
+                                            <%= diff.text_area :description, required: true, class: 'usa-input practice-input width-tablet staff-training-description', style: 'height: 4rem' %>
+                                        </div>
+                                        <div class="grid-row flex-justify-end margin-right-2">
+                                            <%= diff.link_to_remove '', class: 'fas fa-trash-alt staff-trash text-no-underline clear-required-staff-link', title: 'remove required staff training' %>
+                                        </div>
                                     </div>
                                     <div class="height-1px bg-base-lighter flex-fill display-block"></div>
                                 <% end %>

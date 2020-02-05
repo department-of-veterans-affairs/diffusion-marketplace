@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Practice editor', type: :feature do
+describe 'Practice editor', type: :feature, js: true do
   before do
     @admin = User.create!(email: 'toshiro.hitsugaya@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @approver = User.create!(email: 'tosen.kaname@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
@@ -11,7 +11,7 @@ describe 'Practice editor', type: :feature do
     @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline')
   end
 
-  fdescribe 'Risk and Mitigation page' do
+  describe 'Risk and Mitigation page' do
     before do
       login_as(@admin, :scope => :user, :run_callbacks => false)
       visit practice_risk_and_mitigation_path(@practice)
@@ -27,7 +27,7 @@ describe 'Practice editor', type: :feature do
       expect(page).to have_link(class: 'editor-continue-link', href: practice_contact_path(@practice))
     end
 
-    fit 'should require the user to fill out the fields that are marked as required' do
+    it 'should require the user to fill out the fields that are marked as required' do
       find('.add-risk-mitigation-link').click
       @save_progress.click
       expect(page).to be_accessible.according_to :wcag2a, :section508

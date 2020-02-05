@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Practice editor', type: :feature do
+describe 'Practice editor', type: :feature, js: true do
   before do
     @admin = User.create!(email: 'toshiro.hitsugaya@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @approver = User.create!(email: 'tosen.kaname@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)

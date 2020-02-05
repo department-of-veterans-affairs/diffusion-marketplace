@@ -36,6 +36,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         it 'should show an alert window if no practice partners were chosen' do
+            debugger
             select('Alabama', :from => 'editor_state_select')
             select('Birmingham VA Medical Center', :from => 'editor_facility_select')
             fill_in('practice_summary', with: 'This is the most super practice ever made')

@@ -578,7 +578,7 @@
   margin-top: 12px !important;
 }
 
-.partner-input {
+.partner-input, .no-partner-input {
   left: 2px !important;
 }
 
@@ -690,7 +690,7 @@
   }
 }
 
-.documentation-check, .risk-miti-check {
+.documentation-check, .risk-miti-check, .checklist-check {
   visibility: hidden;
 }
 

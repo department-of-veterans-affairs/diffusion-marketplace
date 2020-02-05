@@ -103,10 +103,30 @@
         });
     }
 
+    function uncheckAllPartnerBoxes() {
+        $('#no_practice_partner').click(function(event) {   
+            if(this.checked) {
+                $('.partner-input').each(function() {
+                    this.checked = false;                        
+                });
+            }
+        });
+    }
+
+    function uncheckNoneOptionIfAnotherOptionIsChecked() {
+        $('.partner-input').click(function(event) {   
+            if(this.checked) {
+                $('#no_practice_partner').prop('checked', false);
+            }
+        });
+    }
+
     function loadPracticeEditorFunctions() {
         getFacilitiesByState();
         countCharsOnPageLoad();
         maxCharacters();
+        uncheckAllPartnerBoxes();
+        uncheckNoneOptionIfAnotherOptionIsChecked();
 
         if(selectedFacility) {
             selectFacility();

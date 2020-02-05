@@ -175,6 +175,13 @@ class PracticesController < ApplicationController
         @practice.update_attributes(main_display_image: nil)
       end
 
+      if @practice.main_display_image.blank? && @practice.impact_photos.any?
+        impact_photo = @practice.impact_photos.find_by(position: 1)
+        @practice.update_attributes(main_display_image: impact_photo.attachment)
+        impact_photo.update_attributes(is_main_display_image: true)
+      end
+
+
       # Aurora's code
       # if params[:practice][:impact_photos_attributes].present?
       #   save_as_main_display_image = strong_params[:impact_photos_attributes].to_hash.find{|key, hash| hash["save_as_main_display_image"] == 'on'}
@@ -375,7 +382,7 @@ class PracticesController < ApplicationController
   def practice_params
     params.require(:practice).permit(:need_training, :tagline, :process, :it_required, :need_new_license, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :cost_to_implement_aggregate, :sustainability_aggregate, :veteran_satisfaction_aggregate, :difficulty_aggregate,
                                      :number_adopted, :number_departments, :number_failed, :implementation_time_estimate, :implementation_time_estimate_description, :implentation_summary, :implentation_fte,
-                                     :training_provider, :training_provider_role, :required_training_summary, :support_network_email,
+                                     :training_provider, :training_length, :training_test, :training_provider_role, :required_training_summary, :support_network_email,
                                      :main_display_image, :main_display_image_original_w, :main_display_image_original_h, :main_display_image_crop_x, :main_display_image_crop_y, :main_display_image_crop_w, :main_display_image_crop_h,
                                      :origin_picture, :origin_picture_original_w, :origin_picture_original_h, :origin_picture_crop_x, :origin_picture_crop_y, :origin_picture_crop_w, :origin_picture_crop_h,
                                      impact_photos_attributes: [:id, :title, :is_main_display_image, :description, :position, :attachment, :attachment_original_w, :attachment_original_h, :attachment_crop_x, :attachment_crop_y,
