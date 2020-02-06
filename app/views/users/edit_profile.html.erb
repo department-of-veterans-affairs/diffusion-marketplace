@@ -81,35 +81,35 @@
                 <div class="grid-row width-full">
                   <div class="field grid-col-9">
                     <%= f.label :first_name, class: 'x1-top x1-bottom' %><br/>
-                    <%= f.text_field :first_name, autofocus: true, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
+                    <%= f.text_field :first_name, autofocus: true, class: 'usa-input bg-base-lightest border-base-light text-base', disabled: ENV['USE_NTLM'] == 'true' %>
                   </div>
                 </div>
 
                 <div class="grid-row width-full">
                   <div class="field margin-top-3 grid-col-9">
                     <%= f.label :last_name, class: 'x0 x1-top' %><br/>
-                    <%= f.text_field :last_name, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
+                    <%= f.text_field :last_name, class: 'usa-input bg-base-lightest border-base-light text-base', disabled: ENV['USE_NTLM'] == 'true' %>
                   </div>
                 </div>
 
                 <div class="grid-row width-full">
                   <div class="field margin-top-3 grid-col-9">
                     <%= f.label :location, 'Facility', class: 'x0 x1-top' %><br/>
-                    <%= f.text_field :location, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
+                    <%= f.text_field :location, class: 'usa-input bg-base-lightest border-base-light text-base', disabled: ENV['USE_NTLM'] == 'true' %>
                   </div>
                 </div>
 
                 <div class="grid-row width-full">
                   <div class="field margin-top-3 grid-col-9">
                     <%= f.label :phone_number, 'Work phone number', class: 'x0 x1-top' %><br/>
-                    <%= f.phone_field :phone_number, autofocus: true, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
+                    <%= f.phone_field :phone_number, autofocus: true, class: 'usa-input bg-base-lightest border-base-light text-base', disabled: ENV['USE_NTLM'] == 'true' %>
                   </div>
                 </div>
 
                 <div class="grid-row width-full">
                   <div class="field margin-top-3 grid-col-9">
                     <%= f.label :job_title, class: 'x0 x1-top' %><br/>
-                    <%= f.text_field :job_title, class: 'usa-input', disabled: ENV['USE_NTLM'] == 'true' %>
+                    <%= f.text_field :job_title, class: 'usa-input bg-base-lightest border-base-light text-base', disabled: ENV['USE_NTLM'] == 'true' %>
                   </div>
                 </div>
               </div>
