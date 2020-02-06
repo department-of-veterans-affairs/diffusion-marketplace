@@ -9,7 +9,7 @@
 <%= render 'breadcrumbs' %>
 <%= render 'practice_editor_sidenav' %>
 <div class="grid-container position-relative">
-    <div class="grid-row grid-gap">
+    <div class="grid-row grid-gap practice-editor-min-height">
         <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
         <div id="contact" class="desktop:grid-col-9 grid-col-12 p0">
@@ -24,7 +24,7 @@
                         <legend class="usa-sr-only">Practice Information</legend>
                         <div>
                             <%= f.label :support_network_email, 'Email:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type the email address dedicated to responding to messages for this practice.</span>
-                            <%= f.text_field :support_network_email, required: true, class: 'usa-input practice-input width-tablet contact-email-input' %>
+                            <%= f.text_field :support_network_email, class: 'usa-input practice-input width-tablet contact-email-input' %>
                         </div>
 
                         <h2 class="font-sans-xl margin-top-5">Team</h2>
@@ -47,12 +47,12 @@
                                     </div>
                                     <div>
                                         <%= vae.label :name, 'Name:', class: 'usa-label text-bold display-inline-block vae-name' %>&nbsp;<span>Type the name of the person who created this practice.</span>&nbsp;<span class="text-base-light va-employee-name-character-count" <% if vae_id %> id="va_employee_<%= vae_id %>_name_character_count"<% end %>>(0/50 characters)</span>
-                                        <%= vae.text_field :name, required: true, class: 'usa-input practice-input width-tablet va-employee-name-input', 'counter-id': "va_employee_#{vae_id}_name" %>
+                                        <%= vae.text_field :name, class: 'usa-input practice-input width-tablet va-employee-name-input', 'counter-id': "va_employee_#{vae_id}_name" %>
                                     </div>
 
                                     <div>
                                         <%= vae.label :role, 'Role:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type their title or position name.</span>&nbsp;<span class="text-base-light va-employee-role-character-count" <% if vae_id %> id="va_employee_<%= vae_id %>_role_character_count"<% end %>>(0/50 characters)</span>
-                                        <%= vae.text_field :role, required: true, class: 'usa-input practice-input width-tablet va-employee-role', 'counter-id': "va_employee_#{vae_id}_role" %>
+                                        <%= vae.text_field :role, class: 'usa-input practice-input width-tablet va-employee-role', 'counter-id': "va_employee_#{vae_id}_role" %>
                                     </div>
                                     
                                     <p class="text-bold va-employee-headshot-p margin-bottom-05">Headshot&nbsp;<span class="text-base">(optional)</span></p>

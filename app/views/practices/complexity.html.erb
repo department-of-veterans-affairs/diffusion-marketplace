@@ -64,7 +64,7 @@
                         </p>
                         <div class='margin-top-105 margin-bottom-4'>
                             <div class='grid-col usa-radio'>
-                                <%= radio_button('practice', 'it_required', true, class: 'usa-radio__input complexity-radio it-radio', checked: it_required == true ? 'checked' : false, required: true) %>
+                                <%= radio_button('practice', 'it_required', true, class: 'usa-radio__input complexity-radio it-radio', checked: it_required == true ? 'checked' : false) %>
                                 <label class='usa-radio__label complexity-it-label' for='practice_it_required_true'>Yes</label>
                             </div>
                             <div class='grid-col usa-radio'>
@@ -80,7 +80,7 @@
                         </p>
                         <div class="margin-top-105 margin-bottom-4">
                             <div class='usa-radio'>
-                                <%= radio_button('practice', 'process', 'New clinical approach or new process', class: 'usa-radio__input complexity-radio process-radio', checked: process == 'New clinical approach or new process' ? 'checked' : false, required: true) %>
+                                <%= radio_button('practice', 'process', 'New clinical approach or new process', class: 'usa-radio__input complexity-radio process-radio', checked: process == 'New clinical approach or new process' ? 'checked' : false ) %>
                                 <label class='usa-radio__label complexity-process-label' for='practice_process_new_clinical_approach_or_new_process'>A new clinical approach or new process to the VA</label>
                             </div>
                             <div class='usa-radio'>
@@ -96,7 +96,7 @@
                         </p>
                         <% Practice::TIME_ESTIMATE_OPTIONS.each do |label| %>
                             <div class="grid-col usa-radio margin-top-105">
-                                <%= radio_button('practice', 'implementation_time_estimate', label, class: 'usa-radio__input complexity-radio time-estimate-radio', checked: time_estimate == label ? 'checked' : false, required: true) %>
+                                <%= radio_button('practice', 'implementation_time_estimate', label, class: 'usa-radio__input complexity-radio time-estimate-radio', checked: time_estimate == label ? 'checked' : false) %>
                                 <label class="usa-radio__label time-estimate-label" for='practice_implementation_time_estimate_<%= label.split(' ').join('_').tr('()', '').downcase %>'><%= label %></label>
                             </div>
                         <% end %>
@@ -150,7 +150,7 @@
                                 <label class='usa-radio__label need_training_true_label' for='practice_need_training_true'>Yes</label>
                             </div>
                             <div class='usa-radio'>
-                                <%= radio_button('practice', 'need_training', false, class: 'usa-radio__input complexity-radio training-required-radio', checked: training == false ? 'checked' : false, required: true,) %>
+                                <%= radio_button('practice', 'need_training', false, class: 'usa-radio__input complexity-radio training-required-radio', checked: training == false ? 'checked' : false) %>
                                 <label class='usa-radio__label need_training_false_label' for='practice_need_training_false'>No</label>
                             </div>
                         </div>
@@ -208,11 +208,11 @@
                                     <div class="staff-training-container">
                                         <div class="margin-bottom-3">
                                             <%= diff.label :title, 'Job Title', class: 'usa-label' %>
-                                            <%= diff.text_field :title, required: true, class: 'usa-input practice-input width-tablet staff-training-title' %>
+                                            <%= diff.text_field :title, class: 'usa-input practice-input width-tablet staff-training-title' %>
                                         </div>
                                         <div>
                                             <%= diff.label :description, class: 'usa-label' %>
-                                            <%= diff.text_area :description, required: true, class: 'usa-input practice-input width-tablet staff-training-description', style: 'height: 4rem' %>
+                                            <%= diff.text_area :description, class: 'usa-input practice-input width-tablet staff-training-description', style: 'height: 4rem' %>
                                         </div>
                                         <div class="grid-row flex-justify-end margin-right-2">
                                             <%= diff.link_to_remove '', class: 'fas fa-trash-alt staff-trash text-no-underline clear-required-staff-link', title: 'remove required staff training' %>

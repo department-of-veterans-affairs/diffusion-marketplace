@@ -1,7 +1,7 @@
 <%= render 'breadcrumbs' %>
 <%= render 'practice_editor_sidenav' %>
 <div class="grid-container position-relative">
-    <div class="grid-row grid-gap">
+    <div class="grid-row grid-gap practice-editor-min-height">
         <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
         <div id="resources" class="desktop:grid-col-9 grid-col-12 p0">
@@ -27,7 +27,7 @@
                         <% (1..4).each do |index| %>
                             <div class='grid-row'>
                                 <div class='grid-col usa-radio'>
-                                    <%= radio_button('practice', 'cost_to_implement_aggregate', index.to_s, {required: true, class: 'usa-radio__input resource-radio'}) %>
+                                    <%= radio_button('practice', 'cost_to_implement_aggregate', index.to_s, {class: 'usa-radio__input resource-radio'}) %>
                                     <label class='usa-radio__label' for='practice_cost_to_implement_aggregate_<%= index %>'><%= Practice::COST_LABELS[index-1] %></label>
                                 </div>
                             </div>

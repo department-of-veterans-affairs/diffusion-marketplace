@@ -9,7 +9,7 @@
 <%= render 'breadcrumbs' %>
 <%= render 'practice_editor_sidenav' %>
 <div class="grid-container position-relative">
-    <div class="grid-row grid-gap">
+    <div class="grid-row grid-gap practice-editor-min-height">
         <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
         <div id="timeline" class="desktop:grid-col-9 grid-col-12 p0">
@@ -38,12 +38,12 @@
                                                 <span class="usa-tag tooltip-text">Drag and drop to change order</span>
                                             </div>
                                             <%= tl.label :timeline, 'Time frame:', class: 'usa-label text-bold display-inline-block timeline-duration' %>&nbsp;<span>Type the time frame as Month # (e.g. Month 1, Months 2-3)</span>
-                                            <%= tl.text_field :timeline, required: true, class: 'usa-input practice-input width-card timeline-input' %>
+                                            <%= tl.text_field :timeline, class: 'usa-input practice-input width-card timeline-input' %>
                                         </div>
                                         <div class="grid-row width-full">
                                             <div class="grid-col-11">
                                                 <%= tl.label :milestone, 'Milestone:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type a description of the milestone.</span>&nbsp;<span class="text-base-light milestone-character-count" <% if tl_id.present? %> id="milestone_<%= tl_id %>_character_count" <%end%>>(0/100 characters)</span>
-                                                <%= tl.text_area :milestone, required: true, class: 'usa-input practice-input height-15 milestone-textarea', 'counter-id': "milestone_#{tl_id}_textarea" %>
+                                                <%= tl.text_area :milestone, class: 'usa-input practice-input height-15 milestone-textarea', 'counter-id': "milestone_#{tl_id}_textarea" %>
                                             </div>
                                             <div class="grid-col-fill flex-align-end timeline-trash-container">
                                                 <%= tl.link_to_remove '', class: "fas fa-trash-alt timeline-trash text-no-underline", title: 'remove timeline' %>

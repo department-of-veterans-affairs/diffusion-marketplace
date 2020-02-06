@@ -75,13 +75,6 @@ function denyMultipleMainDisplayImageSelections() {
     });
 }
 
-function makeVideoFileFieldsRequiredIfUsed() {
-    $(document).on('input', 'input.video-file-url-input, textarea.practice-editor-video-caption', function() {
-        var $inputs = $('input.video-file-url-input, textarea.practice-editor-video-caption');
-        $inputs.not(this).prop('required', $(this).val().length);
-    });
-}
-
 function showFieldsOnPageLoad() {
     <% if @practice.impact_photos.empty? %>
         $('.add-impact-photo-link').click();
@@ -104,7 +97,6 @@ function executeImpactFunctions() {
     videoCaptionCharacterCounter();
     showFieldsOnPageLoad();
     denyMultipleMainDisplayImageSelections();
-    makeVideoFileFieldsRequiredIfUsed();
 }
 
 $(document).on('turbolinks:load', executeImpactFunctions);

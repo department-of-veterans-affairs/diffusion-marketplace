@@ -61,7 +61,7 @@ function publicationCharacterCounter() {
         publicationCharacterSpan.text(characterCounter);
 
         if (currentLength >= MAX_LENGTH) {
-            additionalDocumentCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+            publicationCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
         }
     });
 }
@@ -82,28 +82,6 @@ function showPublicationsFieldsOnPageLoad() {
     <% end %>
 }
 
-function makeAdditionalDocumentFieldsRequiredIfUsed() {
-    $(document).on('input', 'input.hidden-documentation-field, input.additional-document-title-input', function() {
-        var $inputs = $('input.hidden-documentation-field, input.additional-document-title-input');
-        $inputs.not(this).prop('required', $(this).val().length);
-    });
-}
-
-function makePublicationFieldsRequiredIfUsed() {
-    $(document).on('input', 'input.publication-title-input, input.publication-link-input', function() {
-        var $inputs = $('input.publication-title-input, input.publication-link-input');
-        $inputs.not(this).prop('required', $(this).val().length);
-    });
-}
-
-function requireAdditionalDocumentAttachment() {
-    <% @practice.additional_documents.each do |ad| %>
-        if (<%= ad.attachment_content_type.nil? %>) {
-            $('#practice_additional_documents_attributes_<%= ad.position - 1 %>_attachment').prop("required", true)
-        }
-    <% end %>
-}
-
 function executeDocumentationFunctions() {
     getAdditionalDocumentCharacterCountOnPageLoad();
     getPublicationCharacterCountOnPageLoad();
@@ -111,9 +89,6 @@ function executeDocumentationFunctions() {
     publicationCharacterCounter();
     showAdditionalDocumentsFieldsOnPageLoad();
     showPublicationsFieldsOnPageLoad();
-    makeAdditionalDocumentFieldsRequiredIfUsed();
-    makePublicationFieldsRequiredIfUsed();
-    requireAdditionalDocumentAttachment();
 }
 
 $(document).on('turbolinks:load', executeDocumentationFunctions);

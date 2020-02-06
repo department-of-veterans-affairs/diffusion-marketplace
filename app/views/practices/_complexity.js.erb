@@ -1,32 +1,3 @@
-function makeImplementationTimeFieldRequiredIfOtherOptionChosen() {
-    $(document).on('change', '.time-estimate-radio', function() {
-        var timeEstimateDescription = $('.time-estimate-description-input');
-        if ($('#practice_implementation_time_estimate_other_please_specify').prop('checked') == true) {
-            timeEstimateDescription.prop('required', true);
-        } else {
-            timeEstimateDescription.prop('required', false);
-        }
-    });
-}
-
-function makeAdditionalStaffFieldsRequiredIfUsed() {
-    $(document).on('input', 'input.staff-title-input, input.staff-hours-input, input.permanent-radio, input.staff-duration-input', function() {
-        var $inputs = $('input.staff-title-input, input.staff-hours-input, input.permanent-radio, input.staff-duration-input');
-        $inputs.not(this).prop('required', $(this).val().length);
-    });
-}
-
-function makeTrainingLengthRequiredIfTrainingRequiredIsChosen() {
-    $(document).on('change', '.training-required-radio', function() {
-        var trainingLengthDescription = $('.training-length-input');
-        if ($('#practice_need_training_true').prop('checked') == true) {
-            trainingLengthDescription.prop('required', true);
-        } else {
-            trainingLengthDescription.prop('required', false);
-        }
-    });
-}
-
 function showAdditionalStaffFieldsOnPageLoad() {
     <% if @practice.additional_staffs.empty? %>
         $('.add-additional-staff-link').click();
@@ -39,48 +10,9 @@ function showStaffTrainingFieldsOnPageLoad() {
     <% end %>
 }
 
-function removeRequiredAttrFromStaffTrainingFieldsWhenHidden() {
-    $(document).on('input', '.training-required-radio, .usa-checkbox__input', function() {
-        var trainingTitle = $('.staff-training-title');
-        var trainingDescription = $('.staff-training-description');
-        if ($('#practice_need_training_false').prop('checked') == true) {
-            trainingTitle.prop('required', false);
-            trainingDescription.prop('required', false);
-        } else {
-            trainingTitle.prop('required', true);
-            trainingDescription.prop('required', true);
-        }
-    });
-}
-
-function evaluateRequiredFieldsOnPageLoad() {
-        var trainingTitle = $('.staff-training-title');
-        var trainingDescription = $('.staff-training-description');
-        var trainingLengthDescription = $('.training-length-input');
-
-        if ($('#practice_need_training_false').prop('checked') == true) {
-            trainingTitle.prop('required', false);
-            trainingDescription.prop('required', false);
-        } else {
-            trainingTitle.prop('required', true);
-            trainingDescription.prop('required', true);
-        }
-
-        if ($('#practice_need_training_true').prop('checked') == true) {
-            trainingLengthDescription.prop('required', true);
-        } else {
-            trainingLengthDescription.prop('required', false);
-        }
-}
-
 function initComplexityFunctions() {
-    makeImplementationTimeFieldRequiredIfOtherOptionChosen();
-    makeAdditionalStaffFieldsRequiredIfUsed();
-    makeTrainingLengthRequiredIfTrainingRequiredIsChosen();
     showAdditionalStaffFieldsOnPageLoad();
     showStaffTrainingFieldsOnPageLoad();
-    removeRequiredAttrFromStaffTrainingFieldsWhenHidden();
-    evaluateRequiredFieldsOnPageLoad();
 }
 
 

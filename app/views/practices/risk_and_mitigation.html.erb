@@ -45,7 +45,7 @@
                                         </div>
                                         <div id="risk_<%= risk_id %>_container" class="risk_<%= risk_id %>_container grid-col-11">
                                             <%= risk.label :description, 'Risk:', class: 'usa-label text-bold display-inline-block risk-description' %>&nbsp;<span>Type the name or description of the risk.</span>&nbsp;<span class="text-base-light risk-character-count risk_<%= risk_id %>_character_count" <% if risk_id.present? %> id="risk_<%= risk_id %>_character_count"<% end %>>(0/150 characters)</span>
-                                            <%= risk.text_area :description, required: true, class: "usa-input practice-input risk-description-textarea height-15 risk_#{risk_id}_description_textarea", 'counter-id': "risk_#{risk_id}_description_textarea" %>
+                                            <%= risk.text_area :description, class: "usa-input practice-input risk-description-textarea height-15 risk_#{risk_id}_description_textarea", 'counter-id': "risk_#{risk_id}_description_textarea" %>
                                         </div>
                                     <% end %>
                                     <div class="grid-row width-full">
@@ -57,7 +57,7 @@
                                                 <%= miti.hidden_field :id %>
                                                 <div id="mitigation_<%= mitigation_id %>_container" class="mitigation_<%= mitigation_id %>_container">
                                                     <%= miti.label :description, 'Mitigation:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type the corresponding mitigation to the risk.</span>&nbsp;<span class="text-base-light mitigation-character-count" <% if mitigation_id.present? %> id="mitigation_<%= mitigation_id %>_character_count"<% end %>>(0/150 characters)</span>
-                                                    <%= miti.text_area :description, required: true, class: 'usa-input practice-input mitigation-description-textarea height-15', 'counter-id': "mitigation_#{mitigation_id}_description_textarea" %>
+                                                    <%= miti.text_area :description, class: 'usa-input practice-input mitigation-description-textarea height-15', 'counter-id': "mitigation_#{mitigation_id}_description_textarea" %>
                                                 </div>
                                             <% end %>
                                         </div>

@@ -9,7 +9,7 @@
 <%= render 'breadcrumbs' %>
 <%= render 'practice_editor_sidenav' %>
 <div class="grid-container position-relative">
-    <div class="grid-row grid-gap">
+    <div class="grid-row grid-gap practice-editor-min-height">
         <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
         <div id="impact" class="desktop:grid-col-9 grid-col-12 p0">
@@ -63,7 +63,7 @@
                                                     <div class="grid-col-fill">
                                                         <div class="margin-bottom-1">
                                                             <% if @practice.impact_photos.empty? %>
-                                                                <%= ip.file_field :attachment, required: true, class: 'hidden-upload hidden-impact-photo-upload', accept: 'image/*' %>
+                                                                <%= ip.file_field :attachment, class: 'hidden-upload hidden-impact-photo-upload', accept: 'image/*' %>
                                                             <% else %>
                                                                 <%= ip.file_field :attachment, class: 'hidden-upload' %>
                                                             <% end %>
@@ -90,7 +90,7 @@
                                             <div class="grid-row width-full">
                                                 <div class="grid-col-11">
                                                     <%= ip.label :description, 'Caption:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Share how your practice is making a real-life impact.</span>&nbsp;<span class="text-base-light impact-photo-caption-character-count" <% if photo_id.present? %>id="impact_photo_<%= photo_id %>_caption_character_count"<% end %>>(0/300 characters)</span>
-                                                    <%= ip.text_area :description, required: true, class: 'usa-input practice-input practice-editor-image-caption height-15', 'counter-id': "impact_photo_#{photo_id}_caption" %>
+                                                    <%= ip.text_area :description, class: 'usa-input practice-input practice-editor-image-caption height-15', 'counter-id': "impact_photo_#{photo_id}_caption" %>
                                                 </div>
                                                 
                                                 <div class="grid-col-fill flex-align-end impact-trash-container">

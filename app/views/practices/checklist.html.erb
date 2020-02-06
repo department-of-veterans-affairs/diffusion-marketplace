@@ -9,7 +9,7 @@
 <%= render 'breadcrumbs' %>
 <%= render 'practice_editor_sidenav' %>
 <div class="grid-container position-relative">
-    <div class="grid-row grid-gap">
+    <div class="grid-row grid-gap practice-editor-min-height">
         <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
         <div id="checklist" class="desktop:grid-col-9 grid-col-12 p0">
@@ -43,7 +43,7 @@
 
                                         <div>
                                             <%= pp.label :name, 'Step:', class: 'usa-label text-bold display-inline-block permission-name' %>&nbsp;<span>Type the type of permissions required for this practice.</span>&nbsp;<span class="text-base-light permission-name-character-count" <% if permission_id.present? %>id="permission_<%= permission_id %>_name_character_count"<% end %>>(0/50 characters)</span>
-                                            <%= pp.text_field :name, required: true, class: 'usa-input practice-input width-tablet permission-name-input', 'counter-id': "permission_#{permission_id}_name" %>
+                                            <%= pp.text_field :name, class: 'usa-input practice-input width-tablet permission-name-input', 'counter-id': "permission_#{permission_id}_name" %>
                                         </div>
 
                                         <div class="grid-row width-full">
@@ -83,7 +83,7 @@
 
                                         <div>
                                             <%= ar.label :name, 'Step:', class: 'usa-label text-bold display-inline-block resource-name' %>&nbsp;<span>Separately list the resources required.</span>&nbsp;<span class="text-base-light resource-name-character-count" <% if resource_id.present? %>id="resource_<%= resource_id %>_name_character_count"<% end %>>(0/50 characters)</span>
-                                            <%= ar.text_field :name, required: true, class: 'usa-input practice-input width-tablet resource-name-input', 'counter-id': "resource_#{resource_id}_name" %>
+                                            <%= ar.text_field :name, class: 'usa-input practice-input width-tablet resource-name-input', 'counter-id': "resource_#{resource_id}_name" %>
                                         </div>
 
                                         <div class="grid-row width-full">
