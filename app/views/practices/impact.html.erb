@@ -28,7 +28,6 @@
                                 <%
                                     photo_id = ip.object.id
                                     attachment = ip.object.attachment
-                                    photo_position = ip.object.position
                                 %>
                                 <li class="practice-editor-impact-photo-li fields" data-id="<%= photo_id %>">
                                     <%= ip.hidden_field :position, class: 'impact-photo-position' %>
@@ -67,14 +66,8 @@
                                                             <% else %>
                                                                 <%= ip.file_field :attachment, class: 'hidden-upload' %>
                                                             <% end %>
-                                                            <%= ip.label :attachment, 'Upload photo', class: "usa-button usa-button--unstyled add-impact-photo-label", accept: 'image/*' %>
+                                                            <%= ip.label :attachment, attachment.present? ? 'Upload new photo' : 'Upload photo', class: "usa-button usa-button--unstyled add-impact-photo-label", accept: 'image/*' %>
                                                         </div>
-                                                        <% if attachment.present? %>
-                                                            <div>
-                                                                <%= ip.check_box :delete_attachment, { class: 'usa-checkbox__input practice-input delete-impact-attachment-input'}, 'true', 'false' %>
-                                                                <%= ip.label :delete_attachment, 'Remove photo', class: 'usa-checkbox__label display-inline-block' %>
-                                                            </div>
-                                                        <% end %>
                                                     </div>
                                                 </div>
                                             </div>

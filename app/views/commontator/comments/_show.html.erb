@@ -14,8 +14,10 @@
   name = Commontator.commontator_name(creator) || ''
   job_title = creator.job_title
   creator_practice = creator.user_practices.find_by(practice_id: comment.thread.commontable_id, user: creator)
-  practice_team_member = creator_practice.team_member
-  verified_practice_implementer = creator_practice.verified_implementer
+  if creator_practice
+    practice_team_member = creator_practice.team_member
+    verified_practice_implementer = creator_practice.verified_implementer
+  end
   show_children = params[:show_children] == 'true'
   practice = Practice.find_by(id: comment.thread.commontable_id)
 %>
