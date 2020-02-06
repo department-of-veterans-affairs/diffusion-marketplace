@@ -102,7 +102,6 @@ class Commontator::CommentsController < Commontator::ApplicationController
           user_practice.update_attributes(verified_implementer: false, team_member: true) if params[:user_practice_status] == 'team_member'
 
           @comment.save
-          # debugger
           format.js
           # format.html { redirect_to commontable_url }
         else

@@ -3,7 +3,7 @@ var CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
 var MAX_LENGTH = 500;
 
 function getBioCharacterCountOnPageLoad() {
-    var bioTextarea = $("#profile_bio_textarea");
+    var bioTextarea = $(".profile-bio");
     var bioCharacterSpan = $("#user_<%= @user.id %>_profile_bio_character_count");
     var bioCurrentLength = bioTextarea.val().length;
     var bioCharacterCounter = '(' + bioCurrentLength + '/' + MAX_LENGTH + ' characters)';

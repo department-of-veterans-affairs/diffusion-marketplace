@@ -25,7 +25,7 @@ describe 'The user index', type: :feature do
   it 'should have edit profile button for logged in user' do
     login_as(@user, scope: :user, run_callbacks: false)
     visit "/users/#{@user.id}"
-    expect(page).to have_content('Edit profile')
+    expect(page).to have_selector('.edit-profile-link')
   end
 
   it 'if not logged in, should be redirected to landing page when accessing account edit' do
@@ -61,9 +61,9 @@ describe 'The user index', type: :feature do
     fill_in('Last name', with: 'Squarepants')
     fill_in('Work phone number', with: '8675309')
     fill_in('Job title', with: 'fry cook')
-    fill_in('Biography', with: 'Lives in a pineapple')
+    fill_in('Bio', with: 'Lives in a pineapple')
 
-    click_button('Update')
+    click_button('Save changes')
 
     sb = User.find(@user.id)
     expect(sb.first_name).to eq('Spongebob')
@@ -78,16 +78,14 @@ describe 'The user index', type: :feature do
     visit '/edit-profile'
 
     expect(page).to be_accessible.according_to :wcag2a, :section508
-    click_on('Edit photo')
 
-    attach_file('Photo', Rails.root + 'spec/fixtures/SpongeBob.png')
+    attach_file('Upload photo', Rails.root + 'spec/fixtures/SpongeBob.png')
 
-    click_button('Update')
+    click_button('Save changes')
 
     sb = User.find(@user.id)
     expect(sb.avatar.present?).to be(true)
 
-    click_on('Edit photo')
     click_on('Remove photo')
     page.driver.browser.switch_to.alert.accept
 
@@ -101,11 +99,10 @@ describe 'The user index', type: :feature do
     visit '/edit-profile'
 
     expect(page).to be_accessible.according_to :wcag2a, :section508
-    click_on('Edit photo')
 
-    attach_file('Photo', Rails.root + 'spec/fixtures/SpongeBob.txt')
+    attach_file('Upload photo', Rails.root + 'spec/fixtures/SpongeBob.txt')
 
-    click_button('Update')
+    click_button('Save changes')
 
     expect(page).to have_content('Avatar content type is invalid')
     expect(page).to have_selector('.empty-user-avatar')
