@@ -23,15 +23,15 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/risk_and_mitigation")
         end
 
-        it 'should require the user to fill out the fields that are marked as required' do
-            @save_button.click
-            timeline_message = page.find('.timeline-input').native.attribute('validationMessage')
-            expect(timeline_message).to eq('Please fill out this field.')
-            fill_in('Time frame:', with: @time_frame)
-            @save_button.click
-            milestone_message = page.find('.milestone-textarea').native.attribute('validationMessage')
-            expect(milestone_message).to eq('Please fill out this field.')
-        end
+        # it 'should require the user to fill out the fields that are marked as required' do
+        #     @save_button.click
+        #     timeline_message = page.find('.timeline-input').native.attribute('validationMessage')
+        #     expect(timeline_message).to eq('Please fill out this field.')
+        #     fill_in('Time frame:', with: @time_frame)
+        #     @save_button.click
+        #     milestone_message = page.find('.milestone-textarea').native.attribute('validationMessage')
+        #     expect(milestone_message).to eq('Please fill out this field.')
+        # end
 
         def fill_in_timeline_fields
             fill_in('Time frame:', with: @time_frame)

@@ -35,30 +35,30 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_field('practice_summary', with: 'This is the most super practice ever made')
         end
 
-        it 'should show an alert window if no practice partners were chosen' do
-            select('Alabama', :from => 'editor_state_select')
-            select('Birmingham VA Medical Center', :from => 'editor_facility_select')
-            fill_in('practice_summary', with: 'This is the most super practice ever made')
-            all('.usa-checkbox__label').last.click
-            @save_button.click
-            expect(accept_alert).to eq('Please choose at least one of the partners listed')
-        end
+        # it 'should show an alert window if no practice partners were chosen' do
+        #     select('Alabama', :from => 'editor_state_select')
+        #     select('Birmingham VA Medical Center', :from => 'editor_facility_select')
+        #     fill_in('practice_summary', with: 'This is the most super practice ever made')
+        #     all('.usa-checkbox__label').last.click
+        #     @save_button.click
+        #     expect(accept_alert).to eq('Please choose at least one of the partners listed')
+        # end
 
-        it 'should require the user to fill out the fields that are marked as required' do
-            find('#practice_partner_1_label').click
-            fill_in('practice_name', with: nil)
-            @save_button.click
-            name_message = page.find("#practice_name").native.attribute("validationMessage")
-            expect(name_message).to eq('Please fill out this field.')
-            fill_in('practice_name', with: 'A public practice')
-            @save_button.click
-            state_message = page.find("#editor_state_select").native.attribute("validationMessage")
-            expect(state_message).to eq('Please select an item in the list.')
-            select('Alabama', :from => 'editor_state_select')
-            select('Birmingham VA Medical Center', :from => 'editor_facility_select')
-            @save_button.click
-            summary_message = page.find("#practice_summary").native.attribute("validationMessage")
-            expect(summary_message).to eq('Please fill out this field.')
-        end
+        # it 'should require the user to fill out the fields that are marked as required' do
+        #     find('#practice_partner_1_label').click
+        #     fill_in('practice_name', with: nil)
+        #     @save_button.click
+        #     name_message = page.find("#practice_name").native.attribute("validationMessage")
+        #     expect(name_message).to eq('Please fill out this field.')
+        #     fill_in('practice_name', with: 'A public practice')
+        #     @save_button.click
+        #     state_message = page.find("#editor_state_select").native.attribute("validationMessage")
+        #     expect(state_message).to eq('Please select an item in the list.')
+        #     select('Alabama', :from => 'editor_state_select')
+        #     select('Birmingham VA Medical Center', :from => 'editor_facility_select')
+        #     @save_button.click
+        #     summary_message = page.find("#practice_summary").native.attribute("validationMessage")
+        #     expect(summary_message).to eq('Please fill out this field.')
+        # end
     end
 end

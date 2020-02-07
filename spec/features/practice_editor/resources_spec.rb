@@ -21,11 +21,11 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/complexity")
         end
 
-        it 'should require the user to select one of the cost to implement options' do
-            @save_button.click
-            resource_message = all('.resource-radio').first.native.attribute('validationMessage')
-            expect(resource_message).to eq('Please select one of these options.')
-        end
+        # it 'should require the user to select one of the cost to implement options' do
+        #     @save_button.click
+        #     resource_message = all('.resource-radio').first.native.attribute('validationMessage')
+        #     expect(resource_message).to eq('Please select one of these options.')
+        # end
 
         it 'should allow the user to select one of the cost to implement options' do
             all('.usa-radio__label').first.click

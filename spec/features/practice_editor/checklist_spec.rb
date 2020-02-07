@@ -24,17 +24,17 @@ describe 'Practice editor', type: :feature, js: true do
       expect(page).to have_link(class: 'editor-back-to-link', href: "/practices/#{@practice.slug}/edit/contact")
     end
 
-    it 'should require the user to fill out the fields that are marked as required' do
-      @save_progress.click
-      permisson_message = page.find('.permission-name-input').native.attribute('validationMessage')
-      expect(permisson_message).to eq('Please fill out this field.')
-      within(:css, '#sortable_permissions') do
-        fill_in('Step', with: 'Permission 1')
-      end
-      @save_progress.click
-      resource_name_message = page.find('.resource-name-input').native.attribute('validationMessage')
-      expect(resource_name_message).to eq('Please fill out this field.')
-    end
+    # it 'should require the user to fill out the fields that are marked as required' do
+    #   @save_progress.click
+    #   # permisson_message = page.find('.permission-name-input').native.attribute('validationMessage')
+    #   # expect(permisson_message).to eq('Please fill out this field.')
+    #   within(:css, '#sortable_permissions') do
+    #     fill_in('Step', with: 'Permission 1')
+    #   end
+    #   @save_progress.click
+    #   resource_name_message = page.find('.resource-name-input').native.attribute('validationMessage')
+    #   expect(resource_name_message).to eq('Please fill out this field.')
+    # end
 
     it 'when no data is present, should allow the user to add a practice permission and additional resource' do
 

@@ -32,15 +32,15 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         describe 'Impact photos' do
-            it 'should require the user to fill out the fields that are marked as required' do
-                @save_button.click
-                upload_photo_message = page.find('.hidden-upload').native.attribute('validationMessage')
-                expect(upload_photo_message).to eq('Please select a file.')
-                attach_file('Upload photo', @image_path)
-                @save_button.click
-                caption_message = page.find('.practice-editor-image-caption').native.attribute('validationMessage')
-                expect(caption_message).to eq('Please fill out this field.')
-            end
+            # it 'should require the user to fill out the fields that are marked as required' do
+            #     @save_button.click
+            #     upload_photo_message = page.find('.hidden-upload').native.attribute('validationMessage')
+            #     expect(upload_photo_message).to eq('Please select a file.')
+            #     attach_file('Upload photo', @image_path)
+            #     @save_button.click
+            #     caption_message = page.find('.practice-editor-image-caption').native.attribute('validationMessage')
+            #     expect(caption_message).to eq('Please fill out this field.')
+            # end
 
             it 'should allow the user to add an impact photo and set it as the practice\'s main display image' do
                 fill_in_impact_photo_fields
@@ -84,16 +84,16 @@ describe 'Practice editor', type: :feature, js: true do
                 all('.practice-editor-video-caption').first.set(@video_caption)
             end
 
-            it 'should require the user to fill out both fields if at least one field is filled out' do
-                all('.video-file-url-input').first.set(@video_file)
-                @save_button.click
-                caption_message = page.find('.practice-editor-video-caption').native.attribute('validationMessage')
-                expect(caption_message).to eq('Please fill out this field.')
-                all('.video-file-url-input').first.set(nil)
-                all('.practice-editor-video-caption').first.set(@video_caption)
-                link_message = page.find('.video-file-url-input').native.attribute('validationMessage')
-                expect(caption_message).to eq('Please fill out this field.')
-            end
+            # it 'should require the user to fill out both fields if at least one field is filled out' do
+            #     all('.video-file-url-input').first.set(@video_file)
+            #     @save_button.click
+            #     caption_message = page.find('.practice-editor-video-caption').native.attribute('validationMessage')
+            #     expect(caption_message).to eq('Please fill out this field.')
+            #     all('.video-file-url-input').first.set(nil)
+            #     all('.practice-editor-video-caption').first.set(@video_caption)
+            #     link_message = page.find('.video-file-url-input').native.attribute('validationMessage')
+            #     expect(caption_message).to eq('Please fill out this field.')
+            # end
 
             it 'should allow the user to add a video file' do
                 fill_in_video_file_fields

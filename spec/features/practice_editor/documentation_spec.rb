@@ -25,17 +25,17 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/resources")
         end
 
-        it 'should require the user to fill out both fields for publications and additional documents if at least one field is filled out for either' do
-            find('.additional-document-title-input').set(@doc_title)
-            @save_button.click
-            add_doc_file_message = page.find('.hidden-upload').native.attribute('validationMessage')
-            expect(add_doc_file_message).to eq('Please select a file.')
-            find('.additional-document-title-input').set(nil)
-            attach_file('Upload file', @doc_path)
-            @save_button.click
-            add_doc_title_message = page.find('.additional-document-title-input').native.attribute('validationMessage')
-            expect(add_doc_title_message).to eq('Please fill out this field.')
-        end
+        # it 'should require the user to fill out both fields for publications and additional documents if at least one field is filled out for either' do
+        #     find('.additional-document-title-input').set(@doc_title)
+        #     @save_button.click
+        #     add_doc_file_message = page.find('.hidden-upload').native.attribute('validationMessage')
+        #     expect(add_doc_file_message).to eq('Please select a file.')
+        #     find('.additional-document-title-input').set(nil)
+        #     attach_file('Upload file', @doc_path)
+        #     @save_button.click
+        #     add_doc_title_message = page.find('.additional-document-title-input').native.attribute('validationMessage')
+        #     expect(add_doc_title_message).to eq('Please fill out this field.')
+        # end
 
         def fill_in_doc_fields
             find('.additional-document-title-input').set(@doc_title)

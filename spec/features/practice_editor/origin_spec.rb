@@ -24,19 +24,19 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/impact")
         end
 
-        it 'should require the user to fill out the fields that are marked as required' do
-            @save_button.click
-            origin_story_message = page.find('.origin-story-textarea').native.attribute('validationMessage')
-            expect(origin_story_message).to eq('Please fill out this field.')
-            fill_in('practice_origin_story', with: @origin_story)
-            @save_button.click
-            practice_creator_name_message = page.find('.practice-creator-name-input').native.attribute('validationMessage')
-            expect(practice_creator_name_message).to eq('Please fill out this field.')
-            fill_in('Name', with: @creator_name)
-            @save_button.click
-            practice_creator_role_message = page.find('.practice-creator-role').native.attribute('validationMessage')
-            expect(practice_creator_role_message).to eq('Please fill out this field.')
-        end
+        # it 'should require the user to fill out the fields that are marked as required' do
+        #     @save_button.click
+        #     origin_story_message = page.find('.origin-story-textarea').native.attribute('validationMessage')
+        #     expect(origin_story_message).to eq('Please fill out this field.')
+        #     fill_in('practice_origin_story', with: @origin_story)
+        #     @save_button.click
+        #     practice_creator_name_message = page.find('.practice-creator-name-input').native.attribute('validationMessage')
+        #     expect(practice_creator_name_message).to eq('Please fill out this field.')
+        #     fill_in('Name', with: @creator_name)
+        #     @save_button.click
+        #     practice_creator_role_message = page.find('.practice-creator-role').native.attribute('validationMessage')
+        #     expect(practice_creator_role_message).to eq('Please fill out this field.')
+        # end
 
         def fill_in_origin_story_field
             fill_in('Origin story', with: @origin_story)

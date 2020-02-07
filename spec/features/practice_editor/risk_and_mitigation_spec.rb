@@ -27,19 +27,19 @@ describe 'Practice editor', type: :feature, js: true do
       expect(page).to have_link(class: 'editor-continue-link', href: practice_contact_path(@practice))
     end
 
-    it 'should require the user to fill out the fields that are marked as required' do
-      find('.add-risk-mitigation-link').click
-      @save_progress.click
-      expect(page).to be_accessible.according_to :wcag2a, :section508
-
-      risk_message = page.find('.risk-description-textarea').native.attribute('validationMessage')
-      expect(risk_message).to eq('Please fill out this field.')
-
-      fill_in('Risk', with: @risk_text)
-      @save_progress.click
-      mitigation_message = page.find('.mitigation-description-textarea ').native.attribute('validationMessage')
-      expect(mitigation_message).to eq('Please fill out this field.')
-    end
+    # it 'should require the user to fill out the fields that are marked as required' do
+    #   find('.add-risk-mitigation-link').click
+    #   @save_progress.click
+    #   expect(page).to be_accessible.according_to :wcag2a, :section508
+    #
+    #   risk_message = page.find('.risk-description-textarea').native.attribute('validationMessage')
+    #   expect(risk_message).to eq('Please fill out this field.')
+    #
+    #   fill_in('Risk', with: @risk_text)
+    #   @save_progress.click
+    #   mitigation_message = page.find('.mitigation-description-textarea ').native.attribute('validationMessage')
+    #   expect(mitigation_message).to eq('Please fill out this field.')
+    # end
 
     def fill_in_risk_mitigation
       find('.add-risk-mitigation-link').click

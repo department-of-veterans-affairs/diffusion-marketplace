@@ -111,6 +111,7 @@ class PracticesController < ApplicationController
   # PATCH/PUT /practices/1.json
   def update
     strong_params = practice_params
+    debugger
     updated = @practice.update(strong_params)
     
     if updated
