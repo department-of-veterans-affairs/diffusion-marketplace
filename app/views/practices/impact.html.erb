@@ -61,12 +61,8 @@
                                                 <div class="grid-row margin-left-2 flex-align-start">
                                                     <div class="grid-col-fill">
                                                         <div class="margin-bottom-1">
-                                                            <% if @practice.impact_photos.empty? %>
-                                                                <%= ip.file_field :attachment, class: 'hidden-upload hidden-impact-photo-upload', accept: 'image/*' %>
-                                                            <% else %>
-                                                                <%= ip.file_field :attachment, class: 'hidden-upload' %>
-                                                            <% end %>
-                                                            <%= ip.label :attachment, attachment.present? ? 'Upload new photo' : 'Upload photo', class: "usa-button padding-2 add-impact-photo-label", accept: 'image/*' %>
+                                                          <%= ip.file_field :attachment, class: 'hidden-upload hidden-impact-photo-upload', accept: 'image/*' %>
+                                                          <%= ip.label :attachment, attachment.present? ? 'Upload new photo' : 'Upload photo', class: "usa-button padding-2 add-impact-photo-label" %>
                                                         </div>
                                                     </div>
                                                 </div>

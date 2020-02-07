@@ -27,15 +27,7 @@
         <%= practice.name %>
       </h4>
     <% end %>
-    <% if practice.practice_partners.any? %>
-      <div class="grid-row">
-        <span class="display-block text-center radius-pill padding-y-1px padding-x-2 bg-base-lighter font-sans-3xs margin-bottom-1">
-          Sponsored
-        </span>
-      </div>
-    <% else %>
-    <div style="height: 28px"></div>
-    <% end %>
+    <div style="height: 5px"></div>
     <div class="grid-row margin-bottom-1">
       <p class="margin-top-0 margin-bottom-1 multiline-ellipses-1 line-height-sans-6 font-sans-sm"><%= practice.tagline %></p>
     </div>

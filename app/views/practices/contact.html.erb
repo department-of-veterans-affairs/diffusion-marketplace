@@ -78,7 +78,7 @@
                                                 <div class="display-inline-block">
                                                     <div class="margin-bottom-1">
                                                         <%= vae.label :avatar, 'Upload new photo', class: "usa-button usa-button--unstyled add-va-employee-headshot-label" %>
-                                                        <%= vae.file_field :avatar, class: 'hidden-upload' %>
+                                                        <%= vae.file_field :avatar, class: 'hidden-upload', accept: 'image/*' %>
                                                     </div>
                                                     <div>
                                                         <%= vae.check_box :delete_avatar, { class: 'usa-checkbox__input practice-input delete-avatar-input'}, 'true', 'false' %>
@@ -88,7 +88,7 @@
                                             <% else %>
                                                 <div class="margin-bottom-1">
                                                     <%= vae.label :avatar, 'Upload photo', class: "usa-button padding-2 add-va-employee-headshot-label" %>
-                                                    <%= vae.file_field :avatar, class: 'hidden-upload' %>
+                                                    <%= vae.file_field :avatar, class: 'hidden-upload', accept: 'image/*' %>
                                                 </div>
                                             <% end %>
                                         </div>

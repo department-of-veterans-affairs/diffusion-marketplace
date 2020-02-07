@@ -13,6 +13,7 @@
     training_test = @practice.training_test
     need_new_license = @practice.need_new_license
     time_estimate = @practice.implementation_time_estimate
+    @no_departments = Department.find_by(name: 'None')
 %>
 
 <%= render 'breadcrumbs' %>
@@ -20,7 +21,6 @@
 <div class="grid-container position-relative">
     <div class="grid-row grid-gap">
         <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-
         <div id="complexity" class="desktop:grid-col-9 grid-col-12 p0">
             <%= render "shared/messages" %>
             <section class="usa-section padding-top-0 p2-bottom complexity">
@@ -41,19 +41,23 @@
                     </p>
                     <fieldset class="usa-fieldset">
                         <div class="grid-row grid-gap margin-top-105 margin-bottom-3">
-                            <div class='usa-checkbox grid-col-6'>
-                                <input type='checkbox' class='usa-checkbox__input no-department-input' id="no_practice_department" <%= @practice.departments.empty? ? "checked= 'true'" : "" %>>
-                                <label class='usa-checkbox__label' for="no_practice_department">None</label>
-                            </div>
-                            <div class='usa-checkbox grid-col-6'>
-                                <input type='checkbox' class='usa-checkbox__input all-departments-input' id="all_practice_departments" <%= @practice.departments == Department.all ? "checked= 'true'" : "" %>>
-                                <label class='usa-checkbox__label' for="all_practice_departments">All</label>
-                            </div>
-                            <% Department.order(:name).all.each do |department| %>
+                            <% Department.order("CASE WHEN name = 'None' THEN 1 WHEN name = 'All' THEN 2 ELSE 3 END, name").each do |department| %>
+                              <% if department.name == 'None' %>
+                                <div class='usa-checkbox grid-col-6'>
+                                  <input type='checkbox' class='usa-checkbox__input no-department-input' id="practice_department_<%= @no_departments.id %>" name="practice[department][<%= @no_departments.id %>][value]" <%= !@practice.departments.find_by(name: 'None').nil? ? "checked= 'true'" : "" %>>
+                                  <label class='usa-checkbox__label' for="practice_department_<%= @no_departments.id %>">None</label>
+                                </div>
+                              <% elsif department.name == 'All' %>
+                                <div class='usa-checkbox grid-col-6'>
+                                  <input type='checkbox' class='usa-checkbox__input all-departments-input' id="practice_department_<%= department.id %>" name='practice[department][<%= department.id %>][value]' <%= @practice.departments.include?(department) ? "checked= 'true'" : "" %>>
+                                  <label class='usa-checkbox__label' for="practice_department_<%= department.id %>"><%= department.name %></label>
+                                </div>
+                              <% else %>
                                 <div class='usa-checkbox grid-col-6'>
                                     <input type='checkbox' class='usa-checkbox__input department-input' id="practice_department_<%= department.id %>" name='practice[department][<%= department.id %>][value]' <%= @practice.departments.include?(department) ? "checked= 'true'" : "" %>>
                                     <label class='usa-checkbox__label' for="practice_department_<%= department.id %>"><%= department.name %></label>
                                 </div>
+                              <% end %>
                             <% end %>
                         </div>
                     </fieldset>

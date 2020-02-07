@@ -57,15 +57,18 @@
             </div>
             <p class="margin-top-3 margin-bottom-1"><span class="text-bold">Partners: </span><span>Select any of the following partners your practice is associated with.</span>
             <% partners.each do |partner| %>
-              <div class='usa-checkbox practice-partner-checkbox'>
-                <input type='checkbox' class='usa-checkbox__input partner-input' id="practice_partner_<%= partner.id %>" name='practice[practice_partner][<%= partner.id %>][value]' <%= p_partners.include?(partner) ? "checked= 'true'" : "" %>>
-                <label class='usa-checkbox__label' id="practice_partner_<%= partner.id %>_label" for="practice_partner_<%= partner.id %>"><%= partner.name %></label>
-              </div>
+              <% if partner.name == 'None of the above, or Unsure' %>
+                <div class='usa-checkbox practice-partner-checkbox'>
+                  <input type='checkbox' class='usa-checkbox__input no-partner-input' id="practice_partner_<%= partner.id %>" name='practice[practice_partner][<%= partner.id %>][value]' <%= p_partners.include?(partner) ? "checked= 'true'" : "" %>>
+                  <label class='usa-checkbox__label' id="practice_partner_<%= partner.id %>_label" for="practice_partner_<%= partner.id %>"><%= partner.name %></label>
+                </div>
+                <% else  %>
+                  <div class='usa-checkbox practice-partner-checkbox'>
+                    <input type='checkbox' class='usa-checkbox__input partner-input' id="practice_partner_<%= partner.id %>" name='practice[practice_partner][<%= partner.id %>][value]' <%= p_partners.include?(partner) ? "checked= 'true'" : "" %>>
+                    <label class='usa-checkbox__label' id="practice_partner_<%= partner.id %>_label" for="practice_partner_<%= partner.id %>"><%= partner.name %></label>
+                  </div>
+                <% end %>
             <% end %>
-            <div class='usa-checkbox practice-partner-checkbox'>
-              <input type='checkbox' class='usa-checkbox__input no-partner-input' id="no_practice_partner" <%= p_partners.empty? ? "checked= 'true'" : "" %>>
-              <label class='usa-checkbox__label' id="no_practice_partner_label" for="no_practice_partner">None of the above, or Unsure</label>
-            </div>
           </fieldset>
         <% end %>
         <div class="grid-row margin-bottom-8">

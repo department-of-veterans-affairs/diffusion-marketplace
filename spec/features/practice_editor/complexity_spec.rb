@@ -61,7 +61,6 @@ describe 'Practice editor', type: :feature, js: true do
         #     staff_description_message = find('.staff-training-description').native.attribute('validationMessage')
         #     expect(staff_description_message).to eq('Please fill out this field.')
         #     find('.staff-training-description').set(@staff_training_description)
-        #     all('.usa-checkbox__label').first.click
         #     @save_button.click
         #     expect(accept_alert).to eq('Please choose at least one of the department options listed')
         # end

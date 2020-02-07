@@ -104,7 +104,7 @@
     }
 
     function uncheckAllPartnerBoxes() {
-        $('#no_practice_partner').click(function(event) {   
+        $('.no-partner-input').click(function(event) {
             if(this.checked) {
                 $('.partner-input').each(function() {
                     this.checked = false;                        
@@ -116,7 +116,7 @@
     function uncheckNoneOptionIfAnotherOptionIsChecked() {
         $('.partner-input').click(function(event) {   
             if(this.checked) {
-                $('#no_practice_partner').prop('checked', false);
+                $('.no-partner-input').prop('checked', false);
             }
         });
     }

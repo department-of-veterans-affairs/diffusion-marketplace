@@ -10,16 +10,9 @@ function showStaffTrainingFieldsOnPageLoad() {
     <% end %>
 }
 
-function uncheckNoneOptionIfUserHasNotSelectedItBefore() {
-    if ($('#no_practice_department').is(':checked') && <%= @practice.departments.empty? %> ) {
-        $('#no_practice_department').prop('checked', false);
-    }
-}
-
 function initComplexityFunctions() {
     showAdditionalStaffFieldsOnPageLoad();
     showStaffTrainingFieldsOnPageLoad();
-    uncheckNoneOptionIfUserHasNotSelectedItBefore();
 }
 
 

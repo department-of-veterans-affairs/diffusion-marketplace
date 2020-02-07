@@ -39,7 +39,6 @@ describe 'Practice editor', type: :feature, js: true do
         #     select('Alabama', :from => 'editor_state_select')
         #     select('Birmingham VA Medical Center', :from => 'editor_facility_select')
         #     fill_in('practice_summary', with: 'This is the most super practice ever made')
-        #     all('.usa-checkbox__label').last.click
         #     @save_button.click
         #     expect(accept_alert).to eq('Please choose at least one of the partners listed')
         # end

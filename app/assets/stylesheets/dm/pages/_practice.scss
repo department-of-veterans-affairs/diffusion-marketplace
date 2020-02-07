@@ -708,3 +708,9 @@
   position: absolute;
   width: 1px;
 }
+
+.practice-creator-avatar, .va-employee-img {
+  width: 65px;
+  height: 65px;
+  object-fit: cover;
+}
