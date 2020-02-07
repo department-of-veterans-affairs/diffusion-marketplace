@@ -146,7 +146,6 @@ class User < ApplicationRecord
 
         # attempt to resolve where the User is VA facility wise
         facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
-        logger.info facilities.inspect
         address = entry[:streetAddress][0]
         postal_code = entry[:postalCode][0]
         # Underscore for _location variable to not get confused with the User attribute location
