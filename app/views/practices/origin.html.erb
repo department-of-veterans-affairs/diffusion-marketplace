@@ -60,7 +60,7 @@
                                             <div class="grid-col-auto practice-creator-headshot-col margin-top-105">
                                                 <% if pc_avatar.present? %>
                                                     <div class="practice-creator-headshot-container">
-                                                        <%= image_tag pc.object.avatar.url, alt: pc.object.name, class: 'practice-creator-avatar' %>
+                                                        <%= image_tag pc.object.avatar_s3_presigned_url, alt: pc.object.name %>
                                                     <%#= vae.cropbox :avatar, width: 200, index: vae.index %>
                                                     </div>
                                                 <% else %>
@@ -72,15 +72,9 @@
                                             <div class="grid-col-10 practice-creator-file-col">
                                                 <div class="display-inline-block">
                                                     <div class="margin-bottom-1">
-                                                        <%= pc.label :avatar, pc_avatar.present? ? 'Upload new photo' : 'Upload photo', class: "usa-button #{pc_avatar.present? ? 'usa-button--unstyled' : ''} add-practice-creator-headshot-label" %>
-                                                        <%= pc.file_field :avatar, class: 'hidden-upload', accept: 'image/*' %>
+                                                        <%= pc.label :avatar, pc_avatar.present? ? 'Upload new photo' : 'Upload photo', class: "usa-button usa-button--unstyled add-practice-creator-headshot-label" %>
+                                                        <%= pc.file_field :avatar, class: 'hidden-upload' %>
                                                     </div>
-                                                    <% if pc_avatar.present? %>
-                                                      <div>
-                                                        <%= pc.check_box :delete_avatar, { class: 'usa-checkbox__input practice-input delete-avatar-input'}, 'true', 'false' %>
-                                                        <%= pc.label :delete_avatar, 'Remove photo', class: 'usa-checkbox__label display-inline-block' %>
-                                                      </div>
-                                                    <% end %>
                                                 </div>
                                             </div>
                                             <div class="grid-col-fill flex-align-end origin-trash-container">
