@@ -14,7 +14,11 @@
           <div class="login-header">
             <div class="login-header-overlay">
               <h1 class="x0">Edit Profile</h1>
-              <p class="font-sans-lg">People on the Diffusion Marketplace will get to know you with the information below.</p>
+              <p class="font-sans-lg">
+                People on the Diffusion Marketplace will get to know you with the information you share below.
+                Your name, facility, work number, and job title are pulled from the VA’s Global Access List (GAL).
+                To edit this, please put in a ticket with yourIT.
+              </p>
             </div>
           </div>
           <div class="login-body">
@@ -109,7 +113,7 @@
                 <div class="grid-row width-full">
                   <div class="field margin-top-3 grid-col-9">
                     <%= f.label :job_title, class: 'x0 x1-top' %><br/>
-                    <%= f.text_field :job_title, class: 'usa-input bg-base-lightest border-base-light text-base', disabled: ENV['USE_NTLM'] == 'true' %>
+                    <%= f.text_field :job_title, class: 'usa-input usa-input__disabled bg-base-lightest border-base-light text-base disabled', disabled: ENV['USE_NTLM'] == 'true' %>
                   </div>
                 </div>
               </div>

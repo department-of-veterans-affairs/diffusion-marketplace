@@ -51,20 +51,11 @@
                                                 <%= link_to ad.object.attachment_s3_presigned_url, target: :_blank, class: 'text-primary margin-top-1 margin-left-05' do %>
                                                     <%= ad.object.attachment_file_name %>
                                                 <% end %>
-                                                <div>
-                                                    <%= ad.label :attachment, 'Upload new file', class: 'usa-button usa-button--unstyled add-documentation-label' %>
-                                                    <%= ad.file_field :attachment, class: 'hidden-upload hidden-new-documentation-field', accept: '.pdf,.doc,.docx' %>
-                                                </div>
-                                                <div class="margin-top-105">
-                                                    <%= ad.check_box :delete_attachment, { class: 'usa-checkbox__input practice-input delete-documentation-attachment-input'}, 'true', 'false' %>
-                                                    <%= ad.label :delete_attachment, 'Remove file', class: 'usa-checkbox__label display-inline-block text-secondary' %>
-                                                </div>
-                                            <% else %>
-                                                <div>
-                                                    <%= ad.label :attachment, 'Upload file', class: 'usa-button usa-button--unstyled add-documentation-label' %>
-                                                    <%= ad.file_field :attachment, class: 'hidden-upload hidden-documentation-field', accept: '.pdf,.doc,.docx' %>
-                                                </div>
                                             <% end %>
+                                            <div>
+                                              <%= ad.label :attachment, attachment.present? ? 'Upload new file' : 'Upload file', class: 'usa-button usa-button--unstyled add-documentation-label' %>
+                                              <%= ad.file_field :attachment, class: 'hidden-upload hidden-new-documentation-field', accept: '.pdf,.doc,.docx' %>
+                                            </div>
                                         </div>
                                         <div class="grid-col-fill flex-align-end documentation-trash-container">
                                             <%= ad.link_to_remove '', class: "fas fa-trash-alt documentation-trash text-no-underline", title: 'remove additional document' %>

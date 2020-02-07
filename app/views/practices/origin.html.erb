@@ -34,7 +34,6 @@
                                 <%
                                     pc_id = pc.object.id
                                     pc_avatar = pc.object.avatar
-                                    pc_position = pc.object.position
                                 %>
                                 
                                 <li class="practice-editor-origin-li fields" data-id="<%= pc_id %>">
@@ -73,15 +72,9 @@
                                             <div class="grid-col-10 practice-creator-file-col">
                                                 <div class="display-inline-block">
                                                     <div class="margin-bottom-1">
-                                                        <%= pc.label :avatar, 'Upload photo', class: "usa-button usa-button--unstyled add-practice-creator-headshot-label" %>
+                                                        <%= pc.label :avatar, pc_avatar.present? ? 'Upload new photo' : 'Upload photo', class: "usa-button usa-button--unstyled add-practice-creator-headshot-label" %>
                                                         <%= pc.file_field :avatar, class: 'hidden-upload' %>
                                                     </div>
-                                                    <% if pc_avatar.present? %>
-                                                        <div>
-                                                            <%= pc.check_box :delete_avatar, { class: 'usa-checkbox__input practice-input delete-avatar-input'}, 'true', 'false' %>
-                                                            <%= pc.label :delete_avatar, 'Remove photo', class: 'usa-checkbox__label display-inline-block' %>
-                                                        </div>
-                                                    <% end %>
                                                 </div>
                                             </div>
                                             <div class="grid-col-fill flex-align-end origin-trash-container">

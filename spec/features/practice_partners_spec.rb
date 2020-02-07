@@ -24,7 +24,6 @@ describe 'Practice partners pages', type: :feature do
   it 'should show the initiating facility\'s name' do
     @user_practice.update(initiating_facility: '687HA')
     visit '/partners/diffusion-of-excellence'
-    debugger
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content(@user_practice.name)
     expect(page).to have_content('Yakima VA Clinic')
