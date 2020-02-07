@@ -10,4 +10,8 @@ class PracticeCreator < ApplicationRecord
   attr_accessor :delete_avatar
 
   validates_attachment_content_type :avatar, content_type: %r{\Aimage/.*\z}
+
+  def avatar_s3_presigned_url(style = nil)
+    object_presigned_url(avatar, style)
+  end
 end

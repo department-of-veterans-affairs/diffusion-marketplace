@@ -60,7 +60,7 @@
                                             <div class="grid-col-auto practice-creator-headshot-col margin-top-105">
                                                 <% if pc_avatar.present? %>
                                                     <div class="practice-creator-headshot-container">
-                                                        <%= image_tag pc.object.avatar.url, alt: pc.object.name %>
+                                                        <%= image_tag pc.object.avatar_s3_presigned_url, alt: pc.object.name %>
                                                     <%#= vae.cropbox :avatar, width: 200, index: vae.index %>
                                                     </div>
                                                 <% else %>
