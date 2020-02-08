@@ -131,19 +131,19 @@ class Practice < ApplicationRecord
   acts_as_commontable dependent: :destroy
 
   accepts_nested_attributes_for :practice_partner_practices, allow_destroy: true
-  accepts_nested_attributes_for :impact_photos, allow_destroy: true
-  accepts_nested_attributes_for :video_files, allow_destroy: true
+  accepts_nested_attributes_for :impact_photos, allow_destroy: true, reject_if: proc { |attributes| attributes['description'].blank? || attributes['attachment'].nil? }
+  accepts_nested_attributes_for :video_files, allow_destroy: true, reject_if: proc { |attributes| attributes['url'].blank? || attributes['description'].blank? }
   accepts_nested_attributes_for :difficulties, allow_destroy: true
   accepts_nested_attributes_for :risk_mitigations, allow_destroy: true
-  accepts_nested_attributes_for :timelines, allow_destroy: true
-  accepts_nested_attributes_for :va_employees, allow_destroy: true
-  accepts_nested_attributes_for :additional_staffs, allow_destroy: true #, reject_if: :all_blank
-  accepts_nested_attributes_for :additional_resources, allow_destroy: true
-  accepts_nested_attributes_for :required_staff_trainings, allow_destroy: true #, reject_if: :all_blank
-  accepts_nested_attributes_for :practice_creators, allow_destroy: true
-  accepts_nested_attributes_for :practice_permissions, allow_destroy: true
-  accepts_nested_attributes_for :additional_documents, allow_destroy: true #, reject_if: proc { |attributes| attributes['title'].blank? || attributes['attachment'].nil? }
-  accepts_nested_attributes_for :publications, allow_destroy: true #, reject_if: proc { |attributes| attributes['title'].blank? || attributes['link'].blank? }
+  accepts_nested_attributes_for :timelines, allow_destroy: true, reject_if: proc { |attributes| attributes['timeline'].blank? || attributes['milestone'].blank? }
+  accepts_nested_attributes_for :va_employees, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? || attributes['role'].blank? }
+  accepts_nested_attributes_for :additional_staffs, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['hours_per_week'].blank? || attributes['duration_in_weeks'].blank? }
+  accepts_nested_attributes_for :additional_resources, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
+  accepts_nested_attributes_for :required_staff_trainings, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['description'].blank? }
+  accepts_nested_attributes_for :practice_creators, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? || attributes['role'].blank? }
+  accepts_nested_attributes_for :practice_permissions, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
+  accepts_nested_attributes_for :additional_documents, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['attachment'].nil? }
+  accepts_nested_attributes_for :publications, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['link'].blank? }
 
   SATISFACTION_LABELS = ['Little or no impact', 'Some impact', 'Significant impact', 'High or large impact'].freeze
   COST_LABELS = ['0-$10,000', '$10,000-$50,000', '$50,000-$250,000', 'More than $250,000'].freeze

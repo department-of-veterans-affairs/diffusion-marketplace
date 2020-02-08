@@ -36,7 +36,7 @@
                                 <input type="hidden" name="practice[risk_mitigations_attributes][${riskMitiId}][risks_attributes][0][id]" id="practice_risk_mitigations_attributes_${riskMitiId}_risks_attributes_0_id">
                                 <div class="risk_container">
                                     <label class="usa-label text-bold display-inline-block risk-description" for="practice_risk_mitigations_attributes_${riskMitiId}_description">Risk:</label>&nbsp;<span>Type the name or description of the risk.</span>&nbsp;<span class="text-base-light risk-character-count risk_0_character_count" id="risk_${riskMitiId}_character_count">(0/150 characters)</span>
-                                    <textarea class="usa-input practice-input risk-description-textarea height-15 risk_0_description_textarea" id="practice_risk_mitigations_attributes_${riskMitiId}_description" name="practice[risk_mitigations_attributes][${riskMitiId}][risks_attributes][0][description]" required></textarea>
+                                    <textarea class="usa-input practice-input risk-description-textarea height-15 risk_0_description_textarea" id="practice_risk_mitigations_attributes_${riskMitiId}_description" name="practice[risk_mitigations_attributes][${riskMitiId}][risks_attributes][0][description]"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -47,7 +47,7 @@
                             <input type="hidden" name="practice[risk_mitigations_attributes][${riskMitiId}][mitigations_attributes][0][id]" id="practice_risk_mitigations_attributes_${riskMitiId}_mitigations_attributes_0_id">
                             <div class="mitigation_container">
                                 <label class="usa-label text-bold display-inline-block" for="practice_risk_mitigations_attributes_${riskMitiId}_mitigations_attributes_0_description">Mitigation:</label>&nbsp;<span>Type the corresponding mitigation to the risk.</span>&nbsp;<span class="text-base-light mitigation-character-count" id="mitigation_${riskMitiId}_character_count">(0/150 characters)</span>
-                                <textarea class="usa-input practice-input mitigation-description-textarea height-15" id="practice_risk_mitigations_attributes_${riskMitiId}_mitigations_attributes_0_description" name="practice[risk_mitigations_attributes][${riskMitiId}][mitigations_attributes][0][description]" required></textarea>
+                                <textarea class="usa-input practice-input mitigation-description-textarea height-15" id="practice_risk_mitigations_attributes_${riskMitiId}_mitigations_attributes_0_description" name="practice[risk_mitigations_attributes][${riskMitiId}][mitigations_attributes][0][description]"></textarea>
                             </div>
                         </div>
                     `;
