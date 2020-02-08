@@ -163,9 +163,10 @@
   padding: 1px 0 0 1px;
   margin-left: -160px;
   margin-top: 50px;
-  z-index: -20;
+  opacity: 0;
   position: absolute;
   padding-left: unset !important;
+  z-index: -20;
 
   &:focus {
     outline: none !important;
