@@ -72,7 +72,8 @@ describe 'Breadcrumbs', type: :feature do
       @user_practice.update(published: true, approved: true)
       visit '/'
       fill_in('Search by practice name, facility name, clinical condition, or keyword', with: 'the best')
-      click_button('homepage-search-button')
+      
+      click_button('practice-search-button')
       expect(page).to have_content('The Best')
       expect(page).to be_accessible.according_to :wcag2a, :section508
       within(:css, '#breadcrumbs') do

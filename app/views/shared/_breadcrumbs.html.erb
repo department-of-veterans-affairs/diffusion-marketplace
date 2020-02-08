@@ -5,9 +5,9 @@
       <% @breadcrumbs.each do |crumb| %>
         <% if crumb[:path] %>
           <%= link_to(crumb[:text], crumb[:path], class: 'dm-font-color-primary-blue') %>
-          <span class='dm-font-color-primary-blue x0-5-right x0-5-left'>></span>
+          <span class='dm-font-color-primary-blue x0-5-right x0-5-left'>›</span>
         <% else %>
-          <%= crumb[:text] %>
+          <span class="text-primary text-bold"><%= crumb[:text] %></span>
         <% end %>
       <% end %>
     </div>

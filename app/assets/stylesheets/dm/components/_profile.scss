@@ -27,13 +27,12 @@
 }
 
 .empty-user-avatar {
-  background-color: #F0F0F0;
-  color: #DADADA !important;
-  border-radius: 4px;
-  font-size: 10rem;
-  padding: 1.25rem 1.25rem 0 1.25rem;
-  position: relative;
-  text-decoration: none !important;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  font-size: 12em;
 }
 
 .profile-h1 {
@@ -43,4 +42,46 @@
 .profile-job-title {
   font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans !important;
   margin-top: 0 !important;
+}
+
+.profile-avatar-container {
+  height: 226px !important;
+  width: 226px !important;
+  position: relative;
+}
+
+.edit-profile-link {
+  color: #005ea2 !important;
+   
+  &:hover {
+    text-decoration: none !important;
+    color: #1a4480 !important;
+  }
+
+  .edit-profile-icon {
+    &:after {
+      text-decoration: none;
+    }
+  }
+}
+
+.cancel-edit-profile-link {
+  &:hover {
+    text-decoration: none !important;
+  }
+
+  .cancel-edit-profile-button {
+    &:hover {
+      text-decoration: none !important;
+    }
+  }
+}
+
+.edit-profile-form {
+  max-width: unset !important;
+}
+
+.profile-bio {
+  max-width: unset !important;
+  resize: none;
 }

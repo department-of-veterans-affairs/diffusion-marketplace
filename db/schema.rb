@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_10_162249) do
+ActiveRecord::Schema.define(version: 2020_01_21_231329) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 2019_10_10_162249) do
     t.bigint "practice_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
     t.index ["practice_id"], name: "index_additional_resources_on_practice_id"
   end
 
@@ -406,6 +407,7 @@ ActiveRecord::Schema.define(version: 2019_10_10_162249) do
     t.string "attachment_content_type"
     t.integer "attachment_file_size"
     t.datetime "attachment_updated_at"
+    t.boolean "is_main_display_image", default: false
     t.index ["practice_id"], name: "index_impact_photos_on_practice_id"
   end
 
@@ -483,6 +485,22 @@ ActiveRecord::Schema.define(version: 2019_10_10_162249) do
     t.index ["practice_id"], name: "index_photo_files_on_practice_id"
   end
 
+  create_table "practice_creators", force: :cascade do |t|
+    t.bigint "practice_id"
+    t.bigint "user_id"
+    t.string "role"
+    t.string "name"
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "avatar_file_name"
+    t.string "avatar_content_type"
+    t.integer "avatar_file_size"
+    t.datetime "avatar_updated_at"
+    t.index ["practice_id"], name: "index_practice_creators_on_practice_id"
+    t.index ["user_id"], name: "index_practice_creators_on_user_id"
+  end
+
   create_table "practice_management_practices", force: :cascade do |t|
     t.bigint "practice_id"
     t.bigint "practice_management_id"
@@ -529,6 +547,7 @@ ActiveRecord::Schema.define(version: 2019_10_10_162249) do
     t.bigint "practice_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
     t.index ["practice_id"], name: "index_practice_permissions_on_practice_id"
   end
 
@@ -617,6 +636,7 @@ ActiveRecord::Schema.define(version: 2019_10_10_162249) do
     t.boolean "highlight", default: false, null: false
     t.boolean "featured", default: false, null: false
     t.integer "ahoy_visit_id"
+    t.string "training_provider_role"
     t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
   end
@@ -906,6 +926,8 @@ ActiveRecord::Schema.define(version: 2019_10_10_162249) do
   add_foreign_key "job_positions", "job_position_categories"
   add_foreign_key "mitigations", "risk_mitigations"
   add_foreign_key "photo_files", "practices"
+  add_foreign_key "practice_creators", "practices"
+  add_foreign_key "practice_creators", "users"
   add_foreign_key "practice_management_practices", "practice_managements"
   add_foreign_key "practice_management_practices", "practices"
   add_foreign_key "practice_partner_practices", "practice_partners"

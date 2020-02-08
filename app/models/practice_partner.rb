@@ -7,4 +7,6 @@ class PracticePartner < ApplicationRecord
   has_many :practice_partner_practices, dependent: :destroy
   has_many :practices, through: :practice_partner_practices
 
+  attr_accessor :no_practice_partners
+
 end

@@ -1,7 +1,7 @@
 @import "../variables/colors";
 
 /* The Modal (background) */
-.modal, .terms-modal, .report-abuse-modal {
+.modal, .terms-modal, .report-abuse-modal, .publication-modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 100000; /* Sit on top */
@@ -16,7 +16,7 @@
 }
 
 /* Modal Content */
-.modal-content, .terms-modal-content, .report-abuse-modal-content {
+.modal-content, .terms-modal-content, .report-abuse-modal-content, .publication-modal-content {
   position: relative;
   background-color: #fefefe;
   margin: auto;
@@ -30,13 +30,17 @@
   animation-duration: 0.4s
 }
 
-.terms-modal, .report-abuse-modal {
+.terms-modal, .report-abuse-modal, .publication-modal {
   display: block;
   padding-top: 120px;
 
   .terms-modal-content {
     border: none
   }
+}
+
+.publication-modal-content {
+  width: 524px;
 }
 
 /* Add Animation */
@@ -92,3 +96,8 @@
     box-shadow: none;
   }
 }
+
+.publication-modal-hidden {
+  display: none;
+}
+

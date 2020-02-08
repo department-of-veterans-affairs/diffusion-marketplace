@@ -68,14 +68,16 @@ class Practice < ApplicationRecord
   crop_attached_file :origin_picture, aspect: '1:1'
   validates_attachment_content_type :main_display_image, content_type: /\Aimage\/.*\z/
   validates_attachment_content_type :origin_picture, content_type: /\Aimage\/.*\z/
+  validates :name, presence: { message: 'Practice name can\'t be blank'}
+  validates :tagline, presence: { message: 'Practice tagline can\'t be blank'}
 
   scope :published,   -> { where(published: true) }
   scope :unpublished,  -> { where(published: false) }
 
   belongs_to :user, optional: true
 
-  has_many :additional_documents, dependent: :destroy
-  has_many :additional_resources, dependent: :destroy
+  has_many :additional_documents, -> {order(position: :asc)}, dependent: :destroy
+  has_many :additional_resources, -> {order(position: :asc)}, dependent: :destroy
   has_many :additional_staffs, dependent: :destroy
   has_many :ancillary_service_practices, dependent: :destroy
   has_many :ancillary_services, through: :ancillary_service_practices
@@ -99,7 +101,7 @@ class Practice < ApplicationRecord
   has_many :domain_practices, dependent: :destroy
   has_many :domains, through: :domain_practices
   has_many :financial_files, dependent: :destroy
-  has_many :impact_photos, dependent: :destroy
+  has_many :impact_photos, -> {order(position: :asc)}, dependent: :destroy
   has_many :implementation_timeline_files, dependent: :destroy
   has_many :job_position_practices, dependent: :destroy
   has_many :job_positions, through: :job_position_practices
@@ -108,37 +110,43 @@ class Practice < ApplicationRecord
   has_many :practice_managements, through: :practice_management_practices
   has_many :practice_partner_practices, dependent: :destroy
   has_many :practice_partners, through: :practice_partner_practices
-  has_many :practice_permissions, dependent: :destroy
-  has_many :publications, dependent: :destroy
+  has_many :practice_permissions, -> {order(position: :asc)}, dependent: :destroy
+  has_many :publications, -> {order(position: :asc)}, dependent: :destroy
   has_many :publication_files, dependent: :destroy
   has_many :required_staff_trainings, dependent: :destroy
-  has_many :risk_mitigations, dependent: :destroy
+  has_many :risk_mitigations, -> {order(position: :asc)}, dependent: :destroy
   has_many :survey_result_files, dependent: :destroy
-  has_many :timelines, dependent: :destroy
+  has_many :timelines, -> {order(position: :asc)}, dependent: :destroy
   has_many :toolkit_files, dependent: :destroy
   has_many :user_practices, dependent: :destroy
   has_many :users, through: :user_practices, dependent: :destroy
   has_many :va_employee_practices, dependent: :destroy
-  has_many :va_employees, through: :va_employee_practices
+  has_many :va_employees, -> {order(position: :asc)}, through: :va_employee_practices
   has_many :va_secretary_priority_practices, dependent: :destroy
   has_many :va_secretary_priorities, through: :va_secretary_priority_practices
-  has_many :video_files, dependent: :destroy
+  has_many :video_files, -> {order(position: :asc)}, dependent: :destroy
+  has_many :practice_creators, -> {order(position: :asc)}, dependent: :destroy
 
   # This allows the practice model to be commented on with the use of the Commontator gem
   acts_as_commontable dependent: :destroy
 
   accepts_nested_attributes_for :practice_partner_practices, allow_destroy: true
-  accepts_nested_attributes_for :impact_photos, allow_destroy: true
+  accepts_nested_attributes_for :impact_photos, allow_destroy: true, reject_if: proc { |attributes| attributes['description'].blank? || attributes['attachment'].nil? }
+  accepts_nested_attributes_for :video_files, allow_destroy: true, reject_if: proc { |attributes| attributes['url'].blank? || attributes['description'].blank? }
   accepts_nested_attributes_for :difficulties, allow_destroy: true
   accepts_nested_attributes_for :risk_mitigations, allow_destroy: true
-  accepts_nested_attributes_for :timelines, allow_destroy: true
-  accepts_nested_attributes_for :va_employees, allow_destroy: true
-  accepts_nested_attributes_for :additional_staffs, allow_destroy: true
-  accepts_nested_attributes_for :additional_resources, allow_destroy: true
-  accepts_nested_attributes_for :required_staff_trainings, allow_destroy: true
+  accepts_nested_attributes_for :timelines, allow_destroy: true, reject_if: proc { |attributes| attributes['timeline'].blank? || attributes['milestone'].blank? }
+  accepts_nested_attributes_for :va_employees, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? || attributes['role'].blank? }
+  accepts_nested_attributes_for :additional_staffs, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['hours_per_week'].blank? || attributes['duration_in_weeks'].blank? }
+  accepts_nested_attributes_for :additional_resources, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
+  accepts_nested_attributes_for :required_staff_trainings, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['description'].blank? }
+  accepts_nested_attributes_for :practice_creators, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? || attributes['role'].blank? }
+  accepts_nested_attributes_for :practice_permissions, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
+  accepts_nested_attributes_for :additional_documents, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['attachment'].nil? }
+  accepts_nested_attributes_for :publications, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['link'].blank? }
 
   SATISFACTION_LABELS = ['Little or no impact', 'Some impact', 'Significant impact', 'High or large impact'].freeze
-  COST_LABELS = ['0-$10,000', '$10,000-$50,000', '$50,000-$250,000', 'Over $250,000'].freeze
+  COST_LABELS = ['0-$10,000', '$10,000-$50,000', '$50,000-$250,000', 'More than $250,000'].freeze
   # also known as "Difficulty"
   COMPLEXITY_LABELS = ['Little or no complexity', 'Some complexity', 'Significant complexity', 'High or large complexity'].freeze
   TIME_ESTIMATE_OPTIONS =['1 week', '1 month', '3 months', '6 months', '1 year', 'longer than 1 year', 'Other (Please specify)']

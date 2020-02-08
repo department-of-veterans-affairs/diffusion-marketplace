@@ -8,7 +8,7 @@ describe 'Practice partners pages', type: :feature do
     @approver = User.create!(email: 'squidward.tentacles@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
-    @user_practice = Practice.create!(name: 'A public practice', approved: true, published: true)
+    @user_practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline')
     PracticePartnerPractice.create!(practice_partner: @pp, practice: @user_practice)
   end
 
@@ -22,12 +22,11 @@ describe 'Practice partners pages', type: :feature do
   end
 
   it 'should show the initiating facility\'s name' do
-    @user_practice.update(initiating_facility: 'vc_0508V')
+    @user_practice.update(initiating_facility: '687HA')
     visit '/partners/diffusion-of-excellence'
-
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content(@user_practice.name)
-    expect(page).to have_content('Tacoma Vet Center')
+    expect(page).to have_content('Yakima VA Clinic')
   end
 
   it 'should display the initiating facility\'s initiating facility property if it is not found in the map' do

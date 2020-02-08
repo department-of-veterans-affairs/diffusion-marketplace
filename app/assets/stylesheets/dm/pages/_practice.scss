@@ -159,9 +159,24 @@
 }
 
 .hidden-upload {
-  width: 1px;
-  height: 1px;
+  height: 0.1px;
   padding: 1px 0 0 1px;
+  margin-left: -160px;
+  margin-top: 50px;
+  overflow: hidden;
+  position: absolute;
+  padding-left: unset !important;
+  width: 0.1px;
+  z-index: -20;
+
+  &:focus {
+    outline: none !important;
+  }
+}
+
+.hidden-impact-photo-upload {
+  margin-left: -30px;
+  margin-top: 18px;
 }
 
 .practice-edit-nav {
@@ -215,11 +230,11 @@
     }
   }
 }
+
 .multiline-ellipses-1, .multiline-ellipses-2, .multiline-ellipses-3 {
   display: block; /* Fallback for non-webkit */
   display: -webkit-box;
   max-width: 400px;
-  margin: 0 auto;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -271,6 +286,17 @@
   }
 }
 
+.video-file-placeholder {
+  position: absolute;
+}
+
+.no-impact-image, .video-file-placeholder {
+  top: 36%;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
 .back-to-partners-link {
   color: $dm-color-primary-blue !important;
   font-weight: normal !important;
@@ -279,10 +305,6 @@
     font-weight: bold;
   }
 }
-
-
-
-
 
 .practice-map-filters {
   fieldset {
@@ -308,4 +330,389 @@
     background-color: #D83933;
     box-shadow: 0 0 0 2px #D83933;
   }
+}
+
+.practice-editor-link {
+  padding-left: 1rem !important;
+}
+
+.editor-back-to-button, .editor-continue-button {
+  margin: 0 !important;
+}
+
+.editor-back-to-link, .editor-continue-link {
+  width: auto;
+  display: inline-block;
+  text-decoration: none !important;
+}
+
+.editor-back-to-link {
+  &:visited {
+    color: $dm-color-primary-blue !important;
+  }
+
+  &:hover {
+    text-decoration: none !important;
+    color: #1a4480 !important
+  }
+}
+
+.editor-continue-link {
+  &:visited {
+    color: white !important;
+  }
+
+  &:hover {
+    text-decoration: none !important;
+    color: white !important
+  }
+}
+
+.practice-editor-name-input, .practice-editor-tagline-textarea, .practice-editor-summary-textarea {
+  max-width: 100% !important;
+}
+
+.practice-editor-tagline-textarea {
+  resize: none;
+  height: 72px !important;
+}
+
+.practice-editor-summary-textarea {
+  resize: none;
+  height: 142px !important;
+}
+
+.practice-partner-checkbox:last-child {
+  margin-bottom: 44px;
+}
+
+.instructions-list {
+  padding-left: 20px;
+
+  li {
+    margin-bottom: 30px;
+
+    &:last-child {
+      margin-bottom: 42px;
+    }
+  }
+}
+
+.fa-check-circle {
+  text-decoration: none !important;
+  color: #DADADA;
+}
+
+.collaborators-form {
+  max-width: 100% !important;
+}
+
+.collab-trash, .staff-trash, .timeline-trash, .risk-mitigation-trash, .impact-trash, 
+.va-employee-trash, .origin-trash, .documentation-trash, .permission-trash, .resource-trash {
+  color: #D83933 !important;
+
+  &:hover {
+    color: #b51d09 !important;
+  }
+}
+
+.impact-trash, .origin-trash, .documentation-trash, .timeline-trash, .risk-mitigation-trash, .va-employee-trash, .permission-trash,
+.resource-trash {
+  font-size: 22px;
+}
+
+.impact-trash-container, .origin-trash-container, .documentation-trash-container, .timeline-trash-container,
+.risk-miti-trash-container, .va-employee-trash-container, .permission-trash-container, .resource-trash-container {
+  align-self: flex-end;
+  text-align: center;
+}
+
+.documentation-trash-container, .timeline-trash-container, .risk-miti-trash-container, .contact-trash-container,
+.permission-trash-container, .resource-trash-container {
+  margin-left: 33px;
+}
+
+.clear-collaborator-button, .add-collaborator-button {
+  text-decoration: none !important;
+}
+
+.clear-collaborator-button {
+  margin-bottom: 28px !important;
+  margin-top: 4px !important;
+}
+
+.add-collaborator-button {
+  margin-top: 28px !important;
+  margin-bottom: 44px !important;
+}
+
+.clear-collaborator-button:hover {
+  color: #D83933 !important;
+}
+
+.add-collaborator-button:hover {
+  color: #005EA2 !important;
+}
+
+.green-check {
+  color: limegreen;
+}
+
+.clear-additional-staff-link, .clear-required-staff-link {
+  margin-top: 0 !important;
+  margin-bottom: 24px !important;
+  color: #D83933 !important;
+
+  &:hover {
+    color: #b51d09 !important;
+  }
+}
+
+.clear-timeline-link, .clear-risk-mitigation-link, .clear-va-employee-link {
+  margin-top: 24px !important;
+  margin-bottom: 24px !important;
+  color: #D83933 !important;
+
+  &:hover {
+    color: #b51d09 !important;
+  }
+}
+
+.add-required-staff-link {
+  margin-top: 24px !important;
+}
+
+.add-additional-staff-link, .add-required-staff-link, .add-timeline-link, .add-risk-mitigation-link, 
+.add-impact-photo-link, .add-va-employee-link, .add-practice-creator-link, .add-additional-document-link, .add-publication-link,
+.add-video-file-link, .add-permission-link, .add-resource-link {
+  margin-top: 24px !important;
+  margin-bottom: 44px;
+}
+
+#required-training-container {
+  display: none;
+}
+
+.milestone-textarea, .risk-description, .mitigation-description, 
+.practice-editor-video-caption, .practice-editor-image-caption, .risk-description-textarea, .mitigation-description-textarea,
+.staff-training-description {
+  resize: none;
+}
+
+.move-timeline-button, .move-risk-mitigation-button, .move-impact-button, .move-va-employee-button, .move-practice-creator-button {
+  margin-top: 0 !important;
+  margin-right: 21px !important;
+
+  &:hover {
+    color: #565c65 !important;
+  }
+}
+
+.hidden-timeline, .hidden-risk-mitigation, .hidden-impact, .hidden-va-employee, .hidden-practice-creator {
+  display: none;
+}
+
+.editor-sidenav-link {
+  padding: 0.6rem !important;
+}
+
+.practice-editor-impact-photo {
+  max-width: 100% !important;
+  object-fit: cover;
+}
+
+.fields {
+  width: 100%;
+}
+
+.add-impact-photo-label {
+  margin-top: 0 !important;
+}
+
+.impact-p, .va-employee-headshot-p, .practice-creator-headshot-p {
+  margin-top: 24px;
+}
+
+.va-employee-headshot-container, .practice-creator-headshot-container {
+  width: 65px;
+  height: 65px;
+  position: relative;
+}
+
+.va-employee-headshot-filler, .practice-creator-headshot-filler {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+.va-employee-headshot-col, .practice-creator-headshot-col {
+  margin-right: 24px;
+}
+
+.add-va-employee-headshot-label, .add-practice-creator-headshot-label {
+  margin-top: 12px !important;
+}
+
+.practice-editor-origin-ul, .practice-editor-timeline-ul, .practice-editor-risk-mitigation-ul, .practice-editor-contact-ul,
+.practice-editor-additional-document-ul, .practice-editor-publication-ul, .practice-editor-impact-photo-ul, 
+.practice-editor-video-file-ul, .practice-editor-permission-ul, .practice-editor-resource-ul {
+  margin: 0;
+  padding: 0;
+}
+
+.practice-editor-origin-li, .practice-editor-timeline-li, .practice-editor-risk-mitigation-li, .practice-editor-contact-li,
+.practice-editor-additional-document-li, .practice-editor-publication-li, .practice-editor-impact-photo-li,
+.practice-editor-video-file-li, .practice-editor-permission-li, .practice-editor-resource-li {
+  list-style: none;
+}
+
+.sortable-placeholder {
+  margin-top: 24px;
+  display: block !important;
+  height: 250px !important;
+  border: 2px solid #005ea2;
+  border-radius: 4px;
+}
+
+.add-documentation-label {
+  margin-top: 12px !important;
+}
+
+.partner-input, .no-partner-input {
+  left: 2px !important;
+}
+
+.delete-avatar-input, .delete-attachment-input {
+  left: 5px !important;
+}
+
+.delete-documentation-attachment-input {
+  left: 8px !important;
+}
+
+.resource-radio {
+  left: 10px !important;
+  height: 2px;
+  width: 2px;
+  top: 10px;
+}
+
+.impact-radio {
+  left: 34px !important;
+  height: 1px;
+  width: 1px;
+  margin-top: 5px;
+}
+
+.complexity-radio {
+  left: 10px !important;
+  height: 1px;
+  width: 1px;
+  margin-top: 11px;
+}
+
+.origin-errors-ul, .contact-errors-ul, .complexity-errors-ul, .complexity-errors-ul, .resources-errors-ul, .overview-errors-ul,
+.impact-errors-ul {
+  padding-left: 20px;
+  margin-top: 5px;
+
+  li {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+}
+
+.practice-editor-publication-error-container {
+  height: 268px;
+  overflow-y: auto;
+}
+
+.position-arrows {
+  position: absolute;
+  top: 0;
+  right: 10px;
+}
+
+.documentation-arrows, .timeline-arrows, .origin-arrows, .risk-miti-arrows, .contact-arrows, .checklist-arrows {
+  right: 1px;
+}
+
+.edit-impact-photo-button, .edit-origin-photo-button {
+  margin-top: 3px !important;
+  margin-right: 24px !important;
+}
+
+.delete-impact-attachment-input {
+  left: 5px !important;
+}
+
+.video-file-url-input {
+  width: 335px !important;
+}
+
+.hidden-radio {
+  display: none !important;
+}
+
+.hidden-documentation-field {
+  margin-top: 30px;
+  margin-left: -120px;
+}
+
+.hidden-impact-field {
+  margin-top: 45px;
+  margin-left: -10px;
+}
+
+.pub-title, .add-doc-title, .practice-creator-name, .timeline-duration, .risk-description, .vae-name {
+  margin-top: 0 !important;
+}
+
+.arrows-tooltip {
+
+  &:hover .tooltip-text {
+    visibility: visible;
+  }
+
+  .tooltip-text {
+    visibility: hidden;
+    width: 230px;
+    text-align: center;
+    text-transform: none !important;
+    padding: 5px;
+    
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    right: -105px;
+    margin-bottom: 5px;
+  }
+}
+
+.documentation-check, .risk-miti-check, .checklist-check {
+  visibility: hidden;
+}
+
+.practice-editor-min-height {
+  min-height: 700px;
+}
+
+.hidden-estimate-label {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.practice-creator-avatar, .va-employee-img {
+  width: 65px;
+  height: 65px;
+  object-fit: cover;
 }

@@ -1,11 +1,17 @@
 class PracticesController < ApplicationController
-  before_action :set_practice, only: [:show, :edit, :update, :destroy, :planning_checklist, :commit, :committed, :highlight, :un_highlight, :feature, :un_feature, :favorite]
+  before_action :set_practice, only: [:show, :edit, :update, :destroy, :planning_checklist, :commit, :committed, :highlight, :un_highlight, :feature, :un_feature, :favorite, :instructions, :overview, :origin, :collaborators, :impact, :resources, :documentation, :complexity, :timeline, :risk_and_mitigation, :contact, :checklist, :publication_validation]
   before_action :set_facility_data, only: [:show, :planning_checklist]
   before_action :authenticate_user!, except: [:show, :search, :index]
   before_action :can_view_committed_view, only: [:committed]
   before_action :can_view_practice, only: [:show, :edit, :update, :destroy, :planning_checklist]
   before_action :can_create_practice, only: [:new, :create]
-  before_action :can_edit_practice, only: [:edit, :update]
+  before_action :can_edit_practice, only: [:edit, :update, :instructions,
+                                           :overview, :origin, :impact,
+                                           :documentation, :resources, :complexity,
+                                           :timeline, :risk_and_mitigation,
+                                           :contact, :checklist, :published,
+                                           :publication_validation
+  ]
 
   # GET /practices
   # GET /practices.json
@@ -104,13 +110,87 @@ class PracticesController < ApplicationController
   # PATCH/PUT /practices/1
   # PATCH/PUT /practices/1.json
   def update
-    updated = @practice.update(practice_params)
+    strong_params = practice_params
+    updated = @practice.update(strong_params)
+    
     if updated
       partner_keys = []
       partner_keys = params[:practice][:practice_partner].keys if params[:practice][:practice_partner].present?
       @practice.practice_partner_practices.each do |partner|
         partner.destroy unless partner_keys.include? partner.practice_partner_id.to_s
       end
+
+      # Remove impact photo
+      if params[:practice][:impact_photos_attributes].present?
+        params[:practice][:impact_photos_attributes].each do |key, photo|
+          if photo['delete_attachment'] == 'true'
+            
+            @practice.impact_photos.find(photo[:id]).update_attributes(attachment: nil)
+          end
+        end
+      end
+
+      # Remove VA employee avatar
+      if params[:practice][:va_employees_attributes].present?
+        params[:practice][:va_employees_attributes].each do |key, e|
+          if e['delete_avatar'] == 'true'
+            
+            @practice.va_employees.find(e[:id]).update_attributes(avatar: nil)
+          end
+        end
+      end
+
+      # Remove practice creator avatar
+      if params[:practice][:practice_creators_attributes].present?
+        params[:practice][:practice_creators_attributes].each do |key, pc|
+          if pc['delete_avatar'] == 'true'
+            
+            @practice.practice_creators.find(pc[:id]).update_attributes(avatar: nil)
+          end
+        end
+      end
+
+      # Remove additional document file
+      if params[:practice][:additional_documents_attributes].present?
+        params[:practice][:additional_documents_attributes].each do |key, ad|
+          if ad['delete_attachment'] == 'true'
+            
+            @practice.additional_documents.find(ad[:id]).update_attributes(attachment: nil)
+          end
+        end
+      end
+
+
+      # Change impact photo to main display image
+      @practice.impact_photos.each do |ip|
+        if ip.is_main_display_image
+          
+          selected_impact_photo = @practice.impact_photos.find(ip[:id]).attachment
+          @practice.update_attributes(main_display_image: selected_impact_photo)
+          
+        end
+      end
+      
+      if @practice.impact_photos.where(is_main_display_image: true).empty? || @practice.impact_photos.empty?
+        @practice.update_attributes(main_display_image: nil)
+      end
+
+      if @practice.main_display_image.blank? && @practice.impact_photos.any?
+        impact_photo = @practice.impact_photos.find_by(position: 1)
+        @practice.update_attributes(main_display_image: impact_photo.attachment)
+        impact_photo.update_attributes(is_main_display_image: true)
+      end
+
+
+      # Aurora's code
+      # if params[:practice][:impact_photos_attributes].present?
+      #   save_as_main_display_image = strong_params[:impact_photos_attributes].to_hash.find{|key, hash| hash["save_as_main_display_image"] == 'on'}
+      #   if save_as_main_display_image.present?
+      #     selected_impact_photo = @practice.impact_photos.find(strong_params[:save_as_main_display_image][:id])
+      #     @practice.update_attributes(main_display_image: selected_impact_photo.attachment) if selected_impact_photo.present?
+      #   end
+      # end
+      
       partner_keys.each do |key|
         next if @practice.practice_partners.ids.include? key.to_i
 
@@ -118,7 +198,7 @@ class PracticesController < ApplicationController
       end
 
       dept_keys = []
-      dept_keys = params[:practice][:practice_department].keys if params[:practice][:practice_department].present?
+      dept_keys = params[:practice][:department].keys if params[:practice][:department].present?
       @practice.department_practices.each do |department|
         department.destroy unless dept_keys.include? department.department_id.to_s
       end
@@ -128,12 +208,12 @@ class PracticesController < ApplicationController
         @practice.department_practices.create department_id: key.to_i
       end
     end
+
     respond_to do |format|
       if updated
-        format.html {redirect_to @practice, notice: 'Practice was successfully updated.'}
+        format.html {redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.'}
         format.json {render :show, status: :ok, location: @practice}
       else
-        format.html {render :edit}
         format.json {render json: @practice.errors, status: :unprocessable_entity}
       end
     end
@@ -142,12 +222,12 @@ class PracticesController < ApplicationController
   def search
     ahoy.track "Practice search", {search_term: request.params[:query]} if request.params[:query].present?
     @practices = Practice.where(approved: true, published: true).order(name: :asc)
-    @facilities_data = facilities_json['features']
+    @facilities_data = facilities_json
     @practices_json = practices_json(@practices)
   end
 
   def planning_checklist
-    @facilities_data = facilities_json['features']
+    @facilities_data = facilities_json
   end
 
   # GET /practices/1/committed
@@ -226,6 +306,69 @@ class PracticesController < ApplicationController
     @practice.update_attributes featured: false
     redirect_to edit_practice_path(@practice)
   end
+  
+  # GET /practices/1/instructions
+  def instructions
+  end
+
+  # /practices/slug/collaborators
+  def collaborators
+  end
+
+  # /practices/slug/overview
+  def overview
+  end
+
+  # GET /practices/1/origin
+  def origin
+  end
+
+  # /practices/slug/impact
+  def impact
+  end
+
+  # /practices/slug/documentation
+  def documentation
+  end
+
+  # /practices/slug/resources
+  def resources
+  end
+
+  # /practices/slug/complexity
+  def complexity
+  end
+
+  # /practices/slug/timeline
+  def timeline
+  end
+
+  # /practices/slug/risk_and_mitigation
+  def risk_and_mitigation
+  end
+
+  # /practices/slug/contact
+  def contact
+  end
+
+  # /practices/slug/checklist
+  def checklist
+  end
+
+  def published
+  end
+
+  def publication_validation
+    respond_to do |format|
+      if @practice.origin_story.nil?
+        flash[:notice] = "#{@practice.name} has been successfully published to the Diffusion Marketplace"
+        # format.html { redirect_to practice_path(@practice), notice: flash[:notice] }
+        format.js {render js: "window.location='#{practice_path(@practice)}'"}
+      else
+        format.js
+      end
+    end
+  end
 
   private
 
@@ -237,19 +380,22 @@ class PracticesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def practice_params
-    params.require(:practice).permit(:tagline, :process, :it_required, :need_new_license, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :cost_to_implement_aggregate, :sustainability_aggregate, :veteran_satisfaction_aggregate, :difficulty_aggregate,
+    params.require(:practice).permit(:need_training, :tagline, :process, :it_required, :need_new_license, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :cost_to_implement_aggregate, :sustainability_aggregate, :veteran_satisfaction_aggregate, :difficulty_aggregate,
                                      :number_adopted, :number_departments, :number_failed, :implementation_time_estimate, :implementation_time_estimate_description, :implentation_summary, :implentation_fte,
-                                     :training_provider, :required_training_summary, :support_network_email,
+                                     :training_provider, :training_length, :training_test, :training_provider_role, :required_training_summary, :support_network_email,
                                      :main_display_image, :main_display_image_original_w, :main_display_image_original_h, :main_display_image_crop_x, :main_display_image_crop_y, :main_display_image_crop_w, :main_display_image_crop_h,
                                      :origin_picture, :origin_picture_original_w, :origin_picture_original_h, :origin_picture_crop_x, :origin_picture_crop_y, :origin_picture_crop_w, :origin_picture_crop_h,
-                                     impact_photos_attributes: [:id, :title, :description, :attachment, :attachment_original_w, :attachment_original_h, :attachment_crop_x, :attachment_crop_y,
+                                     impact_photos_attributes: [:id, :title, :is_main_display_image, :description, :position, :attachment, :attachment_original_w, :attachment_original_h, :attachment_crop_x, :attachment_crop_y,
+                                                                :attachment_crop_w, :attachment_crop_h, :_destroy],
+                                     video_files_attributes: [:id, :title, :description, :url, :position, :attachment, :attachment_original_w, :attachment_original_h, :attachment_crop_x, :attachment_crop_y,
                                                                 :attachment_crop_w, :attachment_crop_h, :_destroy],
                                      difficulties_attributes: [:id, :description, :_destroy],
-                                     risk_mitigations_attributes: [:id, :_destroy, risks_attributes: [:id, :description, :_destroy], mitigations_attributes: [:id, :description, :_destroy]],
-                                     timelines_attributes: [:id, :description, :_destroy],
-                                     va_employees_attributes: [:id, :name, :role, :_destroy, :avatar, :avatar_original_w, :avatar_original_h, :avatar_crop_x, :avatar_crop_y, :avatar_crop_w, :avatar_crop_h],
+                                     risk_mitigations_attributes: [:id, :_destroy, :position, risks_attributes: [:id, :description, :_destroy], mitigations_attributes: [:id, :description, :_destroy]],
+                                     timelines_attributes: [:id, :description, :timeline, :milestone, :_destroy, :position],
+                                     va_employees_attributes: [:id, :name, :role, :position, :_destroy, :avatar, :avatar_original_w, :avatar_original_h, :avatar_crop_x, :avatar_crop_y, :avatar_crop_w, :avatar_crop_h],
                                      additional_staffs_attributes: [:id, :_destroy, :title, :hours_per_week, :duration_in_weeks, :permanent],
-                                     additional_resources_attributes: [:id, :_destroy, :description], required_staff_training: [:id, :_destroy, :title, :description])
+                                     additional_resources_attributes: [:id, :_destroy, :name, :position, :description], required_staff_trainings_attributes: [:id, :_destroy, :title, :description], practice_creators_attributes: [:id, :_destroy, :name, :role, :avatar, :position],
+                                     publications_attributes: [:id, :_destroy, :title, :link, :position], additional_documents_attributes: [:id, :_destroy, :attachment, :title, :position], practice_permissions_attributes: [:id, :_destroy, :position, :name, :description])
   end
 
   def can_view_practice
@@ -270,7 +416,7 @@ class PracticesController < ApplicationController
 
   def prevent_practice_permissions
     # if the user is the practice owner or the user is an admin or approver/editor
-    unless @practice.user_id == current_user.id || current_user.roles.any?
+    unless @practice.user_id == current_user.id || current_user&.roles.any?
       unauthorized_response
     end
   end
@@ -285,7 +431,7 @@ class PracticesController < ApplicationController
   end
 
   def set_facility_data
-    @facility_data = facilities_json['features'].find {|f| f['properties']['id'] == @practice.initiating_facility}
+    @facility_data = facilities_json.find {|f| f['StationNumber'] == @practice.initiating_facility}
   end
 
   def can_view_committed_view
@@ -304,7 +450,7 @@ class PracticesController < ApplicationController
     practices.each do |practice|
       practice_hash = JSON.parse(practice.to_json) # convert to hash
       practice_hash['image'] = practice.main_display_image.present? ? practice.main_display_image_s3_presigned_url : ''
-      practice_hash['sponsored_practice'] = practice.practice_partners.any?
+      practice_hash['sponsored_practice'] = practice.practice_partners.any? && practice.practice_partners.find_by(name: 'None of the above, or Unsure').nil?
       if practice.date_initiated
         practice_hash['date_initiated'] = practice.date_initiated.strftime("%B %Y")
       else
@@ -312,7 +458,7 @@ class PracticesController < ApplicationController
       end
 
       # display initiating facility
-      practice_hash['initiating_facility'] = helpers.facility_name(practice.initiating_facility, facilities_json['features'])
+      practice_hash['initiating_facility'] = helpers.facility_name(practice.initiating_facility, facilities_json)
       practice_hash['user_favorited'] = current_user.favorite_practice_ids.include?(practice.id) if current_user.present?
       practices_array.push practice_hash
     end

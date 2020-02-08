@@ -12,6 +12,20 @@ Rails.application.routes.draw do
   resources :practices, except: :index do
     get '/planning-checklist', action: 'planning_checklist', as: 'planning_checklist'
     get '/committed', action: 'committed', as: 'committed'
+    get '/edit/instructions', action: 'instructions', as: 'instructions'
+    get '/edit/overview', action: 'overview', as: 'overview'
+    get '/edit/collaborators', action: 'collaborators', as: 'collaborators'
+    get '/edit/impact', action: 'impact', as: 'impact'
+    get '/edit/resources', action: 'resources', as: 'resources'
+    get '/edit/documentation', action: 'documentation', as: 'documentation'
+    get '/edit/complexity', action: 'complexity', as: 'complexity'
+    get '/edit/timeline', action: 'timeline', as: 'timeline'
+    get '/edit/risk_and_mitigation', action: 'risk_and_mitigation', as: 'risk_and_mitigation'
+    get '/edit/contact', action: 'contact', as: 'contact'
+    get '/edit/checklist', action: 'checklist', as: 'checklist'
+    get '/edit/origin', action: 'origin', as: 'origin'
+    post '/publication_validation', action: 'publication_validation', as: 'publication_validation'
+    get '/published', action: 'published', as: 'published'
     post '/commit', action: 'commit', as: 'commit'
     post '/favorite', action: 'favorite', as: 'favorite'
     member do
@@ -20,12 +34,14 @@ Rails.application.routes.draw do
       post :feature
       post :un_feature
     end
-    resources :comments do      
+    resources :comments do
       member do
           put 'like' => 'commontator/comments#upvote'
+          get 'report', to: 'commontator/comments#report_comment', as: 'report'
       end
     end
   end
+
   resources :practice_partners, path: :partners
   resources :users, except: %i[show create new edit] do
     patch :re_enable
@@ -49,4 +65,6 @@ Rails.application.routes.draw do
   get '/edit-profile' => 'users#edit_profile'
   post '/edit-profile' => 'users#update_profile'
   delete '/edit-profile-photo' => 'users#delete_photo'
+  # Custom route for reporting a comment
+  # get '/practices/:practice_id/comments/:comment_id/report', action: 'report_comment', controller: 'commontator/comments', as: 'report_comment'
 end

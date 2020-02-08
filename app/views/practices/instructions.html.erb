@@ -1,0 +1,51 @@
+<%# <div id="search-page">
+
+  <div class="dm-background-white full-view-height padding-top-1">
+
+    <section class="grid-container x1-5-bottom">
+      <div id="breadcrumbs" class="dm-font-color-primary-blue p1-top breadcrumbs dm-font-color-super-violet-ish">
+        <a href="/">Home</a>
+        <span class="x0-5-left x0-5-right">›</span>
+        <span id="search-breadcrumb">Practices</span>
+      </div>
+    </section> %>
+<%= render 'breadcrumbs' %>
+<%= render 'practice_editor_sidenav' %>
+<div class="grid-container position-relative">
+    <div class="grid-row grid-gap">
+        <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+
+        <div id="instructions" class="desktop:grid-col-9 grid-col-12 p0">
+        <section class="margin-bottom-1">
+          <%= render "shared/messages" %>
+          <h1 class="font-sans-3xl margin-bottom-205">Create your practice page</h1>
+          <h2 class="margin-0 text-normal">Please follow these instructions to complete each of the following sections for your practice page.</h2>
+        </section>
+
+        <section>
+          <div class="padding-y-1">
+            <ul class="line-height-sans-6 font-sans-md instructions-list">
+              <li>Do not enter Personally Identifying Information (PII) or Personal Health Information (PHI) for any individual, Veteran, or patient into the Diffusion Marketplace.</li>
+              <li>All uploaded files (research, data, examples, illustrations, etc.) should be displayed in a general format (e.g. PNG, JPG, PDF) that is ready to be shown to the public.</li>
+              <li>Ensure your work is accurate, formatted consistently, and is complete before publishing. Use sentence case and spell out acronyms. Your published responses will be displayed ‘as-is’ on the Diffusion Marketplace.</li>
+              <li>You will be able to edit your practice once it’s published.</li>
+            </ul>
+          </div>
+      </section>
+      <div>
+      <%= link_to practice_collaborators_path(@practice), class: 'usa-button padding-2 editor-continue-link margin-right-1 margin-bottom-5' do %>
+        Continue<i class="fas fa-chevron-right fa-sm margin-left-1 text-no-underline"></i>
+      <% end %>
+      </div>
+      <div class="grid-row flex-auto">
+        <div class="bg-gold padding-2 radius-md margin-bottom-8">
+          <p class="text-bold margin-bottom-1">Need help along the way?<p>
+          <p>Reach out to a member of our support staff with your question. <a href="mailto:marketplace@va.gov">Send us an email&nbsp;&nbsp;<i class="fas fa-external-link-alt"></i></a><p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="margin-bottom-105">
+    <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
+  </div>
+</div>

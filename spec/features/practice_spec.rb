@@ -98,18 +98,18 @@ describe 'Practices', type: :feature do
       login_as(@user, :scope => :user, :run_callbacks => false)
 
       # Visit an individual Practice that is approved and published
-      practice = Practice.create!(name: 'A public practice', approved: true, published: true, initiating_facility: 'vc_0508V', tagline: 'Test tagline')
+      practice = Practice.create!(name: 'A public practice', approved: true, published: true, initiating_facility: '687HA', tagline: 'Test tagline')
       visit practice_path(practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(practice.name)
-      expect(page).to have_content('Tacoma Vet Center')
+      expect(page).to have_content('Yakima VA Clinic')
       expect(page).to have_current_path(practice_path(practice))
 
       # Visit the Marketplace
       visit '/practices'
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(practice.name)
-      expect(page).to have_content('Tacoma Vet Center')
+      expect(page).to have_content('Yakima VA Clinic')
     end
   end
 
@@ -236,7 +236,7 @@ Yes')
 
         # Add the rest of the checkboxes
 
-        as = AdditionalStaff.create!(title: 'ACOS of Mental Health', practice: @user_practice)
+        as = AdditionalStaff.create!(title: 'ACOS of Mental Health', hours_per_week: '30', duration_in_weeks: '12', practice: @user_practice)
         pp = PracticePermission.create!(description: 'Licensing', practice: @user_practice)
         @user_practice.update(it_required: true)
         dp = DepartmentPractice.create!(department: @departments[0], practice: @user_practice)
@@ -335,140 +335,6 @@ Yes')
         click_on('Adopt this practice')
         expect(page).to have_current_path(practice_committed_path(@user_practice))
         expect(page).to have_content("You have already committed to this practice. If you did not receive a follow-up email from the practice support team yet, please contact them at #{@user_practice.support_network_email}")
-      end
-    end
-  end
-
-  ########## Practice Edit ############
-  describe 'Practice Edit' do
-    describe 'practice edit authorization' do
-      it 'should not let a non-admin user edit a practice' do
-        login_as(@user2, :scope => :user, :run_callbacks => false)
-        @user_practice.update(approved: true, published: true)
-        visit practice_path(@user_practice)
-        expect(page).to have_no_link('Edit')
-
-        visit edit_practice_path(@user_practice)
-        expect(page).to have_current_path(root_path)
-        expect(page).to be_accessible.according_to :wcag2a, :section508
-        expect(page).to have_content('You are not authorized to view this content.')
-      end
-
-      it 'should let an editor user edit a practice' do
-        login_as(@approver, :scope => :user, :run_callbacks => false)
-        @user_practice.update(approved: true, published: true)
-        visit practice_path(@user_practice)
-        expect(page).to be_accessible.according_to :wcag2a, :section508
-        expect(page).to have_link('Edit')
-      end
-
-      it 'should let an admin user edit a practice' do
-        login_as(@admin, :scope => :user, :run_callbacks => false)
-        @user_practice.update(approved: true, published: true)
-        visit practice_path(@user_practice)
-        expect(page).to be_accessible.according_to :wcag2a, :section508
-        expect(page).to have_link('Edit')
-      end
-    end
-
-    describe 'editing a practice' do
-      it 'should update the practice' do
-        login_as(@admin, :scope => :user, :run_callbacks => false)
-        @user_practice.update(approved: true, published: true)
-        visit practice_path(@user_practice)
-        expect(page).to have_link('Edit')
-        click_link('Edit')
-        fill_in 'Official Practice Name', with: 'The Coolest Practice Ever!'
-        click_link('SAVE ALL CHANGES')
-
-        expect(page).to have_current_path(practice_path(@user_practice))
-        expect(page).to have_content('The Coolest Practice Ever!')
-      end
-
-      it 'should add a practice_parter to the practice', js: true do
-        login_as(@admin, :scope => :user, :run_callbacks => false)
-        @practice.update(approved: true, published: true)
-        # Practice should have no practice_partners
-        expect(@practice.practice_partners.count).to eq(0)
-        visit practice_path(@practice)
-        expect(page).to have_link('Edit')
-        click_link('Edit')
-
-        expect(page).to have_current_path(edit_practice_path(@practice))
-        execute_script("$('body').scrollTo($('h2:contains(Practice Partners)'))")
-        execute_script("$('#practice_partner_1').click()")
-        click_link('SAVE ALL CHANGES')
-
-        expect(page).to have_current_path(practice_path(@practice))
-        # Practice should have now have 1 practice_partner
-        expect(@practice.practice_partners.count).to eq(1)
-      end
-
-      it 'should add a department to the practice', js: true do
-        login_as(@admin, :scope => :user, :run_callbacks => false)
-        @user_practice.update(approved: true, published: true)
-        # Practice should have no departments
-        expect(@user_practice.departments.count).to eq(0)
-        visit practice_path(@user_practice)
-        expect(page).to have_link('Edit')
-        click_link('Edit')
-
-        execute_script("$('body').scrollTo($('h2:contains(Departments affected)'))")
-        execute_script("$('#practice_department_1').click()")
-        click_link('SAVE ALL CHANGES')
-
-        expect(page).to have_current_path(practice_path(@user_practice))
-        # Practice should have now have 1 department
-        expect(@user_practice.departments.count).to eq(1)
-      end
-    end
-
-    describe 'highlight and featured practices' do
-      it 'should highlight and un-highlight a practice' do
-        login_as(@admin, :scope => :user, :run_callbacks => false)
-        @user_practice.update(approved: true, published: true)
-        visit practice_path(@user_practice)
-        expect(page).to have_link('Edit')
-        click_link('Edit')
-
-        page.accept_confirm do
-          click_link('HIGHLIGHT')
-        end
-        expect(page).to have_current_path(edit_practice_path(@user_practice))
-        expect(page).to have_content('REMOVE HIGHLIGHT')
-  
-        visit(edit_practice_path(@user_practice))
-        page.accept_confirm do
-          click_link('REMOVE HIGHLIGHT')
-        end
-        expect(page).to have_current_path(edit_practice_path(@user_practice))
-        expect(page).to have_content('HIGHLIGHT')
-        expect(page).to have_content('HIGHLIGHT')
-      end
-
-      it 'should feature and un-feature a practice' do
-        login_as(@admin, :scope => :user, :run_callbacks => false)
-        @user_practice.update(approved: true, published: true)
-        visit practice_path(@user_practice)
-        expect(page).to have_link('Edit')
-        click_link('Edit')
-
-        click_link('FEATURE')
-        expect(page).to have_current_path(edit_practice_path(@user_practice))
-        expect(page).to have_content('REMOVE FEATURE')
-        expect(page).to have_content('HIGHLIGHT')
-
-        visit root_path
-        within '.featured-practices' do
-          expect(page).to have_content('The Best Practice Ever!')
-        end
-
-        visit(edit_practice_path(@user_practice))
-
-        click_link('REMOVE FEATURE')
-        expect(page).to have_current_path(edit_practice_path(@user_practice))
-        expect(page).to have_content('FEATURE')
-        expect(page).to have_content('HIGHLIGHT')
       end
     end
   end

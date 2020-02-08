@@ -6,7 +6,7 @@ class HomeController < ApplicationController
     @practices = Practice.where(approved: true, published: true).order(name: :asc)
     @favorite_practices = current_user&.favorite_practices || []
 
-    @facilities_data = facilities_json['features']
+    @facilities_data = facilities_json
 
     @vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
 

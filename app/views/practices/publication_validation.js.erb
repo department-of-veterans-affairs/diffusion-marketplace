@@ -1,0 +1,19 @@
+
+$('#practiceEditorPublicationModal').removeClass('publication-modal-hidden');
+
+$(document).on('click', '.back-to-editor-button', function() {
+    $('#practiceEditorPublicationModal').addClass('publication-modal-hidden');
+})
+
+<%# $(document).on('click', '.report-abuse-cancel', function(e) {
+    let cancelConfirmation = confirm('Are you sure want to cancel your report of this comment?');
+    cancelConfirmation == true ? $(e.target).closest('.report-abuse-modal').addClass('hidden') : ''; %>
+<%# }); %>
+
+<%# <% if @practice %>
+<%#    <% if @practice.errors.any? %>
+<%#        <% @practice.errors.full_messages.each do |message| %>
+<%#            $('.origin-errors-ul').append('<li>' + '<%= message %><%#' + '</li>');
+<%#        <% end %>
+<%#    <% end %>
+<%#<% end %>

@@ -1,0 +1,20 @@
+function showAdditionalStaffFieldsOnPageLoad() {
+    <% if @practice.additional_staffs.empty? %>
+        $('.add-additional-staff-link').click();
+    <% end %>
+}
+
+function showStaffTrainingFieldsOnPageLoad() {
+    <% if @practice.required_staff_trainings.empty? %>
+        $('.add-required-staff-link').click();
+    <% end %>
+}
+
+function initComplexityFunctions() {
+    showAdditionalStaffFieldsOnPageLoad();
+    showStaffTrainingFieldsOnPageLoad();
+}
+
+
+
+$(document).on('turbolinks:load', initComplexityFunctions);

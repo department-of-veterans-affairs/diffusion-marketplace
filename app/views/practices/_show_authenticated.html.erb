@@ -11,7 +11,7 @@
           <a href="#origin" class="dm-tab scroll-to" data-target="#origin" data-turbolinks="false">Origin</a>
         </li>
       <% end %>
-      <% if @practice.impact_photos.any? || @practice.video_files.any? || @practice.additional_documents.any? || @practice.publication_files.any? || @practice.publications.any? %>
+      <% if @practice.impact_photos.any? || @practice.video_files.any? || @practice.additional_documents.any? || @practice.publications.any? %>
         <li class="usa-sidenav__item">
           <a href="#impact" class="dm-tab scroll-to" data-target="#impact" data-turbolinks="false">Impact</a>
         </li>
@@ -50,15 +50,15 @@
 
 <section class="usa-section p2-top p2-bottom">
   <div class="grid-container position-relative">
-    <% if current_user&.has_role?(:approver_editor) || current_user&.has_role?(:admin) %>
+    <% if @practice.user_id == current_user.id || current_user.roles.any? %>
       <div class="text-right">
-        <%= link_to 'Edit', edit_practice_path(@practice), class: 'usa-button usa-button--outline margin-right-0' %>
+        <%= link_to 'Edit', practice_instructions_path(@practice), class: 'usa-button usa-button--outline margin-right-0' %>
       </div>
     <% end %>
     <div class="grid-row grid-gap">
       <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
-      <div id="overview" class="desktop:grid-col-6 grid-col-12 p0">
+      <div id="practice_show" class="desktop:grid-col-6 grid-col-12 p0">
         <%= render "shared/messages" %>
         <% unless @practice.published && @practice.approved %>
           <div class="usa-alert usa-alert--warning">
@@ -100,7 +100,7 @@
               </a>
             </div>
           <% end %>
-          <p class="font-sans-lg line-height-sans-5 margin-bottom-4"><%= @practice.description %></p>
+          <p class="font-sans-lg line-height-sans-5 margin-bottom-4"><%= @practice.tagline %></p>
         </div>
         <div <%#class="tablet:grid-col-7 padding-x-1"%>>
           <p class="practice-summary margin-0"><%= @practice.summary %></p>
@@ -111,13 +111,13 @@
           <h4 class="margin-top-0 margin-bottom-1">Origin</h4>
           <p class="line-height-sans-5 margin-bottom-3">
             Created by
-            the <%= @facility_data.present? ? @facility_data['properties']['name'] : @practice.initiating_facility %> in
+            the <%= @facility_data.present? ? @facility_data['OfficialStationName'] : @practice.initiating_facility %> in
             <span><%= @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)' %></span>
           </p>
           <%# <div class="margin-right-2 display-flex-align-items-center">
         <%= render partial: 'shared/badge', locals: {badges: @practice.practice_partners} %>
           <%# </div> %>
-          <% if @practice.practice_partners.any? %>
+          <% if @practice.practice_partners.any? && @practice.practice_partners.find_by(name: 'None of the above, or Unsure').nil? %>
             <h4 class="margin-top-0 margin-bottom-1">Sponsors</h4>
             <div class="<%= @practice.number_adopted.present? ? 'margin-bottom-3' : '' %>">
               <% @practice.practice_partners.each_with_index do |partner, index| %>
@@ -190,26 +190,20 @@
             <% if @practice.video_files.any? %>
               <%= render partial: 'videos' %>
             <% end %>
-            <% if @practice.additional_documents.any? || @practice.publication_files.any? || @practice.publications.any? %>
+            <% if @practice.additional_documents.any? || @practice.publications.any? %>
               <div class="grid-row flex-align-center margin-bottom-4">
                 <h2 class="font-sans-xl text-bold margin-bottom-3 flex-auto margin-right-205">Documentation</h2>
                 <div class="height-2px border border-base-lightest flex-fill"></div>
               </div>
-              <% if @practice.additional_documents.any? || @practice.publication_files.any? %>
+              <% if @practice.additional_documents.any? %>
                 <h3 class="font-sans-lg margin-top-0 margin-bottom-1">Downloads</h3>
                 <div class="padding-bottom-1">
-                  <% if @practice.additional_documents.any? %>
-                    <%= render partial: 'additional_documents' %>
-                  <% else %>
-                    <div class="hidden"></div>
-                  <% end %>
-                  <% if @practice.publication_files.any? %>
-                    <%= render partial: 'publication_files' %>
-                  <% else %>
-                    <div class="hidden"></div>
-                  <% end %>
+                  <%= render partial: 'additional_documents' %>
                 </div>
+              <% else %>
+                <div class="hidden"></div>
               <% end %>
+
               <% if @practice.publications.any? %>
                 <h3 class="font-sans-lg margin-top-0 margin-bottom-1">Links</h3>
                 <div>

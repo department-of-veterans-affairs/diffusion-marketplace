@@ -23,7 +23,7 @@
 
               <div class="field">
                 <%= f.label :email, class: 'x1-top' %><br/>
-                <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'usa-input', disabled: 'true' %>
+                <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'usa-input bg-base-lightest border-base-light text-base', disabled: 'true' %>
               </div>
 
               <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
@@ -32,7 +32,7 @@
 
               <div class="field">
                 <%= f.label :current_password, class: 'usa-label x0 x1-top' %> <i>(we need your current password to confirm your changes)</i><br/>
-                <%= f.password_field :current_password, autocomplete: "current-password", class: 'usa-input' %>
+                <%= f.password_field :current_password, autocomplete: "current-password", class: 'usa-input bg-base-lightest border-base-light text-base' %>
               </div>
 
               <div class="field">
