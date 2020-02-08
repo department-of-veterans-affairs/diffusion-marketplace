@@ -159,13 +159,14 @@
 }
 
 .hidden-upload {
-  height: 1px;
+  height: 0.1px;
   padding: 1px 0 0 1px;
   margin-left: -160px;
   margin-top: 50px;
   overflow: hidden;
   position: absolute;
   padding-left: unset !important;
+  width: 0.1px;
   z-index: -20;
 
   &:focus {
