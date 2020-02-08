@@ -10,6 +10,7 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require _pollyfills
 //= require rails-ujs
 //= require lodash
 //= require jquery
@@ -43,4 +44,7 @@
 //= require infowindow
 //= require reportAbuse
 //= require turbolinksScrollTop
+//= require save-editor-progress
+//= require arrive.min
+//= require html5sortable
 //= require search

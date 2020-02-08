@@ -65,7 +65,7 @@ function searchPracticesPage() {
             '<div class="tablet:grid-col-9 padding-y-105 padding-right-105 padding-left-4">' +
                 '<h2 class="margin-0 truncate-text-search one-line"><a href="/practices/' + result.item.slug + '">' + result.item.name + '</a></h2>' +
                 sponsoredPractice + 
-                '<h4 class="truncate-text-search two-lines text-normal margin-y-1">' + result.item.description + '</h4>' +
+                '<h4 class="truncate-text-search two-lines text-normal margin-y-1">' + result.item.tagline + '</h4>' +
                 '<p class="practice-details margin-y-1 font-sans-3xs">Created in ' + result.item.date_initiated + ' by the ' + result.item.initiating_facility + '</p>' +
                 '<p class="truncate-text-search three-lines">' + result.item.summary + '</p>' +
 
@@ -96,7 +96,7 @@ function searchPracticesPage() {
     // Highlight Fuse.js results
     // Adapted from: https://github.com/brunocechet/Fuse.js-with-highlight
     function highlighter(resultItem) {
-        resultItem.matches.forEach((matchItem) => {
+        resultItem.matches.forEach(function (matchItem) {
             var text = resultItem.item[matchItem.key];
             var result = [];
             var matches = [].concat(matchItem.indices); // limpar referencia
@@ -116,7 +116,7 @@ function searchPracticesPage() {
             resultItem.highlight = result.join('');
 
             if (resultItem.children && resultItem.children.length > 0) {
-                resultItem.children.forEach((child) => {
+                resultItem.children.forEach(function (child) {
                     highlighter(child);
                 });
             }

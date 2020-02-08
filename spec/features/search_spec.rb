@@ -9,7 +9,7 @@ describe 'Search', type: :feature do
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
     @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline')
-    @user_practice2 = Practice.create!(name: 'Another Best Practice', user: @user, initiating_facility: 'vc_0508V', tagline: 'Test tagline 2')
+    @user_practice2 = Practice.create!(name: 'Another Best Practice', user: @user, initiating_facility: '687HA', tagline: 'Test tagline 2')
     login_as(@user, :scope => :user, :run_callbacks => false)
   end
 
@@ -49,7 +49,7 @@ describe 'Search', type: :feature do
       expect(page).to have_content('2 results for "practice"')
 
       # test facility data map for name, positive case
-      expect(page).to have_content('Tacoma Vet Center')
+      expect(page).to have_content('Yakima VA Clinic')
 
     end
 

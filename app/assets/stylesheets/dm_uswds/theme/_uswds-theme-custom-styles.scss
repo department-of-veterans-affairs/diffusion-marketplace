@@ -182,10 +182,14 @@ p {
   font-weight: 600;
 }
 
-.usa-sidenav a {
+.usa-sidenav a, .usa-sidenav p {
   color: #000000;
   font-weight: 100;
   padding: 1rem;
+}
+
+.usa-sidenav p {
+  font-weight: normal;
 }
 
 .usa-sidenav .usa-current::after {

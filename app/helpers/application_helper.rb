@@ -35,7 +35,7 @@ module ApplicationHelper
     when 3
       return '$50,000-$250,000'
     when 4
-      return 'Over $250,000'
+      return 'More than $250,000'
     else
       return '$0-$10,000'
     end
@@ -69,8 +69,8 @@ module ApplicationHelper
 
   def facility_name(facility_id, facilities_data = nil)
     facilities_data = facilities_data || @facilities_data
-    facility_data = facilities_data.find { |f| f['properties']['id'] == facility_id }
-    facility_data.present? ? facility_data['properties']['name'] : facility_id
+    facility_data = facilities_data.find {|f| f['StationNumber'] == facility_id }
+    facility_data.present? ? facility_data['OfficialStationName'] : facility_id
   end
 
   def email_practice_subject(practice)
@@ -88,5 +88,13 @@ module ApplicationHelper
   def email_checklist_body(practice)
     raw("Let's take the next steps to implement #{practice.name}: #{practice.tagline}, from the VA Diffusion Marketplace: %0D%0A%0D%0A#{ENV['HOSTNAME']}/practices/#{practice.slug}/next-steps%0D%0A%0D%0AAbout #{practice.name}: %0D%0A%0D%0A#{practice.description}%0D%0A%0D%0A#{practice.summary}%0D%0A%0D%0A")
   end
+
+  def show_errors(object, field_name)
+    if object.errors.any?
+      if !object.errors.messages[field_name].blank?
+        object.errors.messages[field_name].join(", ")
+      end
+    end
+  end 
 
 end

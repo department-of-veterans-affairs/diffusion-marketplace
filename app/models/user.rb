@@ -22,6 +22,8 @@ class User < ApplicationRecord
   has_many :user_practices
   has_many :practices, through: :user_practices
 
+  has_many :practice_creators
+
   # This allows users to post comments with the use of the Commontator gem
   acts_as_commontator
   
@@ -144,7 +146,6 @@ class User < ApplicationRecord
 
         # attempt to resolve where the User is VA facility wise
         facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
-        logger.info facilities.inspect
         address = entry[:streetAddress][0]
         postal_code = entry[:postalCode][0]
         # Underscore for _location variable to not get confused with the User attribute location

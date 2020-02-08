@@ -14,9 +14,12 @@
   name = Commontator.commontator_name(creator) || ''
   job_title = creator.job_title
   creator_practice = creator.user_practices.find_by(practice_id: comment.thread.commontable_id, user: creator)
-  practice_team_member = creator_practice.team_member
-  verified_practice_implementer = creator_practice.verified_implementer
+  if creator_practice
+    practice_team_member = creator_practice.team_member
+    verified_practice_implementer = creator_practice.verified_implementer
+  end
   show_children = params[:show_children] == 'true'
+  practice = Practice.find_by(id: comment.thread.commontable_id)
 %>
 
 <div class="grid-row margin-bottom-0 margin-top-4">
@@ -37,7 +40,7 @@
             '',
             commontator.edit_comment_path(comment),
             id: "commontator-comment-#{comment.id}-edit",
-            class: 'fas fa-edit fa-lg margin-left-105',
+            class: 'fas fa-edit fa-lg edit-comment-icon margin-left-105',
             remote: true
           ) if comment.can_be_edited_by?(user)
         %>
@@ -87,11 +90,11 @@
                 <h2 class="margin-0 padding-3">Report a comment</h2>
             </div>
             <div class="padding-3">
-              <legend class="usa-legend font-sans-md text-normal text-black margin-bottom-2">I am reporting the following comment for being inappropriate:</legend>
+              <p class="font-sans-md text-normal text-black margin-bottom-2">I am reporting the following comment for being inappropriate:</p>
               <p class="text-normal text-base">"<%= comment.body %>"</p>
               <div class="text-right">
                 <button class="usa-button usa-button--outline margin-0 padding-2 margin-top-5 margin-right-05 report-abuse-cancel">Cancel</button>
-                <button type="submit" class="usa-button margin-0 padding-2 report-abuse-submit">Submit report</button>
+                <%= link_to 'Submit Report', "/practices/#{practice.id}/comments/#{comment.id}/report", class: 'usa-button margin-0 padding-2 report-abuse-submit', data: {confirm: 'Are you sure you want to report this comment?'} %>
               </div>
             </div>
           </div>

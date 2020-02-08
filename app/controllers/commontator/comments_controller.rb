@@ -1,6 +1,6 @@
 class Commontator::CommentsController < Commontator::ApplicationController
   before_action :set_thread, only: [ :new, :create ]
-  before_action :set_comment_and_thread, except: [ :new, :create ]
+  before_action :set_comment_and_thread, except: [ :new, :create, :report_comment ]
   before_action :commontator_set_thread_variables, only: [ :show, :update, :delete, :undelete ]
   before_action :commontator_set_new_comment, only: [ :create ], unless: proc { params[:comment].present? && params[:comment][:parent_id].present? }
 
@@ -102,7 +102,6 @@ class Commontator::CommentsController < Commontator::ApplicationController
           user_practice.update_attributes(verified_implementer: false, team_member: true) if params[:user_practice_status] == 'team_member'
 
           @comment.save
-          # debugger
           format.js
           # format.html { redirect_to commontable_url }
         else
@@ -178,6 +177,16 @@ class Commontator::CommentsController < Commontator::ApplicationController
     respond_to do |format|
       format.html { redirect_to commontable_url }
       format.js { render :vote }
+    end
+  end
+
+  def report_comment
+    CommentMailer.report_comment_email(id: params[:id]).deliver_now
+    notice = 'Comment has been reported and will be reviewed shortly'
+    flash[:notice] = notice
+
+    respond_to do |format|
+      format.html {redirect_to comment_path(id: params[:id]), notice: flash[:notice]}
     end
   end
 

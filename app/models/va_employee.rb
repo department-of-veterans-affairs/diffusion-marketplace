@@ -8,6 +8,8 @@ class VaEmployee < ApplicationRecord
   has_many :va_employee_practices
   has_many :practices, through: :va_employee_practices
 
+  attr_accessor :delete_avatar
+
   def avatar_s3_presigned_url(style = nil)
     object_presigned_url(avatar, style)
   end

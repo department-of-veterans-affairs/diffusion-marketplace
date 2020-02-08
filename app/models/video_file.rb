@@ -4,6 +4,8 @@ class VideoFile < ApplicationRecord
   do_not_validate_attachment_file_type :attachment
   belongs_to :practice
 
+  acts_as_list scope: :practice
+
   def attachment_s3_presigned_url(style = nil)
     object_presigned_url(attachment, style)
   end
