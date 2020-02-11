@@ -16,11 +16,7 @@ header {
 }
 
 .empty-user-icon {
-  background-color: $dm-color-primary-blue;
-  border-radius: 50%;
-  font-size: 2rem;
-  bottom: -0.5rem;
-  position: relative;
+  //position: relative;
   text-decoration: none !important;
   @media screen and (max-width: 1024px) {
     display: none !important;
