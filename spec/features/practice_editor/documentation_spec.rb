@@ -63,11 +63,7 @@ describe 'Practice editor', type: :feature, js: true do
             fill_in_doc_fields
             find('.add-additional-document-link').click
 
-<<<<<<< HEAD
-            all('.hidden-documentation-field').last.attach_file(@doc_path)
-=======
             all('.hidden-new-documentation-field').last.attach_file(@doc_path)
->>>>>>> 9fb62b4530c366cd83b0b29ec23d904d7512ebd0
             all('.additional-document-title-input').last.set('Test title 2')
 
             fill_in_pub_fields
