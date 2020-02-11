@@ -159,6 +159,7 @@
 }
 
 .hidden-upload {
+<<<<<<< HEAD
   height: 1px;
   padding: 1px 0 0 1px;
   margin-left: -160px;
@@ -166,6 +167,16 @@
   opacity: 0;
   position: absolute;
   padding-left: unset !important;
+=======
+  height: 0.1px;
+  padding: 1px 0 0 1px;
+  margin-left: -160px;
+  margin-top: 50px;
+  overflow: hidden;
+  position: absolute;
+  padding-left: unset !important;
+  width: 0.1px;
+>>>>>>> 9fb62b4530c366cd83b0b29ec23d904d7512ebd0
   z-index: -20;
 
   &:focus {
@@ -376,10 +387,13 @@
   height: 72px !important;
 }
 
+<<<<<<< HEAD
 .origin-story-textarea {
   resize: none;
 }
 
+=======
+>>>>>>> 9fb62b4530c366cd83b0b29ec23d904d7512ebd0
 .practice-editor-summary-textarea {
   resize: none;
   height: 142px !important;
