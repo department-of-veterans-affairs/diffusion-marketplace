@@ -15,14 +15,14 @@
             <% end %>
           </div>
           <div class="grid-col-fill">
-            <h4 class="margin-y-0"><%= employee.name %></h4>
-            <p class="margin-y-0"><%= employee.role %></p>
+            <h4 class="margin-y-0 font-sans-xs-2 line-height-sans-505"><%= employee.name %></h4>
+            <p class="margin-y-0 font-sans-xs-2 line-height-sans-505"><%= employee.role %></p>
           </div>
         </div>
       <% end %>
     </div>
 
     <div class="grid-row">
-      <a href="mailto:<%= @practice.support_network_email || ENV['MAILER_SENDER'] %>" class="dm-button-link-secondary text-bold border-2px">Email this support team</a>
+      <a href="mailto:<%= @practice.support_network_email || ENV['MAILER_SENDER'] %>" class="usa-button usa-button--outline padding-2">Email this support team</a>
     </div>
 </section>

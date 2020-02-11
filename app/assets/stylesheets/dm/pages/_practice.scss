@@ -17,13 +17,6 @@
     border: none !important;
   }
 
-  //.usa-sidenav {
-  //  a {
-  //    //color: $dm-color-white !important;
-  //    font-weight: normal !important;
-  //  }
-  //}
-
   .dm-tab {
     border-bottom: 1px solid #F0F0F0;
     font-weight: normal;
@@ -117,10 +110,6 @@
   width: 80%;
   border-top: 1px solid rgba(0, 0, 0, 0.2);
   margin: 1rem auto;
-}
-
-.practice-summary {
-  line-height: 30px !important;
 }
 
 .aggregate-circles-position {
@@ -715,4 +704,12 @@
   width: 65px;
   height: 65px;
   object-fit: cover;
+}
+
+.publication-link, .additional-document-link {
+  color: #005ea2 !important;
+
+  &:hover, &:visited {
+    color: #005ea2 !important;
+  }
 }
