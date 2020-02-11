@@ -6,10 +6,10 @@
 <div class='tablet:grid-col-12'>
   <div class="grid-row padding-bottom-105 border-bottom-1px border-black">
     <div class='grid-col-6 padding-right-1'>
-      <h5 class="margin-0 mitigation-header font-sans-sm">Risk</h5>
+      <h5 class="margin-0 mitigation-header font-sans-xs-2 line-height-sans-505">Risk</h5>
     </div>
     <div class='grid-col-6 padding-right-1'>
-      <h5 class="margin-0 risk-header font-sans-sm">Mitigation</h5>
+      <h5 class="margin-0 risk-header font-sans-xs-2 line-height-sans-505">Mitigation</h5>
     </div>
   </div>
 </div>
@@ -19,12 +19,12 @@
       <div class='grid-row padding-y-105 border-bottom-1px border-black risk-and-mitigation-row'>
         <div class='grid-col-6 padding-right-2'>
           <% rm.risks.each do |risk| %>
-            <p><%= risk.description %></p>
+            <p class="font-sans-xs-2 line-height-sans-505"><%= risk.description %></p>
           <% end %>
         </div>
         <div class='grid-col-6 padding-right-2'>
           <% rm.mitigations.each do |mitigation| %>
-            <p><%= mitigation.description %></p>
+            <p class="font-sans-xs-2 line-height-sans-505"><%= mitigation.description %></p>
           <% end %>
         </div>
       </div>

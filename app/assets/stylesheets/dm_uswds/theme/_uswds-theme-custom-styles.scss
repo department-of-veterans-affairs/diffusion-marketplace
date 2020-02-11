@@ -185,7 +185,10 @@ p {
 .usa-sidenav a, .usa-sidenav p {
   color: #000000;
   font-weight: 100;
-  padding: 1rem;
+}
+
+.usa-sidenav li {
+  height: 40px !important;
 }
 
 .usa-sidenav p {

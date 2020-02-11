@@ -3,7 +3,7 @@
     <h2 class="font-sans-xl text-bold margin-0 flex-auto margin-right-205">Resources</h2>
     <div class="height-2px border border-base-lightest flex-fill"></div>
   </div>
-  <div class="grid-row grid-gap">
+  <div class="grid-row grid-gap flex-align-center">
     <div class="flex-align-center <%= level_aggregate_style(@practice.cost_to_implement_aggregate) %>">
       <div id="cost-aggregate">
         <% cost_to_implement_aggregate = @practice.cost_to_implement_aggregate || 0 %>
@@ -25,13 +25,13 @@
       <% end %>
     <%#</div>%>
     <div class="tablet:grid-col-fill">
-      <div class="margin-0">
+      <div class="margin-0 font-sans-xs-2 line-height-sans-505">
         Cost:
         <span class="sr-only">
           <%= pluralize(cost_to_implement_aggregate, 'dollar')%>
           out of four.
         </span>
-        <span><%= cost_aggregate_description(@practice.cost_to_implement_aggregate) %></span>
+        <span class="font-sans-xs-2 line-height-sans-505"><%= cost_aggregate_description(@practice.cost_to_implement_aggregate) %></span>
       </div>
     </div>
   </div>
@@ -43,7 +43,7 @@
     <h2 class="font-sans-xl text-bold margin-0 flex-auto margin-right-205">Complexity</h2>
     <div class="height-2px border border-base-lightest flex-fill"></div>
   </div>
-  <div class="grid-row grid-gap">
+  <div class="grid-row grid-gap flex-align-center">
     <!-- Complexity level Circle -->
     <% complexity_aggregate = complexity_aggregate(@practice) || 0 %>
     <div class="flex-align-center <%= level_aggregate_style(complexity_aggregate) %>">
@@ -65,7 +65,7 @@
     </div>
 
     <div class="tablet:grid-col-6 text-center tablet:display-none">
-      <p><%= complexity_aggregate_description(complexity_aggregate) %></p>
+      <p class="font-sans-xs-2 line-height-sans-505"><%= complexity_aggregate_description(complexity_aggregate) %></p>
     </div>
 
     <%#<div class="tablet:grid-col-6 display-flex flex-column">
@@ -78,7 +78,7 @@
 
     <div class="tablet:display-block display-none">
       <div class="tablet:grid-col-fill">
-        <p><%= complexity_aggregate_description(complexity_aggregate) %></p>
+        <p class="font-sans-xs-2 line-height-sans-505"><%= complexity_aggregate_description(complexity_aggregate) %></p>
       </div>
     </div>
   </div>

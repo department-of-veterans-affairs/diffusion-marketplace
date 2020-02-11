@@ -1,5 +1,5 @@
 <section class="grid-container x1-5-bottom">
-  <div id="breadcrumbs" class="dm-font-color-primary-blue padding-top-2 breadcrumbs dm-font-color-super-violet-ish">
+  <div id="breadcrumbs" class="dm-font-color-primary-blue padding-top-2 breadcrumbs">
     <a href="/">Home</a>
     <span class="x0-5-left x0-5-right">›</span>
 
@@ -9,13 +9,13 @@
     <% end %>
 
     <% if params[:action] == 'show' && params[:controller] == 'practices' %>
-      <span><%= @practice.name %></span>
+      <span class="text-bold"><%= @practice.name %></span>
     <% end %>
 
     <% if params[:action] == 'instructions' && params[:controller] == 'practices' %>
       <span><%= link_to @practice.name, practice_path(@practice) %></span>
       <span class="x0-5-left x0-5-right">›</span>
-      <span>Edit</span>
+      <span class="text-bold">Edit</span>
     <% end %>
 
     <% if params[:action] == 'collaborators' && params[:controller] == 'practices' %>
@@ -23,7 +23,7 @@
       <span class="x0-5-left x0-5-right">›</span>
       <span><%= link_to 'Edit', practice_instructions_path(@practice) %></span>
       <span class="x0-5-left x0-5-right">›</span>
-      <span>Collaborators</span>
+      <span class="text-bold">Collaborators</span>
     <% end %>
 
     <% if params[:action] == 'overview' && params[:controller] == 'practices' %>
@@ -31,7 +31,7 @@
       <span class="x0-5-left x0-5-right">›</span>
       <span><%= link_to 'Edit', practice_instructions_path(@practice) %></span>
       <span class="x0-5-left x0-5-right">›</span>
-      <span>Overview</span>
+      <span class="text-bold">Overview</span>
     <% end %>
 
     <% if params[:action] == 'origin' && params[:controller] == 'practices' %>
@@ -39,7 +39,7 @@
       <span class="x0-5-left x0-5-right">›</span>
       <span><%= link_to 'Edit', practice_instructions_path(@practice) %></span>
       <span class="x0-5-left x0-5-right">›</span>
-      <span>Origin</span>
+      <span class="text-bold">Origin</span>
     <% end %>
 
     <% if params[:action] == 'impact' && params[:controller] == 'practices' %>
@@ -47,7 +47,7 @@
       <span class="x0-5-left x0-5-right">›</span>
       <span><%= link_to 'Edit', practice_instructions_path(@practice) %></span>
       <span class="x0-5-left x0-5-right">›</span>
-      <span>Impact</span>
+      <span class="text-bold">Impact</span>
     <% end %>
 
     <% if params[:action] == 'documentation' && params[:controller] == 'practices' %>
@@ -55,7 +55,7 @@
       <span class="x0-5-left x0-5-right">›</span>
       <span><%= link_to 'Edit', practice_instructions_path(@practice) %></span>
       <span class="x0-5-left x0-5-right">›</span>
-      <span>Documentation</span>
+      <span class="text-bold">Documentation</span>
     <% end %>
 
     <% if params[:action] == 'resources' && params[:controller] == 'practices' %>
@@ -63,7 +63,7 @@
       <span class="x0-5-left x0-5-right">›</span>
       <span><%= link_to 'Edit', practice_instructions_path(@practice) %></span>
       <span class="x0-5-left x0-5-right">›</span>
-      <span>Resources</span>
+      <span class="text-bold">Resources</span>
     <% end %>
 
     <% if params[:action] == 'complexity' && params[:controller] == 'practices' %>
@@ -71,7 +71,7 @@
       <span class="x0-5-left x0-5-right">›</span>
       <span><%= link_to 'Edit', practice_instructions_path(@practice) %></span>
       <span class="x0-5-left x0-5-right">›</span>
-      <span>Complexity</span>
+      <span class="text-bold">Complexity</span>
     <% end %>
 
     <% if params[:action] == 'timeline' && params[:controller] == 'practices' %>
@@ -79,7 +79,7 @@
       <span class="x0-5-left x0-5-right">›</span>
       <span><%= link_to 'Edit', practice_instructions_path(@practice) %></span>
       <span class="x0-5-left x0-5-right">›</span>
-      <span>Timeline</span>
+      <span class="text-bold">Timeline</span>
     <% end %>
 
     <% if params[:action] == 'risk_and_mitigation' && params[:controller] == 'practices' %>
@@ -87,7 +87,7 @@
       <span class="x0-5-left x0-5-right">›</span>
       <span><%= link_to 'Edit', practice_instructions_path(@practice) %></span>
       <span class="x0-5-left x0-5-right">›</span>
-      <span>Risk and mitigation</span>
+      <span class="text-bold">Risk and mitigation</span>
     <% end %>
 
     <% if params[:action] == 'contact' && params[:controller] == 'practices' %>
@@ -95,7 +95,7 @@
       <span class="x0-5-left x0-5-right">›</span>
       <span><%= link_to 'Edit', practice_instructions_path(@practice) %></span>
       <span class="x0-5-left x0-5-right">›</span>
-      <span>Contact</span>
+      <span class="text-bold">Contact</span>
     <% end %>
 
     <% if params[:action] == 'checklist' && params[:controller] == 'practices' %>
@@ -103,13 +103,13 @@
       <span class="x0-5-left x0-5-right">›</span>
       <span><%= link_to 'Edit', practice_instructions_path(@practice) %></span>
       <span class="x0-5-left x0-5-right">›</span>
-      <span>Checklist</span>
+      <span class="text-bold">Checklist</span>
     <% end %>
 
     <% if params[:action] == 'planning_checklist' && params[:controller] == 'practices' %>
       <span><%= link_to @practice.name, practice_path(@practice) %></span>
       <span class="x0-5-left x0-5-right">›</span>
-      <span>Planning checklist</span>
+      <span class="text-bold">Planning checklist</span>
     <% end %>
 
     <% if params[:action] == 'committed' && params[:controller] == 'practices' %>
@@ -117,7 +117,7 @@
       <span class="x0-5-left x0-5-right">›</span>
       <span><%= link_to 'Next Steps', practice_planning_checklist_path(practice_id: @practice) %></span>
       <span class="x0-5-left x0-5-right">›</span>
-      <span>Confirmation</span>
+      <span class="text-bold">Confirmation</span>
     <% end %>
 
   </div>
