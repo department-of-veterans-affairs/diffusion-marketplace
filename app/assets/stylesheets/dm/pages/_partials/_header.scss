@@ -22,3 +22,38 @@ header {
     display: none !important;
   }
 }
+
+.dm-usa-nav__secondary {
+  position: unset !important;
+
+  @media screen and (max-width: 1024px) {
+    position: unset !important;
+  }
+}
+
+.sign-in-button, .sign-out-button {
+  margin-right: 0 !important;
+  padding: 1rem !important
+}
+
+.logo-container {
+  width: 30% !important;
+}
+
+.nav-container {
+  width: 70% !important;
+}
+
+.usa-nav__primary-item {
+    * {
+        text-decoration: none !important;
+
+        &:hover {
+          text-decoration: none !important;
+        }
+    }
+}
+
+.username-link, .partners-link {
+  padding: 0;
+}
