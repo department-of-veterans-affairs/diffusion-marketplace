@@ -105,14 +105,26 @@ Rails.application.configure do
       s3_permissions: 'private'
   }
 
-  config.action_mailer.smtp_settings = {
-      :address => 'email-smtp.us-west-2.amazonaws.com',
-      :port => 587,
-      :user_name => ENV.fetch('SES_SMTP_USERNAME'),
-      :password => ENV.fetch('SES_SMTP_PASSWORD'),
-      :authentication => :login,
-      :enable_starttls_auto => true
-  }
+  mail_settings = {}
+
+  if ENV['USE_NTLM'] == 'true'
+    mail_settings = {
+        address: 'smtp.va.gov',
+        port: 25,
+        enable_starttls_auto: true
+    }
+  else
+    mail_settings = {
+        address: ENV['SES_SMTP_ADDRESS'],
+        port: 587,
+        user_name: ENV.fetch('SES_SMTP_USERNAME'),
+        password: ENV.fetch('SES_SMTP_PASSWORD'),
+        authentication: :login,
+        enable_starttls_auto: true
+    }
+  end
+
+  config.action_mailer.smtp_settings = mail_settings
 
   config.action_mailer.default_url_options = { host: ENV.fetch('HOSTNAME') }
 end
