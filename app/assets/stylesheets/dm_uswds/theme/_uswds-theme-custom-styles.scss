@@ -90,8 +90,9 @@ i.e.
 .usa-header--extended .usa-nav {
   border-top: none;
   border-right: none;
-  border-bottom: 3px solid $dm-color-darker-blue;
+  //border-bottom: 3px solid $dm-color-darker-blue;
   border-left: none;
+  //width: auto !important;
 }
 
 .usa-header + .usa-section, .usa-header + main {
@@ -103,8 +104,14 @@ i.e.
   color: #000000;
 }
 
+.usa-nav__secondary-links {
+  margin-bottom: 0 !important;
+}
+
 .usa-nav__secondary {
   position: unset;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 
 .usa-button-outline-white {
