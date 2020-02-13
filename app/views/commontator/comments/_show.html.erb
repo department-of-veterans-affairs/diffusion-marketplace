@@ -83,7 +83,7 @@
           deleted <%= timeago(comment.deleted_at) %> <%#(originally posted <%= timeago(comment.created_at) %><%#)%>
         </span>
       <% end %>
-      <div class="fas fa-flag margin-left-1 text-base padding-x-1 text-middle report-abuse-container" id="comment-<%= comment.id %>-report-abuse-container">
+      <div class="<%= current_user == creator ? 'hide-report-comment' : '' %> fas fa-flag margin-left-1 text-base padding-x-1 text-middle report-abuse-container" id="comment-<%= comment.id %>-report-abuse-container">
         <div class="report-abuse-modal hidden font-family-sans" id="comment-<%= comment.id %>-report-abuse-modal">
           <div class="bg-white radius-md report-abuse-modal-content width-tablet">
             <div class="bg-secondary text-white radius-top-md">

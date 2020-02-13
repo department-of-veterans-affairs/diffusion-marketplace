@@ -51,7 +51,7 @@
 <section class="usa-section p2-top p2-bottom">
   <div class="grid-container position-relative">
     <% if @practice.user_id == current_user.id || current_user.roles.any? %>
-      <div class="text-right">
+      <div class="text-right position-absolute edit-practice-link">
         <%= link_to 'Edit', practice_instructions_path(@practice), class: 'usa-button usa-button--outline margin-right-0' %>
       </div>
     <% end %>
@@ -174,7 +174,7 @@
           <div class="margin-bottom-7">
             <% if @practice.diffusion_histories.any? || @practice.impact_photos.any? %>
               <div class="grid-row flex-align-center">
-                <h2 id="impact" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205 margin-bottom-3">Impact</h2>
+                <h2 id="impact" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205">Impact</h2>
                 <div class="height-2px border border-base-lightest flex-fill"></div>
               </div>
               <% if @practice.diffusion_histories.any? %>
