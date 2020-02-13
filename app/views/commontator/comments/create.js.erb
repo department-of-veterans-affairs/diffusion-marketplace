@@ -13,7 +13,7 @@ var reloadWithTurbolinks = (function () {
     }
 
     $('.timeago').timeago();
-    $('#dm-practice-nav').sticky( {topSpacing: 56, zIndex: 10000, bottomSpacing: 200});
+    $('#dm-practice-nav').sticky( {topSpacing: 20, zIndex: 10000, bottomSpacing: 200});
     <% if !@comment.parent_id %>
       console.log('in here');
       $('html, body').animate({

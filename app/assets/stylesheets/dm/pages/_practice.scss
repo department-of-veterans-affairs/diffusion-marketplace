@@ -119,6 +119,13 @@
 .avatar-container {
   width: 65px !important;
   height: 65px;
+  position: relative;
+
+  img {
+    height: 65px;
+    width: 65px;
+    object-fit: cover;
+  }
 }
 
 .un-published-practice {
@@ -712,4 +719,8 @@
   &:hover, &:visited {
     color: #005ea2 !important;
   }
+}
+
+.edit-practice-link {
+  right: 2rem !important;
 }
