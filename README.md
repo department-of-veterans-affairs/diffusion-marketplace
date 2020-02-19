@@ -28,14 +28,13 @@
 #### System dependencies
 
 - `ruby 2.6.3`
-
+  - Linux-based install `rvm` (Ruby Version Manager) http://rvm.io/
 - `bundler`
-
+  - `gem install bundler`
 - `nodejs`
-
-- `postgresql`
-
-- ImageMagick 7+
+  - https://nodejs.org/en/
+- `postgresql` https://www.postgresql.org/download/
+- ImageMagick 7+ https://www.imagemagick.org/script/download.php
 
 #### Configuration
 
