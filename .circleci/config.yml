@@ -5,17 +5,11 @@
 version: 2
 workflows:
     version: 2
-    build-deploy:
+    test:
       jobs:
-        - build
-        - deploy:
-            requires:
-              - build
-            filters:
-              branches:
-                only: master
+        - test
 jobs:
-  build:
+  test:
     docker:
       # specify the version you desire here
       - image: circleci/ruby:2.6.3-node-browsers
@@ -110,48 +104,3 @@ jobs:
       - store_artifacts:
           path: coverage
           destination: coverage
-  deploy:
-    docker:
-      - image: circleci/ruby:2.6.3-node-browsers
-    working_directory: ~/deploy
-    steps:
-      - checkout
-      - setup_remote_docker
-
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "Gemfile.lock" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-      - run:
-          name: Install Rails dependencies
-          command: |
-            sudo apt-get update
-            sudo apt-get install qt5-default libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
-            gem install bundler
-            bundle install --jobs=4 --retry=3 --path vendor/bundle
-
-      - save_cache:
-          paths:
-            - ./vendor/bundle
-          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
-
-      - run:
-          name: Install dependencies
-          command: |
-            sudo apt-get update
-            sudo apt-get install python-pip python-dev jq
-            sudo pip install awscli
-
-      - run:
-          name: Prepare Rails secrets
-          command: |
-            rm -rf config/credentials.yml.enc
-            rm -rf config/master.key
-            EDITOR=vim bundle exec rails credentials:edit
-
-      - run:
-          name: Build && Deploy
-          command: |
-            ./scripts/deploy.sh va-diffusion-marketplace va-diffusion-marketplace-staging us-west-2 $CIRCLE_SHA1
