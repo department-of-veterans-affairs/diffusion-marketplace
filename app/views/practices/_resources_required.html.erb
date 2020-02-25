@@ -1,10 +1,10 @@
-<div class="grid-container-full margin-bottom-7" id="resources_required">
+<div class="grid-container-full margin-bottom-7">
   <div class="grid-row flex-align-center margin-bottom-4">
-    <h2 class="font-sans-xl text-bold margin-0 flex-auto margin-right-205">Resources</h2>
-    <div class="height-2px border border-base-lightest flex-fill"></div>
+    <h2 id="resources_required" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205">Resources</h2>
+    <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest section-line">
   </div>
-  <div class="grid-row grid-gap flex-align-center">
-    <div class="flex-align-center <%= level_aggregate_style(@practice.cost_to_implement_aggregate) %>">
+  <div class="grid-row grid-gap flex-align-center resources-section practice-section">
+    <div class="flex-align-center cost-to-implement-container <%= level_aggregate_style(@practice.cost_to_implement_aggregate) %>">
       <div id="cost-aggregate">
         <% cost_to_implement_aggregate = @practice.cost_to_implement_aggregate || 0 %>
         <% (0..3).each do |index| %>
@@ -16,14 +16,7 @@
         <% end %>
       </div>
     </div>
-    <div class="tablet:grid-col-6 text-center tablet:display-none">
-      <p><%= cost_aggregate_description(@practice.cost_to_implement_aggregate) %></p>
-    </div>
-    <%#<div class="tablet:grid-col-6 display-flex flex-column tablet:margin-top-6">
-      <% @practice.costs.each do |cost| %>
-    <%#    <p class="text-bold font-ui-md margin-top-0"><%= cost.description %><%#</p>
-      <% end %>
-    <%#</div>%>
+
     <div class="tablet:grid-col-fill">
       <div class="margin-0 font-sans-xs-2 line-height-sans-505">
         Cost:
@@ -38,12 +31,12 @@
 </div>
 
 
-<div class="grid-container-full margin-bottom-105" id="complexity">
+<div class="grid-container-full margin-bottom-105">
   <div class="grid-row flex-align-center margin-bottom-4">
-    <h2 class="font-sans-xl text-bold margin-0 flex-auto margin-right-205">Complexity</h2>
-    <div class="height-2px border border-base-lightest flex-fill"></div>
+    <h2 id="complexity" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205">Complexity</h2>
+    <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest section-line">
   </div>
-  <div class="grid-row grid-gap flex-align-center">
+  <div class="grid-row grid-gap flex-align-center complexity-section">
     <!-- Complexity level Circle -->
     <% complexity_aggregate = complexity_aggregate(@practice) || 0 %>
     <div class="flex-align-center <%= level_aggregate_style(complexity_aggregate) %>">

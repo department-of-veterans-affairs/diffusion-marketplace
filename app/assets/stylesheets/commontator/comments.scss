@@ -161,7 +161,7 @@ h2 {
 }
 
 .edit-comment-icon:hover, .fa-trash-alt:hover, .fa-trash-restore-alt:hover {
-  color: #005EA2;
+  color: #565c65;
 }
 
 body {
@@ -198,7 +198,7 @@ body {
 // }
 
 .vote-disabled:hover {
-  color: #71767A;
+  color: #C9C9C9;
 }
 
 .comment-radio {
@@ -210,11 +210,20 @@ body {
 
   &:hover {
     cursor: pointer;
+    color: #565c65;
   }
 }
 
-.empty-vote, .vote-disabled {
+.empty-vote {
   color: #71767A;
+}
+
+.vote-disabled {
+  color: #C9C9C9;
+  background-color: transparent;
+   &:hover {
+     color: #C9C9C9 !important;
+   }
 }
 
 .voted {
@@ -233,10 +242,10 @@ body {
 }
 
 .comment-cancel {
-  box-shadow: inset 0 0 0 2px #565C65;
+  border: 2px solid #565C65 !important;
 
   &:hover {
-    box-shadow: inset 0 0 0 2px #3d4551;
+    border: 2px solid #3d4551 !important;
     color: #3d4551;
   }
 }
@@ -253,6 +262,16 @@ body {
   cursor: pointer;
 }
 
+.report-abuse-submit {
+    border: 2px solid #005ea2 !important;
+  &:hover {
+    border: 2px solid #1A4480 !important;
+  }
+  &:focus {
+    outline-offset: 0 !important;
+  }
+}
+
 .fa-angle-down {
   font-size: 20px;
 }
@@ -260,3 +279,60 @@ body {
 .hide-report-comment {
   display: none !important;
 }
+
+.fa-flag:hover {
+  color: #E41D3D;
+}
+
+//#team-member:checked + .team-member-label::before, #verified-implementer:checked + .implementer-label::before {
+//  box-shadow: 0 0 0 2px #FFBE2E, inset 0 0 0 2px white !important;
+//  background-color: #FFBE2E !important;
+//}
+
+.usa-radio__input:focus + .team-member-label::before, .usa-radio__input:focus + .implementer-label::before {
+  outline: 0.25rem solid #FFBE2E !important;
+  outline-offset: 0.25rem !important;
+}
+
+.comment-three-lines {
+  display: block; /* Fallback for non-webkit */
+  display: -webkit-box;
+  -webkit-line-clamp : 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.report-comment-body {
+  height: 160px;
+  overflow-y: auto;
+}
+
+.delete-comment-icon {
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+::-webkit-input-placeholder {
+  color: #71767A !important;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+  color: #71767A !important;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+  color: #71767A !important;
+}
+
+:-ms-input-placeholder {
+  color: #71767A !important;
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .comment-width-ie {
+    width: 80%;
+  }
+}
+

@@ -71,7 +71,7 @@ en:
         edit: Edit
         new: New Comment
         undelete: Undelete
-        update: Edit
+        update: Save
         reply: Reply
       errors:
         already_deleted: This comment has already been deleted.

@@ -354,6 +354,7 @@
 }
 
 .editor-continue-link {
+  line-height: 1 !important;
   &:visited {
     color: white !important;
   }
@@ -723,4 +724,18 @@
 
 .edit-practice-link {
   right: 2rem !important;
+}
+
+.section-line {
+  flex: 1 0 !important;
+}
+
+.cost-to-implement-container {
+  width: 11.5%;
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .fa-circle {
+    margin-bottom: -2px;
+  }
 }
