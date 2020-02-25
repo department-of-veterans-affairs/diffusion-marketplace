@@ -92,8 +92,7 @@
             <!-- -->
 
             <!-- Departments impacted -->
-            <% if @practice.departments.any? && @practice.departments.find_by(short_name: 'all').blank? && @practice.departments.find_by(short_name: 'none').blank?
-            %>
+            <% if @practice.departments.any? && @practice.departments.find_by(short_name: 'all').blank? && @practice.departments.find_by(short_name: 'none').blank? %>
               <%= render 'next_steps_checkbox', label: 'Departments', sectionId: 'departments-impacted' do %>
                 <% @practice.departments.each do |d| %>
                       <li><%= d.name %></li>
