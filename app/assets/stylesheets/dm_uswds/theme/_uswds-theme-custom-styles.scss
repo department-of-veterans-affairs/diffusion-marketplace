@@ -124,12 +124,14 @@ i.e.
 
 .usa-button--outline {
   box-shadow: none !important;
-  border: 2px solid #005ea2 !important
-}
+  border: 2px solid #005ea2 !important;
 
-.usa-button--outline {
   &:hover {
     border: 2px solid #1a4480 !important;
+  }
+
+  &:disabled {
+    border: 2px solid #dcdee0 !important;
   }
 }
 
