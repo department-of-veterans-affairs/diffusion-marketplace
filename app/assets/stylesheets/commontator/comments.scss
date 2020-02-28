@@ -336,3 +336,29 @@ body {
   }
 }
 
+.more-link {
+  color: #005ea2 !important;
+
+  &:hover {
+    text-decoration: none !important
+  }
+  i:before {
+    display: inline-block;
+    text-decoration: none !important;
+  }
+}
+
+.more-content span {
+  display: none;
+}
+
+.show-arrow {
+  font-size: 0.75em !important;
+}
+
+.more {
+  p {
+    padding-bottom: 4px;
+  }
+}
+

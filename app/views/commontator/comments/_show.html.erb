@@ -28,7 +28,7 @@
     </span>
   </div>
   <div class="grid-col-fill comment-width-ie">
-    <div id="commontator-comment-<%= comment.id %>-section-top" class="section top margin-bottom-05">
+    <div id="commontator-comment-<%= comment.id %>-section-top" class="section top margin-bottom-05 padding-x-1">
       <span id="commontator-comment-<%= comment.id %>-author" class="author">
         <%= link_to name, "/users/#{creator.id}" %>
       </span>
@@ -106,19 +106,16 @@
     </div>
 
     <div id="commontator-comment-<%= comment.id %>-section-middle" class="section middle">
-      <div class="text-base margin-bottom-1">
+      <div class="text-base margin-bottom-1 padding-x-1">
         <%= job_title %>
       </div>
 
-      <div id="commontator-comment-<%= comment.id %>-body" class="body word-break-break-word hyphens-auto">
-        <%= render partial: 'commontator/comments/body', locals: { comment: comment } %>
-      </div>
-      <div class="show-more">
-        <button class="usa-button usa-button--unstyled">Show more</button>
+      <div id="commontator-comment-<%= comment.id %>-body" class="body word-break-break-word hyphens-auto padding-x-1 padding-top-05">
+        <div class="comment-body more"><%= render partial: 'commontator/comments/body', locals: { comment: comment } %></div>
       </div>
     </div>
 
-    <div id="commontator-comment-<%= comment.id %>-section-bottom" class="section bottom">
+    <div id="commontator-comment-<%= comment.id %>-section-bottom" class="section bottom padding-x-1">
       <span id="commontator-comment-<%= comment.id %>-votes" class="votes">
         <%= render partial: 'commontator/comments/votes', locals: { comment: comment, user: user } %>
       </span>

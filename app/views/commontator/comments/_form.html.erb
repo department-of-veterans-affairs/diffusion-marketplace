@@ -9,6 +9,7 @@
   current_user_practice = current_user.user_practices.find_by(practice_id: comment.thread.commontable_id, user: current_user)
   practice_team_member = current_user_practice.team_member if current_user_practice.present?
   verified_practice_implementer = current_user_practice.verified_implementer if current_user_practice.present?
+  name = Commontator.commontator_name(current_user) || ''
 %>
 
 <% config = comment.thread.config %>
@@ -32,6 +33,15 @@
   <% end %>
 
   <div class="field <%= comment.parent.nil? && new_record ? 'comment-field' : 'reply-field' %>">
+    <% if new_record %>
+    <div class="margin-bottom-1">
+      <div class="height-4 width-4 display-inline-block text-middle margin-right-1">
+        <%= Commontator.commontator_avatar(current_user, self) %>
+      </div>
+      <div class="display-inline-block text-bold"><%= name %></div>
+    </div>
+    <% end %>
+
     <%=
       form.text_area :body, rows: '7', aria: { label: 'comment text area' }, placeholder: 'Type your comment here', 
         class: comment.parent.nil? && new_record ? 'comment-textarea' : 'reply-textarea', id: new_record ?
