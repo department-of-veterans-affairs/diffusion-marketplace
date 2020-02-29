@@ -171,7 +171,7 @@
         let lessText = '&nbsp;' + 'See less' + ' <i class="fas fa-angle-up show-arrow display-inline-block"></i>';
 
         $document.find('.comment-cancel').each(function() {
-            $(this).on('click', function () {
+            $(this).on('click', function() {
                 $('.more').find('p').each(function () {
                     let content = $(this).html();
 
