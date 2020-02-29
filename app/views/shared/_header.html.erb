@@ -73,9 +73,9 @@
               <% end %>
             </li>
             <% unless ENV['USE_NTLM'] == 'true' %>
-<!--              <li class="usa-nav__primary-item">-->
-                <%#= link_to('Sign out', destroy_user_session_path, class: 'usa-button-outline-white usa-button sign-out-button', method: :delete) %>
-<!--              </li>-->
+              <li class="usa-nav__primary-item">
+                <%= link_to('Sign out', destroy_user_session_path, class: 'usa-button-outline-white usa-button sign-out-button', method: :delete) %>
+              </li>
             <% end %>
           <% else %>
             <li class="usa-nav__primary-item">
