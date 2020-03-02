@@ -50,6 +50,24 @@
                 <%= f.select(:initiating_facility, options_for_select(['-Select-'], {selected: '-Select-', disabled: '-Select-'}), {}, {id: 'editor_facility_select', class: 'width-full height-5 usa-select'}) %>
               </div>
             </div>
+            <p class="margin-top-3"><span class="text-bold">Practice date:</span>&nbsp;<span>Select the month and year when this practice was created.</span>
+            <div class="grid-row grid-gap-4">
+              <div>
+                <%= label_tag 'editor_date_intiated_month', 'Month', class: 'usa-label' %>
+                <%= select_month(@practice.date_initiated.present? ? date_get_month(@practice.date_initiated) : nil, {prompt: '-Select-', prefix: 'date_initiated'}, {id: 'editor_date_intiated_month', class: 'width-card-lg height-5 usa-select'}) %>
+              </div>
+              <div class="grid-col-fill">
+                <%= label_tag 'editor_date_intiated_year', 'Year', class: 'usa-label' %>
+                <%= select_year(@practice.date_initiated.present? ? date_get_year(@practice.date_initiated) : nil, {start_year: 1970, end_year: Date.today.year, prompt: '-Select-', prefix: 'date_initiated', default: '-Select-'}, {id: 'editor_date_intiated_year', class: 'width-full height-5 usa-select'}) %>
+              </div>
+            </div>
+            <div class="grid-row grid-gap-4">
+              <div>
+                <%= f.label :number_adopted, 'Practice adoptions:', class: 'usa-label text-bold display-block' %>
+                <span>Type the total number of times your practice has been adopted by other facilities.</span>
+                <%= f.number_field :number_adopted, class: "grid-col-3 usa-input", min: 0 %>
+              </div>
+            </div>
             <div>
               <%= f.label :summary, 'Practice summary: ', class: 'usa-label text-bold display-block' %>
               <span>Type a brief summary of your practice’s mission.</span>&nbsp;<span id="practice-editor-summary-character-counter" class="text-base-light">(0/400 characters)</span>
