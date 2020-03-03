@@ -10,8 +10,12 @@ class PracticesController < ApplicationController
                                            :documentation, :resources, :complexity,
                                            :timeline, :risk_and_mitigation,
                                            :contact, :checklist, :published,
-                                           :publication_validation
-  ]
+                                           :publication_validation]
+  before_action only: [:update] do
+    if date_initiated_params_exist(params[:date_initiated])
+      params[:practice][:date_initiated] = create_date_initiated(params[:date_initiated])
+    end
+  end
 
   # GET /practices
   # GET /practices.json
@@ -380,7 +384,7 @@ class PracticesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def practice_params
-    params.require(:practice).permit(:need_training, :tagline, :process, :it_required, :need_new_license, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :cost_to_implement_aggregate, :sustainability_aggregate, :veteran_satisfaction_aggregate, :difficulty_aggregate,
+    params.require(:practice).permit(:need_training, :tagline, :process, :it_required, :need_new_license, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :cost_to_implement_aggregate, :sustainability_aggregate, :veteran_satisfaction_aggregate, :difficulty_aggregate, :date_initiated,
                                      :number_adopted, :number_departments, :number_failed, :implementation_time_estimate, :implementation_time_estimate_description, :implentation_summary, :implentation_fte,
                                      :training_provider, :training_length, :training_test, :training_provider_role, :required_training_summary, :support_network_email,
                                      :main_display_image, :main_display_image_original_w, :main_display_image_original_h, :main_display_image_crop_x, :main_display_image_crop_y, :main_display_image_crop_w, :main_display_image_crop_h,
@@ -465,4 +469,12 @@ class PracticesController < ApplicationController
 
     practices_array.to_json.html_safe
   end
+end
+
+def create_date_initiated (date_initiated)
+  Date.new(date_initiated[:year].to_i, date_initiated[:month].to_i)
+end
+
+def date_initiated_params_exist (date_initiated)
+  date_initiated.present? && !(date_initiated.values.include? nil)
 end
