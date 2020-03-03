@@ -2,7 +2,7 @@
 # Run with: bin/rails surveymonkey:download_response_files
 
 namespace :surveymonkey do
-
+  # TODO: This is DEPRECATED. Do not use. Ever.
   # rails surveymonkey:download_response_files
   desc 'Downloads response files'
   task :download_response_files => :environment do
@@ -54,7 +54,7 @@ namespace :surveymonkey do
     registered_devices_cookies.each { |c|
       cookie = Mechanize::Cookie.new(c[:name], c[:value])
       cookie.domain = '.surveymonkey.com'
-      cookie.expires = '2019-11-04T04:04:32.306Z'
+      cookie.expires = '2020-05-28T22:10:48.948Z'
       cookie.path = '/'
       agent.cookie_jar.add(cookie)
     }
@@ -80,30 +80,30 @@ namespace :surveymonkey do
     puts "==> Getting survey responses"
     client = SurveyMonkeyApi::Client.new
     survey_responses = client.responses_with_details(167278708, {per_page: 100})
-
+    File.write("#{Rails.root}/lib/assets/initial_practice_responses.json", survey_responses)
     # Download files for each respondent
-    survey_responses['data'].each do |response|
-      puts "==> Downloading files for Respondent #{response['id']}"
-
-      # Create the respondent directory to put downloaded files
-      respondent_dir = download_dir + response['id']
-      FileUtils.mkdir_p respondent_dir
-
-      # Download files for each question with files as answers
-      questions.each do |q|
-        print " - Downloading \"#{q[2]}\"..."
-        url = get_download_url(response, q[0], q[1])
-
-        # If the URL is good, download the file
-        if url
-          puts " - Saving \"#{q[2]}\"..."
-          file = agent.get(url)
-          file.save(respondent_dir + '/' + URI.decode(file.filename))
-        end
-
-        puts "done"
-      end
-    end
+    # survey_responses['data'].each do |response|
+    #   puts "==> Downloading files for Respondent #{response['id']}"
+    #
+    #   # Create the respondent directory to put downloaded files
+    #   respondent_dir = download_dir + response['id']
+    #   FileUtils.mkdir_p respondent_dir
+    #
+    #   # Download files for each question with files as answers
+    #   questions.each do |q|
+    #     print " - Downloading \"#{q[2]}\"..."
+    #     url = get_download_url(response, q[0], q[1])
+    #
+    #     # If the URL is good, download the file
+    #     if url
+    #       puts " - Saving \"#{q[2]}\"..."
+    #       file = agent.get(url)
+    #       file.save(respondent_dir + '/' + URI.decode(file.filename))
+    #     end
+    #
+    #     puts "done"
+    #   end
+    # end
 
     puts '***** Completed downloading survey response files *****'
 

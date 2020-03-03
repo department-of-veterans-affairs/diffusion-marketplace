@@ -12,6 +12,9 @@ namespace :importer do
     #   opts.on('-v', '--verbose')
     #   debugger
     # end.parse!
+
+    download_response_files
+
     sheet = Roo::Excelx.new(File.join(Rails.root, '/lib/assets/TEST_Diffusion_Marketplace.xlsx'))
     unless Rails.env.test?
       puts "*********** Importing practices from: #{options[:file]} ***********".light_blue if options[:file].present?
@@ -50,98 +53,98 @@ namespace :importer do
         #   when 'yes'
         #     destroy_practice
         #   when 'n'
-            puts "Would you like to update/re-import this practice?. [Y/N]".white.on_blue
-            puts "WARNING: this may duplicate files, pictures, risk and mitigation pairs, etc. to the practice that were already on there. Use wisely!".yellow
-            ans = STDIN.gets.chomp
-          case ans.downcase
-            when 'y'
-              puts "Updating/importing practice: #{@name}".light_blue
-            when 'yes'
-              puts "Updating/importing practice: #{@name}".light_blue
-            when 'n'
-              puts "Skipping practice #{@name} entirely!".yellow
-              next
-            when 'no'
-              puts "Skipping practice #{@name} entirely!".yellow
-              next
-            else
-              puts "Skipping practice #{@name} entirely!".yellow
-              next
-           end
+        puts "Would you like to update/re-import this practice?. [Y/N]".white.on_blue
+        puts "WARNING: this may duplicate files, pictures, risk and mitigation pairs, etc. to the practice that were already on there. Use wisely!".yellow
+        ans = STDIN.gets.chomp
+        case ans.downcase
+        when 'y'
+          puts "Updating/importing practice: #{@name}".light_blue
+        when 'yes'
+          puts "Updating/importing practice: #{@name}".light_blue
+        when 'n'
+          puts "Skipping practice #{@name} entirely!".yellow
+          next
+        when 'no'
+          puts "Skipping practice #{@name} entirely!".yellow
+          next
+        else
+          puts "Skipping practice #{@name} entirely!".yellow
+          next
+        end
         # when 'yes'
         #   puts "Updating/re-importing practice: #{@name}".light_blue
         # when 'n'
         #   puts "Updating/re-importing practice: #{@name}".light_blue
-      # else
-      #   puts "Skipping practice #{@name} entirely!".yellow
-      #   next
-      # end
-    else
-      @practice = Practice.create(name: @name)
+        # else
+        #   puts "Skipping practice #{@name} entirely!".yellow
+        #   next
+        # end
+      else
+        @practice = Practice.create(name: @name)
+      end
+
+
+      # Basic Practice related questions first
+      basic_answers
+      file_uploads
+      # TODO: Ask Andy if this needs to be dynamic
+      @practice.approved = true
+      @practice.published = true
+      @practice.save!
+
+      # sort all of the relational questions into their own methods for clarity.
+      practice_partners
+      va_employees
+      # developing_facility_types
+      # va_secretary_priorities
+      # practice_managements
+      categories
+      clinical_conditions
+      financial_files
+      job_positions
+      ancillary_services
+      clinical_locations
+      departments
+      video_files
+      additional_documents
+      # business_case_files
+      toolkit_files
+      checklist_files
+      publication_files
+      publications
+      # badges
+      implementation_timeline
+      risk_mitigations
+      additional_staff
+      additional_resources
+      required_training_staff
+      costs_difficulties
+      impact_photos
+      domains
+      practice_permissions
+      timelines
+      training_details
+      license_required
+      it_required
     end
-
-
-    # Basic Practice related questions first
-    basic_answers
-    file_uploads
-    # TODO: Ask Andy if this needs to be dynamic
-    @practice.approved = true
-    @practice.published = true
-    @practice.save!
-
-    # sort all of the relational questions into their own methods for clarity.
-    practice_partners
-    va_employees
-    # developing_facility_types
-    # va_secretary_priorities
-    # practice_managements
-    categories
-    clinical_conditions
-    financial_files
-    job_positions
-    ancillary_services
-    clinical_locations
-    departments
-    video_files
-    additional_documents
-    # business_case_files
-    toolkit_files
-    checklist_files
-    publication_files
-    publications
-    # badges
-    implementation_timeline
-    risk_mitigations
-    additional_staff
-    additional_resources
-    required_training_staff
-    costs_difficulties
-    impact_photos
-    domains
-    practice_permissions
-    timelines
-    training_details
-    license_required
-    it_required
+    puts "*********** Completed Importing Practices! ***********".green
   end
-  puts "*********** Completed Importing Practices! ***********".green
-end
 
-task initial_featured: :environment do |t, args|
-  puts "*********** Initializing Featured Practices **********".green
-  options = {}
-  highlighted = Practice.find_by_slug('project-happen')
-  features = []
-  features << Practice.find_by_slug('flow3')
-  features << Practice.find_by_slug('vione')
-  features << Practice.find_by_slug('vha-rapid-naloxone')
+  task initial_featured: :environment do |t, args|
+    puts "*********** Initializing Featured Practices **********".green
+    options = {}
+    highlighted = Practice.find_by_slug('project-happen')
+    features = []
+    features << Practice.find_by_slug('flow3')
+    features << Practice.find_by_slug('vione')
+    features << Practice.find_by_slug('vha-rapid-naloxone')
 
-  highlighted.update_attributes(highlight: true) if highlighted.present?
-  features.each do |f|
-    f.update_attributes(featured: true)
+    highlighted.update_attributes(highlight: true) if highlighted.present?
+    features.each do |f|
+      f.update_attributes(featured: true)
+    end
+    puts "*********** Completed Featured Practices **********".green
   end
-  puts "*********** Completed Featured Practices **********".green
-end
 end
 
 def destroy_practice
@@ -908,7 +911,7 @@ def impact_photos
                          'Please provide a brief paragraph describing the photo and the Impact.'
                      ]]
   question_fields.each_with_index do |fields, index|
-    description_indices = @questions.each_index.select {|i| @questions[i] == fields[2]}
+    description_indices = @questions.each_index.select { |i| @questions[i] == fields[2] }
     next if @answers[@questions.index(fields[0])].blank?
 
     image_path = "#{Rails.root}/tmp/surveymonkey_responses/#{@respondent_id}/#{@answers[@questions.index(fields[0])]}"
@@ -1033,4 +1036,102 @@ def timelines
     end
   end
 
+end
+
+def signer
+  Aws.config.update({
+                        region: ENV['AWS_REGION'],
+                        credentials: Aws::Credentials.new(ENV['S3_TEST_MARKETPLACE_ACCESS_KEY_ID'], ENV['S3_TEST_MARKETPLACE_SECRET_ACCESS_KEY'])
+                    })
+  @signer ||= Aws::S3::Presigner.new
+end
+
+def s3_presigned_url
+  signer.presigned_url(:get_object, bucket: ENV['S3_TEST_BUCKET_NAME'] || 'test-diffusion-marketplace', key: 'surveymonkey_responses.zip')
+end
+
+def download_survey_monkey_responses_zip
+  open("#{Rails.root}/tmp/surveymonkey_responses.zip", 'wb') do |file|
+    file << open(s3_presigned_url).read
+  end
+end
+
+def unzip_response_files
+  Zip::File.open("#{Rails.root}/tmp/surveymonkey_responses.zip") do |zip_files|
+    zip_files.each do |file|
+      fpath = File.join("#{Rails.root}/tmp", file.name)
+      file.extract(fpath)
+    end
+  end
+end
+
+# You can also manually put these in the tmp directory and skip this part when prompted
+def download_response_files
+  # save response files from S3 to the tmp directory
+  # 1. download from S3
+  if File.exist?("#{Rails.root}/tmp/surveymonkey_responses.zip")
+    puts "The survey_monkey_responses.zip file has already been downloaded.".light_blue
+    puts "Would you like to download again?. [Y/N]".white.on_blue
+    ans = STDIN.gets.chomp
+    case ans.downcase
+    when 'y'
+      puts "==> Downloading response files".light_blue
+      download_survey_monkey_responses_zip
+    when 'yes'
+      puts "==> Downloading response files".light_blue
+      download_survey_monkey_responses_zip
+    when 'n'
+      puts "Skipping Downloading response files".yellow
+    when 'no'
+      puts "Skipping Downloading response files".yellow
+    else
+      puts "Skipping Downloading response files".yellow
+    end
+  else
+    puts "==> Downloading response files".light_blue
+    download_survey_monkey_responses_zip
+  end
+
+  # 2. unzip file from s3
+  puts "==> Unzipping response files".light_blue
+  if File.exist?("#{Rails.root}/tmp/surveymonkey_responses.zip")
+    if File.exist?("#{Rails.root}/tmp/surveymonkey_responses")
+      puts "The survey_monkey_responses.zip file has already been unzipped.".light_blue
+      puts "Would you like to extract it again?. [Y/N]".white.on_blue
+      ans = STDIN.gets.chomp
+      case ans.downcase
+      when 'y'
+        FileUtils.rm_rf("#{Rails.root}/tmp/surveymonkey_responses")
+        puts "==> Unzipping response files".light_blue
+        unzip_response_files
+      when 'yes'
+        FileUtils.rm_rf("#{Rails.root}/tmp/surveymonkey_responses")
+        puts "==> Unzipping response files".light_blue
+        unzip_response_files
+      when 'n'
+        puts "Skipping Unzipping response files".yellow
+      when 'no'
+        puts "Skipping Unzipping response files".yellow
+      else
+        puts "Skipping Unzipping response files".yellow
+      end
+    else
+      puts "==> Unzipping response files".light_blue
+      unzip_response_files
+    end
+  else
+    # stop execution of this whole thing. the importer will fail~
+    raise ResponseFilesMissingError, 'The response files are missing. Please make sure you have the correct credentials to download them or download them from a different source and place them in the tmp folder and re-run this task. Thanks!'
+  end
+
+  if ENV['AWS_ACCESS_KEY_ID'] != ENV['S3_TEST_MARKETPLACE_ACCESS_KEY_ID']
+    Aws.config.update({
+                          region: ENV['AWS_REGION'],
+                          credentials: Aws::Credentials.new(ENV['AWS_ACCESS_KEY_ID'], ENV['AWS_SECRET_ACCESS_KEY'])
+                      })
+  end
+end
+
+# define custom error class
+class ResponseFilesMissingError < StandardError;
 end

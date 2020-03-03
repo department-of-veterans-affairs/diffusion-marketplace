@@ -589,6 +589,7 @@ DEPENDENCIES
   rspec-rails
   rspec-retry
   rspec_junit_formatter
+  rubyzip
   sass-rails (~> 5.0)
   shoulda-matchers
   sidekiq
