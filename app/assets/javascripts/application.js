@@ -48,3 +48,4 @@
 //= require arrive.min
 //= require html5sortable
 //= require search
+//= require objectFitPolyfill.min

@@ -12,9 +12,11 @@
   </style>"))
   %>
   <% if practice.main_display_image.present? %>
-    <%= link_to practice, 'aria-label': "Go to #{practice.name}", 'tabindex': '-1', 'aria-hidden': 'true' do %>
-      <img class="img grid-row <%= featured ? "featured-" : '' %>marketplace-card-header-<%= practice.id %> radius-top-sm" src="<%= practice.main_display_image_s3_presigned_url %>">
-    <% end %>
+    <div class="<%= featured ? "featured-" : '' %>card-img-container">
+      <%= link_to practice, 'aria-label': "Go to #{practice.name}", 'tabindex': '-1', 'aria-hidden': 'true' do %>
+        <img class="img grid-row <%= featured ? "featured-" : '' %>marketplace-card-header-<%= practice.id %> radius-top-sm marketplace-card-img" src="<%= practice.main_display_image_s3_presigned_url %>" data-object-fit="cover">
+      <% end %>
+    </div>
   <% else %>
     <div class="bg-base-lightest" style="<%= featured ? 'height: 309px' : 'height: 227px' %>">
       <i class="fas fa-images fa-3x text-base-lighter <%= featured ? 'tall' : '' %>"></i>
@@ -27,7 +29,6 @@
         <%= practice.name %>
       </h4>
     <% end %>
-    <div style="height: 5px"></div>
     <div class="grid-row margin-bottom-1">
       <p class="margin-top-0 margin-bottom-1 multiline-ellipses-1 line-height-sans-6 font-sans-sm"><%= practice.tagline %></p>
     </div>

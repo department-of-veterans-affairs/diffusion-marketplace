@@ -58,12 +58,12 @@
             <p class="margin-top-3 margin-bottom-1"><span class="text-bold">Partners: </span><span>Select any of the following partners your practice is associated with.</span>
             <% partners.each do |partner| %>
               <% if partner.name == 'None of the above, or Unsure' %>
-                <div class='usa-checkbox practice-partner-checkbox'>
+                <div class='usa-checkbox practice-partner-checkbox position-relative'>
                   <input type='checkbox' class='usa-checkbox__input no-partner-input' id="practice_partner_<%= partner.id %>" name='practice[practice_partner][<%= partner.id %>][value]' <%= p_partners.include?(partner) ? "checked= 'true'" : "" %>>
                   <label class='usa-checkbox__label' id="practice_partner_<%= partner.id %>_label" for="practice_partner_<%= partner.id %>"><%= partner.name %></label>
                 </div>
                 <% else  %>
-                  <div class='usa-checkbox practice-partner-checkbox'>
+                  <div class='usa-checkbox practice-partner-checkbox position-relative'>
                     <input type='checkbox' class='usa-checkbox__input partner-input' id="practice_partner_<%= partner.id %>" name='practice[practice_partner][<%= partner.id %>][value]' <%= p_partners.include?(partner) ? "checked= 'true'" : "" %>>
                     <label class='usa-checkbox__label' id="practice_partner_<%= partner.id %>_label" for="practice_partner_<%= partner.id %>"><%= partner.name %></label>
                   </div>
