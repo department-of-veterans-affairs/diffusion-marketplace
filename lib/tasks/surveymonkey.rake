@@ -80,30 +80,30 @@ namespace :surveymonkey do
     puts "==> Getting survey responses"
     client = SurveyMonkeyApi::Client.new
     survey_responses = client.responses_with_details(167278708, {per_page: 100})
-    File.write("#{Rails.root}/lib/assets/initial_practice_responses.json", survey_responses)
-    # Download files for each respondent
-    # survey_responses['data'].each do |response|
-    #   puts "==> Downloading files for Respondent #{response['id']}"
-    #
-    #   # Create the respondent directory to put downloaded files
-    #   respondent_dir = download_dir + response['id']
-    #   FileUtils.mkdir_p respondent_dir
-    #
-    #   # Download files for each question with files as answers
-    #   questions.each do |q|
-    #     print " - Downloading \"#{q[2]}\"..."
-    #     url = get_download_url(response, q[0], q[1])
-    #
-    #     # If the URL is good, download the file
-    #     if url
-    #       puts " - Saving \"#{q[2]}\"..."
-    #       file = agent.get(url)
-    #       file.save(respondent_dir + '/' + URI.decode(file.filename))
-    #     end
-    #
-    #     puts "done"
-    #   end
-    # end
+
+    #Download files for each respondent
+    survey_responses['data'].each do |response|
+      puts "==> Downloading files for Respondent #{response['id']}"
+
+      # Create the respondent directory to put downloaded files
+      respondent_dir = download_dir + response['id']
+      FileUtils.mkdir_p respondent_dir
+
+      # Download files for each question with files as answers
+      questions.each do |q|
+        print " - Downloading \"#{q[2]}\"..."
+        url = get_download_url(response, q[0], q[1])
+
+        # If the URL is good, download the file
+        if url
+          puts " - Saving \"#{q[2]}\"..."
+          file = agent.get(url)
+          file.save(respondent_dir + '/' + URI.decode(file.filename))
+        end
+
+        puts "done"
+      end
+    end
 
     puts '***** Completed downloading survey response files *****'
 
