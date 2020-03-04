@@ -13,10 +13,9 @@ namespace :importer do
     #   debugger
     # end.parse!
 
-    download_response_files
-
     sheet = Roo::Excelx.new(File.join(Rails.root, '/lib/assets/TEST_Diffusion_Marketplace.xlsx'))
     unless Rails.env.test?
+      download_response_files
       puts "*********** Importing practices from: #{options[:file]} ***********".light_blue if options[:file].present?
       puts "!!!!!! No file path provided !!!!!!".yellow if options[:file].blank?
       puts "*********** Importing practices from: /lib/assets/Diffusion_Marketplace.xlsx ***********".light_blue if options[:file].blank?
