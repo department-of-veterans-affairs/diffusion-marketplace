@@ -81,7 +81,7 @@ namespace :surveymonkey do
     client = SurveyMonkeyApi::Client.new
     survey_responses = client.responses_with_details(167278708, {per_page: 100})
 
-    #Download files for each respondent
+    # Download files for each respondent
     survey_responses['data'].each do |response|
       puts "==> Downloading files for Respondent #{response['id']}"
 
