@@ -39,6 +39,37 @@
               <%= f.text_area :tagline, class: "usa-textarea #{ @practice.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-tagline-textarea" %>
               <p class="usa-error-message <%= @practice.errors[:tagline].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@practice, :tagline) %></span></p>
             </div>
+            <p class="margin-top-3"><span class="text-bold">Practice thumbnail:</span>&nbsp;</p>
+            <div class="grid-row margin-top-1">
+              <div class="grid-col-6">
+                <% if @practice.main_display_image.present? %>
+                  <%= image_tag @practice.main_display_image.url, alt: "practice thumbnail for #{@practice.name}", class: 'height-mobile practice-editor-impact-photo radius-md' %>
+                <% else %>
+                  <div class="bg-base-lightest position-relative radius-md" style="height: 300px; width: 350px;">
+                    <i class="fas fa-images fa-4x text-base-lighter no-impact-image"></i>
+                  </div>
+                <% end %>
+              </div>
+              <div class="grid-col-6">
+                <div class="margin-bottom-205 margin-left-3 margin-top-1">
+                  <p class="thumbnail-upload-text">Upload a clear photo that will be shown as the representative image for this practice. You can upload a .jpg, .jpeg, or .png file and the size limit is 1GB.</p>
+                </div>
+                <div class="grid-row margin-left-3 flex-align-start">
+                  <div class="grid-col-fill">
+                    <div class="">
+                      <%= f.file_field :main_display_image, class: "hidden-upload hidden-impact-photo-upload", accept: 'image/*' %>
+                      <%= f.label :main_display_image, 'Upload new photo', class: "upload-main-display-image-link" %>
+                    </div>
+                    <% if @practice.main_display_image.present? %>
+                      <div>
+                        <%= f.check_box :delete_main_display_image, { class: "usa-checkbox__input"}, 'true', 'false' %>
+                        <%= f.label :delete_main_display_image, 'Remove photo', class: "usa-checkbox__label display-inline-block text-secondary remove-main-display-image-link" %>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
             <p class="margin-top-3"><span class="text-bold">Practice origin:</span>&nbsp;<span>Select the state and facility where this practice originated</span>
             <div class="grid-row grid-gap-4">
               <div>

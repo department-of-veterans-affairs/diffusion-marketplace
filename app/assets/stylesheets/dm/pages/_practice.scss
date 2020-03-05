@@ -478,6 +478,26 @@
   }
 }
 
+.remove-main-display-image-link {
+  margin-top: 6px;
+  margin-bottom: 24px;
+  color: $dm-color-high-red;
+  text-decoration: underline;
+
+  &:hover {
+    color: #b51d09; /* TODO: check if this is needed */
+  }
+}
+
+.upload-main-display-image-link {
+  color: $dm-color-primary-blue;
+  text-decoration: underline;
+
+  &:hover {
+    color: #162E51; /* TODO: check if this is needed */
+  }
+}
+
 .add-required-staff-link {
   margin-top: 24px !important;
 }
@@ -715,4 +735,9 @@
   width: 65px;
   height: 65px;
   object-fit: cover;
+}
+
+.thumbnail-upload-text {
+  font-size: 16.96px;
+  line-height: 26px;
 }

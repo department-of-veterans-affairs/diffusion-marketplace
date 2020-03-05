@@ -27,7 +27,6 @@ describe 'Practice editor', type: :feature, js: true do
         
         def fill_in_impact_photo_fields
             attach_file('Upload photo', @image_path)
-            find('.usa-radio__label').click
             all('.practice-editor-image-caption').first.set(@photo_caption)
         end
 
@@ -48,7 +47,6 @@ describe 'Practice editor', type: :feature, js: true do
                 expect(page).to have_content('Practice was successfully updated')
                 expect(page).to have_field('practice[impact_photos_attributes][0][description]', with: @photo_caption)
                 expect(page).to have_selector('.practice-editor-impact-photo')
-                expect(find_field('practice[impact_photos_attributes][0][is_main_display_image]')).to be_checked
             end
 
             it 'should allow the user to add multiple impact photos' do
@@ -62,7 +60,6 @@ describe 'Practice editor', type: :feature, js: true do
                 expect(page).to have_selector('.practice-editor-impact-photo', count: 2)
                 expect(page).to have_field('practice[impact_photos_attributes][0][description]', with: @photo_caption)
                 expect(page).to have_field('practice[impact_photos_attributes][1][description]', with: 'This is the second cutest charmander image ever')
-                expect(find_field('practice[impact_photos_attributes][0][is_main_display_image]')).to be_checked
             end
 
             it 'should allow the user to delete impact photos' do
