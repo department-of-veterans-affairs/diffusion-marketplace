@@ -13,9 +13,9 @@
 
   $("#<%= id %>-link").fadeIn();
 <% else %>
-  $("#commontator-comment-<%= @comment.id %>-body").html("<%= escape_javascript(
+  $("#commontator-comment-<%= @comment.id %>-body").html("<div class='comment-body more'><%= escape_javascript(
     render partial: 'body', locals: { comment: @comment }
-  ) %>");
+  ) %></div>");
 <% end %>
 
 <%= javascript_proc %>
