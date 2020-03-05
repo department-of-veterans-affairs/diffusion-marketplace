@@ -190,6 +190,7 @@ def basic_answers
   question_fields.each do |key, value|
     @practice.send("#{value.to_sym}=", @answers[@questions.index(key.to_s)]) if value.present?
   end
+  @practice.initiating_facility = @practice.initiating_facility&.split('_')[1]
   @practice.date_initiated = DateTime.strptime(@answers[@questions.index('When was this practice initiated? If day is unknown, use the first of the month'.to_s)], "%m/%d/%Y") if @answers[@questions.index('When was this practice initiated? If day is unknown, use the first of the month'.to_s)].present?
   @practice.phase_gate = @practice.phase_gate.split('.')[1].split('-')[0].squish
   @practice.save
