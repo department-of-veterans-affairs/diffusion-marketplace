@@ -36,12 +36,6 @@
   }
 
   .avatar {
-    .fa-user-circle {
-      color: #162E51;
-      // width: 40px;
-      text-align: center;
-    }
-
     .fa-user-circle::before {
       font-size: 40px;
     }
@@ -360,5 +354,10 @@ body {
   p {
     padding-bottom: 4px;
   }
+}
+
+.fa-user-circle {
+  color: #162e51 !important;
+  text-align: center;
 }
 

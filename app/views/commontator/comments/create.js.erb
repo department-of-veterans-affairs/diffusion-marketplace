@@ -1,31 +1,26 @@
 var reloadWithTurbolinks = (function () {
-  var scrollPosition;
+//  var scrollPosition;
 
   function reload () {
-      document.addEventListener("DOMContentLoaded", function(event) {
-          var scrollpos = localStorage.getItem('scrollpos');
-          if (scrollpos) window.scrollTo(0, scrollpos);
-      });
-
-      window.onbeforeunload = function(e) {
-          localStorage.setItem('scrollpos', window.scrollY);
-      };
+      scrollPosition = [ window.pageXOffset, window.pageYOffset ];
+      Turbolinks.visit(window.location.toString(), { action: 'replace' });
   }
 
   document.addEventListener('turbolinks:load', function () {
-    if (scrollPosition) {
-      window.scrollTo.apply(window, scrollPosition);
-      scrollPosition = null;
-    }
+//    if (scrollPosition) {
+//        console.log('position', scrollPosition);
+//        $('html, body').animate({
+//            scrollTop: scrollPosition[1]
+//        }, 0);
+//      scrollPosition = null;
+//    }
 
     $('.timeago').timeago();
     $('#dm-practice-nav').sticky( {topSpacing: 20, zIndex: 10000, bottomSpacing: 200});
-    <% if !@comment.parent_id %>
-      console.log('in here');
-      $('html, body').animate({
-          scrollTop: $('#commontator-comment-<%= @comment.id %>').offset().top
-      }, 500);
-    <% end %>
+
+    $('html, body').animate({
+        scrollTop: scrollPosition[1]
+    }, 0);
   })
 
   return reload
