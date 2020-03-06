@@ -25,6 +25,10 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_field('practice_number_adopted', with: '1')
         end
 
+        it 'should not have a link to the collaborators page' do
+            expect(page).not_to have_link(href: "/practices/#{@practice.slug}/edit/collaborators")
+        end
+
         it 'should allow the user to update the data on the page' do
             fill_in('practice_name', with: 'A super practice')
             fill_in('practice_tagline', with: 'Super duper')

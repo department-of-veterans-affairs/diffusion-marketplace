@@ -317,6 +317,7 @@ class PracticesController < ApplicationController
 
   # /practices/slug/collaborators
   def collaborators
+    redirect_to practice_overview_path(@practice)
   end
 
   # /practices/slug/overview
