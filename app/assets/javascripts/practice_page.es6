@@ -7,24 +7,30 @@
     }
 
     function highlightSidebarSectionWhenInView() {
-        const SECTIONS = {
-            '#overview': '.sidebar-overview',
-            '#origin': '.sidebar-origin',
-            '#impact': '.sidebar-impact',
-            '#resources_required': '.sidebar-resources',
-            '#complexity': '.sidebar-complexity',
-            '#timeline_and_checklist': '.sidebar-timeline',
-            '#risk_and_mitigation': '.sidebar-risk-miti',
-            '#contact': '.sidebar-contact',
-            '#comments': '.sidebar-comments',
-        };
-        let hoverCss = {
+        // const sections = {
+        //     '#overview': '.sidebar-overview',
+        //     '#origin': '.sidebar-origin',
+        //     '#impact': '.sidebar-impact',
+        //     '#resources_required': '.sidebar-resources',
+        //     '#complexity': '.sidebar-complexity',
+        //     '#timeline_and_checklist': '.sidebar-timeline',
+        //     '#risk_and_mitigation': '.sidebar-risk-miti',
+        //     '#contact': '.sidebar-contact',
+        //     '#comments': '.sidebar-comments',
+        // };
+        let sections = {};
+        const sideNavHeaders = $('.nav-header');
+        sideNavHeaders.each(function() {
+            const headerSelector = `#${this.id}`;
+            sections[headerSelector] = `.sidebar-${this.id}`;
+        });
+        const hoverCss = {
             'font-weight': 'bold',
             'border-left': '4px solid #005EA2',
             'color': 'black',
             'background-color': 'transparent'
         };
-        let nonHoverCss = {
+        const nonHoverCss = {
             'font-weight': 'normal',
             'border-left': 'none',
             'color': 'none',
@@ -33,22 +39,22 @@
         $(window).on('scroll', function () {
             let viewportTop = $(window).scrollTop();
             let activeItem = false;
-            Object.keys(SECTIONS).forEach(function (s) {
+            Object.keys(sections).forEach(function (s) {
                 let sectionPosition = $(s).offset().top + (-50);
-                let nextSection = findNext(s, SECTIONS);
+                let nextSection = findNext(s, sections);
                 if (nextSection) {
                     let nextSectionPosition = $(nextSection).offset().top + (-50);
                     if (viewportTop >= sectionPosition && viewportTop < nextSectionPosition && !activeItem) {
-                        $(SECTIONS[s]).css(hoverCss);
+                        $(sections[s]).css(hoverCss);
                         activeItem = true;
                     } else {
-                        $(SECTIONS[s]).css(nonHoverCss);
+                        $(sections[s]).css(nonHoverCss);
                     }
                 } else if (viewportTop >= sectionPosition && !activeItem) {
-                    $(SECTIONS[s]).css(hoverCss);
+                    $(sections[s]).css(hoverCss);
                     activeItem = true;
                 } else {
-                    $(SECTIONS[s]).css(nonHoverCss);
+                    $(sections[s]).css(nonHoverCss);
                 }
             });
         })
