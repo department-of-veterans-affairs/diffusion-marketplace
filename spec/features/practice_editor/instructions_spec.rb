@@ -19,9 +19,15 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_link(href: "mailto:marketplace@va.gov")
         end
 
-        it 'should take the user to the collaborators page after clicking the continue button' do
+        it 'should take the user to the overview page after clicking the continue button' do
             find(".editor-continue-link").click
-            expect(page).to have_current_path(practice_collaborators_path(@practice))
+            wait_for_page_load('Overview')
+            expect(page).to have_content('Overview')
+            expect(page).to have_current_path(practice_overview_path(@practice))
         end
+    end
+
+    def wait_for_page_load(title)
+        find('div#overview', text: title)
     end
 end
