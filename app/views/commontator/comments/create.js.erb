@@ -1,5 +1,5 @@
 var reloadWithTurbolinks = (function () {
-//  var scrollPosition;
+  var scrollPosition;
 
   function reload () {
       scrollPosition = [ window.pageXOffset, window.pageYOffset ];
@@ -7,14 +7,6 @@ var reloadWithTurbolinks = (function () {
   }
 
   document.addEventListener('turbolinks:load', function () {
-//    if (scrollPosition) {
-//        console.log('position', scrollPosition);
-//        $('html, body').animate({
-//            scrollTop: scrollPosition[1]
-//        }, 0);
-//      scrollPosition = null;
-//    }
-
     $('.timeago').timeago();
     $('#dm-practice-nav').sticky( {topSpacing: 20, zIndex: 10000, bottomSpacing: 200});
 
