@@ -8,7 +8,6 @@ var reloadWithTurbolinks = (function () {
 
   document.addEventListener('turbolinks:load', function () {
       if (scrollPosition) {
-          console.log('position', scrollPosition);
           $('html, body').animate({
               scrollTop: scrollPosition[1]
           }, 0);
