@@ -135,19 +135,11 @@ h2 {
   margin-bottom: 0;
 }
 
-// h4 {
-//   margin: 10px 0 16px 0;
-// }
-
 .comment-author-job-title {
   font-size: 16.96px;
   line-height: 26px;
   color: gray;
 }
-
-// .fa-edit, .delete, .undelete {
-//   margin-right: 11px;
-// }
 
 .edit-comment-icon, .fa-trash-alt, .fa-trash-restore-alt {
   color: #71767A;
@@ -179,17 +171,6 @@ body {
     padding: 0 10px;
   }
 }
-
-// h5 {
-//   margin-top: 0;
-//   font-size: 16.96px;
-//   cursor: pointer;
-
-//   &:hover {
-//     color: #005EA2;
-//     text-decoration: underline;
-//   }
-// }
 
 .vote-disabled:hover {
   color: #C9C9C9;
@@ -277,11 +258,6 @@ body {
 .fa-flag:hover {
   color: #E41D3D;
 }
-
-//#team-member:checked + .team-member-label::before, #verified-implementer:checked + .implementer-label::before {
-//  box-shadow: 0 0 0 2px #FFBE2E, inset 0 0 0 2px white !important;
-//  background-color: #FFBE2E !important;
-//}
 
 .usa-radio__input:focus + .team-member-label::before, .usa-radio__input:focus + .implementer-label::before {
   outline: 0.25rem solid #FFBE2E !important;
