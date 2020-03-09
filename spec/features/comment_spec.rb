@@ -97,6 +97,13 @@ describe 'Comments', type: :feature, js: true do
             find(".like").click
             expect(page).to have_css('.comment-1-1-vote')
         end
+
+        it 'Allow the user to view the profile of a commentator if they click on their name next to the comment' do
+            fill_in('comment[body]', with: 'Hello world')
+            click_button('commit')
+            find('.author').click
+            expect(page).to have_content('Profile')
+        end
     end
 
     describe 'Reporting a comment' do
