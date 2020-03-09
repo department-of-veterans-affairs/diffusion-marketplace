@@ -67,15 +67,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <div class='usa-radio margin-top-3'>
-                                                <%= ip.radio_button('is_main_display_image', true, class: "usa-radio__input impact-radio", checked: "#{ip.object.is_main_display_image == true ? 'checked' : false }") %>
-                                                <%= ip.label 'is_main_display_image_true', 'Selected as thumbnail image', class: 'usa-radio__label display-inline-block' %>
-
-                                                <%= ip.radio_button('is_main_display_image', false, class: "usa-radio__input false hidden-radio", checked: false) %>
-                                                <%= ip.label 'is_main_display_image_true', 'Selected as thumbnail image', class: 'usa-radio__label hidden-radio' %>
-                                            </div>
-                                
                                             <div class="grid-row width-full">
                                                 <div class="grid-col-11">
                                                     <%= ip.label :description, 'Caption:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Share how your practice is making a real-life impact.</span>&nbsp;<span class="text-base-light impact-photo-caption-character-count" <% if photo_id.present? %>id="impact_photo_<%= photo_id %>_caption_character_count"<% end %>>(0/300 characters)</span>

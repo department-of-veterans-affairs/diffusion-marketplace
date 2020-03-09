@@ -163,38 +163,14 @@ class PracticesController < ApplicationController
           end
         end
       end
-
-
-      # Change impact photo to main display image
-      @practice.impact_photos.each do |ip|
-        if ip.is_main_display_image
-          
-          selected_impact_photo = @practice.impact_photos.find(ip[:id]).attachment
-          @practice.update_attributes(main_display_image: selected_impact_photo)
-          
+      
+      # Remove main display image
+      if params[:practice][:delete_main_display_image].present?
+        if params[:practice][:delete_main_display_image] == 'true'
+          @practice.update_attributes(main_display_image: nil)
         end
       end
-      
-      if @practice.impact_photos.where(is_main_display_image: true).empty? || @practice.impact_photos.empty?
-        @practice.update_attributes(main_display_image: nil)
-      end
 
-      if @practice.main_display_image.blank? && @practice.impact_photos.any?
-        impact_photo = @practice.impact_photos.find_by(position: 1)
-        @practice.update_attributes(main_display_image: impact_photo.attachment)
-        impact_photo.update_attributes(is_main_display_image: true)
-      end
-
-
-      # Aurora's code
-      # if params[:practice][:impact_photos_attributes].present?
-      #   save_as_main_display_image = strong_params[:impact_photos_attributes].to_hash.find{|key, hash| hash["save_as_main_display_image"] == 'on'}
-      #   if save_as_main_display_image.present?
-      #     selected_impact_photo = @practice.impact_photos.find(strong_params[:save_as_main_display_image][:id])
-      #     @practice.update_attributes(main_display_image: selected_impact_photo.attachment) if selected_impact_photo.present?
-      #   end
-      # end
-      
       partner_keys.each do |key|
         next if @practice.practice_partners.ids.include? key.to_i
 
