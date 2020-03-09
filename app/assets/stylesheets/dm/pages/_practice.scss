@@ -485,7 +485,7 @@
   text-decoration: underline;
 
   &:hover {
-    color: #b51d09; /* TODO: check if this is needed */
+    color: #B50909;
   }
 }
 
@@ -494,7 +494,7 @@
   text-decoration: underline;
 
   &:hover {
-    color: #162E51; /* TODO: check if this is needed */
+    color: $dm-color-primary-dark-blue;
   }
 }
 

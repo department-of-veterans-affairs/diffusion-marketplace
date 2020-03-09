@@ -41,9 +41,9 @@
             </div>
             <p class="margin-top-3"><span class="text-bold">Practice thumbnail:</span>&nbsp;</p>
             <div class="grid-row margin-top-1">
-              <div class="grid-col-6">
+              <div id="practice-thumbnail-placeholder" class="grid-col-6">
                 <% if @practice.main_display_image.present? %>
-                  <%= image_tag @practice.main_display_image.url, alt: "practice thumbnail for #{@practice.name}", class: 'height-mobile practice-editor-impact-photo radius-md' %>
+                  <%= image_tag @practice.main_display_image_s3_presigned_url, alt: "practice thumbnail for #{@practice.name}", class: 'height-mobile practice-editor-impact-photo radius-md' %>
                 <% else %>
                   <div class="bg-base-lightest position-relative radius-md" style="height: 300px; width: 350px;">
                     <i class="fas fa-images fa-4x text-base-lighter no-impact-image"></i>
@@ -62,8 +62,8 @@
                     </div>
                     <% if @practice.main_display_image.present? %>
                       <div>
-                        <%= f.check_box :delete_main_display_image, { class: "usa-checkbox__input"}, 'true', 'false' %>
-                        <%= f.label :delete_main_display_image, 'Remove photo', class: "usa-checkbox__label display-inline-block text-secondary remove-main-display-image-link" %>
+                        <%= f.check_box :delete_main_display_image, { class: "usa-checkbox__input"}, 'true', 'true' %>
+                        <%= f.label :delete_main_display_image, 'Remove photo', class: "display-inline-block text-secondary remove-main-display-image-link"%>
                       </div>
                     <% end %>
                   </div>
