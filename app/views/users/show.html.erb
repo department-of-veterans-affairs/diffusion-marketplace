@@ -72,14 +72,15 @@
     </section>
   <% end %>
 
-  <% if current_user && current_user.practices.any? %>
+  <% created_practices = Practice.where(user: current_user) %>
+  <% if current_user && created_practices.any? %>
     <section class="dm-background-white margin-bottom-105">
       <div class="grid-container">
         <div class="grid-row">
           <h2 class="profile-h2 font-sans-xl margin-top-0">Created Practices</h2>
         </div>
         <div class="grid-row grid-gap-2 created-practices margin-bottom-5">
-          <% current_user.practices.each do |cup| %>
+          <% created_practices.each do |cup| %>
             <% if cup.present? %>
               <div class="tablet:grid-col-4 margin-y-105 padding-x-105 practice-card-list">
                 <%= render partial: 'practices/favorite_button', locals: { practice: cup, featured: true } %>
