@@ -475,6 +475,28 @@
   }
 }
 
+.remove-main-display-image-link {
+  margin-top: 6px;
+  margin-bottom: 24px;
+  color: $dm-color-high-red;
+  text-decoration: underline;
+
+  &:hover {
+    color: #B50909;
+    cursor: pointer;
+  }
+}
+
+.upload-main-display-image-link {
+  color: $dm-color-primary-blue;
+  text-decoration: underline;
+
+  &:hover {
+    color: $dm-color-primary-dark-blue;
+    cursor: pointer;
+  }
+}
+
 .add-required-staff-link {
   margin-top: 24px !important;
 }
@@ -738,4 +760,9 @@
   .fa-circle {
     margin-bottom: -2px;
   }
+}
+
+.thumbnail-upload-text {
+  font-size: 16.96px;
+  line-height: 26px;
 }

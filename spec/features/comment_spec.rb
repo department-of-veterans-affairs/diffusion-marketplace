@@ -101,8 +101,9 @@ describe 'Comments', type: :feature, js: true do
         it 'Allow the user to view the profile of a commentator if they click on their name next to the comment' do
             fill_in('comment[body]', with: 'Hello world')
             click_button('commit')
-            find('.author').click
+            click_link('User')
             expect(page).to have_content('Profile')
+            expect(page).to have_content('momo.hinamori@soulsociety.com')
         end
     end
 

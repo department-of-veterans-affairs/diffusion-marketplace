@@ -1,6 +1,8 @@
+<% created_practices = Practice.where(user: current_user) %>
+
 <div class="x0-top">
   <section class="usa-section p2-top padding-bottom-0">
-    <div class="grid-container profile-min-height">
+    <div class="grid-container <%= created_practices.empty? && @favorite_practices.empty?  ? 'profile-min-height' : '' %>">
       <div class="grid-row">
         <div class="usa-layout-docs__sidenav desktop:grid-col-3 margin-right-105">
           <% if @user.avatar.present? && @user.avatar.exists? %>
@@ -72,14 +74,14 @@
     </section>
   <% end %>
 
-  <% if current_user && current_user.practices.any? %>
+  <% if current_user && created_practices.any? %>
     <section class="dm-background-white margin-bottom-105">
       <div class="grid-container">
         <div class="grid-row">
           <h2 class="profile-h2 font-sans-xl margin-top-0">Created Practices</h2>
         </div>
         <div class="grid-row grid-gap-2 created-practices margin-bottom-5">
-          <% current_user.practices.each do |cup| %>
+          <% created_practices.each do |cup| %>
             <% if cup.present? %>
               <div class="tablet:grid-col-4 margin-y-105 padding-x-105 practice-card-list">
                 <%= render partial: 'practices/favorite_button', locals: { practice: cup, featured: true } %>
@@ -91,9 +93,11 @@
       </div>
     </section>
   <% end %>
-  <div class="grid-container">
-    <div class="margin-bottom-105">
-        <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
+  <% if created_practices.any? || @favorite_practices.any? %>
+    <div class="grid-container">
+      <div class="margin-bottom-105">
+          <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
+      </div>
     </div>
-  </div>
+  <% end %>
 </div>

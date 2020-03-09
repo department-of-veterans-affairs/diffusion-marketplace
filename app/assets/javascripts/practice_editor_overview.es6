@@ -121,12 +121,37 @@
         });
     }
 
+    function removePracticeThumbnail() {
+        let placeholder = $('#practice-thumbnail-placeholder')
+        let thumbnailExists = placeholder.find('img').length
+        let defaultThumbnail = "<div class='bg-base-lightest position-relative radius-md' style='height: 300px; width: 350px;'><i class='fas fa-images fa-4x text-base-lighter no-impact-image'></i></div>"
+
+        $('#practice_delete_main_display_image').click((event) => {
+            if (thumbnailExists) {
+                placeholder.empty()
+                placeholder.append(defaultThumbnail)
+            }
+        })
+    }
+
+    function clearPracticeThumbnailRemoval() {
+        let thumbnailFileUpload = $('#practice_main_display_image')
+        let thumbnailRemoveInput = $('#practice_delete_main_display_image')
+
+        // triggers only on successful image upload
+        thumbnailFileUpload.on('change', (event) => {
+            thumbnailRemoveInput.val('false')
+        })
+    }
+
     function loadPracticeEditorFunctions() {
         getFacilitiesByState();
         countCharsOnPageLoad();
         maxCharacters();
         uncheckAllPartnerBoxes();
         uncheckNoneOptionIfAnotherOptionIsChecked();
+        removePracticeThumbnail();
+        clearPracticeThumbnailRemoval()
 
         if(selectedFacility) {
             selectFacility();
