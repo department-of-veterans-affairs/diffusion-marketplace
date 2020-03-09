@@ -3,6 +3,7 @@ addEventListener('turbolinks:before-visit', function () {
 });
 
 addEventListener('turbolinks:load', function () {
-    console.log(document.referrer);
-    scrollTo(0, 0)
+    if (window['referrer'] !== window.location.href) {
+        scrollTo(0, 0);
+    }
 });
