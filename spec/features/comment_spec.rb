@@ -56,7 +56,7 @@ describe 'Comments', type: :feature, js: true do
             visit practice_path(@practice)
             find("#commontator-comment-1-edit").click
             fill_in('commontator-comment-1-edit-body', with: 'This is a test.')
-            click_button('Edit')
+            click_button('Save')
             expect(page).to have_content('edited')
         end
 
@@ -111,6 +111,7 @@ describe 'Comments', type: :feature, js: true do
         end
 
         it 'should display the report abuse modal if the user clicks on the flag icon' do
+            login_as(@user1, :scope => :user, :run_callbacks => false)
             visit practice_path(@practice)
             find(".report-abuse-container").click
             expect(page).to have_content('Report a comment')
@@ -118,6 +119,7 @@ describe 'Comments', type: :feature, js: true do
         end
 
         it 'should hide the report abuse modal if the user clicks the cancel button' do
+            login_as(@user1, :scope => :user, :run_callbacks => false)
             visit practice_path(@practice)
             find(".report-abuse-container").click
             expect(page).to have_content('Report a comment')
@@ -129,6 +131,7 @@ describe 'Comments', type: :feature, js: true do
         end
 
         it 'should show a success banner after the user successfully reports a comment' do
+            login_as(@user1, :scope => :user, :run_callbacks => false)
             visit practice_path(@practice)
             find(".report-abuse-container").click
             expect(page).to have_content('Report a comment')

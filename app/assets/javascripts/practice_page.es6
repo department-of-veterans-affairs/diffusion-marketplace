@@ -7,17 +7,6 @@
     }
 
     function highlightSidebarSectionWhenInView() {
-        // const sections = {
-        //     '#overview': '.sidebar-overview',
-        //     '#origin': '.sidebar-origin',
-        //     '#impact': '.sidebar-impact',
-        //     '#resources_required': '.sidebar-resources',
-        //     '#complexity': '.sidebar-complexity',
-        //     '#timeline_and_checklist': '.sidebar-timeline',
-        //     '#risk_and_mitigation': '.sidebar-risk-miti',
-        //     '#contact': '.sidebar-contact',
-        //     '#comments': '.sidebar-comments',
-        // };
         let sections = {};
         const sideNavHeaders = $('.nav-header');
         sideNavHeaders.each(function() {
