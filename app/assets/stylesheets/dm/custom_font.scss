@@ -25,6 +25,17 @@ i.dm {
   &.dm-saluting-veteran:before { content: "\e900";}
 }
 
+.line-height-sans-205 {
+  line-height: 1.13;
+}
+
+.line-height-sans-505 {
+  line-height: 1.53;
+}
+
+.font-sans-xs-2 {
+  font-size: 16.96px;
+}
 .font-sans-4xs {
   font-size: 0.75rem !important;
 }

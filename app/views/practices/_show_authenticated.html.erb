@@ -1,42 +1,54 @@
+<% provide :head_tags do %>
+  <%= javascript_include_tag 'practice_page', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
 <!-- "Practice nav" section -->
 <!-- Impact Origin Resources Required Complexity Timeline Risks & Mitigation Support Team -->
 <div class="grid-container position-relative z-top">
   <div id="dm-practice-nav" class="z-top mobile-hide">
-    <ul id="dm-tabnav" class="usa-sidenav dm-tabnav margin-bottom-1">
+    <ul id="dm-tabnav" class="usa-sidenav dm-tabnav margin-bottom-1 show-page-sidenav">
       <li class="usa-sidenav__item">
-        <a href="#overview" class="dm-tab top-tab scroll-to" data-target="#overview" data-turbolinks="false">Overview</a>
+        <a href="#overview" class="dm-tab top-tab scroll-to sidebar-overview" data-target="#overview" data-turbolinks="false">Overview</a>
       </li>
       <% unless !@practice.origin_story || !@practice.origin_title %>
         <li class="usa-sidenav__item">
-          <a href="#origin" class="dm-tab scroll-to" data-target="#origin" data-turbolinks="false">Origin</a>
+          <a href="#origin" class="dm-tab scroll-to sidebar-origin" data-target="#origin" data-turbolinks="false">Origin</a>
         </li>
       <% end %>
-      <% if @practice.impact_photos.any? || @practice.video_files.any? || @practice.additional_documents.any? || @practice.publications.any? %>
+      <% if @practice.impact_photos.any? || @practice.video_files.any? || @practice.publication_files.any? || @practice.publications.any? %>
         <li class="usa-sidenav__item">
-          <a href="#impact" class="dm-tab scroll-to" data-target="#impact" data-turbolinks="false">Impact</a>
+          <a href="#impact" class="dm-tab scroll-to sidebar-impact" data-target="#impact" data-turbolinks="false">Impact</a>
         </li>
       <% end %>
-      <li class="usa-sidenav__item">
-        <a href="#resources_required" class="dm-tab scroll-to" data-target="#resources_required" data-turbolinks="false">Resources</a>
-      </li>
-      <li class="usa-sidenav__item">
-        <a href="#complexity" class="dm-tab scroll-to" data-target="#complexity" data-turbolinks="false">Complexity</a>
-      </li>
+      <% if @practice.cost_to_implement_aggregate.present? %>
+        <li class="usa-sidenav__item">
+          <a href="#resources_required" class="dm-tab scroll-to sidebar-resources_required" data-target="#resources_required" data-turbolinks="false">Resources</a>
+        </li>
+      <% end %>
+      <% if @practice.departments.any? || @practice.sustainability_aggregate.present? %>
+        <li class="usa-sidenav__item">
+          <a href="#complexity" class="dm-tab scroll-to sidebar-complexity" data-target="#complexity" data-turbolinks="false">Complexity</a>
+        </li>
+      <% end %>
       <% unless @practice.timelines.blank? %>
         <li class="usa-sidenav__item">
-          <a href="#timeline_and_checklist" class="dm-tab scroll-to" data-target="#timeline_and_checklist" data-turbolinks="false">Timeline</a>
+          <a href="#timeline_and_checklist" class="dm-tab scroll-to sidebar-timeline_and_checklist" data-target="#timeline_and_checklist" data-turbolinks="false">Timeline</a>
+        </li>
+      <% end %>
+      <% if @practice.risk_mitigations.any? %>
+        <li class="usa-sidenav__item">
+          <a href="#risk_and_mitigation" class="dm-tab scroll-to sidebar-risk_and_mitigation " data-target="#risk_and_mitigation" data-turbolinks="false">Risk
+            and
+            mitigation</a>
+        </li>
+      <% end %>
+      <% if @practice.va_employees.any? || @practice.support_network_email.present? %>
+        <li class="usa-sidenav__item">
+          <a href="#contact" class="dm-tab bottom-tab scroll-to sidebar-contact" data-target="#contact" data-turbolinks="false">Contact</a>
         </li>
       <% end %>
       <li class="usa-sidenav__item">
-        <a href="#risk_and_mitigation" class="dm-tab scroll-to" data-target="#risk_and_mitigation" data-turbolinks="false">Risk
-          and
-          mitigation</a>
-      </li>
-      <li class="usa-sidenav__item">
-        <a href="#contact" class="dm-tab bottom-tab scroll-to" data-target="#contact" data-turbolinks="false">Contact</a>
-      </li>
-      <li class="usa-sidenav__item">
-        <a href="#comments" class="dm-tab bottom-tab scroll-to" data-target="#comments" data-turbolinks="false">Comments</a>
+        <a href="#comments" class="dm-tab bottom-tab scroll-to sidebar-comments" data-target="#comments" data-turbolinks="false">Comments</a>
       </li>
     </ul>
     <div class="text-center">
@@ -51,14 +63,14 @@
 <section class="usa-section p2-top p2-bottom">
   <div class="grid-container position-relative">
     <% if @practice.user_id == current_user.id || current_user.roles.any? %>
-      <div class="text-right">
+      <div class="text-right position-absolute edit-practice-link">
         <%= link_to 'Edit', practice_instructions_path(@practice), class: 'usa-button usa-button--outline margin-right-0' %>
       </div>
     <% end %>
     <div class="grid-row grid-gap">
       <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
-      <div id="practice_show" class="desktop:grid-col-6 grid-col-12 p0">
+      <div id="practice_show" class="desktop:grid-col-6 grid-col-12 p0 overview-section practice-section">
         <%= render "shared/messages" %>
         <% unless @practice.published && @practice.approved %>
           <div class="usa-alert usa-alert--warning">
@@ -79,14 +91,12 @@
         <% end %>
 
         <div class="bg-white<%#padding-5%>">
-          <% if @practice.tagline.present? %>
-            <h1 class="font-sans-3xl x0-top margin-bottom-2 font-family-sans text-heavy word-break-break-word hyphens-auto">
-              <%= @practice.name %>
-            </h1>
-          <% end %>
+          <h1 id="overview" class="font-sans-2xl x0-top margin-bottom-2 font-family-sans text-heavy word-break-break-word hyphens-auto line-height-sans-205 nav-header">
+            <%= @practice.name %>
+          </h1>
           <% if current_user %>
             <div class="margin-bottom-2">
-              <a href="<%= practice_favorite_path(@practice, format: :js) %>" data-method="post" data-remote="true" rel="nofollow" aria-label="Favorite <%= @practice.name %>" tabindex="-1" aria-hidden="true" class="favorite-practice-link text-no-underline margin-right-3 font-sans-xs">
+              <a href="<%= practice_favorite_path(@practice, format: :js) %>" data-method="post" data-remote="true" rel="nofollow" aria-label="Favorite <%= @practice.name %>" tabindex="-1" aria-hidden="true" class="favorite-practice-link text-no-underline margin-right-3 font-sans-xs-2 line-height-sans-505">
                 <i class="
                   <% if current_user.favorite_practice_ids.include?(@practice.id) %>fas text-secondary
                   <% else %>far text-primary
@@ -95,7 +105,7 @@
                 </i>
                 <span class="text-primary text-no-underline favorite-practice-link-text"><% if current_user.favorite_practice_ids.include?(@practice.id) %>Remove from your favorites<% else %>Add to your favorites<% end %></span>
               </a>
-              <a target="_blank" aria-label="Share <%= @practice.name %>" tabindex="-1" aria-hidden="true" href="mailto:?subject=<%= email_practice_subject(@practice) %>&body=<%= email_practice_body(@practice) %>" class="text-no-underline">
+              <a target="_blank" aria-label="Share <%= @practice.name %>" tabindex="-1" aria-hidden="true" href="mailto:?subject=<%= email_practice_subject(@practice) %>&body=<%= email_practice_body(@practice) %>" class="text-no-underline font-sans-xs-2 line-height-sans-505">
                 <span class="text-no-underline text-primary"><i class="fas fa-external-link-alt padding-right-105"></i>Share link</span>
               </a>
             </div>
@@ -103,25 +113,25 @@
           <p class="font-sans-lg line-height-sans-5 margin-bottom-4"><%= @practice.tagline %></p>
         </div>
         <div <%#class="tablet:grid-col-7 padding-x-1"%>>
-          <p class="practice-summary margin-0"><%= @practice.summary %></p>
+          <p class="practice-summary margin-0 font-sans-xs-2 line-height-sans-505 word-break-break-word hyphens-auto">
+            <%= @practice.summary %>
+          </p>
         </div>
       </div>
       <div class="desktop:grid-col-3 grid-col-auto z-bottom margin-top-8">
         <div class="height-auto padding-2 bg-base-lightest radius-md">
           <h4 class="margin-top-0 margin-bottom-1">Origin</h4>
-          <p class="line-height-sans-5 margin-bottom-3">
+          <p class="font-sans-xs-2 line-height-sans-505 margin-bottom-3">
             Created by
-            the <%= @facility_data.present? ? @facility_data['OfficialStationName'] : @practice.initiating_facility %> in
+            the <%= @facility_data.present? ? @facility_data['OfficialStationName'] : @practice.initiating_facility %>
+            in
             <span><%= @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)' %></span>
           </p>
-          <%# <div class="margin-right-2 display-flex-align-items-center">
-        <%= render partial: 'shared/badge', locals: {badges: @practice.practice_partners} %>
-          <%# </div> %>
           <% if @practice.practice_partners.any? && @practice.practice_partners.find_by(name: 'None of the above, or Unsure').nil? %>
             <h4 class="margin-top-0 margin-bottom-1">Sponsors</h4>
             <div class="<%= @practice.number_adopted.present? ? 'margin-bottom-3' : '' %>">
               <% @practice.practice_partners.each_with_index do |partner, index| %>
-                <p class="line-height-sans-5">
+                <p class="font-sans-xs-2 line-height-sans-505">
                   <%= partner.name %><%= "," if @practice.practice_partners.size != index + 1 && @practice.practice_partners.size > 2 %>
                   <% concat ('and') if index == @practice.practice_partners.size - 2 && @practice.practice_partners.size >= 2 %>
                 </p>
@@ -135,7 +145,7 @@
             <div>
               <h4 class="margin-top-0 margin-bottom-1">Adoptions</h4>
               <%# <p><%= @practice.number_failed %> <%#unsuccessful</p> %>
-              <p class="margin-0 line-height-sans-5">
+              <p class="margin-0 font-sans-xs-2 line-height-sans-505">
                 <span><%= @practice.number_adopted.present? ? @practice.number_adopted : '0' %></span>
                 facilit<%= @practice.number_adopted == 1 ? 'y' : 'ies' %> have adopted this practice</p>
             </div>
@@ -156,7 +166,7 @@
       <div class="grid-row grid-gap">
         <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
         <div class="desktop:grid-col-9 grid-col-12 p0">
-          <div>
+          <div class="origin-section practice-section">
             <%= render partial: 'origin' %>
           </div>
         </div>
@@ -174,44 +184,19 @@
         <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
         <div class="desktop:grid-col-9 grid-col-12 p0">
-          <div class="margin-bottom-7">
-            <% if @practice.diffusion_histories.any? || @practice.impact_photos.any? %>
-              <div class="grid-row flex-align-center">
-                <h2 id="impact" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205 margin-bottom-3">Impact</h2>
-                <div class="height-2px border border-base-lightest flex-fill"></div>
-              </div>
-              <% if @practice.diffusion_histories.any? %>
-                <%= render partial: 'diffusion_map' %>
-              <% end %>
-              <% if @practice.impact_photos.any? %>
-                <%= render partial: 'impact' %>
-              <% end %>
+          <div class="margin-bottom-3 impact-section practice-section">
+            <div class="grid-row flex-align-center">
+              <h2 id="impact" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205 nav-header">Impact</h2>
+              <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest section-line">
+            </div>
+            <% if @practice.diffusion_histories.any? %>
+              <%= render partial: 'diffusion_map' %>
+            <% end %>
+            <% if @practice.impact_photos.any? %>
+              <%= render partial: 'impact' %>
             <% end %>
             <% if @practice.video_files.any? %>
               <%= render partial: 'videos' %>
-            <% end %>
-            <% if @practice.additional_documents.any? || @practice.publications.any? %>
-              <div class="grid-row flex-align-center margin-bottom-4">
-                <h2 class="font-sans-xl text-bold margin-bottom-3 flex-auto margin-right-205">Documentation</h2>
-                <div class="height-2px border border-base-lightest flex-fill"></div>
-              </div>
-              <% if @practice.additional_documents.any? %>
-                <h3 class="font-sans-lg margin-top-0 margin-bottom-1">Downloads</h3>
-                <div class="padding-bottom-1">
-                  <%= render partial: 'additional_documents' %>
-                </div>
-              <% else %>
-                <div class="hidden"></div>
-              <% end %>
-
-              <% if @practice.publications.any? %>
-                <h3 class="font-sans-lg margin-top-0 margin-bottom-1">Links</h3>
-                <div>
-                  <%= render partial: 'publications' %>
-                </div>
-              <% else %>
-                <div class="hidden"></div>
-              <% end %>
             <% end %>
           </div>
         </div>
@@ -220,6 +205,39 @@
   </section>
 <% end %>
 
+<!-- "Documentation" section -->
+<% if @practice.additional_documents.any? || @practice.publications.any? %>
+  <section class="margin-bottom-7">
+    <div class="grid-container">
+      <div class="grid-row grid-gap">
+        <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+        <div class="desktop:grid-col-9 grid-col-12 p0">
+          <div class="grid-row flex-align-center margin-bottom-5">
+            <h2 class="font-sans-xl text-bold margin-y-0 flex-auto margin-right-205">Documentation</h2>
+            <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest section-line">
+          </div>
+          <% if @practice.additional_documents.any? %>
+            <h3 class="font-sans-lg margin-top-0 margin-bottom-1">Downloads</h3>
+            <div class="padding-bottom-1">
+              <%= render partial: 'additional_documents' %>
+            </div>
+          <% else %>
+            <div class="hidden"></div>
+          <% end %>
+
+          <% if @practice.publications.any? %>
+            <h3 class="font-sans-lg margin-top-0 margin-bottom-1">Links</h3>
+            <div>
+              <%= render partial: 'publications' %>
+            </div>
+          <% else %>
+            <div class="hidden"></div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </section>
+<% end %>
 <!-- "Resources Required" section -->
 <section>
   <div class="grid-container">
@@ -241,7 +259,7 @@
       <div class="grid-row grid-gap">
         <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
         <div class="desktop:grid-col-9 grid-col-12 p0">
-          <div>
+          <div class="complexity-section practice-section">
             <%= render partial: 'complexity' %>
           </div>
         </div>
@@ -257,7 +275,7 @@
       <div class="grid-row grid-gap">
         <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
         <div class="desktop:grid-col-9 grid-col-12 p0">
-          <div>
+          <div class="timeline-section practice-section">
             <%= render partial: 'timeline_and_checklist' %>
           </div>
         </div>
@@ -273,7 +291,7 @@
       <div class="grid-row grid-gap">
         <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
         <div class="desktop:grid-col-9 grid-col-12 p0">
-          <div>
+          <div class="risk-miti-section practice-section">
             <%= render partial: 'risks_and_mitigations' %>
           </div>
         </div>
@@ -284,12 +302,12 @@
 
 <!-- "Support Team" || "Contact" section -->
 <% if @practice.va_employees.any? %>
-  <section class="margin-bottom-7" id="contact">
+  <section class="margin-bottom-7">
     <div class="grid-container">
       <div class="grid-row grid-gap">
         <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
         <div class="desktop:grid-col-9 grid-col-12 p0">
-          <div>
+          <div class="contact-section practice-section">
             <%= render partial: 'support_team' %>
           </div>
         </div>

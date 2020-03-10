@@ -29,28 +29,32 @@ class Commontator::Thread < ActiveRecord::Base
     comments.where(cf)
   end
 
-  def ordered_comments(show_all)
+  def ordered_comments(show_all, is_children_list = false)
     fc = filtered_comments(show_all)
     cc = Commontator::Comment.arel_table
 
     # ID is used as a tie-breaker because MySQL lacks sub-second timestamp resolution
-    case config.comment_order.to_sym
-    when :l
-      fc.order(cc[:created_at].desc, cc[:id].desc)
-    when :ve
-      fc.order(
-        Arel::Nodes::Descending.new(cc[:cached_votes_up] - cc[:cached_votes_down]),
-        cc[:created_at].asc,
-        cc[:id].asc
-      )
-    when :vl
-      fc.order(
-        Arel::Nodes::Descending.new(cc[:cached_votes_up] - cc[:cached_votes_down]),
-        cc[:created_at].desc,
-        cc[:id].desc
-      )
-    else
+    if is_children_list
       fc.order(cc[:created_at].asc, cc[:id].asc)
+    else
+      case config.comment_order.to_sym
+      when :l
+        fc.order(cc[:created_at].desc, cc[:id].desc)
+      when :ve
+        fc.order(
+          Arel::Nodes::Descending.new(cc[:cached_votes_up] - cc[:cached_votes_down]),
+          cc[:created_at].asc,
+          cc[:id].asc
+        )
+      when :vl
+        fc.order(
+          Arel::Nodes::Descending.new(cc[:cached_votes_up] - cc[:cached_votes_down]),
+          cc[:created_at].desc,
+          cc[:id].desc
+        )
+      else
+        fc.order(cc[:created_at].asc, cc[:id].asc)
+      end
     end
   end
 
@@ -59,8 +63,19 @@ class Commontator::Thread < ActiveRecord::Base
   end
 
   def comments_with_parent_id(parent_id, show_all)
-    oc = ordered_comments(show_all)
-    [ :i, :b ].include?(config.comment_reply_style) ? oc.where(parent_id: parent_id) : oc
+    oc = ordered_comments(show_all, true) if parent_id.present?
+    oc = ordered_comments(show_all) if parent_id.nil?
+
+    if [ :i, :b ].include?(config.comment_reply_style)
+      # Filter comments by parent_id so we display nested comments
+      oc.where(parent_id: parent_id)
+    elsif parent_id.nil?
+      # Parent is the thread itself and nesting is disabled, so include all comments
+      oc
+    else
+      # Parent is some comment and nesting is disabled, so return nothing
+      oc.none
+    end
   end
 
   def paginated_comments(page, parent_id, show_all)
@@ -114,7 +129,7 @@ class Commontator::Thread < ActiveRecord::Base
               Arel::Nodes::TableAlias.new(
                 Arel::Nodes::Grouping.new(
                   Arel::Nodes::SqlLiteral.new(
-                    ordered_comments(show_all).where(parent_id: parent_id).limit(per_page).to_sql
+                    ordered_comments(show_all, true).where(parent_id: parent_id).limit(per_page).to_sql
                   )
                 ), :commontator_comments
               )

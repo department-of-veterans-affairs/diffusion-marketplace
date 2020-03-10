@@ -1,6 +1,8 @@
+<% created_practices = Practice.where(user: current_user) %>
+
 <div class="x0-top">
   <section class="usa-section p2-top padding-bottom-0">
-    <div class="grid-container">
+    <div class="grid-container <%= created_practices.empty? && @favorite_practices.empty?  ? 'profile-min-height' : '' %>">
       <div class="grid-row">
         <div class="usa-layout-docs__sidenav desktop:grid-col-3 margin-right-105">
           <% if @user.avatar.present? && @user.avatar.exists? %>
@@ -72,7 +74,6 @@
     </section>
   <% end %>
 
-  <% created_practices = Practice.where(user: current_user) %>
   <% if current_user && created_practices.any? %>
     <section class="dm-background-white margin-bottom-105">
       <div class="grid-container">
@@ -92,9 +93,11 @@
       </div>
     </section>
   <% end %>
-  <div class="grid-container">
-    <div class="margin-bottom-105">
-        <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
+  <% if created_practices.any? || @favorite_practices.any? %>
+    <div class="grid-container">
+      <div class="margin-bottom-105">
+          <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
+      </div>
     </div>
-  </div>
+  <% end %>
 </div>

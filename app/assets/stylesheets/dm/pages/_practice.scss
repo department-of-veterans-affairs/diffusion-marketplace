@@ -17,13 +17,6 @@
     border: none !important;
   }
 
-  //.usa-sidenav {
-  //  a {
-  //    //color: $dm-color-white !important;
-  //    font-weight: normal !important;
-  //  }
-  //}
-
   .dm-tab {
     border-bottom: 1px solid #F0F0F0;
     font-weight: normal;
@@ -119,10 +112,6 @@
   margin: 1rem auto;
 }
 
-.practice-summary {
-  line-height: 30px !important;
-}
-
 .aggregate-circles-position {
   top: -165px;
 }
@@ -130,6 +119,13 @@
 .avatar-container {
   width: 65px !important;
   height: 65px !important;
+  position: relative;
+
+  img {
+    height: 65px;
+    width: 65px;
+    object-fit: cover;
+  }
 }
 
 .un-published-practice {
@@ -358,6 +354,7 @@
 }
 
 .editor-continue-link {
+  line-height: 1 !important;
   &:visited {
     color: white !important;
   }
@@ -739,7 +736,47 @@
   object-fit: cover;
 }
 
+.publication-link, .additional-document-link {
+  color: $dm-color-primary-blue !important;
+
+  &:hover, &:visited {
+    color: $dm-color-primary-blue !important;
+  }
+}
+
+.edit-practice-link {
+  right: 2rem !important;
+}
+
+.section-line {
+  flex: 1 0 !important;
+}
+
+.cost-to-implement-container {
+  width: 11.5%;
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .fa-circle {
+    margin-bottom: -2px;
+  }
+}
+
 .thumbnail-upload-text {
   font-size: 16.96px;
   line-height: 26px;
+}
+
+.side-nav-active {
+  background-color: transparent;
+  border-left: 4px solid $dm-color-primary-blue;
+  color: black;
+  font-weight: bold;
+}
+
+.side-nav-inactive {
+  font-weight: normal;
+  border-left: none;
+  color: inherit;
+  background-color: transparent;
 }
