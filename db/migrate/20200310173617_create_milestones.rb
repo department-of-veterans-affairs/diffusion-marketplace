@@ -3,8 +3,7 @@ class CreateMilestones < ActiveRecord::Migration[5.2]
     create_table :milestones do |t|
       t.string :description
       t.integer :position
-      t.references :timelines, foreign_key: true
-      t.bigint :timeline_id
+      t.belongs_to :timeline, foreign_key: true
 
       t.timestamps
     end
