@@ -1,3 +1,5 @@
+@import "../dm/variables/colors";
+
 .commontator .comment {
   &, .body blockquote {
     border: none;
@@ -70,11 +72,11 @@
   .vote-count {
     font-size: 100%;
     margin-right: 9px;
-    color: #71767A;
+    color: $dm-color-gray;
   }
 
   .blocked {
-    color: #71767A;
+    color: $dm-color-gray;
   }
 
   .body {
@@ -96,7 +98,7 @@
 
   .reply {
     a {
-      color: #71767A;
+      color: $dm-color-gray;
     }
     .new-comment {
       width: 100%;
@@ -142,7 +144,7 @@ h2 {
 }
 
 .edit-comment-icon, .fa-trash-alt, .fa-trash-restore-alt {
-  color: #71767A;
+  color: $dm-color-gray;
   text-decoration: none;
 }
 
@@ -190,7 +192,7 @@ body {
 }
 
 .empty-vote {
-  color: #71767A;
+  color: $dm-color-gray;
 }
 
 .vote-disabled {
@@ -228,7 +230,7 @@ body {
 .comments-show-hide-button {
 
   &:disabled {
-    color: #71767A;
+    color: $dm-color-gray;
     background-color: initial;
   }
 }
@@ -285,19 +287,19 @@ body {
 }
 
 ::-webkit-input-placeholder {
-  color: #71767A !important;
+  color: $dm-color-gray !important;
 }
 
 :-moz-placeholder { /* Firefox 18- */
-  color: #71767A !important;
+  color: $dm-color-gray !important;
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
-  color: #71767A !important;
+  color: $dm-color-gray !important;
 }
 
 :-ms-input-placeholder {
-  color: #71767A !important;
+  color: $dm-color-gray !important;
 }
 
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
@@ -307,7 +309,7 @@ body {
 }
 
 .more-link {
-  color: #005ea2 !important;
+  color: $dm-color-primary-blue !important;
 
   &:hover {
     text-decoration: none !important

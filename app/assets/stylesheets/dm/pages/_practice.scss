@@ -737,10 +737,10 @@
 }
 
 .publication-link, .additional-document-link {
-  color: #005ea2 !important;
+  color: $dm-color-primary-blue !important;
 
   &:hover, &:visited {
-    color: #005ea2 !important;
+    color: $dm-color-primary-blue !important;
   }
 }
 
@@ -765,4 +765,18 @@
 .thumbnail-upload-text {
   font-size: 16.96px;
   line-height: 26px;
+}
+
+.side-nav-active {
+  background-color: transparent;
+  border-left: 4px solid $dm-color-primary-blue;
+  color: black;
+  font-weight: bold;
+}
+
+.side-nav-inactive {
+  font-weight: normal;
+  border-left: none;
+  color: inherit;
+  background-color: transparent;
 }

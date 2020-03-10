@@ -185,17 +185,15 @@
 
         <div class="desktop:grid-col-9 grid-col-12 p0">
           <div class="margin-bottom-3 impact-section practice-section">
-            <% if @practice.diffusion_histories.any? || @practice.impact_photos.any? %>
-              <div class="grid-row flex-align-center">
-                <h2 id="impact" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205 nav-header">Impact</h2>
-                <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest section-line">
-              </div>
-              <% if @practice.diffusion_histories.any? %>
-                <%= render partial: 'diffusion_map' %>
-              <% end %>
-              <% if @practice.impact_photos.any? %>
-                <%= render partial: 'impact' %>
-              <% end %>
+            <div class="grid-row flex-align-center">
+              <h2 id="impact" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205 nav-header">Impact</h2>
+              <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest section-line">
+            </div>
+            <% if @practice.diffusion_histories.any? %>
+              <%= render partial: 'diffusion_map' %>
+            <% end %>
+            <% if @practice.impact_photos.any? %>
+              <%= render partial: 'impact' %>
             <% end %>
             <% if @practice.video_files.any? %>
               <%= render partial: 'videos' %>

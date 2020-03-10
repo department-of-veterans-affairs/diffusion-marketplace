@@ -1,5 +1,5 @@
 addEventListener('turbolinks:before-visit', function () {
-    window['referrer'] = window.location.href
+    window['referrer'] = window.location.href;
 });
 
 addEventListener('turbolinks:load', function () {
