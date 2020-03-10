@@ -11,7 +11,7 @@
   nested_comments = thread.nested_comments_for(user, comments, show_all)
 %>
 
-<% if thread.config.comment_order != :l %>
+<% if thread.config.comment_order != :e %>
   <%= render partial: 'commontator/threads/reply', locals: { thread: thread, user: user } %>
 <% end %>
 
@@ -74,7 +74,7 @@
     </span>
   </div>
 
-  <% if thread.config.comment_order == :l %>
+  <% if thread.config.comment_order == :e %>
     <%= render partial: 'commontator/threads/reply', locals: { thread: thread, user: user } %>
   <% end %>
 

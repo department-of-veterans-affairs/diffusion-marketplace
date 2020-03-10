@@ -1,25 +1,11 @@
 <div class="grid-row flex-align-center">
-  <h2 id="origin" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205">Origin</h2>
-  <div class="height-2px border border-base-lightest flex-fill"></div>
+  <h2 id="origin" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205 nav-header">Origin</h2>
+  <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest section-line">
 </div>
-<div class="grid-container-full">
+<div class="grid-container-full origin-container">
   <div class="grid-row">
-    <div>
-      <% if @practice.origin_title.present? %>
-        <h3 class="margin-y-205"><%= @practice.origin_title %></h3>
-      <% end %>
-    </div>
-    <div>
-      <p class="practice-summary margin-0 hyphens-auto word-break-break-word"><%= @practice.origin_story %></p>
-    </div>
-    <%#<div class="grid-row width-full grid-gap-6">
-      <div class="tablet:grid-col-5">
-        <% if @practice.origin_picture.present? %>
-    <%#      <div class="origin-picture-container overflow-hidden height-8 width-8">
-            <%= image_tag @practice.origin_picture_s3_presigned_url(:thumb), class: '', alt: "#{@practice.name} origins" %>
-    <%#      </div>
-        <% end %>
-      </div>
+    <div class="margin-top-4 grid-col-8">
+      <p class="practice-summary margin-0 hyphens-auto word-break-break-word font-sans-xs-2 line-height-sans-505"><%= @practice.origin_story %></p>
     </div>
   </div>
 </div>

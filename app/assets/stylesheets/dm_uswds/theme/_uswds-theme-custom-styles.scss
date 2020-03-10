@@ -115,9 +115,24 @@ i.e.
 }
 
 .usa-button-outline-white {
-  @extend .usa-button--outline;
+  //@extend .usa-button--outline;
+  background-color: transparent !important;
   color: #FFFFFF !important;
-  box-shadow: inset 0 0 0 2px #FFFFFF !important;
+  box-shadow: none !important;
+  border: 2px solid #ffffff !important;
+}
+
+.usa-button--outline {
+  box-shadow: none !important;
+  border: 2px solid $dm-color-primary-blue !important;
+
+  &:hover {
+    border: 2px solid #1a4480 !important;
+  }
+
+  &:disabled {
+    border: 2px solid #dcdee0 !important;
+  }
 }
 
 .usa-button-white {
@@ -192,7 +207,10 @@ p {
 .usa-sidenav a, .usa-sidenav p {
   color: #000000;
   font-weight: 100;
-  padding: 1rem;
+}
+
+.usa-sidenav li {
+  height: 40px !important;
 }
 
 .usa-sidenav p {

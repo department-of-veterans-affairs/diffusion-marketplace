@@ -7,7 +7,7 @@
         <div class="bg-white">
 
           <%# <% if @practice.tagline.present? %>
-          <h1 class="font-sans-3xl x0-top margin-bottom-2 font-family-sans text-heavy word-break-break-word hyphens-auto">
+          <h1 class="font-sans-2xl x0-top margin-bottom-2 font-family-sans text-heavy word-break-break-word hyphens-auto line-height-sans-205">
             <%# <%= @practice.tagline %>
             <%= @practice.name %>
           </h1>
@@ -36,12 +36,12 @@
           <%#  <% end %>
           <%#</div>%>
           <div <%#class="tablet:grid-col-7 padding-x-1"%>>
-            <p class="practice-summary margin-0 font-ui-md"><%= @practice.summary %></p>
+            <p class="practice-summary hyphens-auto word-break-break-word margin-0 font-sans-xs-2 line-height-sans-505"><%= @practice.summary %></p>
           </div>
         </div>
       </div>
       <div class="padding-top-3 margin-bottom-6">
-        <%= link_to 'Login to see full practice', new_user_session_path, id: 'practice-page-login-link', class: 'dm-button-link display-inline-block font-sans-md line-height-sans-2' %>
+        <%= link_to 'Login to see full practice', new_user_session_path, id: 'practice-page-login-link', class: 'dm-button-link display-inline-block font-sans-xs-2 line-height-sans-505' %>
       </div>
     </div>
   </div>

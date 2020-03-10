@@ -982,3 +982,14 @@ ul.no-list-style {
   -webkit-line-clamp: 5;
   height: calc(1em * 1.2 * 5);
 }
+
+#breadcrumbs {
+
+  a {
+    color: #005ea2 !important;
+
+    &:hover, &:visited {
+      color: #005ea2 !important;
+    }
+  }
+}
