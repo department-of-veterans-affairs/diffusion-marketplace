@@ -147,7 +147,7 @@ h2 {
 }
 
 .edit-comment-icon:hover, .fa-trash-alt:hover, .fa-trash-restore-alt:hover {
-  color: #565c65;
+  color: $dm-color-base-dark;
 }
 
 body {
@@ -238,9 +238,9 @@ body {
 }
 
 .report-abuse-submit {
-    border: 2px solid #005ea2 !important;
+    border: 2px solid $dm-color-primary-blue !important;
   &:hover {
-    border: 2px solid #1A4480 !important;
+    border: 2px solid $dm-color-primary-dark-blue !important;
   }
   &:focus {
     outline-offset: 0 !important;
@@ -260,7 +260,7 @@ body {
 }
 
 .usa-radio__input:focus + .team-member-label::before, .usa-radio__input:focus + .implementer-label::before {
-  outline: 0.25rem solid #FFBE2E !important;
+  outline: 0.25rem solid $dm-color-medium-yellow !important;
   outline-offset: 0.25rem !important;
 }
 
@@ -333,7 +333,7 @@ body {
 }
 
 .fa-user-circle {
-  color: #162e51 !important;
+  color: $dm-color-darker-blue !important;
   text-align: center;
 }
 
