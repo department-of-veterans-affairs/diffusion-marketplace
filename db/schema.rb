@@ -455,15 +455,6 @@ ActiveRecord::Schema.define(version: 2020_03_11_215405) do
     t.index ["job_position_category_id"], name: "index_job_positions_on_job_position_category_id"
   end
 
-  create_table "milestones", force: :cascade do |t|
-    t.string "description"
-    t.integer "position"
-    t.bigint "timeline_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["timeline_id"], name: "index_milestones_on_timeline_id"
-  end
-
   create_table "mitigations", force: :cascade do |t|
     t.string "description"
     t.integer "position"
