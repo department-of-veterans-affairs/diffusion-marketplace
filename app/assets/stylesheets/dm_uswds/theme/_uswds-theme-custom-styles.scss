@@ -318,3 +318,10 @@ a {
   border-radius: 2px;
   
 }
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .usa-checkbox__input:checked + .usa-checkbox__label::before, .usa-radio__input:checked + .usa-radio__label::before {
+    border: 3px solid #005ea2 !important;
+    padding: 5px !important;
+  }
+}

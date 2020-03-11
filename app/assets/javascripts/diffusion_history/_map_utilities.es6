@@ -76,3 +76,7 @@ $(document).on('click', '#practiceListTrigger', function () {
 $(document).on('click', 'label', function (e) {
     e.target.focus({preventScroll: true});
 });
+
+$(document).on('click', '.update-map-results-button', function (e) {
+    $('#mapFilters').submit();
+});
