@@ -5,17 +5,17 @@
 version: 2
 workflows:
     version: 2
-    build-deploy:
+    test-deploy:
       jobs:
-        - build
+        - test
         - deploy:
             requires:
-              - build
+              - test
             filters:
               branches:
                 only: master
 jobs:
-  build:
+  test:
     docker:
       # specify the version you desire here
       - image: circleci/ruby:2.6.3-node-browsers
@@ -118,20 +118,6 @@ jobs:
       - checkout
       - setup_remote_docker
 
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "Gemfile.lock" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-      - run:
-          name: Install Rails dependencies
-          command: |
-            sudo apt-get update
-            sudo apt-get install qt5-default libqt5webkit5-dev gstreamer1.0-plugins-base gstreamer1.0-tools gstreamer1.0-x
-            gem install bundler
-            bundle install --jobs=4 --retry=3 --path vendor/bundle
-
       - save_cache:
           paths:
             - ./vendor/bundle
@@ -145,13 +131,6 @@ jobs:
             sudo pip install awscli
 
       - run:
-          name: Prepare Rails secrets
-          command: |
-            rm -rf config/credentials.yml.enc
-            rm -rf config/master.key
-            EDITOR=vim bundle exec rails credentials:edit
-
-      - run:
           name: Build && Deploy
           command: |
-            ./scripts/deploy.sh va-diffusion-marketplace va-diffusion-marketplace-staging us-west-2 $CIRCLE_SHA1
+            ./scripts/deploy.sh diffusion-marketplace-test diffusion-marketplace-test us-west-2 $CIRCLE_SHA1

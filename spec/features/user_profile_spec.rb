@@ -107,4 +107,25 @@ describe 'The user index', type: :feature do
     expect(page).to have_content('Avatar content type is invalid')
     expect(page).to have_selector('.empty-user-avatar')
   end
+
+  it 'should have a created practice and a favorited' do
+    @practice1 = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user)
+    @practice2 = Practice.create!(name: 'The Best Practice Ever!', approved: true, published: true, tagline: 'Test tagline', featured: true)
+    @user_practice = UserPractice.create!(user: @user, practice: @practice2, favorited: true)
+
+    login_as(@user, scope: :user, run_callbacks: false)
+    visit "/users/#{@user.id}"
+
+    within(:css, '.favorited-practices') do
+      expect(page).to have_content('The Best Practice Ever!')
+      expect(page).to_not have_content('A public practice')
+    end
+
+    within(:css, '.created-practices') do
+      expect(page).to have_content('A public practice')
+      expect(page).to_not have_content('The Best Practice Ever!')
+    end
+
+  end
+
 end

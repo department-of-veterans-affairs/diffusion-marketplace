@@ -17,7 +17,7 @@
 | `rails dm:reset_up` | Re-sets up database and imports all data from the full flow of the importer  |  
 | `rails importer:import_answers` | import an xlsx and create practices  | 
 | `rails importer:initial_featured` | sets up the "original" featured practices to show up on the landing page - depends on spreadsheet being imported | 
-| `rails surveymonkey:download_response_files` | Rake task to download files from our SurveyMonkey practice submission form  | 
+| `rails surveymonkey:download_response_files` (DEPRECATED) | Rake task to download files from our SurveyMonkey practice submission form. **Do not use this anymore. Ever.**  | 
 | `rails diffusion_history:all`| Imports all of the diffusion history we have so far for practices - used to populate the geolocation feature (Practice <-> Facility mappings) |
 #### Ruby version
 
@@ -28,14 +28,16 @@
 #### System dependencies
 
 - `ruby 2.6.3`
-
+  - Linux-based install `rvm` (Ruby Version Manager) http://rvm.io/
+  - `ruby -v`
 - `bundler`
-
+  - `gem install bundler`
 - `nodejs`
-
-- `postgresql`
-
-- ImageMagick 7+
+  - https://nodejs.org/en/
+  - `node -v`
+- `postgresql` https://www.postgresql.org/download/
+- ImageMagick 7+ https://www.imagemagick.org/script/download.php
+  - `identify --version`
 
 #### Configuration
 
@@ -56,15 +58,13 @@ S3_BUCKET_NAME
 
 MAILER_SENDER
 
-SURVEY_MONKEY_TOKEN
-SURVEY_MONKEY_USERNAME
-SURVEY_MONKEY_PASSWORD
-SURVEY_MONKEY_EP201
-SURVEY_MONKEY_EP202
-SURVEY_MONKEY_EP203
-
 GA_TRACKING_ID  # (prod only)
 GOOGLE_API_KEY
+
+# For the importer to download the practice files and pictures
+S3_TEST_MARKETPLACE_ACCESS_KEY_ID
+S3_TEST_MARKETPLACE_SECRET_ACCESS_KEY
+S3_TEST_BUCKET # Optional
 
 # Optional
 SESSION_REMEMBER_FOR_IN_DAYS # how long to remember the user for if they check the "Remember me" checkbox. default is 1 day
@@ -117,3 +117,28 @@ SESSION_TIMEOUT_IN_MINUTES # without checking the checkbox, how long the user's 
 
 6. In a browser, browse to `http://localhost:3200` to make sure everything built correctly.
 
+## Initial data - Bulk Importer 
+#### pre-requisites:
+Environment Variables
+```.yaml
+AWS_REGION
+AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY
+S3_BUCKET_NAME
+S3_TEST_BUCKET_NAME
+S3_TEST_MARKETPLACE_ACCESS_KEY_ID
+S3_TEST_MARKETPLACE_SECRET_ACCESS_KEY
+```
+### Order of operations for running DM Specific rake tasks to set up data
+1. Run `rails dm:full_import`
+
+This will run:
+1. `rails dm:db_setup` - sets up the db with `rails db:create db:migrate db:seed`
+2. `rails importer:import_answers` - imports the initial practice data the Diffusion Marketplace team collected via Survey Monkey, images and all~
+3. `rails importer:initial_featured` - sets the first three initial featured practices for the homepage
+4. `rails diffusion_history:all` - set up the initial diffusion history for the first five practices. Individual commands can be found here:  `lib/tasks/diffusion_history.rake`
+
+To reset all of the data and do the process all over again, run:
+```bash
+rails dm:reset_up
+```

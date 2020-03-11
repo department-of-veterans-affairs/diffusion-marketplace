@@ -2,25 +2,21 @@ var reloadWithTurbolinks = (function () {
   var scrollPosition;
 
   function reload () {
-      $(window).scroll(function() {
-          sessionStorage.scrollTop = $(this).scrollTop();
-      });
-
-      $(document).ready(function() {
-          if (sessionStorage.scrollTop != "undefined") {
-              $(window).scrollTop(sessionStorage.scrollTop);
-          }
-      });
+      scrollPosition = [ window.pageXOffset, window.pageYOffset ];
+      Turbolinks.visit(window.location.toString(), { action: 'replace' });
   }
 
   document.addEventListener('turbolinks:load', function () {
-    if (scrollPosition) {
-      window.scrollTo.apply(window, scrollPosition);
-      scrollPosition = null;
-    }
-    $('.timeago').timeago();
-    $('#dm-practice-nav').sticky( {topSpacing: 20, zIndex: 10000, bottomSpacing: 200});
+      if (scrollPosition) {
+          $('html, body').animate({
+              scrollTop: scrollPosition[1]
+          }, 0);
+          scrollPosition = null;
+      }
+      $('.timeago').timeago();
+      $('#dm-practice-nav').sticky( {topSpacing: 20, zIndex: 10000, bottomSpacing: 200});
   })
+
     return reload
 })()
 

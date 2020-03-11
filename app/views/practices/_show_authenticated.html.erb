@@ -15,33 +15,33 @@
           <a href="#origin" class="dm-tab scroll-to sidebar-origin" data-target="#origin" data-turbolinks="false">Origin</a>
         </li>
       <% end %>
-      <% if @practice.impact_photos.any? || @practice.video_files.any? || @practice.additional_documents.any? || @practice.publications.any? %>
+      <% if @practice.impact_photos.any? || @practice.video_files.any? || (@practice.diffusion_histories.any? && ENV['GOOGLE_API_KEY'])  %>
         <li class="usa-sidenav__item">
           <a href="#impact" class="dm-tab scroll-to sidebar-impact" data-target="#impact" data-turbolinks="false">Impact</a>
         </li>
       <% end %>
       <% if @practice.cost_to_implement_aggregate.present? %>
         <li class="usa-sidenav__item">
-          <a href="#resources_required" class="dm-tab scroll-to sidebar-resources" data-target="#resources_required" data-turbolinks="false">Resources</a>
+          <a href="#resources_required" class="dm-tab scroll-to sidebar-resources_required" data-target="#resources_required" data-turbolinks="false">Resources</a>
         </li>
-        <% end %>
+      <% end %>
       <% if @practice.departments.any? || @practice.sustainability_aggregate.present? %>
         <li class="usa-sidenav__item">
           <a href="#complexity" class="dm-tab scroll-to sidebar-complexity" data-target="#complexity" data-turbolinks="false">Complexity</a>
         </li>
-        <% end %>
+      <% end %>
       <% unless @practice.timelines.blank? %>
         <li class="usa-sidenav__item">
-          <a href="#timeline_and_checklist" class="dm-tab scroll-to sidebar-timeline" data-target="#timeline_and_checklist" data-turbolinks="false">Timeline</a>
+          <a href="#timeline_and_checklist" class="dm-tab scroll-to sidebar-timeline_and_checklist" data-target="#timeline_and_checklist" data-turbolinks="false">Timeline</a>
         </li>
       <% end %>
       <% if @practice.risk_mitigations.any? %>
         <li class="usa-sidenav__item">
-          <a href="#risk_and_mitigation" class="dm-tab scroll-to sidebar-risk-miti" data-target="#risk_and_mitigation" data-turbolinks="false">Risk
+          <a href="#risk_and_mitigation" class="dm-tab scroll-to sidebar-risk_and_mitigation " data-target="#risk_and_mitigation" data-turbolinks="false">Risk
             and
             mitigation</a>
         </li>
-        <% end %>
+      <% end %>
       <% if @practice.va_employees.any? || @practice.support_network_email.present? %>
         <li class="usa-sidenav__item">
           <a href="#contact" class="dm-tab bottom-tab scroll-to sidebar-contact" data-target="#contact" data-turbolinks="false">Contact</a>
@@ -91,7 +91,7 @@
         <% end %>
 
         <div class="bg-white<%#padding-5%>">
-          <h1 id="overview" class="font-sans-2xl x0-top margin-bottom-2 font-family-sans text-heavy word-break-break-word hyphens-auto line-height-sans-205">
+          <h1 id="overview" class="font-sans-2xl x0-top margin-bottom-2 font-family-sans text-heavy word-break-break-word hyphens-auto line-height-sans-205 nav-header">
             <%= @practice.name %>
           </h1>
           <% if current_user %>
@@ -123,7 +123,8 @@
           <h4 class="margin-top-0 margin-bottom-1">Origin</h4>
           <p class="font-sans-xs-2 line-height-sans-505 margin-bottom-3">
             Created by
-            the <%= @facility_data.present? ? @facility_data['OfficialStationName'] : @practice.initiating_facility %> in
+            the <%= @facility_data.present? ? @facility_data['OfficialStationName'] : @practice.initiating_facility %>
+            in
             <span><%= @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)' %></span>
           </p>
           <% if @practice.practice_partners.any? && @practice.practice_partners.find_by(name: 'None of the above, or Unsure').nil? %>
@@ -176,7 +177,7 @@
 
 <!-- "Practice content" section -->
 <!-- "Impact" section -->
-<% if @practice.impact_photos.any? || @practice.video_files.any? || @practice.additional_documents.any? || @practice.publication_files.any? || @practice.publications.any? %>
+<% if @practice.impact_photos.any? || @practice.video_files.any? || (@practice.diffusion_histories.any? && ENV['GOOGLE_API_KEY']) %>
   <section>
     <div class="grid-container position-relative">
       <div class="grid-row grid-gap">
@@ -184,45 +185,54 @@
 
         <div class="desktop:grid-col-9 grid-col-12 p0">
           <div class="margin-bottom-3 impact-section practice-section">
-            <% if @practice.diffusion_histories.any? || @practice.impact_photos.any? %>
-              <div class="grid-row flex-align-center">
-                <h2 id="impact" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205">Impact</h2>
-                <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest section-line">
-              </div>
-              <% if @practice.diffusion_histories.any? %>
-                <%= render partial: 'diffusion_map' %>
-              <% end %>
-              <% if @practice.impact_photos.any? %>
-                <%= render partial: 'impact' %>
-              <% end %>
+            <div class="grid-row flex-align-center">
+              <h2 id="impact" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205 nav-header">Impact</h2>
+              <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest section-line">
+            </div>
+            <% if @practice.diffusion_histories.any? %>
+              <%= render partial: 'diffusion_map' %>
+            <% end %>
+            <% if @practice.impact_photos.any? %>
+              <%= render partial: 'impact' %>
             <% end %>
             <% if @practice.video_files.any? %>
               <%= render partial: 'videos' %>
             <% end %>
-            <% if @practice.additional_documents.any? || @practice.publications.any? %>
-              <div class="grid-row flex-align-center margin-bottom-5">
-                <h2 class="font-sans-xl text-bold margin-y-0 flex-auto margin-right-205">Documentation</h2>
-                <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest section-line">
-              </div>
-              <% if @practice.additional_documents.any? %>
-                <h3 class="font-sans-lg margin-top-0 margin-bottom-1">Downloads</h3>
-                <div class="padding-bottom-1">
-                  <%= render partial: 'additional_documents' %>
-                </div>
-              <% else %>
-                <div class="hidden"></div>
-              <% end %>
-
-              <% if @practice.publications.any? %>
-                <h3 class="font-sans-lg margin-top-0 margin-bottom-1">Links</h3>
-                <div>
-                  <%= render partial: 'publications' %>
-                </div>
-              <% else %>
-                <div class="hidden"></div>
-              <% end %>
-            <% end %>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<% end %>
+
+<!-- "Documentation" section -->
+<% if @practice.additional_documents.any? || @practice.publications.any? %>
+  <section class="margin-bottom-7">
+    <div class="grid-container">
+      <div class="grid-row grid-gap">
+        <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+        <div class="desktop:grid-col-9 grid-col-12 p0">
+          <div class="grid-row flex-align-center margin-bottom-5">
+            <h2 class="font-sans-xl text-bold margin-y-0 flex-auto margin-right-205">Documentation</h2>
+            <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest section-line">
+          </div>
+          <% if @practice.additional_documents.any? %>
+            <h3 class="font-sans-lg margin-top-0 margin-bottom-1">Downloads</h3>
+            <div class="padding-bottom-1">
+              <%= render partial: 'additional_documents' %>
+            </div>
+          <% else %>
+            <div class="hidden"></div>
+          <% end %>
+
+          <% if @practice.publications.any? %>
+            <h3 class="font-sans-lg margin-top-0 margin-bottom-1">Links</h3>
+            <div>
+              <%= render partial: 'publications' %>
+            </div>
+          <% else %>
+            <div class="hidden"></div>
+          <% end %>
         </div>
       </div>
     </div>
@@ -292,7 +302,7 @@
 
 <!-- "Support Team" || "Contact" section -->
 <% if @practice.va_employees.any? %>
-  <section class="margin-bottom-7" id="contact">
+  <section class="margin-bottom-7">
     <div class="grid-container">
       <div class="grid-row grid-gap">
         <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
