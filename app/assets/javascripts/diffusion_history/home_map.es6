@@ -47,7 +47,7 @@ function initialize() {
             serviceObj.label = {
                 color: '#FFFFFF',
                 text: `${json.completed + json.in_progress}`,
-                fontFamily: '"Source Sans Pro"'
+                fontFamily: 'Open Sans'
             };
 
             google.maps.event.addListener(serviceObj, 'click', clickCallback.bind(this, json));

@@ -24,7 +24,6 @@
   }
 
   #practice-search-button {
-    // float: left;
     height: 3rem;
     font-size: 1.3rem;
   }
@@ -132,9 +131,17 @@
   .search-no-image {
     top: 36%;
   }
+}
 
-  // .search-row {
-  //   height: 227px;
-  // }
+#practice-search-button:not([disabled]):focus {
+  outline: 2px solid $dm-color-dark-yellow !important;
+  outline-offset: 2px !important;
+}
 
+// Hack for outline-offset
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  #practice-search-button:not([disabled]):focus {
+    border: 2px solid white;
+    padding: 2px 30px 2px 30px;
+  }
 }
