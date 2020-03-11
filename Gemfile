@@ -83,6 +83,8 @@ group :development do
   # Use: localhost:3000/erd
   gem 'erd'
 
+  gem 'rubyzip'
+
   ###
 end
 gem 'ffi', '1.11.1'

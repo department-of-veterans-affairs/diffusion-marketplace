@@ -14,10 +14,16 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to be_accessible.according_to :wcag2a, :section508
         end
 
-        it 'should be there' do
-            expect(page).to have_content('Collaborators')
-            expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/instructions")
-            expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/overview")
+        # This redirect is temporary (DM-1324)
+        it 'should redirect to the Overview page' do
+            expect(page).to have_content('Overview')
+            expect(page).not_to have_content('Collaborators')
         end
+
+        # it 'should be there' do
+        #     expect(page).to have_content('Collaborators')
+        #     expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/instructions")
+        #     expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/overview")
+        # end
     end
 end

@@ -13,6 +13,7 @@ class Practice < ApplicationRecord
   attr_accessor :last_month_commits
   attr_accessor :two_months_ago_commits
   attr_accessor :three_months_ago_commits
+  attr_accessor :delete_main_display_image
 
   def views
     Ahoy::Event.where_props(practice_id: id).count
