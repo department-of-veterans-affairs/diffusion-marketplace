@@ -15,7 +15,7 @@
           <a href="#origin" class="dm-tab scroll-to sidebar-origin" data-target="#origin" data-turbolinks="false">Origin</a>
         </li>
       <% end %>
-      <% if @practice.impact_photos.any? || @practice.video_files.any? || @practice.publication_files.any? || @practice.publications.any? %>
+      <% if @practice.impact_photos.any? || @practice.video_files.any? || (@practice.diffusion_histories.any? && ENV['GOOGLE_API_KEY'])  %>
         <li class="usa-sidenav__item">
           <a href="#impact" class="dm-tab scroll-to sidebar-impact" data-target="#impact" data-turbolinks="false">Impact</a>
         </li>
@@ -177,7 +177,7 @@
 
 <!-- "Practice content" section -->
 <!-- "Impact" section -->
-<% if @practice.impact_photos.any? || @practice.video_files.any? || @practice.additional_documents.any? || @practice.publication_files.any? || @practice.publications.any? %>
+<% if @practice.impact_photos.any? || @practice.video_files.any? || (@practice.diffusion_histories.any? && ENV['GOOGLE_API_KEY']) %>
   <section>
     <div class="grid-container position-relative">
       <div class="grid-row grid-gap">
