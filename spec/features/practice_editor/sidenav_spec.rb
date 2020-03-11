@@ -16,13 +16,17 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         it 'should be there' do
-            expect(page).to have_css('.usa-sidenav__item', count: 12)
+            expect(page).to have_css('.usa-sidenav__item', count: 11)
+        end
+
+        it 'should not have a link to Collaborators' do
+            expect(page).not_to have_link('Collaborators', href: "/practices/#{@practice.slug}/edit/collaborators")
         end
 
         it 'should navigate the user around the editor when they click on the section names' do
-            find('.sidenav-collaborators-link').click
-            expect(page).to have_content('Collaborators')
-            expect(page).to have_content('Here you can add people at your facility who can help you complete this practice page.')
+            find('.sidenav-overview-link').click
+            expect(page).to have_content('Overview')
+            expect(page).to have_content('Introduce your practice and provide a clear overview to people who may be unfamiliar with it.')
 
             find('.sidenav-documentation-link').click
             expect(page).to have_content('Documentation')
