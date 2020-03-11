@@ -2,7 +2,7 @@
 # Run with: bin/rails surveymonkey:download_response_files
 
 namespace :surveymonkey do
-
+  # TODO: This is DEPRECATED. Do not use. Ever.
   # rails surveymonkey:download_response_files
   desc 'Downloads response files'
   task :download_response_files => :environment do
@@ -54,7 +54,7 @@ namespace :surveymonkey do
     registered_devices_cookies.each { |c|
       cookie = Mechanize::Cookie.new(c[:name], c[:value])
       cookie.domain = '.surveymonkey.com'
-      cookie.expires = '2019-11-04T04:04:32.306Z'
+      cookie.expires = '2020-05-28T22:10:48.948Z'
       cookie.path = '/'
       agent.cookie_jar.add(cookie)
     }

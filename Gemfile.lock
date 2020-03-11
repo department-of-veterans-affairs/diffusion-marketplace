@@ -312,9 +312,9 @@ GEM
       connection_pool (~> 2.2)
     net-ldap (0.16.1)
     nio4r (2.5.2)
-    nokogiri (1.10.4)
+    nokogiri (1.10.8)
       mini_portile2 (~> 2.4.0)
-    nokogiri (1.10.4-x64-mingw32)
+    nokogiri (1.10.8-x64-mingw32)
       mini_portile2 (~> 2.4.0)
     ntlm-http (0.1.1)
     ntlm-sso (0.0.1)
@@ -335,7 +335,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
     public_suffix (3.1.1)
-    puma (3.12.2)
+    puma (3.12.4)
     rack (2.0.8)
     rack-protection (2.0.5)
       rack
@@ -589,6 +589,7 @@ DEPENDENCIES
   rspec-rails
   rspec-retry
   rspec_junit_formatter
+  rubyzip
   sass-rails (~> 5.0)
   shoulda-matchers
   sidekiq
