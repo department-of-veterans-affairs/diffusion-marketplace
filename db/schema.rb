@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_11_215405) do
+ActiveRecord::Schema.define(version: 2020_01_21_231329) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -924,7 +924,6 @@ ActiveRecord::Schema.define(version: 2020_03_11_215405) do
   add_foreign_key "job_position_practices", "job_positions"
   add_foreign_key "job_position_practices", "practices"
   add_foreign_key "job_positions", "job_position_categories"
-  add_foreign_key "milestones", "timelines"
   add_foreign_key "mitigations", "risk_mitigations"
   add_foreign_key "photo_files", "practices"
   add_foreign_key "practice_creators", "practices"
