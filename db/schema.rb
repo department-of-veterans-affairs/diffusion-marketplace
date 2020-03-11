@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_21_231329) do
+ActiveRecord::Schema.define(version: 2020_03_11_215405) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -453,6 +453,15 @@ ActiveRecord::Schema.define(version: 2020_01_21_231329) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["job_position_category_id"], name: "index_job_positions_on_job_position_category_id"
+  end
+
+  create_table "milestones", force: :cascade do |t|
+    t.string "description"
+    t.integer "position"
+    t.bigint "timeline_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["timeline_id"], name: "index_milestones_on_timeline_id"
   end
 
   create_table "mitigations", force: :cascade do |t|
@@ -924,6 +933,7 @@ ActiveRecord::Schema.define(version: 2020_01_21_231329) do
   add_foreign_key "job_position_practices", "job_positions"
   add_foreign_key "job_position_practices", "practices"
   add_foreign_key "job_positions", "job_position_categories"
+  add_foreign_key "milestones", "timelines"
   add_foreign_key "mitigations", "risk_mitigations"
   add_foreign_key "photo_files", "practices"
   add_foreign_key "practice_creators", "practices"
