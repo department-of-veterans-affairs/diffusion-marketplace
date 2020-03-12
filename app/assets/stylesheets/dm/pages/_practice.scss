@@ -252,13 +252,13 @@
 }
 
 .impact-image {
-  height: 263px; 
-  width: 393px; 
+  height: 263px;
+  width: 393px;
   object-fit: cover;
 }
 
 .practice-video-container {
-  height: 263px; 
+  height: 263px;
   width: 393px;
 }
 
@@ -404,7 +404,7 @@
   max-width: 100% !important;
 }
 
-.collab-trash, .staff-trash, .timeline-trash, .risk-mitigation-trash, .impact-trash, 
+.collab-trash, .staff-trash, .timeline-trash, .risk-mitigation-trash, .impact-trash,
 .va-employee-trash, .origin-trash, .documentation-trash, .permission-trash, .resource-trash {
   color: #D83933 !important;
 
@@ -501,7 +501,7 @@
   margin-top: 24px !important;
 }
 
-.add-additional-staff-link, .add-required-staff-link, .add-timeline-link, .add-risk-mitigation-link, 
+.add-additional-staff-link, .add-required-staff-link, .add-timeline-link, .add-risk-mitigation-link,
 .add-impact-photo-link, .add-va-employee-link, .add-practice-creator-link, .add-additional-document-link, .add-publication-link,
 .add-video-file-link, .add-permission-link, .add-resource-link {
   margin-top: 24px !important;
@@ -512,7 +512,7 @@
   display: none;
 }
 
-.milestone-textarea, .risk-description, .mitigation-description, 
+.milestone-textarea, .risk-description, .mitigation-description,
 .practice-editor-video-caption, .practice-editor-image-caption, .risk-description-textarea, .mitigation-description-textarea,
 .staff-training-description {
   resize: none;
@@ -575,7 +575,7 @@
 }
 
 .practice-editor-origin-ul, .practice-editor-timeline-ul, .practice-editor-risk-mitigation-ul, .practice-editor-contact-ul,
-.practice-editor-additional-document-ul, .practice-editor-publication-ul, .practice-editor-impact-photo-ul, 
+.practice-editor-additional-document-ul, .practice-editor-publication-ul, .practice-editor-impact-photo-ul,
 .practice-editor-video-file-ul, .practice-editor-permission-ul, .practice-editor-resource-ul {
   margin: 0;
   padding: 0;
@@ -702,7 +702,7 @@
     text-align: center;
     text-transform: none !important;
     padding: 5px;
-    
+
     /* Position the tooltip */
     position: absolute;
     z-index: 1;
