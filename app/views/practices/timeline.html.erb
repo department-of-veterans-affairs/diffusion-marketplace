@@ -41,22 +41,16 @@
                                         </div>
                                         <%= tl.fields_for :milestones, wrapper: false do |m| %>
                                           <div class="grid-row width-full">
-                                              <div class="grid-col-12">
+                                              <div>
                                                   <%= m.label :description, 'Milestone:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type a description of the milestone.</span>&nbsp;<span class="text-base-light milestone-character-count" <% if tl_id.present? %> id="milestone_<%= tl_id %>_character_count" <%end%>>(0/100 characters)</span>
-                                                  <%= m.text_area :description, class: 'usa-input practice-input height-15 milestone-textarea', 'counter-id': "milestone_#{tl_id}_textarea" %>
-                                              </div>
-                                          </div>
-                                          <div class="grid-row width-full">
-                                              <div class="grid-col-auto">
-                                                <%= tl.link_to_add :milestones, class: 'fas fa-plus text-no-underline add-timeline-link' do %>
-                                                  <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add milestone</span>
-                                                <% end %>
-                                              </div>
-                                              <div class="grid-col-fill flex-align-end timeline-trash-container">
-                                                  <%= tl.link_to_remove '', class: "fas fa-trash-alt timeline-trash text-no-underline", title: 'remove timeline' %>
+                                                  <%= m.text_area :description, class: 'usa-input practice-input height-10 milestone-textarea', 'counter-id': "milestone_#{tl_id}_textarea" %>
                                               </div>
                                           </div>
                                         <% end %>
+                                        <%= tl.link_to_add :milestones, class: 'fas fa-plus text-no-underline text-middle text-ttop add-milestone-link' do %>
+                                          <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add milestone</span>
+                                        <% end %>
+                                        <%= tl.link_to_remove '', class: "fas fa-trash-alt timeline-trash text-no-underline margin-top-105 text-right", title: 'remove timeline' %>
                                     </div>
                                 </li>
                             <% end %>
