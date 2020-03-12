@@ -49,4 +49,4 @@
 //= require html5sortable
 //= require search
 //= require modernizr-custom
-//=require object_fit_polyfill
+//= require object_fit_polyfill
