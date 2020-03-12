@@ -418,13 +418,13 @@
   font-size: 22px;
 }
 
-.impact-trash-container, .origin-trash-container, .documentation-trash-container, .timeline-trash-container,
+.impact-trash-container, .origin-trash-container, .documentation-trash-container,
 .risk-miti-trash-container, .va-employee-trash-container, .permission-trash-container, .resource-trash-container {
   align-self: flex-end;
   text-align: center;
 }
 
-.documentation-trash-container, .timeline-trash-container, .risk-miti-trash-container, .contact-trash-container,
+.documentation-trash-container, .risk-miti-trash-container, .contact-trash-container,
 .permission-trash-container, .resource-trash-container {
   margin-left: 33px;
 }
@@ -494,6 +494,10 @@
 .practice-editor-video-caption, .practice-editor-image-caption, .risk-description-textarea, .mitigation-description-textarea,
 .staff-training-description {
   resize: none;
+}
+
+.milestone-textarea {
+  width: 640px !important;
 }
 
 .move-timeline-button, .move-risk-mitigation-button, .move-impact-button, .move-va-employee-button, .move-practice-creator-button {
@@ -738,4 +742,12 @@
   .fa-circle {
     margin-bottom: -2px;
   }
+}
+
+.timeline-trash {
+  width: 69% !important;
+}
+
+.add-milestone-link {
+  width: auto !important;
 }
