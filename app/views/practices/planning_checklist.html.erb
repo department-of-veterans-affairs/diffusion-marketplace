@@ -3,9 +3,20 @@
 <section class="margin-top-7 margin-bottom-6" id="next-steps-top">
   <div class="grid-container">
     <%= render "shared/messages" %>
-    <h1 class="font-sans-3xl margin-bottom-205">Plan my practice adoption</h1>
-    <p class="margin-0">
-      Are you ready to build a team and adopt this practice at your facility? Here is a step-by-step checklist to lead you through the process and give you the best chance of success.
+    <div class="grid-row flex-align-end margin-bottom-105">
+      <h1 class="font-sans-2xl margin-right-3 margin-y-0 grid-col-auto grid-col-auto">Adoption checklist</h1>
+      <div class="grid-col-fill share-checklist-container margin-bottom-05">
+        <a target="_blank"
+           href="mailto:?subject=<%= email_checklist_subject(@practice) %>&body=<%= email_checklist_body(@practice) %>" class="link-primary text-super">
+          <i class="fas fa-external-link-alt"></i>&nbsp;
+          Share Checklist
+        </a>
+      </div>
+    </div>
+    <p class="margin-0 font-sans-lg grid-col-10">
+      Here is a step-by-step guide to give you the best chance of successfully adopting this practice.
+      After acknowledging you’ve completed the following checklist, we will put you in contact with the team members of this practice
+      for further adoption details.
     </p>
   </div>
 </section>
@@ -19,26 +30,6 @@
     <div class="grid-container margin-bottom-6">
       <div class="grid-row">
         <div class="grid-col-7 margin-right-6">
-          <div class="grid-container padding-x-0">
-            <div class="grid-row">
-              <div class="grid-col-3">
-                <h2 class="font-sans-xl margin-bottom-6 margin-top-0 margin-left-0">
-                  Checklist
-                </h2>
-              </div>
-              <div class="grid-col-9">
-                <div class="margin-bottom-6 margin-top-0 margin-left-2" style="line-height: 3rem;">
-                  <a target="_blank"
-                     href="mailto:?subject=<%= email_checklist_subject(@practice) %>&body=<%= email_checklist_body(@practice) %>" class="link-primary">
-                    <i class="fas fa-external-link-alt"></i>
-                    Share Checklist
-                  </a>
-                </div>
-                
-              </div>
-            </div>
-            
-          </div>
           <!-- <button type="button" id="print-checklist-button" role="button" class="dm-button-secondary margin-bottom-205">Print Checklist
           </button> -->
 
