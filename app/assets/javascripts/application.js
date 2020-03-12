@@ -48,4 +48,5 @@
 //= require arrive.min
 //= require html5sortable
 //= require search
-//= require objectFitPolyfill.min
+//= require modernizr-custom
+//=require object_fit_polyfill
