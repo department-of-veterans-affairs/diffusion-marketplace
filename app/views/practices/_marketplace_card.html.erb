@@ -14,7 +14,7 @@
   <% if practice.main_display_image.present? %>
     <div class="<%= featured ? "featured-" : '' %>card-img-container">
       <%= link_to practice, 'aria-label': "Go to #{practice.name}", 'tabindex': '-1', 'aria-hidden': 'true' do %>
-        <img class="img grid-row <%= featured ? "featured-" : '' %>marketplace-card-header-<%= practice.id %> radius-top-sm marketplace-card-img" src="<%= practice.main_display_image_s3_presigned_url %>" data-object-fit="cover">
+        <img alt="<%= practice.name %> Marketplace Card Image" class="img grid-row <%= featured ? "featured-" : '' %>marketplace-card-header-<%= practice.id %> radius-top-sm marketplace-card-img" src="<%= practice.main_display_image_s3_presigned_url %>">
       <% end %>
     </div>
   <% else %>
