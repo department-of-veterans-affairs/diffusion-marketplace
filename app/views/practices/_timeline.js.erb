@@ -5,16 +5,20 @@ var MILESTONE_MAX_LENGTH = 100;
 function getMilestoneCharacterCountOnPageLoad() {
 
     <% @practice.timelines.each do |t| %>
-        var milestoneTextarea = $("textarea[counter-id='milestone_<%= t.id %>_textarea']");
-        var milestoneCharacterSpan = $("#milestone_<%= t.id %>_character_count");
-        var milestoneCurrentLength = milestoneTextarea.val().length;
-        var milestoneCharacterCounter = '(' + milestoneCurrentLength + '/' + MILESTONE_MAX_LENGTH + ' characters)';
+      <% if t.milestones.any? %>
+        <% t.milestones.each do |m| %>
+            var milestoneTextarea = $("textarea[counter-id='milestone_<%= m.id %>_textarea']");
+            var milestoneCharacterSpan = $("#milestone_<%= m.id %>_character_count");
+            var milestoneCurrentLength = milestoneTextarea.val().length;
+            var milestoneCharacterCounter = '(' + milestoneCurrentLength + '/' + MILESTONE_MAX_LENGTH + ' characters)';
 
-        milestoneCharacterSpan.text(milestoneCharacterCounter);
+            milestoneCharacterSpan.text(milestoneCharacterCounter);
 
-        if (milestoneCurrentLength >= MILESTONE_MAX_LENGTH) {
-            milestoneCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
-        }
+            if (milestoneCurrentLength >= MILESTONE_MAX_LENGTH) {
+                milestoneCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+            }
+          <% end %>
+        <% end %>
     <% end %>
 }
 
