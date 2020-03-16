@@ -42,6 +42,7 @@ function milestoneCharacterCounter() {
 function showFieldsOnPageLoad() {
     <% if @practice.timelines.empty? %>
         $('.add-timeline-link').click();
+        $('.add-milestone-link').click();
         $('.practice-editor-timeline-li ').appendTo('#sortable_timelines');
         initSortable('#sortable_timelines');
     <% end %>

@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'Practice editor', type: :feature, js: true do
     before do
         @admin = User.create!(email: 'toshiro.hitsugaya@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-        @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline')
+        @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', number_adopted: 1, date_initiated: Date.new(2011, 12, 31), main_display_image: sample_file())
         @practice_partner = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative', icon: 'fas fa-heart', color: '#E4A002')
         @admin.add_role(User::USER_ROLES[0].to_sym)
     end
@@ -20,6 +20,16 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_content('Overview')
             expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/instructions")
             expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/origin")
+            expect(page).to have_field('Month', with: '12')
+            expect(page).to have_field('Year', with: '2011')
+            expect(page).to have_field('practice_number_adopted', with: '1')
+            expect(page).to have_css("img[src*='SpongeBob.png']")
+            expect(page).to have_content('Upload new photo')
+            expect(page).to have_content('Remove photo')
+        end
+
+        it 'should not have a link to the collaborators page' do
+            expect(page).not_to have_link(href: "/practices/#{@practice.slug}/edit/collaborators")
         end
 
         it 'should allow the user to update the data on the page' do
@@ -27,12 +37,31 @@ describe 'Practice editor', type: :feature, js: true do
             fill_in('practice_tagline', with: 'Super duper')
             select('Alabama', :from => 'editor_state_select')
             select('Birmingham VA Medical Center', :from => 'editor_facility_select')
+            select('October', :from => 'editor_date_intiated_month')
+            select('1970', :from => 'editor_date_intiated_year')
+            fill_in('practice_number_adopted', with: '15')
             fill_in('practice_summary', with: 'This is the most super practice ever made')
             find('#practice_partner_1_label').click
+            check('practice_delete_main_display_image', allow_label_click: true)
             @save_button.click
             expect(page).to have_field('practice_name', with: 'A super practice')
             expect(page).to have_field('practice_tagline', with: 'Super duper')
             expect(page).to have_field('practice_summary', with: 'This is the most super practice ever made')
+            expect(page).to have_field('Month', with: '10')
+            expect(page).to have_field('Year', with: '1970')
+            expect(page).to have_field('practice_number_adopted', with: '15')
+            expect(page).not_to have_css("img[src*='SpongeBob.png']")
+            expect(page).not_to have_content('Remove photo')
+        end
+
+        it 'should allow the user to upload a new practice thumbnail' do
+            attach_file('practice_main_display_image', File.absolute_path('./spec/fixtures/SpongeBob.png'))
+            expect(page).to have_css("img[src*='SpongeBob.png']")
+            expect(page).to have_content('Upload new photo')
+        end
+
+        def sample_file(filename = 'SpongeBob.png')
+            File.new("spec/fixtures/#{filename}")
         end
 
         # it 'should show an alert window if no practice partners were chosen' do

@@ -4,8 +4,6 @@ var reloadWithTurbolinks = (function () {
   function reload () {
       scrollPosition = [ window.pageXOffset, window.pageYOffset ];
       Turbolinks.visit(window.location.toString(), { action: 'replace' });
-
-      console.log('create referrer', document.referrer);
   }
 
   document.addEventListener('turbolinks:load', function () {

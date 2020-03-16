@@ -123,7 +123,23 @@ aws configure set default.region $REGION
 aws configure set default.output json
 
 # Login to AWS Elastic Container Registry
-eval $(aws ecr get-login --no-include-email --region ${REGION})
+echo 'logging into aws ecr'
+eval $(AWS_ACCOUNT_ID=${AWS_ACCOUNT_ID} AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} aws ecr get-login --no-include-email --region ${REGION})
+
+# create the ECR repo if it does not exist yet
+aws ecr describe-repositories --repository-names ${NAME} || aws ecr create-repository --repository-name ${NAME}
+
+# create S3 bucket if it does not exist yet
+echo "Checking S3 bucket exists..."
+#Some sort of error happened with s3 check
+if aws s3 ls "s3://$EB_BUCKET" 2>&1 | grep -q 'NoSuchBucket'
+then
+    echo "bucket does not exist or permission is not there to view it."
+    echo "creating s3 bucket"
+    aws s3api create-bucket --bucket=$EB_BUCKET --region=$REGION --create-bucket-configuration LocationConstraint=$REGION
+else
+    echo "bucket exists, continuing on..."
+fi
 
 # Build the image
 docker build -t $NAME:$VERSION --build-arg S3_BUCKET_NAME=$S3_BUCKET_NAME --build-arg AWS_ACCESS_KEY_ID=AWS_ACCESS_KEY_ID --build-arg AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY --build-arg AWS_REGION=$REGION .

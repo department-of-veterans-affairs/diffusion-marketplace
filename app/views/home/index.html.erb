@@ -4,19 +4,19 @@
     <%= render "shared/messages" %>
 
     <div class="padding-x-9 margin-y-8 dm-background-white grid-row">
-      <div class="tablet:grid-col-fill">
+      <div class="tablet:grid-col-fill ie-welcome-container">
         <div class="tablet:grid-col-auto text-center">
           <h1 class="bold font-sans-2xl margin-0 margin-bottom-1">Welcome to the Diffusion Marketplace</h1>
         </div>
       </div>
       <div class="grid-row padding-x-9">
         <div class="tablet:grid-col-fill text-center">
-          <p class="measure-none margin-bottom-3 font-sans-lg padding-x-4">
+          <p class="measure-none margin-bottom-3 font-sans-lg padding-x-4 line-height-sans-505">
             This site is designed to help spread important and life-saving promising practices throughout the VA Healthcare System.
           </p>
         </div>
       </div>
-      <div class="flex-fill">
+      <div class="flex-fill ie-search-bar-container">
         <form id="homepageSearchBar" name="searchForm" action="/search" method="get" class="usa-search usa-search--big">
           <div role="search">
             <input class="usa-input home-practice-search-field" id="homepage-search-field" type="search" name="search" required title="Type at least three characters to search." autocomplete="off">
@@ -24,7 +24,7 @@
               <span class="usa-search__submit-text">Search</span>
             </button>
           </div>
-          <label for="homepage-search-field" class="font-sans-xs text-left">
+          <label for="homepage-search-field" class="font-sans-xs text-left text-base">
             Search by practice name, facility name, clinical condition, or keyword
           </label>
         </form>
@@ -34,7 +34,7 @@
 
   <section class="margin-bottom-5">
     <div class="grid-container">
-      <h4 class="font-sans-xl margin-bottom-2 margin-top-0">Featured practices</h4>
+      <h4 class="font-sans-xl margin-bottom-1 margin-top-0 line-height-sans-205">Featured practices</h4>
       <p class="font-sans-lg margin-bottom-2">Here are a few featured practices from across the VA.</p>
       <div class="grid-row grid-gap-2 featured-practices">
         <% @featured_practices.each do |fp| %>
@@ -59,11 +59,14 @@
       <%= javascript_include_tag 'diffusion_history/_map_utilities', 'data-turbolinks-track': 'reload' %>
     <% end %>
       <section class="grid-container margin-bottom-4" id="map-of-diffusion">
-        <h4 class="font-sans-xl margin-bottom-2 margin-top-0">Map of diffusion</h4>
+        <h4 class="font-sans-xl margin-bottom-1 margin-top-0">Map of diffusion</h4>
         <p class="font-sans-lg margin-bottom-2">Explore how practices are being adopted across the country.</p>
         <div class="padding-y-105 padding-x-2 bg-gold radius-md margin-bottom-205">
           <span class="text-bold">Note:</span>&nbsp;<span>More practices will be added to this map in the next few months.</span>
         </div>
+        <button id="filterResultsTrigger" class="map-filters-trigger usa-button text-bold display-block margin-bottom-105 padding-2">
+          Filter results
+        </button>
         <div class="width-full position-relative">
           <div id="map" style="width: 100%; height: 633px;"></div>
           <%= render 'maps/home_map_filters' %>

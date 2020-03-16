@@ -1,27 +1,30 @@
 <% diffused_practices = @diffused_practices.map(&:practice).uniq.sort_by(&:name) %>
-<button id="filterResultsTrigger" class="map-filters-trigger usa-button--unstyled position-absolute text-bold display-block">
-  Filter results
-</button>
-<div id="filterResults" class="map-filters padding-y-0 padding-left-1 position-absolute display-none">
-  <div class="margin-top-2 margin-bottom-105">
-    <span id="filterClose" class="close text-base-darkest" tabindex="0" role="button" aria-label="Close map filters"><span class="fas fa-times"></span></span>
-    <h3 class="font-sans-lg bold-height-2 margin-0 ">Filter results</h3>
+<div id="filterResults" class="map-filters padding-y-0 position-absolute display-none">
+  <div class="padding-left-1">
+    <div class="margin-top-2 margin-bottom-105">
+      <span id="filterClose" class="close text-base-darkest" tabindex="0" role="button" aria-label="Close map filters"><span class="fas fa-times"></span></span>
+      <h3 class="font-sans-lg bold-height-2 margin-0 ">Filter results</h3>
+    </div>
+    <div class="margin-bottom-1">
+      <p class="margin-bottom-1 margin-top-0"><span id="facility-results-count"><%= @diffusion_histories.length %></span>
+        facility matches (of <%= @vamc_facilities.length %>)</p>
+      <p class="margin-0">
+        <span id="practice-results-count">
+          <%= diffused_practices.length %>
+        </span>
+        practice matched (of <%= diffused_practices.length %>)
+      </p>
+    </div>
+    <button type="button" class="usa-button--unstyled" id="allMarkersButton">Reset filters</button>
+    <div class="margin-y-105">
+      <button type="submit" class="usa-button padding-2 update-map-results-button">Update results</button>
+    </div>
   </div>
-  <div class="margin-bottom-1">
-    <p class="margin-bottom-1 margin-top-0"><span id="facility-results-count"><%= @diffusion_histories.length %></span>
-      facility matches (of <%= @vamc_facilities.length %>)</p>
-    <p class="margin-0">
-      <span id="practice-results-count">
-        <%= diffused_practices.length %>
-      </span>
-      practice matched (of <%= diffused_practices.length %>)
-    </p>
-  </div>
-  <button type="button" class="usa-button--unstyled margin-bottom-105" id="allMarkersButton">Reset filters</button>
+  <hr class="flex-fill height-2px border border-base-lighter bg-base-lighter section-line margin-0">
 
-  <form id="mapFilters" name="mapFilters" class="">
+  <form id="mapFilters" name="mapFilters" class="padding-left-1">
     <div class="map-filters-content">
-      <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0">Practices</h4>
+      <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-105">Practices</h4>
       <div id="practice-list-container" class="margin-bottom-2">
         <fieldset>
           <legend class="usa-sr-only">Practices</legend>
@@ -136,9 +139,6 @@
           <% end %>
         </fieldset>
       </div>
-    </div>
-    <div class="text-center padding-y-1">
-      <button type="submit" class="usa-button usa-button-primary">Update results</button>
     </div>
   </form>
 </div>

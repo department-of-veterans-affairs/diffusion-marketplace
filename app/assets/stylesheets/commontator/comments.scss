@@ -1,3 +1,5 @@
+@import "../dm/variables/colors";
+
 .commontator .comment {
   &, .body blockquote {
     border: none;
@@ -70,11 +72,11 @@
   .vote-count {
     font-size: 100%;
     margin-right: 9px;
-    color: #71767A;
+    color: $dm-color-gray;
   }
 
   .blocked {
-    color: #71767A;
+    color: $dm-color-gray;
   }
 
   .body {
@@ -96,7 +98,7 @@
 
   .reply {
     a {
-      color: #71767A;
+      color: $dm-color-gray;
     }
     .new-comment {
       width: 100%;
@@ -135,27 +137,19 @@ h2 {
   margin-bottom: 0;
 }
 
-// h4 {
-//   margin: 10px 0 16px 0;
-// }
-
 .comment-author-job-title {
   font-size: 16.96px;
   line-height: 26px;
   color: gray;
 }
 
-// .fa-edit, .delete, .undelete {
-//   margin-right: 11px;
-// }
-
 .edit-comment-icon, .fa-trash-alt, .fa-trash-restore-alt {
-  color: #71767A;
+  color: $dm-color-gray;
   text-decoration: none;
 }
 
 .edit-comment-icon:hover, .fa-trash-alt:hover, .fa-trash-restore-alt:hover {
-  color: #565c65;
+  color: $dm-color-base-dark;
 }
 
 body {
@@ -180,17 +174,6 @@ body {
   }
 }
 
-// h5 {
-//   margin-top: 0;
-//   font-size: 16.96px;
-//   cursor: pointer;
-
-//   &:hover {
-//     color: #005EA2;
-//     text-decoration: underline;
-//   }
-// }
-
 .vote-disabled:hover {
   color: #C9C9C9;
 }
@@ -209,7 +192,7 @@ body {
 }
 
 .empty-vote {
-  color: #71767A;
+  color: $dm-color-gray;
 }
 
 .vote-disabled {
@@ -247,7 +230,7 @@ body {
 .comments-show-hide-button {
 
   &:disabled {
-    color: #71767A;
+    color: $dm-color-gray;
     background-color: initial;
   }
 }
@@ -257,9 +240,9 @@ body {
 }
 
 .report-abuse-submit {
-    border: 2px solid #005ea2 !important;
+    border: 2px solid $dm-color-primary-blue !important;
   &:hover {
-    border: 2px solid #1A4480 !important;
+    border: 2px solid $dm-color-primary-dark-blue !important;
   }
   &:focus {
     outline-offset: 0 !important;
@@ -278,13 +261,8 @@ body {
   color: #E41D3D;
 }
 
-//#team-member:checked + .team-member-label::before, #verified-implementer:checked + .implementer-label::before {
-//  box-shadow: 0 0 0 2px #FFBE2E, inset 0 0 0 2px white !important;
-//  background-color: #FFBE2E !important;
-//}
-
 .usa-radio__input:focus + .team-member-label::before, .usa-radio__input:focus + .implementer-label::before {
-  outline: 0.25rem solid #FFBE2E !important;
+  outline: 0.25rem solid $dm-color-medium-yellow !important;
   outline-offset: 0.25rem !important;
 }
 
@@ -309,19 +287,19 @@ body {
 }
 
 ::-webkit-input-placeholder {
-  color: #71767A !important;
+  color: $dm-color-gray !important;
 }
 
 :-moz-placeholder { /* Firefox 18- */
-  color: #71767A !important;
+  color: $dm-color-gray !important;
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
-  color: #71767A !important;
+  color: $dm-color-gray !important;
 }
 
 :-ms-input-placeholder {
-  color: #71767A !important;
+  color: $dm-color-gray !important;
 }
 
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
@@ -331,7 +309,7 @@ body {
 }
 
 .more-link {
-  color: #005ea2 !important;
+  color: $dm-color-primary-blue !important;
 
   &:hover {
     text-decoration: none !important
@@ -357,7 +335,7 @@ body {
 }
 
 .fa-user-circle {
-  color: #162e51 !important;
+  color: $dm-color-darker-blue !important;
   text-align: center;
 }
 
