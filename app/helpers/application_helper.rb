@@ -3,6 +3,14 @@ module ApplicationHelper
     date.in_time_zone.strftime "%B %Y"
   end
 
+  def date_get_month(date)
+    date.strftime('%m').to_i
+  end
+
+  def date_get_year(date)
+    date.strftime('%Y').to_i
+  end
+
   def content_type(attachment)
     return 'DOCX' if is_word_doc?(attachment)
     'PDF' if is_pdf?(attachment)
@@ -86,7 +94,7 @@ module ApplicationHelper
   end
 
   def email_checklist_body(practice)
-    raw("Let's take the next steps to implement #{practice.name}: #{practice.tagline}, from the VA Diffusion Marketplace: %0D%0A%0D%0A#{ENV['HOSTNAME']}/practices/#{practice.slug}/next-steps%0D%0A%0D%0AAbout #{practice.name}: %0D%0A%0D%0A#{practice.description}%0D%0A%0D%0A#{practice.summary}%0D%0A%0D%0A")
+    raw("Let's take the next steps to implement #{practice.name}: #{practice.tagline}, from the VA Diffusion Marketplace: %0D%0A%0D%0A#{ENV['HOSTNAME']}/practices/#{practice.slug}/planning-checklist%0D%0A%0D%0AAbout #{practice.name}: %0D%0A%0D%0A#{practice.summary}%0D%0A%0D%0A")
   end
 
   def show_errors(object, field_name)

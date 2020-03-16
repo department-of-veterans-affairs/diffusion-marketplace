@@ -6,36 +6,23 @@
         return keys[(keys.indexOf(key) + 1)];
     }
 
+    function addActiveClass(selector) {
+        $(selector).removeClass('side-nav-inactive');
+        $(selector).addClass('side-nav-active');
+    }
+    function removeActiveClass(selector) {
+        $(selector).removeClass('side-nav-active');
+        $(selector).addClass('side-nav-inactive');
+    }
+
     function highlightSidebarSectionWhenInView() {
-        // const sections = {
-        //     '#overview': '.sidebar-overview',
-        //     '#origin': '.sidebar-origin',
-        //     '#impact': '.sidebar-impact',
-        //     '#resources_required': '.sidebar-resources',
-        //     '#complexity': '.sidebar-complexity',
-        //     '#timeline_and_checklist': '.sidebar-timeline',
-        //     '#risk_and_mitigation': '.sidebar-risk-miti',
-        //     '#contact': '.sidebar-contact',
-        //     '#comments': '.sidebar-comments',
-        // };
         let sections = {};
         const sideNavHeaders = $('.nav-header');
         sideNavHeaders.each(function() {
             const headerSelector = `#${this.id}`;
             sections[headerSelector] = `.sidebar-${this.id}`;
         });
-        const hoverCss = {
-            'font-weight': 'bold',
-            'border-left': '4px solid #005EA2',
-            'color': 'black',
-            'background-color': 'transparent'
-        };
-        const nonHoverCss = {
-            'font-weight': 'normal',
-            'border-left': 'none',
-            'color': 'none',
-            'background-color': 'transparent'
-        };
+
         $(window).on('scroll', function () {
             let viewportTop = $(window).scrollTop();
             let activeItem = false;
@@ -45,16 +32,16 @@
                 if (nextSection) {
                     let nextSectionPosition = $(nextSection).offset().top + (-50);
                     if (viewportTop >= sectionPosition && viewportTop < nextSectionPosition && !activeItem) {
-                        $(sections[s]).css(hoverCss);
+                        addActiveClass(sections[s]);
                         activeItem = true;
                     } else {
-                        $(sections[s]).css(nonHoverCss);
+                        removeActiveClass(sections[s]);
                     }
                 } else if (viewportTop >= sectionPosition && !activeItem) {
-                    $(sections[s]).css(hoverCss);
+                    addActiveClass(sections[s]);
                     activeItem = true;
                 } else {
-                    $(sections[s]).css(nonHoverCss);
+                    removeActiveClass(sections[s]);
                 }
             });
         })

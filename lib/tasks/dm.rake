@@ -13,8 +13,6 @@ namespace :dm do
   desc 'Set up data using the full flow of the importer'
   task :full_import => :environment do
     Rake::Task['dm:db_setup'].execute
-    FileUtils.rm_rf("#{Rails.root}/tmp/surveymonkey_responses")
-    Rake::Task['surveymonkey:download_response_files'].execute
     Rake::Task['importer:import_answers'].execute
     Rake::Task['importer:initial_featured'].execute
     Rake::Task['diffusion_history:all'].execute

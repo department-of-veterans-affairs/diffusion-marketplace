@@ -51,7 +51,6 @@
 
 
     <title>Diffusion Marketplace</title>
-    <!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <meta name="viewport" content= "width=device-width, initial-scale=1.0">
@@ -61,6 +60,7 @@
     <%= javascript_include_tag "//cdn.rawgit.com/printercu/google-maps-utility-library-v3-read-only/master/infobox/src/infobox_packed.js", 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag "//cdn.rawgit.com/googlemaps/js-rich-marker/gh-pages/src/richmarker-compiled.js", 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <meta name="turbolinks-cache-control" content="no-preview">
     <%= yield(:head_tags) %>
     <%= yield(:top_practice_img_styles) %>

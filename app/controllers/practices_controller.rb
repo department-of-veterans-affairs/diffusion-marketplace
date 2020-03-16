@@ -10,8 +10,12 @@ class PracticesController < ApplicationController
                                            :documentation, :resources, :complexity,
                                            :timeline, :risk_and_mitigation,
                                            :contact, :checklist, :published,
-                                           :publication_validation
-  ]
+                                           :publication_validation]
+  before_action only: [:update] do
+    if date_initiated_params_exist(params[:date_initiated])
+      params[:practice][:date_initiated] = create_date_initiated(params[:date_initiated])
+    end
+  end
 
   # GET /practices
   # GET /practices.json
@@ -110,7 +114,6 @@ class PracticesController < ApplicationController
   # PATCH/PUT /practices/1
   # PATCH/PUT /practices/1.json
   def update
-    debugger
     strong_params = practice_params
     updated = @practice.update(strong_params)
     
@@ -160,38 +163,14 @@ class PracticesController < ApplicationController
           end
         end
       end
-
-
-      # Change impact photo to main display image
-      @practice.impact_photos.each do |ip|
-        if ip.is_main_display_image
-          
-          selected_impact_photo = @practice.impact_photos.find(ip[:id]).attachment
-          @practice.update_attributes(main_display_image: selected_impact_photo)
-          
+      
+      # Remove main display image
+      if params[:practice][:delete_main_display_image].present?
+        if params[:practice][:delete_main_display_image] == 'true'
+          @practice.update_attributes(main_display_image: nil)
         end
       end
-      
-      if @practice.impact_photos.where(is_main_display_image: true).empty? || @practice.impact_photos.empty?
-        @practice.update_attributes(main_display_image: nil)
-      end
 
-      if @practice.main_display_image.blank? && @practice.impact_photos.any?
-        impact_photo = @practice.impact_photos.find_by(position: 1)
-        @practice.update_attributes(main_display_image: impact_photo.attachment)
-        impact_photo.update_attributes(is_main_display_image: true)
-      end
-
-
-      # Aurora's code
-      # if params[:practice][:impact_photos_attributes].present?
-      #   save_as_main_display_image = strong_params[:impact_photos_attributes].to_hash.find{|key, hash| hash["save_as_main_display_image"] == 'on'}
-      #   if save_as_main_display_image.present?
-      #     selected_impact_photo = @practice.impact_photos.find(strong_params[:save_as_main_display_image][:id])
-      #     @practice.update_attributes(main_display_image: selected_impact_photo.attachment) if selected_impact_photo.present?
-      #   end
-      # end
-      
       partner_keys.each do |key|
         next if @practice.practice_partners.ids.include? key.to_i
 
@@ -314,6 +293,7 @@ class PracticesController < ApplicationController
 
   # /practices/slug/collaborators
   def collaborators
+    redirect_to practice_overview_path(@practice)
   end
 
   # /practices/slug/overview
@@ -381,7 +361,7 @@ class PracticesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def practice_params
-    params.require(:practice).permit(:need_training, :tagline, :process, :it_required, :need_new_license, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :cost_to_implement_aggregate, :sustainability_aggregate, :veteran_satisfaction_aggregate, :difficulty_aggregate,
+    params.require(:practice).permit(:need_training, :tagline, :process, :it_required, :need_new_license, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :cost_to_implement_aggregate, :sustainability_aggregate, :veteran_satisfaction_aggregate, :difficulty_aggregate, :date_initiated,
                                      :number_adopted, :number_departments, :number_failed, :implementation_time_estimate, :implementation_time_estimate_description, :implentation_summary, :implentation_fte,
                                      :training_provider, :training_length, :training_test, :training_provider_role, :required_training_summary, :support_network_email,
                                      :main_display_image, :main_display_image_original_w, :main_display_image_original_h, :main_display_image_crop_x, :main_display_image_crop_y, :main_display_image_crop_w, :main_display_image_crop_h,
@@ -466,4 +446,12 @@ class PracticesController < ApplicationController
 
     practices_array.to_json.html_safe
   end
+end
+
+def create_date_initiated (date_initiated)
+  Date.new(date_initiated[:year].to_i, date_initiated[:month].to_i)
+end
+
+def date_initiated_params_exist (date_initiated)
+  date_initiated.present? && !(date_initiated.values.include? nil)
 end

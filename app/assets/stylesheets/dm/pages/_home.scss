@@ -19,5 +19,15 @@
   float: left;
 }
 
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .ie-welcome-container {
+    width: 100% !important;
+  }
+
+  .ie-search-bar-container {
+    width: 100%;
+  }
+}
+
 
 

@@ -43,7 +43,7 @@ describe 'Practice editor', type: :feature, js: true do
             @save_button.click
             expect(page).to have_content('Practice was successfully updated')
             expect(page).to have_field('practice[timelines_attributes][0][timeline]', with: @time_frame)
-            expect(page).to have_field('practice[timelines_attributes][0][milestone]', with: @milestone)
+            expect(page).to have_field('practice[timelines_attributes][0][milestones_attributes][0][description]', with: @milestone)
         end
 
         it 'should allow the user to add multiple timeline entries' do
@@ -56,9 +56,22 @@ describe 'Practice editor', type: :feature, js: true do
 
             expect(page).to have_content('Practice was successfully updated')
             expect(page).to have_field('practice[timelines_attributes][0][timeline]', with: @time_frame)
-            expect(page).to have_field('practice[timelines_attributes][0][milestone]', with: @milestone)
+            expect(page).to have_field('practice[timelines_attributes][0][milestones_attributes][0][description]', with: @milestone)
             expect(page).to have_field('practice[timelines_attributes][1][timeline]', with: 'Test timeline 2')
-            expect(page).to have_field('practice[timelines_attributes][1][milestone]', with: 'Test milestone 2')
+            expect(page).to have_field('practice[timelines_attributes][1][milestones_attributes][0][description]', with: 'Test milestone 2')
+        end
+
+        it 'should allow the user to add multiple milestones to one timeline entry' do
+            fill_in_timeline_fields
+            find('.add-milestone-link').click
+
+            all('.milestone-textarea').last.set('Test milestone 2')
+            @save_button.click
+
+            expect(page).to have_content('Practice was successfully updated')
+            expect(page).to have_field('practice[timelines_attributes][0][timeline]', with: @time_frame)
+            expect(page).to have_field('practice[timelines_attributes][0][milestones_attributes][0][description]', with: @milestone)
+            expect(page).to have_field('practice[timelines_attributes][0][milestones_attributes][1][description]', with: 'Test milestone 2')
         end
 
         it 'should allow the user to delete timeline entries' do
@@ -68,6 +81,24 @@ describe 'Practice editor', type: :feature, js: true do
             find('.timeline-trash').click
             @save_button.click
             
+            expect(page).to have_content('Practice was successfully updated')
+            expect(page).to have_field('Time frame:', with: nil)
+            expect(page).to have_field('Milestone:', with: nil)
+        end
+
+        it 'should not allow the user to create a timeline entry without any milestone descriptions' do
+            fill_in('Time frame:', with: @time_frame)
+            @save_button.click
+
+            expect(page).to have_content('Practice was successfully updated')
+            expect(page).to have_field('Time frame:', with: nil)
+            expect(page).to have_field('Milestone:', with: nil)
+        end
+
+        it 'should not allow the user to create a timeline entry without a timeline' do
+            fill_in('Milestone:', with: @milestone)
+            @save_button.click
+
             expect(page).to have_content('Practice was successfully updated')
             expect(page).to have_field('Time frame:', with: nil)
             expect(page).to have_field('Milestone:', with: nil)
