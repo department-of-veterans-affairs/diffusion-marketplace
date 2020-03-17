@@ -19,6 +19,7 @@
 | `rails importer:initial_featured` | sets up the "original" featured practices to show up on the landing page - depends on spreadsheet being imported | 
 | `rails surveymonkey:download_response_files` (DEPRECATED) | Rake task to download files from our SurveyMonkey practice submission form. **Do not use this anymore. Ever.**  | 
 | `rails diffusion_history:all`| Imports all of the diffusion history we have so far for practices - used to populate the geolocation feature (Practice <-> Facility mappings) |
+| `rails milestones:milestone_transfer` | Transfers all of the original timeline entry milestones to the new milestone model  |
 #### Ruby version
 
 - `ruby 2.6.3`
@@ -137,6 +138,7 @@ This will run:
 2. `rails importer:import_answers` - imports the initial practice data the Diffusion Marketplace team collected via Survey Monkey, images and all~
 3. `rails importer:initial_featured` - sets the first three initial featured practices for the homepage
 4. `rails diffusion_history:all` - set up the initial diffusion history for the first five practices. Individual commands can be found here:  `lib/tasks/diffusion_history.rake`
+5. `rails milestones:milestone_transfer` - transfers original timeline entry milestones to the new milestone model
 
 To reset all of the data and do the process all over again, run:
 ```bash
