@@ -40,12 +40,18 @@ function milestoneCharacterCounter() {
 }
 
 function showFieldsOnPageLoad() {
-    <% if @practice.timelines.empty? %>
-        $('.add-timeline-link').click();
-        $('.add-milestone-link').click();
-        $('.practice-editor-timeline-li ').appendTo('#sortable_timelines');
-        initSortable('#sortable_timelines');
+  <% if @practice.timelines.empty? %>
+    $('.add-timeline-link').click();
+    $('.add-milestone-link').click();
+    $('.practice-editor-timeline-li ').appendTo('#sortable_timelines');
+    initSortable('#sortable_timelines');
+  <% else %>
+    <% @practice.timelines.each do |tl| %>
+      <% if tl.milestones.empty? %>
+        $("#timeline_<%= tl.id %>_milestone_link").click();
+      <% end %>
     <% end %>
+  <% end %>
 }
 
 function executeMilestoneFunctions() {
