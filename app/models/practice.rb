@@ -139,8 +139,12 @@ class Practice < ApplicationRecord
   accepts_nested_attributes_for :timelines, allow_destroy: true, reject_if: proc { |attributes|
     reject = attributes['timeline'].blank?
     ma_reject = false
-    attributes['milestones_attributes'].each do |i, ma|
-      ma_reject = ma['description'].blank?
+    if attributes['milestones_attributes'].present?
+      attributes['milestones_attributes'].each do |i, ma|
+        ma_reject = ma['description'].blank?
+      end
+    else
+      ma_reject = true
     end
     reject || ma_reject
   }
