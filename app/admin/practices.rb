@@ -1,5 +1,7 @@
 ActiveAdmin.register Practice do
-  actions :all, except: [:new, :create, :destroy]
+  actions :all, except: [:destroy]
+  permit_params :name, :user_email
+  config.create_another = true
 
   scope :published
   scope :unpublished
@@ -9,8 +11,19 @@ ActiveAdmin.register Practice do
     id_column
     column :name
     column :support_network_email
+    column(:user) {|practice| practice.user&.email}
     column :created_at
     actions
+  end
+
+
+  form do |f|
+    f.semantic_errors *f.object.errors.keys# shows errors on :base
+    f.inputs  do
+      f.input :name
+      f.input :user, label: 'User email', as: :string, input_html: {name: 'user_email'}
+    end        # builds an input field for every attribute
+    f.actions         # adds the 'Submit' and 'Cancel' buttons
   end
 
   show do
@@ -18,83 +31,8 @@ ActiveAdmin.register Practice do
       row :id
       row(:name)    { |practice| link_to(practice.name, practice_path(practice)) }
       row :slug
-      row :short_name
-      row :description
-      row :position
-      row :cboc
-      row :program_office
-      row :initiating_facility
-      row :vha_visn
-      row :medical_center
-      row :number_adopted
-      row :number_failed
-      row :business_case_summary
-      row :support_network_email
-      row :va_pulse_link
-      row :additional_notes
-      row :date_initiated
-      row :impact_veteran_experience
-      row :impact_veteran_satisfaction
-      row :impact_other_veteran_experience
-      row :impact_financial_estimate_saved
-      row :impact_financial_per_veteran
-      row :impact_financial_roi
-      row :impact_financial_other
-      row :phase_gate
-      row :successful_implementation
-      row :target_measures
-      row :target_success
-      row :implementation_time_estimate
-      row :implementation_time_estimate_description
-      row :implentation_summary
-      row :implementation_fte
-      row :tagline
-      row :gold_status_tagline
-      row :summary
-      row :risk_level_aggregate
-      row :cost_savings_aggregate
-      row :cost_to_implement_aggregate
-      row :veteran_satisfaction_aggregate
-      row :difficulty_aggregate
-      row :sustainability_aggregate
-      row :origin_title
-      row :origin_story
-      row :need_additional_staff
-      row :need_training
-      row :need_policy_change
-      row :need_new_license
-      row :training_test
-      row :training_test_details
-      row :training_provider
-      row :required_training_summary
-      row :training_length
-      row :facility_complexity_level
-      row :main_display_image_original_w
-      row :main_display_image_original_h
-      row :main_display_image_crop_x
-      row :main_display_image_crop_y
-      row :main_display_image_crop_w
-      row :main_display_image_crop_h
-      row :origin_picture_original_w
-      row :origin_picture_original_h
-      row :origin_picture_crop_x
-      row :origin_picture_crop_y
-      row :origin_picture_crop_w
-      row :origin_picture_crop_h
-      row :number_departments
-      row :it_required
-      row :process
-      row :created_at
-      row :updated_at
-      row :main_display_image_file_name
-      row :main_display_image_content_type
-      row :main_display_image_file_size
-      row :main_display_image_updated_at
-      row :origin_picture_file_name
-      row :origin_picture_content_type
-      row :origin_picture_file_size
-      row :origin_picture_updated_at
-      row :user_id
+      row('Edit URL') { |practice| link_to(practice_overview_path(practice), practice_overview_path(practice)) }
+      row(:user) {|practice| link_to(practice.user&.email, admin_user_path(practice.user)) if practice.user.present?}
       row :published
       row :approved
     end
@@ -112,9 +50,32 @@ ActiveAdmin.register Practice do
   filter :support_network_email
 
   controller do
-    def edit
-      redirect_to edit_practice_path(resource)
+    before_create do |practice|
+      if params[:user_email].present?
+        set_practice_user(practice)
+      end
     end
+
+    before_update do |practice|
+      set_practice_user(practice) if params[:user_email].present?
+      practice.user = nil unless params[:user_email].present?
+    end
+
+    def set_practice_user(practice)
+      email = params[:user_email]
+      user = User.find_by(email: email)
+
+      # create a new user if they do not exist
+      user = User.new(email: email) if user.blank?
+
+      # set the user's attributes based on ldap entry
+      user.skip_password_validation = true
+      user.skip_va_validation = true
+      user.confirm
+      user.save
+      practice.user = user
+    end
+
 
     def find_resource
       scoped_collection.friendly.find(params[:id])
