@@ -66,6 +66,10 @@ class User < ApplicationRecord
                           1 uppercase, 1 lowercase, 1 digit and 1 special character'
   end
 
+  def to_s
+    "#{email}"
+  end
+
   def password_uniqueness
     return true unless encrypted_password_changed?
     return true if password.split('').uniq.length > 6
@@ -117,7 +121,6 @@ class User < ApplicationRecord
         base: LDAP_CONFIG['base']
     )
     if ldap.bind
-      logger.info "LDAP bind: #{ldap.inspect}"
       # Yay, the login credentials were valid!
       # Get the user's full name and return it
       ldap.search(
@@ -129,8 +132,6 @@ class User < ApplicationRecord
         return nil if entry[:mail].blank?
         email = entry[:mail][0].downcase
         user = User.find_by(email: email)
-
-        logger.info "user: #{user.inspect}"
 
         # create a new user if they do not exist
         user = User.new(email: email) if user.blank?
