@@ -1,5 +1,5 @@
 namespace :milestones do
-  desc "Transfer all milestone entries from timelines model to milestones model"
+  desc "Transfer all milestone entries from timelines model to milestone model"
 
   task milestones_transfer: :environment do
     timelines = Timeline.all
