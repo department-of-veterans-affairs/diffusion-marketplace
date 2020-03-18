@@ -53,6 +53,7 @@ ActiveAdmin.register Practice do
     before_create do |practice|
       if params[:user_email].present?
         set_practice_user(practice)
+        practice.approved = true
       end
     end
 
