@@ -16,6 +16,7 @@ namespace :dm do
     Rake::Task['importer:import_answers'].execute
     Rake::Task['importer:initial_featured'].execute
     Rake::Task['diffusion_history:all'].execute
+    Rake::Task['milestones:milestones_transfer'].execute
   end
 
   # rails dm:reset_up
