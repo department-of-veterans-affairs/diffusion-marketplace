@@ -5,7 +5,7 @@
     </div>
   </div>
 <% end %>
-<% if flash.present? %>
+<% if flash.present? && alert.blank? %>
   <% flash.each do |key, value| %>
     <% if key == 'notice' then
          key = 'info'

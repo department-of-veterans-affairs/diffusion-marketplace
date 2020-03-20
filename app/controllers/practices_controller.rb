@@ -194,6 +194,7 @@ class PracticesController < ApplicationController
         format.html {redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.'}
         format.json {render :show, status: :ok, location: @practice}
       else
+        format.html {redirect_back fallback_location: root_path, alert: 'Practice could not be updated.'}
         format.json {render json: @practice.errors, status: :unprocessable_entity}
       end
     end
@@ -341,7 +342,8 @@ class PracticesController < ApplicationController
 
   def publication_validation
     respond_to do |format|
-      if @practice.origin_story.nil?
+      if @practice.name.present? && @practice.tagline.present? && @practice.initiating_facility.present? && @practice.date_initiated.present? && @practice.summary.present? && @practice.support_network_email.present?
+        @practice.update_attributes(published: true)
         flash[:notice] = "#{@practice.name} has been successfully published to the Diffusion Marketplace"
         # format.html { redirect_to practice_path(@practice), notice: flash[:notice] }
         format.js {render js: "window.location='#{practice_path(@practice)}'"}
@@ -449,7 +451,9 @@ class PracticesController < ApplicationController
 end
 
 def create_date_initiated (date_initiated)
-  Date.new(date_initiated[:year].to_i, date_initiated[:month].to_i)
+  if date_initiated[:year].present? && date_initiated[:month].present?
+    Date.new(date_initiated[:year].to_i, date_initiated[:month].to_i)
+  end
 end
 
 def date_initiated_params_exist (date_initiated)
