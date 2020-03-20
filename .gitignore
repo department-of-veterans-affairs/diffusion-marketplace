@@ -54,3 +54,6 @@ public/system
 *.pem
 
 lib/assets/Diffusion_Marketplace.xlsx
+
+.rakeTasks
+.generators
