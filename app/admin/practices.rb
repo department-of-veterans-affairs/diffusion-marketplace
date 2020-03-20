@@ -62,7 +62,7 @@ ActiveAdmin.register Practice do
     end
 
     def set_practice_user(practice)
-      email = params[:user_email]
+      email = params[:user_email].downcase
       user = User.find_by(email: email)
 
       # create a new user if they do not exist
