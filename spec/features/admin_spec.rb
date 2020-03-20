@@ -37,7 +37,7 @@ describe 'The admin dashboard', type: :feature do
 
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_current_path(root_path)
-    expect(page).to have_content('Unauthorized Access!')
+    expect(page).to have_content('Unauthorized access!')
   end
 
   it 'should show the admin dashboard if logged in as an admin' do
