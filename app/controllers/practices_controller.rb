@@ -451,7 +451,7 @@ class PracticesController < ApplicationController
 end
 
 def create_date_initiated (date_initiated)
-  if date_initiated[:year].present? && date_initiated[:month].present?
+  if date_initiated && (date_initiated[:year].present? && date_initiated[:month].present?)
     Date.new(date_initiated[:year].to_i, date_initiated[:month].to_i)
   end
 end

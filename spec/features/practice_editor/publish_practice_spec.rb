@@ -18,13 +18,13 @@ describe 'Practice editor', type: :feature, js: true do
     end
 
     it 'Should display an error modal that contains missing required fields if any exist' do
-      @adoptions = '13'
-      fill_in('practice_number_adopted', with: @adoptions)
+      adoptions = '13'
+      fill_in('practice_number_adopted', with: adoptions)
       find('#practice_partner_1_label').click
       @save_button.click
 
       expect(page).to have_field('practice_name', with: 'A public practice')
-      expect(page).to have_field('practice_number_adopted', with: @adoptions)
+      expect(page).to have_field('practice_number_adopted', with: adoptions)
       expect(all('.partner-input').first).to be_checked
 
       @publish_button.click
@@ -37,33 +37,31 @@ describe 'Practice editor', type: :feature, js: true do
     end
 
     it 'Should publish the practice if all required fields are met' do
-      @tagline = 'Super duper'
-      @state = 'Alabama'
-      @facility = 'Birmingham VA Medical Center'
-      @initiated_month = 'October'
-      @initiated_year = '1970'
-      @summary = 'This is the most super practice ever made'
-      fill_in('practice_tagline', with: @tagline)
-      select(@state, :from => 'editor_state_select')
-      select(@facility, :from => 'editor_facility_select')
-      select(@initiated_month, :from => 'editor_date_intiated_month')
-      select(@initiated_year, :from => 'editor_date_intiated_year')
-      fill_in('Practice summary:', with: @summary)
+      tagline = 'Super duper'
+      initiated_month = 'October'
+      initiated_year = '1970'
+      summary = 'This is the most super practice ever made'
+      fill_in('practice_tagline', with: tagline)
+      select('Alabama', :from => 'editor_state_select')
+      select('Birmingham VA Medical Center', :from => 'editor_facility_select')
+      select(initiated_month, :from => 'editor_date_intiated_month')
+      select(initiated_year, :from => 'editor_date_intiated_year')
+      fill_in('Practice summary:', with: summary)
       @save_button.click
 
-      expect(page).to have_field('practice_tagline', with: @tagline)
-      expect(page).to have_field('practice_summary', with: @summary)
+      expect(page).to have_field('practice_tagline', with: tagline)
+      expect(page).to have_field('practice_summary', with: summary)
       expect(page).to have_field('Month', with: '10')
-      expect(page).to have_field('Year', with: @initiated_year)
+      expect(page).to have_field('Year', with: initiated_year)
       expect(page).to have_field('State', with: 'AL')
       expect(page).to have_field('Facility', with: '521')
 
       visit practice_contact_path(@practice)
-      @email = 'test@email.com'
-      fill_in('Email:', with: @email)
+      email = 'test@email.com'
+      fill_in('Email:', with: email)
       @save_button.click
 
-      expect(page).to have_field('Email:', with: @email)
+      expect(page).to have_field('Email:', with: email)
 
       @publish_button.click
       expect(page).to have_content('A public practice')
