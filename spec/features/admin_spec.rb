@@ -200,7 +200,7 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_current_path(admin_version_path(Version.last))
   end
 
-  fit 'should be able to create a new Practice and browse to the Practice' do
+  it 'should be able to create a new Practice and browse to the Practice' do
     login_as(@admin, scope: :user, run_callbacks: false)
     visit '/admin'
 
