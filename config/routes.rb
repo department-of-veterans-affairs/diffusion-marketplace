@@ -25,6 +25,7 @@ Rails.application.routes.draw do
     get '/edit/checklist', action: 'checklist', as: 'checklist'
     get '/edit/origin', action: 'origin', as: 'origin'
     get '/edit/adoptions', action: 'adoptions', as: 'adoptions'
+    get '/edit/create_or_update_diffusion_history/:practice_id', action: 'create_or_update_diffusion_history', as: 'create_or_update_diffusion_history'
     post '/publication_validation', action: 'publication_validation', as: 'publication_validation'
     get '/published', action: 'published', as: 'published'
     post '/commit', action: 'commit', as: 'commit'
