@@ -41,7 +41,6 @@
       color: black;
       background-color: transparent;
     }
-
   }
 }
 
@@ -353,8 +352,10 @@
   }
 }
 
-.editor-continue-link {
+.editor-continue-link, #practice-overview-save-edit {
+  color: white !important;
   line-height: 1 !important;
+
   &:visited {
     color: white !important;
   }
@@ -490,6 +491,7 @@
 .upload-main-display-image-link {
   color: $dm-color-primary-blue;
   text-decoration: underline;
+  margin-top: 0 !important;
 
   &:hover {
     color: $dm-color-primary-dark-blue;
@@ -541,6 +543,11 @@
 
 .practice-editor-impact-photo {
   max-width: 100% !important;
+  object-fit: cover;
+}
+
+.practice-editor-thumbnail-photo {
+  min-width: 100% !important;
   object-fit: cover;
 }
 
@@ -788,6 +795,16 @@
   color: inherit;
   background-color: transparent;
 }
+
+#practice-overview-crop-mode, #practice-overview-save-edit, #practice-overview-cancel-edit {
+  text-decoration: none;
+  margin: 0 0 0.5rem 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
 .add-milestone-link {
   width: auto !important;
 }

@@ -79,7 +79,7 @@ describe 'The user index', type: :feature do
 
     expect(page).to be_accessible.according_to :wcag2a, :section508
 
-    attach_file('Upload photo', Rails.root + 'spec/fixtures/SpongeBob.png')
+    attach_file('Upload photo', Rails.root + 'spec/assets/SpongeBob.png')
 
     click_button('Save changes')
 
@@ -100,7 +100,7 @@ describe 'The user index', type: :feature do
 
     expect(page).to be_accessible.according_to :wcag2a, :section508
 
-    attach_file('Upload photo', Rails.root + 'spec/fixtures/SpongeBob.txt')
+    attach_file('Upload photo', Rails.root + 'spec/assets/SpongeBob.txt')
 
     click_button('Save changes')
 

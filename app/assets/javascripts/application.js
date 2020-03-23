@@ -18,6 +18,7 @@
 //= require sticky
 //= require jquery.scrollTo
 //= require papercrop
+//= require cropper
 //= require activestorage
 //= require turbolinks
 //= require uswds/uswds

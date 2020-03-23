@@ -14,6 +14,7 @@ class Practice < ApplicationRecord
   attr_accessor :two_months_ago_commits
   attr_accessor :three_months_ago_commits
   attr_accessor :delete_main_display_image
+  attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
 
   def views
     Ahoy::Event.where_props(practice_id: id).count
@@ -53,7 +54,7 @@ class Practice < ApplicationRecord
 
   has_paper_trail
   # has_attached_file :main_display_image, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/:style/missing.png"
-  has_attached_file :main_display_image, styles: { thumb: '1280x720#' }
+  has_attached_file :main_display_image, styles: { thumb: '300x300>' }, :processors => [:cropper]
 
   def main_display_image_s3_presigned_url(style = nil)
     object_presigned_url(main_display_image, style)
@@ -65,7 +66,6 @@ class Practice < ApplicationRecord
     object_presigned_url(origin_picture, style)
   end
 
-  crop_attached_file :main_display_image, aspect: '16:9'
   crop_attached_file :origin_picture, aspect: '1:1'
   validates_attachment_content_type :main_display_image, content_type: /\Aimage\/.*\z/
   validates_attachment_content_type :origin_picture, content_type: /\Aimage\/.*\z/
