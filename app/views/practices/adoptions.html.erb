@@ -1,0 +1,81 @@
+<%= render 'breadcrumbs' %>
+<%= render 'practice_editor_sidenav' %>
+<div class="grid-container position-relative">
+  <div class="grid-row grid-gap practice-editor-min-height">
+    <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+
+    <div id="overview" class="desktop:grid-col-9 grid-col-12 p0">
+      <%= render "shared/messages" %>
+      <section class="usa-section padding-top-0 p2-bottom introduction">
+        <h1 class="font-sans-2xl line-height-sans-205">Adoptions</h1>
+        <h2 class="text-normal font-sans-lg line-height-36 margin-bottom-5">Share which facilities have successfully adopted your practice. Aim to update this data
+          quarterly.</h2>
+
+        <div class="font-sans-lg">
+          <div style="width:23%;display:inline-block;">
+            <h3 class="margin-top-0 margin-bottom-105">Status</h3>
+          </div>
+          <div style="width:40%;display:inline-block;">
+            <h3 class="margin-top-0 margin-bottom-105">Facility</h3>
+          </div>
+          <div style="width:29%;display:inline-block;">
+            <h3 class="margin-top-0 margin-bottom-105">Timeline</h3>
+          </div>
+          <div style="width:6%;display:inline-block;">
+            &nbsp;
+          </div>
+        </div>
+        <div class="usa-accordion">
+          <!-- Use the accurate heading level to maintain the document outline -->
+          <h2 class="usa-accordion__heading">
+            <button class="usa-accordion__button text-primary new line-height-sans-3"
+                    aria-expanded="false"
+                    aria-controls="a0">
+              Add new entry
+            </button>
+          </h2>
+          <div id="a0" class="usa-accordion__content usa-prose">
+            <p>Congress shall make no law respecting an establishment of religion, or prohibiting the free exercise
+              thereof; or abridging the freedom of speech, or of the press; or the right of the people peaceably to
+              assemble, and to petition the Government for a redress of grievances.</p>
+
+          </div>
+          <!-- start repeatable -->
+          <h2 class="usa-accordion__heading margin-top-105">
+            <button class="usa-accordion__button text-normal edit"
+                    aria-expanded="false"
+                    aria-controls="a1">
+              <span class="line-height-sans-505" style="width:23%;display:inline-block;vertical-align:top;">
+                In progress
+              </span>
+              <span class="line-height-sans-505" style="width:45%;display:inline-block;vertical-align:top;">
+                Corporal Michael J. Crescenz Veteran Affairs Medical Center
+              </span>
+              <span class="line-height-sans-505" style="width:29%;display:inline-block;vertical-align:top;">
+                12/2019 - TBD
+              </span>
+            </button>
+          </h2>
+          <div id="a1" class="usa-accordion__content usa-prose">
+            <p>Congress shall make no law respecting an establishment of religion, or prohibiting the free exercise
+              thereof; or abridging the freedom of speech, or of the press; or the right of the people peaceably to
+              assemble, and to petition the Government for a redress of grievances.</p>
+
+          </div>
+        </div>
+        <div class="grid-row margin-bottom-8">
+          <%= link_to practice_overview_path(@practice), class: 'usa-button usa-button--outline editor-back-to-link margin-right-1 padding-2 margin-bottom-5 text-no-underline' do %>
+            <i class="fas fa-chevron-left fa-sm text-no-underline margin-right-1"></i>Back
+          <% end %>
+          <%= link_to practice_origin_path(@practice), class: 'usa-button padding-2 editor-continue-link margin-right-1 margin-bottom-5' do %>
+            Continue<i class="fas fa-chevron-right fa-sm margin-left-1 text-no-underline"></i>
+          <% end %>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="margin-bottom-105">
+    <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
+  </div>
+</div>

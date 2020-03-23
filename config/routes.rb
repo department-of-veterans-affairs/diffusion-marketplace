@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     get '/edit/contact', action: 'contact', as: 'contact'
     get '/edit/checklist', action: 'checklist', as: 'checklist'
     get '/edit/origin', action: 'origin', as: 'origin'
+    get '/edit/adoptions', action: 'adoptions', as: 'adoptions'
     post '/publication_validation', action: 'publication_validation', as: 'publication_validation'
     get '/published', action: 'published', as: 'published'
     post '/commit', action: 'commit', as: 'commit'

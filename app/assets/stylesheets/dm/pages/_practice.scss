@@ -795,3 +795,20 @@
 .timeline-trash {
   right: 3px;
 }
+
+/* Adoptions */
+.usa-accordion__button[aria-expanded=false].edit {
+  background-image: asset_url('edit.svg'), linear-gradient(transparent, transparent);
+  background-position-x: 98%;
+  background-size: 22.5px 20px;
+}
+
+.usa-accordion__button.new {
+  &:hover {
+    color: $dm-color-primary-blue
+  }
+}
+
+.usa-accordion__heading:not(:first-child).margin-top-105 {
+  margin-top: 12px !important;
+}
