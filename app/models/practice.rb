@@ -66,7 +66,6 @@ class Practice < ApplicationRecord
     object_presigned_url(origin_picture, style)
   end
 
-  crop_attached_file :origin_picture, aspect: '1:1'
   validates_attachment_content_type :main_display_image, content_type: /\Aimage\/.*\z/
   validates_attachment_content_type :origin_picture, content_type: /\Aimage\/.*\z/
   validates :name, presence: { message: 'Practice name can\'t be blank'}

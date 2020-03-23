@@ -108,7 +108,6 @@ gem 'roo', '~> 2.8.0'
 
 gem 'friendly_id', '~> 5.2.4'
 
-gem 'papercrop', github: 'agilesix/papercrop', ref: 'turbolink-fix'
 gem 'jquery-cropper'
 
 gem 'rails-assets-sticky', source: 'https://rails-assets.org'
