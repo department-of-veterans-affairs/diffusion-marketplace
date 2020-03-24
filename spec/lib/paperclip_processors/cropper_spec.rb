@@ -26,8 +26,8 @@ module Paperclip
             # detect the image's mime type with MIME if you can't provide it yourself.
             type: MIME::Types.type_for(image_path).first.content_type
         )
-        # cropper = Cropper.new(@practice.main_display_image)
 
+        cropper = Cropper.new(image_file, {}, @practice.main_display_image)
 
         # expect
       end

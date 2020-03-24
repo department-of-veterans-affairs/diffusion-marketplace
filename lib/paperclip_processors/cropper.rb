@@ -22,7 +22,7 @@ module Paperclip
         "#{target.crop_y.to_f}",
         "+repage"
       ]
-      # if cropping, an additonal ImageMagick geometry option is added to the default post-processing cmd
+      # if cropping, an additional ImageMagick geometry option is added to the default post-processing cmd
       # http://www.imagemagick.org/script/command-line-options.php#crop
       crop_command + super
     end
