@@ -79,11 +79,11 @@
     <div class="grid-row grid-gap-4">
       <div>
         <%= label_tag 'date_started_month', 'Month', class: 'usa-label margin-0' %>
-        <%= select_month(nil, {prompt: '-Select-', prefix: 'date_started'}, {id: 'date_started_month', class: 'width-card-lg height-5 usa-select', required: true}) %>
+        <%= select_month(adoption&.start_time&.present? ? date_get_month(adoption.start_time) : nil, {prompt: '-Select-', prefix: 'date_started'}, {id: 'date_started_month', class: 'width-card-lg height-5 usa-select', required: true}) %>
       </div>
       <div class="grid-col-fill">
         <%= label_tag 'date_started_year', 'Year', class: 'usa-label margin-0' %>
-        <%= select_year(nil, {start_year: 2010, end_year: Date.today.year, prompt: '-Select-', prefix: 'date_started', default: '-Select-'}, {id: 'date_started_year', class: 'width-full height-5 usa-select', required: true}) %>
+        <%= select_year(adoption&.start_time&.present? ? date_get_year(adoption.start_time) : nil, {start_year: 2010, end_year: Date.today.year, prompt: '-Select-', prefix: 'date_started', default: '-Select-'}, {id: 'date_started_year', class: 'width-full height-5 usa-select', required: true}) %>
       </div>
     </div>
   </div>
@@ -95,11 +95,11 @@
     <div class="grid-row grid-gap-4">
       <div>
         <%= label_tag 'date_ended_month', 'Month', class: 'usa-label margin-0' %>
-        <%= select_month(nil, {prompt: '-Select-', prefix: 'date_ended'}, {id: 'date_ended_month', class: 'width-card-lg height-5 usa-select'}) %>
+        <%= select_month(adoption&.end_time&.present? ? date_get_month(adoption.end_time) : nil, {prompt: '-Select-', prefix: 'date_ended'}, {id: 'date_ended_month', class: 'width-card-lg height-5 usa-select'}) %>
       </div>
       <div class="grid-col-fill">
         <%= label_tag 'date_ended_year', 'Year', class: 'usa-label margin-0' %>
-        <%= select_year(nil, {start_year: 2010, end_year: Date.today.year, prompt: '-Select-', prefix: 'date_ended', default: '-Select-'}, {id: 'date_ended_year', class: 'width-full height-5 usa-select'}) %>
+        <%= select_year(adoption&.end_time&.present? ? date_get_year(adoption.end_time) : nil, {start_year: 2010, end_year: Date.today.year, prompt: '-Select-', prefix: 'date_ended', default: '-Select-'}, {id: 'date_ended_year', class: 'width-full height-5 usa-select'}) %>
       </div>
     </div>
   </div>
