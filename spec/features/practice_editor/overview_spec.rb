@@ -26,6 +26,7 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_field('practice_number_adopted', with: '1')
             expect(page).to have_no_css("img[src*='charmander.png']")
             expect(page).to have_content('Upload photo')
+            expect(page).to have_content('Upload a clear photo that will be shown as the representative image for this practice.')
             expect(page).to have_no_content('Upload new photo')
             expect(page).to have_no_content('Remove photo')
             expect(page).to have_no_content('Edit photo')
@@ -69,6 +70,8 @@ describe 'Practice editor', type: :feature, js: true do
             attach_file('Upload photo', @image_path)
             @edit_button = find('#practice-overview-crop-mode')
             @edit_button.click
+            expect(page).to have_no_content('Upload a clear photo that will be shown as the representative image for this practice.')
+            expect(page).to have_content("Please click \"Save edits\" and then \"Save your progress\" to save and exit editor.")
             expect(page).to have_content('Cancel edits')
             expect(page).to have_content('Save edits')
             expect(page).to have_css('.cropper-modal')

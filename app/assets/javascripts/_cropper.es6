@@ -131,11 +131,25 @@
     }
   }
 
+  function _toggleImageHelpText({ isEdit }) {
+    let $imageUploadText = $('.thumbnail-upload-text').parent()
+    let $imageEditText = $('.thumbnail-editor-text').parent()
+
+    if (isEdit) {
+      $imageUploadText.addClass('hidden')
+      $imageEditText.removeClass('hidden')
+    } else {
+      $imageUploadText.removeClass('hidden')
+      $imageEditText.addClass('hidden')
+    }
+  }
+
   function _attachUploadEventListener() {
     let $thubmanilInput = $('#practice_main_display_image');
     let $placeholder = $('#practice-thumbnail-placeholder');
 
     $thubmanilInput.on('change', (event) => {
+      _toggleImageHelpText({ isEdit: false })
       _loadPracticeThumbnail(event.target.files[0]);
       _toggleThumbnailRemoval({ deleteImg: false });
       _toggleEditBtn({ visible: true })
@@ -150,6 +164,7 @@
 
   function _attachDeleteEventListener() {
     $deleteBtn.click((event) => {
+      _toggleImageHelpText({ isEdit: false })
       _toggleThumbnailRemoval({ deleteImg: true });
       _setDefaultPracticeThumbnail();
       _toggleBtnsOnPlaceholderChange({ isUpload: false });
@@ -160,6 +175,7 @@
 
   function _attachEditEventListener() {
     $editBtn.click((event) => {
+      _toggleImageHelpText({ isEdit: true })
       _toggleCropper({ visible: true });
       _toggleCropperBtnView({ visible: true });
       _toggleEditBtn({ visible: false });
@@ -174,6 +190,7 @@
 
   function _attachCancelEditEventListener() {
     $cancelEditBtn.click((event) => {
+      _toggleImageHelpText({ isEdit: false })
       _toggleImageView({ isCrop: false })
       _toggleCropperBtnView({ visible: false });
       _toggleEditBtn({ visible: true });

@@ -56,6 +56,9 @@
                 <div class="margin-bottom-205 margin-left-5">
                   <p class="thumbnail-upload-text">Upload a clear photo that will be shown as the representative image for this practice. You can upload a .jpg, .jpeg, or .png file and the size limit is 1GB.</p>
                 </div>
+                <div class="margin-bottom-205 margin-left-5 hidden">
+                  <p class="thumbnail-editor-text">Please click "Save edits" and then "Save your progress" to save and exit editor.</p>
+                </div>
                 <div class="grid-row margin-left-5 flex-align-start">
                   <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
                     <%= f.hidden_field attribute, :id => attribute, :value => nil %>
