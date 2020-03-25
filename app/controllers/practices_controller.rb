@@ -363,13 +363,13 @@ class PracticesController < ApplicationController
     # set attributes for later use
     facility_id = params[:facility_id]
     status = params[:status]
-    start_time = DateTime.parse(params[:date_started][:year].to_i, params[:date_started][:month].to_i)
-    if params[:date_ended].present? && (params[:date_ended][:year].present? && params[:date_ended][:month].present?)
-        end_time = DateTime.parse(params[:date_ended][:year].to_i, params[:date_ended][:month].to_i)
+    start_time = DateTime.new(params[:date_started][:year].to_i, params[:date_started][:month].to_i)
+    if params[:date_ended].present? && !(params[:date_ended].values.include?(''))
+        end_time = DateTime.new(params[:date_ended][:year].to_i, params[:date_ended][:month].to_i)
     end
 
     # if there is a diffusion_history_id, we're updating something
-    dh = DiffusionHistory.find(params[:diffusion_history_id])
+    dh = DiffusionHistory.find(params[:diffusion_history_id]) if params[:diffusion_history_id].present?
 
     if dh.present?
       # update it
