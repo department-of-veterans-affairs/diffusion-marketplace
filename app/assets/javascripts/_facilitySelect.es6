@@ -24,7 +24,7 @@ function getFacilitiesByState(facilityData, facilitySelector = '#editor_facility
     facilitySelect.css('color', FACILITY_SELECT_ACTIVE_COLOR);
     facilitySelect.prop('disabled', 'disabled');
     $(stateSelect).on('change', () => {
-        filterFacilities(facilitySelect, stateSelector);
+        filterFacilities(facilityData, facilitySelect, stateSelector);
     });
 }
 
