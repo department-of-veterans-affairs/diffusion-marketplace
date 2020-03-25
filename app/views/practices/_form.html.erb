@@ -49,7 +49,6 @@
         <%= form.label :main_display_image, 'Project Image', class: 'usa-label' %>
         <% if @practice.main_display_image.present? %>
           <%= image_tag @practice.main_display_image_s3_presigned_url, alt: "#{@practice.name} main image" %>
-          <%#= form.cropbox :main_display_image, index: 0 %>
         <% end %>
         <%= form.file_field :main_display_image, class: 'hidden-upload' %>
         <%= form.label :main_display_image, 'Upload Image', class: 'usa-button usa-button--outline' %>

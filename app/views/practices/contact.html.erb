@@ -64,8 +64,8 @@
                                         <div class="grid-col-auto va-employee-headshot-col margin-top-105">
                                             <% if vae_avatar.present? %>
                                                 <div class="va-employee-headshot-container">
-                                                    <%= image_tag vae.object.avatar.url, alt: vae.object.name, class:'va-employee-img' %>
-                                                <%#= vae.cropbox :avatar, width: 200, index: vae.index %>
+                                                    <%= image_tag vae.object.avatar_s3_presigned_url, alt: vae.object.name, class:'va-employee-img'%>
+                                                    <%#= vae.cropbox :avatar, width: 200, index: vae.index %>
                                                 </div>
                                             <% else %>
                                                 <div class="va-employee-headshot-container bg-base-lightest radius-md">

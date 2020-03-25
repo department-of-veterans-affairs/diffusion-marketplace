@@ -5,6 +5,7 @@
     var selectedFacility = "<%= @practice.initiating_facility %>";
   <% end %>
   <%= javascript_include_tag 'practice_editor_overview', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_cropper', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <%
@@ -43,29 +44,38 @@
             <div class="grid-row margin-top-1">
               <div id="practice-thumbnail-placeholder" class="grid-col-6">
                 <% if @practice.main_display_image.present? %>
-                  <%= image_tag @practice.main_display_image_s3_presigned_url, alt: "practice thumbnail for #{@practice.name}", class: 'height-mobile practice-editor-impact-photo radius-md' %>
+                  <%= image_tag @practice.main_display_image_s3_presigned_url(:original), alt: "practice thumbnail for #{@practice.name}", class: 'height-mobile practice-editor-thumbnail-photo radius-md hidden', id: 'practice-overview-thumbnail-original'%>
+                  <%= image_tag @practice.main_display_image_s3_presigned_url(:thumb), alt: "practice thumbnail for #{@practice.name}", class: 'height-mobile practice-editor-thumbnail-photo radius-md', id: 'practice-overview-thumbnail-modified'%>
                 <% else %>
-                  <div class="bg-base-lightest position-relative radius-md" style="height: 300px; width: 350px;">
+                  <div class="bg-base-lightest position-relative radius-md height-mobile" style="height: 320px; width: 372px;">
                     <i class="fas fa-images fa-4x text-base-lighter no-impact-image"></i>
                   </div>
                 <% end %>
               </div>
               <div class="grid-col-6">
-                <div class="margin-bottom-205 margin-left-3 margin-top-1">
+                <div class="margin-bottom-205 margin-left-5">
                   <p class="thumbnail-upload-text">Upload a clear photo that will be shown as the representative image for this practice. You can upload a .jpg, .jpeg, or .png file and the size limit is 1GB.</p>
                 </div>
-                <div class="grid-row margin-left-3 flex-align-start">
-                  <div class="grid-col-fill">
-                    <div class="">
-                      <%= f.file_field :main_display_image, class: "hidden-upload hidden-impact-photo-upload", accept: 'image/*' %>
-                      <%= f.label :main_display_image, 'Upload new photo', class: "upload-main-display-image-link" %>
-                    </div>
-                    <% if @practice.main_display_image.present? %>
+                <div class="margin-bottom-205 margin-left-5 hidden">
+                  <p class="thumbnail-editor-text">Please click "Save edits" and then "Save your progress" to save and exit editor.</p>
+                </div>
+                <div class="grid-row margin-left-5 flex-align-start">
+                  <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
+                    <%= f.hidden_field attribute, :id => attribute, :value => nil %>
+                  <% end %>
+                  <div class="grid-col-fill image-actions">
+                      <a class="usa-button padding-2 hidden" aria-controls='photo-save-edit' aria-expanded='false' id='practice-overview-save-edit'>Save edits</a>
+                      <a class="usa-button usa-button--outline padding-2 hidden" aria-controls='photo-cancel-edit' aria-expanded='false' id='practice-overview-cancel-edit'>Cancel edits</a>
+                      <a class="<%= @practice.main_display_image.present? ? "usa-button usa-button--outline padding-2" : "usa-button usa-button--outline padding-2 hidden" %>" aria-controls='photo-crop' aria-expanded='false' id='practice-overview-crop-mode'>Edit photo</a>
                       <div>
-                        <%= f.check_box :delete_main_display_image, { class: "usa-checkbox__input"}, 'true', 'true' %>
-                        <%= f.label :delete_main_display_image, 'Remove photo', class: "display-inline-block text-secondary remove-main-display-image-link"%>
+                        <%= f.label :main_display_image,
+                          @practice.main_display_image.present? ? 'Upload new photo' : 'Upload photo',
+                          class: @practice.main_display_image.present? ? 'upload-main-display-image-link' : 'upload-main-display-image-link usa-button'
+                        %>
+                        <%= f.file_field :main_display_image, class: "hidden-upload", accept: 'image/*' %>
                       </div>
-                    <% end %>
+                        <%= f.label :delete_main_display_image, 'Remove photo', class: @practice.main_display_image.present? ? 'display-inline-block text-secondary remove-main-display-image-link' : 'display-inline-block text-secondary remove-main-display-image-link hidden'%>
+                        <%= f.check_box :delete_main_display_image, { class: @practice.main_display_image.present? ? 'usa-checkbox__input' : 'usa-checkbox__input hidden'}, 'true', 'false' %>
                   </div>
                 </div>
               </div>

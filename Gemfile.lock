@@ -13,16 +13,6 @@ GIT
       rails (~> 5)
 
 GIT
-  remote: https://github.com/agilesix/papercrop.git
-  revision: e5e8b1fa37a07d8c59e88a05ec99b9577790c67e
-  ref: turbolink-fix
-  specs:
-    papercrop (0.3.0)
-      jquery-rails
-      paperclip (>= 3.4)
-      rails (>= 3.1)
-
-GIT
   remote: https://github.com/agilesix/surveymonkey.git
   revision: d21232a99470ae53d3c798796e058de94be9426e
   specs:
@@ -247,6 +237,7 @@ GEM
     jbuilder (2.9.1)
       activesupport (>= 4.2.0)
     jmespath (1.4.0)
+    jquery-cropper (2.3.2)
     jquery-rails (4.3.5)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
@@ -561,6 +552,7 @@ DEPENDENCIES
   groupdate
   humanize
   jbuilder (~> 2.5)
+  jquery-cropper
   jquery-rails
   jquery-timeago-rails!
   jquery-ui-rails
@@ -575,7 +567,6 @@ DEPENDENCIES
   ntlm-sso (~> 0.0.1)
   paper_trail
   paperclip (~> 6.0.0)
-  papercrop!
   pg (= 1.1.4)
   pry (~> 0.12.2)
   puma (~> 3.12)

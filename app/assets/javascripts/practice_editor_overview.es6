@@ -2,7 +2,7 @@
     const $document = $(document);
     const CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
     const CHARACTER_COUNTER_VALID_COLOR =  '#a9aeb1';
-    
+
     const NAME_CHARACTER_COUNT = 50;
     const TAGLINE_CHARACTER_COUNT = 150;
     const SUMMARY_CHARACTER_COUNT = 400;
@@ -24,7 +24,7 @@
         // select the facility and display it in the dropdown
         facilitySelect.val(facility.StationNumber);
     }
-    
+
     function getFacilitiesByState() {
         let facilitySelect = $('#editor_facility_select');
         facilitySelect.css('color', CHARACTER_COUNTER_VALID_COLOR);
@@ -63,7 +63,7 @@
         $('#practice-editor-name-character-counter').text(practiceNameCharacterCounter);
         $('#practice-editor-tagline-character-counter').text(practiceTaglineCharacterCounter);
         $('#practice-editor-summary-character-counter').text(practiceSummaryCharacterCounter);
-        
+
         if (practiceNameCurrentLength >= NAME_CHARACTER_COUNT) {
             $('#practice-editor-name-character-counter').css('color', CHARACTER_COUNTER_INVALID_COLOR);
         }
@@ -107,41 +107,18 @@
         $('.no-partner-input').click(function(event) {
             if(this.checked) {
                 $('.partner-input').each(function() {
-                    this.checked = false;                        
+                    this.checked = false;
                 });
             }
         });
     }
 
     function uncheckNoneOptionIfAnotherOptionIsChecked() {
-        $('.partner-input').click(function(event) {   
+        $('.partner-input').click(function(event) {
             if(this.checked) {
                 $('.no-partner-input').prop('checked', false);
             }
         });
-    }
-
-    function removePracticeThumbnail() {
-        let placeholder = $('#practice-thumbnail-placeholder')
-        let thumbnailExists = placeholder.find('img').length
-        let defaultThumbnail = "<div class='bg-base-lightest position-relative radius-md' style='height: 300px; width: 350px;'><i class='fas fa-images fa-4x text-base-lighter no-impact-image'></i></div>"
-
-        $('#practice_delete_main_display_image').click((event) => {
-            if (thumbnailExists) {
-                placeholder.empty()
-                placeholder.append(defaultThumbnail)
-            }
-        })
-    }
-
-    function clearPracticeThumbnailRemoval() {
-        let thumbnailFileUpload = $('#practice_main_display_image')
-        let thumbnailRemoveInput = $('#practice_delete_main_display_image')
-
-        // triggers only on successful image upload
-        thumbnailFileUpload.on('change', (event) => {
-            thumbnailRemoveInput.val('false')
-        })
     }
 
     function loadPracticeEditorFunctions() {
@@ -150,8 +127,6 @@
         maxCharacters();
         uncheckAllPartnerBoxes();
         uncheckNoneOptionIfAnotherOptionIsChecked();
-        removePracticeThumbnail();
-        clearPracticeThumbnailRemoval()
 
         if(selectedFacility) {
             selectFacility();
