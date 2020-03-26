@@ -47,7 +47,7 @@ class PracticesController < ApplicationController
       marker.lat facility['Latitude']
       marker.lng facility['Longitude']
 
-      current_diffusion_status = dhg[1][0].diffusion_history_statuses.find_by(end_time: nil)
+      current_diffusion_status = dhg[1][0].diffusion_history_statuses.find_by(end_time: nil) || dhg[1][0].diffusion_history_statuses.order(id: :desc).first
       marker_url = view_context.image_path('map-marker-default.svg')
       status = 'Complete'
       if current_diffusion_status.status == 'In progress' || current_diffusion_status.status == 'Planning' || current_diffusion_status.status == 'Implementing'
@@ -69,7 +69,7 @@ class PracticesController < ApplicationController
       in_progress = 0
       unsuccessful = 0
       dhg[1].each do |dh|
-        dh_status = dh.diffusion_history_statuses.where(end_time: nil).first
+        dh_status = dh.diffusion_history_statuses.where(end_time: nil).first || dh.diffusion_history_statuses.order(id: :desc).first
         in_progress += 1 if dh_status.status == 'In progress' || dh_status.status == 'Planning' || dh_status.status == 'Implementing'
         completed += 1 if dh_status.status == 'Completed' || dh_status.status == 'Implemented' || dh_status.status == 'Complete'
         unsuccessful += 1 if dh_status.status == 'Unsuccessful'
