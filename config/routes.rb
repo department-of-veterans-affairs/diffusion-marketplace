@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     get '/published', action: 'published', as: 'published'
     post '/commit', action: 'commit', as: 'commit'
     post '/favorite', action: 'favorite', as: 'favorite'
+    delete '/diffusion_history/:diffusion_history_id', action: 'destroy_diffusion_history', as: 'destroy_diffusion_history'
     member do
       post :highlight
       post :un_highlight

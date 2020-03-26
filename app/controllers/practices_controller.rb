@@ -16,7 +16,7 @@ class PracticesController < ApplicationController
                                            :documentation, :resources, :complexity,
                                            :timeline, :risk_and_mitigation,
                                            :contact, :checklist, :published,
-                                           :publication_validation]
+                                           :publication_validation, :adoptions]
   before_action only: [:update] do
     if date_initiated_params_exist(params[:date_initiated])
       params[:practice][:date_initiated] = create_date_initiated(params[:date_initiated])
@@ -365,7 +365,7 @@ class PracticesController < ApplicationController
     status = params[:status]
     start_time = DateTime.new(params[:date_started][:year].to_i, params[:date_started][:month].to_i)
     if params[:date_ended].present? && !(params[:date_ended].values.include?(''))
-        end_time = DateTime.new(params[:date_ended][:year].to_i, params[:date_ended][:month].to_i)
+      end_time = DateTime.new(params[:date_ended][:year].to_i, params[:date_ended][:month].to_i)
     end
 
     # if there is a diffusion_history_id, we're updating something
@@ -378,11 +378,28 @@ class PracticesController < ApplicationController
       # create a new one
       dh = DiffusionHistory.find_or_create_by!(practice: @practice, facility_id: facility_id)
     end
+
+    if params[:diffusion_history_status_id]
+      dhs = DiffusionHistoryStatus.find(params[:diffusion_history_status_id])
+      # if only the end time was updated, update the diffusion history status
+      dhs.update_attributes(start_time: start_time, end_time: end_time) if  end_time.present? && status == dhs.status
+      # if the status changed, end the current diffusion history and make a new one
+      dhs.update_attributes(start_time: start_time, end_time: DateTime.now) if params[:status] != dhs.status
+    end
     # create a new status. if one already exists, do nothing.
-    DiffusionHistoryStatus.find_or_create_by!(diffusion_history: dh, status: status, start_time: start_time, end_time: end_time)
+    DiffusionHistoryStatus.find_or_create_by!(diffusion_history: dh, status: status, start_time: start_time, end_time: end_time) if params[:status] != dhs&.status
 
     respond_to do |format|
       format.js
+    end
+  end
+
+  def destroy_diffusion_history
+    dh = DiffusionHistory.find(params[:diffusion_history_id])
+    dh.destroy
+    respond_to do |format|
+      format.html { redirect_to practice_adoptions_path(dh.practice), notice: 'Adoption entry was successfully deleted.' }
+      format.json { head :no_content }
     end
   end
 

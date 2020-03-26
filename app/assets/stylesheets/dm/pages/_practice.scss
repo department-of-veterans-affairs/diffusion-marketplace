@@ -797,7 +797,7 @@
 }
 
 /* Adoptions */
-.usa-accordion__button[aria-expanded=false].edit {
+.usa-accordion__button[aria-expanded=false].adoptions-edit {
   background-image: asset_url('edit.svg'), linear-gradient(transparent, transparent);
   background-position-x: 98%;
   background-size: 22.5px 20px;
@@ -831,4 +831,9 @@
 
 .action-button-width {
   width: 6%;
+}
+
+.delete-entry-link {
+  height: 47px;
+  padding-top: 15px !important;
 }
