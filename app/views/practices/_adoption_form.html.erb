@@ -28,18 +28,18 @@
 
     <p class="margin-bottom-1"><span class="fw-bold">Status:&nbsp;</span>
       Select the appropriate status of adoption for the facility.</p>
-    <div class="usa-radio">
-      <%= radio_button(nil, 'status', 'In progress', class: 'usa-radio__input', required: true, checked: status == in_progress ? 'checked' : false, id: "status_in_progress#{adoption&.diffusion_history&.id}") %>
+    <div class="usa-radio position-relative">
+      <%= radio_button(nil, 'status', 'In progress', class: 'usa-radio__input adoptions-radio-button', required: true, checked: status == in_progress ? 'checked' : false, id: "status_in_progress#{adoption&.diffusion_history&.id}") %>
       <label class='usa-radio__label' for='<%= "status_in_progress#{adoption&.diffusion_history&.id}" %>'>In progress
         adoption</label>
     </div>
-    <div class="usa-radio">
-      <%= radio_button(nil, 'status', 'Completed', class: 'usa-radio__input', required: true, checked: status == complete ? 'checked' : false, id: "status_completed#{adoption&.diffusion_history&.id}") %>
+    <div class="usa-radio position-relative">
+      <%= radio_button(nil, 'status', 'Completed', class: 'usa-radio__input adoptions-radio-button', required: true, checked: status == complete ? 'checked' : false, id: "status_completed#{adoption&.diffusion_history&.id}") %>
       <label class='usa-radio__label' for='<%= "status_completed#{adoption&.diffusion_history&.id}" %>'>Completed
         adoption</label>
     </div>
-    <div class="usa-radio">
-      <%= radio_button(nil, 'status', 'Unsuccessful', class: 'usa-radio__input', required: true, checked: status == unsuccessful ? 'checked' : false, id: "status_unsuccessful#{adoption&.diffusion_history&.id}") %>
+    <div class="usa-radio position-relative">
+      <%= radio_button(nil, 'status', 'Unsuccessful', class: 'usa-radio__input adoptions-radio-button', required: true, checked: status == unsuccessful ? 'checked' : false, id: "status_unsuccessful#{adoption&.diffusion_history&.id}") %>
       <label class='usa-radio__label' for='<%= "status_unsuccessful#{adoption&.diffusion_history&.id}" %>'>Unsuccessful
         adoption</label>
     </div>
@@ -59,12 +59,21 @@
           <% provide :head_tags do %>
             <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
               $(document).on('turbolinks:load', function() {
+                var facility_id = "<%= facility_id %>";
+                var facilitySelector = "#<%= facility_select_selector %>";
+                var stateSelector = "#<%= state_select_selector %>";
+                getFacilitiesByState(facilityData, facilitySelector, stateSelector);
+                selectFacility(facilityData, facility_id, facilitySelector, stateSelector);
+              });
+            <% end %>
+          <% end %>
+          <% if params[:reload] %>
+            <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
               var facility_id = "<%= facility_id %>";
               var facilitySelector = "#<%= facility_select_selector %>";
               var stateSelector = "#<%= state_select_selector %>";
               getFacilitiesByState(facilityData, facilitySelector, stateSelector);
               selectFacility(facilityData, facility_id, facilitySelector, stateSelector);
-              });
             <% end %>
           <% end %>
         <% end %>
@@ -83,11 +92,11 @@
     <div class="grid-row grid-gap-4">
       <div>
         <%= label_tag "date_started_month#{adoption&.diffusion_history&.id}", 'Month', class: 'usa-label margin-0' %>
-        <%= select_month(adoption&.start_time&.present? ? date_get_month(adoption.start_time) : nil, {prompt: '-Select-', prefix: 'date_started'}, {id: "date_started_month#{adoption&.diffusion_history&.id}", class: 'width-card-lg height-5 usa-select', required: true}) %>
+        <%= select_month(adoption&.start_time&.present? ? date_get_month(adoption.start_time) : nil, {prompt: '-Select-', prefix: 'date_started'}, {id: "date_started_month#{adoption&.diffusion_history&.id}", class: 'width-card-lg height-5 usa-select'}) %>
       </div>
       <div class="grid-col-fill">
         <%= label_tag "date_started_year#{adoption&.diffusion_history&.id}", 'Year', class: 'usa-label margin-0' %>
-        <%= select_year(adoption&.start_time&.present? ? date_get_year(adoption.start_time) : nil, {start_year: 2010, end_year: Date.today.year, prompt: '-Select-', prefix: 'date_started', default: '-Select-'}, {id: "date_started_year#{adoption&.diffusion_history&.id}", class: 'width-full height-5 usa-select', required: true}) %>
+        <%= select_year(adoption&.start_time&.present? ? date_get_year(adoption.start_time) : nil, {start_year: 2010, end_year: Date.today.year, prompt: '-Select-', prefix: 'date_started', default: '-Select-'}, {id: "date_started_year#{adoption&.diffusion_history&.id}", class: 'width-full height-5 usa-select'}) %>
       </div>
     </div>
   </div>

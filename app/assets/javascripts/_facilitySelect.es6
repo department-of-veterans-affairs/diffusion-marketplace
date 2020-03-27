@@ -3,7 +3,7 @@ const FACILITY_SELECT_ACTIVE_COLOR = '#a9aeb1';
 // select the state and facility if the practice already has one
 function selectFacility(facilityData, selectedFacility, facilitySelector = '#editor_facility_select', stateSelector = '#editor_state_select') {
     // based on the facilityData, which is the selected facility?
-    const facility = facilityData.find(f => f.StationNumber === String(selectedFacility) );
+    const facility = facilityData.find(f => f.StationNumber === String(selectedFacility));
 
     // select the state and set it in the dropdown
     const state = facility.MailingAddressState;
@@ -36,7 +36,9 @@ function filterFacilities(facilityData, facilitySelect, stateSelector) {
     facilitySelect.val('-Select-');
 
     let filteredFacilities = facilityData.filter(f => f.MailingAddressState === selectedState);
-    filteredFacilities.forEach(facility => {
+    filteredFacilities
+        .sort((a,b) => a['OfficialStationName'].localeCompare(b['OfficialStationName']))
+        .forEach(facility => {
         facilitySelect
             .append($("<option></option>")
                 .attr("value", facility.StationNumber)

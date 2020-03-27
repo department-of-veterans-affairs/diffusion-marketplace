@@ -1,0 +1,21 @@
+<!-- Use the accurate heading level to maintain the document outline -->
+<h2 class="usa-accordion__heading">
+  <button class="usa-accordion__button text-primary new line-height-sans-3"
+          aria-expanded="<%= params[:created] ? 'true' : 'false' %>"
+          aria-controls="a0">
+    Add new entry
+  </button>
+</h2>
+<div id="a0" class="usa-accordion__content usa-prose">
+  <% if params[:created] %>
+    <div class="usa-alert usa-alert--info x1-bottom">
+      <div class="usa-alert__body">
+        <p>Adoption entry was successfully created.</p>
+      </div>
+    </div>
+  <% end %>
+  <!-- New/Create Adoption form -->
+  <%= render partial: 'adoption_form' %>
+</div>
+<!-- start repeatable -->
+<%= render partial: 'adoptions_list' %>

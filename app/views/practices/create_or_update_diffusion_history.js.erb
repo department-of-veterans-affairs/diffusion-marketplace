@@ -1,1 +1,12 @@
-console.log('successful')
+console.log('successful');
+$('.usa-alert').remove();
+$("#adoptions").html("<%= escape_javascript(render partial: 'adoptions_content', formats: [ :html ]) %>");
+<% if params[:created] %>
+  $('.usa-accordion__content:not(#a0)').attr('hidden', true);
+<% else %>
+  $('.usa-accordion__content').attr('hidden', true);
+<% end %>
+<% if @dh && params[:facility_changed] %>
+  var newTop = $("button[aria-controls='diffusion_history_<%= @dh.id %>']").offset().top - 100
+  scrollTo(0, newTop);
+<% end %>

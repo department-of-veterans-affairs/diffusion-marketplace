@@ -363,33 +363,39 @@ class PracticesController < ApplicationController
     # set attributes for later use
     facility_id = params[:facility_id]
     status = params[:status]
-    start_time = DateTime.new(params[:date_started][:year].to_i, params[:date_started][:month].to_i)
-    if params[:date_ended].present? && !(params[:date_ended].values.include?(''))
+    if params[:date_started].present? && !(params[:date_started].values.include?(''))
+      start_time = DateTime.new(params[:date_started][:year].to_i, params[:date_started][:month].to_i)
+    end
+    if (params[:date_ended].present? && !(params[:date_ended].values.include?(''))) && params[:status].downcase != 'in progress'
       end_time = DateTime.new(params[:date_ended][:year].to_i, params[:date_ended][:month].to_i)
     end
 
     # if there is a diffusion_history_id, we're updating something
-    dh = DiffusionHistory.find(params[:diffusion_history_id]) if params[:diffusion_history_id].present?
-
-    if dh.present?
+    @dh = DiffusionHistory.find(params[:diffusion_history_id]) if params[:diffusion_history_id].present?
+    if @dh.present?
       # update it
-      dh.update_attributes(facility_id: facility_id)
+      @dh.update_attributes(facility_id: facility_id)
+      params[:facility_changed] = true
     else
       # create a new one
-      dh = DiffusionHistory.find_or_create_by!(practice: @practice, facility_id: facility_id)
+      @dh = DiffusionHistory.find_or_create_by!(practice: @practice, facility_id: facility_id)
     end
 
     if params[:diffusion_history_status_id]
       dhs = DiffusionHistoryStatus.find(params[:diffusion_history_status_id])
       # if only the end time was updated, update the diffusion history status
-      dhs.update_attributes(start_time: start_time, end_time: end_time) if  end_time.present? && status == dhs.status
+      dhs.update_attributes(start_time: start_time, end_time: end_time) if end_time.present? && status == dhs.status
       # if the status changed, end the current diffusion history and make a new one
       dhs.update_attributes(start_time: start_time, end_time: DateTime.now) if params[:status] != dhs.status
     end
     # create a new status. if one already exists, do nothing.
-    DiffusionHistoryStatus.find_or_create_by!(diffusion_history: dh, status: status, start_time: start_time, end_time: end_time) if params[:status] != dhs&.status
+    DiffusionHistoryStatus.find_or_create_by!(diffusion_history: @dh, status: status, start_time: start_time, end_time: end_time) if params[:status] != dhs&.status
 
     respond_to do |format|
+      if params[:diffusion_history_id].blank?
+        params[:created] = true
+      end
+      params[:reload] = true
       format.js
     end
   end
