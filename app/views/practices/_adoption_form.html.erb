@@ -149,12 +149,11 @@
     <% if adoption %>
       <%= f.button 'Cancel edits', class: 'usa-button usa-button--outline margin-right-1 padding-2 text-no-underline', type: 'button' %>
     <% else %>
-      <%= f.button 'Clear entry', class: 'usa-button usa-button--outline margin-right-1 padding-2 text-no-underline', type: 'button' %>
+      <%= f.button 'Clear entry', class: 'usa-button usa-button--outline margin-right-1 padding-2 text-no-underline', type: 'button', id: 'clear_entry' %>
     <% end %>
     <%= f.submit submit_button_text, class: 'usa-button padding-2 usa-button-primary' %>
     <% if adoption %>
       <%= link_to 'Delete entry', practice_destroy_diffusion_history_path(adoption.diffusion_history.practice, adoption.diffusion_history), method: :delete, class: 'usa-button usa-button--secondary float-right delete-entry-link', data: {confirm: 'Are you sure you want to delete this adoption entry?'} %>
-      <%#= f.button 'Delete entry', class: 'usa-button usa-button--secondary  padding-2 text-no-underline', type: 'button' %>
     <% end %>
   </div>
 <% end %>

@@ -32,7 +32,7 @@ function filterFacilities(facilityData, facilitySelect, stateSelector) {
     let selectedState = $(`${stateSelector} option:selected`).val();
     facilitySelect.css('color', 'initial');
     facilitySelect.removeAttr('disabled');
-    facilitySelect.find('option:not(:first)').remove();
+    facilitySelect.find('option:not([value="-Select-"])').remove();
     facilitySelect.val('-Select-');
 
     let filteredFacilities = facilityData.filter(f => f.MailingAddressState === selectedState);
