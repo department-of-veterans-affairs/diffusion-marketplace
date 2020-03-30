@@ -83,24 +83,37 @@
           <% facility_id = adoption ? adoption.diffusion_history.facility_id : nil %>
           <% provide :head_tags do %>
             <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                // select facility dropdowns
+              // select facility dropdowns
               $(document).on('turbolinks:load', function() {
                 var facility_id = "<%= facility_id %>";
                 var facilitySelector = "#<%= facility_select_selector %>";
                 var stateSelector = "#<%= state_select_selector %>";
                 getFacilitiesByState(facilityData, facilitySelector, stateSelector);
                 selectFacility(facilityData, facility_id, facilitySelector, stateSelector);
+
+                $(document).on('click', '#cancel_edits_<%= adoption&.diffusion_history&.id %>', function() {
+                  $('button[aria-controls="diffusion_history_<%= adoption&.diffusion_history&.id %>"]').attr('aria-expanded', false);
+                  $('#diffusion_history_<%= adoption&.diffusion_history&.id %>').attr('hidden', 'hidden');
+                });
               });
             <% end %>
           <% end %>
           <% if params[:reload] %>
             <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                // select facility on reload of data after save
+              // select facility on reload of data after save
               var facility_id = "<%= facility_id %>";
               var facilitySelector = "#<%= facility_select_selector %>";
               var stateSelector = "#<%= state_select_selector %>";
               getFacilitiesByState(facilityData, facilitySelector, stateSelector);
               selectFacility(facilityData, facility_id, facilitySelector, stateSelector);
+            <% end %>
+          <% end %>
+        <% else %>
+          <% if params[:reload] %>
+            <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+              var facilitySelector = "#<%= facility_select_selector %>";
+              var stateSelector = "#<%= state_select_selector %>";
+              getFacilitiesByState(facilityData, facilitySelector, stateSelector);
             <% end %>
           <% end %>
         <% end %>
@@ -136,18 +149,18 @@
     <div class="grid-row grid-gap-4">
       <div>
         <%= label_tag "date_ended_month#{adoption&.diffusion_history&.id}", 'Month', class: 'usa-label margin-0' %>
-        <%= select_month(adoption&.end_time&.present? ? date_get_month(adoption.end_time) : nil, {prompt: '-Select-', prefix: 'date_ended'}, {id: "date_ended_month#{adoption&.diffusion_history&.id}", class: 'width-card-lg height-5 usa-select dm-color-disabled', disabled: true}) %>
+        <%= select_month(adoption&.end_time&.present? ? date_get_month(adoption.end_time) : nil, {prompt: '-Select-', prefix: 'date_ended'}, {id: "date_ended_month#{adoption&.diffusion_history&.id}", class: "width-card-lg height-5 usa-select #{adoption&.status == 'In progress' ? 'dm-color-disabled' : ''}", disabled: adoption&.status == 'In progress'}) %>
       </div>
       <div class="grid-col-fill">
         <%= label_tag "date_ended_year#{adoption&.diffusion_history&.id}", 'Year', class: 'usa-label margin-0' %>
-        <%= select_year(adoption&.end_time&.present? ? date_get_year(adoption.end_time) : nil, {start_year: 2010, end_year: Date.today.year, prompt: '-Select-', prefix: 'date_ended', default: '-Select-'}, {id: "date_ended_year#{adoption&.diffusion_history&.id}", class: 'width-full height-5 usa-select dm-color-disabled', disabled: true}) %>
+        <%= select_year(adoption&.end_time&.present? ? date_get_year(adoption.end_time) : nil, {start_year: 2010, end_year: Date.today.year, prompt: '-Select-', prefix: 'date_ended', default: '-Select-'}, {id: "date_ended_year#{adoption&.diffusion_history&.id}", class: "width-full height-5 usa-select #{adoption&.status == 'In progress' ? 'dm-color-disabled' : ''}", disabled: adoption&.status == 'In progress'}) %>
       </div>
     </div>
   </div>
 
   <div class="">
     <% if adoption %>
-      <%= f.button 'Cancel edits', class: 'usa-button usa-button--outline margin-right-1 padding-2 text-no-underline', type: 'button' %>
+      <%= f.button 'Cancel edits', class: 'usa-button usa-button--outline margin-right-1 padding-2 text-no-underline', type: 'button', id: "cancel_edits_#{adoption&.diffusion_history&.id}" %>
     <% else %>
       <%= f.button 'Clear entry', class: 'usa-button usa-button--outline margin-right-1 padding-2 text-no-underline', type: 'button', id: 'clear_entry' %>
     <% end %>
