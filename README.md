@@ -43,7 +43,7 @@
   - OSX: if you have Homebrew: `brew install redis`
   - Windows: https://github.com/dmajkic/redis/downloads
   - ubuntu: https://tecadmin.net/install-redis-ubuntu/
-    - you probably don' need the php extention
+    - you probably don't need the php extension 
 
 #### Configuration
 
