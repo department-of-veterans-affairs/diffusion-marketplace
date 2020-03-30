@@ -1,4 +1,4 @@
-const FACILITY_SELECT_ACTIVE_COLOR = '#a9aeb1';
+const FACILITY_SELECT_DISABLED_COLOR = '#a9aeb1';
 
 // select the state and facility if the practice already has one
 function selectFacility(facilityData, selectedFacility, facilitySelector = '#editor_facility_select', stateSelector = '#editor_state_select') {
@@ -21,7 +21,7 @@ function selectFacility(facilityData, selectedFacility, facilitySelector = '#edi
 function getFacilitiesByState(facilityData, facilitySelector = '#editor_facility_select', stateSelector = '#editor_state_select') {
     let facilitySelect = $(facilitySelector);
     let stateSelect = $(stateSelector);
-    facilitySelect.css('color', FACILITY_SELECT_ACTIVE_COLOR);
+    facilitySelect.css('color', FACILITY_SELECT_DISABLED_COLOR);
     facilitySelect.prop('disabled', 'disabled');
     $(stateSelect).on('change', () => {
         filterFacilities(facilityData, facilitySelect, stateSelector);

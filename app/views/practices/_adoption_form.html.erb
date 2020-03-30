@@ -21,7 +21,7 @@
     end
   end
 %>
-<%= form_with(url: practice_create_or_update_diffusion_history_path(practice)) do |f| %>
+<%= form_with(url: practice_create_or_update_diffusion_history_path(practice), html: {id: "adoption_form#{adoption&.diffusion_history&.id}"}) do |f| %>
   <%= f.hidden_field('diffusion_history_id', value: adoption.diffusion_history.id) if adoption %>
   <%= f.hidden_field('diffusion_history_status_id', value: adoption.id) if adoption %>
   <div class="margin-bottom-3 margin-top-1">
@@ -46,7 +46,8 @@
   </div>
 
   <div class="margin-bottom-3">
-    <p class="margin-bottom-1"><span class="fw-bold">Adopting facility:&nbsp;</span>
+    <p class="margin-bottom-1">
+      <span class="fw-bold">Adopting facility:&nbsp;</span>
       Select the state and facility where this practice is being adopted.</p>
     <div class="grid-row grid-gap-4">
       <div>
@@ -54,10 +55,35 @@
           state_select_selector = adoption ? "editor_state_select_#{adoption.id}" : 'editor_state_select'
           facility_select_selector = adoption ? "editor_facility_select_#{adoption.id}" : 'editor_facility_select'
         %>
+        <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+            // enable/disable date adoption finished select dropdowns
+          var radios = document.querySelectorAll('form[id="adoption_form<%= adoption&.diffusion_history&.id %>"] input[type=radio][name="status"]');
+
+          function changeHandler(event) {
+            var end_month_el = document.getElementById('date_ended_month<%= adoption&.diffusion_history&.id %>');
+            var end_year_el = document.getElementById('date_ended_year<%= adoption&.diffusion_history&.id %>');
+            if (this.value === 'In progress') {
+              end_month_el.classList.add('dm-color-disabled');
+              end_month_el.disabled = true;
+              end_year_el.classList.add('dm-color-disabled');
+              end_year_el.disabled = true;
+            } else {
+              end_month_el.classList.remove('dm-color-disabled');
+              end_month_el.disabled = false;
+              end_year_el.classList.remove('dm-color-disabled');
+              end_year_el.disabled = false;
+            }
+          }
+
+          Array.prototype.forEach.call(radios, function(radio) {
+            radio.addEventListener('change', changeHandler);
+          });
+        <% end %>
         <% if adoption %>
           <% facility_id = adoption ? adoption.diffusion_history.facility_id : nil %>
           <% provide :head_tags do %>
             <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                // select facility dropdowns
               $(document).on('turbolinks:load', function() {
                 var facility_id = "<%= facility_id %>";
                 var facilitySelector = "#<%= facility_select_selector %>";
@@ -69,6 +95,7 @@
           <% end %>
           <% if params[:reload] %>
             <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                // select facility on reload of data after save
               var facility_id = "<%= facility_id %>";
               var facilitySelector = "#<%= facility_select_selector %>";
               var stateSelector = "#<%= state_select_selector %>";
@@ -102,17 +129,18 @@
   </div>
 
   <div class="margin-bottom-205">
-    <p class="margin-bottom-1"><span class="fw-bold">Date adoption finished:&nbsp;</span>
+    <p class="margin-bottom-1">
+      <span class="fw-bold">Date adoption finished:&nbsp;</span>
       Successful or unsuccessful adoption must be selected to edit this field.
     </p>
     <div class="grid-row grid-gap-4">
       <div>
         <%= label_tag "date_ended_month#{adoption&.diffusion_history&.id}", 'Month', class: 'usa-label margin-0' %>
-        <%= select_month(adoption&.end_time&.present? ? date_get_month(adoption.end_time) : nil, {prompt: '-Select-', prefix: 'date_ended'}, {id: "date_ended_month#{adoption&.diffusion_history&.id}", class: 'width-card-lg height-5 usa-select'}) %>
+        <%= select_month(adoption&.end_time&.present? ? date_get_month(adoption.end_time) : nil, {prompt: '-Select-', prefix: 'date_ended'}, {id: "date_ended_month#{adoption&.diffusion_history&.id}", class: 'width-card-lg height-5 usa-select dm-color-disabled', disabled: true}) %>
       </div>
       <div class="grid-col-fill">
         <%= label_tag "date_ended_year#{adoption&.diffusion_history&.id}", 'Year', class: 'usa-label margin-0' %>
-        <%= select_year(adoption&.end_time&.present? ? date_get_year(adoption.end_time) : nil, {start_year: 2010, end_year: Date.today.year, prompt: '-Select-', prefix: 'date_ended', default: '-Select-'}, {id: "date_ended_year#{adoption&.diffusion_history&.id}", class: 'width-full height-5 usa-select'}) %>
+        <%= select_year(adoption&.end_time&.present? ? date_get_year(adoption.end_time) : nil, {start_year: 2010, end_year: Date.today.year, prompt: '-Select-', prefix: 'date_ended', default: '-Select-'}, {id: "date_ended_year#{adoption&.diffusion_history&.id}", class: 'width-full height-5 usa-select dm-color-disabled', disabled: true}) %>
       </div>
     </div>
   </div>
