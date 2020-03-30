@@ -24,7 +24,7 @@
 
 - `ruby 2.6.3`
 
-- `rails ~> 5.2.1`
+- `rails ~> 5.2.4`
 
 #### System dependencies
 
@@ -39,6 +39,11 @@
 - `postgresql` https://www.postgresql.org/download/
 - ImageMagick 7+ https://www.imagemagick.org/script/download.php
   - `identify --version`
+- redis
+  - OSX: if you have Homebrew: `brew install redis`
+  - Windows: https://github.com/dmajkic/redis/downloads
+  - ubuntu: https://tecadmin.net/install-redis-ubuntu/
+    - you probably don' need the php extention
 
 #### Configuration
 
