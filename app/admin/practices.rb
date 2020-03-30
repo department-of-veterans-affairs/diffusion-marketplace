@@ -54,6 +54,7 @@ ActiveAdmin.register Practice do
       if params[:user_email].present?
         set_practice_user(practice)
       end
+      practice.approved = true
     end
 
     before_update do |practice|
