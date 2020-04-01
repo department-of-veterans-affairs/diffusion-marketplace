@@ -219,11 +219,11 @@ body {
 }
 
 .comment-cancel {
-  border: 2px solid #565C65 !important;
+  border: 2px solid $dm-color-base-darker !important;
 
   &:hover {
-    border: 2px solid #3d4551 !important;
-    color: #3d4551;
+    border: 2px solid $dm-color-base-darker !important;
+    color: $dm-color-base-darker;
   }
 }
 
