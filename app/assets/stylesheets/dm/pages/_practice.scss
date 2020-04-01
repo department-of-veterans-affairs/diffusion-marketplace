@@ -425,6 +425,11 @@
   text-align: center;
 }
 
+.va-employee-trash-container {
+  text-align: right;
+  padding-right: 0.2rem;
+}
+
 .documentation-trash-container, .risk-miti-trash-container, .contact-trash-container,
 .permission-trash-container, .resource-trash-container {
   margin-left: 33px;
@@ -823,4 +828,8 @@
 
 .timeline-trash {
   right: 3px;
+}
+
+.main-image {
+  max-width: 20rem !important;
 }

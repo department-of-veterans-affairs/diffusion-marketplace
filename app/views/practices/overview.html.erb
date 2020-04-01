@@ -43,24 +43,24 @@
             <p class="margin-top-3"><span class="text-bold">Practice thumbnail:</span>&nbsp;</p>
             <div class="grid-row margin-top-1 cropper-boundary">
               <div class="grid-col-6">
-                <div class="cropper-images-container" data-type="main">
+                <div class="cropper-images-container main-image" data-type="main">
                   <% if @practice.main_display_image.present? %>
                       <%= image_tag @practice.main_display_image_s3_presigned_url(:original), alt: "practice thumbnail for #{@practice.name}", class: 'height-mobile cropper-thumbnail-original radius-md hidden'%>
                       <%= image_tag @practice.main_display_image_s3_presigned_url(:thumb), alt: "practice thumbnail for #{@practice.name}", class: 'height-mobile cropper-thumbnail-modified radius-md'%>
                   <% end %>
                 </div>
-                <div class="<%= @practice.main_display_image.present? ? 'bg-base-lightest position-relative radius-md height-mobile cropper-image-placeholder hidden' : 'bg-base-lightest position-relative radius-md height-mobile cropper-image-placeholder'%>" style="height: 320px; width: 372px;">
+                <div class="<%= @practice.main_display_image.present? ? 'bg-base-lightest position-relative radius-md height-mobile cropper-image-placeholder hidden' : 'bg-base-lightest position-relative radius-md height-mobile cropper-image-placeholder'%>" style="height: 20rem; width: 20rem;">
                   <i class="fas fa-images fa-4x text-base-lighter no-impact-image"></i>
                 </div>
               </div>
               <div class="grid-col-6">
-                <div class="margin-bottom-2 margin-left-5 cropper-upload-text">
-                  <p>Upload a clear photo that will be shown as the representative image for this practice. You can upload a .jpg, .jpeg, or .png file and the size limit is 1GB.</p>
+                <div class="margin-bottom-2 cropper-upload-text">
+                  <p>Upload a clear photo that will be shown as the representative image for this practice. You can upload a .jpg, .jpeg, or .png file and the size limit is&nbsp;1GB.</p>
                 </div>
-                <div class="margin-bottom-2 margin-left-5 cropper-editor-text hidden">
+                <div class="margin-bottom-2 cropper-editor-text hidden">
                   <p>Please click "Save edits" and then "Save your progress" to save and exit editor.</p>
                 </div>
-                <div class="grid-row margin-left-5 flex-align-start">
+                <div class="grid-row flex-align-start">
                   <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
                     <%= f.hidden_field attribute, :id => attribute, :value => nil %>
                   <% end %>
