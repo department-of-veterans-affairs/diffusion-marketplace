@@ -59,21 +59,21 @@
                                         <%= vae.text_field :role, class: 'usa-input practice-input width-tablet va-employee-role', 'counter-id': "va_employee_#{vae_id}_role" %>
                                     </div>
 
-                                    <p class="text-bold va-employee-headshot-p margin-bottom-05">Headshot&nbsp;<span class="text-base">(optional)</span></p>
+                                    <p class="text-bold headshot-title margin-bottom-05">Headshot&nbsp;<span class="text-base">(optional)</span></p>
 
                                     <div class="grid-row">
-                                        <div class="grid-col-3 va-employee-headshot-col margin-top-105 margin-right-3">
+                                        <div class="grid-col-3 headshot-col margin-top-105 margin-right-3">
                                             <div class="cropper-images-container" data-type="contact">
                                             <% if vae_avatar.present? %>
-                                                <%= image_tag vae.object.avatar_s3_presigned_url(:original), alt: vae.object.name, class:'cropper-thumbnail-original va-employee-img hidden'%>
-                                                <%= image_tag vae.object.avatar_s3_presigned_url(:thumb), alt: vae.object.name, class:'cropper-thumbnail-modified va-employee-img'%>
+                                                <%= image_tag vae.object.avatar_s3_presigned_url(:original), alt: vae.object.name, class:'cropper-thumbnail-original headshot-img hidden'%>
+                                                <%= image_tag vae.object.avatar_s3_presigned_url(:thumb), alt: vae.object.name, class:'cropper-thumbnail-modified headshot-img'%>
                                             <% end %>
                                             </div>
-                                            <div class="<%= vae_avatar.present? ? 'va-employee-headshot-container bg-base-lightest radius-md cropper-image-placeholder hidden' : 'va-employee-headshot-container bg-base-lightest radius-md cropper-image-placeholder'%>" >
-                                                <i class="fas fa-user fa-7x va-employee-headshot-filler text-base-lighter"></i>
+                                            <div class="<%= vae_avatar.present? ? 'headshot-container bg-base-lightest radius-md cropper-image-placeholder hidden' : 'headshot-container bg-base-lightest radius-md cropper-image-placeholder'%>" >
+                                                <i class="fas fa-user fa-7x headshot-filler text-base-lighter"></i>
                                             </div>
                                         </div>
-                                        <div class="grid-col-8 va-employee-file-col">
+                                        <div class="grid-col-8">
                                             <div class="margin-bottom-2 cropper-upload-text">
                                                 <p>
                                                     Upload a photo that clearly shows a face. You can upload a .jpg, .jpeg, or .png file and the size limit is 1GB.
@@ -94,7 +94,7 @@
                                             <%= vae.label :delete_avatar, 'Remove photo', class: vae_avatar.present? ? 'display-inline-block text-secondary cropper-delete-image-label' : 'display-inline-block text-secondary cropper-delete-image-label hidden'%>
                                             <%= vae.check_box :delete_avatar, { class: vae_avatar.present? ? 'usa-checkbox__input cropper-delete-image' : 'usa-checkbox__input cropper-delete-image hidden'}, 'true', 'false' %>
                                         </div>
-                                        <div class="grid-col-fill flex-align-end va-employee-trash-container">
+                                        <div class="grid-col-fill flex-align-end trash-container">
                                             <%= vae.link_to_remove '', class: "fas fa-trash-alt va-employee-trash text-no-underline", title: 'Remove contact' %>
                                         </div>
                                     </div>

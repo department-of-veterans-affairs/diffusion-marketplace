@@ -419,13 +419,13 @@
   font-size: 22px;
 }
 
-.impact-trash-container, .origin-trash-container, .documentation-trash-container,
-.risk-miti-trash-container, .va-employee-trash-container, .permission-trash-container, .resource-trash-container {
+.impact-trash-container, .documentation-trash-container, .trash-container,
+.risk-miti-trash-container, .permission-trash-container, .resource-trash-container {
   align-self: flex-end;
   text-align: center;
 }
 
-.va-employee-trash-container {
+.trash-container {
   text-align: right;
   padding-right: 0.2rem;
 }
@@ -564,30 +564,16 @@
   margin-top: 0 !important;
 }
 
-.impact-p, .va-employee-headshot-p, .practice-creator-headshot-p {
-  margin-top: 24px;
+.impact-p, .headshot-title {
+  margin-top: 1.5rem;
 }
 
-.practice-creator-headshot-container {
-  width: 65px;
-  height: 65px;
-  position: relative;
-}
-
-.va-employee-headshot-filler, .practice-creator-headshot-filler {
+.headshot-filler {
   position: absolute;
   bottom: 0;
   left: 50%;
   -webkit-transform: translateX(-50%);
   transform: translateX(-50%);
-}
-
-.practice-creator-headshot-col {
-  margin-right: 24px;
-}
-
-.add-va-employee-headshot-label, .add-practice-creator-headshot-label {
-  margin-top: 12px !important;
 }
 
 .practice-editor-origin-ul, .practice-editor-timeline-ul, .practice-editor-risk-mitigation-ul, .practice-editor-contact-ul,
@@ -746,21 +732,15 @@
   width: 1px;
 }
 
-.va-employee-headshot-col {
+.headshot-col {
   max-width: 8.9375rem !important;
 }
 
-.practice-creator-avatar {
-  width: 65px;
-  height: 65px;
-  object-fit: cover;
-}
-
-.va-employee-img {
+.headshot-img {
   min-height: 8.9375rem !important;
 }
 
-.va-employee-headshot-container {
+.headshot-container {
   min-height: 8.9375rem !important;
   text-align: center;
 }
