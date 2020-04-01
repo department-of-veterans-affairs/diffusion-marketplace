@@ -77,8 +77,8 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_css('.cropper-modal')
             @save_edits_button = find('.cropper-save-edit')
             @save_edits_button.click
-            expect(find("#crop_x", :visible => false).value).to match '22'
-            expect(find("#crop_y", :visible => false).value).to match '22'
+            expect(find("#crop_x", :visible => false).value).to match '23'
+            expect(find("#crop_y", :visible => false).value).to match '23'
             expect(find("#crop_w", :visible => false).value).to match '180'
             expect(find("#crop_h", :visible => false).value).to match '180'
             @cancel_edits_button = find('.cropper-cancel-edit')
