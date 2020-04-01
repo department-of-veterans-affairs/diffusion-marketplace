@@ -6,6 +6,7 @@
     var selectedFacility = "<%= @practice.initiating_facility %>";
   <% end %>
   <%= javascript_include_tag 'practice_editor_overview', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_cropper', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <%
@@ -37,36 +38,46 @@
             <div>
               <%= f.label :tagline, 'Practice tagline: ', class: 'usa-label text-bold display-block margin-top-3' %>
               <span>Type a short sentence summarizing the key outcomes of your practice.</span>&nbsp;<span id="practice-editor-tagline-character-counter" class="text-base-light">(0/150 characters)</span>
-              <%= f.text_area :tagline, class: "usa-textarea #{ @practice.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-tagline-textarea" %>
+              <%= f.text_area :tagline, class: "usa-textarea #{ @practice.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-tagline-textarea", required: true %>
               <p class="usa-error-message <%= @practice.errors[:tagline].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@practice, :tagline) %></span></p>
             </div>
             <p class="margin-top-3"><span class="text-bold">Practice thumbnail:</span>&nbsp;</p>
-            <div class="grid-row margin-top-1">
-              <div id="practice-thumbnail-placeholder" class="grid-col-6">
-                <% if @practice.main_display_image.present? %>
-                  <%= image_tag @practice.main_display_image_s3_presigned_url, alt: "practice thumbnail for #{@practice.name}", class: 'height-mobile practice-editor-impact-photo radius-md' %>
-                <% else %>
-                  <div class="bg-base-lightest position-relative radius-md" style="height: 300px; width: 350px;">
-                    <i class="fas fa-images fa-4x text-base-lighter no-impact-image"></i>
-                  </div>
-                <% end %>
+            <div class="grid-row margin-top-1 cropper-boundary">
+              <div class="grid-col-6">
+                <div class="cropper-images-container main-image" data-type="main">
+                  <% if @practice.main_display_image.present? %>
+                      <%= image_tag @practice.main_display_image_s3_presigned_url(:original), alt: "practice thumbnail for #{@practice.name}", class: 'height-mobile cropper-thumbnail-original radius-md hidden'%>
+                      <%= image_tag @practice.main_display_image_s3_presigned_url(:thumb), alt: "practice thumbnail for #{@practice.name}", class: 'height-mobile cropper-thumbnail-modified radius-md'%>
+                  <% end %>
+                </div>
+                <div class="<%= @practice.main_display_image.present? ? 'bg-base-lightest position-relative radius-md height-mobile cropper-image-placeholder hidden' : 'bg-base-lightest position-relative radius-md height-mobile cropper-image-placeholder'%>" style="height: 20rem; width: 20rem;">
+                  <i class="fas fa-images fa-4x text-base-lighter no-impact-image"></i>
+                </div>
               </div>
               <div class="grid-col-6">
-                <div class="margin-bottom-205 margin-left-3 margin-top-1">
-                  <p class="thumbnail-upload-text">Upload a clear photo that will be shown as the representative image for this practice. You can upload a .jpg, .jpeg, or .png file and the size limit is 1GB.</p>
+                <div class="margin-bottom-2 cropper-upload-text">
+                  <p>Upload a clear photo that will be shown as the representative image for this practice. You can upload a .jpg, .jpeg, or .png file and the size limit is&nbsp;1GB.</p>
                 </div>
-                <div class="grid-row margin-left-3 flex-align-start">
+                <div class="margin-bottom-2 cropper-editor-text hidden">
+                  <p>Please click "Save edits" and then "Save your progress" to save and exit editor.</p>
+                </div>
+                <div class="grid-row flex-align-start">
+                  <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
+                    <%= f.hidden_field attribute, :id => attribute, :value => nil %>
+                  <% end %>
                   <div class="grid-col-fill">
-                    <div class="">
-                      <%= f.file_field :main_display_image, class: "hidden-upload hidden-impact-photo-upload", accept: 'image/*' %>
-                      <%= f.label :main_display_image, 'Upload new photo', class: "upload-main-display-image-link" %>
-                    </div>
-                    <% if @practice.main_display_image.present? %>
+                      <a class="usa-button padding-2 cropper-save-edit hidden" aria-controls='photo-save-edit' aria-expanded='false'>Save edits</a>
+                      <a class="usa-button usa-button--outline padding-2 cropper-cancel-edit hidden" aria-controls='photo-cancel-edit' aria-expanded='false'>Cancel edits</a>
+                      <a class="<%= @practice.main_display_image.present? ? "usa-button usa-button--outline padding-2 cropper-edit-mode" : "usa-button usa-button--outline padding-2 cropper-edit-mode hidden" %>" aria-controls='photo-crop' aria-expanded='false'>Edit photo</a>
                       <div>
-                        <%= f.check_box :delete_main_display_image, { class: "usa-checkbox__input"}, 'true', 'true' %>
-                        <%= f.label :delete_main_display_image, 'Remove photo', class: "display-inline-block text-secondary remove-main-display-image-link"%>
+                        <%= f.label :main_display_image,
+                          @practice.main_display_image.present? ? 'Upload new photo' : 'Upload photo',
+                          class: @practice.main_display_image.present? ? 'cropper-upload-image-label' : 'cropper-upload-image-label usa-button'
+                        %>
+                        <%= f.file_field :main_display_image, class: "hidden-upload cropper-upload-image", accept: 'image/*' %>
                       </div>
-                    <% end %>
+                      <%= f.label :delete_main_display_image, 'Remove photo', class: @practice.main_display_image.present? ? 'display-inline-block text-secondary cropper-delete-image-label' : 'display-inline-block text-secondary cropper-delete-image-label hidden'%>
+                      <%= f.check_box :delete_main_display_image, { class: @practice.main_display_image.present? ? 'usa-checkbox__input cropper-delete-image' : 'usa-checkbox__input cropper-delete-image hidden'}, 'true', 'false' %>
                   </div>
                 </div>
               </div>
@@ -75,22 +86,22 @@
             <div class="grid-row grid-gap-4">
               <div>
                 <%= label_tag 'editor_state_select', 'State', class: 'usa-label' %>
-                <%= select_tag('', options_for_select(us_states), id: 'editor_state_select', name: 'editor_state_select', class: 'width-card-lg height-5 usa-select') %>
+                <%= select_tag('', options_for_select(us_states), id: 'editor_state_select', name: 'editor_state_select', class: 'width-card-lg height-5 usa-select', required: true) %>
               </div>
               <div class="grid-col-fill">
                 <%= label_tag 'editor_facility_select', 'Facility', class: 'usa-label' %>
-                <%= f.select(:initiating_facility, options_for_select(['-Select-'], {selected: '-Select-', disabled: '-Select-'}), {}, {id: 'editor_facility_select', class: 'width-full height-5 usa-select'}) %>
+                <%= f.select(:initiating_facility, options_for_select(['-Select-'], {selected: '-Select-', disabled: '-Select-'}), {}, {id: 'editor_facility_select', class: 'width-full height-5 usa-select', required: true}) %>
               </div>
             </div>
             <p class="margin-top-3"><span class="text-bold">Practice date:</span>&nbsp;<span>Select the month and year when this practice was created.</span>
             <div class="grid-row grid-gap-4">
               <div>
                 <%= label_tag 'editor_date_intiated_month', 'Month', class: 'usa-label' %>
-                <%= select_month(@practice.date_initiated.present? ? date_get_month(@practice.date_initiated) : nil, {prompt: '-Select-', prefix: 'date_initiated'}, {id: 'editor_date_intiated_month', class: 'width-card-lg height-5 usa-select'}) %>
+                <%= select_month(@practice.date_initiated.present? ? date_get_month(@practice.date_initiated) : nil, {prompt: '-Select-', prefix: 'date_initiated'}, {id: 'editor_date_intiated_month', class: 'width-card-lg height-5 usa-select', required: true}) %>
               </div>
               <div class="grid-col-fill">
                 <%= label_tag 'editor_date_intiated_year', 'Year', class: 'usa-label' %>
-                <%= select_year(@practice.date_initiated.present? ? date_get_year(@practice.date_initiated) : nil, {start_year: 1970, end_year: Date.today.year, prompt: '-Select-', prefix: 'date_initiated', default: '-Select-'}, {id: 'editor_date_intiated_year', class: 'width-full height-5 usa-select'}) %>
+                <%= select_year(@practice.date_initiated.present? ? date_get_year(@practice.date_initiated) : nil, {start_year: 1970, end_year: Date.today.year, prompt: '-Select-', prefix: 'date_initiated', default: '-Select-'}, {id: 'editor_date_intiated_year', class: 'width-full height-5 usa-select', required: true}) %>
               </div>
             </div>
             <div class="grid-row grid-gap-4">
@@ -103,7 +114,7 @@
             <div>
               <%= f.label :summary, 'Practice summary: ', class: 'usa-label text-bold display-block' %>
               <span>Type a brief summary of your practice’s mission.</span>&nbsp;<span id="practice-editor-summary-character-counter" class="text-base-light">(0/400 characters)</span>
-              <%= f.text_area :summary, class: 'usa-textarea display-block practice-editor-summary-textarea' %>
+              <%= f.text_area :summary, class: 'usa-textarea display-block practice-editor-summary-textarea', required: true %>
             </div>
             <p class="margin-top-3 margin-bottom-1"><span class="text-bold">Partners: </span><span>Select any of the following partners your practice is associated with.</span>
             <% partners.each do |partner| %>

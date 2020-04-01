@@ -41,7 +41,6 @@
       color: black;
       background-color: transparent;
     }
-
   }
 }
 
@@ -353,8 +352,10 @@
   }
 }
 
-.editor-continue-link {
+.editor-continue-link, .cropper-save-edit {
+  color: white !important;
   line-height: 1 !important;
+
   &:visited {
     color: white !important;
   }
@@ -424,6 +425,11 @@
   text-align: center;
 }
 
+.va-employee-trash-container {
+  text-align: right;
+  padding-right: 0.2rem;
+}
+
 .documentation-trash-container, .risk-miti-trash-container, .contact-trash-container,
 .permission-trash-container, .resource-trash-container {
   margin-left: 33px;
@@ -475,7 +481,7 @@
   }
 }
 
-.remove-main-display-image-link {
+.cropper-delete-image-label {
   margin-top: 6px;
   margin-bottom: 24px;
   color: $dm-color-high-red;
@@ -487,9 +493,10 @@
   }
 }
 
-.upload-main-display-image-link {
+.cropper-upload-image-label {
   color: $dm-color-primary-blue;
   text-decoration: underline;
+  margin-top: 0 !important;
 
   &:hover {
     color: $dm-color-primary-dark-blue;
@@ -544,6 +551,11 @@
   object-fit: cover;
 }
 
+.cropper-thumbnail-original, .cropper-thumbnail-modified {
+  min-width: 100% !important;
+  object-fit: cover;
+}
+
 .fields {
   width: 100%;
 }
@@ -556,7 +568,7 @@
   margin-top: 24px;
 }
 
-.va-employee-headshot-container, .practice-creator-headshot-container {
+.practice-creator-headshot-container {
   width: 65px;
   height: 65px;
   position: relative;
@@ -570,7 +582,7 @@
   transform: translateX(-50%);
 }
 
-.va-employee-headshot-col, .practice-creator-headshot-col {
+.practice-creator-headshot-col {
   margin-right: 24px;
 }
 
@@ -734,10 +746,23 @@
   width: 1px;
 }
 
-.practice-creator-avatar, .va-employee-img {
+.va-employee-headshot-col {
+  max-width: 8.9375rem !important;
+}
+
+.practice-creator-avatar {
   width: 65px;
   height: 65px;
   object-fit: cover;
+}
+
+.va-employee-img {
+  min-height: 8.9375rem !important;
+}
+
+.va-employee-headshot-container {
+  min-height: 8.9375rem !important;
+  text-align: center;
 }
 
 .publication-link, .additional-document-link {
@@ -770,9 +795,8 @@
   }
 }
 
-.thumbnail-upload-text {
-  font-size: 16.96px;
-  line-height: 26px;
+.cropper-upload-text > p, .cropper-editor-text > p {
+  line-height: 1.625rem !important;
 }
 
 .side-nav-active {
@@ -788,12 +812,26 @@
   color: inherit;
   background-color: transparent;
 }
+
+.cropper-edit-mode, .cropper-save-edit, .cropper-cancel-edit {
+  text-decoration: none !important;
+  margin: 0 0 0.5rem 0 !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
 .add-milestone-link {
   width: auto !important;
 }
 
 .timeline-trash {
   right: 3px;
+}
+
+.main-image {
+  max-width: 20rem !important;
 }
 
 /* Adoptions */

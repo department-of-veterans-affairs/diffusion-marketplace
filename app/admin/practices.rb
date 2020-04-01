@@ -20,7 +20,7 @@ ActiveAdmin.register Practice do
   form do |f|
     f.semantic_errors *f.object.errors.keys# shows errors on :base
     f.inputs  do
-      f.input :name
+      f.input :name, label: 'Practice name'
       f.input :user, label: 'User email', as: :string, input_html: {name: 'user_email'}
     end        # builds an input field for every attribute
     f.actions         # adds the 'Submit' and 'Cancel' buttons
@@ -29,7 +29,7 @@ ActiveAdmin.register Practice do
   show do
     attributes_table  do
       row :id
-      row(:name)    { |practice| link_to(practice.name, practice_path(practice)) }
+      row(:name, label: 'Practice name')    { |practice| link_to(practice.name, practice_path(practice)) }
       row :slug
       row('Edit URL') { |practice| link_to(practice_overview_path(practice), practice_overview_path(practice)) }
       row(:user) {|practice| link_to(practice.user&.email, admin_user_path(practice.user)) if practice.user.present?}
@@ -54,6 +54,7 @@ ActiveAdmin.register Practice do
       if params[:user_email].present?
         set_practice_user(practice)
       end
+      practice.approved = true
     end
 
     before_update do |practice|

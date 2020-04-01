@@ -22,4 +22,3 @@ $(document).on 'click', '.practice-form-submit', (e) ->
 
 $(document).on 'turbolinks:load', (e) ->
   $('.tooltip').tooltip();
-#   init_papercrop();

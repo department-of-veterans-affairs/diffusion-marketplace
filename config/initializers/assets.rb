@@ -8,7 +8,7 @@ Rails.application.config.assets.version = '1.0'
 # Add Yarn node_modules folder to the asset load path.
 Rails.application.config.assets.paths << Rails.root.join('node_modules')
 
-Rails.application.config.assets.precompile += %w( _facilitySelect.js practice_editor_adoptions.js  practice_page.js practice_editor_checklist.js _practice_editor_utilities.js practice_editor_impact.js practice_editor_documentation.js practice_editor_contact.js practice_editor_timeline.js practice_editor_origin.js practice_editor_risk_mitigation.js practice_editor_complexity.js practice_editor_overview.js diffusion_history/home_map.js diffusion_history/practice_map.js diffusion_history/_map_utilities.js )
+Rails.application.config.assets.precompile += %w(  _facilitySelect.js practice_editor_adoptions.js practice_page.js practice_editor_checklist.js _practice_editor_utilities.js _cropper.js practice_editor_impact.js practice_editor_documentation.js practice_editor_contact.js practice_editor_timeline.js practice_editor_origin.js practice_editor_risk_mitigation.js practice_editor_complexity.js practice_editor_overview.js diffusion_history/home_map.js diffusion_history/practice_map.js diffusion_history/_map_utilities.js )
 
 # Precompile additional assets.
 # application.es6, application.scss, and all non-JS/CSS in the app/assets

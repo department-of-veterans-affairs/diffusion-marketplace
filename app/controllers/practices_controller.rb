@@ -177,6 +177,25 @@ class PracticesController < ApplicationController
         end
       end
 
+      # Crop main display image
+      if params[:practice][:crop_x].present? && params[:practice][:crop_y].present? && params[:practice][:crop_h].present? && params[:practice][:crop_w].present?
+        @practice.main_display_image.reprocess!
+      end
+
+      # Crop VA employee avatar
+      if params[:practice][:va_employees_attributes].present?
+        params[:practice][:va_employees_attributes].each do |key, e|
+          if e[:crop_x].present? && e[:crop_y].present? && e[:crop_w].present? && e[:crop_h].present? && e[:id].present? && e[:_destroy] == 'false'
+            vae = @practice.va_employees.find(e[:id])
+            vae.crop_x = e[:crop_x]
+            vae.crop_y = e[:crop_y]
+            vae.crop_w = e[:crop_w]
+            vae.crop_h = e[:crop_h]
+            vae.avatar.reprocess!
+          end
+        end
+      end
+
       partner_keys.each do |key|
         next if @practice.practice_partners.ids.include? key.to_i
 
@@ -422,7 +441,8 @@ class PracticesController < ApplicationController
     params.require(:practice).permit(:need_training, :tagline, :process, :it_required, :need_new_license, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :cost_to_implement_aggregate, :sustainability_aggregate, :veteran_satisfaction_aggregate, :difficulty_aggregate, :date_initiated,
                                      :number_adopted, :number_departments, :number_failed, :implementation_time_estimate, :implementation_time_estimate_description, :implentation_summary, :implentation_fte,
                                      :training_provider, :training_length, :training_test, :training_provider_role, :required_training_summary, :support_network_email,
-                                     :main_display_image, :main_display_image_original_w, :main_display_image_original_h, :main_display_image_crop_x, :main_display_image_crop_y, :main_display_image_crop_w, :main_display_image_crop_h,
+                                     :main_display_image, :crop_x, :crop_y, :crop_h, :crop_w,
+                                     :delete_main_display_image,
                                      :origin_picture, :origin_picture_original_w, :origin_picture_original_h, :origin_picture_crop_x, :origin_picture_crop_y, :origin_picture_crop_w, :origin_picture_crop_h,
                                      impact_photos_attributes: [:id, :title, :is_main_display_image, :description, :position, :attachment, :attachment_original_w, :attachment_original_h, :attachment_crop_x, :attachment_crop_y,
                                                                 :attachment_crop_w, :attachment_crop_h, :_destroy],
@@ -431,7 +451,7 @@ class PracticesController < ApplicationController
                                      difficulties_attributes: [:id, :description, :_destroy],
                                      risk_mitigations_attributes: [:id, :_destroy, :position, risks_attributes: [:id, :description, :_destroy], mitigations_attributes: [:id, :description, :_destroy]],
                                      timelines_attributes: [:id, :description, :timeline, :_destroy, :position, milestones_attributes: [:id, :description, :_destroy]],
-                                     va_employees_attributes: [:id, :name, :role, :position, :_destroy, :avatar, :avatar_original_w, :avatar_original_h, :avatar_crop_x, :avatar_crop_y, :avatar_crop_w, :avatar_crop_h],
+                                     va_employees_attributes: [:id, :name, :role, :position, :_destroy, :avatar, :crop_x, :crop_y, :crop_w, :crop_h, :delete_avatar],
                                      additional_staffs_attributes: [:id, :_destroy, :title, :hours_per_week, :duration_in_weeks, :permanent],
                                      additional_resources_attributes: [:id, :_destroy, :name, :position, :description], required_staff_trainings_attributes: [:id, :_destroy, :title, :description], practice_creators_attributes: [:id, :_destroy, :name, :role, :avatar, :position],
                                      publications_attributes: [:id, :_destroy, :title, :link, :position], additional_documents_attributes: [:id, :_destroy, :attachment, :title, :position], practice_permissions_attributes: [:id, :_destroy, :position, :name, :description])

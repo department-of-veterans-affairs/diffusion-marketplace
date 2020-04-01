@@ -23,6 +23,13 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_content('Contact')
             expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/risk_and_mitigation")
             expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/checklist")
+            expect(page).to have_content('Upload photo')
+            expect(page).to have_content('Upload a photo that clearly shows a face. You can upload a .jpg, .jpeg, or .png file and the size limit is 1GB.')
+            expect(page).to have_no_content('Remove photo')
+            expect(page).to have_no_content('Edit photo')
+            expect(page).to have_no_content('Upload new photo')
+            expect(page).to have_no_content('Cancel edits')
+            expect(page).to have_no_content('Save edits')
         end
 
         # it 'should require the user to fill out the fields that are marked as required' do
@@ -57,6 +64,13 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_css("img.va-employee-img")
             expect(page).to have_field('Name:', with: @employee_name)
             expect(page).to have_field('Role:', with: @employee_role)
+            expect(page).to have_content('Upload new photo')
+            expect(page).to have_content('Remove photo')
+            expect(page).to have_content('Edit photo')
+            expect(page).to have_content('Upload a photo that clearly shows a face. You can upload a .jpg, .jpeg, or .png file and the size limit is 1GB.')
+            expect(page).to have_no_content('Upload photo')
+            expect(page).to have_no_content('Cancel edits')
+            expect(page).to have_no_content('Save edits')
         end
 
         it 'should allow the user to add multiple new contacts' do
@@ -74,6 +88,13 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_field('practice[va_employees_attributes][0][role]', with: @employee_role)
             expect(page).to have_field('practice[va_employees_attributes][1][name]', with: 'Test name 2')
             expect(page).to have_field('practice[va_employees_attributes][1][role]', with: 'Test role 2')
+            expect(page).to have_content('Upload new photo')
+            expect(page).to have_content('Remove photo')
+            expect(page).to have_content('Upload a photo that clearly shows a face. You can upload a .jpg, .jpeg, or .png file and the size limit is 1GB.')
+            expect(page).to have_content('Edit photo')
+            expect(page).to have_content('Upload photo')
+            expect(page).to have_no_content('Cancel edits')
+            expect(page).to have_no_content('Save edits')
         end
 
         it 'should allow the user to delete contacts' do
@@ -87,6 +108,54 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_content('Practice was successfully updated')
             expect(page).to have_field('Name:', with: nil)
             expect(page).to have_field('Role:', with: nil)
+        end
+
+        it 'should allow the user to crop multiple contacts -- new and existing' do
+            fill_in_email_field
+            find('.add-va-employee-link').click
+
+            # added contact box
+            within all('.cropper-boundary')[1] do
+                fill_in_contact_fields
+                find('.cropper-edit-mode').click
+                expect(page).to have_no_content('Upload a photo that clearly shows a face. You can upload a .jpg, .jpeg, or .png file and the size limit is 1GB.')
+                expect(page).to have_content("Please click \"Save edits\" and then \"Save your progress\" to save and exit editor.")
+                expect(page).to have_content('Cancel edits')
+                expect(page).to have_content('Save edits')
+                expect(page).to have_css('.cropper-modal')
+                find('.cropper-save-edit').click
+                expect(find("#crop_x", :visible => false).value).to match '22'
+                expect(find("#crop_y", :visible => false).value).to match '22'
+                expect(find("#crop_w", :visible => false).value).to match '180'
+                expect(find("#crop_h", :visible => false).value).to match '180'
+            end
+
+            @save_button.click
+
+            # existing contact box
+            within all('.cropper-boundary')[0] do
+                fill_in('Name:', with: 'Test name')
+                fill_in('Role:', with: 'Test role')
+                attach_file('Upload new photo', @image_path)
+                find('.cropper-edit-mode').click
+                expect(page).to have_no_content('Upload a photo that clearly shows a face. You can upload a .jpg, .jpeg, or .png file and the size limit is 1GB.')
+                expect(page).to have_content("Please click \"Save edits\" and then \"Save your progress\" to save and exit editor.")
+                expect(page).to have_content('Cancel edits')
+                expect(page).to have_content('Save edits')
+                expect(page).to have_css('.cropper-modal')
+
+                find('.cropper-save-edit').click
+                expect(find("#crop_x", :visible => false).value).to match '22'
+                expect(find("#crop_y", :visible => false).value).to match '22'
+                expect(find("#crop_w", :visible => false).value).to match '180'
+                expect(find("#crop_h", :visible => false).value).to match '180'
+
+                find('.cropper-cancel-edit').click
+                expect(find("#crop_x", :visible => false).value).to match ''
+                expect(find("#crop_y", :visible => false).value).to match ''
+                expect(find("#crop_w", :visible => false).value).to match ''
+                expect(find("#crop_h", :visible => false).value).to match ''
+            end
         end
     end
 end

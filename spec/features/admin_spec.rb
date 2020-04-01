@@ -210,7 +210,7 @@ describe 'The admin dashboard', type: :feature do
     click_link('New Practice')
     expect(page).to have_current_path(new_admin_practice_path)
 
-    fill_in('Name', with: 'The Newest Practice')
+    fill_in('Practice name', with: 'The Newest Practice')
     fill_in('User email', with: 'practice_owner@va.gov')
     click_button('Create Practice')
 
