@@ -190,6 +190,20 @@ class PracticesController < ApplicationController
         end
       end
 
+      # Crop practice creator avatar
+      if params[:practice][:practice_creators_attributes].present?
+        params[:practice][:practice_creators_attributes].each do |key, pc|
+          if pc[:crop_x].present? && pc[:crop_y].present? && pc[:crop_w].present? && pc[:crop_h].present? && pc[:id].present? && pc[:_destroy] == 'false'
+            creator = @practice.practice_creators.find(pc[:id])
+            creator.crop_x = pc[:crop_x]
+            creator.crop_y = pc[:crop_y]
+            creator.crop_w = pc[:crop_w]
+            creator.crop_h = pc[:crop_h]
+            creator.avatar.reprocess!
+          end
+        end
+      end
+
       partner_keys.each do |key|
         next if @practice.practice_partners.ids.include? key.to_i
 
@@ -397,7 +411,7 @@ class PracticesController < ApplicationController
                                      timelines_attributes: [:id, :description, :timeline, :_destroy, :position, milestones_attributes: [:id, :description, :_destroy]],
                                      va_employees_attributes: [:id, :name, :role, :position, :_destroy, :avatar, :crop_x, :crop_y, :crop_w, :crop_h, :delete_avatar],
                                      additional_staffs_attributes: [:id, :_destroy, :title, :hours_per_week, :duration_in_weeks, :permanent],
-                                     additional_resources_attributes: [:id, :_destroy, :name, :position, :description], required_staff_trainings_attributes: [:id, :_destroy, :title, :description], practice_creators_attributes: [:id, :_destroy, :name, :role, :avatar, :position],
+                                     additional_resources_attributes: [:id, :_destroy, :name, :position, :description], required_staff_trainings_attributes: [:id, :_destroy, :title, :description], practice_creators_attributes: [:id, :_destroy, :name, :role, :avatar, :position, :delete_avatar, :crop_x, :crop_y, :crop_w, :crop_h],
                                      publications_attributes: [:id, :_destroy, :title, :link, :position], additional_documents_attributes: [:id, :_destroy, :attachment, :title, :position], practice_permissions_attributes: [:id, :_destroy, :position, :name, :description])
   end
 
