@@ -21,7 +21,7 @@
     end
   end
 %>
-<%= form_with(url: practice_create_or_update_diffusion_history_path(practice), html: {id: "adoption_form#{adoption&.diffusion_history&.id}"}) do |f| %>
+<%= form_with(url: practice_create_or_update_diffusion_history_path(practice), local: false, html: {id: "adoption_form#{adoption&.diffusion_history&.id}"}) do |f| %>
   <%= f.hidden_field('diffusion_history_id', value: adoption.diffusion_history.id) if adoption %>
   <%= f.hidden_field('diffusion_history_status_id', value: adoption.id) if adoption %>
   <div class="margin-bottom-3 margin-top-1">
@@ -54,10 +54,12 @@
         <%
           state_select_selector = adoption ? "editor_state_select_#{adoption.id}" : 'editor_state_select'
           facility_select_selector = adoption ? "editor_facility_select_#{adoption.id}" : 'editor_facility_select'
+          form_id = "adoption_form#{adoption&.diffusion_history&.id}"
         %>
+
         <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
             // enable/disable date adoption finished select dropdowns
-          var radios = document.querySelectorAll('form[id="adoption_form<%= adoption&.diffusion_history&.id %>"] input[type=radio][name="status"]');
+          var radios = document.querySelectorAll('form[id="<%= form_id %>"] input[type=radio][name="status"]');
 
           function changeHandler(event) {
             var end_month_el = document.getElementById('date_ended_month<%= adoption&.diffusion_history&.id %>');
@@ -78,6 +80,47 @@
           Array.prototype.forEach.call(radios, function(radio) {
             radio.addEventListener('change', changeHandler);
           });
+        <% end %>
+        <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+          // client-side validate dates
+          $(document).on('submit.rails', '#<%= form_id %>', function(event) {
+            event.preventDefault();
+            var formValid = true;
+            console.log(event);
+            var data = $('#<%= form_id %>').serializeArray().reduce(function(obj, item) {
+              obj[item.name] = item.value;
+              return obj;
+            }, {});
+
+            console.log(data);
+            if (data['date_started[month]'] && data['date_started[year]'] && data['date_ended[month]'] && data['date_ended[year]']) {
+              var startDate = new Date(Number(data['date_started[year]']), Number(data['date_started[month]']) , 1);
+              var endDate = new Date(Number(data['date_ended[year]']), Number(data['date_ended[month]']), 1);
+              formValid = startDate.getTime() < endDate.getTime();
+            }
+
+            if (formValid) {
+              //Rails.fire(event.target, 'submit');
+             $(event.target).trigger('submit.rails');
+            } else {
+              var alertHtml = '<div class="usa-alert usa-alert--error" role="alert">' +
+                '<div class="usa-alert__body">' +
+                  '<h3 class="usa-alert__heading">There was a problem with your date entries.</h3>' +
+                  '<p class="usa-alert__text">The start date cannot be after the end date.</p>' +
+                '</div>' +
+              '</div>';
+              $(event.target).find('div:first').prepend(alertHtml);
+              var $submitButton = $(event.target).find('input[type="submit"]');
+              Rails.enableElement($submitButton[0]);
+            }
+
+          });
+
+          $(document).on('submit:after', '#<%= form_id %>', function(event) {
+            var $submitButton = $(event.target).find('input[type="submit"]');
+            Rails.enableElement($submitButton[0]);
+          });
+
         <% end %>
         <% if adoption %>
           <% facility_id = adoption ? adoption.diffusion_history.facility_id : nil %>
@@ -128,7 +171,7 @@
   </div>
 
   <div class="margin-bottom-3">
-    <p class="text-bold margin-bottom-1">Date adoption started (Optional)</p>
+    <p class="text-bold margin-bottom-1">Date adoption started <span class="text-base">(optional)</span></p>
     <div class="grid-row grid-gap-4">
       <div>
         <%= label_tag "date_started_month#{adoption&.diffusion_history&.id}", 'Month', class: 'usa-label margin-0' %>
@@ -143,7 +186,7 @@
 
   <div class="margin-bottom-205">
     <p class="margin-bottom-1">
-      <span class="fw-bold">Date adoption finished (Optional):&nbsp;</span>
+      <span class="fw-bold">Date adoption finished <span class="text-base">(optional)</span>:&nbsp;</span>
       Successful or unsuccessful adoption must be selected to edit this field.
     </p>
     <div class="grid-row grid-gap-4">
