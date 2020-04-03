@@ -7,6 +7,9 @@ ARG AWS_REGION
 
 RUN git config --global http.sslVerify false
 
+COPY VA-Internal-S2-RCA1-v1.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-RCA1-v1.cer
+RUN update-ca-trust extract
+
 RUN gem install bundler --force
 
 ENV RAILS_ROOT /app
