@@ -146,8 +146,9 @@
               <h4 class="margin-top-0 margin-bottom-1">Adoptions</h4>
               <%# <p><%= @practice.number_failed %> <%#unsuccessful</p> %>
               <p class="margin-0 font-sans-xs-2 line-height-sans-505">
-                <span><%= @practice.number_adopted.present? ? @practice.number_adopted : '0' %></span>
-                facilit<%= @practice.number_adopted == 1 ? 'y' : 'ies' %> have adopted this practice</p>
+                <% number_adopted = @practice.diffusion_histories.count %>
+                <span><%= number_adopted %></span>
+                facilit<%= number_adopted == 1 ? 'y' : 'ies' %> have adopted this practice</p>
             </div>
           <% else %>
             <div class="hidden"></div>
