@@ -90,7 +90,7 @@
               </div>
               <div class="grid-col-fill">
                 <%= label_tag 'editor_facility_select', 'Facility', class: 'usa-label' %>
-                <%= f.select(:initiating_facility, options_for_select(['-Select-'], {selected: '-Select-', disabled: '-Select-'}), {}, {id: 'editor_facility_select', class: 'width-full height-5 usa-select', required: true}) %>
+                <%= select_tag('practice[initiating_facility]', options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), id: 'editor_facility_select', class: 'width-full height-5 usa-select', required: true) %>
               </div>
             </div>
             <p class="margin-top-3"><span class="text-bold">Practice date:</span>&nbsp;<span>Select the month and year when this practice was created.</span>

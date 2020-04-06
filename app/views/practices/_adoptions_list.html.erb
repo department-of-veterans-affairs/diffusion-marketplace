@@ -5,7 +5,7 @@
 %>
 
 <% diffused_practices.sort_by(&:facility_name).group_by(&:facility_id).each do |dhg| %>
-  <% current_diffusion_status = dhg[1][0].diffusion_history_statuses.find_by(end_time: nil) || dhg[1][0].diffusion_history_statuses.order(id: :desc).first %>
+  <% current_diffusion_status = dhg[1][0].diffusion_history_statuses.order(created_at: :desc).first %>
   <% facility = vamc_facilities.find { |f| f['StationNumber'] == dhg[0] } %>
 
   <h2 class="usa-accordion__heading margin-top-105">
@@ -25,7 +25,9 @@
     </button>
   </h2>
   <div id="diffusion_history_<%= current_diffusion_status.diffusion_history.id %>" class="usa-accordion__content usa-prose">
-
+    <% if params[:existing_dh] %>
+      <%= render partial: 'existing_adoption_warning', locals: {facility: params[:existing_dh]} %>
+    <% end %>
     <%= render partial: 'adoption_form', locals: {adoption: current_diffusion_status} %>
 
   </div>

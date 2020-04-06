@@ -47,7 +47,7 @@ class PracticesController < ApplicationController
       marker.lat facility['Latitude']
       marker.lng facility['Longitude']
 
-      current_diffusion_status = dhg[1][0].diffusion_history_statuses.find_by(end_time: nil) || dhg[1][0].diffusion_history_statuses.order(id: :desc).first
+      current_diffusion_status = dhg[1][0].diffusion_history_statuses.order(id: :desc).first
       marker_url = view_context.image_path('map-marker-default.svg')
       status = 'Complete'
       if current_diffusion_status.status == 'In progress' || current_diffusion_status.status == 'Planning' || current_diffusion_status.status == 'Implementing'
@@ -69,7 +69,7 @@ class PracticesController < ApplicationController
       in_progress = 0
       unsuccessful = 0
       dhg[1].each do |dh|
-        dh_status = dh.diffusion_history_statuses.where(end_time: nil).first || dh.diffusion_history_statuses.order(id: :desc).first
+        dh_status = dh.diffusion_history_statuses.order(created_at: :desc).first
         in_progress += 1 if dh_status.status == 'In progress' || dh_status.status == 'Planning' || dh_status.status == 'Implementing'
         completed += 1 if dh_status.status == 'Completed' || dh_status.status == 'Implemented' || dh_status.status == 'Complete'
         unsuccessful += 1 if dh_status.status == 'Unsuccessful'
@@ -392,26 +392,46 @@ class PracticesController < ApplicationController
     # if there is a diffusion_history_id, we're updating something
     @dh = DiffusionHistory.find(params[:diffusion_history_id]) if params[:diffusion_history_id].present?
     if @dh.present?
-      # update it
-      @dh.update_attributes(facility_id: facility_id)
-      params[:facility_changed] = true
+      # is the user changing to a facility that they already have listed?
+      # if so, tell them no
+      existing_dh = DiffusionHistory.find_by(practice: @practice, facility_id: facility_id)
+      if existing_dh
+        vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
+        params[:existing_dh] = vamc_facilities.find { |f| f['StationNumber'] == facility_id }
+      else
+        # if not,
+        # update it
+        @dh.update_attributes(facility_id: facility_id)
+        params[:facility_changed] = true
+      end
     else
-      # create a new one
-      @dh = DiffusionHistory.find_or_create_by!(practice: @practice, facility_id: facility_id)
+      # or else, we're creating something
+      # figure out if the user already has this diffusion history
+      @dh = DiffusionHistory.find_by(practice: @practice, facility_id: facility_id)
+      # if so, tell them!
+      if @dh
+        vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
+        params[:exists] = vamc_facilities.find { |f| f['StationNumber'] == facility_id }
+      else
+        # if not, create a new one
+        @dh = DiffusionHistory.create(practice: @practice, facility_id: facility_id)
+      end
     end
 
-    if params[:diffusion_history_status_id]
-      dhs = DiffusionHistoryStatus.find(params[:diffusion_history_status_id])
-      # if only the end time was updated, update the diffusion history status
-      dhs.update_attributes(start_time: start_time, end_time: end_time) if end_time.present? && status == dhs.status
-      # if the status changed, end the current diffusion history and make a new one
-      dhs.update_attributes(start_time: start_time, end_time: DateTime.now) if params[:status] != dhs.status
+    if params[:exists].blank? && params[existing_dh].blank?
+      if params[:diffusion_history_status_id]
+        dhs = DiffusionHistoryStatus.find(params[:diffusion_history_status_id])
+        # if only the end time was updated, update the diffusion history status
+        dhs.update_attributes(start_time: start_time, end_time: end_time) if status == dhs.status
+        # if the status changed, end the current diffusion history and make a new one
+        dhs.update_attributes(start_time: start_time, end_time: DateTime.now) if params[:status] != dhs.status
+      end
+      # create a new status.
+      DiffusionHistoryStatus.create!(diffusion_history: @dh, status: status, start_time: start_time, end_time: end_time) if status != dhs&.status
     end
-    # create a new status. if one already exists, do nothing.
-    DiffusionHistoryStatus.find_or_create_by!(diffusion_history: @dh, status: status, start_time: start_time, end_time: end_time) if params[:status] != dhs&.status
 
     respond_to do |format|
-      if params[:diffusion_history_id].blank?
+      if params[:diffusion_history_id].blank? && params[:exists].blank?
         params[:created] = true
       end
       params[:reload] = true
