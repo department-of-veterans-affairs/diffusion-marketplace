@@ -120,5 +120,11 @@
       <span class="text-bold">Confirmation</span>
     <% end %>
 
+    <% if params[:action] == 'shark_tank' && params[:controller] == 'competitions' %>
+      <span><%= link_to @practice.name, practice_path(@practice) %></span>
+      <span class="x0-5-left x0-5-right">›</span>
+      <span class="text-bold">Shark Tank Competition</span>
+    <% end %>
+
   </div>
 </section>

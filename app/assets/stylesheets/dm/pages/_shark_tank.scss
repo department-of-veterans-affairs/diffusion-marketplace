@@ -1,0 +1,14 @@
+@import '../variables/colors';
+
+.shark-tank-eligibility-p {
+  max-width: unset !important;
+}
+
+.shark-tank-support-link {
+  color: $dm-color-primary-blue;
+  text-decoration: underline;
+
+  &:visited {
+    color: $dm-color-primary-blue;
+  }
+}
