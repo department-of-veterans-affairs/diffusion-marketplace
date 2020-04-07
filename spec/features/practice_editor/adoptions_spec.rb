@@ -19,7 +19,6 @@ describe 'Practice editor', type: :feature do
     end
 
     it 'should interact with practice adoptions' do
-
       # it should be there
       expect(page).to have_content('Adoptions')
       expect(page).to have_link(class: 'editor-back-to-link', href: practice_overview_path(@practice))
@@ -124,6 +123,14 @@ describe 'Practice editor', type: :feature do
       select('2020', :from => "date_ended_year#{@practice.diffusion_histories.first.id}")
       find("#adoption_form#{@practice.diffusion_histories.first.id}_submit").click
       expect(page).to have_content('Unsuccessful Anchorage VA Medical Center 02/2010 - 11/2020')
+
+      # it should let the system update delete an adoption entry
+      find("button[aria-controls='diffusion_history_#{@practice.diffusion_histories.first.id}']").click
+      within(:css, "#diffusion_history_#{@practice.diffusion_histories.first.id}") do
+        click_link('Delete entry')
+      end
+      page.accept_alert
+      expect(page).to have_content('Adoption entry was successfully deleted.')
     end
 
   end
