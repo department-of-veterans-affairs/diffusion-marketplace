@@ -420,14 +420,13 @@ class PracticesController < ApplicationController
 
     if params[:exists].blank? && params[existing_dh].blank?
       if params[:diffusion_history_status_id]
+        # update the diffusion history status
         dhs = DiffusionHistoryStatus.find(params[:diffusion_history_status_id])
-        # if only the end time was updated, update the diffusion history status
-        dhs.update_attributes(start_time: start_time, end_time: end_time) if status == dhs.status
-        # if the status changed, end the current diffusion history and make a new one
-        dhs.update_attributes(start_time: start_time, end_time: DateTime.now) if params[:status] != dhs.status
+        dhs.update_attributes(status: status, start_time: start_time, end_time: end_time)
+      else
+        # create a new status.
+        DiffusionHistoryStatus.create!(diffusion_history: @dh, status: status, start_time: start_time, end_time: end_time)
       end
-      # create a new status.
-      DiffusionHistoryStatus.create!(diffusion_history: @dh, status: status, start_time: start_time, end_time: end_time) if status != dhs&.status
     end
 
     respond_to do |format|
