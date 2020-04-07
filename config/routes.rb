@@ -68,6 +68,7 @@ Rails.application.routes.draw do
 
   resource :competitions do
     get '/shark-tank', action: 'shark_tank', as: 'shark-tank'
+    get '/go-fish', action: 'go_fish', as: 'go-fish'
   end
   # Custom route for reporting a comment
   # get '/practices/:practice_id/comments/:comment_id/report', action: 'report_comment', controller: 'commontator/comments', as: 'report_comment'

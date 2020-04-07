@@ -17,7 +17,7 @@ describe 'Shark Tank landing page', type: :feature do
     click_on('Shark Tank Competition')
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content('Submit your practice application by May 1, 2020!')
-    expect(page).to have_content('Eligibility Requirements')
+    expect(page).to have_content('Eligibility requirements')
     expect(page).to have_content('FAQs')
   end
 

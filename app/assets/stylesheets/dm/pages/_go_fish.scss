@@ -1,0 +1,10 @@
+@import '../variables/colors';
+
+.go-fish-link {
+  color: $dm-color-primary-blue;
+  text-decoration: underline;
+
+  &:visited {
+    color: $dm-color-primary-blue;
+  }
+}
