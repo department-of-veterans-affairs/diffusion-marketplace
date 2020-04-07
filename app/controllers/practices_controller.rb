@@ -395,7 +395,7 @@ class PracticesController < ApplicationController
       # is the user changing to a facility that they already have listed?
       # if so, tell them no
       existing_dh = DiffusionHistory.find_by(practice: @practice, facility_id: facility_id)
-      if existing_dh
+      if existing_dh && existing_dh.id != @dh.id
         vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
         params[:existing_dh] = vamc_facilities.find { |f| f['StationNumber'] == facility_id }
       else
