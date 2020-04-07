@@ -149,13 +149,9 @@ describe 'Practice editor', type: :feature, js: true do
                 expect(find("#crop_y", :visible => false).value).to match '22'
                 expect(find("#crop_w", :visible => false).value).to match '180'
                 expect(find("#crop_h", :visible => false).value).to match '180'
-
-                find('.cropper-cancel-edit').click
-                expect(find("#crop_x", :visible => false).value).to match ''
-                expect(find("#crop_y", :visible => false).value).to match ''
-                expect(find("#crop_w", :visible => false).value).to match ''
-                expect(find("#crop_h", :visible => false).value).to match ''
             end
+
+            # @save_button.click
         end
     end
 end

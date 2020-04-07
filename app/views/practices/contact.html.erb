@@ -91,8 +91,10 @@
                                                 <%= vae.label :avatar, vae_avatar.present? ? 'Upload new photo' : 'Upload photo', class: vae_avatar.present? ? 'cropper-upload-image-label' : 'cropper-upload-image-label usa-button'%>
                                                 <%= vae.file_field :avatar, class: "hidden-upload cropper-upload-image", accept: 'image/*' %>
                                             </div>
-                                            <%= vae.label :delete_avatar, 'Remove photo', class: vae_avatar.present? ? 'display-inline-block text-secondary cropper-delete-image-label' : 'display-inline-block text-secondary cropper-delete-image-label hidden'%>
-                                            <%= vae.check_box :delete_avatar, { class: vae_avatar.present? ? 'usa-checkbox__input cropper-delete-image' : 'usa-checkbox__input cropper-delete-image hidden'}, 'true', 'false' %>
+                                            <div class="cropper-delete-image">
+                                                <%= vae.label :delete_avatar, 'Remove photo', class: vae_avatar.present? ? 'display-inline-block text-secondary cropper-delete-image-label' : 'display-inline-block text-secondary cropper-delete-image-label hidden'%>
+                                                <%= vae.check_box :delete_avatar, { class: vae_avatar.present? ? 'usa-checkbox__input' : 'usa-checkbox__input hidden'}, 'true', 'false' %>
+                                            </div>
                                         </div>
                                         <div class="grid-col-fill flex-align-end trash-container">
                                             <%= vae.link_to_remove '', class: "fas fa-trash-alt va-employee-trash text-no-underline", title: 'Remove contact' %>

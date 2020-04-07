@@ -2,6 +2,7 @@
 
 # Users controller, primarily for user admin management
 class UsersController < ApplicationController
+  include CropperUtils
   before_action :set_user, only: %i[show edit update destroy re_enable set_password]
   before_action :require_admin, only: %i[index update destroy re_enable]
   before_action :require_user_or_admin, only: :update
@@ -35,6 +36,14 @@ class UsersController < ApplicationController
     redirect_to users_path unless current_user.present?
     @user = current_user
     if @user.update(user_params)
+      if params[:user][:delete_avatar].present? && params[:user][:delete_avatar] == 'true'
+        @user.update_attributes(avatar: nil)
+      end
+
+      if is_cropping?(params[:user])
+        reprocess_avatar(@user, params[:user])
+      end
+
       flash[:success] = 'Your profile has been updated.'
       redirect_to edit_profile_path
     else
@@ -125,6 +134,6 @@ class UsersController < ApplicationController
 
   def user_params
     return params.require(:user).permit(:avatar, :bio) if ENV['USE_NTLM'] == 'true'
-    params.require(:user).permit(:avatar, :email, :password, :password_confirmation, :job_title, :first_name, :last_name, :phone_number, :visn, :skip_va_validation, :skip_password_validation, :bio, :location, :accepted_terms)
+    params.require(:user).permit(:avatar, :email, :password, :password_confirmation, :job_title, :first_name, :last_name, :phone_number, :visn, :skip_va_validation, :skip_password_validation, :bio, :location, :accepted_term, :delete_avatar, :crop_x, :crop_y, :crop_w, :crop_h)
   end
 end
