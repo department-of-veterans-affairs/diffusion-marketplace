@@ -18,13 +18,10 @@ describe 'Practice editor', type: :feature, js: true do
     end
 
     it 'Should display an error modal that contains missing required fields if any exist' do
-      adoptions = '13'
-      fill_in('practice_number_adopted', with: adoptions)
       find('#practice_partner_1_label').click
       @save_button.click
 
       expect(page).to have_field('practice_name', with: 'A public practice')
-      expect(page).to have_field('practice_number_adopted', with: adoptions)
       expect(all('.partner-input').first).to be_checked
 
       @publish_button.click

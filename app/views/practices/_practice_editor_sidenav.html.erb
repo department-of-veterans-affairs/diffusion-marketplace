@@ -10,7 +10,7 @@
                 <% end %>
             </li>
             <li class="usa-sidenav__item">
-              <%= link_to practice_adoptions_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-overview-link' do %>
+              <%= link_to practice_adoptions_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-adoptions-link' do %>
                 <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%= @practice.diffusion_histories.any? ? 'green-check' : '' %>"></i>Adoptions
               <% end %>
             </li>
