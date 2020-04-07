@@ -49,24 +49,23 @@
         if (formValid) {
             Rails.fire(document.getElementById(formId), 'submit');
         } else {
-            const errorMessage = $(formIdSelector).find('.usa-alert.usa-alert--error');
-            if (!errorMessage.length) {
-                const alertHtml = `
+            $(formIdSelector).parent().find('.usa-alert').remove();
+            $(formIdSelector).find('.usa-alert').remove();
+            const alertHtml = `
                 <div class="usa-alert usa-alert--error" role="alert">
                     <div class="usa-alert__body">
                         <h3 class="usa-alert__heading">There was a problem with your date entries.</h3>
                         <p class="usa-alert__text">The start date cannot be after the end date.</p>
                     </div>
                 </div>`;
-                $(formIdSelector).find('div:first').prepend(alertHtml);
-            }
+            $(formIdSelector).find('div:first').prepend(alertHtml);
             setTimeout(function () {
                 Rails.enableElement(event.target);
             }, 1);
         }
     });
 
-    $document.on('click', 'button[id*="cancel_edits"]', function(event) {
+    $document.on('click', 'button[id*="cancel_edits"]', function (event) {
         const selector = $(event.target).data('selector');
         $(`button[aria-controls="${selector}"]`).attr('aria-expanded', false);
         $(`#${selector}`).attr('hidden', 'hidden');
