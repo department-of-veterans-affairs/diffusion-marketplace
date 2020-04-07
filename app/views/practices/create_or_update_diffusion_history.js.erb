@@ -1,4 +1,5 @@
 $('.usa-alert').remove();
+$(".sidenav-adoptions-link").find('i').addClass('green-check');
 $("#adoptions").html("<%= escape_javascript(render partial: 'adoptions_content', formats: [ :html ]) %>");
 <% if params[:created] || params[:exists] %>
   $('.usa-accordion__content:not(#a0)').attr('hidden', true);
