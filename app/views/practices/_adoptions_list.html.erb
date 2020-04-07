@@ -25,7 +25,7 @@
     </button>
   </h2>
   <div id="diffusion_history_<%= current_diffusion_status.diffusion_history.id %>" class="usa-accordion__content usa-prose">
-    <% if params[:existing_dh] %>
+    <% if params[:existing_dh] && @dh&.id == current_diffusion_status.diffusion_history.id %>
       <%= render partial: 'existing_adoption_warning', locals: {facility: params[:existing_dh]} %>
     <% end %>
     <%= render partial: 'adoption_form', locals: {adoption: current_diffusion_status} %>
