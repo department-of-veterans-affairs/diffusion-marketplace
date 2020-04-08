@@ -3,7 +3,11 @@
 
     function clearAdoptionEntryForm() {
         $document.on('click', '#clear_entry', function () {
-            document.getElementById('adoption_form').reset();
+            const adoptionFormId = 'adoption_form';
+            const $adoptionForm = $(`#${adoptionFormId}`);
+            $adoptionForm.parent().find('.usa-alert').remove();
+            $adoptionForm.find('.usa-alert').remove();
+            $adoptionForm[0].reset();
             const end_month_el = document.getElementById('date_ended_month');
             const end_year_el = document.getElementById('date_ended_year');
             const facility_el = document.getElementById('editor_facility_select');
