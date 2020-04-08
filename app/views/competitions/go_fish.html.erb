@@ -5,7 +5,8 @@
         <%= image_tag('go_fish_logo.png', alt: 'Go Fish Logo') %>
       </div>
     </div>
-    <section class="go-fish-info font-sans-sm">
+  </div>
+    <section class="go-fish-info font-sans-sm grid-col-8 margin-y-0 margin-x-auto">
       <h1 class="font-sans-2xl">
         Go Fish!
       </h1>
@@ -33,7 +34,22 @@
         <%= link_to 'Click here to apply', 'https://www.surveymonkey.com/r/GHC77WV', class: 'go-fish-link', target: '_blank' %>
       </p>
     </section>
-  </div>
+  <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest section-line grid-col-8 margin-top-5 margin-bottom-0 margin-x-auto">
+  <section class="inet-practices">
+    <h3 class="font-sans-lg text-center margin-top-2 margin-bottom-3 margin-x-auto">iNET Practices</h3>
+    <% inet_badge = Badge.find_by(name: 'iNET') %>
+    <% @inet_practices = Practice.joins(:badge_practices).where(badge_practices: { badge: inet_badge}).order(name: :asc) %>
+    <% if @inet_practices.any? %>
+      <div class="grid-row grid-gap">
+        <% @inet_practices.each do |practice| %>
+          <div class="tablet:grid-col-4 flex-column display-flex margin-bottom-28px">
+            <%= render partial: 'practices/favorite_button', locals: {practice: practice, featured: false } %>
+            <%= render partial: '/practices/marketplace_card', locals: {practice: practice, featured: false} %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </section>
   <div class="margin-bottom-105">
     <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
   </div>

@@ -4,7 +4,11 @@
   color: $dm-color-primary-blue;
   text-decoration: underline;
 
+  &:hover {
+    color: $dm-default-link-blue !important;
+  }
+
   &:visited {
-    color: $dm-color-primary-blue;
+    color: $dm-default-visited-link-purple !important;
   }
 }
