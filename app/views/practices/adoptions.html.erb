@@ -1,0 +1,57 @@
+<% provide :head_tags do %>
+  <%= javascript_include_tag '_facilitySelect', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    var facilityData = <%= raw JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json")).to_json %>;
+  <% end %>
+  <%= javascript_include_tag 'practice_editor_adoptions', 'data-turbolinks-track': 'reload' %>
+<% end %>
+<%= render 'breadcrumbs' %>
+<%= render 'practice_editor_sidenav' %>
+<div class="grid-container position-relative">
+  <div class="grid-row grid-gap practice-editor-min-height">
+    <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+
+    <div id="overview" class="desktop:grid-col-9 grid-col-12 p0">
+      <%= render "shared/messages" %>
+      <section class="usa-section padding-top-0 p2-bottom introduction">
+        <h1 class="font-sans-2xl line-height-sans-205">Adoptions</h1>
+        <h2 class="text-normal font-sans-lg line-height-36 margin-bottom-5">
+          Share which facilities have successfully
+          adopted your practice. Aim to update this data
+          quarterly.
+        </h2>
+
+        <div class="font-sans-lg">
+          <div class="display-inline-block status-width">
+            <h3 class="margin-top-0 margin-bottom-105">Status</h3>
+          </div>
+          <div class="display-inline-block facility-header-width">
+            <h3 class="margin-top-0 margin-bottom-105">Facility</h3>
+          </div>
+          <div class="display-inline-block timeline-width">
+            <h3 class="margin-top-0 margin-bottom-105">Timeline</h3>
+          </div>
+          <div class="display-inline-block action-button-width">
+            &nbsp;
+          </div>
+        </div>
+        <div class="usa-accordion" id="adoptions">
+          <!-- start accordions -->
+          <%= render partial: 'adoptions_content' %>
+        </div>
+        <div class="grid-row margin-top-7 margin-bottom-8">
+          <%= link_to practice_overview_path(@practice), class: 'usa-button usa-button--outline editor-back-to-link margin-right-1 padding-2 margin-bottom-5 text-no-underline' do %>
+            <i class="fas fa-chevron-left fa-sm text-no-underline margin-right-1"></i>Back
+          <% end %>
+          <%= link_to practice_origin_path(@practice), class: 'usa-button padding-2 editor-continue-link margin-right-1 margin-bottom-5' do %>
+            Continue<i class="fas fa-chevron-right fa-sm margin-left-1 text-no-underline"></i>
+          <% end %>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="margin-bottom-105">
+    <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
+  </div>
+</div>

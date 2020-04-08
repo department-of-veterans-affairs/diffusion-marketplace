@@ -23,7 +23,6 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/origin")
             expect(page).to have_field('Month', with: '12')
             expect(page).to have_field('Year', with: '2011')
-            expect(page).to have_field('practice_number_adopted', with: '1')
             expect(page).to have_no_css("img[src*='charmander.png']")
             expect(page).to have_content('Upload photo')
             expect(page).to have_content('Upload a clear photo that will be shown as the representative image for this practice.')
@@ -45,7 +44,6 @@ describe 'Practice editor', type: :feature, js: true do
             select('Birmingham VA Medical Center', :from => 'editor_facility_select')
             select('October', :from => 'editor_date_intiated_month')
             select('1970', :from => 'editor_date_intiated_year')
-            fill_in('practice_number_adopted', with: '15')
             fill_in('practice_summary', with: 'This is the most super practice ever made')
             find('#practice_partner_1_label').click
             attach_file('Upload photo', @image_path)
@@ -55,7 +53,6 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_field('practice_summary', with: 'This is the most super practice ever made')
             expect(page).to have_field('Month', with: '10')
             expect(page).to have_field('Year', with: '1970')
-            expect(page).to have_field('practice_number_adopted', with: '15')
             expect(page).to have_css("img[src*='charmander.png']")
             expect(page).to have_content('Remove photo')
             expect(page).to have_content('Upload new photo')

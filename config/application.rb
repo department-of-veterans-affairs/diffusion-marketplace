@@ -17,10 +17,6 @@ Dir["./lib/middleware/*.rb"].each do |file|
   require file
 end
 
-Dir["./lib/modules/*.rb"].each do |file|
-  require file
-end
-
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)

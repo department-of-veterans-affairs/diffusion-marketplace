@@ -419,13 +419,13 @@
   font-size: 22px;
 }
 
-.impact-trash-container, .documentation-trash-container, .trash-container,
-.risk-miti-trash-container, .permission-trash-container, .resource-trash-container {
+.impact-trash-container, .origin-trash-container, .documentation-trash-container,
+.risk-miti-trash-container, .va-employee-trash-container, .permission-trash-container, .resource-trash-container {
   align-self: flex-end;
   text-align: center;
 }
 
-.trash-container {
+.va-employee-trash-container {
   text-align: right;
   padding-right: 0.2rem;
 }
@@ -564,16 +564,30 @@
   margin-top: 0 !important;
 }
 
-.impact-p, .headshot-title {
-  margin-top: 1.5rem;
+.impact-p, .va-employee-headshot-p, .practice-creator-headshot-p {
+  margin-top: 24px;
 }
 
-.headshot-filler {
+.practice-creator-headshot-container {
+  width: 65px;
+  height: 65px;
+  position: relative;
+}
+
+.va-employee-headshot-filler, .practice-creator-headshot-filler {
   position: absolute;
   bottom: 0;
   left: 50%;
   -webkit-transform: translateX(-50%);
   transform: translateX(-50%);
+}
+
+.practice-creator-headshot-col {
+  margin-right: 24px;
+}
+
+.add-va-employee-headshot-label, .add-practice-creator-headshot-label {
+  margin-top: 12px !important;
 }
 
 .practice-editor-origin-ul, .practice-editor-timeline-ul, .practice-editor-risk-mitigation-ul, .practice-editor-contact-ul,
@@ -732,15 +746,21 @@
   width: 1px;
 }
 
-.headshot-col {
+.va-employee-headshot-col {
   max-width: 8.9375rem !important;
 }
 
-.headshot-img {
+.practice-creator-avatar {
+  width: 65px;
+  height: 65px;
+  object-fit: cover;
+}
+
+.va-employee-img {
   min-height: 8.9375rem !important;
 }
 
-.headshot-container {
+.va-employee-headshot-container {
   min-height: 8.9375rem !important;
   text-align: center;
 }
@@ -812,4 +832,53 @@
 
 .main-image {
   max-width: 20rem !important;
+}
+
+/* Adoptions */
+.usa-accordion__button[aria-expanded=false].adoptions-edit {
+  background-image: asset_url('edit.svg'), linear-gradient(transparent, transparent);
+  background-position-x: 98%;
+  background-size: 22.5px 20px;
+}
+
+.usa-accordion__button.new {
+  &:hover {
+    color: $dm-color-primary-blue
+  }
+}
+
+.usa-accordion__heading:not(:first-child).margin-top-105 {
+  margin-top: 12px !important;
+}
+
+.status-width {
+  width: 23%;
+}
+
+.facility-header-width {
+  width: 40%;
+}
+
+.facility-name-width {
+  width: 45%;
+}
+
+.timeline-width {
+  width: 29%;
+}
+
+.action-button-width {
+  width: 6%;
+}
+
+.delete-entry-link {
+  height: 47px;
+  padding-top: 15px !important;
+}
+
+.adoptions-radio-button {
+  top: 10px !important;
+  left: 10px !important;
+  width: 1px;
+  height: 1px;
 }

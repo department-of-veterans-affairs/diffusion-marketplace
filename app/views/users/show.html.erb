@@ -6,14 +6,14 @@
       <div class="grid-row">
         <div class="usa-layout-docs__sidenav desktop:grid-col-3 margin-right-105">
           <% if @user.avatar.present? && @user.avatar.exists? %>
-            <img src="<%= @user.avatar_s3_presigned_url(:thumb) %>" class="avatar-profile-photo"/>
+            <img src="<%= @user.avatar_s3_presigned_url %>" class="avatar-profile-photo"/>
           <% else %>
             <div class="profile-avatar-container bg-base-lightest radius-md">
               <i class="fas fa-user empty-user-avatar text-base-lighter"></i>
             </div>
           <% end %>
         </div>
-        <div class="usa-layout-docs__main desktop:grid-col-fill margin-left-2">
+        <div class="usa-layout-docs__main desktop:grid-col-fill">
           <h1 class='profile-h1 font-sans-2xl display-inline-block margin-bottom-1 margin-top-0'><%= @user.full_name %></h1>
           <div class="display-inline-block margin-left-2">
             <% if current_user == @user %>
@@ -49,7 +49,7 @@
       </div>
       <div class="grid-row">
         <div class="desktop:grid-col-3 margin-right-105"></div>
-        <div class="fs1-125 desktop:grid-col-fill margin-bottom-5 margin-left-2"><%= @user.bio %></div>
+        <div class="fs1-125 desktop:grid-col-fill margin-bottom-5"><%= @user.bio %></div>
       </div>
     </div>
   </section>

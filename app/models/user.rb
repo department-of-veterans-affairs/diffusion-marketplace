@@ -29,10 +29,7 @@ class User < ApplicationRecord
   
   acts_as_voter
 
-  attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
-  attr_accessor :delete_avatar
-
-  has_attached_file :avatar, styles: { thumb: '300x300>' }, :processors => [:cropper]
+  has_attached_file :avatar
 
   def avatar_s3_presigned_url(style = nil)
     object_presigned_url(avatar, style)

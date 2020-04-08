@@ -6,7 +6,6 @@
   let $cancelEditBtn;
   let $deleteInput;
   let $imgsContainer;
-  let imgType;
 
   const imgValues = {
     main: {
@@ -14,16 +13,8 @@
       alt: 'temporary practice thumbnail'
     },
     contact: {
-      class: 'headshot-img',
+      class: 'va-employee-img',
       alt: 'temporary practice contact avatar'
-    },
-    origin: {
-      class: 'headshot-img',
-      alt: 'temporary practice creator avatar'
-    },
-    user: {
-      class: 'avatar-profile-photo',
-      alt: 'temporary user profile avatar'
     }
   }
 
@@ -49,23 +40,16 @@
       $uploadBtnLabel.removeClass('usa-button');
       $deleteBtnLabel.removeClass('hidden');
       $imgDeleteInput.removeClass('hidden');
-      if (imgType === 'user') {
-        $uploadBtnLabel.removeClass('usa-button--outline padding-2')
-      }
     } else {
       $uploadBtnLabel.text('Upload photo');
       $uploadBtnLabel.addClass('usa-button');
       $deleteBtnLabel.addClass('hidden');
       $imgDeleteInput.addClass('hidden');
-      if (imgType === 'user') {
-        $uploadBtnLabel.addClass('usa-button--outline padding-2')
-      }
     }
   }
 
   function _toggleThumbnailRemoval({ deleteImg, target }) {
     let $imgDeleteInput = $(target).closest('.cropper-boundary').find($deleteInput)
-
     if (deleteImg) {
       $imgDeleteInput.val('true');
     } else {
@@ -140,6 +124,7 @@
 
     reader.onload = (function() {
       return function(event) {
+        let imgType = $(target).closest('.cropper-boundary').find('.cropper-images-container').data('type')
         let imgOrgElement = `<img src="${event.target.result}" class="cropper-thumbnail-original ${imgValues[imgType].class} hidden" alt="${imgValues[imgType].alt}"/>`;
         let imgModElement = `<img src="${event.target.result}" class="cropper-thumbnail-modified ${imgValues[imgType].class}" alt="${imgValues[imgType].alt}"/>`;
         $imgImgsContainer.empty();
@@ -190,6 +175,9 @@
       _toggleDefaultPracticeThumbnail({ visible: false, target: event.target })
       _setCropBoxValues({ isCrop: false, target: event.target });
       _toggleCropperBtnView({ visible: false, target: event.target });
+      if (cropper) {
+          _toggleCropper({ visible: false, target: event.target });
+      }
     })
   }
 
@@ -242,12 +230,10 @@
 
   function setImageVars() {
     $editBtn = $('.cropper-edit-mode');
-    $deleteInput = $('.cropper-delete-image').find('input');
+    $deleteInput = $('.cropper-delete-image');
     $cancelEditBtn = $('.cropper-cancel-edit');
     $saveEditBtn = $('.cropper-save-edit');
-    $imgsContainer = $('.cropper-images-container');
-    imgType = $('.cropper-boundary').find('.cropper-images-container').data('type')
-
+    $imgsContainer = $('.cropper-images-container')
   }
 
   function attachNewFieldEventListeners() {

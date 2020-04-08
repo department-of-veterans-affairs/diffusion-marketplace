@@ -3,6 +3,10 @@ module ApplicationHelper
     date.in_time_zone.strftime "%B %Y"
   end
 
+  def month_year_date_format(date)
+    date.in_time_zone.strftime "%m/%Y"
+  end
+
   def date_get_month(date)
     date.strftime('%m').to_i
   end

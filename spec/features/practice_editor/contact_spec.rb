@@ -61,7 +61,7 @@ describe 'Practice editor', type: :feature, js: true do
             @save_button.click
 
             expect(page).to have_content('Practice was successfully updated')
-            expect(page).to have_css("img.headshot-img")
+            expect(page).to have_css("img.va-employee-img")
             expect(page).to have_field('Name:', with: @employee_name)
             expect(page).to have_field('Role:', with: @employee_role)
             expect(page).to have_content('Upload new photo')
@@ -83,7 +83,7 @@ describe 'Practice editor', type: :feature, js: true do
             @save_button.click
 
             expect(page).to have_content('Practice was successfully updated')
-            expect(page).to have_css("img.headshot-img")
+            expect(page).to have_css("img.va-employee-img")
             expect(page).to have_field('practice[va_employees_attributes][0][name]', with: @employee_name)
             expect(page).to have_field('practice[va_employees_attributes][0][role]', with: @employee_role)
             expect(page).to have_field('practice[va_employees_attributes][1][name]', with: 'Test name 2')
@@ -149,9 +149,13 @@ describe 'Practice editor', type: :feature, js: true do
                 expect(find("#crop_y", :visible => false).value).to match '22'
                 expect(find("#crop_w", :visible => false).value).to match '180'
                 expect(find("#crop_h", :visible => false).value).to match '180'
-            end
 
-            # @save_button.click
+                find('.cropper-cancel-edit').click
+                expect(find("#crop_x", :visible => false).value).to match ''
+                expect(find("#crop_y", :visible => false).value).to match ''
+                expect(find("#crop_w", :visible => false).value).to match ''
+                expect(find("#crop_h", :visible => false).value).to match ''
+            end
         end
     end
 end

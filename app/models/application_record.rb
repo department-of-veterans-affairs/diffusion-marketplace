@@ -19,15 +19,4 @@ class ApplicationRecord < ActiveRecord::Base
       s3_presigned_url(path)
     end
   end
-
-  def process_avatar_crop(crop_options)
-    # using `self` here to circumvent future rubocop offenses
-    if crop_options[:crop_w].present? && crop_options[:crop_h].present? && crop_options[:crop_x].present? && crop_options[:crop_y].present? && self.avatar.present?
-      self.crop_x = crop_x
-      self.crop_y = crop_y
-      self.crop_w = crop_w
-      self.crop_h = crop_h
-      self.avatar.reprocess!
-    end
-  end
 end

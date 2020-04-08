@@ -1,8 +1,7 @@
 <% provide :head_tags do %>
-  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-    <%= render partial: 'edit_profile', formats: [:js] %>
-  <% end %>
-  <%= javascript_include_tag '_cropper', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+        <%= render partial: 'edit_profile', formats: [:js] %>
+    <% end %>
 <% end %>
 
 <div class="x0-top">
@@ -50,53 +49,34 @@
               </div>
               <% end %>
               <div class="grid-container p0">
-                <div class="grid-row margin-bottom-3 cropper-boundary">
+                <div class="grid-row margin-bottom-3">
                   <div class="grid-col-4 margin-right-1">
-                    <div class="cropper-images-container avatar-profile-photo-container" data-type="user">
-                      <% if @user.avatar.present? && @user.avatar.exists? %>
-                          <%= image_tag @user.avatar_s3_presigned_url(:original), alt: "user avatar for #{@user.full_name}", class: 'cropper-thumbnail-original avatar-profile-photo hidden'%>
-                          <%= image_tag @user.avatar_s3_presigned_url(:thumb), alt: "user avatar for #{@user.full_name}", class: 'cropper-thumbnail-modified avatar-profile-photo'%>
-                      <% end %>
-                    </div>
-                    <div class="<%= @user.avatar.present? && @user.avatar.exists? ? 'profile-avatar-container bg-base-lightest radius-md cropper-image-placeholder hidden' : 'profile-avatar-container bg-base-lightest radius-md cropper-image-placeholder' %>">
+                    <% if @user.avatar.present? && @user.avatar.exists? %>
+                      <img src="<%= @user.avatar_s3_presigned_url %>" class="avatar-profile-photo"/>
+                    <% else %>
+                      <div class="profile-avatar-container bg-base-lightest radius-md">
                         <i class="fas fa-user empty-user-avatar text-base-lighter"></i>
                       </div>
+                    <% end %>
                   </div>
                   <div class="grid-col-fill">
-                    <span >Photo</span><br/>
-                    <div class="dm-font-color-base-dark margin-top-2 margin-bottom-2 cropper-upload-text ">
-                      <p>
-                        Upload a photo that clearly shows your face. You can upload a .jpg, .jpeg, or .png file and the size limit is 1GB.
-                      </p>
+                    <span>Photo</span><br/>
+                    <p class='dm-font-color-base-dark margin-bottom-2 display-inline-block'>
+                      Upload a photo of yourself so other users know what you look like. We recommend a medium-to-high quality picture of your face.
+                    </p>
+                    <div class="margin-bottom-1 display-inline-block">
+                        <%= f.label :avatar, 'Upload photo', class: "usa-button usa-button--outline padding-2" %>
+                        <%= f.file_field :avatar, class: 'hidden-upload' %>
                     </div>
-                    <div class="margin-bottom-2 cropper-editor-text hidden">
-                      <p>
-                        Please click "Save edits" and then "Save changes" to save and exit editor.
-                      </p>
-                    </div>
-
-                  <div class="grid-row flex-align-start">
-                    <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
-                      <%= f.hidden_field attribute, :id => attribute, :value => nil %>
-                    <% end %>
-                    <div class="grid-col-fill">
-                      <a class="usa-button padding-2 cropper-save-edit hidden" aria-controls='photo-save-edit' aria-expanded='false'>Save edits</a>
-                      <a class="usa-button usa-button--outline padding-2 cropper-cancel-edit hidden" aria-controls='photo-cancel-edit' aria-expanded='false'>Cancel edits</a>
-                      <a class="<%= @user.avatar.present? && @user.avatar.exists? ? "usa-button usa-button--outline padding-2 cropper-edit-mode" : "usa-button usa-button--outline padding-2 cropper-edit-mode hidden" %>" aria-controls='photo-crop' aria-expanded='false'>Edit photo</a>
-                      <div>
-                        <%= f.label :avatar,
-                          @user.avatar.present? && @user.avatar.exists? ? 'Upload new photo' : 'Upload photo',
-                          class: @user.avatar.present? && @user.avatar.exists? ? 'cropper-upload-image-label user-avatar-upload-label' : 'cropper-upload-image-label usa-button usa-button--outline padding-2'
-                        %>
-                        <%= f.file_field :avatar, class: "hidden-upload cropper-upload-image", accept: 'image/*' %>
-                      </div>
-                      <div class="cropper-delete-image">
-                        <%= f.label :delete_avatar, 'Remove photo', class: @user.avatar.present? && @user.avatar.exists? ? 'display-inline-block text-secondary cropper-delete-image-label' : 'display-inline-block text-secondary cropper-delete-image-label hidden'%>
-                        <%= f.check_box :delete_avatar, { class: @user.avatar.present? && @user.avatar.exists? ? 'usa-checkbox__input cropper-delete-image' : 'usa-checkbox__input cropper-delete-image hidden'}, 'true', 'false' %>
-                      </div>
+                    <div class="display-inline-block">
+                      <% if @user.avatar.present? && @user.avatar.exists? %>
+                        <%= link_to "Remove photo", edit_profile_photo_path, data: { confirm: "Are you sure?" }, method: :delete, class: 'usa-button usa-button--secondary usa-button--unstyled text-secondary delete-profile-avatar' %>
+                      <% end %>
                     </div>
                   </div>
-                  </div>
+                    <%#<p>
+                      <a class='usa-button usa-button--outline' aria-controls='photo-file-upload' aria-expanded='false' id='toggle-photo' href='#'>Edit photo</a>
+                    </p>%>
                 </div>
               </div>
             </div>
