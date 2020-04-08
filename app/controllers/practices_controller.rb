@@ -1,4 +1,5 @@
 class PracticesController < ApplicationController
+  include CropperUtils
   before_action :set_practice, only: [:show, :edit, :update, :destroy, :planning_checklist, :commit, :committed, :highlight, :un_highlight, :feature, :un_feature, :favorite, :instructions, :overview, :origin, :collaborators, :impact, :resources, :documentation, :complexity, :timeline, :risk_and_mitigation, :contact, :checklist, :publication_validation]
   before_action :set_facility_data, only: [:show, :planning_checklist]
   before_action :authenticate_user!, except: [:show, :search, :index]
@@ -134,26 +135,6 @@ class PracticesController < ApplicationController
         end
       end
 
-      # Remove VA employee avatar
-      if params[:practice][:va_employees_attributes].present?
-        params[:practice][:va_employees_attributes].each do |key, e|
-          if e['delete_avatar'] == 'true'
-            
-            @practice.va_employees.find(e[:id]).update_attributes(avatar: nil)
-          end
-        end
-      end
-
-      # Remove practice creator avatar
-      if params[:practice][:practice_creators_attributes].present?
-        params[:practice][:practice_creators_attributes].each do |key, pc|
-          if pc['delete_avatar'] == 'true'
-            
-            @practice.practice_creators.find(pc[:id]).update_attributes(avatar: nil)
-          end
-        end
-      end
-
       # Remove additional document file
       if params[:practice][:additional_documents_attributes].present?
         params[:practice][:additional_documents_attributes].each do |key, ad|
@@ -164,44 +145,39 @@ class PracticesController < ApplicationController
         end
       end
       
-      # Remove main display image
-      if params[:practice][:delete_main_display_image].present?
-        if params[:practice][:delete_main_display_image] == 'true'
-          @practice.update_attributes(main_display_image: nil)
+      # Avatar manipulation
+      avatars = ['practice_creators', 'va_employees']
+
+      avatars.each do |avatar|
+        attribute = ("#{avatar}_attributes").to_sym
+
+        if params[:practice][attribute].present?
+          params[:practice][attribute].each do |key, e|
+            if e[:_destroy] == 'false' && e[:id].present?
+              record = @practice.send(avatar).find(e[:id])
+
+              # Remove avatar
+              if e['delete_avatar'] == 'true'
+                record.update_attributes(avatar: nil)
+              end
+
+              # Crop avatar
+              if is_cropping?(e)
+                reprocess_avatar(record, e)
+              end
+            end
+          end
         end
+      end
+
+      # Remove main display image
+      if params[:practice][:delete_main_display_image].present? && params[:practice][:delete_main_display_image] == 'true'
+        @practice.update_attributes(main_display_image: nil)
       end
 
       # Crop main display image
-      if params[:practice][:crop_x].present? && params[:practice][:crop_y].present? && params[:practice][:crop_h].present? && params[:practice][:crop_w].present?
+      if is_cropping?(params[:practice])
         @practice.main_display_image.reprocess!
-      end
-
-      # Crop VA employee avatar
-      if params[:practice][:va_employees_attributes].present?
-        params[:practice][:va_employees_attributes].each do |key, e|
-          if e[:crop_x].present? && e[:crop_y].present? && e[:crop_w].present? && e[:crop_h].present? && e[:id].present? && e[:_destroy] == 'false'
-            vae = @practice.va_employees.find(e[:id])
-            vae.crop_x = e[:crop_x]
-            vae.crop_y = e[:crop_y]
-            vae.crop_w = e[:crop_w]
-            vae.crop_h = e[:crop_h]
-            vae.avatar.reprocess!
-          end
-        end
-      end
-
-      # Crop practice creator avatar
-      if params[:practice][:practice_creators_attributes].present?
-        params[:practice][:practice_creators_attributes].each do |key, pc|
-          if pc[:crop_x].present? && pc[:crop_y].present? && pc[:crop_w].present? && pc[:crop_h].present? && pc[:id].present? && pc[:_destroy] == 'false'
-            creator = @practice.practice_creators.find(pc[:id])
-            creator.crop_x = pc[:crop_x]
-            creator.crop_y = pc[:crop_y]
-            creator.crop_w = pc[:crop_w]
-            creator.crop_h = pc[:crop_h]
-            creator.avatar.reprocess!
-          end
-        end
       end
 
       partner_keys.each do |key|
