@@ -5,6 +5,7 @@ header {
   .usa-navbar {
     background-color: $dm-color-darker-blue;
     color: $dm-color-white;
+    overflow: unset !important;
   }
 }
 .text-white-important {
@@ -37,7 +38,7 @@ header {
 }
 
 .logo-container {
-  width: 30% !important;
+  width: 35% !important;
 }
 
 .nav-container {
@@ -56,6 +57,29 @@ header {
     }
 }
 
-.username-link, .partners-link, .shark-tank-link {
-  padding: 0.25em 0 !important;
+.home-link {
+  display: inline-block !important;
+}
+
+.bulletin-menu-button[aria-expanded="true"]{
+  background-image: asset-url('uswds/angle-arrow-up-white.svg') !important;
+}
+
+.bulletin-menu-button[aria-expanded="false"]{
+  background-image: asset-url('uswds/angle-arrow-down-white.svg') !important;
+}
+
+.bulletin-menu-button {
+  &:after {
+    text-decoration: none !important;
+  }
+}
+
+.usa-nav__link {
+  &::after {
+    background-color: $dm-color-white-important;
+  }
+  &:hover::after {
+    background-color: $dm-color-white-important;
+  }
 }
