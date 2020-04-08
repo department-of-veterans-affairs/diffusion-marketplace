@@ -13,7 +13,8 @@
             aria-expanded="false"
             aria-controls="diffusion_history_<%= current_diffusion_status.diffusion_history.id %>">
               <span class="line-height-sans-505 display-inline-block status-width vertical-align-top">
-                <%= current_diffusion_status.status %>
+                <% status = current_diffusion_status.status == 'Implemented' || current_diffusion_status.status == 'Complete' ? 'Completed' :  current_diffusion_status.status %>
+                <%= status %>
               </span>
       <span class="line-height-sans-505 display-inline-block facility-name-width vertical-align-top">
                 <%= facility["OfficialStationName"] %>
