@@ -81,10 +81,6 @@
             radio.addEventListener('change', changeHandler);
           });
         <% end %>
-        <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-
-
-        <% end %>
         <% if adoption %>
           <% facility_id = adoption ? adoption.diffusion_history.facility_id : nil %>
           <% unless params[:reload] %>

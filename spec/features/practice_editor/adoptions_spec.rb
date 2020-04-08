@@ -124,7 +124,13 @@ describe 'Practice editor', type: :feature do
       find("#adoption_form#{@practice.diffusion_histories.first.id}_submit").click
       expect(page).to have_content('Unsuccessful Anchorage VA Medical Center 02/2010 - 11/2020')
 
+      # it shouldn't count "Unsuccessful" status adoptions
+      visit practice_path(@practice)
+      # it would say "3" here if the "Unsuccessful" were counted
+      expect(page).to have_content('2 facilities have adopted this practice')
+
       # it should let the system update delete an adoption entry
+      visit practice_adoptions_path(@practice)
       find("button[aria-controls='diffusion_history_#{@practice.diffusion_histories.first.id}']").click
       within(:css, "#diffusion_history_#{@practice.diffusion_histories.first.id}") do
         click_link('Delete entry')
@@ -132,6 +138,5 @@ describe 'Practice editor', type: :feature do
       page.accept_alert
       expect(page).to have_content('Adoption entry was successfully deleted.')
     end
-
   end
 end
