@@ -78,6 +78,13 @@ describe 'The user index', type: :feature do
     visit '/edit-profile'
 
     expect(page).to be_accessible.according_to :wcag2a, :section508
+    expect(page).to have_content('Upload photo')
+    expect(page).to have_content('Upload a photo that clearly shows your face. You can upload a .jpg, .jpeg, or .png file and the size limit is 1GB.')
+    expect(page).to have_no_content('Upload new photo')
+    expect(page).to have_no_content('Remove photo')
+    expect(page).to have_no_content('Edit photo')
+    expect(page).to have_no_content('Save edits')
+    expect(page).to have_no_content('Cancel edits')
 
     attach_file('Upload photo', Rails.root + 'spec/assets/SpongeBob.png')
 
@@ -85,13 +92,47 @@ describe 'The user index', type: :feature do
 
     sb = User.find(@user.id)
     expect(sb.avatar.present?).to be(true)
+    expect(page).to have_content('Edit photo')
+    expect(page).to have_content('Remove photo')
+    expect(page).to have_content('Upload new photo')
+    expect(page).to have_css('.cropper-thumbnail-modified')
+    check('Remove photo', allow_label_click: true)
 
-    click_on('Remove photo')
-    page.driver.browser.switch_to.alert.accept
+    click_button('Save changes')
 
     expect(page).to have_selector('.empty-user-avatar')
     sb = User.find(@user.id)
     expect(sb.avatar.present?).to be(false)
+  end
+
+  it 'should allow a user to upload and crop a photo' do
+    login_as(@user, scope: :user, run_callbacks: false)
+    visit '/edit-profile'
+
+    expect(page).to be_accessible.according_to :wcag2a, :section508
+    attach_file('Upload photo', Rails.root + 'spec/assets/SpongeBob.png')
+
+    find('.cropper-edit-mode').click
+
+    expect(page).to have_no_content('Edit photo')
+    expect(page).to have_content('Remove photo')
+    expect(page).to have_content('Upload new photo')
+    expect(page).to have_content('Save edits')
+    expect(page).to have_content('Cancel edits')
+    expect(page).to have_css('.cropper-modal')
+
+    find('.cropper-save-edit').click
+
+    expect(find("#crop_x", :visible => false).value).to match '62'
+    expect(find("#crop_y", :visible => false).value).to match '61'
+    expect(find("#crop_w", :visible => false).value).to match '485'
+    expect(find("#crop_h", :visible => false).value).to match '485'
+
+    click_button('Save changes')
+
+    expect(page).to have_selector('.cropper-thumbnail-modified')
+    sb = User.find(@user.id)
+    expect(sb.avatar.present?).to be(true)
   end
 
   it 'should not allow non image files to be uploaded' do
