@@ -61,12 +61,16 @@ header {
   display: inline-block !important;
 }
 
-.bulletin-menu-button[aria-expanded="true"]{
+.bulletin-menu-button[aria-expanded="true"] {
   background-image: asset-url('uswds/angle-arrow-up-white.svg') !important;
 }
 
-.bulletin-menu-button[aria-expanded="false"]{
+.bulletin-menu-button[aria-expanded="false"] {
   background-image: asset-url('uswds/angle-arrow-down-white.svg') !important;
+}
+
+.bulletin-menu-button[aria-expanded="false"], .bulletin-menu-button[aria-expanded="true"] {
+  background-size: 0.6em !important;
 }
 
 .bulletin-menu-button {
