@@ -1,3 +1,5 @@
+@import "../variables/colors";
+
 .user-icon-placeholder {
   position: absolute;
   width: 40px;
@@ -11,19 +13,12 @@
 }
 
 .avatar-profile-photo {
-  max-width: 224px;
-  width: 100%;
-  padding: -5px;
+  min-width: 100%;
+  height: 14rem !important;
 }
 
-.avatar-header-photo {
-  max-width: 100%;
-  max-height: 100%;
-  /*border-radius: 50%;*/
-  position: relative;
-  display: inline-block;
-  left: 50%;
-  transform: translate(-50%)
+.avatar-profile-photo-container {
+  max-width: 14rem;
 }
 
 .empty-user-avatar {
@@ -88,4 +83,27 @@
 
 .profile-min-height {
   min-height: 380px;
+}
+
+.cropper-delete-image {
+  margin-top: 0;
+  margin-bottom: 24px;
+  color: $dm-color-high-red;
+  text-decoration: underline;
+
+  &:hover {
+    color: #B50909 !important;
+    cursor: pointer;
+  }
+}
+
+.user-avatar-upload-label {
+  color: $dm-color-primary-blue;
+  text-decoration: underline;
+  margin-top: 0 !important;
+  border: none !important;
+  &:hover {
+    color: $dm-color-primary-dark-blue !important;
+    cursor: pointer;
+  }
 }
