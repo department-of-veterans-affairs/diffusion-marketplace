@@ -163,6 +163,56 @@ ActiveAdmin.register_page "Dashboard" do
         end
 
       end # tab
+
+      tab :metrics do
+        h3 do
+          "Metrics for #{@beginning_of_last_month} to #{@end_of_last_month}"
+        end
+
+        panel 'General Traffic' do
+          general_traffic_stats = [{
+                                    accounts: User.all.count,
+                                    unique_visitors: 'TBD',
+                                    number_of_site_visits: 'TBD'
+                                  }]
+          table_for general_traffic_stats do |_stats|
+            column :accounts
+            column :unique_visitors
+            column :number_of_site_visits
+          end
+        end
+
+        panel 'Practices' do
+          practices_stats = [{
+                              total_number_of_practices: Practice.all.count,
+                              new_practices_added: Practice.where(created_at: (DateTime.now - 1.month).beginning_of_month..(DateTime.now - 1.month).end_of_month).count
+                            }]
+          table_for practices_stats do |_stats|
+            column :total_number_of_practices
+            column :new_practices_added
+          end
+        end
+
+        panel 'Practice Engagement' do
+          practices_stats = [{
+                              total_number_of_practices: Practice.all.count,
+                              new_practices_added: Practice.where(created_at: (DateTime.now - 1.month).beginning_of_month..(DateTime.now - 1.month).end_of_month).count
+                            }]
+          table_for practices_stats do |_stats|
+            column :total_number_of_practices
+            column :new_practices_added
+          end
+        end
+
+
+        panel 'Practice Adoption' do
+          practices_adoptions = Practice.select([:id, :name]).joins(:user_practices).where(user_practices: {created_at: (DateTime.now - 1.month).beginning_of_month..(DateTime.now - 1.month).end_of_month, committed: true}).group(:name).size.each {|p, n| puts "#{n} #{p}"}
+          table_for practices_adoptions.each do
+            column(:name) {|practice| link_to(practice.name, admin_practice_path(practice))}
+          end
+        end
+
+      end # tab
     end # tabs
   end # content
 end # register_page
