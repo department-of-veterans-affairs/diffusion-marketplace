@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   before_action :set_paper_trail_whodunnit
   before_action :log_in_va_user
   before_action :user_accepted_terms?
+  before_action :track_visit
 
   protect_from_forgery with: :exception, prepend: true
 
@@ -92,6 +93,10 @@ class ApplicationController < ActionController::Base
       user = User.authenticate_ldap(request.env["REMOTE_USER"])
       sign_in(user) unless user.blank?
     end
+  end
+
+  def track_visit
+    ahoy.track "Site visit", {controller: request.params[:controller], action: request.params[:action], query: request.params[:query], ip_address: request.remote_ip}
   end
 
 end

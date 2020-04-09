@@ -170,10 +170,11 @@ ActiveAdmin.register_page "Dashboard" do
         end
 
         panel 'General Traffic' do
+          site_visit_stats = Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where(time: @beginning_of_last_month..@end_of_last_month).group("properties->>'ip_address'").order('count_all desc').count
           general_traffic_stats = [{
                                     accounts: User.all.count,
-                                    unique_visitors: 'TBD',
-                                    number_of_site_visits: 'TBD'
+                                    unique_visitors: site_visit_stats.keys.length,
+                                    number_of_site_visits: site_visit_stats.sum {|_k, v| v}
                                   }]
           table_for general_traffic_stats do |_stats|
             column :accounts
