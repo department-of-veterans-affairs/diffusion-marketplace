@@ -29,7 +29,7 @@ class HomeController < ApplicationController
       in_progress = 0
       unsuccessful = 0
       dhg[1].each do |dh|
-        dh_status = dh.diffusion_history_statuses.where(end_time: nil).first
+        dh_status = dh.diffusion_history_statuses.order(id: :desc).first
         in_progress += 1 if dh_status.status == 'In progress' || dh_status.status ==  'Planning' || dh_status.status == 'Implementing'
         completed += 1 if dh_status.status == 'Completed' || dh_status.status ==  'Implemented' || dh_status.status == 'Complete'
         unsuccessful += 1 if dh_status.status == 'Unsuccessful'

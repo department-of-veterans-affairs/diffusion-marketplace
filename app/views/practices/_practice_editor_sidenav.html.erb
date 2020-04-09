@@ -10,6 +10,11 @@
                 <% end %>
             </li>
             <li class="usa-sidenav__item">
+              <%= link_to practice_adoptions_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-adoptions-link' do %>
+                <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%= @practice.diffusion_histories.any? ? 'green-check' : '' %>"></i>Adoptions
+              <% end %>
+            </li>
+            <li class="usa-sidenav__item">
                 <%= link_to practice_origin_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-origin-link' do %>
                     <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%= @practice.origin_story.present? ? 'green-check' : '' %>"></i>Origin
                 <% end %>
@@ -55,9 +60,11 @@
                 <% end %>
             </li>
         </ul>
-        <div class="text-center">
-            <%= button_tag 'Save your progress', class: 'usa-button usa-button--outline width-full padding-y-2 margin-top-1', id: 'practice-editor-save-button' %>
-        </div>
+        <% if params[:action] != 'adoptions' %>
+          <div class="text-center">
+              <%= button_tag 'Save your progress', class: 'usa-button usa-button--outline width-full padding-y-2 margin-top-1', id: 'practice-editor-save-button' %>
+          </div>
+        <% end %>
         <% unless @practice.published %>
           <div class="text-center">
             <%= link_to 'Publish practice', practice_publication_validation_path(@practice), class: 'usa-button width-full padding-y-2 margin-top-1', id: 'publish-practice-button', method: :post, remote: true %>

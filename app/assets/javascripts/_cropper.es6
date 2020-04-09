@@ -13,12 +13,8 @@
       alt: 'temporary practice thumbnail'
     },
     contact: {
-      class: 'headshot-img',
+      class: 'va-employee-img',
       alt: 'temporary practice contact avatar'
-    },
-    origin: {
-      class: 'headshot-img',
-      alt: 'temporary practice creator avatar'
     }
   }
 

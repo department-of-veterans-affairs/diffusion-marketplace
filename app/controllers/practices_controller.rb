@@ -1,5 +1,11 @@
 class PracticesController < ApplicationController
-  before_action :set_practice, only: [:show, :edit, :update, :destroy, :planning_checklist, :commit, :committed, :highlight, :un_highlight, :feature, :un_feature, :favorite, :instructions, :overview, :origin, :collaborators, :impact, :resources, :documentation, :complexity, :timeline, :risk_and_mitigation, :contact, :checklist, :publication_validation]
+  before_action :set_practice, only: [:show, :edit, :update, :destroy, :planning_checklist,
+                                      :commit, :committed, :highlight, :un_highlight, :feature,
+                                      :un_feature, :favorite, :instructions, :overview, :origin,
+                                      :collaborators, :impact, :resources, :documentation,
+                                      :complexity, :timeline, :risk_and_mitigation, :contact,
+                                      :checklist, :publication_validation, :adoptions,
+                                      :create_or_update_diffusion_history]
   before_action :set_facility_data, only: [:show, :planning_checklist]
   before_action :authenticate_user!, except: [:show, :search, :index]
   before_action :can_view_committed_view, only: [:committed]
@@ -10,7 +16,7 @@ class PracticesController < ApplicationController
                                            :documentation, :resources, :complexity,
                                            :timeline, :risk_and_mitigation,
                                            :contact, :checklist, :published,
-                                           :publication_validation]
+                                           :publication_validation, :adoptions]
   before_action only: [:update] do
     if date_initiated_params_exist(params[:date_initiated])
       params[:practice][:date_initiated] = create_date_initiated(params[:date_initiated])
@@ -37,11 +43,11 @@ class PracticesController < ApplicationController
     @diffused_practices = @practice.diffusion_histories
     @diffusion_histories = Gmaps4rails.build_markers(@diffused_practices.group_by(&:facility_id)) do |dhg, marker|
 
-      facility = @vamc_facilities.find {|f| f['StationNumber'] == dhg[0]}
+      facility = @vamc_facilities.find { |f| f['StationNumber'] == dhg[0] }
       marker.lat facility['Latitude']
       marker.lng facility['Longitude']
 
-      current_diffusion_status = dhg[1][0].diffusion_history_statuses.find_by(end_time: nil)
+      current_diffusion_status = dhg[1][0].diffusion_history_statuses.order(id: :desc).first
       marker_url = view_context.image_path('map-marker-default.svg')
       status = 'Complete'
       if current_diffusion_status.status == 'In progress' || current_diffusion_status.status == 'Planning' || current_diffusion_status.status == 'Implementing'
@@ -63,7 +69,7 @@ class PracticesController < ApplicationController
       in_progress = 0
       unsuccessful = 0
       dhg[1].each do |dh|
-        dh_status = dh.diffusion_history_statuses.where(end_time: nil).first
+        dh_status = dh.diffusion_history_statuses.order(created_at: :desc).first
         in_progress += 1 if dh_status.status == 'In progress' || dh_status.status == 'Planning' || dh_status.status == 'Implementing'
         completed += 1 if dh_status.status == 'Completed' || dh_status.status == 'Implemented' || dh_status.status == 'Complete'
         unsuccessful += 1 if dh_status.status == 'Unsuccessful'
@@ -102,11 +108,11 @@ class PracticesController < ApplicationController
 
     respond_to do |format|
       if @practice.save
-        format.html {redirect_to @practice, notice: 'Practice was successfully created.'}
-        format.json {render :show, status: :created, location: @practice}
+        format.html { redirect_to @practice, notice: 'Practice was successfully created.' }
+        format.json { render :show, status: :created, location: @practice }
       else
-        format.html {render :new}
-        format.json {render json: @practice.errors, status: :unprocessable_entity}
+        format.html { render :new }
+        format.json { render json: @practice.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -116,7 +122,7 @@ class PracticesController < ApplicationController
   def update
     strong_params = practice_params
     updated = @practice.update(strong_params)
-    
+
     if updated
       partner_keys = []
       partner_keys = params[:practice][:practice_partner].keys if params[:practice][:practice_partner].present?
@@ -128,7 +134,7 @@ class PracticesController < ApplicationController
       if params[:practice][:impact_photos_attributes].present?
         params[:practice][:impact_photos_attributes].each do |key, photo|
           if photo['delete_attachment'] == 'true'
-            
+
             @practice.impact_photos.find(photo[:id]).update_attributes(attachment: nil)
           end
         end
@@ -138,7 +144,7 @@ class PracticesController < ApplicationController
       if params[:practice][:va_employees_attributes].present?
         params[:practice][:va_employees_attributes].each do |key, e|
           if e['delete_avatar'] == 'true'
-            
+
             @practice.va_employees.find(e[:id]).update_attributes(avatar: nil)
           end
         end
@@ -148,7 +154,7 @@ class PracticesController < ApplicationController
       if params[:practice][:practice_creators_attributes].present?
         params[:practice][:practice_creators_attributes].each do |key, pc|
           if pc['delete_avatar'] == 'true'
-            
+
             @practice.practice_creators.find(pc[:id]).update_attributes(avatar: nil)
           end
         end
@@ -158,12 +164,12 @@ class PracticesController < ApplicationController
       if params[:practice][:additional_documents_attributes].present?
         params[:practice][:additional_documents_attributes].each do |key, ad|
           if ad['delete_attachment'] == 'true'
-            
+
             @practice.additional_documents.find(ad[:id]).update_attributes(attachment: nil)
           end
         end
       end
-      
+
       # Remove main display image
       if params[:practice][:delete_main_display_image].present?
         if params[:practice][:delete_main_display_image] == 'true'
@@ -190,20 +196,6 @@ class PracticesController < ApplicationController
         end
       end
 
-      # Crop practice creator avatar
-      if params[:practice][:practice_creators_attributes].present?
-        params[:practice][:practice_creators_attributes].each do |key, pc|
-          if pc[:crop_x].present? && pc[:crop_y].present? && pc[:crop_w].present? && pc[:crop_h].present? && pc[:id].present? && pc[:_destroy] == 'false'
-            creator = @practice.practice_creators.find(pc[:id])
-            creator.crop_x = pc[:crop_x]
-            creator.crop_y = pc[:crop_y]
-            creator.crop_w = pc[:crop_w]
-            creator.crop_h = pc[:crop_h]
-            creator.avatar.reprocess!
-          end
-        end
-      end
-
       partner_keys.each do |key|
         next if @practice.practice_partners.ids.include? key.to_i
 
@@ -224,11 +216,11 @@ class PracticesController < ApplicationController
 
     respond_to do |format|
       if updated
-        format.html {redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.'}
-        format.json {render :show, status: :ok, location: @practice}
+        format.html { redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.' }
+        format.json { render :show, status: :ok, location: @practice }
       else
-        format.html {redirect_back fallback_location: root_path, alert: 'Practice could not be updated.'}
-        format.json {render json: @practice.errors, status: :unprocessable_entity}
+        format.html { redirect_back fallback_location: root_path, alert: 'Practice could not be updated.' }
+        format.json { render json: @practice.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -265,12 +257,12 @@ class PracticesController < ApplicationController
 
     respond_to do |format|
       if user_practice.save
-        format.html {redirect_to practice_committed_path(practice_id: @practice.slug), notice: flash[:notice]} if flash[:notice].present?
-        format.html {redirect_to practice_committed_path(practice_id: @practice.slug)} if flash[:notice].blank?
-        format.json {render :show, status: :created, location: practice_committed_path}
+        format.html { redirect_to practice_committed_path(practice_id: @practice.slug), notice: flash[:notice] } if flash[:notice].present?
+        format.html { redirect_to practice_committed_path(practice_id: @practice.slug) } if flash[:notice].blank?
+        format.json { render :show, status: :created, location: practice_committed_path }
       else
-        format.html {render :planning_checklist, error: user_practice.errors}
-        format.json {render json: user_practice.errors, status: :unprocessable_entity}
+        format.html { render :planning_checklist, error: user_practice.errors }
+        format.json { render json: user_practice.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -291,10 +283,10 @@ class PracticesController < ApplicationController
     respond_to do |format|
       if user_practice.save
         format.js
-        format.json {render json: {favorited: user_practice.favorited}, status: :success}
+        format.json { render json: {favorited: user_practice.favorited}, status: :success }
       else
-        format.js {redirect_back fallback_location: root_path, error: user_practice.errors}
-        format.json {render json: user_practice.errors, status: :unprocessable_entity}
+        format.js { redirect_back fallback_location: root_path, error: user_practice.errors }
+        format.json { render json: user_practice.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -320,7 +312,7 @@ class PracticesController < ApplicationController
     @practice.update_attributes featured: false
     redirect_to edit_practice_path(@practice)
   end
-  
+
   # GET /practices/1/instructions
   def instructions
   end
@@ -379,10 +371,79 @@ class PracticesController < ApplicationController
         @practice.update_attributes(published: true)
         flash[:notice] = "#{@practice.name} has been successfully published to the Diffusion Marketplace"
         # format.html { redirect_to practice_path(@practice), notice: flash[:notice] }
-        format.js {render js: "window.location='#{practice_path(@practice)}'"}
+        format.js { render js: "window.location='#{practice_path(@practice)}'" }
       else
         format.js
       end
+    end
+  end
+
+  def create_or_update_diffusion_history
+    # set attributes for later use
+    facility_id = params[:facility_id]
+    status = params[:status]
+    if params[:date_started].present? && !(params[:date_started].values.include?(''))
+      start_time = DateTime.new(params[:date_started][:year].to_i, params[:date_started][:month].to_i)
+    end
+    if (params[:date_ended].present? && !(params[:date_ended].values.include?(''))) && params[:status].downcase != 'in progress'
+      end_time = DateTime.new(params[:date_ended][:year].to_i, params[:date_ended][:month].to_i)
+    end
+
+    # if there is a diffusion_history_id, we're updating something
+    @dh = DiffusionHistory.find(params[:diffusion_history_id]) if params[:diffusion_history_id].present?
+    if @dh.present?
+      # is the user changing to a facility that they already have listed?
+      # if so, tell them no
+      existing_dh = DiffusionHistory.find_by(practice: @practice, facility_id: facility_id)
+      if existing_dh && existing_dh.id != @dh.id
+        vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
+        params[:existing_dh] = vamc_facilities.find { |f| f['StationNumber'] == facility_id }
+      else
+        # if not,
+        # update it
+        @dh.update_attributes(facility_id: facility_id)
+        params[:facility_changed] = true
+      end
+    else
+      # or else, we're creating something
+      # figure out if the user already has this diffusion history
+      @dh = DiffusionHistory.find_by(practice: @practice, facility_id: facility_id)
+      # if so, tell them!
+      if @dh
+        vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
+        params[:exists] = vamc_facilities.find { |f| f['StationNumber'] == facility_id }
+      else
+        # if not, create a new one
+        @dh = DiffusionHistory.create(practice: @practice, facility_id: facility_id)
+      end
+    end
+
+    if params[:exists].blank? && params[existing_dh].blank?
+      if params[:diffusion_history_status_id]
+        # update the diffusion history status
+        dhs = DiffusionHistoryStatus.find(params[:diffusion_history_status_id])
+        dhs.update_attributes(status: status, start_time: start_time, end_time: end_time)
+      else
+        # create a new status.
+        DiffusionHistoryStatus.create!(diffusion_history: @dh, status: status, start_time: start_time, end_time: end_time)
+      end
+    end
+
+    respond_to do |format|
+      if params[:diffusion_history_id].blank? && params[:exists].blank?
+        params[:created] = true
+      end
+      params[:reload] = true
+      format.js
+    end
+  end
+
+  def destroy_diffusion_history
+    dh = DiffusionHistory.find(params[:diffusion_history_id])
+    dh.destroy
+    respond_to do |format|
+      format.html { redirect_to practice_adoptions_path(dh.practice), notice: 'Adoption entry was successfully deleted.' }
+      format.json { head :no_content }
     end
   end
 
@@ -405,13 +466,13 @@ class PracticesController < ApplicationController
                                      impact_photos_attributes: [:id, :title, :is_main_display_image, :description, :position, :attachment, :attachment_original_w, :attachment_original_h, :attachment_crop_x, :attachment_crop_y,
                                                                 :attachment_crop_w, :attachment_crop_h, :_destroy],
                                      video_files_attributes: [:id, :title, :description, :url, :position, :attachment, :attachment_original_w, :attachment_original_h, :attachment_crop_x, :attachment_crop_y,
-                                                                :attachment_crop_w, :attachment_crop_h, :_destroy],
+                                                              :attachment_crop_w, :attachment_crop_h, :_destroy],
                                      difficulties_attributes: [:id, :description, :_destroy],
                                      risk_mitigations_attributes: [:id, :_destroy, :position, risks_attributes: [:id, :description, :_destroy], mitigations_attributes: [:id, :description, :_destroy]],
                                      timelines_attributes: [:id, :description, :timeline, :_destroy, :position, milestones_attributes: [:id, :description, :_destroy]],
                                      va_employees_attributes: [:id, :name, :role, :position, :_destroy, :avatar, :crop_x, :crop_y, :crop_w, :crop_h, :delete_avatar],
                                      additional_staffs_attributes: [:id, :_destroy, :title, :hours_per_week, :duration_in_weeks, :permanent],
-                                     additional_resources_attributes: [:id, :_destroy, :name, :position, :description], required_staff_trainings_attributes: [:id, :_destroy, :title, :description], practice_creators_attributes: [:id, :_destroy, :name, :role, :avatar, :position, :delete_avatar, :crop_x, :crop_y, :crop_w, :crop_h],
+                                     additional_resources_attributes: [:id, :_destroy, :name, :position, :description], required_staff_trainings_attributes: [:id, :_destroy, :title, :description], practice_creators_attributes: [:id, :_destroy, :name, :role, :avatar, :position],
                                      publications_attributes: [:id, :_destroy, :title, :link, :position], additional_documents_attributes: [:id, :_destroy, :attachment, :title, :position], practice_permissions_attributes: [:id, :_destroy, :position, :name, :description])
   end
 
@@ -442,13 +503,13 @@ class PracticesController < ApplicationController
     respond_to do |format|
       warning = 'You are not authorized to view this content.'
       flash[:warning] = warning
-      format.html {redirect_to '/', warning: warning}
-      format.json {render warning: warning}
+      format.html { redirect_to '/', warning: warning }
+      format.json { render warning: warning }
     end
   end
 
   def set_facility_data
-    @facility_data = facilities_json.find {|f| f['StationNumber'] == @practice.initiating_facility}
+    @facility_data = facilities_json.find { |f| f['StationNumber'] == @practice.initiating_facility }
   end
 
   def can_view_committed_view
@@ -482,14 +543,16 @@ class PracticesController < ApplicationController
 
     practices_array.to_json.html_safe
   end
-end
 
-def create_date_initiated (date_initiated)
-  if date_initiated && (date_initiated[:year].present? && date_initiated[:month].present?)
-    Date.new(date_initiated[:year].to_i, date_initiated[:month].to_i)
+  def create_date_initiated (date_initiated)
+    if date_initiated && (date_initiated[:year].present? && date_initiated[:month].present?)
+      Date.new(date_initiated[:year].to_i, date_initiated[:month].to_i)
+    end
+  end
+
+  def date_initiated_params_exist (date_initiated)
+    date_initiated.present? && !(date_initiated.values.include? nil)
   end
 end
 
-def date_initiated_params_exist (date_initiated)
-  date_initiated.present? && !(date_initiated.values.include? nil)
-end
+

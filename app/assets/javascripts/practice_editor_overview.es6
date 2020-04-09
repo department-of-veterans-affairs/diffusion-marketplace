@@ -7,50 +7,6 @@
     const TAGLINE_CHARACTER_COUNT = 150;
     const SUMMARY_CHARACTER_COUNT = 400;
 
-    // select the state and facility if the practice already has one
-    function selectFacility() {
-        // based on the facilityData, which is the selected facility?
-        const facility = facilityData.find(f => f.StationNumber === String(selectedFacility) );
-
-        // select the state and set it in the dropdown
-        const state = facility.MailingAddressState;
-        const stateSelect = $('#editor_state_select');
-        stateSelect.val(state);
-
-        // filter the facilities in the dropdown
-        const facilitySelect = $('#editor_facility_select');
-        filterFacilities(facilitySelect);
-
-        // select the facility and display it in the dropdown
-        facilitySelect.val(facility.StationNumber);
-    }
-
-    function getFacilitiesByState() {
-        let facilitySelect = $('#editor_facility_select');
-        facilitySelect.css('color', CHARACTER_COUNTER_VALID_COLOR);
-        facilitySelect.prop('disabled', 'disabled');
-        $('#editor_state_select').on('change', () => {
-            filterFacilities(facilitySelect);
-        });
-    }
-
-    function filterFacilities(facilitySelect) {
-        let selectedState = $('#editor_state_select option:selected').val();
-        facilitySelect.css('color', 'initial');
-        facilitySelect.removeAttr('disabled');
-        facilitySelect.find('option:not(:first)').remove();
-        facilitySelect.val('-Select-');
-
-        let filteredFacilites = facilityData.filter(f => f.MailingAddressState === selectedState);
-        filteredFacilites.forEach(facility => {
-            facilitySelect
-                .append($("<option></option>")
-                    .attr("value", facility.StationNumber)
-                    .attr("class", 'usa-select')
-                    .text(facility.OfficialStationName))
-        });
-    }
-
     function countCharsOnPageLoad() {
         let practiceNameCurrentLength = $('.practice-editor-name-input').val().length;
         let practiceTaglineCurrentLength = $('.practice-editor-tagline-textarea').val().length;
@@ -122,14 +78,15 @@
     }
 
     function loadPracticeEditorFunctions() {
-        getFacilitiesByState();
         countCharsOnPageLoad();
         maxCharacters();
         uncheckAllPartnerBoxes();
         uncheckNoneOptionIfAnotherOptionIsChecked();
 
+        // relies on `_facilitySelect.js` utility file to be loaded prior to this file
+        getFacilitiesByState(facilityData);
         if(selectedFacility) {
-            selectFacility();
+            selectFacility(facilityData, selectedFacility);
         }
     }
 
