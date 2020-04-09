@@ -82,7 +82,6 @@ ActiveAdmin.register_page "Dashboard" do
                       });
                     "
               end
-
             end
 
             panel "Practice Commits Leaderboard" do
@@ -161,58 +160,145 @@ ActiveAdmin.register_page "Dashboard" do
         script do
           raw "$(document).ready(function(){$('tr').attr('id', '')});"
         end
-
       end # tab
 
       tab :metrics do
-        h3 do
-          "Metrics for #{@beginning_of_last_month} to #{@end_of_last_month}"
-        end
-
         panel 'General Traffic' do
           site_visit_stats = Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where(time: @beginning_of_last_month..@end_of_last_month).group("properties->>'ip_address'").count
           general_traffic_stats = [{
-                                    accounts: User.all.count,
-                                    unique_visitors: site_visit_stats.length,
+                                    total_accounts: User.all.count,
+                                    unique_visitors: site_visit_stats.keys.length,
                                     number_of_site_visits: site_visit_stats.sum {|_k, v| v}
                                   }]
           table_for general_traffic_stats do |_stats|
-            column :accounts
+            column :total_accounts
             column :unique_visitors
             column :number_of_site_visits
           end
-        end
+        end # panel
 
         panel 'Practices' do
-          practices_stats = [{
-                              total_number_of_practices: Practice.all.count,
-                              new_practices_added: Practice.where(created_at: (DateTime.now - 1.month).beginning_of_month..(DateTime.now - 1.month).end_of_month).count
-                            }]
-          table_for practices_stats do |_stats|
-            column :total_number_of_practices
-            column :new_practices_added
+          practices_added_stats = [{
+                                    total_practices_created: Practice.all.count,
+                                    added_this_month: Practice.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
+                                    added_one_month_ago: Practice.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
+                                    added_two_months_ago: Practice.where(created_at: @beginning_of_two_months_ago..@end_of_two_months_ago).count,
+                                    added_three_months_ago: Practice.where(created_at: @beginning_of_three_months_ago..@end_of_three_months_ago).count
+                                  }]
+
+          table_for practices_added_stats do |practice_stat|
+            column :total_practices_created
+            column("#{@beginning_of_current_month.strftime('%B %Y')} - current month") {|practice_stat| practice_stat[:added_this_month]}
+            column("#{@beginning_of_last_month.strftime('%B %Y')} - last month") {|practice_stat| practice_stat[:added_one_month_ago]}
+            column("#{@beginning_of_two_months_ago.strftime('%B %Y')} - 2 months ago") {|practice_stat| practice_stat[:added_two_months_ago]}
+            column("#{@beginning_of_three_months_ago.strftime('%B %Y')} - 3 months ago") {|practice_stat| practice_stat[:added_three_months_ago]}
           end
-        end
+        end # panel
 
-        panel 'Practice Engagement' do
-          practices_stats = [{
-                              total_number_of_practices: Practice.all.count,
-                              new_practices_added: Practice.where(created_at: (DateTime.now - 1.month).beginning_of_month..(DateTime.now - 1.month).end_of_month).count
-                            }]
-          table_for practices_stats do |_stats|
-            column :total_number_of_practices
-            column :new_practices_added
+        panel 'Practice Engagement & Adoption' do
+          h4 do
+            "Favorited Counts"
           end
-        end
 
+          practices_favorited_stats = [{
+                                        total_favorited: UserPractice.where(favorited: true).count,
+                                        favorited_this_month: UserPractice.where(created_at: @beginning_of_current_month..@end_of_current_month, favorited: true).count,
+                                        favorited_one_month_ago: UserPractice.where(created_at: @beginning_of_last_month..@end_of_last_month,favorited: true).count,
+                                        favorited_two_months_ago: UserPractice.where(created_at: @beginning_of_two_months_ago..@end_of_two_months_ago, favorited: true).count,
+                                        favorited_three_months_ago: UserPractice.where(created_at: @beginning_of_three_months_ago..@end_of_three_months_ago, favorited: true).count
+                                      }]
 
-        panel 'Practice Adoption' do
-          practices_adoptions = Practice.select([:id, :name]).joins(:user_practices).where(user_practices: {created_at: (DateTime.now - 1.month).beginning_of_month..(DateTime.now - 1.month).end_of_month, committed: true}).group(:name).size.each {|p, n| puts "#{n} #{p}"}
-          table_for practices_adoptions.each do
+          table_for practices_favorited_stats do |practice_stat|
+            column :total_favorited
+            column("#{@beginning_of_current_month.strftime('%B %Y')} - current month") {|practice_stat| practice_stat[:favorited_this_month]}
+            column("#{@beginning_of_last_month.strftime('%B %Y')} - last month") {|practice_stat| practice_stat[:favorited_one_month_ago]}
+            column("#{@beginning_of_two_months_ago.strftime('%B %Y')} - 2 months ago") {|practice_stat| practice_stat[:favorited_two_months_ago]}
+            column("#{@beginning_of_three_months_ago.strftime('%B %Y')} - 3 months ago") {|practice_stat| practice_stat[:favorited_three_months_ago]}
+          end
+
+          h4 do
+            "Favorited Counts by Practice"
+          end
+
+          practices_favorites = Practice.all.sort_by(&:current_month_favorited).reverse!
+
+          table_for practices_favorites do |practice|
             column(:name) {|practice| link_to(practice.name, admin_practice_path(practice))}
+            column("#{@beginning_of_current_month.strftime('%B %Y')} - current month") {|practice| practice.current_month_favorited}
+            column("#{@beginning_of_last_month.strftime('%B %Y')} - last month") {|practice| practice.last_month_favorited}
+            column("#{@beginning_of_two_months_ago.strftime('%B %Y')} - 2 months ago") {|practice| practice.two_months_ago_favorited}
+            column("#{@beginning_of_three_months_ago.strftime('%B %Y')} - 3 months ago") {|practice| practice.three_months_ago_favorited}
           end
-        end
 
+          h4 do
+            "Comment Counts"
+          end
+
+          practices_comment_stats = [{
+            total_comments: Commontator::Comment.count,
+            comments_this_month: Commontator::Comment.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
+            comments_one_month_ago: Commontator::Comment.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
+            comments_two_months_ago: Commontator::Comment.where(created_at: @beginning_of_two_months_ago..@end_of_two_months_ago).count,
+            comments_three_months_ago: Commontator::Comment.where(created_at: @beginning_of_three_months_ago..@end_of_three_months_ago).count
+          }]
+
+          table_for practices_comment_stats do |practice_stat|
+            column :total_comments
+            column("#{@beginning_of_current_month.strftime('%B %Y')} - current month") {|practice_stat| practice_stat[:comments_this_month]}
+            column("#{@beginning_of_last_month.strftime('%B %Y')} - last month") {|practice_stat| practice_stat[:comments_one_month_ago]}
+            column("#{@beginning_of_two_months_ago.strftime('%B %Y')} - 2 months ago") {|practice_stat| practice_stat[:comments_two_months_ago]}
+            column("#{@beginning_of_three_months_ago.strftime('%B %Y')} - 3 months ago") {|practice_stat| practice_stat[:comments_three_months_ago]}
+          end
+
+          h4 do
+            "Comment Counts by Practice"
+          end
+
+          practices_comments = Practice.all.order(name: :asc)
+
+          table_for practices_comments do |practice|
+            column(:name) {|practice| link_to(practice.name, admin_practice_path(practice))}
+            column("#{@beginning_of_current_month.strftime('%B %Y')} - current month") {|practice| practice.commontator_thread.comments.where(created_at: @beginning_of_current_month..@end_of_current_month).count}
+            column("#{@beginning_of_last_month.strftime('%B %Y')} - last month") {|practice| practice.commontator_thread.comments.where(created_at: @beginning_of_last_month..@end_of_last_month).count}
+            column("#{@beginning_of_two_months_ago.strftime('%B %Y')} - 2 months ago") {|practice| practice.commontator_thread.comments.where(created_at: @beginning_of_two_months_ago..@end_of_two_months_ago).count}
+            column("#{@beginning_of_three_months_ago.strftime('%B %Y')} - 3 months ago") {|practice| practice.commontator_thread.comments.where(created_at: @beginning_of_three_months_ago..@end_of_three_months_ago).count}
+          end
+
+          h4 do
+            "Adoption Counts"
+          end
+
+          UserPractice.where(created_at: (DateTime.now - 1.month).beginning_of_month..(DateTime.now - 1.month).end_of_month, committed: true).count
+          practices_adoption_stats = [{
+                                        total_adopted: UserPractice.where(committed: true).count,
+                                        adopted_this_month: UserPractice.where(created_at: @beginning_of_current_month..@end_of_current_month, committed: true).count,
+                                        adopted_one_month_ago: UserPractice.where(created_at: @beginning_of_last_month..@end_of_last_month,committed: true).count,
+                                        adopted_two_months_ago: UserPractice.where(created_at: @beginning_of_two_months_ago..@end_of_two_months_ago, committed: true).count,
+                                        adopted_three_months_ago: UserPractice.where(created_at: @beginning_of_three_months_ago..@end_of_three_months_ago, committed: true).count
+                                      }]
+
+          table_for practices_adoption_stats do |practice_stat|
+            column :total_adopted
+            column("#{@beginning_of_current_month.strftime('%B %Y')} - current month") {|practice_stat| practice_stat[:adopted_this_month]}
+            column("#{@beginning_of_last_month.strftime('%B %Y')} - last month") {|practice_stat| practice_stat[:adopted_one_month_ago]}
+            column("#{@beginning_of_two_months_ago.strftime('%B %Y')} - 2 months ago") {|practice_stat| practice_stat[:adopted_two_months_ago]}
+            column("#{@beginning_of_three_months_ago.strftime('%B %Y')} - 3 months ago") {|practice_stat| practice_stat[:adopted_three_months_ago]}
+          end
+
+          h4 do
+            "Adoption Counts by Practice"
+          end
+
+          practices_adoptions = Practice.all.sort_by(&:current_month_adoptions).reverse!
+
+          table_for practices_adoptions do |practice|
+            column(:name) {|practice| link_to(practice.name, admin_practice_path(practice))}
+            column("#{@beginning_of_current_month.strftime('%B %Y')} - current month") {|practice| practice.current_month_adoptions}
+            column("#{@beginning_of_last_month.strftime('%B %Y')} - last month") {|practice| practice.last_month_adoptions}
+            column("#{@beginning_of_two_months_ago.strftime('%B %Y')} - 2 months ago") {|practice| practice.two_months_ago_adoptions}
+            column("#{@beginning_of_three_months_ago.strftime('%B %Y')} - 3 months ago") {|practice| practice.three_months_ago_adoptions}
+          end
+        end # panel
       end # tab
     end # tabs
   end # content
