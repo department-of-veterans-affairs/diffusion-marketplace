@@ -14,6 +14,7 @@ describe 'Shark Tank landing page', type: :feature do
 
   it 'should be there' do
     visit '/'
+    click_on('Bulletin')
     click_on('Shark Tank Competition')
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content('Submit your practice application by May 1, 2020!')
@@ -25,6 +26,14 @@ describe 'Shark Tank landing page', type: :feature do
     visit '/competitions/shark-tank'
   end
 
+  it 'should allow the user to interact with the accordion menus' do
+    visit_shark_tank_page
+    expect(page).to_not have_content('Access:')
+
+    click_on('Eligibility requirements')
+    expect(page).to have_content('Access:')
+  end
+
   it 'should display the past shark tank winners' do
     visit_shark_tank_page
     expect(page).to have_content('Previous Shark Tank Winners')
@@ -33,7 +42,7 @@ describe 'Shark Tank landing page', type: :feature do
     expect(page).to have_content(@practice3.name)
   end
 
-  it 'should allow the user to visit a practice page when they click on a practice card' do
+  it 'should allow the user to visit a practice page when they click on a practice card title' do
     visit_shark_tank_page
     click_on(@practice.name)
     expect(page).to have_content('A public practice')

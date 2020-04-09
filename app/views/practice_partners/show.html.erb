@@ -1,4 +1,4 @@
-<div class="full-view-height">
+<div class="full-view-height partner-page-min-height">
   <section class="grid-container">
     <%= render "shared/messages" %>
   </section>
@@ -26,9 +26,10 @@
   </section>
   <section>
     <div class="grid-container margin-bottom-6">
-      <% if @practice_partner.practices.any? %>
+      <% @partner_practices = @practice_partner.practices %>
+      <% if @partner_practices.any? %>
         <div class="grid-row grid-gap-2">
-          <% @practice_partner.practices.order(name: :asc).each do |p| %>
+          <% @partner_practices.order(name: :asc).each do |p| %>
             <div class="tablet:grid-col-3 padding-y-1">
               <%= render partial: 'practices/favorite_button', locals: {practice: p, featured: false } %>
               <%= render partial: 'practices/marketplace_card', locals: {practice: p, featured: false} %>
@@ -41,9 +42,11 @@
     </div>
   </section>
 
-  <div class="grid-container margin-bottom-105">
-    <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
-  </div>
+  <% if @partner_practices.any? %>
+    <div class="grid-container margin-bottom-105">
+      <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
+    </div>
+  <% end %>
 </div>
 
 

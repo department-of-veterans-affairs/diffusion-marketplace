@@ -1,8 +1,10 @@
-namespace :inet_badge do
-  desc "Add iNET badge to current iNET practices"
+class AddInetPartnerToPracticePartners < ActiveRecord::Migration[5.2]
+  def change
+    iNet = PracticePartner.find_by(slug: 'vha-innovators-network')
+    unless iNet
+      PracticePartner.create!({name: 'VHA Innovators Network', short_name: 'iNET', description: 'The VHA Innovators Network (iNET) is a network of 33 VA medical centers changing the way employees think and solve problems through training and accelerated operationalizing innovation.', slug: 'vha-innovators-network'})
+    end
 
-  task add_inet_badge: :environment do
-    inet_badge_id = Badge.find_by(name: 'iNET').id
     inet_practice_slugs = [
         'healthier-kidneys-through-your-kitchen',
         'whoopsafe',
@@ -35,11 +37,10 @@ namespace :inet_badge do
     inet_practice_slugs.each do |ips|
       inet_practice = Practice.find_by(slug: ips)
       if !inet_practice.nil?
-        BadgePractice.create({practice_id: inet_practice.id, badge_id: inet_badge_id})
+        PracticePartnerPractice.create!({practice_id: inet_practice.id, practice_partner_id: iNet.id})
       else
         puts "The slug #{ips} does not exist"
       end
     end
-    puts "All current iNET practices now have an iNET badge!!"
   end
 end

@@ -81,11 +81,11 @@
                   </span>
               <% end %>
             </li>
-            <%# unless ENV['USE_NTLM'] == 'true' %>
-<!--              <li class="usa-nav__primary-item">-->
-                <%#= link_to('Sign out', destroy_user_session_path, class: 'usa-button-outline-white usa-button sign-out-button', method: :delete) %>
-<!--              </li>-->
-            <%# end %>
+            <% unless ENV['USE_NTLM'] == 'true' %>
+              <li class="usa-nav__primary-item">
+                <%= link_to('Sign out', destroy_user_session_path, class: 'usa-button-outline-white usa-button sign-out-button', method: :delete) %>
+              </li>
+            <% end %>
           <% else %>
             <li class="usa-nav__primary-item">
               <%= link_to 'Sign in', new_user_session_path, class: 'usa-button usa-button-white sign-in-button', id: 'header-login-link' %>
