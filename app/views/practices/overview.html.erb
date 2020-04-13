@@ -66,18 +66,20 @@
                     <%= f.hidden_field attribute, :id => attribute, :value => nil %>
                   <% end %>
                   <div class="grid-col-fill">
-                      <a class="usa-button padding-2 cropper-save-edit hidden" aria-controls='photo-save-edit' aria-expanded='false'>Save edits</a>
-                      <a class="usa-button usa-button--outline padding-2 cropper-cancel-edit hidden" aria-controls='photo-cancel-edit' aria-expanded='false'>Cancel edits</a>
-                      <a class="<%= @practice.main_display_image.present? ? "usa-button usa-button--outline padding-2 cropper-edit-mode" : "usa-button usa-button--outline padding-2 cropper-edit-mode hidden" %>" aria-controls='photo-crop' aria-expanded='false'>Edit photo</a>
-                      <div>
-                        <%= f.label :main_display_image,
-                          @practice.main_display_image.present? ? 'Upload new photo' : 'Upload photo',
-                          class: @practice.main_display_image.present? ? 'cropper-upload-image-label' : 'cropper-upload-image-label usa-button'
-                        %>
-                        <%= f.file_field :main_display_image, class: "hidden-upload cropper-upload-image", accept: 'image/*' %>
-                      </div>
+                    <a class="usa-button padding-2 cropper-save-edit hidden" aria-controls='photo-save-edit' aria-expanded='false'>Save edits</a>
+                    <a class="usa-button usa-button--outline padding-2 cropper-cancel-edit hidden" aria-controls='photo-cancel-edit' aria-expanded='false'>Cancel edits</a>
+                    <a class="<%= @practice.main_display_image.present? ? "usa-button usa-button--outline padding-2 cropper-edit-mode" : "usa-button usa-button--outline padding-2 cropper-edit-mode hidden" %>" aria-controls='photo-crop' aria-expanded='false'>Edit photo</a>
+                    <div>
+                      <%= f.label :main_display_image,
+                        @practice.main_display_image.present? ? 'Upload new photo' : 'Upload photo',
+                        class: @practice.main_display_image.present? ? 'cropper-upload-image-label' : 'cropper-upload-image-label usa-button'
+                      %>
+                      <%= f.file_field :main_display_image, class: "hidden-upload cropper-upload-image", accept: 'image/*' %>
+                    </div>
+                    <div class="cropper-delete-image">
                       <%= f.label :delete_main_display_image, 'Remove photo', class: @practice.main_display_image.present? ? 'display-inline-block text-secondary cropper-delete-image-label' : 'display-inline-block text-secondary cropper-delete-image-label hidden'%>
                       <%= f.check_box :delete_main_display_image, { class: @practice.main_display_image.present? ? 'usa-checkbox__input cropper-delete-image' : 'usa-checkbox__input cropper-delete-image hidden'}, 'true', 'false' %>
+                    </div>
                   </div>
                 </div>
               </div>

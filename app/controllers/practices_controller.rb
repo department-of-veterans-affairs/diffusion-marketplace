@@ -1,4 +1,5 @@
 class PracticesController < ApplicationController
+  include CropperUtils
   before_action :set_practice, only: [:show, :edit, :update, :destroy, :planning_checklist,
                                       :commit, :committed, :highlight, :un_highlight, :feature,
                                       :un_feature, :favorite, :instructions, :overview, :origin,
@@ -140,26 +141,6 @@ class PracticesController < ApplicationController
         end
       end
 
-      # Remove VA employee avatar
-      if params[:practice][:va_employees_attributes].present?
-        params[:practice][:va_employees_attributes].each do |key, e|
-          if e['delete_avatar'] == 'true'
-
-            @practice.va_employees.find(e[:id]).update_attributes(avatar: nil)
-          end
-        end
-      end
-
-      # Remove practice creator avatar
-      if params[:practice][:practice_creators_attributes].present?
-        params[:practice][:practice_creators_attributes].each do |key, pc|
-          if pc['delete_avatar'] == 'true'
-
-            @practice.practice_creators.find(pc[:id]).update_attributes(avatar: nil)
-          end
-        end
-      end
-
       # Remove additional document file
       if params[:practice][:additional_documents_attributes].present?
         params[:practice][:additional_documents_attributes].each do |key, ad|
@@ -170,30 +151,39 @@ class PracticesController < ApplicationController
         end
       end
 
-      # Remove main display image
-      if params[:practice][:delete_main_display_image].present?
-        if params[:practice][:delete_main_display_image] == 'true'
-          @practice.update_attributes(main_display_image: nil)
+      # Avatar manipulation
+      avatars = ['practice_creators', 'va_employees']
+
+      avatars.each do |avatar|
+        attribute = ("#{avatar}_attributes").to_sym
+
+        if params[:practice][attribute].present?
+          params[:practice][attribute].each do |key, e|
+            if e[:_destroy] == 'false' && e[:id].present?
+              record = @practice.send(avatar).find(e[:id])
+
+              # Remove avatar
+              if e['delete_avatar'] == 'true'
+                record.update_attributes(avatar: nil)
+              end
+
+              # Crop avatar
+              if is_cropping?(e)
+                reprocess_avatar(record, e)
+              end
+            end
+          end
         end
+      end
+
+      # Remove main display image
+      if params[:practice][:delete_main_display_image].present? && params[:practice][:delete_main_display_image] == 'true'
+        @practice.update_attributes(main_display_image: nil)
       end
 
       # Crop main display image
-      if params[:practice][:crop_x].present? && params[:practice][:crop_y].present? && params[:practice][:crop_h].present? && params[:practice][:crop_w].present?
+      if is_cropping?(params[:practice])
         @practice.main_display_image.reprocess!
-      end
-
-      # Crop VA employee avatar
-      if params[:practice][:va_employees_attributes].present?
-        params[:practice][:va_employees_attributes].each do |key, e|
-          if e[:crop_x].present? && e[:crop_y].present? && e[:crop_w].present? && e[:crop_h].present? && e[:id].present? && e[:_destroy] == 'false'
-            vae = @practice.va_employees.find(e[:id])
-            vae.crop_x = e[:crop_x]
-            vae.crop_y = e[:crop_y]
-            vae.crop_w = e[:crop_w]
-            vae.crop_h = e[:crop_h]
-            vae.avatar.reprocess!
-          end
-        end
       end
 
       partner_keys.each do |key|
@@ -472,7 +462,7 @@ class PracticesController < ApplicationController
                                      timelines_attributes: [:id, :description, :timeline, :_destroy, :position, milestones_attributes: [:id, :description, :_destroy]],
                                      va_employees_attributes: [:id, :name, :role, :position, :_destroy, :avatar, :crop_x, :crop_y, :crop_w, :crop_h, :delete_avatar],
                                      additional_staffs_attributes: [:id, :_destroy, :title, :hours_per_week, :duration_in_weeks, :permanent],
-                                     additional_resources_attributes: [:id, :_destroy, :name, :position, :description], required_staff_trainings_attributes: [:id, :_destroy, :title, :description], practice_creators_attributes: [:id, :_destroy, :name, :role, :avatar, :position],
+                                     additional_resources_attributes: [:id, :_destroy, :name, :position, :description], required_staff_trainings_attributes: [:id, :_destroy, :title, :description], practice_creators_attributes: [:id, :_destroy, :name, :role, :avatar, :position, :delete_avatar, :crop_x, :crop_y, :crop_w, :crop_h],
                                      publications_attributes: [:id, :_destroy, :title, :link, :position], additional_documents_attributes: [:id, :_destroy, :attachment, :title, :position], practice_permissions_attributes: [:id, :_destroy, :position, :name, :description])
   end
 
