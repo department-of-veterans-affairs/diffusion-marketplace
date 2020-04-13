@@ -84,7 +84,7 @@
   </section>
   <div class="grid-row flex-align-center position-relative margin-bottom-405 grid-col-8 margin-top-0 margin-bottom-4 margin-x-auto">
     <p class="font-sans-sm">
-      If you have any questions, please <a target="_blank" href="mailto:VAInnovation@atlasresearch.us?subject=Shark Tank Competition 2020" class="shark-tank-support-link">email the VA Innovation Support Team</a>
+      If you have any questions, please <a target="_blank" href="mailto:VAInnovation@atlasresearch.us?subject=Shark Tank Question" class="shark-tank-support-link">email the VA Innovation Support Team</a>
     </p>
   </div>
   <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest section-line grid-col-8 margin-top-0 margin-bottom-2 margin-x-auto">
@@ -114,7 +114,7 @@
       <div class="grid-row grid-gap">
         <% @shark_tank_winners.each do |practice| %>
           <div class="tablet:grid-col-4 flex-column display-flex margin-bottom-28px">
-            <%= render partial: 'practices/favorite_button', locals: {practice: practice, featured: false } %>
+            <%= render partial: 'practices/favorite_button', locals: {practice: practice, featured: false, col_4: true } %>
             <%= render partial: '/practices/marketplace_card', locals: {practice: practice, featured: false} %>
           </div>
         <% end %>

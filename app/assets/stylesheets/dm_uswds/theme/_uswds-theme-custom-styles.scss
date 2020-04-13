@@ -284,13 +284,18 @@ a {
 }
 
 .featured-favorite-practice-button {
-  right: 15px;
-  top: 7.5px;
+  right: 23px !important;
+  top: 6.5px !important;
 }
 
-.favorite-practice-button {
-  right: 15px;
-  top: 15px;
+.favorite-practice-button, .practice-card-list > .favorite-practice-button {
+  right: 20px;
+  top: 20px;
+}
+
+.col-4-not-featured-favorite-button {
+  right: 25px;
+  top: 10px;
 }
 
 .search-favorite-practice-button {
@@ -301,11 +306,6 @@ a {
 .highlighted-practice > .favorite-practice-button {
   top: 2%;
   right: 2%;
-}
-
-.practice-card-list > .favorite-practice-button {
-  top: 1%;
-  right: 11%;
 }
 
 .text-no-underline {

@@ -47,14 +47,6 @@ header {
 
 .usa-nav__primary-item {
   align-self: center;
-
-    * {
-        text-decoration: none !important;
-
-        &:hover {
-          text-decoration: none !important;
-        }
-    }
 }
 
 .home-link {
@@ -62,7 +54,17 @@ header {
 }
 
 .bulletin-menu-button[aria-expanded="true"] {
-  background-image: asset-url('uswds/angle-arrow-up-white.svg') !important;
+  background-image: asset-url('uswds/angle-arrow-down.svg') !important;
+  background-color: $dm-color-lightest-gray !important;
+  color: $dm-color-black !important;
+
+  &::after {
+    content: none !important;
+  }
+
+  &:hover {
+    text-decoration: none !important;
+  }
 }
 
 .bulletin-menu-button[aria-expanded="false"] {
@@ -74,16 +76,40 @@ header {
 }
 
 .bulletin-menu-button {
+  height: 5rem !important;
+
+  &:hover {
+    text-decoration: underline !important;
+  }
+
   &:after {
-    text-decoration: none !important;
+    text-decoration: underline !important;
+  }
+
+  &:hover::after {
+    content: none !important;
   }
 }
 
-.usa-nav__link {
-  &::after {
-    background-color: $dm-color-white-important;
+.bulletin-submenu {
+  background-color: $dm-color-lightest-gray !important;
+}
+
+.bulletin-link {
+  color: $dm-color-black !important;
+  font-weight: normal !important;
+
+  &:hover {
+    text-decoration: underline !important;
   }
-  &:hover::after {
-    background-color: $dm-color-white-important;
+
+  &:visited {
+    color: $dm-default-visited-link-purple !important;
+  }
+}
+
+.partners-link {
+  &:hover {
+    text-decoration: underline !important;
   }
 }

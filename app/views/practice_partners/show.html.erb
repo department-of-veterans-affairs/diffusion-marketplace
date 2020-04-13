@@ -28,10 +28,10 @@
     <div class="grid-container margin-bottom-6">
       <% @partner_practices = @practice_partner.practices %>
       <% if @partner_practices.any? %>
-        <div class="grid-row grid-gap-2">
+        <div class="grid-row grid-gap-3">
           <% @partner_practices.order(name: :asc).each do |p| %>
-            <div class="tablet:grid-col-3 padding-y-1">
-              <%= render partial: 'practices/favorite_button', locals: {practice: p, featured: false } %>
+            <div class="tablet:grid-col-3 padding-y-105">
+              <%= render partial: 'practices/favorite_button', locals: {practice: p, featured: false, col_4: false } %>
               <%= render partial: 'practices/marketplace_card', locals: {practice: p, featured: false} %>
             </div>
           <% end %>
