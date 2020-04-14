@@ -16,6 +16,7 @@ class Practice < ApplicationRecord
   attr_accessor :delete_main_display_image
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
 
+  # views
   def views
     Ahoy::Event.where_props(practice_id: id).count
   end
@@ -36,6 +37,7 @@ class Practice < ApplicationRecord
     date_range_views((Date.today - 3.months).at_beginning_of_month, (Date.today - 3.months).at_end_of_month)
   end
 
+  # commits
   def current_month_commits
     committed_user_count_by_range(Date.today.beginning_of_month, Date.today.end_of_month)
   end
@@ -50,6 +52,40 @@ class Practice < ApplicationRecord
 
   def three_months_ago_commits
     committed_user_count_by_range((Date.today - 3.months).at_beginning_of_month, (Date.today - 3.months).at_end_of_month)
+  end
+
+  # favorited
+  def current_month_favorited
+    favorited_count_by_range(Date.today.beginning_of_month, Date.today.end_of_month)
+  end
+
+  def last_month_favorited
+    favorited_count_by_range((Date.today - 1.months).at_beginning_of_month, (Date.today - 1.months).at_end_of_month)
+  end
+
+  def two_months_ago_favorited
+    favorited_count_by_range((Date.today - 2.months).at_beginning_of_month, (Date.today - 2.months).at_end_of_month)
+  end
+
+  def three_months_ago_favorited
+    favorited_count_by_range((Date.today - 3.months).at_beginning_of_month, (Date.today - 3.months).at_end_of_month)
+  end
+
+  # adoptions
+  def current_month_adoptions
+    adoptions_count_by_range(Date.today.beginning_of_month, Date.today.end_of_month)
+  end
+
+  def last_month_adoptions
+    adoptions_count_by_range((Date.today - 1.months).at_beginning_of_month, (Date.today - 1.months).at_end_of_month)
+  end
+
+  def two_months_ago_adoptions
+    adoptions_count_by_range((Date.today - 2.months).at_beginning_of_month, (Date.today - 2.months).at_end_of_month)
+  end
+
+  def three_months_ago_adoptions
+    adoptions_count_by_range((Date.today - 3.months).at_beginning_of_month, (Date.today - 3.months).at_end_of_month)
   end
 
   has_paper_trail
@@ -180,5 +216,21 @@ class Practice < ApplicationRecord
 
   def date_range_views(start_date, end_date)
     Ahoy::Event.where_props(practice_id: id).where(time: start_date..end_date).count
+  end
+
+  def favorited_count
+    user_practices.where({favorited: true}).count
+  end
+
+  def favorited_count_by_range(start_date, end_date)
+    user_practices.where({created_at: start_date..end_date, favorited: true}).count
+  end
+
+  def adoptions_count
+    user_practices.where({committed: true}).count
+  end
+
+  def adoptions_count_by_range(start_date, end_date)
+    user_practices.where({created_at: start_date..end_date, committed: true}).count
   end
 end
