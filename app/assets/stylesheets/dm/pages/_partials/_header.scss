@@ -42,7 +42,7 @@ header {
 }
 
 .nav-container {
-  width: 70% !important;
+  width: 65% !important;
 }
 
 .usa-nav__primary-item {
@@ -57,6 +57,7 @@ header {
   background-image: asset-url('uswds/angle-arrow-down.svg') !important;
   background-color: $dm-color-lightest-gray !important;
   color: $dm-color-black !important;
+  height: 5rem !important;
 
   &::after {
     content: none !important;
@@ -76,8 +77,6 @@ header {
 }
 
 .bulletin-menu-button {
-  height: 5rem !important;
-
   &:hover {
     text-decoration: underline !important;
   }
@@ -111,5 +110,11 @@ header {
 .partners-link {
   &:hover {
     text-decoration: underline !important;
+  }
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .usa-navbar {
+    overflow: visible !important;
   }
 }

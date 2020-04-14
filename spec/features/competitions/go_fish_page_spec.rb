@@ -6,10 +6,10 @@ describe 'Go Fish landing page', type: :feature do
     @practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline')
     @practice2 = Practice.create!(name: 'A second public practice', approved: true, published: true, tagline: 'Test tagline')
     @practice3 = Practice.create!(name: 'A third public practice', approved: true, published: true, tagline: 'Test tagline')
-    @practice_partner = PracticePartner.create!(name: 'VHA Innovators Network')
-    @practice_partner_practice = PracticePartnerPractice.create!(practice_partner_id: @practice_partner.id, practice_id: @practice.id)
-    @practice_partner_practice = PracticePartnerPractice.create!(practice_partner_id: @practice_partner.id, practice_id: @practice2.id)
-    @practice_partner_practice = PracticePartnerPractice.create!(practice_partner_id: @practice_partner.id, practice_id: @practice3.id)
+    @badge = Badge.create!(name: 'Go Fish')
+    @badge_practice = BadgePractice.create!(badge_id: @badge.id, practice_id: @practice.id)
+    @badge_practice2 = BadgePractice.create!(badge_id: @badge.id, practice_id: @practice2.id)
+    @badge_practice3 = BadgePractice.create!(badge_id: @badge.id, practice_id: @practice3.id)
   end
 
   it 'should be there' do
