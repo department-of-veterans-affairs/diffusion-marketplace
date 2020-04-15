@@ -12,7 +12,10 @@
     }
 
     function saveEditorProgressOnContinue() {
-        $('.save-and-continue').on('click', () => {
+        $('.continue-and-save').on('click', (event) => {
+            event.preventDefault();
+            $('#form').append("<input type='hidden' name='next' value='adoptions'>");
+
             if ($('#form')[0].checkValidity()) {
                 $('#form').submit();
             } else {

@@ -121,6 +121,7 @@ class PracticesController < ApplicationController
   # PATCH/PUT /practices/1
   # PATCH/PUT /practices/1.json
   def update
+    debugger
     strong_params = practice_params
     updated = @practice.update(strong_params)
 
@@ -206,11 +207,13 @@ class PracticesController < ApplicationController
 
     respond_to do |format|
       if updated
-        format.html { redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.' }
-        format.json { render :show, status: :ok, location: @practice }
-      else
-        format.html { redirect_back fallback_location: root_path, alert: 'Practice could not be updated.' }
-        format.json { render json: @practice.errors, status: :unprocessable_entity }
+        if params[:next]
+          format.html { redirect_to "practices/#{@practice.slug}/edit/#{params[:next]}", notice: 'Practice was successfully updated.' }
+          format.json { render :show, status: :ok, location: @practice }
+        else
+          format.html { redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.' }
+          format.json { render json: @practice.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
