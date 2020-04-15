@@ -1,8 +1,7 @@
 class AddSharkTankBadgeToBadges < ActiveRecord::Migration[5.2]
   def change
-    Badge.find_or_create_by!({name: 'Shark Tank'})
+    shark_tank_badge = Badge.find_or_create_by!({name: 'Shark Tank'})
 
-    shark_tank_badge_id = Badge.find_by(name: 'Shark Tank').id
     shark_tank_winner_slugs = [
         'healthier-kidneys-through-your-kitchen',
         'whoopsafe',
@@ -35,7 +34,7 @@ class AddSharkTankBadgeToBadges < ActiveRecord::Migration[5.2]
     shark_tank_winner_slugs.each do |stws|
       shark_tank_practice = Practice.find_by(slug: stws)
       if !shark_tank_practice.nil?
-        BadgePractice.create!({practice_id: shark_tank_practice.id, badge_id: shark_tank_badge_id})
+        BadgePractice.create!({practice: shark_tank_practice, badge: shark_tank_badge})
       else
         puts "The slug #{stws} does not exist"
       end

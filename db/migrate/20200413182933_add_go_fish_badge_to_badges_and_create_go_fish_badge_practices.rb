@@ -1,8 +1,7 @@
 class AddGoFishBadgeToBadgesAndCreateGoFishBadgePractices < ActiveRecord::Migration[5.2]
   def change
-    Badge.find_or_create_by!({name: 'Go Fish'})
+    go_fish_badge = Badge.find_or_create_by!({name: 'Go Fish'})
 
-    go_fish_badge_id = Badge.find_by(name: 'Go Fish').id
     go_fish_practice_slugs = [
         'healthier-kidneys-through-your-kitchen',
         'whoopsafe',
@@ -35,7 +34,7 @@ class AddGoFishBadgeToBadgesAndCreateGoFishBadgePractices < ActiveRecord::Migrat
     go_fish_practice_slugs.each do |gfps|
       go_fish_practice = Practice.find_by(slug: gfps)
       if !go_fish_practice.nil?
-        BadgePractice.create!({practice_id: go_fish_practice.id, badge_id: go_fish_badge_id})
+        BadgePractice.create!({practice: go_fish_practice, badge: go_fish_badge})
       else
         puts "The slug #{gfps} does not exist"
       end
