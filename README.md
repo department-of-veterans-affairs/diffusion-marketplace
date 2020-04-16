@@ -20,6 +20,9 @@
 | `rails surveymonkey:download_response_files` (DEPRECATED) | Rake task to download files from our SurveyMonkey practice submission form. **Do not use this anymore. Ever.**  | 
 | `rails diffusion_history:all`| Imports all of the diffusion history we have so far for practices - used to populate the geolocation feature (Practice <-> Facility mappings) |
 | `rails milestones:milestones_transfer` | Transfers all of the original timeline entry milestones to the new milestone model  |
+| `rails go_fish_practices:assign_go_fish_badge` | Assigns the Go Fish badge to all Go Fish practices  |
+| `rails shark_tank_practices:assign_shark_tank_badge` | Assigns the Shark Tank badge to all previous Shark Tank winners  |
+| `rails inet_partner_practices:assign_inet_partner` | Assigns the iNET practice partner to practices that have iNET as a partner  |
 #### Ruby version
 
 - `ruby 2.6.3`

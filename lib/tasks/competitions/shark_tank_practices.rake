@@ -1,8 +1,10 @@
-class AddGoFishBadgeToBadgesAndCreateGoFishBadgePractices < ActiveRecord::Migration[5.2]
-  def change
-    go_fish_badge = Badge.find_or_create_by!({name: 'Go Fish'})
+namespace :shark_tank_practices do
+  desc "Assign the Shark Tank badge to past Shark Tank winners"
 
-    go_fish_practice_slugs = [
+  task assign_shark_tank_badge: :environment do
+    shark_tank_badge = Badge.find_by({name: 'Shark Tank'})
+
+    shark_tank_winner_slugs = [
         'healthier-kidneys-through-your-kitchen',
         'whoopsafe',
         'geri-vet',
@@ -31,13 +33,14 @@ class AddGoFishBadgeToBadgesAndCreateGoFishBadgePractices < ActiveRecord::Migrat
         'vione',
         'flow3'
     ]
-    go_fish_practice_slugs.each do |gfps|
-      go_fish_practice = Practice.find_by(slug: gfps)
-      if !go_fish_practice.nil?
-        BadgePractice.create!({practice: go_fish_practice, badge: go_fish_badge})
+    shark_tank_winner_slugs.each do |stws|
+      shark_tank_practice = Practice.find_by(slug: stws)
+      if !shark_tank_practice.nil?
+        BadgePractice.create!({practice: shark_tank_practice, badge: shark_tank_badge})
       else
-        puts "The slug #{gfps} does not exist"
+        puts "The slug #{stws} does not exist"
       end
     end
+    puts "All past Shark Tank winners now have the Shark Tank Badge!!"
   end
 end
