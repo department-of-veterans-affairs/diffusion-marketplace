@@ -23,7 +23,7 @@
       Veterans.
     </p>
     <div class="usa-accordion margin-bottom-3">
-      <h2 class="usa-accordion__heading">
+      <h2 class="usa-accordion__heading margin-bottom-2">
         <button class="usa-accordion__button font-sans-sm"
                 aria-expanded="false"
                 aria-controls="a1">
@@ -66,24 +66,12 @@
           staff to contribute greater input into their work environment
         </p>
       </div>
-
-      <h2 class="usa-accordion__heading">
-        <button class="usa-accordion__button font-sans-sm"
-                aria-expanded="false"
-                aria-controls="a2">
-          FAQs
-        </button>
-      </h2>
-      <div id="a2" class="usa-accordion__content usa-prose">
-        <p class="shark-tank-faq-p">
-
-        </p>
-      </div>
     </div>
   </section>
   <div class="grid-row flex-align-center position-relative margin-bottom-405 grid-col-8 margin-top-0 margin-bottom-4 margin-x-auto">
-    <p class="font-sans-sm">
-      If you have any questions, please <a target="_blank" href="mailto:VAInnovation@atlasresearch.us?subject=Shark Tank Question" class="shark-tank-support-link">email the VA Innovation Support Team</a>
+    <p class="font-sans-sm line-height-sans-505">
+      If you have any questions, <%= link_to 'read our FAQs', asset_path('shark_tank_2020_faq.pdf', skip_pipeline: true), target: '_blank', class: 'shark-tank-faq-link' %>.
+      If you have additional questions not covered in our FAQs, <a target="_blank" href="mailto:VAInnovation@atlasresearch.us?subject=Shark Tank Question" class="shark-tank-support-link">email the VA Innovation Support Team</a> to the VA Innovation Support Team.
     </p>
   </div>
   <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest section-line grid-col-8 margin-top-0 margin-bottom-2 margin-x-auto">
