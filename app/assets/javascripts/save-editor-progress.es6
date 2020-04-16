@@ -14,7 +14,9 @@
     function saveEditorProgressOnContinue() {
         $('.continue-and-save').on('click', (event) => {
             event.preventDefault();
-            $('#form').append("<input type='hidden' name='next' value='adoptions'>");
+            let nextEndpoint = $(this).attr('data-next');
+            console.log(nextEndpoint);
+            $('#form').append(`<input type='hidden' name='next' value=${nextEndpoint}>`);
 
             if ($('#form')[0].checkValidity()) {
                 $('#form').submit();

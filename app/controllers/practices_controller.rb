@@ -208,7 +208,7 @@ class PracticesController < ApplicationController
     respond_to do |format|
       if updated
         if params[:next]
-          format.html { redirect_to "practices/#{@practice.slug}/edit/#{params[:next]}", notice: 'Practice was successfully updated.' }
+          format.html { redirect_to "/practices/#{@practice.slug}/edit/#{params[:next]}", notice: 'Practice was successfully updated.' }
           format.json { render :show, status: :ok, location: @practice }
         else
           format.html { redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.' }
