@@ -17,6 +17,9 @@ namespace :dm do
     Rake::Task['importer:initial_featured'].execute
     Rake::Task['diffusion_history:all'].execute
     Rake::Task['milestones:milestones_transfer'].execute
+    Rake::Task['go_fish_practices:assign_go_fish_badge'].execute
+    Rake::Task['shark_tank_practices:assign_shark_tank_badge'].execute
+    Rake::Task['inet_partner_practices:assign_inet_partner'].execute
   end
 
   # rails dm:reset_up

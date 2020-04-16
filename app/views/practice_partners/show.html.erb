@@ -1,14 +1,14 @@
-<div class="full-view-height">
+<div class="full-view-height partner-page-min-height">
   <section class="grid-container">
     <%= render "shared/messages" %>
   </section>
   <section class="grid-container">
-    <div class="dm-font-color-primary-blue p1-top breadcrumbs dm-font-color-super-violet-ish" id="breadcrumbs">
+    <div class="dm-font-color-primary-blue p1-top breadcrumbs" id="breadcrumbs">
       <a href="/">Home</a>
       <span class="x0-5-left x0-5-right">›</span>
       <span><%= link_to 'Partners', practice_partners_path %></span>
       <span class="x0-5-left x0-5-right">›</span>
-      <span><%= @practice_partner.short_name.present? ? @practice_partner.short_name : @practice_partner.name %></span>
+      <span class="text-bold"><%= @practice_partner.short_name.present? ? @practice_partner.short_name : @practice_partner.name %></span>
     </div>
   </section>
   <div class="grid-container margin-top-3 margin-bottom-205">
@@ -18,7 +18,7 @@
   </div>
   <section class="margin-bottom-4 grid-container">
     <div class="grid-row">
-      <div class="grid-col-10">
+      <div class="grid-col-11">
         <h1 class="font-sans-2xl margin-top-0 margin-bottom-0"><%= "#{@practice_partner.name}#{@practice_partner.short_name.present? ? " (#{@practice_partner.short_name.upcase})" : ''}"%></h1>
         <p class="margin-0 font-sans-lg line-height-sans-6"><%= @practice_partner.description %></p>
       </div>
@@ -26,11 +26,12 @@
   </section>
   <section>
     <div class="grid-container margin-bottom-6">
-      <% if @practice_partner.practices.any? %>
-        <div class="grid-row grid-gap-2">
-          <% @practice_partner.practices.order(name: :asc).each do |p| %>
-            <div class="tablet:grid-col-3 padding-y-1">
-              <%= render partial: 'practices/favorite_button', locals: {practice: p, featured: false } %>
+      <% @partner_practices = @practice_partner.practices %>
+      <% if @partner_practices.any? %>
+        <div class="grid-row grid-gap-3">
+          <% @partner_practices.order(name: :asc).each do |p| %>
+            <div class="tablet:grid-col-3 padding-y-105">
+              <%= render partial: 'practices/favorite_button', locals: {practice: p, featured: false, col_4: false } %>
               <%= render partial: 'practices/marketplace_card', locals: {practice: p, featured: false} %>
             </div>
           <% end %>
@@ -41,9 +42,11 @@
     </div>
   </section>
 
-  <div class="grid-container margin-bottom-105">
-    <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
-  </div>
+  <% if @partner_practices.any? %>
+    <div class="grid-container margin-bottom-105">
+      <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
+    </div>
+  <% end %>
 </div>
 
 

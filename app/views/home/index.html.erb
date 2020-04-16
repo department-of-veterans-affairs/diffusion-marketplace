@@ -36,11 +36,11 @@
     <div class="grid-container">
       <h4 class="font-sans-xl margin-bottom-1 margin-top-0 line-height-sans-205">Featured practices</h4>
       <p class="font-sans-lg margin-bottom-2">Here are a few featured practices from across the VA.</p>
-      <div class="grid-row grid-gap-2 featured-practices">
+      <div class="grid-row grid-gap featured-practices">
         <% @featured_practices.each do |fp| %>
           <% if fp.present? %>
             <div class="tablet:grid-col-4">
-              <%= render partial: 'practices/favorite_button', locals: {practice: fp, featured: true } %>
+              <%= render partial: 'practices/favorite_button', locals: {practice: fp, featured: true, col_4: false } %>
               <%= render partial: 'practices/marketplace_card', locals: {practice: fp, featured: true} %>
             </div>
           <% end %>
@@ -74,15 +74,15 @@
     </section>
   <% end %>
 
-  <section class="padding-top-2 margin-bottom-6">
+  <section class="padding-top-2 margin-bottom-5">
     <div class="grid-container">
       <h4 class="font-sans-xl margin-bottom-2 margin-top-0">All practices</h4>
       <p class="font-sans-lg margin-bottom-1">View all submitted and accepted practices.</p>
-      <div class="grid-row grid-gap-2">
+      <div class="grid-row grid-gap-3">
         <% @practices.each do |p| %>
           <% if p.present? %>
-            <div class="tablet:grid-col-3 padding-y-1">
-              <%= render partial: 'practices/favorite_button', locals: {practice: p, featured: false } %>
+            <div class="tablet:grid-col-3 padding-y-105">
+              <%= render partial: 'practices/favorite_button', locals: {practice: p, featured: false, col_4: false } %>
               <%= render partial: 'practices/marketplace_card', locals: {practice: p, featured: false} %>
             </div>
           <% end %>

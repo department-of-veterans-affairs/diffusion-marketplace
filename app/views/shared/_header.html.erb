@@ -52,18 +52,27 @@
     <div class="grid-row flex-align-center height-10">
     <div class="usa-logo text-white grid-col-auto flex-auto logo-container" id="extended-logo">
       <em class="usa-logo__text">
-        <a href="/" title="Home" aria-label="Home" class='text-white-important usa-logo__text'>VA<span class='text-normal'> | Diffusion Marketplace</span></a>
+        <a href="/" title="Home" aria-label="Home" class='text-white-important usa-logo__text home-link p1-top p1-bottom p1-right'>VA<span class='text-normal'> | Diffusion Marketplace</span></a>
       </em>
     </div>
   <%# </div> %>
   <nav class="usa-nav grid-col-fill flex-fill nav-container">
       <ul class="usa-nav__primary usa-accordion flex-justify-end">
-          <li class="usa-nav__primary-item">
-            <a href="/partners" class="text-white-important margin-right-6 partners-link">Partners</a>
+          <li class="usa-nav__primary-item margin-right-305">
+            <button class="usa-accordion__button usa-nav__link bulletin-menu-button font-size-17px text-white-important" aria-expanded="false" aria-controls="basic-nav-section-one"><span>Bulletin</span></button>
+            <ul id="basic-nav-section-one" class="usa-nav__submenu bulletin-submenu"><li class="usa-nav__submenu-item">
+              <a href="/competitions/shark-tank" class="font-sans-sm bulletin-link">Shark Tank Competition</a>
+              </li><li class="usa-nav__submenu-item">
+              <a href="/competitions/go-fish" class="font-sans-sm bulletin-link">GoFish!</a>
+              </li>
+            </ul>
+          </li>
+          <li class="usa-nav__primary-item margin-right-305 font-size-17px">
+            <a href="/partners" class="text-white-important partners-link p1">Partners</a>
           </li>
           <% if user_signed_in? %>
-            <li class="usa-nav__primary-item">
-              <%= link_to(user_path(current_user), class: 'text-white-important username-link') do %>
+            <li class="usa-nav__primary-item font-size-17px">
+              <%= link_to(user_path(current_user), class: 'text-white-important username-link p1-bottom p1-left p1-top p0-right') do %>
                 <div class="empty-user-icon image-container display-none-important desktop:display-inline-block text-middle">
                   <i class="fas fa-user fa-lg text-white-important display-none-important desktop:display-inline-block text-middle margin-right-05"></i>
                 </div>
