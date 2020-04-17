@@ -121,15 +121,34 @@ class PracticesController < ApplicationController
   # PATCH/PUT /practices/1
   # PATCH/PUT /practices/1.json
   def update
-    debugger
     strong_params = practice_params
     updated = @practice.update(strong_params)
 
     if updated
-      partner_keys = []
-      partner_keys = params[:practice][:practice_partner].keys if params[:practice][:practice_partner].present?
-      @practice.practice_partner_practices.each do |partner|
-        partner.destroy unless partner_keys.include? partner.practice_partner_id.to_s
+      if params[:practice][:practice_partner].present?
+        partner_keys = params[:practice][:practice_partner].keys
+
+        @practice.practice_partner_practices.each do |partner|
+          partner.destroy unless partner_keys.include? partner.practice_partner_id.to_s
+        end
+
+        partner_keys.each do |key|
+          next if @practice.practice_partners.ids.include? key.to_i
+
+          @practice.practice_partner_practices.create practice_partner_id: key.to_i
+        end
+      end
+
+      if params[:practice][:department].present?
+        dept_keys = params[:practice][:department].keys
+        @practice.department_practices.each do |department|
+          department.destroy unless dept_keys.include? department.department_id.to_s
+        end
+        dept_keys.each do |key|
+          next if @practice.departments.ids.include? key.to_i
+
+          @practice.department_practices.create department_id: key.to_i
+        end
       end
 
       # Remove impact photo
@@ -185,23 +204,6 @@ class PracticesController < ApplicationController
       # Crop main display image
       if is_cropping?(params[:practice])
         @practice.main_display_image.reprocess!
-      end
-
-      partner_keys.each do |key|
-        next if @practice.practice_partners.ids.include? key.to_i
-
-        @practice.practice_partner_practices.create practice_partner_id: key.to_i
-      end
-
-      dept_keys = []
-      dept_keys = params[:practice][:department].keys if params[:practice][:department].present?
-      @practice.department_practices.each do |department|
-        department.destroy unless dept_keys.include? department.department_id.to_s
-      end
-      dept_keys.each do |key|
-        next if @practice.departments.ids.include? key.to_i
-
-        @practice.department_practices.create department_id: key.to_i
       end
     end
 

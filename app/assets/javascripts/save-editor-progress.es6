@@ -3,27 +3,32 @@
 
     function submitPracticeEditorSaveForm() {
         $('#practice-editor-save-button').on('click', () => {
-            if ($('#form')[0].checkValidity()) {
-                    $('#form').submit();
+            let $form = $('#form');
+            if ($form[0].checkValidity()) {
+                    $form.submit();
             } else {
-                $('#form')[0].reportValidity();
+                $form[0].reportValidity();
             }
         });
     }
 
     function saveEditorProgressOnContinue() {
-        $('.continue-and-save').on('click', (event) => {
-            event.preventDefault();
-            let nextEndpoint = $(this).attr('data-next');
-            console.log(nextEndpoint);
-            $('#form').append(`<input type='hidden' name='next' value=${nextEndpoint}>`);
+        let currentEndpoint = window.location.href.split('/').pop();
+        if (currentEndpoint != 'adoptions') {
+            $('.continue-and-save').on('click', (event) => {
+                event.preventDefault();
+                let $form = $('#form');
+                let nextEndpoint = $(event.target).data('next');
 
-            if ($('#form')[0].checkValidity()) {
-                $('#form').submit();
-            } else {
-                $('#form')[0].reportValidity();
-            }
-        });
+                $form.append(`<input type='hidden' name='next' value=${nextEndpoint}>`);
+
+                if ($form[0].checkValidity()) {
+                    $form.submit();
+                } else {
+                    $form[0].reportValidity();
+                }
+            });
+        }
     }
 
     function initSaveProgressFunctions() {
