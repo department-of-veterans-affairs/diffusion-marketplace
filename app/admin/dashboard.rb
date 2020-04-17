@@ -20,53 +20,45 @@ ActiveAdmin.register_page "Dashboard" do
       @practices_views = Practice.all.sort_by(&:current_month_views).reverse!
 
       @date_headers = {
-        total: 'Lifetime',
+        total: 'Total Lifetime',
         current: "#{@beginning_of_current_month.strftime('%B %Y')} - current month",
         one_month_ago: "#{@beginning_of_last_month.strftime('%B %Y')} - last month",
         two_month_ago: "#{@beginning_of_two_months_ago.strftime('%B %Y')} - 2 months ago",
         three_month_ago: "#{@beginning_of_three_months_ago.strftime('%B %Y')} - 3 months ago"
       }
 
-      @practices_headers = ['Practice Name', "#{@date_headers[:total]}", "#{@date_headers[:current]}", "#{@date_headers[:one_month_ago]}", "#{@date_headers[:two_month_ago]}", "#{@date_headers[:three_month_ago]}"]
+      @practices_headers = ['Practice Name', "#{@date_headers[:current]}", "#{@date_headers[:one_month_ago]}", "#{@date_headers[:total]}"]
 
       @general_traffic_stats = {
-        total_accounts: User.all.count,
         unique_visitors: site_visit_stats.keys.length,
-        number_of_site_visits: site_visit_stats.sum {|_k, v| v}
+        number_of_site_visits: site_visit_stats.sum {|_k, v| v},
+        total_accounts: User.all.count
       }
 
       @practices_added_stats = {
-        total_practices_created: Practice.all.count,
         added_this_month: Practice.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
         added_one_month_ago: Practice.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
-        added_two_months_ago: Practice.where(created_at: @beginning_of_two_months_ago..@end_of_two_months_ago).count,
-        added_three_months_ago: Practice.where(created_at: @beginning_of_three_months_ago..@end_of_three_months_ago).count
+        total_practices_created: Practice.all.count
       }
 
       @practices_favorited_stats = {
-        total_favorited: UserPractice.where(favorited: true).count,
         favorited_this_month: UserPractice.where(created_at: @beginning_of_current_month..@end_of_current_month, favorited: true).count,
         favorited_one_month_ago: UserPractice.where(created_at: @beginning_of_last_month..@end_of_last_month,favorited: true).count,
-        favorited_two_months_ago: UserPractice.where(created_at: @beginning_of_two_months_ago..@end_of_two_months_ago, favorited: true).count,
-        favorited_three_months_ago: UserPractice.where(created_at: @beginning_of_three_months_ago..@end_of_three_months_ago, favorited: true).count
+        total_favorited: UserPractice.where(favorited: true).count
       }
 
       @practices_favorites = Practice.all.sort_by(&:current_month_favorited).reverse!
 
       @practices_comment_stats = {
-        total_comments: Commontator::Comment.count,
         comments_this_month: Commontator::Comment.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
         comments_one_month_ago: Commontator::Comment.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
-        comments_two_months_ago: Commontator::Comment.where(created_at: @beginning_of_two_months_ago..@end_of_two_months_ago).count,
-        comments_three_months_ago: Commontator::Comment.where(created_at: @beginning_of_three_months_ago..@end_of_three_months_ago).count
+        total_comments: Commontator::Comment.count
       }
 
       @practices_adoption_stats = {
-        total_adopted: UserPractice.where(committed: true).count,
         adopted_this_month: UserPractice.where(created_at: @beginning_of_current_month..@end_of_current_month, committed: true).count,
         adopted_one_month_ago: UserPractice.where(created_at: @beginning_of_last_month..@end_of_last_month,committed: true).count,
-        adopted_two_months_ago: UserPractice.where(created_at: @beginning_of_two_months_ago..@end_of_two_months_ago, committed: true).count,
-        adopted_three_months_ago: UserPractice.where(created_at: @beginning_of_three_months_ago..@end_of_three_months_ago, committed: true).count
+        total_adopted: UserPractice.where(committed: true).count
       }
     end
 
@@ -102,11 +94,9 @@ ActiveAdmin.register_page "Dashboard" do
           @practices.each do |value|
             sheet.add_row [
               value.name,
-              value.favorited_count,
               value.current_month_favorited,
               value.last_month_favorited,
-              value.two_months_ago_favorited,
-              value.three_months_ago_favorited
+              value.favorited_count
             ], style: xlsx_entry
           end
           sheet.add_row [""], style: xlsx_divider
@@ -120,11 +110,9 @@ ActiveAdmin.register_page "Dashboard" do
           @practices.each do |value|
             sheet.add_row [
               value.name,
-              value.commontator_thread.comments.count,
               value.commontator_thread.comments.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
               value.commontator_thread.comments.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
-              value.commontator_thread.comments.where(created_at: @beginning_of_two_months_ago..@end_of_two_months_ago).count,
-              value.commontator_thread.comments.where(created_at: @beginning_of_three_months_ago..@end_of_three_months_ago).count
+              value.commontator_thread.comments.count
             ], style: xlsx_entry
           end
           sheet.add_row [""], style: xlsx_divider
@@ -138,11 +126,9 @@ ActiveAdmin.register_page "Dashboard" do
           @practices.each do |value|
             sheet.add_row [
               value.name,
-              value.adoptions_count,
               value.current_month_adoptions,
               value.last_month_adoptions,
-              value.two_months_ago_adoptions,
-              value.three_months_ago_adoptions
+              value.adoptions_count
             ], style: xlsx_entry
           end
         end
@@ -308,19 +294,17 @@ ActiveAdmin.register_page "Dashboard" do
 
         panel 'General Traffic' do
           table_for general_traffic_stats do |_stats|
-            column :total_accounts
             column :unique_visitors
             column :number_of_site_visits
+            column :total_accounts
           end
         end # panel
 
         panel 'Practices' do
           table_for practices_added_stats do |practice_stat|
-            column :total_practices_created
             column("#{date_headers[:current]}") {|practice_stat| practice_stat[:added_this_month]}
             column("#{date_headers[:one_month_ago]}") {|practice_stat| practice_stat[:added_one_month_ago]}
-            column("#{date_headers[:two_month_ago]}") {|practice_stat| practice_stat[:added_two_months_ago]}
-            column("#{date_headers[:three_month_ago]}") {|practice_stat| practice_stat[:added_three_months_ago]}
+            column :total_practices_created
           end
         end # panel
 
@@ -330,11 +314,9 @@ ActiveAdmin.register_page "Dashboard" do
           end
 
           table_for practices_favorited_stats do |practice_stat|
-            column :total_favorited
             column("#{date_headers[:current]}") {|practice_stat| practice_stat[:favorited_this_month]}
             column("#{date_headers[:one_month_ago]}") {|practice_stat| practice_stat[:favorited_one_month_ago]}
-            column("#{date_headers[:two_month_ago]}") {|practice_stat| practice_stat[:favorited_two_months_ago]}
-            column("#{date_headers[:three_month_ago]}") {|practice_stat| practice_stat[:favorited_three_months_ago]}
+            column :total_favorited
           end
 
           h4 do
@@ -343,11 +325,9 @@ ActiveAdmin.register_page "Dashboard" do
 
           table_for practices do |practice|
             column(:name) {|practice| link_to(practice.name, admin_practice_path(practice))}
-            column("#{date_headers[:total]}") {|practice| practice.favorited_count}
             column("#{date_headers[:current]}") {|practice| practice.current_month_favorited}
             column("#{date_headers[:one_month_ago]}") {|practice| practice.last_month_favorited}
-            column("#{date_headers[:two_month_ago]}") {|practice| practice.two_months_ago_favorited}
-            column("#{date_headers[:three_month_ago]}") {|practice| practice.three_months_ago_favorited}
+            column("#{date_headers[:total]}") {|practice| practice.favorited_count}
           end
 
           h4 do
@@ -355,11 +335,9 @@ ActiveAdmin.register_page "Dashboard" do
           end
 
           table_for practices_comment_stats do |practice_stat|
-            column :total_comments
             column("#{date_headers[:current]}") {|practice_stat| practice_stat[:comments_this_month]}
             column("#{date_headers[:one_month_ago]}") {|practice_stat| practice_stat[:comments_one_month_ago]}
-            column("#{date_headers[:two_month_ago]}") {|practice_stat| practice_stat[:comments_two_months_ago]}
-            column("#{date_headers[:three_month_ago]}") {|practice_stat| practice_stat[:comments_three_months_ago]}
+            column :total_comments
           end
 
           h4 do
@@ -368,11 +346,9 @@ ActiveAdmin.register_page "Dashboard" do
 
           table_for practices do |practice|
             column(:name) {|practice| link_to(practice.name, admin_practice_path(practice))}
-            column("#{date_headers[:total]}") {|practice| practice.commontator_thread.comments.count}
             column("#{date_headers[:current]}") {|practice| practice.commontator_thread.comments.where(created_at: beginning_of_current_month..end_of_current_month).count}
             column("#{date_headers[:one_month_ago]}") {|practice| practice.commontator_thread.comments.where(created_at: beginning_of_last_month..end_of_last_month).count}
-            column("#{date_headers[:two_month_ago]}") {|practice| practice.commontator_thread.comments.where(created_at: beginning_of_two_months_ago..end_of_two_months_ago).count}
-            column("#{date_headers[:three_month_ago]}") {|practice| practice.commontator_thread.comments.where(created_at: beginning_of_three_months_ago..end_of_three_months_ago).count}
+            column("#{date_headers[:total]}") {|practice| practice.commontator_thread.comments.count}
           end
 
           h4 do
@@ -380,11 +356,9 @@ ActiveAdmin.register_page "Dashboard" do
           end
 
           table_for practices_adoption_stats do |practice_stat|
-            column :total_adopted
             column("#{date_headers[:current]}") {|practice_stat| practice_stat[:adopted_this_month]}
             column("#{date_headers[:one_month_ago]}") {|practice_stat| practice_stat[:adopted_one_month_ago]}
-            column("#{date_headers[:two_month_ago]}") {|practice_stat| practice_stat[:adopted_two_months_ago]}
-            column("#{date_headers[:three_month_ago]}") {|practice_stat| practice_stat[:adopted_three_months_ago]}
+            column :total_adopted
           end
 
           h4 do
@@ -393,11 +367,9 @@ ActiveAdmin.register_page "Dashboard" do
 
           table_for practices do |practice|
             column(:name) {|practice| link_to(practice.name, admin_practice_path(practice))}
-            column("#{date_headers[:total]}") {|practice| practice.adoptions_count}
             column("#{date_headers[:current]}") {|practice| practice.current_month_adoptions}
             column("#{date_headers[:one_month_ago]}") {|practice| practice.last_month_adoptions}
-            column("#{date_headers[:two_month_ago]}") {|practice| practice.two_months_ago_adoptions}
-            column("#{date_headers[:three_month_ago]}") {|practice| practice.three_months_ago_adoptions}
+            column("#{date_headers[:total]}") {|practice| practice.adoptions_count}
           end
         end # panel
       end # tab

@@ -63,14 +63,6 @@ class Practice < ApplicationRecord
     favorited_count_by_range((Date.today - 1.months).at_beginning_of_month, (Date.today - 1.months).at_end_of_month)
   end
 
-  def two_months_ago_favorited
-    favorited_count_by_range((Date.today - 2.months).at_beginning_of_month, (Date.today - 2.months).at_end_of_month)
-  end
-
-  def three_months_ago_favorited
-    favorited_count_by_range((Date.today - 3.months).at_beginning_of_month, (Date.today - 3.months).at_end_of_month)
-  end
-
   # adoptions
   def current_month_adoptions
     adoptions_count_by_range(Date.today.beginning_of_month, Date.today.end_of_month)
@@ -78,14 +70,6 @@ class Practice < ApplicationRecord
 
   def last_month_adoptions
     adoptions_count_by_range((Date.today - 1.months).at_beginning_of_month, (Date.today - 1.months).at_end_of_month)
-  end
-
-  def two_months_ago_adoptions
-    adoptions_count_by_range((Date.today - 2.months).at_beginning_of_month, (Date.today - 2.months).at_end_of_month)
-  end
-
-  def three_months_ago_adoptions
-    adoptions_count_by_range((Date.today - 3.months).at_beginning_of_month, (Date.today - 3.months).at_end_of_month)
   end
 
   has_paper_trail
