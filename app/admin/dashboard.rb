@@ -202,13 +202,13 @@ ActiveAdmin.register_page "Dashboard" do
 
           practices_favorited_stats = [{
                                         total_favorited: UserPractice.where(favorited: true).count,
-                                        favorited_this_month: UserPractice.where(created_at: @beginning_of_current_month..@end_of_current_month, favorited: true).count,
-                                        favorited_one_month_ago: UserPractice.where(created_at: @beginning_of_last_month..@end_of_last_month,favorited: true).count,
-                                        favorited_two_months_ago: UserPractice.where(created_at: @beginning_of_two_months_ago..@end_of_two_months_ago, favorited: true).count,
-                                        favorited_three_months_ago: UserPractice.where(created_at: @beginning_of_three_months_ago..@end_of_three_months_ago, favorited: true).count
+                                        favorited_this_month: UserPractice.where(time_favorited: @beginning_of_current_month..@end_of_current_month).count,
+                                        favorited_one_month_ago: UserPractice.where(time_favorited: @beginning_of_last_month..@end_of_last_month).count,
+                                        favorited_two_months_ago: UserPractice.where(time_favorited: @beginning_of_two_months_ago..@end_of_two_months_ago).count,
+                                        favorited_three_months_ago: UserPractice.where(time_favorited: @beginning_of_three_months_ago..@end_of_three_months_ago).count
                                       }]
 
-          table_for practices_favorited_stats do |practice_stat|
+          table_for practices_favorited_stats, id: 'favorited_stats' do |practice_stat|
             column :total_favorited
             column("#{@beginning_of_current_month.strftime('%B %Y')} - current month") {|practice_stat| practice_stat[:favorited_this_month]}
             column("#{@beginning_of_last_month.strftime('%B %Y')} - last month") {|practice_stat| practice_stat[:favorited_one_month_ago]}
@@ -268,16 +268,15 @@ ActiveAdmin.register_page "Dashboard" do
             "Adoption Counts"
           end
 
-          UserPractice.where(created_at: (DateTime.now - 1.month).beginning_of_month..(DateTime.now - 1.month).end_of_month, committed: true).count
           practices_adoption_stats = [{
                                         total_adopted: UserPractice.where(committed: true).count,
-                                        adopted_this_month: UserPractice.where(created_at: @beginning_of_current_month..@end_of_current_month, committed: true).count,
-                                        adopted_one_month_ago: UserPractice.where(created_at: @beginning_of_last_month..@end_of_last_month,committed: true).count,
-                                        adopted_two_months_ago: UserPractice.where(created_at: @beginning_of_two_months_ago..@end_of_two_months_ago, committed: true).count,
-                                        adopted_three_months_ago: UserPractice.where(created_at: @beginning_of_three_months_ago..@end_of_three_months_ago, committed: true).count
+                                        adopted_this_month: UserPractice.where(time_committed: @beginning_of_current_month..@end_of_current_month, committed: true).count,
+                                        adopted_one_month_ago: UserPractice.where(time_committed: @beginning_of_last_month..@end_of_last_month,committed: true).count,
+                                        adopted_two_months_ago: UserPractice.where(time_committed: @beginning_of_two_months_ago..@end_of_two_months_ago, committed: true).count,
+                                        adopted_three_months_ago: UserPractice.where(time_committed: @beginning_of_three_months_ago..@end_of_three_months_ago, committed: true).count
                                       }]
 
-          table_for practices_adoption_stats do |practice_stat|
+          table_for practices_adoption_stats, id: 'adopted_stats' do |practice_stat|
             column :total_adopted
             column("#{@beginning_of_current_month.strftime('%B %Y')} - current month") {|practice_stat| practice_stat[:adopted_this_month]}
             column("#{@beginning_of_last_month.strftime('%B %Y')} - last month") {|practice_stat| practice_stat[:adopted_one_month_ago]}
