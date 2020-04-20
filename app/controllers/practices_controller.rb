@@ -24,10 +24,6 @@ class PracticesController < ApplicationController
     end
   end
 
-  before_action only: [:overview, :origin, :impact, :documentation, :resources, :complexity, :timeline, :risk_and_mitigation, :contact] do
-    @practice.save
-  end
-
   # GET /practices
   # GET /practices.json
   def index
@@ -213,13 +209,12 @@ class PracticesController < ApplicationController
 
     respond_to do |format|
       if updated
-        if params[:next]
-          format.html { redirect_to "/practices/#{@practice.slug}/edit/#{params[:next]}", notice: 'Practice was successfully updated.' }
-          format.json { render :show, status: :ok, location: @practice }
-        else
-          format.html { redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.' }
-          format.json { render json: @practice.errors, status: :unprocessable_entity }
-        end
+        current_endpoint = request.referrer.split('/').pop
+        format.html { redirect_to "/practices/#{@practice.slug}/edit/#{@practice.practice_editor_slugs.key(current_endpoint)}", notice: 'Practice was successfully updated.' }
+        format.json { render :show, status: :ok, location: @practice }
+
+          # format.html { redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.' }
+          # format.json { render json: @practice.errors, status: :unprocessable_entity }
       end
     end
   end
