@@ -288,8 +288,8 @@ ActiveAdmin.register_page "Dashboard" do
 
       tab :metrics do
         # export .xlsx button
-        form action: export_metrics_path(), method: :get, style: 'text-align: right' do |f|
-          f.input :submit, :type => :submit, :value => 'Export as .xlsx', style: 'margin-bottom: 1rem'
+        form action: export_metrics_path, method: :get, style: 'text-align: right' do |f|
+          f.input :submit, type: :submit, value: 'Export as .xlsx', style: 'margin-bottom: 1rem'
         end
 
         panel 'General Traffic' do
