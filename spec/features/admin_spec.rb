@@ -56,17 +56,38 @@ describe 'The admin dashboard', type: :feature do
       expect(page).to have_selector('#users-information', visible: false)
       expect(page).to have_selector('#practice-leaderboards', visible: true)
       expect(page).to have_selector('#practice-search-terms-table', visible: false)
+      expect(page).to have_css("input[value='Export as .xlsx']", visible: false)
 
       click_link('Practice Search Terms')
       expect(page).to have_selector('#users-information', visible: false)
       expect(page).to have_selector('#practice-leaderboards', visible: false)
       expect(page).to have_selector('#practice-search-terms-table', visible: true)
+      expect(page).to have_css("input[value='Export as .xlsx']", visible: false)
 
       click_link('Users Information')
       expect(page).to have_selector('#users-information', visible: true)
       expect(page).to have_selector('#practice-leaderboards', visible: false)
       expect(page).to have_selector('#practice-search-terms-table', visible: false)
+      expect(page).to have_css("input[value='Export as .xlsx']", visible: false)
+
+      click_link('Metrics')
+      expect(page).to have_selector('#users-information', visible: false)
+      expect(page).to have_selector('#practice-leaderboards', visible: false)
+      expect(page).to have_selector('#practice-search-terms-table', visible: false)
+      expect(page).to have_css("input[value='Export as .xlsx']", visible: true)
     end
+  end
+
+  it 'should show allow admin to download metrics as .xlsx file' do
+    login_as(@admin, scope: :user, run_callbacks: false)
+    visit '/admin'
+
+    click_link('Metrics')
+    export_button = find(:css, "input[type='submit']")
+    export_button.click
+
+    # should not navigate away from metrics page
+    expect(page).to have_current_path(admin_root_path)
   end
 
   it 'should have several tabs that allow navigation' do
