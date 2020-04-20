@@ -42,8 +42,8 @@ ActiveAdmin.register_page "Dashboard" do
       }
 
       @practices_favorited_stats = {
-        favorited_this_month: UserPractice.where(created_at: @beginning_of_current_month..@end_of_current_month, favorited: true).count,
-        favorited_one_month_ago: UserPractice.where(created_at: @beginning_of_last_month..@end_of_last_month,favorited: true).count,
+        favorited_this_month: UserPractice.where(time_favorited: @beginning_of_current_month..@end_of_current_month).count,
+        favorited_one_month_ago: UserPractice.where(time_favorited: @beginning_of_last_month..@end_of_last_month).count,
         total_favorited: UserPractice.where(favorited: true).count
       }
 
@@ -56,8 +56,8 @@ ActiveAdmin.register_page "Dashboard" do
       }
 
       @practices_adoption_stats = {
-        adopted_this_month: UserPractice.where(created_at: @beginning_of_current_month..@end_of_current_month, committed: true).count,
-        adopted_one_month_ago: UserPractice.where(created_at: @beginning_of_last_month..@end_of_last_month,committed: true).count,
+        adopted_this_month: UserPractice.where(time_committed: @beginning_of_current_month..@end_of_current_month, committed: true).count,
+        adopted_one_month_ago: UserPractice.where(time_committed: @beginning_of_last_month..@end_of_last_month,committed: true).count,
         total_adopted: UserPractice.where(committed: true).count
       }
     end
@@ -318,7 +318,7 @@ ActiveAdmin.register_page "Dashboard" do
             column("#{date_headers[:one_month_ago]}") {|practice_stat| practice_stat[:favorited_one_month_ago]}
             column :total_favorited
           end
-
+          byebug
           h4 do
             "Favorited Counts by Practice"
           end
