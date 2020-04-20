@@ -5,6 +5,7 @@ header {
   .usa-navbar {
     background-color: $dm-color-darker-blue;
     color: $dm-color-white;
+    overflow: unset !important;
   }
 }
 .text-white-important {
@@ -37,26 +38,83 @@ header {
 }
 
 .logo-container {
-  width: 30% !important;
+  width: 35% !important;
 }
 
 .nav-container {
-  width: 70% !important;
+  width: 65% !important;
 }
 
 .usa-nav__primary-item {
   align-self: center;
-
-    * {
-        text-decoration: none !important;
-
-        &:hover {
-          text-decoration: none !important;
-        }
-    }
 }
 
-.username-link, .partners-link {
-  padding-right: 0 !important;
-  padding-left: 0 !important;
+.home-link {
+  display: inline-block !important;
+}
+
+.bulletin-menu-button[aria-expanded="true"] {
+  background-image: asset-url('uswds/angle-arrow-down.svg') !important;
+  background-color: $dm-color-lightest-gray !important;
+  color: $dm-color-black !important;
+  height: 5rem !important;
+
+  &::after {
+    content: none !important;
+  }
+
+  &:hover {
+    text-decoration: none !important;
+  }
+}
+
+.bulletin-menu-button[aria-expanded="false"] {
+  background-image: asset-url('uswds/angle-arrow-down-white.svg') !important;
+}
+
+.bulletin-menu-button[aria-expanded="false"], .bulletin-menu-button[aria-expanded="true"] {
+  background-size: 0.6em !important;
+}
+
+.bulletin-menu-button {
+  &:hover {
+    text-decoration: underline !important;
+  }
+
+  &:after {
+    text-decoration: underline !important;
+  }
+
+  &:hover::after {
+    content: none !important;
+  }
+}
+
+.bulletin-submenu {
+  background-color: $dm-color-lightest-gray !important;
+}
+
+.bulletin-link {
+  color: $dm-color-black !important;
+  font-weight: normal !important;
+
+  &:hover {
+    text-decoration: underline !important;
+  }
+
+  &:visited {
+    color: $dm-default-visited-link-purple !important;
+  }
+}
+
+.partners-link {
+  &:hover {
+    text-decoration: underline !important;
+  }
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .usa-navbar {
+    overflow: visible !important;
+  }
 }

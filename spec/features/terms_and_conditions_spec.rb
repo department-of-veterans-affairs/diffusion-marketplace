@@ -17,7 +17,7 @@ describe 'Terms and conditions', type: :feature do
         visit '/partners'
         expect(page).to be_accessible.according_to :wcag2a, :section508
         expect(page).to have_content('Partners')
-        expect(page).to have_content('Partners Best practices are constantly being developed, vetted, and promoted by offices within the VA.')
+        expect(page).to have_content('Best practices are always being developed, vetted, and promoted by offices within the VA.')
         expect(page).not_to have_content('Terms and conditions')
     end
 
@@ -31,7 +31,7 @@ describe 'Terms and conditions', type: :feature do
         expect(page).to be_accessible.according_to :wcag2a, :section508
         expect(page).not_to have_content('Terms and conditions')
         expect(page).to have_content('Partners')
-        expect(page).to have_content('Partners Best practices are constantly being developed, vetted, and promoted by offices within the VA.')
+        expect(page).to have_content('Best practices are always being developed, vetted, and promoted by offices within the VA.')
     end
 
     it 'Should not allow the user to traverse the app without accepting the terms and conditions' do

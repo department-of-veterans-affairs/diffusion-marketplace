@@ -783,7 +783,7 @@
   background-color: transparent;
   border-left: 4px solid $dm-color-primary-blue;
   color: black;
-  font-weight: bold;
+  font-weight: bold !important;
 }
 
 .side-nav-inactive {

@@ -1,0 +1,17 @@
+@import '../variables/colors';
+
+.practice-partner-link {
+  color: $dm-color-primary-blue !important;
+
+  &:hover {
+    color: $dm-color-primary-dark-blue !important;
+  }
+
+  &:visited {
+    color: $dm-default-visited-link-purple !important;
+  }
+}
+
+.partner-page-min-height {
+  min-height: 700px;
+}

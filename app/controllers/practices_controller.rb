@@ -24,6 +24,10 @@ class PracticesController < ApplicationController
     end
   end
 
+  before_action only: [:overview, :origin, :impact, :documentation, :resources, :complexity, :timeline, :risk_and_mitigation, :contact] do
+    @practice.save
+  end
+
   # GET /practices
   # GET /practices.json
   def index
