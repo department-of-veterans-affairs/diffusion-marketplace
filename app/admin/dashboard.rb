@@ -313,12 +313,11 @@ ActiveAdmin.register_page "Dashboard" do
             "Favorited Counts"
           end
 
-          table_for practices_favorited_stats do
+          table_for practices_favorited_stats, id: 'favorited_stats' do
             column("#{date_headers[:current]}") {|ps| ps[:favorited_this_month]}
             column("#{date_headers[:one_month_ago]}") {|ps| ps[:favorited_one_month_ago]}
             column :total_favorited
           end
-          byebug
           h4 do
             "Favorited Counts by Practice"
           end
@@ -355,7 +354,7 @@ ActiveAdmin.register_page "Dashboard" do
             "Adoption Counts"
           end
 
-          table_for practices_adoption_stats do
+          table_for practices_adoption_stats, id: 'adopted_stats' do
             column("#{date_headers[:current]}") {|ps| ps[:adopted_this_month]}
             column("#{date_headers[:one_month_ago]}") {|ps| ps[:adopted_one_month_ago]}
             column :total_adopted
