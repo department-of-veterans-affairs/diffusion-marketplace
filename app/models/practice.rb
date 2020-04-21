@@ -104,19 +104,19 @@ class Practice < ApplicationRecord
     object_presigned_url(origin_picture, style)
   end
 
-  def practice_editor_slugs
-    {
-        'adoptions': 'overview',
-        'impact': 'origin',
-        'documentation': 'impact',
-        'resources': 'documentation',
-        'complexity': 'resources',
-        'timeline': 'complexity',
-        'risk_and_mitigation': 'timeline',
-        'contact': 'risk_and_mitigation',
-        'checklist': 'contact'
-    }
-  end
+  PRACTICE_EDITOR_SLUGS =
+      {
+          'adoptions': 'overview',
+          'impact': 'origin',
+          'documentation': 'impact',
+          'resources': 'documentation',
+          'complexity': 'resources',
+          'timeline': 'complexity',
+          'risk_and_mitigation': 'timeline',
+          'contact': 'risk_and_mitigation',
+          'checklist': 'contact'
+      }
+
 
   validates_attachment_content_type :main_display_image, content_type: /\Aimage\/.*\z/
   validates_attachment_content_type :origin_picture, content_type: /\Aimage\/.*\z/

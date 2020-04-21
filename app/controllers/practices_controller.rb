@@ -211,9 +211,11 @@ class PracticesController < ApplicationController
       if updated
         if params[:next]
           current_endpoint = request.referrer.split('/').pop
-          format.html { redirect_to "/practices/#{@practice.slug}/edit/#{@practice.practice_editor_slugs.key(current_endpoint)}", notice: 'Practice was successfully updated.' }
+          path = eval("practice_#{Practice::PRACTICE_EDITOR_SLUGS.key(current_endpoint)}_path(@practice)")
+          format.html { redirect_to path, notice: 'Practice was successfully updated.' }
           format.json { render :show, status: :ok, location: @practice }
         else
+
           format.html { redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.' }
           format.json { render json: @practice.errors, status: :unprocessable_entity }
         end
