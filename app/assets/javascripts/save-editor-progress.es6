@@ -13,22 +13,18 @@
     }
 
     function saveEditorProgressOnContinue() {
-        let currentEndpoint = window.location.href.split('/').pop();
-        if (currentEndpoint != 'adoptions') {
-            $('.continue-and-save').on('click', (event) => {
-                event.preventDefault();
-                let $form = $('#form');
-                let nextEndpoint = $(event.target).data('next');
+        $('.continue-and-save').on('click', (event) => {
+            event.preventDefault();
+            let $form = $('#form');
 
-                $form.append(`<input type='hidden' name='next' value=${nextEndpoint}>`);
+            $form.append(`<input type='hidden' name='next' value=true>`);
 
-                if ($form[0].checkValidity()) {
-                    $form.submit();
-                } else {
-                    $form[0].reportValidity();
-                }
-            });
-        }
+            if ($form[0].checkValidity()) {
+                $form.submit();
+            } else {
+                $form[0].reportValidity();
+            }
+        });
     }
 
     function initSaveProgressFunctions() {
