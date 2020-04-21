@@ -22,7 +22,6 @@ describe 'Admin Dashboard Metrics Tab', type: :feature do
       td_total = find('td[class*="total_favorited"]')
       expect(td_total.text).to eq('1')
     end
-    debugger
     user_practice_favorited.favorited = false
     user_practice_favorited.save
     visit '/admin'
@@ -33,7 +32,6 @@ describe 'Admin Dashboard Metrics Tab', type: :feature do
       td_total = find('td[class*="total_favorited"]')
       expect(td_total.text).to eq('0')
     end
-    debugger
   end
 
   it 'favorite should display in current month but not in total if unfavorited' do
