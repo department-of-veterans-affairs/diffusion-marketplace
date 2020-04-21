@@ -61,7 +61,6 @@ describe 'Admin Dashboard Metrics Tab', type: :feature do
     UserPractice.create(time_favorited: DateTime.now - 1.months, user: @admin, practice: @practice, time_committed: DateTime.now - 1.months, committed: true)
     visit '/admin'
     click_link 'Metrics'
-    debugger
     within(:css, '#favorited_stats') do
       td_element = find('td[class*="-_last_month"')
       expect(td_element.text).to eq('1')
