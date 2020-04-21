@@ -24,6 +24,12 @@ describe 'The admin dashboard', type: :feature do
     @practice_partner = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative', icon: 'fas fa-heart', color: '#E4A002')
   end
 
+  after(:all) do
+    # remove .xlsx file download
+    FileUtils.rm_rf("#{Rails.root}/tmp/downloads")
+  end
+
+
   it 'if not logged in, should be redirected to sign_in page' do
     visit '/admin'
 
