@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   mount Commontator::Engine => '/commontator' #, as: :dm_commontator
 
   get '/terms_and_conditions' => 'users#terms_and_conditions'
+  get '/dashboard/export', action: 'export_metrics', controller: 'admin/dashboard', as: 'export_metrics'
   post '/accept_terms', action: 'accept_terms', controller: 'users', as: 'accept_terms'
 
   resources :practices, except: :index do
