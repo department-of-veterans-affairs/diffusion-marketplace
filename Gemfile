@@ -125,6 +125,7 @@ gem 'activeadmin'
 gem 'activeadmin_addons'
 gem 'active_skin'
 gem 'active_admin_theme'
+gem 'caxlsx'
 
 gem "chartkick"
 gem 'groupdate'
