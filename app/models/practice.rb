@@ -221,7 +221,7 @@ class Practice < ApplicationRecord
   end
 
   def favorited_count_by_range(start_date, end_date)
-    user_practices.where({created_at: start_date..end_date, favorited: true}).count
+    user_practices.where({time_favorited: start_date..end_date}).count
   end
 
   def adoptions_count
@@ -229,6 +229,6 @@ class Practice < ApplicationRecord
   end
 
   def adoptions_count_by_range(start_date, end_date)
-    user_practices.where({created_at: start_date..end_date, committed: true}).count
+    user_practices.where({time_committed: start_date..end_date}).count
   end
 end
