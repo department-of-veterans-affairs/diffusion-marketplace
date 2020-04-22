@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_16_134102) do
+ActiveRecord::Schema.define(version: 2020_04_17_204838) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -758,6 +758,8 @@ ActiveRecord::Schema.define(version: 2020_04_16_134102) do
     t.boolean "favorited", default: false
     t.boolean "verified_implementer", default: false
     t.boolean "team_member", default: false
+    t.datetime "time_favorited"
+    t.datetime "time_committed"
     t.index ["practice_id"], name: "index_user_practices_on_practice_id"
     t.index ["user_id"], name: "index_user_practices_on_user_id"
   end
