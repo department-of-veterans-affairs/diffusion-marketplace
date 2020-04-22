@@ -245,6 +245,7 @@ class PracticesController < ApplicationController
     else
       user_practice = UserPractice.find_or_initialize_by(user: current_user, practice: @practice)
       user_practice.committed = true
+      user_practice.time_committed = DateTime.now
       PracticeMailer.commitment_response_email(user: current_user, practice: @practice).deliver_now
       PracticeMailer.support_team_notification_of_commitment(user: current_user, practice: @practice).deliver_now
     end
@@ -269,7 +270,7 @@ class PracticesController < ApplicationController
     if user_practice.present?
       user_practice.toggle(:favorited)
     else
-      user_practice = UserPractice.new(user: current_user, practice: @practice, favorited: true)
+      user_practice = UserPractice.new(user: current_user, practice: @practice, favorited: true, time_favorited: DateTime.now)
     end
 
     @favorited = user_practice.favorited
