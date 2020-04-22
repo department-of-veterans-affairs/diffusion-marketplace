@@ -24,10 +24,6 @@ class PracticesController < ApplicationController
     end
   end
 
-  before_action only: [:overview, :origin, :impact, :documentation, :resources, :complexity, :timeline, :risk_and_mitigation, :contact] do
-    @practice.save
-  end
-
   # GET /practices
   # GET /practices.json
   def index
@@ -129,10 +125,30 @@ class PracticesController < ApplicationController
     updated = @practice.update(strong_params)
 
     if updated
-      partner_keys = []
-      partner_keys = params[:practice][:practice_partner].keys if params[:practice][:practice_partner].present?
-      @practice.practice_partner_practices.each do |partner|
-        partner.destroy unless partner_keys.include? partner.practice_partner_id.to_s
+      if params[:practice][:practice_partner].present?
+        partner_keys = params[:practice][:practice_partner].keys
+
+        @practice.practice_partner_practices.each do |partner|
+          partner.destroy unless partner_keys.include? partner.practice_partner_id.to_s
+        end
+
+        partner_keys.each do |key|
+          next if @practice.practice_partners.ids.include? key.to_i
+
+          @practice.practice_partner_practices.create practice_partner_id: key.to_i
+        end
+      end
+
+      if params[:practice][:department].present?
+        dept_keys = params[:practice][:department].keys
+        @practice.department_practices.each do |department|
+          department.destroy unless dept_keys.include? department.department_id.to_s
+        end
+        dept_keys.each do |key|
+          next if @practice.departments.ids.include? key.to_i
+
+          @practice.department_practices.create department_id: key.to_i
+        end
       end
 
       # Remove impact photo
@@ -189,32 +205,19 @@ class PracticesController < ApplicationController
       if is_cropping?(params[:practice])
         @practice.main_display_image.reprocess!
       end
-
-      partner_keys.each do |key|
-        next if @practice.practice_partners.ids.include? key.to_i
-
-        @practice.practice_partner_practices.create practice_partner_id: key.to_i
-      end
-
-      dept_keys = []
-      dept_keys = params[:practice][:department].keys if params[:practice][:department].present?
-      @practice.department_practices.each do |department|
-        department.destroy unless dept_keys.include? department.department_id.to_s
-      end
-      dept_keys.each do |key|
-        next if @practice.departments.ids.include? key.to_i
-
-        @practice.department_practices.create department_id: key.to_i
-      end
     end
 
     respond_to do |format|
       if updated
-        format.html { redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.' }
-        format.json { render :show, status: :ok, location: @practice }
-      else
-        format.html { redirect_back fallback_location: root_path, alert: 'Practice could not be updated.' }
-        format.json { render json: @practice.errors, status: :unprocessable_entity }
+        if params[:next]
+          current_endpoint = request.referrer.split('/').pop
+          path = eval("practice_#{Practice::PRACTICE_EDITOR_SLUGS.key(current_endpoint)}_path(@practice)")
+          format.html { redirect_to path, notice: 'Practice was successfully updated.' }
+          format.json { render :show, status: :ok, location: @practice }
+        else
+          format.html { redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.' }
+          format.json { render json: @practice.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
