@@ -215,7 +215,6 @@ class PracticesController < ApplicationController
           format.html { redirect_to path, notice: 'Practice was successfully updated.' }
           format.json { render :show, status: :ok, location: @practice }
         else
-
           format.html { redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.' }
           format.json { render json: @practice.errors, status: :unprocessable_entity }
         end

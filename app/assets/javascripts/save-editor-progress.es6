@@ -1,36 +1,32 @@
-(($) => {
-    const $document = $(document);
-
-    function submitPracticeEditorSaveForm() {
-        $('#practice-editor-save-button').on('click', () => {
-            let $form = $('#form');
-            if ($form[0].checkValidity()) {
-                    $form.submit();
-            } else {
-                $form[0].reportValidity();
-            }
-        });
+function validateForm(form) {
+    if (form[0].checkValidity()) {
+        form.submit();
+    } else {
+        form[0].reportValidity();
     }
+}
 
-    function saveEditorProgressOnContinue() {
-        $('.continue-and-save').on('click', (event) => {
-            event.preventDefault();
-            let $form = $('#form');
+function submitPracticeEditorSaveForm() {
+    $(document).on('click', '#practice-editor-save-button', () => {
+        let form = $('#form');
+        validateForm(form);
+    });
+}
 
-            $form.append(`<input type='hidden' name='next' value=true>`);
+function saveEditorProgressOnContinue() {
+    $(document).on('click', '.continue-and-save', (event) => {
+        event.preventDefault();
+        let form = $('#form');
 
-            if ($form[0].checkValidity()) {
-                $form.submit();
-            } else {
-                $form[0].reportValidity();
-            }
-        });
-    }
+        form.append(`<input type='hidden' name='next' value=true>`);
 
-    function initSaveProgressFunctions() {
-        submitPracticeEditorSaveForm();
-        saveEditorProgressOnContinue();
-    }
+        validateForm(form);
+    });
+}
 
-    $document.on('turbolinks:load', initSaveProgressFunctions);
-})(window.jQuery);
+function initSaveProgressFunctions() {
+    submitPracticeEditorSaveForm();
+    saveEditorProgressOnContinue();
+}
+
+$(initSaveProgressFunctions());
