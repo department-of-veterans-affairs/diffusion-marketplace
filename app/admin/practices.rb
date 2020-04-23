@@ -76,6 +76,7 @@ ActiveAdmin.register Practice do
       user.confirm unless ENV['USE_NTLM'] == 'true'
       user.save
       practice.user = user
+      practice.commontator_thread.subscribe(user)
     end
 
 
