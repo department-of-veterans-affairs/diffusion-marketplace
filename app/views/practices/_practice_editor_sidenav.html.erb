@@ -62,12 +62,12 @@
         </ul>
         <% if params[:action] != 'adoptions' %>
           <div class="text-center">
-              <%= button_tag 'Save your progress', class: 'usa-button usa-button--outline width-full padding-y-2 margin-top-1', id: 'practice-editor-save-button' %>
+            <%= button_tag 'Save your progress', class: 'usa-button usa-button--outline width-full padding-y-2 margin-top-1', id: 'practice-editor-save-button' %>
           </div>
         <% end %>
-        <% unless @practice.published %>
+        <% if !@practice.published && params[:action] != 'adoptions' %>
           <div class="text-center">
-            <%= link_to 'Publish practice', practice_publication_validation_path(@practice), class: 'usa-button width-full padding-y-2 margin-top-1', id: 'publish-practice-button', method: :post, remote: true %>
+            <%= button_tag 'Publish practice', class: 'usa-button width-full padding-y-2 margin-top-1', id: 'publish-practice-button', data: { form_action: "#{practice_publication_validation_path(@practice)}.js"}%>
           </div>
         <% end %>
     </div>

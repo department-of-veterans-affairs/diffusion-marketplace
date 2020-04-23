@@ -105,9 +105,22 @@ describe 'Practice editor', type: :feature, js: true do
 
             find('.origin-trash').click
             @save_button.click
-            
+
             expect(page).to have_field('Name:', with: nil)
             expect(page).to have_field('Role:', with: nil)
+        end
+
+        it 'should allow the user to delete practice creator avatar' do
+            fill_in_origin_story_field
+            fill_in_creator_fields
+            @save_button.click
+            expect(page).to have_css("img[src*='charmander.png']")
+
+
+            find('.cropper-delete-image-label').click
+            @save_button.click
+
+            expect(page).not_to have_css("img[src*='charmander.png']")
         end
 
         it 'should allow the user to crop multiple practice creators -- new and existing' do

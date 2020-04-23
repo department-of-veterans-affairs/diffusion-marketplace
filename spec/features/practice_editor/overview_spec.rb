@@ -53,6 +53,7 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_field('practice_summary', with: 'This is the most super practice ever made')
             expect(page).to have_field('Month', with: '10')
             expect(page).to have_field('Year', with: '1970')
+            expect(page).to have_checked_field('practice_partner_1')
             expect(page).to have_css("img[src*='charmander.png']")
             expect(page).to have_content('Remove photo')
             expect(page).to have_content('Upload new photo')
@@ -61,6 +62,11 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_no_content('Upload photo')
             expect(page).to have_no_content('Cancel edits')
             expect(page).to have_no_content('Save edits')
+
+            # delete practice thumbnail
+            find('.cropper-delete-image-label').click
+            @save_button.click
+            expect(page).not_to have_css("img[src*='charmander.png']")
         end
 
         it 'should allow the user to edit the practice thumbnail' do
