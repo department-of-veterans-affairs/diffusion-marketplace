@@ -18,19 +18,18 @@ describe 'Shark Tank landing page', type: :feature do
     click_on('Shark Tank Competition')
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content('Submit your practice application by May 1, 2020!')
-    expect(page).to have_content('Eligibility requirements')
-    expect(page).to have_content('FAQs')
+    expect(page).to have_content('2020 VHA Shark Tank Priorities')
   end
 
   def visit_shark_tank_page
     visit '/competitions/shark-tank'
   end
 
-  it 'should allow the user to interact with the accordion menus' do
+  it 'should allow the user to interact with the accordion menu' do
     visit_shark_tank_page
     expect(page).to_not have_content('Access:')
 
-    click_on('Eligibility requirements')
+    click_on('2020 VHA Shark Tank Priorities')
     expect(page).to have_content('Access:')
   end
 

@@ -1,19 +1,32 @@
-(($) => {
-    const $document = $(document);
-
-    function submitPracticeEditorSaveForm() {
-        $('#practice-editor-save-button').on('click', () => {
-            if ($('#form')[0].checkValidity()) {
-                    $('#form').submit();
-            } else {
-                $('#form')[0].reportValidity();
-            }
-        });
+function validateForm(form) {
+    if (form[0].checkValidity()) {
+        form.submit();
+    } else {
+        form[0].reportValidity();
     }
+}
 
-    function initSaveProgressFunctions() {
-        submitPracticeEditorSaveForm();
-    }
+function submitPracticeEditorSaveForm() {
+    $(document).on('click', '#practice-editor-save-button', () => {
+        let form = $('#form');
+        validateForm(form);
+    });
+}
 
-    $document.on('turbolinks:load', initSaveProgressFunctions);
-})(window.jQuery);
+function saveEditorProgressOnContinue() {
+    $(document).on('click', '.continue-and-save', (event) => {
+        event.preventDefault();
+        let form = $('#form');
+
+        form.append(`<input type='hidden' name='next' value=true>`);
+
+        validateForm(form);
+    });
+}
+
+function initSaveProgressFunctions() {
+    submitPracticeEditorSaveForm();
+    saveEditorProgressOnContinue();
+}
+
+$(initSaveProgressFunctions());

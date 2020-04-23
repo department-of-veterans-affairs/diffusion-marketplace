@@ -23,8 +23,8 @@ describe 'Practice editor', type: :feature, js: true do
 
     it 'should be there' do
       expect(page).to have_content('Checklist')
-      expect(page).to have_link(class: 'editor-back-to-link', href: practice_timeline_path(@practice))
-      expect(page).to have_link(class: 'editor-continue-link', href: practice_contact_path(@practice))
+      expect(page).to have_link(href: practice_timeline_path(@practice))
+      expect(page).to have_link(href: practice_contact_path(@practice))
     end
 
     # it 'should require the user to fill out the fields that are marked as required' do
