@@ -1,0 +1,42 @@
+<div class="grid-container position-relative">
+  <div class="grid-row grid-gap">
+    <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+
+    <div id="instructions" class="desktop:grid-col-9 grid-col-12 p0">
+      <section class="margin-bottom-1">
+        <%= render "shared/messages" %>
+        <h1 class="font-sans-2xl margin-bottom-205 line-height-sans-205">Personally Identifiable Information and Protected Health Information</h1>
+      </section>
+      <br/>
+      <section class="margin-bottom-1">
+        <h2 id="pii_top" class="margin-0 text-bold">What is Personally Identifiable Information (PII)?</h2>
+        <div class="padding-y-1">
+          PII includes the following:
+          <ul class="line-height-sans-6 font-sans-md instructions-list">
+            <li>First and last name</li>
+            <li>Email address</li>
+            <li>Phone number</li>
+            <li>Photographs</li>
+            <li>Social security number</li>
+            <li>Maiden name</li>
+            <li>Date of birth</li>
+            <li>Combination of home address and name or any other identifiable information to someone's name</li>
+          </ul>
+        </div>
+      </section>
+      <section class="margin-bottom-1">
+        <h2 class="margin-0 text-bold">What is Protective Health Information (PHI)</h2>
+        <div class="padding-y-1">
+          PHI includes the following:
+          <ul class="line-height-sans-6 font-sans-md instructions-list">
+            <li>Medical information</li>
+            <li>Diagnosis</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+<div class="grid-container margin-bottom-105">
+  <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
+</div>
