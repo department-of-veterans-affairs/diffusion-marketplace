@@ -225,7 +225,7 @@ p {
   width: 0.5rem;
 }
 
-a {
+.link-title {
   color: black;
   text-decoration: none;
 
@@ -235,7 +235,7 @@ a {
 
   &:hover {
     text-decoration: underline;
-    color: #0050D8;
+    color: $dm-color-primary-vivid;
 
     > * {
       text-decoration: underline;
@@ -246,8 +246,15 @@ a {
       opacity: .9;
     }
 
+    &:visited {
+      color: $dm-color-primary-vivid;
+    }
+
   }
 
+
+}
+a {
   &.beta-banner-link {
     color: black;
     text-decoration: underline;
@@ -255,9 +262,11 @@ a {
     &:hover {
       text-decoration: none;
     }
+    &:visited {
+      color: black;
+    }
   }
 }
-
 @media all and (min-width: 40em) {
   /* line 68, uswds-rails-029b4d4c92fc/app/assets/stylesheets/uswds/core/mixins/_utility-builder.scss */
   .tablet\:display-block {
@@ -325,3 +334,5 @@ a {
     padding: 5px !important;
   }
 }
+
+

@@ -26,6 +26,15 @@
         <h1 class="font-sans-2xl line-height-sans-205">Overview</h1>
         <h2 class="text-normal">Introduce your practice and provide a clear overview to people who may be unfamiliar
           with it.</h2>
+
+        <div class="usa-alert usa-alert--warning usa-alert--slim" role="alert">
+          <div class="usa-alert__body">
+            <p class="usa-alert__text">Do not enter any veteran PII or PHI.  <%= link_to "Learn more", pii_phi_information_path %> about what constitutes PII and PHI.</p>
+          </div>
+        </div>
+
+
+
         <%= nested_form_for(@practice, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
           <fieldset class="usa-fieldset">
             <legend class="usa-sr-only">Practice Information</legend>
