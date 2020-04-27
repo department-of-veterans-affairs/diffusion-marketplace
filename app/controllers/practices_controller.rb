@@ -123,32 +123,42 @@ class PracticesController < ApplicationController
   def update
     strong_params = practice_params
     updated = @practice.update(strong_params)
+    current_endpoint = request.referrer.split('/').pop
 
     if updated
-      if params[:practice][:practice_partner].present?
-        partner_keys = params[:practice][:practice_partner].keys
+      practice_partner_params = params[:practice][:practice_partner]
+      practice_partners = @practice.practice_partner_practices
+      if practice_partner_params.present?
+        partner_keys = practice_partner_params.keys
 
-        @practice.practice_partner_practices.each do |partner|
-          partner.destroy unless partner_keys.include? partner.practice_partner_id.to_s
+        practice_partners.each do |partner|
+          partner.destroy unless partner_keys.include?(partner.practice_partner_id.to_s)
         end
 
         partner_keys.each do |key|
           next if @practice.practice_partners.ids.include? key.to_i
 
-          @practice.practice_partner_practices.create practice_partner_id: key.to_i
+          practice_partners.create practice_partner_id: key.to_i
         end
+      elsif practice_partner_params.blank? && current_endpoint == 'overview'
+        practice_partners.destroy_all
       end
-
-      if params[:practice][:department].present?
-        dept_keys = params[:practice][:department].keys
-        @practice.department_practices.each do |department|
+      
+      department_params = params[:practice][:department]
+      practice_departments = @practice.department_practices
+      if department_params.present?
+        dept_keys = department_params.keys
+        practice_departments.each do |department|
           department.destroy unless dept_keys.include? department.department_id.to_s
         end
+
         dept_keys.each do |key|
           next if @practice.departments.ids.include? key.to_i
 
           @practice.department_practices.create department_id: key.to_i
         end
+      elsif department_params.blank? && current_endpoint == 'complexity'
+        practice_departments.destroy_all
       end
 
       # Remove impact photo
@@ -210,7 +220,6 @@ class PracticesController < ApplicationController
     respond_to do |format|
       if updated
         if params[:next]
-          current_endpoint = request.referrer.split('/').pop
           path = eval("practice_#{Practice::PRACTICE_EDITOR_SLUGS.key(current_endpoint)}_path(@practice)")
           format.html { redirect_to path, notice: 'Practice was successfully updated.' }
           format.json { render :show, status: :ok, location: @practice }
