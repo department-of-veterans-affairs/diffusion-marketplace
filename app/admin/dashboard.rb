@@ -20,14 +20,14 @@ ActiveAdmin.register_page "Dashboard" do
       @practices_views = Practice.all.sort_by(&:current_month_views).reverse!
 
       @date_headers = {
-        total: 'Total Lifetime',
+        total: 'Current Total',
         current: "#{@beginning_of_current_month.strftime('%B %Y')} - current month",
         one_month_ago: "#{@beginning_of_last_month.strftime('%B %Y')} - last month",
         two_month_ago: "#{@beginning_of_two_months_ago.strftime('%B %Y')} - 2 months ago",
         three_month_ago: "#{@beginning_of_three_months_ago.strftime('%B %Y')} - 3 months ago"
       }
 
-      @practices_headers = ['Practice Name', "#{@date_headers[:current]}", "#{@date_headers[:one_month_ago]}", "#{@date_headers[:total]}"]
+      @practices_headers = ['Practice Name', "#{@date_headers[:current]}", "Last Month", "#{@date_headers[:total]}"]
 
       @general_traffic_stats = {
         unique_visitors: site_visit_stats.keys.length,
@@ -303,7 +303,7 @@ ActiveAdmin.register_page "Dashboard" do
         panel 'Practices' do
           table_for practices_added_stats do
             column("#{date_headers[:current]}") {|ps| ps[:added_this_month]}
-            column("#{date_headers[:one_month_ago]}") {|ps| ps[:added_one_month_ago]}
+            column("Last Month") {|ps| ps[:added_one_month_ago]}
             column :total_practices_created
           end
         end # panel
@@ -315,7 +315,7 @@ ActiveAdmin.register_page "Dashboard" do
 
           table_for practices_favorited_stats, id: 'favorited_stats' do
             column("#{date_headers[:current]}") {|ps| ps[:favorited_this_month]}
-            column("#{date_headers[:one_month_ago]}") {|ps| ps[:favorited_one_month_ago]}
+            column("Last Month") {|ps| ps[:favorited_one_month_ago]}
             column :total_favorited
           end
           h4 do
@@ -325,7 +325,7 @@ ActiveAdmin.register_page "Dashboard" do
           table_for practices do
             column(:name) {|pr| link_to(pr.name, admin_practice_path(pr))}
             column("#{date_headers[:current]}") {|pr| pr.current_month_favorited}
-            column("#{date_headers[:one_month_ago]}") {|pr| pr.last_month_favorited}
+            column("Last Month") {|pr| pr.last_month_favorited}
             column("#{date_headers[:total]}") {|pr| pr.favorited_count}
           end
 
@@ -335,7 +335,7 @@ ActiveAdmin.register_page "Dashboard" do
 
           table_for practices_comment_stats do
             column("#{date_headers[:current]}") {|ps| ps[:comments_this_month]}
-            column("#{date_headers[:one_month_ago]}") {|ps| ps[:comments_one_month_ago]}
+            column("Last Month") {|ps| ps[:comments_one_month_ago]}
             column :total_comments
           end
 
@@ -346,7 +346,7 @@ ActiveAdmin.register_page "Dashboard" do
           table_for practices do
             column(:name) {|pr| link_to(pr.name, admin_practice_path(pr))}
             column("#{date_headers[:current]}") {|pr| pr.commontator_thread.comments.where(created_at: beginning_of_current_month..end_of_current_month).count}
-            column("#{date_headers[:one_month_ago]}") {|pr| pr.commontator_thread.comments.where(created_at: beginning_of_last_month..end_of_last_month).count}
+            column("Last Month") {|pr| pr.commontator_thread.comments.where(created_at: beginning_of_last_month..end_of_last_month).count}
             column("#{date_headers[:total]}") {|pr| pr.commontator_thread.comments.count}
           end
 
@@ -356,7 +356,7 @@ ActiveAdmin.register_page "Dashboard" do
 
           table_for practices_adoption_stats, id: 'adopted_stats' do
             column("#{date_headers[:current]}") {|ps| ps[:adopted_this_month]}
-            column("#{date_headers[:one_month_ago]}") {|ps| ps[:adopted_one_month_ago]}
+            column("Last Month") {|ps| ps[:adopted_one_month_ago]}
             column :total_adopted
           end
 
@@ -367,7 +367,7 @@ ActiveAdmin.register_page "Dashboard" do
           table_for practices do
             column(:name) {|pr| link_to(pr.name, admin_practice_path(pr))}
             column("#{date_headers[:current]}") {|pr| pr.current_month_adoptions}
-            column("#{date_headers[:one_month_ago]}") {|pr| pr.last_month_adoptions}
+            column("Last Month") {|pr| pr.last_month_adoptions}
             column("#{date_headers[:total]}") {|pr| pr.adoptions_count}
           end
         end # panel

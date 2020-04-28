@@ -17,7 +17,7 @@ describe 'Admin Dashboard Metrics Tab', type: :feature do
     visit '/admin'
     click_link 'Metrics'
     within(:css, '#favorited_stats') do
-      td_element = find('td[class*="-_last_month"]')
+      td_element = find('td[class*="last_month"]')
       expect(td_element.text).to eq('1')
       td_total = find('td[class*="total_favorited"]')
       expect(td_total.text).to eq('1')
@@ -27,7 +27,7 @@ describe 'Admin Dashboard Metrics Tab', type: :feature do
     visit '/admin'
     click_link 'Metrics'
     within(:css, '#favorited_stats') do
-      td_element = find('td[class*="-_last_month"]')
+      td_element = find('td[class*="last_month"]')
       expect(td_element.text).to eq('1')
       td_total = find('td[class*="total_favorited"]')
       expect(td_total.text).to eq('0')
@@ -62,11 +62,11 @@ describe 'Admin Dashboard Metrics Tab', type: :feature do
     visit '/admin'
     click_link 'Metrics'
     within(:css, '#favorited_stats') do
-      td_element = find('td[class*="-_last_month"')
+      td_element = find('td[class*="last_month"')
       expect(td_element.text).to eq('1')
     end
     within(:css, '#adopted_stats') do
-      td_element = find('td[class*="-_last_month"')
+      td_element = find('td[class*="last_month"')
       expect(td_element.text).to eq('1')
     end
     @user = User.create!(email: 'spongebob.squarepants@bikinibottom.net', password: 'Password123',
@@ -75,11 +75,11 @@ describe 'Admin Dashboard Metrics Tab', type: :feature do
     visit '/admin'
     click_link 'Metrics'
     within(:css, '#favorited_stats') do
-      td_element = find('td[class*="-_last_month"')
+      td_element = find('td[class*="last_month"')
       expect(td_element.text).to eq('2')
     end
     within(:css, '#adopted_stats') do
-      td_element = find('td[class*="-_last_month"')
+      td_element = find('td[class*="last_month"')
       expect(td_element.text).to eq('2')
     end
   end
