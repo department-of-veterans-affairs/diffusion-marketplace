@@ -21,6 +21,7 @@
                 <h2 class="text-normal margin-bottom-2">
                     Tell the story of how your practice was started.
                 </h2>
+              <%= render 'pii_phi_alert' %>
                 <%= nested_form_for(@practice, authenticity_token: true, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
                     <fieldset class="usa-fieldset">
                         <legend class="usa-sr-only">Origin Information</legend>
@@ -54,7 +55,12 @@
                                             <%= pc.text_field :role, class: 'usa-input practice-input width-tablet practice-creator-role', 'counter-id': "practice_creator_#{pc_id}_role" %>
                                         </div>
 
-                                        <p class="text-bold headshot-title margin-bottom-05">Headshot&nbsp;<span class="text-base">(optional)</span></p>
+                                        <p class="text-bold headshot-title margin-bottom-05">Headshot&nbsp;<span class="text-base"></span></p>
+                                      <div class="margin-bottom-2 cropper-upload-text">
+                                        <p>
+                                          Choose an image that clearly shows a face.  Use a high-quality .jpg, .jpeg, or .png files less than 32MB.
+                                        </p>
+                                      </div>
                                         <div class="grid-row">
                                             <div class="grid-col-3 headshot-col margin-top-105 margin-right-3">
                                                 <div class="cropper-images-container" data-type="origin">
@@ -68,11 +74,6 @@
                                                 </div>
                                             </div>
                                             <div class="grid-col-8">
-                                                <div class="margin-bottom-2 cropper-upload-text">
-                                                    <p>
-                                                        Upload a photo that clearly shows a face. You can upload a .jpg, .jpeg, or .png file and the size limit is 1GB.
-                                                    </p>
-                                                </div>
                                                 <div class="margin-bottom-2 cropper-editor-text hidden">
                                                     <p>
                                                         Please click "Save edits" and then "Save your progress" to save and exit editor.
