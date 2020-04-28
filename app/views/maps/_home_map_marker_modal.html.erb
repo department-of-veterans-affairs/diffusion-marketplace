@@ -12,12 +12,12 @@
             implementation<%= in_progress == 1 ? '' : 's' %></p>
         </div>
         <div class="practice-list">
-          <% diffusion_histories.sort_by {|dh| dh.practice.name}.each_with_index do |dh, i| %>
+          <% diffusion_histories.delete_if{ |dh| dh.diffusion_history_statuses.order(id: :desc).first.status == 'Unsuccessful' }.sort_by {|dh| dh.practice.name}.each_with_index do |dh, i| %>
             <a href="<%= practice_path(dh.practice) %>" target="_blank" class="display-block padding-y-105 padding-x-2 map-marker-practice margin-bottom-1">
               <p class="margin-0 map-marker-practice-name margin-bottom-1"><%= dh.practice.name %></p>
 
               <%
-                dh_status = dh.diffusion_history_statuses.where(end_time: nil).first || dh.diffusion_history_statuses.order(id: :desc).first
+                dh_status = dh.diffusion_history_statuses.order(id: :desc).first
                 completed = dh_status.status == 'Implemented' || dh_status.status == 'Complete'
                 # TODO: there is no start time at the moment for diffusion histories
                 # start_date = completed ? dh.diffusion_history_statuses.where(status: 'In progress').first.start_time : dh_status.start_time
