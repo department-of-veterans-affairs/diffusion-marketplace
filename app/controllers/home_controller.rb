@@ -10,7 +10,7 @@ class HomeController < ApplicationController
 
     @vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
 
-    @diffused_practices = DiffusionHistory.all
+    @diffused_practices = DiffusionHistory.all.reject { |dh| dh.diffusion_history_statuses.order(id: :desc).first.status == 'Unsuccessful' }
 
     @diffusion_histories = Gmaps4rails.build_markers(@diffused_practices.group_by(&:facility_id)) do |dhg, marker|
 

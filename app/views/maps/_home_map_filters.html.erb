@@ -7,7 +7,7 @@
     </div>
     <div class="margin-bottom-1">
       <p class="margin-bottom-1 margin-top-0"><span id="facility-results-count"><%= @diffusion_histories.length %></span>
-        facility matches (of <%= @vamc_facilities.length %>)</p>
+        facility matches (of <%= @diffusion_histories.length %>)</p>
       <p class="margin-0">
         <span id="practice-results-count">
           <%= diffused_practices.length %>
@@ -61,20 +61,6 @@
         </fieldset>
       </div>
       <div class="margin-bottom-2">
-        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0">Practice cost</h4>
-
-        <% costs = {'No cost': 0, 'Low cost': 1, 'Moderate cost': 2, 'High cost': 3} %>
-        <fieldset>
-          <legend class="usa-sr-only">Costs</legend>
-          <% costs.each do |k, v| %>
-            <input id="costs_<%= k.to_s.downcase.gsub(' ', '_') %>" name="costs" type="checkbox" value="<%= v %>" class="usa-checkbox__input">
-            <label for="costs_<%= k.to_s.downcase.gsub(' ', '_') %>" class="usa-checkbox__label">
-              <%= k %>
-            </label>
-          <% end %>
-        </fieldset>
-      </div>
-      <div class="margin-bottom-2">
         <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0">Facility VISN</h4>
         <div id="visn-list-container" class="map-filters-list">
           <% visns = @vamc_facilities.map {|f| f["VISN"]}.uniq %>
@@ -102,7 +88,7 @@
         <div id="practiceListContainer" class="map-filters-list display-none">
           <fieldset>
             <legend class="usa-sr-only">Facilities</legend>
-            <% @vamc_facilities.sort_by {|f| f["OfficialStationName"]}.sort_by {|f| f["StreetAddressState"]}.each do |f| %>
+            <% @vamc_facilities.sort_by {|f| [f["StreetAddressState"], f["OfficialStationName"], ]}.each do |f| %>
               <input id="<%= f["StationNumber"] %>" name="facilities" type="checkbox" value="<%= f["StationNumber"] %>" class="usa-checkbox__input">
               <label for="<%= f["StationNumber"] %>" class="usa-checkbox__label">
                 <%= f["StreetAddressState"] %>: <%= f["OfficialStationName"] %>

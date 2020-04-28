@@ -201,11 +201,11 @@ class Practice < ApplicationRecord
   NUMBER_DEPARTMENTS_OPTIONS =['1. Single department', '2. Two departments', '3. Three departments', '4. Four or more departments']
 
   def committed_user_count
-    users.count
+    user_practices.where(committed: true).count
   end
 
   def committed_user_count_by_range(start_date, end_date)
-    users.where(created_at:start_date..end_date).count
+    user_practices.where(time_committed:start_date..end_date).count
   end
 
   def number_of_adopted_facilities
