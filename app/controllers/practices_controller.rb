@@ -130,15 +130,14 @@ class PracticesController < ApplicationController
       practice_partners = @practice.practice_partner_practices
       if practice_partner_params.present?
         partner_keys = practice_partner_params.keys
-
-        practice_partners.each do |partner|
-          partner.destroy unless partner_keys.include?(partner.practice_partner_id.to_s)
-        end
-
         partner_keys.each do |key|
           next if @practice.practice_partners.ids.include? key.to_i
 
           practice_partners.create practice_partner_id: key.to_i
+        end
+
+        practice_partners.each do |partner|
+          partner.destroy unless partner_keys.include?(partner.practice_partner_id.to_s)
         end
       elsif practice_partner_params.blank? && current_endpoint == 'overview'
         practice_partners.destroy_all
@@ -148,14 +147,14 @@ class PracticesController < ApplicationController
       practice_departments = @practice.department_practices
       if department_params.present?
         dept_keys = department_params.keys
-        practice_departments.each do |department|
-          department.destroy unless dept_keys.include? department.department_id.to_s
-        end
-
         dept_keys.each do |key|
           next if @practice.departments.ids.include? key.to_i
 
           @practice.department_practices.create department_id: key.to_i
+        end
+
+        practice_departments.each do |department|
+          department.destroy unless dept_keys.include? department.department_id.to_s
         end
       elsif department_params.blank? && current_endpoint == 'complexity'
         practice_departments.destroy_all
