@@ -21,11 +21,15 @@ module PracticesHelper
   end
 
   def departments_required_display(practice)
-    case practice.number_departments
-    when 4
-      return 'Four or more departments'
+    one_to_three_departments = (1..3)
+    department_count = practice.number_departments
+    case
+    when one_to_three_departments.cover?(department_count)
+      return "#{department_count.humanize} department#{department_count == 1 ? '' : 's'}".humanize
+    when department_count == 0
+      return 'None'
     else
-      return "#{practice.number_departments.humanize} department#{practice.number_departments == 1 ? '' : 's'}".humanize
+      return 'Four or more departments'
     end
   end
 

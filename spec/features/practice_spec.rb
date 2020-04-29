@@ -11,9 +11,18 @@ describe 'Practices', type: :feature do
     @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline')
     @practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline')
     @departments = [
-        Department.create!(name: 'Admissions', short_name: 'admissions'),
-        Department.create!(name: 'None', short_name: 'none'),
-        Department.create!(name: 'All departments equally - not a search differentiator', short_name: 'all'),
+        Department.create!(name: 'Test department 1', short_name: 'td1'),
+        Department.create!(name: 'Test department 2', short_name: 'td2'),
+        Department.create!(name: 'Test department 3', short_name: 'td3'),
+        Department.create!(name: 'None'),
+        Department.create!(name: 'All departments equally - not a search differentiator')
+    ]
+    @department_practices = [
+        DepartmentPractice.create!(department: @departments[0], practice: @practice),
+        DepartmentPractice.create!(department: @departments[1], practice: @practice),
+        DepartmentPractice.create!(department: @departments[2], practice: @practice),
+        DepartmentPractice.create!(department: @departments[3], practice: @practice),
+        DepartmentPractice.create!(department: @departments[4], practice: @practice)
     ]
     @practice_partner = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative', icon: 'fas fa-heart', color: '#E4A002')
   end
@@ -275,7 +284,7 @@ Yes')
         @user_practice.update(published: true, approved: true)
 
         # none
-        dp = DepartmentPractice.create!(department: @departments[1], practice: @user_practice)
+        dp = @department_practices[3]
 
         visit practice_planning_checklist_path(practice_id: @user_practice.slug)
         expect(page).to be_accessible.according_to :wcag2a, :section508
@@ -286,7 +295,7 @@ Yes')
         expect(page).not_to have_selector('#departments-impacted')
 
         # all
-        dp = DepartmentPractice.create!(department: @departments[2], practice: @user_practice)
+        dp = @department_practices[4]
 
         visit practice_planning_checklist_path(practice_id: @user_practice.slug)
         expect(page).to be_accessible.according_to :wcag2a, :section508
