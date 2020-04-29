@@ -6,8 +6,8 @@ function detectIE() {
     const $document = $(document);
 
     function browseHappy() {
-        if (detectIE() && !$('.browsehappy').length) {
-            $('#beta-banner').after(`
+        if (detectIE() && !$('.browsehappy').length && window.location.href.split('/').pop() == '') {
+            $('header').after(`
                 <div class="grid-container">
                     <div class="usa-alert usa-alert--warning">
                       <div class="usa-alert__body">
