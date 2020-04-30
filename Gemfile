@@ -132,7 +132,7 @@ gem 'groupdate'
 
 gem 'ahoy_matey'
 
-gem 'ntlm-sso', '~> 0.0.1'
+gem 'ntlm-sso', github: 'agilesix/ntlm-sso', ref: 'master'
 gem 'net-ldap'
 
 gem 'wdm', '>= 0.1.0' if Gem.win_platform?
