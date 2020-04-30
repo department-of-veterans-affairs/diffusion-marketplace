@@ -205,7 +205,7 @@ class Practice < ApplicationRecord
   end
 
   def committed_user_count_by_range(start_date, end_date)
-    user_practices.where(time_committed:start_date..end_date).count
+    user_practices.where(time_committed:start_date...end_date).count
   end
 
   def number_of_adopted_facilities
@@ -213,7 +213,7 @@ class Practice < ApplicationRecord
   end
 
   def date_range_views(start_date, end_date)
-    Ahoy::Event.where_props(practice_id: id).where(time: start_date..end_date).count
+    Ahoy::Event.where_props(practice_id: id).where(time: start_date...end_date).count
   end
 
   def favorited_count
@@ -221,7 +221,7 @@ class Practice < ApplicationRecord
   end
 
   def favorited_count_by_range(start_date, end_date)
-    user_practices.where({time_favorited: start_date..end_date}).count
+    user_practices.where({time_favorited: start_date...end_date}).count
   end
 
   def adoptions_count
@@ -229,6 +229,6 @@ class Practice < ApplicationRecord
   end
 
   def adoptions_count_by_range(start_date, end_date)
-    user_practices.where({time_committed: start_date..end_date}).count
+    user_practices.where({time_committed: start_date...end_date}).count
   end
 end

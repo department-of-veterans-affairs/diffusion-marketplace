@@ -5,14 +5,14 @@ ActiveAdmin.register_page "Dashboard" do
     before_action :set_dashboard_values
 
     def set_dashboard_values
-      @beginning_of_current_month = Date.today.at_beginning_of_month
-      @end_of_current_month = Date.today.at_end_of_month
-      @beginning_of_last_month = (Date.today - 1.months).at_beginning_of_month
-      @end_of_last_month = (Date.today - 1.months).at_end_of_month
-      @beginning_of_two_months_ago = (Date.today - 2.months).at_beginning_of_month
-      @end_of_two_months_ago = (Date.today - 2.months).at_end_of_month
-      @beginning_of_three_months_ago = (Date.today - 3.months).at_beginning_of_month
-      @end_of_three_months_ago = (Date.today - 3.months).at_end_of_month
+      @beginning_of_current_month = Date.today.at_beginning_of_month.beginning_of_day
+      @end_of_current_month = Date.today.at_end_of_month.end_of_day
+      @beginning_of_last_month = (Date.today - 1.months).at_beginning_of_month.beginning_of_day
+      @end_of_last_month = (Date.today - 1.months).at_end_of_month.end_of_day
+      @beginning_of_two_months_ago = (Date.today - 2.months).at_beginning_of_month.beginning_of_day
+      @end_of_two_months_ago = (Date.today - 2.months).at_end_of_month.end_of_day
+      @beginning_of_three_months_ago = (Date.today - 3.months).at_beginning_of_month.beginning_of_day
+      @end_of_three_months_ago = (Date.today - 3.months).at_end_of_month.end_of_day
 
       site_visit_stats = Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where(time: @beginning_of_last_month..@end_of_last_month).group("properties->>'ip_address'").count
 
@@ -345,8 +345,8 @@ ActiveAdmin.register_page "Dashboard" do
 
           table_for practices do
             column(:name) {|pr| link_to(pr.name, admin_practice_path(pr))}
-            column("#{date_headers[:current]}") {|pr| pr.commontator_thread.comments.where(created_at: beginning_of_current_month..end_of_current_month).count}
-            column("Last Month") {|pr| pr.commontator_thread.comments.where(created_at: beginning_of_last_month..end_of_last_month).count}
+            column("#{date_headers[:current]}") {|pr| pr.commontator_thread.comments.where(created_at: beginning_of_current_month...end_of_current_month).count}
+            column("Last Month") {|pr| pr.commontator_thread.comments.where(created_at: beginning_of_last_month...end_of_last_month).count}
             column("#{date_headers[:total]}") {|pr| pr.commontator_thread.comments.count}
           end
 
