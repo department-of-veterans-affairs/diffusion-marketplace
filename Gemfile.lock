@@ -13,6 +13,14 @@ GIT
       rails (~> 5)
 
 GIT
+  remote: https://github.com/agilesix/ntlm-sso.git
+  revision: 32807d619a8cd930b0f1ae549f2eeb32e6154f87
+  ref: master
+  specs:
+    ntlm-sso (0.0.1)
+      ruby-ntlm
+
+GIT
   remote: https://github.com/agilesix/surveymonkey.git
   revision: d21232a99470ae53d3c798796e058de94be9426e
   specs:
@@ -314,8 +322,6 @@ GEM
     nokogiri (1.10.9-x64-mingw32)
       mini_portile2 (~> 2.4.0)
     ntlm-http (0.1.1)
-    ntlm-sso (0.0.1)
-      ruby-ntlm
     orm_adapter (0.5.0)
     paper_trail (10.3.1)
       activerecord (>= 4.2)
@@ -571,7 +577,7 @@ DEPENDENCIES
   mini_racer
   nested_form
   net-ldap
-  ntlm-sso (~> 0.0.1)
+  ntlm-sso!
   paper_trail
   paperclip (~> 6.0.0)
   pg (= 1.1.4)
@@ -606,4 +612,4 @@ RUBY VERSION
    ruby 2.6.3p62
 
 BUNDLED WITH
-   2.0.2
+   2.1.4
