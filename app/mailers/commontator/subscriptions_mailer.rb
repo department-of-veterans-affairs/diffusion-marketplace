@@ -12,11 +12,9 @@ class Commontator::SubscriptionsMailer < ActionMailer::Base
 
   def setup_variables(comment, recipients)
     @comment = comment
-    commentUser = User.find(comment.creator_id).first_name + " " + User.find(comment.creator_id).last_name
-
-    @comment_header = commentUser + " has commented on #{@comment.thread.commontable.name}"
-    @comment_header = commentUser + " has replied to a comment on #{@comment.thread.commontable.name}" unless @comment.parent_id.nil?
-
+    comment_user = User.find(comment.creator_id).full_name
+    @comment_header = "#{comment_user} has commented on #{@comment.thread.commontable.name}"
+    @comment_header = "#{comment_user} has replied to a comment on #{@comment.thread.commontable.name}" unless @comment.parent_id.nil?
     @thread = @comment.thread
     @creator = @comment.creator
     @mail_params = { from: @thread.config.email_from_proc.call(@thread) }
