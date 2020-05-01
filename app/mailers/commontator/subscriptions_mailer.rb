@@ -13,8 +13,10 @@ class Commontator::SubscriptionsMailer < ActionMailer::Base
   def setup_variables(comment, recipients)
     @comment = comment
     commentUser = User.find(comment.creator_id).first_name + " " + User.find(comment.creator_id).last_name
-    comment_body = commentUser + " has commented on #{@comment.thread.commontable.name}"
-    comment_body = commentUser + " has replied to a comment on #{@comment.thread.commontable.name}" unless @comment.parent_id.nil?
+
+    @comment_header = commentUser + " has commented on #{@comment.thread.commontable.name}"
+    @comment_header = commentUser + " has replied to a comment on #{@comment.thread.commontable.name}" unless @comment.parent_id.nil?
+
     @thread = @comment.thread
     @creator = @comment.creator
     @mail_params = { from: @thread.config.email_from_proc.call(@thread) }
@@ -40,11 +42,10 @@ class Commontator::SubscriptionsMailer < ActionMailer::Base
     else
       @comment_url += @comment.parent.id.to_s
     end
-    comment_body += "\r\n\r\n"
-    comment_body += "Click here " + @comment_url + " to view #{@comment.thread.commontable.name} comments"
+    @comment_link = "Click here " + @comment_url + " to view #{@comment.thread.commontable.name} comments"
     subject = "Someone has commented on #{@comment.thread.commontable.name} in Diffusion Marketplace"
     subject = "Someone has replied to a comment on #{@comment.thread.commontable.name} in Diffusion Marketplace" unless @comment.parent_id.nil?
     @mail_params[:subject] = subject
-    @mail_params[:body] = comment_body
+
   end
 end
