@@ -42,10 +42,9 @@ class Commontator::SubscriptionsMailer < ActionMailer::Base
     else
       @comment_url += @comment.parent.id.to_s
     end
-    @comment_link = "Click here " + @comment_url + " to view #{@comment.thread.commontable.name} comments"
+    @practice_name = @comment.thread.commontable.name
     subject = "Someone has commented on #{@comment.thread.commontable.name} in Diffusion Marketplace"
     subject = "Someone has replied to a comment on #{@comment.thread.commontable.name} in Diffusion Marketplace" unless @comment.parent_id.nil?
     @mail_params[:subject] = subject
-
   end
 end
