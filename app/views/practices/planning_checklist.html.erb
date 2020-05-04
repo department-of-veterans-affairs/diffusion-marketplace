@@ -94,10 +94,10 @@
             %>
             <% if practice_departments.where.not(name: 'None').any? %>
               <%= render 'next_steps_checkbox', label: 'Departments:', sectionId: 'departments-impacted' do %>
-                <% if practice_departments.where(short_name: 'all').present? %>
+                <% if practice_departments.where(name: 'All departments equally - not a search differentiator').present? %>
                   <li>All Departments</li>
                 <% else %>
-                  <% practice_departments.where.not(short_name: 'all').each do |d| %>
+                  <% practice_departments.where.not(name: 'All departments equally - not a search differentiator').order('LOWER(name) ASC').each do |d| %>
                     <li><%= d.name %></li>
                   <% end %>
                 <% end %>
