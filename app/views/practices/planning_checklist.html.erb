@@ -58,7 +58,7 @@
             </div>
 
             <!-- Practice champion -->
-            <%= render 'next_steps_checkbox', label: 'Practice champion', sectionId: 'practice-champion', noList: true do %>
+            <%= render 'next_steps_checkbox', label: 'Practice champion:', sectionId: 'practice-champion', noList: true do %>
               <p class="padding-left-4 margin-0">
                 Working Group needs to select a dynamic, charismatic individual who will be able to promote the practice,
                 recruit additional team members, and illicit administrative support.
@@ -67,10 +67,16 @@
             <!-- -->
 
             <!-- Permissions required -->
-            <% if @practice.practice_permissions.any? %>
-              <%= render 'next_steps_checkbox', label: 'Permissions required', sectionId: 'permissions-required' do %>
-                <% @practice.practice_permissions.each do |permission| %>
-                  <li><%= permission.description %></li>
+            <%
+              permissions = @practice.practice_permissions
+            %>
+            <% if permissions.any? %>
+              <%= render 'next_steps_checkbox', label: 'Permissions required:', sectionId: 'permissions-required' do %>
+                <% permissions.each do |permission| %>
+                  <li class="<%= permissions.count > 1 ? 'margin-bottom-105' : '' %>">
+                    <p class="text-bold margin-bottom-1 text-underline"><%= permission.name %></p>
+                    <p><%= permission.description %></p>
+                  </li>
                 <% end %>
               <% end %>
             <% end %>
@@ -83,20 +89,33 @@
             <!-- -->
 
             <!-- Departments impacted -->
-            <% if @practice.departments.any? && @practice.departments.find_by(short_name: 'all').blank? && @practice.departments.find_by(short_name: 'none').blank? %>
-              <%= render 'next_steps_checkbox', label: 'Departments', sectionId: 'departments-impacted' do %>
-                <% @practice.departments.each do |d| %>
-                      <li><%= d.name %></li>
-                    <% end %>
+            <%
+              practice_departments = @practice.departments
+            %>
+            <% if practice_departments.where.not(name: 'None').any? %>
+              <%= render 'next_steps_checkbox', label: 'Departments:', sectionId: 'departments-impacted' do %>
+                <% if practice_departments.where(short_name: 'all').present? %>
+                  <li>All Departments</li>
+                <% else %>
+                  <% practice_departments.where.not(short_name: 'all').each do |d| %>
+                    <li><%= d.name %></li>
+                  <% end %>
+                <% end %>
               <% end %>
             <% end %>
             <!-- -->
 
             <!-- Resource capabilities -->
-            <% if @practice.additional_resources.any? %>
-              <%= render 'next_steps_checkbox', label: 'Resources', sectionId: 'resource-capabilities' do %>
-                <% @practice.additional_resources.each do |r| %>
-                  <li><%= r.description %></li>
+            <%
+              additional_resources = @practice.additional_resources
+            %>
+            <% if additional_resources.any? %>
+              <%= render 'next_steps_checkbox', label: 'Resources:', sectionId: 'resource-capabilities' do %>
+                <% additional_resources.each do |r| %>
+                  <li class="<%= additional_resources.count > 1 ? 'margin-bottom-105' : '' %>">
+                    <p class="text-bold margin-bottom-1 text-underline"><%= r.name %></p>
+                    <p><%= r.description %></p>
+                  </li>
                 <% end %>
               <% end %>
             <% end %>
@@ -113,7 +132,7 @@
             <!-- -->
 
             <!-- Willing to provide feedback -->
-            <%= render 'next_steps_checkbox', label: 'Willing to provide feedback', sectionId: 'feedback-section', noList: true do %>
+            <%= render 'next_steps_checkbox', label: 'Willing to provide feedback:', sectionId: 'feedback-section', noList: true do %>
               <p class="padding-left-4 margin-0">
                 Feedback on the implementation process and sharing the resulting data once the practice is implemented are
                 a requirement/expected.
