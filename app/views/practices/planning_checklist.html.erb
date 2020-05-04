@@ -95,7 +95,7 @@
             <% if practice_departments.where.not(name: 'None').any? %>
               <%= render 'next_steps_checkbox', label: 'Departments:', sectionId: 'departments-impacted' do %>
                 <% if practice_departments.where(short_name: 'all').present? %>
-                  <li><%= practice_departments.find_by(short_name: 'all').name %></li>
+                  <li>All Departments</li>
                 <% else %>
                   <% practice_departments.where.not(short_name: 'all').each do |d| %>
                     <li><%= d.name %></li>

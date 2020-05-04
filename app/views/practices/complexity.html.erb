@@ -50,7 +50,7 @@
                               <% elsif department.name == 'All departments equally - not a search differentiator' %>
                                 <div class='usa-checkbox grid-col-6'>
                                   <input type='checkbox' class='usa-checkbox__input all-departments-input' id="practice_department_<%= department.id %>" name='practice[department][<%= department.id %>][value]' <%= @practice.departments.include?(department) ? "checked= 'true'" : "" %>>
-                                  <label class='usa-checkbox__label' for="practice_department_<%= department.id %>"><%= department.name %></label>
+                                  <label class='usa-checkbox__label' for="practice_department_<%= department.id %>">All</label>
                                 </div>
                               <% else %>
                                 <div class='usa-checkbox grid-col-6'>
