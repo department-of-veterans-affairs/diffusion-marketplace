@@ -118,7 +118,7 @@ class PracticesController < ApplicationController
   # PATCH/PUT /practices/1.json
   def update
     current_endpoint = request.referrer.split('/').pop
-    pr_params = {practice: @practice, practice_params: practice_params}
+    pr_params = { practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint }
     updated = SavePracticeService.new(pr_params).save_practice
 
     respond_to do |format|
@@ -277,15 +277,23 @@ class PracticesController < ApplicationController
   end
 
   def publication_validation
-    pr_params = { practice: @practice, practice_params: practice_params }
-    SavePracticeService.new(pr_params).save_practice
+    current_endpoint = request.referrer.split('/').pop
+    if params[:practice].present?
+      pr_params = { practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint }
+      updated = SavePracticeService.new(pr_params).save_practice
+    end
 
     respond_to do |format|
-      if @practice.name.present? && @practice.tagline.present? && @practice.initiating_facility.present? && @practice.date_initiated.present? && @practice.summary.present? && @practice.support_network_email.present?
-        @practice.update_attributes(published: true)
-        flash[:notice] = "#{@practice.name} has been successfully published to the Diffusion Marketplace"
-        # format.html { redirect_to practice_path(@practice), notice: flash[:notice] }
-        format.js { render js: "window.location='#{practice_path(@practice)}'" }
+      if can_publish
+        # if there is an error with updating the practice, alert the user
+        if updated.is_a?(StandardError)
+          flash[:error] = "There was an #{updated.message}. The practice was not saved or published."
+          format.js { redirect_to self.send("practice_#{current_endpoint}_path", @practice) }
+        else
+          @practice.update_attributes(published: true)
+          flash[:notice] = "#{@practice.name} has been successfully published to the Diffusion Marketplace"
+          format.js { render js: "window.location='#{practice_path(@practice)}'" }
+        end
       else
         format.js
       end
@@ -469,5 +477,9 @@ class PracticesController < ApplicationController
     if params[:date_initiated].present? && !(params[:date_initiated].values.include? nil)
       params[:practice][:date_initiated] = create_date_initiated(params[:date_initiated])
     end
+  end
+
+  def can_publish
+    @practice.name.present? && @practice.tagline.present? && @practice.initiating_facility.present? && @practice.date_initiated.present? && @practice.summary.present? && @practice.support_network_email.present?
   end
 end

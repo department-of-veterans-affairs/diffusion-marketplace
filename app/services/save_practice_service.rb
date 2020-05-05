@@ -6,22 +6,44 @@ class SavePracticeService
     @practice_params = params[:practice_params]
     @avatars = ['practice_creators', 'va_employees']
     @attachments = ['impact_photos', 'additional_documents']
+    @current_endpoint = params[:current_endpoint]
+    @error_messages = {
+      update_practice_partner_practices: 'error updating practice partners',
+      update_department_practices: 'error updating departments',
+      remove_attachments: 'error removing attachments',
+      manipulate_avatars: 'error updating avatars',
+      remove_main_display_image: 'error removing practice thumbnail',
+      crop_main_display_image: 'error cropping practice thumbnail'
+    }
   end
 
   def save_practice
-    updated = @practice.update(@practice_params)
+    begin
+      updated = @practice.update(@practice_params)
 
-    update_practice_partner_practices
-    update_department_practices
-    remove_attachments
-    manipulate_avatars
-    remove_main_display_image
-    crop_main_display_image
+      rescue_method(:update_practice_partner_practices)
+      rescue_method(:update_department_practices)
+      rescue_method(:remove_attachments)
+      rescue_method(:manipulate_avatars)
+      rescue_method(:remove_main_display_image)
+      rescue_method(:crop_main_display_image)
 
-    return updated
+      updated
+    rescue => e
+      Rails.logger.error "save_practice error: #{e.message}"
+      e
+    end
   end
 
   private
+
+  def rescue_method(method_name)
+    begin
+      send(method_name)
+    rescue
+      raise StandardError.new @error_messages[method_name]
+    end
+  end
 
   def update_practice_partner_practices
     practice_partner_params = @practice_params[:practice_partner]
@@ -37,7 +59,7 @@ class SavePracticeService
       practice_partners.each do |partner|
         partner.destroy unless partner_keys.include?(partner.practice_partner_id.to_s)
       end
-    elsif practice_partner_params.blank? && current_endpoint == 'overview'
+    elsif practice_partner_params.blank? && @current_endpoint == 'overview'
       practice_partners.destroy_all
     end
   end
@@ -56,7 +78,7 @@ class SavePracticeService
       practice_departments.each do |department|
         department.destroy unless dept_keys.include? department.department_id.to_s
       end
-    elsif department_params.blank? && current_endpoint == 'complexity'
+    elsif department_params.blank? && @current_endpoint == 'complexity'
       practice_departments.destroy_all
     end
   end
