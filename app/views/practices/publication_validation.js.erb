@@ -1,3 +1,5 @@
+$('#practiceEditorPublicationModal').remove();
+$('body').after("<%= escape_javascript(render partial: 'practices/publication_validation_modal', formats: [ :html ]) %>");
 
 $('#practiceEditorPublicationModal').removeClass('publication-modal-hidden');
 
