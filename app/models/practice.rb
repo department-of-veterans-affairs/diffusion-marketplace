@@ -15,6 +15,7 @@ class Practice < ApplicationRecord
   attr_accessor :three_months_ago_commits
   attr_accessor :delete_main_display_image
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
+  attr_accessor :practice_partner, :department
 
   # views
   def views

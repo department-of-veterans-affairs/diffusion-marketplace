@@ -24,6 +24,8 @@ describe 'Practice editor', type: :feature, js: true do
       expect(page).to have_field('practice_name', with: 'A public practice')
       expect(all('.partner-input').first).to be_checked
 
+      # go to impact page since publishing on overview with empty required fields results in form warnings
+      visit practice_impact_path(@practice)
       @publish_button.click
       expect(page).to have_content('Cannot publish yet')
       expect(page).to have_content('You must include a practice tagline')
@@ -33,34 +35,31 @@ describe 'Practice editor', type: :feature, js: true do
       expect(page).to have_content('You must include a support network email')
     end
 
-    it 'Should publish the practice if all required fields are met' do
+    it 'Should save and publish the practice if all required fields are met' do
       tagline = 'Super duper'
       initiated_month = 'October'
       initiated_year = '1970'
       summary = 'This is the most super practice ever made'
+
+      visit practice_contact_path(@practice)
+      email = 'test@email.com'
+      fill_in('Email:', with: email)
+      @save_button.click
+      expect(page).to have_field('Email:', with: email)
+
+      visit practice_overview_path(@practice)
       fill_in('practice_tagline', with: tagline)
       select('Alabama', :from => 'editor_state_select')
       select('Birmingham VA Medical Center', :from => 'editor_facility_select')
       select(initiated_month, :from => 'editor_date_intiated_month')
       select(initiated_year, :from => 'editor_date_intiated_year')
       fill_in('Practice summary:', with: summary)
-      @save_button.click
-
-      expect(page).to have_field('practice_tagline', with: tagline)
-      expect(page).to have_field('practice_summary', with: summary)
-      expect(page).to have_field('Month', with: '10')
-      expect(page).to have_field('Year', with: initiated_year)
-      expect(page).to have_field('State', with: 'AL')
-      expect(page).to have_field('Facility', with: '521')
-
-      visit practice_contact_path(@practice)
-      email = 'test@email.com'
-      fill_in('Email:', with: email)
-      @save_button.click
-
-      expect(page).to have_field('Email:', with: email)
 
       @publish_button.click
+      expect(page).to have_content(tagline)
+      expect(page).to have_content(summary)
+      expect(page).to have_content('October 1970')
+      expect(page).to have_content('Birmingham VA Medical Center')
       expect(page).to have_content('A public practice')
       expect(page).to_not have_content('Cannot publish yet')
       expect(page).to have_content("#{@practice.name} has been successfully published to the Diffusion Marketplace")
