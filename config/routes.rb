@@ -27,7 +27,7 @@ Rails.application.routes.draw do
     get '/edit/origin', action: 'origin', as: 'origin'
     get '/edit/adoptions', action: 'adoptions', as: 'adoptions'
     post '/edit/create_or_update_diffusion_history/', action: 'create_or_update_diffusion_history', as: 'create_or_update_diffusion_history'
-    post '/publication_validation', action: 'publication_validation', as: 'publication_validation'
+    patch '/publication_validation', action: 'publication_validation', as: 'publication_validation'
     get '/published', action: 'published', as: 'published'
     post '/commit', action: 'commit', as: 'commit'
     post '/favorite', action: 'favorite', as: 'favorite'
