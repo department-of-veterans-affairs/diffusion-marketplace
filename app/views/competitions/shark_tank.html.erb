@@ -8,7 +8,11 @@
         <span>Submit your practice application by May 1, 2020!</span>
       </div>
       <div class="grid-col-auto display-inline-block">
-        <button class="usa-button height-7 width-1505">Apply Now</button>
+        <span>
+          <form action="https://www.surveymonkey.com/r/ST20application" method="get" target="_blank">
+            <button class="usa-button height-7 width-1505" type="submit">Apply Now</button>
+          </form>
+        </span>
       </div>
     </div>
   </div>
@@ -84,6 +88,15 @@
       </p>
       <div class="margin-bottom-2 font-sans-sm">
         <p class="line-height-sans-505 margin-bottom-2"><span class="text-bold">Meeting Link:</span></p>
+        <p class="font-sans-sm line-height-sans-505">
+          <%= link_to 'Click here', asset_path('June_18_invite.ics', skip_pipeline: true), target: '_blank', class: 'shark-tank-faq-link' %>
+          to add this meeting to your calendar June 18 2020
+        </p>
+        <p class="font-sans-sm line-height-sans-505">
+          <%= link_to 'Click here', asset_path('June_23_invite.ics', skip_pipeline: true), target: '_blank', class: 'shark-tank-faq-link' %>
+          to add this meeting to your calendar June 23 2020
+        </p>
+        <br />
         <p class="line-height-sans-505 margin-bottom-2"><span class="text-bold">Dial-in:</span></p>
         <p class="line-height-sans-505 margin-bottom-2"><span class="text-bold">Conference code:</span></p>
       </div>
