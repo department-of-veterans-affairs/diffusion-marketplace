@@ -14,7 +14,7 @@ describe 'Search', type: :feature do
   end
 
   describe 'results' do
-    it 'should show practices that are approved and published'do
+    it 'should show practices that are approved and published' do
       @user_practice.update(published: true, approved: true)
       visit '/search'
       expect(page).to be_accessible.according_to :wcag2a, :section508
@@ -50,9 +50,21 @@ describe 'Search', type: :feature do
 
       # test facility data map for name, positive case
       expect(page).to have_content('Yakima VA Clinic')
-
     end
 
-  end
+    it 'should be able to search based on practice categories' do
+      @user_practice.update(published: true, approved: true)
+      category = Category.create!(name: 'telehealth')
+      CategoryPractice.create!(category: category, practice: @user_practice)
 
+      visit '/search'
+
+      fill_in('practice-search-field', with: 'Telehealth')
+      click_button('Search')
+
+      expect(page).to have_content(@user_practice.name)
+      expect(page).to have_content(@user_practice.initiating_facility)
+      expect(page).to have_content('1 result for "Telehealth"')
+    end
+  end
 end
