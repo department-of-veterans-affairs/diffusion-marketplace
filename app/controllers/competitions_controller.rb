@@ -10,10 +10,7 @@ class CompetitionsController < ApplicationController
   end
 
   def go_fish
-    @breadcrumbs = [
-        { text: 'Home', path: root_path },
-        { text: 'GoFish!' }
-    ]
+    redirect_to root_path
   end
 
   private
