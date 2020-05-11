@@ -4,3 +4,13 @@
     color: #005ea2;
   }
 }
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .footer-links-set-1 {
+    width: 60% !important;
+  }
+
+  .footer-links-set-2 {
+    width: 40% !important;
+  }
+}

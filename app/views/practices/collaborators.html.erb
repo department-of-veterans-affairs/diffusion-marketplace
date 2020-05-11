@@ -5,7 +5,7 @@
         <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
         <div id="collaborators" class="desktop:grid-col-9 grid-col-12 p0">
-            <%= render "shared/messages" %>
+            <%= render partial: "shared/messages", locals: {small_text: false} %>
             <section class="usa-section padding-top-0 p2-bottom collaborators">
                 <h1 class="font-sans-2xl line-height-sans-205">Collaborators</h1>
                 <h2 class="text-normal">Here you can add people at your facility who can help you complete this practice page.</h2>

@@ -1,7 +1,11 @@
+<% provide :head_tags do %>
+  <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
 <div class="full-view-height dm-background-white">
   <!-- "Welcome" section -->
   <section class="grid-container">
-    <%= render "shared/messages" %>
+    <%= render partial: "shared/messages", locals: {small_text: false} %>
 
     <div class="padding-x-9 margin-y-8 dm-background-white grid-row">
       <div class="tablet:grid-col-fill ie-welcome-container">
@@ -39,7 +43,7 @@
       <div class="grid-row grid-gap featured-practices">
         <% @featured_practices.each do |fp| %>
           <% if fp.present? %>
-            <div class="tablet:grid-col-4">
+            <div class="tablet:grid-col-4 flex-column display-flex">
               <%= render partial: 'practices/favorite_button', locals: {practice: fp, featured: true, col_4: false } %>
               <%= render partial: 'practices/marketplace_card', locals: {practice: fp, featured: true} %>
             </div>
@@ -59,7 +63,7 @@
       <%= javascript_include_tag 'diffusion_history/_map_utilities', 'data-turbolinks-track': 'reload' %>
     <% end %>
       <section class="grid-container margin-bottom-4" id="map-of-diffusion">
-        <h4 class="font-sans-xl margin-bottom-1 margin-top-0">Map of diffusion</h4>
+        <h4 class="font-sans-xl margin-bottom-1 margin-top-0 line-height-sans-205">Map of diffusion</h4>
         <p class="font-sans-lg margin-bottom-2">Explore how practices are being adopted across the country.</p>
         <div class="padding-y-105 padding-x-2 bg-gold radius-md margin-bottom-205">
           <span class="text-bold">Note:</span>&nbsp;<span>More practices will be added to this map in the next few months.</span>
@@ -76,7 +80,7 @@
 
   <section class="padding-top-2 margin-bottom-5">
     <div class="grid-container">
-      <h4 class="font-sans-xl margin-bottom-2 margin-top-0">All practices</h4>
+      <h4 class="font-sans-xl margin-bottom-2 margin-top-0 line-height-sans-205">All practices</h4>
       <p class="font-sans-lg margin-bottom-1">View all submitted and accepted practices.</p>
       <div class="grid-row grid-gap-3">
         <% @practices.each do |p| %>

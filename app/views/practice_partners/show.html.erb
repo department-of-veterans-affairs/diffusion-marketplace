@@ -1,9 +1,13 @@
+<% provide :head_tags do %>
+  <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
 <div class="full-view-height partner-page-min-height">
   <section class="grid-container">
-    <%= render "shared/messages" %>
+    <%= render partial: "shared/messages", locals: {small_text: false} %>
   </section>
   <section class="grid-container">
-    <div class="dm-font-color-primary-blue p1-top breadcrumbs" id="breadcrumbs">
+    <div class="dm-font-color-primary-blue margin-y-2 breadcrumbs" id="breadcrumbs">
       <a href="/">Home</a>
       <span class="x0-5-left x0-5-right">›</span>
       <span><%= link_to 'Partners', practice_partners_path %></span>

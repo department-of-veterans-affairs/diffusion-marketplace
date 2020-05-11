@@ -1,9 +1,13 @@
+<% provide :head_tags do %>
+  <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
 <% created_practices = Practice.where(user: current_user) %>
 
 <div class="x0-top">
-  <section class="usa-section p2-top padding-bottom-0">
+  <section class="usa-section p0-top padding-bottom-0">
     <div class="grid-container <%= created_practices.empty? && @favorite_practices.empty?  ? 'profile-min-height' : '' %>">
-      <div class="grid-row">
+      <div class="grid-row margin-bottom-2px">
         <div class="usa-layout-docs__sidenav desktop:grid-col-3 margin-right-105">
           <% if @user.avatar.present? && @user.avatar.exists? %>
             <img src="<%= @user.avatar_s3_presigned_url(:thumb) %>" class="avatar-profile-photo"/>
@@ -13,7 +17,7 @@
             </div>
           <% end %>
         </div>
-        <div class="usa-layout-docs__main desktop:grid-col-fill margin-left-2">
+        <div class="usa-layout-docs__main desktop:grid-col-fill">
           <h1 class='profile-h1 font-sans-2xl display-inline-block margin-bottom-1 margin-top-0'><%= @user.full_name %></h1>
           <div class="display-inline-block margin-left-2">
             <% if current_user == @user %>
@@ -47,9 +51,9 @@
           <% end %>
         </div>
       </div>
-      <div class="grid-row">
+      <div class="grid-row margin-bottom-8">
         <div class="desktop:grid-col-3 margin-right-105"></div>
-        <div class="fs1-125 desktop:grid-col-fill margin-bottom-5 margin-left-2"><%= @user.bio %></div>
+        <div class="fs1-125 desktop:grid-col-fill"><%= @user.bio %></div>
       </div>
     </div>
   </section>
@@ -58,7 +62,7 @@
     <section class="dm-background-white margin-bottom-105">
       <div class="grid-container">
         <div class="grid-row">
-          <h2 class="profile-h2 font-sans-xl margin-top-0">Favorited Practices</h2>
+          <h2 class="profile-h2 font-sans-xl margin-top-0">Favorited practices</h2>
         </div>
         <div class="grid-row grid-gap-3 favorited-practices margin-bottom-5">
           <% @favorite_practices.each do |p| %>
@@ -78,7 +82,7 @@
     <section class="dm-background-white margin-bottom-105">
       <div class="grid-container">
         <div class="grid-row">
-          <h2 class="profile-h2 font-sans-xl margin-top-0">Created Practices</h2>
+          <h2 class="profile-h2 font-sans-xl margin-top-0">Created practices</h2>
         </div>
         <div class="grid-row grid-gap-2 created-practices margin-bottom-5">
           <% created_practices.each do |cup| %>

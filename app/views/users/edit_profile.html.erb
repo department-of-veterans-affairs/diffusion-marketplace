@@ -6,15 +6,15 @@
 <% end %>
 
 <div class="x0-top">
-  <section class="usa-section p2-top" style="min-height: calc(100vh - 286px)">
+  <section class="usa-section p0-top" style="min-height: calc(100vh - 286px)">
     <div class="grid-container">
-      <%= render partial: 'shared/messages' %>
+      <%= render partial: 'shared/messages', locals: {small_text: true} %>
       <div class="grid-row grid-gap">
         <%= render partial: 'side_nav' %>
         <div class="usa-layout-docs__main desktop:grid-col-9 usa-prose">
           <div class="login-header">
             <div class="login-header-overlay">
-              <h1 class="x0">Edit Profile</h1>
+              <h1 class="x0 font-sans-2xl">Edit profile</h1>
               <p class="font-sans-lg">
                 People on the Diffusion Marketplace will get to know you with the information you share below.
                 Your name, facility, work number, and job title are pulled from the VA’s Global Access List (GAL).
@@ -24,15 +24,15 @@
           </div>
           <div class="login-body">
             <%= form_for(@user, url: edit_profile_path, html: {method: :post, class: 'x1-top'}) do |f| %>
-              <div class="actions margin-bottom-4 display-inline-block">
-                <%= f.submit "Save changes", class: 'usa-button usa-button-primary padding-2' %>
-              </div>
-              <div class="display-inline-block ">
+              <div class="display-inline-block margin-right-1">
                 <%= link_to "/users/#{@user.id}", class: 'cancel-edit-profile-link' do %>
                   <button class="usa-button usa-button--base text-ink bg-base-lighter padding-2 cancel-edit-profile-button margin-right-0">
                     Cancel
                   </button>
                 <% end %>
+              </div>
+              <div class="actions margin-bottom-4 display-inline-block">
+                <%= f.submit "Save changes", class: 'usa-button usa-button-primary padding-2' %>
               </div>
               <% if @user.errors.any? %>
               <div class="usa-alert usa-alert--error" >
@@ -63,9 +63,9 @@
                       </div>
                   </div>
                   <div class="grid-col-fill">
-                    <span >Photo</span><br/>
-                    <div class="dm-font-color-base-dark margin-top-2 margin-bottom-2 cropper-upload-text ">
-                      <p>
+                    <p>Photo</p>
+                    <div class="text-base margin-y-1 cropper-upload-text ">
+                      <p class="line-height-sans-505">
                         Upload a photo that clearly shows your face. You can upload a .jpg, .jpeg, or .png file and the size limit is 1GB.
                       </p>
                     </div>
