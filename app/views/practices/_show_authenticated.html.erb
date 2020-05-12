@@ -52,12 +52,12 @@
       </li>
     </ul>
     <div class="text-center">
-      <%= link_to 'Take the next step', practice_planning_checklist_url(practice_id: @practice.slug), id: 'next-steps-link-in-nav', class: 'usa-button width-full' %>
+      <%= link_to 'See adoption checklist', practice_planning_checklist_url(practice_id: @practice.slug), id: 'next-steps-link-in-nav', class: 'usa-button width-full p1' %>
     </div>
   </div>
 </div>
 <div class="practice-mobile-nav padding-1 z-top desktop:display-none display-flex justify-center">
-  <%= link_to 'Take the next step', practice_planning_checklist_url(practice_id: @practice.slug), id: 'next-steps-link-in-mobile-nav', class: 'usa-button' %>
+  <%= link_to 'See adoption checklist', practice_planning_checklist_url(practice_id: @practice.slug), id: 'next-steps-link-in-mobile-nav', class: 'usa-button' %>
 </div>
 
 <section class="usa-section p2-top p2-bottom">
@@ -71,7 +71,7 @@
       <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
       <div id="practice_show" class="desktop:grid-col-6 grid-col-12 p0 overview-section practice-section">
-        <%= render "shared/messages" %>
+        <%= render partial: "shared/messages", locals: {small_text: false} %>
         <% unless @practice.published && @practice.approved %>
           <div class="usa-alert usa-alert--warning">
             <div class="usa-alert__body">

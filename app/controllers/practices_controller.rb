@@ -58,7 +58,9 @@ class PracticesController < ApplicationController
       marker.picture({
                          url: marker_url,
                          width: 31,
-                         height: 44
+                         height: 44,
+                         scaledWidth: 31,
+                         scaledHeight: 44
                      })
 
       marker.shadow nil

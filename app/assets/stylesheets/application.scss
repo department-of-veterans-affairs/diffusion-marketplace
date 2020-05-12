@@ -23,6 +23,13 @@
 @import "font-awesome-sprockets";
 @import "font-awesome";
 
-html, body {
+html {
   height: 100%;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100%;
+  position: relative;
+  padding-bottom: 9.2rem;
 }

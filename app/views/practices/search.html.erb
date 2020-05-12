@@ -15,7 +15,7 @@
     </section>
 
     <section class="grid-container margin-bottom-3">
-      <%= render "shared/messages" %>
+      <%= render partial: "shared/messages", locals: {small_text: false} %>
       <h1 class="font-sans-2xl margin-top-0 margin-bottom-0">Find a practice</h1>
       <p class="margin-0 font-sans-md">Search by practice name, facility name, clinical condition, or keyword</p>
         <form id="searchForm" name="searchForm" class="usa-search margin-bottom-3">

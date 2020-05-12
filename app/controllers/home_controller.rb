@@ -10,7 +10,7 @@ class HomeController < ApplicationController
 
     @vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
 
-    @diffused_practices = DiffusionHistory.all.reject { |dh| dh.diffusion_history_statuses.order(id: :desc).first.status == 'Unsuccessful' }
+    @diffused_practices = DiffusionHistory.all.reject { |dh| dh.diffusion_history_statuses.order(id: :desc).first.status == 'Unsuccessful' || !dh.practice.published }
 
     @diffusion_histories = Gmaps4rails.build_markers(@diffused_practices.group_by(&:facility_id)) do |dhg, marker|
 
@@ -21,7 +21,9 @@ class HomeController < ApplicationController
       marker.picture({
                          url: view_context.image_path('map-marker-default.svg'),
                          width: 31,
-                         height: 44
+                         height: 44,
+                         scaledWidth: 31,
+                         scaledHeight: 44
                      })
 
       marker.shadow nil

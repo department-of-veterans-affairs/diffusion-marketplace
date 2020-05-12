@@ -12,7 +12,7 @@ function initialize() {
     let dataMarkers = null;
 
     function setIcon(json, icon) {
-        json.marker.getServiceObject().setIcon(icon);
+        json.marker.getServiceObject().setIcon({url: icon, scaledSize: new google.maps.Size(31, 44), size: new google.maps.Size(31, 44)});
     }
 
     function clickCallback(json) {
@@ -20,7 +20,7 @@ function initialize() {
             if (selectedMarker.id) {
                 const prevSelected = dataMarkers.find(m => m.id === selectedMarker.id);
                 if (prevSelected.status.toLowerCase() === 'complete') {
-                    prevSelected.marker.getServiceObject().setIcon(defaultMarkerIcon);
+                    setIcon(prevSelected, defaultMarkerIcon);
                 }
             }
             selectedMarker = json;

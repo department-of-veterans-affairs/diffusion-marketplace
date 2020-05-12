@@ -206,7 +206,7 @@ p {
 
 .usa-sidenav a, .usa-sidenav p {
   color: #000000;
-  font-weight: 100;
+  font-weight: normal;
 }
 
 .usa-sidenav li {
@@ -217,12 +217,16 @@ p {
   font-weight: normal;
 }
 
+.usa-sidenav a:hover {
+  background-color: #ffffff !important;
+}
+
 .usa-sidenav .usa-current::after {
-  background-color: #0076d6;
+  background-color: $dm-color-primary-blue;
   border-radius: 0;
   height: 100%;
   top: 0;
-  width: 0.5rem;
+  width: 4px;
 }
 
 a {
@@ -284,17 +288,17 @@ a {
 }
 
 .featured-favorite-practice-button {
-  right: 23px !important;
-  top: 6.5px !important;
+  right: 26px !important;
+  top: 10px !important;
 }
 
-.favorite-practice-button, .practice-card-list > .favorite-practice-button {
-  right: 20px;
-  top: 20px;
+.favorite-practice-button, .favorite-practice-button {
+  right: 22px;
+  top: 22px;
 }
 
 .col-4-not-featured-favorite-button {
-  right: 25px;
+  right: 26px;
   top: 10px;
 }
 

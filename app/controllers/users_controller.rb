@@ -44,7 +44,7 @@ class UsersController < ApplicationController
         reprocess_avatar(@user, params[:user])
       end
 
-      flash[:success] = 'Your profile has been updated.'
+      flash[:success] = 'You successfully updated your profile.'
       redirect_to edit_profile_path
     else
       @user.avatar = nil if @user.errors.messages.include?(:avatar)

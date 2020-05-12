@@ -6,7 +6,7 @@
         <%= render "devise/shared/login_header" %>
         <div class="login-body">
           <h2>Login</h2>
-          <%= render "shared/messages" %>
+          <%= render partial: "shared/messages", locals: {small_text: false} %>
           <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: 'usa-form x1-top'}) do |f| %>
             <%= f.label :email, class: 'usa-label x0' %>
             <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'usa-input', required: true %>
