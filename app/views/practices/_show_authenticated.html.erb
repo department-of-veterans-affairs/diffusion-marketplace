@@ -302,7 +302,7 @@
 <% end %>
 
 <!-- "Support Team" || "Contact" section -->
-<% if @practice.va_employees.any? %>
+<% if @practice.va_employees.any? || @practice.support_network_email.present? %>
   <section class="margin-bottom-7">
     <div class="grid-container">
       <div class="grid-row grid-gap">
