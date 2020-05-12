@@ -225,7 +225,7 @@ Yes')
         # implementation team checkbox
         expect(page).to have_selector('#implementation-team')
         find(:css, 'label[for="team"]').set(true)
-        expect(page).to have_content('You can’t do this alone! A team is needed to get it done. Here are the departments and titles of specific individuals that are needed to work together to implement the practice successfully. Ideal team size is 5 to 10 members.')
+        expect(page).to have_content('Here is a step-by-step guide to give you the best chance of success for adopting this practice. After completing these preparatory steps, we will put you in contact with the practice team members for full adoption details.')
 
         # practice champion checkbox
         expect(page).to have_selector('#practice-champion')
