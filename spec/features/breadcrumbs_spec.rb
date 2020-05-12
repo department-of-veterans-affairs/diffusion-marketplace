@@ -33,8 +33,8 @@ describe 'Breadcrumbs', type: :feature do
         expect(page).to have_content('Partners')
         expect(page).to have_content('Diffusion of Excellence')
       end
-      
-      click_on('The Best Practice Ever!')
+
+      find('.marketplace-card-container').click
       expect(page).to have_current_path(practice_path(@user_practice))
 
       within(:css, '#breadcrumbs') do
@@ -57,7 +57,7 @@ describe 'Breadcrumbs', type: :feature do
         expect(page).to have_content('The Best Practice Ever!')
       end
 
-      click_on('Take the next step')
+      click_on('See adoption checklist')
       # TODO: why is this timing out?
       # expect(page).to be_accessible.according_to :wcag2a, :section508
       within(:css, '#breadcrumbs') do
