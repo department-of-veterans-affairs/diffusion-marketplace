@@ -51,7 +51,7 @@
               <% end %>
               <div class="grid-container p0">
                 <div class="grid-row margin-bottom-3 cropper-boundary">
-                  <div class="grid-col-4 margin-right-1">
+                  <div class="grid-col-4 margin-right-1 profile-image-left-col-setter">
                     <div class="cropper-images-container avatar-profile-photo-container" data-type="user">
                       <% if @user.avatar.present? && @user.avatar.exists? %>
                           <%= image_tag @user.avatar_s3_presigned_url(:original), alt: "user avatar for #{@user.full_name}", class: 'cropper-thumbnail-original avatar-profile-photo hidden'%>
@@ -62,7 +62,7 @@
                         <i class="fas fa-user empty-user-avatar text-base-lighter"></i>
                       </div>
                   </div>
-                  <div class="grid-col-fill">
+                  <div class="grid-col-fill profile-image-right-col-setter">
                     <p>Photo</p>
                     <div class="text-base margin-y-1 cropper-upload-text ">
                       <p class="line-height-sans-505">
