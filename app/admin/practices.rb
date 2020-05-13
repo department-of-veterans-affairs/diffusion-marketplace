@@ -24,7 +24,7 @@ ActiveAdmin.register Practice do
     Practice.create
     selectable_column unless params[:scope] == "get_practice_owner_emails"
     id_column unless params[:scope] == "get_practice_owner_emails"
-    column :name
+    column(:practice_name) {|practice| practice.name}
     column :support_network_email unless params[:scope] == "get_practice_owner_emails"
     column(:user_email) {|practice| practice.user&.email}
     column :created_at unless params[:scope] == "get_practice_owner_emails"
