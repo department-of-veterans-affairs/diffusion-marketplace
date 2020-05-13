@@ -58,7 +58,9 @@ class PracticesController < ApplicationController
       marker.picture({
                          url: marker_url,
                          width: 31,
-                         height: 44
+                         height: 44,
+                         scaledWidth: 31,
+                         scaledHeight: 44
                      })
 
       marker.shadow nil
@@ -451,7 +453,6 @@ class PracticesController < ApplicationController
     practices.each do |practice|
       practice_hash = JSON.parse(practice.to_json) # convert to hash
       practice_hash['image'] = practice.main_display_image.present? ? practice.main_display_image_s3_presigned_url : ''
-      practice_hash['sponsored_practice'] = practice.practice_partners.any? && practice.practice_partners.find_by(name: 'None of the above, or Unsure').nil?
       if practice.date_initiated
         practice_hash['date_initiated'] = practice.date_initiated.strftime("%B %Y")
       else

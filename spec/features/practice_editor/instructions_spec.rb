@@ -16,6 +16,8 @@ describe 'Practice editor', type: :feature, js: true do
 
         it 'should be there' do
             expect(page).to have_content('Create your practice page')
+            expect(page).to have_no_content('Save your progress')
+            expect(page).to have_no_content('Publish practice')
             expect(page).to have_link(href: "mailto:marketplace@va.gov")
         end
 

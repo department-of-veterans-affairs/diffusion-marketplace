@@ -12,14 +12,14 @@ function initialize() {
     let dataMarkers = null;
 
     function setIcon(json, icon) {
-        json.marker.getServiceObject().setIcon(icon);
+        json.marker.getServiceObject().setIcon({url: icon, scaledSize: new google.maps.Size(31, 44), size: new google.maps.Size(31, 44)});
     }
 
     function clickCallback(json) {
         if (json.id !== selectedMarker.id) {
             if (selectedMarker.id) {
                 const prevSelected = dataMarkers.find(m => m.id === selectedMarker.id);
-                prevSelected.marker.getServiceObject().setIcon(defaultMarkerIcon);
+                setIcon(prevSelected, defaultMarkerIcon);
             }
             selectedMarker = json;
             setIcon(json, selectedMarkerIcon);

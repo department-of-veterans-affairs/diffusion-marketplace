@@ -107,3 +107,17 @@
     cursor: pointer;
   }
 }
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .usa-form {
+    max-width: none !important;
+  }
+
+  .profile-image-left-col-setter {
+    width: 33.5% !important;
+  }
+
+  .profile-image-right-col-setter {
+    width: 65% !important;
+  }
+}
