@@ -10,12 +10,12 @@ describe 'Search', type: :feature do
     @approver.add_role(User::USER_ROLES[0].to_sym)
     @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline')
     @user_practice2 = Practice.create!(name: 'Another Best Practice', user: @user, initiating_facility: '687HA', tagline: 'Test tagline 2')
-    login_as(@user, :scope => :user, :run_callbacks => false)
   end
 
   describe 'results' do
     it 'should show practices that are approved and published'do
       @user_practice.update(published: true, approved: true)
+      login_as(@user, :scope => :user, :run_callbacks => false)
       visit '/search'
       expect(page).to be_accessible.according_to :wcag2a, :section508
 
@@ -53,6 +53,17 @@ describe 'Search', type: :feature do
 
     end
 
+  end
+
+  describe 'Cache' do
+    it 'Should be cleared if certain practice attributes have been updated' do
+      login_as(@admin, :scope => :user, :run_callbacks => false)
+      visit '/search'
+      fill_in('practice-search-field', with: 'Test')
+      click_button('Search')
+
+      expect(Rails.cache.redis.keys).to include("views/localhost:3200/search")
+    end
   end
 
 end

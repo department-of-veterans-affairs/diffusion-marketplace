@@ -1,4 +1,9 @@
 class Practice < ApplicationRecord
+  include ActiveModel::Dirty
+
+  before_save :clear_cache_on_update
+  before_create :clear_cache_on_create
+
   extend FriendlyId
   friendly_id :name, use: :slugged
   acts_as_list
@@ -16,6 +21,26 @@ class Practice < ApplicationRecord
   attr_accessor :delete_main_display_image
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
   attr_accessor :practice_partner, :department
+
+  def clear_cache
+    request = Thread.current[:request]
+    cache_key = "views/#{request.host_with_port}/search"
+    Rails.cache.delete(cache_key)
+  end
+
+  def clear_cache_on_create
+    clear_cache
+  end
+
+  def clear_cache_on_update
+    if self.name_changed? ||
+       self.tagline_changed? ||
+       self.description_changed? ||
+       self.summary_changed? ||
+       self.initiating_facility_changed?
+      clear_cache
+    end
+  end
 
   # views
   def views

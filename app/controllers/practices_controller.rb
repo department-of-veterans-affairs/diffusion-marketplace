@@ -19,6 +19,9 @@ class PracticesController < ApplicationController
                                            :contact, :checklist, :published,
                                            :publication_validation, :adoptions]
   before_action :set_date_initiated_params, only: [:update, :publication_validation]
+  before_action :store_request_in_thread
+
+  caches_action :search
 
   # GET /practices
   # GET /practices.json
@@ -372,6 +375,10 @@ class PracticesController < ApplicationController
   end
 
   private
+
+  def store_request_in_thread
+    Thread.current[:request] = request
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_practice
