@@ -9,13 +9,13 @@ ActiveAdmin.register Practice do
 
   csv do
     if params[:scope] == "get_practice_owner_emails"
-      column :name
-      column(:user) {|practice| practice.user&.email}
+      column(:practice_name) {|practice| practice.name}
+      column(:owner_email) {|practice| practice.user&.email}
     else
       column :id
-      column :name
+      column(:practice_name) {|practice| practice.name}
       column :support_network_email
-      column(:user) {|practice| practice.user&.email}
+      column(:owner_email) {|practice| practice.user&.email}
       column :created_at
     end
   end
@@ -26,7 +26,7 @@ ActiveAdmin.register Practice do
     id_column unless params[:scope] == "get_practice_owner_emails"
     column(:practice_name) {|practice| practice.name}
     column :support_network_email unless params[:scope] == "get_practice_owner_emails"
-    column(:user_email) {|practice| practice.user&.email}
+    column(:owner_email) {|practice| practice.user&.email}
     column :created_at unless params[:scope] == "get_practice_owner_emails"
     actions
   end
