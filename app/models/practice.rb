@@ -24,8 +24,10 @@ class Practice < ApplicationRecord
 
   def clear_cache
     request = Thread.current[:request]
-    cache_key = "views/#{request.host_with_port}/search"
-    Rails.cache.delete(cache_key)
+    if request
+      cache_key = "views/#{request.host_with_port}/search"
+      Rails.cache.delete(cache_key)
+    end
   end
 
   def clear_cache_on_create

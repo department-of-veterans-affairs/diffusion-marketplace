@@ -1,4 +1,5 @@
 ActiveAdmin.register Practice do
+  include StoreRequestConcern
   actions :all, except: [:destroy]
   permit_params :name, :user_email
   config.create_another = true
@@ -51,6 +52,7 @@ ActiveAdmin.register Practice do
 
   controller do
     before_create do |practice|
+      store_request_in_thread
       if params[:user_email].present?
         set_practice_user(practice)
       end

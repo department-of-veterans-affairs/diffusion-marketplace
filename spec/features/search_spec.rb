@@ -61,8 +61,9 @@ describe 'Search', type: :feature do
       visit '/search'
       fill_in('practice-search-field', with: 'Test')
       click_button('Search')
+      parsed_uri = URI.parse(page.current_url)
 
-      expect(Rails.cache.redis.keys).to include("views/localhost:3200/search")
+      expect(Rails.cache.redis.keys).to include("views/#{parsed_uri.host}:#{parsed_uri.port}/search")
     end
   end
 

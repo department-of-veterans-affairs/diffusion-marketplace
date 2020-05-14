@@ -1,5 +1,6 @@
 class PracticesController < ApplicationController
   include CropperUtils
+  include StoreRequestConcern
   before_action :set_practice, only: [:show, :edit, :update, :destroy, :planning_checklist,
                                       :commit, :committed, :highlight, :un_highlight, :feature,
                                       :un_feature, :favorite, :instructions, :overview, :origin,
@@ -19,7 +20,7 @@ class PracticesController < ApplicationController
                                            :contact, :checklist, :published,
                                            :publication_validation, :adoptions]
   before_action :set_date_initiated_params, only: [:update, :publication_validation]
-  before_action :store_request_in_thread
+  before_action :store_request_in_thread, only: [:update]
 
   caches_action :search
 
@@ -375,10 +376,6 @@ class PracticesController < ApplicationController
   end
 
   private
-
-  def store_request_in_thread
-    Thread.current[:request] = request
-  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_practice
