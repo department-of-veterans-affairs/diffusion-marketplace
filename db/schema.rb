@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_17_204838) do
+ActiveRecord::Schema.define(version: 2020_05_13_175323) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -480,6 +480,47 @@ ActiveRecord::Schema.define(version: 2020_04_17_204838) do
     t.index ["password_archivable_type", "password_archivable_id"], name: "index_password_archivable"
   end
 
+  create_table "page_categories", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "page_components", force: :cascade do |t|
+    t.bigint "page_id"
+    t.integer "position"
+    t.integer "component_id"
+    t.string "component_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_id"], name: "index_page_components_on_page_id"
+  end
+
+  create_table "page_header_components", force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_component_id"], name: "index_page_header_components_on_page_component_id"
+  end
+
+  create_table "page_paragraph_components", force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_component_id"], name: "index_page_paragraph_components_on_page_component_id"
+  end
+
+  create_table "pages", force: :cascade do |t|
+    t.bigint "page_category_id"
+    t.string "title"
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_category_id"], name: "index_pages_on_page_category_id"
+  end
+
   create_table "photo_files", force: :cascade do |t|
     t.string "title"
     t.integer "position"
@@ -937,6 +978,10 @@ ActiveRecord::Schema.define(version: 2020_04_17_204838) do
   add_foreign_key "job_positions", "job_position_categories"
   add_foreign_key "milestones", "timelines"
   add_foreign_key "mitigations", "risk_mitigations"
+  add_foreign_key "page_components", "pages"
+  add_foreign_key "page_header_components", "page_components"
+  add_foreign_key "page_paragraph_components", "page_components"
+  add_foreign_key "pages", "page_categories"
   add_foreign_key "photo_files", "practices"
   add_foreign_key "practice_creators", "practices"
   add_foreign_key "practice_creators", "users"

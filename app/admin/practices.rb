@@ -22,6 +22,19 @@ ActiveAdmin.register Practice do
     f.inputs  do
       f.input :name, label: 'Practice name'
       f.input :user, label: 'User email', as: :string, input_html: {name: 'user_email'}
+      f.has_many :impact_photos, sortable: :position, sortable_start: 1 do |i|
+        i.input :description, hint: 'Put a description that goes here about the photo'
+      end
+      f.has_many :risk_mitigations, sortable: :position, sortable_start: 1 do |rm|
+        rm.has_many :risks, sortable: :position, sortable_start: 1 do |r|
+          r.input :description
+        end
+
+        rm.has_many :mitigations, sortable: :position, sortable_start: 1 do |m|
+          m.input :description
+        end
+
+      end
     end        # builds an input field for every attribute
     f.actions         # adds the 'Submit' and 'Cancel' buttons
   end
