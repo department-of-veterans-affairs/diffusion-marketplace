@@ -1,0 +1,94 @@
+BEGIN:VCALENDAR
+METHOD:REQUEST
+PRODID:Microsoft Exchange Server 2010
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:Eastern Standard Time
+BEGIN:STANDARD
+DTSTART:16010101T020000
+TZOFFSETFROM:-0400
+TZOFFSETTO:-0500
+RRULE:FREQ=YEARLY;INTERVAL=1;BYDAY=1SU;BYMONTH=11
+END:STANDARD
+BEGIN:DAYLIGHT
+DTSTART:16010101T020000
+TZOFFSETFROM:-0500
+TZOFFSETTO:-0400
+RRULE:FREQ=YEARLY;INTERVAL=1;BYDAY=2SU;BYMONTH=3
+END:DAYLIGHT
+END:VTIMEZONE
+BEGIN:VEVENT
+ORGANIZER;CN="Henderson, Blake":mailto:Blake.Henderson@va.gov
+ATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN=Alex Seeli
+ g:mailto:alex.seelig@agile6.com
+ATTACH:CID:image003.jpg@01D6246E.07316B10
+ATTACH:CID:image002.png@01D6246E.3BAEEB10
+ATTACH:CID:image004.jpg@01D6247F.D806A910
+ATTACH:CID:image001.jpg@01D6247F.D8215D00
+ATTACH:CID:image004.jpg@01D6247F.D8277780
+DESCRIPTION;LANGUAGE=en-US:................................................
+ ..........................................................................
+ ...............\nJoin Skype Meeting<https://meet.RTC.VA.GOV/blake.henderso
+ n/6R00FY10>\nTrouble Joining? Try Skype Web App<https://meet.RTC.VA.GOV/bl
+ ake.henderson/6R00FY10?sl=1>\nJoin by phone\n\n844-376-0278\,\,801303762# 
+ (East)                   English (United States)\n844-815-1331\,\,80130376
+ 2# (East)                   English (United States)\n844-770-5400\,\,80130
+ 3762# (East)                   English (United States)\n\nFind a local num
+ ber<https://dialin.RTC.VA.GOV?id=801303762>\n\nConference ID: 801303762\nF
+ orgot your dial-in PIN?<https://dialin.RTC.VA.GOV> |Help<https://o15.offic
+ eredir.microsoft.com/r/rlidLync15?clid=1033&p1=5&p2=2009>\n\n[https://vaww
+ .portal2.va.gov/sites/LYNC/SiteAssets/VALOGO.png][!OC([1033])!]\n.........
+ ..........................................................................
+ ......................................................\n\n\n[cid:image002.
+ png@01D6246E.3BAEEB10]\n\nGreetings\,\n\nThank you for your interest in th
+ e 2020 VHA Shark Tank Competition. The VA Innovation Support Team will hos
+ t an Applicant Informational Session at 2:00 PM ET on Thursday\, June 18\,
+  2020.\n\nThe session will provide an overview of what to expect during th
+ e 2020 VHA Shark Tank Competition application process and offer an opportu
+ nity to ask questions. If you cannot attend the session\, the VA Innovatio
+ n Support Team will post meeting materials on the VHA Shark Tank Competiti
+ on page on the VHA Diffusion Marketplace. The meeting invite will be updat
+ ed with dial-in and link at a later date.\n\nIf you have any questions\, p
+ lease email the VA Innovation Support Team<mailto:VAInnovation@atlasresear
+ ch.us>.\n\nAgain\, thank you for your interest in the Competition\, and we
+  look forward to receiving your application.\n\n\nSincerely\,\n\nThe VA In
+ novation Support Team\n\n[cid:image004.jpg@01D6247F.D8277780]\n\n
+UID:040000008200E00074C5B7101A82E00800000000A02CB53B6E24D601000000000000000
+ 01000000076D43D3D5B954942935C03061F430EC0
+SUMMARY;LANGUAGE=en-US:2020 VHA Shark Tank Competition Applicant Informatio
+ nal Session 
+DTSTART;TZID=Eastern Standard Time:20200623T140000
+DTEND;TZID=Eastern Standard Time:20200623T150000
+CLASS:PUBLIC
+PRIORITY:5
+DTSTAMP:20200507T185735Z
+TRANSP:OPAQUE
+STATUS:CONFIRMED
+SEQUENCE:1
+LOCATION;LANGUAGE=en-US:Skype Meeting
+X-MICROSOFT-CDO-APPT-SEQUENCE:1
+X-MICROSOFT-CDO-OWNERAPPTID:476534756
+X-MICROSOFT-CDO-BUSYSTATUS:TENTATIVE
+X-MICROSOFT-CDO-INTENDEDSTATUS:BUSY
+X-MICROSOFT-CDO-ALLDAYEVENT:FALSE
+X-MICROSOFT-CDO-IMPORTANCE:1
+X-MICROSOFT-CDO-INSTTYPE:0
+X-MICROSOFT-ONLINEMEETINGEXTERNALLINK:https://meet.RTC.VA.GOV/blake.henders
+ on/6R00FY10
+X-MICROSOFT-ONLINEMEETINGCONFLINK:conf:sip:blake.henderson@va.gov\;gruu\;op
+ aque=app:conf:focus:id:6R00FY10?conversation-id=gdAG4PmlM
+X-MICROSOFT-CONFERENCETELURI:tel:8443760278\,\,801303762
+X-MICROSOFT-ONLINEMEETINGINFORMATION:{"OnlineMeetingProvider":1}
+X-MICROSOFT-DONOTFORWARDMEETING:FALSE
+X-MICROSOFT-DISALLOW-COUNTER:FALSE
+X-MICROSOFT-LOCATIONS:[{"DisplayName":"Skype Meeting"\,"LocationAnnotation"
+ :""\,"LocationUri":""\,"LocationStreet":""\,"LocationCity":""\,"LocationSt
+ ate":""\,"LocationCountry":""\,"LocationPostalCode":""\,"LocationFullAddre
+ ss":""}]
+BEGIN:VALARM
+DESCRIPTION:REMINDER
+TRIGGER;RELATED=START:-PT15M
+ACTION:DISPLAY
+END:VALARM
+END:VEVENT
+END:VCALENDAR
