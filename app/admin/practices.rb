@@ -5,7 +5,7 @@ ActiveAdmin.register Practice do
 
   scope :published
   scope :unpublished
-  scope :Get_Practice_Owner_Emails
+  scope :get_practice_owner_emails
 
   csv do
     if params[:scope] == "get_practice_owner_emails"
