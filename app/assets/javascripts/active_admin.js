@@ -4,20 +4,27 @@
 //= require active_admin/base
 
 (function() {
-    var ready;
-    console.log('loaded')
-    ready = function() {
-        console.log('ready')
-        $(document).on("change", '.polyselect', function() {
-            console.log('showing')
-            $('.polyform').hide();
-            return $('#' + $(this).val() + '_poly').show();
+    var loadComponents = function() {
+        var selects = $('.polyform').parent().siblings('li.select.input').find('.polyselect');
+        $.each(selects, function(index, select) {
+            return $('#' + $(select).val() + '_poly_' + $(select).data('component-id')).show();
         });
-        return $('.polyform').first().parent('form').on("submit", function(e) {
+    };
+
+    var ready = function() {
+        loadComponents();
+
+        // switches out polymorphic forms in page component
+        $(document).on("change", '.polyselect', function() {
+            $('.polyform.component-' + $(this).data('component-id')).hide();
+            return $('#' + $(this).val() + '_poly_' + $(this).data('component-id')).show();
+        });
+
+        // when form is submitted, purges any page component form that is not used on the page
+        return $(document).on("submit", 'form', function(e) {
             return $('.polyform').each((function(_this) {
                 return function(index, element) {
-                    var $e;
-                    $e = $(element);
+                    var $e = $(element);
                     if ($e.css('display') !== 'block') {
                         return $e.remove();
                     }

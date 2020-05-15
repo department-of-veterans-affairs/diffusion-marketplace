@@ -1,5 +1,5 @@
 require 'rails_helper'
 
-RSpec.describe PageCategory, type: :model do
+RSpec.describe PageGroup, type: :model do
   pending "add some examples to (or delete) #{__FILE__}"
 end

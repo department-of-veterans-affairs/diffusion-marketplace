@@ -480,12 +480,6 @@ ActiveRecord::Schema.define(version: 2020_05_13_175323) do
     t.index ["password_archivable_type", "password_archivable_id"], name: "index_password_archivable"
   end
 
-  create_table "page_categories", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "page_components", force: :cascade do |t|
     t.bigint "page_id"
     t.integer "position"
@@ -496,9 +490,19 @@ ActiveRecord::Schema.define(version: 2020_05_13_175323) do
     t.index ["page_id"], name: "index_page_components_on_page_id"
   end
 
+  create_table "page_groups", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_page_groups_on_slug", unique: true
+  end
+
   create_table "page_header_components", force: :cascade do |t|
     t.bigint "page_component_id"
     t.string "text"
+    t.string "heading_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["page_component_id"], name: "index_page_header_components_on_page_component_id"
@@ -513,12 +517,13 @@ ActiveRecord::Schema.define(version: 2020_05_13_175323) do
   end
 
   create_table "pages", force: :cascade do |t|
-    t.bigint "page_category_id"
+    t.bigint "page_group_id"
     t.string "title"
+    t.string "description"
     t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["page_category_id"], name: "index_pages_on_page_category_id"
+    t.index ["page_group_id"], name: "index_pages_on_page_group_id"
   end
 
   create_table "photo_files", force: :cascade do |t|
@@ -981,7 +986,7 @@ ActiveRecord::Schema.define(version: 2020_05_13_175323) do
   add_foreign_key "page_components", "pages"
   add_foreign_key "page_header_components", "page_components"
   add_foreign_key "page_paragraph_components", "page_components"
-  add_foreign_key "pages", "page_categories"
+  add_foreign_key "pages", "page_groups"
   add_foreign_key "photo_files", "practices"
   add_foreign_key "practice_creators", "practices"
   add_foreign_key "practice_creators", "users"
