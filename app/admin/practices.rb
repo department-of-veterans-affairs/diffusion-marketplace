@@ -176,7 +176,6 @@ ActiveAdmin.register Practice do
     end
 
     def find_resource
-      debugger
       scoped_collection.friendly.find(params[:id])
     end
   end
