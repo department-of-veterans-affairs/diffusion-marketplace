@@ -1,3 +1,3 @@
 class PageParagraphComponent < ApplicationRecord
-  belongs_to :page_component, optional: true
+  has_one :page_component, as: :component, autosave: true
 end

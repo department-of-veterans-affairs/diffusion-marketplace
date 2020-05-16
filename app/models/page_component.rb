@@ -1,7 +1,7 @@
 class PageComponent < ApplicationRecord
   belongs_to :page, optional: true
   acts_as_list scope: :page
-  belongs_to :component, polymorphic: true
+  belongs_to :component, polymorphic: true, autosave: true
   accepts_nested_attributes_for :component
 
   after_destroy :destroy_component
@@ -32,5 +32,5 @@ class PageComponent < ApplicationRecord
     debugger
     self.component = _component
   end
-
+  
 end
