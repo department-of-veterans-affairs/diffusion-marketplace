@@ -19,7 +19,6 @@ class PageComponent < ApplicationRecord
   }
 
   def build_component(params)
-    # TODO: swap out COMPONENT_TYPES
     raise "Unknown component_type: #{component_type}" unless COMPONENT_SELECTION.values.include?(component_type)
     if component_id
       _component = eval("#{self.component_type}.find(#{self.component_id})")
@@ -27,8 +26,7 @@ class PageComponent < ApplicationRecord
     else
       _component = component_type.constantize.new(params)
     end
-    debugger
     self.component = _component
   end
-  
+
 end

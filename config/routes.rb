@@ -1,6 +1,7 @@
 # frozen_string_literal: true
-
 Rails.application.routes.draw do
+  require "./lib/constraints/route_constraints"
+  get ':page_group_friendly_id/:page_slug' => 'page#show', constraints: PageGroupConstraint
   ActiveAdmin.routes(self)
   devise_for :users, controllers: { registrations: 'registrations' }
   mount Ahoy::Engine => '/ahoy', as: :dm_ahoy

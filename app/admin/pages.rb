@@ -16,21 +16,21 @@ ActiveAdmin.register Page do
   # end
 
   show do
-    attributes_table  do
+    attributes_table do
+      row('Complete URL') { |page| link_to("/#{page.page_group.name}/#{page.slug}", "/#{page.page_group.name}/#{page.slug}") }
       row :page_group
-      row :id
       row :slug
       row :title
       row :description
       row :created_at
       row :updated_at
       row 'Components' do |p|
-         p.page_components.each do |pc|
-           component = eval("#{pc.component_type}.find(#{pc.component_id})")
-           para pc.component_type
-           para component&.heading_type if pc.component_type == 'PageHeaderComponent'
-           para component&.text
-         end
+        p.page_components.each do |pc|
+          component = eval("#{pc.component_type}.find(#{pc.component_id})")
+          para pc.component_type
+          para component&.heading_type if pc.component_type == 'PageHeaderComponent'
+          para component&.text
+        end
       end
     end
     active_admin_comments
@@ -52,7 +52,6 @@ ActiveAdmin.register Page do
         placeholder = pc.object.component_id ? index - 1 : 'NEW_PAGE_COMPONENT_RECORD'
         component = pc.object.component_id ? eval("#{pc.object.component_type}.find(#{pc.object.component_id})") : nil
 
-        # TODO: DM-1750: <option value="ClassName">Friendly Name</option>
         pc.input :component_type, input_html: {class: 'polyselect', 'data-component-id': placeholder}, collection: PageComponent::COMPONENT_SELECTION
 
         render partial: 'page_header_component_form', locals: {f: pc, component: component, placeholder: placeholder}
