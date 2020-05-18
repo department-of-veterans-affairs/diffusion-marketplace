@@ -5,4 +5,10 @@ class Category < ApplicationRecord
 
   has_many :category_practices
   has_many :practices, through: :categories
+
+  attr_accessor :related_terms_raw
+
+  def related_terms_raw
+    self[:related_terms].join(", ") unless self[:related_terms].nil?
+  end
 end

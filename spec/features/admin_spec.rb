@@ -16,6 +16,10 @@ describe 'The admin dashboard', type: :feature do
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
     @practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline')
+    @categories = [
+      Category.create!(name: 'COVID', description: 'COVID related practices', related_terms: 'COVID-19, Coronavirus'),
+      Category.create!(name: 'Telehealth', description: 'Telelhealth related practices')
+    ]
     @departments = [
         Department.create!(name: 'Admissions', short_name: 'admissions'),
         Department.create!(name: 'None', short_name: 'none'),
@@ -106,6 +110,9 @@ describe 'The admin dashboard', type: :feature do
       click_link('Dashboard')
       expect(page).to have_current_path(admin_dashboard_path)
 
+      click_link('Categories')
+      expect(page).to have_current_path(admin_categories_path)
+
       click_link('Comments')
       expect(page).to have_current_path(admin_comments_path)
 
@@ -124,6 +131,27 @@ describe 'The admin dashboard', type: :feature do
       click_link('Versions')
       expect(page).to have_current_path(admin_versions_path)
     end
+  end
+
+  it 'should be able to view and update categories' do
+    login_as(@admin, scope: :user, run_callbacks: false)
+    visit '/admin'
+
+    click_link('Categories')
+    expect(page).to have_current_path(admin_categories_path)
+
+    click_link('New Category')
+    expect(page).to have_current_path(new_admin_category_path)
+    fill_in('Name', with: 'Mental Health')
+    fill_in('Description', with: 'Mental Health related practices')
+    fill_in('Related Terms', with: 'emotional health, emotional wellbeing')
+    click_button('Create Category')
+    expect(page).to have_current_path(admin_category_path(Category.last))
+    click_link('Edit Category')
+    fill_in('Related Terms', with: 'psychological health, mental wellbeing')
+    click_button('Update Category')
+    expect(page).to have_current_path(admin_category_path(Category.last))
+    expect(page).to have_content('psychological health, mental wellbeing')
   end
 
   it 'should be able to view and update departments' do
