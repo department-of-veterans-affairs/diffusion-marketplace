@@ -111,7 +111,7 @@ class Practice < ApplicationRecord
 
   scope :published,   -> { where(published: true) }
   scope :unpublished,  -> { where(published: false) }
-  scope :get_practice_owner_emails, -> {where(user_id: exists?)}
+  scope :get_practice_owner_emails, -> {where.not(user_id: nil)}
 
   belongs_to :user, optional: true
 
