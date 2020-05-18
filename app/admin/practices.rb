@@ -1,5 +1,4 @@
 ActiveAdmin.register Practice do
-  include StoreRequestConcern
   actions :all, except: [:destroy]
   permit_params :name, :user_email
   config.create_another = true
@@ -51,6 +50,7 @@ ActiveAdmin.register Practice do
   filter :support_network_email
 
   controller do
+    include StoreRequestConcern
     before_create do |practice|
       store_request_in_thread
       if params[:user_email].present?

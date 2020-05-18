@@ -39,7 +39,8 @@ class Practice < ApplicationRecord
        self.tagline_changed? ||
        self.description_changed? ||
        self.summary_changed? ||
-       self.initiating_facility_changed?
+       self.initiating_facility_changed? ||
+       self.main_display_image_updated_at_changed?
       clear_cache
     end
   end
