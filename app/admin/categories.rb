@@ -1,9 +1,11 @@
 ActiveAdmin.register Category do
+  batch_action :destroy, false
+
   filter :name
   filter :description
+  filter :related_terms
 
   index do
-    selectable_column
     id_column
     column :name
     column :description
@@ -46,6 +48,18 @@ ActiveAdmin.register Category do
       end
     end
 
+    def destroy
+      deleted = remove_category
+
+      respond_to do |format|
+        if deleted
+          format.html { redirect_to admin_categories_path(notice: 'Category was successfully updated.') }
+        else
+          format.html { redirect_to edit_admin_category_path(id: params[:id]), :flash => { :error => 'There was an error updating your category.' }}
+        end
+      end
+    end
+
     private
 
     def category_params
@@ -56,6 +70,17 @@ ActiveAdmin.register Category do
       terms = params[:category][:related_terms_raw]
       unless terms.blank?
         params[:category][:related_terms] = terms.split(/\s*,\s*/)
+      end
+    end
+
+    def remove_category
+      begin
+        Category.find(params[:id]).destroy!
+        CategoryPractice.where(category_id: category[:id]).map { |cp| cp.destroy! }
+        true
+      rescue => e
+        Rails.logger.error "remove_category error: #{e.message}"
+        e
       end
     end
   end
