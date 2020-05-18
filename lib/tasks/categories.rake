@@ -8,7 +8,7 @@ namespace :categories do
 
     covid_cats.each do |cat|
       if cat == 'COVID'
-        Category.find_or_create_by!(name: cat, related_terms: ['COVID-19', 'Coronavirus'])
+        Category.find_or_create_by!(name: cat, related_terms: ['COVID-19', 'COVID 19', 'Coronavirus'])
       else
         Category.find_or_create_by!(name: cat)
       end
