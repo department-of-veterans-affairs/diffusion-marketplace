@@ -11,18 +11,16 @@ class PageComponent < ApplicationRecord
     _component.destroy if _component
   end
 
-  COMPONENT_TYPES = %w(PageHeaderComponent PageParagraphComponent)
-
   # used for the component selection on the page builder
-  # 'ClassName': 'Friendly Name'
+  # 'Friendly Name': 'ClassName'
   COMPONENT_SELECTION = {
-      'PageHeaderComponent': 'Header',
-      'PageParagraphComponent': 'Paragraph'
+      'Header': 'PageHeaderComponent',
+      'Paragraph': 'PageParagraphComponent'
   }
 
   def build_component(params)
     # TODO: swap out COMPONENT_TYPES
-    raise "Unknown component_type: #{component_type}" unless COMPONENT_TYPES.include?(component_type)
+    raise "Unknown component_type: #{component_type}" unless COMPONENT_SELECTION.values.include?(component_type)
     if component_id
       _component = eval("#{self.component_type}.find(#{self.component_id})")
       _component.update(params)

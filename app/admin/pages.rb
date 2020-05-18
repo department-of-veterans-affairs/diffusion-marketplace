@@ -53,7 +53,7 @@ ActiveAdmin.register Page do
         component = pc.object.component_id ? eval("#{pc.object.component_type}.find(#{pc.object.component_id})") : nil
 
         # TODO: DM-1750: <option value="ClassName">Friendly Name</option>
-        pc.input :component_type, input_html: {class: 'polyselect', 'data-component-id': placeholder}, collection: PageComponent::COMPONENT_TYPES
+        pc.input :component_type, input_html: {class: 'polyselect', 'data-component-id': placeholder}, collection: PageComponent::COMPONENT_SELECTION
 
         render partial: 'page_header_component_form', locals: {f: pc, component: component, placeholder: placeholder}
         render partial: 'page_paragraph_component_form', locals: {f: pc, component: component, placeholder: placeholder}
