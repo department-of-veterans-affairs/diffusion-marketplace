@@ -66,5 +66,20 @@ describe 'Search', type: :feature do
       expect(page).to have_content(@user_practice.initiating_facility)
       expect(page).to have_content('1 result for "Telehealth"')
     end
+
+    it 'should be able to search based on practice categories related terms' do
+      @user_practice.update(published: true, approved: true)
+      category = Category.create!(name: 'Covid', related_terms: ['Coronavirus'])
+      CategoryPractice.create!(category: category, practice: @user_practice)
+
+      visit '/search'
+
+      fill_in('practice-search-field', with: 'Coronavirus')
+      click_button('Search')
+
+      expect(page).to have_content(@user_practice.name)
+      expect(page).to have_content(@user_practice.initiating_facility)
+      expect(page).to have_content('1 result for "Coronavirus"')
+    end
   end
 end

@@ -465,6 +465,10 @@ class PracticesController < ApplicationController
         practice.categories.each do |category|
           if category.name != 'None'
             practice_hash['categories_name'].push category.name
+
+            unless category.related_terms.empty?
+              practice_hash['categories_name'].concat(category.related_terms)
+            end
           end
         end
       end
