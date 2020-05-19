@@ -252,7 +252,7 @@ describe 'The admin dashboard', type: :feature do
     click_link('Practices')
     expect(page).to have_current_path(admin_practices_path)
     click_link 'Get Practice Owner Emails'
-    click_link 'CSV'
     expect(page).to have_current_path('/admin/practices?scope=get_practice_owner_emails')
+    expect(page).to have_content('Displaying 1 Practice')
   end
 end
