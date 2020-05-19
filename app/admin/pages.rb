@@ -54,8 +54,8 @@ ActiveAdmin.register Page do
 
         pc.input :component_type, input_html: {class: 'polyselect', 'data-component-id': placeholder}, collection: PageComponent::COMPONENT_SELECTION
 
-        render partial: 'page_header_component_form', locals: {f: pc, component: component, placeholder: placeholder}
-        render partial: 'page_paragraph_component_form', locals: {f: pc, component: component, placeholder: placeholder}
+        render partial: 'page_header_component_form', locals: {f: pc, component: component.class == PageHeaderComponent ? component : nil, placeholder: placeholder}
+        render partial: 'page_paragraph_component_form', locals: {f: pc, component: component.class == PageParagraphComponent ? component : nil, placeholder: placeholder}
       end
     end
     f.actions # adds the 'Submit' and 'Cancel' buttons
