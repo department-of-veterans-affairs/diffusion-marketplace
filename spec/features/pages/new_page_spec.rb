@@ -11,7 +11,7 @@ describe 'Page Builder', type: :feature do
     login_as(@admin, scope: :user, run_callbacks: false)
   end
 
-  fit 'Should make the page' do
+  it 'Should make the page' do
     visit '/admin'
     click_link 'Pages'
 
