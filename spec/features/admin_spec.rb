@@ -29,7 +29,6 @@ describe 'The admin dashboard', type: :feature do
     FileUtils.rm_rf("#{Rails.root}/tmp/downloads")
   end
 
-
   it 'if not logged in, should be redirected to sign_in page' do
     visit '/admin'
 
@@ -246,5 +245,14 @@ describe 'The admin dashboard', type: :feature do
     click_link("#{practice_overview_path(Practice.last)}")
 
     expect(page).to have_current_path(practice_overview_path(Practice.last))
+  end
+  it 'practice owner emails are downloaded when user clicks csv link and get_practice_owner_emails scope specified' do
+    login_as(@admin, scope: :user, run_callbacks: false)
+    visit '/admin'
+    click_link('Practices')
+    expect(page).to have_current_path(admin_practices_path)
+    click_link 'Get Practice Owner Emails'
+    expect(page).to have_current_path('/admin/practices?scope=get_practice_owner_emails')
+    expect(page).to have_content('Displaying 1 Practice')
   end
 end
