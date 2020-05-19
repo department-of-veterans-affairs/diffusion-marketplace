@@ -1,12 +1,3 @@
-### Uncomment the "f.inputs" block to render on PageComponent page to get html
-### This will help build the Arbre::Context to concat with the main template
-# f.inputs 'Header',
-#          for: [:component, f.object.component || PageHeaderComponent.new],
-#          id: 'PageHeaderComponent_poly', class: 'inputs polyform' do |phc|
-#   phc.input :text, hint: 'Make this header stand out'
-#   debugger
-# end
-
 # TODO: get the placeholder how active admin does "NEW_#{association_human_name.upcase.split(' ').join('_')}_RECORD"
 placeholder ||= 'NEW_PAGE_COMPONENT_RECORD' # = "NEW_#{association_human_name.upcase.split(' ').join('_')}_RECORD"
 component ||= nil

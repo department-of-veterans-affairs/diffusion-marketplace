@@ -5,7 +5,7 @@ ActiveAdmin.register Page do
   #
   permit_params :title, :page_group_id, :slug, :description,
                 page_components_attributes: [:id, :component_type, :position, :_destroy,
-                                             component_attributes: [:text, :heading_type]]
+                                             component_attributes: [:text, :heading_type, practices: []]]
   #
   # or
   #
@@ -29,7 +29,8 @@ ActiveAdmin.register Page do
           component = eval("#{pc.component_type}.find(#{pc.component_id})")
           para pc.component_type
           para component&.heading_type if pc.component_type == 'PageHeaderComponent'
-          para component&.text
+          para component&.text unless pc.component_type == 'PagePracticeListComponent'
+          para component&.practices.join(', ') if pc.component_type == 'PagePracticeListComponent'
         end
       end
     end
@@ -56,6 +57,7 @@ ActiveAdmin.register Page do
 
         render partial: 'page_header_component_form', locals: {f: pc, component: component.class == PageHeaderComponent ? component : nil, placeholder: placeholder}
         render partial: 'page_paragraph_component_form', locals: {f: pc, component: component.class == PageParagraphComponent ? component : nil, placeholder: placeholder}
+        render partial: 'page_practice_list_component_form', locals: {f: pc, component: component.class == PagePracticeListComponent ? component : nil, placeholder: placeholder}
       end
     end
     f.actions # adds the 'Submit' and 'Cancel' buttons
