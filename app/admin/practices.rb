@@ -34,6 +34,7 @@ ActiveAdmin.register Practice do
     f.inputs  do
       f.input :name, label: 'Practice name'
       f.input :user, label: 'User email', as: :string, input_html: {name: 'user_email'}
+      f.input :categories, as: :select, multiple: true, collection: Category.all.map { |cat| ["#{cat.name.capitalize}", cat.id]}, input_html: { value: @practice_categories }
     end        # builds an input field for every attribute
     f.actions         # adds the 'Submit' and 'Cancel' buttons
   end
@@ -62,6 +63,9 @@ ActiveAdmin.register Practice do
   filter :support_network_email
 
   controller do
+    before_action :set_categories_view, only: :edit
+    after_action :update_categories, only: [:create, :update]
+
     before_create do |practice|
       if params[:user_email].present?
         set_practice_user(practice)
@@ -93,6 +97,35 @@ ActiveAdmin.register Practice do
 
     def find_resource
       scoped_collection.friendly.find(params[:id])
+    end
+
+    def set_categories_view
+      @practice_categories = []
+      current_categories = CategoryPractice.where(practice_id: params[:id])
+      unless current_categories.empty?
+        current_categories.map do |cp|
+          @practice_categories.push(cp[:category_id])
+        end
+      end
+    end
+
+    def update_categories
+      # remove the first category id--first is always empty ''
+      selected_categories = params[:practice][:category_ids].drop(1)
+      selected_categories.map! { |cat| cat.to_i }
+      practice = Practice.find_by(name: params[:practice][:name])
+      current_categories = CategoryPractice.where(practice_id: practice[:id])
+      if selected_categories.length > 0
+        selected_categories.map { |cat| CategoryPractice.find_or_create_by!(category_id: cat, practice_id: practice[:id]) }
+      end
+
+      if params[:action] == 'update' && current_categories.present?
+        if selected_categories.empty?
+          current_categories.map { |cat| cat.destroy! }
+        else
+          current_categories.map { |cat| cat.destroy! unless selected_categories.include? cat.category_id }
+        end
+      end
     end
   end
 end

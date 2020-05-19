@@ -20,6 +20,7 @@ describe 'The admin dashboard', type: :feature do
       Category.create!(name: 'COVID', description: 'COVID related practices', related_terms: 'COVID-19, Coronavirus'),
       Category.create!(name: 'Telehealth', description: 'Telelhealth related practices')
     ]
+    CategoryPractice.create(practice_id: @practice[:id], category_id: @categories[1][:id])
     @departments = [
         Department.create!(name: 'Admissions', short_name: 'admissions'),
         Department.create!(name: 'None', short_name: 'none'),
@@ -274,6 +275,7 @@ describe 'The admin dashboard', type: :feature do
 
     expect(page).to have_current_path(practice_overview_path(Practice.last))
   end
+
   it 'practice owner emails are downloaded when user clicks csv link and get_practice_owner_emails scope specified' do
     login_as(@admin, scope: :user, run_callbacks: false)
     visit '/admin'
@@ -282,5 +284,32 @@ describe 'The admin dashboard', type: :feature do
     click_link 'Get Practice Owner Emails'
     expect(page).to have_current_path('/admin/practices?scope=get_practice_owner_emails')
     expect(page).to have_content('Displaying 1 Practice')
+  end
+
+  it 'should be able to view existing and add categories to a Practice' do
+    login_as(@admin, scope: :user, run_callbacks: false)
+    visit '/admin'
+    click_link('Practices')
+
+    # check if categories display correctly
+    click_link('Edit', href: edit_admin_practice_path(@practice))
+    expect(page).to have_content('Categories')
+    expect(page).to have_content('Covid')
+    expect(page).to have_content('Telehealth')
+    expect(find_field('practice_category_ids').find('option[selected]').text).to eq('Telehealth')
+
+    # check if categories saves correctly with new practice name
+    fill_in('Practice name', with: 'renamed practiced')
+    find("option[value='#{@categories[0][:id]}']").click
+    find("option[value='#{@categories[1][:id]}']").click
+    click_button('Update Practice')
+    click_link('Edit', href: edit_admin_practice_path(@practice))
+    expect(find_field('practice_category_ids').find('option[selected]').text).to eq('Covid')
+
+    # check if categories are deleted correctly
+    find("option[value='#{@categories[0][:id]}']").click
+    click_button('Update Practice')
+    click_link('Edit', href: edit_admin_practice_path(@practice))
+    expect(page).not_to have_selector('option[selected]')
   end
 end
