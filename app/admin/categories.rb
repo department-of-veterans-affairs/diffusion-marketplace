@@ -50,12 +50,11 @@ ActiveAdmin.register Category do
 
     def destroy
       deleted = remove_category
-
       respond_to do |format|
         if deleted
-          format.html { redirect_to admin_categories_path(notice: 'Category was successfully updated.') }
+          format.html { redirect_to admin_categories_path(notice: 'Category was successfully deleted.') }
         else
-          format.html { redirect_to edit_admin_category_path(id: params[:id]), :flash => { :error => 'There was an error updating your category.' }}
+          format.html { redirect_to edit_admin_category_path(id: params[:id]), :flash => { :error => 'There was an error deleting your category.' }}
         end
       end
     end
@@ -75,8 +74,8 @@ ActiveAdmin.register Category do
 
     def remove_category
       begin
+        CategoryPractice.where(category_id: params[:id]).map { |cp| cp.destroy! }
         Category.find(params[:id]).destroy!
-        CategoryPractice.where(category_id: category[:id]).map { |cp| cp.destroy! }
         true
       rescue => e
         Rails.logger.error "remove_category error: #{e.message}"
