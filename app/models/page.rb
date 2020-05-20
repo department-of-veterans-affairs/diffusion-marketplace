@@ -6,12 +6,13 @@ class Page < ApplicationRecord
   validates :title, presence:true
   validates :description, presence:true
   validates_uniqueness_of :slug
-  validates :slug, format: { without: /\s/ }
+  validates :slug, format: { without: /\s/, message: "URL can not contain spaces" }
   validate :string_presence
   validate :downcase_fields
   before_save :downcase_fields
 
   private
+
   def downcase_fields
     self.slug = self.slug.downcase
   end
@@ -19,7 +20,6 @@ class Page < ApplicationRecord
   def string_presence
     if slug.include?("/")
       errors.add(:slug, "URL cannot contain '/'")
-      debugger
     end
   end
 end
