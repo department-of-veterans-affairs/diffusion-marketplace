@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_13_175323) do
+ActiveRecord::Schema.define(version: 2020_05_19_180358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -514,6 +514,12 @@ ActiveRecord::Schema.define(version: 2020_05_13_175323) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["page_component_id"], name: "index_page_paragraph_components_on_page_component_id"
+  end
+
+  create_table "page_practice_list_components", force: :cascade do |t|
+    t.string "practices", default: [], array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "pages", force: :cascade do |t|
