@@ -4,8 +4,12 @@
     <p><%= @page.description %></p>
     <p>
       <% @page.page_components.each do |pc| %>
-      <% component = eval("#{pc.component_type}.find(#{pc.component_id})")%>
-        <%= component.text.html_safe %>
+        <% component = eval("#{pc.component_type}.find(#{pc.component_id})")%>
+        <%= component.text.html_safe unless pc.component_type == 'PagePracticeListComponent' %>
+
+        <%# TODO: Dm-1772 - render practice cards %>
+        <%= component&.practices.join(', ') if pc.component_type == 'PagePracticeListComponent' %>
+
       <% end %>
      </p>
   </section>

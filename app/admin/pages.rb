@@ -29,9 +29,8 @@ ActiveAdmin.register Page do
           component = eval("#{pc.component_type}.find(#{pc.component_id})")
           para pc.component_type
           para component&.heading_type if pc.component_type == 'PageHeaderComponent'
-          para component&.text unless pc.component_type == 'PagePracticeListComponent'
+          para component&.text.html_safe unless pc.component_type == 'PagePracticeListComponent'
           para component&.practices.join(', ') if pc.component_type == 'PagePracticeListComponent'
-          para component&.text.html_safe
         end
       end
     end
