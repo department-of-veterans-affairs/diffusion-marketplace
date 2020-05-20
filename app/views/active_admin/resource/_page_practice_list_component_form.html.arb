@@ -14,12 +14,11 @@ html = Arbre::Context.new do
 
         li class: 'select input optional', id: "page_page_components_attributes_#{placeholder}_practices_attributes_input" do
           label 'Practice List', for: "page_page_components_attributes_#{placeholder}_component_attributes_practice_list", class: 'label'
-          select required: 'required', multiple: 'multiple',
+          select required: 'required', multiple: 'multiple', size: '20',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_practice_list",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][practices][]" do
-            option ''
-            Practice.all.each do |p|
-              option p.name, value: p.id, selected: component&.practices&.include?(p.id)
+            Practice.order(name: :asc).each do |p|
+              option p.name, value: p.id, selected: component&.practices&.include?(p.id.to_s) ? 'selected' : nil
             end
           end
           para 'Hold down the CTRL key and click on Practice names to add to the list.', class: 'inline-hints'
