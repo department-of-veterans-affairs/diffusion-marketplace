@@ -29,7 +29,7 @@ ActiveAdmin.register Page do
           component = eval("#{pc.component_type}.find(#{pc.component_id})")
           para pc.component_type
           para component&.heading_type if pc.component_type == 'PageHeaderComponent'
-          para component&.text
+          para component&.text.html_safe
         end
       end
     end
@@ -67,7 +67,7 @@ ActiveAdmin.register Page do
     end
 
     before_update do |page|
-      debugger
+
     end
   end
 

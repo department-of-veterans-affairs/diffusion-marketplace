@@ -2,5 +2,11 @@
   <section class="grid-container">
     <h1><%= @page.title %></h1>
     <p><%= @page.description %></p>
+    <p>
+      <% @page.page_components.each do |pc| %>
+      <% component = eval("#{pc.component_type}.find(#{pc.component_id})")%>
+        <%= component.text.html_safe %>
+      <% end %>
+     </p>
   </section>
 </div>
