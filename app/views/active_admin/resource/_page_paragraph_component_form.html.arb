@@ -27,8 +27,11 @@ html = Arbre::Context.new do
 
           div rows:'20', class: 'quill-editor', id: "page_page_components_attributes_paragraph_#{placeholder}_component_attributes_text" do
             input type: 'hidden',
-                  name: "page[page_components_attributes][#{placeholder}][component_attributes][text]"
-            div class: 'quill-editor-content'
+                  name: "page[page_components_attributes][#{placeholder}][component_attributes][text]",
+                  value: component&.text
+            div class: 'quill-editor-content' do
+              component&.send(:text).try :html_safe
+            end
           end
 
           # textarea rows: '5', required: true,
