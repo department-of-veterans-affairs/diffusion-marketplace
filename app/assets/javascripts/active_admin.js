@@ -2,6 +2,8 @@
 //= require chartkick
 //= require Chart.bundle
 //= require active_admin/base
+//= require activeadmin/quill_editor/quill
+//= require activeadmin/quill_editor_input
 
 (function() {
     var loadComponents = function() {
