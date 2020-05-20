@@ -139,7 +139,7 @@ class PracticesController < ApplicationController
 
   def search
     ahoy.track "Practice search", {search_term: request.params[:query]} if request.params[:query].present?
-    @practices = Practice.left_outer_joins(:categories).select("practices.*, categories.name as categories_name").where(practices:{ approved: true, published: true }).order(name: :asc).uniq
+    @practices = Practice.get_with_categories
     @facilities_data = facilities_json
     @practices_json = practices_json(@practices)
   end
