@@ -29,6 +29,7 @@ ActiveAdmin.register Page do
           component = eval("#{pc.component_type}.find(#{pc.component_id})")
           para pc.component_type
           para component&.heading_type if pc.component_type == 'PageHeaderComponent'
+          para component&.heading_type if pc.component_type == 'PageHeader2Component'
           para component&.text.html_safe unless pc.component_type == 'PagePracticeListComponent'
           para component&.practices.join(', ') if pc.component_type == 'PagePracticeListComponent'
         end
@@ -56,6 +57,7 @@ ActiveAdmin.register Page do
         pc.input :component_type, input_html: {class: 'polyselect', 'data-component-id': placeholder}, collection: PageComponent::COMPONENT_SELECTION
 
         render partial: 'page_header_component_form', locals: {f: pc, component: component.class == PageHeaderComponent ? component : nil, placeholder: placeholder}
+        render partial: 'page_header2_component_form', locals: {f: pc, component: component.class == PageHeader2Component ? component : nil, placeholder: placeholder}
         render partial: 'page_paragraph_component_form', locals: {f: pc, component: component.class == PageParagraphComponent ? component : nil, placeholder: placeholder}
         render partial: 'page_practice_list_component_form', locals: {f: pc, component: component.class == PagePracticeListComponent ? component : nil, placeholder: placeholder}
       end
