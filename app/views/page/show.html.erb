@@ -16,7 +16,7 @@
             <% practices_ids.each do |pr_id| %>
               <% pr = Practice.find(pr_id.to_i) %>
               <% if pr.present? %>
-                <div class="tablet:grid-col-4 flex-column display-flex">
+                <div class="tablet:grid-col-4 flex-column display-flex x2-bottom">
                   <%= render partial: 'practices/favorite_button', locals: { practice: pr, featured: true, col_4: false } %>
                   <%= render partial: 'practices/marketplace_card', locals: { practice: pr, featured: true } %>
                 </div>
