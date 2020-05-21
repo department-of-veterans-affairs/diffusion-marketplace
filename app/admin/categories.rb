@@ -67,8 +67,10 @@ ActiveAdmin.register Category do
 
     def modify_related_terms_for_db
       terms = params[:category][:related_terms_raw]
-      unless terms.blank?
+      if terms.present?
         params[:category][:related_terms] = terms.split(/\s*,\s*/)
+      else
+        params[:category][:related_terms] = []
       end
     end
 

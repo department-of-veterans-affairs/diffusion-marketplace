@@ -161,6 +161,13 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_current_path(admin_category_path(Category.last))
     expect(page).to have_content('psychological health, mental wellbeing')
 
+    # edit category - remove related terms
+    click_link('Edit Category')
+    fill_in('Related Terms', with: '')
+    click_button('Update Category')
+    expect(page).to have_current_path(admin_category_path(Category.last))
+    expect(page).to have_no_content('psychological health, mental wellbeing')
+
     # delete category
     visit '/admin/categories'
     expect(page).to have_content('COVID')
