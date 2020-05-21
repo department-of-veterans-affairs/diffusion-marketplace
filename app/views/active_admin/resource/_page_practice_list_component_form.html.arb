@@ -21,7 +21,7 @@ html = Arbre::Context.new do
               option p.name, value: p.id, selected: component&.practices&.include?(p.id.to_s) ? 'selected' : nil
             end
           end
-          para 'Hold down the CTRL key and click on Practice names to add to the list.', class: 'inline-hints'
+          para 'Choose practice cards containing practice name, tagline, and image. Hold down the CTRL key and click on Practice names to add to the list.', class: 'inline-hints'
         end
       end
     end

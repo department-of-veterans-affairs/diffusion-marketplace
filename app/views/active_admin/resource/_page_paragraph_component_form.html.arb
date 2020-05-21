@@ -39,7 +39,7 @@ html = Arbre::Context.new do
           #       name: "page[page_components_attributes][#{placeholder}][component_attributes][text]" do
           #   component&.text
           # end
-          para 'Put exciting words in this paragraph.', class: 'inline-hints'
+          para 'Supplementary text to headings and descriptions.', class: 'inline-hints'
         end
       end
     end
