@@ -3,7 +3,7 @@ placeholder ||= 'NEW_PAGE_COMPONENT_RECORD' # = "NEW_#{association_human_name.up
 component ||= nil
 html = Arbre::Context.new do
   li "", class: 'input' do
-    fieldset id: "PageHeaderComponent_poly_#{placeholder}", class: "inputs polyform component-#{placeholder}" do
+    fieldset id: "PageHeader2Component_poly_#{placeholder}", class: "inputs polyform component-#{placeholder}" do
       legend do
         span 'Heading 2'
       end
@@ -11,26 +11,20 @@ html = Arbre::Context.new do
         if component
           input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
         end
-
-        li class: 'select input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_heading_type_input" do
-          label 'Heading Type', for: "page_page_components_attributes_#{placeholder}_component_attributes_heading_type", class: 'label'
-          select value: component&.heading_type || nil, required: 'required',
-                 id: "page_page_components_attributes_#{placeholder}_component_attributes_heading_type",
-                 name: "page[page_components_attributes][#{placeholder}][component_attributes][heading_type]" do
-            option ''
-            %w(H1 H2 H3 H4 H5 H6).each do |h|
-              option h, value: h, selected: component&.heading_type == h
-            end
-          end
-          para 'Choose a heading type where H1 is the largest font-size and H6 is the smallest, yet still bolder, font-size.', class: 'inline-hints'
-        end
-
-        li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_text_input" do
-          label 'Text', for: "page_page_components_attributes_#{placeholder}_component_attributes_text", class: 'label'
+        li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_subtopic_title_input" do
+          label 'Subtopic title', for: "page_page_components_attributes_#{placeholder}_component_attributes_text", class: 'label'
           input value: component&.text || nil, type: 'text', required: 'required',
-                id: "page_page_components_attributes_#{placeholder}_component_attributes_text",
-                name: "page[page_components_attributes][#{placeholder}][component_attributes][text]"
-          para 'Make this header stand out.', class: 'inline-hints'
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_subtopic_title",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][subtopic_title]"
+          para 'Make this topic title stand out.', class: 'inline-hints'
+
+          li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_subtopic_description_input" do
+            label 'Subtopic description', for: "page_page_components_attributes_#{placeholder}_component_attributes_text", class: 'label'
+            input value: component&.text || nil, type: 'text', required: 'required',
+                  id: "page_page_components_attributes_#{placeholder}_component_attributes_subtopic_description",
+                  name: "page[page_components_attributes][#{placeholder}][component_attributes][subtopic_description]"
+            para 'Make this topic description stand out.', class: 'inline-hints'
+          end
         end
       end
     end

@@ -27,9 +27,11 @@ ActiveAdmin.register Page do
       row 'Components' do |p|
         p.page_components.each do |pc|
           component = eval("#{pc.component_type}.find(#{pc.component_id})")
+          debugger
           para pc.component_type
           para component&.heading_type if pc.component_type == 'PageHeaderComponent'
-          para component&.heading_type if pc.component_type == 'PageHeader2Component'
+          para component&.subtopic_title if pc.component_type == 'PageHeader2Component'
+          para component&.subtopic_description if pc.component_type == 'PageHeader2Component'
           para component&.text.html_safe unless pc.component_type == 'PagePracticeListComponent'
           para component&.practices.join(', ') if pc.component_type == 'PagePracticeListComponent'
         end

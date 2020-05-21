@@ -21,6 +21,7 @@ class PageComponent < ApplicationRecord
   }
 
   def build_component(params)
+    debugger
     raise "Unknown component_type: #{component_type}" unless COMPONENT_SELECTION.values.include?(component_type)
     if component_id
       _component = eval("#{self.component_type}.find(#{self.component_id})")
@@ -29,6 +30,7 @@ class PageComponent < ApplicationRecord
       _component = component_type.constantize.new(params)
     end
     self.component = _component
+    debugger
   end
 
 end
