@@ -16,7 +16,7 @@ class PageComponent < ApplicationRecord
   COMPONENT_SELECTION = {
       'Header': 'PageHeaderComponent',
       'Paragraph': 'PageParagraphComponent',
-      'Practice List': 'PagePracticeListComponent'
+      'Practices': 'PagePracticeListComponent'
   }
 
   def build_component(params)

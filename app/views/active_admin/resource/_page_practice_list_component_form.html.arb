@@ -5,7 +5,7 @@ html = Arbre::Context.new do
   li "", class: 'input' do
     fieldset id: "PagePracticeListComponent_poly_#{placeholder}", class: "inputs polyform component-#{placeholder}" do
       legend do
-        span 'Header'
+        span 'Practices'
       end
       ol do
         if component
