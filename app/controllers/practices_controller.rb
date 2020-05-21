@@ -1,6 +1,5 @@
 class PracticesController < ApplicationController
   include CropperUtils
-  include StoreRequestConcern
   before_action :set_practice, only: [:show, :edit, :update, :destroy, :planning_checklist,
                                       :commit, :committed, :highlight, :un_highlight, :feature,
                                       :un_feature, :favorite, :instructions, :overview, :origin,
@@ -20,9 +19,6 @@ class PracticesController < ApplicationController
                                            :contact, :checklist, :published,
                                            :publication_validation, :adoptions]
   before_action :set_date_initiated_params, only: [:update, :publication_validation]
-  before_action :store_request_in_thread, only: [:update]
-
-  caches_action :search
 
   # GET /practices
   # GET /practices.json
@@ -143,7 +139,7 @@ class PracticesController < ApplicationController
 
   def search
     ahoy.track "Practice search", {search_term: request.params[:query]} if request.params[:query].present?
-    @practices = Practice.where(approved: true, published: true).order(name: :asc)
+    @practices = Practice.searchable_practices
     @facilities_data = facilities_json
     @practices_json = practices_json(@practices)
   end

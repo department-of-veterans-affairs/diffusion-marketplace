@@ -12,9 +12,9 @@ describe 'Search', type: :feature do
     @user_practice2 = Practice.create!(name: 'Another Best Practice', user: @user, initiating_facility: '687HA', tagline: 'Test tagline 2', date_initiated: 'Sun, 24 Oct 2004 00:00:00 UTC +00:00', summary: 'This is another best practice.')
   end
 
-  def update_practice
+  def update_practice(practice)
     login_as(@admin, :scope => :user, :run_callbacks => false)
-    visit practice_overview_path(@user_practice)
+    visit practice_overview_path(practice)
     select('Alabama', :from => 'editor_state_select')
     select('Birmingham VA Medical Center', :from => 'editor_facility_select')
     fill_in('practice_summary', with: 'This is the most super practice ever made')
@@ -32,6 +32,21 @@ describe 'Search', type: :feature do
   def search
     click_button('Search')
   end
+
+  def publish_practice(practice)
+    visit practice_overview_path(practice)
+    fill_in('practice_tagline', with: 'Test tagline.')
+    select('Alabama', :from => 'editor_state_select')
+    select('Birmingham VA Medical Center', :from => 'editor_facility_select')
+    fill_in('practice_summary', with: 'This is the most super practice ever made')
+    select('October', :from => 'editor_date_intiated_month')
+    select('1970', :from => 'editor_date_intiated_year')
+    find('#practice-editor-save-button').click
+    visit(practice_contact_path(practice))
+    fill_in('practice_support_network_email', with: 'dm@va.gov')
+    click_button('Publish')
+  end
+
   def cache_keys
     Rails.cache.redis.keys
   end
@@ -42,7 +57,6 @@ describe 'Search', type: :feature do
     fill_in('practice-search-field', with: 'Test')
     search
   end
-
 
   describe 'results' do
     it 'should show practices that are approved and published'do
@@ -69,7 +83,7 @@ describe 'Search', type: :feature do
 
       # show practices that are approved/published
       @user_practice2.update_attributes(published: true, approved: true)
-      update_practice
+      update_practice(@user_practice)
       visit_search_page
       fill_in('practice-search-field', with: 'practice')
       search
@@ -85,22 +99,20 @@ describe 'Search', type: :feature do
   end
 
   describe 'Cache' do
-    it 'Should be cleared if certain practice attributes have been updated' do
+    it 'Should be reset if certain practice attributes have been updated' do
       add_search_to_cache
-      parsed_uri = URI.parse(page.current_url)
 
-      expect(cache_keys).to include("views/#{parsed_uri.host}:#{parsed_uri.port}/search")
+      expect(cache_keys).to include("searchable_practices")
 
-      update_practice
+      update_practice(@user_practice)
 
-      expect(cache_keys).not_to include("views/#{parsed_uri.host}:#{parsed_uri.port}/search")
+      expect(cache_keys).to include("searchable_practices")
     end
 
-    it 'Should be cleared if a new practice is created through the admin panel' do
+    it 'Should be reset if a new practice is created through the admin panel' do
       add_search_to_cache
-      parsed_uri = URI.parse(page.current_url)
 
-      expect(cache_keys).to include("views/#{parsed_uri.host}:#{parsed_uri.port}/search")
+      expect(cache_keys).to include("searchable_practices")
 
       login_as(@admin, :scope => :user, :run_callbacks => false)
       visit '/admin'
@@ -109,8 +121,17 @@ describe 'Search', type: :feature do
       fill_in('Practice name', with: 'The Newest Practice')
       fill_in('User email', with: 'practice_owner@va.gov')
       click_button('Create Practice')
+      latest_practice = Practice.last
 
-      expect(cache_keys).not_to include("views/#{parsed_uri.host}:#{parsed_uri.port}/search")
+      visit '/search?=newest'
+      expect(page).to_not have_content(latest_practice.name)
+
+      publish_practice(latest_practice)
+      expect(cache_keys).to include("searchable_practices")
+      expect(Practice.searchable_practices.last.name).to eq(latest_practice.name)
+      visit '/search?=newest'
+      expect(page).to have_content('1 result for "newest"')
+      expect(page).to have_content(latest_practice.name)
     end
   end
 

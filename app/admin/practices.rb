@@ -50,9 +50,7 @@ ActiveAdmin.register Practice do
   filter :support_network_email
 
   controller do
-    include StoreRequestConcern
     before_create do |practice|
-      store_request_in_thread
       if params[:user_email].present?
         set_practice_user(practice)
       end
