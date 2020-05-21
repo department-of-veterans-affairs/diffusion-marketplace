@@ -2,5 +2,29 @@
   <section class="grid-container">
     <h1><%= @page.title %></h1>
     <p><%= @page.description %></p>
+    <p>
+      <% @page.page_components.each do |pc| %>
+        <% component = pc.component_type.constantize.find(pc.component_id)%>
+        <%= component.text.html_safe unless pc.component_type == 'PagePracticeListComponent' %>
+        <% case pc.component_type when 'PageHeaderComponent'%>
+        <% when 'PageParagraphComponent' %>
+
+        <%# Practice List %>
+        <% when 'PagePracticeListComponent' %>
+          <% practices_ids = component.practices %> <%# array of id strings %>
+          <div class="grid-row grid-gap">
+            <% practices_ids.each do |pr_id| %>
+              <% pr = Practice.find(pr_id.to_i) %>
+              <% if pr.present? %>
+                <div class="tablet:grid-col-4 flex-column display-flex">
+                  <%= render partial: 'practices/favorite_button', locals: { practice: pr, featured: true, col_4: false } %>
+                  <%= render partial: 'practices/marketplace_card', locals: { practice: pr, featured: true } %>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+     </p>
   </section>
 </div>

@@ -23,11 +23,22 @@ html = Arbre::Context.new do
           end
           label 'Text', for: "page_page_components_attributes_paragraph_#{placeholder}_component_attributes_text", class: 'label'
           # TODO: DM-1752: switch to quill_editor. switch to input?
-          textarea rows: '5', required: true,
-                id: "page_page_components_attributes_paragraph_#{placeholder}_component_attributes_text",
-                name: "page[page_components_attributes][#{placeholder}][component_attributes][text]" do
-            component&.text
+
+
+          div rows:'20', class: 'quill-editor', id: "page_page_components_attributes_paragraph_#{placeholder}_component_attributes_text" do
+            input type: 'hidden',
+                  name: "page[page_components_attributes][#{placeholder}][component_attributes][text]",
+                  value: component&.text
+            div class: 'quill-editor-content' do
+              component&.send(:text).try :html_safe
+            end
           end
+
+          # textarea rows: '5', required: true,
+          #       id: "page_page_components_attributes_paragraph_#{placeholder}_component_attributes_text",
+          #       name: "page[page_components_attributes][#{placeholder}][component_attributes][text]" do
+          #   component&.text
+          # end
           para 'Put exciting words in this paragraph.', class: 'inline-hints'
         end
       end
