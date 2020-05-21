@@ -14,7 +14,7 @@ html = Arbre::Context.new do
   li "", class: 'input' do
     fieldset id: "PageParagraphComponent_poly_#{placeholder}", class: "inputs polyform component-#{placeholder}" do
       legend do
-        span 'Paragraph'
+        span 'Body text'
       end
       ol do
         li class: 'string input optional stringish', id: "page_page_components_attributes_paragraph_#{placeholder}_component_attributes_text_input" do

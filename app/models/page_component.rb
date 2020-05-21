@@ -15,7 +15,7 @@ class PageComponent < ApplicationRecord
   # 'Friendly Name': 'ClassName'
   COMPONENT_SELECTION = {
       'Header': 'PageHeaderComponent',
-      'Paragraph': 'PageParagraphComponent',
+      'Body text': 'PageParagraphComponent',
       'Practices': 'PagePracticeListComponent'
   }
 
