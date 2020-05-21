@@ -74,6 +74,8 @@ Rails.application.routes.draw do
     get '/shark-tank', action: 'shark_tank', as: 'shark-tank'
     get '/go-fish', action: 'go_fish', as: 'go-fish'
   end
+
+  get '/covid-19', action: 'show', controller: 'pages', as: 'covid-19'
   # Custom route for reporting a comment
   # get '/practices/:practice_id/comments/:comment_id/report', action: 'report_comment', controller: 'commontator/comments', as: 'report_comment'
 end
