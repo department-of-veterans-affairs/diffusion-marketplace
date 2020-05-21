@@ -17,7 +17,7 @@ ActiveAdmin.register Page do
 
   show do
     attributes_table do
-      row('Complete URL') { |page| link_to("/#{page.page_group.name}/#{page.slug}", "/#{page.page_group.name}/#{page.slug}") }
+      row('Complete URL') { |page| link_to("/#{page.page_group.friendly_id}/#{page.slug}", "/#{page.page_group.friendly_id}/#{page.slug}") }
       row :page_group
       row :slug
       row :title

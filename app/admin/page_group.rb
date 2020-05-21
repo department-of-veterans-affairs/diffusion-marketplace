@@ -3,7 +3,7 @@ ActiveAdmin.register PageGroup do
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
-  permit_params :name, :description
+  permit_params :name, :description, :slug, :has_landing_page
   #
   # or
   #

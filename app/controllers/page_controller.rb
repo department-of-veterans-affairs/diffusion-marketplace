@@ -1,5 +1,20 @@
 class PageController < ApplicationController
   def show
-    @page = Page.includes(:page_group).find_by(slug: params[:page_slug], page_groups: {slug: params[:page_group_friendly_id]})
+    page_slug = params[:page_slug] ? params[:page_slug] : 'home'
+    @page = Page.includes(:page_group).find_by(slug: page_slug, page_groups: {slug: params[:page_group_friendly_id]})
+
+    if page_slug.include?('home')
+      @breadcrumbs = [
+          { text: 'Home', path: root_path },
+          { text: "#{@page.title}" }
+      ]
+    else
+      @breadcrumbs = [
+          { text: 'Home', path: root_path },
+          { text: "#{@page.page_group.name}" , path: ''},
+          { text: "#{@page.title}" }
+      ]
+    end
+    debugger
   end
 end
