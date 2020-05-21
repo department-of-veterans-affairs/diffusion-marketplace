@@ -5,7 +5,7 @@ ActiveAdmin.register Page do
   #
   permit_params :title, :page_group_id, :slug, :description,
                 page_components_attributes: [:id, :component_type, :position, :_destroy,
-                                             component_attributes: [:text, :heading_type, practices: []]]
+                                             component_attributes: [:text, :heading_type, :subtopic_title, :subtopic_description, practices: []]]
   #
   # or
   #
@@ -27,12 +27,11 @@ ActiveAdmin.register Page do
       row 'Components' do |p|
         p.page_components.each do |pc|
           component = eval("#{pc.component_type}.find(#{pc.component_id})")
-          debugger
           para pc.component_type
           para component&.heading_type if pc.component_type == 'PageHeaderComponent'
           para component&.subtopic_title if pc.component_type == 'PageHeader2Component'
           para component&.subtopic_description if pc.component_type == 'PageHeader2Component'
-          para component&.text.html_safe unless pc.component_type == 'PagePracticeListComponent'
+          para component&.text.html_safe unless pc.component_type == 'PagePracticeListComponent' || pc.component_type == 'PageHeader2Component'
           para component&.practices.join(', ') if pc.component_type == 'PagePracticeListComponent'
         end
       end
