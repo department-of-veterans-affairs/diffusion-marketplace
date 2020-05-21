@@ -16,6 +16,5 @@ class PageController < ApplicationController
           { text: "#{@page.title}" }
       ]
     end
-    debugger
   end
 end
