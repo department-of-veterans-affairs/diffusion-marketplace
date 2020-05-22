@@ -3,6 +3,7 @@ class PageController < ApplicationController
     page_slug = params[:page_slug] ? params[:page_slug] : 'home'
     @page = Page.includes(:page_group).find_by(slug: page_slug, page_groups: {slug: params[:page_group_friendly_id]})
     @path_parts = request.path.split('/')
+    @facilities_data = facilities_json
 
     if page_slug.include?('home')
       @breadcrumbs = [

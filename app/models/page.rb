@@ -6,8 +6,9 @@ class Page < ApplicationRecord
   validates :title, presence: true
   validates :description, presence: true
   validates_uniqueness_of :slug, scope: :page_group_id
-  validates :slug, format: { without: /\s/, message: "URL can not contain spaces" }
-  validate :string_presence
+  SLUG_FORMAT = /^[a-zA-Z0-9_-]*$*/
+  validates :slug, uniqueness: {case_sensitive: false},
+            format: {with: Regexp.new('\A' + SLUG_FORMAT.source + '\z'), message: "invalid characters in URL"}
   validate :downcase_fields
   before_create :downcase_fields
 
@@ -16,11 +17,5 @@ class Page < ApplicationRecord
 
   def downcase_fields
     self.slug = self.slug.downcase
-  end
-
-  def string_presence
-    if slug.include?("/")
-      errors.add(:slug, "URL cannot contain '/'")
-    end
   end
 end
