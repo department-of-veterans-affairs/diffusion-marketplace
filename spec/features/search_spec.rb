@@ -130,7 +130,8 @@ describe 'Search', type: :feature do
       expect(cache_keys).to include("searchable_practices")
 
       # TODO: why does this hang up the test db?
-      # expect(Practice.searchable_practices.last.name).to eq(latest_practice.name)
+      find('h1#overview', text: latest_practice.name)
+      expect(Practice.searchable_practices.last.name).to eq(latest_practice.name)
 
       visit '/search?=newest'
       expect(page).to have_content('1 result for "newest"')
