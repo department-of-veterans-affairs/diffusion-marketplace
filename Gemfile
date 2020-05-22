@@ -31,8 +31,6 @@ gem 'redis'
 
 gem 'hiredis'
 
-gem 'actionpack-action_caching'
-
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.13'
 
