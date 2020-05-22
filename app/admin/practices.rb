@@ -5,14 +5,26 @@ ActiveAdmin.register Practice do
 
   scope :published
   scope :unpublished
+  scope :get_practice_owner_emails
+  csv do
+    if params[:scope] == "get_practice_owner_emails"
+      column(:practice_name) {|practice| practice.name}
+      column(:owner_email) {|practice| practice.user&.email}
+    else
+      Practice.column_names.each do |item|
+        column(item)
+      end
+    end
+  end
 
   index do
-    selectable_column
-    id_column
-    column :name
-    column :support_network_email
-    column(:user) {|practice| practice.user&.email}
-    column :created_at
+    Practice.create
+    selectable_column unless params[:scope] == "get_practice_owner_emails"
+    id_column unless params[:scope] == "get_practice_owner_emails"
+    column(:practice_name) {|practice| practice.name}
+    column :support_network_email unless params[:scope] == "get_practice_owner_emails"
+    column(:owner_email) {|practice| practice.user&.email}
+    column :created_at unless params[:scope] == "get_practice_owner_emails"
     actions
   end
 
@@ -78,7 +90,6 @@ ActiveAdmin.register Practice do
       practice.user = user
       practice.commontator_thread.subscribe(user)
     end
-
 
     def find_resource
       scoped_collection.friendly.find(params[:id])

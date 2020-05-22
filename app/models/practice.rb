@@ -137,8 +137,9 @@ class Practice < ApplicationRecord
   validates_uniqueness_of :name, {message: 'Practice name already exists'}
   # validates :tagline, presence: { message: 'Practice tagline can\'t be blank'}
 
-  scope :published, -> { where(published: true) }
-  scope :unpublished, -> { where(published: false) }
+  scope :published,   -> { where(published: true) }
+  scope :unpublished,  -> { where(published: false) }
+  scope :get_practice_owner_emails, -> {where.not(user_id: nil)}
 
   belongs_to :user, optional: true
 
