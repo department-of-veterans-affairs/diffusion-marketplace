@@ -41,7 +41,7 @@ ActiveAdmin.register Page do
   form :html => {:multipart => true} do |f|
     f.semantic_errors *f.object.errors.keys # shows errors on :base
     f.inputs "Page Information" do
-      f.input :slug, label: 'URL', hint: 'Enter a valid, browseable, url for your page to use, ex.: "page-title" or "subspace/title-of-page".'
+      f.input :slug, label: 'URL', hint: 'Enter a valid, browsable, url for your page to use, ex.: "page-title" or "subspace/title-of-page".'
       f.input :title, label: 'Title', hint: 'The title of the page. The "H1" of the page'
       f.input :description, label: 'Description', hint: 'Why someone would go to this page. Why should we not delete this page?'
       f.input :page_group, label: 'Group', hint: 'The Group will be included in the final url: ex.: "/competitions/page-title" where "competitions" is the Group and "page-title" is the chosen url from above.'

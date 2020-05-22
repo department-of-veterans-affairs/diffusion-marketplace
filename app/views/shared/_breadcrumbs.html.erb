@@ -1,14 +1,14 @@
 <% if @breadcrumbs %>
 <div class="grid-container margin-y-2">
   <div class="grid-row">
-    <div class="grid-col-auto">
+    <div class="grid-col-auto breadcrumbs-container">
       <% @breadcrumbs.each do |crumb| %>
         <%
           path = crumb[:path]
           text = crumb[:text]
         %>
         <% if path && path.present? %>
-          <%= link_to(text, path, class: 'dm-font-color-primary-blue') %>
+          <%= link_to(text, path, class: 'dm-font-color-primary-blue breadcrumb-link') %>
           <span class='dm-font-color-primary-blue x0-5-right x0-5-left'>›</span>
         <% elsif path && path.empty? %>
           <span><%= text %></span><span class='dm-font-color-primary-blue x0-5-right x0-5-left'>›</span>
