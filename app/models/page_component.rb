@@ -17,6 +17,9 @@ class PageComponent < ApplicationRecord
       'Header': 'PageHeaderComponent',
       'Body text': 'PageParagraphComponent',
       'Practices': 'PagePracticeListComponent'
+      'Heading 2': 'PageHeader2Component',
+      'Paragraph': 'PageParagraphComponent',
+      'Practice List': 'PagePracticeListComponent'
   }
 
   def build_component(params)
