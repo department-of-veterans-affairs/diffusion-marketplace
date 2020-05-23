@@ -72,10 +72,7 @@ describe 'Page Builder', type: :feature do
       expect(page).to have_content('Awesome Landing Page')
       expect(page).to have_content('This is an awesome page group landing page')
 
-      click_link '/programming/home'
-      expect(page).to have_current_path('/programming/home')
-      expect(page).to have_content('Awesome Landing Page')
-      expect(page).to have_content('This is an awesome page group landing page.')
+      click_link '/programming'
     end
   end
 end
