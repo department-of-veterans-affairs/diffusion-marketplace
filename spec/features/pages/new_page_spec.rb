@@ -54,10 +54,6 @@ describe 'Page Builder', type: :feature do
     expect(page).to have_content('This is the first page built.')
 
     click_link '/programming/hello-world'
-    expect(page).to have_current_path('/programming/hello-world')
-    expect(page).to have_content('Hello world!')
-    expect(page).to have_content('This is the first page built.')
-
   end
 
   describe 'Page groups' do
