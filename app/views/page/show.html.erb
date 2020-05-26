@@ -5,7 +5,7 @@
     <div class="page-content">
       <% @page.page_components.each do |pc| %>
         <% component = pc.component_type.constantize.find(pc.component_id) %>
-        <%= component.text.html_safe unless pc.component_type == 'PagePracticeListComponent' || pc.component_type == 'PageHeader2Component' %>
+        <%= component.text.html_safe unless pc.component_type == 'PagePracticeListComponent' || pc.component_type == 'PageHeader2Component' || pc.component_type == 'PageSubpageHyperlinkComponent' %>
         <% case pc.component_type when 'PageHeaderComponent' %>
         <% when 'PageHeader2Component' %>
           <div class="heading_2 margin-bottom-5">
@@ -13,6 +13,7 @@
             <div class="grid-col-6 heading2_subtopic_description"><%=component.subtopic_description %></div>
           </div>
         <% when 'PageParagraphComponent' %>
+
         <%# Practice List %>
         <% when 'PagePracticeListComponent' %>
           <% practices_ids = component.practices %> <%# array of id strings %>
@@ -25,6 +26,22 @@
                   <%= render partial: 'practices/marketplace_card', locals: {practice: pr, featured: true} %>
                 </div>
               <% end %>
+            <% end %>
+          </div>
+
+        <%# Subpage Hyperlink %>
+        <% when 'PageSubpageHyperlinkComponent' %>
+          <div class="grid-row x3-bottom">
+            <a href="<%= component.url %>" class="grid-col-10 page-subpage-hyperlink">
+              <h2 class="font-sans-xl display-inline-block underline x0-top">
+                <%= component.title %>
+              </h2>
+              <span class="x0-5-left fas fa-chevron-right fa-icon-125 vertical-align-middle p1-bottom"></span>
+            </a>
+            <% if component.description.present? %>
+              <div class="font-sans-sm p1-top heading2_subtopic_description">
+                <%= component.description %>
+              </div>
             <% end %>
           </div>
         <% end %>
