@@ -170,7 +170,6 @@ ActiveRecord::Schema.define(version: 2020_05_21_144125) do
     t.integer "parent_category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "related_terms", default: [], array: true
   end
 
   create_table "category_practices", force: :cascade do |t|
