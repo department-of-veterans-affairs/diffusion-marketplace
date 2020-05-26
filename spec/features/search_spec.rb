@@ -8,8 +8,8 @@ describe 'Search', type: :feature do
     @approver = User.create!(email: 'squidward.tentacles@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
-    @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: '631HC', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.')
-    @user_practice2 = Practice.create!(name: 'Another Best Practice', user: @user, initiating_facility: '687HA', tagline: 'Test tagline 2', date_initiated: 'Sun, 24 Oct 2004 00:00:00 UTC +00:00', summary: 'This is another best practice.')
+    @practice = Practice.create!(name: 'The Best Practice Ever!', initiating_facility: '631HC', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.')
+    @practice2 = Practice.create!(name: 'Another Best Practice', initiating_facility: '687HA', tagline: 'Test tagline 2', date_initiated: 'Sun, 24 Oct 2004 00:00:00 UTC +00:00', summary: 'This is another best practice.')
   end
 
   def update_practice(practice)
@@ -34,6 +34,7 @@ describe 'Search', type: :feature do
   end
 
   def publish_practice(practice)
+    login_as(@admin, :scope => :user, :run_callbacks => false)
     visit practice_overview_path(practice)
     fill_in('practice_tagline', with: 'Test tagline.')
     select('Alabama', :from => 'editor_state_select')
@@ -60,7 +61,7 @@ describe 'Search', type: :feature do
 
   describe 'results' do
     it 'should show practices that are approved and published' do
-      @user_practice.update(published: true, approved: true)
+      update_practice(@practice)
       user_login
       visit_search_page
       expect(page).to be_accessible.according_to :wcag2a, :section508
@@ -71,8 +72,8 @@ describe 'Search', type: :feature do
       expect(page).to be_accessible.according_to :wcag2a, :section508
 
       # test facility data map for name, negative case
-      expect(page).to have_content(@user_practice.name)
-      expect(page).to have_content(@user_practice.initiating_facility)
+      expect(page).to have_content(@practice.name)
+      expect(page).to have_content(@practice.initiating_facility)
       expect(page).to have_content('1 result for "Test"')
 
       # do not show a practice that is not approved/published
@@ -82,15 +83,14 @@ describe 'Search', type: :feature do
       expect(page).to have_content('1 result for "practice"')
 
       # show practices that are approved/published
-      @user_practice2.update_attributes(published: true, approved: true)
-      update_practice(@user_practice)
+      publish_practice(@practice2)
       visit_search_page
       fill_in('practice-search-field', with: 'practice')
       search
 
       expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_content(@user_practice.name)
-      expect(page).to have_content(@user_practice2.name)
+      expect(page).to have_content(@practice.name)
+      expect(page).to have_content(@practice2.name)
       expect(page).to have_content('2 results for "practice"')
 
       # test facility data map for name, positive case
@@ -98,24 +98,24 @@ describe 'Search', type: :feature do
     end
 
     it 'should be able to search based on practice categories' do
-      @user_practice.update(published: true, approved: true)
+      @practice.update(published: true, approved: true)
       category = Category.create!(name: 'telehealth')
-      CategoryPractice.create!(category: category, practice: @user_practice)
+      CategoryPractice.create!(category: category, practice: @practice)
 
       visit '/search'
 
       fill_in('practice-search-field', with: 'Telehealth')
       click_button('Search')
 
-      expect(page).to have_content(@user_practice.name)
-      expect(page).to have_content(@user_practice.initiating_facility)
+      expect(page).to have_content(@practice.name)
+      expect(page).to have_content(@practice.initiating_facility)
       expect(page).to have_content('1 result for "Telehealth"')
     end
 
     it 'should be able to search based on practice categories related terms' do
-      @user_practice.update(published: true, approved: true)
+      @practice.update(published: true, approved: true)
       category = Category.create!(name: 'Covid')
-      CategoryPractice.create!(category: category, practice: @user_practice)
+      CategoryPractice.create!(category: category, practice: @practice)
       category.update(related_terms: ['Coronavirus'])
 
       visit '/search'
@@ -123,8 +123,8 @@ describe 'Search', type: :feature do
       fill_in('practice-search-field', with: 'Coronavirus')
       click_button('Search')
 
-      expect(page).to have_content(@user_practice.name)
-      expect(page).to have_content(@user_practice.initiating_facility)
+      expect(page).to have_content(@practice.name)
+      expect(page).to have_content(@practice.initiating_facility)
       expect(page).to have_content('1 result for "Coronavirus"')
     end
   end
@@ -135,7 +135,7 @@ describe 'Search', type: :feature do
 
       expect(cache_keys).to include("searchable_practices")
 
-      update_practice(@user_practice)
+      update_practice(@practice)
 
       expect(cache_keys).to include("searchable_practices")
     end

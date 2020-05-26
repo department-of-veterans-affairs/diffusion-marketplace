@@ -34,7 +34,7 @@ class Practice < ApplicationRecord
         self.summary_changed? ||
         self.initiating_facility_changed? ||
         self.main_display_image_updated_at_changed? ||
-        self.published_changed?
+        self.published_changed? ||
       clear_searchable_cache
     end
   end
