@@ -41,7 +41,7 @@ class Practice < ApplicationRecord
 
   def self.searchable_practices
     Rails.cache.fetch('searchable_practices') do
-      Practice.where(approved: true, published: true).order(name: :asc)
+      Practice.get_with_categories
     end
   end
 
