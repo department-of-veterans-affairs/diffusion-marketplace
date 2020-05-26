@@ -13,14 +13,14 @@ html = Arbre::Context.new do
         end
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_subtopic_title_input" do
           label 'Subtopic title', for: "page_page_components_attributes_#{placeholder}_component_attributes_text", class: 'label'
-          input value: component&.text || nil, type: 'text', required: 'required',
+          input value: component&.subtopic_title || nil, type: 'text', required: 'required',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_subtopic_title",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][subtopic_title]"
           para 'Make this topic title stand out.', class: 'inline-hints'
 
           li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_subtopic_description_input" do
             label 'Subtopic description', for: "page_page_components_attributes_#{placeholder}_component_attributes_text", class: 'label'
-            input value: component&.text || nil, type: 'text', required: 'required',
+            input value: component&.subtopic_description || nil, type: 'text', required: 'required',
                   id: "page_page_components_attributes_#{placeholder}_component_attributes_subtopic_description",
                   name: "page[page_components_attributes][#{placeholder}][component_attributes][subtopic_description]"
             para 'Make this topic description stand out.', class: 'inline-hints'
