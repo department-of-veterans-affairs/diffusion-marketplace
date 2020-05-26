@@ -1,4 +1,5 @@
 class Page < ApplicationRecord
+  has_paper_trail
   belongs_to :page_group
   has_many :page_components, -> { order(position: :asc) }, dependent: :destroy, autosave: true
   accepts_nested_attributes_for :page_components, allow_destroy: true

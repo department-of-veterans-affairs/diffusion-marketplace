@@ -25,6 +25,7 @@ ActiveAdmin.register Page do
       row :slug
       row :title
       row :description
+      row :published
       row :created_at
       row :updated_at
       row 'Components' do |p|
@@ -49,6 +50,7 @@ ActiveAdmin.register Page do
       f.input :slug, label: 'URL suffix', hint: 'Enter a brief and descriptive page URL suffix (Ex: "page-title"). Note: to make a page the home or landing page for a page group, enter "home".'
       f.input :title, label: 'Title', hint: 'The main heading/"H1" of the page.'
       f.input :description, label: 'Description', hint: 'Overall purpose of the page.'
+      f.input :published, label: 'Published', hint: 'Date when page was published' #, input_html: {:value => f.object.published.try(:strftime, '%Y-%m-%d'), disabled: true}
       f.input :page_group, label: 'Group', hint: 'The Group is the page type and will be included in the url. (Ex: "/competitions/page-title" where "competitions" is the Group and "page-title" is the chosen url suffix from above. If the url suffix is "home", the complete URL will be "/competitions")'
     end
 
