@@ -459,6 +459,20 @@ class PracticesController < ApplicationController
         practice_hash['date_initiated'] = '(start date unknown)'
       end
 
+      if practice.categories&.length > 0
+        practice_hash['categories_name'] = []
+
+        practice.categories.each do |category|
+          if category.name != 'None'
+            practice_hash['categories_name'].push category.name
+
+            unless category.related_terms.empty?
+              practice_hash['categories_name'].concat(category.related_terms)
+            end
+          end
+        end
+      end
+
       # display initiating facility
       practice_hash['initiating_facility'] = helpers.facility_name(practice.initiating_facility, facilities_json)
       practice_hash['user_favorited'] = current_user.favorite_practice_ids.include?(practice.id) if current_user.present?

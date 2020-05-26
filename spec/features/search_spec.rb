@@ -59,7 +59,7 @@ describe 'Search', type: :feature do
   end
 
   describe 'results' do
-    it 'should show practices that are approved and published'do
+    it 'should show practices that are approved and published' do
       @user_practice.update(published: true, approved: true)
       user_login
       visit_search_page
@@ -96,8 +96,22 @@ describe 'Search', type: :feature do
       # test facility data map for name, positive case
       expect(page).to have_content('Yakima VA Clinic')
     end
-  end
 
+    it 'should be able to search based on practice categories' do
+      @user_practice.update(published: true, approved: true)
+      category = Category.create!(name: 'telehealth')
+      CategoryPractice.create!(category: category, practice: @user_practice)
+
+      visit '/search'
+
+      fill_in('practice-search-field', with: 'Telehealth')
+      click_button('Search')
+
+      expect(page).to have_content(@user_practice.name)
+      expect(page).to have_content(@user_practice.initiating_facility)
+      expect(page).to have_content('1 result for "Telehealth"')
+      end
+      end
   describe 'Cache' do
     it 'Should be reset if certain practice attributes have been updated' do
       add_search_to_cache
@@ -109,6 +123,20 @@ describe 'Search', type: :feature do
       expect(cache_keys).to include("searchable_practices")
     end
 
+    it 'should be able to search based on practice categories related terms' do
+      @user_practice.update(published: true, approved: true)
+      category = Category.create!(name: 'Covid', related_terms: ['Coronavirus'])
+      CategoryPractice.create!(category: category, practice: @user_practice)
+
+      visit '/search'
+
+      fill_in('practice-search-field', with: 'Coronavirus')
+      click_button('Search')
+
+      expect(page).to have_content(@user_practice.name)
+      expect(page).to have_content(@user_practice.initiating_facility)
+      expect(page).to have_content('1 result for "Coronavirus"')
+    end
     it 'Should be reset if a new practice is created through the admin panel' do
       add_search_to_cache
 
@@ -137,5 +165,4 @@ describe 'Search', type: :feature do
       expect(page).to have_content(latest_practice.name)
     end
   end
-
 end
