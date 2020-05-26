@@ -110,8 +110,25 @@ describe 'Search', type: :feature do
       expect(page).to have_content(@user_practice.name)
       expect(page).to have_content(@user_practice.initiating_facility)
       expect(page).to have_content('1 result for "Telehealth"')
-      end
-      end
+    end
+
+    it 'should be able to search based on practice categories related terms' do
+      @user_practice.update(published: true, approved: true)
+      category = Category.create!(name: 'Covid')
+      CategoryPractice.create!(category: category, practice: @user_practice)
+      category.update(related_terms: ['Coronavirus'])
+
+      visit '/search'
+
+      fill_in('practice-search-field', with: 'Coronavirus')
+      click_button('Search')
+
+      expect(page).to have_content(@user_practice.name)
+      expect(page).to have_content(@user_practice.initiating_facility)
+      expect(page).to have_content('1 result for "Coronavirus"')
+    end
+  end
+
   describe 'Cache' do
     it 'Should be reset if certain practice attributes have been updated' do
       add_search_to_cache
@@ -123,20 +140,6 @@ describe 'Search', type: :feature do
       expect(cache_keys).to include("searchable_practices")
     end
 
-    it 'should be able to search based on practice categories related terms' do
-      @user_practice.update(published: true, approved: true)
-      category = Category.create!(name: 'Covid', related_terms: ['Coronavirus'])
-      CategoryPractice.create!(category: category, practice: @user_practice)
-
-      visit '/search'
-
-      fill_in('practice-search-field', with: 'Coronavirus')
-      click_button('Search')
-
-      expect(page).to have_content(@user_practice.name)
-      expect(page).to have_content(@user_practice.initiating_facility)
-      expect(page).to have_content('1 result for "Coronavirus"')
-    end
     it 'Should be reset if a new practice is created through the admin panel' do
       add_search_to_cache
 
@@ -156,7 +159,7 @@ describe 'Search', type: :feature do
 
       publish_practice(latest_practice)
       expect(cache_keys).to include("searchable_practices")
-      
+
       find('h1#overview', text: latest_practice.name)
       expect(Practice.searchable_practices.last.name).to eq(latest_practice.name)
 

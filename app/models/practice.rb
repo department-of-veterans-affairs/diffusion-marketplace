@@ -1,7 +1,7 @@
 class Practice < ApplicationRecord
   include ActiveModel::Dirty
 
-  after_save :clear_cache_on_update
+  after_save :clear_searchable_cache_on_save
 
   extend FriendlyId
   friendly_id :name, use: :slugged
@@ -21,13 +21,13 @@ class Practice < ApplicationRecord
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
   attr_accessor :practice_partner, :department
 
-  def clear_cache
+  def clear_searchable_cache
     cache_key = "searchable_practices"
     Rails.cache.delete(cache_key)
     Practice.searchable_practices
   end
 
-  def clear_cache_on_update
+  def clear_searchable_cache_on_save
     if self.name_changed? ||
         self.tagline_changed? ||
         self.description_changed? ||
@@ -35,7 +35,7 @@ class Practice < ApplicationRecord
         self.initiating_facility_changed? ||
         self.main_display_image_updated_at_changed? ||
         self.published_changed?
-      clear_cache
+      clear_searchable_cache
     end
   end
 
@@ -152,7 +152,7 @@ class Practice < ApplicationRecord
   has_many :badge_practices, dependent: :destroy
   has_many :badges, through: :badge_practices
   has_many :business_case_files, dependent: :destroy
-  has_many :category_practices, dependent: :destroy
+  has_many :category_practices, dependent: :destroy, autosave: true
   has_many :categories, through: :category_practices
   has_many :checklist_files, dependent: :destroy
   has_many :clinical_condition_practices, dependent: :destroy
