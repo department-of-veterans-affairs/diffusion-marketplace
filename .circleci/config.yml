@@ -78,6 +78,23 @@ jobs:
       - run: bundle exec rails db:create
       - run: bundle exec rails db:schema:load
 
+      # security checks
+      - run:
+          name: run bundler-audit
+          command: |
+            bundle exec bundle-audit check --update | tee /tmp/bundler-audit-report.txt
+
+      - run:
+          name: run bundler-leak
+          command: |
+            bundle exec bundle leak check --update | tee /tmp/bundler-leak-report.txt
+
+      - run:
+          name: run security scanner
+          command: |
+            mkdir /tmp/security-report
+            bundle exec brakeman --exit-on-warn -o /tmp/security-report/report.json
+
       # run tests!
       - run:
           name: run tests
@@ -90,11 +107,7 @@ jobs:
                             --out /tmp/test-results/rspec.xml \
                             --format progress \
                             $TEST_FILES
-      - run:
-          name: run security scanner
-          command: |
-            mkdir /tmp/security-report
-            bundle exec brakeman --exit-on-warn -o /tmp/security-report/report.json
+
 
       # collect reports
       - store_test_results:
@@ -110,6 +123,10 @@ jobs:
       - store_artifacts:
           path: coverage
           destination: coverage
+      - store_artifacts:
+          path: /tmp/bundler-leak-report.txt
+      - store_artifacts:
+          path: /tmp/bundler-audit-report.txt
   deploy:
     docker:
       - image: circleci/ruby:2.6.3-node-browsers
