@@ -70,7 +70,7 @@ group :development, :test do
   gem 'brakeman', '>= 4.7.1'
   gem 'bundler-audit'
   gem 'bundler-leak'
-  gem 'json', '2.2.0'
+  gem 'json', '>= 2.3.0'
 end
 
 group :development do
