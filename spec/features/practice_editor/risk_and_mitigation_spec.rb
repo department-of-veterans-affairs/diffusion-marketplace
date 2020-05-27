@@ -91,5 +91,10 @@ describe 'Practice editor', type: :feature, js: true do
       @save_progress.click
       expect(page).not_to have_content('Risk: Type the name or description of the risk.')
     end
+
+    it 'should allow a user to continue if there are no risk and mitigations pair made' do
+      click_link 'Continue'
+      expect(page).to have_current_path(practice_contact_path(@practice))
+    end
   end
 end
