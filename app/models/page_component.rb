@@ -17,7 +17,8 @@ class PageComponent < ApplicationRecord
       'Header': 'PageHeaderComponent',
       'Heading 2': 'PageHeader2Component',
       'Body text': 'PageParagraphComponent',
-      'Practices': 'PagePracticeListComponent'
+      'Practices': 'PagePracticeListComponent',
+      'Subpage Hyperlink': 'PageSubpageHyperlinkComponent'
   }
 
   def build_component(params)

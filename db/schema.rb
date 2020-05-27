@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_26_152343) do
+ActiveRecord::Schema.define(version: 2020_05_21_214745) do
+
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -532,6 +533,16 @@ ActiveRecord::Schema.define(version: 2020_05_26_152343) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "page_subpage_hyperlink_components", force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "title"
+    t.string "description"
+    t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_component_id"], name: "index_page_subpage_hyperlink_components_on_page_component_id"
+  end
+
   create_table "pages", force: :cascade do |t|
     t.bigint "page_group_id"
     t.string "title"
@@ -1004,6 +1015,7 @@ ActiveRecord::Schema.define(version: 2020_05_26_152343) do
   add_foreign_key "page_header2_components", "page_components"
   add_foreign_key "page_header_components", "page_components"
   add_foreign_key "page_paragraph_components", "page_components"
+  add_foreign_key "page_subpage_hyperlink_components", "page_components"
   add_foreign_key "pages", "page_groups"
   add_foreign_key "photo_files", "practices"
   add_foreign_key "practice_creators", "practices"

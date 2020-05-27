@@ -5,7 +5,7 @@ ActiveAdmin.register Page do
   #
   permit_params :title, :page_group_id, :slug, :description,
                 page_components_attributes: [:id, :component_type, :position, :_destroy,
-                                             component_attributes: [:text, :heading_type, :subtopic_title, :subtopic_description, practices: []]]
+                                             component_attributes: [:url, :description, :title, :text, :heading_type, :subtopic_title, :subtopic_description, practices: []]]
   #
   # or
   #
@@ -35,8 +35,10 @@ ActiveAdmin.register Page do
           para component&.heading_type if pc.component_type == 'PageHeaderComponent'
           para component&.subtopic_title if pc.component_type == 'PageHeader2Component'
           para component&.subtopic_description if pc.component_type == 'PageHeader2Component'
-          para component&.text.html_safe unless pc.component_type == 'PagePracticeListComponent' || pc.component_type == 'PageHeader2Component'
+          para component&.text.html_safe unless pc.component_type == 'PagePracticeListComponent' || pc.component_type == 'PageHeader2Component' || pc.component_type == 'PageSubpageHyperlinkComponent'
           para component&.practices.join(', ') if pc.component_type == 'PagePracticeListComponent'
+          para component&.title if pc.component_type == 'PageSubpageHyperlinkComponent'
+          para component&.url if pc.component_type == 'PageSubpageHyperlinkComponent'
         end
       end
       row :publish_page do
@@ -69,6 +71,8 @@ ActiveAdmin.register Page do
         render partial: 'page_header2_component_form', locals: {f: pc, component: component.class == PageHeader2Component ? component : nil, placeholder: placeholder}
         render partial: 'page_paragraph_component_form', locals: {f: pc, component: component.class == PageParagraphComponent ? component : nil, placeholder: placeholder}
         render partial: 'page_practice_list_component_form', locals: {f: pc, component: component.class == PagePracticeListComponent ? component : nil, placeholder: placeholder}
+        render partial: 'page_subpage_hyperlink_component_form', locals: {f: pc, component: component.class == PageSubpageHyperlinkComponent ? component : nil, placeholder: placeholder}
+
       end
     end
     f.actions # adds the 'Submit' and 'Cancel' buttons
