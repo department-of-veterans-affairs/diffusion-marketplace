@@ -4,7 +4,7 @@ RSpec.describe InternalUrlValidator do
   describe 'internal url validations' do
     before do
       Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline')
-      PageGroup.create(name: 'programming', slug: 'programming', description: 'Pages about programming go in this group.')
+      page_group = PageGroup.create(name: 'programming', slug: 'programming', description: 'Pages about programming go in this group.')
       Page.create(page_group: page_group, title: 'ruby', description: 'what a gem', slug: 'ruby-rocks', created_at: Time.now)
     end
 
