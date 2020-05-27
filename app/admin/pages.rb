@@ -39,6 +39,9 @@ ActiveAdmin.register Page do
           para component&.practices.join(', ') if pc.component_type == 'PagePracticeListComponent'
         end
       end
+      row :publish_page do
+        link_to('publish_page', '#')
+      end
     end
     active_admin_comments
   end
