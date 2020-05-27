@@ -71,7 +71,8 @@ Rails.application.routes.draw do
   delete '/edit-profile-photo' => 'users#delete_photo'
 
   resource :competitions do
-    get '/shark-tank', action: 'shark_tank', as: 'shark-tank'
+    # hide shark tank for now
+    # get '/shark-tank', action: 'shark_tank', as: 'shark-tank'
     get '/go-fish', action: 'go_fish', as: 'go-fish'
   end
 
