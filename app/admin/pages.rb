@@ -3,7 +3,7 @@ ActiveAdmin.register Page do
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
-  permit_params :title, :page_group_id, :slug, :description,
+  permit_params :title, :page_group_id, :slug, :description, :published,
                 page_components_attributes: [:id, :component_type, :position, :_destroy,
                                              component_attributes: [:url, :description, :title, :text, :heading_type, :subtopic_title, :subtopic_description, practices: []]]
   #
@@ -14,6 +14,21 @@ ActiveAdmin.register Page do
   #   permitted << :other if params[:action] == 'create' && current_user.admin?
   #   permitted
   # end
+  #
+  index do
+    selectable_column
+    column(:title) { |page| link_to(page.title, admin_page_path(page)) }
+    column(:page_group)
+    column(:slug)
+    column(:description) { |page|
+      page.description.truncate(200)
+    }
+    column(:published)
+    actions do |page|
+      publish_action_str = page.published ? "Unpublish" : "Publish"
+      item publish_action_str, publish_page_admin_page_path(page)
+    end
+  end
 
   show do
     attributes_table do
@@ -42,16 +57,39 @@ ActiveAdmin.register Page do
         end
       end
       row :publish_page do
-        link_to('publish_page', '#')
+        if resource.published
+          link_to('Unpublish Page', publish_page_admin_page_path, method: :post, class: 'active_admin_action_button')
+        else
+          link_to('Publish Page', publish_page_admin_page_path, method: :post, class: 'active_admin_action_button')
+        end
       end
     end
     active_admin_comments
   end
 
+  # action_item :publish_page do
+  #   link_to('Publish Page', publish_page_admin_page_path, method: :post)
+  # end
+  member_action :publish_page, method: :post do
+    message = 'page published'
+    if resource.published
+      message = 'page unpublished'
+      resource.published = nil
+    else
+      resource.published = DateTime.now
+    end
+    resource.save
+    redirect_to resource_path, notice: message
+  end
 
   form :html => {:multipart => true} do |f|
     f.semantic_errors *f.object.errors.keys # shows errors on :base
     f.inputs "Page Information" do
+      if(resource.published)
+        f.input :slug, input_html: { disabled: true } , label: 'URL suffix', hint: 'Enter a brief and descriptive page URL suffix (Ex: "page-title"). Note: to make a page the home or landing page for a page group, enter "home".'
+      else
+        f.input :slug, label: 'URL suffix', hint: 'Enter a brief and descriptive page URL suffix (Ex: "page-title"). Note: to make a page the home or landing page for a page group, enter "home".'
+      end
       f.input :slug, label: 'URL suffix', hint: 'Enter a brief and descriptive page URL suffix (Ex: "page-title"). Note: to make a page the home or landing page for a page group, enter "home".'
       f.input :title, label: 'Title', hint: 'The main heading/"H1" of the page.'
       f.input :description, label: 'Description', hint: 'Overall purpose of the page.'
