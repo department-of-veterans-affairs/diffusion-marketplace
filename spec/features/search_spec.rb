@@ -61,7 +61,7 @@ describe 'Search', type: :feature do
 
   describe 'results' do
     it 'should show practices that are approved and published' do
-      update_practice(@practice)
+      @practice.update(published: true, approved: true)
       user_login
       visit_search_page
       expect(page).to be_accessible.according_to :wcag2a, :section508
@@ -83,7 +83,7 @@ describe 'Search', type: :feature do
       expect(page).to have_content('1 result for "practice"')
 
       # show practices that are approved/published
-      publish_practice(@practice2)
+      @practice2.update(published: true, approved: true)
       visit_search_page
       fill_in('practice-search-field', with: 'practice')
       search

@@ -1,7 +1,8 @@
 class Practice < ApplicationRecord
   include ActiveModel::Dirty
 
-  after_save :clear_searchable_cache_on_save
+  before_save :clear_searchable_cache_on_save
+  after_save :reset_searchable_practices
 
   extend FriendlyId
   friendly_id :name, use: :slugged
@@ -20,6 +21,7 @@ class Practice < ApplicationRecord
   attr_accessor :delete_main_display_image
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
   attr_accessor :practice_partner, :department
+  attr_accessor :reset_searchable_cache
 
   def clear_searchable_cache
     cache_key = "searchable_practices"
@@ -35,8 +37,12 @@ class Practice < ApplicationRecord
         self.initiating_facility_changed? ||
         self.main_display_image_updated_at_changed? ||
         self.published_changed?
-      clear_searchable_cache
+      self.reset_searchable_cache = true
     end
+  end
+
+  def reset_searchable_practices
+    clear_searchable_cache if self.reset_searchable_cache
   end
 
   def self.searchable_practices
