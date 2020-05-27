@@ -1,4 +1,9 @@
 class Practice < ApplicationRecord
+  include ActiveModel::Dirty
+
+  before_save :clear_searchable_cache_on_save
+  after_save :reset_searchable_practices
+
   extend FriendlyId
   friendly_id :name, use: :slugged
   acts_as_list
@@ -16,6 +21,35 @@ class Practice < ApplicationRecord
   attr_accessor :delete_main_display_image
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
   attr_accessor :practice_partner, :department
+  attr_accessor :reset_searchable_cache
+
+  def clear_searchable_cache
+    cache_key = "searchable_practices"
+    Rails.cache.delete(cache_key)
+    Practice.searchable_practices
+  end
+
+  def clear_searchable_cache_on_save
+    if self.name_changed? ||
+        self.tagline_changed? ||
+        self.description_changed? ||
+        self.summary_changed? ||
+        self.initiating_facility_changed? ||
+        self.main_display_image_updated_at_changed? ||
+        self.published_changed?
+      self.reset_searchable_cache = true
+    end
+  end
+
+  def reset_searchable_practices
+    clear_searchable_cache if self.reset_searchable_cache
+  end
+
+  def self.searchable_practices
+    Rails.cache.fetch('searchable_practices') do
+      Practice.get_with_categories
+    end
+  end
 
   # views
   def views
@@ -77,13 +111,13 @@ class Practice < ApplicationRecord
   # has_attached_file :main_display_image, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/:style/missing.png"
 
   # crop the img with custom Paperclip processor located in lib/paperclip_processors/cropper.rb
-  has_attached_file :main_display_image, styles: { thumb: '300x300>' }, :processors => [:cropper]
+  has_attached_file :main_display_image, styles: {thumb: '300x300>'}, :processors => [:cropper]
 
   def main_display_image_s3_presigned_url(style = nil)
     object_presigned_url(main_display_image, style)
   end
 
-  has_attached_file :origin_picture, styles: { thumb: '200x200#' }
+  has_attached_file :origin_picture, styles: {thumb: '200x200#'}
 
   def origin_picture_s3_presigned_url(style = nil)
     object_presigned_url(origin_picture, style)
@@ -105,8 +139,8 @@ class Practice < ApplicationRecord
 
   validates_attachment_content_type :main_display_image, content_type: /\Aimage\/.*\z/
   validates_attachment_content_type :origin_picture, content_type: /\Aimage\/.*\z/
-  validates :name, presence: { message: 'Practice name can\'t be blank'}
-  validates_uniqueness_of :name, { message: 'Practice name already exists'}
+  validates :name, presence: {message: 'Practice name can\'t be blank'}
+  validates_uniqueness_of :name, {message: 'Practice name already exists'}
   # validates :tagline, presence: { message: 'Practice tagline can\'t be blank'}
 
   scope :published,   -> { where(published: true) }
@@ -116,15 +150,15 @@ class Practice < ApplicationRecord
 
   belongs_to :user, optional: true
 
-  has_many :additional_documents, -> {order(position: :asc)}, dependent: :destroy
-  has_many :additional_resources, -> {order(position: :asc)}, dependent: :destroy
+  has_many :additional_documents, -> { order(position: :asc) }, dependent: :destroy
+  has_many :additional_resources, -> { order(position: :asc) }, dependent: :destroy
   has_many :additional_staffs, dependent: :destroy
   has_many :ancillary_service_practices, dependent: :destroy
   has_many :ancillary_services, through: :ancillary_service_practices
   has_many :badge_practices, dependent: :destroy
   has_many :badges, through: :badge_practices
   has_many :business_case_files, dependent: :destroy
-  has_many :category_practices, dependent: :destroy
+  has_many :category_practices, dependent: :destroy, autosave: true
   has_many :categories, through: :category_practices
   has_many :checklist_files, dependent: :destroy
   has_many :clinical_condition_practices, dependent: :destroy
@@ -141,7 +175,7 @@ class Practice < ApplicationRecord
   has_many :domain_practices, dependent: :destroy
   has_many :domains, through: :domain_practices
   has_many :financial_files, dependent: :destroy
-  has_many :impact_photos, -> {order(position: :asc)}, dependent: :destroy
+  has_many :impact_photos, -> { order(position: :asc) }, dependent: :destroy
   has_many :implementation_timeline_files, dependent: :destroy
   has_many :job_position_practices, dependent: :destroy
   has_many :job_positions, through: :job_position_practices
@@ -150,22 +184,22 @@ class Practice < ApplicationRecord
   has_many :practice_managements, through: :practice_management_practices
   has_many :practice_partner_practices, dependent: :destroy
   has_many :practice_partners, through: :practice_partner_practices
-  has_many :practice_permissions, -> {order(position: :asc)}, dependent: :destroy
-  has_many :publications, -> {order(position: :asc)}, dependent: :destroy
+  has_many :practice_permissions, -> { order(position: :asc) }, dependent: :destroy
+  has_many :publications, -> { order(position: :asc) }, dependent: :destroy
   has_many :publication_files, dependent: :destroy
   has_many :required_staff_trainings, dependent: :destroy
-  has_many :risk_mitigations, -> {order(position: :asc)}, dependent: :destroy
+  has_many :risk_mitigations, -> { order(position: :asc) }, dependent: :destroy
   has_many :survey_result_files, dependent: :destroy
-  has_many :timelines, -> {order(position: :asc)}, dependent: :destroy
+  has_many :timelines, -> { order(position: :asc) }, dependent: :destroy
   has_many :toolkit_files, dependent: :destroy
   has_many :user_practices, dependent: :destroy
   has_many :users, through: :user_practices, dependent: :destroy
   has_many :va_employee_practices, dependent: :destroy
-  has_many :va_employees, -> {order(position: :asc)}, through: :va_employee_practices
+  has_many :va_employees, -> { order(position: :asc) }, through: :va_employee_practices
   has_many :va_secretary_priority_practices, dependent: :destroy
   has_many :va_secretary_priorities, through: :va_secretary_priority_practices
-  has_many :video_files, -> {order(position: :asc)}, dependent: :destroy
-  has_many :practice_creators, -> {order(position: :asc)}, dependent: :destroy
+  has_many :video_files, -> { order(position: :asc) }, dependent: :destroy
+  has_many :practice_creators, -> { order(position: :asc) }, dependent: :destroy
 
   # This allows the practice model to be commented on with the use of the Commontator gem
   acts_as_commontable dependent: :destroy
@@ -200,15 +234,15 @@ class Practice < ApplicationRecord
   COST_LABELS = ['0-$10,000', '$10,000-$50,000', '$50,000-$250,000', 'More than $250,000'].freeze
   # also known as "Difficulty"
   COMPLEXITY_LABELS = ['Little or no complexity', 'Some complexity', 'Significant complexity', 'High or large complexity'].freeze
-  TIME_ESTIMATE_OPTIONS =['1 week', '1 month', '3 months', '6 months', '1 year', 'longer than 1 year', 'Other (Please specify)']
-  NUMBER_DEPARTMENTS_OPTIONS =['1. Single department', '2. Two departments', '3. Three departments', '4. Four or more departments']
+  TIME_ESTIMATE_OPTIONS = ['1 week', '1 month', '3 months', '6 months', '1 year', 'longer than 1 year', 'Other (Please specify)']
+  NUMBER_DEPARTMENTS_OPTIONS = ['1. Single department', '2. Two departments', '3. Three departments', '4. Four or more departments']
 
   def committed_user_count
     user_practices.where(committed: true).count
   end
 
   def committed_user_count_by_range(start_date, end_date)
-    user_practices.where(time_committed:start_date...end_date).count
+    user_practices.where(time_committed: start_date...end_date).count
   end
 
   def number_of_adopted_facilities

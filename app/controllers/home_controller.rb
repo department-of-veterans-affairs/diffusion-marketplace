@@ -3,7 +3,7 @@ class HomeController < ApplicationController
   def index
     @top_practice = Practice.find_by_highlight true
     @featured_practices = Practice.where featured: true
-    @practices = Practice.where(approved: true, published: true).order(name: :asc)
+    @practices = Practice.searchable_practices
     @favorite_practices = current_user&.favorite_practices || []
 
     @facilities_data = facilities_json
@@ -63,8 +63,9 @@ class HomeController < ApplicationController
   end
 
   def search
+    # TODO: why do I have this here? - A.H.
     ahoy.track "Practice search", {search_term: request.params[:query]} if request.params[:query].present?
-    @practices = Practice.get_with_categories
+    @practices = Practice.searchable_practices
     @facilities_data = facilities_json['features']
     @practices_json = practices_json(@practices)
   end
