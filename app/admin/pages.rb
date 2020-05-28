@@ -26,7 +26,7 @@ ActiveAdmin.register Page do
     column(:published)
     actions do |page|
       publish_action_str = page.published ? "Unpublish" : "Publish"
-      item publish_action_str, publish_page_admin_page_path(page)
+      item publish_action_str, publish_page_admin_page_path(page), method: :post
     end
   end
 
@@ -71,9 +71,9 @@ ActiveAdmin.register Page do
   #   link_to('Publish Page', publish_page_admin_page_path, method: :post)
   # end
   member_action :publish_page, method: :post do
-    message = 'page published'
+    message = 'Page published'
     if resource.published
-      message = 'page unpublished'
+      message = 'Page unpublished'
       resource.published = nil
     else
       resource.published = DateTime.now
@@ -85,15 +85,14 @@ ActiveAdmin.register Page do
   form :html => {:multipart => true} do |f|
     f.semantic_errors *f.object.errors.keys # shows errors on :base
     f.inputs "Page Information" do
-      if(resource.published)
+      if resource.published
         f.input :slug, input_html: { disabled: true } , label: 'URL suffix', hint: 'Enter a brief and descriptive page URL suffix (Ex: "page-title"). Note: to make a page the home or landing page for a page group, enter "home".'
       else
         f.input :slug, label: 'URL suffix', hint: 'Enter a brief and descriptive page URL suffix (Ex: "page-title"). Note: to make a page the home or landing page for a page group, enter "home".'
       end
-      f.input :slug, label: 'URL suffix', hint: 'Enter a brief and descriptive page URL suffix (Ex: "page-title"). Note: to make a page the home or landing page for a page group, enter "home".'
       f.input :title, label: 'Title', hint: 'The main heading/"H1" of the page.'
       f.input :description, label: 'Description', hint: 'Overall purpose of the page.'
-      f.input :published, label: 'Published', hint: 'Date when page was published' #, input_html: {:value => f.object.published.try(:strftime, '%Y-%m-%d'), disabled: true}
+      f.input :published, input_html: { disabled: true }, label: 'Published', hint: 'Date when page was published' #, input_html: {:value => f.object.published.try(:strftime, '%Y-%m-%d'), disabled: true}
       f.input :page_group, label: 'Group', hint: 'The Group is the page type and will be included in the url. (Ex: "/competitions/page-title" where "competitions" is the Group and "page-title" is the chosen url suffix from above. If the url suffix is "home", the complete URL will be "/competitions")'
     end
 
