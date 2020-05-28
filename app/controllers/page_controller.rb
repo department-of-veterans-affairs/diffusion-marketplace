@@ -1,6 +1,4 @@
 class PageController < ApplicationController
-  #before_action :is_admin, :only => [:new, :edit, :create, :destroy]
-
   def show
     page_slug = params[:page_slug] ? params[:page_slug] : 'home'
     @page = Page.includes(:page_group).find_by(slug: page_slug, page_groups: {slug: params[:page_group_friendly_id]})
@@ -30,15 +28,18 @@ class PageController < ApplicationController
     is_a_admin = false
     if current_user
       if not @page.published
-        current_user.roles.each do |role|
-          if role.name == "admin"
-            is_a_admin = true
-            break
-          end
-        end
-        if not is_a_admin
+        if not current_user.has_role?(:admin)
           redirect_to(root_path)
         end
+        # current_user.roles.each do |role|
+        #   if role.name == "admin"
+        #     is_a_admin = true
+        #     break
+        #   end
+        # end
+        # if not is_a_admin
+        #   redirect_to(root_path)
+        # end
       end
     else
       redirect_to(root_path)

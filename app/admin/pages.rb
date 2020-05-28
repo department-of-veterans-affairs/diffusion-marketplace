@@ -67,9 +67,6 @@ ActiveAdmin.register Page do
     active_admin_comments
   end
 
-  # action_item :publish_page do
-  #   link_to('Publish Page', publish_page_admin_page_path, method: :post)
-  # end
   member_action :publish_page, method: :post do
     message = 'Page published'
     if resource.published
@@ -77,15 +74,19 @@ ActiveAdmin.register Page do
       resource.published = nil
     else
       resource.published = DateTime.now
+      if not resource.ever_published
+        resource.ever_published = true
+      end
     end
     resource.save
-    redirect_to resource_path, notice: message
+      #redirect_to resource_path, notice: message
+    redirect_to admin_pages_path, notice: message
   end
 
   form :html => {:multipart => true} do |f|
     f.semantic_errors *f.object.errors.keys # shows errors on :base
     f.inputs "Page Information" do
-      if resource.published
+      if resource.ever_published
         f.input :slug, input_html: { disabled: true } , label: 'URL suffix', hint: 'Enter a brief and descriptive page URL suffix (Ex: "page-title"). Note: to make a page the home or landing page for a page group, enter "home".'
       else
         f.input :slug, label: 'URL suffix', hint: 'Enter a brief and descriptive page URL suffix (Ex: "page-title"). Note: to make a page the home or landing page for a page group, enter "home".'
