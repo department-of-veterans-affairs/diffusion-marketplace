@@ -95,28 +95,31 @@ function searchPracticesPage() {
     // Adapted from: https://github.com/brunocechet/Fuse.js-with-highlight
     function highlighter(resultItem) {
         resultItem.matches.forEach(function (matchItem) {
-            var text = resultItem.item[matchItem.key];
-            var result = [];
-            var matches = [].concat(matchItem.indices); // limpar referencia
-            var pair = matches.shift();
+            // don't highlight if match was on category since category is not in practice search result text and can't be highlighted
+            if (matchItem.key != 'categories_name') {
+                var text = resultItem.item[matchItem.key];
+                var result = [];
+                var matches = [].concat(matchItem.indices); // limpar referencia
+                var pair = matches.shift();
 
-            for (var i = 0; i < text.length; i++) {
-                var char = text.charAt(i);
-                if (pair && i === pair[0]) {
-                    result.push('<mark>')
+                for (var i = 0; i < text.length; i++) {
+                    var char = text.charAt(i);
+                    if (pair && i === pair[0]) {
+                        result.push('<mark>')
+                    }
+                    result.push(char);
+                    if (pair && i === pair[1]) {
+                        result.push('</mark>');
+                        pair = matches.shift()
+                    }
                 }
-                result.push(char);
-                if (pair && i === pair[1]) {
-                    result.push('</mark>');
-                    pair = matches.shift()
-                }
-            }
-            resultItem.highlight = result.join('');
+                resultItem.highlight = result.join('');
 
-            if (resultItem.children && resultItem.children.length > 0) {
-                resultItem.children.forEach(function (child) {
-                    highlighter(child);
-                });
+                if (resultItem.children && resultItem.children.length > 0) {
+                    resultItem.children.forEach(function (child) {
+                        highlighter(child);
+                    });
+                }
             }
         });
     }
@@ -126,7 +129,7 @@ function searchPracticesPage() {
 
     // Set Fuse.js search options
     var search_options = {
-        keys: ['name', 'tagline', 'description', 'summary', 'initiating_facility'],
+        keys: ['name', 'tagline', 'description', 'summary', 'initiating_facility', 'categories_name'],
         minMatchCharLength: 3,
         tokenize: true,
         shouldSort: true,

@@ -5,10 +5,10 @@ class PageController < ApplicationController
     @path_parts = request.path.split('/')
     @facilities_data = facilities_json
 
-    if page_slug.include?('home')
+    if page_slug == 'home'
       @breadcrumbs = [
           { text: 'Home', path: root_path },
-          { text: "#{@page.title}" }
+          { text: "#{@page.page_group.name}" }
       ]
     elsif Page.where(slug: 'home', page_group_id: @page.page_group_id).exists?
        @breadcrumbs = [
