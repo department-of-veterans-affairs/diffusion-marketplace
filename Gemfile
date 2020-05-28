@@ -98,7 +98,7 @@ gem 'activerecord-nulldb-adapter'
 gem 'acts_as_list'
 gem 'aws-sdk-s3'
 gem 'paperclip', '~> 6.0.0'
-gem 'font-awesome-sass', '~> 5.12.0'
+gem 'font-awesome-sass', '~> 5.13.0'
 gem 'sidekiq'
 
 gem 'survey_monkey_api', github: 'agilesix/surveymonkey'
