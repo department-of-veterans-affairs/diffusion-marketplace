@@ -1,0 +1,42 @@
+# TODO: get the placeholder how active admin does "NEW_#{association_human_name.upcase.split(' ').join('_')}_RECORD"
+placeholder ||= 'NEW_PAGE_COMPONENT_RECORD' # = "NEW_#{association_human_name.upcase.split(' ').join('_')}_RECORD"
+component ||= nil
+html = Arbre::Context.new do
+  li "", class: 'input' do
+    fieldset id: "PageSubpageHyperlinkComponent_poly_#{placeholder}", class: "inputs polyform component-#{placeholder}" do
+      legend do
+        span 'Subpage Hyperlink'
+      end
+      ol do
+        if component
+          input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
+        end
+
+        li class: 'url input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_url_input" do
+          label 'Url Suffix', for: "page_page_components_attributes_#{placeholder}_component_attributes_url", class: 'label'
+          input value: component&.url || nil, type: 'url', required: 'required',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_url",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][url]"
+          para 'Enter a brief and descriptive URL suffix to any internal page of the marketplace (Ex: "/practices/vione", "/partners", "/covid-19/telehealth"', class: 'inline-hints'
+        end
+
+        li class: 'string input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_title_input" do
+          input value: component&.title || nil, type: 'text', required: 'required',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_title",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][title]"
+          label 'Title', for: "page_page_components_attributes_#{placeholder}_component_attributes_title"
+          para 'Title of subpage styled as secondary heading/“H2”', class: 'inline-hints'
+        end
+
+        li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_description_input" do
+          label 'Description', for: "page_page_components_attributes_#{placeholder}_component_attributes_description", class: 'label'
+          input value: component&.description || nil, type: 'text',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_description",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][description]"
+        end
+      end
+    end
+  end
+end
+
+f.template.concat(html.to_s)
