@@ -1,9 +1,9 @@
 <div class="full-view-height dm-background-white">
   <section class="grid-container">
-    <h1 class="font-sans-2xl margin-bottom-405">
+    <h1 class="font-sans-2xl margin-bottom-405 grid-col-10">
       <%= @page.title %>
     </h1>
-    <p class="font-sans-lg x3-bottom">
+    <p class="font-sans-lg x3-bottom grid-col-10">
       <%= @page.description %>
     </p>
 
@@ -21,7 +21,7 @@
         <%# Page Header 2 %>
         <% case pc.component_type when 'PageHeader2Component' %>
           <div class="grid-row x3-bottom">
-            <div class="grid-col-10 heading2_subtopic_title"><%=component.subtopic_title %></div>
+            <div class="grid-col-8 heading2_subtopic_title"><%=component.subtopic_title %></div>
             <% if component.subtopic_description.present? %>
               <div class="grid-col-8 heading2_subtopic_description x1-top">
                 <%=component.subtopic_description %>
@@ -46,8 +46,8 @@
 
         <%# Subpage Hyperlink %>
         <% when 'PageSubpageHyperlinkComponent' %>
-          <div class="grid-row x3-bottom">
-            <a href="<%= component.url %>" class="grid-col-10 page-subpage-hyperlink">
+          <div class="grid-row x3-bottom grid-col-8">
+            <a href="<%= component.url %>" class="page-subpage-hyperlink">
               <h2 class="font-sans-xl display-inline-block underline x0-top">
                 <%= component.title %>
               </h2>

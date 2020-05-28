@@ -113,6 +113,12 @@ header {
   }
 }
 
+.shark-tank-link {
+  &:hover {
+    text-decoration: underline !important;
+  }
+}
+
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   .usa-navbar {
     overflow: visible !important;

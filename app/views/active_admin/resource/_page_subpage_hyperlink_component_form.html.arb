@@ -13,7 +13,7 @@ html = Arbre::Context.new do
         end
 
         li class: 'url input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_url_input" do
-          label 'Url Suffix', for: "page_page_components_attributes_#{placeholder}_component_attributes_url", class: 'label'
+          label 'Subpage URL suffix', for: "page_page_components_attributes_#{placeholder}_component_attributes_url", class: 'label'
           input value: component&.url || nil, type: 'url', required: 'required',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_url",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][url]"
@@ -24,12 +24,12 @@ html = Arbre::Context.new do
           input value: component&.title || nil, type: 'text', required: 'required',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_title",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][title]"
-          label 'Title', for: "page_page_components_attributes_#{placeholder}_component_attributes_title"
-          para 'Title of subpage styled as secondary heading/“H2”', class: 'inline-hints'
+          label 'Subpage title', for: "page_page_components_attributes_#{placeholder}_component_attributes_title"
+          para 'Title of subpage styled as secondary heading/"H2"', class: 'inline-hints'
         end
 
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_description_input" do
-          label 'Description', for: "page_page_components_attributes_#{placeholder}_component_attributes_description", class: 'label'
+          label 'Subpage description', for: "page_page_components_attributes_#{placeholder}_component_attributes_description", class: 'label'
           input value: component&.description || nil, type: 'text',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_description",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][description]"

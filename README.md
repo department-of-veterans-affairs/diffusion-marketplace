@@ -23,6 +23,8 @@
 | `rails go_fish_practices:assign_go_fish_badge` | Assigns the Go Fish badge to all Go Fish practices  |
 | `rails shark_tank_practices:assign_shark_tank_badge` | Assigns the Shark Tank badge to all previous Shark Tank winners  |
 | `rails inet_partner_practices:assign_inet_partner` | Assigns the iNET practice partner to practices that have iNET as a partner  |
+| `rails shark_tank_practices:assign_shark_tank_badge` | Assigns the Shark Tank badge to all previous Shark Tank winners  |
+| `rails categories:add_covid_cats` | Adds COVID related categories and assigns them to practices  |
 #### Ruby version
 
 - `ruby 2.6.3`
@@ -150,6 +152,7 @@ This will run:
 6. `rails go_fish_practices:assign_go_fish_badge` - assigns the Go Fish badge to all Go Fish practices
 7. `rails shark_tank_practices:assign_shark_tank_badge` - assigns the Shark Tank badge to all previous Shark Tank winners
 8. `rails inet_partner_practices:assign_inet_partner` - assigns the iNET practice partner to practices that have iNET as a partner
+9. `rails categories:add_covid_cats` - adds COVID related categories and assigns them to practices
 
 To reset all of the data and do the process all over again, run:
 ```bash

@@ -123,7 +123,7 @@ describe 'Breadcrumbs', type: :feature do
       visit '/programming/home'
 
       expect(page).to have_css('.breadcrumbs-container a:first-child', text: 'Home')
-      expect(page).to have_css('.breadcrumbs-container span:last-child', text: @page.title)
+      expect(page).to have_css('.breadcrumbs-container span:last-child', text: @page_group.name)
     end
 
     it 'Should show three breadcrumbs with only one link for a page that has a page group without a landing page' do

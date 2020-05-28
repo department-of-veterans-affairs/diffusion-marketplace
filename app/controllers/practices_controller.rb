@@ -120,18 +120,27 @@ class PracticesController < ApplicationController
   # PATCH/PUT /practices/1.json
   def update
     current_endpoint = request.referrer.split('/').pop
-    pr_params = { practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint }
-    updated = SavePracticeService.new(pr_params).save_practice
+    updated = true
+    if params[:practice].present?
+      pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
+      updated = SavePracticeService.new(pr_params).save_practice
+    end
 
     respond_to do |format|
       if updated
-        if params[:next]
-          path = eval("practice_#{Practice::PRACTICE_EDITOR_SLUGS.key(current_endpoint)}_path(@practice)")
-          format.html { redirect_to path, notice: 'Practice was successfully updated.' }
-          format.json { render :show, status: :ok, location: @practice }
+        if updated.is_a?(StandardError)
+          flash[:error] = "There was an #{updated.message}. The practice was not saved."
+          format.html { redirect_back fallback_location: root_path }
+          format.json { render json: updated, status: :unprocessable_entity }
         else
-          format.html { redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.' }
-          format.json { render json: @practice.errors, status: :unprocessable_entity }
+          if params[:next]
+            path = eval("practice_#{Practice::PRACTICE_EDITOR_SLUGS.key(current_endpoint)}_path(@practice)")
+            format.html { redirect_to path, notice: params[:practice].present? ? 'Practice was successfully updated.' : nil }
+            format.json { render :show, status: :ok, location: @practice }
+          else
+            format.html { redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.' }
+            format.json { render json: @practice, status: :ok }
+          end
         end
       end
     end
@@ -139,7 +148,7 @@ class PracticesController < ApplicationController
 
   def search
     ahoy.track "Practice search", {search_term: request.params[:query]} if request.params[:query].present?
-    @practices = Practice.where(approved: true, published: true).order(name: :asc)
+    @practices = Practice.searchable_practices
     @facilities_data = facilities_json
     @practices_json = practices_json(@practices)
   end
@@ -281,7 +290,7 @@ class PracticesController < ApplicationController
   def publication_validation
     current_endpoint = request.referrer.split('/').pop
     if params[:practice].present?
-      pr_params = { practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint }
+      pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
       updated = SavePracticeService.new(pr_params).save_practice
     end
 
@@ -457,6 +466,20 @@ class PracticesController < ApplicationController
         practice_hash['date_initiated'] = practice.date_initiated.strftime("%B %Y")
       else
         practice_hash['date_initiated'] = '(start date unknown)'
+      end
+
+      if practice.categories&.length > 0
+        practice_hash['categories_name'] = []
+
+        practice.categories.each do |category|
+          if category.name != 'None'
+            practice_hash['categories_name'].push category.name
+
+            unless category.related_terms.empty?
+              practice_hash['categories_name'].concat(category.related_terms)
+            end
+          end
+        end
       end
 
       # display initiating facility
