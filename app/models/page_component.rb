@@ -26,7 +26,7 @@ class PageComponent < ApplicationRecord
     if component_id
       _component = eval("#{self.component_type}.where({id: #{self.component_id}}).first")
       if _component
-        # update the old one
+        # update the current one
         _component.update(params)
       else
         # Delete the component associated with this page component and make a new one.
