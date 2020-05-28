@@ -120,18 +120,27 @@ class PracticesController < ApplicationController
   # PATCH/PUT /practices/1.json
   def update
     current_endpoint = request.referrer.split('/').pop
-    pr_params = { practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint }
-    updated = SavePracticeService.new(pr_params).save_practice
+    updated = true
+    if params[:practice].present?
+      pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
+      updated = SavePracticeService.new(pr_params).save_practice
+    end
 
     respond_to do |format|
       if updated
-        if params[:next]
-          path = eval("practice_#{Practice::PRACTICE_EDITOR_SLUGS.key(current_endpoint)}_path(@practice)")
-          format.html { redirect_to path, notice: 'Practice was successfully updated.' }
-          format.json { render :show, status: :ok, location: @practice }
+        if updated.is_a?(StandardError)
+          flash[:error] = "There was an #{updated.message}. The practice was not saved."
+          format.html { redirect_back fallback_location: root_path }
+          format.json { render json: updated, status: :unprocessable_entity }
         else
-          format.html { redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.' }
-          format.json { render json: @practice.errors, status: :unprocessable_entity }
+          if params[:next]
+            path = eval("practice_#{Practice::PRACTICE_EDITOR_SLUGS.key(current_endpoint)}_path(@practice)")
+            format.html { redirect_to path, notice: params[:practice].present? ? 'Practice was successfully updated.' : nil }
+            format.json { render :show, status: :ok, location: @practice }
+          else
+            format.html { redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.' }
+            format.json { render json: @practice, status: :ok }
+          end
         end
       end
     end
@@ -281,7 +290,7 @@ class PracticesController < ApplicationController
   def publication_validation
     current_endpoint = request.referrer.split('/').pop
     if params[:practice].present?
-      pr_params = { practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint }
+      pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
       updated = SavePracticeService.new(pr_params).save_practice
     end
 
