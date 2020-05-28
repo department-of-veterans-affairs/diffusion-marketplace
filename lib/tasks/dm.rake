@@ -20,6 +20,7 @@ namespace :dm do
     Rake::Task['go_fish_practices:assign_go_fish_badge'].execute
     Rake::Task['shark_tank_practices:assign_shark_tank_badge'].execute
     Rake::Task['inet_partner_practices:assign_inet_partner'].execute
+    Rake::Task['categories:add_covid_cats'].execute
   end
 
   # rails dm:reset_up

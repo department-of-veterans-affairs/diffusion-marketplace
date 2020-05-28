@@ -5,12 +5,12 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.6.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.4'
+gem 'rails', '>= 5.2.4.3'
 # Use postgresql as the database for Active Record
 gem 'pg', '1.1.4'
 # gem 'pg', '1.1.4',  platforms: [:mingw, :x64_mingw]
 # Use Puma as the app server
-gem 'puma', '~> 3.12'
+gem 'puma', '>= 4.3.5'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -27,7 +27,10 @@ gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 4.0'
+gem 'redis'
+
+gem 'hiredis'
+
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.13'
 
@@ -64,7 +67,10 @@ group :development, :test do
   gem 'axe-matchers'
   gem 'webdrivers'
 
-  gem 'brakeman'
+  gem 'brakeman', '>= 4.7.1'
+  gem 'bundler-audit'
+  gem 'bundler-leak'
+  gem 'json', '>= 2.3.0'
 end
 
 group :development do

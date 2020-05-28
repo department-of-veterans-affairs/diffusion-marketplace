@@ -139,7 +139,7 @@ class PracticesController < ApplicationController
 
   def search
     ahoy.track "Practice search", {search_term: request.params[:query]} if request.params[:query].present?
-    @practices = Practice.where(approved: true, published: true).order(name: :asc)
+    @practices = Practice.searchable_practices
     @facilities_data = facilities_json
     @practices_json = practices_json(@practices)
   end
@@ -457,6 +457,20 @@ class PracticesController < ApplicationController
         practice_hash['date_initiated'] = practice.date_initiated.strftime("%B %Y")
       else
         practice_hash['date_initiated'] = '(start date unknown)'
+      end
+
+      if practice.categories&.length > 0
+        practice_hash['categories_name'] = []
+
+        practice.categories.each do |category|
+          if category.name != 'None'
+            practice_hash['categories_name'].push category.name
+
+            unless category.related_terms.empty?
+              practice_hash['categories_name'].concat(category.related_terms)
+            end
+          end
+        end
       end
 
       # display initiating facility
