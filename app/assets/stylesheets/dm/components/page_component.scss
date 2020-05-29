@@ -1,0 +1,14 @@
+@import "../../dm/variables/colors";
+body {
+  p.ql-align-justify {
+    margin-bottom: 16px;
+
+    a {
+      color: $dm-color-primary-vivid;
+      
+      &:visited {
+        color: $dm-color-primary-vivid;
+      }
+    }
+  }
+}
