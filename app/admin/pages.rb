@@ -55,7 +55,7 @@ ActiveAdmin.register Page do
           para component&.subtopic_title if pc.component_type == 'PageHeader2Component'
           para component&.subtopic_description if pc.component_type == 'PageHeader2Component'
           para component&.text.html_safe unless pc.component_type == 'PagePracticeListComponent' || pc.component_type == 'PageHeader2Component' || pc.component_type == 'PageSubpageHyperlinkComponent'
-          para component&.practices.join(', ') if pc.component_type == 'PagePracticeListComponent'
+          para component&.practices.map {|pid| Practice.find(pid).name }.join("\n") if pc.component_type == 'PagePracticeListComponent'
           para component&.title if pc.component_type == 'PageSubpageHyperlinkComponent'
           para component&.url if pc.component_type == 'PageSubpageHyperlinkComponent'
         end
