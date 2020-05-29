@@ -47,14 +47,12 @@
         <%# Subpage Hyperlink %>
         <% when 'PageSubpageHyperlinkComponent' %>
           <div class="grid-row x3-bottom grid-col-8">
-            <a href="<%= component.url %>" class="page-subpage-hyperlink">
-              <h2 class="font-sans-xl display-inline-block underline x0-top">
-                <%= component.title %>
-              </h2>
+            <a href="<%= component.url %>" class="width-100 page-subpage-hyperlink">
+              <h2 class="font-sans-xl display-inline underline x0-top"><%= component.title %></h2>
               <span class="x0-5-left fas fa-chevron-right fa-icon-125 vertical-align-middle p1-bottom"></span>
             </a>
             <% if component.description.present? %>
-              <div class="font-sans-sm x1-top heading2_subtopic_description">
+              <div class="font-sans-sm x1-top width-100 heading2_subtopic_description">
                 <%= component.description %>
               </div>
             <% end %>
