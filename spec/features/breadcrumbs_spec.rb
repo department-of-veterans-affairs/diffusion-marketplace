@@ -15,9 +15,9 @@ describe 'Breadcrumbs', type: :feature do
     PracticePartnerPractice.create!(practice_partner: @pp, practice: @user_practice)
     @page_group = PageGroup.create!(name: 'programming', description: 'Pages about programming go in this group.')
     @page_group2 = PageGroup.create!(name: 'test', description: 'Pages about tests go in this group.')
-    @page = Page.create!(title: 'Test', description: 'This is a test page', slug: 'home', page_group: @page_group)
-    @page2 = Page.create!(title: 'Test', description: 'This is a test page', slug: 'test-page', page_group: @page_group2)
-    @page3 = Page.create!(title: 'Test', description: 'This is a test page', slug: 'test-page', page_group: @page_group)
+    @page = Page.create!(title: 'Test', description: 'This is a test page', slug: 'home', page_group: @page_group, published: Time.now)
+    @page2 = Page.create!(title: 'Test', description: 'This is a test page', slug: 'test-page', page_group: @page_group2, published: Time.now)
+    @page3 = Page.create!(title: 'Test', description: 'This is a test page', slug: 'test-page', page_group: @page_group, published: Time.now)
   end
 
   describe 'Practice partners flow' do
