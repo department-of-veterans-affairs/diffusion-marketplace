@@ -1,3 +1,9 @@
+<% provide :head_tags do %>
+  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    <%= render partial: 'maps/facility_auto_complete', formats: [:js] %>
+  <% end %>
+<% end %>
+
 <% diffused_practices = @diffused_practices.map(&:practice).uniq.sort_by(&:name) %>
 <div id="filterResults" class="map-filters padding-y-0 position-absolute display-none">
   <div class="padding-left-1">
@@ -77,10 +83,10 @@
       </div>
 
       <div class="margin-bottom-2 clearfix">
-        <div class="usa-search usa-search--small">
+        <div class="usa-search usa-search--small" id="facility_name_container">
           <label class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0 text-bold" for="facility_name">Facility
             name</label>
-          <input class="usa-input" id="facility_name" name="facility_name">
+          <input id="facility_name" class="usa-input typeahead" name="facility_name">
         </div>
         <button type="button" class="usa-button--unstyled float-right padding-top-1 padding-bottom-05 padding-right-1" id="practiceListTrigger">
           View list of facilities

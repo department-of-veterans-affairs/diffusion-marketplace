@@ -19,6 +19,30 @@
   float: left;
 }
 
+.tt-dataset-facilityNames {
+  width: 275px;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #FFFFFF;
+  padding-bottom: 12px;
+}
+
+#facility_name_container {
+  .typeahead {
+    width: 275px;
+  }
+}
+
+.tt-selectable {
+  padding-left: 8px;
+  padding-right: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $dm-color-light-gray
+  }
+}
+
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   .ie-welcome-container {
     width: 100% !important;
