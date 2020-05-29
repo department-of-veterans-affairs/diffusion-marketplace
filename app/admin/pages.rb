@@ -48,17 +48,19 @@ ActiveAdmin.register Page do
       row :created_at
       row :updated_at
       row 'Components' do |p|
-        p.page_components.each do |pc|
+        p.page_components.map { |pc|
           component = eval("#{pc.component_type}.find(#{pc.component_id})")
-          para PageComponent::COMPONENT_SELECTION.key(pc.component_type)
-          para component&.heading_type if pc.component_type == 'PageHeaderComponent'
-          para component&.subtopic_title if pc.component_type == 'PageHeader2Component'
-          para component&.subtopic_description if pc.component_type == 'PageHeader2Component'
-          para component&.text.html_safe unless pc.component_type == 'PagePracticeListComponent' || pc.component_type == 'PageHeader2Component' || pc.component_type == 'PageSubpageHyperlinkComponent'
-          para component&.practices.map {|pid| Practice.find(pid).name }.join("\n") if pc.component_type == 'PagePracticeListComponent'
-          para component&.title if pc.component_type == 'PageSubpageHyperlinkComponent'
-          para component&.url if pc.component_type == 'PageSubpageHyperlinkComponent'
-        end
+          Arbre::Context.new do
+            para PageComponent::COMPONENT_SELECTION.key(pc.component_type)
+            para component&.heading_type if pc.component_type == 'PageHeaderComponent'
+            para component&.subtopic_title if pc.component_type == 'PageHeader2Component'
+            para component&.subtopic_description if pc.component_type == 'PageHeader2Component'
+            para component&.text.html_safe unless pc.component_type == 'PagePracticeListComponent' || pc.component_type == 'PageHeader2Component' || pc.component_type == 'PageSubpageHyperlinkComponent'
+            para component&.practices.map {|pid| Practice.find(pid).name }.join("\n") if pc.component_type == 'PagePracticeListComponent'
+            para component&.title if pc.component_type == 'PageSubpageHyperlinkComponent'
+            para component&.url if pc.component_type == 'PageSubpageHyperlinkComponent'
+          end
+        }.join('').html_safe
       end
       row :publish_page do
         if resource.published
