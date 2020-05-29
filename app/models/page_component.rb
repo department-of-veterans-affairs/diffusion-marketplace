@@ -35,12 +35,10 @@ class PageComponent < ApplicationRecord
           delete_component =  c.constantize.where({page_component: self}).first
           delete_component.destroy if delete_component
         end
-        params[:page_component] = self
         _component = component_type.constantize.new(params)
       end
     else
       # make a brand new component
-      params[:page_component] = self
       _component = component_type.constantize.new(params)
     end
     self.component = _component
