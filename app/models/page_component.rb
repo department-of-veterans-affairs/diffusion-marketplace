@@ -24,7 +24,7 @@ class PageComponent < ApplicationRecord
   def build_component(params)
     raise "Unknown component_type: #{component_type}" unless COMPONENT_SELECTION.values.include?(component_type)
     if component_id
-      _component = eval("#{self.component_type}.where({id: #{self.component_id}}).first")
+      _component = eval("#{self.component_type}.where({id: '#{self.component_id}'}).first")
       if _component
         # update the current one
         _component.update(params)

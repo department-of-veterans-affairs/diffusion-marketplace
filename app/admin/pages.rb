@@ -49,7 +49,7 @@ ActiveAdmin.register Page do
       row :updated_at
       row 'Components' do |p|
         p.page_components.map { |pc|
-          component = eval("#{pc.component_type}.find(#{pc.component_id})")
+          component = eval("#{pc.component_type}.find('#{pc.component_id}')")
           Arbre::Context.new do
             para PageComponent::COMPONENT_SELECTION.key(pc.component_type)
             para component&.heading_type if pc.component_type == 'PageHeaderComponent'
@@ -108,7 +108,7 @@ ActiveAdmin.register Page do
       f.has_many :page_components, heading: nil, sortable: :position, sortable_start: 1, allow_destroy: true do |pc, index|
         # TODO: get the placeholder how active admin does "NEW_#{association_human_name.upcase.split(' ').join('_')}_RECORD"
         placeholder = pc.object.component_id ? index - 1 : 'NEW_PAGE_COMPONENT_RECORD'
-        component = pc.object.component_id ? eval("#{pc.object.component_type}.find(#{pc.object.component_id})") : nil
+        component = pc.object.component_id ? eval("#{pc.object.component_type}.find('#{pc.object.component_id}')") : nil
 
         pc.input :component_type, input_html: {class: 'polyselect', 'data-component-id': placeholder}, collection: PageComponent::COMPONENT_SELECTION
 

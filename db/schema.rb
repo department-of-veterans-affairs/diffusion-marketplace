@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_28_141041) do
+ActiveRecord::Schema.define(version: 2020_05_29_222129) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "active_admin_comments", force: :cascade do |t|
@@ -484,11 +485,13 @@ ActiveRecord::Schema.define(version: 2020_05_28_141041) do
   create_table "page_components", force: :cascade do |t|
     t.bigint "page_id"
     t.integer "position"
-    t.integer "component_id"
     t.string "component_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "component_id", null: false
+    t.index ["component_id"], name: "index_page_components_on_component_id"
     t.index ["page_id"], name: "index_page_components_on_page_id"
+    t.index ["position"], name: "index_page_components_on_position"
   end
 
   create_table "page_groups", force: :cascade do |t|
@@ -500,7 +503,7 @@ ActiveRecord::Schema.define(version: 2020_05_28_141041) do
     t.index ["slug"], name: "index_page_groups_on_slug", unique: true
   end
 
-  create_table "page_header2_components", force: :cascade do |t|
+  create_table "page_header2_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "page_component_id"
     t.string "subtopic_title"
     t.string "subtopic_description"
@@ -509,7 +512,7 @@ ActiveRecord::Schema.define(version: 2020_05_28_141041) do
     t.index ["page_component_id"], name: "index_page_header2_components_on_page_component_id"
   end
 
-  create_table "page_header_components", force: :cascade do |t|
+  create_table "page_header_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "page_component_id"
     t.string "text"
     t.string "heading_type"
@@ -518,7 +521,7 @@ ActiveRecord::Schema.define(version: 2020_05_28_141041) do
     t.index ["page_component_id"], name: "index_page_header_components_on_page_component_id"
   end
 
-  create_table "page_paragraph_components", force: :cascade do |t|
+  create_table "page_paragraph_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "page_component_id"
     t.string "text"
     t.datetime "created_at", null: false
@@ -526,13 +529,13 @@ ActiveRecord::Schema.define(version: 2020_05_28_141041) do
     t.index ["page_component_id"], name: "index_page_paragraph_components_on_page_component_id"
   end
 
-  create_table "page_practice_list_components", force: :cascade do |t|
+  create_table "page_practice_list_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "practices", default: [], array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "page_subpage_hyperlink_components", force: :cascade do |t|
+  create_table "page_subpage_hyperlink_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "page_component_id"
     t.string "title"
     t.string "description"
