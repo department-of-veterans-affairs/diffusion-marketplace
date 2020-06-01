@@ -77,9 +77,9 @@ ActiveAdmin.register Page do
   end
 
   member_action :publish_page, method: :post do
-    message = resource.title.to_s + ' Page published'
+    message = "\"#{resource.title.to_s}\" Page published"
     if resource.published
-      message = resource.title.to_s +  ' Page unpublished'
+      message = "\"#{resource.title.to_s}\" Page unpublished"
       resource.published = nil
     else
       resource.published = DateTime.now
