@@ -85,6 +85,8 @@ GEM
       sass
       select2-rails (~> 4.0)
       xdan-datetimepicker-rails (~> 2.5.1)
+    activeadmin_quill_editor (0.2.0)
+      activeadmin (>= 1.0)
     activejob (5.2.4.3)
       activesupport (= 5.2.4.3)
       globalid (>= 0.3.6)
@@ -544,6 +546,7 @@ DEPENDENCIES
   active_skin
   activeadmin
   activeadmin_addons
+  activeadmin_quill_editor
   activerecord-nulldb-adapter
   acts_as_list
   acts_as_votable

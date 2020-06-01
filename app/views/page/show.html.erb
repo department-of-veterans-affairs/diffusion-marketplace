@@ -1,0 +1,64 @@
+<div class="full-view-height dm-background-white">
+  <section class="grid-container">
+    <h1 class="font-sans-2xl margin-bottom-405 grid-col-10">
+      <%= @page.title %>
+    </h1>
+    <p class="font-sans-lg x3-bottom grid-col-10">
+      <%= @page.description %>
+    </p>
+
+    <div class="page-content">
+      <% @page.page_components.each do |pc| %>
+        <% component = pc.component_type.constantize.find(pc.component_id) %>
+
+        <%# Page Header and Paragraph %>
+        <% if (pc.component_type == 'PageHeaderComponent' || pc.component_type == 'PageParagraphComponent') && component.text.present? %>
+          <div class="grid-row x3-bottom">
+            <%= component.text.html_safe %>
+          </div>
+        <% end %>
+
+        <%# Page Header 2 %>
+        <% case pc.component_type when 'PageHeader2Component' %>
+          <div class="grid-row x3-bottom">
+            <div class="grid-col-8 heading2_subtopic_title"><%=component.subtopic_title %></div>
+            <% if component.subtopic_description.present? %>
+              <div class="grid-col-8 heading2_subtopic_description x1-top">
+                <%=component.subtopic_description %>
+              </div>
+            <% end %>
+          </div>
+
+        <%# Practice List %>
+        <% when 'PagePracticeListComponent' %>
+          <% practices_ids = component.practices %> <%# array of id strings %>
+          <div class="grid-row grid-gap x1-bottom">
+            <% practices_ids.each do |pr_id| %>
+              <% pr = Practice.find(pr_id.to_i) %>
+              <% if pr.present? %>
+                <div class="tablet:grid-col-4 flex-column display-flex x2-bottom">
+                  <%= render partial: 'practices/favorite_button', locals: {practice: pr, featured: true, col_4: false} %>
+                  <%= render partial: 'practices/marketplace_card', locals: {practice: pr, featured: true} %>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+
+        <%# Subpage Hyperlink %>
+        <% when 'PageSubpageHyperlinkComponent' %>
+          <div class="grid-row x3-bottom grid-col-8">
+            <a href="<%= component.url %>" class="width-100 page-subpage-hyperlink">
+              <h2 class="font-sans-xl display-inline underline x0-top"><%= component.title %></h2>
+              <span class="x0-5-left fas fa-chevron-right fa-icon-125 vertical-align-middle p1-bottom"></span>
+            </a>
+            <% if component.description.present? %>
+              <div class="font-sans-sm x1-top width-100 heading2_subtopic_description">
+                <%= component.description %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </section>
+</div>

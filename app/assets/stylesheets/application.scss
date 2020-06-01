@@ -33,3 +33,23 @@ body {
   position: relative;
   padding-bottom: 9.2rem;
 }
+
+/*page components*/
+.heading2_subtopic_title{
+  font-style: normal;
+  font-weight: bold;
+  font-size: 33.92px;
+  line-height: 38px;
+  display: flex;
+  align-items: center;
+  color: #000000;
+}
+.heading2_subtopic_description{
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16.96px;
+  line-height: 26px;
+  display: flex;
+  align-items: center;
+  color: #000000;
+}
