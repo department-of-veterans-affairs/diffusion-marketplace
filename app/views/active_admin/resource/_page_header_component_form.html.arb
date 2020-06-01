@@ -1,0 +1,40 @@
+# TODO: get the placeholder how active admin does "NEW_#{association_human_name.upcase.split(' ').join('_')}_RECORD"
+placeholder ||= 'NEW_PAGE_COMPONENT_RECORD' # = "NEW_#{association_human_name.upcase.split(' ').join('_')}_RECORD"
+component ||= nil
+html = Arbre::Context.new do
+  li "", class: 'input' do
+    fieldset id: "PageHeaderComponent_poly_#{placeholder}", class: "inputs polyform component-#{placeholder}" do
+      legend do
+        span 'Header'
+      end
+      ol do
+        if component
+          input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
+        end
+
+        li class: 'select input optional', id: "page_page_components_attributes_#{placeholder}_component_attributes_heading_type_input" do
+          label 'Heading Type', for: "page_page_components_attributes_#{placeholder}_component_attributes_heading_type", class: 'label'
+          select value: component&.heading_type || nil, required: 'required',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_heading_type",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][heading_type]" do
+            option ''
+            %w(H1 H2 H3 H4 H5 H6).each do |h|
+              option h, value: h, selected: component&.heading_type == h
+            end
+          end
+          para 'Choose a heading type where H1 is the largest font-size and H6 is the smallest, yet still bolder, font-size.', class: 'inline-hints'
+        end
+
+        li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_text_input" do
+          label 'Text', for: "page_page_components_attributes_#{placeholder}_component_attributes_text", class: 'label'
+          input value: component&.text || nil, type: 'text', required: 'required',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_text",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][text]"
+          para 'Make this header stand out.', class: 'inline-hints'
+        end
+      end
+    end
+  end
+end
+
+f.template.concat(html.to_s)

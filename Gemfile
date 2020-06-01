@@ -132,6 +132,7 @@ gem 'activeadmin_addons'
 gem 'active_skin'
 gem 'active_admin_theme'
 gem 'caxlsx'
+gem 'activeadmin_quill_editor'
 
 gem "chartkick"
 gem 'groupdate'
@@ -145,3 +146,4 @@ gem 'wdm', '>= 0.1.0' if Gem.win_platform?
 
 gem 'gmaps4rails', github: 'agilesix/Google-Maps-for-Rails', ref: 'master'
 gem 'lodash-rails'
+
