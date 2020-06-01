@@ -22,6 +22,7 @@ ActiveAdmin.register Page do
     column(:slug)
     column(:complete_url) { |page|
       page_link = page.slug == 'home' ? "/#{page.page_group.friendly_id}" : "/#{page.page_group.friendly_id}/#{page.slug}"
+      page_link = page_link.downcase
       link_to(page_link, page_link, target: '_blank', title: 'opens page in new tab')
     }
     column(:description) { |page|
@@ -38,6 +39,7 @@ ActiveAdmin.register Page do
     attributes_table do
       row('Complete URL') { |page|
         page_link = page.slug == 'home' ? "/#{page.page_group.friendly_id}" : "/#{page.page_group.friendly_id}/#{page.slug}"
+        page_link = page_link.downcase
         link_to(page_link, page_link, target: '_blank', title: 'opens page in new tab')
       }
       row :page_group
@@ -75,9 +77,9 @@ ActiveAdmin.register Page do
   end
 
   member_action :publish_page, method: :post do
-    message = 'Page published'
+    message = "\"#{resource.title.to_s}\" Page published"
     if resource.published
-      message = 'Page unpublished'
+      message = "\"#{resource.title.to_s}\" Page unpublished"
       resource.published = nil
     else
       resource.published = DateTime.now
@@ -86,8 +88,7 @@ ActiveAdmin.register Page do
       end
     end
     resource.save
-      #redirect_to resource_path, notice: message
-    redirect_to admin_pages_path, notice: message
+    redirect_back fallback_location: root_path, notice: message
   end
 
   form :html => {:multipart => true} do |f|
