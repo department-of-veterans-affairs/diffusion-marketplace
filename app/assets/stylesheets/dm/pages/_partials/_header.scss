@@ -1,6 +1,5 @@
 @import "../../variables/colors";
 @import "../../../dm_uswds/theme/uswds-theme-components";
-$underline: none !important;
 
 header {
   .usa-navbar {
@@ -79,11 +78,11 @@ header {
 
 .bulletin-menu-button {
   &:hover {
-    text-decoration: $underline;
+    text-decoration: none !important;
   }
 
   &:after {
-    text-decoration: $underline;
+    text-decoration: none !important;
   }
 
   &:hover::after {
@@ -99,30 +98,14 @@ header {
   color: $dm-color-black !important;
   font-weight: normal !important;
 
-  &:hover {
-    text-decoration: $underline;
-  }
-
   &:visited {
     color: $dm-default-visited-link-purple !important;
   }
 }
 
-.partners-link {
+.usa-nav__primary-item a {
   &:hover {
-    text-decoration: $underline;
-  }
-}
-
-.shark-tank-link {
-  &:hover {
-    text-decoration: $underline;
-  }
-}
-
-.covid-link {
-  &:hover {
-    text-decoration: $underline;
+    text-decoration: underline !important;
   }
 }
 
