@@ -11,6 +11,6 @@ describe 'The landing page', type: :feature do
   it 'should have a covid-19 section' do
     visit '/'
     expect(page).to have_content('COVID-19')
-    expect(page).top have_content('See more')
+    expect(page).to have_content('See more')
   end
 end
