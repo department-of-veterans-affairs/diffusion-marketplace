@@ -54,12 +54,12 @@ module ApplicationHelper
   end
 
   def complexity_aggregate_description(aggregate)
-    case aggregate
-    when 2
+    case
+    when aggregate == 2
       return 'Some complexity to implement'
-    when 3
+    when aggregate == 3
       return 'Significant complexity to implement'
-    when 4
+    when aggregate >= 4
       return 'High or large complexity to implement'
     else
       return 'Little to no complexity to implement'
