@@ -8,7 +8,7 @@ class PageComponent < ApplicationRecord
 
   # used after destroying the page component
   def destroy_component
-    _component = eval("#{self.component_type}.find(#{self.component_id})")
+    _component = eval("#{self.component_type}.find('#{self.component_id}')")
     _component.destroy if _component
   end
 
