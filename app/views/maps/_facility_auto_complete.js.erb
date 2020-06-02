@@ -1,7 +1,6 @@
 var facilities = <%= raw @vamc_facilities.to_json %>;
 
 var substringMatcher = function(strs) {
-    console.log('hello world');
     return function findMatches(q, cb) {
         var matches, substringRegex;
 

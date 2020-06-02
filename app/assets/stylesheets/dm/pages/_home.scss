@@ -43,6 +43,15 @@
   }
 }
 
+.map-filters-trigger, #filterClose {
+  width: 100% !important;
+}
+
+#filterClose {
+  color: $dm-color-dark-black !important;
+  background-color: $dm-color-lighter-grey !important;
+}
+
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   .ie-welcome-container {
     width: 100% !important;

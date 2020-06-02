@@ -267,3 +267,30 @@ function openMarkerModal(id) {
     modal.style.display = "block";
     $span.focus({preventScroll: true});
 }
+
+function addHiddenClass(selector) {
+    $(selector).removeClass('display-block');
+    $(selector).addClass('hidden');
+}
+
+function removeHiddenClass(selector) {
+    $(selector).removeClass('hidden');
+    $(selector).addClass('display-block');
+}
+
+function toggleFilterResultsAndFilterCloseButtons() {
+    let resultsTrigger = '#filterResultsTrigger';
+    let  filterClose = '#filterClose';
+
+    $(document).on('click', resultsTrigger, () => {
+        addHiddenClass(resultsTrigger);
+        removeHiddenClass(filterClose);
+    });
+
+    $(document).on('click', '#filterClose', () => {
+        addHiddenClass(filterClose);
+        removeHiddenClass(resultsTrigger);
+    });
+}
+
+$(toggleFilterResultsAndFilterCloseButtons());
