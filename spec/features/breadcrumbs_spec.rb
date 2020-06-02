@@ -13,6 +13,11 @@ describe 'Breadcrumbs', type: :feature do
     @user_practice2 = Practice.create!(name: 'Another Best Practice', user: @user, initiating_facility: 'vc_0508V', tagline: 'Test tagline 2')
     login_as(@user, :scope => :user, :run_callbacks => false)
     PracticePartnerPractice.create!(practice_partner: @pp, practice: @user_practice)
+    @page_group = PageGroup.create!(name: 'programming', description: 'Pages about programming go in this group.')
+    @page_group2 = PageGroup.create!(name: 'test', description: 'Pages about tests go in this group.')
+    @page = Page.create!(title: 'Test', description: 'This is a test page', slug: 'home', page_group: @page_group, published: Time.now)
+    @page2 = Page.create!(title: 'Test', description: 'This is a test page', slug: 'test-page', page_group: @page_group2, published: Time.now)
+    @page3 = Page.create!(title: 'Test', description: 'This is a test page', slug: 'test-page', page_group: @page_group, published: Time.now)
   end
 
   describe 'Practice partners flow' do
@@ -113,4 +118,30 @@ describe 'Breadcrumbs', type: :feature do
     end
   end
 
+  describe 'Page builder flow' do
+    it 'Should show two breadcrumbs for a page group landing page' do
+      visit '/programming/home'
+
+      expect(page).to have_css('.breadcrumbs-container a:first-child', text: 'Home')
+      expect(page).to have_css('.breadcrumbs-container span:last-child', text: @page_group.name)
+    end
+
+    it 'Should show three breadcrumbs with only one link for a page that has a page group without a landing page' do
+      visit '/test/test-page'
+
+      expect(page).to have_css('.breadcrumb-link', count: 1)
+      expect(page).to have_css('.breadcrumbs-container a:first-child', text: 'Home')
+      expect(page).to have_css('.breadcrumbs-container span:nth-of-type(2)', text: @page_group2.name)
+      expect(page).to have_css('.breadcrumbs-container span:last-child', text: @page.title)
+    end
+
+    it 'Should show three breadcrumbs with two links for a page that has a page group a landing page' do
+      visit '/programming/test-page'
+
+      expect(page).to have_css('.breadcrumb-link', count: 2)
+      expect(page).to have_css('.breadcrumbs-container a:first-child', text: 'Home')
+      expect(page).to have_css('.breadcrumbs-container a:nth-of-type(2)', text: @page_group.name)
+      expect(page).to have_css('.breadcrumbs-container span:last-child', text: @page.title)
+    end
+  end
 end

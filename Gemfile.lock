@@ -85,6 +85,8 @@ GEM
       sass
       select2-rails (~> 4.0)
       xdan-datetimepicker-rails (~> 2.5.1)
+    activeadmin_quill_editor (0.2.0)
+      activeadmin (>= 1.0)
     activejob (5.2.4.3)
       activesupport (= 5.2.4.3)
       globalid (>= 0.3.6)
@@ -266,18 +268,18 @@ GEM
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
     json (2.3.0)
-    kaminari (1.1.1)
+    kaminari (1.2.1)
       activesupport (>= 4.1.0)
-      kaminari-actionview (= 1.1.1)
-      kaminari-activerecord (= 1.1.1)
-      kaminari-core (= 1.1.1)
-    kaminari-actionview (1.1.1)
+      kaminari-actionview (= 1.2.1)
+      kaminari-activerecord (= 1.2.1)
+      kaminari-core (= 1.2.1)
+    kaminari-actionview (1.2.1)
       actionview
-      kaminari-core (= 1.1.1)
-    kaminari-activerecord (1.1.1)
+      kaminari-core (= 1.2.1)
+    kaminari-activerecord (1.2.1)
       activerecord
-      kaminari-core (= 1.1.1)
-    kaminari-core (1.1.1)
+      kaminari-core (= 1.2.1)
+    kaminari-core (1.2.1)
     launchy (2.4.3)
       addressable (~> 2.3)
     letter_opener (1.7.0)
@@ -544,6 +546,7 @@ DEPENDENCIES
   active_skin
   activeadmin
   activeadmin_addons
+  activeadmin_quill_editor
   activerecord-nulldb-adapter
   acts_as_list
   acts_as_votable

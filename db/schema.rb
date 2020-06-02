@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_14_200744) do
+ActiveRecord::Schema.define(version: 2020_05_29_222129) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "active_admin_comments", force: :cascade do |t|
@@ -481,6 +482,81 @@ ActiveRecord::Schema.define(version: 2020_05_14_200744) do
     t.index ["password_archivable_type", "password_archivable_id"], name: "index_password_archivable"
   end
 
+  create_table "page_components", force: :cascade do |t|
+    t.bigint "page_id"
+    t.integer "position"
+    t.string "component_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "component_id", null: false
+    t.index ["component_id"], name: "index_page_components_on_component_id"
+    t.index ["page_id"], name: "index_page_components_on_page_id"
+    t.index ["position"], name: "index_page_components_on_position"
+  end
+
+  create_table "page_groups", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_page_groups_on_slug", unique: true
+  end
+
+  create_table "page_header2_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "subtopic_title"
+    t.string "subtopic_description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_component_id"], name: "index_page_header2_components_on_page_component_id"
+  end
+
+  create_table "page_header_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "text"
+    t.string "heading_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_component_id"], name: "index_page_header_components_on_page_component_id"
+  end
+
+  create_table "page_paragraph_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_component_id"], name: "index_page_paragraph_components_on_page_component_id"
+  end
+
+  create_table "page_practice_list_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "practices", default: [], array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "page_subpage_hyperlink_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "title"
+    t.string "description"
+    t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_component_id"], name: "index_page_subpage_hyperlink_components_on_page_component_id"
+  end
+
+  create_table "pages", force: :cascade do |t|
+    t.bigint "page_group_id"
+    t.string "title"
+    t.string "description"
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "published"
+    t.boolean "ever_published", default: false, null: false
+    t.index ["page_group_id"], name: "index_pages_on_page_group_id"
+  end
+
   create_table "photo_files", force: :cascade do |t|
     t.string "title"
     t.integer "position"
@@ -938,6 +1014,12 @@ ActiveRecord::Schema.define(version: 2020_05_14_200744) do
   add_foreign_key "job_positions", "job_position_categories"
   add_foreign_key "milestones", "timelines"
   add_foreign_key "mitigations", "risk_mitigations"
+  add_foreign_key "page_components", "pages"
+  add_foreign_key "page_header2_components", "page_components"
+  add_foreign_key "page_header_components", "page_components"
+  add_foreign_key "page_paragraph_components", "page_components"
+  add_foreign_key "page_subpage_hyperlink_components", "page_components"
+  add_foreign_key "pages", "page_groups"
   add_foreign_key "photo_files", "practices"
   add_foreign_key "practice_creators", "practices"
   add_foreign_key "practice_creators", "users"
