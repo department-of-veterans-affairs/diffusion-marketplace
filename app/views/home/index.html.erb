@@ -37,18 +37,21 @@
   </section>
 
   <section class="margin-bottom-5">
-    <div class="grid-container">
-      <h4 class="font-sans-xl margin-bottom-1 margin-top-0 line-height-sans-205">Featured practices</h4>
-      <p class="font-sans-lg margin-bottom-2">Here are a few featured practices from across the VA.</p>
-      <div class="grid-row grid-gap featured-practices">
-        <% @featured_practices.each do |fp| %>
-          <% if fp.present? %>
-            <div class="tablet:grid-col-4 flex-column display-flex">
-              <%= render partial: 'practices/favorite_button', locals: {practice: fp, featured: true, col_4: false } %>
-              <%= render partial: 'practices/marketplace_card', locals: {practice: fp, featured: true} %>
-            </div>
+    <div class="grid-container homepage-covid-section-container height-auto">
+      <div class="grid-row ie-grid-row-12">
+        <div class="grid-col-8">
+          <%= link_to '/covid-19', class: 'homepage-covid-link' do %>
+            <h2 class="font-sans-xl">COVID-19<span class="fas fa-angle-right margin-left-105"></span></h2>
           <% end %>
-        <% end %>
+          <p class="line-height-sans-505 font-sans-sm">
+            The Diffusion Marketplace has practices that help the VHA response to COVID-19. We have assembled a group of practices for frontline staff and administrators
+            responding to the changing medical landscape.
+          </p>
+          <%= link_to 'See more', '/covid-19', class: 'usa-button usa-button--outline' %>
+        </div>
+        <div class="grid-col-fill text-center virus-image-container">
+          <i class="fas fa-viruses fa-9x text-primary-darker"></i>
+        </div>
       </div>
     </div>
   </section>
