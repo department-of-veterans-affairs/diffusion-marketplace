@@ -46,7 +46,7 @@ function initialize() {
             const serviceObj = json.marker.getServiceObject();
             serviceObj.label = {
                 color: '#FFFFFF',
-                text: `${json.completed + json.in_progress}`,
+                text: `${json.completed + json.in_progress + json.unsuccessful}`,
                 fontFamily: 'Open Sans'
             };
 
@@ -252,7 +252,6 @@ function initialize() {
     };
 
     $(document).on('click', '#filterResultsTrigger', function () {
-        $('#filterResultsTrigger').hide();
         $('#filterResults').show();
         $('#filterClose').focus();
         closeInfoWindow();
@@ -287,10 +286,15 @@ function toggleFilterResultsAndFilterCloseButtons() {
         removeHiddenClass(filterClose);
     });
 
-    $(document).on('click', '#filterClose', () => {
+    $(document).on('click', filterClose, () => {
         addHiddenClass(filterClose);
         removeHiddenClass(resultsTrigger);
     });
+
+    $(document).on('click', '#map img', () => {
+        addHiddenClass(filterClose);
+        removeHiddenClass(resultsTrigger);
+    })
 }
 
 $(toggleFilterResultsAndFilterCloseButtons());
