@@ -146,7 +146,7 @@ class Practice < ApplicationRecord
   scope :published,   -> { where(published: true) }
   scope :unpublished,  -> { where(published: false) }
   scope :get_practice_owner_emails, -> {where.not(user_id: nil)}
-  scope :get_with_categories, -> { left_outer_joins(:categories).select("practices.*, categories.name as categories_name").where(practices:{ approved: true, published: true }).order(name: :asc).uniq }
+  scope :get_with_categories, -> { left_outer_joins(:categories).select("practices.*, categories.name as categories_name").where(practices:{ approved: true, published: true, enabled: true }).order(name: :asc).uniq }
 
   belongs_to :user, optional: true
 
