@@ -28,9 +28,16 @@ class PracticesController < ApplicationController
     redirect_to root_path
   end
 
+  def is_enabled
+    if not @practice.enabled
+      redirect_to(root_path)
+    end
+  end
+
   # GET /practices/1
   # GET /practices/1.json
   def show
+    is_enabled
     ahoy.track "Practice show", {practice_id: @practice.id} if current_user.present?
     # This allows comments thread to show up without the need to click a link
     commontator_thread_show(@practice)

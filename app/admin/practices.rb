@@ -24,8 +24,22 @@ ActiveAdmin.register Practice do
     column(:practice_name) {|practice| practice.name}
     column :support_network_email unless params[:scope] == "get_practice_owner_emails"
     column(:owner_email) {|practice| practice.user&.email}
+    column :enabled unless params[:scope] == "get_practice_owner_emails"
     column :created_at unless params[:scope] == "get_practice_owner_emails"
-    actions
+    actions do |practice|
+      practice_enabled_action_str = practice.enabled ? "Disable" : "Enable"
+      item practice_enabled_action_str, enable_practice_admin_practice_path(practice), method: :post
+    end
+  end
+
+  member_action :enable_practice, method: :post do
+    resource.enabled = !resource.enabled
+    message = "\"#{resource.name}\" Practice enabled"
+    if not resource.enabled
+      message = "\"#{resource.name}\" Practice disabled"
+    end
+    resource.save
+    redirect_back fallback_location: root_path, notice: message
   end
 
 
@@ -61,6 +75,7 @@ ActiveAdmin.register Practice do
       row(:user) {|practice| link_to(practice.user&.email, admin_user_path(practice.user)) if practice.user.present?}
       row :published
       row :approved
+      row :enabled
     end
     h3 'Versions'
     table_for practice.versions.order(created_at: :desc) do |version|
