@@ -19,6 +19,51 @@
   float: left;
 }
 
+.homepage-covid-section-container {
+  height: 309px;
+  max-width: 60rem !important;
+  padding-top: 43px !important;
+  padding-left: 33px !important;
+  padding-bottom: 30px;
+  background-color: $dm-color-baby-blue;
+
+  .homepage-covid-link {
+    width: auto;
+    display: inline-block;
+    margin-bottom: 24px;
+
+    &:hover {
+      color: $dm-color-light-black !important;
+    }
+
+    &:visited {
+      color: $dm-default-visited-link-purple !important;
+    }
+
+    h2 {
+      margin-top: 0 !important;
+    }
+  }
+
+  p {
+    margin-bottom: 30px;
+  }
+
+  .usa-button {
+    margin-right: 0 !important;
+    color: $dm-color-lighter-black !important;
+    border: 2px solid $dm-color-lighter-black !important;
+
+    &:hover {
+      border: 2px solid $dm-color-lighter-black !important;
+    }
+  }
+
+  .virus-image-container {
+    align-self: center;
+  }
+}
+
 .tt-dataset-facilityNames {
   width: 275px;
   max-height: 200px;
@@ -59,6 +104,10 @@
 
   .ie-search-bar-container {
     width: 100%;
+  }
+
+  .virus-image-container {
+    margin: 0 auto;
   }
 }
 
