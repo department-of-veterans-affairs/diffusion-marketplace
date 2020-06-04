@@ -97,6 +97,9 @@
               <input id="<%= f["StationNumber"] %>" name="facilities" type="checkbox" value="<%= f["StationNumber"] %>" class="usa-checkbox__input">
               <label for="<%= f["StationNumber"] %>" class="usa-checkbox__label">
                 <%= f["StreetAddressState"] %>: <%= f["OfficialStationName"] %>
+                <% unless f["OfficialStationName"].downcase.include?(f["CommonName"].downcase) %>
+                  (<%= f["CommonName"] %>)
+                <% end %>
               </label>
             <% end %>
           </fieldset>

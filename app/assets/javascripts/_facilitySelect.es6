@@ -43,6 +43,17 @@ function filterFacilities(facilityData, facilitySelect, stateSelector) {
             .append($("<option></option>")
                 .attr("value", facility.StationNumber)
                 .attr("class", 'usa-select')
-                .text(facility.OfficialStationName))
+                .text(assignFacilityName(facility)))
     });
+}
+
+function assignFacilityName(facility) {
+    let officialName = facility['OfficialStationName']
+    let commonName = facility['CommonName']
+
+    if(officialName.toLowerCase().includes(commonName.toLowerCase())) {
+        return officialName
+    } else {
+        return `${officialName} (${commonName})`
+    }
 }
