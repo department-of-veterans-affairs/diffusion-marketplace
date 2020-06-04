@@ -21,12 +21,12 @@ var substringMatcher = function(strs) {
         cb(matches);
     };
 };
-var facilityNameArr = []
+var facilityNameArr = [];
 $.each(facilities, function(key, value) {
-    facilityNameArr.push(value.OfficialStationName)
+    facilityNameArr.push(value.OfficialStationName);
 })
 
-var facilityNames = facilityNameArr
+var facilityNames = facilityNameArr;
 
 
 function typeahead() {
