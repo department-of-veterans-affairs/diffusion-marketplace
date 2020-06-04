@@ -35,7 +35,7 @@ ActiveAdmin.register Practice do
   member_action :enable_practice, method: :post do
     resource.enabled = !resource.enabled
     message = "\"#{resource.name}\" Practice enabled"
-    if not resource.enabled
+    unless resource.enabled
       message = "\"#{resource.name}\" Practice disabled"
     end
     resource.save

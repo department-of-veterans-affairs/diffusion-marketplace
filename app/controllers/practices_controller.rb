@@ -19,7 +19,7 @@ class PracticesController < ApplicationController
                                            :contact, :checklist, :published,
                                            :publication_validation, :adoptions]
   before_action :set_date_initiated_params, only: [:update, :publication_validation]
-
+  before_action :is_enabled, only: [:show]
   # GET /practices
   # GET /practices.json
   def index
@@ -29,7 +29,7 @@ class PracticesController < ApplicationController
   end
 
   def is_enabled
-    if not @practice.enabled
+    unless @practice.enabled
       redirect_to(root_path)
     end
   end
@@ -37,7 +37,6 @@ class PracticesController < ApplicationController
   # GET /practices/1
   # GET /practices/1.json
   def show
-    is_enabled
     ahoy.track "Practice show", {practice_id: @practice.id} if current_user.present?
     # This allows comments thread to show up without the need to click a link
     commontator_thread_show(@practice)
