@@ -185,10 +185,10 @@ function initialize() {
         }
 
         // facility name
-        if (data.facility_name && data.facility_name.length) {
+        if (data.facility_name && data.facility_name[0].value) {
             const facilityName = data.facility_name[0].value;
             result = result.filter(function (d) {
-                return d.facility.OfficialStationName.toLowerCase().includes(facilityName.toLowerCase());
+                return facilityName.toLowerCase().includes(d.facility.OfficialStationName.toLowerCase());
             });
         }
 
