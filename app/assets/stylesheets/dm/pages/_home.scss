@@ -64,6 +64,43 @@
   }
 }
 
+.tt-dataset-facilityNames {
+  width: 275px;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #FFFFFF;
+  padding-bottom: 12px;
+}
+
+#facility_name_container {
+  .typeahead {
+    width: 275px;
+  }
+}
+
+.tt-hint {
+  visibility: hidden;
+}
+
+.tt-selectable {
+  padding-left: 8px;
+  padding-right: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $dm-color-light-gray
+  }
+}
+
+.map-filters-trigger, #filterClose {
+  width: 100% !important;
+}
+
+#filterClose {
+  color: $dm-color-dark-black !important;
+  background-color: $dm-color-lighter-grey !important;
+}
+
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   .ie-welcome-container {
     width: 100% !important;
