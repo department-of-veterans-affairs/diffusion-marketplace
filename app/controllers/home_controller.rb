@@ -10,7 +10,7 @@ class HomeController < ApplicationController
 
     @vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
 
-    @diffused_practices = DiffusionHistory.all.reject { |dh| dh.diffusion_history_statuses.order(id: :desc).first.status == 'Unsuccessful' || !dh.practice.published }
+    @diffused_practices = DiffusionHistory.all.reject { |dh| !dh.practice.published }
 
     @diffusion_histories = Gmaps4rails.build_markers(@diffused_practices.group_by(&:facility_id)) do |dhg, marker|
 
@@ -52,13 +52,14 @@ class HomeController < ApplicationController
                                                   diffusion_histories: dhg[1],
                                                   completed: completed,
                                                   in_progress: in_progress,
+                                                  unsuccessful: unsuccessful,
                                                   facility: facility
                                               }
                       ),
                       facility: facility
                   })
 
-      marker.infowindow render_to_string(partial: 'maps/infowindow', locals: {diffusion_histories: dhg[1], completed: completed, in_progress: in_progress, facility: facility, home_page: true})
+      marker.infowindow render_to_string(partial: 'maps/infowindow', locals: {diffusion_histories: dhg[1], completed: completed, in_progress: in_progress, unsuccessful: unsuccessful, facility: facility, home_page: true})
     end
   end
 
