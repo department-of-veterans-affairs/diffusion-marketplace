@@ -1,3 +1,7 @@
+<% provide :head_tags do %>
+  <%= javascript_include_tag '_assign_facility_name', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
 var facilities = <%= raw @vamc_facilities.to_json %>;
 
 var substringMatcher = function(strs) {
@@ -21,13 +25,12 @@ var substringMatcher = function(strs) {
         cb(matches);
     };
 };
-var facilityNameArr = [];
-$.each(facilities, function(key, value) {
-    facilityNameArr.push(value.OfficialStationName);
+
+var facilityNames = [];
+facilities.forEach(function(key, value) {
+    var name = assignFacilityName(key);
+    return facilityNames.push(name);
 })
-
-var facilityNames = facilityNameArr;
-
 
 function typeahead() {
     $('#facility_name_container .typeahead').typeahead({
@@ -41,4 +44,4 @@ function typeahead() {
         });
 }
 
-$(document).on('turbolinks:load', typeahead)
+$(document).on('turbolinks:load', typeahead);
