@@ -10,6 +10,8 @@ describe 'Practices', type: :feature do
     @approver.add_role(User::USER_ROLES[0].to_sym)
     @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline')
     @practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline')
+    @enabled_practice = Practice.create!(name: 'Enabled practice', approved: true, published: true, enabled: true, tagline: 'Enabled practice tagline')
+    @disabled_practice = Practice.create!(name: 'Disabled practice', approved: true, published: true, enabled: false, tagline: 'Disabled practice tagline')
     @departments = [
         Department.create!(name: 'Test department 1', short_name: 'td1'),
         Department.create!(name: 'Test department 2', short_name: 'td2'),
@@ -123,6 +125,27 @@ describe 'Practices', type: :feature do
   end
 
   describe 'show page' do
+    it 'should display enabled practice in metrics' do
+      login_as(@admin, :scope => :user, :run_callbacks => false)
+      # Visit an individual Practice that is enabled
+      visit practice_path(@enabled_practice)
+      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to have_content(@enabled_practice.name)
+      expect(page).to have_content(@enabled_practice.initiating_facility)
+      expect(page).to have_current_path(practice_path(@enabled_practice))
+      click_on('Add to your favorites')
+      visit admin_dashboard_path
+      click_on('Metrics')
+      expect(page).to have_content('Enabled practice')
+    end
+
+    it 'should NOT display disabled practice in metrics' do
+      login_as(@admin, :scope => :user, :run_callbacks => false)
+      visit admin_dashboard_path
+      click_on('Metrics')
+      expect(page).to_not have_content('Disabled practice')
+    end
+
     it 'should display the initiating facility\'s initiating facility property if it is not found in the map' do
       login_as(@user, :scope => :user, :run_callbacks => false)
       @user_practice.update(published: true, approved: true)

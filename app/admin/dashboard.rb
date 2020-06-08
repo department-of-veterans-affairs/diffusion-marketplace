@@ -1,9 +1,9 @@
 ActiveAdmin.register_page "Dashboard" do
   menu priority: 1, label: proc {I18n.t("active_admin.dashboard")}
 
+
   controller do
     before_action :set_dashboard_values
-
     def set_dashboard_values
       @beginning_of_current_month = Date.today.at_beginning_of_month.beginning_of_day
       @end_of_current_month = Date.today.at_end_of_month.end_of_day
@@ -13,11 +13,11 @@ ActiveAdmin.register_page "Dashboard" do
       @end_of_two_months_ago = (Date.today - 2.months).at_end_of_month.end_of_day
       @beginning_of_three_months_ago = (Date.today - 3.months).at_beginning_of_month.beginning_of_day
       @end_of_three_months_ago = (Date.today - 3.months).at_end_of_month.end_of_day
+      @enabled_practices = Practice.where(enabled: true)
 
       site_visit_stats = Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where(time: @beginning_of_last_month..@end_of_last_month).group("properties->>'ip_address'").count
-
-      @practices = Practice.all.order(name: :asc)
-      @practices_views = Practice.all.sort_by(&:current_month_views).reverse!
+      @practices = @enabled_practices.order(name: :asc)
+      @practices_views = @enabled_practices.sort_by(&:current_month_views).reverse!
 
       @date_headers = {
         total: 'Current Total',
@@ -36,9 +36,9 @@ ActiveAdmin.register_page "Dashboard" do
       }
 
       @practices_added_stats = {
-        added_this_month: Practice.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
-        added_one_month_ago: Practice.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
-        total_practices_created: Practice.all.count
+        added_this_month: @enabled_practices.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
+        added_one_month_ago: @enabled_practices.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
+        total_practices_created: @enabled_practices.count
       }
 
       @practices_favorited_stats = {
@@ -47,7 +47,7 @@ ActiveAdmin.register_page "Dashboard" do
         total_favorited: UserPractice.where(favorited: true).count
       }
 
-      @practices_favorites = Practice.all.sort_by(&:current_month_favorited).reverse!
+      @practices_favorites = @enabled_practices.sort_by(&:current_month_favorited).reverse!
 
       @practices_comment_stats = {
         comments_this_month: Commontator::Comment.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
@@ -140,6 +140,7 @@ ActiveAdmin.register_page "Dashboard" do
   end
 
   content title: proc {I18n.t("active_admin.dashboard")} do
+    enabled_practices = Practice.where(enabled: true)
     tabs do
       tab :users_information do
         columns do
@@ -198,11 +199,11 @@ ActiveAdmin.register_page "Dashboard" do
               end
 
               script do
-                total_current_month_views = Practice.all.sum(&:current_month_views)
-                total_last_month_views = Practice.all.sum(&:last_month_views)
-                total_two_months_ago_views = Practice.all.sum(&:two_months_ago_views)
-                total_three_months_ago_views = Practice.all.sum(&:three_months_ago_views)
-                total_lifetime_views = Practice.all.sum(&:views)
+                total_current_month_views = enabled_practices.sum(&:current_month_views)
+                total_last_month_views = enabled_practices.sum(&:last_month_views)
+                total_two_months_ago_views = enabled_practices.sum(&:two_months_ago_views)
+                total_three_months_ago_views = enabled_practices.sum(&:three_months_ago_views)
+                total_lifetime_views = enabled_practices.sum(&:views)
                 raw "$(document).ready(function($) {
                         $('#practice-views-table').append('<tr><td><b>Totals</b></td><td><b>#{total_current_month_views}</b></td><td><b>#{total_last_month_views}</b></td><td><b>#{total_two_months_ago_views}</b></td><td><b>#{total_three_months_ago_views}</b></td><td><b>#{total_lifetime_views}</b></td></tr>');
                       });
@@ -221,11 +222,11 @@ ActiveAdmin.register_page "Dashboard" do
               end
 
               script do
-                total_current_month_commits = Practice.all.sum(&:current_month_commits)
-                total_last_month_commits = Practice.all.sum(&:last_month_commits)
-                total_two_months_ago_commits = Practice.all.sum(&:two_months_ago_commits)
-                total_three_months_ago_commits = Practice.all.sum(&:three_months_ago_commits)
-                total_lifetime_commits = Practice.all.sum(&:committed_user_count)
+                total_current_month_commits = enabled_practices.sum(&:current_month_commits)
+                total_last_month_commits = enabled_practices.sum(&:last_month_commits)
+                total_two_months_ago_commits = enabled_practices.sum(&:two_months_ago_commits)
+                total_three_months_ago_commits = enabled_practices.sum(&:three_months_ago_commits)
+                total_lifetime_commits = enabled_practices.sum(&:committed_user_count)
                 raw "$(document).ready(function($) {
                         $('#practice-commits-table').append('<tr><td><b>Totals</b></td><td><b>#{total_current_month_commits}</b></td><td><b>#{total_last_month_commits}</b></td><td><b>#{total_two_months_ago_commits}</b></td><td><b>#{total_three_months_ago_commits}</b></td><td><b>#{total_lifetime_commits}</b></td></tr>');
                       });

@@ -4,7 +4,7 @@ class PageController < ApplicationController
     @page = Page.includes(:page_group).find_by(slug: page_slug.downcase, page_groups: {slug: params[:page_group_friendly_id].downcase})
     @path_parts = request.path.split('/')
     @facilities_data = facilities_json
-    is_admin @page
+    is_admin
     if page_slug == 'home'
 
       @breadcrumbs = [
@@ -25,7 +25,7 @@ class PageController < ApplicationController
       ]
     end
   end
-  def is_admin(page)
+  def is_admin
     if current_user
       if not @page.published
         if not current_user.has_role?(:admin)
