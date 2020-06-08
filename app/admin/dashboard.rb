@@ -140,6 +140,7 @@ ActiveAdmin.register_page "Dashboard" do
   end
 
   content title: proc {I18n.t("active_admin.dashboard")} do
+    enabled_practices = Practice.where(enabled: true)
     tabs do
       tab :users_information do
         columns do
@@ -198,7 +199,6 @@ ActiveAdmin.register_page "Dashboard" do
               end
 
               script do
-                enabled_practices = Practice.where(enabled: true)
                 total_current_month_views = enabled_practices.sum(&:current_month_views)
                 total_last_month_views = enabled_practices.sum(&:last_month_views)
                 total_two_months_ago_views = enabled_practices.sum(&:two_months_ago_views)
@@ -222,7 +222,6 @@ ActiveAdmin.register_page "Dashboard" do
               end
 
               script do
-                enabled_practices = Practice.where(enabled: true)
                 total_current_month_commits = enabled_practices.sum(&:current_month_commits)
                 total_last_month_commits = enabled_practices.sum(&:last_month_commits)
                 total_two_months_ago_commits = enabled_practices.sum(&:two_months_ago_commits)
