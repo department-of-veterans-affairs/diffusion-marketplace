@@ -19,13 +19,19 @@ class PracticesController < ApplicationController
                                            :contact, :checklist, :published,
                                            :publication_validation, :adoptions]
   before_action :set_date_initiated_params, only: [:update, :publication_validation]
-
+  before_action :is_enabled, only: [:show]
   # GET /practices
   # GET /practices.json
   def index
     # @practices = Practice.where(approved: true, published: true).order(name: :asc)
     # @facilities_data = facilities_json['features']
     redirect_to root_path
+  end
+
+  def is_enabled
+    unless @practice.enabled
+      redirect_to(root_path)
+    end
   end
 
   # GET /practices/1
