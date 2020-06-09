@@ -18,6 +18,7 @@ class PageComponent < ApplicationRecord
       'Subpage Hyperlink': 'PageSubpageHyperlinkComponent',
       'Heading 2': 'PageHeader2Component',
       'Heading 3': 'PageHeader3Component',
+      'Accordion': 'PageAccordionComponent',
       'Body text': 'PageParagraphComponent',
       'Practices': 'PagePracticeListComponent'
   }
