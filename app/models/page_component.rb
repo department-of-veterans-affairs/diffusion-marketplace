@@ -19,7 +19,8 @@ class PageComponent < ApplicationRecord
       'Heading 2': 'PageHeader2Component',
       'Heading 3': 'PageHeader3Component',
       'Body text': 'PageParagraphComponent',
-      'Practices': 'PagePracticeListComponent'
+      'Practices': 'PagePracticeListComponent',
+      'YouTube Player': 'PageYouTubePlayerComponent'
   }
 
   def build_component(params)

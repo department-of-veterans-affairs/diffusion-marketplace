@@ -71,6 +71,16 @@
               </div>
             <% end %>
           </div>
+
+        <% when 'PageYouTubePlayerComponent' %>
+          <div class="grid-row x3-bottom grid-col-12">
+            <%= youtube_embed(component.url) %>
+            <% if component.caption.present? %>
+              <div class="font-sans-sm x1-top width-100 pb-youtube-caption">
+                <%= component.caption %>
+              </div>
+            <% end %>
+          </div>
         <% end %>
       <% end %>
     </div>

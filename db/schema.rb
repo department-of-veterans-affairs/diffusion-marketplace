@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_08_145832) do
+ActiveRecord::Schema.define(version: 2020_06_09_164254) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -555,6 +555,15 @@ ActiveRecord::Schema.define(version: 2020_06_08_145832) do
     t.index ["page_component_id"], name: "index_page_subpage_hyperlink_components_on_page_component_id"
   end
 
+  create_table "page_you_tube_player_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "url"
+    t.string "caption"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_component_id"], name: "index_page_you_tube_player_components_on_page_component_id"
+  end
+
   create_table "pages", force: :cascade do |t|
     t.bigint "page_group_id"
     t.string "title"
@@ -1031,6 +1040,7 @@ ActiveRecord::Schema.define(version: 2020_06_08_145832) do
   add_foreign_key "page_header_components", "page_components"
   add_foreign_key "page_paragraph_components", "page_components"
   add_foreign_key "page_subpage_hyperlink_components", "page_components"
+  add_foreign_key "page_you_tube_player_components", "page_components"
   add_foreign_key "pages", "page_groups"
   add_foreign_key "photo_files", "practices"
   add_foreign_key "practice_creators", "practices"
