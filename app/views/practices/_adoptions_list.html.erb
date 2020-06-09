@@ -18,9 +18,7 @@
               </span>
       <span class="line-height-sans-505 display-inline-block facility-name-width vertical-align-top">
                 <%= facility["OfficialStationName"] %>
-                <% unless facility["OfficialStationName"].downcase.include?(facility["CommonName"].downcase) %>
-                  (<%= facility["CommonName"] %>)
-                <% end %>
+                <%= show_common_name(facility["OfficialStationName"], facility["CommonName"]) %>
               </span>
       <span class="line-height-sans-505 display-inline-block timeline-width vertical-align-top">
                 <%= current_diffusion_status.start_time.present? ? month_year_date_format(current_diffusion_status.start_time) : 'TBD' %>

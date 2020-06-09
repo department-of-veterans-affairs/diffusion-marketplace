@@ -107,6 +107,11 @@ module ApplicationHelper
         object.errors.messages[field_name].join(", ")
       end
     end
-  end 
+  end
 
+  def show_common_name(official_name, common_name)
+    unless official_name.downcase.include?(common_name.downcase)
+      "(#{common_name})"
+    end
+  end
 end

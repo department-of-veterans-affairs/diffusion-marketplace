@@ -3,9 +3,7 @@
   <p class="margin-top-1p5">
   <b>
     <%= facility['OfficialStationName'] %>
-    <% unless facility["OfficialStationName"].include?(facility["CommonName"]) %>
-      (<%= facility["CommonName"] %>)
-    <% end %>
+    <%= show_common_name(facility["OfficialStationName"], facility["CommonName"]) %>
   </b>
   </p>
   <% if home_page ||= false %>
