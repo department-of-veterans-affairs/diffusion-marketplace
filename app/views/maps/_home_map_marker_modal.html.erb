@@ -5,7 +5,10 @@
       <div>
         <span class="close text-base-darkest" tabindex="0" role="button" aria-label="Close modal"><span class="fas fa-times"></span></span>
         <div class="margin-bottom-2">
-          <h2 class="margin-top-0 margin-bottom-1"><%= facility['OfficialStationName'] %></h2>
+          <h2 class="margin-top-0 margin-bottom-1">
+            <%= facility['OfficialStationName'] %>
+            <%= show_common_name(facility["OfficialStationName"], facility["CommonName"]) %>
+          </h2>
           <p class="margin-top-1 margin-bottom-0"><%= in_progress %> in-progress
             adoption<%= in_progress == 1 ? '' : 's' %></p>
           <p class="margin-top-1 margin-bottom-0"><%= completed %> completed

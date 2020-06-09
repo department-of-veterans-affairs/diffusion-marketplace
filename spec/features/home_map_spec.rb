@@ -56,6 +56,14 @@ describe 'HomeMap', type: :feature do
       expect(page).to have_content('James J. Howard Veterans\' Outpatient Clinic')
     end
 
+    it 'displays alternate facility name' do
+      visit '/'
+      open_filters
+
+      find('#practiceListTrigger').click
+      expect(page).to have_content('(Birmingham-Alabama)')
+    end
+
     it 'should show unsuccessful adoptions' do
       visit '/'
       open_filters
