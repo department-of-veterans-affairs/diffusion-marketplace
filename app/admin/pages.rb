@@ -5,7 +5,7 @@ ActiveAdmin.register Page do
   #
   permit_params :title, :page_group_id, :slug, :description, :published,
                 page_components_attributes: [:id, :component_type, :position, :_destroy,
-                                             component_attributes: [:url, :description, :title, :text, :heading_type, :subtopic_title, :subtopic_description, practices: []]]
+                                             component_attributes: [:url, :description, :title, :text, :heading_type, :subtopic_title, :subtopic_description, :alignment, practices: []]]
   #
   # or
   #
@@ -57,7 +57,10 @@ ActiveAdmin.register Page do
             para component&.heading_type if pc.component_type == 'PageHeaderComponent'
             para component&.subtopic_title if pc.component_type == 'PageHeader2Component'
             para component&.subtopic_description if pc.component_type == 'PageHeader2Component'
-            para component&.text.html_safe unless pc.component_type == 'PagePracticeListComponent' || pc.component_type == 'PageHeader2Component' || pc.component_type == 'PageSubpageHyperlinkComponent'
+            para component&.title if pc.component_type == 'PageHeader3Component'
+            para component&.description if pc.component_type == 'PageHeader3Component'
+            para component&.alignment if pc.component_type == 'PageHeader3Component'
+            para component&.text.html_safe unless pc.component_type == 'PagePracticeListComponent' || pc.component_type == 'PageHeader2Component' || pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageHeader3Component'
             para "#{component&.practices.length} Practice#{component&.practices.length == 1 ? '' : 's'}" if pc.component_type == 'PagePracticeListComponent'
             para component&.practices.map {|pid| Practice.find(pid).name }.join("\n") if pc.component_type == 'PagePracticeListComponent'
             para component&.title if pc.component_type == 'PageSubpageHyperlinkComponent'
@@ -115,6 +118,7 @@ ActiveAdmin.register Page do
 
         # render partial: 'page_header_component_form', locals: {f: pc, component: component.class == PageHeaderComponent ? component : nil, placeholder: placeholder}
         render partial: 'page_header2_component_form', locals: {f: pc, component: component.class == PageHeader2Component ? component : nil, placeholder: placeholder}
+        render partial: 'page_header3_component_form', locals: {f: pc, component: component.class == PageHeader3Component ? component : nil, placeholder: placeholder}
         render partial: 'page_paragraph_component_form', locals: {f: pc, component: component.class == PageParagraphComponent ? component : nil, placeholder: placeholder}
         render partial: 'page_practice_list_component_form', locals: {f: pc, component: component.class == PagePracticeListComponent ? component : nil, placeholder: placeholder}
         render partial: 'page_subpage_hyperlink_component_form', locals: {f: pc, component: component.class == PageSubpageHyperlinkComponent ? component : nil, placeholder: placeholder}

@@ -29,6 +29,20 @@
             <% end %>
           </div>
 
+          <%# Page Header 3 %>
+          <% when 'PageHeader3Component' %>
+          <div align="<%=component.alignment.downcase %>">
+            <div class="grid-row x3-bottom">
+              <div class="grid-col-8 heading3_title"><%=component.title %></div>
+              <% if component.description.present? %>
+                <div class="grid-col-8 heading3_description x1-top">
+                  <%=component.description %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+
         <%# Practice List %>
         <% when 'PagePracticeListComponent' %>
           <% practices_ids = component.practices %> <%# array of id strings %>
