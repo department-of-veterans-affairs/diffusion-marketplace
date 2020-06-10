@@ -63,8 +63,7 @@ ActiveAdmin.register Page do
             para component&.text.html_safe unless pc.component_type == 'PagePracticeListComponent' || pc.component_type == 'PageHeader2Component' || pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageHeader3Component' || pc.component_type == 'PageYouTubePlayerComponent'
             para "#{component&.practices.length} Practice#{component&.practices.length == 1 ? '' : 's'}" if pc.component_type == 'PagePracticeListComponent'
             para component&.practices.map {|pid| Practice.find(pid).name }.join("\n") if pc.component_type == 'PagePracticeListComponent'
-            para component&.url if pc.component_type == 'PageSubpageHyperlinkComponent'
-            para component&.url if pc.component_type == 'PageYouTubePlayerComponent'
+            para component&.url if pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageYouTubePlayerComponent'
             para component&.caption if pc.component_type == 'PageYouTubePlayerComponent'
           end
         }.join('').html_safe

@@ -7,7 +7,7 @@
 
 (function() {
     var loadComponents = function() {
-        var selects = $('.polyform').parent().siblings('li.select.input').find('.polyselect');
+        var selects = $('.polyform').siblings('li.select.input').find('.polyselect');
         $.each(selects, function(index, select) {
             return $('#' + $(select).val() + '_poly_' + $(select).data('component-id')).show();
         });
@@ -27,7 +27,7 @@
             return $('.polyform').each((function(_this) {
                 return function(index, element) {
                     var $e = $(element);
-                    if ($e.css('display') !== 'block') {
+                    if ($e.css('display') !== 'list-item') {
                         return $e.remove();
                     }
                 };
