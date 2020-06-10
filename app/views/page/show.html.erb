@@ -1,12 +1,13 @@
 <div class="full-view-height dm-background-white">
   <section class="grid-container">
-    <h1 class="font-sans-2xl margin-bottom-405 grid-col-10">
-      <%= @page.title %>
-    </h1>
-    <p class="font-sans-lg x3-bottom grid-col-10">
-      <%= @page.description %>
-    </p>
-
+    <div id="page-<%=@page.id %>" style="display: <%= @page.is_visible ? 'block' : 'none' %>">
+      <h1 class="font-sans-2xl margin-bottom-405 grid-col-10">
+        <%= @page.title %>
+      </h1>
+      <p class="font-sans-lg x3-bottom grid-col-10">
+        <%= @page.description %>
+      </p>
+    </div>
     <div class="page-content">
       <% @page.page_components.each do |pc| %>
         <% component = pc.component_type.constantize.find(pc.component_id) %>

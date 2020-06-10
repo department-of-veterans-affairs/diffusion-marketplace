@@ -3,7 +3,7 @@ ActiveAdmin.register Page do
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
-  permit_params :title, :page_group_id, :slug, :description, :published,
+  permit_params :title, :page_group_id, :slug, :description, :published, :ever_published, :is_visible,
                 page_components_attributes: [:id, :component_type, :position, :_destroy,
                                              component_attributes: [:url, :description, :title, :text, :heading_type, :subtopic_title, :subtopic_description, :alignment, :caption, practices: []]]
   #
@@ -105,6 +105,7 @@ ActiveAdmin.register Page do
       f.input :title, label: 'Title', hint: 'The main heading/"H1" of the page.'
       f.input :description, label: 'Description', hint: 'Overall purpose of the page.'
       f.input :page_group, label: 'Group', hint: 'The Group is the page type and will be included in the url. (Ex: "/competitions/page-title" where "competitions" is the Group and "page-title" is the chosen url suffix from above. If the url suffix is "home", the complete URL will be "/competitions")'
+      f.input :is_visible, label: 'Is Visible?', hint: 'This field allows you to show or hide the page title and description.'
       f.input :published, input_html: { disabled: true }, as: :datepicker, label: 'Published', hint: 'Date when page was published. This field is readonly. Do not touch.'
     end
 

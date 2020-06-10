@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_09_164254) do
+ActiveRecord::Schema.define(version: 2020_06_10_162150) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -582,6 +582,7 @@ ActiveRecord::Schema.define(version: 2020_06_09_164254) do
     t.datetime "updated_at", null: false
     t.datetime "published"
     t.boolean "ever_published", default: false, null: false
+    t.boolean "is_visible", default: true, null: false
     t.index ["page_group_id"], name: "index_pages_on_page_group_id"
   end
 
