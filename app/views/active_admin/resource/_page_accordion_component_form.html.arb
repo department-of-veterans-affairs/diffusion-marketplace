@@ -11,34 +11,29 @@
 placeholder ||= 'NEW_PAGE_COMPONENT_RECORD'
 component ||= nil
 html = Arbre::Context.new do
-  li "", class: 'input' do
-    legend do
-      span 'Accordion'
-    end
-    if component
-      input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
-    end
-    li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_title_input" do
-      label 'Title', for: "page_page_components_attributes_accordion_#{placeholder}_component_attributes_text", class: 'label'
-      input value: component&.title || nil, type: 'text', required: 'required',
-            id: "page_page_components_attributes_#{placeholder}_component_attributes_title",
-            name: "page[page_components_attributes][#{placeholder}][component_attributes][title]"
-      para 'Section header styled as secondary heading/"H2"', class: 'inline-hints'
-    end
-
-
-
-
-
-    fieldset id: "PageAccordionComponent_poly_#{placeholder}", class: "inputs polyform component-#{placeholder}" do
+  li "", id: "PageAccordionComponent_poly_#{placeholder}", class: "input polyform component-#{placeholder}" do
+    fieldset class: "inputs" do
+      legend do
+        span 'Accordion'
+      end
+      if component
+        input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
+      end
       ol do
+        li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_title_input" do
+          label 'Title', for: "page_page_components_attributes_accordion_#{placeholder}_component_attributes_text", class: 'label'
+          input value: component&.title || nil, type: 'text', required: 'required',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_title",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][title]"
+          para 'Section header styled as secondary heading/"H2"', class: 'inline-hints'
+        end
         li class: 'string input optional stringish', id: "page_page_components_attributes_accordion_#{placeholder}_component_attributes_text_input" do
           if component
             input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
           end
           label 'Text', for: "page_page_components_attributes_accordion_#{placeholder}_component_attributes_text", class: 'label'
 
-          div rows:'20', class: 'quill-editor', id: "page_page_components_attributes_accordion_#{placeholder}_component_attributes_text" do
+          div rows: '20', class: 'quill-editor', id: "page_page_components_attributes_accordion_#{placeholder}_component_attributes_text" do
             input type: 'hidden',
                   name: "page[page_components_attributes][#{placeholder}][component_attributes][text]",
                   value: component&.text

@@ -108,7 +108,7 @@ ActiveAdmin.register Page do
     end
 
     f.inputs "Page Components" do
-      f.has_many :page_components, heading: nil, sortable: :position, sortable_start: 1, allow_destroy: true do |pc, index|
+      f.has_many :page_components, heading: nil, sortable: :position, sortable_start: 1, allow_destroy: true, class: 'page_components' do |pc, index|
         # TODO: get the placeholder how active admin does "NEW_#{association_human_name.upcase.split(' ').join('_')}_RECORD"
         placeholder = pc.object.component_id ? index - 1 : 'NEW_PAGE_COMPONENT_RECORD'
         component = pc.object.component_id ? eval("#{pc.object.component_type}.find('#{pc.object.component_id}')") : nil
