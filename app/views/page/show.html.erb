@@ -43,7 +43,7 @@
             </div>
           </div>
 
-          <%# Accordion %>
+        <%# Accordion %>
         <% when 'PageAccordionComponent' %>
           <div class="usa-accordion margin-bottom-3">
             <h2 class="usa-accordion__heading margin-bottom-2">
@@ -64,6 +64,11 @@
             </div>
           </div>
 
+        <%# Image %>
+        <% when 'PageImageComponent' %>
+          <div class="grid-row x3-bottom <%= get_grid_alignment_css_class(component.alignment) %>">
+            <img class="grid-col-8 width-auto maxh-15rem" src="<%= component.page_image_s3_presigned_url() %>" alt="<%= component.page_image_s3_presigned_url() %>"/>
+          </div>
 
         <%# Practice List %>
         <% when 'PagePracticeListComponent' %>

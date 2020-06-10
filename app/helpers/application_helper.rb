@@ -107,6 +107,15 @@ module ApplicationHelper
         object.errors.messages[field_name].join(", ")
       end
     end
-  end 
+  end
 
+  def get_grid_alignment_css_class(alignment)
+    if alignment == 'center'
+      'justify-center'
+    elsif alignment == 'right'
+      'justify-end'
+    else
+      ''
+    end
+  end
 end
