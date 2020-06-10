@@ -17,15 +17,15 @@ html = Arbre::Context.new do
           input value: component&.url || nil, type: 'url', required: 'required',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_url",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][url]"
-          para 'Enter the full YouTube url (Ex: "youtube.com/video")', class: 'inline-hints'
+          para 'Enter the full YouTube URL.', class: 'inline-hints'
         end
 
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_caption_input" do
-          label 'Caption', for: "page_page_components_attributes_#{placeholder}_component_attributes_caption", class: 'label'
+          label 'Caption (optional)', for: "page_page_components_attributes_#{placeholder}_component_attributes_caption", class: 'label'
           input value: component&.caption || nil, type: 'text',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_caption",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][caption]"
-          para 'Brief description about the video.', class: 'inline-hints'
+          para 'Enter a brief description about the video.', class: 'inline-hints'
         end
       end
     end
