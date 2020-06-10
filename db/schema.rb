@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_09_164254) do
+ActiveRecord::Schema.define(version: 2020_06_09_134340) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -480,6 +480,15 @@ ActiveRecord::Schema.define(version: 2020_06_09_164254) do
     t.string "password_salt"
     t.datetime "created_at"
     t.index ["password_archivable_type", "password_archivable_id"], name: "index_password_archivable"
+  end
+
+  create_table "page_accordion_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "title"
+    t.string "text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_component_id"], name: "index_page_accordion_components_on_page_component_id"
   end
 
   create_table "page_components", force: :cascade do |t|
@@ -1034,6 +1043,7 @@ ActiveRecord::Schema.define(version: 2020_06_09_164254) do
   add_foreign_key "job_positions", "job_position_categories"
   add_foreign_key "milestones", "timelines"
   add_foreign_key "mitigations", "risk_mitigations"
+  add_foreign_key "page_accordion_components", "page_components"
   add_foreign_key "page_components", "pages"
   add_foreign_key "page_header2_components", "page_components"
   add_foreign_key "page_header3_components", "page_components"

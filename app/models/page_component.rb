@@ -15,11 +15,12 @@ class PageComponent < ApplicationRecord
   # used for the component selection on the page builder
   # 'Friendly Name': 'ClassName'
   COMPONENT_SELECTION = {
-      'Subpage Hyperlink': 'PageSubpageHyperlinkComponent',
+      'Accordion': 'PageAccordionComponent',
+      'Body text': 'PageParagraphComponent',
       'Heading 2': 'PageHeader2Component',
       'Heading 3': 'PageHeader3Component',
-      'Body text': 'PageParagraphComponent',
       'Practices': 'PagePracticeListComponent',
+      'Subpage Hyperlink': 'PageSubpageHyperlinkComponent',
       'YouTube Player': 'PageYouTubePlayerComponent'
   }
 
