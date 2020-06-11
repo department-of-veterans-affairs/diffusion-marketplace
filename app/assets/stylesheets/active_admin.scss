@@ -99,3 +99,12 @@ form fieldset.inputs legend {
 fieldset.page_components.inputs.has_many_fields {
   padding-top: 0;
 }
+
+.aa-downloadable-file-link {
+  margin: 0.5em 0 0 20%;
+  font-size: 14px;
+
+  span {
+    padding-right: 5px;
+  }
+}

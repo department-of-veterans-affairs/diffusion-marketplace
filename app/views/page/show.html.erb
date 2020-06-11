@@ -93,7 +93,7 @@
             <% end %>
           </div>
 
-          <%# YouTube Player %>
+        <%# YouTube Player %>
         <% when 'PageYouTubePlayerComponent' %>
           <div class="grid-row x3-bottom grid-col-12">
             <%= youtube_embed(component.url) %>
@@ -102,6 +102,19 @@
                 <span class="text-bold">ABOVE:</span> <%= component.caption %>
               </div>
             <% end %>
+          </div>
+
+        <%# Downloadable File %>
+        <% when 'PageDownloadableFileComponent' %>
+          <%
+            description = component.description
+            display_name = component.display_name
+          %>
+          <div class="grid-row x3-bottom grid-col-8 font-sans-xs">
+              <%= content_tag(:span, description, class: 'x0-375-right') if description != '' %>
+              <%= link_to component.attachment_s3_presigned_url, class: 'usa-button--unstyled pb-downloadable-file-link', download: display_name != '' ? display_name : component.attachment_file_name do %>
+                <%= display_name != '' ? display_name : component.attachment_file_name %>
+              <% end %>
           </div>
         <% end %>
       <% end %>

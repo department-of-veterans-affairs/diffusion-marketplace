@@ -12,3 +12,19 @@ body {
     }
   }
 }
+
+.pb-downloadable-file-link {
+  color: $dm-color-primary-vivid !important;
+
+  &:hover {
+    color: $dm-color-primary-dark-blue !important;
+  }
+
+  &:active {
+    color: $dm-color-darker-blue !important;
+  }
+
+  &:visited {
+    color: $dm-alt-visited-purple !important;
+  }
+}

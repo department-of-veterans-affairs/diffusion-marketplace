@@ -5,7 +5,7 @@ ActiveAdmin.register Page do
   #
   permit_params :title, :page_group_id, :slug, :description, :published,
                 page_components_attributes: [:id, :component_type, :position, :_destroy,
-                                             component_attributes: [:url, :description, :title, :text, :heading_type, :subtopic_title, :subtopic_description, :alignment, :caption, practices: []]]
+                                             component_attributes: [:url, :description, :title, :text, :heading_type, :subtopic_title, :subtopic_description, :alignment, :caption, :display_name, :attachment, practices: []]]
   #
   # or
   #
@@ -60,11 +60,14 @@ ActiveAdmin.register Page do
             para component&.title if pc.component_type == 'PageHeader3Component' || pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageAccordionComponent'
             para component&.description if pc.component_type == 'PageHeader3Component'
             para component&.alignment if pc.component_type == 'PageHeader3Component'
-            para component&.text.html_safe unless pc.component_type == 'PagePracticeListComponent' || pc.component_type == 'PageHeader2Component' || pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageHeader3Component' || pc.component_type == 'PageYouTubePlayerComponent'
+            para component&.text.html_safe unless pc.component_type == 'PagePracticeListComponent' || pc.component_type == 'PageHeader2Component' || pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageHeader3Component' || pc.component_type == 'PageYouTubePlayerComponent' || pc.component_type == 'PageDownloadableFileComponent'
             para "#{component&.practices.length} Practice#{component&.practices.length == 1 ? '' : 's'}" if pc.component_type == 'PagePracticeListComponent'
             para component&.practices.map {|pid| Practice.find(pid).name }.join("\n") if pc.component_type == 'PagePracticeListComponent'
             para component&.url if pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageYouTubePlayerComponent'
             para component&.caption if pc.component_type == 'PageYouTubePlayerComponent'
+            para component&.attachment_file_name if pc.component_type == 'PageDownloadableFileComponent'
+            para component&.display_name if pc.component_type == 'PageDownloadableFileComponent' && component&.display_name != ''
+            para component&.description if pc.component_type == 'PageDownloadableFileComponent' && component&.description != ''
           end
         }.join('').html_safe
       end
@@ -124,7 +127,7 @@ ActiveAdmin.register Page do
         render partial: 'page_subpage_hyperlink_component_form', locals: {f: pc, component: component.class == PageSubpageHyperlinkComponent ? component : nil, placeholder: placeholder}
         render partial: 'page_accordion_component_form', locals: {f: pc, component: component.class == PageAccordionComponent ? component : nil, placeholder: placeholder}
         render partial: 'page_you_tube_player_component_form', locals: {f: pc, component: component.class == PageYouTubePlayerComponent ? component : nil, placeholder: placeholder}
-
+        render partial: 'page_downloadable_file_component_form', locals: {f: pc, component: component.class == PageDownloadableFileComponent ? component : nil, placeholder: placeholder}
       end
     end
     f.actions # adds the 'Submit' and 'Cancel' buttons
