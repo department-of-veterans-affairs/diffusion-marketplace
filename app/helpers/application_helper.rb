@@ -82,7 +82,11 @@ module ApplicationHelper
   def facility_name(facility_id, facilities_data = nil)
     facilities_data = facilities_data || @facilities_data
     facility_data = facilities_data.find {|f| f['StationNumber'] == facility_id }
-    facility_data.present? ? facility_data['OfficialStationName'] : facility_id
+    if facility_data.present?
+      "#{facility_data["OfficialStationName"]} #{show_common_name(facility_data["OfficialStationName"], facility_data["CommonName"])}"
+    else
+      facility_id
+    end
   end
 
   def email_practice_subject(practice)
@@ -106,6 +110,12 @@ module ApplicationHelper
       if !object.errors.messages[field_name].blank?
         object.errors.messages[field_name].join(", ")
       end
+    end
+  end
+
+  def show_common_name(official_name, common_name)
+    unless official_name.downcase.include?(common_name.downcase)
+      "(#{common_name})"
     end
   end
 

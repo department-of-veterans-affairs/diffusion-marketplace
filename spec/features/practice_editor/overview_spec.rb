@@ -47,6 +47,9 @@ describe 'Practice editor', type: :feature, js: true do
             fill_in('practice_summary', with: 'This is the most super practice ever made')
             find('#practice_partner_1_label').click
             attach_file('Upload photo', @image_path)
+
+            # alternate name of facility should be displayed
+            expect(page).to have_content('(Birmingham-Alabama)')
             @save_button.click
             expect(page).to have_field('practice_name', with: 'A super practice')
             expect(page).to have_field('practice_tagline', with: 'Super duper')

@@ -43,6 +43,6 @@ function filterFacilities(facilityData, facilitySelect, stateSelector) {
             .append($("<option></option>")
                 .attr("value", facility.StationNumber)
                 .attr("class", 'usa-select')
-                .text(facility.OfficialStationName))
+                .text(assignFacilityName(facility)))
     });
 }

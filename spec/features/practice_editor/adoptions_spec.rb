@@ -27,8 +27,10 @@ describe 'Practice editor', type: :feature do
       # new entry form should clear the entry when "Clear entry" is clicked
       find('button[aria-controls="a0"]').click
       find('label[for="status_in_progress"').click
-      select('Alaska', :from => 'editor_state_select')
-      select('Anchorage VA Medical Center', :from => 'editor_facility_select')
+      select('Alabama', :from => 'editor_state_select')
+      select('Birmingham VA Medical Center', :from => 'editor_facility_select')
+      # alternate name of facility should be displayed
+      expect(page).to have_content('(Birmingham-Alabama)')
       find('#clear_entry').click
       expect(page).to have_field('State', with: '')
 
