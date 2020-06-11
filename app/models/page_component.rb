@@ -20,6 +20,7 @@ class PageComponent < ApplicationRecord
       'Downloadable File': 'PageDownloadableFileComponent',
       'Heading 2': 'PageHeader2Component',
       'Heading 3': 'PageHeader3Component',
+      'Image': 'PageImageComponent',
       'Practices': 'PagePracticeListComponent',
       'Subpage Hyperlink': 'PageSubpageHyperlinkComponent',
       'YouTube Player': 'PageYouTubePlayerComponent'

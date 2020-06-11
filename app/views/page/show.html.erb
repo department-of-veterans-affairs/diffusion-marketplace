@@ -1,12 +1,13 @@
 <div class="full-view-height dm-background-white">
   <section class="grid-container">
-    <h1 class="font-sans-2xl margin-bottom-405 grid-col-10">
-      <%= @page.title %>
-    </h1>
-    <p class="font-sans-lg x3-bottom grid-col-10">
-      <%= @page.description %>
-    </p>
-
+    <div id="page-<%=@page.id %>" style="display: <%= @page.is_visible ? 'block' : 'none' %>">
+      <h1 class="font-sans-2xl margin-bottom-405 grid-col-10">
+        <%= @page.title %>
+      </h1>
+      <p class="font-sans-lg x3-bottom grid-col-10">
+        <%= @page.description %>
+      </p>
+    </div>
     <div class="page-content">
       <% @page.page_components.each do |pc| %>
         <% component = pc.component_type.constantize.find(pc.component_id) %>
@@ -42,27 +43,32 @@
             </div>
           </div>
 
-          <%# Accordion %>
+        <%# Accordion %>
         <% when 'PageAccordionComponent' %>
           <div class="usa-accordion margin-bottom-3">
             <h2 class="usa-accordion__heading margin-bottom-2">
               <button class="usa-accordion__button font-sans-sm"
                       aria-expanded="false"
-                      aria-controls="a1">
-                <%=component.title %>
+                      aria-controls="a<%= component.id %>">
+                <%= component.title %>
               </button>
             </h2>
-            <div id="a1" class="usa-accordion__content usa-prose">
+            <div id="a<%= component.id %>" class="usa-accordion__content usa-prose">
                 <div class="grid-row x3-bottom">
                   <% if component.text.present? %>
                     <div class="grid-col-8 heading3_description x1-top">
-                      <%=component.text.html_safe %>
+                      <%= component.text.html_safe %>
                     </div>
                   <% end %>
                 </div>
             </div>
           </div>
 
+        <%# Image %>
+        <% when 'PageImageComponent' %>
+          <div class="grid-row x3-bottom <%= get_grid_alignment_css_class(component.alignment) %>">
+            <img class="grid-col-8 width-auto maxh-15rem" src="<%= component.page_image_s3_presigned_url() %>" alt="<%= component.page_image_s3_presigned_url() %>"/>
+          </div>
 
         <%# Practice List %>
         <% when 'PagePracticeListComponent' %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_10_171945) do
+ActiveRecord::Schema.define(version: 2020_06_11_144655) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -553,6 +553,19 @@ ActiveRecord::Schema.define(version: 2020_06_10_171945) do
     t.index ["page_component_id"], name: "index_page_header_components_on_page_component_id"
   end
 
+  create_table "page_image_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.text "alt_text"
+    t.string "alignment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "page_image_file_name"
+    t.string "page_image_content_type"
+    t.integer "page_image_file_size"
+    t.datetime "page_image_updated_at"
+    t.index ["page_component_id"], name: "index_page_image_components_on_page_component_id"
+  end
+
   create_table "page_paragraph_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "page_component_id"
     t.string "text"
@@ -595,6 +608,7 @@ ActiveRecord::Schema.define(version: 2020_06_10_171945) do
     t.datetime "updated_at", null: false
     t.datetime "published"
     t.boolean "ever_published", default: false, null: false
+    t.boolean "is_visible", default: true, null: false
     t.index ["page_group_id"], name: "index_pages_on_page_group_id"
   end
 
@@ -1062,6 +1076,7 @@ ActiveRecord::Schema.define(version: 2020_06_10_171945) do
   add_foreign_key "page_header2_components", "page_components"
   add_foreign_key "page_header3_components", "page_components"
   add_foreign_key "page_header_components", "page_components"
+  add_foreign_key "page_image_components", "page_components"
   add_foreign_key "page_paragraph_components", "page_components"
   add_foreign_key "page_subpage_hyperlink_components", "page_components"
   add_foreign_key "page_you_tube_player_components", "page_components"
