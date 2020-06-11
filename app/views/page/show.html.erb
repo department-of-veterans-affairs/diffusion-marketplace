@@ -49,15 +49,15 @@
             <h2 class="usa-accordion__heading margin-bottom-2">
               <button class="usa-accordion__button font-sans-sm"
                       aria-expanded="false"
-                      aria-controls="a1">
-                <%=component.title %>
+                      aria-controls="a<%= component.id %>">
+                <%= component.title %>
               </button>
             </h2>
-            <div id="a1" class="usa-accordion__content usa-prose">
+            <div id="a<%= component.id %>" class="usa-accordion__content usa-prose">
                 <div class="grid-row x3-bottom">
                   <% if component.text.present? %>
                     <div class="grid-col-8 heading3_description x1-top">
-                      <%=component.text.html_safe %>
+                      <%= component.text.html_safe %>
                     </div>
                   <% end %>
                 </div>
