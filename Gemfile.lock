@@ -410,6 +410,8 @@ GEM
     roo (2.8.2)
       nokogiri (~> 1)
       rubyzip (>= 1.2.1, < 2.0.0)
+    route_downcaser (1.2.3)
+      activesupport (>= 3.2)
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
       rspec-expectations (~> 3.8.0)
@@ -605,6 +607,7 @@ DEPENDENCIES
   redis
   rolify
   roo (~> 2.8.0)
+  route_downcaser
   rspec
   rspec-rails
   rspec-retry

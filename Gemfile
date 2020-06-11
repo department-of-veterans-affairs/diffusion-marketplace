@@ -147,3 +147,4 @@ gem 'wdm', '>= 0.1.0' if Gem.win_platform?
 gem 'gmaps4rails', github: 'agilesix/Google-Maps-for-Rails', ref: 'master'
 gem 'lodash-rails'
 
+gem 'route_downcaser'
