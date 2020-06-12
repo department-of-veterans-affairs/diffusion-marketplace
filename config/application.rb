@@ -38,7 +38,7 @@ module DiffusionMarketplace
     # Don't generate system test files.
     config.generators.system_tests = nil
 
-    #config.active_job.queue_adapter = :sidekiq
+    config.active_job.queue_adapter = :sidekiq
 
     config.middleware.use NTLMAuthentication if ENV['USE_NTLM'] == 'true'
   end
