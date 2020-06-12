@@ -5,7 +5,8 @@ ActiveAdmin.register Page do
   #
   permit_params :title, :page_group_id, :slug, :description, :published, :ever_published, :is_visible,
                 page_components_attributes: [:id, :component_type, :position, :_destroy,
-                                             component_attributes: [:url, :description, :title, :text, :heading_type, :subtopic_title, :subtopic_description, :alignment, :page_image, :caption, :alt_text, :display_name, :attachment, practices: []]]
+                component_attributes: [:url, :description, :title, :text, :heading_type, :subtopic_title, :subtopic_description, :alignment, :page_image, :caption, :alt_text, :html_tag, :display_name, :attachment, practices: []]]
+
   #
   # or
   #
@@ -60,7 +61,7 @@ ActiveAdmin.register Page do
             para component&.title if pc.component_type == 'PageHeader3Component' || pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageAccordionComponent'
             para component&.description if pc.component_type == 'PageHeader3Component'
             para component&.alignment if pc.component_type == 'PageHeader3Component'
-            para component&.text.html_safe unless pc.component_type == 'PagePracticeListComponent' || pc.component_type == 'PageHeader2Component' || pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageHeader3Component' || pc.component_type == 'PageYouTubePlayerComponent' || pc.component_type == 'PageImageComponent' || pc.component_type == 'PageDownloadableFileComponent'
+            para component&.text.html_safe unless pc.component_type == 'PageHrComponent' || pc.component_type == 'PagePracticeListComponent' || pc.component_type == 'PageHeader2Component' || pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageHeader3Component' || pc.component_type == 'PageYouTubePlayerComponent' || pc.component_type == 'PageImageComponent' || pc.component_type == 'PageDownloadableFileComponent'
             para "#{component&.practices.length} Practice#{component&.practices.length == 1 ? '' : 's'}" if pc.component_type == 'PagePracticeListComponent'
             para component&.practices.map {|pid| Practice.find(pid).name }.join("\n") if pc.component_type == 'PagePracticeListComponent'
             para component&.url if pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageYouTubePlayerComponent'
@@ -121,7 +122,6 @@ ActiveAdmin.register Page do
         component = pc.object.component_id ? eval("#{pc.object.component_type}.find('#{pc.object.component_id}')") : nil
 
         pc.input :component_type, input_html: {class: 'polyselect', 'data-component-id': placeholder}, collection: PageComponent::COMPONENT_SELECTION
-
         # render partial: 'page_header_component_form', locals: {f: pc, component: component.class == PageHeaderComponent ? component : nil, placeholder: placeholder}
         render partial: 'page_header2_component_form', locals: {f: pc, component: component.class == PageHeader2Component ? component : nil, placeholder: placeholder}
         render partial: 'page_header3_component_form', locals: {f: pc, component: component.class == PageHeader3Component ? component : nil, placeholder: placeholder}
@@ -131,7 +131,9 @@ ActiveAdmin.register Page do
         render partial: 'page_accordion_component_form', locals: {f: pc, component: component.class == PageAccordionComponent ? component : nil, placeholder: placeholder}
         render partial: 'page_you_tube_player_component_form', locals: {f: pc, component: component.class == PageYouTubePlayerComponent ? component : nil, placeholder: placeholder}
         render partial: 'page_image_component_form', locals: {f: pc, component: component.class == PageImageComponent ? component : nil, placeholder: placeholder}
+        render partial: 'page_hr_component_form', locals: {f: pc, component: component.class == PageHrComponent ? component : nil, placeholder: placeholder}
         render partial: 'page_downloadable_file_component_form', locals: {f: pc, component: component.class == PageDownloadableFileComponent ? component : nil, placeholder: placeholder}
+
       end
     end
     f.actions # adds the 'Submit' and 'Cancel' buttons

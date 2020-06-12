@@ -23,7 +23,8 @@ class PageComponent < ApplicationRecord
       'Image': 'PageImageComponent',
       'Practices': 'PagePracticeListComponent',
       'Subpage Hyperlink': 'PageSubpageHyperlinkComponent',
-      'YouTube Player': 'PageYouTubePlayerComponent'
+      'YouTube Player': 'PageYouTubePlayerComponent',
+      'Horizontal Separator': 'PageHrComponent'
   }
 
   def build_component(params)
