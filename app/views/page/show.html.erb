@@ -104,7 +104,7 @@
           <div class="grid-row x3-bottom grid-col-12">
             <%= youtube_embed(component.url) %>
             <% if component.caption.present? %>
-              <div class="font-sans-3xs margin-top-1 width-100 line-height-15px pb-youtube-caption">
+              <div class="font-sans-2xs line-height-135 margin-top-1 width-100 line-height-15px pb-youtube-caption">
                 <span class="text-bold">ABOVE:</span> <%= component.caption %>
               </div>
             <% end %>
@@ -117,10 +117,10 @@
             display_name = component.display_name
             next_component = @page.page_components.find_by(position: pc.position + 1)
           %>
-          <div class="grid-row grid-col-8 <%= next_component != nil && next_component.component_type == pc.component_type ? 'margin-bottom-1' : 'x3-bottom' %> font-sans-xs">
-            <%= content_tag(:span, description, class: 'x0-375-right') if description != '' %>
+          <div class="grid-row grid-col-8 <%= next_component != nil && next_component.component_type == pc.component_type ? 'margin-bottom-1' : 'x3-bottom' %> font-sans-sm line-height-162">
+            <%= content_tag(:span, description, class: 'margin-right-1') if description != '' %>
             <%= link_to component.attachment_s3_presigned_url, class: 'pb-downloadable-file-link', target: '_blank', download: display_name != '' ? display_name : component.attachment_file_name do %>
-              <%= display_name != '' ? display_name : component.attachment_file_name %>
+              <i class="far fa-file margin-right-1"></i><%= display_name != '' ? display_name : component.attachment_file_name %>
             <% end %>
           </div>
         <% end %>
