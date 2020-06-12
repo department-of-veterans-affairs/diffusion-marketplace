@@ -29,7 +29,7 @@ html = Arbre::Context.new do
         end
         li class: 'file input required', id: "page_page_components_attributes_#{placeholder}_component_attributes_page_image_input" do
           label 'Image', for: "page_page_components_attributes_#{placeholder}_component_attributes_page_image", class: 'label'
-          input value: component&.page_image || nil, type: 'file', required: 'required',
+          input value: component&.page_image || nil, type: 'file', required: 'required', accept: '.jpg, .jpeg, .png',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_page_image",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][page_image]"
           para 'Alternate text that gets rendered in case the image cannot load.', class: 'inline-hints'
