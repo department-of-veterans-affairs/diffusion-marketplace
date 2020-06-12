@@ -1,3 +1,7 @@
+<% provide :head_tags do %>
+  <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
 <div class="full-view-height dm-background-white">
   <section class="grid-container">
     <div id="page-<%= @page.id %>" class="<%= 'display-none' unless @page.is_visible %>">
@@ -70,8 +74,8 @@
               <% pr = Practice.find(pr_id.to_i) %>
               <% if pr.present? %>
                 <div class="tablet:grid-col-4 flex-column display-flex margin-bottom-28px">
-                  <%= render partial: 'practices/favorite_button', locals: {practice: pr, featured: true, col_4: false} %>
-                  <%= render partial: 'practices/marketplace_card', locals: {practice: pr, featured: true} %>
+                  <%= render partial: 'practices/favorite_button', locals: {practice: pr, featured: false, col_4: true } %>
+                  <%= render partial: 'practices/marketplace_card', locals: {practice: pr, featured: false } %>
                 </div>
               <% end %>
             <% end %>
