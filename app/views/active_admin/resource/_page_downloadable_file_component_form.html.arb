@@ -17,7 +17,7 @@ html = Arbre::Context.new do
           input value: component&.attachment || nil, type: 'file', required: 'required', accept: '.pdf,.doc,.docx',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_attachment",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][attachment]"
-          para 'Choose a file to upload.', class: 'inline-hints'
+          para 'File types allowed: .pdf, .doc, .docx.', class: 'inline-hints'
             if component&.attachment != nil
               para class: 'aa-downloadable-file-link' do
                 span 'Current uploaded file:'
