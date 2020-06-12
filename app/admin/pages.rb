@@ -99,6 +99,7 @@ ActiveAdmin.register Page do
   end
 
   form :html => {:multipart => true} do |f|
+    f.actions # adds the 'Submit' and 'Cancel' buttons
     f.semantic_errors *f.object.errors.keys # shows errors on :base
     f.inputs "Page Information" do
       if resource.ever_published
@@ -108,8 +109,8 @@ ActiveAdmin.register Page do
       end
       f.input :title, label: 'Title', hint: 'The main heading/"H1" of the page.'
       f.input :description, label: 'Description', hint: 'Overall purpose of the page.'
+      f.input :is_visible, label: 'Title and Description are visible?', hint: 'This field allows you to show or hide the page title and description.'
       f.input :page_group, label: 'Group', hint: 'The Group is the page type and will be included in the url. (Ex: "/competitions/page-title" where "competitions" is the Group and "page-title" is the chosen url suffix from above. If the url suffix is "home", the complete URL will be "/competitions")'
-      f.input :is_visible, label: 'Is Visible?', hint: 'This field allows you to show or hide the page title and description.'
       f.input :published, input_html: { disabled: true }, as: :datepicker, label: 'Published', hint: 'Date when page was published. This field is readonly. Do not touch.'
     end
 
