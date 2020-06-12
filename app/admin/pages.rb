@@ -5,7 +5,7 @@ ActiveAdmin.register Page do
   #
   permit_params :title, :page_group_id, :slug, :description, :published, :ever_published, :is_visible,
                 page_components_attributes: [:id, :component_type, :position, :_destroy,
-component_attributes: [:url, :description, :title, :text, :heading_type, :subtopic_title, :subtopic_description, :alignment, :page_image, :caption, :alt_text, :html_tag, :display_name, :attachment, practices: []]]
+                component_attributes: [:url, :description, :title, :text, :heading_type, :subtopic_title, :subtopic_description, :alignment, :page_image, :caption, :alt_text, :html_tag, :display_name, :attachment, practices: []]]
 
   #
   # or
