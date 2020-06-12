@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_11_144655) do
+ActiveRecord::Schema.define(version: 2020_06_12_095152) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -540,6 +540,14 @@ ActiveRecord::Schema.define(version: 2020_06_11_144655) do
     t.index ["page_component_id"], name: "index_page_header_components_on_page_component_id"
   end
 
+  create_table "page_hr_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "html_tag"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_component_id"], name: "index_page_hr_components_on_page_component_id"
+  end
+
   create_table "page_image_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "page_component_id"
     t.text "alt_text"
@@ -1062,6 +1070,7 @@ ActiveRecord::Schema.define(version: 2020_06_11_144655) do
   add_foreign_key "page_header2_components", "page_components"
   add_foreign_key "page_header3_components", "page_components"
   add_foreign_key "page_header_components", "page_components"
+  add_foreign_key "page_hr_components", "page_components"
   add_foreign_key "page_image_components", "page_components"
   add_foreign_key "page_paragraph_components", "page_components"
   add_foreign_key "page_subpage_hyperlink_components", "page_components"
