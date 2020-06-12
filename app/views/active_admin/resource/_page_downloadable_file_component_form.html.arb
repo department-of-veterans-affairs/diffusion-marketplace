@@ -14,10 +14,10 @@ html = Arbre::Context.new do
 
         li class: 'file input required', id: "page_page_components_attributes_#{placeholder}_component_attributes_attachment_input" do
           label 'File', for: "page_page_components_attributes_#{placeholder}_component_attributes_attachment", class: 'label'
-          input value: component&.attachment || nil, type: 'file', required: 'required',
+          input value: component&.attachment || nil, type: 'file', required: 'required', accept: '.pdf,.doc,.docx',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_attachment",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][attachment]"
-          para 'Choose a file to upload', class: 'inline-hints'
+          para 'Choose a file to upload.', class: 'inline-hints'
             if component&.attachment != nil
               para class: 'aa-downloadable-file-link' do
                 span 'Current uploaded file:'
@@ -31,7 +31,7 @@ html = Arbre::Context.new do
           input value: component&.display_name || nil, type: 'text',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_display_name",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][display_name]"
-          para 'Enter a user-friendly name for the file (Ex: "Get Started With My Practice")', class: 'inline-hints'
+          para 'Enter a user-friendly name for the file (Ex: "Get Started With My Practice").', class: 'inline-hints'
         end
 
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_description_input" do
@@ -39,7 +39,7 @@ html = Arbre::Context.new do
           input value: component&.description || nil, type: 'text',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_description",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][description]"
-          para 'Enter a description about the file', class: 'inline-hints'
+          para 'Enter a description about the file.', class: 'inline-hints'
         end
       end
     end

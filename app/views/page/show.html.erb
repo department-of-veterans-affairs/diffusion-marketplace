@@ -115,12 +115,13 @@
           <%
             description = component.description
             display_name = component.display_name
+            next_component = @page.page_components.find_by(position: pc.position + 1)
           %>
-          <div class="grid-row x3-bottom grid-col-8 font-sans-xs">
-              <%= content_tag(:span, description, class: 'x0-375-right') if description != '' %>
-              <%= link_to component.attachment_s3_presigned_url, class: 'usa-button--unstyled pb-downloadable-file-link', download: display_name != '' ? display_name : component.attachment_file_name do %>
-                <%= display_name != '' ? display_name : component.attachment_file_name %>
-              <% end %>
+          <div class="grid-row grid-col-8 <%= next_component != nil && next_component.component_type == pc.component_type ? 'margin-bottom-1' : 'x3-bottom' %> font-sans-xs">
+            <%= content_tag(:span, description, class: 'x0-375-right') if description != '' %>
+            <%= link_to component.attachment_s3_presigned_url, class: 'pb-downloadable-file-link', target: '_blank', download: display_name != '' ? display_name : component.attachment_file_name do %>
+              <%= display_name != '' ? display_name : component.attachment_file_name %>
+            <% end %>
           </div>
         <% end %>
       <% end %>

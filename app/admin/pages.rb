@@ -60,7 +60,7 @@ ActiveAdmin.register Page do
             para component&.title if pc.component_type == 'PageHeader3Component' || pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageAccordionComponent'
             para component&.description if pc.component_type == 'PageHeader3Component'
             para component&.alignment if pc.component_type == 'PageHeader3Component'
-            para component&.text.html_safe unless pc.component_type == 'PagePracticeListComponent' || pc.component_type == 'PageHeader2Component' || pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageHeader3Component' || pc.component_type == 'PageYouTubePlayerComponent' || pc.component_type == 'PageImageComponent'
+            para component&.text.html_safe unless pc.component_type == 'PagePracticeListComponent' || pc.component_type == 'PageHeader2Component' || pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageHeader3Component' || pc.component_type == 'PageYouTubePlayerComponent' || pc.component_type == 'PageImageComponent' || pc.component_type == 'PageDownloadableFileComponent'
             para "#{component&.practices.length} Practice#{component&.practices.length == 1 ? '' : 's'}" if pc.component_type == 'PagePracticeListComponent'
             para component&.practices.map {|pid| Practice.find(pid).name }.join("\n") if pc.component_type == 'PagePracticeListComponent'
             para component&.url if pc.component_type == 'PageSubpageHyperlinkComponent' || pc.component_type == 'PageYouTubePlayerComponent'
