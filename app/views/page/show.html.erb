@@ -14,7 +14,7 @@
 
         <%# Page Header and Paragraph %>
         <% if (pc.component_type == 'PageHeaderComponent' || pc.component_type == 'PageParagraphComponent') && component.text.present? %>
-          <div class="grid-row x3-bottom">
+          <div class="margin-bottom-4">
             <%= component.text.html_safe %>
           </div>
         <% end %>
@@ -32,14 +32,12 @@
 
           <%# Page Header 3 %>
         <% when 'PageHeader3Component' %>
-          <div class="grid-row x3-bottom <%= get_grid_alignment_css_class(component.alignment.downcase) %>">
-            <div class="grid-col-8 heading3_title"><%= component.title %></div>
-            <% if component.description.present? %>
-              <div class="grid-col-8 heading3_description x1-top">
-                <%= component.description %>
-              </div>
-            <% end %>
-          </div>
+          <h3 class="font-sans-lg margin-bottom-2 text-<%= component.alignment.downcase %> "><%= component.title %></h3>
+          <% if component.description.present? %>
+            <div class="grid-col-8 x1-top">
+              <%= component.description %>
+            </div>
+          <% end %>
 
           <%# Page Header 3 %>
         <% when 'PageHrComponent' %>
@@ -57,13 +55,9 @@
               </button>
             </h2>
             <div id="a<%= component.id %>" class="usa-accordion__content usa-prose">
-              <div class="grid-row">
-                <% if component.text.present? %>
-                  <div class="grid-col-12 heading3_description x1-top">
-                    <%= component.text.html_safe %>
-                  </div>
-                <% end %>
-              </div>
+              <% if component.text.present? %>
+                <%= component.text.html_safe %>
+              <% end %>
             </div>
           </div>
 
@@ -80,7 +74,7 @@
             <% practices_ids.each do |pr_id| %>
               <% pr = Practice.find(pr_id.to_i) %>
               <% if pr.present? %>
-                <div class="tablet:grid-col-4 flex-column display-flex x2-bottom">
+                <div class="tablet:grid-col-4 flex-column display-flex margin-bottom-28px">
                   <%= render partial: 'practices/favorite_button', locals: {practice: pr, featured: true, col_4: false} %>
                   <%= render partial: 'practices/marketplace_card', locals: {practice: pr, featured: true} %>
                 </div>
