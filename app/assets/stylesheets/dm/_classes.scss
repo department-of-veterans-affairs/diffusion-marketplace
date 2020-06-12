@@ -503,6 +503,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   margin-top: 0 !important;
 }
 
+.x05-top {
+  margin-top: 0.875rem !important;
+}
+
 .x1-top {
   margin-top: 1rem !important;
 }
@@ -543,6 +547,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .x1-5-bottom {
   margin-bottom: 1.5em !important;
+}
+
+.x1-75-bottom {
+  margin-bottom: 1.75rem !important;
 }
 
 .x2-bottom {
@@ -615,6 +623,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .x0-right {
   margin-right: 0 !important;
+}
+
+.x0-375-right {
+  margin-right: 0.375rem !important;
 }
 
 .x0-5-right {
@@ -1057,4 +1069,12 @@ ul.no-list-style {
 
 .line-height-15px {
   line-height: 15px;
+}
+
+.line-height-162 {
+  line-height: 162%;
+}
+
+.line-height-135 {
+  line-height: 135%;
 }

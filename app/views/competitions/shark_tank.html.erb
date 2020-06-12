@@ -3,15 +3,15 @@
 <% end %>
 
 <div class="grid-container position-relative">
-  <div class="grid-row flex-align-center position-relative margin-bottom-405 grid-col-8 margin-top-0 margin-bottom-2 margin-x-auto">
+  <div class="grid-row flex-align-center position-relative margin-bottom-405 grid-col-8 margin-top-0 margin-bottom-3 margin-x-auto">
     <div class="width-full">
       <div class="margin-top-44px margin-bottom-3">
         <%= image_tag('shark-tank-logo.png', alt: 'Shark Tank 2020 Logo') %>
       </div>
-      <div class="grid-col-auto font-sans-lg margin-right-305 display-inline-block text-middle">
+      <div class="font-sans-lg">
         <span>Submit your practice application by July 10, 2020!</span>
       </div>
-      <div class="grid-col-auto display-inline-block">
+      <div class="x05-top">
         <form action="https://www.surveymonkey.com/r/ST20application" method="get" target="_blank">
           <button class="usa-button height-7 shark-tank-apply-button" type="submit">Apply Now</button>
         </form>
@@ -21,7 +21,7 @@
   <section class="shark-tank-info grid-col-8 margin-y-0 margin-x-auto">
     <p class="margin-bottom-2 line-height-sans-505 font-sans-sm">Attention all VHA employees! The 2020 VHA Shark Tank Competition application is now open! All employees are encouraged to submit their
       practices and compete for the opportunity to pitch their practice live at the VHA Innovation Experience (iEx) in Washington, DC to
-      Medical Center and VISN Director Sharks! To compete, submit your successfully implemented practice HERE by 11:59 pm PT on July 10, 2020.
+      Medical Center and VISN Director Sharks! To compete, submit your successfully implemented practice by 11:59 pm PT on July 10, 2020.
     </p>
     <p class="margin-bottom-4 line-height-sans-505 font-sans-sm">
       The Competition shines a spotlight on employees passionate about solving some of the toughest challenges across VHA and provides a
@@ -55,7 +55,7 @@
         </p>
         <p class="shark-tank-eligibility-p font-sans-sm">
           <span class="text-bold font-sans-md">Rural Women Veterans: A Diverse Community - </span> Develop and expand
-          innovative practices to support rural women veterans, with an emphasis on minority women living in rural areas
+          innovative practices to support rural women Veterans, with an emphasis on minority women living in rural areas
         </p>
         <p class="shark-tank-eligibility-p font-sans-sm">
           <span class="text-bold font-sans-md">Veteran and Employee Experience - </span> Restoring pride, public trust,
@@ -75,13 +75,16 @@
       </div>
     </div>
   </section>
-  <div class="grid-row flex-align-center position-relative margin-bottom-405 grid-col-8 margin-top-0 margin-bottom-4 margin-x-auto">
+  <div class="grid-row flex-align-center position-relative margin-bottom-405 grid-col-8 margin-top-0 x1-75-bottom margin-x-auto">
     <p class="font-sans-sm line-height-sans-505">
-      If you have any questions, <%= link_to 'read our FAQs', asset_path('shark_tank_2020_faq.pdf', skip_pipeline: true), target: '_blank', class: 'shark-tank-faq-link' %>.
+      If you have any questions, <%= link_to 'read our FAQs', asset_path('shark_tank_faq.docx', skip_pipeline: true), target: '_blank', class: 'shark-tank-faq-link' %>.
       If you have additional questions not covered in our FAQs, <a target="_blank" href="mailto:VAInnovation@atlasresearch.us?subject=Shark Tank Question" class="shark-tank-support-link">email the VA Innovation Support Team</a>.
     </p>
   </div>
-  <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest section-line grid-col-8 margin-top-0 margin-bottom-2 margin-x-auto">
+  <div class="grid-col-8 margin-bottom-3 margin-x-auto">
+    <%= youtube_embed('https://www.youtube.com/watch?v=Vo17aIUjfQQ') %>
+  </div>
+  <hr class="flex-fill height-1px border border-base-lighter bg-base-lightest section-line grid-col-8 margin-top-0 margin-bottom-2 margin-x-auto">
   <section class="info-sessions grid-col-8 margin-y-0 margin-x-auto">
       <h3 class="font-sans-lg margin-bottom-2">Informational Sessions</h3>
       <p class="line-height-sans-505 margin-bottom-2 font-sans-sm">
@@ -95,21 +98,28 @@
           <%= link_to 'Add invite to calendar', asset_path('June_18_invite.ics', skip_pipeline: true), target: '_blank', class: 'shark-tank-faq-link' %>
         </p>
         <br />
+        <p class="line-height-sans-505 margin-bottom-2"><span class="text-bold">Dial-in: </span>844-376-0278</p>
+        <p class="line-height-sans-505 margin-bottom-2"><span class="text-bold">Conference code: </span>745525651#</p>
+        <br />
         <p class="font-sans-sm line-height-sans-505">
           <b>June 23, 2020 Session</b><br />
           <%= link_to 'Add invite to calendar', asset_path('June_23_invite.ics', skip_pipeline: true), target: '_blank', class: 'shark-tank-faq-link' %>
         </p>
         <br />
         <p class="line-height-sans-505 margin-bottom-2"><span class="text-bold">Dial-in: </span>844-376-0278</p>
-        <p class="line-height-sans-505 margin-bottom-2"><span class="text-bold">Conference code: </span>745525651</p>
+        <p class="line-height-sans-505 margin-bottom-2"><span class="text-bold">Conference code: </span>801303762#</p>
       </div>
-      <p class="line-height-sans-505 font-sans-sm">
+      <p class="line-height-sans-505 font-sans-sm margin-bottom-205">
         The sessions will provide an overview of what to expect during the 2020 VHA Shark Tank Competition application process and offer
         an opportunity to ask questions. If you cannot attend the session, the VA Innovation Support Team will post resource materials on
         the VHA Shark Tank Competition page on the VHA Diffusion Marketplace.
       </p>
   </section>
-  <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest section-line grid-col-8 margin-top-5 margin-bottom-0 margin-x-auto">
+  <hr class="flex-fill height-1px border border-base-lighter bg-base-lightest section-line grid-col-8 margin-y-0 margin-x-auto">
+  <div class="grid-col-8 margin-x-auto padding-y-205">
+    <%= link_to 'shark_tank_2020_application.docx', asset_path('shark_tank_2020_application.docx', skip_pipeline: true), target: '_blank', class: 'shark-tank-application-link' %>
+  </div>
+  <hr class="flex-fill height-1px border border-base-lighter bg-base-lightest section-line grid-col-8 margin-y-0 margin-x-auto">
   <section class="shark-tank-winners">
     <h3 class="font-sans-lg text-center grid-col-8 margin-top-2 margin-bottom-3 margin-x-auto">Previous Shark Tank Winners</h3>
     <% shark_tank_badge = Badge.find_by(name: 'Shark Tank') %>

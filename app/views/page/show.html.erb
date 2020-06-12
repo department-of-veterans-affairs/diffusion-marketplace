@@ -1,6 +1,6 @@
 <div class="full-view-height dm-background-white">
   <section class="grid-container">
-    <div id="page-<%=@page.id %>" style="display: <%= @page.is_visible ? 'block' : 'none' %>">
+    <div id="page-<%= @page.id %>" class="<%= 'display-none' unless @page.is_visible %>">
       <h1 class="font-sans-2xl margin-bottom-405 grid-col-10">
         <%= @page.title %>
       </h1>
@@ -22,25 +22,23 @@
         <%# Page Header 2 %>
         <% case pc.component_type when 'PageHeader2Component' %>
           <div class="grid-row x3-bottom">
-            <div class="grid-col-8 heading2_subtopic_title"><%=component.subtopic_title %></div>
+            <div class="grid-col-8 heading2_subtopic_title"><%= component.subtopic_title %></div>
             <% if component.subtopic_description.present? %>
               <div class="grid-col-8 heading2_subtopic_description x1-top">
-                <%=component.subtopic_description %>
+                <%= component.subtopic_description %>
               </div>
             <% end %>
           </div>
 
           <%# Page Header 3 %>
-          <% when 'PageHeader3Component' %>
-          <div align="<%=component.alignment.downcase %>">
-            <div class="grid-row x3-bottom">
-              <div class="grid-col-8 heading3_title"><%=component.title %></div>
-              <% if component.description.present? %>
-                <div class="grid-col-8 heading3_description x1-top">
-                  <%=component.description %>
-                </div>
-              <% end %>
-            </div>
+        <% when 'PageHeader3Component' %>
+          <div class="grid-row x3-bottom <%= get_grid_alignment_css_class(component.alignment.downcase) %>">
+            <div class="grid-col-8 heading3_title"><%= component.title %></div>
+            <% if component.description.present? %>
+              <div class="grid-col-8 heading3_description x1-top">
+                <%= component.description %>
+              </div>
+            <% end %>
           </div>
 
           <%# Page Header 3 %>
@@ -59,23 +57,23 @@
               </button>
             </h2>
             <div id="a<%= component.id %>" class="usa-accordion__content usa-prose">
-                <div class="grid-row x3-bottom">
-                  <% if component.text.present? %>
-                    <div class="grid-col-8 heading3_description x1-top">
-                      <%= component.text.html_safe %>
-                    </div>
-                  <% end %>
-                </div>
+              <div class="grid-row">
+                <% if component.text.present? %>
+                  <div class="grid-col-12 heading3_description x1-top">
+                    <%= component.text.html_safe %>
+                  </div>
+                <% end %>
+              </div>
             </div>
           </div>
 
-        <%# Image %>
+          <%# Image %>
         <% when 'PageImageComponent' %>
-          <div class="grid-row x3-bottom <%= get_grid_alignment_css_class(component.alignment) %>">
-            <img class="grid-col-8 width-auto maxh-15rem" src="<%= component.page_image_s3_presigned_url() %>" alt="<%= component.page_image_s3_presigned_url() %>"/>
+          <div class="grid-row x3-bottom <%= get_grid_alignment_css_class(component.alignment.downcase) %>">
+            <img class="grid-col-8 width-auto maxh-15rem" src="<%= component.page_image_s3_presigned_url %>" alt="<%= component.page_image_s3_presigned_url %>"/>
           </div>
 
-        <%# Practice List %>
+          <%# Practice List %>
         <% when 'PagePracticeListComponent' %>
           <% practices_ids = component.practices %> <%# array of id strings %>
           <div class="grid-row grid-gap x1-bottom">
@@ -90,7 +88,7 @@
             <% end %>
           </div>
 
-        <%# Subpage Hyperlink %>
+          <%# Subpage Hyperlink %>
         <% when 'PageSubpageHyperlinkComponent' %>
           <div class="grid-row x3-bottom grid-col-8">
             <a href="<%= component.url %>" class="width-100 page-subpage-hyperlink">
@@ -109,9 +107,23 @@
           <div class="grid-row x3-bottom grid-col-12">
             <%= youtube_embed(component.url) %>
             <% if component.caption.present? %>
-              <div class="font-sans-3xs margin-top-1 width-100 line-height-15px pb-youtube-caption">
+              <div class="font-sans-2xs line-height-135 margin-top-1 width-100 line-height-15px pb-youtube-caption">
                 <span class="text-bold">ABOVE:</span> <%= component.caption %>
               </div>
+            <% end %>
+          </div>
+
+          <%# Downloadable File %>
+        <% when 'PageDownloadableFileComponent' %>
+          <%
+            description = component.description
+            display_name = component.display_name
+            next_component = @page.page_components.find_by(position: pc.position + 1)
+          %>
+          <div class="grid-row grid-col-8 <%= next_component != nil && next_component.component_type == pc.component_type ? 'margin-bottom-1' : 'x3-bottom' %> font-sans-sm line-height-162">
+            <%= content_tag(:span, description, class: 'margin-right-1') if description != '' %>
+            <%= link_to component.attachment_s3_presigned_url, class: 'pb-downloadable-file-link', target: '_blank', download: display_name != '' ? display_name : component.attachment_file_name do %>
+              <i class="far fa-file margin-right-1"></i><%= display_name != '' ? display_name : component.attachment_file_name %>
             <% end %>
           </div>
         <% end %>

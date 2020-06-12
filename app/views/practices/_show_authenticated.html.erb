@@ -124,6 +124,9 @@
           <p class="font-sans-xs-2 line-height-sans-505 margin-bottom-3">
             Created by
             the <%= @facility_data.present? ? @facility_data['OfficialStationName'] : @practice.initiating_facility %>
+            <% if @facility_data.present? %>
+              <%= show_common_name(@facility_data["OfficialStationName"], @facility_data["CommonName"]) %>
+            <% end %>
             in
             <span><%= @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)' %></span>
           </p>

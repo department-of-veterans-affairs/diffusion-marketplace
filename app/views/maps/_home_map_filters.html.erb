@@ -97,6 +97,7 @@
               <input id="<%= f["StationNumber"] %>" name="facilities" type="checkbox" value="<%= f["StationNumber"] %>" class="usa-checkbox__input">
               <label for="<%= f["StationNumber"] %>" class="usa-checkbox__label">
                 <%= f["StreetAddressState"] %>: <%= f["OfficialStationName"] %>
+                  <%= show_common_name(f["OfficialStationName"], f["CommonName"]) %>
               </label>
             <% end %>
           </fieldset>
