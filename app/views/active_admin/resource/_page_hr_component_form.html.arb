@@ -12,8 +12,8 @@ html = Arbre::Context.new do
           input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
         end
         li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_html_tag_input" do
-          label 'HTML tag', for: "page_page_components_attributes_#{placeholder}_component_attributes_text", class: 'label'
-          input value: component&.html_tag || nil, type: 'text', required: 'required',
+          para 'This component simply renders a horizontal gray line that spans across the page. It has nothing to configure.'
+          input value: component&.html_tag || nil, type: 'hidden',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_html_tag",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][html_tag]"
         end
