@@ -45,10 +45,7 @@
 
           <%# Page Header 3 %>
         <% when 'PageHrComponent' %>
-          <div class="margin-bottom-2">
-            <hr />
-          </div>
-
+          <hr class="flex-fill border border-base-lighter bg-base-lightest section-line margin-top-0 margin-bottom-2 margin-x-auto">
         <%# Accordion %>
         <% when 'PageAccordionComponent' %>
           <div class="usa-accordion margin-bottom-3">
@@ -69,7 +66,7 @@
           <%# Image %>
         <% when 'PageImageComponent' %>
           <div class="grid-row x3-bottom <%= get_grid_alignment_css_class(component.alignment.downcase) %>">
-            <img class="grid-col-8 width-auto maxh-15rem" src="<%= component.page_image_s3_presigned_url %>" alt="<%= component.page_image_s3_presigned_url %>"/>
+            <img class="width-auto maxh-15rem" src="<%= component.page_image_s3_presigned_url %>" alt="<%= component.page_image_s3_presigned_url %>"/>
           </div>
 
           <%# Practice List %>
