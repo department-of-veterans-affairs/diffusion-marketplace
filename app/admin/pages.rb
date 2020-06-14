@@ -3,7 +3,7 @@ ActiveAdmin.register Page do
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
-  permit_params :title, :page_group_id, :slug, :description, :published, :ever_published, :is_visible,
+  permit_params :title, :page_group_id, :slug, :description, :published, :ever_published, :is_visible, :template_type,
                 page_components_attributes: [:id, :component_type, :position, :_destroy,
                 component_attributes: [:url, :description, :title, :text, :heading_type, :subtopic_title, :subtopic_description, :alignment, :page_image, :caption, :alt_text, :html_tag, :display_name, :attachment, practices: []]]
 
@@ -45,6 +45,7 @@ ActiveAdmin.register Page do
       }
       row :page_group
       row :slug
+      row :template_type
       row :title
       row :description
       row :published
@@ -110,6 +111,7 @@ ActiveAdmin.register Page do
       else
         f.input :slug, label: 'URL suffix', hint: 'Enter a brief and descriptive page URL suffix (Ex: "page-title"). Note: to make a page the home or landing page for a page group, enter "home".'
       end
+      f.input :template_type
       f.input :title, label: 'Title', hint: 'The main heading/"H1" of the page.'
       f.input :description, label: 'Description', hint: 'Overall purpose of the page.'
       f.input :is_visible, label: 'Title and Description are visible?', hint: 'This field allows you to show or hide the page title and description.'
