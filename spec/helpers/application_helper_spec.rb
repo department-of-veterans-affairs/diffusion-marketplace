@@ -48,4 +48,80 @@ RSpec.describe ApplicationHelper, type: :helper do
       end
     end
   end
+
+  describe "#get_grid_alignment_css_class" do
+    context "when given a 'right' alignment" do
+      it "returns 'justify-end'" do
+        mock_alignment = 'RiGht'
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('justify-end')
+      end
+
+      it "returns 'justify-end'" do
+        mock_alignment = 'right'
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('justify-end')
+      end
+    end
+
+    context "when given a 'center' alignment" do
+      it "returns 'justify-center'" do
+        mock_alignment = 'Center'
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('justify-center')
+      end
+
+      it "returns 'justify-center'" do
+        mock_alignment = 'center'
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('justify-center')
+      end
+    end
+
+    context "when given a no or any other alignment" do
+      it "returns an empty string" do
+        mock_alignment = nil
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('')
+      end
+
+      it "returns 'justify-center'" do
+        mock_alignment = 'foobar'
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('')
+      end
+    end
+  end
+
+  describe "#get_link_target_attribute" do
+    context "when given a" do
+      it "returns 'justify-end'" do
+        mock_alignment = 'RiGht'
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('justify-end')
+      end
+
+      it "returns 'justify-end'" do
+        mock_alignment = 'right'
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('justify-end')
+      end
+    end
+
+    context "when given a 'center' alignment" do
+      it "returns 'justify-center'" do
+        mock_alignment = 'Center'
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('justify-center')
+      end
+
+      it "returns 'justify-center'" do
+        mock_alignment = 'center'
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('justify-center')
+      end
+    end
+
+    context "when given a no or any other alignment" do
+      it "returns an empty string" do
+        mock_alignment = nil
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('')
+      end
+
+      it "returns 'justify-center'" do
+        mock_alignment = 'foobar'
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('')
+      end
+    end
+  end
 end

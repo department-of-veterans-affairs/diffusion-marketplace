@@ -14,9 +14,11 @@ describe 'Page Builder - Show', type: :feature do
     image_path = File.join(Rails.root, '/spec/assets/charmander.png')
     image_file = File.new(image_path)
     image_component = PageImageComponent.create(alignment: 'right', alt_text: 'best pokemon ever', page_image: image_file)
+    cta_component = PageCtaComponent.create(url: 'https://www.google.com', button_text:'Search now', cta_text: 'Curious about programming languages?')
     PageComponent.create(page: page, component: practice_list_component, created_at: Time.now)
     PageComponent.create(page: page, component: subpage_hyperlink_component, created_at: Time.now)
     PageComponent.create(page: page, component: image_component, created_at: Time.now)
+    PageComponent.create(page: page, component: cta_component, created_at: Time.now)
 
     user = User.create!(email: 'sandy.cheeks@bikinibottom.net', password: 'Password123',
       password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
@@ -46,5 +48,11 @@ describe 'Page Builder - Show', type: :feature do
   it 'Should display the page image' do
     expect(page).to have_css("img[src*='charmander.png']")
     page.should have_css('.justify-end')
+  end
+
+  it 'Should display the call to action' do
+    expect(find('.page-cta-hyperlink')[:href]).to include('https://www.google.com')
+    expect(page).to have_content('Curious about programming languages?')
+    expect(page).to have_content('Search now')
   end
 end

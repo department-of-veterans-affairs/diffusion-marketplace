@@ -17,6 +17,7 @@ class PageComponent < ApplicationRecord
   COMPONENT_SELECTION = {
       'Accordion': 'PageAccordionComponent',
       'Body text': 'PageParagraphComponent',
+      'Call to Action': 'PageCtaComponent',
       'Downloadable File': 'PageDownloadableFileComponent',
       'Heading 2': 'PageHeader2Component',
       'Heading 3': 'PageHeader3Component',
