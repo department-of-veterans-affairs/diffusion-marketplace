@@ -254,6 +254,11 @@ class PracticesController < ApplicationController
   def overview
   end
 
+  # /practices/slug/introduction
+  def introduction
+    set_practice
+  end
+
   # GET /practices/1/origin
   def origin
   end

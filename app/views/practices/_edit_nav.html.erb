@@ -1,6 +1,6 @@
 <div class='dm-sidenav practice-edit-nav sticky' style=''>
   <% unless @practice.new_record? %>
-    <div style='padding: .5rem 1rem;'
+    <div style='padding: .5rem 1rem;'>
     <p>
       <b>Publishing Options</b></br>
 
@@ -17,28 +17,28 @@
   <!-- Navigational buttons -->
   <ul class='usa-sidenav'>
     <li class='usa-sidenav__item practice-nav'>
-      <div class='nav-button scroll-to' data-target='#introduction'>Practice Introduction</a>
+      <a class='nav-button scroll-to' data-target='#introduction'>Practice Introduction</a>
     </li>
     <li class='usa-sidenav__item practice-nav'>
-      <div class='nav-button scroll-to' data-target='#impact'>Impact</a>
+      <a class='nav-button scroll-to' data-target='#impact'>Impact</a>
     </li>
     <li class='usa-sidenav__item practice-nav'>
-      <div class='nav-button scroll-to' data-target='#origin'>Origin of Practice</a>
+      <a class='nav-button scroll-to' data-target='#origin'>Origin of Practice</a>
     </li>
     <li class='usa-sidenav__item practice-nav'>
-      <div class='nav-button scroll-to' data-target='#resources'>Resources Required</a>
+      <a class='nav-button scroll-to' data-target='#resources'>Resources Required</a>
     </li>
     <li class='usa-sidenav__item practice-nav'>
-      <div class='nav-button scroll-to' data-target='#difficulty'>Difficulty</a>
+      <a class='nav-button scroll-to' data-target='#difficulty'>Difficulty</a>
     </li>
     <li class='usa-sidenav__item practice-nav'>
-      <div class='nav-button scroll-to' data-target='#risks'>Risks & Mitigation</a>
+      <a class='nav-button scroll-to' data-target='#risks'>Risks & Mitigation</a>
     </li>
     <li class='usa-sidenav__item practice-nav'>
-      <div class='nav-button scroll-to' data-target='#timeline'>Timeline & Checklist</a>
+      <a class='nav-button scroll-to' data-target='#timeline'>Timeline & Checklist</a>
     </li>
     <li class='usa-sidenav__item practice-nav'>
-      <div class='nav-button scroll-to' data-target='#support'>Support Team</a>
+      <a class='nav-button scroll-to' data-target='#support'>Support Team</a>
     </li>
 
     <div class='nav-divider'></div>
@@ -55,11 +55,11 @@
     </li> -->
     <% if @practice.published %>
       <li class='usa-sidenav__item practice-nav'>
-        <div class='nav-button'>UN-PUBLISH</a>
+        <a class='nav-button'>UN-PUBLISH</a>
       </li>
     <% else %>
       <li class='usa-sidenav__item practice-nav'>
-        <div class='nav-button'>PUBLISH</a>
+        <a class='nav-button'>PUBLISH</a>
       </li>
     <% end %>
     <% if @practice.published && current_user.has_role?(:admin) %>

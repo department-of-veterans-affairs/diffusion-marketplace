@@ -4,6 +4,11 @@
             <li class="usa-sidenav__item">
                 <%= link_to 'Instructions', practice_instructions_path(@practice), class: 'dm-tab top-tab editor-sidenav-link sidenav-instructions-link' %>
             </li>
+          <li class="usa-sidenav__item">
+            <%= link_to practice_introduction_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-overview-link' do %>
+              <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%= @practice.name && @practice.tagline && @practice.summary && @practice.practice_partners.any? ? 'green-check' : '' %>"></i>Introduction
+            <% end %>
+          </li>
             <li class="usa-sidenav__item">
                 <%= link_to practice_overview_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-overview-link' do %>
                     <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%= @practice.name && @practice.tagline && @practice.summary && @practice.practice_partners.any? ? 'green-check' : '' %>"></i>Overview
