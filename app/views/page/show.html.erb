@@ -70,11 +70,17 @@
 
         <%# CTA %>
         <% when 'PageCtaComponent' %>
-          <div class="grid-row x3-bottom <%= page_narrow_classes %>">
+          <div class="grid-row margin-bottom-3 <%= page_narrow_classes %>">
             <div class="font-sans-lg grid-col-12 x1-bottom">
               <span><%= component.cta_text %></span>
             </div>
-            <a href="<%= component.url %>" target="<%= get_link_target_attribute(component.url) %>" class="usa-button height-7 x0 display-grid-align-items-center page-cta-hyperlink" ><span class="fw-bold font-sans-xs-2 display-grid-align-items-center"><%= component.button_text %></span></a>
+            <a href="<%= component.url %>"
+               target="<%= get_link_target_attribute(component.url) %>"
+               class="usa-button height-7 x0 display-grid-align-items-center page-cta-hyperlink text-no-underline">
+              <span class="fw-bold font-sans-xs-2 display-grid-align-items-center text-no-underline">
+                <%= component.button_text %>
+              </span>
+            </a>
           </div>
 
           <%# Image %>
