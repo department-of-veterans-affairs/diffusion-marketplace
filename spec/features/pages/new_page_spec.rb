@@ -27,7 +27,8 @@ describe 'Page Builder', type: :feature do
       fill_in 'Description', with: 'This page will not get created.'
       select 'programming', from: 'page_page_group_id'
 
-      click_button 'Create Page'
+      # bottom create page button
+      find('input[name="commit_1"]').click
 
       expect(page).to have_content('Slug has already been taken')
     end
@@ -46,7 +47,8 @@ describe 'Page Builder', type: :feature do
     fill_in 'Description', with: 'This is the first page built.'
     select 'programming', from: 'page[page_group_id]'
 
-    click_button 'Create Page'
+    # bottom create page button
+    find('input[name="commit_1"]').click
 
     expect(page).to have_current_path(admin_page_path(Page.last.id))
 
@@ -68,7 +70,8 @@ describe 'Page Builder', type: :feature do
       fill_in 'Description', with: 'This is an awesome page group landing page.'
       select 'programming', from: 'page_page_group_id'
 
-      click_button 'Create Page'
+      # bottom create page button
+      find('input[name="commit_1"]').click
 
       expect(page).to have_current_path(admin_page_path(Page.last.id))
       expect(page).to have_content('Awesome Landing Page')

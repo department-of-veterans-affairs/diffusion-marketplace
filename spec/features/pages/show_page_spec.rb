@@ -14,12 +14,14 @@ describe 'Page Builder - Show', type: :feature do
     image_path = File.join(Rails.root, '/spec/assets/charmander.png')
     image_file = File.new(image_path)
     image_component = PageImageComponent.create(alignment: 'right', alt_text: 'best pokemon ever', page_image: image_file)
+    cta_component = PageCtaComponent.create(url: 'https://www.google.com', button_text:'Search now', cta_text: 'Curious about programming languages?')
     youtube_video_component = PageYouTubePlayerComponent.create(url: 'https://www.youtube.com/watch?v=C0DPdy98e4c', caption: 'Test Video')
     downloadable_file = File.new(File.join(Rails.root, '/spec/assets/dummy.pdf'))
     downloadable_file_component = PageDownloadableFileComponent.create(attachment: downloadable_file, description: 'Test file')
     PageComponent.create(page: page, component: practice_list_component, created_at: Time.now)
     PageComponent.create(page: page, component: subpage_hyperlink_component, created_at: Time.now)
     PageComponent.create(page: page, component: image_component, created_at: Time.now)
+    PageComponent.create(page: page, component: cta_component, created_at: Time.now)
     PageComponent.create(page: page, component: youtube_video_component, created_at: Time.now)
     PageComponent.create(page: page, component: downloadable_file_component, created_at: Time.now)
 
@@ -51,6 +53,12 @@ describe 'Page Builder - Show', type: :feature do
   it 'Should display the page image' do
     expect(page).to have_css("img[src*='charmander.png']")
     page.should have_css('.justify-end')
+  end
+
+  it 'Should display the call to action' do
+    expect(find('.page-cta-hyperlink')[:href]).to include('https://www.google.com')
+    expect(page).to have_content('Curious about programming languages?')
+    expect(page).to have_content('Search now')
   end
 
   it 'Should display the YouTube video' do
