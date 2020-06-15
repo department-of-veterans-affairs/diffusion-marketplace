@@ -48,6 +48,7 @@ ActiveAdmin.register Page do
       row :template_type
       row :title
       row :description
+      row :has_chrome_warning_banner
       row :published
       row :created_at
       row :updated_at
@@ -83,7 +84,6 @@ ActiveAdmin.register Page do
           link_to('Publish Page', publish_page_admin_page_path, method: :post, class: 'active_admin_action_button')
         end
       end
-      row :has_chrome_warning_banner
     end
     active_admin_comments
   end
@@ -117,8 +117,8 @@ ActiveAdmin.register Page do
       f.input :description, label: 'Description', hint: 'Overall purpose of the page.'
       f.input :is_visible, label: 'Title and Description are visible?', hint: 'This field allows you to show or hide the page title and description.'
       f.input :page_group, label: 'Group', hint: 'The Group is the page type and will be included in the url. (Ex: "/competitions/page-title" where "competitions" is the Group and "page-title" is the chosen url suffix from above. If the url suffix is "home", the complete URL will be "/competitions")'
-      f.input :published, input_html: { disabled: true }, as: :datepicker, label: 'Published', hint: 'Date when page was published. This field is readonly. Do not touch.'
       f.input :has_chrome_warning_banner, label: 'Switch to Chrome warning banner', hint: 'Check this if the Page has any call to action or link that only works or is optimal in the Chrome Browser.'
+      f.input :published, input_html: { disabled: true }, as: :datepicker, label: 'Published', hint: 'Date when page was published. This field is readonly. Do not touch.'
     end
 
     f.inputs "Page Components" do
