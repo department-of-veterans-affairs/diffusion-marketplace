@@ -628,6 +628,7 @@ ActiveRecord::Schema.define(version: 2020_06_15_151811) do
     t.boolean "ever_published", default: false, null: false
     t.boolean "is_visible", default: true, null: false
     t.integer "template_type", default: 0
+    t.boolean "has_chrome_warning_banner", default: false
     t.index ["page_group_id"], name: "index_pages_on_page_group_id"
   end
 

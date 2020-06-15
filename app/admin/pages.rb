@@ -3,7 +3,7 @@ ActiveAdmin.register Page do
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
-  permit_params :title, :page_group_id, :slug, :description, :published, :ever_published, :is_visible, :template_type,
+  permit_params :title, :page_group_id, :slug, :description, :published, :ever_published, :is_visible, :template_type, :has_chrome_warning_banner,
                 page_components_attributes: [:id, :component_type, :position, :_destroy,
                 component_attributes: [:url, :description, :title, :text, :heading_type, :subtopic_title, :subtopic_description, :alignment, :page_image, :caption, :alt_text, :html_tag, :display_name, :attachment, :cta_text, :button_text, practices: []]]
 
@@ -83,6 +83,7 @@ ActiveAdmin.register Page do
           link_to('Publish Page', publish_page_admin_page_path, method: :post, class: 'active_admin_action_button')
         end
       end
+      row :has_chrome_warning_banner
     end
     active_admin_comments
   end
@@ -117,6 +118,7 @@ ActiveAdmin.register Page do
       f.input :is_visible, label: 'Title and Description are visible?', hint: 'This field allows you to show or hide the page title and description.'
       f.input :page_group, label: 'Group', hint: 'The Group is the page type and will be included in the url. (Ex: "/competitions/page-title" where "competitions" is the Group and "page-title" is the chosen url suffix from above. If the url suffix is "home", the complete URL will be "/competitions")'
       f.input :published, input_html: { disabled: true }, as: :datepicker, label: 'Published', hint: 'Date when page was published. This field is readonly. Do not touch.'
+      f.input :has_chrome_warning_banner, label: 'Switch to Chrome warning banner', hint: 'Check this if the Page has any call to action or link that only works or is optimal in the Chrome Browser.'
     end
 
     f.inputs "Page Components" do
