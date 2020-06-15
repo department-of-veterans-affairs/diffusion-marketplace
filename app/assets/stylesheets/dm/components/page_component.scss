@@ -35,5 +35,23 @@ a.pb-downloadable-file-link {
     margin-top: 1em;
     margin-bottom: 1em;
     line-height: 1.53;
+
+    a {
+      color: $dm-color-primary-vivid !important;
+      text-decoration: underline !important;
+
+      &:hover {
+        color: $dm-color-primary-dark-blue !important;
+        text-decoration: none !important;
+      }
+
+      &:active {
+        color: $dm-color-darker-blue !important;
+      }
+
+      &:visited {
+        color: $dm-alt-visited-purple !important;
+      }
+    }
   }
 }
