@@ -109,6 +109,7 @@ class PracticesController < ApplicationController
   # POST /practices
   # POST /practices.json
   def create
+    debugger
     @practice = Practice.new(practice_params)
 
     respond_to do |format|
@@ -125,6 +126,7 @@ class PracticesController < ApplicationController
   # PATCH/PUT /practices/1
   # PATCH/PUT /practices/1.json
   def update
+    debugger
     current_endpoint = request.referrer.split('/').pop
     updated = true
     if params[:practice].present?
@@ -401,7 +403,7 @@ class PracticesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def practice_params
-    params.require(:practice).permit(:need_training, :tagline, :process, :it_required, :need_new_license, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :cost_to_implement_aggregate, :sustainability_aggregate, :veteran_satisfaction_aggregate, :difficulty_aggregate, :date_initiated,
+    params.require(:practice).permit(:need_training, :short_name, :tagline, :process, :it_required, :need_new_license, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :cost_to_implement_aggregate, :sustainability_aggregate, :veteran_satisfaction_aggregate, :difficulty_aggregate, :date_initiated,
                                      :number_adopted, :number_departments, :number_failed, :implementation_time_estimate, :implementation_time_estimate_description, :implentation_summary, :implentation_fte,
                                      :training_provider, :training_length, :training_test, :training_provider_role, :required_training_summary, :support_network_email,
                                      :main_display_image, :crop_x, :crop_y, :crop_h, :crop_w,

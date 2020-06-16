@@ -43,7 +43,7 @@
               <rect class="rectangle21" />
             </svg>
             <div>
-              <%= f.label :short_name, 'Acronym: ', class: 'usa-label text-bold display-block margin-top-3' %>
+              <%= f.label :short_name, 'Acronym ', class: 'usa-label text-bold display-block margin-top-3' %>
               <span>Type the acronym for your practice.</span><!--&nbsp;<span id="practice-editor-tagline-character-counter" class="text-base-light">(0/150 characters)</span>-->
               <div style="height:40px; width:143px">
                 <%= f.text_field :short_name, class: "usa-input #{ @practice.errors[:short_name].any? ? 'usa-input--error' : '' } display-block practice-editor-short_name-input", required: true %>
@@ -55,8 +55,8 @@
               <rect class="rectangle21" />
             </svg>
 
-            <p class="margin-top-3"><span class="text-bold">Thumbnail:</span>&nbsp;</p>
-            <span>Choose an image to represent this practice.  Use a high-quality .jpg, .jpeg, or .png file less than 32MB.  PII/PHI waivers are required for photos featuring Veterans.  Waivers must be filled out with the 'External to VA' check box selected..</span>
+            <p class="margin-top-3"><span class="text-bold">Thumbnail</span>&nbsp;</p>
+            <span>Choose an image to represent this practice.  Use a high-quality .jpg, .jpeg, or .png file less than 32MB.  PII/PHI waivers are required for photos featuring Veterans.  Waivers must be filled out with the 'External to VA' check box selected.</span>
             <div class="grid-row margin-top-1 cropper-boundary">
               <div class="grid-col-6">
                 <div class="cropper-images-container main-image" data-type="main">
@@ -93,18 +93,20 @@
                 </div>
               </div>
             </div>
-            <p class="margin-top-3"><span class="text-bold">Practice origin:</span>&nbsp;<span>Select the state and facility where this practice originated</span>
-            <div class="grid-row grid-gap-4">
-              <div>
-                <%= label_tag 'editor_state_select', 'State', class: 'usa-label' %>
-                <%= select_tag('', options_for_select(us_states), id: 'editor_state_select', name: 'editor_state_select', class: 'width-card-lg height-5 usa-select', required: true) %>
-              </div>
-              <div class="grid-col-fill">
-                <%= label_tag 'editor_facility_select', 'Facility', class: 'usa-label' %>
-                <%= select_tag('practice[initiating_facility]', options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), id: 'editor_facility_select', class: 'width-full height-5 usa-select', required: true) %>
-              </div>
+            <svg class="svg">
+              <rect class="rectangle21" />
+            </svg>
+            <div>
+              <%= f.label :summary, 'Summary ', class: 'usa-label text-bold display-block' %>
+              <span>Type a short summary of your practice’s mission to engage the audience and provide initial context.</span>&nbsp;<span id="practice-editor-summary-character-counter" class="text-base-light"></span>
+              <%= f.text_area :summary, class: 'usa-textarea display-block practice-editor-summary-textarea', required: true %>
             </div>
-            <p class="margin-top-3"><span class="text-bold">Practice date:</span>&nbsp;<span>Select the month and year when this practice was created.</span>
+            <svg class="svg">
+              <rect class="rectangle21" />
+            </svg>
+
+            <p class="margin-top-3"><span class="text-bold">Date created</span></p>
+            Select the month and year this practice was created.
             <div class="grid-row grid-gap-4">
               <div>
                 <%= label_tag 'editor_date_intiated_month', 'Month', class: 'usa-label' %>
@@ -115,11 +117,46 @@
                 <%= select_year(@practice.date_initiated.present? ? date_get_year(@practice.date_initiated) : nil, {start_year: 1970, end_year: Date.today.year, prompt: '-Select-', prefix: 'date_initiated', default: '-Select-'}, {id: 'editor_date_intiated_year', class: 'width-full height-5 usa-select', required: true}) %>
               </div>
             </div>
-            <div>
-              <%= f.label :summary, 'Practice summary: ', class: 'usa-label text-bold display-block' %>
-              <span>Type a brief summary of your practice’s mission.</span>&nbsp;<span id="practice-editor-summary-character-counter" class="text-base-light">(0/400 characters)</span>
-              <%= f.text_area :summary, class: 'usa-textarea display-block practice-editor-summary-textarea', required: true %>
+            <svg class="svg">
+              <rect class="rectangle21" />
+            </svg>
+            <%#= debugger %>
+            <p class="margin-top-3"><span class="text-bold">Practice origin</span>&nbsp;</p>
+            <span>Select the location where this practice originated</span>
+            <div class="grid-row grid-gap margin-top-105 margin-bottom-3">
+              <div class='usa-checkbox grid-col-12'>
+                <input type='radio' class='usa-checkbox__input practice_origin_facility' id='practice_origin_1' value="facility" name='practice_origin_<%= @practice.id %>' checked='true'>
+                <label class='usa-checkbox__label' for='practice_origin_1'>Facility</label>
+              </div>
+              <div class='usa-checkbox grid-col-12'>
+                <input type='radio' class='usa-checkbox__input practice_origin_VISN' id='practice_origin_2' value="VISN" name='practice_origin_<%= @practice.id %>' checked='false'>
+                <label class='usa-checkbox__label' for='practice_origin_2'>VISN</label>
+              </div>
+              <div class='usa-checkbox grid-col-12'>
+                <input type='radio' class='usa-checkbox__input practice_origin_department' id='practice_origin_3' value="department" name='practice_origin_<%= @practice.id %>' checked='false'>
+                <label class='usa-checkbox__label' for='practice_origin_3'>Department</label>
+              </div>
+              <div class='usa-checkbox grid-col-12'>
+                <input type='radio' class='usa-checkbox__input practice_origin_other' id='practice_origin_4' value="other" name='practice_origin_<%= @practice.id %>' checked='false'>
+                <label class='usa-checkbox__label' for='practice_origin_4'>Other</label>
+              </div>
             </div>
+
+            <div class="grid-row grid-gap-4">
+              <div>
+                <%= label_tag 'editor_state_select', 'State', class: 'usa-label' %>
+                <%= select_tag('', options_for_select(us_states), id: 'editor_state_select', name: 'editor_state_select', class: 'width-card-lg height-5 usa-select', required: true) %>
+              </div>
+              <div class="grid-col-fill">
+                <%= label_tag 'editor_facility_select', 'Facility', class: 'usa-label' %>
+                <%= select_tag('practice[initiating_facility]', options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), id: 'editor_facility_select', class: 'width-full height-5 usa-select', required: true) %>
+              </div>
+            </div>
+            <svg class="svg">
+              <rect class="rectangle21" />
+            </svg>
+
+
             <p class="margin-top-3 margin-bottom-1"><span class="text-bold">Partners: </span><span>Select any of the following partners your practice is associated with.</span>
               <%
                 no_partners = PracticePartner.where(name: 'None of the above, or Unsure')

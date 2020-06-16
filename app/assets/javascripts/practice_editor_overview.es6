@@ -9,23 +9,23 @@
 
     function countCharsOnPageLoad() {
         let practiceNameCurrentLength = $('.practice-editor-name-input').val().length;
-        let practiceTaglineCurrentLength = $('.practice-editor-tagline-textarea').val().length;
+        // let practiceTaglineCurrentLength = $('.practice-editor-tagline-textarea').val().length;
         let practiceSummaryCurrentLength = $('.practice-editor-summary-textarea').val().length;
 
         let practiceNameCharacterCounter = `(${practiceNameCurrentLength}/${NAME_CHARACTER_COUNT} characters)`;
-        let practiceTaglineCharacterCounter = `(${practiceTaglineCurrentLength}/${TAGLINE_CHARACTER_COUNT} characters)`;
+        // let practiceTaglineCharacterCounter = `(${practiceTaglineCurrentLength}/${TAGLINE_CHARACTER_COUNT} characters)`;
         let practiceSummaryCharacterCounter = `(${practiceSummaryCurrentLength}/${SUMMARY_CHARACTER_COUNT} characters)`;
 
         $('#practice-editor-name-character-counter').text(practiceNameCharacterCounter);
-        $('#practice-editor-tagline-character-counter').text(practiceTaglineCharacterCounter);
+        // $('#practice-editor-tagline-character-counter').text(practiceTaglineCharacterCounter);
         $('#practice-editor-summary-character-counter').text(practiceSummaryCharacterCounter);
 
         if (practiceNameCurrentLength >= NAME_CHARACTER_COUNT) {
             $('#practice-editor-name-character-counter').css('color', CHARACTER_COUNTER_INVALID_COLOR);
         }
-        if (practiceTaglineCurrentLength >= TAGLINE_CHARACTER_COUNT) {
-            $('#practice-editor-tagline-character-counter').css('color', CHARACTER_COUNTER_INVALID_COLOR);
-        }
+        // if (practiceTaglineCurrentLength >= TAGLINE_CHARACTER_COUNT) {
+        //     $('#practice-editor-tagline-character-counter').css('color', CHARACTER_COUNTER_INVALID_COLOR);
+        // }
         if (practiceSummaryCurrentLength >= SUMMARY_CHARACTER_COUNT) {
             $('#practice-editor-summary-character-counter').css('color', CHARACTER_COUNTER_INVALID_COLOR);
         }
