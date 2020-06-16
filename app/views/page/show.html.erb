@@ -7,7 +7,7 @@
 
 <% page_narrow_classes = 'grid-col-8 margin-x-auto' if @page.narrow? %>
 
-<div class="full-view-height dm-background-white">
+<div class="dm-background-white">
   <section class="grid-container">
     <div id="page-<%= @page.id %>" class="<%= 'display-none' unless @page.is_visible %> <%= @page.narrow? ? page_narrow_classes : 'grid-col-10' %> margin-bottom-5">
       <h1 class="font-sans-2xl margin-bottom-3">
