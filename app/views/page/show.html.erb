@@ -41,10 +41,10 @@
 
           <%# Page Header 3 %>
         <% when 'PageHeader3Component' %>
-          <div class="<%= page_narrow_classes %>">
-            <h3 class="font-sans-lg margin-bottom-2 text-<%= component.alignment.downcase %> "><%= component.title %></h3>
+          <div class="<%= page_narrow_classes %> margin-bottom-3">
+            <h3 class="font-sans-lg text-<%= component.alignment.downcase %> "><%= component.title %></h3>
             <% if component.description.present? %>
-              <div class="grid-col-8 x1-top">
+              <div class="<%= @page.narrow? ? 'grid-col-12' : 'grid-col-8' %> x1-top line-height-sans-505">
                 <%= component.description %>
               </div>
             <% end %>
