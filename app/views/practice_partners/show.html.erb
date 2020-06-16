@@ -29,7 +29,7 @@
     </div>
   </section>
   <section>
-    <div class="grid-container margin-bottom-6">
+    <div class="grid-container">
       <% @partner_practices = @practice_partner.practices %>
       <% if @partner_practices.any? %>
         <div class="grid-row grid-gap-3">
@@ -45,12 +45,6 @@
       <% end %>
     </div>
   </section>
-
-  <% if @partner_practices.any? %>
-    <div class="grid-container margin-bottom-105">
-      <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
-    </div>
-  <% end %>
 </div>
 
 

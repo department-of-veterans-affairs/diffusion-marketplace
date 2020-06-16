@@ -133,6 +133,11 @@
   }
 }
 
+// Hiding pagination for now due to extra padding
+.pagination {
+  display: none !important;
+}
+
 h2 {
   margin-bottom: 0;
 }

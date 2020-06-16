@@ -142,7 +142,7 @@
           %>
           <div class="grid-row <%= page_narrow_classes %> <%= next_component != nil && next_component.component_type == pc.component_type ? 'margin-bottom-1' : 'margin-bottom-3 ' %> font-sans-sm line-height-162">
             <%= content_tag(:span, description, class: 'margin-right-1') if description != '' %>
-            <%= link_to component.attachment_s3_presigned_url, class: 'pb-downloadable-file-link', target: '_blank', download: display_name != '' ? display_name : component.attachment_file_name do %>
+            <%= link_to component.attachment_s3_presigned_url, class: 'pb-link', target: '_blank', download: display_name != '' ? display_name : component.attachment_file_name do %>
               <i class="far fa-file margin-right-1"></i><%= display_name != '' ? display_name : component.attachment_file_name %>
             <% end %>
           </div>

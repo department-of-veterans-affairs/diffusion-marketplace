@@ -67,7 +67,7 @@ describe 'Page Builder - Show', type: :feature do
   end
 
   it 'Should display the downloadable file' do
-    expect(page).to have_css('.pb-downloadable-file-link')
+    expect(page).to have_css('.pb-link')
     expect(page).to have_content('Test file')
   end
 
