@@ -8,7 +8,7 @@ describe 'Practices', type: :feature do
     @approver = User.create!(email: 'squidward.tentacles@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
-    @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline')
+    @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test Facility', tagline: 'Test tagline')
     @practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline')
     @enabled_practice = Practice.create!(name: 'Enabled practice', approved: true, published: true, enabled: true, tagline: 'Enabled practice tagline')
     @disabled_practice = Practice.create!(name: 'Disabled practice', approved: true, published: true, enabled: false, tagline: 'Disabled practice tagline')
@@ -120,7 +120,7 @@ describe 'Practices', type: :feature do
       visit '/practices'
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(practice.name)
-      expect(page).to have_content('Yakima VA Clinic')
+      expect(page).to have_content('Yakima VA…')
     end
   end
 
@@ -148,7 +148,7 @@ describe 'Practices', type: :feature do
 
     it 'should display the initiating facility\'s initiating facility property if it is not found in the map' do
       login_as(@user, :scope => :user, :run_callbacks => false)
-      @user_practice.update(published: true, approved: true)
+      @user_practice.update(published: true, approved: true, initiating_facility: 'Page VA Clinic')
       # Visit an individual Practice that is approved and published
       visit practice_path(@user_practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
@@ -160,7 +160,7 @@ describe 'Practices', type: :feature do
       visit '/practices'
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@user_practice.name)
-      expect(page).to have_content(@user_practice.initiating_facility)
+      expect(page).to have_content('Page VA…')
     end
 
     it 'should display the practice complexity section' do
