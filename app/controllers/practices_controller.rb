@@ -109,7 +109,6 @@ class PracticesController < ApplicationController
   # POST /practices
   # POST /practices.json
   def create
-    debugger
     @practice = Practice.new(practice_params)
 
     respond_to do |format|
@@ -126,7 +125,6 @@ class PracticesController < ApplicationController
   # PATCH/PUT /practices/1
   # PATCH/PUT /practices/1.json
   def update
-    debugger
     current_endpoint = request.referrer.split('/').pop
     updated = true
     if params[:practice].present?
