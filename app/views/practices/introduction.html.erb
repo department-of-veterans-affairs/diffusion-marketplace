@@ -30,7 +30,6 @@
         <svg class="svg">
           <rect class="rectangle21" />
         </svg>
-
         <%= nested_form_for(@practice, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
           <fieldset class="usa-fieldset">
             <legend class="usa-sr-only">Practice Information</legend>
@@ -40,14 +39,24 @@
               <%= f.text_field :name, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input" %>
               <p class="usa-error-message <%= @practice.errors[:name].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@practice, :name) %></span></p>
             </div>
+            <svg class="svg">
+              <rect class="rectangle21" />
+            </svg>
             <div>
               <%= f.label :short_name, 'Acronym: ', class: 'usa-label text-bold display-block margin-top-3' %>
               <span>Type the acronym for your practice.</span><!--&nbsp;<span id="practice-editor-tagline-character-counter" class="text-base-light">(0/150 characters)</span>-->
-              <%= f.text_field :short_name, class: "usa-input #{ @practice.errors[:short_name].any? ? 'usa-input--error' : '' } display-block practice-editor-short_name-input", required: false %>
+              <div style="height:40px; width:143px">
+                <%= f.text_field :short_name, class: "usa-input #{ @practice.errors[:short_name].any? ? 'usa-input--error' : '' } display-block practice-editor-short_name-input", required: true %>
+              </div>
               <p class="usa-error-message <%= @practice.errors[:short_name].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@practice, :short_name) %></span></p>
             </div>
 
-            <p class="margin-top-3"><span class="text-bold">Practice thumbnail:</span>&nbsp;</p>
+            <svg class="svg">
+              <rect class="rectangle21" />
+            </svg>
+
+            <p class="margin-top-3"><span class="text-bold">Thumbnail:</span>&nbsp;</p>
+            <span>Choose an image to represent this practice.  Use a high-quality .jpg, .jpeg, or .png file less than 32MB.  PII/PHI waivers are required for photos featuring Veterans.  Waivers must be filled out with the 'External to VA' check box selected..</span>
             <div class="grid-row margin-top-1 cropper-boundary">
               <div class="grid-col-6">
                 <div class="cropper-images-container main-image" data-type="main">
@@ -61,12 +70,12 @@
                 </div>
               </div>
               <div class="grid-col-6">
-                <div class="margin-bottom-2 cropper-upload-text">
-                  <p>Upload a clear photo that will be shown as the representative image for this practice. You can upload a .jpg, .jpeg, or .png file and the size limit is&nbsp;1GB.</p>
-                </div>
-                <div class="margin-bottom-2 cropper-editor-text hidden">
-                  <p>Please click "Save edits" and then "Save your progress" to save and exit editor.</p>
-                </div>
+<!--                <div class="margin-bottom-2 cropper-upload-text">-->
+<!--                  <p>Upload a clear photo that will be shown as the representative image for this practice. You can upload a .jpg, .jpeg, or .png file and the size limit is&nbsp;1GB.</p>-->
+<!--                </div>-->
+<!--                <div class="margin-bottom-2 cropper-editor-text hidden">-->
+<!--                  <p>Please click "Save edits" and then "Save your progress" to save and exit editor.</p>-->
+<!--                </div>-->
                 <div class="grid-row flex-align-start">
                   <% [:crop_x, :crop_y, :crop_w, :crop_h].each { |attribute| %>
                   <%=  f.hidden_field attribute, :id => attribute, :value => nil %>
@@ -74,16 +83,16 @@
                   <div class="grid-col-fill">
                     <a class="usa-button padding-2 cropper-save-edit hidden" aria-controls='photo-save-edit' aria-expanded='false'>Save edits</a>
                     <a class="usa-button usa-button--outline padding-2 cropper-cancel-edit hidden" aria-controls='photo-cancel-edit' aria-expanded='false'>Cancel edits</a>
-                    <a class="<%= @practice.main_display_image.present? ? "usa-button usa-button--outline padding-2 cropper-edit-mode" : "usa-button usa-button--outline padding-2 cropper-edit-mode hidden" %>" aria-controls='photo-crop' aria-expanded='false'>Edit photo</a>
+                    <a class="<%= @practice.main_display_image.present? ? "usa-button usa-button--outline padding-2 cropper-edit-mode" : "usa-button usa-button--outline padding-2 cropper-edit-mode hidden" %>" aria-controls='photo-crop' aria-expanded='false'>Edit image</a>
                     <div>
                       <%= f.label :main_display_image,
-                                  @practice.main_display_image.present? ? 'Upload new photo' : 'Upload photo',
+                                  @practice.main_display_image.present? ? 'Upload new image' : 'Upload image',
                                   class: @practice.main_display_image.present? ? 'cropper-upload-image-label' : 'cropper-upload-image-label usa-button'
                       %>
                       <%= f.file_field :main_display_image, class: "hidden-upload cropper-upload-image", accept: 'image/*' %>
                     </div>
                     <div class="cropper-delete-image">
-                      <%= f.label :delete_main_display_image, 'Remove photo', class: @practice.main_display_image.present? ? 'display-inline-block text-secondary cropper-delete-image-label' : 'display-inline-block text-secondary cropper-delete-image-label hidden'%>
+                      <%= f.label :delete_main_display_image, 'Remove image', class: @practice.main_display_image.present? ? 'display-inline-block text-secondary cropper-delete-image-label' : 'display-inline-block text-secondary cropper-delete-image-label hidden'%>
                       <%= f.check_box :delete_main_display_image, { class: @practice.main_display_image.present? ? 'usa-checkbox__input cropper-delete-image' : 'usa-checkbox__input cropper-delete-image hidden'}, 'true', 'false' %>
                     </div>
                   </div>
