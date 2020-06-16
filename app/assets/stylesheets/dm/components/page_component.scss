@@ -13,9 +13,9 @@ body {
   }
 }
 
-a.pb-downloadable-file-link {
+.pb-link {
   color: $dm-color-primary-vivid !important;
-  text-decoration: none !important;
+  text-decoration: underline !important;
 
   &:hover {
     color: $dm-color-primary-dark-blue !important;
