@@ -1,362 +1,360 @@
-[
-  {
-    "departments":
-    [
-      {
-        "id":1, "name":"VBA", "offices":
-        [
-          {
-            "id": 1,
-            "name": "Albuquerque Regional Office",
-            "state": "NM"
-          },
-          {
-            "id": 2,
-            "name": "Anchorage Regional Office",
-            "state": "AK"
-          },
-          {
-            "id": 3,
-            "name": "Atlanta Regional Office",
-            "state": "GA"
-          },
-          {
-            "id": 4,
-            "name": "Baltimore Regional Office",
-            "state": "MD"
-          },
-          {
-            "id": 5,
-            "name": "Boise Regional Office",
-            "state": "ID"
-          },
-          {
-            "id": 6,
-            "name": "Boston Regional Office",
-            "state": "MA"
-          },
-          {
-            "id": 7,
-            "name": "Buffalo Regional Office",
-            "state": "NY"
-          },
-          {
-            "id": 8,
-            "name": "Cheyenne Regional Office",
-            "state": "WY"
-          },
-          {
-            "id": 9,
-            "name": "Chicago Regional Office",
-            "state": "IL"
-          },
-          {
-            "id": 10,
-            "name": "Cleveland Regional Office",
-            "state": "OH"
-          },
-          {
-            "id": 11,
-            "name": "Columbia Regional Office",
-            "state": "SC"
-          },
-          {
-            "id": 12,
-            "name": "Denver Regional Office",
-            "state": "CO"
-          },
-          {
-            "id": 13,
-            "name": "Des Moines Regional Office",
-            "state": "IA"
-          },
-          {
-            "id": 14,
-            "name": "Detroit Regional Office",
-            "state": "MI"
-          },
-          {
-            "id": 15,
-            "name": "Fargo Regional Office",
-            "state": "ND"
-          },
-          {
-            "id": 16,
-            "name": "Fort Harrison Regional Office",
-            "state": "MO"
-          },
-          {
-            "id": 17,
-            "name": "Hartford Regional Office",
-            "state": "CT"
-          },
-          {
-            "id": 18,
-            "name": "Honolulu Regional Office",
-            "state": "HI"
-          },
-          {
-            "id": 19,
-            "name": "Houston Regional Office",
-            "state": "TX"
-          },
-          {
-            "id": 20,
-            "name": "Huntington Regional Office",
-            "state": "WV"
-          },
-          {
-            "id": 21,
-            "name": "Indianapolis Regional Office",
-            "state": "IN"
-          },
-          {
-            "id": 22,
-            "name": "Jackson Regional Office",
-            "state": "MI"
-          },
-          {
-            "id": 23,
-            "name": "Lincoln Regional Office",
-            "state": "NE"
-          },
-          {
-            "id": 24,
-            "name": "Little Rock Regional Office",
-            "state": "AR"
-          },
-          {
-            "id": 25,
-            "name": "Los Angeles Regional Office",
-            "state": "CA"
-          },
-          {
-            "id": 26,
-            "name": "Louisville Regional Office",
-            "state": "KY"
-          },
-          {
-            "id": 27,
-            "name": "Manchester Regional Office",
-            "state": "NH"
-          },
-          {
-            "id": 28,
-            "name": "Manila Regional Office",
-            "state": "Philippines (PH)"
-          },
-          {
-            "id": 29,
-            "name": "Milwaukee Regional Office",
-            "state": "WI"
-          },
-          {
-            "id": 30,
-            "name": "Montgomery Regional Office",
-            "state": "AL"
-          },
-          {
-            "id": 31,
-            "name": "Muskogee Regional Office",
-            "state": "OK"
-          },
-          {
-            "id": 32,
-            "name": "Nashville Regional Office",
-            "state": "TN"
-          },
-          {
-            "id": 33,
-            "name": "New Orleans Regional Office",
-            "state": "LA"
-          },
-          {
-            "id": 34,
-            "name": "New York Regional Office",
-            "state": "NY"
-          },
-          {
-            "id": 35,
-            "name": "Newark Regional Office",
-            "state": "NJ"
-          },
-          {
-            "id": 36,
-            "name": "Oakland Regional Office",
-            "state": "CA"
-          },
-          {
-            "id": 37,
-            "Office": "Philadelphia Regional Office",
-            "state": "PA"
-          },
-          {
-            "id": 38,
-            "name": "Phoenix Regional Office",
-            "state": "AZ"
-          },
-          {
-            "id": 39,
-            "name": "Pittsburgh Regional Office",
-            "state": "PA"
-          },
-          {
-            "id": 40,
-            "name": "Portland Regional Office",
-            "state": "OR"
-          },
-          {
-            "id": 41,
-            "name": "Providence Regional Office",
-            "state": "RI"
-          },
-          {
-            "id": 42,
-            "name": "Reno Regional Office",
-            "state": "NV"
-          },
-          {
-            "id": 43,
-            "name": "Roanoke Regional Office",
-            "state": "VA"
-          },
-          {
-            "id": 44,
-            "name": "Salt Lake City Regional Office",
-            "state": "UT"
-          },
-          {
-            "id": 45,
-            "name": "San Diego Regional Office",
-            "state": "CA"
-          },
-          {
-            "id": 46,
-            "name": "San Juan Regional Office",
-            "state": "PR"
-          },
-          {
-            "id": 47,
-            "name": "Seattle Regional Office",
-            "state": "WA"
-          },
-          {
-            "id": 48,
-            "name": "Sioux Falls Regional Office",
-            "state": "SD"
-          },
-          {
-            "id": 49,
-            "name": "St. Louis Regional Office",
-            "state": "MO"
-          },
-          {
-            "id": 50,
-            "name": "St. Paul Regional Office",
-            "state": "MN"
-          },
-          {
-            "id": 51,
-            "name": "St. Petersburg Regional Office",
-            "state": "FL"
-          },
-          {
-            "id": 52,
-            "name": "Togus Regional Office",
-            "state": "ME"
-          },
-          {
-            "id": 53,
-            "name": "Waco Regional Office",
-            "state": "TX"
-          },
-          {
-            "id": 54,
-            "name": "Washington D.C. National Capital Regional Office",
-            "state": "DC"
-          },
-          {
-            "id": 55,
-            "name": "White River Junction Regional Office",
-            "state": "VT"
-          },
-          {
-            "id": 56,
-            "name": "Wichita Regional Office",
-            "state": "KS"
-          },
-          {
-            "id": 57,
-            "name": "Wilmington Regional Office",
-            "state": "DE"
-          },
-          {
-            "id": 58,
-            "name": "Winston-Salem Regional Office",
-            "state": "NC"
-          }
-        ]
-      }
-    ],
-    "visns":
-    [
-      {
-        "id": 1, "number": "1"
-      },
-      {
-        "id": 2, "number": "2"
-      },
-      {
-        "id": 3, "number": "4"
-      },
-      {
-        "id": 4, "number": "5"
-      },
-      {
-        "id": 5, "number": "6"
-      },
-      {
-        "id": 6, "number": "7"
-      },
-      {
-        "id": 7, "number": "8"
-      },
-      {
-        "id": 8, "number": "9"
-      },
-      {
-        "id": 9, "number": "10"
-      },
-      {
-        "id": 10, "number": "12"
-      },
-      {
-        "id": 11, "number": "15"
-      },
-      {
-        "id": 12, "number": "16"
-      },
-      {
-        "id": 13, "number": "17"
-      },
-      {
-        "id": 14, "number": "18"
-      },
-      {
-        "id": 15, "number": "19"
-      },
-      {
-        "id": 16, "number": "20"
-      },
-      {
-        "id": 17, "number": "21"
-      },
-      {
-        "id": 18, "number": "22"
-      },
-      {
-        "id": 19, "number": "23"
-      }
-    ]
-  }
-]
+{
+  "departments":
+  [
+    {
+      "id":1, "name":"VBA", "offices":
+      [
+        {
+          "id": 1,
+          "name": "Albuquerque Regional Office",
+          "state": "NM"
+        },
+        {
+          "id": 2,
+          "name": "Anchorage Regional Office",
+          "state": "AK"
+        },
+        {
+          "id": 3,
+          "name": "Atlanta Regional Office",
+          "state": "GA"
+        },
+        {
+          "id": 4,
+          "name": "Baltimore Regional Office",
+          "state": "MD"
+        },
+        {
+          "id": 5,
+          "name": "Boise Regional Office",
+          "state": "ID"
+        },
+        {
+          "id": 6,
+          "name": "Boston Regional Office",
+          "state": "MA"
+        },
+        {
+          "id": 7,
+          "name": "Buffalo Regional Office",
+          "state": "NY"
+        },
+        {
+          "id": 8,
+          "name": "Cheyenne Regional Office",
+          "state": "WY"
+        },
+        {
+          "id": 9,
+          "name": "Chicago Regional Office",
+          "state": "IL"
+        },
+        {
+          "id": 10,
+          "name": "Cleveland Regional Office",
+          "state": "OH"
+        },
+        {
+          "id": 11,
+          "name": "Columbia Regional Office",
+          "state": "SC"
+        },
+        {
+          "id": 12,
+          "name": "Denver Regional Office",
+          "state": "CO"
+        },
+        {
+          "id": 13,
+          "name": "Des Moines Regional Office",
+          "state": "IA"
+        },
+        {
+          "id": 14,
+          "name": "Detroit Regional Office",
+          "state": "MI"
+        },
+        {
+          "id": 15,
+          "name": "Fargo Regional Office",
+          "state": "ND"
+        },
+        {
+          "id": 16,
+          "name": "Fort Harrison Regional Office",
+          "state": "MO"
+        },
+        {
+          "id": 17,
+          "name": "Hartford Regional Office",
+          "state": "CT"
+        },
+        {
+          "id": 18,
+          "name": "Honolulu Regional Office",
+          "state": "HI"
+        },
+        {
+          "id": 19,
+          "name": "Houston Regional Office",
+          "state": "TX"
+        },
+        {
+          "id": 20,
+          "name": "Huntington Regional Office",
+          "state": "WV"
+        },
+        {
+          "id": 21,
+          "name": "Indianapolis Regional Office",
+          "state": "IN"
+        },
+        {
+          "id": 22,
+          "name": "Jackson Regional Office",
+          "state": "MI"
+        },
+        {
+          "id": 23,
+          "name": "Lincoln Regional Office",
+          "state": "NE"
+        },
+        {
+          "id": 24,
+          "name": "Little Rock Regional Office",
+          "state": "AR"
+        },
+        {
+          "id": 25,
+          "name": "Los Angeles Regional Office",
+          "state": "CA"
+        },
+        {
+          "id": 26,
+          "name": "Louisville Regional Office",
+          "state": "KY"
+        },
+        {
+          "id": 27,
+          "name": "Manchester Regional Office",
+          "state": "NH"
+        },
+        {
+          "id": 28,
+          "name": "Manila Regional Office",
+          "state": "Philippines (PH)"
+        },
+        {
+          "id": 29,
+          "name": "Milwaukee Regional Office",
+          "state": "WI"
+        },
+        {
+          "id": 30,
+          "name": "Montgomery Regional Office",
+          "state": "AL"
+        },
+        {
+          "id": 31,
+          "name": "Muskogee Regional Office",
+          "state": "OK"
+        },
+        {
+          "id": 32,
+          "name": "Nashville Regional Office",
+          "state": "TN"
+        },
+        {
+          "id": 33,
+          "name": "New Orleans Regional Office",
+          "state": "LA"
+        },
+        {
+          "id": 34,
+          "name": "New York Regional Office",
+          "state": "NY"
+        },
+        {
+          "id": 35,
+          "name": "Newark Regional Office",
+          "state": "NJ"
+        },
+        {
+          "id": 36,
+          "name": "Oakland Regional Office",
+          "state": "CA"
+        },
+        {
+          "id": 37,
+          "Office": "Philadelphia Regional Office",
+          "state": "PA"
+        },
+        {
+          "id": 38,
+          "name": "Phoenix Regional Office",
+          "state": "AZ"
+        },
+        {
+          "id": 39,
+          "name": "Pittsburgh Regional Office",
+          "state": "PA"
+        },
+        {
+          "id": 40,
+          "name": "Portland Regional Office",
+          "state": "OR"
+        },
+        {
+          "id": 41,
+          "name": "Providence Regional Office",
+          "state": "RI"
+        },
+        {
+          "id": 42,
+          "name": "Reno Regional Office",
+          "state": "NV"
+        },
+        {
+          "id": 43,
+          "name": "Roanoke Regional Office",
+          "state": "VA"
+        },
+        {
+          "id": 44,
+          "name": "Salt Lake City Regional Office",
+          "state": "UT"
+        },
+        {
+          "id": 45,
+          "name": "San Diego Regional Office",
+          "state": "CA"
+        },
+        {
+          "id": 46,
+          "name": "San Juan Regional Office",
+          "state": "PR"
+        },
+        {
+          "id": 47,
+          "name": "Seattle Regional Office",
+          "state": "WA"
+        },
+        {
+          "id": 48,
+          "name": "Sioux Falls Regional Office",
+          "state": "SD"
+        },
+        {
+          "id": 49,
+          "name": "St. Louis Regional Office",
+          "state": "MO"
+        },
+        {
+          "id": 50,
+          "name": "St. Paul Regional Office",
+          "state": "MN"
+        },
+        {
+          "id": 51,
+          "name": "St. Petersburg Regional Office",
+          "state": "FL"
+        },
+        {
+          "id": 52,
+          "name": "Togus Regional Office",
+          "state": "ME"
+        },
+        {
+          "id": 53,
+          "name": "Waco Regional Office",
+          "state": "TX"
+        },
+        {
+          "id": 54,
+          "name": "Washington D.C. National Capital Regional Office",
+          "state": "DC"
+        },
+        {
+          "id": 55,
+          "name": "White River Junction Regional Office",
+          "state": "VT"
+        },
+        {
+          "id": 56,
+          "name": "Wichita Regional Office",
+          "state": "KS"
+        },
+        {
+          "id": 57,
+          "name": "Wilmington Regional Office",
+          "state": "DE"
+        },
+        {
+          "id": 58,
+          "name": "Winston-Salem Regional Office",
+          "state": "NC"
+        }
+      ]
+    }
+  ],
+  "visns":
+  [
+    {
+      "id": 1, "number": "1"
+    },
+    {
+      "id": 2, "number": "2"
+    },
+    {
+      "id": 3, "number": "4"
+    },
+    {
+      "id": 4, "number": "5"
+    },
+    {
+      "id": 5, "number": "6"
+    },
+    {
+      "id": 6, "number": "7"
+    },
+    {
+      "id": 7, "number": "8"
+    },
+    {
+      "id": 8, "number": "9"
+    },
+    {
+      "id": 9, "number": "10"
+    },
+    {
+      "id": 10, "number": "12"
+    },
+    {
+      "id": 11, "number": "15"
+    },
+    {
+      "id": 12, "number": "16"
+    },
+    {
+      "id": 13, "number": "17"
+    },
+    {
+      "id": 14, "number": "18"
+    },
+    {
+      "id": 15, "number": "19"
+    },
+    {
+      "id": 16, "number": "20"
+    },
+    {
+      "id": 17, "number": "21"
+    },
+    {
+      "id": 18, "number": "22"
+    },
+    {
+      "id": 19, "number": "23"
+    }
+  ]
+}
