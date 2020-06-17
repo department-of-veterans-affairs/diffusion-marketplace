@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_16_165020) do
+ActiveRecord::Schema.define(version: 2020_06_17_133257) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -800,6 +800,9 @@ ActiveRecord::Schema.define(version: 2020_06_16_165020) do
     t.string "training_provider_role"
     t.boolean "enabled", default: true, null: false
     t.string "initiating_facility_other"
+    t.integer "initiating_facility_type", default: 0
+    t.integer "initiating_department_office_id"
+    t.integer "initiating_visn_id"
     t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
   end
