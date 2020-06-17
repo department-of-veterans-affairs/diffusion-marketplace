@@ -1,0 +1,17 @@
+<% provide :head_tags do %>
+  <%= javascript_include_tag 'ie', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
+function detectChrome() {
+    return /chrome/.test(navigator.userAgent.toLowerCase());
+}
+
+function browsePageBuilderPageHappy() {
+    var has_warning_banner = <%= @page.has_chrome_warning_banner %>
+
+    if (!detectChrome() && !$('.browsehappy').length && has_warning_banner == true) {
+        pageChromeWarningBanner();
+    }
+}
+
+$(document).on('turbolinks:load', browsePageBuilderPageHappy);

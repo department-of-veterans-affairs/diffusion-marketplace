@@ -15,10 +15,17 @@ class PageComponent < ApplicationRecord
   # used for the component selection on the page builder
   # 'Friendly Name': 'ClassName'
   COMPONENT_SELECTION = {
-      'Subpage Hyperlink': 'PageSubpageHyperlinkComponent',
-      'Heading 2': 'PageHeader2Component',
+      'Accordion': 'PageAccordionComponent',
       'Body text': 'PageParagraphComponent',
-      'Practices': 'PagePracticeListComponent'
+      'Call to Action': 'PageCtaComponent',
+      'Downloadable File': 'PageDownloadableFileComponent',
+      'Heading 2': 'PageHeader2Component',
+      'Heading 3': 'PageHeader3Component',
+      'Image': 'PageImageComponent',
+      'Practices': 'PagePracticeListComponent',
+      'Subpage Hyperlink': 'PageSubpageHyperlinkComponent',
+      'YouTube Player': 'PageYouTubePlayerComponent',
+      'Horizontal Separator': 'PageHrComponent'
   }
 
   def build_component(params)

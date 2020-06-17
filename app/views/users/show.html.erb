@@ -59,7 +59,7 @@
   </section>
 
   <% if @favorite_practices.any? %>
-    <section class="dm-background-white margin-bottom-105">
+    <section class="dm-background-white">
       <div class="grid-container">
         <div class="grid-row">
           <h2 class="profile-h2 font-sans-xl margin-top-0">Favorited practices</h2>
@@ -79,12 +79,12 @@
   <% end %>
 
   <% if current_user && created_practices.any? %>
-    <section class="dm-background-white margin-bottom-105">
+    <section class="dm-background-white">
       <div class="grid-container">
         <div class="grid-row">
           <h2 class="profile-h2 font-sans-xl margin-top-0">Created practices</h2>
         </div>
-        <div class="grid-row grid-gap-3 created-practices margin-bottom-5">
+        <div class="grid-row grid-gap-3 created-practices">
           <% created_practices.each do |cup| %>
             <% if cup.present? %>
               <div class="tablet:grid-col-3 margin-y-105 padding-x-105 practice-card-list">
@@ -96,12 +96,5 @@
         </div>
       </div>
     </section>
-  <% end %>
-  <% if created_practices.any? || @favorite_practices.any? %>
-    <div class="grid-container">
-      <div class="margin-bottom-105">
-          <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
-      </div>
-    </div>
   <% end %>
 </div>

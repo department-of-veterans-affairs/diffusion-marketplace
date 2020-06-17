@@ -333,6 +333,14 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   max-width: 30rem !important;
 }
 
+.maxh-15rem {
+  max-height: 15rem !important;
+}
+
+.width-auto {
+  width: auto !important;
+}
+
 .vertical-align-middle {
   vertical-align: middle;
 }
@@ -615,6 +623,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .x0-right {
   margin-right: 0 !important;
+}
+
+.x0-375-right {
+  margin-right: 0.375rem !important;
 }
 
 .x0-5-right {
@@ -1042,6 +1054,10 @@ ul.no-list-style {
   margin-bottom: 30px;
 }
 
+.margin-bottom-905 {
+  margin-bottom: 80px !important;
+}
+
 .message-icon-bg-position {
   background-position: 1.25rem 0.6rem !important;
 }
@@ -1053,4 +1069,33 @@ ul.no-list-style {
 
 .underline {
   text-decoration: underline;
+}
+
+.line-height-15px {
+  line-height: 15px;
+}
+
+.line-height-162 {
+  line-height: 162%;
+}
+
+.line-height-135 {
+  line-height: 135%;
+}
+
+.dm-link {
+  color: $dm-color-primary-vivid !important;
+  text-decoration: underline !important;
+
+  &:hover {
+    color: $dm-color-primary-dark-blue !important;
+  }
+
+  &:active {
+    color: $dm-color-darker-blue !important;
+  }
+
+  &:visited {
+    color: $dm-alt-visited-purple !important;
+  }
 }

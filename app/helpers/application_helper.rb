@@ -118,4 +118,22 @@ module ApplicationHelper
       "(#{common_name})"
     end
   end
+
+  def get_grid_alignment_css_class(alignment)
+    if alignment&.downcase == 'center'
+      'justify-center'
+    elsif alignment&.downcase == 'right'
+      'justify-end'
+    else
+      ''
+    end
+  end
+
+  def get_link_target_attribute(url)
+    if url.include?(ENV.fetch('HOSTNAME'))
+      ''
+    else
+      '_blank'
+    end
+  end
 end

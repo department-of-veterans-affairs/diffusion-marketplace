@@ -95,7 +95,7 @@
                 <% if practice_departments.where(name: 'All departments equally - not a search differentiator').present? %>
                   <li>All Departments</li>
                 <% else %>
-                  <% practice_departments.where.not(name: 'All departments equally - not a search differentiator').order('LOWER(name) ASC').each do |d| %>
+                  <% practice_departments.where.not(name: 'All departments equally - not a search differentiator').order(Arel.sql('lower(name) ASC')).each do |d| %>
                     <li><%= d.name %></li>
                   <% end %>
                 <% end %>
@@ -163,12 +163,6 @@
       </div>
     </div>
   <% end %>
-  <!--  </form>-->
-  <div class="grid-container margin-bottom-105">
-    <p>
-      <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
-    </p>
-  </div>
 </section>
 
 

@@ -15,6 +15,8 @@ class Page < ApplicationRecord
   validate :downcase_fields
   before_create :downcase_fields
 
+  enum template_type: {default: 0, narrow: 1}
+
   private
 
   def downcase_fields
