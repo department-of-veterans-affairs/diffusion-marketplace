@@ -18,22 +18,20 @@ class PracticesController < ApplicationController
                                            :timeline, :risk_and_mitigation,
                                            :contact, :checklist, :published,
                                            :publication_validation, :adoptions]
-  before_action only: [:update] do
-    if date_initiated_params_exist(params[:date_initiated])
-      params[:practice][:date_initiated] = create_date_initiated(params[:date_initiated])
-    end
-  end
-
-  before_action only: [:overview, :origin, :impact, :documentation, :resources, :complexity, :timeline, :risk_and_mitigation, :contact] do
-    @practice.save
-  end
-
+  before_action :set_date_initiated_params, only: [:update, :publication_validation]
+  before_action :is_enabled, only: [:show]
   # GET /practices
   # GET /practices.json
   def index
     # @practices = Practice.where(approved: true, published: true).order(name: :asc)
     # @facilities_data = facilities_json['features']
     redirect_to root_path
+  end
+
+  def is_enabled
+    unless @practice.enabled
+      redirect_to(root_path)
+    end
   end
 
   # GET /practices/1
@@ -66,7 +64,9 @@ class PracticesController < ApplicationController
       marker.picture({
                          url: marker_url,
                          width: 31,
-                         height: 44
+                         height: 44,
+                         scaledWidth: 31,
+                         scaledHeight: 44
                      })
 
       marker.shadow nil
@@ -125,103 +125,36 @@ class PracticesController < ApplicationController
   # PATCH/PUT /practices/1
   # PATCH/PUT /practices/1.json
   def update
-    strong_params = practice_params
-    updated = @practice.update(strong_params)
-
-    if updated
-      partner_keys = []
-      partner_keys = params[:practice][:practice_partner].keys if params[:practice][:practice_partner].present?
-      @practice.practice_partner_practices.each do |partner|
-        partner.destroy unless partner_keys.include? partner.practice_partner_id.to_s
-      end
-
-      # Remove impact photo
-      if params[:practice][:impact_photos_attributes].present?
-        params[:practice][:impact_photos_attributes].each do |key, photo|
-          if photo['delete_attachment'] == 'true'
-
-            @practice.impact_photos.find(photo[:id]).update_attributes(attachment: nil)
-          end
-        end
-      end
-
-      # Remove additional document file
-      if params[:practice][:additional_documents_attributes].present?
-        params[:practice][:additional_documents_attributes].each do |key, ad|
-          if ad['delete_attachment'] == 'true'
-
-            @practice.additional_documents.find(ad[:id]).update_attributes(attachment: nil)
-          end
-        end
-      end
-
-      # Avatar manipulation
-      avatars = ['practice_creators', 'va_employees']
-
-      avatars.each do |avatar|
-        attribute = ("#{avatar}_attributes").to_sym
-
-        if params[:practice][attribute].present?
-          params[:practice][attribute].each do |key, e|
-            if e[:_destroy] == 'false' && e[:id].present?
-              record = @practice.send(avatar).find(e[:id])
-
-              # Remove avatar
-              if e['delete_avatar'] == 'true'
-                record.update_attributes(avatar: nil)
-              end
-
-              # Crop avatar
-              if is_cropping?(e)
-                reprocess_avatar(record, e)
-              end
-            end
-          end
-        end
-      end
-
-      # Remove main display image
-      if params[:practice][:delete_main_display_image].present? && params[:practice][:delete_main_display_image] == 'true'
-        @practice.update_attributes(main_display_image: nil)
-      end
-
-      # Crop main display image
-      if is_cropping?(params[:practice])
-        @practice.main_display_image.reprocess!
-      end
-
-      partner_keys.each do |key|
-        next if @practice.practice_partners.ids.include? key.to_i
-
-        @practice.practice_partner_practices.create practice_partner_id: key.to_i
-      end
-
-      dept_keys = []
-      dept_keys = params[:practice][:department].keys if params[:practice][:department].present?
-      @practice.department_practices.each do |department|
-        department.destroy unless dept_keys.include? department.department_id.to_s
-      end
-      dept_keys.each do |key|
-        next if @practice.departments.ids.include? key.to_i
-
-        @practice.department_practices.create department_id: key.to_i
-      end
+    current_endpoint = request.referrer.split('/').pop
+    updated = true
+    if params[:practice].present?
+      pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
+      updated = SavePracticeService.new(pr_params).save_practice
     end
 
     respond_to do |format|
       if updated
-        format.html { redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.' }
-        format.json { render :show, status: :ok, location: @practice }
-      else
-        format.html { redirect_back fallback_location: root_path, alert: 'Practice could not be updated.' }
-        format.json { render json: @practice.errors, status: :unprocessable_entity }
+        if updated.is_a?(StandardError)
+          flash[:error] = "There was an #{updated.message}. The practice was not saved."
+          format.html { redirect_back fallback_location: root_path }
+          format.json { render json: updated, status: :unprocessable_entity }
+        else
+          if params[:next]
+            path = eval("practice_#{Practice::PRACTICE_EDITOR_SLUGS.key(current_endpoint)}_path(@practice)")
+            format.html { redirect_to path, notice: params[:practice].present? ? 'Practice was successfully updated.' : nil }
+            format.json { render :show, status: :ok, location: @practice }
+          else
+            format.html { redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.' }
+            format.json { render json: @practice, status: :ok }
+          end
+        end
       end
     end
   end
 
   def search
     ahoy.track "Practice search", {search_term: request.params[:query]} if request.params[:query].present?
-    @practices = Practice.where(approved: true, published: true).order(name: :asc)
+    @practices = Practice.searchable_practices
     @facilities_data = facilities_json
     @practices_json = practices_json(@practices)
   end
@@ -245,6 +178,7 @@ class PracticesController < ApplicationController
     else
       user_practice = UserPractice.find_or_initialize_by(user: current_user, practice: @practice)
       user_practice.committed = true
+      user_practice.time_committed = DateTime.now
       PracticeMailer.commitment_response_email(user: current_user, practice: @practice).deliver_now
       PracticeMailer.support_team_notification_of_commitment(user: current_user, practice: @practice).deliver_now
     end
@@ -269,7 +203,7 @@ class PracticesController < ApplicationController
     if user_practice.present?
       user_practice.toggle(:favorited)
     else
-      user_practice = UserPractice.new(user: current_user, practice: @practice, favorited: true)
+      user_practice = UserPractice.new(user: current_user, practice: @practice, favorited: true, time_favorited: DateTime.now)
     end
 
     @favorited = user_practice.favorited
@@ -360,12 +294,23 @@ class PracticesController < ApplicationController
   end
 
   def publication_validation
+    current_endpoint = request.referrer.split('/').pop
+    if params[:practice].present?
+      pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
+      updated = SavePracticeService.new(pr_params).save_practice
+    end
+
     respond_to do |format|
-      if @practice.name.present? && @practice.tagline.present? && @practice.initiating_facility.present? && @practice.date_initiated.present? && @practice.summary.present? && @practice.support_network_email.present?
-        @practice.update_attributes(published: true)
-        flash[:notice] = "#{@practice.name} has been successfully published to the Diffusion Marketplace"
-        # format.html { redirect_to practice_path(@practice), notice: flash[:notice] }
-        format.js { render js: "window.location='#{practice_path(@practice)}'" }
+      if can_publish
+        # if there is an error with updating the practice, alert the user
+        if updated.is_a?(StandardError)
+          flash[:error] = "There was an #{updated.message}. The practice was not saved or published."
+          format.js { redirect_to self.send("practice_#{current_endpoint}_path", @practice) }
+        else
+          @practice.update_attributes(published: true)
+          flash[:notice] = "#{@practice.name} has been successfully published to the Diffusion Marketplace"
+          format.js { render js: "window.location='#{practice_path(@practice)}'" }
+        end
       else
         format.js
       end
@@ -467,7 +412,8 @@ class PracticesController < ApplicationController
                                      va_employees_attributes: [:id, :name, :role, :position, :_destroy, :avatar, :crop_x, :crop_y, :crop_w, :crop_h, :delete_avatar],
                                      additional_staffs_attributes: [:id, :_destroy, :title, :hours_per_week, :duration_in_weeks, :permanent],
                                      additional_resources_attributes: [:id, :_destroy, :name, :position, :description], required_staff_trainings_attributes: [:id, :_destroy, :title, :description], practice_creators_attributes: [:id, :_destroy, :name, :role, :avatar, :position, :delete_avatar, :crop_x, :crop_y, :crop_w, :crop_h],
-                                     publications_attributes: [:id, :_destroy, :title, :link, :position], additional_documents_attributes: [:id, :_destroy, :attachment, :title, :position], practice_permissions_attributes: [:id, :_destroy, :position, :name, :description])
+                                     publications_attributes: [:id, :_destroy, :title, :link, :position], additional_documents_attributes: [:id, :_destroy, :attachment, :title, :position], practice_permissions_attributes: [:id, :_destroy, :position, :name, :description],
+                                     practice_partner: {}, department: {})
   end
 
   def can_view_practice
@@ -522,11 +468,24 @@ class PracticesController < ApplicationController
     practices.each do |practice|
       practice_hash = JSON.parse(practice.to_json) # convert to hash
       practice_hash['image'] = practice.main_display_image.present? ? practice.main_display_image_s3_presigned_url : ''
-      practice_hash['sponsored_practice'] = practice.practice_partners.any? && practice.practice_partners.find_by(name: 'None of the above, or Unsure').nil?
       if practice.date_initiated
         practice_hash['date_initiated'] = practice.date_initiated.strftime("%B %Y")
       else
         practice_hash['date_initiated'] = '(start date unknown)'
+      end
+
+      if practice.categories&.length > 0
+        practice_hash['categories_name'] = []
+
+        practice.categories.each do |category|
+          if category.name != 'None'
+            practice_hash['categories_name'].push category.name
+
+            unless category.related_terms.empty?
+              practice_hash['categories_name'].concat(category.related_terms)
+            end
+          end
+        end
       end
 
       # display initiating facility
@@ -538,15 +497,19 @@ class PracticesController < ApplicationController
     practices_array.to_json.html_safe
   end
 
-  def create_date_initiated (date_initiated)
+  def create_date_initiated(date_initiated)
     if date_initiated && (date_initiated[:year].present? && date_initiated[:month].present?)
       Date.new(date_initiated[:year].to_i, date_initiated[:month].to_i)
     end
   end
 
-  def date_initiated_params_exist (date_initiated)
-    date_initiated.present? && !(date_initiated.values.include? nil)
+  def set_date_initiated_params
+    if params[:date_initiated].present? && !(params[:date_initiated].values.include? nil)
+      params[:practice][:date_initiated] = create_date_initiated(params[:date_initiated])
+    end
+  end
+
+  def can_publish
+    @practice.name.present? && @practice.tagline.present? && @practice.initiating_facility.present? && @practice.date_initiated.present? && @practice.summary.present? && @practice.support_network_email.present?
   end
 end
-
-

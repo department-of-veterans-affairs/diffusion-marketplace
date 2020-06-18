@@ -1,22 +1,25 @@
+<% provide :head_tags do %>
+  <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
 <%= render 'breadcrumbs' %>
 
 <section class="margin-top-7 margin-bottom-6" id="next-steps-top">
   <div class="grid-container">
-    <%= render "shared/messages" %>
+    <%= render partial: "shared/messages", locals: {small_text: false} %>
     <div class="grid-row flex-align-end margin-bottom-105">
       <h1 class="font-sans-2xl margin-right-3 margin-y-0 grid-col-auto grid-col-auto">Adoption checklist</h1>
       <div class="grid-col-fill share-checklist-container margin-bottom-05">
         <a target="_blank"
            href="mailto:?subject=<%= email_checklist_subject(@practice) %>&body=<%= email_checklist_body(@practice) %>" class="link-primary text-super">
           <i class="fas fa-external-link-alt"></i>&nbsp;
-          Share Checklist
+          Share checklist
         </a>
       </div>
     </div>
-    <p class="margin-0 font-sans-lg grid-col-10">
-      Here is a step-by-step guide to give you the best chance of successfully adopting this practice.
-      After acknowledging you’ve completed the following checklist, we will put you in contact with the team members of this practice
-      for further adoption details.
+    <p class="margin-0 font-sans-lg grid-col-10 line-height-36">
+      Here is a step-by-step guide to give you the best chance of success for adopting this practice. After completing these
+      preparatory steps, we will put you in contact with the practice team members for full adoption details.
     </p>
   </div>
 </section>
@@ -28,8 +31,8 @@
   <%= form_for :commit, url: {action: :commit }, method: :post do %>
     <!--  <form class="usa-form-large" action="<%#= practice_commit_path(practice_id: @practice.slug) %>" method="post">-->
     <div class="grid-container margin-bottom-6">
-      <div class="grid-row">
-        <div class="grid-col-7 margin-right-6">
+      <div class="grid-row grid-gap">
+        <div class="grid-col-8">
           <!-- <button type="button" id="print-checklist-button" role="button" class="dm-button-secondary margin-bottom-205">Print Checklist
           </button> -->
 
@@ -40,12 +43,7 @@
             <div id="implementation-team" class="margin-bottom-3">
               <div class="usa-checkbox">
                 <input class="usa-checkbox__input" id="team" type="checkbox" name="checklist" value="implementation team">
-                <label class="usa-checkbox__label margin-bottom-1" for="team"><span class="fw-bold">Implementation team:</span></label>
-                <p class="padding-left-4 margin-top-0 margin-bottom-4">
-                  You can’t do this alone! A team is needed to get it done. Here are the departments and titles of specific
-                  individuals that are needed to work together to implement the practice successfully. Ideal team size is 5
-                  to 10 members.
-                </p>
+                <label class="usa-checkbox__label margin-bottom-1" for="team"><span class="fw-bold">Implementation team</span></label>
               </div>
               <div class="padding-left-9">
                 <% @practice.additional_staffs.each do |as| %>
@@ -67,10 +65,16 @@
             <!-- -->
 
             <!-- Permissions required -->
-            <% if @practice.practice_permissions.any? %>
+            <%
+              permissions = @practice.practice_permissions
+            %>
+            <% if permissions.any? %>
               <%= render 'next_steps_checkbox', label: 'Permissions required', sectionId: 'permissions-required' do %>
-                <% @practice.practice_permissions.each do |permission| %>
-                  <li><%= permission.description %></li>
+                <% permissions.each do |permission| %>
+                  <li class="<%= permissions.count > 1 ? 'margin-bottom-105' : '' %>">
+                    <p class="text-bold margin-bottom-1 text-underline"><%= permission.name %></p>
+                    <p><%= permission.description %></p>
+                  </li>
                 <% end %>
               <% end %>
             <% end %>
@@ -83,20 +87,33 @@
             <!-- -->
 
             <!-- Departments impacted -->
-            <% if @practice.departments.any? && @practice.departments.find_by(short_name: 'all').blank? && @practice.departments.find_by(short_name: 'none').blank? %>
+            <%
+              practice_departments = @practice.departments
+            %>
+            <% if practice_departments.where.not(name: 'None').any? %>
               <%= render 'next_steps_checkbox', label: 'Departments', sectionId: 'departments-impacted' do %>
-                <% @practice.departments.each do |d| %>
-                      <li><%= d.name %></li>
-                    <% end %>
+                <% if practice_departments.where(name: 'All departments equally - not a search differentiator').present? %>
+                  <li>All Departments</li>
+                <% else %>
+                  <% practice_departments.where.not(name: 'All departments equally - not a search differentiator').order(Arel.sql('lower(name) ASC')).each do |d| %>
+                    <li><%= d.name %></li>
+                  <% end %>
+                <% end %>
               <% end %>
             <% end %>
             <!-- -->
 
             <!-- Resource capabilities -->
-            <% if @practice.additional_resources.any? %>
+            <%
+              additional_resources = @practice.additional_resources
+            %>
+            <% if additional_resources.any? %>
               <%= render 'next_steps_checkbox', label: 'Resources', sectionId: 'resource-capabilities' do %>
-                <% @practice.additional_resources.each do |r| %>
-                  <li><%= r.description %></li>
+                <% additional_resources.each do |r| %>
+                  <li class="<%= additional_resources.count > 1 ? 'margin-bottom-105' : '' %>">
+                    <p class="text-bold margin-bottom-1 text-underline"><%= r.name %></p>
+                    <p><%= r.description %></p>
+                  </li>
                 <% end %>
               <% end %>
             <% end %>
@@ -139,23 +156,13 @@
           </p>
         </div>
         <div class="tablet:grid-col-4">
-          Selected practice:
-          <div class='practice-card-outline'>
-            <div class='flex-column display-flex practice-card-list padding-x-105 padding-y-2' style='position: relative;'>
-              <%= render partial: 'marketplace_card', locals: {practice: @practice} %>
-            </div>
-          </div>
+          <%= render partial: 'practices/favorite_button', locals: {practice: @practice, featured: true, col_4: false } %>
+          <%= render partial: 'marketplace_card', locals: {practice: @practice, featured: false} %>
           <div class="margin-top-auto"></div>
         </div>
       </div>
     </div>
   <% end %>
-  <!--  </form>-->
-  <div class="grid-container margin-bottom-105">
-    <p>
-      <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
-    </p>
-  </div>
 </section>
 
 

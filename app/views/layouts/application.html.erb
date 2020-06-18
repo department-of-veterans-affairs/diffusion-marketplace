@@ -73,8 +73,7 @@
         <% end %>>
     <%= render 'shared/header' %>
     <%= render 'shared/breadcrumbs' %>
-    <main id="main-content" class="<%= params[:controller] %>">
-      <%= render 'practices/publication_validation_modal' %>
+    <main id="main-content" class="<%= params[:controller] %> margin-bottom-905">
       <%= yield %>
     </main>
     <%= render 'shared/footer' %>

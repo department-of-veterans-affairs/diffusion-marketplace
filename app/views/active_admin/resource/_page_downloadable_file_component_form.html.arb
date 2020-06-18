@@ -1,0 +1,49 @@
+# TODO: get the placeholder how active admin does "NEW_#{association_human_name.upcase.split(' ').join('_')}_RECORD"
+placeholder ||= 'NEW_PAGE_COMPONENT_RECORD' # = "NEW_#{association_human_name.upcase.split(' ').join('_')}_RECORD"
+component ||= nil
+html = Arbre::Context.new do
+  li "", id: "PageDownloadableFileComponent_poly_#{placeholder}", class: "input polyform component-#{placeholder}" do
+    fieldset class: "inputs" do
+      legend do
+        span 'Downloadable File'
+      end
+      ol do
+        if component
+          input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
+        end
+
+        li class: 'file input required', id: "page_page_components_attributes_#{placeholder}_component_attributes_attachment_input" do
+          label 'File', for: "page_page_components_attributes_#{placeholder}_component_attributes_attachment", class: 'label'
+          input value: component&.attachment || nil, type: 'file', required: 'required', accept: '.pdf,.doc,.docx',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_attachment",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][attachment]"
+          para 'File types allowed: .pdf, .doc, .docx.', class: 'inline-hints'
+            if component&.attachment != nil
+              para class: 'aa-downloadable-file-link' do
+                span 'Current uploaded file:'
+                a component&.attachment_file_name, href: "#{component&.attachment}", target: "_blank"
+              end
+            end
+        end
+
+        li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_display_name_input" do
+          label 'Display Name', for: "page_page_components_attributes_#{placeholder}_component_attributes_display_name", class: 'label'
+          input value: component&.display_name || nil, type: 'text',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_display_name",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][display_name]"
+          para 'Enter a user-friendly name for the file (Ex: "Get Started With My Practice").', class: 'inline-hints'
+        end
+
+        li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_description_input" do
+          label 'Description', for: "page_page_components_attributes_#{placeholder}_component_attributes_description", class: 'label'
+          input value: component&.description || nil, type: 'text',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_description",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][description]"
+          para 'Enter a description about the file.', class: 'inline-hints'
+        end
+      end
+    end
+  end
+end
+
+f.template.concat(html.to_s)

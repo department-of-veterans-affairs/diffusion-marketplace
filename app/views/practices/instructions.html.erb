@@ -17,23 +17,23 @@
 
         <div id="instructions" class="desktop:grid-col-9 grid-col-12 p0">
         <section class="margin-bottom-1">
-          <%= render "shared/messages" %>
+          <%= render partial: "shared/messages", locals: {small_text: false} %>
           <h1 class="font-sans-2xl margin-bottom-205 line-height-sans-205">Create your practice page</h1>
-          <h2 class="margin-0 text-normal">Please follow these instructions to complete each of the following sections for your practice page.</h2>
+          <h2 class="margin-0 text-normal line-height-36">Please follow these instructions to complete each of the following sections for your practice page.</h2>
         </section>
         <br/>
-          <section class="margin-bottom-1">
+          <section class="desktop:grid-col-8">
             <h2 class="margin-0 text-bold">What you'll need</h2>
-              <div class="padding-y-1">
+              <div class="">
                 <ul class="line-height-sans-6 font-sans-md instructions-list">
                   <li>To create a thorough page, you’ll be asked to share data, images, video, instructions, files, and stories related to your practice.</li>
                   <li>All uploaded files should be displayed in a common file format (.jpg, .jpeg, .png, or .pdf) that is ready to be shown to the public. Images must be less than 32MB.</li>
                 </ul>
               </div>
           </section>
-          <section class="margin-bottom-1">
+          <section class="desktop:grid-col-8">
           <h2 class="margin-0 text-bold">PII and PHI policy</h2>
-          <div class="padding-y-1">
+          <div class="">
             <ul class="line-height-sans-6 font-sans-md instructions-list">
               <li>Do not enter Personally Identifiable Information (PII) or Protected Health Information (PHI) for any individual, Veteran, or patient.</li>
               <li><%= link_to "Learn more", pii_phi_information_path %> about what constitutes PII and PHI.</li>
@@ -41,9 +41,9 @@
             </ul>
           </div>
         </section>
-          <section class="margin-bottom-1">
+          <section class="desktop:grid-col-8">
             <h2 class="margin-0 text-bold">Formatting and editing</h2>
-            <div class="padding-y-1">
+            <div class="">
               <ul class="line-height-sans-6 font-sans-md instructions-list">
                 <li>Ensure your work is accurate, formatted consistently, and as complete as possible before publishing.</li>
                 <li>Use sentence case (only capitalizing the first word in titles) and spell out acronyms. Capitalize proper nouns and names.</li>
@@ -53,10 +53,10 @@
             </div>
           </section>
 
-      <div class="grid-row flex-auto">
-        <div class="bg-gold padding-2 radius-md margin-bottom-8">
+      <div class="grid-row flex-auto margin-bottom-3">
+        <div class="bg-gold padding-2 radius-md">
           <p class="text-bold margin-bottom-1">Need help along the way?<p>
-          <p>Reach out to a member of our support staff with your question. <a href="mailto:marketplace@va.gov">Send us an email&nbsp;&nbsp;<i class="fas fa-external-link-alt"></i></a><p>
+          <p>Reach out to a member of our support staff with your question. <a class="beta-banner-link" href="mailto:marketplace@va.gov">Send us an email<i class="margin-left-1 fas fa-external-link-alt text-no-underline"></i></a><p>
         </div>
       </div>
       <div>
@@ -65,8 +65,5 @@
         <% end %>
       </div>
     </div>
-  </div>
-  <div class="margin-bottom-105">
-    <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
   </div>
 </div>

@@ -85,6 +85,11 @@ describe 'Practice editor', type: :feature, js: true do
             find('.staff-training-description').set(@staff_training_description)
         end
 
+        def check_department_fields
+            find('label[for=practice_department_1]').click
+            find('label[for=practice_department_2]').click
+        end
+
         it 'should allow the user to add an additional staff member and required staff training' do
             fill_in_required_fields
             fill_in_additional_staff_fields
@@ -149,6 +154,15 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_field('Role duration', with:  nil)
             expect(page).to have_field('Job Title', with: nil)
             expect(page).to have_field('Description', with: nil)
+        end
+
+        it 'should allow the user to add and remove departments' do
+            fill_in_required_fields
+            fill_in_required_staff_training_fields
+            check_department_fields
+            @save_button.click
+            expect(page).to have_checked_field('practice_department_1', visible: false)
+            expect(page).to have_checked_field('practice_department_2', visible: false)
         end
     end
 end

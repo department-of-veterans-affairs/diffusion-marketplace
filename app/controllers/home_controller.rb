@@ -3,14 +3,14 @@ class HomeController < ApplicationController
   def index
     @top_practice = Practice.find_by_highlight true
     @featured_practices = Practice.where featured: true
-    @practices = Practice.where(approved: true, published: true).order(name: :asc)
+    @practices = Practice.searchable_practices
     @favorite_practices = current_user&.favorite_practices || []
 
     @facilities_data = facilities_json
 
     @vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
 
-    @diffused_practices = DiffusionHistory.all
+    @diffused_practices = DiffusionHistory.all.reject { |dh| !dh.practice.published }
 
     @diffusion_histories = Gmaps4rails.build_markers(@diffused_practices.group_by(&:facility_id)) do |dhg, marker|
 
@@ -21,7 +21,9 @@ class HomeController < ApplicationController
       marker.picture({
                          url: view_context.image_path('map-marker-default.svg'),
                          width: 31,
-                         height: 44
+                         height: 44,
+                         scaledWidth: 31,
+                         scaledHeight: 44
                      })
 
       marker.shadow nil
@@ -50,19 +52,21 @@ class HomeController < ApplicationController
                                                   diffusion_histories: dhg[1],
                                                   completed: completed,
                                                   in_progress: in_progress,
+                                                  unsuccessful: unsuccessful,
                                                   facility: facility
                                               }
                       ),
                       facility: facility
                   })
 
-      marker.infowindow render_to_string(partial: 'maps/infowindow', locals: {diffusion_histories: dhg[1], completed: completed, in_progress: in_progress, facility: facility, home_page: true})
+      marker.infowindow render_to_string(partial: 'maps/infowindow', locals: {diffusion_histories: dhg[1], completed: completed, in_progress: in_progress, unsuccessful: unsuccessful, facility: facility, home_page: true})
     end
   end
 
   def search
+    # TODO: why do I have this here? - A.H.
     ahoy.track "Practice search", {search_term: request.params[:query]} if request.params[:query].present?
-    @practices = Practice.where(approved: true, published: true).order(name: :asc)
+    @practices = Practice.searchable_practices
     @facilities_data = facilities_json['features']
     @practices_json = practices_json(@practices)
   end

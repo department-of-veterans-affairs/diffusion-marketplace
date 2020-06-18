@@ -1,7 +1,26 @@
+@import "../../../dm/variables/colors";
+
+footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
 .nominate-link {
-  color: #005ea2;
+  color: $dm-color-primary-blue;
   text-decoration: none;
   &:visited {
-    color: #005ea2;
+    color: $dm-color-primary-blue;
+  }
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .footer-links-set-1 {
+    width: 60% !important;
+  }
+
+  .footer-links-set-2 {
+    width: 40% !important;
   }
 }

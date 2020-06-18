@@ -12,14 +12,14 @@ function initialize() {
     let dataMarkers = null;
 
     function setIcon(json, icon) {
-        json.marker.getServiceObject().setIcon(icon);
+        json.marker.getServiceObject().setIcon({url: icon, scaledSize: new google.maps.Size(31, 44), size: new google.maps.Size(31, 44)});
     }
 
     function clickCallback(json) {
         if (json.id !== selectedMarker.id) {
             if (selectedMarker.id) {
                 const prevSelected = dataMarkers.find(m => m.id === selectedMarker.id);
-                prevSelected.marker.getServiceObject().setIcon(defaultMarkerIcon);
+                setIcon(prevSelected, defaultMarkerIcon);
             }
             selectedMarker = json;
             setIcon(json, selectedMarkerIcon);
@@ -46,7 +46,7 @@ function initialize() {
             const serviceObj = json.marker.getServiceObject();
             serviceObj.label = {
                 color: '#FFFFFF',
-                text: `${json.completed + json.in_progress}`,
+                text: `${json.completed + json.in_progress + json.unsuccessful}`,
                 fontFamily: 'Open Sans'
             };
 
@@ -185,10 +185,10 @@ function initialize() {
         }
 
         // facility name
-        if (data.facility_name && data.facility_name.length) {
+        if (data.facility_name && data.facility_name[0].value) {
             const facilityName = data.facility_name[0].value;
             result = result.filter(function (d) {
-                return d.facility.OfficialStationName.toLowerCase().includes(facilityName.toLowerCase());
+                return facilityName.toLowerCase().includes(d.facility.OfficialStationName.toLowerCase());
             });
         }
 
@@ -252,7 +252,6 @@ function initialize() {
     };
 
     $(document).on('click', '#filterResultsTrigger', function () {
-        $('#filterResultsTrigger').hide();
         $('#filterResults').show();
         $('#filterClose').focus();
         closeInfoWindow();
@@ -267,3 +266,35 @@ function openMarkerModal(id) {
     modal.style.display = "block";
     $span.focus({preventScroll: true});
 }
+
+function addHiddenClass(selector) {
+    $(selector).removeClass('display-block');
+    $(selector).addClass('hidden');
+}
+
+function removeHiddenClass(selector) {
+    $(selector).removeClass('hidden');
+    $(selector).addClass('display-block');
+}
+
+function toggleFilterResultsAndFilterCloseButtons() {
+    let resultsTrigger = '#filterResultsTrigger';
+    let  filterClose = '#filterClose';
+
+    $(document).on('click', resultsTrigger, () => {
+        addHiddenClass(resultsTrigger);
+        removeHiddenClass(filterClose);
+    });
+
+    $(document).on('click', filterClose, () => {
+        addHiddenClass(filterClose);
+        removeHiddenClass(resultsTrigger);
+    });
+
+    $(document).on('click', '#map img', () => {
+        addHiddenClass(filterClose);
+        removeHiddenClass(resultsTrigger);
+    })
+}
+
+$(toggleFilterResultsAndFilterCloseButtons());

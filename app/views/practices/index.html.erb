@@ -1,6 +1,10 @@
+<% provide :head_tags do %>
+  <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
 <div id="search-page">
 
-  <div class="dm-background-white full-view-height padding-top-1">
+  <div class="dm-background-white padding-top-1">
 
     <section class="grid-container x1-5-bottom">
       <div id="breadcrumbs" class="dm-font-color-primary-blue p1-top breadcrumbs dm-font-color-super-violet-ish">
@@ -11,7 +15,7 @@
     </section>
 
     <section class="grid-container margin-bottom-8">
-      <%= render "shared/messages" %>
+      <%= render partial: "shared/messages", locals: {small_text: false} %>
       <h1 class="font-sans-3xl margin-top-0 margin-bottom-205">Find your new best practice</h1>
       <h2 class="margin-0">Search by Practice name, facility location, condition, or keyword</h2>
     </section>

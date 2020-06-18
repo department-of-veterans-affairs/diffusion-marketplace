@@ -1,12 +1,15 @@
 # frozen_string_literal: true
-
 Rails.application.routes.draw do
+  require "./lib/constraints/route_constraints"
+  get ':page_group_friendly_id' => 'page#show', constraints: PageGroupHomeConstraint
+  get ':page_group_friendly_id/:page_slug' => 'page#show', constraints: PageGroupConstraint
   ActiveAdmin.routes(self)
   devise_for :users, controllers: { registrations: 'registrations' }
   mount Ahoy::Engine => '/ahoy', as: :dm_ahoy
   mount Commontator::Engine => '/commontator' #, as: :dm_commontator
 
   get '/terms_and_conditions' => 'users#terms_and_conditions'
+  get '/dashboard/export', action: 'export_metrics', controller: 'admin/dashboard', as: 'export_metrics'
   post '/accept_terms', action: 'accept_terms', controller: 'users', as: 'accept_terms'
 
   resources :practices, except: :index do
@@ -26,7 +29,7 @@ Rails.application.routes.draw do
     get '/edit/origin', action: 'origin', as: 'origin'
     get '/edit/adoptions', action: 'adoptions', as: 'adoptions'
     post '/edit/create_or_update_diffusion_history/', action: 'create_or_update_diffusion_history', as: 'create_or_update_diffusion_history'
-    post '/publication_validation', action: 'publication_validation', as: 'publication_validation'
+    patch '/publication_validation', action: 'publication_validation', as: 'publication_validation'
     get '/published', action: 'published', as: 'published'
     post '/commit', action: 'commit', as: 'commit'
     post '/favorite', action: 'favorite', as: 'favorite'
@@ -71,9 +74,13 @@ Rails.application.routes.draw do
   delete '/edit-profile-photo' => 'users#delete_photo'
 
   resource :competitions do
+    # show shark tank for now
     get '/shark-tank', action: 'shark_tank', as: 'shark-tank'
     get '/go-fish', action: 'go_fish', as: 'go-fish'
   end
+
+  get '/nominate-a-practice', controller: 'nominate_practices', action: 'index', as: 'nominate_a_practice'
+
   # Custom route for reporting a comment
   # get '/practices/:practice_id/comments/:comment_id/report', action: 'report_comment', controller: 'commontator/comments', as: 'report_comment'
 end

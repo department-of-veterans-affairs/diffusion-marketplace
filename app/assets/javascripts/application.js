@@ -49,3 +49,6 @@
 //= require search
 //= require modernizr-custom
 //= require object_fit_polyfill
+//= require jquery.shave.min.js
+//= require typeahead.bundle.min.js
+//= require _render_warning_banners

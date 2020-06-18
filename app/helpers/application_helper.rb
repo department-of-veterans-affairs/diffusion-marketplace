@@ -54,12 +54,12 @@ module ApplicationHelper
   end
 
   def complexity_aggregate_description(aggregate)
-    case aggregate
-    when 2
+    case
+    when aggregate == 2
       return 'Some complexity to implement'
-    when 3
+    when aggregate == 3
       return 'Significant complexity to implement'
-    when 4
+    when aggregate >= 4
       return 'High or large complexity to implement'
     else
       return 'Little to no complexity to implement'
@@ -82,7 +82,11 @@ module ApplicationHelper
   def facility_name(facility_id, facilities_data = nil)
     facilities_data = facilities_data || @facilities_data
     facility_data = facilities_data.find {|f| f['StationNumber'] == facility_id }
-    facility_data.present? ? facility_data['OfficialStationName'] : facility_id
+    if facility_data.present?
+      "#{facility_data["OfficialStationName"]} #{show_common_name(facility_data["OfficialStationName"], facility_data["CommonName"])}"
+    else
+      facility_id
+    end
   end
 
   def email_practice_subject(practice)
@@ -107,6 +111,29 @@ module ApplicationHelper
         object.errors.messages[field_name].join(", ")
       end
     end
-  end 
+  end
 
+  def show_common_name(official_name, common_name)
+    unless official_name.downcase.include?(common_name.downcase)
+      "(#{common_name})"
+    end
+  end
+
+  def get_grid_alignment_css_class(alignment)
+    if alignment&.downcase == 'center'
+      'justify-center'
+    elsif alignment&.downcase == 'right'
+      'justify-end'
+    else
+      ''
+    end
+  end
+
+  def get_link_target_attribute(url)
+    if url.include?(ENV.fetch('HOSTNAME'))
+      ''
+    else
+      '_blank'
+    end
+  end
 end

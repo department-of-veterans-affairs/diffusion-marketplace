@@ -6,7 +6,7 @@
 
 <div id="search-page">
 
-  <div class="dm-background-white full-view-height padding-top-1">
+  <div class="dm-background-white padding-top-1">
 
     <section class="grid-container x1-5-bottom">
       <div id="breadcrumbs" class="dm-font-color-primary-blue p1-top breadcrumbs dm-font-color-super-violet-ish">
@@ -15,7 +15,7 @@
     </section>
 
     <section class="grid-container margin-bottom-3">
-      <%= render "shared/messages" %>
+      <%= render partial: "shared/messages", locals: {small_text: false} %>
       <h1 class="font-sans-2xl margin-top-0 margin-bottom-0">Find a practice</h1>
       <p class="margin-0 font-sans-md">Search by practice name, facility name, clinical condition, or keyword</p>
         <form id="searchForm" name="searchForm" class="usa-search margin-bottom-3">
@@ -35,9 +35,5 @@
       <p class="margin-bottom-2" id="results-summary"></p>
       <div id="search-results" class="margin-bottom-6"></div>
     </section>
-  </div>
-
-  <div class="grid-container margin-bottom-105">
-      <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
   </div>
 </div>

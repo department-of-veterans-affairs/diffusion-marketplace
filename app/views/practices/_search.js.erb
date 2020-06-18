@@ -43,7 +43,6 @@ function searchPracticesPage() {
             var noBackgroundImage = result.item.image ? '' : 'class: fas fa-images fa-3x text-base-lighter search-no-image';
             var background = result.item.image ? 'background: url(' + result.item.image + ')' + ' transparent; background-repeat: no-repeat; background-position: center; background-size: cover;' : 'background-color: #f0f0f0; transparent; background-size: contain; background-repeat: no-repeat; background-position: center; ';
             var favoriteButtonIcon = result.item.user_favorited ? 'fas text-secondary' : 'far text-base';
-            var sponsoredPractice = result.item.sponsored_practice ? '<div class="grid-row margin-top-1"><span class="display-block text-center radius-pill padding-y-1px padding-x-2 bg-base-lighter font-sans-3xs">Sponsored</span></div>' : '<div class="hidden"></div>';
             var favoriteButton =
                 '<a aria-label="Favorite ' + result.item.name + '" tabindex="-1" aria-hidden="true" class="search-favorite-practice-button" id="favorite-button-' + result.item.id +'" data-remote="true" rel="nofollow" data-method="post" href="/practices/' + result.item.slug + '/favorite.js">' +
                     '<i class="' + favoriteButtonIcon + ' fa-heart favorite-icon-' + result.item.id + ' text-no-underline"></i>' +
@@ -64,7 +63,6 @@ function searchPracticesPage() {
             '</div>' +
             '<div class="tablet:grid-col-9 padding-y-105 padding-right-105 padding-left-4">' +
                 '<h2 class="margin-0 truncate-text-search one-line"><a class="link-title" href="/practices/' + result.item.slug + '">' + result.item.name + '</a></h2>' +
-                sponsoredPractice + 
                 '<h4 class="truncate-text-search two-lines text-normal margin-y-1">' + result.item.tagline + '</h4>' +
                 '<p class="practice-details margin-y-1 font-sans-3xs">Created in ' + result.item.date_initiated + ' by the ' + result.item.initiating_facility + '</p>' +
                 '<p class="truncate-text-search three-lines">' + result.item.summary + '</p>' +
@@ -97,28 +95,31 @@ function searchPracticesPage() {
     // Adapted from: https://github.com/brunocechet/Fuse.js-with-highlight
     function highlighter(resultItem) {
         resultItem.matches.forEach(function (matchItem) {
-            var text = resultItem.item[matchItem.key];
-            var result = [];
-            var matches = [].concat(matchItem.indices); // limpar referencia
-            var pair = matches.shift();
+            // don't highlight if match was on category since category is not in practice search result text and can't be highlighted
+            if (matchItem.key != 'categories_name') {
+                var text = resultItem.item[matchItem.key];
+                var result = [];
+                var matches = [].concat(matchItem.indices); // limpar referencia
+                var pair = matches.shift();
 
-            for (var i = 0; i < text.length; i++) {
-                var char = text.charAt(i);
-                if (pair && i === pair[0]) {
-                    result.push('<mark>')
+                for (var i = 0; i < text.length; i++) {
+                    var char = text.charAt(i);
+                    if (pair && i === pair[0]) {
+                        result.push('<mark>')
+                    }
+                    result.push(char);
+                    if (pair && i === pair[1]) {
+                        result.push('</mark>');
+                        pair = matches.shift()
+                    }
                 }
-                result.push(char);
-                if (pair && i === pair[1]) {
-                    result.push('</mark>');
-                    pair = matches.shift()
-                }
-            }
-            resultItem.highlight = result.join('');
+                resultItem.highlight = result.join('');
 
-            if (resultItem.children && resultItem.children.length > 0) {
-                resultItem.children.forEach(function (child) {
-                    highlighter(child);
-                });
+                if (resultItem.children && resultItem.children.length > 0) {
+                    resultItem.children.forEach(function (child) {
+                        highlighter(child);
+                    });
+                }
             }
         });
     }
@@ -128,7 +129,7 @@ function searchPracticesPage() {
 
     // Set Fuse.js search options
     var search_options = {
-        keys: ['name', 'tagline', 'description', 'summary', 'initiating_facility'],
+        keys: ['name', 'tagline', 'description', 'summary', 'initiating_facility', 'categories_name'],
         minMatchCharLength: 3,
         tokenize: true,
         shouldSort: true,

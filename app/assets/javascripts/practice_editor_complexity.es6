@@ -31,6 +31,12 @@
                 });
             }
         });
+
+        $(document).on('click', '.department-input', function() {
+            if ($('.department-input:checked').length == $('.department-input').length) {
+                $('.all-departments-input').prop('checked', true);
+            }
+        });
     }
 
     function uncheckAllDepartmentBoxes() {
@@ -46,9 +52,8 @@
 
     function uncheckAllIfAnotherOptionIsChosen() {
         $('.department-input').click(function(event) {   
-            if($(event.target).is(':checked') && $('.all-departments-input').is(':checked')) {
+            if($(event.target).not(':checked') && $('.all-departments-input').is(':checked')) {
                 $('.all-departments-input').prop('checked', false);
-                $('.department-input').not(event.target).prop('checked', false);
             }
         });
     }

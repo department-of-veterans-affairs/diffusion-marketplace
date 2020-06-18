@@ -20,7 +20,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         it 'should be there' do
-            expect(page).to have_content('Origin')
+            expect(page).to have_content('Impact')
             expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/origin")
             expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/documentation")
         end

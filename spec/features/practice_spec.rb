@@ -8,12 +8,23 @@ describe 'Practices', type: :feature do
     @approver = User.create!(email: 'squidward.tentacles@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
-    @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline')
+    @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test Facility', tagline: 'Test tagline')
     @practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline')
+    @enabled_practice = Practice.create!(name: 'Enabled practice', approved: true, published: true, enabled: true, tagline: 'Enabled practice tagline')
+    @disabled_practice = Practice.create!(name: 'Disabled practice', approved: true, published: true, enabled: false, tagline: 'Disabled practice tagline')
     @departments = [
-        Department.create!(name: 'Admissions', short_name: 'admissions'),
-        Department.create!(name: 'None', short_name: 'none'),
-        Department.create!(name: 'All departments equally - not a search differentiator', short_name: 'all'),
+        Department.create!(name: 'Test department 1', short_name: 'td1'),
+        Department.create!(name: 'Test department 2', short_name: 'td2'),
+        Department.create!(name: 'Test department 3', short_name: 'td3'),
+        Department.create!(name: 'None'),
+        Department.create!(name: 'All departments equally - not a search differentiator')
+    ]
+    @department_practices = [
+        DepartmentPractice.create!(department: @departments[0], practice: @practice),
+        DepartmentPractice.create!(department: @departments[1], practice: @practice),
+        DepartmentPractice.create!(department: @departments[2], practice: @practice),
+        DepartmentPractice.create!(department: @departments[3], practice: @practice),
+        DepartmentPractice.create!(department: @departments[4], practice: @practice)
     ]
     @practice_partner = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative', icon: 'fas fa-heart', color: '#E4A002')
   end
@@ -109,14 +120,35 @@ describe 'Practices', type: :feature do
       visit '/practices'
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(practice.name)
-      expect(page).to have_content('Yakima VA Clinic')
+      expect(page).to have_content('Yakima VA…')
     end
   end
 
   describe 'show page' do
+    it 'should display enabled practice in metrics' do
+      login_as(@admin, :scope => :user, :run_callbacks => false)
+      # Visit an individual Practice that is enabled
+      visit practice_path(@enabled_practice)
+      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to have_content(@enabled_practice.name)
+      expect(page).to have_content(@enabled_practice.initiating_facility)
+      expect(page).to have_current_path(practice_path(@enabled_practice))
+      click_on('Add to your favorites')
+      visit admin_dashboard_path
+      click_on('Metrics')
+      expect(page).to have_content('Enabled practice')
+    end
+
+    it 'should NOT display disabled practice in metrics' do
+      login_as(@admin, :scope => :user, :run_callbacks => false)
+      visit admin_dashboard_path
+      click_on('Metrics')
+      expect(page).to_not have_content('Disabled practice')
+    end
+
     it 'should display the initiating facility\'s initiating facility property if it is not found in the map' do
       login_as(@user, :scope => :user, :run_callbacks => false)
-      @user_practice.update(published: true, approved: true)
+      @user_practice.update(published: true, approved: true, initiating_facility: 'Page VA Clinic')
       # Visit an individual Practice that is approved and published
       visit practice_path(@user_practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
@@ -128,7 +160,7 @@ describe 'Practices', type: :feature do
       visit '/practices'
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@user_practice.name)
-      expect(page).to have_content(@user_practice.initiating_facility)
+      expect(page).to have_content('Page VA…')
     end
 
     it 'should display the practice complexity section' do
@@ -216,7 +248,7 @@ Yes')
         # implementation team checkbox
         expect(page).to have_selector('#implementation-team')
         find(:css, 'label[for="team"]').set(true)
-        expect(page).to have_content('You can’t do this alone! A team is needed to get it done. Here are the departments and titles of specific individuals that are needed to work together to implement the practice successfully. Ideal team size is 5 to 10 members.')
+        expect(page).to have_content('Here is a step-by-step guide to give you the best chance of success for adopting this practice. After completing these preparatory steps, we will put you in contact with the practice team members for full adoption details.')
 
         # practice champion checkbox
         expect(page).to have_selector('#practice-champion')
@@ -275,7 +307,7 @@ Yes')
         @user_practice.update(published: true, approved: true)
 
         # none
-        dp = DepartmentPractice.create!(department: @departments[1], practice: @user_practice)
+        dp = @department_practices[3]
 
         visit practice_planning_checklist_path(practice_id: @user_practice.slug)
         expect(page).to be_accessible.according_to :wcag2a, :section508
@@ -286,7 +318,7 @@ Yes')
         expect(page).not_to have_selector('#departments-impacted')
 
         # all
-        dp = DepartmentPractice.create!(department: @departments[2], practice: @user_practice)
+        dp = @department_practices[4]
 
         visit practice_planning_checklist_path(practice_id: @user_practice.slug)
         expect(page).to be_accessible.according_to :wcag2a, :section508

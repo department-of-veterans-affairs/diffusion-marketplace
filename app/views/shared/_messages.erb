@@ -13,9 +13,9 @@
     <!-- session expired message shows two extra messages. not sure why. these conditionals: value.to_s.downcase.include?('session expired') || value.to_s.downcase == 'true' || -->
     <!-- invalid email also shows two messages. not sure why. that is this conditional: (value == 'Invalid Email or password.' && key == 'alert') -->
     <% unless value.to_s.downcase.include?('session expired') || value.to_s.downcase == 'true' || (value == 'Invalid Email or password.' && key == 'alert') %>
-      <div class="grid-container usa-alert usa-alert--<%= key %> margin-bottom-2">
-        <div class="usa-alert__body">
-          <div class="usa-alert__heading fw-bold" role="alert"><%= value %></div>
+      <div class="usa-alert usa-alert--<%= key %> margin-bottom-2 <%= small_text ? 'message-icon-bg-position' : '' %>">
+        <div class="usa-alert__body grid-row flex-align-center">
+          <div class="usa-alert__heading <%= small_text ? 'font-sans-sm x0-bottom' : '' %>" role="alert"><%= value %></div>
         </div>
       </div>
     <% end %>

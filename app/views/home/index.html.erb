@@ -1,7 +1,11 @@
-<div class="full-view-height dm-background-white">
+<% provide :head_tags do %>
+  <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
+<div class="dm-background-white">
   <!-- "Welcome" section -->
   <section class="grid-container">
-    <%= render "shared/messages" %>
+    <%= render partial: "shared/messages", locals: {small_text: false} %>
 
     <div class="padding-x-9 margin-y-8 dm-background-white grid-row">
       <div class="tablet:grid-col-fill ie-welcome-container">
@@ -33,18 +37,21 @@
   </section>
 
   <section class="margin-bottom-5">
-    <div class="grid-container">
-      <h4 class="font-sans-xl margin-bottom-1 margin-top-0 line-height-sans-205">Featured practices</h4>
-      <p class="font-sans-lg margin-bottom-2">Here are a few featured practices from across the VA.</p>
-      <div class="grid-row grid-gap featured-practices">
-        <% @featured_practices.each do |fp| %>
-          <% if fp.present? %>
-            <div class="tablet:grid-col-4">
-              <%= render partial: 'practices/favorite_button', locals: {practice: fp, featured: true, col_4: false } %>
-              <%= render partial: 'practices/marketplace_card', locals: {practice: fp, featured: true} %>
-            </div>
+    <div class="grid-container homepage-covid-section-container height-auto">
+      <div class="grid-row ie-grid-row-12">
+        <div class="grid-col-8">
+          <%= link_to '/covid-19', class: 'homepage-covid-link' do %>
+            <h2 class="font-sans-xl">COVID-19<span class="fas fa-angle-right margin-left-105"></span></h2>
           <% end %>
-        <% end %>
+          <p class="line-height-sans-505 font-sans-sm">
+            The Diffusion Marketplace has practices that help VHA respond to COVID-19.
+            We have assembled a group of practices for frontline staff and administrators responding to the changing medical landscape.
+          </p>
+          <%= link_to 'See more', '/covid-19', class: 'usa-button usa-button--outline' %>
+        </div>
+        <div class="grid-col-fill text-center virus-image-container">
+          <i class="fas fa-viruses fa-9x text-primary-darker"></i>
+        </div>
       </div>
     </div>
   </section>
@@ -59,7 +66,7 @@
       <%= javascript_include_tag 'diffusion_history/_map_utilities', 'data-turbolinks-track': 'reload' %>
     <% end %>
       <section class="grid-container margin-bottom-4" id="map-of-diffusion">
-        <h4 class="font-sans-xl margin-bottom-1 margin-top-0">Map of diffusion</h4>
+        <h4 class="font-sans-xl margin-bottom-1 margin-top-0 line-height-sans-205">Map of diffusion</h4>
         <p class="font-sans-lg margin-bottom-2">Explore how practices are being adopted across the country.</p>
         <div class="padding-y-105 padding-x-2 bg-gold radius-md margin-bottom-205">
           <span class="text-bold">Note:</span>&nbsp;<span>More practices will be added to this map in the next few months.</span>
@@ -67,6 +74,7 @@
         <button id="filterResultsTrigger" class="map-filters-trigger usa-button text-bold display-block margin-bottom-105 padding-2">
           Filter results
         </button>
+        <button type="button" class="usa-button text-bold hidden margin-bottom-105 padding-2 bg-base-lightest text-ink" id="filterClose" aria-label="Close map filters">Close filters</button>
         <div class="width-full position-relative">
           <div id="map" style="width: 100%; height: 633px;"></div>
           <%= render 'maps/home_map_filters' %>
@@ -74,9 +82,9 @@
     </section>
   <% end %>
 
-  <section class="padding-top-2 margin-bottom-5">
+  <section class="padding-top-2">
     <div class="grid-container">
-      <h4 class="font-sans-xl margin-bottom-2 margin-top-0">All practices</h4>
+      <h4 class="font-sans-xl margin-bottom-2 margin-top-0 line-height-sans-205">All practices</h4>
       <p class="font-sans-lg margin-bottom-1">View all submitted and accepted practices.</p>
       <div class="grid-row grid-gap-3">
         <% @practices.each do |p| %>
@@ -90,8 +98,4 @@
       </div>
     </div>
   </section>
-
-  <div class="grid-container margin-bottom-105">
-    <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
-  </div>
 </div>

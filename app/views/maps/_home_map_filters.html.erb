@@ -1,13 +1,18 @@
+<% provide :head_tags do %>
+  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    <%= render partial: 'maps/facility_auto_complete', formats: [:js] %>
+  <% end %>
+<% end %>
+
 <% diffused_practices = @diffused_practices.map(&:practice).uniq.sort_by(&:name) %>
 <div id="filterResults" class="map-filters padding-y-0 position-absolute display-none">
   <div class="padding-left-1">
     <div class="margin-top-2 margin-bottom-105">
-      <span id="filterClose" class="close text-base-darkest" tabindex="0" role="button" aria-label="Close map filters"><span class="fas fa-times"></span></span>
       <h3 class="font-sans-lg bold-height-2 margin-0 ">Filter results</h3>
     </div>
     <div class="margin-bottom-1">
       <p class="margin-bottom-1 margin-top-0"><span id="facility-results-count"><%= @diffusion_histories.length %></span>
-        facility matches (of <%= @vamc_facilities.length %>)</p>
+        facility matches (of <%= @diffusion_histories.length %>)</p>
       <p class="margin-0">
         <span id="practice-results-count">
           <%= diffused_practices.length %>
@@ -41,7 +46,7 @@
           <legend class="usa-sr-only">Statuses</legend>
           <% statuses.each do |v| %>
             <input id="status_<%= v.downcase.gsub(' ', '_') %>" name="statuses" type="checkbox" value="<%= v %>" class="usa-checkbox__input">
-            <label for="status_<%= v.downcase.gsub(' ', '_') %>" class="usa-checkbox__label">
+            <label for="status_<%= v.downcase.gsub(' ', '_') %>" class="usa-checkbox__label adoption-status-label">
               <%= v %>
             </label>
           <% end %>
@@ -55,20 +60,6 @@
           <% complexities.each do |k, v| %>
             <input id="complexity_<%= k.to_s.downcase.gsub(' ', '_') %>" name="complexities" type="checkbox" value="<%= v %>" class="usa-checkbox__input">
             <label for="complexity_<%= k.to_s.downcase.gsub(' ', '_') %>" class="usa-checkbox__label">
-              <%= k %>
-            </label>
-          <% end %>
-        </fieldset>
-      </div>
-      <div class="margin-bottom-2">
-        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0">Practice cost</h4>
-
-        <% costs = {'No cost': 0, 'Low cost': 1, 'Moderate cost': 2, 'High cost': 3} %>
-        <fieldset>
-          <legend class="usa-sr-only">Costs</legend>
-          <% costs.each do |k, v| %>
-            <input id="costs_<%= k.to_s.downcase.gsub(' ', '_') %>" name="costs" type="checkbox" value="<%= v %>" class="usa-checkbox__input">
-            <label for="costs_<%= k.to_s.downcase.gsub(' ', '_') %>" class="usa-checkbox__label">
               <%= k %>
             </label>
           <% end %>
@@ -91,10 +82,10 @@
       </div>
 
       <div class="margin-bottom-2 clearfix">
-        <div class="usa-search usa-search--small">
+        <div class="usa-search usa-search--small" id="facility_name_container">
           <label class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0 text-bold" for="facility_name">Facility
             name</label>
-          <input class="usa-input" id="facility_name" name="facility_name">
+          <input id="facility_name" class="usa-input typeahead" name="facility_name">
         </div>
         <button type="button" class="usa-button--unstyled float-right padding-top-1 padding-bottom-05 padding-right-1" id="practiceListTrigger">
           View list of facilities
@@ -102,10 +93,11 @@
         <div id="practiceListContainer" class="map-filters-list display-none">
           <fieldset>
             <legend class="usa-sr-only">Facilities</legend>
-            <% @vamc_facilities.sort_by {|f| f["OfficialStationName"]}.sort_by {|f| f["StreetAddressState"]}.each do |f| %>
+            <% @vamc_facilities.sort_by {|f| [f["StreetAddressState"], f["OfficialStationName"], ]}.each do |f| %>
               <input id="<%= f["StationNumber"] %>" name="facilities" type="checkbox" value="<%= f["StationNumber"] %>" class="usa-checkbox__input">
               <label for="<%= f["StationNumber"] %>" class="usa-checkbox__label">
                 <%= f["StreetAddressState"] %>: <%= f["OfficialStationName"] %>
+                  <%= show_common_name(f["OfficialStationName"], f["CommonName"]) %>
               </label>
             <% end %>
           </fieldset>

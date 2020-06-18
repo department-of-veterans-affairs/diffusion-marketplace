@@ -1,7 +1,7 @@
 <div>
   <section class="grid-container margin-bottom-3">
-    <%= render "shared/messages" %>
-    <div class="dm-font-color-primary-blue p1-top breadcrumbs" id="breadcrumbs">
+    <%= render partial: "shared/messages", locals: {small_text: false} %>
+    <div class="dm-font-color-primary-blue margin-y-2 breadcrumbs" id="breadcrumbs">
       <a href="/">Home</a>
       <span class="x0-5-left x0-5-right">›</span>
       <span class="text-bold">Partners</span>
@@ -15,7 +15,7 @@
     </div>
   </section>
 
-  <section class="practice-partner-list margin-bottom-2">
+  <section class="practice-partner-list">
     <div class="grid-container">
       <% @practice_partners.each do |ss| %>
         <% if ss.name == 'None of the above, or Unsure' %>
@@ -23,7 +23,7 @@
         <% else %>
           <div class="grid-row">
             <div class="grid-col-8 margin-bottom-3">
-              <h3 class="font-sans-lg margin-top-0 margin-bottom-05"><%= link_to "#{ss.name}#{ss.short_name.present? ? " (#{ss.short_name.upcase})" : ''}", practice_partner_path(ss), class: 'practice-partner-link' %></h3>
+              <h3 class="font-sans-lg margin-top-0 margin-bottom-05"><%= link_to "#{ss.name}#{ss.short_name.present? ? " (#{ss.short_name.upcase})" : ''}", practice_partner_path(ss), class: 'practice-partner-link', title: "Go to #{ss.name} partner page" %></h3>
               <p class="font-sans-md line-height-sans-505"><%= ss.description %></p>
             </div>
           </div>
@@ -31,7 +31,4 @@
       <% end %>
     </div>
   </section>
-  <div class="grid-container margin-bottom-105">
-    <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
-  </div>
 </div>

@@ -2,7 +2,7 @@
   <div class="grid-container position-relative padding-x-9">
     <div class="grid-row padding-x-9">
       <div id="overview" class="grid-col-12">
-        <%= render "shared/messages" %>
+        <%= render partial: "shared/messages", locals: {small_text: false} %>
 
         <div class="bg-white">
 
@@ -44,9 +44,6 @@
         <%= link_to 'Login to see full practice', new_user_session_path, id: 'practice-page-login-link', class: 'dm-button-link display-inline-block font-sans-xs-2 line-height-sans-505' %>
       </div>
     </div>
-  </div>
-  <div class="grid-container margin-bottom-105">
-    <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
   </div>
 </section>
 <%# <div class="dm-background-triangle-bottom "></div> %>

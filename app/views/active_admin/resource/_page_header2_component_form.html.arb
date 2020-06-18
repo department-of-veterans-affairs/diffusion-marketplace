@@ -1,0 +1,33 @@
+# TODO: get the placeholder how active admin does "NEW_#{association_human_name.upcase.split(' ').join('_')}_RECORD"
+placeholder ||= 'NEW_PAGE_COMPONENT_RECORD' # = "NEW_#{association_human_name.upcase.split(' ').join('_')}_RECORD"
+component ||= nil
+html = Arbre::Context.new do
+  li "", id: "PageHeader2Component_poly_#{placeholder}", class: "polyform component-#{placeholder}" do
+    fieldset class: "inputs"  do
+      legend do
+        span 'Heading 2'
+      end
+      ol do
+        if component
+          input type: 'hidden', value: component.id, name: "page[page_components_attributes][#{placeholder}][component_attributes][id]"
+        end
+        li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_subtopic_title_input" do
+          label 'Subtopic title', for: "page_page_components_attributes_#{placeholder}_component_attributes_text", class: 'label'
+          input value: component&.subtopic_title || nil, type: 'text', required: 'required',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_subtopic_title",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][subtopic_title]"
+          para 'Section header styled as secondary heading/"H2"', class: 'inline-hints'
+
+          li class: 'string input optional stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_subtopic_description_input" do
+            label 'Subtopic description', for: "page_page_components_attributes_#{placeholder}_component_attributes_text", class: 'label'
+            input value: component&.subtopic_description || nil, type: 'text', required: 'required',
+                  id: "page_page_components_attributes_#{placeholder}_component_attributes_subtopic_description",
+                  name: "page[page_components_attributes][#{placeholder}][component_attributes][subtopic_description]"
+          end
+        end
+      end
+    end
+  end
+end
+
+f.template.concat(html.to_s)

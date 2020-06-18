@@ -4,7 +4,7 @@
   max-width: unset !important;
 }
 
-.shark-tank-support-link, .shark-tank-faq-link {
+.shark-tank-support-link, .shark-tank-faq-link, .shark-tank-application-link {
   color: $dm-color-primary-blue;
   text-decoration: underline;
 
@@ -15,4 +15,8 @@
   &:visited {
     color: $dm-default-visited-link-purple !important;
   }
+}
+.shark-tank-apply-button {
+  padding: 16px !important;
+  margin-right: 0 !important;
 }

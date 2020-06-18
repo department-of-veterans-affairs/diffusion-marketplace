@@ -1,4 +1,5 @@
 <% provide :head_tags do %>
+  <%= javascript_include_tag '_assign_facility_name', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_facilitySelect', 'data-turbolinks-track': 'reload' %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     var facilityData = <%= raw JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json")).to_json %>;
@@ -21,8 +22,8 @@
     <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
     <div id="overview" class="desktop:grid-col-9 grid-col-12 p0">
-      <%= render "shared/messages" %>
-      <section class="usa-section padding-top-0 p2-bottom introduction">
+      <%= render partial: "shared/messages", locals: {small_text: false} %>
+      <section class="usa-section padding-top-0 p0-bottom introduction">
         <h1 class="font-sans-2xl line-height-sans-205">Overview</h1>
         <h2 class="text-normal">Introduce your practice and provide a clear overview to people who may be unfamiliar
           with it.</h2>
@@ -130,19 +131,15 @@
             <% end %>
           </fieldset>
         <% end %>
-        <div class="grid-row margin-bottom-8">
-            <%= link_to practice_instructions_path(@practice), class: 'usa-button usa-button--outline editor-back-to-link margin-right-1 padding-2 margin-bottom-5 text-no-underline' do %>
+        <div class="grid-row">
+            <%= link_to practice_instructions_path(@practice), class: 'usa-button usa-button--outline editor-back-to-link margin-right-1 padding-2 text-no-underline' do %>
                 <i class="fas fa-chevron-left fa-sm text-no-underline margin-right-1"></i>Back
             <% end %>
-            <%= link_to practice_adoptions_path(@practice), class: 'usa-button padding-2 editor-continue-link margin-right-1 margin-bottom-5' do %>
+            <%= link_to practice_adoptions_path(@practice), class: 'usa-button padding-2 editor-continue-link continue-and-save margin-right-1' do %>
                 Continue<i class="fas fa-chevron-right fa-sm margin-left-1 text-no-underline"></i>
             <% end %>
         </div>
       </section>
     </div>
-  </div>
-
-  <div class="margin-bottom-105">
-    <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
   </div>
 </div>

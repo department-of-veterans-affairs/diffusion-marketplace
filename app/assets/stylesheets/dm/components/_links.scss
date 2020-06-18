@@ -1,5 +1,7 @@
 @import "../variables/colors";
 
+$none-important: none !important;
+
 a.dm {
   color: #000000;
   text-decoration: none;
@@ -10,5 +12,22 @@ a.dm {
 
   &:visited {
     color: #000000;
+  }
+}
+
+.page-subpage-hyperlink {
+  color: $dm-color-base !important;
+
+  &:hover {
+    color: $dm-color-darker-blue !important;
+    text-decoration: $none-important;
+
+    span {
+      text-decoration: $none-important;
+    }
+  }
+
+  &:visited {
+    color: $dm-color-base;
   }
 }

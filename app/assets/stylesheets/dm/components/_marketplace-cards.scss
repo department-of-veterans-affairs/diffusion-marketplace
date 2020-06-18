@@ -119,3 +119,56 @@
   right: 25px !important;
   top: 10px !important;
 }
+
+.marketplace-card-container:hover {
+  text-decoration: none !important;
+  color: $dm-color-black !important;
+
+  * {
+    text-decoration: none !important;
+  }
+
+  h4 {
+    color: $dm-color-primary-blue !important;
+    text-decoration: underline !important;
+  }
+
+  .js-shave-char {
+    color: $dm-color-primary-blue !important;
+  }
+
+  p {
+    text-decoration: none !important;
+    color: $dm-color-black !important;
+  }
+
+  span {
+    text-decoration: none !important;
+    color: $dm-color-black !important;
+  }
+}
+
+.marketplace-card-container:visited {
+  h4 {
+    color: $dm-default-visited-link-purple !important;
+
+    &:hover {
+      color: $dm-default-visited-link-purple !important;
+    }
+  }
+
+  .js-shave-char {
+    color: $dm-default-visited-link-purple !important;
+  }
+}
+
+.practice-card-tagline {
+  margin-top: 0 !important;
+  margin-bottom: 0.5em !important;
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .marketplace-card-img {
+    display: none !important;
+  }
+}

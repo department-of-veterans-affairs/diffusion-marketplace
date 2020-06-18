@@ -13,8 +13,8 @@
         <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
         <div id="timeline" class="desktop:grid-col-9 grid-col-12 p0">
-            <%= render "shared/messages" %>
-            <section class="usa-section padding-top-0 p2-bottom timeline">
+            <%= render partial: "shared/messages", locals: {small_text: false} %>
+            <section class="usa-section padding-top-0 p0-bottom timeline">
                 <h1 class="font-sans-2xl line-height-sans-205">Timeline</h1>
                 <h2 class="text-normal">
                     This section details the estimated timeline for another facility to implement your practice.
@@ -73,18 +73,15 @@
 
                     </fieldset>
                 <% end %>
-                <div class="grid-row margin-bottom-8">
-                    <%= link_to practice_complexity_path(@practice), class: 'usa-button usa-button--outline editor-back-to-link margin-right-1 padding-2 margin-bottom-5 text-no-underline' do %>
+                <div class="grid-row">
+                    <%= link_to practice_complexity_path(@practice), class: 'usa-button usa-button--outline editor-back-to-link margin-right-1 padding-2 text-no-underline' do %>
                         <i class="fas fa-chevron-left fa-sm text-no-underline margin-right-1"></i>Back
                     <% end %>
-                    <%= link_to practice_risk_and_mitigation_path(@practice), class: 'usa-button padding-2 editor-continue-link margin-right-1 margin-bottom-5' do %>
+                    <%= link_to practice_risk_and_mitigation_path(@practice), class: 'usa-button padding-2 editor-continue-link continue-and-save margin-right-1' do %>
                         Continue<i class="fas fa-chevron-right fa-sm margin-left-1 text-no-underline"></i>
                     <% end %>
                 </div>
             </section>
         </div>
-    </div>
-    <div class="margin-bottom-105">
-        <button class="usa-button usa-button--unstyled return-to-top">Return to top</button>
     </div>
 </div>

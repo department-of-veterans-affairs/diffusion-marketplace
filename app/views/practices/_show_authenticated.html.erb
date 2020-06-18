@@ -52,12 +52,12 @@
       </li>
     </ul>
     <div class="text-center">
-      <%= link_to 'Take the next step', practice_planning_checklist_url(practice_id: @practice.slug), id: 'next-steps-link-in-nav', class: 'usa-button width-full' %>
+      <%= link_to 'See adoption checklist', practice_planning_checklist_url(practice_id: @practice.slug), id: 'next-steps-link-in-nav', class: 'usa-button width-full p1' %>
     </div>
   </div>
 </div>
 <div class="practice-mobile-nav padding-1 z-top desktop:display-none display-flex justify-center">
-  <%= link_to 'Take the next step', practice_planning_checklist_url(practice_id: @practice.slug), id: 'next-steps-link-in-mobile-nav', class: 'usa-button' %>
+  <%= link_to 'See adoption checklist', practice_planning_checklist_url(practice_id: @practice.slug), id: 'next-steps-link-in-mobile-nav', class: 'usa-button' %>
 </div>
 
 <section class="usa-section p2-top p2-bottom">
@@ -71,7 +71,7 @@
       <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
       <div id="practice_show" class="desktop:grid-col-6 grid-col-12 p0 overview-section practice-section">
-        <%= render "shared/messages" %>
+        <%= render partial: "shared/messages", locals: {small_text: false} %>
         <% unless @practice.published && @practice.approved %>
           <div class="usa-alert usa-alert--warning">
             <div class="usa-alert__body">
@@ -124,6 +124,9 @@
           <p class="font-sans-xs-2 line-height-sans-505 margin-bottom-3">
             Created by
             the <%= @facility_data.present? ? @facility_data['OfficialStationName'] : @practice.initiating_facility %>
+            <% if @facility_data.present? %>
+              <%= show_common_name(@facility_data["OfficialStationName"], @facility_data["CommonName"]) %>
+            <% end %>
             in
             <span><%= @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)' %></span>
           </p>
@@ -208,18 +211,18 @@
 
 <!-- "Documentation" section -->
 <% if @practice.additional_documents.any? || @practice.publications.any? %>
-  <section class="margin-bottom-7">
+  <section class="margin-bottom-4">
     <div class="grid-container">
       <div class="grid-row grid-gap">
         <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
         <div class="desktop:grid-col-9 grid-col-12 p0">
-          <div class="grid-row flex-align-center margin-bottom-5">
+          <div class="grid-row flex-align-center margin-bottom-30px">
             <h2 class="font-sans-xl text-bold margin-y-0 flex-auto margin-right-205">Documentation</h2>
             <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest section-line">
           </div>
           <% if @practice.additional_documents.any? %>
             <h3 class="font-sans-lg margin-top-0 margin-bottom-1">Downloads</h3>
-            <div class="padding-bottom-1">
+            <div>
               <%= render partial: 'additional_documents' %>
             </div>
           <% else %>
@@ -302,7 +305,7 @@
 <% end %>
 
 <!-- "Support Team" || "Contact" section -->
-<% if @practice.va_employees.any? %>
+<% if @practice.va_employees.any? || @practice.support_network_email.present? %>
   <section class="margin-bottom-7">
     <div class="grid-container">
       <div class="grid-row grid-gap">

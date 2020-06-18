@@ -78,11 +78,11 @@ header {
 
 .bulletin-menu-button {
   &:hover {
-    text-decoration: underline !important;
+    text-decoration: none !important;
   }
 
   &:after {
-    text-decoration: underline !important;
+    text-decoration: none !important;
   }
 
   &:hover::after {
@@ -98,16 +98,12 @@ header {
   color: $dm-color-black !important;
   font-weight: normal !important;
 
-  &:hover {
-    text-decoration: underline !important;
-  }
-
   &:visited {
     color: $dm-default-visited-link-purple !important;
   }
 }
 
-.partners-link {
+.usa-nav__primary-item a {
   &:hover {
     text-decoration: underline !important;
   }

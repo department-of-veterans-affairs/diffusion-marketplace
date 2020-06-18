@@ -21,7 +21,7 @@
     end
   end
 %>
-<%= form_with(url: "#{practice_create_or_update_diffusion_history_path(practice)}.js", local: false, html: {id: "adoption_form#{adoption&.diffusion_history&.id}"}) do |f| %>
+<%= form_with(url: "#{practice_create_or_update_diffusion_history_path(practice)}.js", local: false, html: {id: "adoption_form#{adoption&.diffusion_history&.id}", class: 'adoption-form'}) do |f| %>
   <%= f.hidden_field('diffusion_history_id', value: adoption.diffusion_history.id) if adoption %>
   <%= f.hidden_field('diffusion_history_status_id', value: adoption.id) if adoption %>
   <div class="margin-bottom-3 margin-top-1">

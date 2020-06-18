@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_16_134102) do
+ActiveRecord::Schema.define(version: 2020_06_15_151811) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "active_admin_comments", force: :cascade do |t|
@@ -170,6 +171,7 @@ ActiveRecord::Schema.define(version: 2020_04_16_134102) do
     t.integer "parent_category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "related_terms", default: [], array: true
   end
 
   create_table "category_practices", force: :cascade do |t|
@@ -480,6 +482,156 @@ ActiveRecord::Schema.define(version: 2020_04_16_134102) do
     t.index ["password_archivable_type", "password_archivable_id"], name: "index_password_archivable"
   end
 
+  create_table "page_accordion_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "title"
+    t.string "text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_component_id"], name: "index_page_accordion_components_on_page_component_id"
+  end
+
+  create_table "page_components", force: :cascade do |t|
+    t.bigint "page_id"
+    t.integer "position"
+    t.string "component_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "component_id", null: false
+    t.index ["component_id"], name: "index_page_components_on_component_id"
+    t.index ["page_id"], name: "index_page_components_on_page_id"
+    t.index ["position"], name: "index_page_components_on_position"
+  end
+
+  create_table "page_cta_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.text "cta_text"
+    t.string "button_text"
+    t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_component_id"], name: "index_page_cta_components_on_page_component_id"
+  end
+
+  create_table "page_downloadable_file_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "display_name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "attachment_file_name"
+    t.string "attachment_content_type"
+    t.integer "attachment_file_size"
+    t.datetime "attachment_updated_at"
+    t.index ["page_component_id"], name: "index_page_downloadable_file_components_on_page_component_id"
+  end
+
+  create_table "page_groups", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_page_groups_on_slug", unique: true
+  end
+
+  create_table "page_header2_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "subtopic_title"
+    t.string "subtopic_description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_component_id"], name: "index_page_header2_components_on_page_component_id"
+  end
+
+  create_table "page_header3_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "alignment"
+    t.string "title"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_component_id"], name: "index_page_header3_components_on_page_component_id"
+  end
+
+  create_table "page_header_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "text"
+    t.string "heading_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_component_id"], name: "index_page_header_components_on_page_component_id"
+  end
+
+  create_table "page_hr_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "html_tag"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_component_id"], name: "index_page_hr_components_on_page_component_id"
+  end
+
+  create_table "page_image_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.text "alt_text"
+    t.string "alignment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "page_image_file_name"
+    t.string "page_image_content_type"
+    t.integer "page_image_file_size"
+    t.datetime "page_image_updated_at"
+    t.index ["page_component_id"], name: "index_page_image_components_on_page_component_id"
+  end
+
+  create_table "page_paragraph_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_component_id"], name: "index_page_paragraph_components_on_page_component_id"
+  end
+
+  create_table "page_practice_list_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "practices", default: [], array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "page_subpage_hyperlink_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "title"
+    t.string "description"
+    t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_component_id"], name: "index_page_subpage_hyperlink_components_on_page_component_id"
+  end
+
+  create_table "page_you_tube_player_components", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "page_component_id"
+    t.string "url"
+    t.string "caption"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_component_id"], name: "index_page_you_tube_player_components_on_page_component_id"
+  end
+
+  create_table "pages", force: :cascade do |t|
+    t.bigint "page_group_id"
+    t.string "title"
+    t.string "description"
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "published"
+    t.boolean "ever_published", default: false, null: false
+    t.boolean "is_visible", default: true, null: false
+    t.integer "template_type", default: 0
+    t.boolean "has_chrome_warning_banner", default: false
+    t.index ["page_group_id"], name: "index_pages_on_page_group_id"
+  end
+
   create_table "photo_files", force: :cascade do |t|
     t.string "title"
     t.integer "position"
@@ -646,6 +798,7 @@ ActiveRecord::Schema.define(version: 2020_04_16_134102) do
     t.boolean "featured", default: false, null: false
     t.integer "ahoy_visit_id"
     t.string "training_provider_role"
+    t.boolean "enabled", default: true, null: false
     t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
   end
@@ -758,6 +911,8 @@ ActiveRecord::Schema.define(version: 2020_04_16_134102) do
     t.boolean "favorited", default: false
     t.boolean "verified_implementer", default: false
     t.boolean "team_member", default: false
+    t.datetime "time_favorited"
+    t.datetime "time_committed"
     t.index ["practice_id"], name: "index_user_practices_on_practice_id"
     t.index ["user_id"], name: "index_user_practices_on_user_id"
   end
@@ -935,6 +1090,19 @@ ActiveRecord::Schema.define(version: 2020_04_16_134102) do
   add_foreign_key "job_positions", "job_position_categories"
   add_foreign_key "milestones", "timelines"
   add_foreign_key "mitigations", "risk_mitigations"
+  add_foreign_key "page_accordion_components", "page_components"
+  add_foreign_key "page_components", "pages"
+  add_foreign_key "page_cta_components", "page_components"
+  add_foreign_key "page_downloadable_file_components", "page_components"
+  add_foreign_key "page_header2_components", "page_components"
+  add_foreign_key "page_header3_components", "page_components"
+  add_foreign_key "page_header_components", "page_components"
+  add_foreign_key "page_hr_components", "page_components"
+  add_foreign_key "page_image_components", "page_components"
+  add_foreign_key "page_paragraph_components", "page_components"
+  add_foreign_key "page_subpage_hyperlink_components", "page_components"
+  add_foreign_key "page_you_tube_player_components", "page_components"
+  add_foreign_key "pages", "page_groups"
   add_foreign_key "photo_files", "practices"
   add_foreign_key "practice_creators", "practices"
   add_foreign_key "practice_creators", "users"
