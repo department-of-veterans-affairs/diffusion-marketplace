@@ -120,25 +120,28 @@
             <svg class="svg">
               <rect class="rectangle21" />
             </svg>
-            <%#= debugger %>
             <p class="margin-top-3"><span class="text-bold">Practice origin</span>&nbsp;</p>
             <span>Select the location where this practice originated</span>
             <div class="grid-row grid-gap margin-top-105 margin-bottom-3">
               <div class='usa-checkbox grid-col-12'>
-                <input type='radio' class='usa-checkbox__input practice_origin_facility' id='practice_origin_1' value="facility" name='practice_origin_<%= @practice.id %>' checked='true'>
-                <label class='usa-checkbox__label' for='practice_origin_1'>Facility</label>
+                <%= f.radio_button :initiating_facility_type, '0' %> Facility<br />
+<!--                <input type='radio' class='usa-checkbox__input practice_origin_facility' id='practice_origin_1' value="0" name='practice_origin_<%#= @practice.id %>' checked='true'>-->
+<!--                <label class='usa-checkbox__label' for='practice_origin_1'>Facility</label>-->
               </div>
               <div class='usa-checkbox grid-col-12'>
-                <input type='radio' class='usa-checkbox__input practice_origin_VISN' id='practice_origin_2' value="VISN" name='practice_origin_<%= @practice.id %>' checked='false'>
-                <label class='usa-checkbox__label' for='practice_origin_2'>VISN</label>
+                <%= f.radio_button :initiating_facility_type, '1' %> VISN<br />
+<!--                <input type='radio' class='usa-checkbox__input practice_origin_VISN' id='practice_origin_2' value="1" name='practice_origin_<%#= @practice.id %>' checked='false'>-->
+<!--                <label class='usa-checkbox__label' for='practice_origin_2'>VISN</label>-->
               </div>
               <div class='usa-checkbox grid-col-12'>
-                <input type='radio' class='usa-checkbox__input practice_origin_department' id='practice_origin_3' value="department" name='practice_origin_<%= @practice.id %>' checked='false'>
-                <label class='usa-checkbox__label' for='practice_origin_3'>Department</label>
+                <%= f.radio_button :initiating_facility_type, '2' %> Department<br />
+<!--                <input type='radio' class='usa-checkbox__input practice_origin_department' id='practice_origin_3' value="2" name='practice_origin_<%#= @practice.id %>' checked='false'>-->
+<!--                <label class='usa-checkbox__label' for='practice_origin_3'>Department</label>-->
               </div>
               <div class='usa-checkbox grid-col-12'>
-                <input type='radio' class='usa-checkbox__input practice_origin_other' id='practice_origin_4' value="other" name='practice_origin_<%= @practice.id %>' checked='false'>
-                <label class='usa-checkbox__label' for='practice_origin_4'>Other</label>
+                <%= f.radio_button :initiating_facility_type, '3' %> Other<br />
+<!--                <input type='radio' class='usa-checkbox__input practice_origin_other' id='practice_origin_4' value="3" name='practice_origin_<%#= @practice.id %>' checked='false'>-->
+<!--                <label class='usa-checkbox__label' for='practice_origin_4'>Other</label>-->
               </div>
             </div>
 
