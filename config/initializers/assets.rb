@@ -16,3 +16,4 @@ Rails.application.config.assets.precompile += %w( ie.js _render_warning_banners.
 # Rails.application.config.assets.precompile += %w( admin.js admin.css )
 
 Rails.application.config.assets.precompile += %w( commontator/* )
+Rails.application.config.assets.precompile += %w( practice_editor_introduction.js )

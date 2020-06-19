@@ -8,11 +8,14 @@
   <% end %>
   <%= javascript_include_tag 'practice_editor_overview', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_cropper', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'practice_editor_introduction', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <%
   partners = PracticePartner.all
   p_partners = @practice.practice_partners
+
+  debugger
 %>
 
 <%= render 'breadcrumbs' %>
@@ -123,43 +126,44 @@
             <p class="margin-top-3"><span class="text-bold">Practice origin</span>&nbsp;</p>
             <span>Select the location where this practice originated</span>
             <div class="grid-row grid-gap margin-top-105 margin-bottom-3">
+              <input type="hidden" id="_init_facility" value="<%= @practice.initiating_facility_type %>">
+
               <div class='usa-checkbox grid-col-12'>
                 <%= f.radio_button :initiating_facility_type, '0' %> Facility<br />
-<!--                <input type='radio' class='usa-checkbox__input practice_origin_facility' id='practice_origin_1' value="0" name='practice_origin_<%#= @practice.id %>' checked='true'>-->
-<!--                <label class='usa-checkbox__label' for='practice_origin_1'>Facility</label>-->
               </div>
               <div class='usa-checkbox grid-col-12'>
-                <%= f.radio_button :initiating_facility_type, '1' %> VISN<br />
-<!--                <input type='radio' class='usa-checkbox__input practice_origin_VISN' id='practice_origin_2' value="1" name='practice_origin_<%#= @practice.id %>' checked='false'>-->
-<!--                <label class='usa-checkbox__label' for='practice_origin_2'>VISN</label>-->
+                <%= f.radio_button :initiating_facility_type, '1', onClick: "javascript:showHidePracticeOriginFields();" %> VISN<br />
               </div>
               <div class='usa-checkbox grid-col-12'>
                 <%= f.radio_button :initiating_facility_type, '2' %> Department<br />
-<!--                <input type='radio' class='usa-checkbox__input practice_origin_department' id='practice_origin_3' value="2" name='practice_origin_<%#= @practice.id %>' checked='false'>-->
-<!--                <label class='usa-checkbox__label' for='practice_origin_3'>Department</label>-->
               </div>
               <div class='usa-checkbox grid-col-12'>
                 <%= f.radio_button :initiating_facility_type, '3' %> Other<br />
-<!--                <input type='radio' class='usa-checkbox__input practice_origin_other' id='practice_origin_4' value="3" name='practice_origin_<%#= @practice.id %>' checked='false'>-->
-<!--                <label class='usa-checkbox__label' for='practice_origin_4'>Other</label>-->
               </div>
             </div>
 
             <div class="grid-row grid-gap-4">
-              <div>
+              <div id="editor_state_dropdown">
                 <%= label_tag 'editor_state_select', 'State', class: 'usa-label' %>
                 <%= select_tag('', options_for_select(us_states), id: 'editor_state_select', name: 'editor_state_select', class: 'width-card-lg height-5 usa-select', required: true) %>
               </div>
-              <div class="grid-col-fill">
+              <div id="editor_facility_dropdown" class="grid-col-fill">
                 <%= label_tag 'editor_facility_select', 'Facility', class: 'usa-label' %>
                 <%= select_tag('practice[initiating_facility]', options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), id: 'editor_facility_select', class: 'width-full height-5 usa-select', required: true) %>
               </div>
+              <div id="editor_department_dropdown" class="grid-col-fill">
+                <input type="text" value="hello">
+                <%#= label_tag 'editor_department_select', 'Department', class: 'usa-label' %>
+                <%#= select_tag(:initiating_department_office_id, options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), id: 'editor_facility_select', class: 'width-full height-5 usa-select', required: true) %>
+              </div>
+            </div>
+            <div id="init_facility_other">
+              <%= label_tag 'initiating_facility_other', 'Other', class: 'usa-label' %>
+              <%= f.text_field :init_facility_other_text, :value => params[:initiating_facility_other] %><br />
             </div>
             <svg class="svg">
               <rect class="rectangle21" />
             </svg>
-
-
             <p class="margin-top-3 margin-bottom-1"><span class="text-bold">Partners: </span><span>Select any of the following partners your practice is associated with.</span>
               <%
                 no_partners = PracticePartner.where(name: 'None of the above, or Unsure')
