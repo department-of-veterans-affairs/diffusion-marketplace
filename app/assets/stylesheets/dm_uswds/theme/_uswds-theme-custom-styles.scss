@@ -156,7 +156,7 @@ button.appearance-none {
   @extend .text-primary;
   &:hover {
     @extend .text-base-darkest;
-  } 
+  }
 }
 
 // Custom styles
@@ -312,15 +312,10 @@ a {
   right: 2%;
 }
 
-.text-no-underline {
-  @include u-text('no-underline', !important)
-}
-
 .practice-card-outline {
   border: 2px solid #DCDEE0;
   box-sizing: border-box;
   border-radius: 2px;
-  
 }
 
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {

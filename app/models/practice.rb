@@ -250,6 +250,18 @@ class Practice < ApplicationRecord
     number_adopted
   end
 
+  def number_of_completed_adoptions
+    diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Completed'}).or(diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Implemented'})).or(diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Complete'})).count
+  end
+
+  def number_of_in_progress_adoptions
+    diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'In progress'}).or(diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Planning'})).or(diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Implementing'})).count
+  end
+
+  def number_of_unsuccessful_adoptions
+    diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Unsuccessful'}).count
+  end
+
   def date_range_views(start_date, end_date)
     Ahoy::Event.where_props(practice_id: id).where(time: start_date...end_date).count
   end

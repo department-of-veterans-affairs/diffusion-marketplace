@@ -1,11 +1,11 @@
 <% if @favorited %>
-  $('.favorite-icon-<%= @practice.id %>').removeClass('far text-base');
-  $('.favorite-icon-<%= @practice.id %>').addClass('fas text-secondary');
-  $('.favorite-practice-link-text').text('Remove from your favorites');
+  $('.dm-favorite-icon-<%= @practice.id %>').removeClass('far');
+  $('.dm-favorite-icon-<%= @practice.id %>').addClass('fas');
+  $('.dm-favorite-practice-link-text').text('Bookmarked');
 <% else %>
-  $('.favorite-icon-<%= @practice.id %>').removeClass('fas text-secondary');
-  $('.favorite-icon-<%= @practice.id %>').addClass('far text-base');
-  $('.favorite-practice-link-text').text('Add to your favorites');
+  $('.dm-favorite-icon-<%= @practice.id %>').removeClass('fas');
+  $('.dm-favorite-icon-<%= @practice.id %>').addClass('far');
+  $('.dm-favorite-practice-link-text').text('Bookmark');
 <% end %>
 
 if (results) {
