@@ -5,16 +5,14 @@
 
 $( document ).ready(function() {
     const $document = $(document);
-    alert( "ready!" );
+    //alert( "ready!" );
     showHidePracticeOriginFields(99);
 });
 
 function showHidePracticeOriginFields(facility_type){
-    alert(facility_type);
     if(facility_type == 99){
         facility_type = document.getElementById("_init_facility_type").value;
     }
-    alert(facility_type)
     if(facility_type == 0)
     {
         document.getElementById("editor_state_dropdown").style.display = "block";

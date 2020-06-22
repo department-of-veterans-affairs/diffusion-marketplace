@@ -9,6 +9,7 @@
   <%= javascript_include_tag 'practice_editor_overview', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_cropper', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_introduction', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'practice_editor_adoptions', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <%
@@ -167,6 +168,13 @@
             <svg class="svg">
               <rect class="rectangle21" />
             </svg>
+            <!--Adoptions -->
+
+
+
+
+
+
             <p class="margin-top-3 margin-bottom-1"><span class="text-bold">Partners: </span><span>Select any of the following partners your practice is associated with.</span>
               <%
                 no_partners = PracticePartner.where(name: 'None of the above, or Unsure')
