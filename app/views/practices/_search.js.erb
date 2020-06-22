@@ -42,7 +42,7 @@ function searchPracticesPage() {
         results.forEach(function(result) {
             var noBackgroundImage = result.item.image ? '' : 'class: fas fa-images fa-3x text-base-lighter search-no-image';
             var background = result.item.image ? 'background: url(' + result.item.image + ')' + ' transparent; background-repeat: no-repeat; background-position: center; background-size: cover;' : 'background-color: #f0f0f0; transparent; background-size: contain; background-repeat: no-repeat; background-position: center; ';
-            var favoriteButtonIcon = result.item.user_favorited ? 'fas text-secondary' : 'far text-base';
+            var favoriteButtonIcon = result.item.user_favorited ? 'fas text-secondary' : 'far';
             var favoriteButton =
                 '<a aria-label="Favorite ' + result.item.name + '" tabindex="-1" aria-hidden="true" class="search-favorite-practice-button" id="favorite-button-' + result.item.id +'" data-remote="true" rel="nofollow" data-method="post" href="/practices/' + result.item.slug + '/favorite.js">' +
                     '<i class="' + favoriteButtonIcon + ' fa-heart favorite-icon-' + result.item.id + ' text-no-underline"></i>' +
@@ -184,7 +184,7 @@ function searchPracticesPage() {
 function addResultsBreadcrumb() {
     $('#search-breadcrumb').html('<a href="/practices">Practices</a>');
     $('#breadcrumbs').append('<span class="x0-5-left x0-5-right">›</span>' +
-        '<span id="results-breadcrumb">Search</span>'
+        '<span id="results-breadcrumb" class="text-bold">Search</span>'
     );
 }
 

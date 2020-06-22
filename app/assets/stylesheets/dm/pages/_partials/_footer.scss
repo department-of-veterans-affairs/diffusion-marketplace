@@ -8,10 +8,15 @@ footer {
 }
 
 .nominate-link {
-  color: $dm-color-primary-blue;
+  color: $dm-color-blue-50v;
   text-decoration: none;
+
+  &:hover {
+    color: $dm-color-blue-50v !important;
+  }
+
   &:visited {
-    color: $dm-color-primary-blue;
+    color: $dm-color-blue-50v;
   }
 }
 

@@ -239,7 +239,7 @@ p {
 
   &:hover {
     text-decoration: underline;
-    color: $dm-color-primary-vivid;
+    color: $dm-color-blue-50v;
 
     > * {
       text-decoration: underline;
@@ -251,7 +251,7 @@ p {
     }
 
     &:visited {
-      color: $dm-color-primary-vivid;
+      color: $dm-color-blue-50v;
     }
 
   }
@@ -259,7 +259,7 @@ p {
 
 }
 a {
-  color: $dm-color-primary-vivid;
+  color: $dm-color-blue-50v;
   text-decoration: underline;
 
   &:visited {
@@ -268,7 +268,7 @@ a {
 
   &:hover {
     text-decoration: none;
-    color: $dm-color-primary-dark-blue;
+    color: $dm-color-blue-50v;
   }
 
   &.beta-banner-link {
@@ -298,6 +298,7 @@ a {
 }
 
 .favorite-practice-button, .featured-favorite-practice-button, .search-favorite-practice-button {
+  color: $dm-color-black;
   position: absolute;
   width: 28px;
   height: 28px;

@@ -1,3 +1,4 @@
+@import '../variables/colors';
 .marker_container {
   min-height: 146px;
   background-color: #FFFFFF;
@@ -29,20 +30,20 @@
       border-radius: 4px;
 
       &:hover {
-        border: 2px solid #005EA2;
+        border: 2px solid $dm-color-blue-50v;
       }
     }
 
     a {
-
+      text-decoration: none;
       .map-marker-practice-content {
-        text-decoration: none;
+        text-decoration: none !important;
         font-size: 16.96px;
         color: #171717;
       }
 
       .map-marker-practice-name {
-        text-decoration: none;
+        text-decoration: none !important;
         font-weight: bold;
         font-size: 16.96px;
         color: #171717;

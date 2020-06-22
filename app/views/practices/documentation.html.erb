@@ -48,7 +48,7 @@
                                             <p class="text-bold margin-top-3 <%= attachment.present? ? 'margin-bottom-1' : '' %>" %>File:&nbsp;<span class="text-normal">You can upload a .pdf, .docx, .xlsx, .jpg, .jpeg, or .png file that is less than 32MB.</span></p>
                                             <% if attachment.present? %>
                                                 <i class="fas fa-file"></i>
-                                                <%= link_to ad.object.attachment_s3_presigned_url, target: :_blank, class: 'text-primary margin-top-1 margin-left-05' do %>
+                                                <%= link_to ad.object.attachment_s3_presigned_url, target: :_blank, class: 'dm-font-color-blue-50v margin-top-1 margin-left-05' do %>
                                                     <%= ad.object.attachment_file_name %>
                                                 <% end %>
                                             <% end %>
