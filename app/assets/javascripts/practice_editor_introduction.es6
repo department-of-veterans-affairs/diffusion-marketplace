@@ -13,6 +13,7 @@ function showHidePracticeOriginFields(facility_type){
     if(facility_type == 99){
         facility_type = document.getElementById("_init_facility_type").value;
     }
+    //alert(facility_type)
     if(facility_type == 0)
     {
         document.getElementById("editor_state_dropdown").style.display = "block";
@@ -24,7 +25,7 @@ function showHidePracticeOriginFields(facility_type){
     else if(facility_type == 1){
         document.getElementById("editor_state_dropdown").style.display = "none";
         document.getElementById("editor_facility_dropdown").style.display = "none";
-        document.getElementById("editor_ofice_dropdown").style.display = "none";
+        document.getElementById("editor_office_dropdown").style.display = "none";
         document.getElementById("editor_visn_dropdown").style.display = "block";
         document.getElementById("init_facility_other").style.display = "none";
     }

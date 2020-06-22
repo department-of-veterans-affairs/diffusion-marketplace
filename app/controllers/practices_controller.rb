@@ -257,8 +257,7 @@ class PracticesController < ApplicationController
   # /practices/slug/introduction
   def introduction
     set_practice
-     @office_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_office_lookup.json"))
-      #debugger
+      #@office_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_office_lookup.json"))
   end
 
   # GET /practices/1/origin

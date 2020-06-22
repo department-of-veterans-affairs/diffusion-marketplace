@@ -146,7 +146,8 @@
             <div class="grid-row grid-gap-4">
               <div id="editor_office_dropdown" class="grid-col-fill">
                 <%= label_tag 'editor_office_select', 'Office', class: 'usa-label' %>
-                <%= select_tag(:initiating_department_office_id, options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), id: 'editor_office_select', class: 'width-full height-5 usa-select', required: true) %><br />
+<!--                <%#= select_tag(:initiating_department_office_id, options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), id: 'editor_office_select', class: 'width-full height-5 usa-select', required: true) %><br />-->
+                <%= select_tag(:initiating_department_office_id, offices_for_select, required: true) %><br />
               </div>
               <div id="editor_state_dropdown">
                 <%= label_tag 'editor_state_select', 'State', class: 'usa-label' %>

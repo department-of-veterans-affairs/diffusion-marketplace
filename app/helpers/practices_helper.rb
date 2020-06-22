@@ -37,4 +37,13 @@ module PracticesHelper
     durations = practice.additional_staffs.map { |as| as.duration_in_weeks&.downcase }
     durations.include?('permanent') ? 'Permanent' : "#{durations.map { |d| d.to_i }.sum} weeks" if durations.any?
   end
+
+  def offices_for_select
+    @office_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_office_lookup.json"))
+    @office_data = @office_data["departments"][0]["offices"]
+    #@office_data.map {|c| [ c['name']['label'], c['id']['id'].to_i ] }
+    debugger
+    format.json {render json: @office_data.map{|office| {:id => office.id, :name =>  office.name} }}
+
+  end
 end
