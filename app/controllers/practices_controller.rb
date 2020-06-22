@@ -257,7 +257,7 @@ class PracticesController < ApplicationController
   # /practices/slug/introduction
   def introduction
     set_practice
-     @data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
+     @office_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_office_lookup.json"))
       #debugger
   end
 
@@ -458,6 +458,10 @@ class PracticesController < ApplicationController
 
   def set_facility_data
     @facility_data = facilities_json.find { |f| f['StationNumber'] == @practice.initiating_facility }
+  end
+
+  def set_office_data
+    @office_data = facilities_json.find{|f|f['']}
   end
 
   def can_view_committed_view

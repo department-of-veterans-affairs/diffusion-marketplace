@@ -17,28 +17,28 @@ function showHidePracticeOriginFields(facility_type){
     {
         document.getElementById("editor_state_dropdown").style.display = "block";
         document.getElementById("editor_facility_dropdown").style.display = "block";
-        document.getElementById("editor_department_dropdown").style.display = "none";
+        document.getElementById("editor_office_dropdown").style.display = "none";
         document.getElementById("editor_visn_dropdown").style.display = "none";
         document.getElementById("init_facility_other").style.display = "none";
     }
     else if(facility_type == 1){
         document.getElementById("editor_state_dropdown").style.display = "none";
         document.getElementById("editor_facility_dropdown").style.display = "none";
-        document.getElementById("editor_department_dropdown").style.display = "none";
+        document.getElementById("editor_ofice_dropdown").style.display = "none";
         document.getElementById("editor_visn_dropdown").style.display = "block";
         document.getElementById("init_facility_other").style.display = "none";
     }
     else if(facility_type == 2){
         document.getElementById("editor_state_dropdown").style.display = "block";
         document.getElementById("editor_facility_dropdown").style.display = "block";
-        document.getElementById("editor_department_dropdown").style.display = "block";
+        document.getElementById("editor_office_dropdown").style.display = "block";
         document.getElementById("editor_visn_dropdown").style.display = "none";
         document.getElementById("init_facility_other").style.display = "none";
     }
     else if(facility_type == 3){
         document.getElementById("editor_state_dropdown").style.display = "none";
         document.getElementById("editor_facility_dropdown").style.display = "none";
-        document.getElementById("editor_department_dropdown").style.display = "none";
+        document.getElementById("editor_office_dropdown").style.display = "none";
         document.getElementById("editor_visn_dropdown").style.display = "none";
         document.getElementById("init_facility_other").style.display = "block";
     }

@@ -136,7 +136,7 @@
                 <%= f.radio_button :initiating_facility_type, '1', onClick: "javascript:showHidePracticeOriginFields(1);" %> VISN<br />
               </div>
               <div class='usa-checkbox grid-col-12'>
-                <%= f.radio_button :initiating_facility_type, '2', onClick: "javascript:showHidePracticeOriginFields(2);" %> Department<br />
+                <%= f.radio_button :initiating_facility_type, '2', onClick: "javascript:showHidePracticeOriginFields(2);" %> Office<br />
               </div>
               <div class='usa-checkbox grid-col-12'>
                 <%= f.radio_button :initiating_facility_type, '3', onClick: "javascript:showHidePracticeOriginFields(3);" %> Other<br />
@@ -144,9 +144,9 @@
             </div>
 
             <div class="grid-row grid-gap-4">
-              <div id="editor_department_dropdown" class="grid-col-fill">
-                <%= label_tag 'editor_department_select', 'Department', class: 'usa-label' %>
-                <%= select_tag(:initiating_department_office_id, options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), id: 'editor_department_select', class: 'width-full height-5 usa-select', required: true) %><br />
+              <div id="editor_office_dropdown" class="grid-col-fill">
+                <%= label_tag 'editor_office_select', 'Office', class: 'usa-label' %>
+                <%= select_tag(:initiating_department_office_id, options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), id: 'editor_office_select', class: 'width-full height-5 usa-select', required: true) %><br />
               </div>
               <div id="editor_state_dropdown">
                 <%= label_tag 'editor_state_select', 'State', class: 'usa-label' %>
