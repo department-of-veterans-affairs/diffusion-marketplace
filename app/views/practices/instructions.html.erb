@@ -48,7 +48,7 @@
                 <li>Ensure your work is accurate, formatted consistently, and as complete as possible before publishing.</li>
                 <li>Use sentence case (only capitalizing the first word in titles) and spell out acronyms. Capitalize proper nouns and names.</li>
                 <li>You will be able to edit your practice once it’s published.</li>
-                <li><%= link_to "View an example", practice_overview_path(@practice) %> of a well-formatted completed practice.</li>
+                <li><%= link_to "View an example", practice_path(ENV.fetch('EXAMPLE_PRACTICE_SLUG', 'project-happen')) %> of a well-formatted completed practice.</li>
               </ul>
             </div>
           </section>
