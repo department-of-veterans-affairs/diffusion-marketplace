@@ -77,7 +77,6 @@ describe 'Practice editor', type: :feature, js: true do
             attach_file('Upload photo', @image_path)
             @edit_button = find('.cropper-edit-mode')
             @edit_button.click
-            expect(page).to have_no_content(@choose_image_text)
             expect(page).to have_content("Please click \"Save edits\" and then \"Save your progress\" to save and exit editor.")
             expect(page).to have_content('Cancel edits')
             expect(page).to have_content('Save edits')
