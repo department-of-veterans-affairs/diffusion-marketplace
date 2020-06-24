@@ -52,8 +52,8 @@
     <div class="grid-row grid-gap-4">
       <div>
         <%
-          state_select_selector = adoption ? "editor_state_select_#{adoption.id}" : 'editor_state_select'
-          facility_select_selector = adoption ? "editor_facility_select_#{adoption.id}" : 'editor_facility_select'
+          state_select_selector = adoption ? "editor_adoption_state_select_#{adoption.id}" : 'editor_adoption_state_select'
+          facility_select_selector = adoption ? "editor_adoption_facility_select_#{adoption.id}" : 'editor_adoption_facility_select'
           form_id = "adoption_form#{adoption&.diffusion_history&.id}"
         %>
 
