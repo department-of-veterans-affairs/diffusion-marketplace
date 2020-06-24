@@ -1,31 +1,23 @@
-@import "../../../dm/variables/colors";
+@import "../../variables/colors";
 
 footer {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-}
+  .dm-footer-link {
+    color: $dm-color-base;
+    text-decoration: none;
 
-.nominate-link {
-  color: $dm-color-blue-50v;
-  text-decoration: none;
+    &:hover {
+      color: $dm-color-blue-50v;
+      text-decoration: underline;
+    }
 
-  &:hover {
-    color: $dm-color-blue-50v !important;
-  }
+    &:visited {
+      color: $dm-color-base;
+      text-decoration: none;
 
-  &:visited {
-    color: $dm-color-blue-50v;
-  }
-}
-
-@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-  .footer-links-set-1 {
-    width: 60% !important;
-  }
-
-  .footer-links-set-2 {
-    width: 40% !important;
+      &:hover {
+        color: $dm-color-blue-50v;
+        text-decoration: underline;
+      }
+    }
   }
 }

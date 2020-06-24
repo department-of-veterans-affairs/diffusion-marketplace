@@ -1064,10 +1064,6 @@ ul.no-list-style {
   margin-bottom: 30px;
 }
 
-.margin-bottom-905 {
-  margin-bottom: 80px !important;
-}
-
 .message-icon-bg-position {
   background-position: 1.25rem 0.6rem !important;
 }
@@ -1091,23 +1087,6 @@ ul.no-list-style {
 
 .line-height-135 {
   line-height: 135%;
-}
-
-.dm-link {
-  color: $dm-color-blue-50v !important;
-  text-decoration: underline !important;
-
-  &:hover {
-    color: $dm-color-blue-50v !important;
-  }
-
-  &:active {
-    color: $dm-color-blue-70v !important;
-  }
-
-  &:visited {
-    color: $dm-alt-visited-purple !important;
-  }
 }
 
 .disabled-label {
