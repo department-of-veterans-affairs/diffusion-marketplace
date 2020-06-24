@@ -22,8 +22,7 @@ html = Arbre::Context.new do
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][alignment]" do
             option ''
             %w(left center right).each do |h|
-              option h.capitalize, value: h, selected: component&.alignment == h
-            para 'Defaults to center', class: 'inline-hints'
+              option h.capitalize, value: h, selected: component.present? ? component&.alignment == h : h == 'center'
             end
           end
         end
