@@ -1,5 +1,3 @@
-
-
 <div class="grid-container position-relative">
   <div class="grid-row grid-gap">
     <div class="desktop:grid-col-2 grid-col-auto z-bottom">&nbsp;</div>
@@ -7,10 +5,12 @@
     <div id="instructions" class="desktop:grid-col-10 grid-col-12 p0">
       <section class="margin-bottom-3">
         <%= render "shared/messages" %>
-        <h1 class="font-sans-2xl line-height-sans-205 margin-top-5">Personally Identifiable Information and Protected Health Information</h1>
+        <h1 class="font-sans-2xl line-height-sans-205 margin-top-5">Personally Identifiable Information and Protected
+          Health Information</h1>
       </section>
       <section class="margin-bottom-3">
-        <h2 id="pii_top" class="margin-0 margin-bottom-2 text-bold font-sans-xl">What is Personally Identifiable Information (PII)?</h2>
+        <h2 id="pii_top" class="margin-0 margin-bottom-2 text-bold font-sans-xl">What is Personally Identifiable
+          Information (PII)?</h2>
         <div class="font-sans-sm desktop:grid-col-8">
           <p>PII includes the following:</p>
           <ul class="line-height-26 font-sans-sm padding-top-0 padding-left-205 margin-0">
@@ -26,20 +26,31 @@
         </div>
       </section>
       <section class="margin-bottom-3">
-      <h2 class="margin-0 margin-bottom-2 text-bold font-sans-xl">What is Protective Health Information (PHI)</h2>
-      <div class="font-sans-sm desktop:grid-col-8">
-        <p>PHI includes the following:</p>
-        <ul class="line-height-26 font-sans-sm padding-top-0 padding-left-205 margin-0">
-          <li>Medical information</li>
-          <li>Diagnosis</li>
-        </ul>
-      </div>
-    </section>
+        <h2 class="margin-0 margin-bottom-2 text-bold font-sans-xl">What is Protective Health Information (PHI)</h2>
+        <div class="font-sans-sm desktop:grid-col-8">
+          <p>PHI includes the following:</p>
+          <ul class="line-height-26 font-sans-sm padding-top-0 padding-left-205 margin-0">
+            <li>Medical information</li>
+            <li>Diagnosis</li>
+          </ul>
+        </div>
+      </section>
       <section class="margin-bottom-3">
         <h2 class="margin-0 margin-bottom-2 text-bold font-sans-xl">Consent forms</h2>
-        <p class="font-sans-sm desktop:grid-col-8 line-height-26">
-          If you want to upload an image that features a Veteran, or text that includes a Veteran’s name, you must have <%= link_to "a waiver", pii_phi_information_path %>.  Waivers must be filled out with the ‘External to VA’ check box selected.
-        </p>
+        <ul class="line-height-26 font-sans-sm padding-top-0 padding-left-205 margin-0 desktop:grid-col-8">
+          <li>Do not enter Personally Identifiable Information (PII) or Protected Health Information (PHI) for any
+            individual, Veteran, or patient.
+          </li>
+          <li>If you post PII you must fill out and hold onto
+            <%= link_to 'Form 3203', 'https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-3203.pdf', target: '_blank' %>.</li>
+          <li>If you want to upload an image that features a Veteran,
+            or text that includes a Veterans name or identifiable information you must have
+            <%= link_to 'Form 3203', 'https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-3203.pdf', target: '_blank' %>.
+            Waivers must be filled out with the 'External to VA' check box selected.
+          </li>
+          <li>If you post PHI on the site you must fill out and hold onto
+            <%= link_to 'Form 5345', 'https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-5345.pdf', target: '_blank' %>.</li>
+        </ul>
       </section>
     </div>
   </div>
