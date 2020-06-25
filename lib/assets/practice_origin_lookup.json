@@ -2,7 +2,7 @@
   "departments":
   [
     {
-      "id":1, "name":"VBA", "offices":
+      "id": 1, "name": "VBA", "offices":
       [
         {
           "id": 1,
