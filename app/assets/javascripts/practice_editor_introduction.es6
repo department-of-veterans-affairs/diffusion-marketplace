@@ -9,13 +9,14 @@ $( document ).ready(function() {
     showHidePracticeOriginFields(99);
 });
 
-function chooseState(chosen) {
+function chooseStateAndFacility(chosen) {
     let element = document.getElementById('editor_state_select');
     var objOffices = JSON.parse(officeData);
     for( let prop in objOffices ){
         var obj = objOffices[prop];
         if(obj.id == chosen){
             element.value = obj.state;
+            element.disabled = true;
             $("#editor_state_select").trigger('change');
             break;
         }
