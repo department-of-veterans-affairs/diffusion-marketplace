@@ -22,7 +22,9 @@
 
     function loadPracticeEditorFunctions() {
         // relies on `_facilitySelect.js` utility file to be loaded prior to this file
+        debugger
         getFacilitiesByState(facilityData);
+        getAdoptionFacilitiesByState(facilityData);
         clearAdoptionEntryForm();
     }
 
@@ -35,6 +37,7 @@
         // clear all alerts
         $(formIdSelector).parent().find('.usa-alert').remove();
         $(formIdSelector).find('.usa-alert').remove();
+        debugger
 
         if (!$(formIdSelector)[0].checkValidity()) {
             $(formIdSelector)[0].reportValidity();

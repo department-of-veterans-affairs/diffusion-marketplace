@@ -7,7 +7,6 @@
     <% initiating_facility = @practice.initiating_facility || false%>
     var officeData = '<%= raw fetch_offices %>';
     var selectedFacility = "<%= @practice.initiating_facility %>";
-    debugger
   <% end %>
   <%= javascript_include_tag 'practice_editor_overview', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_cropper', 'data-turbolinks-track': 'reload' %>
@@ -53,7 +52,7 @@
               <%= f.label :short_name, 'Acronym ', class: 'usa-label text-bold display-block margin-top-3' %>
               <span>Type the acronym for your practice.</span><!--&nbsp;<span id="practice-editor-tagline-character-counter" class="text-base-light">(0/150 characters)</span>-->
               <div style="height:40px; width:143px">
-                <%= f.text_field :short_name, class: "usa-input #{ @practice.errors[:short_name].any? ? 'usa-input--error' : '' } display-block practice-editor-short_name-input", required: true %>
+                <%= f.text_field :short_name, class: "usa-input #{ @practice.errors[:short_name].any? ? 'usa-input--error' : '' } display-block practice-editor-short_name-input", required: false %>
               </div>
               <p class="usa-error-message <%= @practice.errors[:short_name].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@practice, :short_name) %></span></p>
             </div>
@@ -168,13 +167,13 @@
             <div class="grid-row">
               <div id="editor_visn_dropdown" class="grid-col-auto">
                 <%= label_tag 'editor_visn_select', 'VISN', class: 'usa-label' %>
-                <%= select_tag(:initiating_visn_id, options_for_select(visns_for_select), id: 'editor_visn_select', class: 'width-full height-5 usa-select', required: true) %><br />
+                <%= select_tag(:initiating_facility, options_for_select(visns_for_select), id: 'editor_visn_select', class: 'width-full height-5 usa-select', required: true) %><br />
               </div>
             </div>
             <div class="grid-row">
               <div id="init_facility_other" class="grid-col-auto">
                 <%= label_tag 'initiating_facility_other', 'Other', class: 'usa-label' %>
-                <%= f.text_field :init_facility_other_text, :value => params[:initiating_facility_other] %>
+                <%= f.text_field :init_facility_other_text, :value => params[:initiating_facility] %>
               </div>
             </div>
             <svg class="svg">

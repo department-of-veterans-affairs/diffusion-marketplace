@@ -29,7 +29,7 @@
     <p class="margin-bottom-1"><span class="fw-bold">Status:&nbsp;</span>
       Select the appropriate status of adoption for the facility.</p>
     <div class="usa-radio position-relative">
-      <%= radio_button(nil, 'status', 'In progress', class: 'usa-radio__input adoptions-radio-button', required: true, checked: status == in_progress ? 'checked' : false, id: "status_in_progress#{adoption&.diffusion_history&.id}") %>
+      <%= radio_button(nil, 'status', 'In progress', class: 'usa-radio__input adoptions-radio-button', required: true, type: button_tag, checked: status == in_progress ? 'checked' : false, id: "status_in_progress#{adoption&.diffusion_history&.id}") %>
       <label class='usa-radio__label' for='<%= "status_in_progress#{adoption&.diffusion_history&.id}" %>'>In progress
         adoption</label>
     </div>
@@ -91,6 +91,7 @@
                   var facility_id = "<%= facility_id %>";
                   var facilitySelector = "#<%= facility_select_selector %>";
                   var stateSelector = "#<%= state_select_selector %>";
+                debugger
                   getFacilitiesByState(facilityData, facilitySelector, stateSelector);
                   selectFacility(facilityData, facility_id, facilitySelector, stateSelector);
                 });
@@ -103,6 +104,7 @@
               var facility_id = "<%= facility_id %>";
               var facilitySelector = "#<%= facility_select_selector %>";
               var stateSelector = "#<%= state_select_selector %>";
+              debugger
               getFacilitiesByState(facilityData, facilitySelector, stateSelector);
               selectFacility(facilityData, facility_id, facilitySelector, stateSelector);
             <% end %>
@@ -113,6 +115,7 @@
               var facilitySelector = "#<%= facility_select_selector %>";
               var stateSelector = "#<%= state_select_selector %>";
               getFacilitiesByState(facilityData, facilitySelector, stateSelector);
+              getAdoptionFacilitiesByState(facilityData);
             <% end %>
           <% end %>
         <% end %>

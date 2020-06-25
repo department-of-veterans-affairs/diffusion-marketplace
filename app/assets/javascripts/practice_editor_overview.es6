@@ -84,7 +84,9 @@
         uncheckNoneOptionIfAnotherOptionIsChecked();
 
         // relies on `_facilitySelect.js` utility file to be loaded prior to this file
+        debugger
         getFacilitiesByState(facilityData);
+        getAdoptionFacilitiesByState(facilityData);
         if(selectedFacility) {
             selectFacility(facilityData, selectedFacility);
         }

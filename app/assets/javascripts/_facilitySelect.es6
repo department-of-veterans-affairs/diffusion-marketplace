@@ -21,6 +21,19 @@ function selectFacility(facilityData, selectedFacility, facilitySelector = '#edi
 function getFacilitiesByState(facilityData, facilitySelector = '#editor_facility_select', stateSelector = '#editor_state_select') {
     let facilitySelect = $(facilitySelector);
     let stateSelect = $(stateSelector);
+    console.log($(facilitySelector));
+    facilitySelect.css('color', FACILITY_SELECT_DISABLED_COLOR);
+    facilitySelect.prop('disabled', 'disabled');
+    $(stateSelect).on('change', () => {
+        filterFacilities(facilityData, facilitySelect, stateSelector);
+    });
+}
+
+function getAdoptionFacilitiesByState(facilityData, facilitySelector = '#editor_adoption_facility_select', stateSelector = '#editor_adoption_state_select') {
+    let facilitySelect = $(facilitySelector);
+    debugger
+    let stateSelect = $(stateSelector);
+    console.log($(facilitySelector));
     facilitySelect.css('color', FACILITY_SELECT_DISABLED_COLOR);
     facilitySelect.prop('disabled', 'disabled');
     $(stateSelect).on('change', () => {

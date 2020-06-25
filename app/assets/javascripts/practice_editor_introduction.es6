@@ -16,7 +16,7 @@ function chooseStateAndFacility(chosen) {
         var obj = objOffices[prop];
         if(obj.id == chosen){
             element.value = obj.state;
-            element.disabled = true;
+            //element.disabled = true;
             $("#editor_state_select").trigger('change');
             break;
         }
