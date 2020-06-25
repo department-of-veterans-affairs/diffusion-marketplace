@@ -10,19 +10,16 @@ $( document ).ready(function() {
 });
 
 function chooseState(chosen) {
-    alert(chosen);
     let element = document.getElementById('editor_state_select');
-    alert(element.value);
-    element.value = 'CO';
-    //$('#editor_state_select').val = '1';
-    // var tData = JSON.parse('../../../../lib/assets/practice_origin_office_lookup');
-    // alert(tData);
-    // let request = new XMLHttpRequest();
-    // request.open("GET", "<%= practice_assets_path> + /practice_origin_office_lookup.json", false);
-    // request.overrideMimeType("application/json");
-    // request.send(null);
-    // var jsonData = JSON.parse(request.responseText);
-    // console.log(jsonData);
+    var objOffices = JSON.parse(officeData);
+    for( let prop in objOffices ){
+        var obj = objOffices[prop];
+        if(obj.id == chosen){
+            element.value = obj.state;
+            $("#editor_state_select").trigger('change');
+            break;
+        }
+    }
 }
 
 

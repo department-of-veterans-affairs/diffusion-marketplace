@@ -4,16 +4,15 @@
   <%= javascript_include_tag '_facilitySelect', 'data-turbolinks-track': 'reload' %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     var facilityData = <%= raw JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json")).to_json %>;
-    <% initiating_facility = @practice.initiating_facility || false %>
+    <% initiating_facility = @practice.initiating_facility || false%>
+    var officeData = '<%= raw fetch_offices %>';
     var selectedFacility = "<%= @practice.initiating_facility %>";
     debugger
-    var officeData = "<%= @office_data %>"
   <% end %>
   <%= javascript_include_tag 'practice_editor_overview', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_cropper', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_introduction', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_adoptions', 'data-turbolinks-track': 'reload' %>
-  <%= office_data = @office_data %>
 <% end %>
 
 <%
