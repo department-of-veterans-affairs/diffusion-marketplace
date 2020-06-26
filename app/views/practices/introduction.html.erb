@@ -6,19 +6,20 @@
     var facilityData = <%= raw JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json")).to_json %>;
     <% initiating_facility = @practice.initiating_facility || false%>
     var officeData = '<%= raw fetch_offices %>';
+    var visnData = '<%= raw fetch_visns %>'
     var selectedFacility = "<%= @practice.initiating_facility %>";
+    var initiatingFacilityType = "<%= @practice.initiating_facility_type %>"
+    var initiatingDepartmentOfficeId = "<%= @practice.initiating_department_office_id %>"
   <% end %>
   <%= javascript_include_tag 'practice_editor_overview', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_cropper', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_introduction', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_include_tag 'practice_editor_adoptions', 'data-turbolinks-track': 'reload' %>
+  <%#= javascript_include_tag 'practice_editor_adoptions', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <%
   partners = PracticePartner.all
   p_partners = @practice.practice_partners
-
-  #debugger
 %>
 
 <%= render 'breadcrumbs' %>
@@ -118,7 +119,7 @@
                 <%= label_tag 'editor_date_intiated_month', 'Month', class: 'usa-label' %>
                 <%= select_month(@practice.date_initiated.present? ? date_get_month(@practice.date_initiated) : nil, {prompt: '-Select-', prefix: 'date_initiated'}, {id: 'editor_date_intiated_month', class: 'width-card-lg height-5 usa-select', required: true}) %>
               </div>
-              <div class="grid-col-fill">
+              <div>
                 <%= label_tag 'editor_date_intiated_year', 'Year', class: 'usa-label' %>
                 <%= select_year(@practice.date_initiated.present? ? date_get_year(@practice.date_initiated) : nil, {start_year: 1970, end_year: Date.today.year, prompt: '-Select-', prefix: 'date_initiated', default: '-Select-'}, {id: 'editor_date_intiated_year', class: 'width-full height-5 usa-select', required: true}) %>
               </div>
@@ -148,66 +149,65 @@
             <div class="grid-row">
               <div id="editor_office_dropdown" class="grid-col-auto">
                 <%= label_tag 'editor_office_select', 'Office', class: 'usa-label' %>
-<!--                <%#= select_tag(:initiating_department_office_id, options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), id: 'editor_office_select', class: 'width-full height-5 usa-select', required: true) %><br />-->
-                <%= select_tag(:initiating_department_office_id, options_for_select(offices_for_select), required: true, :onChange => "chooseStateAndFacility(this.options[this.selectedIndex].value)") %><br />
+                <%= select_tag(:initiating_department_office_id, options_for_select(offices_for_select), prompt: '-Select-', class: "usa-select", required: true, :onChange => "chooseStateAndFacility(this.options[this.selectedIndex].value)") %><br />
               </div>
             </div>
             <div class="grid-row">
               <div id="editor_state_dropdown" class="grid-col-auto">
                 <%= label_tag 'editor_state_select', 'State', class: 'usa-label' %>
-                <%= select_tag('', options_for_select(us_states), id: 'editor_state_select', name: 'editor_state_select', class: 'width-card-lg height-5 usa-select', required: true) %><br />
+                <%= select_tag('', options_for_select(us_states, :include_blank => '-Select-'), id: 'editor_state_select', name: 'editor_state_select', class: 'width-card-lg height-5 usa-select', required: true) %><br />
               </div>
             </div>
             <div class="grid-row">
               <div id="editor_facility_dropdown" class="grid-col-auto">
                 <%= label_tag 'editor_facility_select', 'Facility', class: 'usa-label' %>
-                <%= select_tag(:facility_id, options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), id: 'editor_facility_select', class: 'width-full height-5 usa-select', required: true) %><br />
+                <%= select_tag('', options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), id: 'editor_facility_select', name: 'editor_facility_select', class: 'width-full height-5 usa-select', required: true) %><br />
               </div>
             </div>
             <div class="grid-row">
               <div id="editor_visn_dropdown" class="grid-col-auto">
                 <%= label_tag 'editor_visn_select', 'VISN', class: 'usa-label' %>
-                <%= select_tag(:initiating_facility, options_for_select(visns_for_select), id: 'editor_visn_select', class: 'width-full height-5 usa-select', required: true) %><br />
+                <%= select_tag('', options_for_select(visns_for_select), name: 'editor_visn_select', class: 'width-full height-5 usa-select', required: true) %><br />
               </div>
             </div>
             <div class="grid-row">
               <div id="init_facility_other" class="grid-col-auto">
                 <%= label_tag 'initiating_facility_other', 'Other', class: 'usa-label' %>
-                <%= f.text_field :init_facility_other_text, :value => params[:initiating_facility] %>
+                <%= f.text_field :initiating_facility, name: 'initiating_facility_other', id: 'initiating_facility_other', required: false %>
               </div>
             </div>
             <svg class="svg">
               <rect class="rectangle21" />
             </svg>
-            <!--Adoptions -->
-                <div id="overview" class="desktop:grid-col-9 grid-col-12 p0">
-                  <%= render partial: "shared/messages", locals: {small_text: false} %>
-                  <section class="usa-section padding-top-0 p0-bottom introduction">
-                   <p class="margin-top-3"><span class="text-bold">Adoptions</span>&nbsp;</p>
-                    <span>Share which facilities have successfully
-                      adopted your practice. Aim to update this data
-                      quarterly.</span>
+<!--            Adoptions -->
+<!--                <div id="overview" class="desktop:grid-col-9 grid-col-12 p0">-->
+                  <%#= render partial: "shared/messages", locals: {small_text: false} %>
+<!--                  <section class="usa-section padding-top-0 p0-bottom introduction">-->
+<!--                   <p class="margin-top-3"><span class="text-bold">Adoptions</span>&nbsp;</p>-->
+<!--                    <span>Share which facilities have successfully-->
+<!--                      adopted your practice. Aim to update this data-->
+<!--                      quarterly.</span>-->
 
 
 
-                    <div class="font-sans-lg">
-                      <div class="display-inline-block status-width">
-                        <h3 class="margin-top-0 margin-bottom-105">Status</h3>
-                      </div>
-                      <div class="display-inline-block facility-header-width">
-                        <h3 class="margin-top-0 margin-bottom-105">Facility</h3>
-                      </div>
-                      <div class="display-inline-block timeline-width">
-                        <h3 class="margin-top-0 margin-bottom-105">Timeline</h3>
-                      </div>
-                      <div class="display-inline-block action-button-width">
-                        &nbsp;
-                      </div>
-                    </div>
-                    <div class="usa-accordion" id="adoptions">
+<!--                    <div class="font-sans-lg">-->
+<!--                      <div class="display-inline-block status-width">-->
+<!--                        <h3 class="margin-top-0 margin-bottom-105">Status</h3>-->
+<!--                      </div>-->
+<!--                      <div class="display-inline-block facility-header-width">-->
+<!--                        <h3 class="margin-top-0 margin-bottom-105">Facility</h3>-->
+<!--                      </div>-->
+<!--                      <div class="display-inline-block timeline-width">-->
+<!--                        <h3 class="margin-top-0 margin-bottom-105">Timeline</h3>-->
+<!--                      </div>-->
+<!--                      <div class="display-inline-block action-button-width">-->
+<!--                        &nbsp;-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                    <div class="usa-accordion" id="adoptions">-->
                       <!-- start accordions -->
-                      <%= render partial: 'adoptions_content' %>
-                    </div>
+                      <%#= render partial: 'adoptions_content' %>
+<!--                    </div>-->
 <!--                    <div class="grid-row margin-top-7">-->
                       <%#= link_to practice_overview_path(@practice), class: 'usa-button usa-button--outline editor-back-to-link margin-right-1 padding-2 text-no-underline' do %>
 <!--                        <i class="fas fa-chevron-left fa-sm text-no-underline margin-right-1"></i>Back-->
@@ -216,12 +216,9 @@
 <!--                        Continue<i class="fas fa-chevron-right fa-sm margin-left-1 text-no-underline"></i>-->
                       <%# end %>
 <!--                    </div>-->
-                  </section>
-                </div>
+<!--                  </section>-->
+<!--                </div>-->
             <!-- END Adoptions -->
-            <svg class="svg">
-              <rect class="rectangle21" />
-            </svg>
             <p class="margin-top-3"><span class="text-bold">Awards and recognition</span>&nbsp;
             <span>Select any awards or recognitions your practice has received.</span></p>
 

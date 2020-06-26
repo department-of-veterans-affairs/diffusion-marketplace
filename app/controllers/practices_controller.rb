@@ -37,6 +37,7 @@ class PracticesController < ApplicationController
   # GET /practices/1
   # GET /practices/1.json
   def show
+    debugger
     ahoy.track "Practice show", {practice_id: @practice.id} if current_user.present?
     # This allows comments thread to show up without the need to click a link
     commontator_thread_show(@practice)
@@ -128,10 +129,29 @@ class PracticesController < ApplicationController
     current_endpoint = request.referrer.split('/').pop
     updated = true
     if params[:practice].present?
+      if params[:practice][:initiating_facility_type].present?
+        #debugger
+        facility_type = params[:practice][:initiating_facility_type]
+        if facility_type == "0"
+          @practice.initiating_facility = params[:editor_facility_select]
+          @practice.initiating_department_office_id = ""
+        end
+        if facility_type == "1"
+          @practice.initiating_facility = params[:editor_visn_select]
+          @practice.initiating_department_office_id = ""
+        end
+        if facility_type == "2"
+          @practice.initiating_facility = params[:editor_facility_select]
+          @practice.initiating_department_office_id = params[:initiating_department_office_id]
+        end
+        if facility_type == "3"
+          @practice.initiating_facility = params[:initiating_facility_other]
+          @practice.initiating_department_office_id = ""
+        end
+      end
       pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
       updated = SavePracticeService.new(pr_params).save_practice
     end
-
     respond_to do |format|
       if updated
         if updated.is_a?(StandardError)
@@ -327,6 +347,7 @@ class PracticesController < ApplicationController
     # set attributes for later use
     facility_id = params[:facility_id]
     status = params[:status]
+    debugger
     if params[:date_started].present? && !(params[:date_started].values.include?(''))
       start_time = DateTime.new(params[:date_started][:year].to_i, params[:date_started][:month].to_i)
     end

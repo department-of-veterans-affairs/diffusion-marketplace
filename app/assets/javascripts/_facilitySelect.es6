@@ -4,7 +4,6 @@ const FACILITY_SELECT_DISABLED_COLOR = '#a9aeb1';
 function selectFacility(facilityData, selectedFacility, facilitySelector = '#editor_facility_select', stateSelector = '#editor_state_select') {
     // based on the facilityData, which is the selected facility?
     const facility = facilityData.find(f => f.StationNumber === String(selectedFacility));
-
     // select the state and set it in the dropdown
     const state = facility.MailingAddressState;
     const stateSelect = $(stateSelector);
@@ -29,17 +28,17 @@ function getFacilitiesByState(facilityData, facilitySelector = '#editor_facility
     });
 }
 
-function getAdoptionFacilitiesByState(facilityData, facilitySelector = '#editor_adoption_facility_select', stateSelector = '#editor_adoption_state_select') {
-    let facilitySelect = $(facilitySelector);
-    debugger
-    let stateSelect = $(stateSelector);
-    console.log($(facilitySelector));
-    facilitySelect.css('color', FACILITY_SELECT_DISABLED_COLOR);
-    facilitySelect.prop('disabled', 'disabled');
-    $(stateSelect).on('change', () => {
-        filterFacilities(facilityData, facilitySelect, stateSelector);
-    });
-}
+// function getAdoptionFacilitiesByState(facilityData, facilitySelector = '#editor_adoption_facility_select', stateSelector = '#editor_adoption_state_select') {
+//     let facilitySelect = $(facilitySelector);
+//     debugger
+//     let stateSelect = $(stateSelector);
+//     console.log($(facilitySelector));
+//     facilitySelect.css('color', FACILITY_SELECT_DISABLED_COLOR);
+//     facilitySelect.prop('disabled', 'disabled');
+//     $(stateSelect).on('change', () => {
+//         filterFacilities(facilityData, facilitySelect, stateSelector);
+//     });
+// }
 
 function filterFacilities(facilityData, facilitySelect, stateSelector) {
     let selectedState = $(`${stateSelector} option:selected`).val();
