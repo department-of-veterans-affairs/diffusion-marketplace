@@ -2,6 +2,12 @@
 
 #dm-practice-nav {
   width: 207px !important;
+
+  a {
+    &:visited {
+      color: $dm-color-base;
+    }
+  }
 }
 
 #dm-practice-nav-sticky-wrapper {
@@ -290,7 +296,7 @@
 }
 
 .back-to-partners-link {
-  color: $dm-color-primary-blue !important;
+  color: $dm-color-blue-50v !important;
   font-weight: normal !important;
 
   &:before {
@@ -340,7 +346,7 @@
 
 .editor-back-to-link {
   &:visited {
-    color: $dm-color-primary-blue !important;
+    color: $dm-color-blue-50v !important;
   }
 
   &:hover {
@@ -385,11 +391,7 @@
   padding-left: 20px;
 
   li {
-    margin-bottom: 30px;
-
-    &:last-child {
-      margin-bottom: 42px;
-    }
+    margin-bottom: 16px;
   }
 }
 
@@ -491,12 +493,12 @@
 }
 
 .cropper-upload-image-label {
-  color: $dm-color-primary-blue;
+  color: $dm-color-blue-50v;
   text-decoration: underline;
   margin-top: 0 !important;
 
   &:hover {
-    color: $dm-color-primary-dark-blue;
+    color: $dm-color-blue-50v;
     cursor: pointer;
   }
 }
@@ -743,10 +745,10 @@
 }
 
 .publication-link, .additional-document-link {
-  color: $dm-color-primary-blue !important;
+  color: $dm-color-blue-50v !important;
 
   &:hover, &:visited {
-    color: $dm-color-primary-blue !important;
+    color: $dm-color-blue-50v !important;
   }
 }
 

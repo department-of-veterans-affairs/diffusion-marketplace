@@ -17,8 +17,9 @@
             <section class="usa-section padding-top-0 p0-bottom documentation">
                 <h1 class="font-sans-2xl line-height-sans-205">Documentation&nbsp;<span class="text-base">(optional)</span></h1>
                 <h2 class="text-normal margin-bottom-5">
-                    Instructional text is needed here
+                    Upload files and web links that are relevant to your practice.
                 </h2>
+                <%= render 'pii_phi_alert' %>
                 <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
                     <fieldset class="usa-fieldset">
                         <legend class="usa-sr-only">Documentation</legend>
@@ -44,11 +45,10 @@
                                     </div>
                                     <div class="grid-row width-full">
                                         <div class="grid-col-11">
-                                            <p class="text-bold margin-top-3 <%= attachment.present? ? 'margin-bottom-1' : '' %>" %>File:&nbsp;<span class="text-normal">choose a pdf or docx or word document (type of file info goes here)</span></p>
-
+                                            <p class="text-bold margin-top-3 <%= attachment.present? ? 'margin-bottom-1' : '' %>" %>File:&nbsp;<span class="text-normal">You can upload a .pdf, .docx, .xlsx, .jpg, .jpeg, or .png file that is less than 32MB.</span></p>
                                             <% if attachment.present? %>
                                                 <i class="fas fa-file"></i>
-                                                <%= link_to ad.object.attachment_s3_presigned_url, target: :_blank, class: 'text-primary margin-top-1 margin-left-05' do %>
+                                                <%= link_to ad.object.attachment_s3_presigned_url, target: :_blank, class: 'dm-font-color-blue-50v margin-top-1 margin-left-05' do %>
                                                     <%= ad.object.attachment_file_name %>
                                                 <% end %>
                                             <% end %>

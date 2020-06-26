@@ -4,25 +4,25 @@ body {
     margin-bottom: 16px;
 
     a {
-      color: $dm-color-primary-vivid;
+      color: $dm-color-blue-50v;
       
-      &:visited {
-        color: $dm-color-primary-vivid;
-      }
+      //&:visited {
+      //  color: $dm-color-primary-vivid;
+      //}
     }
   }
 }
 
 .pb-link {
-  color: $dm-color-primary-vivid !important;
+  color: $dm-color-blue-50v!important;
   text-decoration: underline !important;
 
   &:hover {
-    color: $dm-color-primary-dark-blue !important;
+    color: $dm-color-blue-50v !important;
   }
 
   &:active {
-    color: $dm-color-darker-blue !important;
+    color: $dm-color-blue-70v !important;
   }
 
   &:visited {
@@ -37,16 +37,16 @@ body {
     line-height: 1.53;
 
     a {
-      color: $dm-color-primary-vivid !important;
+      color: $dm-color-blue-50v !important;
       text-decoration: underline !important;
 
       &:hover {
-        color: $dm-color-primary-dark-blue !important;
+        color: $dm-color-blue-50v !important;
         text-decoration: none !important;
       }
 
       &:active {
-        color: $dm-color-darker-blue !important;
+        color: $dm-color-blue-70v !important;
       }
 
       &:visited {

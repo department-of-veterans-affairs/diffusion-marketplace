@@ -17,6 +17,7 @@ describe 'Practice editor', type: :feature, js: true do
             @practice_email = 'test@mail.com'
             @employee_name = 'Test name'
             @employee_role = 'Test role'
+            @choose_image_text = 'Choose an image that clearly shows a face. Use a high-quality .jpg, .jpeg, or .png files less than 32MB.'
         end
 
         it 'should be there' do
@@ -24,7 +25,7 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/risk_and_mitigation")
             expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/checklist")
             expect(page).to have_content('Upload photo')
-            expect(page).to have_content('Upload a photo that clearly shows a face. You can upload a .jpg, .jpeg, or .png file and the size limit is 1GB.')
+            expect(page).to have_content(@choose_image_text)
             expect(page).to have_no_content('Remove photo')
             expect(page).to have_no_content('Edit photo')
             expect(page).to have_no_content('Upload new photo')
@@ -67,7 +68,7 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_content('Upload new photo')
             expect(page).to have_content('Remove photo')
             expect(page).to have_content('Edit photo')
-            expect(page).to have_content('Upload a photo that clearly shows a face. You can upload a .jpg, .jpeg, or .png file and the size limit is 1GB.')
+            expect(page).to have_content(@choose_image_text)
             expect(page).to have_no_content('Upload photo')
             expect(page).to have_no_content('Cancel edits')
             expect(page).to have_no_content('Save edits')
@@ -90,7 +91,7 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_field('practice[va_employees_attributes][1][role]', with: 'Test role 2')
             expect(page).to have_content('Upload new photo')
             expect(page).to have_content('Remove photo')
-            expect(page).to have_content('Upload a photo that clearly shows a face. You can upload a .jpg, .jpeg, or .png file and the size limit is 1GB.')
+            expect(page).to have_content(@choose_image_text)
             expect(page).to have_content('Edit photo')
             expect(page).to have_content('Upload photo')
             expect(page).to have_no_content('Cancel edits')
@@ -118,7 +119,7 @@ describe 'Practice editor', type: :feature, js: true do
             within all('.cropper-boundary')[1] do
                 fill_in_contact_fields
                 find('.cropper-edit-mode').click
-                expect(page).to have_no_content('Upload a photo that clearly shows a face. You can upload a .jpg, .jpeg, or .png file and the size limit is 1GB.')
+                expect(page).to have_no_content(@choose_image_text)
                 expect(page).to have_content("Please click \"Save edits\" and then \"Save your progress\" to save and exit editor.")
                 expect(page).to have_content('Cancel edits')
                 expect(page).to have_content('Save edits')
@@ -138,7 +139,7 @@ describe 'Practice editor', type: :feature, js: true do
                 fill_in('Role:', with: 'Test role')
                 attach_file('Upload new photo', @image_path)
                 find('.cropper-edit-mode').click
-                expect(page).to have_no_content('Upload a photo that clearly shows a face. You can upload a .jpg, .jpeg, or .png file and the size limit is 1GB.')
+                expect(page).to have_no_content(@choose_image_text)
                 expect(page).to have_content("Please click \"Save edits\" and then \"Save your progress\" to save and exit editor.")
                 expect(page).to have_content('Cancel edits')
                 expect(page).to have_content('Save edits')

@@ -6,6 +6,7 @@ describe 'Practice editor', type: :feature, js: true do
         @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', number_adopted: 1, date_initiated: Date.new(2011, 12, 31))
         @practice_partner = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative', icon: 'fas fa-heart', color: '#E4A002')
         @admin.add_role(User::USER_ROLES[0].to_sym)
+        @choose_image_text= 'Choose an image to represent this practice. Use a high-quality .jpg, .jpeg, or .png files less than 32MB. PII/PHI Waivers are required for photos featuring Veterans. Waivers must be filled out with the ‘External to VA’ check box selected.'
     end
 
     describe 'Overview page' do
@@ -25,7 +26,7 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_field('Year', with: '2011')
             expect(page).to have_no_css("img[src*='charmander.png']")
             expect(page).to have_content('Upload photo')
-            expect(page).to have_content('Upload a clear photo that will be shown as the representative image for this practice.')
+            expect(page).to have_content(@choose_image_text)
             expect(page).to have_no_content('Upload new photo')
             expect(page).to have_no_content('Remove photo')
             expect(page).to have_no_content('Edit photo')
@@ -76,7 +77,6 @@ describe 'Practice editor', type: :feature, js: true do
             attach_file('Upload photo', @image_path)
             @edit_button = find('.cropper-edit-mode')
             @edit_button.click
-            expect(page).to have_no_content('Upload a clear photo that will be shown as the representative image for this practice.')
             expect(page).to have_content("Please click \"Save edits\" and then \"Save your progress\" to save and exit editor.")
             expect(page).to have_content('Cancel edits')
             expect(page).to have_content('Save edits')

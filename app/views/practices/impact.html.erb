@@ -19,10 +19,19 @@
                 <h2 class="text-normal margin-bottom-2">
                     Showcase real stories of how your practice is making an impact.
                 </h2>
+                <%= render 'pii_phi_alert' %>
                 <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
                     <fieldset class="usa-fieldset">
                         <legend class="usa-sr-only">Impact</legend>
                         <h2 class="font-sans-xl margin-bottom-2">Image upload</h2>
+                         <div class="margin-bottom-2 cropper-upload-text">
+                          <span class="text-bold headshot-title margin-bottom-05">Image:
+                            <span class="text-normal">
+                              Use a high-quality .jpg, .jpeg, or .png files less than 32MB. <%= link_to "PHI/PII waivers", pii_phi_information_path %> are required for photos featuring Veterans. Waivers must be filled out with the ‘External to VA’ check box selected.
+                            </span>
+                          </span>
+                        </div>
+
                         <ul class="practice-editor-impact-photo-ul" id="sortable_impact_photos" role="listbox" aria-label="Practice editor impact photo list">
                             <%= f.fields_for :impact_photos, wrapper: false do |ip| %>
                                 <%
@@ -52,12 +61,6 @@
                                                         <span class="usa-tag tooltip-text">Drag and drop to change order</span>
                                                     </div>
                                                 </div>
-                                                <div class="margin-bottom-205 margin-left-2 margin-top-1">
-                                                    <p>• Guidelines for uploading a good image</p>
-                                                    <p>• Guidelines for uploading a good image</p>
-                                                    <p>• Guidelines for uploading a good image</p>
-                                                </div>
-                    
                                                 <div class="grid-row margin-left-2 flex-align-start">
                                                     <div class="grid-col-fill">
                                                         <div class="margin-bottom-1">
