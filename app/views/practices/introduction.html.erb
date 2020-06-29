@@ -130,8 +130,6 @@
             <p class="margin-top-3"><span class="text-bold">Practice origin</span>&nbsp;</p>
             <span>Select the location where this practice originated</span>
             <div class="grid-row grid-gap margin-top-105">
-              <input type="hidden" id="_init_facility_type" value="<%= @practice.initiating_facility_type %>">
-
               <div class='usa-checkbox grid-col-12'>
                 <%= f.radio_button :initiating_facility_type, '0', onClick: "javascript:showHidePracticeOriginFields(0);" %> Facility<br />
               </div>

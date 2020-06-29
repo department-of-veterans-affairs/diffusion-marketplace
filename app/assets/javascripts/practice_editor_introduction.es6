@@ -52,53 +52,12 @@ function chooseStateAndFacility(chosen) {
     }
     //console.log($(element).closest('form').serialize());
 }
-
-
-// function showHidePracticeOriginFields(facility_type){
-//     if(facility_type == 99){
-//         facility_type = document.getElementById("_init_facility_type").value;
-//     }
-//     alert(facility_type)
-//     if(facility_type == 0)
-//     {
-//         document.getElementById("editor_state_dropdown").style.display = "block";
-//         document.getElementById("editor_facility_dropdown").style.display = "block";
-//         document.getElementById("editor_office_dropdown").style.display = "none";
-//         document.getElementById("editor_visn_dropdown").style.display = "none";
-//         document.getElementById("init_facility_other").style.display = "none";
-//     }
-//     else if(facility_type == 1){
-//         document.getElementById("editor_state_dropdown").style.display = "none";
-//         document.getElementById("editor_facility_dropdown").style.display = "none";
-//         document.getElementById("editor_office_dropdown").style.display = "none";
-//         document.getElementById("editor_visn_dropdown").style.display = "block";
-//         document.getElementById("init_facility_other").style.display = "none";
-//     }
-//     else if(facility_type == 2){
-//         document.getElementById("editor_state_dropdown").style.display = "block";
-//         document.getElementById("editor_facility_dropdown").style.display = "block";
-//         document.getElementById("editor_office_dropdown").style.display = "block";
-//         document.getElementById("editor_visn_dropdown").style.display = "none";
-//         document.getElementById("init_facility_other").style.display = "none";
-//     }
-//     else if(facility_type == 3){
-//         document.getElementById("editor_state_dropdown").style.display = "none";
-//         document.getElementById("editor_facility_dropdown").style.display = "none";
-//         document.getElementById("editor_office_dropdown").style.display = "none";
-//         document.getElementById("editor_visn_dropdown").style.display = "none";
-//         document.getElementById("init_facility_other").style.display = "block";
-//     }
-// }
-
 function showHidePracticeOriginFields(facility_type){
-    var bReset = false;
+    //var bReset = false;
     if(facility_type == 99){
-        facility_type = document.getElementById("_init_facility_type").value;
+        facility_type = initiatingFacilityType; // document.getElementById("_init_facility_type").value;
     }
-    else{
-        bReset = true;
-    }
-    alert(facility_type)
+    //alert(facility_type)
     if(facility_type == 0)
     {
         document.getElementById("editor_state_dropdown").style.display = "block";
@@ -115,21 +74,8 @@ function showHidePracticeOriginFields(facility_type){
         document.getElementById("init_facility_other").style.display = "none";
     }
     else if(facility_type == 2){
-        debugger
-        if(bReset) {
-            document.getElementById("editor_state_select").selectedIndex = 0;
-        }
         document.getElementById("editor_state_dropdown").style.display = "block";
-        if(bReset) {
-            document.getElementById("editor_facility_select").selectedIndex = 0;
-        }
         document.getElementById("editor_facility_dropdown").style.display = "block";
-        if(bReset) {
-            var officeSelect = document.getElementById("initiating_department_office_id");
-            if(officeSelect){
-                officeSelect.selectedIndex = 0;
-            }
-        }
         document.getElementById("editor_office_dropdown").style.display = "block";
         document.getElementById("editor_visn_dropdown").style.display = "none";
         document.getElementById("init_facility_other").style.display = "none";
