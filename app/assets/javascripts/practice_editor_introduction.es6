@@ -13,10 +13,24 @@ $( document ).ready(function() {
 function sortOutInitiatingFacility(){
     if (initiatingFacilityType == "0"){
         document.getElementById('initiating_facility_other').value = "";
+        document.getElementById('initiating_department_office_id').value = "";
 
     }
     if (initiatingFacilityType == "1"){
         document.getElementById('initiating_facility_other').value = "";
+        //TODO: get initiating VISN data
+        // debugger
+        // var objVisns = JSON.parse(visnData);
+        // let visnSelect =  document.getElementById('editor_visn_select');
+        // debugger
+        // for(let visn in objVisns){
+        //     var obj = objVisns[visn];
+        //     if(obj.name == selectedFacility){
+        //         visnSelect.value = obj.id;
+        //         break;
+        //     }
+        // }
+
     }
     if (initiatingFacilityType == "2"){
         document.getElementById('initiating_facility_other').value = "";
@@ -32,6 +46,7 @@ function sortOutInitiatingFacility(){
         }
     }
     if (initiatingFacilityType == "3"){
+        document.getElementById('initiating_department_office_id').value = "";
 
     }
 

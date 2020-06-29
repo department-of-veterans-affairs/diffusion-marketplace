@@ -5,16 +5,20 @@ function selectFacility(facilityData, selectedFacility, facilitySelector = '#edi
     // based on the facilityData, which is the selected facility?
     const facility = facilityData.find(f => f.StationNumber === String(selectedFacility));
     // select the state and set it in the dropdown
-    const state = facility.MailingAddressState;
-    const stateSelect = $(stateSelector);
-    stateSelect.val(state);
+    if(facility) {
+        const state = facility.MailingAddressState;
+        const stateSelect = $(stateSelector);
+        stateSelect.val(state);
+    }
 
     // filter the facilities in the dropdown
     const facilitySelect = $(facilitySelector);
     filterFacilities(facilityData, facilitySelect, stateSelector);
 
     // select the facility and display it in the dropdown
-    facilitySelect.val(facility.StationNumber);
+    if(facility) {
+        facilitySelect.val(facility.StationNumber);
+    }
 }
 
 function getFacilitiesByState(facilityData, facilitySelector = '#editor_facility_select', stateSelector = '#editor_state_select') {
