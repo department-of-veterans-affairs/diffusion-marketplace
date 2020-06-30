@@ -20,11 +20,12 @@
                 <h2 class="text-normal margin-bottom-2">
                     This section helps people to reach out for support, ask questions, and connect about your practice.
                 </h2>
+
                 <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
                     <fieldset class="usa-fieldset">
                         <legend class="usa-sr-only">Practice Information</legend>
                         <div>
-                            <%= f.label :support_network_email, 'Email:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type the email address dedicated to responding to messages for this practice.</span>
+                            <%= f.label :support_network_email, 'Email:', class: 'usa-label text-bold display-inline-block line-height-26' %>&nbsp;<span class="line-height-26">Type the email address dedicated to responding to messages for this practice. If you haven’t set up a practice’s distro email yet, enter the request under the "Your IT" portal linked on the home screen of your GFE.</span>
                             <%= f.text_field :support_network_email, class: 'usa-input practice-input width-tablet contact-email-input', required: true %>
                         </div>
 
@@ -76,7 +77,7 @@
                                         <div class="grid-col-8">
                                             <div class="margin-bottom-2 cropper-upload-text">
                                                 <p>
-                                                    Upload a photo that clearly shows a face. You can upload a .jpg, .jpeg, or .png file and the size limit is 1GB.
+                                                  Choose an image that clearly shows a face. Use a high-quality .jpg, .jpeg, or .png files less than 32MB.
                                                 </p>
                                             </div>
                                             <div class="margin-bottom-2 cropper-editor-text hidden">

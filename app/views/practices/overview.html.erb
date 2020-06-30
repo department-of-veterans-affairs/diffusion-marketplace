@@ -33,6 +33,7 @@
         <h1 class="font-sans-2xl line-height-sans-205">Overview</h1>
         <h2 class="text-normal">Introduce your practice and provide a clear overview to people who may be unfamiliar
           with it.</h2>
+        <%= render 'pii_phi_alert' %>
         <%= nested_form_for(@practice, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
           <fieldset class="usa-fieldset">
             <legend class="usa-sr-only">Practice Information</legend>
@@ -48,7 +49,7 @@
               <%= f.text_area :tagline, class: "usa-textarea #{ @practice.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-tagline-textarea", required: true %>
               <p class="usa-error-message <%= @practice.errors[:tagline].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@practice, :tagline) %></span></p>
             </div>
-            <p class="margin-top-3"><span class="text-bold">Practice thumbnail:</span>&nbsp;</p>
+            <p class="margin-top-3"><span class="text-bold">Practice thumbnail:</span><span> Choose an image to represent this practice. Use a high-quality .jpg, .jpeg, or .png files less than 32MB. PII/PHI Waivers are required for photos featuring Veterans. Waivers must be filled out with the ‘External to VA’ check box selected.</span>&nbsp;</p>
             <div class="grid-row margin-top-1 cropper-boundary">
               <div class="grid-col-6">
                 <div class="cropper-images-container main-image" data-type="main">
@@ -62,9 +63,6 @@
                 </div>
               </div>
               <div class="grid-col-6">
-                <div class="margin-bottom-2 cropper-upload-text">
-                  <p>Upload a clear photo that will be shown as the representative image for this practice. You can upload a .jpg, .jpeg, or .png file and the size limit is&nbsp;1GB.</p>
-                </div>
                 <div class="margin-bottom-2 cropper-editor-text hidden">
                   <p>Please click "Save edits" and then "Save your progress" to save and exit editor.</p>
                 </div>
