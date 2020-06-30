@@ -10,6 +10,7 @@
     const facilityOption = '#initiating_facility_type_facility';
     const visnOption = '#initiating_facility_type_visn';
     const departmentOption = '#initiating_facility_type_department';
+    const otherOption = '#initiating_facility_type_other';
 
     function countCharsOnPageLoad() {
         let practiceNameCurrentLength = $('.practice-editor-name-input').val().length;
@@ -98,22 +99,16 @@
 
     function disableOptions() {
         if ($(`${facilityOption}:checked`).length > 0) {
-            // console.log('hello facility')
             disableOtherFacilityInputOptions('editor_visn_select editor_department_select editor_office_state_select editor_office_select practice_initiating_facility_other')
         } else if ($(`${visnOption}:checked`).length > 0) {
-            // console.log('hello visn')
             disableOtherFacilityInputOptions('editor_state_select editor_facility_select editor_department_select editor_office_state_select editor_office_select practice_initiating_facility_other')
         } else if ($(`${departmentOption}:checked`).length > 0) {
-            // console.log('hello department')
             disableOtherFacilityInputOptions('editor_state_select editor_facility_select editor_visn_select practice_initiating_facility_other')
-        } else {
-            // console.log('hello other')
+        } else if ($(`${otherOption}:checked`).length > 0) {
             disableOtherFacilityInputOptions('editor_state_select editor_facility_select editor_visn_select editor_department_select editor_office_state_select editor_office_select')
+        } else {
+            disableOtherFacilityInputOptions('editor_state_select editor_facility_select editor_visn_select editor_department_select editor_office_state_select editor_office_select practice_initiating_facility_other')
         }
-    }
-
-    function disableInputsOnLoad() {
-        disableOptions();
     }
 
     function addEnableAttrAndColor(labelSelector, inputSelector) {
@@ -122,13 +117,9 @@
         inputSelector.css('color', `${enabledColor}`);
         inputSelector.css('border-color', `${enabledColor}`);
         inputSelector.prop('disabled', false);
-        console.log('labelSelector', labelSelector);
-        console.log('inputSelector', inputSelector);
     }
 
     function enableCurrentlySelectedOption(currentOptionInputs) {
-        console.log('inside enableCurrentlySelected')
-        console.log('current option', currentOptionInputs)
         currentOptionInputs.split(' ').forEach(oi => {
             addEnableAttrAndColor($('label[for="' + oi + '"]'), $(`#${oi}`));
         });
@@ -137,21 +128,16 @@
     function toggleInputsOnRadioSelect() {
         $(document).on('click', '#initiating_facility_type_facility, #initiating_facility_type_visn, #initiating_facility_type_department, #initiating_facility_type_other', function() {
             disableOptions();
-
             if ($(`${facilityOption}:checked`).length > 0) {
-                // console.log('hello facility');
                 enableCurrentlySelectedOption('editor_state_select');
                 disableOtherFacilityInputOptions('editor_visn_select editor_department_select editor_office_state_select editor_office_select practice_initiating_facility_other')
             } else if ($(`${visnOption}:checked`).length > 0) {
-                // console.log('hello visn');
                 enableCurrentlySelectedOption('editor_visn_select');
                 disableOtherFacilityInputOptions('editor_state_select editor_facility_select editor_department_select editor_office_state_select editor_office_select practice_initiating_facility_other')
             } else if ($(`${departmentOption}:checked`).length > 0) {
-                // console.log('hello department');
                 enableCurrentlySelectedOption('editor_department_select');
                 disableOtherFacilityInputOptions('editor_state_select editor_facility_select editor_visn_select practice_initiating_facility_other')
             } else {
-                // console.log('hello other')
                 enableCurrentlySelectedOption('practice_initiating_facility_other')
                 disableOtherFacilityInputOptions('editor_state_select editor_facility_select editor_visn_select editor_department_select editor_office_state_select editor_office_select')
             }
@@ -163,27 +149,27 @@
         maxCharacters();
         uncheckAllPartnerBoxes();
         uncheckNoneOptionIfAnotherOptionIsChecked();
-        disableInputsOnLoad();
+        disableOptions();
         toggleInputsOnRadioSelect();
 
         // relies on `_facilitySelect.js` utility file to be loaded prior to this file
+        filterFacilitiesOnRadioSelect(facilityData);
         getFacilitiesByState(facilityData);
         if(selectedFacility !== "false" && selectedFacility !== "") {
-            console.log('in selectedFacility', selectedFacility)
             selectFacility(facilityData, selectedFacility);
         }
 
         // relies on `_visnSelect.js` utility file to be loaded prior to this file
         if (selectedVisn !== "false" && selectedVisn !== "") {
-            console.log('in selectedVisn', selectedVisn)
             selectVisn(originData, selectedVisn)
         }
 
         // relies on `_officeSelect.js` utility file to be loaded prior to this file
+        disableAndSelectDepartmentOptionValue();
+        filterDepartmentTypeOptionsOnRadioSelect(originData);
         getStatesByDepartment(originData);
         getOfficesByState(originData);
         if (selectedOffice !== "false" && selectedDepartment !== "false" && selectedOffice !== "" && selectedDepartment !== "") {
-            console.log('in selectedOffice', selectedOffice)
             selectOffice(originData, selectedDepartment, selectedOffice)
         }
     }

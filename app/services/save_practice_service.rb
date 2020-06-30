@@ -13,7 +13,8 @@ class SavePracticeService
       remove_attachments: 'error removing attachments',
       manipulate_avatars: 'error updating avatars',
       remove_main_display_image: 'error removing practice thumbnail',
-      crop_main_display_image: 'error cropping practice thumbnail'
+      crop_main_display_image: 'error cropping practice thumbnail',
+      update_initiating_facility: 'error updating initiating facility'
     }
   end
 
@@ -27,6 +28,7 @@ class SavePracticeService
       rescue_method(:manipulate_avatars)
       rescue_method(:remove_main_display_image)
       rescue_method(:crop_main_display_image)
+      rescue_method(:update_initiating_facility)
 
       updated
     rescue => e
@@ -131,6 +133,19 @@ class SavePracticeService
   def crop_main_display_image
     if is_cropping?(@practice_params)
       @practice.main_display_image.reprocess!
+    end
+  end
+
+  def update_initiating_facility
+    @initiating_facility_type = @practice_params[:initiating_facility_type]
+    @initiating_facility = @practice_params[:initiating_facility]
+    if @practice_params[:initiating_facility_type] != 'department'
+      @practice.update_attributes(initiating_department_office_id: nil)
+    end
+        if @initiating_facility_type.present? && @initiating_facility.present? && @current_endpoint == 'overview'
+      @practice.update_attributes({ initiating_facility_type: @initiating_facility_type, initiating_facility: @initiating_facility })
+    else
+      raise StandardError.new @error_messages[method_name]
     end
   end
 end

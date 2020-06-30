@@ -33,7 +33,7 @@
         </div>
         <div class="grid-row p0 flex-align-end">
           <span class="font-sans-3xs multiline-ellipses-3 line-height-sans-205 practice-card-origin-info">
-            Created in <%= practice.date_initiated.present? ? date_format(practice.date_initiated) : '(start date unknown)' %> by the <%= facility_name(practice.initiating_facility) %>
+            Created in <%= practice.date_initiated.present? ? date_format(practice.date_initiated) : '(start date unknown)' %> by <%= origin_display(practice) %>
           </span>
         </div>
       </div>

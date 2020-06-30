@@ -799,10 +799,8 @@ ActiveRecord::Schema.define(version: 2020_06_17_133257) do
     t.integer "ahoy_visit_id"
     t.string "training_provider_role"
     t.boolean "enabled", default: true, null: false
-    t.string "initiating_facility_other"
     t.integer "initiating_facility_type", default: 0
     t.integer "initiating_department_office_id"
-    t.integer "initiating_visn_id"
     t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
   end
