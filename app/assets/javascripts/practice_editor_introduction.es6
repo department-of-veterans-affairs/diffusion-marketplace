@@ -9,35 +9,70 @@ $( document ).ready(function() {
     showHidePracticeOriginFields(99);
     sortOutInitiatingFacility();
     var max_fields = 10;
-    var otherFacilityWrapper = $(".add_more_facilities");
-    var add_button = $(".add_form_field");
-    var x = 1;
-    $(add_button).click(function(e) {
-        debugger
-        e.preventDefault();
-        if (x < max_fields) {
-            x++;
-            //$(otherFacilityWrapper).append('<div><input type="text" name="mytext[]"/><a href="#" class="delete">Delete</a></div>');
-            $(otherFacilityWrapper).append('<div class="grid-col-auto"><label for="editor_state_select_other[]">State</label></div>'); //add label
-            //$(otherFacilityWrapper).append('<div class="grid-col-auto">%= select_tag("", options_for_select(us_states, :include_blank => "-Select-"), id: "editor_state_select_other[]", name: "editor_state_select_other[]", class: "width-card-lg height-5 usa-select", required: true) %></div>');
-            debugger
-            var items = stateData.split(',');
-            for(var item in items){
-                console.log(items[item])
-            }
-
-
-        } else {
-            alert('You Reached the limits')
-        }
-    });
-
-    $(otherFacilityWrapper).on("click", ".delete", function(e) {
-        e.preventDefault();
-        $(this).parent('div').remove();
-        x--;
-    })
+    //var otherFacilityWrapper = $(".add_more_facilities");
 });
+
+function addOtherPracticeOriginFacilities(){
+    debugger
+    initiatingFacilityCtr++;
+
+    var select = document.createElement("select");
+    var stateSelector = "editor_state_select_other[" + initiatingFacilityCtr + "]";
+    select.name = stateSelector;
+    select.id = stateSelector;
+    select.style.position = "absolute";
+
+    var items = stateData.split(',');
+    var ctr = 0;
+    var option = document.createElement("option");
+    option.value = '';
+    option.text = "-Select-";
+    select.appendChild(option);
+    for(var i = 0; i < items.length; i++){
+        var splitStr = items[i].split(":");
+        var option = document.createElement("option");
+        option.value = splitStr[0];
+        option.text = splitStr[1];
+        select.appendChild(option);
+    }
+debugger
+    var label = document.createElement("label");
+    label.innerHTML = "<br /><br />State <br />"
+    label.htmlFor = stateSelector;
+    //stateSelector = "#" + stateSelector;
+
+    var facilitySelector = "editor_facility_select_other[" + initiatingFacilityCtr + "]";
+    //var facilitySelect = $(facilitySelector);
+    //select.onchange = function(){filterFacilities(facilityData, "#" +  facilitySelect, "#" +  stateSelector)};
+
+
+    document.getElementById("container").appendChild(label).appendChild(select);
+
+    select = document.createElement("select");
+
+    select.name = facilitySelector;
+    select.id = facilitySelector;
+    select.style.width = "477px";
+
+    option = document.createElement("option");
+    option.value = '';
+    option.text = "-Select-";
+    select.appendChild(option);
+    ctr = 0;
+
+    label = document.createElement("label");
+    label.innerHTML = "<br /><br />Facility <br />"
+    label.htmlFor = facilitySelector;
+    facilitySelector = "#" + facilitySelector;
+    document.getElementById("container").appendChild(label).appendChild(select);
+    debugger
+    //getFacilitiesByState(facilityData, facilitySelector, stateSelector);
+
+
+}
+
+
+
 
 function sortOutInitiatingFacility(){
     if (initiatingFacilityType == "0"){
@@ -108,6 +143,9 @@ function showHidePracticeOriginFields(facility_type){
         document.getElementById("editor_facility_dropdown").style.display = "block";
         document.getElementById("add_more_facilities").style.display = "block";
         document.getElementById("editor_office_dropdown").style.display = "none";
+        // document.getElementById("editor_office_dropdown").hidden = true;
+        //document.getElementById("initiating_department_office_id").disabled = true;
+
         document.getElementById("editor_visn_dropdown").style.display = "none";
         document.getElementById("init_facility_other").style.display = "none";
     }

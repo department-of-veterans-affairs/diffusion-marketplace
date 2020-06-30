@@ -64,3 +64,19 @@ body {
   height: 4px;
   width: 40px;
 }
+
+.add_more_facilities_button {
+  background: none!important;
+  border: none;
+  padding: 0!important;
+  /*optional*/
+  //font-family: Public Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 162%;
+  /*input has OS specific font-family*/
+  color: #2672DE;
+  text-decoration: underline;
+  cursor: grab/pointer;
+}

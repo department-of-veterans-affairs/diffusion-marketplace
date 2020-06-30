@@ -3,6 +3,7 @@ const FACILITY_SELECT_DISABLED_COLOR = '#a9aeb1';
 // select the state and facility if the practice already has one
 function selectFacility(facilityData, selectedFacility, facilitySelector = '#editor_facility_select', stateSelector = '#editor_state_select') {
     // based on the facilityData, which is the selected facility?
+    debugger
     const facility = facilityData.find(f => f.StationNumber === String(selectedFacility));
     // select the state and set it in the dropdown
     if(facility) {
@@ -22,13 +23,18 @@ function selectFacility(facilityData, selectedFacility, facilitySelector = '#edi
 }
 
 function getFacilitiesByState(facilityData, facilitySelector = '#editor_facility_select', stateSelector = '#editor_state_select') {
+    debugger
+    // if(inputCtr > 0) {
+    //     facilitySelector = facilitySelector + "[" + inputCtr + "]";
+    //     stateSelector = stateSelector + "[" + inputCtr + "]";
+    // }
     let facilitySelect = $(facilitySelector);
     let stateSelect = $(stateSelector);
     console.log($(facilitySelector));
     facilitySelect.css('color', FACILITY_SELECT_DISABLED_COLOR);
     facilitySelect.prop('disabled', 'disabled');
     $(stateSelect).on('change', () => {
-        filterFacilities(facilityData, facilitySelect, stateSelector);
+        filterFacilities(facilityData, "#" +  facilitySelect, "#" +  stateSelector);
     });
 }
 
@@ -45,6 +51,7 @@ function getFacilitiesByState(facilityData, facilitySelector = '#editor_facility
 // }
 
 function filterFacilities(facilityData, facilitySelect, stateSelector) {
+    debugger
     let selectedState = $(`${stateSelector} option:selected`).val();
     facilitySelect.css('color', 'initial');
     facilitySelect.removeAttr('disabled');

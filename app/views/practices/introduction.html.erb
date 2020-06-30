@@ -6,11 +6,12 @@
     var facilityData = <%= raw JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json")).to_json %>;
     <% initiating_facility = @practice.initiating_facility || false%>
     var officeData = '<%= raw fetch_offices %>';
-    var visnData = '<%= raw fetch_visns %>'
+    var visnData = '<%= raw fetch_visns %>';
     var selectedFacility = "<%= @practice.initiating_facility %>";
-    var initiatingFacilityType = "<%= @practice.initiating_facility_type %>"
-    var initiatingDepartmentOfficeId = "<%= @practice.initiating_department_office_id %>"
-    var stateData = '<%= options_for_states %>'
+    var initiatingFacilityType = "<%= @practice.initiating_facility_type %>";
+    var initiatingDepartmentOfficeId = "<%= @practice.initiating_department_office_id %>";
+    var stateData = '<%= options_for_states %>';
+    var initiatingFacilityCtr = 0;
   <% end %>
   <%= javascript_include_tag 'practice_editor_overview', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_cropper', 'data-turbolinks-track': 'reload' %>
@@ -162,14 +163,14 @@
                 <%= label_tag 'editor_facility_select', 'Facility', class: 'usa-label' %>
                 <%= select_tag('', options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), id: 'editor_facility_select', name: 'editor_facility_select', class: 'width-full height-5 usa-select', required: true) %><br />
               </div>
-
+            </div>
+            <div id="container"></div><br />
               <div class="add_more_facilities" id="add_more_facilities">
-                  <button class="add_form_field">Add another &nbsp;
-                    <span style="font-size:16px; font-weight:bold;">+ </span>
-                  </button>
+                  <button class="add_more_facilities_button" onclick="addOtherPracticeOriginFacilities()">Add another</button>
               </div>
 
-            </div>
+
+
             <div class="grid-row">
               <div id="editor_visn_dropdown" class="grid-col-auto">
                 <%= label_tag 'editor_visn_select', 'VISN', class: 'usa-label' %>
