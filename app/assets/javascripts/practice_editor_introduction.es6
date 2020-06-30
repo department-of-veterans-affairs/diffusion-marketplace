@@ -8,6 +8,35 @@ $( document ).ready(function() {
     //alert( "ready!" );
     showHidePracticeOriginFields(99);
     sortOutInitiatingFacility();
+    var max_fields = 10;
+    var otherFacilityWrapper = $(".add_more_facilities");
+    var add_button = $(".add_form_field");
+    var x = 1;
+    $(add_button).click(function(e) {
+        debugger
+        e.preventDefault();
+        if (x < max_fields) {
+            x++;
+            //$(otherFacilityWrapper).append('<div><input type="text" name="mytext[]"/><a href="#" class="delete">Delete</a></div>');
+            $(otherFacilityWrapper).append('<div class="grid-col-auto"><label for="editor_state_select_other[]">State</label></div>'); //add label
+            //$(otherFacilityWrapper).append('<div class="grid-col-auto">%= select_tag("", options_for_select(us_states, :include_blank => "-Select-"), id: "editor_state_select_other[]", name: "editor_state_select_other[]", class: "width-card-lg height-5 usa-select", required: true) %></div>');
+            debugger
+            var items = stateData.split(',');
+            for(var item in items){
+                console.log(items[item])
+            }
+
+
+        } else {
+            alert('You Reached the limits')
+        }
+    });
+
+    $(otherFacilityWrapper).on("click", ".delete", function(e) {
+        e.preventDefault();
+        $(this).parent('div').remove();
+        x--;
+    })
 });
 
 function sortOutInitiatingFacility(){
@@ -77,6 +106,7 @@ function showHidePracticeOriginFields(facility_type){
     {
         document.getElementById("editor_state_dropdown").style.display = "block";
         document.getElementById("editor_facility_dropdown").style.display = "block";
+        document.getElementById("add_more_facilities").style.display = "block";
         document.getElementById("editor_office_dropdown").style.display = "none";
         document.getElementById("editor_visn_dropdown").style.display = "none";
         document.getElementById("init_facility_other").style.display = "none";
@@ -85,6 +115,7 @@ function showHidePracticeOriginFields(facility_type){
         document.getElementById("editor_state_dropdown").style.display = "none";
         document.getElementById("editor_facility_dropdown").style.display = "none";
         document.getElementById("editor_office_dropdown").style.display = "none";
+        document.getElementById("add_more_facilities").style.display = "none";
         document.getElementById("editor_visn_dropdown").style.display = "block";
         document.getElementById("init_facility_other").style.display = "none";
     }
@@ -92,6 +123,7 @@ function showHidePracticeOriginFields(facility_type){
         document.getElementById("editor_state_dropdown").style.display = "block";
         document.getElementById("editor_facility_dropdown").style.display = "block";
         document.getElementById("editor_office_dropdown").style.display = "block";
+        document.getElementById("add_more_facilities").style.display = "none";
         document.getElementById("editor_visn_dropdown").style.display = "none";
         document.getElementById("init_facility_other").style.display = "none";
     }
@@ -100,6 +132,7 @@ function showHidePracticeOriginFields(facility_type){
         document.getElementById("editor_facility_dropdown").style.display = "none";
         document.getElementById("editor_office_dropdown").style.display = "none";
         document.getElementById("editor_visn_dropdown").style.display = "none";
+        document.getElementById("add_more_facilities").style.display = "none";
         document.getElementById("init_facility_other").style.display = "block";
     }
 }

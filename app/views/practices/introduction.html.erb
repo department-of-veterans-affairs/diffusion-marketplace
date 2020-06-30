@@ -10,6 +10,7 @@
     var selectedFacility = "<%= @practice.initiating_facility %>";
     var initiatingFacilityType = "<%= @practice.initiating_facility_type %>"
     var initiatingDepartmentOfficeId = "<%= @practice.initiating_department_office_id %>"
+    var stateData = '<%= options_for_states %>'
   <% end %>
   <%= javascript_include_tag 'practice_editor_overview', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_cropper', 'data-turbolinks-track': 'reload' %>
@@ -161,6 +162,13 @@
                 <%= label_tag 'editor_facility_select', 'Facility', class: 'usa-label' %>
                 <%= select_tag('', options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), id: 'editor_facility_select', name: 'editor_facility_select', class: 'width-full height-5 usa-select', required: true) %><br />
               </div>
+
+              <div class="add_more_facilities" id="add_more_facilities">
+                  <button class="add_form_field">Add another &nbsp;
+                    <span style="font-size:16px; font-weight:bold;">+ </span>
+                  </button>
+              </div>
+
             </div>
             <div class="grid-row">
               <div id="editor_visn_dropdown" class="grid-col-auto">

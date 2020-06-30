@@ -57,4 +57,17 @@ module PracticesHelper
     @visn_data = @visn_data["visns"]
     @visn_data.map {|c| [ c['number'], c['id'] ] }
   end
+  def options_for_states
+    @state_options = us_states
+    x = 0
+    state_hash_str = "";
+    @state_options.each do |st|
+      if x > 0
+        st.split()
+        state_hash_str += st[1] + ":" + st[0] + ","
+      end
+      x = x + 1
+    end
+    state_hash_str
+  end
 end
