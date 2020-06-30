@@ -94,7 +94,7 @@
               origin_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
             %>
 
-            <p class="margin-top-3 margin-bottom-1"><span class="text-bold">Practice origin:</span>&nbsp;<span>Select the state and facility where this practice originated</span>
+            <p class="margin-top-3 margin-bottom-1"><span class="text-bold">Practice origin:</span>&nbsp;<span>Select the state and facility where this practice originated.</span>
             <div class="usa-radio margin-bottom-1 position-relative">
             <%= radio_button_tag 'practice[initiating_facility_type]', 'facility', @practice.facility? ? true : false, class: 'usa-radio__input initiating-facility-type-radio', id: "initiating_facility_type_facility", required: true %>
             <%= label_tag 'initiating_facility_type_facility', 'Select by facility', class: 'usa-radio__label initiating-facility-type-label x0-bottom', for: "initiating_facility_type_facility" %>

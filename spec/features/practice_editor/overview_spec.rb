@@ -41,6 +41,7 @@ describe 'Practice editor', type: :feature, js: true do
         it 'should allow the user to update the data on the page' do
             fill_in('practice_name', with: 'A super practice')
             fill_in('practice_tagline', with: 'Super duper')
+            all('.initiating-facility-type-label').first.click
             select('Alabama', :from => 'editor_state_select')
             select('Birmingham VA Medical Center', :from => 'editor_facility_select')
             select('October', :from => 'editor_date_intiated_month')
@@ -143,7 +144,7 @@ describe 'Practice editor', type: :feature, js: true do
           select('St. Petersburg Regional Office', :from => 'editor_office_select')
           @save_button.click
 
-          expect(all(facility_type_input)[0]).to be_checked
+          expect(all(facility_type_input)[2]).to be_checked
           expect(page).to have_content('VBA')
           expect(page).to have_content('FL')
           expect(page).to have_content('St. Petersburg Regional Office')
