@@ -122,9 +122,8 @@
         <div class="height-auto padding-2 bg-base-lightest radius-md">
           <h4 class="margin-top-0 margin-bottom-1">Origin</h4>
           <p class="font-sans-xs-2 line-height-sans-505 margin-bottom-3">
-            Created by <%= origin_display(@practice) %>
-            in
-            <span><%= @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)' %></span>
+            Created <%= origin_display(@practice) %>
+            <span><%= @practice.date_initiated.present? ? "in #{date_format(@practice.date_initiated)}" : 'in (start date unknown)' %></span>
           </p>
           <% if @practice.practice_partners.any? && @practice.practice_partners.find_by(name: 'None of the above, or Unsure').nil? %>
             <h4 class="margin-top-0 margin-bottom-1">Sponsors</h4>

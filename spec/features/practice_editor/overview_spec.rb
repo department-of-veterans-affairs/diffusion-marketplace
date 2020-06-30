@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'Practice editor', type: :feature, js: true do
     before do
         @admin = User.create!(email: 'toshiro.hitsugaya@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-        @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', number_adopted: 1, date_initiated: Date.new(2011, 12, 31))
+        @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', number_adopted: 1, date_initiated: Date.new(2011, 12, 31), initiating_facility_type: nil)
         @practice_partner = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative', icon: 'fas fa-heart', color: '#E4A002')
         @admin.add_role(User::USER_ROLES[0].to_sym)
         @choose_image_text= 'Choose an image to represent this practice. Use a high-quality .jpg, .jpeg, or .png files less than 32MB. PII/PHI Waivers are required for photos featuring Veterans. Waivers must be filled out with the ‘External to VA’ check box selected.'
@@ -119,5 +119,62 @@ describe 'Practice editor', type: :feature, js: true do
         #     summary_message = page.find("#practice_summary").native.attribute("validationMessage")
         #     expect(summary_message).to eq('Please fill out this field.')
         # end
+
+        facility_type_label = '.initiating-facility-type-label'
+        facility_type_input = '.initiating-facility-type-radio'
+
+        it 'should allow the user to choose from multiple initiating facility types' do
+          all(facility_type_label).first.click
+          select('Florida', :from => 'editor_state_select')
+          select('Boca Raton VA Clinic', :from => 'editor_facility_select')
+          select('November', :from => 'editor_date_intiated_month')
+          select('1982', :from => 'editor_date_intiated_year')
+          fill_in('practice_summary', with: 'This is an awesome practice.')
+          find('#practice_partner_1_label').click
+          @save_button.click
+
+          expect(all(facility_type_input).first).to be_checked
+          expect(page).to have_content('Florida')
+          expect(page).to have_content('Boca Raton VA Clinic')
+
+          all(facility_type_label)[2].click
+          select('VBA', :from => 'editor_department_select')
+          select('FL', :from => 'editor_office_state_select')
+          select('St. Petersburg Regional Office', :from => 'editor_office_select')
+          @save_button.click
+
+          expect(all(facility_type_input)[0]).to be_checked
+          expect(page).to have_content('VBA')
+          expect(page).to have_content('FL')
+          expect(page).to have_content('St. Petersburg Regional Office')
+        end
+
+        it 'should show the correct facility on the practice show page' do
+            all(facility_type_label)[2].click
+            select('VBA', :from => 'editor_department_select')
+            select('AZ', :from => 'editor_office_state_select')
+            select('Phoenix Regional Office', :from => 'editor_office_select')
+            select('March', :from => 'editor_date_intiated_month')
+            select('1996', :from => 'editor_date_intiated_year')
+            fill_in('practice_summary', with: 'This is one cool practice.')
+            find('#practice_partner_1_label').click
+            @save_button.click
+
+            visit '/practices/a-public-practice'
+            expect(page).to have_content('Created by the Phoenix Regional Office in March 1996')
+        end
+
+        it 'should require the user to select or fill out at least one facility type' do
+            facility_type_message = all(facility_type_input).first.native.attribute('validationMessage')
+            fill_in('practice_summary', with: 'This is the best practice.')
+            find('#practice_partner_1_label').click
+            @save_button.click
+            expect(facility_type_message).to eq('Please select one of these options.')
+
+            all(facility_type_label)[1].click
+            facility_message = find('#editor_visn_select').native.attribute('validationMessage')
+            @save_button.click
+            expect(facility_message).to eq('Please select an item in the list.')
+        end
     end
 end

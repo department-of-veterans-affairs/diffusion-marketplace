@@ -38,7 +38,8 @@ class Practice < ApplicationRecord
         self.initiating_facility_changed? ||
         self.main_display_image_updated_at_changed? ||
         self.published_changed? ||
-        self.enabled_changed?
+        self.enabled_changed? ||
+        self.date_initiated_changed?
       self.reset_searchable_cache = true
     end
   end
