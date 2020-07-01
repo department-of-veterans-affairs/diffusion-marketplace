@@ -1,9 +1,3 @@
-function enableSelect(select, selectLabel) {
-    selectLabel.hasClass('disabled-label') ? selectLabel.removeClass('disabled-label') : selectLabel.addClass('enabled-label');
-    select.hasClass('disabled-input') ? select.removeClass('disabled-input') && select.addClass('enabled-input') : select.addClass('enabled-input');
-    select.removeAttr('disabled');
-}
-
 function getDepartment(originData, departmentSelector) {
     let selectedDepartment = $(`#${departmentSelector}`).val();
     return originData.departments.find(d => `${d.id}` === selectedDepartment);

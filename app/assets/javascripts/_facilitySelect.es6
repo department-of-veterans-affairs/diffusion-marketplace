@@ -1,5 +1,11 @@
 const FACILITY_SELECT_DISABLED_COLOR = '#a9aeb1';
 
+function enableSelect(select, selectLabel) {
+    selectLabel.hasClass('disabled-label') ? selectLabel.removeClass('disabled-label') : selectLabel.addClass('enabled-label');
+    select.hasClass('disabled-input') ? select.removeClass('disabled-input') && select.addClass('enabled-input') : select.addClass('enabled-input');
+    select.removeAttr('disabled');
+}
+
 // select the state and facility if the practice already has one
 function selectFacility(facilityData, selectedFacility, facilitySelector = 'editor_facility_select', stateSelector = 'editor_state_select') {
     // based on the facilityData, which is the selected facility?
@@ -33,6 +39,7 @@ function getFacilitiesByState(facilityData, facilitySelector = 'editor_facility_
 function filterFacilities(facilityData, facilitySelect, facilitySelectLabel, stateSelector) {
     let selectedState = $(`#${stateSelector} option:selected`).val();
     enableSelect(facilitySelect, facilitySelectLabel);
+    facilitySelect.removeAttr('disabled');
     facilitySelect.find('option:not([value=""])').remove();
     facilitySelect.val('');
 
