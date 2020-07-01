@@ -32,10 +32,7 @@ function getFacilitiesByState(facilityData, facilitySelector = 'editor_facility_
 
 function filterFacilities(facilityData, facilitySelect, facilitySelectLabel, stateSelector) {
     let selectedState = $(`#${stateSelector} option:selected`).val();
-    facilitySelectLabel.css('color', 'initial');
-    facilitySelect.css('color', 'initial');
-    facilitySelect.css('border-color', 'initial');
-    facilitySelect.removeAttr('disabled');
+    enableSelect(facilitySelect, facilitySelectLabel);
     facilitySelect.find('option:not([value=""])').remove();
     facilitySelect.val('');
 

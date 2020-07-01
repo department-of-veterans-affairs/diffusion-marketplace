@@ -140,20 +140,20 @@ describe 'Practice editor', type: :feature, js: true do
 
           all(facility_type_label)[2].click
           select('VBA', :from => 'editor_department_select')
-          select('FL', :from => 'editor_office_state_select')
+          select('Florida', :from => 'editor_office_state_select')
           select('St. Petersburg Regional Office', :from => 'editor_office_select')
           @save_button.click
 
           expect(all(facility_type_input)[2]).to be_checked
           expect(page).to have_content('VBA')
-          expect(page).to have_content('FL')
+          expect(page).to have_content('Florida')
           expect(page).to have_content('St. Petersburg Regional Office')
         end
 
         it 'should show the correct facility on the practice show page' do
             all(facility_type_label)[2].click
             select('VBA', :from => 'editor_department_select')
-            select('AZ', :from => 'editor_office_state_select')
+            select('Arizona', :from => 'editor_office_state_select')
             select('Phoenix Regional Office', :from => 'editor_office_select')
             select('March', :from => 'editor_date_intiated_month')
             select('1996', :from => 'editor_date_intiated_year')

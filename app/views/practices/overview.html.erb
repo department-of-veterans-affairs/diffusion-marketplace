@@ -135,7 +135,7 @@
                 <%= select_tag('', options_for_select(us_states), id: 'editor_office_state_select', name: 'editor_office_state_select', class: 'width-card-lg height-5 usa-select', required: true) %>
               </div>
               <div class="grid-col-fill">
-                <%= label_tag 'editor_office_select', 'Facility', class: 'usa-label x0-top' %>
+                <%= label_tag 'editor_office_select', 'Office', class: 'usa-label x0-top' %>
                 <%= select_tag('practice[initiating_facility]', options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), id: 'editor_office_select', class: 'width-full height-5 usa-select', required: true) %>
               </div>
             </div>

@@ -14,23 +14,18 @@
 
     function countCharsOnPageLoad() {
         let practiceNameCurrentLength = $('.practice-editor-name-input').val().length;
-        // let practiceTaglineCurrentLength = $('.practice-editor-tagline-textarea').val().length;
         let practiceSummaryCurrentLength = $('.practice-editor-summary-textarea').val().length;
 
         let practiceNameCharacterCounter = `(${practiceNameCurrentLength}/${NAME_CHARACTER_COUNT} characters)`;
-        // let practiceTaglineCharacterCounter = `(${practiceTaglineCurrentLength}/${TAGLINE_CHARACTER_COUNT} characters)`;
         let practiceSummaryCharacterCounter = `(${practiceSummaryCurrentLength}/${SUMMARY_CHARACTER_COUNT} characters)`;
 
         $('#practice-editor-name-character-counter').text(practiceNameCharacterCounter);
-        // $('#practice-editor-tagline-character-counter').text(practiceTaglineCharacterCounter);
         $('#practice-editor-summary-character-counter').text(practiceSummaryCharacterCounter);
 
         if (practiceNameCurrentLength >= NAME_CHARACTER_COUNT) {
             $('#practice-editor-name-character-counter').css('color', CHARACTER_COUNTER_INVALID_COLOR);
         }
-        // if (practiceTaglineCurrentLength >= TAGLINE_CHARACTER_COUNT) {
-        //     $('#practice-editor-tagline-character-counter').css('color', CHARACTER_COUNTER_INVALID_COLOR);
-        // }
+
         if (practiceSummaryCurrentLength >= SUMMARY_CHARACTER_COUNT) {
             $('#practice-editor-summary-character-counter').css('color', CHARACTER_COUNTER_INVALID_COLOR);
         }
@@ -83,11 +78,8 @@
     }
 
     function addDisableAttrAndColor(labelSelector, inputSelector) {
-        const disabledColor = '#c9c9c9';
-        labelSelector.css('color', disabledColor);
-        inputSelector.css('color', disabledColor);
-        inputSelector.css('border-color', disabledColor);
-        inputSelector.css('background-color', '#FFFFFF');
+        labelSelector.hasClass('enabled-label') ? labelSelector.removeClass('enabled-label') && labelSelector.addClass('disabled-label') : labelSelector.addClass('disabled-label');
+        inputSelector.hasClass('enabled-input') ? inputSelector.removeClass('enabled-input') && inputSelector.addClass('disabled-input') : inputSelector.addClass('disabled-input');
         inputSelector.prop('disabled', true);
     }
 
@@ -112,10 +104,8 @@
     }
 
     function addEnableAttrAndColor(labelSelector, inputSelector) {
-        const enabledColor = 'initial';
-        labelSelector.css('color', `${enabledColor}`);
-        inputSelector.css('color', `${enabledColor}`);
-        inputSelector.css('border-color', `${enabledColor}`);
+        labelSelector.hasClass('disabled-label') ? labelSelector.removeClass('disabled-label') && labelSelector.addClass('enabled-label') : labelSelector.addClass('enabled-label');
+        inputSelector.hasClass('disabled-input') ? inputSelector.removeClass('disabled-input') && inputSelector.addClass('enabled-input') : inputSelector.addClass('enabled-input');
         inputSelector.prop('disabled', false);
     }
 

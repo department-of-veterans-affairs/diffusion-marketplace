@@ -1,7 +1,6 @@
 function enableSelect(select, selectLabel) {
-    selectLabel.css('color', 'initial');
-    select.css('color', 'initial');
-    select.css('border-color', 'initial');
+    selectLabel.hasClass('disabled-label') ? selectLabel.removeClass('disabled-label') : selectLabel.addClass('enabled-label');
+    select.hasClass('disabled-input') ? select.removeClass('disabled-input') && select.addClass('enabled-input') : select.addClass('enabled-input');
     select.removeAttr('disabled');
 }
 
