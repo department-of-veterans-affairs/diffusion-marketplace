@@ -692,6 +692,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_104356) do
     t.bigint "practice_id"
     t.string "facility_id"
     t.integer "facility_type", default: 0
+    t.integer "initiating_department_office_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["practice_id"], name: "index_practice_origin_facilities_on_practice_id"
