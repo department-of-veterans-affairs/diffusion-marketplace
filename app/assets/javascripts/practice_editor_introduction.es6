@@ -46,7 +46,8 @@ debugger
     //select.onchange = function(){filterFacilities(facilityData, "#" +  facilitySelect, "#" +  stateSelector)};
 
 
-    document.getElementById("container").appendChild(label).appendChild(select);
+    document.getElementById("container").appendChild(label);
+    document.getElementById("container").appendChild(select);
 
     select = document.createElement("select");
 
@@ -64,9 +65,11 @@ debugger
     label.innerHTML = "<br /><br />Facility <br />"
     label.htmlFor = facilitySelector;
     facilitySelector = "#" + facilitySelector;
-    document.getElementById("container").appendChild(label).appendChild(select);
+    stateSelector = "#" + stateSelector;
+    document.getElementById("container").appendChild(label);
+    document.getElementById("container").appendChild(select);
     debugger
-    //getFacilitiesByState(facilityData, facilitySelector, stateSelector);
+    getFacilitiesByState(facilityData, facilitySelector, stateSelector);
 
 
 }
@@ -143,8 +146,8 @@ function showHidePracticeOriginFields(facility_type){
         document.getElementById("editor_facility_dropdown").style.display = "block";
         document.getElementById("add_more_facilities").style.display = "block";
         document.getElementById("editor_office_dropdown").style.display = "none";
-        // document.getElementById("editor_office_dropdown").hidden = true;
-        //document.getElementById("initiating_department_office_id").disabled = true;
+        document.getElementById("editor_office_dropdown").hidden = true;
+        document.getElementById("initiating_department_office_id").disabled = true;
 
         document.getElementById("editor_visn_dropdown").style.display = "none";
         document.getElementById("init_facility_other").style.display = "none";

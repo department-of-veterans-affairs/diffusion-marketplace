@@ -206,6 +206,7 @@ class Practice < ApplicationRecord
   # This allows the practice model to be commented on with the use of the Commontator gem
   acts_as_commontable dependent: :destroy
 
+  #accepts_nested_attributes_for :practices_origin_facilities?
   accepts_nested_attributes_for :practice_partner_practices, allow_destroy: true
   accepts_nested_attributes_for :impact_photos, allow_destroy: true, reject_if: proc { |attributes| attributes['description'].blank? || attributes['attachment'].nil? }
   accepts_nested_attributes_for :video_files, allow_destroy: true, reject_if: proc { |attributes| attributes['url'].blank? || attributes['description'].blank? }

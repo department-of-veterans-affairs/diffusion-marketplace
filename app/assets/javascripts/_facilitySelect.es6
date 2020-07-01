@@ -24,10 +24,6 @@ function selectFacility(facilityData, selectedFacility, facilitySelector = '#edi
 
 function getFacilitiesByState(facilityData, facilitySelector = '#editor_facility_select', stateSelector = '#editor_state_select') {
     debugger
-    // if(inputCtr > 0) {
-    //     facilitySelector = facilitySelector + "[" + inputCtr + "]";
-    //     stateSelector = stateSelector + "[" + inputCtr + "]";
-    // }
     let facilitySelect = $(facilitySelector);
     let stateSelect = $(stateSelector);
     console.log($(facilitySelector));
