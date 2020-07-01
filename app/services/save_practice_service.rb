@@ -146,7 +146,7 @@ class SavePracticeService
       if initiating_facility_type.present? && initiating_facility.present?
         @practice.update_attributes({ initiating_facility_type: initiating_facility_type, initiating_facility: initiating_facility })
       else
-        raise StandardError.new @error_messages[method_name]
+        raise StandardError.new @error_messages[:update_initiating_facility]
       end
     end
   end

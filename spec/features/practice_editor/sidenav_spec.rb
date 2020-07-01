@@ -16,7 +16,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         it 'should be there' do
-            expect(page).to have_css('.usa-sidenav__item', count: 13)
+            expect(page).to have_css('.usa-sidenav__item', count: 12)
         end
 
         it 'should not have a link to Collaborators' do
