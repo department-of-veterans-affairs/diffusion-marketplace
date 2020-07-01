@@ -146,8 +146,8 @@ function showHidePracticeOriginFields(facility_type){
         document.getElementById("editor_facility_dropdown").style.display = "block";
         document.getElementById("add_more_facilities").style.display = "block";
         document.getElementById("editor_office_dropdown").style.display = "none";
-        document.getElementById("editor_office_dropdown").hidden = true;
-        document.getElementById("initiating_department_office_id").disabled = true;
+        // document.getElementById("editor_office_dropdown").hidden = true;
+        // document.getElementById("initiating_department_office_id").disabled = true;
 
         document.getElementById("editor_visn_dropdown").style.display = "none";
         document.getElementById("init_facility_other").style.display = "none";

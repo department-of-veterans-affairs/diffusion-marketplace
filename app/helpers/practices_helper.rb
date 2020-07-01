@@ -43,6 +43,13 @@ module PracticesHelper
     @office_data["departments"][0]["offices"].to_json
   end
 
+  def departments_for_select
+    debugger
+    @department_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_office_lookup.json"))
+    @department_data = @department_data["departments"]
+    @department_data.map {|c| [ c['name'], c['id'] ] }
+  end
+
   def offices_for_select
     @office_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_office_lookup.json"))
     @office_data = @office_data["departments"][0]["offices"]

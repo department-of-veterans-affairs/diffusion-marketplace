@@ -149,7 +149,7 @@
             <div class="grid-row">
               <div id="editor_office_dropdown" class="grid-col-auto">
                 <%= label_tag 'editor_office_select', 'Office', class: 'usa-label' %>
-                <%= select_tag(:initiating_department_office_id, options_for_select(offices_for_select), prompt: '-Select-', class: "usa-select", required: true, :onChange => "chooseStateAndFacility(this.options[this.selectedIndex].value)") %><br />
+                <%= select_tag(:initiating_department_office_id, options_for_select(departments_for_select), prompt: '-Select-', class: "usa-select", required: true, :onChange => "chooseStateAndFacility(this.options[this.selectedIndex].value)") %><br />
               </div>
             </div>
             <div class="grid-row">
