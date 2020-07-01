@@ -3,7 +3,6 @@ const FACILITY_SELECT_DISABLED_COLOR = '#a9aeb1';
 // select the state and facility if the practice already has one
 function selectFacility(facilityData, selectedFacility, facilitySelector = '#editor_facility_select', stateSelector = '#editor_state_select') {
     // based on the facilityData, which is the selected facility?
-    debugger
     const facility = facilityData.find(f => f.StationNumber === String(selectedFacility));
     // select the state and set it in the dropdown
     if(facility) {
@@ -14,7 +13,6 @@ function selectFacility(facilityData, selectedFacility, facilitySelector = '#edi
 
     // filter the facilities in the dropdown
     const facilitySelect = $(facilitySelector);
-    debugger
     filterFacilities(facilityData, facilitySelect, stateSelector);
 
     // select the facility and display it in the dropdown

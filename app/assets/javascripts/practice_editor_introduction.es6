@@ -8,6 +8,9 @@ $( document ).ready(function() {
     //alert( "ready!" );
     showHidePracticeOriginFields(99);
     sortOutInitiatingFacility();
+
+    getOfficesByState(originData);
+
     var max_fields = 10;
     //var otherFacilityWrapper = $(".add_more_facilities");
 });
@@ -181,6 +184,7 @@ function showHidePracticeOriginFields(facility_type){
 }
 //_oFficeSelect.es6 from legacy PE functions///////////////////////////////////////////////////////////////////////////
 function getDepartment(originData, departmentSelector) {
+    debugger;
     let selectedDepartment = $(`#${departmentSelector}`).val();
     return originData.departments.find(d => `${d.id}` === selectedDepartment);
 }
@@ -213,7 +217,6 @@ function selectOffice(originData, selectedDepartment, selectedOffice, officeSele
 }
 
 function getStatesByDepartment(originData, departmentSelector = 'initiating_department_office_id', stateSelector = 'editor_state_select') {
-    debugger
     let departmentSelect = $(`#${departmentSelector}`);
     let stateSelect = $(`#${stateSelector}`);
     let stateSelectLabel = $('label[for="' + stateSelector + '"]');
@@ -228,8 +231,8 @@ function getOfficesByState(originData, stateSelector = 'editor_state_select', of
     let stateSelect = $(`#${stateSelector}`);
     let officeSelect = $(`#${officeSelector}`);
     let officeSelectLabel = $('label[for="' + officeSelector + '"]');
-    officeSelect.css('color', FACILITY_SELECT_DISABLED_COLOR);
-    officeSelect.prop('disabled', 'disabled');
+    //officeSelect.css('color', FACILITY_SELECT_DISABLED_COLOR);
+    //officeSelect.prop('disabled', 'disabled');
     $(stateSelect).on('change', () => {
         filterOfficesByState(originData, officeSelect, officeSelectLabel, departmentSelector, stateSelector);
     });
@@ -277,13 +280,12 @@ function filterDepartmentTypeOptionsOnRadioSelect(originData, selectedOffice, st
 }
 
 function filterOfficesByState(originData, officeSelect, officeSelectLabel, departmentSelector, stateSelector) {
-    debugger
     let selectedState = $(`#${stateSelector}`).val();
-    let officeSelectObj = document.getElementById(officeSelect);
+    //let officeSelectObj = document.getElementById(officeSelect);
     //enableSelect(officeSelectObj, officeSelectLabel);
     //officeSelectObj.find('option:not([value=""])').remove();
-    officeSelectObj.val('');
-
+    officeSelect.val('');
+    debugger;
     const department = getDepartment(originData, departmentSelector);
     let filteredOffices = department.offices.filter(o => o.state === selectedState);
     filteredOffices

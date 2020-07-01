@@ -156,7 +156,7 @@
             <div class="grid-row">
               <div id="editor_state_dropdown" class="grid-col-auto">
                 <%= label_tag 'editor_state_select', 'State', class: 'usa-label' %>
-                <%= select_tag('', options_for_select(us_states, :include_blank => '-Select-'), id: 'editor_state_select', name: 'editor_state_select', class: 'width-card-lg height-5 usa-select', required: true, :onChange => "filterOfficesByState(originData, 'editor_office_select', 'editor_office_select_label', 'initiating_department_office_id', 'editor_state_select')") %><br />
+                <%= select_tag('', options_for_select(us_states, :include_blank => '-Select-'), id: 'editor_state_select', name: 'editor_state_select', class: 'width-card-lg height-5 usa-select', required: true) %><br />
               </div>
             </div>
             <div class="grid-row">
@@ -167,7 +167,7 @@
           </div>
             <div class="grid-row">
               <div id="editor_office_dropdown" class="grid-col-auto">
-                <%= label_tag 'editor_office_select', 'Office', id: "editor_office_select_label", class: 'usa-label' %>
+                <%= label_tag 'editor_office_select', 'Office', class: 'usa-label' %>
                 <%= select_tag('', options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), id: 'editor_office_select', name: 'editor_office_select', class: 'width-full height-5 usa-select', required: true) %><br />
               </div>
             </div>
