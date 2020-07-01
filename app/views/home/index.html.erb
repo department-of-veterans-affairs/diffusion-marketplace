@@ -20,19 +20,6 @@
           </p>
         </div>
       </div>
-      <div class="flex-fill ie-search-bar-container">
-        <form id="homepageSearchBar" name="searchForm" action="/search" method="get" class="usa-search usa-search--big">
-          <div role="search">
-            <input class="usa-input home-practice-search-field" id="homepage-search-field" type="search" name="search" required title="Type at least three characters to search." autocomplete="off">
-            <button class="usa-button" type="submit" id="practice-search-button">
-              <span class="usa-search__submit-text">Search</span>
-            </button>
-          </div>
-          <label for="homepage-search-field" class="font-sans-xs text-left text-base">
-            Search by practice name, facility name, clinical condition, or keyword
-          </label>
-        </form>
-      </div>
     </div>
   </section>
 
@@ -55,7 +42,7 @@
       </div>
     </div>
   </section>
-  
+
   <% if ENV['GOOGLE_API_KEY'].present? %>
     <% provide :head_tags do %>
       <%= javascript_tag 'data-turbolinks-track': 'reload' do %>

@@ -13,49 +13,6 @@
     font-weight: bold;
   }
 
-  #practice-search-form {
-    margin-bottom: 2rem;
-  }
-
-  #practice-search-field {
-    margin: 0;
-    // float: left;
-    height: 3rem;
-  }
-
-  #practice-search-button {
-    height: 3rem;
-    font-size: 1.3rem;
-  }
-
-  /* Wider than 650px */
-  @media all and (min-width: 650px) {
-    #practice-search-field {
-      border-right: none;
-      /*background: red;*/
-    }
-
-    #practice-search-button {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-  }
-
-  /* Narrower than 650px */
-  @media all and (max-width: 650px) {
-    #practice-search-field {
-      border-bottom: none;
-      /*background: blue;*/
-    }
-
-    #practice-search-button {
-      width: 100%;
-      max-width: 30rem;
-      border-top-left-radius: 0;
-      border-top-right-radius: 0;
-    }
-  }
-
   #results-summary {
     font-style: italic;
     clear: both;
@@ -99,7 +56,7 @@
     position: relative;
     width: 100%;  /* desired width */
   }
-  
+
   .img-box-content {
     background-repeat: no-repeat;
 
@@ -118,18 +75,5 @@
 
   .search-no-image {
     top: 36%;
-  }
-}
-
-#practice-search-button:not([disabled]):focus {
-  outline: 2px solid $dm-color-dark-yellow !important;
-  outline-offset: 2px !important;
-}
-
-// Hack for outline-offset
-@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-  #practice-search-button:not([disabled]):focus {
-    border: 2px solid white;
-    padding: 2px 30px 2px 30px;
   }
 }
