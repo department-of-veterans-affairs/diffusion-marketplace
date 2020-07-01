@@ -14,6 +14,7 @@ function selectFacility(facilityData, selectedFacility, facilitySelector = '#edi
 
     // filter the facilities in the dropdown
     const facilitySelect = $(facilitySelector);
+    debugger
     filterFacilities(facilityData, facilitySelect, stateSelector);
 
     // select the facility and display it in the dropdown
@@ -30,7 +31,7 @@ function getFacilitiesByState(facilityData, facilitySelector = '#editor_facility
     facilitySelect.css('color', FACILITY_SELECT_DISABLED_COLOR);
     facilitySelect.prop('disabled', 'disabled');
     $(stateSelect).on('change', () => {
-        filterFacilities(facilityData, "#" +  facilitySelect, "#" +  stateSelector);
+        filterFacilities(facilityData, facilitySelect, stateSelector);
     });
 }
 
