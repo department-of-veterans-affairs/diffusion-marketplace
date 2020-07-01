@@ -63,7 +63,8 @@ function filterStatesByDepartment(originData, stateSelect, stateSelectLabel, dep
     stateSelect.val('');
     let department = getDepartment(originData, departmentSelector);
     let filteredStates = department.offices.map(o => o.state);
-    filteredStates
+    let uniqueStates = [...new Set(filteredStates)];
+    uniqueStates
         .sort()
         .forEach(state => {
             stateSelect
