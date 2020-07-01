@@ -38,13 +38,16 @@ module PracticesHelper
     durations.include?('permanent') ? 'Permanent' : "#{durations.map { |d| d.to_i }.sum} weeks" if durations.any?
   end
 
+  def fetch_origin_data
+    @origin_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_office_lookup.json"))
+  end
+
   def fetch_offices
     @office_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_office_lookup.json"))
     @office_data["departments"][0]["offices"].to_json
   end
 
   def departments_for_select
-    debugger
     @department_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_office_lookup.json"))
     @department_data = @department_data["departments"]
     @department_data.map {|c| [ c['name'], c['id'] ] }

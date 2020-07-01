@@ -6,6 +6,7 @@
     var facilityData = <%= raw JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json")).to_json %>;
     <% initiating_facility = @practice.initiating_facility || false%>
     var officeData = '<%= raw fetch_offices %>';
+    var originData = '<%= raw fetch_origin_data %>'
     var visnData = '<%= raw fetch_visns %>';
     var selectedFacility = "<%= @practice.initiating_facility %>";
     var initiatingFacilityType = "<%= @practice.initiating_facility_type %>";
@@ -147,21 +148,27 @@
             </div>
 
             <div class="grid-row">
-              <div id="editor_office_dropdown" class="grid-col-auto">
-                <%= label_tag 'editor_office_select', 'Office', class: 'usa-label' %>
-                <%= select_tag(:initiating_department_office_id, options_for_select(departments_for_select), prompt: '-Select-', class: "usa-select", required: true, :onChange => "chooseStateAndFacility(this.options[this.selectedIndex].value)") %><br />
+              <div id="editor_department_dropdown" class="grid-col-auto">
+                <%= label_tag 'editor_department_select', 'Department', class: 'usa-label' %>
+                <%= select_tag(:initiating_department_office_id, options_for_select(departments_for_select), prompt: '-Select-', class: "usa-select", required: true) %><br />
               </div>
             </div>
             <div class="grid-row">
               <div id="editor_state_dropdown" class="grid-col-auto">
                 <%= label_tag 'editor_state_select', 'State', class: 'usa-label' %>
-                <%= select_tag('', options_for_select(us_states, :include_blank => '-Select-'), id: 'editor_state_select', name: 'editor_state_select', class: 'width-card-lg height-5 usa-select', required: true) %><br />
+                <%= select_tag('', options_for_select(us_states, :include_blank => '-Select-'), id: 'editor_state_select', name: 'editor_state_select', class: 'width-card-lg height-5 usa-select', required: true, :onChange => "filterOfficesByState(originData, 'editor_office_select', 'editor_office_select_label', 'initiating_department_office_id', 'editor_state_select')") %><br />
               </div>
             </div>
             <div class="grid-row">
-              <div id="editor_facility_dropdown" class="grid-col-auto">
-                <%= label_tag 'editor_facility_select', 'Facility', class: 'usa-label' %>
-                <%= select_tag('', options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), id: 'editor_facility_select', name: 'editor_facility_select', class: 'width-full height-5 usa-select', required: true) %><br />
+            <div id="editor_facility_dropdown" class="grid-col-auto">
+              <%= label_tag 'editor_facility_select', 'Facility', class: 'usa-label' %>
+              <%= select_tag('', options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), id: 'editor_facility_select', name: 'editor_facility_select', class: 'width-full height-5 usa-select', required: true) %><br />
+            </div>
+          </div>
+            <div class="grid-row">
+              <div id="editor_office_dropdown" class="grid-col-auto">
+                <%= label_tag 'editor_office_select', 'Office', id: "editor_office_select_label", class: 'usa-label' %>
+                <%= select_tag('', options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), id: 'editor_office_select', name: 'editor_office_select', class: 'width-full height-5 usa-select', required: true) %><br />
               </div>
             </div>
             <div id="container"></div><br />
