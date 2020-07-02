@@ -1109,3 +1109,22 @@ ul.no-list-style {
     color: $dm-alt-visited-purple !important;
   }
 }
+
+.disabled-label {
+  color: $dm-color-disabled !important;
+}
+
+.disabled-input {
+  color: $dm-color-disabled !important;
+  border-color: $dm-color-disabled !important;
+  background-color: $dm-color-white !important;
+}
+
+.enabled-label {
+  color: initial !important;
+}
+
+.enabled-input {
+  color: initial !important;
+  border-color: initial !important;
+}

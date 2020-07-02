@@ -8,6 +8,9 @@ class PracticesController < ApplicationController
                                       :checklist, :publication_validation, :adoptions,
                                       :create_or_update_diffusion_history]
   before_action :set_facility_data, only: [:show, :planning_checklist]
+  before_action :set_office_data, only: [:show, :planning_checklist]
+  before_action :set_visn_data, only: [:show, :planning_checklist]
+  before_action :set_initiating_facility_other, only: [:show, :planning_checklist]
   before_action :authenticate_user!, except: [:show, :search, :index]
   before_action :can_view_committed_view, only: [:committed]
   before_action :can_view_practice, only: [:show, :edit, :update, :destroy, :planning_checklist]
@@ -157,6 +160,7 @@ class PracticesController < ApplicationController
     @practices = Practice.searchable_practices
     @facilities_data = facilities_json
     @practices_json = practices_json(@practices)
+
   end
 
   def planning_checklist
@@ -252,6 +256,11 @@ class PracticesController < ApplicationController
 
   # /practices/slug/overview
   def overview
+  end
+
+  # /practices/slug/introduction
+  def introduction
+    set_practice
   end
 
   # GET /practices/1/origin
@@ -396,9 +405,9 @@ class PracticesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def practice_params
-    params.require(:practice).permit(:need_training, :tagline, :process, :it_required, :need_new_license, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :cost_to_implement_aggregate, :sustainability_aggregate, :veteran_satisfaction_aggregate, :difficulty_aggregate, :date_initiated,
-                                     :number_adopted, :number_departments, :number_failed, :implementation_time_estimate, :implementation_time_estimate_description, :implentation_summary, :implentation_fte,
-                                     :training_provider, :training_length, :training_test, :training_provider_role, :required_training_summary, :support_network_email,
+    params.require(:practice).permit(:need_training, :short_name, :tagline, :process, :it_required, :need_new_license, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :cost_to_implement_aggregate, :sustainability_aggregate, :veteran_satisfaction_aggregate, :difficulty_aggregate, :date_initiated,
+                                     :number_adopted, :number_departments, :number_failed, :implementation_time_estimate, :implementation_time_estimate_description, :implentation_summary, :implentation_fte, :initiating_department_office_id, :initiating_facility_type,
+                                     :training_provider, :training_length, :training_test, :training_provider_role, :required_training_summary, :support_network_email, :initiating_facility_other,
                                      :main_display_image, :crop_x, :crop_y, :crop_h, :crop_w,
                                      :delete_main_display_image,
                                      :origin_picture, :origin_picture_original_w, :origin_picture_original_h, :origin_picture_crop_x, :origin_picture_crop_y, :origin_picture_crop_w, :origin_picture_crop_h,
@@ -449,7 +458,20 @@ class PracticesController < ApplicationController
   end
 
   def set_facility_data
-    @facility_data = facilities_json.find { |f| f['StationNumber'] == @practice.initiating_facility }
+    @facility_data = facilities_json.find { |f| f['StationNumber'] == @practice.initiating_facility } if @practice.facility?
+  end
+
+  def set_office_data
+    practice_department_id = @practice.initiating_department_office_id
+    @office_data = origin_data_json['departments'][practice_department_id - 1]['offices'].find { |o| o['id'] == @practice.initiating_facility.to_i } if @practice.department?
+  end
+
+  def set_visn_data
+    @visn_data = origin_data_json['visns'].find { |v| v['id'] == @practice.initiating_facility.to_i } if @practice.visn?
+  end
+
+  def set_initiating_facility_other
+    @initiating_facility_other = @practice.initiating_facility if @practice.other?
   end
 
   def can_view_committed_view
@@ -489,7 +511,7 @@ class PracticesController < ApplicationController
       end
 
       # display initiating facility
-      practice_hash['initiating_facility'] = helpers.facility_name(practice.initiating_facility, facilities_json)
+      practice_hash['initiating_facility'] = helpers.origin_display(practice)
       practice_hash['user_favorited'] = current_user.favorite_practice_ids.include?(practice.id) if current_user.present?
       practices_array.push practice_hash
     end

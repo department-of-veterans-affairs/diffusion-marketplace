@@ -68,6 +68,10 @@ class ApplicationController < ActionController::Base
     JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
   end
 
+  def origin_data_json
+    JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
+  end
+
   def user_accepted_terms?
     if current_user.present? && !current_user.accepted_terms && params[:controller] != 'users' && params[:action] != 'terms_and_conditions'
       redirect_to terms_and_conditions_path
