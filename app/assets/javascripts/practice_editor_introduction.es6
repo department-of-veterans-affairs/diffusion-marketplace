@@ -9,6 +9,9 @@ $( document ).ready(function() {
     showHidePracticeOriginFields(99);
     sortOutInitiatingFacility();
 
+    disableAndSelectDepartmentOptionValue();
+    filterDepartmentTypeOptionsOnRadioSelect(originData);
+    getStatesByDepartment(originData);
     getOfficesByState(originData);
 
     var max_fields = 10;
@@ -171,6 +174,8 @@ function showHidePracticeOriginFields(facility_type){
         document.getElementById("add_more_facilities").style.display = "none";
         document.getElementById("editor_visn_dropdown").style.display = "none";
         document.getElementById("init_facility_other").style.display = "none";
+        debugger
+        document.getElementById("editor_facility_select").disabled = true;
     }
     else if(facility_type == 3){
         document.getElementById("editor_department_dropdown").style.display = "none";
@@ -217,6 +222,7 @@ function selectOffice(originData, selectedDepartment, selectedOffice, officeSele
 }
 
 function getStatesByDepartment(originData, departmentSelector = 'initiating_department_office_id', stateSelector = 'editor_state_select') {
+    debugger
     let departmentSelect = $(`#${departmentSelector}`);
     let stateSelect = $(`#${stateSelector}`);
     let stateSelectLabel = $('label[for="' + stateSelector + '"]');
@@ -255,7 +261,7 @@ function filterStatesByDepartment(originData, stateSelect, stateSelectLabel, dep
         });
 }
 
-function filterDepartmentTypeOptionsOnRadioSelect(originData, selectedOffice, stateSelect, stateSelectLabel, departmentSelector = 'editor_department_select', stateSelector = 'editor_office_state_select', officeSelector = 'editor_office_select') {
+function filterDepartmentTypeOptionsOnRadioSelect(originData, selectedOffice, stateSelect, stateSelectLabel, departmentSelector = 'editor_department_select', stateSelector = 'editor_state_select', officeSelector = 'editor_office_select') {
     $('#initiating_facility_type_department').on('click', function() {
         let selectedDepartment = $(`#${departmentSelector} option:selected`).val();
         let stateSelect = $(`#${stateSelector}`);
@@ -281,9 +287,8 @@ function filterDepartmentTypeOptionsOnRadioSelect(originData, selectedOffice, st
 
 function filterOfficesByState(originData, officeSelect, officeSelectLabel, departmentSelector, stateSelector) {
     let selectedState = $(`#${stateSelector}`).val();
-    //let officeSelectObj = document.getElementById(officeSelect);
-    //enableSelect(officeSelectObj, officeSelectLabel);
-    //officeSelectObj.find('option:not([value=""])').remove();
+    enableSelect(officeSelect, officeSelectLabel);
+    officeSelect.find('option:not([value=""])').remove();
     officeSelect.val('');
     debugger;
     const department = getDepartment(originData, departmentSelector);
