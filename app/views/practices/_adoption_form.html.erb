@@ -29,7 +29,7 @@
     <p class="margin-bottom-1"><span class="fw-bold">Status:&nbsp;</span>
       Select the appropriate status of adoption for the facility.</p>
     <div class="usa-radio position-relative">
-      <%= radio_button(nil, 'status', 'In progress', class: 'usa-radio__input adoptions-radio-button', required: true, type: button_tag, checked: status == in_progress ? 'checked' : false, id: "status_in_progress#{adoption&.diffusion_history&.id}") %>
+      <%= radio_button(nil, 'status', 'In progress', class: 'usa-radio__input adoptions-radio-button', required: true, checked: status == in_progress ? 'checked' : false, id: "status_in_progress#{adoption&.diffusion_history&.id}") %>
       <label class='usa-radio__label' for='<%= "status_in_progress#{adoption&.diffusion_history&.id}" %>'>In progress
         adoption</label>
     </div>
@@ -52,8 +52,8 @@
     <div class="grid-row grid-gap-4">
       <div>
         <%
-          state_select_selector = adoption ? "editor_adoption_state_select_#{adoption.id}" : 'editor_adoption_state_select'
-          facility_select_selector = adoption ? "editor_adoption_facility_select_#{adoption.id}" : 'editor_adoption_facility_select'
+          state_select_selector = adoption ? "editor_state_select_#{adoption.id}" : 'editor_state_select'
+          facility_select_selector = adoption ? "editor_facility_select_#{adoption.id}" : 'editor_facility_select'
           form_id = "adoption_form#{adoption&.diffusion_history&.id}"
         %>
 
@@ -89,9 +89,8 @@
                 // select facility dropdowns
                 $(document).on('turbolinks:load', function() {
                   var facility_id = "<%= facility_id %>";
-                  var facilitySelector = "#<%= facility_select_selector %>";
-                  var stateSelector = "#<%= state_select_selector %>";
-                debugger
+                  var facilitySelector = "<%= facility_select_selector %>";
+                  var stateSelector = "<%= state_select_selector %>";
                   getFacilitiesByState(facilityData, facilitySelector, stateSelector);
                   selectFacility(facilityData, facility_id, facilitySelector, stateSelector);
                 });
@@ -102,9 +101,8 @@
             <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
               // select facility on reload of data after save
               var facility_id = "<%= facility_id %>";
-              var facilitySelector = "#<%= facility_select_selector %>";
-              var stateSelector = "#<%= state_select_selector %>";
-              debugger
+              var facilitySelector = "<%= facility_select_selector %>";
+              var stateSelector = "<%= state_select_selector %>";
               getFacilitiesByState(facilityData, facilitySelector, stateSelector);
               selectFacility(facilityData, facility_id, facilitySelector, stateSelector);
             <% end %>
@@ -112,10 +110,9 @@
         <% else %>
           <% if params[:reload] %>
             <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-              var facilitySelector = "#<%= facility_select_selector %>";
-              var stateSelector = "#<%= state_select_selector %>";
+              var facilitySelector = "<%= facility_select_selector %>";
+              var stateSelector = "<%= state_select_selector %>";
               getFacilitiesByState(facilityData, facilitySelector, stateSelector);
-<!--              getAdoptionFacilitiesByState(facilityData);-->
             <% end %>
           <% end %>
         <% end %>

@@ -67,6 +67,7 @@ Rails.application.routes.draw do
   get 'practices/view_toolkit' => 'practices#view_toolkit'
   # Ditto for "Planning Checklist"
   get 'practices/planning_checklist' => 'practices#planning_checklist'
+  get 'pii_phi_information' => 'home#pii_phi_information'
   get '/search' => 'practices#search'
 
   get '/users/:id' => 'users#show'

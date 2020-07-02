@@ -15,6 +15,7 @@ describe 'Search', type: :feature do
   def update_practice(practice)
     login_as(@admin, :scope => :user, :run_callbacks => false)
     visit practice_overview_path(practice)
+    all('.initiating-facility-type-label').first.click
     select('Alabama', :from => 'editor_state_select')
     select('Birmingham VA Medical Center', :from => 'editor_facility_select')
     fill_in('practice_summary', with: 'This is the most super practice ever made')
@@ -37,6 +38,7 @@ describe 'Search', type: :feature do
     login_as(@admin, :scope => :user, :run_callbacks => false)
     visit practice_overview_path(practice)
     fill_in('practice_tagline', with: 'Test tagline.')
+    all('.initiating-facility-type-label').first.click
     select('Alabama', :from => 'editor_state_select')
     select('Birmingham VA Medical Center', :from => 'editor_facility_select')
     fill_in('practice_summary', with: 'This is the most super practice ever made')

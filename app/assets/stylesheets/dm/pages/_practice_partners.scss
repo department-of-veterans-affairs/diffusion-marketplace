@@ -1,10 +1,10 @@
 @import '../variables/colors';
 
 .practice-partner-link {
-  color: $dm-color-primary-blue !important;
+  color: $dm-color-blue-50v !important;
 
   &:hover {
-    color: $dm-color-primary-dark-blue !important;
+    color: $dm-color-blue-50v !important;
   }
 
   &:visited {

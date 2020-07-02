@@ -8,6 +8,7 @@ class Practice < ApplicationRecord
   friendly_id :name, use: :slugged
   acts_as_list
   visitable :ahoy_visit
+  enum initiating_facility_type: { facility: 0, visn: 1, department: 2, other: 3 }
 
   attr_accessor :views
   attr_accessor :current_month_views
@@ -37,7 +38,8 @@ class Practice < ApplicationRecord
         self.initiating_facility_changed? ||
         self.main_display_image_updated_at_changed? ||
         self.published_changed? ||
-        self.enabled_changed?
+        self.enabled_changed? ||
+        self.date_initiated_changed?
       self.reset_searchable_cache = true
     end
   end
@@ -239,7 +241,6 @@ class Practice < ApplicationRecord
   COMPLEXITY_LABELS = ['Little or no complexity', 'Some complexity', 'Significant complexity', 'High or large complexity'].freeze
   TIME_ESTIMATE_OPTIONS = ['1 week', '1 month', '3 months', '6 months', '1 year', 'longer than 1 year', 'Other (Please specify)']
   NUMBER_DEPARTMENTS_OPTIONS = ['1. Single department', '2. Two departments', '3. Three departments', '4. Four or more departments']
-
   def committed_user_count
     user_practices.where(committed: true).count
   end

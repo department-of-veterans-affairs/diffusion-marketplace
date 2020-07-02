@@ -229,7 +229,7 @@ p {
   width: 4px;
 }
 
-a {
+.link-title {
   color: black;
   text-decoration: none;
 
@@ -239,7 +239,7 @@ a {
 
   &:hover {
     text-decoration: underline;
-    color: #0050D8;
+    color: $dm-color-blue-50v;
 
     > * {
       text-decoration: underline;
@@ -250,6 +250,25 @@ a {
       opacity: .9;
     }
 
+    &:visited {
+      color: $dm-color-blue-50v;
+    }
+
+  }
+
+
+}
+a {
+  color: $dm-color-blue-50v;
+  text-decoration: underline;
+
+  &:visited {
+    color: $dm-alt-visited-purple;
+  }
+
+  &:hover {
+    text-decoration: none;
+    color: $dm-color-blue-50v;
   }
 
   &.beta-banner-link {
@@ -259,9 +278,11 @@ a {
     &:hover {
       text-decoration: none;
     }
+    &:visited {
+      color: black;
+    }
   }
 }
-
 @media all and (min-width: 40em) {
   /* line 68, uswds-rails-029b4d4c92fc/app/assets/stylesheets/uswds/core/mixins/_utility-builder.scss */
   .tablet\:display-block {
@@ -277,6 +298,7 @@ a {
 }
 
 .favorite-practice-button, .featured-favorite-practice-button, .search-favorite-practice-button {
+  color: $dm-color-black;
   position: absolute;
   width: 28px;
   height: 28px;
@@ -324,3 +346,5 @@ a {
     padding: 5px !important;
   }
 }
+
+

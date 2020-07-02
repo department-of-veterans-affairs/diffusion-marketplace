@@ -81,11 +81,34 @@ module ApplicationHelper
 
   def facility_name(facility_id, facilities_data = nil)
     facilities_data = facilities_data || @facilities_data
-    facility_data = facilities_data.find {|f| f['StationNumber'] == facility_id }
+    facility_data = @facility_data || facilities_data.find {|f| f['StationNumber'] == facility_id }
     if facility_data.present?
       "#{facility_data["OfficialStationName"]} #{show_common_name(facility_data["OfficialStationName"], facility_data["CommonName"])}"
     else
       facility_id
+    end
+  end
+
+  def origin_data_json
+    JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
+  end
+
+  def origin_display(practice)
+    if practice.initiating_facility?
+      if practice.facility?
+        "by the #{facility_name(practice.initiating_facility)}"
+      elsif practice.visn?
+        visn = origin_data_json['visns'].find { |v| v['id'] == practice.initiating_facility.to_i }
+        "by #{visn['number']}"
+      elsif practice.department?
+        practice_department_id = practice.initiating_department_office_id
+        office = origin_data_json['departments'][practice_department_id - 1]['offices'].find { |o| o['id'] == practice.initiating_facility.to_i }
+        "by the #{office['name']}"
+      elsif practice.other?
+        "by the #{practice.initiating_facility}"
+      end
+    else
+      ''
     end
   end
 

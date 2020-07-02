@@ -61,14 +61,6 @@
     clear: both;
   }
 
-  // #search-results {
-  //   margin-bottom: 2rem;
-  // }
-
-  #search-results a:visited {
-    color: $dm-color-black;
-  }
-
   /* Truncate text a given line amount */
   .truncate-text-search {
     display: block;
@@ -107,11 +99,7 @@
     position: relative;
     width: 100%;  /* desired width */
   }
-  //.img-box:before {
-  //  content: "";
-  //  display: block;
-  //  padding-top: 100%;  /* initial ratio of 1:1 */
-  //}
+  
   .img-box-content {
     background-repeat: no-repeat;
 

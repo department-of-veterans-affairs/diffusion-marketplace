@@ -8,6 +8,9 @@ class PracticesController < ApplicationController
                                       :checklist, :publication_validation, :adoptions,
                                       :create_or_update_diffusion_history]
   before_action :set_facility_data, only: [:show, :planning_checklist]
+  before_action :set_office_data, only: [:show, :planning_checklist]
+  before_action :set_visn_data, only: [:show, :planning_checklist]
+  before_action :set_initiating_facility_other, only: [:show, :planning_checklist]
   before_action :authenticate_user!, except: [:show, :search, :index]
   before_action :can_view_committed_view, only: [:committed]
   before_action :can_view_practice, only: [:show, :edit, :update, :destroy, :planning_checklist]
@@ -177,6 +180,7 @@ class PracticesController < ApplicationController
     @practices = Practice.searchable_practices
     @facilities_data = facilities_json
     @practices_json = practices_json(@practices)
+
   end
 
   def planning_checklist
@@ -477,7 +481,20 @@ class PracticesController < ApplicationController
   end
 
   def set_facility_data
-    @facility_data = facilities_json.find { |f| f['StationNumber'] == @practice.initiating_facility }
+    @facility_data = facilities_json.find { |f| f['StationNumber'] == @practice.initiating_facility } if @practice.facility?
+  end
+
+  def set_office_data
+    practice_department_id = @practice.initiating_department_office_id
+    @office_data = origin_data_json['departments'][practice_department_id - 1]['offices'].find { |o| o['id'] == @practice.initiating_facility.to_i } if @practice.department?
+  end
+
+  def set_visn_data
+    @visn_data = origin_data_json['visns'].find { |v| v['id'] == @practice.initiating_facility.to_i } if @practice.visn?
+  end
+
+  def set_initiating_facility_other
+    @initiating_facility_other = @practice.initiating_facility if @practice.other?
   end
 
   def set_office_data
@@ -521,7 +538,7 @@ class PracticesController < ApplicationController
       end
 
       # display initiating facility
-      practice_hash['initiating_facility'] = helpers.facility_name(practice.initiating_facility, facilities_json)
+      practice_hash['initiating_facility'] = helpers.origin_display(practice)
       practice_hash['user_favorited'] = current_user.favorite_practice_ids.include?(practice.id) if current_user.present?
       practices_array.push practice_hash
     end

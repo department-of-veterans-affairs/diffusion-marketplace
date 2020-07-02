@@ -31,6 +31,7 @@
     width: auto;
     display: inline-block;
     margin-bottom: 24px;
+    text-decoration: none;
 
     &:hover {
       color: $dm-color-light-black !important;
@@ -115,5 +116,14 @@
   }
 }
 
+.return-to-top {
+  color: $dm-color-primary-vivid;
+  text-decoration: underline;
+
+  &:hover {
+    color: $dm-color-darker-blue;
+    text-decoration: none !important;
+  }
+}
 
 

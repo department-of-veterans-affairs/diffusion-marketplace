@@ -245,7 +245,7 @@ body {
 }
 
 .report-abuse-submit {
-    border: 2px solid $dm-color-primary-blue !important;
+    border: 2px solid $dm-color-blue-50v !important;
   &:hover {
     border: 2px solid $dm-color-primary-dark-blue !important;
   }
@@ -314,7 +314,7 @@ body {
 }
 
 .more-link {
-  color: $dm-color-primary-blue !important;
+  color: $dm-color-blue-50v !important;
 
   &:hover {
     text-decoration: none !important

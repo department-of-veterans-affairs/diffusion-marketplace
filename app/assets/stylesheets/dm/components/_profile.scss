@@ -98,12 +98,12 @@
 }
 
 .user-avatar-upload-label {
-  color: $dm-color-primary-blue;
+  color: $dm-color-blue-50v;
   text-decoration: underline;
   margin-top: 0 !important;
   border: none !important;
   &:hover {
-    color: $dm-color-primary-dark-blue !important;
+    color: $dm-color-blue-50v !important;
     cursor: pointer;
   }
 }

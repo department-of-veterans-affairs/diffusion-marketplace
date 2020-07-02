@@ -29,7 +29,7 @@ DM BUTTON CLASSES
 
 .dm-button-primary,
 .dm-button-link {
-  background-color: $dm-color-primary-blue;
+  background-color: $dm-color-blue-50v;
   border: none;
   color: $dm-color-white;
 }
@@ -37,8 +37,8 @@ DM BUTTON CLASSES
 .dm-button-secondary,
 .dm-button-link-secondary {
   background-color: $dm-color-white;
-  border: 1px solid $dm-color-primary-blue;
-  color: $dm-color-primary-blue;
+  border: 1px solid $dm-color-blue-50v;
+  color: $dm-color-blue-50v;
 }
 
 .dm-button-danger {
@@ -67,11 +67,11 @@ DM BUTTON CLASSES
 
 .dm-button-link-secondary {
   &:visited {
-    color: $dm-color-primary-blue;
+    color: $dm-color-blue-50v;
   }
 
   &:hover {
-    color: $dm-color-primary-blue;
+    color: $dm-color-blue-50v;
   }
 }
 

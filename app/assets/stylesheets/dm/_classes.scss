@@ -158,6 +158,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   color: $dm-color-base-dark !important;
 }
 
+.dm-font-color-blue-50v {
+  color: $dm-color-blue-50v;
+}
+
 /* Font Weight */
 
 .fw-100 {
@@ -1010,10 +1014,16 @@ ul.no-list-style {
 #breadcrumbs {
 
   a {
-    color: #005ea2 !important;
+    color: $dm-color-blue-50v !important;
+    text-decoration: none;
 
-    &:hover, &:visited {
-      color: #005ea2 !important;
+    &:hover {
+      color: $dm-color-blue-50v;
+      text-decoration: underline;
+    }
+
+    &:visited {
+      color: $dm-color-blue-50v !important;
     }
   }
 }
@@ -1080,18 +1090,37 @@ ul.no-list-style {
 }
 
 .dm-link {
-  color: $dm-color-primary-vivid !important;
+  color: $dm-color-blue-50v !important;
   text-decoration: underline !important;
 
   &:hover {
-    color: $dm-color-primary-dark-blue !important;
+    color: $dm-color-blue-50v !important;
   }
 
   &:active {
-    color: $dm-color-darker-blue !important;
+    color: $dm-color-blue-70v !important;
   }
 
   &:visited {
     color: $dm-alt-visited-purple !important;
   }
+}
+
+.disabled-label {
+  color: $dm-color-disabled !important;
+}
+
+.disabled-input {
+  color: $dm-color-disabled !important;
+  border-color: $dm-color-disabled !important;
+  background-color: $dm-color-white !important;
+}
+
+.enabled-label {
+  color: initial !important;
+}
+
+.enabled-input {
+  color: initial !important;
+  border-color: initial !important;
 }

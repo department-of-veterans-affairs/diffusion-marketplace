@@ -13,7 +13,7 @@
       <h1 class="font-sans-2xl margin-bottom-3">
         <%= @page.title %>
       </h1>
-      <p class="font-sans-lg">
+      <p class="font-sans-lg line-height-36">
         <%= @page.description %>
       </p>
     </div>
@@ -111,7 +111,7 @@
           <%# Subpage Hyperlink %>
         <% when 'PageSubpageHyperlinkComponent' %>
           <div class="grid-row margin-bottom-3  grid-col-8 <%= 'margin-x-auto' if @page.narrow? %>">
-            <a href="<%= component.url %>" class="width-100 page-subpage-hyperlink">
+            <a href="<%= component.url %>" class="width-100 page-subpage-hyperlink text-no-underline">
               <h2 class="font-sans-xl display-inline underline x0-top"><%= component.title %></h2>
               <span class="x0-5-left fas fa-chevron-right fa-icon-125 vertical-align-middle p1-bottom"></span>
             </a>

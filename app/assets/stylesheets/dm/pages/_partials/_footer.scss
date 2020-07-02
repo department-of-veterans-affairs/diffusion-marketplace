@@ -1,3 +1,5 @@
+@import "../../../dm/variables/colors";
+
 footer {
   position: absolute;
   right: 0;
@@ -6,9 +8,15 @@ footer {
 }
 
 .nominate-link {
-  color: #005ea2;
+  color: $dm-color-blue-50v;
+  text-decoration: none;
+
+  &:hover {
+    color: $dm-color-blue-50v !important;
+  }
+
   &:visited {
-    color: #005ea2;
+    color: $dm-color-blue-50v;
   }
 }
 

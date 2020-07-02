@@ -49,6 +49,7 @@ describe 'Practice editor', type: :feature, js: true do
 
       visit practice_overview_path(@practice)
       fill_in('practice_tagline', with: tagline)
+      all('.initiating-facility-type-label').first.click
       select('Alabama', :from => 'editor_state_select')
       select('Birmingham VA Medical Center', :from => 'editor_facility_select')
       select(initiated_month, :from => 'editor_date_intiated_month')
