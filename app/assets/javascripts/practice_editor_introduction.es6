@@ -8,7 +8,7 @@ $( document ).ready(function() {
     //alert( "ready!" );
     showHidePracticeOriginFields(99);
     sortOutInitiatingFacility();
-
+debugger
     disableAndSelectDepartmentOptionValue();
     filterDepartmentTypeOptionsOnRadioSelect(originData);
     getStatesByDepartment(originData);
@@ -146,8 +146,11 @@ function showHidePracticeOriginFields(facility_type){
         facility_type = initiatingFacilityType; // document.getElementById("_init_facility_type").value;
     }
     //alert(facility_type)
+    debugger
     if(facility_type == 0)
     {
+        document.getElementById("editor_facility_select").disabled = false;
+        document.getElementById("editor_office_select").disabled = true;
         document.getElementById("editor_department_dropdown").style.display = "none";
         document.getElementById("editor_state_dropdown").style.display = "block";
         document.getElementById("editor_facility_dropdown").style.display = "block";
@@ -157,6 +160,8 @@ function showHidePracticeOriginFields(facility_type){
         document.getElementById("init_facility_other").style.display = "none";
     }
     else if(facility_type == 1){
+        document.getElementById("editor_office_select").disabled = true;
+        document.getElementById("editor_facility_select").disabled = true;
         document.getElementById("editor_department_dropdown").style.display = "none";
         document.getElementById("editor_state_dropdown").style.display = "none";
         document.getElementById("editor_facility_dropdown").style.display = "none";
@@ -167,6 +172,8 @@ function showHidePracticeOriginFields(facility_type){
 
     }
     else if(facility_type == 2){
+        document.getElementById("editor_office_select").disabled = false;
+        document.getElementById("editor_facility_select").disabled = true;
         document.getElementById("editor_department_dropdown").style.display = "block";
         document.getElementById("editor_state_dropdown").style.display = "block";
         document.getElementById("editor_facility_dropdown").style.display = "none";
@@ -174,10 +181,10 @@ function showHidePracticeOriginFields(facility_type){
         document.getElementById("add_more_facilities").style.display = "none";
         document.getElementById("editor_visn_dropdown").style.display = "none";
         document.getElementById("init_facility_other").style.display = "none";
-        debugger
-        document.getElementById("editor_facility_select").disabled = true;
     }
     else if(facility_type == 3){
+        document.getElementById("editor_office_select").disabled = false;
+        document.getElementById("editor_facility_select").disabled = true;
         document.getElementById("editor_department_dropdown").style.display = "none";
         document.getElementById("editor_state_dropdown").style.display = "none";
         document.getElementById("editor_facility_dropdown").style.display = "none";
@@ -247,6 +254,7 @@ function filterStatesByDepartment(originData, stateSelect, stateSelectLabel, dep
     enableSelect(stateSelect, stateSelectLabel);
     stateSelect.find('option:not([value=""])').remove();
     stateSelect.val('');
+    debugger
     let department = getDepartment(originData, departmentSelector);
     let filteredStates = department.offices.map(o => o.state);
     let uniqueStates = [...new Set(filteredStates)];
@@ -289,6 +297,7 @@ function filterOfficesByState(originData, officeSelect, officeSelectLabel, depar
     let selectedState = $(`#${stateSelector}`).val();
     enableSelect(officeSelect, officeSelectLabel);
     officeSelect.find('option:not([value=""])').remove();
+    debugger
     officeSelect.val('');
     debugger;
     const department = getDepartment(originData, departmentSelector);

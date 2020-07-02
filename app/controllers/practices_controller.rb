@@ -141,7 +141,7 @@ class PracticesController < ApplicationController
           @practice.initiating_department_office_id = ""
         end
         if facility_type == "2"
-          @practice.initiating_facility = params[:editor_facility_select]
+          @practice.initiating_facility = params[:editor_office_select]
           @practice.initiating_department_office_id = params[:initiating_department_office_id]
         end
         if facility_type == "3"
