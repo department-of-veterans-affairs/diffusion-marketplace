@@ -130,7 +130,6 @@ class PracticesController < ApplicationController
   def update
     current_endpoint = request.referrer.split('/').pop
     updated = true
-    debugger
     if params[:practice].present?
       if params[:practice][:initiating_facility_type].present?
         #debugger

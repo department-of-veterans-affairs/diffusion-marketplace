@@ -51,6 +51,7 @@ function getOfficesByState(originData, stateSelector = 'editor_office_state_sele
     });
 }
 function filterStatesByDepartment(originData, stateSelect, stateSelectLabel, departmentSelector) {
+    debugger
     enableSelect(stateSelect, stateSelectLabel);
     stateSelect.find('option:not([value=""])').remove();
     stateSelect.val('');
@@ -77,8 +78,8 @@ function filterDepartmentTypeOptionsOnRadioSelect(originData, selectedOffice, st
         let officeSelect = $(`#${officeSelector}`);
         let officeSelectLabel = $('label[for="' + officeSelector + '"]');
         let selectedOffice = $(`#${officeSelector} option:selected`).val();
-
-        if (selectedDepartment !== '' && selectedState === '') {
+debugger
+        if ((selectedDepartment !== '' && selectedDepartment !== undefined) && selectedState === '') {
             filterStatesByDepartment(originData, stateSelect, stateSelectLabel, departmentSelector);
         }
         else if (selectedState !== '' && selectedDepartment !== '' && selectedOffice === '') {
