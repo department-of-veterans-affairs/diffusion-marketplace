@@ -24,8 +24,8 @@
 
   // desktop
   @media screen and (min-width: 64rem) {
-    margin: 0rem 0.5rem;
-    order: unset;
+    margin: 0 0.5rem;
+    order: 0;
     max-width: 16.5rem;
 
     #practice-search-field {
