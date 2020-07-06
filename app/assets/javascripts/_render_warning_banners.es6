@@ -1,5 +1,5 @@
 function homeChromeEdgeWarningBanner() {
-    return $('header').after(`
+    return $('.usa-header').after(`
         <div class="grid-container">
             <div class="usa-alert usa-alert--warning">
               <div class="usa-alert__body">
