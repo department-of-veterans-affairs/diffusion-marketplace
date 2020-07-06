@@ -162,7 +162,7 @@
             <div id="visn_select_form" class="grid-row">
               <div class="margin-bottom-2 grid-col-8">
                 <%= label_tag 'editor_visn_select', 'VISN', class: 'usa-label x0-top' %>
-                <%= select_tag('practice[initiating_facility]', options_for_select(origin_data['visns'].collect { |v| [v['number'], v['id']] }), id: 'editor_visn_select', class: 'height-5 usa-select', include_blank: '-Select-', required: true) %>
+                <%= select_tag('practice[initiating_facility]', options_for_select(origin_data['visns'].collect { |v| [v['number'], v['id']] }), id: 'editor_visn_select', name: "editor_visn_select", class: 'height-5 usa-select', include_blank: '-Select-') %>
               </div>
             </div>
             <div id="facility_select_form" class="gap-4 margin-bottom-2">
@@ -173,13 +173,13 @@
               <br />
               <div class="grid-col-8">
                 <%= label_tag 'editor_facility_select', 'Facility', class: 'usa-label x0-top' %>
-                <%= select_tag('practice[initiating_facility]', options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), id: 'editor_facility_select', class: 'width-full height-5 usa-select', required: true) %>
+                <%= select_tag('practice[initiating_facility]', options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), id: 'editor_facility_select', name: "editor_facility_select", class: 'width-full height-5 usa-select') %>
               </div>
             </div>
             <div id="office_select_form" class="grid-row">
               <div class="margin-bottom-1 grid-col-8">
                 <%= label_tag 'editor_department_select', 'Department', class: 'usa-label x0-top' %>
-                <%= select_tag('practice[initiating_department_office_id]', options_for_select(origin_data['departments'].collect { |d| [d['name'], d['id']] }), id: 'editor_department_select', class: 'height-5 usa-select', include_blank: '-Select-', required: true) %>
+                <%= select_tag('practice[initiating_department_office_id]', options_for_select(origin_data['departments'].collect { |d| [d['name'], d['id']] }), id: 'editor_department_select', class: 'height-5 usa-select', include_blank: '-Select-') %>
               </div>
               <br />
               <div class="grid-row grid-gap-4 margin-bottom-2">
