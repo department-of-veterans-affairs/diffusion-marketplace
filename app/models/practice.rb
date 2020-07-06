@@ -211,6 +211,7 @@ class Practice < ApplicationRecord
 
   #accepts_nested_attributes_for :practices_origin_facilities?
   accepts_nested_attributes_for :practice_origin_facilities, allow_destroy: true
+  accepts_nested_attributes_for :practice_awards, allow_destroy: true
   accepts_nested_attributes_for :practice_partner_practices, allow_destroy: true
   accepts_nested_attributes_for :impact_photos, allow_destroy: true, reject_if: proc { |attributes| attributes['description'].blank? || attributes['attachment'].nil? }
   accepts_nested_attributes_for :video_files, allow_destroy: true, reject_if: proc { |attributes| attributes['url'].blank? || attributes['description'].blank? }
