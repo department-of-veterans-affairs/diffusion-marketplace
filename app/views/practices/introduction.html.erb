@@ -5,10 +5,11 @@
   <%= javascript_include_tag '_visnSelect', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_officeSelect', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_overview', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'practice_editor_introduction', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_cropper', 'data-turbolinks-track': 'reload' %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     var facilityData = <%= raw JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json")).to_json %>;
-    <% initiating_facility = @practice.initiating_facility || false%>
+    <%# initiating_facility = @practice.initiating_facility || false%>
     var officeData = '<%= raw fetch_offices %>';
     var originData = <%= raw JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json")).to_json %>;
     var visnData = '<%= raw fetch_visns %>';
@@ -201,7 +202,7 @@
                 <%= f.text_field :initiating_facility, name: 'initiating_facility_other', id: 'initiating_facility_other', required: false %>
               </div>
             </div>
-            <div id="container"><br />
+            <div id="more_facilities_container"><br />
               <div class="add_more_facilities" id="add_more_facilities">
                 <button class="add_more_facilities_button" onclick="addOtherPracticeOriginFacilities()">Add another</button>
               </div>

@@ -128,16 +128,17 @@
             //disableOptions();
             if ($(`${facilityOption}:checked`).length > 0) {
                 showCurrentlySelectedOptions('facility_select_form');
+                showCurrentlySelectedOptions('more_facilities_container');
                 hideOtherSelectForms(['visn_select_form', 'office_select_form', 'other_select_form' ]);
             } else if ($(`${visnOption}:checked`).length > 0) {
                 showCurrentlySelectedOptions('visn_select_form');
-                hideOtherSelectForms(['facility_select_form', 'office_select_form', 'other_select_form' ]);
+                hideOtherSelectForms(['facility_select_form', 'office_select_form', 'other_select_form', 'more_facilities_container' ]);
             } else if ($(`${departmentOption}:checked`).length > 0) {
                 showCurrentlySelectedOptions('office_select_form');
-                hideOtherSelectForms(['facility_select_form', 'visn_select_form', 'other_select_form' ]);
+                hideOtherSelectForms(['facility_select_form', 'visn_select_form', 'other_select_form', 'more_facilities_container' ]);
             } else {
                 showCurrentlySelectedOptions('other_select_form');
-                hideOtherSelectForms(['facility_select_form', 'visn_select_form', 'office_select_form']);
+                hideOtherSelectForms(['facility_select_form', 'visn_select_form', 'office_select_form', 'more_facilities_container' ]);
             }
         })
     }
