@@ -169,16 +169,37 @@
               </div>
             </div>
             <div id="facility_select_form" class="gap-4 margin-bottom-2">
-              <div class="grid-col-6">
-                <%= label_tag 'editor_state_select', 'State', class: 'usa-label x0-top' %>
-                <%= select_tag('', options_for_select(us_states), id: 'editor_state_select', name: 'editor_state_select', class: 'width-card-lg height-5 usa-select') %>
-              </div>
+              <ul class="practice-editor-origin-ul" id="sortable_origins" role="listbox" title="Practice creators" aria-label="Practice editor practice creator list">
+              <%= f.fields_for :practice_origin_facilities, wrapper: false do |pof| %>
+                <%
+                  orig_facility_id = pof.object.id
+                %>
+                  <li class="practice-editor-origin-li fields" data-id="<%= orig_facility_id %>">
+                    <div class="grid-col-6">
+                      <%= label_tag 'editor_state_select', 'State', class: 'usa-label x0-top' %>
+                      <%= select_tag('', options_for_select(us_states), id: "orig_facility_id_#{orig_facility_id}", name: "orig_facility_id_#{orig_facility_id}", class: 'width-card-lg height-5 usa-select') %>
+                    </div>
+                    <div>
+                      <%= pof.label :facility_id, 'Facility:', class: 'usa-label text-bold display-inline-block' %>&nbsp;
+                      <%= pof.select :facility_id, options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), class: 'usa-input practice-input width-tablet practice-creator-role', 'counter-id': "practice_creator_#{pc_id}_role" %>
+                    </div>
+
+                  </li>
+              <% end %>
+               </ul>
+
+
+
+
+
+
               <br />
               <div class="grid-col-8">
                 <%= label_tag 'editor_facility_select', 'Facility', class: 'usa-label x0-top' %>
                 <%= select_tag('practice[initiating_facility]', options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), id: 'editor_facility_select', name: "editor_facility_select", class: 'width-full height-5 usa-select') %>
               </div>
             </div>
+
             <div id="office_select_form" class="grid-row">
               <div class="margin-bottom-1 grid-col-8">
                 <%= label_tag 'editor_department_select', 'Department', class: 'usa-label x0-top' %>

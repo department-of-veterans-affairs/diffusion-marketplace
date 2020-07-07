@@ -134,7 +134,7 @@ class PracticesController < ApplicationController
     debugger
     if params[:practice].present?
       if params[:practice][:initiating_facility_type].present?
-        #debugger
+        debugger
         facility_type = params[:practice][:initiating_facility_type]
         if facility_type == "facility"
           @practice.initiating_facility = params[:editor_facility_select]
@@ -443,7 +443,8 @@ class PracticesController < ApplicationController
                                      additional_staffs_attributes: [:id, :_destroy, :title, :hours_per_week, :duration_in_weeks, :permanent],
                                      additional_resources_attributes: [:id, :_destroy, :name, :position, :description], required_staff_trainings_attributes: [:id, :_destroy, :title, :description], practice_creators_attributes: [:id, :_destroy, :name, :role, :avatar, :position, :delete_avatar, :crop_x, :crop_y, :crop_w, :crop_h],
                                      publications_attributes: [:id, :_destroy, :title, :link, :position], additional_documents_attributes: [:id, :_destroy, :attachment, :title, :position], practice_permissions_attributes: [:id, :_destroy, :position, :name, :description],
-                                     practice_partner: {}, department: {})
+                                     practice_partner: {}, department: {},
+                                     practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :facility_type, :initiating_department_office_id ])
   end
 
   def can_view_practice

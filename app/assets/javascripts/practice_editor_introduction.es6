@@ -44,34 +44,24 @@ debugger
     let label = document.createElement("label");
     label.innerHTML = "<br /><br />State <br />"
     label.htmlFor = stateSelector;
-
     document.getElementById(p).appendChild(label);
     document.getElementById(p).appendChild(select);
-
     var facilitySelector = "editor_facility_select[" + initiatingFacilityCtr + "]";
-
     select = document.createElement("select");
     select.name = facilitySelector;
     select.id = facilitySelector;
     select.style.width = "477px";
-
     option = document.createElement("option");
     option.value = '';
     option.text = "-Select-";
     select.appendChild(option);
-    ctr = 0;
-
     label = document.createElement("label");
     label.innerHTML = "<br /><br />Facility <br />"
     label.htmlFor = facilitySelector;
-    //facilitySelector = "#" + facilitySelector;
-    //stateSelector = "#" + stateSelector;
-    //const html = '<a href="" onclick="javascript:removeElement(' + facilitySelector + '' + " ); return false;">Remove<//a>';
-    //const html = "a href=''>Remove<//a>";
     document.getElementById(p).appendChild(label);
     document.getElementById(p).appendChild(select);
     debugger
-    //getFacilitiesByState(facilityData, facilitySelector, stateSelector);
+    getFacilitiesByState(facilityData, facilitySelector, stateSelector);
 
 
 }

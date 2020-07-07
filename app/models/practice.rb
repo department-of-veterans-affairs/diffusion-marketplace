@@ -204,7 +204,7 @@ class Practice < ApplicationRecord
   has_many :video_files, -> { order(position: :asc) }, dependent: :destroy
   has_many :practice_creators, -> { order(position: :asc) }, dependent: :destroy
   has_many :practice_awards, -> {order(position: :asc) }, dependent: :destroy
-  has_many :practice_origin_facilities, -> {order(position: :asc) }, dependent: :destroy
+  has_many :practice_origin_facilities, -> {order(id: :asc) }, dependent: :destroy
 
   # This allows the practice model to be commented on with the use of the Commontator gem
   acts_as_commontable dependent: :destroy
