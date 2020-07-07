@@ -131,6 +131,7 @@ class PracticesController < ApplicationController
     current_endpoint = request.referrer.split('/').pop
     updated = true
     #raise params.inspect
+    debugger
     if params[:practice].present?
       if params[:practice][:initiating_facility_type].present?
         #debugger
@@ -138,16 +139,13 @@ class PracticesController < ApplicationController
         if facility_type == "facility"
           @practice.initiating_facility = params[:editor_facility_select]
           @practice.initiating_department_office_id = ""
-        end
-        if facility_type == "visn"
+        elsif facility_type == "visn"
           @practice.initiating_facility = params[:editor_visn_select]
           @practice.initiating_department_office_id = ""
-        end
-        if facility_type == "department"
+        elsif facility_type == "department"
           @practice.initiating_facility = params[:editor_office_select]
           @practice.initiating_department_office_id = params[:initiating_department_office_id]
-        end
-        if facility_type == "other"
+        elsif facility_type == "other"
           @practice.initiating_facility = params[:initiating_facility_other]
           @practice.initiating_department_office_id = ""
         end

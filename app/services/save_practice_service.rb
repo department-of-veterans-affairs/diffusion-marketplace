@@ -14,7 +14,8 @@ class SavePracticeService
       manipulate_avatars: 'error updating avatars',
       remove_main_display_image: 'error removing practice thumbnail',
       crop_main_display_image: 'error cropping practice thumbnail',
-      update_initiating_facility: 'error updating initiating facility'
+      update_initiating_facility: 'error updating initiating facility',
+      update_practice_origin_facilities: 'error updating practice origin facilities'
     }
   end
 
@@ -29,6 +30,7 @@ class SavePracticeService
       rescue_method(:remove_main_display_image)
       rescue_method(:crop_main_display_image)
       rescue_method(:update_initiating_facility)
+      rescue_method(:update_practice_origin_facilities)
 
       updated
     rescue => e
@@ -149,5 +151,12 @@ class SavePracticeService
         raise StandardError.new @error_messages[:update_initiating_facility]
       end
     end
+  end
+
+  def update_practice_origin_facilities
+    debugger
+    id = @practice.id
+    initiating_facility = @practice_params[:initiating_facility]
+    facility_type = @practice_params[:initiating_facility_type]
   end
 end

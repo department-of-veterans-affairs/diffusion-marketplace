@@ -124,6 +124,7 @@
     }
 
     function toggleInputsOnRadioSelect() {
+        debugger
         $(document).on('click', '#initiating_facility_type_facility, #initiating_facility_type_visn, #initiating_facility_type_department, #initiating_facility_type_other', function() {
             //disableOptions();
             if ($(`${facilityOption}:checked`).length > 0) {
@@ -152,13 +153,13 @@
             hideOtherSelectForms(['visn_select_form', 'office_select_form', 'other_select_form' ]);
         } else if (selectedFacilityType == 'visn') {
             showCurrentlySelectedOptions('visn_select_form');
-            hideOtherSelectForms(['facility_select_form', 'office_select_form', 'other_select_form' ]);
+            hideOtherSelectForms(['facility_select_form', 'office_select_form', 'other_select_form', 'more_facilities_container' ]);
         } else if (selectedFacilityType == 'department') {
             showCurrentlySelectedOptions('office_select_form');
-            hideOtherSelectForms(['facility_select_form', 'visn_select_form', 'other_select_form' ]);
+            hideOtherSelectForms(['facility_select_form', 'visn_select_form', 'other_select_form', 'more_facilities_container' ]);
         } else {
             showCurrentlySelectedOptions('other_select_form');
-            hideOtherSelectForms(['facility_select_form', 'visn_select_form', 'office_select_form']);
+            hideOtherSelectForms(['facility_select_form', 'visn_select_form', 'office_select_form', 'more_facilities_container' ]);
         }
     }
 

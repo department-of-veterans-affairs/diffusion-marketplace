@@ -19,6 +19,8 @@
     var selectedDepartment = "<%= @practice.initiating_department_office_id %>"
     var selectedOffice = "<%= @practice.department? && @practice.initiating_facility || false %>"
     var selectedVisn = "<%= @practice.visn? && @practice.initiating_facility || false %>"
+    var initiatingFacilityType = "<%= @practice.initiating_facility_type %>"
+    debugger
     var initiatingDepartmentOfficeId = "<%= @practice.initiating_department_office_id %>";
     var stateData = '<%= options_for_states %>';
     var initiatingFacilityCtr = 0;
@@ -204,7 +206,7 @@
             </div>
             <div id="more_facilities_container"><br />
               <div class="add_more_facilities" id="add_more_facilities">
-                <button class="add_more_facilities_button" onclick="addOtherPracticeOriginFacilities()">Add another</button>
+                <button class="add_more_facilities_button" onclick="addOtherPracticeOriginFacilities('more_facilities_container')">Add another</button>
               </div>
             </div>
             <svg class="svg">
