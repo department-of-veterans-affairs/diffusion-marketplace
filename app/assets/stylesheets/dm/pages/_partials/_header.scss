@@ -52,12 +52,8 @@ header {
       }
     }
 
-    // remove usa accordion button image
-    .usa-accordion__button {
-      &[aria-expanded="true"], &[aria-expanded="false"]  {
-        background-image: none;
-      }
-
+    .dm-last-nav-link {
+      border-bottom: 0.0625rem solid $dm-color-cool-gray-30 !important;
     }
 
     .usa-nav__submenu-item {
@@ -81,21 +77,43 @@ header {
 
     .usa-nav__link {
       color: $dm-color-base;
+      border-left: 0.25rem transparent !important;
+      padding-left: 0.75rem;
 
       &:visited {
         color: $dm-color-base;
       }
 
-      &:hover, &:active, &:focus, &[aria-expanded="true"]{
-        background-color: $dm-color-white;
+      &.dm-current-link, &:hover, &:active, &:focus, &[aria-expanded="true"] {
         border-left: 0.25rem solid $dm-color-blue-50v !important;
-        padding-left: 0.75rem;
         color: $dm-color-blue-50v !important;
         font-weight: bold;
       }
 
+      &:hover, &:active, &:focus, &[aria-expanded="true"] {
+        background-color: $dm-color-white;
+      }
+
       &[aria-expanded="false"] {
         border-bottom: 0.0625rem solid $dm-color-cool-gray-30 !important;
+      }
+    }
+
+    .dm-sub-nav-display {
+      display: block !important;
+
+      //remove usa accordion button image
+      &[aria-expanded="true"], &[aria-expanded="false"]  {
+        background-image: none;
+      }
+
+      &.usa-nav__link {
+        border-bottom: none !important;
+      }
+
+      li > .dm-current-link {
+        color: $dm-color-blue-50v !important;
+        font-weight: bold;
       }
     }
   }
@@ -107,7 +125,7 @@ header {
     }
 
     .usa-logo {
-      margin: 1.75rem 0px 1.6875rem;
+      margin: 1.75rem 0 1.6875rem;
     }
 
     .usa-nav__submenu {
@@ -119,8 +137,9 @@ header {
     .usa-nav__link {
       margin: 0rem 1rem!important;
       padding: 1.75rem 0 !important;
-      border-bottom: 5px solid transparent !important;
-      &:hover, &:focus {
+      border-bottom: 0.3125rem solid transparent !important;
+
+      &:hover, &:focus, &.dm-current-link {
         border-bottom: 0.3125rem solid $dm-color-blue-50v !important;
       }
 
@@ -129,6 +148,7 @@ header {
         text-decoration: none;
         border-bottom: 0.3125rem solid $dm-color-blue-70v !important;
       }
+
       &.usa-accordion__button {
         padding: 1.75rem 0 1.75rem 0.5rem !important;
 

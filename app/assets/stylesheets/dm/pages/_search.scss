@@ -1,6 +1,6 @@
 // Styles for the practice search page
 @import '../variables/colors';
-.search-practices {
+.dm-search-practices {
 
   hr {
     border: none;
@@ -11,11 +11,6 @@
   mark {
     background: #ffbe2e;
     font-weight: bold;
-  }
-
-  #results-summary {
-    font-style: italic;
-    clear: both;
   }
 
   /* Truncate text a given line amount */

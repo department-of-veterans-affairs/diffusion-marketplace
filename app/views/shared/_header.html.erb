@@ -19,12 +19,12 @@
       </button>
       <ul class="usa-nav__primary usa-accordion">
         <li class="usa-nav__primary-item">
-          <a class="usa-nav__link" href="/competitions/shark-tank">
+          <a class="usa-nav__link <%= 'dm-current-link' if request.fullpath == '/competitions/shark-tank' %>" href="/competitions/shark-tank">
             <span>Shark Tank</span>
           </a>
         </li>
         <li class="usa-nav__primary-item">
-          <a class="usa-nav__link" href="/covid-19">
+          <a class="usa-nav__link <%= 'dm-current-link' if request.fullpath == '/covid-19' %>" href="/covid-19">
             <span>COVID-19</span>
           </a>
         </li>
@@ -34,16 +34,20 @@
         <% if user_signed_in? %>
           <% if ENV['USE_NTLM'] == 'true' %>
             <li class="usa-nav__primary-item">
-              <%= link_to('Your profile', user_path(current_user), class: 'usa-nav__link') %>
+              <a class="usa-nav__link dm-last-nav-link <%= 'dm-current-link' if request.fullpath == user_path(current_user) %>" href="<%= user_path(current_user) %>">
+                <span>Your profile</span>
+              </a>
             </li>
           <% else %>
             <li class="usa-nav__primary-item">
-              <button class="usa-accordion__button usa-nav__link" aria-expanded="false" aria-controls="dm-user-profile-options">
-                <span>Your Profile</span>
+              <button class="usa-accordion__button usa-nav__link <%= 'dm-current-link dm-sub-nav-display' if request.fullpath == user_path(current_user) %>" aria-expanded="false" aria-controls="dm-user-profile-options">
+                <span>Your profile</span>
               </button>
-              <ul id="dm-user-profile-options" class="usa-nav__submenu" hidden="true">
+              <ul id="dm-user-profile-options" class="usa-nav__submenu <%= 'dm-sub-nav-display' if request.fullpath == user_path(current_user) %>" hidden="true">
                 <li class="usa-nav__submenu-item">
-                  <%= link_to('Profile', user_path(current_user)) %>
+                  <a class="<%= 'dm-current-link' if request.fullpath == user_path(current_user) %>" href="<%= user_path(current_user) %>">
+                    <span>Profile</span>
+                  </a>
                 </li>
                 <li class="usa-nav__submenu-item">
                   <%= link_to('Sign out', destroy_user_session_path, method: :delete) %>

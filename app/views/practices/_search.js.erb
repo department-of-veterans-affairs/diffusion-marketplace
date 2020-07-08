@@ -17,14 +17,16 @@ function searchPracticesPage() {
         var resultsHTML = '';
         var resultsSummary = document.querySelector('#results-summary');
         var searchResults = document.querySelector('#search-results');
+        let searchField = document.querySelector('#dm-search-search-field');
 
+        searchField.value = query;
         // Run the search query
         results = fuse.search(query);
 
         console.log(results.length)
 
         // Print the number of results for the query
-        resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? '' : 's') + ' for "' + query + '":';
+        resultsSummary.innerHTML += `${results.length} ${results.length === 1 ? 'result' : 'results'} for <span class="text-bold">${query}</span>:`;
 
         // Highlight results (only Fuse.js matching)
         results.forEach(function(result) {

@@ -77,8 +77,8 @@ describe 'Breadcrumbs', type: :feature do
     it 'should show proper breadcrumbs when a user searches for a practice and then visits that practice\'s page' do
       @user_practice.update(published: true, approved: true)
       visit '/'
-      fill_in('practice-search-field', with: 'the best')
-      find('#practice-search-button').click
+      fill_in('#dm-search-search-field', with: 'the best')
+      find('#dm-search-search-button').click
       expect(page).to have_content('The Best')
       expect(page).to be_accessible.according_to :wcag2a, :section508
       within(:css, '#breadcrumbs') do
@@ -95,8 +95,8 @@ describe 'Breadcrumbs', type: :feature do
       end
 
       # go back to search page
-      fill_in('practice-search-field', with: 'the best')
-      find('#practice-search-button').click
+      fill_in('#dm-search-search-field', with: 'the best')
+      find('##dm-search-search-button').click
       expect(page).to have_current_path('/search?query=the%20best')
 
       within(:css, '#breadcrumbs') do
