@@ -1,22 +1,52 @@
-// (($) => {
-//     const $document = $(document);
-//     $document.on('turbolinks:load');
-// })(window.jQuery);
-
-$( document ).ready(function() {
+(($) => {
     const $document = $(document);
-    //alert( "ready!" );
-    showHidePracticeOriginFields(99);
-    sortOutInitiatingFacility();
-debugger
-    disableAndSelectDepartmentOptionValue();
-    filterDepartmentTypeOptionsOnRadioSelect(originData);
-    getStatesByDepartment(originData);
-    getOfficesByState(originData);
 
-    var max_fields = 10;
-    //var otherFacilityWrapper = $(".add_more_facilities");
-});
+    function attachFacilitySelectListener() {
+
+        $document.arrive('.practice-editor-origin-facility-li', (newElem) => {
+            let $newEl = $(newElem);
+            let dataId = $newEl.data('id');
+            styleOriginFacility($newEl, dataId);
+            getFacilitiesByState(facilityData, `practice_practice_origin_facilities_attributes_${dataId}_facility_id`, `editor_state_select_${dataId}`)
+            $document.unbindArrive('.practice-editor-origin-li', newElem);
+        });
+    }
+
+    function loadPracticeIntroductionFunctions() {
+        attachFacilitySelectListener();
+    }
+
+    $document.on('turbolinks:load', loadPracticeIntroductionFunctions);
+})(window.jQuery);
+
+function styleOriginFacility($newEl, dataId){
+    $newEl.css('list-style', 'none');
+    // let dataId = $newEl.data('id');
+    const $originFacilityElements = $('.practice-editor-origin-facility-li');
+    if($originFacilityElements.length > 1){
+        $.each($originFacilityElements, (i, el) => {
+            if($(el).data('id') !== dataId) {
+                $(el).addClass('margin-bottom-4');
+            }
+        });
+    }
+}
+
+
+// $( document ).ready(function() {
+//     const $document = $(document);
+//     //alert( "ready!" );
+//     showHidePracticeOriginFields(99);
+//     sortOutInitiatingFacility();
+//     debugger
+//     disableAndSelectDepartmentOptionValue();
+//     filterDepartmentTypeOptionsOnRadioSelect(originData);
+//     getStatesByDepartment(originData);
+//     getOfficesByState(originData);
+//
+//     var max_fields = 10;
+//     //var otherFacilityWrapper = $(".add_more_facilities");
+// });
 
 function addOtherPracticeOriginFacilities(p){
     debugger

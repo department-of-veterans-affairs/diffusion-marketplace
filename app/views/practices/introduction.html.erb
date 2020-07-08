@@ -49,7 +49,7 @@
         <h2 class="text-normal">Introduce your practice and provide a brief summary to people who may be unfamiliar
           with it.</h2>
         <svg class="svg">
-          <rect class="rectangle21" />
+          <rect width="40" height="4" class="rectangle21" />
         </svg>
         <%= nested_form_for(@practice, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
           <fieldset class="usa-fieldset">
@@ -61,7 +61,7 @@
               <p class="usa-error-message <%= @practice.errors[:name].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@practice, :name) %></span></p>
             </div>
             <svg class="svg">
-              <rect class="rectangle21" />
+              <rect width="40" height="4" class="rectangle21" />
             </svg>
             <div>
               <%= f.label :short_name, 'Acronym ', class: 'usa-label text-bold display-block margin-top-3' %>
@@ -73,7 +73,7 @@
             </div>
 
             <svg class="svg">
-              <rect class="rectangle21" />
+              <rect width="40" height="4" class="rectangle21" />
             </svg>
 
             <p class="margin-top-3"><span class="text-bold">Thumbnail</span>&nbsp;</p>
@@ -115,7 +115,7 @@
               </div>
             </div>
             <svg class="svg">
-              <rect class="rectangle21" />
+              <rect width="40" height="4" class="rectangle21" />
             </svg>
             <div>
               <%= f.label :summary, 'Summary ', class: 'usa-label text-bold display-block' %>
@@ -123,7 +123,7 @@
               <%= f.text_area :summary, class: 'usa-textarea display-block practice-editor-summary-textarea', required: true %>
             </div>
             <svg class="svg">
-              <rect class="rectangle21" />
+              <rect width="40" height="4" class="rectangle21" />
             </svg>
 
             <p class="margin-top-3"><span class="text-bold">Date created</span></p>
@@ -139,7 +139,7 @@
               </div>
             </div>
             <svg class="svg">
-              <rect class="rectangle21" />
+              <rect width="40" height="4" class="rectangle21" />
             </svg>
             <p class="margin-top-3"><span class="text-bold">Practice origin</span>&nbsp;</p>
             <span>Select the location where this practice originated</span>
@@ -172,32 +172,42 @@
               <ul class="practice-editor-origin-ul" id="sortable_origins" role="listbox" title="Practice creators" aria-label="Practice editor practice creator list">
               <%= f.fields_for :practice_origin_facilities, wrapper: false do |pof| %>
                 <%
-                  orig_facility_id = pof.object.id
+                  orig_facility_id = pof.object.id || "new_practice_origin_facilities"
                 %>
-                  <li class="practice-editor-origin-li fields" data-id="<%= orig_facility_id %>">
-                    <div class="grid-col-6">
-                      <%= label_tag 'editor_state_select', 'State', class: 'usa-label x0-top' %>
-                      <%= select_tag('', options_for_select(us_states), id: "orig_facility_id_#{orig_facility_id}", name: "orig_facility_id_#{orig_facility_id}", class: 'width-card-lg height-5 usa-select') %>
-                    </div>
-                    <div>
-                      <%= pof.label :facility_id, 'Facility:', class: 'usa-label text-bold display-inline-block' %>&nbsp;
-                      <%= pof.select :facility_id, options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), class: 'usa-input practice-input width-tablet practice-creator-role', 'counter-id': "practice_creator_#{pc_id}_role" %>
-                    </div>
+                  <% if pof.object.facility_id %>
+                  <%# provide :head_tags do %>
 
+                      <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                      $(document).arrive('<%= "#practice_practice_origin_facilities_attributes_#{pof.index}_facility_id" %>', function(newElem)  {
+                        styleOriginFacility($(newElem).closest('li'));
+                        var facility_id = '<%= pof.object.facility_id %>';
+                        var facilitySelector = '<%= "practice_practice_origin_facilities_attributes_#{pof.index}_facility_id" %>';
+                        var stateSelector ='<%= "editor_state_select_#{orig_facility_id}" %>';
+                        getFacilitiesByState(facilityData, facilitySelector, stateSelector);
+                        selectFacility(facilityData, facility_id, facilitySelector, stateSelector);
+                        $(document).unbindArrive('<%= "#practice_practice_origin_facilities_attributes_#{pof.index}_facility_id" %>', newElem);
+                      });
+                      <% end %>
+                    <%# end %>
+                   <% end %>
+                  <li class="practice-editor-origin-facility-li fields" data-id="<%= orig_facility_id %>">
+                    <div class="margin-bottom-3">
+                      <%= label_tag "editor_state_select_#{orig_facility_id}", 'State', class: 'usa-label x0-top margin-bottom-1' %>
+                      <%= select_tag('', options_for_select(us_states), id: "editor_state_select_#{orig_facility_id}", name: "editor_state_select_#{orig_facility_id}", class: 'width-card-lg height-5 usa-select') %>
+                    </div>
+                    <div class="grid-row">
+                      <%= pof.label :facility_id, 'Facility', class: 'usa-label x0-top margin-bottom-1 grid-col-12' %>&nbsp;
+                      <%= pof.select :facility_id, options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), {}, {class: 'width-full height-5 usa-select desktop:grid-col-10 margin-bottom-2', 'counter-id': "practice_origin_facility_#{orig_facility_id}"} %>
+                    </div>
+                    <div class="grid-col-fill flex-align-end trash-container">
+                      <%= pof.link_to_remove 'Delete Entry', class: "origin-trash font-sans-xs line-height-26 cursor-pointer" %>
+                    </div>
                   </li>
               <% end %>
                </ul>
-
-
-
-
-
-
-              <br />
-              <div class="grid-col-8">
-                <%= label_tag 'editor_facility_select', 'Facility', class: 'usa-label x0-top' %>
-                <%= select_tag('practice[initiating_facility]', options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), id: 'editor_facility_select', name: "editor_facility_select", class: 'width-full height-5 usa-select') %>
-              </div>
+              <%= f.link_to_add :practice_origin_facilities, class: 'add-practice-creator-link line-height-26 cursor-pointer' do %>
+                <span class="font-sans-xs text-normal">Add another</span>
+              <% end %>
             </div>
 
             <div id="office_select_form" class="grid-row">
@@ -225,18 +235,18 @@
                 <%= f.text_field :initiating_facility, name: 'initiating_facility_other', id: 'initiating_facility_other', required: false %>
               </div>
             </div>
-            <div id="more_facilities_container"><br />
-              <div class="add_more_facilities" id="add_more_facilities">
-                <button class="add_more_facilities_button" onclick="addOtherPracticeOriginFacilities('more_facilities_container')">Add another</button>
-              </div>
-            </div>
             <svg class="svg">
-              <rect class="rectangle21" />
+              <rect width="40" height="4" class="rectangle21" />
             </svg>
+
+
+
             <p class="margin-top-3"><span class="text-bold">Awards and recognition</span>&nbsp;
             <span>Select any awards or recognitions your practice has received.</span></p>
             <div class="grid-row grid-gap margin-top-105">
+
               <div class='usa-checkbox grid-col-12'>
+                <%#= f.check_box 'awards_gold_status', class: 'usa-checkbox__input' %> <%#= f.label 'awards_gold_status', class: 'usa-checkbox__label' %>
                 <input id="awards_gold_status" name="awards_gold_status" type="checkbox" value="0" /> Gold Status Practice<br />
               </div>
               <div class='usa-checkbox grid-col-12'>
@@ -248,10 +258,21 @@
               <div class='usa-checkbox grid-col-12'>
                 <input id="awards_other" name="awards_other" type="checkbox" value="0" /> Other<br />
               </div>
+              <ul class="practice-editor-origin-ul" id="sortable_origins" role="listbox" title="Practice creators" aria-label="Practice editor practice creator list">
+                <%= f.fields_for :practice_awards, wrapper: false do |pa| %>
+                  <li class="practice-editor-origin-facility-li fields">
+                    <%= pa.label :name, 'Name of award or recognition' %>
+                    <%= pa.text_field :name, class:'usa-input' %>
+                  </li>
+                <% end %>
+              </ul>
+              <%= f.link_to_add :practice_awards, class: 'add-practice-creator-link line-height-26 cursor-pointer' do %>
+                <span class="font-sans-xs text-normal">Add another</span>
+              <% end %>
             </div>
 
             <svg class="svg">
-              <rect class="rectangle21" />
+              <rect width="40" height="4" class="rectangle21" />
             </svg>
             <p class="margin-top-3 margin-bottom-1"><span class="text-bold">Partners: </span><span>Select any of the following partners your practice is associated with.</span>
               <%
