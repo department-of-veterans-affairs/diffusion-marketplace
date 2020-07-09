@@ -2,6 +2,8 @@ var practices = <%= @practices_json %>;
 var results = null;
 
 function searchPracticesPage() {
+    const searchField = document.querySelector('#dm-search-search-field');
+
     // Skip if not the search page
     if (location.pathname !== '/search') return;
 
@@ -17,8 +19,8 @@ function searchPracticesPage() {
         var resultsHTML = '';
         var resultsSummary = document.querySelector('#results-summary');
         var searchResults = document.querySelector('#search-results');
-        let searchField = document.querySelector('#dm-search-search-field');
 
+        // set the search page search bar input value
         searchField.value = query;
         // Run the search query
         results = fuse.search(query);
@@ -26,7 +28,8 @@ function searchPracticesPage() {
         console.log(results.length)
 
         // Print the number of results for the query
-        resultsSummary.innerHTML += `${results.length} ${results.length === 1 ? 'result' : 'results'} for <span class="text-bold">${query}</span>:`;
+        let resultContent = results.length + ' result' + (results.length === 1 ? '' : 's') + ' for <span class="text-bold">' + query + '</span>:';
+        resultsSummary.innerHTML += resultContent
 
         // Highlight results (only Fuse.js matching)
         results.forEach(function(result) {
