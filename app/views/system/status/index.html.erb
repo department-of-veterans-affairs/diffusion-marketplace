@@ -1,0 +1,43 @@
+<% no_file_text = 'No REVISION file' %>
+<div class="grid-container">
+  <div class="grid-col-8 margin-x-auto">
+    <h1>Application Information</h1>
+    <div class="grid-row word-break-break-word hyphens-auto padding-y-105 border-bottom-1px border-black">
+      <div class="tablet:grid-col-6">
+        <p class="padding-left-105 font-sans-xs-2 line-height-sans-505">&nbsp;</p>
+      </div>
+      <div class="tablet:grid-col-6">
+        <p class="padding-left-105 font-sans-xs-2 line-height-sans-505">
+          &nbsp;
+        </p>
+      </div>
+    </div>
+    <div class="grid-row word-break-break-word hyphens-auto padding-y-105 border-bottom-1px border-black">
+      <div class="tablet:grid-col-6">
+        <p class="padding-left-105 font-sans-xs-2 line-height-sans-505">Deployed at</p>
+      </div>
+      <div class="tablet:grid-col-6">
+        <% time = @deployed_at ? @deployed_at.in_time_zone('America/New_York').strftime("%m/%d/%Y %I:%M %Z") : no_file_text %>
+        <p class="padding-left-105 font-sans-xs-2 line-height-sans-505">
+          <%= time %>
+        </p>
+      </div>
+    </div>
+    <div class="grid-row word-break-break-word hyphens-auto padding-y-105 border-bottom-1px border-black">
+      <div class="tablet:grid-col-6 padding-left-105">
+        <p class="font-sans-xs-2 line-height-sans-505">
+          Revision
+        </p>
+      </div>
+      <div class="tablet:grid-col-6 padding-left-105">
+        <p class="font-sans-xs-2 line-height-sans-505">
+          <% if @revision %>
+            <%= link_to @revision, "https://github.com/agilesix/diffusion-marketplace/commits/#{@revision}", target: '_blank' %>
+          <% else %>
+            <%= no_file_text %>
+          <% end %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
