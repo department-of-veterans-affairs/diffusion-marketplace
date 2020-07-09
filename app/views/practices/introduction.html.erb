@@ -241,13 +241,11 @@
 
 
 
-            <p class="margin-top-3"><span class="text-bold">Awards and recognition</span>&nbsp;
-            <span>Select any awards or recognitions your practice has received.</span></p>
+            <p class="margin-top-3"><span class="text-bold">Awards and recognition</span>&nbsp<br />
+            Select any awards or recognitions your practice has received.</p>
             <div class="grid-row grid-gap margin-top-105">
-
               <div class='usa-checkbox grid-col-12'>
-                <%#= f.check_box 'awards_gold_status', class: 'usa-checkbox__input' %> <%#= f.label 'awards_gold_status', class: 'usa-checkbox__label' %>
-                <input id="awards_gold_status" name="awards_gold_status" type="checkbox" value="0" /> Gold Status Practice<br />
+                <input id="awards_diffusion_excellence" name="awards_diffusion_excellence" type="checkbox" value="0" /> Diffusion of Excellence Promising Practice<br />
               </div>
               <div class='usa-checkbox grid-col-12'>
                 <input id="awards_innovation_fellow" name="awards_innovation_fellow" type="checkbox" value="0" /> Innovavtion Fellow<br />
@@ -255,20 +253,25 @@
               <div class='usa-checkbox grid-col-12'>
                 <input id="awards_vha_shark_tank_winner" name="awards_vha_shark_tank_winner" type="checkbox" value="0" /> VHA Shark Tank Winner<br />
               </div>
-              <div class='usa-checkbox grid-col-12'>
-                <input id="awards_other" name="awards_other" type="checkbox" value="0" /> Other<br />
+              <div class='usa-checkbox grid-col-12 margin-bottom-2'>
+                <input id="awards_other" name="awards_other" type="checkbox" onclick="javascript:showOtherAwardFields()" value="0" /> Other<br />
               </div>
-              <ul class="practice-editor-origin-ul" id="sortable_origins" role="listbox" title="Practice creators" aria-label="Practice editor practice creator list">
+              <div id="other_awards_container">
+              <ul class="practice-editor-awards-ul" id="other_awards_list" name="other_awards_list" role="listbox" title="Other Awards" aria-label="Other Awards">
                 <%= f.fields_for :practice_awards, wrapper: false do |pa| %>
-                  <li class="practice-editor-origin-facility-li fields">
-                    <%= pa.label :name, 'Name of award or recognition' %>
-                    <%= pa.text_field :name, class:'usa-input' %>
+                  <li class="practice-editor-other-awards-li fields">
+                    <%= pa.label :name, 'Name of award or recognition', class: 'usa-label' %>
+                    <%= pa.text_field :name, class: 'usa-input width-full margin-bottom-1' %>
+                    <div class="grid-col-fill flex-align-end trash-container">
+                      <%= f.link_to_remove 'Delete Entry', class: "origin-trash font-sans-xs line-height-26 cursor-pointer" %>
+                    </div>
                   </li>
                 <% end %>
               </ul>
               <%= f.link_to_add :practice_awards, class: 'add-practice-creator-link line-height-26 cursor-pointer' do %>
                 <span class="font-sans-xs text-normal">Add another</span>
               <% end %>
+              </div>
             </div>
 
             <svg class="svg">

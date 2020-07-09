@@ -14,6 +14,7 @@
 
     function loadPracticeIntroductionFunctions() {
         attachFacilitySelectListener();
+        showOtherAwardFields();
     }
 
     $document.on('turbolinks:load', loadPracticeIntroductionFunctions);
@@ -21,7 +22,6 @@
 
 function styleOriginFacility($newEl, dataId){
     $newEl.css('list-style', 'none');
-    // let dataId = $newEl.data('id');
     const $originFacilityElements = $('.practice-editor-origin-facility-li');
     if($originFacilityElements.length > 1){
         $.each($originFacilityElements, (i, el) => {
@@ -31,7 +31,6 @@ function styleOriginFacility($newEl, dataId){
         });
     }
 }
-
 
 // $( document ).ready(function() {
 //     const $document = $(document);
@@ -94,6 +93,15 @@ debugger
     getFacilitiesByState(facilityData, facilitySelector, stateSelector);
 
 
+}
+
+function showOtherAwardFields(){
+    if(document.getElementById('awards_other').checked) {
+        document.getElementById('other_awards_container').style.display = 'block';
+    }
+    else{
+        document.getElementById('other_awards_container').style.display = 'none';
+    }
 }
 
 function addSelect(parentId, elementId, html) {
