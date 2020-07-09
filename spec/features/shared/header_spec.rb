@@ -32,7 +32,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
         expect(page).to have_link(href: '/competitions/shark-tank')
         expect(page).to have_content('COVID-19')
         expect(page).to have_link(href: '/covid-19')
-        expect(page).to have_content('Your Profile')
+        expect(page).to have_content('Your profile')
       end
     end
 
@@ -53,7 +53,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
 
     context 'clicking on the profile link' do
       it 'should redirect to user profile page' do
-        click_on 'Your Profile'
+        click_on 'Your profile'
         click_on 'Profile'
         expect(page).to have_current_path(user_path(@admin))
       end
@@ -61,7 +61,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
 
     context 'clicking on the sign out link' do
       it 'should sign the user out' do
-        click_on 'Your Profile'
+        click_on 'Your profile'
         click_on 'Sign out'
         expect(page).to have_current_path('/')
         expect(page).to have_content('Signed out successfully.')
