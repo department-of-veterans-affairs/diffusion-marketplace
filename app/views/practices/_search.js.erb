@@ -2,6 +2,8 @@ var practices = <%= @practices_json %>;
 var results = null;
 
 function searchPracticesPage() {
+    const searchField = document.querySelector('#dm-search-search-field');
+
     // Skip if not the search page
     if (location.pathname !== '/search') return;
 
@@ -18,20 +20,16 @@ function searchPracticesPage() {
         var resultsSummary = document.querySelector('#results-summary');
         var searchResults = document.querySelector('#search-results');
 
-        // If the query is empty or less than three characters, remove any previous results from page
-        if (query === '' || query.length < 3) {
-            resultsSummary.innerHTML = '<p><i>Type at least three characters to search.</i></p>';
-            // searchResults.innerHTML = '';
-            return;
-        }
-
+        // set the search page search bar input value
+        searchField.value = query;
         // Run the search query
         results = fuse.search(query);
 
         console.log(results.length)
 
         // Print the number of results for the query
-        resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? '' : 's') + ' for "' + query + '":';
+        let resultContent = results.length + ' result' + (results.length === 1 ? '' : 's') + ' for <span class="text-bold">' + query + '</span>:';
+        resultsSummary.innerHTML += resultContent
 
         // Highlight results (only Fuse.js matching)
         results.forEach(function(result) {
@@ -62,7 +60,7 @@ function searchPracticesPage() {
                 '</div>' +
             '</div>' +
             '<div class="tablet:grid-col-9 padding-y-105 padding-right-105 padding-left-4">' +
-                '<h2 class="margin-0 truncate-text-search one-line"><a class="link-title" href="/practices/' + result.item.slug + '">' + result.item.name + '</a></h2>' +
+                '<h2 class="margin-0 truncate-text-search one-line"><a class="dm-link-title" href="/practices/' + result.item.slug + '">' + result.item.name + '</a></h2>' +
                 '<h4 class="truncate-text-search two-lines text-normal margin-y-1">' + result.item.tagline + '</h4>' +
                 '<p class="practice-details margin-y-1 font-sans-3xs">Created in ' + result.item.date_initiated + ' ' + result.item.initiating_facility + '</p>' +
                 '<p class="truncate-text-search three-lines">' + result.item.summary + '</p>' +
@@ -130,7 +128,7 @@ function searchPracticesPage() {
     // Set Fuse.js search options
     var search_options = {
         keys: ['name', 'tagline', 'description', 'summary', 'initiating_facility', 'categories_name'],
-        minMatchCharLength: 3,
+        minMatchCharLength: 1,
         tokenize: true,
         shouldSort: true,
         threshold: 0.2,
@@ -146,37 +144,10 @@ function searchPracticesPage() {
     // Create a search context with practices and search options
     var fuse = new Fuse(practices, search_options);
 
-    // Search bar elements
-    var searchField = document.querySelector('#practice-search-field');
-    var searchButton = document.querySelector('#practice-search-button');
-
-    // Set up "enter" event handler for search field
-    var timeout = null;
-
-    $(document).on('submit', '#searchForm', function (e) {
-        e.preventDefault();
-        // const $searchQuery = $('#practice-search-field').val();
-
-        // Make a new timeout set to go off in 500ms
-        timeout = setTimeout(function () {
-            search(searchField.value);
-            window.history.pushState("", "", '/search?query=' + searchField.value);
-            ahoy.track('Practice search', {search_term: searchField.value});
-            if (typeof ga === 'function') {
-                ga('send', {
-                    hitType: 'event',
-                    eventCategory: 'search',
-                    eventAction: 'search',
-                    location: '/search?query=' + searchField.value
-                });
-            }
-        }, 500);
-
-    });
-
     if (window.location.pathname === '/search' && window.location.search !== '') {
         const query = window.location.search.split('=')[1];
         search(decodeURI(query));
+        trackSearchField(decodeURI(query));
         searchField.value = decodeURI(query);
     }
 }
@@ -186,6 +157,20 @@ function addResultsBreadcrumb() {
     $('#breadcrumbs').append('<span class="x0-5-left x0-5-right">›</span>' +
         '<span id="results-breadcrumb" class="text-bold">Search</span>'
     );
+}
+
+function trackSearchField(searchTerm) {
+    if (searchTerm != '') {
+        ahoy.track('Practice search', {search_term: searchTerm});
+        if (typeof ga === 'function') {
+            ga('send', {
+                hitType: 'event',
+                eventCategory: 'search',
+                eventAction: 'search',
+                location: '/search?query=' + searchTerm
+            });
+        }
+    }
 }
 
 document.addEventListener('turbolinks:load', function() {

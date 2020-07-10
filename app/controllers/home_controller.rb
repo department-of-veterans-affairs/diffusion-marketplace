@@ -63,20 +63,10 @@ class HomeController < ApplicationController
     end
   end
 
-  def search
-    # TODO: why do I have this here? - A.H.
-    ahoy.track "Practice search", {search_term: request.params[:query]} if request.params[:query].present?
-    @practices = Practice.searchable_practices
-    @facilities_data = facilities_json['features']
-    @practices_json = practices_json(@practices)
-  end
-
   def pii_phi_information
     @breadcrumbs = [
         { text: 'Home', path: root_path },
         { text: 'PII/PHI Information' }
     ]
   end
-
-
 end

@@ -27,93 +27,6 @@ i.e.
   box-sizing: border-box;
 }
 
-/* Override usa-banner */
-.usa-banner {
-  .usa-banner__header-action {
-    &:after {
-      background-image: none;
-      content: '\f078';
-      font-family: 'Font Awesome 5 Free';
-      font-weight: 900;
-    }
-  }
-
-  .usa-banner__button[aria-expanded=false]::after {
-    background-image: none;
-    content: '\f078';
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-    left: -999em;
-    position: absolute;
-    width: 12px;
-    color: color($theme-color-primary-light);
-
-    @media screen and (min-width: 40em) {
-      position: static;
-    }
-  }
-
-  .usa-banner__button[aria-expanded=true]::after {
-    background-image: none;
-    content: '\f077';
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-    left: -999em;
-    position: absolute;
-    width: 12px;
-    color: color($theme-color-primary-light);
-
-    @media screen and (min-width: 40em) {
-      position: static;
-      display: inline;
-    }
-  }
-}
-
-/* Override usa-logo */
-@media screen and (min-width: 64em) {
-  .usa-header--extended .usa-logo {
-    font-size: 1.5rem;
-    margin: 0;
-  }
-}
-
-.usa-nav {
-  background-color: $dm-color-darker-blue !important;
-}
-
-/* Override .usa-nav*/
-.usa-nav__secondary-links .usa-nav__secondary-item + .usa-nav__secondary-item::before {
-  color: transparent;
-}
-
-.usa-header--extended .usa-nav {
-  border-top: none;
-  border-right: none;
-  //border-bottom: 3px solid $dm-color-darker-blue;
-  border-left: none;
-  //width: auto !important;
-}
-
-.usa-header + .usa-section, .usa-header + main {
-  border: none;
-}
-
-.usa-nav__secondary-links .usa-nav__secondary-item,
-.usa-nav__secondary-links a {
-  color: #000000;
-}
-
-.usa-nav__secondary-links {
-  margin-bottom: 0 !important;
-}
-
-.usa-nav__secondary {
-  position: unset;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-}
-
 .usa-button-outline-white {
   //@extend .usa-button--outline;
   background-color: transparent !important;
@@ -133,11 +46,6 @@ i.e.
   &:disabled {
     border: 2px solid #dcdee0 !important;
   }
-}
-
-.usa-button-white {
-  background-color: #FFFFFF !important;
-  color: $dm-color-darker-blue !important;
 }
 
 // USWDS utility extensions
@@ -222,14 +130,10 @@ p {
 }
 
 .usa-sidenav .usa-current::after {
-  background-color: $dm-color-primary-blue;
-  border-radius: 0;
-  height: 100%;
-  top: 0;
-  width: 4px;
+  background-color: $dm-color-lightest-gray !important;
 }
 
-.link-title {
+.dm-link-title {
   color: black;
   text-decoration: none;
 

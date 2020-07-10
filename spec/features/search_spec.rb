@@ -31,7 +31,7 @@ describe 'Search', type: :feature do
   end
 
   def search
-    click_button('Search')
+    find('#dm-search-search-button').click
   end
 
   def publish_practice(practice)
@@ -57,7 +57,7 @@ describe 'Search', type: :feature do
   def add_search_to_cache
     user_login
     visit_search_page
-    fill_in('practice-search-field', with: 'Test')
+    fill_in('dm-search-search-field', with: 'Test')
     search
   end
 
@@ -68,7 +68,7 @@ describe 'Search', type: :feature do
       visit_search_page
       expect(page).to be_accessible.according_to :wcag2a, :section508
 
-      fill_in('practice-search-field', with: 'Test')
+      fill_in('dm-search-search-field', with: 'Test')
       search
 
       expect(page).to be_accessible.according_to :wcag2a, :section508
@@ -76,58 +76,58 @@ describe 'Search', type: :feature do
       # test facility data map for name, negative case
       expect(page).to have_content(@practice.name)
       expect(page).to have_content(@practice.initiating_facility)
-      expect(page).to have_content('1 result for "Test"')
+      expect(page).to have_content('1 result for Test')
 
       # do not show a practice that is not approved/published
-      fill_in('practice-search-field', with: 'practice')
-      click_button('Search')
+      fill_in('dm-search-search-field', with: 'practice')
+      find('#dm-search-search-button').click
 
-      expect(page).to have_content('1 result for "practice"')
+      expect(page).to have_content('1 result for practice')
 
       # show practices that are approved/published
       @practice2.update(published: true, approved: true)
       visit_search_page
-      fill_in('practice-search-field', with: 'practice')
+      fill_in('dm-search-search-field', with: 'practice')
       search
 
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@practice.name)
       expect(page).to have_content(@practice2.name)
-      expect(page).to have_content('2 results for "practice"')
+      expect(page).to have_content('2 results for practice')
 
       # test facility data map for name, positive case
       expect(page).to have_content('Yakima VA Clinic')
     end
 
     it 'should be able to search based on practice categories' do
-      @practice.update(published: true, approved: true)
       category = Category.create!(name: 'telehealth')
       CategoryPractice.create!(category: category, practice: @practice)
+      @practice.update(published: true, approved: true)
 
       visit '/search'
 
-      fill_in('practice-search-field', with: 'Telehealth')
-      click_button('Search')
+      fill_in('dm-search-search-field', with: 'Telehealth')
+      find('#dm-search-search-button').click
 
       expect(page).to have_content(@practice.name)
       expect(page).to have_content(@practice.initiating_facility)
-      expect(page).to have_content('1 result for "Telehealth"')
+      expect(page).to have_content('1 result for Telehealth')
     end
 
     it 'should be able to search based on practice categories related terms' do
-      @practice.update(published: true, approved: true)
       category = Category.create!(name: 'Covid')
       CategoryPractice.create!(category: category, practice: @practice)
       category.update(related_terms: ['Coronavirus'])
+      @practice.update(published: true, approved: true)
 
       visit '/search'
 
-      fill_in('practice-search-field', with: 'Coronavirus')
-      click_button('Search')
+      fill_in('dm-search-search-field', with: 'Coronavirus')
+      find('#dm-search-search-button').click
 
       expect(page).to have_content(@practice.name)
       expect(page).to have_content(@practice.initiating_facility)
-      expect(page).to have_content('1 result for "Coronavirus"')
+      expect(page).to have_content('1 result for Coronavirus')
     end
   end
 
@@ -166,7 +166,7 @@ describe 'Search', type: :feature do
       expect(Practice.searchable_practices.last.name).to eq(latest_practice.name)
 
       visit '/search?=newest'
-      expect(page).to have_content('1 result for "newest"')
+      expect(page).to have_content('1 result for newest')
       expect(page).to have_content(latest_practice.name)
     end
   end

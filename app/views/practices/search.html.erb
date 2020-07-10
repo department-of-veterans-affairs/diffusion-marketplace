@@ -5,34 +5,33 @@
 <% end %>
 
 <div id="search-page">
-
   <div class="dm-background-white padding-top-1">
-
     <section class="grid-container x1-5-bottom">
       <div id="breadcrumbs" class="dm-font-color-blue-50v p1-top breadcrumbs">
         <a href="/">Home</a>
       </div>
     </section>
-
-    <section class="grid-container margin-bottom-3">
+    <section class="grid-container">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
-      <h1 class="font-sans-2xl margin-top-0 margin-bottom-0">Find a practice</h1>
-      <p class="margin-0 font-sans-md">Search by practice name, facility name, clinical condition, or keyword</p>
-        <form id="searchForm" name="searchForm" class="usa-search margin-bottom-3">
-          <div role="search" class="flex-column">
-            <label class="margin-bottom-1" for="practice-search-field"></label>
-            <div id="search-bar-container" class="display-flex">
-              <input class="usa-input" id="practice-search-field" required title="Type at least three characters to search." autocomplete="off" type="search" name="search">
-              <button id="practice-search-button" class="usa-button" type="submit">
-                <span class="usa-search__submit-text text-bold">Search</span>
-              </button>
-            </div>
+      <h1 class="font-sans-2xl margin-top-0 margin-bottom-2">Search results</h1>
+      <div class="grid-row">
+      <form id="dm-search-search-form" name="dm-search-search-form" class="usa-search margin-bottom-3 grid-col-12 desktop:grid-col-6">
+        <div role="search" class="flex-column">
+          <label class="margin-bottom-1" for="dm-search-search-field"></label>
+          <div id="search-bar-container" class="display-flex">
+            <input class="usa-input" id="dm-search-search-field" required title="Type at least three characters to search." autocomplete="off" type="search" name="search">
+            <button id="dm-search-search-button" class="usa-button" type="submit">
+              <span class="usa-search__submit-text text-bold">Search</span>
+            </button>
           </div>
-        </form>
+        </div>
+        <p class="margin-top-1 font-sans-3xs grid-col-12 text-italic">Search by practice name, facility name, clinical condition, category, or keyword</p>
+        </div>
+      </form>
     </section>
 
-    <section class="search-practices grid-container">
-      <p class="margin-bottom-2" id="results-summary"></p>
+    <section class="dm-search-practices grid-container">
+      <p class="margin-bottom-3 font-sans-lg" id="results-summary"></p>
       <div id="search-results" class="margin-bottom-6"></div>
     </section>
   </div>
