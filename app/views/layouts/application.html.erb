@@ -73,12 +73,10 @@
         <% end %>>
     <%= render 'shared/header' %>
     <%= render 'shared/breadcrumbs' %>
-    <main id="main-content" class="<%= params[:controller] %> margin-bottom-905">
+    <main id="main-content" class="<%= params[:controller] %> padding-bottom-9">
       <%= yield %>
     </main>
     <%= render 'shared/footer' %>
     <%= render 'shared/feedback_survey' %>
-
   </body>
-
 </html>

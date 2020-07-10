@@ -1,96 +1,66 @@
-<header class="usa-header usa-header--extended bg-primary-darker">
-  <a class="usa-skipnav" href="#main-content">Skip to main content</a>
-  <div class="usa-banner">
-    <div class="usa-accordion">
-      <div class="usa-banner__header  text-normal">
-        <div class="usa-banner__inner flex-align-center">
-          <div class="grid-col-auto">
-            <img class="usa-banner__header-flag" src="<%= image_url 'uswds/us_flag_small.png' %>" alt="U.S. flag">
-          </div>
-          <div class="grid-col-fill tablet:grid-col-auto">
-            <p class="usa-banner__header-text font-sans-4xs line-height-sans-255">An official website of the United States government</p>
-          <%#  <p class="usa-banner__header-action" aria-hidden="true">Here’s how you know</p>%>
-          </div>
-          <%#<button id="banner-button" class="usa-accordion__button usa-banner__button"
-                  aria-expanded="false" aria-controls="gov-banner">
-            <span class="usa-banner__button-text">Here’s how you know</span>
-          </button>%>
-        </div>
+<%= render 'shared/usa_banner' %>
+<%# source: https://designsystem.digital.gov/components/header/ (basic header) %>
+<div class="usa-overlay"></div>
+<header class="usa-header usa-header--basic border-bottom">
+  <div class="usa-nav-container">
+    <div class="usa-navbar">
+      <div class="usa-logo">
+        <em class="usa-logo__text">
+          <a href="/" title="Home" aria-label="Home">
+            VA <span class="text-normal"> | Diffusion Marketplace</span>
+          </a>
+        </em>
       </div>
-      <div class="usa-banner__content usa-accordion__content" id="gov-banner" hidden>
-        <div class="grid-row grid-gap-lg">
-          <div class="usa-banner__guidance tablet:grid-col-6">
-            <img class="usa-banner__icon usa-media-block__img" src="<%= image_url 'uswds/icon-dot-gov.svg' %>" alt="Dot gov">
-            <div class="usa-media-block__body">
-              <p>
-                <strong>The .gov means it’s official.</strong>
-                <br>
-                Federal government websites often end in .gov or .mil. Before sharing sensitive information, make sure
-                you’re on a federal government site.
-              </p>
-            </div>
-          </div>
-          <div class="usa-banner__guidance tablet:grid-col-6">
-            <img class="usa-banner__icon usa-media-block__img" src="<%= image_url 'uswds/icon-https.svg' %>" alt="Https">
-            <div class="usa-media-block__body">
-              <p>
-                <strong>The site is secure.</strong>
-                <br>
-                The <strong>https://</strong> ensures that you are connecting to the official website and that any
-                information you provide is encrypted and transmitted securely.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <button class="usa-menu-btn">Menu</button>
     </div>
-  </div>
-
-  <div class="usa-overlay"></div>
-
-  <div class="usa-navbar bg-primary-darker text-white grid-container text-bold">
-    <div class="grid-row flex-align-center height-10">
-    <div class="usa-logo text-white grid-col-auto flex-auto logo-container" id="extended-logo">
-      <em class="usa-logo__text">
-        <a href="/" title="Home" aria-label="Home" class='text-white-important usa-logo__text home-link p1-top p1-bottom p1-right'>VA<span class='text-normal'> | Diffusion Marketplace</span></a>
-      </em>
-    </div>
-  <%# </div> %>
-  <nav class="usa-nav grid-col-fill flex-fill nav-container">
-      <ul class="usa-nav__primary usa-accordion flex-justify-end">
-          <li class="usa-nav__primary-item margin-right-305 font-size-17px">
-            <a href="/covid-19" class="text-white-important covid-link p1">COVID-19</a>
-          </li>
-          <li class="usa-nav__primary-item margin-right-305 font-size-17px">
-            <a href="/competitions/shark-tank" class="text-white-important shark-tank-link p1">Shark Tank</a>
-          </li>
-          <li class="usa-nav__primary-item margin-right-305 font-size-17px">
-            <a href="/partners" class="text-white-important partners-link p1">Partners</a>
-          </li>
-          <% if user_signed_in? %>
-            <li class="usa-nav__primary-item font-size-17px">
-              <%= link_to(user_path(current_user), class: 'text-white-important username-link p1-bottom p1-left p1-top p0-right') do %>
-                <div class="empty-user-icon image-container display-none-important desktop:display-inline-block text-middle">
-                  <i class="fas fa-user fa-lg text-white-important display-none-important desktop:display-inline-block text-middle margin-right-05"></i>
-                </div>
-                <span class='text-white-important display-inline-block'>
-                    <%= current_user.full_name %>
-                  </span>
-              <% end %>
+    <nav aria-label="Primary navigation" class="usa-nav">
+      <button class="usa-nav__close">
+        <img src="<%= image_url 'uswds/close.svg' %>" role="img" alt="close">
+      </button>
+      <ul class="usa-nav__primary usa-accordion">
+        <li class="usa-nav__primary-item">
+          <a class="usa-nav__link <%= 'dm-current-link' if request.fullpath == '/competitions/shark-tank' %>" href="/competitions/shark-tank">
+            <span>Shark Tank</span>
+          </a>
+        </li>
+        <li class="usa-nav__primary-item">
+          <a class="usa-nav__link <%= 'dm-current-link' if request.fullpath == '/covid-19' %>" href="/covid-19">
+            <span>COVID-19</span>
+          </a>
+        </li>
+      </ul>
+      <%= render 'shared/navbar_search' %>
+      <ul class="usa-nav__primary usa-accordion margin-top-0">
+        <% if user_signed_in? %>
+          <% if ENV['USE_NTLM'] == 'true' %>
+            <li class="usa-nav__primary-item">
+              <a class="usa-nav__link dm-last-nav-link <%= 'dm-current-link' if request.fullpath == user_path(current_user) %>" href="<%= user_path(current_user) %>">
+                <span>Your profile</span>
+              </a>
             </li>
-            <% unless ENV['USE_NTLM'] == 'true' %>
-              <li class="usa-nav__primary-item">
-                <%= link_to('Sign out', destroy_user_session_path, class: 'usa-button-outline-white usa-button sign-out-button', method: :delete) %>
-              </li>
-            <% end %>
           <% else %>
             <li class="usa-nav__primary-item">
-              <%= link_to 'Sign in', new_user_session_path, class: 'usa-button usa-button-white sign-in-button', id: 'header-login-link' %>
+              <button class="usa-accordion__button usa-nav__link <%= 'dm-current-link dm-sub-nav-display' if request.fullpath == user_path(current_user) %>" aria-expanded="false" aria-controls="dm-user-profile-options">
+                <span>Your profile</span>
+              </button>
+              <ul id="dm-user-profile-options" class="usa-nav__submenu <%= 'dm-sub-nav-display' if request.fullpath == user_path(current_user) %>" hidden="true">
+                <li class="usa-nav__submenu-item">
+                  <a class="<%= 'dm-current-link' if request.fullpath == user_path(current_user) %>" href="<%= user_path(current_user) %>">
+                    <span>Profile</span>
+                  </a>
+                </li>
+                <li class="usa-nav__submenu-item">
+                  <%= link_to('Sign out', destroy_user_session_path, method: :delete) %>
+                </li>
+              </ul>
             </li>
           <% end %>
+        <% else %>
+          <li class="usa-nav__primary-item">
+            <%= link_to 'Sign in', new_user_session_path, class: 'usa-nav__link' %>
+          </li>
+        <% end %>
       </ul>
-  </nav>
+    </nav>
   </div>
-  </div>
-  <%= render partial: 'shared/beta_banner' %>
 </header>

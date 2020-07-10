@@ -31,7 +31,11 @@ html {
 body {
   min-height: 100%;
   position: relative;
-  padding-bottom: 199px;
+}
+
+#main-content {
+  /* ensures no white space after footer */
+  min-height: calc(100vh - 271px)
 }
 
 /*page components*/

@@ -156,7 +156,6 @@ class PracticesController < ApplicationController
   end
 
   def search
-    ahoy.track "Practice search", {search_term: request.params[:query]} if request.params[:query].present?
     @practices = Practice.searchable_practices
     @facilities_data = facilities_json
     @practices_json = practices_json(@practices)

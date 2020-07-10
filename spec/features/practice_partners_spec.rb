@@ -14,7 +14,7 @@ describe 'Practice partners pages', type: :feature do
 
   it 'should navigate to strategic sponsors list page' do
     visit '/'
-    within(:css, 'header') do
+    within(:css, 'footer') do
       find(:css, 'a', text: 'Partners').click
     end
     # TODO: this is timing out in CI

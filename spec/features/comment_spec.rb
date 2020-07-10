@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'Comments', type: :feature, js: true do
     before do
         @user1 = User.create!(email: 'hisagi.shuhei@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-        @user2 = User.create!(email: 'momo.hinamori@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+        @user2 = User.create!(email: 'momo.hinamori@soulsociety.com', first_name: 'Momo', last_name: 'H', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
         @practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline')
         @practice_partner = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative', icon: 'fas fa-heart', color: '#E4A002')
     end
@@ -101,7 +101,7 @@ describe 'Comments', type: :feature, js: true do
         it 'Allow the user to view the profile of a commentator if they click on their name next to the comment' do
             fill_in('comment[body]', with: 'Hello world')
             click_button('commit')
-            click_link('User')
+            click_link('Momo H')
             expect(page).to have_content('Profile')
             expect(page).to have_content('momo.hinamori@soulsociety.com')
         end

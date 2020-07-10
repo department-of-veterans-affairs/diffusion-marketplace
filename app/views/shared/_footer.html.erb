@@ -1,31 +1,37 @@
-<footer class="<% if current_user.present? && params[:controller] == 'practices' && params[:action] == 'show' %> desktop:padding-bottom-0 padding-bottom-9<% end %>">
+<footer>
+  <%# return to top %>
   <div class="grid-container usa-footer__return-to-top">
-    <button class="usa-button usa-button--unstyled return-to-top dm-link">Return to top</button>
+    <button class="usa-button usa-button--unstyled dm-return-to-top">Return to top</button>
   </div>
+  <%# footer actions %>
   <div class="bg-base-lightest">
-    <div class="grid-container padding-y-2">
-      <div class="grid-row flex-align-center font-sans-sm">
-        <div class="grid-col flex-auto text-bold footer-links-set-1">
-          <div class="display-inline-block margin-right-5"><a class="link-title" href="/">Home</a></div>
-          <div class="display-inline-block margin-right-5"><a class="link-title" href="/partners">Partners</a></div>
-
-          <div class="display-inline-block margin-right-5">
-            <a class="link-title" target="_blank" href="mailto:dm@agile6.com?subject=<%= URI.encode('Bug report for Diffusion Marketplace') %>&body=<%= URI.encode('Please be sure to include a step-by-step list to reproduce the error, if applicable.') %>">Report a bug</a>
-          </div>
-          <div class="display-inline-block"><a href="#" class="feedback-survey-popup link-title">Send us feedback</a></div>
-        </div>
-        <div class="grid-col flex-end width-auto text-right margin-right-0 footer-links-set-2">
-          <div>
-            <a href="<%= nominate_a_practice_path %>" class="nominate-link">Nominate a practice</a>
-          </div>
-        </div>
+    <div class="grid-container padding-x-0 desktop:padding-y-2">
+      <div class="grid-row desktop:margin-x-4">
+        <a class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 grid-col-12 margin-right-5 padding-y-2 padding-x-2 text-bold dm-footer-link" href="/">
+          Home
+        </a>
+        <a class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base-light grid-col-12 margin-right-5 padding-y-2 padding-x-2 text-bold dm-footer-link" href="/partners">
+          Partners
+        </a>
+        <a class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base-light grid-col-12 margin-right-5 padding-y-2 padding-x-2 text-bold dm-footer-link" target="_blank" href="mailto:dm@agile6.com?subject=<%= URI.encode('Bug report for Diffusion Marketplace') %>&body=<%= URI.encode('Please be sure to include a step-by-step list to reproduce the error, if applicable.') %>">
+          Report a bug
+        </a>
+        <a class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base-light grid-col-12 margin-right-5 padding-y-2 padding-x-2 text-bold dm-footer-link" href="#" class="feedback-survey-popup">
+          Send feedback
+        </a>
+        <a class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base-light grid-col-12 margin-right-5 padding-y-2 padding-x-2 text-bold dm-footer-link" href="<%= nominate_a_practice_path %>" >
+          Nominate a practice
+        </a>
       </div>
     </div>
   </div>
+
   <div class="bg-primary-darker text-white padding-y-4">
     <div class="grid-container">
       <div class="grid-row">
-        <p class="font-sans-lg margin-0 text-normal">U.S. Department of Veteran Affairs | Veterans Health Administration </p>
+        <p class="font-sans-lg margin-0 text-normal">
+          <span class="text-bold">VA</span> | Diffusion Marketplace
+        </p>
       </div>
     </div>
   </div>

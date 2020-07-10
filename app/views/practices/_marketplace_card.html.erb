@@ -10,7 +10,7 @@
     }
   </style>"))
   %>
-  <%= link_to practice, 'aria-label': "Go to #{practice.name}", 'tabindex': '-1', 'aria-hidden': 'true', class: 'marketplace-card-container link-title' do %>
+  <%= link_to practice, 'aria-label': "Go to #{practice.name}", 'tabindex': '-1', 'aria-hidden': 'true', class: 'marketplace-card-container dm-link-title' do %>
     <div class="radius-sm border-2px border-base-lightest">
       <% if practice.main_display_image.present? %>
         <div class="<%= featured ? "featured-" : '' %>card-img-container">
@@ -23,7 +23,7 @@
       <% end %>
 
       <div class="padding-2 height-card-mobile">
-        <%#= link_to practice, class: 'multiline-ellipses-2 margin-bottom-1 link-title' do %>
+        <%#= link_to practice, class: 'multiline-ellipses-2 margin-bottom-1 dm-link-title' do %>
           <h4 class="grid-col-auto bold font-sans-md practice-title multiline-ellipses-2 margin-bottom-1">
             <%= practice.name %>
           </h4>
