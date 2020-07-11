@@ -124,7 +124,6 @@
     }
 
     function toggleInputsOnRadioSelect() {
-        debugger
         $(document).on('click', '#initiating_facility_type_facility, #initiating_facility_type_visn, #initiating_facility_type_department, #initiating_facility_type_other', function() {
             //disableOptions();
             if ($(`${facilityOption}:checked`).length > 0) {
@@ -176,13 +175,8 @@
         // relies on `_facilitySelect.js` utility file to be loaded prior to this file
         filterFacilitiesOnRadioSelect(facilityData);
         getFacilitiesByState(facilityData);
-        //debugger
-        // if(selectedFacility !== "false" && selectedFacility !== "") {
-        //     selectFacility(facilityData, selectedFacility);
-        // }
 
         // relies on `_visnSelect.js` utility file to be loaded prior to this file
-        debugger
         if (selectedVisn !== "false" && selectedVisn !== "") {
             selectVisn(originData, selectedVisn)
         }

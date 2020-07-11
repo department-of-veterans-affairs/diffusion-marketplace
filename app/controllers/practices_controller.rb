@@ -131,10 +131,8 @@ class PracticesController < ApplicationController
     current_endpoint = request.referrer.split('/').pop
     updated = true
     #raise params.inspect
-    debugger
     if params[:practice].present?
       if params[:practice][:initiating_facility_type].present?
-        debugger
         facility_type = params[:practice][:initiating_facility_type]
         if facility_type == "facility"
           @practice.initiating_facility = params[:editor_facility_select]
@@ -348,7 +346,6 @@ class PracticesController < ApplicationController
     # set attributes for later use
     facility_id = params[:facility_id]
     status = params[:status]
-    debugger
     if params[:date_started].present? && !(params[:date_started].values.include?(''))
       start_time = DateTime.new(params[:date_started][:year].to_i, params[:date_started][:month].to_i)
     end

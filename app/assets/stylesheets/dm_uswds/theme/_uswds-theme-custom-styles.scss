@@ -251,4 +251,23 @@ a {
   }
 }
 
+/* line 214, ../../.rvm/gems/ruby-2.6.3/bundler/gems/uswds-rails-642a358220dc/app/assets/stylesheets/uswds/elements/_inputs.scss */
+.usa-checkbox__input:checked + .usa-checkbox__label::before,
+.usa-radio__input:checked + .usa-radio__label::before {
+  background-color: $dm-color-blue-70v;
+  box-shadow: 0 0 0 2px $dm-color-blue-70v;
+}
+
+/* line 220, ../../.rvm/gems/ruby-2.6.3/bundler/gems/uswds-rails-642a358220dc/app/assets/stylesheets/uswds/elements/_inputs.scss */
+.usa-radio__input:checked + .usa-radio__label::before {
+  box-shadow: 0 0 0 2px $dm-color-blue-70v, inset 0 0 0 2px white;
+}
+
+@media print {
+  /* line 220, ../../.rvm/gems/ruby-2.6.3/bundler/gems/uswds-rails-642a358220dc/app/assets/stylesheets/uswds/elements/_inputs.scss */
+  .usa-radio__input:checked + .usa-radio__label::before {
+    box-shadow: inset 0 0 0 2px white, inset 0 0 0 1rem $dm-color-blue-70v, 0 0 0 2px $dm-color-blue-70v;
+  }
+}
+
 

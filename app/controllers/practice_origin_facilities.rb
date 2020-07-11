@@ -8,7 +8,6 @@ class PracticeOriginFacilities < ApplicationController
   end
 
   def initialize (practice_id, facility_id, facility_type, initiating_department_office_id)
-    debugger
     @practice_id = practice_id
     @facility_id = facility_id
     @facility_type = facility_type
