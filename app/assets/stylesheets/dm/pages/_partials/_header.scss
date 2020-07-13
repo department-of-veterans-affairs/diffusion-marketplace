@@ -118,6 +118,23 @@ header {
     }
   }
 
+  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    .dm-logo-container {
+      width: 50%;
+      margin-left: 0;
+      padding-left: 1rem;
+    }
+
+    .mobile-menu-container {
+      width: 50%;
+      text-align: right;
+    }
+
+    .usa-nav__close img {
+      width: auto;
+    }
+  }
+
   // desktop
   @media screen and (min-width: 64rem) {
     .usa-navbar {
