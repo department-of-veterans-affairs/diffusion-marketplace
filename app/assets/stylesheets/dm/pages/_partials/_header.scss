@@ -166,6 +166,10 @@ header {
         border-bottom: 0.3125rem solid $dm-color-blue-70v !important;
       }
 
+      &:after {
+        background-color: initial !important;
+      }
+
       &.usa-accordion__button {
         padding: 1.75rem 0 1.75rem 0.5rem !important;
 
