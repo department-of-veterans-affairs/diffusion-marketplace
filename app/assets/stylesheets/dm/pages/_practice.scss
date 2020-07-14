@@ -418,14 +418,14 @@
   font-size: 22px;
 }
 
-.impact-trash-container, .documentation-trash-container, .trash-container,
+.impact-trash-container, .documentation-trash-container, //.trash-container,
 .risk-miti-trash-container, .permission-trash-container, .resource-trash-container {
   align-self: flex-end;
   text-align: center;
 }
 
 .trash-container {
-  text-align: right;
+  //text-align: right;
   padding-right: 0.2rem;
 }
 
