@@ -7,22 +7,20 @@ ActiveAdmin.register_page "Adoptions" do
     before_action :hello_world
     def hello_world
       @practices = Practice.all
+      @adoptions = DiffusionHistory.all
     end
   end
 
   content do
-    panel 'Practice Engagement & Adoption' do
-      h4 do
-        "Favorited Counts"
-      end
-      table_for practices, id: 'adopted_stats' do
-        column(:name)
+    h1 'Adoptions by practice'
+
+    practices.each do |p|
+      panel "#{p.name}" do
+        "#{p.diffusion_histories.exists? ? h4('Adoption Facilities') : para('No Adoptions recorded for this practice')}"
+        adoptions.where(practice: p).each do |a|
+          para "#{a.facility_id}"
+        end
       end
     end
-    # table_for practices, id: 'adopted_stats' do
-    #   column("#{date_headers[:current]}") {|ps| ps[:adopted_this_month]}
-    #   column("Last Month") {|ps| ps[:adopted_one_month_ago]}
-    #   column :total_adopted
-    # end
   end
 end
