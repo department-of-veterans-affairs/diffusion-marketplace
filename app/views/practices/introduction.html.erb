@@ -256,8 +256,7 @@
                           function(newElem) {
                             styleOriginFacility($(newElem).closest('li'));
                             var facility_id = '<%= pof.object.facility_id %>';
-                            var facilitySelector =
-                            '<%= "practice_practice_origin_facilities_attributes_#{pof.index}_facility_id" %>';
+                            var facilitySelector = '<%= "practice_practice_origin_facilities_attributes_#{pof.index}_facility_id" %>';
                             var stateSelector ='<%= "editor_state_select_#{orig_facility_id}" %>';
                             getFacilitiesByState(facilityData, facilitySelector, stateSelector);
                             selectFacility(facilityData, facility_id, facilitySelector, stateSelector);
@@ -298,6 +297,17 @@
                 <%= f.link_to_add :practice_origin_facilities,
                                   class: 'add-practice-originating-facilities-link line-height-26 cursor-pointer' do %>
                   <span class="font-sans-xs text-normal">Add another</span>
+                <% end %>
+                <% unless @practice.practice_origin_facilities.any? %>
+                  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                    observePracticeEditorOriginFacilityLiArrival($(document));
+                    $(document).arrive('#practice_origin_facilities_fields_blueprint',
+                      function(blueprint) {
+                        $('.add-practice-originating-facilities-link').click();
+                        $(document).unbindArrive('#practice_origin_facilities_fields_blueprint', blueprint);
+                      }
+                    );
+                  <% end %>
                 <% end %>
               </div>
 
