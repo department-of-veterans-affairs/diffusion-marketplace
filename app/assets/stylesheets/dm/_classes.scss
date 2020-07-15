@@ -1107,3 +1107,29 @@ ul.no-list-style {
   color: initial !important;
   border-color: initial !important;
 }
+
+/* links, icons, buttons */
+.dm-internal-link {
+  color: $dm-color-base !important;
+  text-decoration: underline !important;
+
+  &:visited, &:hover, &:active {
+    text-decoration: underline !important;
+  }
+
+  &:hover, &:active {
+    cursor: pointer !important;
+  }
+
+  &:visited {
+    color: $dm-color-base !important;
+  }
+
+  &:hover {
+    color: $dm-color-blue-50v !important;
+  }
+
+  &:active {
+    color: $dm-color-blue-70v !important;
+  }
+}

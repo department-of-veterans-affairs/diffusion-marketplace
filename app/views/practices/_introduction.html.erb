@@ -1,4 +1,6 @@
 <%# TODO: Make compatible with IE %>
+<%# TODO: Make unauthenticated view %>
+
 <%
   has_main_img = @practice.main_display_image.present?
   updated_at = @practice.updated_at.present? ? @practice.updated_at : @practice.created_at
@@ -103,7 +105,7 @@
         <p class="grid-col-12 margin-bottom-2 font-sans-3xs line-height-sans-3">
           <span class="text-bold text-uppercase">Partners:</span>
             <% @practice.practice_partners.each_with_index do |partner, index| %>
-              <a href="<%= practice_partner_path(partner) %>" class="text-underline"><%= partner.name %></a><%= ", " if @practice.practice_partners.size != index + 1 && @practice.practice_partners.size > 1 %>
+              <a href="<%= practice_partner_path(partner) %>" class="dm-internal-link"><%= partner.name %></a><%= ", " if @practice.practice_partners.size != index + 1 && @practice.practice_partners.size > 1 %>
             <% end %>
         </span>
         </p>
