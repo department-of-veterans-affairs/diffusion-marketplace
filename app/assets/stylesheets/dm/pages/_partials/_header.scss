@@ -195,15 +195,6 @@ header {
         margin-left: 0 !important;
         padding-left: 0;
       }
-
-      .usa-nav__link {
-        &:hover {
-          position: static !important;
-        }
-        &[aria-expanded="true"] {
-          position: static !important;
-        }
-      }
     }
   }
 }
