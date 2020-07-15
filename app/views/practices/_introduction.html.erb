@@ -6,6 +6,7 @@
   in_progress_adoptions = @practice.number_of_in_progress_adoptions
   unsuccessful_adoptions = @practice.number_of_unsuccessful_adoptions
   has_practice_partners = @practice.practice_partners.any? && @practice.practice_partners.find_by(name: 'None of the above, or Unsure').nil?
+  has_practice_awards = @practice.practice_awards.any?
 %>
 
 <div class="grid-container">
@@ -14,7 +15,7 @@
       <%# practice main display image %>
       <% if has_main_img %>
         <img
-          class="float-right desktop:grid-col-4 grid-col-12 margin-bottom-2"
+          class="float-right desktop:grid-col-4 grid-col-12 margin-bottom-2 desktop:margin-left-2"
           src="<%= @practice.main_display_image_s3_presigned_url %>"
           alt="<%= @practice.name %> main image"/>
       <% end %>
@@ -88,10 +89,15 @@
         </p>
       <% end %>
       <%# practice awards %>
-      <%# TODO: reintroduce once practice supports awards/recognition %>
-      <p class="grid-col-12 margin-bottom-2 font-sans-3xs line-height-sans-3 display-none">
-        <span class="text-bold text-uppercase">Awards and Recognition:</span>
-      </p>
+      <% if has_practice_awards %>
+        <p class="grid-col-12 margin-bottom-2 font-sans-3xs line-height-sans-3">
+          <span class="text-bold text-uppercase">Awards and Recognition:</span>
+            <% @practice.practice_awards.each_with_index do |award, index| %>
+              <span><%= award.name %></span><%= ", " if @practice.practice_awards.size != index + 1 && @practice.practice_awards.size > 1 %>
+            <% end %>
+        </span>
+        </p>
+      <% end %>
       <%# practice partners %>
       <% if has_practice_partners %>
         <p class="grid-col-12 margin-bottom-2 font-sans-3xs line-height-sans-3">
