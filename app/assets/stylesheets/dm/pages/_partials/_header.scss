@@ -121,7 +121,7 @@ header {
   @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
     .dm-logo-container {
       width: 50%;
-      margin-left: 0;
+      margin-left: 0 !important;
       padding-left: 1rem;
     }
 
@@ -183,6 +183,25 @@ header {
           color: $dm-color-white !important;
           padding: 1.75rem 0 2.0625rem 0.5rem !important;
           margin: 0 1rem !important;
+        }
+      }
+    }
+  }
+
+  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    @media screen and (min-width: 64rem) {
+      .dm-logo-container {
+        width: 100%;
+        margin-left: 0 !important;
+        padding-left: 0;
+      }
+
+      .usa-nav__link {
+        &:hover {
+          position: static !important;
+        }
+        &[aria-expanded="true"] {
+          position: static !important;
         }
       }
     }
