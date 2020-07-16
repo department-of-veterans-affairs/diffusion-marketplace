@@ -2,74 +2,98 @@
     const $document = $(document);
 
     function attachFacilitySelectListener() {
-        observePracticeEditorOriginFacilityLiArrival($document);
+        observePracticeEditorLiArrival($document);
+        attachTrashListener($document);
+    }
 
-        $document.on('click', '.origin-trash', function() {
-            const $liEls = $('#facility_select_form ul li.practice-editor-origin-facility-li');
-
-            const $originFacilityElements =
-                $liEls
-                    .not(function(i, el) {
-                        return el.style.display === 'none';
-                    });
-
-            const $firstOriginFacilityEl = $($originFacilityElements.first());
-
-            if ($originFacilityElements.length === 0) {
-                $('.add-practice-originating-facilities-link')
-                    .detach()
-                    .appendTo('#facility_select_form');
-            } else if ($originFacilityElements.length === 1) {
-                $firstOriginFacilityEl.find('.origin-trash').hide();
-                removeSeparator($firstOriginFacilityEl);
-            } else {
-                $firstOriginFacilityEl.find('.origin-trash').show();
-                const $lastOriginFacilityEl = $($originFacilityElements.last());
-                removeSeparator($lastOriginFacilityEl);
-            }
+    function attachShowOtherAwardFields() {
+        observePracticeEditorLiArrival(
+            $document,
+            '.practice-editor-other-awards-li',
+            '.practice-editor-awards-ul',
+            '.add-practice-award-other-link'
+        );
+        $document.on('change', '#practice_award_other', function() {
+            showOtherAwardFields();
         });
+
+        attachTrashListener(
+            $document,
+            '#other_awards_container',
+            '.practice-editor-other-awards-li',
+            '.add-practice-award-other-link'
+        );
     }
 
     function loadPracticeIntroductionFunctions() {
         attachFacilitySelectListener();
-        showOtherAwardFields();
+        attachShowOtherAwardFields();
     }
 
     $document.on('turbolinks:load', loadPracticeIntroductionFunctions);
 })(window.jQuery);
 
-function removeSeparator($originFacilityEl) {
+function attachTrashListener($document, formSelector = '#facility_select_form', liElSelector = '.practice-editor-origin-facility-li', addAnotherLinkSelector = '.add-practice-originating-facilities-link') {
+    $document.on('click', `${formSelector} .origin-trash`, function() {
+        const $liEls = $(`${formSelector} ul li${liElSelector}`);
+
+        const $originFacilityElements =
+            $liEls
+                .not(function(i, el) {
+                    return el.style.display === 'none';
+                });
+
+        const $firstOriginFacilityEl = $($originFacilityElements.first());
+
+        if ($originFacilityElements.length === 0) {
+            $(addAnotherLinkSelector)
+                .detach()
+                .appendTo(formSelector);
+        } else if ($originFacilityElements.length === 1) {
+            $firstOriginFacilityEl.find( '.origin-trash').hide();
+            removeSeparator($firstOriginFacilityEl, addAnotherLinkSelector);
+        } else {
+            $firstOriginFacilityEl.find('.origin-trash').show();
+            const $lastOriginFacilityEl = $($originFacilityElements.last());
+            removeSeparator($lastOriginFacilityEl, addAnotherLinkSelector);
+        }
+    });
+}
+
+function removeSeparator($originFacilityEl, addAnotherLinkSelector = '.add-practice-originating-facilities-link') {
     const $separator = $originFacilityEl.find('.add-another-separator');
     if ($separator.length) {
         $separator.remove();
     }
-    $('.add-practice-originating-facilities-link')
+    $(addAnotherLinkSelector)
         .detach()
         .appendTo($originFacilityEl.find('.trash-container'));
 }
 
-function observePracticeEditorOriginFacilityLiArrival($document) {
-    $document.arrive('.practice-editor-origin-facility-li', (newElem) => {
+function observePracticeEditorLiArrival($document, liElSelector = '.practice-editor-origin-facility-li', ulSelector = '.practice-editor-origin-ul', addAnotherLinkSelector = '.add-practice-originating-facilities-link') {
+    $document.arrive(liElSelector, (newElem) => {
         const $newEl = $(newElem);
         const dataId = $newEl.data('id');
-        styleOriginFacility($newEl, dataId);
-        getFacilitiesByState(facilityData,
-            `practice_practice_origin_facilities_attributes_${dataId}_facility_id`,
-            `editor_state_select_${dataId}`
-        );
-        $document.unbindArrive('.practice-editor-origin-facility-li', newElem);
+        styleOriginFacility($newEl, dataId, liElSelector, ulSelector, addAnotherLinkSelector);
+        if (liElSelector === '.practice-editor-origin-facility-li') {
+            getFacilitiesByState(facilityData,
+                `practice_practice_origin_facilities_attributes_${dataId}_facility_id`,
+                `editor_state_select_${dataId}`
+            );
+        }
+        $document.unbindArrive(liElSelector, newElem);
     });
 }
 
-function styleOriginFacility($newEl, dataId) {
+function styleOriginFacility($newEl, dataId, liElSelector = '.practice-editor-origin-facility-li', ulSelector = '.practice-editor-origin-ul', addAnotherLinkSelector = '.add-practice-originating-facilities-link') {
     $newEl
         .detach()
-        .appendTo('.practice-editor-origin-ul');
+        .appendTo(ulSelector);
 
     $newEl.css('list-style', 'none');
 
     const $originFacilityElements =
-        $('.practice-editor-origin-facility-li')
+        $(liElSelector)
             .not(function(i, el) {
                 return el.style.display === 'none';
             });
@@ -89,17 +113,17 @@ function styleOriginFacility($newEl, dataId) {
         });
 
         const $lastOriginFacilityEl = $($originFacilityElements.last());
-        removeSeparator($lastOriginFacilityEl);
+        removeSeparator($lastOriginFacilityEl, addAnotherLinkSelector);
     } else {
         $firstOriginFacilityEl.find('.origin-trash').hide();
-        $('.add-practice-originating-facilities-link')
+        $(addAnotherLinkSelector)
             .detach()
             .prependTo($($newEl.find('.trash-container')));
     }
 }
 
 function showOtherAwardFields() {
-    if (document.getElementById('awards_other').checked) {
+    if (document.getElementById('practice_award_other').checked) {
         document.getElementById('other_awards_container').style.display = 'block';
     } else {
         document.getElementById('other_awards_container').style.display = 'none';

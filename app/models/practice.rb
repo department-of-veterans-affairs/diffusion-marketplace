@@ -139,6 +139,23 @@ class Practice < ApplicationRecord
           'checklist': 'contact'
       }
 
+  PRACTICE_EDITOR_AWARDS_AND_RECOGNITION =
+      [
+          'Diffusion of Excellence Promising Practice',
+          'FedHealth IT Award',
+          'Gears of Government Winner',
+          'Igniting Innovation Award',
+          'iNET Seed Investee',
+          'iNet Spark Award Investee',
+          'iNET Spread Investee',
+          'QUERI Veterans Choice Act Award',
+          'QUERI VISN Partnered Implementation Initiative',
+          'QUERI Partnered Evaluation Initiative',
+          'Rural Promising Practice',
+          'VHA Shark Tank Winner',
+          'Other'
+  ]
+
 
   validates_attachment_content_type :main_display_image, content_type: /\Aimage\/.*\z/
   validates_attachment_content_type :origin_picture, content_type: /\Aimage\/.*\z/
@@ -211,7 +228,7 @@ class Practice < ApplicationRecord
 
   #accepts_nested_attributes_for :practices_origin_facilities?
   accepts_nested_attributes_for :practice_origin_facilities, allow_destroy: true, reject_if: proc { |attributes| attributes['facility_id'].blank? }
-  accepts_nested_attributes_for :practice_awards, allow_destroy: true
+  accepts_nested_attributes_for :practice_awards, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
   accepts_nested_attributes_for :practice_partner_practices, allow_destroy: true
   accepts_nested_attributes_for :impact_photos, allow_destroy: true, reject_if: proc { |attributes| attributes['description'].blank? || attributes['attachment'].nil? }
   accepts_nested_attributes_for :video_files, allow_destroy: true, reject_if: proc { |attributes| attributes['url'].blank? || attributes['description'].blank? }

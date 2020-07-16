@@ -65,7 +65,9 @@
               <p class="usa-error-message <%= @practice.errors[:name].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@practice, :name) %></span>
               </p>
             </div>
+
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+
             <div class="margin-bottom-5 margin-top-3">
               <div class="margin-bottom-3">
                 <%= f.label :short_name, 'Acronym ', class: 'usa-label text-bold display-block margin-top-0 margin-bottom-1' %>
@@ -149,6 +151,7 @@
             </div>
 
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+
             <div class="margin-top-3 margin-bottom-5">
               <%= f.label :summary, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-1' do %>
                 Summary <span class="text-gray-50">(required field)</span>
@@ -190,7 +193,7 @@
               <p class="text-bold margin-bottom-1">
                 Practice origin <span class="text-gray-50">(required field)</span>
               </p>
-              <span class="">Select the location where this practice originated</span>
+              <span>Select the location where this practice originated</span>
               <div class="grid-row grid-gap margin-top-105 grid-col-1 margin-bottom-3">
                 <div class="usa-radio margin-bottom-1 position-relative">
                   <%= radio_button_tag 'practice[initiating_facility_type]',
@@ -245,7 +248,7 @@
               </div>
 
               <div id="facility_select_form" class="margin-bottom-5">
-                <ul class="practice-editor-origin-ul" id="sortable_origins" role="listbox" title="Practice creators" aria-label="Practice editor practice creator list">
+                <ul class="practice-editor-origin-ul" role="listbox" title="Practice origin facilities" aria-label="Practice editor origin facility list">
                   <%= f.fields_for :practice_origin_facilities, wrapper: false do |pof| %>
                     <%
                       orig_facility_id = pof.object.id || "new_practice_origin_facilities"
@@ -300,7 +303,7 @@
                 <% end %>
                 <% unless @practice.practice_origin_facilities.any? %>
                   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                    observePracticeEditorOriginFacilityLiArrival($(document));
+                    observePracticeEditorLiArrival($(document));
                     $(document).arrive('#practice_origin_facilities_fields_blueprint',
                       function(blueprint) {
                         $('.add-practice-originating-facilities-link').click();
@@ -328,8 +331,9 @@
                 <div class="margin-bottom-3 grid-col-8">
                   <%= label_tag 'editor_office_select', 'Office', class: 'usa-label x0-top margin-bottom-1 grid-col-12' %>
                   <%= select_tag('practice[initiating_facility]', options_for_select([['-Select-', nil, selected: true,
-                                                                                       disabled: true, class: 'usa-select dm-color-disabled']]), id: 'editor_office_select', class: 'height-5
-                usa-select x0-top') %>
+                                                                                       disabled: true, class: 'usa-select dm-color-disabled']]),
+                                 id: 'editor_office_select',
+                                 class: 'height-5 usa-select x0-top') %>
                 </div>
               </div>
 
@@ -344,47 +348,115 @@
 
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
 
-            <p class="margin-top-3"><span class="text-bold">Awards and recognition</span>&nbsp
-              Select any awards or recognitions your practice has received.</p>
-            <div class="grid-row grid-gap margin-top-105">
-              <div class='usa-checkbox grid-col-12'>
-                <input id="awards_diffusion_excellence" name="awards_diffusion_excellence" type="checkbox" value="0"/>
-                Diffusion of Excellence Promising Practice
+            <div class="margin-top-3 margin-bottom-5">
+              <div class="margin-bottom-2">
+                <p class="text-bold margin-bottom-1">
+                  Awards and recognition
+                </p>
+                <span>Select any awards or recognitions your practice has received.</span>
               </div>
-              <div class='usa-checkbox grid-col-12'>
-                <input id="awards_innovation_fellow" name="awards_innovation_fellow" type="checkbox" value="0"/>
-                Innovavtion Fellow
-              </div>
-              <div class='usa-checkbox grid-col-12'>
-                <input id="awards_vha_shark_tank_winner" name="awards_vha_shark_tank_winner" type="checkbox" value="0"/>
-                VHA Shark Tank Winner
-              </div>
-              <div class='usa-checkbox grid-col-12 margin-bottom-2'>
-                <input id="awards_other" name="awards_other" type="checkbox" onclick="javascript:showOtherAwardFields()" value="0"/>
-                Other
-              </div>
-              <div id="other_awards_container">
-                <ul class="practice-editor-awards-ul" id="other_awards_list" name="other_awards_list" role="listbox" title="Other Awards" aria-label="Other Awards">
-                  <%= f.fields_for :practice_awards, wrapper: false do |pa| %>
-                    <li class="practice-editor-other-awards-li fields">
-                      <%= pa.label :name, 'Name of award or recognition', class: 'usa-label' %>
-                      <%= pa.text_field :name, class: 'usa-input width-full margin-bottom-1' %>
-                      <div class="grid-col-fill flex-align-end trash-container">
-                        <%= f.link_to_remove 'Delete Entry', class: "origin-trash font-sans-xs line-height-26
-                      cursor-pointer" %>
-                      </div>
-                    </li>
-                  <% end %>
-                </ul>
-                <%= f.link_to_add :practice_awards, class: 'add-practice-creator-link line-height-26 cursor-pointer' do
-                %>
-                  <span class="font-sans-xs text-normal">Add another</span>
+              <div>
+                <% Practice::PRACTICE_EDITOR_AWARDS_AND_RECOGNITION.each do |award| %>
+                  <% underscore_award = award.split(' ').join('').underscore %>
+                  <div class="usa-checkbox practice-partner-checkbox position-relative">
+                    <input type="checkbox"
+                           class="usa-checkbox__input partner-input"
+                           id="practice_award_<%= underscore_award %>"
+                           name="practice[practice_awards_attributes][<%= underscore_award %>][name]"
+                           value="<%= award %>"
+                           <%= 'checked="true"' if @practice.practice_awards.find_by(name: award) %>
+                      />
+                    <label class="usa-checkbox__label"
+                           id="practice_award_<%= underscore_award %>_label"
+                           for="practice_award_<%= underscore_award %>"
+                    >
+                      <%= award %>
+                    </label>
+                  </div>
                 <% end %>
+                <div id="other_awards_container">
+                  <%
+                    other_awards = @practice.practice_awards.where.not(name: Practice::PRACTICE_EDITOR_AWARDS_AND_RECOGNITION)
+                    other_award_ids = other_awards.ids
+                  %>
+                  <ul class="practice-editor-awards-ul padding-left-0" id="other_awards_list" role="listbox" title="Other Awards" aria-label="Other Awards">
+                    <%= f.fields_for :practice_awards, wrapper: false do |pa| %>
+                      <%
+                        other_award_id = pa.object.id || "new_practice_awards"
+                        show_other_award_form = other_award_ids.include?(other_award_id) || other_award_id == "new_practice_awards"
+                      %>
+                      <% if pa.object.id %>
+                        <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                          $(document).arrive('<%= "#practice_practice_awards_attributes_#{pa.index}_name" %>',
+                            function(newElem) {
+                              styleOriginFacility(
+                                $(newElem).closest('li'),
+                                <%= other_award_id %>,
+                                '.practice-editor-other-awards-li',
+                                '.practice-editor-awards-ul',
+                                '.add-practice-award-other-link'
+                              );
+                              $(document).unbindArrive('<%= "#practice_practice_awards_attributes_#{pa.index}_name" %>', newElem);
+                            }
+                          );
+                        <% end %>
+                      <% end %>
+                      <% if show_other_award_form %>
+                        <li class="practice-editor-other-awards-li fields" data-id="<%= other_award_id %>">
+                          <div class="grid-row">
+                            <div class="grid-col-12">
+                              <%= pa.label :name, 'Name of award or recognition', class: 'usa-label x0-top margin-bottom-1 grid-col-12' %>
+                              <%= pa.text_field :name, class: 'usa-input desktop:grid-col-8 margin-bottom-2 x0-top' %>
+                            </div>
+                            <div class="grid-col-8 trash-container">
+                              <%= f.link_to_remove 'Delete Entry',
+                                                   class: "origin-trash font-sans-xs line-height-26 cursor-pointer float-right" %>
+                            </div>
+                          </div>
+                        </li>
+                      <% end %>
+                    <% end %>
+                  </ul>
+                  <%= f.link_to_add :practice_awards, class: 'add-practice-award-other-link line-height-26 cursor-pointer' do %>
+                    <span class="font-sans-xs text-normal">Add another</span>
+                  <% end %>
+                  <% unless other_awards.any? %>
+                    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                      observePracticeEditorLiArrival(
+                          $(document),
+                          '.practice-editor-other-awards-li',
+                          '.practice-editor-awards-ul',
+                          '.add-practice-award-other-link'
+                      );
+                      attachTrashListener(
+                          $(document),
+                          '#other_awards_container',
+                          '.practice-editor-other-awards-li',
+                          '.add-practice-award-other-link'
+                      );
+                      $(document).arrive('#practice_awards_fields_blueprint',
+                        function(blueprint) {
+                          $('.add-practice-award-other-link').click();
+                          $(document).unbindArrive('#practice_awards_fields_blueprint', blueprint);
+                        }
+                      );
+                      showOtherAwardFields();
+                    <% end %>
+                  <% end %>
+                </div>
               </div>
             </div>
 
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
-            <p class="margin-top-3 margin-bottom-1"><span class="text-bold">Partners: </span><span>Select any of the following partners your practice is associated with.</span>
+
+            <div class="margin-top-3 margin-bottom-5">
+              <div class="margin-bottom-2">
+                <p class="text-bold margin-bottom-1">
+                  Partners
+                </p>
+                <span>Select any of the following partners your practice is associated with.</span>
+              </div>
+              <div>
               <%
                 no_partners = PracticePartner.where(name: 'None of the above, or Unsure')
                 partners = PracticePartner.where.not(id: no_partners.ids)
@@ -392,23 +464,41 @@
               %>
               <% partners_list.each do |partner| %>
                 <% if partner.name == 'None of the above, or Unsure' %>
-                <div class='usa-checkbox practice-partner-checkbox position-relative'>
-                  <input type='checkbox' class='usa-checkbox__input no-partner-input' id="practice_partner_<%= partner.id %>" name="practice[practice_partner][<%= partner.id %>][value]"
-                         <%= 'checked="true"' if p_partners.include?(partner) %> />
-                  <label class='usa-checkbox__label' id="practice_partner_<%= partner.id %>_label" for="practice_partner_<%= partner.id %>"><%=
-                    partner.name %></label>
+                <div class="usa-checkbox practice-partner-checkbox position-relative">
+                  <input type="checkbox"
+                         class="usa-checkbox__input no-partner-input"
+                         id="practice_partner_<%= partner.id %>"
+                         name="practice[practice_partner][<%= partner.id %>][value]"
+                         <%= 'checked="true"' if p_partners.include?(partner) %>
+                    />
+                  <label class="usa-checkbox__label"
+                         id="practice_partner_<%= partner.id %>_label"
+                         for="practice_partner_<%= partner.id %>"
+                  >
+                    <%= partner.name %></label>
                 </div>
-              <% else %>
-                <div class='usa-checkbox practice-partner-checkbox position-relative'>
-                  <input type='checkbox' class='usa-checkbox__input partner-input' id="practice_partner_<%= partner.id %>" name='practice[practice_partner][<%= partner.id %>][value]' <%=
-                    p_partners.include?(partner) ? "checked= 'true'" : "" %>>
-                  <label class='usa-checkbox__label' id="practice_partner_<%= partner.id %>_label" for="practice_partner_<%= partner.id %>"><%=
-                    partner.name %></label>
-                </div>
+                <% else %>
+                  <div class="usa-checkbox practice-partner-checkbox position-relative">
+                    <input type="checkbox"
+                           class="usa-checkbox__input partner-input"
+                           id="practice_partner_<%= partner.id %>"
+                           name="practice[practice_partner][<%= partner.id %>][value]"
+                           <%= 'checked="true"' if p_partners.include?(partner) %>
+                      />
+                    <label class="usa-checkbox__label"
+                           id="practice_partner_<%= partner.id %>_label"
+                           for="practice_partner_<%= partner.id %>"
+                    >
+                      <%= partner.name %>
+                    </label>
+                  </div>
+                <% end %>
               <% end %>
-            <% end %>
-          </fieldset>
+            </div>
+          </div>
+        </fieldset>
         <% end %>
+
         <div class="grid-row margin-bottom-8">
           <%= link_to practice_instructions_path(@practice), class: 'usa-button usa-button--outline
             editor-back-to-link margin-right-1 padding-2 margin-bottom-5 text-no-underline' do %>
