@@ -124,4 +124,80 @@ RSpec.describe ApplicationHelper, type: :helper do
       end
     end
   end
+
+  describe "#origin_display_name and #origin_display" do
+    before do
+      @practice = Practice.create(name: 'test-practice', initiating_facility_type: 'facility')
+      PracticeOriginFacility.create(practice: @practice, facility_id: '546', facility_type: 0)
+    end
+
+    context "when given a practice with a facility" do
+      it "returns the name" do
+        expect(helper.origin_display_name(@practice)).to eq('Bruce W. Carter Department of Veterans Affairs Medical Center (Miami)')
+        expect(helper.origin_display(@practice)).to eq('by the Bruce W. Carter Department of Veterans Affairs Medical Center (Miami)')
+      end
+    end
+
+    context "when given a practice with multiple facilities" do
+      before do
+        PracticeOriginFacility.create(practice: @practice, facility_id: '516')
+        PracticeOriginFacility.create(practice: @practice, facility_id: '614')
+
+      end
+      it "returns the name" do
+        expect(helper.origin_display_name(@practice)).to eq('Bruce W. Carter Department of Veterans Affairs Medical Center (Miami), C.W. Bill Young Department of Veterans Affairs Medical Center (Bay Pines), Memphis VA Medical Center')
+        expect(helper.origin_display(@practice)).to eq('by the Bruce W. Carter Department of Veterans Affairs Medical Center (Miami), C.W. Bill Young Department of Veterans Affairs Medical Center (Bay Pines), Memphis VA Medical Center')
+      end
+    end
+
+    context "when given a practice with a visn" do
+      before do
+        @practice.update(initiating_facility_type: 'visn', initiating_facility: '5')
+      end
+      it "returns the name" do
+        expect(helper.origin_display_name(@practice)).to eq('VISN-6')
+        expect(helper.origin_display(@practice)).to eq('by VISN-6')
+      end
+    end
+
+    context "when given a practice with a department" do
+      before do
+        @practice.update(initiating_facility_type: 'department', initiating_facility: '36', initiating_department_office_id: 1)
+      end
+      it "returns the name" do
+        expect(helper.origin_display_name(@practice)).to eq('Oakland Regional Office')
+        expect(helper.origin_display(@practice)).to eq('by the Oakland Regional Office')
+      end
+    end
+
+    context "when given a practice with a other" do
+      before do
+        @practice.update(initiating_facility_type: 'other', initiating_facility: 'foobar facility')
+      end
+      it "returns the name" do
+        expect(helper.origin_display_name(@practice)).to eq('foobar facility')
+        expect(helper.origin_display(@practice)).to eq('by the foobar facility')
+      end
+    end
+
+    context "when given a practice with no intiating facility type" do
+      before do
+        @practice.update(initiating_facility_type: nil, initiating_facility: 'foobar')
+      end
+      it "returns an empty string" do
+        expect(helper.origin_display_name(@practice)).to eq('')
+        expect(helper.origin_display(@practice)).to eq('')
+      end
+    end
+
+    context "when given a practice with intiating facility but no " do
+      before do
+        @practice.update(initiating_facility_type: 'other', initiating_facility: nil)
+      end
+      it "returns an empty string" do
+        expect(helper.origin_display_name(@practice)).to eq('')
+        expect(helper.origin_display(@practice)).to eq('')
+      end
+    end
+  end
 end

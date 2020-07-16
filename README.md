@@ -25,7 +25,7 @@
 | `rails inet_partner_practices:assign_inet_partner` | Assigns the iNET practice partner to practices that have iNET as a partner  |
 | `rails shark_tank_practices:assign_shark_tank_badge` | Assigns the Shark Tank badge to all previous Shark Tank winners  |
 | `rails categories:add_covid_cats` | Adds COVID related categories and assigns them to practices  |
-| `rails practice_origin_facilities:move_practice_initiating_facility` | Moves practice.initiating_facility to the practice_origin_facilities table  |
+| `rails practice_origin_facilities:move_practice_initiating_facility` | Moves practice initiating facilities to the practice_origin_facilities table  |
 
 #### Ruby version
 
@@ -155,7 +155,7 @@ This will run:
 7. `rails shark_tank_practices:assign_shark_tank_badge` - assigns the Shark Tank badge to all previous Shark Tank winners
 8. `rails inet_partner_practices:assign_inet_partner` - assigns the iNET practice partner to practices that have iNET as a partner
 9. `rails categories:add_covid_cats` - adds COVID related categories and assigns them to practices
-10. `rails practice_origin_facilities:move_practice_initiating_facility` - moves practice.initiating_facility to the practice_origin_facilities table
+10. `rails practice_origin_facilities:move_practice_initiating_facility` - moves practice initiating facilities to the practice_origin_facilities table
 
 To reset all of the data and do the process all over again, run:
 ```bash
