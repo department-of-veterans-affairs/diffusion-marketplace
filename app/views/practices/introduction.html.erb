@@ -6,6 +6,7 @@
   <%= javascript_include_tag '_facilitySelect', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_visnSelect', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_officeSelect', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_overview', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_introduction', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_cropper', 'data-turbolinks-track': 'reload' %>
@@ -270,8 +271,8 @@
                     <% end %>
                     <li class="practice-editor-origin-facility-li fields" data-id="<%= orig_facility_id %>">
                       <div class="margin-bottom-3">
-                        <%= label_tag "editor_state_select_#{orig_facility_id}", 'State', class: 'usa-label x0-top
-                    margin-bottom-1' %>
+                        <%= label_tag "editor_state_select_#{orig_facility_id}", 'State',
+                                      class: 'usa-label x0-top margin-bottom-1' %>
                         <%= select_tag('', options_for_select(us_states), id: "editor_state_select_#{orig_facility_id}",
                                        name: "editor_state_select_#{orig_facility_id}", class: 'width-card-lg height-5 usa-select') %>
                       </div>
@@ -282,8 +283,7 @@
                                          options_for_select([['-Select-', nil, selected: true, disabled: true,
                                                               class: 'usa-select dm-color-disabled']]),
                                          {},
-                                         {class: 'height-5 usa-select desktop:grid-col-8 margin-bottom-2 x0-top',
-                                          'counter-id': "practice_origin_facility_#{orig_facility_id}"}
+                                         {class: 'height-5 usa-select desktop:grid-col-8 margin-bottom-2 x0-top'}
                           %>
                         </div>
 
@@ -294,7 +294,6 @@
                         </div>
                       </div>
                     </li>
-
                   <% end %>
                 </ul>
                 <%= f.link_to_add :practice_origin_facilities,
@@ -362,7 +361,7 @@
                     <input type="checkbox"
                            class="usa-checkbox__input partner-input"
                            id="practice_award_<%= underscore_award %>"
-                           name="practice[practice_awards_attributes][<%= underscore_award %>][name]"
+                           name="practice[practice_award][<%= underscore_award %>][name]"
                            value="<%= award %>"
                            <%= 'checked="true"' if @practice.practice_awards.find_by(name: award) %>
                       />
@@ -385,23 +384,24 @@
                         other_award_id = pa.object.id || "new_practice_awards"
                         show_other_award_form = other_award_ids.include?(other_award_id) || other_award_id == "new_practice_awards"
                       %>
-                      <% if pa.object.id %>
-                        <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                          $(document).arrive('<%= "#practice_practice_awards_attributes_#{pa.index}_name" %>',
-                            function(newElem) {
-                              styleOriginFacility(
-                                $(newElem).closest('li'),
-                                <%= other_award_id %>,
-                                '.practice-editor-other-awards-li',
-                                '.practice-editor-awards-ul',
-                                '.add-practice-award-other-link'
-                              );
-                              $(document).unbindArrive('<%= "#practice_practice_awards_attributes_#{pa.index}_name" %>', newElem);
-                            }
-                          );
-                        <% end %>
-                      <% end %>
                       <% if show_other_award_form %>
+                        <% if pa.object.id %>
+                          <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                            $(document).arrive('<%= "#practice_practice_awards_attributes_#{pa.index}_name" %>',
+                              function(newElem) {
+                                styleOriginFacility(
+                                  $(newElem).closest('li'),
+                                  <%= other_award_id %>,
+                                  '.practice-editor-other-awards-li',
+                                  '.practice-editor-awards-ul',
+                                  '.add-practice-award-other-link'
+                                );
+                                $(document).unbindArrive('<%= "#practice_practice_awards_attributes_#{pa.index}_name" %>', newElem);
+                              }
+                            );
+                          <% end %>
+                        <% end %>
+
                         <li class="practice-editor-other-awards-li fields" data-id="<%= other_award_id %>">
                           <div class="grid-row">
                             <div class="grid-col-12">
@@ -475,7 +475,8 @@
                          id="practice_partner_<%= partner.id %>_label"
                          for="practice_partner_<%= partner.id %>"
                   >
-                    <%= partner.name %></label>
+                    <%= partner.name %>
+                  </label>
                 </div>
                 <% else %>
                   <div class="usa-checkbox practice-partner-checkbox position-relative">

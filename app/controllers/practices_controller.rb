@@ -445,6 +445,7 @@ class PracticesController < ApplicationController
                                      practice_permissions_attributes: [:id, :_destroy, :position, :name, :description],
                                      practice_partner: {},
                                      department: {},
+                                     practice_award: {},
                                      practice_awards_attributes: {},
                                      practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :facility_type, :initiating_department_office_id ])
   end

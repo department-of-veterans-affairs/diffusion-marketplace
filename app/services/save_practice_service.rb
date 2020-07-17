@@ -8,13 +8,14 @@ class SavePracticeService
     @attachments = ['impact_photos', 'additional_documents']
     @current_endpoint = params[:current_endpoint]
     @error_messages = {
-      update_practice_partner_practices: 'error updating practice partners',
-      update_department_practices: 'error updating departments',
-      remove_attachments: 'error removing attachments',
-      manipulate_avatars: 'error updating avatars',
-      remove_main_display_image: 'error removing practice thumbnail',
-      crop_main_display_image: 'error cropping practice thumbnail',
-      update_initiating_facility: 'error updating initiating facility',
+        update_practice_partner_practices: 'error updating practice partners',
+        update_department_practices: 'error updating departments',
+        remove_attachments: 'error removing attachments',
+        manipulate_avatars: 'error updating avatars',
+        remove_main_display_image: 'error removing practice thumbnail',
+        crop_main_display_image: 'error cropping practice thumbnail',
+        update_initiating_facility: 'error updating initiating facility',
+        update_practice_awards: 'error updating practice awards',
     }
   end
 
@@ -29,6 +30,7 @@ class SavePracticeService
       rescue_method(:remove_main_display_image)
       rescue_method(:crop_main_display_image)
       rescue_method(:update_initiating_facility)
+      rescue_method(:update_practice_awards)
 
       updated
     rescue => e
@@ -144,32 +146,32 @@ class SavePracticeService
     end
     if @current_endpoint == 'overview'
       if initiating_facility_type.present? && initiating_facility.present?
-        @practice.update_attributes({ initiating_facility_type: initiating_facility_type, initiating_facility: initiating_facility })
+        @practice.update_attributes({initiating_facility_type: initiating_facility_type, initiating_facility: initiating_facility})
       else
         raise StandardError.new @error_messages[:update_initiating_facility]
       end
     end
   end
-end
 
-practices = []
-complete_map = []
-practices.each do |p|
-  if p.diffusion_histories.exists?
-    practice_diffusion_histories = p.diffusion_histories.map { |dh|
-        selected_facility = facility_data.select { |fd| fd["StationNumber"] === dh.facility_id }
-        #this is what is getting returned
-        dh_status = dh.diffusion_history_statuses.first
-        {
-            facility_name: selected_facility[0]["OfficialStationName"],
-            common_name: selected_facility[0]["CommonName"],
-            state: selected_facility[0]["MailingAddressState"],
-            date: dh_status.status == 'In progress' || dh_status.status == 'Implementing' || dh_status.status == 'Planning' || dh_status.status == 'Unsuccessful' ? dh_status.start_time : dh_status.end_time,
-            status: dh_status.status,
-            rurality: selected_facility[0]["Rurality"],
-            complexity: selected_facility[0]["FY17ParentStationComplexityLevel"]
-        }
-      }
-    complete_map << practice_diffusion_histories
+  def update_practice_awards
+    practice_award_params = @practice_params[:practice_award]
+    if practice_award_params
+      practice_awards = @practice.practice_awards
+      practice_awards_to_create = practice_award_params.values.map { |param| param[:name] }
+      practice_awards_to_create.each { |award| @practice.practice_awards.find_or_create_by(name: award) }
+
+      # get practice awards that are in the provided list
+      # figure out which ones are not in the params and delete the award if the practice has it made
+      Practice::PRACTICE_EDITOR_AWARDS_AND_RECOGNITION.each do |defined_award|
+        # check if the award is in the params, delete award if it is not in the params
+        practice_awards.find_by(name: defined_award)&.destroy unless practice_awards_to_create.include?(defined_award)
+
+        # if "Other" was not checked, destroy all "Other" awards
+        if defined_award == 'Other' && !practice_awards_to_create.include?(defined_award)
+          other_awards = practice_awards.where.not(name: Practice::PRACTICE_EDITOR_AWARDS_AND_RECOGNITION)
+          other_awards.destroy_all
+        end
+      end
+    end
   end
 end
