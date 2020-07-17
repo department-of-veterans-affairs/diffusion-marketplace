@@ -1,4 +1,6 @@
 <%# TODO: Make compatible with IE %>
+<%# TODO: Hover, Click, Visited Interactions %>
+
 <%# TODO: Make unauthenticated view %>
 
 <%
@@ -65,13 +67,14 @@
   </div>
   <div class="grid-row">
     <%# practice origin date and location %>
-    <div class="grid-col-12 margin-bottom-2 display-flex">
-      <i class="fas fa-map-marker-alt margin-right-1"></i>
-      <span class="font-sans-xs line-height-sans-6 margin-top-neg-05">
+    <div class="grid-col-12 margin-bottom-2">
+      <p class="desktop:grid-col-6 font-sans-3xs line-height-sans-3">
+      <span class="text-bold text-uppercase">Origin:</span>
+      <span>
         <%= @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)' %>,
-        <%= @facility_data.present? ? @facility_data['OfficialStationName'] : @practice.initiating_facility %>
-        <%= show_common_name(@facility_data["OfficialStationName"], @facility_data["CommonName"]) if @facility_data.present?%>
+        <%= origin_display_name(@practice) %>
       </span>
+      </p>
     </div>
     <%# practice adoptions %>
     <div class="desktop:float-left desktop:grid-col-6">
