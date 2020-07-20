@@ -1133,3 +1133,23 @@ ul.no-list-style {
     color: $dm-color-blue-70v !important;
   }
 }
+
+.dm-icon-link {
+  color: $dm-color-blue-50v !important;
+
+  &:visited {
+    color: $dm-color-blue-50v !important;
+  }
+
+  &:hover, &:active {
+    cursor: pointer !important;
+  }
+
+  &:hover {
+    color: $dm-color-blue-70v !important;
+  }
+
+  &:visited {
+    color: $dm-color-blue-80v !important;
+  }
+}
