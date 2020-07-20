@@ -62,6 +62,7 @@ button.appearance-none {
 
 .link-primary, .link-primary:visited {
   @extend .text-primary;
+
   &:hover {
     @extend .text-base-darkest;
   }
@@ -138,7 +139,7 @@ p {
   text-decoration: none;
 
   &:visited {
-    color:black;
+    color: black;
   }
 
   &:hover {
@@ -162,6 +163,7 @@ p {
 
 
 }
+
 a {
   color: $dm-color-blue-50v;
   text-decoration: underline;
@@ -182,11 +184,13 @@ a {
     &:hover {
       text-decoration: none;
     }
+
     &:visited {
       color: black;
     }
   }
 }
+
 @media all and (min-width: 40em) {
   /* line 68, uswds-rails-029b4d4c92fc/app/assets/stylesheets/uswds/core/mixins/_utility-builder.scss */
   .tablet\:display-block {
@@ -270,4 +274,16 @@ a {
   }
 }
 
+.usa-button {
+  &.black {
+    &:not(.usa-button--outline) {
+      background-color: $dm-color-black !important;
+    }
 
+    &.usa-button--outline {
+      box-shadow: none !important;
+      border: 2px solid $dm-color-black !important;
+      color: $dm-color-black !important;
+    }
+  }
+}

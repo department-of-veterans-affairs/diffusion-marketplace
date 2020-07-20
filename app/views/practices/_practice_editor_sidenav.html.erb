@@ -29,7 +29,7 @@
         </ul>
         <% if params[:action] != 'instructions' && params[:action] != 'adoptions' %>
           <div class="text-center">
-            <%= button_tag 'Save your progress', class: 'usa-button usa-button--outline width-full padding-y-2 margin-top-1', id: 'practice-editor-save-button' %>
+            <%= button_tag 'Save', class: 'usa-button black usa-button--outline width-full padding-y-2 margin-top-1', id: 'practice-editor-save-button' %>
           </div>
         <% end %>
         <% if !@practice.published && params[:action] != 'instructions' %>
