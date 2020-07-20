@@ -98,7 +98,7 @@
         <p class="grid-col-12 margin-bottom-2 font-sans-3xs line-height-sans-3">
           <span class="text-bold text-uppercase">Awards and Recognition:</span>
             <% @practice.practice_awards.each_with_index do |award, index| %>
-              <% if award.name != "Other" %>
+              <% if award.name.downcase != "other" %>
                 <span><%= award.name %></span><%= ", " if @practice.practice_awards.size != index + 1 && @practice.practice_awards.size > 1 %>
               <% end %>
             <% end %>

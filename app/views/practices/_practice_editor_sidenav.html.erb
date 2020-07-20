@@ -2,68 +2,28 @@
     <div id="dm-practice-nav" class="z-top mobile-hide">
         <ul id="dm-tabnav" class="usa-sidenav dm-tabnav">
             <li class="usa-sidenav__item">
-                <%= link_to practice_instructions_path(@practice), class: 'dm-tab top-tab editor-sidenav-link sidenav-instructions-link' do%>
-              <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%= @practice.name && @practice.tagline && @practice.summary && @practice.practice_partners.any? ? 'green-check' : '' %>"></i>Instructions
+                <%= link_to practice_instructions_path(@practice), class: 'dm-tab top-tab editor-sidenav-link scroll-to sidenav-instructions-link' do%>
+                  Instructions
                 <% end %>
             </li>
           <li class="usa-sidenav__item">
-            <%= link_to practice_introduction_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-overview-link' do %>
-              <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%= @practice.name && @practice.tagline && @practice.summary && @practice.practice_partners.any? ? 'green-check' : '' %>"></i>Introduction
+            <%= link_to practice_introduction_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link scroll-to sidenav-introduction-link' do %>
+              Introduction 
             <% end %>
           </li>
             <li class="usa-sidenav__item">
-                <%= link_to practice_overview_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-overview-link' do %>
-                    <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%= @practice.name && @practice.tagline && @practice.summary && @practice.practice_partners.any? ? 'green-check' : '' %>"></i>Overview
-                <% end %>
-            </li>
-<!--            <li class="usa-sidenav__item">-->
-              <%#= link_to practice_adoptions_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-adoptions-link' do %>
-<!--                <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%#= @practice.diffusion_histories.any? ? 'green-check' : '' %>"></i>Adoptions-->
-              <%# end %>
-<!--            </li>-->
-<!--            <li class="usa-sidenav__item">-->
-                <%#= link_to practice_origin_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-origin-link' do %>
-<!--                    <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%#= @practice.origin_story.present? ? 'green-check' : '' %>"></i>Origin-->
-                <%# end %>
-<!--            </li>-->
-<!--            <li class="usa-sidenav__item">-->
-                <%#= link_to practice_impact_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-impact-link' do %>
-<!--                    <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%#= @practice.impact_photos.any? ? 'green-check' : '' %>"></i>Impact-->
-                <%# end %>
-<!--            </li>-->
-<!--            <li class="usa-sidenav__item">-->
-                <%#= link_to practice_documentation_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-documentation-link' do %>
-<!--                    <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 documentation-check"></i>Documentation-->
-                <%# end %>
-<!--            </li>-->
-<!--            <li class="usa-sidenav__item">-->
-                <%#= link_to practice_resources_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-resources-link' do %>
-<!--                    <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%#= @practice.cost_to_implement_aggregate != 0 && @practice.cost_to_implement_aggregate.present? ? 'green-check' : '' %>"></i>Resources-->
-                <%# end %>
-<!--            </li>-->
-<!--            <li class="usa-sidenav__item">-->
-                <%#= link_to practice_complexity_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-complexity-link' do %>
-<!--                    <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%#= @practice.additional_staffs.any? && @practice.departments.any? && @practice.training_length ? 'green-check' : '' %>"></i>Complexity-->
-                <%# end %>
-<!--            </li>-->
-<!--            <li class="usa-sidenav__item">-->
-                <%#= link_to practice_timeline_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-timeline-link' do %>
-<!--                    <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%#= @practice.timelines.any? ? 'green-check' : '' %>"></i>Timeline-->
-                <%# end %>
-<!--            </li>-->
-<!--            <li class="usa-sidenav__item">-->
-                <%#= link_to practice_risk_and_mitigation_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-risk-miti-link' do %>
-<!--                    <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 risk-miti-check"></i>Risk and mitigation-->
-                <%# end %>
-<!--            </li>-->
-            <li class="usa-sidenav__item">
-                <%= link_to practice_contact_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-contact-link' do %>
-                    <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%= @practice.va_employees.any? && @practice.support_network_email.present? ? 'green-check' : '' %>"></i>Contact
+                <%= link_to practice_overview_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link scroll-to sidenav-overview-link' do %>
+                    Overview
                 <% end %>
             </li>
             <li class="usa-sidenav__item">
-                <%= link_to practice_implementation_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-checklist-link' do %>
-                    <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 implementation-check"></i>Implementation
+                <%= link_to practice_contact_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link scroll-to sidenav-contact-link' do %>
+                    Contact
+                <% end %>
+            </li>
+            <li class="usa-sidenav__item">
+                <%= link_to practice_implementation_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link scroll-to sidenav-checklist-link' do %>
+                    Implementation
                 <% end %>
             </li>
         </ul>
