@@ -1,0 +1,64 @@
+
+<%
+  section_title = locals[:section_title]
+  form = locals[:form]
+  practice = locals[:practice]
+%>
+
+<section class="dm-image-editor margin-top-3 margin-bottom-5">
+  <label class="usa-label text-bold margin-top-0 margin-bottom-1">
+    <%= section_title %>
+  </label>
+  <span class="line-height-26">
+    Choose an image to represent this practice.
+    Use a high-quality .jpg, .jpeg, or .png file
+    that is at least 768px wide and 432px high and less than 32MB.
+    If you want to upload an image that features a Veteran you must have
+    <%= link_to 'Form 3203', 'https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-3203.pdf', target: '_blank' %>.
+    Waivers must be filled out with the 'External to VA' check box selected.
+  </span>
+  <div class="dm-image-editor-text margin-bottom-2 usa-alert usa-alert--warning usa-alert--slim display-none">
+    <p class="usa-alert__body">
+      You must click "Save edits" in this section and then "Save" in the side navigation to save a draft with thumbnail updates.
+    </p>
+  </div>
+  <div class="dm-image-error-text margin-bottom-2 usa-alert usa-alert--error usa-alert--slim display-none">
+    <p class="usa-alert__body">
+    </p>
+  </div>
+
+  <div class="dm-cropper-boundary grid-col-12 margin-top-2">
+    <div class="dm-cropper-images-container grid-col-6 margin-bottom-2" data-type="main">
+      <% if practice.main_display_image.present? %>
+        <%= image_tag practice.main_display_image_s3_presigned_url(:original),
+                      alt: "practice thumbnail for #{practice.name}",
+                      class: 'dm-cropper-thumbnail-original radius-md display-none' %>
+        <%= image_tag practice.main_display_image_s3_presigned_url(:thumb),
+                      alt: "practice thumbnail for #{practice.name}",
+                      class: 'dm-cropper-thumbnail-modified radius-md' %>
+      <% end %>
+    </div>
+    <% [:crop_x, :crop_y, :crop_w, :crop_h].each { |attribute| %>
+      <%= form.hidden_field attribute, id: attribute, value: nil %>
+    <% } %>
+    <a class="dm-cropper-cancel-edit usa-button usa-button--outline display-none margin-right-1" aria-controls='image-cancel-edit' aria-expanded='false'>
+      Cancel edits
+    </a>
+    <a class="dm-cropper-save-edit usa-button display-none" aria-controls='image-save-edit' aria-expanded='false'>
+      Save edits
+    </a>
+    <a class="dm-cropper-edit-mode usa-button usa-button--outline <%= practice.main_display_image.present? ? '' : 'display-none' %>" aria-controls="image-crop" aria-expanded='false'>
+      Edit image
+    </a>
+    <div class="margin-y-1">
+      <%= form.label :main_display_image,
+                  practice.main_display_image.present? ? 'Upload new image' : 'Upload image',
+                  class: "dm-cropper-upload-image-label #{practice.main_display_image.present? ? 'dm-blue-action-link' : 'usa-button usa-button--outline'}" %>
+      <%= form.file_field :main_display_image, class: "dm-cropper-upload-image hidden-upload", accept: 'image/*' %>
+    </div>
+    <div class="dm-cropper-delete-image">
+      <%= form.label :delete_main_display_image, 'Remove image', class: "text-secondary dm-cropper-delete-image-label #{practice.main_display_image.present? ? '' : 'display-none' }" %>
+      <%= form.check_box :delete_main_display_image, { class: "dm-cropper-delete-image usa-checkbox__input #{practice.main_display_image.present? ? '' : 'display-none'}" }, 'true', 'false' %>
+    </div>
+  </div>
+</section>

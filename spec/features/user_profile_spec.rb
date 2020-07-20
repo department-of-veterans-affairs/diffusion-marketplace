@@ -95,7 +95,7 @@ describe 'The user index', type: :feature do
     expect(page).to have_content('Edit photo')
     expect(page).to have_content('Remove photo')
     expect(page).to have_content('Upload new photo')
-    expect(page).to have_css('.cropper-thumbnail-modified')
+    expect(page).to have_css('.dm-cropper-thumbnail-modified')
     check('Remove photo', allow_label_click: true)
 
     click_button('Save changes')
@@ -112,7 +112,7 @@ describe 'The user index', type: :feature do
     expect(page).to be_accessible.according_to :wcag2a, :section508
     attach_file('Upload photo', Rails.root + 'spec/assets/SpongeBob.png')
 
-    find('.cropper-edit-mode').click
+    find('.dm-cropper-edit-mode').click
 
     expect(page).to have_no_content('Edit photo')
     expect(page).to have_content('Remove photo')
@@ -121,7 +121,7 @@ describe 'The user index', type: :feature do
     expect(page).to have_content('Cancel edits')
     expect(page).to have_css('.cropper-modal')
 
-    find('.cropper-save-edit').click
+    find('.dm-cropper-save-edit').click
 
     expect(find("#crop_x", :visible => false).value).to match '62'
     expect(find("#crop_y", :visible => false).value).to match '61'
@@ -130,7 +130,7 @@ describe 'The user index', type: :feature do
 
     click_button('Save changes')
 
-    expect(page).to have_selector('.cropper-thumbnail-modified')
+    expect(page).to have_selector('.dm-cropper-thumbnail-modified')
     sb = User.find(@user.id)
     expect(sb.avatar.present?).to be(true)
   end

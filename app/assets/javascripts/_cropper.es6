@@ -10,7 +10,7 @@
 
   const imgValues = {
     main: {
-      class: 'height-mobile radius-md',
+      class: 'radius-md',
       alt: 'temporary practice thumbnail'
     },
     contact: {
@@ -28,43 +28,45 @@
   }
 
   function _toggleDefaultPracticeThumbnail({ visible, target }) {
-    let $defaultThumbnail = $(target).closest('.cropper-boundary').find('.cropper-image-placeholder');
-    let $imgImgsContainer = $(target).closest('.cropper-boundary').find($imgsContainer)
+    let $defaultThumbnail = $(target).closest('.dm-cropper-boundary').find('.cropper-image-placeholder');
+    let $imgImgsContainer = $(target).closest('.dm-cropper-boundary').find($imgsContainer)
 
     if (visible) {
       $imgImgsContainer.empty();
-      $defaultThumbnail.removeClass('hidden');
+      $defaultThumbnail.removeClass('display-none');
     } else {
-      $defaultThumbnail.addClass('hidden');
+      $defaultThumbnail.addClass('display-none');
     }
   }
 
   function _toggleBtnsOnPlaceholderChange({ isUpload, target }) {
-    let $deleteBtnLabel = $(target).closest('.cropper-boundary').find('.cropper-delete-image-label');
-    let $uploadBtnLabel = $(target).closest('.cropper-boundary').find('.cropper-upload-image-label');
-    let $imgDeleteInput = $(target).closest('.cropper-boundary').find($deleteInput);
+    let $deleteBtnLabel = $(target).closest('.dm-cropper-boundary').find('.dm-cropper-delete-image-label');
+    let $uploadBtnLabel = $(target).closest('.dm-cropper-boundary').find('.dm-cropper-upload-image-label');
+    let $imgDeleteInput = $(target).closest('.dm-cropper-boundary').find($deleteInput);
 
     if (isUpload) {
-      $uploadBtnLabel.text('Upload new photo');
-      $uploadBtnLabel.removeClass('usa-button');
-      $deleteBtnLabel.removeClass('hidden');
-      $imgDeleteInput.removeClass('hidden');
+      $uploadBtnLabel.text('Upload new image');
+      $uploadBtnLabel.addClass('dm-blue-action-link');
+      $uploadBtnLabel.removeClass('usa-button usa-button--outline');
+      $deleteBtnLabel.removeClass('display-none');
+      $imgDeleteInput.removeClass('display-none');
       if (imgType === 'user') {
-        $uploadBtnLabel.removeClass('usa-button--outline padding-2')
+        $uploadBtnLabel.removeClass('padding-2')
       }
     } else {
-      $uploadBtnLabel.text('Upload photo');
-      $uploadBtnLabel.addClass('usa-button');
-      $deleteBtnLabel.addClass('hidden');
-      $imgDeleteInput.addClass('hidden');
+      $uploadBtnLabel.text('Upload image');
+      $uploadBtnLabel.addClass('usa-button usa-button--outline');
+      $deleteBtnLabel.addClass('display-none');
+      $imgDeleteInput.addClass('display-none');
+      $uploadBtnLabel.removeClass('dm-blue-action-link');
       if (imgType === 'user') {
-        $uploadBtnLabel.addClass('usa-button--outline padding-2')
+        $uploadBtnLabel.addClass('padding-2')
       }
     }
   }
 
   function _toggleThumbnailRemoval({ deleteImg, target }) {
-    let $imgDeleteInput = $(target).closest('.cropper-boundary').find($deleteInput)
+    let $imgDeleteInput = $(target).closest('.dm-cropper-boundary').find($deleteInput)
 
     if (deleteImg) {
       $imgDeleteInput.val('true');
@@ -74,24 +76,24 @@
   }
 
   function _toggleImageView({ isCrop, target }) {
-    let $originalImage = $(target).closest('.cropper-boundary').find('.cropper-thumbnail-original');
-    let $modifiedImage = $(target).closest('.cropper-boundary').find('.cropper-thumbnail-modified');
+    let $originalImage = $(target).closest('.dm-cropper-boundary').find('.dm-cropper-thumbnail-original');
+    let $modifiedImage = $(target).closest('.dm-cropper-boundary').find('.dm-cropper-thumbnail-modified');
 
     if (isCrop && $originalImage) {
-      $modifiedImage.addClass('hidden');
-      $originalImage.removeClass('hidden');
+      $modifiedImage.addClass('display-none');
+      $originalImage.removeClass('display-none');
     } else {
-      $modifiedImage.removeClass('hidden');
-      $originalImage.addClass('hidden');
+      $modifiedImage.removeClass('display-none');
+      $originalImage.addClass('display-none');
     }
   }
 
   function _toggleCropper({ visible, target }) {
-    let $image = $(target).closest('.cropper-boundary').find('.cropper-thumbnail-original');
+    let $image = $(target).closest('.dm-cropper-boundary').find('.dm-cropper-thumbnail-original');
 
     if (visible) {
       let cropOptions = {
-          aspectRatio: 1,
+          aspectRatio: 16/9,
           checkCrossOrigin: false,
           checkOrientation: true,
           viewMode: 2,
@@ -110,11 +112,12 @@
   }
 
   function _toggleEditBtn({ visible, target }) {
-    let $imgEditBtn = $(target).closest('.cropper-boundary').find($editBtn)
+    let $imgEditBtn = $(target).closest('.dm-cropper-boundary').find($editBtn)
+
     if (visible) {
-      $imgEditBtn.removeClass('hidden');
+      $imgEditBtn.removeClass('display-none');
     } else {
-      $imgEditBtn.addClass('hidden');
+      $imgEditBtn.addClass('display-none');
     }
   }
 
@@ -122,80 +125,109 @@
     if (isCrop) {
       let cropValues = cropper.getData(true);
 
-      $(target).closest('.cropper-boundary').find("#crop_x").val(cropValues.x);
-      $(target).closest('.cropper-boundary').find("#crop_y").val(cropValues.y);
-      $(target).closest('.cropper-boundary').find("#crop_w").val(cropValues.width);
-      $(target).closest('.cropper-boundary').find("#crop_h").val(cropValues.height);
+      $(target).closest('.dm-cropper-boundary').find("#crop_x").val(cropValues.x);
+      $(target).closest('.dm-cropper-boundary').find("#crop_y").val(cropValues.y);
+      $(target).closest('.dm-cropper-boundary').find("#crop_w").val(cropValues.width);
+      $(target).closest('.dm-cropper-boundary').find("#crop_h").val(cropValues.height);
     } else {
-      $(target).closest('.cropper-boundary').find("#crop_x").val(null);
-      $(target).closest('.cropper-boundary').find("#crop_y").val(null);
-      $(target).closest('.cropper-boundary').find("#crop_w").val(null);
-      $(target).closest('.cropper-boundary').find("#crop_h").val(null);
+      $(target).closest('.dm-cropper-boundary').find("#crop_x").val(null);
+      $(target).closest('.dm-cropper-boundary').find("#crop_y").val(null);
+      $(target).closest('.dm-cropper-boundary').find("#crop_w").val(null);
+      $(target).closest('.dm-cropper-boundary').find("#crop_h").val(null);
     }
   }
 
   function _loadPracticeThumbnail({ uploadedImg, target }) {
-    let reader = new FileReader();
-    let $imgImgsContainer = $(target).closest('.cropper-boundary').find('.cropper-images-container')
+    let imgSizeMb = uploadedImg.size * 0.000001 // convert bytes to MB
+    let errorContent = {
+      dimension: 'Sorry, you cannot upload an image smaller than 768px wide by 432px high.',
+      size: 'Sorry, you cannot upload an image larger than 32MB.'
+    }
+    let $errorText = $('.dm-image-error-text')
+    let $imgImgsContainer = $(target).closest('.dm-cropper-boundary').find('.dm-cropper-images-container')
 
-    reader.onload = (function() {
-      return function(event) {
-        let imgOrgElement = `<img src="${event.target.result}" class="cropper-thumbnail-original ${imgValues[imgType].class} hidden" alt="${imgValues[imgType].alt}"/>`;
-        let imgModElement = `<img src="${event.target.result}" class="cropper-thumbnail-modified ${imgValues[imgType].class}" alt="${imgValues[imgType].alt}"/>`;
-        $imgImgsContainer.empty();
-        $imgImgsContainer.append(imgOrgElement);
-        $imgImgsContainer.append(imgModElement);
-      }
-    })()
+    // check if the image is less than 34 MB
+    if (imgSizeMb <= 30) {
+      let reader = new FileReader();
 
-    // Read in the image file as a data URL
-    reader.readAsDataURL(uploadedImg);
-  }
+      reader.onload = (function() {
+        return function(event) {
+          let imgOrgElement = `<img src="${event.target.result}" class="dm-cropper-thumbnail-original ${imgValues[imgType].class} display-none" alt="${imgValues[imgType].alt}"/>`;
+          let imgModElement = `<img src="${event.target.result}" class="dm-cropper-thumbnail-modified ${imgValues[imgType].class}" alt="${imgValues[imgType].alt}"/>`;
+          $imgImgsContainer.empty();
+          $imgImgsContainer.append(imgOrgElement);
+          $imgImgsContainer.append(imgModElement);
 
-  function _toggleCropperBtnView({ visible, target}) {
-    let $imgSaveEditBtn = $(target).closest('.cropper-boundary').find($saveEditBtn)
-    let $imgCancelEditBtn = $(target).closest('.cropper-boundary').find($cancelEditBtn)
+          let imgWidth = $('.dm-cropper-thumbnail-modified')[0].naturalWidth;
+          let imgHeight = $('.dm-cropper-thumbnail-modified')[0].naturalHeight;
+          console.log('dfdf',$('.dm-cropper-thumbnail-modified')[0] )
+          // check if image dimensions are acceptable
+          if (imgWidth >= 768 && imgHeight >= 432) {
+            $errorText.addClass('display-none')
+            _successfulImageLoad({ target })
+          } else {
+            $('.dm-cropper-thumbnail-modified').addClass('display-none')
+            $errorText.removeClass('display-none')
+            $errorText.find('p').text(errorContent.dimension)
+            _failedImageLoad({ target })
+          }
+        }
+      })()
 
-    if (visible) {
-      $imgSaveEditBtn.removeClass('hidden');
-      $imgCancelEditBtn.removeClass('hidden');
+      // Read in the image file as a data URL
+      reader.readAsDataURL(uploadedImg);
     } else {
-      $imgSaveEditBtn.addClass('hidden');
-      $imgCancelEditBtn.addClass('hidden');
+      $imgImgsContainer.empty();
+      $errorText.removeClass('display-none')
+      $errorText.find('p').text(errorContent.size)
+      _failedImageLoad({ target })
     }
   }
 
-  function _toggleImageHelpText({ isEdit, target }) {
-    let $imageUploadText = $(target).closest('.cropper-boundary').find('.cropper-upload-text')
-    let $imageEditText = $(target).closest('.cropper-boundary').find('.cropper-editor-text')
+  function _failedImageLoad({ target }) {
+    _toggleThumbnailRemoval({ deleteImg: false, target });
+    _toggleEditBtn({ visible: false, target })
+    _toggleBtnsOnPlaceholderChange({ isUpload: false, target });
+    _toggleDefaultPracticeThumbnail({ visible: false, target })
+    _setCropBoxValues({ isCrop: false, target });
+    _toggleCropperBtnView({ visible: false, target });
+  }
 
-    if (isEdit) {
-      $imageUploadText.addClass('hidden')
-      $imageEditText.removeClass('hidden')
+  function _successfulImageLoad({ target }) {
+    _toggleThumbnailRemoval({ deleteImg: false, target });
+    _toggleEditBtn({ visible: true, target })
+    _toggleBtnsOnPlaceholderChange({ isUpload: true, target });
+    _toggleDefaultPracticeThumbnail({ visible: false, target })
+    _setCropBoxValues({ isCrop: false, target });
+    _toggleCropperBtnView({ visible: false, target });
+  }
+
+  function _toggleCropperBtnView({ visible, target}) {
+    let $imgSaveEditBtn = $(target).closest('.dm-cropper-boundary').find($saveEditBtn)
+    let $imgCancelEditBtn = $(target).closest('.dm-cropper-boundary').find($cancelEditBtn)
+    let $imageEditText = $('.dm-image-editor-text')
+
+    if (visible) {
+      $imgSaveEditBtn.removeClass('display-none');
+      $imgCancelEditBtn.removeClass('display-none');
+      $imageEditText.removeClass('display-none')
     } else {
-      $imageUploadText.removeClass('hidden')
-      $imageEditText.addClass('hidden')
+      $imgSaveEditBtn.addClass('display-none');
+      $imgCancelEditBtn.addClass('display-none');
+      $imageEditText.addClass('display-none')
     }
   }
 
   function _attachUploadEventListener() {
-    let $thubmanilInput = $('.cropper-upload-image');
+    let $thubmanilInput = $('.dm-cropper-upload-image');
 
     $thubmanilInput.on('change', (event) => {
-      _toggleImageHelpText({ isEdit: false, target: event.target })
       _loadPracticeThumbnail({ uploadedImg: event.target.files[0], target: event.target });
-      _toggleThumbnailRemoval({ deleteImg: false, target: event.target });
-      _toggleEditBtn({ visible: true, target: event.target})
-      _toggleBtnsOnPlaceholderChange({ isUpload: true, target: event.target });
-      _toggleDefaultPracticeThumbnail({ visible: false, target: event.target })
-      _setCropBoxValues({ isCrop: false, target: event.target });
-      _toggleCropperBtnView({ visible: false, target: event.target });
     })
   }
 
   function _attachDeleteEventListener() {
     $deleteInput.click((event) => {
-      _toggleImageHelpText({ isEdit: false, target: event.target })
       _toggleThumbnailRemoval({ deleteImg: true, target: event.target });
       _toggleDefaultPracticeThumbnail({ visible: true, target: event.target });
       _toggleBtnsOnPlaceholderChange({ isUpload: false, target: event.target });
@@ -206,7 +238,6 @@
 
   function _attachEditEventListener() {
     $editBtn.click((event) => {
-      _toggleImageHelpText({ isEdit: true, target: event.target });
       _toggleCropper({ visible: true, target: event.target });
       _toggleImageView({ isCrop: true, target: event.target });
       _toggleCropperBtnView({ visible: true, target: event.target });
@@ -222,7 +253,6 @@
 
   function _attachCancelEditEventListener() {
     $cancelEditBtn.click((event) => {
-      _toggleImageHelpText({ isEdit: false, target: event.target })
       _toggleCropper({ visible: false, target: event.target });
       _toggleImageView({ isCrop: false, target: event.target })
       _toggleCropperBtnView({ visible: false, target: event.target });
@@ -241,17 +271,17 @@
   }
 
   function setImageVars() {
-    $editBtn = $('.cropper-edit-mode');
-    $deleteInput = $('.cropper-delete-image').find('input');
-    $cancelEditBtn = $('.cropper-cancel-edit');
-    $saveEditBtn = $('.cropper-save-edit');
-    $imgsContainer = $('.cropper-images-container');
-    imgType = $('.cropper-boundary').find('.cropper-images-container').data('type')
+    $editBtn = $('.dm-cropper-edit-mode');
+    $deleteInput = $('.dm-cropper-delete-image').find('input');
+    $cancelEditBtn = $('.dm-cropper-cancel-edit');
+    $saveEditBtn = $('.dm-cropper-save-edit');
+    $imgsContainer = $('.dm-cropper-images-container');
+    imgType = $('.dm-cropper-boundary').find('.dm-cropper-images-container').data('type')
 
   }
 
   function attachNewFieldEventListeners() {
-    $document.arrive('.cropper-boundary', (newElem) => {
+    $document.arrive('.dm-cropper-boundary', (newElem) => {
       setImageVars();
       attachImgActionsEventListeners();
     })

@@ -20,7 +20,7 @@
       <% if has_main_img %>
         <img
           class="float-right desktop:grid-col-4 grid-col-12 margin-bottom-2 desktop:margin-left-2"
-          src="<%= @practice.main_display_image_s3_presigned_url %>"
+          src="<%= @practice.main_display_image_s3_presigned_url(:thumb) %>"
           alt="<%= @practice.name %> main image"/>
       <% end %>
       <%# practice name %>
