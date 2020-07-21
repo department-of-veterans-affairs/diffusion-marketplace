@@ -2,27 +2,32 @@
     <div id="dm-practice-nav" class="z-top mobile-hide">
         <ul id="dm-tabnav" class="usa-sidenav dm-tabnav">
             <li class="usa-sidenav__item">
-                <%= link_to practice_instructions_path(@practice), class: 'dm-tab top-tab editor-sidenav-link scroll-to sidenav-instructions-link' do%>
+                <%= link_to practice_instructions_path(@practice), class: 'dm-tab top-tab editor-sidenav-link scroll-to sidenav-instructions' do%>
                   Instructions
                 <% end %>
             </li>
           <li class="usa-sidenav__item">
-            <%= link_to practice_introduction_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link scroll-to sidenav-introduction-link' do %>
-              Introduction 
+            <%#= link_to practice_introduction_path(@practice), class: "#{'usa-current' if current_page?(practice_introduction_path)} width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link scroll-to sidenav-introduction" do %>
+              <%= link_to('Introduction',  practice_introduction_path(@practice), class: "#{'usa-current' if current_page?( practice_introduction_path(@practice))} width-full dm-tab practice-editor-link") %>
+            <%# end %>
+          </li>
+          <li class="usa-sidenav__item">
+            <%= link_to practice_adoptions_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link scroll-to sidenav-adoptions' do %>
+              Adoptions
             <% end %>
           </li>
             <li class="usa-sidenav__item">
-                <%= link_to practice_overview_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link scroll-to sidenav-overview-link' do %>
+                <%= link_to practice_overview_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link scroll-to sidenav-overview' do %>
                     Overview
                 <% end %>
             </li>
             <li class="usa-sidenav__item">
-                <%= link_to practice_contact_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link scroll-to sidenav-contact-link' do %>
-                    Contact
+                <%= link_to practice_contact_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link scroll-to sidenav-contact' do %>
+                   Contact
                 <% end %>
             </li>
             <li class="usa-sidenav__item">
-                <%= link_to practice_implementation_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link scroll-to sidenav-checklist-link' do %>
+                <%= link_to practice_implementation_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link scroll-to sidenav-implementation' do %>
                     Implementation
                 <% end %>
             </li>
