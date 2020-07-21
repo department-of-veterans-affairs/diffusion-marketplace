@@ -164,6 +164,10 @@ header {
         color: $dm-color-blue-70v !important;
         text-decoration: none;
         border-bottom: 0.3125rem solid $dm-color-blue-70v !important;
+
+        &:after {
+          background-color: $dm-color-blue-70v !important;
+        }
       }
 
       &:after {
