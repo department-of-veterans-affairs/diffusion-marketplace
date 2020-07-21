@@ -128,7 +128,7 @@ class Practice < ApplicationRecord
 
   PRACTICE_EDITOR_SLUGS =
       {
-          'adoptions': 'overview',
+          'adoptions': 'introduction',
           'impact': 'origin',
           'documentation': 'impact',
           'resources': 'documentation',
@@ -136,7 +136,8 @@ class Practice < ApplicationRecord
           'timeline': 'complexity',
           'risk_and_mitigation': 'timeline',
           'contact': 'risk_and_mitigation',
-          'checklist': 'contact'
+          'checklist': 'contact',
+          'introduction': 'instructions'
       }
 
   PRACTICE_EDITOR_AWARDS_AND_RECOGNITION =

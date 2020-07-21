@@ -158,6 +158,7 @@ class PracticesController < ApplicationController
           format.html { redirect_back fallback_location: root_path }
           format.json { render json: updated, status: :unprocessable_entity }
         else
+          debugger
           if params[:next]
             path = eval("practice_#{Practice::PRACTICE_EDITOR_SLUGS.key(current_endpoint)}_path(@practice)")
             format.html { redirect_to path, notice: params[:practice].present? ? 'Practice was successfully updated.' : nil }
