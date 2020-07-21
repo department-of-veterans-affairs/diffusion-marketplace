@@ -1,8 +1,8 @@
 <div class="grid-container position-relative z-top">
     <div id="dm-practice-nav" class="z-top mobile-hide">
 
-      <aside class="usa-layout-docs__sidenav">
-        <nav>
+<!--      <aside class="usa-layout-docs__sidenav">-->
+<!--        <nav>-->
           <ul id="dm-tabnav" class="usa-sidenav dm-tabnav">
               <li class="usa-sidenav__item">
                 <%= link_to 'Instructions', practice_instructions_path(@practice), class: "#{'active' if current_page?( practice_instructions_path(@practice))} width-full dm-tab" %>
@@ -23,8 +23,8 @@
                   <%= link_to 'Implementation', practice_implementation_path(@practice), class: "#{'active' if current_page?( practice_implementation_path(@practice))} width-full dm-tab" %>
               </li>
           </ul>
-        </nav>
-      </aside>
+<!--        </nav>-->
+<!--      </aside>-->
 
 
         <% if params[:action] != 'instructions' && params[:action] != 'adoptions' %>
