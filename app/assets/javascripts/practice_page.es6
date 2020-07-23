@@ -103,3 +103,32 @@
 
     $document.on('turbolinks:load', executePracticeCommentsFunctions);
 })(window.jQuery);
+
+function seeMoreText() {
+    var dots = document.getElementById("dots");
+    var moreText = document.getElementById("more_text");
+    var btnText = document.getElementById("seeMore");
+    if (dots.style.display === "none") {
+        dots.style.display = "inline";
+        btnText.innerHTML = "See more";
+        moreText.style.display = "none";
+    } else {
+        dots.style.display = "none";
+        btnText.innerHTML = "See less";
+        moreText.style.display = "inline";
+    }
+}
+function seeMoreTextAwards() {
+    var dots = document.getElementById("dots_award");
+    var moreText = document.getElementById("more_text_award");
+    var btnText = document.getElementById("seeMore_award");
+    if (dots.style.display === "none") {
+        dots.style.display = "inline";
+        btnText.innerHTML = "See more";
+        moreText.style.display = "none";
+    } else {
+        dots.style.display = "none";
+        btnText.innerHTML = "See less";
+        moreText.style.display = "inline";
+    }
+}

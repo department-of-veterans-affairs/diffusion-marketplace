@@ -98,8 +98,8 @@ module ApplicationHelper
     JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
   end
 
-  def origin_display_name_trunc(practice, num_chars=180)
-    origin_display_name(practice).truncate(num_chars)
+  def origin_display_name_trunc(practice, start_char=0,  num_chars=180)
+    origin_display_name(practice)[start_char...num_chars]
   end
 
   def link_to_function(name, *args, &block)

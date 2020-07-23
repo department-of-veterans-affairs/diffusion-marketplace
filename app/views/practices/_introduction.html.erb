@@ -2,6 +2,9 @@
 <%# TODO: Hover, Click, Visited Interactions %>
 
 <%# TODO: Make unauthenticated view %>
+<% provide :head_tags do %>
+  <%= javascript_include_tag 'practice_page', 'data-turbolinks-track': 'reload' %>
+<% end %>
 
 <%
   has_main_img = @practice.main_display_image.present?
@@ -12,7 +15,6 @@
   has_practice_partners = @practice.practice_partners.any? && @practice.practice_partners.find_by(name: 'None of the above, or Unsure').nil?
   has_practice_awards = @practice.practice_awards.any?
 %>
-
 <div class="grid-container">
   <div class="grid-row">
     <div class="desktop:grid-col-12">
@@ -75,7 +77,10 @@
           <%= @practice_date %>,
               <% if origin_display_name(@practice).length > 180 %>
                 <%= origin_display_name_trunc(@practice) %>
-                <%= link_to_function ' See more', "$(this).parent().html('#{escape_javascript @practice_date + ", " +  origin_display_name(@practice).html_safe}')" %>
+                <span id="dots">...</span>
+                <span id="more_text">
+                  <%= origin_display_name_trunc(@practice, 180, 99999) %>
+                </span><a href="" onclick="seeMoreText(); return false" id="seeMore">See more</a>
               <% else %>
                 <%= origin_display_name(@practice) %>
               <% end %>
@@ -105,8 +110,12 @@
           <span class="text-bold text-uppercase">Awards and Recognition:</span>
           <% @all_awards = get_all_awards(@practice) %>
           <% if @all_awards.length > 180 %>
-            <%= truncate(@all_awards.to_s, length: 180) %>
-            <%= link_to_function ' See more', "$(this).parent().html('#{escape_javascript '<span class="text-bold text-uppercase">Awards and Recognition:</span>' + " " +  @all_awards.html_safe}')" %>
+            <%#= truncate(@all_awards.to_s, length: 180) %>
+            <%= @all_awards[0...180] %>
+            <span id="dots_award">...</span>
+            <span id="more_text_award">
+                <%= @all_awards[180...99999] %>
+                </span><a href="" onclick="seeMoreTextAwards(); return false" id="seeMore_award">See more</a>
           <% else %>
             <%= @all_awards %>
           <% end %>
