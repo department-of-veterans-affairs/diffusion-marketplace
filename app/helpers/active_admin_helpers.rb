@@ -15,7 +15,7 @@ module ActiveAdminHelpers
     facility_data = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
     practice_diffusion_histories = p.diffusion_histories.map { |dh|
       selected_facility = facility_data.select { |fd| fd["StationNumber"] === dh.facility_id }
-      #this is what is getting returned
+
       dh_status = dh.diffusion_history_statuses.first
       {
         facility_name: selected_facility[0]["OfficialStationName"],
@@ -31,6 +31,5 @@ module ActiveAdminHelpers
     }
     sorted_diffusion_histories = practice_diffusion_histories.sort_by { |pdh| [pdh[:state], pdh[:facility_name]] }
     complete_map[p.name] = sorted_diffusion_histories
-    puts "Complete map", sorted_diffusion_histories
   end
 end

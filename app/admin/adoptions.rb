@@ -37,8 +37,8 @@ ActiveAdmin.register_page "Adoptions" do
                                 'Location',
                                 'VISN',
                                 'Station Number',
-                                'Date',
-                                'Status',
+                                'Adoption Date',
+                                'Adoption Status',
                                 'Rurality',
                                 'Facility Complexity'
                             ], style: xlsx_sub_header_3
@@ -76,7 +76,7 @@ ActiveAdmin.register_page "Adoptions" do
       div(class: 'adoptions-legend') do
         h4 do
           span 'Note: '
-          span 'Date is based on the adoption status.'
+          span 'Adoption date is based on the adoption status.'
         end
         ul do
           li do

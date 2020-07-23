@@ -49,20 +49,32 @@ ActiveAdmin.register Practice do
       # styling
       s = p.workbook.styles
       xlsx_main_header = s.add_style sz: 18, alignment: { horizontal: :center }, bg_color: '005EA2', fg_color: 'FFFFFF'
-      xlsx_sub_header_2 = s.add_style sz: 16, alignment: { horizontal: :left }, bg_color: '585858', fg_color: 'FFFFFF'
       xlsx_sub_header_3 = s.add_style sz: 14, alignment: { horizontal: :center }, bg_color: 'F3F3F3', fg_color: '000000', b: true, border: {style: :thin, color: '000000', edges: [:top, :bottom, :left, :right]}
       xlsx_entry = s.add_style sz: 12, alignment: { horizontal: :left, vertical: :center, wrap_text: true}
+      xlsx_legend = s.add_style s2: 14, alignment: { horizontal: :center, vertical: :center, wrap_text: true}
       xlsx_divider = s.add_style sz: 12
+      xlsx_legend_no_bottom_border = s.add_style b: true, u: true, border: {style: :thin, color: 'FFFFFF', edges: [:bottom]}
+      xlsx_legend_no_top_border = s.add_style b: true, border: {style: :thin, color: 'FFFFFF', edges: [:top]}
+      xlsx_legend_no_y_border = s.add_style b: true, border: {style: :thin, color: 'FFFFFF', edges: [:bottom, :top]}
+      xlsx_bold = s.add_style fg_color: '000000'
       # building out xlsx file
       p.workbook.add_worksheet(:name => "Adoption Data - #{Date.today}") do |sheet|
         sheet.add_row ["#{@practice_name} Adoption Data - #{Date.today}"], style: xlsx_main_header
+        sheet.add_row [''], style: xlsx_divider
+        sheet.add_row ['Note: Adoption date is based on the adoption status.'], style: xlsx_legend_no_bottom_border
+        sheet.add_row ['Completed/Unsuccessful: End Date'], style: xlsx_legend_no_y_border
+        sheet.add_row ['In Progress: Start Date'], style: xlsx_legend_no_top_border
+        sheet.merge_cells 'A1:C1'
+        sheet.add_row [''], style: xlsx_divider
         @complete_map.each do |key, value|
           if value.present?
             sheet.add_row [
                               'State',
                               'Location',
-                              'Date',
-                              'Status',
+                              'VISN',
+                              'Station Number',
+                              'Adoption Date',
+                              'Adoption Status',
                               'Rurality',
                               'Facility Complexity'
                           ], style: xlsx_sub_header_3
@@ -71,6 +83,8 @@ ActiveAdmin.register Practice do
               sheet.add_row [
                                 v[:state],
                                 adoption_facility_name(v),
+                                v[:visn],
+                                v[:station_number],
                                 adoption_date(v),
                                 v[:status],
                                 adoption_rurality(v),
@@ -80,9 +94,9 @@ ActiveAdmin.register Practice do
           else
             sheet.add_row ['No adoptions recorded for this practice.']
           end
-          sheet.add_row [''], style: xlsx_divider
         end
       end
+      p.use_shared_strings = true
     end
 
     # generating downloadable .xlsx file
@@ -102,8 +116,10 @@ ActiveAdmin.register Practice do
 
   show do
     # export .xlsx button
-    form action: export_practice_adoptions_admin_practice_path, method: :get, style: 'text-align: left' do |f|
-      f.input :submit, type: :submit, value: 'Download Adoption Data', style: 'margin-bottom: 1rem'
+    if resource.diffusion_histories.present?
+      form action: export_practice_adoptions_admin_practice_path, method: :get, style: 'text-align: left' do |f|
+        f.input :submit, type: :submit, value: 'Download Adoption Data', style: 'margin-bottom: 1rem'
+      end
     end
 
     attributes_table  do
@@ -136,7 +152,7 @@ ActiveAdmin.register Practice do
     helper_method :adoption_rurality
     helper_method :get_adoption_values
     before_action :set_categories_view, only: :edit
-    before_action :set_practice_adoption_values
+    before_action :set_practice_adoption_values, only: [:show, :export_practice_adoptions]
     after_action :update_categories, only: [:create, :update]
 
     before_create do |practice|
