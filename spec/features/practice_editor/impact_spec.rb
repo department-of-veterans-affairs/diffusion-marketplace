@@ -69,6 +69,16 @@ describe 'Practice editor', type: :feature, js: true do
                 expect(page).to_not have_selector('.practice-editor-impact-photo')
                 expect(all('.practice-editor-image-caption').first.text).to be_blank
             end
+
+            it 'should allow the user to update a current impact photo\'s text' do
+                fill_in_impact_photo_fields
+                @save_button.click
+
+                all('.practice-editor-image-caption').first.set('test caption')
+                @save_button.click
+
+                expect(page).to have_field('practice[impact_photos_attributes][0][description]', with: 'test caption')
+            end
         end
 
         describe 'Video files' do
