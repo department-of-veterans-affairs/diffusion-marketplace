@@ -70,10 +70,16 @@
     <div class="grid-col-12 margin-bottom-2">
       <p class="desktop:grid-col-6 font-sans-3xs line-height-sans-3">
       <span class="text-bold text-uppercase">Origin:</span>
-      <span>
-        <%= @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)' %>,
-        <%= origin_display_name(@practice) %>
-      </span>
+        <span id="practice_origin_facilities_text">
+          <% @practice_date =  @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)'%>
+          <%= @practice_date %>,
+              <% if origin_display_name(@practice).length > 180 %>
+                <%= origin_display_name_trunc(@practice) %>
+                <%= link_to_function ' See more', "$(this).parent().html('#{escape_javascript @practice_date + ", " +  origin_display_name(@practice).html_safe}')" %>
+              <% else %>
+                <%= origin_display_name(@practice) %>
+              <% end %>
+        </span>
       </p>
     </div>
     <%# practice adoptions %>
@@ -97,12 +103,13 @@
       <% if has_practice_awards %>
         <p class="grid-col-12 margin-bottom-2 font-sans-3xs line-height-sans-3">
           <span class="text-bold text-uppercase">Awards and Recognition:</span>
-            <% @practice.practice_awards.each_with_index do |award, index| %>
-              <% if award.name.downcase != "other" %>
-                <span><%= award.name %></span><%= ", " if @practice.practice_awards.size != index + 1 && @practice.practice_awards.size > 1 %>
-              <% end %>
-            <% end %>
-        </span>
+          <% @all_awards = get_all_awards(@practice) %>
+          <% if @all_awards.length > 180 %>
+            <%= truncate(@all_awards.to_s, length: 180) %>
+            <%= link_to_function ' See more', "$(this).parent().html('#{escape_javascript '<span class="text-bold text-uppercase">Awards and Recognition:</span>' + " " +  @all_awards.html_safe}')" %>
+          <% else %>
+            <%= @all_awards %>
+          <% end %>
         </p>
       <% end %>
       <%# practice partners %>
