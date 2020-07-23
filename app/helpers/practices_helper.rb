@@ -93,4 +93,12 @@ module PracticesHelper
     end
     @all_awards.to_s
   end
+
+  def display_practice_name(practice)
+    if (@practice.short_name.present?)
+      "#{@practice.name} (#{@practice.short_name})"
+    else
+      @practice.name
+    end
+  end
 end
