@@ -237,9 +237,9 @@ class Practice < ApplicationRecord
   accepts_nested_attributes_for :practice_permissions, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
   accepts_nested_attributes_for :additional_documents, allow_destroy: true, reject_if: proc { |attributes|
     reject = attributes['title'].blank?
-    ip_reject = false
-    ip_reject = attributes['attachment'].blank? if attributes['id'].blank?
-    reject || ip_reject
+    ad_reject = false
+    ad_reject = attributes['attachment'].blank? if attributes['id'].blank?
+    reject || ad_reject
   }
   accepts_nested_attributes_for :publications, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['link'].blank? }
   SATISFACTION_LABELS = ['Little or no impact', 'Some impact', 'Significant impact', 'High or large impact'].freeze
