@@ -76,10 +76,10 @@
           <% @practice_date =  @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)'%>
           <%= @practice_date %>,
               <% if origin_display_name(@practice).length > 180 %>
-                <%= origin_display_name_trunc(@practice) %>
+                <span id="origin_facility_truncated"><%= origin_display_name_trunc(@practice) %></span>
                 <span id="dots">...</span>
                 <span id="more_text">
-                  <%= origin_display_name_trunc(@practice, 180, 99999) %>
+                  <%= origin_display_name_trunc(@practice, 0, 99999) %>
                 </span><a class="dm-unstyled-btn-primary" href="" onclick="seeMoreText(); return false" id="seeMore">See more</a>
               <% else %>
                 <%= origin_display_name(@practice) %>
@@ -110,11 +110,11 @@
           <span class="text-bold text-uppercase">Awards and Recognition:</span>
           <% @all_awards = get_all_awards(@practice) %>
           <% if @all_awards.length > 180 %>
-            <%#= truncate(@all_awards.to_s, length: 180) %>
-            <%= @all_awards[0...180] %>
+            <%#= truncate(@all_awards.to_s, start: 0, length: 180) %>
+            <span id="awards_truncated"><%= @all_awards[0...180]%></span>
             <span id="dots_award">...</span>
             <span id="more_text_award">
-                <%= @all_awards[180...99999] %>
+                <%= @all_awards %>
                 </span><a class="dm-unstyled-btn-primary" href="" onclick="seeMoreTextAwards(); return false" id="seeMore_award">See more</a>
           <% else %>
             <%= @all_awards %>

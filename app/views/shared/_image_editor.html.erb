@@ -32,10 +32,10 @@
       <% if practice.main_display_image.present? %>
         <%= image_tag practice.main_display_image_s3_presigned_url(:original),
                       alt: "practice thumbnail for #{practice.name}",
-                      class: 'dm-cropper-thumbnail-original radius-md display-none' %>
+                      class: 'dm-cropper-thumbnail-original display-none' %>
         <%= image_tag practice.main_display_image_s3_presigned_url(:thumb),
                       alt: "practice thumbnail for #{practice.name}",
-                      class: 'dm-cropper-thumbnail-modified radius-md' %>
+                      class: 'dm-cropper-thumbnail-modified' %>
       <% end %>
     </div>
     <% [:crop_x, :crop_y, :crop_w, :crop_h].each { |attribute| %>

@@ -10,7 +10,7 @@
 
   const imgValues = {
     main: {
-      class: 'radius-md',
+      class: '',
       alt: 'temporary practice thumbnail'
     },
     contact: {
