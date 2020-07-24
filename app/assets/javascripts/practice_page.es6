@@ -108,13 +108,16 @@ function seeMoreText() {
     var dots = document.getElementById("dots");
     var moreText = document.getElementById("more_text");
     var btnText = document.getElementById("seeMore");
+    var originFacilityTruncated = document.getElementById("origin_facility_truncated");
     if (dots.style.display === "none") {
         dots.style.display = "inline";
         btnText.innerHTML = "See more";
+        originFacilityTruncated.style.display = "inline";
         moreText.style.display = "none";
     } else {
         dots.style.display = "none";
         btnText.innerHTML = "See less";
+        originFacilityTruncated.style.display = "none";
         moreText.style.display = "inline";
     }
 }
@@ -122,13 +125,16 @@ function seeMoreTextAwards() {
     var dots = document.getElementById("dots_award");
     var moreText = document.getElementById("more_text_award");
     var btnText = document.getElementById("seeMore_award");
+    var awardsTruncated = document.getElementById("awards_truncated");
     if (dots.style.display === "none") {
         dots.style.display = "inline";
         btnText.innerHTML = "See more";
         moreText.style.display = "none";
+        awardsTruncated.style.display = "inline";
     } else {
         dots.style.display = "none";
         btnText.innerHTML = "See less";
+        awardsTruncated.style.display = "none";
         moreText.style.display = "inline";
     }
 }
