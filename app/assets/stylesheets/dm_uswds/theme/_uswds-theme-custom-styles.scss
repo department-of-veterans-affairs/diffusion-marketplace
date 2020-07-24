@@ -67,19 +67,6 @@ i.e.
   }
 }
 
-.dm-blue-action-link {
-  text-decoration: underline !important;
-  color: $dm-color-blue-50v !important;
-
-  &:hover {
-    cursor: pointer;
-    text-decoration: none !important;
-    color: $dm-color-blue-70v !important;
-  }
-}
-
-
-
 // USWDS utility extensions
 
 button.appearance-none {

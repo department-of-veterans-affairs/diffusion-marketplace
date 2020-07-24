@@ -96,7 +96,7 @@
   }
 
   &.high {
-    border-color: $dm-color-high-red;
+    border-color: $dm-color-red-50v;
   }
 }
 
@@ -496,7 +496,7 @@
 .dm-cropper-delete-image-label {
   margin-top: 6px;
   margin-bottom: 24px;
-  color: $dm-color-high-red;
+  color: $dm-color-red-50v;
   text-decoration: underline;
 
   &:hover {

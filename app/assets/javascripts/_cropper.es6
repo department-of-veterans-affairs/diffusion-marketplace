@@ -46,7 +46,7 @@
 
     if (isUpload) {
       $uploadBtnLabel.text('Upload new image');
-      $uploadBtnLabel.addClass('dm-blue-action-link');
+      $uploadBtnLabel.addClass('dm-unstyled-btn-primary');
       $uploadBtnLabel.removeClass('usa-button usa-button--outline');
       $deleteBtnLabel.removeClass('display-none');
       $imgDeleteInput.removeClass('display-none');
@@ -58,7 +58,7 @@
       $uploadBtnLabel.addClass('usa-button usa-button--outline');
       $deleteBtnLabel.addClass('display-none');
       $imgDeleteInput.addClass('display-none');
-      $uploadBtnLabel.removeClass('dm-blue-action-link');
+      $uploadBtnLabel.removeClass('dm-unstyled-btn-primary');
       if (imgType === 'user') {
         $uploadBtnLabel.addClass('padding-2')
       }

@@ -53,11 +53,11 @@
     <div class="margin-y-1">
       <%= form.label :main_display_image,
                   practice.main_display_image.present? ? 'Upload new image' : 'Upload image',
-                  class: "dm-cropper-upload-image-label #{practice.main_display_image.present? ? 'dm-blue-action-link' : 'usa-button usa-button--outline'}" %>
+                  class: "dm-cropper-upload-image-label #{practice.main_display_image.present? ? 'dm-unstyled-btn-primary' : 'usa-button usa-button--outline'}" %>
       <%= form.file_field :main_display_image, class: "dm-cropper-upload-image hidden-upload", accept: 'image/*' %>
     </div>
     <div class="dm-cropper-delete-image">
-      <%= form.label :delete_main_display_image, 'Remove image', class: "text-secondary dm-cropper-delete-image-label #{practice.main_display_image.present? ? '' : 'display-none' }" %>
+      <%= form.label :delete_main_display_image, 'Remove image', class: "dm-unstyled-btn-secondary text-secondary dm-cropper-delete-image-label #{practice.main_display_image.present? ? '' : 'display-none' }" %>
       <%= form.check_box :delete_main_display_image, { class: "dm-cropper-delete-image usa-checkbox__input #{practice.main_display_image.present? ? '' : 'display-none'}" }, 'true', 'false' %>
     </div>
   </div>

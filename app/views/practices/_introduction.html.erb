@@ -80,7 +80,7 @@
                 <span id="dots">...</span>
                 <span id="more_text">
                   <%= origin_display_name_trunc(@practice, 180, 99999) %>
-                </span><a href="" onclick="seeMoreText(); return false" id="seeMore">See more</a>
+                </span><a class="dm-unstyled-btn-primary" href="" onclick="seeMoreText(); return false" id="seeMore">See more</a>
               <% else %>
                 <%= origin_display_name(@practice) %>
               <% end %>
@@ -115,7 +115,7 @@
             <span id="dots_award">...</span>
             <span id="more_text_award">
                 <%= @all_awards[180...99999] %>
-                </span><a href="" onclick="seeMoreTextAwards(); return false" id="seeMore_award">See more</a>
+                </span><a class="dm-unstyled-btn-primary" href="" onclick="seeMoreTextAwards(); return false" id="seeMore_award">See more</a>
           <% else %>
             <%= @all_awards %>
           <% end %>
