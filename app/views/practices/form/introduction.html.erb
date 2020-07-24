@@ -324,12 +324,16 @@
                           <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
                             $(document).arrive('<%= "#practice_practice_awards_attributes_#{pa.index}_name" %>',
                               function(newElem) {
+                                var $li = $(newElem).closest('li');
                                 styleOriginFacility(
-                                  $(newElem).closest('li'),
+                                  $li,
                                   <%= other_award_id %>,
                                   '.practice-editor-other-awards-li',
                                   '.practice-editor-awards-ul'
                                 );
+                                var $_destroy = $li.find('.trash-container input[name="practice[_destroy]"]');
+                                $_destroy.attr('name', 'practice[practice_awards_attributes][<%= pa.index %>][_destroy]');
+                                $_destroy.attr('id', 'practice_practice_awards_attributes_<%= pa.index %>__destroy');
                                 $(document).unbindArrive('<%= "#practice_practice_awards_attributes_#{pa.index}_name" %>', newElem);
                               }
                             );
@@ -343,7 +347,7 @@
                               <%= pa.text_field :name, class: 'usa-input desktop:grid-col-8 margin-bottom-1 x0-top' %>
                             </div>
                             <div class="grid-col-8 trash-container">
-                              <%= f.link_to_remove 'Delete Entry',
+                              <%= f.link_to_remove 'Delete entry',
                                                    class: "origin-trash font-sans-xs line-height-26 cursor-pointer float-right" %>
                             </div>
                           </div>
@@ -353,6 +357,18 @@
                   </ul>
                   <%= f.link_to_add :practice_awards, class: 'add-another-link add-practice-award-other-link line-height-26 cursor-pointer' do %>
                     <span class="font-sans-xs text-normal">Add another</span>
+                  <% end %>
+                  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                    $(document).arrive('#practice_awards_fields_blueprint',
+                      function(blueprint) {
+                        var blueprintText = $(blueprint).data('blueprint');
+                        var newBluePrintText = blueprintText.replace('practice[_destroy]', 'practice[practice_awards_attributes][new_practice_awards][_destroy]');
+                        $(blueprint).data('blueprint', newBluePrintText);
+                        newBluePrintText = newBluePrintText.replace('practice__destroy', 'practice_practice_awards_attributes_new_practice_awards__destroy');
+                        $(blueprint).data('blueprint', newBluePrintText);
+                        $(document).unbindArrive('#practice_awards_fields_blueprint', blueprint);
+                      }
+                    );
                   <% end %>
                   <% unless other_awards.any? %>
                     <%= javascript_tag 'data-turbolinks-track': 'reload' do %>

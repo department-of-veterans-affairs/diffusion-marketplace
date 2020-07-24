@@ -135,7 +135,7 @@ class Practice < ApplicationRecord
           'complexity': 'resources',
           'timeline': 'complexity',
           'risk_and_mitigation': 'timeline',
-          'contact': 'risk_and_mitigation',
+          'contact': 'overview',
           'checklist': 'contact',
           'introduction': 'instructions'
       }

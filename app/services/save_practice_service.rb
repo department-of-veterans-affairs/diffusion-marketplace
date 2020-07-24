@@ -175,7 +175,7 @@ class SavePracticeService
           other_awards.destroy_all
         end
       end
-    elsif practice_award_params.blank? && @current_endpoint == 'overview' && practice_awards.any?
+    elsif practice_award_params.blank? && @current_endpoint == 'introduction' && practice_awards.any?
       practice_awards.destroy_all
     end
   end
