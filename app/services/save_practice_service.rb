@@ -158,8 +158,8 @@ class SavePracticeService
 
   def update_practice_awards
     practice_award_params = @practice_params[:practice_award]
+    practice_awards = @practice.practice_awards
     if practice_award_params
-      practice_awards = @practice.practice_awards
       practice_awards_to_create = practice_award_params.values.map { |param| param[:name] }
       practice_awards_to_create.each { |award| @practice.practice_awards.find_or_create_by(name: award) }
 
@@ -175,6 +175,8 @@ class SavePracticeService
           other_awards.destroy_all
         end
       end
+    elsif practice_award_params.blank? && @current_endpoint == 'overview' && practice_awards.any?
+      practice_awards.destroy_all
     end
   end
 end

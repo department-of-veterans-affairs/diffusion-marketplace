@@ -108,16 +108,21 @@
       <% if has_practice_awards %>
         <p class="grid-col-12 margin-bottom-2 font-sans-3xs line-height-sans-3">
           <span class="text-bold text-uppercase">Awards and Recognition:</span>
-          <% @all_awards = get_all_awards(@practice) %>
-          <% if @all_awards.length > 180 %>
+          <% all_awards = get_all_awards(@practice) %>
+          <% if all_awards.length > 180 %>
             <%#= truncate(@all_awards.to_s, start: 0, length: 180) %>
-            <span id="awards_truncated"><%= @all_awards[0...180]%></span>
+            <span id="awards_truncated"><%= all_awards[0...180]%></span>
             <span id="dots_award">...</span>
             <span id="more_text_award">
-                <%= @all_awards %>
-                </span><a class="dm-unstyled-btn-primary" href="" onclick="seeMoreTextAwards(); return false" id="seeMore_award">See more</a>
+                <%= all_awards %>
+            </span>
+            <button class="usa-button usa-button--unstyled font-sans-3xs"
+                    onclick="seeMoreTextAwards(); return false;"
+                    id="seeMore_award">
+              See more
+            </button>
           <% else %>
-            <%= @all_awards %>
+            <%= all_awards %>
           <% end %>
         </p>
       <% end %>
@@ -126,9 +131,11 @@
         <p class="grid-col-12 margin-bottom-2 font-sans-3xs line-height-sans-3">
           <span class="text-bold text-uppercase">Partners:</span>
             <% @practice.practice_partners.each_with_index do |partner, index| %>
-              <a href="<%= practice_partner_path(partner) %>" class="dm-internal-link"><%= partner.name %></a><%= ", " if @practice.practice_partners.size != index + 1 && @practice.practice_partners.size > 1 %>
+              <a href="<%= practice_partner_path(partner) %>" class="dm-internal-link">
+                <%= partner.name %>
+              </a>
+              <%= ", " if @practice.practice_partners.size != index + 1 && @practice.practice_partners.size > 1 %>
             <% end %>
-        </span>
         </p>
       <% end %>
     </div>
