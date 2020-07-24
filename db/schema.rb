@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_06_214303) do
+ActiveRecord::Schema.define(version: 2020_07_22_233930) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -688,6 +688,15 @@ ActiveRecord::Schema.define(version: 2020_07_06_214303) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "practice_metrics", force: :cascade do |t|
+    t.string "description"
+    t.bigint "practice_id"
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["practice_id"], name: "index_practice_metrics_on_practice_id"
+  end
+
   create_table "practice_origin_facilities", force: :cascade do |t|
     t.bigint "practice_id"
     t.string "facility_id"
@@ -1129,6 +1138,7 @@ ActiveRecord::Schema.define(version: 2020_07_06_214303) do
   add_foreign_key "practice_creators", "users"
   add_foreign_key "practice_management_practices", "practice_managements"
   add_foreign_key "practice_management_practices", "practices"
+  add_foreign_key "practice_metrics", "practices"
   add_foreign_key "practice_origin_facilities", "practices"
   add_foreign_key "practice_partner_practices", "practice_partners"
   add_foreign_key "practice_partner_practices", "practices"

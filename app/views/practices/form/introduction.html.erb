@@ -248,7 +248,7 @@
                 </div>
               </div>
 
-              <div id="facility_select_form" class="margin-bottom-5">
+              <div id="facility_select_form" class="margin-bottom-5 position-relative">
                 <ul class="practice-editor-origin-ul" role="listbox" title="Practice origin facilities" aria-label="Practice editor origin facility list">
                   <%= f.fields_for :practice_origin_facilities, wrapper: false do |pof| %>
                     <%
@@ -283,7 +283,7 @@
                                          options_for_select([['-Select-', nil, selected: true, disabled: true,
                                                               class: 'usa-select dm-color-disabled']]),
                                          {},
-                                         {class: 'height-5 usa-select desktop:grid-col-8 margin-bottom-2 x0-top'}
+                                         {class: 'height-5 usa-select desktop:grid-col-8 margin-bottom-1 x0-top'}
                           %>
                         </div>
 
@@ -297,7 +297,7 @@
                   <% end %>
                 </ul>
                 <%= f.link_to_add :practice_origin_facilities,
-                                  class: 'add-practice-originating-facilities-link line-height-26 cursor-pointer' do %>
+                                  class: 'add-another-link add-practice-originating-facilities-link line-height-26 cursor-pointer' do %>
                   <span class="font-sans-xs text-normal">Add another</span>
                 <% end %>
                 <% unless @practice.practice_origin_facilities.any? %>
@@ -373,7 +373,7 @@
                     </label>
                   </div>
                 <% end %>
-                <div id="other_awards_container">
+                <div id="other_awards_container" class="position-relative">
                   <%
                     other_awards = @practice.practice_awards.where.not(name: Practice::PRACTICE_EDITOR_AWARDS_AND_RECOGNITION)
                     other_award_ids = other_awards.ids
@@ -393,8 +393,7 @@
                                   $(newElem).closest('li'),
                                   <%= other_award_id %>,
                                   '.practice-editor-other-awards-li',
-                                  '.practice-editor-awards-ul',
-                                  '.add-practice-award-other-link'
+                                  '.practice-editor-awards-ul'
                                 );
                                 $(document).unbindArrive('<%= "#practice_practice_awards_attributes_#{pa.index}_name" %>', newElem);
                               }
@@ -406,7 +405,7 @@
                           <div class="grid-row">
                             <div class="grid-col-12">
                               <%= pa.label :name, 'Name of award or recognition', class: 'usa-label x0-top margin-bottom-1 grid-col-12' %>
-                              <%= pa.text_field :name, class: 'usa-input desktop:grid-col-8 margin-bottom-2 x0-top' %>
+                              <%= pa.text_field :name, class: 'usa-input desktop:grid-col-8 margin-bottom-1 x0-top' %>
                             </div>
                             <div class="grid-col-8 trash-container">
                               <%= f.link_to_remove 'Delete Entry',
@@ -417,7 +416,7 @@
                       <% end %>
                     <% end %>
                   </ul>
-                  <%= f.link_to_add :practice_awards, class: 'add-practice-award-other-link line-height-26 cursor-pointer' do %>
+                  <%= f.link_to_add :practice_awards, class: 'add-another-link add-practice-award-other-link line-height-26 cursor-pointer' do %>
                     <span class="font-sans-xs text-normal">Add another</span>
                   <% end %>
                   <% unless other_awards.any? %>
@@ -425,14 +424,12 @@
                       observePracticeEditorLiArrival(
                           $(document),
                           '.practice-editor-other-awards-li',
-                          '.practice-editor-awards-ul',
-                          '.add-practice-award-other-link'
+                          '.practice-editor-awards-ul'
                       );
                       attachTrashListener(
                           $(document),
                           '#other_awards_container',
-                          '.practice-editor-other-awards-li',
-                          '.add-practice-award-other-link'
+                          '.practice-editor-other-awards-li'
                       );
                       $(document).arrive('#practice_awards_fields_blueprint',
                         function(blueprint) {

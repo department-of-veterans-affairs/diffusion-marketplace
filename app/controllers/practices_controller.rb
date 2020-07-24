@@ -271,6 +271,7 @@ class PracticesController < ApplicationController
 
   # /practices/slug/overview
   def overview
+    render 'practices/form/overview'
   end
 
   # /practices/slug/introduction
@@ -447,7 +448,9 @@ class PracticesController < ApplicationController
                                      department: {},
                                      practice_award: {},
                                      practice_awards_attributes: {},
-                                     practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :facility_type, :initiating_department_office_id ])
+                                     practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :facility_type, :initiating_department_office_id ],
+                                     practice_metrics_attributes: [:id, :_destroy, :description]
+    )
   end
 
   def can_view_practice

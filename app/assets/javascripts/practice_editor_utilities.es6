@@ -5,7 +5,9 @@
 // See "practice_editor_introduction.html.erb"
 // and "practice_editor_introduction.es6"
 // for examples on how to use these functions
-function attachTrashListener($document, formSelector = '#facility_select_form', liElSelector = '.practice-editor-origin-facility-li', addAnotherLinkSelector = '.add-practice-originating-facilities-link') {
+function attachTrashListener($document,
+                             formSelector = '#facility_select_form',
+                             liElSelector = '.practice-editor-origin-facility-li') {
     $document.on('click', `${formSelector} .origin-trash`, function() {
         const $liEls = $(`${formSelector} ul li${liElSelector}`);
 
@@ -17,38 +19,41 @@ function attachTrashListener($document, formSelector = '#facility_select_form', 
 
         const $firstOriginFacilityEl = $($originFacilityElements.first());
 
-        if ($originFacilityElements.length === 0) {
-            $(addAnotherLinkSelector)
-                .detach()
-                .appendTo(formSelector);
-        } else if ($originFacilityElements.length === 1) {
-            $firstOriginFacilityEl.find( '.origin-trash').hide();
-            removeSeparator($firstOriginFacilityEl, addAnotherLinkSelector);
+        if ($originFacilityElements.length === 1) {
+            $firstOriginFacilityEl.find('.origin-trash').css('visibility','hidden');
+            removeSeparator($firstOriginFacilityEl);
         } else {
-            $firstOriginFacilityEl.find('.origin-trash').show();
+            $firstOriginFacilityEl.find('.origin-trash').css('visibility','visible');
             const $lastOriginFacilityEl = $($originFacilityElements.last());
-            removeSeparator($lastOriginFacilityEl, addAnotherLinkSelector);
+            removeSeparator($lastOriginFacilityEl);
         }
     });
 }
 
-function removeSeparator($originFacilityEl, addAnotherLinkSelector = '.add-practice-originating-facilities-link') {
+function removeSeparator($originFacilityEl) {
     const $separator = $originFacilityEl.find('.add-another-separator');
     if ($separator.length) {
         $separator.remove();
     }
-    $(addAnotherLinkSelector)
-        .detach()
-        .appendTo($originFacilityEl.find('.trash-container'));
 }
 
-function observePracticeEditorLiArrival($document, liElSelector = '.practice-editor-origin-facility-li', ulSelector = '.practice-editor-origin-ul', addAnotherLinkSelector = '.add-practice-originating-facilities-link') {
+function observePracticeEditorLiArrival($document,
+                                        liElSelector = '.practice-editor-origin-facility-li',
+                                        ulSelector = '.practice-editor-origin-ul',
+                                        separatorCols = '8') {
     $document.arrive(liElSelector, (newElem) => {
         const $newEl = $(newElem);
         const dataId = $newEl.data('id');
-        styleOriginFacility($newEl, dataId, liElSelector, ulSelector, addAnotherLinkSelector);
+        styleOriginFacility(
+            $newEl,
+            dataId,
+            liElSelector,
+            ulSelector,
+            separatorCols
+        );
         if (liElSelector === '.practice-editor-origin-facility-li') {
-            getFacilitiesByState(facilityData,
+            getFacilitiesByState(
+                facilityData,
                 `practice_practice_origin_facilities_attributes_${dataId}_facility_id`,
                 `editor_state_select_${dataId}`
             );
@@ -57,48 +62,16 @@ function observePracticeEditorLiArrival($document, liElSelector = '.practice-edi
     });
 }
 
-function styleOriginFacility($newEl, dataId, liElSelector = '.practice-editor-origin-facility-li', ulSelector = '.practice-editor-origin-ul', addAnotherLinkSelector = '.add-practice-originating-facilities-link') {
+function styleOriginFacility($newEl,
+                             dataId,
+                             liElSelector = '.practice-editor-origin-facility-li',
+                             ulSelector = '.practice-editor-origin-ul',
+                             separatorCols = '8') {
     $newEl
         .detach()
         .appendTo(ulSelector);
 
     $newEl.css('list-style', 'none');
-
-    // I'm not sure why some are broken (I'm looking at you, Practice Awards...),
-    // but let's make sure the dataId and the name and id attributes match.
-    // Let's only do practice awards for now (liElSelector = .practice-editor-other-awards-li).
-    // If others need this code, let's look to fixing the Facility Select section and open to the public.
-    if (liElSelector === '.practice-editor-other-awards-li') {
-        let badId = null;
-        $.each($newEl.find('input:not([type="hidden"]), select, textarea'),
-            function (i, formElement) {
-                const $formElement = $(formElement);
-                const id = $formElement.attr('id');
-                const endStringMatch = id.indexOf('_practice_awards_name') > 0 ? '_practice_awards_name' : '_name';
-                badId = id.substring(id.lastIndexOf('_attributes_') + 12, id.lastIndexOf(endStringMatch));
-                if (+badId !== +dataId) {
-                    const newId = id.replace(badId, dataId);
-
-                    $formElement.attr('id', newId);
-                    $formElement.attr('name', $formElement.attr('name').replace(badId, dataId));
-
-                    const label = $formElement.siblings('label');
-                    label.attr('for', newId);
-                }
-            });
-        // fix the trash can
-        const $_destroyEl = $newEl.find('.trash-container input');
-        $_destroyEl.attr('name', `practice[practice_awards_attributes][${dataId}][_destroy]`);
-        $_destroyEl.attr('id', `practice_practice_awards_attributes_${dataId}__destroy`);
-
-        //fix the hidden id input
-        const $hiddenIdEl = $(`#practice_practice_awards_attributes_${badId}_id`);
-        if (+dataId === +$hiddenIdEl.val()) {
-            $hiddenIdEl.detach().prependTo($newEl);
-            $hiddenIdEl.attr('id', `practice_practice_awards_attributes_${dataId}_id`);
-            $hiddenIdEl.attr('name', `practice[practice_awards_attributes][${dataId}][id]`);
-        }
-    }
 
     const $originFacilityElements =
         $(liElSelector)
@@ -109,23 +82,20 @@ function styleOriginFacility($newEl, dataId, liElSelector = '.practice-editor-or
     const $firstOriginFacilityEl = $($originFacilityElements.first());
 
     if ($originFacilityElements.length > 1) {
-        $firstOriginFacilityEl.find('.origin-trash').show();
+        $firstOriginFacilityEl.find('.origin-trash').css('visibility','visible');
         $.each($originFacilityElements, (i, el) => {
             const $separator = $(el).find('.add-another-separator');
             if ($(el).data('id') !== dataId) {
                 if ($separator.length === 0) {
-                    const addAnotherSeparatorHtml = '<div class="grid-col-8 border-y-1px border-gray-5 add-another-separator margin-y-2"></div>';
+                    const addAnotherSeparatorHtml = `<div class="grid-col-${separatorCols} border-y-1px border-gray-5 add-another-separator margin-y-2"></div>`;
                     $(el).append(addAnotherSeparatorHtml);
                 }
             }
         });
 
         const $lastOriginFacilityEl = $($originFacilityElements.last());
-        removeSeparator($lastOriginFacilityEl, addAnotherLinkSelector);
+        removeSeparator($lastOriginFacilityEl);
     } else {
-        $firstOriginFacilityEl.find('.origin-trash').hide();
-        $(addAnotherLinkSelector)
-            .detach()
-            .prependTo($($newEl.find('.trash-container')));
+        $firstOriginFacilityEl.find('.origin-trash').css('visibility','hidden');
     }
 }

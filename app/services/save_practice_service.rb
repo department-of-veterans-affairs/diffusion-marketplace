@@ -139,17 +139,20 @@ class SavePracticeService
   end
 
   def update_initiating_facility
+
     initiating_facility_type = @practice_params[:initiating_facility_type]
     initiating_facility = @practice_params[:initiating_facility]
-    if initiating_facility_type != 'department'
-      @practice.update_attributes(initiating_department_office_id: nil)
-    end
-    if @current_endpoint == 'overview'
+    if initiating_facility_type.present? && initiating_facility.present?
+      if initiating_facility_type != 'department'
+        @practice.update_attributes(initiating_department_office_id: nil)
+      end
+      # if @current_endpoint == 'overview'
       if initiating_facility_type.present? && initiating_facility.present?
         @practice.update_attributes({initiating_facility_type: initiating_facility_type, initiating_facility: initiating_facility})
       else
         raise StandardError.new @error_messages[:update_initiating_facility]
       end
+      # end
     end
   end
 
