@@ -47,52 +47,43 @@ ActiveAdmin.register Practice do
   member_action :export_practice_adoptions, method: :get do
     metrics_xlsx_file = Axlsx::Package.new do |p|
       # styling
-      s = p.workbook.styles
-      xlsx_main_header = s.add_style sz: 18, alignment: { horizontal: :center }, bg_color: '005EA2', fg_color: 'FFFFFF'
-      xlsx_sub_header_3 = s.add_style sz: 14, alignment: { horizontal: :center }, bg_color: 'F3F3F3', fg_color: '000000', b: true, border: {style: :thin, color: '000000', edges: [:top, :bottom, :left, :right]}
-      xlsx_entry = s.add_style sz: 12, alignment: { horizontal: :left, vertical: :center, wrap_text: true}
-      xlsx_legend = s.add_style s2: 14, alignment: { horizontal: :center, vertical: :center, wrap_text: true}
-      xlsx_divider = s.add_style sz: 12
-      xlsx_legend_no_bottom_border = s.add_style b: true, u: true, border: {style: :thin, color: 'FFFFFF', edges: [:bottom]}
-      xlsx_legend_no_top_border = s.add_style b: true, border: {style: :thin, color: 'FFFFFF', edges: [:top]}
-      xlsx_legend_no_y_border = s.add_style b: true, border: {style: :thin, color: 'FFFFFF', edges: [:bottom, :top]}
-      xlsx_bold = s.add_style fg_color: '000000'
+      adoption_xlsx_styles(p)
+
       # building out xlsx file
       p.workbook.add_worksheet(:name => "Adoption Data - #{Date.today}") do |sheet|
-        sheet.add_row ["#{@practice_name} Adoption Data - #{Date.today}"], style: xlsx_main_header
-        sheet.add_row [''], style: xlsx_divider
-        sheet.add_row ['Note: Adoption date is based on the adoption status.'], style: xlsx_legend_no_bottom_border
-        sheet.add_row ['Completed/Unsuccessful: End Date'], style: xlsx_legend_no_y_border
-        sheet.add_row ['In Progress: Start Date'], style: xlsx_legend_no_top_border
+        sheet.add_row ["#{@practice_name} Adoption Data - #{Date.today}"], style: @xlsx_main_header
+        sheet.add_row [''], style: @xlsx_divider
+        sheet.add_row ['Note: Adoption date is based on the adoption status.'], style: @xlsx_legend_no_bottom_border
+        sheet.add_row ['Completed/Unsuccessful: End Date'], style: @xlsx_legend_no_y_border
+        sheet.add_row ['In Progress: Start Date'], style: @xlsx_legend_no_top_border
         sheet.merge_cells 'A1:C1'
-        sheet.add_row [''], style: xlsx_divider
+        sheet.add_row [''], style: @xlsx_divider
+
         @complete_map.each do |key, value|
           if value.present?
             sheet.add_row [
-                              'State',
-                              'Location',
-                              'VISN',
-                              'Station Number',
-                              'Adoption Date',
-                              'Adoption Status',
-                              'Rurality',
-                              'Facility Complexity'
-                          ], style: xlsx_sub_header_3
+                'State',
+                'Location',
+                'VISN',
+                'Station Number',
+                'Adoption Date',
+                'Adoption Status',
+                'Rurality',
+                'Facility Complexity'
+            ], style: @xlsx_sub_header_3
 
             value.each do |v|
               sheet.add_row [
-                                v[:state],
-                                adoption_facility_name(v),
-                                v[:visn],
-                                v[:station_number],
-                                adoption_date(v),
-                                v[:status],
-                                adoption_rurality(v),
-                                v[:complexity]
-                            ], style: xlsx_entry
+                  v[:state],
+                  adoption_facility_name(v),
+                  v[:visn],
+                  v[:station_number],
+                  adoption_date(v),
+                  v[:status],
+                  adoption_rurality(v),
+                  v[:complexity]
+              ], style: @xlsx_entry
             end
-          else
-            sheet.add_row ['No adoptions recorded for this practice.']
           end
         end
       end
@@ -151,6 +142,7 @@ ActiveAdmin.register Practice do
     helper_method :adoption_date
     helper_method :adoption_rurality
     helper_method :get_adoption_values
+    helper_method :adoption_xlsx_styles
     before_action :set_categories_view, only: :edit
     before_action :set_practice_adoption_values, only: [:show, :export_practice_adoptions]
     after_action :update_categories, only: [:create, :update]
