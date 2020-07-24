@@ -98,5 +98,15 @@ describe 'Practice editor', type: :feature, js: true do
             expect(all('.publication-title-input').first.text).to be_blank
             expect(page).to have_field('Link:', with: nil)
         end
+
+        it 'should allow the user to update an existing additional document' do
+            fill_in_doc_fields
+            @save_button.click
+
+            find('.additional-document-title-input').set('test title')
+            @save_button.click
+
+            expect(page).to have_field('practice[additional_documents_attributes][0][title]', with: 'test title')
+        end
     end
 end

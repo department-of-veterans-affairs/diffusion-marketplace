@@ -208,7 +208,12 @@ class Practice < ApplicationRecord
   acts_as_commontable dependent: :destroy
 
   accepts_nested_attributes_for :practice_partner_practices, allow_destroy: true
-  accepts_nested_attributes_for :impact_photos, allow_destroy: true, reject_if: proc { |attributes| attributes['description'].blank? || attributes['attachment'].nil? }
+  accepts_nested_attributes_for :impact_photos, allow_destroy: true, reject_if: proc { |attributes|
+    reject = attributes['description'].blank?
+    ip_reject = false
+    ip_reject = attributes['attachment'].blank? if attributes['id'].blank?
+    reject || ip_reject
+  }
   accepts_nested_attributes_for :video_files, allow_destroy: true, reject_if: proc { |attributes| attributes['url'].blank? || attributes['description'].blank? }
   accepts_nested_attributes_for :difficulties, allow_destroy: true
   accepts_nested_attributes_for :risk_mitigations, allow_destroy: true
@@ -230,9 +235,13 @@ class Practice < ApplicationRecord
   accepts_nested_attributes_for :required_staff_trainings, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['description'].blank? }
   accepts_nested_attributes_for :practice_creators, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? || attributes['role'].blank? }
   accepts_nested_attributes_for :practice_permissions, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
-  accepts_nested_attributes_for :additional_documents, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['attachment'].nil? }
+  accepts_nested_attributes_for :additional_documents, allow_destroy: true, reject_if: proc { |attributes|
+    reject = attributes['title'].blank?
+    ad_reject = false
+    ad_reject = attributes['attachment'].blank? if attributes['id'].blank?
+    reject || ad_reject
+  }
   accepts_nested_attributes_for :publications, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['link'].blank? }
-
   SATISFACTION_LABELS = ['Little or no impact', 'Some impact', 'Significant impact', 'High or large impact'].freeze
   COST_LABELS = ['0-$10,000', '$10,000-$50,000', '$50,000-$250,000', 'More than $250,000'].freeze
   # also known as "Difficulty"
@@ -242,31 +251,24 @@ class Practice < ApplicationRecord
   def committed_user_count
     user_practices.where(committed: true).count
   end
-
   def committed_user_count_by_range(start_date, end_date)
     user_practices.where(time_committed: start_date...end_date).count
   end
-
   def number_of_adopted_facilities
     number_adopted
   end
-
   def date_range_views(start_date, end_date)
     Ahoy::Event.where_props(practice_id: id).where(time: start_date...end_date).count
   end
-
   def favorited_count
     user_practices.where({favorited: true}).count
   end
-
   def favorited_count_by_range(start_date, end_date)
     user_practices.where({time_favorited: start_date...end_date}).count
   end
-
   def adoptions_count
     user_practices.where({committed: true}).count
   end
-
   def adoptions_count_by_range(start_date, end_date)
     user_practices.where({time_committed: start_date...end_date}).count
   end

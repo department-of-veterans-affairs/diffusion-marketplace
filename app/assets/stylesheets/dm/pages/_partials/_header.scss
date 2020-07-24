@@ -164,6 +164,10 @@ header {
         color: $dm-color-blue-70v !important;
         text-decoration: none;
         border-bottom: 0.3125rem solid $dm-color-blue-70v !important;
+
+        &:after {
+          background-color: transparent !important;
+        }
       }
 
       &:after {
@@ -194,15 +198,6 @@ header {
         width: 100%;
         margin-left: 0 !important;
         padding-left: 0;
-      }
-
-      .usa-nav__link {
-        &:hover {
-          position: static !important;
-        }
-        &[aria-expanded="true"] {
-          position: static !important;
-        }
       }
     }
   }
