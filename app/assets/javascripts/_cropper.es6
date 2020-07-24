@@ -158,19 +158,21 @@
           $imgImgsContainer.append(imgOrgElement);
           $imgImgsContainer.append(imgModElement);
 
-          let imgWidth = $('.dm-cropper-thumbnail-modified')[0].naturalWidth;
-          let imgHeight = $('.dm-cropper-thumbnail-modified')[0].naturalHeight;
-          console.log('dfdf',$('.dm-cropper-thumbnail-modified')[0] )
-          // check if image dimensions are acceptable
-          if (imgWidth >= 768 && imgHeight >= 432) {
-            $errorText.addClass('display-none')
-            _successfulImageLoad({ target })
-          } else {
-            $('.dm-cropper-thumbnail-modified').addClass('display-none')
-            $errorText.removeClass('display-none')
-            $errorText.find('p').text(errorContent.dimension)
-            _failedImageLoad({ target })
-          }
+          // wait for the image to be loaded
+          $('.dm-cropper-thumbnail-modified').on('load', function(event) {
+            let imgWidth = $('.dm-cropper-thumbnail-modified')[0].naturalWidth;
+            let imgHeight = $('.dm-cropper-thumbnail-modified')[0].naturalHeight;
+            // check if image dimensions are acceptable
+            if (imgWidth >= 768 && imgHeight >= 432) {
+              $errorText.addClass('display-none')
+              _successfulImageLoad({ target })
+            } else {
+              $('.dm-cropper-thumbnail-modified').addClass('display-none')
+              $errorText.removeClass('display-none')
+              $errorText.find('p').text(errorContent.dimension)
+              _failedImageLoad({ target })
+            }
+          });
         }
       })()
 
