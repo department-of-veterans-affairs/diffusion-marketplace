@@ -99,6 +99,8 @@ class PracticesController < ApplicationController
 
       marker.infowindow render_to_string(partial: 'maps/infowindow', locals: {diffusion_histories: dhg[1], completed: completed, in_progress: in_progress, facility: facility})
     end
+
+    render 'practices/show/show'
   end
 
   # GET /practices/1/edit
@@ -262,6 +264,7 @@ class PracticesController < ApplicationController
 
   # GET /practices/1/instructions
   def instructions
+    render 'practices/form/instructions'
   end
 
   # /practices/slug/collaborators
@@ -277,6 +280,7 @@ class PracticesController < ApplicationController
   # /practices/slug/introduction
   def introduction
     set_practice
+    render 'practices/form/introduction'
       #@office_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_office_lookup.json"))
   end
 
@@ -448,7 +452,7 @@ class PracticesController < ApplicationController
                                      department: {},
                                      practice_award: {},
                                      practice_awards_attributes: {},
-                                     practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :facility_type, :initiating_department_office_id ],
+                                     practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :facility_type, :initiating_department_office_id],
                                      practice_metrics_attributes: [:id, :_destroy, :description]
     )
   end
