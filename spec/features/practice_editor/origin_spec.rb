@@ -118,7 +118,7 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_css("img[src*='charmander.png']")
 
 
-            find('.cropper-delete-image-label').click
+            find('.dm-cropper-delete-image-label').click
             @save_button.click
 
             expect(page).not_to have_css("img[src*='charmander.png']")
@@ -129,15 +129,15 @@ describe 'Practice editor', type: :feature, js: true do
             find('.add-practice-creator-link').click
 
             # added practice creator box
-            within all('.cropper-boundary')[1] do
+            within all('.dm-cropper-boundary')[1] do
                 fill_in_creator_fields
-                find('.cropper-edit-mode').click
+                find('.dm-cropper-edit-mode').click
                 expect(page).to have_no_content(@choose_image_text)
                 expect(page).to have_content("Please click \"Save edits\" and then \"Save your progress\" to save and exit editor.")
                 expect(page).to have_content('Cancel edits')
                 expect(page).to have_content('Save edits')
                 expect(page).to have_css('.cropper-modal')
-                find('.cropper-save-edit').click
+                find('.dm-cropper-save-edit').click
                 expect(find("#crop_x", :visible => false).value).to match '22'
                 expect(find("#crop_y", :visible => false).value).to match '22'
                 expect(find("#crop_w", :visible => false).value).to match '180'
@@ -147,24 +147,24 @@ describe 'Practice editor', type: :feature, js: true do
             @save_button.click
 
             # existing practice creator box
-            within all('.cropper-boundary')[0] do
+            within all('.dm-cropper-boundary')[0] do
                 fill_in('Name', with: @creator_name)
                 fill_in('Role', with: @creator_role)
                 attach_file('Upload new photo', @image_path)
-                find('.cropper-edit-mode').click
+                find('.dm-cropper-edit-mode').click
                 expect(page).to have_no_content(@choose_image_text)
                 expect(page).to have_content("Please click \"Save edits\" and then \"Save your progress\" to save and exit editor.")
                 expect(page).to have_content('Cancel edits')
                 expect(page).to have_content('Save edits')
                 expect(page).to have_css('.cropper-modal')
 
-                find('.cropper-save-edit').click
+                find('.dm-cropper-save-edit').click
                 expect(find("#crop_x", :visible => false).value).to match '22'
                 expect(find("#crop_y", :visible => false).value).to match '22'
                 expect(find("#crop_w", :visible => false).value).to match '180'
                 expect(find("#crop_h", :visible => false).value).to match '180'
 
-                find('.cropper-cancel-edit').click
+                find('.dm-cropper-cancel-edit').click
                 expect(find("#crop_x", :visible => false).value).to match ''
                 expect(find("#crop_y", :visible => false).value).to match ''
                 expect(find("#crop_w", :visible => false).value).to match ''

@@ -69,26 +69,26 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_no_content('Save edits')
 
             # delete practice thumbnail
-            find('.cropper-delete-image-label').click
+            find('.dm-cropper-delete-image-label').click
             @save_button.click
             expect(page).not_to have_css("img[src*='charmander.png']")
         end
 
         it 'should allow the user to edit the practice thumbnail' do
             attach_file('Upload photo', @image_path)
-            @edit_button = find('.cropper-edit-mode')
+            @edit_button = find('.dm-cropper-edit-mode')
             @edit_button.click
             expect(page).to have_content("Please click \"Save edits\" and then \"Save your progress\" to save and exit editor.")
             expect(page).to have_content('Cancel edits')
             expect(page).to have_content('Save edits')
             expect(page).to have_css('.cropper-modal')
-            @save_edits_button = find('.cropper-save-edit')
+            @save_edits_button = find('.dm-cropper-save-edit')
             @save_edits_button.click
             expect(find("#crop_x", :visible => false).value).to match '23'
             expect(find("#crop_y", :visible => false).value).to match '23'
             expect(find("#crop_w", :visible => false).value).to match '180'
             expect(find("#crop_h", :visible => false).value).to match '180'
-            @cancel_edits_button = find('.cropper-cancel-edit')
+            @cancel_edits_button = find('.dm-cropper-cancel-edit')
             @cancel_edits_button.click
             expect(find("#crop_x", :visible => false).value).to match ''
             expect(find("#crop_y", :visible => false).value).to match ''

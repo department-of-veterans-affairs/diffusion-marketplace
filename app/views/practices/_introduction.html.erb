@@ -2,6 +2,9 @@
 <%# TODO: Hover, Click, Visited Interactions %>
 
 <%# TODO: Make unauthenticated view %>
+<% provide :head_tags do %>
+  <%= javascript_include_tag 'practice_page', 'data-turbolinks-track': 'reload' %>
+<% end %>
 
 <%
   has_main_img = @practice.main_display_image.present?
@@ -12,7 +15,6 @@
   has_practice_partners = @practice.practice_partners.any? && @practice.practice_partners.find_by(name: 'None of the above, or Unsure').nil?
   has_practice_awards = @practice.practice_awards.any?
 %>
-
 <div class="grid-container">
   <div class="grid-row">
     <div class="desktop:grid-col-12">
@@ -20,13 +22,13 @@
       <% if has_main_img %>
         <img
           class="float-right desktop:grid-col-4 grid-col-12 margin-bottom-2 desktop:margin-left-2"
-          src="<%= @practice.main_display_image_s3_presigned_url %>"
+          src="<%= @practice.main_display_image_s3_presigned_url(:thumb) %>"
           alt="<%= @practice.name %> main image"/>
       <% end %>
       <%# practice name %>
       <div class="<%= has_main_img ? 'desktop:grid-col-8' : 'desktop:grid-col-10' %> grid-col-12">
         <h1 class="font-sans-2xl margin-top-0 margin-bottom-1 line-height-sans-2 dm-word-break-break-word dm-hyphens-auto">
-          <%= @practice.name %> <%= @practice.short_name if @practice.short_name.present? %>
+          <%= display_practice_name(@practice) %>
         </h1>
       </div>
       <%# practice last update timestamp %>
@@ -34,7 +36,7 @@
         Last updated <%= timeago(updated_at) %>
       </p>
       <%# practice actions %>
-      <div class="display-flex flex-wrap margin-bottom-2">
+      <div class="display-flex flex-wrap margin-bottom-2 desktop:grid-col-6">
         <%# bookmark %>
         <a href="<%= practice_favorite_path(@practice, format: :js) %>" data-method="post" data-remote="true" rel="nofollow" aria-label="Bookmark <%= @practice.name %>" tabindex="-1" aria-hidden="true" class="dm-favorite-practice-link dm-icon-link text-no-underline font-sans-xs text-primary desktop:grid-col-3 grid-col-6 desktop:margin-bottom-0 margin-bottom-2">
           <i class="<%= current_user.favorite_practice_ids.include?(@practice.id) ? 'fas' : 'far '%> fa-bookmark dm-favorite-icon-<%= @practice.id %>  margin-right-05"></i>
@@ -44,7 +46,7 @@
         </a>
         <%# share %>
         <a target="_blank" tabindex="-1" aria-hidden="true"
-        aria-label="Share <%= @practice.name %>" href="mailto:?subject=<%= email_practice_subject(@practice) %>&body=<%= email_practice_body(@practice) %>" class="text-no-underline text-primary font-sans-xs desktop:grid-col-3 grid-col-6 desktop:margin-bottom-0 margin-bottom-2">
+        aria-label="Share <%= @practice.name %>" href="mailto:?subject=<%= email_practice_subject(@practice) %>&body=<%= email_practice_body(@practice) %>" class="dm-icon-link text-no-underline text-primary font-sans-xs desktop:grid-col-3 grid-col-6 desktop:margin-bottom-0 margin-bottom-2">
           <i class="far fa-share-square margin-right-05"></i>
           <span>Share</span>
         </a>
@@ -53,7 +55,7 @@
           <i class="far fa-bell margin-right-05"></i>Subscribe
         </span>
         <%# print %>
-        <a class="text-no-underline font-sans-xs text-primary desktop:grid-col-3 grid-col-6 margin-bottom-0"
+        <a class="dm-icon-link text-no-underline font-sans-xs text-primary desktop:grid-col-3 grid-col-6 margin-bottom-0"
         onclick="window.print(); return false;">
           <i class="fas fa-print margin-right-05"></i>
           <span>Print</span>
@@ -70,10 +72,19 @@
     <div class="grid-col-12 margin-bottom-2">
       <p class="desktop:grid-col-6 font-sans-3xs line-height-sans-3">
       <span class="text-bold text-uppercase">Origin:</span>
-      <span>
-        <%= @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)' %>,
-        <%= origin_display_name(@practice) %>
-      </span>
+        <span id="practice_origin_facilities_text">
+          <% @practice_date =  @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)'%>
+          <%= @practice_date %>,
+              <% if origin_display_name(@practice).length > 180 %>
+                <%= origin_display_name_trunc(@practice) %>
+                <span id="dots">...</span>
+                <span id="more_text">
+                  <%= origin_display_name_trunc(@practice, 180, 99999) %>
+                </span><a class="dm-unstyled-btn-primary" href="" onclick="seeMoreText(); return false" id="seeMore">See more</a>
+              <% else %>
+                <%= origin_display_name(@practice) %>
+              <% end %>
+        </span>
       </p>
     </div>
     <%# practice adoptions %>
@@ -97,12 +108,17 @@
       <% if has_practice_awards %>
         <p class="grid-col-12 margin-bottom-2 font-sans-3xs line-height-sans-3">
           <span class="text-bold text-uppercase">Awards and Recognition:</span>
-            <% @practice.practice_awards.each_with_index do |award, index| %>
-              <% if award.name.downcase != "other" %>
-                <span><%= award.name %></span><%= ", " if @practice.practice_awards.size != index + 1 && @practice.practice_awards.size > 1 %>
-              <% end %>
-            <% end %>
-        </span>
+          <% @all_awards = get_all_awards(@practice) %>
+          <% if @all_awards.length > 180 %>
+            <%#= truncate(@all_awards.to_s, length: 180) %>
+            <%= @all_awards[0...180] %>
+            <span id="dots_award">...</span>
+            <span id="more_text_award">
+                <%= @all_awards[180...99999] %>
+                </span><a class="dm-unstyled-btn-primary" href="" onclick="seeMoreTextAwards(); return false" id="seeMore_award">See more</a>
+          <% else %>
+            <%= @all_awards %>
+          <% end %>
         </p>
       <% end %>
       <%# practice partners %>

@@ -96,7 +96,7 @@
   }
 
   &.high {
-    border-color: $dm-color-high-red;
+    border-color: $dm-color-red-50v;
   }
 }
 
@@ -368,7 +368,7 @@
   }
 }
 
-.editor-continue-link, .cropper-save-edit {
+.editor-continue-link, .dm-cropper-save-edit {
   color: white !important;
   line-height: 1 !important;
 
@@ -493,10 +493,10 @@
   }
 }
 
-.cropper-delete-image-label {
+.dm-cropper-delete-image-label {
   margin-top: 6px;
   margin-bottom: 24px;
-  color: $dm-color-high-red;
+  color: $dm-color-red-50v;
   text-decoration: underline;
 
   &:hover {
@@ -505,7 +505,7 @@
   }
 }
 
-.cropper-upload-image-label {
+.dm-cropper-upload-image-label {
   color: $dm-color-blue-50v;
   text-decoration: underline;
   margin-top: 0 !important;
@@ -563,7 +563,7 @@
   object-fit: cover;
 }
 
-.cropper-thumbnail-original, .cropper-thumbnail-modified {
+.dm-cropper-thumbnail-original, .dm-cropper-thumbnail-modified {
   min-width: 100% !important;
   object-fit: cover;
 }
@@ -787,10 +787,6 @@
   }
 }
 
-.cropper-upload-text > p, .cropper-editor-text > p {
-  line-height: 1.625rem !important;
-}
-
 .side-nav-active {
   background-color: transparent;
   border-left: 4px solid $dm-color-primary-blue;
@@ -805,25 +801,12 @@
   background-color: transparent;
 }
 
-.cropper-edit-mode, .cropper-save-edit, .cropper-cancel-edit {
-  text-decoration: none !important;
-  margin: 0 0 0.5rem 0 !important;
-}
-
-.hidden {
-  display: none !important;
-}
-
 .add-milestone-link {
   width: auto !important;
 }
 
 .timeline-trash {
   right: 3px;
-}
-
-.main-image {
-  max-width: 20rem !important;
 }
 
 /* Adoptions */

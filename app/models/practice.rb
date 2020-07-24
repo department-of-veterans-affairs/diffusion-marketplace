@@ -114,7 +114,7 @@ class Practice < ApplicationRecord
   # has_attached_file :main_display_image, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/:style/missing.png"
 
   # crop the img with custom Paperclip processor located in lib/paperclip_processors/cropper.rb
-  has_attached_file :main_display_image, styles: {thumb: '300x300>'}, :processors => [:cropper]
+  has_attached_file :main_display_image, styles: {thumb: '768x432>'}, :processors => [:cropper]
 
   def main_display_image_s3_presigned_url(style = nil)
     object_presigned_url(main_display_image, style)

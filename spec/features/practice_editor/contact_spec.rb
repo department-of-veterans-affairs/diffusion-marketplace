@@ -116,15 +116,15 @@ describe 'Practice editor', type: :feature, js: true do
             find('.add-va-employee-link').click
 
             # added contact box
-            within all('.cropper-boundary')[1] do
+            within all('.dm-cropper-boundary')[1] do
                 fill_in_contact_fields
-                find('.cropper-edit-mode').click
+                find('.dm-cropper-edit-mode').click
                 expect(page).to have_no_content(@choose_image_text)
                 expect(page).to have_content("Please click \"Save edits\" and then \"Save your progress\" to save and exit editor.")
                 expect(page).to have_content('Cancel edits')
                 expect(page).to have_content('Save edits')
                 expect(page).to have_css('.cropper-modal')
-                find('.cropper-save-edit').click
+                find('.dm-cropper-save-edit').click
                 expect(find("#crop_x", :visible => false).value).to match '22'
                 expect(find("#crop_y", :visible => false).value).to match '22'
                 expect(find("#crop_w", :visible => false).value).to match '180'
@@ -134,18 +134,18 @@ describe 'Practice editor', type: :feature, js: true do
             @save_button.click
 
             # existing contact box
-            within all('.cropper-boundary')[0] do
+            within all('.dm-cropper-boundary')[0] do
                 fill_in('Name:', with: 'Test name')
                 fill_in('Role:', with: 'Test role')
                 attach_file('Upload new photo', @image_path)
-                find('.cropper-edit-mode').click
+                find('.dm-cropper-edit-mode').click
                 expect(page).to have_no_content(@choose_image_text)
                 expect(page).to have_content("Please click \"Save edits\" and then \"Save your progress\" to save and exit editor.")
                 expect(page).to have_content('Cancel edits')
                 expect(page).to have_content('Save edits')
                 expect(page).to have_css('.cropper-modal')
 
-                find('.cropper-save-edit').click
+                find('.dm-cropper-save-edit').click
                 expect(find("#crop_x", :visible => false).value).to match '22'
                 expect(find("#crop_y", :visible => false).value).to match '22'
                 expect(find("#crop_w", :visible => false).value).to match '180'

@@ -76,4 +76,29 @@ module PracticesHelper
     end
     state_hash_str
   end
+
+  def get_all_awards(practice)
+    @all_awards = "";
+    @practice.practice_awards.each_with_index do |award, index|
+      if award.name.downcase != "other"
+        if @all_awards.length == 0
+          @all_awards = award.name.to_s
+        else
+          @all_awards += award.name.to_s
+        end
+        if @practice.practice_awards.size != index + 1 && @practice.practice_awards.size > 1
+          @all_awards += ", "
+        end
+      end
+    end
+    @all_awards.to_s
+  end
+
+  def display_practice_name(practice)
+    if (@practice.short_name.present?)
+      "#{@practice.name} (#{@practice.short_name})"
+    else
+      @practice.name
+    end
+  end
 end

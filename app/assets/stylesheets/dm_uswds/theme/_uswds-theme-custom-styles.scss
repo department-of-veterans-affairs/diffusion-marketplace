@@ -27,6 +27,22 @@ i.e.
   box-sizing: border-box;
 }
 
+// buttons
+
+.usa-button {
+  &.black {
+    &:not(.usa-button--outline) {
+      background-color: $dm-color-black !important;
+    }
+
+    &.usa-button--outline {
+      box-shadow: none !important;
+      border: 2px solid $dm-color-black !important;
+      color: $dm-color-black !important;
+    }
+  }
+}
+
 .usa-button-outline-white {
   //@extend .usa-button--outline;
   background-color: transparent !important;
@@ -36,11 +52,14 @@ i.e.
 }
 
 .usa-button--outline {
+  min-width: 8.75rem !important;
+  min-height: 2.4375rem !important;
   box-shadow: none !important;
-  border: 2px solid $dm-color-primary-blue !important;
+  border: 2px solid $dm-color-blue-50v !important;
 
   &:hover {
-    border: 2px solid #1a4480 !important;
+    color: $dm-color-blue-70v !important;
+    border: 2px solid $dm-color-blue-70v !important;
   }
 
   &:disabled {
@@ -271,19 +290,5 @@ a {
   /* line 220, ../../.rvm/gems/ruby-2.6.3/bundler/gems/uswds-rails-642a358220dc/app/assets/stylesheets/uswds/elements/_inputs.scss */
   .usa-radio__input:checked + .usa-radio__label::before {
     box-shadow: inset 0 0 0 2px white, inset 0 0 0 1rem $dm-color-blue-70v, 0 0 0 2px $dm-color-blue-70v;
-  }
-}
-
-.usa-button {
-  &.black {
-    &:not(.usa-button--outline) {
-      background-color: $dm-color-black !important;
-    }
-
-    &.usa-button--outline {
-      box-shadow: none !important;
-      border: 2px solid $dm-color-black !important;
-      color: $dm-color-black !important;
-    }
   }
 }
