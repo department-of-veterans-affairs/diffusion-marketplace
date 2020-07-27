@@ -1,3 +1,5 @@
+include ActiveAdminHelpers
+
 ActiveAdmin.register Practice do
   actions :all, except: [:destroy]
   permit_params :name, :user_email
@@ -42,6 +44,56 @@ ActiveAdmin.register Practice do
     redirect_back fallback_location: root_path, notice: message
   end
 
+  member_action :export_practice_adoptions, method: :get do
+    metrics_xlsx_file = Axlsx::Package.new do |p|
+      # styling
+      adoption_xlsx_styles(p)
+
+      # building out xlsx file
+      p.workbook.add_worksheet(:name => "Adoption Data - #{Date.today}") do |sheet|
+        sheet.add_row ["#{@practice_name} Adoption Data - #{Date.today}"], style: @xlsx_main_header
+        sheet.add_row [''], style: @xlsx_divider
+        sheet.add_row ['Note: Adoption date is based on the adoption status.'], style: @xlsx_legend_no_bottom_border
+        sheet.add_row ['Completed/Unsuccessful: End Date'], style: @xlsx_legend_no_y_border
+        sheet.add_row ['In Progress: Start Date'], style: @xlsx_legend_no_top_border
+        sheet.merge_cells 'A1:C1'
+        sheet.add_row [''], style: @xlsx_divider
+
+        @complete_map.each do |key, value|
+          if value.present?
+            sheet.add_row [
+                'State',
+                'Location',
+                'VISN',
+                'Station Number',
+                'Adoption Date',
+                'Adoption Status',
+                'Rurality',
+                'Facility Complexity'
+            ], style: @xlsx_sub_header_3
+
+            value.each do |v|
+              sheet.add_row [
+                  v[:state],
+                  adoption_facility_name(v),
+                  v[:visn],
+                  v[:station_number],
+                  adoption_date(v),
+                  v[:status],
+                  adoption_rurality(v),
+                  v[:complexity]
+              ], style: @xlsx_entry
+            end
+          end
+        end
+      end
+      p.use_shared_strings = true
+    end
+
+    # generating downloadable .xlsx file
+    send_data metrics_xlsx_file.to_stream.read, :filename => "adoptions_#{Date.today}.xlsx", :type => "application/xlsx"
+  end
+
 
   form do |f|
     f.semantic_errors *f.object.errors.keys# shows errors on :base
@@ -54,6 +106,13 @@ ActiveAdmin.register Practice do
   end
 
   show do
+    # export .xlsx button
+    if resource.diffusion_histories.present?
+      form action: export_practice_adoptions_admin_practice_path, method: :get, style: 'text-align: left' do |f|
+        f.input :submit, type: :submit, value: 'Download Adoption Data', style: 'margin-bottom: 1rem'
+      end
+    end
+
     attributes_table  do
       row :id
       row(:name, label: 'Practice name')    { |practice| link_to(practice.name, practice_path(practice)) }
@@ -72,13 +131,20 @@ ActiveAdmin.register Practice do
       column do |v| link_to 'View', admin_version_path(v.id) end
       column do |v| link_to('Revert', revert_admin_version_path(v.id), method: :put, data: {confirm: 'Are you sure you want to do this? This will override the practice with the specified version.'}) end
     end
+    active_admin_comments
   end
 
   filter :nameYou
   filter :support_network_email
 
   controller do
+    helper_method :adoption_facility_name
+    helper_method :adoption_date
+    helper_method :adoption_rurality
+    helper_method :get_adoption_values
+    helper_method :adoption_xlsx_styles
     before_action :set_categories_view, only: :edit
+    before_action :set_practice_adoption_values, only: [:show, :export_practice_adoptions]
     after_action :update_categories, only: [:create, :update]
 
     before_create do |practice|
@@ -91,6 +157,13 @@ ActiveAdmin.register Practice do
     before_update do |practice|
       set_practice_user(practice) if params[:user_email].present?
       practice.user = nil unless params[:user_email].present?
+    end
+
+    def set_practice_adoption_values
+      @facility_data = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
+      @practice_name = resource.name
+      @complete_map = {}
+      get_adoption_values(resource, @complete_map)
     end
 
     def set_practice_user(practice)

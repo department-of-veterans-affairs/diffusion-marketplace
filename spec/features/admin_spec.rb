@@ -34,6 +34,18 @@ describe 'The admin dashboard', type: :feature do
     FileUtils.rm_rf("#{Rails.root}/tmp/downloads")
   end
 
+  def create_diffusion_history
+    diffusion_history = DiffusionHistory.create!(practice_id: @practice.id, facility_id: '516')
+    DiffusionHistoryStatus.create!(diffusion_history_id: diffusion_history.id, status: 'Completed')
+  end
+
+  def visit_practice_show
+    visit '/admin/practices'
+    within_table('index_table_practices') do
+      first('.table_actions').click_link('View')
+    end
+  end
+
   it 'if not logged in, should be redirected to sign_in page' do
     visit '/admin'
 
@@ -334,5 +346,35 @@ describe 'The admin dashboard', type: :feature do
     click_button('Update Practice')
     click_link('Edit', href: edit_admin_practice_path(@practice))
     expect(page).not_to have_selector('option[selected]')
+  end
+
+  it 'should only display a button to download adoptions if the practice has any' do
+    login_as(@admin, scope: :user, run_callbacks: false)
+    visit '/admin'
+    visit_practice_show
+
+    expect(page).to_not have_selector("input[value='Download Adoption Data']")
+
+    create_diffusion_history
+
+    visit '/admin/practices'
+    within_table('index_table_practices') do
+      first('.table_actions').click_link('View')
+    end
+
+    expect(page).to have_selector("input[value='Download Adoption Data']")
+  end
+
+  it 'should allow an admin user to download adoption data as a .xlsx file if there are any adoptions' do
+    create_diffusion_history
+
+    login_as(@admin, scope: :user, run_callbacks: false)
+    visit '/admin'
+    visit_practice_show
+    export_button = find(:css, "input[value='Download Adoption Data']")
+    export_button.click
+
+    # should not navigate away from metrics page
+    expect(page).to have_current_path(admin_practice_path(@practice))
   end
 end
