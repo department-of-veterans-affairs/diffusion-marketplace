@@ -117,3 +117,47 @@ fieldset.page_components.inputs.has_many_fields {
     padding-right: 5px;
   }
 }
+
+.form-and-legend-container {
+  position: relative;
+  margin-top: 1.8rem;
+}
+
+.adoptions-legend {
+  border: 1px solid #5ea3d3;
+  padding: 10px;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+
+  h4 {
+    margin-top: 0;
+
+    span:first-child {
+      color: #000000;
+      font-weight: bold;
+    }
+  }
+
+  ul {
+    padding: 0;
+    margin-bottom: 0;
+
+    li {
+      color: #5E6469;
+      list-style-type: none;
+      font-size: 13px;
+
+      span:first-child {
+        color: #000000;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.no-adoptions-div {
+  text-align: center;
+}
