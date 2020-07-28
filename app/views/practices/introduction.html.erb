@@ -204,7 +204,7 @@
                         );
                       <% end %>
                     <% end %>
-                    <li class="practice-editor-origin-facility-li fields" data-id="<%= orig_facility_id %>">
+                    <li class="practice-editor-origin-facility-li fields" role="option" data-id="<%= orig_facility_id %>">
                       <div class="margin-bottom-3">
                         <%= label_tag "editor_state_select_#{orig_facility_id}", 'State',
                                       class: 'usa-label x0-top margin-bottom-1' %>
@@ -337,7 +337,7 @@
                           <% end %>
                         <% end %>
 
-                        <li class="practice-editor-other-awards-li fields" data-id="<%= other_award_id %>">
+                        <li class="practice-editor-other-awards-li fields" role="option" data-id="<%= other_award_id %>">
                           <div class="grid-row">
                             <div class="grid-col-12">
                               <%= pa.label :name, 'Name of award or recognition', class: 'usa-label x0-top margin-bottom-1 grid-col-12' %>

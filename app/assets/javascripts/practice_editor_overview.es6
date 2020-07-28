@@ -114,12 +114,16 @@
             addEnableAttrAndColor($('label[for="' + oi + '"]'), $(`#${oi}`));
         });
     }
+
     function showCurrentlySelectedOptions(currentSelectForm){
         $(`#${currentSelectForm}`).show();
+        $(`#${currentSelectForm} :input`).prop("disabled", false);
     }
+
     function hideOtherSelectForms(formsToHide){
         formsToHide.forEach(f => {
             $(`#${f}`).hide();
+            $(`#${f} :input`).prop("disabled", true);
         });
     }
 
