@@ -16,6 +16,7 @@ class SavePracticeService
         crop_main_display_image: 'error cropping practice thumbnail',
         update_initiating_facility: 'error updating initiating facility',
         update_practice_awards: 'error updating practice awards',
+        update_category_practices: 'error updating practice categories',
     }
   end
 
@@ -31,6 +32,7 @@ class SavePracticeService
       rescue_method(:crop_main_display_image)
       rescue_method(:update_initiating_facility)
       rescue_method(:update_practice_awards)
+      rescue_method(:update_category_practices)
 
       updated
     rescue => e
@@ -84,6 +86,25 @@ class SavePracticeService
       end
     elsif department_params.blank? && @current_endpoint == 'complexity'
       practice_departments.destroy_all
+    end
+  end
+
+  def update_category_practices
+    category_params = @practice_params[:category]
+    practice_categories = @practice.category_practices
+    if category_params.present?
+      cat_keys = category_params.keys
+      cat_keys.each do |key|
+        next if @practice.categories.ids.include? key.to_i
+
+        @practice.category_practices.create category_id: key.to_i
+      end
+
+      practice_categories.each do |cat|
+        cat.destroy unless cat_keys.include? cat.category_id.to_s
+      end
+    elsif category_params.blank? && @current_endpoint == 'introduction'
+      practice_categories.destroy_all
     end
   end
 

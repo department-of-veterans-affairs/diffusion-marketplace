@@ -21,7 +21,7 @@ class Practice < ApplicationRecord
   attr_accessor :three_months_ago_commits
   attr_accessor :delete_main_display_image
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
-  attr_accessor :practice_partner, :department, :practice_award
+  attr_accessor :practice_partner, :department, :practice_award, :category
   attr_accessor :reset_searchable_cache
 
   def clear_searchable_cache
