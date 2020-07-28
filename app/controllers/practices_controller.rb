@@ -150,6 +150,10 @@ class PracticesController < ApplicationController
       end
       pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
       updated = SavePracticeService.new(pr_params).save_practice
+      if facility_type != "facility"
+        origin_facilities = @practice.practice_origin_facilities.where(:practice_id => @practice.id)
+        origin_facilities.destroy_all
+      end
     end
     respond_to do |format|
       if updated
