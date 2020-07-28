@@ -21,9 +21,6 @@
             <% if tagline.blank? || initiating_facility.blank? || date_initiated.blank? || summary.blank? %>
               <p class="text-bold">Overview</p>
               <ul class="overview-errors-ul">
-                <% if tagline.blank? %>
-                  <li>You must include a practice tagline</li>
-                <% end %>
                 <% if date_initiated.blank? %>
                   <li>You must include the initiation date for your practice</li>
                 <% end %>

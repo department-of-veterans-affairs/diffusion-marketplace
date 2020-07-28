@@ -328,7 +328,6 @@ class PracticesController < ApplicationController
       pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
       updated = SavePracticeService.new(pr_params).save_practice
     end
-
     respond_to do |format|
       if can_publish
         # if there is an error with updating the practice, alert the user
@@ -565,6 +564,6 @@ class PracticesController < ApplicationController
   end
 
   def can_publish
-    @practice.name.present? && @practice.tagline.present? && @practice.initiating_facility.present? && @practice.date_initiated.present? && @practice.summary.present? && @practice.support_network_email.present?
+    @practice.name.present? && @practice.initiating_facility.present? && @practice.date_initiated.present? && @practice.summary.present? && @practice.support_network_email.present?
   end
 end
