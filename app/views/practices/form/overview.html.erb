@@ -27,14 +27,14 @@
                   <%= f.label :name, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-1' do %>
                     Metrics
                   <% end %>
-                  <span>
+                  <span class="line-height-26">
                     Provide quantifiable measures and representative
                     figures used to demonstrate the success of your practice
                     (e.g. costs avoided per month, number of Veteran lives improved each year,
                     number of staff hours saved per week).
                   </span>
                 </div>
-                <ul class="practice-editor-metrics-ul padding-left-0" role="listbox" title="Practice metrics" aria-label="Practice editor metric list">
+                <ul class="practice-editor-metrics-ul padding-left-0" title="Practice metrics" aria-label="Practice editor metric list">
                   <%= f.fields_for :practice_metrics, wrapper: false do |pm| %>
                     <%
                       metric_id = pm.object.id || "new_practice_metrics"
