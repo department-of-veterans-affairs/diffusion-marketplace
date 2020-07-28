@@ -143,16 +143,7 @@ class Practice < ApplicationRecord
   PRACTICE_EDITOR_AWARDS_AND_RECOGNITION =
       [
           'Diffusion of Excellence Promising Practice',
-          'FedHealth IT Award',
-          'Gears of Government Winner',
-          'Igniting Innovation Award',
-          'iNET Seed Investee',
-          'iNet Spark Award Investee',
-          'iNET Spread Investee',
-          'QUERI Veterans Choice Act Award',
-          'QUERI VISN Partnered Implementation Initiative',
-          'QUERI Partnered Evaluation Initiative',
-          'Rural Promising Practice',
+          'Innovation Fellow',
           'VHA Shark Tank Winner',
           'Other'
   ]
