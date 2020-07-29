@@ -132,6 +132,8 @@ module ApplicationHelper
           office['name']
         when 'other'
           practice.initiating_facility
+        else
+          ''
         end
       else
         ''
