@@ -9,9 +9,9 @@ describe 'Practices', type: :feature do
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
     @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test Facility', initiating_facility_type: 'other', tagline: 'Test tagline')
-    @practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline')
-    @enabled_practice = Practice.create!(name: 'Enabled practice', approved: true, published: true, enabled: true, tagline: 'Enabled practice tagline')
-    @disabled_practice = Practice.create!(name: 'Disabled practice', approved: true, published: true, enabled: false, tagline: 'Disabled practice tagline')
+    @practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', date_initiated: Time.now())
+    @enabled_practice = Practice.create!(name: 'Enabled practice', approved: true, published: true, enabled: true, date_initiated: Time.now())
+    @disabled_practice = Practice.create!(name: 'Disabled practice', approved: true, published: true, enabled: false, date_initiated: Time.now())
     @departments = [
         Department.create!(name: 'Test department 1', short_name: 'td1'),
         Department.create!(name: 'Test department 2', short_name: 'td2'),
@@ -109,18 +109,19 @@ describe 'Practices', type: :feature do
       login_as(@user, :scope => :user, :run_callbacks => false)
 
       # Visit an individual Practice that is approved and published
-      practice = Practice.create!(name: 'Another public practice', approved: true, published: true, initiating_facility: '687HA', tagline: 'Test tagline')
+      practice = Practice.create!(name: 'Another public practice', date_initiated: Time.now(), approved: true, published: true, initiating_facility_type: 'facility', tagline: 'Test tagline')
+      PracticeOriginFacility.create!(practice: practice, facility_type: 0, facility_id: '687HA')
       visit practice_path(practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(practice.name)
-      expect(page).to have_content('Yakima VA Clinic (Yakima)')
+      expect(page).to have_content('Yakima VA Clinic')
       expect(page).to have_current_path(practice_path(practice))
 
       # Visit the Marketplace
-      visit '/practices'
+      visit root_path
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(practice.name)
-      expect(page).to have_content('Yakima VA…')
+      expect(page).to have_content('Yakima VA Clinic')
     end
   end
 
