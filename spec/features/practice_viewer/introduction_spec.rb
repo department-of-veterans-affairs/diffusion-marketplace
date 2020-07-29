@@ -44,7 +44,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
       expect(page).to have_content('Bookmarked')
       find('.dm-favorite-practice-link').click
       expect(page).to have_content('Bookmark')
-      expect(page).to have_selector(:css, "a[href='mailto:?subject=VA%20Diffusion%20Marketplace%20-%20A%20public%20minimum%20practice%20summary&body=Check out this practice, A public minimum practice: , on the VA Diffusion Marketplace: %0D%0A%0D%0Ahttp://localhost:3200/practices/a-public-min-practice%0D%0A%0D%0AAbout A public minimum practice: %0D%0A%0D%0A%0D%0A%0D%0ATest summary%0D%0A%0D%0A']")
+      expect(page).to have_selector(:css, "a[href='mailto:?subject=VA%20Diffusion%20Marketplace%20-%20A%20public%20minimum%20practice%20summary&body=Check out this practice, A public minimum practice: , on the VA Diffusion Marketplace: %0D%0A%0D%0A#{ENV.fetch('HOSTNAME')}/practices/a-public-min-practice%0D%0A%0D%0AAbout A public minimum practice: %0D%0A%0D%0A%0D%0A%0D%0ATest summary%0D%0A%0D%0A']")
       # TODO: How to test print?
     end
   end

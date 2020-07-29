@@ -21,7 +21,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
   describe 'on load' do
     before do
       login_as(@admin, :scope => :user, :run_callbacks => false)
-      visit practice_introduction_path(@practice)
+      visit_practice_edit
       expect(page).to be_accessible.according_to :wcag2a, :section508
     end
 
@@ -49,7 +49,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
   describe 'editing a practice' do
     before do
       login_as(@admin, :scope => :user, :run_callbacks => false)
-      visit practice_introduction_path(@practice)
+      visit_practice_edit
     end
 
     it 'should allow changing name, acronym, summary' do
@@ -60,7 +60,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
       fill_in('Acronym', with: 'YOLO')
       fill_in('Summary', with: 'Updated summary')
       click_save
-      visit_practice
+      visit_practice_show
       expect(page).to have_content('Edited practice')
       expect(page).to have_content('YOLO')
       expect(page).to have_content('Updated summary')
@@ -75,7 +75,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
       select('October', :from => 'editor_date_intiated_month')
       select('1970', :from => 'editor_date_intiated_year')
       click_save
-      visit_practice
+      visit_practice_show
       expect(page).to have_content('October 1970')
       expect(page).to have_no_content('August 2013')
     end
@@ -91,43 +91,47 @@ describe 'Practice editor - introduction', type: :feature, js: true do
 
         # add another facility
         find('.add-practice-originating-facilities-link').click
-        find(:xpath, "//div[@id='facility_select_form']/ul/li[last()]/div/select/option[text()='Alabama']").click
-        find(:xpath, "//div[@id='facility_select_form']/ul/li[last()]/div[2]/div/select/option[text()='Birmingham VA Medical Center (Birmingham-Alabama)']").click
+        last_fac_field = find_all('.practice-editor-origin-facility-li').last
+        last_fac_state_select = last_fac_field.find('select[id*="editor_state_select"]')
+        last_fac_fac_select = last_fac_field.find('select[id*="facility_id"]')
+        select('Alabama', from: last_fac_state_select[:name])
+        select('Birmingham VA Medical Center (Birmingham-Alabama)', from: last_fac_fac_select[:name])
         # delete first facility
-        find(:xpath, "//div[@id='facility_select_form']/ul/li[1]/div[2]/div[2]/a[text()='Delete Entry']").click
+        first_fac_field = find_all('.practice-editor-origin-facility-li').first
+        first_fac_field.find('.origin-trash').click
         click_save
-        visit_practice
+        visit_practice_show
         expect(page).to have_content('Birmingham VA Medical Center (Birmingham-Alabama)')
         expect(page).to have_no_content('Palo Alto VA Medical Center-Menlo Park')
 
         # set VISN
-        visit practice_introduction_path(@practice)
+        visit_practice_edit
         find(:xpath, "//*[@id='initiating_facility_type_visn']/following-sibling::label").click
         select('VISN-1', :from => 'editor_visn_select')
         click_save
-        visit_practice
+        visit_practice_show
         expect(page).to have_no_content('Birmingham VA Medical Center (Birmingham-Alabama)')
         expect(page).to have_content('VISN-1')
 
         # set department
-        visit practice_introduction_path(@practice)
+        visit_practice_edit
         find(:xpath, "//*[@id='initiating_facility_type_department']/following-sibling::label").click
         select('VBA', :from => 'editor_department_select')
         select('Alabama', :from => 'editor_office_state_select')
         select('Montgomery Regional Office', :from => 'editor_office_select')
         click_save
-        visit_practice
+        visit_practice_show
         expect(page).to have_no_content('VISN-1')
         expect(page).to have_content('Montgomery Regional Office')
 
         # set other
-        visit practice_introduction_path(@practice)
+        visit_practice_edit
         find(:xpath, "//*[@id='initiating_facility_type_other']/following-sibling::label").click
         within(:css, '#init_facility_other') do
           fill_in('Other', with: 'Xavier Institute')
         end
         click_save
-        visit_practice
+        visit_practice_show
         expect(page).to have_no_content('Montgomery Regional Office')
         expect(page).to have_content('Xavier Institute')
       end
@@ -145,7 +149,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         expect(page).to have_content('Name of award or recognition')
         fill_in('Name of award or recognition', with: 'Amazing Award')
         click_save
-        visit_practice
+        visit_practice_show
         expect(page).to have_no_content('VHA Shark Tank Winnder')
         expect(page).to have_no_content('Other')
         expect(page).to have_content('QUERI Veterans Choice Act Award')
@@ -162,14 +166,14 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         expect(page).to have_unchecked_field('Diffusion of Excellence')
         expect(page).to have_unchecked_field('Office of Rural Health')
         click_save
-        visit_practice
+        visit_practice_show
         expect(page).to have_no_content('Diffusion of Excellence')
         expect(page).to have_no_content('Office of Rural Health')
-        visit practice_introduction_path(@practice)
+        visit_practice_edit
         find('#practice_partner_1_label').click # clicks Diffusion of Excellence
         expect(page).to have_unchecked_field('None of the above, or Unsure')
         click_save
-        visit_practice
+        visit_practice_show
         expect(page).to have_content('Diffusion of Excellence')
         expect(page).to have_no_content('Office of Rural Health')
       end
@@ -181,6 +185,10 @@ def click_save
   find('#practice-editor-save-button').click
 end
 
-def visit_practice
+def visit_practice_show
   visit practice_path(@practice)
+end
+
+def visit_practice_edit
+  visit practice_introduction_path(@practice)
 end

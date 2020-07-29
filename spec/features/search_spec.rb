@@ -8,18 +8,11 @@ describe 'Search', type: :feature do
     @approver = User.create!(email: 'squidward.tentacles@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
-    @practice = Practice.create!(name: 'The Best Practice Ever!', initiating_facility: '631HC', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.')
-    @practice2 = Practice.create!(name: 'Another Best Practice', initiating_facility: '687HA', tagline: 'Test tagline 2', date_initiated: 'Sun, 24 Oct 2004 00:00:00 UTC +00:00', summary: 'This is another best practice.')
-  end
+    @practice = Practice.create!(name: 'The Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.')
+    PracticeOriginFacility.create!(practice: @practice, facility_type: 0, facility_id: '640A0')
+    @practice2 = Practice.create!(name: 'Another Best Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 2', date_initiated: 'Sun, 24 Oct 2004 00:00:00 UTC +00:00', summary: 'This is another best practice.')
+    PracticeOriginFacility.create!(practice: @practice2, facility_type:0, facility_id: '687HA')
 
-  def update_practice(practice)
-    login_as(@admin, :scope => :user, :run_callbacks => false)
-    visit practice_overview_path(practice)
-    all('.initiating-facility-type-label').first.click
-    select('Alabama', :from => 'editor_state_select')
-    select('Birmingham VA Medical Center', :from => 'editor_facility_select')
-    fill_in('practice_summary', with: 'This is the most super practice ever made')
-    find('#practice-editor-save-button').click
   end
 
   def user_login
@@ -34,17 +27,24 @@ describe 'Search', type: :feature do
     find('#dm-search-search-button').click
   end
 
-  def publish_practice(practice)
+  def update_practice_introduction(practice)
     login_as(@admin, :scope => :user, :run_callbacks => false)
-    visit practice_overview_path(practice)
-    fill_in('practice_tagline', with: 'Test tagline.')
-    all('.initiating-facility-type-label').first.click
-    select('Alabama', :from => 'editor_state_select')
-    select('Birmingham VA Medical Center', :from => 'editor_facility_select')
+    visit practice_introduction_path(practice)
+    find('.add-practice-originating-facilities-link').click
+    last_fac_field = find_all('.practice-editor-origin-facility-li').last
+    last_fac_state_select = last_fac_field.find('select[id*="editor_state_select"]')
+    last_fac_fac_select = last_fac_field.find('select[id*="facility_id"]')
+    select('Alabama', from: last_fac_state_select[:name])
+    select('Birmingham VA Medical Center (Birmingham-Alabama)', from: last_fac_fac_select[:name])
+    fill_in('practice_summary', with: 'This is the most super practice ever made')
     fill_in('practice_summary', with: 'This is the most super practice ever made')
     select('October', :from => 'editor_date_intiated_month')
     select('1970', :from => 'editor_date_intiated_year')
     find('#practice-editor-save-button').click
+  end
+
+  def publish_practice(practice)
+    update_practice_introduction(practice)
     visit(practice_contact_path(practice))
     fill_in('practice_support_network_email', with: 'dm@va.gov')
     click_button('Publish')
@@ -75,7 +75,7 @@ describe 'Search', type: :feature do
 
       # test facility data map for name, negative case
       expect(page).to have_content(@practice.name)
-      expect(page).to have_content(@practice.initiating_facility)
+      expect(page).to have_content('Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo Park)')
       expect(page).to have_content('1 result for Test')
 
       # do not show a practice that is not approved/published
@@ -137,7 +137,7 @@ describe 'Search', type: :feature do
 
       expect(cache_keys).to include("searchable_practices")
 
-      update_practice(@practice)
+      update_practice_introduction(@practice)
 
       expect(cache_keys).to include("searchable_practices")
     end
@@ -161,8 +161,6 @@ describe 'Search', type: :feature do
 
       publish_practice(latest_practice)
       expect(cache_keys).to include("searchable_practices")
-
-      find('h1#overview', text: latest_practice.name)
       expect(Practice.searchable_practices.last.name).to eq(latest_practice.name)
 
       visit '/search?=newest'

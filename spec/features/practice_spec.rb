@@ -113,7 +113,7 @@ describe 'Practices', type: :feature do
       visit practice_path(practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(practice.name)
-      expect(page).to have_content('Yakima VA Clinic')
+      expect(page).to have_content('Yakima VA Clinic (Yakima)')
       expect(page).to have_current_path(practice_path(practice))
 
       # Visit the Marketplace
@@ -133,7 +133,7 @@ describe 'Practices', type: :feature do
       expect(page).to have_content(@enabled_practice.name)
       expect(page).to have_content(@enabled_practice.initiating_facility)
       expect(page).to have_current_path(practice_path(@enabled_practice))
-      click_on('Add to your favorites')
+      click_on('Bookmark')
       visit admin_dashboard_path
       click_on('Metrics')
       expect(page).to have_content('Enabled practice')

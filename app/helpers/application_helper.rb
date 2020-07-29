@@ -112,7 +112,7 @@ module ApplicationHelper
 
   def origin_display_name(practice)
     if practice.initiating_facility_type?
-      if practice.facility? && practice.practice_origin_facilities.any?
+      if practice.facility? && practice.practice_origin_facilities.present?
         fac_type = Practice.initiating_facility_types[practice.initiating_facility_type]
         locs = practice.practice_origin_facilities.where(facility_type: fac_type)
         facility_names = String.new
