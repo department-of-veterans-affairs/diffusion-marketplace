@@ -151,7 +151,7 @@ class PracticesController < ApplicationController
       pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
       updated = SavePracticeService.new(pr_params).save_practice
       if facility_type != "facility"
-        origin_facilities = @practice.practice_origin_facilities.where(:practice_id => @practice.id)
+        origin_facilities = @practice.practice_origin_facilities
         origin_facilities.destroy_all
       end
     end
@@ -564,6 +564,10 @@ class PracticesController < ApplicationController
   end
 
   def can_publish
-    @practice.name.present? && @practice.initiating_facility.present? && @practice.date_initiated.present? && @practice.summary.present? && @practice.support_network_email.present?
+    if @practice.name.present? && @practice.initiating_facility_type.present? && @practice.date_initiated.present? && @practice.summary.present? && @practice.support_network_email.present?
+      @practice.facility? ? @practice.practice_origin_facilities.present? : @practice.initating_facility.present?
+    else
+      false
+    end
   end
 end

@@ -106,7 +106,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
 
         # set VISN
         visit_practice_edit
-        find(:xpath, "//*[@id='initiating_facility_type_visn']/following-sibling::label").click
+        click_origin_type('initiating_facility_type_visn')
         select('VISN-1', :from => 'editor_visn_select')
         click_save
         visit_practice_show
@@ -115,7 +115,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
 
         # set department
         visit_practice_edit
-        find(:xpath, "//*[@id='initiating_facility_type_department']/following-sibling::label").click
+        click_origin_type('initiating_facility_type_department')
         select('VBA', :from => 'editor_department_select')
         select('Alabama', :from => 'editor_office_state_select')
         select('Montgomery Regional Office', :from => 'editor_office_select')
@@ -126,7 +126,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
 
         # set other
         visit_practice_edit
-        find(:xpath, "//*[@id='initiating_facility_type_other']/following-sibling::label").click
+        click_origin_type('initiating_facility_type_other')
         within(:css, '#init_facility_other') do
           fill_in('Other', with: 'Xavier Institute')
         end
@@ -191,4 +191,8 @@ end
 
 def visit_practice_edit
   visit practice_introduction_path(@practice)
+end
+
+def click_origin_type(elem_id)
+  find("##{elem_id}").sibling('label').click
 end

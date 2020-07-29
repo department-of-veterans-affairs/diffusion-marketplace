@@ -90,7 +90,5 @@ describe 'The user index', type: :feature do
       expect(page).to have_content('A public practice')
       expect(page).to_not have_content('The Best Practice Ever!')
     end
-
   end
-
 end
