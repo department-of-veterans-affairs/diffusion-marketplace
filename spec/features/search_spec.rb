@@ -160,6 +160,7 @@ describe 'Search', type: :feature do
       expect(page).to_not have_content(latest_practice.name)
 
       publish_practice(latest_practice)
+      sleep 1
       expect(cache_keys).to include("searchable_practices")
       expect(Practice.searchable_practices.last.name).to eq(latest_practice.name)
 
