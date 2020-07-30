@@ -13,7 +13,7 @@
             '.practice-editor-awards-ul'
         );
         $document.on('change', '#practice_award_other', function() {
-            showOtherAwardFields();
+            showOtherAwardsFields();
         });
 
         attachTrashListener(
@@ -23,18 +23,45 @@
         );
     }
 
+    function attachShowOtherCategoriesFields() {
+        observePracticeEditorLiArrival(
+            $document,
+            '.practice-editor-other-categories-li',
+            '.practice-editor-categories-ul'
+        );
+        $document.on('change', '#category_other', function() {
+            showOtherCategoriesFields();
+        });
+
+        attachTrashListener(
+            $document,
+            '#other_categories_container',
+            '.practice-editor-other-categories-li'
+        );
+    }
+
+
     function loadPracticeIntroductionFunctions() {
         attachFacilitySelectListener();
         attachShowOtherAwardFields();
+        attachShowOtherCategoriesFields();
     }
 
     $document.on('turbolinks:load', loadPracticeIntroductionFunctions);
 })(window.jQuery);
 
-function showOtherAwardFields() {
+function showOtherAwardsFields() {
     if (document.getElementById('practice_award_other').checked) {
         document.getElementById('other_awards_container').style.display = 'block';
     } else {
         document.getElementById('other_awards_container').style.display = 'none';
+    }
+}
+
+function showOtherCategoriesFields() {
+    if (document.getElementById('category_other').checked) {
+        document.getElementById('other_categories_container').style.display = 'block';
+    } else {
+        document.getElementById('other_categories_container').style.display = 'none';
     }
 }

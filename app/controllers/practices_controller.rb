@@ -130,7 +130,7 @@ class PracticesController < ApplicationController
   # PATCH/PUT /practices/1
   # PATCH/PUT /practices/1.json
   def update
-
+    debugger
     current_endpoint = request.referrer.split('/').pop
     updated = true
     #raise params.inspect
@@ -454,6 +454,7 @@ class PracticesController < ApplicationController
                                      category: {},
                                      practice_award: {},
                                      practice_awards_attributes: [:id, :_destroy, :name],
+                                     practice_categories_attributes: [:id, :_destroy, :name],
                                      practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :facility_type, :initiating_department_office_id],
                                      practice_metrics_attributes: [:id, :_destroy, :description]
     )
