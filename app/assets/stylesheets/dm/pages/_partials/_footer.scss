@@ -20,11 +20,4 @@ footer {
       }
     }
   }
-
-  .dm-return-to-top {
-    &:hover, &:focus, &:active {
-      text-decoration: none;
-      color: $dm-color-blue-50v;
-    }
-  }
 }

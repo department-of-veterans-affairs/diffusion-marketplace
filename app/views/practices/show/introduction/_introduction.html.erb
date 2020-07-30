@@ -21,7 +21,7 @@
       <%# practice main display image %>
       <% if has_main_img %>
         <img
-          class="dm-thumbnail-image float-right desktop:grid-col-4 grid-col-12 margin-bottom-2 desktop:margin-left-2"
+          class="dm-thumbnail-image desktop:grid-col-4 grid-col-12 margin-bottom-2 desktop:margin-left-2"
           src="<%= @practice.main_display_image_s3_presigned_url(:thumb) %>"
           alt="<%= @practice.name %> main image"/>
       <% end %>
@@ -78,9 +78,9 @@
               <% if origin_display_name(@practice).length > 180 %>
                 <span id="origin_facility_truncated"><%= origin_display_name_trunc(@practice) %></span>
                 <span id="dots">...</span>
-                <span id="more_text">
+                <span id="more_text" class="display-none">
                   <%= origin_display_name_trunc(@practice, 0, 99999) %>
-                </span><a class="dm-unstyled-btn-primary" href="" onclick="seeMoreText(); return false" id="seeMore">See more</a>
+                </span><a class="usa-button--unstyled dm-btn-primary font-sans-3xs" href="" onclick="seeMoreText(); return false" id="seeMore">See more</a>
               <% else %>
                 <%= origin_display_name(@practice) %>
               <% end %>
@@ -116,7 +116,7 @@
             <span id="more_text_award">
                 <%= all_awards %>
             </span>
-            <button class="usa-button usa-button--unstyled font-sans-3xs"
+            <button class="usa-button--unstyled dm-btn-primary font-sans-3xs"
                     onclick="seeMoreTextAwards(); return false;"
                     id="seeMore_award">
               See more

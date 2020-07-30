@@ -46,22 +46,16 @@
 
     if (isUpload) {
       $uploadBtnLabel.text('Upload new image');
-      $uploadBtnLabel.addClass('dm-unstyled-btn-primary');
-      $uploadBtnLabel.removeClass('usa-button usa-button--outline');
+      $uploadBtnLabel.addClass('usa-button--unstyled');
+      $uploadBtnLabel.removeClass('usa-button--outline');
       $deleteBtnLabel.removeClass('display-none');
       $imgDeleteInput.removeClass('display-none');
-      if (imgType === 'user') {
-        $uploadBtnLabel.removeClass('padding-2')
-      }
     } else {
       $uploadBtnLabel.text('Upload image');
-      $uploadBtnLabel.addClass('usa-button usa-button--outline');
+      $uploadBtnLabel.addClass('usa-button--outline');
       $deleteBtnLabel.addClass('display-none');
       $imgDeleteInput.addClass('display-none');
-      $uploadBtnLabel.removeClass('dm-unstyled-btn-primary');
-      if (imgType === 'user') {
-        $uploadBtnLabel.addClass('padding-2')
-      }
+      $uploadBtnLabel.removeClass('usa-button--unstyled');
     }
   }
 

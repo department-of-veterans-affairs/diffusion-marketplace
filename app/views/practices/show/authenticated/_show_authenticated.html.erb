@@ -81,7 +81,7 @@
   <div class="grid-container position-relative">
     <% if @practice.user_id == current_user.id || current_user.roles.any? %>
       <div class="text-right position-absolute edit-practice-link">
-        <%= link_to 'Edit', practice_instructions_path(@practice), class: 'usa-button usa-button--outline margin-right-0' %>
+        <%= link_to 'Edit', practice_instructions_path(@practice), class: 'usa-button--outline dm-btn-primary margin-right-0' %>
       </div>
     <% end %>
     <div class="grid-row grid-gap">
@@ -114,7 +114,6 @@
     </div>
   </div>
 </section>
-<%#<div class="dm-background-triangle-bottom "></div>%>
 <!-- "Origin of this Practice" section -->
 <% unless !@practice.origin_story || !@practice.origin_title %>
   <section class="padding-bottom-2 margin-bottom-5">
@@ -143,7 +142,7 @@
           <div class="margin-bottom-3 impact-section practice-section">
             <div class="grid-row flex-align-center">
               <h2 id="impact" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205 nav-header">Impact</h2>
-              <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest section-line">
+              <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest dm-section-line">
             </div>
             <% if @practice.diffusion_histories.any? %>
               <%= render partial: 'diffusion_map' %>
@@ -170,7 +169,7 @@
         <div class="desktop:grid-col-9 grid-col-12 p0">
           <div class="grid-row flex-align-center margin-bottom-30px">
             <h2 class="font-sans-xl text-bold margin-y-0 flex-auto margin-right-205">Documentation</h2>
-            <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest section-line">
+            <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest dm-section-line">
           </div>
           <% if @practice.additional_documents.any? %>
             <h3 class="font-sans-lg margin-top-0 margin-bottom-1">Downloads</h3>

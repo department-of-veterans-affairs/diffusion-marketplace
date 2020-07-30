@@ -11,9 +11,9 @@
             const end_month_el = document.getElementById('date_ended_month');
             const end_year_el = document.getElementById('date_ended_year');
             const facility_el = document.getElementById('editor_facility_select');
-            end_month_el.classList.add('dm-color-disabled');
+            end_month_el.classList.add('dm-color-gray-20');
             end_month_el.disabled = true;
-            end_year_el.classList.add('dm-color-disabled');
+            end_year_el.classList.add('dm-color-gray-20');
             end_year_el.disabled = true;
             facility_el.style.color = FACILITY_SELECT_DISABLED_COLOR;
             facility_el.disabled = true;

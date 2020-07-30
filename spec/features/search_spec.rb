@@ -30,7 +30,7 @@ describe 'Search', type: :feature do
   def update_practice_introduction(practice)
     login_as(@admin, :scope => :user, :run_callbacks => false)
     visit practice_introduction_path(practice)
-    find('.add-practice-originating-facilities-link').click
+    find('.dm-add-practice-originating-facilities-link').click
     last_fac_field = find_all('.practice-editor-origin-facility-li').last
     last_fac_state_select = last_fac_field.find('select[id*="editor_state_select"]')
     last_fac_fac_select = last_fac_field.find('select[id*="facility_id"]')

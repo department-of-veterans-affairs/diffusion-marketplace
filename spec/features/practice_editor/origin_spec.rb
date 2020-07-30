@@ -104,7 +104,7 @@ describe 'Practice editor', type: :feature, js: true do
             fill_in_creator_fields
             @save_button.click
 
-            find('.origin-trash').click
+            find('.dm-origin-trash').click
             @save_button.click
 
             expect(page).to have_field('Name:', with: nil)

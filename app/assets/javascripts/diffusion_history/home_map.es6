@@ -269,17 +269,17 @@ function openMarkerModal(id) {
 
 function addHiddenClass(selector) {
     $(selector).removeClass('display-block');
-    $(selector).addClass('hidden');
+    $(selector).addClass('display-none');
 }
 
 function removeHiddenClass(selector) {
-    $(selector).removeClass('hidden');
+    $(selector).removeClass('display-none');
     $(selector).addClass('display-block');
 }
 
 function toggleFilterResultsAndFilterCloseButtons() {
     let resultsTrigger = '#filterResultsTrigger';
-    let  filterClose = '#filterClose';
+    let filterClose = '#filterClose';
 
     $(document).on('click', resultsTrigger, () => {
         addHiddenClass(resultsTrigger);

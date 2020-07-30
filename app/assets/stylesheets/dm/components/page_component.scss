@@ -1,57 +1,40 @@
 @import "../../dm/variables/colors";
-body {
-  p.ql-align-justify {
-    margin-bottom: 16px;
+@import "../../dm/components/links";
 
-    a {
-      color: $dm-color-blue-50v;
-      
-      //&:visited {
-      //  color: $dm-color-primary-vivid;
-      //}
-    }
-  }
-}
-
-.pb-link {
-  color: $dm-color-blue-50v!important;
-  text-decoration: underline !important;
-
-  &:hover {
-    color: $dm-color-blue-50v !important;
-  }
-
-  &:active {
-    color: $dm-color-blue-70v !important;
-  }
-
-  &:visited {
-    color: $dm-alt-visited-purple !important;
-  }
-}
-
-.page-content {
-  p {
-    margin-top: 1em;
-    margin-bottom: 1em;
+.dm-page-content {
+  p, li {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
     line-height: 1.53;
 
+    &.ql-align-justify {
+      display: flex;
+      justify-content: center;
+
+      > p, span, a, li, blockquote, pre, strong, em, u {
+        display: flex;
+        justify-content: center;
+      }
+    }
+
+    &.ql-align-center {
+      text-align: center;
+
+      > p, span, a, li, blockquote, pre, strong, em, u {
+        text-align: center;
+      }
+    }
+
+    &.ql-align-right {
+      text-align: right;
+
+      > p, span, a, li, blockquote, pre, strong, em, u {
+        text-align: right;
+      }
+    }
+
     a {
-      color: $dm-color-blue-50v !important;
-      text-decoration: underline !important;
-
-      &:hover {
-        color: $dm-color-blue-50v !important;
-        text-decoration: none !important;
-      }
-
-      &:active {
-        color: $dm-color-blue-70v !important;
-      }
-
-      &:visited {
-        color: $dm-alt-visited-purple !important;
-      }
+      @extend .dm-external-link;
     }
   }
 }

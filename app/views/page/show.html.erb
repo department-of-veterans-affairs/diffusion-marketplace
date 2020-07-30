@@ -7,7 +7,7 @@
 
 <% page_narrow_classes = 'grid-col-8 margin-x-auto' if @page.narrow? %>
 
-<div class="dm-background-white">
+<div class="bg-white">
   <section class="grid-container">
     <div id="page-<%= @page.id %>" class="<%= 'display-none' unless @page.is_visible %> <%= @page.narrow? ? page_narrow_classes : 'grid-col-10' %> margin-bottom-5">
       <h1 class="font-sans-2xl margin-bottom-3">
@@ -17,7 +17,7 @@
         <%= @page.description %>
       </p>
     </div>
-    <div class="page-content">
+    <div class="dm-page-content">
       <% @page.page_components.each do |pc| %>
         <% component = pc.component_type.constantize.find(pc.component_id) %>
 
@@ -31,28 +31,34 @@
         <%# Page Header 2 %>
         <% case pc.component_type when 'PageHeader2Component' %>
           <div class="grid-row margin-bottom-3">
-            <div class="grid-col-8 <%= 'margin-x-auto' if @page.narrow? %> heading2_subtopic_title"><%= component.subtopic_title %></div>
+            <h2 class="grid-col-8 font-sans-xl <%= 'margin-x-auto' if @page.narrow? %>">
+              <%= component.subtopic_title %>
+            </h2>
             <% if component.subtopic_description.present? %>
-              <div class="grid-col-8 <%= 'margin-x-auto' if @page.narrow? %> heading2_subtopic_description x1-top">
+              <div class="grid-col-8 font-sans-sm <%= 'margin-x-auto' if @page.narrow? %> x1-top">
                 <%= component.subtopic_description %>
               </div>
             <% end %>
           </div>
 
-          <%# Page Header 3 %>
+        <%# Page Header 3 %>
         <% when 'PageHeader3Component' %>
           <div class="<%= page_narrow_classes %> margin-bottom-3">
-            <h3 class="font-sans-lg text-<%= component.alignment.downcase %> "><%= component.title %></h3>
+            <h3 class="font-sans-lg text-<%= component.alignment.downcase %>">
+              <%= component.title %>
+            </h3>
             <% if component.description.present? %>
               <div class="<%= @page.narrow? ? 'grid-col-12' : 'grid-col-8' %> x1-top line-height-sans-505">
                 <%= component.description %>
               </div>
             <% end %>
           </div>
-          <%# Page Header 3 %>
+
+        <%# Page Horizontal Line %>
         <% when 'PageHrComponent' %>
-          <hr class="flex-fill border border-base-lighter bg-base-lightest section-line margin-top-0 margin-bottom-3 <%= page_narrow_classes %>">
-          <%# Accordion %>
+          <hr class="flex-fill border border-base-lighter bg-base-lightest dm-section-line margin-top-0 margin-bottom-3 <%= page_narrow_classes %>">
+
+        <%# Accordion %>
         <% when 'PageAccordionComponent' %>
           <div class="<%= page_narrow_classes %>">
             <div class="usa-accordion margin-bottom-3">
@@ -79,21 +85,21 @@
             </div>
             <a href="<%= component.url %>"
                target="<%= get_link_target_attribute(component.url) %>"
-               class="usa-button height-7 x0 display-grid-align-items-center page-cta-hyperlink text-no-underline">
-              <span class="fw-bold font-sans-xs-2 display-grid-align-items-center text-no-underline">
+               class="usa-button dm-btn-primary">
+              <span class="font-sans-xs-2">
                 <%= component.button_text %>
               </span>
             </a>
           </div>
 
-          <%# Image %>
+        <%# Image %>
         <% when 'PageImageComponent' %>
           <div class="grid-row margin-bottom-3 <%= get_grid_alignment_css_class(component.alignment.downcase) %> <%= page_narrow_classes %>">
             <img class="width-auto maxh-15rem" src="<%= component.page_image_s3_presigned_url %>" alt="<%= component.alt_text %>"/>
           </div>
 
-          <%# Practice List %>
-          <%# note: everything EXCEPT Practice List has the page_narrow_classes applied %>
+        <%# Practice List %>
+        <%# note: everything EXCEPT Practice List has the page_narrow_classes applied %>
         <% when 'PagePracticeListComponent' %>
           <% practices_ids = component.practices %> <%# array of id strings %>
           <div class="grid-row grid-gap x1-bottom">
@@ -108,32 +114,32 @@
             <% end %>
           </div>
 
-          <%# Subpage Hyperlink %>
+        <%# Subpage Hyperlink %>
         <% when 'PageSubpageHyperlinkComponent' %>
           <div class="grid-row margin-bottom-3  grid-col-8 <%= 'margin-x-auto' if @page.narrow? %>">
-            <a href="<%= component.url %>" class="width-100 page-subpage-hyperlink text-no-underline">
-              <h2 class="font-sans-xl display-inline underline x0-top"><%= component.title %></h2>
+            <a href="<%= component.url %>" class="width-100 dm-internal-link">
+              <h2 class="font-sans-xl display-inline x0-top"><%= component.title %></h2>
               <span class="x0-5-left fas fa-chevron-right fa-icon-125 vertical-align-middle p1-bottom"></span>
             </a>
             <% if component.description.present? %>
-              <div class="font-sans-sm x1-top width-100 heading2_subtopic_description">
+              <div class="font-sans-sm x1-top width-100">
                 <%= component.description %>
               </div>
             <% end %>
           </div>
 
-          <%# YouTube Player %>
+        <%# YouTube Player %>
         <% when 'PageYouTubePlayerComponent' %>
           <div class="grid-row margin-bottom-3  <%= page_narrow_classes %>">
             <%= youtube_embed(component.url) %>
             <% if component.caption.present? %>
-              <div class="font-sans-2xs line-height-135 margin-top-1 width-100 line-height-15px pb-youtube-caption">
+              <div class="font-sans-2xs line-height-135 margin-top-1 width-100 line-height-15px">
                 <span class="text-bold">ABOVE:</span> <%= component.caption %>
               </div>
             <% end %>
           </div>
 
-          <%# Downloadable File %>
+        <%# Downloadable File %>
         <% when 'PageDownloadableFileComponent' %>
           <%
             description = component.description
@@ -142,7 +148,7 @@
           %>
           <div class="grid-row <%= page_narrow_classes %> <%= next_component != nil && next_component.component_type == pc.component_type ? 'margin-bottom-1' : 'margin-bottom-3 ' %> font-sans-sm line-height-162">
             <%= content_tag(:span, description, class: 'margin-right-1') if description != '' %>
-            <%= link_to component.attachment_s3_presigned_url, class: 'pb-link', target: '_blank', download: display_name != '' ? display_name : component.attachment_file_name do %>
+            <%= link_to component.attachment_s3_presigned_url, class: 'dm-external-link', target: '_blank', download: display_name != '' ? display_name : component.attachment_file_name do %>
               <i class="far fa-file margin-right-1"></i><%= display_name != '' ? display_name : component.attachment_file_name %>
             <% end %>
           </div>
