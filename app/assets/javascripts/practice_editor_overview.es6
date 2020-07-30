@@ -115,39 +115,70 @@
         });
     }
 
+    function showCurrentlySelectedOptions(currentSelectForm){
+        $(`#${currentSelectForm}`).show();
+        $(`#${currentSelectForm} :input`).prop("disabled", false);
+    }
+
+    function hideOtherSelectForms(formsToHide){
+        formsToHide.forEach(f => {
+            $(`#${f}`).hide();
+            $(`#${f} :input`).prop("disabled", true);
+        });
+    }
+
     function toggleInputsOnRadioSelect() {
         $(document).on('click', '#initiating_facility_type_facility, #initiating_facility_type_visn, #initiating_facility_type_department, #initiating_facility_type_other', function() {
-            disableOptions();
+            //disableOptions();
             if ($(`${facilityOption}:checked`).length > 0) {
-                enableCurrentlySelectedOption('editor_state_select');
-                disableOtherFacilityInputOptions('editor_visn_select editor_department_select editor_office_state_select editor_office_select practice_initiating_facility_other')
+                showCurrentlySelectedOptions('facility_select_form');
+                showCurrentlySelectedOptions('more_facilities_container');
+                hideOtherSelectForms(['visn_select_form', 'office_select_form', 'other_select_form' ]);
             } else if ($(`${visnOption}:checked`).length > 0) {
-                enableCurrentlySelectedOption('editor_visn_select');
-                disableOtherFacilityInputOptions('editor_state_select editor_facility_select editor_department_select editor_office_state_select editor_office_select practice_initiating_facility_other')
+                showCurrentlySelectedOptions('visn_select_form');
+                hideOtherSelectForms(['facility_select_form', 'office_select_form', 'other_select_form', 'more_facilities_container' ]);
             } else if ($(`${departmentOption}:checked`).length > 0) {
-                enableCurrentlySelectedOption('editor_department_select');
-                disableOtherFacilityInputOptions('editor_state_select editor_facility_select editor_visn_select practice_initiating_facility_other')
+                showCurrentlySelectedOptions('office_select_form');
+                hideOtherSelectForms(['facility_select_form', 'visn_select_form', 'other_select_form', 'more_facilities_container' ]);
             } else {
-                enableCurrentlySelectedOption('practice_initiating_facility_other')
-                disableOtherFacilityInputOptions('editor_state_select editor_facility_select editor_visn_select editor_department_select editor_office_state_select editor_office_select')
+                showCurrentlySelectedOptions('other_select_form');
+                hideOtherSelectForms(['facility_select_form', 'visn_select_form', 'office_select_form', 'more_facilities_container' ]);
             }
         })
     }
+
+    function toggleInputsOnLoad() {
+        if(selectedFacilityType !== 'other'){
+            document.getElementById('initiating_facility_other').value = "";
+        }
+        if (selectedFacilityType == 'facility') {
+            showCurrentlySelectedOptions('facility_select_form');
+            hideOtherSelectForms(['visn_select_form', 'office_select_form', 'other_select_form' ]);
+        } else if (selectedFacilityType == 'visn') {
+            showCurrentlySelectedOptions('visn_select_form');
+            hideOtherSelectForms(['facility_select_form', 'office_select_form', 'other_select_form', 'more_facilities_container' ]);
+        } else if (selectedFacilityType == 'department') {
+            showCurrentlySelectedOptions('office_select_form');
+            hideOtherSelectForms(['facility_select_form', 'visn_select_form', 'other_select_form', 'more_facilities_container' ]);
+        } else {
+            showCurrentlySelectedOptions('other_select_form');
+            hideOtherSelectForms(['facility_select_form', 'visn_select_form', 'office_select_form', 'more_facilities_container' ]);
+        }
+    }
+
+
 
     function loadPracticeEditorFunctions() {
         countCharsOnPageLoad();
         maxCharacters();
         uncheckAllPartnerBoxes();
         uncheckNoneOptionIfAnotherOptionIsChecked();
-        disableOptions();
         toggleInputsOnRadioSelect();
+        toggleInputsOnLoad();
 
         // relies on `_facilitySelect.js` utility file to be loaded prior to this file
         filterFacilitiesOnRadioSelect(facilityData);
         getFacilitiesByState(facilityData);
-        if(selectedFacility !== "false" && selectedFacility !== "") {
-            selectFacility(facilityData, selectedFacility);
-        }
 
         // relies on `_visnSelect.js` utility file to be loaded prior to this file
         if (selectedVisn !== "false" && selectedVisn !== "") {

@@ -21,8 +21,8 @@ describe 'Practice editor', type: :feature do
     it 'should interact with practice adoptions' do
       # it should be there
       expect(page).to have_content('Adoptions')
-      expect(page).to have_link(class: 'editor-back-to-link', href: practice_overview_path(@practice))
-      expect(page).to have_link(class: 'editor-continue-link', href: practice_origin_path(@practice))
+      expect(page).to have_link(class: 'editor-back-to-link', href: practice_introduction_path(@practice))
+      expect(page).to have_link(class: 'editor-continue-link', href: practice_overview_path(@practice))
 
       # new entry form should clear the entry when "Clear entry" is clicked
       find('button[aria-controls="a0"]').click
@@ -47,7 +47,7 @@ describe 'Practice editor', type: :feature do
 
       # it should update the overview section with the correct number of facility adoptions
       visit practice_path(@practice)
-      expect(page).to have_content('1 facility has adopted this practice')
+      expect(page).to have_content('1 in-progress')
 
       # make another one
       visit practice_adoptions_path(@practice)
@@ -58,7 +58,7 @@ describe 'Practice editor', type: :feature do
       find('#adoption_form_submit').click
 
       visit practice_path(@practice)
-      expect(page).to have_content('2 facilities have adopted this practice')
+      expect(page).to have_content('2 in-progress')
 
       # it shouldn't let the system create the same facility twice for a practice
       visit practice_adoptions_path(@practice)
@@ -129,7 +129,7 @@ describe 'Practice editor', type: :feature do
       # it shouldn't count "Unsuccessful" status adoptions
       visit practice_path(@practice)
       # it would say "3" here if the "Unsuccessful" were counted
-      expect(page).to have_content('2 facilities have adopted this practice')
+      expect(page).to have_content('1 completed, 1 in-progress 1 unsuccessful')
 
       # it should let the system update delete an adoption entry
       visit practice_adoptions_path(@practice)

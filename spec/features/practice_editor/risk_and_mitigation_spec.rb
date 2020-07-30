@@ -22,7 +22,6 @@ describe 'Practice editor', type: :feature, js: true do
     end
 
     it 'should be there' do
-      expect(page).to have_content('Checklist')
       expect(page).to have_link(href: practice_timeline_path(@practice))
       expect(page).to have_link(href: practice_contact_path(@practice))
     end

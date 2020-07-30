@@ -25,6 +25,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   background-color: $dm-color-white;
 }
 
+.dm-background-gray-2 {
+  background-color: $dm-color-gray-2;
+}
+
 .dm-background-light-black {
   background-color: $dm-color-light-black !important;
 }
@@ -292,10 +296,6 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .display-inline-block {
   display: inline-block !important;
-}
-
-.display-block {
-  display: block !important;
 }
 
 .display-grid,
@@ -967,11 +967,11 @@ ul.no-list-style {
 
 /* Breaking/Truncating lines */
 
-.hyphens-auto {
+.dm-hyphens-auto {
   hyphens: auto;
 }
 
-.word-break-break-word {
+.dm-word-break-break-word {
   word-break: break-word;
 }
 
@@ -1106,4 +1106,116 @@ ul.no-list-style {
 .enabled-input {
   color: initial !important;
   border-color: initial !important;
+}
+
+/* links, icons, buttons */
+.dm-internal-link {
+  color: $dm-color-base !important;
+  text-decoration: underline !important;
+
+  &:visited, &:hover, &:active {
+    text-decoration: underline !important;
+  }
+
+  &:hover, &:active {
+    cursor: pointer !important;
+  }
+
+  &:visited {
+    color: $dm-color-base !important;
+  }
+
+  &:hover {
+    color: $dm-color-blue-50v !important;
+  }
+
+  &:active {
+    color: $dm-color-blue-70v !important;
+  }
+}
+
+.dm-icon-link {
+  color: $dm-color-blue-50v !important;
+
+  &:visited {
+    color: $dm-color-blue-50v !important;
+  }
+
+  &:hover, &:active {
+    cursor: pointer !important;
+  }
+
+  &:hover {
+    color: $dm-color-blue-70v !important;
+  }
+
+  &:active {
+    color: $dm-color-blue-80v !important;
+  }
+}
+
+.dm-unstyled-btn-primary {
+  text-decoration: underline !important;
+  color: $dm-color-blue-50v !important;
+
+  &:visited {
+    color: $dm-color-blue-50v !important;
+  }
+
+  &:hover, &:active {
+    cursor: pointer !important;
+    text-decoration: underline !important;
+  }
+
+  &:hover {
+    color: $dm-color-blue-70v !important;
+  }
+
+  &:active {
+    color: $dm-color-blue-80v !important;
+  }
+}
+
+.dm-unstyled-btn-primary {
+  text-decoration: underline !important;
+  color: $dm-color-blue-50v !important;
+
+  &:visited {
+    color: $dm-color-blue-50v !important;
+  }
+
+  &:hover, &:active {
+    cursor: pointer !important;
+    text-decoration: underline !important;
+  }
+
+  &:hover {
+    color: $dm-color-blue-70v !important;
+  }
+
+  &:active {
+    color: $dm-color-blue-80v !important;
+  }
+}
+
+.dm-unstyled-btn-secondary {
+  text-decoration: underline !important;
+  color: $dm-color-red-50v !important;
+
+  &:visited {
+    color: $dm-color-red-50v !important;
+  }
+
+  &:hover, &:active {
+    cursor: pointer !important;
+    text-decoration: underline !important;
+  }
+
+  &:hover {
+    color: $dm-color-red-60v !important;
+  }
+
+  &:active {
+    color: $dm-color-red-70v !important;
+  }
 }

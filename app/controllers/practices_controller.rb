@@ -130,11 +130,31 @@ class PracticesController < ApplicationController
   def update
     current_endpoint = request.referrer.split('/').pop
     updated = true
+    #raise params.inspect
     if params[:practice].present?
+      if params[:practice][:initiating_facility_type].present?
+        facility_type = params[:practice][:initiating_facility_type]
+        if facility_type == "facility"
+          @practice.initiating_facility = params[:editor_facility_select]
+          @practice.initiating_department_office_id = ""
+        elsif facility_type == "visn"
+          @practice.initiating_facility = params[:editor_visn_select]
+          @practice.initiating_department_office_id = ""
+        elsif facility_type == "department"
+          @practice.initiating_facility = params[:editor_office_select]
+          @practice.initiating_department_office_id = params[:initiating_department_office_id]
+        elsif facility_type == "other"
+          @practice.initiating_facility = params[:initiating_facility_other]
+          @practice.initiating_department_office_id = ""
+        end
+      end
       pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
       updated = SavePracticeService.new(pr_params).save_practice
+      if facility_type != "facility"
+        origin_facilities = @practice.practice_origin_facilities
+        origin_facilities.destroy_all
+      end
     end
-
     respond_to do |format|
       if updated
         if updated.is_a?(StandardError)
@@ -260,6 +280,7 @@ class PracticesController < ApplicationController
   # /practices/slug/introduction
   def introduction
     set_practice
+      #@office_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_office_lookup.json"))
   end
 
   # GET /practices/1/origin
@@ -307,7 +328,6 @@ class PracticesController < ApplicationController
       pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
       updated = SavePracticeService.new(pr_params).save_practice
     end
-
     respond_to do |format|
       if can_publish
         # if there is an error with updating the practice, alert the user
@@ -405,8 +425,9 @@ class PracticesController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def practice_params
     params.require(:practice).permit(:need_training, :short_name, :tagline, :process, :it_required, :need_new_license, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :cost_to_implement_aggregate, :sustainability_aggregate, :veteran_satisfaction_aggregate, :difficulty_aggregate, :date_initiated,
-                                     :number_adopted, :number_departments, :number_failed, :implementation_time_estimate, :implementation_time_estimate_description, :implentation_summary, :implentation_fte, :initiating_department_office_id, :initiating_facility_type,
-                                     :training_provider, :training_length, :training_test, :training_provider_role, :required_training_summary, :support_network_email, :initiating_facility_other,
+                                     :number_adopted, :number_departments, :number_failed, :implementation_time_estimate, :implementation_time_estimate_description, :implentation_summary, :implentation_fte,
+                                     :training_provider, :training_length, :training_test, :training_provider_role, :required_training_summary, :support_network_email,
+                                     :initiating_facility_type, :initiating_department_office_id,
                                      :main_display_image, :crop_x, :crop_y, :crop_h, :crop_w,
                                      :delete_main_display_image,
                                      :origin_picture, :origin_picture_original_w, :origin_picture_original_h, :origin_picture_crop_x, :origin_picture_crop_y, :origin_picture_crop_w, :origin_picture_crop_h,
@@ -419,9 +440,17 @@ class PracticesController < ApplicationController
                                      timelines_attributes: [:id, :description, :timeline, :_destroy, :position, milestones_attributes: [:id, :description, :_destroy]],
                                      va_employees_attributes: [:id, :name, :role, :position, :_destroy, :avatar, :crop_x, :crop_y, :crop_w, :crop_h, :delete_avatar],
                                      additional_staffs_attributes: [:id, :_destroy, :title, :hours_per_week, :duration_in_weeks, :permanent],
-                                     additional_resources_attributes: [:id, :_destroy, :name, :position, :description], required_staff_trainings_attributes: [:id, :_destroy, :title, :description], practice_creators_attributes: [:id, :_destroy, :name, :role, :avatar, :position, :delete_avatar, :crop_x, :crop_y, :crop_w, :crop_h],
-                                     publications_attributes: [:id, :_destroy, :title, :link, :position], additional_documents_attributes: [:id, :_destroy, :attachment, :title, :position], practice_permissions_attributes: [:id, :_destroy, :position, :name, :description],
-                                     practice_partner: {}, department: {})
+                                     additional_resources_attributes: [:id, :_destroy, :name, :position, :description],
+                                     required_staff_trainings_attributes: [:id, :_destroy, :title, :description],
+                                     practice_creators_attributes: [:id, :_destroy, :name, :role, :avatar, :position, :delete_avatar, :crop_x, :crop_y, :crop_w, :crop_h],
+                                     publications_attributes: [:id, :_destroy, :title, :link, :position],
+                                     additional_documents_attributes: [:id, :_destroy, :attachment, :title, :position],
+                                     practice_permissions_attributes: [:id, :_destroy, :position, :name, :description],
+                                     practice_partner: {},
+                                     department: {},
+                                     practice_award: {},
+                                     practice_awards_attributes: {},
+                                     practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :facility_type, :initiating_department_office_id ])
   end
 
   def can_view_practice
@@ -471,6 +500,10 @@ class PracticesController < ApplicationController
 
   def set_initiating_facility_other
     @initiating_facility_other = @practice.initiating_facility if @practice.other?
+  end
+
+  def set_office_data
+    @office_data = facilities_json.find{|f|f['']}
   end
 
   def can_view_committed_view
@@ -531,6 +564,10 @@ class PracticesController < ApplicationController
   end
 
   def can_publish
-    @practice.name.present? && @practice.tagline.present? && @practice.initiating_facility.present? && @practice.date_initiated.present? && @practice.summary.present? && @practice.support_network_email.present?
+    if @practice.name.present? && @practice.initiating_facility_type.present? && @practice.date_initiated.present? && @practice.summary.present? && @practice.support_network_email.present?
+      @practice.facility? ? @practice.practice_origin_facilities.present? : @practice.initating_facility.present?
+    else
+      false
+    end
   end
 end

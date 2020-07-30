@@ -5,7 +5,7 @@
 <% @practice.timelines.order(position: :asc).each_with_index do |t, i| %>
     <div class="timeline">
       <div class="bg-white padding-y-05"><i class="fas fa-circle fa-2x text-primary-darker"></i><span class="timeline-number"></span></div>
-      <div class="hyphens-auto word-break-break-word padding-bottom-205 timeline-and-milestone-container">
+      <div class="dm-hyphens-auto dm-word-break-break-word padding-bottom-205 timeline-and-milestone-container">
         <h2 class="margin-top-0 margin-left-6"><%= t.timeline %></h2>
         <ul class="margin-left-6 padding-0 margin-y-1">
           <% t.milestones.each do |m| %>

@@ -1,5 +1,5 @@
 
-<div class="grid-row word-break-break-word hyphens-auto padding-y-105 border-bottom-1px border-black">
+<div class="grid-row dm-word-break-break-word dm-hyphens-auto padding-y-105 border-bottom-1px border-black">
   <div class="tablet:grid-col-6">
     <p class="text-bold padding-left-105 font-sans-xs-2 line-height-sans-505">Item</p>
   </div>
@@ -7,7 +7,7 @@
     <p class="text-bold padding-left-105 font-sans-xs-2 line-height-sans-505">Level or requirements</p>
   </div>
 </div>
-<div class="grid-row word-break-break-word hyphens-auto padding-y-105 border-bottom-1px border-black">
+<div class="grid-row dm-word-break-break-word dm-hyphens-auto padding-y-105 border-bottom-1px border-black">
   <div class="tablet:grid-col-6 padding-left-105">
     <p class="font-sans-xs-2 line-height-sans-505">Implementation</p>
   </div>
@@ -15,7 +15,7 @@
     <p class="font-sans-xs-2 line-height-sans-505"><%= PracticesHelper::COMPLEXITY_LABELS[@practice.difficulty_aggregate - 1] %></p>
   </div>
 </div>
-<div class="grid-row word-break-break-word hyphens-auto padding-y-105 border-bottom-1px border-black">
+<div class="grid-row dm-word-break-break-word dm-hyphens-auto padding-y-105 border-bottom-1px border-black">
   <div class="tablet:grid-col-6 padding-left-105">
     <p class="font-sans-xs-2 line-height-sans-505">Maintenance and sustainability</p>
   </div>
@@ -23,7 +23,7 @@
     <p class="font-sans-xs-2 line-height-sans-505"><%= PracticesHelper::COMPLEXITY_LABELS[@practice.sustainability_aggregate - 1] %></p>
   </div>
 </div>
-<div class="grid-row word-break-break-word hyphens-auto padding-y-105 border-bottom-1px border-black">
+<div class="grid-row dm-word-break-break-word dm-hyphens-auto padding-y-105 border-bottom-1px border-black">
   <div class="tablet:grid-col-6 padding-left-105">
     <p class="font-sans-xs-2 line-height-sans-505">Departments required</p>
   </div>
@@ -31,7 +31,7 @@
     <p class="font-sans-xs-2 line-height-sans-505"><%= departments_required_display(@practice) %> </p>
   </div>
 </div>
-<div class="grid-row word-break-break-word hyphens-auto padding-y-105 border-bottom-1px border-black">
+<div class="grid-row dm-word-break-break-word dm-hyphens-auto padding-y-105 border-bottom-1px border-black">
   <div class="tablet:grid-col-6 padding-left-105">
     <p class="font-sans-xs-2 line-height-sans-505">IT Involvement</p>
   </div>
@@ -39,7 +39,7 @@
     <p class="font-sans-xs-2 line-height-sans-505"><%= @practice.it_required ? 'Yes' : 'No' %></p>
   </div>
 </div>
-<div class="grid-row word-break-break-word hyphens-auto padding-y-105 border-bottom-1px border-black">
+<div class="grid-row dm-word-break-break-word dm-hyphens-auto padding-y-105 border-bottom-1px border-black">
   <div class="tablet:grid-col-6 padding-left-105">
     <p class="font-sans-xs-2 line-height-sans-505">Job titles required</p>
   </div>
@@ -47,7 +47,7 @@
     <p class="font-sans-xs-2 line-height-sans-505"><%= @practice.additional_staffs.map(&:title).join(', ') %></p>
   </div>
 </div>
-<div class="grid-row word-break-break-word hyphens-auto padding-y-105 border-bottom-1px border-black">
+<div class="grid-row dm-word-break-break-word dm-hyphens-auto padding-y-105 border-bottom-1px border-black">
   <div class="tablet:grid-col-6 padding-left-105">
     <p class="font-sans-xs-2 line-height-sans-505">Hours per week</p>
   </div>
@@ -56,7 +56,7 @@
     <p class="font-sans-xs-2 line-height-sans-505"><%= hpw %> hour<%= hpw == 1 ? '' : 's' %> per week</p>
   </div>
 </div>
-<div class="grid-row word-break-break-word hyphens-auto padding-y-105 border-bottom-1px border-black">
+<div class="grid-row dm-word-break-break-word dm-hyphens-auto padding-y-105 border-bottom-1px border-black">
   <div class="tablet:grid-col-6 padding-left-105">
     <p class="font-sans-xs-2 line-height-sans-505">Duration of job</p>
   </div>
@@ -64,7 +64,7 @@
     <p class="font-sans-xs-2 line-height-sans-505"><%= duration_of_job_display(@practice) %></p>
   </div>
 </div>
-<div class="grid-row word-break-break-word hyphens-auto padding-y-105 border-bottom-1px border-black">
+<div class="grid-row dm-word-break-break-word dm-hyphens-auto padding-y-105 border-bottom-1px border-black">
   <div class="tablet:grid-col-6 padding-left-105">
     <p class="font-sans-xs-2 line-height-sans-505">New or modified approach</p>
   </div>
@@ -72,7 +72,7 @@
     <p class="font-sans-xs-2 line-height-sans-505"><%= @practice.process %></p>
   </div>
 </div>
-<div class="grid-row word-break-break-word hyphens-auto padding-y-105 border-bottom-1px border-black">
+<div class="grid-row dm-word-break-break-word dm-hyphens-auto padding-y-105 border-bottom-1px border-black">
   <div class="tablet:grid-col-6 padding-left-105">
     <p class="font-sans-xs-2 line-height-sans-505">Expected length of implementation</p>
   </div>
@@ -80,7 +80,7 @@
     <p class="font-sans-xs-2 line-height-sans-505"><%= @practice.implementation_time_estimate %></p>
   </div>
 </div>
-<div class="grid-row word-break-break-word hyphens-auto padding-y-105 border-bottom-1px border-black">
+<div class="grid-row dm-word-break-break-word dm-hyphens-auto padding-y-105 border-bottom-1px border-black">
   <div class="tablet:grid-col-6 padding-left-105">
     <p class="font-sans-xs-2 line-height-sans-505">Length of training</p>
   </div>
@@ -88,7 +88,7 @@
     <p class="font-sans-xs-2 line-height-sans-505"><%= @practice.training_length %></p>
   </div>
 </div>
-<div class="grid-row word-break-break-word hyphens-auto padding-y-105 border-bottom-1px border-black">
+<div class="grid-row dm-word-break-break-word dm-hyphens-auto padding-y-105 border-bottom-1px border-black">
   <div class="tablet:grid-col-6 padding-left-105">
     <p class="font-sans-xs-2 line-height-sans-505">Training provider</p>
   </div>
@@ -96,7 +96,7 @@
     <p class="font-sans-xs-2 line-height-sans-505"><%= @practice.training_provider %></p>
   </div>
 </div>
-<div class="grid-row word-break-break-word hyphens-auto padding-y-105 border-bottom-1px border-black">
+<div class="grid-row dm-word-break-break-word dm-hyphens-auto padding-y-105 border-bottom-1px border-black">
   <div class="tablet:grid-col-6 padding-left-105">
     <p class="font-sans-xs-2 line-height-sans-505">Required test</p>
   </div>
@@ -104,7 +104,7 @@
     <p class="font-sans-xs-2 line-height-sans-505"><%= @practice.training_test ? 'Yes' : 'No' %></p>
   </div>
 </div>
-<div class="grid-row word-break-break-word hyphens-auto padding-y-105 border-bottom-1px border-black">
+<div class="grid-row dm-word-break-break-word dm-hyphens-auto padding-y-105 border-bottom-1px border-black">
   <div class="tablet:grid-col-6 padding-left-105">
     <p class="font-sans-xs-2 line-height-sans-505">Required license or certification</p>
   </div>
