@@ -42,6 +42,15 @@
       <span class="text-bold">Origin</span>
     <% end %>
 
+    <% if params[:action] == 'introduction' && params[:controller] == 'practices' %>
+      <span><%= link_to @practice.name, practice_path(@practice) %></span>
+      <span class="x0-5-left x0-5-right">›</span>
+      <span><%= link_to 'Edit', practice_introduction_path(@practice) %></span>
+      <span class="x0-5-left x0-5-right">›</span>
+      <span class="text-bold">Introduction</span>
+    <% end %>
+
+
     <% if params[:action] == 'impact' && params[:controller] == 'practices' %>
       <span><%= link_to @practice.name, practice_path(@practice) %></span>
       <span class="x0-5-left x0-5-right">›</span>

@@ -25,6 +25,8 @@
 | `rails inet_partner_practices:assign_inet_partner` | Assigns the iNET practice partner to practices that have iNET as a partner  |
 | `rails shark_tank_practices:assign_shark_tank_badge` | Assigns the Shark Tank badge to all previous Shark Tank winners  |
 | `rails categories:add_covid_cats` | Adds COVID related categories and assigns them to practices  |
+| `rails practice_origin_facilities:move_practice_initiating_facility` | Moves practice initiating facilities to the practice_origin_facilities table  |
+
 #### Ruby version
 
 - `ruby 2.6.3`
@@ -80,7 +82,7 @@ S3_TEST_BUCKET # Optional
 # Optional
 SESSION_REMEMBER_FOR_IN_DAYS # how long to remember the user for if they check the "Remember me" checkbox. default is 1 day
 SESSION_TIMEOUT_IN_MINUTES # without checking the checkbox, how long the user's session stays alive if they are active. default is 15 minutes
-```  
+```
 
 #### Database creation
 
@@ -106,12 +108,12 @@ SESSION_TIMEOUT_IN_MINUTES # without checking the checkbox, how long the user's 
 ### Set up
 #### Within the command line:
 
-1. Clone this repository 
+1. Clone this repository
 
     `git clone https://github.com/agilesix/diffusion-marketplace.git`
 
 2. Change directory into the newly created project directory
-    
+
     `cd diffusion-marketplace`
 
 3. Install project dependencies
@@ -128,7 +130,7 @@ SESSION_TIMEOUT_IN_MINUTES # without checking the checkbox, how long the user's 
 
 6. In a browser, browse to `http://localhost:3200` to make sure everything built correctly.
 
-## Initial data - Bulk Importer 
+## Initial data - Bulk Importer
 #### pre-requisites:
 Environment Variables
 ```.yaml
@@ -153,6 +155,7 @@ This will run:
 7. `rails shark_tank_practices:assign_shark_tank_badge` - assigns the Shark Tank badge to all previous Shark Tank winners
 8. `rails inet_partner_practices:assign_inet_partner` - assigns the iNET practice partner to practices that have iNET as a partner
 9. `rails categories:add_covid_cats` - adds COVID related categories and assigns them to practices
+10. `rails practice_origin_facilities:move_practice_initiating_facility` - moves practice initiating facilities to the practice_origin_facilities table
 
 To reset all of the data and do the process all over again, run:
 ```bash

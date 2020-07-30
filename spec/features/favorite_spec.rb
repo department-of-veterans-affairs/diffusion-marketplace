@@ -76,7 +76,7 @@ describe 'Favorites', type: :feature do
     describe 'logged out' do
       it 'should not show a favorite link' do
         visit '/practices/the-best-practice-ever'
-        expect(page).not_to have_content('Add to your favorites')
+        expect(page).not_to have_content('Bookmark')
       end
     end
 
@@ -87,21 +87,21 @@ describe 'Favorites', type: :feature do
 
       it 'should show a favorite link' do
         visit '/practices/the-best-practice-ever'
-        expect(page).to have_selector('.favorite-practice-link')
+        expect(page).to have_selector('.dm-favorite-practice-link')
       end
 
       it 'should allow adding a favorite' do
         visit '/practices/a-public-practice'
-        favorite_link = find(:css, '.favorite-practice-link')
+        favorite_link = find(:css, '.dm-favorite-practice-link')
         favorite_link.click
-        expect(favorite_link).to have_content('Remove from your favorites')
+        expect(favorite_link).to have_content('Bookmarked')
       end
 
       it 'should allow removing a favorite' do
         visit '/practices/the-best-practice-ever'
-        favorite_link = find(:css, '.favorite-practice-link')
+        favorite_link = find(:css, '.dm-favorite-practice-link')
         favorite_link.click
-        expect(favorite_link).to have_content('Add to your favorites')
+        expect(favorite_link).to have_content('Bookmark')
       end
     end
   end

@@ -43,9 +43,9 @@ function searchPracticesPage() {
             var favoriteButtonIcon = result.item.user_favorited ? 'fas text-secondary' : 'far';
             var favoriteButton =
                 '<a aria-label="Favorite ' + result.item.name + '" tabindex="-1" aria-hidden="true" class="search-favorite-practice-button" id="favorite-button-' + result.item.id +'" data-remote="true" rel="nofollow" data-method="post" href="/practices/' + result.item.slug + '/favorite.js">' +
-                    '<i class="' + favoriteButtonIcon + ' fa-heart favorite-icon-' + result.item.id + ' text-no-underline"></i>' +
+                    '<i class="' + favoriteButtonIcon + ' fa-heart dm-favorite-icon-' + result.item.id + ' text-no-underline"></i>' +
                 '</a>';
-            resultsHTML += 
+            resultsHTML +=
             '<div class="grid-row search-row radius-sm border-2px border-base-lightest margin-bottom-105 flex-align-center">' +
             '<div class="tablet:grid-col-3">' +
                 '<div class="img-box">' +
@@ -57,7 +57,7 @@ function searchPracticesPage() {
                     '<i class="' + noBackgroundImage + '"></i>' +
                     '</div>' +
                     '</a>' +
-                '</div>' +            
+                '</div>' +
             '</div>' +
             '<div class="tablet:grid-col-9 padding-y-105 padding-right-105 padding-left-4">' +
                 '<h2 class="margin-0 truncate-text-search one-line"><a class="dm-link-title" href="/practices/' + result.item.slug + '">' + result.item.name + '</a></h2>' +

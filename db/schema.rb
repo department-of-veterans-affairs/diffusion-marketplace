@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_17_133257) do
+ActiveRecord::Schema.define(version: 2020_07_01_104356) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -646,6 +646,14 @@ ActiveRecord::Schema.define(version: 2020_06_17_133257) do
     t.index ["practice_id"], name: "index_photo_files_on_practice_id"
   end
 
+  create_table "practice_awards", force: :cascade do |t|
+    t.bigint "practice_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["practice_id"], name: "index_practice_awards_on_practice_id"
+  end
+
   create_table "practice_creators", force: :cascade do |t|
     t.bigint "practice_id"
     t.bigint "user_id"
@@ -678,6 +686,16 @@ ActiveRecord::Schema.define(version: 2020_06_17_133257) do
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "practice_origin_facilities", force: :cascade do |t|
+    t.bigint "practice_id"
+    t.string "facility_id"
+    t.integer "facility_type", default: 0
+    t.integer "initiating_department_office_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["practice_id"], name: "index_practice_origin_facilities_on_practice_id"
   end
 
   create_table "practice_partner_practices", force: :cascade do |t|
@@ -1106,10 +1124,12 @@ ActiveRecord::Schema.define(version: 2020_06_17_133257) do
   add_foreign_key "page_you_tube_player_components", "page_components"
   add_foreign_key "pages", "page_groups"
   add_foreign_key "photo_files", "practices"
+  add_foreign_key "practice_awards", "practices"
   add_foreign_key "practice_creators", "practices"
   add_foreign_key "practice_creators", "users"
   add_foreign_key "practice_management_practices", "practice_managements"
   add_foreign_key "practice_management_practices", "practices"
+  add_foreign_key "practice_origin_facilities", "practices"
   add_foreign_key "practice_partner_practices", "practice_partners"
   add_foreign_key "practice_partner_practices", "practices"
   add_foreign_key "practice_permissions", "practices"

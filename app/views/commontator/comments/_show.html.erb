@@ -91,7 +91,7 @@
             <div class="padding-3">
               <p class="font-sans-md text-normal text-black margin-bottom-2">I am reporting the following comment for being inappropriate:</p>
               <div>
-                <p class="text-normal text-base word-break-break-word hyphens-auto report-comment-body text-italic">
+                <p class="text-normal text-base dm-word-break-break-word dm-hyphens-auto report-comment-body text-italic">
                   "<%= comment.body %>"
                 </p>
               </div>
@@ -110,7 +110,7 @@
         <%= job_title %>
       </div>
 
-      <div id="commontator-comment-<%= comment.id %>-body" class="body word-break-break-word hyphens-auto padding-x-1 padding-y-05">
+      <div id="commontator-comment-<%= comment.id %>-body" class="body dm-word-break-break-word dm-hyphens-auto padding-x-1 padding-y-05">
         <div class="comment-body more"><%= render partial: 'commontator/comments/body', locals: { comment: comment } %></div>
       </div>
     </div>

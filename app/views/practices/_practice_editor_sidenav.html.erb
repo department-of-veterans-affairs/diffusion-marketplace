@@ -1,78 +1,40 @@
 <div class="grid-container position-relative z-top">
-  <div id="dm-practice-nav" class="z-top mobile-hide">
-    <ul id="dm-tabnav" class="usa-sidenav dm-tabnav">
-      <li class="usa-sidenav__item">
-        <%= link_to 'Instructions', practice_instructions_path(@practice), class: 'dm-tab top-tab editor-sidenav-link sidenav-instructions-link' %>
-      </li>
-      <li class="usa-sidenav__item">
-        <%= link_to practice_overview_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-overview-link' do %>
-          <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%= @practice.name && @practice.tagline && @practice.summary && @practice.practice_partners.any? ? 'green-check' : '' %>"></i>Overview
+    <div id="dm-practice-nav" class="z-top mobile-hide">
+
+          <ul id="dm-tabnav" class="usa-sidenav dm-tabnav">
+              <li class="usa-sidenav__item">
+                <%= link_to 'Instructions', practice_instructions_path(@practice), class: "#{'active' if current_page?( practice_instructions_path(@practice))} width-full dm-tab" %>
+              </li>
+            <li class="usa-sidenav__item">
+                <%= link_to 'Introduction', practice_introduction_path(@practice), class: "#{'active' if current_page?( practice_introduction_path(@practice))} dm-tab" %>
+            </li>
+            <li class="usa-sidenav__item">
+                <%= link_to 'Adoptions', practice_adoptions_path(@practice), class: "#{'active' if current_page?( practice_adoptions_path(@practice))} width-full dm-tab" %>
+            </li>
+              <li class="usa-sidenav__item">
+                  <%= link_to 'Overview', practice_overview_path(@practice), class: "#{'active' if current_page?( practice_overview_path(@practice))} width-full dm-tab" %>
+              </li>
+              <li class="usa-sidenav__item">
+                  <%= link_to 'Contact', practice_contact_path(@practice), class: "#{'active' if current_page?( practice_contact_path(@practice))} width-full dm-tab" %>
+              </li>
+              <li class="usa-sidenav__item">
+                  <%= link_to 'Implementation', practice_implementation_path(@practice), class: "#{'active' if current_page?( practice_implementation_path(@practice))} width-full dm-tab" %>
+              </li>
+          </ul>
+
+        <% if params[:action] != 'instructions' && params[:action] != 'adoptions' %>
+          <div class="text-center">
+            <%= button_tag 'Save', class: 'usa-button black usa-button--outline width-full padding-y-2 margin-top-1', id: 'practice-editor-save-button' %>
+          </div>
         <% end %>
-      </li>
-      <li class="usa-sidenav__item">
-        <%= link_to practice_adoptions_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-adoptions-link' do %>
-          <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%= @practice.diffusion_histories.any? ? 'green-check' : '' %>"></i>Adoptions
+        <% if !@practice.published && params[:action] != 'instructions' %>
+          <div class="text-center">
+            <% if params[:action] == 'adoptions' %>
+                <%= link_to 'Publish practice', practice_publication_validation_path(@practice), class: 'usa-button width-full padding-y-2 margin-top-1', id: 'publish-practice-button', method: :patch, remote: true %>
+            <% else %>
+                <%= button_tag 'Publish practice', class: 'usa-button width-full padding-y-2 margin-top-1', id: 'publish-practice-button', data: { form_action: "#{practice_publication_validation_path(@practice)}.js"}%>
+            <% end %>
+          </div>
         <% end %>
-      </li>
-      <li class="usa-sidenav__item">
-        <%= link_to practice_origin_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-origin-link' do %>
-          <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%= @practice.origin_story.present? ? 'green-check' : '' %>"></i>Origin
-        <% end %>
-      </li>
-      <li class="usa-sidenav__item">
-        <%= link_to practice_impact_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-impact-link' do %>
-          <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%= @practice.impact_photos.any? ? 'green-check' : '' %>"></i>Impact
-        <% end %>
-      </li>
-      <li class="usa-sidenav__item">
-        <%= link_to practice_documentation_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-documentation-link' do %>
-          <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 documentation-check"></i>Documentation
-        <% end %>
-      </li>
-      <li class="usa-sidenav__item">
-        <%= link_to practice_resources_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-resources-link' do %>
-          <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%= @practice.cost_to_implement_aggregate != 0 && @practice.cost_to_implement_aggregate.present? ? 'green-check' : '' %>"></i>Resources
-        <% end %>
-      </li>
-      <li class="usa-sidenav__item">
-        <%= link_to practice_complexity_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-complexity-link' do %>
-          <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%= @practice.additional_staffs.any? && @practice.departments.any? && @practice.training_length ? 'green-check' : '' %>"></i>Complexity
-        <% end %>
-      </li>
-      <li class="usa-sidenav__item">
-        <%= link_to practice_timeline_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-timeline-link' do %>
-          <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%= @practice.timelines.any? ? 'green-check' : '' %>"></i>Timeline
-        <% end %>
-      </li>
-      <li class="usa-sidenav__item">
-        <%= link_to practice_risk_and_mitigation_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-risk-miti-link' do %>
-          <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 risk-miti-check"></i>Risk and mitigation
-        <% end %>
-      </li>
-      <li class="usa-sidenav__item">
-        <%= link_to practice_contact_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-contact-link' do %>
-          <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 <%= @practice.va_employees.any? && @practice.support_network_email.present? ? 'green-check' : '' %>"></i>Contact
-        <% end %>
-      </li>
-      <li class="usa-sidenav__item">
-        <%= link_to practice_checklist_path(@practice), class: 'width-full dm-tab practice-editor-link text-middle display-inline-block editor-sidenav-link sidenav-checklist-link' do %>
-          <i class="fas fa-check-circle font-code-lg display-inline-block text-middle padding-right-105 checklist-check"></i>Checklist
-        <% end %>
-      </li>
-    </ul>
-    <% if params[:action] != 'instructions' && params[:action] != 'adoptions' %>
-      <div class="text-center">
-        <%= button_tag 'Save your progress', class: 'usa-button usa-button--outline width-full padding-y-2 margin-top-1', id: 'practice-editor-save-button' %>
-      </div>
-    <% end %>
-    <% if !@practice.published && params[:action] != 'instructions' %>
-      <div class="text-center">
-        <% if params[:action] == 'adoptions' %>
-          <%= link_to 'Publish practice', practice_publication_validation_path(@practice), class: 'usa-button width-full padding-y-2 margin-top-1', id: 'publish-practice-button', method: :patch, remote: true %>
-        <% else %>
-          <%= button_tag 'Publish practice', class: 'usa-button width-full padding-y-2 margin-top-1', id: 'publish-practice-button', data: { form_action: "#{practice_publication_validation_path(@practice)}.js"}%>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
+    </div>
 </div>

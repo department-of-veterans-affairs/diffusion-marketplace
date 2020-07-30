@@ -21,7 +21,7 @@ class Practice < ApplicationRecord
   attr_accessor :three_months_ago_commits
   attr_accessor :delete_main_display_image
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
-  attr_accessor :practice_partner, :department
+  attr_accessor :practice_partner, :department, :practice_award
   attr_accessor :reset_searchable_cache
 
   def clear_searchable_cache
@@ -114,7 +114,7 @@ class Practice < ApplicationRecord
   # has_attached_file :main_display_image, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/:style/missing.png"
 
   # crop the img with custom Paperclip processor located in lib/paperclip_processors/cropper.rb
-  has_attached_file :main_display_image, styles: {thumb: '300x300>'}, :processors => [:cropper]
+  has_attached_file :main_display_image, styles: {thumb: '768x432>'}, :processors => [:cropper]
 
   def main_display_image_s3_presigned_url(style = nil)
     object_presigned_url(main_display_image, style)
@@ -128,7 +128,7 @@ class Practice < ApplicationRecord
 
   PRACTICE_EDITOR_SLUGS =
       {
-          'adoptions': 'overview',
+          'adoptions': 'introduction',
           'impact': 'origin',
           'documentation': 'impact',
           'resources': 'documentation',
@@ -136,8 +136,26 @@ class Practice < ApplicationRecord
           'timeline': 'complexity',
           'risk_and_mitigation': 'timeline',
           'contact': 'risk_and_mitigation',
-          'checklist': 'contact'
+          'checklist': 'contact',
+          'introduction': 'instructions'
       }
+
+  PRACTICE_EDITOR_AWARDS_AND_RECOGNITION =
+      [
+        'Diffusion of Excellence Promising Practice',
+        'FedHealth IT Award',
+        'Gears of Government Winner',
+        'Igniting Innovation Award',
+        'iNET Seed Investee',
+        'iNet Spark Award Investee',
+        'iNET Spread Investee',
+        'QUERI Veterans Choice Act Award',
+        'QUERI VISN Partnered Implementation Initiative',
+        'QUERI Partnered Evaluation Initiative',
+        'Rural Promising Practice',
+        'VHA Shark Tank Winner',
+        'Other'
+      ]
 
 
   validates_attachment_content_type :main_display_image, content_type: /\Aimage\/.*\z/
@@ -203,10 +221,15 @@ class Practice < ApplicationRecord
   has_many :va_secretary_priorities, through: :va_secretary_priority_practices
   has_many :video_files, -> { order(position: :asc) }, dependent: :destroy
   has_many :practice_creators, -> { order(position: :asc) }, dependent: :destroy
+  has_many :practice_awards, -> {order(id: :asc) }, dependent: :destroy
+  has_many :practice_origin_facilities, -> {order(id: :asc) }, dependent: :destroy
 
   # This allows the practice model to be commented on with the use of the Commontator gem
   acts_as_commontable dependent: :destroy
 
+  #accepts_nested_attributes_for :practices_origin_facilities?
+  accepts_nested_attributes_for :practice_origin_facilities, allow_destroy: true, reject_if: proc { |attributes| attributes['facility_id'].blank? }
+  accepts_nested_attributes_for :practice_awards, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
   accepts_nested_attributes_for :practice_partner_practices, allow_destroy: true
   accepts_nested_attributes_for :impact_photos, allow_destroy: true, reject_if: proc { |attributes|
     reject = attributes['description'].blank?
@@ -257,6 +280,19 @@ class Practice < ApplicationRecord
   def number_of_adopted_facilities
     number_adopted
   end
+
+  def number_of_completed_adoptions
+    diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Completed'}).or(diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Implemented'})).or(diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Complete'})).count
+  end
+
+  def number_of_in_progress_adoptions
+    diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'In progress'}).or(diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Planning'})).or(diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Implementing'})).count
+  end
+
+  def number_of_unsuccessful_adoptions
+    diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Unsuccessful'}).count
+  end
+
   def date_range_views(start_date, end_date)
     Ahoy::Event.where_props(practice_id: id).where(time: start_date...end_date).count
   end

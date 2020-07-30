@@ -57,14 +57,31 @@ body {
   align-items: center;
   color: #000000;
 }
-.rectangle21{
-  height: 4px;
-  width: 40px;
+.rectangle21 {
   fill: #1A4480;
   background: #1A4480;
 }
-.svg{
-  margin-top: 24px;
+
+.practice-editor-rect-svg {
   height: 4px;
   width: 40px;
 }
+
+.add_more_facilities_button {
+  background: none!important;
+  border: none;
+  padding: 0!important;
+  /*optional*/
+  //font-family: Public Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 162%;
+  /*input has OS specific font-family*/
+  color: #2672DE;
+  text-decoration: underline;
+  cursor: grab/pointer;
+}
+#more_text {display: none;}
+#more_text_award {display: none;}
+

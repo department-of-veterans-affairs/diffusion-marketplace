@@ -37,4 +37,68 @@ module PracticesHelper
     durations = practice.additional_staffs.map { |as| as.duration_in_weeks&.downcase }
     durations.include?('permanent') ? 'Permanent' : "#{durations.map { |d| d.to_i }.sum} weeks" if durations.any?
   end
+
+  def fetch_offices
+    @office_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
+    @office_data["departments"][0]["offices"].to_json
+  end
+
+  def departments_for_select
+    @department_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
+    @department_data = @department_data["departments"]
+    @department_data.map {|c| [ c['name'], c['id'] ] }
+  end
+
+  def offices_for_select
+    @office_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
+    @office_data = @office_data["departments"][0]["offices"]
+    @office_data.map {|c| [ c['name'], c['id'] ] }
+  end
+  def fetch_visns
+    @visn_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
+    @visn_data = @visn_data["visns"]
+  end
+  def visns_for_select
+    @visn_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
+    @visn_data = @visn_data["visns"]
+    @visn_data.map {|c| [ c['number'], c['id'] ] }
+  end
+  def options_for_states
+    @state_options = us_states
+    x = 0
+    state_hash_str = "";
+    @state_options.each do |st|
+      if x > 0
+        st.split()
+        state_hash_str += st[1] + ":" + st[0] + ","
+      end
+      x = x + 1
+    end
+    state_hash_str
+  end
+
+  def get_all_awards(practice)
+    @all_awards = "";
+    @practice.practice_awards.each_with_index do |award, index|
+      if award.name.downcase != "other"
+        if @all_awards.length == 0
+          @all_awards = award.name.to_s
+        else
+          @all_awards += award.name.to_s
+        end
+        if @practice.practice_awards.size != index + 1 && @practice.practice_awards.size > 1
+          @all_awards += ", "
+        end
+      end
+    end
+    @all_awards.to_s
+  end
+
+  def display_practice_name(practice)
+    if (@practice.short_name.present?)
+      "#{@practice.name} (#{@practice.short_name})"
+    else
+      @practice.name
+    end
+  end
 end

@@ -39,7 +39,7 @@
                                 %>
                                 <li class="practice-editor-origin-li fields" data-id="<%= pc_id %>">
                                     <%= pc.hidden_field :position, class: 'origin-position' %>
-                                    <div class="origin-container padding-205 border border-width-1px border-base-lighter radius-sm margin-top-3 cropper-boundary">
+                                    <div class="origin-container padding-205 border border-width-1px border-base-lighter radius-sm margin-top-3 dm-cropper-boundary">
                                         <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
                                             <%= pc.hidden_field attribute, :id => attribute, :value => nil %>
                                         <% end %>
@@ -56,17 +56,17 @@
                                         </div>
 
                                         <p class="text-bold headshot-title margin-bottom-05">Headshot&nbsp;<span class="text-base"></span></p>
-                                      <div class="margin-bottom-2 cropper-upload-text">
+                                      <div class="margin-bottom-2 dm-cropper-upload-text">
                                         <p>
                                           Choose an image that clearly shows a face.  Use a high-quality .jpg, .jpeg, or .png files less than 32MB.
                                         </p>
                                       </div>
                                         <div class="grid-row">
                                             <div class="grid-col-3 headshot-col margin-top-105 margin-right-3">
-                                                <div class="cropper-images-container" data-type="origin">
+                                                <div class="dm-cropper-images-container" data-type="origin">
                                                     <% if pc_avatar.present? %>
-                                                        <%= image_tag pc.object.avatar_s3_presigned_url(:original), alt: pc.object.name, class:'cropper-thumbnail-original headshot-img hidden'%>
-                                                        <%= image_tag pc.object.avatar_s3_presigned_url(:thumb), alt: pc.object.name, class:'cropper-thumbnail-modified headshot-img'%>
+                                                        <%= image_tag pc.object.avatar_s3_presigned_url(:original), alt: pc.object.name, class:'dm-cropper-thumbnail-original headshot-img hidden'%>
+                                                        <%= image_tag pc.object.avatar_s3_presigned_url(:thumb), alt: pc.object.name, class:'dm-cropper-thumbnail-modified headshot-img'%>
                                                     <% end %>
                                                 </div>
                                                 <div class="<%= pc_avatar.present? ? 'headshot-container bg-base-lightest radius-md cropper-image-placeholder hidden' : 'headshot-container bg-base-lightest radius-md cropper-image-placeholder'%>">
@@ -74,20 +74,20 @@
                                                 </div>
                                             </div>
                                             <div class="grid-col-8">
-                                                <div class="margin-bottom-2 cropper-editor-text hidden">
+                                                <div class="margin-bottom-2 dm-image-editor-text hidden">
                                                     <p>
                                                         Please click "Save edits" and then "Save your progress" to save and exit editor.
                                                     </p>
                                                 </div>
-                                                <a class="usa-button padding-2 cropper-save-edit hidden" aria-controls='photo-save-edit' aria-expanded='false'>Save edits</a>
-                                                <a class="usa-button usa-button--outline padding-2 cropper-cancel-edit hidden" aria-controls='photo-cancel-edit' aria-expanded='false'>Cancel edits</a>
-                                                <a class="<%= pc_avatar.present? ? "usa-button usa-button--outline padding-2 cropper-edit-mode" : "usa-button usa-button--outline padding-2 cropper-edit-mode hidden" %>" aria-controls='photo-crop' aria-expanded='false'>Edit photo</a>
+                                                <a class="usa-button padding-2 dm-cropper-save-edit hidden" aria-controls='photo-save-edit' aria-expanded='false'>Save edits</a>
+                                                <a class="usa-button usa-button--outline padding-2 dm-cropper-cancel-edit hidden" aria-controls='photo-cancel-edit' aria-expanded='false'>Cancel edits</a>
+                                                <a class="<%= pc_avatar.present? ? "usa-button usa-button--outline padding-2 dm-cropper-edit-mode" : "usa-button usa-button--outline padding-2 dm-cropper-edit-mode hidden" %>" aria-controls='photo-crop' aria-expanded='false'>Edit photo</a>
                                                 <div>
-                                                    <%= pc.label :avatar, pc_avatar.present? ? 'Upload new photo' : 'Upload photo', class: pc_avatar.present? ? 'cropper-upload-image-label' : 'cropper-upload-image-label usa-button'%>
+                                                    <%= pc.label :avatar, pc_avatar.present? ? 'Upload new photo' : 'Upload photo', class: pc_avatar.present? ? 'dm-cropper-upload-image-label' : 'dm-cropper-upload-image-label usa-button'%>
                                                     <%= pc.file_field :avatar, class: "hidden-upload cropper-upload-image", accept: 'image/*' %>
                                                 </div>
-                                                <div class="cropper-delete-image">
-                                                    <%= pc.label :delete_avatar, 'Remove photo', class: pc_avatar.present? ? 'display-inline-block text-secondary cropper-delete-image-label' : 'display-inline-block text-secondary cropper-delete-image-label hidden'%>
+                                                <div class="dm-cropper-delete-image">
+                                                    <%= pc.label :delete_avatar, 'Remove photo', class: pc_avatar.present? ? 'display-inline-block text-secondary dm-cropper-delete-image-label' : 'display-inline-block text-secondary dm-cropper-delete-image-label hidden'%>
                                                     <%= pc.check_box :delete_avatar, { class: pc_avatar.present? ? 'usa-checkbox__input' : 'usa-checkbox__input hidden'}, 'true', 'false' %>
                                                 </div>
                                             </div>
