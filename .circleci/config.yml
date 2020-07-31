@@ -51,7 +51,7 @@ jobs:
       - image: redis
 
     working_directory: ~/repo
-    resource_class: xlarge
+    resource_class: medium
     steps:
       - checkout
 
