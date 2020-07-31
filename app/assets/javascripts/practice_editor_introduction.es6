@@ -26,7 +26,7 @@
     function attachShowOtherCategoriesFields() {
         observePracticeEditorLiArrival(
             $document,
-            '.practice-editor-other-categories-li',
+            '.practice-editor-category-li',
             '.practice-editor-categories-ul'
         );
         $document.on('change', '#category_other', function() {
@@ -36,7 +36,7 @@
         attachTrashListener(
             $document,
             '#other_categories_container',
-            '.practice-editor-other-categories-li'
+            '.practice-editor-category-li'
         );
     }
 
