@@ -455,8 +455,9 @@
               <div>
                 <%
                   practice_categories = @practice.category_practices
+                  practice_categories_ids = practice_categories.map(&:category_id)
                   other = Category.where(name: 'Other')
-                  categories = Category.where.not(id: other.ids).order(name: :asc)
+                  categories = Category.where.not(id: other.ids, is_other: true).order(name: :asc)
                   categories_list = categories + other
                 %>
 
@@ -467,7 +468,7 @@
                            class="usa-checkbox__input category-input"
                            id="category_<%= underscore_cat %>"
                            name="practice[category][<%= cat.id %>][value]"
-                           <%= 'checked="true"' if practice_categories.include?(cat) %>
+                           <%= 'checked="true"' if practice_categories_ids.include?(cat.id) %>
                       />
                     <label class="usa-checkbox__label"
                            id="category_<%= underscore_cat %>_label"
@@ -492,17 +493,17 @@
                         <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
 
                           $(document).arrive('<%= "#practice_categories_attributes_#{cat.index}_name" %>',
-                          function(newElem) {
-                          styleOriginFacility(
-                          $(newElem).closest('li'),
-                          <%= category_id %>,
-                          '.practice-editor-category-li',
-                          '.practice-editor-categories-ul',
-                          '.add-category-link',
-                          '12'
-                          );
-                          $(document).unbindArrive('<%= "#practice_categories_attributes_#{cat.index}_name" %>', newElem);
-                          }
+                            function(newElem) {
+                              styleOriginFacility(
+                                $(newElem).closest('li'),
+                                <%= category_id %>,
+                                '.practice-editor-category-li',
+                                '.practice-editor-categories-ul',
+                                '.add-category-link',
+                                '12'
+                              );
+                                $(document).unbindArrive('<%= "#practice_categories_attributes_#{cat.index}_name" %>', newElem);
+                            }
                           );
                         <% end %>
                       <% end %>
@@ -527,20 +528,20 @@
                   <% unless other_categories.any? %>
                     <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
                       observePracticeEditorLiArrival(
-                      $(document),
-                      '.practice-editor-category-li',
-                      '.practice-editor-categories-ul'
+                        $(document),
+                        '.practice-editor-category-li',
+                        '.practice-editor-categories-ul'
                       );
                       attachTrashListener(
-                      $(document),
-                      '#other_categories_container',
-                      '.practice-editor-category-li'
+                        $(document),
+                        '#other_categories_container',
+                        '.practice-editor-category-li'
                       );
-                      $(document).arrive('#practice_categories_fields_blueprint',
-                      function(blueprint) {
-                      $('.add-category-link').click();
-                      $(document).unbindArrive('#practice_categories_fields_blueprint', blueprint);
-                      }
+                      $(document).arrive('#categories_fields_blueprint',
+                        function(blueprint) {
+                          $('.add-category-link').click();
+                          $(document).unbindArrive('#categories_fields_blueprint', blueprint);
+                        }
                       );
                       showOtherCategoriesFields();
                     <% end %>
