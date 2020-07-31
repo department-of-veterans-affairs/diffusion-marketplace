@@ -162,13 +162,11 @@ class SavePracticeService
     if practice_award_params
       practice_awards_to_create = practice_award_params.values.map { |param| param[:name] }
       practice_awards_to_create.each { |award| @practice.practice_awards.find_or_create_by(name: award) }
-
       # get practice awards that are in the provided list
       # figure out which ones are not in the params and delete the award if the practice has it made
       Practice::PRACTICE_EDITOR_AWARDS_AND_RECOGNITION.each do |defined_award|
         # check if the award is in the params, delete award if it is not in the params
         practice_awards.find_by(name: defined_award)&.destroy unless practice_awards_to_create.include?(defined_award)
-
         # if "Other" was not checked, destroy all "Other" awards
         if defined_award == 'Other' && !practice_awards_to_create.include?(defined_award)
           other_awards = practice_awards.where.not(name: Practice::PRACTICE_EDITOR_AWARDS_AND_RECOGNITION)
