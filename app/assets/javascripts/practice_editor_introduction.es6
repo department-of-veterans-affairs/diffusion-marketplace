@@ -10,8 +10,7 @@
         observePracticeEditorLiArrival(
             $document,
             '.practice-editor-other-awards-li',
-            '.practice-editor-awards-ul',
-            '.add-practice-award-other-link'
+            '.practice-editor-awards-ul'
         );
         $document.on('change', '#practice_award_other', function() {
             showOtherAwardFields();
@@ -20,8 +19,7 @@
         attachTrashListener(
             $document,
             '#other_awards_container',
-            '.practice-editor-other-awards-li',
-            '.add-practice-award-other-link'
+            '.practice-editor-other-awards-li'
         );
     }
 

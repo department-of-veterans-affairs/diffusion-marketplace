@@ -4,9 +4,9 @@
 
 <!-- Practice hero image section -->
 
-<%= render partial: 'show_unauthenticated' unless current_user.present? %>
+<%= render partial: 'practices/show/authenticated/show_unauthenticated' unless current_user.present? %>
 
-<%= render partial: 'show_authenticated' if current_user.present? %>
+<%= render partial: 'practices/show/authenticated/show_authenticated' if current_user.present? %>
 
 <% if current_user.present? %>
     <section>

@@ -1,0 +1,117 @@
+<% provide :head_tags do %>
+  <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
+<%= render 'breadcrumbs' %>
+<%= render 'practice_editor_sidenav' %>
+<div class="grid-container position-relative">
+  <div class="grid-row grid-gap practice-editor-min-height">
+    <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+
+    <div id="overview" class="desktop:grid-col-9 grid-col-12 p0">
+      <%= render partial: "shared/messages", locals: {small_text: false} %>
+      <section class="usa-section padding-top-0 p0-bottom introduction">
+        <h1 class="font-sans-2xl line-height-sans-205">Overview</h1>
+        <h2 class="text-normal">
+          Introduce your practice and provide a clear overview to people who may be unfamiliar
+          with it.
+        </h2>
+        <%= render 'pii_phi_alert' %>
+        <%= nested_form_for(@practice, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
+          <fieldset class="usa-fieldset grid-col-10">
+            <legend class="usa-sr-only">Practice Overview</legend>
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+            <div class="margin-bottom-5 margin-top-3">
+              <div id="practice-metrics-container" class="position-relative">
+                <div class="margin-bottom-3">
+                  <%= f.label :name, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-1' do %>
+                    Metrics
+                  <% end %>
+                  <span class="line-height-26">
+                    Provide quantifiable measures and representative
+                    figures used to demonstrate the success of your practice
+                    (e.g. costs avoided per month, number of Veteran lives improved each year,
+                    number of staff hours saved per week).
+                  </span>
+                </div>
+                <ul class="practice-editor-metrics-ul padding-left-0" title="Practice metrics" aria-label="Practice editor metric list">
+                  <%= f.fields_for :practice_metrics, wrapper: false do |pm| %>
+                    <%
+                      metric_id = pm.object.id || "new_practice_metrics"
+                    %>
+                    <% if pm.object.description %>
+                      <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+
+                        $(document).arrive('<%= "#practice_practice_metrics_attributes_#{pm.index}_description" %>',
+                          function(newElem) {
+                            styleOriginFacility(
+                              $(newElem).closest('li'),
+                              <%= metric_id %>,
+                              '.practice-editor-metric-li',
+                              '.practice-editor-metrics-ul',
+                              '.add-practice-metric-link',
+                              '12'
+                            );
+                            $(document).unbindArrive('<%= "#practice_practice_metrics_attributes_#{pm.index}_description" %>', newElem);
+                          }
+                        );
+                      <% end %>
+                    <% end %>
+                    <li class="practice-editor-metric-li fields" <%= "id=practice_practice_metrics_attributes_#{pm.index}_li" if pm.object.id %> data-id="<%= metric_id %>">
+                      <div class="grid-row">
+                        <div class="grid-col-12">
+                          <%= pm.text_field :description, class: 'usa-input margin-bottom-1 x0-top', 'aria-label': 'Description' %>
+                        </div>
+
+                        <div class="grid-col-12 trash-container">
+                          <%= pm.link_to_remove 'Delete entry',
+                                                 class: "origin-trash font-sans-xs line-height-26 cursor-pointer float-right"
+                          %>
+                        </div>
+                      </div>
+                    </li>
+                  <% end %>
+                </ul>
+                <%= f.link_to_add :practice_metrics, class: 'add-another-link add-practice-metric-link line-height-26 cursor-pointer' do %>
+                  <span class="font-sans-xs text-normal">Add another</span>
+                <% end %>
+                <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                    observePracticeEditorLiArrival(
+                      $(document),
+                      '.practice-editor-metric-li',
+                      '.practice-editor-metrics-ul',
+                      '.add-practice-metric-link',
+                      '12'
+                    );
+                    attachTrashListener(
+                      $(document),
+                      '#practice-metrics-container',
+                      '.practice-editor-metric-li',
+                      '.add-practice-metric-link'
+                    );
+                  <% unless @practice.practice_metrics.any? %>
+                    $(document).arrive('#practice_metrics_fields_blueprint',
+                      function(blueprint) {
+                        $('.add-practice-metric-link').click();
+                        $(document).unbindArrive('#practice_metrics_fields_blueprint', blueprint);
+                      }
+                    );
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          </fieldset>
+
+        <% end %>
+        <div class="grid-row">
+            <%= link_to practice_adoptions_path(@practice), class: 'usa-button black usa-button--outline editor-back-to-link margin-right-1 padding-2 text-no-underline' do %>
+                <i class="fas fa-sm text-no-underline margin-right-1"></i>Back
+            <% end %>
+            <%= link_to practice_contact_path(@practice), class: 'usa-button black pe-continue padding-2 editor-continue-link continue-and-save margin-right-1' do %>
+                Continue<i class="fas fa-sm margin-left-1 text-no-underline"></i>
+            <% end %>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

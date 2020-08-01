@@ -5,7 +5,7 @@
 <!-- "Practice nav" section -->
 <!-- Impact Origin Resources Required Complexity Timeline Risks & Mitigation Support Team -->
 
-<%= render partial: 'introduction' %>
+<%= render partial: 'practices/show/introduction/introduction' %>
 <div class="grid-container position-relative z-top">
   <div id="dm-practice-nav" class="z-top mobile-hide">
     <ul id="dm-tabnav" class="usa-sidenav dm-tabnav margin-bottom-1 show-page-sidenav">
@@ -62,6 +62,21 @@
   <%= link_to 'See adoption checklist', practice_planning_checklist_url(practice_id: @practice.slug), id: 'next-steps-link-in-mobile-nav', class: 'usa-button' %>
 </div>
 
+<% if @practice.practice_metrics.any? %>
+  <section class="padding-bottom-2 margin-bottom-5">
+    <div class="grid-container">
+      <div class="grid-row grid-gap">
+        <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+        <div class="desktop:grid-col-9 grid-col-12 p0">
+          <div class="origin-section practice-section">
+            <%= render partial: 'practices/show/overview/metrics' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<% end %>
+
 <section class="usa-section p2-top p2-bottom">
   <div class="grid-container position-relative">
     <% if @practice.user_id == current_user.id || current_user.roles.any? %>
@@ -100,7 +115,6 @@
   </div>
 </section>
 <%#<div class="dm-background-triangle-bottom "></div>%>
-
 <!-- "Origin of this Practice" section -->
 <% unless !@practice.origin_story || !@practice.origin_title %>
   <section class="padding-bottom-2 margin-bottom-5">

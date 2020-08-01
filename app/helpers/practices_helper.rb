@@ -66,10 +66,10 @@ module PracticesHelper
   def options_for_states
     @state_options = us_states
     x = 0
-    state_hash_str = "";
+    state_hash_str = ""
     @state_options.each do |st|
       if x > 0
-        st.split()
+        st.split
         state_hash_str += st[1] + ":" + st[0] + ","
       end
       x = x + 1
@@ -78,27 +78,26 @@ module PracticesHelper
   end
 
   def get_all_awards(practice)
-    @all_awards = "";
-    @practice.practice_awards.each_with_index do |award, index|
-      if award.name.downcase != "other"
-        if @all_awards.length == 0
-          @all_awards = award.name.to_s
-        else
-          @all_awards += award.name.to_s
-        end
-        if @practice.practice_awards.size != index + 1 && @practice.practice_awards.size > 1
-          @all_awards += ", "
-        end
+    all_awards = ""
+    practice_awards = practice.practice_awards.where.not(name: 'Other')
+    practice_awards.each_with_index do |award, index|
+      if all_awards.length == 0
+        all_awards = award.name.to_s
+      else
+        all_awards += award.name.to_s
+      end
+      if practice_awards.length != index + 1 && practice.practice_awards.length > 1
+        all_awards += ", "
       end
     end
-    @all_awards.to_s
+    all_awards.to_s
   end
 
   def display_practice_name(practice)
-    if (@practice.short_name.present?)
-      "#{@practice.name} (#{@practice.short_name})"
+    if practice.short_name.present?
+      "#{practice.name} (#{practice.short_name})"
     else
-      @practice.name
+      practice.name
     end
   end
 end

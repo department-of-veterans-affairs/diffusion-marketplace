@@ -135,7 +135,7 @@ class Practice < ApplicationRecord
           'complexity': 'resources',
           'timeline': 'complexity',
           'risk_and_mitigation': 'timeline',
-          'contact': 'risk_and_mitigation',
+          'contact': 'overview',
           'checklist': 'contact',
           'introduction': 'instructions'
       }
@@ -223,16 +223,19 @@ class Practice < ApplicationRecord
   has_many :practice_creators, -> { order(position: :asc) }, dependent: :destroy
   has_many :practice_awards, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_origin_facilities, -> {order(id: :asc) }, dependent: :destroy
+  has_many :practice_metrics, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_testimonials, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_multimedia, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_problem_resources, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_solution_resources, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_results_resources, -> {order(id: :asc) }, dependent: :destroy
+
   # This allows the practice model to be commented on with the use of the Commontator gem
   acts_as_commontable dependent: :destroy
 
   #accepts_nested_attributes_for :practices_origin_facilities?
   accepts_nested_attributes_for :practice_origin_facilities, allow_destroy: true, reject_if: proc { |attributes| attributes['facility_id'].blank? }
+  accepts_nested_attributes_for :practice_metrics, allow_destroy: true, reject_if: proc { |attributes| attributes['description'].blank? }
   accepts_nested_attributes_for :practice_awards, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
   accepts_nested_attributes_for :practice_partner_practices, allow_destroy: true
   accepts_nested_attributes_for :impact_photos, allow_destroy: true, reject_if: proc { |attributes|
