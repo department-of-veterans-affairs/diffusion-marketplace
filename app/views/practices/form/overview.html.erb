@@ -13,13 +13,67 @@
       <section class="usa-section padding-top-0 p0-bottom introduction">
         <h1 class="font-sans-2xl line-height-sans-205">Overview</h1>
         <h2 class="text-normal">
-          Introduce your practice and provide a clear overview to people who may be unfamiliar
-          with it.
+          Describe the journey of your practice from problem identification and the implementation of your solution
+          through to measured results and outcomes.
         </h2>
         <%= render 'pii_phi_alert' %>
         <%= nested_form_for(@practice, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
           <fieldset class="usa-fieldset grid-col-10">
             <legend class="usa-sr-only">Practice Overview</legend>
+            <!-- PROBLEM section -->
+            <div id="problem_section>">
+                <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+                <div class="margin-bottom-5 margin-top-3">
+                  <b>Problem statement</b> (required field)<br/>
+                  Type the main problem your practice attempted to address and include context and any initial goals.
+                  <%= f.text_area :overview_problem, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-overview-statement-input" %>
+                </div>
+                <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+                <div class="margin-bottom-5 margin-top-3">
+                  <b>Problem attachments</b><br />
+                  Attach any additional images, videos, files or links related to the problem your practice addresses.
+                </div>
+                <div id="display_problem_resources">...</div>
+            </div>
+
+            <!-- SOLUTION section -->
+            <div id="solution_section>">
+              <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+              <div class="margin-bottom-5 margin-top-3">
+                <b>Solution statement</b> (required field)<br/>
+                Type the solution that was implemented to address the problem.
+                <%= f.text_area :overview_solution, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-overview-statement-input" %>
+              </div>
+              <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+              <div class="margin-bottom-5 margin-top-3">
+                <b>Solution attachments</b><br />
+                Attach any additional images, videos, files or links related to the solution implemented for your practice.
+              </div>
+              <div id="display_solution_resources">...</div>
+            </div>
+
+            <!-- RESULTS section -->
+            <div id="results_section>">
+              <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+              <div class="margin-bottom-5 margin-top-3">
+                <b>Results statement</b> (required field)<br/>
+                Type information about the impact of the practice at the originating facility.
+                <%= f.text_area :overview_results, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-overview-statement-input" %>
+              </div>
+              <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+              <div class="margin-bottom-5 margin-top-3">
+                <b>Results attachments</b><br />
+                Attach any additional images, videos, files or links relevant to your results statement.
+              </div>
+              <div id="display_solution_resources">...</div>
+            </div>
+
+
+
+
+
+
+
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
             <div class="margin-bottom-5 margin-top-3">
               <div id="practice-metrics-container" class="position-relative">
