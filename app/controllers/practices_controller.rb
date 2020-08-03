@@ -152,6 +152,10 @@ class PracticesController < ApplicationController
       end
       pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
       updated = SavePracticeService.new(pr_params).save_practice
+      if facility_type != "facility"
+        origin_facilities = @practice.practice_origin_facilities
+        origin_facilities.destroy_all
+      end
     end
     respond_to do |format|
       if updated
@@ -329,7 +333,6 @@ class PracticesController < ApplicationController
       pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
       updated = SavePracticeService.new(pr_params).save_practice
     end
-
     respond_to do |format|
       if can_publish
         # if there is an error with updating the practice, alert the user
@@ -433,6 +436,7 @@ class PracticesController < ApplicationController
                                      :main_display_image, :crop_x, :crop_y, :crop_h, :crop_w,
                                      :delete_main_display_image,
                                      :origin_picture, :origin_picture_original_w, :origin_picture_original_h, :origin_picture_crop_x, :origin_picture_crop_y, :origin_picture_crop_w, :origin_picture_crop_h,
+                                     :overview_problem, :overview_solution, :overview_results,
                                      impact_photos_attributes: [:id, :title, :is_main_display_image, :description, :position, :attachment, :attachment_original_w, :attachment_original_h, :attachment_crop_x, :attachment_crop_y,
                                                                 :attachment_crop_w, :attachment_crop_h, :_destroy],
                                      video_files_attributes: [:id, :title, :description, :url, :position, :attachment, :attachment_original_w, :attachment_original_h, :attachment_crop_x, :attachment_crop_y,
@@ -570,6 +574,10 @@ class PracticesController < ApplicationController
   end
 
   def can_publish
-    @practice.name.present? && @practice.tagline.present? && @practice.initiating_facility.present? && @practice.date_initiated.present? && @practice.summary.present? && @practice.support_network_email.present?
+    if @practice.name.present? && @practice.initiating_facility_type.present? && @practice.date_initiated.present? && @practice.summary.present? && @practice.support_network_email.present?
+      @practice.facility? ? @practice.practice_origin_facilities.present? : @practice.initating_facility.present?
+    else
+      false
+    end
   end
 end

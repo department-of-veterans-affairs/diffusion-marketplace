@@ -190,7 +190,7 @@ RSpec.describe ApplicationHelper, type: :helper do
       end
     end
 
-    context "when given a practice with intiating facility but no " do
+    context "when given a practice with intiating facility type but no initiating facility" do
       before do
         @practice.update(initiating_facility_type: 'other', initiating_facility: nil)
       end

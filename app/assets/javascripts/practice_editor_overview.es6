@@ -123,6 +123,18 @@
         });
     }
 
+    function showCurrentlySelectedOptions(currentSelectForm){
+        $(`#${currentSelectForm}`).show();
+        $(`#${currentSelectForm} :input`).prop("disabled", false);
+    }
+
+    function hideOtherSelectForms(formsToHide){
+        formsToHide.forEach(f => {
+            $(`#${f}`).hide();
+            $(`#${f} :input`).prop("disabled", true);
+        });
+    }
+
     function toggleInputsOnRadioSelect() {
         $(document).on('click', '#initiating_facility_type_facility, #initiating_facility_type_visn, #initiating_facility_type_department, #initiating_facility_type_other', function() {
             //disableOptions();

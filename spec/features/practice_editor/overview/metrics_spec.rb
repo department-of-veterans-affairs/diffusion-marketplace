@@ -30,7 +30,7 @@ describe 'Practice editor', type: :feature, js: true do
           last_metric_field.find('input')
         end
 
-        fit 'should allow the user to update the data on the page' do
+        it 'should allow the user to update the data on the page' do
           # no metrics should be there
           visit practice_path(@practice)
           expect(page).to_not have_content('Metrics')

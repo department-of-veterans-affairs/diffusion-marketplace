@@ -183,7 +183,7 @@
                 </div>
               </div>
 
-              <div id="facility_select_form" class="margin-bottom-5 position-relative">
+              <div id="facility_select_form" class="margin-bottom-5">
                 <ul class="practice-editor-origin-ul" role="listbox" title="Practice origin facilities" aria-label="Practice editor origin facility list">
                   <%= f.fields_for :practice_origin_facilities, wrapper: false do |pof| %>
                     <%
@@ -218,7 +218,7 @@
                                          options_for_select([['-Select-', nil, selected: true, disabled: true,
                                                               class: 'usa-select dm-color-disabled']]),
                                          {},
-                                         {class: 'height-5 usa-select desktop:grid-col-8 margin-bottom-1 x0-top'}
+                                         {class: 'height-5 usa-select desktop:grid-col-8 margin-bottom-2 x0-top'}
                           %>
                         </div>
 
@@ -232,7 +232,7 @@
                   <% end %>
                 </ul>
                 <%= f.link_to_add :practice_origin_facilities,
-                                  class: 'add-another-link add-practice-originating-facilities-link line-height-26 cursor-pointer' do %>
+                                  class: 'add-practice-originating-facilities-link line-height-26 cursor-pointer' do %>
                   <span class="font-sans-xs text-normal">Add another</span>
                 <% end %>
                 <% unless @practice.practice_origin_facilities.any? %>
@@ -308,7 +308,7 @@
                     </label>
                   </div>
                 <% end %>
-                <div id="other_awards_container" class="position-relative">
+                <div id="other_awards_container">
                   <%
                     other_awards = @practice.practice_awards.where.not(name: Practice::PRACTICE_EDITOR_AWARDS_AND_RECOGNITION)
                     other_award_ids = other_awards.ids
@@ -324,16 +324,13 @@
                           <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
                             $(document).arrive('<%= "#practice_practice_awards_attributes_#{pa.index}_name" %>',
                               function(newElem) {
-                                var $li = $(newElem).closest('li');
                                 styleOriginFacility(
-                                  $li,
+                                  $(newElem).closest('li'),
                                   <%= other_award_id %>,
                                   '.practice-editor-other-awards-li',
-                                  '.practice-editor-awards-ul'
+                                  '.practice-editor-awards-ul',
+                                  '.add-practice-award-other-link'
                                 );
-                                var $_destroy = $li.find('.trash-container input[name="practice[_destroy]"]');
-                                $_destroy.attr('name', 'practice[practice_awards_attributes][<%= pa.index %>][_destroy]');
-                                $_destroy.attr('id', 'practice_practice_awards_attributes_<%= pa.index %>__destroy');
                                 $(document).unbindArrive('<%= "#practice_practice_awards_attributes_#{pa.index}_name" %>', newElem);
                               }
                             );
@@ -344,10 +341,10 @@
                           <div class="grid-row">
                             <div class="grid-col-12">
                               <%= pa.label :name, 'Name of award or recognition', class: 'usa-label x0-top margin-bottom-1 grid-col-12' %>
-                              <%= pa.text_field :name, class: 'usa-input desktop:grid-col-8 margin-bottom-1 x0-top' %>
+                              <%= pa.text_field :name, class: 'usa-input desktop:grid-col-8 margin-bottom-2 x0-top' %>
                             </div>
                             <div class="grid-col-8 trash-container">
-                              <%= f.link_to_remove 'Delete entry',
+                              <%= f.link_to_remove 'Delete Entry',
                                                    class: "origin-trash font-sans-xs line-height-26 cursor-pointer float-right" %>
                             </div>
                           </div>
@@ -355,32 +352,22 @@
                       <% end %>
                     <% end %>
                   </ul>
-                  <%= f.link_to_add :practice_awards, class: 'add-another-link add-practice-award-other-link line-height-26 cursor-pointer' do %>
+                  <%= f.link_to_add :practice_awards, class: 'add-practice-award-other-link line-height-26 cursor-pointer' do %>
                     <span class="font-sans-xs text-normal">Add another</span>
-                  <% end %>
-                  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                    $(document).arrive('#practice_awards_fields_blueprint',
-                      function(blueprint) {
-                        var blueprintText = $(blueprint).data('blueprint');
-                        var newBluePrintText = blueprintText.replace('practice[_destroy]', 'practice[practice_awards_attributes][new_practice_awards][_destroy]');
-                        $(blueprint).data('blueprint', newBluePrintText);
-                        newBluePrintText = newBluePrintText.replace('practice__destroy', 'practice_practice_awards_attributes_new_practice_awards__destroy');
-                        $(blueprint).data('blueprint', newBluePrintText);
-                        $(document).unbindArrive('#practice_awards_fields_blueprint', blueprint);
-                      }
-                    );
                   <% end %>
                   <% unless other_awards.any? %>
                     <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
                       observePracticeEditorLiArrival(
                           $(document),
                           '.practice-editor-other-awards-li',
-                          '.practice-editor-awards-ul'
+                          '.practice-editor-awards-ul',
+                          '.add-practice-award-other-link'
                       );
                       attachTrashListener(
                           $(document),
                           '#other_awards_container',
-                          '.practice-editor-other-awards-li'
+                          '.practice-editor-other-awards-li',
+                          '.add-practice-award-other-link'
                       );
                       $(document).arrive('#practice_awards_fields_blueprint',
                         function(blueprint) {
@@ -443,136 +430,6 @@
                   </div>
                 <% end %>
               <% end %>
-            </div>
-
-            <div class="margin-top-3 margin-bottom-5">
-              <div class="margin-bottom-2">
-                <p class="text-bold margin-bottom-1">
-                  Categories
-                </p>
-                <span>Select any categories that apply to your practice.</span>
-              </div>
-              <div>
-                <%
-                  practice_categories = @practice.category_practices
-                  practice_categories_ids = practice_categories.map(&:category_id)
-                  other = Category.where(name: 'Other')
-                  categories = Category.where.not(id: other.ids, is_other: true).order(name: :asc)
-                  categories_list = categories + other
-                %>
-
-                <% categories_list.each do |cat| %>
-                  <% underscore_cat = cat.name.split(' ').join('').underscore %>
-                  <div class="usa-checkbox pe-category-checkbox position-relative">
-                    <input type="checkbox"
-                           class="usa-checkbox__input category-input"
-                           id="category_<%= underscore_cat %>"
-                           name="practice[category][<%= cat.id %>][value]"
-                           <%= 'checked="true"' if practice_categories_ids.include?(cat.id) %>
-                      />
-                    <label class="usa-checkbox__label"
-                           id="category_<%= underscore_cat %>_label"
-                           for="category_<%= underscore_cat %>"
-                    >
-                      <%= cat.name %>
-                    </label>
-                  </div>
-                <% end %>
-
-                <div id="other_categories_container" class="position-relative">
-                  <%
-                    other_categories = @practice.categories.where(is_other: true)
-                    other_category_ids = other_categories.ids
-                  %>
-
-                  <ul class="practice-editor-categories-ul padding-left-0" role="listbox" title="Practice categories" aria-label="Practice editor category list">
-                    <%= f.fields_for :categories, wrapper: false do |cat| %>
-                      <%
-                        other_category_id = cat.object.id || "new_categories"
-                        show_other_category_form = other_category_ids.include?(other_category_id) || other_category_id == "new_categories"
-                      %>
-                      <% if cat.object.name %>
-                        <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-
-                          $(document).arrive('<%= "#practice_categories_attributes_#{cat.index}_name" %>',
-                          function(newElem) {
-                          styleOriginFacility(
-                          $(newElem).closest('li'),
-                          <%= other_category_id %>,
-                          '.practice-editor-category-li',
-                          '.practice-editor-categories-ul',
-                          '.add-category-link',
-                          '12'
-                          );
-                          $(document).unbindArrive('<%= "#practice_categories_attributes_#{cat.index}_name" %>', newElem);
-                          }
-                          );
-                        <% end %>
-                      <% end %>
-
-                      <% if show_other_category_form %>
-                        <% if cat.object.id %>
-                          <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                            $(document).arrive('<%= "#practice_categories_attributes_#{cat.index}_name" %>',
-                            function(newElem) {
-                            var $li = $(newElem).closest('li');
-                            styleOriginFacility(
-                            $li,
-                            <%= other_category_id %>,
-                            '.practice-editor-other-categories-li',
-                            '.practice-editor-categories-ul'
-                            );
-                            var $_destroy = $li.find('.trash-container input[name="practice[_destroy]"]');
-                            $_destroy.attr('name', 'practice[categories_attributes][<%= cat.index %>][_destroy]');
-                            $_destroy.attr('id', 'practice_categories_attributes_<%= cat.index %>__destroy');
-                            $(document).unbindArrive('<%= "#practice_categories_attributes_#{cat.index}_name" %>', newElem);
-                            }
-                            );
-                          <% end %>
-                        <% end %>
-                        <li class="practice-editor-category-li fields" <%= "id=practice_categories_attributes_#{cat.index}_li" if cat.object.id %> data-id="<%= other_category_id %>">
-                          <div class="grid-row">
-                            <%= cat.hidden_field :is_other, value: true %>
-                            <div class="grid-col-12">
-                              <%= cat.text_field :name, class: 'usa-input margin-bottom-1 x0-top', 'aria-label': 'Name' %>
-                            </div>
-
-                            <div class="grid-col-12 trash-container">
-                              <%= cat.link_to_remove 'Delete entry',
-                                                    class: "origin-trash font-sans-xs line-height-26 cursor-pointer float-right"
-                              %>
-                            </div>
-                          </div>
-                        </li>
-                      <% end %>
-                    <% end %>
-                  </ul>
-                  <%= f.link_to_add :categories, class: 'add-another-link add-category-link line-height-26 cursor-pointer' do %>
-                    <span class="font-sans-xs text-normal">Add another</span>
-                  <% end %>
-                  <% unless other_categories.any? %>
-                    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                      observePracticeEditorLiArrival(
-                        $(document),
-                        '.practice-editor-category-li',
-                        '.practice-editor-categories-ul'
-                      );
-                      attachTrashListener(
-                        $(document),
-                        '#other_categories_container',
-                        '.practice-editor-category-li'
-                      );
-                      $(document).arrive('#categories_fields_blueprint',
-                        function(blueprint) {
-                          $('.add-category-link').click();
-                          $(document).unbindArrive('#categories_fields_blueprint', blueprint);
-                        }
-                      );
-                      showOtherCategoriesFields();
-                    <% end %>
-                  <% end %>
-                </div>
-              </div>
             </div>
           </div>
         </fieldset>

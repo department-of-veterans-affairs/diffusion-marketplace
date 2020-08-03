@@ -13,7 +13,7 @@
             '.practice-editor-awards-ul'
         );
         $document.on('change', '#practice_award_other', function() {
-            showOtherAwardsFields();
+            showOtherAwardFields();
         });
 
         attachTrashListener(
@@ -50,7 +50,7 @@
     $document.on('turbolinks:load', loadPracticeIntroductionFunctions);
 })(window.jQuery);
 
-function showOtherAwardsFields() {
+function showOtherAwardFields() {
     if (document.getElementById('practice_award_other').checked) {
         document.getElementById('other_awards_container').style.display = 'block';
     } else {

@@ -157,6 +157,7 @@ class Practice < ApplicationRecord
         'Other'
       ]
 
+
   validates_attachment_content_type :main_display_image, content_type: /\Aimage\/.*\z/
   validates_attachment_content_type :origin_picture, content_type: /\Aimage\/.*\z/
   validates :name, presence: {message: 'Practice name can\'t be blank'}
@@ -223,6 +224,11 @@ class Practice < ApplicationRecord
   has_many :practice_awards, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_origin_facilities, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_metrics, -> {order(id: :asc) }, dependent: :destroy
+  has_many :practice_testimonials, -> {order(id: :asc) }, dependent: :destroy
+  has_many :practice_multimedia, -> {order(id: :asc) }, dependent: :destroy
+  has_many :practice_problem_resources, -> {order(id: :asc) }, dependent: :destroy
+  has_many :practice_solution_resources, -> {order(id: :asc) }, dependent: :destroy
+  has_many :practice_results_resources, -> {order(id: :asc) }, dependent: :destroy
 
   # This allows the practice model to be commented on with the use of the Commontator gem
   acts_as_commontable dependent: :destroy
@@ -239,6 +245,12 @@ class Practice < ApplicationRecord
     ip_reject = attributes['attachment'].blank? if attributes['id'].blank?
     reject || ip_reject
   }
+  accepts_nested_attributes_for :practice_multimedia, allow_destroy: true
+  accepts_nested_attributes_for :practice_testimonials, allow_destroy: true
+  accepts_nested_attributes_for :practice_problem_resources, allow_destroy: true
+  accepts_nested_attributes_for :practice_solution_resources, allow_destroy: true
+  accepts_nested_attributes_for :practice_results_resources, allow_destroy: true
+
   accepts_nested_attributes_for :video_files, allow_destroy: true, reject_if: proc { |attributes| attributes['url'].blank? || attributes['description'].blank? }
   accepts_nested_attributes_for :difficulties, allow_destroy: true
   accepts_nested_attributes_for :risk_mitigations, allow_destroy: true

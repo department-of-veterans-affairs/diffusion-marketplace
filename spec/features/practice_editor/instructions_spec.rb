@@ -14,22 +14,30 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to be_accessible.according_to :wcag2a, :section508
         end
 
-        it 'should be there' do
-            expect(page).to have_content('Create your practice page')
-            expect(page).to have_no_content('Save your progress')
+        it 'should have content and links' do
+            expect(page).to have_content('Instructions')
+            expect(page).to have_content('Please follow these instructions to complete each of the following sections for your practice page.')
+            expect(page).to have_content("What you'll need")
+            expect(page).to have_content('PII and PHI policy')
+            expect(page).to have_content('Formatting and editing')
+            expect(page).to have_no_content('Save')
             expect(page).to have_no_content('Publish practice')
-            expect(page).to have_link(href: "mailto:marketplace@va.gov")
+            expect(page).to have_link(href: pii_phi_information_path)
+            expect(page).to have_link(href: "https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-3203.pdf")
+            expect(page).to have_link(href: "https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-3203.pdf")
+            expect(page).to have_link(href: "https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-5345.pdf")
+            expect(page).to have_link(href: practice_path('project-happen'))
         end
 
-        it 'should take the user to the overview page after clicking the continue button' do
+        it 'should take the user to the introduction page after clicking the continue button' do
             find(".editor-continue-link").click
-            wait_for_page_load('Overview')
-            expect(page).to have_content('Overview')
-            expect(page).to have_current_path(practice_overview_path(@practice))
+            wait_for_page_load('Introduction')
+            expect(page).to have_content('Introduction')
+            expect(page).to have_current_path(practice_introduction_path(@practice))
         end
     end
 
     def wait_for_page_load(title)
-        find('div#overview', text: title)
+        find('div#introduction', text: title)
     end
 end
