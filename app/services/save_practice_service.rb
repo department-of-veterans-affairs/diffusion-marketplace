@@ -46,7 +46,8 @@ class SavePracticeService
   def rescue_method(method_name)
     begin
       send(method_name)
-    rescue
+    rescue StandardError => e
+    puts e
       raise StandardError.new @error_messages[method_name]
     end
   end
@@ -91,58 +92,45 @@ class SavePracticeService
 
   def update_category_practices
     category_params = @practice_params[:category]
-    practice_categories = @practice.categories
     practice_category_practices = @practice.category_practices
-    categories = @practice.categories
-    # if category_params.present?
-    #   puts "params", category_params.values
-    #   practice_categories_to_create = category_params.values.map { |param| param[:name] }
-    #   practice_categories_to_create.each { |cat| practice_categories.find_or_create_by(name: cat) }
-    #
-    #   # get practice categories that are in the provided list
-    #   # figure out which ones are not in the params and delete the category if the practice has it made
-    #   Category.all.each do |defined_cat|
-    #     # check if the category is in the params, delete category if it is not in the params
-    #     practice_categories.find_by(id: defined_cat.id)&.destroy unless practice_categories_to_create.include?(defined_cat)
-    #
-    #     # if "Other" was not checked, destroy all "Other" categories
-    #     if defined_cat == 'Other' && !practice_categories_to_create.include?(defined_cat)
-    #       other_categories = practice_categories.where(is_other: true)
-    #       other_categories.destroy_all
-    #     end
-    #   end
-    # elsif category_params.blank? && @current_endpoint == 'introduction' && practice_categories.any?
-    #   practice_categories.destroy_all
-    # end
+    practice_categories = @practice.categories
+    other_cat_id = Category.find_by(name: 'Other').id
+
     if category_params.present?
+      category_attribute_params = @practice_params[:categories_attributes]
+      categories_to_create = category_attribute_params.values.map { |param| param[:name] }
       cat_keys = category_params.keys
-      cat_keys.each do |key, value|
-        puts "key id", key.to_i
-        if @practice.categories.ids.include?(key.to_i) && key != 'Other'
-          practice_category_practices.create(category_id: key.to_i)
+      # If Other was checked, create a new category with is_other true and create a category_practice linking to the new category
+      categories_to_create.each do |category|
+        unless category == ""
+          cate = Category.find_or_create_by(name: category, is_other: true)
+          practice_category_practices.find_or_create_by(category_id: cate.id)
         end
-        # If Other was checked, create a new category with is_other true and create a category_practice linking to the new category
-        # elsif key == 'Other'
-        #         #   practice_categories.create(name: value, is_other: true)
-        #         #   @practice.category_practices.create(category_id: key.to_i, )
-        #         # end
       end
 
-      practice_categories.each do |cat|
-        cat.destroy unless cat_keys.include? cat.category_id.to_s
+      cat_keys.each do |key|
+        if practice_categories.ids.exclude?(key.to_i)
+          practice_category_practices.find_or_create_by(category_id: key.to_i)
+        end
       end
 
-      # if "Other" was not checked, destroy all "Other" categories
-      # if key == 'Other' && !cat_keys.include?(key)
-      #   other_categories = practice_categories.where(is_other: true)
-      #   other_categories.destroy_all
-      # end
+      if cat_keys.exclude?(other_cat_id.to_s)
+        other_practice_categories = practice_categories.where(is_other: true)
+
+        other_practice_categories.each do |oc|
+          oc.destroy unless CategoryPractice.where(category_id: oc.id).not(practice_id: @practice.id).any?
+        end
+
+        other_practice_categories.destroy_all
+      end
+
+      practice_category_practices.where(category: { is_other: false }).each do |pcp|
+        pcp.destroy unless cat_keys.include?(pcp.category_id.to_s)
+      end
+
     elsif category_params.blank? && @current_endpoint == 'introduction'
-      practice_categories.destroy_all
+      practice_category_practices.destroy_all
     end
-    # elsif category_params.blank? && @current_endpoint == 'introduction' && practice_categories.any?
-    #   practice_categories.destroy_all
-    # end
   end
 
   def remove_attachments

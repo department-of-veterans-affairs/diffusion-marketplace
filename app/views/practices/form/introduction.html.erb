@@ -482,44 +482,69 @@
                 <div id="other_categories_container" class="position-relative">
                   <%
                     other_categories = @practice.categories.where(is_other: true)
+                    other_category_ids = other_categories.ids
                   %>
 
                   <ul class="practice-editor-categories-ul padding-left-0" role="listbox" title="Practice categories" aria-label="Practice editor category list">
                     <%= f.fields_for :categories, wrapper: false do |cat| %>
                       <%
-                        category_id = cat.object.id || "new_practice_categories"
+                        other_category_id = cat.object.id || "new_categories"
+                        show_other_category_form = other_category_ids.include?(other_category_id) || other_category_id == "new_categories"
                       %>
                       <% if cat.object.name %>
                         <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
 
                           $(document).arrive('<%= "#practice_categories_attributes_#{cat.index}_name" %>',
-                            function(newElem) {
-                              styleOriginFacility(
-                                $(newElem).closest('li'),
-                                <%= category_id %>,
-                                '.practice-editor-category-li',
-                                '.practice-editor-categories-ul',
-                                '.add-category-link',
-                                '12'
-                              );
-                                $(document).unbindArrive('<%= "#practice_categories_attributes_#{cat.index}_name" %>', newElem);
-                            }
+                          function(newElem) {
+                          styleOriginFacility(
+                          $(newElem).closest('li'),
+                          <%= other_category_id %>,
+                          '.practice-editor-category-li',
+                          '.practice-editor-categories-ul',
+                          '.add-category-link',
+                          '12'
+                          );
+                          $(document).unbindArrive('<%= "#practice_categories_attributes_#{cat.index}_name" %>', newElem);
+                          }
                           );
                         <% end %>
                       <% end %>
-                      <li class="practice-editor-category-li fields" <%= "id=practice_categories_attributes_#{cat.index}_li" if cat.object.id %> data-id="<%= category_id %>">
-                        <div class="grid-row">
-                          <div class="grid-col-12">
-                            <%= cat.text_field :name, class: 'usa-input margin-bottom-1 x0-top', 'aria-label': 'Name' %>
-                          </div>
 
-                          <div class="grid-col-12 trash-container">
-                            <%= cat.link_to_remove 'Delete entry',
-                                                  class: "origin-trash font-sans-xs line-height-26 cursor-pointer float-right"
-                            %>
+                      <% if show_other_category_form %>
+                        <% if cat.object.id %>
+                          <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                            $(document).arrive('<%= "#practice_categories_attributes_#{cat.index}_name" %>',
+                            function(newElem) {
+                            var $li = $(newElem).closest('li');
+                            styleOriginFacility(
+                            $li,
+                            <%= other_category_id %>,
+                            '.practice-editor-other-categories-li',
+                            '.practice-editor-categories-ul'
+                            );
+                            var $_destroy = $li.find('.trash-container input[name="practice[_destroy]"]');
+                            $_destroy.attr('name', 'practice[categories_attributes][<%= cat.index %>][_destroy]');
+                            $_destroy.attr('id', 'practice_categories_attributes_<%= cat.index %>__destroy');
+                            $(document).unbindArrive('<%= "#practice_categories_attributes_#{cat.index}_name" %>', newElem);
+                            }
+                            );
+                          <% end %>
+                        <% end %>
+                        <li class="practice-editor-category-li fields" <%= "id=practice_categories_attributes_#{cat.index}_li" if cat.object.id %> data-id="<%= other_category_id %>">
+                          <div class="grid-row">
+                            <%= cat.hidden_field :is_other, value: true %>
+                            <div class="grid-col-12">
+                              <%= cat.text_field :name, class: 'usa-input margin-bottom-1 x0-top', 'aria-label': 'Name' %>
+                            </div>
+
+                            <div class="grid-col-12 trash-container">
+                              <%= cat.link_to_remove 'Delete entry',
+                                                    class: "origin-trash font-sans-xs line-height-26 cursor-pointer float-right"
+                              %>
+                            </div>
                           </div>
-                        </div>
-                      </li>
+                        </li>
+                      <% end %>
                     <% end %>
                   </ul>
                   <%= f.link_to_add :categories, class: 'add-another-link add-category-link line-height-26 cursor-pointer' do %>
