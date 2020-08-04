@@ -33,6 +33,46 @@
                   <b>Problem attachments</b><br />
                   Attach any additional images, videos, files or links related to the problem your practice addresses.
                 </div>
+              <div class="grid-row grid-gap margin-top-105 grid-col-1 margin-bottom-3">
+                <div class="usa-radio margin-bottom-1 position-relative">
+                  <%= radio_button_tag 'practice[initiating_facility_type]',
+                                       'Image',
+                                       @practice.facility?,
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "initiating_facility_type_facility"
+                  %>
+                  <%= label_tag 'initiating_facility_type_facility', 'Image', class: 'usa-radio__label
+                initiating-facility-type-label x0-bottom', for: "initiating_facility_type_facility" %>
+                </div>
+                <div class="usa-radio margin-bottom-1 position-relative">
+                  <%= radio_button_tag 'practice[initiating_facility_type]',
+                                       'Video',
+                                       @practice.visn?,
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "initiating_facility_type_visn"
+                  %>
+                  <%= label_tag 'initiating_facility_type_visn', 'Video', class: 'usa-radio__label
+                initiating-facility-type-label x0-bottom', for: "initiating_facility_type_visn" %>
+                </div>
+                <div class="usa-radio margin-bottom-1 position-relative">
+                  <%= radio_button_tag 'practice[initiating_facility_type]',
+                                       'File', @practice.department?,
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "initiating_facility_type_department"
+                  %>
+                  <%= label_tag 'initiating_facility_type_department', 'File', class: 'usa-radio__label
+                initiating-facility-type-label x0-bottom', for: "initiating_facility_type_department" %>
+                </div>
+                <div class="usa-radio position-relative">
+                  <%= radio_button_tag 'practice[initiating_facility_type]', 'Link',
+                                       @practice.other?,
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "initiating_facility_type_other"
+                  %>
+                  <%= label_tag 'initiating_facility_type_other', 'Link', class: 'usa-radio__label
+                initiating-facility-type-label x0-bottom', for: "initiating_facility_type_other" %>
+                </div>
+              </div>
                 <div id="display_problem_resources">...</div>
             </div>
 
@@ -65,7 +105,7 @@
                 <b>Results attachments</b><br />
                 Attach any additional images, videos, files or links relevant to your results statement.
               </div>
-              <div id="display_solution_resources">...</div>
+              <div id="display_results_resources">...</div>
             </div>
 
 

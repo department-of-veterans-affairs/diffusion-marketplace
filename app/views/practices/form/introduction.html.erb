@@ -59,7 +59,7 @@
                 <%= f.label :name, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-1' do %>
                   Name <span class="text-gray-50">(required field)</span>
                 <% end %>
-                <span>Type the official name of your practice.</span>&nbsp;<!-- <span id="practice-editor-name-character-counter" class="text-base-light">(0/50 characters)</span>-->
+                <span>Type the official name of your practice.</span>&nbsp;
               </div>
               <%= f.text_field :name, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input" %>
 
