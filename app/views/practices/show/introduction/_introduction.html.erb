@@ -63,7 +63,7 @@
       </div>
       <%# practice summary %>
       <p class="desktop:grid-col-10 grid-col-12 margin-bottom-2 font-sans-lg line-height-sans-6">
-        <%= @practice.summary %>
+        <%= safe_join(h(@practice.summary).split("\r\n"), tag(:br)) %>
       </p>
     </div>
   </div>
