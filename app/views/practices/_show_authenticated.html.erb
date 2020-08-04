@@ -114,7 +114,7 @@
         </div>
         <div <%#class="tablet:grid-col-7 padding-x-1"%>>
           <p class="practice-summary margin-0 font-sans-xs-2 line-height-sans-505 word-break-break-word hyphens-auto">
-            <%= @practice.summary %>
+            <%= safe_join(h(@practice.summary).split("\r\n"), tag(:br)) %>
           </p>
         </div>
       </div>
