@@ -491,24 +491,6 @@
                         other_category_id = cat.object.id || "new_categories"
                         show_other_category_form = other_category_ids.include?(other_category_id) || other_category_id == "new_categories"
                       %>
-                      <% if cat.object.name %>
-                        <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-
-                          $(document).arrive('<%= "#practice_categories_attributes_#{cat.index}_name" %>',
-                          function(newElem) {
-                          styleOriginFacility(
-                          $(newElem).closest('li'),
-                          <%= other_category_id %>,
-                          '.practice-editor-category-li',
-                          '.practice-editor-categories-ul',
-                          '.add-category-link',
-                          '12'
-                          );
-                          $(document).unbindArrive('<%= "#practice_categories_attributes_#{cat.index}_name" %>', newElem);
-                          }
-                          );
-                        <% end %>
-                      <% end %>
 
                       <% if show_other_category_form %>
                         <% if cat.object.id %>
@@ -519,8 +501,9 @@
                             styleOriginFacility(
                             $li,
                             <%= other_category_id %>,
-                            '.practice-editor-other-categories-li',
-                            '.practice-editor-categories-ul'
+                            '.practice-editor-category-li',
+                            '.practice-editor-categories-ul',
+                            '12'
                             );
                             var $_destroy = $li.find('.trash-container input[name="practice[_destroy]"]');
                             $_destroy.attr('name', 'practice[categories_attributes][<%= cat.index %>][_destroy]');
@@ -532,7 +515,6 @@
                         <% end %>
                         <li class="practice-editor-category-li fields" <%= "id=practice_categories_attributes_#{cat.index}_li" if cat.object.id %> data-id="<%= other_category_id %>">
                           <div class="grid-row">
-                            <%= cat.hidden_field :is_other, value: true %>
                             <div class="grid-col-12">
                               <%= cat.text_field :name, class: 'usa-input margin-bottom-1 x0-top', 'aria-label': 'Name' %>
                             </div>
@@ -555,7 +537,8 @@
                       observePracticeEditorLiArrival(
                         $(document),
                         '.practice-editor-category-li',
-                        '.practice-editor-categories-ul'
+                        '.practice-editor-categories-ul',
+                        '12'
                       );
                       attachTrashListener(
                         $(document),
@@ -568,7 +551,7 @@
                           $(document).unbindArrive('#categories_fields_blueprint', blueprint);
                         }
                       );
-                      showOtherCategoriesFields();
+                      showOtherCategoryFields();
                     <% end %>
                   <% end %>
                 </div>

@@ -179,8 +179,8 @@ class Practice < ApplicationRecord
   has_many :badge_practices, dependent: :destroy
   has_many :badges, through: :badge_practices
   has_many :business_case_files, dependent: :destroy
-  has_many :category_practices, dependent: :destroy, autosave: true
-  has_many :categories, through: :category_practices
+  has_many :category_practices, -> { order(id: :asc) }, dependent: :destroy, autosave: true
+  has_many :categories, -> { order(id: :asc) }, through: :category_practices
   has_many :checklist_files, dependent: :destroy
   has_many :clinical_condition_practices, dependent: :destroy
   has_many :clinical_conditions, through: :clinical_condition_practices
@@ -237,7 +237,7 @@ class Practice < ApplicationRecord
   accepts_nested_attributes_for :practice_origin_facilities, allow_destroy: true, reject_if: proc { |attributes| attributes['facility_id'].blank? }
   accepts_nested_attributes_for :practice_metrics, allow_destroy: true, reject_if: proc { |attributes| attributes['description'].blank? }
   accepts_nested_attributes_for :practice_awards, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
-  accepts_nested_attributes_for :categories, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
+  accepts_nested_attributes_for :categories, allow_destroy: true, reject_if: proc { true }
   accepts_nested_attributes_for :practice_partner_practices, allow_destroy: true
   accepts_nested_attributes_for :impact_photos, allow_destroy: true, reject_if: proc { |attributes|
     reject = attributes['description'].blank?

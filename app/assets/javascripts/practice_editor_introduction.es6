@@ -23,14 +23,15 @@
         );
     }
 
-    function attachShowOtherCategoriesFields() {
+    function attachShowOtherCategoryFields() {
         observePracticeEditorLiArrival(
             $document,
             '.practice-editor-category-li',
-            '.practice-editor-categories-ul'
+            '.practice-editor-categories-ul',
+            '12'
         );
         $document.on('change', '#category_other', function() {
-            showOtherCategoriesFields();
+            showOtherCategoryFields();
         });
 
         attachTrashListener(
@@ -44,7 +45,7 @@
     function loadPracticeIntroductionFunctions() {
         attachFacilitySelectListener();
         attachShowOtherAwardFields();
-        attachShowOtherCategoriesFields();
+        attachShowOtherCategoryFields();
     }
 
     $document.on('turbolinks:load', loadPracticeIntroductionFunctions);
@@ -58,7 +59,7 @@ function showOtherAwardFields() {
     }
 }
 
-function showOtherCategoriesFields() {
+function showOtherCategoryFields() {
     if (document.getElementById('category_other').checked) {
         document.getElementById('other_categories_container').style.display = 'block';
     } else {

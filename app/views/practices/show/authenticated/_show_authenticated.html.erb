@@ -271,3 +271,24 @@
     </div>
   </section>
 <% end %>
+
+<%
+  practice_category_practices = @practice.category_practices
+%>
+
+<% if practice_category_practices.any? %>
+
+  <section class="search-terms-section desktop-hide">
+    <div class="grid-container">
+      <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+      <h3 class="font-sans-lg margin-bottom-2">Search Tags</h3>
+      <% practice_category_practices.each do |pcp| %>
+        <div
+          class="display-inline-block category-container font-sans-3xs bg-primary padding-y-05 padding-x-1 radius-sm"
+        >
+          <%= pcp.category.name %>
+        </div>
+      <% end %>
+    </div>
+  </section>
+<% end %>

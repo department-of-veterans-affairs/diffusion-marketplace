@@ -16,7 +16,7 @@ class SavePracticeService
         crop_main_display_image: 'error cropping practice thumbnail',
         update_initiating_facility: 'error updating initiating facility',
         update_practice_awards: 'error updating practice awards',
-        update_category_practices: 'error updating practice categories',
+        # update_category_practices: 'error updating practice categories'
     }
   end
 
@@ -32,13 +32,13 @@ class SavePracticeService
       rescue_method(:crop_main_display_image)
       rescue_method(:update_initiating_facility)
       rescue_method(:update_practice_awards)
-      rescue_method(:update_category_practices)
-
+      # rescue_method(:update_category_practices)
       updated
     rescue => e
       Rails.logger.error "save_practice error: #{e.message}"
       e
     end
+    update_category_practices
   end
 
   private
@@ -47,7 +47,7 @@ class SavePracticeService
     begin
       send(method_name)
     rescue StandardError => e
-    puts e
+      puts e
       raise StandardError.new @error_messages[method_name]
     end
   end
@@ -98,15 +98,7 @@ class SavePracticeService
 
     if category_params.present?
       category_attribute_params = @practice_params[:categories_attributes]
-      categories_to_create = category_attribute_params.values.map { |param| param[:name] }
       cat_keys = category_params.keys
-      # If Other was checked, create a new category with is_other true and create a category_practice linking to the new category
-      categories_to_create.each do |category|
-        unless category == ""
-          cate = Category.find_or_create_by(name: category, is_other: true)
-          practice_category_practices.find_or_create_by(category_id: cate.id)
-        end
-      end
 
       cat_keys.each do |key|
         if practice_categories.ids.exclude?(key.to_i)
@@ -114,17 +106,36 @@ class SavePracticeService
         end
       end
 
-      if cat_keys.exclude?(other_cat_id.to_s)
-        other_practice_categories = practice_categories.where(is_other: true)
-
-        other_practice_categories.each do |oc|
-          oc.destroy unless CategoryPractice.where(category_id: oc.id).not(practice_id: @practice.id).any?
+      if cat_keys.include?(other_cat_id.to_s)
+        categories_to_process = category_attribute_params.values.map { |param| { id: param[:id], name: param[:name], _destroy: param[:_destroy]} }
+        # If Other was checked, create a new category with is_other true and create a category_practice linking to the new category
+        categories_to_process.each do |category|
+          unless category[:name] == ""
+            if category[:_destroy] == 'false' && category[:id].nil?
+              cate = Category.create(name: category[:name], is_other: true)
+              practice_category_practices.create(category_id: cate.id)
+            elsif category[:_destroy] == 'false' && category[:id].present?
+              practice_categories.find_by(id: category[:id].to_i).update_attributes(name: category[:name])
+            elsif category[:_destroy] == 'true' && category[:id].present?
+              practice_category_practices.where(category_id: category[:id]).destroy_all
+            end
+          end
         end
-
-        other_practice_categories.destroy_all
       end
 
-      practice_category_practices.where(category: { is_other: false }).each do |pcp|
+      other_practice_categories = practice_categories.where(is_other: true)
+
+      if other_practice_categories.any?
+        if cat_keys.exclude?(other_cat_id.to_s)
+          practice_category_practices.joins(:category).where(categories: { is_other: true }).destroy_all
+
+          other_practice_categories.each do |oc|
+            oc.destroy unless CategoryPractice.where.not(practice_id: @practice.id).where(category_id: oc.id).any?
+          end
+        end
+      end
+
+      practice_category_practices.joins(:category).where(categories: { is_other: false }).each do |pcp|
         pcp.destroy unless cat_keys.include?(pcp.category_id.to_s)
       end
 

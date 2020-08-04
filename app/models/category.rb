@@ -4,7 +4,7 @@ class Category < ApplicationRecord
   acts_as_list
 
   has_many :category_practices, dependent: :destroy
-  # has_many :practices, through: :categories
+  has_many :practices, through: :categories
   has_many :practices, through: :category_practices
 
   attr_accessor :related_terms_raw
