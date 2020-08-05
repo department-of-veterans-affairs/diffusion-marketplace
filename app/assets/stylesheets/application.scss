@@ -38,50 +38,11 @@ body {
   min-height: calc(100vh - 271px)
 }
 
-/*page components*/
-.heading2_subtopic_title{
-  font-style: normal;
-  font-weight: bold;
-  font-size: 33.92px;
-  line-height: 38px;
-  display: flex;
-  align-items: center;
-  color: #000000;
-}
-.heading2_subtopic_description{
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16.96px;
-  line-height: 26px;
-  display: flex;
-  align-items: center;
-  color: #000000;
-}
-.rectangle21 {
-  fill: #1A4480;
-  background: #1A4480;
-}
-
 .practice-editor-rect-svg {
   height: 4px;
   width: 40px;
 }
 
-.add_more_facilities_button {
-  background: none!important;
-  border: none;
-  padding: 0!important;
-  /*optional*/
-  //font-family: Public Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 162%;
-  /*input has OS specific font-family*/
-  color: #2672DE;
-  text-decoration: underline;
-  cursor: grab/pointer;
-}
 #more_text {display: none;}
 #more_text_award {display: none;}
 

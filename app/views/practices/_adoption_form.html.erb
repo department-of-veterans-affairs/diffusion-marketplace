@@ -26,7 +26,7 @@
   <%= f.hidden_field('diffusion_history_status_id', value: adoption.id) if adoption %>
   <div class="margin-bottom-3 margin-top-1">
 
-    <p class="margin-bottom-1"><span class="fw-bold">Status:&nbsp;</span>
+    <p class="margin-bottom-1"><span class="text-bold">Status:&nbsp;</span>
       Select the appropriate status of adoption for the facility.</p>
     <div class="usa-radio position-relative">
       <%= radio_button(nil, 'status', 'In progress', class: 'usa-radio__input adoptions-radio-button', required: true, checked: status == in_progress ? 'checked' : false, id: "status_in_progress#{adoption&.diffusion_history&.id}") %>
@@ -47,7 +47,7 @@
 
   <div class="margin-bottom-3">
     <p class="margin-bottom-1">
-      <span class="fw-bold">Adopting facility:&nbsp;</span>
+      <span class="text-bold">Adopting facility:&nbsp;</span>
       Select the state and facility where this practice is being adopted.</p>
     <div class="grid-row grid-gap-4">
       <div>
@@ -65,14 +65,14 @@
             var end_month_el = document.getElementById('date_ended_month<%= adoption&.diffusion_history&.id %>');
             var end_year_el = document.getElementById('date_ended_year<%= adoption&.diffusion_history&.id %>');
             if (this.value === 'In progress') {
-              end_month_el.classList.add('dm-color-disabled');
+              end_month_el.classList.add('dm-color-gray-20');
               end_month_el.disabled = true;
-              end_year_el.classList.add('dm-color-disabled');
+              end_year_el.classList.add('dm-color-gray-20');
               end_year_el.disabled = true;
             } else {
-              end_month_el.classList.remove('dm-color-disabled');
+              end_month_el.classList.remove('dm-color-gray-20');
               end_month_el.disabled = false;
-              end_year_el.classList.remove('dm-color-disabled');
+              end_year_el.classList.remove('dm-color-gray-20');
               end_year_el.disabled = false;
             }
           }
@@ -121,7 +121,7 @@
       </div>
       <div class="grid-col-fill">
         <%= label_tag facility_select_selector, 'Facility', class: 'usa-label margin-0' %>
-        <%= select_tag(:facility_id, options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-disabled']]), id: facility_select_selector, class: 'width-full height-5 usa-select', required: true) %>
+        <%= select_tag(:facility_id, options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-gray-20']]), id: facility_select_selector, class: 'width-full height-5 usa-select', required: true) %>
       </div>
     </div>
   </div>
@@ -142,18 +142,18 @@
 
   <div class="margin-bottom-205">
     <p class="margin-bottom-1">
-      <span class="fw-bold">Date adoption finished <span class="text-base">(optional)</span>:&nbsp;</span>
+      <span class="text-bold">Date adoption finished <span class="text-base">(optional)</span>:&nbsp;</span>
       Successful or unsuccessful adoption must be selected to edit this field.
     </p>
     <div class="grid-row grid-gap-4">
       <% disabled = adoption&.status&.downcase == 'in progress' || adoption.nil? %>
       <div>
         <%= label_tag "date_ended_month#{adoption&.diffusion_history&.id}", 'Month', class: 'usa-label margin-0' %>
-        <%= select_month(adoption&.end_time&.present? ? date_get_month(adoption.end_time) : nil, {prompt: '-Select-', prefix: 'date_ended'}, {id: "date_ended_month#{adoption&.diffusion_history&.id}", class: "width-card-lg height-5 usa-select #{disabled ? 'dm-color-disabled' : ''}", disabled: disabled}) %>
+        <%= select_month(adoption&.end_time&.present? ? date_get_month(adoption.end_time) : nil, {prompt: '-Select-', prefix: 'date_ended'}, {id: "date_ended_month#{adoption&.diffusion_history&.id}", class: "width-card-lg height-5 usa-select #{disabled ? 'dm-color-gray-20' : ''}", disabled: disabled}) %>
       </div>
       <div class="grid-col-fill">
         <%= label_tag "date_ended_year#{adoption&.diffusion_history&.id}", 'Year', class: 'usa-label margin-0' %>
-        <%= select_year(adoption&.end_time&.present? ? date_get_year(adoption.end_time) : nil, {start_year: 2010, end_year: Date.today.year, prompt: '-Select-', prefix: 'date_ended', default: '-Select-'}, {id: "date_ended_year#{adoption&.diffusion_history&.id}", class: "width-full height-5 usa-select #{disabled ? 'dm-color-disabled' : ''}", disabled: disabled}) %>
+        <%= select_year(adoption&.end_time&.present? ? date_get_year(adoption.end_time) : nil, {start_year: 2010, end_year: Date.today.year, prompt: '-Select-', prefix: 'date_ended', default: '-Select-'}, {id: "date_ended_year#{adoption&.diffusion_history&.id}", class: "width-full height-5 usa-select #{disabled ? 'dm-color-gray-20' : ''}", disabled: disabled}) %>
       </div>
     </div>
   </div>

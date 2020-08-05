@@ -27,63 +27,152 @@ i.e.
   box-sizing: border-box;
 }
 
-// buttons
-
+/****************************************
+  BUTTONS
+*****************************************/
+// solid btns - to use: class="usa-button dm-btn-primary"
 .usa-button {
-  &.black {
-    &:not(.usa-button--outline) {
-      background-color: $dm-color-black !important;
+  text-decoration: none !important;
+  font-weight: bold;
+  color: $dm-color-white;
+
+  &:visited, &:active, &:hover {
+    text-decoration: none;
+    cursor: pointer;
+    color: $dm-color-white;
+  }
+
+  // solid blue-50v btn
+  &.dm-btn-primary {
+    background-color: $dm-color-blue-50v;
+
+    &:visited, &:active, &:hover {
+      background-color: $dm-color-blue-50v;
     }
 
-    &.usa-button--outline {
-      box-shadow: none !important;
-      border: 2px solid $dm-color-black !important;
-      color: $dm-color-black !important;
+    &:visited {
+      background-color: $dm-color-blue-50v;
+    }
+
+    &:hover {
+      background-color: $dm-color-blue-70v;
+    }
+
+    &:active {
+      background-color: $dm-color-blue-80v;
+    }
+  }
+
+  // solid gray-90 btn
+  &.dm-btn-base {
+    background-color: $dm-color-base;
+
+    &:visited, &:active, &:hover {
+      background-color: $dm-color-base;
     }
   }
 }
 
-.usa-button-outline-white {
-  //@extend .usa-button--outline;
-  background-color: transparent !important;
-  color: #FFFFFF !important;
-  box-shadow: none !important;
-  border: 2px solid #ffffff !important;
-}
-
+// outline btns - to use: class="usa-button--outline dm-btn-primary"
 .usa-button--outline {
-  min-width: 8.75rem !important;
-  min-height: 2.4375rem !important;
-  box-shadow: none !important;
-  border: 2px solid $dm-color-blue-50v !important;
+  @extend .usa-button;
+  border-width: 2px;
+  border-style: solid;
+  background-color: transparent !important;
+  box-shadow: none;
+  margin-top: 0;
 
-  &:hover {
-    color: $dm-color-blue-70v !important;
-    border: 2px solid $dm-color-blue-70v !important;
+  &:visited, &:active, &:hover {
+    background-color: transparent !important;
+    border-width: 2px;
+    border-style: solid;
+    box-shadow: none;
   }
 
-  &:disabled {
-    border: 2px solid #dcdee0 !important;
+  // outline blue-50v btn
+  &.dm-btn-primary {
+  color: $dm-color-blue-50v;
+  border-color: $dm-color-blue-50v;
+
+    &:visited {
+      color: $dm-color-blue-50v;
+      border-color: $dm-color-blue-50v;
+    }
+
+    &:hover {
+      color: $dm-color-blue-70v;
+      border-color: $dm-color-blue-70v;
+    }
+
+    &:active {
+      color: $dm-color-blue-80v;
+      border-color: $dm-color-blue-80v;
+    }
+  }
+
+  // outline gray-90 btn
+  &.dm-btn-base {
+    color: $dm-color-base !important;;
+    border-color: $dm-color-base;
+
+    &:visited, &:active, &:hover {
+      color: $dm-color-base !important;;
+      border-color: $dm-color-base;
+    }
   }
 }
 
-// USWDS utility extensions
+// unstyled btns - to use: class="usa-button--unstyled dm-btn-primary"
+.usa-button--unstyled {
+  @extend .usa-button;
+  background-color: transparent !important;
+  font-weight: normal !important;
+  text-decoration: underline !important;
 
-button.appearance-none {
-  appearance: none;
-  background: none;
-  border: none;
+  &:visited, &:active, &:hover {
+    background-color: transparent !important;
+    font-weight: normal;
+    text-decoration: underline;
+  }
+
+  // unstyled blue-50v btn
+  &.dm-btn-primary {
+  color: $dm-color-blue-50v;
+
+    &:visited {
+      color: $dm-color-blue-50v;
+    }
+
+    &:hover {
+      color: $dm-color-blue-70v;
+    }
+
+    &:active {
+      color: $dm-color-blue-80v;
+    }
+  }
+
+  // unstyled red-50v btn
+  &.dm-btn-warning {
+    color: $dm-color-red-50v;
+
+    &:visited {
+      color: $dm-color-red-50v;
+    }
+
+    &:hover {
+      color: $dm-color-red-60v;
+    }
+
+    &:active {
+      color: $dm-color-red-70v;
+    }
+  }
 }
 
-.link-dark, .link-dark:visited {
-  @extend .text-base-darkest;
-}
-
-.link-primary, .link-primary:visited {
-  @extend .text-primary;
-
-  &:hover {
-    @extend .text-base-darkest;
+.usa-form {
+  .usa-button, .usa-button--unstyled, .usa-button--unstyled {
+    margin-top: 0.5rem;
   }
 }
 
@@ -93,38 +182,10 @@ p {
   @extend .measure-none;
 }
 
-.icon {
-  position: relative;
-  top: 6px;
-  margin-right: 6px;
-}
-
-.icon-large {
-  float: left;
-  margin-right: 15px;
-  position: relative;
-  top: 20px;
-  height: 50px;
-}
-
-.icon-positive-outcomes {
-  float: left;
-  margin-right: 15px;
-  height: 35px;
-}
-
-.icon-highlights {
-  width: 35px;
-}
-
 .badge {
   position: relative;
   top: 15px;
   width: 40px;
-}
-
-.section-selected {
-  border-bottom: solid 6px color('accent-cool-dark');
 }
 
 .usa-sidenav .usa-current {
@@ -147,10 +208,6 @@ p {
 
 .usa-sidenav a:hover {
   background-color: #ffffff !important;
-}
-
-.usa-sidenav .usa-current::after {
-  background-color: $dm-color-lightest-gray !important;
 }
 
 .dm-link-title {
@@ -181,33 +238,6 @@ p {
   }
 
 
-}
-
-a {
-  color: $dm-color-blue-50v;
-  text-decoration: underline;
-
-  &:visited {
-    color: $dm-alt-visited-purple;
-  }
-
-  &:hover {
-    text-decoration: none;
-    color: $dm-color-blue-50v;
-  }
-
-  &.beta-banner-link {
-    color: black;
-    text-decoration: underline;
-
-    &:hover {
-      text-decoration: none;
-    }
-
-    &:visited {
-      color: black;
-    }
-  }
 }
 
 @media all and (min-width: 40em) {
@@ -259,12 +289,6 @@ a {
 .highlighted-practice > .favorite-practice-button {
   top: 2%;
   right: 2%;
-}
-
-.practice-card-outline {
-  border: 2px solid #DCDEE0;
-  box-sizing: border-box;
-  border-radius: 2px;
 }
 
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {

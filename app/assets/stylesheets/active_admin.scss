@@ -9,16 +9,18 @@
 // $sidebar-width: 242px;
 
 // Active Admin's got SASS!
-@import "active_admin/mixins";
-@import "active_admin/base";
-@import "active_skin";
-@import "wigu/active_admin_theme";
+@import 'active_admin/mixins';
+@import 'active_admin/base';
+@import 'active_skin';
+@import 'wigu/active_admin_theme';
 @import 'activeadmin/quill_editor_input';
 
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:
 //
 //   .status_tag { background: #6090DB; }
+
+@import '/dm/variables/colors';
 
 #header {
   h1.site_title {
@@ -78,7 +80,7 @@ form fieldset.inputs legend {
   text-shadow: none;
   border-radius: 4px;
   background-color: #5ea3d3;
-  color: #ffffff;
+  color: $dm-color-white;
   display: inline-block;
   font-weight: bold;
   font-size: 1.0em;
@@ -87,7 +89,7 @@ form fieldset.inputs legend {
   padding: 10px 20px;
   line-height: 12px;
     &:link,&:visited{
-        color: #ffffff;
+        color: $dm-color-white;
       text-decoration: none;
     }
   &:hover{
@@ -136,7 +138,7 @@ fieldset.page_components.inputs.has_many_fields {
     margin-top: 0;
 
     span:first-child {
-      color: #000000;
+      color: $dm-color-black;
       font-weight: bold;
     }
   }
@@ -151,7 +153,7 @@ fieldset.page_components.inputs.has_many_fields {
       font-size: 13px;
 
       span:first-child {
-        color: #000000;
+        color: $dm-color-black;
         font-weight: bold;
       }
     }
