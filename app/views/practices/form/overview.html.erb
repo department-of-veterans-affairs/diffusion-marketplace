@@ -1,5 +1,6 @@
 <% provide :head_tags do %>
   <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'practice_editor_overview', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <%= render 'breadcrumbs' %>
@@ -26,7 +27,7 @@
                 <div class="margin-bottom-5 margin-top-3">
                   <b>Problem statement</b> (required field)<br/>
                   Type the main problem your practice attempted to address and include context and any initial goals.
-                  <%= f.text_area :overview_problem, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-overview-statement-input" %>
+                  <%= f.text_area :overview_problem, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-overview-statement-input", required: true %>
                 </div>
                 <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
                 <div class="margin-bottom-5 margin-top-3">
@@ -35,43 +36,44 @@
                 </div>
               <div class="grid-row grid-gap margin-top-105 grid-col-1 margin-bottom-3">
                 <div class="usa-radio margin-bottom-1 position-relative">
-                  <%= radio_button_tag 'practice[initiating_facility_type]',
+                  <%= radio_button_tag 'practice_problem_resources[resource_type]',
                                        'Image',
-                                       @practice.facility?,
+                                       false, onclick: "displayResourceForm('problem', 'image');",
                                        class: 'usa-radio__input initiating-facility-type-radio',
-                                       id: "initiating_facility_type_facility"
+                                       id: "practice_problem_image"
                   %>
-                  <%= label_tag 'initiating_facility_type_facility', 'Image', class: 'usa-radio__label
-                initiating-facility-type-label x0-bottom', for: "initiating_facility_type_facility" %>
+                  <%= label_tag 'practice_problem_image', 'Image', class: 'usa-radio__label
+                initiating-facility-type-label x0-bottom', for: "practice_problem_image" %>
                 </div>
                 <div class="usa-radio margin-bottom-1 position-relative">
-                  <%= radio_button_tag 'practice[initiating_facility_type]',
+                  <%= radio_button_tag 'practice_problem_resources[resource_type]',
                                        'Video',
-                                       @practice.visn?,
+                                       false, onclick: "displayResourceForm('problem', 'video');",
                                        class: 'usa-radio__input initiating-facility-type-radio',
-                                       id: "initiating_facility_type_visn"
+                                       id: "practice_problem_video"
                   %>
-                  <%= label_tag 'initiating_facility_type_visn', 'Video', class: 'usa-radio__label
-                initiating-facility-type-label x0-bottom', for: "initiating_facility_type_visn" %>
+                  <%= label_tag 'practice_problem_video', 'Video', class: 'usa-radio__label
+                initiating-facility-type-label x0-bottom', for: "practice_problem_video" %>
                 </div>
                 <div class="usa-radio margin-bottom-1 position-relative">
-                  <%= radio_button_tag 'practice[initiating_facility_type]',
-                                       'File', @practice.department?,
+                  <%= radio_button_tag 'practice_problem_resources[resource_type]',
+                                       'File', false, onclick: "displayResourceForm('problem', 'file');",
                                        class: 'usa-radio__input initiating-facility-type-radio',
-                                       id: "initiating_facility_type_department"
+                                       id: "practice_problem_file"
                   %>
-                  <%= label_tag 'initiating_facility_type_department', 'File', class: 'usa-radio__label
-                initiating-facility-type-label x0-bottom', for: "initiating_facility_type_department" %>
+                  <%= label_tag 'practice_problem_file', 'File', class: 'usa-radio__label
+                initiating-facility-type-label x0-bottom', for: "practice_problem_file" %>
                 </div>
                 <div class="usa-radio position-relative">
-                  <%= radio_button_tag 'practice[initiating_facility_type]', 'Link',
-                                       @practice.other?,
+                  <%= radio_button_tag 'practice_problem_resources[resource_type]', 'Link',
+                                       false, onclick: "displayResourceForm('problem', 'link');",
                                        class: 'usa-radio__input initiating-facility-type-radio',
-                                       id: "initiating_facility_type_other"
+                                       id: "practice_problem_link"
                   %>
-                  <%= label_tag 'initiating_facility_type_other', 'Link', class: 'usa-radio__label
-                initiating-facility-type-label x0-bottom', for: "initiating_facility_type_other" %>
+                  <%= label_tag 'practice_problem_link', 'Link', class: 'usa-radio__label
+                initiating-facility-type-label x0-bottom', for: "practice_problem_link" %>
                 </div>
+                <div class="margin-top-3" id="display_problem_form"></div>
               </div>
                 <div id="display_problem_resources">...</div>
             </div>
