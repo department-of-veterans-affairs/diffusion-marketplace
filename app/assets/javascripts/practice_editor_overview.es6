@@ -207,9 +207,9 @@ function displayResourceForm(sArea, sType){
             break;
         case 'video': addVideoFields(sArea);
             break;
-        case 'file': form_container.innerHTML = "file_form";
+        case 'file': addFileFields(sArea);
             break;
-        case 'link': form_container.innerHTML = "link_form";
+        case 'link': addLinkFields(sArea)
             break;
         default: form_container.innerHTML = "unknown_form";
     }
@@ -260,7 +260,7 @@ function addVideoFields(sArea){
     input.id = sGuid;
     input.style.width = "643px";
     input.required = true;
-    input.innerText = "https://www.youtube.com/watch?"
+    input.placeholder = "https://www.youtube.com/watch?"
     var label = document.createElement("Label");
     label.htmlFor = sGuid;
     label.innerHTML="Link (paste the full Youtube address)";
@@ -287,6 +287,111 @@ function addVideoFields(sArea){
     form_container.appendChild(input);
     form_container.appendChild(document.createElement("br"));
 
+}
+
+function addLinkFields(sArea){
+    var form_container = document.getElementById('display_' + sArea + '_form');
+    // Clear previous contents of the container
+    while (form_container.hasChildNodes()) {
+        form_container.removeChild(form_container.lastChild);
+    }
+    //for (i=0;i<number;i++){
+    // Append a node with a random text
+    var sGuid = createGUID();
+    // Create an <input> element, set its type and name attributes
+    var input = document.createElement("input");
+    input.type = "text";
+    input.name = sGuid;
+    input.id = sGuid;
+    input.style.width = "643px";
+    input.required = true;
+    var label = document.createElement("Label");
+    label.htmlFor = sGuid;
+    label.innerHTML="Link (paste the full address)";
+    form_container.appendChild(label);
+    form_container.appendChild(document.createElement("br"));
+    form_container.appendChild(input);
+    form_container.appendChild(document.createElement("br"));
+    form_container.appendChild(document.createElement("br"));
+
+    sGuid = createGUID();
+    label = document.createElement("Label");
+    label.htmlFor = sGuid;
+    label.innerHTML="Title";
+
+    input = document.createElement("input");
+    input.type = "text";
+    input.name = sGuid;
+    input.id = sGuid;
+    input.style.width = "309px";
+    input.required = true;
+
+    form_container.appendChild(label);
+    form_container.appendChild(document.createElement("br"));
+    form_container.appendChild(input);
+    form_container.appendChild(document.createElement("br"));
+    form_container.appendChild(document.createElement("br"));
+
+    sGuid = createGUID();
+
+    label = document.createElement("Label");
+    label.htmlFor = sGuid;
+    label.innerHTML="Description";
+
+    input = document.createElement("input");
+    input.type = "text";
+    input.name = sGuid;
+    input.id = sGuid;
+    input.style.width = "643px";
+    input.required = true;
+
+    form_container.appendChild(label);
+    form_container.appendChild(document.createElement("br"));
+    form_container.appendChild(input);
+    form_container.appendChild(document.createElement("br"));
+}
+
+function addFileFields(sArea){
+    var form_container = document.getElementById('display_' + sArea + '_form');
+    // Clear previous contents of the container
+    while (form_container.hasChildNodes()) {
+        form_container.removeChild(form_container.lastChild);
+    }
+    //for (i=0;i<number;i++){
+    // Append a node with a random text
+    var sGuid = createGUID();
+    // Create an <input> element, set its type and name attributes
+    var input = document.createElement("input");
+    input.type = "text";
+    input.name = sGuid;
+    input.id = sGuid;
+    input.style.width = "393px";
+    input.required = true;
+    var label = document.createElement("Label");
+    label.htmlFor = sGuid;
+    label.innerHTML="File name";
+    form_container.appendChild(label);
+    form_container.appendChild(document.createElement("br"));
+    form_container.appendChild(input);
+    form_container.appendChild(document.createElement("br"));
+    form_container.appendChild(document.createElement("br"));
+
+    sGuid = createGUID();
+    label = document.createElement("Label");
+    label.htmlFor = sGuid;
+    label.innerHTML="File description";
+
+    input = document.createElement("input");
+    input.type = "text";
+    input.name = sGuid;
+    input.id = sGuid;
+    input.style.width = "643px";
+    input.required = true;
+
+    form_container.appendChild(label);
+    form_container.appendChild(document.createElement("br"));
+    form_container.appendChild(input);
+    form_container.appendChild(document.createElement("br"));
 }
 
 function createGUID() {
