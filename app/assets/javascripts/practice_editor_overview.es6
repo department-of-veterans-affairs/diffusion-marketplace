@@ -221,15 +221,31 @@ function addImageFields(sArea){
     while (form_container.hasChildNodes()) {
         form_container.removeChild(form_container.lastChild);
     }
+
+
+
     //for (i=0;i<number;i++){
         // Append a node with a random text
-        var sGuid = createGUID();
+
         form_container.appendChild(document.createTextNode("Use a high-quality .jpg, .jpeg, or .png file that is less than 32MB.  If you want to upload " +
             "an image that features a Veteran you must have FORM 3203.  Waivers must be filled out with the 'External to VA' check box selected."));
         form_container.appendChild(document.createElement("br"));
         form_container.appendChild(document.createElement("br"));
+
+        var sGuid = createGUID();
+
+        var input = document.createElement("INPUT");
+        input.setAttribute("type", "file");
+        form_container.appendChild(input);
+        form_container.appendChild(document.createElement("br"));
+        form_container.appendChild(document.createElement("br"));
+
+
+
+
+        sGuid = createGUID();
         // Create an <input> element, set its type and name attributes
-        var input = document.createElement("input");
+        input = document.createElement("input");
         input.type = "text";
         input.name = sGuid;
         input.id = sGuid;
@@ -357,6 +373,10 @@ function addFileFields(sArea){
     while (form_container.hasChildNodes()) {
         form_container.removeChild(form_container.lastChild);
     }
+
+    form_container.appendChild(document.createTextNode("Upload a .pdf, .docx, .xlxs, .jpg, or .png file that is less than 32MB. "));
+    form_container.appendChild(document.createElement("br"));
+    form_container.appendChild(document.createElement("br"));
     //for (i=0;i<number;i++){
     // Append a node with a random text
     var sGuid = createGUID();
