@@ -197,19 +197,55 @@
     //     }
     // }
 
-    $document.on('turbolinks:load');
+    function hideResources(){
+        document.getElementById('problem_image_form').style.display = 'none';
+        document.getElementById('problem_video_form').style.display = 'none';
+        document.getElementById('problem_file_form').style.display = 'none';
+        document.getElementById('problem_link_form').style.display = 'none';
+    }
+
+
+    $document.on('turbolinks:load', hideResources);
 })(window.jQuery);
+
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#blah').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$("#imgInp").change(function(){
+    readURL(this);
+});
 
 function displayResourceForm(sArea, sType){
     var form_container = document.getElementById('display_' + sArea + '_form');
     switch (sType) {
-        case 'image': addImageFields(sArea);
+        case 'image': document.getElementById('problem_image_form').style.display = 'block';
+            document.getElementById('problem_video_form').style.display = 'none';
+            document.getElementById('problem_file_form').style.display = 'none';
+            document.getElementById('problem_link_form').style.display = 'none';
             break;
-        case 'video': addVideoFields(sArea);
+        case 'video': document.getElementById('problem_video_form').style.display = 'block';
+            document.getElementById('problem_image_form').style.display = 'none';
+            document.getElementById('problem_file_form').style.display = 'none';
+            document.getElementById('problem_link_form').style.display = 'none';
             break;
-        case 'file': addFileFields(sArea);
+        case 'file': document.getElementById('problem_file_form').style.display = 'block';
+            document.getElementById('problem_video_form').style.display = 'none';
+            document.getElementById('problem_image_form').style.display = 'none';
+            document.getElementById('problem_link_form').style.display = 'none';
             break;
-        case 'link': addLinkFields(sArea)
+        case 'link': document.getElementById('problem_link_form').style.display = 'block';
+            document.getElementById('problem_video_form').style.display = 'none';
+            document.getElementById('problem_file_form').style.display = 'none';
+            document.getElementById('problem_image_form').style.display = 'none';
             break;
         default: form_container.innerHTML = "unknown_form";
     }

@@ -73,7 +73,20 @@
                   <%= label_tag 'practice_problem_link', 'Link', class: 'usa-radio__label
                 initiating-facility-type-label x0-bottom', for: "practice_problem_link" %>
                 </div>
-                <div class="margin-top-3" id="display_problem_form"></div>
+                <div class="margin-top-3" id="display_problem_form">
+                  <div id="problem_image_form">
+                    <%= render partial: "practices/overview_forms/problem_image_form", locals: {small_text: false} %>
+                  </div>
+                  <div id="problem_video_form">
+                    <%= render partial: "practices/overview_forms/problem_video_form", locals: {small_text: false} %>
+                  </div>
+                  <div id="problem_file_form">
+                    <%= render partial: "practices/overview_forms/problem_file_form", locals: {small_text: false} %>
+                  </div>
+                  <div id="problem_link_form">
+                    <%= render partial: "practices/overview_forms/problem_link_form", locals: {small_text: false} %>
+                  </div>
+                </div>
               </div>
                 <div id="display_problem_resources">...</div>
             </div>
