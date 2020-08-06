@@ -235,6 +235,8 @@ function displayResourceForm(sArea, sType){
             break;
         case 'video':
             document.getElementById('problem_video_form').style.display = 'block';
+            document.getElementById('problem_resource_video_form').style.display = 'block';
+            document.getElementById('display_problem_resources_video').style.display = 'block';
             document.getElementById('problem_image_form').style.display = 'none';
             document.getElementById('problem_file_form').style.display = 'none';
             document.getElementById('problem_link_form').style.display = 'none';
