@@ -227,22 +227,28 @@ $("#imgInp").change(function(){
 function displayResourceForm(sArea, sType){
     var form_container = document.getElementById('display_' + sArea + '_form');
     switch (sType) {
-        case 'image': document.getElementById('problem_image_form').style.display = 'block';
+        case 'image':
+            document.getElementById('problem_image_form').style.display = 'block';
             document.getElementById('problem_video_form').style.display = 'none';
             document.getElementById('problem_file_form').style.display = 'none';
             document.getElementById('problem_link_form').style.display = 'none';
             break;
-        case 'video': document.getElementById('problem_video_form').style.display = 'block';
+        case 'video':
+            document.getElementById('problem_video_form').style.display = 'block';
             document.getElementById('problem_image_form').style.display = 'none';
             document.getElementById('problem_file_form').style.display = 'none';
             document.getElementById('problem_link_form').style.display = 'none';
             break;
-        case 'file': document.getElementById('problem_file_form').style.display = 'block';
+        case 'file':
+            document.getElementById('problem_file_form').style.display = 'block';
             document.getElementById('problem_video_form').style.display = 'none';
             document.getElementById('problem_image_form').style.display = 'none';
             document.getElementById('problem_link_form').style.display = 'none';
             break;
-        case 'link': document.getElementById('problem_link_form').style.display = 'block';
+        case 'link':
+            document.getElementById('problem_link_form').style.display = 'block';
+            document.getElementById('problem_resource_link_form').style.display = 'block';
+            document.getElementById('display_problem_resources_link').style.display = 'block';
             document.getElementById('problem_video_form').style.display = 'none';
             document.getElementById('problem_file_form').style.display = 'none';
             document.getElementById('problem_image_form').style.display = 'none';
@@ -450,9 +456,4 @@ function addFileFields(sArea){
     form_container.appendChild(document.createElement("br"));
 }
 
-function createGUID() {
-    return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-    });
-}
+

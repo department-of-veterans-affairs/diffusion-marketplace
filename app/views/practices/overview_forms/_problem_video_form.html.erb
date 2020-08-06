@@ -1,0 +1,16 @@
+<%= label_tag 'practice_problem_resources', 'Link (paste the full Youtube address)', for: 'image_video_link' %>
+<input type="text" id="image_video_link" style="width: 643px">
+<br /><br />
+<%= label_tag 'practice_problem_resources', 'Caption', for: 'image_video_caption' %>
+<input type="text" id="image_video_caption" style="width: 643px">
+<%#= text_field_tag :practice_problem_resources, nil, required: true, id: 'image_caption', class: 'usa-input', :options => {:size => "643", :placeholder => "Search Events", :class => "round shadow"} %>
+<div class="grid-row margin-bottom-8">
+  <%= link_to practice_instructions_path(@practice), class: 'usa-button usa-button--outline dm-btn-primary
+            editor-back-to-link margin-right-1 padding-2 margin-bottom-5 text-no-underline' do %>
+    Cancel
+  <% end %>
+  <%= link_to practice_adoptions_path(@practice), class: 'usa-button dm-btn-primary pe-continue padding-2 editor-continue-link
+            continue-and-save margin-right-1 margin-bottom-5' do %>
+    Add Video
+  <% end %>
+</div>
