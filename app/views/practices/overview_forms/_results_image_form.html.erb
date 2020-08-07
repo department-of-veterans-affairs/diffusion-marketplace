@@ -1,0 +1,35 @@
+<div id="results_resource_image_form">
+  <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form'}) do |form| %>
+    <%= render 'shared/problem_image_editor', locals: { section_title: 'Thumbnail', form: form, practice: @practice } %>
+  <% end %>
+  <%= label_tag 'practice_results_resources', 'Caption', for: 'practice_results_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_name' %>
+  <input type="text" name="practice[results_resources_attributes][RANDOM_NUMBER_OR_SOMETHING][name]" id="practice_results_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_name" style="width: 643px">
+<%#= text_field_tag :practice_results_resources, nil, required: true, id: 'image_caption', class: 'usa-input', :class => "round shadow" %>
+</div>
+
+<%= javascript_tag 'data-turbolinks-track':'reload' do %>
+  $(document).on('click', '#add_results_resource_image', function(e){
+  debugger;
+  e.preventDefault();
+  var image_form = $('#results_resource_image_form').clone();
+  image_form.html(image_form.html().replace(/RANDOM_NUMBER_OR_SOMETHING/g, createGUID()));
+  image_form.appendTo('#display_results_resources_image');
+  document.getElementById('display_results_resources_image').style.display = 'block';
+  });
+
+  $(document).on('click', '#cancel_results_resource_image', function(e){
+  debugger;
+  e.preventDefault();
+  document.getElementById("results_image_form").style.display = 'none';
+  document.getElementById('practice_results_image').checked = false;
+  document.getElementById('results_resource_image_form').style.display = 'none';
+  document.getElementById('display_results_resources_image').style.display = 'none';
+  });
+<% end %>
+<div class="grid-row margin-bottom-8">
+  <button type="button" id="cancel_results_resource_image" class="usa-button usa-button--outline dm-btn-primary
+            editor-back-to-link margin-right-1 padding-2 margin-bottom-5 text-no-underline">Cancel</button>
+
+  <button type="button" id="add_results_resource_image" class="usa-button usa-button-outline pe-continue padding-2
+            margin-right-1 margin-bottom-5">Add image</button>
+</div>

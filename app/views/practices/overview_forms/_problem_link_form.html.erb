@@ -12,15 +12,7 @@
   <input type="text" required name="practice[problem_resources_attributes][RANDOM_NUMBER_OR_SOMETHING][description]" id="practice_problem_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_description" style="width: 643px">
 </div>
 <%= javascript_tag 'data-turbolinks-track':'reload' do %>
-    $(document).on('click', '#add_problem_resource_link', function(e){
-        debugger;
-        e.preventDefault();
-        var link_form = $('#problem_resource_link_form').clone();
-        link_form.html(link_form.html().replace(/RANDOM_NUMBER_OR_SOMETHING/g, createGUID()));
-        link_form.appendTo('#display_problem_resources_link');
-        document.getElementById('display_problem_resources_link').style.display = 'block';
-  });
-
+    attachAddResourceListener('problem_resource_link_form', 'display_problem_resources_link');
   $(document).on('click', '#cancel_problem_resource_link', function(e){
     debugger;
     e.preventDefault();

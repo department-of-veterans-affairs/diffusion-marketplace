@@ -202,6 +202,26 @@
         document.getElementById('problem_video_form').style.display = 'none';
         document.getElementById('problem_file_form').style.display = 'none';
         document.getElementById('problem_link_form').style.display = 'none';
+
+        document.getElementById('solution_image_form').style.display = 'none';
+        document.getElementById('solution_video_form').style.display = 'none';
+        document.getElementById('solution_file_form').style.display = 'none';
+        document.getElementById('solution_link_form').style.display = 'none';
+        document.getElementById('solution_resource_video_form').style.display = 'none';
+        document.getElementById('solution_resource_file_form').style.display = 'none';
+        document.getElementById('solution_resource_image_form').style.display = 'none';
+        document.getElementById('solution_resource_link_form').style.display = 'none';
+
+
+        //document.getElementById('results_image_form').style.display = 'none';
+        document.getElementById('results_resource_image_form').style.display = 'none';
+        document.getElementById('results_video_form').style.display = 'none';
+        document.getElementById('results_file_form').style.display = 'none';
+        document.getElementById('results_link_form').style.display = 'none';
+        document.getElementById('results_resource_video_form').style.display = 'none';
+        document.getElementById('results_resource_file_form').style.display = 'none';
+        document.getElementById('results_resource_image_form').style.display = 'none';
+        document.getElementById('results_resource_link_form').style.display = 'none';
     }
 
 
@@ -226,38 +246,39 @@ $("#imgInp").change(function(){
 
 function displayResourceForm(sArea, sType){
     var form_container = document.getElementById('display_' + sArea + '_form');
+    alert(sArea);
     switch (sType) {
         case 'image':
-            document.getElementById('problem_image_form').style.display = 'block';
-            document.getElementById('problem_resource_image_form').style.display = 'block';
-            document.getElementById('display_problem_resources_image').style.display = 'block';
-            document.getElementById('problem_video_form').style.display = 'none';
-            document.getElementById('problem_file_form').style.display = 'none';
-            document.getElementById('problem_link_form').style.display = 'none';
+            document.getElementById(sArea + '_image_form').style.display = 'block';
+            document.getElementById(sArea + '_resource_image_form').style.display = 'block';
+            document.getElementById('display_' + sArea + '_resources_image').style.display = 'block';
+            document.getElementById(sArea + '_video_form').style.display = 'none';
+            document.getElementById(sArea + '_file_form').style.display = 'none';
+            document.getElementById(sArea + '_link_form').style.display = 'none';
             break;
         case 'video':
-            document.getElementById('problem_video_form').style.display = 'block';
-            document.getElementById('problem_resource_video_form').style.display = 'block';
-            document.getElementById('display_problem_resources_video').style.display = 'block';
-            document.getElementById('problem_image_form').style.display = 'none';
-            document.getElementById('problem_file_form').style.display = 'none';
-            document.getElementById('problem_link_form').style.display = 'none';
+            document.getElementById(sArea + '_video_form').style.display = 'block';
+            document.getElementById(sArea + '_resource_video_form').style.display = 'block';
+            document.getElementById('display_' + sArea + '_resources_video').style.display = 'block';
+            document.getElementById(sArea + '_image_form').style.display = 'none';
+            document.getElementById(sArea + '_file_form').style.display = 'none';
+            document.getElementById(sArea + '_link_form').style.display = 'none';
             break;
         case 'file':
-            document.getElementById('problem_file_form').style.display = 'block';
-            document.getElementById('problem_resource_file_form').style.display = 'block';
-            document.getElementById('display_problem_resources_file').style.display = 'block';
-            document.getElementById('problem_video_form').style.display = 'none';
-            document.getElementById('problem_image_form').style.display = 'none';
-            document.getElementById('problem_link_form').style.display = 'none';
+            document.getElementById(sArea + '_file_form').style.display = 'block';
+            document.getElementById(sArea + '_resource_file_form').style.display = 'block';
+            document.getElementById('display_' + sArea + '_resources_file').style.display = 'block';
+            document.getElementById(sArea + '_video_form').style.display = 'none';
+            document.getElementById(sArea + '_image_form').style.display = 'none';
+            document.getElementById(sArea + '_link_form').style.display = 'none';
             break;
         case 'link':
-            document.getElementById('problem_link_form').style.display = 'block';
-            document.getElementById('problem_resource_link_form').style.display = 'block';
-            document.getElementById('display_problem_resources_link').style.display = 'block';
-            document.getElementById('problem_video_form').style.display = 'none';
-            document.getElementById('problem_file_form').style.display = 'none';
-            document.getElementById('problem_image_form').style.display = 'none';
+            document.getElementById(sArea + '_link_form').style.display = 'block';
+            document.getElementById(sArea + '_resource_link_form').style.display = 'block';
+            document.getElementById('display_' + sArea + '_resources_link').style.display = 'block';
+            document.getElementById(sArea + '_video_form').style.display = 'none';
+            document.getElementById(sArea + '_file_form').style.display = 'none';
+            document.getElementById(sArea + '_image_form').style.display = 'none';
             break;
         default: form_container.innerHTML = "unknown_form";
     }
@@ -460,6 +481,28 @@ function addFileFields(sArea){
     form_container.appendChild(document.createElement("br"));
     form_container.appendChild(input);
     form_container.appendChild(document.createElement("br"));
+}
+
+function attachAddResourceListener(formSelector, container){
+    $(document).on('click', 'button[id*="_resource_link"]', function(e){
+        debugger;
+        e.preventDefault();
+        const link_form = $(`#${formSelector}`).clone();
+        const nGuid = createGUID();
+
+        $.each($(`#${formSelector} input`), function(i, ele){
+            $(ele).attr('name', ele.name.replace(/RANDOM_NUMBER_OR_SOMETHING/g, nGuid));
+            $(ele).attr('id', ele.name.replace(/RANDOM_NUMBER_OR_SOMETHING/g, nGuid));
+        });
+
+        $.each($(`#${formSelector} label`), function(i, ele){
+            $(ele).attr('for', $(ele).attr('for').replace(/RANDOM_NUMBER_OR_SOMETHING/g, nGuid));
+        });
+
+
+        link_form.appendTo(`#${container}`);
+        document.getElementById(container).style.display = 'block';
+    });
 }
 
 

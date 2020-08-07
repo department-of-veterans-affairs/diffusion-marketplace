@@ -1,0 +1,39 @@
+<div id="results_resource_link_form">
+  <%= label_tag 'practice_results_resources_link', 'Link (paste the full address)', for: 'practice_results_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_link_url' %>
+  <input type="text" required name="practice[results_resources_attributes][RANDOM_NUMBER_OR_SOMETHING][link_url]" id="practice_results_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_link_url" style="width: 643px">
+  <br /><br />
+  <%= label_tag 'practice_results_resources_name', 'Title', for: 'practice_results_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_name' %>
+  <br />
+  <input type="text" required name="practice[results_resources_attributes][RANDOM_NUMBER_OR_SOMETHING][name]" id="practice_results_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_name" style="width: 393px">
+  <br />
+  <br />
+  <%= label_tag 'practice_results_resources_description', 'Description', for: 'practice_results_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_description' %>
+  <br />
+  <input type="text" required name="practice[results_resources_attributes][RANDOM_NUMBER_OR_SOMETHING][description]" id="practice_results_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_description" style="width: 643px">
+</div>
+<%= javascript_tag 'data-turbolinks-track':'reload' do %>
+  $(document).on('click', '#add_results_resource_link', function(e){
+  debugger;
+  e.preventDefault();
+  var link_form = $('#results_resource_link_form').clone();
+  link_form.html(link_form.html().replace(/RANDOM_NUMBER_OR_SOMETHING/g, createGUID()));
+  link_form.appendTo('#display_results_resources_link');
+  document.getElementById('display_results_resources_link').style.display = 'block';
+  });
+
+  $(document).on('click', '#cancel_results_resource_link', function(e){
+  debugger;
+  e.preventDefault();
+  document.getElementById("results_link_form").style.display = 'none';
+  document.getElementById('practice_results_link').checked = false;
+  document.getElementById('results_resource_link_form').style.display = 'none';
+  document.getElementById('display_results_resources_link').style.display = 'none';
+  });
+<% end %>
+<div class="grid-row margin-bottom-8">
+  <button type="button" id="cancel_results_resource_link" class="usa-button usa-button--outline dm-btn-primary
+            editor-back-to-link margin-right-1 padding-2 margin-bottom-5 text-no-underline">Cancel</button>
+
+  <button type="button" id="add_results_resource_link" class="usa-button usa-button-outline pe-continue padding-2
+            margin-right-1 margin-bottom-5">Add link</button>
+</div>
