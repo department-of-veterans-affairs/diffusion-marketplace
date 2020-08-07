@@ -4,17 +4,17 @@
 <br /><br />
 <%= label_tag 'practice_problem_resources', 'Caption', for: 'practice_problem_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_name' %>
 <input type="text" name="practice[problem_resources_attributes][RANDOM_NUMBER_OR_SOMETHING][name]" id="practice_problem_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_name" style="width: 643px">
+  <div class="grid-row margin-bottom-8">
+    <button type="button" id="cancel_problem_resource_video" class="usa-button usa-button--outline dm-btn-primary
+            editor-back-to-link margin-right-1 padding-2 margin-bottom-5 text-no-underline">Cancel</button>
+
+    <button type="button" class="add-resource usa-button usa-button-outline pe-continue padding-2
+            margin-right-1 margin-bottom-5">Add video</button>
+  </div>
 </div>
 
 <%= javascript_tag 'data-turbolinks-track':'reload' do %>
-  $(document).on('click', '#add_problem_resource_video', function(e){
-    debugger;
-    e.preventDefault();
-    var video_form = $('#problem_resource_video_form').clone();
-    video_form.html(video_form.html().replace(/RANDOM_NUMBER_OR_SOMETHING/g, createGUID()));
-    video_form.appendTo('#display_problem_resources_video');
-    document.getElementById('display_problem_resources_video').style.display = 'block';
-});
+  attachAddResourceListener('problem_resource_video_form', 'display_problem_resources_video');
 
   $(document).on('click', '#cancel_problem_resource_video', function(e){
   debugger;
@@ -25,10 +25,3 @@
   document.getElementById('display_problem_resources_video').style.display = 'none';
   });
 <% end %>
-<div class="grid-row margin-bottom-8">
-  <button type="button" id="cancel_problem_resource_video" class="usa-button usa-button--outline dm-btn-primary
-            editor-back-to-link margin-right-1 padding-2 margin-bottom-5 text-no-underline">Cancel</button>
-
-  <button type="button" id="add_problem_resource_video" class="usa-button usa-button-outline pe-continue padding-2
-            margin-right-1 margin-bottom-5">Add video</button>
-</div>

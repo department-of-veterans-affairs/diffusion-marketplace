@@ -246,7 +246,6 @@ $("#imgInp").change(function(){
 
 function displayResourceForm(sArea, sType){
     var form_container = document.getElementById('display_' + sArea + '_form');
-    alert(sArea);
     switch (sType) {
         case 'image':
             document.getElementById(sArea + '_image_form').style.display = 'block';
@@ -484,7 +483,7 @@ function addFileFields(sArea){
 }
 
 function attachAddResourceListener(formSelector, container){
-    $(document).on('click', 'button[id*="_resource_link"]', function(e){
+    $(document).on('click', `#${formSelector} .add-resource`, function(e){
         debugger;
         e.preventDefault();
         const link_form = $(`#${formSelector}`).clone();

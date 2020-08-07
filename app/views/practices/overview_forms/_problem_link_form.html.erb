@@ -10,6 +10,15 @@
   <%= label_tag 'practice_problem_resources_description', 'Description', for: 'practice_problem_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_description' %>
   <br />
   <input type="text" required name="practice[problem_resources_attributes][RANDOM_NUMBER_OR_SOMETHING][description]" id="practice_problem_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_description" style="width: 643px">
+
+  <div class="grid-row margin-bottom-8">
+    <button type="button" id="cancel_problem_resource_link" class=" usa-button usa-button--outline dm-btn-primary
+            editor-back-to-link margin-right-1 padding-2 margin-bottom-5 text-no-underline">Cancel</button>
+
+    <button type="button" class="add-resource usa-button usa-button-outline pe-continue padding-2
+            margin-right-1 margin-bottom-5">Add link</button>
+  </div>
+
 </div>
 <%= javascript_tag 'data-turbolinks-track':'reload' do %>
     attachAddResourceListener('problem_resource_link_form', 'display_problem_resources_link');
@@ -22,10 +31,3 @@
     document.getElementById('display_problem_resources_link').style.display = 'none';
   });
 <% end %>
-<div class="grid-row margin-bottom-8">
-  <button type="button" id="cancel_problem_resource_link" class="usa-button usa-button--outline dm-btn-primary
-            editor-back-to-link margin-right-1 padding-2 margin-bottom-5 text-no-underline">Cancel</button>
-
-  <button type="button" id="add_problem_resource_link" class="usa-button usa-button-outline pe-continue padding-2
-            margin-right-1 margin-bottom-5">Add link</button>
-</div>
