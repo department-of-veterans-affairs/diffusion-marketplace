@@ -107,7 +107,64 @@
                 <b>Solution attachments</b><br />
                 Attach any additional images, videos, files or links related to the solution implemented for your practice.
               </div>
-              <div id="display_solution_resources">...</div>
+              <div class="grid-row grid-gap margin-top-105 grid-col-1 margin-bottom-3">
+                <div class="usa-radio margin-bottom-1 position-relative">
+                  <%= radio_button_tag 'practice_solution_resources[resource_type]',
+                                       'Image',
+                                       false, onclick: "displayResourceForm('solution', 'image');",
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "practice_solution_image"
+                  %>
+                  <%= label_tag 'practice_solution_image', 'Image', class: 'usa-radio__label
+                initiating-facility-type-label x0-bottom', for: "practice_solution_image" %>
+                </div>
+                <div class="usa-radio margin-bottom-1 position-relative">
+                  <%= radio_button_tag 'practice_solution_resources[resource_type]',
+                                       'Video',
+                                       false, onclick: "displayResourceForm('solution', 'video');",
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "practice_solution_video"
+                  %>
+                  <%= label_tag 'practice_solution_video', 'Video', class: 'usa-radio__label
+                initiating-facility-type-label x0-bottom', for: "practice_solution_video" %>
+                </div>
+                <div class="usa-radio margin-bottom-1 position-relative">
+                  <%= radio_button_tag 'practice_solution_resources[resource_type]',
+                                       'File', false, onclick: "displayResourceForm('solution', 'file');",
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "practice_solution_file"
+                  %>
+                  <%= label_tag 'practice_solution_file', 'File', class: 'usa-radio__label
+                initiating-facility-type-label x0-bottom', for: "practice_solution_file" %>
+                </div>
+                <div class="usa-radio position-relative">
+                  <%= radio_button_tag 'practice_solution_resources[resource_type]', 'Link',
+                                       false, onclick: "displayResourceForm('solution', 'link');",
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "practice_solution_link"
+                  %>
+                  <%= label_tag 'practice_solution_link', 'Link', class: 'usa-radio__label
+                initiating-facility-type-label x0-bottom', for: "practice_solution_link" %>
+                </div>
+                <div class="margin-top-3" id="display_problem_form">
+                  <div id="solution_image_form">
+                    <%= render partial: "practices/overview_forms/solution_image_form", locals: {small_text: false} %>
+                  </div>
+                  <div id="solution_video_form">
+                    <%= render partial: "practices/overview_forms/solution_video_form", locals: {small_text: false} %>
+                  </div>
+                  <div id="solution_file_form">
+                    <%= render partial: "practices/overview_forms/solution_file_form", locals: {small_text: false} %>
+                  </div>
+                  <div id="solution_link_form">
+                    <%= render partial: "practices/overview_forms/solution_link_form", locals: {small_text: false} %>
+                  </div>
+                </div>
+              </div>
+              <div id="display_solution_resources_image"></div>
+              <div id="display_solution_resources_video"></div>
+              <div id="display_solution_resources_file"></div>
+              <div id="display_solution_resources_link"></div>
             </div>
 
             <!-- RESULTS section -->
@@ -123,15 +180,68 @@
                 <b>Results attachments</b><br />
                 Attach any additional images, videos, files or links relevant to your results statement.
               </div>
-              <div id="display_results_resources">...</div>
+              <div class="grid-row grid-gap margin-top-105 grid-col-1 margin-bottom-3">
+                <div class="usa-radio margin-bottom-1 position-relative">
+                  <%= radio_button_tag 'practice_results_resources[resource_type]',
+                                       'Image',
+                                       false, onclick: "displayResourceForm('results', 'image');",
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "practice_results_image"
+                  %>
+                  <%= label_tag 'practice_results_image', 'Image', class: 'usa-radio__label
+                initiating-facility-type-label x0-bottom', for: "practice_results_image" %>
+                </div>
+                <div class="usa-radio margin-bottom-1 position-relative">
+                  <%= radio_button_tag 'practice_results_resources[resource_type]',
+                                       'Video',
+                                       false, onclick: "displayResourceForm('results', 'video');",
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "practice_results_video"
+                  %>
+                  <%= label_tag 'practice_results_video', 'Video', class: 'usa-radio__label
+                initiating-facility-type-label x0-bottom', for: "practice_results_video" %>
+                </div>
+                <div class="usa-radio margin-bottom-1 position-relative">
+                  <%= radio_button_tag 'practice_results_resources[resource_type]',
+                                       'File', false, onclick: "displayResourceForm('results', 'file');",
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "practice_results_file"
+                  %>
+                  <%= label_tag 'practice_solution_file', 'File', class: 'usa-radio__label
+                initiating-facility-type-label x0-bottom', for: "practice_solution_file" %>
+                </div>
+                <div class="usa-radio position-relative">
+                  <%= radio_button_tag 'practice_results_resources[resource_type]', 'Link',
+                                       false, onclick: "displayResourceForm('results', 'link');",
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "practice_results_link"
+                  %>
+                  <%= label_tag 'practice_results_link', 'Link', class: 'usa-radio__label
+                initiating-facility-type-label x0-bottom', for: "practice_results_link" %>
+                </div>
+                <div class="margin-top-3" id="display_problem_form">
+                  <div id="solution_image_form">
+                    <%= render partial: "practices/overview_forms/results_image_form", locals: {small_text: false} %>
+                  </div>
+                  <div id="solution_video_form">
+                    <%= render partial: "practices/overview_forms/results_video_form", locals: {small_text: false} %>
+                  </div>
+                  <div id="solution_file_form">
+                    <%= render partial: "practices/overview_forms/results_file_form", locals: {small_text: false} %>
+                  </div>
+                  <div id="solution_link_form">
+                    <%= render partial: "practices/overview_forms/results_link_form", locals: {small_text: false} %>
+                  </div>
+                </div>
+              </div>
+              <div id="display_results_resources_image"></div>
+              <div id="display_results_resources_video"></div>
+              <div id="display_results_resources_file"></div>
+              <div id="display_results_resources_link"></div>
             </div>
 
 
-
-
-
-
-
+            <!-- METRICS Section -->
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
             <div class="margin-bottom-5 margin-top-3">
               <div id="practice-metrics-container" class="position-relative">

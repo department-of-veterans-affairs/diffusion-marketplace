@@ -10,11 +10,11 @@
   $(document).on('click', '#add_problem_resource_video', function(e){
     debugger;
     e.preventDefault();
-    var link_form = $('#problem_resource_video_form').clone();
-    link_form.html(link_form.html().replace(/RANDOM_NUMBER_OR_SOMETHING/g, createGUID()));
-    link_form.appendTo('#display_problem_resources_video');
+    var video_form = $('#problem_resource_video_form').clone();
+    video_form.html(video_form.html().replace(/RANDOM_NUMBER_OR_SOMETHING/g, createGUID()));
+    video_form.appendTo('#display_problem_resources_video');
     document.getElementById('display_problem_resources_video').style.display = 'block';
-  });
+});
 
   $(document).on('click', '#cancel_problem_resource_video', function(e){
   debugger;
