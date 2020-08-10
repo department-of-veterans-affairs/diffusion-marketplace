@@ -16,11 +16,15 @@ class SavePracticeService
         crop_main_display_image: 'error cropping practice thumbnail',
         update_initiating_facility: 'error updating initiating facility',
         update_practice_awards: 'error updating practice awards',
+        update_practice_problem_resources: 'error updating practice problem resources'
     }
   end
 
   def save_practice
     begin
+      debugger
+      process_problem_resource_params
+      debugger
       updated = @practice.update(@practice_params)
 
       rescue_method(:update_practice_partner_practices)
@@ -31,6 +35,7 @@ class SavePracticeService
       rescue_method(:crop_main_display_image)
       rescue_method(:update_initiating_facility)
       rescue_method(:update_practice_awards)
+      rescue_method(:update_practice_problem_resources)
 
       updated
     rescue => e
@@ -199,4 +204,8 @@ class SavePracticeService
       practice_awards.destroy_all
     end
   end
+  def process_problem_resource_params
+    @practice_params['practice_problem_resources_attributes'].delete('RANDOM_NUMBER_OR_SOMETHING')
+  end
+
 end

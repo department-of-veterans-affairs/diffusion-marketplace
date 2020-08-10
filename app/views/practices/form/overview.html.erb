@@ -75,23 +75,27 @@
                 </div>
                 <div class="margin-top-3" id="display_problem_form">
                   <div id="problem_image_form">
-                    <%= render partial: "practices/overview_forms/problem_image_form", locals: {small_text: false} %>
+                    <%#= render partial: "practices/overview_forms/problem_image_form", locals: {small_text: false} %>
                   </div>
                   <div id="problem_video_form">
-                    <%= render partial: "practices/overview_forms/problem_video_form", locals: {small_text: false} %>
+                    <%#= render partial: "practices/overview_forms/problem_video_form", locals: {small_text: false} %>
                   </div>
                   <div id="problem_file_form">
-                    <%= render partial: "practices/overview_forms/problem_file_form", locals: {small_text: false} %>
+                    <%#= render partial: "practices/overview_forms/problem_file_form", locals: {small_text: false} %>
                   </div>
                   <div id="problem_link_form">
-                    <%= render partial: "practices/overview_forms/problem_link_form", locals: {small_text: false} %>
+                    <%= render partial: "practices/overview_forms/problem_link_form" %>
                   </div>
                 </div>
               </div>
               <div id="display_problem_resources_image"></div>
               <div id="display_problem_resources_video"></div>
               <div id="display_problem_resources_file"></div>
-              <div id="display_problem_resources_link"></div>
+              <div id="display_problem_resources_link">
+                <% @practice.practice_problem_resources.where(resource_type: 'link').each do |pr| %>
+                  <%= render partial: "practices/overview_forms/problem_link_form", locals: {resource: pr} %>
+                <% end %>
+              </div>
             </div>
 
             <!-- SOLUTION section -->

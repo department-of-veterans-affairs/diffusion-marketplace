@@ -456,7 +456,7 @@ class PracticesController < ApplicationController
                                      practice_partner: {},
                                      department: {},
                                      practice_award: {},
-                                     practice_problem_resources_attributes: [:id, :_destroy, :resource_type, :name, :description, :link_url, :attachment_file_name, :position],
+                                     practice_problem_resources_attributes: {},
                                      practice_solution_resources_attributes: [:id, :_destroy, :resource_type, :name, :description, :link_url, :attachment_file_name, :position],
                                      practice_results_resources_attributes: [:id, :_destroy, :resource_type, :name, :description, :link_url, :attachment_file_name, :position],
                                      practice_multimedia_attributes: [:id, :_destroy, :resource_type, :name, :description, :link_url, :attachment_file_name, :position],
