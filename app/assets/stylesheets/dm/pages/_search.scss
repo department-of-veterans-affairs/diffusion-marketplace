@@ -1,7 +1,6 @@
 // Styles for the practice search page
 @import '../variables/colors';
 .dm-search-practices {
-
   hr {
     border: none;
     height: 2px;
@@ -9,7 +8,7 @@
   }
 
   mark {
-    background: #ffbe2e;
+    background: $dm-color-gold-20v;
     font-weight: bold;
   }
 

@@ -31,7 +31,6 @@
 //= require practices
 //= require _feedback_survey
 //= require _side_nav
-//= require admin
 //= require commontator/application
 //= require jquery.timeago
 //= require timeago

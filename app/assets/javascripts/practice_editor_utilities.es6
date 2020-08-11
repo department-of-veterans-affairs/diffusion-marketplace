@@ -8,7 +8,7 @@
 function attachTrashListener($document,
                              formSelector = '#facility_select_form',
                              liElSelector = '.practice-editor-origin-facility-li') {
-    $document.on('click', `${formSelector} .origin-trash`, function() {
+    $document.on('click', `${formSelector} .dm-origin-trash`, function() {
         const $liEls = $(`${formSelector} ul li${liElSelector}`);
 
         const $originFacilityElements =
@@ -20,10 +20,10 @@ function attachTrashListener($document,
         const $firstOriginFacilityEl = $($originFacilityElements.first());
 
         if ($originFacilityElements.length === 1) {
-            $firstOriginFacilityEl.find('.origin-trash').css('visibility','hidden');
+            $firstOriginFacilityEl.find('.dm-origin-trash').css('visibility','hidden');
             removeSeparator($firstOriginFacilityEl);
         } else {
-            $firstOriginFacilityEl.find('.origin-trash').css('visibility','visible');
+            $firstOriginFacilityEl.find('.dm-origin-trash').css('visibility','visible');
             const $lastOriginFacilityEl = $($originFacilityElements.last());
             removeSeparator($lastOriginFacilityEl);
         }
@@ -82,7 +82,7 @@ function styleOriginFacility($newEl,
     const $firstOriginFacilityEl = $($originFacilityElements.first());
 
     if ($originFacilityElements.length > 1) {
-        $firstOriginFacilityEl.find('.origin-trash').css('visibility','visible');
+        $firstOriginFacilityEl.find('.dm-origin-trash').css('visibility','visible');
         $.each($originFacilityElements, (i, el) => {
             const $separator = $(el).find('.add-another-separator');
             if ($(el).data('id') !== dataId) {
@@ -96,7 +96,7 @@ function styleOriginFacility($newEl,
         const $lastOriginFacilityEl = $($originFacilityElements.last());
         removeSeparator($lastOriginFacilityEl);
     } else {
-        $firstOriginFacilityEl.find('.origin-trash').css('visibility','hidden');
+        $firstOriginFacilityEl.find('.dm-origin-trash').css('visibility','hidden');
     }
 }
 

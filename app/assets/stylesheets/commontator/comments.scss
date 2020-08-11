@@ -72,11 +72,11 @@
   .vote-count {
     font-size: 100%;
     margin-right: 9px;
-    color: $dm-color-gray;
+    color: $dm-color-blue-50v;
   }
 
   .blocked {
-    color: $dm-color-gray;
+    color: $dm-color-gray-30;
   }
 
   .body {
@@ -97,18 +97,9 @@
   }
 
   .reply {
-    a {
-      color: $dm-color-gray;
-    }
     .new-comment {
       width: 100%;
       margin-top: 18px;
-    }
-  }
-
-  .reply {
-    a:hover {
-      color: #005EA2;
     }
   }
 
@@ -149,7 +140,7 @@ h2 {
 }
 
 .edit-comment-icon, .fa-trash-alt, .fa-trash-restore-alt {
-  color: $dm-color-gray;
+  color: $dm-color-gray-30;
   text-decoration: none;
 }
 
@@ -173,7 +164,7 @@ body {
   margin-left: 14px;
 
   .association-with-practice {
-    background: #FFBE2E;
+    background: $dm-color-gold-20v;
     border-radius: 16px;
     padding: 0 10px;
   }
@@ -197,7 +188,7 @@ body {
 }
 
 .empty-vote {
-  color: $dm-color-gray;
+  color: $dm-color-gray-30;
 }
 
 .vote-disabled {
@@ -223,19 +214,10 @@ body {
   }
 }
 
-.comment-cancel {
-  border: 2px solid $dm-color-base-darker !important;
-
-  &:hover {
-    border: 2px solid $dm-color-base-darker !important;
-    color: $dm-color-base-darker;
-  }
-}
-
 .comments-show-hide-button {
 
   &:disabled {
-    color: $dm-color-gray;
+    color: $dm-color-gray-30;
     background-color: initial;
   }
 }
@@ -247,7 +229,7 @@ body {
 .report-abuse-submit {
     border: 2px solid $dm-color-blue-50v !important;
   &:hover {
-    border: 2px solid $dm-color-primary-dark-blue !important;
+    border: 2px solid $dm-color-blue-70v !important;
   }
   &:focus {
     outline-offset: 0 !important;
@@ -263,11 +245,11 @@ body {
 }
 
 .fa-flag:hover {
-  color: #E41D3D;
+  color: $dm-color-red-50v;
 }
 
 .usa-radio__input:focus + .team-member-label::before, .usa-radio__input:focus + .implementer-label::before {
-  outline: 0.25rem solid $dm-color-medium-yellow !important;
+  outline: 0.25rem solid $dm-color-gold-20v !important;
   outline-offset: 0.25rem !important;
 }
 
@@ -292,19 +274,19 @@ body {
 }
 
 ::-webkit-input-placeholder {
-  color: $dm-color-gray !important;
+  color: $dm-color-gray-30 !important;
 }
 
 :-moz-placeholder { /* Firefox 18- */
-  color: $dm-color-gray !important;
+  color: $dm-color-gray-30 !important;
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
-  color: $dm-color-gray !important;
+  color: $dm-color-gray-30 !important;
 }
 
 :-ms-input-placeholder {
-  color: $dm-color-gray !important;
+  color: $dm-color-gray-30 !important;
 }
 
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
@@ -340,7 +322,7 @@ body {
 }
 
 .fa-user-circle {
-  color: $dm-color-darker-blue !important;
+  color: $dm-color-blue-80v !important;
   text-align: center;
 }
 

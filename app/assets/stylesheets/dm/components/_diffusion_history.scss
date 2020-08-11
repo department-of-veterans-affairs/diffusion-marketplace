@@ -1,17 +1,9 @@
 @import '../variables/colors';
-.marker_container {
+.dm-marker-container {
   min-height: 146px;
-  background-color: #FFFFFF;
+  background-color: $dm-color-white;
   border-radius: 4px;
   padding: 8px 15px;
-}
-
-.infowindow-link {
-  color: #1a4480 !important;
-
-  &:hover {
-    text-decoration: none;
-  }
 }
 
 .home-marker-modal {

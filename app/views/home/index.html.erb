@@ -2,12 +2,12 @@
   <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
-<div class="dm-background-white">
+<div class="bg-white">
   <!-- "Welcome" section -->
   <section class="grid-container">
     <%= render partial: "shared/messages", locals: {small_text: false} %>
 
-    <div class="margin-y-5 dm-background-white grid-row">
+    <div class="margin-y-5 bg-white grid-row">
       <div class="tablet:grid-col-fill ie-welcome-container">
         <div class="tablet:grid-col-10">
           <h1 class="bold font-sans-2xl margin-top-0 margin-bottom-2">Welcome to the Diffusion Marketplace</h1>
@@ -27,8 +27,8 @@
     <div class="grid-container homepage-covid-section-container height-auto">
       <div class="grid-row ie-grid-row-12">
         <div class="grid-col-8">
-          <%= link_to '/covid-19', class: 'homepage-covid-link' do %>
-            <h2 class="font-sans-xl">COVID-19<span class="fas fa-angle-right margin-left-105"></span></h2>
+          <%= link_to '/covid-19', class: 'dm-internal-link dm-homepage-covid-link' do %>
+            <h2 class="font-sans-xl  margin-top-0 margin-bottom-2">COVID-19<span class="fas fa-angle-right margin-left-105"></span></h2>
           <% end %>
           <p class="line-height-sans-505 font-sans-sm">
             The Diffusion Marketplace has practices that help VHA respond to COVID-19.
@@ -58,10 +58,10 @@
         <div class="padding-y-105 padding-x-2 bg-gold radius-md margin-bottom-205">
           <span class="text-bold">Note:</span>&nbsp;<span>More practices will be added to this map in the next few months.</span>
         </div>
-        <button id="filterResultsTrigger" class="map-filters-trigger usa-button text-bold display-block margin-bottom-105 padding-2">
+        <button id="filterResultsTrigger" class="map-filters-trigger usa-button dm-primary-btn display-block margin-bottom-105 padding-2">
           Filter results
         </button>
-        <button type="button" class="usa-button text-bold hidden margin-bottom-105 padding-2 bg-base-lightest text-ink" id="filterClose" aria-label="Close map filters">Close filters</button>
+        <button type="button" class="usa-button display-none margin-bottom-105 padding-2 bg-base-lightest text-ink" id="filterClose" aria-label="Close map filters">Close filters</button>
         <div class="width-full position-relative">
           <div id="map" style="width: 100%; height: 633px;"></div>
           <%= render 'maps/home_map_filters' %>

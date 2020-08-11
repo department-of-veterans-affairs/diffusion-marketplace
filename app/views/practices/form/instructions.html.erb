@@ -1,14 +1,3 @@
-<%# <div id="search-page">
-
-  <div class="dm-background-white full-view-height padding-top-1">
-
-    <section class="grid-container x1-5-bottom">
-      <div id="breadcrumbs" class="dm-font-color-primary-blue p1-top breadcrumbs dm-font-color-super-violet-ish">
-        <a href="/">Home</a>
-        <span class="x0-5-left x0-5-right">›</span>
-        <span id="search-breadcrumb">Practices</span>
-      </div>
-    </section> %>
 <%= render 'breadcrumbs' %>
 <%= render 'practice_editor_sidenav' %>
 <div class="grid-container position-relative">
@@ -36,16 +25,16 @@
           <div class="">
             <ul class="line-height-sans-6 font-sans-md instructions-list">
               <li>Do not enter Personally Identifiable Information (PII) or Protected Health Information (PHI) for any individual, Veteran, or patient.</li>
-              <li><%= link_to "Learn more", pii_phi_information_path %> about what constitutes PII and PHI.</li>
+              <li><%= link_to "Learn more", pii_phi_information_path, class: 'dm-internal-link' %> about what constitutes PII and PHI.</li>
               <li>If you post PII you must fill out and hold onto
-                <%= link_to 'Form 3203', 'https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-3203.pdf', target: '_blank' %>.</li>
+                <%= link_to 'Form 3203', 'https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-3203.pdf', target: '_blank', class: 'dm-external-link' %>.</li>
               <li>If you want to upload an image that features a Veteran,
                 or text that includes a Veterans name or identifiable information you must have
-                <%= link_to 'Form 3203', 'https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-3203.pdf', target: '_blank' %>.
+                <%= link_to 'Form 3203', 'https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-3203.pdf', target: '_blank', class: 'dm-external-link' %>.
                 Waivers must be filled out with the 'External to VA' check box selected.
               </li>
               <li>If you post PHI on the site you must fill out and hold onto
-                <%= link_to 'Form 5345', 'https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-5345.pdf', target: '_blank' %>.</li>
+                <%= link_to 'Form 5345', 'https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-5345.pdf', target: '_blank', class: 'dm-external-link' %>.</li>
             </ul>
           </div>
         </section>
@@ -56,7 +45,7 @@
                 <li>Ensure your work is accurate, formatted consistently, and as complete as possible before publishing.</li>
                 <li>Use sentence case (only capitalizing the first word in titles) and spell out acronyms. Capitalize proper nouns and names.</li>
                 <li>You will be able to edit your practice once it’s published.</li>
-                <li><%= link_to "View an example", practice_path(ENV.fetch('EXAMPLE_PRACTICE_SLUG', 'project-happen')) %> of a well-formatted completed practice.</li>
+                <li><%= link_to "View an example", practice_path(ENV.fetch('EXAMPLE_PRACTICE_SLUG', 'project-happen')), class: 'dm-internal-link' %> of a well-formatted completed practice.</li>
               </ul>
             </div>
           </section>
@@ -64,12 +53,12 @@
       <div class="grid-row flex-auto margin-bottom-3">
         <div class="bg-gold padding-2 radius-md">
           <p class="text-bold margin-bottom-1">Need help along the way?<p>
-          <p>Reach out to a member of our support staff with your question. <a class="beta-banner-link" href="mailto:marketplace@va.gov" target="_blank">Send us an email<i class="margin-left-1 fas fa-external-link-alt text-no-underline"></i></a><p>
+          <p>Reach out to a member of our support staff with your question. <a class="dm-banner-link" href="mailto:marketplace@va.gov" target="_blank">Send us an email<i class="margin-left-1 fas fa-external-link-alt text-no-underline"></i></a><p>
         </div>
       </div>
       <div>
-        <%= link_to practice_introduction_path(@practice), class: 'usa-button black pe-continue padding-2 editor-continue-link margin-right-1 margin-bottom-5' do %>
-          Continue<i class="fas fa-sm margin-left-1 text-no-underline"></i>
+        <%= link_to practice_introduction_path(@practice), class: 'usa-button dm-btn-base pe-continue editor-continue-link margin-right-1 margin-bottom-5' do %>
+          Continue
         <% end %>
       </div>
     </div>

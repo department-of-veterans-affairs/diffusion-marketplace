@@ -2,12 +2,12 @@
 <section class="usa-section margin-y-0 p0">
     <div class="grid-row flex-align-center margin-bottom-3">
       <h2 id="contact" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205 nav-header">Contact</h2>
-      <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest section-line">
+      <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest dm-section-line">
     </div>
     <div class="grid-row margin-top-4 grid-gap">
       <% @practice.va_employees.each do |employee| %>
         <div class="grid-row width-mobile margin-bottom-4 flex-align-center">
-          <div class="avatar-container display-flex-align-items-center flex-justify-center dm-background-white overflow-hidden margin-right-105 <%= employee.avatar.present? ? '' : 'width-auto' %>">
+          <div class="avatar-container display-flex-align-items-center flex-justify-center bg-white overflow-hidden margin-right-105 <%= employee.avatar.present? ? '' : 'width-auto' %>">
             <% if employee.avatar.present? %>
               <%= image_tag employee.avatar_s3_presigned_url(:thumb), alt: employee.name %>
             <% else %>

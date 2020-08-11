@@ -41,23 +41,23 @@
     <% [:crop_x, :crop_y, :crop_w, :crop_h].each { |attribute| %>
       <%= form.hidden_field attribute, id: attribute, value: nil %>
     <% } %>
-    <a class="dm-cropper-cancel-edit usa-button usa-button--outline display-none margin-right-1" aria-controls='image-cancel-edit' aria-expanded='false'>
+    <a class="dm-cropper-cancel-edit usa-button--outline dm-btn-primary display-none margin-right-1" aria-controls='image-cancel-edit' aria-expanded='false'>
       Cancel edits
     </a>
-    <a class="dm-cropper-save-edit usa-button display-none" aria-controls='image-save-edit' aria-expanded='false'>
+    <a class="dm-cropper-save-edit usa-button dm-btn-primary display-none" aria-controls='image-save-edit' aria-expanded='false'>
       Save edits
     </a>
-    <a class="dm-cropper-edit-mode usa-button usa-button--outline <%= practice.main_display_image.present? ? '' : 'display-none' %>" aria-controls="image-crop" aria-expanded='false'>
+    <a class="dm-cropper-edit-mode usa-button--outline dm-btn-primary <%= practice.main_display_image.present? ? '' : 'display-none' %>" aria-controls="image-crop" aria-expanded='false'>
       Edit image
     </a>
     <div class="margin-y-1">
       <%= form.label :main_display_image,
                   practice.main_display_image.present? ? 'Upload new image' : 'Upload image',
-                  class: "dm-cropper-upload-image-label #{practice.main_display_image.present? ? 'dm-unstyled-btn-primary' : 'usa-button usa-button--outline'}" %>
+                  class: "dm-cropper-upload-image-label dm-btn-primary #{practice.main_display_image.present? ? 'usa-button--unstyled' : 'usa-button--outline'}" %>
       <%= form.file_field :main_display_image, class: "dm-cropper-upload-image hidden-upload", accept: 'image/*' %>
     </div>
     <div class="dm-cropper-delete-image">
-      <%= form.label :delete_main_display_image, 'Remove image', class: "dm-unstyled-btn-secondary text-secondary dm-cropper-delete-image-label #{practice.main_display_image.present? ? '' : 'display-none' }" %>
+      <%= form.label :delete_main_display_image, 'Remove image', class: " usa-button--unstyled dm-btn-warning text-secondary dm-cropper-delete-image-label #{practice.main_display_image.present? ? '' : 'display-none' }" %>
       <%= form.check_box :delete_main_display_image, { class: "dm-cropper-delete-image usa-checkbox__input #{practice.main_display_image.present? ? '' : 'display-none'}" }, 'true', 'false' %>
     </div>
   </div>
