@@ -4,12 +4,21 @@
     function initializeOverviewForm() {
         hideResources();
         attachAddResourceListener('problem_resource_link_form', 'display_problem_resources_link');
+        attachDeleteResourceListener();
         $(document).on('click', '#cancel_problem_resource_link', function (e) {
             debugger;
             e.preventDefault();
             document.getElementById("problem_link_form").style.display = 'none';
             document.getElementById('practice_problem_link').checked = false;
             document.getElementById('problem_resource_link_form').style.display = 'none';
+        });
+    }
+
+    function attachDeleteResourceListener(){
+        $document.on('click', '.remove_nested_fields', function (e) {
+            const destroyInput = $(e.target).siblings('input');
+            destroyInput.val(true);
+            $(e.target).parents('div[id*="problem_resource_link_form"]').hide();
         });
     }
 
@@ -300,7 +309,12 @@ function attachAddResourceListener(formSelector, container){
         const nGuid = createGUID();
         const link_form = $(`#${formSelector}`).clone(true);
         link_form.attr('id', `${formSelector}_${nGuid}`);
+        link_form.find('#cancelAddButtonRow').remove();
 
+        const deleteEntryHtml = `<div class="grid-col-12 trash-container">
+       <input type="hidden" value="false" name="practice[practice_problem_resources_attributes][${nGuid}][_destroy]"/>
+        <button class="usa-button usa-button--unstyled text-secondary remove_nested_fields">Delete entry</button> </div>`;
+        link_form.append(deleteEntryHtml);
 
         $.each(link_form.find('input'), function(i, ele){
             $(ele).attr('name', ele.name.replace(/RANDOM_NUMBER_OR_SOMETHING/g, nGuid));
@@ -313,5 +327,12 @@ function attachAddResourceListener(formSelector, container){
         document.getElementById(container).style.display = 'block';
     });
 }
+
+function removePracticeProblemResource(id){
+    var res = document.getElementById("problem_resource_link_"  + id);
+    res.remove();
+}
+
+
 
 

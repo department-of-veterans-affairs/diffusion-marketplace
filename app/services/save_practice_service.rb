@@ -35,8 +35,6 @@ class SavePracticeService
       rescue_method(:crop_main_display_image)
       rescue_method(:update_initiating_facility)
       rescue_method(:update_practice_awards)
-      rescue_method(:update_practice_problem_resources)
-
       updated
     rescue => e
       Rails.logger.error "save_practice error: #{e.message}"
@@ -49,7 +47,8 @@ class SavePracticeService
   def rescue_method(method_name)
     begin
       send(method_name)
-    rescue
+    rescue => e
+      debugger
       raise StandardError.new @error_messages[method_name]
     end
   end
@@ -68,7 +67,7 @@ class SavePracticeService
       practice_partners.each do |partner|
         partner.destroy unless partner_keys.include?(partner.practice_partner_id.to_s)
       end
-    elsif practice_partner_params.blank? && @current_endpoint == 'overview'
+    elsif practice_partner_params.blank? && @current_endpoint == 'introduction'
       practice_partners.destroy_all
     end
   end

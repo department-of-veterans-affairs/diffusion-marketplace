@@ -1,3 +1,5 @@
+<% provide :main_classes, 'dm-background-gray-2' %>
+<% provide :footer_classes, 'dm-background-gray-2' %>
 <% provide :head_tags do %>
   <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_overview', 'data-turbolinks-track': 'reload' %>
@@ -92,9 +94,12 @@
               <div id="display_problem_resources_video"></div>
               <div id="display_problem_resources_file"></div>
               <div id="display_problem_resources_link">
-                <% @practice.practice_problem_resources.where(resource_type: 'link').each do |pr| %>
-                  <%= render partial: "practices/overview_forms/problem_link_form", locals: {resource: pr} %>
-                <% end %>
+
+                <% @practice.practice_problem_resources.where(resource_type: 'link').each_with_index do |pr, i| %>
+                  <%= render partial: "practices/overview_forms/problem_link_form", locals: {resource: pr, placeholder: i} %>
+
+                  <% end %>
+
               </div>
             </div>
 
@@ -291,8 +296,8 @@
 
                         <div class="grid-col-12 trash-container">
                           <%= pm.link_to_remove 'Delete entry',
-                                                 class: "origin-trash font-sans-xs line-height-26 cursor-pointer float-right"
-                          %>
+                                                  class: "origin-trash font-sans-xs line-height-26 cursor-pointer float-right"
+                        %>
                         </div>
                       </div>
                     </li>
