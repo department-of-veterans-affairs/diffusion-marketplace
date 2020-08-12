@@ -613,7 +613,7 @@
   margin-top: 12px !important;
 }
 
-.partner-input, .no-partner-input {
+.partner-input, .no-partner-input, .category-input {
   left: 2px !important;
   top: 5px !important;
 }
@@ -883,8 +883,13 @@
 // Introduction
 #pr-view-introduction {
   .dm-thumbnail-image {
-    max-height: 10.875rem;
-    width: auto;
+    width: 100%;
+    object-fit: cover;
+
+    @media screen and (min-width: 1024px) {
+      max-height: 10.875rem;
+      width: auto;
+    }
   }
 }
 

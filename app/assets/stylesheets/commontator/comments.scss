@@ -344,3 +344,11 @@ body {
   text-align: center;
 }
 
+.comments-section {
+  margin-bottom: 40px;
+
+  @media screen and (min-width: 1024px) {
+    margin-bottom: 0;
+  }
+}
+

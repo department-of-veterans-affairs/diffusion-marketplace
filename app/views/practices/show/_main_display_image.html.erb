@@ -1,0 +1,6 @@
+<% if @practice.main_display_image.present? %>
+  <img
+    class="dm-thumbnail-image margin-bottom-2"
+    src="<%= @practice.main_display_image_s3_presigned_url(:thumb) %>"
+    alt="<%= @practice.name %> main image"/>
+<% end %>

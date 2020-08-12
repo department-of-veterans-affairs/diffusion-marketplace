@@ -1,0 +1,24 @@
+<% search_terms = get_all_search_terms(@practice) %>
+
+<% if search_terms.count > 10 %>
+  <% slice_terms(@practice).each do |term| %>
+    <%= render partial: 'practices/show/search_terms/all_search_terms', locals: {term: term} %>
+  <% end %>
+
+  <% remaining_terms = get_remaining_terms_if_sliced(@practice) %>
+  <div id="search_terms_truncated_mobile" style="display: none">
+    <% remaining_terms.each do |term| %>
+      <%= render partial: 'practices/show/search_terms/all_search_terms', locals: {term: term} %>
+    <% end %>
+  </div>
+
+  <button class="usa-button usa-button--unstyled font-sans-3xs text-bold text-ls-1 text-uppercase width-auto"
+          onclick="seeMoreSearchTermsMobile(); return false;"
+          id="seeMore_search_terms_mobile">
+    See more
+  </button>
+<% else %>
+  <% search_terms.each do |term| %>
+    <%= render partial: 'practices/show/search_terms/all_search_terms', locals: {term: term} %>
+  <% end %>
+<% end %>

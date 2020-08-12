@@ -516,6 +516,7 @@
                         <li class="practice-editor-category-li fields" <%= "id=practice_categories_attributes_#{cat.index}_li" if cat.object.id %> data-id="<%= other_category_id %>">
                           <div class="grid-row">
                             <div class="grid-col-12">
+                              <%= cat.label :name, 'Name of category', class: 'usa-label x0-top margin-bottom-1 grid-col-12' %>
                               <%= cat.text_field :name, class: 'usa-input margin-bottom-1 x0-top', 'aria-label': 'Name' %>
                             </div>
 

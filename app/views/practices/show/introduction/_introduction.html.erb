@@ -7,7 +7,6 @@
 <% end %>
 
 <%
-  has_main_img = @practice.main_display_image.present?
   updated_at = @practice.updated_at.present? ? @practice.updated_at : @practice.created_at
   completed_adoptions = @practice.number_of_completed_adoptions
   in_progress_adoptions = @practice.number_of_in_progress_adoptions
@@ -15,28 +14,22 @@
   has_practice_partners = @practice.practice_partners.any? && @practice.practice_partners.find_by(name: 'None of the above, or Unsure').nil?
   has_practice_awards = @practice.practice_awards.any?
 %>
+
 <section id="pr-view-introduction" class="grid-container">
-  <div class="grid-row">
-    <div class="desktop:grid-col-12">
-      <%# practice main display image %>
-      <% if has_main_img %>
-        <img
-          class="dm-thumbnail-image float-right desktop:grid-col-4 grid-col-12 margin-bottom-2 desktop:margin-left-2"
-          src="<%= @practice.main_display_image_s3_presigned_url(:thumb) %>"
-          alt="<%= @practice.name %> main image"/>
-      <% end %>
-      <%# practice name %>
-      <div class="<%= has_main_img ? 'desktop:grid-col-8' : 'desktop:grid-col-10' %> grid-col-12">
-        <h1 class="font-sans-2xl margin-top-0 margin-bottom-1 line-height-sans-2 dm-word-break-break-word dm-hyphens-auto">
-          <%= display_practice_name(@practice) %>
-        </h1>
-      </div>
+  <div class="grid-row grid-gap-2">
+    <%# practice main display image for mobile %>
+    <%= render partial: 'practices/show/mobile_partials/main_display_image_container' %>
+    <%# practice name %>
+    <div class="desktop:grid-col-8 grid-col-12">
+      <h1 class="font-sans-2xl margin-top-0 margin-bottom-1 line-height-sans-2 dm-word-break-break-word dm-hyphens-auto">
+        <%= display_practice_name(@practice) %>
+      </h1>
       <%# practice last update timestamp %>
-      <p class="<%= has_main_img ? 'desktop:grid-col-8' : 'desktop:grid-col-10' %> grid-col-12 font-sans-3xs text-gray-50 line-height-sans-4 margin-bottom-2">
+      <p class="grid-col-12 font-sans-3xs text-gray-50 line-height-sans-4 margin-bottom-2">
         Last updated <%= timeago(updated_at) %>
       </p>
       <%# practice actions %>
-      <div class="display-flex flex-wrap margin-bottom-2 desktop:grid-col-6">
+      <div class="display-flex flex-wrap margin-bottom-2">
         <%# bookmark %>
         <a href="<%= practice_favorite_path(@practice, format: :js) %>" data-method="post" data-remote="true" rel="nofollow" aria-label="Bookmark <%= @practice.name %>" tabindex="-1" aria-hidden="true" class="dm-favorite-practice-link dm-icon-link text-no-underline font-sans-xs text-primary desktop:grid-col-3 grid-col-6 desktop:margin-bottom-0 margin-bottom-2">
           <i class="<%= current_user.favorite_practice_ids.include?(@practice.id) ? 'fas' : 'far '%> fa-bookmark dm-favorite-icon-<%= @practice.id %>  margin-right-05"></i>
@@ -62,82 +55,87 @@
         </a>
       </div>
       <%# practice summary %>
-      <p class="desktop:grid-col-10 grid-col-12 margin-bottom-2 font-sans-lg line-height-sans-6">
+      <p class="margin-bottom-2 font-sans-lg line-height-sans-6">
         <%= @practice.summary %>
       </p>
-    </div>
-  </div>
-  <div class="grid-row">
-    <%# practice origin date and location %>
-    <div class="grid-col-12 margin-bottom-2">
-      <p class="desktop:grid-col-6 font-sans-3xs line-height-sans-3">
-      <span class="text-bold text-uppercase">Origin:</span>
-        <span id="practice_origin_facilities_text">
-          <% @practice_date =  @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)'%>
-          <%= @practice_date %>,
-              <% if origin_display_name(@practice).length > 180 %>
-                <span id="origin_facility_truncated"><%= origin_display_name_trunc(@practice) %></span>
-                <span id="dots">...</span>
-                <span id="more_text">
-                  <%= origin_display_name_trunc(@practice, 0, 99999) %>
-                </span><a class="dm-unstyled-btn-primary" href="" onclick="seeMoreText(); return false" id="seeMore">See more</a>
-              <% else %>
-                <%= origin_display_name(@practice) %>
-              <% end %>
-        </span>
-      </p>
-    </div>
-    <%# practice adoptions %>
-    <div class="desktop:float-left desktop:grid-col-6">
-      <% if completed_adoptions > 0 || in_progress_adoptions > 0 || unsuccessful_adoptions > 0 %>
-        <p class="grid-col-12 margin-bottom-2 font-sans-3xs line-height-sans-3">
-          <%# TODO: link adoptions to new diffusion tracker map %>
-          <span class="text-bold text-uppercase">Adoptions:</span>
-          <% if completed_adoptions > 0 %>
-            <%= completed_adoptions %>&nbsp;completed<%= ', ' if in_progress_adoptions > 0 || unsuccessful_adoptions > 0 %>
-          <% end %>
-          <% if in_progress_adoptions > 0 %>
-            <%= in_progress_adoptions %>&nbsp;in-progress<% ', ' if unsuccessful_adoptions > 0 %>
-          <% end %>
-          <% if unsuccessful_adoptions > 0 %>
-            <%= unsuccessful_adoptions %>&nbsp;unsuccessful
-          <% end %>
+
+      <%# practice origin date and location %>
+      <div class="margin-bottom-2">
+        <p class="font-sans-3xs line-height-sans-3">
+        <span class="text-bold text-uppercase">Origin:</span>
+          <span id="practice_origin_facilities_text">
+            <% @practice_date =  @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)'%>
+            <%= @practice_date %>,
+                <% if origin_display_name(@practice).length > 180 %>
+                  <span id="origin_facility_truncated"><%= origin_display_name_trunc(@practice) %></span>
+                  <span id="dots">...</span>
+                  <span id="more_text">
+                    <%= origin_display_name_trunc(@practice, 0, 99999) %>
+                  </span><a class="dm-unstyled-btn-primary" href="" onclick="seeMoreText(); return false" id="seeMore">See more</a>
+                <% else %>
+                  <%= origin_display_name(@practice) %>
+                <% end %>
+          </span>
         </p>
-      <% end %>
-      <%# practice awards %>
-      <% if has_practice_awards %>
-        <p class="grid-col-12 margin-bottom-2 font-sans-3xs line-height-sans-3">
-          <span class="text-bold text-uppercase">Awards and Recognition:</span>
-          <% all_awards = get_all_awards(@practice) %>
-          <% if all_awards.length > 180 %>
-            <%#= truncate(@all_awards.to_s, start: 0, length: 180) %>
-            <span id="awards_truncated"><%= all_awards[0...180]%></span>
-            <span id="dots_award">...</span>
-            <span id="more_text_award">
-                <%= all_awards %>
-            </span>
-            <button class="usa-button usa-button--unstyled font-sans-3xs"
-                    onclick="seeMoreTextAwards(); return false;"
-                    id="seeMore_award">
-              See more
-            </button>
-          <% else %>
-            <%= all_awards %>
-          <% end %>
-        </p>
-      <% end %>
-      <%# practice partners %>
-      <% if has_practice_partners %>
-        <p class="grid-col-12 margin-bottom-2 font-sans-3xs line-height-sans-3">
-          <span class="text-bold text-uppercase">Partners:</span>
-            <% @practice.practice_partners.each_with_index do |partner, index| %>
-              <a href="<%= practice_partner_path(partner) %>" class="dm-internal-link">
-                <%= partner.name %>
-              </a>
-              <%= ", " if @practice.practice_partners.size != index + 1 && @practice.practice_partners.size > 1 %>
+      </div>
+      <%# practice adoptions %>
+      <div>
+        <% if completed_adoptions > 0 || in_progress_adoptions > 0 || unsuccessful_adoptions > 0 %>
+          <p class="grid-col-12 margin-bottom-2 font-sans-3xs line-height-sans-3">
+            <%# TODO: link adoptions to new diffusion tracker map %>
+            <span class="text-bold text-uppercase">Adoptions:</span>
+            <% if completed_adoptions > 0 %>
+              <%= completed_adoptions %>&nbsp;completed<%= ', ' if in_progress_adoptions > 0 || unsuccessful_adoptions > 0 %>
             <% end %>
-        </p>
-      <% end %>
+            <% if in_progress_adoptions > 0 %>
+              <%= in_progress_adoptions %>&nbsp;in-progress<% ', ' if unsuccessful_adoptions > 0 %>
+            <% end %>
+            <% if unsuccessful_adoptions > 0 %>
+              <%= unsuccessful_adoptions %>&nbsp;unsuccessful
+            <% end %>
+          </p>
+        <% end %>
+        <%# practice awards %>
+        <% if has_practice_awards %>
+          <p class="margin-bottom-2 font-sans-3xs line-height-sans-3">
+            <span class="text-bold text-uppercase">Awards and Recognition:</span>
+            <% all_awards = get_all_awards(@practice) %>
+            <% if all_awards.length > 180 %>
+              <%#= truncate(@all_awards.to_s, start: 0, length: 180) %>
+              <span id="awards_truncated"><%= all_awards[0...180]%></span>
+              <span id="dots_award">...</span>
+              <span id="more_text_award">
+                  <%= all_awards %>
+              </span>
+              <button class="usa-button usa-button--unstyled font-sans-3xs"
+                      onclick="seeMoreTextAwards(); return false;"
+                      id="seeMore_award">
+                See more
+              </button>
+            <% else %>
+              <%= all_awards %>
+            <% end %>
+          </p>
+        <% end %>
+        <%# practice partners %>
+        <% if has_practice_partners %>
+          <p class="margin-bottom-2 font-sans-3xs line-height-sans-3">
+            <span class="text-bold text-uppercase">Partners:</span>
+              <% @practice.practice_partners.each_with_index do |partner, index| %>
+                <a href="<%= practice_partner_path(partner) %>" class="dm-internal-link">
+                  <%= partner.name %>
+                </a>
+                <%= ", " if @practice.practice_partners.size != index + 1 && @practice.practice_partners.size > 1 %>
+              <% end %>
+          </p>
+        <% end %>
+      </div>
+    </div>
+    <div class="desktop:grid-col-4 mobile-hide">
+      <%# practice main display image for desktop %>
+      <%= render partial: 'practices/show/desktop_partials/main_display_image_container' %>
+      <%# search terms(campaigns/categories/tags) for desktop %>
+      <%= render partial: 'practices/show/desktop_partials/search_terms' %>
     </div>
     <%# practice updates %>
     <%# TODO: reintroduce once update feature is available %>

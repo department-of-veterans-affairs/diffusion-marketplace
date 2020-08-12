@@ -1,0 +1,21 @@
+@import "../variables/colors";
+
+.category-link {
+  cursor: pointer;
+  text-decoration: none;
+  background-color: $dm-color-primary-blue-2;
+
+  &:hover {
+    text-decoration: none;
+    color: $dm-color-white !important;
+    background-color: $dm-color-primary-dark-blue !important;
+  }
+
+  &:visited {
+    color: $dm-color-white !important;
+  }
+
+  &:active {
+    background-color: $dm-color-darker-blue !important;
+  }
+}
