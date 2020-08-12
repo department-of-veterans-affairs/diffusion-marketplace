@@ -216,7 +216,7 @@
                           <%= pof.label :facility_id, 'Facility', class: 'usa-label x0-top margin-bottom-1 grid-col-12' %>
                           <%= pof.select :facility_id,
                                          options_for_select([['-Select-', nil, selected: true, disabled: true,
-                                                              class: 'usa-select dm-color-disabled']]),
+                                                              class: 'usa-select dm-color-gray-20']]),
                                          {},
                                          {class: 'height-5 usa-select desktop:grid-col-8 margin-bottom-1 x0-top'}
                           %>
@@ -224,7 +224,8 @@
 
                         <div class="grid-col-8 trash-container">
                           <%= pof.link_to_remove 'Delete Entry',
-                                                 class: "origin-trash font-sans-xs line-height-26 cursor-pointer float-right"
+                                                 class: "dm-origin-trash
+                                                 font-sans-xs usa-button--unstyled dm-btn-warning float-right"
                           %>
                         </div>
                       </div>
@@ -232,7 +233,7 @@
                   <% end %>
                 </ul>
                 <%= f.link_to_add :practice_origin_facilities,
-                                  class: 'add-another-link add-practice-originating-facilities-link line-height-26 cursor-pointer' do %>
+                                  class: 'dm-add-another-link dm-add-practice-originating-facilities-link usa-button--unstyled dm-btn-primary font-sans-xs cursor-pointer' do %>
                   <span class="font-sans-xs text-normal">Add another</span>
                 <% end %>
                 <% unless @practice.practice_origin_facilities.any? %>
@@ -240,7 +241,7 @@
                     observePracticeEditorLiArrival($(document));
                     $(document).arrive('#practice_origin_facilities_fields_blueprint',
                       function(blueprint) {
-                        $('.add-practice-originating-facilities-link').click();
+                        $('.dm-add-practice-originating-facilities-link').click();
                         $(document).unbindArrive('#practice_origin_facilities_fields_blueprint', blueprint);
                       }
                     );
@@ -265,7 +266,7 @@
                 <div class="margin-bottom-3 grid-col-8">
                   <%= label_tag 'editor_office_select', 'Office', class: 'usa-label x0-top margin-bottom-1 grid-col-12' %>
                   <%= select_tag('practice[initiating_facility]', options_for_select([['-Select-', nil, selected: true,
-                                                                                       disabled: true, class: 'usa-select dm-color-disabled']]),
+                                                                                       disabled: true, class: 'usa-select dm-color-gray-20']]),
                                  id: 'editor_office_select',
                                  class: 'height-5 usa-select x0-top') %>
                 </div>
@@ -348,14 +349,14 @@
                             </div>
                             <div class="grid-col-8 trash-container">
                               <%= f.link_to_remove 'Delete entry',
-                                                   class: "origin-trash font-sans-xs line-height-26 cursor-pointer float-right" %>
+                                                   class: "dm-origin-trash font-sans-xs usa-button--unstyled dm-btn-warning float-right" %>
                             </div>
                           </div>
                         </li>
                       <% end %>
                     <% end %>
                   </ul>
-                  <%= f.link_to_add :practice_awards, class: 'add-another-link add-practice-award-other-link line-height-26 cursor-pointer' do %>
+                  <%= f.link_to_add :practice_awards, class: 'dm-add-another-link dm-add-practice-award-other-link usa-button--unstyled dm-btn-primary' do %>
                     <span class="font-sans-xs text-normal">Add another</span>
                   <% end %>
                   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
@@ -384,7 +385,7 @@
                       );
                       $(document).arrive('#practice_awards_fields_blueprint',
                         function(blueprint) {
-                          $('.add-practice-award-other-link').click();
+                          $('.dm-add-practice-award-other-link').click();
                           $(document).unbindArrive('#practice_awards_fields_blueprint', blueprint);
                         }
                       );
@@ -563,12 +564,11 @@
         <% end %>
 
         <div class="grid-row margin-bottom-8">
-          <%= link_to practice_instructions_path(@practice), class: 'usa-button black usa-button--outline
-            editor-back-to-link margin-right-1 padding-2 margin-bottom-5 text-no-underline' do %>
+          <%= link_to practice_instructions_path(@practice), class: 'usa-button--outline dm-btn-base
+            editor-back-to-link margin-right-1 margin-bottom-5 text-no-underline' do %>
             Back
           <% end %>
-          <%= link_to practice_adoptions_path(@practice), class: 'usa-button black pe-continue padding-2 editor-continue-link
-            continue-and-save margin-right-1 margin-bottom-5' do %>
+          <%= link_to practice_adoptions_path(@practice), class: 'usa-button dm-btn-base pe-continue editor-continue-link continue-and-save margin-right-1 margin-bottom-5' do %>
             Continue
           <% end %>
         </div>

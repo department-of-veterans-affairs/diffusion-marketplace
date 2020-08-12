@@ -45,7 +45,7 @@ describe 'Page Builder - Show', type: :feature do
   end
 
   it 'Should display the subpage hyperlink' do
-    expect(find('.page-subpage-hyperlink')[:href]).to include('/programming/javascript')
+    expect(find('.dm-internal-link')[:href]).to include('/programming/javascript')
     expect(page).to have_content('Check out JavaScript')
     expect(page).to have_content('It is pretty cool too')
   end
@@ -56,7 +56,7 @@ describe 'Page Builder - Show', type: :feature do
   end
 
   it 'Should display the call to action' do
-    expect(find('.page-cta-hyperlink')[:href]).to include('https://www.google.com')
+    expect(find('.usa-button.dm-btn-primary')[:href]).to include('https://www.google.com')
     expect(page).to have_content('Curious about programming languages?')
     expect(page).to have_content('Search now')
   end
@@ -67,7 +67,7 @@ describe 'Page Builder - Show', type: :feature do
   end
 
   it 'Should display the downloadable file' do
-    expect(page).to have_css('.pb-link')
+    expect(page).to have_css('.dm-external-link')
     expect(page).to have_content('Test file')
   end
 

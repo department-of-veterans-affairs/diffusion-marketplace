@@ -56,7 +56,9 @@ describe 'Comments', type: :feature, js: true do
             visit practice_path(@practice)
             find("#commontator-comment-1-edit").click
             fill_in('commontator-comment-1-edit-body', with: 'This is a test.')
-            click_button('Save')
+            within(:css, '.comment') do
+                click_button('Post')
+            end
             expect(page).to have_content('edited')
         end
 

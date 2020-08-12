@@ -99,7 +99,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         expect(find(:css, 'select#practice_practice_origin_facilities_attributes_0_facility_id').value).to eq(@pr_facility.facility_id)
 
         # add another facility
-        find('.add-practice-originating-facilities-link').click
+        find('.dm-add-practice-originating-facilities-link').click
         last_fac_field = find_all('.practice-editor-origin-facility-li').last
         last_fac_state_select = last_fac_field.find('select[id*="editor_state_select"]')
         last_fac_fac_select = last_fac_field.find('select[id*="facility_id"]')
@@ -107,7 +107,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         select('Birmingham VA Medical Center (Birmingham-Alabama)', from: last_fac_fac_select[:name])
         # delete first facility
         first_fac_field = find_all('.practice-editor-origin-facility-li').first
-        first_fac_field.find('.origin-trash').click
+        first_fac_field.find('.dm-origin-trash').click
         click_save
         visit_practice_show
         expect(page).to have_content('Birmingham VA Medical Center (Birmingham-Alabama)')

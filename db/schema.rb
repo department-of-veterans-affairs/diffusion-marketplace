@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_31_104955) do
+ActiveRecord::Schema.define(version: 2020_08_03_133740) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -708,6 +708,9 @@ ActiveRecord::Schema.define(version: 2020_07_31_104955) do
     t.integer "attachment_file_size"
     t.datetime "attachment_updated_at"
     t.string "resource_type"
+    t.string "name"
+    t.string "description"
+    t.integer "position"
     t.index ["practice_id"], name: "index_practice_multimedia_on_practice_id"
   end
 
@@ -763,6 +766,9 @@ ActiveRecord::Schema.define(version: 2020_07_31_104955) do
     t.integer "attachment_file_size"
     t.datetime "attachment_updated_at"
     t.string "resource_type"
+    t.string "name"
+    t.string "description"
+    t.integer "position"
     t.index ["practice_id"], name: "index_practice_problem_resources_on_practice_id"
   end
 
@@ -776,6 +782,9 @@ ActiveRecord::Schema.define(version: 2020_07_31_104955) do
     t.integer "attachment_file_size"
     t.datetime "attachment_updated_at"
     t.string "resource_type"
+    t.string "name"
+    t.string "description"
+    t.integer "position"
     t.index ["practice_id"], name: "index_practice_results_resources_on_practice_id"
   end
 
@@ -789,6 +798,9 @@ ActiveRecord::Schema.define(version: 2020_07_31_104955) do
     t.integer "attachment_file_size"
     t.datetime "attachment_updated_at"
     t.string "resource_type"
+    t.string "name"
+    t.string "description"
+    t.integer "position"
     t.index ["practice_id"], name: "index_practice_solution_resources_on_practice_id"
   end
 
@@ -798,6 +810,7 @@ ActiveRecord::Schema.define(version: 2020_07_31_104955) do
     t.string "author"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "position"
     t.index ["practice_id"], name: "index_practice_testimonials_on_practice_id"
   end
 
