@@ -12,16 +12,3 @@
             margin-right-1 margin-bottom-5">Add video</button>
   </div>
 </div>
-
-<%= javascript_tag 'data-turbolinks-track':'reload' do %>
-  attachAddResourceListener('problem_resource_video_form', 'display_problem_resources_video');
-
-  $(document).on('click', '#cancel_problem_resource_video', function(e){
-  debugger;
-  e.preventDefault();
-  document.getElementById("problem_video_form").style.display = 'none';
-  document.getElementById('practice_problem_video').checked = false;
-  document.getElementById('problem_resource_video_form').style.display = 'none';
-  document.getElementById('display_problem_resources_video').style.display = 'none';
-  });
-<% end %>

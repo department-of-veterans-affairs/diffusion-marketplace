@@ -3,8 +3,13 @@
 
     function initializeOverviewForm() {
         hideResources();
-        attachAddResourceListener('problem_resource_link_form', 'display_problem_resources_link');
-        attachDeleteResourceListener();
+        attachAddResourceListener('problem_resource_link_form', 'display_problem_resources_link', '"problem');
+        attachAddResourceListener('solution_resource_link_form', 'display_solution_resources_link', 'solution');
+        attachAddResourceListener('results_resource_link_form', 'display_results_resources_link', 'results');
+        attachDeleteResourceListener('problem', 'link');
+        attachDeleteResourceListener('solution', 'link');
+        attachDeleteResourceListener('results', 'link');
+
         $(document).on('click', '#cancel_problem_resource_link', function (e) {
             debugger;
             e.preventDefault();
@@ -12,13 +17,29 @@
             document.getElementById('practice_problem_link').checked = false;
             document.getElementById('problem_resource_link_form').style.display = 'none';
         });
+
+        $(document).on('click', '#cancel_solution_resource_link', function (e) {
+            debugger;
+            e.preventDefault();
+            document.getElementById("solution_link_form").style.display = 'none';
+            document.getElementById('practice_solution_link').checked = false;
+            document.getElementById('solution_resource_link_form').style.display = 'none';
+        });
+
+        $(document).on('click', '#cancel_results_resource_link', function (e) {
+            debugger;
+            e.preventDefault();
+            document.getElementById("results_link_form").style.display = 'none';
+            document.getElementById('practice_results_link').checked = false;
+            document.getElementById('results_resource_link_form').style.display = 'none';
+        });
     }
 
-    function attachDeleteResourceListener(){
+    function attachDeleteResourceListener(sArea, sType){
         $document.on('click', '.remove_nested_fields', function (e) {
             const destroyInput = $(e.target).siblings('input');
             destroyInput.val(true);
-            $(e.target).parents('div[id*="problem_resource_link_form"]').hide();
+            $(e.target).parents('div[id*=' + sArea + '_resource_' + sType + '_form]').hide();
         });
     }
 
@@ -33,21 +54,21 @@
         document.getElementById('solution_video_form').style.display = 'none';
         document.getElementById('solution_file_form').style.display = 'none';
         document.getElementById('solution_link_form').style.display = 'none';
-        document.getElementById('solution_resource_video_form').style.display = 'none';
-        document.getElementById('solution_resource_file_form').style.display = 'none';
-        document.getElementById('solution_resource_image_form').style.display = 'none';
-        document.getElementById('solution_resource_link_form').style.display = 'none';
+        // document.getElementById('solution_resource_video_form').style.display = 'none';
+        // document.getElementById('solution_resource_file_form').style.display = 'none';
+        // document.getElementById('solution_resource_image_form').style.display = 'none';
+        // document.getElementById('solution_resource_link_form').style.display = 'none';
 
 
         //document.getElementById('results_image_form').style.display = 'none';
-        document.getElementById('results_resource_image_form').style.display = 'none';
+        document.getElementById('results_image_form').style.display = 'none';
         document.getElementById('results_video_form').style.display = 'none';
         document.getElementById('results_file_form').style.display = 'none';
         document.getElementById('results_link_form').style.display = 'none';
-        document.getElementById('results_resource_video_form').style.display = 'none';
-        document.getElementById('results_resource_file_form').style.display = 'none';
-        document.getElementById('results_resource_image_form').style.display = 'none';
-        document.getElementById('results_resource_link_form').style.display = 'none';
+        // document.getElementById('results_resource_video_form').style.display = 'none';
+        // document.getElementById('results_resource_file_form').style.display = 'none';
+        // document.getElementById('results_resource_image_form').style.display = 'none';
+        // document.getElementById('results_resource_link_form').style.display = 'none';
     }
 
 
@@ -302,7 +323,7 @@ function addFileFields(sArea){
     form_container.appendChild(document.createElement("br"));
 }
 
-function attachAddResourceListener(formSelector, container){
+function attachAddResourceListener(formSelector, container, sArea){
     $(document).on('click', `#${formSelector} .add-resource`, function(e){
         debugger;
         e.preventDefault();
@@ -311,10 +332,22 @@ function attachAddResourceListener(formSelector, container){
         link_form.attr('id', `${formSelector}_${nGuid}`);
         link_form.attr('class', `resource_container`);
         link_form.find('#cancelAddButtonRow').remove();
-
-        const deleteEntryHtml = `<div class="grid-col-12 trash-container">
-       <input type="hidden" value="false" name="practice[practice_problem_resources_attributes][${nGuid}][_destroy]"/>
-        <button class="usa-button usa-button--unstyled text-red-50 remove_nested_fields">Delete entry</button> </div>`;
+        let deleteEntryHtml = "";
+        if(sArea == "problem") {
+            deleteEntryHtml = `<div class="grid-col-12 trash-container">
+           <input type="hidden" value="false" name="practice[practice_problem_resources_attributes][${nGuid}][_destroy]"/>
+            <button class="usa-button usa-button--unstyled text-red-50 remove_nested_fields">Delete entry</button> </div>`;
+        }
+        else if(sArea == "solution"){
+            deleteEntryHtml = `<div class="grid-col-12 trash-container">
+           <input type="hidden" value="false" name="practice[practice_solution_resources_attributes][${nGuid}][_destroy]"/>
+            <button class="usa-button usa-button--unstyled text-red-50 remove_nested_fields">Delete entry</button> </div>`;
+        }
+        else if(sArea == "results"){
+            deleteEntryHtml = `<div class="grid-col-12 trash-container">
+           <input type="hidden" value="false" name="practice[practice_results_resources_attributes][${nGuid}][_destroy]"/>
+            <button class="usa-button usa-button--unstyled text-red-50 remove_nested_fields">Delete entry</button> </div>`;
+        }
         link_form.append(deleteEntryHtml);
 
         $.each(link_form.find('input'), function(i, ele){

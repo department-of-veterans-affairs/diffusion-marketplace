@@ -14,16 +14,3 @@
             margin-right-1 margin-bottom-5">Add image</button>
   </div>
 </div>
-
-<%= javascript_tag 'data-turbolinks-track':'reload' do %>
-  attachAddResourceListener('problem_resource_image_form', 'display_problem_resources_image');
-
-  $(document).on('click', '#cancel_problem_resource_image', function(e){
-  debugger;
-  e.preventDefault();
-  document.getElementById("problem_image_form").style.display = 'none';
-  document.getElementById('practice_problem_image').checked = false;
-  document.getElementById('problem_resource_image_form').style.display = 'none';
-  document.getElementById('display_problem_resources_image').style.display = 'none';
-  });
-<% end %>

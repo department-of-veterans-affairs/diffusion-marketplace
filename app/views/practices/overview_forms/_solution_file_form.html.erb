@@ -11,25 +11,6 @@
   <input type="text" name="practice[solution_resources_attributes][RANDOM_NUMBER_OR_SOMETHING][description]" id="practice_solution_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_description" style="width: 643px">
 <%#= text_field_tag :practice_solution_resources, nil, required: true, id: 'image_caption', class: 'usa-input', :options => {:size => "643", :placeholder => "Search Events", :class => "round shadow"} %>
 </div>
-<%= javascript_tag 'data-turbolinks-track':'reload' do %>
-  $(document).on('click', '#add_solution_resource_file', function(e){
-  debugger;
-  e.preventDefault();
-  var file_form = $('#solution_resource_file_form').clone();
-  file_form.html(file_form.html().replace(/RANDOM_NUMBER_OR_SOMETHING/g, createGUID()));
-  file_form.appendTo('#display_solution_resources_file');
-  document.getElementById('display_solution_resources_file').style.display = 'block';
-  });
-
-  $(document).on('click', '#cancel_solution_resource_file', function(e){
-  debugger;
-  e.preventDefault();
-  document.getElementById("solution_file_form").style.display = 'none';
-  document.getElementById('practice_solution_file').checked = false;
-  document.getElementById('solution_resource_file_form').style.display = 'none';
-  document.getElementById('display_solution_resources_file').style.display = 'none';
-  });
-<% end %>
 <div class="grid-row margin-bottom-8">
   <button type="button" id="cancel_solution_resource_file" class="usa-button usa-button--outline dm-btn-primary
             editor-back-to-link margin-right-1 padding-2 margin-bottom-5 text-no-underline">Cancel</button>
