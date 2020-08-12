@@ -16,9 +16,9 @@ class SavePracticeService
         crop_main_display_image: 'error cropping practice thumbnail',
         update_initiating_facility: 'error updating initiating facility',
         update_practice_awards: 'error updating practice awards',
-        update_practice_problem_resources: 'error updating practice problem resources',
-        update_practice_solution_resources: 'error updating practice solution resources',
-        update_results_solution_resources: 'error updating practice solution resources'
+        update_practice_problem_resources: 'error updating practice overview problem resources',
+        update_practice_solution_resources: 'error updating practice overview solution resources',
+        update_practice_results_resources: 'error updating practice overview results resources'
     }
   end
 
@@ -26,8 +26,7 @@ class SavePracticeService
     begin
       process_problem_resource_params
       process_solution_resource_params
-      # process_results_resource_params
-      debugger
+      process_results_resource_params
       updated = @practice.update(@practice_params)
 
       rescue_method(:update_practice_partner_practices)
