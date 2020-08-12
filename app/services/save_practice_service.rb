@@ -22,9 +22,7 @@ class SavePracticeService
 
   def save_practice
     begin
-      debugger
       process_problem_resource_params
-      debugger
       updated = @practice.update(@practice_params)
 
       rescue_method(:update_practice_partner_practices)
