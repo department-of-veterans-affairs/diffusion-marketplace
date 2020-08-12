@@ -309,11 +309,12 @@ function attachAddResourceListener(formSelector, container){
         const nGuid = createGUID();
         const link_form = $(`#${formSelector}`).clone(true);
         link_form.attr('id', `${formSelector}_${nGuid}`);
+        link_form.attr('class', `resource_container`);
         link_form.find('#cancelAddButtonRow').remove();
 
         const deleteEntryHtml = `<div class="grid-col-12 trash-container">
        <input type="hidden" value="false" name="practice[practice_problem_resources_attributes][${nGuid}][_destroy]"/>
-        <button class="usa-button usa-button--unstyled text-secondary remove_nested_fields">Delete entry</button> </div>`;
+        <button class="usa-button usa-button--unstyled text-red-50 remove_nested_fields">Delete entry</button> </div>`;
         link_form.append(deleteEntryHtml);
 
         $.each(link_form.find('input'), function(i, ele){
