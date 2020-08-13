@@ -80,7 +80,7 @@
                     <%#= render partial: "practices/overview_forms/problem_image_form", locals: {small_text: false} %>
                   </div>
                   <div id="problem_video_form">
-                    <%#= render partial: "practices/overview_forms/problem_video_form", locals: {small_text: false} %>
+                    <%= render partial: "practices/overview_forms/problem_video_form", locals: {small_text: false} %>
                   </div>
                   <div id="problem_file_form">
                     <%#= render partial: "practices/overview_forms/problem_file_form", locals: {small_text: false} %>
@@ -91,11 +91,15 @@
                 </div>
               </div>
               <div id="display_problem_resources_image"></div>
-              <div id="display_problem_resources_video"></div>
-              <div id="display_problem_resources_file">
-
+              <div id="display_problem_resources_video">
+                <b>VIDEOS:</b>
+                <% @practice.practice_problem_resources.where(resource_type: 'video').each_with_index do |pr, i| %>
+                  <%= render partial: "practices/overview_forms/problem_video_form", locals: {resource: pr, placeholder: i} %>
+                <% end %>
               </div>
+              <div id="display_problem_resources_file"></div>
               <div id="display_problem_resources_link">
+                <b>LINKS:</b>
                 <% @practice.practice_problem_resources.where(resource_type: 'link').each_with_index do |pr, i| %>
                   <%= render partial: "practices/overview_forms/problem_link_form", locals: {resource: pr, placeholder: i} %>
                   <% end %>

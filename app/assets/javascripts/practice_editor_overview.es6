@@ -3,23 +3,33 @@
 
     function initializeOverviewForm() {
         hideResources();
+        debugger
+        //links
         attachAddResourceListener('problem_resource_link_form', 'display_problem_resources_link', '"problem');
         attachAddResourceListener('solution_resource_link_form', 'display_solution_resources_link', 'solution');
         attachAddResourceListener('results_resource_link_form', 'display_results_resources_link', 'results');
         attachDeleteResourceListener('problem', 'link');
         attachDeleteResourceListener('solution', 'link');
         attachDeleteResourceListener('results', 'link');
+        //Videos
+        attachAddResourceListener('problem_resource_video_form', 'display_problem_resources_video', '"problem');
+        attachDeleteResourceListener('problem', 'video');
 
         $(document).on('click', '#cancel_problem_resource_link', function (e) {
-            debugger;
             e.preventDefault();
             document.getElementById("problem_link_form").style.display = 'none';
             document.getElementById('practice_problem_link').checked = false;
             document.getElementById('problem_resource_link_form').style.display = 'none';
         });
 
+        $(document).on('click', '#cancel_problem_resource_video', function (e) {
+            e.preventDefault();
+            document.getElementById("problem_video_form").style.display = 'none';
+            document.getElementById('practice_problem_video').checked = false;
+            document.getElementById('problem_resource_video_form').style.display = 'none';
+        });
+
         $(document).on('click', '#cancel_solution_resource_link', function (e) {
-            debugger;
             e.preventDefault();
             document.getElementById("solution_link_form").style.display = 'none';
             document.getElementById('practice_solution_link').checked = false;
@@ -27,7 +37,6 @@
         });
 
         $(document).on('click', '#cancel_results_resource_link', function (e) {
-            debugger;
             e.preventDefault();
             document.getElementById("results_link_form").style.display = 'none';
             document.getElementById('practice_results_link').checked = false;
@@ -349,6 +358,7 @@ function attachAddResourceListener(formSelector, container, sArea){
             <button class="usa-button usa-button--unstyled text-red-50 remove_nested_fields">Delete entry</button> </div>`;
         }
         link_form.append(deleteEntryHtml);
+        debugger
 
         $.each(link_form.find('input'), function(i, ele){
             $(ele).attr('name', ele.name.replace(/RANDOM_NUMBER_OR_SOMETHING/g, nGuid));
