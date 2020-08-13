@@ -105,7 +105,7 @@ module PracticesHelper
   def get_all_search_terms(practice)
     all_terms = []
     # TODO: Add both campaigns and tags to this code
-    practice_categories = practice.categories.where.not(is_other: true, name: 'Other')
+    practice_categories = practice.categories
     practice_categories.each do |category|
       all_terms.push(category.name)
     end

@@ -3,12 +3,12 @@
 .category-link {
   cursor: pointer;
   text-decoration: none;
-  background-color: $dm-color-primary-blue-2;
+  background-color: $dm-color-blue-50v;
 
   &:hover {
     text-decoration: none;
     color: $dm-color-white !important;
-    background-color: $dm-color-primary-dark-blue !important;
+    background-color: $dm-color-blue-70v !important;
   }
 
   &:visited {
@@ -16,6 +16,19 @@
   }
 
   &:active {
-    background-color: $dm-color-darker-blue !important;
+    background-color: $dm-color-blue-80v !important;
+  }
+}
+
+#seeMore_search_terms_desktop, #seeMore_search_terms_mobile {
+  font-weight: bold !important;
+  text-decoration: none !important;
+
+  &:hover {
+    text-decoration: underline !important;
+  }
+
+  &:active {
+    text-decoration: underline !important;
   }
 }

@@ -841,13 +841,23 @@
 // PRACTICE VIEW
 // Introduction
 #pr-view-introduction {
+  .desktop-main-display-image-container, .mobile-main-display-image-container {
+    @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+      padding-top: 56.25%;
+    }
+  }
   .dm-thumbnail-image {
     width: 100%;
+    height: auto;
     object-fit: cover;
 
     @media screen and (min-width: 1024px) {
       max-height: 10.875rem;
-      width: auto;
+      width: 100%;
+    }
+
+    @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+      display: none !important;
     }
   }
 }
