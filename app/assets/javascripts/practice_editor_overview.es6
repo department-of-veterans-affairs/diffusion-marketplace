@@ -5,15 +5,17 @@
         hideResources();
         debugger
         //links
-        attachAddResourceListener('problem_resource_link_form', 'display_problem_resources_link', '"problem');
-        attachAddResourceListener('solution_resource_link_form', 'display_solution_resources_link', 'solution');
-        attachAddResourceListener('results_resource_link_form', 'display_results_resources_link', 'results');
+        attachAddResourceListener('problem_resource_link_form', 'display_problem_resources_link', 'problem', 'link');
+        attachAddResourceListener('solution_resource_link_form', 'display_solution_resources_link', 'solution', 'link');
+        attachAddResourceListener('results_resource_link_form', 'display_results_resources_link', 'results', 'link');
         attachDeleteResourceListener('problem', 'link');
         attachDeleteResourceListener('solution', 'link');
         attachDeleteResourceListener('results', 'link');
         //Videos
-        attachAddResourceListener('problem_resource_video_form', 'display_problem_resources_video', '"problem');
+        attachAddResourceListener('problem_resource_video_form', 'display_problem_resources_video', 'problem', 'video');
         attachDeleteResourceListener('problem', 'video');
+        attachAddResourceListener('solution_resource_video_form', 'display_solution_resources_video', 'solution', 'video');
+        attachDeleteResourceListener('solution', 'video');
 
         $(document).on('click', '#cancel_problem_resource_link', function (e) {
             e.preventDefault();
@@ -36,6 +38,13 @@
             document.getElementById('solution_resource_link_form').style.display = 'none';
         });
 
+        $(document).on('click', '#cancel_solution_resource_video', function (e) {
+            e.preventDefault();
+            document.getElementById("solution_video_form").style.display = 'none';
+            document.getElementById('practice_solution_video').checked = false;
+            document.getElementById('solution_resource_video_form').style.display = 'none';
+        });
+
         $(document).on('click', '#cancel_results_resource_link', function (e) {
             e.preventDefault();
             document.getElementById("results_link_form").style.display = 'none';
@@ -46,6 +55,7 @@
 
     function attachDeleteResourceListener(sArea, sType){
         $document.on('click', '.remove_nested_fields', function (e) {
+            debugger
             const destroyInput = $(e.target).siblings('input');
             destroyInput.val(true);
             $(e.target).parents('div[id*=' + sArea + '_resource_' + sType + '_form]').hide();
@@ -332,7 +342,7 @@ function addFileFields(sArea){
     form_container.appendChild(document.createElement("br"));
 }
 
-function attachAddResourceListener(formSelector, container, sArea){
+function attachAddResourceListener(formSelector, container, sArea, sType){
     $(document).on('click', `#${formSelector} .add-resource`, function(e){
         debugger;
         e.preventDefault();
@@ -341,22 +351,11 @@ function attachAddResourceListener(formSelector, container, sArea){
         link_form.attr('id', `${formSelector}_${nGuid}`);
         link_form.attr('class', `resource_container`);
         link_form.find('#cancelAddButtonRow').remove();
-        let deleteEntryHtml = "";
-        if(sArea == "problem") {
-            deleteEntryHtml = `<div class="grid-col-12 trash-container">
-           <input type="hidden" value="false" name="practice[practice_problem_resources_attributes][${nGuid}][_destroy]"/>
+
+          const deleteEntryHtml = `<div class="grid-col-12 trash-container">
+           <input type="hidden" value="false" name="practice[practice_${sArea}_resources_attributes][${nGuid}_${sType}][_destroy]"/>
             <button class="usa-button usa-button--unstyled text-red-50 remove_nested_fields">Delete entry</button> </div>`;
-        }
-        else if(sArea == "solution"){
-            deleteEntryHtml = `<div class="grid-col-12 trash-container">
-           <input type="hidden" value="false" name="practice[practice_solution_resources_attributes][${nGuid}][_destroy]"/>
-            <button class="usa-button usa-button--unstyled text-red-50 remove_nested_fields">Delete entry</button> </div>`;
-        }
-        else if(sArea == "results"){
-            deleteEntryHtml = `<div class="grid-col-12 trash-container">
-           <input type="hidden" value="false" name="practice[practice_results_resources_attributes][${nGuid}][_destroy]"/>
-            <button class="usa-button usa-button--unstyled text-red-50 remove_nested_fields">Delete entry</button> </div>`;
-        }
+
         link_form.append(deleteEntryHtml);
         debugger
 

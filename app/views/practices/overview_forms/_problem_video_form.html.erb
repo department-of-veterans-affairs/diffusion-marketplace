@@ -1,15 +1,17 @@
 <% resource ||= nil
    placeholder ||= 'RANDOM_NUMBER_OR_SOMETHING'
+   placeholder = placeholder.to_s + '_video'
 %>
 <div id="problem_resource_video_form<%= "_#{placeholder}" if resource %>" <% if resource %> class="resource_container margin-bottom-5" <% end %>>
   <input type="hidden" name="practice[practice_problem_resources_attributes][<%= placeholder %>][resource_type]" value="video"/>
   <% if resource&.id  %>
+    <% debugger %>
     <div class="grid-col-8 margin-bottom-3 margin-x-auto float-left">
       <%= youtube_embed(resource.link_url) %>
     </div>
     <input value="<%= resource&.id %>" type="hidden" name="practice[practice_problem_resources_attributes][<%= placeholder %>][id]"/>
   <% end %>
-  <%= label_tag 'practice_problem_resources_video', 'Link (paste the full Youtube address)', class: 'usa-label', for: "practice_problem_resources_attributes_#{placeholder}_video_url" %>
+  <%= label_tag 'practice_problem_resources_video', 'Link (paste the full Youtube address)', class: 'usa-label', for: "practice_problem_resources_attributes_#{placeholder}_link_url" %>
   <input class="usa-input" value="<%= resource&.link_url %>"  placeholder="https://www.youtube.com/watch?v=" type="text" name="practice[practice_problem_resources_attributes][<%= placeholder %>][link_url]" id="practice_problem_resources_attributes_<%= placeholder %>_link_url" style="width: 643px"/>
   <%= label_tag 'practice_problem_resources_name', 'Caption', class: 'usa-label', for: "practice_problem_resources_attributes_#{placeholder}_name" %>
   <input class="usa-input" value="<%= resource&.name %>" type="text" name="practice[practice_problem_resources_attributes][<%= placeholder %>][name]" id="practice_problem_resources_attributes_<%= placeholder %>_name" style="width: 393px"/>

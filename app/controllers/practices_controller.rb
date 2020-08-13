@@ -130,6 +130,7 @@ class PracticesController < ApplicationController
   # PATCH/PUT /practices/1
   # PATCH/PUT /practices/1.json
   def update
+    debugger
     current_endpoint = request.referrer.split('/').pop
     updated = true
     #raise params.inspect

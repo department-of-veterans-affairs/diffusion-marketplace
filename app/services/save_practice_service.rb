@@ -206,15 +206,21 @@ class SavePracticeService
     end
   end
   def process_problem_resource_params
-    @practice_params['practice_problem_resources_attributes'].delete('RANDOM_NUMBER_OR_SOMETHING')
+    PracticeProblemResource.resource_types.each do |rt|
+      @practice_params['practice_problem_resources_attributes'].delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
+    end
   end
 
   def process_solution_resource_params
-    @practice_params['practice_solution_resources_attributes'].delete('RANDOM_NUMBER_OR_SOMETHING')
+    PracticeSolutionResource.resource_types.each do |rt|
+      @practice_params['practice_solution_resources_attributes'].delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
+    end
   end
 
   def process_results_resource_params
-    @practice_params['practice_results_resources_attributes'].delete('RANDOM_NUMBER_OR_SOMETHING')
+    PracticeResultsResource.resource_types.each do |rt|
+      @practice_params['practice_results_resources_attributes'].delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
+    end
   end
 
 end

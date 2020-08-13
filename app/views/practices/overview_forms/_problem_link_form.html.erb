@@ -1,16 +1,17 @@
 <% resource ||= nil
    placeholder ||= 'RANDOM_NUMBER_OR_SOMETHING'
+   placeholder = placeholder.to_s + '_link'
 %>
   <div id="problem_resource_link_form<%= "_#{placeholder}" if resource %>" <% if resource %> class="resource_container margin-bottom-5" <% end %>>
     <input type="hidden" name="practice[practice_problem_resources_attributes][<%= placeholder %>][resource_type]" value="link"/>
     <% if resource&.id  %>
       <input value="<%= resource&.id %>" type="hidden" name="practice[practice_problem_resources_attributes][<%= placeholder %>][id]"/>
   <% end %>
-    <%= label_tag 'practice_problem_resources_link', 'Link (paste the full address)', class: 'usa-label', for: "practice_problem_resources_attributes_#{placeholder}_link_url" %>
+    <%= label_tag 'practice_problem_resources_link', 'Link (paste the full address)', class: 'usa-label', for: "practice_problem_resources_attributes_#{placeholder}_link_link_url" %>
     <input class="usa-input" value="<%= resource&.link_url %>" type="text" name="practice[practice_problem_resources_attributes][<%= placeholder %>][link_url]" id="practice_problem_resources_attributes_<%= placeholder %>_link_url" style="width: 643px"/>
-    <%= label_tag 'practice_problem_resources_name', 'Title', class: 'usa-label', for: "practice_problem_resources_attributes_#{placeholder}_name" %>
+    <%= label_tag 'practice_problem_resources_name', 'Title', class: 'usa-label', for: "practice_problem_resources_attributes_#{placeholder}_link_name" %>
     <input class="usa-input" value="<%= resource&.name %>" type="text" name="practice[practice_problem_resources_attributes][<%= placeholder %>][name]" id="practice_problem_resources_attributes_<%= placeholder %>_name" style="width: 393px"/>
-    <%= label_tag 'practice_problem_resources_description', 'Description', class: 'usa-label', for: "practice_problem_resources_attributes_#{placeholder}_description" %>
+    <%= label_tag 'practice_problem_resources_description', 'Description', class: 'usa-label', for: "practice_problem_resources_attributes_#{placeholder}_link_description" %>
     <input class="usa-input" value="<%= resource&.description %>" type="text" name="practice[practice_problem_resources_attributes][<%= placeholder %>][description]" id="practice_problem_resources_attributes_<%= placeholder %>_description" style="width: 643px"/>
     <% if resource %>
      <div class="grid-col-12 trash-container">
