@@ -90,16 +90,28 @@
                   </div>
                 </div>
               </div>
-              <div id="display_problem_resources_image"></div>
+              <div id="display_problem_resources_image">
+                <% if @practice.practice_problem_resources.where(resource_type: 'image').exists? %>
+                  <b>IMAGES:</b>
+                <% end %>
+              </div>
               <div id="display_problem_resources_video">
-                <b>VIDEOS:</b>
+                <% if @practice.practice_problem_resources.where(resource_type: 'video').exists? %>
+                  <b>VIDEOS:</b>
+                <% end %>
                 <% @practice.practice_problem_resources.where(resource_type: 'video').each_with_index do |pr, i| %>
                   <%= render partial: "practices/overview_forms/problem_video_form", locals: {resource: pr, placeholder: i} %>
                 <% end %>
               </div>
-              <div id="display_problem_resources_file"></div>
+              <div id="display_problem_resources_file">
+                <% if @practice.practice_problem_resources.where(resource_type: 'file').exists? %>
+                  <b>FILES:</b>
+                <% end %>
+              </div>
               <div id="display_problem_resources_link">
-                <b>LINKS:</b>
+                <% if @practice.practice_problem_resources.where(resource_type: 'link').exists? %>
+                  <b>LINKS:</b>
+                <% end %>
                 <% @practice.practice_problem_resources.where(resource_type: 'link').each_with_index do |pr, i| %>
                   <%= render partial: "practices/overview_forms/problem_link_form", locals: {resource: pr, placeholder: i} %>
                   <% end %>
@@ -163,7 +175,7 @@
                     <%#= render partial: "practices/overview_forms/solution_image_form", locals: {small_text: false} %>
                   </div>
                   <div id="solution_video_form">
-                    <%#= render partial: "practices/overview_forms/solution_video_form", locals: {small_text: false} %>
+                    <%= render partial: "practices/overview_forms/solution_video_form", locals: {small_text: false} %>
                   </div>
                   <div id="solution_file_form">
                     <%#= render partial: "practices/overview_forms/solution_file_form", locals: {small_text: false} %>
@@ -173,10 +185,28 @@
                   </div>
                 </div>
               </div>
-              <div id="display_solution_resources_image"></div>
-              <div id="display_solution_resources_video"></div>
-              <div id="display_solution_resources_file"></div>
+              <div id="display_solution_resources_image">
+                <% if @practice.practice_solution_resources.where(resource_type: 'image').exists? %>
+                  <b>IMAGES:</b>
+                <% end %>
+              </div>
+              <div id="display_solution_resources_video">
+                <% if @practice.practice_solution_resources.where(resource_type: 'video').exists? %>
+                  <b>VIDEOS:</b>
+                <% end %>
+                <% @practice.practice_solution_resources.where(resource_type: 'video').each_with_index do |pr, i| %>
+                  <%= render partial: "practices/overview_forms/solution_video_form", locals: {resource: pr, placeholder: i} %>
+                <% end %>
+              </div>
+              <div id="display_solution_resources_file">
+                <% if @practice.practice_solution_resources.where(resource_type: 'file').exists? %>
+                  <b>FILES:</b>
+                <% end %>
+              </div>
               <div id="display_solution_resources_link">
+                <% if @practice.practice_solution_resources.where(resource_type: 'link').exists? %>
+                  <b>LINKS:</b>
+                <% end %>
                 <% @practice.practice_solution_resources.where(resource_type: 'link').each_with_index do |pr, i| %>
                   <%= render partial: "practices/overview_forms/solution_link_form", locals: {resource: pr, placeholder: i} %>
                 <% end %>
@@ -240,7 +270,7 @@
                     <%#= render partial: "practices/overview_forms/results_image_form", locals: {small_text: false} %>
                   </div>
                   <div id="results_video_form">
-                    <%#= render partial: "practices/overview_forms/results_video_form", locals: {small_text: false} %>
+                    <%= render partial: "practices/overview_forms/results_video_form", locals: {small_text: false} %>
                   </div>
                   <div id="results_file_form">
                     <%#= render partial: "practices/overview_forms/results_file_form", locals: {small_text: false} %>
@@ -250,10 +280,28 @@
                   </div>
                 </div>
               </div>
-              <div id="display_results_resources_image"></div>
-              <div id="display_results_resources_video"></div>
-              <div id="display_results_resources_file"></div>
+              <div id="display_results_resources_image">
+                <% if @practice.practice_results_resources.where(resource_type: 'image').exists? %>
+                  <b>IMAGES:</b>
+                <% end %>
+              </div>
+              <div id="display_results_resources_video">
+                <% if @practice.practice_results_resources.where(resource_type: 'video').exists? %>
+                  <b>VIDEOS:</b>
+                <% end %>
+                <% @practice.practice_results_resources.where(resource_type: 'video').each_with_index do |pr, i| %>
+                  <%= render partial: "practices/overview_forms/results_video_form", locals: {resource: pr, placeholder: i} %>
+                <% end %>
+              </div>
+              <div id="display_results_resources_file">
+                <% if @practice.practice_results_resources.where(resource_type: 'file').exists? %>
+                  <b>FILES:</b>
+                  <% end %>
+              </div>
               <div id="display_results_resources_link">
+                <% if @practice.practice_results_resources.where(resource_type: 'link').exists? %>
+                  <b>LINKS:</b>
+                <% end %>
                 <% @practice.practice_results_resources.where(resource_type: 'link').each_with_index do |pr, i| %>
                   <%= render partial: "practices/overview_forms/results_link_form", locals: {resource: pr, placeholder: i} %>
                 <% end %>

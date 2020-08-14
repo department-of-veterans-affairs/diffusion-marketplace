@@ -16,6 +16,8 @@
         attachDeleteResourceListener('problem', 'video');
         attachAddResourceListener('solution_resource_video_form', 'display_solution_resources_video', 'solution', 'video');
         attachDeleteResourceListener('solution', 'video');
+        attachAddResourceListener('results_resource_video_form', 'display_results_resources_video', 'results', 'video');
+        attachDeleteResourceListener('results', 'video');
 
         $(document).on('click', '#cancel_problem_resource_link', function (e) {
             e.preventDefault();

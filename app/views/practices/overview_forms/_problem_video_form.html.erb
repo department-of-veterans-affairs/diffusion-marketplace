@@ -5,7 +5,6 @@
 <div id="problem_resource_video_form<%= "_#{placeholder}" if resource %>" <% if resource %> class="resource_container margin-bottom-5" <% end %>>
   <input type="hidden" name="practice[practice_problem_resources_attributes][<%= placeholder %>][resource_type]" value="video"/>
   <% if resource&.id  %>
-    <% debugger %>
     <div class="grid-col-8 margin-bottom-3 margin-x-auto float-left">
       <%= youtube_embed(resource.link_url) %>
     </div>
