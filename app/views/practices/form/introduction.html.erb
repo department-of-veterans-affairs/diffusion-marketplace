@@ -504,7 +504,7 @@
                             <%= other_category_id %>,
                             '.practice-editor-category-li',
                             '.practice-editor-categories-ul',
-                            '12'
+                            '8'
                             );
                             var $_destroy = $li.find('.trash-container input[name="practice[_destroy]"]');
                             $_destroy.attr('name', 'practice[categories_attributes][<%= cat.index %>][_destroy]');
@@ -516,14 +516,14 @@
                         <% end %>
                         <li class="practice-editor-category-li fields" <%= "id=practice_categories_attributes_#{cat.index}_li" if cat.object.id %> data-id="<%= other_category_id %>">
                           <div class="grid-row">
-                            <div class="grid-col-12">
+                            <div class="grid-col-8">
                               <%= cat.label :name, 'Name of category', class: 'usa-label x0-top margin-bottom-1 grid-col-12' %>
                               <%= cat.text_field :name, class: 'usa-input margin-bottom-1 x0-top', 'aria-label': 'Name' %>
                             </div>
 
-                            <div class="grid-col-12 trash-container">
+                            <div class="grid-col-8 trash-container">
                               <%= cat.link_to_remove 'Delete entry',
-                                                    class: "origin-trash font-sans-xs line-height-26 cursor-pointer float-right"
+                                                    class: "dm-origin-trash font-sans-xs line-height-26 cursor-pointer float-right"
                               %>
                             </div>
                           </div>
@@ -531,7 +531,7 @@
                       <% end %>
                     <% end %>
                   </ul>
-                  <%= f.link_to_add :categories, class: 'add-another-link add-category-link line-height-26 cursor-pointer' do %>
+                  <%= f.link_to_add :categories, class: 'dm-add-another-link add-category-link line-height-26 cursor-pointer' do %>
                     <span class="font-sans-xs text-normal">Add another</span>
                   <% end %>
                   <% unless other_categories.any? %>
@@ -540,7 +540,7 @@
                         $(document),
                         '.practice-editor-category-li',
                         '.practice-editor-categories-ul',
-                        '12'
+                        '8'
                       );
                       attachTrashListener(
                         $(document),
