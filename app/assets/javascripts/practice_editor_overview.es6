@@ -2,8 +2,9 @@
     const $document = $(document);
 
     function initializeOverviewForm() {
-        hideResources();
         debugger
+        hideResources();
+
         //links
         attachAddResourceListener('problem_resource_link_form', 'display_problem_resources_link', 'problem', 'link');
         attachAddResourceListener('solution_resource_link_form', 'display_solution_resources_link', 'solution', 'link');
@@ -18,7 +19,12 @@
         attachDeleteResourceListener('solution', 'video');
         attachAddResourceListener('results_resource_video_form', 'display_results_resources_video', 'results', 'video');
         attachDeleteResourceListener('results', 'video');
+        //Files
+        attachAddResourceListener('problem_resource_file_form', 'display_problem_resources_file', 'problem', 'file');
+        attachDeleteResourceListener('problem', 'file');
 
+
+        //PROBLEM
         $(document).on('click', '#cancel_problem_resource_link', function (e) {
             e.preventDefault();
             document.getElementById("problem_link_form").style.display = 'none';
@@ -33,6 +39,14 @@
             document.getElementById('problem_resource_video_form').style.display = 'none';
         });
 
+        $(document).on('click', '#cancel_problem_resource_file', function (e) {
+            e.preventDefault();
+            document.getElementById("problem_file_form").style.display = 'none';
+            document.getElementById('practice_problem_file').checked = false;
+            document.getElementById('problem_resource_file_form').style.display = 'none';
+        });
+
+        //SOLUTION
         $(document).on('click', '#cancel_solution_resource_link', function (e) {
             e.preventDefault();
             document.getElementById("solution_link_form").style.display = 'none';
@@ -47,6 +61,7 @@
             document.getElementById('solution_resource_video_form').style.display = 'none';
         });
 
+        //RESULTS
         $(document).on('click', '#cancel_results_resource_link', function (e) {
             e.preventDefault();
             document.getElementById("results_link_form").style.display = 'none';
@@ -57,8 +72,8 @@
 
     function attachDeleteResourceListener(sArea, sType){
         $document.on('click', '.remove_nested_fields', function (e) {
-            debugger
             const destroyInput = $(e.target).siblings('input');
+            debugger
             destroyInput.val(true);
             $(e.target).parents('div[id*=' + sArea + '_resource_' + sType + '_form]').hide();
         });
