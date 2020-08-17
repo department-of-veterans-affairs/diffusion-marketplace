@@ -172,6 +172,7 @@ ActiveRecord::Schema.define(version: 2020_08_03_133740) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "related_terms", default: [], array: true
+    t.boolean "is_other", default: false
   end
 
   create_table "category_practices", force: :cascade do |t|

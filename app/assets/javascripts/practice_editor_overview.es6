@@ -114,6 +114,14 @@
             addEnableAttrAndColor($('label[for="' + oi + '"]'), $(`#${oi}`));
         });
     }
+    function showCurrentlySelectedOptions(currentSelectForm){
+        $(`#${currentSelectForm}`).show();
+    }
+    function hideOtherSelectForms(formsToHide){
+        formsToHide.forEach(f => {
+            $(`#${f}`).hide();
+        });
+    }
 
     function showCurrentlySelectedOptions(currentSelectForm){
         $(`#${currentSelectForm}`).show();

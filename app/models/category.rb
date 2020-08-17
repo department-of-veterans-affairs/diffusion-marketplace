@@ -3,8 +3,9 @@ class Category < ApplicationRecord
   belongs_to :parent_category, class_name: 'Category', optional: true
   acts_as_list
 
-  has_many :category_practices
+  has_many :category_practices, dependent: :destroy
   has_many :practices, through: :categories
+  has_many :practices, through: :category_practices
 
   attr_accessor :related_terms_raw
 
