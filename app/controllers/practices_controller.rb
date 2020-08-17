@@ -454,6 +454,7 @@ class PracticesController < ApplicationController
                                      practice_permissions_attributes: [:id, :_destroy, :position, :name, :description],
                                      practice_partner: {},
                                      department: {},
+                                     category: {},
                                      practice_award: {},
                                      practice_problem_resources_attributes: {},
                                      practice_solution_resources_attributes: {},
@@ -461,6 +462,7 @@ class PracticesController < ApplicationController
                                      practice_multimedia_attributes: [:id, :_destroy, :resource_type, :name, :description, :link_url, :attachment_file_name, :position],
                                      practice_testimonials_attributes: [:id, :_destroy, :testimonial, :author, :position],
                                      practice_awards_attributes: [:id, :_destroy, :name],
+                                     categories_attributes: [:id, :_destroy, :name, :is_other],
                                      practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :facility_type, :initiating_department_office_id],
                                      practice_metrics_attributes: [:id, :_destroy, :description]
     )

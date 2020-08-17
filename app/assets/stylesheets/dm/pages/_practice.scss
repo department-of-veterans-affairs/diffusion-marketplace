@@ -571,7 +571,7 @@
   margin-top: 12px !important;
 }
 
-.partner-input, .no-partner-input {
+.partner-input, .no-partner-input, .category-input {
   left: 2px !important;
   top: 5px !important;
 }
@@ -848,11 +848,23 @@
 // PRACTICE VIEW
 // Introduction
 #pr-view-introduction {
-  @media screen and (min-width: 64rem) {
-    .dm-thumbnail-image {
+  .desktop-main-display-image-container, .mobile-main-display-image-container {
+    @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+      padding-top: 56.25%;
+    }
+  }
+  .dm-thumbnail-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+
+    @media screen and (min-width: 1024px) {
       max-height: 10.875rem;
-      width: auto;
-      float: right;
+      width: 100%;
+    }
+
+    @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+      display: none !important;
     }
   }
 }
@@ -880,4 +892,8 @@ li.small-disc:before {
   border: 2px solid $dm-color-gray-10;
   border-radius: 2px;
   padding: 16px;
+}
+
+.pe-category-checkbox:last-child {
+  margin-bottom: 40px;
 }

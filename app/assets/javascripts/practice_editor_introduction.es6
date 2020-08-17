@@ -23,9 +23,29 @@
         );
     }
 
+    function attachShowOtherCategoryFields() {
+        observePracticeEditorLiArrival(
+            $document,
+            '.practice-editor-category-li',
+            '.practice-editor-categories-ul',
+            '8'
+        );
+        $document.on('change', '#category_other', function() {
+            showOtherCategoryFields();
+        });
+
+        attachTrashListener(
+            $document,
+            '#other_categories_container',
+            '.practice-editor-category-li'
+        );
+    }
+
+
     function loadPracticeIntroductionFunctions() {
         attachFacilitySelectListener();
         attachShowOtherAwardFields();
+        attachShowOtherCategoryFields();
     }
 
     $document.on('turbolinks:load', loadPracticeIntroductionFunctions);
@@ -36,5 +56,13 @@ function showOtherAwardFields() {
         document.getElementById('other_awards_container').style.display = 'block';
     } else {
         document.getElementById('other_awards_container').style.display = 'none';
+    }
+}
+
+function showOtherCategoryFields() {
+    if (document.getElementById('category_other').checked) {
+        document.getElementById('other_categories_container').style.display = 'block';
+    } else {
+        document.getElementById('other_categories_container').style.display = 'none';
     }
 }

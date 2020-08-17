@@ -68,6 +68,14 @@
             document.getElementById('results_resource_link_form').style.display = 'none';
         });
     }
+    function showCurrentlySelectedOptions(currentSelectForm){
+        $(`#${currentSelectForm}`).show();
+    }
+    function hideOtherSelectForms(formsToHide){
+        formsToHide.forEach(f => {
+            $(`#${f}`).hide();
+        });
+    }
 
     function attachDeleteResourceListener(sArea, sType){
         $document.on('click', '.remove_nested_fields', function (e) {

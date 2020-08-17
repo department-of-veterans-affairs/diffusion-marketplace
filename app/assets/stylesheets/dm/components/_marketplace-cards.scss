@@ -67,9 +67,11 @@
   background-size: cover;
   background-position-x: center;
   background-position-y: center;
-  .marketplace-card-img { // hide image if object fit is not supported - opacity to 0 for the link area
+  .marketplace-card-img, .dm-thumbnail-image { // hide image if object fit is not supported - opacity to 0 for the link area
     opacity: 0;
+  }
 
+  .marketplace-card-img {
     &:hover {
       opacity: 0 !important;
     }
