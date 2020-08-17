@@ -124,7 +124,7 @@
     "#{$filename-base}.svg"
   );
 
-  $image-props: url("#{$path}/#{$filename}") no-repeat center / #{$width} #{$height};
+  $image-props: asset-url("#{$path}/#{$filename}") no-repeat center / #{$width} #{$height};
 
   // Default background shorthand for browsers that don't support mask or supports.
   background: $image-props;

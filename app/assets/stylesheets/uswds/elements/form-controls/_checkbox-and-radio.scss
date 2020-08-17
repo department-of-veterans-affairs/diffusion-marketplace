@@ -90,7 +90,7 @@
   @media print {
     background-image: none;
     background-color: color("white");
-    content: url("#{$theme-image-path}/checkbox-check-print.svg");
+    content: asset-url("#{$theme-image-path}/checkbox-check-print.svg");
     text-indent: 0;
   }
 }

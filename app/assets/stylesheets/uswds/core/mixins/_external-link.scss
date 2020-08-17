@@ -5,7 +5,7 @@
 ) {
   &::after {
     $icon-size: 0.65em;
-    background-image: url("#{$image-path}/#{$external-link}.svg");
+    background-image: asset-url("#{$image-path}/#{$external-link}.svg");
     background-position: 50% 60%;
     background-repeat: no-repeat;
     background-size: 100%;

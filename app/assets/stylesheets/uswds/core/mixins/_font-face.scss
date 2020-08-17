@@ -11,9 +11,10 @@
     font-style: unquote($font-style);
     font-weight: $font-weight;
     font-display: fallback;
-    src: url(#{$file-path}.woff2) format("woff2"),
-      url(#{$file-path}.woff) format("woff"),
-      url(#{$file-path}.ttf) format("truetype");
+    src:
+        asset-url("#{$file-path}.woff2") format('woff2'),
+        asset-url("#{$file-path}.woff") format('woff'),
+        asset-url("#{$file-path}.ttf") format('truetype');
   }
 }
 
