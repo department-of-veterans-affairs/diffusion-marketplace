@@ -229,6 +229,8 @@ class Practice < ApplicationRecord
   has_many :practice_problem_resources, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_solution_resources, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_results_resources, -> {order(id: :asc) }, dependent: :destroy
+  has_one :maturity_level_practice, dependent: :destroy
+  has_one :maturity_level, through: :maturity_level_practice
 
   # This allows the practice model to be commented on with the use of the Commontator gem
   acts_as_commontable dependent: :destroy
