@@ -5,16 +5,17 @@
 <div id="problem_resource_file_form<%= "_#{placeholder}" if resource %>" <% if resource %> class="resource_container margin-bottom-5" <% end %>>
   <input type="hidden" name="practice[practice_problem_resources_attributes][<%= placeholder %>][resource_type]" value="file"/>
   <% unless resource&.id  %>
-    <div class="grid-col-8 margin-bottom-3 margin-x-auto float-left">
+    <div class="grid-col-12 margin-bottom-3 margin-x-auto float-left">
       <label class="usa-label" for="input-single">Upload a .pdf, .docx, .xlxs, .jpg, .jpeg, or .png file that is less than 32MB</label>
-      <input id="input-single" class="usa-file-input usa-hint" type="file" name="input-single" accept=".pdf, .docx, .xlxs, .jpg, .jpeg, .png" aria-describedby="input-single-hint" />
+<!--      <input id="input-single" class="usa-file-input usa-hint" type="file" name="input-single" accept=".PDF,.docx,.xlxs,.JPG,.JPEG,.PNG" aria-describedby="input-single-hint" />-->
+      <input id="file-input-specific" class="usa-file-input" type="file" name="file-input-specific" aria-describedby="file-input-specific-hint"accept=".pdf,.txt,.jpg.,jpeg,.png"/>
     </div>
     <input value="<%= resource&.id %>" type="hidden" name="practice[practice_problem_resources_attributes][<%= placeholder %>][id]"/>
   <% end %>
   <%= label_tag 'practice_problem_resources_name', 'File name', class: 'usa-label', for: "practice_problem_resources_attributes_#{placeholder}_name" %>
-  <input class="usa-input" value="<%= resource&.name %>" type="text" name="practice[practice_problem_resources_attributes][<%= placeholder %>][name]" id="practice_problem_resources_attributes_<%= placeholder %>_name" style="width: 393px"/>
-  <%= label_tag 'practice_problem_resources_description', 'File description', class: 'usa-label', for: "practice_problem_resources_attributes_#{placeholder}_description" %>
-  <input class="usa-input" value="<%= resource&.description %>"  type="text" name="practice[practice_problem_resources_attributes][<%= placeholder %>][description]" id="practice_problem_resources_attributes_<%= placeholder %>_description" style="width: 643px"/>
+    <input class="usa-input" value="<%= resource&.name %>" type="text" name="practice[practice_problem_resources_attributes][<%= placeholder %>][name]" id="practice_problem_resources_attributes_<%= placeholder %>_name" style="width: 393px"/>
+    <%= label_tag 'practice_problem_resources_description', 'File description', class: 'usa-label', for: "practice_problem_resources_attributes_#{placeholder}_description" %>
+    <input class="usa-input" value="<%= resource&.description %>"  type="text" name="practice[practice_problem_resources_attributes][<%= placeholder %>][description]" id="practice_problem_resources_attributes_<%= placeholder %>_description" style="width: 643px"/>
   <% if resource %>
     <div class="grid-col-12 trash-container">
       <input type="hidden" value="false" name="practice[practice_problem_resources_attributes][<%= placeholder %>][_destroy]"/>
@@ -29,5 +30,6 @@
               margin-right-1 margin-bottom-5">Add file</button>
     </div>
   <% end %>
+
 </div>
 

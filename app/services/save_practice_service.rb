@@ -15,10 +15,10 @@ class SavePracticeService
         remove_main_display_image: 'error removing practice thumbnail',
         crop_main_display_image: 'error cropping practice thumbnail',
         update_initiating_facility: 'error updating initiating facility',
-        update_practice_awards: 'error updating practice awards',
-        update_practice_problem_resources: 'error updating practice overview problem resources',
-        update_practice_solution_resources: 'error updating practice overview solution resources',
-        update_practice_results_resources: 'error updating practice overview results resources'
+        update_practice_awards: 'error updating practice awards'
+        # update_practice_problem_resources: 'error updating practice overview problem resources',
+        # update_practice_solution_resources: 'error updating practice overview solution resources',
+        # update_practice_results_resources: 'error updating practice overview results resources'
     }
   end
 
@@ -206,6 +206,7 @@ class SavePracticeService
     end
   end
   def process_problem_resource_params
+    debugger
     PracticeProblemResource.resource_types.each do |rt|
       @practice_params['practice_problem_resources_attributes'].delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
     end

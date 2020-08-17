@@ -2,7 +2,6 @@
     const $document = $(document);
 
     function initializeOverviewForm() {
-        debugger
         hideResources();
 
         //links
@@ -73,7 +72,6 @@
     function attachDeleteResourceListener(sArea, sType){
         $document.on('click', '.remove_nested_fields', function (e) {
             const destroyInput = $(e.target).siblings('input');
-            debugger
             destroyInput.val(true);
             $(e.target).parents('div[id*=' + sArea + '_resource_' + sType + '_form]').hide();
         });
