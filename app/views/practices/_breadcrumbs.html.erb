@@ -66,7 +66,7 @@
       <span class="text-bold">Resources</span>
     <% end %>
 
-    <% if params[:action] == 'complexity' && params[:controller] == 'practices' %>
+    <% if params[:action] == 'departments' && params[:controller] == 'practices' %>
       <span><%= link_to @practice.name, practice_path(@practice) %></span>
       <span class="x0-5-left x0-5-right">›</span>
       <span><%= link_to 'Edit', practice_instructions_path(@practice) %></span>

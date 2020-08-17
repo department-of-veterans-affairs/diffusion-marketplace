@@ -278,8 +278,8 @@ class PracticesController < ApplicationController
   def resources
   end
 
-  # /practices/slug/complexity
-  def complexity
+  # /practices/slug/departments
+  def departments
   end
 
   # /practices/slug/timeline

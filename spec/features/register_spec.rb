@@ -22,6 +22,6 @@ describe 'Register', type: :feature do
     expect(page).to have_content('Email must use @va.gov email address')
     expect(page).to have_content('Email invalid')
     expect(page).to have_content('Password must include 6 unique characters')
-    expect(page).to have_content('Password complexity requirement not met. Password must include 3 of the following: 1 uppercase, 1 lowercase, 1 digit and 1 special character')
+    expect(page).to have_content('Password departments requirement not met. Password must include 3 of the following: 1 uppercase, 1 lowercase, 1 digit and 1 special character')
   end
 end

@@ -21,7 +21,7 @@ Rails.application.routes.draw do
     get '/edit/impact', action: 'impact', as: 'impact'
     get '/edit/resources', action: 'resources', as: 'resources'
     get '/edit/documentation', action: 'documentation', as: 'documentation'
-    get '/edit/complexity', action: 'complexity', as: 'complexity'
+    get '/edit/departments', action: 'departments', as: 'departments'
     get '/edit/timeline', action: 'timeline', as: 'timeline'
     get '/edit/risk_and_mitigation', action: 'risk_and_mitigation', as: 'risk_and_mitigation'
     get '/edit/contact', action: 'contact', as: 'contact'

@@ -19,7 +19,7 @@ describe 'Practice editor', type: :feature, js: true do
 
         it 'should be there' do
             expect(page).to have_content('Timeline')
-            expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/complexity")
+            expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/departments")
             expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/risk_and_mitigation")
         end
 
