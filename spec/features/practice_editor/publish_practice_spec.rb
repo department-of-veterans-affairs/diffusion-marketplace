@@ -6,6 +6,8 @@ describe 'Practice editor', type: :feature, js: true do
     @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: false)
     @practice_partner = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative', icon: 'fas fa-heart', color: '#E4A002')
     @admin.add_role(User::USER_ROLES[0].to_sym)
+    Category.create!(name: 'Pulmonary Care')
+    Category.create!(name: 'Other')
   end
 
   describe 'Publish practice flow' do

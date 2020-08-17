@@ -28,7 +28,7 @@
             $document,
             '.practice-editor-category-li',
             '.practice-editor-categories-ul',
-            '12'
+            '8'
         );
         $document.on('change', '#category_other', function() {
             showOtherCategoryFields();

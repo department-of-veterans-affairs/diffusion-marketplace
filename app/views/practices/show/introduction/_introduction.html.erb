@@ -135,7 +135,9 @@
       <%# practice main display image for desktop %>
       <%= render partial: 'practices/show/desktop_partials/main_display_image_container' %>
       <%# search terms(campaigns/categories/tags) for desktop %>
-      <%= render partial: 'practices/show/desktop_partials/search_terms' %>
+      <% if @practice.categories.where.not(is_other: true, name: 'Other').any? %>
+        <%= render partial: 'practices/show/desktop_partials/search_terms' %>
+      <% end %>
     </div>
     <%# practice updates %>
     <%# TODO: reintroduce once update feature is available %>

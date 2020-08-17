@@ -16,7 +16,7 @@ class SavePracticeService
         crop_main_display_image: 'error cropping practice thumbnail',
         update_initiating_facility: 'error updating initiating facility',
         update_practice_awards: 'error updating practice awards',
-        # update_category_practices: 'error updating practice categories'
+        update_category_practices: 'error updating practice categories'
     }
   end
 
@@ -32,13 +32,12 @@ class SavePracticeService
       rescue_method(:crop_main_display_image)
       rescue_method(:update_initiating_facility)
       rescue_method(:update_practice_awards)
-      # rescue_method(:update_category_practices)
+      rescue_method(:update_category_practices)
       updated
     rescue => e
       Rails.logger.error "save_practice error: #{e.message}"
       e
     end
-    update_category_practices
   end
 
   private
@@ -94,7 +93,6 @@ class SavePracticeService
     category_params = @practice_params[:category]
     practice_category_practices = @practice.category_practices
     practice_categories = @practice.categories
-    other_cat_id = Category.find_by(name: 'Other').id
 
     if category_params.present?
       category_attribute_params = @practice_params[:categories_attributes]
@@ -105,6 +103,8 @@ class SavePracticeService
           practice_category_practices.find_or_create_by(category_id: key.to_i)
         end
       end
+
+      other_cat_id = Category.find_by(name: 'Other').id
 
       if cat_keys.include?(other_cat_id.to_s)
         categories_to_process = category_attribute_params.values.map { |param| { id: param[:id], name: param[:name], _destroy: param[:_destroy]} }

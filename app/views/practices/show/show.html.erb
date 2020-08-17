@@ -38,7 +38,9 @@
 <% end %>
 
 <%# search terms(campaigns/categories/tags) for mobile  %>
-<%= render partial: 'practices/show/mobile_partials/search_terms' %>
+<% if @practice.categories.where.not(is_other: true, name: 'Other').any? %>
+  <%= render partial: 'practices/show/mobile_partials/search_terms' %>
+<% end %>
 
 
 
