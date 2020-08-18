@@ -14,6 +14,13 @@ describe 'Practice editor - introduction', type: :feature, js: true do
     @pr_partner_3 = PracticePartner.create!({name: 'None of the above, or Unsure'})
     PracticePartnerPractice.create!(practice: @practice, practice_partner: @pr_partner_1, created_at: Time.now)
     PracticePartnerPractice.create!(practice: @practice, practice_partner: @pr_partner_2, created_at: Time.now)
+    @cat_1 = Category.create!(name: 'COVID')
+    @cat_2 = Category.create!(name: 'Environmental Services')
+    Category.create!(name: 'Follow-up Care')
+    Category.create!(name: 'Pulmonary Care')
+    Category.create!(name: 'Other')
+    CategoryPractice.create!(practice: @practice, category: @cat_1, created_at: Time.now)
+    CategoryPractice.create!(practice: @practice, category: @cat_2, created_at: Time.now)
 
     login_as(@admin, :scope => :user, :run_callbacks => false)
   end
@@ -41,6 +48,8 @@ describe 'Practice editor - introduction', type: :feature, js: true do
       expect(page).to have_content('Awards and recognition')
       expect(page).to have_content('Partners')
       expect(page).to have_content('Select any of the following partners your practice is associated with.')
+      expect(page).to have_content('Categories')
+      expect(page).to have_content('Select any categories that apply to your practice.')
       expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/instructions")
       expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/adoptions")
     end
@@ -176,6 +185,27 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         visit_practice_show
         expect(page).to have_content('Diffusion of Excellence')
         expect(page).to have_no_content('Office of Rural Health')
+      end
+    end
+
+    context 'categories' do
+      it 'should allow changing categories' do
+        expect(page).to have_checked_field('COVID')
+        expect(page).to have_checked_field('Environmental Services')
+        expect(page).to have_unchecked_field('Pulmonary Care')
+        expect(page).to have_unchecked_field('Follow-up Care')
+        expect(page).to have_no_content('Name of category')
+        find('#category_pulmonary_care_label').click # selects Pulmonary Care
+        find('#category_other_label').click # selects other
+        find('#category_environmental_services_label').click # deselects Environmental Services
+        expect(page).to have_content('Name of category')
+        fill_in('Name of category', with: 'Cool category')
+        click_save
+        visit_practice_show
+        expect(page).to have_no_content('Environmental Services')
+        expect(page).to have_no_content('Other')
+        expect(page).to have_content('COVID')
+        expect(page).to have_content('PULMONARY CARE')
       end
     end
   end

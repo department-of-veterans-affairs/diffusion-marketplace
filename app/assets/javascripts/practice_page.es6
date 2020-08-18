@@ -138,3 +138,29 @@ function seeMoreTextAwards() {
         moreText.style.display = "inline";
     }
 }
+
+function seeMoreSearchTermsMobile() {
+    var btnText = document.getElementById("seeMore_search_terms_mobile");
+    var termsTruncated = document.getElementById("search_terms_truncated_mobile");
+
+    if (termsTruncated.style.display === "none") {
+        btnText.innerHTML = "See less";
+        termsTruncated.style.display = "inline";
+    } else {
+        btnText.innerHTML = "See more";
+        termsTruncated.style.display = "none";
+    }
+}
+
+function seeMoreSearchTermsDesktop() {
+    var btnText = document.getElementById("seeMore_search_terms_desktop");
+    var termsTruncated = document.getElementById("search_terms_truncated_desktop");
+
+    if (termsTruncated.style.display === "none") {
+        btnText.innerHTML = "See less";
+        termsTruncated.style.display = "inline";
+    } else {
+        btnText.innerHTML = "See more";
+        termsTruncated.style.display = "none";
+    }
+}

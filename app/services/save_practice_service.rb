@@ -16,6 +16,7 @@ class SavePracticeService
         crop_main_display_image: 'error cropping practice thumbnail',
         update_initiating_facility: 'error updating initiating facility',
         update_practice_awards: 'error updating practice awards',
+        update_category_practices: 'error updating practice categories'
     }
   end
 
@@ -31,7 +32,7 @@ class SavePracticeService
       rescue_method(:crop_main_display_image)
       rescue_method(:update_initiating_facility)
       rescue_method(:update_practice_awards)
-
+      rescue_method(:update_category_practices)
       updated
     rescue => e
       Rails.logger.error "save_practice error: #{e.message}"
@@ -44,7 +45,8 @@ class SavePracticeService
   def rescue_method(method_name)
     begin
       send(method_name)
-    rescue
+    rescue StandardError => e
+      puts e
       raise StandardError.new @error_messages[method_name]
     end
   end
@@ -84,6 +86,61 @@ class SavePracticeService
       end
     elsif department_params.blank? && @current_endpoint == 'departments'
       practice_departments.destroy_all
+    end
+  end
+
+  def update_category_practices
+    category_params = @practice_params[:category]
+    practice_category_practices = @practice.category_practices
+    practice_categories = @practice.categories
+
+    if category_params.present?
+      category_attribute_params = @practice_params[:categories_attributes]
+      cat_keys = category_params.keys
+
+      cat_keys.each do |key|
+        if practice_categories.ids.exclude?(key.to_i)
+          practice_category_practices.find_or_create_by(category_id: key.to_i)
+        end
+      end
+
+      other_cat_id = Category.find_by(name: 'Other').id
+
+      if cat_keys.include?(other_cat_id.to_s)
+        categories_to_process = category_attribute_params.values.map { |param| { id: param[:id], name: param[:name], _destroy: param[:_destroy]} }
+        # If Other was checked, create a new category with is_other true and create a category_practice linking to the new category
+        categories_to_process.each do |category|
+          unless category[:name] == ""
+            if category[:_destroy] == 'false' && category[:id].nil?
+              cate = Category.create(name: category[:name], is_other: true)
+              practice_category_practices.create(category_id: cate.id)
+            elsif category[:_destroy] == 'false' && category[:id].present?
+              practice_categories.find_by(id: category[:id].to_i).update_attributes(name: category[:name])
+            elsif category[:_destroy] == 'true' && category[:id].present?
+              practice_category_practices.where(category_id: category[:id]).destroy_all
+            end
+          end
+        end
+      end
+
+      other_practice_categories = practice_categories.where(is_other: true)
+
+      if other_practice_categories.any?
+        if cat_keys.exclude?(other_cat_id.to_s)
+          practice_category_practices.joins(:category).where(categories: { is_other: true }).destroy_all
+
+          other_practice_categories.each do |oc|
+            oc.destroy unless CategoryPractice.where.not(practice_id: @practice.id).where(category_id: oc.id).any?
+          end
+        end
+      end
+
+      practice_category_practices.joins(:category).where(categories: { is_other: false }).each do |pcp|
+        pcp.destroy unless cat_keys.include?(pcp.category_id.to_s)
+      end
+
+    elsif category_params.blank? && @current_endpoint == 'introduction'
+      practice_category_practices.destroy_all
     end
   end
 
@@ -162,33 +219,13 @@ class SavePracticeService
     if practice_award_params
       practice_awards_to_create = practice_award_params.values.map { |param| param[:name] }
       practice_awards_to_create.each { |award| @practice.practice_awards.find_or_create_by(name: award) }
-      # get practice awards that are in the provided list
-      # figure out which ones are not in the params and delete the award if the practice has it made
-      Practice::PRACTICE_EDITOR_AWARDS_AND_RECOGNITION.each do |defined_award|
-        # check if the award is in the params, delete award if it is not in the params
-        practice_awards.find_by(name: defined_award)&.destroy unless practice_awards_to_create.include?(defined_award)
-        # if "Other" was not checked, destroy all "Other" awards
-        if defined_award == 'Other' && !practice_awards_to_create.include?(defined_award)
-          other_awards = practice_awards.where.not(name: Practice::PRACTICE_EDITOR_AWARDS_AND_RECOGNITION)
-          other_awards.destroy_all
-        end
-      end
-    elsif practice_award_params.blank? && @current_endpoint == 'introduction' && practice_awards.any?
-      practice_awards.destroy_all
-    end
-  end
 
-  def update_practice_awards
-    practice_award_params = @practice_params[:practice_award]
-    practice_awards = @practice.practice_awards
-    if practice_award_params
-      practice_awards_to_create = practice_award_params.values.map { |param| param[:name] }
-      practice_awards_to_create.each { |award| @practice.practice_awards.find_or_create_by(name: award) }
       # get practice awards that are in the provided list
       # figure out which ones are not in the params and delete the award if the practice has it made
       Practice::PRACTICE_EDITOR_AWARDS_AND_RECOGNITION.each do |defined_award|
         # check if the award is in the params, delete award if it is not in the params
         practice_awards.find_by(name: defined_award)&.destroy unless practice_awards_to_create.include?(defined_award)
+
         # if "Other" was not checked, destroy all "Other" awards
         if defined_award == 'Other' && !practice_awards_to_create.include?(defined_award)
           other_awards = practice_awards.where.not(name: Practice::PRACTICE_EDITOR_AWARDS_AND_RECOGNITION)

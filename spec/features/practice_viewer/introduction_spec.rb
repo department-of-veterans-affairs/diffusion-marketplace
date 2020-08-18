@@ -22,6 +22,14 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
     @pr_partner_2 = PracticePartner.create!(name: 'Office of Rural Health', short_name: 'ORH', description: 'Congress established the Veterans Health Administration Office of Rural Health in 2006 to conduct, coordinate, promote and disseminate research on issues that affect the nearly five million Veterans who reside in rural communities. Working through its three Veterans Rural Health Resource Centers, as well as partners from academia, state and local governments, private industry, and non-profit organizations, ORH strives to break down the barriers separating rural Veterans from quality care.', icon: 'fas fa-mountain', color: '#1CC2AE')
     PracticePartnerPractice.create!(practice: @pr_max, practice_partner: @pr_partner_1, created_at: Time.now)
     PracticePartnerPractice.create!(practice: @pr_max, practice_partner: @pr_partner_2, created_at: Time.now)
+    @cat_1 = Category.create!(name: 'COVID')
+    @cat_2 = Category.create!(name: 'Environmental Services')
+    @cat_3 = Category.create!(name: 'Follow-up Care')
+    @cat_4 = Category.create!(name: 'Other')
+    CategoryPractice.create!(practice: @pr_max, category: @cat_1, created_at: Time.now)
+    CategoryPractice.create!(practice: @pr_max, category: @cat_2, created_at: Time.now)
+    CategoryPractice.create!(practice: @pr_max, category: @cat_3, created_at: Time.now)
+    CategoryPractice.create!(practice: @pr_max, category: @cat_4, created_at: Time.now)
 
     login_as(@admin, :scope => :user, :run_callbacks => false)
   end
@@ -96,6 +104,26 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
       expect(page).to have_content(@pr_partner_2.name)
       expect(page).to have_link(href: practice_partner_path(@pr_partner_1))
       expect(page).to have_link(href: practice_partner_path(@pr_partner_2))
+    end
+  end
+
+  describe 'categories section' do
+    before do
+      visit practice_path(@pr_max)
+    end
+
+    it 'should display the content correctly' do
+      expect(page).to have_link('COVID')
+      expect(page).to have_link('Environmental Services')
+      expect(page).to have_link('Follow-up Care')
+      expect(page).to_not have_link('Other')
+    end
+
+    it 'should take the user to the search results page when a category tag is clicked' do
+      all('.category-link').first.click
+      expect(page).to have_content('Search results')
+      expect(page).to have_content('1 result for COVID')
+      expect(page).to have_content('A public maximum practice')
     end
   end
 
