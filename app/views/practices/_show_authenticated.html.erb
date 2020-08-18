@@ -15,7 +15,7 @@
           <a href="#origin" class="dm-tab scroll-to sidebar-origin" data-target="#origin" data-turbolinks="false">Origin</a>
         </li>
       <% end %>
-      <% if @practice.impact_photos.any? || @practice.video_files.any? || (@practice.diffusion_histories.any? && ENV['GOOGLE_API_KEY'])  %>
+      <% if @practice.impact_photos.any? || @practice.video_files.any? || (@practice.diffusion_histories.any? && ENV['GOOGLE_API_KEY']) %>
         <li class="usa-sidenav__item">
           <a href="#impact" class="dm-tab scroll-to sidebar-impact" data-target="#impact" data-turbolinks="false">Impact</a>
         </li>
@@ -25,9 +25,9 @@
           <a href="#resources_required" class="dm-tab scroll-to sidebar-resources_required" data-target="#resources_required" data-turbolinks="false">Resources</a>
         </li>
       <% end %>
-      <% if @practice.departments.any? || @practice.sustainability_aggregate.present? %>
+      <% if @practice.departments.any? %>
         <li class="usa-sidenav__item">
-          <a href="#complexity" class="dm-tab scroll-to sidebar-complexity" data-target="#complexity" data-turbolinks="false">Complexity</a>
+          <a href="#departments" class="dm-tab scroll-to sidebar-departments" data-target="#departments" data-turbolinks="false">Departments</a>
         </li>
       <% end %>
       <% unless @practice.timelines.blank? %>
@@ -251,21 +251,23 @@
   </div>
 </section>
 
-<!-- "Complexity" section -->
-<section class="margin-bottom-7">
-  <div>
-    <div class="grid-container">
-      <div class="grid-row grid-gap">
-        <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-        <div class="desktop:grid-col-9 grid-col-12 p0">
-          <div class="complexity-section practice-section">
-            <%= render partial: 'complexity' %>
+<!-- "Departments" section -->
+<% if @practice.departments.any? %>
+  <section class="margin-bottom-7">
+    <div>
+      <div class="grid-container">
+        <div class="grid-row grid-gap">
+          <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+          <div class="desktop:grid-col-9 grid-col-12 p0">
+            <div class="departments-section practice-section">
+              <%= render partial: 'departments' %>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+<% end %>
 
 <!-- "Timeline and Checklist" section -->
 <% if @practice.timelines.any? %>
