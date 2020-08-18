@@ -446,6 +446,8 @@
               <% end %>
             </div>
 
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+
             <div class="margin-top-3 margin-bottom-5">
               <div class="margin-bottom-2">
                 <p class="text-bold margin-bottom-1">
@@ -557,6 +559,38 @@
                     <% end %>
                   <% end %>
                 </div>
+              </div>
+            </div>
+
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+
+            <div class="margin-top-3 margin-bottom-5">
+              <div class="margin-bottom-2">
+                <p class="text-bold margin-bottom-1">
+                  Maturity
+                </p>
+                <span>Select the level of maturity that applies to your practice.</span>
+              </div>
+
+              <%
+                maturity_levels = MaturityLevel.all.order(position: :asc)
+              %>
+
+              <div class="maturity-level-radio-container">
+                <% maturity_levels.each do |ml| %>
+                  <% lowercase_ml_name = ml.name.downcase %>
+                  <div class="usa-radio position-relative">
+                    <%= radio_button_tag 'practice[maturity_level]', "#{lowercase_ml_name}",
+                                         MaturityLevelPractice.where(practice: @practice, maturity_level: ml).exists?,
+                                         class: 'usa-radio__input maturity-level-radio',
+                                         id: "maturity_level_#{lowercase_ml_name}"
+                    %>
+                    <%= label_tag "maturity_level_#{lowercase_ml_name}", "#{ml.name}",
+                        class: "usa-radio__label maturity-level-label #{ MaturityLevel.last.name == ml.name ? 'margin-bottom-0' : 'margin-bottom-1' }",
+                        for: "maturity_level_#{lowercase_ml_name}"
+                    %>
+                  </div>
+                <% end %>
               </div>
             </div>
           </div>
