@@ -22,6 +22,9 @@
         attachAddResourceListener('problem_resource_file_form', 'display_problem_resources_file', 'problem', 'file');
         attachDeleteResourceListener('problem', 'file');
 
+        attachAddResourceListener('solution_resource_file_form', 'display_solution_resources_file', 'solution', 'file');
+        attachDeleteResourceListener('solution', 'file');
+
 
         //PROBLEM
         $(document).on('click', '#cancel_problem_resource_link', function (e) {
@@ -58,6 +61,13 @@
             document.getElementById("solution_video_form").style.display = 'none';
             document.getElementById('practice_solution_video').checked = false;
             document.getElementById('solution_resource_video_form').style.display = 'none';
+        });
+
+        $(document).on('click', '#cancel_solution_resource_file', function (e) {
+            e.preventDefault();
+            document.getElementById("solution_file_form").style.display = 'none';
+            document.getElementById('practice_solution_file').checked = false;
+            document.getElementById('solution_resource_file_form').style.display = 'none';
         });
 
         //RESULTS

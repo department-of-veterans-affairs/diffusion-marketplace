@@ -1,20 +1,34 @@
-<div id="solution_resource_file_form">
-  <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form'}) do |form| %>
-    <%= render 'shared/problem_image_editor', locals: { section_title: 'Thumbnail', form: form, practice: @practice } %>
+<% resource ||= nil
+   placeholder ||= 'RANDOM_NUMBER_OR_SOMETHING'
+   placeholder = placeholder.to_s + '_file'
+%>
+<div id="solution_resource_file_form<%= "_#{placeholder}" if resource %>" <% if resource %> class="resource_container margin-bottom-5" <% end %>>
+  <input type="hidden" name="practice[practice_solution_resources_attributes][<%= placeholder %>][resource_type]" value="file"/>
+  <% if resource&.id  %>
+    <%= link_to(resource&.attachment&.original_filename, resource&.attachment_s3_presigned_url, target: '_blank')%>
+    <input value="<%= resource&.id %>" type="hidden" name="practice[practice_solution_resources_attributes][<%= placeholder %>][id]"/>
+  <% else %>
+    <div class="grid-col-12 margin-bottom-3 margin-x-auto float-left">
+      <label class="usa-label" for="input-single">Upload a .pdf, .docx, .xlxs, .jpg, .jpeg, or .png file that is less than 32MB</label>
+      <input id="input-single" class="usa-file-input usa-hint" type="file" name="practice[practice_solution_resources_attributes][<%= placeholder %>][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" aria-describedby="input-single-hint" />
+    </div>
   <% end %>
-  <%= label_tag 'practice_solution_resources', 'File name', for: 'practice_solution_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_name' %>
-  <br />
-  <input type="text" id="practice_solution_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_name" name="practice_solution_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_name" style="width: 393px">
-  <br />
-  <br />
-  <%= label_tag 'practice_solution_resources', 'File description', for: 'practice_solution_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_description' %>
-  <input type="text" name="practice[solution_resources_attributes][RANDOM_NUMBER_OR_SOMETHING][description]" id="practice_solution_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_description" style="width: 643px">
-<%#= text_field_tag :practice_solution_resources, nil, required: true, id: 'image_caption', class: 'usa-input', :options => {:size => "643", :placeholder => "Search Events", :class => "round shadow"} %>
-</div>
-<div class="grid-row margin-bottom-8">
-  <button type="button" id="cancel_solution_resource_file" class="usa-button usa-button--outline dm-btn-primary
-            editor-back-to-link margin-right-1 padding-2 margin-bottom-5 text-no-underline">Cancel</button>
+  <%= label_tag 'practice_solution_resources_name', 'File name', class: 'usa-label', for: "practice_solution_resources_attributes_#{placeholder}_name" %>
+  <input class="usa-input" value="<%= resource&.name %>" type="text" name="practice[practice_solution_resources_attributes][<%= placeholder %>][name]" id="practice_solution_resources_attributes_<%= placeholder %>_name" style="width: 393px"/>
+  <%= label_tag 'practice_solution_resources_description', 'File description', class: 'usa-label', for: "practice_solution_resources_attributes_#{placeholder}_description" %>
+  <input class="usa-input" value="<%= resource&.description %>"  type="text" name="practice[practice_solution_resources_attributes][<%= placeholder %>][description]" id="practice_solution_resources_attributes_<%= placeholder %>_description" style="width: 643px"/>
+  <% if resource %>
+    <div class="grid-col-12 trash-container">
+      <input type="hidden" value="false" name="practice[practice_solution_resources_attributes][<%= placeholder %>][_destroy]"/>
+      <button type="button" class="usa-button usa-button--unstyled text-red-50 remove_nested_fields">Delete entry</button>
+    </div>
+  <% else %>
+    <div id="cancelAddButtonRow" class="grid-row margin-bottom-8">
+      <button type="button" id="cancel_solution_resource_file" class=" usa-button usa-button--outline dm-btn-primary
+              editor-back-to-link margin-right-1 padding-2 margin-bottom-5 text-no-underline">Cancel</button>
 
-  <button type="button" id="add_solution_resource_file" class="usa-button usa-button-outline pe-continue padding-2
-            margin-right-1 margin-bottom-5">Add file</button>
+      <button type="button" class="add-resource usa-button usa-button-outline pe-continue padding-2
+              margin-right-1 margin-bottom-5">Add file</button>
+    </div>
+  <% end %>
 </div>

@@ -181,7 +181,7 @@
                     <%= render partial: "practices/overview_forms/solution_video_form", locals: {small_text: false} %>
                   </div>
                   <div id="solution_file_form">
-                    <%#= render partial: "practices/overview_forms/solution_file_form", locals: {small_text: false} %>
+                    <%= render partial: "practices/overview_forms/solution_file_form", locals: {small_text: false} %>
                   </div>
                   <div id="solution_link_form">
                     <%= render partial: "practices/overview_forms/solution_link_form", locals: {small_text: false} %>
@@ -204,6 +204,9 @@
               <div id="display_solution_resources_file">
                 <% if @practice.practice_solution_resources.where(resource_type: 'file').exists? %>
                   <b>FILES:</b>
+                <% end %>
+                <% @practice.practice_solution_resources.where(resource_type: 'file').each_with_index do |pr, i| %>
+                  <%= render partial: "practices/overview_forms/solution_file_form", locals: {resource: pr, placeholder: i} %>
                 <% end %>
               </div>
               <div id="display_solution_resources_link">
