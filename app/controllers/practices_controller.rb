@@ -4,7 +4,7 @@ class PracticesController < ApplicationController
                                       :commit, :committed, :highlight, :un_highlight, :feature,
                                       :un_feature, :favorite, :instructions, :overview, :origin,
                                       :collaborators, :impact, :resources, :documentation,
-                                      :complexity, :timeline, :risk_and_mitigation, :contact,
+                                      :departments, :timeline, :risk_and_mitigation, :contact,
                                       :checklist, :publication_validation, :adoptions,
                                       :create_or_update_diffusion_history]
   before_action :set_facility_data, only: [:show, :planning_checklist]
