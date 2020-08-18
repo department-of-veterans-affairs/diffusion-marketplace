@@ -580,15 +580,26 @@
                 <% maturity_levels.each do |ml| %>
                   <% lowercase_ml_name = ml.name.downcase %>
                   <div class="usa-radio position-relative">
-                    <%= radio_button_tag 'practice[maturity_level]', "#{lowercase_ml_name}",
+                    <%= radio_button_tag 'practice[maturity_level]', "#{ml.name}",
                                          MaturityLevelPractice.where(practice: @practice, maturity_level: ml).exists?,
                                          class: 'usa-radio__input maturity-level-radio',
                                          id: "maturity_level_#{lowercase_ml_name}"
                     %>
-                    <%= label_tag "maturity_level_#{lowercase_ml_name}", "#{ml.name}",
-                        class: "usa-radio__label maturity-level-label #{ MaturityLevel.last.name == ml.name ? 'margin-bottom-0' : 'margin-bottom-1' }",
-                        for: "maturity_level_#{lowercase_ml_name}"
-                    %>
+                    <label class="usa-radio__label maturity-level-label margin-bottom-1 line-height-sans-6"
+                           for="maturity_level_<%= lowercase_ml_name %>"
+                    >
+                      <span class="text-bold margin-left-neg-05"><%= ml.name %>: </span>
+                      <% if ml.name == 'Emerging' %>
+                        Core feasibility and effectiveness is still being assessed in a live environment to understand practice
+                        value and real-world impact. The practice is adapting based on initial customer and participant feedback.
+                      <% elsif ml.name == 'Replicating' %>
+                        The practice is being adopted at additional facilities after successful pilot(s); it is evolving as it
+                        seeks to optimize impact and replicability.
+                      <% else %>
+                        A national stakeholder has decided the practice impact has been validated and its replicability established.
+                        The practice will be implemented at all applicable facilities.
+                      <% end %>
+                    </label>
                   </div>
                 <% end %>
               </div>
