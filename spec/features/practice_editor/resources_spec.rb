@@ -18,7 +18,7 @@ describe 'Practice editor', type: :feature, js: true do
         it 'should be there' do
             expect(page).to have_content('Resources')
             expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/documentation")
-            expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/complexity")
+            expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/departments")
         end
 
         # it 'should require the user to select one of the cost to implement options' do

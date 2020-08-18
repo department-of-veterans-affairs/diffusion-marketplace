@@ -86,7 +86,7 @@ class SavePracticeService
       practice_departments.each do |department|
         department.destroy unless dept_keys.include? department.department_id.to_s
       end
-    elsif department_params.blank? && @current_endpoint == 'complexity'
+    elsif department_params.blank? && @current_endpoint == 'departments'
       practice_departments.destroy_all
     end
   end
