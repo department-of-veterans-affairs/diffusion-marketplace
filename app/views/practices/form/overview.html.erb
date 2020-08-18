@@ -255,12 +255,12 @@
                 </div>
                 <div class="usa-radio margin-bottom-1 position-relative">
                   <%= radio_button_tag 'practice_results_resources[resource_type]',
-                                       'File', false, onclick: "displayResourceForm('results', 'file');",
+                                       'Files', false, onclick: "displayResourceForm('results', 'file');",
                                        class: 'usa-radio__input initiating-facility-type-radio',
                                        id: "practice_results_file"
                   %>
-                  <%= label_tag 'practice_solution_file', 'File', class: 'usa-radio__label
-                initiating-facility-type-label x0-bottom', for: "practice_solution_file" %>
+                  <%= label_tag 'practice_results_file', 'File', class: 'usa-radio__label
+                initiating-facility-type-label x0-bottom', for: "practice_results_file" %>
                 </div>
                 <div class="usa-radio position-relative">
                   <%= radio_button_tag 'practice_results_resources[resource_type]', 'Link',
@@ -279,7 +279,7 @@
                     <%= render partial: "practices/overview_forms/results_video_form", locals: {small_text: false} %>
                   </div>
                   <div id="results_file_form">
-                    <%#= render partial: "practices/overview_forms/results_file_form", locals: {small_text: false} %>
+                    <%= render partial: "practices/overview_forms/results_file_form", locals: {small_text: false} %>
                   </div>
                   <div id="results_link_form">
                     <%= render partial: "practices/overview_forms/results_link_form", locals: {small_text: false} %>
@@ -303,6 +303,9 @@
                 <% if @practice.practice_results_resources.where(resource_type: 'file').exists? %>
                   <b>FILES:</b>
                   <% end %>
+                <% @practice.practice_results_resources.where(resource_type: 'file').each_with_index do |pr, i| %>
+                  <%= render partial: "practices/overview_forms/results_file_form", locals: {resource: pr, placeholder: i} %>
+                <% end %>
               </div>
               <div id="display_results_resources_link">
                 <% if @practice.practice_results_resources.where(resource_type: 'link').exists? %>

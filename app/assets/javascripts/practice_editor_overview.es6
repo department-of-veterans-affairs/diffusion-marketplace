@@ -21,9 +21,11 @@
         //Files
         attachAddResourceListener('problem_resource_file_form', 'display_problem_resources_file', 'problem', 'file');
         attachDeleteResourceListener('problem', 'file');
-
         attachAddResourceListener('solution_resource_file_form', 'display_solution_resources_file', 'solution', 'file');
         attachDeleteResourceListener('solution', 'file');
+
+        attachAddResourceListener('results_resource_file_form', 'display_results_resources_file', 'results', 'file');
+        attachDeleteResourceListener('results', 'file');
 
 
         //PROBLEM
@@ -76,6 +78,20 @@
             document.getElementById("results_link_form").style.display = 'none';
             document.getElementById('practice_results_link').checked = false;
             document.getElementById('results_resource_link_form').style.display = 'none';
+        });
+
+        $(document).on('click', '#cancel_results_resource_video', function (e) {
+            e.preventDefault();
+            document.getElementById("results_video_form").style.display = 'none';
+            document.getElementById('practice_results_video').checked = false;
+            document.getElementById('results_resource_video_form').style.display = 'none';
+        });
+
+        $(document).on('click', '#cancel_results_resource_file', function (e) {
+            e.preventDefault();
+            document.getElementById("results_file_form").style.display = 'none';
+            document.getElementById('practice_results_file').checked = false;
+            document.getElementById('results_resource_file_form').style.display = 'none';
         });
     }
     function showCurrentlySelectedOptions(currentSelectForm){
@@ -160,6 +176,7 @@ function displayResourceForm(sArea, sType){
             document.getElementById(sArea + '_link_form').style.display = 'none';
             break;
         case 'file':
+            debugger
             document.getElementById(sArea + '_file_form').style.display = 'block';
             document.getElementById(sArea + '_resource_file_form').style.display = 'block';
             document.getElementById(sArea + '_video_form').style.display = 'none';
