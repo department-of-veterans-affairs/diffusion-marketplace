@@ -19,7 +19,7 @@
 //= require cropper
 //= require activestorage
 //= require turbolinks
-//= require uswds
+//= require uswds/uswds
 //= require jquery_nested_form
 //= require jquery-ui/widgets/tooltip
 //= require ahoy
