@@ -11,7 +11,7 @@ describe 'Practice editor', type: :feature, js: true do
         ]
     end
 
-    fdescribe 'Departments Page' do
+    describe 'Departments Page' do
         before do
             login_as(@admin, :scope => :user, :run_callbacks => false)
             visit practice_departments_path(@practice)
