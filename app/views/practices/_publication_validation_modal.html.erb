@@ -25,7 +25,7 @@
                   <li>You must include the initiation date for your practice</li>
                 <% end %>
                 <% if %>
-                <% initiating_facility_type == "facility" ? @practice.practice_origin_facilities.empty? : initiating_facility.blank? %>
+                  <% initiating_facility_type == "facility" ? @practice.practice_origin_facilities.empty? : initiating_facility.blank? %>
                   <li>You must include the initiating facility for your practice</li>
                 <% end %>
                 <% if summary.blank? %>
