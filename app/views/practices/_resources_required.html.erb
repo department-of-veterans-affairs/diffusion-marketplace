@@ -33,46 +33,7 @@
 
 <div class="grid-container-full margin-bottom-105">
   <div class="grid-row flex-align-center margin-bottom-4">
-    <h2 id="complexity" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205 nav-header">Complexity</h2>
-    <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest dm-section-line">
-  </div>
-  <div class="grid-row grid-gap flex-align-center complexity-section">
-    <!-- Complexity level Circle -->
-    <% complexity_aggregate = complexity_aggregate(@practice) || 0 %>
-    <div class="flex-align-center <%= level_aggregate_style(complexity_aggregate) %>">
-      <div id="complexity-aggregate" class="tablet:grid-col-12">
-        <% (0..3).each do |index| %>
-          <% if index < complexity_aggregate %>
-            <%= image_tag 'wrench_dark.svg', alt: "Wrench dark #{index + 1}", class: 'height-205' %>
-          <% else %>
-            <%= image_tag 'wrench_light.svg', alt: "Wrench light #{index + 1}", class: 'height-205' %>
-          <% end %>
-        <% end %>
-      </div>
-      <div class="grid-auto">
-        <span class="sr-only">
-          <%= pluralize(complexity_aggregate, 'wrench')%> 
-          out of four.
-        </span>
-      </div>
-    </div>
-
-    <div class="tablet:grid-col-6 text-center tablet:display-none">
-      <p class="font-sans-xs-2 line-height-sans-505"><%= complexity_aggregate_description(complexity_aggregate) %></p>
-    </div>
-
-    <%#<div class="tablet:grid-col-6 display-flex flex-column">
-      <% @practice.difficulties.each do |difficulty| %>
-      <%#  <% if difficulty.description.present? %>
-      <%#    <h3><%= difficulty.description %><%#</h3>
-        <% end %>
-      <%#<% end %>
-    <%#</div>%>
-
-    <div class="tablet:display-block display-none">
-      <div class="tablet:grid-col-fill">
-        <p class="font-sans-xs-2 line-height-sans-505"><%= complexity_aggregate_description(complexity_aggregate) %></p>
-      </div>
-    </div>
+    <h2 id="departments" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205 nav-header">Departments</h2>
+    <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest section-line">
   </div>
 </div>
