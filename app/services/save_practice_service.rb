@@ -240,7 +240,6 @@ class SavePracticeService
     end
   end
   def process_problem_resource_params
-    debugger
     PracticeProblemResource.resource_types.each do |rt|
       @practice_params['practice_problem_resources_attributes'].delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
     end
