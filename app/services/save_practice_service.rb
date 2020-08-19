@@ -22,25 +22,49 @@ class SavePracticeService
 
   def save_practice
     begin
-      process_problem_resource_params
-      process_solution_resource_params
-      process_results_resource_params
+      if @practice_params["practice_problem_resources_attributes"].present?
+        process_problem_resource_params
+      end
+      if @practice_params["practice_solution_resources_attributes"].present?
+        process_solution_resource_params
+      end
+      if @practice_params["practice_results_resources_attributes"].present?
+        process_results_resource_params
+      end
       updated = @practice.update(@practice_params)
 
-      rescue_method(:update_practice_partner_practices)
-      rescue_method(:update_department_practices)
-      rescue_method(:remove_attachments)
-      rescue_method(:manipulate_avatars)
-      rescue_method(:remove_main_display_image)
-      rescue_method(:crop_main_display_image)
-      rescue_method(:update_initiating_facility)
-      rescue_method(:update_practice_awards)
-      rescue_method(:update_category_practices)
-      updated
+
+      # rescue_method(:update_practice_partner_practices)
+      # rescue_method(:update_department_practices)
+      # rescue_method(:remove_attachments)
+      # rescue_method(:manipulate_avatars)
+      # rescue_method(:remove_main_display_image)
+      # rescue_method(:crop_main_display_image)
+      # rescue_method(:update_initiating_facility)
+      # rescue_method(:update_practice_awards)
+      # rescue_method(:update_category_practices)
+
     rescue => e
       Rails.logger.error "save_practice error: #{e.message}"
       e
     end
+
+    process_problem_resource_params
+    process_solution_resource_params
+    process_results_resource_params
+    updated = @practice.update(@practice_params)
+
+    update_practice_partner_practices
+    update_department_practices
+    remove_attachments
+    manipulate_avatars
+    remove_main_display_image
+    crop_main_display_image
+    update_initiating_facility
+    update_practice_awards
+    update_category_practices
+
+    updated
   end
 
   private
@@ -241,19 +265,19 @@ class SavePracticeService
   end
   def process_problem_resource_params
     PracticeProblemResource.resource_types.each do |rt|
-      @practice_params['practice_problem_resources_attributes'].delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
+      @practice_params['practice_problem_resources_attributes']&.delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
     end
   end
 
   def process_solution_resource_params
     PracticeSolutionResource.resource_types.each do |rt|
-      @practice_params['practice_solution_resources_attributes'].delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
+      @practice_params['practice_solution_resources_attributes']&.delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
     end
   end
 
   def process_results_resource_params
     PracticeResultsResource.resource_types.each do |rt|
-      @practice_params['practice_results_resources_attributes'].delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
+      @practice_params['practice_results_resources_attributes']&.delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
     end
   end
 
