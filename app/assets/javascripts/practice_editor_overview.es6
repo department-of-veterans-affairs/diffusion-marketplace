@@ -418,12 +418,34 @@ function attachAddResourceListener(formSelector, container, sArea, sType){
         });
         link_form.appendTo(`#${container}`);
         document.getElementById(container).style.display = 'block';
+        //clear form_inputs
+        const formToClear = $(`#${formSelector}`).clone(true);
+        $.each(formToClear.find('input'), function(i, ele){
+            debugger
+            var elementToClear = document.getElementById($(ele).attr('id'));
+            if (elementToClear != null){
+                if($(ele).attr('id') == 'input-single'){
+                    //elementToClear.val('');
+                    elementToClear.value = null;
+                }
+                elementToClear.value = "";
+            }
+        });
     });
 }
 
 function removePracticeProblemResource(id){
     var res = document.getElementById("problem_resource_link_"  + id);
     res.remove();
+}
+
+function clearFormOnAddResource(form){
+        debugger
+    var formToClear = document.getElementById(form);
+    debugger
+    $.each(formToClear.find('input'), function(i, ele){
+        $(ele).val('');
+    });
 }
 
 
