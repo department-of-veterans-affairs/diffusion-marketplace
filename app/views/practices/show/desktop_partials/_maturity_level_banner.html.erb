@@ -6,17 +6,17 @@
         This practice is emerging and worth watching as it is being assessed in early implementations.
         <a href="<%= request.base_url %>/search?query=emerging" class="dm-internal-link">See more practices.</a>
       </p>
-    <% elsif @practice.replicating? %>
+    <% elsif @practice.replicate? %>
       <p class="usa-alert__text text-bold">This is a replicate practice.</p>
       <p class="usa-alert__text">
         This practice is replicating across multiple facilities as its impact continues to be validated.
-        <a href="<%= request.base_url %>/search?query=replicating" class="dm-internal-link">See more practices.</a>
+        <a href="<%= request.base_url %>/search?query=replicate" class="dm-internal-link">See more practices.</a>
       </p>
-    <% elsif @practice.scaling? %>
+    <% elsif @practice.scale? %>
       <p class="usa-alert__text text-bold">This is a scale practice.</p>
       <p class="usa-alert__text">
         This practice is scaling widely with the support of national stakeholders.
-        <a href="<%= request.base_url %>/search?query=scaling" class="dm-internal-link">See more practices.</a>
+        <a href="<%= request.base_url %>/search?query=scale" class="dm-internal-link">See more practices.</a>
       </p>
     <% end %>
   </div>

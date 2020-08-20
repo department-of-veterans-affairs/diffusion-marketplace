@@ -214,13 +214,13 @@ describe 'Practice editor - introduction', type: :feature, js: true do
     context 'maturity' do
       it 'should allow the user to add or update the maturity level of a practice' do
         expect(find(:css, '#maturity_level_emerging').selected?).to eq(false)
-        expect(find(:css, '#maturity_level_replicating').selected?).to eq(false)
-        expect(find(:css, '#maturity_level_scaling').selected?).to eq(false)
+        expect(find(:css, '#maturity_level_replicate').selected?).to eq(false)
+        expect(find(:css, '#maturity_level_scale').selected?).to eq(false)
 
         # choose a maturity level
-        click_origin_type('maturity_level_replicating')
+        click_origin_type('maturity_level_replicate')
         click_save
-        expect(find(:css, '#maturity_level_replicating').selected?).to eq(true)
+        expect(find(:css, '#maturity_level_replicate').selected?).to eq(true)
 
         # choose another maturity level
         click_origin_type('maturity_level_emerging')

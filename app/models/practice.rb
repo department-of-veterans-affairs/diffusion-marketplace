@@ -9,7 +9,7 @@ class Practice < ApplicationRecord
   acts_as_list
   visitable :ahoy_visit
   enum initiating_facility_type: { facility: 0, visn: 1, department: 2, other: 3 }
-  enum maturity_level: { emerging: 0, replicating: 1, scaling: 2 }
+  enum maturity_level: { emerging: 0, replicate: 1, scale: 2 }
 
   attr_accessor :views
   attr_accessor :current_month_views
