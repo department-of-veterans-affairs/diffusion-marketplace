@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_18_154146) do
+ActiveRecord::Schema.define(version: 2020_08_17_180728) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -456,24 +456,6 @@ ActiveRecord::Schema.define(version: 2020_08_18_154146) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["job_position_category_id"], name: "index_job_positions_on_job_position_category_id"
-  end
-
-  create_table "maturity_level_practices", force: :cascade do |t|
-    t.bigint "maturity_level_id"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["maturity_level_id"], name: "index_maturity_level_practices_on_maturity_level_id"
-    t.index ["practice_id"], name: "index_maturity_level_practices_on_practice_id"
-  end
-
-  create_table "maturity_levels", force: :cascade do |t|
-    t.string "name"
-    t.string "short_name"
-    t.text "definition"
-    t.integer "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "milestones", force: :cascade do |t|
@@ -924,6 +906,7 @@ ActiveRecord::Schema.define(version: 2020_08_18_154146) do
     t.string "overview_problem"
     t.string "overview_solution"
     t.string "overview_results"
+    t.integer "maturity_level"
     t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
   end
@@ -1213,8 +1196,6 @@ ActiveRecord::Schema.define(version: 2020_08_18_154146) do
   add_foreign_key "job_position_practices", "job_positions"
   add_foreign_key "job_position_practices", "practices"
   add_foreign_key "job_positions", "job_position_categories"
-  add_foreign_key "maturity_level_practices", "maturity_levels"
-  add_foreign_key "maturity_level_practices", "practices"
   add_foreign_key "milestones", "timelines"
   add_foreign_key "mitigations", "risk_mitigations"
   add_foreign_key "page_accordion_components", "page_components"

@@ -406,31 +406,16 @@
                 <span>Select any of the following partners your practice is associated with.</span>
               </div>
               <div>
-              <%
-                no_partners = PracticePartner.where(name: 'None of the above, or Unsure')
-                partners = PracticePartner.where.not(id: no_partners.ids)
-                partners_list = partners + no_partners
-              %>
-              <% partners_list.each do |partner| %>
-                <% if partner.name == 'None of the above, or Unsure' %>
-                <div class="usa-checkbox practice-partner-checkbox position-relative">
-                  <input type="checkbox"
-                         class="usa-checkbox__input no-partner-input"
-                         id="practice_partner_<%= partner.id %>"
-                         name="practice[practice_partner][<%= partner.id %>][value]"
-                         <%= 'checked="true"' if p_partners.include?(partner) %>
-                    />
-                  <label class="usa-checkbox__label"
-                         id="practice_partner_<%= partner.id %>_label"
-                         for="practice_partner_<%= partner.id %>"
-                  >
-                    <%= partner.name %>
-                  </label>
-                </div>
-                <% else %>
+                <%
+                  no_partners = PracticePartner.where(name: 'None of the above, or Unsure')
+                  partners = PracticePartner.where.not(id: no_partners.ids)
+                  partners_list = partners + no_partners
+                %>
+                <% partners_list.each do |partner| %>
+                  <% if partner.name == 'None of the above, or Unsure' %>
                   <div class="usa-checkbox practice-partner-checkbox position-relative">
                     <input type="checkbox"
-                           class="usa-checkbox__input partner-input"
+                           class="usa-checkbox__input no-partner-input"
                            id="practice_partner_<%= partner.id %>"
                            name="practice[practice_partner][<%= partner.id %>][value]"
                            <%= 'checked="true"' if p_partners.include?(partner) %>
@@ -442,8 +427,24 @@
                       <%= partner.name %>
                     </label>
                   </div>
+                  <% else %>
+                    <div class="usa-checkbox practice-partner-checkbox position-relative">
+                      <input type="checkbox"
+                             class="usa-checkbox__input partner-input"
+                             id="practice_partner_<%= partner.id %>"
+                             name="practice[practice_partner][<%= partner.id %>][value]"
+                             <%= 'checked="true"' if p_partners.include?(partner) %>
+                        />
+                      <label class="usa-checkbox__label"
+                             id="practice_partner_<%= partner.id %>_label"
+                             for="practice_partner_<%= partner.id %>"
+                      >
+                        <%= partner.name %>
+                      </label>
+                    </div>
+                  <% end %>
                 <% end %>
-              <% end %>
+              </div>
             </div>
 
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
@@ -572,40 +573,40 @@
                 <span>Select the level of maturity that applies to your practice.</span>
               </div>
 
-              <%
-                maturity_levels = MaturityLevel.all.order(position: :asc)
-              %>
-
               <div class="maturity-level-radio-container">
-                <% maturity_levels.each do |ml| %>
-                  <% lowercase_ml_name = ml.name.downcase %>
                   <div class="usa-radio position-relative">
-                    <%= radio_button_tag 'practice[maturity_level]', "#{ml.name}",
-                                         MaturityLevelPractice.where(practice: @practice, maturity_level: ml).exists?,
-                                         class: 'usa-radio__input maturity-level-radio',
-                                         id: "maturity_level_#{lowercase_ml_name}"
-                    %>
+                    <%= radio_button_tag 'practice[maturity_level]', 'emerging', @practice.emerging? ? true : false, class: 'usa-radio__input maturity-level-radio', id: "maturity_level_emerging" %>
                     <label class="usa-radio__label maturity-level-label margin-bottom-1 line-height-sans-6"
-                           for="maturity_level_<%= lowercase_ml_name %>"
+                           for="maturity_level_emerging"
                     >
-                      <span class="text-bold margin-left-neg-05"><%= ml.name %>: </span>
-                      <% if ml.name == 'Emerging' %>
-                        Core feasibility and effectiveness is still being assessed in a live environment to understand practice
-                        value and real-world impact. The practice is adapting based on initial customer and participant feedback.
-                      <% elsif ml.name == 'Replicating' %>
-                        The practice is being adopted at additional facilities after successful pilot(s); it is evolving as it
-                        seeks to optimize impact and replicability.
-                      <% else %>
-                        A national stakeholder has decided the practice impact has been validated and its replicability established.
-                        The practice will be implemented at all applicable facilities.
-                      <% end %>
+                      <span class="text-bold margin-left-neg-05">Emerging: </span>
+                      Core feasibility and effectiveness is still being assessed in a live environment to understand practice
+                      value and real-world impact. The practice is adapting based on initial customer and participant feedback.
                     </label>
                   </div>
-                <% end %>
+                  <div class="usa-radio position-relative">
+                    <%= radio_button_tag 'practice[maturity_level]', 'replicating', @practice.replicating? ? true : false, class: 'usa-radio__input maturity-level-radio', id: "maturity_level_replicating" %>
+                    <label class="usa-radio__label maturity-level-label margin-bottom-1 line-height-sans-6"
+                           for="maturity_level_replicating"
+                    >
+                      <span class="text-bold margin-left-neg-05">Replicating: </span>
+                      The practice is being adopted at additional facilities after successful pilot(s); it is evolving as it
+                      seeks to optimize impact and replicability.
+                    </label>
+                  </div>
+                  <div class="usa-radio position-relative">
+                    <%= radio_button_tag 'practice[maturity_level]', 'scaling', @practice.scaling? ? true : false, class: 'usa-radio__input maturity-level-radio', id: "maturity_level_scaling" %>
+                    <label class="usa-radio__label maturity-level-label margin-bottom-0 line-height-sans-6"
+                           for="maturity_level_scaling"
+                    >
+                      <span class="text-bold margin-left-neg-05">Scaling: </span>
+                      A national stakeholder has decided the practice impact has been validated and its replicability established.
+                      The practice will be implemented at all applicable facilities.
+                    </label>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </fieldset>
+          </fieldset>
         <% end %>
 
         <div class="grid-row margin-bottom-8">

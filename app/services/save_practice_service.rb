@@ -16,8 +16,7 @@ class SavePracticeService
         crop_main_display_image: 'error cropping practice thumbnail',
         update_initiating_facility: 'error updating initiating facility',
         update_practice_awards: 'error updating practice awards',
-        update_category_practices: 'error updating practice categories',
-        update_maturity_level_practice: 'error updating practice maturity level'
+        update_category_practices: 'error updating practice categories'
     }
   end
 
@@ -34,7 +33,6 @@ class SavePracticeService
       rescue_method(:update_initiating_facility)
       rescue_method(:update_practice_awards)
       rescue_method(:update_category_practices)
-      rescue_method(:update_maturity_level_practice)
       updated
     rescue => e
       Rails.logger.error "save_practice error: #{e.message}"
@@ -235,20 +233,6 @@ class SavePracticeService
       end
     elsif practice_award_params.blank? && @current_endpoint == 'introduction' && practice_awards.any?
       practice_awards.destroy_all
-    end
-  end
-
-  def update_maturity_level_practice
-    maturity_level_param = @practice_params[:maturity_level]
-    practice_maturity_level = @practice.maturity_level
-
-    debugger
-
-    if maturity_level_param.present? && practice_maturity_level.nil?
-      debugger
-      MaturityLevelPractice.create(practice: @practice, maturity_level_id: MaturityLevel.find_by(name: maturity_level_param))
-    elsif maturity_level_param.present? && practice_maturity_level.present?
-      MaturityLevelPractice.update_attributes(maturity_level_id: MaturityLevel.find_by(name: maturity_level_param))
     end
   end
 end

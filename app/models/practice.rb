@@ -9,6 +9,7 @@ class Practice < ApplicationRecord
   acts_as_list
   visitable :ahoy_visit
   enum initiating_facility_type: { facility: 0, visn: 1, department: 2, other: 3 }
+  enum maturity_level: { emerging: 0, replicating: 1, scaling: 2 }
 
   attr_accessor :views
   attr_accessor :current_month_views
@@ -39,7 +40,8 @@ class Practice < ApplicationRecord
         self.main_display_image_updated_at_changed? ||
         self.published_changed? ||
         self.enabled_changed? ||
-        self.date_initiated_changed?
+        self.date_initiated_changed? ||
+        self.maturity_level_changed?
       self.reset_searchable_cache = true
     end
   end
@@ -229,8 +231,6 @@ class Practice < ApplicationRecord
   has_many :practice_problem_resources, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_solution_resources, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_results_resources, -> {order(id: :asc) }, dependent: :destroy
-  has_one :maturity_level_practice, dependent: :destroy
-  has_one :maturity_level, through: :maturity_level_practice
 
   # This allows the practice model to be commented on with the use of the Commontator gem
   acts_as_commontable dependent: :destroy
@@ -241,7 +241,6 @@ class Practice < ApplicationRecord
   accepts_nested_attributes_for :practice_awards, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
   accepts_nested_attributes_for :categories, allow_destroy: true, reject_if: proc { true }
   accepts_nested_attributes_for :practice_partner_practices, allow_destroy: true
-  accepts_nested_attributes_for :maturity_level_practice, allow_destroy: true
   accepts_nested_attributes_for :impact_photos, allow_destroy: true, reject_if: proc { |attributes|
     reject = attributes['description'].blank?
     ip_reject = false

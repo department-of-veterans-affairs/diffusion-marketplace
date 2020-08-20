@@ -883,3 +883,13 @@ li.small-disc:before {
 .pe-category-checkbox:last-child {
   margin-bottom: 40px;
 }
+
+.maturity-level-banner {
+  padding: 0.5rem 1.25rem 0.5rem 1.75rem !important;
+  margin-top: 0 !important;
+  background-color: transparent !important;
+
+  &:before {
+    background-color: $dm-color-blue-30v !important;
+  }
+}
