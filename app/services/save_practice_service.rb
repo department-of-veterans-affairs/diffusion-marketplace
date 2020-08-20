@@ -31,8 +31,6 @@ class SavePracticeService
       if @practice_params["practice_results_resources_attributes"].present?
         process_results_resource_params
       end
-      updated = @practice.update(@practice_params)
-
 
       # rescue_method(:update_practice_partner_practices)
       # rescue_method(:update_department_practices)
@@ -48,10 +46,6 @@ class SavePracticeService
       Rails.logger.error "save_practice error: #{e.message}"
       e
     end
-
-    process_problem_resource_params
-    process_solution_resource_params
-    process_results_resource_params
     updated = @practice.update(@practice_params)
 
     update_practice_partner_practices
