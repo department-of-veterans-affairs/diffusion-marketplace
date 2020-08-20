@@ -2,7 +2,7 @@ var practices = <%= @practices_json %>;
 var results = null;
 
 function searchPracticesPage() {
-    const searchField = document.querySelector('#dm-search-search-field');
+    const searchField = document.querySelector('#dm-practice-search-field');
 
     // Skip if not the search page
     if (location.pathname !== '/search') return;
@@ -28,38 +28,37 @@ function searchPracticesPage() {
         console.log(results.length)
 
         // Print the number of results for the query
-        let resultContent = results.length + ' result' + (results.length === 1 ? '' : 's') + ' for <span class="text-bold">' + query + '</span>:';
-        resultsSummary.innerHTML += resultContent
+        resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? '' : 's') + ' for <span class="text-bold">' + query + '</span>:';
 
         // Highlight results (only Fuse.js matching)
-        results.forEach(function(result) {
+        results.forEach(function (result) {
             highlighter(result);
         });
 
         // Template out the search results
-        results.forEach(function(result) {
+        results.forEach(function (result) {
             var noBackgroundImage = result.item.image ? '' : 'class: fas fa-images fa-3x text-base-lighter search-no-image';
             var background = result.item.image ? 'background: url(' + result.item.image + ')' + ' transparent; background-repeat: no-repeat; background-position: center; background-size: cover;' : 'background-color: #f0f0f0; transparent; background-size: contain; background-repeat: no-repeat; background-position: center; ';
             var favoriteButtonIcon = result.item.user_favorited ? 'fas text-secondary' : 'far';
             var favoriteButton =
-                '<a aria-label="Favorite ' + result.item.name + '" tabindex="-1" aria-hidden="true" class="search-favorite-practice-button" id="favorite-button-' + result.item.id +'" data-remote="true" rel="nofollow" data-method="post" href="/practices/' + result.item.slug + '/favorite.js">' +
-                    '<i class="' + favoriteButtonIcon + ' fa-heart favorite-icon-' + result.item.id + ' text-no-underline"></i>' +
+                '<a aria-label="Favorite ' + result.item.name + '" tabindex="-1" aria-hidden="true" class="search-favorite-practice-button" id="favorite-button-' + result.item.id + '" data-remote="true" rel="nofollow" data-method="post" href="/practices/' + result.item.slug + '/favorite.js">' +
+                '<i class="' + favoriteButtonIcon + ' fa-heart favorite-icon-' + result.item.id + ' text-no-underline"></i>' +
                 '</a>';
-            resultsHTML += 
-            '<div class="grid-row search-row radius-sm border-2px border-base-lightest margin-bottom-105 flex-align-center">' +
-            '<div class="tablet:grid-col-3">' +
+            resultsHTML +=
+                '<div class="grid-row search-row radius-sm border-2px border-base-lightest margin-bottom-105 flex-align-center">' +
+                '<div class="tablet:grid-col-3">' +
                 '<div class="img-box">' +
                 <% if current_user.present? %>
-                    favoriteButton +
+                favoriteButton +
                 <% end %>
                 '<a href="/practices/' + result.item.slug + '" aria-label="Go to ' + result.item.name + '">' +
                 '<div class="img img-box-content border-right border-right-width-2px border-base-lightest position-relative" style="' + background + '">' +
-                    '<i class="' + noBackgroundImage + '"></i>' +
-                    '</div>' +
-                    '</a>' +
-                '</div>' +            
-            '</div>' +
-            '<div class="tablet:grid-col-9 padding-y-105 padding-right-105 padding-left-4">' +
+                '<i class="' + noBackgroundImage + '"></i>' +
+                '</div>' +
+                '</a>' +
+                '</div>' +
+                '</div>' +
+                '<div class="tablet:grid-col-9 padding-y-105 padding-right-105 padding-left-4">' +
                 '<h2 class="margin-0 truncate-text-search one-line"><a class="dm-link-title" href="/practices/' + result.item.slug + '">' + result.item.name + '</a></h2>' +
                 '<h4 class="truncate-text-search two-lines text-normal margin-y-1">' + result.item.tagline + '</h4>' +
                 '<p class="practice-details margin-y-1 font-sans-3xs">Created in ' + result.item.date_initiated + ' ' + result.item.initiating_facility + '</p>' +
@@ -67,13 +66,13 @@ function searchPracticesPage() {
 
                 '<!-- Uncomment to show Fuse.js diagnostics -->' +
                 '<!--' +
-                    '<h3>Fuse.js highlighted character matching</h3>' +
-                    '<p class="">' + result.highlight + '</p>' +
-                    '<p><b>Score: ' + result.score + '</b></p>' +
+                '<h3>Fuse.js highlighted character matching</h3>' +
+                '<p class="">' + result.highlight + '</p>' +
+                '<p><b>Score: ' + result.score + '</b></p>' +
                 '-->' +
 
-            '</div>' +
-            '</div>';
+                '</div>' +
+                '</div>';
         });
 
         // Print results to the page
@@ -144,6 +143,21 @@ function searchPracticesPage() {
     // Create a search context with practices and search options
     var fuse = new Fuse(practices, search_options);
 
+    // Set up "enter" event handler for search field
+    var timeout = null;
+
+    $(document).on('submit', '#dm-practice-search-form', function (e) {
+        e.preventDefault();
+
+        // Make a new timeout set to go off in 500ms
+        timeout = setTimeout(function () {
+            search(searchField.value);
+            window.history.pushState("", "", '/search?query=' + searchField.value);
+            trackSearchField(decodeURI(searchField.value));
+        }, 500);
+
+    });
+
     if (window.location.pathname === '/search' && window.location.search !== '') {
         const query = window.location.search.split('=')[1];
         search(decodeURI(query));
@@ -160,7 +174,7 @@ function addResultsBreadcrumb() {
 }
 
 function trackSearchField(searchTerm) {
-    if (searchTerm != '') {
+    if (searchTerm !== '') {
         ahoy.track('Practice search', {search_term: searchTerm});
         if (typeof ga === 'function') {
             ga('send', {
@@ -173,6 +187,6 @@ function trackSearchField(searchTerm) {
     }
 }
 
-document.addEventListener('turbolinks:load', function() {
+document.addEventListener('turbolinks:load', function () {
     searchPracticesPage();
 });
