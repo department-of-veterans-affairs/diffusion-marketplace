@@ -176,7 +176,7 @@ function displayResourceForm(sArea, sType){
             document.getElementById(sArea + '_link_form').style.display = 'none';
             break;
         case 'file':
-            debugger
+            
             document.getElementById(sArea + '_file_form').style.display = 'block';
             document.getElementById(sArea + '_resource_file_form').style.display = 'block';
             document.getElementById(sArea + '_video_form').style.display = 'none';
@@ -394,7 +394,6 @@ function addFileFields(sArea){
 
 function attachAddResourceListener(formSelector, container, sArea, sType){
     $(document).on('click', `#${formSelector} .add-resource`, function(e){
-        debugger;
         e.preventDefault();
         const nGuid = createGUID();
         const formToClear = $(`#${formSelector}`);
@@ -408,7 +407,6 @@ function attachAddResourceListener(formSelector, container, sArea, sType){
             <button class="usa-button usa-button--unstyled text-red-50 remove_nested_fields">Delete entry</button> </div>`;
 
         link_form.append(deleteEntryHtml);
-        debugger
 
         $.each(link_form.find('input'), function(i, ele){
             $(ele).attr('name', ele.name.replace(/RANDOM_NUMBER_OR_SOMETHING/g, nGuid));
@@ -422,22 +420,13 @@ function attachAddResourceListener(formSelector, container, sArea, sType){
 
         //clear form_inputs
         $.each(formToClear.find('input:not([type="hidden"])'), function(i, ele){
-            debugger
+            
             $(ele).val(null);
             if (ele.type === 'file') {
                 $(ele)
                     .closest('.usa-file-input')
                     .replaceWith(`
-                        <div class="usa-file-input">
-                            <div class="usa-file-input__target">
-                                <div class="usa-file-input__instructions" aria-hidden="true">
-                                    <span class="usa-file-input__drag-text">Drag file here or </span>
-                                    <span class="usa-file-input__choose">choose from folder</span>
-                                </div>
-                                <div class="usa-file-input__box"></div>
-                                <input id="input-single" class="usa-hint usa-file-input__input" type="file" name="practice[practice_${sArea}_resources_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" aria-describedby="input-single-hint" />
-                            </div>
-                        </div>
+                        <input id="practice_${sArea}-input-single_RANDOM_NUMBER_OR_SOMETHING" class="usa-hint usa-file-input" type="file" name="practice[practice_${sArea}_resources_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" aria-describedby="input-single-hint" />     
                     `);
             }
         });
@@ -450,9 +439,9 @@ function removePracticeProblemResource(id){
 }
 
 function clearFormOnAddResource(form){
-        debugger
+        
     var formToClear = document.getElementById(form);
-    debugger
+    
     $.each(formToClear.find('input'), function(i, ele){
         $(ele).val('');
     });

@@ -10,7 +10,7 @@
   <% else %>
     <div class="grid-col-12 margin-bottom-3 margin-x-auto float-left">
       <label class="usa-label" for="input-single">Upload a .pdf, .docx, .xlxs, .jpg, .jpeg, or .png file that is less than 32MB</label>
-      <input id="input-single" class="usa-file-input usa-hint" type="file" name="practice[practice_problem_resources_attributes][<%= placeholder %>][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" aria-describedby="input-single-hint" />
+      <input id="practice_problem-input-single_<%= placeholder %>" class="usa-file-input usa-hint" type="file" name="practice[practice_problem_resources_attributes][<%= placeholder %>][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" aria-describedby="input-single-hint" />
     </div>
   <% end %>
   <%= label_tag 'practice_problem_resources_name', 'File name', class: 'usa-label', for: "practice_problem_resources_attributes_#{placeholder}_name" %>
