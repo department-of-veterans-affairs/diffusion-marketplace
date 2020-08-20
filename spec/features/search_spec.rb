@@ -40,6 +40,7 @@ describe 'Search', type: :feature do
     fill_in('practice_summary', with: 'This is the most super practice ever made')
     select('October', :from => 'editor_date_intiated_month')
     select('1970', :from => 'editor_date_intiated_year')
+    find("#maturity_level_replicating").sibling('label').click
     find('#practice-editor-save-button').click
   end
 
@@ -128,6 +129,19 @@ describe 'Search', type: :feature do
       expect(page).to have_content(@practice.name)
       expect(page).to have_content(@practice.initiating_facility)
       expect(page).to have_content('1 result for Coronavirus')
+    end
+
+    it 'should be able to search based on practice maturity level' do
+      @practice.update(published: true, approved: true, maturity_level: 'replicating')
+
+      visit '/search'
+
+      fill_in('dm-search-search-field', with: 'replicating')
+      find('#dm-search-search-button').click
+
+      expect(page).to have_content(@practice.name)
+      expect(page).to have_content(@practice.maturity_level)
+      expect(page).to have_content('1 result for replicating')
     end
   end
 
