@@ -392,9 +392,45 @@ function addFileFields(sArea){
     form_container.appendChild(document.createElement("br"));
 }
 
+function validateFormFields(formSelector, sArea, sType){
+    debugger
+    clearErrorDivs(sArea);
+    if(sType == "file"){
+        var sAttachment = document.getElementsByClassName(sArea + '-file-attachment');
+        if(sAttachment[0].value == ""){
+            var errDiv = document.getElementById(sArea + '_file_err_message_attachment');
+            errDiv.style.display = "block";
+            return false;
+        }
+        var sName = document.getElementById('practice_' + sArea + '_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_file_name');
+        if(sName.value == ""){
+            var errDiv = document.getElementById(sArea + '_file_err_message_name');
+            errDiv.style.display = "block";
+            return false;
+        }
+        var sDesc = document.getElementById('practice_' + sArea + '_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_file_description');
+        if(sDesc.value == ""){
+            var errDiv = document.getElementById(sArea + '_file_err_message_description');
+            errDiv.style.display = "block";
+            return false;
+        }
+    }
+    return true;
+}
+
+function clearErrorDivs(sArea){
+    //FILE
+    document.getElementById(sArea + '_file_err_message_name').style.display = "none";
+    document.getElementById(sArea + '_file_err_message_description').style.display = "none";
+    document.getElementById(sArea + '_file_err_message_attachment').style.display = "none";
+}
+
 function attachAddResourceListener(formSelector, container, sArea, sType){
     $(document).on('click', `#${formSelector} .add-resource`, function(e){
         e.preventDefault();
+        if(validateFormFields(formSelector, sArea, sType) == false){
+            return false;
+        }
         const nGuid = createGUID();
         const formToClear = $(`#${formSelector}`);
         const link_form = formToClear.clone(true);

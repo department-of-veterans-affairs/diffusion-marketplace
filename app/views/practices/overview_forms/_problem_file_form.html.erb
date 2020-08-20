@@ -10,13 +10,16 @@
   <% else %>
     <div class="grid-col-12 margin-bottom-3 margin-x-auto float-left">
       <label class="usa-label" for="input-single">Upload a .pdf, .docx, .xlxs, .jpg, .jpeg, or .png file that is less than 32MB</label>
-      <input id="practice_problem-input-single_<%= placeholder %>" class="usa-file-input usa-hint" type="file" name="practice[practice_problem_resources_attributes][<%= placeholder %>][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" aria-describedby="input-single-hint" />
+      <input id="practice_problem-input-single_<%= placeholder %>" class="usa-file-input usa-hint problem-file-attachment" type="file" name="practice[practice_problem_resources_attributes][<%= placeholder %>][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" aria-describedby="input-single-hint" />
+      <input type="text" readonly class="margin-top-1 margin-bottom-3" style="display: none; color:red; border-color: darkred" id="problem_file_err_message_attachment" value="Please upload a file."/>
     </div>
   <% end %>
   <%= label_tag 'practice_problem_resources_name', 'File name', class: 'usa-label', for: "practice_problem_resources_attributes_#{placeholder}_name" %>
     <input class="usa-input" value="<%= resource&.name %>" type="text" name="practice[practice_problem_resources_attributes][<%= placeholder %>][name]" id="practice_problem_resources_attributes_<%= placeholder %>_name" style="width: 393px"/>
+  <input type="text" readonly class="margin-top-1 margin-bottom-3" style="display: none; color:red; border-color: darkred" id="problem_file_err_message_name" value="Please enter a file name."/>
     <%= label_tag 'practice_problem_resources_description', 'File description', class: 'usa-label', for: "practice_problem_resources_attributes_#{placeholder}_description" %>
     <input class="usa-input" value="<%= resource&.description %>"  type="text" name="practice[practice_problem_resources_attributes][<%= placeholder %>][description]" id="practice_problem_resources_attributes_<%= placeholder %>_description" style="width: 643px"/>
+  <input type="text" readonly class="margin-top-1 margin-bottom-3" style="display: none; color:red; border-color: darkred" id="problem_file_err_message_description" value="Please enter a file description."/>
   <% if resource %>
     <div class="grid-col-12 trash-container">
       <input type="hidden" value="false" name="practice[practice_problem_resources_attributes][<%= placeholder %>][_destroy]"/>
