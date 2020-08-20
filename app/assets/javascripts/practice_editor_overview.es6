@@ -397,7 +397,8 @@ function attachAddResourceListener(formSelector, container, sArea, sType){
         debugger;
         e.preventDefault();
         const nGuid = createGUID();
-        const link_form = $(`#${formSelector}`).clone(true);
+        const formToClear = $(`#${formSelector}`);
+        const link_form = formToClear.clone(true);
         link_form.attr('id', `${formSelector}_${nGuid}`);
         link_form.attr('class', `resource_container`);
         link_form.find('#cancelAddButtonRow').remove();
@@ -418,11 +419,27 @@ function attachAddResourceListener(formSelector, container, sArea, sType){
         });
         link_form.appendTo(`#${container}`);
         document.getElementById(container).style.display = 'block';
+
         //clear form_inputs
-        const formToClear = $(`#${formSelector}`);
         $.each(formToClear.find('input:not([type="hidden"])'), function(i, ele){
             debugger
             $(ele).val(null);
+            if (ele.type === 'file') {
+                $(ele)
+                    .closest('.usa-file-input')
+                    .replaceWith(`
+                        <div class="usa-file-input">
+                            <div class="usa-file-input__target">
+                                <div class="usa-file-input__instructions" aria-hidden="true">
+                                    <span class="usa-file-input__drag-text">Drag file here or </span>
+                                    <span class="usa-file-input__choose">choose from folder</span>
+                                </div>
+                                <div class="usa-file-input__box"></div>
+                                <input id="input-single" class="usa-hint usa-file-input__input" type="file" name="practice[practice_${sArea}_resources_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" aria-describedby="input-single-hint" />
+                            </div>
+                        </div>
+                    `);
+            }
         });
     });
 }
