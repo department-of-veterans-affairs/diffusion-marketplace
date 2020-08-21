@@ -7,7 +7,7 @@
 a {
   // pages internal to DM
   &.dm-internal-link {
-    color: $dm-color-base;
+    color: $dm-color-base !important;
     text-decoration: underline;
 
     &:visited, &:hover, &:active {
@@ -19,15 +19,15 @@ a {
     }
 
     &:visited {
-      color: $dm-color-base;
+      color: $dm-color-base !important;
     }
 
     &:hover {
-      color: $dm-color-blue-50v;
+      color: $dm-color-blue-50v !important;
     }
 
     &:active {
-      color: $dm-color-blue-70v;
+      color: $dm-color-blue-70v !important;
     }
   }
 
