@@ -16,7 +16,7 @@
     <div class="dm-cropper-boundary grid-col-12 margin-top-2" data-type="image" data-area="<%= area %>">
       <%# resource crop data %>
       <% [:crop_x, :crop_y, :crop_w, :crop_h].each { |attribute| %>
-        <input <%= resource&.id ? 'required' : '' %> id="<%= attribute.to_s %>" type="hidden" value="" name="practice[practice_<%= area %>_resources_attributes][<%= placeholder %>][<%= attribute %>]"/>
+        <input id="<%= attribute.to_s %>" class="<%= attribute.to_s %>" type="hidden" value="" name="practice[practice_<%= area %>_resources_attributes][<%= placeholder %>][<%= attribute %>]"/>
       <% } %>
       <% if !resource&.id %>
         <div class="margin-y-1">

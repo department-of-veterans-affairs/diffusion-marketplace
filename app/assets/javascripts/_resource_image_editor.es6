@@ -71,16 +71,22 @@
 
     if (isCrop && $image.data('cropper')) {
       let cropValues = $image.data('cropper').getData(true);
+      $(target).closest('.dm-cropper-boundary').find(".crop_x").val(cropValues.x);
+      $(target).closest('.dm-cropper-boundary').find(".crop_y").val(cropValues.y);
+      $(target).closest('.dm-cropper-boundary').find(".crop_w").val(cropValues.width);
+      $(target).closest('.dm-cropper-boundary').find(".crop_h").val(cropValues.height);
 
-      $(target).closest('.dm-cropper-boundary').find("#crop_x").val(cropValues.x);
-      $(target).closest('.dm-cropper-boundary').find("#crop_y").val(cropValues.y);
-      $(target).closest('.dm-cropper-boundary').find("#crop_w").val(cropValues.width);
-      $(target).closest('.dm-cropper-boundary').find("#crop_h").val(cropValues.height);
+      _createModifiedImage({ target })
+      _toggleCropper({ visible: false, target: target });
+      _toggleCropperBtnView({ visible: false, target: target });
+      _toggleEditBtn({ visible: true, target: target });
+      _toggleDeleteBtn({ visible: true, target: target });
+      _toggleImageView({ isCrop: false, target: target });
     } else {
-      $(target).closest('.dm-cropper-boundary').find("#crop_x").val(null);
-      $(target).closest('.dm-cropper-boundary').find("#crop_y").val(null);
-      $(target).closest('.dm-cropper-boundary').find("#crop_w").val(null);
-      $(target).closest('.dm-cropper-boundary').find("#crop_h").val(null);
+      $(target).closest('.dm-cropper-boundary').find(".crop_x").val(null);
+      $(target).closest('.dm-cropper-boundary').find(".crop_y").val(null);
+      $(target).closest('.dm-cropper-boundary').find(".crop_w").val(null);
+      $(target).closest('.dm-cropper-boundary').find(".crop_h").val(null);
     }
   }
 
@@ -214,12 +220,6 @@
   function _attachSaveEditEventListener() {
     $saveEditBtn.click((event) => {
       _setCropBoxValues({ isCrop: true, target: event.target });
-      _createModifiedImage({ target: event.target });
-      _toggleCropper({ visible: false, target: event.target });
-      _toggleCropperBtnView({ visible: false, target: event.target });
-      _toggleEditBtn({ visible: true, target: event.target });
-      _toggleDeleteBtn({ visible: true, target: event.target });
-      _toggleImageView({ isCrop: false, target: event.target });
     });
   }
 
@@ -235,7 +235,6 @@
   }
 
   function attachImgActionsEventListeners() {
-    _attachEditEventListener();
     _attachUploadEventListener();
     _attachEditEventListener();
     _attachDeleteEventListener();
@@ -255,7 +254,8 @@
   function attachNewFieldEventListeners() {
     $document.arrive('.dm-cropper-boundary', (newElem) => {
       setImageVars();
-      attachImgActionsEventListeners();
+      _attachSaveEditEventListener();
+      _attachCancelEditEventListener();
     })
   }
 

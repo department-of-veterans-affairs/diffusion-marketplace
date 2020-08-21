@@ -539,9 +539,16 @@ function attachAddResourceListener(formSelector, container, sArea, sType){
 
         if (sType == 'image') {
             formToClear.find('.dm-cropper-images-container').empty()
+            formToClear.find('.dm-cropper-edit-mode').addClass('display-none')
+            formToClear.find('.dm-cropper-delete-image').addClass('display-none')
+            formToClear.find('.dm-cropper-cancel-edit').addClass('display-none')
+            formToClear.find('.dm-cropper-save-edit').addClass('display-none')
             $(`#${container}`).find('.dm-file-upload-label').remove()
             $(`#${container}`).find('.dm-cropper-delete-image').remove()
             $(`#${container}`).find('.usa-file-input').addClass('display-none')
+            // remove event listeners
+            $(`#${container}`).find('.dm-cropper-cancel-edit').off()
+            $(`#${container}`).find('.dm-cropper-save-edit').off()
         }
     });
 }
