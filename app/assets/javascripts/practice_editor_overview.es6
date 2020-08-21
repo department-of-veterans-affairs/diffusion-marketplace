@@ -429,8 +429,42 @@ function validateFormFields(formSelector, sArea, sType){
         }
 
         var sName = document.getElementById('practice_' + sArea + '_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_video_name');
-        if(sName.value == ""){
+        if(sName.value === ""){
             var errDiv = document.getElementById(sArea + '_video_err_message_name');
+            errDiv.style.display = "block";
+            return false;
+        }
+    }
+    else if(sType == 'link'){
+        var sLink = document.getElementById('practice_' + sArea + '_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_link_link_url');
+        if(sLink.value == ""){
+            var errDiv = document.getElementById(sArea + '_link_err_message_link_url');
+            errDiv.style.display = "block";
+            return false;
+        }
+        var sName = document.getElementById('practice_' + sArea + '_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_link_name');
+        if(sName.value == ""){
+            var errDiv = document.getElementById(sArea + '_link_err_message_name');
+            errDiv.style.display = "block";
+            return false;
+        }
+        var sDesc = document.getElementById('practice_' + sArea + '_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_link_description');
+        if(sDesc.value == ""){
+            var errDiv = document.getElementById(sArea + '_link_err_message_description');
+            errDiv.style.display = "block";
+            return false;
+        }
+    }
+    else if(sType == 'image'){
+        var sAttachment = document.getElementsByClassName(sArea + '-image-attachment');
+        if(sAttachment[0].value == ""){
+            var errDiv = document.getElementById(sArea + '_image_err_message_attachment');
+            errDiv.style.display = "block";
+            return false;
+        }
+        var sName = document.getElementById('practice_' + sArea + '_resources_attributes_RANDOM_NUMBER_OR_SOMETHING_image_name');
+        if(sName.value == ""){
+            var errDiv = document.getElementById(sArea + '_image_err_message_name');
             errDiv.style.display = "block";
             return false;
         }
@@ -446,6 +480,14 @@ function clearErrorDivs(sArea){
 
     document.getElementById(sArea + '_video_err_message_name').style.display = "none";
     document.getElementById(sArea + '_video_err_message_link_url').style.display = "none";
+
+    document.getElementById(sArea + '_link_err_message_link_url').style.display = "none";
+    document.getElementById(sArea + '_link_err_message_name').style.display = "none";
+    document.getElementById(sArea + '_link_err_message_description').style.display = "none";
+
+    document.getElementById(sArea + '_image_err_message_attachment').style.display = "none";
+    document.getElementById(sArea + '_image_err_message_name').style.display = "none";
+
 }
 
 function attachAddResourceListener(formSelector, container, sArea, sType){

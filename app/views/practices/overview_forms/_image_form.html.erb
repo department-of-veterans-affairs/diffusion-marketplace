@@ -29,7 +29,9 @@
             </p>
           </div>
           <%# resource attachment %>
-          <input id="input-single" class="dm-cropper-upload-image usa-file-input usa-hint" type="file" name="practice[practice_<%= area %>_resources_attributes][<%= placeholder %>][attachment]" accept=".jpg,.jpeg,.png" aria-describedby="input-single-hint" />
+          <input id="input-single" class="dm-cropper-upload-image usa-file-input usa-hint <%= area %>-image-attachment" type="file" name="practice[practice_<%= area %>_resources_attributes][<%= placeholder %>][attachment]" accept=".jpg,.jpeg,.png" aria-describedby="input-single-hint" />
+          <input type="text" readonly class="margin-top-1 margin-bottom-3" style="display: none; color:red; border-color: darkred" id="<%= area %>_image_err_message_attachment" value="Please upload an image."/>
+
         </div>
       <% end %>
 
@@ -64,6 +66,7 @@
       <%# caption input %>
       <%= label_tag "practice_#{area}_resources_name", 'Caption', class: 'usa-label', for: "practice_#{area}_resources_attributes_#{placeholder}_name" %>
       <input class="usa-input" value="<%= resource&.name %>" type="text" name="practice[practice_<%= area %>_resources_attributes][<%= placeholder %>][name]" id="practice_<%= area %>_resources_attributes_<%= placeholder %>_name"/>
+      <input type="text" readonly class="margin-top-1 margin-bottom-3" style="display: none; color:red; border-color: darkred" id="<%= area %>_image_err_message_name" value="Please enter a caption."/>
     </div>
   </section>
   <% if resource&.id %>
