@@ -1,23 +1,12 @@
 <div class="usa-alert usa-alert--info usa-alert--no-icon margin-bottom-1 maturity-level-banner">
   <div class="usa-alert__body line-height-sans-6">
-    <% if @practice.emerging? %>
-      <p class="usa-alert__text text-bold">This is an emerging practice.</p>
+    <%
+      maturity = @practice.maturity_level
+    %>
+      <p class="usa-alert__text text-bold">This is <%= maturity == 'emerging' ? 'an' : 'a' %> <%= maturity %> practice.</p>
       <p class="usa-alert__text">
-        This practice is emerging and worth watching as it is being assessed in early implementations.
-        <a href="<%= request.base_url %>/search?query=emerging" class="dm-internal-link">See more practices.</a>
+        <%= Practice::MATURITY_LEVEL_MAP[maturity.to_sym][:description] %>
+        <a href="/search?query=<%= maturity %>" class="dm-internal-link">See more <%= maturity %> practices.</a>
       </p>
-    <% elsif @practice.replicate? %>
-      <p class="usa-alert__text text-bold">This is a replicate practice.</p>
-      <p class="usa-alert__text">
-        This practice is replicating across multiple facilities as its impact continues to be validated.
-        <a href="<%= request.base_url %>/search?query=replicate" class="dm-internal-link">See more practices.</a>
-      </p>
-    <% elsif @practice.scale? %>
-      <p class="usa-alert__text text-bold">This is a scale practice.</p>
-      <p class="usa-alert__text">
-        This practice is scaling widely with the support of national stakeholders.
-        <a href="<%= request.base_url %>/search?query=scale" class="dm-internal-link">See more practices.</a>
-      </p>
-    <% end %>
   </div>
 </div>

@@ -574,38 +574,19 @@
               </div>
 
               <div class="maturity-level-radio-container">
+                <% Practice::MATURITY_LEVEL_MAP.each do |key, value| %>
                   <div class="usa-radio position-relative">
-                    <%= radio_button_tag 'practice[maturity_level]', 'emerging', @practice.emerging? ? true : false, class: 'usa-radio__input maturity-level-radio', id: "maturity_level_emerging" %>
-                    <label class="usa-radio__label maturity-level-label margin-bottom-1 line-height-sans-6"
-                           for="maturity_level_emerging"
+                    <%= radio_button_tag 'practice[maturity_level]', "#{key}", @practice.maturity_level == key.to_s, class: 'usa-radio__input maturity-level-radio', id: "maturity_level_#{key}" %>
+                    <label class="usa-radio__label maturity-level-label <%= key.to_s == 'scale' ? 'margin-bottom-0' : 'margin-bottom-1' %> line-height-sans-6"
+                           for="maturity_level_<%= key %>"
                     >
-                      <span class="text-bold margin-left-neg-05">Emerging: </span>
-                      Core feasibility and effectiveness is still being assessed in a live environment to understand practice
-                      value and real-world impact. The practice is adapting based on initial customer and participant feedback.
+                      <span class="text-bold margin-left-neg-05"><%= key.capitalize %>: </span>
+                      <%= value[:form_label] %>
                     </label>
                   </div>
-                  <div class="usa-radio position-relative">
-                    <%= radio_button_tag 'practice[maturity_level]', 'replicate', @practice.replicate? ? true : false, class: 'usa-radio__input maturity-level-radio', id: "maturity_level_replicate" %>
-                    <label class="usa-radio__label maturity-level-label margin-bottom-1 line-height-sans-6"
-                           for="maturity_level_replicate"
-                    >
-                      <span class="text-bold margin-left-neg-05">Replicate: </span>
-                      The practice is being adopted at additional facilities after successful pilot(s); it is evolving as it
-                      seeks to optimize impact and replicability.
-                    </label>
-                  </div>
-                  <div class="usa-radio position-relative">
-                    <%= radio_button_tag 'practice[maturity_level]', 'scale', @practice.scale? ? true : false, class: 'usa-radio__input maturity-level-radio', id: "maturity_level_scale" %>
-                    <label class="usa-radio__label maturity-level-label margin-bottom-0 line-height-sans-6"
-                           for="maturity_level_scale"
-                    >
-                      <span class="text-bold margin-left-neg-05">Scale: </span>
-                      A national stakeholder has decided the practice impact has been validated and its replicability established.
-                      The practice will be implemented at all applicable facilities.
-                    </label>
-                  </div>
-                </div>
+                <% end %>
               </div>
+            </div>
           </fieldset>
         <% end %>
 
