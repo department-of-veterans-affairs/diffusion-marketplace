@@ -136,8 +136,8 @@ describe 'Search', type: :feature do
 
       visit '/search'
 
-      fill_in('dm-search-search-field', with: 'replicate')
-      find('#dm-search-search-button').click
+      fill_in('dm-practice-search-field', with: 'replicate')
+      find('#dm-practice-search-button').click
 
       expect(page).to have_content(@practice.name)
       expect(page).to have_content(@practice.maturity_level)
