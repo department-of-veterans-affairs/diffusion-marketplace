@@ -127,26 +127,6 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
     end
   end
 
-  describe 'maturity level indicators' do
-    before do
-      # set maturity level
-      @pr_max.update_attributes(maturity_level: 'emerging')
-      visit practice_path(@pr_max)
-    end
-
-    it 'should display the content correctly' do
-      expect(page).to have_content('This is an emerging practice.')
-      expect(page).to have_link('See more practices.')
-    end
-
-    it 'should take the user to the search results page when the See more practices link is clicked' do
-      click_link('See more practices')
-      expect(page).to have_content('Search results')
-      expect(page).to have_content('1 result for emerging')
-      expect(page).to have_content('A public maximum practice')
-    end
-  end
-
   describe 'practice page with minimum content' do
     before do
       visit practice_path(@pr_min)

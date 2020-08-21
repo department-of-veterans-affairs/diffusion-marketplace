@@ -24,7 +24,7 @@ describe 'Search', type: :feature do
   end
 
   def search
-    find('#dm-search-search-button').click
+    find('#dm-practice-search-button').click
   end
 
   def update_practice_introduction(practice)
@@ -40,7 +40,6 @@ describe 'Search', type: :feature do
     fill_in('practice_summary', with: 'This is the most super practice ever made')
     select('October', :from => 'editor_date_intiated_month')
     select('1970', :from => 'editor_date_intiated_year')
-    find("#maturity_level_replicate").sibling('label').click
     find('#practice-editor-save-button').click
   end
 
@@ -58,7 +57,7 @@ describe 'Search', type: :feature do
   def add_search_to_cache
     user_login
     visit_search_page
-    fill_in('dm-search-search-field', with: 'Test')
+    fill_in('dm-practice-search-field', with: 'Test')
     search
   end
 
@@ -69,7 +68,7 @@ describe 'Search', type: :feature do
       visit_search_page
       expect(page).to be_accessible.according_to :wcag2a, :section508
 
-      fill_in('dm-search-search-field', with: 'Test')
+      fill_in('dm-practice-search-field', with: 'Test')
       search
 
       expect(page).to be_accessible.according_to :wcag2a, :section508
@@ -80,15 +79,15 @@ describe 'Search', type: :feature do
       expect(page).to have_content('1 result for Test')
 
       # do not show a practice that is not approved/published
-      fill_in('dm-search-search-field', with: 'practice')
-      find('#dm-search-search-button').click
+      fill_in('dm-practice-search-field', with: 'practice')
+      find('#dm-practice-search-button').click
 
       expect(page).to have_content('1 result for practice')
 
       # show practices that are approved/published
       @practice2.update(published: true, approved: true)
       visit_search_page
-      fill_in('dm-search-search-field', with: 'practice')
+      fill_in('dm-practice-search-field', with: 'practice')
       search
 
       expect(page).to be_accessible.according_to :wcag2a, :section508
@@ -107,8 +106,8 @@ describe 'Search', type: :feature do
 
       visit '/search'
 
-      fill_in('dm-search-search-field', with: 'Telehealth')
-      find('#dm-search-search-button').click
+      fill_in('dm-practice-search-field', with: 'Telehealth')
+      find('#dm-practice-search-button').click
 
       expect(page).to have_content(@practice.name)
       expect(page).to have_content(@practice.initiating_facility)
@@ -123,25 +122,12 @@ describe 'Search', type: :feature do
 
       visit '/search'
 
-      fill_in('dm-search-search-field', with: 'Coronavirus')
-      find('#dm-search-search-button').click
+      fill_in('dm-practice-search-field', with: 'Coronavirus')
+      find('#dm-practice-search-button').click
 
       expect(page).to have_content(@practice.name)
       expect(page).to have_content(@practice.initiating_facility)
       expect(page).to have_content('1 result for Coronavirus')
-    end
-
-    it 'should be able to search based on practice maturity level' do
-      @practice.update(published: true, approved: true, maturity_level: 'replicate')
-
-      visit '/search'
-
-      fill_in('dm-search-search-field', with: 'replicate')
-      find('#dm-search-search-button').click
-
-      expect(page).to have_content(@practice.name)
-      expect(page).to have_content(@practice.maturity_level)
-      expect(page).to have_content('1 result for replicate')
     end
   end
 

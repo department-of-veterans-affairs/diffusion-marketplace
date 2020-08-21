@@ -50,8 +50,6 @@ describe 'Practice editor - introduction', type: :feature, js: true do
       expect(page).to have_content('Select any of the following partners your practice is associated with.')
       expect(page).to have_content('Categories')
       expect(page).to have_content('Select any categories that apply to your practice.')
-      expect(page).to have_content('Maturity')
-      expect(page).to have_content('Select the level of maturity that applies to your practice.')
       expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/instructions")
       expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/adoptions")
     end
@@ -210,24 +208,6 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         expect(page).to have_content('PULMONARY CARE')
       end
     end
-
-    context 'maturity' do
-      it 'should allow the user to add or update the maturity level of a practice' do
-        expect(find(:css, '#maturity_level_emerging').selected?).to eq(false)
-        expect(find(:css, '#maturity_level_replicate').selected?).to eq(false)
-        expect(find(:css, '#maturity_level_scale').selected?).to eq(false)
-
-        # choose a maturity level
-        click_origin_type('maturity_level_replicate')
-        click_save
-        expect(find(:css, '#maturity_level_replicate').selected?).to eq(true)
-
-        # choose another maturity level
-        click_origin_type('maturity_level_emerging')
-        click_save
-        expect(find(:css, '#maturity_level_emerging').selected?).to eq(true)
-      end
-    end
   end
 end
 
@@ -244,9 +224,5 @@ def visit_practice_edit
 end
 
 def click_origin_type(elem_id)
-  find("##{elem_id}").sibling('label').click
-end
-
-def click_maturity_level(elem_id)
   find("##{elem_id}").sibling('label').click
 end

@@ -9,7 +9,6 @@ class Practice < ApplicationRecord
   acts_as_list
   visitable :ahoy_visit
   enum initiating_facility_type: { facility: 0, visn: 1, department: 2, other: 3 }
-  enum maturity_level: { emerging: 0, replicate: 1, scale: 2 }
 
   attr_accessor :views
   attr_accessor :current_month_views
@@ -40,8 +39,7 @@ class Practice < ApplicationRecord
         self.main_display_image_updated_at_changed? ||
         self.published_changed? ||
         self.enabled_changed? ||
-        self.date_initiated_changed? ||
-        self.maturity_level_changed?
+        self.date_initiated_changed?
       self.reset_searchable_cache = true
     end
   end

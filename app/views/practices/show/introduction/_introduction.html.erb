@@ -55,14 +55,9 @@
         </a>
       </div>
       <%# practice summary %>
-      <p class="margin-bottom-1 font-sans-lg line-height-sans-6">
+      <p class="margin-bottom-2 font-sans-lg line-height-sans-6">
         <%= safe_join(h(@practice.summary).split("\r\n"), tag(:br)) %>
       </p>
-
-      <%# practice maturity level %>
-      <% if @practice.maturity_level.present? %>
-        <%= render partial: 'practices/show/desktop_partials/maturity_level_banner' %>
-      <% end %>
 
       <%# practice origin date and location %>
       <div class="margin-bottom-2">
