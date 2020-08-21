@@ -7,7 +7,7 @@
 a {
   // pages internal to DM
   &.dm-internal-link {
-    color: $dm-color-base;
+    color: $dm-color-base !important;
     text-decoration: underline;
 
     &:visited, &:hover, &:active {

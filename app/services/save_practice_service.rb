@@ -6,6 +6,7 @@ class SavePracticeService
     @practice_params = params[:practice_params]
     @avatars = ['practice_creators', 'va_employees']
     @attachments = ['impact_photos', 'additional_documents']
+    @resources = ['problem', 'solution', 'results']
     @current_endpoint = params[:current_endpoint]
     @error_messages = {
         update_practice_partner_practices: 'error updating practice partners',
@@ -16,7 +17,8 @@ class SavePracticeService
         crop_main_display_image: 'error cropping practice thumbnail',
         update_initiating_facility: 'error updating initiating facility',
         update_practice_awards: 'error updating practice awards',
-        update_category_practices: 'error updating practice categories'
+        update_category_practices: 'error updating practice categories',
+        crop_resource_images: 'error cropping practice resource images'
     }
   end
 
@@ -31,6 +33,27 @@ class SavePracticeService
       if @practice_params["practice_results_resources_attributes"].present?
         process_results_resource_params
       end
+      # @practice_params['practice_problem_resources_attributes'].each do |resource|
+      
+      #   debugger
+      #   resource
+      #   res = resource[1]
+      #   if res[:resource_type] == 'image'
+      #     if res[:attachment].present?
+      #       debugger
+      #       blah = @practice.practice_problem_resources.find_or_create_by!(resource_type: res[:resource_type], name: res[:name], attachment: res[:attachment], practice_id: @practice.id)
+      #       debugger
+      #       if is_cropping?(res)
+      #         reprocess_avatar(blah, res)
+      #       end
+      #       resource.delete
+      #       debugger
+      #       resource
+      #     else
+      #       resource.delete
+      #     end
+      #   end
+    # end
 
       # rescue_method(:update_practice_partner_practices)
       # rescue_method(:update_department_practices)
@@ -57,6 +80,7 @@ class SavePracticeService
     update_initiating_facility
     update_practice_awards
     update_category_practices
+    crop_resource_images
 
     updated
   end
@@ -69,6 +93,20 @@ class SavePracticeService
     rescue StandardError => e
       puts e
       raise StandardError.new @error_messages[method_name]
+    end
+  end
+
+  def crop_resource_images
+    @resources.each do |resource|
+      res_name = "practice_#{resource}_resources"
+      params_resources = @practice_params["#{res_name}_attributes"]
+      params_resources.each do |r|
+        if is_cropping?(r[1]) && r[1][:_destroy] == 'false' && r[1][:id].present?
+          r_id = r[1][:id].to_i
+          record = @practice.send(res_name).find(r_id)
+          reprocess_attachment(record, r[1])
+        end
+      end
     end
   end
 
@@ -274,5 +312,4 @@ class SavePracticeService
       @practice_params['practice_results_resources_attributes']&.delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
     end
   end
-
 end

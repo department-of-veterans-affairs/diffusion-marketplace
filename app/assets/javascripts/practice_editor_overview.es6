@@ -26,6 +26,13 @@
 
         attachAddResourceListener('results_resource_file_form', 'display_results_resources_file', 'results', 'file');
         attachDeleteResourceListener('results', 'file');
+        //Images
+        attachAddResourceListener('problem_resource_image_form', 'display_problem_resources_image', 'problem', 'image');
+        attachAddResourceListener('solution_resource_image_form', 'display_solution_resources_image', 'solution', 'image');
+        attachAddResourceListener('results_resource_image_form', 'display_results_resources_image', 'results', 'image');
+        attachDeleteResourceListener('problem', 'image');
+        attachDeleteResourceListener('solution', 'image');
+        attachDeleteResourceListener('results', 'image');
 
 
         //PROBLEM
@@ -176,7 +183,6 @@ function displayResourceForm(sArea, sType){
             document.getElementById(sArea + '_link_form').style.display = 'none';
             break;
         case 'file':
-            
             document.getElementById(sArea + '_file_form').style.display = 'block';
             document.getElementById(sArea + '_resource_file_form').style.display = 'block';
             document.getElementById(sArea + '_video_form').style.display = 'none';
@@ -193,50 +199,49 @@ function displayResourceForm(sArea, sType){
     }
 }
 
-function addImageFields(sArea){
-    var form_container = document.getElementById('display_' + sArea + '_form');
-    // // Clear previous contents of the container
-    while (form_container.hasChildNodes()) {
-        form_container.removeChild(form_container.lastChild);
-    }
+// function addImageFields(sArea){
+//     var form_container = document.getElementById('display_' + sArea + '_form');
+//     // // Clear previous contents of the container
+//     while (form_container.hasChildNodes()) {
+//         form_container.removeChild(form_container.lastChild);
+//     }
+
+
+//     //for (i=0;i<number;i++){
+//         // Append a node with a random text
+
+//         form_container.appendChild(document.createTextNode("Use a high-quality .jpg, .jpeg, or .png file that is less than 32MB.  If you want to upload " +
+//             "an image that features a Veteran you must have FORM 3203.  Waivers must be filled out with the 'External to VA' check box selected."));
+//         form_container.appendChild(document.createElement("br"));
+//         form_container.appendChild(document.createElement("br"));
+
+//         var sGuid = createGUID();
+
+//         var input = document.createElement("INPUT");
+//         input.setAttribute("type", "file");
+//         form_container.appendChild(input);
+//         form_container.appendChild(document.createElement("br"));
+//         form_container.appendChild(document.createElement("br"));
 
 
 
-    //for (i=0;i<number;i++){
-        // Append a node with a random text
 
-        form_container.appendChild(document.createTextNode("Use a high-quality .jpg, .jpeg, or .png file that is less than 32MB.  If you want to upload " +
-            "an image that features a Veteran you must have FORM 3203.  Waivers must be filled out with the 'External to VA' check box selected."));
-        form_container.appendChild(document.createElement("br"));
-        form_container.appendChild(document.createElement("br"));
-
-        var sGuid = createGUID();
-
-        var input = document.createElement("INPUT");
-        input.setAttribute("type", "file");
-        form_container.appendChild(input);
-        form_container.appendChild(document.createElement("br"));
-        form_container.appendChild(document.createElement("br"));
-
-
-
-
-        sGuid = createGUID();
-        // Create an <input> element, set its type and name attributes
-        input = document.createElement("input");
-        input.type = "text";
-        input.name = sGuid;
-        input.id = sGuid;
-        input.style.width = "643px";
-        input.required = true;
-        var label = document.createElement("Label");
-        label.htmlFor = sGuid;
-        label.innerHTML="Caption";
-        form_container.appendChild(label);
-        form_container.appendChild(document.createElement("br"));
-        form_container.appendChild(input);
-        form_container.appendChild(document.createElement("br"));
-}
+//         sGuid = createGUID();
+//         // Create an <input> element, set its type and name attributes
+//         input = document.createElement("input");
+//         input.type = "text";
+//         input.name = sGuid;
+//         input.id = sGuid;
+//         input.style.width = "643px";
+//         input.required = true;
+//         var label = document.createElement("Label");
+//         label.htmlFor = sGuid;
+//         label.innerHTML="Caption";
+//         form_container.appendChild(label);
+//         form_container.appendChild(document.createElement("br"));
+//         form_container.appendChild(input);
+//         form_container.appendChild(document.createElement("br"));
+// }
 
 function addVideoFields(sArea){
     var form_container = document.getElementById('display_' + sArea + '_form');
@@ -458,7 +463,7 @@ function attachAddResourceListener(formSelector, container, sArea, sType){
 
           const deleteEntryHtml = `<div class="grid-col-12 trash-container">
            <input type="hidden" value="false" name="practice[practice_${sArea}_resources_attributes][${nGuid}_${sType}][_destroy]"/>
-            <button class="usa-button usa-button--unstyled text-red-50 remove_nested_fields">Delete entry</button> </div>`;
+            <button class="usa-button--unstyled dm-btn-warning remove_nested_fields">Delete entry</button></div>`;
 
         link_form.append(deleteEntryHtml);
 
@@ -474,16 +479,28 @@ function attachAddResourceListener(formSelector, container, sArea, sType){
 
         //clear form_inputs
         $.each(formToClear.find('input:not([type="hidden"])'), function(i, ele){
-            
             $(ele).val(null);
-            if (ele.type === 'file') {
+            if (ele.type === 'file' && sType == 'file') {
                 $(ele)
                     .closest('.usa-file-input')
                     .replaceWith(`
-                        <input id="practice_${sArea}-input-single_RANDOM_NUMBER_OR_SOMETHING" class="usa-hint usa-file-input" type="file" name="practice[practice_${sArea}_resources_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" aria-describedby="input-single-hint" />     
+                        <input id="practice_${sArea}-input-single_RANDOM_NUMBER_OR_SOMETHING" class="usa-hint usa-file-input" type="file" name="practice[practice_${sArea}_resources_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" aria-describedby="input-single-hint" />
                     `);
+            } else if (ele.type === 'file' && sType == 'image') {
+                $(ele)
+                .closest('.usa-file-input')
+                .replaceWith(`
+                    <input id="practice_${sArea}-input-single_RANDOM_NUMBER_OR_SOMETHING" class="usa-hint usa-file-input dm-cropper-upload-image" type="file" name="practice[practice_${sArea}_resources_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".jpg,.jpeg,.png" aria-describedby="input-single-hint" />
+                `);
             }
         });
+
+        if (sType == 'image') {
+            formToClear.find('.dm-cropper-images-container').empty()
+            $(`#${container}`).find('.dm-file-upload-label').remove()
+            $(`#${container}`).find('.dm-cropper-delete-image').remove()
+            $(`#${container}`).find('.usa-file-input').addClass('display-none')
+        }
     });
 }
 

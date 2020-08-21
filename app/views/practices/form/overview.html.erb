@@ -3,6 +3,7 @@
 <% provide :head_tags do %>
   <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_overview', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_resource_image_editor', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <%= render 'breadcrumbs' %>
@@ -36,8 +37,8 @@
                   <b>Problem attachments</b><br />
                   Attach any additional images, videos, files or links related to the problem your practice addresses.
                 </div>
-              <div class="grid-row grid-gap margin-top-105 grid-col-1 margin-bottom-3">
-                <div class="usa-radio margin-bottom-1 position-relative">
+              <div class="grid-row grid-gap margin-top-105 margin-bottom-3">
+                <div class="usa-radio margin-bottom-1 position-relative grid-col-12">
                   <%= radio_button_tag 'practice_problem_resources[resource_type]',
                                        'Image',
                                        false, onclick: "displayResourceForm('problem', 'image');",
@@ -47,7 +48,7 @@
                   <%= label_tag 'practice_problem_image', 'Image', class: 'usa-radio__label
                 initiating-facility-type-label x0-bottom', for: "practice_problem_image" %>
                 </div>
-                <div class="usa-radio margin-bottom-1 position-relative">
+                <div class="usa-radio margin-bottom-1 position-relative grid-col-12">
                   <%= radio_button_tag 'practice_problem_resources[resource_type]',
                                        'Video',
                                        false, onclick: "displayResourceForm('problem', 'video');",
@@ -57,7 +58,7 @@
                   <%= label_tag 'practice_problem_video', 'Video', class: 'usa-radio__label
                 initiating-facility-type-label x0-bottom', for: "practice_problem_video" %>
                 </div>
-                <div class="usa-radio margin-bottom-1 position-relative">
+                <div class="usa-radio margin-bottom-1 position-relative grid-col-12">
                   <%= radio_button_tag 'practice_problem_resources[resource_type]',
                                        'File', false, onclick: "displayResourceForm('problem', 'file');",
                                        class: 'usa-radio__input initiating-facility-type-radio',
@@ -66,7 +67,7 @@
                   <%= label_tag 'practice_problem_file', 'File', class: 'usa-radio__label
                 initiating-facility-type-label x0-bottom', for: "practice_problem_file" %>
                 </div>
-                <div class="usa-radio position-relative">
+                <div class="usa-radio position-relative grid-col-12">
                   <%= radio_button_tag 'practice_problem_resources[resource_type]', 'Link',
                                        false, onclick: "displayResourceForm('problem', 'link');",
                                        class: 'usa-radio__input initiating-facility-type-radio',
@@ -77,7 +78,7 @@
                 </div>
                 <div class="margin-top-3" id="display_problem_form">
                   <div id="problem_image_form">
-                    <%#= render partial: "practices/overview_forms/problem_image_form", locals: {small_text: false} %>
+                    <%= render partial: "practices/overview_forms/image_form", locals: { small_text: false, resource: nil, area: 'problem' } %>
                   </div>
                   <div id="problem_video_form">
                     <%= render partial: "practices/overview_forms/problem_video_form", locals: {small_text: false} %>
@@ -93,6 +94,9 @@
               <div id="display_problem_resources_image">
                 <% if @practice.practice_problem_resources.where(resource_type: 'image').exists? %>
                   <b>IMAGES:</b>
+                  <% @practice.practice_problem_resources.where(resource_type: 'image').each_with_index do |pr, i| %>
+                  <%= render partial: "practices/overview_forms/image_form", locals: { resource: pr, placeholder: i, area: 'problem' } %>
+                <% end %>
                 <% end %>
               </div>
               <div id="display_problem_resources_video">
@@ -134,8 +138,8 @@
                 <b>Solution attachments</b><br />
                 Attach any additional images, videos, files or links related to the solution implemented for your practice.
               </div>
-              <div class="grid-row grid-gap margin-top-105 grid-col-1 margin-bottom-3">
-                <div class="usa-radio margin-bottom-1 position-relative">
+              <div class="grid-row grid-gap margin-top-105 margin-bottom-3">
+                <div class="usa-radio margin-bottom-1 position-relative grid-col-12">
                   <%= radio_button_tag 'practice_solution_resources[resource_type]',
                                        'Image',
                                        false, onclick: "displayResourceForm('solution', 'image');",
@@ -145,7 +149,7 @@
                   <%= label_tag 'practice_solution_image', 'Image', class: 'usa-radio__label
                 initiating-facility-type-label x0-bottom', for: "practice_solution_image" %>
                 </div>
-                <div class="usa-radio margin-bottom-1 position-relative">
+                <div class="usa-radio margin-bottom-1 position-relative grid-col-12">
                   <%= radio_button_tag 'practice_solution_resources[resource_type]',
                                        'Video',
                                        false, onclick: "displayResourceForm('solution', 'video');",
@@ -155,7 +159,7 @@
                   <%= label_tag 'practice_solution_video', 'Video', class: 'usa-radio__label
                 initiating-facility-type-label x0-bottom', for: "practice_solution_video" %>
                 </div>
-                <div class="usa-radio margin-bottom-1 position-relative">
+                <div class="usa-radio margin-bottom-1 position-relative grid-col-12">
                   <%= radio_button_tag 'practice_solution_resources[resource_type]',
                                        'File', false, onclick: "displayResourceForm('solution', 'file');",
                                        class: 'usa-radio__input initiating-facility-type-radio',
@@ -164,7 +168,7 @@
                   <%= label_tag 'practice_solution_file', 'File', class: 'usa-radio__label
                 initiating-facility-type-label x0-bottom', for: "practice_solution_file" %>
                 </div>
-                <div class="usa-radio position-relative">
+                <div class="usa-radio position-relative grid-col-12">
                   <%= radio_button_tag 'practice_solution_resources[resource_type]', 'Link',
                                        false, onclick: "displayResourceForm('solution', 'link');",
                                        class: 'usa-radio__input initiating-facility-type-radio',
@@ -175,7 +179,7 @@
                 </div>
                 <div class="margin-top-3" id="display_problem_form">
                   <div id="solution_image_form">
-                    <%#= render partial: "practices/overview_forms/solution_image_form", locals: {small_text: false} %>
+                    <%= render partial: "practices/overview_forms/image_form", locals: { area: 'solution'} %>
                   </div>
                   <div id="solution_video_form">
                     <%= render partial: "practices/overview_forms/solution_video_form", locals: {small_text: false} %>
@@ -191,6 +195,9 @@
               <div id="display_solution_resources_image">
                 <% if @practice.practice_solution_resources.where(resource_type: 'image').exists? %>
                   <b>IMAGES:</b>
+                  <% @practice.practice_solution_resources.where(resource_type: 'image').each_with_index do |pr, i| %>
+                    <%= render partial: "practices/overview_forms/image_form", locals: { resource: pr, placeholder: i, area: 'solution' } %>
+                  <% end %>
                 <% end %>
               </div>
               <div id="display_solution_resources_video">
@@ -232,8 +239,8 @@
                 <b>Results attachments</b><br />
                 Attach any additional images, videos, files or links relevant to your results statement.
               </div>
-              <div class="grid-row grid-gap margin-top-105 grid-col-1 margin-bottom-3">
-                <div class="usa-radio margin-bottom-1 position-relative">
+              <div class="grid-row grid-gap margin-top-105 margin-bottom-3">
+                <div class="usa-radio margin-bottom-1 position-relative grid-col-12">
                   <%= radio_button_tag 'practice_results_resources[resource_type]',
                                        'Image',
                                        false, onclick: "displayResourceForm('results', 'image');",
@@ -243,7 +250,7 @@
                   <%= label_tag 'practice_results_image', 'Image', class: 'usa-radio__label
                 initiating-facility-type-label x0-bottom', for: "practice_results_image" %>
                 </div>
-                <div class="usa-radio margin-bottom-1 position-relative">
+                <div class="usa-radio margin-bottom-1 position-relative grid-col-12">
                   <%= radio_button_tag 'practice_results_resources[resource_type]',
                                        'Video',
                                        false, onclick: "displayResourceForm('results', 'video');",
@@ -253,7 +260,7 @@
                   <%= label_tag 'practice_results_video', 'Video', class: 'usa-radio__label
                 initiating-facility-type-label x0-bottom', for: "practice_results_video" %>
                 </div>
-                <div class="usa-radio margin-bottom-1 position-relative">
+                <div class="usa-radio margin-bottom-1 position-relative grid-col-12">
                   <%= radio_button_tag 'practice_results_resources[resource_type]',
                                        'Files', false, onclick: "displayResourceForm('results', 'file');",
                                        class: 'usa-radio__input initiating-facility-type-radio',
@@ -262,7 +269,7 @@
                   <%= label_tag 'practice_results_file', 'File', class: 'usa-radio__label
                 initiating-facility-type-label x0-bottom', for: "practice_results_file" %>
                 </div>
-                <div class="usa-radio position-relative">
+                <div class="usa-radio position-relative grid-col-12">
                   <%= radio_button_tag 'practice_results_resources[resource_type]', 'Link',
                                        false, onclick: "displayResourceForm('results', 'link');",
                                        class: 'usa-radio__input initiating-facility-type-radio',
@@ -273,7 +280,7 @@
                 </div>
                 <div class="margin-top-3" id="display_problem_form">
                   <div id="results_image_form">
-                    <%#= render partial: "practices/overview_forms/results_image_form", locals: {small_text: false} %>
+                    <%= render partial: "practices/overview_forms/image_form", locals: { small_text: false, area: 'results' } %>
                   </div>
                   <div id="results_video_form">
                     <%= render partial: "practices/overview_forms/results_video_form", locals: {small_text: false} %>
@@ -289,6 +296,9 @@
               <div id="display_results_resources_image">
                 <% if @practice.practice_results_resources.where(resource_type: 'image').exists? %>
                   <b>IMAGES:</b>
+                  <% @practice.practice_results_resources.where(resource_type: 'image').each_with_index do |pr, i| %>
+                    <%= render partial: "practices/overview_forms/image_form", locals: { resource: pr, placeholder: i, area: 'results' } %>
+                  <% end %>
                 <% end %>
               </div>
               <div id="display_results_resources_video">
