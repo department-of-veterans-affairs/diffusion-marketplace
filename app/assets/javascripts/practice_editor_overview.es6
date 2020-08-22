@@ -508,8 +508,8 @@ function attachAddResourceListener(formSelector, container, sArea, sType){
             <button class="usa-button--unstyled dm-btn-warning remove_nested_fields">Delete entry</button></div>`;
 
         link_form.append(deleteEntryHtml);
-
         $.each(link_form.find('input'), function(i, ele){
+            ele.required = true;
             $(ele).attr('name', ele.name.replace(/RANDOM_NUMBER_OR_SOMETHING/g, nGuid));
             $(ele).attr('id', ele.name.replace(/RANDOM_NUMBER_OR_SOMETHING/g, nGuid));
         });
