@@ -8,15 +8,15 @@
     <input value="<%= resource&.id %>" type="hidden" name="practice[practice_results_resources_attributes][<%= placeholder %>][id]"/>
   <% end %>
   <%= label_tag 'practice_results_resources_link', 'Link (paste the full address)', class: 'usa-label', for: "practice_results_resources_attributes_#{placeholder}_link_url" %>
-  <input class="usa-input" value="<%= resource&.link_url %>" type="text" name="practice[practice_results_resources_attributes][<%= placeholder %>][link_url]" id="practice_results_resources_attributes_<%= placeholder %>_link_url" style="width: 643px"/>
+  <input <%= resource&.id ? 'required' : '' %> class="usa-input" value="<%= resource&.link_url %>" type="text" name="practice[practice_results_resources_attributes][<%= placeholder %>][link_url]" id="practice_results_resources_attributes_<%= placeholder %>_link_url" style="width: 643px"/>
   <input type="text" readonly class="margin-top-1 margin-bottom-3" style="display: none; color:red; border-color: darkred" id="results_link_err_message_link_url" value="Please enter a valid url/link."/>
 
   <%= label_tag 'practice_results_resources_name', 'Title', class: 'usa-label', for: "practice_results_resources_attributes_#{placeholder}_name" %>
-  <input class="usa-input" value="<%= resource&.name %>" type="text" name="practice[practice_results_resources_attributes][<%= placeholder %>][name]" id="practice_results_resources_attributes_<%= placeholder %>_name" style="width: 393px"/>
+  <input <%= resource&.id ? 'required' : '' %> class="usa-input" value="<%= resource&.name %>" type="text" name="practice[practice_results_resources_attributes][<%= placeholder %>][name]" id="practice_results_resources_attributes_<%= placeholder %>_name" style="width: 393px"/>
   <input type="text" readonly class="margin-top-1 margin-bottom-3" style="display: none; color:red; border-color: darkred" id="results_link_err_message_name" value="Please enter a title."/>
 
   <%= label_tag 'practice_results_resources_description', 'Description', class: 'usa-label', for: "practice_results_resources_attributes_#{placeholder}_description" %>
-  <input class="usa-input" value="<%= resource&.description %>" type="text" name="practice[practice_results_resources_attributes][<%= placeholder %>][description]" id="practice_results_resources_attributes_<%= placeholder %>_description" style="width: 643px"/>
+  <input <%= resource&.id ? 'required' : '' %> class="usa-input" value="<%= resource&.description %>" type="text" name="practice[practice_results_resources_attributes][<%= placeholder %>][description]" id="practice_results_resources_attributes_<%= placeholder %>_description" style="width: 643px"/>
   <input type="text" readonly class="margin-top-1 margin-bottom-3" style="display: none; color:red; border-color: darkred" id="results_link_err_message_description" value="Please enter a description."/>
 
   <% if resource %>
