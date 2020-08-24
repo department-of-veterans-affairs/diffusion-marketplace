@@ -258,7 +258,6 @@
   }
 
   function attachImgActionsEventListeners() {
-    _attachEditEventListener();
     _attachUploadEventListener();
     _attachEditEventListener();
     _attachDeleteEventListener();
