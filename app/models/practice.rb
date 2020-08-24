@@ -235,7 +235,6 @@ class Practice < ApplicationRecord
 
   #accepts_nested_attributes_for :practices_origin_facilities?
   accepts_nested_attributes_for :practice_origin_facilities, allow_destroy: true, reject_if: proc { |attributes|
-    debugger
     attributes['facility_id'].blank?
   }
   accepts_nested_attributes_for :practice_metrics, allow_destroy: true, reject_if: proc { |attributes| attributes['description'].blank? }

@@ -173,6 +173,10 @@ class PracticesController < ApplicationController
             format.json { render json: @practice, status: :ok }
           end
         end
+      else
+        flash[:error] = "There was an #{@practice.errors.messages}. The practice was not saved."
+        format.html { redirect_back fallback_location: root_path }
+        format.json { render json: updated, status: :unprocessable_entity }
       end
     end
   end
