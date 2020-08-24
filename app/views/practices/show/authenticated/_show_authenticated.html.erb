@@ -63,14 +63,28 @@
 </div>
 
 <% if @practice.practice_metrics.any? %>
-  <section class="padding-bottom-2 margin-bottom-5">
-    <div class="grid-container">
-      <div class="grid-row grid-gap">
-        <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-        <div class="desktop:grid-col-9 grid-col-12 p0">
-          <div class="origin-section practice-section">
-            <%= render partial: 'practices/show/overview/metrics' %>
-          </div>
+  <section class="margin-bottom-4 grid-container">
+    <div class="grid-row grid-gap-2">
+      <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
+      <div class="desktop:grid-col-9 grid-col-12">
+        <div class="metric-section practice-section">
+          <%= render partial: 'practices/show/overview/metrics' %>
+        </div>
+      </div>
+    </div>
+  </section>
+<% end %>
+
+<% if @practice.diffusion_histories.any? && ENV['GOOGLE_API_KEY'] %>
+  <section class="margin-bottom-5 grid-container">
+    <div class="grid-row grid-gap-2">
+      <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
+      <div class="desktop:grid-col-9 grid-col-12">
+        <div class="metric-section practice-section">
+          <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+          <h3 class="margin-top-2 margin-bottom-105 line-height-26 font-sans-lg">Diffusion tracker</h3>
+          <%= render partial: 'practices/show/overview/diffusion_tracker/diffusion_map' %>
+          <%= render partial: 'practices/show/overview/diffusion_tracker/adoptions' %>
         </div>
       </div>
     </div>
@@ -85,7 +99,7 @@
       </div>
     <% end %>
     <div class="grid-row grid-gap">
-      <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+      <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
 
       <div id="practice_show" class="desktop:grid-col-6 grid-col-12 p0 overview-section practice-section">
         <%= render partial: "shared/messages", locals: {small_text: false} %>
@@ -132,33 +146,30 @@
 
 <!-- "Practice content" section -->
 <!-- "Impact" section -->
-<% if @practice.impact_photos.any? || @practice.video_files.any? || (@practice.diffusion_histories.any? && ENV['GOOGLE_API_KEY']) %>
-  <section>
-    <div class="grid-container position-relative">
-      <div class="grid-row grid-gap">
-        <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+<%# if @practice.impact_photos.any? || @practice.video_files.any? %>
+<!--  <section>-->
+<!--    <div class="grid-container position-relative">-->
+<!--      <div class="grid-row grid-gap">-->
+<!--        <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>-->
 
-        <div class="desktop:grid-col-9 grid-col-12 p0">
-          <div class="margin-bottom-3 impact-section practice-section">
-            <div class="grid-row flex-align-center">
-              <h2 id="impact" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205 nav-header">Impact</h2>
-              <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest dm-section-line">
-            </div>
-            <% if @practice.diffusion_histories.any? %>
-              <%= render partial: 'diffusion_map' %>
-            <% end %>
-            <% if @practice.impact_photos.any? %>
-              <%= render partial: 'impact' %>
-            <% end %>
-            <% if @practice.video_files.any? %>
-              <%= render partial: 'videos' %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-<% end %>
+<!--        <div class="desktop:grid-col-9 grid-col-12 p0">-->
+<!--          <div class="margin-bottom-3 impact-section practice-section">-->
+<!--            <div class="grid-row flex-align-center">-->
+<!--              <h2 id="impact" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205 nav-header">Impact</h2>-->
+<!--              <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest dm-section-line">-->
+<!--            </div>-->
+<%# if @practice.impact_photos.any? %>
+<%#= render partial: 'impact' %>
+<%# end %>
+<%# if @practice.video_files.any? %>
+<%#= render partial: 'videos' %>
+<%# end %>
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </section>-->
+<%# end %>
 
 <!-- "Documentation" section -->
 <% if @practice.additional_documents.any? || @practice.publications.any? %>
