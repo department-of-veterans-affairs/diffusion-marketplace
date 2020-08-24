@@ -36,6 +36,14 @@
 
 
         //PROBLEM
+        $(document).on('click', '#cancel_problem_resource_image', function (e) {
+            e.preventDefault();
+            document.getElementById("problem_image_form").style.display = 'none';
+            document.getElementById('practice_problem_image').checked = false;
+            document.getElementById('problem_resource_image_form').style.display = 'none';
+        });
+
+
         $(document).on('click', '#cancel_problem_resource_link', function (e) {
             e.preventDefault();
             document.getElementById("problem_link_form").style.display = 'none';
@@ -58,6 +66,14 @@
         });
 
         //SOLUTION
+        $(document).on('click', '#cancel_solution_resource_image', function (e) {
+            e.preventDefault();
+            document.getElementById("solution_image_form").style.display = 'none';
+            document.getElementById('practice_solution_image').checked = false;
+            document.getElementById('solution_resource_image_form').style.display = 'none';
+        });
+
+
         $(document).on('click', '#cancel_solution_resource_link', function (e) {
             e.preventDefault();
             document.getElementById("solution_link_form").style.display = 'none';
@@ -80,6 +96,13 @@
         });
 
         //RESULTS
+        $(document).on('click', '#cancel_results_resource_image', function (e) {
+            e.preventDefault();
+            document.getElementById("results_image_form").style.display = 'none';
+            document.getElementById('practice_results_image').checked = false;
+            document.getElementById('results_resource_image_form').style.display = 'none';
+        });
+
         $(document).on('click', '#cancel_results_resource_link', function (e) {
             e.preventDefault();
             document.getElementById("results_link_form").style.display = 'none';

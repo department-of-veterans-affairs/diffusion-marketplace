@@ -12,11 +12,11 @@
   <% end %>
     <%= label_tag 'practice_solution_resources_video', 'Link (paste the full Youtube address)', class: 'usa-label', for: "practice_solution_resources_attributes_#{placeholder}_link_url" %>
   <input <%= resource&.id ? 'required' : '' %> class="usa-input" value="<%= resource&.link_url %>"  placeholder="https://www.youtube.com/watch?v=" type="text" name="practice[practice_solution_resources_attributes][<%= placeholder %>][link_url]" id="practice_solution_resources_attributes_<%= placeholder %>_link_url" style="width: 643px"/>
-  <input type="text" readonly class="margin-top-1 margin-bottom-3" style="display: none; color:red; border-color: darkred" id="solution_video_err_message_link_url" value="Please enter a youube url."/>
+  <input type="text" readonly class="overview_error_msg" id="solution_video_err_message_link_url" value="Please enter a youube url."/>
 
   <%= label_tag 'practice_solution_resources_name', 'Caption', class: 'usa-label', for: "practice_solution_resources_attributes_#{placeholder}_name" %>
   <input <%= resource&.id ? 'required' : '' %> class="usa-input" value="<%= resource&.name %>" type="text" name="practice[practice_solution_resources_attributes][<%= placeholder %>][name]" id="practice_solution_resources_attributes_<%= placeholder %>_name" style="width: 393px"/>
-  <input type="text" readonly class="margin-top-1 margin-bottom-3" style="display: none; color:red; border-color: darkred" id="solution_video_err_message_name" value="Please enter a caption for the video."/>
+  <input type="text" readonly class="overview_error_msg" id="solution_video_err_message_name" value="Please enter a caption for the video."/>
 
   <% if resource %>
     <div class="grid-col-12 trash-container">

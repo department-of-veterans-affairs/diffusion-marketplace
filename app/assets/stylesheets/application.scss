@@ -43,6 +43,16 @@ body {
   width: 40px;
 }
 
+.overview_error_msg{
+  display: none;
+  color: red;
+  border-color: darkred;
+  margin-top: .5rem;
+  margin-bottom: 2.0rem;
+  width: 300px;
+
+}
+
 #more_text {display: none;}
 #more_text_award {display: none;}
 
