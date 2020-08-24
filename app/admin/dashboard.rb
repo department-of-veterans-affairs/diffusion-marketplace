@@ -211,14 +211,14 @@ ActiveAdmin.register_page "Dashboard" do
               end
             end
 
-            panel "Practice Commits Leaderboard" do
+            panel "Practice Adoptions Leaderboard" do
               table_for practices_views.each, id: 'practice-commits-table' do
                 column(:name) {|practice| link_to(practice.name, admin_practice_path(practice))}
                 column("#{date_headers[:current]}") {|practice| practice.committed_user_count_by_range(beginning_of_current_month, end_of_current_month)}
                 column("#{date_headers[:one_month_ago]}") {|practice| practice.committed_user_count_by_range(beginning_of_last_month, end_of_last_month)}
                 column("#{date_headers[:two_month_ago]}") {|practice| practice.committed_user_count_by_range(beginning_of_two_months_ago, end_of_two_months_ago)}
                 column("#{date_headers[:three_month_ago]}") {|practice| practice.committed_user_count_by_range(beginning_of_three_months_ago, end_of_three_months_ago)}
-                column("Total lifetime commits") {|practice| practice.committed_user_count}
+                column("Total lifetime adoptions") {|practice| practice.committed_user_count}
               end
 
               script do
