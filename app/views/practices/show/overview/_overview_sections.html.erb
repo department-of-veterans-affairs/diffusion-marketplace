@@ -1,0 +1,52 @@
+<%
+  grouped_resources = resources.group_by(&:resource_type)
+  # debugger
+%>
+
+<div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-3"></div>
+<h4><%= title %></h4>
+<div><%= statement %></div>
+<h4>Images</h4>
+  <% grouped_resources['image'].each do |pr| %>
+    <div class="margin-bottom-2px">
+    <%= image_tag pr.attachment_s3_presigned_url, class: 'height-mobile practice-editor-impact-photo radius-md' %>
+    <% if pr.name.present? %>
+      <div class="font-sans-2xs line-height-135 margin-top-1 width-100 line-height-15px">
+        <span class="text-bold">ABOVE:</span> <%= pr.name %>
+      </div>
+    <% end %>
+    </div>
+  <% end %>
+<h4>Videos</h4>
+<% grouped_resources['video'].each do |pr| %>
+  <div class="margin-bottom-2px">
+      <%= youtube_embed(pr.link_url) %>
+      <% if pr.name.present? %>
+        <div class="font-sans-2xs line-height-135 margin-top-1 width-100 line-height-15px">
+          <span class="text-bold">ABOVE:</span> <%= pr.name %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<h4>Files</h4>
+<% grouped_resources['file'].each do |pr| %>
+  <div class="margin-bottom-2px">
+    <% if pr.name.present? %>
+      <div class="font-sans-2xs line-height-135 margin-top-1 width-100 line-height-15px">
+        <li><%= pr.description %> <%= link_to(pr.attachment&.original_filename, pr.attachment_s3_presigned_url, target: '_blank')%>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+<h4>Links</h4>
+<% grouped_resources['link'].each do |pr| %>
+  <div class="margin-bottom-2px">
+    <% if pr.name.present? %>
+      <div class="font-sans-2xs line-height-135 margin-top-1 width-100 line-height-15px">
+<!--        <li><%#= pr.name %> <%#= link_to(pr.link_url, target: '_blank', alt: pr.description)%>-->
+        <li><%= pr.description %> <a href="<%= pr.link_url %>" target="_blank"><%= pr.name %></a></li>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
