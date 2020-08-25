@@ -24,9 +24,9 @@ describe 'Practice editor', type: :feature, js: true do
 
         it 'should not display the image resource form' do
           expect(page).to have_no_content("Use a high-quality .jpg, .jpeg, or .png file that is less than 32MB. If you want to upload an image that features a Veteran you must have Form 3203. Waivers must be filled out with the 'External to VA' check box selected.")
-          expect(page).to have_no_css('#problem_resource_image_form')
-          expect(page).to have_no_css('#solution_resource_image_form')
-          expect(page).to have_no_css('#results_resource_image_form')
+          expect(page).to have_no_css('#problem_resources_image_form')
+          expect(page).to have_no_css('#solution_resources_image_form')
+          expect(page).to have_no_css('#results_resources_image_form')
           within(:css, '#problem_section') do
             expect(page).to have_no_content('IMAGES')
             expect(page).to have_no_css("img[src*='acceptable_img.jpg']")
@@ -49,9 +49,9 @@ describe 'Practice editor', type: :feature, js: true do
 
         it 'should not display the image resource form' do
           expect(page).to have_no_content("Use a high-quality .jpg, .jpeg, or .png file that is less than 32MB. If you want to upload an image that features a Veteran you must have Form 3203. Waivers must be filled out with the 'External to VA' check box selected.")
-          expect(page).to have_no_css('#problem_resource_image_form')
-          expect(page).to have_no_css('#solution_resource_image_form')
-          expect(page).to have_no_css('#results_resource_image_form')
+          expect(page).to have_no_css('#problem_resources_image_form')
+          expect(page).to have_no_css('#solution_resources_image_form')
+          expect(page).to have_no_css('#results_resources_image_form')
           within(:css, '#problem_section') do
             expect(page).to have_content('IMAGES')
             expect(page).to have_css("img[src*='acceptable_img.jpg']")

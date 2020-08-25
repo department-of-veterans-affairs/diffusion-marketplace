@@ -76,18 +76,18 @@
                   <%= label_tag 'practice_problem_link', 'Link', class: 'usa-radio__label
                 initiating-facility-type-label x0-bottom', for: "practice_problem_link" %>
                 </div>
-                <div class="margin-top-3" id="display_problem_form">
+                <div class="margin-top-3display_problem_form">
                   <div id="problem_image_form">
-                    <%= render partial: "practices/overview_forms/image_form", locals: { area: 'problem' } %>
+                    <%= render partial: "practices/overview_forms/image_form", locals: { area: 'problem_resources' } %>
                   </div>
                   <div id="problem_video_form">
-                    <%= render partial: "practices/overview_forms/video_form", locals: { area: 'problem' } %>
+                    <%= render partial: "practices/overview_forms/video_form", locals: { area: 'problem_resources' } %>
                   </div>
                   <div id="problem_file_form">
-                    <%= render partial: "practices/overview_forms/file_form", locals: { area: 'problem' } %>
+                    <%= render partial: "practices/overview_forms/file_form", locals: { area: 'problem_resources' } %>
                   </div>
                   <div id="problem_link_form">
-                    <%= render partial: "practices/overview_forms/link_form", locals: { area: 'problem' } %>
+                    <%= render partial: "practices/overview_forms/link_form", locals: { area: 'problem_resources' } %>
                   </div>
                 </div>
               </div>
@@ -95,7 +95,7 @@
                 <% if @practice.practice_problem_resources.where(resource_type: 'image').exists? %>
                   <div class="text-bold margin-bottom-2">IMAGES:</div>
                   <% @practice.practice_problem_resources.where(resource_type: 'image').each_with_index do |pr, i| %>
-                  <%= render partial: "practices/overview_forms/image_form", locals: { resource: pr, placeholder: i, area: 'problem' } %>
+                  <%= render partial: "practices/overview_forms/image_form", locals: { resource: pr, placeholder: i, area: 'problem_resources' } %>
                 <% end %>
                 <% end %>
               </div>
@@ -104,7 +104,7 @@
                   <div class="text-bold margin-bottom-2">VIDEOS:</div>
                 <% end %>
                 <% @practice.practice_problem_resources.where(resource_type: 'video').each_with_index do |pr, i| %>
-                  <%= render partial: "practices/overview_forms/video_form", locals: {resource: pr, placeholder: i, area: 'problem'} %>
+                  <%= render partial: "practices/overview_forms/video_form", locals: {resource: pr, placeholder: i, area: 'problem_resources'} %>
                 <% end %>
               </div>
               <div id="display_problem_resources_file">
@@ -112,7 +112,7 @@
                   <div class="text-bold margin-bottom-2">FILES:</div>
                 <% end %>
                 <% @practice.practice_problem_resources.where(resource_type: 'file').each_with_index do |pr, i| %>
-                  <%= render partial: "practices/overview_forms/file_form", locals: { resource: pr, placeholder: i, area: 'problem' } %>
+                  <%= render partial: "practices/overview_forms/file_form", locals: { resource: pr, placeholder: i, area: 'problem_resources' } %>
                 <% end %>
               </div>
               <div id="display_problem_resources_link">
@@ -120,7 +120,7 @@
                   <div class="text-bold margin-bottom-2">LINKS:</div>
                 <% end %>
                 <% @practice.practice_problem_resources.where(resource_type: 'link').each_with_index do |pr, i| %>
-                  <%= render partial: "practices/overview_forms/link_form", locals: { resource: pr, placeholder: i, area: 'problem' } %>
+                  <%= render partial: "practices/overview_forms/link_form", locals: { resource: pr, placeholder: i, area: 'problem_resources' } %>
                   <% end %>
               </div>
             </div>
@@ -177,18 +177,18 @@
                   <%= label_tag 'practice_solution_link', 'Link', class: 'usa-radio__label
                 initiating-facility-type-label x0-bottom', for: "practice_solution_link" %>
                 </div>
-                <div class="margin-top-3" id="display_problem_form">
+                <div class="margin-top-3 display_problem_form">
                   <div id="solution_image_form">
-                    <%= render partial: "practices/overview_forms/image_form", locals: { area: 'solution' } %>
+                    <%= render partial: "practices/overview_forms/image_form", locals: { area: 'solution_resources' } %>
                   </div>
                   <div id="solution_video_form">
-                    <%= render partial: "practices/overview_forms/video_form", locals: { area: 'solution' } %>
+                    <%= render partial: "practices/overview_forms/video_form", locals: { area: 'solution_resources' } %>
                   </div>
                   <div id="solution_file_form">
-                    <%= render partial: "practices/overview_forms/file_form", locals: { area: 'solution' } %>
+                    <%= render partial: "practices/overview_forms/file_form", locals: { area: 'solution_resources' } %>
                   </div>
                   <div id="solution_link_form">
-                    <%= render partial: "practices/overview_forms/link_form", locals: { area: 'solution' } %>
+                    <%= render partial: "practices/overview_forms/link_form", locals: { area: 'solution_resources' } %>
                   </div>
                 </div>
               </div>
@@ -196,7 +196,7 @@
                 <% if @practice.practice_solution_resources.where(resource_type: 'image').exists? %>
                   <div class="text-bold margin-bottom-2">IMAGES:</div>
                   <% @practice.practice_solution_resources.where(resource_type: 'image').each_with_index do |pr, i| %>
-                    <%= render partial: "practices/overview_forms/image_form", locals: { resource: pr, placeholder: i, area: 'solution' } %>
+                    <%= render partial: "practices/overview_forms/image_form", locals: { resource: pr, placeholder: i, area: 'solution_resources' } %>
                   <% end %>
                 <% end %>
               </div>
@@ -205,7 +205,7 @@
                   <div class="text-bold margin-bottom-2">VIDEOS:</div>
                 <% end %>
                 <% @practice.practice_solution_resources.where(resource_type: 'video').each_with_index do |pr, i| %>
-                  <%= render partial: "practices/overview_forms/video_form", locals: { resource: pr, placeholder: i, area: 'solution' } %>
+                  <%= render partial: "practices/overview_forms/video_form", locals: { resource: pr, placeholder: i, area: 'solution_resources' } %>
                 <% end %>
               </div>
               <div id="display_solution_resources_file">
@@ -213,7 +213,7 @@
                   <div class="text-bold margin-bottom-2">FILES:</div>
                 <% end %>
                 <% @practice.practice_solution_resources.where(resource_type: 'file').each_with_index do |pr, i| %>
-                  <%= render partial: "practices/overview_forms/file_form", locals: { resource: pr, placeholder: i, area: 'solution' } %>
+                  <%= render partial: "practices/overview_forms/file_form", locals: { resource: pr, placeholder: i, area: 'solution_resources' } %>
                 <% end %>
               </div>
               <div id="display_solution_resources_link">
@@ -221,7 +221,7 @@
                   <div class="text-bold margin-bottom-2">LINKS:</div>
                 <% end %>
                 <% @practice.practice_solution_resources.where(resource_type: 'link').each_with_index do |pr, i| %>
-                  <%= render partial: "practices/overview_forms/link_form", locals: { resource: pr, placeholder: i, area: 'solution' } %>
+                  <%= render partial: "practices/overview_forms/link_form", locals: { resource: pr, placeholder: i, area: 'solution_resources' } %>
                 <% end %>
               </div>
             </div>
@@ -278,18 +278,18 @@
                   <%= label_tag 'practice_results_link', 'Link', class: 'usa-radio__label
                 initiating-facility-type-label x0-bottom', for: "practice_results_link" %>
                 </div>
-                <div class="margin-top-3" id="display_problem_form">
+                <div class="margin-top-3 display_problem_form">
                   <div id="results_image_form">
-                    <%= render partial: "practices/overview_forms/image_form", locals: { area: 'results' } %>
+                    <%= render partial: "practices/overview_forms/image_form", locals: { area: 'results_resources' } %>
                   </div>
                   <div id="results_video_form">
-                    <%= render partial: "practices/overview_forms/video_form", locals: { area: 'results '} %>
+                    <%= render partial: "practices/overview_forms/video_form", locals: { area: 'results_resources'} %>
                   </div>
                   <div id="results_file_form">
-                    <%= render partial: "practices/overview_forms/file_form", locals: { area: 'results' } %>
+                    <%= render partial: "practices/overview_forms/file_form", locals: { area: 'results_resources' } %>
                   </div>
                   <div id="results_link_form">
-                    <%= render partial: "practices/overview_forms/link_form", locals: { area: 'results' } %>
+                    <%= render partial: "practices/overview_forms/link_form", locals: { area: 'results_resources' } %>
                   </div>
                 </div>
               </div>
@@ -297,7 +297,7 @@
                 <% if @practice.practice_results_resources.where(resource_type: 'image').exists? %>
                   <div class="text-bold margin-bottom-2">IMAGES:</div>
                   <% @practice.practice_results_resources.where(resource_type: 'image').each_with_index do |pr, i| %>
-                    <%= render partial: "practices/overview_forms/image_form", locals: { resource: pr, placeholder: i, area: 'results' } %>
+                    <%= render partial: "practices/overview_forms/image_form", locals: { resource: pr, placeholder: i, area: 'results_resources' } %>
                   <% end %>
                 <% end %>
               </div>
@@ -306,7 +306,7 @@
                   <div class="text-bold margin-bottom-2">VIDEOS:</div>
                 <% end %>
                 <% @practice.practice_results_resources.where(resource_type: 'video').each_with_index do |pr, i| %>
-                  <%= render partial: "practices/overview_forms/video_form", locals: {resource: pr, placeholder: i, area: 'results'} %>
+                  <%= render partial: "practices/overview_forms/video_form", locals: {resource: pr, placeholder: i, area: 'results_resources'} %>
                 <% end %>
               </div>
               <div id="display_results_resources_file">
@@ -314,7 +314,7 @@
                   <div class="text-bold margin-bottom-2">FILES:</div>
                   <% end %>
                 <% @practice.practice_results_resources.where(resource_type: 'file').each_with_index do |pr, i| %>
-                  <%= render partial: "practices/overview_forms/file_form", locals: { resource: pr, placeholder: i, area: 'results' } %>
+                  <%= render partial: "practices/overview_forms/file_form", locals: { resource: pr, placeholder: i, area: 'results_resources' } %>
                 <% end %>
               </div>
               <div id="display_results_resources_link">
@@ -322,7 +322,7 @@
                   <div class="text-bold margin-bottom-2">LINKS:</div>
                 <% end %>
                 <% @practice.practice_results_resources.where(resource_type: 'link').each_with_index do |pr, i| %>
-                  <%= render partial: "practices/overview_forms/link_form", locals: { resource: pr, placeholder: i, area: 'results' } %>
+                  <%= render partial: "practices/overview_forms/link_form", locals: { resource: pr, placeholder: i, area: 'results_resources' } %>
                 <% end %>
               </div>
             </div>
@@ -409,8 +409,68 @@
                 <% end %>
               </div>
             </div>
-          </fieldset>
 
+            <!-- MULTIMEDIA section -->
+            <div id="results_section">
+              <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
+              <div class="margin-bottom-5 margin-top-3">
+                <b>Results statement</b> (required field)<br/>
+                Type information about the impact of the practice at the originating facility.
+                <%= f.text_area :overview_results, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-overview-statement-input" %>
+              </div>
+              <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
+              <div class="margin-bottom-5 margin-top-3">
+                <b>Multimedia</b><br />
+                Add any additional images, video, and audio to support your practice's overview.
+              </div>
+              <div class="grid-row grid-gap margin-top-105 margin-bottom-3">
+                <div class="usa-radio margin-bottom-1 position-relative grid-col-12">
+                  <%= radio_button_tag 'practice_multimedia[resource_type]',
+                                       'Image',
+                                       false, onclick: "displayResourceForm('multimedia', 'image');",
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "practice_multimedia_image"
+                  %>
+                  <%= label_tag 'practice_multimedia_image', 'Image', class: 'usa-radio__label
+                initiating-facility-type-label x0-bottom', for: "practice_multimedia_image" %>
+                </div>
+                <div class="usa-radio margin-bottom-1 position-relative grid-col-12">
+                  <%= radio_button_tag 'practice_multimedia[resource_type]',
+                                       'Video',
+                                       false, onclick: "displayResourceForm('multimedia', 'video');",
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "practice_multimedia_video"
+                  %>
+                  <%= label_tag 'practice_multimedia_video', 'Video', class: 'usa-radio__label
+                initiating-facility-type-label x0-bottom', for: "practice_multimedia_video" %>
+                </div>
+                <div class="margin-top-3 display_problem_form">
+                  <div id="multimedia_image_form">
+                    <%= render partial: "practices/overview_forms/image_form", locals: { area: 'multimedia' } %>
+                  </div>
+                  <div id="multimedia_video_form">
+                    <%= render partial: "practices/overview_forms/video_form", locals: { area: 'multimedia '} %>
+                  </div>
+                </div>
+              </div>
+              <div id="display_multimedia_resources_image">
+                <% if @practice.practice_multimedia.where(resource_type: 'image').exists? %>
+                  <div class="text-bold margin-bottom-2">IMAGES:</div>
+                  <% @practice.practice_multimedia.where(resource_type: 'image').each_with_index do |pr, i| %>
+                    <%= render partial: "practices/overview_forms/image_form", locals: { resource: pr, placeholder: i, area: 'multimedia' } %>
+                  <% end %>
+                <% end %>
+              </div>
+              <div id="display_multimedia_resources_video">
+                <% if @practice.practice_multimedia.where(resource_type: 'video').exists? %>
+                  <div class="text-bold margin-bottom-2">VIDEOS:</div>
+                <% end %>
+                <% @practice.practice_multimedia.where(resource_type: 'video').each_with_index do |pr, i| %>
+                  <%= render partial: "practices/overview_forms/video_form", locals: {resource: pr, placeholder: i, area: 'multimedia'} %>
+                <% end %>
+              </div>
+            </div>
+          </fieldset>
         <% end %>
         <div class="grid-row">
             <%= link_to practice_adoptions_path(@practice), class: 'usa-button--outline dm-btn-base editor-back-to-link margin-right-1' do %>
