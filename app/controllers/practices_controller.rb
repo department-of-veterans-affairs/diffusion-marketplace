@@ -57,10 +57,10 @@ class PracticesController < ApplicationController
       marker_url = view_context.image_path('map-marker-default.svg')
       status = 'Complete'
       if current_diffusion_status.status == 'In progress' || current_diffusion_status.status == 'Planning' || current_diffusion_status.status == 'Implementing'
-        marker_url = view_context.image_path('map-marker-in-progress.svg')
+        marker_url = view_context.image_path('map-marker-in-progress-default.svg')
         status = 'In progress'
       elsif current_diffusion_status.status == 'Unsuccessful'
-        marker_url = view_context.image_path('map-marker-unsuccessful.svg')
+        marker_url = view_context.image_path('map-marker-unsuccessful-default.svg')
         status = 'Unsuccessful'
       end
 
