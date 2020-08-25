@@ -57,10 +57,10 @@ class PracticesController < ApplicationController
       marker_url = view_context.image_path('map-marker-default.svg')
       status = 'Complete'
       if current_diffusion_status.status == 'In progress' || current_diffusion_status.status == 'Planning' || current_diffusion_status.status == 'Implementing'
-        marker_url = view_context.image_path('map-marker-in-progress.svg')
+        marker_url = view_context.image_path('map-marker-in-progress-default.svg')
         status = 'In progress'
       elsif current_diffusion_status.status == 'Unsuccessful'
-        marker_url = view_context.image_path('map-marker-unsuccessful.svg')
+        marker_url = view_context.image_path('map-marker-unsuccessful-default.svg')
         status = 'Unsuccessful'
       end
 
@@ -440,7 +440,7 @@ class PracticesController < ApplicationController
                                      :main_display_image, :crop_x, :crop_y, :crop_h, :crop_w,
                                      :delete_main_display_image,
                                      :origin_picture, :origin_picture_original_w, :origin_picture_original_h, :origin_picture_crop_x, :origin_picture_crop_y, :origin_picture_crop_w, :origin_picture_crop_h,
-                                     :overview_problem, :overview_solution, :overview_results,
+                                     :overview_problem, :overview_solution, :overview_results, :maturity_level,
                                      impact_photos_attributes: [:id, :title, :is_main_display_image, :description, :position, :attachment, :attachment_original_w, :attachment_original_h, :attachment_crop_x, :attachment_crop_y,
                                                                 :attachment_crop_w, :attachment_crop_h, :_destroy],
                                      video_files_attributes: [:id, :title, :description, :url, :position, :attachment, :attachment_original_w, :attachment_original_h, :attachment_crop_x, :attachment_crop_y,

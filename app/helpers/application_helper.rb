@@ -83,11 +83,15 @@ module ApplicationHelper
     facilities_data = facilities_data || @facilities_data || facilities_data_json
     facility_data = @facility_data || facilities_data.find {|f| f['StationNumber'] == facility_id }
     if facility_data.present?
-      common_name = show_common_name(facility_data["OfficialStationName"], facility_data["CommonName"])
-      facility_data["OfficialStationName"] + (common_name.present? ? " #{common_name}" : '')
+      facility_name_with_common_name(facility_data["OfficialStationName"], facility_data["CommonName"])
     else
       facility_id
     end
+  end
+
+  def facility_name_with_common_name(official_station_name, common_name)
+    common_name = show_common_name(official_station_name, common_name)
+    official_station_name + (common_name.present? ? " #{common_name}" : '')
   end
 
   def facilities_data_json

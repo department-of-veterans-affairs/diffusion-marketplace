@@ -9,6 +9,7 @@ class Practice < ApplicationRecord
   acts_as_list
   visitable :ahoy_visit
   enum initiating_facility_type: { facility: 0, visn: 1, department: 2, other: 3 }
+  enum maturity_level: { emerging: 0, replicate: 1, scale: 2 }
 
   attr_accessor :views
   attr_accessor :current_month_views
@@ -39,7 +40,8 @@ class Practice < ApplicationRecord
         self.main_display_image_updated_at_changed? ||
         self.published_changed? ||
         self.enabled_changed? ||
-        self.date_initiated_changed?
+        self.date_initiated_changed? ||
+        self.maturity_level_changed?
       self.reset_searchable_cache = true
     end
   end
@@ -156,6 +158,23 @@ class Practice < ApplicationRecord
         'VHA Shark Tank Winner',
         'Other'
       ]
+
+  MATURITY_LEVEL_MAP = {
+      emerging: {
+          form_label: 'Core feasibility and effectiveness is still being assessed in a live environment to understand practice value and real-world impact.
+                       The practice is adapting based on initial customer and participant feedback.',
+          description: 'This practice is emerging and worth watching as it is being assessed in early implementations.'
+      },
+      replicate: {
+          form_label: 'The practice is being adopted at additional facilities after successful pilot(s); it is evolving as it seeks to optimize impact and replicability.',
+          description: 'This practice is replicating across multiple facilities as its impact continues to be validated. '
+      },
+      scale: {
+          form_label: 'A national stakeholder has decided the practice impact has been validated and its replicability established. The practice will be implemented at all
+                       applicable facilities.',
+          description: 'This practice is scaling widely with the support of national stakeholders.'
+      }
+  }
 
 
   validates_attachment_content_type :main_display_image, content_type: /\Aimage\/.*\z/

@@ -1,0 +1,12 @@
+<div class="usa-alert usa-alert--info usa-alert--no-icon margin-bottom-1 maturity-level-banner">
+  <div class="usa-alert__body line-height-sans-6">
+    <%
+      maturity = @practice.maturity_level
+    %>
+      <p class="usa-alert__text text-bold">This is <%= maturity == 'emerging' ? 'an' : 'a' %> <%= maturity %> practice.</p>
+      <p class="usa-alert__text">
+        <%= Practice::MATURITY_LEVEL_MAP[maturity.to_sym][:description] %>
+        <a href="/search?query=<%= maturity %>" class="dm-internal-link">See more <%= maturity %> practices.</a>
+      </p>
+  </div>
+</div>

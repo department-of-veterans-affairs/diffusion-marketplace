@@ -255,7 +255,6 @@ class SavePracticeService
   end
 
   def update_initiating_facility
-
     initiating_facility_type = @practice_params[:initiating_facility_type]
     initiating_facility = @practice_params[:initiating_facility]
     if initiating_facility_type.present? && initiating_facility.present?
