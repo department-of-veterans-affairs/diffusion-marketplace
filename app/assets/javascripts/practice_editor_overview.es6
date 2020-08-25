@@ -496,21 +496,31 @@ function validateFormFields(formSelector, sArea, sType){
 }
 
 function clearErrorDivs(sArea){
-    //FILE
-    document.getElementById(sArea + '_file_err_message_name').style.display = "none";
-    document.getElementById(sArea + '_file_err_message_description').style.display = "none";
-    document.getElementById(sArea + '_file_err_message_attachment').style.display = "none";
+    // FILE
+    if (sArea === 'file') {
+        document.getElementById(sArea + '_file_err_message_name').style.display = "none";
+        document.getElementById(sArea + '_file_err_message_description').style.display = "none";
+        document.getElementById(sArea + '_file_err_message_attachment').style.display = "none";
+    }
 
-    document.getElementById(sArea + '_video_err_message_name').style.display = "none";
-    document.getElementById(sArea + '_video_err_message_link_url').style.display = "none";
+    // VIDEO
+    if (sArea === 'video') {
+        document.getElementById(sArea + '_video_err_message_name').style.display = "none";
+        document.getElementById(sArea + '_video_err_message_link_url').style.display = "none";
+    }
 
-    document.getElementById(sArea + '_link_err_message_link_url').style.display = "none";
-    document.getElementById(sArea + '_link_err_message_name').style.display = "none";
-    document.getElementById(sArea + '_link_err_message_description').style.display = "none";
+    // LINK
+    if (sArea === 'video') {
+        document.getElementById(sArea + '_link_err_message_link_url').style.display = "none";
+        document.getElementById(sArea + '_link_err_message_name').style.display = "none";
+        document.getElementById(sArea + '_link_err_message_description').style.display = "none";
+    }
 
-    document.getElementById(sArea + '_image_err_message_attachment').style.display = "none";
-    document.getElementById(sArea + '_image_err_message_name').style.display = "none";
-
+    // IMAGE
+    if (sArea === 'video') {
+        document.getElementById(sArea + '_image_err_message_attachment').style.display = "none";
+        document.getElementById(sArea + '_image_err_message_name').style.display = "none";
+    }
 }
 
 function attachAddResourceListener(formSelector, container, sArea, sType){
@@ -526,7 +536,7 @@ function attachAddResourceListener(formSelector, container, sArea, sType){
         link_form.attr('class', `resource_container`);
         link_form.find('#cancelAddButtonRow').remove();
 debugger
-          const deleteEntryHtml = `<div class="grid-col-12 trash-container margin-bottom-3">
+          const deleteEntryHtml = `<div class="grid-col-12 trash-container">
            <input type="hidden" value="false" name="practice[practice_${sArea}_resources_attributes][${nGuid}_${sType}][_destroy]"/>
             <button class="usa-button--unstyled dm-btn-warning remove_nested_fields">Delete entry</button></div>`;
 
@@ -539,6 +549,12 @@ debugger
         $.each(link_form.find('label'), function(i, ele){
             $(ele).attr('for', $(ele).attr('for').replace(/RANDOM_NUMBER_OR_SOMETHING/g, nGuid));
         });
+        debugger
+        if ($(`#${container}`).children().length === 0) {
+            let title = `${sType}s`
+            let titleHTML = `<div class="text-bold margin-bottom-2" >${title.toUpperCase()}:</div>`
+            $(`#${container}`).append(titleHTML)
+        }
         link_form.appendTo(`#${container}`);
         document.getElementById(container).style.display = 'block';
 
@@ -582,14 +598,8 @@ function removePracticeProblemResource(id){
 }
 
 function clearFormOnAddResource(form){
-        
     var formToClear = document.getElementById(form);
-    
     $.each(formToClear.find('input'), function(i, ele){
         $(ele).val('');
     });
 }
-
-
-
-

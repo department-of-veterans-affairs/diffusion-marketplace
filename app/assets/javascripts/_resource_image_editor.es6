@@ -77,11 +77,11 @@
       $(target).closest('.dm-cropper-boundary').find(".crop_h").val(cropValues.height);
 
       _createModifiedImage({ target })
-      _toggleCropper({ visible: false, target: target });
-      _toggleCropperBtnView({ visible: false, target: target });
-      _toggleEditBtn({ visible: true, target: target });
-      _toggleDeleteBtn({ visible: true, target: target });
-      _toggleImageView({ isCrop: false, target: target });
+      _toggleCropper({ visible: false, target });
+      _toggleCropperBtnView({ visible: false, target });
+      _toggleEditBtn({ visible: true, target });
+      _toggleDeleteBtn({ visible: true, target });
+      _toggleImageView({ isCrop: false, target });
     } else {
       $(target).closest('.dm-cropper-boundary').find(".crop_x").val(null);
       $(target).closest('.dm-cropper-boundary').find(".crop_y").val(null);
@@ -109,14 +109,10 @@
 
   function _loadPracticeThumbnail({ uploadedImg, target }) {
     let imgSizeMb = uploadedImg.size * 0.000001 // convert bytes to MB
-    let errorContent = {
-      dimension: 'Sorry, you cannot upload an image smaller than 768px wide by 432px high.',
-      size: 'Sorry, you cannot upload an image larger than 32MB.'
-    }
     let $errorText = $('.dm-image-error-text')
     let $imgImgsContainer = $(target).closest('.dm-cropper-boundary').find($imgsContainer)
 
-    // check if the image is less than 34 MB
+    // check if the image is less than 32 MB
     if (imgSizeMb <= 32) {
       let reader = new FileReader();
 
@@ -135,7 +131,7 @@
     } else {
       $imgImgsContainer.empty();
       $errorText.removeClass('display-none')
-      $errorText.find('p').text(errorContent.size)
+      $errorText.find('p').text('Sorry, you cannot upload an image larger than 32MB.')
       _failedImageLoad({ target })
     }
   }
@@ -145,6 +141,7 @@
     _toggleDeleteBtn({ visible: false, target });
     _setCropBoxValues({ isCrop: false, target });
     _toggleCropperBtnView({ visible: false, target });
+    _clearUpload({ target });
   }
 
   function _successfulImageLoad({ target }) {

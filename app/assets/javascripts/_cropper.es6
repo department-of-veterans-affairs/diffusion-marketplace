@@ -140,8 +140,8 @@
     let $errorText = $('.dm-image-error-text')
     let $imgImgsContainer = $(target).closest('.dm-cropper-boundary').find('.dm-cropper-images-container')
 
-    // check if the image is less than 34 MB
-    if (imgSizeMb <= 30) {
+    // check if the image is less than 32 MB
+    if (imgSizeMb <= 32) {
       let reader = new FileReader();
 
       reader.onload = (function() {
