@@ -6,6 +6,7 @@
 <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-3"></div>
 <h4><%= title %></h4>
 <div><%= statement %></div>
+<% if resources.image.any? %>
 <h4>Images</h4>
   <% grouped_resources['image'].each do |pr| %>
     <div class="margin-bottom-2px">
@@ -17,9 +18,12 @@
     <% end %>
     </div>
   <% end %>
+<% end %>
+
+<% if resources.video.any? %>
 <h4>Videos</h4>
-<% grouped_resources['video'].each do |pr| %>
-  <div class="margin-bottom-2px">
+  <% grouped_resources['video'].each do |pr| %>
+    <div class="margin-bottom-2px">
       <%= youtube_embed(pr.link_url) %>
       <% if pr.name.present? %>
         <div class="font-sans-2xs line-height-135 margin-top-1 width-100 line-height-15px">
@@ -28,25 +32,33 @@
       <% end %>
     </div>
   <% end %>
-<h4>Files</h4>
-<% grouped_resources['file'].each do |pr| %>
-  <div class="margin-bottom-2px">
-    <% if pr.name.present? %>
-      <div class="font-sans-2xs line-height-135 margin-top-1 width-100 line-height-15px">
-        <li><%= pr.description %> <%= link_to(pr.attachment&.original_filename, pr.attachment_s3_presigned_url, target: '_blank')%>
-      </div>
-    <% end %>
-  </div>
-<% end %>
-<h4>Links</h4>
-<% grouped_resources['link'].each do |pr| %>
-  <div class="margin-bottom-2px">
-    <% if pr.name.present? %>
-      <div class="font-sans-2xs line-height-135 margin-top-1 width-100 line-height-15px">
-<!--        <li><%#= pr.name %> <%#= link_to(pr.link_url, target: '_blank', alt: pr.description)%>-->
-        <li><%= pr.description %> <a href="<%= pr.link_url %>" target="_blank"><%= pr.name %></a></li>
-      </div>
-    <% end %>
-  </div>
 <% end %>
 
+<% if resources.file.any? %>
+<h4>Files</h4>
+  <% grouped_resources['file'].each do |pr| %>
+    <div class="margin-bottom-2px">
+      <% if pr.name.present? %>
+        <div class="font-sans-2xs line-height-135 margin-top-1 width-100 line-height-15px">
+          <li><%= pr.description %> <%= link_to(pr.attachment&.original_filename, pr.attachment_s3_presigned_url, target: '_blank')%>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
+
+<% if resources.link.any? %>
+<h4>Links</h4>
+  <% grouped_resources['link'].each do |pr| %>
+    <div class="margin-bottom-2px">
+      <% if pr.name.present? %>
+        <% if !pr.link_url.start_with?("http") %>
+            <% pr.link_url = "http://" + pr.link_url %>
+        <% end %>
+        <div class="font-sans-2xs line-height-135 margin-top-1 width-100 line-height-15px">
+          <li><%= pr.description %> <a href="<%= pr.link_url %>" target="_blank"><%= pr.name %></a></li>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
