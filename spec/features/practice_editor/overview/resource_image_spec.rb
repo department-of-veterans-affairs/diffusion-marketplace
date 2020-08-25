@@ -7,9 +7,9 @@ describe 'Practice editor', type: :feature, js: true do
     @pr_no_resources = Practice.create!(name: 'A practice with no resources', slug: 'practice-no-resources', approved: true, published: true, date_initiated: Date.new(2011, 12, 31))
     @pr_with_resources = Practice.create!(name: 'A practice with resources', slug: 'practice-with-resources', approved: true, published: true, date_initiated: Date.new(2011, 12, 31))
     img_path_1 = "#{Rails.root}/spec/assets/acceptable_img.jpg"
-    @problem_resource = PracticeProblemResource.create(practice: @pr_with_resources, name: 'problem resource caption', attachment: File.new(img_path_1))
-    @problem_resource = PracticeSolutionResource.create(practice: @pr_with_resources, name: 'problem solution caption', attachment: File.new(img_path_1))
-    @problem_resource = PracticeResultsResource.create(practice: @pr_with_resources, name: 'problem results caption', attachment: File.new(img_path_1))
+    @problem_resource = PracticeProblemResource.create(practice: @pr_with_resources, name: 'problem resource caption', attachment: File.new(img_path_1), resource_type: 0)
+    @problem_resource = PracticeSolutionResource.create(practice: @pr_with_resources, name: 'problem solution caption', attachment: File.new(img_path_1), resource_type: 0)
+    @problem_resource = PracticeResultsResource.create(practice: @pr_with_resources, name: 'problem results caption', attachment: File.new(img_path_1), resource_type: 0)
     @img_path_2 = "#{Rails.root}/spec/assets/unacceptable_img_size.png"
     @img_path_3 = "#{Rails.root}/spec/assets/charmander.png"
     login_as(@admin, :scope => :user, :run_callbacks => false)
@@ -73,6 +73,7 @@ describe 'Practice editor', type: :feature, js: true do
         before do
           visit practice_overview_path(@pr_no_resources)
         end
+
         context 'clicking cancel' do
           it 'should hide the form' do
             within(:css, '#problem_section') do
@@ -90,7 +91,7 @@ describe 'Practice editor', type: :feature, js: true do
             end
           end
         end
-  
+
         context 'add image with too large file size' do
           it 'should throw an error and clear upload' do
             within(:css, '#problem_section') do
@@ -107,7 +108,7 @@ describe 'Practice editor', type: :feature, js: true do
             end
           end
         end
-  
+
         context 'remove uploaded image' do
           it 'should clear upload' do
             within(:css, '#problem_section') do
@@ -128,7 +129,7 @@ describe 'Practice editor', type: :feature, js: true do
             end
           end
         end
-  
+
         context 'not including a caption' do
           it 'should throw an error and prevent adding image' do
             within(:css, '#problem_section') do
@@ -145,14 +146,14 @@ describe 'Practice editor', type: :feature, js: true do
               find('.add-resource').click
               expect(page).to have_content('Please enter a caption.')
             end
-  
+
             within(:css, '#display_problem_resources_image') do
               expect(page).to have_no_css("img")
             end
           end
         end
-  
-        context 'uploading and cropping and image' do
+
+        context 'uploading an image' do
           it 'should add the image on save' do
             within(:css, '#problem_section') do
               find('label[for=practice_problem_image]').click
@@ -165,38 +166,53 @@ describe 'Practice editor', type: :feature, js: true do
               expect(page).to have_no_content('Drag file here or choose from folder')
               expect(page).to have_content('Remove image')
               expect(page).to have_content('Edit image')
+              fill_in('Caption', with: 'this is a cool picture')
               find('.add-resource').click
-              expect(page).to have_content('Please enter a caption.')
+
+              within(:css, '#problem_resource_image_form') do
+                # clear the form
+                expect(page).to have_content('Drag file here or choose from folder')
+                expect(page).to have_no_css("img")
+                expect(page).to have_content('Caption')
+                expect(page).to have_no_content('this is a cool picture')
+                expect(page).to have_no_content('Remove image')
+                expect(page).to have_no_content('Edit image')
+              end
+
+              within(:css, '#display_problem_resources_image') do
+                expect(page).to have_content('IMAGES')
+                expect(page).to have_css("img")
+                expect(page).to have_content('Caption')
+                expect(page).to have_content('this is a cool picture')
+                expect(page).to have_no_content('Remove image')
+                expect(page).to have_content('Edit image')
+              end
             end
-  
+
+            find('#practice-editor-save-button').click
             within(:css, '#display_problem_resources_image') do
-              expect(page).to have_no_css("img")
+              expect(page).to have_content('IMAGES')
+              expect(page).to have_css("img[src*='charmander.png")
+              expect(page).to have_content('Caption')
+              expect(page).to have_content('this is a cool picture')
+              expect(page).to have_no_content('Remove image')
+              expect(page).to have_content('Edit image')
             end
           end
         end
       end
 
+      describe 'with saved images' do
+        before do
+          visit practice_overview_path(@pr_with_resources)
+        end
+
+        # deleting an entry
+        # uploading and cropping and saving
+        # uploading adding and cropping and saving
+        # cropping an uploaded
+      end
     end
-
-
-      # def first_metric_field
-      #   find_all('.practice-editor-metric-li').first
-      # end
-
-      # def first_metric_field_input
-      #   first_metric_field.find('input')
-      # end
-
-      # def last_metric_field
-      #   find_all('.practice-editor-metric-li').last
-      # end
-
-      # def last_metric_field_input
-      #   last_metric_field.find('input')
-      # end
   end
 end
 
-def upload_new_img(img_path)
-  attach_file(find('.dm-cropper-upload-image'), img_path)
-end

@@ -1,0 +1,17 @@
+<% resource ||= nil
+   placeholder = placeholder
+   area = area
+   type = type
+%>
+
+<% if resource&.id %>
+  <div class="grid-col-12 margin-top-2">
+    <input type="hidden" value="false" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][_destroy]"/>
+    <button type="button" data-area="<%= area %>" data-type="<%= type %>"class="usa-button--unstyled dm-btn-warning remove_nested_fields">Delete entry</button>
+  </div>
+<% else %>
+  <div id="cancelAddButtonRow" class="grid-row margin-y-2">
+    <button type="button" id="cancel_<%= area %>_<%= type %>" class="usa-button--outline dm-btn-primary margin-right-1">Cancel</button>
+    <button type="button" class="add-resource usa-button dm-btn-primary">Add <%= type %></button>
+  </div>
+<% end %>

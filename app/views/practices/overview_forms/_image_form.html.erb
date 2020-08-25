@@ -12,7 +12,7 @@
     <input type="hidden" value="<%= resource.id %>" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][id]"/>
   <% end  %>
 
-  <section class="dm-resource-image-editor margin-bottom-2">
+  <section class="dm-resource-image-editor">
     <div class="dm-cropper-boundary grid-col-12 margin-top-2" data-type="image" data-area="<%= area %>">
       <%# resource crop data %>
       <% [:crop_x, :crop_y, :crop_w, :crop_h].each { |attribute| %>
@@ -69,15 +69,7 @@
       <input type="text" readonly class="overview_error_msg" id="<%= area %>_image_err_message_name" value="Please enter a caption."/>
     </div>
   </section>
-  <% if resource&.id %>
-    <div class="grid-col-12 trash-container">
-      <input type="hidden" value="false" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][_destroy]"/>
-      <button type="button" class="usa-button--unstyled dm-btn-warning remove_nested_fields">Delete entry</button>
-    </div>
-  <% else %>
-    <div id="cancelAddButtonRow" class="grid-row margin-bottom-2">
-      <button type="button" id="cancel_<%= area %>_image" class="usa-button--outline dm-btn-primary margin-right-1">Cancel</button>
-      <button type="button" class="add-resource usa-button dm-btn-primary">Add image</button>
-    </div>
-  <% end %>
- </div>
+
+  <%# action buttons %>
+  <%= render partial: "practices/overview_forms/form_actions", locals: { resource: resource, placeholder: placeholder, area: area, type: 'image' } %>
+</div>
