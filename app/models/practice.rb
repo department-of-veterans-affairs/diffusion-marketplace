@@ -101,15 +101,6 @@ class Practice < ApplicationRecord
     favorited_count_by_range((Date.today - 1.months).at_beginning_of_month, (Date.today - 1.months).at_end_of_month)
   end
 
-  # adoptions
-  def current_month_adoptions
-    adoptions_count_by_range(Date.today.beginning_of_month, Date.today.end_of_month)
-  end
-
-  def last_month_adoptions
-    adoptions_count_by_range((Date.today - 1.months).at_beginning_of_month, (Date.today - 1.months).at_end_of_month)
-  end
-
   has_paper_trail
   # has_attached_file :main_display_image, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/:style/missing.png"
 
@@ -266,10 +257,10 @@ class Practice < ApplicationRecord
   def favorited_count_by_range(start_date, end_date)
     user_practices.where({time_favorited: start_date...end_date}).count
   end
-  def adoptions_count
+  def commits_count
     user_practices.where({committed: true}).count
   end
-  def adoptions_count_by_range(start_date, end_date)
+  def commits_count_by_range(start_date, end_date)
     user_practices.where({time_committed: start_date...end_date}).count
   end
 end

@@ -53,7 +53,9 @@ ActiveAdmin.register Practice do
       p.workbook.add_worksheet(:name => "Adoption Data - #{Date.today}") do |sheet|
         sheet.add_row ["#{@practice_name} Adoption Data - #{Date.today}"], style: @xlsx_main_header
         sheet.add_row [''], style: @xlsx_divider
-        sheet.add_row ['Note: Adoption date is based on the adoption status.'], style: @xlsx_legend_no_bottom_border
+        sheet.add_row ['Please Note'], style: @xlsx_legend_no_bottom_border
+        sheet.add_row ['Adoption date is based on the adoption status.'], style: @xlsx_legend_no_y_border
+        sheet.add_row [''], style: @xlsx_divider
         sheet.add_row ['Completed/Unsuccessful: End Date'], style: @xlsx_legend_no_y_border
         sheet.add_row ['In Progress: Start Date'], style: @xlsx_legend_no_top_border
         sheet.merge_cells 'A1:C1'
