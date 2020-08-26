@@ -70,9 +70,9 @@
       <div class="practice-editor-long-rect-svg border-top-05 border-primary-dark"></div>
       <h1>Overview</h1>
       <div class="metric-section practice-section">
-        <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_problem_resources, statement:  @practice.overview_problem, title: 'The problem'} %>
-        <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_solution_resources, statement:  @practice.overview_solution, title: 'The solution'} %>
-        <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_results_resources, statement:  @practice.overview_results, title: 'The results'} %>
+        <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_problem_resources, statement:  @practice.overview_problem, title: 'The problem', s_area: 'problem'} %>
+        <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_solution_resources, statement:  @practice.overview_solution, title: 'The solution', s_area: 'solution'} %>
+        <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_results_resources, statement:  @practice.overview_results, title: 'The results', s_area: 'results'} %>
       </div>
     </div>
   </div>

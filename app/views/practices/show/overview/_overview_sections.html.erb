@@ -1,11 +1,29 @@
 <%
   grouped_resources = resources.group_by(&:resource_type)
   # debugger
+  truncated_id = "overview_" + s_area + "_truncated"
+  dots_id = "dots_" + s_area + "_statement"
+  more_text_id = s_area + "_statement_more_text"
+  see_more_button_text_id = "see_more_" + s_area + "statement"
+
 %>
 
 <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-3"></div>
 <h4><%= title %></h4>
-<div><%= statement %></div>
+<% if statement.length > 360 %>
+  <span id=<%= truncated_id %>><%= overview_statement(statement) %></span>
+  <span id=<%= dots_id %>>...</span>
+  <span id=<%= more_text_id %> class="display-none">
+    <%= overview_statement(statement, 0, 99999) %>
+    </span><a class="usa-button--unstyled dm-btn-primary font-sans-3xs" href="" onclick="seeMoreStatementText(<%= dots_id %>, <%= more_text_id %>, <%= see_more_button_text_id %>, <%= truncated_id %> ); return false" id=<%= see_more_button_text_id.to_s %>>See more</a>
+<% else %>
+  <%= statement %>
+<% end %>
+
+
+<!--<div><%#= statement %></div>-->
+
+
 <% if resources.image.any? %>
 <h4>Images</h4>
   <% grouped_resources['image'].each do |pr| %>
@@ -40,7 +58,7 @@
     <div class="margin-bottom-2px">
       <% if pr.name.present? %>
         <div class="font-sans-2xs line-height-135 margin-top-1 width-100 line-height-15px">
-          <li><%= pr.description %> <%= link_to(pr.attachment&.original_filename, pr.attachment_s3_presigned_url, target: '_blank')%>
+          <li><%= pr.description %> <%= link_to(pr.name || pr.attachment&.original_filename, pr.attachment_s3_presigned_url, target: '_blank')%>
         </div>
       <% end %>
     </div>
