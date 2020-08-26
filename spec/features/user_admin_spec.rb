@@ -120,7 +120,7 @@ describe 'The user index', type: :feature do
     expect(page).to have_content('dummy@email.com')
   end
 
-  it 'should not try to create a user that aleady exists' do
+  it 'should not try to create a user that already exists' do
     login_as(@admin, scope: :user, run_callbacks: false)
     visit '/users'
 
