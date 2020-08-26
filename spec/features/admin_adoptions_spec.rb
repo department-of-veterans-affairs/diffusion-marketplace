@@ -13,7 +13,7 @@ describe 'Admin Adoptions Tab', type: :feature do
     @diffusion_history_status_2 = DiffusionHistoryStatus.create!(diffusion_history_id: @diffusion_history_2.id, status: 'Unsuccessful')
   end
 
-  it 'should show all adoptions by each practice' do
+  it 'should show all adoptions for each practice' do
     visit '/admin'
     click_link 'Adoptions'
 
