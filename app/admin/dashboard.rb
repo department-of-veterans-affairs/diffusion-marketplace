@@ -3,6 +3,7 @@ ActiveAdmin.register_page "Dashboard" do
 
 
   controller do
+    helper_method :adoption_xlsx_styles
     before_action :set_dashboard_values
     def set_dashboard_values
       @beginning_of_current_month = Date.today.at_beginning_of_month.beginning_of_day
@@ -66,6 +67,7 @@ ActiveAdmin.register_page "Dashboard" do
       metrics_xlsx_file = Axlsx::Package.new do |p|
         # styling
         s = p.workbook.styles
+        adoption_xlsx_styles(p)
         xlsx_main_header = s.add_style sz: 16, alignment: { horizontal: :center }, bg_color: '005EA2', fg_color: 'FFFFFF'
         xlsx_sub_header_1 = s.add_style sz: 14, alignment: { horizontal: :center }, fg_color: '005EA2'
         xlsx_sub_header_2 = s.add_style sz: 12, alignment: { horizontal: :center }, bg_color: '585858', fg_color: 'FFFFFF'
@@ -75,6 +77,16 @@ ActiveAdmin.register_page "Dashboard" do
 
         # building out xlsx file
         p.workbook.add_worksheet(:name => "DM Metrics - #{Date.today}") do |sheet|
+          sheet.add_row ["Adoptions by Practice - #{Date.today}"], style: xlsx_main_header
+          sheet.add_row [''], style: xlsx_divider
+          sheet.add_row ['Please Note'], style: @xlsx_legend_no_bottom_border
+          sheet.add_row ['Adoptions and commits are defined by the following:'], style: @xlsx_legend_no_y_border
+          sheet.add_row [''], style: xlsx_divider
+          sheet.add_row ['Adoptions: Number of adoptions Practice Owner has added for Diffusion Map.'], style: @xlsx_legend_no_y_border
+          sheet.add_row ['Commits: Number of users committed to practice through Diffusion Marketplace.'], style: @xlsx_legend_no_top_border
+          sheet.merge_cells 'A1:C1'
+          sheet.add_row [''], style: xlsx_divider
+
           sheet.add_row ["Diffusion Marketplace Metrics - #{Date.today}"], style: xlsx_main_header
           sheet.add_row ["General Traffic"], style: xlsx_sub_header_1
           @general_traffic_stats.each { |key, value| sheet.add_row [key.to_s.tr!('_', ' ').titleize, value], style: xlsx_entry }
@@ -144,7 +156,7 @@ ActiveAdmin.register_page "Dashboard" do
     div(class: 'dashboard-legend-container') do
       div(class: 'dashboard-legend') do
         h3 do
-          'Important'
+          'Please Note'
         end
         h4 do
           span 'Adoptions '
