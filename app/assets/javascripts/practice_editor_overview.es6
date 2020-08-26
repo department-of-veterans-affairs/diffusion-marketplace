@@ -3,37 +3,26 @@
 
     function initializeOverviewForm() {
         hideResources();
-
+        attachDeleteResourceListener()
         //links
         attachAddResourceListener('problem_resources_link_form', 'display_problem_resources_link', 'problem_resources', 'link');
         attachAddResourceListener('solution_resources_link_form', 'display_solution_resources_link', 'solution_resources', 'link');
         attachAddResourceListener('results_resources_link_form', 'display_results_resources_link', 'results_resources', 'link');
-        attachDeleteResourceListener('problem_resources', 'link');
-        attachDeleteResourceListener('solution_resources', 'link');
-        attachDeleteResourceListener('results_resources', 'link');
+
         //Videos
         attachAddResourceListener('problem_resources_video_form', 'display_problem_resources_video', 'problem_resources', 'video');
-        attachDeleteResourceListener('problem', 'video');
         attachAddResourceListener('solution_resources_video_form', 'display_solution_resources_video', 'solution_resources', 'video');
-        attachDeleteResourceListener('solution_resources', 'video');
         attachAddResourceListener('results_resources_video_form', 'display_results_resources_video', 'results_resources', 'video');
-        attachDeleteResourceListener('results_resources', 'video');
+
         //Files
         attachAddResourceListener('problem_resources_file_form', 'display_problem_resources_file', 'problem_resources', 'file');
-        attachDeleteResourceListener('problem_resources', 'file');
         attachAddResourceListener('solution_resources_file_form', 'display_solution_resources_file', 'solution_resources', 'file');
-        attachDeleteResourceListener('solution_resources', 'file');
-
         attachAddResourceListener('results_resources_file_form', 'display_results_resources_file', 'results_resources', 'file');
-        attachDeleteResourceListener('results_resources', 'file');
+
         //Images
         attachAddResourceListener('problem_resources_image_form', 'display_problem_resources_image', 'problem_resources', 'image');
         attachAddResourceListener('solution_resources_image_form', 'display_solution_resources_image', 'solution_resources', 'image');
         attachAddResourceListener('results_resources_image_form', 'display_results_resources_image', 'results_resources', 'image');
-        attachDeleteResourceListener('problem_resources', 'image');
-        attachDeleteResourceListener('solution_resources', 'image');
-        attachDeleteResourceListener('results_resources', 'image');
-
 
         //PROBLEM
         $(document).on('click', '#cancel_problem_resources_image', function (e) {
@@ -139,23 +128,32 @@
             document.getElementById('multimedia_video_form').style.display = 'none';
         });
     }
+
     function showCurrentlySelectedOptions(currentSelectForm){
         $(`#${currentSelectForm}`).show();
     }
+
     function hideOtherSelectForms(formsToHide){
         formsToHide.forEach(f => {
             $(`#${f}`).hide();
         });
     }
 
-    function attachDeleteResourceListener(sArea, sType){
+    function attachDeleteResourceListener(){
         $document.on('click', '.remove_nested_fields', function (e) {
             const destroyInput = $(e.target).siblings('input');
             destroyInput.val(true);
-            $(e.target).parents('div[id*=' + sArea + '_' + sType + '_form]').hide();
+            let area = $(e.target).data('area')
+            let type = $(e.target).data('type')
+            $(e.target).parents('div[id*=' + area + '_' + type + '_form]').hide();
+
+            let visibleChildDivs = $(e.target).closest(`#display_${area}_${type}`).find('div:visible')
+            // remove title of section if there are no items
+            if (visibleChildDivs.length === 1) {
+                visibleChildDivs[0].remove()
+            }
         });
     }
-
 
     function hideResources(){
         document.getElementById('problem_image_form').style.display = 'none';
@@ -553,9 +551,9 @@ function attachAddResourceListener(formSelector, container, sArea, sType){
         link_form.find('#cancelAddButtonRow').remove();
 
         const deleteEntryHtml = `
-            <div class="grid-col-12 trash-container">
+            <div class="grid-col-12 margin-top-2">
                <input type="hidden" value="false" name="practice[practice_${sArea}_attributes][${nGuid}_${sType}][_destroy]"/>
-               <button type="button" class="usa-button--unstyled dm-btn-warning remove_nested_fields">
+               <button type="button" data-area="${sArea}" data-type="${sType}" class="usa-button--unstyled dm-btn-warning remove_nested_fields">
                     Delete entry
                </button>
             </div>

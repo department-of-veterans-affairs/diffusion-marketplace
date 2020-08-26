@@ -3,7 +3,8 @@
    placeholder = placeholder.to_s + '_link'
    area = area.to_s
 %>
-  <div id="<%= area %>_link_form<%= "_#{placeholder}" if resource %>" <% if resource %> class="resource_container margin-bottom-5" <% end %>>
+
+<div id="<%= area %>_link_form<%= "_#{placeholder}" if resource %>" <% if resource %> class="resource_container margin-bottom-5" <% end %>>
     <input type="hidden" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][resource_type]" value="link"/>
     <% if resource&.id  %>
       <input value="<%= resource&.id %>" type="hidden" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][id]"/>
@@ -20,18 +21,6 @@
     <input <%= resource&.id ? 'required' : '' %> class="usa-input" value="<%= resource&.description %>" type="text" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][description]" id="practice_<%= area %>_attributes_<%= placeholder %>_description" style="width: 643px"/>
     <input type="text" readonly class="overview_error_msg" id="<%= area %>_link_err_message_description" value="Please enter a description."/>
 
-    <% if resource %>
-     <div class="grid-col-12 trash-container">
-       <input type="hidden" value="false" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][_destroy]"/>
-        <button type="button" class="usa-button usa-button--unstyled text-red-50 remove_nested_fields">Delete entry</button>
-     </div>
-      <% else %>
-      <div id="cancelAddButtonRow" class="grid-row margin-bottom-2">
-        <button type="button" id="cancel_<%= area %>_link" class=" usa-button usa-button--outline dm-btn-primary
-              editor-back-to-link margin-right-1 padding-2 margin-bottom-5 text-no-underline">Cancel</button>
-
-        <button type="button" class="add-resource usa-button usa-button-outline pe-continue padding-2
-              margin-right-1 margin-bottom-5">Add link</button>
-      </div>
-    <% end %>
-  </div>
+  <%# action buttons %>
+  <%= render partial: "practices/overview_forms/form_actions", locals: { resource: resource, placeholder: placeholder, area: area, type: 'link' } %>
+</div>
