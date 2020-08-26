@@ -98,23 +98,6 @@ ActiveAdmin.register_page "Adoptions" do
             end
           end
         end
-
-        # div(class: 'adoptions-legend') do
-        #   h4 do
-        #     span 'Note: '
-        #     span 'Adoption date is based on the adoption status.'
-        #   end
-        #   ul do
-        #     li do
-        #       span 'Completed/Unsuccessful: '
-        #       span 'End Date'
-        #     end
-        #     li do
-        #       span 'In Progress: '
-        #       span 'Start Date'
-        #     end
-        #   end
-        # end
       end
 
       columns do
