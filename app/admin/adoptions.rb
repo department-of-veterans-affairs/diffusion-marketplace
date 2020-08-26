@@ -118,7 +118,7 @@ ActiveAdmin.register_page "Adoptions" do
           if value.present?
             panel "#{name}" do
 
-              h2 do
+              h3 do
                 "Adoption Counts"
               end
               adoption_counts.each do |key, counts|
@@ -132,7 +132,7 @@ ActiveAdmin.register_page "Adoptions" do
                 end
               end
 
-              h2 do
+              h3 do
                 "Adoption Information"
               end
               table_for value do
