@@ -3,30 +3,16 @@ ActiveAdmin.register_page "Dashboard" do
 
 
   controller do
+    helper_method :set_date_values
     helper_method :adoption_xlsx_styles
     before_action :set_dashboard_values
     def set_dashboard_values
-      @beginning_of_current_month = Date.today.at_beginning_of_month.beginning_of_day
-      @end_of_current_month = Date.today.at_end_of_month.end_of_day
-      @beginning_of_last_month = (Date.today - 1.months).at_beginning_of_month.beginning_of_day
-      @end_of_last_month = (Date.today - 1.months).at_end_of_month.end_of_day
-      @beginning_of_two_months_ago = (Date.today - 2.months).at_beginning_of_month.beginning_of_day
-      @end_of_two_months_ago = (Date.today - 2.months).at_end_of_month.end_of_day
-      @beginning_of_three_months_ago = (Date.today - 3.months).at_beginning_of_month.beginning_of_day
-      @end_of_three_months_ago = (Date.today - 3.months).at_end_of_month.end_of_day
+      set_date_values
       @enabled_practices = Practice.where(enabled: true)
 
       site_visit_stats = Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where(time: @beginning_of_last_month..@end_of_last_month).group("properties->>'ip_address'").count
       @practices = @enabled_practices.order(name: :asc)
       @practices_views = @enabled_practices.sort_by(&:current_month_views).reverse!
-
-      @date_headers = {
-          total: 'Current Total',
-          current: "#{@beginning_of_current_month.strftime('%B %Y')} - current month",
-          one_month_ago: "#{@beginning_of_last_month.strftime('%B %Y')} - last month",
-          two_month_ago: "#{@beginning_of_two_months_ago.strftime('%B %Y')} - 2 months ago",
-          three_month_ago: "#{@beginning_of_three_months_ago.strftime('%B %Y')} - 3 months ago"
-      }
 
       @practices_headers = ['Practice Name', "#{@date_headers[:current]}", "Last Month", "#{@date_headers[:total]}"]
 
@@ -137,11 +123,11 @@ ActiveAdmin.register_page "Dashboard" do
           sheet.add_row @practices_headers, style: xlsx_sub_header_3
           @practices.each do |value|
             sheet.add_row [
-                              value.name,
-                              value.current_month_commits,
-                              value.last_month_commits,
-                              value.commits_count
-                          ], style: xlsx_entry
+                value.name,
+                value.current_month_commits,
+                value.last_month_commits,
+                value.commits_count
+            ], style: xlsx_entry
           end
         end
       end

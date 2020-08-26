@@ -13,12 +13,16 @@ describe 'Admin Adoptions Tab', type: :feature do
     @diffusion_history_status_2 = DiffusionHistoryStatus.create!(diffusion_history_id: @diffusion_history_2.id, status: 'Unsuccessful')
   end
 
-  it 'should show all adoptions for each practice' do
+  it 'should show all adoptions and adoption counts for practices that have at least one adoption' do
     visit '/admin'
     click_link 'Adoptions'
 
     expect(page).to have_selector("input[value='Download All']")
     expect(page).to have_selector('.panel', count: 1)
+    expect(page).to have_content('CURRENT MONTH')
+    expect(page).to have_content('LAST MONTH')
+    expect(page).to have_content('2 MONTHS AGO')
+    expect(page).to have_content('CURRENT TOTAL')
     expect(page).to have_content('The Best Practice Ever!')
     expect(page).to have_content('Cabrillo VA Clinic')
     expect(page).to have_content('C.W. Bill Young Department of Veterans Affairs Medical Center (Bay Pines)')
