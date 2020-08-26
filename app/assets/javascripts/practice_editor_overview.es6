@@ -549,7 +549,7 @@ function attachAddResourceListener(formSelector, container, sArea, sType){
         const formToClear = $(`#${formSelector}`);
         const link_form = formToClear.clone(true);
         link_form.attr('id', `${formSelector}_${nGuid}`);
-        link_form.attr('class', `resource_container`);
+        link_form.attr('class', `resource_container margin-bottom-5`);
         link_form.find('#cancelAddButtonRow').remove();
 
         const deleteEntryHtml = `

@@ -251,6 +251,7 @@
   function attachNewFieldEventListeners() {
     $document.arrive('.dm-cropper-boundary', (newElem) => {
       setImageVars();
+      _attachUploadEventListener();
       _attachSaveEditEventListener();
       _attachCancelEditEventListener();
     })
