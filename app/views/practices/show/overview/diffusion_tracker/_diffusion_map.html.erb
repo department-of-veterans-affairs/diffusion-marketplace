@@ -1,0 +1,44 @@
+<% if ENV['GOOGLE_API_KEY'].present? %>
+  <% provide :head_tags do %>
+    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+      var mapData = <%= raw @diffusion_histories.to_json %>;
+      var defaultMarkerIcon = '<%= image_path('map-marker-default.svg') %>';
+      var selectedMarkerIcon = '<%= image_path('map-marker-selected.svg') %>';
+      var hoverMarkerIcon = '<%= image_path('map-marker-hover.svg') %>';
+      var defaultInProgressMarkerIcon = '<%= image_path('map-marker-in-progress-default.svg') %>';
+      var selectedInProgressMarkerIcon = '<%= image_path('map-marker-in-progress-selected.svg') %>';
+      var hoverInProgressMarkerIcon = '<%= image_path('map-marker-in-progress-hover.svg') %>';
+      var defaultUnsuccessfulMarkerIcon = '<%= image_path('map-marker-unsuccessful-default.svg') %>';
+      var selectedUnsuccessfulMarkerIcon = '<%= image_path('map-marker-unsuccessful-selected.svg') %>';
+      var hoverUnsuccessfulMarkerIcon = '<%= image_path('map-marker-unsuccessful-hover.svg') %>';
+    <% end %>
+    <%= javascript_include_tag 'diffusion_history/practice_map', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'diffusion_history/_map_utilities', 'data-turbolinks-track': 'reload' %>
+  <% end %>
+  <section class="margin-bottom-0 padding-0" id="map-of-diffusion">
+    <div class="width-full position-relative grid-row margin-bottom-2">
+      <div id="map" class="dm-practice-diffusion-map"></div>
+    </div>
+    <div class="display-inline-block">
+      <% statuses = ['Complete', 'In progress', 'Unsuccessful'] %>
+      <form id="mapFilters" name="mapFilters" class="practice-map-filters margin-bottom-05">
+        <fieldset>
+          <legend class="usa-sr-only">Statuses</legend>
+          <% statuses.each do |v| %>
+            <% id = v.downcase.gsub(' ', '_') %>
+            <input id="status_<%= id %>" name="statuses" type="checkbox" value="<%= v %>" class="usa-checkbox__input" checked>
+            <label for="status_<%= id %>" class="usa-checkbox__label <%= id %>">
+              <% if v == 'In progress' %>
+                In-progress
+              <% elsif v == 'Complete' %>
+                Successful
+              <% else %>
+                <%= v %>
+              <% end %>
+            </label>
+          <% end %>
+        </fieldset>
+      </form>
+    </div>
+  </section>
+<% end %>

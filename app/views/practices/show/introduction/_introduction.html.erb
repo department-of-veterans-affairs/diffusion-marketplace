@@ -56,7 +56,7 @@
       </div>
       <%# practice summary %>
       <p class="margin-bottom-1 font-sans-lg line-height-sans-6">
-        <%= safe_join(h(@practice.summary).split("\r\n"), tag(:br)) %>
+        <%= safe_join(raw(@practice.summary).split("\r\n"), tag(:br)) %>
       </p>
 
       <%# practice maturity level %>
