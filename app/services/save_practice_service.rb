@@ -36,37 +36,37 @@ class SavePracticeService
       if @practice_params["practice_multimedia_attributes"].present?
         process_multimedia_params
       end
-      # @practice_params['practice_problem_resources_attributes'].each do |resource|
-      
-      #   debugger
-      #   resource
-      #   res = resource[1]
-      #   if res[:resource_type] == 'image'
-      #     if res[:attachment].present?
-      #       debugger
-      #       blah = @practice.practice_problem_resources.find_or_create_by!(resource_type: res[:resource_type], name: res[:name], attachment: res[:attachment], practice_id: @practice.id)
-      #       debugger
-      #       if is_cropping?(res)
-      #         reprocess_avatar(blah, res)
-      #       end
-      #       resource.delete
-      #       debugger
-      #       resource
-      #     else
-      #       resource.delete
-      #     end
-      #   end
-    # end
+        # @practice_params['practice_problem_resources_attributes'].each do |resource|
 
-      # rescue_method(:update_practice_partner_practices)
-      # rescue_method(:update_department_practices)
-      # rescue_method(:remove_attachments)
-      # rescue_method(:manipulate_avatars)
-      # rescue_method(:remove_main_display_image)
-      # rescue_method(:crop_main_display_image)
-      # rescue_method(:update_initiating_facility)
-      # rescue_method(:update_practice_awards)
-      # rescue_method(:update_category_practices)
+        #   debugger
+        #   resource
+        #   res = resource[1]
+        #   if res[:resource_type] == 'image'
+        #     if res[:attachment].present?
+        #       debugger
+        #       blah = @practice.practice_problem_resources.find_or_create_by!(resource_type: res[:resource_type], name: res[:name], attachment: res[:attachment], practice_id: @practice.id)
+        #       debugger
+        #       if is_cropping?(res)
+        #         reprocess_avatar(blah, res)
+        #       end
+        #       resource.delete
+        #       debugger
+        #       resource
+        #     else
+        #       resource.delete
+        #     end
+        #   end
+        # end
+
+        # rescue_method(:update_practice_partner_practices)
+        # rescue_method(:update_department_practices)
+        # rescue_method(:remove_attachments)
+        # rescue_method(:manipulate_avatars)
+        # rescue_method(:remove_main_display_image)
+        # rescue_method(:crop_main_display_image)
+        # rescue_method(:update_initiating_facility)
+        # rescue_method(:update_practice_awards)
+        # rescue_method(:update_category_practices)
 
     rescue => e
       Rails.logger.error "save_practice error: #{e.message}"
@@ -103,11 +103,13 @@ class SavePracticeService
     @resources.each do |resource|
       res_name = "practice_#{resource}_resources"
       params_resources = @practice_params["#{res_name}_attributes"]
-      params_resources.each do |r|
-        if is_cropping?(r[1]) && r[1][:_destroy] == 'false' && r[1][:id].present?
-          r_id = r[1][:id].to_i
-          record = @practice.send(res_name).find(r_id)
-          reprocess_attachment(record, r[1])
+      if params_resources
+        params_resources.each do |r|
+          if is_cropping?(r[1]) && r[1][:_destroy] == 'false' && r[1][:id].present?
+            r_id = r[1][:id].to_i
+            record = @practice.send(res_name).find(r_id)
+            reprocess_attachment(record, r[1])
+          end
         end
       end
     end
@@ -169,7 +171,7 @@ class SavePracticeService
       other_cat_id = Category.find_by(name: 'Other').id
 
       if cat_keys.include?(other_cat_id.to_s)
-        categories_to_process = category_attribute_params.values.map { |param| { id: param[:id], name: param[:name], _destroy: param[:_destroy]} }
+        categories_to_process = category_attribute_params.values.map { |param| {id: param[:id], name: param[:name], _destroy: param[:_destroy]} }
         # If Other was checked, create a new category with is_other true and create a category_practice linking to the new category
         categories_to_process.each do |category|
           unless category[:name] == ""
@@ -189,7 +191,7 @@ class SavePracticeService
 
       if other_practice_categories.any?
         if cat_keys.exclude?(other_cat_id.to_s)
-          practice_category_practices.joins(:category).where(categories: { is_other: true }).destroy_all
+          practice_category_practices.joins(:category).where(categories: {is_other: true}).destroy_all
 
           other_practice_categories.each do |oc|
             oc.destroy unless CategoryPractice.where.not(practice_id: @practice.id).where(category_id: oc.id).any?
@@ -197,7 +199,7 @@ class SavePracticeService
         end
       end
 
-      practice_category_practices.joins(:category).where(categories: { is_other: false }).each do |pcp|
+      practice_category_practices.joins(:category).where(categories: {is_other: false}).each do |pcp|
         pcp.destroy unless cat_keys.include?(pcp.category_id.to_s)
       end
 
