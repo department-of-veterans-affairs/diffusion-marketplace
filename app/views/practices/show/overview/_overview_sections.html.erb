@@ -10,7 +10,7 @@
 
 <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-3"></div>
 <h4><%= title %></h4>
-<% if statement.length > 360 %>
+<% if statement.present? && statement.length > 360 %>
   <span id=<%= truncated_id %>><%= overview_statement(statement) %></span>
   <span id=<%= dots_id %>>...</span>
   <span id=<%= more_text_id %> class="display-none">
