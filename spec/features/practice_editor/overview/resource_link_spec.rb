@@ -6,12 +6,12 @@ describe 'Practice editor', type: :feature, js: true do
     @admin.add_role(User::USER_ROLES[0].to_sym)
     @pr_no_resources = Practice.create!(name: 'A practice with no resources', slug: 'practice-no-resources', approved: true, published: true, date_initiated: Date.new(2011, 12, 31), overview_problem: 'problem statement', overview_solution: 'solution statement', overview_results: 'results statement')
     @pr_with_resources = Practice.create!(name: 'A practice with resources', slug: 'practice-with-resources', approved: true, published: true, date_initiated: Date.new(2011, 12, 31), overview_problem: 'problem statement', overview_solution: 'solution statement', overview_results: 'results statement')
-    link_url_1 = 'https://www.google.com/'
-    @problem_resource = PracticeProblemResource.create(practice: @pr_with_resources, name: 'existing problem link', description: 'problem link description', link_url: link_url_1, resource_type: 3)
-    @problem_resource = PracticeSolutionResource.create(practice: @pr_with_resources, name: 'existing solution link', description: 'solution link description', link_url: link_url_1, resource_type: 3)
-    @problem_resource = PracticeResultsResource.create(practice: @pr_with_resources, name: 'existing results link', description: 'results link description', link_url: link_url_1, resource_type: 3)
+    @link_url_1 = 'https://www.google.com/'
     @link_url_2 = 'https://www.wikipedia.com/'
     @link_url_3 = 'https://www.youtube.com/'
+    PracticeProblemResource.create(practice: @pr_with_resources, name: 'existing problem link', description: 'problem link description', link_url: @link_url_1, resource_type: 3)
+    PracticeSolutionResource.create(practice: @pr_with_resources, name: 'existing solution link', description: 'solution link description', link_url: @link_url_1, resource_type: 3)
+    PracticeResultsResource.create(practice: @pr_with_resources, name: 'existing results link', description: 'results link description', link_url: @link_url_1, resource_type: 3)
     login_as(@admin, :scope => :user, :run_callbacks => false)
   end
 
@@ -40,7 +40,7 @@ describe 'Practice editor', type: :feature, js: true do
         def saved_link_display_test(area)
           within(:css, "##{area}_section") do
             expect(page).to have_content('LINKS')
-            expect(url_field.value).to eq("https://www.google.com/")
+            expect(url_field.value).to eq(@link_url_1)
             expect(title_field.value).to eq("existing #{area} link")
             expect(description_field.value).to eq("#{area} link description")
             expect(page).to have_content('Delete entry')
@@ -177,7 +177,7 @@ describe 'Practice editor', type: :feature, js: true do
 
         save_practice
         visit practice_path(@pr_with_resources)
-        expect(page).to have_no_link("existing #{area} link", href: 'https://www.google.com/')
+        expect(page).to have_no_link("existing #{area} link", href: @link_url_1)
         expect(page).to have_link('edited link', href: @link_url_3)
         expect(page).to have_content("edited practice #{area} link")
       end
@@ -284,9 +284,9 @@ def with_resource_pr_test_setup
   visit practice_path(@pr_with_resources)
   expect(page).to have_content('Overview')
   expect(page).to have_content("Links")
-  expect(page).to have_link('existing problem link', href: 'https://www.google.com/')
-  expect(page).to have_link('existing solution link', href: 'https://www.google.com/')
-  expect(page).to have_link('existing results link', href: 'https://www.google.com/')
+  expect(page).to have_link('existing problem link', href: @link_url_1)
+  expect(page).to have_link('existing solution link', href: @link_url_1)
+  expect(page).to have_link('existing results link', href: @link_url_1)
   expect(page).to have_content("problem link description")
   expect(page).to have_content("solution link description")
   expect(page).to have_content("results link description")
