@@ -30,7 +30,7 @@
               <div class="margin-bottom-5 margin-top-3">
                 <b>Problem statement</b> (required field)<br/>
                 Type the main problem your practice attempted to address and include context and any initial goals.
-                <%= f.text_area :overview_problem, :required => true, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-overview-statement-input", required: true %>
+                <%= f.text_area :overview_problem, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-overview-statement-input", required: true %>
               </div>
               <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
               <div class="margin-bottom-5 margin-top-3">
