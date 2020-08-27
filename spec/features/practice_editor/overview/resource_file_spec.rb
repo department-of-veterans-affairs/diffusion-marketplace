@@ -13,7 +13,6 @@ describe 'Practice editor', type: :feature, js: true do
     @file_path_2 = "#{Rails.root}/spec/assets/SpongeBob.txt"
     @file_path_3 = "#{Rails.root}/spec/assets/charmander.png"
     login_as(@admin, :scope => :user, :run_callbacks => false)
-    @areas = ['problem', 'solution', 'results']
   end
 
   describe 'Overview page -- resource file:' do
@@ -31,23 +30,11 @@ describe 'Practice editor', type: :feature, js: true do
           expect(page).to have_no_css('#solution_resources_file_form')
           expect(page).to have_no_css('#results_resources_file_form')
         end
-
-        it 'should not display any file resources' do
-          expect(page).to have_no_content('FILES')
-          expect(page).to have_no_css("input[accept='.pdf,.docx,.xlxs,.jpg,.jpeg,.png']")
-        end
       end
 
       context 'with saved resources' do
         before do
           with_resource_pr_test_setup
-        end
-
-        it 'should not display the file resource form' do
-          expect(page).to have_no_content("Upload a .pdf, .docx, .xlxs, .jpg, .jpeg, or .png file that is less than 32MB.")
-          expect(page).to have_no_css('#problem_resources_file_form')
-          expect(page).to have_no_css('#solution_resources_file_form')
-          expect(page).to have_no_css('#results_resources_file_form')
         end
 
         def saved_file_display_test(area)
@@ -73,9 +60,13 @@ describe 'Practice editor', type: :feature, js: true do
         no_resource_pr_test_setup
       end
 
+      def cancel_form(area)
+        find("#cancel_#{area}_resources_file").click
+      end
+
       def complete_add_file_test(area)
         within(:css, "##{area}_section") do
-          click_file_form(area)
+          click_file_form area
           expect(page).to have_content("Upload a .pdf, .docx, .xlxs, .jpg, .jpeg, or .png file that is less than 32MB.")
           expect(page).to have_content('File name')
           expect(page).to have_content('File description')
@@ -91,6 +82,14 @@ describe 'Practice editor', type: :feature, js: true do
           fill_in('File description', with: "new practice #{area} file")
           add_resource
           expect(find_all('.overview_error_msg').length).to eq 0
+
+          within(:css, "##{area}_resources_file_form") do
+            expect(page).to have_content('Drag file here or choose from folder')
+            expect(name_field.value).to eq ''
+            expect(description_field.value).to eq ''
+          end
+          cancel_form area
+          expect(page).to have_no_css("##{area}_resources_file_form")
         end
 
         within(:css, "#display_#{area}_resources_file") do
@@ -128,7 +127,7 @@ describe 'Practice editor', type: :feature, js: true do
 
       def edit_added_file_test(area)
         within(:css, "##{area}_section") do
-          click_file_form(area)
+          click_file_form area
           upload_file(area, @file_path_2)
           fill_in('File name', with: 'new file')
           fill_in('File description', with: "new practice #{area} file")
@@ -208,7 +207,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         within(:css, "##{area}_section") do
-          click_file_form(area)
+          click_file_form area
           upload_file(area, @file_path_2)
           fill_in('File name', with: 'new file')
           fill_in('File description', with: "new practice #{area} file")
@@ -241,7 +240,6 @@ describe 'Practice editor', type: :feature, js: true do
         delete_entries_test 'results'
       end
     end
-    # canceling form - should clear it and errors
   end
 end
 
