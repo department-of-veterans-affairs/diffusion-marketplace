@@ -7,13 +7,16 @@ ActiveAdmin.register_page "Adoptions" do
     helper_method :adoption_rurality
     helper_method :adoption_xlsx_styles
     helper_method :get_adoption_values
+    helper_method :get_adoption_counts
     before_action :set_adoption_values
 
     def set_adoption_values
       @practices = Practice.order(Arel.sql("lower(name) ASC"))
       @complete_map = {}
+      @adoption_counts = {}
       @practices.each do |p|
         get_adoption_values(p, @complete_map)
+        @adoption_counts[p.name] = get_adoption_counts(p)
       end
     end
   end
@@ -27,37 +30,54 @@ ActiveAdmin.register_page "Adoptions" do
         p.workbook.add_worksheet(:name => "Practice Adoptions - #{Date.today}") do |sheet|
           sheet.add_row ["Adoptions by Practice - #{Date.today}"], style: @xlsx_main_header
           sheet.add_row [''], style: @xlsx_divider
-          sheet.add_row ['Note: Adoption date is based on the adoption status.'], style: @xlsx_legend_no_bottom_border
+          sheet.add_row ['Please Note'], style: @xlsx_legend_no_bottom_border
+          sheet.add_row ['Adoption date is based on the adoption status.'], style: @xlsx_legend_no_y_border
+          sheet.add_row [''], style: @xlsx_divider
           sheet.add_row ['Completed/Unsuccessful: End Date'], style: @xlsx_legend_no_y_border
           sheet.add_row ['In Progress: Start Date'], style: @xlsx_legend_no_top_border
           sheet.merge_cells 'A1:C1'
           sheet.add_row [''], style: @xlsx_divider
 
-          @complete_map.each do |key, value|
+          @complete_map.each do |name, value|
             if value.present?
-              sheet.add_row [key], style: @xlsx_sub_header_2
+              sheet.add_row [name], style: @xlsx_sub_header_2
+              # adoption counts
+              sheet.add_row ['Adoption Counts'], style: @xlsx_sub_header
+              @adoption_counts.each do |key, counts|
+                if key == name
+                  sheet.add_row ["#{@date_headers[:current]}", counts[:adopted_this_month]], style: @xlsx_entry
+                  sheet.add_row ["#{@date_headers[:one_month_ago]}", counts[:adopted_one_month_ago]], style: @xlsx_entry
+                  sheet.add_row ["#{@date_headers[:two_month_ago]}", counts[:adopted_two_months_ago]], style: @xlsx_entry
+                  sheet.add_row ["#{@date_headers[:total]}", counts[:total_adopted]], style: @xlsx_entry
+                end
+              end
+
+              sheet.add_row [''], style: @xlsx_divider
+
+              # adoption information
+              sheet.add_row ['Adoption Information'], style: @xlsx_sub_header
               sheet.add_row [
-                                'State',
-                                'Location',
-                                'VISN',
-                                'Station Number',
-                                'Adoption Date',
-                                'Adoption Status',
-                                'Rurality',
-                                'Facility Complexity'
-                            ], style: @xlsx_sub_header_3
+                  'State',
+                  'Location',
+                  'VISN',
+                  'Station Number',
+                  'Adoption Date',
+                  'Adoption Status',
+                  'Rurality',
+                  'Facility Complexity'
+              ], style: @xlsx_sub_header_3
 
               value.each do |v|
                 sheet.add_row [
-                                  v[:state],
-                                  adoption_facility_name(v),
-                                  v[:visn],
-                                  v[:station_number],
-                                  adoption_date(v),
-                                  v[:status],
-                                  adoption_rurality(v),
-                                  v[:complexity]
-                              ], style: @xlsx_entry
+                    v[:state],
+                    adoption_facility_name(v),
+                    v[:visn],
+                    v[:station_number],
+                    adoption_date(v),
+                    v[:status],
+                    adoption_rurality(v),
+                    v[:complexity]
+                ], style: @xlsx_entry
               end
               sheet.add_row [''], style: @xlsx_divider
             end
@@ -77,9 +97,12 @@ ActiveAdmin.register_page "Adoptions" do
         form action: admin_adoptions_export_all_adoptions_path, method: :get, style: 'text-align: left' do |f|
           f.input :submit, type: :submit, value: 'Download All', style: 'margin-bottom: 1rem'
         end
+
         div(class: 'adoptions-legend') do
+          h3 do
+            'Please Note'
+          end
           h4 do
-            span 'Note: '
             span 'Adoption date is based on the adoption status.'
           end
           ul do
@@ -99,6 +122,24 @@ ActiveAdmin.register_page "Adoptions" do
         complete_map.each do |name, value|
           if value.present?
             panel "#{name}" do
+
+              h3 do
+                "Adoption Counts"
+              end
+              adoption_counts.each do |key, counts|
+                if key == name
+                  table_for counts do
+                    column("#{date_headers[:current]}") {|c| c[:adopted_this_month]}
+                    column("#{date_headers[:one_month_ago]}") {|c| c[:adopted_one_month_ago]}
+                    column("#{date_headers[:two_month_ago]}") {|c| c[:adopted_two_months_ago]}
+                    column("#{date_headers[:total]}") {|c| c[:total_adopted]}
+                  end
+                end
+              end
+
+              h3 do
+                "Adoption Information"
+              end
               table_for value do
                 column('State') { |v| v[:state] }
                 column('Location') { |v| adoption_facility_name(v) }

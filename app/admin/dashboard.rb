@@ -3,62 +3,49 @@ ActiveAdmin.register_page "Dashboard" do
 
 
   controller do
+    helper_method :set_date_values
+    helper_method :adoption_xlsx_styles
     before_action :set_dashboard_values
     def set_dashboard_values
-      @beginning_of_current_month = Date.today.at_beginning_of_month.beginning_of_day
-      @end_of_current_month = Date.today.at_end_of_month.end_of_day
-      @beginning_of_last_month = (Date.today - 1.months).at_beginning_of_month.beginning_of_day
-      @end_of_last_month = (Date.today - 1.months).at_end_of_month.end_of_day
-      @beginning_of_two_months_ago = (Date.today - 2.months).at_beginning_of_month.beginning_of_day
-      @end_of_two_months_ago = (Date.today - 2.months).at_end_of_month.end_of_day
-      @beginning_of_three_months_ago = (Date.today - 3.months).at_beginning_of_month.beginning_of_day
-      @end_of_three_months_ago = (Date.today - 3.months).at_end_of_month.end_of_day
+      set_date_values
       @enabled_practices = Practice.where(enabled: true)
 
       site_visit_stats = Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where(time: @beginning_of_last_month..@end_of_last_month).group("properties->>'ip_address'").count
       @practices = @enabled_practices.order(name: :asc)
       @practices_views = @enabled_practices.sort_by(&:current_month_views).reverse!
 
-      @date_headers = {
-        total: 'Current Total',
-        current: "#{@beginning_of_current_month.strftime('%B %Y')} - current month",
-        one_month_ago: "#{@beginning_of_last_month.strftime('%B %Y')} - last month",
-        two_month_ago: "#{@beginning_of_two_months_ago.strftime('%B %Y')} - 2 months ago",
-        three_month_ago: "#{@beginning_of_three_months_ago.strftime('%B %Y')} - 3 months ago"
-      }
-
       @practices_headers = ['Practice Name', "#{@date_headers[:current]}", "Last Month", "#{@date_headers[:total]}"]
 
       @general_traffic_stats = {
-        unique_visitors: site_visit_stats.keys.length,
-        number_of_site_visits: site_visit_stats.sum {|_k, v| v},
-        total_accounts: User.all.count
+          unique_visitors: site_visit_stats.keys.length,
+          number_of_site_visits: site_visit_stats.sum {|_k, v| v},
+          total_accounts: User.all.count
       }
 
       @practices_added_stats = {
-        added_this_month: @enabled_practices.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
-        added_one_month_ago: @enabled_practices.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
-        total_practices_created: @enabled_practices.count
+          added_this_month: @enabled_practices.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
+          added_one_month_ago: @enabled_practices.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
+          total_practices_created: @enabled_practices.count
       }
 
       @practices_favorited_stats = {
-        favorited_this_month: UserPractice.where(time_favorited: @beginning_of_current_month..@end_of_current_month).count,
-        favorited_one_month_ago: UserPractice.where(time_favorited: @beginning_of_last_month..@end_of_last_month).count,
-        total_favorited: UserPractice.where(favorited: true).count
+          favorited_this_month: UserPractice.where(time_favorited: @beginning_of_current_month..@end_of_current_month).count,
+          favorited_one_month_ago: UserPractice.where(time_favorited: @beginning_of_last_month..@end_of_last_month).count,
+          total_favorited: UserPractice.where(favorited: true).count
       }
 
       @practices_favorites = @enabled_practices.sort_by(&:current_month_favorited).reverse!
 
       @practices_comment_stats = {
-        comments_this_month: Commontator::Comment.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
-        comments_one_month_ago: Commontator::Comment.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
-        total_comments: Commontator::Comment.count
+          comments_this_month: Commontator::Comment.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
+          comments_one_month_ago: Commontator::Comment.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
+          total_comments: Commontator::Comment.count
       }
 
-      @practices_adoption_stats = {
-        adopted_this_month: UserPractice.where(time_committed: @beginning_of_current_month..@end_of_current_month, committed: true).count,
-        adopted_one_month_ago: UserPractice.where(time_committed: @beginning_of_last_month..@end_of_last_month,committed: true).count,
-        total_adopted: UserPractice.where(committed: true).count
+      @practices_commitment_stats = {
+          committed_this_month: UserPractice.where(time_committed: @beginning_of_current_month..@end_of_current_month, committed: true).count,
+          committed_one_month_ago: UserPractice.where(time_committed: @beginning_of_last_month..@end_of_last_month,committed: true).count,
+          total_committed: UserPractice.where(committed: true).count
       }
     end
 
@@ -66,6 +53,7 @@ ActiveAdmin.register_page "Dashboard" do
       metrics_xlsx_file = Axlsx::Package.new do |p|
         # styling
         s = p.workbook.styles
+        adoption_xlsx_styles(p)
         xlsx_main_header = s.add_style sz: 16, alignment: { horizontal: :center }, bg_color: '005EA2', fg_color: 'FFFFFF'
         xlsx_sub_header_1 = s.add_style sz: 14, alignment: { horizontal: :center }, fg_color: '005EA2'
         xlsx_sub_header_2 = s.add_style sz: 12, alignment: { horizontal: :center }, bg_color: '585858', fg_color: 'FFFFFF'
@@ -75,6 +63,16 @@ ActiveAdmin.register_page "Dashboard" do
 
         # building out xlsx file
         p.workbook.add_worksheet(:name => "DM Metrics - #{Date.today}") do |sheet|
+          sheet.add_row ["Adoptions by Practice - #{Date.today}"], style: xlsx_main_header
+          sheet.add_row [''], style: xlsx_divider
+          sheet.add_row ['Please Note'], style: @xlsx_legend_no_bottom_border
+          sheet.add_row ['Adoptions and commits are defined by the following:'], style: @xlsx_legend_no_y_border
+          sheet.add_row [''], style: xlsx_divider
+          sheet.add_row ['Adoptions: Number of adoptions Practice Owner has added for Diffusion Map.'], style: @xlsx_legend_no_y_border
+          sheet.add_row ['Commits: Number of users committed to practice through Diffusion Marketplace.'], style: @xlsx_legend_no_top_border
+          sheet.merge_cells 'A1:C1'
+          sheet.add_row [''], style: xlsx_divider
+
           sheet.add_row ["Diffusion Marketplace Metrics - #{Date.today}"], style: xlsx_main_header
           sheet.add_row ["General Traffic"], style: xlsx_sub_header_1
           @general_traffic_stats.each { |key, value| sheet.add_row [key.to_s.tr!('_', ' ').titleize, value], style: xlsx_entry }
@@ -84,7 +82,7 @@ ActiveAdmin.register_page "Dashboard" do
           @practices_added_stats.each { |key, value| sheet.add_row [key.to_s.tr!('_', ' ').titleize, value], style: xlsx_entry }
           sheet.add_row [""], style: xlsx_divider
 
-          sheet.add_row ["Practice Engagement & Adoption"], style: xlsx_sub_header_1
+          sheet.add_row ["Practice Engagement & Commitment"], style: xlsx_sub_header_1
           sheet.add_row ["Favorited Counts"], style: xlsx_sub_header_2
           @practices_favorited_stats.each { |key, value| sheet.add_row [key.to_s.tr!('_', ' ').titleize, value], style: xlsx_entry }
           sheet.add_row [""], style: xlsx_divider
@@ -93,11 +91,11 @@ ActiveAdmin.register_page "Dashboard" do
           sheet.add_row @practices_headers, style: xlsx_sub_header_3
           @practices.each do |value|
             sheet.add_row [
-              value.name,
-              value.current_month_favorited,
-              value.last_month_favorited,
-              value.favorited_count
-            ], style: xlsx_entry
+                              value.name,
+                              value.current_month_favorited,
+                              value.last_month_favorited,
+                              value.favorited_count
+                          ], style: xlsx_entry
           end
           sheet.add_row [""], style: xlsx_divider
 
@@ -109,26 +107,26 @@ ActiveAdmin.register_page "Dashboard" do
           sheet.add_row @practices_headers, style: xlsx_sub_header_3
           @practices.each do |value|
             sheet.add_row [
-              value.name,
-              value.commontator_thread.comments.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
-              value.commontator_thread.comments.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
-              value.commontator_thread.comments.count
-            ], style: xlsx_entry
+                              value.name,
+                              value.commontator_thread.comments.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
+                              value.commontator_thread.comments.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
+                              value.commontator_thread.comments.count
+                          ], style: xlsx_entry
           end
           sheet.add_row [""], style: xlsx_divider
 
-          sheet.add_row ["Adoption Counts"], style: xlsx_sub_header_2
-          @practices_adoption_stats.each { |key, value| sheet.add_row [key.to_s.tr!('_', ' ').titleize, value], style: xlsx_entry }
+          sheet.add_row ["Commit Counts"], style: xlsx_sub_header_2
+          @practices_commitment_stats.each { |key, value| sheet.add_row [key.to_s.tr!('_', ' ').titleize, value], style: xlsx_entry }
           sheet.add_row [""], style: xlsx_divider
 
-          sheet.add_row ["Adoption Counts by Practice"], style: xlsx_sub_header_2
+          sheet.add_row ["Commit Counts by Practice"], style: xlsx_sub_header_2
           sheet.add_row @practices_headers, style: xlsx_sub_header_3
           @practices.each do |value|
             sheet.add_row [
-              value.name,
-              value.current_month_adoptions,
-              value.last_month_adoptions,
-              value.adoptions_count
+                value.name,
+                value.current_month_commits,
+                value.last_month_commits,
+                value.commits_count
             ], style: xlsx_entry
           end
         end
@@ -141,28 +139,51 @@ ActiveAdmin.register_page "Dashboard" do
 
   content title: proc {I18n.t("active_admin.dashboard")} do
     enabled_practices = Practice.where(enabled: true)
+    div(class: 'dashboard-legend-container') do
+      div(class: 'dashboard-legend') do
+        h3 do
+          'Please Note'
+        end
+        h4 do
+          span 'Adoptions '
+          span 'and '
+          span 'commits '
+          span 'are defined by the following:'
+        end
+        ul do
+          li do
+            span 'Adoptions: '
+            span 'Number of adoptions Practice Owner has added for Diffusion Map.'
+          end
+          li do
+            span 'Commits: '
+            span 'Number of users committed to practice through Diffusion Marketplace.'
+          end
+        end
+      end
+    end
     tabs do
       tab :users_information do
         columns do
           column do
-            panel 'New user signups by month' do
+            panel 'New Users This Month' do
               column_chart User.where('created_at >= ?', 1.week.ago).group_by_month(:created_at, format: '%b').count, ytitle: 'Users'
             end
 
-            panel 'Users signed in by month' do
+            panel 'New Users by Month' do
               column_chart User.group_by_month(:current_sign_in_at, format: '%b').count, ytitle: 'Users'
             end
           end # column
         end # columns
         user_info = [{
-                         in_the_last: 'New user signups',
+                         in_the_last: 'New Users',
                          '24_hours': User.where('created_at >= ?', 1.day.ago).count,
                          week: User.where('created_at >= ?', 1.week.ago).count,
                          month: User.where('created_at >= ?', 1.month.ago).count,
                          three_months: User.where('created_at >= ?', 3.months.ago).count,
                          year: User.where('created_at >= ?', 1.year.ago).count
                      }, {
-                         in_the_last: 'Users signed in',
+                         in_the_last: 'Total Users',
                          '24_hours': User.where('current_sign_in_at >= ?', 1.day.ago).count,
                          week: User.where('current_sign_in_at >= ?', 1.week.ago).count,
                          month: User.where('current_sign_in_at >= ?', 1.month.ago).count,
@@ -309,7 +330,7 @@ ActiveAdmin.register_page "Dashboard" do
           end
         end # panel
 
-        panel 'Practice Engagement & Adoption' do
+        panel 'Practice Engagement & Commitment' do
           h4 do
             "Favorited Counts"
           end
@@ -352,24 +373,24 @@ ActiveAdmin.register_page "Dashboard" do
           end
 
           h4 do
-            "Adoption Counts"
+            "Commit Counts"
           end
 
-          table_for practices_adoption_stats, id: 'adopted_stats' do
-            column("#{date_headers[:current]}") {|ps| ps[:adopted_this_month]}
-            column("Last Month") {|ps| ps[:adopted_one_month_ago]}
-            column :total_adopted
+          table_for practices_commitment_stats, id: 'adopted_stats' do
+            column("#{date_headers[:current]}") {|ps| ps[:committed_this_month]}
+            column("Last Month") {|ps| ps[:committed_one_month_ago]}
+            column :total_committed
           end
 
           h4 do
-            "Adoption Counts by Practice"
+            "Commit Counts by Practice"
           end
 
           table_for practices do
             column(:name) {|pr| link_to(pr.name, admin_practice_path(pr))}
-            column("#{date_headers[:current]}") {|pr| pr.current_month_adoptions}
-            column("Last Month") {|pr| pr.last_month_adoptions}
-            column("#{date_headers[:total]}") {|pr| pr.adoptions_count}
+            column("#{date_headers[:current]}") {|pr| pr.current_month_commits}
+            column("Last Month") {|pr| pr.last_month_commits}
+            column("#{date_headers[:total]}") {|pr| pr.commits_count}
           end
         end # panel
       end # tab

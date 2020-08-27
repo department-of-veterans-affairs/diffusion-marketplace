@@ -33,9 +33,39 @@ module ActiveAdminHelpers
     complete_map[p.name] = sorted_diffusion_histories
   end
 
+  def set_date_values
+    @beginning_of_current_month = Date.today.at_beginning_of_month.beginning_of_day
+    @end_of_current_month = Date.today.at_end_of_month.end_of_day
+    @beginning_of_last_month = (Date.today - 1.months).at_beginning_of_month.beginning_of_day
+    @end_of_last_month = (Date.today - 1.months).at_end_of_month.end_of_day
+    @beginning_of_two_months_ago = (Date.today - 2.months).at_beginning_of_month.beginning_of_day
+    @end_of_two_months_ago = (Date.today - 2.months).at_end_of_month.end_of_day
+    @beginning_of_three_months_ago = (Date.today - 3.months).at_beginning_of_month.beginning_of_day
+    @end_of_three_months_ago = (Date.today - 3.months).at_end_of_month.end_of_day
+
+    @date_headers = {
+        total: 'Current Total',
+        current: "#{@beginning_of_current_month.strftime('%B %Y')} - current month",
+        one_month_ago: "#{@beginning_of_last_month.strftime('%B %Y')} - last month",
+        two_month_ago: "#{@beginning_of_two_months_ago.strftime('%B %Y')} - 2 months ago",
+        three_month_ago: "#{@beginning_of_three_months_ago.strftime('%B %Y')} - 3 months ago"
+    }
+  end
+
+  def get_adoption_counts(p)
+    set_date_values
+    {
+        adopted_this_month: p.diffusion_histories.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
+        adopted_one_month_ago: p.diffusion_histories.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
+        adopted_two_months_ago: p.diffusion_histories.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
+        total_adopted: p.diffusion_histories.count
+    }
+  end
+
   def adoption_xlsx_styles(p)
     s = p.workbook.styles
     @xlsx_main_header = s.add_style sz: 18, alignment: { horizontal: :center }, bg_color: '005EA2', fg_color: 'FFFFFF'
+    @xlsx_sub_header = s.add_style sz: 16, alignment: { horizontal: :center }, bg_color: 'FFFFFF', fg_color: '005EA2', b: true, border: {style: :thin, color: '000000', edges: [:top, :bottom, :left, :right]}
     @xlsx_sub_header_2 = s.add_style sz: 16, alignment: { horizontal: :left }, bg_color: '585858', fg_color: 'FFFFFF'
     @xlsx_sub_header_3 = s.add_style sz: 14, alignment: { horizontal: :center }, bg_color: 'F3F3F3', fg_color: '000000', b: true, border: {style: :thin, color: '000000', edges: [:top, :bottom, :left, :right]}
     @xlsx_entry = s.add_style sz: 12, alignment: { horizontal: :left, vertical: :center, wrap_text: true}
