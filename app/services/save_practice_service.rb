@@ -6,7 +6,7 @@ class SavePracticeService
     @practice_params = params[:practice_params]
     @avatars = ['practice_creators', 'va_employees']
     @attachments = ['impact_photos', 'additional_documents']
-    @resources = ['problem', 'solution', 'results']
+    @resources = ['problem', 'solution', 'results', 'multimedia']
     @current_endpoint = params[:current_endpoint]
     @error_messages = {
         update_practice_partner_practices: 'error updating practice partners',
@@ -36,27 +36,9 @@ class SavePracticeService
       if @practice_params["practice_multimedia_attributes"].present?
         process_multimedia_params
       end
-        # @practice_params['practice_problem_resources_attributes'].each do |resource|
+        # TODO: uncomment this when we're ready to merge
 
-        #   debugger
-        #   resource
-        #   res = resource[1]
-        #   if res[:resource_type] == 'image'
-        #     if res[:attachment].present?
-        #       debugger
-        #       blah = @practice.practice_problem_resources.find_or_create_by!(resource_type: res[:resource_type], name: res[:name], attachment: res[:attachment], practice_id: @practice.id)
-        #       debugger
-        #       if is_cropping?(res)
-        #         reprocess_avatar(blah, res)
-        #       end
-        #       resource.delete
-        #       debugger
-        #       resource
-        #     else
-        #       resource.delete
-        #     end
-        #   end
-        # end
+        # updated = @practice.update(@practice_params)
 
         # rescue_method(:update_practice_partner_practices)
         # rescue_method(:update_department_practices)
@@ -67,11 +49,15 @@ class SavePracticeService
         # rescue_method(:update_initiating_facility)
         # rescue_method(:update_practice_awards)
         # rescue_method(:update_category_practices)
+        # rescue_method(:crop_resource_images)
 
+        # updated
     rescue => e
       Rails.logger.error "save_practice error: #{e.message}"
       e
     end
+
+    # TODO: delete everything outside of the rescue when we're ready to merge
     updated = @practice.update(@practice_params)
 
     update_practice_partner_practices
