@@ -240,7 +240,6 @@ describe 'Practice editor', type: :feature, js: true do
         delete_entries_test 'results'
       end
     end
-    # canceling form - should clear it and errors
   end
 end
 
