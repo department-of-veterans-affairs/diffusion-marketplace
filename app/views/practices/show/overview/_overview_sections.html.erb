@@ -56,6 +56,7 @@
 
 <% if resources.file.any? %>
   <h4>Files</h4>
+  <ul>
   <% grouped_resources['file'].each do |pr| %>
     <div class="margin-bottom-2px">
       <% if pr.name.present? %>
@@ -65,10 +66,12 @@
       <% end %>
     </div>
   <% end %>
+  </ul>
 <% end %>
 
 <% if resources.link.any? %>
   <h4>Links</h4>
+  <ul>
   <% grouped_resources['link'].each do |pr| %>
     <div class="margin-bottom-2px">
       <% if pr.name.present? %>
@@ -76,9 +79,10 @@
           <% pr.link_url = "http://" + pr.link_url %>
         <% end %>
         <div class="font-sans-2xs line-height-135 margin-top-1 width-100 line-height-15px">
-          <li><%= pr.description %> <a href="<%= pr.link_url %>" target="_blank"><%= pr.name %></a></li>
+          <li><%= pr.description %> <a class="usa-link usa-link--external" href="<%= pr.link_url %>" target="_blank"><%= pr.name %></a></li>
         </div>
       <% end %>
     </div>
   <% end %>
+  </ul>
 <% end %>
