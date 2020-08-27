@@ -33,6 +33,9 @@ class SavePracticeService
       if @practice_params["practice_results_resources_attributes"].present?
         process_results_resource_params
       end
+      if @practice_params["practice_multimedia_attributes"].present?
+        process_multimedia_params
+      end
       # @practice_params['practice_problem_resources_attributes'].each do |resource|
       
       #   debugger
@@ -294,6 +297,7 @@ class SavePracticeService
       practice_awards.destroy_all
     end
   end
+
   def process_problem_resource_params
     PracticeProblemResource.resource_types.each do |rt|
       @practice_params['practice_problem_resources_attributes']&.delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
@@ -309,6 +313,12 @@ class SavePracticeService
   def process_results_resource_params
     PracticeResultsResource.resource_types.each do |rt|
       @practice_params['practice_results_resources_attributes']&.delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
+    end
+  end
+
+  def process_multimedia_params
+    PracticeMultimedium.resource_types.each do |rt|
+      @practice_params['practice_multimedia_attributes']&.delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
     end
   end
 end

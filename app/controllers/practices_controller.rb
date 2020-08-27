@@ -463,7 +463,7 @@ class PracticesController < ApplicationController
                                      practice_problem_resources_attributes: {},
                                      practice_solution_resources_attributes: {},
                                      practice_results_resources_attributes: {},
-                                     practice_multimedia_attributes: [:id, :_destroy, :resource_type, :name, :description, :link_url, :attachment_file_name, :position],
+                                     practice_multimedia_attributes: {},
                                      practice_testimonials_attributes: [:id, :_destroy, :testimonial, :author, :position],
                                      practice_awards_attributes: [:id, :_destroy, :name],
                                      categories_attributes: [:id, :_destroy, :name, :is_other],

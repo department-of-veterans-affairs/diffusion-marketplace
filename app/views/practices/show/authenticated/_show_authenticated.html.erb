@@ -70,9 +70,9 @@
       <div class="practice-editor-long-rect-svg border-top-05 border-primary-dark"></div>
       <h1>Overview</h1>
       <div class="metric-section practice-section">
-        <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_problem_resources, statement:  @practice.overview_problem, title: 'The problem', s_area: 'problem'} %>
-        <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_solution_resources, statement:  @practice.overview_solution, title: 'The solution', s_area: 'solution'} %>
-        <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_results_resources, statement:  @practice.overview_results, title: 'The results', s_area: 'results'} %>
+        <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_problem_resources, statement: @practice.overview_problem, title: 'The problem', s_area: 'problem'} %>
+        <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_solution_resources, statement: @practice.overview_solution, title: 'The solution', s_area: 'solution'} %>
+        <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_results_resources, statement: @practice.overview_results, title: 'The results', s_area: 'results'} %>
       </div>
     </div>
   </div>
@@ -90,6 +90,18 @@
     </div>
   </section>
 <% end %>
+
+<!--//Overview-Problem-->
+<section class="margin-bottom-4 grid-container">
+  <div class="grid-row grid-gap-2">
+    <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
+    <div class="desktop:grid-col-9 grid-col-12">
+      <div class="multimedia-section practice-section">
+        <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_multimedia, statement: '', title: 'Multimedia', s_area: 'multimedia'} %>
+      </div>
+    </div>
+  </div>
+</section>
 
 <% if @practice.diffusion_histories.any? && ENV['GOOGLE_API_KEY'] %>
   <section class="margin-bottom-5 grid-container">
