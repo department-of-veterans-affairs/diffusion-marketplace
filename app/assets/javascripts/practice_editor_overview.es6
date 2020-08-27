@@ -29,7 +29,6 @@
         //PROBLEM
         $(document).on('click', '#cancel_problem_resources_image', function (e) {
             e.preventDefault();
-            document.getElementById("problem_image_form").style.display = 'none';
             document.getElementById('practice_problem_image').checked = false;
             document.getElementById('problem_resources_image_form').style.display = 'none';
         });
@@ -37,21 +36,18 @@
 
         $(document).on('click', '#cancel_problem_resources_link', function (e) {
             e.preventDefault();
-            document.getElementById("problem_link_form").style.display = 'none';
             document.getElementById('practice_problem_link').checked = false;
             document.getElementById('problem_resources_link_form').style.display = 'none';
         });
 
         $(document).on('click', '#cancel_problem_resources_video', function (e) {
             e.preventDefault();
-            document.getElementById("problem_video_form").style.display = 'none';
             document.getElementById('practice_problem_video').checked = false;
             document.getElementById('problem_resources_video_form').style.display = 'none';
         });
 
         $(document).on('click', '#cancel_problem_resources_file', function (e) {
             e.preventDefault();
-            document.getElementById("problem_file_form").style.display = 'none';
             document.getElementById('practice_problem_file').checked = false;
             document.getElementById('problem_resources_file_form').style.display = 'none';
         });
@@ -59,28 +55,24 @@
         //SOLUTION
         $(document).on('click', '#cancel_solution_resources_image', function (e) {
             e.preventDefault();
-            document.getElementById("solution_image_form").style.display = 'none';
             document.getElementById('practice_solution_image').checked = false;
             document.getElementById('solution_resources_image_form').style.display = 'none';
         });
 
         $(document).on('click', '#cancel_solution_resources_link', function (e) {
             e.preventDefault();
-            document.getElementById("solution_link_form").style.display = 'none';
             document.getElementById('practice_solution_link').checked = false;
             document.getElementById('solution_resources_link_form').style.display = 'none';
         });
 
         $(document).on('click', '#cancel_solution_resources_video', function (e) {
             e.preventDefault();
-            document.getElementById("solution_video_form").style.display = 'none';
             document.getElementById('practice_solution_video').checked = false;
             document.getElementById('solution_resources_video_form').style.display = 'none';
         });
 
         $(document).on('click', '#cancel_solution_resources_file', function (e) {
             e.preventDefault();
-            document.getElementById("solution_file_form").style.display = 'none';
             document.getElementById('practice_solution_file').checked = false;
             document.getElementById('solution_resources_file_form').style.display = 'none';
         });
@@ -88,28 +80,24 @@
         //RESULTS
         $(document).on('click', '#cancel_results_resources_image', function (e) {
             e.preventDefault();
-            document.getElementById("results_image_form").style.display = 'none';
             document.getElementById('practice_results_image').checked = false;
             document.getElementById('results_resources_image_form').style.display = 'none';
         });
 
         $(document).on('click', '#cancel_results_resources_link', function (e) {
             e.preventDefault();
-            document.getElementById("results_link_form").style.display = 'none';
             document.getElementById('practice_results_link').checked = false;
             document.getElementById('results_resources_link_form').style.display = 'none';
         });
 
         $(document).on('click', '#cancel_results_resources_video', function (e) {
             e.preventDefault();
-            document.getElementById("results_video_form").style.display = 'none';
             document.getElementById('practice_results_video').checked = false;
             document.getElementById('results_resources_video_form').style.display = 'none';
         });
 
         $(document).on('click', '#cancel_results_resources_file', function (e) {
             e.preventDefault();
-            document.getElementById("results_file_form").style.display = 'none';
             document.getElementById('practice_results_file').checked = false;
             document.getElementById('results_resources_file_form').style.display = 'none';
         });
@@ -119,14 +107,12 @@
             e.preventDefault();
             document.getElementById("multimedia_image_form").style.display = 'none';
             document.getElementById('practice_multimedia_image').checked = false;
-            document.getElementById('multimedia_image_form').style.display = 'none';
         });
 
         $(document).on('click', '#cancel_multimedia_video', function (e) {
             e.preventDefault();
             document.getElementById("multimedia_video_form").style.display = 'none';
             document.getElementById('practice_multimedia_video').checked = false;
-            document.getElementById('multimedia_video_form').style.display = 'none';
         });
     }
 
