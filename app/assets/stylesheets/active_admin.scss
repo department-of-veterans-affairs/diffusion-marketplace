@@ -134,6 +134,13 @@ fieldset.page_components.inputs.has_many_fields {
   right: 0;
   bottom: 0;
 
+  h3 {
+    margin-top: 0;
+    color: #000000;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
   h4 {
     margin-top: 0;
 
@@ -162,4 +169,51 @@ fieldset.page_components.inputs.has_many_fields {
 
 .no-adoptions-div {
   text-align: center;
+}
+
+.dashboard-legend-container {
+  position: relative;
+  margin-bottom: 8.3rem;
+}
+
+.dashboard-legend {
+  border: 1px solid #5ea3d3;
+  padding: 10px;
+  border-radius: 4px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+
+  h3 {
+    margin-top: 0;
+    color: #000000;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+  h4 {
+    margin-top: 0;
+
+    span:first-child, span:nth-child(3) {
+      color: #000000;
+      font-weight: bold;
+    }
+  }
+
+  ul {
+    padding: 0;
+    margin-bottom: 0;
+    margin-right: 0;
+
+    li {
+      color: #5E6469;
+      list-style-type: none;
+      font-size: 13px;
+
+      span:first-child {
+        color: #000000;
+        font-weight: bold;
+      }
+    }
+  }
 }
