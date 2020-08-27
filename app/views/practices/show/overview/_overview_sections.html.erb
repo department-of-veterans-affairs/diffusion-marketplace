@@ -79,7 +79,7 @@
           <% pr.link_url = "http://" + pr.link_url %>
         <% end %>
         <div class="font-sans-2xs line-height-135 margin-top-1 width-100 line-height-15px">
-          <li><%= pr.description %> <a class="usa-link usa-link--external" href="<%= pr.link_url %>" target="_blank"><%= pr.name %></a></li>
+          <li><%= pr.description %> <a class="<%= pr.link_url.downcase().include?('marketplace.gov') ? '' : 'usa-link usa-link--external' %>" href="<%= pr.link_url %>" target="_blank"><%= pr.name %></a></li>
         </div>
       <% end %>
     </div>
