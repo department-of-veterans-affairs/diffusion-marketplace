@@ -6,12 +6,12 @@ describe 'Practice editor', type: :feature, js: true do
     @admin.add_role(User::USER_ROLES[0].to_sym)
     @pr_no_resources = Practice.create!(name: 'A practice with no resources', slug: 'practice-no-resources', approved: true, published: true, date_initiated: Date.new(2011, 12, 31), overview_problem: 'problem statement', overview_solution: 'solution statement', overview_results: 'results statement')
     @pr_with_resources = Practice.create!(name: 'A practice with resources', slug: 'practice-with-resources', approved: true, published: true, date_initiated: Date.new(2011, 12, 31), overview_problem: 'problem statement', overview_solution: 'solution statement', overview_results: 'results statement')
-    file_path_1 = "#{Rails.root}/spec/assets/dummy.pdf"
-    @problem_resource = PracticeProblemResource.create(practice: @pr_with_resources, name: 'existing problem file', description: 'problem file description', attachment: File.new(file_path_1), resource_type: 2)
-    @problem_resource = PracticeSolutionResource.create(practice: @pr_with_resources, name: 'existing solution file', description: 'solution file description', attachment: File.new(file_path_1), resource_type: 2)
-    @problem_resource = PracticeResultsResource.create(practice: @pr_with_resources, name: 'existing results file', description: 'results file description', attachment: File.new(file_path_1), resource_type: 2)
+    @file_path_1 = "#{Rails.root}/spec/assets/dummy.pdf"
     @file_path_2 = "#{Rails.root}/spec/assets/SpongeBob.txt"
     @file_path_3 = "#{Rails.root}/spec/assets/charmander.png"
+    PracticeProblemResource.create(practice: @pr_with_resources, name: 'existing problem file', description: 'problem file description', attachment: File.new(@file_path_1), resource_type: 2)
+    PracticeSolutionResource.create(practice: @pr_with_resources, name: 'existing solution file', description: 'solution file description', attachment: File.new(@file_path_1), resource_type: 2)
+    PracticeResultsResource.create(practice: @pr_with_resources, name: 'existing results file', description: 'results file description', attachment: File.new(@file_path_1), resource_type: 2)
     login_as(@admin, :scope => :user, :run_callbacks => false)
   end
 
@@ -240,7 +240,6 @@ describe 'Practice editor', type: :feature, js: true do
         delete_entries_test 'results'
       end
     end
-    # canceling form - should clear it and errors
   end
 end
 

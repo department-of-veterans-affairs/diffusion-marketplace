@@ -53,14 +53,28 @@ ActiveAdmin.register Practice do
       p.workbook.add_worksheet(:name => "Adoption Data - #{Date.today}") do |sheet|
         sheet.add_row ["#{@practice_name} Adoption Data - #{Date.today}"], style: @xlsx_main_header
         sheet.add_row [''], style: @xlsx_divider
-        sheet.add_row ['Note: Adoption date is based on the adoption status.'], style: @xlsx_legend_no_bottom_border
+        sheet.add_row ['Please Note'], style: @xlsx_legend_no_bottom_border
+        sheet.add_row ['Adoption date is based on the adoption status.'], style: @xlsx_legend_no_y_border
+        sheet.add_row [''], style: @xlsx_divider
         sheet.add_row ['Completed/Unsuccessful: End Date'], style: @xlsx_legend_no_y_border
         sheet.add_row ['In Progress: Start Date'], style: @xlsx_legend_no_top_border
         sheet.merge_cells 'A1:C1'
         sheet.add_row [''], style: @xlsx_divider
 
-        @complete_map.each do |key, value|
+        @complete_map.each do |name, value|
           if value.present?
+            # adoption counts
+            sheet.add_row ['Adoption Counts'], style: @xlsx_sub_header
+
+            sheet.add_row ["#{@date_headers[:current]}", @adoption_counts[:adopted_this_month]], style: @xlsx_entry
+            sheet.add_row ["#{@date_headers[:one_month_ago]}", @adoption_counts[:adopted_one_month_ago]], style: @xlsx_entry
+            sheet.add_row ["#{@date_headers[:two_month_ago]}", @adoption_counts[:adopted_two_months_ago]], style: @xlsx_entry
+            sheet.add_row ["#{@date_headers[:total]}", @adoption_counts[:total_adopted]], style: @xlsx_entry
+
+            sheet.add_row [''], style: @xlsx_divider
+
+            # adoption information
+            sheet.add_row ['Adoption Information'], style: @xlsx_sub_header
             sheet.add_row [
                 'State',
                 'Location',
@@ -142,6 +156,7 @@ ActiveAdmin.register Practice do
     helper_method :adoption_date
     helper_method :adoption_rurality
     helper_method :get_adoption_values
+    helper_method :get_adoption_counts
     helper_method :adoption_xlsx_styles
     before_action :set_categories_view, only: :edit
     before_action :set_practice_adoption_values, only: [:show, :export_practice_adoptions]
@@ -163,7 +178,9 @@ ActiveAdmin.register Practice do
       @facility_data = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
       @practice_name = resource.name
       @complete_map = {}
+      @adoption_counts = {}
       get_adoption_values(resource, @complete_map)
+      @adoption_counts = get_adoption_counts(resource)
     end
 
     def set_practice_user(practice)
