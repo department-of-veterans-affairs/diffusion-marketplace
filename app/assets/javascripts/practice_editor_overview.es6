@@ -172,68 +172,321 @@ function validateFormFields(formSelector, sArea, sType) {
         if (sAttachment[0].value === "") {
             errDiv = document.getElementById(sArea + '_file_err_message_attachment');
             errDiv.style.display = "block";
+            $(sAttachment).closest('.usa-file-input').prepend($(errDiv));
+            $(sAttachment).closest('.usa-file-input__target').css({
+                'border-color': '#b50909',
+                'border-width': '2px'
+            });
+            $(sAttachment).closest('.usa-file-input').css({
+                'border-left-width': '0.25rem',
+                'border-left-color': '#b50909',
+                'border-left-style': 'solid',
+                'padding-left': '1rem',
+                'position': 'relative'
+            });
             return false;
+        } else {
+            $(sAttachment).closest('.usa-file-input__target').css({
+                'border': '1px dashed #a9aeb1'
+            });
+            $(sAttachment).closest('.usa-file-input').css({
+                'border-left-width': 'initial',
+                'border-left-color': 'initial',
+                'border-left-style': 'initial',
+                'padding-left': 'initial',
+                'position': 'initial'
+            });
         }
         const sName = document.getElementById('practice_' + sArea + '_attributes_RANDOM_NUMBER_OR_SOMETHING_file_name');
         if (sName.value === "") {
             errDiv = document.getElementById(sArea + '_file_err_message_name');
             errDiv.style.display = "block";
+            $(sName).css({
+                'border-width': '0.25rem',
+                'border-color': '#b50909',
+                'border-style': 'solid'
+            });
+            $(sName).closest(`.${sArea}-input-container`).css({
+                'border-left-width': '0.25rem',
+                'border-left-color': '#b50909',
+                'border-left-style': 'solid',
+                'padding-left': '1rem',
+                'position': 'relative'
+            });
             return false;
+        } else {
+            $(sName).css({
+                'border-width': '1px',
+                'border-color': '#565c65',
+                'border-style': 'solid'
+            });
+
+            $(sName).closest(`.${sArea}-input-container`).css({
+                'border-left-width': 'initial',
+                'border-left-color': 'initial',
+                'border-left-style': 'initial',
+                'padding-left': 'initial',
+                'position': 'initial'
+            });
         }
         const sDesc = document.getElementById('practice_' + sArea + '_attributes_RANDOM_NUMBER_OR_SOMETHING_file_description');
         if (sDesc.value === "") {
             errDiv = document.getElementById(sArea + '_file_err_message_description');
             errDiv.style.display = "block";
+            $(sDesc).css({
+                'border-width': '0.25rem',
+                'border-color': '#b50909',
+                'border-style': 'solid'
+            });
+            $(sDesc).closest(`.${sArea}-input-container`).css({
+                'border-left-width': '0.25rem',
+                'border-left-color': '#b50909',
+                'border-left-style': 'solid',
+                'padding-left': '1rem',
+                'position': 'relative'
+            });
             return false;
+        } else {
+            $(sDesc).css({
+                'border-width': '1px',
+                'border-color': '#565c65',
+                'border-style': 'solid'
+            });
+
+            $(sDesc).closest(`.${sArea}-input-container`).css({
+                'border-left-width': 'initial',
+                'border-left-color': 'initial',
+                'border-left-style': 'initial',
+                'padding-left': 'initial',
+                'position': 'initial'
+            });
         }
     } else if (sType === 'video') {
         const sLink = document.getElementById('practice_' + sArea + '_attributes_RANDOM_NUMBER_OR_SOMETHING_video_link_url');
         if (sLink.value === "" || !sLink.value.includes('https://www.youtube.com')) {
             errDiv = document.getElementById(sArea + '_video_err_message_link_url');
             errDiv.style.display = "block";
+            $(sLink).css({
+                'border-width': '0.25rem',
+                'border-color': '#b50909',
+                'border-style': 'solid'
+            });
+            $(sLink).closest(`.${sArea}-input-container`).css({
+                'border-left-width': '0.25rem',
+                'border-left-color': '#b50909',
+                'border-left-style': 'solid',
+                'padding-left': '1rem',
+                'position': 'relative'
+            });
             return false;
+        } else {
+            $(sLink).css({
+                'border-width': '1px',
+                'border-color': '#565c65',
+                'border-style': 'solid'
+            });
+
+            $(sLink).closest(`.${sArea}-input-container`).css({
+                'border-left-width': 'initial',
+                'border-left-color': 'initial',
+                'border-left-style': 'initial',
+                'padding-left': 'initial',
+                'position': 'initial'
+            });
         }
 
         const sName = document.getElementById('practice_' + sArea + '_attributes_RANDOM_NUMBER_OR_SOMETHING_video_name');
         if (sName.value === "") {
             errDiv = document.getElementById(sArea + '_video_err_message_name');
             errDiv.style.display = "block";
+            $(sName).css({
+                'border-width': '0.25rem',
+                'border-color': '#b50909',
+                'border-style': 'solid'
+            });
+            $(sName).closest(`.${sArea}-input-container`).css({
+                'border-left-width': '0.25rem',
+                'border-left-color': '#b50909',
+                'border-left-style': 'solid',
+                'padding-left': '1rem',
+                'position': 'relative'
+            });
             return false;
+        } else {
+            $(sName).css({
+                'border-width': '1px',
+                'border-color': '#565c65',
+                'border-style': 'solid'
+            });
+
+            $(sName).closest(`.${sArea}-input-container`).css({
+                'border-left-width': 'initial',
+                'border-left-color': 'initial',
+                'border-left-style': 'initial',
+                'padding-left': 'initial',
+                'position': 'initial'
+            });
         }
     } else if (sType === 'link') {
         const sLink = document.getElementById('practice_' + sArea + '_attributes_RANDOM_NUMBER_OR_SOMETHING_link_link_url');
         if (sLink.value === "") {
             errDiv = document.getElementById(sArea + '_link_err_message_link_url');
             errDiv.style.display = "block";
+            $(sLink).css({
+                'border-width': '0.25rem',
+                'border-color': '#b50909',
+                'border-style': 'solid'
+            });
+            $(sLink).closest(`.${sArea}-input-container`).css({
+                'border-left-width': '0.25rem',
+                'border-left-color': '#b50909',
+                'border-left-style': 'solid',
+                'padding-left': '1rem',
+                'position': 'relative'
+            });
             return false;
+        } else {
+            $(sLink).css({
+                'border-width': '1px',
+                'border-color': '#565c65',
+                'border-style': 'solid'
+            });
+
+            $(sLink).closest(`.${sArea}-input-container`).css({
+                'border-left-width': 'initial',
+                'border-left-color': 'initial',
+                'border-left-style': 'initial',
+                'padding-left': 'initial',
+                'position': 'initial'
+            });
         }
         const sName = document.getElementById('practice_' + sArea + '_attributes_RANDOM_NUMBER_OR_SOMETHING_link_name');
         if (sName.value === "") {
             errDiv = document.getElementById(sArea + '_link_err_message_name');
             errDiv.style.display = "block";
+            $(sName).css({
+                'border-width': '0.25rem',
+                'border-color': '#b50909',
+                'border-style': 'solid'
+            });
+            $(sName).closest(`.${sArea}-input-container`).css({
+                'border-left-width': '0.25rem',
+                'border-left-color': '#b50909',
+                'border-left-style': 'solid',
+                'padding-left': '1rem',
+                'position': 'relative'
+            });
             return false;
+        } else {
+            $(sName).css({
+                'border-width': '1px',
+                'border-color': '#565c65',
+                'border-style': 'solid'
+            });
+
+            $(sName).closest(`.${sArea}-input-container`).css({
+                'border-left-width': 'initial',
+                'border-left-color': 'initial',
+                'border-left-style': 'initial',
+                'padding-left': 'initial',
+                'position': 'initial'
+            });
         }
         const sDesc = document.getElementById('practice_' + sArea + '_attributes_RANDOM_NUMBER_OR_SOMETHING_link_description');
         if (sDesc.value === "") {
             errDiv = document.getElementById(sArea + '_link_err_message_description');
             errDiv.style.display = "block";
+            $(sDesc).css({
+                'border-width': '0.25rem',
+                'border-color': '#b50909',
+                'border-style': 'solid'
+            });
+            $(sDesc).closest(`.${sArea}-input-container`).css({
+                'border-left-width': '0.25rem',
+                'border-left-color': '#b50909',
+                'border-left-style': 'solid',
+                'padding-left': '1rem',
+                'position': 'relative'
+            });
             return false;
+        } else {
+            $(sDesc).css({
+                'border-width': '1px',
+                'border-color': '#565c65',
+                'border-style': 'solid'
+            });
+
+            $(sDesc).closest(`.${sArea}-input-container`).css({
+                'border-left-width': 'initial',
+                'border-left-color': 'initial',
+                'border-left-style': 'initial',
+                'padding-left': 'initial',
+                'position': 'initial'
+            });
         }
     } else if (sType === 'image') {
         const sAttachment = document.getElementsByClassName(sArea + '-image-attachment');
         if (sAttachment[0].value === "") {
             errDiv = document.getElementById(sArea + '_image_err_message_attachment');
             errDiv.style.display = "block";
+            $(sAttachment).closest('.usa-file-input').prepend($(errDiv));
+            $(sAttachment).closest('.usa-file-input__target').css({
+                'border-color': '#b50909',
+                'border-width': '2px'
+            });
+            $(sAttachment).closest('.usa-file-input').css({
+                'border-left-width': '0.25rem',
+                'border-left-color': '#b50909',
+                'border-left-style': 'solid',
+                'padding-left': '1rem',
+                'position': 'relative'
+            });
             return false;
+        } else {
+            $(sAttachment).closest('.usa-file-input__target').css({
+                'border': '1px dashed #a9aeb1'
+            });
+            $(sAttachment).closest('.usa-file-input').css({
+                'border-left-width': 'initial',
+                'border-left-color': 'initial',
+                'border-left-style': 'initial',
+                'padding-left': 'initial',
+                'position': 'initial'
+            });
         }
         const sName = document.getElementById('practice_' + sArea + '_attributes_RANDOM_NUMBER_OR_SOMETHING_image_name');
         if (sName.value === "") {
             errDiv = document.getElementById(sArea + '_image_err_message_name');
             errDiv.style.display = "block";
+            $(sName).css({
+                'border-width': '0.25rem',
+                'border-color': '#b50909',
+                'border-style': 'solid'
+            });
+            $(sName).closest(`.${sArea}-input-container`).css({
+                'border-left-width': '0.25rem',
+                'border-left-color': '#b50909',
+                'border-left-style': 'solid',
+                'padding-left': '1rem',
+                'position': 'relative'
+            });
             return false;
+        } else {
+            $(sName).css({
+                'border-width': '1px',
+                'border-color': '#565c65',
+                'border-style': 'solid'
+            });
+
+            $(sName).closest(`.${sArea}-input-container`).css({
+                'border-left-width': 'initial',
+                'border-left-color': 'initial',
+                'border-left-style': 'initial',
+                'padding-left': 'initial',
+                'position': 'initial'
+            });
         }
     }
-    return true;
 }
 
 function clearErrorDivs(sArea, sType) {
