@@ -10,18 +10,33 @@
     <%= link_to(resource&.attachment&.original_filename, resource&.attachment_s3_presigned_url, target: '_blank')%>
     <input value="<%= resource&.id %>" type="hidden" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][id]"/>
   <% else %>
-    <div class="grid-col-12 margin-bottom-3 margin-x-auto float-left">
-      <label class="usa-label maxw-full margin-bottom-2 margin-top-0" for="input-single">Upload a .pdf, .docx, .xlxs, .jpg, .jpeg, or .png file that is less than 32MB.</label>
+    <div class="grid-col-12 margin-bottom-3 margin-x-auto">
+      <label class="usa-label maxw-full margin-bottom-2 margin-top-0" for="practice_<%= area %>-input-single_<%= placeholder %>">
+        Upload a .pdf, .docx, .xlxs, .jpg, .jpeg, or .png file that is less than 32MB.
+      </label>
+      <div class="usa-form-group usa-form-group--error overview_error_msg" id="<%= area %>_file_err_message_attachment">
+        <span class="text-bold">No file uploaded</span>
+        <span class="usa-error-message" id="file-input-error-alert" role="alert">Please upload a file</span>
+      </div>
       <input <%= resource&.id ? 'required' : '' %> id="practice_<%= area %>-input-single_<%= placeholder %>" class="usa-file-input usa-hint <%= area %>-file-attachment" type="file" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" aria-describedby="input-single-hint" />
-      <input type="text" readonly class="overview_error_msg" id="<%= area %>_file_err_message_attachment" value="Please upload a file."/>
     </div>
   <% end %>
   <%= label_tag "practice_#{area}_name", 'File name', class: 'usa-label', for: "practice_#{area}_attributes_#{placeholder}_name" %>
+  <div class="<%= area %>-input-container">
+    <div class="usa-form-group usa-form-group--error overview_error_msg" id="<%= area %>_file_err_message_name">
+      <span class="text-bold">No file name</span>
+      <span class="usa-error-message" role="alert">Please enter a file name</span>
+    </div>
     <input <%= resource&.id ? 'required' : '' %> class="usa-input" value="<%= resource&.name %>" type="text" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][name]" id="practice_<%= area %>_attributes_<%= placeholder %>_name" style="width: 393px"/>
-  <input type="text" readonly class="overview_error_msg" id="<%= area %>_file_err_message_name" value="Please enter a file name."/>
-    <%= label_tag "practice_#{area}_description", 'File description', class: 'usa-label', for: "practice_#{area}_attributes_#{placeholder}_description" %>
+  </div>
+  <%= label_tag "practice_#{area}_description", 'File description', class: 'usa-label', for: "practice_#{area}_attributes_#{placeholder}_description" %>
+  <div class="<%= area %>-input-container">
+    <div class="usa-form-group usa-form-group--error overview_error_msg" id="<%= area %>_file_err_message_description">
+      <span class="text-bold">No file description</span>
+      <span class="usa-error-message" role="alert">Please enter a file description</span>
+    </div>
     <input <%= resource&.id ? 'required' : '' %> class="usa-input" value="<%= resource&.description %>"  type="text" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][description]" id="practice_<%= area %>_attributes_<%= placeholder %>_description" style="width: 643px"/>
-  <input type="text" readonly class="overview_error_msg" id="<%= area %>_file_err_message_description" value="Please enter a file description."/>
+  </div>
 
   <%# action buttons %>
   <%= render partial: "practices/overview_forms/form_actions", locals: { resource: resource, placeholder: placeholder, area: area, type: 'file' } %>
