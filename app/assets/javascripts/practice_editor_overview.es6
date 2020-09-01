@@ -141,7 +141,12 @@
                 //  but to simply hide the div that is holding this text, then show it again in the add function.
                 // This is because the user may add more to the holding area after deleting everything...
                 // and now the text is gone XD
-                visibleChildDivs[0].remove();
+                visibleChildDivs[0].hide;
+                let elementId = area + '_' + type + '_section_text';
+                let newEle = document.getElementById(elementId);
+                if(newEle != null) {
+                    newEle.style.display = 'none';
+                }
             }
         });
     }
@@ -405,7 +410,7 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
 
         if ($(`#${container}`).children().length === 0) {
             let title = `${sType}s`
-            let titleHTML = `<div class="text-bold margin-bottom-2" >${title.toUpperCase()}:</div>`
+            let titleHTML = `<div id="${sArea}_${sType}_section_text" class="text-bold margin-bottom-2" >${title.toUpperCase()}:</div>`
             $(`#${container}`).append(titleHTML)
         }
         link_form.appendTo(`#${container}`);
@@ -442,6 +447,12 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
             $(`#${container}`).find('.dm-cropper-cancel-edit').off();
             $(`#${container}`).find('.dm-cropper-save-edit').off();
         }
+        let elementId = sArea + '_' + sType + '_section_text';
+        let newEle = document.getElementById(elementId);
+        if(newEle != null) {
+            newEle.style.display = 'block';
+        }
+
     });
 }
 
