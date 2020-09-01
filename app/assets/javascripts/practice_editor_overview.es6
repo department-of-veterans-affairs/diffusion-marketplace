@@ -137,10 +137,6 @@
             let visibleChildDivs = $(e.target).closest(`#display_${area}_${type}`).find('div:visible');
             // remove title of section if there are no items
             if (visibleChildDivs.length === 1) {
-                // TODO: we may not want to remove this,
-                //  but to simply hide the div that is holding this text, then show it again in the add function.
-                // This is because the user may add more to the holding area after deleting everything...
-                // and now the text is gone XD
                 visibleChildDivs[0].hide;
                 let elementId = area + '_' + type + '_section_text';
                 let newEle = document.getElementById(elementId);
