@@ -57,7 +57,7 @@ describe 'Practice editor', type: :feature, js: true do
       end
     end
 
-    describe 'complete and add video' do
+    describe 'complete form and add video' do
       before do
         no_resource_pr_test_setup
       end
@@ -74,10 +74,10 @@ describe 'Practice editor', type: :feature, js: true do
           expect(page).to have_content('Link (paste the full Youtube address)')
           expect(page).to have_content('Caption')
           add_resource
-          expect(error_msg_val).to eq 'Please enter a Youtube url.'
+          expect(page).to have_content('Please enter a valid YouTube url')
           url_field.set(@video_url_2)
           add_resource
-          expect(error_msg_val).to eq 'Please enter a caption for the video.'
+          expect(page).to have_content('Please enter a caption')
           caption_field.set("new practice #{area} video")
           add_resource
           expect(find_all('.overview_error_msg').length).to eq 0
@@ -256,54 +256,50 @@ describe 'Practice editor', type: :feature, js: true do
       end
     end
   end
-end
 
-def set_area_name(area)
-  area == 'multimedia' ? area : "#{area}_resources"
-end
-
-def url_field
-  find_all('input[type="text"][class="usa-input"]').first
-end
-
-def caption_field
-  find_all('input[type="text"][class="usa-input"]').last
-end
-
-def click_video_form(area)
-  find("label[for=practice_#{area}_video]").click
-end
-
-def add_resource
-  find('.add-resource').click
-end
-
-def save_practice
-  find('#practice-editor-save-button').click
-end
-
-def error_msg_val
-  find_all('.overview_error_msg').first.value
-end
-
-def no_resource_pr_test_setup
-  visit practice_path(@pr_no_resources)
-  expect(page).to have_content('Overview')
-  expect(page).to have_no_content("Videos")
-  visit practice_overview_path(@pr_no_resources)
-end
-
-def with_resource_pr_test_setup
-  visit practice_path(@pr_with_resources)
-  expect(page).to have_content('Overview')
-  expect(page).to have_content("Videos")
-  @frame_index.each do |f, i|
-    within_frame(i) do
-      expect(page).to have_link('Make the Difference', href: @video_url_1)
-    end
+  def set_area_name(area)
+    area == 'multimedia' ? area : "#{area}_resources"
   end
-  expect(page).to have_content("existing problem video")
-  expect(page).to have_content("existing solution video")
-  expect(page).to have_content("existing problem video")
-  visit practice_overview_path(@pr_with_resources)
+
+  def url_field
+    find_all('input[type="text"]').first
+  end
+
+  def caption_field
+    find_all('input[type="text"]').last
+  end
+
+  def click_video_form(area)
+    find("label[for=practice_#{area}_video]").click
+  end
+
+  def add_resource
+    find('.add-resource').click
+  end
+
+  def save_practice
+    find('#practice-editor-save-button').click
+  end
+
+  def no_resource_pr_test_setup
+    visit practice_path(@pr_no_resources)
+    expect(page).to have_content('Overview')
+    expect(page).to have_no_content("Videos")
+    visit practice_overview_path(@pr_no_resources)
+  end
+
+  def with_resource_pr_test_setup
+    visit practice_path(@pr_with_resources)
+    expect(page).to have_content('Overview')
+    expect(page).to have_content("Videos")
+    @frame_index.each do |f, i|
+      within_frame(i) do
+        expect(page).to have_link('Make the Difference', href: @video_url_1)
+      end
+    end
+    expect(page).to have_content("existing problem video")
+    expect(page).to have_content("existing solution video")
+    expect(page).to have_content("existing problem video")
+    visit practice_overview_path(@pr_with_resources)
+  end
 end

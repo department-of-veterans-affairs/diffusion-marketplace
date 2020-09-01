@@ -194,8 +194,8 @@ function hideAttachmentErrorStyles(inputTitle, elem1, elem2) {
     $(inputTitle).closest(elem2).find('label').removeClass('usa-label--error margin-bottom-0');
 }
 
-function validateFormFields(formSelector, sArea, sType) {
-    clearErrorDivs(sArea, sType);
+function validateFormFields(formSelector, sArea, sType, target) {
+    clearErrorDivs(sArea, sType, target);
     let errDiv = null;
     if (sType === "file") {
         const sAttachment = document.getElementsByClassName(sArea + '-file-attachment');
@@ -344,7 +344,7 @@ function validateFormFields(formSelector, sArea, sType) {
     }
 }
 
-function clearErrorDivs(sArea, sType) {
+function clearErrorDivs(sArea, sType, target) {
     // FILE
     if (sType === 'file') {
         document.getElementById(sArea + '_file_err_message_name').style.display = "none";
@@ -367,15 +367,15 @@ function clearErrorDivs(sArea, sType) {
 
     // IMAGE
     if (sType === 'image') {
-        document.getElementById(sArea + '_image_err_message_attachment').style.display = "none";
-        document.getElementById(sArea + '_image_err_message_name').style.display = "none";
+        $(`#${sArea}_image_err_message_attachment`).css('display', 'none')
+        $(`#${sArea}_image_err_message_name`).css('display', 'none')
     }
 }
 
 function attachAddResourceListener(formSelector, container, sArea, sType) {
     $(document).on('click', `#${formSelector} .add-resource`, function (e) {
         e.preventDefault();
-        if (validateFormFields(formSelector, sArea, sType) === false) {
+        if (validateFormFields(formSelector, sArea, sType, event.target) === false) {
             return false;
         }
         const nGuid = createGUID();
@@ -383,7 +383,7 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
         const link_form = formToClear.clone(true);
         link_form.attr('id', `${formSelector}_${nGuid}`);
         link_form.attr('class', `resource_container margin-bottom-5`);
-        link_form.find('#cancelAddButtonRow').remove();
+        link_form.find('.dm-cancel-add-button-row').remove();
 
         const deleteEntryHtml = `
             <div class="grid-col-12 margin-top-2">
@@ -419,13 +419,13 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
                 $(ele)
                     .closest('.usa-file-input')
                     .replaceWith(`
-                        <input id="practice_${sArea}-input-single_RANDOM_NUMBER_OR_SOMETHING" class="usa-hint usa-file-input" type="file" name="practice[practice_${sArea}_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" aria-describedby="input-single-hint" />
+                        <input id="practice_${sArea}-input-single_RANDOM_NUMBER_OR_SOMETHING" class="usa-hint usa-file-input" type="file" name="practice[practice_${sArea}_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" aria-describedby="practice_${sArea}-input-single_RANDOM_NUMBER_OR_SOMETHING-hint" />
                     `);
             } else if (ele.type === 'file' && sType === 'image') {
                 $(ele)
                     .closest('.usa-file-input')
                     .replaceWith(`
-                    <input id="practice_${sArea}-input-single_RANDOM_NUMBER_OR_SOMETHING" class="usa-hint usa-file-input dm-cropper-upload-image" type="file" name="practice[practice_${sArea}_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".jpg,.jpeg,.png" aria-describedby="input-single-hint" />
+                    <input id="practice_${sArea}-input-single_RANDOM_NUMBER_OR_SOMETHING" class="usa-hint usa-file-input dm-cropper-upload-image" type="file" name="practice[practice_${sArea}_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".jpg,.jpeg,.png" aria-describedby="practice_${sArea}-input-single_RANDOM_NUMBER_OR_SOMETHING-hint" />
                 `);
             }
         });
