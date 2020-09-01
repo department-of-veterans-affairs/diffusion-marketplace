@@ -943,4 +943,23 @@ li.small-disc:before {
       min-width: auto !important;
     }
   }
+
+  .overview-input-error {
+    border-left-width: 0.25rem !important;
+    border-left-color: #b50909 !important;
+    border-left-style: solid !important;
+    padding-left: 1rem !important;
+    position: relative !important;
+  }
+
+  .overview-attachment-input-target-error {
+    border-color: #b50909 !important;
+    border-width: 2px !important;
+  }
+
+  .overview-text-input-error {
+    border-width: 0.25rem !important;
+    border-color: #b50909 !important;
+    border-style: solid !important;
+  }
 }

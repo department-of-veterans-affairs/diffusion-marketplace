@@ -28,13 +28,15 @@
             <p class="usa-alert__body">
             </p>
           </div>
-          <div class="usa-form-group usa-form-group--error overview_error_msg" id="<%= area %>_image_err_message_attachment">
-            <span class="text-bold">No image uploaded</span>
-            <span class="usa-error-message" id="file-input-error-alert" role="alert">Please upload an image</span>
-          </div>
+          <%= render partial: 'practices/overview_error_partials/attachment', locals: {
+              area: area,
+              resource_type: 'image',
+              error: 'No image uploaded',
+              message: 'Please upload an image'
+          }
+          %>
           <%# resource attachment %>
           <input <%= resource&.id ? 'required' : '' %> id="input-single" class="dm-cropper-upload-image usa-file-input usa-hint <%= area %>-image-attachment" type="file" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][attachment]" accept=".jpg,.jpeg,.png" aria-describedby="input-single-hint" />
-
         </div>
       <% end %>
 
@@ -69,10 +71,13 @@
       <%# caption input %>
       <%= label_tag "practice_#{area}_name", 'Caption', class: 'usa-label', for: "practice_#{area}_attributes_#{placeholder}_name" %>
       <div class="<%= area %>-input-container">
-        <div class="usa-form-group usa-form-group--error overview_error_msg" id="<%= area %>_image_err_message_name">
-          <span class="text-bold">No image caption</span>
-          <span class="usa-error-message" role="alert">Please enter a caption</span>
-        </div>
+        <%= render partial: 'practices/overview_error_partials/name', locals: {
+            area: area,
+            resource_type: 'image',
+            error: 'No image caption',
+            message: 'Please enter a caption'
+        }
+        %>
         <input <%= resource&.id ? 'required' : '' %> class="usa-input" value="<%= resource&.name %>" type="text" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][name]" id="practice_<%= area %>_attributes_<%= placeholder %>_name"/>
       </div>
     </div>

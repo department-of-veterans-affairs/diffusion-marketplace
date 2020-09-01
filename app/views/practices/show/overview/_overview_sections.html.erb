@@ -26,7 +26,7 @@
   <h4>Images</h4>
   <% grouped_resources['image'].each do |pr| %>
     <div class="margin-bottom-2px">
-      <%= image_tag pr.attachment_s3_presigned_url, class: 'height-mobile practice-editor-impact-photo radius-md' %>
+      <%= image_tag pr.attachment_s3_presigned_url(:thumb), class: 'height-mobile practice-editor-impact-photo radius-md' %>
       <% if pr.name.present? %>
         <div class="font-sans-2xs line-height-135 margin-top-1 width-100 line-height-15px">
           <span class="text-bold">ABOVE:</span> <%= pr.name %>
