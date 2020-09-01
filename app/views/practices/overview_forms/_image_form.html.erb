@@ -31,7 +31,6 @@
           <%= render partial: 'practices/overview_error_partials/attachment', locals: {
               area: area,
               resource_type: 'image',
-              error: 'No image uploaded',
               message: 'Please upload an image'
           }
           %>
@@ -69,12 +68,11 @@
       </button>
 
       <%# caption input %>
-      <%= label_tag "practice_#{area}_name", 'Caption', class: 'usa-label', for: "practice_#{area}_attributes_#{placeholder}_name" %>
       <div class="<%= area %>-input-container">
+        <%= label_tag "practice_#{area}_name", 'Caption', class: 'usa-label', for: "practice_#{area}_attributes_#{placeholder}_name" %>
         <%= render partial: 'practices/overview_error_partials/name', locals: {
             area: area,
             resource_type: 'image',
-            error: 'No image caption',
             message: 'Please enter a caption'
         }
         %>

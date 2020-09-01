@@ -165,26 +165,32 @@ function displayResourceForm(sArea, sType) {
 
 function displayInputErrorStyles(inputTitle, elem) {
     $(inputTitle).closest(elem).addClass('overview-input-error');
+    $(inputTitle).parent().find('label').addClass('usa-label--error');
 }
 
 function hideInputErrorStyles(inputTitle, elem) {
     $(inputTitle).closest(elem).removeClass('overview-input-error');
+    $(inputTitle).parent().find('label').removeClass('usa-label--error');
 }
 
 function displayTextInputErrorStyles(inputTitle) {
     $(inputTitle).addClass('overview-text-input-error');
+    $(inputTitle).parent().find('label').addClass('usa-label--error');
 }
 
 function hideTextInputErrorStyles(inputTitle) {
     $(inputTitle).removeClass('overview-text-input-error');
+    $(inputTitle).parent().find('label').removeClass('usa-label--error');
 }
 
-function displayAttachmentErrorStyles(inputTitle, elem) {
-    $(inputTitle).closest(elem).addClass('overview-attachment-input-target-error');
+function displayAttachmentErrorStyles(inputTitle, elem1, elem2) {
+    $(inputTitle).closest(elem1).addClass('overview-attachment-input-target-error');
+    $(inputTitle).closest(elem2).find('label').addClass('usa-label--error margin-bottom-0');
 }
 
-function hideAttachmentErrorStyles(inputTitle, elem) {
-    $(inputTitle).closest(elem).removeClass('overview-attachment-input-target-error');
+function hideAttachmentErrorStyles(inputTitle, elem1, elem2) {
+    $(inputTitle).closest(elem1).removeClass('overview-attachment-input-target-error');
+    $(inputTitle).closest(elem2).find('label').removeClass('usa-label--error margin-bottom-0');
 }
 
 function validateFormFields(formSelector, sArea, sType) {
@@ -199,12 +205,12 @@ function validateFormFields(formSelector, sArea, sType) {
             errDiv = document.getElementById(sArea + '_file_err_message_attachment');
             errDiv.style.display = "block";
             $(sAttachment).closest('.usa-file-input').prepend($(errDiv));
-            displayAttachmentErrorStyles(sAttachment, '.usa-file-input__target');
-            displayInputErrorStyles(sAttachment, '.usa-file-input');
+            displayAttachmentErrorStyles(sAttachment, '.usa-file-input__target', 'div.grid-col-12');
+            displayInputErrorStyles(sAttachment, '.grid-col-12');
             return false;
         } else {
-            hideAttachmentErrorStyles(sAttachment, '.usa-file-input__target');
-            hideInputErrorStyles(sAttachment, '.usa-file-input');
+            hideAttachmentErrorStyles(sAttachment, '.usa-file-input__target', 'div.grid-col-12');
+            hideInputErrorStyles(sAttachment, '.grid-col-12');
         }
 
         if (sName.value === "") {
@@ -313,15 +319,15 @@ function validateFormFields(formSelector, sArea, sType) {
             errDiv = document.getElementById(sArea + '_image_err_message_attachment');
             errDiv.style.display = "block";
             $(sAttachment).closest('.usa-file-input').prepend($(errDiv));
-            displayAttachmentErrorStyles(sAttachment, '.usa-file-input__target');
-            displayInputErrorStyles(sAttachment, '.usa-file-input');
+            displayAttachmentErrorStyles(sAttachment, '.usa-file-input__target', 'div.margin-y-1');
+            displayInputErrorStyles(sAttachment, '.margin-y-1');
             // Hide name error message
             hideTextInputErrorStyles(sName);
             hideInputErrorStyles(sName, `.${sArea}-input-container`);
             return false;
         } else {
-            hideAttachmentErrorStyles(sAttachment, '.usa-file-input__target');
-            hideInputErrorStyles(sAttachment, '.usa-file-input');
+            hideAttachmentErrorStyles(sAttachment, '.usa-file-input__target', 'div.margin-y-1');
+            hideInputErrorStyles(sAttachment, '.margin-y-1');
         }
 
         if (sName.value === "") {
