@@ -963,7 +963,11 @@ li.small-disc:before {
     border-style: solid !important;
   }
 
-  .usa-label--error {
-    margin-top: 1.5rem !important;
+  .overview-resource-label {
+    margin-top: 16px !important;
   }
+}
+
+.usa-label--error {
+  margin-top: 1.5rem !important;
 }

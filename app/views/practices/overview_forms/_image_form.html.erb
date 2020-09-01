@@ -20,7 +20,7 @@
       <% } %>
       <% if !resource&.id %>
         <div class="margin-y-1">
-          <label class="usa-label dm-file-upload-label margin-bottom-2" for="input-single">
+          <label class="usa-label dm-file-upload-label margin-bottom-2 overview-resource-label" for="input-single">
             Use a high-quality .jpg, .jpeg, or .png file that is less than 32MB. If you want to upload an image that features a Veteran you must have
             <%= link_to 'Form 3203', 'https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-3203.pdf', target: '_blank' %>. Waivers must be filled out with the 'External to VA' check box selected.
           </label>
@@ -69,7 +69,7 @@
 
       <%# caption input %>
       <div class="<%= area %>-input-container">
-        <%= label_tag "practice_#{area}_name", 'Caption', class: 'usa-label', for: "practice_#{area}_attributes_#{placeholder}_name" %>
+        <%= label_tag "practice_#{area}_name", 'Caption', class: 'usa-label overview-resource-label', for: "practice_#{area}_attributes_#{placeholder}_name" %>
         <%= render partial: 'practices/overview_error_partials/name', locals: {
             area: area,
             resource_type: 'image',

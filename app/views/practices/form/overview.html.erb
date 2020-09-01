@@ -15,12 +15,14 @@
     <div id="overview" class="desktop:grid-col-9 grid-col-12 p0">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
       <section class="usa-section padding-top-0 p0-bottom introduction">
-        <h1 class="font-sans-2xl line-height-sans-205">Overview</h1>
-        <h2 class="text-normal">
+        <h1 class="font-sans-2xl line-height-sans-205 margin-bottom-3">Overview</h1>
+        <h2 class="text-normal line-height-sans-6 font-sans-lg">
           Describe the journey of your practice from problem identification and the implementation of your solution
           through to measured results and outcomes.
         </h2>
-        <%= render 'pii_phi_alert' %>
+        <div class="margin-top-3">
+          <%= render 'pii_phi_alert' %>
+        </div>
         <%= nested_form_for(@practice, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
           <fieldset class="usa-fieldset grid-col-10">
             <legend class="usa-sr-only">Practice Overview</legend>
@@ -28,16 +30,16 @@
             <div id="problem_section">
               <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
               <div class="margin-bottom-5 margin-top-3">
-                <b>Problem statement</b> (required field)<br/>
-                Type the main problem your practice attempted to address and include context and any initial goals.
+                <p class="line-height-sans-205 margin-bottom-2 text-bold">Problem statement <span class="text-gray-50">(required field)</span></p>
+                <p class="line-height-26">Type the main problem your practice attempted to address and include context and any initial goals.</p>
                 <%= f.text_area :overview_problem, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-overview-statement-input", required: true %>
               </div>
               <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
-              <div class="margin-bottom-5 margin-top-3">
-                <b>Problem attachments</b><br/>
-                Attach any additional images, videos, files or links related to the problem your practice addresses.
+              <div class="margin-top-3">
+                <p class="line-height-sans-205 margin-bottom-2 text-bold">Problem attachments</p>
+                <p class="line-height-26">Attach any additional images, videos, files or links related to the problem your practice addresses.</p>
               </div>
-              <div class="grid-row grid-gap margin-top-105 margin-bottom-3">
+              <div class="grid-row grid-gap margin-top-2 margin-bottom-5">
                 <div class="usa-radio margin-bottom-1 position-relative grid-col-12">
                   <%= radio_button_tag 'practice_problem_resources[resource_type]',
                                        'Image',
@@ -76,7 +78,7 @@
                   <%= label_tag 'practice_problem_link', 'Link', class: 'usa-radio__label
                 initiating-facility-type-label x0-bottom', for: "practice_problem_link" %>
                 </div>
-                <div id="display_problem_resources_form" class="margin-top-3 display_problem_form">
+                <div id="display_problem_resources_form" class="display_problem_form">
                     <%= render partial: "practices/overview_forms/image_form", locals: {area: 'problem_resources'} %>
                     <%= render partial: "practices/overview_forms/video_form", locals: {area: 'problem_resources'} %>
                     <%= render partial: "practices/overview_forms/file_form", locals: {area: 'problem_resources'} %>
@@ -121,17 +123,18 @@
             <div id="solution_section">
               <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
               <div class="margin-bottom-5 margin-top-3">
-                <b>Solution statement</b> (required field)<br/>
-                Type the solution that was implemented to address the problem.
+                <p class="line-height-sans-205 margin-bottom-2 text-bold">Solution statement <span class="text-gray-50">(required field)</span></p>
+                <p class="line-height-26">Type the solution that was implemented to address the problem.</p>
                 <%= f.text_area :overview_solution, required: true, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-overview-statement-input" %>
               </div>
               <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
-              <div class="margin-bottom-5 margin-top-3">
-                <b>Solution attachments</b><br/>
-                Attach any additional images, videos, files or links related to the solution implemented for your
-                practice.
+              <div class="margin-top-3">
+                <p class="line-height-sans-205 margin-bottom-2 text-bold">Solution attachments</p>
+                <p class="line-height-26">
+                  Attach any additional images, videos, files or links related to the solution implemented for your practice.
+                </p>
               </div>
-              <div class="grid-row grid-gap margin-top-105 margin-bottom-3">
+              <div class="grid-row grid-gap margin-top-2 margin-bottom-3">
                 <div class="usa-radio margin-bottom-1 position-relative grid-col-12">
                   <%= radio_button_tag 'practice_solution_resources[resource_type]',
                                        'Image',
@@ -170,7 +173,7 @@
                   <%= label_tag 'practice_solution_link', 'Link', class: 'usa-radio__label
                 initiating-facility-type-label x0-bottom', for: "practice_solution_link" %>
                 </div>
-                <div id="display_solution_resources_form" class="margin-top-3 display_problem_form">
+                <div id="display_solution_resources_form" class="display_problem_form">
                     <%= render partial: "practices/overview_forms/image_form", locals: {area: 'solution_resources'} %>
                     <%= render partial: "practices/overview_forms/video_form", locals: {area: 'solution_resources'} %>
                     <%= render partial: "practices/overview_forms/file_form", locals: {area: 'solution_resources'} %>
@@ -215,16 +218,18 @@
             <div id="results_section">
               <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
               <div class="margin-bottom-5 margin-top-3">
-                <b>Results statement</b> (required field)<br/>
-                Type information about the impact of the practice at the originating facility.
+                <p class="line-height-sans-205 margin-bottom-2 text-bold">Results statement <span class="text-gray-50">(required field)</span></p>
+                <p class="line-height-26">Type information about the impact of the practice at the originating facility.</p>
                 <%= f.text_area :overview_results, required: true, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-overview-statement-input" %>
               </div>
               <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
-              <div class="margin-bottom-5 margin-top-3">
-                <b>Results attachments</b><br/>
-                Attach any additional images, videos, files or links relevant to your results statement.
+              <div class="margin-top-3">
+                <p class="line-height-sans-205 margin-bottom-2 text-bold">Results attachments</p>
+                <p class="line-height-26">
+                  Attach any additional images, videos, files or links relevant to your results statement.
+                </p>
               </div>
-              <div class="grid-row grid-gap margin-top-105 margin-bottom-3">
+              <div class="grid-row grid-gap margin-top-2 margin-bottom-3">
                 <div class="usa-radio margin-bottom-1 position-relative grid-col-12">
                   <%= radio_button_tag 'practice_results_resources[resource_type]',
                                        'Image',
@@ -263,7 +268,7 @@
                   <%= label_tag 'practice_results_link', 'Link', class: 'usa-radio__label
                 initiating-facility-type-label x0-bottom', for: "practice_results_link" %>
                 </div>
-                <div id="display_results_resources_form" class="margin-top-3 display_problem_form">
+                <div id="display_results_resources_form" class="display_problem_form">
                     <%= render partial: "practices/overview_forms/image_form", locals: {area: 'results_resources'} %>
                     <%= render partial: "practices/overview_forms/video_form", locals: {area: 'results_resources'} %>
                     <%= render partial: "practices/overview_forms/file_form", locals: {area: 'results_resources'} %>
@@ -306,11 +311,11 @@
 
 
             <!-- METRICS Section -->
-            <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
             <div class="margin-bottom-5 margin-top-3">
               <div id="practice-metrics-container" class="position-relative">
-                <div class="margin-bottom-3">
-                  <%= f.label :name, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-1' do %>
+                <div class="margin-bottom-2">
+                  <%= f.label :name, class: 'usa-label text-bold display-block margin-top-0 line-height-sans-205 margin-bottom-2' do %>
                     Metrics
                   <% end %>
                   <span class="line-height-26">
@@ -389,11 +394,13 @@
             <!-- MULTIMEDIA section -->
             <div id="multimedia_section">
               <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
-              <div class="margin-bottom-5 margin-top-3">
-                <b>Multimedia</b><br/>
-                Add any additional images, video, and audio to support your practice's overview.
+              <div class="margin-top-3">
+                <p class="line-height-sans-205 margin-bottom-2 text-bold">Multimedia</p>
+                <p class="line-height-26">
+                  Add any additional images, video, and audio to support your practice's overview.
+                </p>
               </div>
-              <div class="grid-row grid-gap margin-top-105 margin-bottom-3">
+              <div class="grid-row grid-gap margin-top-2 margin-bottom-5">
                 <div class="usa-radio margin-bottom-1 position-relative grid-col-12">
                   <%= radio_button_tag 'practice_multimedia[resource_type]',
                                        'Image',
@@ -404,7 +411,7 @@
                   <%= label_tag 'practice_multimedia_image', 'Image', class: 'usa-radio__label
                 initiating-facility-type-label x0-bottom', for: "practice_multimedia_image" %>
                 </div>
-                <div class="usa-radio margin-bottom-1 position-relative grid-col-12">
+                <div class="usa-radio position-relative grid-col-12">
                   <%= radio_button_tag 'practice_multimedia[resource_type]',
                                        'Video',
                                        false, onclick: "displayResourceForm('multimedia', 'video');",
@@ -414,7 +421,7 @@
                   <%= label_tag 'practice_multimedia_video', 'Video', class: 'usa-radio__label
                 initiating-facility-type-label x0-bottom', for: "practice_multimedia_video" %>
                 </div>
-                <div id="display_multimedia_form" class="margin-top-3 display_problem_form">
+                <div id="display_multimedia_form" class="display_problem_form">
                   <%= render partial: "practices/overview_forms/image_form", locals: {area: 'multimedia'} %>
                   <%= render partial: "practices/overview_forms/video_form", locals: {area: 'multimedia'} %>
                 </div>
