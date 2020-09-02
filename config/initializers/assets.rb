@@ -18,7 +18,8 @@ Rails.application.config.assets.precompile += %w(
                                                   practice_page.js
                                                   practice_editor_checklist.js
                                                   _practice_editor_utilities.js
-                                                  _cropper.js practice_editor_impact.js
+                                                  _cropper.js _overview_image_editor.js
+                                                  practice_editor_impact.js
                                                   practice_editor_documentation.js
                                                   practice_editor_contact.js
                                                   practice_editor_timeline.js

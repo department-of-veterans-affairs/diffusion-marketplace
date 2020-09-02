@@ -1,0 +1,89 @@
+<%
+  grouped_resources = resources.group_by(&:resource_type)
+  truncated_id = "overview_" + s_area + "_truncated"
+  dots_id = "dots_" + s_area + "_statement"
+  more_text_id = s_area + "_statement_more_text"
+  see_more_button_text_id = "see_more_" + s_area + "statement"
+
+%>
+
+<div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+<h3 class="font-sans-lg line-height-25px margin-top-2 margin-bottom-1"><%= title %></h3>
+<% if statement.present? && statement.length > 360 %>
+  <div class="line-height-26 overview-statement-container">
+    <span id=<%= truncated_id %>><%= overview_statement(statement) %></span>
+    <span id=<%= dots_id %>>...</span>
+    <span id=<%= more_text_id %> class="display-none">
+      <%= overview_statement(statement, 0, 99999) %>
+      </span>
+    <a class="usa-button--unstyled dm-btn-primary" href="" onclick="seeMoreStatementText(<%= dots_id %>, <%= more_text_id %>, <%= see_more_button_text_id %>, <%= truncated_id %> ); return false" id=<%= see_more_button_text_id.to_s %>>See
+      more</a>
+  </div>
+<% else %>
+  <div class="line-height-26">
+    <%= statement %>
+  </div>
+<% end %>
+
+<% if resources.image.any? %>
+  <h4 class="margin-top-3 margin-bottom-2 line-height-18px">Images</h4>
+  <div class="grid-row grid-gap">
+    <% grouped_resources['image'].each do |pr| %>
+      <div class="margin-bottom-2 practice-editor-impact-photo-container">
+        <%= image_tag pr.attachment_s3_presigned_url(:thumb), class: 'height-mobile practice-editor-impact-photo' %>
+        <% if pr.name.present? %>
+          <div class="margin-top-1">
+            <span class="text-bold line-height-15px font-sans-3xs">ABOVE:</span> <span class="font-sans-2xs text-medium line-height-19px"><%= pr.name %></span>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<% if resources.video.any? %>
+  <h4 class="margin-top-3 margin-bottom-2 line-height-18px">Videos</h4>
+  <% grouped_resources['video'].each do |pr| %>
+    <div class="margin-bottom-2 desktop:grid-col-11 grid-col-12">
+      <%= youtube_embed(pr.link_url) %>
+      <% if pr.name.present? %>
+        <div class="margin-top-1 width-100">
+          <span class="text-bold line-height-15px font-sans-3xs">ABOVE:</span> <span class="font-sans-2xs text-medium line-height-19px"><%= pr.name %></span>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
+
+<% if resources.file.any? %>
+  <h4 class="line-height-18px margin-bottom-1 margin-top-3">Files</h4>
+  <ul class="overview-files-ul margin-0 padding-left-0">
+  <% grouped_resources['file'].each do |pr| %>
+    <div class="margin-bottom-1">
+      <% if pr.name.present? %>
+        <div class="margin-top-1 width-100 line-height-26">
+          <li class="small-disc"><%= pr.description %> <%= link_to(pr.name || pr.attachment&.original_filename, pr.attachment_s3_presigned_url, target: '_blank', class: 'dm-external-link') %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+  </ul>
+<% end %>
+
+<% if resources.link.any? %>
+  <h4 class="line-height-18px margin-bottom-1 margin-top-3">Links</h4>
+  <ul class="overview-links-ul margin-0 padding-left-0">
+  <% grouped_resources['link'].each do |pr| %>
+    <div class="margin-bottom-1">
+      <% if pr.name.present? %>
+        <% unless pr.link_url.start_with?("http") %>
+          <% pr.link_url = "http://" + pr.link_url %>
+        <% end %>
+        <div class="margin-top-1 width-100 line-height-26">
+          <li class="small-disc"><%= pr.description %> <a class="<%= pr.link_url.downcase().include?('marketplace.gov') ? 'dm-internal-link' : 'dm-external-link usa-link--external' %>" href="<%= pr.link_url %>" target="_blank"><%= pr.name %></a></li>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+  </ul>
+<% end %>

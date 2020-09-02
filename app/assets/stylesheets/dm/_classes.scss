@@ -938,6 +938,18 @@ ul.no-list-style {
   line-height: 15px;
 }
 
+.line-height-18px {
+  line-height: 18px;
+}
+
+.line-height-19px {
+  line-height: 19px;
+}
+
+.line-height-25px {
+  line-height: 25px;
+}
+
 .line-height-162 {
   line-height: 162%;
 }
@@ -968,4 +980,8 @@ ul.no-list-style {
 /* Horizontal Rule */
 .dm-section-line {
   flex: 1 0;
+}
+
+.bg-gray-2{
+  background-color: $dm-color-gray-2;
 }

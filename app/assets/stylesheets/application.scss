@@ -40,7 +40,19 @@ body {
 
 .practice-editor-rect-svg {
   height: 4px;
-  width: 40px;
+  width: 60px;
+}
+
+.practice-editor-long-rect-svg{
+  height: 4px;
+  width: 726px;
+}
+
+.overview_error_msg{
+  display: none;
+  margin-top: 0;
+  width: 300px;
+
 }
 
 #more_text {display: none;}

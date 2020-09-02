@@ -348,6 +348,12 @@
   max-width: 100% !important;
 }
 
+.practice-editor-overview-statement-input {
+  max-width: 100% !important;
+  height: 135px !important;
+  resize: none
+}
+
 .practice-editor-tagline-textarea {
   resize: none;
   height: 72px !important;
@@ -400,8 +406,8 @@
 }
 
 .trash-container {
-  //text-align: right;
   padding-right: 0.2rem;
+  margin-top: 5px;
 }
 
 .documentation-trash-container, .risk-miti-trash-container, .contact-trash-container,
@@ -849,7 +855,9 @@
   width: 125px;
 }
 
-// PRACTICE VIEW
+/*********************************
+ PRACTICE VIEW
+**********************************/
 // Introduction
 #pr-view-introduction {
   .desktop-main-display-image-container, .mobile-main-display-image-container {
@@ -891,6 +899,13 @@ li.small-disc:before {
   top: 4px;
 }
 
+.resource_container{
+  background: $dm-color-white;
+  border: 2px solid $dm-color-gray-20;
+  border-radius: 2px;
+  padding: 16px;
+}
+
 .pe-category-checkbox:last-child {
   margin-bottom: 40px;
 }
@@ -910,4 +925,78 @@ li.small-disc:before {
   left: 11px !important;
   width: 1px;
   height: 1px;
+}
+
+/*********************************
+ PRACTICE EDITOR
+**********************************/
+// Overview
+#overview {
+  .dm-resource-image-editor {
+    .dm-file-upload-label {
+      max-width: 100%;
+      line-height: 26px;
+      color: $dm-color-base;
+    }
+  }
+
+  .dm-cropper-images-container {
+    img, canvas {
+      max-width: 476px !important;
+      max-height: 309px !important;
+      min-width: auto !important;
+    }
+  }
+
+  .overview-input-error {
+    border-left-width: 0.25rem !important;
+    border-left-color: #b50909 !important;
+    border-left-style: solid !important;
+    padding-left: 1rem !important;
+    position: relative !important;
+  }
+
+  .overview-attachment-input-target-error {
+    border-color: #b50909 !important;
+    border-width: 2px !important;
+  }
+
+  .overview-text-input-error {
+    border-width: 0.25rem !important;
+    border-color: #b50909 !important;
+    border-style: solid !important;
+  }
+
+  .overview-resource-label {
+    margin-top: 16px !important;
+  }
+
+  .usa-label--error {
+    margin-top: 1.5rem !important;
+  }
+
+  .overview-problem-statement-label + span, .overview-solution-statement-label + span, .overview-results-statement-label + span {
+    line-height: 18px !important;
+  }
+}
+
+.overview-files-ul {
+  div:last-child {
+    margin-bottom: 0 !important;
+  }
+}
+
+.overview-statement-container {
+  a {
+    display: inline-block;
+    width: auto;
+  }
+}
+
+.practice-editor-impact-photo-container {
+  div {
+    @media screen and (max-width: 1023px) {
+      width: 100% !important;
+    }
+  }
 }

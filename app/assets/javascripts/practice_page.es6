@@ -95,10 +95,25 @@
         });
     }
 
+    function createWidthForImageCaption() {
+        $('.practice-editor-impact-photo-container').each(function () {
+            $(this).hide();
+        });
+        $(window).on('load', function() {
+            $('.practice-editor-impact-photo').each(function () {
+                $(this).parent().show();
+                if ($(window).width() > 1023) {
+                    $(this).next().width(`${$(this).width()}`);
+                }
+            })
+        })
+    }
+
     function executePracticeCommentsFunctions() {
         highlightSidebarSectionWhenInView();
         setUpShowMoreOrLessButtons();
         setUpShowMoreOrLessOnArrive();
+        createWidthForImageCaption();
     }
 
     $document.on('turbolinks:load', executePracticeCommentsFunctions);
@@ -162,5 +177,23 @@ function seeMoreSearchTermsDesktop() {
     } else {
         btnText.innerHTML = "See more";
         termsTruncated.style.display = "none";
+    }
+}
+
+function seeMoreStatementText(dotsSection, moreStatementText, buttonText, statementTruncated) {
+    var dots = document.getElementById(dotsSection.id);
+    var moreText = document.getElementById(moreStatementText.id);
+    var btnText = document.getElementById(buttonText.id);
+    var originFacilityTruncated = document.getElementById(statementTruncated.id);
+    if (dots.style.display === "none") {
+        dots.style.display = "inline";
+        btnText.innerHTML = "See more";
+        originFacilityTruncated.style.display = "inline";
+        moreText.style.display = "none";
+    } else {
+        dots.style.display = "none";
+        btnText.innerHTML = "See less";
+        originFacilityTruncated.style.display = "none";
+        moreText.style.display = "inline";
     }
 }

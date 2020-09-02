@@ -10,7 +10,7 @@
   <div id="dm-practice-nav" class="z-top mobile-hide">
     <ul id="dm-tabnav" class="usa-sidenav dm-tabnav margin-bottom-1 show-page-sidenav">
       <li class="usa-sidenav__item">
-        <a href="#overview" class="dm-tab top-tab scroll-to sidebar-overview" data-target="#overview" data-turbolinks="false">Overview</a>
+        <a href="#overview_page" class="dm-tab top-tab scroll-to sidebar-overview" data-target="#overview" data-turbolinks="false">Overview</a>
       </li>
       <% unless !@practice.origin_story || !@practice.origin_title %>
         <li class="usa-sidenav__item">
@@ -62,8 +62,30 @@
   <%= link_to 'See adoption checklist', practice_planning_checklist_url(practice_id: @practice.slug), id: 'next-steps-link-in-mobile-nav', class: 'usa-button' %>
 </div>
 
+<!--//Overview-Problem-->
+<section id="overview_page" class="margin-bottom-5 grid-container">
+  <div class="grid-row grid-gap-2">
+    <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
+    <div class="desktop:grid-col-9 grid-col-12">
+      <div class="practice-editor-long-rect-svg border-top-05 border-primary-dark"></div>
+      <h1 class="font-sans-xl line-height-37px margin-top-2">Overview</h1>
+      <div class="metric-section practice-section">
+        <section id="overview_problem" class="margin-bottom-5">
+          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_problem_resources, statement: @practice.overview_problem, title: 'The problem', s_area: 'problem'} %>
+        </section>
+        <section id="overview_solution" class="margin-bottom-5">
+          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_solution_resources, statement: @practice.overview_solution, title: 'The solution', s_area: 'solution'} %>
+        </section>
+        <section id="overview_results">
+          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_results_resources, statement: @practice.overview_results, title: 'The results', s_area: 'results'} %>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+
 <% if @practice.practice_metrics.any? %>
-  <section class="margin-bottom-4 grid-container">
+  <section class="margin-bottom-5 grid-container">
     <div class="grid-row grid-gap-2">
       <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
       <div class="desktop:grid-col-9 grid-col-12">
@@ -75,6 +97,7 @@
   </section>
 <% end %>
 
+<!--//Overview-Problem-->
 <% if @practice.diffusion_histories.any? && ENV['GOOGLE_API_KEY'] %>
   <section class="margin-bottom-5 grid-container">
     <div class="grid-row grid-gap-2">
@@ -82,9 +105,26 @@
       <div class="desktop:grid-col-9 grid-col-12">
         <div class="metric-section practice-section">
           <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
-          <h3 class="margin-top-2 margin-bottom-105 line-height-26 font-sans-lg">Diffusion tracker</h3>
+          <h3 class="margin-y-2 line-height-26 font-sans-lg">Diffusion tracker</h3>
           <%= render partial: 'practices/show/overview/diffusion_tracker/diffusion_map' %>
           <%= render partial: 'practices/show/overview/diffusion_tracker/adoptions' %>
+        </div>
+      </div>
+    </div>
+  </section>
+<% end %>
+
+<%
+  practice_multimedia = @practice.practice_multimedia
+%>
+
+<% if practice_multimedia.any? %>
+  <section class="margin-bottom-5 grid-container">
+    <div class="grid-row grid-gap-2">
+      <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
+      <div class="desktop:grid-col-9 grid-col-12">
+        <div class="multimedia-section practice-section">
+          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: practice_multimedia, statement: '', title: 'Multimedia', s_area: 'multimedia'} %>
         </div>
       </div>
     </div>

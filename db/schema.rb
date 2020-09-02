@@ -707,10 +707,10 @@ ActiveRecord::Schema.define(version: 2020_08_17_180728) do
     t.string "attachment_content_type"
     t.integer "attachment_file_size"
     t.datetime "attachment_updated_at"
-    t.string "resource_type"
     t.string "name"
     t.string "description"
     t.integer "position"
+    t.integer "resource_type", default: 0
     t.index ["practice_id"], name: "index_practice_multimedia_on_practice_id"
   end
 
@@ -765,10 +765,10 @@ ActiveRecord::Schema.define(version: 2020_08_17_180728) do
     t.string "attachment_content_type"
     t.integer "attachment_file_size"
     t.datetime "attachment_updated_at"
-    t.string "resource_type"
     t.string "name"
     t.string "description"
     t.integer "position"
+    t.integer "resource_type", default: 0
     t.index ["practice_id"], name: "index_practice_problem_resources_on_practice_id"
   end
 
@@ -781,10 +781,10 @@ ActiveRecord::Schema.define(version: 2020_08_17_180728) do
     t.string "attachment_content_type"
     t.integer "attachment_file_size"
     t.datetime "attachment_updated_at"
-    t.string "resource_type"
     t.string "name"
     t.string "description"
     t.integer "position"
+    t.integer "resource_type", default: 0
     t.index ["practice_id"], name: "index_practice_results_resources_on_practice_id"
   end
 
@@ -797,10 +797,10 @@ ActiveRecord::Schema.define(version: 2020_08_17_180728) do
     t.string "attachment_content_type"
     t.integer "attachment_file_size"
     t.datetime "attachment_updated_at"
-    t.string "resource_type"
     t.string "name"
     t.string "description"
     t.integer "position"
+    t.integer "resource_type", default: 0
     t.index ["practice_id"], name: "index_practice_solution_resources_on_practice_id"
   end
 

@@ -6,6 +6,7 @@ class SavePracticeService
     @practice_params = params[:practice_params]
     @avatars = ['practice_creators', 'va_employees']
     @attachments = ['impact_photos', 'additional_documents']
+    @resources = ['problem_resources', 'solution_resources', 'results_resources', 'multimedia']
     @current_endpoint = params[:current_endpoint]
     @error_messages = {
         update_practice_partner_practices: 'error updating practice partners',
@@ -16,24 +17,39 @@ class SavePracticeService
         crop_main_display_image: 'error cropping practice thumbnail',
         update_initiating_facility: 'error updating initiating facility',
         update_practice_awards: 'error updating practice awards',
-        update_category_practices: 'error updating practice categories'
+        update_category_practices: 'error updating practice categories',
+        crop_resource_images: 'error cropping practice resource images'
     }
   end
 
   def save_practice
     begin
-      updated = @practice.update(@practice_params)
+      if @practice_params["practice_problem_resources_attributes"].present?
+        process_problem_resource_params
+      end
+      if @practice_params["practice_solution_resources_attributes"].present?
+        process_solution_resource_params
+      end
+      if @practice_params["practice_results_resources_attributes"].present?
+        process_results_resource_params
+      end
+      if @practice_params["practice_multimedia_attributes"].present?
+        process_multimedia_params
+      end
+        updated = @practice.update(@practice_params)
 
-      rescue_method(:update_practice_partner_practices)
-      rescue_method(:update_department_practices)
-      rescue_method(:remove_attachments)
-      rescue_method(:manipulate_avatars)
-      rescue_method(:remove_main_display_image)
-      rescue_method(:crop_main_display_image)
-      rescue_method(:update_initiating_facility)
-      rescue_method(:update_practice_awards)
-      rescue_method(:update_category_practices)
-      updated
+        rescue_method(:update_practice_partner_practices)
+        rescue_method(:update_department_practices)
+        rescue_method(:remove_attachments)
+        rescue_method(:manipulate_avatars)
+        rescue_method(:remove_main_display_image)
+        rescue_method(:crop_main_display_image)
+        rescue_method(:update_initiating_facility)
+        rescue_method(:update_practice_awards)
+        rescue_method(:update_category_practices)
+        rescue_method(:crop_resource_images)
+
+        updated
     rescue => e
       Rails.logger.error "save_practice error: #{e.message}"
       e
@@ -51,6 +67,22 @@ class SavePracticeService
     end
   end
 
+  def crop_resource_images
+    @resources.each do |resource|
+      res_name = "practice_#{resource}"
+      params_resources = @practice_params["#{res_name}_attributes"]
+      if params_resources
+        params_resources.each do |r|
+          if is_cropping?(r[1]) && r[1][:_destroy] == 'false' && r[1][:id].present?
+            r_id = r[1][:id].to_i
+            record = @practice.send(res_name).find(r_id)
+            reprocess_attachment(record, r[1])
+          end
+        end
+      end
+    end
+  end
+
   def update_practice_partner_practices
     practice_partner_params = @practice_params[:practice_partner]
     practice_partners = @practice.practice_partner_practices
@@ -65,7 +97,7 @@ class SavePracticeService
       practice_partners.each do |partner|
         partner.destroy unless partner_keys.include?(partner.practice_partner_id.to_s)
       end
-    elsif practice_partner_params.blank? && @current_endpoint == 'overview'
+    elsif practice_partner_params.blank? && @current_endpoint == 'introduction'
       practice_partners.destroy_all
     end
   end
@@ -107,7 +139,7 @@ class SavePracticeService
       other_cat_id = Category.find_by(name: 'Other').id
 
       if cat_keys.include?(other_cat_id.to_s)
-        categories_to_process = category_attribute_params.values.map { |param| { id: param[:id], name: param[:name], _destroy: param[:_destroy]} }
+        categories_to_process = category_attribute_params.values.map { |param| {id: param[:id], name: param[:name], _destroy: param[:_destroy]} }
         # If Other was checked, create a new category with is_other true and create a category_practice linking to the new category
         categories_to_process.each do |category|
           unless category[:name] == ""
@@ -127,7 +159,7 @@ class SavePracticeService
 
       if other_practice_categories.any?
         if cat_keys.exclude?(other_cat_id.to_s)
-          practice_category_practices.joins(:category).where(categories: { is_other: true }).destroy_all
+          practice_category_practices.joins(:category).where(categories: {is_other: true}).destroy_all
 
           other_practice_categories.each do |oc|
             oc.destroy unless CategoryPractice.where.not(practice_id: @practice.id).where(category_id: oc.id).any?
@@ -135,7 +167,7 @@ class SavePracticeService
         end
       end
 
-      practice_category_practices.joins(:category).where(categories: { is_other: false }).each do |pcp|
+      practice_category_practices.joins(:category).where(categories: {is_other: false}).each do |pcp|
         pcp.destroy unless cat_keys.include?(pcp.category_id.to_s)
       end
 
@@ -233,6 +265,30 @@ class SavePracticeService
       end
     elsif practice_award_params.blank? && @current_endpoint == 'introduction' && practice_awards.any?
       practice_awards.destroy_all
+    end
+  end
+
+  def process_problem_resource_params
+    PracticeProblemResource.resource_types.each do |rt|
+      @practice_params['practice_problem_resources_attributes']&.delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
+    end
+  end
+
+  def process_solution_resource_params
+    PracticeSolutionResource.resource_types.each do |rt|
+      @practice_params['practice_solution_resources_attributes']&.delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
+    end
+  end
+
+  def process_results_resource_params
+    PracticeResultsResource.resource_types.each do |rt|
+      @practice_params['practice_results_resources_attributes']&.delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
+    end
+  end
+
+  def process_multimedia_params
+    PracticeMultimedium.resource_types.each do |rt|
+      @practice_params['practice_multimedia_attributes']&.delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
     end
   end
 end

@@ -19,6 +19,7 @@
 //= require cropper
 //= require activestorage
 //= require turbolinks
+//= require arrive.min
 //= require uswds/uswds
 //= require jquery_nested_form
 //= require jquery-ui/widgets/tooltip
@@ -43,7 +44,6 @@
 //= require reportAbuse
 //= require turbolinksScrollTop
 //= require save-editor-progress
-//= require arrive.min
 //= require html5sortable
 //= require search
 //= require modernizr-custom
