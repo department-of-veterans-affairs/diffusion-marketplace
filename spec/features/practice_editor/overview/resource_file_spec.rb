@@ -72,13 +72,13 @@ describe 'Practice editor', type: :feature, js: true do
           expect(page).to have_content('File description')
           expect(page).to have_css("input[accept='.pdf,.docx,.xlxs,.jpg,.jpeg,.png']")
           add_resource
-          expect(error_msg_val).to eq 'Please upload a file.'
+          expect(page).to have_content('Please upload a file')
           upload_file(area, @file_path_2)
           add_resource
-          expect(error_msg_val).to eq 'Please enter a file name.'
+          expect(page).to have_content('Please enter a file name')
           fill_in('File name', with: 'new file')
           add_resource
-          expect(error_msg_val).to eq 'Please enter a file description.'
+          expect(page).to have_content('Please enter a file description')
           fill_in('File description', with: "new practice #{area} file")
           add_resource
           expect(find_all('.overview_error_msg').length).to eq 0
@@ -241,52 +241,49 @@ describe 'Practice editor', type: :feature, js: true do
       end
     end
   end
-end
 
-def name_field
-  find_all('input[type="text"][class="usa-input"]').first
-end
+  def name_field
+    find_all('input[type="text"][class="usa-input"]').first
+  end
 
-def description_field
-  find_all('input[type="text"][class="usa-input"]').last
-end
+  def description_field
+    find_all('input[type="text"][class="usa-input"]').last
+  end
 
-def click_file_form(area)
-  find("label[for=practice_#{area}_file]").click
-end
+  def click_file_form(area)
+    find("label[for=practice_#{area}_file]").click
+  end
 
-def upload_file(area, file)
-  find_all('input[type="file"]').first.attach_file(file)
-end
+  def upload_file(area, file)
+    find_all('input[type="file"]').first.attach_file(file)
+  end
 
-def add_resource
-  find('.add-resource').click
-end
+  def add_resource
+    find('.add-resource').click
+  end
 
-def save_practice
-  find('#practice-editor-save-button').click
-end
+  def save_practice
+    find('#practice-editor-save-button').click
+  end
 
-def error_msg_val
-  find_all('.overview_error_msg').first.value
-end
+  def no_resource_pr_test_setup
+    visit practice_path(@pr_no_resources)
+    expect(page).to have_content('Overview')
+    expect(page).to have_no_content("Files")
+    visit practice_overview_path(@pr_no_resources)
+  end
 
-def no_resource_pr_test_setup
-  visit practice_path(@pr_no_resources)
-  expect(page).to have_content('Overview')
-  expect(page).to have_no_content("Files")
-  visit practice_overview_path(@pr_no_resources)
-end
+  def with_resource_pr_test_setup
+    visit practice_path(@pr_with_resources)
+    expect(page).to have_content('Overview')
+    expect(page).to have_content("Files")
+    expect(has_link?("existing problem file")).to eq(true)
+    expect(has_link?("existing solution file")).to eq(true)
+    expect(has_link?("existing results file")).to eq(true)
+    expect(page).to have_content("problem file description")
+    expect(page).to have_content("solution file description")
+    expect(page).to have_content("results file description")
+    visit practice_overview_path(@pr_with_resources)
+  end
 
-def with_resource_pr_test_setup
-  visit practice_path(@pr_with_resources)
-  expect(page).to have_content('Overview')
-  expect(page).to have_content("Files")
-  expect(has_link?("existing problem file")).to eq(true)
-  expect(has_link?("existing solution file")).to eq(true)
-  expect(has_link?("existing results file")).to eq(true)
-  expect(page).to have_content("problem file description")
-  expect(page).to have_content("solution file description")
-  expect(page).to have_content("results file description")
-  visit practice_overview_path(@pr_with_resources)
 end

@@ -1,6 +1,5 @@
 <%
   grouped_resources = resources.group_by(&:resource_type)
-  # debugger
   truncated_id = "overview_" + s_area + "_truncated"
   dots_id = "dots_" + s_area + "_statement"
   more_text_id = s_area + "_statement_more_text"
@@ -29,22 +28,16 @@
 <% if resources.image.any? %>
   <h4 class="margin-top-3 margin-bottom-2 line-height-18px">Images</h4>
   <div class="grid-row grid-gap">
-  <% grouped_resources['image'].each do |pr| %>
-    <div class="margin-bottom-2 practice-editor-impact-photo-container">
-      <%= image_tag pr.attachment_s3_presigned_url(:thumb), class: 'height-mobile practice-editor-impact-photo radius-md' %>
-      <% if pr.name.present? %>
-        <%#
-<!--          image_dimensions = Paperclip::Geometry.from_file(pr.attachment_s3_presigned_url)-->
-<!--          # ratio = 4.17-->
-<!--          calculated_width = image_dimensions.width / 4.17-->
-        %>
-        <%#= image_dimensions %>
-        <div class="margin-top-1">
-          <span class="text-bold line-height-15px font-sans-3xs">ABOVE:</span> <span class="font-sans-2xs text-medium line-height-19px"><%= pr.name %></span>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
+    <% grouped_resources['image'].each do |pr| %>
+      <div class="margin-bottom-2 practice-editor-impact-photo-container">
+        <%= image_tag pr.attachment_s3_presigned_url(:thumb), class: 'height-mobile practice-editor-impact-photo radius-md' %>
+        <% if pr.name.present? %>
+          <div class="margin-top-1">
+            <span class="text-bold line-height-15px font-sans-3xs">ABOVE:</span> <span class="font-sans-2xs text-medium line-height-19px"><%= pr.name %></span>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 <% end %>
 
