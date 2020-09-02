@@ -95,10 +95,25 @@
         });
     }
 
+    function createWidthForImageCaption() {
+        $('.practice-editor-impact-photo-container').each(function () {
+            $(this).hide();
+        });
+        $(window).on('load', function() {
+            $('.practice-editor-impact-photo').each(function () {
+                $(this).parent().show();
+                if ($(window).width() > 1023) {
+                    $(this).next().width(`${$(this).width()}`);
+                }
+            })
+        })
+    }
+
     function executePracticeCommentsFunctions() {
         highlightSidebarSectionWhenInView();
         setUpShowMoreOrLessButtons();
         setUpShowMoreOrLessOnArrive();
+        createWidthForImageCaption();
     }
 
     $document.on('turbolinks:load', executePracticeCommentsFunctions);
@@ -166,7 +181,6 @@ function seeMoreSearchTermsDesktop() {
 }
 
 function seeMoreStatementText(dotsSection, moreStatementText, buttonText, statementTruncated) {
-    debugger
     var dots = document.getElementById(dotsSection.id);
     var moreText = document.getElementById(moreStatementText.id);
     var btnText = document.getElementById(buttonText.id);
