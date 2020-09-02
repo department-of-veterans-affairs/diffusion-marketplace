@@ -9,10 +9,10 @@
     <div id="timeline" class="desktop:grid-col-9 grid-col-12 p0">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
       <section class="usa-section padding-top-0 p0-bottom timeline">
-        <h1 class="font-sans-2xl line-height-sans-205">Timeline</h1>
-        <h2 class="text-normal">
-          This section details the estimated timeline for another facility to implement your practice.
-        </h2>
+        <h2 class="font-sans-2xl line-height-sans-205">Timeline</h2>
+        <h3 class="text-normal">
+          This section details the estimated timeline for another facility to implement your practice.  List out each milestone separately.
+        </h3>
         <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
           <fieldset class="usa-fieldset">
             <legend class="usa-sr-only">Timeline</legend>
