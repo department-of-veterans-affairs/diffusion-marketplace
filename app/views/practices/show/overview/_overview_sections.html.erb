@@ -7,7 +7,7 @@
 
 %>
 
-<div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
+<div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
 <h3 class="font-sans-lg line-height-25px margin-top-2 margin-bottom-1"><%= title %></h3>
 <% if statement.present? && statement.length > 360 %>
   <div class="line-height-26 overview-statement-container">
@@ -30,7 +30,7 @@
   <div class="grid-row grid-gap">
     <% grouped_resources['image'].each do |pr| %>
       <div class="margin-bottom-2 practice-editor-impact-photo-container">
-        <%= image_tag pr.attachment_s3_presigned_url(:thumb), class: 'height-mobile practice-editor-impact-photo radius-md' %>
+        <%= image_tag pr.attachment_s3_presigned_url(:thumb), class: 'height-mobile practice-editor-impact-photo' %>
         <% if pr.name.present? %>
           <div class="margin-top-1">
             <span class="text-bold line-height-15px font-sans-3xs">ABOVE:</span> <span class="font-sans-2xs text-medium line-height-19px"><%= pr.name %></span>
