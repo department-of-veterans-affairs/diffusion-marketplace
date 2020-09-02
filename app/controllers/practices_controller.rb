@@ -285,6 +285,11 @@ class PracticesController < ApplicationController
     render 'practices/form/overview'
   end
 
+  def implementation
+    set_practice
+    render 'practices/form/implementation'
+  end
+
   # /practices/slug/introduction
   def introduction
     set_practice
