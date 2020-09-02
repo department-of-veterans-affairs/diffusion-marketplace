@@ -1,11 +1,3 @@
-<% provide :head_tags do %>
-  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-    <%= render partial: 'timeline', formats: [:js] %>
-  <% end %>
-  <%= javascript_include_tag 'practice_editor_timeline', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
-<% end %>
-<div class="grid-container position-relative">
     <div id="timeline" class="desktop:grid-col-9 grid-col-12 p0">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
       <section class="usa-section padding-top-0 p0-bottom timeline">
@@ -27,32 +19,19 @@
                     <%= tl.hidden_field :id %>
                     <div id="milestone_<%= tl_id %>_container"  class="padding-205 border border-width-1px border-base-lighter radius-sm margin-top-3">
                       <div class="position-relative">
-                        <div class="fas fa-arrows-alt font-sans-lg position-arrows timeline-arrows text-base arrows-tooltip">
-                          <span class="usa-tag tooltip-text">Drag and drop to change order</span>
-                        </div>
-                        <%= tl.label :timeline, 'Time frame:', class: 'usa-label text-bold display-inline-block timeline-duration' %>&nbsp;<span>Type the time frame as Month # (e.g. Month 1, Months 2-3)</span>
+                        <%= tl.label :timeline, 'Time frame', class: 'usa-label text-bold display-inline-block timeline-duration' %>&nbsp;
                         <%= tl.text_field :timeline, class: 'usa-input practice-input width-card timeline-input' %>
                       </div>
-                      <%= tl.fields_for :milestones do |m| %>
-                        <%
-                          m_id = m.object.id
-                        %>
-                        <%= m.hidden_field :position, class: 'milestone-position' %>
                         <div class="grid-row width-full">
                           <div>
-                            <%= m.label :description, 'Milestone:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type a description of the milestone.</span>&nbsp;<span class="text-base-light milestone-character-count" <% if m_id.present? %> id="milestone_<%= m_id %>_character_count" <%end%>>(0/100 characters)</span>
-                            <%= m.text_area :description, class: 'usa-input practice-input height-10 milestone-textarea', 'counter-id': "milestone_#{m_id}_textarea" %>
+                            <%= tl.label :milestone, '', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Description of milestones (include context or disclaimers as needed.</span>&nbsp;
+                            <%= tl.text_area :milestone, class: 'usa-input practice-input height-10 milestone-textarea', 'counter-id': "milestone_#{tl_id}_textarea" %>
                           </div>
                         </div>
-                      <% end %>
+
                       <div class="grid-row">
-                        <div class="position-relative add-milestone-width-ie">
-                          <%= tl.link_to_add :milestones, class: 'fas fa-plus text-no-underline add-milestone-link margin-top-105 ', id: "timeline_#{tl_id}_milestone_link" do %>
-                            <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add milestone</span>
-                          <% end %>
-                        </div>
                         <div class="timeline-trash-container grid-col-fill position-relative">
-                          <%= tl.link_to_remove '', class: "fas fa-trash-alt timeline-trash text-no-underline position-absolute bottom-0 margin-top-105", title: 'remove timeline' %>
+                          <%= tl.link_to_remove 'Delete entry', class: "fas timeline-trash text-no-underline position-absolute bottom-0 margin-top-105", title: 'remove timeline' %>
                         </div>
                       </div>
                     </div>
@@ -77,4 +56,4 @@
         </div>
       </section>
     </div>
-</div>
+<!--</div>-->

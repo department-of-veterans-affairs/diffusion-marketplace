@@ -394,9 +394,19 @@
   }
 }
 
-.impact-trash, .dm-origin-trash, .documentation-trash, .timeline-trash, .risk-mitigation-trash, .va-employee-trash, .permission-trash,
+.impact-trash, .dm-origin-trash, .documentation-trash, .risk-mitigation-trash, .va-employee-trash, .permission-trash,
 .resource-trash {
   font-size: 22px;
+}
+
+.timeline-trash{
+  font-family: Public Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 162%;
+  text-align: right;
+  text-decoration-line: underline;
 }
 
 .impact-trash-container, .documentation-trash-container, //.trash-container,

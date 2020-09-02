@@ -266,18 +266,7 @@ class Practice < ApplicationRecord
   accepts_nested_attributes_for :video_files, allow_destroy: true, reject_if: proc { |attributes| attributes['url'].blank? || attributes['description'].blank? }
   accepts_nested_attributes_for :difficulties, allow_destroy: true
   accepts_nested_attributes_for :risk_mitigations, allow_destroy: true
-  accepts_nested_attributes_for :timelines, allow_destroy: true, reject_if: proc { |attributes|
-    reject = attributes['timeline'].blank?
-    ma_reject = false
-    if attributes['milestones_attributes'].present?
-      attributes['milestones_attributes'].each do |i, ma|
-        ma_reject = ma['description'].blank?
-      end
-    else
-      ma_reject = true
-    end
-    reject || ma_reject
-  }
+  accepts_nested_attributes_for :timelines, allow_destroy: true
   accepts_nested_attributes_for :va_employees, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? || attributes['role'].blank? }
   accepts_nested_attributes_for :additional_staffs, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['hours_per_week'].blank? || attributes['duration_in_weeks'].blank? }
   accepts_nested_attributes_for :additional_resources, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }

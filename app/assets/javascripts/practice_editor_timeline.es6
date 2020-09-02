@@ -3,7 +3,7 @@
 
     function removeBulletPointFromNewLi() {
         $document.arrive('.practice-editor-timeline-li', (newElem) => {
-            $(newElem).find($('.add-milestone-link')).click();
+            // $(newElem).find($('.add-milestone-link')).click();
             $(newElem).appendTo('#sortable_timelines');
             initSortable('#sortable_timelines');
             $(newElem).css('list-style', 'none')
@@ -35,7 +35,7 @@
 
     function loadPracticeTimelineFunctions() {
         removeBulletPointFromNewLi();
-        dragAndDropTimelineListItems();
+        // dragAndDropTimelineListItems();
     }
 
     $document.on('turbolinks:load', loadPracticeTimelineFunctions);
