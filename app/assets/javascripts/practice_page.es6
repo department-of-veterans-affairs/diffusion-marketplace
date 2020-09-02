@@ -166,7 +166,6 @@ function seeMoreSearchTermsDesktop() {
 }
 
 function seeMoreStatementText(dotsSection, moreStatementText, buttonText, statementTruncated) {
-    debugger
     var dots = document.getElementById(dotsSection.id);
     var moreText = document.getElementById(moreStatementText.id);
     var btnText = document.getElementById(buttonText.id);

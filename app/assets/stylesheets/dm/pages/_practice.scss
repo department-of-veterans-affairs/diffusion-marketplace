@@ -406,7 +406,6 @@
 }
 
 .trash-container {
-  //text-align: right;
   padding-right: 0.2rem;
   margin-top: 5px;
 }
@@ -856,7 +855,9 @@
   width: 125px;
 }
 
-// PRACTICE VIEW
+/*********************************
+ PRACTICE VIEW
+**********************************/
 // Introduction
 #pr-view-introduction {
   .desktop-main-display-image-container, .mobile-main-display-image-container {
@@ -926,7 +927,10 @@ li.small-disc:before {
   height: 1px;
 }
 
-// practice overview section
+/*********************************
+ PRACTICE EDITOR
+**********************************/
+// Overview
 #overview {
   .dm-resource-image-editor {
     .dm-file-upload-label {
@@ -966,8 +970,8 @@ li.small-disc:before {
   .overview-resource-label {
     margin-top: 16px !important;
   }
-}
 
-.usa-label--error {
-  margin-top: 1.5rem !important;
+  .usa-label--error {
+    margin-top: 1.5rem !important;
+  }
 }
