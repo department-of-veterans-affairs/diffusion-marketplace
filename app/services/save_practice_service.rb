@@ -6,7 +6,7 @@ class SavePracticeService
     @practice_params = params[:practice_params]
     @avatars = ['practice_creators', 'va_employees']
     @attachments = ['impact_photos', 'additional_documents']
-    @resources = ['problem', 'solution', 'results', 'multimedia']
+    @resources = ['problem_resources', 'solution_resources', 'results_resources', 'multimedia']
     @current_endpoint = params[:current_endpoint]
     @error_messages = {
         update_practice_partner_practices: 'error updating practice partners',
@@ -69,7 +69,7 @@ class SavePracticeService
 
   def crop_resource_images
     @resources.each do |resource|
-      res_name = "practice_#{resource}_resources"
+      res_name = "practice_#{resource}"
       params_resources = @practice_params["#{res_name}_attributes"]
       if params_resources
         params_resources.each do |r|
