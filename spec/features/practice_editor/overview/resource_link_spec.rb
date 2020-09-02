@@ -55,7 +55,7 @@ describe 'Practice editor', type: :feature, js: true do
       end
     end
 
-    describe 'complete and add link' do
+    describe 'complete form and add link' do
       before do
         no_resource_pr_test_setup
       end
@@ -71,13 +71,13 @@ describe 'Practice editor', type: :feature, js: true do
           expect(page).to have_content('Title')
           expect(page).to have_content('Description')
           add_resource
-          expect(error_msg_val).to eq 'Please enter a valid url/link.'
+          expect(page).to have_content('Please enter a valid url/link')
           url_field.set(@link_url_2)
           add_resource
-          expect(error_msg_val).to eq 'Please enter a title.'
+          expect(page).to have_content('Please enter a link title')
           title_field.set('new link')
           add_resource
-          expect(error_msg_val).to eq 'Please enter a description.'
+          expect(page).to have_content('Please enter a link description')
           description_field.set("new practice #{area} link")
           add_resource
           expect(find_all('.overview_error_msg').length).to eq 0
@@ -243,52 +243,48 @@ describe 'Practice editor', type: :feature, js: true do
       end
     end
   end
-end
 
-def url_field
-  find_all('input[type="text"][class="usa-input"]').first
-end
+  def url_field
+    find_all('input[type="text"]').first
+  end
 
-def title_field
-  find_all('input[type="text"][class="usa-input"]')[1]
-end
+  def title_field
+    find_all('input[type="text"]')[1]
+  end
 
-def description_field
-  find_all('input[type="text"][class="usa-input"]').last
-end
+  def description_field
+    find_all('input[type="text"]').last
+  end
 
-def click_link_form(area)
-  find("label[for=practice_#{area}_link]").click
-end
+  def click_link_form(area)
+    find("label[for=practice_#{area}_link]").click
+  end
 
-def add_resource
-  find('.add-resource').click
-end
+  def add_resource
+    find('.add-resource').click
+  end
 
-def save_practice
-  find('#practice-editor-save-button').click
-end
+  def save_practice
+    find('#practice-editor-save-button').click
+  end
 
-def error_msg_val
-  find_all('.overview_error_msg').first.value
-end
+  def no_resource_pr_test_setup
+    visit practice_path(@pr_no_resources)
+    expect(page).to have_content('Overview')
+    expect(page).to have_no_content("Links")
+    visit practice_overview_path(@pr_no_resources)
+  end
 
-def no_resource_pr_test_setup
-  visit practice_path(@pr_no_resources)
-  expect(page).to have_content('Overview')
-  expect(page).to have_no_content("Links")
-  visit practice_overview_path(@pr_no_resources)
-end
-
-def with_resource_pr_test_setup
-  visit practice_path(@pr_with_resources)
-  expect(page).to have_content('Overview')
-  expect(page).to have_content("Links")
-  expect(page).to have_link('existing problem link', href: @link_url_1)
-  expect(page).to have_link('existing solution link', href: @link_url_1)
-  expect(page).to have_link('existing results link', href: @link_url_1)
-  expect(page).to have_content("problem link description")
-  expect(page).to have_content("solution link description")
-  expect(page).to have_content("results link description")
-  visit practice_overview_path(@pr_with_resources)
+  def with_resource_pr_test_setup
+    visit practice_path(@pr_with_resources)
+    expect(page).to have_content('Overview')
+    expect(page).to have_content("Links")
+    expect(page).to have_link('existing problem link', href: @link_url_1)
+    expect(page).to have_link('existing solution link', href: @link_url_1)
+    expect(page).to have_link('existing results link', href: @link_url_1)
+    expect(page).to have_content("problem link description")
+    expect(page).to have_content("solution link description")
+    expect(page).to have_content("results link description")
+    visit practice_overview_path(@pr_with_resources)
+  end
 end

@@ -12,24 +12,22 @@
     </div>
     <input value="<%= resource.id %>" type="hidden" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][id]"/>
   <% end %>
-  <%= label_tag "practice_#{area}_video", 'Link (paste the full Youtube address)', class: 'usa-label', for: "practice_#{area}_attributes_#{placeholder}_link_url" %>
   <div class="<%= area %>-input-container">
+    <%= label_tag "practice_#{area}_video", 'Link (paste the full Youtube address)', class: 'usa-label overview-resource-label', for: "practice_#{area}_attributes_#{placeholder}_link_url" %>
     <%= render partial: 'practices/overview_error_partials/link', locals: {
         area: area,
         resource_type: 'video',
-        error: 'No valid YouTube url',
         message: 'Please enter a valid YouTube url'
     }
     %>
     <input <%= resource&.id ? 'required' : '' %> class="usa-input" value="<%= resource&.link_url %>"  placeholder="https://www.youtube.com/watch?v=" type="text" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][link_url]" id="practice_<%= area %>_attributes_<%= placeholder %>_link_url" style="width: 643px"/>
   </div>
 
-  <%= label_tag "practice_#{area}_name", 'Caption', class: 'usa-label', for: "practice_#{area}_attributes_#{placeholder}_name" %>
   <div class="<%= area %>-input-container">
+    <%= label_tag "practice_#{area}_name", 'Caption', class: 'usa-label overview-resource-label', for: "practice_#{area}_attributes_#{placeholder}_name" %>
     <%= render partial: 'practices/overview_error_partials/name', locals: {
         area: area,
         resource_type: 'video',
-        error: 'No video caption',
         message: 'Please enter a caption'
     }
     %>

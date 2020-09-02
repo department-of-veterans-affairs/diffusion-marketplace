@@ -137,11 +137,12 @@
             let visibleChildDivs = $(e.target).closest(`#display_${area}_${type}`).find('div:visible');
             // remove title of section if there are no items
             if (visibleChildDivs.length === 1) {
-                // TODO: we may not want to remove this,
-                //  but to simply hide the div that is holding this text, then show it again in the add function.
-                // This is because the user may add more to the holding area after deleting everything...
-                // and now the text is gone XD
-                visibleChildDivs[0].remove();
+                visibleChildDivs[0].hide;
+                let elementId = area + '_' + type + '_section_text';
+                let newEle = document.getElementById(elementId);
+                if(newEle != null) {
+                    newEle.style.display = 'none';
+                }
             }
         });
     }
@@ -165,30 +166,36 @@ function displayResourceForm(sArea, sType) {
 
 function displayInputErrorStyles(inputTitle, elem) {
     $(inputTitle).closest(elem).addClass('overview-input-error');
+    $(inputTitle).parent().find('label').addClass('usa-label--error');
 }
 
 function hideInputErrorStyles(inputTitle, elem) {
     $(inputTitle).closest(elem).removeClass('overview-input-error');
+    $(inputTitle).parent().find('label').removeClass('usa-label--error');
 }
 
 function displayTextInputErrorStyles(inputTitle) {
     $(inputTitle).addClass('overview-text-input-error');
+    $(inputTitle).parent().find('label').addClass('usa-label--error');
 }
 
 function hideTextInputErrorStyles(inputTitle) {
     $(inputTitle).removeClass('overview-text-input-error');
+    $(inputTitle).parent().find('label').removeClass('usa-label--error');
 }
 
-function displayAttachmentErrorStyles(inputTitle, elem) {
-    $(inputTitle).closest(elem).addClass('overview-attachment-input-target-error');
+function displayAttachmentErrorStyles(inputTitle, elem1, elem2) {
+    $(inputTitle).closest(elem1).addClass('overview-attachment-input-target-error');
+    $(inputTitle).closest(elem2).find('label').addClass('usa-label--error margin-bottom-0');
 }
 
-function hideAttachmentErrorStyles(inputTitle, elem) {
-    $(inputTitle).closest(elem).removeClass('overview-attachment-input-target-error');
+function hideAttachmentErrorStyles(inputTitle, elem1, elem2) {
+    $(inputTitle).closest(elem1).removeClass('overview-attachment-input-target-error');
+    $(inputTitle).closest(elem2).find('label').removeClass('usa-label--error margin-bottom-0');
 }
 
-function validateFormFields(formSelector, sArea, sType) {
-    clearErrorDivs(sArea, sType);
+function validateFormFields(formSelector, sArea, sType, target) {
+    clearErrorDivs(sArea, sType, target);
     let errDiv = null;
     if (sType === "file") {
         const sAttachment = document.getElementsByClassName(sArea + '-file-attachment');
@@ -199,12 +206,12 @@ function validateFormFields(formSelector, sArea, sType) {
             errDiv = document.getElementById(sArea + '_file_err_message_attachment');
             errDiv.style.display = "block";
             $(sAttachment).closest('.usa-file-input').prepend($(errDiv));
-            displayAttachmentErrorStyles(sAttachment, '.usa-file-input__target');
-            displayInputErrorStyles(sAttachment, '.usa-file-input');
+            displayAttachmentErrorStyles(sAttachment, '.usa-file-input__target', 'div.grid-col-12');
+            displayInputErrorStyles(sAttachment, '.grid-col-12');
             return false;
         } else {
-            hideAttachmentErrorStyles(sAttachment, '.usa-file-input__target');
-            hideInputErrorStyles(sAttachment, '.usa-file-input');
+            hideAttachmentErrorStyles(sAttachment, '.usa-file-input__target', 'div.grid-col-12');
+            hideInputErrorStyles(sAttachment, '.grid-col-12');
         }
 
         if (sName.value === "") {
@@ -313,15 +320,15 @@ function validateFormFields(formSelector, sArea, sType) {
             errDiv = document.getElementById(sArea + '_image_err_message_attachment');
             errDiv.style.display = "block";
             $(sAttachment).closest('.usa-file-input').prepend($(errDiv));
-            displayAttachmentErrorStyles(sAttachment, '.usa-file-input__target');
-            displayInputErrorStyles(sAttachment, '.usa-file-input');
+            displayAttachmentErrorStyles(sAttachment, '.usa-file-input__target', 'div.margin-y-1');
+            displayInputErrorStyles(sAttachment, '.margin-y-1');
             // Hide name error message
             hideTextInputErrorStyles(sName);
             hideInputErrorStyles(sName, `.${sArea}-input-container`);
             return false;
         } else {
-            hideAttachmentErrorStyles(sAttachment, '.usa-file-input__target');
-            hideInputErrorStyles(sAttachment, '.usa-file-input');
+            hideAttachmentErrorStyles(sAttachment, '.usa-file-input__target', 'div.margin-y-1');
+            hideInputErrorStyles(sAttachment, '.margin-y-1');
         }
 
         if (sName.value === "") {
@@ -337,7 +344,7 @@ function validateFormFields(formSelector, sArea, sType) {
     }
 }
 
-function clearErrorDivs(sArea, sType) {
+function clearErrorDivs(sArea, sType, target) {
     // FILE
     if (sType === 'file') {
         document.getElementById(sArea + '_file_err_message_name').style.display = "none";
@@ -360,15 +367,15 @@ function clearErrorDivs(sArea, sType) {
 
     // IMAGE
     if (sType === 'image') {
-        document.getElementById(sArea + '_image_err_message_attachment').style.display = "none";
-        document.getElementById(sArea + '_image_err_message_name').style.display = "none";
+        $(`#${sArea}_image_err_message_attachment`).css('display', 'none')
+        $(`#${sArea}_image_err_message_name`).css('display', 'none')
     }
 }
 
 function attachAddResourceListener(formSelector, container, sArea, sType) {
     $(document).on('click', `#${formSelector} .add-resource`, function (e) {
         e.preventDefault();
-        if (validateFormFields(formSelector, sArea, sType) === false) {
+        if (validateFormFields(formSelector, sArea, sType, event.target) === false) {
             return false;
         }
         const nGuid = createGUID();
@@ -376,7 +383,7 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
         const link_form = formToClear.clone(true);
         link_form.attr('id', `${formSelector}_${nGuid}`);
         link_form.attr('class', `resource_container margin-bottom-5`);
-        link_form.find('#cancelAddButtonRow').remove();
+        link_form.find('.dm-cancel-add-button-row').remove();
 
         const deleteEntryHtml = `
             <div class="grid-col-12 margin-top-2">
@@ -399,7 +406,7 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
 
         if ($(`#${container}`).children().length === 0) {
             let title = `${sType}s`
-            let titleHTML = `<div class="text-bold margin-bottom-2" >${title.toUpperCase()}:</div>`
+            let titleHTML = `<div id="${sArea}_${sType}_section_text" class="text-bold margin-bottom-2" >${title.toUpperCase()}:</div>`
             $(`#${container}`).append(titleHTML)
         }
         link_form.appendTo(`#${container}`);
@@ -412,13 +419,13 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
                 $(ele)
                     .closest('.usa-file-input')
                     .replaceWith(`
-                        <input id="practice_${sArea}-input-single_RANDOM_NUMBER_OR_SOMETHING" class="usa-hint usa-file-input" type="file" name="practice[practice_${sArea}_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" aria-describedby="input-single-hint" />
+                        <input id="practice_${sArea}-input-single_RANDOM_NUMBER_OR_SOMETHING" class="usa-hint usa-file-input" type="file" name="practice[practice_${sArea}_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" aria-describedby="practice_${sArea}-input-single_RANDOM_NUMBER_OR_SOMETHING-hint" />
                     `);
             } else if (ele.type === 'file' && sType === 'image') {
                 $(ele)
                     .closest('.usa-file-input')
                     .replaceWith(`
-                    <input id="practice_${sArea}-input-single_RANDOM_NUMBER_OR_SOMETHING" class="usa-hint usa-file-input dm-cropper-upload-image" type="file" name="practice[practice_${sArea}_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".jpg,.jpeg,.png" aria-describedby="input-single-hint" />
+                    <input id="practice_${sArea}-input-single_RANDOM_NUMBER_OR_SOMETHING" class="usa-hint usa-file-input dm-cropper-upload-image" type="file" name="practice[practice_${sArea}_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".jpg,.jpeg,.png" aria-describedby="practice_${sArea}-input-single_RANDOM_NUMBER_OR_SOMETHING-hint" />
                 `);
             }
         });
@@ -436,6 +443,12 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
             $(`#${container}`).find('.dm-cropper-cancel-edit').off();
             $(`#${container}`).find('.dm-cropper-save-edit').off();
         }
+        let elementId = sArea + '_' + sType + '_section_text';
+        let newEle = document.getElementById(elementId);
+        if(newEle != null) {
+            newEle.style.display = 'block';
+        }
+
     });
 }
 

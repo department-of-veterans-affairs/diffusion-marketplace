@@ -10,37 +10,34 @@
     <%= link_to(resource&.attachment&.original_filename, resource&.attachment_s3_presigned_url, target: '_blank')%>
     <input value="<%= resource&.id %>" type="hidden" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][id]"/>
   <% else %>
-    <div class="grid-col-12 margin-bottom-3 margin-x-auto">
-      <label class="usa-label maxw-full margin-bottom-2 margin-top-0" for="practice_<%= area %>-input-single_<%= placeholder %>">
+    <div class="grid-col-12 margin-x-auto">
+      <label class="usa-label maxw-full margin-bottom-2 overview-resource-label" for="practice_<%= area %>-input-single_<%= placeholder %>">
         Upload a .pdf, .docx, .xlxs, .jpg, .jpeg, or .png file that is less than 32MB.
       </label>
       <%= render partial: 'practices/overview_error_partials/attachment', locals: {
           area: area,
           resource_type: 'file',
-          error: 'No file uploaded',
           message: 'Please upload a file'
       }
       %>
-      <input <%= resource&.id ? 'required' : '' %> id="practice_<%= area %>-input-single_<%= placeholder %>" class="usa-file-input usa-hint <%= area %>-file-attachment" type="file" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" aria-describedby="input-single-hint" />
+      <input <%= resource&.id ? 'required' : '' %> id="practice_<%= area %>-input-single_<%= placeholder %>" class="usa-file-input usa-hint <%= area %>-file-attachment" type="file" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" aria-describedby="practice_<%= area %>-input-single_<%= placeholder %>-hint" />
     </div>
   <% end %>
-  <%= label_tag "practice_#{area}_name", 'File name', class: 'usa-label', for: "practice_#{area}_attributes_#{placeholder}_name" %>
   <div class="<%= area %>-input-container">
+    <%= label_tag "practice_#{area}_name", 'File name', class: 'usa-label overview-resource-label', for: "practice_#{area}_attributes_#{placeholder}_name" %>
     <%= render partial: 'practices/overview_error_partials/name', locals: {
         area: area,
         resource_type: 'file',
-        error: 'No file name',
         message: 'Please enter a file name'
     }
     %>
     <input <%= resource&.id ? 'required' : '' %> class="usa-input" value="<%= resource&.name %>" type="text" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][name]" id="practice_<%= area %>_attributes_<%= placeholder %>_name" style="width: 393px"/>
   </div>
-  <%= label_tag "practice_#{area}_description", 'File description', class: 'usa-label', for: "practice_#{area}_attributes_#{placeholder}_description" %>
   <div class="<%= area %>-input-container">
+    <%= label_tag "practice_#{area}_description", 'File description', class: 'usa-label overview-resource-label', for: "practice_#{area}_attributes_#{placeholder}_description" %>
     <%= render partial: 'practices/overview_error_partials/description', locals: {
         area: area,
         resource_type: 'file',
-        error: 'No file description',
         message: 'Please enter a file description'
     }
     %>
