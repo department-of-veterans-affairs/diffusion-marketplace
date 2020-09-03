@@ -984,4 +984,29 @@ li.small-disc:before {
   .usa-label--error {
     margin-top: 1.5rem !important;
   }
+
+  .overview-problem-statement-label + span, .overview-solution-statement-label + span, .overview-results-statement-label + span {
+    line-height: 18px !important;
+  }
+}
+
+.overview-files-ul {
+  div:last-child {
+    margin-bottom: 0 !important;
+  }
+}
+
+.overview-statement-container {
+  a {
+    display: inline-block;
+    width: auto;
+  }
+}
+
+.practice-editor-impact-photo-container {
+  div {
+    @media screen and (max-width: 1023px) {
+      width: 100% !important;
+    }
+  }
 }

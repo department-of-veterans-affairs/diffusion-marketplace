@@ -95,10 +95,25 @@
         });
     }
 
+    function createWidthForImageCaption() {
+        $('.practice-editor-impact-photo-container').each(function () {
+            $(this).hide();
+        });
+        $(window).on('load', function() {
+            $('.practice-editor-impact-photo').each(function () {
+                $(this).parent().show();
+                if ($(window).width() > 1023) {
+                    $(this).next().width(`${$(this).width()}`);
+                }
+            })
+        })
+    }
+
     function executePracticeCommentsFunctions() {
         highlightSidebarSectionWhenInView();
         setUpShowMoreOrLessButtons();
         setUpShowMoreOrLessOnArrive();
+        createWidthForImageCaption();
     }
 
     $document.on('turbolinks:load', executePracticeCommentsFunctions);
