@@ -202,7 +202,7 @@ module ApplicationHelper
 
   def time_intervals
     [
-        ['-Select-', nil, selected: true, disabled: true, class: 'usa-select time_interval_select'],
+        ['-Select-', nil, selected: true, disabled: true, class: 'usa-select'],
         ['Days', 'Days', class: 'usa-select'],
         ['Weeks', 'Weeks', class: 'usa-select'],
         ['Months', 'Months', class: 'usa-select'],
