@@ -1010,3 +1010,14 @@ li.small-disc:before {
     }
   }
 }
+
+// Implementation
+#implementation {
+  .usa-combo-box__clear-input, .usa-combo-box__toggle-list, .usa-combo-box__input-button-separator {
+    top: 2rem;
+  }
+
+  .dm-add-practice-department-link {
+    bottom: 1rem;
+  }
+}

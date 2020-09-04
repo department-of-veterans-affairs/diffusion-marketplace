@@ -103,21 +103,21 @@ class SavePracticeService
   end
 
   def update_department_practices
-    department_params = @practice_params[:department]
-    practice_departments = @practice.department_practices
-    if department_params.present?
-      dept_keys = department_params.keys
+    dept_params = @practice_params[:department]
+    practice_depts = @practice.department_practices
+    if dept_params.present?
+      dept_keys = dept_params.keys
       dept_keys.each do |key|
-        next if @practice.departments.ids.include? key.to_i
-
-        @practice.department_practices.create department_id: key.to_i
+        if key == 'new_department_practice'
+          practice_depts.create department_id: dept_params[key][:value].to_i
+        elsif practice_depts.ids.include? key.to_i
+          if dept_params[key][:_destroy] === 'true'
+            practice_depts.find_by(id: key).destroy!
+          else
+            practice_depts.find_by(id: key).update_attributes(department_id: dept_params[key][:value].to_i)
+          end
+        end
       end
-
-      practice_departments.each do |department|
-        department.destroy unless dept_keys.include? department.department_id.to_s
-      end
-    elsif department_params.blank? && @current_endpoint == 'departments'
-      practice_departments.destroy_all
     end
   end
 

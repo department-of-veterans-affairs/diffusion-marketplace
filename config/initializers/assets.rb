@@ -28,6 +28,7 @@ Rails.application.config.assets.precompile += %w(
                                                   practice_editor_complexity.js
                                                   practice_editor_overview.js
                                                   practice_editor_introduction.js
+                                                  practice_editor_implementation.js
                                                   practice_editor_utilities.js
                                                   diffusion_history/home_map.js
                                                   diffusion_history/practice_map.js

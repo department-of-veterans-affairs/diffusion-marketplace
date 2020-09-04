@@ -2,7 +2,6 @@
 <% provide :footer_classes, 'bg-gray-2' %>
 <% provide :head_tags do %>
   <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_include_tag 'practice_editor_overview', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_timeline', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
@@ -20,10 +19,16 @@
       <div class="margin-top-3">
         <%= render 'pii_phi_alert' %>
       </div>
+      <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
+      <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
+
       <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
       <div class="margin-bottom-5 margin-top-3">
-        <%= render 'practices/timeline' %>
-      </div>
+        <%# render 'practices/timeline'%>
+
+        <%= render partial: 'practices/departments', locals: {f: f} %>
+      <% end %>
+    </div>
 
   <div class="grid-row">
     <%= link_to practice_overview_path(@practice), class: 'usa-button--outline dm-btn-base editor-back-to-link margin-right-1' do %>

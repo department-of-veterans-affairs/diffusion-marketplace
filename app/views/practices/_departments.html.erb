@@ -1,23 +1,76 @@
 <%
-  no_departments = Department.find_by(name: 'None')
-  all_departments = Department.find_by(name: 'All departments equally - not a search differentiator')
+  all_depts = Department.where.not(name: 'None')
 %>
 
-<div class="grid-row word-break-break-word hyphens-auto padding-y-105 border-bottom-1px border-top-1px border-black">
-  <div class="tablet:grid-col-6 padding-left-105">
-    <p class="font-sans-xs-2 line-height-sans-505">Departments required</p>
-  </div>
-  <div class="tablet:grid-col-6 padding-left-105">
-    <p class="font-sans-xs-2 line-height-sans-505">
-      <% if @practice.departments.ids.include?(all_departments.id) %>
-        All
-      <% elsif @practice.departments.ids.include?(no_departments.id) %>
-        None
-      <% else %>
-        <% @practice.departments.each do |d| %>
-          <%= d.name %><%= ',' unless @practice.departments.last.id == d.id %>
+<div id="dm-practice-editor-departments" class="desktop:grid-col-9 grid-col-12 p0 width-full">
+  <section class="usa-section padding-top-0 p0-bottom">
+    <h2 class="font-sans-md line-height-sans-205">Departments</h2>
+    <h3 class="text-normal font-sans-md line-height-sans-205">
+      Which departments may be involved during implementation of your practice?
+    </h3>
+    <fieldset class="usa-fieldset grid-col-6">
+      <legend class="usa-sr-only">Departments</legend>
+      <div id="dm-practice-department-container">
+        <ul class="dm-practice-editor-department-ul add-list-reset" role="listbox" aria-label="Practice editor timeline list">
+          <%= f.fields_for :department_practices, wrapper: false do |dp| %>
+            <%
+              dp_id = dp.object.id || 'new_department_practice'
+              dp_dept_id = dp.object.department_id
+            %>
+            <% if dp_id %>
+              <%# add separators on page load %>
+              <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                $(document).arrive('<%= "#practice_department_#{dp_id}_value" %>',
+                  function(newElem) {
+                    styleOriginFacility(
+                      $(newElem).closest('li'),
+                      <%= dp_id %>,
+                      '.dm-practice-editor-department-li',
+                      '.dm-practice-editor-department-ul',
+                      '12'
+                    );
+                    $(document).unbindArrive('<%= "#practice_department_#{dp_id}_value" %>', newElem);
+                  }
+                );
+              <% end %>
+            <% end %>
+            <li class="dm-practice-editor-department-li fields margin-bottom-2" data-id="<%= dp_id %>">
+              <div class="grid-row">
+                <div class="usa-combo-box grid-col-12" data-default-value="<%= dp_dept_id %>">
+                  <label for="practice_department_<%= dp_id %>_value">Select a department</label>
+                  <select id="practice_department_<%= dp_id %>_value" class="usa-select" name="practice[department][<%= dp_id %>][value]">
+                    <% all_depts.each do |d| %>
+                      <option value="<%= d.id %>">
+                        <%= d.name %>
+                      </option>
+                    <% end %>
+                  </select>
+                </div>
+                <div class="grid-col-12 trash-container">
+                  <input type="hidden" name="practice[department][<%= dp_id %>][_destroy]" value="false"/>
+                  <a class="dm-origin-trash font-sans-xs line-height-26 cursor-pointer float-right remove_nested_fields">Delete entry</a>
+                </div>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+        <%= f.link_to_add :department_practices, id: 'link_to_add_link_department_practices', class: "dm-add-another-link dm-add-practice-department-link line-height-26 cursor-pointer #{'display-none' unless @practice.departments.any?}" do %>
+          <span class="font-sans-xs text-normal">Add another</span>
         <% end %>
-      <% end %>
-    </p>
-  </div>
+        <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+          observePracticeEditorLiArrival(
+            $(document),
+            '.dm-practice-editor-department-li',
+            '.dm-practice-editor-department-ul',
+            '12'
+          );
+          attachTrashListener(
+            $(document),
+            '#dm-practice-department-container',
+            '.dm-practice-editor-department-li'
+          );
+        <% end %>
+      </div>
+    </fieldset>
+  </section>
 </div>

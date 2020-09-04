@@ -10,7 +10,7 @@ function attachTrashListener($document,
                              liElSelector = '.practice-editor-origin-facility-li',
                              link_to_add_link_id = '',
                              link_to_add_button_id = '') {
-    $document.on('click', `${formSelector} .dm-origin-trash`, function() {
+    $document.on('click', `${formSelector} .dm-origin-trash`, function(e) {
         const $liEls = $(`${formSelector} ul li${liElSelector}`);
 
         const $originFacilityElements =
@@ -30,6 +30,10 @@ function attachTrashListener($document,
             removeSeparator($lastOriginFacilityEl);
         }
         toggleLinkToAddButtonVsLink(link_to_add_link_id, link_to_add_button_id, $originFacilityElements.length);
+
+        if(liElSelector === '.dm-practice-editor-department-li') {
+            $(e.target).closest('.trash-container').find('input').val('true')
+        }
     });
 }
 
