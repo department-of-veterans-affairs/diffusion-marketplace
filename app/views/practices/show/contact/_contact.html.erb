@@ -1,0 +1,26 @@
+<section id="overview_page" class="margin-bottom-5 grid-container">
+  <div class="grid-row">
+    <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
+    <div class="desktop:grid-col-9 grid-col-12">
+      <div class="practice-editor-long-rect-svg border-top-05 border-primary-dark"></div>
+      <h1 class="font-sans-xl line-height-37px margin-top-2 margin-bottom-5">Contact</h1>
+
+      <!--Comments-->
+      <% if current_user.present? %>
+        <div class="desktop:grid-col-11 comments-section practice-section">
+          <div>
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+            <h2 id="comments" class="font-sans-lg text-bold margin-top-2 margin-bottom-3">Comment</h2>
+            <p class="line-height-26 margin-bottom-105">
+              If you have a question or comment that can be public, comment below and the practice team will be alerted
+              (there may be others that have the same questions or thoughts). For private questions or comments, submit a message.
+            </p>
+          </div>
+          <div>
+            <%= commontator_thread(@practice) %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>

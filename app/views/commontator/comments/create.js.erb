@@ -81,7 +81,7 @@ $('#practice-comment-label').text('<%= @comment.thread.comments.count == 1 ? 'co
           var numReplies = <%= nested_children.present? ? nested_children.count : 0 %>;
           var repliesText = numReplies === 1 ? 'reply' : 'replies';
 
-          $('#comments-show-hide-button-<%= @comment.parent_id %>').text('Hide ' + repliesText + ' >');
+          $('#comments-show-hide-button-<%= @comment.parent_id %>').text('Hide ' + repliesText);
       }
 
       $(document).on('turbolinks:load', showReplies);

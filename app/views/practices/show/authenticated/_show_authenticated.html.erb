@@ -131,6 +131,9 @@
   </section>
 <% end %>
 
+<!-- Contact Section-->
+<%= render partial: 'practices/show/contact/contact' %>
+
 <section class="usa-section p2-top p2-bottom">
   <div class="grid-container position-relative">
     <% if @practice.user_id == current_user.id || current_user.roles.any? %>

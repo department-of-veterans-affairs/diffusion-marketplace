@@ -5,7 +5,6 @@
     border: none;
 
     font-weight: normal;
-    color: #000;
   }
 
   & {
@@ -29,7 +28,7 @@
   }
 
   .author {
-    font-size: 110%;
+    font-size: 16px;
     font-weight: bold;
   }
 
@@ -64,14 +63,9 @@
     margin: 5px 0;
   }
 
-  .like {
-
-    margin-right: 5px;
-  }
-
   .vote-count {
     font-size: 100%;
-    margin-right: 9px;
+    margin-right: 24px;
     color: $dm-color-blue-50v;
   }
 
@@ -92,7 +86,7 @@
     }
   }
 
-  .reply, .timestamp {
+  .reply {
     font-size: 90%;
   }
 
@@ -101,10 +95,6 @@
       width: 100%;
       margin-top: 18px;
     }
-  }
-
-  .timestamp {
-    color: black;
   }
 
   .error-explanation {
@@ -244,8 +234,8 @@ body {
   display: none !important;
 }
 
-.fa-flag:hover {
-  color: $dm-color-red-50v;
+.fa-flag {
+  color: $dm-color-red-alt;
 }
 
 .usa-radio__input:focus + .team-member-label::before, .usa-radio__input:focus + .implementer-label::before {

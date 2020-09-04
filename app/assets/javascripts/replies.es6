@@ -40,9 +40,9 @@ $(document).on('turbolinks:load', () => {
             const repliesText = numReplies === 1 ? 'reply' : 'replies';
             console.log('container hidden', containerHidden);
             if (!containerHidden) {
-                target.text(`View ${numReplies} ${repliesText} >`);
+                target.text(`Show ${numReplies} ${repliesText}`);
             } else {
-                target.text(`Hide ${repliesText} >`);
+                target.text(`Hide ${numReplies} ${repliesText}`);
             }
         });
     }

@@ -8,35 +8,6 @@
 
 <%= render partial: 'practices/show/authenticated/show_authenticated' if current_user.present? %>
 
-<% if current_user.present? %>
-    <section>
-        <div class="grid-container">
-            <div class="grid-row grid-gap">
-                <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-                <div class="desktop:grid-col-9 grid-col-12 p0 p1-5-right comments-section practice-section">
-                    <div>
-                        <div class="grid-row flex-align-center margin-bottom-3">
-                            <h2 id="comments" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205 nav-header">Comments</h2>
-                            <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest dm-section-line">
-                        </div>
-                        <h4 class="font-body-md">
-                            <span id="practice-comment-count">
-                              <%= @practice.commontator_thread.comments.count  %>
-                            </span>
-                          <span id="practice-comment-label">
-                            <%= @practice.commontator_thread.comments.count == 1  ? 'comment' : 'comments' %>
-                          </span>
-                        </h4>
-                    </div>
-                    <div>
-                        <%= commontator_thread(@practice) %>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-<% end %>
-
 <%# search terms(campaigns/categories/tags) for mobile  %>
 <% if @practice.categories.where.not(is_other: true, name: 'Other').any? %>
   <%= render partial: 'practices/show/mobile_partials/search_terms' %>

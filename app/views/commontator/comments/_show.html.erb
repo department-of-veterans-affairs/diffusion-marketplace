@@ -22,18 +22,13 @@
 %>
 
 <div class="grid-row margin-bottom-0 margin-top-4">
-  <div class="grid-col-auto margin-right-1 avatar-container <%= creator.avatar.present? ? '' : 'width-auto' %> text-center">
-    <span id="commontator-comment-<%= comment.id %>-avatar" class="avatar">
-      <%= Commontator.commontator_avatar(creator, self) %>
-    </span>
-  </div>
   <div class="grid-col-fill comment-width-ie">
-    <div id="commontator-comment-<%= comment.id %>-section-top" class="section top margin-bottom-05 padding-x-1">
-      <span id="commontator-comment-<%= comment.id %>-author" class="author">
-        <%= link_to name, "/users/#{creator.id}", class:'dm-link-title' %>
+    <div id="commontator-comment-<%= comment.id %>-section-top" class="section top margin-bottom-2 line-height-26">
+      <span id="commontator-comment-<%= comment.id %>-author" class="author line-height-26 text-middle">
+        <%= link_to name, "/users/#{creator.id}", class:'dm-link-title' %> (<%= job_title %>)
       </span>
 
-      <span id="commontator-comment-<%= comment.id %>-actions" class="actions">
+      <span id="commontator-comment-<%= comment.id %>-actions" class="actions text-middle">
         <%=
           link_to(
             '',
@@ -70,19 +65,25 @@
       <% end %>
 
       <% if comment.created_at == comment.updated_at %>
-        <span id="commontator-comment-<%= comment.id %>-created-timestamp" class="timestamp <%= practice_team_member || verified_practice_implementer || comment.can_be_deleted_by?(user) ? '' : 'margin-left-105' %>">
+        <span
+          id="commontator-comment-<%= comment.id %>-created-timestamp"
+          class="timestamp <%= practice_team_member || verified_practice_implementer || comment.can_be_deleted_by?(user) ? '' : 'margin-left-105' %> text-middle"
+        >
           posted <%= timeago(comment.created_at) %>
         </span>
       <% elsif comment.created_at != comment.updated_at && !comment.deleted_at %>
-        <span id="commontator-comment-<%= comment.id %>-updated-timestamp" class="timestamp updated-timestamp <%= practice_team_member || verified_practice_implementer || comment.can_be_deleted_by?(user) ? '' : 'margin-left-105' %>">
+        <span
+          id="commontator-comment-<%= comment.id %>-updated-timestamp"
+          class="timestamp updated-timestamp <%= practice_team_member || verified_practice_implementer || comment.can_be_deleted_by?(user) ? '' : 'margin-left-105' %> text-middle"
+        >
           edited <%= timeago(comment.updated_at) %>
         </span>
       <% else %>
-        <span class="timestamp">
+        <span class="timestamp text-middle">
           deleted <%= timeago(comment.deleted_at) %>
         </span>
       <% end %>
-      <div class="<%= current_user == creator ? 'hide-report-comment' : '' %> fas fa-flag margin-left-1 text-base padding-x-1 text-middle report-abuse-container" id="comment-<%= comment.id %>-report-abuse-container">
+      <div class="<%= current_user == creator ? 'report-comment' : '' %> fas fa-flag text-base padding-x-1 text-middle report-abuse-container" id="comment-<%= comment.id %>-report-abuse-container">
         <div class="report-abuse-modal hidden font-family-sans" id="comment-<%= comment.id %>-report-abuse-modal">
           <div class="bg-white radius-md report-abuse-modal-content width-tablet">
             <div class="bg-secondary text-white radius-top-md">
@@ -106,51 +107,49 @@
     </div>
 
     <div id="commontator-comment-<%= comment.id %>-section-middle" class="section middle">
-      <div class="text-base margin-bottom-1 padding-x-1">
-        <%= job_title %>
-      </div>
-
-      <div id="commontator-comment-<%= comment.id %>-body" class="body dm-word-break-break-word dm-hyphens-auto padding-x-1 padding-y-05">
+      <div id="commontator-comment-<%= comment.id %>-body" class="body dm-word-break-break-word dm-hyphens-auto">
         <div class="comment-body more"><%= render partial: 'commontator/comments/body', locals: { comment: comment } %></div>
       </div>
     </div>
 
     <div id="commontator-comment-<%= comment.id %>-section-bottom" class="section bottom padding-x-1">
-      <span id="commontator-comment-<%= comment.id %>-votes" class="votes">
-        <%= render partial: 'commontator/comments/votes', locals: { comment: comment, user: user } %>
-      </span>
-      <% if !comment.parent_id? %>
-        <% unless comment.is_deleted? %>
-          <span id="commontator-comment-<%= comment.id %>-reply-link" class="reply">
-            <%=
-              link_to(
-                t('commontator.comment.actions.reply'),
-                commontator.new_thread_comment_path(thread, comment: { parent_id: comment.id }),
-                remote: true, class: 'usa-button--unstyled dm-btn-primary'
-              ) if thread.config.comment_reply_style != :n && !thread.is_closed?
-            %>
-          </span>
+      <div class="display-inline-block">
+        <span id="commontator-comment-<%= comment.id %>-votes" class="votes">
+          <%= render partial: 'commontator/comments/votes', locals: { comment: comment, user: user } %>
+        </span>
+        <% if !comment.parent_id? %>
+          <% unless comment.is_deleted? %>
+            <span id="commontator-comment-<%= comment.id %>-reply-link" class="reply">
+              <%=
+                link_to(
+                  t('commontator.comment.actions.reply'),
+                  commontator.new_thread_comment_path(thread, comment: { parent_id: comment.id }),
+                  remote: true, class: 'usa-button--unstyled dm-btn-primary'
+                ) if thread.config.comment_reply_style != :n && !thread.is_closed?
+              %>
+            </span>
+          <% end %>
         <% end %>
-      <% end %>
+      </div>
+
+      <!-- Replies -->
+      <div class="replies-container display-inline-block margin-left-3">
+        <% if nested_children.count > 0 %>
+          <div class="show-hide-buttons-container grid-col-auto margin-top-2 text-bold" id="comment-<%= comment.id %>-button-container">
+            <button id="comments-show-hide-button-<%= comment.id %>" data-number-replies="<%= nested_children.count %>" <%= 'disabled' if comment.is_deleted? %> class="usa-button--unstyled dm-btn-primary comments-show-hide-button usa-button--unstyled show-hide-button padding-0"><%= !show_children ? "Show #{nested_children.count} #{nested_children.count == 1 ? 'reply' : 'replies'}" : "Hide #{nested_children.count == 1 ? 'reply' : 'replies'}" %></button>
+          </div>
+        <% end %>
+
+        <div id="commontator-comment-<%= comment.id %>-children" class="commontator-comment-<%= comment.id %>-children padding-left-3 margin-bottom-0 children <%= 'hidden' unless show_children %>">
+          <% if thread.config.comment_order == :e %>
+            <div id="commontator-comment-<%= comment.id %>-reply" class="reply margin-0"></div>
+          <% end %>
+
+          <%= render partial: 'commontator/comments/list',
+                     locals: { user: user, nested_comments: nested_children } %>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-
-
-<div class="replies-container margin-left-9 grid-row">
-  <% if nested_children.count > 0 %>
-    <div class="show-hide-buttons-container grid-col-auto margin-top-2 text-bold" id="comment-<%= comment.id %>-button-container">
-      <button id="comments-show-hide-button-<%= comment.id %>" data-number-replies="<%= nested_children.count %>" <%= 'disabled' if comment.is_deleted? %> class="usa-button comments-show-hide-button usa-button--unstyled show-hide-button padding-0"><%= !show_children ? "View #{nested_children.count} #{nested_children.count == 1 ? 'reply' : 'replies'} >" : "Hide #{nested_children.count == 1 ? 'reply' : 'replies'} >" %></button>
-    </div>
-  <% end %>
-
-  <div id="commontator-comment-<%= comment.id %>-children" class="commontator-comment-<%= comment.id %>-children padding-left-3 margin-bottom-0 children <%= 'hidden' unless show_children %>">
-    <% if thread.config.comment_order == :e %>
-      <div id="commontator-comment-<%= comment.id %>-reply" class="reply margin-0"></div>
-    <% end %>
-
-    <%= render partial: 'commontator/comments/list',
-              locals: { user: user, nested_comments: nested_children } %>
   </div>
 </div>
 

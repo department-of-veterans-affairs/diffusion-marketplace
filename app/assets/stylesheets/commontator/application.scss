@@ -92,16 +92,15 @@
 
   .field textarea {
     width: 100%;
-    border: 1px solid #171717;
-    padding: 9px 0 9px 8px;
+    max-width: unset !important;
+    padding: 6px 18px 6px 18px;
     overflow: auto;
     resize: none;
-    height: 67px;
+    height: 40px;
   }
 
   .submit {
-    margin-top: 8px;
-    // margin-bottom: 29px;
+    margin-top: 16px;
     text-align: right;
     width: 100%;
 
