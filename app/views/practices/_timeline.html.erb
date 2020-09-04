@@ -22,6 +22,14 @@
                         <%= tl.label :timeline, 'Time frame', class: 'usa-label text-bold display-inline-block timeline-duration' %>&nbsp;
                         <%= tl.text_field :timeline, class: 'usa-input practice-input width-card timeline-input' %>
                       </div>
+
+                      <div class="grid-row width-full">
+                        <div>
+                          <%= tl.label :time_interval, '', class: 'usa-label text-bold display-inline-block' %><br />
+                          <%= tl.select(:time_interval, options_for_select(time_intervals, selected: tl.object.time_interval ), class: 'usa-select time_interval_select', required: true) %>
+                        </div>
+                      </div>
+
                         <div class="grid-row width-full">
                           <div>
                             <%= tl.label :milestone, '', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Description of milestones (include context or disclaimers as needed.</span>&nbsp;
@@ -38,22 +46,20 @@
                   </li>
                 <% end %>
               </ul>
-              <%= f.link_to_add :timelines, class: 'fas fa-plus text-no-underline add-timeline-link' do %>
-                <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add another</span>
-              <% end %>
+              <%# if @practice.timelines.any? %>
+                    <%= f.link_to_add :timelines, class: 'fas fa-plus text-no-underline add-timeline-link' do %>
+                      <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add another</span>
+                    <% end %>
+                <%# else %>
+                    <%#= f.button :timelines, class: 'fas fa-plus text-no-underline add-timeline-link' do %>
+<!--                      <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add timeline step</span>-->
+                    <%# end %>
+                <%# end %>
             </div>
             <ul class="trash-can display-none"></ul>
 
           </fieldset>
         <% end %>
-        <div class="grid-row">
-          <%= link_to practice_departments_path(@practice), class: 'usa-button usa-button--outline editor-back-to-link margin-right-1 padding-2 text-no-underline' do %>
-            <i class="fas fa-chevron-left fa-sm text-no-underline margin-right-1"></i>Back
-          <% end %>
-          <%= link_to practice_risk_and_mitigation_path(@practice), class: 'usa-button padding-2 editor-continue-link continue-and-save margin-right-1' do %>
-            Continue<i class="fas fa-chevron-right fa-sm margin-left-1 text-no-underline"></i>
-          <% end %>
-        </div>
       </section>
     </div>
 <!--</div>-->
