@@ -16,7 +16,7 @@
                   %>
                   <% if tl_id %>
                     <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                      $(document).arrive('<%= "#practice_practice_timelines_attributes_#{tl.index}_milestone" %>',
+                      $(document).arrive('<%= "#practice_timelines_attributes_#{tl.index}_milestone" %>',
                       function(newElem) {
                       styleOriginFacility(
                       $(newElem).closest('li'),
@@ -26,7 +26,7 @@
                       '.add-practice-timeline-link',
                       '12'
                       );
-                      $(document).unbindArrive('<%= "#practice_practice_timelines_attributes_#{tl.index}_description" %>', newElem);
+                      $(document).unbindArrive('<%= "#practice_timelines_attributes_#{tl.index}_milestone" %>', newElem);
                       }
                       );
                     <% end %>
@@ -38,7 +38,7 @@
                     <div class="grid-row">
                       <div class="grid-col-12">
                         <%= tl.label :timeline, 'Time frame', class: 'usa-label display-inline-block timeline-duration' %>&nbsp;
-                        <%= tl.text_field :timeline, class: 'usa-input practice-input timeline-input timeline_time_frame' %>
+                        <%= tl.number_field :timeline, class: 'usa-input practice-input timeline-input timeline_time_frame', min: 1 %>
                       </div>
 
                       <div class="grid-col-12">
@@ -59,27 +59,28 @@
                   </li>
                 <% end %>
               </ul>
-              <% if @practice.timelines.any? %>
-                  <%= f.link_to_add :timelines, class: 'dm-add-another-link add-practice-timeline-link line-height-26 cursor-pointer' do %>
+
+                  <%= f.link_to_add :timelines, id: 'link_to_add_link_timeline', class: "dm-add-another-link add-practice-timeline-link line-height-26 cursor-pointer #{'display-none' unless @practice.timelines.any?}" do %>
                     <span class="font-sans-xs text-normal">Add another</span>
                   <% end %>
-                <% else %>
-                    <%= f.link_to_add :timelines, class: 'usa-button--outline dm-btn-primary add-timeline-link' do %>
-                      <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add timeline step</span>
-                    <% end %>
-                <% end %>
+                  <%= f.link_to_add :timelines, id: 'link_to_add_button_timeline', class: "usa-button--outline dm-btn-primary add-timeline-link #{'display-none' if @practice.timelines.any?}" do %>
+                    <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add timeline step</span>
+                  <% end %>
               <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
                 observePracticeEditorLiArrival(
                 $(document),
                 '.practice-editor-timeline-li',
                 '.practice-editor-timeline-ul',
-                '12'
+                '12',
+                'link_to_add_link_timeline',
+                'link_to_add_button_timeline'
                 );
                 attachTrashListener(
                 $(document),
                 '#practice-timeline-container',
                 '.practice-editor-timeline-li',
-                '.add-practice-timeline-link'
+                'link_to_add_link_timeline',
+                'link_to_add_button_timeline'
                 );
                 <% end %>
             </div>

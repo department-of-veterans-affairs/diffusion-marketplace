@@ -7,7 +7,9 @@
 // for examples on how to use these functions
 function attachTrashListener($document,
                              formSelector = '#facility_select_form',
-                             liElSelector = '.practice-editor-origin-facility-li') {
+                             liElSelector = '.practice-editor-origin-facility-li',
+                             link_to_add_link_id = '',
+                             link_to_add_button_id = '') {
     $document.on('click', `${formSelector} .dm-origin-trash`, function() {
         const $liEls = $(`${formSelector} ul li${liElSelector}`);
 
@@ -27,7 +29,21 @@ function attachTrashListener($document,
             const $lastOriginFacilityEl = $($originFacilityElements.last());
             removeSeparator($lastOriginFacilityEl);
         }
+        toggleLinkToAddButtonVsLink(link_to_add_link_id, link_to_add_button_id, $originFacilityElements.length);
     });
+}
+
+function toggleLinkToAddButtonVsLink(link_to_add_link_id, link_to_add_button_id, elementLength){
+    if(link_to_add_link_id && link_to_add_button_id){
+        if (elementLength > 0) {
+            $(`#${link_to_add_link_id}`).show();
+            $(`#${link_to_add_button_id}`).hide();
+        }
+        else{
+            $(`#${link_to_add_link_id}`).hide();
+            $(`#${link_to_add_button_id}`).show();
+        }
+    }
 }
 
 function removeSeparator($originFacilityEl) {
@@ -40,7 +56,9 @@ function removeSeparator($originFacilityEl) {
 function observePracticeEditorLiArrival($document,
                                         liElSelector = '.practice-editor-origin-facility-li',
                                         ulSelector = '.practice-editor-origin-ul',
-                                        separatorCols = '8') {
+                                        separatorCols = '8',
+                                        link_to_add_link_id = '',
+                                        link_to_add_button_id = '') {
     $document.arrive(liElSelector, (newElem) => {
         const $newEl = $(newElem);
         const dataId = $newEl.data('id');
@@ -49,7 +67,9 @@ function observePracticeEditorLiArrival($document,
             dataId,
             liElSelector,
             ulSelector,
-            separatorCols
+            separatorCols,
+            link_to_add_link_id,
+            link_to_add_button_id
         );
         if (liElSelector === '.practice-editor-origin-facility-li') {
             getFacilitiesByState(
@@ -66,7 +86,9 @@ function styleOriginFacility($newEl,
                              dataId,
                              liElSelector = '.practice-editor-origin-facility-li',
                              ulSelector = '.practice-editor-origin-ul',
-                             separatorCols = '8') {
+                             separatorCols = '8',
+                             link_to_add_link_id = '',
+                             link_to_add_button_id = '') {
     $newEl
         .detach()
         .appendTo(ulSelector);
@@ -80,7 +102,7 @@ function styleOriginFacility($newEl,
             });
 
     const $firstOriginFacilityEl = $($originFacilityElements.first());
-
+    console.log($originFacilityElements.length);
     if ($originFacilityElements.length > 1) {
         $firstOriginFacilityEl.find('.dm-origin-trash').css('visibility','visible');
         $.each($originFacilityElements, (i, el) => {
@@ -98,6 +120,8 @@ function styleOriginFacility($newEl,
     } else {
         $firstOriginFacilityEl.find('.dm-origin-trash').css('visibility','hidden');
     }
+
+    toggleLinkToAddButtonVsLink(link_to_add_link_id, link_to_add_button_id, $originFacilityElements.length);
 }
 
 function createGUID() {
