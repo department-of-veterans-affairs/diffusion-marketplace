@@ -14,10 +14,10 @@
         <ul class="dm-practice-editor-department-ul add-list-reset" role="listbox" aria-label="Practice editor timeline list">
           <%= f.fields_for :department_practices, wrapper: false do |dp| %>
             <%
-              dp_id = dp.object.id || 'new_department_practice'
+              dp_id = dp.object.id || "new_department_practice_#{dp.index}"
               dp_dept_id = dp.object.department_id
             %>
-            <% if dp_id %>
+            <% if dp.object.id %>
               <%# add separators on page load %>
               <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
                 $(document).arrive('<%= "#practice_department_#{dp_id}_value" %>',
