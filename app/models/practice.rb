@@ -262,7 +262,7 @@ class Practice < ApplicationRecord
   accepts_nested_attributes_for :practice_problem_resources, allow_destroy: true
   accepts_nested_attributes_for :practice_solution_resources, allow_destroy: true
   accepts_nested_attributes_for :practice_results_resources, allow_destroy: true
-  accepts_nested_attributes_for :department_practices, allow_destroy: true
+  accepts_nested_attributes_for :department_practices, allow_destroy: true, reject_if: proc { |attributes| attributes['value'].blank? }
 
   accepts_nested_attributes_for :video_files, allow_destroy: true, reject_if: proc { |attributes| attributes['url'].blank? || attributes['description'].blank? }
   accepts_nested_attributes_for :difficulties, allow_destroy: true

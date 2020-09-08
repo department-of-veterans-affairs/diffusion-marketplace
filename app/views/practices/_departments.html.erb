@@ -54,7 +54,7 @@
             </li>
           <% end %>
         </ul>
-        <%= f.link_to_add :department_practices, id: 'link_to_add_link_department_practices', class: "dm-add-another-link dm-add-practice-department-link line-height-26 cursor-pointer #{'display-none' unless @practice.departments.any?}" do %>
+        <%= f.link_to_add :department_practices, id: 'link_to_add_link_department_practices', class: "dm-add-another-link dm-add-practice-department-link line-height-26 cursor-pointer" do %>
           <span class="font-sans-xs text-normal">Add another</span>
         <% end %>
         <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
@@ -69,6 +69,14 @@
             '#dm-practice-department-container',
             '.dm-practice-editor-department-li'
           );
+          <% unless @practice.departments.any? %>
+            $(document).arrive('#department_practices_fields_blueprint',
+              function(blueprint) {
+                $('.dm-add-practice-department-link').click();
+                $(document).unbindArrive('#department_practices_fields_blueprint', blueprint);
+              }
+            );
+          <% end %>
         <% end %>
       </div>
     </fieldset>
