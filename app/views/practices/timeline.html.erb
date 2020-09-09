@@ -39,24 +39,13 @@
                                             <%= tl.label :timeline, 'Time frame:', class: 'usa-label text-bold display-inline-block timeline-duration' %>&nbsp;<span>Type the time frame as Month # (e.g. Month 1, Months 2-3)</span>
                                             <%= tl.text_field :timeline, class: 'usa-input practice-input width-card timeline-input' %>
                                         </div>
-                                        <%#= tl.fields_for :milestones do |m| %>
-                                          <%#
-<!--                                            m_id = m.object.id-->
-                                          %>
-                                          <%#= m.hidden_field :position, class: 'milestone-position' %>
                                           <div class="grid-row width-full">
                                               <div>
                                                   <%= tl.label :milestone, 'Milestone:', class: 'usa-label text-bold display-inline-block' %>&nbsp;<span>Type a description of the milestone.</span>&nbsp;<span class="text-base-light milestone-character-count" <% if tl_id.present? %> id="milestone_<%= tl_id %>_character_count" <%end%>>(0/100 characters)</span>
                                                   <%= tl.text_area :milestone, class: 'usa-input practice-input height-10 milestone-textarea', 'counter-id': "milestone_#{tl_id}_textarea" %>
                                               </div>
                                           </div>
-                                        <%# end %>
                                         <div class="grid-row">
-<!--                                          <div class="position-relative add-milestone-width-ie">-->
-                                            <%#= tl.link_to_add :milestones, class: 'fas fa-plus text-no-underline add-milestone-link margin-top-105 ', id: "timeline_#{tl_id}_milestone_link" do %>
-<!--                                              <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add milestone</span>-->
-                                            <%# end %>
-<!--                                          </div>-->
                                           <div class="timeline-trash-container grid-col-fill position-relative">
                                             <%= tl.link_to_remove '', class: "fas fa-trash-alt timeline-trash text-no-underline position-absolute bottom-0 margin-top-105", title: 'remove timeline' %>
                                           </div>
