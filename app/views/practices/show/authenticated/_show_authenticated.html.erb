@@ -258,23 +258,19 @@
   </div>
 </section>
 
-<!-- "Departments" section -->
-<% if @practice.departments.any? %>
-  <section class="margin-bottom-7">
-    <div>
-      <div class="grid-container">
-        <div class="grid-row grid-gap">
-          <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-          <div class="desktop:grid-col-9 grid-col-12 p0">
-            <div class="departments-section practice-section">
-              <%= render partial: 'departments' %>
-            </div>
-          </div>
+<% if @practice.department_practices.any? %>
+  <section class="margin-bottom-5 grid-container">
+    <div class="grid-row grid-gap-2">
+      <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
+      <div class="desktop:grid-col-9 grid-col-12">
+        <div class="practice-section">
+          <%= render partial: 'practices/show/implementation/departments' %>
         </div>
       </div>
     </div>
   </section>
 <% end %>
+
 
 <!-- "Timeline and Checklist" section -->
 <% if @practice.timelines.any? %>
