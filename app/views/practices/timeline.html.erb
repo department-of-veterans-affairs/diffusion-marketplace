@@ -1,7 +1,4 @@
 <% provide :head_tags do %>
-    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-        <%= render partial: 'timeline', formats: [:js] %>
-    <% end %>
     <%= javascript_include_tag 'practice_editor_timeline', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
