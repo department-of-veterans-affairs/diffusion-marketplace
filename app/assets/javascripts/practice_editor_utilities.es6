@@ -102,7 +102,6 @@ function styleOriginFacility($newEl,
             });
 
     const $firstOriginFacilityEl = $($originFacilityElements.first());
-    console.log($originFacilityElements.length);
     if ($originFacilityElements.length > 1) {
         $firstOriginFacilityEl.find('.dm-origin-trash').css('visibility','visible');
         $.each($originFacilityElements, (i, el) => {

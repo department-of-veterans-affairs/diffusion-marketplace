@@ -3,7 +3,6 @@
 
     function removeBulletPointFromNewLi() {
         $document.arrive('.practice-editor-timeline-li', (newElem) => {
-            // $(newElem).find($('.add-milestone-link')).click();
             $(newElem).appendTo('#sortable_timelines');
             initSortable('#sortable_timelines');
             $(newElem).css('list-style', 'none')
