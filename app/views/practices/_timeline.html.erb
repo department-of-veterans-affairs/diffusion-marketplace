@@ -1,4 +1,9 @@
-    <div id="timeline" class="desktop:grid-col-9 grid-col-12 p0">
+<% provide :head_tags do %>
+  <%= javascript_include_tag 'practice_editor_timeline', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
+<div id="timeline" class="desktop:grid-col-9 grid-col-12 p0">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
       <section class="usa-section padding-top-0 p0-bottom timeline">
         <h2 class="font-sans-2xl line-height-sans-205">Timeline</h2>
