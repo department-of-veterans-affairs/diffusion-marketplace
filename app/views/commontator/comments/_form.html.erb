@@ -93,7 +93,7 @@
         %>
       <% end %>
         <% if comment.parent %>
-          <%= form.submit t("commontator.comment.actions.#{new_record ? 'reply' : 'update'}"), name: 'reply', class: 'comment-submit margin-right-0 usa-button dm-btn-primary', id: "#{comment.parent && new_record ? 'submit-reply' : 'submit-reply-edit'}" %>
+          <%= form.submit t("commontator.comment.actions.#{new_record ? 'create' : 'update'}"), name: 'reply', class: 'comment-submit margin-right-0 usa-button dm-btn-primary', id: "#{comment.parent && new_record ? 'submit-reply' : 'submit-reply-edit'}" %>
         <% else %>
           <%= form.submit t("commontator.comment.actions.#{new_record ? 'create' : 'update'}"), class: "comment-submit margin-right-0 usa-button dm-btn-primary", id: "#{new_record ? 'submit-comment' : 'submit-comment-edit'}", value: 'Post' %>
         <% end %>

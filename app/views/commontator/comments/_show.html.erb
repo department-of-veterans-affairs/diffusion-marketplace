@@ -21,21 +21,59 @@
   practice = Practice.find_by(id: comment.thread.commontable_id)
 %>
 
-<div class="grid-row margin-bottom-0 margin-top-4">
+<div class="grid-row margin-bottom-0 margin-top-3">
   <div class="grid-col-fill comment-width-ie">
     <div id="commontator-comment-<%= comment.id %>-section-top" class="section top margin-bottom-2 line-height-26">
       <span id="commontator-comment-<%= comment.id %>-author" class="author line-height-26 text-middle">
-        <%= link_to name, "/users/#{creator.id}", class:'dm-link-title' %> (<%= job_title %>)
+        <%= link_to "#{name} (#{job_title})", "/users/#{creator.id}", class:'dm-link-title' %>
       </span>
+      
+      <% if practice_team_member %>
+        <span
+          class="radius-sm font-sans-3xs bg-blue-20v text-uppercase text-bold line-height-15px padding-y-1px padding-x-05 text-ls-1 text-center display-inline-block
+                <%= creator.first_name.blank? && creator.last_name.blank? ? 'margin-left-0 margin-right-1' : 'margin-x-1' %>"
+        >
+          Practice owner
+        </span>
+      <% elsif verified_practice_implementer %>
+        <span
+          class="radius-sm font-sans-3xs bg-gold-10v text-uppercase text-bold line-height-15px padding-y-1px padding-x-05 text-ls-1 text-center display-inline-block
+                <%= creator.first_name.blank? && creator.last_name.blank? ? 'margin-left-0 margin-right-1' : 'margin-x-1' %>"
+        >
+          Practice adopter
+        </span>
+      <% else %>
+        <span class="hidden"></span>
+      <% end %>
+
+      <% if comment.created_at == comment.updated_at %>
+        <span
+          id="commontator-comment-<%= comment.id %>-created-timestamp"
+          class="timestamp commontator-timestamp <%= practice_team_member || verified_practice_implementer || comment.can_be_deleted_by?(user) ? '' : 'margin-left-105' %> text-middle"
+        >
+          posted <%= timeago(comment.created_at) %>
+        </span>
+      <% elsif comment.created_at != comment.updated_at && !comment.deleted_at %>
+        <span
+          id="commontator-comment-<%= comment.id %>-updated-timestamp"
+          class="timestamp commontator-timestamp updated-timestamp <%= practice_team_member || verified_practice_implementer || comment.can_be_deleted_by?(user) ? '' : 'margin-left-105' %> text-middle"
+        >
+          edited <%= timeago(comment.updated_at) %>
+        </span>
+      <% else %>
+        <span class="timestamp commontator-timestamp text-middle">
+          deleted <%= timeago(comment.deleted_at) %>
+        </span>
+      <% end %>
 
       <span id="commontator-comment-<%= comment.id %>-actions" class="actions text-middle">
         <%=
           link_to(
-            '',
-            commontator.edit_comment_path(comment),
-            id: "commontator-comment-#{comment.id}-edit",
-            class: "fas fa-edit fa-lg edit-comment-icon #{creator.first_name.blank? && creator.last_name.blank? ? '' : 'margin-left-105'}",
-            remote: true
+              '',
+              commontator.edit_comment_path(comment),
+              id: "commontator-comment-#{comment.id}-edit",
+              class: "fas fa-edit fa-lg edit-comment-icon #{ creator.first_name.blank? && creator.last_name.blank? ? '' : 'margin-left-1' }",
+              remote: true
           ) if comment.can_be_edited_by?(user)
         %>
 
@@ -47,79 +85,50 @@
                       data: is_deleted ? { confirm: "Are you sure you want to restore this #{comment.parent.nil? ? 'comment' : 'reply'}?"} : { confirm: "Are you sure you want to delete this #{comment.parent.nil? ? 'comment' : 'reply'}?" },
                       method: :put,
                       id: "commontator-comment-#{comment.id}-#{del_string}",
-                      class: is_deleted ? "fas fa-trash-restore-alt fa-lg #{practice_team_member || verified_practice_implementer ? 'margin-left-105' : 'margin-x-105'}" : "fas fa-trash-alt fa-lg delete-comment-icon #{practice_team_member || verified_practice_implementer ? 'margin-left-105' : 'margin-x-105'} #{practice_team_member || verified_practice_implementer ? '' : 'margin-right-105'}",
+                      class: is_deleted ? "fas fa-trash-restore-alt fa-lg margin-left-1" : "fas fa-trash-alt fa-lg delete-comment-icon margin-left-1",
                       remote: true %>
         <% end %>
       </span>
-      
-      <% if practice_team_member %>
-        <span class="radius-pill font-sans-2xs bg-gold padding-y-1px padding-x-1 <%= creator.first_name.blank? && creator.last_name.blank? ? 'margin-left-0 margin-right-105' : 'margin-x-105' %>">
-          Practice team member
-        </span>
-      <% elsif verified_practice_implementer %>
-        <span class="radius-pill font-sans-2xs bg-gold padding-y-1px padding-x-1 <%= creator.first_name.blank? && creator.last_name.blank? ? 'margin-left-0 margin-right-105' : 'margin-x-105' %>">
-          Verified implementer
-        </span>
-      <% else %>
-        <span class="hidden"></span>
-      <% end %>
 
-      <% if comment.created_at == comment.updated_at %>
-        <span
-          id="commontator-comment-<%= comment.id %>-created-timestamp"
-          class="timestamp <%= practice_team_member || verified_practice_implementer || comment.can_be_deleted_by?(user) ? '' : 'margin-left-105' %> text-middle"
-        >
-          posted <%= timeago(comment.created_at) %>
-        </span>
-      <% elsif comment.created_at != comment.updated_at && !comment.deleted_at %>
-        <span
-          id="commontator-comment-<%= comment.id %>-updated-timestamp"
-          class="timestamp updated-timestamp <%= practice_team_member || verified_practice_implementer || comment.can_be_deleted_by?(user) ? '' : 'margin-left-105' %> text-middle"
-        >
-          edited <%= timeago(comment.updated_at) %>
-        </span>
-      <% else %>
-        <span class="timestamp text-middle">
-          deleted <%= timeago(comment.deleted_at) %>
-        </span>
-      <% end %>
-      <div class="<%= current_user == creator ? 'report-comment' : '' %> fas fa-flag text-base padding-x-1 text-middle report-abuse-container" id="comment-<%= comment.id %>-report-abuse-container">
-        <div class="report-abuse-modal hidden font-family-sans" id="comment-<%= comment.id %>-report-abuse-modal">
-          <div class="bg-white radius-md report-abuse-modal-content width-tablet">
-            <div class="bg-secondary text-white radius-top-md">
-                <h2 class="margin-0 padding-3">Report a comment</h2>
-            </div>
-            <div class="padding-3">
-              <p class="font-sans-md text-normal text-black margin-bottom-2">I am reporting the following comment for being inappropriate:</p>
-              <div>
-                <p class="text-normal text-base dm-word-break-break-word dm-hyphens-auto report-comment-body text-italic">
-                  "<%= comment.body %>"
-                </p>
+      <% if current_user != creator %>
+        <div class="report-comment fas fa-flag text-base padding-x-1 text-middle report-abuse-container" id="comment-<%= comment.id %>-report-abuse-container">
+          <div class="report-abuse-modal hidden font-family-sans" id="comment-<%= comment.id %>-report-abuse-modal">
+            <div class="bg-white radius-md report-abuse-modal-content width-tablet">
+              <div class="bg-secondary text-white radius-top-md">
+                  <h2 class="margin-0 padding-3">Report a comment</h2>
               </div>
-              <div class="text-right">
-                <button class="usa-button usa-button--outline margin-0 padding-2 margin-top-5 margin-right-05 report-abuse-cancel">Cancel</button>
-                <%= link_to 'Submit Report', "/practices/#{practice.id}/comments/#{comment.id}/report", class: 'usa-button padding-2 border-primary border-2px report-abuse-submit', data: {confirm: 'Are you sure you want to report this comment?'} %>
+              <div class="padding-3">
+                <p class="font-sans-md text-normal text-black margin-bottom-2">I am reporting the following comment for being inappropriate:</p>
+                <div>
+                  <p class="text-normal text-base dm-word-break-break-word dm-hyphens-auto report-comment-body text-italic">
+                    "<%= comment.body %>"
+                  </p>
+                </div>
+                <div class="text-right">
+                  <button class="usa-button usa-button--outline margin-0 padding-2 margin-top-5 margin-right-05 report-abuse-cancel">Cancel</button>
+                  <%= link_to 'Submit Report', "/practices/#{practice.id}/comments/#{comment.id}/report", class: 'usa-button padding-2 border-primary border-2px report-abuse-submit', data: {confirm: 'Are you sure you want to report this comment?'} %>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      <% end %>
     </div>
 
     <div id="commontator-comment-<%= comment.id %>-section-middle" class="section middle">
-      <div id="commontator-comment-<%= comment.id %>-body" class="body dm-word-break-break-word dm-hyphens-auto">
-        <div class="comment-body more"><%= render partial: 'commontator/comments/body', locals: { comment: comment } %></div>
+      <div id="commontator-comment-<%= comment.id %>-body" class="body dm-word-break-break-word dm-hyphens-auto line-height-26">
+        <div class="comment-body more padding-bottom-05"><%= render partial: 'commontator/comments/body', locals: { comment: comment } %></div>
       </div>
     </div>
 
-    <div id="commontator-comment-<%= comment.id %>-section-bottom" class="section bottom padding-x-1">
+    <div id="commontator-comment-<%= comment.id %>-section-bottom" class="section bottom position-relative">
       <div class="display-inline-block">
         <span id="commontator-comment-<%= comment.id %>-votes" class="votes">
           <%= render partial: 'commontator/comments/votes', locals: { comment: comment, user: user } %>
         </span>
         <% if !comment.parent_id? %>
           <% unless comment.is_deleted? %>
-            <span id="commontator-comment-<%= comment.id %>-reply-link" class="reply">
+            <span id="commontator-comment-<%= comment.id %>-reply-link" class="reply display-inline-block">
               <%=
                 link_to(
                   t('commontator.comment.actions.reply'),
@@ -132,30 +141,43 @@
         <% end %>
       </div>
 
-      <!-- Replies -->
-      <div class="replies-container display-inline-block margin-left-3">
-        <% if nested_children.count > 0 %>
-          <div class="show-hide-buttons-container grid-col-auto margin-top-2 text-bold" id="comment-<%= comment.id %>-button-container">
-            <button id="comments-show-hide-button-<%= comment.id %>" data-number-replies="<%= nested_children.count %>" <%= 'disabled' if comment.is_deleted? %> class="usa-button--unstyled dm-btn-primary comments-show-hide-button usa-button--unstyled show-hide-button padding-0"><%= !show_children ? "Show #{nested_children.count} #{nested_children.count == 1 ? 'reply' : 'replies'}" : "Hide #{nested_children.count == 1 ? 'reply' : 'replies'}" %></button>
-          </div>
-        <% end %>
-
-        <div id="commontator-comment-<%= comment.id %>-children" class="commontator-comment-<%= comment.id %>-children padding-left-3 margin-bottom-0 children <%= 'hidden' unless show_children %>">
-          <% if thread.config.comment_order == :e %>
-            <div id="commontator-comment-<%= comment.id %>-reply" class="reply margin-0"></div>
-          <% end %>
-
-          <%= render partial: 'commontator/comments/list',
-                     locals: { user: user, nested_comments: nested_children } %>
+      <% if thread.config.comment_order != :e %>
+        <div class="grid-row">
+          <div class="grid-col-2"></div>
+          <div id="commontator-comment-<%= comment.id %>-reply" class="reply grid-col-10 padding-top-1"></div>
         </div>
-      </div>
+      <% end %>
+
+      <!-- Replies -->
+      <% if nested_children.count > 0 %>
+        <div class="show-hide-buttons-container display-inline-block text-bold position-absolute top-0 left-0" id="comment-<%= comment.id %>-button-container">
+          <button
+            id="comments-show-hide-button-<%= comment.id %>"
+            data-number-replies="<%= nested_children.count %>"
+            <%= 'disabled' if comment.is_deleted? %>
+            class="usa-button--unstyled dm-btn-primary comments-show-hide-button usa-button--unstyled show-hide-button padding-0"
+          >
+              <%= !show_children ? "Show #{nested_children.count} #{nested_children.count == 1 ? 'reply' : 'replies'}" : "Hide #{nested_children.count} #{nested_children.count == 1 ? 'reply' : 'replies'}" %>
+          </button>
+        </div>
+
+        <div class="grid-row">
+          <div class="grid-col-2"></div>
+          <div class="replies-container grid-col-10">
+            <div id="commontator-comment-<%= comment.id %>-children" class="commontator-comment-<%= comment.id %>-children margin-bottom-0 children <%= 'hidden' unless show_children %>">
+              <% if thread.config.comment_order == :e %>
+                <div id="commontator-comment-<%= comment.id %>-reply" class="reply margin-0"></div>
+              <% end %>
+
+              <%= render partial: 'commontator/comments/list',
+                         locals: { user: user, nested_comments: nested_children } %>
+            </div>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
-
-<% if thread.config.comment_order != :e %>
-  <div id="commontator-comment-<%= comment.id %>-reply" class="reply padding-left-9 padding-top-1"></div>
-<% end %>
 
 
 

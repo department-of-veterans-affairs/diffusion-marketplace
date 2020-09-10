@@ -18,14 +18,6 @@
           }
         %>
       <% end %>
-      <h5 class="font-sans-3xs line-height-15px text-bold text-ls-1 text-uppercase">
-        <span id="practice-comment-count">
-          <%= @practice.commontator_thread.comments.count  %>
-        </span>
-        <span id="practice-comment-label">
-          <%= @practice.commontator_thread.comments.count == 1  ? 'comment' : 'comments' %>
-        </span>
-      </h5>
     </div>
   <% end %>
 </div>

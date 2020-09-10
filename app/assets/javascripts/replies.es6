@@ -32,7 +32,7 @@ $(document).on('turbolinks:load', () => {
     if (numEvents === 0) {
         $(document).on('click', '.comments-show-hide-button', (event) => {
             const target = $(event.currentTarget);
-            const container = target.parent().next();
+            const container = target.parent().next().find('.children');
             const containerHidden = container.hasClass('hidden');
             containerHidden ? container.removeClass('hidden') : container.addClass('hidden');
 

@@ -1,5 +1,5 @@
-<section id="overview_page" class="margin-bottom-5 grid-container">
-  <div class="grid-row">
+<section id="pr-view-contact" class="margin-bottom-5 grid-container">
+  <div class="grid-row grid-gap">
     <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
     <div class="desktop:grid-col-9 grid-col-12">
       <div class="practice-editor-long-rect-svg border-top-05 border-primary-dark"></div>
@@ -21,6 +21,17 @@
           </div>
         </div>
       <% end %>
+
+      <!--Email-->
+      <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
+      <h2 id="email" class="font-sans-lg text-bold margin-top-2 margin-bottom-1 line-height-25px">Email</h2>
+      <%
+        main_email = @practice.support_network_email
+        practice_emails = @practice.practice_emails
+      %>
+      <p class="line-height-26 margin-bottom-105">
+        Email <%= mail_to main_email, main_email, cc: practice_emails.map(&:address).join(', '), class: 'dm-external-link' %> with questions about this practice.
+      </p>
     </div>
   </div>
 </section>
