@@ -671,14 +671,6 @@ ActiveRecord::Schema.define(version: 2020_09_08_154516) do
     t.index ["user_id"], name: "index_practice_creators_on_user_id"
   end
 
-  create_table "practice_emails", force: :cascade do |t|
-    t.bigint "practice_id"
-    t.string "address"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["practice_id"], name: "index_practice_emails_on_practice_id"
-  end
-
   create_table "practice_management_practices", force: :cascade do |t|
     t.bigint "practice_id"
     t.bigint "practice_management_id"
