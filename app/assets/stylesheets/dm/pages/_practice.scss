@@ -1020,4 +1020,9 @@ li.small-disc:before {
   .dm-add-practice-department-link {
     bottom: 1rem;
   }
+
+  // required to hide inputs that appear when navigating away from comboboxes by clicking a link from the practice editor side nav
+  .usa-combo-box__input[aria-owns="--list"] {
+    display: none !important;
+  }
 }
