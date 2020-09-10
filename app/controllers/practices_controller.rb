@@ -6,7 +6,7 @@ class PracticesController < ApplicationController
                                       :collaborators, :impact, :resources, :documentation,
                                       :departments, :timeline, :risk_and_mitigation, :contact,
                                       :checklist, :publication_validation, :adoptions,
-                                      :create_or_update_diffusion_history]
+                                      :create_or_update_diffusion_history, :implementation, :introduction]
   before_action :set_facility_data, only: [:show, :planning_checklist]
   before_action :set_office_data, only: [:show, :planning_checklist]
   before_action :set_visn_data, only: [:show, :planning_checklist]
@@ -286,15 +286,12 @@ class PracticesController < ApplicationController
   end
 
   def implementation
-    set_practice
     render 'practices/form/implementation'
   end
 
   # /practices/slug/introduction
   def introduction
-    set_practice
     render 'practices/form/introduction'
-      #@office_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_office_lookup.json"))
   end
 
   # GET /practices/1/origin
