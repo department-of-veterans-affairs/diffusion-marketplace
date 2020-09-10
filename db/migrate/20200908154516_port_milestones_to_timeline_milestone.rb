@@ -7,7 +7,9 @@ class PortMilestonesToTimelineMilestone < ActiveRecord::Migration[5.2]
         tl_milestone = "";
         cur_tl_id = ms.timeline_id
         Milestone.all.where(timeline_id: cur_tl_id.to_s).each do |d|
-          tl_milestone += d.description + "\r\n"
+          if d.description.length != 0
+            tl_milestone += d.description + "\r\n"
+          end
         end
         tl = Timeline.find_by(id: ms.timeline_id.to_s)
         tl.milestone = tl_milestone
