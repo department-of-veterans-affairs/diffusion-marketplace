@@ -1,5 +1,6 @@
-class PortMilestonesToTimelineMilestone < ActiveRecord::Migration[5.2]
-  def change
+namespace :port_milestones_to_timelines do
+  desc "Ports milestone descriptions to Timeline.milestone field in line break delimited list"
+  task port_milestones_to_timelines: :environment do
     tl_ids = Array.new
     Milestone.all.each do |ms|
       if(!tl_ids.include?(ms.timeline_id))
@@ -16,5 +17,6 @@ class PortMilestonesToTimelineMilestone < ActiveRecord::Migration[5.2]
         tl.save
       end
     end
+    puts "All milestones have been ported to Timelines.milestone field."
   end
 end
