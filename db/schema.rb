@@ -1216,7 +1216,6 @@ ActiveRecord::Schema.define(version: 2020_09_08_154516) do
   add_foreign_key "practice_awards", "practices"
   add_foreign_key "practice_creators", "practices"
   add_foreign_key "practice_creators", "users"
-  add_foreign_key "practice_emails", "practices"
   add_foreign_key "practice_management_practices", "practice_managements"
   add_foreign_key "practice_management_practices", "practices"
   add_foreign_key "practice_metrics", "practices"
