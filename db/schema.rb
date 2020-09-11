@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_03_173620) do
+ActiveRecord::Schema.define(version: 2020_09_08_154516) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1001,6 +1001,7 @@ ActiveRecord::Schema.define(version: 2020_09_03_173620) do
     t.bigint "practice_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "time_interval"
     t.index ["practice_id"], name: "index_timelines_on_practice_id"
   end
 

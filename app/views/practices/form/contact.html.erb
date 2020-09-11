@@ -1,6 +1,10 @@
 <% provide :main_classes, 'bg-gray-2' %>
 <% provide :footer_classes, 'bg-gray-2' %>
 
+<% provide :head_tags do %>
+  <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
 <%= render 'breadcrumbs' %>
 <%= render 'practice_editor_sidenav' %>
 <div class="grid-container position-relative">
@@ -25,46 +29,70 @@
               <p class="line-height-18px margin-top-3 text-bold">Email <span class="text-gray-50">(required field)</span></p>
               <p class="line-height-26 margin-bottom-2">Type the email address dedicated to responding to messages for this practice.</p>
 
-              <div class="grid-col-8">
+              <div class="grid-col-8 main-practice-email-container">
                 <%= f.label :support_network_email, 'Main email address', class: 'usa-label line-height-26 x0-top main-practice-email-label' %>
-                <%= f.text_field :support_network_email, class: 'usa-input practice-input width-tablet main-practice-email-input margin-bottom-2px', required: true %>
+                <%= f.text_field :support_network_email, class: 'usa-input practice-input width-tablet main-practice-email-input margin-bottom-2', required: true %>
               </div>
 
               <!-- PracticeEmail form -->
               <div class="grid-col-8">
-                <ul class="practice-editor-contact-ul" role="listbox" title="Practice origin facilities" aria-label="Practice editor origin facility list">
-                  <%= f.fields_for :practice_emails, wrapper: false do |pe| %>
-                    <%
-                      pe_id = pe.object.id || "new_practice_emails"
-                    %>
-                    <li class="practice-editor-contact-li fields" role="option" data-id="<%= pe_id %>">
-                      <div>
-                        <%= pe.label :address, 'Copied (cc’ed) email address', class: 'usa-label pe-address-label' %>
-                        <%= pe.text_field :address, class: 'usa-input practice-input width-tablet pe-address-input' %>
-                      </div>
-                      <div class="trash-container">
-                        <%= pe.link_to_remove 'Delete entry', class: "dm-contact-trash usa-button--unstyled dm-btn-warning float-right line-height-26" %>
-                      </div>
-                    </li>
+                <div id="contact_container position-relative">
+                  <ul class="practice-editor-contact-ul" role="listbox" title="Practice origin facilities" aria-label="Practice editor origin facility list">
+                    <%= f.fields_for :practice_emails, wrapper: false do |pe| %>
+                      <%
+                        pe_id = pe.object.id || "new_practice_emails"
+                      %>
+                      <li class="practice-editor-contact-li fields" role="option" data-id="<%= pe_id %>">
+                        <div class="grid-row">
+                          <div class="grid-col-12">
+                            <%= pe.label :address, 'Copied (cc’ed) email address', class: 'usa-label pe-address-label margin-top-0' %>
+                            <%= pe.text_field :address, class: 'usa-input practice-input width-tablet pe-address-input' %>
+                          </div>
+                          <div class="trash-container grid-col-12">
+                            <%= pe.link_to_remove 'Delete entry', class: "dm-origin-trash usa-button--unstyled dm-btn-warning float-right line-height-26" %>
+                          </div>
+                        </div>
+                      </li>
+                    <% end %>
+                  </ul>
+                  <%= f.link_to_add :practice_emails, id: 'link_to_add_link_email', class: "dm-add-another-link add-practice-email-link usa-button--unstyled dm-btn-primary line-height-26 #{'display-none' unless @practice.practice_emails.any?}" do %>
+                    <span class="text-normal">Add another</span>
                   <% end %>
-                </ul>
-                <%= f.link_to_add :practice_emails, class: 'dm-add-practice-email-link usa-button--unstyled dm-btn-primary line-height-26' do %>
-                  <span class="text-normal">Add another</span>
-                <% end %>
+                  <%= f.link_to_add :practice_emails, id: 'link_to_add_button_email', class: "usa-button--unstyled dm-btn-primary x0-top add-email-link #{'display-none' if @practice.practice_emails.any?}" do %>
+                    <span class="font-sans-md text-normal text-no-underline">Add another</span>
+                  <% end %>
+                  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                    observePracticeEditorLiArrival(
+                    $(document),
+                    '.practice-editor-contact-li',
+                    '.practice-editor-contact-ul',
+                    '12',
+                    'link_to_add_link_email',
+                    'link_to_add_button_email'
+                    );
+                    attachTrashListener(
+                    $(document),
+                    '#contact_container',
+                    '.practice-editor-contact-li',
+                    'link_to_add_link_email',
+                    'link_to_add_button_email'
+                    );
+                  <% end %>
+                </div>
               </div>
             </div>
           </fieldset>
         <% end %>
+        <!--Add these links when contact is merged into feature/new-practice-page and we have the other editor pages-->
 
-        <div class="grid-row margin-bottom-8">
-          <%= link_to practice_overview_path(@practice), class: 'usa-button--outline dm-btn-base
-            editor-back-to-link margin-right-1 margin-bottom-5 text-no-underline' do %>
-            Back
-          <% end %>
-          <%= link_to practice_overview_path(@practice), class: 'usa-button dm-btn-base pe-continue editor-continue-link continue-and-save margin-right-1 margin-bottom-5' do %>
-            Continue
-          <% end %>
-        </div>
+<!--        <div class="grid-row margin-bottom-8">-->
+          <%#= link_to practice_overview_path(@practice), class: 'usa-button--outline dm-btn-base editor-back-to-link margin-right-1 margin-bottom-5 text-no-underline' do %>
+<!--            Back-->
+          <%# end %>
+          <%#= link_to practice_overview_path(@practice), class: 'usa-button dm-btn-base pe-continue editor-continue-link continue-and-save margin-right-1 margin-bottom-5' do %>
+<!--            Continue-->
+          <%# end %>
+<!--        </div>-->
       </section>
     </div>
   </div>
