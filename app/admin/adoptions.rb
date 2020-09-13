@@ -14,9 +14,11 @@ ActiveAdmin.register_page "Adoptions" do
       @practices = Practice.order(Arel.sql("lower(name) ASC"))
       @complete_map = {}
       @adoption_counts = {}
+      @practice_ids = {}
       @practices.each do |p|
         get_adoption_values(p, @complete_map)
         @adoption_counts[p.name] = get_adoption_counts(p)
+        @practice_ids.merge!({p.name => p.id})
       end
     end
   end
@@ -40,7 +42,9 @@ ActiveAdmin.register_page "Adoptions" do
 
           @complete_map.each do |name, value|
             if value.present?
+              practice_id = @practice_ids[name]
               sheet.add_row [name], style: @xlsx_sub_header_2
+              sheet.add_row ["Practice Id", practice_id], style: @xlsx_entry
               # adoption counts
               sheet.add_row ['Adoption Counts'], style: @xlsx_sub_header
               @adoption_counts.each do |key, counts|
