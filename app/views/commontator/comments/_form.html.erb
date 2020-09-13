@@ -35,7 +35,7 @@
   <div class="field <%= comment.parent.nil? && new_record ? 'comment-field' : 'reply-field' %>">
 
     <%=
-      form.text_area :body, rows: '7', aria: { label: 'comment text area' }, placeholder: 'Type your comment here', 
+      form.text_area :body, rows: '7', aria: { label: 'comment text area' }, placeholder: 'Type your comment here...',
         class: comment.parent.nil? && new_record ? 'usa-textarea comment-textarea line-height-26' : 'usa-textarea reply-textarea line-height-26', id: new_record ?
         comment.parent.nil? ? "commontator-thread-#{@commontator_thread.id}-new-comment-body" :
                               "commontator-comment-#{comment.parent.id}-reply" :
@@ -59,7 +59,7 @@
       <% elsif new_record %>
         <div class="usa-radio">
           <%= radio_button_tag 'user_practice_status', :verified_implementer, verified_practice_implementer ? true : false, class: 'usa-radio__input', id: 'verified-implementer' %>
-          <%= label_tag 'user_practice_status_verified_implementer', 'I am currently implementing this practice', class: 'usa-radio__label implementer-label margin-bottom-1', for: 'verified-implementer' %>
+          <%= label_tag 'user_practice_status_verified_implementer', 'I am currently adopting this practice', class: 'usa-radio__label implementer-label margin-bottom-1', for: 'verified-implementer' %>
         </div>
         <div class="usa-radio">
           <%= radio_button_tag 'user_practice_status', :team_member, practice_team_member ? true : false, class: 'usa-radio__input', id: 'team-member' %>
@@ -69,7 +69,7 @@
       <% if !new_record %>
         <div class="usa-radio">
           <%= radio_button_tag 'user_practice_status', :verified_implementer, verified_practice_implementer ? true : false, class: 'usa-radio__input', id: "verified-implementer-#{comment.id}" %>
-          <%= label_tag 'user_practice_status_verified_implementer', 'I am currently implementing this practice', class: 'usa-radio__label implementer-label margin-bottom-1', for: "verified-implementer-#{comment.id}" %>
+          <%= label_tag 'user_practice_status_verified_implementer', 'I am currently adopting this practice', class: 'usa-radio__label implementer-label margin-bottom-1', for: "verified-implementer-#{comment.id}" %>
         </div>
         <div class="usa-radio">
           <%= radio_button_tag 'user_practice_status', :team_member, practice_team_member ? true : false, class: 'usa-radio__input', id: "team-member-#{comment.id}" %>

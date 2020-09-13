@@ -25,8 +25,8 @@
         main_email = @practice.support_network_email
         practice_emails = @practice.practice_emails
       %>
-      <p class="line-height-26 margin-bottom-105">
-        Email <%= mail_to main_email, main_email, cc: practice_emails.map(&:address).join(', '), class: 'dm-external-link' %> with questions about this practice.
+      <p class="line-height-26 margin-bottom-105 main-email-address-container">
+        Email <%= mail_to main_email, main_email, cc: practice_emails.map(&:address).join(', '), class: 'dm-external-link', 'aria-label': "Email #{main_email}"  %> with questions about this practice.
       </p>
     </div>
   </div>

@@ -14,6 +14,8 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to be_accessible.according_to :wcag2a, :section508
             @save_button = find('#practice-editor-save-button')
             @practice_main_email = 'test@mail.com'
+            @email_field_name = 'practice[practice_emails_attributes][0][address]'
+            @email_field_name_2 = 'practice[practice_emails_attributes][1][address]'
         end
 
         it 'should be there' do
@@ -30,23 +32,23 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         def fill_in_main_email_field
-            fill_in('main-practice-email-input', with: @practice_main_email)
-        end
-
-        def first_cc_email_field
-            find_all('.practice-editor-metric-li').first
+            fill_in('Main email address', with: @practice_main_email)
         end
 
         def first_cc_email_field_input
-            first_metric_field.find('input')
+            all('.pe-address-input').first
         end
 
-        def last_cc_email_field
-            find_all('.practice-editor-metric-li').last
+        def first_cc_email_field
+            find_all('.practice-editor-contact-li').first
         end
 
         def last_cc_email_field_input
-            last_metric_field.find('input')
+            all('.pe-address-input').last
+        end
+
+        def last_cc_email_field
+            find_all('.practice-editor-contact-li').last
         end
 
         it 'should allow the user to update the email data on the page' do
@@ -62,7 +64,7 @@ describe 'Practice editor', type: :feature, js: true do
             end
 
             # Edit the main email
-            visit practice_overview_path(@practice)
+            visit practice_contact_path(@practice)
             fill_in('Main email address', with: 'main_test@test.com')
             @save_button.click
             expect(page).to have_field('Main email address', with: "main_test@test.com")
@@ -73,56 +75,43 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_content('main_test@test.com')
 
             # create one cc email and save
-            within(:css, '.practice-editor-contact-ul') do
-                fill_in(first_cc_email_field_input[:address], with: 'test2@test.com')
-            end
+            visit practice_contact_path(@practice)
+            first_cc_email_field_input.set('test2@test.com')
+
             @save_button.click
-            within(:css, '.practice-editor-contact-ul') do
-                expect(page).to have_field(first_cc_email_field_input[:address], with: 'test2@test.com')
-            end
+            expect(page).to have_field(@email_field_name, with: 'test2@test.com')
 
             # Edit the cc email
-            visit practice_overview_path(@practice)
-            within(:css, '.practice-editor-contact-ul') do
-                fill_in(first_cc_email_field_input[:name], with: "test22@test.com")
-            end
+            first_cc_email_field_input.set('test22@test.com')
             @save_button.click
-            within(:css, '.practice-editor-contact-ul') do
-                expect(page).to have_field(first_cc_email_field_input[:name], with: "test22@test.com")
-            end
+            expect(page).to have_field(@email_field_name, with: 'test22@test.com')
 
             # create another cc email and save
-            visit practice_overview_path(@practice)
-            within(:css, '#contact_container') do
-                click_link('Add another')
-                fill_in(last_cc_email_field_input[:address], with: "second_test@test.com")
-            end
+            click_link('Add another')
+            last_cc_email_field_input.set('second_test@test.com')
+
             @save_button.click
-            within(:css, '.practice-editor-contact-ul') do
-                expect(page).to have_field(first_cc_email_field_input[:address], with: 'test22@test.com')
-                expect(page).to have_field(last_cc_email_field_input[:address], with: 'second_test@test.com')
-            end
+            expect(page).to have_field(@email_field_name, with: 'test22@test.com')
+            expect(page).to have_field(@email_field_name_2, with: 'second_test@test.com')
 
             # delete first cc email
-            visit practice_overview_path(@practice)
             input_field_id = first_cc_email_field_input[:id]
-            within(:css, "##{first_cc_email_field[:id]}") do
+            within(first_cc_email_field) do
                 click_link('Delete entry')
                 expect(page).to_not have_selector("##{input_field_id}")
             end
             @save_button.click
             within(:css, '.practice-editor-contact-ul') do
-                expect(page).to have_field(first_cc_email_field_input[:address], with: 'second_test@test.com')
+                expect(page).to have_field(@email_field_name, with: 'second_test@test.com')
             end
 
             # delete "second" cc email
-            visit practice_overview_path(@practice)
-            expect(page).to have_field(first_cc_email_field_input[:name], with: 'second_test@test.com')
+            expect(page).to have_field(@email_field_name, with: 'second_test@test.com')
             input_field_id = first_cc_email_field_input[:id]
             within(:css, '#contact_container') do
                 click_link('Add another')
             end
-            within(:css, "##{first_cc_email_field[:id]}") do
+            within(first_cc_email_field) do
                 click_link('Delete entry')
                 expect(page).to_not have_selector("##{input_field_id}")
             end

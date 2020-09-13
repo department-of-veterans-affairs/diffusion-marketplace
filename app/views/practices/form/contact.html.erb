@@ -36,12 +36,27 @@
 
               <!-- PracticeEmail form -->
               <div class="grid-col-8">
-                <div id="contact_container position-relative">
+                <div id="contact_container" class="position-relative">
                   <ul class="practice-editor-contact-ul" role="listbox" title="Practice origin facilities" aria-label="Practice editor origin facility list">
                     <%= f.fields_for :practice_emails, wrapper: false do |pe| %>
                       <%
                         pe_id = pe.object.id || "new_practice_emails"
                       %>
+                      <% if pe.object.address %>
+                        <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                          $(document).arrive('<%= "#practice_practice_emails_attributes_#{pe.index}_address" %>', function(newElem) {
+                            styleOriginFacility(
+                            $(newElem).closest('li'),
+                            <%= pe_id %>,
+                            '.practice-editor-contact-li',
+                            '.practice-editor-contact-ul',
+                            '.add-practice-email-link',
+                            '12'
+                          );
+                          $(document).unbindArrive('<%= "#practice_practice_emails_attributes_#{pe.index}_address" %>', newElem);
+                          });
+                        <% end %>
+                      <% end %>
                       <li class="practice-editor-contact-li fields" role="option" data-id="<%= pe_id %>">
                         <div class="grid-row">
                           <div class="grid-col-12">
@@ -55,28 +70,29 @@
                       </li>
                     <% end %>
                   </ul>
-                  <%= f.link_to_add :practice_emails, id: 'link_to_add_link_email', class: "dm-add-another-link add-practice-email-link usa-button--unstyled dm-btn-primary line-height-26 #{'display-none' unless @practice.practice_emails.any?}" do %>
+                  <%= f.link_to_add :practice_emails, class: 'dm-add-another-link add-practice-email-link usa-button--unstyled dm-btn-primary line-height-26' do %>
                     <span class="text-normal">Add another</span>
-                  <% end %>
-                  <%= f.link_to_add :practice_emails, id: 'link_to_add_button_email', class: "usa-button--unstyled dm-btn-primary x0-top add-email-link #{'display-none' if @practice.practice_emails.any?}" do %>
-                    <span class="font-sans-md text-normal text-no-underline">Add another</span>
                   <% end %>
                   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
                     observePracticeEditorLiArrival(
-                    $(document),
-                    '.practice-editor-contact-li',
-                    '.practice-editor-contact-ul',
-                    '12',
-                    'link_to_add_link_email',
-                    'link_to_add_button_email'
+                        $(document),
+                        '.practice-editor-contact-li',
+                        '.practice-editor-contact-ul',
+                        '.add-practice-email-link',
+                        '12'
                     );
                     attachTrashListener(
-                    $(document),
-                    '#contact_container',
-                    '.practice-editor-contact-li',
-                    'link_to_add_link_email',
-                    'link_to_add_button_email'
+                        $(document),
+                        '#contact_container',
+                        '.practice-editor-contact-li',
+                        '.add-practice-email-link'
                     );
+                    <% unless @practice.practice_emails.any? %>
+                      $(document).arrive('#practice_emails_fields_blueprint', function(blueprint) {
+                        $('.add-practice-email-link').click();
+                        $(document).unbindArrive('#practice_emails_fields_blueprint', blueprint);
+                      });
+                    <% end %>
                   <% end %>
                 </div>
               </div>
