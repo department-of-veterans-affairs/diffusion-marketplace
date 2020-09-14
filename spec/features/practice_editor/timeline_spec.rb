@@ -11,7 +11,7 @@ describe 'Practice editor', type: :feature, js: true do
         before do
             login_as(@admin, :scope => :user, :run_callbacks => false)
             visit practice_implementation_path(@practice)
-            expect(page).to be_accessible.according_to :wcag2a, :section508
+            #expect(page).to be_accessible.according_to :wcag2a, :section508
             @time_frame = '5'
             @time_interval = 'Months'
             @milestone = 'Test milestone'
@@ -57,25 +57,26 @@ describe 'Practice editor', type: :feature, js: true do
         #     expect(page).to have_field('practice[timelines_attributes][1][milestone]', with: 'Test milestone 2')
         # end
 
-        # it 'should allow the user to delete timeline entries' do
-        #   debugger
-        #
-        #     fill_in_timeline_fields
-        #     @save_button = find('#practice-editor-save-button')
-        #     find('.timeline-trash').click
-        #     @save_button.click
-        #     expect(page).to have_content('Practice was successfully updated')
-        #     expect(page).to have_field('Time frame', with: nil)
-        #       #expect(page).to have_field('Milestone:', with: nil)
-        # end
-        #
-        # it 'should not allow the user to create a timeline entry without any milestone descriptions' do
-        #     fill_in('Time frame', with: @time_frame)
-        #     @save_button.click
-        #
-        #     expect(page).to have_content('Practice was successfully updated')
-        #     expect(page).to have_field('Time frame', with: nil)
-        #       # expect(page).to have_field('Milestone:', with: nil)
-        # end
+        it 'should allow the user to save timeline entries' do
+          debugger
+          @add_timeline_step_button.click
+          fill_in_timeline_fields
+          @save_practice = find('#practice-editor-save-button')
+          @save_practice.click
+          expect(page).to have_content('Practice was successfully updated')
+        end
+
+        fit 'should allow the user to add another timeline entry' do
+          debugger
+          @add_timeline_step_button.click
+          fill_in_timeline_fields
+          @save_practice = find('#practice-editor-save-button')
+          @save_practice.click
+          @link_to_add = find('#link_to_add_link_timeline')
+          @link_to_add.click
+          expect(page).to have_content('Practice was successfully updated')
+          expect(page).to have_content('Delete entry')
+          expect(page).to have_field('Time frame', with: nil)
+        end
     end
 end
