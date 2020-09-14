@@ -31,7 +31,6 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         def fill_in_timeline_fields
-            debugger
             fill_in('Time frame', with: @time_frame)
             select @time_interval, from: 'Time interval'
             fill_in('Description of milestones (include context or disclaimers as needed.', with: @milestone)
