@@ -33,7 +33,7 @@ describe 'Practice editor', type: :feature, js: true do
         def fill_in_timeline_fields
             fill_in('Time frame', with: @time_frame)
             select @time_interval, from: 'Time interval'
-            fill_in('Description of milestones (include context or disclaimers as needed.', with: @milestone)
+            fill_in('Description of milestones (include context or disclaimers as needed)', with: @milestone)
         end
 
         # it 'should allow the user to add multiple timeline entries' do
