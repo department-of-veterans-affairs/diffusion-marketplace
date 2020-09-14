@@ -96,7 +96,6 @@ function styleOriginFacility($newEl,
         const $lastOriginFacilityEl = $($originFacilityElements.last());
         removeSeparator($lastOriginFacilityEl);
     } else {
-        console.log('hello')
         $firstOriginFacilityEl.find('.dm-origin-trash').css('visibility','hidden');
     }
 }

@@ -59,7 +59,6 @@
         if (t.length < showChar) return;
 
         $(element).html(firstHalf + secondHalf);
-        console.log('hello', t)
     }
 
     function setMoreLessHandlers(elements) {
