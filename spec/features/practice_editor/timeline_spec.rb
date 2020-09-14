@@ -11,14 +11,14 @@ describe 'Practice editor', type: :feature, js: true do
         before do
             login_as(@admin, :scope => :user, :run_callbacks => false)
             visit practice_implementation_path(@practice)
-            #expect(page).to be_accessible.according_to :wcag2a, :section508
+            expect(page).to be_accessible.according_to :wcag2a, :section508
             @time_frame = '5'
             @time_interval = 'Months'
             @milestone = 'Test milestone'
             @add_timeline_step_button = find('#link_to_add_button_timeline')
         end
 
-        it 'should be there' do
+        fit 'should be there' do
             @save_button = find('#practice-editor-save-button')
             expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).to have_content('Timeline')
