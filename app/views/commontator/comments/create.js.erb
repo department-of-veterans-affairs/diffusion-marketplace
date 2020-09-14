@@ -5,9 +5,9 @@ var reloadWithTurbolinks = (function () {
       scrollPosition = [ window.pageXOffset, window.pageYOffset ];
       Turbolinks.visit(window.location.toString(), { action: 'replace' });
   }
-  $(document).off('turbolinks:load', somethingAwesome);
+  $(document).off('turbolinks:load', moveNavToCurrentPosition);
 
-  function somethingAwesome() {
+  function moveNavToCurrentPosition() {
       $('.timeago').timeago();
       $('#dm-practice-nav').sticky({topSpacing: 20, zIndex: 10000, bottomSpacing: 200});
 
@@ -16,7 +16,7 @@ var reloadWithTurbolinks = (function () {
       }, 0);
   }
 
-  document.addEventListener('turbolinks:load', somethingAwesome);
+  document.addEventListener('turbolinks:load', moveNavToCurrentPosition);
 
   return reload
 })()
