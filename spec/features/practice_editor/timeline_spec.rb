@@ -58,7 +58,6 @@ describe 'Practice editor', type: :feature, js: true do
         # end
 
         it 'should allow the user to save timeline entries' do
-          debugger
           @add_timeline_step_button.click
           fill_in_timeline_fields
           @save_practice = find('#practice-editor-save-button')
@@ -66,8 +65,7 @@ describe 'Practice editor', type: :feature, js: true do
           expect(page).to have_content('Practice was successfully updated')
         end
 
-        fit 'should allow the user to add another timeline entry' do
-          debugger
+        it 'should allow the user to add another timeline entry' do
           @add_timeline_step_button.click
           fill_in_timeline_fields
           @save_practice = find('#practice-editor-save-button')
