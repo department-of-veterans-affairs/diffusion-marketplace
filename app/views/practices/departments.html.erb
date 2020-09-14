@@ -33,7 +33,7 @@
           </p>
           <fieldset class="usa-fieldset">
             <div class="grid-row grid-gap margin-top-105 margin-bottom-3">
-              <% Department.order("CASE WHEN name = 'None' THEN 1 WHEN name = 'All departments equally - not a search differentiator' THEN 2 ELSE 3 END, LOWER(name)").each do |department| %>
+              <% Department.order(Arel.sql("CASE WHEN name = 'None' THEN 1 WHEN name = 'All departments equally - not a search differentiator' THEN 2 ELSE 3 END, LOWER(name)")).each do |department| %>
                 <% if department.name == 'None' %>
                   <div class='usa-checkbox grid-col-6'>
                     <input type='checkbox' class='usa-checkbox__input no-department-input' id="practice_department_<%= @no_departments.id %>" name="practice[department][<%= @no_departments.id %>][value]" <%= !@practice.departments.find_by(name: 'None').nil? ? "checked= 'true'" : "" %>>
