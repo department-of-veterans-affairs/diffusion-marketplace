@@ -25,10 +25,12 @@ describe 'Practice', type: :feature, js: true do
     it 'should allow the user to update the departments for the practice' do
       # no departments should be there
       visit practice_path(@practice)
-      expect(page).to have_content('Departments')
-      expect(page).to have_no_content('Admissions')
-      expect(page).to have_no_content('Anesthetics')
-      expect(page).to have_no_content('Chaplaincy')
+      within(:css, '#dm-implementation-section') do
+        expect(page).to have_no_content('Departments')
+        expect(page).to have_no_content('Admissions')
+        expect(page).to have_no_content('Anesthetics')
+        expect(page).to have_no_content('Chaplaincy')
+      end
 
       # navigate to the PE Implementation form
       click_link('Edit')
@@ -56,7 +58,6 @@ describe 'Practice', type: :feature, js: true do
       # check departments in practice view
       visit practice_path(@practice)
       expect(page).to have_content('Departments')
-      debugger
       expect(page).to have_content('Admissions')
       expect(page).to have_no_content('Anesthetics')
       expect(page).to have_no_content('Chaplaincy')

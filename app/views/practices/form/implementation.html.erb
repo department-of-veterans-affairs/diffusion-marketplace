@@ -20,14 +20,13 @@
         <%= render 'pii_phi_alert' %>
       </div>
       <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
-      <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
+        <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
+        <%= render partial: 'practices/implementation_forms/timeline', locals: {f: f} %>
 
-      <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
-      <div class="margin-bottom-5 margin-top-3">
-        <%# render 'practices/timeline'%>
-
-        <%= render partial: 'practices/implementation_forms/departments', locals: {f: f} %>
-      <% end %>
+        <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
+        <div class="margin-bottom-5 margin-top-3">
+          <%= render partial: 'practices/implementation_forms/departments', locals: {f: f} %>
+        <% end %>
     </div>
 
   <div class="grid-row">

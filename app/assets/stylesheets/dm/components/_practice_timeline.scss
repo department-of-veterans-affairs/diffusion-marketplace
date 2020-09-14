@@ -17,6 +17,11 @@
   font-weight: bold;
 }
 
+.dm-timeline-icon {
+  margin-top: 1.25rem;
+  max-height: 1rem;
+}
+
 /* The actual timeline (the vertical ruler) */
 .timeline {
   margin: 0 auto;
@@ -27,18 +32,20 @@
     height: 0;
   }
 
+  h4 {
+    margin-top: 1.25rem;
+  }
+
   /* The actual timeline (the vertical ruler) */
   &:after {
-    background-color: $dm-color-blue-80v;
+    background-color: $dm-color-base;
     content: '';
-    // left: 50%;
-    // margin-left: -3px;
     z-index: -1;
-    margin-left: 12.7px;
+    margin-left: 31px;
     position: absolute;
     top: 0;
-    width: 6px;
-    height: 100%;
+    width: 2px;
+    height: 130%;
   }
 
   /* Media queries - Responsive timeline on screens less than 600px wide */
