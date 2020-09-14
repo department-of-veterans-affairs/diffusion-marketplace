@@ -11,7 +11,7 @@
     <fieldset class="usa-fieldset grid-col-6">
       <legend class="usa-sr-only">Departments</legend>
       <div id="dm-practice-department-container">
-        <ul class="dm-practice-editor-department-ul add-list-reset" role="listbox" aria-label="Practice editor timeline list">
+        <ul class="dm-practice-editor-department-ul add-list-reset" aria-label="Practice editor timeline list">
           <%= f.fields_for :department_practices, wrapper: false do |dp| %>
             <%
               dp_id = dp.object.id || "new_department_practice_#{dp.index}"
