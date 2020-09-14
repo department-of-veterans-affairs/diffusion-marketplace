@@ -2,7 +2,6 @@ namespace :milestones do
   #desc "Transfer all milestone entries from timelines model to milestone model"
 
   task milestones_transfer: :environment do
-    debugger
     timelines = Timeline.all
     timelines.each do |tl|
       Milestone.create({description: tl.milestone, timeline_id: tl.id})
@@ -12,7 +11,6 @@ namespace :milestones do
 
   desc "Ports milestone descriptions to Timeline.milestone field in line break delimited list"
   task port_milestones_to_timelines: :environment do
-    debugger
     tl_ids = Array.new
     Milestone.all.each do |ms|
       if(!tl_ids.include?(ms.timeline_id))
