@@ -44,11 +44,9 @@
             mitigation</a>
         </li>
       <% end %>
-      <% if @practice.support_network_email.present? %>
-        <li class="usa-sidenav__item">
-          <a href="#contact" class="dm-tab bottom-tab scroll-to sidebar-contact" data-target="#contact" data-turbolinks="false">Contact</a>
-        </li>
-      <% end %>
+      <li class="usa-sidenav__item">
+        <a href="#contact" class="dm-tab bottom-tab scroll-to sidebar-contact" data-target="#contact" data-turbolinks="false">Contact</a>
+      </li>
     </ul>
     <div class="text-center">
       <%= link_to 'See adoption checklist', practice_planning_checklist_url(practice_id: @practice.slug), id: 'next-steps-link-in-nav', class: 'usa-button width-full p1' %>

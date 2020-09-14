@@ -59,7 +59,7 @@ describe 'Practice editor', type: :feature, js: true do
             # see if the main email shows up in the show view
             click_link(@practice.name)
             expect(page).to have_content('Email')
-            within(:css, '#pr-view-contact') do
+            within(:css, '#contact') do
                 expect(page).to have_content(@practice_main_email)
             end
 

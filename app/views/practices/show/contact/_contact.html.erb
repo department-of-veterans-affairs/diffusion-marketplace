@@ -19,15 +19,17 @@
       <% end %>
 
       <!--Email-->
-      <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
-      <h2 id="email" class="font-sans-lg text-bold margin-top-2 margin-bottom-1 line-height-25px">Email</h2>
       <%
         main_email = @practice.support_network_email
         practice_emails = @practice.practice_emails
       %>
-      <p class="line-height-26 margin-bottom-105 main-email-address-container">
-        Email <%= mail_to main_email, main_email, cc: practice_emails.map(&:address).join(', '), class: 'dm-external-link', 'aria-label': "Email #{main_email}"  %> with questions about this practice.
-      </p>
+      <% if main_email.present? %>
+        <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
+        <h2 id="email" class="font-sans-lg text-bold margin-top-2 margin-bottom-1 line-height-25px">Email</h2>
+        <p class="line-height-26 margin-bottom-105 main-email-address-container">
+          Email <%= mail_to main_email, main_email, cc: practice_emails.map(&:address).join(', '), class: 'dm-external-link', 'aria-label': "Email #{main_email}"  %> with questions about this practice.
+        </p>
+      <% end %>
     </div>
   </div>
 </section>
