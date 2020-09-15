@@ -1001,7 +1001,6 @@ ActiveRecord::Schema.define(version: 2020_09_14_164308) do
     t.bigint "practice_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "time_interval"
     t.index ["practice_id"], name: "index_timelines_on_practice_id"
   end
 
