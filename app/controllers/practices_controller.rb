@@ -324,6 +324,12 @@ class PracticesController < ApplicationController
   def contact
   end
 
+  # /practices/slug/about
+  def about
+    set_practice
+    render 'practices/form/about'
+  end
+
   # /practices/slug/checklist
   def checklist
   end

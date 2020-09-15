@@ -1,0 +1,64 @@
+<% provide :main_classes, 'bg-gray-2' %>
+<% provide :footer_classes, 'bg-gray-2' %>
+<% provide :head_tags do %>
+  <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
+<%= render 'breadcrumbs' %>
+<%= render 'practice_editor_sidenav' %>
+<div class="grid-container position-relative">
+  <div class="grid-row grid-gap practice-editor-min-height">
+    <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+
+    <div id="about" class="desktop:grid-col-9 grid-col-12 p0">
+      <%= render partial: "shared/messages", locals: {small_text: false} %>
+      <section class="usa-section padding-top-0 p0-bottom about">
+        <h1 class="font-sans-2xl line-height-46px margin-bottom-3">About</h1>
+        <h2 class="text-normal line-height-36 font-sans-lg">
+          This section helps people understand how your practice started and introduces the original team.
+        </h2>
+        <div class="margin-top-3">
+          <%= render 'pii_phi_alert' %>
+        </div>
+        <%= nested_form_for(@practice, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
+          <fieldset class="usa-fieldset grid-col-10">
+            <legend class="usa-sr-only">Practice About Information</legend>
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+            <div>
+              <%= f.label :origin_story, class: 'usa-label' do %>
+                <p class="text-bold margin-bottom-2 line-height-18px">Origin story</p>
+                <p class="line-height-26">Type a short story describing how your practice started.</p>
+              <% end %>
+              <%= f.text_area :origin_story, class: 'usa-input practice-input height-15 margin-bottom-5 origin-story-textarea' %>
+            </div>
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+            <div class="margin-top-3 margin-bottom-2">
+              <p class="text-bold margin-bottom-2 line-height-18px">Team members</p>
+              <p class="line-height-26">Add the names of people who helped start the practice.</p>
+            </div>
+            <%= f.fields_for :va_employees, wrapper: false do |vae| %>
+              <%
+                vae_id = vae.object.id
+              %>
+              <div id="va_employee_container" class="position-relative">
+                <ul class="practice-editor-contact-ul" id="sortable_contacts" role="listbox" aria-label="Practice editor contact list">
+                  <li class="practice-editor-contact-li fields" data-id="<%= vae_id %>">
+                    <div class="grid-col-8">
+                      <%= vae.label :name, 'Name', class: 'usa-label x0-top' %>
+                      <%= vae.text_field :name, class: 'usa-input practice-input va-employee-name-input' %>
+                    </div>
+
+                    <div class="grid-col-8">
+                      <%= vae.label :role, 'Role', class: 'usa-label' %>
+                      <%= vae.text_field :role, class: 'usa-input practice-input va-employee-role' %>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            <% end %>
+          </fieldset>
+        <% end %>
+      </section>
+    </div>
+  </div>
+</div>
