@@ -937,6 +937,28 @@ li.small-disc:before {
   height: 1px;
 }
 
+// Overview
+.overview-files-ul {
+  div:last-child {
+    margin-bottom: 0 !important;
+  }
+}
+
+.overview-statement-container {
+  a {
+    display: inline-block;
+    width: auto;
+  }
+}
+
+.practice-editor-impact-photo-container {
+  div {
+    @media screen and (max-width: 1023px) {
+      width: 100% !important;
+    }
+  }
+}
+
 /*********************************
  PRACTICE EDITOR
 **********************************/

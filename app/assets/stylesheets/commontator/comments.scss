@@ -5,7 +5,6 @@
     border: none;
 
     font-weight: normal;
-    color: #000;
   }
 
   & {
@@ -25,11 +24,11 @@
   }
 
   .bottom {
-    margin-top: 10px;
+    margin-top: 4px;
   }
 
   .author {
-    font-size: 110%;
+    font-size: 16px;
     font-weight: bold;
   }
 
@@ -48,9 +47,6 @@
   }
 
   .votes {
-
-    text-align: center;
-
     input, img {
       background-color: transparent;
     }
@@ -64,15 +60,13 @@
     margin: 5px 0;
   }
 
-  .like {
-
-    margin-right: 5px;
-  }
-
   .vote-count {
+    display: inline-block;
     font-size: 100%;
-    margin-right: 9px;
+    //margin-right: 24px;
+    width: 31px;
     color: $dm-color-blue-50v;
+    margin-left: 5px;
   }
 
   .blocked {
@@ -92,7 +86,7 @@
     }
   }
 
-  .reply, .timestamp {
+  .reply {
     font-size: 90%;
   }
 
@@ -101,10 +95,6 @@
       width: 100%;
       margin-top: 18px;
     }
-  }
-
-  .timestamp {
-    color: black;
   }
 
   .error-explanation {
@@ -124,6 +114,10 @@
   }
 }
 
+.commontator-timestamp {
+  color: $dm-color-gray-60 !important;
+}
+
 // Hiding pagination for now due to extra padding
 .pagination {
   display: none !important;
@@ -137,15 +131,6 @@ h2 {
   font-size: 16.96px;
   line-height: 26px;
   color: gray;
-}
-
-.edit-comment-icon, .fa-trash-alt, .fa-trash-restore-alt {
-  color: $dm-color-gray-30;
-  text-decoration: none;
-}
-
-.edit-comment-icon:hover, .fa-trash-alt:hover, .fa-trash-restore-alt:hover {
-  color: $dm-color-base-dark;
 }
 
 body {
@@ -178,17 +163,20 @@ body {
   display: none;
 }
 
-.fa-thumbs-up {
+.fa-thumbs-up, .edit-comment-icon {
+  text-decoration: none;
   padding: 0;
+  color: $dm-color-blue-50v;
+  background-color: transparent !important;
 
   &:hover {
+    color: $dm-color-blue-70v;
     cursor: pointer;
-    color: #565c65;
   }
-}
 
-.empty-vote {
-  color: $dm-color-gray-30;
+  &:active {
+    color: $dm-color-blue-80v;
+  }
 }
 
 .vote-disabled {
@@ -197,10 +185,6 @@ body {
    &:hover {
      color: #C9C9C9 !important;
    }
-}
-
-.voted {
-  color: #005EA2;
 }
 
 .show-hide-button {
@@ -244,8 +228,16 @@ body {
   display: none !important;
 }
 
-.fa-flag:hover {
+.fa-flag, .fa-trash-alt, .fa-trash-restore-alt {
   color: $dm-color-red-50v;
+
+  &:hover {
+    color: $dm-color-red-60v;
+  }
+
+  &:active {
+    color: $dm-color-red-70v;
+  }
 }
 
 .usa-radio__input:focus + .team-member-label::before, .usa-radio__input:focus + .implementer-label::before {
@@ -295,30 +287,12 @@ body {
   }
 }
 
-.more-link {
-  color: $dm-color-blue-50v !important;
-
-  &:hover {
-    text-decoration: none !important
-  }
-  i:before {
-    display: inline-block;
-    text-decoration: none !important;
-  }
-}
-
 .more-content span {
   display: none;
 }
 
 .show-arrow {
   font-size: 0.75em !important;
-}
-
-.more {
-  p {
-    padding-bottom: 4px;
-  }
 }
 
 .fa-user-circle {
@@ -334,3 +308,6 @@ body {
   }
 }
 
+.comment-submit {
+  padding: 14px 20px 14px 20px !important;
+}
