@@ -12,13 +12,12 @@ describe 'Practice editor', type: :feature, js: true do
             login_as(@admin, :scope => :user, :run_callbacks => false)
             visit practice_implementation_path(@practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508
-            @time_frame = '5'
-            @time_interval = 'Months'
+            @time_frame = '3 Months'
             @milestone = 'Test milestone'
             @add_timeline_step_button = find('#link_to_add_button_timeline')
         end
 
-        fit 'should be there' do
+        it 'should be there' do
             @save_button = find('#practice-editor-save-button')
             expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).to have_content('Timeline')
@@ -27,35 +26,13 @@ describe 'Practice editor', type: :feature, js: true do
             fill_in_timeline_fields
             @save_button.click
             expect(page).to have_content('Practice was successfully updated')
-            expect(page).to have_field('Time frame', with: "5")
+            expect(page).to have_field('Time frame', with: "3 Months")
         end
 
         def fill_in_timeline_fields
             fill_in('Time frame', with: @time_frame)
-            select @time_interval, from: 'Time interval'
             fill_in('Description of milestones (include context or disclaimers as needed)', with: @milestone)
         end
-
-        # it 'should allow the user to add multiple timeline entries' do
-        #     @add_timeline_step_button.click
-        #     fill_in_timeline_fields
-        #     debugger
-        #     @save_button = find('#practice-editor-save-button')
-        #     @save_button.click
-        #     find('add-practice-timeline-link').click
-        #
-        #     all('.timeline-input').last.set('Test timeline 2')
-        #     all('.milestone-textarea').last.set('Test milestone 2')
-        #     @save_button.click
-        #
-        #     expect(page).to have_content('Practice was successfully updated')
-        #     expect(page).to have_field('practice[timelines_attributes][0][timeline]', with: @time_frame)
-        #     expect(page).to have_field('practice[timelines_attributes][0][time_interval]', with: @time_frame)
-        #
-        #     expect(page).to have_field('practice[timelines_attributes][0][milestone]', with: @milestone)
-        #     expect(page).to have_field('practice[timelines_attributes][1][timeline]', with: 'Test timeline 2')
-        #     expect(page).to have_field('practice[timelines_attributes][1][milestone]', with: 'Test milestone 2')
-        # end
 
         it 'should allow the user to save timeline entries' do
           @add_timeline_step_button.click

@@ -42,14 +42,8 @@
                     <div class="grid-row">
                       <div class="grid-col-12">
                         <%= tl.label :timeline, 'Time frame', class: 'usa-label display-inline-block timeline-duration' %>&nbsp;
-                        <%= tl.number_field :timeline, class: 'usa-input practice-input timeline-input grid-col-2', min: 1, required: true %>
+                        <%= tl.text_field :timeline, class: 'usa-input practice-input timeline-input grid-col-6', min: 1, required: true %>
                       </div>
-
-                      <div class="grid-col-12">
-                          <%= tl.label :time_interval, '', class: 'usa-label display-inline-block grid-col-12' %>
-                          <%= tl.select(:time_interval, options_for_select(time_intervals, selected: tl.object.time_interval ), {}, {class: 'usa-select grid-col-6', required: true}) %>
-                      </div>
-
                         <div class="grid-col-12">
                             <%= tl.label :milestone, 'Description of milestones (include context or disclaimers as needed)', class: 'usa-label width-full maxw-full grid-col-12' %>
                             <%= tl.text_area :milestone, class: 'usa-input practice-input height-10 milestone-textarea', 'counter-id': "milestone_#{tl_id}_textarea", required: true %>
