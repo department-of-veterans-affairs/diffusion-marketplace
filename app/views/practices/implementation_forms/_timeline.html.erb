@@ -1,0 +1,89 @@
+<% provide :head_tags do %>
+  <%= javascript_include_tag 'practice_editor_timeline', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
+<div id="timeline" class="desktop:grid-col-10 grid-col-12 p0">
+      <%= render partial: "shared/messages", locals: {small_text: false} %>
+      <section class="usa-section padding-top-0 p0-bottom timeline">
+        <h2 class="font-sans-sm">Timeline</h2>
+        <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
+          This section details the estimated timeline for another facility to implement your practice.  List out each milestone separately.
+        </h3>
+          <fieldset class="usa-fieldset">
+            <legend class="usa-sr-only">Timeline</legend>
+            <div id="practice-timeline-container"
+            class="margin-top-1">
+              <ul class="practice-editor-timeline-ul" id="sortable_timelines" role="listbox" aria-label="Practice editor timeline list">
+                <%= f.fields_for :timelines, wrapper: false do |tl| %>
+                  <%
+                    tl_id = tl.object.id
+                  %>
+                  <% if tl_id %>
+                    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                      $(document).arrive('<%= "#practice_timelines_attributes_#{tl.index}_milestone" %>',
+                      function(newElem) {
+                      styleOriginFacility(
+                      $(newElem).closest('li'),
+                      <%= tl_id %>,
+                      '.practice-editor-timeline-li',
+                      '.practice-editor-timeline-ul',
+                      '.add-practice-timeline-link',
+                      '12'
+                      );
+                      $(document).unbindArrive('<%= "#practice_timelines_attributes_#{tl.index}_milestone" %>', newElem);
+                      }
+                      );
+                    <% end %>
+                  <% end %>
+
+                  <li class="practice-editor-timeline-li fields" data-id="<%= tl_id %>">
+                    <%= tl.hidden_field :position, class: 'timeline-position' %>
+                    <%= tl.hidden_field :id %>
+                    <div class="grid-row">
+                      <div class="grid-col-12">
+                        <%= tl.label :timeline, 'Time frame', class: 'usa-label display-inline-block timeline-duration' %>&nbsp;
+                        <%= tl.text_field :timeline, class: 'usa-input practice-input timeline-input grid-col-6', min: 1, required: true %>
+                      </div>
+                        <div class="grid-col-12">
+                            <%= tl.label :milestone, 'Description of milestones (include context or disclaimers as needed)', class: 'usa-label width-full maxw-full grid-col-12' %>
+                            <%= tl.text_area :milestone, class: 'usa-input practice-input height-10 milestone-textarea', 'counter-id': "milestone_#{tl_id}_textarea", required: true %>
+                        </div>
+                      <div class="grid-col-12 trash-container">
+                        <%= tl.link_to_remove 'Delete entry',
+                                              class: "dm-origin-trash font-sans-xs line-height-26 cursor-pointer float-right"
+                        %>
+                      </div>
+                    </div>
+                  </li>
+                <% end %>
+              </ul>
+
+                  <%= f.link_to_add :timelines, id: 'link_to_add_link_timeline', class: "dm-add-another-link add-practice-timeline-link line-height-26 cursor-pointer #{'display-none' unless @practice.timelines.any?}" do %>
+                    <span class="font-sans-xs text-normal">Add another</span>
+                  <% end %>
+                  <%= f.link_to_add :timelines, id: 'link_to_add_button_timeline', class: "usa-button--outline dm-btn-primary add-timeline-link #{'display-none' if @practice.timelines.any?}" do %>
+                    <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add timeline step</span>
+                  <% end %>
+              <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                observePracticeEditorLiArrival(
+                $(document),
+                '.practice-editor-timeline-li',
+                '.practice-editor-timeline-ul',
+                '12',
+                'link_to_add_link_timeline',
+                'link_to_add_button_timeline'
+                );
+                attachTrashListener(
+                $(document),
+                '#practice-timeline-container',
+                '.practice-editor-timeline-li',
+                'link_to_add_link_timeline',
+                'link_to_add_button_timeline'
+                );
+                <% end %>
+            </div>
+          </fieldset>
+      </section>
+    </div>
+<!--</div>-->

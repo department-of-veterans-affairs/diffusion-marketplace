@@ -6,7 +6,7 @@ class PracticesController < ApplicationController
                                       :collaborators, :impact, :resources, :documentation,
                                       :departments, :timeline, :risk_and_mitigation, :contact,
                                       :checklist, :publication_validation, :adoptions,
-                                      :create_or_update_diffusion_history]
+                                      :create_or_update_diffusion_history, :implementation, :introduction]
   before_action :set_facility_data, only: [:show, :planning_checklist]
   before_action :set_office_data, only: [:show, :planning_checklist]
   before_action :set_visn_data, only: [:show, :planning_checklist]
@@ -285,11 +285,13 @@ class PracticesController < ApplicationController
     render 'practices/form/overview'
   end
 
+  def implementation
+    render 'practices/form/implementation'
+  end
+
   # /practices/slug/introduction
   def introduction
-    set_practice
     render 'practices/form/introduction'
-      #@office_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_office_lookup.json"))
   end
 
   # GET /practices/1/origin
@@ -448,7 +450,7 @@ class PracticesController < ApplicationController
                                                               :attachment_crop_w, :attachment_crop_h, :_destroy],
                                      difficulties_attributes: [:id, :description, :_destroy],
                                      risk_mitigations_attributes: [:id, :_destroy, :position, risks_attributes: [:id, :description, :_destroy], mitigations_attributes: [:id, :description, :_destroy]],
-                                     timelines_attributes: [:id, :description, :timeline, :_destroy, :position, milestones_attributes: [:id, :description, :_destroy]],
+                                     timelines_attributes: [:id, :description, :milestone, :timeline, :_destroy, :position],
                                      va_employees_attributes: [:id, :name, :role, :position, :_destroy, :avatar, :crop_x, :crop_y, :crop_w, :crop_h, :delete_avatar],
                                      additional_staffs_attributes: [:id, :_destroy, :title, :hours_per_week, :duration_in_weeks, :permanent],
                                      additional_resources_attributes: [:id, :_destroy, :name, :position, :description],

@@ -63,7 +63,7 @@
     <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
     <div class="desktop:grid-col-9 grid-col-12">
       <div class="practice-editor-long-rect-svg border-top-05 border-primary-dark"></div>
-      <h1 class="font-sans-xl line-height-37px margin-top-2">Overview</h1>
+      <h2 class="font-sans-xl line-height-37px margin-top-2 margin-bottom-5">Overview</h2>
       <div class="metric-section practice-section">
         <section id="overview_problem" class="margin-bottom-5">
           <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_problem_resources, statement: @practice.overview_problem, title: 'The problem', s_area: 'problem'} %>
@@ -126,6 +126,30 @@
   </section>
 <% end %>
 
+<!-- Implementation section -->
+<section id="dm-implementation-section" class="margin-bottom-5 grid-container">
+  <div class="grid-row grid-gap-2">
+    <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
+    <div class="desktop:grid-col-9 grid-col-12">
+      <div class="practice-editor-long-rect-svg border-top-05 border-primary-dark"></div>
+      <h2 class="font-sans-xl line-height-37px margin-top-2 margin-bottom-5">Implementation</h2>
+      <div class="metric-section practice-section">
+        <% if @practice.timelines.any? %>
+          <section id="dm-implementation-timeline" class="margin-bottom-5">
+            <%= render partial: 'practices/show/implementation/timelines' %>
+          </section>
+        <% end %>
+        <% if @practice.department_practices.any? %>
+          <section id="dm-implementation-departments" class="margin-bottom-5">
+            <%= render partial: 'practices/show/implementation/departments' %>
+          </section>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>
+
+
 <!-- Contact Section-->
 <%= render partial: 'practices/show/contact/contact' %>
 
@@ -166,6 +190,7 @@
     </div>
   </div>
 </section>
+
 <!-- "Origin of this Practice" section -->
 <% unless !@practice.origin_story || !@practice.origin_title %>
   <section class="padding-bottom-2 margin-bottom-5">
@@ -237,53 +262,6 @@
           <% else %>
             <div class="hidden"></div>
           <% end %>
-        </div>
-      </div>
-    </div>
-  </section>
-<% end %>
-<!-- "Resources Required" section -->
-<section>
-  <div class="grid-container">
-    <div class="grid-row grid-gap">
-      <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-      <div class="desktop:grid-col-9 grid-col-12 p0">
-        <div>
-          <%= render partial: 'resources_required' %>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- "Departments" section -->
-<% if @practice.departments.any? %>
-  <section class="margin-bottom-7">
-    <div>
-      <div class="grid-container">
-        <div class="grid-row grid-gap">
-          <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-          <div class="desktop:grid-col-9 grid-col-12 p0">
-            <div class="departments-section practice-section">
-              <%= render partial: 'departments' %>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-<% end %>
-
-<!-- "Timeline and Checklist" section -->
-<% if @practice.timelines.any? %>
-  <section class="timeline-section">
-    <div class="grid-container">
-      <div class="grid-row grid-gap">
-        <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-        <div class="desktop:grid-col-9 grid-col-12 p0">
-          <div class="timeline-section practice-section">
-            <%= render partial: 'timeline_and_checklist' %>
-          </div>
         </div>
       </div>
     </div>
