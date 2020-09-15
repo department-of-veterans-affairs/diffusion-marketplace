@@ -239,6 +239,7 @@ class Practice < ApplicationRecord
   has_many :practice_problem_resources, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_solution_resources, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_results_resources, -> {order(id: :asc) }, dependent: :destroy
+  has_many :practice_emails, -> {order(id: :asc) }, dependent: :destroy
 
   # This allows the practice model to be commented on with the use of the Commontator gem
   acts_as_commontable dependent: :destroy
@@ -291,6 +292,7 @@ class Practice < ApplicationRecord
     reject || ad_reject
   }
   accepts_nested_attributes_for :publications, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['link'].blank? }
+  accepts_nested_attributes_for :practice_emails, allow_destroy: true, reject_if: proc { |attributes| attributes['address'].blank? }
   SATISFACTION_LABELS = ['Little or no impact', 'Some impact', 'Significant impact', 'High or large impact'].freeze
   COST_LABELS = ['0-$10,000', '$10,000-$50,000', '$50,000-$250,000', 'More than $250,000'].freeze
   # also known as "Difficulty"

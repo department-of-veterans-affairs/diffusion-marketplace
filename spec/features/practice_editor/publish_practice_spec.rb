@@ -42,9 +42,9 @@ describe 'Practice editor', type: :feature, js: true do
 
       visit practice_contact_path(@practice)
       email = 'test@email.com'
-      fill_in('Email:', with: email)
+      fill_in('Main email address', with: email)
       @save_button.click
-      expect(page).to have_field('Email:', with: email)
+      expect(page).to have_field('Main email address', with: email)
 
       visit practice_introduction_path(@practice)
       find('#initiating_facility_type_facility').sibling('label').click

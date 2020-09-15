@@ -51,24 +51,22 @@
     function setMoreLessHTML(element) {
         const showChar = 300;
         const ellipsesText = "...";
-        const moreText = '&nbsp; See more <i class="fas fa-angle-down show-arrow display-inline-block"></i>';
-        const lessText = '&nbsp; See less <i class="fas fa-angle-up show-arrow display-inline-block"></i>';
+        const moreText = 'See more';
+        const lessText = 'See less';
         let t = $(element).text();
+        let firstHalf = `${t.slice(0, showChar)}<span>${ellipsesText} </span><button type="button" class="usa-button--unstyled dm-btn-primary more-link text-no-underline">${moreText}</button>`;
+        let secondHalf = `<span style="display:none;">${t.slice(showChar, t.length)} <button type="button" class="usa-button--unstyled dm-btn-primary less-link text-no-underline">${lessText}</button></span>`;
         if (t.length < showChar) return;
 
-        $(element).html(
-            `
-             ${t.slice(0, showChar)}<span>${ellipsesText}</span> <button type="button" class="usa-button usa-button--unstyled more-link text-no-underline">${moreText}</button>
-             <span style="display:none;"> ${t.slice(showChar, t.length)} <button type="button" class="usa-button usa-button--unstyled less-link text-no-underline">${lessText}</button></span>
-             `
-        );
+        $(element).html(firstHalf + secondHalf);
     }
 
     function setMoreLessHandlers(elements) {
         $('button.more-link', elements).click(function (event) {
+            let $this = $(this);
             event.preventDefault();
-            $(this).hide().prev().hide();
-            $(this).next().show();
+            $this.hide().prev().hide();
+            $this.next().show();
         });
 
         $('button.less-link', elements).click(function (event) {

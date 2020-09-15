@@ -7,9 +7,13 @@
 %>
 
 <% if comment.can_be_voted_on? %>
-  <% can_vote = comment.can_be_voted_on_by?(user) %>
-  <% vote = comment.get_vote_by(user) %>
-  <% comment_voting = thread.config.comment_voting.to_sym %>
+  <%
+    can_vote = comment.can_be_voted_on_by?(user)
+    vote = comment.get_vote_by(user)
+    comment_voting = thread.config.comment_voting.to_sym
+    config = thread.config
+    vote_count = config.vote_count_proc.call(thread, comment.cached_votes_up, comment.cached_votes_down)
+  %>
 
   <% if comment_voting == :ld || comment_voting == :l %>
   <% vtype = (comment_voting == :ld) ? 'upvote' : 'like' %>
@@ -35,8 +39,7 @@
   <% end %>
 
   <span id="commontator-comment-<%= comment.id %>-vote-count" class="vote-count comment-<%= comment.id %>-<%= comment.cached_votes_up %>-vote<%=comment.cached_votes_up == 1 ? '' : 's' %>">
-    <% config = thread.config %>
-    <%= config.vote_count_proc.call(thread, comment.cached_votes_up, comment.cached_votes_down) %>
+    <%= vote_count unless vote_count == '0' %>
   </span>
 
   <% if comment_voting == :ld %>

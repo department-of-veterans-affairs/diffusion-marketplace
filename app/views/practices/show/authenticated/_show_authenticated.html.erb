@@ -44,13 +44,8 @@
             mitigation</a>
         </li>
       <% end %>
-      <% if @practice.va_employees.any? || @practice.support_network_email.present? %>
-        <li class="usa-sidenav__item">
-          <a href="#contact" class="dm-tab bottom-tab scroll-to sidebar-contact" data-target="#contact" data-turbolinks="false">Contact</a>
-        </li>
-      <% end %>
       <li class="usa-sidenav__item">
-        <a href="#comments" class="dm-tab bottom-tab scroll-to sidebar-comments" data-target="#comments" data-turbolinks="false">Comments</a>
+        <a href="#contact" class="dm-tab bottom-tab scroll-to sidebar-contact" data-target="#contact" data-turbolinks="false">Contact</a>
       </li>
     </ul>
     <div class="text-center">
@@ -130,6 +125,9 @@
     </div>
   </section>
 <% end %>
+
+<!-- Contact Section-->
+<%= render partial: 'practices/show/contact/contact' %>
 
 <section class="usa-section p2-top p2-bottom">
   <div class="grid-container position-relative">
@@ -301,22 +299,6 @@
         <div class="desktop:grid-col-9 grid-col-12 p0">
           <div class="risk-miti-section practice-section">
             <%= render partial: 'risks_and_mitigations' %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-<% end %>
-
-<!-- "Support Team" || "Contact" section -->
-<% if @practice.va_employees.any? || @practice.support_network_email.present? %>
-  <section class="margin-bottom-7">
-    <div class="grid-container">
-      <div class="grid-row grid-gap">
-        <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-        <div class="desktop:grid-col-9 grid-col-12 p0">
-          <div class="contact-section practice-section">
-            <%= render partial: 'support_team' %>
           </div>
         </div>
       </div>

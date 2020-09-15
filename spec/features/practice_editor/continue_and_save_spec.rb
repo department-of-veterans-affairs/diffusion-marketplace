@@ -42,9 +42,9 @@ describe 'Practice editor', type: :feature, js: true do
     end
 
     it 'should not allow a user to move to the next page if there is a required field not filled out' do
-      visit practice_contact_path(@practice)
+      visit practice_overview_path(@practice)
       find('.continue-and-save').click
-      email_message = page.find('.contact-email-input').native.attribute('validationMessage')
+      email_message = all('.practice-editor-overview-statement-input').first.native.attribute('validationMessage')
       expect(email_message).to eq('Please fill out this field.')
     end
   end
