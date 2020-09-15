@@ -11,7 +11,7 @@
     <fieldset class="usa-fieldset grid-col-6">
       <legend class="usa-sr-only">Departments</legend>
       <div id="dm-practice-department-container">
-        <ul class="dm-practice-editor-department-ul add-list-reset" aria-label="Practice editor timeline list">
+        <ul class="dm-practice-editor-department-ul add-list-reset" role="listbox" aria-label="Practice editor timeline list">
           <%= f.fields_for :department_practices, wrapper: false do |dp| %>
             <%
               dp_id = dp.object.id || "new_department_practice_#{dp.index}"
@@ -34,7 +34,7 @@
                 );
               <% end %>
             <% end %>
-            <li class="dm-practice-editor-department-li fields margin-bottom-2" data-id="<%= dp_id %>">
+            <li class="dm-practice-editor-department-li fields margin-bottom-2" role="option" data-id="<%= dp_id %>">
               <div class="grid-row">
                 <div class="usa-combo-box grid-col-12" data-default-value="<%= dp_dept_id %>">
                   <label for="practice_department_<%= dp_id %>_value">Select a department</label>
