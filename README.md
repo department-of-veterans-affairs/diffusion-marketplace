@@ -26,6 +26,7 @@
 | `rails shark_tank_practices:assign_shark_tank_badge` | Assigns the Shark Tank badge to all previous Shark Tank winners  |
 | `rails categories:add_covid_cats` | Adds COVID related categories and assigns them to practices  |
 | `rails practice_origin_facilities:move_practice_initiating_facility` | Moves practice initiating facilities to the practice_origin_facilities table  |
+| `rails port_milestones_to_timelines:port_milestones_to_timelines` | Ports data from Milestone table description field to Timelines.milestone field.  |
 
 #### Ruby version
 
@@ -150,12 +151,11 @@ This will run:
 2. `rails importer:import_answers` - imports the initial practice data the Diffusion Marketplace team collected via Survey Monkey, images and all~
 3. `rails importer:initial_featured` - sets the first three initial featured practices for the homepage
 4. `rails diffusion_history:all` - set up the initial diffusion history for the first five practices. Individual commands can be found here:  `lib/tasks/diffusion_history.rake`
-5. `rails milestones:milestones_transfer` - transfers original timeline entry milestones to the new milestone model
-6. `rails go_fish_practices:assign_go_fish_badge` - assigns the Go Fish badge to all Go Fish practices
-7. `rails shark_tank_practices:assign_shark_tank_badge` - assigns the Shark Tank badge to all previous Shark Tank winners
-8. `rails inet_partner_practices:assign_inet_partner` - assigns the iNET practice partner to practices that have iNET as a partner
-9. `rails categories:add_covid_cats` - adds COVID related categories and assigns them to practices
-10. `rails practice_origin_facilities:move_practice_initiating_facility` - moves practice initiating facilities to the practice_origin_facilities table
+5. `rails go_fish_practices:assign_go_fish_badge` - assigns the Go Fish badge to all Go Fish practices
+6. `rails shark_tank_practices:assign_shark_tank_badge` - assigns the Shark Tank badge to all previous Shark Tank winners
+7. `rails inet_partner_practices:assign_inet_partner` - assigns the iNET practice partner to practices that have iNET as a partner
+8. `rails categories:add_covid_cats` - adds COVID related categories and assigns them to practices
+9. `rails practice_origin_facilities:move_practice_initiating_facility` - moves practice initiating facilities to the practice_origin_facilities table
 
 To reset all of the data and do the process all over again, run:
 ```bash

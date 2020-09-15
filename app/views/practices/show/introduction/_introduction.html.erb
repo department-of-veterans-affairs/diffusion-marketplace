@@ -2,9 +2,6 @@
 <%# TODO: Hover, Click, Visited Interactions %>
 
 <%# TODO: Make unauthenticated view %>
-<% provide :head_tags do %>
-  <%= javascript_include_tag 'practice_page', 'data-turbolinks-track': 'reload' %>
-<% end %>
 
 <%
   updated_at = @practice.updated_at.present? ? @practice.updated_at : @practice.created_at

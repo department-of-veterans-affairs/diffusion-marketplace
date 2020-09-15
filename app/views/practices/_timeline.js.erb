@@ -4,60 +4,16 @@ var MILESTONE_MAX_LENGTH = 100;
 
 function getMilestoneCharacterCountOnPageLoad() {
 
-    <% @practice.timelines.each do |t| %>
-      <% if t.milestones.any? %>
-        <% t.milestones.each do |m| %>
-            var milestoneTextarea = $("textarea[counter-id='milestone_<%= m.id %>_textarea']");
-            var milestoneCharacterSpan = $("#milestone_<%= m.id %>_character_count");
-            var milestoneCurrentLength = milestoneTextarea.val().length;
-            var milestoneCharacterCounter = '(' + milestoneCurrentLength + '/' + MILESTONE_MAX_LENGTH + ' characters)';
-
-            milestoneCharacterSpan.text(milestoneCharacterCounter);
-
-            if (milestoneCurrentLength >= MILESTONE_MAX_LENGTH) {
-                milestoneCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
-            }
-          <% end %>
-        <% end %>
-    <% end %>
+    return 500;
 }
 
 function milestoneCharacterCounter() {
-    $(document).on('input', '.milestone-textarea', function(e) {
-        var t = e.target;
-        var currentLength = $(t).val().length;
-
-        var milestoneCharacterSpan = $(t).closest('div').find('.milestone-character-count');
-        var characterCounter = '(' + currentLength + '/' + MILESTONE_MAX_LENGTH + ' characters)';
-
-        milestoneCharacterSpan.css('color', CHARACTER_COUNTER_VALID_COLOR);
-        milestoneCharacterSpan.text(characterCounter);
-
-        if (currentLength >= MILESTONE_MAX_LENGTH) {
-            milestoneCharacterSpan.css('color', CHARACTER_COUNTER_INVALID_COLOR);
-        }
-    });
-}
-
-function showFieldsOnPageLoad() {
-  <% if @practice.timelines.empty? %>
-    $('.add-timeline-link').click();
-    $('.add-milestone-link').click();
-    $('.practice-editor-timeline-li ').appendTo('#sortable_timelines');
-    initSortable('#sortable_timelines');
-  <% else %>
-    <% @practice.timelines.each do |tl| %>
-      <% if tl.milestones.empty? %>
-        $("#timeline_<%= tl.id %>_milestone_link").click();
-      <% end %>
-    <% end %>
-  <% end %>
+    return 5;
 }
 
 function executeMilestoneFunctions() {
-    getMilestoneCharacterCountOnPageLoad();
     milestoneCharacterCounter();
-    showFieldsOnPageLoad();
+//    showFieldsOnPageLoad();
 }
 
 $(document).on('turbolinks:load', executeMilestoneFunctions);

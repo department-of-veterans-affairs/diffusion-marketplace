@@ -49,5 +49,6 @@ RSpec.describe Practice, type: :model do
     it { should have_many(:va_secretary_priority_practices) }
     it { should have_many(:va_secretary_priorities) }
     it { should have_many(:video_files) }
+    it { should have_many(:practice_emails) }
   end
 end

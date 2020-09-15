@@ -1,0 +1,16 @@
+<div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+<h3 class="margin-top-2 margin-bottom-2 line-height-25px font-sans-lg">Timeline</h3>
+<% @practice.timelines.order(position: :asc).each_with_index do |t, i| %>
+    <div class="timeline">
+      <div class="bg-white margin-x-3 dm-timeline-icon"><i class="fas fa-circle"></i><span class="timeline-number"></span></div>
+      <div class="dm-hyphens-auto timeline-and-milestone-container">
+        <h4 class="margin-left-9 text-uppercase font-sans-3xs"><%= t.timeline %></h4>
+        <ul class="margin-left-6 padding-0 margin-y-1">
+          <% mile_stones = t.milestone.split("\r\n") %>
+          <% mile_stones.each do |ms|%>
+            <div class="margin-left-3 font-sans-3xs line-height-sans-6"><%= ms %></div>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+<% end %>

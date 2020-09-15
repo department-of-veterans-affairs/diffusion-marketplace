@@ -1,0 +1,84 @@
+<%
+  all_depts = Department.where.not(name: 'None')
+%>
+
+<div id="dm-practice-editor-departments" class="desktop:grid-col-10 grid-col-12 p0">
+  <section class="usa-section padding-top-0 p0-bottom">
+    <h2 class="font-sans-sm">Departments</h2>
+    <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
+      Which departments may be involved during implementation of your practice?
+    </h3>
+    <fieldset class="usa-fieldset grid-col-6">
+      <legend class="usa-sr-only">Departments</legend>
+      <div id="dm-practice-department-container">
+        <ul class="dm-practice-editor-department-ul add-list-reset" role="listbox" aria-label="Practice editor timeline list">
+          <%= f.fields_for :department_practices, wrapper: false do |dp| %>
+            <%
+              dp_id = dp.object.id || "new_department_practice_#{dp.index}"
+              dp_dept_id = dp.object.department_id
+            %>
+            <% if dp.object.id %>
+              <%# add separators on page load %>
+              <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                $(document).arrive('<%= "#practice_department_#{dp_id}_value" %>',
+                  function(newElem) {
+                    styleOriginFacility(
+                      $(newElem).closest('li'),
+                      <%= dp_id %>,
+                      '.dm-practice-editor-department-li',
+                      '.dm-practice-editor-department-ul',
+                      '12'
+                    );
+                    $(document).unbindArrive('<%= "#practice_department_#{dp_id}_value" %>', newElem);
+                  }
+                );
+              <% end %>
+            <% end %>
+            <li class="dm-practice-editor-department-li fields margin-bottom-2" role="option" data-id="<%= dp_id %>">
+              <div class="grid-row">
+                <div class="usa-combo-box grid-col-12" data-default-value="<%= dp_dept_id %>">
+                  <label for="practice_department_<%= dp_id %>_value">Select a department</label>
+                  <select id="practice_department_<%= dp_id %>_value" class="usa-select" name="practice[department][<%= dp_id %>][value]">
+                    <% all_depts.each do |d| %>
+                      <option value="<%= d.id %>">
+                        <%= d.name %>
+                      </option>
+                    <% end %>
+                  </select>
+                </div>
+                <div class="grid-col-12 trash-container">
+                  <input type="hidden" name="practice[department][<%= dp_id %>][_destroy]" value="false"/>
+                  <a class="dm-origin-trash font-sans-xs line-height-26 cursor-pointer float-right remove_nested_fields">Delete entry</a>
+                </div>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+        <%= f.link_to_add :department_practices, id: 'link_to_add_link_department_practices', class: "dm-add-another-link dm-add-practice-department-link line-height-26 cursor-pointer" do %>
+          <span class="font-sans-xs text-normal">Add another</span>
+        <% end %>
+        <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+          observePracticeEditorLiArrival(
+            $(document),
+            '.dm-practice-editor-department-li',
+            '.dm-practice-editor-department-ul',
+            '12'
+          );
+          attachTrashListener(
+            $(document),
+            '#dm-practice-department-container',
+            '.dm-practice-editor-department-li'
+          );
+          <% unless @practice.departments.any? %>
+            $(document).arrive('#department_practices_fields_blueprint',
+              function(blueprint) {
+                $('.dm-add-practice-department-link').click();
+                $(document).unbindArrive('#department_practices_fields_blueprint', blueprint);
+              }
+            );
+          <% end %>
+        <% end %>
+      </div>
+    </fieldset>
+  </section>
+</div>

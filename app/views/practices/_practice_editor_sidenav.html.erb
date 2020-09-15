@@ -14,11 +14,11 @@
               <li class="usa-sidenav__item">
                   <%= link_to 'Overview', practice_overview_path(@practice), class: "#{'active' if current_page?( practice_overview_path(@practice))} width-full dm-tab" %>
               </li>
+            <li class="usa-sidenav__item">
+              <%= link_to 'Implementation', practice_implementation_path(@practice), class: "#{'active' if current_page?( practice_implementation_path(@practice))} width-full dm-tab" %>
+            </li>
               <li class="usa-sidenav__item">
                   <%= link_to 'Contact', practice_contact_path(@practice), class: "#{'active' if current_page?( practice_contact_path(@practice))} width-full dm-tab" %>
-              </li>
-              <li class="usa-sidenav__item">
-                  <%= link_to 'Implementation', practice_implementation_path(@practice), class: "#{'active' if current_page?( practice_implementation_path(@practice))} width-full dm-tab" %>
               </li>
               <li class="usa-sidenav__item">
                 <%= link_to 'About', practice_about_path(@practice), class: "#{'active' if current_page?( practice_about_path(@practice))} width-full dm-tab" %>
