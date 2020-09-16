@@ -43,17 +43,19 @@
                         pe_id = pe.object.id || "new_practice_emails"
                       %>
                       <% if pe.object.address %>
-                        <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                          $(document).arrive('<%= "#practice_practice_emails_attributes_#{pe.index}_address" %>', function(newElem) {
-                            styleOriginFacility(
-                            $(newElem).closest('li'),
-                            <%= pe_id %>,
-                            '.practice-editor-contact-li',
-                            '.practice-editor-contact-ul',
-                            '12'
-                          );
-                          $(document).unbindArrive('<%= "#practice_practice_emails_attributes_#{pe.index}_address" %>', newElem);
-                          });
+                        <% provide :head_tags do %>
+                          <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                            $(document).arrive('<%= "#practice_practice_emails_attributes_#{pe.index}_address" %>', function(newElem) {
+                              styleOriginFacility(
+                              $(newElem).closest('li'),
+                              <%= pe_id %>,
+                              '.practice-editor-contact-li',
+                              '.practice-editor-contact-ul',
+                              '12'
+                            );
+                            $(document).unbindArrive('<%= "#practice_practice_emails_attributes_#{pe.index}_address" %>', newElem);
+                            });
+                          <% end %>
                         <% end %>
                       <% end %>
                       <li class="practice-editor-contact-li fields" <%= "id=practice_practice_emails_attributes_#{pe.index}_li" if pe_id %> role="option" data-id="<%= pe_id %>">
@@ -72,23 +74,25 @@
                   <%= f.link_to_add :practice_emails, class: 'dm-add-another-link add-practice-email-link usa-button--unstyled dm-btn-primary line-height-26' do %>
                     <span class="text-normal">Add another</span>
                   <% end %>
-                  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                    observePracticeEditorLiArrival(
-                        $(document),
-                        '.practice-editor-contact-li',
-                        '.practice-editor-contact-ul',
-                        '12'
-                    );
-                    attachTrashListener(
-                        $(document),
-                        '#contact_container',
-                        '.practice-editor-contact-li'
-                    );
-                    <% unless @practice.practice_emails.any? %>
-                      $(document).arrive('#practice_emails_fields_blueprint', function(blueprint) {
-                        $('.add-practice-email-link').click();
-                        $(document).unbindArrive('#practice_emails_fields_blueprint', blueprint);
-                      });
+                  <% provide :head_tags do %>
+                    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                      observePracticeEditorLiArrival(
+                          $(document),
+                          '.practice-editor-contact-li',
+                          '.practice-editor-contact-ul',
+                          '12'
+                      );
+                      attachTrashListener(
+                          $(document),
+                          '#contact_container',
+                          '.practice-editor-contact-li'
+                      );
+                      <% unless @practice.practice_emails.any? %>
+                        $(document).arrive('#practice_emails_fields_blueprint', function(blueprint) {
+                          $('.add-practice-email-link').click();
+                          $(document).unbindArrive('#practice_emails_fields_blueprint', blueprint);
+                        });
+                      <% end %>
                     <% end %>
                   <% end %>
                 </div>

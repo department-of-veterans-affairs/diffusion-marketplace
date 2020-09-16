@@ -331,20 +331,22 @@
                       metric_id = pm.object.id || "new_practice_metrics"
                     %>
                     <% if pm.object.description %>
-                      <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                        $(document).arrive('<%= "#practice_practice_metrics_attributes_#{pm.index}_description" %>',
-                          function(newElem) {
-                            styleOriginFacility(
-                              $(newElem).closest('li'),
-                              <%= metric_id %>,
-                              '.practice-editor-metric-li',
-                              '.practice-editor-metrics-ul',
-                              '.add-practice-metric-link',
-                              '12'
-                            );
-                            $(document).unbindArrive('<%= "#practice_practice_metrics_attributes_#{pm.index}_description" %>', newElem);
-                          }
-                        );
+                      <% provide :head_tags do %>
+                        <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                          $(document).arrive('<%= "#practice_practice_metrics_attributes_#{pm.index}_description" %>',
+                            function(newElem) {
+                              styleOriginFacility(
+                                $(newElem).closest('li'),
+                                <%= metric_id %>,
+                                '.practice-editor-metric-li',
+                                '.practice-editor-metrics-ul',
+                                '.add-practice-metric-link',
+                                '12'
+                              );
+                              $(document).unbindArrive('<%= "#practice_practice_metrics_attributes_#{pm.index}_description" %>', newElem);
+                            }
+                          );
+                        <% end %>
                       <% end %>
                     <% end %>
                     <li class="practice-editor-metric-li fields" <%= "id=practice_practice_metrics_attributes_#{pm.index}_li" if pm.object.id %> data-id="<%= metric_id %>">
@@ -365,26 +367,28 @@
                 <%= f.link_to_add :practice_metrics, class: 'dm-add-another-link add-practice-metric-link line-height-26 cursor-pointer' do %>
                   <span class="font-sans-xs text-normal">Add another</span>
                 <% end %>
-                <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                  observePracticeEditorLiArrival(
-                  $(document),
-                  '.practice-editor-metric-li',
-                  '.practice-editor-metrics-ul',
-                  '12'
-                  );
-                  attachTrashListener(
-                  $(document),
-                  '#practice-metrics-container',
-                  '.practice-editor-metric-li',
-                  '.add-practice-metric-link'
-                  );
-                  <% unless @practice.practice_metrics.any? %>
-                    $(document).arrive('#practice_metrics_fields_blueprint',
-                    function(blueprint) {
-                      $('.add-practice-metric-link').click();
-                      $(document).unbindArrive('#practice_metrics_fields_blueprint', blueprint);
-                    }
+                <% provide :head_tags do %>
+                  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                    observePracticeEditorLiArrival(
+                    $(document),
+                    '.practice-editor-metric-li',
+                    '.practice-editor-metrics-ul',
+                    '12'
                     );
+                    attachTrashListener(
+                    $(document),
+                    '#practice-metrics-container',
+                    '.practice-editor-metric-li',
+                    '.add-practice-metric-link'
+                    );
+                    <% unless @practice.practice_metrics.any? %>
+                      $(document).arrive('#practice_metrics_fields_blueprint',
+                      function(blueprint) {
+                        $('.add-practice-metric-link').click();
+                        $(document).unbindArrive('#practice_metrics_fields_blueprint', blueprint);
+                      }
+                      );
+                    <% end %>
                   <% end %>
                 <% end %>
               </div>
