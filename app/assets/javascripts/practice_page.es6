@@ -195,3 +195,21 @@ function seeMoreStatementText(dotsSection, moreStatementText, buttonText, statem
         moreText.style.display = "inline";
     }
 }
+
+function seeMoreTextOriginStory() {
+    let dots = document.getElementById("dots_origin_story");
+    let moreText = document.getElementById("more_text_origin_story");
+    let btnText = document.getElementById("seeMore_origin_story");
+    let textTruncated = document.getElementById("origin_story_truncated");
+    if (dots.style.display === "none") {
+        dots.style.display = "inline";
+        btnText.innerHTML = "See more";
+        moreText.style.display = "none";
+        textTruncated.style.display = "inline";
+    } else {
+        dots.style.display = "none";
+        btnText.innerHTML = "See less";
+        textTruncated.style.display = "none";
+        moreText.style.display = "inline";
+    }
+}

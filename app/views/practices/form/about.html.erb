@@ -60,7 +60,7 @@
                           <% end %>
                         <% end %>
                       <% end %>
-                      <li class="practice-editor-about-li fields" <%= "id=practice_va_employees_attributes_#{vae.index}_li" if vae_id %> data-id="<%= vae_id %>">
+                      <li class="practice-editor-about-li fields" <%= "id=practice_va_employees_attributes_#{vae.index}_li" if vae_id %> role="option" data-id="<%= vae_id %>">
                         <div class="grid-row">
                           <div class="grid-col-12">
                             <%= vae.label :name, 'Name', class: 'usa-label x0-top' %>

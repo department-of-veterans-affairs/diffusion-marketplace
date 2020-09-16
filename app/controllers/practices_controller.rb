@@ -6,7 +6,7 @@ class PracticesController < ApplicationController
                                       :collaborators, :impact, :resources, :documentation,
                                       :departments, :timeline, :risk_and_mitigation, :contact,
                                       :checklist, :publication_validation, :adoptions,
-                                      :create_or_update_diffusion_history, :implementation, :introduction]
+                                      :create_or_update_diffusion_history, :implementation, :introduction, :about]
   before_action :set_facility_data, only: [:show, :planning_checklist]
   before_action :set_office_data, only: [:show, :planning_checklist]
   before_action :set_visn_data, only: [:show, :planning_checklist]
@@ -329,7 +329,6 @@ class PracticesController < ApplicationController
 
   # /practices/slug/about
   def about
-    set_practice
     render 'practices/form/about'
   end
 
