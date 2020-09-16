@@ -498,7 +498,7 @@
   margin-top: 24px !important;
 }
 
-.add-additional-staff-link, .add-required-staff-link, .add-timeline-link, .add-risk-mitigation-link,
+.add-additional-staff-link, .add-required-staff-link, .add-timeline-link, .add-practice-resources-link, .add-risk-mitigation-link,
 .add-impact-photo-link, .add-va-employee-link, .add-practice-creator-link, .add-additional-document-link, .add-publication-link,
 .add-video-file-link, .add-permission-link, .add-resource-link {
   margin-top: 24px !important;
@@ -566,14 +566,14 @@
   transform: translateX(-50%);
 }
 
-.practice-editor-origin-ul, .practice-editor-timeline-ul, .practice-editor-risk-mitigation-ul, .practice-editor-contact-ul,
+.practice-editor-origin-ul, .practice-editor-timeline-ul, .practice-editor-practice-resources-ul, .practice-editor-risk-mitigation-ul, .practice-editor-contact-ul,
 .practice-editor-additional-document-ul, .practice-editor-publication-ul, .practice-editor-impact-photo-ul,
 .practice-editor-video-file-ul, .practice-editor-permission-ul, .practice-editor-resource-ul {
   margin: 0;
   padding: 0;
 }
 
-.practice-editor-origin-li, .practice-editor-timeline-li, .practice-editor-risk-mitigation-li, .practice-editor-contact-li,
+.practice-editor-origin-li, .practice-editor-timeline-li, .practice-editor-practice-resources-li, .practice-editor-risk-mitigation-li, .practice-editor-contact-li,
 .practice-editor-additional-document-li, .practice-editor-publication-li, .practice-editor-impact-photo-li,
 .practice-editor-video-file-li, .practice-editor-permission-li, .practice-editor-resource-li {
   list-style: none;
@@ -677,7 +677,7 @@
   margin-left: -10px;
 }
 
-.pub-title, .add-doc-title, .practice-creator-name, .timeline-duration, .risk-description, .vae-name {
+.pub-title, .add-doc-title, .practice-creator-name, .timeline-duration, .practice-resources-duration, .risk-description, .vae-name {
   margin-top: 0 !important;
 }
 

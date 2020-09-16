@@ -26,8 +26,14 @@
         <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
         <div class="margin-bottom-5 margin-top-3">
           <%= render partial: 'practices/implementation_forms/departments', locals: {f: f} %>
+        </div>
+          <!--        Resources     -->
+          <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
+          <div class="margin-bottom-5 margin-top-3">
+            <%= render partial: 'practices/implementation_forms/resources', locals: {f: f} %>
+          </div>
         <% end %>
-    </div>
+
 
   <div class="grid-row">
     <%= link_to practice_overview_path(@practice), class: 'usa-button--outline dm-btn-base editor-back-to-link margin-right-1' do %>
