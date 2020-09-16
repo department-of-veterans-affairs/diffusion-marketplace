@@ -45,17 +45,19 @@
                         vae_id = vae.object.id || "new_va_employees"
                       %>
                       <% if vae_id %>
-                        <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                          $(document).arrive('<%= "#practice_va_employees_attributes_#{vae.index}_name" %>', function(newElem) {
-                          styleOriginFacility(
-                          $(newElem).closest('li'),
-                          <%= vae_id %>,
-                          '.practice-editor-about-li',
-                          '.practice-editor-about-ul',
-                          '12'
-                          );
-                          $(document).unbindArrive('<%= "#practice_va_employees_attributes_#{vae.index}_name" %>', newElem);
-                          });
+                        <% provide :head_tags do %>
+                          <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                            $(document).arrive('<%= "#practice_va_employees_attributes_#{vae.index}_name" %>', function(newElem) {
+                            styleOriginFacility(
+                            $(newElem).closest('li'),
+                            <%= vae_id %>,
+                            '.practice-editor-about-li',
+                            '.practice-editor-about-ul',
+                            '12'
+                            );
+                            $(document).unbindArrive('<%= "#practice_va_employees_attributes_#{vae.index}_name" %>', newElem);
+                            });
+                          <% end %>
                         <% end %>
                       <% end %>
                       <li class="practice-editor-about-li fields" <%= "id=practice_va_employees_attributes_#{vae.index}_li" if vae_id %> data-id="<%= vae_id %>">
@@ -77,23 +79,25 @@
                   <%= f.link_to_add :va_employees, id: 'link_to_add_link_va_employees', class: 'dm-add-another-link add-va-employee-link usa-button--unstyled dm-btn-primary line-height-26' do %>
                     <span class="text-normal">Add another</span>
                   <% end %>
-                  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                    observePracticeEditorLiArrival(
-                    $(document),
-                    '.practice-editor-about-li',
-                    '.practice-editor-about-ul',
-                    '12'
-                    );
-                    attachTrashListener(
-                    $(document),
-                    '#about_container',
-                    '.practice-editor-about-li'
-                    );
-                    <% unless @practice.va_employees.any? %>
-                      $(document).arrive('#va_employees_fields_blueprint', function(blueprint) {
-                        $('.add-va-employee-link').click();
-                        $(document).unbindArrive('#va_employees_fields_blueprint', blueprint);
-                      });
+                  <% provide :head_tags do %>
+                    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                      observePracticeEditorLiArrival(
+                      $(document),
+                      '.practice-editor-about-li',
+                      '.practice-editor-about-ul',
+                      '12'
+                      );
+                      attachTrashListener(
+                      $(document),
+                      '#about_container',
+                      '.practice-editor-about-li'
+                      );
+                      <% unless @practice.va_employees.any? %>
+                        $(document).arrive('#va_employees_fields_blueprint', function(blueprint) {
+                          $('.add-va-employee-link').click();
+                          $(document).unbindArrive('#va_employees_fields_blueprint', blueprint);
+                        });
+                      <% end %>
                     <% end %>
                   <% end %>
                 </div>
