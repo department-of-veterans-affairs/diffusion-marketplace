@@ -23,7 +23,6 @@ class SavePracticeService
   end
 
   def save_practice
-    debugger
     begin
       # if @practice_params[:practice_resources_attributes].present?
       #   resource_label_type =  @practice_params[:practice_resources_attributes][:resource_label_type]
@@ -42,24 +41,38 @@ class SavePracticeService
       if @practice_params["practice_multimedia_attributes"].present?
         process_multimedia_params
       end
-        updated = @practice.update(@practice_params)
-
-        rescue_method(:update_practice_partner_practices)
-        rescue_method(:update_department_practices)
-        rescue_method(:remove_attachments)
-        rescue_method(:manipulate_avatars)
-        rescue_method(:remove_main_display_image)
-        rescue_method(:crop_main_display_image)
-        rescue_method(:update_initiating_facility)
-        rescue_method(:update_practice_awards)
-        rescue_method(:update_category_practices)
-        rescue_method(:crop_resource_images)
-
-        updated
+        # updated = @practice.update(@practice_params)
+        #
+        # rescue_method(:update_practice_partner_practices)
+        # rescue_method(:update_department_practices)
+        # rescue_method(:remove_attachments)
+        # rescue_method(:manipulate_avatars)
+        # rescue_method(:remove_main_display_image)
+        # rescue_method(:crop_main_display_image)
+        # rescue_method(:update_initiating_facility)
+        # rescue_method(:update_practice_awards)
+        # rescue_method(:update_category_practices)
+        # rescue_method(:crop_resource_images)
+        #
+        # updated
     rescue => e
       Rails.logger.error "save_practice error: #{e.message}"
       e
     end
+    updated = @practice.update(@practice_params)
+    debugger
+    update_practice_partner_practices
+    update_department_practices
+    remove_attachments
+    manipulate_avatars
+    remove_main_display_image
+    crop_main_display_image
+    update_initiating_facility
+    update_practice_awards
+    update_category_practices
+    crop_resource_images
+
+    updated
   end
 
   private

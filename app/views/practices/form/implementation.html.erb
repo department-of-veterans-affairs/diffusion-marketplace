@@ -31,6 +31,15 @@
           <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
           <div class="margin-bottom-5 margin-top-3">
             <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "core", resource_type_label: "people", media_type: 'resource'}%>
+            <br />
+            <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "core", resource_type_label: "processes", media_type: 'resource'}%>
+            <br />
+            <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "core", resource_type_label: "tools", media_type: 'resource'}%>
+
+            <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "optional", resource_type_label: "people", media_type: 'resource'}%>
+            <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "optional", resource_type_label: "processes", media_type: 'resource'}%>
+            <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "optional", resource_type_label: "tools", media_type: 'resource'}%>
+
           </div>
         <% end %>
 

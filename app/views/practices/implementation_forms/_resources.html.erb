@@ -5,36 +5,59 @@
   resource_type = resource_type
   resource_type_label = resource_type_label
   media_type = media_type
+  slug = resource_type + "-" + resource_type_label + "-" + media_type
+  link_to_add_link_slug = 'link_to_add_link_' + resource_type + "_" + resource_type_label + "_" + media_type
+  link_to_add_button_slug = 'link_to_add_button_' + resource_type + "_" + resource_type_label + "_" + media_type
+  f = f
+  add_practice_resources_link = "add-practice-resources-link-" + slug
+  #practice_resources_fields_blueprint
+  blue_print_id = "practice_resources_fields_blueprint_" + slug
+  resource_type_place_holder = "RESOURCE_TYPE_PLACE_HOLDER"
+  resource_type_label_place_holder = "RESOURCE_TYPE_LABEL_PLACE_HOLDER"
+  media_type_place_holder = "MEDIA_TYPE_PLACE_HOLDER"
+
+  li_class_place_holder = "LI_CLASS_PLACE_HOLDER"
 %>
 
-<div id="practice_core_resources" class="desktop:grid-col-10 grid-col-12 p0">
+<div id="<%= slug %>-resources" class="desktop:grid-col-10 grid-col-12 p0">
   <section class="usa-section padding-top-0 p0-bottom">
-    <h2 class="font-sans-sm">Core resources list</h2>
-    <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
-      Provide a list of the resources another facility would need to implement your practice.
-    </h3>
+    <% if resource_type_label === "People" && resource_type === "Core" && media_type === "resource" %>
+      <h2 class="font-sans-sm">Core resources list</h2>
+      <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
+        Provide a list of the resources another facility would need to implement your practice.
+      </h3>
+    <% end %>
     <fieldset class="usa-fieldset">
       <legend class="usa-sr-only">Core resources</legend>
-      <div id="practice-core-resource-container"
+      <div id="<%= slug %>-container"
            class="margin-top-1">
         <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
-          <b>People: </b>Type a job title, department, and/or discipline another facility would need to involve in implementing your practice.  Provide dependencies for implementation (e.g., Clinical Application Controller required for 2-4 hours/week for 1-2 weeks).
+          <% if resource_type_label === "people" %>
+            <b>People: </b>Type a job title, department, and/or discipline another facility would need to involve in implementing your practice.  Provide dependencies for implementation (e.g., Clinical Application Controller required for 2-4 hours/week for 1-2 weeks).
+          <% elsif resource_type_label === "processes"%>
+            <b>Processes: </b>Type a process (e.g., method, procedure, training) another facility would need to implement your practice.
+        <% elsif resource_type_label === "tools"%>
+            <b>tools: </b>Type a tool (e.g., equipment, software, supply) another facility would need to implement your practice.
+        <% end %>
         </h3>
-        <ul class="practice-editor-practice-core-resources-ul add-list-reset" id="sortable_practice_core_resources" role="listbox" aria-label="Practice editor core resource list">
+        <ul class="<%= slug %>-ul add-list-reset" id="sortable_practice_core_resources" role="listbox" aria-label="Practice editor core resource list">
           <%= f.fields_for :practice_resources, wrapper: false do |pr| %>
             <%
-              pr_id = pr.object_id
+              pr_id = pr.object.id || "new_practice_resources"
+              show_form = (pr.object.resource_type_label == resource_type_label && pr.object.resource_type == resource_type && pr.object.media_type == media_type) || pr_id == "new_practice_resources"
+              #debugger
             %>
-            <% if pr_id %>
+            <% if show_form %>
+            <% if pr.object.id %>
               <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
                 $(document).arrive('<%= "#practice_resources_attributes_#{pr_id}_resource" %>',
                 function(newElem) {
                 styleOriginFacility(
                 $(newElem).closest('li'),
                 <%= pr_id %>,
-                '.practice-editor-practice-core-resources-li',
-                '.practice-editor-practice-core-resources-ul',
-                '.add-practice-resources-link',
+                '.<%= slug %>-li',
+                '.<%= slug %>-ul',
+                '.<%= add_practice_resources_link %>>',
                 '12'
                 );
                 $(document).unbindArrive('<%= "#practice_resources_attributes_#{pr_id}_resource_type" %>', newElem);
@@ -43,16 +66,16 @@
               <% end %>
             <% end %>
 
-            <li class="practice-editor-practice-core-resources-li fields margin-bottom-2" data-id="<%= pr_id %>">
+            <li class="<%= li_class_place_holder %>-li fields margin-bottom-2" data-id="<%= pr_id %>">
               <%= pr.hidden_field :position %>
               <%= pr.hidden_field :id %>
               <div class="grid-row">
                 <div class="grid-col-12">
                   <%= pr.label :resource, 'Resource', class: 'usa-label display-inline-block practice-resources-duration' %>&nbsp;
-                  <%= pr.text_field :resource, class: 'usa-input practice-input timeline-input grid-col-12', min: 1, required: true %>
-                  <%= pr.hidden_field :resource_type_label, value: resource_type_label %>
-                  <%= pr.hidden_field :resource_type, value: resource_type %>
-                  <%= pr.hidden_field :media_type, value: media_type %>
+                  <%= pr.text_field :resource, class: 'usa-input practice-input timeline-input grid-col-12', required: true %>
+                  <%= pr.hidden_field :resource_type_label, value: pr.object.id ? resource_type_label : resource_type_label_place_holder %>
+                  <%= pr.hidden_field :resource_type, value: pr.object.id ? resource_type : resource_type_place_holder %>
+                  <%= pr.hidden_field :media_type, value: pr.object.id ? media_type : media_type_place_holder %>
                 </div>
                 <div class="grid-col-12 trash-container">
                   <%= pr.link_to_remove 'Delete entry',
@@ -62,35 +85,54 @@
               </div>
             </li>
           <% end %>
+        <% end %>
         </ul>
         <br />
-        <%= f.link_to_add :practice_resources, id: 'link_to_add_link_practice_core_resources', class: "dm-add-another-link add-practice-resources-link line-height-26 cursor-pointer #{'display-none' unless @practice.practice_resources.any?}" do %>
+        <% cur_resources = @practice.practice_resources.where(resource_type_label: resource_type_label, resource_type: resource_type, media_type: media_type) %>
+        <%= f.link_to_add :practice_resources, id: link_to_add_link_slug, 'data-dm-blueprint-id': blue_print_id, class: add_practice_resources_link + " dm-add-another-link line-height-26 cursor-pointer #{'display-none' unless cur_resources.any?}" do %>
           <span class="font-sans-xs text-normal">Add another</span>
         <% end %>
-        <%= f.link_to_add :practice_resources, id: 'link_to_add_button_practice_core_resources', class: "usa-button--outline dm-btn-primary add-practice-resources-link #{'display-none' if @practice.practice_resources.any?}" do %>
+        <%= f.link_to_add :practice_resources, id: link_to_add_button_slug, 'data-dm-blueprint-id': blue_print_id, class: add_practice_resources_link + " usa-button--outline dm-btn-primary #{'display-none' if cur_resources.any?}" do %>
           <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add resource</span>
         <% end %>
         <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
           observePracticeEditorLiArrival(
           $(document),
-          '.practice-editor-practice-core-resources-li',
-          '.practice-editor-practice-core-resources-ul',
+          '.<%= slug %>-li',
+          '.<%= slug %>-ul',
           '12',
-          'link_to_add_link_practice_core_resources',
-          'link_to_add_button_practice_core_resources'
+          '<%= link_to_add_link_slug %>',
+          '<%= link_to_add_button_slug %>'
           );
           attachTrashListener(
           $(document),
-          '#practice-core-resource-container',
-          '.practice-editor-practice-core-resources-li',
-          'link_to_add_link_practice_core_resources',
-          'link_to_add_button_practice_core_resources'
+          '#<%= slug %>-container',
+          '.<%= slug %>-li',
+          '<%= link_to_add_link_slug %>',
+          '<%= link_to_add_button_slug %>'
+          );
+          $(document).arrive('#practice_resources_fields_blueprint',
+          function(blueprint) {
+          console.log(blueprint);
+            var cloned_blue_print =  $(blueprint).clone(true);
+            cloned_blue_print.attr('id', '<%= blue_print_id %>');
+            $(blueprint).before(cloned_blue_print);
+            var link_to_add_buttons = $('a[data-dm-blueprint-id="<%= blue_print_id %>"]');
+            link_to_add_buttons.data('blueprint-id', '<%= blue_print_id %>');
+            console.log(cloned_blue_print);
+            cloned_blue_print.data('blueprint', cloned_blue_print.data('blueprint').replace('<%= li_class_place_holder %>', '<%= slug %>'));
+
+            cloned_blue_print.data('blueprint', cloned_blue_print.data('blueprint').replace('<%= resource_type_label_place_holder %>', '<%= resource_type_label %>'));
+            console.log(cloned_blue_print);
+            cloned_blue_print.data('blueprint', cloned_blue_print.data('blueprint').replace('<%= resource_type_place_holder %>', '<%= resource_type %>'));
+            cloned_blue_print.data('blueprint', cloned_blue_print.data('blueprint').replace('<%= media_type_place_holder %>', '<%= media_type %>'));
+            $(document).unbindArrive('#practice_awards_fields_blueprint', blueprint);
+          }
           );
         <% end %>
       </div>
     </fieldset>
   </section>
 </div>
-
 
 <!---               OPTIONAL RESOURCES            --->
