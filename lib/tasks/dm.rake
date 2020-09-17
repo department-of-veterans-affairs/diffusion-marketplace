@@ -22,6 +22,8 @@ namespace :dm do
     Rake::Task['categories:add_covid_cats'].execute
     Rake::Task['practice_origin_facilities:move_practice_initiating_facility'].execute
     Rake::Task['milestones:port_milestones_to_timelines'].execute
+    Rake::Task['practice_multimedia:transfer_practice_impact_photos'].execute
+    Rake::Task['practice_multimedia:transfer_practice_videos'].execute
   end
 
   # rails dm:reset_up
