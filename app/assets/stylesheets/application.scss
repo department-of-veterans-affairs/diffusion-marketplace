@@ -45,7 +45,10 @@ body {
 
 .practice-editor-long-rect-svg{
   height: 4px;
-  width: 726px;
+
+  @media screen and (min-width: 1024px) {
+    width: 726px;
+  }
 }
 
 .overview_error_msg{
