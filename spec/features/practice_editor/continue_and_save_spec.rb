@@ -13,32 +13,29 @@ describe 'Practice editor', type: :feature, js: true do
     end
 
     it 'should save the users work and advance them to the next page in the editor when clicked' do
-      visit practice_origin_path(@practice)
-      origin = 'This practice was founded on the basis of being awesome'
-      creator_name = 'Byakuya Kuchiki'
-      creator_role = 'Captain of the Sixth Division in the Thirteen Cour Guard Squads'
-      image_path = File.join(Rails.root, '/spec/assets/charmander.png')
-      photo_caption = 'This is the cutest charmander image ever'
-      fill_in('Origin story', with: origin)
-      fill_in('Name', with: creator_name)
-      fill_in('Role', with: creator_role)
+      visit practice_implementation_path(@practice)
+      time_frame = '1'
+      milestone = 'week to complete this milestone'
+      fill_in('Time frame', with: time_frame)
+      fill_in('Description of milestones (include context or disclaimers as needed)', with: milestone)
       find('.continue-and-save').click
 
       @practice.reload
       expect(page).to have_content('Practice was successfully updated')
-      expect(page).to have_content('Impact')
-      expect(page).to have_content('Showcase real stories of how your practice is making an impact.')
-      expect(@practice.origin_story).to eq(origin)
-      expect(@practice.practice_creators.count).to eq(1)
+      expect(page).to have_content('Contact')
+      expect(page).to have_content('This section helps people to reach out for support, ask questions, and connect about your practice.')
+      expect(@practice.timelines.first.timeline).to eq(time_frame)
+      expect(@practice.timelines.first.milestone).to eq(milestone)
 
-      attach_file('Upload photo', image_path)
-      all('.practice-editor-image-caption').first.set(photo_caption)
+      main_email = 'test@test.com'
+
+      fill_in('Main email address', with: main_email)
       find('.continue-and-save').click
 
       @practice.reload
       expect(page).to have_content('Practice was successfully updated')
-      expect(page).to have_content('Documentation')
-      expect(@practice.impact_photos.count).to eq(1)
+      expect(page).to have_content('About')
+      expect(@practice.support_network_email).to eq(main_email)
     end
 
     it 'should not allow a user to move to the next page if there is a required field not filled out' do
