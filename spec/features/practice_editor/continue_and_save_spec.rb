@@ -16,6 +16,7 @@ describe 'Practice editor', type: :feature, js: true do
       visit practice_implementation_path(@practice)
       time_frame = '1'
       milestone = 'week to complete this milestone'
+      find('#link_to_add_button_timeline').click
       fill_in('Time frame', with: time_frame)
       fill_in('Description of milestones (include context or disclaimers as needed)', with: milestone)
       find('.continue-and-save').click
