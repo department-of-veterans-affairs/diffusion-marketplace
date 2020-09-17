@@ -1,6 +1,11 @@
 <% provide :head_tags do %>
   <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
+<%
+  resource_type = resource_type
+  resource_type_label = resource_type_label
+  media_type = media_type
+%>
 
 <div id="practice_core_resources" class="desktop:grid-col-10 grid-col-12 p0">
   <section class="usa-section padding-top-0 p0-bottom">
@@ -13,39 +18,41 @@
       <div id="practice-core-resource-container"
            class="margin-top-1">
         <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
-          <b>People: </b>Type a job title, deparment, and/or discipline another facility would need to involve in implementing your practice.  Provide dependencies for implementation (e.g., Clinical Application Controller required for 2-4 hours/week for 1-2 weeks).
+          <b>People: </b>Type a job title, department, and/or discipline another facility would need to involve in implementing your practice.  Provide dependencies for implementation (e.g., Clinical Application Controller required for 2-4 hours/week for 1-2 weeks).
         </h3>
-        <ul class="practice-editor-practice-resources-ul" id="sortable_practice_core_resources" role="listbox" aria-label="Practice editor core resource list">
+        <ul class="practice-editor-practice-core-resources-ul add-list-reset" id="sortable_practice_core_resources" role="listbox" aria-label="Practice editor core resource list">
           <%= f.fields_for :practice_resources, wrapper: false do |pr| %>
             <%
               pr_id = pr.object_id
             %>
             <% if pr_id %>
               <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                $(document).arrive('<%= "#practice_resources_attributes_#{pr.index}_resource" %>',
+                $(document).arrive('<%= "#practice_resources_attributes_#{pr_id}_resource" %>',
                 function(newElem) {
                 styleOriginFacility(
                 $(newElem).closest('li'),
                 <%= pr_id %>,
-                '.practice-editor-practice-resources-li',
-                '.practice-editor-practice-resources-ul',
+                '.practice-editor-practice-core-resources-li',
+                '.practice-editor-practice-core-resources-ul',
                 '.add-practice-resources-link',
                 '12'
                 );
-                $(document).unbindArrive('<%= "#practice_resources_attributes_#{pr.index}_resource_type" %>', newElem);
+                $(document).unbindArrive('<%= "#practice_resources_attributes_#{pr_id}_resource_type" %>', newElem);
                 }
                 );
               <% end %>
             <% end %>
 
-            <li class="practice-editor-practice-resources-li" data-id="<%= pr_id %>">
+            <li class="practice-editor-practice-core-resources-li fields margin-bottom-2" data-id="<%= pr_id %>">
               <%= pr.hidden_field :position %>
               <%= pr.hidden_field :id %>
-              <%= pr.hidden_field :resource_type_label, value: PracticeResource.resource_type_labels[2] %>
               <div class="grid-row">
                 <div class="grid-col-12">
                   <%= pr.label :resource, 'Resource', class: 'usa-label display-inline-block practice-resources-duration' %>&nbsp;
-                  <%= pr.text_field :resource, class: 'usa-input practice-input timeline-input grid-col-6', min: 1, required: true %>
+                  <%= pr.text_field :resource, class: 'usa-input practice-input timeline-input grid-col-12', min: 1, required: true %>
+                  <%= pr.hidden_field :resource_type_label, value: resource_type_label %>
+                  <%= pr.hidden_field :resource_type, value: resource_type %>
+                  <%= pr.hidden_field :media_type, value: media_type %>
                 </div>
                 <div class="grid-col-12 trash-container">
                   <%= pr.link_to_remove 'Delete entry',
@@ -57,27 +64,27 @@
           <% end %>
         </ul>
         <br />
-        <%= f.link_to_add :practice_resources, id: 'link_to_add_link_practice_resources', class: "dm-add-another-link add-practice-resources-link line-height-26 cursor-pointer #{'display-none' unless @practice.practice_resources.any?}" do %>
+        <%= f.link_to_add :practice_resources, id: 'link_to_add_link_practice_core_resources', class: "dm-add-another-link add-practice-resources-link line-height-26 cursor-pointer #{'display-none' unless @practice.practice_resources.any?}" do %>
           <span class="font-sans-xs text-normal">Add another</span>
         <% end %>
-        <%= f.link_to_add :practice_resources, id: 'link_to_add_button_practice_resources', class: "usa-button--outline dm-btn-primary add-practice-resources-link #{'display-none' if @practice.practice_resources.any?}" do %>
+        <%= f.link_to_add :practice_resources, id: 'link_to_add_button_practice_core_resources', class: "usa-button--outline dm-btn-primary add-practice-resources-link #{'display-none' if @practice.practice_resources.any?}" do %>
           <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add resource</span>
         <% end %>
         <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
           observePracticeEditorLiArrival(
           $(document),
-          '.practice-editor-practice-resources-li',
-          '.practice-editor-practice-resources-ul',
+          '.practice-editor-practice-core-resources-li',
+          '.practice-editor-practice-core-resources-ul',
           '12',
-          'link_to_add_link_practice_resources',
-          'link_to_add_button_practice_resources'
+          'link_to_add_link_practice_core_resources',
+          'link_to_add_button_practice_core_resources'
           );
           attachTrashListener(
           $(document),
           '#practice-core-resource-container',
-          '.practice-editor-practice-resources-li',
-          'link_to_add_link_practice_resources',
-          'link_to_add_button_practice_resources'
+          '.practice-editor-practice-core-resources-li',
+          'link_to_add_link_practice_core_resources',
+          'link_to_add_button_practice_core_resources'
           );
         <% end %>
       </div>

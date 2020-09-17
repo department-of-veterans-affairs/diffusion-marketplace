@@ -23,7 +23,13 @@ class SavePracticeService
   end
 
   def save_practice
+    debugger
     begin
+      # if @practice_params[:practice_resources_attributes].present?
+      #   resource_label_type =  @practice_params[:practice_resources_attributes][:resource_label_type]
+      #   @practice_params["practice_resources_attributes"]["resource_type_label"] = @practice_params["practice_resources_attributes"]["resource_type_label"]
+      # end
+
       if @practice_params["practice_problem_resources_attributes"].present?
         process_problem_resource_params
       end
