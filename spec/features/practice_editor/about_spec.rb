@@ -10,8 +10,6 @@ describe 'Practice editor', type: :feature, js: true do
     describe 'About page' do
         before do
             login_as(@admin, :scope => :user, :run_callbacks => false)
-            visit practice_about_path(@practice)
-            expect(page).to be_accessible.according_to :wcag2a, :section508
             @origin_story = 'This practice was founded on the basis of being awesome.'
             @creator_name = 'Grimmjow Jaegerjaquez'
             @creator_role = 'Sixth Espada'
@@ -24,6 +22,8 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         it 'should be there' do
+            visit practice_about_path(@practice)
+            expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).to have_content('About')
             expect(page).to have_content('This section helps people understand how your practice started and introduces the original team.')
             expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/contact")
@@ -62,6 +62,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         it 'should allow the user to update the origin story' do
+            visit practice_about_path(@practice)
             # create the origin story
             fill_in_origin_story_field
             save_button.click
@@ -85,6 +86,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         it 'should allow the user to update team members' do
+            visit practice_about_path(@practice)
             # create one team member and save
             fill_in_origin_story_field
             first_creator_name_field_input.set(@creator_name)
