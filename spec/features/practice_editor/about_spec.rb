@@ -9,6 +9,7 @@ describe 'Practice editor', type: :feature, js: true do
 
     describe 'About page' do
         before do
+          @practice
             login_as(@admin, :scope => :user, :run_callbacks => false)
             visit practice_about_path(@practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508
