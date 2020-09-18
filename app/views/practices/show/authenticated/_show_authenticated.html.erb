@@ -21,6 +21,11 @@
       <li class="usa-sidenav__item">
         <a href="#about" class="dm-tab bottom-tab scroll-to sidebar-about" data-target="#about" data-turbolinks="false">About</a>
       </li>
+      <% if @practice.origin_story.present? || @practice.va_employees.any? %>
+        <li class="usa-sidenav__item">
+          <a href="#about" class="dm-tab bottom-tab scroll-to sidebar-about" data-target="#about" data-turbolinks="false">About</a>
+        </li>
+      <% end %>
     </ul>
     <div class="text-center">
       <%= link_to 'See adoption checklist', practice_planning_checklist_url(practice_id: @practice.slug), id: 'next-steps-link-in-nav', class: 'usa-button width-full p1' %>
@@ -127,6 +132,11 @@
 <!-- Contact Section-->
 <%= render partial: 'practices/show/contact/contact' %>
 
+<!-- About Section-->
+<% if @practice.origin_story.present? || @practice.va_employees.any? %>
+  <%= render partial: 'practices/show/about/about' %>
+<% end %>
+
 <section class="usa-section p2-top p2-bottom">
   <div class="grid-container position-relative">
     <% if @practice.user_id == current_user.id || current_user.roles.any? %>
@@ -164,22 +174,6 @@
     </div>
   </div>
 </section>
-
-<!-- "Origin of this Practice" section -->
-<% unless !@practice.origin_story || !@practice.origin_title %>
-  <section class="padding-bottom-2 margin-bottom-5">
-    <div class="grid-container">
-      <div class="grid-row grid-gap">
-        <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-        <div class="desktop:grid-col-9 grid-col-12 p0">
-          <div class="origin-section practice-section">
-            <%= render partial: 'origin' %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-<% end %>
 
 <!-- "Practice content" section -->
 <!-- "Impact" section -->

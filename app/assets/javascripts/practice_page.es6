@@ -56,8 +56,8 @@
         const moreText = 'See more';
         const lessText = 'See less';
         let t = $(element).text();
-        let firstHalf = `${t.slice(0, showChar)}<span>${ellipsesText} </span><button type="button" class="usa-button--unstyled dm-btn-primary more-link text-no-underline">${moreText}</button>`;
-        let secondHalf = `<span style="display:none;">${t.slice(showChar, t.length)} <button type="button" class="usa-button--unstyled dm-btn-primary less-link text-no-underline">${lessText}</button></span>`;
+        let firstHalf = `${t.slice(0, showChar)}<span>${ellipsesText} </span><button type="button" class="usa-button--unstyled dm-btn-primary more-link text-no-underline width-auto">${moreText}</button>`;
+        let secondHalf = `<span style="display:none;">${t.slice(showChar, t.length)} <button type="button" class="usa-button--unstyled dm-btn-primary less-link text-no-underline width-auto">${lessText}</button></span>`;
         if (t.length < showChar) return;
 
         $(element).html(firstHalf + secondHalf);
@@ -194,6 +194,24 @@ function seeMoreStatementText(dotsSection, moreStatementText, buttonText, statem
         dots.style.display = "none";
         btnText.innerHTML = "See less";
         originFacilityTruncated.style.display = "none";
+        moreText.style.display = "inline";
+    }
+}
+
+function seeMoreTextOriginStory() {
+    let dots = document.getElementById("dots_origin_story");
+    let moreText = document.getElementById("more_text_origin_story");
+    let btnText = document.getElementById("seeMore_origin_story");
+    let textTruncated = document.getElementById("origin_story_truncated");
+    if (dots.style.display === "none") {
+        dots.style.display = "inline";
+        btnText.innerHTML = "See more";
+        moreText.style.display = "none";
+        textTruncated.style.display = "inline";
+    } else {
+        dots.style.display = "none";
+        btnText.innerHTML = "See less";
+        textTruncated.style.display = "none";
         moreText.style.display = "inline";
     }
 }

@@ -45,7 +45,10 @@ body {
 
 .practice-editor-long-rect-svg{
   height: 4px;
-  width: 726px;
+
+  @media screen and (min-width: 1024px) {
+    width: 726px;
+  }
 }
 
 .overview_error_msg{
@@ -55,6 +58,7 @@ body {
 
 }
 
-#more_text {display: none;}
-#more_text_award {display: none;}
+#more_text, #more_text_award, #more_text_origin_story {
+  display: none;
+}
 

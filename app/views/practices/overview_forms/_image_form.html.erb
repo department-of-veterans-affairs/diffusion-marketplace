@@ -41,7 +41,7 @@
 
       <div class="dm-cropper-images-container margin-top-2 margin-bottom-1 <%= resource.nil? ? 'grid-col-6' : 'dm-resource-image'%>">
         <% if resource.present? %>
-          <%= image_tag resource.attachment_s3_presigned_url(),
+          <%= image_tag resource.attachment_s3_presigned_url,
                 alt: "practice thumbnail for #",
                 class: 'dm-cropper-thumbnail-original display-none' %>
           <%= image_tag resource.attachment_s3_presigned_url(:thumb),

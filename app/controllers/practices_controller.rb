@@ -6,7 +6,7 @@ class PracticesController < ApplicationController
                                       :collaborators, :impact, :resources, :documentation,
                                       :departments, :timeline, :risk_and_mitigation, :contact,
                                       :checklist, :publication_validation, :adoptions,
-                                      :create_or_update_diffusion_history, :implementation, :introduction]
+                                      :create_or_update_diffusion_history, :implementation, :introduction, :about]
   before_action :set_facility_data, only: [:show, :planning_checklist]
   before_action :set_office_data, only: [:show, :planning_checklist]
   before_action :set_visn_data, only: [:show, :planning_checklist]
@@ -20,7 +20,7 @@ class PracticesController < ApplicationController
                                            :documentation, :resources, :complexity,
                                            :timeline, :risk_and_mitigation,
                                            :contact, :checklist, :published,
-                                           :publication_validation, :adoptions]
+                                           :publication_validation, :adoptions, :about]
   before_action :set_date_initiated_params, only: [:update, :publication_validation]
   before_action :is_enabled, only: [:show]
   # GET /practices
@@ -327,6 +327,11 @@ class PracticesController < ApplicationController
     render 'practices/form/contact'
   end
 
+  # /practices/slug/about
+  def about
+    render 'practices/form/about'
+  end
+
   # /practices/slug/checklist
   def checklist
   end
@@ -451,7 +456,7 @@ class PracticesController < ApplicationController
                                      difficulties_attributes: [:id, :description, :_destroy],
                                      risk_mitigations_attributes: [:id, :_destroy, :position, risks_attributes: [:id, :description, :_destroy], mitigations_attributes: [:id, :description, :_destroy]],
                                      timelines_attributes: [:id, :description, :milestone, :timeline, :_destroy, :position],
-                                     va_employees_attributes: [:id, :name, :role, :position, :_destroy, :avatar, :crop_x, :crop_y, :crop_w, :crop_h, :delete_avatar],
+                                     va_employees_attributes: [:id, :name, :role, :_destroy],
                                      additional_staffs_attributes: [:id, :_destroy, :title, :hours_per_week, :duration_in_weeks, :permanent],
                                      additional_resources_attributes: [:id, :_destroy, :name, :position, :description],
                                      required_staff_trainings_attributes: [:id, :_destroy, :title, :description],

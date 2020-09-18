@@ -19,19 +19,21 @@
             %>
             <% if dp.object.id %>
               <%# add separators on page load %>
-              <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                $(document).arrive('<%= "#practice_department_#{dp_id}_value" %>',
-                  function(newElem) {
-                    styleOriginFacility(
-                      $(newElem).closest('li'),
-                      <%= dp_id %>,
-                      '.dm-practice-editor-department-li',
-                      '.dm-practice-editor-department-ul',
-                      '12'
-                    );
-                    $(document).unbindArrive('<%= "#practice_department_#{dp_id}_value" %>', newElem);
-                  }
-                );
+              <% provide :head_tags do %>
+                <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                  $(document).arrive('<%= "#practice_department_#{dp_id}_value" %>',
+                    function(newElem) {
+                      styleOriginFacility(
+                        $(newElem).closest('li'),
+                        <%= dp_id %>,
+                        '.dm-practice-editor-department-li',
+                        '.dm-practice-editor-department-ul',
+                        '12'
+                      );
+                      $(document).unbindArrive('<%= "#practice_department_#{dp_id}_value" %>', newElem);
+                    }
+                  );
+                <% end %>
               <% end %>
             <% end %>
             <li class="dm-practice-editor-department-li fields margin-bottom-2" role="option" data-id="<%= dp_id %>">
@@ -57,25 +59,27 @@
         <%= f.link_to_add :department_practices, id: 'link_to_add_link_department_practices', class: "dm-add-another-link dm-add-practice-department-link line-height-26 cursor-pointer" do %>
           <span class="font-sans-xs text-normal">Add another</span>
         <% end %>
-        <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-          observePracticeEditorLiArrival(
-            $(document),
-            '.dm-practice-editor-department-li',
-            '.dm-practice-editor-department-ul',
-            '12'
-          );
-          attachTrashListener(
-            $(document),
-            '#dm-practice-department-container',
-            '.dm-practice-editor-department-li'
-          );
-          <% unless @practice.departments.any? %>
-            $(document).arrive('#department_practices_fields_blueprint',
-              function(blueprint) {
-                $('.dm-add-practice-department-link').click();
-                $(document).unbindArrive('#department_practices_fields_blueprint', blueprint);
-              }
+        <% provide :head_tags do %>
+          <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+            observePracticeEditorLiArrival(
+              $(document),
+              '.dm-practice-editor-department-li',
+              '.dm-practice-editor-department-ul',
+              '12'
             );
+            attachTrashListener(
+              $(document),
+              '#dm-practice-department-container',
+              '.dm-practice-editor-department-li'
+            );
+            <% unless @practice.departments.any? %>
+              $(document).arrive('#department_practices_fields_blueprint',
+                function(blueprint) {
+                  $('.dm-add-practice-department-link').click();
+                  $(document).unbindArrive('#department_practices_fields_blueprint', blueprint);
+                }
+              );
+            <% end %>
           <% end %>
         <% end %>
       </div>
