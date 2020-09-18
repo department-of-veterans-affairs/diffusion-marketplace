@@ -3,49 +3,23 @@
 <% end %>
 
 <!-- "Practice nav" section -->
-<!-- Impact Origin Resources Required Complexity Timeline Risks & Mitigation Support Team -->
+<!-- Overview Implementation Contact About -->
 
 <%= render partial: 'practices/show/introduction/introduction' %>
 <div class="grid-container position-relative z-top">
   <div id="dm-practice-nav" class="z-top mobile-hide">
     <ul id="dm-tabnav" class="usa-sidenav dm-tabnav margin-bottom-1 show-page-sidenav">
       <li class="usa-sidenav__item">
-        <a href="#overview_page" class="dm-tab top-tab scroll-to sidebar-overview" data-target="#overview" data-turbolinks="false">Overview</a>
+        <a href="#overview" class="dm-tab top-tab scroll-to sidebar-overview" data-target="#overview" data-turbolinks="false">Overview</a>
       </li>
-      <% unless !@practice.origin_story || !@practice.origin_title %>
-        <li class="usa-sidenav__item">
-          <a href="#origin" class="dm-tab scroll-to sidebar-origin" data-target="#origin" data-turbolinks="false">Origin</a>
-        </li>
-      <% end %>
-      <% if @practice.impact_photos.any? || @practice.video_files.any? || (@practice.diffusion_histories.any? && ENV['GOOGLE_API_KEY']) %>
-        <li class="usa-sidenav__item">
-          <a href="#impact" class="dm-tab scroll-to sidebar-impact" data-target="#impact" data-turbolinks="false">Impact</a>
-        </li>
-      <% end %>
-      <% if @practice.cost_to_implement_aggregate.present? %>
-        <li class="usa-sidenav__item">
-          <a href="#resources_required" class="dm-tab scroll-to sidebar-resources_required" data-target="#resources_required" data-turbolinks="false">Resources</a>
-        </li>
-      <% end %>
-      <% if @practice.departments.any? %>
-        <li class="usa-sidenav__item">
-          <a href="#departments" class="dm-tab scroll-to sidebar-departments" data-target="#departments" data-turbolinks="false">Departments</a>
-        </li>
-      <% end %>
-      <% unless @practice.timelines.blank? %>
-        <li class="usa-sidenav__item">
-          <a href="#timeline_and_checklist" class="dm-tab scroll-to sidebar-timeline_and_checklist" data-target="#timeline_and_checklist" data-turbolinks="false">Timeline</a>
-        </li>
-      <% end %>
-      <% if @practice.risk_mitigations.any? %>
-        <li class="usa-sidenav__item">
-          <a href="#risk_and_mitigation" class="dm-tab scroll-to sidebar-risk_and_mitigation " data-target="#risk_and_mitigation" data-turbolinks="false">Risk
-            and
-            mitigation</a>
-        </li>
-      <% end %>
+      <li class="usa-sidenav__item">
+        <a href="#dm-implementation-section" class="dm-tab bottom-tab scroll-to sidebar-implementation" data-target="#implementation" data-turbolinks="false">Implementation</a>
+      </li>
       <li class="usa-sidenav__item">
         <a href="#contact" class="dm-tab bottom-tab scroll-to sidebar-contact" data-target="#contact" data-turbolinks="false">Contact</a>
+      </li>
+      <li class="usa-sidenav__item">
+        <a href="#about" class="dm-tab bottom-tab scroll-to sidebar-about" data-target="#about" data-turbolinks="false">About</a>
       </li>
     </ul>
     <div class="text-center">
@@ -58,7 +32,7 @@
 </div>
 
 <!--//Overview-Problem-->
-<section id="overview_page" class="margin-bottom-5 grid-container">
+<section id="overview" class="margin-bottom-5 grid-container nav-header">
   <div class="grid-row grid-gap-2">
     <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
     <div class="desktop:grid-col-9 grid-col-12">
@@ -127,13 +101,13 @@
 <% end %>
 
 <!-- Implementation section -->
-<section id="dm-implementation-section" class="margin-bottom-5 grid-container">
+<section id="implementation" class="grid-container nav-header">
   <div class="grid-row grid-gap-2">
     <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
     <div class="desktop:grid-col-9 grid-col-12">
       <div class="practice-editor-long-rect-svg border-top-05 border-primary-dark"></div>
       <h2 class="font-sans-xl line-height-37px margin-top-2 margin-bottom-5">Implementation</h2>
-      <div class="metric-section practice-section">
+      <div class="metric-section practice-section margin-bottom-5">
         <% if @practice.timelines.any? %>
           <section id="dm-implementation-timeline" class="margin-bottom-5">
             <%= render partial: 'practices/show/implementation/timelines' %>
