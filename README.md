@@ -27,6 +27,8 @@
 | `rails categories:add_covid_cats` | Adds COVID related categories and assigns them to practices  |
 | `rails practice_origin_facilities:move_practice_initiating_facility` | Moves practice initiating facilities to the practice_origin_facilities table  |
 | `rails port_milestones_to_timelines:port_milestones_to_timelines` | Ports data from Milestone table description field to Timelines.milestone field.  |
+| `rails practice_multimedia:transfer_practice_impact_photos` | Ports data from ImpactPhotos table PracticeMultimedia table.  |
+| `rails practice_multimedia:transfer_practice_practice_videos` | Ports data from VideoFile table to PracticeMultimedia table.  |
 
 #### Ruby version
 
@@ -156,6 +158,8 @@ This will run:
 7. `rails inet_partner_practices:assign_inet_partner` - assigns the iNET practice partner to practices that have iNET as a partner
 8. `rails categories:add_covid_cats` - adds COVID related categories and assigns them to practices
 9. `rails practice_origin_facilities:move_practice_initiating_facility` - moves practice initiating facilities to the practice_origin_facilities table
+10. `rails practice_multimedia:transfer_practice_impact_photos` - moves practice impact photos to practice multimedia
+10. `rails practice_multimedia:transfer_practice_videos` - moves practice videos to practice multimedia
 
 To reset all of the data and do the process all over again, run:
 ```bash
