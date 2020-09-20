@@ -13,13 +13,10 @@
         <a href="#overview" class="dm-tab top-tab scroll-to sidebar-overview" data-target="#overview" data-turbolinks="false">Overview</a>
       </li>
       <li class="usa-sidenav__item">
-        <a href="#dm-implementation-section" class="dm-tab bottom-tab scroll-to sidebar-implementation" data-target="#implementation" data-turbolinks="false">Implementation</a>
+        <a href="#implementation" class="dm-tab bottom-tab scroll-to sidebar-implementation" data-target="#implementation" data-turbolinks="false">Implementation</a>
       </li>
       <li class="usa-sidenav__item">
         <a href="#contact" class="dm-tab bottom-tab scroll-to sidebar-contact" data-target="#contact" data-turbolinks="false">Contact</a>
-      </li>
-      <li class="usa-sidenav__item">
-        <a href="#about" class="dm-tab bottom-tab scroll-to sidebar-about" data-target="#about" data-turbolinks="false">About</a>
       </li>
       <% if @practice.origin_story.present? || @practice.va_employees.any? %>
         <li class="usa-sidenav__item">
@@ -27,13 +24,32 @@
         </li>
       <% end %>
     </ul>
-    <div class="text-center">
-      <%= link_to 'See adoption checklist', practice_planning_checklist_url(practice_id: @practice.slug), id: 'next-steps-link-in-nav', class: 'usa-button width-full p1' %>
+    <%
+      main_email = @practice.support_network_email
+      practice_emails = @practice.practice_emails
+    %>
+    <div class="text-center margin-bottom-1">
+      <%= mail_to main_email, 'Email practice', cc: practice_emails.map(&:address).join(', '), class: 'usa-button--outline dm-btn-primary width-full display-flex flex-align-center flex-justify-center height-5', 'aria-label': "side nav email #{main_email}"  %>
     </div>
+    <div class="text-center margin-bottom-1">
+      <%= link_to 'Start adoption', practice_planning_checklist_url(practice_id: @practice.slug), id: 'next-steps-link-in-nav', class: 'usa-button dm-btn-primary width-full' %>
+    </div>
+    <% if @practice.user_id == current_user.id || current_user.roles.any? %>
+      <div class="text-center">
+        <%= link_to practice_instructions_path(@practice), id: 'edit-link-in-nav', class: 'usa-button dm-btn-base width-full' do %>
+          <i class="fas fa-edit margin-right-1"></i>Edit practice
+        <% end %>
+      </div>
+    <% end %>
   </div>
 </div>
+
 <div class="practice-mobile-nav padding-1 z-top desktop:display-none display-flex justify-center">
-  <%= link_to 'See adoption checklist', practice_planning_checklist_url(practice_id: @practice.slug), id: 'next-steps-link-in-mobile-nav', class: 'usa-button' %>
+  <%= mail_to main_email, 'Email', cc: practice_emails.map(&:address).join(', '), id: 'email-link-in-mobile-nav', class: 'width-100 usa-button--outline dm-btn-primary display-flex flex-align-center flex-justify-center height-5 x0-875-right', 'aria-label': "Mobile nav email #{main_email}"  %>
+  <%= link_to 'Adopt', practice_planning_checklist_url(practice_id: @practice.slug), id: 'next-steps-link-in-mobile-nav', class: "width-100 usa-button #{ @practice.user_id == current_user.id || current_user.roles.any? ? 'x0-875-right' : 'x0-right'}" %>
+  <% if @practice.user_id == current_user.id || current_user.roles.any? %>
+      <%= link_to 'Edit', practice_instructions_path(@practice), id: 'edit-link-in-mobile-nav', class: 'width-100 usa-button dm-btn-base x0-right' %>
+  <% end %>
 </div>
 
 <!--//Overview-Problem-->
@@ -139,11 +155,6 @@
 
 <section class="usa-section p2-top p2-bottom">
   <div class="grid-container position-relative">
-    <% if @practice.user_id == current_user.id || current_user.roles.any? %>
-      <div class="text-right position-absolute edit-practice-link">
-        <%= link_to 'Edit', practice_instructions_path(@practice), class: 'usa-button--outline dm-btn-primary margin-right-0' %>
-      </div>
-    <% end %>
     <div class="grid-row grid-gap">
       <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
 
@@ -166,41 +177,10 @@
             </div>
           </div>
         <% end %>
-
-        <div class="bg-white<%#padding-5%>">
-          <p class="font-sans-lg line-height-sans-5 margin-bottom-4"><%= @practice.tagline %></p>
-        </div>
       </div>
     </div>
   </div>
 </section>
-
-<!-- "Practice content" section -->
-<!-- "Impact" section -->
-<%# if @practice.impact_photos.any? || @practice.video_files.any? %>
-<!--  <section>-->
-<!--    <div class="grid-container position-relative">-->
-<!--      <div class="grid-row grid-gap">-->
-<!--        <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>-->
-
-<!--        <div class="desktop:grid-col-9 grid-col-12 p0">-->
-<!--          <div class="margin-bottom-3 impact-section practice-section">-->
-<!--            <div class="grid-row flex-align-center">-->
-<!--              <h2 id="impact" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205 nav-header">Impact</h2>-->
-<!--              <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest dm-section-line">-->
-<!--            </div>-->
-<%# if @practice.impact_photos.any? %>
-<%#= render partial: 'impact' %>
-<%# end %>
-<%# if @practice.video_files.any? %>
-<%#= render partial: 'videos' %>
-<%# end %>
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </section>-->
-<%# end %>
 
 <!-- "Documentation" section -->
 <% if @practice.additional_documents.any? || @practice.publications.any? %>

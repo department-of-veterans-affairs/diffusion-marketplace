@@ -29,11 +29,9 @@
             Object.keys(sections).forEach(function (s) {
                 let sectionPosition = $(s).offset().top + (-50);
                 let nextSection = findNext(s, sections);
-                console.log('next section', nextSection);
                 if (nextSection) {
                     let nextSectionPosition = $(nextSection).offset().top + (-50);
                     if (viewportTop >= sectionPosition && viewportTop < nextSectionPosition && !activeItem) {
-                        console.log('hello')
                         addActiveClass(sections[s]);
                         activeItem = true;
                     } else {

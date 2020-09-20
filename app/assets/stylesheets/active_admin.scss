@@ -89,7 +89,7 @@ form fieldset.inputs legend {
   padding: 10px 20px;
   line-height: 12px;
     &:link,&:visited{
-        color: $dm-color-white;
+        color: `$dm-color-white`;
       text-decoration: none;
     }
   &:hover{
