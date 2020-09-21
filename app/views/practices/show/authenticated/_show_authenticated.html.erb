@@ -142,6 +142,11 @@
             <%= render partial: 'practices/show/implementation/departments' %>
           </section>
         <% end %>
+        <% if @practice.risk_mitigations.any? %>
+          <section id="dm-implementation-risk-mitigations" class="margin-bottom-5">
+            <%= render partial: 'practices/show/implementation/risks_and_mitigations' %>
+          </section>
+        <% end %>
       </div>
     </div>
   </div>
@@ -213,22 +218,6 @@
           <% else %>
             <div class="hidden"></div>
           <% end %>
-        </div>
-      </div>
-    </div>
-  </section>
-<% end %>
-
-<!-- "Risks & Mitigations" section -->
-<% if @practice.risk_mitigations.any? %>
-  <section class="margin-bottom-7">
-    <div class="grid-container">
-      <div class="grid-row grid-gap">
-        <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-        <div class="desktop:grid-col-9 grid-col-12 p0">
-          <div class="risk-miti-section practice-section">
-            <%= render partial: 'risks_and_mitigations' %>
-          </div>
         </div>
       </div>
     </div>

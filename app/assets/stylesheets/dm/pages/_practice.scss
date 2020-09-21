@@ -420,7 +420,7 @@
   margin-top: 5px;
 }
 
-.documentation-trash-container, .risk-miti-trash-container, .contact-trash-container,
+.documentation-trash-container, .contact-trash-container,
 .permission-trash-container, .resource-trash-container {
   margin-left: 33px;
 }
@@ -498,7 +498,7 @@
   margin-top: 24px !important;
 }
 
-.add-additional-staff-link, .add-required-staff-link, .add-timeline-link, .add-risk-mitigation-link,
+.add-additional-staff-link, .add-required-staff-link, .add-timeline-link, 
 .add-impact-photo-link, .add-va-employee-link, .add-practice-creator-link, .add-additional-document-link, .add-publication-link,
 .add-video-file-link, .add-permission-link, .add-resource-link {
   margin-top: 24px !important;
@@ -976,6 +976,51 @@ li.small-disc:before {
   }
 }
 
+// Implementation
+#dm-implementation-section {
+  .usa-table--borderless {
+    min-width: 100%;
+
+    tr {
+      td:first-child {
+        padding-left: 0;
+      }
+
+      th:nth-child(2), td:nth-child(2) {
+        padding-left: 0.35rem !important;
+      }
+
+      th:first-child, td:first-child {
+        border-right: 1px solid $dm-color-base;
+      }
+
+      td {
+        border-bottom: 1px solid $dm-color-base;
+      }
+
+      &:last-child {
+        td {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    .usa-table--borderless {
+      tr {
+        th:first-child {
+          width: 20.125rem;
+        }
+
+        th:nth-child(2), td:nth-child(2) {
+          padding-left: 0.75rem !important;
+        }
+      }
+    }
+  }
+}
+
 /*********************************
  PRACTICE EDITOR
 **********************************/
@@ -1063,6 +1108,11 @@ li.small-disc:before {
   // required to hide inputs that appear when navigating away from comboboxes by clicking a link from the practice editor side nav
   .usa-combo-box__input[aria-owns="--list"] {
     display: none !important;
+  }
+
+  #dm-add-link-risk-mitigation {
+    position: absolute;
+    bottom: 0px;
   }
 }
 
