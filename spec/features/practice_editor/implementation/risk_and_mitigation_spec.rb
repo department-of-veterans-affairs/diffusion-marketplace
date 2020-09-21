@@ -58,7 +58,7 @@ describe 'Practice', type: :feature, js: true do
 
       # check risk and mitigation in practice view
       click_link(@practice.name)
-      within(:css, '#dm-implementation-section') do
+      within(:css, '#implementation') do
         expect(page).to have_content('Risks and mitigations')
         expect(page).to have_content('first risk')
         expect(page).to have_content('first mitigation')
@@ -73,7 +73,7 @@ describe 'Practice', type: :feature, js: true do
 
       # check risk and mitigation in practice view
       click_link(@practice.name)
-      within(:css, '#dm-implementation-section') do
+      within(:css, '#implementation') do
         expect(page).to have_content('first edited risk')
         expect(page).to have_content('first edited mitigation')
       end
@@ -91,7 +91,7 @@ describe 'Practice', type: :feature, js: true do
 
       # check risk and mitigation in practice view
       click_link(@practice.name)
-      within(:css, '#dm-implementation-section') do
+      within(:css, '#implementation') do
         expect(page).to have_content('first edited risk')
         expect(page).to have_content('first edited mitigation')
         expect(page).to have_content('second risk')
@@ -107,7 +107,7 @@ describe 'Practice', type: :feature, js: true do
 
       # check risk and mitigation in practice view
       visit practice_path(@practice)
-      within(:css, '#dm-implementation-section') do
+      within(:css, '#implementation') do
         expect(page).to have_content('first edited risk')
         expect(page).to have_content('first edited mitigation')
         expect(page).to have_no_content('second risk')

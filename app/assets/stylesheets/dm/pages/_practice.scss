@@ -977,11 +977,15 @@ li.small-disc:before {
 }
 
 // Implementation
-#dm-implementation-section {
+#implementation {
   .usa-table--borderless {
     min-width: 100%;
 
     tr {
+      th {
+        width: 50%;
+      }
+
       td:first-child {
         padding-left: 0;
       }
