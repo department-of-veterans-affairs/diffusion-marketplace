@@ -62,7 +62,7 @@ describe 'Breadcrumbs', type: :feature do
         expect(page).to have_content('The Best Practice Ever!')
       end
 
-      click_on('See adoption checklist')
+      click_on('Start adoption')
       # TODO: why is this timing out?
       # expect(page).to be_accessible.according_to :wcag2a, :section508
       within(:css, '#breadcrumbs') do

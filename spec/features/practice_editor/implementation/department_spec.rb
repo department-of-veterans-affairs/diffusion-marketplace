@@ -25,7 +25,7 @@ describe 'Practice', type: :feature, js: true do
     it 'should allow the user to update the departments for the practice' do
       # no departments should be there
       visit practice_path(@practice)
-      within(:css, '#dm-implementation-section') do
+      within(:css, '#implementation') do
         expect(page).to have_no_content('Departments')
         expect(page).to have_no_content('Admissions')
         expect(page).to have_no_content('Anesthetics')

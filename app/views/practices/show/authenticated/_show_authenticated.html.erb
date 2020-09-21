@@ -3,42 +3,18 @@
 <% end %>
 
 <!-- "Practice nav" section -->
-<!-- Impact Origin Resources Required Complexity Timeline Risks & Mitigation Support Team -->
+<!-- Overview Implementation Contact About -->
 
 <%= render partial: 'practices/show/introduction/introduction' %>
 <div class="grid-container position-relative z-top">
   <div id="dm-practice-nav" class="z-top mobile-hide">
     <ul id="dm-tabnav" class="usa-sidenav dm-tabnav margin-bottom-1 show-page-sidenav">
       <li class="usa-sidenav__item">
-        <a href="#overview_page" class="dm-tab top-tab scroll-to sidebar-overview" data-target="#overview" data-turbolinks="false">Overview</a>
+        <a href="#overview" class="dm-tab top-tab scroll-to sidebar-overview" data-target="#overview" data-turbolinks="false">Overview</a>
       </li>
-      <% if @practice.impact_photos.any? || @practice.video_files.any? || (@practice.diffusion_histories.any? && ENV['GOOGLE_API_KEY']) %>
-        <li class="usa-sidenav__item">
-          <a href="#impact" class="dm-tab scroll-to sidebar-impact" data-target="#impact" data-turbolinks="false">Impact</a>
-        </li>
-      <% end %>
-      <% if @practice.cost_to_implement_aggregate.present? %>
-        <li class="usa-sidenav__item">
-          <a href="#resources_required" class="dm-tab scroll-to sidebar-resources_required" data-target="#resources_required" data-turbolinks="false">Resources</a>
-        </li>
-      <% end %>
-      <% if @practice.departments.any? %>
-        <li class="usa-sidenav__item">
-          <a href="#departments" class="dm-tab scroll-to sidebar-departments" data-target="#departments" data-turbolinks="false">Departments</a>
-        </li>
-      <% end %>
-      <% unless @practice.timelines.blank? %>
-        <li class="usa-sidenav__item">
-          <a href="#timeline_and_checklist" class="dm-tab scroll-to sidebar-timeline_and_checklist" data-target="#timeline_and_checklist" data-turbolinks="false">Timeline</a>
-        </li>
-      <% end %>
-      <% if @practice.risk_mitigations.any? %>
-        <li class="usa-sidenav__item">
-          <a href="#risk_and_mitigation" class="dm-tab scroll-to sidebar-risk_and_mitigation " data-target="#risk_and_mitigation" data-turbolinks="false">Risk
-            and
-            mitigation</a>
-        </li>
-      <% end %>
+      <li class="usa-sidenav__item">
+        <a href="#implementation" class="dm-tab bottom-tab scroll-to sidebar-implementation" data-target="#implementation" data-turbolinks="false">Implementation</a>
+      </li>
       <li class="usa-sidenav__item">
         <a href="#contact" class="dm-tab bottom-tab scroll-to sidebar-contact" data-target="#contact" data-turbolinks="false">Contact</a>
       </li>
@@ -48,17 +24,39 @@
         </li>
       <% end %>
     </ul>
-    <div class="text-center">
-      <%= link_to 'See adoption checklist', practice_planning_checklist_url(practice_id: @practice.slug), id: 'next-steps-link-in-nav', class: 'usa-button width-full p1' %>
+    <%
+      main_email = @practice.support_network_email
+      practice_emails = @practice.practice_emails
+      cc_emails = practice_emails.map(&:address).join(', ')
+      instructions_path = practice_instructions_path(@practice)
+      checklist_path = practice_planning_checklist_url(practice_id: @practice.slug)
+    %>
+    <div class="text-center margin-bottom-1">
+      <%= mail_to main_email, 'Email practice', cc: cc_emails, class: 'usa-button--outline dm-btn-primary width-full display-flex flex-align-center flex-justify-center height-5', 'aria-label': "side nav email #{main_email}"  %>
     </div>
+    <div class="text-center margin-bottom-1">
+      <%= link_to 'Start adoption', checklist_path, id: 'next-steps-link-in-nav', class: 'usa-button dm-btn-primary width-full' %>
+    </div>
+    <% if @practice.user_id == current_user.id || current_user.roles.any? %>
+      <div class="text-center">
+        <%= link_to instructions_path, id: 'edit-link-in-nav', class: 'usa-button dm-btn-base width-full' do %>
+          <i class="fas fa-edit margin-right-1"></i>Edit practice
+        <% end %>
+      </div>
+    <% end %>
   </div>
 </div>
+
 <div class="practice-mobile-nav padding-1 z-top desktop:display-none display-flex justify-center">
-  <%= link_to 'See adoption checklist', practice_planning_checklist_url(practice_id: @practice.slug), id: 'next-steps-link-in-mobile-nav', class: 'usa-button' %>
+  <%= mail_to main_email, 'Email', cc: cc_emails, id: 'email-link-in-mobile-nav', class: 'width-100 usa-button--outline dm-btn-primary display-flex flex-align-center flex-justify-center height-5 x0-875-right', 'aria-label': "Mobile nav email #{main_email}"  %>
+  <%= link_to 'Adopt', checklist_path, id: 'next-steps-link-in-mobile-nav', class: "width-100 usa-button #{ @practice.user_id == current_user.id || current_user.roles.any? ? 'x0-875-right' : 'x0-right'}" %>
+  <% if @practice.user_id == current_user.id || current_user.roles.any? %>
+      <%= link_to 'Edit', instructions_path, id: 'edit-link-in-mobile-nav', class: 'width-100 usa-button dm-btn-base x0-right' %>
+  <% end %>
 </div>
 
 <!--//Overview-Problem-->
-<section id="overview_page" class="margin-bottom-5 grid-container">
+<section id="overview" class="margin-bottom-5 grid-container nav-header">
   <div class="grid-row grid-gap-2">
     <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
     <div class="desktop:grid-col-9 grid-col-12">
@@ -127,13 +125,13 @@
 <% end %>
 
 <!-- Implementation section -->
-<section id="dm-implementation-section" class="margin-bottom-5 grid-container">
+<section id="implementation" class="grid-container nav-header">
   <div class="grid-row grid-gap-2">
     <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
     <div class="desktop:grid-col-9 grid-col-12">
       <div class="practice-editor-long-rect-svg border-top-05 border-primary-dark"></div>
       <h2 class="font-sans-xl line-height-37px margin-top-2 margin-bottom-5">Implementation</h2>
-      <div class="metric-section practice-section">
+      <div class="metric-section practice-section margin-bottom-5">
         <% if @practice.timelines.any? %>
           <section id="dm-implementation-timeline" class="margin-bottom-5">
             <%= render partial: 'practices/show/implementation/timelines' %>
@@ -160,11 +158,6 @@
 
 <section class="usa-section p2-top p2-bottom">
   <div class="grid-container position-relative">
-    <% if @practice.user_id == current_user.id || current_user.roles.any? %>
-      <div class="text-right position-absolute edit-practice-link">
-        <%= link_to 'Edit', practice_instructions_path(@practice), class: 'usa-button--outline dm-btn-primary margin-right-0' %>
-      </div>
-    <% end %>
     <div class="grid-row grid-gap">
       <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
 
@@ -187,41 +180,10 @@
             </div>
           </div>
         <% end %>
-
-        <div class="bg-white<%#padding-5%>">
-          <p class="font-sans-lg line-height-sans-5 margin-bottom-4"><%= @practice.tagline %></p>
-        </div>
       </div>
     </div>
   </div>
 </section>
-
-<!-- "Practice content" section -->
-<!-- "Impact" section -->
-<%# if @practice.impact_photos.any? || @practice.video_files.any? %>
-<!--  <section>-->
-<!--    <div class="grid-container position-relative">-->
-<!--      <div class="grid-row grid-gap">-->
-<!--        <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>-->
-
-<!--        <div class="desktop:grid-col-9 grid-col-12 p0">-->
-<!--          <div class="margin-bottom-3 impact-section practice-section">-->
-<!--            <div class="grid-row flex-align-center">-->
-<!--              <h2 id="impact" class="font-sans-xl text-bold margin-0 flex-auto margin-right-205 nav-header">Impact</h2>-->
-<!--              <hr class="flex-fill height-2px border border-base-lightest bg-base-lightest dm-section-line">-->
-<!--            </div>-->
-<%# if @practice.impact_photos.any? %>
-<%#= render partial: 'impact' %>
-<%# end %>
-<%# if @practice.video_files.any? %>
-<%#= render partial: 'videos' %>
-<%# end %>
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </section>-->
-<%# end %>
 
 <!-- "Documentation" section -->
 <% if @practice.additional_documents.any? || @practice.publications.any? %>

@@ -40,7 +40,6 @@
 
     &.active, &.tab-active, &:hover {
       font-weight: bold;
-      //border-left: 4px solid $dm-color-blue-50v;
       color: $dm-color-blue-50v;
       background-color: transparent;
       position:relative;
@@ -69,6 +68,7 @@
 
 .practice-mobile-nav {
   background: $dm-color-white;
+  border-top: 1px solid $dm-color-base;
   position: fixed;
   bottom: 0;
   right: 0;
@@ -330,7 +330,7 @@
   }
 }
 
-.editor-continue-link, .dm-cropper-save-edit {
+.editor-continue-link, .dm-cropper-save-edit, #edit-link-in-nav {
   color: white !important;
   line-height: 1 !important;
 
@@ -775,9 +775,20 @@
 
 .side-nav-active {
   background-color: transparent;
-  border-left: 4px solid $dm-color-primary-blue;
-  color: black;
+  color: $dm-color-blue-50v !important;
   font-weight: bold !important;
+  position: relative;
+
+  &:before {
+    content:"";
+    background:$dm-color-blue-50v;
+    position:absolute;
+    bottom:10%;
+    left:0;
+    height:75%;
+    width:4px;
+    border-radius: 12px;
+  }
 }
 
 .side-nav-inactive {
@@ -956,6 +967,12 @@ li.small-disc:before {
     @media screen and (max-width: 1023px) {
       width: 100% !important;
     }
+  }
+}
+
+#next-steps-link-in-nav {
+  &:visited {
+    color: $dm-color-white !important;
   }
 }
 
