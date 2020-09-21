@@ -12,7 +12,7 @@
   has_practice_awards = @practice.practice_awards.any?
 %>
 
-<section id="pr-view-introduction" class="grid-container">
+<section id="pr-view-introduction" class="grid-container margin-bottom-3">
   <div class="grid-row grid-gap-2">
     <%# practice main display image for mobile %>
     <%= render partial: 'practices/show/mobile_partials/main_display_image_container' %>
@@ -61,12 +61,15 @@
         <%= render partial: 'practices/show/desktop_partials/maturity_level_banner' %>
       <% end %>
 
-      <%# practice origin date and location %>
-      <div class="margin-bottom-2">
-        <h5 class="font-sans-3xs line-height-sans-3 text-uppercase text-ls-1 line-height-15px display-inline-block margin-y-0">Origin:</h5>
-        <span id="practice_origin_facilities_text" class="font-normal line-height-26">
-          <% @practice_date =  @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)'%>
-          <%= @practice_date %>,
+      <%# Container for Origin/Adoptions/Awards/Partners %>
+      <div class="introduction-sections-container">
+
+        <%# practice origin date and location %>
+        <div>
+          <h5 class="font-sans-3xs text-uppercase text-ls-1 line-height-15px display-inline margin-y-0">Origin:</h5>
+          <p id="practice_origin_facilities_text" class="font-normal line-height-26 display-inline">
+            <% @practice_date =  @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)'%>
+            <%= @practice_date %>,
               <% if origin_display_name(@practice).length > 180 %>
                 <span id="origin_facility_truncated"><%= origin_display_name_trunc(@practice) %></span>
                 <span id="dots">...</span>
@@ -76,14 +79,15 @@
               <% else %>
                 <%= origin_display_name(@practice) %>
               <% end %>
-        </span>
-      </div>
-      <%# practice adoptions %>
-      <div>
+          </p>
+        </div>
+
+        <%# practice adoptions %>
         <% if completed_adoptions > 0 || in_progress_adoptions > 0 || unsuccessful_adoptions > 0 %>
-          <p class="grid-col-12 margin-bottom-2 font-sans-3xs line-height-sans-3">
+          <div class="grid-col-12">
+            <h5 class="font-sans-3xs text-uppercase text-ls-1 line-height-15px display-inline margin-y-0">Adoptions:</h5>
             <%# TODO: link adoptions to new diffusion tracker map %>
-            <span class="text-bold text-uppercase">Adoptions:</span>
+            <p class="display-inline font-normal line-height-26">
             <% if completed_adoptions > 0 %>
               <%= completed_adoptions %>&nbsp;completed<%= ', ' if in_progress_adoptions > 0 || unsuccessful_adoptions > 0 %>
             <% end %>
@@ -93,44 +97,52 @@
             <% if unsuccessful_adoptions > 0 %>
               <%= unsuccessful_adoptions %>&nbsp;unsuccessful
             <% end %>
-          </p>
+            </p>
+          </div>
         <% end %>
+
         <%# practice awards %>
         <% if has_practice_awards %>
-          <p class="margin-bottom-2 font-sans-3xs line-height-sans-3">
-            <span class="text-bold text-uppercase">Awards and Recognition:</span>
-            <% all_awards = get_all_awards(@practice) %>
-            <% if all_awards.length > 180 %>
-              <%#= truncate(@all_awards.to_s, start: 0, length: 180) %>
-              <span id="awards_truncated"><%= all_awards[0...180]%></span>
-              <span id="dots_award">...</span>
-              <span id="more_text_award">
-                  <%= all_awards %>
-              </span>
-              <button class="usa-button--unstyled dm-btn-primary font-sans-3xs"
-                      onclick="seeMoreTextAwards(); return false;"
-                      id="seeMore_award">
-                See more
-              </button>
-            <% else %>
-              <%= all_awards %>
-            <% end %>
-          </p>
+          <div>
+            <h5 class="font-sans-3xs text-uppercase text-ls-1 line-height-15px display-inline margin-y-0">Awards and Recognition:</h5>
+            <p class="display-inline font-normal line-height-26">
+              <% all_awards = get_all_awards(@practice) %>
+              <% if all_awards.length > 180 %>
+                <%#= truncate(@all_awards.to_s, start: 0, length: 180) %>
+                <span id="awards_truncated"><%= all_awards[0...180]%></span>
+                <span id="dots_award">...</span>
+                <span id="more_text_award">
+                    <%= all_awards %>
+                </span>
+                <button class="usa-button--unstyled dm-btn-primary"
+                        onclick="seeMoreTextAwards(); return false;"
+                        id="seeMore_award">
+                  See more
+                </button>
+              <% else %>
+                <%= all_awards %>
+              <% end %>
+            </p>
+          </div>
         <% end %>
+
         <%# practice partners %>
         <% if has_practice_partners %>
-          <p class="margin-bottom-2 font-sans-3xs line-height-sans-3">
-            <span class="text-bold text-uppercase">Partners:</span>
-              <% @practice.practice_partners.each_with_index do |partner, index| %>
-                <a href="<%= practice_partner_path(partner) %>" class="dm-internal-link">
-                  <%= partner.name %>
-                </a>
-                <%= ", " if @practice.practice_partners.size != index + 1 && @practice.practice_partners.size > 1 %>
-              <% end %>
-          </p>
+          <div>
+            <p class="font-sans-3xs line-height-sans-3">
+              <span class="text-bold text-uppercase">Partners:</span>
+                <% @practice.practice_partners.each_with_index do |partner, index| %>
+                  <a href="<%= practice_partner_path(partner) %>" class="dm-internal-link">
+                    <%= partner.name %>
+                  </a>
+                  <%= ", " if @practice.practice_partners.size != index + 1 && @practice.practice_partners.size > 1 %>
+                <% end %>
+            </p>
+          </div>
         <% end %>
       </div>
     </div>
+
     <div class="desktop:grid-col-4 mobile-hide">
       <%# practice main display image for desktop %>
       <%= render partial: 'practices/show/desktop_partials/main_display_image_container' %>

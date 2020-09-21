@@ -889,6 +889,16 @@
       display: none !important;
     }
   }
+
+  .introduction-sections-container {
+    div {
+      margin-bottom: 16px ;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
 }
 
 .dm-add-another-link {
