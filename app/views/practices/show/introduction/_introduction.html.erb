@@ -63,22 +63,20 @@
 
       <%# practice origin date and location %>
       <div class="margin-bottom-2">
-        <p class="font-sans-3xs line-height-sans-3">
-        <span class="text-bold text-uppercase">Origin:</span>
-          <span id="practice_origin_facilities_text">
-            <% @practice_date =  @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)'%>
-            <%= @practice_date %>,
-                <% if origin_display_name(@practice).length > 180 %>
-                  <span id="origin_facility_truncated"><%= origin_display_name_trunc(@practice) %></span>
-                  <span id="dots">...</span>
-                  <span id="more_text" class="display-none">
-                    <%= origin_display_name_trunc(@practice, 0, 99999) %>
-                  </span><a class="usa-button--unstyled dm-btn-primary font-sans-3xs" href="" onclick="seeMoreText(); return false" id="seeMore">See more</a>
-                <% else %>
-                  <%= origin_display_name(@practice) %>
-                <% end %>
-          </span>
-        </p>
+        <h5 class="font-sans-3xs line-height-sans-3 text-uppercase text-ls-1 line-height-15px display-inline-block margin-y-0">Origin:</h5>
+        <span id="practice_origin_facilities_text" class="font-normal line-height-26">
+          <% @practice_date =  @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)'%>
+          <%= @practice_date %>,
+              <% if origin_display_name(@practice).length > 180 %>
+                <span id="origin_facility_truncated"><%= origin_display_name_trunc(@practice) %></span>
+                <span id="dots">...</span>
+                <span id="more_text" class="display-none">
+                  <%= origin_display_name_trunc(@practice, 0, 99999) %>
+                </span><a class="usa-button--unstyled dm-btn-primary" href="" onclick="seeMoreText(); return false" id="seeMore">See more</a>
+              <% else %>
+                <%= origin_display_name(@practice) %>
+              <% end %>
+        </span>
       </div>
       <%# practice adoptions %>
       <div>
