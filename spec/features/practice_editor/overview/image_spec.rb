@@ -330,7 +330,7 @@ describe 'Practice editor', type: :feature, js: true do
     visit practice_path(@pr_no_resources)
     expect(page).to have_content('Overview')
     expect(page).to have_no_content("Images")
-    within(:css, '#overview_page') do
+    within(:css, '#overview') do
       expect(page).to have_no_css("img")
     end
     visit practice_overview_path(@pr_no_resources)
