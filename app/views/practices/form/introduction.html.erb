@@ -566,7 +566,7 @@
             <div class="margin-top-3 margin-bottom-5">
               <div class="margin-bottom-2">
                 <p class="text-bold margin-bottom-1">
-                  Maturity
+                  Diffusion Phases
                 </p>
                 <span>Select the level of maturity that applies to your practice.</span>
               </div>
@@ -578,8 +578,7 @@
                     <label class="usa-radio__label maturity-level-label <%= key.to_s == 'scale' ? 'margin-bottom-0' : 'margin-bottom-1' %> line-height-sans-6"
                            for="maturity_level_<%= key %>"
                     >
-                      <span class="text-bold margin-left-neg-05"><%= key.capitalize %>: </span>
-                      <%= value[:form_label] %>
+                      <span class="margin-left-neg-05"><%= value[:description] %></span>
                     </label>
                   </div>
                 <% end %>

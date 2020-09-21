@@ -148,18 +148,13 @@ class Practice < ApplicationRecord
 
   MATURITY_LEVEL_MAP = {
       emerging: {
-          form_label: 'Core feasibility and effectiveness is still being assessed in a live environment to understand practice value and real-world impact.
-                       The practice is adapting based on initial customer and participant feedback.',
-          description: 'This practice is emerging and worth watching as it is being assessed in early implementations.'
+          description: 'This practice is <b>emerging</b> and worth watching as it is being assessed in early implementations.'.html_safe
       },
       replicate: {
-          form_label: 'The practice is being adopted at additional facilities after successful pilot(s); it is evolving as it seeks to optimize impact and replicability.',
-          description: 'This practice is replicating across multiple facilities as its impact continues to be validated. '
+          description: 'This practice is <b>replicating</b> across multiple facilities as its impact continues to be validated.'.html_safe
       },
       scale: {
-          form_label: 'A national stakeholder has decided the practice impact has been validated and its replicability established. The practice will be implemented at all
-                       applicable facilities.',
-          description: 'This practice is scaling widely with the support of national stakeholders.'
+          description: 'This practice is <b>scaling</b> widely with the support of national stakeholders.'.html_safe
       }
   }
 
