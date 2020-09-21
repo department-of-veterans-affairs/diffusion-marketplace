@@ -568,14 +568,14 @@
 
 .practice-editor-origin-ul, .practice-editor-timeline-ul, .practice-editor-practice-resources-ul, .practice-editor-risk-mitigation-ul, .practice-editor-contact-ul,
 .practice-editor-additional-document-ul, .practice-editor-publication-ul, .practice-editor-impact-photo-ul,
-.practice-editor-video-file-ul, .practice-editor-permission-ul, .practice-editor-resource-ul {
+.practice-editor-video-file-ul, .practice-editor-permission-ul, .practice-editor-resource-ul, .practice-editor-about-ul {
   margin: 0;
   padding: 0;
 }
 
 .practice-editor-origin-li, .practice-editor-timeline-li, .practice-editor-practice-resources-li, .practice-editor-risk-mitigation-li, .practice-editor-contact-li,
 .practice-editor-additional-document-li, .practice-editor-publication-li, .practice-editor-impact-photo-li,
-.practice-editor-video-file-li, .practice-editor-permission-li, .practice-editor-resource-li {
+.practice-editor-video-file-li, .practice-editor-permission-li, .practice-editor-resource-li, .practice-editor-about-li {
   list-style: none;
 }
 
@@ -1047,4 +1047,9 @@ li.small-disc:before {
   .usa-combo-box__input[aria-owns="--list"] {
     display: none !important;
   }
+}
+
+// About
+.origin-story-textarea {
+  resize: none;
 }

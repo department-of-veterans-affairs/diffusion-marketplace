@@ -20,8 +20,8 @@ describe 'Practice editor', type: :feature, js: true do
 
         it 'should be there' do
             expect(page).to have_content('Contact')
-            # expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/risk_and_mitigation")
-            # expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/checklist")
+            expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/implementation")
+            expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/about")
             expect(page).to have_content('This section helps people to reach out for support, ask questions, and connect about your practice.')
         end
 

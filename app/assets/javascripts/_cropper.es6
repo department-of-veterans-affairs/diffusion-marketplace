@@ -13,14 +13,6 @@
       class: '',
       alt: 'temporary practice thumbnail'
     },
-    contact: {
-      class: 'headshot-img',
-      alt: 'temporary practice contact avatar'
-    },
-    origin: {
-      class: 'headshot-img',
-      alt: 'temporary practice creator avatar'
-    },
     user: {
       class: 'avatar-profile-photo',
       alt: 'temporary user profile avatar'

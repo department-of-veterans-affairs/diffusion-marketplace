@@ -121,16 +121,12 @@ class Practice < ApplicationRecord
 
   PRACTICE_EDITOR_SLUGS =
       {
+          'introduction': 'instructions',
           'adoptions': 'introduction',
-          'impact': 'origin',
-          'documentation': 'impact',
-          'resources': 'documentation',
-          'departments': 'resources',
-          'timeline': 'departments',
-          'risk_and_mitigation': 'timeline',
-          'contact': 'overview',
-          'checklist': 'contact',
-          'introduction': 'instructions'
+          'overview': 'adoptions',
+          'implementation': 'overview',
+          'contact': 'implementation',
+          'about': 'contact',
       }
 
   PRACTICE_EDITOR_AWARDS_AND_RECOGNITION =
