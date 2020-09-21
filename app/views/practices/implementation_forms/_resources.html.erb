@@ -113,7 +113,7 @@
           );
           $(document).arrive('#practice_resources_fields_blueprint',
           function(blueprint) {
-          console.log(blueprint);
+            //console.log(blueprint);
             var cloned_blue_print =  $(blueprint).clone(true);
             cloned_blue_print.attr('id', '<%= blue_print_id %>');
             $(blueprint).before(cloned_blue_print);
@@ -134,5 +134,3 @@
     </fieldset>
   </section>
 </div>
-
-<!---               OPTIONAL RESOURCES            --->
