@@ -27,16 +27,19 @@
     <%
       main_email = @practice.support_network_email
       practice_emails = @practice.practice_emails
+      cc_emails = practice_emails.map(&:address).join(', ')
+      instructions_path = practice_instructions_path(@practice)
+      checklist_path = practice_planning_checklist_url(practice_id: @practice.slug)
     %>
     <div class="text-center margin-bottom-1">
-      <%= mail_to main_email, 'Email practice', cc: practice_emails.map(&:address).join(', '), class: 'usa-button--outline dm-btn-primary width-full display-flex flex-align-center flex-justify-center height-5', 'aria-label': "side nav email #{main_email}"  %>
+      <%= mail_to main_email, 'Email practice', cc: cc_emails, class: 'usa-button--outline dm-btn-primary width-full display-flex flex-align-center flex-justify-center height-5', 'aria-label': "side nav email #{main_email}"  %>
     </div>
     <div class="text-center margin-bottom-1">
-      <%= link_to 'Start adoption', practice_planning_checklist_url(practice_id: @practice.slug), id: 'next-steps-link-in-nav', class: 'usa-button dm-btn-primary width-full' %>
+      <%= link_to 'Start adoption', checklist_path, id: 'next-steps-link-in-nav', class: 'usa-button dm-btn-primary width-full' %>
     </div>
     <% if @practice.user_id == current_user.id || current_user.roles.any? %>
       <div class="text-center">
-        <%= link_to practice_instructions_path(@practice), id: 'edit-link-in-nav', class: 'usa-button dm-btn-base width-full' do %>
+        <%= link_to instructions_path, id: 'edit-link-in-nav', class: 'usa-button dm-btn-base width-full' do %>
           <i class="fas fa-edit margin-right-1"></i>Edit practice
         <% end %>
       </div>
@@ -45,10 +48,10 @@
 </div>
 
 <div class="practice-mobile-nav padding-1 z-top desktop:display-none display-flex justify-center">
-  <%= mail_to main_email, 'Email', cc: practice_emails.map(&:address).join(', '), id: 'email-link-in-mobile-nav', class: 'width-100 usa-button--outline dm-btn-primary display-flex flex-align-center flex-justify-center height-5 x0-875-right', 'aria-label': "Mobile nav email #{main_email}"  %>
-  <%= link_to 'Adopt', practice_planning_checklist_url(practice_id: @practice.slug), id: 'next-steps-link-in-mobile-nav', class: "width-100 usa-button #{ @practice.user_id == current_user.id || current_user.roles.any? ? 'x0-875-right' : 'x0-right'}" %>
+  <%= mail_to main_email, 'Email', cc: cc_emails, id: 'email-link-in-mobile-nav', class: 'width-100 usa-button--outline dm-btn-primary display-flex flex-align-center flex-justify-center height-5 x0-875-right', 'aria-label': "Mobile nav email #{main_email}"  %>
+  <%= link_to 'Adopt', checklist_path, id: 'next-steps-link-in-mobile-nav', class: "width-100 usa-button #{ @practice.user_id == current_user.id || current_user.roles.any? ? 'x0-875-right' : 'x0-right'}" %>
   <% if @practice.user_id == current_user.id || current_user.roles.any? %>
-      <%= link_to 'Edit', practice_instructions_path(@practice), id: 'edit-link-in-mobile-nav', class: 'width-100 usa-button dm-btn-base x0-right' %>
+      <%= link_to 'Edit', instructions_path, id: 'edit-link-in-mobile-nav', class: 'width-100 usa-button dm-btn-base x0-right' %>
   <% end %>
 </div>
 
