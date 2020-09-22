@@ -2,10 +2,11 @@
   <div class="usa-alert__body line-height-sans-6">
     <%
       maturity = @practice.maturity_level
+      maturity_map = Practice::MATURITY_LEVEL_MAP[maturity.to_sym]
     %>
     <p class="usa-alert__text x0-bottom">
-      <%= Practice::MATURITY_LEVEL_MAP[maturity.to_sym][:description] %>
-      <a href="/search?query=<%= maturity %>" class="dm-internal-link">See more <%= maturity %> practices.</a>
+      <%= maturity_map[:description] %>
+      <a href="/search?query=<%= maturity %>" class="dm-internal-link">See more <%= maturity_map[:link_text] %> practices.</a>
     </p>
   </div>
 </div>

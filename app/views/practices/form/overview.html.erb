@@ -87,7 +87,6 @@
               </div>
               <div id="display_problem_resources_image">
                 <% if @practice.practice_problem_resources.where(resource_type: 'image').exists? %>
-<!--                  <div id="problem_resources_image_section_text" class="text-bold margin-bottom-2">IMAGES:</div>-->
                   <h5 id="problem_resources_image_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Images:</h5>
                   <% @practice.practice_problem_resources.where(resource_type: 'image').each_with_index do |pr, i| %>
                     <%= render partial: "practices/overview_forms/image_form", locals: {resource: pr, placeholder: i, area: 'problem_resources'} %>
@@ -96,7 +95,6 @@
               </div>
               <div id="display_problem_resources_video">
                 <% if @practice.practice_problem_resources.where(resource_type: 'video').exists? %>
-<!--                  <div id="problem_resources_video_section_text" class="text-bold margin-bottom-2">VIDEOS:</div>-->
                   <h5 id="problem_resources_video_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Videos:</h5>
                 <% end %>
                 <% @practice.practice_problem_resources.where(resource_type: 'video').each_with_index do |pr, i| %>
@@ -105,7 +103,6 @@
               </div>
               <div id="display_problem_resources_file">
                 <% if @practice.practice_problem_resources.where(resource_type: 'file').exists? %>
-<!--                  <div id="problem_resources_file_section_text" class="text-bold margin-bottom-2">FILES:</div>-->
                   <h5 id="problem_resources_file_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Files:</h5>
                 <% end %>
                 <% @practice.practice_problem_resources.where(resource_type: 'file').each_with_index do |pr, i| %>
@@ -114,7 +111,6 @@
               </div>
               <div id="display_problem_resources_link">
                 <% if @practice.practice_problem_resources.where(resource_type: 'link').exists? %>
-<!--                  <div id="problem_resources_link_section_text" class="text-bold margin-bottom-2">LINKS:</div>-->
                   <h5 id="problem_resources_link_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Links:</h5>
                 <% end %>
                 <% @practice.practice_problem_resources.where(resource_type: 'link').each_with_index do |pr, i| %>
@@ -186,7 +182,6 @@
               </div>
               <div id="display_solution_resources_image">
                 <% if @practice.practice_solution_resources.where(resource_type: 'image').exists? %>
-<!--                  <div id="solution_resources_image_section_text" class="text-bold margin-bottom-2">IMAGES:</div>-->
                   <h5 id="solution_resources_image_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Images:</h5>
                   <% @practice.practice_solution_resources.where(resource_type: 'image').each_with_index do |pr, i| %>
                     <%= render partial: "practices/overview_forms/image_form", locals: {resource: pr, placeholder: i, area: 'solution_resources'} %>
@@ -195,7 +190,6 @@
               </div>
               <div id="display_solution_resources_video">
                 <% if @practice.practice_solution_resources.where(resource_type: 'video').exists? %>
-<!--                  <div id="solution_resources_video_section_text" class="text-bold margin-bottom-2">VIDEOS:</div>-->
                   <h5 id="solution_resources_video_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Videos:</h5>
                 <% end %>
                 <% @practice.practice_solution_resources.where(resource_type: 'video').each_with_index do |pr, i| %>
@@ -204,7 +198,6 @@
               </div>
               <div id="display_solution_resources_file">
                 <% if @practice.practice_solution_resources.where(resource_type: 'file').exists? %>
-<!--                  <div id="solution_resources_file_section_text" class="text-bold margin-bottom-2">FILES:</div>-->
                   <h5 id="solution_resources_file_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Files:</h5>
                 <% end %>
                 <% @practice.practice_solution_resources.where(resource_type: 'file').each_with_index do |pr, i| %>
@@ -213,7 +206,6 @@
               </div>
               <div id="display_solution_resources_link">
                 <% if @practice.practice_solution_resources.where(resource_type: 'link').exists? %>
-<!--                  <div id="solution_resources_link_section_text" class="text-bold margin-bottom-2">LINKS:</div>-->
                   <h5 id="solution_resources_link_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Links:</h5>
                 <% end %>
                 <% @practice.practice_solution_resources.where(resource_type: 'link').each_with_index do |pr, i| %>
@@ -285,7 +277,6 @@
               </div>
               <div id="display_results_resources_image">
                 <% if @practice.practice_results_resources.where(resource_type: 'image').exists? %>
-<!--                  <div id="results_resources_image_section_text" class="text-bold margin-bottom-2">IMAGES:</div>-->
                   <h5 id="results_resources_image_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Images:</h5>
                   <% @practice.practice_results_resources.where(resource_type: 'image').each_with_index do |pr, i| %>
                     <%= render partial: "practices/overview_forms/image_form", locals: {resource: pr, placeholder: i, area: 'results_resources'} %>
@@ -294,7 +285,6 @@
               </div>
               <div id="display_results_resources_video">
                 <% if @practice.practice_results_resources.where(resource_type: 'video').exists? %>
-<!--                  <div id="results_resources_video_section_text" class="text-bold margin-bottom-2">VIDEOS:</div>-->
                   <h5 id="results_resources_video_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Videos:</h5>
                 <% end %>
                 <% @practice.practice_results_resources.where(resource_type: 'video').each_with_index do |pr, i| %>
@@ -303,7 +293,6 @@
               </div>
               <div id="display_results_resources_file">
                 <% if @practice.practice_results_resources.where(resource_type: 'file').exists? %>
-<!--                  <div id="results_resources_file_section_text" class="text-bold margin-bottom-2">FILES:</div>-->
                   <h5 id="results_resources_file_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Files:</h5>
                 <% end %>
                 <% @practice.practice_results_resources.where(resource_type: 'file').each_with_index do |pr, i| %>
@@ -312,7 +301,6 @@
               </div>
               <div id="display_results_resources_link">
                 <% if @practice.practice_results_resources.where(resource_type: 'link').exists? %>
-<!--                  <div id="results_resources_link_section_text" class="text-bold margin-bottom-2">LINKS:</div>-->
                   <h5 id="results_resources_link_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Links:</h5>
                 <% end %>
                 <% @practice.practice_results_resources.where(resource_type: 'link').each_with_index do |pr, i| %>
