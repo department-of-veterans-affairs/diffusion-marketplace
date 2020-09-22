@@ -24,10 +24,11 @@ describe 'Practice editor', type: :feature, js: true do
 
         it 'should navigate the user around the editor when they click on the section names' do
             click_link 'Introduction'
-            find('div#introduction')
+            page.has_css?('#introduction')
             expect(page).to have_content('Introduce your practice and provide a brief summary to people who may be unfamiliar with it.')
 
             click_link 'Adoptions'
+            page.has_css?('#adoptions')
             expect(page).to have_content('Share which facilities have successfully adopted your practice. All adoptions roll up to the VAMC level. Aim to update this data quarterly.')
         end
     end
