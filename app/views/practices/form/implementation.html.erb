@@ -3,6 +3,7 @@
 <% provide :head_tags do %>
   <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_timeline', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'practice_editor_implementation', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <%= render 'breadcrumbs' %>
@@ -64,15 +65,15 @@
                 <%= label_tag 'core_resource_link', 'Link', class: 'usa-radio__label
                 initiating-facility-type-label line-height-19px x0-bottom', for: "core_resource_attachment_link" %>
               </div>
-              <div id="display_core_attachment_form" class="display_core_attachments_form" hidden="true">
-                <%= render partial: "practices/implementation_forms/core_attachment_file_form", locals: {area: 'core_attachment'} %>
-                <%= render partial: "practices/implementation_forms/core_attachment_link_form", locals: {area: 'core_attachment'} %>
+              <div id="display_core_attachment_form" class="display_core_attachments_form">
+                <%= render partial: "practices/implementation_forms/core_attachment_file_form", locals: {area: 'core_attachment', resource_type: 'core'} %>
+                <%= render partial: "practices/implementation_forms/core_attachment_link_form", locals: {area: 'core_attachment', resource_type: 'core'} %>
               </div>
               <div id="display_core_attachment_file">
                 <% if @practice.practice_resources.where(resource_type: 'core', media_type: 'file').exists? %>
                   <div id="core_attachment_file_section_text" class="text-bold margin-bottom-2">FILES:</div>
                   <% @practice.practice_resources.where(resource_type: 'core', media_type: 'file').each_with_index do |pr, i| %>
-                    <%= render partial: "practices/implementation_forms/core_attachment_file_form", locals: {resource: pr, placeholder: i, area: 'core_attachment'} %>
+                    <%= render partial: "practices/implementation_forms/core_attachment_file_form", locals: {resource: pr, placeholder: i, area: 'core_attachment', resource_type: 'core'} %>
                   <% end %>
                 <% end %>
               </div>
@@ -81,7 +82,7 @@
                   <div id="core_attachment_link_section_text" class="text-bold margin-bottom-2">LINKS:</div>
                 <% end %>
                 <% @practice.practice_resources.where(resource_type: 'core', media_type: 'link').each_with_index do |pr, i| %>
-                  <%= render partial: "practices/implementation_forms/core_attachment_link_form", locals: {resource: pr, placeholder: i, area: 'core_attachment'} %>
+                  <%= render partial: "practices/implementation_forms/core_attachment_link_form", locals: {resource: pr, placeholder: i, area: 'resources'} %>
                 <% end %>
               </div>
 
