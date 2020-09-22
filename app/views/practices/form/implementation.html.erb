@@ -212,11 +212,9 @@
               </div>
             </div>
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
-
-
+            <%= render partial: 'practices/implementation_forms/risks_and_mitigations', locals: {f: f} %>
           </div>
         <% end %>
-
 
   <div class="grid-row">
     <%= link_to practice_overview_path(@practice), class: 'usa-button--outline dm-btn-base editor-back-to-link margin-right-1' do %>

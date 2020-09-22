@@ -494,6 +494,10 @@ to confirm the class DOES NOT EXIST before adding a new class
   margin-right: 0.5em !important;
 }
 
+.x0-875-right {
+  margin-right: 0.875em !important
+}
+
 .x1-right {
   margin-right: 1rem !important;
 }
@@ -802,7 +806,7 @@ ul.no-list-style {
 }
 
 .width-100 {
-  width: 100%;
+  width: 100% !important;
 }
 
 /* box-shadows */

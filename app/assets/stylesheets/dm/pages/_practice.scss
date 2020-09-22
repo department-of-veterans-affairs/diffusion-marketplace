@@ -40,7 +40,6 @@
 
     &.active, &.tab-active, &:hover {
       font-weight: bold;
-      //border-left: 4px solid $dm-color-blue-50v;
       color: $dm-color-blue-50v;
       background-color: transparent;
       position:relative;
@@ -69,6 +68,7 @@
 
 .practice-mobile-nav {
   background: $dm-color-white;
+  border-top: 1px solid $dm-color-base;
   position: fixed;
   bottom: 0;
   right: 0;
@@ -330,7 +330,7 @@
   }
 }
 
-.editor-continue-link, .dm-cropper-save-edit {
+.editor-continue-link, .dm-cropper-save-edit, #edit-link-in-nav {
   color: white !important;
   line-height: 1 !important;
 
@@ -420,7 +420,7 @@
   margin-top: 5px;
 }
 
-.documentation-trash-container, .risk-miti-trash-container, .contact-trash-container,
+.documentation-trash-container, .contact-trash-container,
 .permission-trash-container, .resource-trash-container {
   margin-left: 33px;
 }
@@ -775,9 +775,20 @@
 
 .side-nav-active {
   background-color: transparent;
-  border-left: 4px solid $dm-color-primary-blue;
-  color: black;
+  color: $dm-color-blue-50v !important;
   font-weight: bold !important;
+  position: relative;
+
+  &:before {
+    content:"";
+    background:$dm-color-blue-50v;
+    position:absolute;
+    bottom:10%;
+    left:0;
+    height:75%;
+    width:4px;
+    border-radius: 12px;
+  }
 }
 
 .side-nav-inactive {
@@ -959,6 +970,61 @@ li.small-disc:before {
   }
 }
 
+#next-steps-link-in-nav {
+  &:visited {
+    color: $dm-color-white !important;
+  }
+}
+
+// Implementation
+#implementation {
+  .usa-table--borderless {
+    min-width: 100%;
+
+    tr {
+      th {
+        width: 50%;
+      }
+
+      td:first-child {
+        padding-left: 0;
+      }
+
+      th:nth-child(2), td:nth-child(2) {
+        padding-left: 0.35rem !important;
+      }
+
+      th:first-child, td:first-child {
+        border-right: 1px solid $dm-color-base;
+      }
+
+      td {
+        border-bottom: 1px solid $dm-color-base;
+      }
+
+      &:last-child {
+        td {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    .usa-table--borderless {
+      tr {
+        th:first-child {
+          width: 20.125rem;
+        }
+
+        th:nth-child(2), td:nth-child(2) {
+          padding-left: 0.75rem !important;
+        }
+      }
+    }
+  }
+}
+
 /*********************************
  PRACTICE EDITOR
 **********************************/
@@ -1046,6 +1112,11 @@ li.small-disc:before {
   // required to hide inputs that appear when navigating away from comboboxes by clicking a link from the practice editor side nav
   .usa-combo-box__input[aria-owns="--list"] {
     display: none !important;
+  }
+
+  #dm-add-link-risk-mitigation {
+    position: absolute;
+    bottom: 0px;
   }
 }
 

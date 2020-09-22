@@ -1,0 +1,27 @@
+<div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+<h3 class="margin-top-2 margin-bottom-2 line-height-25px font-sans-lg">Risks and mitigations</h3>
+
+<table class="usa-table usa-table--borderless">
+  <thead>
+    <tr class="text-uppercase font-sans-3xs">
+      <th scope="col">Risk</th>
+      <th scope="col">Mitigation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @practice.risk_mitigations.each_with_index do |rm, index| %>
+      <tr>
+        <% rm.risks.each do |risk| %>
+          <td class="font-sans-xs-1 line-height-sans-505 text-top padding-left-0">
+            <%= risk.description %>
+          </td>
+        <% end %>
+        <% rm.mitigations.each do |mitigation| %>
+          <td class="font-sans-xs-1 text-top line-height-sans-505">
+            <%= safe_join(raw(mitigation.description).split("\r\n"), tag(:br)) %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

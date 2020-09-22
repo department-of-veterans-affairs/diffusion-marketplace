@@ -41,24 +41,24 @@ class SavePracticeService
       if @practice_params["practice_multimedia_attributes"].present?
         process_multimedia_params
       end
-      debugger
       if @practice_params["practice_resources_attributes"].present?
         process_practice_resources_params
       end
-        # updated = @practice.update(@practice_params)
-        #
-        # rescue_method(:update_practice_partner_practices)
-        # rescue_method(:update_department_practices)
-        # rescue_method(:remove_attachments)
-        # rescue_method(:manipulate_avatars)
-        # rescue_method(:remove_main_display_image)
-        # rescue_method(:crop_main_display_image)
-        # rescue_method(:update_initiating_facility)
-        # rescue_method(:update_practice_awards)
-        # rescue_method(:update_category_practices)
-        # rescue_method(:crop_resource_images)
-        #
-        # updated
+      if @practice_params["risk_mitigations_attributes"].present?
+        process_risk_mitigations_params
+      end
+        updated = @practice.update(@practice_params)
+        rescue_method(:update_practice_partner_practices)
+        rescue_method(:update_department_practices)
+        rescue_method(:remove_attachments)
+        rescue_method(:manipulate_avatars)
+        rescue_method(:remove_main_display_image)
+        rescue_method(:crop_main_display_image)
+        rescue_method(:update_initiating_facility)
+        rescue_method(:update_practice_awards)
+        rescue_method(:update_category_practices)
+        rescue_method(:crop_resource_images)
+
     rescue => e
       Rails.logger.error "save_practice error: #{e.message}"
       e
@@ -325,4 +325,16 @@ class SavePracticeService
     end
   end
 
+  def process_risk_mitigations_params
+    @practice_params["risk_mitigations_attributes"].each do |rm|
+      if rm[1][:_destroy] == 'false'
+        risk_desc = rm[1][:risks_attributes]["0"][:description]
+        miti_desc = rm[1][:mitigations_attributes]["0"][:description]
+
+        if risk_desc.empty? || miti_desc.empty?
+          @practice_params["risk_mitigations_attributes"].delete(rm[0])
+        end
+      end
+    end
+  end
 end
