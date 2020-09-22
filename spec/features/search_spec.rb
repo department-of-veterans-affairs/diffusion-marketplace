@@ -46,6 +46,12 @@ describe 'Search', type: :feature do
 
   def publish_practice(practice)
     update_practice_introduction(practice)
+    visit(practice_adoptions_path(practice))
+    find('button[aria-controls="a0"]').click
+    find('label[for="status_in_progress"').click
+    select('Alaska', :from => 'editor_state_select')
+    select('Anchorage VA Medical Center', :from => 'editor_facility_select')
+    find('#adoption_form_submit').click
     visit(practice_contact_path(practice))
     fill_in('practice_support_network_email', with: 'dm@va.gov')
     click_button('Publish')
