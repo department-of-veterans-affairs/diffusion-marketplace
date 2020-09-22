@@ -173,9 +173,13 @@ describe 'Practices', type: :feature do
       expect(page).to have_content(@user_practice.name)
       expect(page).to have_content(@user_practice.initiating_facility)
       expect(page).to have_current_path(practice_path(@user_practice))
-
     end
 
+    it 'should NOT show the edit practice button if the user is not an admin/approver or creater of the practice' do
+      login_as(@user, :scope => :user, :run_callbacks => false)
+      visit practice_path(@practice)
+      expect(page).to_not have_link('Edit practice')
+    end
   end
 
   describe 'Next Steps' do

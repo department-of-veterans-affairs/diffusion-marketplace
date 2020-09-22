@@ -91,22 +91,22 @@ i.e.
 
   // outline blue-50v btn
   &.dm-btn-primary {
-  color: $dm-color-blue-50v;
-  border-color: $dm-color-blue-50v;
+  color: $dm-color-blue-50v !important;
+  border-color: $dm-color-blue-50v !important;
 
     &:visited {
-      color: $dm-color-blue-50v;
-      border-color: $dm-color-blue-50v;
+      color: $dm-color-blue-50v !important;
+      border-color: $dm-color-blue-50v !important;
     }
 
     &:hover {
-      color: $dm-color-blue-70v;
-      border-color: $dm-color-blue-70v;
+      color: $dm-color-blue-70v !important;
+      border-color: $dm-color-blue-70v !important;
     }
 
     &:active {
-      color: $dm-color-blue-80v;
-      border-color: $dm-color-blue-80v;
+      color: $dm-color-blue-80v !important;
+      border-color: $dm-color-blue-80v !important;
     }
   }
 
