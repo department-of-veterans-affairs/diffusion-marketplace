@@ -13,23 +13,31 @@
             <%# Overview errors %>
             <%
               tagline = @practice.tagline
-              initiating_facility = @practice.initiating_facility
+              initiating_facility = @practice.facility? ? @practice.practice_origin_facilities.present? : @practice.initating_facility.present?
               initiating_facility_type = @practice.initiating_facility_type
               summary = @practice.summary
               date_initiated = @practice.date_initiated
+              adoptions = @practice.diffusion_histories
             %>
-            <% if initiating_facility.blank? || date_initiated.blank? || summary.blank? %>
+            <% if initiating_facility_type.blank? || initiating_facility.blank? || date_initiated.blank? || summary.blank? %>
               <p class="text-bold">Overview</p>
-              <ul class="overview-errors-ul">
+              <ul class="dm-publish-errors-ul">
                 <% if date_initiated.blank? %>
                   <li>You must include the initiation date for your practice</li>
                 <% end %>
-                <% if initiating_facility.blank? %>
+                <% if initiating_facility_type.blank? || initiating_facility.blank? %>
                   <li>You must include the initiating facility for your practice</li>
                 <% end %>
                 <% if summary.blank? %>
                   <li>You must include a practice summary</li>
                 <% end %>
+              </ul>
+            <% end %>
+
+            <% if adoptions.blank? %>
+              <p class="text-bold">Adoptions</p>
+              <ul class="dm-publish-errors-ul">
+                <li>You must include at least one adoption</li>
               </ul>
             <% end %>
 
@@ -39,7 +47,7 @@
             %>
             <% if email.blank? %>
               <p class="text-bold">Contact</p>
-              <ul class="contact-errors-ul">
+              <ul class="dm-publish-errors-ul margin-bottom-0">
                 <li>You must include a support network email</li>
               </ul>
             <% end %>

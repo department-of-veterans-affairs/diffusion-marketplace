@@ -158,11 +158,11 @@
     </div>
   </div>
 
-  <div class="">
+  <div>
     <% if adoption %>
-      <%= f.button 'Cancel edits', class: 'usa-button usa-button--outline margin-right-1 padding-2 text-no-underline', type: 'button', id: "cancel_edits_#{adoption&.diffusion_history&.id}", 'data-selector': "diffusion_history_#{adoption&.diffusion_history&.id}" %>
+      <%= f.button 'Cancel edits', class: 'usa-button--outline dm-btn-primary margin-right-1 padding-2 text-no-underline', type: 'button', id: "cancel_edits_#{adoption&.diffusion_history&.id}", 'data-selector': "diffusion_history_#{adoption&.diffusion_history&.id}" %>
     <% else %>
-      <%= f.button 'Clear entry', class: 'usa-button usa-button--outline margin-right-1 padding-2 text-no-underline', type: 'button', id: 'clear_entry' %>
+      <%= f.button 'Clear entry', class: 'usa-button--outline dm-btn-primary margin-right-1 padding-2 text-no-underline', type: 'button', id: 'clear_entry' %>
     <% end %>
     <button type="button" class="usa-button usa-button-primary padding-2" id="adoption_form<%= adoption&.diffusion_history&.id %>_submit" data-disable-with="<%= submit_button_text %>" data-form-id="<%= form_id %>"><%= submit_button_text %></button>
     <% if adoption %>

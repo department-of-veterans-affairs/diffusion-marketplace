@@ -593,7 +593,7 @@ class PracticesController < ApplicationController
   end
 
   def can_publish
-    if @practice.name.present? && @practice.initiating_facility_type.present? && @practice.date_initiated.present? && @practice.summary.present? && @practice.support_network_email.present?
+    if @practice.name.present? && @practice.initiating_facility_type.present? && @practice.date_initiated.present? && @practice.summary.present? && @practice.support_network_email.present? && @practice.diffusion_histories.present?
       @practice.facility? ? @practice.practice_origin_facilities.present? : @practice.initating_facility.present?
     else
       false
