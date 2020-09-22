@@ -41,6 +41,7 @@ class SavePracticeService
       if @practice_params["practice_multimedia_attributes"].present?
         process_multimedia_params
       end
+      debugger
       if @practice_params["practice_resources_attributes"].present?
         process_practice_resources_params
       end

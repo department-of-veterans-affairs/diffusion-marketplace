@@ -2,11 +2,19 @@
     const $document = $(document);
 
     function initializeImplementationForm() {
-        hideResources();
+        hideResources('core_attachment');
+        hideResources('optional_attachment');
+        hideResources('support_attachment');
 
         attachDeleteResourceListener();
         attachAddResourceListener("core_attachment_file_form", "display_core_attachment_file", "core_attachment", "file" );
         attachAddResourceListener("core_attachment_link_form", "display_core_attachment_link", "core_attachment", "link" );
+
+        attachAddResourceListener("optional_attachment_file_form", "display_optional_attachment_file", "optional_attachment", "file" );
+        attachAddResourceListener("optional_attachment_link_form", "display_optional_attachment_link", "optional_attachment", "link" );
+
+        attachAddResourceListener("support_attachment_file_form", "display_support_attachment_file", "support_attachment", "file" );
+        attachAddResourceListener("support_attachment_link_form", "display_support_attachment_link", "support_attachment", "link" );
 
         // //links
         // attachAddResourceListener('problem_resources_link_form', 'display_problem_resources_link', 'problem_resources', 'link');
@@ -130,8 +138,8 @@
         });
     }
 
-    function hideResources() {
-        const areas = ['core_attachment'];
+    function hideResources(sArea) {
+        const areas = [sArea];
         areas.forEach(a => {
             $(`#display_${a}_form div[id*="_form"]`).hide();
             $(`#display_${a}_form div[id*="_file"]`).hide();
