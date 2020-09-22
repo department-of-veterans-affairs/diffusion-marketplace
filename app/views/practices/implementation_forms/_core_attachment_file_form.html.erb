@@ -8,7 +8,6 @@
   <input type="hidden" name="practice[practice_resources_attributes][<%= placeholder %>][media_type]" value="file"/>
   <input type="hidden" name="practice[practice_resources_attributes][<%= placeholder %>][resource_type]" value="core"/>
   <% if resource&.id  %>
-    <% debugger %>
     <%= link_to(resource&.attachment&.original_filename, resource&.attachment_s3_presigned_url, target: '_blank')%>
     <input value="<%= resource&.id %>" type="hidden" name="practice[practice_resources_attributes][<%= placeholder %>][id]"/>
   <% else %>

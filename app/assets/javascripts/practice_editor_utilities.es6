@@ -238,7 +238,6 @@ function attachDeleteResourceListener() {
 
 function validateFormFields(formSelector, sArea, sType, target) {
     clearErrorDivs(sArea, sType, target);
-    debugger
     let errDiv = null;
     if (sType === "file") {
         const sAttachment = document.getElementsByClassName(sArea + '-file-attachment');

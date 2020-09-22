@@ -132,7 +132,6 @@
 
     function hideResources() {
         const areas = ['core_attachment'];
-        debugger
         areas.forEach(a => {
             $(`#display_${a}_form div[id*="_form"]`).hide();
             $(`#display_${a}_form div[id*="_file"]`).hide();
