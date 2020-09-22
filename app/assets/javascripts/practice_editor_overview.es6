@@ -134,7 +134,7 @@
             let type = $(e.target).data('type');
             $(e.target).parents('div[id*=' + area + '_' + type + '_form]').hide();
 
-            let visibleChildDivs = $(e.target).closest(`#display_${area}_${type}`).find('div:visible');
+            let visibleChildDivs = $(e.target).closest(`#display_${area}_${type}`).find('h5:visible');
             // remove title of section if there are no items
             if (visibleChildDivs.length === 1) {
                 visibleChildDivs[0].hide;
@@ -406,7 +406,7 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
 
         if ($(`#${container}`).children().length === 0) {
             let title = `${sType}s`
-            let titleHTML = `<div id="${sArea}_${sType}_section_text" class="text-bold margin-bottom-2" >${title.toUpperCase()}:</div>`
+            let titleHTML = `<h5 id="${sArea}_${sType}_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0" >${title.toUpperCase()}:</h5>`;
             $(`#${container}`).append(titleHTML)
         }
         link_form.appendTo(`#${container}`);

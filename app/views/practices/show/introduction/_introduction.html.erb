@@ -129,14 +129,14 @@
         <%# practice partners %>
         <% if has_practice_partners %>
           <div>
-            <p class="font-sans-3xs line-height-sans-3">
-              <span class="text-bold text-uppercase">Partners:</span>
-                <% @practice.practice_partners.each_with_index do |partner, index| %>
-                  <a href="<%= practice_partner_path(partner) %>" class="dm-internal-link">
-                    <%= partner.name %>
-                  </a>
-                  <%= ", " if @practice.practice_partners.size != index + 1 && @practice.practice_partners.size > 1 %>
-                <% end %>
+            <h5 class="font-sans-3xs text-uppercase text-ls-1 line-height-15px display-inline margin-y-0">Partners:</h5>
+            <p class="display-inline font-normal line-height-26">
+              <% @practice.practice_partners.each_with_index do |partner, index| %>
+                <a href="<%= practice_partner_path(partner) %>" class="dm-internal-link">
+                  <%= partner.name %>
+                </a>
+                <%= ", " if @practice.practice_partners.size != index + 1 && @practice.practice_partners.size > 1 %>
+              <% end %>
             </p>
           </div>
         <% end %>
