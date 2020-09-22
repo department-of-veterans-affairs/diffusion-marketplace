@@ -134,3 +134,21 @@ function createGUID() {
         return v.toString(16);
     });
 }
+
+function displayAttachmentForm(sArea, sType) {
+    // sArea: core, optional, support
+    // type: file, link
+    debugger
+    // document.getElementById("display_core_attachment_form").style.display = 'none';
+    //
+    // document.getElementById("display_core_attachment_form").style.display = 'block';
+    // if(sType == 'file'){
+    //     document.getElementById("core_attachment_link_form").style.display = 'none';
+    // }
+    // else if(sType == 'link'){
+    //     document.getElementById("core_attachment_file_form").style.display = 'none';
+    // }
+    debugger
+    $(`#display_${sArea}_form div[id*="_form"]`).show();
+    $(`#display_${sArea}_form div[id="${sArea}_${sType}_form"]`).show();
+}

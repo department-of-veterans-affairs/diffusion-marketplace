@@ -60,7 +60,7 @@ class SavePracticeService
       e
     end
     updated = @practice.update(@practice_params)
-    debugger
+    #debugger
     update_practice_partner_practices
     update_department_practices
     remove_attachments
