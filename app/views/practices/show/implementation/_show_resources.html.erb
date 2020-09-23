@@ -1,0 +1,278 @@
+<% core_resources = @practice.practice_resources.where(resource_type: 'core', media_type: 'resource') %>
+<% if core_resources.any? %>
+<div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+<h3 class="margin-top-2 margin-bottom-2 line-height-25px font-sans-lg">Core resources</h3>
+  <table class="usa-table usa-table--borderless">
+    <tbody>
+    <% core_people = @practice.practice_resources.where(resource_type: 'core', media_type: 'resource', resource_type_label: 'people') %>
+    <% if core_people.any? %>
+      <tr class="noBorder">
+          <td class="font-sans-xs-1 line-height-sans-505 text-top padding-left-0">
+            <b>PEOPLE</b>
+          </td>
+        <ul>
+          <td class="font-sans-xs-1 text-top line-height-sans-505">
+            <% core_people.each do |cp| %>
+            <li><%= safe_join(raw(cp.resource).split("\r\n"), tag(:br)) %></li>
+            <% end %>
+          </td>
+        <%# end %>
+        </ul>
+      </tr>
+    <% end %>
+    <% core_process =  @practice.practice_resources.where(resource_type: 'core', media_type: 'resource', resource_type_label: 'processes') %>
+    <% if core_process.any? %>
+      <tr>
+        <td class="font-sans-xs-1 line-height-sans-505 text-top padding-left-0">
+          <b>PROCESSES</b>
+        </td>
+        <ul>
+          <td class="font-sans-xs-1 text-top line-height-sans-505">
+            <% core_process.each do |cp| %>
+              <li><%= safe_join(raw(cp.resource).split("\r\n"), tag(:br)) %></li>
+            <% end %>
+          </td>
+        </ul>
+      </tr>
+    <% end %>
+    <% core_tools =  @practice.practice_resources.where(resource_type: 'core', media_type: 'resource', resource_type_label: 'tools') %>
+    <% if core_tools.any? %>
+      <tr>
+        <td class="font-sans-xs-1 line-height-sans-505 text-top padding-left-0">
+          <b>TOOLS</b>
+        </td>
+        <ul>
+          <td class="font-sans-xs-1 text-top line-height-sans-505">
+            <% core_tools.each do |ct| %>
+              <li><%= safe_join(raw(ct.resource).split("\r\n"), tag(:br)) %></li>
+            <% end %>
+          </td>
+        </ul>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>
+<br />
+<!---core files --->
+<% core_file_attachments = @practice.practice_resources.where(resource_type: 'core', media_type: 'file') %>
+<% if core_file_attachments.any? %>
+  <b>Files</b>
+  <ul>
+    <% core_file_attachments.each do |cfa| %>
+      <div class="margin-bottom-1">
+        <% if cfa.name.present? %>
+          <div class="margin-top-1 width-100 line-height-26">
+            <li class="small-disc"><%= cfa.description %> <%= link_to(cfa.name || cfa.attachment&.original_filename, cfa.attachment_s3_presigned_url, target: '_blank', class: 'dm-external-link') %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </ul>
+  <% end %>
+<!--- core links --->
+<% core_link_attachments = @practice.practice_resources.where(resource_type: 'core', media_type: 'link') %>
+<% if core_link_attachments.any? %>
+  <b>Links</b>
+  <ul>
+    <% core_link_attachments.each do |cla| %>
+      <div class="margin-bottom-1">
+        <% if cla.name.present? %>
+          <% unless cla.link_url.start_with?("http") %>
+            <% cla.link_url = "http://" + cla.link_url %>
+          <% end %>
+          <div class="margin-top-1 width-100 line-height-26">
+            <li class="small-disc"><%= cla.description %> <a class="<%= cla.link_url.downcase().include?('marketplace.gov') ? 'dm-internal-link' : 'dm-external-link usa-link--external' %>" href="<%= cla.link_url %>" target="_blank"><%= cla.name %></a></li>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </ul>
+<% end %>
+
+
+<!--- Optional Resources --->
+<% optional_resources = @practice.practice_resources.where(resource_type: 'optional', media_type: 'resource') %>
+<% if optional_resources.any? %>
+  <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+  <h3 class="margin-top-2 margin-bottom-2 line-height-25px font-sans-lg">Optional resources</h3>
+  <table class="usa-table usa-table--borderless">
+    <tbody>
+    <% optional_people = @practice.practice_resources.where(resource_type: 'optional', media_type: 'resource', resource_type_label: 'people') %>
+    <% if optional_people.any? %>
+      <tr class="noBorder">
+        <td class="font-sans-xs-1 line-height-sans-505 text-top padding-left-0">
+          <b>PEOPLE</b>
+        </td>
+        <ul>
+          <td class="font-sans-xs-1 text-top line-height-sans-505">
+            <% optional_people.each do |cp| %>
+              <li><%= safe_join(raw(cp.resource).split("\r\n"), tag(:br)) %></li>
+            <% end %>
+          </td>
+          <%# end %>
+        </ul>
+      </tr>
+    <% end %>
+    <% optional_process =  @practice.practice_resources.where(resource_type: 'optional', media_type: 'resource', resource_type_label: 'processes') %>
+    <% if optional_process.any? %>
+      <tr>
+        <td class="font-sans-xs-1 line-height-sans-505 text-top padding-left-0">
+          <b>PROCESSES</b>
+        </td>
+        <ul>
+          <td class="font-sans-xs-1 text-top line-height-sans-505">
+            <% optional_process.each do |cp| %>
+              <li><%= safe_join(raw(cp.resource).split("\r\n"), tag(:br)) %></li>
+            <% end %>
+          </td>
+        </ul>
+      </tr>
+    <% end %>
+    <% optional_tools =  @practice.practice_resources.where(resource_type: 'optional', media_type: 'resource', resource_type_label: 'tools') %>
+    <% if optional_tools.any? %>
+      <tr>
+        <td class="font-sans-xs-1 line-height-sans-505 text-top padding-left-0">
+          <b>TOOLS</b>
+        </td>
+        <ul>
+          <td class="font-sans-xs-1 text-top line-height-sans-505">
+            <% optional_tools.each do |ct| %>
+              <li><%= safe_join(raw(ct.resource).split("\r\n"), tag(:br)) %></li>
+            <% end %>
+          </td>
+        </ul>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>
+<br />
+<!---optional files --->
+<% optional_file_attachments = @practice.practice_resources.where(resource_type: 'optional', media_type: 'file') %>
+<% if optional_file_attachments.any? %>
+  <b>Files</b>
+  <ul>
+    <% optional_file_attachments.each do |cfa| %>
+      <div class="margin-bottom-1">
+        <% if cfa.name.present? %>
+          <div class="margin-top-1 width-100 line-height-26">
+            <li class="small-disc"><%= cfa.description %> <%= link_to(cfa.name || cfa.attachment&.original_filename, cfa.attachment_s3_presigned_url, target: '_blank', class: 'dm-external-link') %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </ul>
+<% end %>
+<!--- optional links --->
+<% optional_link_attachments = @practice.practice_resources.where(resource_type: 'optional', media_type: 'link') %>
+<% if optional_link_attachments.any? %>
+  <b>Links</b>
+  <ul>
+    <% optional_link_attachments.each do |cla| %>
+      <div class="margin-bottom-1">
+        <% if cla.name.present? %>
+          <% unless cla.link_url.start_with?("http") %>
+            <% cla.link_url = "http://" + cla.link_url %>
+          <% end %>
+          <div class="margin-top-1 width-100 line-height-26">
+            <li class="small-disc"><%= cla.description %> <a class="<%= cla.link_url.downcase().include?('marketplace.gov') ? 'dm-internal-link' : 'dm-external-link usa-link--external' %>" href="<%= cla.link_url %>" target="_blank"><%= cla.name %></a></li>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </ul>
+<% end %>
+
+<!--- Support Resources --->
+<% support_resources = @practice.practice_resources.where(resource_type: 'support', media_type: 'resource') %>
+<% if support_resources.any? %>
+  <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+  <h3 class="margin-top-2 margin-bottom-2 line-height-25px font-sans-lg">support resources</h3>
+  <table class="usa-table usa-table--borderless">
+    <tbody>
+    <% support_people = @practice.practice_resources.where(resource_type: 'support', media_type: 'resource', resource_type_label: 'people') %>
+    <% if support_people.any? %>
+      <tr class="noBorder">
+        <td class="font-sans-xs-1 line-height-sans-505 text-top padding-left-0">
+          <b>PEOPLE</b>
+        </td>
+        <ul>
+          <td class="font-sans-xs-1 text-top line-height-sans-505">
+            <% support_people.each do |cp| %>
+              <li><%= safe_join(raw(cp.resource).split("\r\n"), tag(:br)) %></li>
+            <% end %>
+          </td>
+          <%# end %>
+        </ul>
+      </tr>
+    <% end %>
+    <% support_process =  @practice.practice_resources.where(resource_type: 'support', media_type: 'resource', resource_type_label: 'processes') %>
+    <% if support_process.any? %>
+      <tr>
+        <td class="font-sans-xs-1 line-height-sans-505 text-top padding-left-0">
+          <b>PROCESSES</b>
+        </td>
+        <ul>
+          <td class="font-sans-xs-1 text-top line-height-sans-505">
+            <% support_process.each do |cp| %>
+              <li><%= safe_join(raw(cp.resource).split("\r\n"), tag(:br)) %></li>
+            <% end %>
+          </td>
+        </ul>
+      </tr>
+    <% end %>
+    <% support_tools =  @practice.practice_resources.where(resource_type: 'support', media_type: 'resource', resource_type_label: 'tools') %>
+    <% if support_tools.any? %>
+      <tr>
+        <td class="font-sans-xs-1 line-height-sans-505 text-top padding-left-0">
+          <b>TOOLS</b>
+        </td>
+        <ul>
+          <td class="font-sans-xs-1 text-top line-height-sans-505">
+            <% support_tools.each do |ct| %>
+              <li><%= safe_join(raw(ct.resource).split("\r\n"), tag(:br)) %></li>
+            <% end %>
+          </td>
+        </ul>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>
+<br />
+<!---support files --->
+<% support_file_attachments = @practice.practice_resources.where(resource_type: 'support', media_type: 'file') %>
+<% if support_file_attachments.any? %>
+  <b>Files</b>
+  <ul>
+    <% support_file_attachments.each do |cfa| %>
+      <div class="margin-bottom-1">
+        <% if cfa.name.present? %>
+          <div class="margin-top-1 width-100 line-height-26">
+            <li class="small-disc"><%= cfa.description %> <%= link_to(cfa.name || cfa.attachment&.original_filename, cfa.attachment_s3_presigned_url, target: '_blank', class: 'dm-external-link') %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </ul>
+<% end %>
+<!--- support links --->
+<% support_link_attachments = @practice.practice_resources.where(resource_type: 'support', media_type: 'link') %>
+<% if support_link_attachments.any? %>
+  <b>Links</b>
+  <ul>
+    <% support_link_attachments.each do |cla| %>
+      <div class="margin-bottom-1">
+        <% if cla.name.present? %>
+          <% unless cla.link_url.start_with?("http") %>
+            <% cla.link_url = "http://" + cla.link_url %>
+          <% end %>
+          <div class="margin-top-1 width-100 line-height-26">
+            <li class="small-disc"><%= cla.description %> <a class="<%= cla.link_url.downcase().include?('marketplace.gov') ? 'dm-internal-link' : 'dm-external-link usa-link--external' %>" href="<%= cla.link_url %>" target="_blank"><%= cla.name %></a></li>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </ul>
+<% end %>

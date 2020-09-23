@@ -142,6 +142,11 @@
             <%= render partial: 'practices/show/implementation/departments' %>
           </section>
         <% end %>
+        <% if @practice.practice_resources.any? %>
+          <section id="dm-implementation-show-resources" class="margin-bottom-5">
+            <%= render partial: 'practices/show/implementation/show_resources' %>
+          </section>
+          <% end %>
         <% if @practice.risk_mitigations.any? %>
           <section id="dm-implementation-risk-mitigations" class="margin-bottom-5">
             <%= render partial: 'practices/show/implementation/risks_and_mitigations' %>
