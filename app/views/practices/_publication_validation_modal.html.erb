@@ -13,7 +13,7 @@
             <%# Overview errors %>
             <%
               tagline = @practice.tagline
-              initiating_facility = @practice.facility? ? @practice.practice_origin_facilities.present? : @practice.initating_facility.present?
+              initiating_facility = @practice.has_facility?
               initiating_facility_type = @practice.initiating_facility_type
               summary = @practice.summary
               date_initiated = @practice.date_initiated

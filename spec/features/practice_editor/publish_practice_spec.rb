@@ -34,6 +34,11 @@ describe 'Practice editor', type: :feature, js: true do
       select('Birmingham VA Medical Center (Birmingham-Alabama)', from: last_fac_fac_select[:name])
     end
 
+    def set_initiating_visn
+      find('#initiating_facility_type_visn').sibling('label').click
+      select('VISN-1', :from => 'editor_visn_select')
+    end
+
     def set_adoption
       find('button[aria-controls="a0"]').click
       find('label[for="status_in_progress"').click
@@ -88,10 +93,10 @@ describe 'Practice editor', type: :feature, js: true do
 
       # set required fields in introduction page
       visit practice_introduction_path(@practice)
-      set_initiating_fac
       set_pr_required_fields
-
+      set_initiating_visn
       @publish_button.click
+
       expect(page).to have_no_content('Cannot publish yet')
       expect(page).to have_content("#{@practice.name} has been successfully published to the Diffusion Marketplace")
       # Publish button should be gone if the practice has been published
@@ -100,7 +105,7 @@ describe 'Practice editor', type: :feature, js: true do
       visit practice_path(@practice)
       expect(page).to have_content('practice summary')
       expect(page).to have_content('October 1970')
-      expect(page).to have_content('Birmingham VA Medical Center (Birmingham-Alabama)')
+      expect(page).to have_content('VISN-1')
       expect(page).to have_content('A public practice')
     end
   end
