@@ -66,7 +66,6 @@
                 <%= label_tag 'core_resource_link', 'Link', class: 'usa-radio__label
                 initiating-facility-type-label line-height-19px x0-bottom', for: "core_resource_attachment_link" %>
               </div>
-              <br />
               <div id="display_core_attachment_form" class="display_core_attachments_form">
                 <%= render partial: "practices/implementation_forms/core_attachment_file_form", locals: {area: 'core_attachment', resource_type: 'core'} %>
                 <%= render partial: "practices/implementation_forms/core_attachment_link_form", locals: {area: 'core_attachment', resource_type: 'core'} %>
@@ -189,7 +188,6 @@
                 <%= label_tag 'support_resource_link', 'Link', class: 'usa-radio__label
                 initiating-facility-type-label line-height-19px x0-bottom', for: "support_resource_attachment_link" %>
               </div>
-              <br />
               <div id="display_support_attachment_form" class="display_support_attachments_form">
                 <%= render partial: "practices/implementation_forms/support_attachment_file_form", locals: {area: 'support_attachment', resource_type: 'support'} %>
                 <%= render partial: "practices/implementation_forms/support_attachment_link_form", locals: {area: 'support_attachment', resource_type: 'support'} %>
@@ -207,7 +205,7 @@
                   <div id="support_attachment_link_section_text" class="text-bold margin-bottom-2">LINKS:</div>
                 <% end %>
                 <% @practice.practice_resources.where(resource_type: 'support', media_type: 'link').each_with_index do |pr, i| %>
-                  <%= render partial: "practices/implementation_forms/support", locals: {resource: pr, placeholder: i, area: 'support_attachment', resource_type: 'support'} %>
+                  <%= render partial: "practices/implementation_forms/support_attachment_link_form", locals: {resource: pr, placeholder: i, area: 'support_attachment', resource_type: 'support'} %>
                 <% end %>
               </div>
             </div>

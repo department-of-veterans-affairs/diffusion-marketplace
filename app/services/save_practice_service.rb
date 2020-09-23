@@ -28,7 +28,6 @@ class SavePracticeService
       #   resource_label_type =  @practice_params[:practice_resources_attributes][:resource_label_type]
       #   @practice_params["practice_resources_attributes"]["resource_type_label"] = @practice_params["practice_resources_attributes"]["resource_type_label"]
       # end
-
       if @practice_params["practice_problem_resources_attributes"].present?
         process_problem_resource_params
       end
@@ -47,24 +46,8 @@ class SavePracticeService
       if @practice_params["risk_mitigations_attributes"].present?
         process_risk_mitigations_params
       end
-        updated = @practice.update(@practice_params)
-        rescue_method(:update_practice_partner_practices)
-        rescue_method(:update_department_practices)
-        rescue_method(:remove_attachments)
-        rescue_method(:manipulate_avatars)
-        rescue_method(:remove_main_display_image)
-        rescue_method(:crop_main_display_image)
-        rescue_method(:update_initiating_facility)
-        rescue_method(:update_practice_awards)
-        rescue_method(:update_category_practices)
-        rescue_method(:crop_resource_images)
 
-    rescue => e
-      Rails.logger.error "save_practice error: #{e.message}"
-      e
-    end
-    updated = @practice.update(@practice_params)
-    #debugger
+    @practice.update(@practice_params)
     update_practice_partner_practices
     update_department_practices
     remove_attachments
@@ -75,8 +58,20 @@ class SavePracticeService
     update_practice_awards
     update_category_practices
     crop_resource_images
-
-    updated
+        rescue_method(:update_practice_partner_practices)
+        rescue_method(:update_department_practices)
+        rescue_method(:remove_attachments)
+        rescue_method(:manipulate_avatars)
+        rescue_method(:remove_main_display_image)
+        rescue_method(:crop_main_display_image)
+        rescue_method(:update_initiating_facility)
+        rescue_method(:update_practice_awards)
+        rescue_method(:update_category_practices)
+        rescue_method(:crop_resource_images)
+    rescue => e
+      Rails.logger.error "save_practice error: #{e.message}"
+      e
+    end
   end
 
   private
@@ -321,6 +316,7 @@ class SavePracticeService
 
   def process_practice_resources_params
     PracticeResource.media_types.each do |rt|
+      debugger
       @practice_params['practice_resources_attributes']&.delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
     end
   end
