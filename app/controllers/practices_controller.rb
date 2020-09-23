@@ -178,9 +178,9 @@ class PracticesController < ApplicationController
     elsif facility_type == "visn" && params[:editor_visn_select].present?
       @practice.initiating_facility = params[:editor_visn_select]
       @practice.initiating_department_office_id = ""
-    elsif facility_type == "department" && params[:editor_office_select].present? && params[:initiating_department_office_id].present?
-      @practice.initiating_facility = params[:editor_office_select]
-      @practice.initiating_department_office_id = params[:initiating_department_office_id]
+    elsif facility_type == "department" && params[:editor_office_state_select].present? && params[:practice][:initiating_department_office_id].present? && params[:practice][:initiating_facility]
+      @practice.initiating_facility = params[:practice][:initiating_facility]
+      @practice.initiating_department_office_id = params[:practice][:initiating_department_office_id]
     elsif facility_type == "other" && params[:initiating_facility_other].present?
       @practice.initiating_facility = params[:initiating_facility_other]
       @practice.initiating_department_office_id = ""
