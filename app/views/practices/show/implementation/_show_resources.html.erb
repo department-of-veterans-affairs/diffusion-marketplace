@@ -1,4 +1,4 @@
-<% core_resources = @practice.practice_resources.where(resource_type: 'core', media_type: 'resource') %>
+<% core_resources = @practice.practice_resources.where(resource_type: 'core') %>
 <% if core_resources.any? %>
 <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
 <h3 class="margin-top-2 margin-bottom-2 line-height-25px font-sans-lg">Core resources</h3>
@@ -92,7 +92,7 @@
 
 
 <!--- Optional Resources --->
-<% optional_resources = @practice.practice_resources.where(resource_type: 'optional', media_type: 'resource') %>
+<% optional_resources = @practice.practice_resources.where(resource_type: 'optional') %>
 <% if optional_resources.any? %>
   <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
   <h3 class="margin-top-2 margin-bottom-2 line-height-25px font-sans-lg">Optional resources</h3>
@@ -185,7 +185,7 @@
 <% end %>
 
 <!--- Support Resources --->
-<% support_resources = @practice.practice_resources.where(resource_type: 'support', media_type: 'resource') %>
+<% support_resources = @practice.practice_resources.where(resource_type: 'support') %>
 <% if support_resources.any? %>
   <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
   <h3 class="margin-top-2 margin-bottom-2 line-height-25px font-sans-lg">support resources</h3>
