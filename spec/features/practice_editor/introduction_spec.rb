@@ -66,7 +66,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
       expect(page).to have_field('Name', with: @practice.name)
       expect(page).to have_field('Acronym', with: @practice.short_name)
       expect(page).to have_field('Summary', with: @practice.summary)
-      fill_in('Name', with: 'Edited practice')
+      fill_in('Name (required field)', with: 'Edited practice')
       fill_in('Acronym', with: 'YOLO')
       fill_in('Summary', with: 'Updated summary')
       click_save
