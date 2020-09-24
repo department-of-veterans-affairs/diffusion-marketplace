@@ -56,6 +56,16 @@ class Practice < ApplicationRecord
     end
   end
 
+  def has_facility?
+    if self.facility?
+      self.practice_origin_facilities.present?
+    elsif self.department?
+      self.initiating_department_office_id.present? && self.initiating_facility.present?
+    elsif self.visn? || self.other?
+      self.initiating_facility.present?
+    end
+  end
+
   # views
   def views
     Ahoy::Event.where_props(practice_id: id).count

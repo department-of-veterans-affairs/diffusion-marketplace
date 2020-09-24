@@ -30,13 +30,10 @@ describe 'Search', type: :feature do
   def update_practice_introduction(practice)
     login_as(@admin, :scope => :user, :run_callbacks => false)
     visit practice_introduction_path(practice)
-    find('.dm-add-practice-originating-facilities-link').click
-    last_fac_field = find_all('.practice-editor-origin-facility-li').last
-    last_fac_state_select = last_fac_field.find('select[id*="editor_state_select"]')
-    last_fac_fac_select = last_fac_field.find('select[id*="facility_id"]')
-    select('Alabama', from: last_fac_state_select[:name])
-    select('Birmingham VA Medical Center (Birmingham-Alabama)', from: last_fac_fac_select[:name])
-    fill_in('practice_summary', with: 'This is the most super practice ever made')
+    find("#initiating_facility_type_department").sibling('label').click
+    select('VBA', :from => 'editor_department_select')
+    select('Alabama', :from => 'editor_office_state_select')
+    select('Montgomery Regional Office', :from => 'editor_office_select')
     fill_in('practice_summary', with: 'This is the most super practice ever made')
     select('October', :from => 'editor_date_intiated_month')
     select('1970', :from => 'editor_date_intiated_year')
@@ -46,6 +43,12 @@ describe 'Search', type: :feature do
 
   def publish_practice(practice)
     update_practice_introduction(practice)
+    visit(practice_adoptions_path(practice))
+    find('button[aria-controls="a0"]').click
+    find('label[for="status_in_progress"').click
+    select('Alaska', :from => 'editor_state_select')
+    select('Anchorage VA Medical Center', :from => 'editor_facility_select')
+    find('#adoption_form_submit').click
     visit(practice_contact_path(practice))
     fill_in('practice_support_network_email', with: 'dm@va.gov')
     click_button('Publish')
