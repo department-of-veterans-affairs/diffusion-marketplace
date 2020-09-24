@@ -8,6 +8,9 @@
   <input type="hidden" name="practice[practice_resources_attributes][<%= placeholder %>][media_type]" value="file"/>
   <input type="hidden" name="practice[practice_resources_attributes][<%= placeholder %>][resource_type]" value="support"/>
   <% if resource&.id  %>
+    <label for="practice[practice_resources_attributes][<%= placeholder %>][id]">
+      File:
+    </label>
     <%= link_to(resource&.attachment&.original_filename, resource&.attachment_s3_presigned_url, target: '_blank')%>
     <input value="<%= resource&.id %>" type="hidden" name="practice[practice_resources_attributes][<%= placeholder %>][id]"/>
   <% else %>
@@ -47,5 +50,5 @@
   </div>
 
   <%# action buttons %>
-  <%= render partial: "practices/overview_forms/form_actions", locals: { resource: resource, placeholder: placeholder, area: area, type: 'file' } %>
+  <%= render partial: "practices/overview_forms/form_actions", locals: { resource: resource, placeholder: placeholder, area: area, type: 'file', align: 'right' } %>
 </div>

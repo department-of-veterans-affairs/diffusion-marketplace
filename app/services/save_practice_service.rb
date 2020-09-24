@@ -316,6 +316,7 @@ class SavePracticeService
 
   def process_practice_resources_params
     PracticeResource.media_types.each do |rt|
+      debugger
       @practice_params['practice_resources_attributes']&.delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
     end
   end
