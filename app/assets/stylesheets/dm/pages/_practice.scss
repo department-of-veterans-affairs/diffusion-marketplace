@@ -396,7 +396,7 @@
 
 .impact-trash, .dm-origin-trash, .documentation-trash, .risk-mitigation-trash, .va-employee-trash, .permission-trash,
 .resource-trash {
-  font-size: 22px;
+  font-size: 16px;
 }
 
 .timeline-trash{
@@ -867,8 +867,8 @@
 }
 
 .initiating-facility-type-radio {
-  top: 10px !important;
-  left: 25px !important;
+  top: 23px !important;
+  left: 27px !important;
   width: 1px;
   height: 1px;
 }
@@ -941,7 +941,7 @@ li.small-disc:before {
   margin-bottom: 40px;
 }
 
-.maturity-level-banner {
+.maturity-level-banner, .pii-phi-alert-banner {
   padding: 0.5rem 1.25rem 0.5rem 1.75rem !important;
   margin-top: 0 !important;
   background-color: transparent !important;
