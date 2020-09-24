@@ -48,6 +48,6 @@
     %>
     <input <%= resource&.id ? 'required' : '' %> class="usa-input" value="<%= resource&.description %>"  type="text" name="practice[practice_resources_attributes][<%= placeholder %>][description]" id="practice_<%= area %>_attributes_<%= placeholder %>_description" style="width: 643px"/>
   </div>
-    <%= render partial: "practices/overview_forms/form_actions", locals: { resource: resource, placeholder: placeholder, area: area, type: 'file', align: 'right'} %>
+    <%= render partial: "practices/overview_forms/form_actions", locals: { resource: resource, placeholder: placeholder, area: area, type: 'file', align: 'right', table_name: 'resources' } %>
 </div>
 

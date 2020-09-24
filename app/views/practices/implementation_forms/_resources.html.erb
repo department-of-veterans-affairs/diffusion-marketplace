@@ -34,7 +34,7 @@
             <b>tools: </b>Type a tool (e.g., equipment, software, supply) another facility would need to implement your practice.
         <% end %>
         </h3>
-        <ul class="<%= slug %>-ul add-list-reset" id="sortable_practice_core_resources" role="listbox" aria-label="Practice editor core resource list">
+        <ul class="<%= slug %>-ul add-list-reset" id="<%= slug %>_practice_core_resources" aria-label="Practice editor core resource list">
           <%= f.fields_for :practice_resources, wrapper: false do |pr| %>
             <%
               pr_id = pr.object.id || "new_practice_resources"

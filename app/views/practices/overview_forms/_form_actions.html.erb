@@ -2,11 +2,12 @@
    placeholder = placeholder
    area = area
    type = type
-   align = align || 'left'
+   align ||= 'left'
+   table_name ||= area
 %>
 <% if resource&.id %>
   <div class="grid-col-12 margin-top-2" align="<%= align %>">
-    <input type="hidden" value="false" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][_destroy]"/>
+    <input type="hidden" value="false" name="practice[practice_<%= table_name %>_attributes][<%= placeholder %>][_destroy]"/>
     <button type="button" data-area="<%= area %>" data-type="<%= type %>"class="usa-button--unstyled dm-btn-warning remove_nested_fields">Delete entry</button>
   </div>
 <% else %>
