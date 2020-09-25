@@ -10,7 +10,7 @@
       <li class="usa-sidenav__item">
         <a href="#overview" class="dm-tab top-tab scroll-to sidebar-overview" data-target="#overview" data-turbolinks="false">Overview</a>
       </li>
-      <% unless !@practice.origin_story || !@practice.origin_title %>
+      <% if @practice.origin_story %>
         <li class="usa-sidenav__item">
           <a href="#origin" class="dm-tab scroll-to sidebar-origin" data-target="#origin" data-turbolinks="false">Origin</a>
         </li>
@@ -159,7 +159,7 @@
 <%#<div class="dm-background-triangle-bottom "></div>%>
 
 <!-- "Origin of this Practice" section -->
-<% unless !@practice.origin_story || !@practice.origin_title %>
+<% if @practice.origin_story %>
   <section class="padding-bottom-2 margin-bottom-5">
     <div class="grid-container">
       <div class="grid-row grid-gap">
