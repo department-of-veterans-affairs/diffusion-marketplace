@@ -62,7 +62,7 @@
                         <i class="fas fa-user empty-user-avatar text-base-lighter"></i>
                       </div>
                   </div>
-                  <div class="grid-col-fill profile-image-right-col-setter">
+                  <div class="grid-col-fill profile-image-right-col-setter display-none">
                     <p>Photo</p>
                     <div class="text-base margin-y-1">
                       <p class="line-height-sans-505">
@@ -75,7 +75,7 @@
                       </p>
                     </div>
 
-                  <div class="grid-row flex-align-start">
+                  <div class="grid-row flex-align-start display-none">
                     <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
                       <%= f.hidden_field attribute, :id => attribute, :value => nil %>
                     <% end %>
