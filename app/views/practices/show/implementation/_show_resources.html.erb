@@ -188,7 +188,7 @@
 <% support_resources = @practice.practice_resources.where(resource_type: 'support') %>
 <% if support_resources.any? %>
   <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
-  <h3 class="margin-top-2 margin-bottom-2 line-height-25px font-sans-lg">support resources</h3>
+  <h3 class="margin-top-2 margin-bottom-2 line-height-25px font-sans-lg">Support resources</h3>
   <table class="usa-table usa-table--borderless">
     <tbody>
     <% support_people = @practice.practice_resources.where(resource_type: 'support', media_type: 'resource', resource_type_label: 'people') %>
