@@ -66,7 +66,6 @@ function observePracticeEditorLiArrival($document,
     $document.arrive(liElSelector, (newElem) => {
         const $newEl = $(newElem);
         const dataId = $newEl.data('id');
-        console.log($newEl);
         styleOriginFacility(
             $newEl,
             dataId,

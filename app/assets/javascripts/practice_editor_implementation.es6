@@ -77,7 +77,6 @@
 })(window.jQuery);
 
 function displayAttachmentForm(sArea, sType) {
-    //debugger
     $(`#display_${sArea}_form div[id*="_form"]`).hide();
     $(`#display_${sArea}_form div[id="${sArea}_${sType}_form"]`).show();
 }
