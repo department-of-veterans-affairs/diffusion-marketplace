@@ -23,4 +23,8 @@ class PracticeResource < ApplicationRecord
   def skip_for_non_image
     %w(image/jpg image/jpeg image/png).include?(attachment_content_type)
   end
+
+  def attachment_crop
+    process_attachment_crop({crop_w: @crop_w, crop_h: @crop_h, crop_x: @crop_x, crop_y: @crop_y})
+  end
 end

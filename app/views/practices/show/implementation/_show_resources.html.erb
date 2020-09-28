@@ -58,7 +58,7 @@
 <% core_file_attachments = @practice.practice_resources.where(resource_type: 'core', media_type: 'file') %>
 <% if core_file_attachments.any? %>
   <b>Files</b>
-  <ul>
+  <ul class="usa-list--unstyled">
     <% core_file_attachments.each do |cfa| %>
       <div class="margin-bottom-1">
         <% if cfa.name.present? %>
@@ -74,7 +74,7 @@
 <% core_link_attachments = @practice.practice_resources.where(resource_type: 'core', media_type: 'link') %>
 <% if core_link_attachments.any? %>
   <b>Links</b>
-  <ul>
+  <ul class="usa-list--unstyled">
     <% core_link_attachments.each do |cla| %>
       <div class="margin-bottom-1">
         <% if cla.name.present? %>
@@ -152,7 +152,7 @@
 <% optional_file_attachments = @practice.practice_resources.where(resource_type: 'optional', media_type: 'file') %>
 <% if optional_file_attachments.any? %>
   <b>Files</b>
-  <ul>
+  <ul class="usa-list--unstyled">
     <% optional_file_attachments.each do |cfa| %>
       <div class="margin-bottom-1">
         <% if cfa.name.present? %>
@@ -168,7 +168,7 @@
 <% optional_link_attachments = @practice.practice_resources.where(resource_type: 'optional', media_type: 'link') %>
 <% if optional_link_attachments.any? %>
   <b>Links</b>
-  <ul>
+  <ul class="usa-list--unstyled">
     <% optional_link_attachments.each do |cla| %>
       <div class="margin-bottom-1">
         <% if cla.name.present? %>
@@ -245,7 +245,7 @@
 <% support_file_attachments = @practice.practice_resources.where(resource_type: 'support', media_type: 'file') %>
 <% if support_file_attachments.any? %>
   <b>Files</b>
-  <ul>
+  <ul class="usa-list--unstyled">
     <% support_file_attachments.each do |cfa| %>
       <div class="margin-bottom-1">
         <% if cfa.name.present? %>
@@ -261,7 +261,7 @@
 <% support_link_attachments = @practice.practice_resources.where(resource_type: 'support', media_type: 'link') %>
 <% if support_link_attachments.any? %>
   <b>Links</b>
-  <ul>
+  <ul class="usa-list--unstyled">
     <% support_link_attachments.each do |cla| %>
       <div class="margin-bottom-1">
         <% if cla.name.present? %>

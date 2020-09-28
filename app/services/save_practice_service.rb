@@ -44,26 +44,16 @@ class SavePracticeService
       end
 
     @practice.update(@practice_params)
-    update_practice_partner_practices
-    update_department_practices
-    remove_attachments
-    manipulate_avatars
-    remove_main_display_image
-    crop_main_display_image
-    update_initiating_facility
-    update_practice_awards
-    update_category_practices
-    crop_resource_images
-        rescue_method(:update_practice_partner_practices)
-        rescue_method(:update_department_practices)
-        rescue_method(:remove_attachments)
-        rescue_method(:manipulate_avatars)
-        rescue_method(:remove_main_display_image)
-        rescue_method(:crop_main_display_image)
-        rescue_method(:update_initiating_facility)
-        rescue_method(:update_practice_awards)
-        rescue_method(:update_category_practices)
-        rescue_method(:crop_resource_images)
+    rescue_method(:update_practice_partner_practices)
+    rescue_method(:update_department_practices)
+    rescue_method(:remove_attachments)
+    rescue_method(:manipulate_avatars)
+    rescue_method(:remove_main_display_image)
+    rescue_method(:crop_main_display_image)
+    rescue_method(:update_initiating_facility)
+    rescue_method(:update_practice_awards)
+    rescue_method(:update_category_practices)
+    rescue_method(:crop_resource_images)
     rescue => e
       Rails.logger.error "save_practice error: #{e.message}"
       e
