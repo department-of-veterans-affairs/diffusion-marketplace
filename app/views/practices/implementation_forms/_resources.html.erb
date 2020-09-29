@@ -27,11 +27,11 @@
            class="margin-top-1">
         <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
           <% if resource_type_label === "people" %>
-            <b>People: </b>Type a job title, department, and/or discipline another facility would need to involve in implementing your practice.  Provide dependencies for implementation (e.g., Clinical Application Controller required for 2-4 hours/week for 1-2 weeks).
+            <span class="text-bold">People: </span>Type a job title, department, and/or discipline another facility would need to involve in implementing your practice.  Provide dependencies for implementation (e.g., Clinical Application Controller required for 2-4 hours/week for 1-2 weeks).
           <% elsif resource_type_label === "processes"%>
-            <b>Processes: </b>Type a process (e.g., method, procedure, training) another facility would need to implement your practice.
+            <span class="text-bold">Processes: </span>Type a process (e.g., method, procedure, training) another facility would need to implement your practice.
         <% elsif resource_type_label === "tools"%>
-            <b>Tools: </b>Type a tool (e.g., equipment, software, supply) another facility would need to implement your practice.
+            <span class="text-bold">Tools: </span>Type a tool (e.g., equipment, software, supply) another facility would need to implement your practice.
         <% end %>
         </h3>
         <ul class="<%= slug %>-ul add-list-reset" id="<%= slug %>_practice_core_resources" aria-label="Practice editor core resource list">
@@ -39,7 +39,6 @@
             <%
               pr_id = pr.object.id || "new_practice_resources"
               show_form = (pr.object.resource_type_label == resource_type_label && pr.object.resource_type == resource_type && pr.object.media_type == media_type) || pr_id == "new_practice_resources"
-              #debugger
             %>
             <% if show_form %>
             <% if pr.object.id %>
