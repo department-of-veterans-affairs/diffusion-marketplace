@@ -79,6 +79,7 @@
             </li>
           <% end %>
         <% end %>
+          <br />
         </ul>
         <% cur_resources = @practice.practice_resources.where(resource_type_label: resource_type_label, resource_type: resource_type, media_type: media_type) %>
         <%= f.link_to_add :practice_resources, id: link_to_add_link_slug, 'data-dm-blueprint-id': blue_print_id, class: add_practice_resources_link + " dm-add-another-link line-height-26 cursor-pointer #{'display-none' unless cur_resources.any?}" do %>

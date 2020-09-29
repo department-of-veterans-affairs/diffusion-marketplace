@@ -53,16 +53,6 @@
 
     }
 
-    function showCurrentlySelectedOptions(currentSelectForm) {
-        $(`#${currentSelectForm}`).show();
-    }
-
-    function hideOtherSelectForms(formsToHide) {
-        formsToHide.forEach(f => {
-            $(`#${f}`).hide();
-        });
-    }
-
     function hideResources(sArea) {
         const areas = [sArea];
         areas.forEach(a => {
@@ -75,8 +65,3 @@
 
     $document.on('turbolinks:load', initializeImplementationForm);
 })(window.jQuery);
-
-function displayAttachmentForm(sArea, sType) {
-    $(`#display_${sArea}_form div[id*="_form"]`).hide();
-    $(`#display_${sArea}_form div[id="${sArea}_${sType}_form"]`).show();
-}

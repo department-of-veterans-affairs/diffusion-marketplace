@@ -443,3 +443,8 @@ function hideAttachmentErrorStyles(inputTitle, elem1, elem2) {
     $(inputTitle).closest(elem2).find('label').removeClass('usa-label--error margin-bottom-0');
 }
 
+function displayAttachmentForm(sArea, sType) {
+    $(`#display_${sArea}_form div[id*="_form"]`).hide();
+    $(`#display_${sArea}_form div[id="${sArea}_${sType}_form"]`).show();
+}
+

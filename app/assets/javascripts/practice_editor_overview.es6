@@ -116,16 +116,6 @@
         });
     }
 
-    function showCurrentlySelectedOptions(currentSelectForm) {
-        $(`#${currentSelectForm}`).show();
-    }
-
-    function hideOtherSelectForms(formsToHide) {
-        formsToHide.forEach(f => {
-            $(`#${f}`).hide();
-        });
-    }
-
     function hideResources() {
         const areas = ['problem_resources', 'solution_resources', 'results_resources', 'multimedia'];
 
