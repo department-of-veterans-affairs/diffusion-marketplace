@@ -3,7 +3,7 @@
    placeholder = placeholder.to_s + '_file'
    area = area.to_s
 %>
-
+<div class="grid-col-12">
 <div id="<%= area %>_file_form<%= "_#{placeholder}" if resource %>" <% if resource %> class="resource_container margin-bottom-5" <% end %>>
   <input type="hidden" name="practice[practice_resources_attributes][<%= placeholder %>][media_type]" value="file"/>
   <input type="hidden" name="practice[practice_resources_attributes][<%= placeholder %>][resource_type]" value="optional"/>
@@ -36,7 +36,7 @@
     }
     %>
 
-    <input <%= resource&.id ? 'required' : '' %> class="usa-input grid-col-8" value="<%= resource&.name %>" type="text" name="practice[practice_resources_attributes][<%= placeholder %>][name]" id="practice_<%= area %>_attributes_<%= placeholder %>_name"/>
+    <input <%= resource&.id ? 'required' : '' %> class="usa-input grid-col-6" value="<%= resource&.name %>" type="text" name="practice[practice_resources_attributes][<%= placeholder %>][name]" id="practice_<%= area %>_attributes_<%= placeholder %>_name"/>
   </div>
   <div class="<%= area %>-input-container">
     <%= label_tag "practice_#{area}_description", 'File description', class: 'usa-label overview-resource-label', for: "practice_#{area}_attributes_#{placeholder}_description" %>
@@ -46,9 +46,10 @@
         message: 'Please enter a file description'
     }
     %>
-    <input <%= resource&.id ? 'required' : '' %> class="usa-input grid-col-12" value="<%= resource&.description %>"  type="text" name="practice[practice_resources_attributes][<%= placeholder %>][description]" id="practice_<%= area %>_attributes_<%= placeholder %>_description"/>
+    <input <%= resource&.id ? 'required' : '' %> class="usa-input grid-col-10" value="<%= resource&.description %>"  type="text" name="practice[practice_resources_attributes][<%= placeholder %>][description]" id="practice_<%= area %>_attributes_<%= placeholder %>_description"/>
   </div>
 
   <%# action buttons %>
   <%= render partial: "practices/overview_forms/form_actions", locals: { resource: resource, placeholder: placeholder, area: area, type: 'file', align: 'right', table_name: 'resources' } %>
+</div>
 </div>
