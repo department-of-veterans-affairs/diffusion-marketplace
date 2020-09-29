@@ -80,6 +80,7 @@ Rails.application.routes.draw do
   end
 
   get '/nominate-a-practice', controller: 'nominate_practices', action: 'index', as: 'nominate_a_practice'
+  get '/diffusion-map', controller: 'home', action: 'diffusion_map', as: 'diffusion_map'
 
   namespace :system do
     get 'status' => 'status#index', as: 'status'
