@@ -36,18 +36,15 @@
               Provide a list of the resources another facility would need to implement your practice.
             </h3>
             <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "core", resource_type_label: "people", media_type: 'resource'}%>
-            <br />
             <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "core", resource_type_label: "processes", media_type: 'resource'}%>
-            <br />
             <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "core", resource_type_label: "tools", media_type: 'resource'}%>
-            <br />
 
-            <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5 margin-bottom-2"></div>
             <h2 class="font-sans-sm">Core resources attachments</h2>
             <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
               Upload any files or attach any links related to support resources.
             </h3>
-            <div class="grid-row grid-gap margin-top-2 margin-bottom-5">
+            <div class="grid-row grid-gap margin-top-2 margin-bottom-3">
               <div class="usa-radio position-relative grid-col-12">
                 <%= radio_button_tag 'practice_resources[media_type]',
                                      'File', false, onclick: "displayAttachmentForm('core_attachment', 'file');",
@@ -87,28 +84,20 @@
                 <% end %>
               </div>
             </div>
-
-
-
-
-            <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-bottom-3"></div>
             <h2 class="font-sans-sm">Optional resources list</h2>
             <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
               Provide a list of the resources another facility would need to implement your practice.
             </h3>
             <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "optional", resource_type_label: "people", media_type: 'resource'}%>
-            <br />
             <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "optional", resource_type_label: "processes", media_type: 'resource'}%>
-            <br />
             <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "optional", resource_type_label: "tools", media_type: 'resource'}%>
-            <br />
-
-            <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5 margin-bottom-2"></div>
             <h2 class="font-sans-sm">Optional resources attachments</h2>
             <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
               Upload any files or attach any links related to support resources.
             </h3>
-            <div class="grid-row grid-gap margin-top-2 margin-bottom-5">
+            <div class="grid-row grid-gap margin-top-2 margin-bottom-3">
               <div class="usa-radio position-relative grid-col-12">
                 <%= radio_button_tag 'practice_resources[media_type]',
                                      'File', false, onclick: "displayAttachmentForm('optional_attachment', 'file');",
@@ -148,28 +137,20 @@
                 <% end %>
               </div>
             </div>
-            <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
-
-
-
-
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
             <h2 class="font-sans-sm">Support resources list</h2>
             <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
               Provide a list of the resources another facility would need to implement your practice.
             </h3>
             <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "support", resource_type_label: "people", media_type: 'resource'}%>
-            <br />
             <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "support", resource_type_label: "processes", media_type: 'resource'}%>
-            <br />
             <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "support", resource_type_label: "tools", media_type: 'resource'}%>
-
-
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
             <h2 class="font-sans-sm">Support resources attachments</h2>
             <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
               Upload any files or attach any links related to support resources.
             </h3>
-            <div class="grid-row grid-gap margin-top-2 margin-bottom-5">
+            <div class="grid-row grid-gap margin-top-2">
               <div class="usa-radio position-relative grid-col-12">
                 <%= radio_button_tag 'practice_resources[media_type]',
                                      'File', false, onclick: "displayAttachmentForm('support_attachment', 'file');",
@@ -209,7 +190,7 @@
                 <% end %>
               </div>
             </div>
-            <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-3"></div>
             <%= render partial: 'practices/implementation_forms/risks_and_mitigations', locals: {f: f} %>
           </div>
         <% end %>
