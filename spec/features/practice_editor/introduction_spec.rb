@@ -50,7 +50,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
       expect(page).to have_content('Categories')
       expect(page).to have_content('Select any categories that apply to your practice.')
       expect(page).to have_content('Diffusion phase')
-      expect(page).to have_content('Select the level of maturity that applies to your practice.')
+      expect(page).to have_content('Select the diffusion phase that applies to your practice.')
       expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/instructions")
       expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/adoptions")
     end
