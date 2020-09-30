@@ -4,8 +4,6 @@
 
 @import '../variables/colors';
 
-
-
 .home .circle {
   width: 130px;
   height: 130px;
@@ -66,10 +64,10 @@
       border: 2px solid $dm-color-lighter-black !important;
     }
   }
+}
 
-  .virus-image-container {
-    align-self: center;
-  }
+.dm-virus-image-container {
+  display: none;
 }
 
 .tt-dataset-facilityNames {
@@ -114,7 +112,19 @@
     width: 100% !important;
   }
 
-  .virus-image-container {
+  .dm-virus-image-container {
     margin: 0 auto;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .dm-diffusion-map-more {
+    position: absolute;
+    bottom: -117px;
+   }
+
+  .dm-virus-image-container {
+    display: block;
+    align-self: center;
   }
 }

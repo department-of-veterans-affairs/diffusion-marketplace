@@ -26,10 +26,10 @@
 
   <section class=" grid-container margin-bottom-5">
     <div class="grid-row grid-gap-3">
-      <div class="grid-col-8">
-        <div class="homepage-featured-section-container height-auto position-relative">
-          <div class="grid-row">
-            <div class="grid-col-8">
+      <div class="desktop:grid-col-8">
+        <div class="homepage-featured-section-container height-auto position-relative margin-bottom-3 desktop:margin-bottom-0 padding-right-4 desktop:padding-right-0">
+          <div class="grid-row desktop:margin-right-2">
+            <div class="grid-col-12 desktop:grid-col-8">
               <%= link_to '/covid-19', class: 'homepage-featured-link' do %>
                 <h2 class="font-sans-xl">COVID-19<span class="fas fa-angle-right margin-left-105"></span></h2>
               <% end %>
@@ -40,14 +40,14 @@
               </p>
               <%= link_to 'See more', '/covid-19', class: 'usa-button usa-button--outline' %>
             </div>
-            <div class="grid-col-fill text-center virus-image-container">
+            <div class="grid-col-fill text-center dm-virus-image-container">
               <i class="fas fa-viruses fa-9x text-primary-darker"></i>
             </div>
           </div>
         </div>
       </div>
-      <div class="grid-col-4">
-        <div class="homepage-featured-section-container height-full dm-primary-5v-background position-relative">
+      <div class="desktop:grid-col-4">
+        <div class="homepage-featured-section-container height-full dm-primary-5v-background position-relative padding-right-4 desktop:padding-right-0">
           <div class="grid-row">
             <div class="grid-col-12">
               <%= link_to '/diffusion-map', class: 'homepage-featured-link' do %>
@@ -56,7 +56,9 @@
               <p class="line-height-sans-505 font-sans-sm">
                 See practices mapped out by location.
               </p>
-              <%= link_to 'See more', '/diffusion-map', class: 'usa-button usa-button--outline' %>
+              <div class="dm-diffusion-map-more">
+                <%= link_to 'See more', '/diffusion-map', class: 'usa-button usa-button--outline' %>
+              </div>
             </div>
           </div>
 
