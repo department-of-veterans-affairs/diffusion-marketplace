@@ -210,15 +210,6 @@ body {
   cursor: pointer;
 }
 
-.report-abuse-submit {
-    border: 2px solid $dm-color-blue-50v !important;
-  &:hover {
-    border: 2px solid $dm-color-blue-70v !important;
-  }
-  &:focus {
-    outline-offset: 0 !important;
-  }
-}
 
 .fa-angle-down {
   font-size: 20px;
@@ -306,8 +297,4 @@ body {
   @media screen and (min-width: 1024px) {
     margin-bottom: 0;
   }
-}
-
-.comment-submit {
-  padding: 14px 20px 14px 20px !important;
 }

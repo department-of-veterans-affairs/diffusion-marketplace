@@ -80,13 +80,13 @@
                       <%= f.hidden_field attribute, :id => attribute, :value => nil %>
                     <% end %>
                     <div class="grid-col-fill">
-                      <a class="usa-button padding-2 dm-cropper-save-edit hidden" aria-controls='photo-save-edit' aria-expanded='false'>Save edits</a>
-                      <a class="usa-button usa-button--outline padding-2 dm-cropper-cancel-edit hidden" aria-controls='photo-cancel-edit' aria-expanded='false'>Cancel edits</a>
-                      <a class="<%= @user.avatar.present? && @user.avatar.exists? ? "usa-button usa-button--outline padding-2 dm-cropper-edit-mode" : "usa-button usa-button--outline padding-2 dm-cropper-edit-mode hidden" %>" aria-controls='photo-crop' aria-expanded='false'>Edit photo</a>
+                      <a class="usa-button dm-btn-primary padding-2 dm-cropper-save-edit hidden" aria-controls='photo-save-edit' aria-expanded='false'>Save edits</a>
+                      <a class="usa-button--outline dm-btn-primary padding-2 dm-cropper-cancel-edit hidden" aria-controls='photo-cancel-edit' aria-expanded='false'>Cancel edits</a>
+                      <a class="<%= @user.avatar.present? && @user.avatar.exists? ? "usa-button--outline dm-btn-primary padding-2 dm-cropper-edit-mode" : "usa-button--outline dm-btn-primary padding-2 dm-cropper-edit-mode hidden" %>" aria-controls='photo-crop' aria-expanded='false'>Edit photo</a>
                       <div>
                         <%= f.label :avatar,
                           @user.avatar.present? && @user.avatar.exists? ? 'Upload new photo' : 'Upload photo',
-                          class: @user.avatar.present? && @user.avatar.exists? ? 'dm-cropper-upload-image-label user-avatar-upload-label' : 'dm-cropper-upload-image-label usa-button usa-button--outline padding-2'
+                          class: @user.avatar.present? && @user.avatar.exists? ? 'dm-cropper-upload-image-label user-avatar-upload-label' : 'dm-cropper-upload-image-label usa-button--outline dm-btn-primary padding-2'
                         %>
                         <%= f.file_field :avatar, class: "hidden-upload cropper-upload-image", accept: 'image/*' %>
                       </div>

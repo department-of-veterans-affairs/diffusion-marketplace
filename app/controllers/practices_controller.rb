@@ -152,7 +152,7 @@ class PracticesController < ApplicationController
       end
       pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
       updated = SavePracticeService.new(pr_params).save_practice
-      if facility_type != "facility"
+      if facility_type != "facility" && current_endpoint == 'introduction'
         origin_facilities = @practice.practice_origin_facilities
         origin_facilities.destroy_all
       end

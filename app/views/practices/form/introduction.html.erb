@@ -95,7 +95,6 @@
                 Type a short summary of your practice’s mission to engage the audience
                 and provide initial context.
               </span>
-              <!--&nbsp;<span id="practice-editor-summary-character-counter" class="text-base-light"></span>-->
               <%= f.text_area :summary, class: 'usa-textarea display-block practice-editor-summary-textarea' %>
             </div>
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
@@ -105,18 +104,21 @@
               </p>
               Select the month and year this practice was created.
               <div class="grid-row grid-gap-2">
-                <div>
+                <div class="grid-col-7">
                   <%= label_tag 'editor_date_intiated_month', 'Month', class: 'usa-label' %>
                   <%= select_month(@practice.date_initiated.present? ? date_get_month(@practice.date_initiated) : nil,
-                                   {prompt: '-Select-', prefix: 'date_initiated'}, {id: 'editor_date_intiated_month', class: 'width-card-lg
-                height-5 usa-select' }) %>
+                                   {prompt: '-Select-', prefix: 'date_initiated'}, {id: 'editor_date_intiated_month', class: 'height-5 usa-select' }) %>
                 </div>
-                <div>
+                <div class="grid-col-2">
                   <%= label_tag 'editor_date_intiated_year', 'Year', class: 'usa-label' %>
-                  <%= select_year(@practice.date_initiated.present? ? date_get_year(@practice.date_initiated) : nil,
-                                  {start_year: 1970, end_year: Date.today.year, prompt: '-Select-', prefix: 'date_initiated', default:
-                                      '-Select-'}, {id: 'editor_date_intiated_year', class: 'width-full height-5 usa-select' })
-                  %>
+                  <input class="usa-input"
+                         id="editor_date_initiated_year"
+                         type="number"
+                         min="1970"
+                         max="9999"
+                         value="<%= @practice.date_initiated.present? ? date_get_year(@practice.date_initiated) : nil %>"
+                         name="date_initiated[year]"
+                         oninput="if (value.length > 4) value = value.slice(0, 4)"/>
                 </div>
               </div>
             </div>
@@ -407,13 +409,11 @@
                 <%
                   no_partners = PracticePartner.where(name: 'None of the above, or Unsure')
                   partners = PracticePartner.where.not(id: no_partners.ids)
-                  partners_list = partners + no_partners
                 %>
-                <% partners_list.each do |partner| %>
-                  <% if partner.name == 'None of the above, or Unsure' %>
+                <% partners.each do |partner| %>
                   <div class="usa-checkbox practice-partner-checkbox position-relative">
                     <input type="checkbox"
-                           class="usa-checkbox__input no-partner-input"
+                           class="usa-checkbox__input partner-input"
                            id="practice_partner_<%= partner.id %>"
                            name="practice[practice_partner][<%= partner.id %>][value]"
                            <%= 'checked="true"' if p_partners.include?(partner) %>
@@ -425,22 +425,6 @@
                       <%= partner.name %>
                     </label>
                   </div>
-                  <% else %>
-                    <div class="usa-checkbox practice-partner-checkbox position-relative">
-                      <input type="checkbox"
-                             class="usa-checkbox__input partner-input"
-                             id="practice_partner_<%= partner.id %>"
-                             name="practice[practice_partner][<%= partner.id %>][value]"
-                             <%= 'checked="true"' if p_partners.include?(partner) %>
-                        />
-                      <label class="usa-checkbox__label"
-                             id="practice_partner_<%= partner.id %>_label"
-                             for="practice_partner_<%= partner.id %>"
-                      >
-                        <%= partner.name %>
-                      </label>
-                    </div>
-                  <% end %>
                 <% end %>
               </div>
             </div>
@@ -566,7 +550,7 @@
             <div class="margin-top-3 margin-bottom-5">
               <div class="margin-bottom-105">
                 <p class="text-bold margin-bottom-2">
-                  Diffusion Phase
+                  Diffusion phase
                 </p>
                 <span>Select the diffusion phase that applies to your practice.</span>
               </div>
@@ -575,7 +559,7 @@
                 <% Practice::MATURITY_LEVEL_MAP.each do |key, value| %>
                   <div class="usa-radio position-relative">
                     <%= radio_button_tag 'practice[maturity_level]', "#{key}", @practice.maturity_level == key.to_s, class: 'usa-radio__input maturity-level-radio', id: "maturity_level_#{key}" %>
-                    <label class="usa-radio__label maturity-level-label <%= key.to_s == 'scale' ? 'margin-bottom-0' : 'margin-bottom-105' %> line-height-sans-6"
+                    <label class="usa-radio__label maturity-level-label <%= key.to_s == 'scale' ? 'margin-bottom-0' : 'margin-bottom-105' %> line-height-26"
                            for="maturity_level_<%= key %>"
                     >
                       <span class="margin-left-neg-05"><%= value[:description] %></span>

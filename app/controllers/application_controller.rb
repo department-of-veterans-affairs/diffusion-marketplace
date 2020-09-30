@@ -45,20 +45,161 @@ class ApplicationController < ActionController::Base
       session[:breadcrumbs] << {'display': 'Search', 'path': "#{url.path}?#{url.query}"} if search_breadcrumb.blank?
     end
 
+    def get_practice_by_id
+      Practice.friendly.find(params[:id])
+    end
+
+    # This avoids the RecordNotFound error when using get_practice_by_id method above
+    def get_practice_by_practice_id
+      Practice.friendly.find(params[:practice_id])
+    end
+
+    def empty_breadcrumbs
+      session[:breadcrumbs] = []
+    end
+
+    def practice_breadcrumb(practice)
+      session[:breadcrumbs].find { |b| b['display'] == practice.name }
+    end
+
+    def add_practice_breadcrumb(practice)
+      session[:breadcrumbs] << { 'display': practice.name, 'path': practice_path(practice) }.stringify_keys
+    end
+
+    def add_checklist_breadcrumb(practice)
+      session[:breadcrumbs] << { 'display': 'Planning checklist', 'path': practice_planning_checklist_path(practice) }
+    end
+
+    def remove_breadcrumb(crumb)
+      session[:breadcrumbs].slice!(session[:breadcrumbs].index(crumb))
+    end
+
+    def instructions_breadcrumb
+      session[:breadcrumbs].find { |b| b['display'] == 'Instructions' }
+    end
+
+    # practice path
+    if params[:action] == 'show' && params[:controller] == 'practices'
+      practice = get_practice_by_id
+
+      if practice_breadcrumb(practice).blank?
+        add_practice_breadcrumb(practice)
+      # If there are any duplicate breadcrumbs, delete them
+      elsif practice_breadcrumb(practice).present? && practice_breadcrumb(practice).count > 1
+        remove_breadcrumb(practice_breadcrumb(practice))
+        add_practice_breadcrumb(practice)
+      end
+    end
+
+    # practice checklist path
+    if params[:action] == 'planning_checklist' && params[:controller] == 'practices'
+      practice = get_practice_by_practice_id
+
+      empty_breadcrumbs
+      add_practice_breadcrumb(practice)
+      session[:breadcrumbs] << { 'display': 'Planning checklist', 'path': practice_planning_checklist_path(practice) }
+    end
+
+    # practice committed path
+    if params[:action] == 'committed' && params[:controller] == 'practices'
+      practice = get_practice_by_practice_id
+
+      empty_breadcrumbs
+      add_practice_breadcrumb(practice)
+      add_checklist_breadcrumb(practice)
+      session[:breadcrumbs] << { 'display': 'Confirmation', 'path': practice_committed_path(practice) }
+    end
+
     # practice partners path
     if params[:action] == 'index' && params[:controller] == 'practice_partners'
       # empty the bread crumbs and start a new 'path'
-      session[:breadcrumbs] = []
-      session[:breadcrumbs] << {'display': 'Partners', 'path': practice_partners_path}
+      empty_breadcrumbs
+      session[:breadcrumbs] << { 'display': 'Partners', 'path': practice_partners_path }
     end
 
     # practice partner show path
     if params[:action] == 'show' && params[:controller] == 'practice_partners'
       # add the practice partner to the crumbs if it's not there already
       @practice_partner = PracticePartner.friendly.find(params[:id])
-      unless session[:breadcrumbs].find {|b| b['display'] == @practice_partner.name}.present?
-        session[:breadcrumbs] << {'display': @practice_partner.name, 'path': practice_partner_path(@practice_partner)}
+      practice = Practice.find_by(slug: session[:user_return_to].split('/').pop)
+      partner_breadcrumb = session[:breadcrumbs].find { |b| b['display'] == @practice_partner.name }
+      add_partner_breadcrumb = session[:breadcrumbs] << { 'display': @practice_partner.name, 'path': practice_partner_path(@practice_partner) }
+
+
+      if practice.present? && practice_breadcrumb(practice).blank?
+        add_practice_breadcrumb(practice)
       end
+
+      if partner_breadcrumb.blank?
+        add_partner_breadcrumb
+      # If there are any duplicate practice partner name breadcrumbs, delete them
+      elsif partner_breadcrumb.present? && partner_breadcrumb.count > 1
+        remove_breadcrumb(partner_breadcrumb)
+        add_partner_breadcrumb
+      end
+    end
+
+    ### PRACTICE EDITOR BREADCRUMBS ###
+    # Instructions breadcrumbs
+    if params[:action] == 'instructions' && params[:controller] == 'practices'
+      practice = get_practice_by_practice_id
+      empty_breadcrumbs
+      add_practice_breadcrumb(practice)
+      add_instructions_breadcrumb(practice)
+    end
+
+    # Introduction breadcrumbs
+    if params[:action] == 'introduction' && params[:controller] == 'practices'
+      practice = get_practice_by_practice_id
+      empty_breadcrumbs
+      add_practice_breadcrumb(practice)
+      add_instructions_breadcrumb(practice)
+      session[:breadcrumbs] << { 'display': 'Introduction', 'path': practice_introduction_path(practice) }
+    end
+
+    # Adoptions breadcrumbs
+    if params[:action] == 'adoptions' && params[:controller] == 'practices'
+      practice = get_practice_by_practice_id
+      empty_breadcrumbs
+      add_practice_breadcrumb(practice)
+      add_instructions_breadcrumb(practice)
+      session[:breadcrumbs] << { 'display': 'Adoptions', 'path': practice_adoptions_path(practice) }
+    end
+
+    # Overview breadcrumbs
+    if params[:action] == 'overview' && params[:controller] == 'practices'
+      practice = get_practice_by_practice_id
+      empty_breadcrumbs
+      add_practice_breadcrumb(practice)
+      add_instructions_breadcrumb(practice)
+      session[:breadcrumbs] << { 'display': 'Overview', 'path': practice_overview_path(practice) }
+    end
+
+    # Implementation breadcrumbs
+    if params[:action] == 'implementation' && params[:controller] == 'practices'
+      practice = get_practice_by_practice_id
+      empty_breadcrumbs
+      add_practice_breadcrumb(practice)
+      add_instructions_breadcrumb(practice)
+      session[:breadcrumbs] << { 'display': 'Implementation', 'path': practice_implementation_path(practice) }
+    end
+
+    # Contact breadcrumbs
+    if params[:action] == 'contact' && params[:controller] == 'practices'
+      practice = get_practice_by_practice_id
+      empty_breadcrumbs
+      add_practice_breadcrumb(practice)
+      add_instructions_breadcrumb(practice)
+      session[:breadcrumbs] << { 'display': 'Contact', 'path': practice_contact_path(practice) }
+    end
+
+    # About breadcrumbs
+    if params[:action] == 'about' && params[:controller] == 'practices'
+      practice = get_practice_by_practice_id
+      empty_breadcrumbs
+      add_practice_breadcrumb(practice)
+      add_instructions_breadcrumb(practice)
+      session[:breadcrumbs] << { 'display': 'About', 'path': practice_about_path(practice) }
     end
   end
 

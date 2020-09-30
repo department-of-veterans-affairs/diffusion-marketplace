@@ -105,8 +105,8 @@
                   </p>
                 </div>
                 <div class="text-right">
-                  <button class="usa-button usa-button--outline margin-0 padding-2 margin-top-5 margin-right-05 report-abuse-cancel">Cancel</button>
-                  <%= link_to 'Submit Report', "/practices/#{practice.id}/comments/#{comment.id}/report", class: 'usa-button padding-2 border-primary border-2px report-abuse-submit', data: {confirm: 'Are you sure you want to report this comment?'} %>
+                  <button class="usa-button--outline dm-btn-primary margin-0 padding-2 margin-top-5 margin-right-05 report-abuse-cancel">Cancel</button>
+                  <%= link_to 'Submit Report', "/practices/#{practice.id}/comments/#{comment.id}/report", class: 'usa-button dm-btn-primary padding-2 report-abuse-submit', data: {confirm: 'Are you sure you want to report this comment?'} %>
                 </div>
               </div>
             </div>
@@ -133,7 +133,7 @@
                 link_to(
                   t('commontator.comment.actions.reply'),
                   commontator.new_thread_comment_path(thread, comment: { parent_id: comment.id }),
-                  remote: true, class: 'usa-button--unstyled dm-btn-primary'
+                  remote: true, class: 'usa-button--unstyled dm-btn-primary reply-link'
                 ) if thread.config.comment_reply_style != :n && !thread.is_closed?
               %>
             </span>

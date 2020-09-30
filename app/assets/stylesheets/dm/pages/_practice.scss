@@ -359,10 +359,10 @@
   height: 72px !important;
 }
 
-.practice-editor-summary-textarea {
-  resize: none;
-  height: 142px !important;
-}
+//.practice-editor-summary-textarea {
+//  resize: none;
+//  height: 142px !important;
+//}
 
 .practice-partner-checkbox:last-child {
   margin-bottom: 44px;
@@ -591,7 +591,7 @@
   margin-top: 12px !important;
 }
 
-.partner-input, .no-partner-input, .category-input {
+.partner-input, .category-input {
   left: 2px !important;
   top: 5px !important;
 }
@@ -1035,9 +1035,23 @@ li.small-disc:before {
   }
 }
 
+// Contact
+#contact {
+  .report-abuse-cancel {
+    border: none !important;
+  }
+}
+
 /*********************************
  PRACTICE EDITOR
 **********************************/
+// Introduction
+#editor_date_initiated_year {
+  &::-webkit-inner-spin-button {
+    display: none;
+  }
+}
+
 // Overview
 #overview {
   .dm-resource-image-editor {
