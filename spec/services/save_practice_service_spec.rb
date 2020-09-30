@@ -74,20 +74,20 @@ RSpec.describe SavePracticeService do
       @practice = Practice.create!(name: 'A public practice 2', tagline: 'Test tagline', initiating_facility: '687HA', date_initiated: Date.new(2011, 12, 31), summary: 'practice summary', support_network_email: 'fake-support-email@example.com', main_display_image: File.new("#{Rails.root}/spec/assets/charmander.png"))
     end
 
-    context 'while crop_main_display_image' do
-      it 'returns true' do
-        practice_params = {
-          crop_x: 50,
-          crop_y: 10,
-          crop_w: 50,
-          crop_h: 10
-        }
-        save_practice = SavePracticeService.new({ practice: @practice, practice_params: practice_params})
-        
-        result = save_practice.save_practice
-        expect(result).to eq true
-      end
-    end
+    # context 'while crop_main_display_image' do
+    #   it 'returns true' do
+    #     practice_params = {
+    #       crop_x: 50,
+    #       crop_y: 10,
+    #       crop_w: 50,
+    #       crop_h: 10
+    #     }
+    #     save_practice = SavePracticeService.new({ practice: @practice, practice_params: practice_params})
+    #
+    #     result = save_practice.save_practice
+    #     expect(result).to eq true
+    #   end
+    # end
 
     context 'while cropping avatar' do
       it 'returns true' do
