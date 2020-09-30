@@ -53,8 +53,8 @@ describe 'Practice editor', type: :feature, js: true do
       last_fac_fac_select = last_fac_field.find('select[id*="facility_id"]')
       select('Alabama', from: last_fac_state_select[:name])
       select('Birmingham VA Medical Center (Birmingham-Alabama)', from: last_fac_fac_select[:name])
-      select(initiated_month, :from => 'editor_date_intiated_month')
-      select(initiated_year, :from => 'editor_date_intiated_year')
+      select(initiated_month, :from => 'editor_date_initiated_month')
+      fill_in('Year', with: initiated_year)
       fill_in('Summary', with: summary)
 
       @publish_button.click

@@ -105,12 +105,12 @@
               Select the month and year this practice was created.
               <div class="grid-row grid-gap-2">
                 <div class="grid-col-7">
-                  <%= label_tag 'editor_date_intiated_month', 'Month', class: 'usa-label' %>
+                  <%= label_tag 'editor_date_initiated_month', 'Month', class: 'usa-label' %>
                   <%= select_month(@practice.date_initiated.present? ? date_get_month(@practice.date_initiated) : nil,
-                                   {prompt: '-Select-', prefix: 'date_initiated'}, {id: 'editor_date_intiated_month', class: 'height-5 usa-select' }) %>
+                                   {prompt: '-Select-', prefix: 'date_initiated'}, {id: 'editor_date_initiated_month', class: 'height-5 usa-select' }) %>
                 </div>
                 <div class="grid-col-2">
-                  <%= label_tag 'editor_date_intiated_year', 'Year', class: 'usa-label' %>
+                  <%= label_tag 'editor_date_initiated_year', 'Year', class: 'usa-label' %>
                   <input class="usa-input"
                          id="editor_date_initiated_year"
                          type="number"

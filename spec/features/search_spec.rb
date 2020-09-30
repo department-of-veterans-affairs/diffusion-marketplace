@@ -38,8 +38,8 @@ describe 'Search', type: :feature do
     select('Birmingham VA Medical Center (Birmingham-Alabama)', from: last_fac_fac_select[:name])
     fill_in('practice_summary', with: 'This is the most super practice ever made')
     fill_in('practice_summary', with: 'This is the most super practice ever made')
-    select('October', :from => 'editor_date_intiated_month')
-    find('#editor_date_initiated_year').set('1970')
+    select('October', :from => 'editor_date_initiated_month')
+    fill_in('Year', with: '1970')
     find("#maturity_level_replicate").sibling('label').click
     find('#practice-editor-save-button').click
   end

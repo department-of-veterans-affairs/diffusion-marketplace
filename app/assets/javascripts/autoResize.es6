@@ -42,7 +42,7 @@
 
                     // Clone the actual textarea removing unique properties
                     // and insert before original textarea:
-                    return textarea.clone().removeAttr('id').removeAttr('name').addClass('clone').css({
+                    return textarea.clone().removeAttr('id').removeAttr('name').attr('aria-label', 'resizable textarea').addClass('clone').css({
                         position: 'absolute',
                         top: 0,
                         left: -9999
