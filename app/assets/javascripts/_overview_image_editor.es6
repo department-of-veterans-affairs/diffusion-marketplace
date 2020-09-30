@@ -5,7 +5,6 @@
   let $cancelEditBtn;
   let $deleteBtn;
   let $imgsContainer;
-  let $thumbnailInput;
 
   function _toggleDeleteBtn({ visible, target }) {
     let $imgDeleteBtn = $(target).closest('.dm-cropper-boundary').find($deleteBtn);
@@ -189,7 +188,7 @@
   }
 
   function _attachUploadEventListener() {
-    $thumbnailInput.on('change', (event) => {
+    $('.dm-cropper-upload-image').on('change', (event) => {
       _loadPracticeThumbnail({ uploadedImg: event.target.files[0], target: event.target });
     })
   }
@@ -245,7 +244,6 @@
     $cancelEditBtn = $('.dm-cropper-cancel-edit');
     $saveEditBtn = $('.dm-cropper-save-edit');
     $imgsContainer = $('.dm-cropper-images-container');
-    $thumbnailInput = $('.dm-cropper-upload-image');
   }
 
   function attachNewFieldEventListeners() {

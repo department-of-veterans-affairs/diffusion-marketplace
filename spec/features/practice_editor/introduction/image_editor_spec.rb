@@ -23,13 +23,12 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
 
       it 'should not display an image' do
         within('section.dm-image-editor') do
-          expect(page).to have_content('Upload image')
+          expect(page).to have_content('Drag file here or choose from folder')
           expect(page).to have_content('Thumbnail')
           expect(page).to have_content("Choose an image to represent this practice. Use a high-quality .jpg, .jpeg, or .png file that is at least 768px wide and 432px high and less than 32MB. If you want to upload an image that features a Veteran you must have Form 3203. Waivers must be filled out with the 'External to VA' check box selected.")
           expect(page).to have_link(href: 'https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-3203.pdf')
           expect(page).not_to have_css('.dm-cropper-thumbnail-modified')
           expect(page).to have_no_content('Remove image')
-          expect(page).to have_no_content('Upload new image')
           expect(page).to have_no_content('Edit image')
           expect(page).to have_no_content('Cancel edits')
           expect(page).to have_no_content('Save edits')
@@ -44,14 +43,13 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
 
       it 'should display an image' do
         within('section.dm-image-editor') do
-          expect(page).to have_content('Upload new image')
           expect(page).to have_content('Thumbnail')
           expect(page).to have_content("Choose an image to represent this practice. Use a high-quality .jpg, .jpeg, or .png file that is at least 768px wide and 432px high and less than 32MB. If you want to upload an image that features a Veteran you must have Form 3203. Waivers must be filled out with the 'External to VA' check box selected.")
           expect(page).to have_link(href: 'https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-3203.pdf')
           expect(page).to have_css("img[src*='acceptable_img.jpg']")
           expect(page).to have_content('Remove image')
           expect(page).to have_content('Edit image')
-          expect(page).to have_no_content('Upload image')
+          expect(page).to have_no_content('Drag file here or choose from folder')
           expect(page).to have_no_content('Cancel edits')
           expect(page).to have_no_content('Save edits')
         end
@@ -69,14 +67,13 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
 
       it 'should display the image and save it' do
         within('section.dm-image-editor') do
-          expect(page).to have_content('Upload new image')
           expect(page).to have_content('Thumbnail')
           expect(page).to have_content("Choose an image to represent this practice. Use a high-quality .jpg, .jpeg, or .png file that is at least 768px wide and 432px high and less than 32MB. If you want to upload an image that features a Veteran you must have Form 3203. Waivers must be filled out with the 'External to VA' check box selected.")
           expect(page).to have_link(href: 'https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-3203.pdf')
           expect(page).to have_css("img[src*='acceptable_img.jpg']")
           expect(page).to have_content('Remove image')
           expect(page).to have_content('Edit image')
-          expect(page).to have_no_content('Upload image')
+          expect(page).to have_no_content('Drag file here or choose from folder')
           expect(page).to have_no_content('Cancel edits')
           expect(page).to have_no_content('Save edits')
         end
@@ -93,10 +90,8 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
       it 'should display an alert' do
         within('section.dm-image-editor') do
           expect(page).to have_content('Sorry, you cannot upload an image larger than 32MB.')
-          expect(page).to have_content('Upload image')
+          expect(page).to have_content('Drag file here or choose from folder')
           expect(page).not_to have_css("img[src*='unacceptable_img_size.png']")
-          expect(page).to have_no_content('Remove image')
-          expect(page).to have_no_content('Upload new image')
           expect(page).to have_no_content('Cancel edits')
           expect(page).to have_no_content('Save edits')
           expect(page).to have_no_content('Remove image')
@@ -108,7 +103,8 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
       before do
         visit practice_introduction_path(@pr_with_thumbnail)
         expect(page).to have_no_content('Sorry, you cannot upload an image smaller than 768px wide by 432px high.')
-        upload_new_img @unacceptable_img_dimension_path
+        click_remove_img
+        upload_img @unacceptable_img_dimension_path
       end
 
       it 'should display an alert' do
@@ -116,9 +112,8 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
           expect(page).to have_content('Sorry, you cannot upload an image smaller than 768px wide by 432px high.')
           expect(page).not_to have_css("img[src*='acceptable_img.jpg']")
           expect(page).not_to have_css("img[src*='unacceptable_img_dimension.jpg']")
-          expect(page).to have_content('Upload image')
+          expect(page).to have_content('Drag file here or choose from folder')
           expect(page).to have_no_content('Remove image')
-          expect(page).to have_no_content('Upload new image')
           expect(page).to have_no_content('Cancel edits')
           expect(page).to have_no_content('Save edits')
           expect(page).to have_no_content('Remove image')
@@ -138,7 +133,7 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
 
       it 'should remove the image' do
         within('section.dm-image-editor') do
-          expect(page).to have_content('Upload image')
+          expect(page).to have_content('Drag file here or choose from folder')
           expect(page).to have_content('Thumbnail')
           expect(page).to have_content("Choose an image to represent this practice. Use a high-quality .jpg, .jpeg, or .png file that is at least 768px wide and 432px high and less than 32MB. If you want to upload an image that features a Veteran you must have Form 3203. Waivers must be filled out with the 'External to VA' check box selected.")
           expect(page).to have_link(href: 'https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-3203.pdf')
@@ -146,7 +141,6 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
           expect(page).to have_no_css('.dm-cropper-thumbnail-modified')
           expect(page).to have_no_content('Remove image')
           expect(page).to have_no_content('Edit image')
-          expect(page).to have_no_content('Upload new image')
           expect(page).to have_no_content('Cancel edits')
           expect(page).to have_no_content('Save edits')
         end
@@ -157,13 +151,14 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
       before do
         visit practice_introduction_path(@pr_without_thumbnail)
         upload_img @acceptable_img_path
+        find(:css, '.dm-cropper-thumbnail-modified')
         expect(page).to have_css('.dm-cropper-thumbnail-modified')
         click_remove_img
       end
 
       it 'should remove the image' do
         within('section.dm-image-editor') do
-          expect(page).to have_content('Upload image')
+          expect(page).to have_content('Drag file here or choose from folder')
           expect(page).to have_content('Thumbnail')
           expect(page).to have_no_content('Sorry, you cannot upload an image smaller than 768px wide by 432px high.')
           expect(page).to have_content("Choose an image to represent this practice. Use a high-quality .jpg, .jpeg, or .png file that is at least 768px wide and 432px high and less than 32MB. If you want to upload an image that features a Veteran you must have Form 3203. Waivers must be filled out with the 'External to VA' check box selected.")
@@ -171,7 +166,6 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
           expect(page).to have_no_css("img[src*='acceptable_img.jpg']")
           expect(page).to have_no_content('Remove image')
           expect(page).to have_no_content('Edit image')
-          expect(page).to have_no_content('Upload new image')
           expect(page).to have_no_content('Cancel edits')
           expect(page).to have_no_content('Save edits')
         end
@@ -187,7 +181,7 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
 
       it 'should remove the image' do
         within('section.dm-image-editor') do
-          expect(page).to have_content('Upload new image')
+          expect(page).to have_no_content('Drag file here or choose from folder')
           expect(page).to have_content('Thumbnail')
           expect(page).to have_content("Choose an image to represent this practice. Use a high-quality .jpg, .jpeg, or .png file that is at least 768px wide and 432px high and less than 32MB. If you want to upload an image that features a Veteran you must have Form 3203. Waivers must be filled out with the 'External to VA' check box selected.")
           expect(page).to have_link(href: 'https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-3203.pdf')
@@ -196,7 +190,6 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
           expect(page).to have_content('Remove image')
           expect(page).to have_content('Cancel edits')
           expect(page).to have_content('Save edits')
-          expect(page).to have_no_content('Upload image')
           expect(page).to have_no_content('Edit image')
 
           # ensure the crop is reset when image is removed
@@ -216,13 +209,12 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
           expect(find("#crop_y", :visible => false).value).to match ''
           expect(find("#crop_w", :visible => false).value).to match ''
           expect(find("#crop_h", :visible => false).value).to match ''
-          expect(page).to have_content('Upload image')
+          expect(page).to have_content('Drag file here or choose from folder')
           expect(page).not_to have_css("img[src*='acceptable_img.jpg']")
           expect(page).to have_no_css('.cropper-container')
           expect(page).to have_no_content('Remove image')
           expect(page).to have_no_content('Cancel edits')
           expect(page).to have_no_content('Save edits')
-          expect(page).to have_no_content('Upload new image')
           expect(page).to have_no_content('Edit image')
         end
       end
@@ -239,16 +231,14 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
 
       it 'should crop the image' do
         within('section.dm-image-editor') do
-          expect(page).to have_content('Upload new image')
           expect(page).to have_content('Thumbnail')
           expect(page).to have_content("Choose an image to represent this practice. Use a high-quality .jpg, .jpeg, or .png file that is at least 768px wide and 432px high and less than 32MB. If you want to upload an image that features a Veteran you must have Form 3203. Waivers must be filled out with the 'External to VA' check box selected.")
           expect(page).to have_link(href: 'https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-3203.pdf')
-          expect(page).to have_content("You must click \"Save edits\" in this section and then \"Save\" in the side navigation to save a draft with thumbnail updates.")
           expect(page).to have_css("img[src*='acceptable_img.jpg']")
           expect(page).to have_content('Cancel edits')
           expect(page).to have_content('Remove image')
           expect(page).to have_content('Save edits')
-          expect(page).to have_no_content('Upload image')
+          expect(page).to have_no_content('Drag file here or choose from folder')
           expect(page).to have_no_content('Edit image')
           expect(find("#crop_x", :visible => false).value).to match ''
           expect(find("#crop_y", :visible => false).value).to match ''
@@ -261,9 +251,9 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
           expect(find("#crop_w", :visible => false).value).to match '634'
           expect(find("#crop_h", :visible => false).value).to match '356'
         end
-
+        click_edit_img
         click_save_edits
-        expect(page).to have_css("img[src*='acceptable_img.jpg']")
+        expect(page).to have_css(".dm-cropper-thumbnail-modified")
       end
 
       it 'should cancel any cropping of the image' do
@@ -279,6 +269,7 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
           expect(find("#crop_w", :visible => false).value).to match '634'
           expect(find("#crop_h", :visible => false).value).to match '356'
 
+          click_edit_img
           click_cancel_edits
           expect(find("#crop_x", :visible => false).value).to match ''
           expect(find("#crop_y", :visible => false).value).to match ''
@@ -310,10 +301,6 @@ def click_cancel_edits
   find('.dm-cropper-save-edit').click
 end
 
-def upload_new_img(img_path)
-  attach_file('Upload new image', img_path)
-end
-
 def upload_img(img_path)
-  attach_file('Upload image', img_path)
+  find('.dm-cropper-upload-image').attach_file(img_path)
 end

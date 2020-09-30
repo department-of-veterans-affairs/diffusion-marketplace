@@ -6,17 +6,20 @@
   let $cancelEditBtn;
   let $deleteInput;
   let $imgsContainer;
-  let imgType;
+  let fileUploadHtml = `<input class="dm-cropper-upload-image usa-file-input" accept="image/*" type="file" name="practice[main_display_image]" id="practice_main_display_image">`;
 
-  const imgValues = {
-    main: {
-      class: '',
-      alt: 'temporary practice thumbnail'
-    },
-    user: {
-      class: 'avatar-profile-photo',
-      alt: 'temporary user profile avatar'
+  function _clearUpload({ target }) {
+    let $imgImgsContainer = $(target).closest('.dm-cropper-boundary').find($imgsContainer)
+    $imgImgsContainer.empty();
+    let fileUploadExists = $('.usa-file-input').length > 0;
+
+    if (fileUploadExists) {
+      $('.usa-file-input').replaceWith(fileUploadHtml);
+    } else {
+      $('.dm-image-error-text').after(fileUploadHtml);
     }
+    // add event listener again
+    _attachUploadEventListener()
   }
 
   function _toggleDefaultPracticeThumbnail({ visible, target }) {
@@ -33,21 +36,14 @@
 
   function _toggleBtnsOnPlaceholderChange({ isUpload, target }) {
     let $deleteBtnLabel = $(target).closest('.dm-cropper-boundary').find('.dm-cropper-delete-image-label');
-    let $uploadBtnLabel = $(target).closest('.dm-cropper-boundary').find('.dm-cropper-upload-image-label');
     let $imgDeleteInput = $(target).closest('.dm-cropper-boundary').find($deleteInput);
 
     if (isUpload) {
-      $uploadBtnLabel.text('Upload new image');
-      $uploadBtnLabel.addClass('usa-button--unstyled');
-      $uploadBtnLabel.removeClass('usa-button--outline');
       $deleteBtnLabel.removeClass('display-none');
       $imgDeleteInput.removeClass('display-none');
     } else {
-      $uploadBtnLabel.text('Upload image');
-      $uploadBtnLabel.addClass('usa-button--outline');
       $deleteBtnLabel.addClass('display-none');
       $imgDeleteInput.addClass('display-none');
-      $uploadBtnLabel.removeClass('usa-button--unstyled');
     }
   }
 
@@ -115,11 +111,37 @@
       $(target).closest('.dm-cropper-boundary').find("#crop_y").val(cropValues.y);
       $(target).closest('.dm-cropper-boundary').find("#crop_w").val(cropValues.width);
       $(target).closest('.dm-cropper-boundary').find("#crop_h").val(cropValues.height);
+      _createModifiedImage({ target })
+      _toggleCropper({ visible: false, target });
+      _toggleCropperBtnView({ visible: false, target });
+      _toggleEditBtn({ visible: true, target });
+      _toggleDeleteBtn({ visible: true, target });
+      _toggleImageView({ isCrop: false, target });
     } else {
       $(target).closest('.dm-cropper-boundary').find("#crop_x").val(null);
       $(target).closest('.dm-cropper-boundary').find("#crop_y").val(null);
       $(target).closest('.dm-cropper-boundary').find("#crop_w").val(null);
       $(target).closest('.dm-cropper-boundary').find("#crop_h").val(null);
+    }
+  }
+
+  function _createModifiedImage({ target }) {
+    let $modifiedImage = $(target).closest('.dm-cropper-boundary').find('.dm-cropper-thumbnail-modified');
+    let $image = $(target).closest('.dm-cropper-boundary').find('.dm-cropper-thumbnail-original');
+
+    if ($modifiedImage.length > 0) {
+      $modifiedImage.remove()
+    }
+
+    if ($image) {
+      $(target).closest('.dm-cropper-boundary').find('.dm-cropper-thumbnail-original').addClass('display-none')
+      let croppedCanvas = $image.data('cropper').getCroppedCanvas({ width: 310 })
+
+        let url = croppedCanvas.toDataURL();
+        let image = new Image();
+        image.src = url;
+        image.classList.add('dm-cropper-thumbnail-modified')
+        $(target).closest('.dm-cropper-boundary').find($imgsContainer).append(image)
     }
   }
 
@@ -138,8 +160,8 @@
 
       reader.onload = (function() {
         return function(event) {
-          let imgOrgElement = `<img src="${event.target.result}" class="dm-cropper-thumbnail-original ${imgValues[imgType].class} display-none" alt="${imgValues[imgType].alt}"/>`;
-          let imgModElement = `<img src="${event.target.result}" class="dm-cropper-thumbnail-modified ${imgValues[imgType].class}" alt="${imgValues[imgType].alt}"/>`;
+          let imgOrgElement = `<img src="${event.target.result}" class="dm-cropper-thumbnail-original display-none" alt="temporary practice image"/>`;
+          let imgModElement = `<img src="${event.target.result}" class="dm-cropper-thumbnail-modified" alt="temporary practice image"/>`;
           $imgImgsContainer.empty();
           $imgImgsContainer.append(imgOrgElement);
           $imgImgsContainer.append(imgModElement);
@@ -179,6 +201,7 @@
     _toggleDefaultPracticeThumbnail({ visible: false, target })
     _setCropBoxValues({ isCrop: false, target });
     _toggleCropperBtnView({ visible: false, target });
+    _clearUpload({ target })
   }
 
   function _successfulImageLoad({ target }) {
@@ -193,16 +216,13 @@
   function _toggleCropperBtnView({ visible, target}) {
     let $imgSaveEditBtn = $(target).closest('.dm-cropper-boundary').find($saveEditBtn)
     let $imgCancelEditBtn = $(target).closest('.dm-cropper-boundary').find($cancelEditBtn)
-    let $imageEditText = $('.dm-image-editor-text')
 
     if (visible) {
       $imgSaveEditBtn.removeClass('display-none');
       $imgCancelEditBtn.removeClass('display-none');
-      $imageEditText.removeClass('display-none')
     } else {
       $imgSaveEditBtn.addClass('display-none');
       $imgCancelEditBtn.addClass('display-none');
-      $imageEditText.addClass('display-none')
     }
   }
 
@@ -216,6 +236,7 @@
 
   function _attachDeleteEventListener() {
     $deleteInput.click((event) => {
+      _clearUpload({ target: event.target })
       _toggleThumbnailRemoval({ deleteImg: true, target: event.target });
       _toggleDefaultPracticeThumbnail({ visible: true, target: event.target });
       _toggleBtnsOnPlaceholderChange({ isUpload: false, target: event.target });
@@ -250,11 +271,11 @@
   }
 
   function attachImgActionsEventListeners() {
-    _attachUploadEventListener();
     _attachEditEventListener();
     _attachDeleteEventListener();
     _attachSaveEditEventListener();
     _attachCancelEditEventListener();
+    _attachUploadEventListener();
   }
 
   function setImageVars() {
@@ -263,21 +284,21 @@
     $cancelEditBtn = $('.dm-cropper-cancel-edit');
     $saveEditBtn = $('.dm-cropper-save-edit');
     $imgsContainer = $('.dm-cropper-images-container');
-    imgType = $('.dm-cropper-boundary').find('.dm-cropper-images-container').data('type')
-
   }
 
-  function attachNewFieldEventListeners() {
-    $document.arrive('.dm-cropper-boundary', (newElem) => {
-      setImageVars();
-      attachImgActionsEventListeners();
-    })
+  function displayUpload() {
+    $('.usa-file-input').ready(() => {
+      let imageExists = $('.dm-cropper-thumbnail-modified').length > 0;
+      if (imageExists) {
+        $('.dm-cropper-boundary').find('.usa-file-input').addClass('display-none');
+      }
+    });
   }
 
   function loadCropperFunctions() {
     setImageVars();
     attachImgActionsEventListeners();
-    attachNewFieldEventListeners();
+    displayUpload();
 }
 
   $document.on('turbolinks:load', loadCropperFunctions);
