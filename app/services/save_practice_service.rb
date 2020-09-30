@@ -58,7 +58,6 @@ class SavePracticeService
       Rails.logger.error "save_practice error: #{e.message}"
       e
     end
-    true
   end
 
   private
