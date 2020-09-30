@@ -144,11 +144,11 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
         const formToClear = $(`#${formSelector}`);
         const link_form = formToClear.clone(true);
         link_form.attr('id', `${formSelector}_${nGuid}`);
-        link_form.attr('class', `resource_container margin-bottom-5`);
+        link_form.attr('class', `margin-bottom-5`);
         link_form.find('.dm-cancel-add-button-row').remove();
 
         const deleteEntryHtml = `
-            <div class="grid-col-12 margin-top-2">
+            <div class="grid-col-12 margin-top-2" align="right">
                <input type="hidden" value="false" name="practice[practice_${sArea}_attributes][${nGuid}_${sType}][_destroy]"/>
                <button type="button" data-area="${sArea}" data-type="${sType}" class="usa-button--unstyled dm-btn-warning remove_nested_fields">
                     Delete entry
