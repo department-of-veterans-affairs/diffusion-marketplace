@@ -78,6 +78,10 @@ class ApplicationController < ActionController::Base
       session[:breadcrumbs].find { |b| b['display'] == 'Instructions' }
     end
 
+    def add_instructions_breadcrumb(practice)
+      session[:breadcrumbs] << { 'display': 'Edit', 'path': practice_instructions_path(practice) }
+    end
+
     # practice path
     if params[:action] == 'show' && params[:controller] == 'practices'
       practice = get_practice_by_id

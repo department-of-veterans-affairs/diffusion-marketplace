@@ -39,7 +39,7 @@ describe 'Search', type: :feature do
     fill_in('practice_summary', with: 'This is the most super practice ever made')
     fill_in('practice_summary', with: 'This is the most super practice ever made')
     select('October', :from => 'editor_date_intiated_month')
-    select('1970', :from => 'editor_date_intiated_year')
+    fill_in('Year', with: '1970')
     find("#maturity_level_replicate").sibling('label').click
     find('#practice-editor-save-button').click
   end
