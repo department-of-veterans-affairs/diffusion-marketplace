@@ -18,7 +18,5 @@ describe 'Practice editor', type: :feature, js: true do
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content('Core resources list')
     end
-
-
   end
 end
