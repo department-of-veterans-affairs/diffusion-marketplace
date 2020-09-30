@@ -81,9 +81,9 @@ describe 'Practice editor - introduction', type: :feature, js: true do
 
     it 'should allow changing date created' do
       expect(page).to have_field('Month', with: '8')
-      expect(page).to have_field('Year', with: '2016')
+      expect(find('#editor_date_initiated_year').value).to eq '2016'
       select('October', :from => 'editor_date_intiated_month')
-      fill_in('Year', with: '1970')
+      find('#editor_date_initiated_year').set('1970')
       click_save
       visit_practice_show
       expect(page).to have_content('October 1970')

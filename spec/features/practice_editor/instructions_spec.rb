@@ -18,7 +18,7 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_content('Instructions')
             expect(page).to have_content('Please follow these instructions to build your practice page.')
             expect(page).to have_content("What you'll need")
-            expect(page).to have_content('PII and PHI policy')
+            expect(page).to have_content('Privacy policy')
             expect(page).to have_content('Formatting and editing')
             expect(page).to have_no_content('Save')
             expect(page).to have_no_content('Publish practice')
