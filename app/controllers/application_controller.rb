@@ -125,7 +125,7 @@ class ApplicationController < ActionController::Base
     if params[:action] == 'show' && params[:controller] == 'practice_partners'
       # add the practice partner to the crumbs if it's not there already
       @practice_partner = PracticePartner.friendly.find(params[:id])
-      practice = Practice.find_by(slug: session[:user_return_to].split('/').pop)
+      practice = Practice.find_by(slug: session[:user_return_to].split('/').pop) if session[:user_return_to].present?
       partner_breadcrumb = session[:breadcrumbs].find { |b| b['display'] == @practice_partner.name }
       add_partner_breadcrumb = session[:breadcrumbs] << { 'display': @practice_partner.name, 'path': practice_partner_path(@practice_partner) }
 
