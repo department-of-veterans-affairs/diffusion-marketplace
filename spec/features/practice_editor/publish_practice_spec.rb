@@ -19,53 +19,94 @@ describe 'Practice editor', type: :feature, js: true do
       @publish_button = find('#publish-practice-button')
     end
 
-    it 'Should display an error modal that contains missing required fields if any exist' do
-      find('#practice_partner_1_label').click
-      @save_button.click
-      expect(page).to have_field('practice_name', with: 'A public practice')
-      expect(page).to have_checked_field('Diffusion of Excellence')
-
-      # go to impact page since publishing on overview with empty required fields results in form warnings
-      visit practice_impact_path(@practice)
-      @publish_button.click
-      expect(page).to have_content('Cannot publish yet')
-      expect(page).to have_content('You must include the initiation date for your practice')
-      expect(page).to have_content('You must include the initiating facility for your practice')
-      expect(page).to have_content('You must include a practice summary')
-      expect(page).to have_content('You must include a support network email')
+    def set_pr_required_fields
+      fill_in('Summary', with: 'practice summary')
+      select('October', :from => 'editor_date_intiated_month')
+      fill_in('Year', with '1970')
     end
 
-    it 'Should save and publish the practice if all required fields are met' do
-      initiated_month = 'October'
-      initiated_year = '1970'
-      summary = 'This is the most super practice ever made'
-
-      visit practice_contact_path(@practice)
-      email = 'test@email.com'
-      fill_in('Main email address', with: email)
-      @save_button.click
-      expect(page).to have_field('Main email address', with: email)
-
-      visit practice_introduction_path(@practice)
+    def set_initiating_fac
       find('#initiating_facility_type_facility').sibling('label').click
       last_fac_field = find_all('.practice-editor-origin-facility-li').last
       last_fac_state_select = last_fac_field.find('select[id*="editor_state_select"]')
       last_fac_fac_select = last_fac_field.find('select[id*="facility_id"]')
       select('Alabama', from: last_fac_state_select[:name])
       select('Birmingham VA Medical Center (Birmingham-Alabama)', from: last_fac_fac_select[:name])
-      select(initiated_month, :from => 'editor_date_initiated_month')
-      fill_in('Year', with: initiated_year)
-      fill_in('Summary', with: summary)
+    end
 
+    def set_initiating_visn
+      find('#initiating_facility_type_visn').sibling('label').click
+      select('VISN-1', :from => 'editor_visn_select')
+    end
+
+    def set_adoption
+      find('button[aria-controls="a0"]').click
+      find('label[for="status_in_progress"').click
+      select('Alaska', :from => 'editor_state_select')
+      select('Anchorage VA Medical Center', :from => 'editor_facility_select')
+      find('#adoption_form_submit').click
+    end
+
+    it 'should display an error modal only when missing required fields exists' do
       @publish_button.click
-      expect(page).to have_content(summary)
-      expect(page).to have_content('October 1970')
-      expect(page).to have_content('Birmingham VA Medical Center (Birmingham-Alabama)')
-      expect(page).to have_content('A public practice')
-      expect(page).to_not have_content('Cannot publish yet')
+      page.has_css?('.publication-modal-body')
+      expect(page).to have_content('Cannot publish yet')
+      expect(page).to have_content('This is what you need to do before publishing your practice to the Diffusion Marketplace')
+      expect(page).to have_content('You must include the initiation date for your practice')
+      expect(page).to have_content('You must include the initiating facility for your practice')
+      expect(page).to have_content('You must include a practice summary')
+      expect(page).to have_content('You must include at least one adoption')
+      expect(page).to have_content('You must include a support network email')
+      find('.back-to-editor-button').click
+
+      set_pr_required_fields
+      set_initiating_fac
+      @publish_button.click
+      page.has_css?('.publication-modal-body')
+      expect(page).to have_content('Cannot publish yet')
+      expect(page).to have_content('This is what you need to do before publishing your practice to the Diffusion Marketplace')
+      expect(page).to have_no_content('You must include the initiation date for your practice')
+      expect(page).to have_no_content('You must include the initiating facility for your practice')
+      expect(page).to have_no_content('You must include a practice summary')
+      expect(page).to have_content('You must include at least one adoption')
+      expect(page).to have_content('You must include a support network email')
+
+      visit practice_adoptions_path(@practice)
+      set_adoption
+      @publish_button.click
+      page.has_css?('.publication-modal-body')
+      expect(page).to have_no_content('You must include at least one adoption')
+      expect(page).to have_content('You must include a support network email')
+    end
+
+    it 'Should save and publish the practice if all required fields are met' do
+      # set contact email
+      visit practice_contact_path(@practice)
+      email = 'test@email.com'
+      fill_in('Main email address', with: email)
+      @save_button.click
+      expect(page).to have_field('Main email address', with: email)
+
+      # set adoption
+      visit practice_adoptions_path(@practice)
+      set_adoption
+
+      # set required fields in introduction page
+      visit practice_introduction_path(@practice)
+      set_pr_required_fields
+      set_initiating_visn
+      @publish_button.click
+
+      expect(page).to have_no_content('Cannot publish yet')
       expect(page).to have_content("#{@practice.name} has been successfully published to the Diffusion Marketplace")
       # Publish button should be gone if the practice has been published
       expect(page).to_not have_link('Publish practice')
+
+      visit practice_path(@practice)
+      expect(page).to have_content('practice summary')
+      expect(page).to have_content('October 1970')
+      expect(page).to have_content('VISN-1')
+      expect(page).to have_content('A public practice')
     end
   end
 end

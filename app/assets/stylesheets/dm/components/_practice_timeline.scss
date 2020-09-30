@@ -28,31 +28,23 @@
   max-width: 100%;
   position: relative;
 
-  &:last-child:after {
-    height: 0;
-  }
-
   h4 {
     margin-top: 1.25rem;
   }
+}
 
-  /* The actual timeline (the vertical ruler) */
-  &:after {
-    background-color: $dm-color-base;
-    content: '';
-    z-index: -1;
-    margin-left: 31px;
-    position: absolute;
-    top: 0;
-    width: 2px;
-    height: 130%;
-  }
-
-  /* Media queries - Responsive timeline on screens less than 600px wide */
-  @media screen and (max-width: 600px) {
-    /* Place the timeline to the left */
+#dm-timelines {
+  >div:not(:last-of-type) {
+  /* add the vertical line except for the last timeline entry */
     &:after {
-      left: 27px;
+      background-color: $dm-color-base;
+      content: '';
+      z-index: -1;
+      margin-left: 31px;
+      position: absolute;
+      top: 0;
+      width: 2px;
+      height: calc(100% + 1.5rem)
     }
   }
 }

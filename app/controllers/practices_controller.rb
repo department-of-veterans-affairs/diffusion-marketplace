@@ -132,30 +132,14 @@ class PracticesController < ApplicationController
   def update
     current_endpoint = request.referrer.split('/').pop
     updated = true
-    #raise params.inspect
     if params[:practice].present?
-      if params[:practice][:initiating_facility_type].present?
-        facility_type = params[:practice][:initiating_facility_type]
-        if facility_type == "facility"
-          @practice.initiating_facility = params[:editor_facility_select]
-          @practice.initiating_department_office_id = ""
-        elsif facility_type == "visn"
-          @practice.initiating_facility = params[:editor_visn_select]
-          @practice.initiating_department_office_id = ""
-        elsif facility_type == "department"
-          @practice.initiating_facility = params[:editor_office_select]
-          @practice.initiating_department_office_id = params[:initiating_department_office_id]
-        elsif facility_type == "other"
-          @practice.initiating_facility = params[:initiating_facility_other]
-          @practice.initiating_department_office_id = ""
-        end
+      facility_type = params[:practice][:initiating_facility_type] || nil
+      if facility_type.present?
+        set_initiating_fac_params params
       end
       pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
       updated = SavePracticeService.new(pr_params).save_practice
-      if facility_type != "facility" && current_endpoint == 'introduction'
-        origin_facilities = @practice.practice_origin_facilities
-        origin_facilities.destroy_all
-      end
+      clear_origin_facilities if facility_type != "facility" && current_endpoint == 'introduction'
     end
     respond_to do |format|
       if updated
@@ -178,6 +162,30 @@ class PracticesController < ApplicationController
         format.html { redirect_back fallback_location: root_path }
         format.json { render json: updated, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def clear_origin_facilities
+    origin_facilities = @practice.practice_origin_facilities
+    origin_facilities.destroy_all
+  end
+
+  def set_initiating_fac_params(params)
+    facility_type = params[:practice][:initiating_facility_type]
+    if facility_type == "facility" && params[:practice][:practice_origin_facilities_attributes].present?
+      @practice.initiating_facility = ""
+      @practice.initiating_department_office_id = ""
+    elsif facility_type == "visn" && params[:editor_visn_select].present?
+      @practice.initiating_facility = params[:editor_visn_select]
+      @practice.initiating_department_office_id = ""
+    elsif facility_type == "department" && params[:editor_office_state_select].present? && params[:practice][:initiating_department_office_id].present? && params[:practice][:initiating_facility]
+      @practice.initiating_facility = params[:practice][:initiating_facility]
+      @practice.initiating_department_office_id = params[:practice][:initiating_department_office_id]
+    elsif facility_type == "other" && params[:initiating_facility_other].present?
+      @practice.initiating_facility = params[:initiating_facility_other]
+      @practice.initiating_department_office_id = ""
+    else
+      params[:practice][:initiating_facility_type] = ""
     end
   end
 
@@ -342,8 +350,13 @@ class PracticesController < ApplicationController
   def publication_validation
     current_endpoint = request.referrer.split('/').pop
     if params[:practice].present?
+      facility_type = params[:practice][:initiating_facility_type] || nil
+      if facility_type.present?
+        set_initiating_fac_params params
+      end
       pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
       updated = SavePracticeService.new(pr_params).save_practice
+      clear_origin_facilities if facility_type != "facility"
     end
     respond_to do |format|
       if can_publish
@@ -593,8 +606,8 @@ class PracticesController < ApplicationController
   end
 
   def can_publish
-    if @practice.name.present? && @practice.initiating_facility_type.present? && @practice.date_initiated.present? && @practice.summary.present? && @practice.support_network_email.present?
-      @practice.facility? ? @practice.practice_origin_facilities.present? : @practice.initating_facility.present?
+    if @practice.name.present? && @practice.initiating_facility_type.present? && @practice.date_initiated.present? && @practice.summary.present? && @practice.support_network_email.present? && @practice.diffusion_histories.present?
+      @practice.has_facility?
     else
       false
     end
