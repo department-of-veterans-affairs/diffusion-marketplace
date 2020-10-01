@@ -76,17 +76,13 @@ i.e.
 // outline btns - to use: class="usa-button--outline dm-btn-primary"
 .usa-button--outline {
   @extend .usa-button;
-  //border-width: 2px;
   border-style: solid;
   background-color: transparent !important;
-  //box-shadow: none;
   margin-top: 0;
 
   &:visited, &:active, &:hover {
     background-color: transparent !important;
-    //border-width: 2px;
     border-style: solid;
-    //box-shadow: none;
   }
 
   // outline blue-50v btn
