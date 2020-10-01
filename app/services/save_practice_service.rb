@@ -54,6 +54,7 @@ class SavePracticeService
     rescue_method(:update_practice_awards)
     rescue_method(:update_category_practices)
     rescue_method(:crop_resource_images)
+      true
     rescue => e
       Rails.logger.error "save_practice error: #{e.message}"
       e
