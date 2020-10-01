@@ -1,0 +1,15 @@
+<h4 class="margin-bottom-1 margin-top-0">Links</h4>
+<ul class="usa-list--unstyled margin-bottom-5">
+  <% link_attachments.each do |la| %>
+    <div class="margin-bottom-1">
+      <% if la.name.present? %>
+        <% unless la.link_url.start_with?("http") %>
+          <% la.link_url = "http://" + la.link_url %>
+        <% end %>
+        <div class="margin-top-1 width-100 line-height-26">
+          <li class="small-disc"><%= la.description %> <a class="<%= la.link_url.downcase().include?('marketplace.gov') ? 'dm-internal-link' : 'dm-external-link usa-link--external' %>" href="<%= la.link_url %>" target="_blank"><%= la.name %></a></li>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</ul>
