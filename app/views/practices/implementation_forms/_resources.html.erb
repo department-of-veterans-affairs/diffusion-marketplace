@@ -80,13 +80,12 @@
           <% end %>
         <% end %>
         </ul>
-        <br />
         <% cur_resources = @practice.practice_resources.where(resource_type_label: resource_type_label, resource_type: resource_type, media_type: media_type) %>
         <%= f.link_to_add :practice_resources, id: link_to_add_link_slug, 'data-dm-blueprint-id': blue_print_id, class: add_practice_resources_link + " dm-add-another-link line-height-26 cursor-pointer #{'display-none' unless cur_resources.any?}" do %>
           <span class="font-sans-xs text-normal">Add another</span>
         <% end %>
         <%= f.link_to_add :practice_resources, id: link_to_add_button_slug, 'data-dm-blueprint-id': blue_print_id, class: add_practice_resources_link + " usa-button--outline dm-btn-primary #{'display-none' if cur_resources.any?}" do %>
-          <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add resource</span>
+          <span class="font-sans-md text-bold text-no-underline">Add resource</span>
         <% end %>
         <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
           observePracticeEditorLiArrival(
