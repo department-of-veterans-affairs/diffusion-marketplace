@@ -82,7 +82,12 @@ describe 'Practice editor - introduction', type: :feature, js: true do
     it 'should allow changing date created' do
       expect(page).to have_field('Month', with: '8')
       expect(page).to have_field('Year', with: '2016')
+      # Make sure client-side validation is working
       select('October', :from => 'editor_date_initiated_month')
+      fill_in('Year', with: '1969')
+      click_save
+      year_created_message = page.find('#editor_date_initiated_year').native.attribute('validationMessage')
+      expect(year_created_message).to eq('Please select a value that is no less than 1970.')
       fill_in('Year', with: '1970')
       click_save
       visit_practice_show
