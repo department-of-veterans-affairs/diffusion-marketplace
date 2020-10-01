@@ -20,44 +20,46 @@ describe 'HomeMap', type: :feature do
 
   context 'when visiting a practice page with diffusion history' do
     it 'the map shows up and filters are working' do
+      # need to select by title since there are duplicate divs with the same width
+      marker_div = 'div[style*="width: 31px"][title=""]'
+
       visit practice_path(Practice.first)
 
       # filters button
       expect(page).to be_accessible.within '#mapFilters'
-
       # all markers
-      markers = page.all(:css, 'div[style*="width: 31px"]')
-      expect(markers.count).to eq(25)
+      marker_count = find_all(:css, marker_div).count
+      expect(marker_count).to eq(25)
 
       # Filter out "Complete" status
       complete_filter_checkbox = find(:css, 'label[for="status_complete"]')
       complete_filter_checkbox.click
 
-      markers = page.all(:css, 'div[style*="width: 31px"]')
+      marker_count = find_all(:css, marker_div).count
       # 7 in progress and 1 unsuccessful
-      expect(markers.count).to eq(8)
+      expect(marker_count).to eq(8)
 
       # Filter out "In progress" status
       in_progress_filter_checkbox = find(:css, 'label[for="status_in_progress"]')
       in_progress_filter_checkbox.click
 
       # 1 unsuccessful
-      markers = page.all(:css, 'div[style*="width: 31px"]')
-      expect(markers.count).to eq(1)
+      marker_count = find_all(:css, marker_div).count
+      expect(marker_count).to eq(1)
 
       # Filter out "Unsuccessful" status
       unsuccessful_filter_checkbox = find(:css, 'label[for="status_unsuccessful"]')
       unsuccessful_filter_checkbox.click
 
       # no markers
-      markers = page.all(:css, 'div[style*="width: 31px"]')
-      expect(markers.count).to eq(0)
+      marker_count = find_all(:css, marker_div).count
+      expect(marker_count).to eq(0)
 
       # Bring back "Complete"
       complete_filter_checkbox.click
-      markers = page.all(:css, 'div[style*="width: 31px"]')
+      marker_count = find_all(:css, marker_div).count
       # 17 complete
-      expect(markers.count).to eq(17)
+      expect(marker_count).to eq(17)
     end
   end
 end
