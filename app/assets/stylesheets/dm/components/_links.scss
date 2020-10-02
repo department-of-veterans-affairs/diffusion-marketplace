@@ -33,7 +33,7 @@ a {
 
   // pages external to DM
   &.dm-external-link {
-    color: $dm-color-blue-50v;
+    color: $dm-color-blue-50v !important;
     text-decoration: underline;
 
     &:visited, &:hover, &:active {

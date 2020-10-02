@@ -50,14 +50,14 @@
                 </div>
                 <div class="grid-col-12 trash-container">
                   <input type="hidden" name="practice[department][<%= dp_id %>][_destroy]" value="false"/>
-                  <a class="dm-origin-trash font-sans-xs line-height-26 cursor-pointer float-right remove_nested_fields">Delete entry</a>
+                  <a class="dm-origin-trash usa-button--unstyled dm-btn-warning float-right line-height-26 remove_nested_fields">Delete entry</a>
                 </div>
               </div>
             </li>
           <% end %>
         </ul>
-        <%= f.link_to_add :department_practices, id: 'link_to_add_link_department_practices', class: "dm-add-another-link dm-add-practice-department-link line-height-26 cursor-pointer" do %>
-          <span class="font-sans-xs text-normal">Add another</span>
+        <%= f.link_to_add :department_practices, id: 'link_to_add_link_department_practices', class: "dm-add-another-link dm-add-practice-department-link usa-button--unstyled dm-btn-primary line-height-26 cursor-pointer" do %>
+          <span class="text-normal">Add another</span>
         <% end %>
         <% provide :head_tags do %>
           <%= javascript_tag 'data-turbolinks-track': 'reload' do %>

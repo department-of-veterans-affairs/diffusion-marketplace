@@ -216,14 +216,13 @@
                                          options_for_select([['-Select-', nil, selected: true, disabled: true,
                                                               class: 'usa-select dm-color-gray-20']]),
                                          {},
-                                         {class: 'height-5 usa-select desktop:grid-col-8 margin-bottom-1 x0-top'}
+                                         {class: 'height-5 usa-select desktop:grid-col-8 x0-top'}
                           %>
                         </div>
 
                         <div class="grid-col-8 trash-container">
                           <%= pof.link_to_remove 'Delete Entry',
-                                                 class: "dm-origin-trash
-                                                 font-sans-xs usa-button--unstyled dm-btn-warning float-right"
+                                                 class: "dm-origin-trash usa-button--unstyled dm-btn-warning float-right line-height-26"
                           %>
                         </div>
                       </div>
@@ -231,8 +230,8 @@
                   <% end %>
                 </ul>
                 <%= f.link_to_add :practice_origin_facilities,
-                                  class: 'dm-add-another-link dm-add-practice-originating-facilities-link usa-button--unstyled dm-btn-primary font-sans-xs cursor-pointer' do %>
-                  <span class="font-sans-xs text-normal">Add another</span>
+                                  class: 'dm-add-another-link dm-add-practice-originating-facilities-link usa-button--unstyled dm-btn-primary cursor-pointer line-height-26' do %>
+                  <span class="text-normal">Add another</span>
                 <% end %>
                 <% unless @practice.practice_origin_facilities.any? %>
                   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
@@ -343,19 +342,19 @@
                           <div class="grid-row">
                             <div class="grid-col-12">
                               <%= pa.label :name, 'Name of award or recognition', class: 'usa-label x0-top margin-bottom-1 grid-col-12' %>
-                              <%= pa.text_field :name, class: 'usa-input desktop:grid-col-8 margin-bottom-1 x0-top' %>
+                              <%= pa.text_field :name, class: 'usa-input desktop:grid-col-8 x0-top' %>
                             </div>
                             <div class="grid-col-8 trash-container">
                               <%= f.link_to_remove 'Delete entry',
-                                                   class: "dm-origin-trash font-sans-xs usa-button--unstyled dm-btn-warning float-right" %>
+                                                   class: "dm-origin-trash usa-button--unstyled dm-btn-warning float-right line-height-26" %>
                             </div>
                           </div>
                         </li>
                       <% end %>
                     <% end %>
                   </ul>
-                  <%= f.link_to_add :practice_awards, class: 'dm-add-another-link dm-add-practice-award-other-link usa-button--unstyled dm-btn-primary' do %>
-                    <span class="font-sans-xs text-normal">Add another</span>
+                  <%= f.link_to_add :practice_awards, class: 'dm-add-another-link dm-add-practice-award-other-link usa-button--unstyled dm-btn-primary line-height-26' do %>
+                    <span class="text-normal">Add another</span>
                   <% end %>
                   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
                     $(document).arrive('#practice_awards_fields_blueprint',
@@ -519,12 +518,12 @@
                           <div class="grid-row">
                             <div class="grid-col-8">
                               <%= cat.label :name, 'Name of category', class: 'usa-label x0-top margin-bottom-1 grid-col-12' %>
-                              <%= cat.text_field :name, class: 'usa-input margin-bottom-1 x0-top', 'aria-label': 'Name' %>
+                              <%= cat.text_field :name, class: 'usa-input x0-top', 'aria-label': 'Name' %>
                             </div>
 
                             <div class="grid-col-8 trash-container">
                               <%= cat.link_to_remove 'Delete entry',
-                                                    class: "dm-origin-trash font-sans-xs line-height-26 cursor-pointer float-right"
+                                                    class: "dm-origin-trash usa-button--unstyled dm-btn-warning float-right line-height-26"
                               %>
                             </div>
                           </div>
@@ -532,8 +531,8 @@
                       <% end %>
                     <% end %>
                   </ul>
-                  <%= f.link_to_add :categories, class: 'dm-add-another-link add-category-link line-height-26 cursor-pointer' do %>
-                    <span class="font-sans-xs text-normal">Add another</span>
+                  <%= f.link_to_add :categories, class: 'dm-add-another-link add-category-link usa-button--unstyled dm-btn-primary line-height-26 cursor-pointer' do %>
+                    <span class="text-normal">Add another</span>
                   <% end %>
                   <% unless other_categories.any? %>
                     <%= javascript_tag 'data-turbolinks-track': 'reload' do %>

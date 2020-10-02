@@ -481,6 +481,7 @@ class PracticesController < ApplicationController
                                      department: {},
                                      category: {},
                                      practice_award: {},
+                                     practice_resources_attributes: {},
                                      practice_problem_resources_attributes: {},
                                      practice_solution_resources_attributes: {},
                                      practice_results_resources_attributes: {},

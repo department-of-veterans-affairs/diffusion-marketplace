@@ -3,6 +3,7 @@
 <% provide :head_tags do %>
   <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_timeline', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'practice_editor_implementation', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <%= render 'breadcrumbs' %>
@@ -11,6 +12,7 @@
   <div class="grid-row grid-gap practice-editor-min-height">
     <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
     <div id="implementation" class="desktop:grid-col-9 grid-col-12 p0">
+      <%= render partial: "shared/messages", locals: {small_text: false} %>
     <section class="usa-section padding-top-0 p0-bottom introduction">
     <h1 class="font-sans-2xl line-height-sans-205 margin-bottom-3">Implementation</h1>
       <h2 class="text-normal line-height-sans-6 font-sans-lg">
@@ -26,13 +28,173 @@
         <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
         <div class="margin-bottom-5 margin-top-3">
           <%= render partial: 'practices/implementation_forms/departments', locals: {f: f} %>
+        </div>
+          <!--        Resources     -->
+          <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
+          <div class="margin-bottom-5 margin-top-3">
+            <h2 class="font-sans-sm">Core resources list</h2>
+            <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
+              Provide a list of the resources another facility would need to implement your practice.
+            </h3>
+            <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "core", resource_type_label: "people", media_type: 'resource'}%>
+            <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "core", resource_type_label: "processes", media_type: 'resource'}%>
+            <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "core", resource_type_label: "tools", media_type: 'resource'}%>
 
-                  <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
-        <%= render partial: 'practices/implementation_forms/risks_and_mitigations', locals: {f: f} %>
-
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5 margin-bottom-2"></div>
+            <h2 class="font-sans-sm">Core resources attachments</h2>
+            <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
+              Upload any files or attach any links related to support resources.
+            </h3>
+            <div class="grid-row grid-gap margin-top-2 margin-bottom-3">
+              <div class="usa-radio position-relative grid-col-12">
+                <%= radio_button_tag 'practice_resources[media_type]',
+                                     'File', false, onclick: "displayAttachmentForm('core_attachment', 'file');",
+                                     class: 'usa-radio__input initiating-facility-type-radio',
+                                     id: "core_resource_attachment_file"
+                %>
+                <%= label_tag 'core_resource_file', 'File', class: 'usa-radio__label
+                initiating-facility-type-label line-height-19px margin-bottom-105', for: "core_resource_attachment_file" %>
+              </div>
+              <div class="usa-radio position-relative grid-col-12">
+                <%= radio_button_tag 'practice_resources[media_type]', 'Link',
+                                     false, onclick: "displayAttachmentForm('core_attachment', 'link');",
+                                     class: 'usa-radio__input initiating-facility-type-radio',
+                                     id: "core_resource_attachment_link"
+                %>
+                <%= label_tag 'core_resource_link', 'Link', class: 'usa-radio__label
+                initiating-facility-type-label line-height-19px x0-bottom', for: "core_resource_attachment_link" %>
+              </div>
+              <div id="display_core_attachment_form" class="display_core_attachments_form grid-row grid-col-12 margin-bottom-2">
+                <%= render partial: "practices/implementation_forms/attachment_file_form", locals: {area: 'core_attachment', resource_type: 'core'} %>
+                <%= render partial: "practices/implementation_forms/attachment_link_form", locals: {area: 'core_attachment', resource_type: 'core'} %>
+              </div>
+              <div id="display_core_attachment_file" class="grid-col-12">
+                <% if @practice.practice_resources.where(resource_type: 'core', media_type: 'file').exists? %>
+                  <h5 id="core_attachment_file_section_text" class="text-bold margin-bottom-2 font-sans-3xs text-ls-1 line-height-15px">FILES:</h5>
+                  <% @practice.practice_resources.where(resource_type: 'core', media_type: 'file').each_with_index do |pr, i| %>
+                    <%= render partial: "practices/implementation_forms/attachment_file_form", locals: {resource: pr, placeholder: i, area: 'core_attachment', resource_type: 'core'} %>
+                  <% end %>
+                <% end %>
+              </div>
+              <div id="display_core_attachment_link" class="grid-col-12">
+                <% if @practice.practice_resources.where(resource_type: 'core', media_type: 'link').exists? %>
+                  <h5 id="core_attachment_link_section_text" class="text-bold margin-bottom-2 font-sans-3xs text-ls-1 line-height-15px">LINKS:</h5>
+                <% end %>
+                <% @practice.practice_resources.where(resource_type: 'core', media_type: 'link').each_with_index do |pr, i| %>
+                  <%= render partial: "practices/implementation_forms/attachment_link_form", locals: {resource: pr, placeholder: i, area: 'core_attachment', resource_type: 'core'} %>
+                <% end %>
+              </div>
+            </div>
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-bottom-3"></div>
+            <h2 class="font-sans-sm">Optional resources list</h2>
+            <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
+              Provide a list of the resources another facility would need to implement your practice.
+            </h3>
+            <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "optional", resource_type_label: "people", media_type: 'resource'}%>
+            <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "optional", resource_type_label: "processes", media_type: 'resource'}%>
+            <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "optional", resource_type_label: "tools", media_type: 'resource'}%>
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5 margin-bottom-2"></div>
+            <h2 class="font-sans-sm">Optional resources attachments</h2>
+            <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
+              Upload any files or attach any links related to support resources.
+            </h3>
+            <div class="grid-row grid-gap margin-top-2 margin-bottom-3">
+              <div class="usa-radio position-relative grid-col-12">
+                <%= radio_button_tag 'practice_resources[media_type]',
+                                     'File', false, onclick: "displayAttachmentForm('optional_attachment', 'file');",
+                                     class: 'usa-radio__input initiating-facility-type-radio',
+                                     id: "optional_resource_attachment_file"
+                %>
+                <%= label_tag 'optional_resource_file', 'File', class: 'usa-radio__label
+                initiating-facility-type-label line-height-19px margin-bottom-105', for: "optional_resource_attachment_file" %>
+              </div>
+              <div class="usa-radio position-relative grid-col-12">
+                <%= radio_button_tag 'practice_resources[media_type]', 'Link',
+                                     false, onclick: "displayAttachmentForm('optional_attachment', 'link');",
+                                     class: 'usa-radio__input initiating-facility-type-radio',
+                                     id: "optional_resource_attachment_link"
+                %>
+                <%= label_tag 'optional_resource_link', 'Link', class: 'usa-radio__label
+                initiating-facility-type-label line-height-19px x0-bottom', for: "optional_resource_attachment_link" %>
+              </div>
+              <div id="display_optional_attachment_form" class="display_optional_attachments_form grid-row grid-col-12 margin-bottom-2">
+                <%= render partial: "practices/implementation_forms/attachment_file_form", locals: {area: 'optional_attachment', resource_type: 'optional'} %>
+                <%= render partial: "practices/implementation_forms/attachment_link_form", locals: {area: 'optional_attachment', resource_type: 'optional'} %>
+              </div>
+              <div id="display_optional_attachment_file"  class="grid-col-12">
+                <% if @practice.practice_resources.where(resource_type: 'optional', media_type: 'file').exists? %>
+                  <h5 id="optional_attachment_file_section_text" class="text-bold margin-bottom-2 font-sans-3xs text-ls-1 line-height-15px">FILES:</h5>
+                  <% @practice.practice_resources.where(resource_type: 'optional', media_type: 'file').each_with_index do |pr, i| %>
+                    <%= render partial: "practices/implementation_forms/attachment_file_form", locals: {resource: pr, placeholder: i, area: 'optional_attachment', resource_type: 'optional'} %>
+                  <% end %>
+                <% end %>
+              </div>
+              <div id="display_optional_attachment_link" class="grid-col-12">
+                <% if @practice.practice_resources.where(resource_type: 'optional', media_type: 'link').exists? %>
+                  <h5 id="optional_attachment_link_section_text" class="text-bold margin-bottom-2 font-sans-3xs text-ls-1 line-height-15px">LINKS:</h5>
+                <% end %>
+                <% @practice.practice_resources.where(resource_type: 'optional', media_type: 'link').each_with_index do |pr, i| %>
+                  <%= render partial: "practices/implementation_forms/attachment_link_form", locals: {resource: pr, placeholder: i, area: 'optional_attachment', resource_type: 'optional'} %>
+                <% end %>
+              </div>
+            </div>
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+            <h2 class="font-sans-sm">Support resources list</h2>
+            <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
+              Provide a list of the resources another facility would need to implement your practice.
+            </h3>
+            <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "support", resource_type_label: "people", media_type: 'resource'}%>
+            <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "support", resource_type_label: "processes", media_type: 'resource'}%>
+            <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "support", resource_type_label: "tools", media_type: 'resource'}%>
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
+            <h2 class="font-sans-sm">Support resources attachments</h2>
+            <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
+              Upload any files or attach any links related to support resources.
+            </h3>
+            <div class="grid-row grid-gap margin-top-2">
+              <div class="usa-radio position-relative grid-col-12">
+                <%= radio_button_tag 'practice_resources[media_type]',
+                                     'File', false, onclick: "displayAttachmentForm('support_attachment', 'file');",
+                                     class: 'usa-radio__input initiating-facility-type-radio',
+                                     id: "support_resource_attachment_file"
+                %>
+                <%= label_tag 'support_resource_file', 'File', class: 'usa-radio__label
+                initiating-facility-type-label line-height-19px margin-bottom-105', for: "support_resource_attachment_file" %>
+              </div>
+              <div class="usa-radio position-relative grid-col-12">
+                <%= radio_button_tag 'practice_resources[media_type]', 'Link',
+                                     false, onclick: "displayAttachmentForm('support_attachment', 'link');",
+                                     class: 'usa-radio__input initiating-facility-type-radio',
+                                     id: "support_resource_attachment_link"
+                %>
+                <%= label_tag 'support_resource_link', 'Link', class: 'usa-radio__label
+                initiating-facility-type-label line-height-19px x0-bottom', for: "support_resource_attachment_link" %>
+              </div>
+              <div id="display_support_attachment_form" class="display_support_attachments_form grid-row grid-col-12 margin-bottom-2">
+                <%= render partial: "practices/implementation_forms/attachment_file_form", locals: {area: 'support_attachment', resource_type: 'support'} %>
+                <%= render partial: "practices/implementation_forms/attachment_link_form", locals: {area: 'support_attachment', resource_type: 'support'} %>
+              </div>
+              <div id="display_support_attachment_file"  class="grid-col-12">
+                <% if @practice.practice_resources.where(resource_type: 'support', media_type: 'file').exists? %>
+                  <h5 id="support_attachment_file_section_text" class="text-bold margin-bottom-2 font-sans-3xs text-ls-1 line-height-15px">FILES:</h5>
+                  <% @practice.practice_resources.where(resource_type: 'support', media_type: 'file').each_with_index do |pr, i| %>
+                    <%= render partial: "practices/implementation_forms/attachment_file_form", locals: {resource: pr, placeholder: i, area: 'support_attachment', resource_type: 'support'} %>
+                  <% end %>
+                <% end %>
+              </div>
+              <div id="display_support_attachment_link" class="grid-col-12">
+                <% if @practice.practice_resources.where(resource_type: 'support', media_type: 'link').exists? %>
+                  <h5 id="support_attachment_link_section_text" class="text-bold margin-bottom-2 font-sans-3xs text-ls-1 line-height-15px">LINKS:</h5>
+                <% end %>
+                <% @practice.practice_resources.where(resource_type: 'support', media_type: 'link').each_with_index do |pr, i| %>
+                  <%= render partial: "practices/implementation_forms/attachment_link_form", locals: {resource: pr, placeholder: i, area: 'support_attachment', resource_type: 'support'} %>
+                <% end %>
+              </div>
+            </div>
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-3"></div>
+            <%= render partial: 'practices/implementation_forms/risks_and_mitigations', locals: {f: f} %>
+          </div>
         <% end %>
-
-    </div>
 
   <div class="grid-row">
     <%= link_to practice_overview_path(@practice), class: 'usa-button--outline dm-btn-base editor-back-to-link margin-right-1' do %>

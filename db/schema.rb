@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_14_164308) do
+ActiveRecord::Schema.define(version: 2020_09_16_131735) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -780,6 +780,25 @@ ActiveRecord::Schema.define(version: 2020_09_14_164308) do
     t.index ["practice_id"], name: "index_practice_problem_resources_on_practice_id"
   end
 
+  create_table "practice_resources", force: :cascade do |t|
+    t.bigint "practice_id"
+    t.string "link_url"
+    t.string "resource"
+    t.string "name"
+    t.string "description"
+    t.integer "resource_type"
+    t.integer "media_type"
+    t.integer "resource_type_label"
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "attachment_file_name"
+    t.string "attachment_content_type"
+    t.integer "attachment_file_size"
+    t.datetime "attachment_updated_at"
+    t.index ["practice_id"], name: "index_practice_resources_on_practice_id"
+  end
+
   create_table "practice_results_resources", force: :cascade do |t|
     t.bigint "practice_id"
     t.string "link_url"
@@ -1233,6 +1252,7 @@ ActiveRecord::Schema.define(version: 2020_09_14_164308) do
   add_foreign_key "practice_partner_practices", "practices"
   add_foreign_key "practice_permissions", "practices"
   add_foreign_key "practice_problem_resources", "practices"
+  add_foreign_key "practice_resources", "practices"
   add_foreign_key "practice_results_resources", "practices"
   add_foreign_key "practice_solution_resources", "practices"
   add_foreign_key "practice_testimonials", "practices"

@@ -41,8 +41,10 @@ describe 'HomeMap', type: :feature do
       # filter the markers
       update_results
 
-      markers = page.all(:css, 'div[style*="width: 31px"]')
-      expect(markers.count).to be(2)
+      # need to select by title since there are duplicate divs with the same width
+      marker_div = 'div[style*="width: 31px"][title=""]'
+      marker_count = find_all(:css, marker_div).count
+      expect(marker_count).to be(2)
 
     end
 
