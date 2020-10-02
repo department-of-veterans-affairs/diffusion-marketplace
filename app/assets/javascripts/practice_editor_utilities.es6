@@ -150,7 +150,7 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
         const deleteEntryHtml = `
             <div class="grid-col-12 margin-top-2" align="right">
                <input type="hidden" value="false" name="practice[practice_${sArea}_attributes][${nGuid}_${sType}][_destroy]"/>
-               <button type="button" data-area="${sArea}" data-type="${sType}" class="usa-button--unstyled dm-btn-warning remove_nested_fields">
+               <button type="button" data-area="${sArea}" data-type="${sType}" class="usa-button--unstyled dm-btn-warning line-height-26 remove_nested_fields">
                     Delete entry
                </button>
             </div>

@@ -352,20 +352,20 @@
                     <li class="practice-editor-metric-li fields" <%= "id=practice_practice_metrics_attributes_#{pm.index}_li" if pm.object.id %> data-id="<%= metric_id %>">
                       <div class="grid-row">
                         <div class="grid-col-12">
-                          <%= pm.text_field :description, class: 'usa-input margin-bottom-1 x0-top', 'aria-label': 'Description' %>
+                          <%= pm.text_field :description, class: 'usa-input x0-top', 'aria-label': 'Description' %>
                         </div>
 
                         <div class="grid-col-12 trash-container">
                           <%= pm.link_to_remove 'Delete entry',
-                                                class: "dm-origin-trash font-sans-xs line-height-26 cursor-pointer float-right"
+                                                class: "dm-origin-trash usa-button--unstyled dm-btn-warning float-right line-height-26"
                           %>
                         </div>
                       </div>
                     </li>
                   <% end %>
                 </ul>
-                <%= f.link_to_add :practice_metrics, class: 'dm-add-another-link add-practice-metric-link line-height-26 cursor-pointer' do %>
-                  <span class="font-sans-xs text-normal">Add another</span>
+                <%= f.link_to_add :practice_metrics, class: 'dm-add-another-link add-practice-metric-link usa-button--unstyled dm-btn-primary line-height-26 cursor-pointer' do %>
+                  <span class="text-normal">Add another</span>
                 <% end %>
                 <% provide :head_tags do %>
                   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>

@@ -52,7 +52,7 @@
                         </div>
                       <div class="grid-col-12 trash-container">
                         <%= tl.link_to_remove 'Delete entry',
-                                              class: "dm-origin-trash font-sans-xs line-height-26 cursor-pointer float-right"
+                                              class: "dm-origin-trash usa-button--unstyled dm-btn-warning float-right line-height-26"
                         %>
                       </div>
                     </div>
@@ -60,8 +60,8 @@
                 <% end %>
               </ul>
 
-                  <%= f.link_to_add :timelines, id: 'link_to_add_link_timeline', class: "dm-add-another-link add-practice-timeline-link line-height-26 cursor-pointer #{'display-none' unless @practice.timelines.any?}" do %>
-                    <span class="font-sans-xs text-normal">Add another</span>
+                  <%= f.link_to_add :timelines, id: 'link_to_add_link_timeline', class: "dm-add-another-link add-practice-timeline-link usa-button--unstyled dm-btn-primary line-height-26 cursor-pointer #{'display-none' unless @practice.timelines.any?}" do %>
+                    <span class="text-normal">Add another</span>
                   <% end %>
                   <%= f.link_to_add :timelines, id: 'link_to_add_button_timeline', class: "usa-button--outline dm-btn-primary add-timeline-link #{'display-none' if @practice.timelines.any?}" do %>
                     <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add timeline step</span>
