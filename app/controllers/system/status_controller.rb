@@ -5,6 +5,7 @@ module System
     def index
       @deployed_at = deployed_at
       @revision = revision
+      @refreshed_db_with = refreshed
     end
 
     private
@@ -20,5 +21,14 @@ module System
     def revision
       revision_file.read rescue nil
     end
+
+    def refreshed_file
+      File.new("REFRESHED_DB_WITH") rescue nil
+    end
+
+    def refreshed
+      refreshed_file.read rescue nil
+    end
+
   end
 end

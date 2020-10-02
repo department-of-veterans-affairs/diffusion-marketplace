@@ -1,14 +1,13 @@
 class HomeController < ApplicationController
 
   def index
-    @top_practice = Practice.find_by_highlight true
-    @featured_practices = Practice.where featured: true
     @practices = Practice.searchable_practices
     @favorite_practices = current_user&.favorite_practices || []
-
     @facilities_data = facilities_json
+  end
 
-    @vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
+  def diffusion_map
+    @vamc_facilities = facilities_json
 
     @diffused_practices = DiffusionHistory.all.reject { |dh| !dh.practice.published }
 
@@ -61,6 +60,7 @@ class HomeController < ApplicationController
 
       marker.infowindow render_to_string(partial: 'maps/infowindow', locals: {diffusion_histories: dhg[1], completed: completed, in_progress: in_progress, unsuccessful: unsuccessful, facility: facility, home_page: true})
     end
+    render 'maps/diffusion_map'
   end
 
   def pii_phi_information

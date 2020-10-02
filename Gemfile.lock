@@ -605,7 +605,7 @@ DEPENDENCIES
   pg (= 1.1.4)
   pry (~> 0.12.2)
   puma (>= 4.3.5)
-  rails (= 5.2.4.4)
+  rails (>= 5.2.4.4)
   rails-assets-jquery.scrollTo!
   rails-assets-sticky!
   rails-erd

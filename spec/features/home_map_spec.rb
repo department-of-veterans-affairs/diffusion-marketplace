@@ -9,6 +9,7 @@ describe 'HomeMap', type: :feature do
     Rake::Task['importer:import_answers'].execute
     Rake::Task['diffusion_history:flow3'].execute
     ENV['GOOGLE_API_KEY'] = ENV['GOOGLE_TEST_API_KEY']
+    visit '/diffusion-map'
   end
 
   after do
@@ -25,8 +26,6 @@ describe 'HomeMap', type: :feature do
 
   context 'when visiting the homepage' do
     it 'the map shows up and filters are working' do
-      visit '/'
-
       # filters button
       expect(page).to be_accessible.within '#filterResultsTrigger'
 
@@ -49,7 +48,6 @@ describe 'HomeMap', type: :feature do
     end
 
     it 'autocompletes facility names' do
-      visit '/'
       open_filters
 
       find('#facility_name').set('Ja')
@@ -59,7 +57,6 @@ describe 'HomeMap', type: :feature do
     end
 
     it 'displays alternate facility name' do
-      visit '/'
       open_filters
 
       find('#practiceListTrigger').click
@@ -67,7 +64,6 @@ describe 'HomeMap', type: :feature do
     end
 
     it 'should show unsuccessful adoptions' do
-      visit '/'
       open_filters
       all('.usa-checkbox__label').first.click
       find('.adoption-status-label:nth-of-type(2)').click
