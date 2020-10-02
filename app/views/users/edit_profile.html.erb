@@ -2,7 +2,6 @@
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     <%= render partial: 'edit_profile', formats: [:js] %>
   <% end %>
-  <%= javascript_include_tag '_cropper', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <div class="x0-top">
@@ -54,15 +53,14 @@
                   <div class="grid-col-4 margin-right-1 profile-image-left-col-setter">
                     <div class="dm-cropper-images-container avatar-profile-photo-container" data-type="user">
                       <% if @user.avatar.present? && @user.avatar.exists? %>
-                          <%= image_tag @user.avatar_s3_presigned_url(:original), alt: "user avatar for #{@user.full_name}", class: 'dm-cropper-thumbnail-original avatar-profile-photo hidden'%>
                           <%= image_tag @user.avatar_s3_presigned_url(:thumb), alt: "user avatar for #{@user.full_name}", class: 'dm-cropper-thumbnail-modified avatar-profile-photo'%>
                       <% end %>
                     </div>
-                    <div class="<%= @user.avatar.present? && @user.avatar.exists? ? 'profile-avatar-container bg-base-lightest radius-md cropper-image-placeholder hidden' : 'profile-avatar-container bg-base-lightest radius-md cropper-image-placeholder' %>">
+                    <div class="display-none <%= @user.avatar.present? && @user.avatar.exists? ? 'profile-avatar-container bg-base-lightest radius-md cropper-image-placeholder hidden' : 'profile-avatar-container bg-base-lightest radius-md cropper-image-placeholder' %>">
                         <i class="fas fa-user empty-user-avatar text-base-lighter"></i>
                       </div>
                   </div>
-                  <div class="grid-col-fill profile-image-right-col-setter">
+                  <div class="grid-col-fill profile-image-right-col-setter display-none">
                     <p>Photo</p>
                     <div class="text-base margin-y-1">
                       <p class="line-height-sans-505">
@@ -75,7 +73,7 @@
                       </p>
                     </div>
 
-                  <div class="grid-row flex-align-start">
+                  <div class="display-none grid-row flex-align-start display-none">
                     <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
                       <%= f.hidden_field attribute, :id => attribute, :value => nil %>
                     <% end %>
