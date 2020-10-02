@@ -15,6 +15,10 @@ to confirm the class DOES NOT EXIST before adding a new class
 
 @import "variables/colors";
 
+.dm-primary-5v-background {
+  background-color: $dm-color-primary-5v !important;
+}
+
 /* Linear Gradient backgrounds */
 // TODO: we can probably remove with new designs
 .dm-background-linear-gradient-down-cool {

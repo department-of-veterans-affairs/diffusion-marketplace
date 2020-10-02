@@ -1,0 +1,51 @@
+<div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+<h3 class="margin-top-2 margin-bottom-2 line-height-25px font-sans-lg"><%= table_name %></h3>
+<table class="usa-table usa-table--borderless dm-resource-table margin-bottom-5">
+  <tbody>
+    <% people = practice.practice_resources.where(resource_type: "#{resource_type}", media_type: 'resource', resource_type_label: 'people') %>
+    <% if people.any? %>
+      <tr>
+        <td class="font-sans-xs-1 line-height-sans-505 text-top padding-left-0">
+          <h5 class="margin-top-0">PEOPLE</h5>
+        </td>
+        <td class="font-sans-xs-1 text-top line-height-sans-505">
+          <ul class="padding-left-0 margin-y-0">
+            <% people.each do |cp| %>
+              <li><%= safe_join(raw(cp.resource).split("\r\n"), tag(:br)) %></li>
+            <% end %>
+          </ul>
+        </td>
+      </tr>
+    <% end %>
+    <% process = practice.practice_resources.where(resource_type: "#{resource_type}", media_type: 'resource', resource_type_label: 'processes') %>
+    <% if process.any? %>
+      <tr>
+        <td class="font-sans-xs-1 line-height-sans-505 text-top padding-left-0">
+          <h5 class="margin-top-0">PROCESSES</h5>
+        </td>
+        <td class="font-sans-xs-1 text-top line-height-sans-505">
+          <ul class="padding-left-0 margin-y-0">
+            <% process.each do |cp| %>
+              <li><%= safe_join(raw(cp.resource).split("\r\n"), tag(:br)) %></li>
+            <% end %>
+          </ul>
+        </td>
+      </tr>
+    <% end %>
+    <% tools =  practice.practice_resources.where(resource_type: "#{resource_type}", media_type: 'resource', resource_type_label: 'tools') %>
+    <% if tools.any? %>
+      <tr>
+        <td class="font-sans-xs-1 line-height-sans-505 text-top padding-left-0">
+          <h5 class="margin-top-0">TOOLS</h5>
+        </td>
+        <td class="font-sans-xs-1 text-top line-height-sans-505">
+          <ul class="padding-left-0 margin-y-0">
+            <% tools.each do |ct| %>
+              <li><%= safe_join(raw(ct.resource).split("\r\n"), tag(:br)) %></li>
+            <% end %>
+          </ul>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

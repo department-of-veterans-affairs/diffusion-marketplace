@@ -17,24 +17,39 @@
   float: left;
 }
 
-.homepage-covid-section-container {
+.homepage-featured-link {
+  width: auto;
+  display: inline-block;
+  margin-bottom: 24px;
+  text-decoration: none;
+  color: $dm-color-dark-black;
+
+  &:hover {
+    color: $dm-color-light-black !important;
+  }
+
+  &:visited {
+    color: $dm-default-visited-purple !important;
+  }
+
+  h2 {
+    margin-top: 0 !important;
+  }
+}
+
+.homepage-featured-section-see-more-link {
+  position: absolute;
+  bottom: 50px;
+  left: 20px;
+}
+
+.homepage-featured-section-container {
   height: 309px;
   max-width: 60rem !important;
   padding-top: 43px !important;
   padding-left: 33px !important;
   padding-bottom: 30px;
   background-color: $dm-color-blue-20v;
-
-  .homepage-covid-link {
-    width: auto;
-    display: inline-block;
-    margin-bottom: 24px;
-    margin-top: 0 !important;
-
-    h2 {
-      margin-top: 0 !important;
-    }
-  }
 
   p {
     margin-bottom: 30px;
@@ -49,10 +64,10 @@
       border: 2px solid $dm-color-base !important;
     }
   }
+}
 
-  .virus-image-container {
-    align-self: center;
-  }
+.dm-virus-image-container {
+  display: none;
 }
 
 .tt-dataset-facilityNames {
@@ -97,7 +112,19 @@
     width: 100% !important;
   }
 
-  .virus-image-container {
+  .dm-virus-image-container {
     margin: 0 auto;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .dm-diffusion-map-more {
+    position: absolute;
+    bottom: -117px;
+   }
+
+  .dm-virus-image-container {
+    display: block;
+    align-self: center;
   }
 }

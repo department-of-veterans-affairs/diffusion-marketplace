@@ -1,4 +1,5 @@
 <% no_file_text = 'No REVISION file' %>
+<% no_refreshed_text = 'No REFRESHED_DB_WITH file' %>
 <div class="grid-container">
   <div class="grid-col-8 margin-x-auto">
     <h1>Application Information</h1>
@@ -39,5 +40,22 @@
         </p>
       </div>
     </div>
+    <div class="grid-row word-break-break-word hyphens-auto padding-y-105 border-bottom-1px border-black">
+      <div class="tablet:grid-col-6 padding-left-105">
+        <p class="font-sans-xs-2 line-height-sans-505">
+          DB Version
+        </p>
+      </div>
+      <div class="tablet:grid-col-6 padding-left-105">
+        <p class="font-sans-xs-2 line-height-sans-505">
+          <% if @refreshed_db_with %>
+            <%= @refreshed_db_with %>
+          <% else %>
+            <%= no_refreshed_text %>
+          <% end %>
+        </p>
+      </div>
+    </div>
+
   </div>
 </div>

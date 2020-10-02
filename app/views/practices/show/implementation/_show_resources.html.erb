@@ -1,0 +1,80 @@
+<% core_resources = @practice.practice_resources.where(resource_type: 'core') %>
+<% if core_resources.any? %>
+  <%= render partial: 'practices/show/implementation/resource_table', locals: {
+      table_name: 'Core resources',
+      resource_type: 'core',
+      practice: @practice
+    }
+  %>
+<% end %>
+<!---core files --->
+<% core_file_attachments = @practice.practice_resources.where(resource_type: 'core', media_type: 'file') %>
+<% if core_file_attachments.any? %>
+  <%= render partial: 'practices/show/implementation/resource_file_attachment', locals: {
+      file_attachments: core_file_attachments
+    }
+  %>
+<% end %>
+<!--- core links --->
+<% core_link_attachments = @practice.practice_resources.where(resource_type: 'core', media_type: 'link') %>
+<% if core_link_attachments.any? %>
+  <%= render partial: 'practices/show/implementation/resource_link_attachment', locals: {
+      link_attachments: core_link_attachments
+    }
+  %>
+<% end %>
+
+
+<!--- Optional Resources --->
+<% optional_resources = @practice.practice_resources.where(resource_type: 'optional') %>
+<% if optional_resources.any? %>
+  <%= render partial: 'practices/show/implementation/resource_table', locals:{
+      table_name: 'Optional resources',
+      resource_type: 'optional',
+      practice: @practice
+    }
+  %>
+<% end %>
+<!---optional files --->
+<% optional_file_attachments = @practice.practice_resources.where(resource_type: 'optional', media_type: 'file') %>
+<% if optional_file_attachments.any? %>
+  <%= render partial: 'practices/show/implementation/resource_file_attachment', locals: {
+      file_attachments: optional_file_attachments
+    }
+  %>
+<% end %>
+<!--- optional links --->
+<% optional_link_attachments = @practice.practice_resources.where(resource_type: 'optional', media_type: 'link') %>
+<% if optional_link_attachments.any? %>
+  <%= render partial: 'practices/show/implementation/resource_link_attachment', locals: {
+      link_attachments: optional_link_attachments
+    }
+  %>
+<% end %>
+
+<!--- Support Resources --->
+<% support_resources = @practice.practice_resources.where(resource_type: 'support') %>
+<% if support_resources.any? %>
+  <%= render partial: 'practices/show/implementation/resource_table', locals: {
+      table_name: 'Support resources',
+      resource_type: 'support',
+      practice: @practice
+    }
+  %>
+<% end %>
+<!---support files --->
+<% support_file_attachments = @practice.practice_resources.where(resource_type: 'support', media_type: 'file') %>
+<% if support_file_attachments.any? %>
+  <%= render partial: 'practices/show/implementation/resource_file_attachment', locals: {
+      file_attachments: support_file_attachments
+    }
+  %>
+<% end %>
+<!--- support links --->
+<% support_link_attachments = @practice.practice_resources.where(resource_type: 'support', media_type: 'link') %>
+<% if support_link_attachments.any? %>
+  <%= render partial: 'practices/show/implementation/resource_link_attachment', locals: {
+      link_attachments: support_link_attachments
+    }
+  %>
+<% end %>

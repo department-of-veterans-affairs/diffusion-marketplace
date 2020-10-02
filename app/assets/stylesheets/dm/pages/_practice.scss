@@ -412,7 +412,7 @@
 
 .trash-container {
   padding-right: 0.2rem;
-  margin-top: 5px;
+  margin-top: 8px;
 }
 
 .documentation-trash-container, .contact-trash-container,
@@ -493,8 +493,8 @@
   margin-top: 24px !important;
 }
 
-.add-additional-staff-link, .add-required-staff-link, .add-timeline-link, 
-.add-impact-photo-link, .add-va-employee-link, .add-practice-creator-link, .add-additional-document-link, .add-publication-link,
+.add-additional-staff-link, .add-required-staff-link, .add-timeline-link, .add-practice-resources-link,
+.add-impact-photo-link, .add-practice-creator-link, .add-additional-document-link, .add-publication-link,
 .add-video-file-link, .add-permission-link, .add-resource-link {
   margin-top: 24px !important;
   margin-bottom: 44px;
@@ -561,14 +561,14 @@
   transform: translateX(-50%);
 }
 
-.practice-editor-origin-ul, .practice-editor-timeline-ul, .practice-editor-risk-mitigation-ul, .practice-editor-contact-ul,
+.practice-editor-origin-ul, .practice-editor-timeline-ul, .practice-editor-practice-resources-ul, .practice-editor-risk-mitigation-ul, .practice-editor-contact-ul,
 .practice-editor-additional-document-ul, .practice-editor-publication-ul, .practice-editor-impact-photo-ul,
 .practice-editor-video-file-ul, .practice-editor-permission-ul, .practice-editor-resource-ul, .practice-editor-about-ul {
   margin: 0;
   padding: 0;
 }
 
-.practice-editor-origin-li, .practice-editor-timeline-li, .practice-editor-risk-mitigation-li, .practice-editor-contact-li,
+.practice-editor-origin-li, .practice-editor-timeline-li, .practice-editor-practice-resources-li, .practice-editor-risk-mitigation-li, .practice-editor-contact-li,
 .practice-editor-additional-document-li, .practice-editor-publication-li, .practice-editor-impact-photo-li,
 .practice-editor-video-file-li, .practice-editor-permission-li, .practice-editor-resource-li, .practice-editor-about-li {
   list-style: none;
@@ -668,7 +668,7 @@
   margin-left: -10px;
 }
 
-.pub-title, .add-doc-title, .practice-creator-name, .timeline-duration, .risk-description, .vae-name {
+.pub-title, .add-doc-title, .practice-creator-name, .timeline-duration, .practice-resources-duration, .risk-description, .vae-name {
   margin-top: 0 !important;
 }
 
@@ -981,20 +981,8 @@ li.small-disc:before {
 #implementation {
   .usa-table--borderless {
     min-width: 100%;
-
+  
     tr {
-      th {
-        width: 50%;
-      }
-
-      td:first-child {
-        padding-left: 0;
-      }
-
-      th:nth-child(2), td:nth-child(2) {
-        padding-left: 0.35rem !important;
-      }
-
       th:first-child, td:first-child {
         border-right: 1px solid $dm-color-base;
       }
@@ -1003,9 +991,43 @@ li.small-disc:before {
         border-bottom: 1px solid $dm-color-base;
       }
 
+      td:first-child {
+        padding-left: 0;
+      }
+
       &:last-child {
         td {
-          border-bottom: none;
+          border-bottom: none !important;
+        }
+      }
+    }
+
+    &.dm-risk-mitigation-table {
+      tr {
+        th {
+          width: 50%;
+        }
+
+        th:nth-child(2), td:nth-child(2) {
+          padding-left: 0.35rem !important;
+        }
+      }
+    }
+
+    &.dm-resource-table {
+      tr {
+        td:first-child {
+          width: 150px;
+        }
+
+        td:nth-child(2) {
+          padding-left: 1.75rem !important;
+        }
+
+        &:first-child {
+          td {
+            border-top-color: white !important;
+          }
         }
       }
     }
@@ -1013,13 +1035,15 @@ li.small-disc:before {
 
   @media screen and (min-width: 1024px) {
     .usa-table--borderless {
-      tr {
-        th:first-child {
-          width: 20.125rem;
-        }
+      &.dm-risk-mitigation-table {
+        tr {
+          td:first-child {
+            width: 20.125rem;
+          }
 
-        th:nth-child(2), td:nth-child(2) {
-          padding-left: 0.75rem !important;
+          th:nth-child(2), td:nth-child(2) {
+            padding-left: 0.75rem !important;
+          }
         }
       }
     }

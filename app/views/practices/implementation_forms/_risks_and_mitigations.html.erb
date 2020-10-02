@@ -64,15 +64,15 @@
                 <% end %>
               </div>
               <div class="grid-row">
-                <div class="grid-col-11 risk-miti-trash-container margin-top-2">
-                  <%= rm.link_to_remove 'Delete entry', class: "float-right risk-mitigation-trash font-sans-sm", 'aria-label': 'Remove' %>
+                <div class="grid-col-11 risk-miti-trash-container margin-top-1">
+                  <%= rm.link_to_remove 'Delete entry', class: "risk-mitigation-trash usa-button--unstyled dm-btn-warning float-right line-height-26", 'aria-label': 'Remove' %>
                 </div>
               </div>
             </li>
           <% end %>
         </ul>
         <%= f.link_to_add :risk_mitigations, id: 'dm-add-link-risk-mitigation', class: "add-risk-mitigation-link line-height-26 usa-button--unstyled dm-btn-primary #{'display-none' unless @practice.risk_mitigations.any?}" do %>
-          <span class="font-sans-sm text-normal">Add another</span>
+          <span class="text-normal">Add another</span>
         <% end %>
         <%= f.link_to_add :risk_mitigations, id: 'dm-add-button-risk-mitigation', class: "usa-button--outline dm-btn-primary add-risk-mitigation-link #{'display-none' if @practice.risk_mitigations.any?}" do %>
           <span class="font-sans-sm text-bold text-no-underline">Add risk and mitigation</span>

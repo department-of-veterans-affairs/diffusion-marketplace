@@ -4,7 +4,6 @@
 <% end %>
 
 <div id="timeline" class="desktop:grid-col-10 grid-col-12 p0">
-      <%= render partial: "shared/messages", locals: {small_text: false} %>
       <section class="usa-section padding-top-0 p0-bottom timeline">
         <h4 class="font-sans-sm margin-top-3 margin-bottom-2 line-height-18px">Timeline</h4>
         <p class="text-normal line-height-26">
@@ -52,7 +51,7 @@
                         </div>
                       <div class="grid-col-12 trash-container">
                         <%= tl.link_to_remove 'Delete entry',
-                                              class: "dm-origin-trash line-height-26 cursor-pointer float-right"
+                                              class: "dm-origin-trash usa-button--unstyled dm-btn-warning float-right line-height-26"
                         %>
                       </div>
                     </div>
