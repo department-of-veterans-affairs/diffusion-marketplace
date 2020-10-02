@@ -72,9 +72,6 @@
                 <% if @practice.practice_resources.where(resource_type: 'core', media_type: 'file').exists? %>
                   <div id="core_attachment_file_section_text" class="text-bold margin-bottom-2">FILES:</div>
                   <% @practice.practice_resources.where(resource_type: 'core', media_type: 'file').each_with_index do |pr, i| %>
-                    <% if i > 0 %>
-                      <div class="margin-bottom-2"><hr></div>
-                    <% end %>
                     <%= render partial: "practices/implementation_forms/attachment_file_form", locals: {resource: pr, placeholder: i, area: 'core_attachment', resource_type: 'core'} %>
                   <% end %>
                 <% end %>
@@ -84,9 +81,6 @@
                   <div id="core_attachment_link_section_text" class="text-bold margin-bottom-2">LINKS:</div>
                 <% end %>
                 <% @practice.practice_resources.where(resource_type: 'core', media_type: 'link').each_with_index do |pr, i| %>
-                  <% if i > 0 %>
-                    <div class="margin-bottom-2"><hr></div>
-                  <% end %>
                   <%= render partial: "practices/implementation_forms/attachment_link_form", locals: {resource: pr, placeholder: i, area: 'core_attachment', resource_type: 'core'} %>
                 <% end %>
               </div>
@@ -131,9 +125,6 @@
                 <% if @practice.practice_resources.where(resource_type: 'optional', media_type: 'file').exists? %>
                   <div id="optional_attachment_file_section_text" class="text-bold margin-bottom-2">FILES:</div>
                   <% @practice.practice_resources.where(resource_type: 'optional', media_type: 'file').each_with_index do |pr, i| %>
-                    <% if i > 0 %>
-                      <div class="margin-bottom-2"><hr></div>
-                    <% end %>
                     <%= render partial: "practices/implementation_forms/attachment_file_form", locals: {resource: pr, placeholder: i, area: 'optional_attachment', resource_type: 'optional'} %>
                   <% end %>
                 <% end %>
@@ -143,9 +134,6 @@
                   <div id="optional_attachment_link_section_text" class="text-bold margin-bottom-2">LINKS:</div>
                 <% end %>
                 <% @practice.practice_resources.where(resource_type: 'optional', media_type: 'link').each_with_index do |pr, i| %>
-                  <% if i > 0 %>
-                    <div class="margin-bottom-2"><hr></div>
-                  <% end %>
                   <%= render partial: "practices/implementation_forms/attachment_link_form", locals: {resource: pr, placeholder: i, area: 'optional_attachment', resource_type: 'optional'} %>
                 <% end %>
               </div>
@@ -190,9 +178,6 @@
                 <% if @practice.practice_resources.where(resource_type: 'support', media_type: 'file').exists? %>
                   <div id="support_attachment_file_section_text" class="text-bold margin-bottom-2">FILES:</div>
                   <% @practice.practice_resources.where(resource_type: 'support', media_type: 'file').each_with_index do |pr, i| %>
-                    <% if i > 0 %>
-                      <div class="margin-bottom-2"><hr></div>
-                    <% end %>
                     <%= render partial: "practices/implementation_forms/attachment_file_form", locals: {resource: pr, placeholder: i, area: 'support_attachment', resource_type: 'support'} %>
                   <% end %>
                 <% end %>
@@ -202,9 +187,6 @@
                   <div id="support_attachment_link_section_text" class="text-bold margin-bottom-2">LINKS:</div>
                 <% end %>
                 <% @practice.practice_resources.where(resource_type: 'support', media_type: 'link').each_with_index do |pr, i| %>
-                  <% if i > 0 %>
-                    <div class="margin-bottom-2"><hr></div>
-                  <% end %>
                   <%= render partial: "practices/implementation_forms/attachment_link_form", locals: {resource: pr, placeholder: i, area: 'support_attachment', resource_type: 'support'} %>
                 <% end %>
               </div>
