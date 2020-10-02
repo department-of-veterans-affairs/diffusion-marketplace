@@ -42,24 +42,25 @@
             %>
             <% if show_form %>
             <% if pr.object.id %>
+                <% provide :head_tags do %>
               <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                $(document).arrive('<%= "#practice_resources_attributes_#{pr_id}_resource" %>',
+                $(document).arrive('<%= "#practice_practice_resources_attributes_#{pr.index}_resource_type" %>',
                 function(newElem) {
-                styleOriginFacility(
-                $(newElem).closest('li'),
-                <%= pr_id %>,
-                '.<%= slug %>-li',
-                '.<%= slug %>-ul',
-                '.<%= add_practice_resources_link %>',
-                '12'
+                  styleOriginFacility(
+                  $(newElem).closest('li'),
+                  <%= pr_id %>,
+                  '.<%= slug %>-li',
+                  '.<%= slug %>-ul',
+                  '12'
+                  );
+                  $(document).unbindArrive('<%= "#practice_practice_resources_attributes_#{pr.index}_resource_type" %>', newElem);
+                  }
                 );
-                $(document).unbindArrive('<%= "#practice_resources_attributes_#{pr_id}_resource_type" %>', newElem);
-                }
-                );
+               <% end %>
               <% end %>
             <% end %>
+            <li class="<%= pr.object.id ? slug : li_class_place_holder %>-li fields margin-bottom-2" data-id="<%= pr_id %>">
 
-            <li class="<%= li_class_place_holder %>-li fields" data-id="<%= pr_id %>">
               <%= pr.hidden_field :position %>
               <%= pr.hidden_field :id %>
               <div class="grid-row">
@@ -105,7 +106,6 @@
           );
           $(document).arrive('#practice_resources_fields_blueprint',
           function(blueprint) {
-            //console.log(blueprint);
             var cloned_blue_print =  $(blueprint).clone(true);
             cloned_blue_print.attr('id', '<%= blue_print_id %>');
             $(blueprint).before(cloned_blue_print);

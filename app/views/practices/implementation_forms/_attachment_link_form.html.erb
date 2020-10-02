@@ -4,7 +4,7 @@
    area = area.to_s
 %>
 <div class="grid-col-12">
-  <div id="<%= area %>_link_form<%= "_#{placeholder}" if resource %>">
+  <div id="<%= area %>_link_form<%= "_#{placeholder}" if resource %>"> <% if resource %> class="resource_container margin-bottom-2" <% end %>
     <input type="hidden" name="practice[practice_resources_attributes][<%= placeholder %>][media_type]" value="link"/>
     <input type="hidden" name="practice[practice_resources_attributes][<%= placeholder %>][resource_type]" value="<%= area.split('_')[0] %>"/>
     <% if resource&.id  %>
