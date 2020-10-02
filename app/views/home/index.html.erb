@@ -16,58 +16,56 @@
       <div class="grid-row">
         <div class="tablet:grid-col-8">
           <p class="measure-none font-sans-lg line-height-sans-505">
-            This site is designed to help spread important and life-saving promising practices throughout the VA Healthcare System.
+            This site is designed to help spread important and life-saving promising practices throughout the VA
+            Healthcare System.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="margin-bottom-5">
-    <div class="grid-container homepage-covid-section-container height-auto">
-      <div class="grid-row ie-grid-row-12">
-        <div class="grid-col-8">
-          <%= link_to '/covid-19', class: 'homepage-covid-link' do %>
-            <h2 class="font-sans-xl">COVID-19<span class="fas fa-angle-right margin-left-105"></span></h2>
-          <% end %>
-          <p class="line-height-sans-505 font-sans-sm">
-            The Diffusion Marketplace has practices that help VHA respond to COVID-19.
-            We have assembled a group of practices for frontline staff and administrators responding to the changing medical landscape.
-          </p>
-          <%= link_to 'See more', '/covid-19', class: 'usa-button usa-button--outline' %>
+  <section class=" grid-container margin-bottom-5">
+    <div class="grid-row grid-gap-3">
+      <div class="desktop:grid-col-8">
+        <div class="homepage-featured-section-container height-auto position-relative margin-bottom-3 desktop:margin-bottom-0 padding-right-4 desktop:padding-right-0">
+          <div class="grid-row desktop:margin-right-2">
+            <div class="grid-col-12 desktop:grid-col-8">
+              <%= link_to '/covid-19', class: 'homepage-featured-link' do %>
+                <h2 class="font-sans-xl">COVID-19<span class="fas fa-angle-right margin-left-105"></span></h2>
+              <% end %>
+              <p class="line-height-sans-505 font-sans-sm">
+                The Diffusion Marketplace has practices that help VHA respond to COVID-19.
+                We have assembled a group of practices for frontline staff and administrators responding to the changing
+                medical landscape.
+              </p>
+              <%= link_to 'See more', '/covid-19', class: 'usa-button usa-button--outline' %>
+            </div>
+            <div class="grid-col-fill text-center dm-virus-image-container">
+              <i class="fas fa-viruses fa-9x text-primary-darker"></i>
+            </div>
+          </div>
         </div>
-        <div class="grid-col-fill text-center virus-image-container">
-          <i class="fas fa-viruses fa-9x text-primary-darker"></i>
+      </div>
+      <div class="desktop:grid-col-4">
+        <div class="homepage-featured-section-container height-full dm-primary-5v-background position-relative padding-right-4 desktop:padding-right-0">
+          <div class="grid-row">
+            <div class="grid-col-12">
+              <%= link_to '/diffusion-map', class: 'homepage-featured-link' do %>
+                <h2 class="font-sans-xl">Diffusion map<span class="fas fa-angle-right margin-left-105"></span></h2>
+              <% end %>
+              <p class="line-height-sans-505 font-sans-sm">
+                See practices mapped out by location.
+              </p>
+              <div class="dm-diffusion-map-more">
+                <%= link_to 'See more', '/diffusion-map', class: 'usa-button usa-button--outline' %>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
   </section>
-
-  <% if ENV['GOOGLE_API_KEY'].present? %>
-    <% provide :head_tags do %>
-      <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-        <%= render partial: 'maps/marker_icons', formats: [:js] %>
-        <%= render partial: 'maps/map_data', formats: [:js] %>
-      <% end %>
-      <%= javascript_include_tag 'diffusion_history/home_map', 'data-turbolinks-track': 'reload' %>
-      <%= javascript_include_tag 'diffusion_history/_map_utilities', 'data-turbolinks-track': 'reload' %>
-    <% end %>
-      <section class="grid-container margin-bottom-4" id="map-of-diffusion">
-        <h4 class="font-sans-xl margin-bottom-1 margin-top-0 line-height-sans-205">Map of diffusion</h4>
-        <p class="font-sans-lg margin-bottom-2">Explore how practices are being adopted across the country.</p>
-        <div class="padding-y-105 padding-x-2 bg-gold radius-md margin-bottom-205">
-          <span class="text-bold">Note:</span>&nbsp;<span>More practices will be added to this map in the next few months.</span>
-        </div>
-        <button id="filterResultsTrigger" class="map-filters-trigger usa-button text-bold display-block margin-bottom-105 padding-2">
-          Filter results
-        </button>
-        <button type="button" class="usa-button text-bold hidden margin-bottom-105 padding-2 bg-base-lightest text-ink" id="filterClose" aria-label="Close map filters">Close filters</button>
-        <div class="width-full position-relative">
-          <div id="map" style="width: 100%; height: 633px;"></div>
-          <%= render 'maps/home_map_filters' %>
-        </div>
-    </section>
-  <% end %>
 
   <section class="padding-top-2">
     <div class="grid-container">
@@ -77,7 +75,7 @@
         <% @practices.each do |p| %>
           <% if p.present? %>
             <div class="tablet:grid-col-3 padding-y-105">
-              <%= render partial: 'practices/favorite_button', locals: {practice: p, featured: false, col_4: false } %>
+              <%= render partial: 'practices/favorite_button', locals: {practice: p, featured: false, col_4: false} %>
               <%= render partial: 'practices/marketplace_card', locals: {practice: p, featured: false} %>
             </div>
           <% end %>

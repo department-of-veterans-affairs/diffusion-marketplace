@@ -28,18 +28,18 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
   describe 'header links' do
     it 'should exist' do
       within('header.usa-header') do
-        expect(page).to have_content('Shark Tank')
-        expect(page).to have_link(href: '/competitions/shark-tank')
+        expect(page).to have_content('Diffusion map')
+        expect(page).to have_link(href: '/diffusion-map')
         expect(page).to have_content('COVID-19')
         expect(page).to have_link(href: '/covid-19')
         expect(page).to have_content('Your profile')
       end
     end
 
-    context 'clicking on the shark tank link' do
-      it 'should redirect to shark tank page' do
-        click_on 'Shark Tank'
-        expect(page).to have_current_path('/competitions/shark-tank')
+    context 'clicking on the diffusion map link' do
+      it 'should redirect to diffusion map page' do
+        click_on 'Diffusion map'
+        expect(page).to have_current_path('/diffusion-map')
       end
     end
 
