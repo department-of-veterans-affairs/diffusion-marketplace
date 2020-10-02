@@ -76,23 +76,20 @@ i.e.
 // outline btns - to use: class="usa-button--outline dm-btn-primary"
 .usa-button--outline {
   @extend .usa-button;
-  border-width: 2px;
   border-style: solid;
   background-color: transparent !important;
-  box-shadow: none;
   margin-top: 0;
 
   &:visited, &:active, &:hover {
     background-color: transparent !important;
-    border-width: 2px;
     border-style: solid;
-    box-shadow: none;
   }
 
   // outline blue-50v btn
   &.dm-btn-primary {
   color: $dm-color-blue-50v !important;
   border-color: $dm-color-blue-50v !important;
+  box-shadow: inset 0 0 0 2px $dm-color-blue-50v;
 
     &:visited {
       color: $dm-color-blue-50v !important;
@@ -102,11 +99,13 @@ i.e.
     &:hover {
       color: $dm-color-blue-70v !important;
       border-color: $dm-color-blue-70v !important;
+      box-shadow: inset 0 0 0 2px $dm-color-blue-70v;
     }
 
     &:active {
       color: $dm-color-blue-80v !important;
       border-color: $dm-color-blue-80v !important;
+      box-shadow: inset 0 0 0 2px $dm-color-blue-80v;
     }
   }
 
@@ -114,10 +113,12 @@ i.e.
   &.dm-btn-base {
     color: $dm-color-base !important;;
     border-color: $dm-color-base;
+    box-shadow: inset 0 0 0 2px $dm-color-base;
 
     &:visited, &:active, &:hover {
       color: $dm-color-base !important;;
       border-color: $dm-color-base;
+      box-shadow: inset 0 0 0 2px $dm-color-base;
     }
   }
 }

@@ -359,11 +359,6 @@
   height: 72px !important;
 }
 
-.practice-editor-summary-textarea {
-  resize: none;
-  height: 142px !important;
-}
-
 .practice-partner-checkbox:last-child {
   margin-bottom: 44px;
 }
@@ -396,7 +391,7 @@
 
 .impact-trash, .dm-origin-trash, .documentation-trash, .risk-mitigation-trash, .va-employee-trash, .permission-trash,
 .resource-trash {
-  font-size: 22px;
+  font-size: 16px;
 }
 
 .timeline-trash{
@@ -591,7 +586,7 @@
   margin-top: 12px !important;
 }
 
-.partner-input, .no-partner-input, .category-input {
+.partner-input, .category-input {
   left: 2px !important;
   top: 5px !important;
 }
@@ -863,8 +858,8 @@
 }
 
 .initiating-facility-type-radio {
-  top: 10px !important;
-  left: 25px !important;
+  top: 23px !important;
+  left: 27px !important;
   width: 1px;
   height: 1px;
 }
@@ -894,6 +889,16 @@
 
     @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
       display: none !important;
+    }
+  }
+
+  .introduction-sections-container {
+    div {
+      margin-bottom: 16px ;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
   }
 }
@@ -927,7 +932,7 @@ li.small-disc:before {
   margin-bottom: 40px;
 }
 
-.maturity-level-banner {
+.maturity-level-banner, .pii-phi-alert-banner {
   padding: 0.5rem 1.25rem 0.5rem 1.75rem !important;
   margin-top: 0 !important;
   background-color: transparent !important;
@@ -1045,9 +1050,23 @@ li.small-disc:before {
   }
 }
 
+// Contact
+#contact {
+  .report-abuse-cancel {
+    border: none !important;
+  }
+}
+
 /*********************************
  PRACTICE EDITOR
 **********************************/
+// Introduction
+#editor_date_initiated_year {
+  &::-webkit-inner-spin-button {
+    display: none;
+  }
+}
+
 // Overview
 #overview {
   .dm-resource-image-editor {

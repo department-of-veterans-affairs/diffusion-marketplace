@@ -11,7 +11,6 @@ describe 'Practice editor - introduction', type: :feature, js: true do
     PracticeAward.create!(practice: @practice, name: 'Diffusion of Excellence Promising Practice', created_at: Time.now)
     @pr_partner_1 = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative helps to identify and disseminate clinical and administrative best practices through a learning environment that empowers its top performers to apply their innovative ideas throughout the system — further establishing VA as a leader in health care, while promoting positive outcomes for Veterans.', icon: 'fas fa-heart', color: '#E4A002')
     @pr_partner_2 = PracticePartner.create!(name: 'Office of Rural Health', short_name: 'ORH', description: 'Congress established the Veterans Health Administration Office of Rural Health in 2006 to conduct, coordinate, promote and disseminate research on issues that affect the nearly five million Veterans who reside in rural communities. Working through its three Veterans Rural Health Resource Centers, as well as partners from academia, state and local governments, private industry, and non-profit organizations, ORH strives to break down the barriers separating rural Veterans from quality care.', icon: 'fas fa-mountain', color: '#1CC2AE')
-    @pr_partner_3 = PracticePartner.create!({name: 'None of the above, or Unsure'})
     PracticePartnerPractice.create!(practice: @practice, practice_partner: @pr_partner_1, created_at: Time.now)
     PracticePartnerPractice.create!(practice: @practice, practice_partner: @pr_partner_2, created_at: Time.now)
     @cat_1 = Category.create!(name: 'COVID')
@@ -50,8 +49,8 @@ describe 'Practice editor - introduction', type: :feature, js: true do
       expect(page).to have_content('Select any of the following partners your practice is associated with.')
       expect(page).to have_content('Categories')
       expect(page).to have_content('Select any categories that apply to your practice.')
-      expect(page).to have_content('Maturity')
-      expect(page).to have_content('Select the level of maturity that applies to your practice.')
+      expect(page).to have_content('Diffusion phase')
+      expect(page).to have_content('Select the diffusion phase that applies to your practice.')
       expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/instructions")
       expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/adoptions")
     end
@@ -83,8 +82,13 @@ describe 'Practice editor - introduction', type: :feature, js: true do
     it 'should allow changing date created' do
       expect(page).to have_field('Month', with: '8')
       expect(page).to have_field('Year', with: '2016')
-      select('October', :from => 'editor_date_intiated_month')
-      select('1970', :from => 'editor_date_intiated_year')
+      # Make sure client-side validation is working
+      select('October', :from => 'editor_date_initiated_month')
+      fill_in('Year', with: '1969')
+      click_save
+      year_created_message = page.find('#editor_date_initiated_year').native.attribute('validationMessage')
+      expect(year_created_message).to eq('Please select a value that is no less than 1970.')
+      fill_in('Year', with: '1970')
       click_save
       visit_practice_show
       expect(page).to have_content('October 1970')
@@ -172,21 +176,11 @@ describe 'Practice editor - introduction', type: :feature, js: true do
       it 'should allow changing partners' do
         expect(page).to have_checked_field('Diffusion of Excellence')
         expect(page).to have_checked_field('Office of Rural Health')
-        expect(page).to have_unchecked_field('None of the above, or Unsure')
-        find('#practice_partner_3_label').click # clicks None
-        expect(page).to have_unchecked_field('Diffusion of Excellence')
-        expect(page).to have_unchecked_field('Office of Rural Health')
+        find('#practice_partner_1_label').click # uncheck Diffusion of Excellence
         click_save
         visit_practice_show
-        expect(page).to have_no_content('Diffusion of Excellence')
-        expect(page).to have_no_content('Office of Rural Health')
-        visit_practice_edit
-        find('#practice_partner_1_label').click # clicks Diffusion of Excellence
-        expect(page).to have_unchecked_field('None of the above, or Unsure')
-        click_save
-        visit_practice_show
-        expect(page).to have_content('Diffusion of Excellence')
-        expect(page).to have_no_content('Office of Rural Health')
+        expect(page).to_not have_link('Diffusion of Excellence')
+        expect(page).to have_link('Office of Rural Health')
       end
     end
 

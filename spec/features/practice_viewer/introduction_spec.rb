@@ -135,7 +135,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
     end
 
     it 'should display the content correctly' do
-      expect(page).to have_content('This is an emerging practice.')
+      expect(page).to have_content('This practice is emerging and worth watching as it is being assessed in early implementations.')
       expect(page).to have_link('See more emerging practices.')
     end
 

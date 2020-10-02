@@ -54,8 +54,8 @@
             <legend class="usa-sr-only">Practice Information</legend>
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
             <div class="margin-bottom-5 margin-top-3">
-              <div class="margin-bottom-3">
-                <%= f.label :name, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-1' do %>
+              <div>
+                <%= f.label :name, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
                   Name <span class="text-gray-50">(required field)</span>
                 <% end %>
                 <span>Type the official name of your practice.</span>&nbsp;
@@ -69,8 +69,8 @@
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
 
             <div class="margin-bottom-5 margin-top-3">
-              <div class="margin-bottom-3">
-                <%= f.label :short_name, 'Acronym ', class: 'usa-label text-bold display-block margin-top-0 margin-bottom-1' %>
+              <div>
+                <%= f.label :short_name, 'Acronym ', class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' %>
                 <span>Type the acronym for your practice.</span><!--&nbsp;<span id="practice-editor-tagline-character-counter" class="text-base-light">(0/150 characters)</span>-->
               </div>
               <div>
@@ -88,35 +88,37 @@
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
 
             <div class="margin-top-3 margin-bottom-5">
-              <%= f.label :summary, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-1' do %>
+              <%= f.label :summary, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
                 Summary <span class="text-gray-50">(required field)</span>
               <% end %>
               <span class="line-height-26">
                 Type a short summary of your practice’s mission to engage the audience
                 and provide initial context.
               </span>
-              <!--&nbsp;<span id="practice-editor-summary-character-counter" class="text-base-light"></span>-->
               <%= f.text_area :summary, class: 'usa-textarea display-block practice-editor-summary-textarea' %>
             </div>
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
             <div class="margin-top-3 margin-bottom-5">
-              <p class="margin-bottom-1 text-bold">
+              <p class="margin-bottom-2 text-bold">
                 Date created <span class="text-gray-50">(required field)</span>
               </p>
               Select the month and year this practice was created.
               <div class="grid-row grid-gap-2">
-                <div>
-                  <%= label_tag 'editor_date_intiated_month', 'Month', class: 'usa-label' %>
+                <div class="grid-col-7">
+                  <%= label_tag 'editor_date_initiated_month', 'Month', class: 'usa-label' %>
                   <%= select_month(@practice.date_initiated.present? ? date_get_month(@practice.date_initiated) : nil,
-                                   {prompt: '-Select-', prefix: 'date_initiated'}, {id: 'editor_date_intiated_month', class: 'width-card-lg
-                height-5 usa-select' }) %>
+                                   {prompt: '-Select-', prefix: 'date_initiated'}, {id: 'editor_date_initiated_month', class: 'height-5 usa-select' }) %>
                 </div>
-                <div>
-                  <%= label_tag 'editor_date_intiated_year', 'Year', class: 'usa-label' %>
-                  <%= select_year(@practice.date_initiated.present? ? date_get_year(@practice.date_initiated) : nil,
-                                  {start_year: 1970, end_year: Date.today.year, prompt: '-Select-', prefix: 'date_initiated', default:
-                                      '-Select-'}, {id: 'editor_date_intiated_year', class: 'width-full height-5 usa-select' })
-                  %>
+                <div class="grid-col-2">
+                  <%= label_tag 'editor_date_initiated_year', 'Year', class: 'usa-label' %>
+                  <input class="usa-input"
+                         id="editor_date_initiated_year"
+                         type="number"
+                         min="1970"
+                         max="9999"
+                         value="<%= @practice.date_initiated.present? ? date_get_year(@practice.date_initiated) : nil %>"
+                         name="date_initiated[year]"
+                         oninput="if (value.length > 4) value = value.slice(0, 4)"/>
                 </div>
               </div>
             </div>
@@ -124,12 +126,12 @@
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
 
             <div class="margin-top-3 margin-bottom-5">
-              <p class="text-bold margin-bottom-1">
+              <p class="text-bold margin-bottom-2">
                 Practice origin <span class="text-gray-50">(required field)</span>
               </p>
               <span>Select the location where this practice originated</span>
-              <div class="grid-row grid-gap margin-top-105 grid-col-1 margin-bottom-3">
-                <div class="usa-radio margin-bottom-1 position-relative">
+              <div class="grid-row grid-gap grid-col-1 margin-bottom-3">
+                <div class="usa-radio position-relative">
                   <%= radio_button_tag 'practice[initiating_facility_type]',
                                        'facility',
                                        @practice.facility?,
@@ -137,9 +139,9 @@
                                        id: "initiating_facility_type_facility"
                   %>
                   <%= label_tag 'initiating_facility_type_facility', 'Facility', class: 'usa-radio__label
-                initiating-facility-type-label x0-bottom', for: "initiating_facility_type_facility" %>
+                initiating-facility-type-label x0-bottom margin-top-105', for: "initiating_facility_type_facility" %>
                 </div>
-                <div class="usa-radio margin-bottom-1 position-relative">
+                <div class="usa-radio position-relative">
                   <%= radio_button_tag 'practice[initiating_facility_type]',
                                        'visn',
                                        @practice.visn?,
@@ -147,16 +149,16 @@
                                        id: "initiating_facility_type_visn"
                   %>
                   <%= label_tag 'initiating_facility_type_visn', 'VISN', class: 'usa-radio__label
-                initiating-facility-type-label x0-bottom', for: "initiating_facility_type_visn" %>
+                initiating-facility-type-label x0-bottom margin-top-105', for: "initiating_facility_type_visn" %>
                 </div>
-                <div class="usa-radio margin-bottom-1 position-relative">
+                <div class="usa-radio position-relative">
                   <%= radio_button_tag 'practice[initiating_facility_type]',
                                        'department', @practice.department?,
                                        class: 'usa-radio__input initiating-facility-type-radio',
                                        id: "initiating_facility_type_department"
                   %>
                   <%= label_tag 'initiating_facility_type_department', 'Office', class: 'usa-radio__label
-                initiating-facility-type-label x0-bottom', for: "initiating_facility_type_department" %>
+                initiating-facility-type-label x0-bottom margin-top-105', for: "initiating_facility_type_department" %>
                 </div>
                 <div class="usa-radio position-relative">
                   <%= radio_button_tag 'practice[initiating_facility_type]', 'other',
@@ -165,7 +167,7 @@
                                        id: "initiating_facility_type_other"
                   %>
                   <%= label_tag 'initiating_facility_type_other', 'Other', class: 'usa-radio__label
-                initiating-facility-type-label x0-bottom', for: "initiating_facility_type_other" %>
+                initiating-facility-type-label x0-bottom margin-top-105', for: "initiating_facility_type_other" %>
                 </div>
               </div>
 
@@ -281,8 +283,8 @@
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
 
             <div class="margin-top-3 margin-bottom-5">
-              <div class="margin-bottom-2">
-                <p class="text-bold margin-bottom-1">
+              <div class="margin-bottom-105">
+                <p class="text-bold margin-bottom-2">
                   Awards and recognition
                 </p>
                 <span>Select any awards or recognitions your practice has received.</span>
@@ -396,8 +398,8 @@
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
 
             <div class="margin-top-3 margin-bottom-5">
-              <div class="margin-bottom-2">
-                <p class="text-bold margin-bottom-1">
+              <div class="margin-bottom-105">
+                <p class="text-bold margin-bottom-2">
                   Partners
                 </p>
                 <span>Select any of the following partners your practice is associated with.</span>
@@ -406,13 +408,11 @@
                 <%
                   no_partners = PracticePartner.where(name: 'None of the above, or Unsure')
                   partners = PracticePartner.where.not(id: no_partners.ids)
-                  partners_list = partners + no_partners
                 %>
-                <% partners_list.each do |partner| %>
-                  <% if partner.name == 'None of the above, or Unsure' %>
+                <% partners.each do |partner| %>
                   <div class="usa-checkbox practice-partner-checkbox position-relative">
                     <input type="checkbox"
-                           class="usa-checkbox__input no-partner-input"
+                           class="usa-checkbox__input partner-input"
                            id="practice_partner_<%= partner.id %>"
                            name="practice[practice_partner][<%= partner.id %>][value]"
                            <%= 'checked="true"' if p_partners.include?(partner) %>
@@ -424,22 +424,6 @@
                       <%= partner.name %>
                     </label>
                   </div>
-                  <% else %>
-                    <div class="usa-checkbox practice-partner-checkbox position-relative">
-                      <input type="checkbox"
-                             class="usa-checkbox__input partner-input"
-                             id="practice_partner_<%= partner.id %>"
-                             name="practice[practice_partner][<%= partner.id %>][value]"
-                             <%= 'checked="true"' if p_partners.include?(partner) %>
-                        />
-                      <label class="usa-checkbox__label"
-                             id="practice_partner_<%= partner.id %>_label"
-                             for="practice_partner_<%= partner.id %>"
-                      >
-                        <%= partner.name %>
-                      </label>
-                    </div>
-                  <% end %>
                 <% end %>
               </div>
             </div>
@@ -447,8 +431,8 @@
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
 
             <div class="margin-top-3 margin-bottom-5">
-              <div class="margin-bottom-2">
-                <p class="text-bold margin-bottom-1">
+              <div class="margin-bottom-105">
+                <p class="text-bold margin-bottom-2">
                   Categories
                 </p>
                 <span>Select any categories that apply to your practice.</span>
@@ -563,22 +547,21 @@
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
 
             <div class="margin-top-3 margin-bottom-5">
-              <div class="margin-bottom-2">
-                <p class="text-bold margin-bottom-1">
-                  Maturity
+              <div class="margin-bottom-105">
+                <p class="text-bold margin-bottom-2">
+                  Diffusion phase
                 </p>
-                <span>Select the level of maturity that applies to your practice.</span>
+                <span>Select the diffusion phase that applies to your practice.</span>
               </div>
 
               <div class="maturity-level-radio-container">
                 <% Practice::MATURITY_LEVEL_MAP.each do |key, value| %>
                   <div class="usa-radio position-relative">
                     <%= radio_button_tag 'practice[maturity_level]', "#{key}", @practice.maturity_level == key.to_s, class: 'usa-radio__input maturity-level-radio', id: "maturity_level_#{key}" %>
-                    <label class="usa-radio__label maturity-level-label <%= key.to_s == 'scale' ? 'margin-bottom-0' : 'margin-bottom-1' %> line-height-sans-6"
+                    <label class="usa-radio__label maturity-level-label <%= key.to_s == 'scale' ? 'margin-bottom-0' : 'margin-bottom-105' %> line-height-26"
                            for="maturity_level_<%= key %>"
                     >
-                      <span class="text-bold margin-left-neg-05"><%= key.capitalize %>: </span>
-                      <%= value[:form_label] %>
+                      <span class="margin-left-neg-05"><%= value[:description] %></span>
                     </label>
                   </div>
                 <% end %>

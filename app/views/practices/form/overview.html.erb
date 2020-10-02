@@ -39,7 +39,7 @@
                 <p class="line-height-18px margin-bottom-2 text-bold">Problem attachments</p>
                 <p class="line-height-26">Attach any additional images, videos, files or links related to the problem your practice addresses.</p>
               </div>
-              <div class="grid-row grid-gap margin-top-2 margin-bottom-5">
+              <div class="grid-row grid-gap margin-bottom-5">
                 <div class="usa-radio position-relative grid-col-12">
                   <%= radio_button_tag 'practice_problem_resources[resource_type]',
                                        'Image',
@@ -48,7 +48,7 @@
                                        id: "practice_problem_image"
                   %>
                   <%= label_tag 'practice_problem_image', 'Image', class: 'usa-radio__label
-                initiating-facility-type-label line-height-19px margin-bottom-105', for: "practice_problem_image" %>
+                initiating-facility-type-label line-height-19px margin-bottom-0 margin-top-105', for: "practice_problem_image" %>
                 </div>
                 <div class="usa-radio position-relative grid-col-12">
                   <%= radio_button_tag 'practice_problem_resources[resource_type]',
@@ -58,7 +58,7 @@
                                        id: "practice_problem_video"
                   %>
                   <%= label_tag 'practice_problem_video', 'Video', class: 'usa-radio__label
-                initiating-facility-type-label line-height-19px margin-bottom-105', for: "practice_problem_video" %>
+                initiating-facility-type-label line-height-19px margin-bottom-0 margin-top-105', for: "practice_problem_video" %>
                 </div>
                 <div class="usa-radio position-relative grid-col-12">
                   <%= radio_button_tag 'practice_problem_resources[resource_type]',
@@ -67,7 +67,7 @@
                                        id: "practice_problem_file"
                   %>
                   <%= label_tag 'practice_problem_file', 'File', class: 'usa-radio__label
-                initiating-facility-type-label line-height-19px margin-bottom-105', for: "practice_problem_file" %>
+                initiating-facility-type-label line-height-19px margin-bottom-0 margin-top-105', for: "practice_problem_file" %>
                 </div>
                 <div class="usa-radio position-relative grid-col-12">
                   <%= radio_button_tag 'practice_problem_resources[resource_type]', 'Link',
@@ -76,7 +76,7 @@
                                        id: "practice_problem_link"
                   %>
                   <%= label_tag 'practice_problem_link', 'Link', class: 'usa-radio__label
-                initiating-facility-type-label line-height-19px x0-bottom', for: "practice_problem_link" %>
+                initiating-facility-type-label line-height-19px margin-bottom-0 margin-top-105', for: "practice_problem_link" %>
                 </div>
                 <div id="display_problem_resources_form" class="display_problem_form">
                     <%= render partial: "practices/overview_forms/image_form", locals: {area: 'problem_resources'} %>
@@ -87,7 +87,7 @@
               </div>
               <div id="display_problem_resources_image">
                 <% if @practice.practice_problem_resources.where(resource_type: 'image').exists? %>
-                  <div id="problem_resources_image_section_text" class="text-bold margin-bottom-2">IMAGES:</div>
+                  <h5 id="problem_resources_image_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Images:</h5>
                   <% @practice.practice_problem_resources.where(resource_type: 'image').each_with_index do |pr, i| %>
                     <%= render partial: "practices/overview_forms/image_form", locals: {resource: pr, placeholder: i, area: 'problem_resources'} %>
                   <% end %>
@@ -95,7 +95,7 @@
               </div>
               <div id="display_problem_resources_video">
                 <% if @practice.practice_problem_resources.where(resource_type: 'video').exists? %>
-                  <div id="problem_resources_video_section_text" class="text-bold margin-bottom-2">VIDEOS:</div>
+                  <h5 id="problem_resources_video_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Videos:</h5>
                 <% end %>
                 <% @practice.practice_problem_resources.where(resource_type: 'video').each_with_index do |pr, i| %>
                   <%= render partial: "practices/overview_forms/video_form", locals: {resource: pr, placeholder: i, area: 'problem_resources'} %>
@@ -103,7 +103,7 @@
               </div>
               <div id="display_problem_resources_file">
                 <% if @practice.practice_problem_resources.where(resource_type: 'file').exists? %>
-                  <div id="problem_resources_file_section_text" class="text-bold margin-bottom-2">FILES:</div>
+                  <h5 id="problem_resources_file_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Files:</h5>
                 <% end %>
                 <% @practice.practice_problem_resources.where(resource_type: 'file').each_with_index do |pr, i| %>
                   <%= render partial: "practices/overview_forms/file_form", locals: {resource: pr, placeholder: i, area: 'problem_resources'} %>
@@ -111,7 +111,7 @@
               </div>
               <div id="display_problem_resources_link">
                 <% if @practice.practice_problem_resources.where(resource_type: 'link').exists? %>
-                  <div id="problem_resources_link_section_text" class="text-bold margin-bottom-2">LINKS:</div>
+                  <h5 id="problem_resources_link_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Links:</h5>
                 <% end %>
                 <% @practice.practice_problem_resources.where(resource_type: 'link').each_with_index do |pr, i| %>
                   <%= render partial: "practices/overview_forms/link_form", locals: {resource: pr, placeholder: i, area: 'problem_resources'} %>
@@ -134,7 +134,7 @@
                   Attach any additional images, videos, files or links related to the solution implemented for your practice.
                 </p>
               </div>
-              <div class="grid-row grid-gap margin-top-2 margin-bottom-3">
+              <div class="grid-row grid-gap margin-bottom-3">
                 <div class="usa-radio position-relative grid-col-12">
                   <%= radio_button_tag 'practice_solution_resources[resource_type]',
                                        'Image',
@@ -143,7 +143,7 @@
                                        id: "practice_solution_image"
                   %>
                   <%= label_tag 'practice_solution_image', 'Image', class: 'usa-radio__label
-                initiating-facility-type-label line-height-19px margin-bottom-105', for: "practice_solution_image" %>
+                initiating-facility-type-label line-height-19px margin-bottom-0 margin-top-105', for: "practice_solution_image" %>
                 </div>
                 <div class="usa-radio position-relative grid-col-12">
                   <%= radio_button_tag 'practice_solution_resources[resource_type]',
@@ -153,7 +153,7 @@
                                        id: "practice_solution_video"
                   %>
                   <%= label_tag 'practice_solution_video', 'Video', class: 'usa-radio__label
-                initiating-facility-type-label line-height-19px margin-bottom-105', for: "practice_solution_video" %>
+                initiating-facility-type-label line-height-19px margin-bottom-0 margin-top-105', for: "practice_solution_video" %>
                 </div>
                 <div class="usa-radio position-relative grid-col-12">
                   <%= radio_button_tag 'practice_solution_resources[resource_type]',
@@ -162,7 +162,7 @@
                                        id: "practice_solution_file"
                   %>
                   <%= label_tag 'practice_solution_file', 'File', class: 'usa-radio__label
-                initiating-facility-type-label line-height-19px margin-bottom-105', for: "practice_solution_file" %>
+                initiating-facility-type-label line-height-19px margin-bottom-0 margin-top-105', for: "practice_solution_file" %>
                 </div>
                 <div class="usa-radio position-relative grid-col-12">
                   <%= radio_button_tag 'practice_solution_resources[resource_type]', 'Link',
@@ -171,7 +171,7 @@
                                        id: "practice_solution_link"
                   %>
                   <%= label_tag 'practice_solution_link', 'Link', class: 'usa-radio__label
-                initiating-facility-type-label line-height-19px x0-bottom', for: "practice_solution_link" %>
+                initiating-facility-type-label line-height-19px margin-bottom-0 margin-top-105', for: "practice_solution_link" %>
                 </div>
                 <div id="display_solution_resources_form" class="display_problem_form">
                     <%= render partial: "practices/overview_forms/image_form", locals: {area: 'solution_resources'} %>
@@ -182,7 +182,7 @@
               </div>
               <div id="display_solution_resources_image">
                 <% if @practice.practice_solution_resources.where(resource_type: 'image').exists? %>
-                  <div id="solution_resources_image_section_text" class="text-bold margin-bottom-2">IMAGES:</div>
+                  <h5 id="solution_resources_image_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Images:</h5>
                   <% @practice.practice_solution_resources.where(resource_type: 'image').each_with_index do |pr, i| %>
                     <%= render partial: "practices/overview_forms/image_form", locals: {resource: pr, placeholder: i, area: 'solution_resources'} %>
                   <% end %>
@@ -190,7 +190,7 @@
               </div>
               <div id="display_solution_resources_video">
                 <% if @practice.practice_solution_resources.where(resource_type: 'video').exists? %>
-                  <div id="solution_resources_video_section_text" class="text-bold margin-bottom-2">VIDEOS:</div>
+                  <h5 id="solution_resources_video_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Videos:</h5>
                 <% end %>
                 <% @practice.practice_solution_resources.where(resource_type: 'video').each_with_index do |pr, i| %>
                   <%= render partial: "practices/overview_forms/video_form", locals: {resource: pr, placeholder: i, area: 'solution_resources'} %>
@@ -198,7 +198,7 @@
               </div>
               <div id="display_solution_resources_file">
                 <% if @practice.practice_solution_resources.where(resource_type: 'file').exists? %>
-                  <div id="solution_resources_file_section_text" class="text-bold margin-bottom-2">FILES:</div>
+                  <h5 id="solution_resources_file_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Files:</h5>
                 <% end %>
                 <% @practice.practice_solution_resources.where(resource_type: 'file').each_with_index do |pr, i| %>
                   <%= render partial: "practices/overview_forms/file_form", locals: {resource: pr, placeholder: i, area: 'solution_resources'} %>
@@ -206,7 +206,7 @@
               </div>
               <div id="display_solution_resources_link">
                 <% if @practice.practice_solution_resources.where(resource_type: 'link').exists? %>
-                  <div id="solution_resources_link_section_text" class="text-bold margin-bottom-2">LINKS:</div>
+                  <h5 id="solution_resources_link_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Links:</h5>
                 <% end %>
                 <% @practice.practice_solution_resources.where(resource_type: 'link').each_with_index do |pr, i| %>
                   <%= render partial: "practices/overview_forms/link_form", locals: {resource: pr, placeholder: i, area: 'solution_resources'} %>
@@ -229,7 +229,7 @@
                   Attach any additional images, videos, files or links relevant to your results statement.
                 </p>
               </div>
-              <div class="grid-row grid-gap margin-top-2 margin-bottom-3">
+              <div class="grid-row grid-gap margin-bottom-3">
                 <div class="usa-radio position-relative grid-col-12">
                   <%= radio_button_tag 'practice_results_resources[resource_type]',
                                        'Image',
@@ -238,7 +238,7 @@
                                        id: "practice_results_image"
                   %>
                   <%= label_tag 'practice_results_image', 'Image', class: 'usa-radio__label
-                initiating-facility-type-label line-height-19px margin-bottom-105', for: "practice_results_image" %>
+                initiating-facility-type-label line-height-19px margin-bottom-0 margin-top-105', for: "practice_results_image" %>
                 </div>
                 <div class="usa-radio position-relative grid-col-12">
                   <%= radio_button_tag 'practice_results_resources[resource_type]',
@@ -248,7 +248,7 @@
                                        id: "practice_results_video"
                   %>
                   <%= label_tag 'practice_results_video', 'Video', class: 'usa-radio__label
-                initiating-facility-type-label line-height-19px margin-bottom-105', for: "practice_results_video" %>
+                initiating-facility-type-label line-height-19px margin-bottom-0 margin-top-105', for: "practice_results_video" %>
                 </div>
                 <div class="usa-radio position-relative grid-col-12">
                   <%= radio_button_tag 'practice_results_resources[resource_type]',
@@ -257,7 +257,7 @@
                                        id: "practice_results_file"
                   %>
                   <%= label_tag 'practice_results_file', 'File', class: 'usa-radio__label
-                initiating-facility-type-label line-height-19px margin-bottom-105', for: "practice_results_file" %>
+                initiating-facility-type-label line-height-19px margin-bottom-0 margin-top-105', for: "practice_results_file" %>
                 </div>
                 <div class="usa-radio position-relative grid-col-12">
                   <%= radio_button_tag 'practice_results_resources[resource_type]', 'Link',
@@ -266,7 +266,7 @@
                                        id: "practice_results_link"
                   %>
                   <%= label_tag 'practice_results_link', 'Link', class: 'usa-radio__label
-                initiating-facility-type-label x0-bottom line-height-19px', for: "practice_results_link" %>
+                initiating-facility-type-label line-height-19px margin-bottom-0 margin-top-105', for: "practice_results_link" %>
                 </div>
                 <div id="display_results_resources_form" class="display_problem_form">
                     <%= render partial: "practices/overview_forms/image_form", locals: {area: 'results_resources'} %>
@@ -277,7 +277,7 @@
               </div>
               <div id="display_results_resources_image">
                 <% if @practice.practice_results_resources.where(resource_type: 'image').exists? %>
-                  <div id="results_resources_image_section_text" class="text-bold margin-bottom-2">IMAGES:</div>
+                  <h5 id="results_resources_image_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Images:</h5>
                   <% @practice.practice_results_resources.where(resource_type: 'image').each_with_index do |pr, i| %>
                     <%= render partial: "practices/overview_forms/image_form", locals: {resource: pr, placeholder: i, area: 'results_resources'} %>
                   <% end %>
@@ -285,7 +285,7 @@
               </div>
               <div id="display_results_resources_video">
                 <% if @practice.practice_results_resources.where(resource_type: 'video').exists? %>
-                  <div id="results_resources_video_section_text" class="text-bold margin-bottom-2">VIDEOS:</div>
+                  <h5 id="results_resources_video_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Videos:</h5>
                 <% end %>
                 <% @practice.practice_results_resources.where(resource_type: 'video').each_with_index do |pr, i| %>
                   <%= render partial: "practices/overview_forms/video_form", locals: {resource: pr, placeholder: i, area: 'results_resources'} %>
@@ -293,7 +293,7 @@
               </div>
               <div id="display_results_resources_file">
                 <% if @practice.practice_results_resources.where(resource_type: 'file').exists? %>
-                  <div id="results_resources_file_section_text" class="text-bold margin-bottom-2">FILES:</div>
+                  <h5 id="results_resources_file_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Files:</h5>
                 <% end %>
                 <% @practice.practice_results_resources.where(resource_type: 'file').each_with_index do |pr, i| %>
                   <%= render partial: "practices/overview_forms/file_form", locals: {resource: pr, placeholder: i, area: 'results_resources'} %>
@@ -301,7 +301,7 @@
               </div>
               <div id="display_results_resources_link">
                 <% if @practice.practice_results_resources.where(resource_type: 'link').exists? %>
-                  <div id="results_resources_link_section_text" class="text-bold margin-bottom-2">LINKS:</div>
+                  <h5 id="results_resources_link_section_text" class="font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Links:</h5>
                 <% end %>
                 <% @practice.practice_results_resources.where(resource_type: 'link').each_with_index do |pr, i| %>
                   <%= render partial: "practices/overview_forms/link_form", locals: {resource: pr, placeholder: i, area: 'results_resources'} %>
@@ -314,7 +314,7 @@
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
             <div class="margin-bottom-5 margin-top-3">
               <div id="practice-metrics-container" class="position-relative">
-                <div class="margin-bottom-2">
+                <div>
                   <%= f.label :name, class: 'usa-label text-bold display-block margin-top-0 line-height-18px margin-bottom-2' do %>
                     Metrics
                   <% end %>
@@ -325,7 +325,7 @@
                     number of staff hours saved per week).
                   </span>
                 </div>
-                <ul class="practice-editor-metrics-ul padding-left-0" title="Practice metrics" aria-label="Practice editor metric list">
+                <ul class="practice-editor-metrics-ul padding-left-0 margin-top-1" title="Practice metrics" aria-label="Practice editor metric list">
                   <%= f.fields_for :practice_metrics, wrapper: false do |pm| %>
                     <%
                       metric_id = pm.object.id || "new_practice_metrics"
@@ -403,7 +403,7 @@
                   Add any additional images, video, and audio to support your practice's overview.
                 </p>
               </div>
-              <div class="grid-row grid-gap margin-top-2 margin-bottom-5">
+              <div class="grid-row grid-gap margin-bottom-5">
                 <div class="usa-radio position-relative grid-col-12">
                   <%= radio_button_tag 'practice_multimedia[resource_type]',
                                        'Image',
@@ -412,7 +412,7 @@
                                        id: "practice_multimedia_image"
                   %>
                   <%= label_tag 'practice_multimedia_image', 'Image', class: 'usa-radio__label
-                initiating-facility-type-label line-height-19px margin-bottom-105', for: "practice_multimedia_image" %>
+                initiating-facility-type-label line-height-19px margin-bottom-0 margin-top-105', for: "practice_multimedia_image" %>
                 </div>
                 <div class="usa-radio position-relative grid-col-12">
                   <%= radio_button_tag 'practice_multimedia[resource_type]',
@@ -422,7 +422,7 @@
                                        id: "practice_multimedia_video"
                   %>
                   <%= label_tag 'practice_multimedia_video', 'Video', class: 'usa-radio__label
-                initiating-facility-type-label x0-bottom line-height-19px', for: "practice_multimedia_video" %>
+                initiating-facility-type-label line-height-19px margin-bottom-0 margin-top-105', for: "practice_multimedia_video" %>
                 </div>
                 <div id="display_multimedia_form" class="display_problem_form">
                   <%= render partial: "practices/overview_forms/image_form", locals: {area: 'multimedia'} %>

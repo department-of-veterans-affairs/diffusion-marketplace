@@ -107,11 +107,37 @@
         })
     }
 
+    // This sets the comment parameters for the Resize plugin
+    function commontatorResize(El) {
+        if (!$(El).hasClass('clone')) {
+            $(El).each(function () {
+                $(El).autoResize({extraSpace: 14});
+                $(El).height($(this)[0].scrollHeight - 12);
+            });
+        }
+    }
+
+    function expandCommentTextArea() {
+        commontatorResize('.comment-textarea')
+    }
+
+    function expandReplyTextArea() {
+        let replyEl = '.reply-textarea';
+        $document.arrive(replyEl, function(newElem) {
+            if (!$(newElem).hasClass('clone')) {
+                commontatorResize(newElem);
+            }
+            $document.unbindArrive(replyEl, newElem);
+        });
+    }
+
     function executePracticeCommentsFunctions() {
         highlightSidebarSectionWhenInView();
         setUpShowMoreOrLessButtons();
         setUpShowMoreOrLessOnArrive();
         createWidthForImageCaption();
+        expandCommentTextArea();
+        expandReplyTextArea();
     }
 
     $document.on('turbolinks:load', executePracticeCommentsFunctions);

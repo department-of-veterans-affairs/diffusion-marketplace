@@ -96,6 +96,12 @@
         );
     }
 
+    function expandSummaryTextArea() {
+        let summaryEl = $('#practice_summary');
+        summaryEl.autoResize();
+        summaryEl.height(summaryEl[0].scrollHeight - 14);
+    }
+
 
     function loadPracticeIntroductionFunctions() {
         attachFacilitySelectListener();
@@ -103,6 +109,7 @@
         attachShowOtherCategoryFields();
         toggleInputsOnRadioSelect();
         toggleInputsOnLoad();
+        expandSummaryTextArea();
         // relies on `_facilitySelect.js` utility file to be loaded prior to this file
         filterFacilitiesOnRadioSelect(facilityData);
         getFacilitiesByState(facilityData);
@@ -118,29 +125,10 @@
         if (selectedOffice !== "false" && selectedDepartment !== "false" && selectedOffice !== "" && selectedDepartment !== "") {
             selectOffice(originData, selectedDepartment, selectedOffice)
         }
-        uncheckAllPartnerBoxes();
-        uncheckNoneOptionIfAnotherOptionIsChecked();
     }
 
     $document.on('turbolinks:load', loadPracticeIntroductionFunctions);
 })(window.jQuery);
-
-function uncheckAllPartnerBoxes() {
-    $('.no-partner-input').click(function(event) {
-        if(this.checked) {
-            $('.partner-input').each(function() {
-                this.checked = false;
-            });
-        }
-    });
-}
-function uncheckNoneOptionIfAnotherOptionIsChecked() {
-    $('.partner-input').click(function(event) {
-        if(this.checked) {
-            $('.no-partner-input').prop('checked', false);
-        }
-    });
-}
 
 function showOtherAwardFields() {
     if (document.getElementById('practice_award_other').checked) {

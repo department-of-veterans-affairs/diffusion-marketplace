@@ -33,7 +33,8 @@
         <%= image_tag pr.attachment_s3_presigned_url(:thumb), class: 'height-mobile practice-editor-impact-photo' %>
         <% if pr.name.present? %>
           <div class="margin-top-1">
-            <span class="text-bold line-height-15px font-sans-3xs">ABOVE:</span> <span class="font-sans-2xs text-medium line-height-19px"><%= pr.name %></span>
+            <h5 class="font-sans-3xs text-uppercase text-ls-1 line-height-15px display-inline margin-y-0">Above:</h5>
+            <p class="display-inline font-normal line-height-26"><%= pr.name %></p>
           </div>
         <% end %>
       </div>
@@ -48,7 +49,8 @@
       <%= youtube_embed(pr.link_url) %>
       <% if pr.name.present? %>
         <div class="margin-top-1 width-100">
-          <span class="text-bold line-height-15px font-sans-3xs">ABOVE:</span> <span class="font-sans-2xs text-medium line-height-19px"><%= pr.name %></span>
+          <h5 class="font-sans-3xs text-uppercase text-ls-1 line-height-15px display-inline margin-y-0">Above:</h5>
+          <p class="display-inline font-normal line-height-26"><%= pr.name %></p>
         </div>
       <% end %>
     </div>

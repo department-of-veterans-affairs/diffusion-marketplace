@@ -105,6 +105,10 @@ to confirm the class DOES NOT EXIST before adding a new class
   text-transform: uppercase;
 }
 
+.font-normal {
+  font-weight: normal !important;
+}
+
 /* Text Align */
 
 .text-center {
@@ -404,6 +408,10 @@ to confirm the class DOES NOT EXIST before adding a new class
 
 .x0-bottom {
   margin-bottom: 0 !important;
+}
+
+.x0-5-bottom {
+  margin-bottom: 0.5rem !important;
 }
 
 .x1-bottom {
