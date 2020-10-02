@@ -50,7 +50,7 @@
                 <%= pr_id %>,
                 '.<%= slug %>-li',
                 '.<%= slug %>-ul',
-                '.<%= add_practice_resources_link %>>',
+                '.<%= add_practice_resources_link %>',
                 '12'
                 );
                 $(document).unbindArrive('<%= "#practice_resources_attributes_#{pr_id}_resource_type" %>', newElem);
@@ -59,7 +59,7 @@
               <% end %>
             <% end %>
 
-            <li class="<%= li_class_place_holder %>-li fields margin-bottom-2" data-id="<%= pr_id %>">
+            <li class="<%= li_class_place_holder %>-li fields" data-id="<%= pr_id %>">
               <%= pr.hidden_field :position %>
               <%= pr.hidden_field :id %>
               <div class="grid-row">
