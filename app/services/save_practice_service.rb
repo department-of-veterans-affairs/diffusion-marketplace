@@ -43,7 +43,7 @@ class SavePracticeService
         process_risk_mitigations_params
       end
 
-    @practice.update(@practice_params)
+      updated = @practice.update(@practice_params)
     rescue_method(:update_practice_partner_practices)
     rescue_method(:update_department_practices)
     rescue_method(:remove_attachments)
@@ -53,8 +53,8 @@ class SavePracticeService
     rescue_method(:update_initiating_facility)
     rescue_method(:update_practice_awards)
     rescue_method(:update_category_practices)
-    rescue_method(:crop_resource_images)
-      true
+      rescue_method(:crop_resource_images)
+      updated
     rescue => e
       Rails.logger.error "save_practice error: #{e.message}"
       e
