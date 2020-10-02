@@ -22,7 +22,7 @@ describe 'Practice editor', type: :feature, js: true do
     def set_pr_required_fields
       fill_in('Summary', with: 'practice summary')
       select('October', :from => 'editor_date_intiated_month')
-      fill_in('Year', with '1970')
+      fill_in('Year', with: '1970')
     end
 
     def set_initiating_fac
