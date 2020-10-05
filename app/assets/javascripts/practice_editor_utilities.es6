@@ -192,7 +192,7 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
                 $(ele)
                     .closest('.usa-file-input')
                     .replaceWith(`
-                    <input id="practice_${sArea}-input-single_RANDOM_NUMBER_OR_SOMETHING" class="usa-hint usa-file-input dm-cropper-upload-image" type="file" name="practice[practice_${sArea}_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".jpg,.jpeg,.png" aria-describedby="practice_${sArea}-input-single_RANDOM_NUMBER_OR_SOMETHING-hint" />
+                    <input id="practice_${sArea}-input-single_RANDOM_NUMBER_OR_SOMETHING" class="usa-hint usa-file-input dm-cropper-upload-image" type="file" name="practice[practice_${sArea}_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".jpg,.jpeg,.png" />
                 `);
             }
         });

@@ -97,7 +97,7 @@
     $(target)
       .closest('.dm-cropper-boundary').find(".usa-file-input")
       .replaceWith(`
-        <input id="practice_${area}-input-single_RANDOM_NUMBER_OR_SOMETHING" class="dm-cropper-upload-image usa-hint usa-file-input ${area}-image-attachment" type="file" name="practice[practice_${area}_attributes][RANDOM_NUMBER_OR_SOMETHING_${type}][attachment]" accept=".jpg,.jpeg,.png" aria-describedby="practice_${area}-input-single_RANDOM_NUMBER_OR_SOMETHING-hint"/>
+        <input id="practice_${area}-input-single_RANDOM_NUMBER_OR_SOMETHING" class="dm-cropper-upload-image usa-hint usa-file-input ${area}-image-attachment" type="file" name="practice[practice_${area}_attributes][RANDOM_NUMBER_OR_SOMETHING_${type}][attachment]" accept=".jpg,.jpeg,.png" />
       `)
     // add event listener again
     $('.dm-cropper-upload-image').on('change', (event) => {

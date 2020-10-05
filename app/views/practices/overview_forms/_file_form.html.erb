@@ -20,7 +20,7 @@
           message: 'Please upload a file'
       }
       %>
-      <input <%= resource&.id ? 'required' : '' %> id="practice_<%= area %>-input-single_<%= placeholder %>" class="usa-file-input usa-hint <%= area %>-file-attachment" type="file" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" aria-describedby="practice_<%= area %>-input-single_<%= placeholder %>-hint" />
+      <input <%= resource&.id ? 'required' : '' %> id="practice_<%= area %>-input-single_<%= placeholder %>" class="usa-file-input usa-hint <%= area %>-file-attachment" type="file" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" />
     </div>
   <% end %>
   <div class="<%= area %>-input-container">
