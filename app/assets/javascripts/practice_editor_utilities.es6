@@ -172,7 +172,6 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
             $(`#${container}`).append(titleHTML)
         }
         link_form.appendTo(`#${container}`);
-        console.log('container', container)
         document.getElementById(container).style.display = 'block';
 
         //clear form_inputs
