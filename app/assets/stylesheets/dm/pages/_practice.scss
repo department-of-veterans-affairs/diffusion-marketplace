@@ -852,6 +852,7 @@
   width: 1px;
   height: 1px;
 }
+
 .pe-continue{
   width: 125px;
 }
@@ -1145,6 +1146,13 @@ li.small-disc:before {
   #dm-add-link-risk-mitigation {
     position: absolute;
     bottom: 0px;
+  }
+
+  .implementation-radio {
+    left: 27px !important;
+    top: 10px;
+    width: 1px;
+    height: 1px;
   }
 }
 
