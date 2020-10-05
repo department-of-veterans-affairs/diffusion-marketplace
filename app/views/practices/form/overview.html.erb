@@ -101,7 +101,7 @@
                   <%= render partial: "practices/overview_forms/video_form", locals: {resource: pr, placeholder: i, area: 'problem_resources'} %>
                 <% end %>
               </div>
-              <div id="display_problem_resources_file grid-row">
+              <div id="display_problem_resources_file">
                 <% if @practice.practice_problem_resources.where(resource_type: 'file').exists? %>
                   <div id="problem_resources_file_section_text" class="text-bold font-sans-3xs text-uppercase text-ls-1 line-height-15px margin-bottom-2 margin-top-0">Files:</div>
                 <% end %>
