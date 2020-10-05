@@ -178,10 +178,15 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
         $.each(formToClear.find('input:not([type="hidden"])'), function (i, ele) {
             $(ele).val(null);
             if (ele.type === 'file' && sType === 'file') {
+                let area = sArea
+                if (sArea === 'optional_attachment' || 'core_attachment' || 'support_attachment') {
+                    area = 'resources'
+                }
+
                 $(ele)
                     .closest('.usa-file-input')
                     .replaceWith(`
-                        <input id="practice_${sArea}-input-single_RANDOM_NUMBER_OR_SOMETHING" class="usa-hint usa-file-input" type="file" name="practice[practice_${sArea}_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" aria-describedby="practice_${sArea}-input-single_RANDOM_NUMBER_OR_SOMETHING-hint" />
+                        <input id="practice_${area}-input-single_RANDOM_NUMBER_OR_SOMETHING" class="usa-hint usa-file-input" type="file" name="practice[practice_${area}_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" aria-describedby="practice_${area}-input-single_RANDOM_NUMBER_OR_SOMETHING-hint" />
                     `);
             } else if (ele.type === 'file' && sType === 'image') {
                 $(ele)
