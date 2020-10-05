@@ -179,7 +179,7 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
             $(ele).val(null);
             if (ele.type === 'file' && sType === 'file') {
                 let area = sArea
-                if (sArea === 'optional_attachment' || 'core_attachment' || 'support_attachment') {
+                if (sArea === 'optional_attachment' || sArea === 'core_attachment' || sArea === 'support_attachment') {
                     area = 'resources'
                 }
 
