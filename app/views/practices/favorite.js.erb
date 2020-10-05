@@ -9,7 +9,6 @@
 <% end %>
 
 if (results) {
-  console.log('results', results);
   var r = results.find(function(p) {
     return p.item.id === <%= @practice.id %>;
   });

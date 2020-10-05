@@ -21,7 +21,7 @@
           <%= render 'pii_phi_alert' %>
         </div>
         <%= nested_form_for(@practice, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
-          <fieldset class="usa-fieldset grid-col-10">
+          <fieldset class="usa-fieldset grid-col-11">
             <legend class="usa-sr-only">Practice About Information</legend>
             <div class="margin-bottom-5">
               <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
@@ -37,7 +37,7 @@
                 <p class="text-bold margin-bottom-2 line-height-18px">Team members</p>
                 <p class="line-height-26">Add the names of people who helped start the practice.</p>
               </div>
-              <div class="grid-col-8">
+              <div class="grid-col-7">
                 <div id="about_container" class="position-relative">
                   <ul class="practice-editor-about-ul" id="sortable_va_employees" role="listbox" title="Practice about" aria-label="Practice editor VA employee list">
                     <%= f.fields_for :va_employees, wrapper: false do |vae| %>

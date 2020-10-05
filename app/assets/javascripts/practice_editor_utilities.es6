@@ -168,7 +168,7 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
 
         if ($(`#${container}`).children().length === 0) {
             let title = `${sType}s`
-            let titleHTML = `<div id="${sArea}_${sType}_section_text" class="text-bold font-sans-3xs margin-bottom-2 text-ls-1 line-height-15px" >${title.toUpperCase()}:</div>`
+            let titleHTML = `<h5 id="${sArea}_${sType}_section_text" class="text-bold font-sans-3xs margin-bottom-2 margin-top-0 text-ls-1 line-height-15px" >${title.toUpperCase()}:</h5>`
             $(`#${container}`).append(titleHTML)
         }
         link_form.appendTo(`#${container}`);
@@ -222,10 +222,9 @@ function attachDeleteResourceListener() {
         let type = $(e.target).data('type');
         $(e.target).parents('div[id*=' + area + '_' + type + '_form]').hide();
 
-        let visibleChildDivs = $(e.target).closest(`#display_${area}_${type}`).find('div:visible');
+        let visibleChildDivs = $(e.target).closest(`#display_${area}_${type}`).find($('div.margin-bottom-5:visible'));
         // remove title of section if there are no items
-        if (visibleChildDivs.length === 1) {
-            visibleChildDivs[0].hide;
+        if (visibleChildDivs.length === 0) {
             let elementId = area + '_' + type + '_section_text';
             let newEle = document.getElementById(elementId);
             if(newEle != null) {
