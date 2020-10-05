@@ -31,7 +31,7 @@
         </div>
           <!--        Resources     -->
           <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
-          <div class="margin-bottom-5 margin-top-3">
+          <div class="margin-bottom-5 margin-top-3 grid-col-12">
             <h2 class="font-sans-sm">Core resources list</h2>
             <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
               Provide a list of the resources another facility would need to implement your practice.
@@ -68,7 +68,7 @@
                 <%= render partial: "practices/implementation_forms/attachment_file_form", locals: {area: 'core_attachment', resource_type: 'core'} %>
                 <%= render partial: "practices/implementation_forms/attachment_link_form", locals: {area: 'core_attachment', resource_type: 'core'} %>
               </div>
-              <div id="display_core_attachment_file" class="grid-col-12">
+              <div id="display_core_attachment_file" class="grid-col-11">
                 <% if @practice.practice_resources.where(resource_type: 'core', media_type: 'file').exists? %>
                   <h5 id="core_attachment_file_section_text" class="text-bold margin-bottom-2 font-sans-3xs text-ls-1 line-height-15px">FILES:</h5>
                   <% @practice.practice_resources.where(resource_type: 'core', media_type: 'file').each_with_index do |pr, i| %>
@@ -76,7 +76,7 @@
                   <% end %>
                 <% end %>
               </div>
-              <div id="display_core_attachment_link" class="grid-col-12">
+              <div id="display_core_attachment_link" class="grid-col-11">
                 <% if @practice.practice_resources.where(resource_type: 'core', media_type: 'link').exists? %>
                   <h5 id="core_attachment_link_section_text" class="text-bold margin-bottom-2 font-sans-3xs text-ls-1 line-height-15px">LINKS:</h5>
                 <% end %>
@@ -121,7 +121,7 @@
                 <%= render partial: "practices/implementation_forms/attachment_file_form", locals: {area: 'optional_attachment', resource_type: 'optional'} %>
                 <%= render partial: "practices/implementation_forms/attachment_link_form", locals: {area: 'optional_attachment', resource_type: 'optional'} %>
               </div>
-              <div id="display_optional_attachment_file"  class="grid-col-12">
+              <div id="display_optional_attachment_file"  class="grid-col-11">
                 <% if @practice.practice_resources.where(resource_type: 'optional', media_type: 'file').exists? %>
                   <h5 id="optional_attachment_file_section_text" class="text-bold margin-bottom-2 font-sans-3xs text-ls-1 line-height-15px">FILES:</h5>
                   <% @practice.practice_resources.where(resource_type: 'optional', media_type: 'file').each_with_index do |pr, i| %>
@@ -129,7 +129,7 @@
                   <% end %>
                 <% end %>
               </div>
-              <div id="display_optional_attachment_link" class="grid-col-12">
+              <div id="display_optional_attachment_link" class="grid-col-11">
                 <% if @practice.practice_resources.where(resource_type: 'optional', media_type: 'link').exists? %>
                   <h5 id="optional_attachment_link_section_text" class="text-bold margin-bottom-2 font-sans-3xs text-ls-1 line-height-15px">LINKS:</h5>
                 <% end %>
@@ -174,7 +174,7 @@
                 <%= render partial: "practices/implementation_forms/attachment_file_form", locals: {area: 'support_attachment', resource_type: 'support'} %>
                 <%= render partial: "practices/implementation_forms/attachment_link_form", locals: {area: 'support_attachment', resource_type: 'support'} %>
               </div>
-              <div id="display_support_attachment_file"  class="grid-col-12">
+              <div id="display_support_attachment_file"  class="grid-col-11">
                 <% if @practice.practice_resources.where(resource_type: 'support', media_type: 'file').exists? %>
                   <h5 id="support_attachment_file_section_text" class="text-bold margin-bottom-2 font-sans-3xs text-ls-1 line-height-15px">FILES:</h5>
                   <% @practice.practice_resources.where(resource_type: 'support', media_type: 'file').each_with_index do |pr, i| %>
@@ -182,7 +182,7 @@
                   <% end %>
                 <% end %>
               </div>
-              <div id="display_support_attachment_link" class="grid-col-12">
+              <div id="display_support_attachment_link" class="grid-col-11">
                 <% if @practice.practice_resources.where(resource_type: 'support', media_type: 'link').exists? %>
                   <h5 id="support_attachment_link_section_text" class="text-bold margin-bottom-2 font-sans-3xs text-ls-1 line-height-15px">LINKS:</h5>
                 <% end %>
