@@ -1075,31 +1075,8 @@ li.small-disc:before {
     }
   }
 
-  .overview-input-error {
-    border-left-width: 0.25rem !important;
-    border-left-color: #b50909 !important;
-    border-left-style: solid !important;
-    padding-left: 1rem !important;
-    position: relative !important;
-  }
-
-  .overview-attachment-input-target-error {
-    border-color: #b50909 !important;
-    border-width: 2px !important;
-  }
-
-  .overview-text-input-error {
-    border-width: 0.25rem !important;
-    border-color: #b50909 !important;
-    border-style: solid !important;
-  }
-
   .overview-resource-label {
     margin-top: 16px !important;
-  }
-
-  .usa-label--error {
-    margin-top: 1.5rem !important;
   }
 
   .overview-problem-statement-label + span, .overview-solution-statement-label + span, .overview-results-statement-label + span {
@@ -1163,4 +1140,28 @@ li.small-disc:before {
 // About
 .origin-story-textarea {
   resize: none;
+}
+
+// Cross-section styles
+.input-error {
+  border-left-width: 0.25rem !important;
+  border-left-color: #b50909 !important;
+  border-left-style: solid !important;
+  padding-left: 1rem !important;
+  position: relative !important;
+}
+
+.attachment-input-target-error {
+  border-color: #b50909 !important;
+  border-width: 2px !important;
+}
+
+.text-input-error {
+  border-width: 0.25rem !important;
+  border-color: #b50909 !important;
+  border-style: solid !important;
+}
+
+.usa-label--error {
+  margin-top: 1.5rem !important;
 }
