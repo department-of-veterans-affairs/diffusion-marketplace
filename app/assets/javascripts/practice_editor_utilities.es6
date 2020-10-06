@@ -204,7 +204,7 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
                 $(ele)
                     .closest('.usa-file-input')
                     .replaceWith(`
-                    <input id="practice_${sArea}_RANDOM_NUMBER_OR_SOMETHING_image" class="usa-hint usa-file-input dm-cropper-upload-image" type="file" name="practice[practice_${sArea}_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".jpg,.jpeg,.png" />
+                    <input id="practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_image" class="usa-hint usa-file-input dm-cropper-upload-image" type="file" name="practice[practice_${sArea}_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".jpg,.jpeg,.png" />
                 `);
             }
         });
@@ -394,7 +394,7 @@ function validateFormFields(formSelector, sArea, sType, target) {
             hideInputErrorStyles(sDesc, `.${sArea}-input-container`);
         }
     } else if (sType === 'image') {
-        const sAttachment = document.getElementById(`practice_${sArea}_RANDOM_NUMBER_OR_SOMETHING_image`);
+        const sAttachment = document.getElementById(`practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_image`);
         const sName = document.getElementById('practice_' + sArea + '_attributes_RANDOM_NUMBER_OR_SOMETHING_image_name');
 
         if (sAttachment.value === "") {
