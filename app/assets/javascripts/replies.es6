@@ -38,7 +38,6 @@ $(document).on('turbolinks:load', () => {
 
             const numReplies = target.data('number-replies');
             const repliesText = numReplies === 1 ? 'reply' : 'replies';
-            console.log('container hidden', containerHidden);
             if (!containerHidden) {
                 target.text(`Show ${numReplies} ${repliesText}`);
             } else {

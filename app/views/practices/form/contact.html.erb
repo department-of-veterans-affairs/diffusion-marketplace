@@ -22,20 +22,20 @@
           <%= render 'pii_phi_alert' %>
         </div>
         <%= nested_form_for(@practice, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
-          <fieldset class="usa-fieldset grid-col-10">
+          <fieldset class="usa-fieldset grid-col-11">
             <legend class="usa-sr-only">Practice Contact</legend>
             <div class="margin-bottom-5">
               <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
               <h4 class="line-height-18px margin-top-3 font-sans-sm text-bold margin-bottom-2">Email <span class="text-gray-50">(required field)</span></h4>
               <p class="line-height-26 margin-bottom-2">Type the email address dedicated to responding to messages for this practice.</p>
 
-              <div class="grid-col-8 main-practice-email-container">
+              <div class="grid-col-7 main-practice-email-container">
                 <%= f.label :support_network_email, 'Main email address', class: 'usa-label line-height-26 x0-top main-practice-email-label' %>
                 <%= f.text_field :support_network_email, class: 'usa-input practice-input width-tablet main-practice-email-input margin-bottom-2', required: true %>
               </div>
 
               <!-- PracticeEmail form -->
-              <div class="grid-col-8">
+              <div class="grid-col-7">
                 <div id="contact_container" class="position-relative">
                   <ul class="practice-editor-contact-ul" role="listbox" title="Practice contact" aria-label="Practice editor contact list">
                     <%= f.fields_for :practice_emails, wrapper: false do |pe| %>

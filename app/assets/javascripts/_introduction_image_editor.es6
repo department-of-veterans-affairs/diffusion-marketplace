@@ -137,11 +137,8 @@
       $(target).closest('.dm-cropper-boundary').find('.dm-cropper-thumbnail-original').addClass('display-none')
       let croppedCanvas = $image.data('cropper').getCroppedCanvas({ width: 310 })
 
-        let url = croppedCanvas.toDataURL();
-        let image = new Image();
-        image.src = url;
-        image.classList.add('dm-cropper-thumbnail-modified')
-        $(target).closest('.dm-cropper-boundary').find($imgsContainer).append(image)
+      $(target).closest('.dm-cropper-boundary').find($imgsContainer).append(croppedCanvas)
+      $(target).closest('.dm-cropper-boundary').find('canvas').addClass('dm-cropper-thumbnail-modified')
     }
   }
 
@@ -266,7 +263,6 @@
       _toggleImageView({ isCrop: false, target: event.target })
       _toggleCropperBtnView({ visible: false, target: event.target });
       _toggleEditBtn({ visible: true, target: event.target });
-      _setCropBoxValues({ isCrop: false, target: event.target });
     });
   }
 
