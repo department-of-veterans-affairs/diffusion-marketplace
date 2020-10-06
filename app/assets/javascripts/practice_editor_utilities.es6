@@ -150,7 +150,7 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
         let area = sArea
         let resourceType = ''
         if (sArea === 'optional_attachment' || sArea === 'core_attachment' || sArea === 'support_attachment') {
-            if (sType === 'file') {
+            if (sType === 'file' || sType === 'link') {
                 area = 'resources'
                 resourceType = '_' + sArea.substr(0, sArea.indexOf('_attachment'));
             }
@@ -264,9 +264,9 @@ function validateFormFields(formSelector, sArea, sType, target) {
         if (sArea === 'optional_attachment' || sArea === 'core_attachment' || sArea === 'support_attachment') {
             area = 'resources'
         }
-        const sAttachment = $(`.${sArea}-file-attachment`)
-        const sName = $(`#practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_file_${resource_type}name`)
-        const sDesc = $(`#practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_file_${resource_type}description`)
+        const sAttachment = document.getElementsByClassName(`${sArea}-file-attachment`)
+        const sName = document.getElementById(`practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_file_${resource_type}name`)
+        const sDesc = document.getElementById(`practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_file_${resource_type}description`)
 
         if (sAttachment[0].value === "") {
             errDiv = document.getElementById(sArea + '_file_err_message_attachment');
@@ -330,9 +330,18 @@ function validateFormFields(formSelector, sArea, sType, target) {
             hideInputErrorStyles(sName, `.${sArea}-input-container`);
         }
     } else if (sType === 'link') {
-        const sLink = document.getElementById('practice_' + sArea + '_attributes_RANDOM_NUMBER_OR_SOMETHING_link_link_url');
-        const sName = document.getElementById('practice_' + sArea + '_attributes_RANDOM_NUMBER_OR_SOMETHING_link_name');
-        const sDesc = document.getElementById('practice_' + sArea + '_attributes_RANDOM_NUMBER_OR_SOMETHING_link_description');
+        let resource_type = ''
+        if (sArea.includes('_attachment')) {
+            resource_type = '_' + sArea.substr(0, sArea.indexOf('_attachment'));
+        }
+
+        let area = sArea
+        if (sArea === 'optional_attachment' || sArea === 'core_attachment' || sArea === 'support_attachment') {
+            area = 'resources'
+        }
+        const sLink = document.getElementById('practice_' + sArea + `_attributes_RANDOM_NUMBER_OR_SOMETHING_link${resource_type}_link_url`);
+        const sName = document.getElementById(`practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_link${resource_type}_name`);
+        const sDesc = document.getElementById(`practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_link${resource_type}_description`);
 
         if (sLink.value === "") {
             errDiv = document.getElementById(sArea + '_link_err_message_link_url');
