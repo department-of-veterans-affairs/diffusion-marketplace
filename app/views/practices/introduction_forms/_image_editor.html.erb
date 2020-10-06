@@ -16,9 +16,9 @@
       <p class="usa-alert__body"></p>
     </div>
     <%= form.file_field :main_display_image, class: "dm-cropper-upload-image usa-file-input", accept: 'image/*' %>
-    <div class="dm-cropper-images-container grid-col-6 margin-top-2" data-type="main">
+    <div class="dm-cropper-images-container grid-col-6 margin-top-2">
       <% if practice.main_display_image.present? %>
-        <%= image_tag practice.main_display_image_s3_presigned_url(:original),
+        <%= image_tag practice.main_display_image_s3_presigned_url(),
                       alt: "practice thumbnail for #{practice.name}",
                       class: 'dm-cropper-thumbnail-original display-none' %>
         <%= image_tag practice.main_display_image_s3_presigned_url(:thumb),

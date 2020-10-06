@@ -147,9 +147,18 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
         link_form.attr('class', `margin-bottom-5`);
         link_form.find('.dm-cancel-add-button-row').remove();
 
+        let area = sArea
+        let resourceType = ''
+        if (sArea === 'optional_attachment' || sArea === 'core_attachment' || sArea === 'support_attachment') {
+            if (sType === 'file') {
+                area = 'resources'
+                resourceType = '_' + sArea.substr(0, sArea.indexOf('_attachment'));
+            }
+        }
+
         const deleteEntryHtml = `
             <div class="grid-col-12 margin-top-2" align="right">
-               <input type="hidden" value="false" name="practice[practice_${sArea}_attributes][${nGuid}_${sType}][_destroy]"/>
+               <input type="hidden" value="false" name="practice[practice_${area}_attributes][${nGuid}_${sType}${resourceType}][_destroy]"/>
                <button type="button" data-area="${sArea}" data-type="${sType}" class="usa-button--unstyled dm-btn-warning line-height-26 remove_nested_fields">
                     Delete entry
                </button>
@@ -177,22 +186,25 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
         //clear form_inputs
         $.each(formToClear.find('input:not([type="hidden"])'), function (i, ele) {
             $(ele).val(null);
+
             if (ele.type === 'file' && sType === 'file') {
                 let area = sArea
+                let resourceType = ''
+
                 if (sArea === 'optional_attachment' || sArea === 'core_attachment' || sArea === 'support_attachment') {
                     area = 'resources'
+                    resource_type = sArea.substr(0, sArea.indexOf('_attachment')) + '_';
                 }
-
                 $(ele)
                     .closest('.usa-file-input')
                     .replaceWith(`
-                        <input id="practice_${area}-input-single_RANDOM_NUMBER_OR_SOMETHING" class="usa-hint usa-file-input" type="file" name="practice[practice_${area}_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" aria-describedby="practice_${area}-input-single_RANDOM_NUMBER_OR_SOMETHING-hint" />
+                        <input id="practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_file_${resource_type}attachment" class="usa-hint usa-file-input" type="file" name="practice[practice_${area}_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" />
                     `);
             } else if (ele.type === 'file' && sType === 'image') {
                 $(ele)
                     .closest('.usa-file-input')
                     .replaceWith(`
-                    <input id="practice_${sArea}-input-single_RANDOM_NUMBER_OR_SOMETHING" class="usa-hint usa-file-input dm-cropper-upload-image" type="file" name="practice[practice_${sArea}_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".jpg,.jpeg,.png" />
+                    <input id="practice_${sArea}_RANDOM_NUMBER_OR_SOMETHING" class="usa-hint usa-file-input dm-cropper-upload-image" type="file" name="practice[practice_${sArea}_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".jpg,.jpeg,.png" />
                 `);
             }
         });
@@ -243,9 +255,18 @@ function validateFormFields(formSelector, sArea, sType, target) {
     clearErrorDivs(sArea, sType, target);
     let errDiv = null;
     if (sType === "file") {
-        const sAttachment = document.getElementsByClassName(sArea + '-file-attachment');
-        const sName = document.getElementById('practice_' + sArea + '_attributes_RANDOM_NUMBER_OR_SOMETHING_file_name');
-        const sDesc = document.getElementById('practice_' + sArea + '_attributes_RANDOM_NUMBER_OR_SOMETHING_file_description');
+        let resource_type = ''
+        if (sArea.includes('_attachment')) {
+            resource_type = sArea.substr(0, sArea.indexOf('_attachment')) + '_';
+        }
+
+        let area = sArea
+        if (sArea === 'optional_attachment' || sArea === 'core_attachment' || sArea === 'support_attachment') {
+            area = 'resources'
+        }
+        const sAttachment = $(`.${sArea}-file-attachment`)
+        const sName = $(`#practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_file_${resource_type}name`)
+        const sDesc = $(`#practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_file_${resource_type}description`)
 
         if (sAttachment[0].value === "") {
             errDiv = document.getElementById(sArea + '_file_err_message_attachment');
@@ -264,9 +285,6 @@ function validateFormFields(formSelector, sArea, sType, target) {
             errDiv.style.display = "block";
             displayTextInputErrorStyles(sName);
             displayInputErrorStyles(sName, `.${sArea}-input-container`);
-            // Hide name error message
-            hideTextInputErrorStyles(sDesc);
-            hideInputErrorStyles(sDesc, `.${sArea}-input-container`);
             return false;
         } else {
             hideTextInputErrorStyles(sName);
@@ -396,7 +414,6 @@ function clearErrorDivs(sArea, sType, target) {
         document.getElementById(sArea + '_file_err_message_description').style.display = "none";
         document.getElementById(sArea + '_file_err_message_attachment').style.display = "none";
     }
-
     // VIDEO
     if (sType === 'video') {
         document.getElementById(sArea + '_video_err_message_name').style.display = "none";
