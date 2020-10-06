@@ -147,18 +147,18 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
         link_form.attr('class', `margin-bottom-5`);
         link_form.find('.dm-cancel-add-button-row').remove();
 
-        let area = sArea
-        let resourceType = ''
+        let area = sArea;
+        let resource_type = '';
         if (sArea === 'optional_attachment' || sArea === 'core_attachment' || sArea === 'support_attachment') {
             if (sType === 'file') {
-                area = 'resources'
-                resourceType = '_' + sArea.substr(0, sArea.indexOf('_attachment'));
+                area = 'resources';
+                resource_type = '_' + sArea.substr(0, sArea.indexOf('_attachment'));
             }
         }
 
         const deleteEntryHtml = `
             <div class="grid-col-12 margin-top-2" align="right">
-               <input type="hidden" value="false" name="practice[practice_${area}_attributes][${nGuid}_${sType}${resourceType}][_destroy]"/>
+               <input type="hidden" value="false" name="practice[practice_${area}_attributes][${nGuid}_${sType}${resource_type}][_destroy]"/>
                <button type="button" data-area="${sArea}" data-type="${sType}" class="usa-button--unstyled dm-btn-warning line-height-26 remove_nested_fields">
                     Delete entry
                </button>
@@ -189,7 +189,7 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
 
             if (ele.type === 'file' && sType === 'file') {
                 let area = sArea
-                let resourceType = ''
+                let resource_type = ''
 
                 if (sArea === 'optional_attachment' || sArea === 'core_attachment' || sArea === 'support_attachment') {
                     area = 'resources'
@@ -265,8 +265,8 @@ function validateFormFields(formSelector, sArea, sType, target) {
             area = 'resources'
         }
         const sAttachment = $(`.${sArea}-file-attachment`)
-        const sName = $(`#practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_file_${resource_type}name`)
-        const sDesc = $(`#practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_file_${resource_type}description`)
+        const sName = $(`#practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_file_${resource_type}name`);
+        const sDesc = $(`#practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_file_${resource_type}description`);
 
         if (sAttachment[0].value === "") {
             errDiv = document.getElementById(sArea + '_file_err_message_attachment');
