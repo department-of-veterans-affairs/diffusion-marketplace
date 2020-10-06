@@ -44,15 +44,15 @@ class SavePracticeService
       end
 
       updated = @practice.update(@practice_params)
-    rescue_method(:update_practice_partner_practices)
-    rescue_method(:update_department_practices)
-    rescue_method(:remove_attachments)
-    rescue_method(:manipulate_avatars)
-    rescue_method(:remove_main_display_image)
-    rescue_method(:crop_main_display_image)
-    rescue_method(:update_initiating_facility)
-    rescue_method(:update_practice_awards)
-    rescue_method(:update_category_practices)
+      rescue_method(:update_practice_partner_practices)
+      rescue_method(:update_department_practices)
+      rescue_method(:remove_attachments)
+      rescue_method(:manipulate_avatars)
+      rescue_method(:remove_main_display_image)
+      rescue_method(:crop_main_display_image)
+      rescue_method(:update_initiating_facility)
+      rescue_method(:update_practice_awards)
+      rescue_method(:update_category_practices)
       rescue_method(:crop_resource_images)
       updated
     rescue => e
@@ -304,6 +304,9 @@ class SavePracticeService
   def process_practice_resources_params
     PracticeResource.media_types.each do |rt|
       @practice_params['practice_resources_attributes']&.delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0])
+      @practice_params['practice_resources_attributes']&.delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0] + '_core')
+      @practice_params['practice_resources_attributes']&.delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0] + '_optional')
+      @practice_params['practice_resources_attributes']&.delete('RANDOM_NUMBER_OR_SOMETHING_' + rt[0] + '_support')
     end
   end
 

@@ -3,25 +3,53 @@
 
           <ul id="dm-tabnav" class="usa-sidenav dm-tabnav">
               <li class="usa-sidenav__item">
-                <%= link_to 'Instructions', practice_instructions_path(@practice), class: "#{'active' if current_page?( practice_instructions_path(@practice))} width-full dm-tab" %>
+                <% if current_page?(practice_instructions_path(@practice)) %>
+                  <a href="#" onclick="return false" class="active width-full dm-tab">Instructions</a>
+                <% else %>
+                  <%= link_to 'Instructions', practice_instructions_path(@practice), class: "#{'active' if current_page?( practice_instructions_path(@practice))} width-full dm-tab" %>
+                <% end %>
               </li>
               <li class="usa-sidenav__item">
+                <% if current_page?(practice_introduction_path(@practice)) %>
+                  <a href="#" onclick="return false" class="active width-full dm-tab">Introduction</a>
+                <% else %>
                   <%= link_to 'Introduction', practice_introduction_path(@practice), class: "#{'active' if current_page?( practice_introduction_path(@practice))} dm-tab" %>
+                <% end %>
               </li>
               <li class="usa-sidenav__item">
+                <% if current_page?(practice_adoptions_path(@practice)) %>
+                  <a href="#" onclick="return false" class="active width-full dm-tab">Adoptions</a>
+                <% else %>
                   <%= link_to 'Adoptions', practice_adoptions_path(@practice), class: "#{'active' if current_page?( practice_adoptions_path(@practice))} width-full dm-tab" %>
+                <% end %>
               </li>
               <li class="usa-sidenav__item">
+                <% if current_page?(practice_overview_path(@practice)) %>
+                  <a href="#" onclick="return false" class="active width-full dm-tab">Overview</a>
+                <% else %>
                   <%= link_to 'Overview', practice_overview_path(@practice), class: "#{'active' if current_page?( practice_overview_path(@practice))} width-full dm-tab" %>
+                <% end %>
               </li>
             <li class="usa-sidenav__item">
-              <%= link_to 'Implementation', practice_implementation_path(@practice), class: "#{'active' if current_page?( practice_implementation_path(@practice))} width-full dm-tab" %>
+              <% if current_page?(practice_implementation_path(@practice)) %>
+                <a href="#" onclick="return false" class="active width-full dm-tab">Implementation</a>
+                <% else %>
+                <%= link_to 'Implementation', practice_implementation_path(@practice), class: "#{'active' if current_page?( practice_implementation_path(@practice))} width-full dm-tab" %>
+              <% end %>
             </li>
               <li class="usa-sidenav__item">
+                <% if current_page?(practice_contact_path(@practice)) %>
+                  <a href="#" onclick="return false" class="active width-full dm-tab">Contact</a>
+                <% else %>
                   <%= link_to 'Contact', practice_contact_path(@practice), class: "#{'active' if current_page?( practice_contact_path(@practice))} width-full dm-tab" %>
+                <% end %>
               </li>
               <li class="usa-sidenav__item">
-                <%= link_to 'About', practice_about_path(@practice), class: "#{'active' if current_page?( practice_about_path(@practice))} width-full dm-tab" %>
+                <% if current_page?(practice_about_path(@practice)) %>
+                  <a href="#" onclick="return false" class="active width-full dm-tab">About</a>
+                <% else %>
+                  <%= link_to 'About', practice_about_path(@practice), class: "#{'active' if current_page?( practice_about_path(@practice))} width-full dm-tab" %>
+                <% end %>
               </li>
           </ul>
 

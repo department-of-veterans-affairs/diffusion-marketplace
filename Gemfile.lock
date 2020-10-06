@@ -29,7 +29,7 @@ GIT
 
 GIT
   remote: https://github.com/agilesix/uswds-rails.git
-  revision: 79b82e18284a94e6a8e083b6fbf022a66df75140
+  revision: bc5c729d132ef27ccdcf26bdf6cfac530d92ebeb
   branch: 2.8.1
   specs:
     uswds-rails (2.8.1)

@@ -1,48 +1,47 @@
 <% resource ||= nil
    placeholder ||= 'RANDOM_NUMBER_OR_SOMETHING'
-   placeholder = placeholder.to_s + '_link'
+   placeholder = "#{placeholder.to_s}_link_#{resource_type}"
    area = area.to_s
 %>
-<div class="grid-col-12">
-  <div id="<%= area %>_link_form<%= "_#{placeholder}" if resource %>" <% if resource %> class="resource_container margin-bottom-2" <% end %>>
-    <input type="hidden" name="practice[practice_resources_attributes][<%= placeholder %>][media_type]" value="link"/>
-    <input type="hidden" name="practice[practice_resources_attributes][<%= placeholder %>][resource_type]" value="<%= area.split('_')[0] %>"/>
-    <% if resource&.id  %>
-      <input value="<%= resource&.id %>" type="hidden" name="practice[practice_resources_attributes][<%= placeholder %>][id]"/>
-    <% end %>
-    <div class="<%= area %>-input-container">
-      <%= label_tag "practice_#{area}_link", 'Link (paste the full address)', class: 'usa-label overview-resource-label', for: "practice_#{area}_attributes_#{placeholder}_link_link_url" %>
-      <%= render partial: 'practices/overview_error_partials/link', locals: {
-          area: area,
-          resource_type: 'link',
-          message: 'Please enter a valid url/link'
-      }
-      %>
 
-      <input <%= resource&.id ? 'required' : '' %> class="usa-input grid-col-12" value="<%= resource&.link_url %>" type="text" name="practice[practice_resources_attributes][<%= placeholder %>][link_url]" id="practice_<%= area %>_attributes_<%= placeholder %>_link_url"/>
-    </div>
-    <div class="<%= area %>-input-container">
-      <%= label_tag "practice_#{area}_name", 'Title', class: 'usa-label overview-resource-label', for: "practice_#{area}_attributes_#{placeholder}_link_name" %>
-      <%= render partial: 'practices/overview_error_partials/name', locals: {
-          area: area,
-          resource_type: 'link',
-          message: 'Please enter a link title'
-      }
-      %>
-      <input <%= resource&.id ? 'required' : '' %> class="usa-input grid-col-6" value="<%= resource&.name %>" type="text" name="practice[practice_resources_attributes][<%= placeholder %>][name]" id="practice_<%= area %>_attributes_<%= placeholder %>_name"/>
-    </div>
+<div id="<%= area %>_link_form<%= "_#{placeholder}" if resource %>" <% if resource %> class="resource_container margin-bottom-5" <% end %> class="grid-col-11">
+  <input type="hidden" name="practice[practice_resources_attributes][<%= placeholder %>][media_type]" value="link"/>
+  <input type="hidden" name="practice[practice_resources_attributes][<%= placeholder %>][resource_type]" value="<%= area.split('_')[0] %>"/>
+  <% if resource&.id  %>
+    <input value="<%= resource&.id %>" type="hidden" name="practice[practice_resources_attributes][<%= placeholder %>][id]"/>
+  <% end %>
+  <div class="<%= area %>-input-container">
+    <%= label_tag "practice_#{area}_link", 'Link (paste the full address)', class: 'usa-label overview-resource-label', for: "practice_#{area}_attributes_#{placeholder}_link_url" %>
+    <%= render partial: 'practices/overview_error_partials/link', locals: {
+      area: area,
+      resource_type: 'link',
+      message: 'Please enter a valid url/link'
+    }
+    %>
 
-    <div class="<%= area %>-input-container">
-      <%= label_tag "practice_#{area}_description", 'Description', class: 'usa-label overview-resource-label', for: "practice_#{area}_attributes_#{placeholder}_link_description" %>
-      <%= render partial: 'practices/overview_error_partials/description', locals: {
-          area: area,
-          resource_type: 'link',
-          message: 'Please enter a link description'
-      }
-      %>
-      <input <%= resource&.id ? 'required' : '' %> class="usa-input grid-col-12" value="<%= resource&.description %>" type="text" name="practice[practice_resources_attributes][<%= placeholder %>][description]" id="practice_<%= area %>_attributes_<%= placeholder %>_description"/>
-    </div>
-    <%# action buttons %>
-    <%= render partial: "practices/overview_forms/form_actions", locals: { resource: resource, placeholder: placeholder, area: area, type: 'link', align: 'right', table_name: 'resources' } %>
+    <input <%= resource&.id ? 'required' : '' %> class="usa-input grid-col-12" value="<%= resource&.link_url %>" type="text" name="practice[practice_resources_attributes][<%= placeholder %>][link_url]" id="practice_<%= area %>_attributes_<%= placeholder %>_link_url"/>
   </div>
+  <div class="<%= area %>-input-container">
+    <%= label_tag "practice_#{area}_name", 'Title', class: 'usa-label overview-resource-label', for: "practice_#{area}_attributes_#{placeholder}_link_name" %>
+    <%= render partial: 'practices/overview_error_partials/name', locals: {
+        area: area,
+        resource_type: 'link',
+        message: 'Please enter a link title'
+    }
+    %>
+    <input <%= resource&.id ? 'required' : '' %> class="usa-input grid-col-6" value="<%= resource&.name %>" type="text" name="practice[practice_resources_attributes][<%= placeholder %>][name]" id="practice_<%= area %>_attributes_<%= placeholder %>_name"/>
+  </div>
+
+  <div class="<%= area %>-input-container">
+    <%= label_tag "practice_#{area}_description", 'Description', class: 'usa-label overview-resource-label', for: "practice_#{area}_attributes_#{placeholder}_link_description" %>
+    <%= render partial: 'practices/overview_error_partials/description', locals: {
+        area: area,
+        resource_type: 'link',
+        message: 'Please enter a link description'
+    }
+    %>
+    <input <%= resource&.id ? 'required' : '' %> class="usa-input grid-col-12" value="<%= resource&.description %>" type="text" name="practice[practice_resources_attributes][<%= placeholder %>][description]" id="practice_<%= area %>_attributes_<%= placeholder %>_description"/>
+  </div>
+  <%# action buttons %>
+  <%= render partial: "practices/overview_forms/form_actions", locals: { resource: resource, placeholder: placeholder, area: area, type: 'link', align: 'right', table_name: 'resources' } %>
 </div>

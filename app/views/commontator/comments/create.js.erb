@@ -85,7 +85,6 @@ $('#practice-comment-label').text('<%= @comment.thread.comments.count == 1 ? 'co
 
           var repliesText = numReplies === 1 ? numReplies + ' reply' : numReplies + ' replies';
 
-          console.log('In here')
           $('#comments-show-hide-button-<%= @comment.parent_id %>').text('Hide ' + repliesText);
       }
 

@@ -55,7 +55,7 @@ describe 'Practice editor', type: :feature, js: true do
       end
     end
 
-    describe 'complete and add file' do
+    describe 'complete and add files' do
       before do
         no_resource_pr_test_setup
       end
@@ -100,11 +100,19 @@ describe 'Practice editor', type: :feature, js: true do
           expect(page).to have_content('Delete entry')
         end
 
+        click_file_form area
+        upload_file(area, @file_path_3)
+        fill_in('File name', with: 'second new file')
+        fill_in('File description', with: "second new practice #{area} file")
+        add_resource
+
         save_practice
         visit practice_path(@pr_no_resources)
         expect(page).to have_content("Files")
         expect(page).to have_content("new file")
         expect(page).to have_content("new practice #{area} file")
+        expect(page).to have_content("second new file")
+        expect(page).to have_content("second new practice #{area} file")
       end
 
       it 'problem section - should save file' do
@@ -243,11 +251,11 @@ describe 'Practice editor', type: :feature, js: true do
   end
 
   def name_field
-    find_all('input[type="text"][class="usa-input"]').first
+    find_all('input[type="text"]').first
   end
 
   def description_field
-    find_all('input[type="text"][class="usa-input"]').last
+    find_all('input[type="text"]').last
   end
 
   def click_file_form(area)
