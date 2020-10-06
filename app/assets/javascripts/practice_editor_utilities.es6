@@ -193,12 +193,12 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
 
                 if (sArea === 'optional_attachment' || sArea === 'core_attachment' || sArea === 'support_attachment') {
                     area = 'resources'
-                    resource_type = sArea.substr(0, sArea.indexOf('_attachment')) + '_';
+                    resource_type = sArea.substr(0, sArea.indexOf('_attachment'));
                 }
                 $(ele)
                     .closest('.usa-file-input')
                     .replaceWith(`
-                        <input id="practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_file_${resource_type}attachment" class="usa-hint usa-file-input" type="file" name="practice[practice_${area}_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" />
+                        <input id="practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_file_${resource_type ? resource_type + '_' : ''}attachment" class="usa-hint usa-file-input" type="file" name="practice[practice_${area}_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}${resource_type ? '_' + resource_type : ''}][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" />
                     `);
             } else if (ele.type === 'file' && sType === 'image') {
                 $(ele)
