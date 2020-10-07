@@ -83,6 +83,11 @@
               <% else %>
                 <%= origin_display_name(@practice) %>
               <% end %>
+            <!-- display department --->
+            <% dept_name = origin_display_department_name(@practice) %>
+            <% if dept_name.length() > 0 %>
+              <span>, <%= dept_name %> Department</span>
+            <% end %>
           </p>
         </div>
 
