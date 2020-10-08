@@ -51,6 +51,10 @@
           <span>Print</span>
         </a>
       </div>
+      <%# practice tagline %>
+      <p class="margin-bottom-1 font-sans-lg line-height-36">
+        <%= safe_join(raw(@practice.tagline.truncate(72)).split("\r\n"), tag(:br)) %>
+      </p>
       <%# practice summary %>
       <p class="margin-bottom-1 font-sans-lg line-height-36">
         <%= safe_join(raw(@practice.summary).split("\r\n"), tag(:br)) %>
