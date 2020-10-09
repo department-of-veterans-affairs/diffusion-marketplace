@@ -60,6 +60,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
           user_practice.update_attributes(verified_implementer: false, team_member: true) if params[:user_practice_status] == 'team_member'
 
           @comment.save
+          ahoy.track "Practice comment created", { comment_id: @comment.id, creator_id: @comment.creator_id, editor_id: @comment.editor_id, body: @comment.body }
 
           format.js
         else
@@ -102,6 +103,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
           user_practice.update_attributes(verified_implementer: false, team_member: true) if params[:user_practice_status] == 'team_member'
 
           @comment.save
+          ahoy.track "Practice comment updated", { comment_id: @comment.id, creator_id: @comment.creator_id, editor_id: @comment.editor_id, body: @comment.body }
           format.js
           # format.html { redirect_to commontable_url }
         else
@@ -121,8 +123,11 @@ class Commontator::CommentsController < Commontator::ApplicationController
   def delete
     security_transgression_unless @comment.can_be_deleted_by?(@commontator_user)
 
-    @comment.errors.add(:base, t('commontator.comment.errors.already_deleted')) \
-      unless @comment.delete_by(@commontator_user)
+    if @comment.delete_by(@commontator_user)
+      ahoy.track "Practice comment deleted", { comment_id: params[:id] }
+    else
+      @comment.errors.add(:base, t('commontator.comment.errors.already_deleted')) \
+    end
 
     respond_to do |format|
       format.html { redirect_to commontable_url }
@@ -134,8 +139,11 @@ class Commontator::CommentsController < Commontator::ApplicationController
   def undelete
     security_transgression_unless @comment.can_be_deleted_by?(@commontator_user)
 
-    @comment.errors.add(:base, t('commontator.comment.errors.not_deleted')) \
-      unless @comment.undelete_by(@commontator_user)
+    if @comment.undelete_by(@commontator_user)
+      ahoy.track "Practice comment undeleted", { comment_id: params[:id] }
+    else
+      @comment.errors.add(:base, t('commontator.comment.errors.not_deleted')) \
+    end
 
     respond_to do |format|
       format.html { redirect_to commontable_url }
@@ -184,7 +192,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
     CommentMailer.report_comment_email(id: params[:id]).deliver_now
     notice = 'Comment has been reported and will be reviewed shortly'
     flash[:notice] = notice
-
+    ahoy.track "Practice comment reported", { comment_id: params[:id], practice_id: params[:practice_id] }
     respond_to do |format|
       format.html {redirect_to comment_path(id: params[:id]), notice: flash[:notice]}
     end
