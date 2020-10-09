@@ -64,17 +64,26 @@
             </div>
 
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
-            <div class="margin-bottom-5 margin-top-3">
-            <div>
-              <%= f.label :tagline, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
-                Tagline <span class="text-gray-50">(required field)</span>
-              <% end %>
-              <span>Type a short sentence summarizing the key outcomes of your practice.  This text will only display on the practice card.</span>&nbsp;
+            <div class="usa-character-count">
+              <div class="usa-form-group">
+                <div class="margin-bottom-5 margin-top-3">
+                  <div>
+                    <%= f.label :tagline, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
+                      Tagline <span class="text-gray-50">(required field)</span>
+                    <% end %>
+                    <span>Type a short sentence summarizing the key outcomes of your practice.  This text will display on the practice card.</span>&nbsp;
+                  </div>
+                  <%= f.text_field :tagline, class: "usa-input usa-character-count__field #{ @practice.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input", required: true, maxlength: 72 %>
+                  <p class="usa-error-message <%= @practice.errors[:tagline].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@practice, :tagline) %></span>
+                  </p>
+                  <span id="with-hint-input-info" class="usa-hint usa-character-count__message" aria-live="polite">
+                    You can enter up to 72 characters
+                  </span>
+                </div>
+              </div>
             </div>
-            <%= f.text_field :tagline, class: "usa-input #{ @practice.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input", required: true, maxlength: 72 %>
-            <p class="usa-error-message <%= @practice.errors[:tagline].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@practice, :tagline) %></span>
-            </p>
-          </div>
+
+
 
           <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
 
