@@ -143,6 +143,12 @@ module ApplicationHelper
     end
   end
 
+  def origin_display_department_name(practice)
+    dept_id = practice.initiating_department_office_id
+    dept = origin_data_json['departments'][dept_id - 1]
+    dept['name']
+  end
+
   def origin_display(practice)
     display_name = origin_display_name(practice)
     if display_name.present?
