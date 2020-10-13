@@ -43,6 +43,20 @@ function initSortable(ulId) {
     });
 }
 
+function maxCharacters() {
+    $('.practice-editor-name-input').on('input', (e) => {
+        characterCounter(e, $('#practice-editor-name-character-counter'), NAME_CHARACTER_COUNT);
+    });
+
+    $('.practice-editor-tagline-textarea').on('input', (e) => {
+        characterCounter(e, $('#practice-editor-tagline-character-counter'), TAGLINE_CHARACTER_COUNT);
+    });
+
+    $('.practice-editor-summary-textarea').on('input', (e) => {
+        characterCounter(e, $('#practice-editor-summary-character-counter'), SUMMARY_CHARACTER_COUNT);
+    });
+}
+
 function truncateText() {
     $('.practice-title').each(function(index, element) {
         $(element).shave(46);
