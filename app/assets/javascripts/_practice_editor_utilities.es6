@@ -34,6 +34,9 @@ $(document).arrive('.fields', (newElem) => {
                           // later, you can stop observing
                           // observer.disconnect();
 });
+const CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
+const CHARACTER_COUNTER_VALID_COLOR =  '#a9aeb1';
+const TAGLINE_CHARACTER_COUNT = 150;
 
 function initSortable(ulId) {
     sortable(ulId, {
@@ -43,21 +46,48 @@ function initSortable(ulId) {
     });
 }
 
-function maxCharacters() {
-    $('.practice-editor-name-input').on('input', (e) => {
-        characterCounter(e, $('#practice-editor-name-character-counter'), NAME_CHARACTER_COUNT);
-    });
+function countCharsOnPageLoad() {
+    let practiceNameCurrentLength = $('.practice-editor-name-input').val().length;
+    let practiceSummaryCurrentLength = $('.practice-editor-summary-textarea').val().length;
 
+    let practiceNameCharacterCounter = `(${practiceNameCurrentLength}/${NAME_CHARACTER_COUNT} characters)`;
+    let practiceSummaryCharacterCounter = `(${practiceSummaryCurrentLength}/${SUMMARY_CHARACTER_COUNT} characters)`;
+
+    $('#practice-editor-name-character-counter').text(practiceNameCharacterCounter);
+    $('#practice-editor-summary-character-counter').text(practiceSummaryCharacterCounter);
+
+    if (practiceNameCurrentLength >= NAME_CHARACTER_COUNT) {
+        $('#practice-editor-name-character-counter').css('color', CHARACTER_COUNTER_INVALID_COLOR);
+    }
+
+    if (practiceSummaryCurrentLength >= SUMMARY_CHARACTER_COUNT) {
+        $('#practice-editor-summary-character-counter').css('color', CHARACTER_COUNTER_INVALID_COLOR);
+    }
+}
+
+function characterCounter(e, $element, maxlength) {
+    const t = e.target;
+    let currentLength = $(t).val().length;
+
+    let characterCounter = `(${currentLength}/${maxlength} characters)`;
+
+    $element.css('color', CHARACTER_COUNTER_VALID_COLOR);
+    $element.text(characterCounter);
+
+    if (currentLength >= maxlength) {
+        $element.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+    }
+}
+
+function maxCharacters() {
+    debugger
     $('.practice-editor-tagline-textarea').on('input', (e) => {
         characterCounter(e, $('#practice-editor-tagline-character-counter'), TAGLINE_CHARACTER_COUNT);
-    });
-
-    $('.practice-editor-summary-textarea').on('input', (e) => {
-        characterCounter(e, $('#practice-editor-summary-character-counter'), SUMMARY_CHARACTER_COUNT);
     });
 }
 
 function truncateText() {
+    debugger
     $('.practice-title').each(function(index, element) {
         $(element).shave(46);
     });
@@ -71,4 +101,4 @@ function truncateText() {
     });
 }
 
-$(document).on('turbolinks:load', truncateText);
+$(document).on('turbolinks:load', truncateText, countCharsOnPageLoad, maxCharacters);
