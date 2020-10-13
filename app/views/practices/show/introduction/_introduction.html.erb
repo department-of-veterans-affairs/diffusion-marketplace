@@ -83,6 +83,10 @@
               <% else %>
                 <%= origin_display_name(@practice) %>
               <% end %>
+            <!-- display department --->
+            <% if @practice.department? %>
+              <span>, <%= origin_display_department_name(@practice) %> Department</span>
+            <% end %>
           </p>
         </div>
 

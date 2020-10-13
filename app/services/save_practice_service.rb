@@ -112,9 +112,20 @@ class SavePracticeService
     practice_depts = @practice.department_practices
     if dept_params.present?
       dept_keys = dept_params.keys
+      dept_ids = Array.new
+      practice_depts.each do |v|
+        dept_ids.push(v[:department_id].to_s)
+      end
       dept_keys.each do |key|
         value = dept_params[key][:value]
         destroy = dept_params[key][:_destroy] === 'true'
+        if destroy === false
+          if dept_ids.include? value
+            next
+          else
+            dept_ids.push(value)
+          end
+        end
         if value || destroy
           if key.include? 'new_department_practice'
             practice_depts.create department_id: value.to_i
