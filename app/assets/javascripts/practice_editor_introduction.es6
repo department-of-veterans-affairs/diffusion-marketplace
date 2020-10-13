@@ -6,6 +6,30 @@
     const departmentOption = '#initiating_facility_type_department';
     const otherOption = '#initiating_facility_type_other';
 
+    const CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
+    const CHARACTER_COUNTER_VALID_COLOR =  '#a9aeb1';
+    const TAGLINE_CHARACTER_COUNT = 72;
+
+    function characterCounter(e, $element, maxlength) {
+        const t = e.target;
+        let currentLength = $(t).val().length;
+
+        let characterCounter = `(${currentLength}/${maxlength} characters)`;
+
+        $element.css('color', CHARACTER_COUNTER_VALID_COLOR);
+        $element.text(characterCounter);
+
+        if (currentLength >= maxlength) {
+            $element.css('color', CHARACTER_COUNTER_INVALID_COLOR);
+        }
+    }
+
+    function maxCharacters() {
+        $('.practice-editor-tagline-textarea').on('input', (e) => {
+            characterCounter(e, $('#practice-editor-tagline-character-counter'), TAGLINE_CHARACTER_COUNT);
+        });
+    }
+
     function showCurrentlySelectedOptions(currentSelectForm){
         $(`#${currentSelectForm}`).show();
         $(`#${currentSelectForm} :input`).prop("disabled", false);
@@ -104,6 +128,7 @@
 
 
     function loadPracticeIntroductionFunctions() {
+        maxCharacters();
         attachFacilitySelectListener();
         attachShowOtherAwardFields();
         attachShowOtherCategoryFields();
