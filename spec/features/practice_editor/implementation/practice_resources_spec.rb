@@ -43,7 +43,7 @@ describe 'Practice editor', type: :feature, js: true do
     it 'should allow user to add multiple resources' do
       add_people_resource
     end
-    fit 'should allow user to add a core link' do
+    it 'should allow user to add a core link' do
       add_core_link
     end
   end
