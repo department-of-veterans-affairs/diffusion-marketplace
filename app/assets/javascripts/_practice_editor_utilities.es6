@@ -49,7 +49,7 @@ function truncateText() {
     });
 
     $('.practice-card-tagline').each(function(index, element) {
-        $(element).shave(80);
+        $(element).shave(56);
     });
 
     $('.practice-card-origin-info').each(function(index, element) {
