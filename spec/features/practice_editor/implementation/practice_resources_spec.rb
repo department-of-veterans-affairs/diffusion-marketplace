@@ -21,7 +21,7 @@ describe 'Practice editor', type: :feature, js: true do
       find('#link_to_add_link_core_people_resource').click
     end
     def add_core_link
-      find(:xpath, "//label[@for='support_resource_attachment_link']").click
+      find('label[for="support_resource_attachment_link"').click
     end
 
     def resources_input_1
@@ -43,7 +43,7 @@ describe 'Practice editor', type: :feature, js: true do
     it 'should allow user to add multiple resources' do
       add_people_resource
     end
-    it 'should allow user to add a core link' do
+    fit 'should allow user to add a core link' do
       add_core_link
     end
   end
