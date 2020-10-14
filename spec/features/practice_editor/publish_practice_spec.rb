@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'Practice editor', type: :feature, js: true do
   before do
     @admin = User.create!(email: 'toshiro.hitsugaya@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: false)
+    @practice = Practice.create!(name: 'A public practice', tagline: 'a public tagline', slug: 'a-public-practice', approved: true, published: false)
     @practice_partner = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative', icon: 'fas fa-heart', color: '#E4A002')
     @admin.add_role(User::USER_ROLES[0].to_sym)
     Category.create!(name: 'Pulmonary Care')
@@ -58,7 +58,6 @@ describe 'Practice editor', type: :feature, js: true do
       expect(page).to have_content('You must include at least one adoption')
       expect(page).to have_content('You must include a support network email')
       find('.back-to-editor-button').click
-
       set_pr_required_fields
       set_initiating_fac
       @publish_button.click
