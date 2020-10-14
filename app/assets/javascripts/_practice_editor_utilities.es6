@@ -44,7 +44,6 @@ function initSortable(ulId) {
 }
 
 function truncateText() {
-    debugger
     $('.practice-title').each(function(index, element) {
         $(element).shave(46);
     });
