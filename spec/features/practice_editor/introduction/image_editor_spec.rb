@@ -68,12 +68,10 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
       end
 
       it 'should display the image and save it' do
-        debugger
         within('section.dm-image-editor') do
           expect(page).to have_content('Thumbnail')
           expect(page).to have_content("Choose an image to represent this practice. Use a high-quality .jpg, .jpeg, or .png file that is at least 768px wide and 432px high and less than 32MB. If you want to upload an image that features a Veteran you must have Form 3203. Waivers must be filled out with the 'External to VA' check box selected.")
           expect(page).to have_link(href: 'https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-3203.pdf')
-          debugger
           expect(page).to have_css("img[src*='acceptable_img.jpg']")
           expect(page).to have_content('Remove image')
           expect(page).to have_content('Edit image')
