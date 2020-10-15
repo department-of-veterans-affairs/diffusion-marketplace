@@ -12,14 +12,15 @@ describe 'Practice editor', type: :feature, js: true do
       visit practice_implementation_path(@practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
     end
+
     def add_people_resource
-      find('#link_to_add_button_core_people_resource').click
       resources_input_1.set('Fred')
-      save_resource
+      save_progress
       expect(page).to have_content('Practice was successfully updated')
       # Add Another
       find('#link_to_add_link_core_people_resource').click
     end
+
     def add_core_link
       find('label[for="support_resource_attachment_link"').click
     end
@@ -27,7 +28,8 @@ describe 'Practice editor', type: :feature, js: true do
     def resources_input_1
       find_all('.practice-input ').first
     end
-    def save_resource
+
+    def save_progress
       find('#practice-editor-save-button').click
     end
 
@@ -45,6 +47,17 @@ describe 'Practice editor', type: :feature, js: true do
     end
     it 'should allow user to add a core link' do
       add_core_link
+    end
+
+    it 'should not allow the user to save unless they have at least one core people resource' do
+      save_progress
+      core_people_resource_message = resources_input_1.native.attribute('validationMessage')
+      expect(core_people_resource_message).to eq('Please fill out this field.')
+
+      resources_input_1.set('A practice person')
+      save_progress
+      expect(page).to have_content('Practice was successfully updated')
+      expect(resources_input_1.value ).to eq('A practice person')
     end
   end
 end
