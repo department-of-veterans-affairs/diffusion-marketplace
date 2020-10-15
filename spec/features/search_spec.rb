@@ -35,6 +35,7 @@ describe 'Search', type: :feature do
     select('Alabama', :from => 'editor_office_state_select')
     select('Montgomery Regional Office', :from => 'editor_office_select')
     fill_in('practice_summary', with: 'This is the most super practice ever made')
+    fill_in('Tagline (required field)', with: 'practice tagline')
     select('October', :from => 'editor_date_initiated_month')
     fill_in('Year', with: '1970')
     find("#maturity_level_replicate").sibling('label').click
@@ -179,11 +180,10 @@ describe 'Search', type: :feature do
       publish_practice(latest_practice)
       sleep 1
       expect(cache_keys).to include("searchable_practices")
-      # expect(Practice.searchable_practices.last.name).to eq(latest_practice.name)
-
-      # visit '/search?=newest'
-      # expect(page).to have_content('1 result for newest')
-      # expect(page).to have_content(latest_practice.name)
+      expect(Practice.searchable_practices.last.name).to eq(latest_practice.name)
+      visit '/search?=newest'
+      expect(page).to have_content('1 result for newest')
+      expect(page).to have_content(latest_practice.name)
     end
   end
 end
