@@ -9,17 +9,17 @@
     }
 
     function requireCorePeopleResourceInput() {
-        $('.practice-input').each(function(index, el) {
-            if ($(el).closest('li').hasClass('core-people-resource-li')) {
-                $(el).attr('required', 'true')
+        $('.practice-input').each(function() {
+            if ($(this).closest('li').hasClass('core-people-resource-li')) {
+                $(this).attr('required', 'true');
             }
         })
     }
 
     function displayCorePeopleTrashContainer() {
-        let corePeopleLi = $('.core-people-resource-li')
+        let corePeopleLi = $('.core-people-resource-li');
         if (corePeopleLi.length > 1) {
-            corePeopleLi.not(':first').find('.trash-container').css('display', 'block')
+            corePeopleLi.not(':first').find('.trash-container').css('display', 'block');
         }
     }
 
