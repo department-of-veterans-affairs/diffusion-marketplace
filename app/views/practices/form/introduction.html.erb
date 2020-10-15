@@ -73,7 +73,7 @@
                     <% end %>
                     <span>Type a short sentence summarizing the key outcomes of your practice.  This text will display on the practice card.</span>&nbsp&nbsp;
                     <span id="practice-editor-tagline-character-counter" class="text-base-light">(0/72 characters)</span>
-                    <%= f.text_area :tagline, class: "usa-textarea #{ @practice.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-tagline-textarea", required: true %>
+                    <%= f.text_area :tagline, class: "usa-textarea #{ @practice.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-tagline-textarea"%>
                     <p class="usa-error-message <%= @practice.errors[:tagline].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@practice, :tagline) %></span></p>
                   </div>
                 </div>
