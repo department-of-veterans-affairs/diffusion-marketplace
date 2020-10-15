@@ -24,6 +24,15 @@
         }
     }
 
+    function countCharsOnPageLoad() {
+        let practiceTaglineCurrentLength = $('.practice-editor-tagline-textarea').val().length;
+        let practiceTaglineCharacterCounter = `(${practiceTaglineCurrentLength}/${TAGLINE_CHARACTER_COUNT} characters)`;
+        $('#practice-editor-tagline-character-counter').text(practiceTaglineCharacterCounter);
+        if (practiceTaglineCurrentLength >= TAGLINE_CHARACTER_COUNT) {
+            $('#practice-editor-tagline-character-counter').css('color', CHARACTER_COUNTER_INVALID_COLOR);
+        }
+    }
+
     function maxCharacters() {
         $('.practice-editor-tagline-textarea').on('input', (e) => {
             characterCounter(e, $('#practice-editor-tagline-character-counter'), TAGLINE_CHARACTER_COUNT);
@@ -128,6 +137,7 @@
 
 
     function loadPracticeIntroductionFunctions() {
+        countCharsOnPageLoad();
         maxCharacters();
         attachFacilitySelectListener();
         attachShowOtherAwardFields();
