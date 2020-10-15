@@ -1,6 +1,28 @@
 (($) => {
     const $document = $(document);
 
+    function displayCorePeopleResource() {
+        let addCorePeopleResourceButton = $('#link_to_add_button_core_people_resource');
+        if (addCorePeopleResourceButton.is(':visible')) {
+            addCorePeopleResourceButton.click();
+        }
+    }
+
+    function requireCorePeopleResourceInput() {
+        $('.practice-input').each(function(index, el) {
+            if ($(el).closest('li').hasClass('core-people-resource-li')) {
+                $(el).attr('required', 'true')
+            }
+        })
+    }
+
+    function displayCorePeopleTrashContainer() {
+        let corePeopleLi = $('.core-people-resource-li')
+        if (corePeopleLi.length > 1) {
+            corePeopleLi.not(':first').find('.trash-container').css('display', 'block')
+        }
+    }
+
     function initializeImplementationForm() {
         hideResources('core_attachment');
         hideResources('optional_attachment');
@@ -50,6 +72,9 @@
             document.getElementById('support_attachment_link_form').style.display = 'none';
         });
 
+        displayCorePeopleResource();
+        requireCorePeopleResourceInput();
+        displayCorePeopleTrashContainer();
 
     }
 
@@ -61,7 +86,6 @@
             $(`#display_${a}_form div[id*="_link"]`).hide();
         });
     }
-
 
     $document.on('turbolinks:load', initializeImplementationForm);
 })(window.jQuery);
