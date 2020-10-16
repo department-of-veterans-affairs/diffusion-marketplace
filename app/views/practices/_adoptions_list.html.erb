@@ -4,33 +4,82 @@
   vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
 %>
 
-<% diffused_practices.sort_by(&:facility_name).group_by(&:facility_id).each do |dhg| %>
-  <% current_diffusion_status = dhg[1][0].diffusion_history_statuses.order(created_at: :desc).first %>
-  <% facility = vamc_facilities.find { |f| f['StationNumber'] == dhg[0] } %>
+<div class="usa-accordion usa-accordion--bordered">
 
-  <h2 class="usa-accordion__heading margin-top-105">
-    <button class="usa-accordion__button text-normal adoptions-edit"
+  <!-- Use the accurate heading level to maintain the document outline -->
+  <h2 class="usa-accordion__heading">
+    <button class="usa-accordion__button"
             aria-expanded="false"
-            aria-controls="diffusion_history_<%= current_diffusion_status.diffusion_history.id %>">
-              <span class="line-height-sans-505 display-inline-block status-width vertical-align-top">
-                <% status = current_diffusion_status.status == 'Implemented' || current_diffusion_status.status == 'Complete' ? 'Completed' :  current_diffusion_status.status %>
-                <%= status %>
-              </span>
-      <span class="line-height-sans-505 display-inline-block facility-name-width vertical-align-top">
-                <%= facility["OfficialStationName"] %>
-                <%= show_common_name(facility["OfficialStationName"], facility["CommonName"]) %>
-              </span>
-      <span class="line-height-sans-505 display-inline-block timeline-width vertical-align-top">
-                <%= current_diffusion_status.start_time.present? ? month_year_date_format(current_diffusion_status.start_time) : 'TBD' %>
-        - <%= current_diffusion_status.end_time.present? ? month_year_date_format(current_diffusion_status.end_time) : 'TBD' %>
-              </span>
+            aria-controls="b-a1">
+      First Amendment
     </button>
   </h2>
-  <div id="diffusion_history_<%= current_diffusion_status.diffusion_history.id %>" class="usa-accordion__content usa-prose">
-    <% if params[:existing_dh] && @dh&.id == current_diffusion_status.diffusion_history.id %>
-      <%= render partial: 'existing_adoption_warning', locals: {facility: params[:existing_dh]} %>
-    <% end %>
-    <%= render partial: 'adoption_form', locals: {adoption: current_diffusion_status} %>
+  <% hello = diffused_practices.select {|dh| dh.diffusion_history_statuses[0].status == 'Completed' || 'Complete' || 'Implemented' } %>
+  <% array = [] %>
+  <% hello.each do |h| %>
+    <% facility = vamc_facilities.find { |f| f['StationNumber'] == h.facility_id } %>
+    <% array.push(facility: facility, diffusion_history: h) %>
+  <% end %>
+  <% ordered_array = array.sort_by { |a| a[:facility]["StreetAddressState"] } %>
+  <% ordered_array.each do |a| %>
+    <div id="b-a1" class="usa-accordion__content usa-prose">
+      <%= a[:facility]["StreetAddressState"] %>: <%= a[:facility]["OfficialStationName"] %>
+    </div>
+    <h2 class="usa-accordion__heading margin-top-105">
+      <button class="usa-accordion__button text-normal adoptions-edit"
+              aria-expanded="false"
+              aria-controls="diffusion_history_<%= a[:diffusion_history].id %>">
+              <span class="line-height-sans-505 display-inline-block status-width vertical-align-top">
+                <% status = a[:diffusion_history].diffusion_history_statuses[0].status == 'Implemented' || a[:diffusion_history].diffusion_history_statuses[0].status == 'Complete' ? 'Completed' :  a[:diffusion_history].diffusion_history_statuses[0].status %>
+                <%= status %>
+              </span>
+        <span class="line-height-sans-505 display-inline-block facility-name-width vertical-align-top">
+                <%= a[:facility]["OfficialStationName"] %>
+          <%= show_common_name(a[:facility]["OfficialStationName"], a[:facility]["CommonName"]) %>
+              </span>
+        <span class="line-height-sans-505 display-inline-block timeline-width vertical-align-top">
+                <%= a[:diffusion_history].diffusion_history_statuses[0].start_time.present? ? month_year_date_format(a[:diffusion_history].diffusion_history_statuses[0].start_time) : 'TBD' %>
+          - <%= a[:diffusion_history].diffusion_history_statuses[0].end_time.present? ? month_year_date_format(a[:diffusion_history].diffusion_history_statuses[0].end_time) : 'TBD' %>
+              </span>
+      </button>
+    </h2>
+<!--    <div id="diffusion_history_<%#= current_diffusion_status.diffusion_history.id %>" class="usa-accordion__content usa-prose">-->
+      <%# if params[:existing_dh] && @dh&.id == current_diffusion_status.diffusion_history.id %>
+        <%#= render partial: 'existing_adoption_warning', locals: {facility: params[:existing_dh]} %>
+      <%# end %>
+      <%#= render partial: 'adoption_form', locals: {adoption: current_diffusion_status} %>
 
-  </div>
-<% end %>
+<!--    </div>-->
+  <% end %>
+</div>
+
+<%# diffused_practices.sort_by(&:facility_name).group_by(&:facility_id).each do |dhg| %>
+  <%# current_diffusion_status = dhg[1][0].diffusion_history_statuses.order(created_at: :desc).first %>
+  <%# facility = vamc_facilities.find { |f| f['StationNumber'] == dhg[0] } %>
+
+<!--  <h2 class="usa-accordion__heading margin-top-105">-->
+<!--    <button class="usa-accordion__button text-normal adoptions-edit"-->
+<!--            aria-expanded="false"-->
+<!--            aria-controls="diffusion_history_<%#= current_diffusion_status.diffusion_history.id %>">-->
+<!--              <span class="line-height-sans-505 display-inline-block status-width vertical-align-top">-->
+                <%# status = current_diffusion_status.status == 'Implemented' || current_diffusion_status.status == 'Complete' ? 'Completed' :  current_diffusion_status.status %>
+                <%#= status %>
+<!--              </span>-->
+<!--      <span class="line-height-sans-505 display-inline-block facility-name-width vertical-align-top">-->
+                <%#= facility["OfficialStationName"] %>
+                <%#= show_common_name(facility["OfficialStationName"], facility["CommonName"]) %>
+<!--              </span>-->
+<!--      <span class="line-height-sans-505 display-inline-block timeline-width vertical-align-top">-->
+                <%#= current_diffusion_status.start_time.present? ? month_year_date_format(current_diffusion_status.start_time) : 'TBD' %>
+<!--        - <%#= current_diffusion_status.end_time.present? ? month_year_date_format(current_diffusion_status.end_time) : 'TBD' %>-->
+<!--              </span>-->
+<!--    </button>-->
+<!--  </h2>-->
+<!--  <div id="diffusion_history_<%#= current_diffusion_status.diffusion_history.id %>" class="usa-accordion__content usa-prose">-->
+    <%# if params[:existing_dh] && @dh&.id == current_diffusion_status.diffusion_history.id %>
+      <%#= render partial: 'existing_adoption_warning', locals: {facility: params[:existing_dh]} %>
+    <%# end %>
+    <%#= render partial: 'adoption_form', locals: {adoption: current_diffusion_status} %>
+
+<!--  </div>-->
+<%# end %>
