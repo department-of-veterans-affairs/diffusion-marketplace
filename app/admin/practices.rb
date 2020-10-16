@@ -156,7 +156,7 @@ ActiveAdmin.register Practice do
     helper_method :adoption_date
     helper_method :adoption_rurality
     helper_method :get_adoption_values
-    helper_method :get_adoption_counts
+    helper_method :adoption_counts_by_practice
     helper_method :adoption_xlsx_styles
     before_action :set_categories_view, only: :edit
     before_action :set_practice_adoption_values, only: [:show, :export_practice_adoptions]
@@ -180,7 +180,7 @@ ActiveAdmin.register Practice do
       @complete_map = {}
       @adoption_counts = {}
       get_adoption_values(resource, @complete_map)
-      @adoption_counts = get_adoption_counts(resource)
+      @adoption_counts = adoption_counts_by_practice(resource)
     end
 
     def set_practice_user(practice)
