@@ -12,6 +12,10 @@ describe 'Practice', type: :feature, js: true do
       login_as(@admin, :scope => :user, :run_callbacks => false)
     end
 
+    def fill_in_core_people_field
+      fill_in('Resource', with: 'A practice person')
+    end
+
     def visit_pr_edit
       click_link('Edit')
       click_link('Implementation')
@@ -45,6 +49,8 @@ describe 'Practice', type: :feature, js: true do
       expect(page).to have_content('Share the difficulties and risks a facility may face during implementation.')
       expect(page).to have_css('#dm-add-button-risk-mitigation')
       expect(page).to have_no_css('#dm-add-link-risk-mitigation')
+
+      fill_in_core_people_field
 
       # create one risk and mitigation and save
       add_another
