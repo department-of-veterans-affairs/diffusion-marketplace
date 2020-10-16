@@ -4,6 +4,7 @@
   <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_timeline', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_implementation', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_usa_file_input', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <%= render 'breadcrumbs' %>
@@ -13,7 +14,7 @@
     <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
     <div id="implementation" class="desktop:grid-col-9 grid-col-12 p0">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
-    <section class="usa-section padding-top-0 p0-bottom introduction">
+    <section class="usa-section padding-top-0 p0-bottom implementation">
     <h1 class="font-sans-2xl line-height-sans-205 margin-bottom-3">Implementation</h1>
       <h2 class="text-normal line-height-sans-6 font-sans-lg">
         Compile requirements and considerations to help another facility successfully implement your practice.
@@ -45,7 +46,7 @@
             <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
               Upload any files or attach any links related to core resources.
             </h3>
-            <div class="grid-row grid-gap margin-top-2 margin-bottom-0">
+            <div class="dm-core-attachment-form grid-row grid-gap margin-top-2 margin-bottom-0">
               <div class="usa-radio position-relative grid-col-12">
                 <%= radio_button_tag 'practice_resources[media_type]',
                                      'File', false, onclick: "displayAttachmentForm('core_attachment', 'file');",
@@ -64,7 +65,7 @@
                 <%= label_tag 'core_resource_link', 'Link', class: 'usa-radio__label
                 initiating-facility-type-label line-height-19px x0-bottom', for: "core_resource_attachment_link" %>
               </div>
-              <div id="display_core_attachment_form" class="display_core_attachments_form grid-row grid-col-12 margin-bottom-5">
+              <div id="display_core_attachment_form" class="dm-file-form display_core_attachments_form grid-row grid-col-12 margin-bottom-5">
                 <%= render partial: "practices/implementation_forms/attachment_file_form", locals: {area: 'core_attachment', resource_type: 'core'} %>
                 <%= render partial: "practices/implementation_forms/attachment_link_form", locals: {area: 'core_attachment', resource_type: 'core'} %>
               </div>
@@ -98,7 +99,7 @@
             <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
               Upload any files or attach any links related to optional resources.
             </h3>
-            <div class="grid-row grid-gap margin-top-2 margin-bottom-0">
+            <div class="dm-optional-attachment-form grid-row grid-gap margin-top-2 margin-bottom-0">
               <div class="usa-radio position-relative grid-col-12">
                 <%= radio_button_tag 'practice_resources[media_type]',
                                      'File', false, onclick: "displayAttachmentForm('optional_attachment', 'file');",
@@ -117,7 +118,7 @@
                 <%= label_tag 'optional_resource_link', 'Link', class: 'usa-radio__label
                 initiating-facility-type-label line-height-19px x0-bottom', for: "optional_resource_attachment_link" %>
               </div>
-              <div id="display_optional_attachment_form" class="display_optional_attachments_form grid-row grid-col-12 margin-bottom-5">
+              <div id="display_optional_attachment_form" class="dm-file-form display_optional_attachments_form grid-row grid-col-12 margin-bottom-5">
                 <%= render partial: "practices/implementation_forms/attachment_file_form", locals: {area: 'optional_attachment', resource_type: 'optional'} %>
                 <%= render partial: "practices/implementation_forms/attachment_link_form", locals: {area: 'optional_attachment', resource_type: 'optional'} %>
               </div>
@@ -151,7 +152,7 @@
             <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
               Upload any files or attach any links related to support resources.
             </h3>
-            <div class="grid-row grid-gap margin-top-2">
+            <div class="dm-support-attachment-form grid-row grid-gap margin-top-2">
               <div class="usa-radio position-relative grid-col-12">
                 <%= radio_button_tag 'practice_resources[media_type]',
                                      'File', false, onclick: "displayAttachmentForm('support_attachment', 'file');",
@@ -170,7 +171,7 @@
                 <%= label_tag 'support_resource_link', 'Link', class: 'usa-radio__label
                 initiating-facility-type-label line-height-19px x0-bottom', for: "support_resource_attachment_link" %>
               </div>
-              <div id="display_support_attachment_form" class="display_support_attachments_form grid-row grid-col-12 margin-bottom-5">
+              <div id="display_support_attachment_form" class="dm-file-form display_support_attachments_form grid-row grid-col-12 margin-bottom-5">
                 <%= render partial: "practices/implementation_forms/attachment_file_form", locals: {area: 'support_attachment', resource_type: 'support'} %>
                 <%= render partial: "practices/implementation_forms/attachment_link_form", locals: {area: 'support_attachment', resource_type: 'support'} %>
               </div>

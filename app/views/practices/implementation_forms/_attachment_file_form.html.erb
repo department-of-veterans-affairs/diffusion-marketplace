@@ -3,7 +3,7 @@
    placeholder = "#{placeholder.to_s}_file_#{resource_type}"
    area = area.to_s
 %>
-<div id="<%= area %>_file_form<%= "_#{placeholder}" if resource %>" <% if resource %> class="resource_container margin-bottom-5" <% end %> class="grid-col-11">
+<div id="<%= area %>_file_form<%= "_#{placeholder}" if resource %>" <% if resource %> class="grid-col-11 resource_container margin-bottom-5" <% end %> class="grid-col-11">
   <input type="hidden" name="practice[practice_resources_attributes][<%= placeholder %>][media_type]" value="file"/>
   <input type="hidden" name="practice[practice_resources_attributes][<%= placeholder %>][resource_type]" value="<%= area.split('_')[0] %>"/>
   <% if resource&.id  %>
@@ -13,10 +13,13 @@
     <%= link_to(resource&.attachment&.original_filename, resource&.attachment_s3_presigned_url, target: '_blank', class: 'dm-external-link')%>
     <input value="<%= resource&.id %>" type="hidden" name="practice[practice_resources_attributes][<%= placeholder %>][id]"/>
   <% else %>
-    <div class="grid-col-12 margin-x-auto">
-      <label class="usa-label maxw-full margin-bottom-2 implementation-resource-label" for="practice_<%= area %>_attributes_<%= placeholder %>_attachment">
+    <div class="grid-col-12 margin-x-auto dm-usa-file-input-container" data-area="<%= area %>">
+      <label class="usa-label maxw-full margin-bottom-2 implementation-resource-label dm-file-upload-label" for="practice_<%= area %>_attributes_<%= placeholder %>_attachment">
         Upload a .pdf, .docx, .xlxs, .jpg, .jpeg, or .png file that is less than 32MB.
       </label>
+      <div class="dm-usa-file-upload-error-text margin-bottom-2 usa-alert usa-alert--error usa-alert--slim display-none">
+        <p class="usa-alert__body">Sorry, you cannot upload a file larger than 32MB.</p>
+      </div>
       <%= render partial: 'practices/overview_error_partials/attachment', locals: {
           area: area,
           resource_type: 'file',
