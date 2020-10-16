@@ -53,11 +53,11 @@
             <div class="margin-bottom-5 margin-top-3">
               <div>
                 <%= f.label :name, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
-                  Name <span class="text-gray-50">(required field)</span>
+                  Name <span class="text-gray-50">(required for publishing)</span>
                 <% end %>
                 <span>Type the official name of your practice.</span>&nbsp;
               </div>
-              <%= f.text_field :name, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input", required: true %>
+              <%= f.text_field :name, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input", required: @practice.published %>
 
               <p class="usa-error-message <%= @practice.errors[:name].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@practice, :name) %></span>
               </p>
@@ -69,11 +69,11 @@
                 <div class="margin-bottom-5 margin-top-3">
                   <div>
                     <%= f.label :tagline, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
-                      Tagline <span class="text-gray-50">(required field)</span>
+                      Tagline <span class="text-gray-50">(required for publishing)</span>
                     <% end %>
                     <span>Type a short sentence summarizing the key outcomes of your practice.  This text will display on the practice card.</span>&nbsp&nbsp;
                     <span id="practice-editor-tagline-character-counter" class="text-base-light">(0/72 characters)</span>
-                    <%= f.text_area :tagline, class: "usa-textarea #{ @practice.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-tagline-textarea"%>
+                     <%= f.text_area :tagline, class: "usa-textarea #{ @practice.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-tagline-textarea", required: @practice.published ? true : false %>
                     <p class="usa-error-message <%= @practice.errors[:tagline].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@practice, :tagline) %></span></p>
                   </div>
                 </div>
