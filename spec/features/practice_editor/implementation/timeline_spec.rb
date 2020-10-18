@@ -22,11 +22,16 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).to have_content('Timeline')
             expect(page).to have_content('Add timeline step')
+            fill_in_core_people_field
             @add_timeline_step_button.click
             fill_in_timeline_fields
             @save_button.click
             expect(page).to have_content('Practice was successfully updated')
             expect(page).to have_field('Time frame', with: "3 Months")
+        end
+
+        def fill_in_core_people_field
+          fill_in('Resource', with: 'A practice person')
         end
 
         def fill_in_timeline_fields
@@ -35,6 +40,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         it 'should allow the user to save timeline entries' do
+          fill_in_core_people_field
           @add_timeline_step_button.click
           fill_in_timeline_fields
           @save_practice = find('#practice-editor-save-button')
@@ -43,6 +49,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         it 'should allow the user to add another timeline entry' do
+          fill_in_core_people_field
           @add_timeline_step_button.click
           fill_in_timeline_fields
           @save_practice = find('#practice-editor-save-button')

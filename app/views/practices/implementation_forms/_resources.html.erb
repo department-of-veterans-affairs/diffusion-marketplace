@@ -66,7 +66,7 @@
               <div class="grid-row">
                 <div class="grid-col-12">
                   <%= pr.label :resource, 'Resource', class: 'usa-label display-inline-block practice-resources-duration' %>&nbsp;
-                  <%= pr.text_field :resource, class: 'usa-input practice-input timeline-input grid-col-12', required: true %>
+                  <%= pr.text_field :resource, class: 'usa-input practice-input timeline-input grid-col-12' %>
                   <%= pr.hidden_field :resource_type_label, value: pr.object.id ? resource_type_label : resource_type_label_place_holder %>
                   <%= pr.hidden_field :resource_type, value: pr.object.id ? resource_type : resource_type_place_holder %>
                   <%= pr.hidden_field :media_type, value: pr.object.id ? media_type : media_type_place_holder %>
