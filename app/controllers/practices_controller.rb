@@ -376,6 +376,7 @@ class PracticesController < ApplicationController
   end
 
   def create_or_update_diffusion_history
+    debugger
     # set attributes for later use
     facility_id = params[:facility_id]
     status = params[:status]

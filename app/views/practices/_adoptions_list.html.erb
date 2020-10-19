@@ -1,58 +1,28 @@
 <%
   practice ||= @practice
   diffused_practices = practice.diffusion_histories
-  vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
+  completed_adoption_text = ['Completed', 'Complete', 'Implemented']
+  in_progress_adoption_text = ['Planning', 'In progress', 'Implementing']
+  completed_adoptions = diffused_practices.select {|dh| completed_adoption_text.include?(dh.diffusion_history_statuses[0].status) }
+  in_progress_adoptions = diffused_practices.select {|dh| in_progress_adoption_text.include?(dh.diffusion_history_statuses[0].status) }
+  unsuccessful_adoptions = diffused_practices.select {|dh| dh.diffusion_history_statuses[0].status == 'Unsuccessful' }
+  completed_hash_array = []
+  in_progress_hash_array = []
+  unsuccessful_hash_array = []
+  sorted_completed_adoptions = practice.get_adoptions_by_status(completed_adoptions, completed_hash_array) if completed_adoptions.any?
+  sorted_in_progress_adoptions = practice.get_adoptions_by_status(in_progress_adoptions, in_progress_hash_array) if in_progress_adoptions.any?
+  sorted_unsuccessful_adoptions = practice.get_adoptions_by_status(unsuccessful_adoptions, unsuccessful_hash_array) if unsuccessful_adoptions.any?
 %>
-<% completed_adoption_text = %w[Completed Complete Implemented] %>
-<% hello = diffused_practices.select {|dh| completed_adoption_text.include?(dh.diffusion_history_statuses[0].status) } %>
-<% array = [] %>
-<% hello.each do |h| %>
-  <% facility = vamc_facilities.find { |f| f['StationNumber'] == h.facility_id } %>
-  <% array.push(facility: facility, diffusion_history: h) %>
+
+<% if sorted_in_progress_adoptions %>
+  <%= render partial: 'practices/adoption_accordion_by_status', locals: { adoption_text: 'Unsuccessful', adoption_type: in_progress_adoptions, sorted_adoptions_by_type: sorted_in_progress_adoptions } %>
 <% end %>
-<% ordered_array = array.sort_by { |a| a[:facility]["StreetAddressState"] } %>
-
-<div class="usa-accordion usa-accordion--bordered">
-
-  <!-- Use the accurate heading level to maintain the document outline -->
-  <h2 class="usa-accordion__heading">
-    <button class="usa-accordion__button"
-            aria-expanded="false"
-            aria-controls="completed_adoptions">
-      Completed adoptions: <%= hello.count %>
-    </button>
-  </h2>
-  <div id="completed_adoptions" class="padding-x-2px padding-bottom-2px bg-base-lightest">
-    <% ordered_array.each do |a| %>
-<!--      <div id="<%#= a[:diffusion_history].id %>" class="usa-accordion__content usa-prose">-->
-<!--        <%#= a[:facility]["StreetAddressState"] %>: <%#= a[:facility]["OfficialStationName"] %>-->
-<!--      </div>-->
-      <div class="usa-accordion x0-top">
-        <h2 class="usa-accordion__heading x0-top padding-top-2px padding-bottom-0">
-          <button class="usa-accordion__button text-normal adoptions-edit bg-white"
-                  aria-expanded="false"
-                  aria-controls="diffusion_history_<%= a[:diffusion_history].id %>">
-            <span class="line-height-sans-505 display-inline-block facility-name-width vertical-align-top">
-                    <%= a[:facility]["StreetAddressState"]%>: <%= a[:facility]["OfficialStationName"] %>
-              <%= show_common_name(a[:facility]["OfficialStationName"], a[:facility]["CommonName"]) %>
-                  </span>
-            <span class="line-height-sans-505 display-inline-block timeline-width vertical-align-top">
-                    <%= a[:diffusion_history].diffusion_history_statuses[0].start_time.present? ? month_year_date_format(a[:diffusion_history].diffusion_history_statuses[0].start_time) : 'TBD' %>
-              - <%= a[:diffusion_history].diffusion_history_statuses[0].end_time.present? ? month_year_date_format(a[:diffusion_history].diffusion_history_statuses[0].end_time) : 'TBD' %>
-                  </span>
-          </button>
-        </h2>
-        <div id="diffusion_history_<%= a[:diffusion_history].diffusion_history_statuses[0].diffusion_history.id %>" class="usa-accordion__content usa-prose border-0">
-          <% if params[:existing_dh] && @dh&.id == a[:diffusion_history].diffusion_history_statuses[0].diffusion_history.id %>
-            <%= render partial: 'existing_adoption_warning', locals: {facility: params[:existing_dh]} %>
-          <% end %>
-          <%= render partial: 'adoption_form', locals: { adoption: a[:diffusion_history].diffusion_history_statuses[0] } %>
-
-        </div>
-      </div>
-    <% end %>
-  </div>
-</div>
+<% if sorted_completed_adoptions %>
+  <%= render partial: 'practices/adoption_accordion_by_status', locals: { adoption_text: 'Completed', adoption_type: completed_adoptions, sorted_adoptions_by_type: sorted_completed_adoptions } %>
+<% end %>
+<% if sorted_unsuccessful_adoptions %>
+  <%= render partial: 'practices/adoption_accordion_by_status', locals: { adoption_text: 'In-progress', adoption_type: unsuccessful_adoptions, sorted_adoptions_by_type: sorted_unsuccessful_adoptions } %>
+<% end %>
 
 <%# diffused_practices.sort_by(&:facility_name).group_by(&:facility_id).each do |dhg| %>
   <%# current_diffusion_status = dhg[1][0].diffusion_history_statuses.order(created_at: :desc).first %>

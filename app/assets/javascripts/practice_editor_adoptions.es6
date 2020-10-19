@@ -82,8 +82,9 @@
 })(window.jQuery);
 
 function showAdoptionForm() {
-    $('#add_adoption_button').on('click', function() {
-        $(this).closest('div').find('.usa-accordion__content').removeClass('display-none')
+    let adoption_button = '#add_adoption_button';
+    $(document).on('click', adoption_button, function() {
+        $(adoption_button).closest('div').find('.usa-accordion__content').removeClass('display-none')
     })
 }
 

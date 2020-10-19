@@ -793,6 +793,11 @@
   background-size: 22.5px 20px;
 }
 
+.usa-accordion__button[aria-expanded=true].adoptions-edit {
+  background-image: asset_url('minus.svg'), linear-gradient(transparent, transparent);
+  background-position-x: 97.6%;
+}
+
 .usa-accordion__button.new {
   &:hover {
     color: $dm-color-primary-blue

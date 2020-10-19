@@ -332,4 +332,13 @@ class Practice < ApplicationRecord
   def commits_count_by_range(start_date, end_date)
     user_practices.where({time_committed: start_date...end_date}).count
   end
+
+  def get_adoptions_by_status(adoption_array, hash_array)
+    vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
+    adoption_array.each do |adoption|
+      facility = vamc_facilities.find { |f| f['StationNumber'] == adoption.facility_id }
+      hash_array.push(facility: facility, diffusion_history: adoption)
+    end
+    hash_array.sort_by { |a| a[:facility]["StreetAddressState"] }
+  end
 end
