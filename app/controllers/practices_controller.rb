@@ -608,7 +608,7 @@ class PracticesController < ApplicationController
 
   def can_publish
     if @practice.name.present? && @practice.initiating_facility_type.present? && @practice.date_initiated.present? && @practice.summary.present? && @practice.support_network_email.present? && @practice.diffusion_histories.present?
-      @practice.has_facility?
+      @practice.has_facility? && @practice.tagline.present? && @practice.overview_problem.present? && @practice.overview_solution.present? && @practice.overview_results.present?
     else
       false
     end

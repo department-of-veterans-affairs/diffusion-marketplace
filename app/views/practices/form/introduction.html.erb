@@ -53,7 +53,7 @@
             <div class="margin-bottom-5 margin-top-3">
               <div>
                 <%= f.label :name, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
-                  Name <span class="text-gray-50">(required for publishing)</span>
+                  Name <span class="text-gray-50">(required field)</span>
                 <% end %>
                 <span>Type the official name of your practice.</span>&nbsp;
               </div>
@@ -69,11 +69,11 @@
                 <div class="margin-bottom-5 margin-top-3">
                   <div>
                     <%= f.label :tagline, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
-                      Tagline <span class="text-gray-50">(required for publishing)</span>
+                      Tagline <span class="text-gray-50">(required field)</span>
                     <% end %>
                     <span>Type a short sentence summarizing the key outcomes of your practice.  This text will display on the practice card.</span>&nbsp&nbsp;
                     <span id="practice-editor-tagline-character-counter" class="text-base-light">(0/72 characters)</span>
-                     <%= f.text_area :tagline, class: "usa-textarea #{ @practice.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-tagline-textarea", required: @practice.published ? true : false %>
+                     <%= f.text_area :tagline, class: "usa-textarea #{ @practice.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-tagline-textarea", required: @practice.published %>
                     <p class="usa-error-message <%= @practice.errors[:tagline].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@practice, :tagline) %></span></p>
                   </div>
                 </div>
@@ -108,7 +108,7 @@
                 Type a short summary of your practice’s mission to engage the audience
                 and provide initial context.
               </span>
-              <%= f.text_area :summary, class: 'usa-textarea display-block practice-editor-summary-textarea' %>
+              <%= f.text_area :summary, class: 'usa-textarea display-block practice-editor-summary-textarea', required: @practice.published %>
             </div>
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
             <div class="margin-top-3 margin-bottom-5">
@@ -120,7 +120,7 @@
                 <div class="grid-col-7">
                   <%= label_tag 'editor_date_initiated_month', 'Month', class: 'usa-label' %>
                   <%= select_month(@practice.date_initiated.present? ? date_get_month(@practice.date_initiated) : nil,
-                                   {prompt: '-Select-', prefix: 'date_initiated'}, {id: 'editor_date_initiated_month', class: 'height-5 usa-select' }) %>
+                                   {prompt: '-Select-', prefix: 'date_initiated'}, {id: 'editor_date_initiated_month', class: 'height-5 usa-select', required: @practice.published  }) %>
                 </div>
                 <div class="grid-col-2">
                   <%= label_tag 'editor_date_initiated_year', 'Year', class: 'usa-label' %>
@@ -131,6 +131,9 @@
                          max="9999"
                          value="<%= @practice.date_initiated.present? ? date_get_year(@practice.date_initiated) : nil %>"
                          name="date_initiated[year]"
+                         <% if @practice.published %>
+                          required="<%= @practice.published %>"
+                         <% end %>
                          oninput="if (value.length > 4) value = value.slice(0, 4)"/>
                 </div>
               </div>
