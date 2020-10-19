@@ -5,6 +5,24 @@
 // See "practice_editor_introduction.html.erb"
 // and "practice_editor_introduction.es6"
 // for examples on how to use these functions
+
+function showHideTrashElements(liSelector, attr1, value1, attr2, value2) {
+    const corePeopleResourceLi = 'core-people-resource-li';
+    const originTrash = '.dm-origin-trash';
+
+    // Removed required attribute from hidden input(s) to avoid 'not focusable' js validation error
+    $(`.${corePeopleResourceLi}:not(:visible)`).find('input.practice-input').each(function() {
+        $(this).removeAttr('required');
+    });
+
+    if (liSelector.hasClass(corePeopleResourceLi)) {
+        liSelector.find('.trash-container').css(attr1, value1);
+        liSelector.find(originTrash).css(attr2, value2);
+    } else {
+        liSelector.find(originTrash).css(attr2, value2);
+    }
+}
+
 function attachTrashListener($document,
                              formSelector = '#facility_select_form',
                              liElSelector = '.practice-editor-origin-facility-li',
@@ -22,7 +40,8 @@ function attachTrashListener($document,
         const $firstOriginFacilityEl = $($originFacilityElements.first());
 
         if ($originFacilityElements.length === 1) {
-            $firstOriginFacilityEl.find('.dm-origin-trash').css('visibility','hidden');
+            // If there is a core people resource li, show the trash container in order to maintain 'Add another' link spacing
+            showHideTrashElements($firstOriginFacilityEl, 'display', 'block', 'visibility', 'hidden');
             removeSeparator($firstOriginFacilityEl);
         } else {
             $firstOriginFacilityEl.find('.dm-origin-trash').css('visibility','visible');
@@ -82,6 +101,11 @@ function observePracticeEditorLiArrival($document,
                 `editor_state_select_${dataId}`
             );
         }
+
+        if (liElSelector === '.core-people-resource-li') {
+            $(`${liElSelector}:visible`).find('.practice-input').attr('required', 'true');
+        }
+
         $document.unbindArrive(liElSelector, newElem);
     });
 }
@@ -107,7 +131,9 @@ function styleOriginFacility($newEl,
 
     const $firstOriginFacilityEl = $($originFacilityElements.first());
     if ($originFacilityElements.length > 1) {
-        $firstOriginFacilityEl.find('.dm-origin-trash').css('visibility','visible');
+        // If there is a core people resource li, hide the trash container in order prevent a large space in-between separator and bottom of first input
+        showHideTrashElements($firstOriginFacilityEl, 'display', 'none', 'visibility', 'visible');
+
         $.each($originFacilityElements, (i, el) => {
             const $separator = $(el).find('.add-another-separator');
             if ($(el).data('id') !== dataId) {

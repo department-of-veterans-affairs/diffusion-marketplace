@@ -262,7 +262,7 @@ class Practice < ApplicationRecord
     ip_reject = attributes['attachment'].blank? if attributes['id'].blank?
     reject || ip_reject
   }
-  accepts_nested_attributes_for :practice_resources, allow_destroy: true
+  accepts_nested_attributes_for :practice_resources, allow_destroy: true, reject_if: proc { |attributes| attributes['resource'].blank? }
   accepts_nested_attributes_for :practice_multimedia, allow_destroy: true
   accepts_nested_attributes_for :practice_testimonials, allow_destroy: true
   accepts_nested_attributes_for :practice_problem_resources, allow_destroy: true

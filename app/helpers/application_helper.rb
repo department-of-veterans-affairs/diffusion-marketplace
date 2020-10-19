@@ -107,7 +107,7 @@ module ApplicationHelper
   end
 
   def overview_statement(statement, start_char=0,  num_chars=360)
-    statement[start_char...num_chars]
+    safe_join(raw(statement[start_char...num_chars]).split("\r\n"), tag(:br))
   end
 
   def origin_display_name(practice)

@@ -22,6 +22,10 @@ describe 'Practice', type: :feature, js: true do
       find_all('.usa-combo-box__list-option').first.click
     end
 
+    def fill_in_core_people_field
+      fill_in('Resource', with: 'A practice person')
+    end
+
     it 'should allow the user to update the departments for the practice' do
       # no departments should be there
       visit practice_path(@practice)
@@ -39,6 +43,8 @@ describe 'Practice', type: :feature, js: true do
       expect(page).to have_content('Which departments may be involved during implementation of your practice?')
       expect(page).to have_content('Select a department')
       expect(page).to have_content('Add another')
+
+      fill_in_core_people_field
 
       # create one department and save
       # no departments should be visible
