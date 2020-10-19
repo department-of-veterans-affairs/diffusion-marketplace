@@ -20,18 +20,11 @@
         })
     }
 
-    function showAdoptionForm() {
-        $('#add_adoption_button').on('click', function() {
-            $(this).closest('div').find('.usa-accordion__content').removeClass('display-none')
-        })
-    }
-
     function loadPracticeEditorFunctions() {
         // relies on `_facilitySelect.js` utility file to be loaded prior to this file
         getFacilitiesByState(facilityData);
         //getAdoptionFacilitiesByState(facilityData);
         clearAdoptionEntryForm();
-        showAdoptionForm();
     }
 
     // client-side validate dates
@@ -87,3 +80,11 @@
 
     $document.on('turbolinks:load', loadPracticeEditorFunctions);
 })(window.jQuery);
+
+function showAdoptionForm() {
+    $('#add_adoption_button').on('click', function() {
+        $(this).closest('div').find('.usa-accordion__content').removeClass('display-none')
+    })
+}
+
+$(showAdoptionForm);
