@@ -1,10 +1,10 @@
 <!-- Use the accurate heading level to maintain the document outline -->
-<button class="usa-button--outline dm-btn-primary new line-height-sans-3"
-        aria-expanded="<%= params[:created] || params[:exists] ? 'true' : 'false' %>"
-        aria-controls="a0">
+<button id="add_adoption_button" class="usa-button--outline dm-btn-primary new line-height-sans-3 margin-bottom-3">
+<!--        aria-expanded="<%#= params[:created] || params[:exists] ? 'true' : 'false' %>"-->
+<!--        aria-controls="a0">-->
   Add new adoption
 </button>
-<div id="a0" class="usa-accordion__content usa-prose">
+<div <%# id="a0"%> class="usa-accordion__content usa-prose display-none">
   <% if params[:created] %>
     <div class="usa-alert usa-alert--info x1-bottom" role="alert">
       <div class="usa-alert__body">
