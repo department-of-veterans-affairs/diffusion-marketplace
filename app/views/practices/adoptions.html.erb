@@ -12,7 +12,7 @@
   <div class="grid-row grid-gap practice-editor-min-height">
     <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
-    <div id="overview" class="desktop:grid-col-9 grid-col-12 p0">
+    <div id="adoptions" class="desktop:grid-col-9 grid-col-12 p0">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
       <section class="usa-section padding-top-0 p0-bottom introduction">
         <h1 class="font-sans-2xl line-height-46px">Adoptions</h1>
@@ -20,16 +20,17 @@
           Share which facilities have successfully adopted your practice. All adoptions roll up to the VAMC level. Aim to update this data quarterly.
         </h2>
 
+        <%= render 'pii_phi_alert' %>
+
         <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
         <h4 class="line-height-18px margin-top-3">Adoptions</h4>
         <p class="line-height-26 margin-y-2">
           Share which facilities have adopted your practice. Aim to update this data quarterly.
         </p>
 
-        <div class="usa-accordion" id="adoptions">
-          <!-- start accordions -->
-          <%= render partial: 'adoptions_content' %>
-        </div>
+        <!-- start accordions -->
+        <%= render partial: 'adoptions_content' %>
+
         <div class="grid-row margin-top-7">
           <%= link_to practice_introduction_path(@practice), class: 'usa-button--outline dm-btn-base editor-back-to-link margin-right-1' do %>
             <i class="fas fa-sm text-no-underline margin-right-1"></i>Back

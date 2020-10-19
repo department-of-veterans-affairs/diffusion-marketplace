@@ -7,6 +7,7 @@ $("#adoptions").html("<%= escape_javascript(render partial: 'adoptions_content',
   $('.usa-accordion__content').attr('hidden', true);
 <% end %>
 <% if @dh && params[:facility_changed] %>
+$('#Completed_adoptions').attr('aria-expanded', false);
   var newTop = $("button[aria-controls='diffusion_history_<%= @dh.id %>']").offset().top - 100
   scrollTo(0, newTop);
 <% end %>

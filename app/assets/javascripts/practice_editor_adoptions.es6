@@ -81,11 +81,11 @@
     $document.on('turbolinks:load', loadPracticeEditorFunctions);
 })(window.jQuery);
 
-function showAdoptionForm() {
-    let adoption_button = '#add_adoption_button';
-    $(document).on('click', adoption_button, function() {
-        $(adoption_button).closest('div').find('.usa-accordion__content').removeClass('display-none')
-    })
-}
-
-$(showAdoptionForm);
+// function showAdoptionForm() {
+//     let adoption_button = '#add_adoption_button';
+//     $(document).on('click', adoption_button, function() {
+//         $(adoption_button).closest('div').find('.usa-accordion__content').removeClass('display-none')
+//     })
+// }
+//
+// $(showAdoptionForm);
