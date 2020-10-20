@@ -99,7 +99,7 @@ function initialize() {
 
     handler.buildMap({
             provider: {
-                zoom: 2,
+                zoom: 3,
                 center: {lat: 44.967243, lng:  -103.771556},
                 zoomControlOptions: {
                     position: google.maps.ControlPosition.TOP_RIGHT
