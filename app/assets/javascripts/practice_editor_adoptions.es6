@@ -59,7 +59,7 @@
             Rails.fire(document.getElementById(formId), 'submit');
         } else {
             const alertHtml = `
-                <div class="usa-alert usa-alert--error" role="alert">
+                <div class="usa-alert usa-alert--error margin-bottom-2" role="alert">
                     <div class="usa-alert__body">
                         <h3 class="usa-alert__heading">There was a problem with your date entries.</h3>
                         <p class="usa-alert__text">The start date cannot be after the end date.</p>
@@ -81,11 +81,24 @@
     $document.on('turbolinks:load', loadPracticeEditorFunctions);
 })(window.jQuery);
 
-// function showAdoptionForm() {
-//     let adoption_button = '#add_adoption_button';
-//     $(document).on('click', adoption_button, function() {
-//         $(adoption_button).closest('div').find('.usa-accordion__content').removeClass('display-none')
-//     })
-// }
-//
-// $(showAdoptionForm);
+function showAdoptionForm() {
+    $(document).on('click', '#add_adoption_button', function() {
+        $(this).hide();
+        $('#adoption_form_container').removeClass('display-none');
+    })
+}
+
+function hideAdoptionForm() {
+    $(document).on('click', '#clear_entry', function() {
+        console.log('hello 2')
+        $('#adoption_form_container').addClass('display-none');
+        $('#add_adoption_button').show();
+    })
+}
+
+function trigger() {
+    showAdoptionForm();
+    hideAdoptionForm();
+}
+
+$(trigger);

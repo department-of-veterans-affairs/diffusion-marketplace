@@ -2,7 +2,13 @@ $('.usa-alert:not(.pii-phi-alert)').remove();
 $(".sidenav-adoptions-link").find('i').addClass('green-check');
 $("#adoptions").html("<%= escape_javascript(render partial: 'adoptions_content', formats: [ :html ]) %>");
 <% if params[:created] || params[:exists] %>
-  $('.usa-accordion__content:not(#a0)').attr('hidden', true);
+  <% if params[:exists] %>
+    $('#adoption_form_container').removeClass('display-none')
+  <% end %>
+  $('#adoption_form_container').attr('hidden', true);
+  $('.parent-adoption-accordion').each(function() {
+      $(this).find('div').first().attr('hidden', true);
+  })
 <% else %>
   $('.usa-accordion__content').attr('hidden', true);
 <% end %>
@@ -10,7 +16,7 @@ $("#adoptions").html("<%= escape_javascript(render partial: 'adoptions_content',
   var newTop = $("button[aria-controls='diffusion_history_<%= @dh.id %>']").closest('.parent-adoption-accordion').offset().top - 100
   scrollTo(0, newTop);
 $('.parent-adoption-accordion').each(function() {
-    $(this).find('div').first().attr('hidden', 'true');
+    $(this).find('div').first().attr('hidden', true);
 })
 <% end %>
 
