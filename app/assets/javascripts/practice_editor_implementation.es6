@@ -11,7 +11,14 @@
     function requireCorePeopleResourceInput() {
         $('.practice-input').each(function() {
             if ($(this).closest('li').hasClass('core-people-resource-li')) {
-                $(this).attr('required', 'true');
+                debugger
+                let is_published = document.getElementById("hidden_publish").value;
+                if(is_published == "true") {
+                    $(this).attr('required', 'true');
+                }
+                else{
+                    $(this).attr('required', 'false');
+                }
             }
         })
     }
