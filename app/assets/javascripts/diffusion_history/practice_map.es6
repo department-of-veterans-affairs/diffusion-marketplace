@@ -99,6 +99,8 @@ function initialize() {
 
     handler.buildMap({
             provider: {
+                zoom: 2,
+                center: {lat: 44.967243, lng:  -103.771556},
                 zoomControlOptions: {
                     position: google.maps.ControlPosition.TOP_RIGHT
                 },
@@ -119,7 +121,6 @@ function initialize() {
             buildMapMarkers(mapData);
 
             handler.bounds.extendWith(markers);
-            handler.fitMapToBounds();
         });
 
     google.maps.event.addListener(handler.getMap(), 'click', function () {
