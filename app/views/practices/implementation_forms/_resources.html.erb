@@ -95,7 +95,8 @@
           '.<%= slug %>-ul',
           '12',
           '<%= link_to_add_link_slug %>',
-          '<%= link_to_add_button_slug %>'
+          '<%= link_to_add_button_slug %>',
+          <%= @practice.published %>
           );
           attachTrashListener(
           $(document),
