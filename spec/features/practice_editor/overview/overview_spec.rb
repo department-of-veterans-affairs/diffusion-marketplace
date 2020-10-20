@@ -36,6 +36,14 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_content('revised results')
       end
     end
+
+    it 'should have the correct continue and back links' do
+      visit practice_overview_path(@practice)
+      within(:css, '.introduction') do
+        expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/adoptions")
+        expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/implementation")
+      end
+    end
   end
 
   def problem_statement

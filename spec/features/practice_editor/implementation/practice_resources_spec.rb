@@ -6,19 +6,16 @@ describe 'Practice editor', type: :feature, js: true do
     @admin.add_role(User::USER_ROLES[0].to_sym)
   end
 
-  describe 'Resources Page' do
+  describe 'Implementation Page' do
     before do
       login_as(@admin, :scope => :user, :run_callbacks => false)
       visit practice_implementation_path(@practice)
-      expect(page).to be_accessible.according_to :wcag2a, :section508
     end
 
     def add_people_resource
       resources_input_1.set('Fred')
       save_progress
       expect(page).to have_content('Practice was successfully updated')
-      # Add Another
-      find('#link_to_add_link_core_people_resource').click
     end
 
     def add_core_link
@@ -26,7 +23,7 @@ describe 'Practice editor', type: :feature, js: true do
     end
 
     def resources_input_1
-      find_all('.practice-input ').first
+      find_all('.practice-input').first
     end
 
     def save_progress
@@ -34,7 +31,6 @@ describe 'Practice editor', type: :feature, js: true do
     end
 
     it 'should be there' do
-      expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content('Core resources list')
       expect(page).to have_content('Core resources attachments')
       expect(page).to have_content('Optional resources list')
@@ -58,6 +54,20 @@ describe 'Practice editor', type: :feature, js: true do
       save_progress
       expect(page).to have_content('Practice was successfully updated')
       expect(resources_input_1.value ).to eq('A practice person')
+    end
+
+    it 'should not save blank resource fields' do
+      add_people_resource
+
+      within(:css, '#core-tools-resource-container') do
+        find('#link_to_add_button_core_tools_resource').click
+        find('#link_to_add_link_core_tools_resource').click
+        find('#link_to_add_link_core_tools_resource').click
+        find_all('.practice-input').last.set('A practice tool')
+      end
+      save_progress
+      visit practice_path(@practice)
+      expect(page).to have_content('A practice tool')
     end
   end
 end

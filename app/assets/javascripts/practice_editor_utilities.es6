@@ -169,11 +169,18 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
         if (validateFormFields(formSelector, sArea, sType, event.target) === false) {
             return false;
         }
+
+        // get file name before form is cleared
+        let fileName
+        if (sType === 'file') {
+            fileName = $(e.target).parent().parent().find('.usa-file-input__input')[0].files[0].name
+        }
+
         const nGuid = createGUID();
         const formToClear = $(`#${formSelector}`);
         const link_form = formToClear.clone(true);
         link_form.attr('id', `${formSelector}_${nGuid}`);
-        link_form.attr('class', `margin-bottom-5`);
+        link_form.attr('class', `margin-bottom-5 grid-col-11`);
         link_form.find('.dm-cancel-add-button-row').remove();
 
         let area = sArea;
@@ -217,18 +224,7 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
             $(ele).val(null);
 
             if (ele.type === 'file' && sType === 'file') {
-                let area = sArea
-                let resource_type = ''
-
-                if (sArea === 'optional_attachment' || sArea === 'core_attachment' || sArea === 'support_attachment') {
-                    area = 'resources'
-                    resource_type = sArea.substr(0, sArea.indexOf('_attachment'));
-                }
-                $(ele)
-                    .closest('.usa-file-input')
-                    .replaceWith(`
-                        <input id="practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_file_${resource_type ? resource_type + '_' : ''}attachment" class="usa-hint usa-file-input" type="file" name="practice[practice_${area}_attributes][RANDOM_NUMBER_OR_SOMETHING_${sType}${resource_type ? '_' + resource_type : ''}][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" />
-                    `);
+                replaceFileInput(sArea, ele)
             } else if (ele.type === 'file' && sType === 'image') {
                 $(ele)
                     .closest('.usa-file-input')
@@ -251,13 +247,37 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
             $(`#${container}`).find('.dm-cropper-cancel-edit').off();
             $(`#${container}`).find('.dm-cropper-save-edit').off();
         }
+
         let elementId = sArea + '_' + sType + '_section_text';
         let newEle = document.getElementById(elementId);
         if(newEle != null) {
             newEle.style.display = 'block';
         }
 
+        // hide file upload so user can't upload a new file once added it is added to save queue
+        if (sType === 'file') {
+            let $uploadInputLabel = $(`#${container}`).find('.dm-file-upload-label')
+            $(`<div>File: ${fileName}</div>`).insertAfter($uploadInputLabel)
+            $uploadInputLabel.remove();
+            $(`#${container}`).find('.usa-file-input').addClass('display-none');
+        }
     });
+}
+
+function replaceFileInput(sArea, ele) {
+    let area = sArea
+    let resource_type = ''
+
+    if (sArea === 'optional_attachment' || sArea === 'core_attachment' || sArea === 'support_attachment') {
+        area = 'resources'
+        resource_type = sArea.substr(0, sArea.indexOf('_attachment'));
+    }
+
+    $(ele)
+        .closest('.usa-file-input')
+        .replaceWith(`
+            <input id="practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_file_${resource_type ? resource_type + '_' : ''}attachment" class="usa-hint usa-file-input" type="file" name="practice[practice_${area}_attributes][RANDOM_NUMBER_OR_SOMETHING_file${resource_type ? '_' + resource_type : ''}][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" />
+        `);
 }
 
 function attachDeleteResourceListener() {
@@ -281,238 +301,155 @@ function attachDeleteResourceListener() {
 }
 
 function validateFormFields(formSelector, sArea, sType, target) {
-    clearErrorDivs(sArea, sType, target);
-    let errDiv = null;
     if (sType === "file") {
         let resource_type = ''
         if (sArea.includes('_attachment')) {
             resource_type = sArea.substr(0, sArea.indexOf('_attachment')) + '_';
         }
 
-        let area = sArea
-        if (sArea === 'optional_attachment' || sArea === 'core_attachment' || sArea === 'support_attachment') {
-            area = 'resources'
-        }
-        const sAttachment = document.getElementById(`practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_file_${resource_type}attachment`);
+        const sAttachment = $(`#practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_file_${resource_type}attachment`)[0]
         const sName = document.getElementById(`practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_file_${resource_type}name`);
         const sDesc = document.getElementById(`practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_file_${resource_type}description`);
 
         if (sAttachment.value === "") {
-            errDiv = document.getElementById(sArea + '_file_err_message_attachment');
-            errDiv.style.display = "block";
-            $(sAttachment).closest('.usa-file-input').prepend($(errDiv));
-            displayAttachmentErrorStyles(sAttachment, '.usa-file-input__target', 'div.grid-col-12');
-            displayInputErrorStyles(sAttachment, '.grid-col-12');
-            // Hide name error message
-            hideTextInputErrorStyles(sName);
-            hideInputErrorStyles(sName, `.${sArea}-input-container`);
-            // Hide description error message
-            hideTextInputErrorStyles(sDesc);
-            hideInputErrorStyles(sDesc, `.${sArea}-input-container`);
+            displayAttachmentErrorStyles(sAttachment, 'div.grid-col-12');
+            hideTextInputErrorStyles(sName, `.${sArea}-input-container`);
+            hideTextInputErrorStyles(sDesc, `.${sArea}-input-container`);
             return false;
         } else {
-            hideAttachmentErrorStyles(sAttachment, '.usa-file-input__target', 'div.grid-col-12');
-            hideInputErrorStyles(sAttachment, '.grid-col-12');
+            hideAttachmentErrorStyles(sAttachment, 'div.grid-col-12');
         }
 
         if (sName.value === "") {
-            errDiv = document.getElementById(sArea + '_file_err_message_name');
-            errDiv.style.display = "block";
-            displayTextInputErrorStyles(sName);
-            displayInputErrorStyles(sName, `.${sArea}-input-container`);
-            // Hide description error message
-            hideTextInputErrorStyles(sDesc);
-            hideInputErrorStyles(sDesc, `.${sArea}-input-container`);
+            displayTextInputErrorStyles(sName, `.${sArea}-input-container`);
+            hideTextInputErrorStyles(sDesc, `.${sArea}-input-container`);
             return false;
         } else {
-            hideTextInputErrorStyles(sName);
-            hideInputErrorStyles(sName, `.${sArea}-input-container`);
+            hideTextInputErrorStyles(sName, `.${sArea}-input-container`);
         }
 
         if (sDesc.value === "") {
-            errDiv = document.getElementById(sArea + '_file_err_message_description');
-            errDiv.style.display = "block";
-            displayTextInputErrorStyles(sDesc);
-            displayInputErrorStyles(sDesc, `.${sArea}-input-container`);
+            displayTextInputErrorStyles(sDesc, `.${sArea}-input-container`);
             return false;
         } else {
-            hideTextInputErrorStyles(sDesc);
-            hideInputErrorStyles(sDesc, `.${sArea}-input-container`);
+            hideTextInputErrorStyles(sDesc, `.${sArea}-input-container`);
         }
+
     } else if (sType === 'video') {
         const sLink = document.getElementById('practice_' + sArea + '_attributes_RANDOM_NUMBER_OR_SOMETHING_video_link_url');
         const sName = document.getElementById('practice_' + sArea + '_attributes_RANDOM_NUMBER_OR_SOMETHING_video_name');
 
         if (sLink.value === "" || !sLink.value.includes('https://www.youtube.com')) {
-            errDiv = document.getElementById(sArea + '_video_err_message_link_url');
-            errDiv.style.display = "block";
-            displayTextInputErrorStyles(sLink);
-            displayInputErrorStyles(sLink, `.${sArea}-input-container`);
-            // Hide name error message
-            hideTextInputErrorStyles(sName);
-            hideInputErrorStyles(sName, `.${sArea}-input-container`);
+            displayTextInputErrorStyles(sLink, `.${sArea}-input-container`);
+            hideTextInputErrorStyles(sName, `.${sArea}-input-container`);
             return false;
         } else {
-            hideTextInputErrorStyles(sLink);
-            hideInputErrorStyles(sLink, `.${sArea}-input-container`);
+            hideTextInputErrorStyles(sLink, `.${sArea}-input-container`);
         }
 
         if (sName.value === "") {
-            errDiv = document.getElementById(sArea + '_video_err_message_name');
-            errDiv.style.display = "block";
-            displayTextInputErrorStyles(sName);
-            displayInputErrorStyles(sName, `.${sArea}-input-container`);
+            displayTextInputErrorStyles(sName, `.${sArea}-input-container`);
             return false;
         } else {
-            hideTextInputErrorStyles(sName);
-            hideInputErrorStyles(sName, `.${sArea}-input-container`);
+            hideTextInputErrorStyles(sName, `.${sArea}-input-container`);
         }
+
     } else if (sType === 'link') {
         let resource_type = ''
         if (sArea.includes('_attachment')) {
             resource_type = '_' + sArea.substr(0, sArea.indexOf('_attachment'));
         }
 
-        let area = sArea
-        if (sArea === 'optional_attachment' || sArea === 'core_attachment' || sArea === 'support_attachment') {
-            area = 'resources'
-        }
         const sLink = document.getElementById('practice_' + sArea + `_attributes_RANDOM_NUMBER_OR_SOMETHING_link${resource_type}_link_url`);
         const sName = document.getElementById(`practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_link${resource_type}_name`);
         const sDesc = document.getElementById(`practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_link${resource_type}_description`);
 
         if (sLink.value === "") {
-            errDiv = document.getElementById(sArea + '_link_err_message_link_url');
-            errDiv.style.display = "block";
-            displayTextInputErrorStyles(sLink);
-            displayInputErrorStyles(sLink, `.${sArea}-input-container`);
+            displayTextInputErrorStyles(sLink, `.${sArea}-input-container`);
             // Hide name error message
-            hideTextInputErrorStyles(sName);
-            hideInputErrorStyles(sName, `.${sArea}-input-container`);
+            hideTextInputErrorStyles(sName, `.${sArea}-input-container`);
             // Hide description error message
-            hideTextInputErrorStyles(sDesc);
-            hideInputErrorStyles(sDesc, `.${sArea}-input-container`);
+            hideTextInputErrorStyles(sDesc, `.${sArea}-input-container`);
             return false;
         } else {
-            hideTextInputErrorStyles(sLink);
-            hideInputErrorStyles(sLink, `.${sArea}-input-container`);
+            hideTextInputErrorStyles(sLink, `.${sArea}-input-container`);
         }
 
         if (sName.value === "") {
-            errDiv = document.getElementById(sArea + '_link_err_message_name');
-            errDiv.style.display = "block";
-            displayTextInputErrorStyles(sName);
-            displayInputErrorStyles(sName, `.${sArea}-input-container`);
-            // Hide description error message
-            hideTextInputErrorStyles(sDesc);
-            hideInputErrorStyles(sDesc, `.${sArea}-input-container`);
+            displayTextInputErrorStyles(sName, `.${sArea}-input-container`);
+            hideTextInputErrorStyles(sDesc, `.${sArea}-input-container`);
             return false;
         } else {
-            hideTextInputErrorStyles(sName);
-            hideInputErrorStyles(sName, `.${sArea}-input-container`);
+            hideTextInputErrorStyles(sName, `.${sArea}-input-container`);
         }
 
         if (sDesc.value === "") {
-            errDiv = document.getElementById(sArea + '_link_err_message_description');
-            errDiv.style.display = "block";
-            displayTextInputErrorStyles(sDesc);
-            displayInputErrorStyles(sDesc, `.${sArea}-input-container`);
+            displayTextInputErrorStyles(sDesc, `.${sArea}-input-container`);
             return false;
         } else {
-            hideTextInputErrorStyles(sDesc);
-            hideInputErrorStyles(sDesc, `.${sArea}-input-container`);
+            hideTextInputErrorStyles(sDesc, `.${sArea}-input-container`);
         }
+
     } else if (sType === 'image') {
         const sAttachment = document.getElementById(`practice_${sArea}_attributes_RANDOM_NUMBER_OR_SOMETHING_image`);
         const sName = document.getElementById('practice_' + sArea + '_attributes_RANDOM_NUMBER_OR_SOMETHING_image_name');
 
         if (sAttachment.value === "") {
-            errDiv = document.getElementById(sArea + '_image_err_message_attachment');
-            errDiv.style.display = "block";
-            $(sAttachment).closest('.usa-file-input').prepend($(errDiv));
-            displayAttachmentErrorStyles(sAttachment, '.usa-file-input__target', 'div.margin-y-1');
-            displayInputErrorStyles(sAttachment, '.margin-y-1');
-            // Hide name error message
-            hideTextInputErrorStyles(sName);
-            hideInputErrorStyles(sName, `.${sArea}-input-container`);
+            displayAttachmentErrorStyles(sAttachment, 'div.margin-y-1');
+            hideTextInputErrorStyles(sName, `.${sArea}-input-container`);
             return false;
         } else {
-            hideAttachmentErrorStyles(sAttachment, '.usa-file-input__target', 'div.margin-y-1');
-            hideInputErrorStyles(sAttachment, '.margin-y-1');
+            hideAttachmentErrorStyles(sAttachment, 'div.margin-y-1');
         }
 
         if (sName.value === "") {
-            errDiv = document.getElementById(sArea + '_image_err_message_name');
-            errDiv.style.display = "block";
-            displayTextInputErrorStyles(sName);
-            displayInputErrorStyles(sName, `.${sArea}-input-container`);
+            displayTextInputErrorStyles(sName, `.${sArea}-input-container`);
             return false;
         } else {
-            hideTextInputErrorStyles(sName);
-            hideInputErrorStyles(sName, `.${sArea}-input-container`);
+            hideTextInputErrorStyles(sName, `.${sArea}-input-container`);
         }
     }
 }
 
-function clearErrorDivs(sArea, sType, target) {
-    // FILE
-    if (sType === 'file') {
-        document.getElementById(sArea + '_file_err_message_name').style.display = "none";
-        document.getElementById(sArea + '_file_err_message_description').style.display = "none";
-        document.getElementById(sArea + '_file_err_message_attachment').style.display = "none";
-    }
-    // VIDEO
-    if (sType === 'video') {
-        document.getElementById(sArea + '_video_err_message_name').style.display = "none";
-        document.getElementById(sArea + '_video_err_message_link_url').style.display = "none";
-    }
-
-    // LINK
-    if (sType === 'link') {
-        document.getElementById(sArea + '_link_err_message_link_url').style.display = "none";
-        document.getElementById(sArea + '_link_err_message_name').style.display = "none";
-        document.getElementById(sArea + '_link_err_message_description').style.display = "none";
-    }
-
-    // IMAGE
-    if (sType === 'image') {
-        $(`#${sArea}_image_err_message_attachment`).css('display', 'none')
-        $(`#${sArea}_image_err_message_name`).css('display', 'none')
-    }
-}
-
-function displayInputErrorStyles(inputTitle, elem) {
-    $(inputTitle).closest(elem).addClass('input-error');
+function _displayInputErrorStyles(inputTitle, inputContainer) {
+    $(inputTitle).closest(inputContainer).addClass('input-error');
     $(inputTitle).parent().find('label').addClass('usa-label--error');
+    $(inputTitle).closest(inputContainer).find('.overview_error_msg').css({ display: 'block' })
 }
 
-function hideInputErrorStyles(inputTitle, elem) {
-    $(inputTitle).closest(elem).removeClass('input-error');
-    $(inputTitle).parent().find('label').removeClass('usa-label--error');
-}
-
-function displayTextInputErrorStyles(inputTitle) {
+function displayTextInputErrorStyles(inputTitle, inputContainer) {
     $(inputTitle).addClass('text-input-error');
     $(inputTitle).parent().find('label').addClass('usa-label--error');
+    _displayInputErrorStyles(inputTitle, inputContainer)
 }
 
-function hideTextInputErrorStyles(inputTitle) {
-    $(inputTitle).removeClass('text-input-error');
+function displayAttachmentErrorStyles(inputTitle, inputContainer) {
+    $(inputTitle).closest(inputContainer).find('.dm-usa-file-upload-error-text').addClass('display-none');
+    $(inputTitle).parent().addClass('attachment-input-target-error');
+    $(inputTitle).closest(inputContainer).find('label').addClass('usa-label--error margin-bottom-0');
+    _displayInputErrorStyles(inputTitle, inputContainer)
+}
+
+function _hideInputErrorStyles(inputTitle, inputContainer) {
+    $(inputTitle).closest(inputContainer).removeClass('input-error');
+    $(inputTitle).closest(inputContainer).find('.overview_error_msg').css({ display: 'none' });
     $(inputTitle).parent().find('label').removeClass('usa-label--error');
 }
 
-function displayAttachmentErrorStyles(inputTitle, elem1, elem2) {
-    $(inputTitle).closest(elem1).addClass('attachment-input-target-error');
-    $(inputTitle).closest(elem2).find('label').addClass('usa-label--error margin-bottom-0');
+function hideTextInputErrorStyles(inputTitle, inputContainer) {
+    $(inputTitle).removeClass('text-input-error');
+    $(inputTitle).parent().find('label').removeClass('usa-label--error');
+    _hideInputErrorStyles(inputTitle, inputContainer)
 }
 
-function hideAttachmentErrorStyles(inputTitle, elem1, elem2) {
-    $(inputTitle).closest(elem1).removeClass('attachment-input-target-error');
-    $(inputTitle).closest(elem2).find('label').removeClass('usa-label--error margin-bottom-0');
+function hideAttachmentErrorStyles(inputTitle, inputContainer) {
+    $(inputTitle).closest(inputContainer).find('.dm-usa-file-upload-error-text').addClass('display-none');
+    $(inputTitle).parent().removeClass('attachment-input-target-error');
+    $(inputTitle).closest(inputContainer).find('label').removeClass('usa-label--error margin-bottom-0');
+    _hideInputErrorStyles(inputTitle, inputContainer)
 }
 
 function displayAttachmentForm(sArea, sType) {
     $(`#display_${sArea}_form div[id*="_form"]`).hide();
     $(`#display_${sArea}_form div[id="${sArea}_${sType}_form"]`).show();
 }
-
