@@ -15,11 +15,26 @@
 %>
 
 <% if sorted_in_progress_adoptions %>
-  <%= render partial: 'practices/adoption_accordion_by_status', locals: { adoption_text: 'In-progress', adoption_type: in_progress_adoptions, sorted_adoptions_by_type: sorted_in_progress_adoptions } %>
+  <%= render partial: 'practices/adoption_accordion_by_status', locals: {
+      adoption_text: 'In-progress',
+      adoption_type: in_progress_adoptions,
+      sorted_adoptions_by_type: sorted_in_progress_adoptions
+  }
+  %>
 <% end %>
 <% if sorted_completed_adoptions %>
-  <%= render partial: 'practices/adoption_accordion_by_status', locals: { adoption_text: 'Completed', adoption_type: completed_adoptions, sorted_adoptions_by_type: sorted_completed_adoptions } %>
+  <%= render partial: 'practices/adoption_accordion_by_status', locals: {
+      adoption_text: 'Completed',
+      adoption_type: completed_adoptions,
+      sorted_adoptions_by_type: sorted_completed_adoptions
+  }
+  %>
 <% end %>
 <% if sorted_unsuccessful_adoptions %>
-  <%= render partial: 'practices/adoption_accordion_by_status', locals: { adoption_text: 'Unsuccessful', adoption_type: unsuccessful_adoptions, sorted_adoptions_by_type: sorted_unsuccessful_adoptions } %>
+  <%= render partial: 'practices/adoption_accordion_by_status', locals: {
+      adoption_text: 'Unsuccessful',
+      adoption_type: unsuccessful_adoptions,
+      sorted_adoptions_by_type: sorted_unsuccessful_adoptions
+  }
+  %>
 <% end %>

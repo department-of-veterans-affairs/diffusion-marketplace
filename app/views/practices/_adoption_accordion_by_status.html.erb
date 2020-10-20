@@ -1,17 +1,17 @@
-<div class="usa-accordion usa-accordion--bordered">
+<div class="usa-accordion usa-accordion--bordered parent-adoption-accordion">
 
   <!-- Use the accurate heading level to maintain the document outline -->
   <h2 class="usa-accordion__heading">
     <button class="usa-accordion__button"
             aria-expanded="false"
-            aria-controls="<%= adoption_text %>_adoptions">
+            aria-controls="<%= adoption_text.downcase %>_adoptions">
       <%= adoption_text %> adoptions: <%= adoption_type.count %>
     </button>
   </h2>
-  <div id="<%= adoption_text %>_adoptions" class="padding-x-2px padding-bottom-2px bg-base-lightest">
+  <div id="<%= adoption_text.downcase %>_adoptions" class="padding-x-2px padding-bottom-2px bg-base-lightest">
     <% sorted_adoptions_by_type.each do |a| %>
       <% diffusion_history_status = a[:diffusion_history].diffusion_history_statuses[0] %>
-      <div class="usa-accordion x0-top">
+      <div class="usa-accordion x0-top child-adoption-accordion">
         <h2 class="usa-accordion__heading x0-top padding-top-2px padding-bottom-0">
           <button class="usa-accordion__button text-normal adoptions-edit bg-white"
                   aria-expanded="false"
