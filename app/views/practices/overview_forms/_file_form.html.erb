@@ -10,10 +10,13 @@
     <span class="line-height-26">File: <%= link_to(resource&.attachment&.original_filename, resource&.attachment_s3_presigned_url, target: '_blank', class: 'dm-external-link')%></span>
     <input value="<%= resource&.id %>" type="hidden" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][id]"/>
   <% else %>
-    <div class="grid-col-12 margin-x-auto">
-      <label class="usa-label maxw-full margin-bottom-2 overview-resource-label" for="practice_<%= area %>_<%= placeholder %>">
+    <div class="grid-col-12 margin-x-auto dm-usa-file-input-container" data-area="<%= area %>">
+      <label class="usa-label maxw-full margin-bottom-2 dm-file-upload-label overview-resource-label" for="practice_<%= area %>_<%= placeholder %>">
         Upload a .pdf, .docx, .xlxs, .jpg, .jpeg, or .png file that is less than 32MB.
       </label>
+      <div class="dm-usa-file-upload-error-text margin-bottom-2 usa-alert usa-alert--error usa-alert--slim display-none">
+        <p class="usa-alert__body">Sorry, you cannot upload a file larger than 32MB.</p>
+      </div>
       <%= render partial: 'practices/overview_error_partials/attachment', locals: {
           area: area,
           resource_type: 'file',

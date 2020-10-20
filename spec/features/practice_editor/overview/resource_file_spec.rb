@@ -9,6 +9,7 @@ describe 'Practice editor', type: :feature, js: true do
     @file_path_1 = "#{Rails.root}/spec/assets/dummy.pdf"
     @file_path_2 = "#{Rails.root}/spec/assets/SpongeBob.txt"
     @file_path_3 = "#{Rails.root}/spec/assets/charmander.png"
+    @file_path_size_error = "#{Rails.root}/spec/assets/unacceptable_img_size.png"
     PracticeProblemResource.create(practice: @pr_with_resources, name: 'existing problem file', description: 'problem file description', attachment: File.new(@file_path_1), resource_type: 2)
     PracticeSolutionResource.create(practice: @pr_with_resources, name: 'existing solution file', description: 'solution file description', attachment: File.new(@file_path_1), resource_type: 2)
     PracticeResultsResource.create(practice: @pr_with_resources, name: 'existing results file', description: 'results file description', attachment: File.new(@file_path_1), resource_type: 2)
@@ -73,14 +74,22 @@ describe 'Practice editor', type: :feature, js: true do
           expect(page).to have_css("input[accept='.pdf,.docx,.xlxs,.jpg,.jpeg,.png']")
           add_resource
           expect(page).to have_content('Please upload a file')
+          upload_file(area, @file_path_size_error)
+          expect(page).to have_content('Sorry, you cannot upload a file larger than 32MB.')
+          expect(page).to have_no_content('Please upload a file')
+          add_resource
+          expect(page).to have_content('Please upload a file')
           upload_file(area, @file_path_2)
+          expect(page).to have_no_content('Sorry, you cannot upload a file larger than 32MB.')
           add_resource
           expect(page).to have_content('Please enter a file name')
           fill_in('File name', with: 'new file')
           add_resource
+          expect(page).to have_no_content('Please enter a file name')
           expect(page).to have_content('Please enter a file description')
           fill_in('File description', with: "new practice #{area} file")
           add_resource
+          expect(page).to have_no_content('Please enter a file description')
           expect(find_all('.overview_error_msg').length).to eq 0
 
           within(:css, "##{area}_resources_file_form") do
@@ -146,7 +155,6 @@ describe 'Practice editor', type: :feature, js: true do
           expect(page).to have_content('SpongeBob.txt')
           expect(name_field.value).to eq('new file')
           expect(description_field.value).to eq("new practice #{area} file")
-          upload_file(area, @file_path_3)
           name_field.set('edited file')
           description_field.set("edited practice #{area} file")
         end
@@ -293,5 +301,4 @@ describe 'Practice editor', type: :feature, js: true do
     expect(page).to have_content("results file description")
     visit practice_overview_path(@pr_with_resources)
   end
-
 end
