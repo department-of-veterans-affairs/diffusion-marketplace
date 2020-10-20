@@ -7,9 +7,11 @@ $("#adoptions").html("<%= escape_javascript(render partial: 'adoptions_content',
   $('.usa-accordion__content').attr('hidden', true);
 <% end %>
 <% if @dh && params[:facility_changed] %>
-  var newTop = $("button[aria-controls='diffusion_history_<%= @dh.id %>']").offset().top - 100
+  var newTop = $("button[aria-controls='diffusion_history_<%= @dh.id %>']").closest('.parent-adoption-accordion').offset().top - 100
   scrollTo(0, newTop);
-$('#In-progress_adoptions').attr('hidden', 'true')
+$('.parent-adoption-accordion').each(function() {
+    $(this).find('div').first().attr('hidden', 'true');
+})
 <% end %>
 
 <% if params[:existing_dh] %>
