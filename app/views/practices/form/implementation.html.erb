@@ -90,7 +90,7 @@
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-bottom-3"></div>
             <h2 class="font-sans-sm">Optional resources list</h2>
             <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
-              Provide a list of the resources another facility would need to implement your practice.
+              Provide a list of resources that are optional, and/or can be tailored by facilities to fit their needs.
             </h3>
             <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "optional", resource_type_label: "people", media_type: 'resource'}%>
             <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "optional", resource_type_label: "processes", media_type: 'resource'}%>
@@ -143,7 +143,7 @@
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
             <h2 class="font-sans-sm">Support resources list</h2>
             <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
-              Provide a list of the resources another facility would need to implement your practice.
+              Provide a list of the resources your team would provide to another facility.
             </h3>
             <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "support", resource_type_label: "people", media_type: 'resource'}%>
             <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "support", resource_type_label: "processes", media_type: 'resource'}%>
