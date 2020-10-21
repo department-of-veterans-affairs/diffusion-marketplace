@@ -5,7 +5,8 @@ $('#practiceEditorPublicationModal').removeClass('publication-modal-hidden');
 
 $(document).on('click', '.back-to-editor-button', function() {
     $('#practiceEditorPublicationModal').addClass('publication-modal-hidden');
-    location.reload()
+    let practice = '<%= @practice.slug %>'
+    $('#form').attr('action', `/practices/${practice}`)
 })
 
 <%# $(document).on('click', '.report-abuse-cancel', function(e) {
