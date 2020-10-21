@@ -2,7 +2,13 @@ $('.usa-alert:not(.pii-phi-alert)').remove();
 $(".sidenav-adoptions-link").find('i').addClass('green-check');
 $("#adoptions").html("<%= escape_javascript(render partial: 'adoptions_content', formats: [ :html ]) %>");
 <% if params[:exists] %>
+<%= debugger %>
   $('#adoption_form_container').removeClass('display-none');
+  <% if @dh.nil? %>
+    $('.parent-adoption-accordion').each(function() {
+      $(this).find('div').first().attr('hidden', true);
+    })
+  <% end %>
 <% elsif params[:created] %>
   $('#adoption_form_container').addClass('display-none');
   $('.parent-adoption-accordion').each(function() {
