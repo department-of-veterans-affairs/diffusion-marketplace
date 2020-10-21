@@ -595,8 +595,11 @@ class PracticesController < ApplicationController
     end
   end
 
+  def current_endpoint
+    request.referrer.split('/').pop
+  end
+
   def update_conditions
-    current_endpoint = request.referrer.split('/').pop
     if params[:practice].present?
       facility_type = params[:practice][:initiating_facility_type] || nil
       if facility_type.present?
