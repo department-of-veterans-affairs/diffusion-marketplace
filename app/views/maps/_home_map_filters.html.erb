@@ -93,7 +93,7 @@
         <div id="practiceListContainer" class="map-filters-list display-none">
           <fieldset>
             <legend class="usa-sr-only">Facilities</legend>
-            <% @vamc_facilities.sort_by {|f| [f["StreetAddressState"], f["OfficialStationName"], ]}.each do |f| %>
+            <% @vamc_facilities.sort_by {|f| [f["StreetAddressState"], f["OfficialStationName"]]}.each do |f| %>
               <input id="<%= f["StationNumber"] %>" name="facilities" type="checkbox" value="<%= f["StationNumber"] %>" class="usa-checkbox__input">
               <label for="<%= f["StationNumber"] %>" class="usa-checkbox__label">
                 <%= f["StreetAddressState"] %>: <%= f["OfficialStationName"] %>

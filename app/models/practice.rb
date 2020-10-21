@@ -339,6 +339,6 @@ class Practice < ApplicationRecord
       facility = vamc_facilities.find { |f| f['StationNumber'] == adoption.facility_id }
       hash_array.push(facility: facility, diffusion_history: adoption)
     end
-    hash_array.sort_by { |a| a[:facility]["StreetAddressState"] }
+    hash_array.sort_by { |a| [a[:facility]["StreetAddressState"], a[:facility]["OfficialStationName"]] }
   end
 end

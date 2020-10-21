@@ -10,6 +10,7 @@
     </div>
   </div>
 <% end %>
+
 <div id="adoption_form_container" class="display-none margin-bottom-2">
   <% if params[:exists] %>
     <%= render partial: 'existing_adoption_warning', locals: {facility: params[:exists]} %>
