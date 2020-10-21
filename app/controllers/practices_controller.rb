@@ -130,7 +130,6 @@ class PracticesController < ApplicationController
   # PATCH/PUT /practices/1
   # PATCH/PUT /practices/1.json
   def update
-    updated = true
     updated = update_conditions
     respond_to do |format|
       if updated
