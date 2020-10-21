@@ -130,17 +130,8 @@ class PracticesController < ApplicationController
   # PATCH/PUT /practices/1
   # PATCH/PUT /practices/1.json
   def update
-    current_endpoint = request.referrer.split('/').pop
     updated = true
-    if params[:practice].present?
-      facility_type = params[:practice][:initiating_facility_type] || nil
-      if facility_type.present?
-        set_initiating_fac_params params
-      end
-      pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
-      updated = SavePracticeService.new(pr_params).save_practice
-      clear_origin_facilities if facility_type != "facility" && current_endpoint == 'introduction'
-    end
+    updated = update_conditions
     respond_to do |format|
       if updated
         if updated.is_a?(StandardError)
@@ -348,16 +339,7 @@ class PracticesController < ApplicationController
   end
 
   def publication_validation
-    current_endpoint = request.referrer.split('/').pop
-    if params[:practice].present?
-      facility_type = params[:practice][:initiating_facility_type] || nil
-      if facility_type.present?
-        set_initiating_fac_params params
-      end
-      pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
-      updated = SavePracticeService.new(pr_params).save_practice
-      clear_origin_facilities if facility_type != "facility"
-    end
+    updated = update_conditions
     respond_to do |format|
       if can_publish
         # if there is an error with updating the practice, alert the user
@@ -611,6 +593,20 @@ class PracticesController < ApplicationController
       @practice.has_facility? && @practice.tagline.present? && @practice.overview_problem.present? && @practice.overview_solution.present? && @practice.overview_results.present?
     else
       false
+    end
+  end
+
+  def update_conditions
+    current_endpoint = request.referrer.split('/').pop
+    if params[:practice].present?
+      facility_type = params[:practice][:initiating_facility_type] || nil
+      if facility_type.present?
+        set_initiating_fac_params params
+      end
+      pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
+      updated = SavePracticeService.new(pr_params).save_practice
+      clear_origin_facilities if facility_type != "facility" && current_endpoint == 'introduction'
+      updated
     end
   end
 end
