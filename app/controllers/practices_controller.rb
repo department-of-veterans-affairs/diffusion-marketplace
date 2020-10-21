@@ -356,7 +356,7 @@ class PracticesController < ApplicationController
       end
       pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
       updated = SavePracticeService.new(pr_params).save_practice
-      clear_origin_facilities if facility_type != "facility"
+      clear_origin_facilities if facility_type != "facility" && current_endpoint == 'introduction'
     end
     respond_to do |format|
       if can_publish
