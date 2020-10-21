@@ -5,7 +5,7 @@
         $document.on('click', '#clear_entry', function () {
             const adoptionFormId = 'adoption_form';
             const $adoptionForm = $(`#${adoptionFormId}`);
-            $adoptionForm.parent().find('.usa-alert').remove();
+            $adoptionForm.parent().prev('.usa-alert').remove();
             $adoptionForm.find('.usa-alert').remove();
             $adoptionForm[0].reset();
             const end_month_el = document.getElementById('date_ended_month');

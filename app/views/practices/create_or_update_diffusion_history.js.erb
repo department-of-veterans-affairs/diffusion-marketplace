@@ -18,6 +18,8 @@ $("#adoptions").html("<%= escape_javascript(render partial: 'adoptions_content',
 $('.parent-adoption-accordion').each(function() {
     if (!$(this).find('#diffusion_history_<%= @dh.id %>').length) {
         $(this).find('div').first().attr('hidden', true);
+    } else {
+        $(this).find('.parent-accordion-button').attr('aria-expanded', true);
     }
 })
 $(".usa-accordion__content:not('#diffusion_history_<%= @dh.id %>')").attr('hidden', true);

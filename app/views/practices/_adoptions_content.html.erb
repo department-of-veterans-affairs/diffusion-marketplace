@@ -1,9 +1,9 @@
 <!-- Use the accurate heading level to maintain the document outline -->
-<button id="add_adoption_button" class="usa-button--outline dm-btn-primary new line-height-sans-3 <%= params[:created] ? 'margin-bottom-0' : 'margin-bottom-3' %>">
+<button id="add_adoption_button" class="usa-button--outline dm-btn-primary new line-height-sans-3 margin-bottom-3">
   Add new adoption
 </button>
 <% if params[:created] %>
-  <div class="usa-alert usa-alert--info x1-bottom" role="alert">
+  <div class="usa-alert usa-alert--info adoption-success-alert margin-bottom-3 margin-top-0" role="alert">
     <div class="usa-alert__body">
       <h3 class="usa-alert__heading">Success!</h3>
       <p class="usa-alert__text">Adoption entry was successfully created.</p>
