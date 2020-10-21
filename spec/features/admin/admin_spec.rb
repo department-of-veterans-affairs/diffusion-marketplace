@@ -361,7 +361,6 @@ describe 'The admin dashboard', type: :feature do
     within_table('index_table_practices') do
       first('.table_actions').click_link('View')
     end
-
     expect(page).to have_selector("input[value='Download Adoption Data']")
   end
 
