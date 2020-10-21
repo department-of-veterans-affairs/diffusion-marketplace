@@ -1,12 +1,15 @@
+let parentAccordion = '.parent-adoption-accordion';
+let formContainer = '#adoption_form_container';
+
 $('.usa-alert:not(.pii-phi-alert)').remove();
 $(".sidenav-adoptions-link").find('i').addClass('green-check');
 $("#adoptions").html("<%= escape_javascript(render partial: 'adoptions_content', formats: [ :html ]) %>");
 <% if params[:created] || params[:exists] %>
   <% if params[:exists] %>
-    $('#adoption_form_container').removeClass('display-none')
+    $(formContainer).removeClass('display-none');
   <% end %>
-  $('#adoption_form_container').attr('hidden', true);
-  $('.parent-adoption-accordion').each(function() {
+  $(formContainer).attr('hidden', true);
+  $(parentAccordion).each(function() {
       $(this).find('div').first().attr('hidden', true);
   })
 <% else %>
@@ -15,12 +18,20 @@ $("#adoptions").html("<%= escape_javascript(render partial: 'adoptions_content',
 <% if @dh && params[:facility_changed] %>
   var newTop = $("button[aria-controls='diffusion_history_<%= @dh.id %>']").closest('.parent-adoption-accordion').offset().top - 100
   scrollTo(0, newTop);
-$('.parent-adoption-accordion').each(function() {
-    $(this).find('div').first().attr('hidden', true);
+$(parentAccordion).each(function() {
+    if (!$(this).find('#diffusion_history_<%= @dh.id %>').length) {
+        $(this).find('div').first().attr('hidden', true);
+    }
 })
+$(".usa-accordion__content:not('#diffusion_history_<%= @dh.id %>')").attr('hidden', true);
 <% end %>
 
 <% if params[:existing_dh] %>
   $("button[aria-controls='diffusion_history_<%= @dh.id %>']").attr('aria-expanded', true);
   $('#diffusion_history_<%= @dh.id %>').attr('hidden', false);
+$(parentAccordion).each(function() {
+    if (!$(this).find('#diffusion_history_<%= @dh.id %>').length) {
+        $(this).find('div').first().attr('hidden', true);
+    }
+})
 <% end %>

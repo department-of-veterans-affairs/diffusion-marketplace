@@ -90,15 +90,27 @@ function showAdoptionForm() {
 
 function hideAdoptionForm() {
     $(document).on('click', '#clear_entry', function() {
-        console.log('hello 2')
         $('#adoption_form_container').addClass('display-none');
         $('#add_adoption_button').show();
     })
 }
 
-function trigger() {
-    showAdoptionForm();
-    hideAdoptionForm();
+function toggleAccordions(accordionEl1, accordionEl2) {
+    $(document).on("click", accordionEl1, function() {
+        if (accordionEl1 === '.parent-accordion-button') {
+            $(accordionEl2).parent().next().attr('hidden', true);
+            $(accordionEl2).attr('aria-expanded', false);
+        }
+        $(accordionEl1).not($(this)).parent().next().attr('hidden', true);
+        $(accordionEl1).not($(this)).attr('aria-expanded', false);
+    })
 }
 
-$(trigger);
+function loadAdoptionFunctions() {
+    showAdoptionForm();
+    hideAdoptionForm();
+    toggleAccordions('.child-accordion-button', '.parent-accordion-button');
+    toggleAccordions('.parent-accordion-button', '.child-accordion-button')
+}
+
+$(loadAdoptionFunctions);
