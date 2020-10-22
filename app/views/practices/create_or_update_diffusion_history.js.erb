@@ -1,3 +1,5 @@
+<%# debugger %>
+
 $('.usa-alert:not(.pii-phi-alert)').remove();
 $(".sidenav-adoptions-link").find('i').addClass('green-check');
 $("#adoptions").html("<%= escape_javascript(render partial: 'adoptions_content', formats: [ :html ]) %>");
@@ -16,16 +18,16 @@ $("#adoptions").html("<%= escape_javascript(render partial: 'adoptions_content',
 <% end %>
 
 <% if @dh && params[:facility_changed] %>
-  var newTop = $("button[aria-controls='diffusion_history_<%= @dh.id %>']").closest('.parent-adoption-accordion').offset().top - 100
-  scrollTo(0, newTop);
-$('.parent-adoption-accordion').each(function() {
-    if (!$(this).find('#diffusion_history_<%= @dh.id %>').length) {
-        $(this).find('div').first().attr('hidden', true);
-    } else {
-        $(this).find('.parent-accordion-button').attr('aria-expanded', true);
-    }
-})
-$(".usa-accordion__content:not('#diffusion_history_<%= @dh.id %>')").attr('hidden', true);
+  $('.parent-adoption-accordion').each(function() {
+      if (!$(this).find('#diffusion_history_<%= @dh.id %>').length) {
+          $(this).find('div').first().attr('hidden', true);
+      } else {
+          $(this).find('.parent-accordion-button').attr('aria-expanded', true);
+          $(this).find('div').first().attr('hidden', false);
+          var newTop = $("button[aria-controls='diffusion_history_<%= @dh.id %>']").offset().top - 100
+          scrollTo(0, newTop);
+      }
+  })
 <% end %>
 
 <% if params[:existing_dh] %>

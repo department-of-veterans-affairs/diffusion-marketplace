@@ -25,13 +25,16 @@ describe 'Practice editor', type: :feature do
       expect(page).to have_link(class: 'editor-continue-link', href: practice_overview_path(@practice))
 
       # new entry form should clear the entry when "Clear entry" is clicked
-      find('button[aria-controls="a0"]').click
+      find('#add_adoption_button').click
       find('label[for="status_in_progress"').click
       select('Alabama', :from => 'editor_state_select')
       select('Birmingham VA Medical Center', :from => 'editor_facility_select')
       # alternate name of facility should be displayed
       expect(page).to have_content('(Birmingham-Alabama)')
+      # clear Entry now hides the form 10/22/20
       find('#clear_entry').click
+      # show the form again
+      find('#add_adoption_button').click
       expect(page).to have_field('State', with: '')
 
       # it should create an adoption
@@ -51,7 +54,7 @@ describe 'Practice editor', type: :feature do
 
       # make another one
       visit practice_adoptions_path(@practice)
-      find('button[aria-controls="a0"]').click
+      find('#add_adoption_button').click
       find('label[for="status_in_progress"').click
       select('Alaska', :from => 'editor_state_select')
       select('Fairbanks VA Clinic', :from => 'editor_facility_select')
@@ -62,7 +65,7 @@ describe 'Practice editor', type: :feature do
 
       # it shouldn't let the system create the same facility twice for a practice
       visit practice_adoptions_path(@practice)
-      find('button[aria-controls="a0"]').click
+      find('#add_adoption_button').click
       find('label[for="status_in_progress"').click
       select('Alaska', :from => 'editor_state_select')
       select('Fairbanks VA Clinic', :from => 'editor_facility_select')
@@ -73,6 +76,7 @@ describe 'Practice editor', type: :feature do
       end
 
       # it shouldn't let the system update the facility if the facility already exists for a practice
+      find("button[aria-controls='in-progress_adoptions'").click
       find("button[aria-controls='diffusion_history_#{@practice.diffusion_histories.first.id}']").click
       select('Fairbanks VA Clinic', :from => "editor_facility_select_#{@practice.diffusion_histories.first.id}")
       find("#adoption_form#{@practice.diffusion_histories.first.id}_submit").click
@@ -81,7 +85,7 @@ describe 'Practice editor', type: :feature do
       end
 
       # it shouldn't let the system create an adoption if the end date is greater than the start date
-      find('button[aria-controls="a0"]').click
+      find('#add_adoption_button').click
       find('label[for="status_completed"').click
       select('Alaska', :from => 'editor_state_select')
       select('Homer VA Clinic', :from => 'editor_facility_select')
@@ -104,9 +108,11 @@ describe 'Practice editor', type: :feature do
         expect(page).not_to have_content('The start date cannot be after the end date.')
         expect(page).to have_content('Success!')
       end
-      expect(page).to have_content('Completed Homer VA Clinic 01/2010 - 12/2020')
+      find("button[aria-controls='successful_adoptions'").click
+      expect(page).to have_content('AK: Homer VA Clinic (01/2010 - 12/2020)')
 
       # it shouldn't let the system update an adoption if the end date is greater than the start date
+      find("button[aria-controls='in-progress_adoptions'").click
       find("button[aria-controls='diffusion_history_#{@practice.diffusion_histories.first.id}']").click
       find("label[for='status_unsuccessful#{@practice.diffusion_histories.first.id}'").click
       select('December', :from => "date_started_month#{@practice.diffusion_histories.first.id}")
@@ -124,7 +130,7 @@ describe 'Practice editor', type: :feature do
       select('November', :from => "date_ended_month#{@practice.diffusion_histories.first.id}")
       select('2020', :from => "date_ended_year#{@practice.diffusion_histories.first.id}")
       find("#adoption_form#{@practice.diffusion_histories.first.id}_submit").click
-      expect(page).to have_content('Unsuccessful Anchorage VA Medical Center 02/2010 - 11/2020')
+      expect(page).to have_content('AK: Anchorage VA Medical Center (02/2010 - 11/2020)')
 
       # it shouldn't count "Unsuccessful" status adoptions
       visit practice_path(@practice)
@@ -133,6 +139,7 @@ describe 'Practice editor', type: :feature do
 
       # it should let the system update delete an adoption entry
       visit practice_adoptions_path(@practice)
+      find("button[aria-controls='unsuccessful_adoptions'").click
       find("button[aria-controls='diffusion_history_#{@practice.diffusion_histories.first.id}']").click
       within(:css, "#diffusion_history_#{@practice.diffusion_histories.first.id}") do
         click_link('Delete entry')
