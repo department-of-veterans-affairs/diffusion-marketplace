@@ -1,11 +1,17 @@
+
+
 $('.usa-alert:not(.pii-phi-alert)').remove();
 $(".sidenav-adoptions-link").find('i').addClass('green-check');
 $("#adoptions").html("<%= escape_javascript(render partial: 'adoptions_content', formats: [ :html ]) %>");
 <% if params[:exists] %>
-  $('#adoption_form_container').removeClass('display-none');
-  $('.parent-adoption-accordion').each(function() {
-    $(this).find('div').first().attr('hidden', true);
-  })
+  // show the top form, hide the add new button, and close any open parent accordions when the page loads
+  if ($('#adoption_form_container').hasClass('display-none')) {
+    $('#add_adoption_button').addClass('display-none');
+    $('#adoption_form_container').removeClass('display-none');
+    $('.parent-adoption-accordion').each(function() {
+        $(this).find('div').first().attr('hidden', true);
+    })
+  }
 <% elsif params[:created] %>
   $('#adoption_form_container').addClass('display-none');
   $('.parent-adoption-accordion').each(function() {
