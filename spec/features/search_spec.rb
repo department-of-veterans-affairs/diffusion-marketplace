@@ -45,7 +45,7 @@ describe 'Search', type: :feature do
   def publish_practice(practice)
     update_practice_introduction(practice)
     visit(practice_adoptions_path(practice))
-    find('button[aria-controls="a0"]').click
+    find('#add_adoption_button').click
     find('label[for="status_in_progress"').click
     select('Alaska', :from => 'editor_state_select')
     select('Anchorage VA Medical Center', :from => 'editor_facility_select')

@@ -789,18 +789,18 @@
 /* Adoptions */
 .usa-accordion__button[aria-expanded=false].adoptions-edit {
   background-image: asset_url('edit.svg'), linear-gradient(transparent, transparent);
-  background-position-x: 98%;
+  background-position-x: 98.6%;
   background-size: 22.5px 20px;
 }
 
 .usa-accordion__button[aria-expanded=true].adoptions-edit {
   background-image: asset_url('minus.svg'), linear-gradient(transparent, transparent);
-  background-position-x: 97.6%;
+  background-position-x: 97.8%;
 }
 
-.usa-accordion__button.new {
-  &:hover {
-    color: $dm-color-primary-blue
+.child-accordion-button {
+  span {
+    margin-left: -4px;
   }
 }
 

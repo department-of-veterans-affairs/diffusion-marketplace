@@ -1,5 +1,3 @@
-<%# debugger %>
-
 $('.usa-alert:not(.pii-phi-alert)').remove();
 $(".sidenav-adoptions-link").find('i').addClass('green-check');
 $("#adoptions").html("<%= escape_javascript(render partial: 'adoptions_content', formats: [ :html ]) %>");

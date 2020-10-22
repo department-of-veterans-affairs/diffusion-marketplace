@@ -40,7 +40,7 @@ describe 'Practice editor', type: :feature, js: true do
     end
 
     def set_adoption
-      find('button[aria-controls="a0"]').click
+      find('#add_adoption_button').click
       find('label[for="status_in_progress"').click
       select('Alaska', :from => 'editor_state_select')
       select('Anchorage VA Medical Center', :from => 'editor_facility_select')
