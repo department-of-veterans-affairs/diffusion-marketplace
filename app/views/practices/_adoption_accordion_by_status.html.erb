@@ -8,22 +8,19 @@
       <%= adoption_text %> adoptions: <%= adoption_type.count %>
     </button>
   </h2>
-  <div id="<%= adoption_text.downcase %>_adoptions" class="padding-x-2px padding-bottom-2px bg-base-lightest">
+  <div id="<%= adoption_text.downcase %>_adoptions" class="usa-accordion__content border-0 p0-25-bottom p0-top padding-x-05 bg-base-lightest">
     <% sorted_adoptions_by_type.each do |a| %>
       <% diffusion_history_status = a[:diffusion_history].diffusion_history_statuses[0] %>
       <div class="usa-accordion x0-top child-adoption-accordion">
-        <h2 class="usa-accordion__heading x0-top padding-top-2px padding-bottom-0">
+        <h2 class="usa-accordion__heading x0-top padding-top-05 padding-bottom-0">
           <button class="usa-accordion__button text-normal adoptions-edit bg-white child-accordion-button"
                   aria-expanded="false"
                   aria-controls="diffusion_history_<%= a[:diffusion_history].id %>">
-            <span class="line-height-sans-505 display-inline-block facility-name-width vertical-align-top">
-                    <%= a[:facility]["StreetAddressState"]%>: <%= a[:facility]["OfficialStationName"] %>
-              <%= show_common_name(a[:facility]["OfficialStationName"], a[:facility]["CommonName"]) %>
-                  </span>
-            <span class="line-height-sans-505 display-inline-block timeline-width vertical-align-top">
-                    <%= diffusion_history_status.start_time.present? ? month_year_date_format(diffusion_history_status.start_time) : 'TBD' %>
-              - <%= diffusion_history_status.end_time.present? ? month_year_date_format(diffusion_history_status.end_time) : 'TBD' %>
-                  </span>
+            <span class="line-height-sans-505 display-inline-block vertical-align-top">
+              <%= a[:facility]["StreetAddressState"]%>: <%= a[:facility]["OfficialStationName"] %><%= show_common_name(a[:facility]["OfficialStationName"], a[:facility]["CommonName"]) %>
+              (<%= diffusion_history_status.start_time.present? ? month_year_date_format(diffusion_history_status.start_time) : 'TBD' %>
+              - <%= diffusion_history_status.end_time.present? ? month_year_date_format(diffusion_history_status.end_time) : 'TBD' %>)
+            </span>
           </button>
         </h2>
         <div id="diffusion_history_<%= diffusion_history_status.diffusion_history.id %>" class="usa-accordion__content usa-prose border-0">

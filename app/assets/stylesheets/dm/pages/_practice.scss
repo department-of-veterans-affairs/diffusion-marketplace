@@ -869,6 +869,14 @@
   border-radius: 4px !important;
 }
 
+#successful_adoptions, #unsuccessful_adoptions, #in-progress_adoptions {
+  .child-adoption-accordion:first-child {
+    .usa-accordion__heading {
+      padding-top: 0 !important;
+    }
+  }
+}
+
 /*********************************
  PRACTICE VIEW
 **********************************/
