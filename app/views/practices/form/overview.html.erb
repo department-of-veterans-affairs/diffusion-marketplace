@@ -4,6 +4,7 @@
   <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_overview', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_overview_image_editor', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_usa_file_input', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <%= render 'breadcrumbs' %>
@@ -39,7 +40,7 @@
                 <p class="line-height-18px margin-bottom-2 text-bold">Problem attachments</p>
                 <p class="line-height-26">Attach any additional images, videos, files or links related to the problem your practice addresses.</p>
               </div>
-              <div class="grid-row grid-gap margin-bottom-5">
+              <div class="dm-file-form grid-row grid-gap margin-bottom-5">
                 <div class="usa-radio position-relative grid-col-12">
                   <%= radio_button_tag 'practice_problem_resources[resource_type]',
                                        'Image',
@@ -134,7 +135,7 @@
                   Attach any additional images, videos, files or links related to the solution implemented for your practice.
                 </p>
               </div>
-              <div class="grid-row grid-gap margin-bottom-5">
+              <div class="dm-file-form grid-row grid-gap margin-bottom-5">
                 <div class="usa-radio position-relative grid-col-12">
                   <%= radio_button_tag 'practice_solution_resources[resource_type]',
                                        'Image',
@@ -229,7 +230,7 @@
                   Attach any additional images, videos, files or links relevant to your results statement.
                 </p>
               </div>
-              <div class="grid-row grid-gap margin-bottom-5">
+              <div class="dm-file-form grid-row grid-gap margin-bottom-5">
                 <div class="usa-radio position-relative grid-col-12">
                   <%= radio_button_tag 'practice_results_resources[resource_type]',
                                        'Image',
@@ -403,7 +404,7 @@
                   Add any additional images, video, and audio to support your practice's overview.
                 </p>
               </div>
-              <div class="grid-row grid-gap margin-bottom-5">
+              <div class="dm-file-form grid-row grid-gap margin-bottom-5">
                 <div class="usa-radio position-relative grid-col-12">
                   <%= radio_button_tag 'practice_multimedia[resource_type]',
                                        'Image',

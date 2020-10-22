@@ -22,16 +22,16 @@
 <div id="<%= slug %>-resources" class="desktop:grid-col-10 grid-col-12 p0">
   <section class="usa-section padding-top-0 p0-bottom">
     <fieldset class="usa-fieldset">
-      <legend class="usa-sr-only">Core resources</legend>
+      <legend class="usa-sr-only"><%= resource_type %> resources</legend>
       <div id="<%= slug %>-container"
            class="margin-top-1">
         <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-3 margin-bottom-1">
           <% if resource_type_label === "people" %>
-            <span class="text-bold">People: </span>Type a job title, department, and/or discipline another facility would need to involve in implementing your practice.  Provide dependencies for implementation (e.g., Clinical Application Controller required for 2-4 hours/week for 1-2 weeks).
+            <span class="text-bold">People: </span><%= get_person_resource_text(resource_type) %>
           <% elsif resource_type_label === "processes"%>
-            <span class="text-bold">Processes: </span>Type a process (e.g., method, procedure, training) another facility would need to implement your practice.
+            <span class="text-bold">Processes: </span><%= get_process_resource_text(resource_type) %>
         <% elsif resource_type_label === "tools"%>
-            <span class="text-bold">Tools: </span>Type a tool (e.g., equipment, software, supply) another facility would need to implement your practice.
+            <span class="text-bold">Tools: </span><%= get_tool_resource_text(resource_type) %>
         <% end %>
         </h3>
         <ul class="<%= slug %>-ul add-list-reset" id="<%= slug %>_practice_core_resources" aria-label="Practice editor core resource list">
