@@ -82,34 +82,34 @@ describe 'Practice editor', type: :feature, js: true do
       expect(page).to have_content('You must include a support network email')
     end
 
-    # it 'Should save and publish the practice if all required fields are met' do
-    #   # set contact email
-    #   visit practice_contact_path(@practice)
-    #   email = 'test@email.com'
-    #   fill_in('Main email address', with: email)
-    #   @save_button.click
-    #   expect(page).to have_field('Main email address', with: email)
-    #
-    #   # set adoption
-    #   visit practice_adoptions_path(@practice)
-    #   set_adoption
-    #
-    #   # set required fields in introduction page
-    #   visit practice_introduction_path(@practice)
-    #   set_pr_required_fields
-    #   set_initiating_visn
-    #   @publish_button.click
-    #
-    #   expect(page).to have_no_content('Cannot publish yet')
-    #   expect(page).to have_content("#{@practice.name} has been successfully published to the Diffusion Marketplace")
-    #   # Publish button should be gone if the practice has been published
-    #   expect(page).to_not have_link('Publish practice')
-    #
-    #   visit practice_path(@practice)
-    #   expect(page).to have_content('practice summary')
-    #   expect(page).to have_content('October 1970')
-    #   expect(page).to have_content('VISN-1')
-    #   expect(page).to have_content('A public practice')
-    # end
+    it 'Should save and publish the practice if all required fields are met' do
+      # set contact email
+      visit practice_contact_path(@practice)
+      email = 'test@email.com'
+      fill_in('Main email address', with: email)
+      @save_button.click
+      expect(page).to have_field('Main email address', with: email)
+
+      # set adoption
+      visit practice_adoptions_path(@practice)
+      set_adoption
+
+      # set required fields in introduction page
+      visit practice_introduction_path(@practice)
+      set_pr_required_fields
+      set_initiating_visn
+      @publish_button.click
+
+      expect(page).to have_no_content('Cannot publish yet')
+      expect(page).to have_content("#{@practice.name} has been successfully published to the Diffusion Marketplace")
+      # Publish button should be gone if the practice has been published
+      expect(page).to_not have_link('Publish practice')
+
+      visit practice_path(@practice)
+      expect(page).to have_content('practice summary')
+      expect(page).to have_content('October 1970')
+      expect(page).to have_content('VISN-1')
+      expect(page).to have_content('A public practice')
+    end
   end
 end

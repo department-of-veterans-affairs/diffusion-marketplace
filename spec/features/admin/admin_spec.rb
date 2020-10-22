@@ -348,21 +348,21 @@ describe 'The admin dashboard', type: :feature do
     expect(page).not_to have_selector('option[selected]')
   end
 
-  # it 'should only display a button to download adoptions if the practice has any' do
-  #   login_as(@admin, scope: :user, run_callbacks: false)
-  #   visit '/admin'
-  #   visit_practice_show
-  #
-  #   expect(page).to_not have_selector("input[value='Download Adoption Data']")
-  #
-  #   create_diffusion_history
-  #
-  #   visit '/admin/practices'
-  #   within_table('index_table_practices') do
-  #     first('.table_actions').click_link('View')
-  #   end
-  #   expect(page).to have_selector("input[value='Download Adoption Data']")
-  # end
+  it 'should only display a button to download adoptions if the practice has any' do
+    login_as(@admin, scope: :user, run_callbacks: false)
+    visit '/admin'
+    visit_practice_show
+
+    expect(page).to_not have_selector("input[value='Download Adoption Data']")
+
+    create_diffusion_history
+
+    visit '/admin/practices'
+    within_table('index_table_practices') do
+      first('.table_actions').click_link('View')
+    end
+    expect(page).to have_selector("input[value='Download Adoption Data']")
+  end
 
   it 'should allow an admin user to download adoption data as a .xlsx file if there are any adoptions' do
     create_diffusion_history
