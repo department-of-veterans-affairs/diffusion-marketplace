@@ -97,7 +97,7 @@
             <%# TODO: link adoptions to new diffusion tracker map %>
             <p class="display-inline font-normal line-height-26">
             <% if completed_adoptions > 0 %>
-              <%= completed_adoptions %>&nbsp;completed<%= ', ' if in_progress_adoptions > 0 || unsuccessful_adoptions > 0 %>
+              <%= completed_adoptions %>&nbsp;successful<%= ', ' if in_progress_adoptions > 0 || unsuccessful_adoptions > 0 %>
             <% end %>
             <% if in_progress_adoptions > 0 %>
               <%= in_progress_adoptions %>&nbsp;in-progress<% ', ' if unsuccessful_adoptions > 0 %>

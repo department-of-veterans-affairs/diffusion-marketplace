@@ -132,9 +132,8 @@ describe 'Practice editor', type: :feature do
       find("#adoption_form#{@practice.diffusion_histories.first.id}_submit").click
       expect(page).to have_content('AK: Anchorage VA Medical Center (02/2010 - 11/2020)')
 
-      # it shouldn't count "Unsuccessful" status adoptions
+      # check the PV to make sure the adoption count is correct
       visit practice_path(@practice)
-      # it would say "3" here if the "Unsuccessful" were counted
       expect(page).to have_content('1 completed, 1 in-progress 1 unsuccessful')
 
       # it should let the system update delete an adoption entry

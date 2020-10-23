@@ -47,7 +47,7 @@
           <% statuses.each do |v| %>
             <input id="status_<%= v.downcase.gsub(' ', '_') %>" name="statuses" type="checkbox" value="<%= v %>" class="usa-checkbox__input">
             <label for="status_<%= v.downcase.gsub(' ', '_') %>" class="usa-checkbox__label adoption-status-label">
-              <%= v %>
+              <%= v == 'Complete' ? 'Successful' : v %>
             </label>
           <% end %>
         </fieldset>
