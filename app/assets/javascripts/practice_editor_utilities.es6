@@ -81,7 +81,8 @@ function observePracticeEditorLiArrival($document,
                                         ulSelector = '.practice-editor-origin-ul',
                                         separatorCols = '8',
                                         link_to_add_link_id = '',
-                                        link_to_add_button_id = '') {
+                                        link_to_add_button_id = '',
+                                        is_published = false) {
     $document.arrive(liElSelector, (newElem) => {
         const $newEl = $(newElem);
         const dataId = $newEl.data('id');
@@ -103,7 +104,9 @@ function observePracticeEditorLiArrival($document,
         }
 
         if (liElSelector === '.core-people-resource-li') {
-            $(`${liElSelector}:visible`).find('.practice-input').attr('required', 'true');
+            if(is_published) {
+                $(`${liElSelector}:visible`).find('.practice-input').attr('required', 'true');
+            }
         }
 
         $document.unbindArrive(liElSelector, newElem);
