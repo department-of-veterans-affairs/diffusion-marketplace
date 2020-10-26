@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   before_action :log_in_va_user
   before_action :user_accepted_terms?
   before_action :track_visit
+  before_action :track_role
 
   protect_from_forgery with: :exception, prepend: true
 
@@ -227,4 +228,9 @@ class ApplicationController < ActionController::Base
     ahoy.track "Site visit", {controller: request.params[:controller], action: request.params[:action], query: request.params[:query], ip_address: request.remote_ip}
   end
 
+  def track_role
+    if current_user.present?
+      ahoy.track "User role", {user: current_user.email, role: current_user.user_role}
+    end
+  end
 end

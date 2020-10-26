@@ -100,6 +100,10 @@ class User < ApplicationRecord
     end
   end
 
+  def user_role
+    roles.collect(&:name).join(', ')
+  end
+
   def full_name
     return 'User' unless last_name || first_name
 
