@@ -52,12 +52,22 @@ module ActiveAdminHelpers
     }
   end
 
-  def get_adoption_counts(p)
+  def all_adoption_counts
+    set_date_values
+    {
+      adoptions_this_month: DiffusionHistory.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
+      adoptions_one_month_ago: DiffusionHistory.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
+      adoptions_two_months_ago: DiffusionHistory.where(created_at: @beginning_of_two_months_ago..@end_of_two_months_ago).count,
+      total_adoptions: DiffusionHistory.count
+    }
+  end
+
+  def adoption_counts_by_practice(p)
     set_date_values
     {
         adopted_this_month: p.diffusion_histories.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
         adopted_one_month_ago: p.diffusion_histories.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
-        adopted_two_months_ago: p.diffusion_histories.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
+        adopted_two_months_ago: p.diffusion_histories.where(created_at: @beginning_of_two_months_ago..@end_of_two_months_ago).count,
         total_adopted: p.diffusion_histories.count
     }
   end
