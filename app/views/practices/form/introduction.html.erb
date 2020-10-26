@@ -67,7 +67,7 @@
             <div class="margin-bottom-5 margin-top-3">
               <div>
                 <%= f.label :short_name, 'Acronym ', class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' %>
-                <span>Type the acronym for your practice.</span><!--&nbsp;<span id="practice-editor-tagline-character-counter" class="text-base-light">(0/150 characters)</span>-->
+                <span>Type the acronym for your practice.</span>
               </div>
               <div>
                 <%= f.text_field :short_name, class: "grid-col-3 usa-input #{ @practice.errors[:short_name].any? ? 'usa-input--error' : '' } display-block practice-editor-short_name-input", required: false %>
@@ -88,7 +88,7 @@
                     <span>Type a short sentence summarizing the key outcomes of your practice.  This text will display on the practice card.</span>&nbsp&nbsp;
                     <span id="practice-editor-tagline-character-counter" class="text-base-light">(0/72 characters)</span>
                      <%= f.text_area :tagline, class: "usa-textarea #{ @practice.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-tagline-textarea", required: @practice.published %>
-                    <p class="usa-error-message <%= @practice.errors[:tagline].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@practice, :tagline) %></span></p>
+                    <p class="usa-error-message <%= @practice.errors[:tagline].any? ? 'fas fa-exclamation-circle' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@practice, :tagline) %></span></p>
                   </div>
                 </div>
               </div>
