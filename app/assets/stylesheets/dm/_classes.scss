@@ -8,53 +8,19 @@
 ========================================
 ----------------------------------------
 DM COMMONLY USED CLASSES - use these if you really mean it!
+IMPORTANT: Consult https://designsystem.digital.gov/utilities/
+to confirm the class DOES NOT EXIST before adding a new class
 ----------------------------------------
 */
+
 @import "variables/colors";
-
-.rounded {
-  border-radius: 50%;
-}
-
-.full-view-height {
-  min-height: 100vh;
-}
-
-/* Background Colors */
-.dm-background-white {
-  background-color: $dm-color-white;
-}
-
-.dm-background-light-black {
-  background-color: $dm-color-light-black !important;
-}
-
-.dm-background-primary-blue {
-  background-color: $dm-color-primary-blue !important;
-}
-
-.dm-background-light-blue {
-  background-color: $dm-color-light-blue !important;
-}
-
-.dm-background-royal-blue {
-  background-color: $dm-color-royal-blue !important;
-}
-
-.dm-background-pale-blue {
-  background-color: $dm-color-pale-blue !important;
-}
-
-.dm-background-steel-grey {
-  background-color: $dm-color-steel-grey !important;
-}
 
 .dm-primary-5v-background {
   background-color: $dm-color-primary-5v !important;
 }
 
 /* Linear Gradient backgrounds */
-
+// TODO: we can probably remove with new designs
 .dm-background-linear-gradient-down-cool {
   background: linear-gradient(180deg, rgba(0, 150, 246, 0.35) 0%, rgba(255, 255, 255, 0) 100%) !important;
 }
@@ -65,102 +31,12 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 // fades from the bottom from a darker blue to clear
 .dm-background-linear-gradient-up-dark-blue {
-  background: linear-gradient(180deg, #E7F6F8 8.75%, rgba(255, 255, 255, 0) 100%), #0076D6;
-}
-
-/* encompassing backgrounds - use these to fill the entire page */
-
-// fades top down from white to light blue to white again
-.dm-background-half-and-half {
-  position: relative;
-
-  &:after {
-    background: linear-gradient(0.5turn, #FFFFFF, #E7F6F8, #FFFFFF);
-    content: '';
-    height: 100%;
-    position: absolute;
-    top: 0;
-    width: 100%;
-    z-index: -10;
-  }
-}
-
-// fades from the bottom from light blue to white
-.dm-background-linear-up-lightblue-to-white {
-  position: relative;
-
-  &:after {
-    background: linear-gradient(to top, #E7F6F8 50%, #FFFFFF);
-    content: '';
-    height: 100%;
-    position: absolute;
-    top: 0;
-    width: 100%;
-    z-index: -10;
-  }
-}
-
-
-.dm-color-disabled {
-  color: $dm-color-disabled !important;
+  background: linear-gradient(180deg, $dm-color-light-blue 8.75%, rgba(255, 255, 255, 0) 100%), $dm-color-blue-50v;
 }
 
 /* Font colors */
-
-.dm-font-color-black {
-  color: $dm-color-black !important;
-}
-
-.dm-font-dark-black {
-  color: $dm-color-dark-black !important;
-}
-
-.dm-font-color-white {
-  color: $dm-color-white !important;
-}
-
-.dm-font-color-primary-blue {
-  color: $dm-color-primary-blue !important;
-}
-
-.dm-font-color-dark-brown {
-  color: $dm-color-dark-brown !important;
-}
-
-.dm-font-color-blue-black {
-  color: $dm-color-blue-black !important;
-}
-
-.dm-font-color-super-grey {
-  color: $dm-color-super-grey !important;
-}
-
-.dm-font-color-super-violet-ish {
-  color: $dm-color-super-violet-ish !important;
-}
-
-.dm-font-color-steel-grey {
-  color: $dm-color-steel-grey !important;
-}
-
-.dm-font-color-royal-blue {
-  color: $dm-color-royal-blue !important;
-}
-
-.dm-font-color-pale-blue {
-  color: $dm-color-pale-blue !important;
-}
-
-.dm-color-dark-blue-gray {
-  color: $dm-color-dark-blue-gray !important;
-}
-
-.dm-font-color-midnight-black {
-  color: $dm-color-midnight-black !important;
-}
-
-.dm-font-color-base-dark {
-  color: $dm-color-base-dark !important;
+.dm-color-gray-20 {
+  color: $dm-color-gray-20 !important;
 }
 
 .dm-font-color-blue-50v {
@@ -171,22 +47,6 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .fw-100 {
   font-weight: 100;
-}
-
-.fw-200 {
-  font-weight: 200;
-}
-
-.fw-300 {
-  font-weight: 300;
-}
-
-.fw-normal {
-  font-weight: normal !important;
-}
-
-.fw-bold {
-  font-weight: bold !important;
 }
 
 /* Font Size */
@@ -245,6 +105,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   text-transform: uppercase;
 }
 
+.font-normal {
+  font-weight: normal !important;
+}
+
 /* Text Align */
 
 .text-center {
@@ -297,10 +161,6 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .display-inline-block {
   display: inline-block !important;
-}
-
-.display-block {
-  display: block !important;
 }
 
 .display-grid,
@@ -550,6 +410,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   margin-bottom: 0 !important;
 }
 
+.x0-5-bottom {
+  margin-bottom: 0.5rem !important;
+}
+
 .x1-bottom {
   margin-bottom: 1rem !important;
 }
@@ -640,6 +504,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .x0-5-right {
   margin-right: 0.5em !important;
+}
+
+.x0-875-right {
+  margin-right: 0.875em !important
 }
 
 .x1-right {
@@ -791,6 +659,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
   padding-bottom: 0 !important;
 }
 
+.p0-25-bottom {
+  padding-bottom: 0.25rem !important;
+}
+
 .p0-75-bottom {
   padding-bottom: 0.75rem !important;
 }
@@ -831,6 +703,10 @@ DM COMMONLY USED CLASSES - use these if you really mean it!
 
 .p0-top {
   padding-top: 0 !important;
+}
+
+.p0-25-top {
+  padding-top: 0.25rem !important;
 }
 
 .p0-75-top {
@@ -950,7 +826,7 @@ ul.no-list-style {
 }
 
 .width-100 {
-  width: 100%;
+  width: 100% !important;
 }
 
 /* box-shadows */
@@ -972,11 +848,11 @@ ul.no-list-style {
 
 /* Breaking/Truncating lines */
 
-.hyphens-auto {
+.dm-hyphens-auto {
   hyphens: auto;
 }
 
-.word-break-break-word {
+.dm-word-break-break-word {
   word-break: break-word;
 }
 
@@ -1086,6 +962,18 @@ ul.no-list-style {
   line-height: 15px;
 }
 
+.line-height-18px {
+  line-height: 18px;
+}
+
+.line-height-19px {
+  line-height: 19px;
+}
+
+.line-height-25px {
+  line-height: 25px;
+}
+
 .line-height-162 {
   line-height: 162%;
 }
@@ -1095,12 +983,12 @@ ul.no-list-style {
 }
 
 .disabled-label {
-  color: $dm-color-disabled !important;
+  color: $dm-color-gray-20 !important;
 }
 
 .disabled-input {
-  color: $dm-color-disabled !important;
-  border-color: $dm-color-disabled !important;
+  color: $dm-color-gray-20 !important;
+  border-color: $dm-color-gray-20 !important;
   background-color: $dm-color-white !important;
 }
 
@@ -1111,4 +999,25 @@ ul.no-list-style {
 .enabled-input {
   color: initial !important;
   border-color: initial !important;
+}
+
+/* Horizontal Rule */
+.dm-section-line {
+  flex: 1 0;
+}
+
+.bg-gray-2{
+  background-color: $dm-color-gray-2;
+}
+
+.bg-gold-10v {
+  background-color: $dm-color-gold-10v;
+}
+
+.bg-blue-20v {
+  background-color: $dm-color-blue-20v;
+}
+
+.border-0 {
+  border: 0 !important;
 }

@@ -12,26 +12,58 @@
           <% if @practice %>
             <%# Overview errors %>
             <%
+              s_name = @practice.name
               tagline = @practice.tagline
-              initiating_facility = @practice.initiating_facility
+              initiating_facility = @practice.has_facility?
+              initiating_facility_type = @practice.initiating_facility_type
               summary = @practice.summary
               date_initiated = @practice.date_initiated
+              adoptions = @practice.diffusion_histories
+              overview_problem = @practice.overview_problem
+              overview_solution = @practice.overview_solution
+              overview_results = @practice.overview_results
             %>
-            <% if tagline.blank? || initiating_facility.blank? || date_initiated.blank? || summary.blank? %>
-              <p class="text-bold">Overview</p>
-              <ul class="overview-errors-ul">
+            <% if s_name.blank? || tagline.blank? || initiating_facility_type.blank? || initiating_facility.blank? || date_initiated.blank? || summary.blank? %>
+              <p class="text-bold">Introduction</p>
+              <ul class="dm-publish-errors-ul">
+                <% if s_name.blank? %>
+                  <li>You must include a name for your practice</li>
+                <% end %>
                 <% if tagline.blank? %>
-                  <li>You must include a practice tagline</li>
+                  <li>You must include a tagline for your practice</li>
                 <% end %>
                 <% if date_initiated.blank? %>
                   <li>You must include the initiation date for your practice</li>
                 <% end %>
-                <% if initiating_facility.blank? %>
+                <% if initiating_facility_type.blank? || initiating_facility.blank? %>
                   <li>You must include the initiating facility for your practice</li>
                 <% end %>
                 <% if summary.blank? %>
                   <li>You must include a practice summary</li>
                 <% end %>
+              </ul>
+            <% end %>
+
+            <% if overview_problem.blank? || overview_solution.blank? || overview_results.blank? %>
+              <p class="text-bold">Overview</p>
+              <ul class="dm-publish-errors-ul">
+                <% if overview_problem.blank? %>
+                  <li>You must include a problem statement for your practice</li>
+                <% end %>
+                <% if overview_solution.blank? %>
+                  <li>You must include a solution statement for your practice</li>
+                <% end %>
+                <% if overview_results.blank? %>
+                  <li>You must include a results statement for your practice</li>
+                <% end %>
+              </ul>
+            <% end %>
+
+
+            <% if adoptions.blank? %>
+              <p class="text-bold">Adoptions</p>
+              <ul class="dm-publish-errors-ul">
+                <li>You must include at least one adoption</li>
               </ul>
             <% end %>
 
@@ -41,7 +73,7 @@
             %>
             <% if email.blank? %>
               <p class="text-bold">Contact</p>
-              <ul class="contact-errors-ul">
+              <ul class="dm-publish-errors-ul margin-bottom-0">
                 <li>You must include a support network email</li>
               </ul>
             <% end %>

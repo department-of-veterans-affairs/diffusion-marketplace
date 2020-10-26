@@ -16,7 +16,7 @@ workflows:
                 only: master
 jobs:
   test:
-    parallelism: 4
+    parallelism: 20
     docker:
       # specify the version you desire here
       - image: circleci/ruby:2.6.3-node-browsers
@@ -51,7 +51,7 @@ jobs:
       - image: redis
 
     working_directory: ~/repo
-    resource_class: medium+
+    resource_class: medium
     steps:
       - checkout
 

@@ -80,33 +80,79 @@ module ApplicationHelper
   end
 
   def facility_name(facility_id, facilities_data = nil)
-    facilities_data = facilities_data || @facilities_data
+    facilities_data = facilities_data || @facilities_data || facilities_data_json
     facility_data = @facility_data || facilities_data.find {|f| f['StationNumber'] == facility_id }
     if facility_data.present?
-      "#{facility_data["OfficialStationName"]} #{show_common_name(facility_data["OfficialStationName"], facility_data["CommonName"])}"
+      facility_name_with_common_name(facility_data["OfficialStationName"], facility_data["CommonName"])
     else
       facility_id
     end
+  end
+
+  def facility_name_with_common_name(official_station_name, common_name)
+    common_name = show_common_name(official_station_name, common_name)
+    official_station_name + (common_name.present? ? " #{common_name}" : '')
+  end
+
+  def facilities_data_json
+    JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
   end
 
   def origin_data_json
     JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
   end
 
-  def origin_display(practice)
-    if practice.initiating_facility?
-      if practice.facility?
-        "by the #{facility_name(practice.initiating_facility)}"
-      elsif practice.visn?
-        visn = origin_data_json['visns'].find { |v| v['id'] == practice.initiating_facility.to_i }
-        "by #{visn['number']}"
-      elsif practice.department?
-        practice_department_id = practice.initiating_department_office_id
-        office = origin_data_json['departments'][practice_department_id - 1]['offices'].find { |o| o['id'] == practice.initiating_facility.to_i }
-        "by the #{office['name']}"
-      elsif practice.other?
-        "by the #{practice.initiating_facility}"
+  def origin_display_name_trunc(practice, start_char=0,  num_chars=180)
+    origin_display_name(practice)[start_char...num_chars]
+  end
+
+  def overview_statement(statement, start_char=0,  num_chars=360)
+    safe_join(raw(statement[start_char...num_chars]).split("\r\n"), tag(:br))
+  end
+
+  def origin_display_name(practice)
+    if practice.initiating_facility_type?
+      if practice.facility? && practice.practice_origin_facilities.present?
+        fac_type = Practice.initiating_facility_types[practice.initiating_facility_type]
+        locs = practice.practice_origin_facilities.where(facility_type: fac_type)
+        facility_names = String.new
+        locs.each_with_index do |loc, index|
+          facility_names += (facility_name(loc.facility_id) + (locs.size != index + 1 && locs.size > 1 ? ', ' : ''))
+        end
+        facility_names
+      elsif practice.initiating_facility?
+      # TODO: Modify once visn, dept, other is moved from Practice to a separate table
+        case practice.initiating_facility_type
+        when 'visn'
+          visn = origin_data_json['visns'].find { |v| v['id'] == practice.initiating_facility.to_i }
+          visn['number']
+        when 'department'
+          dept_id = practice.initiating_department_office_id
+          office = origin_data_json['departments'][dept_id - 1]['offices'].find { |o| o['id'] == practice.initiating_facility.to_i }
+          office['name']
+        when 'other'
+          practice.initiating_facility
+        else
+          ''
+        end
+      else
+        ''
       end
+    else
+      ''
+    end
+  end
+
+  def origin_display_department_name(practice)
+    dept_id = practice.initiating_department_office_id
+    dept = origin_data_json['departments'][dept_id - 1]
+    dept['name']
+  end
+
+  def origin_display(practice)
+    display_name = origin_display_name(practice)
+    if display_name.present?
+      practice.visn? ? "by #{display_name}" : "by the #{display_name}"
     else
       ''
     end

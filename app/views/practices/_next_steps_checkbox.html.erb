@@ -1,11 +1,11 @@
-<% 
+<%
   noList ||= false
 %>
 
 <div id="<%= sectionId %>" class="margin-bottom-3">
   <div class="usa-checkbox">
     <input class="usa-checkbox__input" id="<%= sectionId %>-input" type="checkbox" name="checklist" value="<%= sectionId %>">
-    <label class="usa-checkbox__label margin-bottom-105" for="<%= sectionId %>-input"><span class="fw-bold"><%= label %></span></label>
+    <label class="usa-checkbox__label margin-bottom-105" for="<%= sectionId %>-input"><span class="text-bold"><%= label %></span></label>
     <% unless noList %>
       <ul class="margin-top-0 padding-left-6">
         <%= yield %>

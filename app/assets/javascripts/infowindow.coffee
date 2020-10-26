@@ -4,7 +4,7 @@ class @InfoBoxBuilder extends Gmaps.Google.Builders.Marker # inherit from base b
     return null unless _.isString @args.infowindow
 
     boxText = document.createElement("div")
-    boxText.setAttribute('class', 'marker_container') #to customize
+    boxText.setAttribute('class', 'dm-marker-container') #to customize
     boxText.innerHTML = @args.infowindow
     @infowindow = new InfoBox(@infobox(boxText))
 

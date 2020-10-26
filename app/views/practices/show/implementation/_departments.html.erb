@@ -1,0 +1,8 @@
+<div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+<h3 class="margin-top-2 margin-bottom-2 line-height-25px font-sans-lg">Departments</h3>
+<ul id="practice-departments-ul" class="margin-0 padding-left-0">
+
+  <% @practice.departments.each do |dp| %>
+    <li class="margin-bottom-1 small-disc line-height-sans-5"><%= dp.name %></li>
+  <% end %>
+</ul>

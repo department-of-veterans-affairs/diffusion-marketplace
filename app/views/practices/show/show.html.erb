@@ -1,0 +1,18 @@
+<%= render 'breadcrumbs' %>
+<!-- "Practice name" section -->
+
+
+<!-- Practice hero image section -->
+
+<%= render partial: 'practices/show/authenticated/show_unauthenticated' unless current_user.present? %>
+
+<%= render partial: 'practices/show/authenticated/show_authenticated' if current_user.present? %>
+
+<%# search terms(campaigns/categories/tags) for mobile  %>
+<% if @practice.categories.where.not(is_other: true, name: 'Other').any? %>
+  <%= render partial: 'practices/show/mobile_partials/search_terms' %>
+<% end %>
+
+
+
+

@@ -16,11 +16,14 @@ namespace :dm do
     Rake::Task['importer:import_answers'].execute
     Rake::Task['importer:initial_featured'].execute
     Rake::Task['diffusion_history:all'].execute
-    Rake::Task['milestones:milestones_transfer'].execute
     Rake::Task['go_fish_practices:assign_go_fish_badge'].execute
     Rake::Task['shark_tank_practices:assign_shark_tank_badge'].execute
     Rake::Task['inet_partner_practices:assign_inet_partner'].execute
     Rake::Task['categories:add_covid_cats'].execute
+    Rake::Task['practice_origin_facilities:move_practice_initiating_facility'].execute
+    Rake::Task['milestones:port_milestones_to_timelines'].execute
+    Rake::Task['practice_multimedia:transfer_practice_impact_photos'].execute
+    Rake::Task['practice_multimedia:transfer_practice_videos'].execute
   end
 
   # rails dm:reset_up

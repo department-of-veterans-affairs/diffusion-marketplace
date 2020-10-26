@@ -1,0 +1,53 @@
+<% resource ||= nil
+   placeholder ||= 'RANDOM_NUMBER_OR_SOMETHING'
+   placeholder = placeholder.to_s + '_file'
+   area = area.to_s
+%>
+
+<div id="<%= area %>_file_form<%= "_#{placeholder}" if resource %>" <% if resource %> class="resource_container margin-bottom-5 grid-col-12" <% end %> class="grid-col-12">
+  <input type="hidden" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][resource_type]" value="file"/>
+  <% if resource&.id  %>
+    <span class="line-height-26">File: <%= link_to(resource&.attachment&.original_filename, resource&.attachment_s3_presigned_url, target: '_blank', class: 'dm-external-link')%></span>
+    <input value="<%= resource&.id %>" type="hidden" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][id]"/>
+  <% else %>
+    <div class="grid-col-12 margin-x-auto dm-usa-file-input-container" data-area="<%= area %>">
+      <label class="usa-label maxw-full margin-bottom-2 dm-file-upload-label overview-resource-label" for="practice_<%= area %>_<%= placeholder %>">
+        Upload a .pdf, .docx, .xlxs, .jpg, .jpeg, or .png file that is less than 32MB.
+      </label>
+      <div class="dm-usa-file-upload-error-text margin-bottom-2 usa-alert usa-alert--error usa-alert--slim display-none">
+        <p class="usa-alert__body">Sorry, you cannot upload a file larger than 32MB.</p>
+      </div>
+      <%= render partial: 'practices/overview_error_partials/attachment', locals: {
+          area: area,
+          resource_type: 'file',
+          message: 'Please upload a file'
+      }
+      %>
+      <input <%= resource&.id ? 'required' : '' %> id="practice_<%= area %>_attributes_<%= placeholder %>_attachment" class="usa-file-input usa-hint <%= area %>-file-attachment" type="file" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" />
+    </div>
+  <% end %>
+  <div class="<%= area %>-input-container">
+    <%= label_tag "practice_#{area}_name", 'File name', class: 'usa-label overview-resource-label', for: "practice_#{area}_attributes_#{placeholder}_name" %>
+    <%= render partial: 'practices/overview_error_partials/name', locals: {
+        area: area,
+        resource_type: 'file',
+        message: 'Please enter a file name'
+    }
+    %>
+    <input <%= resource&.id ? 'required' : '' %> class="usa-input grid-col-8" value="<%= resource&.name %>" type="text" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][name]" id="practice_<%= area %>_attributes_<%= placeholder %>_name"/>
+  </div>
+  <div class="<%= area %>-input-container">
+    <%= label_tag "practice_#{area}_description", 'File description', class: 'usa-label overview-resource-label', for: "practice_#{area}_attributes_#{placeholder}_description" %>
+    <%= render partial: 'practices/overview_error_partials/description', locals: {
+        area: area,
+        resource_type: 'file',
+        message: 'Please enter a file description'
+    }
+    %>
+    <input <%= resource&.id ? 'required' : '' %> class="usa-input grid-col-12" value="<%= resource&.description %>"  type="text" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][description]" id="practice_<%= area %>_attributes_<%= placeholder %>_description"/>
+  </div>
+
+  <%# action buttons %>
+  <%= render partial: "practices/overview_forms/form_actions", locals: { resource: resource, placeholder: placeholder, area: area, type: 'file' } %>
+</div>
+

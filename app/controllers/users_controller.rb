@@ -9,7 +9,7 @@ class UsersController < ApplicationController
   before_action :final_admin, only: :update
 
   def index
-    @users = User.all.order(:email).page(params[:page])
+    redirect_to root_path
   end
 
   def show

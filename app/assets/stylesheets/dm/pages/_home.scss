@@ -29,7 +29,7 @@
   }
 
   &:visited {
-    color: $dm-default-visited-link-purple !important;
+    color: $dm-default-visited-purple !important;
   }
 
   h2 {
@@ -49,7 +49,7 @@
   padding-top: 43px !important;
   padding-left: 33px !important;
   padding-bottom: 30px;
-  background-color: $dm-color-baby-blue;
+  background-color: $dm-color-blue-20v;
 
   p {
     margin-bottom: 30px;
@@ -57,11 +57,11 @@
 
   .usa-button {
     margin-right: 0 !important;
-    color: $dm-color-lighter-black !important;
-    border: 2px solid $dm-color-lighter-black !important;
+    color: $dm-color-base !important;
+    border: 2px solid $dm-color-base !important;
 
     &:hover {
-      border: 2px solid $dm-color-lighter-black !important;
+      border: 2px solid $dm-color-base !important;
     }
   }
 }
@@ -74,7 +74,7 @@
   width: 275px;
   max-height: 200px;
   overflow-y: auto;
-  background-color: #FFFFFF;
+  background-color: $dm-color-white;
   padding-bottom: 12px;
 }
 
@@ -94,7 +94,7 @@
   cursor: pointer;
 
   &:hover {
-    background-color: $dm-color-light-gray
+    background-color: $dm-color-gray-30;
   }
 }
 

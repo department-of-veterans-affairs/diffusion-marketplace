@@ -1,0 +1,7 @@
+<div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+<h3 class="margin-top-2 margin-bottom-2 line-height-25px font-sans-lg">Metrics</h3>
+<ul id="practice-metrics-ul" class="margin-0 padding-left-0">
+  <% @practice.practice_metrics.each do |m| %>
+    <li class="line-height-26 margin-bottom-1 small-disc"><%= m.description %></li>
+  <% end %>
+</ul>

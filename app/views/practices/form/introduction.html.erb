@@ -1,0 +1,613 @@
+<% provide :main_classes, 'bg-gray-2' %>
+<% provide :footer_classes, 'bg-gray-2' %>
+<% provide :head_tags do %>
+  <!--  <script type="text/javascript" src="../../../practice_origin_office_lookup.json"></script>-->
+  <%= javascript_include_tag '_assign_facility_name', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_facilitySelect', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_visnSelect', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_officeSelect', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'practice_editor_introduction', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_introduction_image_editor', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    var facilityData = <%= raw JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json")).to_json %>;
+    <%# initiating_facility = @practice.initiating_facility || false%>
+    var officeData = '<%= raw fetch_offices %>';
+    var originData = <%= raw JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json")).to_json %>;
+    var visnData = '<%= raw fetch_visns %>';
+    var selectedFacility = "<%= @practice.facility? && @practice.initiating_facility || false %>"
+    var selectedFacilityType = "<%= @practice.initiating_facility_type %>"
+    var selectedDepartment = "<%= @practice.initiating_department_office_id %>"
+    var selectedOffice = "<%= @practice.department? && @practice.initiating_facility || false %>"
+    var selectedVisn = "<%= @practice.visn? && @practice.initiating_facility || false %>"
+    var initiatingFacilityType = "<%= @practice.initiating_facility_type %>"
+    var initiatingDepartmentOfficeId = "<%= @practice.initiating_department_office_id %>";
+    var stateData = '<%= options_for_states %>';
+    var initiatingFacilityCtr = 0;
+  <% end %>
+<% end %>
+
+<%
+  origin_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
+  partners = PracticePartner.all
+  p_partners = @practice.practice_partners
+%>
+
+<%= render 'breadcrumbs' %>
+<%= render 'practice_editor_sidenav' %>
+<div class="grid-container position-relative">
+  <div class="grid-row grid-gap practice-editor-min-height">
+    <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+
+    <div id="introduction" class="desktop:grid-col-9 grid-col-12 p0">
+      <%= render partial: "shared/messages", locals: {small_text: false} %>
+      <section class="usa-section padding-top-0 p2-bottom introduction">
+        <h1 class="font-sans-2xl line-height-sans-205">Introduction</h1>
+        <h2 class="text-normal">Introduce your practice and provide a brief summary to people who may be unfamiliar
+          with it.</h2>
+        <%= render 'pii_phi_alert' %>
+        <%= nested_form_for(@practice, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
+          <fieldset class="usa-fieldset grid-col-10">
+            <legend class="usa-sr-only">Practice Information</legend>
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+            <div class="margin-bottom-5 margin-top-3">
+              <div>
+                <%= f.label :name, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
+                  Name <span class="text-gray-50">(required field)</span>
+                <% end %>
+                <span>Type the official name of your practice.</span>&nbsp;
+              </div>
+              <%= f.text_field :name, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input", required: true %>
+
+              <p class="usa-error-message <%= @practice.errors[:name].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@practice, :name) %></span>
+              </p>
+            </div>
+
+          <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+            <div class="margin-bottom-5 margin-top-3">
+              <div>
+                <%= f.label :short_name, 'Acronym ', class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' %>
+                <span>Type the acronym for your practice.</span>
+              </div>
+              <div>
+                <%= f.text_field :short_name, class: "grid-col-3 usa-input #{ @practice.errors[:short_name].any? ? 'usa-input--error' : '' } display-block practice-editor-short_name-input", required: false %>
+              </div>
+              <p class="usa-error-message <%= @practice.errors[:short_name].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">
+                <span class="font-family-sans"><%= show_errors(@practice, :short_name) %></span>
+              </p>
+            </div>
+
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+            <div class="usa-character-count">
+              <div class="usa-form-group">
+                <div class="margin-bottom-5 margin-top-3">
+                  <div>
+                    <%= f.label :tagline, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
+                      Tagline <span class="text-gray-50">(required field)</span>
+                    <% end %>
+                    <span>Type a short sentence summarizing the key outcomes of your practice.  This text will display on the practice card.</span>&nbsp&nbsp;
+                    <span id="practice-editor-tagline-character-counter" class="text-base-light">(0/72 characters)</span>
+                     <%= f.text_area :tagline, class: "usa-textarea #{ @practice.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-tagline-textarea", required: @practice.published %>
+                    <p class="usa-error-message <%= @practice.errors[:tagline].any? ? 'fas fa-exclamation-circle' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@practice, :tagline) %></span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+
+            <%= render partial: 'practices/introduction_forms/image_editor', locals: { section_title: 'Thumbnail', form: f, practice: @practice } %>
+
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+
+            <div class="margin-top-3 margin-bottom-5">
+              <%= f.label :summary, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
+                Summary <span class="text-gray-50">(required field)</span>
+              <% end %>
+              <span class="line-height-26">
+                Type a short summary of your practice’s mission to engage the audience
+                and provide initial context.
+              </span>
+              <%= f.text_area :summary, class: 'usa-textarea display-block practice-editor-summary-textarea', required: @practice.published %>
+            </div>
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+            <div class="margin-top-3 margin-bottom-5">
+              <p class="margin-bottom-2 text-bold">
+                Date created <span class="text-gray-50">(required field)</span>
+              </p>
+              Select the month and year this practice was created.
+              <div class="grid-row grid-gap-2">
+                <div class="grid-col-7">
+                  <%= label_tag 'editor_date_initiated_month', 'Month', class: 'usa-label' %>
+                  <%= select_month(@practice.date_initiated.present? ? date_get_month(@practice.date_initiated) : nil,
+                                   {prompt: '-Select-', prefix: 'date_initiated'}, {id: 'editor_date_initiated_month', class: 'height-5 usa-select', required: @practice.published  }) %>
+                </div>
+                <div class="grid-col-2">
+                  <%= label_tag 'editor_date_initiated_year', 'Year', class: 'usa-label' %>
+                  <input class="usa-input"
+                         id="editor_date_initiated_year"
+                         type="number"
+                         min="1970"
+                         max="9999"
+                         value="<%= @practice.date_initiated.present? ? date_get_year(@practice.date_initiated) : nil %>"
+                         name="date_initiated[year]"
+                         <% if @practice.published %>
+                          required="<%= @practice.published %>"
+                         <% end %>
+                         oninput="if (value.length > 4) value = value.slice(0, 4)"/>
+                </div>
+              </div>
+            </div>
+
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+
+            <div class="margin-top-3 margin-bottom-5">
+              <p class="text-bold margin-bottom-2">
+                Practice origin <span class="text-gray-50">(required field)</span>
+              </p>
+              <span>Select the location where this practice originated</span>
+              <div class="grid-row grid-gap grid-col-1 margin-bottom-3">
+                <div class="usa-radio position-relative">
+                  <%= radio_button_tag 'practice[initiating_facility_type]',
+                                       'facility',
+                                       @practice.facility?,
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "initiating_facility_type_facility"
+                  %>
+                  <%= label_tag 'initiating_facility_type_facility', 'Facility', class: 'usa-radio__label
+                initiating-facility-type-label x0-bottom margin-top-105', for: "initiating_facility_type_facility" %>
+                </div>
+                <div class="usa-radio position-relative">
+                  <%= radio_button_tag 'practice[initiating_facility_type]',
+                                       'visn',
+                                       @practice.visn?,
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "initiating_facility_type_visn"
+                  %>
+                  <%= label_tag 'initiating_facility_type_visn', 'VISN', class: 'usa-radio__label
+                initiating-facility-type-label x0-bottom margin-top-105', for: "initiating_facility_type_visn" %>
+                </div>
+                <div class="usa-radio position-relative">
+                  <%= radio_button_tag 'practice[initiating_facility_type]',
+                                       'department', @practice.department?,
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "initiating_facility_type_department"
+                  %>
+                  <%= label_tag 'initiating_facility_type_department', 'Office', class: 'usa-radio__label
+                initiating-facility-type-label x0-bottom margin-top-105', for: "initiating_facility_type_department" %>
+                </div>
+                <div class="usa-radio position-relative">
+                  <%= radio_button_tag 'practice[initiating_facility_type]', 'other',
+                                       @practice.other?,
+                                       class: 'usa-radio__input initiating-facility-type-radio',
+                                       id: "initiating_facility_type_other"
+                  %>
+                  <%= label_tag 'initiating_facility_type_other', 'Other', class: 'usa-radio__label
+                initiating-facility-type-label x0-bottom margin-top-105', for: "initiating_facility_type_other" %>
+                </div>
+              </div>
+
+              <div id="visn_select_form" class="grid-row">
+                <div class="margin-bottom-2 grid-col-8">
+                  <%= label_tag 'editor_visn_select', 'VISN', class: 'usa-label x0-top' %>
+                  <%= select_tag('practice[initiating_facility]',
+                                 options_for_select(origin_data['visns'].collect { |v| [v['number'], v['id']] }),
+                                 id: 'editor_visn_select', name: "editor_visn_select",
+                                 class: 'height-5 usa-select',
+                                 include_blank: '-Select-')
+                  %>
+                </div>
+              </div>
+
+              <div id="facility_select_form" class="margin-bottom-5 position-relative">
+                <ul class="practice-editor-origin-ul" role="listbox" title="Practice origin facilities" aria-label="Practice editor origin facility list">
+                  <%= f.fields_for :practice_origin_facilities, wrapper: false do |pof| %>
+                    <%
+                      orig_facility_id = pof.object.id || "new_practice_origin_facilities"
+                    %>
+                    <% if pof.object.facility_id %>
+                      <% provide :head_tags do %>
+                        <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                          $(document).arrive('<%= "#practice_practice_origin_facilities_attributes_#{pof.index}_facility_id" %>',
+                            function(newElem) {
+                              styleOriginFacility($(newElem).closest('li'));
+                              var facility_id = '<%= pof.object.facility_id %>';
+                              var facilitySelector = '<%= "practice_practice_origin_facilities_attributes_#{pof.index}_facility_id" %>';
+                              var stateSelector ='<%= "editor_state_select_#{orig_facility_id}" %>';
+                              getFacilitiesByState(facilityData, facilitySelector, stateSelector);
+                              selectFacility(facilityData, facility_id, facilitySelector, stateSelector);
+                              $(document).unbindArrive('<%= "#practice_practice_origin_facilities_attributes_#{pof.index}_facility_id" %>', newElem);
+                            }
+                          );
+                        <% end %>
+                      <% end %>
+                    <% end %>
+                    <li class="practice-editor-origin-facility-li fields" role="option" data-id="<%= orig_facility_id %>">
+                      <div class="margin-bottom-3">
+                        <%= label_tag "editor_state_select_#{orig_facility_id}", 'State',
+                                      class: 'usa-label x0-top margin-bottom-1' %>
+                        <%= select_tag('', options_for_select(us_states), id: "editor_state_select_#{orig_facility_id}",
+                                       name: "editor_state_select_#{orig_facility_id}", class: 'width-card-lg height-5 usa-select') %>
+                      </div>
+                      <div class="grid-row">
+                        <div class="grid-col-12">
+                          <%= pof.label :facility_id, 'Facility', class: 'usa-label x0-top margin-bottom-1 grid-col-12' %>
+                          <%= pof.select :facility_id,
+                                         options_for_select([['-Select-', nil, selected: true, disabled: true,
+                                                              class: 'usa-select dm-color-gray-20']]),
+                                         {},
+                                         {class: 'height-5 usa-select desktop:grid-col-8 x0-top'}
+                          %>
+                        </div>
+
+                        <div class="grid-col-8 trash-container">
+                          <%= pof.link_to_remove 'Delete Entry',
+                                                 class: "dm-origin-trash usa-button--unstyled dm-btn-warning float-right line-height-26"
+                          %>
+                        </div>
+                      </div>
+                    </li>
+                  <% end %>
+                </ul>
+                <%= f.link_to_add :practice_origin_facilities,
+                                  class: 'dm-add-another-link dm-add-practice-originating-facilities-link usa-button--unstyled dm-btn-primary cursor-pointer line-height-26' do %>
+                  <span class="text-normal">Add another</span>
+                <% end %>
+                <% unless @practice.practice_origin_facilities.any? %>
+                  <% provide :head_tags do %>
+                    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                      observePracticeEditorLiArrival($(document));
+                      $(document).arrive('#practice_origin_facilities_fields_blueprint',
+                        function(blueprint) {
+                          $('.dm-add-practice-originating-facilities-link').click();
+                          $(document).unbindArrive('#practice_origin_facilities_fields_blueprint', blueprint);
+                        }
+                      );
+                    <% end %>
+                  <% end %>
+                <% end %>
+              </div>
+
+              <div id="office_select_form" class="grid-row">
+                <div class="margin-bottom-3 grid-col-8">
+                  <%= label_tag 'editor_department_select', 'Administration', class: 'usa-label x0-top margin-bottom-1
+                grid-col-12' %>
+                  <%= select_tag('practice[initiating_department_office_id]',
+                                 options_for_select(origin_data['departments'].collect { |d| [d['name'], d['id']] }), id:
+                                     'editor_department_select', class: 'height-5 usa-select x0-top', include_blank: '-Select-') %>
+                </div>
+                <div class="margin-bottom-3 grid-row">
+                  <%= label_tag 'editor_office_state_select', 'State', class: 'usa-label x0-top margin-bottom-1
+                grid-col-12' %>
+                  <%= select_tag('', options_for_select(us_states), id: 'editor_office_state_select', name:
+                      'editor_office_state_select', class: 'width-card-lg height-5 usa-select x0-top') %>
+                </div>
+                <div class="margin-bottom-3 grid-col-8">
+                  <%= label_tag 'editor_office_select', 'Office', class: 'usa-label x0-top margin-bottom-1 grid-col-12' %>
+                  <%= select_tag('practice[initiating_facility]', options_for_select([['-Select-', nil, selected: true,
+                                                                                       disabled: true, class: 'usa-select dm-color-gray-20']]),
+                                 id: 'editor_office_select',
+                                 class: 'height-5 usa-select x0-top') %>
+                </div>
+              </div>
+
+              <div id="other_select_form" class="grid-row">
+                <div id="init_facility_other" class="grid-col-auto grid-col-8">
+                  <%= label_tag 'initiating_facility_other', 'Other', class: 'usa-label x0-top' %>
+                  <%= f.text_field :initiating_facility, name: 'initiating_facility_other', id:
+                      'initiating_facility_other', class: 'usa-input width-full margin-bottom-1', required: false %>
+                </div>
+              </div>
+            </div>
+
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+
+            <div class="margin-top-3 margin-bottom-5">
+              <div class="margin-bottom-105">
+                <p class="text-bold margin-bottom-2">
+                  Awards and recognition
+                </p>
+                <span>Select any awards or recognitions your practice has received.</span>
+              </div>
+              <div>
+                <% Practice::PRACTICE_EDITOR_AWARDS_AND_RECOGNITION.each do |award| %>
+                  <% underscore_award = award.split(' ').join('').underscore %>
+                  <div class="usa-checkbox practice-partner-checkbox position-relative">
+                    <input type="checkbox"
+                           class="usa-checkbox__input partner-input"
+                           id="practice_award_<%= underscore_award %>"
+                           name="practice[practice_award][<%= underscore_award %>][name]"
+                           value="<%= award %>"
+                           <%= 'checked="true"' if @practice.practice_awards.find_by(name: award) %>
+                      />
+                    <label class="usa-checkbox__label"
+                           id="practice_award_<%= underscore_award %>_label"
+                           for="practice_award_<%= underscore_award %>"
+                    >
+                      <%= award %>
+                    </label>
+                  </div>
+                <% end %>
+                <div id="other_awards_container" class="display-none position-relative">
+                  <%
+                    other_awards = @practice.practice_awards.where.not(name: Practice::PRACTICE_EDITOR_AWARDS_AND_RECOGNITION)
+                    other_award_ids = other_awards.ids
+                  %>
+                  <ul class="practice-editor-awards-ul padding-left-0" id="other_awards_list" role="listbox" title="Other Awards" aria-label="Other Awards">
+                    <%= f.fields_for :practice_awards, wrapper: false do |pa| %>
+                      <%
+                        other_award_id = pa.object.id || "new_practice_awards"
+                        show_other_award_form = other_award_ids.include?(other_award_id) || other_award_id == "new_practice_awards"
+                      %>
+                      <% if show_other_award_form %>
+                        <% if pa.object.id %>
+                          <% provide :head_tags do %>
+                            <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                              $(document).arrive('<%= "#practice_practice_awards_attributes_#{pa.index}_name" %>',
+                                function(newElem) {
+                                  var $li = $(newElem).closest('li');
+                                  styleOriginFacility(
+                                    $li,
+                                    <%= other_award_id %>,
+                                    '.practice-editor-other-awards-li',
+                                    '.practice-editor-awards-ul'
+                                  );
+                                  var $_destroy = $li.find('.trash-container input[name="practice[_destroy]"]');
+                                  $_destroy.attr('name', 'practice[practice_awards_attributes][<%= pa.index %>][_destroy]');
+                                  $_destroy.attr('id', 'practice_practice_awards_attributes_<%= pa.index %>__destroy');
+                                  $(document).unbindArrive('<%= "#practice_practice_awards_attributes_#{pa.index}_name" %>', newElem);
+                                }
+                              );
+                            <% end %>
+                          <% end %>
+                        <% end %>
+
+                        <li class="practice-editor-other-awards-li fields" role="option" data-id="<%= other_award_id %>">
+                          <div class="grid-row">
+                            <div class="grid-col-12">
+                              <%= pa.label :name, 'Name of award or recognition', class: 'usa-label x0-top margin-bottom-1 grid-col-12' %>
+                              <%= pa.text_field :name, class: 'usa-input desktop:grid-col-8 x0-top' %>
+                            </div>
+                            <div class="grid-col-8 trash-container">
+                              <%= f.link_to_remove 'Delete entry',
+                                                   class: "dm-origin-trash usa-button--unstyled dm-btn-warning float-right line-height-26" %>
+                            </div>
+                          </div>
+                        </li>
+                      <% end %>
+                    <% end %>
+                  </ul>
+                  <%= f.link_to_add :practice_awards, class: 'dm-add-another-link dm-add-practice-award-other-link usa-button--unstyled dm-btn-primary line-height-26' do %>
+                    <span class="text-normal">Add another</span>
+                  <% end %>
+                  <% provide :head_tags do %>
+                    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                      $(document).arrive('#practice_awards_fields_blueprint',
+                        function(blueprint) {
+                          var blueprintText = $(blueprint).data('blueprint');
+                          var newBluePrintText = blueprintText.replace('practice[_destroy]', 'practice[practice_awards_attributes][new_practice_awards][_destroy]');
+                          $(blueprint).data('blueprint', newBluePrintText);
+                          newBluePrintText = newBluePrintText.replace('practice__destroy', 'practice_practice_awards_attributes_new_practice_awards__destroy');
+                          $(blueprint).data('blueprint', newBluePrintText);
+                          $(document).unbindArrive('#practice_awards_fields_blueprint', blueprint);
+                        }
+                      );
+                    <% end %>
+                  <% end %>
+                  <% unless other_awards.any? %>
+                    <% provide :head_tags do %>
+                      <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                        observePracticeEditorLiArrival(
+                            $(document),
+                            '.practice-editor-other-awards-li',
+                            '.practice-editor-awards-ul'
+                        );
+                        attachTrashListener(
+                            $(document),
+                            '#other_awards_container',
+                            '.practice-editor-other-awards-li'
+                        );
+                        $(document).arrive('#practice_awards_fields_blueprint',
+                          function(blueprint) {
+                            $('.dm-add-practice-award-other-link').click();
+                            $(document).unbindArrive('#practice_awards_fields_blueprint', blueprint);
+                          }
+                        );
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+
+            <div class="margin-top-3 margin-bottom-5">
+              <div class="margin-bottom-105">
+                <p class="text-bold margin-bottom-2">
+                  Partners
+                </p>
+                <span>Select any of the following partners your practice is associated with.</span>
+              </div>
+              <div>
+                <%
+                  no_partners = PracticePartner.where(name: 'None of the above, or Unsure')
+                  partners = PracticePartner.where.not(id: no_partners.ids)
+                %>
+                <% partners.each do |partner| %>
+                  <div class="usa-checkbox practice-partner-checkbox position-relative">
+                    <input type="checkbox"
+                           class="usa-checkbox__input partner-input"
+                           id="practice_partner_<%= partner.id %>"
+                           name="practice[practice_partner][<%= partner.id %>][value]"
+                           <%= 'checked="true"' if p_partners.include?(partner) %>
+                      />
+                    <label class="usa-checkbox__label"
+                           id="practice_partner_<%= partner.id %>_label"
+                           for="practice_partner_<%= partner.id %>"
+                    >
+                      <%= partner.name %>
+                    </label>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+
+            <div class="margin-top-3 margin-bottom-5">
+              <div class="margin-bottom-105">
+                <p class="text-bold margin-bottom-2">
+                  Categories
+                </p>
+                <span>Select any categories that apply to your practice.</span>
+              </div>
+              <div>
+                <%
+                  practice_categories = @practice.category_practices
+                  practice_categories_ids = practice_categories.map(&:category_id)
+                  other = Category.where(name: 'Other')
+                  categories = Category.where.not(id: other.ids, is_other: true).order(name: :asc)
+                  categories_list = categories + other
+                %>
+
+                <% categories_list.each do |cat| %>
+                  <% underscore_cat = cat.name.split(' ').join('').underscore %>
+                  <div class="usa-checkbox pe-category-checkbox position-relative">
+                    <input type="checkbox"
+                           class="usa-checkbox__input category-input"
+                           id="category_<%= underscore_cat %>"
+                           name="practice[category][<%= cat.id %>][value]"
+                           <%= 'checked="true"' if practice_categories_ids.include?(cat.id) %>
+                      />
+                    <label class="usa-checkbox__label"
+                           id="category_<%= underscore_cat %>_label"
+                           for="category_<%= underscore_cat %>"
+                    >
+                      <%= cat.name %>
+                    </label>
+                  </div>
+                <% end %>
+
+                <div id="other_categories_container" class="display-none position-relative">
+                  <%
+                    other_categories = @practice.categories.where(is_other: true)
+                    other_category_ids = other_categories.ids
+                  %>
+
+                  <ul class="practice-editor-categories-ul padding-left-0" role="listbox" title="Practice categories" aria-label="Practice editor category list">
+                    <%= f.fields_for :categories, wrapper: false do |cat| %>
+                      <%
+                        other_category_id = cat.object.id || "new_categories"
+                        show_other_category_form = other_category_ids.include?(other_category_id) || other_category_id == "new_categories"
+                      %>
+
+                      <% if show_other_category_form %>
+                        <% if cat.object.id %>
+                          <% provide :head_tags do %>
+                            <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                              $(document).arrive('<%= "#practice_categories_attributes_#{cat.index}_name" %>',
+                              function(newElem) {
+                              var $li = $(newElem).closest('li');
+                              styleOriginFacility(
+                              $li,
+                              <%= other_category_id %>,
+                              '.practice-editor-category-li',
+                              '.practice-editor-categories-ul',
+                              '8'
+                              );
+                              var $_destroy = $li.find('.trash-container input[name="practice[_destroy]"]');
+                              $_destroy.attr('name', 'practice[categories_attributes][<%= cat.index %>][_destroy]');
+                              $_destroy.attr('id', 'practice_categories_attributes_<%= cat.index %>__destroy');
+                              $(document).unbindArrive('<%= "#practice_categories_attributes_#{cat.index}_name" %>', newElem);
+                              }
+                              );
+                            <% end %>
+                          <% end %>
+                        <% end %>
+                        <li class="practice-editor-category-li fields" <%= "id=practice_categories_attributes_#{cat.index}_li" if cat.object.id %> role="option" data-id="<%= other_category_id %>">
+                          <div class="grid-row">
+                            <div class="grid-col-8">
+                              <%= cat.label :name, 'Name of category', class: 'usa-label x0-top margin-bottom-1 grid-col-12' %>
+                              <%= cat.text_field :name, class: 'usa-input x0-top', 'aria-label': 'Name' %>
+                            </div>
+
+                            <div class="grid-col-8 trash-container">
+                              <%= cat.link_to_remove 'Delete entry',
+                                                    class: "dm-origin-trash usa-button--unstyled dm-btn-warning float-right line-height-26"
+                              %>
+                            </div>
+                          </div>
+                        </li>
+                      <% end %>
+                    <% end %>
+                  </ul>
+                  <%= f.link_to_add :categories, class: 'dm-add-another-link add-category-link usa-button--unstyled dm-btn-primary line-height-26 cursor-pointer' do %>
+                    <span class="text-normal">Add another</span>
+                  <% end %>
+                  <% unless other_categories.any? %>
+                    <% provide :head_tags do %>
+                      <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                        observePracticeEditorLiArrival(
+                          $(document),
+                          '.practice-editor-category-li',
+                          '.practice-editor-categories-ul',
+                          '8'
+                        );
+                        attachTrashListener(
+                          $(document),
+                          '#other_categories_container',
+                          '.practice-editor-category-li'
+                        );
+                        $(document).arrive('#categories_fields_blueprint',
+                          function(blueprint) {
+                            $('.add-category-link').click();
+                            $(document).unbindArrive('#categories_fields_blueprint', blueprint);
+                          }
+                        );
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+
+            <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+
+            <div class="margin-top-3 margin-bottom-5">
+              <div class="margin-bottom-105">
+                <p class="text-bold margin-bottom-2">
+                  Diffusion phase
+                </p>
+                <span>Select the diffusion phase that applies to your practice.</span>
+              </div>
+
+              <div class="maturity-level-radio-container">
+                <% Practice::MATURITY_LEVEL_MAP.each do |key, value| %>
+                  <div class="usa-radio position-relative">
+                    <%= radio_button_tag 'practice[maturity_level]', "#{key}", @practice.maturity_level == key.to_s, class: 'usa-radio__input maturity-level-radio', id: "maturity_level_#{key}" %>
+                    <label class="usa-radio__label maturity-level-label <%= key.to_s == 'scale' ? 'margin-bottom-0' : 'margin-bottom-105' %> line-height-26"
+                           for="maturity_level_<%= key %>"
+                    >
+                      <span class="margin-left-neg-05"><%= value[:description] %></span>
+                    </label>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </fieldset>
+        <% end %>
+
+        <div class="grid-row margin-bottom-8">
+          <%= link_to practice_instructions_path(@practice), class: 'usa-button--outline dm-btn-base
+            editor-back-to-link margin-right-1 margin-bottom-5 text-no-underline' do %>
+            Back
+          <% end %>
+          <%= link_to practice_adoptions_path(@practice), class: 'usa-button dm-btn-base pe-continue editor-continue-link continue-and-save margin-right-1 margin-bottom-5' do %>
+            Continue
+          <% end %>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

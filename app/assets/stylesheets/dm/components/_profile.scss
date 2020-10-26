@@ -1,12 +1,5 @@
 @import "../variables/colors";
 
-.user-icon-placeholder {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  background: #FFFFFF; 
-}
-
 .dm-user {
   bottom: -15px;
   position: relative;
@@ -85,10 +78,10 @@
   min-height: 380px;
 }
 
-.cropper-delete-image {
+.dm-cropper-delete-image {
   margin-top: 0;
   margin-bottom: 24px;
-  color: $dm-color-high-red;
+  color: $dm-color-red-50v;
   text-decoration: underline;
 
   &:hover {

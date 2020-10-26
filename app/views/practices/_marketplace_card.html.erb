@@ -29,14 +29,15 @@
           </h4>
         <%# end %>
         <div class="grid-row margin-bottom-1">
-          <p class="multiline-ellipses-1 line-height-sans-505 font-sans-sm practice-card-tagline"><%= practice.tagline %></p>
+          <p class="multiline-ellipses-1 line-height-sans-505 font-sans-sm practice-card-tagline"><%= practice.tagline&.truncate(56) %></p>
         </div>
         <div class="grid-row p0 flex-align-end">
           <span class="font-sans-3xs multiline-ellipses-3 line-height-sans-205 practice-card-origin-info">
-            Created in <%= practice.date_initiated.present? ? date_format(practice.date_initiated) : '(start date unknown)' %><%= practice.initiating_facility? ? " #{origin_display(practice)}" : '' %>
+            Created in <%= practice.date_initiated.present? ? date_format(practice.date_initiated) : '(start date unknown)' %><%= practice.initiating_facility_type.present? ? " #{origin_display(practice)}" : '' %>
           </span>
         </div>
       </div>
     </div>
   <% end %>
+
 

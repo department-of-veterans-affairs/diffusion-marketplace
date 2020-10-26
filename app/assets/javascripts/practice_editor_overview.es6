@@ -1,168 +1,137 @@
 (($) => {
     const $document = $(document);
-    const CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
-    const CHARACTER_COUNTER_VALID_COLOR =  '#a9aeb1';
 
-    const NAME_CHARACTER_COUNT = 50;
-    const TAGLINE_CHARACTER_COUNT = 150;
-    const SUMMARY_CHARACTER_COUNT = 400;
+    function initializeOverviewForm() {
+        hideResources();
+        attachDeleteResourceListener()
+        //links
+        attachAddResourceListener('problem_resources_link_form', 'display_problem_resources_link', 'problem_resources', 'link');
+        attachAddResourceListener('solution_resources_link_form', 'display_solution_resources_link', 'solution_resources', 'link');
+        attachAddResourceListener('results_resources_link_form', 'display_results_resources_link', 'results_resources', 'link');
 
-    const facilityOption = '#initiating_facility_type_facility';
-    const visnOption = '#initiating_facility_type_visn';
-    const departmentOption = '#initiating_facility_type_department';
-    const otherOption = '#initiating_facility_type_other';
+        //Videos
+        attachAddResourceListener('problem_resources_video_form', 'display_problem_resources_video', 'problem_resources', 'video');
+        attachAddResourceListener('solution_resources_video_form', 'display_solution_resources_video', 'solution_resources', 'video');
+        attachAddResourceListener('results_resources_video_form', 'display_results_resources_video', 'results_resources', 'video');
+        attachAddResourceListener('multimedia_video_form', 'display_multimedia_video', 'multimedia', 'video');
 
-    function countCharsOnPageLoad() {
-        let practiceNameCurrentLength = $('.practice-editor-name-input').val().length;
-        let practiceSummaryCurrentLength = $('.practice-editor-summary-textarea').val().length;
+        //Files
+        attachAddResourceListener('problem_resources_file_form', 'display_problem_resources_file', 'problem_resources', 'file');
+        attachAddResourceListener('solution_resources_file_form', 'display_solution_resources_file', 'solution_resources', 'file');
+        attachAddResourceListener('results_resources_file_form', 'display_results_resources_file', 'results_resources', 'file');
 
-        let practiceNameCharacterCounter = `(${practiceNameCurrentLength}/${NAME_CHARACTER_COUNT} characters)`;
-        let practiceSummaryCharacterCounter = `(${practiceSummaryCurrentLength}/${SUMMARY_CHARACTER_COUNT} characters)`;
+        //Images
+        attachAddResourceListener('problem_resources_image_form', 'display_problem_resources_image', 'problem_resources', 'image');
+        attachAddResourceListener('solution_resources_image_form', 'display_solution_resources_image', 'solution_resources', 'image');
+        attachAddResourceListener('results_resources_image_form', 'display_results_resources_image', 'results_resources', 'image');
+        attachAddResourceListener('multimedia_image_form', 'display_multimedia_image', 'multimedia', 'image');
 
-        $('#practice-editor-name-character-counter').text(practiceNameCharacterCounter);
-        $('#practice-editor-summary-character-counter').text(practiceSummaryCharacterCounter);
-
-        if (practiceNameCurrentLength >= NAME_CHARACTER_COUNT) {
-            $('#practice-editor-name-character-counter').css('color', CHARACTER_COUNTER_INVALID_COLOR);
-        }
-
-        if (practiceSummaryCurrentLength >= SUMMARY_CHARACTER_COUNT) {
-            $('#practice-editor-summary-character-counter').css('color', CHARACTER_COUNTER_INVALID_COLOR);
-        }
-    }
-
-    function characterCounter(e, $element, maxlength) {
-        const t = e.target;
-        let currentLength = $(t).val().length;
-
-        let characterCounter = `(${currentLength}/${maxlength} characters)`;
-
-        $element.css('color', CHARACTER_COUNTER_VALID_COLOR);
-        $element.text(characterCounter);
-
-        if (currentLength >= maxlength) {
-            $element.css('color', CHARACTER_COUNTER_INVALID_COLOR);
-        }
-    }
-
-    function maxCharacters() {
-        $('.practice-editor-name-input').on('input', (e) => {
-            characterCounter(e, $('#practice-editor-name-character-counter'), NAME_CHARACTER_COUNT);
+        //PROBLEM
+        $(document).on('click', '#cancel_problem_resources_image', function (e) {
+            e.preventDefault();
+            document.getElementById('practice_problem_image').checked = false;
+            document.getElementById('problem_resources_image_form').style.display = 'none';
         });
 
-        $('.practice-editor-tagline-textarea').on('input', (e) => {
-            characterCounter(e, $('#practice-editor-tagline-character-counter'), TAGLINE_CHARACTER_COUNT);
+
+        $(document).on('click', '#cancel_problem_resources_link', function (e) {
+            e.preventDefault();
+            document.getElementById('practice_problem_link').checked = false;
+            document.getElementById('problem_resources_link_form').style.display = 'none';
         });
 
-        $('.practice-editor-summary-textarea').on('input', (e) => {
-            characterCounter(e, $('#practice-editor-summary-character-counter'), SUMMARY_CHARACTER_COUNT);
+        $(document).on('click', '#cancel_problem_resources_video', function (e) {
+            e.preventDefault();
+            document.getElementById('practice_problem_video').checked = false;
+            document.getElementById('problem_resources_video_form').style.display = 'none';
+        });
+
+        $(document).on('click', '#cancel_problem_resources_file', function (e) {
+            e.preventDefault();
+            document.getElementById('practice_problem_file').checked = false;
+            document.getElementById('problem_resources_file_form').style.display = 'none';
+        });
+
+        //SOLUTION
+        $(document).on('click', '#cancel_solution_resources_image', function (e) {
+            e.preventDefault();
+            document.getElementById('practice_solution_image').checked = false;
+            document.getElementById('solution_resources_image_form').style.display = 'none';
+        });
+
+        $(document).on('click', '#cancel_solution_resources_link', function (e) {
+            e.preventDefault();
+            document.getElementById('practice_solution_link').checked = false;
+            document.getElementById('solution_resources_link_form').style.display = 'none';
+        });
+
+        $(document).on('click', '#cancel_solution_resources_video', function (e) {
+            e.preventDefault();
+            document.getElementById('practice_solution_video').checked = false;
+            document.getElementById('solution_resources_video_form').style.display = 'none';
+        });
+
+        $(document).on('click', '#cancel_solution_resources_file', function (e) {
+            e.preventDefault();
+            document.getElementById('practice_solution_file').checked = false;
+            document.getElementById('solution_resources_file_form').style.display = 'none';
+        });
+
+        //RESULTS
+        $(document).on('click', '#cancel_results_resources_image', function (e) {
+            e.preventDefault();
+            document.getElementById('practice_results_image').checked = false;
+            document.getElementById('results_resources_image_form').style.display = 'none';
+        });
+
+        $(document).on('click', '#cancel_results_resources_link', function (e) {
+            e.preventDefault();
+            document.getElementById('practice_results_link').checked = false;
+            document.getElementById('results_resources_link_form').style.display = 'none';
+        });
+
+        $(document).on('click', '#cancel_results_resources_video', function (e) {
+            e.preventDefault();
+            document.getElementById('practice_results_video').checked = false;
+            document.getElementById('results_resources_video_form').style.display = 'none';
+        });
+
+        $(document).on('click', '#cancel_results_resources_file', function (e) {
+            e.preventDefault();
+            document.getElementById('practice_results_file').checked = false;
+            document.getElementById('results_resources_file_form').style.display = 'none';
+        });
+
+        //MULTIMEDIA
+        $(document).on('click', '#cancel_multimedia_image', function (e) {
+            e.preventDefault();
+            document.getElementById("multimedia_image_form").style.display = 'none';
+            document.getElementById('practice_multimedia_image').checked = false;
+        });
+
+        $(document).on('click', '#cancel_multimedia_video', function (e) {
+            e.preventDefault();
+            document.getElementById("multimedia_video_form").style.display = 'none';
+            document.getElementById('practice_multimedia_video').checked = false;
         });
     }
 
-    function uncheckAllPartnerBoxes() {
-        $('.no-partner-input').click(function(event) {
-            if(this.checked) {
-                $('.partner-input').each(function() {
-                    this.checked = false;
-                });
-            }
+    function hideResources() {
+        const areas = ['problem_resources', 'solution_resources', 'results_resources', 'multimedia'];
+
+        areas.forEach(a => {
+            $(`#display_${a}_form div[id*="_form"]`).hide();
         });
     }
 
-    function uncheckNoneOptionIfAnotherOptionIsChecked() {
-        $('.partner-input').click(function(event) {
-            if(this.checked) {
-                $('.no-partner-input').prop('checked', false);
-            }
-        });
-    }
 
-    function addDisableAttrAndColor(labelSelector, inputSelector) {
-        labelSelector.hasClass('enabled-label') ? labelSelector.removeClass('enabled-label') && labelSelector.addClass('disabled-label') : labelSelector.addClass('disabled-label');
-        inputSelector.hasClass('enabled-input') ? inputSelector.removeClass('enabled-input') && inputSelector.addClass('disabled-input') : inputSelector.addClass('disabled-input');
-        inputSelector.prop('disabled', true);
-    }
-
-    function disableOtherFacilityInputOptions(otherOptions) {
-        otherOptions.split(' ').forEach(oo => {
-            addDisableAttrAndColor($('label[for="' + oo + '"]'), $(`#${oo}`));
-        })
-    }
-
-    function disableOptions() {
-        if ($(`${facilityOption}:checked`).length > 0) {
-            disableOtherFacilityInputOptions('editor_visn_select editor_department_select editor_office_state_select editor_office_select practice_initiating_facility_other')
-        } else if ($(`${visnOption}:checked`).length > 0) {
-            disableOtherFacilityInputOptions('editor_state_select editor_facility_select editor_department_select editor_office_state_select editor_office_select practice_initiating_facility_other')
-        } else if ($(`${departmentOption}:checked`).length > 0) {
-            disableOtherFacilityInputOptions('editor_state_select editor_facility_select editor_visn_select practice_initiating_facility_other')
-        } else if ($(`${otherOption}:checked`).length > 0) {
-            disableOtherFacilityInputOptions('editor_state_select editor_facility_select editor_visn_select editor_department_select editor_office_state_select editor_office_select')
-        } else {
-            disableOtherFacilityInputOptions('editor_state_select editor_facility_select editor_visn_select editor_department_select editor_office_state_select editor_office_select practice_initiating_facility_other')
-        }
-    }
-
-    function addEnableAttrAndColor(labelSelector, inputSelector) {
-        labelSelector.hasClass('disabled-label') ? labelSelector.removeClass('disabled-label') && labelSelector.addClass('enabled-label') : labelSelector.addClass('enabled-label');
-        inputSelector.hasClass('disabled-input') ? inputSelector.removeClass('disabled-input') && inputSelector.addClass('enabled-input') : inputSelector.addClass('enabled-input');
-        inputSelector.prop('disabled', false);
-    }
-
-    function enableCurrentlySelectedOption(currentOptionInputs) {
-        currentOptionInputs.split(' ').forEach(oi => {
-            addEnableAttrAndColor($('label[for="' + oi + '"]'), $(`#${oi}`));
-        });
-    }
-
-    function toggleInputsOnRadioSelect() {
-        $(document).on('click', '#initiating_facility_type_facility, #initiating_facility_type_visn, #initiating_facility_type_department, #initiating_facility_type_other', function() {
-            disableOptions();
-            if ($(`${facilityOption}:checked`).length > 0) {
-                enableCurrentlySelectedOption('editor_state_select');
-                disableOtherFacilityInputOptions('editor_visn_select editor_department_select editor_office_state_select editor_office_select practice_initiating_facility_other')
-            } else if ($(`${visnOption}:checked`).length > 0) {
-                enableCurrentlySelectedOption('editor_visn_select');
-                disableOtherFacilityInputOptions('editor_state_select editor_facility_select editor_department_select editor_office_state_select editor_office_select practice_initiating_facility_other')
-            } else if ($(`${departmentOption}:checked`).length > 0) {
-                enableCurrentlySelectedOption('editor_department_select');
-                disableOtherFacilityInputOptions('editor_state_select editor_facility_select editor_visn_select practice_initiating_facility_other')
-            } else {
-                enableCurrentlySelectedOption('practice_initiating_facility_other')
-                disableOtherFacilityInputOptions('editor_state_select editor_facility_select editor_visn_select editor_department_select editor_office_state_select editor_office_select')
-            }
-        })
-    }
-
-    function loadPracticeEditorFunctions() {
-        countCharsOnPageLoad();
-        maxCharacters();
-        uncheckAllPartnerBoxes();
-        uncheckNoneOptionIfAnotherOptionIsChecked();
-        disableOptions();
-        toggleInputsOnRadioSelect();
-
-        // relies on `_facilitySelect.js` utility file to be loaded prior to this file
-        filterFacilitiesOnRadioSelect(facilityData);
-        getFacilitiesByState(facilityData);
-        if(selectedFacility !== "false" && selectedFacility !== "") {
-            selectFacility(facilityData, selectedFacility);
-        }
-
-        // relies on `_visnSelect.js` utility file to be loaded prior to this file
-        if (selectedVisn !== "false" && selectedVisn !== "") {
-            selectVisn(originData, selectedVisn)
-        }
-
-        // relies on `_officeSelect.js` utility file to be loaded prior to this file
-        disableAndSelectDepartmentOptionValue();
-        filterDepartmentTypeOptionsOnRadioSelect(originData);
-        getStatesByDepartment(originData);
-        getOfficesByState(originData);
-        if (selectedOffice !== "false" && selectedDepartment !== "false" && selectedOffice !== "" && selectedDepartment !== "") {
-            selectOffice(originData, selectedDepartment, selectedOffice)
-        }
-    }
-
-    $document.on('turbolinks:load', loadPracticeEditorFunctions);
+    $document.on('turbolinks:load', initializeOverviewForm);
 })(window.jQuery);
+
+function displayResourceForm(sArea, sType) {
+    $(`#display_${sArea}_form div[id*="_form"]`).hide();
+    $(`#display_${sArea}_form div[id="${sArea}_${sType}_form"]`).show();
+}
+
+
+

@@ -5,8 +5,10 @@ class PageController < ApplicationController
     @path_parts = request.path.split('/')
     @facilities_data = facilities_json
     is_admin
-    if page_slug == 'home'
+    # Start a new path
+    session[:breadcrumbs] = []
 
+    if page_slug == 'home'
       @breadcrumbs = [
           { text: 'Home', path: root_path },
           { text: "#{@page.page_group.name}" }

@@ -1,0 +1,85 @@
+<% provide :head_tags do %>
+  <%= javascript_include_tag 'practice_editor_risk_mitigation', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
+<div id="risk-mitigation" class="desktop:grid-col-11 grid-col-12 p0">
+  <section class="usa-section p0-bottom p0-top risk-mitigation">
+    <h4 class="font-sans-sm line-height-18px margin-top-3 margin-bottom-2">Risk and mitigation</h4>
+    <p class="text-normal line-height-26 margin-bottom-2">
+      Share the difficulties and risks a facility may face during implementation.
+    </p>
+      <fieldset class="usa-fieldset">
+      <legend class="usa-sr-only">Risks and Mitigations</legend>
+        <ul class="practice-editor-risk-mitigation-ul" id="sortable_risk_mitigations" role="listbox" aria-label="Practice editor risk and mitigation pair list">
+          <%= f.fields_for :risk_mitigations, wrapper: false do |rm| %>
+            <%
+              rm_id = rm.object.id
+              rm_position = rm.object.position
+            %>
+            <% if rm.object.id %>
+              <%# add separators on page load %>
+              <% provide :head_tags do %>
+                <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+                  $(document).arrive('<%= "#practice_risk_mitigations_attributes_#{rm.index}_mitigations_attributes_0_description" %>',
+                    function(newElem) {
+                      styleOriginFacility(
+                        $(newElem).closest('li'),
+                        <%= rm_id %>,
+                        '.practice-editor-risk-mitigation-li',
+                        '.practice-editor-risk-mitigation-ul',
+                        '11'
+                      );
+                      $(document).unbindArrive('<%= "#practice_risk_mitigations_attributes_#{rm.index}_mitigations_attributes_0_description" %>', newElem);
+                    }
+                  );
+                <% end %>
+              <% end %>
+            <% end %>
+            <li class="practice-editor-risk-mitigation-li fields" role="option"  data-id="<%= rm_id %>">
+              <%= rm.hidden_field :id %>
+              <%= rm.hidden_field :position, class: 'risk-mitigation-position' %>
+              <div class="risk-container grid-row">
+                <%= rm.fields_for :risks, wrapper: false do |risk| %>
+                  <%
+                    risk_id = risk.object.id
+                  %>
+                  <%= risk.hidden_field :id %>
+                  <div id="risk_<%= risk_id %>_container" class="risk_<%= risk_id %>_container grid-col-11">
+                    <%= risk.label :description, 'Description of the risk', class: 'usa-label display-inline-block timeline-duration font-sans-sm' %>
+                    <%= risk.text_field :description, class: "usa-input risk-description-textarea", 'counter-id': "risk_#{risk_id}_description_textarea" %>
+                  </div>
+                <% end %>
+              </div>
+              <div class="grid-col-11 mitigation-container">
+                <%= rm.fields_for :mitigations, wrapper: false do |miti| %>
+                  <%
+                    mitigation_id = miti.object.id
+                  %>
+                  <%= miti.hidden_field :id %>
+                  <div id="mitigation_<%= mitigation_id %>_container" class="mitigation_<%= mitigation_id %>_container">
+                    <%= miti.label :description, 'Corresponding mitigation', class: 'usa-label grid-col-11 font-sans-sm margin-top-2' %>
+                    <%= miti.text_area :description, class: 'usa-input practice-input mitigation-description-textarea height-15', 'counter-id': "mitigation_#{mitigation_id}_description_textarea" %>
+                  </div>
+                <% end %>
+              </div>
+              <div class="grid-row">
+                <div class="grid-col-11 risk-miti-trash-container margin-top-1">
+                  <%= rm.link_to_remove 'Delete entry', class: "risk-mitigation-trash usa-button--unstyled dm-btn-warning float-right line-height-26", 'aria-label': 'Remove' %>
+                </div>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+        <%= f.link_to_add :risk_mitigations, id: 'dm-add-link-risk-mitigation', class: "add-risk-mitigation-link line-height-26 usa-button--unstyled dm-btn-primary #{'display-none' unless @practice.risk_mitigations.any?}" do %>
+          <span class="text-normal">Add another</span>
+        <% end %>
+        <%= f.link_to_add :risk_mitigations, id: 'dm-add-button-risk-mitigation', class: "usa-button--outline dm-btn-primary add-risk-mitigation-link #{'display-none' if @practice.risk_mitigations.any?}" do %>
+          <span class="font-sans-sm text-bold text-no-underline">Add risk and mitigation</span>
+        <% end %>
+        <ul class="trash-can display-none"></ul>
+      </fieldset>
+
+  </section>
+</div>
+

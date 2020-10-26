@@ -19,52 +19,50 @@
 
     function hideAddLinksAndShowRiskMitiFields() {
         $('.add-risk-mitigation-link').on('click', () => {
+            let addBtnExists = $('#dm-add-button-risk-mitigation').length > 0;
+
+            // change add button display
+            if (addBtnExists) {
+                $('#dm-add-button-risk-mitigation').addClass('display-none');
+                $('#dm-add-link-risk-mitigation').removeClass('display-none');
+            }
+
             $document.arrive('.fields', (newElement) => {
+                // add separator to previous element if another risk mitigation exists
                 $(newElement).appendTo('#sortable_risk_mitigations');
                 initSortable('#sortable_risk_mitigations');
+                let multipleRiskMitigationExists = $('.practice-editor-risk-mitigation-li').length >= 1
+                if (multipleRiskMitigationExists) {
+                    let separator = '<div class="grid-col-11 border-y-1px border-gray-5 add-another-separator margin-y-2"></div>'
+                    $(newElement).prev().append(separator)
+                }
+
+                // add delete entry event handler
+                let $deleteEntry = $(newElement).find('.risk-mitigation-trash')
+                attachDeleteEntryHandler($deleteEntry)
+
                 const riskUuid = createUniqueRiskMitiId();
                 const mitiUuid = createUniqueRiskMitiId();
                 const riskMitiId = newElement.firstElementChild.name.split('[')[2].replace(']', '');
-                $(newElement).find('div.padding-205.border.border-width-1px.border-base-lighter.radius-sm.margin-top-3').prepend(`
-                        <div class="position-relative">
-                            <div class="fas fa-arrows-alt font-sans-lg position-arrows risk-miti-arrows text-base arrows-tooltip">
-                                <span class="usa-tag tooltip-text">Drag and drop to change order</span>
-                            </div>
-                        </div>
-                        <div class="grid-row width-full">
-                            <div class="grid-col-11">
+                $(newElement).find('div.risk-container').prepend(`
                                 <input type="hidden" name="practice[risk_mitigations_attributes][${riskMitiId}][risks_attributes][0][id]" id="practice_risk_mitigations_attributes_${riskMitiId}_risks_attributes_0_id">
-                                <div class="risk_container">
-                                    <label class="usa-label text-bold display-inline-block risk-description" for="practice_risk_mitigations_attributes_${riskMitiId}_description">Risk:</label>&nbsp;<span>Type the name or description of the risk.</span>&nbsp;<span class="text-base-light risk-character-count risk_0_character_count" id="risk_${riskMitiId}_character_count">(0/150 characters)</span>
-                                    <textarea class="usa-input practice-input risk-description-textarea height-15 risk_0_description_textarea" id="practice_risk_mitigations_attributes_${riskMitiId}_description" name="practice[risk_mitigations_attributes][${riskMitiId}][risks_attributes][0][description]"></textarea>
+                                <div class="risk_container grid-col-11">
+                                    <label class="usa-label display-inline-block risk-description" for="practice_risk_mitigations_attributes_${riskMitiId}_description"> Description of the risk</label>
+                                    <input class="usa-input practice-input risk-description-textarea risk_0_description_textarea" type="text" id="practice_risk_mitigations_attributes_${riskMitiId}_description" name="practice[risk_mitigations_attributes][${riskMitiId}][risks_attributes][0][description]">
                                 </div>
-                            </div>
-                        </div>
                     `);
 
                     let mitigationContainer = `
-                        <div class="grid-col-11">
                             <input type="hidden" name="practice[risk_mitigations_attributes][${riskMitiId}][mitigations_attributes][0][id]" id="practice_risk_mitigations_attributes_${riskMitiId}_mitigations_attributes_0_id">
                             <div class="mitigation_container">
-                                <label class="usa-label text-bold display-inline-block" for="practice_risk_mitigations_attributes_${riskMitiId}_mitigations_attributes_0_description">Mitigation:</label>&nbsp;<span>Type the corresponding mitigation to the risk.</span>&nbsp;<span class="text-base-light mitigation-character-count" id="mitigation_${riskMitiId}_character_count">(0/150 characters)</span>
+                                <label class="usa-label grid-col-11 font-sans-sm margin-top-2" for="practice_risk_mitigations_attributes_${riskMitiId}_mitigations_attributes_0_description">Corresponding mitigation</label>
                                 <textarea class="usa-input practice-input mitigation-description-textarea height-15" id="practice_risk_mitigations_attributes_${riskMitiId}_mitigations_attributes_0_description" name="practice[risk_mitigations_attributes][${riskMitiId}][mitigations_attributes][0][description]"></textarea>
                             </div>
-                        </div>
                     `;
-
-                    $(newElement).find('.risk-miti-trash-container').before(mitigationContainer);
+                    $(newElement).find('.mitigation-container').append(mitigationContainer)
 
                 $document.unbindArrive('.fields');
             })
-        });
-    }
-
-    function removeBulletPointFromNewLi() {
-        $document.arrive('.practice-editor-risk-mitigation-li', (newElem) => {
-            $(newElem).css('list-style', 'none');
-            $(newElem).appendTo('#sortable_risk_mitigations');
-            initSortable('#sortable_risk_mitigations');
-            $document.unbindArrive('.practice-editor-risk-mitigation-li', newElem);
         });
     }
 
@@ -90,11 +88,32 @@
         }
     }
 
+    function attachDeleteEntryHandler(elem) {
+        $(elem).on('click', (e) => {
+            let $previousLi = $(e.target).closest('.practice-editor-risk-mitigation-li').filter(":visible").prev('.practice-editor-risk-mitigation-li').filter(":visible");
+
+            let $afterLi = $(e.target).closest('.practice-editor-risk-mitigation-li').filter(":visible").next('.practice-editor-risk-mitigation-li').filter(":visible");
+
+            let $allLi = $('.practice-editor-risk-mitigation-li').filter(":visible")
+
+            // remove previous element separator if there is no element after the one being deleted
+            if ($previousLi.length > 0 && $afterLi.length === 0) {
+                $previousLi.find('.add-another-separator').filter(":visible").remove();
+            }
+
+            // if there are no more <li> elements display the add button
+            if ($allLi.length <= 1) {
+                $('#dm-add-button-risk-mitigation').removeClass('display-none');
+                $('#dm-add-link-risk-mitigation').addClass('display-none');
+            }
+        })
+    }
+
     function loadPracticeEditorRiskMitiFunctions() {
         hideAddLinksAndShowRiskMitiFields();
         createUniqueRiskMitiId();
-        removeBulletPointFromNewLi();
-        dragAndDropRiskMitigationListItems();
+        attachDeleteEntryHandler('.risk-mitigation-trash');
+        // dragAndDropRiskMitigationListItems();
     }
 
     $document.on('turbolinks:load', loadPracticeEditorRiskMitiFunctions);

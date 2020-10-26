@@ -23,6 +23,7 @@ header {
   }
 
   .usa-nav__link {
+    color: $dm-color-gray-60 !important;
     padding: 1rem;
   }
 
@@ -41,19 +42,19 @@ header {
     }
 
     .usa-nav__primary-item, .usa-nav__submenu-item {
-      border-top: 0.0625rem solid $dm-color-cool-gray-30 !important;
+      border-top: 0.0625rem solid $dm-color-gray-30 !important;
     }
 
     .usa-nav__submenu {
       width: 100%;
 
       &:last-child {
-        border-bottom: 0.0625rem solid $dm-color-cool-gray-30 !important;
+        border-bottom: 0.0625rem solid $dm-color-gray-30 !important;
       }
     }
 
     .dm-last-nav-link {
-      border-bottom: 0.0625rem solid $dm-color-cool-gray-30 !important;
+      border-bottom: 0.0625rem solid $dm-color-gray-30 !important;
     }
 
     .usa-nav__submenu-item {
@@ -76,7 +77,7 @@ header {
     }
 
     .usa-nav__link {
-      color: $dm-color-base;
+      color: $dm-color-base !important;
       border-left: 0.25rem transparent !important;
       padding-left: 0.75rem;
 
@@ -95,7 +96,7 @@ header {
       }
 
       &[aria-expanded="false"] {
-        border-bottom: 0.0625rem solid $dm-color-cool-gray-30 !important;
+        border-bottom: 0.0625rem solid $dm-color-gray-30 !important;
       }
     }
 

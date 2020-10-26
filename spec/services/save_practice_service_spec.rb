@@ -83,7 +83,7 @@ RSpec.describe SavePracticeService do
           crop_h: 10
         }
         save_practice = SavePracticeService.new({ practice: @practice, practice_params: practice_params})
-        
+
         result = save_practice.save_practice
         expect(result).to eq true
       end

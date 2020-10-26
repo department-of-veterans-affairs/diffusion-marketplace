@@ -5,25 +5,60 @@
         $document.on('click', '#clear_entry', function () {
             const adoptionFormId = 'adoption_form';
             const $adoptionForm = $(`#${adoptionFormId}`);
+            $adoptionForm.parent().prev('.usa-alert').remove();
             $adoptionForm.parent().find('.usa-alert').remove();
-            $adoptionForm.find('.usa-alert').remove();
             $adoptionForm[0].reset();
             const end_month_el = document.getElementById('date_ended_month');
             const end_year_el = document.getElementById('date_ended_year');
             const facility_el = document.getElementById('editor_facility_select');
-            end_month_el.classList.add('dm-color-disabled');
+            end_month_el.classList.add('dm-color-gray-20');
             end_month_el.disabled = true;
-            end_year_el.classList.add('dm-color-disabled');
+            end_year_el.classList.add('dm-color-gray-20');
             end_year_el.disabled = true;
             facility_el.style.color = FACILITY_SELECT_DISABLED_COLOR;
             facility_el.disabled = true;
+            $('#adoption_form_container').addClass('display-none');
+            $('#add_adoption_button').removeClass('display-none');
+        })
+    }
+
+    function showAdoptionForm() {
+        $(document).on('click', '#add_adoption_button', function() {
+            $(this).addClass('display-none');
+            $('#adoption_form_container').removeClass('display-none');
+            $('.parent-accordion-button').each(function() {
+                if ($(this).attr('aria-expanded') === 'true') {
+                    $(this).attr('aria-expanded', false);
+                    $(this).parent().next().attr('hidden', true)
+                }
+            })
+        })
+    }
+
+    function toggleAccordions(accordionEl1, accordionEl2) {
+        $(document).on("click", accordionEl1, function() {
+            let adoptionFormEl = $('#adoption_form_container');
+            if (accordionEl1 === '.parent-accordion-button') {
+                if (!adoptionFormEl.hasClass('display-none')) {
+                    adoptionFormEl.addClass('display-none');
+                    $('#add_adoption_button').removeClass('display-none');
+                }
+                $(accordionEl2).parent().next().attr('hidden', true);
+                $(accordionEl2).attr('aria-expanded', false);
+            }
+            $(accordionEl1).not($(this)).parent().next().attr('hidden', true);
+            $(accordionEl1).not($(this)).attr('aria-expanded', false);
         })
     }
 
     function loadPracticeEditorFunctions() {
         // relies on `_facilitySelect.js` utility file to be loaded prior to this file
         getFacilitiesByState(facilityData);
+        //getAdoptionFacilitiesByState(facilityData);
         clearAdoptionEntryForm();
+        showAdoptionForm();
+        toggleAccordions('.child-accordion-button', '.parent-accordion-button');
+        toggleAccordions('.parent-accordion-button', '.child-accordion-button');
     }
 
     // client-side validate dates
@@ -58,7 +93,7 @@
             Rails.fire(document.getElementById(formId), 'submit');
         } else {
             const alertHtml = `
-                <div class="usa-alert usa-alert--error" role="alert">
+                <div class="usa-alert usa-alert--error margin-bottom-2" role="alert">
                     <div class="usa-alert__body">
                         <h3 class="usa-alert__heading">There was a problem with your date entries.</h3>
                         <p class="usa-alert__text">The start date cannot be after the end date.</p>

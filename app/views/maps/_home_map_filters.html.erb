@@ -20,12 +20,12 @@
         practice matched (of <%= diffused_practices.length %>)
       </p>
     </div>
-    <button type="button" class="usa-button--unstyled" id="allMarkersButton">Reset filters</button>
+    <button type="button" class="usa-button--unstyled dm-btn-primary" id="allMarkersButton">Reset filters</button>
     <div class="margin-y-105">
       <button type="submit" class="usa-button padding-2 update-map-results-button">Update results</button>
     </div>
   </div>
-  <hr class="flex-fill height-2px border border-base-lighter bg-base-lighter section-line margin-0">
+  <hr class="flex-fill height-2px border border-base-lighter bg-base-lighter dm-section-line margin-0">
 
   <form id="mapFilters" name="mapFilters" class="padding-left-1">
     <div class="map-filters-content">
@@ -47,7 +47,7 @@
           <% statuses.each do |v| %>
             <input id="status_<%= v.downcase.gsub(' ', '_') %>" name="statuses" type="checkbox" value="<%= v %>" class="usa-checkbox__input">
             <label for="status_<%= v.downcase.gsub(' ', '_') %>" class="usa-checkbox__label adoption-status-label">
-              <%= v %>
+              <%= v == 'Complete' ? 'Successful' : v %>
             </label>
           <% end %>
         </fieldset>
@@ -93,7 +93,7 @@
         <div id="practiceListContainer" class="map-filters-list display-none">
           <fieldset>
             <legend class="usa-sr-only">Facilities</legend>
-            <% @vamc_facilities.sort_by {|f| [f["StreetAddressState"], f["OfficialStationName"], ]}.each do |f| %>
+            <% @vamc_facilities.sort_by {|f| [f["StreetAddressState"], f["OfficialStationName"]]}.each do |f| %>
               <input id="<%= f["StationNumber"] %>" name="facilities" type="checkbox" value="<%= f["StationNumber"] %>" class="usa-checkbox__input">
               <label for="<%= f["StationNumber"] %>" class="usa-checkbox__label">
                 <%= f["StreetAddressState"] %>: <%= f["OfficialStationName"] %>
