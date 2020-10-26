@@ -2,12 +2,12 @@
   <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
-<div class="dm-background-white">
+<div class="bg-white">
   <!-- "Welcome" section -->
   <section class="grid-container">
     <%= render partial: "shared/messages", locals: {small_text: false} %>
 
-    <div class="margin-y-5 dm-background-white grid-row">
+    <div class="margin-y-5 bg-white grid-row">
       <div class="tablet:grid-col-fill ie-welcome-container">
         <div class="tablet:grid-col-10">
           <h1 class="bold font-sans-2xl margin-top-0 margin-bottom-2">Welcome to the Diffusion Marketplace</h1>
@@ -30,7 +30,7 @@
         <div class="homepage-featured-section-container height-auto position-relative margin-bottom-3 desktop:margin-bottom-0 padding-right-4 desktop:padding-right-0">
           <div class="grid-row desktop:margin-right-2">
             <div class="grid-col-12 desktop:grid-col-8">
-              <%= link_to '/covid-19', class: 'homepage-featured-link' do %>
+              <%= link_to '/covid-19', class: 'dm-internal-link homepage-featured-link' do %>
                 <h2 class="font-sans-xl">COVID-19<span class="fas fa-angle-right margin-left-105"></span></h2>
               <% end %>
               <p class="line-height-sans-505 font-sans-sm">
@@ -38,7 +38,7 @@
                 We have assembled a group of practices for frontline staff and administrators responding to the changing
                 medical landscape.
               </p>
-              <%= link_to 'See more', '/covid-19', class: 'usa-button usa-button--outline' %>
+              <%= link_to 'See more', '/covid-19', class: 'usa-button--outline dm-btn-base' %>
             </div>
             <div class="grid-col-fill text-center dm-virus-image-container">
               <i class="fas fa-viruses fa-9x text-primary-darker"></i>
@@ -50,14 +50,14 @@
         <div class="homepage-featured-section-container height-full dm-primary-5v-background position-relative padding-right-4 desktop:padding-right-0">
           <div class="grid-row">
             <div class="grid-col-12">
-              <%= link_to '/diffusion-map', class: 'homepage-featured-link' do %>
+              <%= link_to '/diffusion-map', class: 'dm-internal-link homepage-featured-link' do %>
                 <h2 class="font-sans-xl">Diffusion map<span class="fas fa-angle-right margin-left-105"></span></h2>
               <% end %>
               <p class="line-height-sans-505 font-sans-sm">
                 See practices mapped out by location.
               </p>
               <div class="dm-diffusion-map-more">
-                <%= link_to 'See more', '/diffusion-map', class: 'usa-button usa-button--outline' %>
+                <%= link_to 'See more', '/diffusion-map', class: 'usa-button--outline dm-btn-base' %>
               </div>
             </div>
           </div>

@@ -32,17 +32,16 @@ $(document).on('turbolinks:load', () => {
     if (numEvents === 0) {
         $(document).on('click', '.comments-show-hide-button', (event) => {
             const target = $(event.currentTarget);
-            const container = target.parent().next();
+            const container = target.parent().next().find('.children');
             const containerHidden = container.hasClass('hidden');
             containerHidden ? container.removeClass('hidden') : container.addClass('hidden');
 
             const numReplies = target.data('number-replies');
             const repliesText = numReplies === 1 ? 'reply' : 'replies';
-            console.log('container hidden', containerHidden);
             if (!containerHidden) {
-                target.text(`View ${numReplies} ${repliesText} >`);
+                target.text(`Show ${numReplies} ${repliesText}`);
             } else {
-                target.text(`Hide ${repliesText} >`);
+                target.text(`Hide ${numReplies} ${repliesText}`);
             }
         });
     }

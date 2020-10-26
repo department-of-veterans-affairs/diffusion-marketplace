@@ -33,9 +33,6 @@
     <div class="grid-container margin-bottom-6">
       <div class="grid-row grid-gap">
         <div class="grid-col-8">
-          <!-- <button type="button" id="print-checklist-button" role="button" class="dm-button-secondary margin-bottom-205">Print Checklist
-          </button> -->
-
           <fieldset class="usa-fieldset">
             <legend class="usa-sr-only">Implementation checklist</legend>
 
@@ -43,13 +40,13 @@
             <div id="implementation-team" class="margin-bottom-3">
               <div class="usa-checkbox">
                 <input class="usa-checkbox__input" id="team" type="checkbox" name="checklist" value="implementation team">
-                <label class="usa-checkbox__label margin-bottom-1" for="team"><span class="fw-bold">Implementation team</span></label>
+                <label class="usa-checkbox__label margin-bottom-1" for="team"><span class="text-bold">Implementation team</span></label>
               </div>
               <div class="padding-left-9">
                 <% @practice.additional_staffs.each do |as| %>
                   <div class="usa-checkbox margin-bottom-205">
                     <input class="usa-checkbox__input" id="additional-staff-<%= as.id %>" type="checkbox" name="checklist" value="additional-staff-<%= as.id %>">
-                    <label class="usa-checkbox__label margin-bottom-1" for="additional-staff-<%= as.id %>"><span class="fw-bold"><%= as.title %></span></label>
+                    <label class="usa-checkbox__label margin-bottom-1" for="additional-staff-<%= as.id %>"><span class="text-bold"><%= as.title %></span></label>
                   </div>
                 <% end %>
               </div>

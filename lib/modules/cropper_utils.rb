@@ -10,4 +10,12 @@ module CropperUtils
     record.crop_h = params[:crop_h]
     record.avatar.reprocess!
   end
+
+  def reprocess_attachment(record, params)
+    record.crop_x = params[:crop_x]
+    record.crop_y = params[:crop_y]
+    record.crop_w = params[:crop_w]
+    record.crop_h = params[:crop_h]
+    record.attachment.reprocess!
+  end
 end

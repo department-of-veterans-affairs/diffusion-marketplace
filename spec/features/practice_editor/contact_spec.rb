@@ -1,158 +1,121 @@
 require 'rails_helper'
 
 describe 'Practice editor', type: :feature, js: true do
-    before do
-        @admin = User.create!(email: 'toshiro.hitsugaya@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-        @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline')
-        @admin.add_role(User::USER_ROLES[0].to_sym)
-    end
-
     describe 'Contact Page' do
         before do
+            @admin = User.create!(email: 'toshiro.hitsugaya@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+            @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline')
+            @admin.add_role(User::USER_ROLES[0].to_sym)
             login_as(@admin, :scope => :user, :run_callbacks => false)
             visit practice_contact_path(@practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508
             @save_button = find('#practice-editor-save-button')
-            @image_path = File.join(Rails.root, '/spec/assets/charmander.png')
-            @practice_email = 'test@mail.com'
-            @employee_name = 'Test name'
-            @employee_role = 'Test role'
-            @choose_image_text = 'Choose an image that clearly shows a face. Use a high-quality .jpg, .jpeg, or .png files less than 32MB.'
+            @practice_main_email = 'test@mail.com'
+            @email_field_name = 'practice[practice_emails_attributes][0][address]'
+            @email_field_name_2 = 'practice[practice_emails_attributes][1][address]'
         end
 
         it 'should be there' do
             expect(page).to have_content('Contact')
-            expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/risk_and_mitigation")
-            expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/checklist")
-            expect(page).to have_content('Upload photo')
-            expect(page).to have_content(@choose_image_text)
-            expect(page).to have_no_content('Remove photo')
-            expect(page).to have_no_content('Edit photo')
-            expect(page).to have_no_content('Upload new photo')
-            expect(page).to have_no_content('Cancel edits')
-            expect(page).to have_no_content('Save edits')
+            expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/implementation")
+            expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/about")
+            expect(page).to have_content('This section helps people to reach out for support, ask questions, and connect about your practice.')
         end
 
-        # it 'should require the user to fill out the fields that are marked as required' do
-        #     @save_button.click
-        #     email_message = page.find('.contact-email-input').native.attribute('validationMessage')
-        #     expect(email_message).to eq('Please fill out this field.')
-        #     fill_in('Email:', with: @practice_email)
-        #     @save_button.click
-        #     contact_name_message = page.find('.va-employee-name-input').native.attribute('validationMessage')
-        #     expect(contact_name_message).to eq('Please fill out this field.')
-        #     fill_in('Name:', with: @employee_name)
-        #     contact_role_message = page.find('.va-employee-role').native.attribute('validationMessage')
-        #     expect(contact_role_message).to eq('Please fill out this field.')
-        # end
-
-        def fill_in_email_field
-            fill_in('Email:', with: @practice_email)
+        it 'should require the user to fill out the main email address field' do
+            @save_button.click
+            email_message = page.find('.main-practice-email-input').native.attribute('validationMessage')
+            expect(email_message).to eq('Please fill out this field.')
         end
 
-        def fill_in_contact_fields
-            fill_in('Name:', with: 'Test name')
-            fill_in('Role:', with: 'Test role')
-            attach_file('Upload photo', @image_path)
+        def fill_in_main_email_field
+            fill_in('Main email address', with: @practice_main_email)
         end
 
-        it 'should allow the user to add a new contact' do
-            fill_in_email_field
-            fill_in_contact_fields
+        def first_cc_email_field_input
+            all('.pe-address-input').first
+        end
+
+        def first_cc_email_field
+            find_all('.practice-editor-contact-li').first
+        end
+
+        def last_cc_email_field_input
+            all('.pe-address-input').last
+        end
+
+        def last_cc_email_field
+            find_all('.practice-editor-contact-li').last
+        end
+
+        it 'should allow the user to update the email data on the page' do
+            # create the main email address
+            fill_in_main_email_field
             @save_button.click
 
-            expect(page).to have_content('Practice was successfully updated')
-            expect(page).to have_css("img.headshot-img")
-            expect(page).to have_field('Name:', with: @employee_name)
-            expect(page).to have_field('Role:', with: @employee_role)
-            expect(page).to have_content('Upload new photo')
-            expect(page).to have_content('Remove photo')
-            expect(page).to have_content('Edit photo')
-            expect(page).to have_content(@choose_image_text)
-            expect(page).to have_no_content('Upload photo')
-            expect(page).to have_no_content('Cancel edits')
-            expect(page).to have_no_content('Save edits')
-        end
-
-        it 'should allow the user to add multiple new contacts' do
-            fill_in_email_field
-            fill_in_contact_fields
-            find('.add-va-employee-link').click
-
-            all('.va-employee-name-input').last.set('Test name 2')
-            all('.va-employee-role').last.set('Test role 2')
-            @save_button.click
-
-            expect(page).to have_content('Practice was successfully updated')
-            expect(page).to have_css("img.headshot-img")
-            expect(page).to have_field('practice[va_employees_attributes][0][name]', with: @employee_name)
-            expect(page).to have_field('practice[va_employees_attributes][0][role]', with: @employee_role)
-            expect(page).to have_field('practice[va_employees_attributes][1][name]', with: 'Test name 2')
-            expect(page).to have_field('practice[va_employees_attributes][1][role]', with: 'Test role 2')
-            expect(page).to have_content('Upload new photo')
-            expect(page).to have_content('Remove photo')
-            expect(page).to have_content(@choose_image_text)
-            expect(page).to have_content('Edit photo')
-            expect(page).to have_content('Upload photo')
-            expect(page).to have_no_content('Cancel edits')
-            expect(page).to have_no_content('Save edits')
-        end
-
-        it 'should allow the user to delete contacts' do
-            fill_in_email_field
-            fill_in_contact_fields
-            @save_button.click
-
-            find('.va-employee-trash').click
-            @save_button.click
-
-            expect(page).to have_content('Practice was successfully updated')
-            expect(page).to have_field('Name:', with: nil)
-            expect(page).to have_field('Role:', with: nil)
-        end
-
-        it 'should allow the user to crop multiple contacts -- new and existing' do
-            fill_in_email_field
-            find('.add-va-employee-link').click
-
-            # added contact box
-            within all('.cropper-boundary')[1] do
-                fill_in_contact_fields
-                find('.cropper-edit-mode').click
-                expect(page).to have_no_content(@choose_image_text)
-                expect(page).to have_content("Please click \"Save edits\" and then \"Save your progress\" to save and exit editor.")
-                expect(page).to have_content('Cancel edits')
-                expect(page).to have_content('Save edits')
-                expect(page).to have_css('.cropper-modal')
-                find('.cropper-save-edit').click
-                expect(find("#crop_x", :visible => false).value).to match '22'
-                expect(find("#crop_y", :visible => false).value).to match '22'
-                expect(find("#crop_w", :visible => false).value).to match '180'
-                expect(find("#crop_h", :visible => false).value).to match '180'
+            # see if the main email shows up in the show view
+            click_link(@practice.name)
+            expect(page).to have_content('Email')
+            within(:css, '#contact') do
+                expect(page).to have_content(@practice_main_email)
             end
 
+            # Edit the main email
+            visit practice_contact_path(@practice)
+            fill_in('Main email address', with: 'main_test@test.com')
             @save_button.click
+            expect(page).to have_field('Main email address', with: "main_test@test.com")
 
-            # existing contact box
-            within all('.cropper-boundary')[0] do
-                fill_in('Name:', with: 'Test name')
-                fill_in('Role:', with: 'Test role')
-                attach_file('Upload new photo', @image_path)
-                find('.cropper-edit-mode').click
-                expect(page).to have_no_content(@choose_image_text)
-                expect(page).to have_content("Please click \"Save edits\" and then \"Save your progress\" to save and exit editor.")
-                expect(page).to have_content('Cancel edits')
-                expect(page).to have_content('Save edits')
-                expect(page).to have_css('.cropper-modal')
 
-                find('.cropper-save-edit').click
-                expect(find("#crop_x", :visible => false).value).to match '22'
-                expect(find("#crop_y", :visible => false).value).to match '22'
-                expect(find("#crop_w", :visible => false).value).to match '180'
-                expect(find("#crop_h", :visible => false).value).to match '180'
+            # check if the main email with updated text shows up in the show view
+            click_link(@practice.name)
+            expect(page).to have_content('main_test@test.com')
+
+            # create one cc email and save
+            visit practice_contact_path(@practice)
+            first_cc_email_field_input.set('test2@test.com')
+
+            @save_button.click
+            expect(page).to have_field(@email_field_name, with: 'test2@test.com')
+
+            # Edit the cc email
+            first_cc_email_field_input.set('test22@test.com')
+            @save_button.click
+            expect(page).to have_field(@email_field_name, with: 'test22@test.com')
+
+            # create another cc email and save
+            click_link('Add another')
+            last_cc_email_field_input.set('second_test@test.com')
+
+            @save_button.click
+            expect(page).to have_field(@email_field_name, with: 'test22@test.com')
+            expect(page).to have_field(@email_field_name_2, with: 'second_test@test.com')
+
+            # delete first cc email
+            input_field_id = first_cc_email_field_input[:id]
+            within(first_cc_email_field) do
+                click_link('Delete entry')
+                expect(page).to_not have_selector("##{input_field_id}")
+            end
+            @save_button.click
+            within(:css, '.practice-editor-contact-ul') do
+                expect(page).to have_field(@email_field_name, with: 'second_test@test.com')
             end
 
-            # @save_button.click
+            # delete "second" cc email
+            expect(page).to have_field(@email_field_name, with: 'second_test@test.com')
+            input_field_id = first_cc_email_field_input[:id]
+            within(:css, '#contact_container') do
+                click_link('Add another')
+            end
+            within(first_cc_email_field) do
+                click_link('Delete entry')
+                expect(page).to_not have_selector("##{input_field_id}")
+            end
+            @save_button.click
+            within(:css, '.practice-editor-contact-ul') do
+                expect(page).to_not have_selector("##{input_field_id}")
+            end
         end
     end
 end

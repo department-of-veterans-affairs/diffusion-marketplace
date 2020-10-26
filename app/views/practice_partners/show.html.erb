@@ -6,18 +6,10 @@
   <section class="grid-container">
     <%= render partial: "shared/messages", locals: {small_text: false} %>
   </section>
-  <section class="grid-container">
-    <div class="dm-font-color-blue-50v margin-y-2 breadcrumbs" id="breadcrumbs">
-      <a href="/">Home</a>
-      <span class="x0-5-left x0-5-right">›</span>
-      <span><%= link_to 'Partners', practice_partners_path %></span>
-      <span class="x0-5-left x0-5-right">›</span>
-      <span class="text-bold"><%= @practice_partner.short_name.present? ? @practice_partner.short_name : @practice_partner.name %></span>
-    </div>
-  </section>
+  <%= render '/practices/breadcrumbs' %>
   <div class="grid-container margin-top-3 margin-bottom-205">
-      <%= link_to practice_partners_path(@practices), class: 'back-to-partners-link' do %>
-          <span class="fas fa-chevron-left"></span>&nbsp;&nbsp;<span class="font-sans-md">Return to all partners</span>
+      <%= link_to practice_partners_path(@practices), class: 'usa-button--unstyled dm-btn-primary' do %>
+          <span class="fas fa-chevron-left margin-right-1"></span><span class="font-sans-md">Return to all partners</span>
       <% end %>
   </div>
   <section class="margin-bottom-4 grid-container">

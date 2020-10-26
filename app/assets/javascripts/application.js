@@ -19,6 +19,7 @@
 //= require cropper
 //= require activestorage
 //= require turbolinks
+//= require arrive.min
 //= require uswds/uswds
 //= require jquery_nested_form
 //= require jquery-ui/widgets/tooltip
@@ -31,7 +32,6 @@
 //= require practices
 //= require _feedback_survey
 //= require _side_nav
-//= require admin
 //= require commontator/application
 //= require jquery.timeago
 //= require timeago
@@ -44,7 +44,6 @@
 //= require reportAbuse
 //= require turbolinksScrollTop
 //= require save-editor-progress
-//= require arrive.min
 //= require html5sortable
 //= require search
 //= require modernizr-custom
@@ -52,3 +51,4 @@
 //= require jquery.shave.min.js
 //= require typeahead.bundle.min.js
 //= require _render_warning_banners
+//= require autoResize

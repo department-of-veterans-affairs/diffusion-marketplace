@@ -51,24 +51,22 @@
     function setMoreLessHTML(element) {
         const showChar = 300;
         const ellipsesText = "...";
-        const moreText = '&nbsp; See more <i class="fas fa-angle-down show-arrow display-inline-block"></i>';
-        const lessText = '&nbsp; See less <i class="fas fa-angle-up show-arrow display-inline-block"></i>';
+        const moreText = 'See more';
+        const lessText = 'See less';
         let t = $(element).text();
+        let firstHalf = `${t.slice(0, showChar)}<span>${ellipsesText} </span><button type="button" class="usa-button--unstyled dm-btn-primary more-link text-no-underline width-auto">${moreText}</button>`;
+        let secondHalf = `<span style="display:none;">${t.slice(showChar, t.length)} <button type="button" class="usa-button--unstyled dm-btn-primary less-link text-no-underline width-auto">${lessText}</button></span>`;
         if (t.length < showChar) return;
 
-        $(element).html(
-            `
-             ${t.slice(0, showChar)}<span>${ellipsesText}</span> <button type="button" class="usa-button usa-button--unstyled more-link text-no-underline">${moreText}</button>
-             <span style="display:none;"> ${t.slice(showChar, t.length)} <button type="button" class="usa-button usa-button--unstyled less-link text-no-underline">${lessText}</button></span>
-             `
-        );
+        $(element).html(firstHalf + secondHalf);
     }
 
     function setMoreLessHandlers(elements) {
         $('button.more-link', elements).click(function (event) {
+            let $this = $(this);
             event.preventDefault();
-            $(this).hide().prev().hide();
-            $(this).next().show();
+            $this.hide().prev().hide();
+            $this.next().show();
         });
 
         $('button.less-link', elements).click(function (event) {
@@ -95,11 +93,149 @@
         });
     }
 
+    function createWidthForImageCaption() {
+        $('.practice-editor-impact-photo-container').each(function () {
+            $(this).hide();
+        });
+        $(window).on('load', function() {
+            $('.practice-editor-impact-photo').each(function () {
+                $(this).parent().show();
+                if ($(window).width() > 1023) {
+                    $(this).next().width(`${$(this).width()}`);
+                }
+            })
+        })
+    }
+
+    // This sets the comment parameters for the Resize plugin
+    function commontatorResize(El) {
+        if (!$(El).hasClass('clone')) {
+            $(El).each(function () {
+                $(El).autoResize({extraSpace: 14});
+                $(El).height($(this)[0].scrollHeight - 12);
+            });
+        }
+    }
+
+    function expandCommentTextArea() {
+        commontatorResize('.comment-textarea')
+    }
+
+    function expandReplyTextArea() {
+        let replyEl = '.reply-textarea';
+        $document.arrive(replyEl, function(newElem) {
+            if (!$(newElem).hasClass('clone')) {
+                commontatorResize(newElem);
+            }
+            $document.unbindArrive(replyEl, newElem);
+        });
+    }
+
     function executePracticeCommentsFunctions() {
         highlightSidebarSectionWhenInView();
         setUpShowMoreOrLessButtons();
         setUpShowMoreOrLessOnArrive();
+        createWidthForImageCaption();
+        expandCommentTextArea();
+        expandReplyTextArea();
     }
 
     $document.on('turbolinks:load', executePracticeCommentsFunctions);
 })(window.jQuery);
+
+function seeMoreText() {
+    var dots = document.getElementById("dots");
+    var moreText = document.getElementById("more_text");
+    var btnText = document.getElementById("seeMore");
+    var originFacilityTruncated = document.getElementById("origin_facility_truncated");
+    if (dots.style.display === "none") {
+        dots.style.display = "inline";
+        btnText.innerHTML = "See more";
+        originFacilityTruncated.style.display = "inline";
+        moreText.style.display = "none";
+    } else {
+        dots.style.display = "none";
+        btnText.innerHTML = "See less";
+        originFacilityTruncated.style.display = "none";
+        moreText.style.display = "inline";
+    }
+}
+function seeMoreTextAwards() {
+    var dots = document.getElementById("dots_award");
+    var moreText = document.getElementById("more_text_award");
+    var btnText = document.getElementById("seeMore_award");
+    var awardsTruncated = document.getElementById("awards_truncated");
+    if (dots.style.display === "none") {
+        dots.style.display = "inline";
+        btnText.innerHTML = "See more";
+        moreText.style.display = "none";
+        awardsTruncated.style.display = "inline";
+    } else {
+        dots.style.display = "none";
+        btnText.innerHTML = "See less";
+        awardsTruncated.style.display = "none";
+        moreText.style.display = "inline";
+    }
+}
+
+function seeMoreSearchTermsMobile() {
+    var btnText = document.getElementById("seeMore_search_terms_mobile");
+    var termsTruncated = document.getElementById("search_terms_truncated_mobile");
+
+    if (termsTruncated.style.display === "none") {
+        btnText.innerHTML = "See less";
+        termsTruncated.style.display = "inline";
+    } else {
+        btnText.innerHTML = "See more";
+        termsTruncated.style.display = "none";
+    }
+}
+
+function seeMoreSearchTermsDesktop() {
+    var btnText = document.getElementById("seeMore_search_terms_desktop");
+    var termsTruncated = document.getElementById("search_terms_truncated_desktop");
+
+    if (termsTruncated.style.display === "none") {
+        btnText.innerHTML = "See less";
+        termsTruncated.style.display = "inline";
+    } else {
+        btnText.innerHTML = "See more";
+        termsTruncated.style.display = "none";
+    }
+}
+
+function seeMoreStatementText(dotsSection, moreStatementText, buttonText, statementTruncated) {
+    var dots = document.getElementById(dotsSection.id);
+    var moreText = document.getElementById(moreStatementText.id);
+    var btnText = document.getElementById(buttonText.id);
+    var originFacilityTruncated = document.getElementById(statementTruncated.id);
+    if (dots.style.display === "none") {
+        dots.style.display = "inline";
+        btnText.innerHTML = "See more";
+        originFacilityTruncated.style.display = "inline";
+        moreText.style.display = "none";
+    } else {
+        dots.style.display = "none";
+        btnText.innerHTML = "See less";
+        originFacilityTruncated.style.display = "none";
+        moreText.style.display = "inline";
+    }
+}
+
+function seeMoreTextOriginStory() {
+    let dots = document.getElementById("dots_origin_story");
+    let moreText = document.getElementById("more_text_origin_story");
+    let btnText = document.getElementById("seeMore_origin_story");
+    let textTruncated = document.getElementById("origin_story_truncated");
+    if (dots.style.display === "none") {
+        dots.style.display = "inline";
+        btnText.innerHTML = "See more";
+        moreText.style.display = "none";
+        textTruncated.style.display = "inline";
+    } else {
+        dots.style.display = "none";
+        btnText.innerHTML = "See less";
+        textTruncated.style.display = "none";
+        moreText.style.display = "inline";
+    }
+}

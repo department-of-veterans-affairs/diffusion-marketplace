@@ -6,7 +6,7 @@ class PracticesController < ApplicationController
                                       :collaborators, :impact, :resources, :documentation,
                                       :departments, :timeline, :risk_and_mitigation, :contact,
                                       :checklist, :publication_validation, :adoptions,
-                                      :create_or_update_diffusion_history]
+                                      :create_or_update_diffusion_history, :implementation, :introduction, :about]
   before_action :set_facility_data, only: [:show, :planning_checklist]
   before_action :set_office_data, only: [:show, :planning_checklist]
   before_action :set_visn_data, only: [:show, :planning_checklist]
@@ -20,7 +20,7 @@ class PracticesController < ApplicationController
                                            :documentation, :resources, :complexity,
                                            :timeline, :risk_and_mitigation,
                                            :contact, :checklist, :published,
-                                           :publication_validation, :adoptions]
+                                           :publication_validation, :adoptions, :about]
   before_action :set_date_initiated_params, only: [:update, :publication_validation]
   before_action :is_enabled, only: [:show]
   # GET /practices
@@ -57,10 +57,10 @@ class PracticesController < ApplicationController
       marker_url = view_context.image_path('map-marker-default.svg')
       status = 'Complete'
       if current_diffusion_status.status == 'In progress' || current_diffusion_status.status == 'Planning' || current_diffusion_status.status == 'Implementing'
-        marker_url = view_context.image_path('map-marker-in-progress.svg')
+        marker_url = view_context.image_path('map-marker-in-progress-default.svg')
         status = 'In progress'
       elsif current_diffusion_status.status == 'Unsuccessful'
-        marker_url = view_context.image_path('map-marker-unsuccessful.svg')
+        marker_url = view_context.image_path('map-marker-unsuccessful-default.svg')
         status = 'Unsuccessful'
       end
 
@@ -99,6 +99,8 @@ class PracticesController < ApplicationController
 
       marker.infowindow render_to_string(partial: 'maps/infowindow', locals: {diffusion_histories: dhg[1], completed: completed, in_progress: in_progress, facility: facility})
     end
+
+    render 'practices/show/show'
   end
 
   # GET /practices/1/edit
@@ -128,13 +130,7 @@ class PracticesController < ApplicationController
   # PATCH/PUT /practices/1
   # PATCH/PUT /practices/1.json
   def update
-    current_endpoint = request.referrer.split('/').pop
-    updated = true
-    if params[:practice].present?
-      pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
-      updated = SavePracticeService.new(pr_params).save_practice
-    end
-
+    updated = update_conditions
     respond_to do |format|
       if updated
         if updated.is_a?(StandardError)
@@ -151,7 +147,35 @@ class PracticesController < ApplicationController
             format.json { render json: @practice, status: :ok }
           end
         end
+      else
+        flash[:error] = "There was an #{@practice.errors.messages}. The practice was not saved."
+        format.html { redirect_back fallback_location: root_path }
+        format.json { render json: updated, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def clear_origin_facilities
+    origin_facilities = @practice.practice_origin_facilities
+    origin_facilities.destroy_all
+  end
+
+  def set_initiating_fac_params(params)
+    facility_type = params[:practice][:initiating_facility_type]
+    if facility_type == "facility" && params[:practice][:practice_origin_facilities_attributes].present?
+      @practice.initiating_facility = ""
+      @practice.initiating_department_office_id = ""
+    elsif facility_type == "visn" && params[:editor_visn_select].present?
+      @practice.initiating_facility = params[:editor_visn_select]
+      @practice.initiating_department_office_id = ""
+    elsif facility_type == "department" && params[:editor_office_state_select].present? && params[:practice][:initiating_department_office_id].present? && params[:practice][:initiating_facility]
+      @practice.initiating_facility = params[:practice][:initiating_facility]
+      @practice.initiating_department_office_id = params[:practice][:initiating_department_office_id]
+    elsif facility_type == "other" && params[:initiating_facility_other].present?
+      @practice.initiating_facility = params[:initiating_facility_other]
+      @practice.initiating_department_office_id = ""
+    else
+      params[:practice][:initiating_facility_type] = ""
     end
   end
 
@@ -246,6 +270,7 @@ class PracticesController < ApplicationController
 
   # GET /practices/1/instructions
   def instructions
+    render 'practices/form/instructions'
   end
 
   # /practices/slug/collaborators
@@ -255,11 +280,16 @@ class PracticesController < ApplicationController
 
   # /practices/slug/overview
   def overview
+    render 'practices/form/overview'
+  end
+
+  def implementation
+    render 'practices/form/implementation'
   end
 
   # /practices/slug/introduction
   def introduction
-    set_practice
+    render 'practices/form/introduction'
   end
 
   # GET /practices/1/origin
@@ -292,6 +322,12 @@ class PracticesController < ApplicationController
 
   # /practices/slug/contact
   def contact
+    render 'practices/form/contact'
+  end
+
+  # /practices/slug/about
+  def about
+    render 'practices/form/about'
   end
 
   # /practices/slug/checklist
@@ -302,12 +338,7 @@ class PracticesController < ApplicationController
   end
 
   def publication_validation
-    current_endpoint = request.referrer.split('/').pop
-    if params[:practice].present?
-      pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
-      updated = SavePracticeService.new(pr_params).save_practice
-    end
-
+    updated = update_conditions
     respond_to do |format|
       if can_publish
         # if there is an error with updating the practice, alert the user
@@ -405,23 +436,45 @@ class PracticesController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def practice_params
     params.require(:practice).permit(:need_training, :short_name, :tagline, :process, :it_required, :need_new_license, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :cost_to_implement_aggregate, :sustainability_aggregate, :veteran_satisfaction_aggregate, :difficulty_aggregate, :date_initiated,
-                                     :number_adopted, :number_departments, :number_failed, :implementation_time_estimate, :implementation_time_estimate_description, :implentation_summary, :implentation_fte, :initiating_department_office_id, :initiating_facility_type,
-                                     :training_provider, :training_length, :training_test, :training_provider_role, :required_training_summary, :support_network_email, :initiating_facility_other,
+                                     :number_adopted, :number_departments, :number_failed, :implementation_time_estimate, :implementation_time_estimate_description, :implentation_summary, :implentation_fte,
+                                     :training_provider, :training_length, :training_test, :training_provider_role, :required_training_summary, :support_network_email,
+                                     :initiating_facility_type, :initiating_department_office_id,
                                      :main_display_image, :crop_x, :crop_y, :crop_h, :crop_w,
-                                     :delete_main_display_image,
+                                     :tagline, :delete_main_display_image,
                                      :origin_picture, :origin_picture_original_w, :origin_picture_original_h, :origin_picture_crop_x, :origin_picture_crop_y, :origin_picture_crop_w, :origin_picture_crop_h,
+                                     :overview_problem, :overview_solution, :overview_results, :maturity_level,
                                      impact_photos_attributes: [:id, :title, :is_main_display_image, :description, :position, :attachment, :attachment_original_w, :attachment_original_h, :attachment_crop_x, :attachment_crop_y,
                                                                 :attachment_crop_w, :attachment_crop_h, :_destroy],
                                      video_files_attributes: [:id, :title, :description, :url, :position, :attachment, :attachment_original_w, :attachment_original_h, :attachment_crop_x, :attachment_crop_y,
                                                               :attachment_crop_w, :attachment_crop_h, :_destroy],
                                      difficulties_attributes: [:id, :description, :_destroy],
                                      risk_mitigations_attributes: [:id, :_destroy, :position, risks_attributes: [:id, :description, :_destroy], mitigations_attributes: [:id, :description, :_destroy]],
-                                     timelines_attributes: [:id, :description, :timeline, :_destroy, :position, milestones_attributes: [:id, :description, :_destroy]],
-                                     va_employees_attributes: [:id, :name, :role, :position, :_destroy, :avatar, :crop_x, :crop_y, :crop_w, :crop_h, :delete_avatar],
+                                     timelines_attributes: [:id, :description, :milestone, :timeline, :_destroy, :position],
+                                     va_employees_attributes: [:id, :name, :role, :_destroy],
                                      additional_staffs_attributes: [:id, :_destroy, :title, :hours_per_week, :duration_in_weeks, :permanent],
-                                     additional_resources_attributes: [:id, :_destroy, :name, :position, :description], required_staff_trainings_attributes: [:id, :_destroy, :title, :description], practice_creators_attributes: [:id, :_destroy, :name, :role, :avatar, :position, :delete_avatar, :crop_x, :crop_y, :crop_w, :crop_h],
-                                     publications_attributes: [:id, :_destroy, :title, :link, :position], additional_documents_attributes: [:id, :_destroy, :attachment, :title, :position], practice_permissions_attributes: [:id, :_destroy, :position, :name, :description],
-                                     practice_partner: {}, department: {})
+                                     additional_resources_attributes: [:id, :_destroy, :name, :position, :description],
+                                     required_staff_trainings_attributes: [:id, :_destroy, :title, :description],
+                                     practice_creators_attributes: [:id, :_destroy, :name, :role, :avatar, :position, :delete_avatar, :crop_x, :crop_y, :crop_w, :crop_h],
+                                     publications_attributes: [:id, :_destroy, :title, :link, :position],
+                                     additional_documents_attributes: [:id, :_destroy, :attachment, :title, :position],
+                                     practice_permissions_attributes: [:id, :_destroy, :position, :name, :description],
+                                     practice_partner: {},
+                                     department: {},
+                                     category: {},
+                                     practice_award: {},
+                                     practice_resources_attributes: {},
+                                     practice_problem_resources_attributes: {},
+                                     practice_solution_resources_attributes: {},
+                                     practice_results_resources_attributes: {},
+                                     practice_multimedia_attributes: {},
+                                     practice_email: {},
+                                     practice_testimonials_attributes: [:id, :_destroy, :testimonial, :author, :position],
+                                     practice_awards_attributes: [:id, :_destroy, :name],
+                                     categories_attributes: [:id, :_destroy, :name, :is_other],
+                                     practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :facility_type, :initiating_department_office_id],
+                                     practice_metrics_attributes: [:id, :_destroy, :description],
+                                     practice_emails_attributes: [:id, :address, :_destroy]
+    )
   end
 
   def can_view_practice
@@ -471,6 +524,10 @@ class PracticesController < ApplicationController
 
   def set_initiating_facility_other
     @initiating_facility_other = @practice.initiating_facility if @practice.other?
+  end
+
+  def set_office_data
+    @office_data = facilities_json.find{|f|f['']}
   end
 
   def can_view_committed_view
@@ -531,6 +588,27 @@ class PracticesController < ApplicationController
   end
 
   def can_publish
-    @practice.name.present? && @practice.tagline.present? && @practice.initiating_facility.present? && @practice.date_initiated.present? && @practice.summary.present? && @practice.support_network_email.present?
+    if @practice.name.present? && @practice.initiating_facility_type.present? && @practice.date_initiated.present? && @practice.summary.present? && @practice.support_network_email.present? && @practice.diffusion_histories.present?
+      @practice.has_facility? && @practice.tagline.present? && @practice.overview_problem.present? && @practice.overview_solution.present? && @practice.overview_results.present?
+    else
+      false
+    end
+  end
+
+  def current_endpoint
+    request.referrer.split('/').pop
+  end
+
+  def update_conditions
+    if params[:practice].present?
+      facility_type = params[:practice][:initiating_facility_type] || nil
+      if facility_type.present?
+        set_initiating_fac_params params
+      end
+      pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
+      updated = SavePracticeService.new(pr_params).save_practice
+      clear_origin_facilities if facility_type != "facility" && current_endpoint == 'introduction'
+      updated
+    end
   end
 end

@@ -9,6 +9,7 @@ class Practice < ApplicationRecord
   acts_as_list
   visitable :ahoy_visit
   enum initiating_facility_type: { facility: 0, visn: 1, department: 2, other: 3 }
+  enum maturity_level: { emerging: 0, replicate: 1, scale: 2 }
 
   attr_accessor :views
   attr_accessor :current_month_views
@@ -21,7 +22,7 @@ class Practice < ApplicationRecord
   attr_accessor :three_months_ago_commits
   attr_accessor :delete_main_display_image
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
-  attr_accessor :practice_partner, :department
+  attr_accessor :practice_partner, :department, :practice_award, :category
   attr_accessor :reset_searchable_cache
 
   def clear_searchable_cache
@@ -39,7 +40,8 @@ class Practice < ApplicationRecord
         self.main_display_image_updated_at_changed? ||
         self.published_changed? ||
         self.enabled_changed? ||
-        self.date_initiated_changed?
+        self.date_initiated_changed? ||
+        self.maturity_level_changed?
       self.reset_searchable_cache = true
     end
   end
@@ -51,6 +53,16 @@ class Practice < ApplicationRecord
   def self.searchable_practices
     Rails.cache.fetch('searchable_practices') do
       Practice.get_with_categories
+    end
+  end
+
+  def has_facility?
+    if self.facility?
+      self.practice_origin_facilities.present?
+    elsif self.department?
+      self.initiating_department_office_id.present? && self.initiating_facility.present?
+    elsif self.visn? || self.other?
+      self.initiating_facility.present?
     end
   end
 
@@ -105,7 +117,7 @@ class Practice < ApplicationRecord
   # has_attached_file :main_display_image, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/:style/missing.png"
 
   # crop the img with custom Paperclip processor located in lib/paperclip_processors/cropper.rb
-  has_attached_file :main_display_image, styles: {thumb: '300x300>'}, :processors => [:cropper]
+  has_attached_file :main_display_image, styles: {thumb: '768x432>'}, :processors => [:cropper]
 
   def main_display_image_s3_presigned_url(style = nil)
     object_presigned_url(main_display_image, style)
@@ -119,21 +131,49 @@ class Practice < ApplicationRecord
 
   PRACTICE_EDITOR_SLUGS =
       {
-          'adoptions': 'overview',
-          'impact': 'origin',
-          'documentation': 'impact',
-          'resources': 'documentation',
-          'departments': 'resources',
-          'timeline': 'departments',
-          'risk_and_mitigation': 'timeline',
-          'contact': 'risk_and_mitigation',
-          'checklist': 'contact'
+          'introduction': 'instructions',
+          'adoptions': 'introduction',
+          'overview': 'adoptions',
+          'implementation': 'overview',
+          'contact': 'implementation',
+          'about': 'contact',
       }
+
+  PRACTICE_EDITOR_AWARDS_AND_RECOGNITION =
+      [
+        'Diffusion of Excellence Promising Practice',
+        'FedHealth IT Award',
+        'Gears of Government Winner',
+        'Igniting Innovation Award',
+        'iNET Seed Investee',
+        'iNet Spark Award Investee',
+        'iNET Spread Investee',
+        'QUERI Veterans Choice Act Award',
+        'QUERI VISN Partnered Implementation Initiative',
+        'QUERI Partnered Evaluation Initiative',
+        'Rural Promising Practice',
+        'VHA Shark Tank Winner',
+        'Other'
+      ]
+
+  MATURITY_LEVEL_MAP = {
+      emerging: {
+          link_text: 'emerging',
+          description: 'This practice is <b>emerging</b> and worth watching as it is being assessed in early implementations.'.html_safe
+      },
+      replicate: {
+          link_text: 'replicating',
+          description: 'This practice is <b>replicating</b> across multiple facilities as its impact continues to be validated.'.html_safe
+      },
+      scale: {
+          link_text: 'scaling',
+          description: 'This practice is <b>scaling</b> widely with the support of national stakeholders.'.html_safe
+      }
+  }
 
 
   validates_attachment_content_type :main_display_image, content_type: /\Aimage\/.*\z/
   validates_attachment_content_type :origin_picture, content_type: /\Aimage\/.*\z/
-  validates :name, presence: {message: 'Practice name can\'t be blank'}
   validates_uniqueness_of :name, {message: 'Practice name already exists'}
   # validates :tagline, presence: { message: 'Practice tagline can\'t be blank'}
 
@@ -152,8 +192,8 @@ class Practice < ApplicationRecord
   has_many :badge_practices, dependent: :destroy
   has_many :badges, through: :badge_practices
   has_many :business_case_files, dependent: :destroy
-  has_many :category_practices, dependent: :destroy, autosave: true
-  has_many :categories, through: :category_practices
+  has_many :category_practices, -> { order(id: :asc) }, dependent: :destroy, autosave: true
+  has_many :categories, -> { order(id: :asc) }, through: :category_practices
   has_many :checklist_files, dependent: :destroy
   has_many :clinical_condition_practices, dependent: :destroy
   has_many :clinical_conditions, through: :clinical_condition_practices
@@ -194,10 +234,27 @@ class Practice < ApplicationRecord
   has_many :va_secretary_priorities, through: :va_secretary_priority_practices
   has_many :video_files, -> { order(position: :asc) }, dependent: :destroy
   has_many :practice_creators, -> { order(position: :asc) }, dependent: :destroy
+  has_many :practice_awards, -> {order(id: :asc) }, dependent: :destroy
+  has_many :practice_origin_facilities, -> {order(id: :asc) }, dependent: :destroy
+  has_many :practice_metrics, -> {order(id: :asc) }, dependent: :destroy
+  has_many :practice_testimonials, -> {order(id: :asc) }, dependent: :destroy
+  has_many :practice_multimedia, -> {order(id: :asc) }, dependent: :destroy
+  has_many :practice_problem_resources, -> {order(id: :asc) }, dependent: :destroy
+  has_many :practice_solution_resources, -> {order(id: :asc) }, dependent: :destroy
+  has_many :practice_results_resources, -> {order(id: :asc) }, dependent: :destroy
+  has_many :practice_emails, -> {order(id: :asc) }, dependent: :destroy
+  has_many :practice_resources, -> {order(id: :asc) }, dependent: :destroy
 
   # This allows the practice model to be commented on with the use of the Commontator gem
   acts_as_commontable dependent: :destroy
 
+  #accepts_nested_attributes_for :practices_origin_facilities?
+  accepts_nested_attributes_for :practice_origin_facilities, allow_destroy: true, reject_if: proc { |attributes|
+    attributes['facility_id'].blank?
+  }
+  accepts_nested_attributes_for :practice_metrics, allow_destroy: true, reject_if: proc { |attributes| attributes['description'].blank? }
+  accepts_nested_attributes_for :practice_awards, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
+  accepts_nested_attributes_for :categories, allow_destroy: true, reject_if: proc { true }
   accepts_nested_attributes_for :practice_partner_practices, allow_destroy: true
   accepts_nested_attributes_for :impact_photos, allow_destroy: true, reject_if: proc { |attributes|
     reject = attributes['description'].blank?
@@ -205,21 +262,18 @@ class Practice < ApplicationRecord
     ip_reject = attributes['attachment'].blank? if attributes['id'].blank?
     reject || ip_reject
   }
+  accepts_nested_attributes_for :practice_resources, allow_destroy: true, reject_if: proc { |attributes| attributes['resource'] && attributes['resource'].blank? }
+  accepts_nested_attributes_for :practice_multimedia, allow_destroy: true
+  accepts_nested_attributes_for :practice_testimonials, allow_destroy: true
+  accepts_nested_attributes_for :practice_problem_resources, allow_destroy: true
+  accepts_nested_attributes_for :practice_solution_resources, allow_destroy: true
+  accepts_nested_attributes_for :practice_results_resources, allow_destroy: true
+  accepts_nested_attributes_for :department_practices, allow_destroy: true, reject_if: proc { |attributes| attributes['value'].blank? }
+
   accepts_nested_attributes_for :video_files, allow_destroy: true, reject_if: proc { |attributes| attributes['url'].blank? || attributes['description'].blank? }
   accepts_nested_attributes_for :difficulties, allow_destroy: true
   accepts_nested_attributes_for :risk_mitigations, allow_destroy: true
-  accepts_nested_attributes_for :timelines, allow_destroy: true, reject_if: proc { |attributes|
-    reject = attributes['timeline'].blank?
-    ma_reject = false
-    if attributes['milestones_attributes'].present?
-      attributes['milestones_attributes'].each do |i, ma|
-        ma_reject = ma['description'].blank?
-      end
-    else
-      ma_reject = true
-    end
-    reject || ma_reject
-  }
+  accepts_nested_attributes_for :timelines, allow_destroy: true, reject_if: proc{ |attributes| attributes['milestone'].blank? || attributes['timeline'].blank?}
   accepts_nested_attributes_for :va_employees, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? || attributes['role'].blank? }
   accepts_nested_attributes_for :additional_staffs, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['hours_per_week'].blank? || attributes['duration_in_weeks'].blank? }
   accepts_nested_attributes_for :additional_resources, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
@@ -233,6 +287,7 @@ class Practice < ApplicationRecord
     reject || ad_reject
   }
   accepts_nested_attributes_for :publications, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['link'].blank? }
+  accepts_nested_attributes_for :practice_emails, allow_destroy: true, reject_if: proc { |attributes| attributes['address'].blank? }
   SATISFACTION_LABELS = ['Little or no impact', 'Some impact', 'Significant impact', 'High or large impact'].freeze
   COST_LABELS = ['0-$10,000', '$10,000-$50,000', '$50,000-$250,000', 'More than $250,000'].freeze
   # also known as "Difficulty"
@@ -248,6 +303,19 @@ class Practice < ApplicationRecord
   def number_of_adopted_facilities
     number_adopted
   end
+
+  def number_of_completed_adoptions
+    diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Completed'}).or(diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Implemented'})).or(diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Complete'})).count
+  end
+
+  def number_of_in_progress_adoptions
+    diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'In progress'}).or(diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Planning'})).or(diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Implementing'})).count
+  end
+
+  def number_of_unsuccessful_adoptions
+    diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Unsuccessful'}).count
+  end
+
   def date_range_views(start_date, end_date)
     Ahoy::Event.where_props(practice_id: id).where(time: start_date...end_date).count
   end
@@ -262,5 +330,14 @@ class Practice < ApplicationRecord
   end
   def commits_count_by_range(start_date, end_date)
     user_practices.where({time_committed: start_date...end_date}).count
+  end
+
+  def get_adoptions_by_status(adoption_array, hash_array)
+    vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
+    adoption_array.each do |adoption|
+      facility = vamc_facilities.find { |f| f['StationNumber'] == adoption.facility_id }
+      hash_array.push(facility: facility, diffusion_history: adoption)
+    end
+    hash_array.sort_by { |a| [a[:facility]["StreetAddressState"], a[:facility]["OfficialStationName"]] }
   end
 end

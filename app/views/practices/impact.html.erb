@@ -24,7 +24,7 @@
                     <fieldset class="usa-fieldset">
                         <legend class="usa-sr-only">Impact</legend>
                         <h2 class="font-sans-xl margin-bottom-2">Image upload</h2>
-                         <div class="margin-bottom-2 cropper-upload-text">
+                         <div class="margin-bottom-2">
                           <span class="text-bold headshot-title margin-bottom-05">Image:
                             <span class="text-normal">
                               Use a high-quality .jpg, .jpeg, or .png files less than 32MB. <%= link_to "PHI/PII waivers", pii_phi_information_path %> are required for photos featuring Veterans. Waivers must be filled out with the ‘External to VA’ check box selected.
@@ -85,7 +85,7 @@
                                 <% end %>
                             </ul>
                             <%= f.link_to_add :impact_photos, class: 'fas fa-plus text-no-underline add-impact-photo-link' do %>
-                                <span class="padding-left-1 font-sans-md text-normal text-no-underline">Add another</span>
+                                <span class="padding-left-1 text-normal text-no-underline">Add another</span>
                             <% end %>
                             
                             <h2 class="font-sans-xl margin-bottom-2 margin-top-1">Video attachment</h2>
@@ -151,9 +151,9 @@
                     </fieldset>
                 <% end %>
                 <div class="grid-row">
-                    <%= link_to practice_origin_path(@practice), class: 'usa-button usa-button--outline editor-back-to-link margin-right-1 padding-2 text-no-underline' do %>
-                        <i class="fas fa-chevron-left fa-sm text-no-underline margin-right-1"></i>Back
-                    <% end %>
+                    <%#= link_to practice_origin_path(@practice), class: 'usa-button usa-button--outline editor-back-to-link margin-right-1 padding-2 text-no-underline' do %>
+<!--                        <i class="fas fa-chevron-left fa-sm text-no-underline margin-right-1"></i>Back-->
+                    <%# end %>
                     <%= link_to practice_documentation_path(@practice), class: 'usa-button padding-2 editor-continue-link continue-and-save margin-right-1' do %>
                         Continue<i class="fas fa-chevron-right fa-sm margin-left-1 text-no-underline"></i>
                     <% end %>

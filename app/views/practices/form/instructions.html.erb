@@ -1,0 +1,75 @@
+<%= render 'breadcrumbs' %>
+<%= render 'practice_editor_sidenav' %>
+<div class="grid-container position-relative">
+    <div class="grid-row grid-gap">
+        <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+
+        <div id="instructions" class="desktop:grid-col-9 grid-col-12 p0">
+        <section class="margin-bottom-3">
+          <%= render partial: "shared/messages", locals: {small_text: false} %>
+          <h1 class="font-sans-2xl margin-bottom-205 line-height-sans-205">Instructions</h1>
+          <h2 class="margin-0 text-normal line-height-36">
+            Please follow these instructions to build your practice page. Your page is modular, meaning that most sections in the editor are optional and you can choose to fill out only the sections
+            that make sense for your practice.
+          </h2>
+        </section>
+          <section class="desktop:grid-col-11 margin-bottom-5">
+            <h2 class="margin-0 font-sans-xl line-height-36">What you'll need</h2>
+              <div>
+                <ul class="line-height-26 font-sans-md instructions-list padding-left-0">
+                  <li class="small-disc x0-5-bottom">To create a thorough page, you’ll be asked to share data, images, video, instructions, files, and stories related to your practice.</li>
+                  <li class="small-disc">All uploaded files should be displayed in a common file format (.jpg, .jpeg, .png, or .pdf) that is ready to be shown to the public. Images must be less than 32MB.</li>
+                </ul>
+              </div>
+          </section>
+          <section class="desktop:grid-col-11 margin-bottom-5">
+            <h2 class="margin-0 font-sans-xl line-height-36">Formatting and editing</h2>
+            <div>
+              <ul class="line-height-26 font-sans-md instructions-list padding-left-0">
+                <li class="small-disc x0-5-bottom">Please fill out all fields marked as required. All other fields are optional.</li>
+                <li class="small-disc x0-5-bottom">Ensure your work is accurate, formatted consistently, and as complete as possible before publishing.</li>
+                <li class="small-disc x0-5-bottom">Use sentence case (only capitalizing the first word in titles) and spell out acronyms. Capitalize proper nouns and names.</li>
+                <li class="small-disc x0-5-bottom">You will be able to edit your practice once it’s published.</li>
+                <li class="small-disc"><%= link_to "View an example", practice_path(ENV.fetch('EXAMPLE_PRACTICE_SLUG', 'project-happen')), class: 'dm-internal-link' %> of a well-formatted completed practice.</li>
+              </ul>
+            </div>
+          </section>
+          <section class="desktop:grid-col-11 margin-bottom-3">
+            <h2 class="margin-0 font-sans-xl line-height-36">Privacy policy</h2>
+            <div>
+              <ul class="line-height-26 font-sans-md instructions-list padding-left-0">
+                <li class="small-disc x0-5-bottom">Avoid entering Personally Identifiable Information (PII) or Protected Health Information (PHI) for any individual, Veteran, or patient.</li>
+                <li class="small-disc x0-5-bottom"><%= link_to "Learn more", pii_phi_information_path, class: 'dm-internal-link' %> about what constitutes PII and PHI.</li>
+                <li class="small-disc x0-5-bottom">If you post PII you must fill out and hold onto
+                  <%= link_to 'VAF 10-3203', 'https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-3203.pdf', target: '_blank', class: 'dm-external-link' %> and
+                  <%= link_to 'VAF 10-5345', 'https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-5345.pdf', target: '_blank', class: 'dm-external-link' %>.
+                </li>
+                <li class="small-disc x0-5-bottom">
+                  If you want to upload an image that features a Veteran, or text that includes a Veteran's name or individually-identifiable information you must have forms
+                  <%= link_to 'VAF 10-3203', 'https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-3203.pdf', target: '_blank', class: 'dm-external-link' %> and
+                  <%= link_to 'VAF 10-5345', 'https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-5345.pdf', target: '_blank', class: 'dm-external-link' %>.
+                  Waivers must be filled out with the 'External to VA' check box selected.
+                </li>
+                <li class="small-disc">
+                  If you post PHI on the site you must fill out and hold onto
+                  <%= link_to 'VAF 10-3203', 'https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-3203.pdf', target: '_blank', class: 'dm-external-link' %> and
+                  <%= link_to 'VAF 10-5345', 'https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-5345.pdf', target: '_blank', class: 'dm-external-link' %>.
+                </li>
+              </ul>
+            </div>
+          </section>
+
+      <div class="grid-row flex-auto margin-bottom-3">
+        <div class="usa-alert usa-alert--info usa-alert--no-icon pii-phi-alert-banner line-height-26">
+          <p class="text-bold margin-bottom-2">Need help along the way?<p>
+          <p>Reach out to a member of our support staff with your question. <a class="dm-external-link" href="mailto:marketplace@va.gov" target="_blank">Send us an email<i class="margin-left-1 fas fa-external-link-alt text-no-underline"></i></a><p>
+        </div>
+      </div>
+      <div class="grid-col-11">
+        <%= link_to practice_introduction_path(@practice), class: 'usa-button dm-btn-base pe-continue editor-continue-link margin-right-1 margin-bottom-5' do %>
+          Continue
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

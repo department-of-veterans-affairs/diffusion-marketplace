@@ -38,33 +38,25 @@ body {
   min-height: calc(100vh - 271px)
 }
 
-/*page components*/
-.heading2_subtopic_title{
-  font-style: normal;
-  font-weight: bold;
-  font-size: 33.92px;
-  line-height: 38px;
-  display: flex;
-  align-items: center;
-  color: #000000;
-}
-.heading2_subtopic_description{
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16.96px;
-  line-height: 26px;
-  display: flex;
-  align-items: center;
-  color: #000000;
-}
-.rectangle21{
+.practice-editor-rect-svg {
   height: 4px;
-  width: 40px;
-  fill: #1A4480;
-  background: #1A4480;
+  width: 60px;
 }
-.svg{
-  margin-top: 24px;
+
+.practice-editor-long-rect-svg{
   height: 4px;
-  width: 40px;
+
+  @media screen and (min-width: 1024px) {
+    width: 726px;
+  }
+}
+
+.overview_error_msg {
+  display: none;
+  margin-top: 0;
+  width: 300px;
+}
+
+#more_text, #more_text_award, #more_text_origin_story {
+  display: none;
 }

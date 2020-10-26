@@ -5,15 +5,18 @@ var reloadWithTurbolinks = (function () {
       scrollPosition = [ window.pageXOffset, window.pageYOffset ];
       Turbolinks.visit(window.location.toString(), { action: 'replace' });
   }
+  $(document).off('turbolinks:load', moveNavToCurrentPosition);
 
-  document.addEventListener('turbolinks:load', function () {
-    $('.timeago').timeago();
-    $('#dm-practice-nav').sticky( {topSpacing: 20, zIndex: 10000, bottomSpacing: 200});
+  function moveNavToCurrentPosition() {
+      $('.timeago').timeago();
+      $('#dm-practice-nav').sticky({topSpacing: 20, zIndex: 10000, bottomSpacing: 200});
 
-    $('html, body').animate({
-        scrollTop: scrollPosition[1]
-    }, 0);
-  })
+      $('html, body').animate({
+          scrollTop: scrollPosition[1]
+      }, 0);
+  }
+
+  document.addEventListener('turbolinks:load', moveNavToCurrentPosition);
 
   return reload
 })()
@@ -56,7 +59,7 @@ $('.timeago').timeago();
 
 $('#practice-comment-count').text(<%= @comment.thread.comments.count %>)
 
-$('#practice-comment-label').text('<%= @comment.thread.comments.count == 1 ? 'comment' : 'comments' %>')
+$('#practice-comment-label').text('<%= @comment.thread.comments.count == 1 ? 'comment:' : 'comments:' %>')
 
 <%= javascript_proc %>
 
@@ -73,15 +76,16 @@ $('#practice-comment-label').text('<%= @comment.thread.comments.count == 1 ? 'co
           <%
             thread = @comment.thread
             nested_children ||= begin
-              children = thread.paginated_comments(@commontator_page, @comment.id, @commontator_show_all)
+              children = thread.paginated_comments(@commontator_page, @comment.parent_id, @commontator_show_all)
               thread.nested_comments_for(@commontator_user, children, @commontator_show_all)
             end
            %>
 
           var numReplies = <%= nested_children.present? ? nested_children.count : 0 %>;
-          var repliesText = numReplies === 1 ? 'reply' : 'replies';
 
-          $('#comments-show-hide-button-<%= @comment.parent_id %>').text('Hide ' + repliesText + ' >');
+          var repliesText = numReplies === 1 ? numReplies + ' reply' : numReplies + ' replies';
+
+          $('#comments-show-hide-button-<%= @comment.parent_id %>').text('Hide ' + repliesText);
       }
 
       $(document).on('turbolinks:load', showReplies);

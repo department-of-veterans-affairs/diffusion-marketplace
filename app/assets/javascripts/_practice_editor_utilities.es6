@@ -48,10 +48,6 @@ function truncateText() {
         $(element).shave(46);
     });
 
-    $('.practice-card-tagline').each(function(index, element) {
-        $(element).shave(80);
-    });
-
     $('.practice-card-origin-info').each(function(index, element) {
         $(element).shave(32);
     });

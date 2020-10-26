@@ -12,7 +12,11 @@ function initialize() {
     let dataMarkers = null;
 
     function setIcon(json, icon) {
-        json.marker.getServiceObject().setIcon({url: icon, scaledSize: new google.maps.Size(31, 44), size: new google.maps.Size(31, 44)});
+        json.marker.getServiceObject().setIcon({
+            url: icon,
+            scaledSize: new google.maps.Size(31, 44),
+            size: new google.maps.Size(31, 44)
+        });
     }
 
     function clickCallback(json) {
@@ -21,12 +25,20 @@ function initialize() {
                 const prevSelected = dataMarkers.find(m => m.id === selectedMarker.id);
                 if (prevSelected.status.toLowerCase() === 'complete') {
                     setIcon(prevSelected, defaultMarkerIcon);
+                } else if (prevSelected.status.toLowerCase() === 'in progress') {
+                    setIcon(prevSelected, defaultInProgressMarkerIcon);
+                } else {
+                    setIcon(prevSelected, defaultUnsuccessfulMarkerIcon);
                 }
             }
             selectedMarker = json;
 
             if (json.status.toLowerCase() === 'complete') {
                 setIcon(json, selectedMarkerIcon);
+            } else if (json.status.toLowerCase() === 'in progress') {
+                setIcon(json, selectedInProgressMarkerIcon);
+            } else {
+                setIcon(json, selectedUnsuccessfulMarkerIcon);
             }
 
             $('#filterResultsTrigger').show();
@@ -35,14 +47,26 @@ function initialize() {
     }
 
     function mouseoverCallback(json) {
-        if (json.id !== selectedMarker.id && json.status.toLowerCase() === 'complete') {
-            setIcon(json, hoverMarkerIcon);
+        if (json.id !== selectedMarker.id) {
+            if (json.status.toLowerCase() === 'complete') {
+                setIcon(json, hoverMarkerIcon);
+            } else if (json.status.toLowerCase() === 'in progress') {
+                setIcon(json, hoverInProgressMarkerIcon);
+            } else {
+                setIcon(json, hoverUnsuccessfulMarkerIcon);
+            }
         }
     }
 
     function mouseoutCallback(json) {
-        if (json.id !== selectedMarker.id && json.status.toLowerCase() === 'complete') {
-            setIcon(json, defaultMarkerIcon);
+        if (json.id !== selectedMarker.id) {
+            if (json.status.toLowerCase() === 'complete') {
+                setIcon(json, defaultMarkerIcon);
+            } else if (json.status.toLowerCase() === 'in progress') {
+                setIcon(json, defaultInProgressMarkerIcon);
+            } else {
+                setIcon(json, defaultUnsuccessfulMarkerIcon);
+            }
         }
     }
 
@@ -64,6 +88,10 @@ function initialize() {
             json.marker.infowindow.close();
             if (json.status.toLowerCase() === 'complete') {
                 setIcon(json, defaultMarkerIcon);
+            } else if (json.status.toLowerCase() === 'in progress') {
+                setIcon(json, defaultInProgressMarkerIcon);
+            } else {
+                setIcon(json, defaultUnsuccessfulMarkerIcon);
             }
             selectedMarker = {};
         }
@@ -71,7 +99,7 @@ function initialize() {
 
     handler.buildMap({
             provider: {
-                zoom: 2,
+                zoom: 3,
                 center: {lat: 44.967243, lng:  -103.771556},
                 zoomControlOptions: {
                     position: google.maps.ControlPosition.TOP_RIGHT

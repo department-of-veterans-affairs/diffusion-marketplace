@@ -77,8 +77,7 @@ function filterDepartmentTypeOptionsOnRadioSelect(originData, selectedOffice, st
         let officeSelect = $(`#${officeSelector}`);
         let officeSelectLabel = $('label[for="' + officeSelector + '"]');
         let selectedOffice = $(`#${officeSelector} option:selected`).val();
-
-        if (selectedDepartment !== '' && selectedState === '') {
+        if ((selectedDepartment !== '' && selectedDepartment !== undefined) && selectedState === '') {
             filterStatesByDepartment(originData, stateSelect, stateSelectLabel, departmentSelector);
         }
         else if (selectedState !== '' && selectedDepartment !== '' && selectedOffice === '') {

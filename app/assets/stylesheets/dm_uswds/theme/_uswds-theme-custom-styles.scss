@@ -27,44 +27,154 @@ i.e.
   box-sizing: border-box;
 }
 
-.usa-button-outline-white {
-  //@extend .usa-button--outline;
-  background-color: transparent !important;
-  color: #FFFFFF !important;
-  box-shadow: none !important;
-  border: 2px solid #ffffff !important;
+/****************************************
+  BUTTONS
+*****************************************/
+// solid btns - to use: class="usa-button dm-btn-primary"
+.usa-button {
+  text-decoration: none !important;
+  font-weight: bold;
+  color: $dm-color-white;
+
+  &:visited, &:active, &:hover {
+    text-decoration: none;
+    cursor: pointer;
+    color: $dm-color-white;
+  }
+
+  // solid blue-50v btn
+  &.dm-btn-primary {
+    background-color: $dm-color-blue-50v;
+
+    &:visited, &:active, &:hover {
+      background-color: $dm-color-blue-50v;
+    }
+
+    &:visited {
+      background-color: $dm-color-blue-50v;
+    }
+
+    &:hover {
+      background-color: $dm-color-blue-70v;
+    }
+
+    &:active {
+      background-color: $dm-color-blue-80v;
+    }
+  }
+
+  // solid gray-90 btn
+  &.dm-btn-base {
+    background-color: $dm-color-base;
+
+    &:visited, &:active, &:hover {
+      background-color: $dm-color-base;
+    }
+  }
 }
 
+// outline btns - to use: class="usa-button--outline dm-btn-primary"
 .usa-button--outline {
-  box-shadow: none !important;
-  border: 2px solid $dm-color-primary-blue !important;
+  @extend .usa-button;
+  border-style: solid;
+  background-color: transparent !important;
+  margin-top: 0;
 
-  &:hover {
-    border: 2px solid #1a4480 !important;
+  &:visited, &:active, &:hover {
+    background-color: transparent !important;
+    border-style: solid;
   }
 
-  &:disabled {
-    border: 2px solid #dcdee0 !important;
+  // outline blue-50v btn
+  &.dm-btn-primary {
+  color: $dm-color-blue-50v !important;
+  border-color: $dm-color-blue-50v !important;
+  box-shadow: inset 0 0 0 2px $dm-color-blue-50v;
+
+    &:visited {
+      color: $dm-color-blue-50v !important;
+      border-color: $dm-color-blue-50v !important;
+    }
+
+    &:hover {
+      color: $dm-color-blue-70v !important;
+      border-color: $dm-color-blue-70v !important;
+      box-shadow: inset 0 0 0 2px $dm-color-blue-70v;
+    }
+
+    &:active {
+      color: $dm-color-blue-80v !important;
+      border-color: $dm-color-blue-80v !important;
+      box-shadow: inset 0 0 0 2px $dm-color-blue-80v;
+    }
+  }
+
+  // outline gray-90 btn
+  &.dm-btn-base {
+    color: $dm-color-base !important;;
+    border-color: $dm-color-base;
+    box-shadow: inset 0 0 0 2px $dm-color-base;
+
+    &:visited, &:active, &:hover {
+      color: $dm-color-base !important;;
+      border-color: $dm-color-base;
+      box-shadow: inset 0 0 0 2px $dm-color-base;
+    }
   }
 }
 
-// USWDS utility extensions
+// unstyled btns - to use: class="usa-button--unstyled dm-btn-primary"
+.usa-button--unstyled {
+  @extend .usa-button;
+  background-color: transparent !important;
+  font-weight: normal !important;
+  text-decoration: underline !important;
 
-button.appearance-none {
-  appearance: none;
-  background: none;
-  border: none;
+  &:visited, &:active, &:hover {
+    background-color: transparent !important;
+    font-weight: normal;
+    text-decoration: underline;
+  }
+
+  // unstyled blue-50v btn
+  &.dm-btn-primary {
+  color: $dm-color-blue-50v;
+
+    &:visited {
+      color: $dm-color-blue-50v;
+    }
+
+    &:hover {
+      color: $dm-color-blue-70v;
+    }
+
+    &:active {
+      color: $dm-color-blue-80v;
+    }
+  }
+
+  // unstyled red-50v btn
+  &.dm-btn-warning {
+    color: $dm-color-red-50v;
+
+    &:visited {
+      color: $dm-color-red-50v;
+    }
+
+    &:hover {
+      color: $dm-color-red-60v;
+    }
+
+    &:active {
+      color: $dm-color-red-70v;
+    }
+  }
 }
 
-.link-dark, .link-dark:visited {
-  @extend .text-base-darkest;
-}
-
-.link-primary, .link-primary:visited {
-  @extend .text-primary;
-  &:hover {
-    @extend .text-base-darkest;
-  } 
+.usa-form {
+  .usa-button, .usa-button--unstyled, .usa-button--unstyled {
+    margin-top: 0.5rem;
+  }
 }
 
 // Custom styles
@@ -73,38 +183,10 @@ p {
   @extend .measure-none;
 }
 
-.icon {
-  position: relative;
-  top: 6px;
-  margin-right: 6px;
-}
-
-.icon-large {
-  float: left;
-  margin-right: 15px;
-  position: relative;
-  top: 20px;
-  height: 50px;
-}
-
-.icon-positive-outcomes {
-  float: left;
-  margin-right: 15px;
-  height: 35px;
-}
-
-.icon-highlights {
-  width: 35px;
-}
-
 .badge {
   position: relative;
   top: 15px;
   width: 40px;
-}
-
-.section-selected {
-  border-bottom: solid 6px color('accent-cool-dark');
 }
 
 .usa-sidenav .usa-current {
@@ -129,16 +211,12 @@ p {
   background-color: #ffffff !important;
 }
 
-.usa-sidenav .usa-current::after {
-  background-color: $dm-color-lightest-gray !important;
-}
-
 .dm-link-title {
   color: black;
   text-decoration: none;
 
   &:visited {
-    color:black;
+    color: black;
   }
 
   &:hover {
@@ -162,31 +240,7 @@ p {
 
 
 }
-a {
-  color: $dm-color-blue-50v;
-  text-decoration: underline;
 
-  &:visited {
-    color: $dm-alt-visited-purple;
-  }
-
-  &:hover {
-    text-decoration: none;
-    color: $dm-color-blue-50v;
-  }
-
-  &.beta-banner-link {
-    color: black;
-    text-decoration: underline;
-
-    &:hover {
-      text-decoration: none;
-    }
-    &:visited {
-      color: black;
-    }
-  }
-}
 @media all and (min-width: 40em) {
   /* line 68, uswds-rails-029b4d4c92fc/app/assets/stylesheets/uswds/core/mixins/_utility-builder.scss */
   .tablet\:display-block {
@@ -238,17 +292,6 @@ a {
   right: 2%;
 }
 
-.text-no-underline {
-  @include u-text('no-underline', !important)
-}
-
-.practice-card-outline {
-  border: 2px solid #DCDEE0;
-  box-sizing: border-box;
-  border-radius: 2px;
-  
-}
-
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   .usa-checkbox__input:checked + .usa-checkbox__label::before, .usa-radio__input:checked + .usa-radio__label::before {
     border: 3px solid #005ea2 !important;
@@ -256,4 +299,26 @@ a {
   }
 }
 
+/* line 214, ../../.rvm/gems/ruby-2.6.3/bundler/gems/uswds-rails-642a358220dc/app/assets/stylesheets/uswds/elements/_inputs.scss */
+.usa-checkbox__input:checked + .usa-checkbox__label::before,
+.usa-radio__input:checked + .usa-radio__label::before {
+  background-color: $dm-color-blue-70v;
+  box-shadow: 0 0 0 2px $dm-color-blue-70v;
+}
 
+/* line 220, ../../.rvm/gems/ruby-2.6.3/bundler/gems/uswds-rails-642a358220dc/app/assets/stylesheets/uswds/elements/_inputs.scss */
+.usa-radio__input:checked + .usa-radio__label::before {
+  box-shadow: 0 0 0 2px $dm-color-blue-70v, inset 0 0 0 2px white;
+}
+
+@media print {
+  /* line 220, ../../.rvm/gems/ruby-2.6.3/bundler/gems/uswds-rails-642a358220dc/app/assets/stylesheets/uswds/elements/_inputs.scss */
+  .usa-radio__input:checked + .usa-radio__label::before {
+    box-shadow: inset 0 0 0 2px white, inset 0 0 0 1rem $dm-color-blue-70v, 0 0 0 2px $dm-color-blue-70v;
+  }
+}
+
+// File input choose text
+.usa-file-input__choose {
+  color: $dm-color-blue-50v !important;
+}

@@ -3,5 +3,5 @@ class Timeline < ApplicationRecord
   belongs_to :practice
   has_many :milestones, dependent: :destroy
 
-  accepts_nested_attributes_for :milestones, allow_destroy: true
+    #accepts_nested_attributes_for :milestones, allow_destroy: true
 end
