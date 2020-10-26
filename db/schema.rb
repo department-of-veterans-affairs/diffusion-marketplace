@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_16_131735) do
+ActiveRecord::Schema.define(version: 2020_06_17_133257) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -172,7 +172,6 @@ ActiveRecord::Schema.define(version: 2020_09_16_131735) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "related_terms", default: [], array: true
-    t.boolean "is_other", default: false
   end
 
   create_table "category_practices", force: :cascade do |t|
@@ -647,14 +646,6 @@ ActiveRecord::Schema.define(version: 2020_09_16_131735) do
     t.index ["practice_id"], name: "index_photo_files_on_practice_id"
   end
 
-  create_table "practice_awards", force: :cascade do |t|
-    t.bigint "practice_id"
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["practice_id"], name: "index_practice_awards_on_practice_id"
-  end
-
   create_table "practice_creators", force: :cascade do |t|
     t.bigint "practice_id"
     t.bigint "user_id"
@@ -669,14 +660,6 @@ ActiveRecord::Schema.define(version: 2020_09_16_131735) do
     t.datetime "avatar_updated_at"
     t.index ["practice_id"], name: "index_practice_creators_on_practice_id"
     t.index ["user_id"], name: "index_practice_creators_on_user_id"
-  end
-
-  create_table "practice_emails", force: :cascade do |t|
-    t.bigint "practice_id"
-    t.string "address"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["practice_id"], name: "index_practice_emails_on_practice_id"
   end
 
   create_table "practice_management_practices", force: :cascade do |t|
@@ -695,41 +678,6 @@ ActiveRecord::Schema.define(version: 2020_09_16_131735) do
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "practice_metrics", force: :cascade do |t|
-    t.string "description"
-    t.bigint "practice_id"
-    t.integer "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["practice_id"], name: "index_practice_metrics_on_practice_id"
-  end
-
-  create_table "practice_multimedia", force: :cascade do |t|
-    t.bigint "practice_id"
-    t.string "link_url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "attachment_file_name"
-    t.string "attachment_content_type"
-    t.integer "attachment_file_size"
-    t.datetime "attachment_updated_at"
-    t.string "name"
-    t.string "description"
-    t.integer "position"
-    t.integer "resource_type", default: 0
-    t.index ["practice_id"], name: "index_practice_multimedia_on_practice_id"
-  end
-
-  create_table "practice_origin_facilities", force: :cascade do |t|
-    t.bigint "practice_id"
-    t.string "facility_id"
-    t.integer "facility_type", default: 0
-    t.integer "initiating_department_office_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["practice_id"], name: "index_practice_origin_facilities_on_practice_id"
   end
 
   create_table "practice_partner_practices", force: :cascade do |t|
@@ -762,83 +710,6 @@ ActiveRecord::Schema.define(version: 2020_09_16_131735) do
     t.datetime "updated_at", null: false
     t.string "name"
     t.index ["practice_id"], name: "index_practice_permissions_on_practice_id"
-  end
-
-  create_table "practice_problem_resources", force: :cascade do |t|
-    t.bigint "practice_id"
-    t.string "link_url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "attachment_file_name"
-    t.string "attachment_content_type"
-    t.integer "attachment_file_size"
-    t.datetime "attachment_updated_at"
-    t.string "name"
-    t.string "description"
-    t.integer "position"
-    t.integer "resource_type", default: 0
-    t.index ["practice_id"], name: "index_practice_problem_resources_on_practice_id"
-  end
-
-  create_table "practice_resources", force: :cascade do |t|
-    t.bigint "practice_id"
-    t.string "link_url"
-    t.string "resource"
-    t.string "name"
-    t.string "description"
-    t.integer "resource_type"
-    t.integer "media_type"
-    t.integer "resource_type_label"
-    t.integer "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "attachment_file_name"
-    t.string "attachment_content_type"
-    t.integer "attachment_file_size"
-    t.datetime "attachment_updated_at"
-    t.index ["practice_id"], name: "index_practice_resources_on_practice_id"
-  end
-
-  create_table "practice_results_resources", force: :cascade do |t|
-    t.bigint "practice_id"
-    t.string "link_url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "attachment_file_name"
-    t.string "attachment_content_type"
-    t.integer "attachment_file_size"
-    t.datetime "attachment_updated_at"
-    t.string "name"
-    t.string "description"
-    t.integer "position"
-    t.integer "resource_type", default: 0
-    t.index ["practice_id"], name: "index_practice_results_resources_on_practice_id"
-  end
-
-  create_table "practice_solution_resources", force: :cascade do |t|
-    t.bigint "practice_id"
-    t.string "link_url"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "attachment_file_name"
-    t.string "attachment_content_type"
-    t.integer "attachment_file_size"
-    t.datetime "attachment_updated_at"
-    t.string "name"
-    t.string "description"
-    t.integer "position"
-    t.integer "resource_type", default: 0
-    t.index ["practice_id"], name: "index_practice_solution_resources_on_practice_id"
-  end
-
-  create_table "practice_testimonials", force: :cascade do |t|
-    t.bigint "practice_id"
-    t.string "testimonial"
-    t.string "author"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "position"
-    t.index ["practice_id"], name: "index_practice_testimonials_on_practice_id"
   end
 
   create_table "practices", force: :cascade do |t|
@@ -930,10 +801,6 @@ ActiveRecord::Schema.define(version: 2020_09_16_131735) do
     t.boolean "enabled", default: true, null: false
     t.integer "initiating_facility_type", default: 0
     t.integer "initiating_department_office_id"
-    t.string "overview_problem"
-    t.string "overview_solution"
-    t.string "overview_results"
-    t.integer "maturity_level"
     t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
   end
@@ -1239,23 +1106,13 @@ ActiveRecord::Schema.define(version: 2020_09_16_131735) do
   add_foreign_key "page_you_tube_player_components", "page_components"
   add_foreign_key "pages", "page_groups"
   add_foreign_key "photo_files", "practices"
-  add_foreign_key "practice_awards", "practices"
   add_foreign_key "practice_creators", "practices"
   add_foreign_key "practice_creators", "users"
-  add_foreign_key "practice_emails", "practices"
   add_foreign_key "practice_management_practices", "practice_managements"
   add_foreign_key "practice_management_practices", "practices"
-  add_foreign_key "practice_metrics", "practices"
-  add_foreign_key "practice_multimedia", "practices"
-  add_foreign_key "practice_origin_facilities", "practices"
   add_foreign_key "practice_partner_practices", "practice_partners"
   add_foreign_key "practice_partner_practices", "practices"
   add_foreign_key "practice_permissions", "practices"
-  add_foreign_key "practice_problem_resources", "practices"
-  add_foreign_key "practice_resources", "practices"
-  add_foreign_key "practice_results_resources", "practices"
-  add_foreign_key "practice_solution_resources", "practices"
-  add_foreign_key "practice_testimonials", "practices"
   add_foreign_key "practices", "users"
   add_foreign_key "publication_files", "practices"
   add_foreign_key "publications", "practices"
