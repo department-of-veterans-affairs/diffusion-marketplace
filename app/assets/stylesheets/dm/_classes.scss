@@ -659,6 +659,10 @@ to confirm the class DOES NOT EXIST before adding a new class
   padding-bottom: 0 !important;
 }
 
+.p0-25-bottom {
+  padding-bottom: 0.25rem !important;
+}
+
 .p0-75-bottom {
   padding-bottom: 0.75rem !important;
 }
@@ -699,6 +703,10 @@ to confirm the class DOES NOT EXIST before adding a new class
 
 .p0-top {
   padding-top: 0 !important;
+}
+
+.p0-25-top {
+  padding-top: 0.25rem !important;
 }
 
 .p0-75-top {
@@ -1008,4 +1016,8 @@ ul.no-list-style {
 
 .bg-blue-20v {
   background-color: $dm-color-blue-20v;
+}
+
+.border-0 {
+  border: 0 !important;
 }

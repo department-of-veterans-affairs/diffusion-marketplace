@@ -18,7 +18,7 @@
       <button class="usa-accordion__button"
               aria-expanded="false"
               aria-controls="<%= group.to_s.underscore %>">
-        <%= group.to_s %>
+        <%= group.to_s %> adoptions: <%= histories.count %>
       </button>
     </h2>
     <div id="<%= group.to_s.underscore %>" class="usa-accordion__content usa-prose">

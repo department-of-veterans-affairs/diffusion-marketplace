@@ -35,7 +35,7 @@
     </div>
     <div class="usa-radio position-relative">
       <%= radio_button(nil, 'status', 'Completed', class: 'usa-radio__input adoptions-radio-button', required: true, checked: status == complete ? 'checked' : false, id: "status_completed#{adoption&.diffusion_history&.id}") %>
-      <label class='usa-radio__label' for='<%= "status_completed#{adoption&.diffusion_history&.id}" %>'>Completed
+      <label class='usa-radio__label' for='<%= "status_completed#{adoption&.diffusion_history&.id}" %>'>Successful
         adoption</label>
     </div>
     <div class="usa-radio position-relative">
