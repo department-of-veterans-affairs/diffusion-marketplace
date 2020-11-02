@@ -39,7 +39,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
       expect(page).to have_content('Type the official name of your practice.')
       expect(page).to have_content('Acronym')
       expect(page).to have_content('Summary (required field)')
-      expect(page).to have_content('Type a short summary of your practice’s mission to engage the audience and provide initial context.')
+      expect(page).to have_content('Type a short 1-3 sentence summary of your practice’s mission to engage the audience and provide initial context.')
       expect(page).to have_content('Date created (required field)')
       expect(page).to have_content('Select the month and year this practice was created.')
       expect(page).to have_content('Practice origin (required field)')
