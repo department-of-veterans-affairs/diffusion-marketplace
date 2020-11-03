@@ -63,13 +63,12 @@
                       <li class="practice-editor-about-li fields" <%= "id=practice_va_employees_attributes_#{vae.index}_li" if vae_id %> role="option" data-id="<%= vae_id %>">
                         <div class="grid-row">
                           <div class="grid-col-12">
-                            <div title="Type the name of the team member.">
+
                               <%= vae.label :name, 'Name', class: 'usa-label x0-top', alt: 'hello' %>
-                            </div>
+                            <div>Type the name of the team member.</div>
                             <%= vae.text_field :name, class: 'usa-input practice-input va-employee-name-input' %>
-                            <div title="Type the job title of the team member.">
-                              <%= vae.label :role, 'Role', class: 'usa-label' %>
-                            </div>
+                            <%= vae.label :role, 'Role', class: 'usa-label' %>
+                            <div>Type the job title of the team member. </div>
                             <%= vae.text_field :role, class: 'usa-input practice-input va-employee-role' %>
                           </div>
                           <div class="trash-container grid-col-12">
