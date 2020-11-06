@@ -39,7 +39,7 @@ describe 'Breadcrumbs', type: :feature do
         expect(page).to have_content('Diffusion of Excellence')
       end
 
-      find('.marketplace-card-container').click
+      find('.dm-practice-link').click
       expect(page).to have_current_path(practice_path(@user_practice))
 
       within(:css, '#breadcrumbs') do

@@ -1,26 +1,135 @@
-@import "../variables/colors";
-.practice-card {
-  border-radius: 20px;
-  box-shadow: 0 4px 4px rgba(0,0,0,0.25);
-  background-color: $dm-color-white;
-  .practice-card-aggregate-icon {
-    font-size: 1.5em;
+@import '../variables/colors';
+
+.dm-practice-card {
+  position: relative;
+  min-width: 309px;
+  max-width: 309px;
+  max-height: 436px;
+
+  .dm-practice-link {
+    color: $dm-color-base;
+    text-decoration: none;
+
+    &:hover {
+      h3 {
+        cursor: pointer;
+        text-decoration: underline;
+        text-decoration-color: $dm-color-yellow-20v;
+      }
+    }
   }
-}
-.practice-card-aggregates-background {
-  background: linear-gradient(0deg, #ECECEC, #ECECEC);
-  border-radius: 0 0 20px 0;
-}
 
-.practice-card-tagline-link {
-  color: $dm-color-black !important;
-  text-decoration: none !important;
+  // bookmark button
+  .dm-practice-bookmark-btn {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    text-align: center;
+    background-color: $dm-color-white;
+    padding: 5px;
+    border-radius: 50%;
+    z-index: 2;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    top: 18px;
+    right: 18px;
 
-  &:focus {
-    color: $dm-color-black !important;
+    .fas {
+      color: $dm-color-blue-50v;
+
+      &:hover {
+        color: $dm-color-blue-70v;
+      }
+
+      &:active {
+        color: $dm-color-blue-80v;
+      }
+    }
+
+    .far {
+      color: $dm-color-black;
+
+      &:hover {
+        color: $dm-color-blue-50v;
+      }
+
+      &:active {
+        color: $dm-color-blue-70v;
+      }
+    }
   }
 
-  &:hover {
-    text-decoration: underline !important;
+  .dm-practice-card-container {
+    height: 412px;
+    max-width: 309px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  .dm-practice-card-img-container {
+    max-height: 165px;
+    min-width: 285px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+    img {
+      flex-shrink: 0;
+      min-height: 100%;
+      min-width: 100%;
+    }
+  }
+
+  .dm-practice-title {
+    overflow: hidden;
+  }
+
+  .padding-105 {
+    height: calc(100% - 165px);
+  }
+
+  .dm-practice-card-origin {
+    display: flex;
+    align-items: flex-end;
+    position: absolute;
+    bottom: 12px;
+    margin-right: 24px;
+
+    span {
+      height: 30px;
+    }
+  }
+
+  // styling for when there is no practice thumbnail
+  .dm-bg-gray-80 {
+    height: 165px;
+    background-color: $dm-color-gray-80;
+    display: flex;
+
+    h3 {
+      align-self: flex-end;
+      color: $dm-color-white;
+    }
+  }
+
+  .practice-card-tagline {
+    line-height: 25.92px;
+  }
+
+  .multiline-ellipses-1, .multiline-ellipses-2, .multiline-ellipses-3 {
+    display: block; /* Fallback for non-webkit */
+    max-width: 400px;
+    overflow: hidden;
+  }
+
+  .multiline-ellipses-1 {
+    height: 100px;
+  }
+
+  .multiline-ellipses-2 {
+    max-height: 51px;
+  }
+
+  .multiline-ellipses-3 {
+    height: 32px;
   }
 }

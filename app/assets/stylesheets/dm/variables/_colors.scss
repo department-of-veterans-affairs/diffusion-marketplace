@@ -1,5 +1,6 @@
 // https://designsystem.digital.gov/design-tokens/color/system-tokens/
 $dm-color-base: #1b1b1b; // gray-90
+$dm-color-gray-80: #2e2e2e;
 $dm-color-gray-60: #5c5c5c;
 $dm-color-gray-30: #adadad;
 $dm-color-gray-20: #c9c9c9;
@@ -15,6 +16,8 @@ $dm-color-red-70v: #8b0a03;
 $dm-color-gold-10v: #ffe396;
 $dm-color-gold-20v: #ffbe2e;
 $dm-color-yellow: #F2C94C;
+$dm-color-yellow-20v: #face00;
+$dm-color-yellow-30v: #ddaa01;
 
 // other
 $dm-color-white: #ffffff;
@@ -26,12 +29,7 @@ $dm-color-dark-black: #171717;
 $dm-color-primary-5v: #EDF5FF;
 $dm-color-lighter-grey: #DCDEE0;
 
-// comments section TODO: cleanup once new comment designs in place
-$dm-color-base-dark: #565C65;
-$dm-color-base-darker: #3d4551;
-
 // TODO: can probably clean up once new designs in place
-$dm-color-primary-blue: #005EA2;
 $dm-color-light-blue: #E7F6F8;
 $dm-color-darker-gold: #795c1e;
 $dm-color-light-black: #252D32;

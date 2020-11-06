@@ -71,16 +71,13 @@
     <div class="grid-container">
       <h4 class="font-sans-xl margin-bottom-2 margin-top-0 line-height-sans-205">All practices</h4>
       <p class="font-sans-lg margin-bottom-1">View all submitted and accepted practices.</p>
-      <div class="grid-row grid-gap-3">
-        <% @practices.each do |p| %>
-          <% if p.present? %>
-            <div class="tablet:grid-col-3 padding-y-105">
-              <%= render partial: 'practices/favorite_button', locals: {practice: p, featured: false, col_4: false} %>
-              <%= render partial: 'practices/marketplace_card', locals: {practice: p, featured: false} %>
-            </div>
+        <div class="grid-row grid-gap-3">
+          <% @practices.each do |p| %>
+            <% if p.present? %>
+              <%= render partial: 'shared/practice_card', locals: { practice: p } %>
+            <% end %>
           <% end %>
-        <% end %>
-      </div>
+        </div>
     </div>
   </section>
 </div>

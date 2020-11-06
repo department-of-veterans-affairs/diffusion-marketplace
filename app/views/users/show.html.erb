@@ -64,13 +64,10 @@
         <div class="grid-row">
           <h2 class="profile-h2 font-sans-xl margin-top-0">Bookmarked practices</h2>
         </div>
-        <div class="grid-row grid-gap-3 favorited-practices margin-bottom-5">
+        <div class="grid-row grid-gap-3 dm-favorited-practices">
           <% @favorite_practices.each do |p| %>
             <% if p.present? %>
-              <div class="tablet:grid-col-3 padding-y-105 practice-card-list">
-                <%= render partial: 'practices/favorite_button', locals: { practice: p, featured: false, col_4: false } %>
-                <%= render partial: 'practices/marketplace_card', locals: { practice: p, featured: false } %>
-              </div>
+              <%= render partial: 'shared/practice_card', locals: { practice: p } %>
             <% end %>
           <% end %>
         </div>
@@ -84,13 +81,10 @@
         <div class="grid-row">
           <h2 class="profile-h2 font-sans-xl margin-top-0">Created practices</h2>
         </div>
-        <div class="grid-row grid-gap-3 created-practices">
-          <% created_practices.each do |cup| %>
-            <% if cup.present? %>
-              <div class="tablet:grid-col-3 margin-y-105 padding-x-105 practice-card-list">
-                <%= render partial: 'practices/favorite_button', locals: { practice: cup, featured: false, col_4: false } %>
-                <%= render partial: 'practices/marketplace_card', locals: { practice: cup, featured: false } %>
-              </div>
+        <div class="grid-row grid-gap-3 dm-created-practices">
+          <% created_practices.each do |p| %>
+            <% if p.present? %>
+              <%= render partial: 'shared/practice_card', locals: { practice: p } %>
             <% end %>
           <% end %>
         </div>
