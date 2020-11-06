@@ -900,15 +900,18 @@ ul.no-list-style {
 
   a {
     color: $dm-color-blue-50v !important;
-    text-decoration: none;
 
     &:hover {
-      color: $dm-color-blue-50v;
+      color: $dm-color-blue-70v !important;
       text-decoration: underline;
     }
 
     &:visited {
-      color: $dm-color-blue-50v !important;
+      color: $dm-color-blue-50v;
+    }
+
+    &:active {
+      color: $dm-color-blue-80v !important;
     }
   }
 }
@@ -1020,4 +1023,10 @@ ul.no-list-style {
 
 .border-0 {
   border: 0 !important;
+}
+
+.rect-svg-blue-30v {
+  height: 8px;
+  width: 292px;
+  color: $dm-color-blue-30v;
 }

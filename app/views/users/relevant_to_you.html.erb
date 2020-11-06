@@ -1,0 +1,29 @@
+<% provide :head_tags do %>
+  <%= javascript_include_tag '_practice_utilities', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
+<div id="relevant-to-you" class="usa-section p0-top p0-bottom grid-container">
+  <div class="grid-col-4 desktop:grid-col-12">
+    <div class="rect-svg-blue-30v border-top-1 margin-top-8"></div>
+    <h1 class="margin-top-2 margin-bottom-9 usa-prose-h1 font-sans-2xl line-height-46px">Relevant to you</h1>
+    <% if @favorite_practices.any? %>
+      <%= render partial: 'practices/show/marketplace_cards_container', locals: {
+          container_classes: "favorite-practices #{ @user_location_practices.any? ? 'margin-bottom-9' : 'margin-bottom-5' }",
+          container_header_classes: 'usa-prose-h2 font-sans-xl line-height-37px',
+          container_title: 'Your bookmarked practices',
+          practice_data_set: @favorite_practices
+      }
+      %>
+    <% end %>
+    <% if @user_location_practices.any? %>
+      <%= render partial: 'practices/show/marketplace_cards_container', locals: {
+          container_classes: 'user-location-practices margin-bottom-05',
+          container_header_classes: 'usa-prose-h2 font-sans-xl line-height-37px',
+          container_title: 'Based on your location',
+          practice_data_set: @user_location_practices
+      }
+      %>
+      <a href="/search?query=<%= @user.location %>" class="dm-external-link margin-bottom-5">See more practices</a>
+    <% end %>
+  </div>
+</div>

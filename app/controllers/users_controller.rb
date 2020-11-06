@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   include CropperUtils
   before_action :set_user, only: %i[show edit update destroy re_enable set_password]
   before_action :require_admin, only: %i[index update destroy re_enable]
-  before_action :require_user_or_admin, only: :update
+  before_action :require_user_or_admin, only: %i[update relevant_to_you]
   before_action :final_admin, only: :update
 
   def index
@@ -104,6 +104,36 @@ class UsersController < ApplicationController
   end
 
   def terms_and_conditions
+  end
+
+  def relevant_to_you
+    @breadcrumbs = [
+        { text: 'Home', path: root_path },
+        { text: 'Relevant to you' }
+    ]
+    @user = current_user || nil
+    if current_user.present?
+      @favorite_practices = @user&.favorite_practices || []
+      @practices = Practice.searchable_practices
+      @facilities_data = facilities_json
+      @offices_data = origin_data_json
+      @user_location_practices = []
+
+      @practices.each do |p|
+        if p.facility? && p.practice_origin_facilities.any?
+          p.practice_origin_facilities.each do |pof|
+            origin_facility = @facilities_data.find { |f| f['StationNumber'] == pof.facility_id } || nil
+            @user_location_practices << p if origin_facility.present? && origin_facility['OfficialStationName'] == @user.location
+          end
+        elsif p.visn?
+          origin_visn = @offices_data['visns'].find { |f| f['id'].to_s == p.initiating_facility } || nil
+          @user_location_practices << p if origin_visn['number'] == @user.location
+        # elsif
+        # elsif
+        end
+      end
+      @user_location_practices
+    end
   end
 
   private

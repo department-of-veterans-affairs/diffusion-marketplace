@@ -1,12 +1,12 @@
 <% provide :head_tags do %>
-  <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_practice_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <% created_practices = Practice.where(user: current_user) %>
 
-<div class="x0-top">
+<div class="x0-top grid-container">
   <section class="usa-section p0-top padding-bottom-0">
-    <div class="grid-container <%= created_practices.empty? && @favorite_practices.empty?  ? 'profile-min-height' : '' %>">
+    <div class="<%= created_practices.empty? && @favorite_practices.empty?  ? 'profile-min-height' : '' %>">
       <div class="grid-row margin-bottom-2px">
         <div class="usa-layout-docs__sidenav desktop:grid-col-3 margin-right-105">
           <% if @user.avatar.present? && @user.avatar.exists? %>
@@ -59,41 +59,29 @@
   </section>
 
   <% if @favorite_practices.any? %>
-    <section class="bg-white">
-      <div class="grid-container">
-        <div class="grid-row">
-          <h2 class="profile-h2 font-sans-xl margin-top-0">Bookmarked practices</h2>
-        </div>
-        <div class="grid-row grid-gap-3 favorited-practices margin-bottom-5">
-          <% @favorite_practices.each do |p| %>
-            <% if p.present? %>
-              <div class="tablet:grid-col-3 padding-y-105 practice-card-list">
-                <%= render partial: 'practices/favorite_button', locals: { practice: p, featured: false, col_4: false } %>
-                <%= render partial: 'practices/marketplace_card', locals: { practice: p, featured: false } %>
-              </div>
-            <% end %>
-          <% end %>
-        </div>
-      </div>
-    </section>
+    <%= render partial: 'practices/show/marketplace_cards_container', locals: {
+        container_classes: 'favorite-practices margin-bottom-5',
+        container_header_classes: 'font-sans-xl margin-top-0',
+        container_title: 'Bookmarked practices',
+        practice_data_set: @favorite_practices
+      }
+    %>
   <% end %>
 
   <% if current_user && created_practices.any? %>
     <section class="bg-white">
-      <div class="grid-container">
-        <div class="grid-row">
-          <h2 class="profile-h2 font-sans-xl margin-top-0">Created practices</h2>
-        </div>
-        <div class="grid-row grid-gap-3 created-practices">
-          <% created_practices.each do |cup| %>
-            <% if cup.present? %>
-              <div class="tablet:grid-col-3 margin-y-105 padding-x-105 practice-card-list">
-                <%= render partial: 'practices/favorite_button', locals: { practice: cup, featured: false, col_4: false } %>
-                <%= render partial: 'practices/marketplace_card', locals: { practice: cup, featured: false } %>
-              </div>
-            <% end %>
+      <div class="grid-row">
+        <h2 class="profile-h2 font-sans-xl margin-top-0">Created practices</h2>
+      </div>
+      <div class="grid-row grid-gap-3 created-practices">
+        <% created_practices.each do |cup| %>
+          <% if cup.present? %>
+            <div class="tablet:grid-col-3 margin-y-105 padding-x-105 practice-card-list">
+              <%= render partial: 'practices/favorite_button', locals: { practice: cup, featured: false, col_4: false } %>
+              <%= render partial: 'practices/marketplace_card', locals: { practice: cup, featured: false } %>
+            </div>
           <% end %>
-        </div>
+        <% end %>
       </div>
     </section>
   <% end %>

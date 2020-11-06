@@ -1,0 +1,13 @@
+<section class="<%= container_classes %>">
+  <h2 class="<%= container_header_classes %>"><%= container_title %></h2>
+  <div class="grid-row grid-gap-3">
+    <% practice_data_set.each do |p| %>
+      <% if p.present? %>
+        <div class="tablet:grid-col-4 padding-y-105 practice-card-list">
+          <%= render partial: 'practices/favorite_button', locals: { practice: p, featured: true, col_4: false } %>
+          <%= render partial: 'practices/marketplace_card', locals: { practice: p, featured: true } %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</section>
