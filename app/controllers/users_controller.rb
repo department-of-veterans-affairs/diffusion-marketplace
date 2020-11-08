@@ -113,7 +113,7 @@ class UsersController < ApplicationController
     ]
     @user = current_user || nil
     if current_user.present?
-      @favorite_practices = @user&.favorite_practices || []
+      @favorite_practices = UserPractice.where(user: @user, favorited: true).order('time_favorited DESC').map { |up| Practice.find_by(id: up.practice_id)} || []
       @practices = Practice.searchable_practices
       @facilities_data = facilities_json
       @offices_data = origin_data_json
@@ -125,12 +125,8 @@ class UsersController < ApplicationController
             origin_facility = @facilities_data.find { |f| f['StationNumber'] == pof.facility_id } || nil
             @user_location_practices << p if origin_facility.present? && origin_facility['OfficialStationName'] == @user.location
           end
-        elsif p.visn?
-          origin_visn = @offices_data['visns'].find { |f| f['id'].to_s == p.initiating_facility } || nil
-          @user_location_practices << p if origin_visn['number'] == @user.location
-        # elsif
-        # elsif
         end
+        # TODO: In the future, if user-locations are recorded as VISNs or Offices, we need to add them here. As of 11/7/2020, we are only using facilities.
       end
       @user_location_practices
     end

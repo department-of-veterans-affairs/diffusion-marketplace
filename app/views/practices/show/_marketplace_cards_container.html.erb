@@ -1,5 +1,7 @@
 <section class="<%= container_classes %>">
-  <h2 class="<%= container_header_classes %>"><%= container_title %></h2>
+  <% if container_header_classes.present? && container_title.present? %>
+    <h2 class="<%= container_header_classes %>"><%= container_title %></h2>
+  <% end %>
   <div class="grid-row grid-gap-3">
     <% practice_data_set.each do |p| %>
       <% if p.present? %>

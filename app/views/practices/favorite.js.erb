@@ -7,10 +7,3 @@
   $('.dm-favorite-icon-<%= @practice.id %>').addClass('far');
   $('.dm-favorite-practice-link-text').text('Bookmark');
 <% end %>
-
-if (results) {
-  var r = results.find(function(p) {
-    return p.item.id === <%= @practice.id %>;
-  });
-  r.item.user_favorited = <%= @favorited %>;
-}

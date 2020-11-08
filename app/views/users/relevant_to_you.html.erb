@@ -8,22 +8,27 @@
     <h1 class="margin-top-2 margin-bottom-9 usa-prose-h1 font-sans-2xl line-height-46px">Relevant to you</h1>
     <% if @favorite_practices.any? %>
       <%= render partial: 'practices/show/marketplace_cards_container', locals: {
-          container_classes: "favorite-practices #{ @user_location_practices.any? ? 'margin-bottom-9' : 'margin-bottom-5' }",
-          container_header_classes: 'usa-prose-h2 font-sans-xl line-height-37px',
+          container_classes: "favorite-practices margin-bottom-9",
+          container_header_classes: 'usa-prose-h2 font-sans-xl line-height-37px margin-bottom-105',
           container_title: 'Your bookmarked practices',
           practice_data_set: @favorite_practices
       }
       %>
     <% end %>
+
+    <h2 class="usa-prose-h2 font-sans-xl line-height-37px margin-bottom-3">Based on your location</h2>
     <% if @user_location_practices.any? %>
       <%= render partial: 'practices/show/marketplace_cards_container', locals: {
           container_classes: 'user-location-practices margin-bottom-05',
-          container_header_classes: 'usa-prose-h2 font-sans-xl line-height-37px',
-          container_title: 'Based on your location',
+          container_header_classes: nil,
+          container_title: nil,
           practice_data_set: @user_location_practices
       }
       %>
-      <a href="/search?query=<%= @user.location %>" class="dm-external-link margin-bottom-5">See more practices</a>
+      <a href="/search?query=<%= @user.location %>" class="dm-external-link margin-bottom-5" title="See more practices based on your location">See more practices</a>
+    <% else %>
+      <p class="usa-prose-body line-height-26 margin-bottom-1">You don’t have a location listed in GAL yet.</p>
+      <a href="https://yourit.va.gov" class="margin-bottom-5 dm-external-link usa-link--external line-height-26" title="Link to YourIT">Submit a ticket to YourIT</a>
     <% end %>
   </div>
 </div>
