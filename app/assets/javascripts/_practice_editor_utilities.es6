@@ -53,7 +53,7 @@ function truncateText() {
     });
 
     $('.practice-card-tagline').each(function(index, element) {
-        $(element).shave(125)
+        $(element).shave(120)
     });
 }
 
