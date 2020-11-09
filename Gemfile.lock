@@ -337,6 +337,7 @@ GEM
       mini_portile2 (~> 2.4.0)
     ntlm-http (0.1.1)
     orm_adapter (0.5.0)
+    pagy (3.9.0)
     paper_trail (10.3.1)
       activerecord (>= 4.2)
       request_store (~> 1.1)
@@ -600,6 +601,7 @@ DEPENDENCIES
   nested_form
   net-ldap
   ntlm-sso!
+  pagy (~> 3.5)
   paper_trail
   paperclip (~> 6.0.0)
   pg (= 1.1.4)

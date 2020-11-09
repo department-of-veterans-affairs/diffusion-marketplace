@@ -1,0 +1,9 @@
+//$('.favorite-practices').append('<%= @paginated_favorite_practices %>');
+//$('.favorite-practices').append("<%= escape_javascript render(partial: 'practices/marketplace_card', locals: { practice: @paginated_favorite_practices.first, featured: true }) %>")
+//$('.favorite-practices').append('<%== pagy_nav(@pagy_a) %>');
+$('.favorite-practices').append("<%= escape_javascript render(partial: 'practices/show/marketplace_cards_container', locals: {
+        container_classes: nil,
+        container_header_classes: nil,
+        container_title: nil,
+        practice_data_set: @paginated_favorite_practices
+}) %>")

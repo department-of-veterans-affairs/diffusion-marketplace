@@ -6,14 +6,17 @@
   <div class="grid-col-4 desktop:grid-col-12">
     <div class="rect-svg-blue-30v border-top-1 margin-top-8"></div>
     <h1 class="margin-top-2 margin-bottom-9 usa-prose-h1 font-sans-2xl line-height-46px">Relevant to you</h1>
-    <% if @favorite_practices.any? %>
+    <% if @paginated_favorite_practices.any? %>
       <%= render partial: 'practices/show/marketplace_cards_container', locals: {
           container_classes: "favorite-practices margin-bottom-9",
           container_header_classes: 'usa-prose-h2 font-sans-xl line-height-37px margin-bottom-105',
           container_title: 'Your bookmarked practices',
-          practice_data_set: @favorite_practices
+          practice_data_set: @paginated_favorite_practices
       }
       %>
+      <%#== pagy_nav(@pagy_a).html_safe %>
+      <%= will_paginate @paginated_favorite_practices %>
+<!--      <%#= page_entries_info @paginated_favorite_practices %><br/>-->
     <% end %>
 
     <h2 class="usa-prose-h2 font-sans-xl line-height-37px margin-bottom-3">Based on your location</h2>

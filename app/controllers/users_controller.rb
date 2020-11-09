@@ -2,6 +2,7 @@
 
 # Users controller, primarily for user admin management
 class UsersController < ApplicationController
+  require 'will_paginate/array'
   include CropperUtils
   before_action :set_user, only: %i[show edit update destroy re_enable set_password]
   before_action :require_admin, only: %i[index update destroy re_enable]
@@ -113,7 +114,14 @@ class UsersController < ApplicationController
     ]
     @user = current_user || nil
     if current_user.present?
-      @favorite_practices = UserPractice.where(user: @user, favorited: true).order('time_favorited DESC').map { |up| Practice.find_by(id: up.practice_id)} || []
+      # If a favorited practice has a nil value for the time_favorited attr, place it at the end of the favorite_practices array
+      no_time_favorite_practices = UserPractice.where(user: @user, favorited: true, time_favorited: nil) || []
+      favorite_practices = UserPractice.where(user: @user, favorited: true).where.not(time_favorited: nil).order('time_favorited DESC').map { |up| find_user_practice_by_practice_id(up) } || []
+      favorite_practices.concat(no_time_favorite_practices)
+      # @pagy_a, @paginated_favorite_practices = pagy_array(favorite_practices, items: 3, link_extra: 'data-remote="true" class="paginated-favorite-practices"')
+      # @pagy_a, @paginated_favorite_practices = pagy_array(favorite_practices, items: 3, size: [], link_extra: 'data-remote="true" class="paginated-favorite-practices"')
+      @paginated_favorite_practices = favorite_practices.paginate(page: 1, per_page: 2)
+      debugger
       @practices = Practice.searchable_practices
       @facilities_data = facilities_json
       @offices_data = origin_data_json
@@ -130,9 +138,18 @@ class UsersController < ApplicationController
       end
       @user_location_practices
     end
+
+    # respond_to do |format|
+    #   format.html
+    #   format.js
+    # end
   end
 
   private
+
+  def find_user_practice_by_practice_id(up)
+    Practice.find_by(id: up.practice_id)
+  end
 
   def require_admin
     unless current_user.present? && current_user.has_role?(:admin)

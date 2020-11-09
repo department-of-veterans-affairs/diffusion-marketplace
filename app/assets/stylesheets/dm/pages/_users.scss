@@ -3,4 +3,8 @@
 // Relevant to you
 .relevant_to_you {
   padding-bottom: 20px !important;
+
+  .pagination {
+    display: block !important;
+  }
 }
