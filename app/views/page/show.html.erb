@@ -102,7 +102,7 @@
         <%# note: everything EXCEPT Practice List has the page_narrow_classes applied %>
         <% when 'PagePracticeListComponent' %>
           <% practices_ids = component.practices %> <%# array of id strings %>
-          <div class="grid-row grid-gap x1-bottom">
+          <div class="grid-row grid-gap-3 x1-bottom">
             <% practices_ids.each do |pr_id| %>
               <% pr = Practice.find(pr_id.to_i) %>
               <% if pr.present? %>
