@@ -152,11 +152,10 @@
             The VA will be notified of your plan to implement this practice and the practice support team will message you to start working on the next implementation steps.
           </p>
         </div>
-        <div class="tablet:grid-col-4">
-          <%= render partial: 'practices/favorite_button', locals: {practice: @practice, featured: true, col_4: false } %>
-          <%= render partial: 'marketplace_card', locals: {practice: @practice, featured: false} %>
-          <div class="margin-top-auto"></div>
+        <div class="grid-row grid-gap-3">
+          <%= render partial: 'shared/practice_card', locals: { practice: @practice } %>
         </div>
+          <div class="margin-top-auto"></div>
       </div>
     </div>
   <% end %>

@@ -26,53 +26,10 @@
       <% if @partner_practices.any? %>
         <div class="grid-row grid-gap-3">
           <% @partner_practices.order(name: :asc).each do |p| %>
-            <div class="tablet:grid-col-3 padding-y-105">
-              <%= render partial: 'practices/favorite_button', locals: {practice: p, featured: false, col_4: false } %>
-              <%= render partial: 'practices/marketplace_card', locals: {practice: p, featured: false} %>
-            </div>
+            <%= render partial: 'shared/practice_card', locals: {practice: p, featured: false} %>
           <% end %>
         </div>
-      <% else %>
-        <p></p>
       <% end %>
     </div>
   </section>
 </div>
-
-
-
-
-
-
-
-
-
-<%#    <div class="grid-container search-practices">
-      <hr>
-      <% if @practice_partner.practices.any? %>
-<%#      <% @practice_partner.practices.order(name: :asc).each do |p| %>
-<%#        <div class="grid-row search-row margin-bottom-3">
-          <div class="tablet:grid-col-4">
-            <div class="img-box margin-top-2">
-              <%= link_to p, 'aria-label': "Go to #{p.name}"  do %>
-<%#                <div class="img img-box-content" style="<%= p.main_display_image.present? ? "background: url('#{p.main_display_image_s3_presigned_url}') transparent" : 'background: transparent' %><%#; background-size: contain; background-repeat: no-repeat; background-position: center;">
-<%#                </div>
-              <% end %>
-<%#            </div>
-          </div>
-          <div class="tablet:grid-col-8">
-            <h2 class="margin-top-1"><%= link_to p.tagline, practice_path(p) %><%#</h2>
-            <h3 class="truncate-text two-lines"><%= p.description %><%#</h3>
-            <p class="practice-details"><%= p.name %><%# | <span class="uppercase"><%= p.date_initiated.present? ? date_format(p.date_initiated) : '(start date unknown)' %><%#</span> | <span class="uppercase"><%= facility_name(p.initiating_facility) %><%#</span></p>
-            <p class="truncate-text five-lines"><%= p.summary %><%#</p>
-            <%= render partial: 'shared/badge', locals: {badges: p.practice_partners} %>
-<%#          </div>
-        </div>
-        <hr>
-      <% end %>
-<%#      <% else %>
-<%#        <p>There are no practices at this time.</p>
-      <% end %>
-<%#    </div>
-  </section>
-</div>%>

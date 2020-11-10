@@ -44,12 +44,16 @@ function initSortable(ulId) {
 }
 
 function truncateText() {
-    $('.practice-title').each(function(index, element) {
-        $(element).shave(46);
+    $('.dm-practice-title').each(function(index, element) {
+        $(element).shave(55);
     });
 
-    $('.practice-card-origin-info').each(function(index, element) {
-        $(element).shave(32);
+    $('.dm-practice-card-origin-info').each(function(index, element) {
+        $(element).shave(35);
+    });
+
+    $('.practice-card-tagline').each(function(index, element) {
+        $(element).shave(120)
     });
 }
 
