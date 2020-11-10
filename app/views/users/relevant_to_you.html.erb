@@ -8,23 +8,23 @@
     <h1 class="margin-top-2 margin-bottom-9 usa-prose-h1 font-sans-2xl line-height-46px">Relevant to you</h1>
     <% if @paginated_favorite_practices.any? %>
       <%= render partial: 'practices/show/marketplace_cards_container', locals: {
-          container_classes: "favorite-practices margin-bottom-2",
+          container_classes: "favorite-practices margin-bottom-105 margin-top-0",
           container_header_classes: 'usa-prose-h2 font-sans-xl line-height-37px margin-bottom-105',
           container_title: 'Your bookmarked practices',
           practice_data_set: @paginated_favorite_practices
       }
       %>
-      <% link = pagy_link_proc(@pagy_a) %>
-      <%=  link.call(@pagy_a.vars[:page] + 1, 'Load more', 'class="margin-bottom-9"').html_safe %>
+      <% link = pagy_link_proc(@pagy_favorite_practices) %>
+      <%=  link.call(@pagy_favorite_practices.vars[:page] + 1, 'Load more', 'class="margin-bottom-9"').html_safe %>
     <% end %>
 
-    <h2 class="usa-prose-h2 font-sans-xl line-height-37px margin-bottom-3">Based on your location</h2>
+    <h2 class="usa-prose-h2 font-sans-xl line-height-37px margin-bottom-105 margin-top-0">Based on your location</h2>
     <% if @user_location_practices.any? %>
       <%= render partial: 'practices/show/marketplace_cards_container', locals: {
           container_classes: 'user-location-practices margin-bottom-05',
           container_header_classes: nil,
           container_title: nil,
-          practice_data_set: @user_location_practices
+          practice_data_set: @user_location_practices.first(3)
       }
       %>
       <a href="/search?query=<%= @user.location %>" class="dm-external-link margin-bottom-5" title="See more practices based on your location">See more practices</a>

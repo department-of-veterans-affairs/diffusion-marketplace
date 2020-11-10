@@ -115,11 +115,15 @@ class UsersController < ApplicationController
     @user = current_user || nil
     if current_user.present?
       # If a favorited practice has a nil value for the time_favorited attr, place it at the end of the favorite_practices array
-      no_time_favorite_practices = UserPractice.where(user: @user, favorited: true, time_favorited: nil).map { |up| find_user_practice_by_practice_id(up) } || []
-      favorite_practices = UserPractice.where(user: @user, favorited: true).where.not(time_favorited: nil).order('time_favorited DESC').map { |up| find_user_practice_by_practice_id(up) } || []
+      no_time_favorite_practices = UserPractice.where(user: @user, favorited: true, time_favorited: nil).map { |up| up.practice } || []
+      favorite_practices = UserPractice.where(user: @user, favorited: true).where.not(time_favorited: nil).order('time_favorited DESC').map { |up| up.practice } || []
       favorite_practices.concat(no_time_favorite_practices)
-      @pagy_a, @paginated_favorite_practices = pagy_array(favorite_practices, page: params[:page], items: 3, link_extra: "data-remote='true' class='paginated-favorite-practices page-#{params[:page] || 1} usa-button--outline dm-btn-base'")
-      # @paginated_favorite_practices = favorite_practices.paginate(page: params[:page], per_page: 3)
+      @pagy_favorite_practices, @paginated_favorite_practices = pagy_array(
+          favorite_practices,
+          page: params[:page],
+          items: 3,
+          link_extra: "data-remote='true' class='paginated-favorite-practices favorite-practices-page-#{params[:page] || 1} usa-button--outline dm-btn-base margin-bottom-9'"
+      )
       # debugger
       @practices = Practice.searchable_practices
       @facilities_data = facilities_json
@@ -145,10 +149,6 @@ class UsersController < ApplicationController
   end
 
   private
-
-  def find_user_practice_by_practice_id(up)
-    Practice.find_by(id: up.practice_id)
-  end
 
   def require_admin
     unless current_user.present? && current_user.has_role?(:admin)

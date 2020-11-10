@@ -1,17 +1,15 @@
-//$('.favorite-practices').append('<%= @paginated_favorite_practices %>');
-//$('.favorite-practices').append("<%= escape_javascript render(partial: 'practices/marketplace_card', locals: { practice: @paginated_favorite_practices.first, featured: true }) %>")
-//$('.favorite-practices').append('<%== pagy_nav(@pagy_a) %>');
 $('.favorite-practices').append("<%= escape_javascript render(partial: 'practices/show/marketplace_cards_container', locals: {
-        container_classes: nil,
+        container_classes: 'margin-bottom-105',
         container_header_classes: nil,
         container_title: nil,
         practice_data_set: @paginated_favorite_practices
 }) %>")
-<% link = pagy_link_proc(@pagy_a) %>
-$('.page-1').remove();
-<% if @pagy_a.next.present? %>
-  $(".page-<%= @pagy_a.prev %>").remove();
-  $('.favorite-practices').append(`<%= link.call(@pagy_a.next, 'Load more').html_safe %>`);
+<% link = pagy_link_proc(@pagy_favorite_practices) %>
+$('.favorite-practices-page-1').remove();
+<% if @pagy_favorite_practices.next.present? %>
+  $(".favorite-practices-page-<%= @pagy_favorite_practices.prev %>").remove();
+  $('.favorite-practices').append(`<%= link.call(@pagy_favorite_practices.next, 'Load more').html_safe %>`);
 <% else %>
-  $(".page-<%= @pagy_a.prev %>").remove();
+  $(".favorite-practices-page-<%= @pagy_favorite_practices.prev %>").remove();
+  $(".favorite-practices").last().css('margin-bottom', '48px');
 <% end %>
