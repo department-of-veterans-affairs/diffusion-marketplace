@@ -7,3 +7,11 @@ $('.favorite-practices').append("<%= escape_javascript render(partial: 'practice
         container_title: nil,
         practice_data_set: @paginated_favorite_practices
 }) %>")
+<% link = pagy_link_proc(@pagy_a) %>
+$('.page-1').remove();
+<% if @pagy_a.next.present? %>
+  $(".page-<%= @pagy_a.prev %>").remove();
+  $('.favorite-practices').append(`<%= link.call(@pagy_a.next, 'Load more').html_safe %>`);
+<% else %>
+  $(".page-<%= @pagy_a.prev %>").remove();
+<% end %>
