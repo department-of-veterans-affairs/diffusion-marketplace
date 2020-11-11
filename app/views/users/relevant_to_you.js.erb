@@ -1,26 +1,33 @@
 function paginatedBookmarkedPractices() {
-  var favoritePracticesClass = '.favorite-practices';
+    <% pagy_favorites = @pagy_favorite_practices %>
+    <% next_page = pagy_favorites.next %>
+    var favoritePracticesClass = ".paginated-favorite-practices";
 
-  <% next_page_param = @pagy_favorite_practices.next %>
-  $(favoritePracticesClass).append("<%= escape_javascript render(partial: 'users/relevant_to_you/practice_cards_container', locals: {
-      container_classes: "#{next_page_param.present? ? 'margin-bottom-105' : 'margin-top-neg-105'}",
-      container_header_classes: nil,
-      container_title: nil,
-      practice_data_set: @paginated_favorite_practices
-  }) %>")
+    // Append the next set of practice cards to the current set
+    $(favoritePracticesClass).append("<%= escape_javascript render(partial: 'users/relevant_to_you/practice_cards_container', locals: {
+        container_classes:  "#{next_page.present? ? 'margin-bottom-105' : 'margin-top-neg-105'}",
+        container_header_classes: nil,
+        container_title: nil,
+        practice_data_set: @paginated_favorite_practices
+    }) %>")
 
-  $('.favorite-practices-page-1').remove();
+    // Remove the first 'Load more' link
+    $('.favorite-practices-page-2-link').remove();
 
-  var prevPageClass = ".favorite-practices-page-<%= @pagy_favorite_practices.prev %>";
-  <% if @pagy_favorite_practices.next.present? %>
-    $(prevPageClass).remove();
 
-    <% link = pagy_link_proc(@pagy_favorite_practices) %>
-    $(favoritePracticesClass).append(`<%= link.call(next_page_param, 'Load more').html_safe %>`);
-  <% else %>
-    $(prevPageClass).remove();
-    $(favoritePracticesClass).last().css('margin-bottom', '68px');
-  <% end %>
+    var prevPageClass = ".favorite-practices-page-<%= pagy_favorites.prev %>-link";
+
+    // If there's another set of cards, remove the previous 'Load more' link
+    <% if next_page.present? %>
+        $(prevPageClass).remove();
+
+        <% link = pagy_link_proc(pagy_favorites) %>
+        $(favoritePracticesClass).append(`<%= link.call(next_page, 'Load more').html_safe %>`);
+    <% else %>
+    // If there isn't another set, remove the previous 'Load more' link and add proper margin to the last set's container
+        $(prevPageClass).remove();
+        $(favoritePracticesClass).last().css('margin-bottom', '68px');
+    <% end %>
 }
 
-$(paginatedBookmarkedPractices)
+$(paginatedBookmarkedPractices);

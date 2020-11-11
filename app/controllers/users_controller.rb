@@ -114,17 +114,20 @@ class UsersController < ApplicationController
     ]
     @user = current_user || nil
     if current_user.present?
-      # If a favorited practice has a nil value for the time_favorited attr, place it at the end of the favorite_practices array
-      no_time_favorite_practices = UserPractice.where(user: @user, favorited: true, time_favorited: nil).map { |up| up.practice } || []
-      favorite_practices = UserPractice.where(user: @user, favorited: true).where.not(time_favorited: nil).order('time_favorited DESC').map { |up| up.practice } || []
+      # If a favorited practice has a nil value for the time_favorited attribute, place it at the end of the favorite_practices array
+      no_time_favorite_practices = UserPractice.where(user: @user, favorited: true, time_favorited: nil).map { |up| up.practice }
+      favorite_practices = UserPractice.where(user: @user, favorited: true).where.not(time_favorited: nil).order('time_favorited DESC').map { |up| up.practice }
       favorite_practices.concat(no_time_favorite_practices)
+
+      # Create the pagy instance
       @pagy_favorite_practices, @paginated_favorite_practices = pagy_array(
           favorite_practices,
           page: params[:page],
           items: 3,
-          link_extra: "data-remote='true' class='paginated-favorite-practices favorite-practices-page-#{params[:page] || 1}
-                        usa-button--outline dm-btn-base margin-bottom-10 width-15'"
+          link_extra: "data-remote='true' class='favorite-practices-page-#{params[:page] || 2}-link usa-button--outline dm-btn-base margin-bottom-10 width-15'"
       )
+
+      # Practices based on the user's location
       @practices = Practice.searchable_practices
       @facilities_data = facilities_json
       @offices_data = origin_data_json
