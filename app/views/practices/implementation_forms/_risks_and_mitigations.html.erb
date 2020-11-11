@@ -4,6 +4,8 @@
 <% end %>
 <% risk_join_array = Array.new %>
 <% miti_join_array = Array.new %>
+<% m_items_to_delete = Array.new %>
+<% r_items_to_delete = Array.new %>
 
 <%= f.fields_for :risk_mitigations, wrapper: false do |rm| %>
   <%= rm.fields_for :risks, wrapper: false do |risk| %>
@@ -11,12 +13,37 @@
   <% end %>
   <%= rm.fields_for :mitigations, wrapper: false do |miti| %>
     <% miti_join_array.push(miti.object.risk_mitigation_id) %>
-    <% miti.delete %>
   <% end %>
 <% end %>
-<% debugger %>
 <% if miti_join_array.length != risk_join_array.length %>
-    <% debugger %>
+    <% if miti_join_array.length > risk_join_array.length %>
+          <% miti_join_array.each do |m_id| %>
+            <% if  !risk_join_array.include?(m_id) %>
+              <% m_items_to_delete.push(m_id) %>
+            <% end %>
+          <% end %>
+    <% end %>
+    <% if risk_join_array.length > miti_join_array.length %>
+        <% risk_join_array.each do |r_id| %>
+          <% if !miti_join_array.include?(r_id) %>
+            <% r_items_to_delete.push(r_id) %>
+          <% end %>
+        <% end %>
+    <% end %>
+
+  <% if m_items_to_delete.length > 0 %>
+      <% m_items_to_delete.each do |d| %>
+          <% Mitigation.where(risk_mitigation_id: d).destroy_all %>
+          <% RiskMitigation.find_by_id(d).destroy %>
+      <% end %>
+  <% end %>
+
+  <% if r_items_to_delete.length > 0 %>
+      <% r_items_to_delete.each do |d| %>
+        <% Risk.where(risk_mitigation_id: d).destroy_all %>
+        <% RiskMitigation.find_by_id(d).destroy %>
+      <% end %>
+  <% end %>
 <% end %>
 
 <div id="risk-mitigation" class="desktop:grid-col-11 grid-col-12 p0">
@@ -29,11 +56,6 @@
       <legend class="usa-sr-only">Risks and Mitigations</legend>
         <ul class="practice-editor-risk-mitigation-ul" id="sortable_risk_mitigations" role="listbox" aria-label="Practice editor risk and mitigation pair list">
           <%= f.fields_for :risk_mitigations, wrapper: false do |rm| %>
-            <%# if rm[1][:risks_attributes] == nil || rm[1][:mitigations_attributes] == nil %>
-              <%# debugger %>
-              <%# @practice_params["risk_mitigations_attributes"].delete(rm[0]) %>
-              <%# next %>
-            <%# end %>
             <%
               rm_id = rm.object.id
               rm_position = rm.object.position
@@ -65,25 +87,27 @@
                   <%
                     risk_id = risk.object.id
                   %>
-                  <% debugger %>
                   <%= risk.hidden_field :id %>
-                  <div id="risk_<%= risk_id %>_container" class="risk_<%= risk_id %>_container grid-col-11">
-                    <%= risk.label :description, 'Description of the risk', class: 'usa-label display-inline-block timeline-duration font-sans-sm' %>
-                    <%= risk.text_field :description, class: "usa-input risk-description-textarea", 'counter-id': "risk_#{risk_id}_description_textarea" %>
-                  </div>
+                    <% if !r_items_to_delete.include?(risk.object.risk_mitigation_id) %>
+                      <div id="risk_<%= risk_id %>_container" class="risk_<%= risk_id %>_container grid-col-11">
+                        <%= risk.label :description, 'Description of the risk', class: 'usa-label display-inline-block timeline-duration font-sans-sm' %>
+                        <%= risk.text_field :description, class: "usa-input risk-description-textarea", 'counter-id': "risk_#{risk_id}_description_textarea" %>
+                      </div>
+                  <% end %>
                 <% end %>
               </div>
               <div class="grid-col-11 mitigation-container">
                 <%= rm.fields_for :mitigations, wrapper: false do |miti| %>
-                  <% debugger %>
                   <%
                     mitigation_id = miti.object.id
                   %>
                   <%= miti.hidden_field :id %>
-                  <div id="mitigation_<%= mitigation_id %>_container" class="mitigation_<%= mitigation_id %>_container">
-                    <%= miti.label :description, 'Corresponding mitigation', class: 'usa-label grid-col-11 font-sans-sm margin-top-2' %>
-                    <%= miti.text_area :description, class: 'usa-input practice-input mitigation-description-textarea height-15', 'counter-id': "mitigation_#{mitigation_id}_description_textarea" %>
-                  </div>
+                    <% if !m_items_to_delete.include?(miti.object.risk_mitigation_id) %>
+                      <div id="mitigation_<%= mitigation_id %>_container" class="mitigation_<%= mitigation_id %>_container">
+                        <%= miti.label :description, 'Corresponding mitigation', class: 'usa-label grid-col-11 font-sans-sm margin-top-2' %>
+                        <%= miti.text_area :description, class: 'usa-input practice-input mitigation-description-textarea height-15', 'counter-id': "mitigation_#{mitigation_id}_description_textarea" %>
+                      </div>
+                  <% end %>
                 <% end %>
               </div>
               <div class="grid-row">
@@ -102,7 +126,6 @@
         <% end %>
         <ul class="trash-can display-none"></ul>
       </fieldset>
-
   </section>
 </div>
 
