@@ -125,12 +125,9 @@
     <% shark_tank_badge = Badge.find_by(name: 'Shark Tank') %>
     <% @shark_tank_winners = Practice.joins(:badge_practices).where(badge_practices: { badge: shark_tank_badge}).order(name: :asc) %>
     <% if @shark_tank_winners.any? %>
-      <div class="grid-row grid-gap">
+      <div class="grid-row grid-gap-3">
         <% @shark_tank_winners.each do |practice| %>
-          <div class="tablet:grid-col-4 flex-column display-flex margin-bottom-28px">
-            <%= render partial: 'practices/favorite_button', locals: {practice: practice, featured: false, col_4: true } %>
-            <%= render partial: '/practices/marketplace_card', locals: {practice: practice, featured: false} %>
-          </div>
+            <%= render partial: 'shared/practice_card', locals: { practice: practice} %>
         <% end %>
       </div>
     <% end %>

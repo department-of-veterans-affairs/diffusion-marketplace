@@ -1,15 +1,26 @@
-$('.favorite-practices').append("<%= escape_javascript render(partial: 'practices/show/marketplace_cards_container', locals: {
-        container_classes: 'margin-bottom-105',
-        container_header_classes: nil,
-        container_title: nil,
-        practice_data_set: @paginated_favorite_practices
-}) %>")
-<% link = pagy_link_proc(@pagy_favorite_practices) %>
-$('.favorite-practices-page-1').remove();
-<% if @pagy_favorite_practices.next.present? %>
-  $(".favorite-practices-page-<%= @pagy_favorite_practices.prev %>").remove();
-  $('.favorite-practices').append(`<%= link.call(@pagy_favorite_practices.next, 'Load more').html_safe %>`);
-<% else %>
-  $(".favorite-practices-page-<%= @pagy_favorite_practices.prev %>").remove();
-  $(".favorite-practices").last().css('margin-bottom', '48px');
-<% end %>
+function paginatedBookmarkedPractices() {
+  var favoritePracticesClass = '.favorite-practices';
+
+  <% next_page_param = @pagy_favorite_practices.next %>
+  $(favoritePracticesClass).append("<%= escape_javascript render(partial: 'users/relevant_to_you/practice_cards_container', locals: {
+      container_classes: "#{next_page_param.present? ? 'margin-bottom-105' : 'margin-top-neg-105'}",
+      container_header_classes: nil,
+      container_title: nil,
+      practice_data_set: @paginated_favorite_practices
+  }) %>")
+
+  $('.favorite-practices-page-1').remove();
+
+  var prevPageClass = ".favorite-practices-page-<%= @pagy_favorite_practices.prev %>";
+  <% if @pagy_favorite_practices.next.present? %>
+    $(prevPageClass).remove();
+
+    <% link = pagy_link_proc(@pagy_favorite_practices) %>
+    $(favoritePracticesClass).append(`<%= link.call(next_page_param, 'Load more').html_safe %>`);
+  <% else %>
+    $(prevPageClass).remove();
+    $(favoritePracticesClass).last().css('margin-bottom', '68px');
+  <% end %>
+}
+
+$(paginatedBookmarkedPractices)

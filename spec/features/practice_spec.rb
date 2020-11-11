@@ -161,7 +161,7 @@ describe 'Practices', type: :feature do
       visit '/practices'
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@user_practice.name)
-      expect(page).to have_content('Page VA…')
+      expect(page).to have_content('Page VA Clinic')
     end
 
     it 'should display the practice departments section' do

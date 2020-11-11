@@ -122,7 +122,8 @@ class UsersController < ApplicationController
           favorite_practices,
           page: params[:page],
           items: 3,
-          link_extra: "data-remote='true' class='paginated-favorite-practices favorite-practices-page-#{params[:page] || 1} usa-button--outline dm-btn-base margin-bottom-9'"
+          link_extra: "data-remote='true' class='paginated-favorite-practices favorite-practices-page-#{params[:page] || 1}
+                        usa-button--outline dm-btn-base margin-bottom-10 width-15'"
       )
       @practices = Practice.searchable_practices
       @facilities_data = facilities_json

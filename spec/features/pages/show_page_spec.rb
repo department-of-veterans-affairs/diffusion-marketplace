@@ -41,7 +41,7 @@ describe 'Page Builder - Show', type: :feature do
   it 'Should display the practices' do
     expect(page).to have_content('A public practice')
     expect(page).to have_content('A cool practice')
-    expect(page).to have_css('.marketplace-card-container')
+    expect(page).to have_css('.dm-practice-link')
   end
 
   it 'Should display the subpage hyperlink' do
