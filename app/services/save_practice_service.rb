@@ -323,11 +323,6 @@ class SavePracticeService
 
   def process_risk_mitigations_params
     @practice_params["risk_mitigations_attributes"].each do |rm|
-      #remove record if not both risk and mitigation exist.... bj_11_4_20
-      if rm[1][:risks_attributes] == nil || rm[1][:mitigations_attributes] == nil
-        @practice_params["risk_mitigations_attributes"].delete(rm[0])
-        next
-      end
       if rm[1][:_destroy] == 'false'
         risk_desc = rm[1][:risks_attributes]["0"][:description]
         miti_desc = rm[1][:mitigations_attributes]["0"][:description]
