@@ -129,8 +129,6 @@ class UsersController < ApplicationController
           link_extra: "data-remote='true' class='paginated-favorite-practices-page-#{params[:favorites].nil? ? 2 : params[:favorites].to_i + 1}-link usa-button--outline dm-btn-base margin-bottom-10 x075-top width-15'"
       )
 
-      # debugger
-
       # Practices based on the user's location
       @practices = Practice.searchable_practices
       @facilities_data = facilities_json

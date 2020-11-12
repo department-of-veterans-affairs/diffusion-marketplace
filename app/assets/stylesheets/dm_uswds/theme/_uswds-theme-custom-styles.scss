@@ -19,6 +19,10 @@ i.e.
 @include u-padding-right('05');
 ----------------------------------------
 */
+
+// Breadcrumb min-width
+$theme-breadcrumb-min-width: 'mobile';
+
 @import "uswds-theme-color";
 @import "uswds/uswds";
 @import "../../dm/variables/colors";
