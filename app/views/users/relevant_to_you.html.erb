@@ -9,7 +9,7 @@
     <% if @paginated_favorite_practices.any? %>
       <section class="relevant-favorite-practices">
         <%= render partial: 'users/relevant_to_you/practice_cards_container', locals: {
-            container_classes: "paginated-favorite-practices #{@pagy_favorite_practices.count > 3 ? 'margin-bottom-105' : 'margin-bottom-9' } margin-top-0",
+            container_classes: "paginated-favorite-practices margin-top-0",
             container_header_classes: 'usa-prose-h2 font-sans-xl line-height-37px margin-bottom-105',
             container_title: 'Your bookmarked practices',
             practice_data_set: @paginated_favorite_practices
@@ -32,7 +32,11 @@
             practice_data_set: @user_location_practices.first(3)
         }
         %>
-        <a href="/search?query=<%= @user.location %>" class="dm-external-link margin-bottom-5" title="See more practices based on your location">See more practices</a>
+        <% if @user_location_practices.count > 3 %>
+          <a href="/search?query=<%= @user.location %>" class="dm-external-link margin-bottom-5" title="See more practices based on your location">
+            See more practices
+          </a>
+        <% end %>
       <% else %>
         <p class="usa-prose-body line-height-26 margin-bottom-1">You don’t have a location listed in GAL yet.</p>
         <a href="https://yourit.va.gov" class="margin-bottom-5 dm-external-link usa-link--external line-height-26" title="Link to YourIT">Submit a ticket to YourIT</a>

@@ -6,8 +6,9 @@ class UsersController < ApplicationController
   include CropperUtils
   before_action :set_user, only: %i[show edit update destroy re_enable set_password]
   before_action :require_admin, only: %i[index update destroy re_enable]
-  before_action :require_user_or_admin, only: %i[update relevant_to_you]
+  before_action :require_user_or_admin, only: %i[update]
   before_action :final_admin, only: :update
+  before_action :require_user, only: :relevant_to_you
 
   def index
     redirect_to root_path
@@ -122,10 +123,13 @@ class UsersController < ApplicationController
       # Create the pagy instance
       @pagy_favorite_practices, @paginated_favorite_practices = pagy_array(
           favorite_practices,
-          page: params[:page],
+          # assigning a unique page_param allows for multiple pagy instances to be used in a single action, in case we need multiple 'Load more' sections
+          page_param: 'favorites',
           items: 3,
-          link_extra: "data-remote='true' class='favorite-practices-page-#{params[:page] || 2}-link usa-button--outline dm-btn-base margin-bottom-10 width-15'"
+          link_extra: "data-remote='true' class='paginated-favorite-practices-page-#{params[:favorites].nil? ? 2 : params[:favorites].to_i + 1}-link usa-button--outline dm-btn-base margin-bottom-10 x075-top width-15'"
       )
+
+      # debugger
 
       # Practices based on the user's location
       @practices = Practice.searchable_practices
@@ -152,6 +156,12 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def require_user
+    unless current_user.present?
+      redirect_to root_path
+    end
+  end
 
   def require_admin
     unless current_user.present? && current_user.has_role?(:admin)
