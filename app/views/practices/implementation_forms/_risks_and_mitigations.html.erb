@@ -14,29 +14,30 @@
     <% miti_join_array.push(miti.object.risk_mitigation_id) %>
   <% end %>
 <% end %>
-   <% miti_join_array.each do |m_id| %>
-      <% if  !risk_join_array.include?(m_id) %>
-        <% m_items_to_delete.push(m_id) %>
-      <% end %>
-     <% end %>
-   <% risk_join_array.each do |r_id| %>
-     <% if !miti_join_array.include?(r_id) %>
-       <% r_items_to_delete.push(r_id) %>
-     <% end %>
+ <% miti_join_array.each do |m_id| %>
+    <% if  !risk_join_array.include?(m_id) %>
+      <% m_items_to_delete.push(m_id) %>
+    <% end %>
+ <% end %>
+ <% risk_join_array.each do |r_id| %>
+   <% if !miti_join_array.include?(r_id) %>
+     <% r_items_to_delete.push(r_id) %>
    <% end %>
-  <% if m_items_to_delete.length > 0 %>
-      <% m_items_to_delete.each do |d| %>
-          <% Mitigation.where(risk_mitigation_id: d).destroy_all %>
-          <% RiskMitigation.find_by_id(d).destroy %>
-      <% end %>
-  <% end %>
+ <% end %>
 
-  <% if r_items_to_delete.length > 0 %>
-      <% r_items_to_delete.each do |d| %>
-        <% Risk.where(risk_mitigation_id: d).destroy_all %>
+<% if m_items_to_delete.length > 0 %>
+    <% m_items_to_delete.each do |d| %>
+        <% Mitigation.where(risk_mitigation_id: d).destroy_all %>
         <% RiskMitigation.find_by_id(d).destroy %>
-      <% end %>
-  <% end %>
+    <% end %>
+<% end %>
+
+<% if r_items_to_delete.length > 0 %>
+    <% r_items_to_delete.each do |d| %>
+      <% Risk.where(risk_mitigation_id: d).destroy_all %>
+      <% RiskMitigation.find_by_id(d).destroy %>
+    <% end %>
+<% end %>
 <% if r_items_to_delete.length > 0 || m_items_to_delete.length > 0 %>
   <script type="text/javascript" charset="utf-8">
       document.location.reload();
