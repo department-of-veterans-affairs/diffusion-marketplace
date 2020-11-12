@@ -12,7 +12,7 @@ describe 'Favorites', type: :feature do
     describe 'logged out' do
       it 'should not show a favorite button' do
         visit '/'
-        expect(page).not_to have_selector('.favorite-practice-button')
+        expect(page).not_to have_selector('.dm-practice-bookmark-btn')
       end
     end
 
@@ -23,17 +23,17 @@ describe 'Favorites', type: :feature do
       end
 
       it 'should show a favorite button' do
-        expect(page).to have_selector('.favorite-practice-button')
+        expect(page).to have_selector('.dm-practice-bookmark-btn')
       end
 
       it 'should allow adding a favorite' do
-        favorite_button = find(:css, "#favorite-button-#{@practice1.id}")
+        favorite_button = find(:css, "#dm-bookmark-button-#{@practice1.id}")
         favorite_button.click
         expect(favorite_button).to have_selector('.fas')
       end
 
       it 'should allow removing a favorite' do
-        favorite_button = first(:css, "#favorite-button-#{@practice2.id}")
+        favorite_button = first(:css, "#dm-bookmark-button-#{@practice2.id}")
         favorite_button.click
         expect(favorite_button).to have_selector('.far')
       end
@@ -44,7 +44,7 @@ describe 'Favorites', type: :feature do
     describe 'logged out' do
       it 'should not show a favorite button' do
         visit '/practices'
-        expect(page).not_to have_selector('.favorite-practice-button')
+        expect(page).not_to have_selector('.dm-practice-bookmark-btn')
       end
     end
 
@@ -55,17 +55,17 @@ describe 'Favorites', type: :feature do
       end
 
       it 'should show a favorite button' do
-        expect(page).to have_selector('.favorite-practice-button')
+        expect(page).to have_selector('.dm-practice-bookmark-btn')
       end
 
       it 'should allow adding a favorite' do
-        favorite_button = find(:css, "#favorite-button-#{@practice1.id}")
+        favorite_button = find(:css, "#dm-bookmark-button-#{@practice1.id}")
         favorite_button.click
         expect(favorite_button).to have_selector('.fas')
       end
 
       it 'should allow removing a favorite' do
-        favorite_button = first(:css, "#favorite-button-#{@practice2.id}")
+        favorite_button = first(:css, "#dm-bookmark-button-#{@practice2.id}")
         favorite_button.click
         expect(favorite_button).to have_selector('.far')
       end
@@ -74,7 +74,7 @@ describe 'Favorites', type: :feature do
 
   describe 'Practice show page' do
     describe 'logged out' do
-      it 'should not show a favorite link' do
+      it 'should not show a bookmark link' do
         visit '/practices/the-best-practice-ever'
         expect(page).not_to have_content('Bookmark')
       end
@@ -132,11 +132,11 @@ describe 'Favorites', type: :feature do
       end
 
       it 'should show a favorite button' do
-        expect(page).to have_selector('.favorite-practice-button')
+        expect(page).to have_selector('.dm-practice-bookmark-btn')
       end
 
       it 'should allow removing a favorite' do
-        favorite_button = first(:css, "#favorite-button-#{@practice2.id}")
+        favorite_button = first(:css, "#dm-bookmark-button-#{@practice2.id}")
         favorite_button.click
         expect(favorite_button).to have_selector('.far')
       end

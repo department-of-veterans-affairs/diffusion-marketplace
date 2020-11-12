@@ -81,12 +81,12 @@ describe 'The user index', type: :feature do
     login_as(@user, scope: :user, run_callbacks: false)
     visit "/users/#{@user.id}"
 
-    within(:css, '.favorited-practices') do
+    within(:css, '.dm-favorited-practices') do
       expect(page).to have_content('The Best Practice Ever!')
       expect(page).to_not have_content('A public practice')
     end
 
-    within(:css, '.created-practices') do
+    within(:css, '.dm-created-practices') do
       expect(page).to have_content('A public practice')
       expect(page).to_not have_content('The Best Practice Ever!')
     end

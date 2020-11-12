@@ -205,27 +205,6 @@
   border: 2px solid #F0F0F0;
 }
 
-.multiline-ellipses-1, .multiline-ellipses-2, .multiline-ellipses-3 {
-  display: block; /* Fallback for non-webkit */
-  //display: -webkit-box;
-  max-width: 400px;
-  //-webkit-box-orient: vertical;
-  overflow: hidden;
-  //text-overflow: ellipsis;
-}
-
-.multiline-ellipses-1 {
-  height: 75px;
-}
-
-.multiline-ellipses-2 {
-  height: 45px;
-}
-
-.multiline-ellipses-3 {
-  height: 32px;
-}
-
 .impact-image {
   height: 263px;
   width: 393px;
@@ -235,10 +214,6 @@
 .practice-video-container {
   height: 263px;
   width: 393px;
-}
-
-.practice-title {
-  margin: 0;
 }
 
 .fa-circle {
