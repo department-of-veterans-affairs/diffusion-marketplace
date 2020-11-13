@@ -2,48 +2,6 @@
   <%= javascript_include_tag 'practice_editor_risk_mitigation', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
-<% risk_join_array = Array.new %>
-<% miti_join_array = Array.new %>
-<% m_items_to_delete = Array.new %>
-<% r_items_to_delete = Array.new %>
-<%= f.fields_for :risk_mitigations, wrapper: false do |rm| %>
-  <%= rm.fields_for :risks, wrapper: false do |risk| %>
-    <% risk_join_array.push(risk.object.risk_mitigation_id) %>
-  <% end %>
-  <%= rm.fields_for :mitigations, wrapper: false do |miti| %>
-    <% miti_join_array.push(miti.object.risk_mitigation_id) %>
-  <% end %>
-<% end %>
- <% miti_join_array.each do |m_id| %>
-    <% if  !risk_join_array.include?(m_id) %>
-      <% m_items_to_delete.push(m_id) %>
-    <% end %>
- <% end %>
- <% risk_join_array.each do |r_id| %>
-   <% if !miti_join_array.include?(r_id) %>
-     <% r_items_to_delete.push(r_id) %>
-   <% end %>
- <% end %>
-
-<% if m_items_to_delete.length > 0 %>
-    <% m_items_to_delete.each do |d| %>
-        <% Mitigation.where(risk_mitigation_id: d).destroy_all %>
-        <% RiskMitigation.find_by_id(d).destroy %>
-    <% end %>
-<% end %>
-
-<% if r_items_to_delete.length > 0 %>
-    <% r_items_to_delete.each do |d| %>
-      <% Risk.where(risk_mitigation_id: d).destroy_all %>
-      <% RiskMitigation.find_by_id(d).destroy %>
-    <% end %>
-<% end %>
-<% if r_items_to_delete.length > 0 || m_items_to_delete.length > 0 %>
-  <script type="text/javascript" charset="utf-8">
-      document.location.reload();
-  </script>>
-<% end %>
-
 <div id="risk-mitigation" class="desktop:grid-col-11 grid-col-12 p0">
   <section class="usa-section p0-bottom p0-top risk-mitigation">
     <h4 class="font-sans-sm line-height-18px margin-top-3 margin-bottom-2">Risk and mitigation</h4>

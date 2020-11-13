@@ -26,6 +26,7 @@ namespace :dm do
     Rake::Task['practice_multimedia:transfer_practice_videos'].execute
     Rake::Task['documentation:port_additional_documents_to_practice_resources'].execute
     Rake::Task['documentation:port_publications_to_practice_resources'].execute
+    Rake::Task['risk_and_mitigation:remove_unpaired_risks_and_mitigation'].execute
   end
 
   # rails dm:reset_up
