@@ -1,5 +1,5 @@
 <%
-  all_depts = Department.where.not(name: 'None')
+  all_depts = Department.where.not(name: 'None').order(:name)
 %>
 
 <div id="dm-practice-editor-departments" class="desktop:grid-col-10 grid-col-12 p0">
