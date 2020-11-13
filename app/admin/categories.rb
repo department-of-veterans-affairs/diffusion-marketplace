@@ -52,7 +52,7 @@ ActiveAdmin.register Category do
       deleted = remove_category
       respond_to do |format|
         if deleted
-          format.html { redirect_to admin_categories_path(notice: 'Category was successfully deleted.') }
+          format.html { redirect_to admin_categories_path, notice: 'Category was successfully deleted.' }
         else
           format.html { redirect_to edit_admin_category_path(id: params[:id]), :flash => { :error => 'There was an error deleting your category.' }}
         end
