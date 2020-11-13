@@ -1,6 +1,11 @@
 @import "../../variables/colors";
 
 footer {
+  // Keeps footer at the bottom of the page
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+
   .dm-footer-link {
     color: $dm-color-base;
     text-decoration: none;
