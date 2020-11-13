@@ -2,14 +2,10 @@
   <%= javascript_include_tag 'practice_page', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
-<!-- "Practice nav" section -->
-<!-- Overview Implementation Contact About -->
 <section class="usa-section padding-y-0">
   <div class="grid-container position-relative">
     <div class="grid-row grid-gap">
-      <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
-
-      <div id="practice_show" class="desktop:grid-col-6 grid-col-12 p0 overview-section practice-section">
+      <div id="practice_show" class="grid-col-12 overview-section practice-section">
         <%= render partial: "shared/messages", locals: {small_text: false} %>
         <% unless @practice.published && @practice.approved %>
           <div class="usa-alert usa-alert--warning">
@@ -32,6 +28,9 @@
     </div>
   </div>
 </section>
+
+<!-- "Practice nav" section -->
+<!-- Overview Implementation Contact About -->
 
 <%= render partial: 'practices/show/introduction/introduction' %>
 <div class="grid-container position-relative z-top">
