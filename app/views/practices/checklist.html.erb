@@ -3,7 +3,7 @@
         <%= render partial: 'checklist', formats: [:js] %>
     <% end %>
     <%= javascript_include_tag 'practice_editor_checklist', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag '_practice_utilities', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <%= render 'breadcrumbs' %>
@@ -31,7 +31,7 @@
                                     permission_id = pp.object.id
                                     permission_position = pp.object.position
                                 %>
-                                <li class="practice-editor-permission-li fields" data-id="<%= permission_id %>">
+                                <li class="practice-editor-permission-li fields" data-id="<%= permission_id %>" role="option">
                                     <%= pp.hidden_field :id %>
                                     <%= pp.hidden_field :position, class: 'permission-position' %>
                                     <div class="permissions-container padding-205 border border-width-1px border-base-lighter radius-sm margin-top-3">
@@ -71,7 +71,7 @@
                                     resource_id = ar.object.id
                                     resource_position = ar.object.position
                                 %>
-                                <li class="practice-editor-resource-li fields" data-id="<%= resource_id %>">
+                                <li class="practice-editor-resource-li fields" data-id="<%= resource_id %>" role="option">
                                     <%= ar.hidden_field :id %>
                                     <%= ar.hidden_field :position, class: 'resource-position' %>
                                     <div class="resources-container padding-205 border border-width-1px border-base-lighter radius-sm margin-top-3">
