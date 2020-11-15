@@ -1,7 +1,4 @@
 function paginatedBookmarkedPractices() {
-    <% pagy_favorites = @pagy_favorite_practices %>
-    <% current_page = pagy_favorites.page %>
-    <% next_page = pagy_favorites.next %>
     var favoritePracticesClass = ".paginated-favorite-practices";
 
     // Append the next set of practice cards to the current set
@@ -16,6 +13,9 @@ function paginatedBookmarkedPractices() {
     $('.paginated-favorite-practices-page-2-link').remove();
 
     // If there's another set of cards, remove the current 'Load more' link and then add one for the next page
+    <% pagy_favorites = @pagy_favorite_practices %>
+    <% current_page = pagy_favorites.page %>
+    <% next_page = pagy_favorites.next %>
     var currentPageClass = ".paginated-favorite-practices-page-<%= current_page %>-link";
     <% if next_page.present? %>
         $(currentPageClass).remove();
