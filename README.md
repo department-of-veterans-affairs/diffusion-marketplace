@@ -29,7 +29,9 @@
 | `rails port_milestones_to_timelines:port_milestones_to_timelines` | Ports data from Milestone table description field to Timelines.milestone field.  |
 | `rails practice_multimedia:transfer_practice_impact_photos` | Ports data from ImpactPhotos table PracticeMultimedia table.  |
 | `rails practice_multimedia:transfer_practice_videos` | Ports data from VideoFile table to PracticeMultimedia table.  |
-
+| `rails documentation:port_additional_documents_to_practice_resources ` | Ports additional documents to practice_resources
+| `rails documentation:port_publications_to_practice_resources` | Ports publications (links) to practice_resources
+| `rails risk_and_mitigation:remove_unpaired_risks_and_mitigation` | Removes risks without a corresponding mitigation AND removes mitigations without a corresponding risk.
 #### Ruby version
 
 - `ruby 2.6.3`
