@@ -73,7 +73,7 @@
         <% end %>>
     <%= render 'shared/header' %>
     <%= render 'shared/breadcrumbs' %>
-    <main id="main-content" class="<%= params[:controller] %> <%= params[:action] %> padding-bottom-9 <%= yield(:main_classes) %>">
+    <main id="main-content" class="<%= params[:controller] %> padding-bottom-9 <%= yield(:main_classes) %>">
       <%= yield %>
     </main>
     <%= render 'shared/footer' %>
