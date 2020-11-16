@@ -2,29 +2,41 @@
   <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
-<div class="bg-white">
+<div>
   <!-- "Welcome" section -->
-  <section class="grid-container">
+  <section class="homepage-explore-all-section bg-primary-darker text-white display-flex flex-align-center margin-bottom-5">
     <%= render partial: "shared/messages", locals: {small_text: false} %>
 
-    <div class="margin-y-5 bg-white grid-row">
-      <div class="tablet:grid-col-fill ie-welcome-container">
-        <div class="tablet:grid-col-10">
-          <h1 class="bold font-sans-2xl margin-top-0 margin-bottom-2">Welcome to the Diffusion Marketplace</h1>
+    <div class="grid-container">
+      <div class="grid-row flex-align-center">
+        <div class="grid-col-3">
+          <div>
+            <i class="fas fa-laptop-medical fa-9x"></i>
+          </div>
         </div>
-      </div>
-      <div class="grid-row">
-        <div class="tablet:grid-col-8">
-          <p class="measure-none font-sans-lg line-height-sans-505">
-            This site is designed to help spread important and life-saving promising practices throughout the VA
-            Healthcare System.
-          </p>
+        <div class="tablet:grid-col-9 desktop:grid-col-9 ie-welcome-container">
+          <h1 class="bold font-sans-2xl line-height-46px margin-top-0 margin-bottom-5">Find the next important or life-saving practice to adopt at your VA facility.</h1>
+          <%#= link_to 'Explore all practices', explore_path, class: 'usa-button--big homepage-explore-all-button' %>
+          <button class="usa-button--big homepage-explore-all-button">Explore all practices</button>
         </div>
       </div>
     </div>
   </section>
 
-  <section class=" grid-container margin-bottom-5">
+  <section class="grid-container banner-links-section">
+    <%= link_to('/', nil, 'aria-label': 'Go to relevant to you page', 'tabindex': '-1', 'aria-hidden': 'true', class: 'margin-bottom-5') do %>
+      <div class="grid-row usa-alert usa-alert--info usa-alert--no-icon relevant-to-you-banner display-flex flex-align-center">
+        <div class="desktop:grid-col-3">
+          <i class="fas fa-user-circle fa-5x"></i>
+        </div>
+        <div class="desktop:grid-col-6">
+
+        </div>
+      </div>
+    <% end %>
+  </section>
+
+  <section class="grid-container margin-bottom-5">
     <div class="grid-row grid-gap-3">
       <div class="desktop:grid-col-8">
         <div class="homepage-featured-section-container height-auto position-relative margin-bottom-3 desktop:margin-bottom-0 padding-right-4 desktop:padding-right-0">

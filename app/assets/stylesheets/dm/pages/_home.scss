@@ -107,6 +107,39 @@
   background-color: $dm-color-lighter-grey !important;
 }
 
+.homepage-explore-all-section {
+  height: 400px;
+
+  .homepage-explore-all-button {
+    line-height: 26px !important;
+    color: $dm-color-base !important;
+    background-color: $dm-color-white !important;
+    border: none !important;
+    padding: 16px 24px 16px 24px !important;
+    font-weight: bold !important;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $dm-color-alt-lighter-grey !important;
+    }
+
+    &:active {
+      background-color: $dm-color-light-grey !important;
+    }
+  }
+}
+
+.banner-links-section {
+  .relevant-to-you-banner {
+    background-color: transparent !important;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+
+    &:before {
+      background-color: $dm-color-blue-30v !important;
+    }
+  }
+}
+
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   .ie-welcome-container {
     width: 100% !important;
