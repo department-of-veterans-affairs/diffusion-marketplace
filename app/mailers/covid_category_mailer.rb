@@ -4,7 +4,6 @@ class CovidCategoryMailer < ApplicationMailer
   layout 'mailer'
 
   def send_covid_category_selections(options = {})
-    debugger
     practice_name = options[:practice_name]
     selected_categories = options[:selected_categories]
     url = options[:url]
@@ -24,7 +23,6 @@ class CovidCategoryMailer < ApplicationMailer
       end
     end
     text = text + "\n\n\n" + "Link to " + practice_name + ": " + url
-
     subject = "The following covid 19 related categories were added or removed from '" + practice_name + "'"
     mail(to: 'dm@agile6.com', subject: subject, body: text)
   end
