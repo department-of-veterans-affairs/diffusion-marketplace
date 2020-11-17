@@ -1,9 +1,17 @@
+function refreshPage() {
+  <% if request.referrer.split('/').pop == 'relevant-to-you' %>
+    location.reload();
+  <% end %>
+}
+
 <% if @favorited %>
   $('.dm-favorite-icon-<%= @practice.id %>').removeClass('far');
   $('.dm-favorite-icon-<%= @practice.id %>').addClass('fas');
   $('.dm-favorite-practice-link-text').text('Bookmarked');
+  refreshPage();
 <% else %>
   $('.dm-favorite-icon-<%= @practice.id %>').removeClass('fas');
   $('.dm-favorite-icon-<%= @practice.id %>').addClass('far');
   $('.dm-favorite-practice-link-text').text('Bookmark');
+  refreshPage();
 <% end %>
