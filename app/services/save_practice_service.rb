@@ -194,7 +194,6 @@ class SavePracticeService
       end
     end
 
-    debugger
 
     if category_params.present?
       category_attribute_params = @practice_params[:categories_attributes]
