@@ -242,6 +242,10 @@ class SavePracticeService
     elsif category_params.blank? && @current_endpoint == 'introduction'
       practice_category_practices.destroy_all
     end
+    debugger
+    if unselected_categories_obj.present? || selected_categories_obj.present?
+      CovidCategoryMailer.send_covid_category_selections(selected_categories: selected_categories_obj, unselected_categories: unselected_categories_obj, practice_name: @practice.name, url: "#{ENV.fetch('HOSTNAME')}/practices/#{@practice.slug}").deliver_now
+    end
   end
 
   def remove_attachments
