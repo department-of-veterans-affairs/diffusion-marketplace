@@ -145,6 +145,56 @@ class SavePracticeService
     category_params = @practice_params[:category]
     practice_category_practices = @practice.category_practices
     practice_categories = @practice.categories
+    categories_selected = Array.new
+    categories_unselected = Array.new
+    dm_notification_categories = ["COVID", "TELEHEALTH", "CURBSIDE CARE", "ENVIRONMENTAL SERVICES", "PULMONARY CARE", "HEALTHCARE ADMINISTRATION"]
+
+
+    if category_params.blank? && practice_categories.present?
+      practice_categories.each do |pc|
+        categories_unselected.push(pc.id)
+      end
+    end
+    if practice_categories.blank? && category_params.present?
+      category_params.keys.each do |key|
+        categories_selected.push(key.to_i)
+      end
+    end
+    if practice_categories.present? && category_params.present?
+      cat_keys = category_params.keys
+      practice_categories.each do |pc|
+        if cat_keys.exclude?(pc.id.to_s)
+          categories_unselected.push(pc.id)
+        end
+      end
+      cat_keys.each do |ck|
+        if practice_categories.ids.exclude?(ck.to_i)
+          categories_selected.push(ck.to_i)
+        end
+      end
+    end
+    selected_categories_obj = Array.new
+    unselected_categories_obj = Array.new
+    categories_selected.each do |cs|
+      cur_cat = Category.find_by(id: cs)
+      dm_notification_categories.each do |dm|
+        if cur_cat.name.upcase.include?(dm)
+          selected_categories_obj.push(cur_cat)
+          next
+        end
+      end
+    end
+    categories_unselected.each do |cu|
+      cur_cat = Category.find_by(id: cu)
+      dm_notification_categories.each do |dm|
+        if cur_cat.name.upcase.include?(dm)
+          unselected_categories_obj.push(cur_cat)
+          next
+        end
+      end
+    end
+
+    debugger
 
     if category_params.present?
       category_attribute_params = @practice_params[:categories_attributes]
@@ -155,7 +205,6 @@ class SavePracticeService
           practice_category_practices.find_or_create_by(category_id: key.to_i)
         end
       end
-
       other_cat_id = Category.find_by(name: 'Other').id
 
       if cat_keys.include?(other_cat_id.to_s)
