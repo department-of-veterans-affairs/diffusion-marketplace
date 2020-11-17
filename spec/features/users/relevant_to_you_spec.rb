@@ -86,7 +86,7 @@ describe 'Relevant to you page', type: :feature do
       end
     end
 
-    it 'should take the user to the search page with a query of their location if there are three or more practices that share their location and click the link' do
+    it 'should take the user to the search page with a query of their location if there are more than three practices that share their location and click the link' do
       login_and_visit_relevant_path(@user2)
 
       click_link('See more practices')
@@ -117,6 +117,15 @@ describe 'Relevant to you page', type: :feature do
       within(:css, '.paginated-favorite-practices') do
         expect(page).to have_selector('.dm-practice-card', count: 4)
       end
+    end
+
+    it 'should remove load more link if the user started with four or more bookmarked practices, but after un-bookmarking, has less than four' do
+      login_and_visit_relevant_path(@user2)
+
+      expect(page).to have_selector('.paginated-favorite-practices-page-2-link')
+
+      all('.dm-practice-bookmark-btn').first.click
+      expect(page).to_not have_selector('.paginated-favorite-practices-page-2-link')
     end
   end
 end
