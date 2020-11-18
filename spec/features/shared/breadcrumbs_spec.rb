@@ -123,8 +123,8 @@ describe 'Breadcrumbs', type: :feature do
 
       expect(page).to have_css('.breadcrumb-link', count: 1)
       expect(page).to have_css('.breadcrumbs-container a:first-child', text: 'Home')
-      expect(page).to have_css('.breadcrumbs-container span:nth-of-type(2)', text: @page_group2.name)
-      expect(page).to have_css('.breadcrumbs-container span:last-child', text: @page.title)
+      expect(page).to have_css('.breadcrumbs-container .usa-breadcrumb__list-item:nth-of-type(2)', text: @page_group2.name)
+      expect(page).to have_css('.breadcrumbs-container .usa-breadcrumb__list-item:last-child', text: @page.title)
     end
 
     it 'Should show three breadcrumbs with two links for a page that has a page group a landing page' do
@@ -132,8 +132,8 @@ describe 'Breadcrumbs', type: :feature do
 
       expect(page).to have_css('.breadcrumb-link', count: 2)
       expect(page).to have_css('.breadcrumbs-container a:first-child', text: 'Home')
-      expect(page).to have_css('.breadcrumbs-container a:nth-of-type(2)', text: @page_group.name)
-      expect(page).to have_css('.breadcrumbs-container span:last-child', text: @page.title)
+      expect(page).to have_css('.breadcrumbs-container .usa-breadcrumb__list-item:nth-of-type(2) a', text: @page_group.name)
+      expect(page).to have_css('.breadcrumbs-container .usa-breadcrumb__list-item:last-child', text: @page.title)
     end
   end
 end

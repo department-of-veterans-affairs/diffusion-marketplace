@@ -1,22 +1,29 @@
 <% if @breadcrumbs %>
-<div class="grid-container margin-y-2">
-  <div class="grid-row">
-    <div id="breadcrumbs" class="grid-col-auto breadcrumbs-container">
-      <% @breadcrumbs.each do |crumb| %>
-        <%
-          path = crumb[:path]
-          text = crumb[:text]
-        %>
-        <% if path && path.present? %>
-          <%= link_to(text, path, class: 'dm-font-color-blue-50v breadcrumb-link') %>
-          <span class='dm-font-color-blue-50v x0-5-right x0-5-left'>›</span>
-        <% elsif path && path.empty? %>
-          <span><%= text %></span><span class='dm-font-color-blue-50v x0-5-right x0-5-left'>›</span>
-        <% else %>
-          <span class="dm-font-color-blue-50v text-bold"><%= text %></span>
-        <% end %>
-      <% end %>
+  <div class="grid-container">
+    <div class="grid-row">
+      <div id="breadcrumbs" class="grid-col-auto usa-breadcrumb breadcrumbs-container" aria-label="Breadcrumbs">
+        <ol class="usa-breadcrumb__list">
+          <% @breadcrumbs.each do |crumb| %>
+            <%
+              path = crumb[:path]
+              text = crumb[:text]
+            %>
+            <% if path && path.present? %>
+              <li class="usa-breadcrumb__list-item">
+                <%= link_to(text, path, class: 'dm-external-link breadcrumb-link usa-breadcrumb__link') %>
+              </li>
+            <% elsif path && path.empty? %>
+              <li class="usa-breadcrumb__list-item usa-current" aria-current="page">
+                <span><%= text %></span>
+              </li>
+            <% else %>
+              <li class="usa-breadcrumb__list-item usa-current" aria-current="page">
+                <span><%= text %></span>
+              </li>
+            <% end %>
+          <% end %>
+        </ol>
+      </div>
     </div>
   </div>
-</div>
 <% end %>

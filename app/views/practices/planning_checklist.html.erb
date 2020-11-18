@@ -1,5 +1,5 @@
 <% provide :head_tags do %>
-  <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_practice_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <%= render 'breadcrumbs' %>
@@ -30,7 +30,7 @@
 <section>
   <%= form_for :commit, url: {action: :commit }, method: :post do %>
     <!--  <form class="usa-form-large" action="<%#= practice_commit_path(practice_id: @practice.slug) %>" method="post">-->
-    <div class="grid-container margin-bottom-6">
+    <div class="grid-container">
       <div class="grid-row grid-gap">
         <div class="grid-col-8">
           <fieldset class="usa-fieldset">

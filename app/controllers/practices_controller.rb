@@ -227,10 +227,12 @@ class PracticesController < ApplicationController
   def favorite
     user_practice = UserPractice.find_by(user: current_user, practice: @practice)
 
-    if user_practice.present?
-      user_practice.toggle(:favorited)
+    if user_practice.present? && user_practice.favorited
+      user_practice.update_attributes(favorited: false)
+    elsif user_practice.present? && !user_practice.favorited
+      user_practice.update_attributes(favorited: true, time_favorited: DateTime.now)
     else
-      user_practice = UserPractice.new(user: current_user, practice: @practice, favorited: true, time_favorited: DateTime.now)
+      user_practice = UserPractice.create(user: current_user, practice: @practice, favorited: true, time_favorited: DateTime.now)
     end
 
     @favorited = user_practice.favorited
