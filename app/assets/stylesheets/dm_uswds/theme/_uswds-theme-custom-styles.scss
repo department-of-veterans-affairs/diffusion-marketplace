@@ -19,6 +19,10 @@ i.e.
 @include u-padding-right('05');
 ----------------------------------------
 */
+
+// Breadcrumb min-width
+$theme-breadcrumb-min-width: 'mobile';
+
 @import "uswds-theme-color";
 @import "uswds/uswds";
 @import "../../dm/variables/colors";
@@ -269,8 +273,12 @@ p {
 }
 
 .featured-favorite-practice-button {
-  right: 26px !important;
-  top: 10px !important;
+  right: 20px !important;
+  top: 20px !important;
+
+  i {
+    margin-top: 2px;
+  }
 }
 
 .favorite-practice-button, .favorite-practice-button {
@@ -322,6 +330,14 @@ p {
 // File input choose text
 .usa-file-input__choose {
   color: $dm-color-blue-50v !important;
+}
+
+.usa-breadcrumb {
+  background-color: transparent !important;
+}
+
+.usa-breadcrumb__list-item:not(:last-child)::after {
+  background: asset_url('angle-arrow-right.svg') no-repeat center / 0.84375ex 1.35ex !important;
 }
 
 .usa-header + main {

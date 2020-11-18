@@ -48,6 +48,8 @@ gem 'devise-security'
 gem 'kaminari'
 
 gem 'rolify'
+# pagination gem
+gem 'pagy', '~> 3.5'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -1,26 +1,35 @@
-<section class="grid-container margin-y-2">
-  <div id="breadcrumbs" class="dm-font-color-blue-50v breadcrumbs">
-    <a href="/">Home</a>
-    <span class="x0-5-left x0-5-right">›</span>
-
-    <%
-      breadcrumbs = session[:breadcrumbs]
-    %>
-
-    <% breadcrumbs.each_with_index do |b, i| %>
+<section class="grid-container">
+  <div id="breadcrumbs" class="grid-col-auto usa-breadcrumb breadcrumbs-container" aria-label="Breadcrumbs">
+    <ol class="usa-breadcrumb__list">
+      <li class="usa-breadcrumb__list-item">
+        <a href="/">Home</a>
+      </li>
       <%
-        last_crumb = breadcrumbs.size - 1 == i
+        breadcrumbs = session[:breadcrumbs]
       %>
-        <% if !last_crumb %>
-          <span><%= link_to b['display'] || b[:display], b['path'] || b[:path] %></span>
-          <span class="x0-5-left x0-5-right">›</span>
-        <% elsif !last_crumb && b['display'] == 'Edit' %>
-          <span><%= link_to b['display'] || b[:display], b['path'] || b[:path] %></span>
-        <% elsif last_crumb && b['display'] == 'Edit' %>
-          <span class="text-bold"><%= b['display'] || b[:display] %></span>
-        <% else %>
-          <span class="text-bold"><%= b['display'] || b[:display] %></span>
-        <% end %>
-    <% end %>
+
+      <% breadcrumbs.each_with_index do |b, i| %>
+        <%
+          last_crumb = breadcrumbs.size - 1 == i
+        %>
+          <% if !last_crumb %>
+            <li class="usa-breadcrumb__list-item">
+              <%= link_to(b['display'] || b[:display], b['path'] || b[:path], class: 'dm-external-link breadcrumb-link usa-breadcrumb__link') %>
+            </li>
+          <% elsif !last_crumb && b['display'] == 'Edit' %>
+            <li class="usa-breadcrumb__list-item">
+              <%= link_to(b['display'] || b[:display], b['path'] || b[:path], class: 'dm-external-link breadcrumb-link usa-breadcrumb__link') %>
+            </li>
+          <% elsif last_crumb && b['display'] == 'Edit' %>
+            <li class="usa-breadcrumb__list-item usa-current" aria-current="page">
+              <span><%= b['display'] || b[:display] %></span>
+            </li>
+          <% else %>
+          <li class="usa-breadcrumb__list-item usa-current" aria-current="page">
+            <span><%= b['display'] || b[:display] %></span>
+          </li>
+          <% end %>
+      <% end %>
+    </ol>
   </div>
 </section>
