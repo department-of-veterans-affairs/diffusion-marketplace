@@ -110,14 +110,38 @@
 .homepage-explore-all-section {
   height: 400px;
 
+  h1 {
+    line-height: 36px;
+
+    @media screen and (min-width: 1024px) {
+      line-height: 46px;
+    }
+  }
+
+  .fa-laptop-medical {
+    color: $dm-color-blue-vivid !important;
+  }
+
   .homepage-explore-all-button {
-    line-height: 26px !important;
+    line-height: 19px !important;
     color: $dm-color-base !important;
     background-color: $dm-color-white !important;
     border: none !important;
-    padding: 16px 24px 16px 24px !important;
     font-weight: bold !important;
     cursor: pointer;
+    padding: 12px 20px 12px 20px !important;
+    width: 197px !important;
+    font-size: 16px !important;
+
+    @media screen and (min-width: 1024px) {
+      line-height: 26px !important;
+      color: $dm-color-base !important;
+      background-color: $dm-color-white !important;
+      border: none !important;
+      padding: 16px 24px 16px 24px !important;
+      font-size: 22px !important;
+      width: 264px !important;
+    }
 
     &:hover {
       background-color: $dm-color-alt-lighter-grey !important;
@@ -127,16 +151,47 @@
       background-color: $dm-color-light-grey !important;
     }
   }
+
+  @media screen and (max-width: 1023px) {
+    .fa-laptop-medical {
+      font-size: 4em !important;
+    }
+  }
 }
 
 .banner-links-section {
-  .relevant-to-you-banner {
-    background-color: transparent !important;
+  .relevant-to-you-banner-link, .covid-banner-link {
+    text-decoration: none !important;
+
+    &:visited {
+      color: $dm-color-base !important;
+    }
+
+    &:hover {
+      h2 {
+        text-decoration: underline !important;
+      }
+    }
+  }
+  .relevant-to-you-banner, .covid-banner {
+    padding: 40px 0 40px 0 !important;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
 
     &:before {
       background-color: $dm-color-blue-30v !important;
     }
+  }
+
+  .relevant-to-you-banner {
+    background-color: transparent !important;
+  }
+
+  .fa-user-circle {
+    color: $dm-color-base !important;
+  }
+
+  .covid-banner {
+    background-color: $dm-color-blue-30v;
   }
 }
 

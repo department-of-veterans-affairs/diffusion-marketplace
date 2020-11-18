@@ -4,18 +4,20 @@
 
 <div>
   <!-- "Welcome" section -->
-  <section class="homepage-explore-all-section bg-primary-darker text-white display-flex flex-align-center margin-bottom-5">
+  <section class="homepage-explore-all-section bg-primary-darker display-flex flex-align-center margin-bottom-5">
     <%= render partial: "shared/messages", locals: {small_text: false} %>
 
     <div class="grid-container">
-      <div class="grid-row flex-align-center">
-        <div class="grid-col-3">
+      <div class="grid-row">
+        <div class="grid-col-3 display-flex justify-center margin-top-2">
           <div>
             <i class="fas fa-laptop-medical fa-9x"></i>
           </div>
         </div>
-        <div class="tablet:grid-col-9 desktop:grid-col-9 ie-welcome-container">
-          <h1 class="bold font-sans-2xl line-height-46px margin-top-0 margin-bottom-5">Find the next important or life-saving practice to adopt at your VA facility.</h1>
+        <div class="tablet:grid-col-9 desktop:grid-col-9 ie-welcome-container text-white">
+          <h1 class="usa-prose-intro font-normal font-sans-lg margin-y-3 desktop:font-bold desktop:usa-prose-h1 desktop:font-sans-2xl desktop:margin-top-0 desktop:margin-bottom-5">
+            Find the next important or life-saving practice to adopt at your VA facility.
+          </h1>
           <%#= link_to 'Explore all practices', explore_path, class: 'usa-button--big homepage-explore-all-button' %>
           <button class="usa-button--big homepage-explore-all-button">Explore all practices</button>
         </div>
@@ -24,16 +26,56 @@
   </section>
 
   <section class="grid-container banner-links-section">
-    <%= link_to('/', nil, 'aria-label': 'Go to relevant to you page', 'tabindex': '-1', 'aria-hidden': 'true', class: 'margin-bottom-5') do %>
-      <div class="grid-row usa-alert usa-alert--info usa-alert--no-icon relevant-to-you-banner display-flex flex-align-center">
-        <div class="desktop:grid-col-3">
+    <%= link_to '/', class: 'relevant-to-you-banner-link', 'aria-label': 'Go to relevant to you page', 'tabindex': '-1', 'aria-hidden': 'true' do %>
+      <div class="grid-row usa-alert usa-alert--info usa-alert--no-icon relevant-to-you-banner display-flex margin-bottom-5">
+        <div class="desktop:grid-col-3 display-flex justify-center">
           <i class="fas fa-user-circle fa-5x"></i>
         </div>
         <div class="desktop:grid-col-6">
-
+            <h2 class="usa-prose-h2 font-sans-xl line-height-37px margin-bottom-2 margin-top-0">Relevant to you</h2>
+            <p class="line-height-26">Explore practices that are relevant to your location, role, and saved searches.</p>
+        </div>
+        <div class="desktop:grid-col-3 display-flex flex-align-center justify-end padding-right-5">
+          <i class="fas fa-chevron-right fa-3x"></i>
         </div>
       </div>
     <% end %>
+
+    <%= link_to '/covid-19', class: 'covid-banner-link', 'aria-label': 'Go to COVID-19 landing page', 'tabindex': '-1', 'aria-hidden': 'true' do %>
+      <div class="grid-row covid-banner display-flex margin-bottom-5">
+        <div class="desktop:grid-col-3 display-flex justify-center margin-top-105">
+          <i class="fas fa-viruses fa-6x"></i>
+        </div>
+        <div class="desktop:grid-col-6">
+          <h2 class="usa-prose-h2 font-sans-xl line-height-37px margin-bottom-2 margin-top-0">COVID-19</h2>
+          <p class="line-height-26">
+            The Diffusion Marketplace has practices that help VHA respond to COVID-19. We have assembled a group of practices for frontline staff and administrators responding
+            to the changing medical landscape.
+          </p>
+        </div>
+        <div class="desktop:grid-col-3 display-flex flex-align-center justify-end padding-right-5">
+          <i class="fas fa-chevron-right fa-3x"></i>
+        </div>
+      </div>
+    <% end %>
+  </section>
+
+  <section class="grid-container nominate-section">
+    <div class="grid-row margin-bottom-5">
+      <div class="display-flex">
+        <div class="desktop:grid-col-3 display-flex justify-center">
+          <i class="fas fa-notes-medical fa-5x"></i>
+        </div>
+        <div class="desktop:grid-col-6">
+          <h2 class="usa-prose-h2 font-sans-xl line-height-37px margin-bottom-2 margin-top-0">Nominate a practice</h2>
+          <p class="line-height-26 margin-bottom-2">
+            If you have a practice that has been adopted at two or more locations, has been endorsed by a senior executive stakeholder, and is an active practice, click
+            the link below to submit it to the Marketplace.
+          </p>
+          <%= link_to 'Start nomination', nominate_a_practice_path, class: 'usa-button--outline dm-btn-base line-height-19px' %>
+        </div>
+      </div>
+    </div>
   </section>
 
   <section class="grid-container margin-bottom-5">
