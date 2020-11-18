@@ -323,3 +323,7 @@ p {
 .usa-file-input__choose {
   color: $dm-color-blue-50v !important;
 }
+
+.usa-header + main {
+  border-top: 0 !important;
+}
