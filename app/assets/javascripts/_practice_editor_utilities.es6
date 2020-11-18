@@ -42,19 +42,3 @@ function initSortable(ulId) {
         handle: '.position-arrows'
     });
 }
-
-function truncateText() {
-    $('.dm-practice-title').each(function(index, element) {
-        $(element).shave(55);
-    });
-
-    $('.dm-practice-card-origin-info').each(function(index, element) {
-        $(element).shave(35);
-    });
-
-    $('.practice-card-tagline').each(function(index, element) {
-        $(element).shave(120)
-    });
-}
-
-$(document).on('turbolinks:load', truncateText);

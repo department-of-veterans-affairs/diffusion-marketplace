@@ -45,15 +45,15 @@ a {
     }
 
     &:visited {
-      color: $dm-default-visited-purple;
+      color: $dm-default-visited-purple !important;
     }
 
     &:hover {
-      color: $dm-color-blue-70v;
+      color: $dm-color-blue-70v !important;
     }
 
     &:active {
-      color: $dm-color-blue-80v;
+      color: $dm-color-blue-80v !important;
     }
   }
 

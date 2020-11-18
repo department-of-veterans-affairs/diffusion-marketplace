@@ -372,6 +372,10 @@ to confirm the class DOES NOT EXIST before adding a new class
   margin-top: 0 !important;
 }
 
+.x075-top {
+  margin-top: 0.75rem !important;
+}
+
 .x05-top {
   margin-top: 0.875rem !important;
 }
@@ -433,6 +437,7 @@ to confirm the class DOES NOT EXIST before adding a new class
 .x3-bottom {
   margin-bottom: 3rem !important;
 }
+
 /* 60px */
 .x3-75-bottom {
   margin-bottom: 3.75rem !important;
@@ -440,6 +445,11 @@ to confirm the class DOES NOT EXIST before adding a new class
 
 .x4-bottom {
   margin-bottom: 4rem !important;
+}
+
+/* 68px */
+.x4-25-bottom {
+  margin-bottom: 4.25rem !important;
 }
 
 .x5-bottom {
@@ -900,15 +910,18 @@ ul.no-list-style {
 
   a {
     color: $dm-color-blue-50v !important;
-    text-decoration: none;
 
     &:hover {
-      color: $dm-color-blue-50v;
+      color: $dm-color-blue-70v !important;
       text-decoration: underline;
     }
 
     &:visited {
-      color: $dm-color-blue-50v !important;
+      color: $dm-color-blue-50v;
+    }
+
+    &:active {
+      color: $dm-color-blue-80v !important;
     }
   }
 }
@@ -1020,4 +1033,10 @@ ul.no-list-style {
 
 .border-0 {
   border: 0 !important;
+}
+
+.rect-svg-blue-30v {
+  height: 8px;
+  width: 292px;
+  color: $dm-color-blue-30v;
 }

@@ -1,12 +1,12 @@
 <% provide :head_tags do %>
-  <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_practice_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <% created_practices = Practice.where(user: current_user) %>
 
-<div class="x0-top">
+<div class="x0-top grid-container">
   <section class="usa-section p0-top padding-bottom-0">
-    <div class="grid-container <%= created_practices.empty? && @favorite_practices.empty?  ? 'profile-min-height' : '' %>">
+    <div class="<%= created_practices.empty? && @favorite_practices.empty?  ? 'profile-min-height' : '' %>">
       <div class="grid-row margin-bottom-2px">
         <div class="usa-layout-docs__sidenav desktop:grid-col-3 margin-right-105">
           <% if @user.avatar.present? && @user.avatar.exists? %>
@@ -60,34 +60,30 @@
 
   <% if @favorite_practices.any? %>
     <section class="bg-white">
-      <div class="grid-container">
-        <div class="grid-row">
-          <h2 class="profile-h2 font-sans-xl margin-top-0">Bookmarked practices</h2>
-        </div>
-        <div class="grid-row grid-gap-3 dm-favorited-practices">
-          <% @favorite_practices.each do |p| %>
-            <% if p.present? %>
-              <%= render partial: 'shared/practice_card', locals: { practice: p } %>
-            <% end %>
+      <div class="grid-row">
+        <h2 class="profile-h2 font-sans-xl margin-top-0">Bookmarked practices</h2>
+      </div>
+      <div class="grid-row grid-gap-3 dm-favorited-practices">
+        <% @favorite_practices.each do |p| %>
+          <% if p.present? %>
+            <%= render partial: 'shared/practice_card', locals: { practice: p } %>
           <% end %>
-        </div>
+        <% end %>
       </div>
     </section>
   <% end %>
 
   <% if current_user && created_practices.any? %>
     <section class="bg-white">
-      <div class="grid-container">
-        <div class="grid-row">
-          <h2 class="profile-h2 font-sans-xl margin-top-5">Created practices</h2>
-        </div>
-        <div class="grid-row grid-gap-3 dm-created-practices">
-          <% created_practices.each do |p| %>
-            <% if p.present? %>
-              <%= render partial: 'shared/practice_card', locals: { practice: p } %>
-            <% end %>
+      <div class="grid-row">
+        <h2 class="profile-h2 font-sans-xl margin-top-5">Created practices</h2>
+      </div>
+      <div class="grid-row grid-gap-3 dm-created-practices">
+        <% created_practices.each do |p| %>
+          <% if p.present? %>
+            <%= render partial: 'shared/practice_card', locals: { practice: p } %>
           <% end %>
-        </div>
+        <% end %>
       </div>
     </section>
   <% end %>
