@@ -17,59 +17,6 @@
   float: left;
 }
 
-.homepage-featured-link {
-  width: auto;
-  display: inline-block;
-  margin-bottom: 24px;
-  text-decoration: none;
-  color: $dm-color-dark-black;
-
-  &:hover {
-    color: $dm-color-light-black !important;
-  }
-
-  &:visited {
-    color: $dm-default-visited-purple !important;
-  }
-
-  h2 {
-    margin-top: 0 !important;
-  }
-}
-
-.homepage-featured-section-see-more-link {
-  position: absolute;
-  bottom: 50px;
-  left: 20px;
-}
-
-.homepage-featured-section-container {
-  height: 309px;
-  max-width: 60rem !important;
-  padding-top: 43px !important;
-  padding-left: 33px !important;
-  padding-bottom: 30px;
-  background-color: $dm-color-blue-20v;
-
-  p {
-    margin-bottom: 30px;
-  }
-
-  .usa-button {
-    margin-right: 0 !important;
-    color: $dm-color-base !important;
-    border: 2px solid $dm-color-base !important;
-
-    &:hover {
-      border: 2px solid $dm-color-base !important;
-    }
-  }
-}
-
-.dm-virus-image-container {
-  display: none;
-}
-
 .tt-dataset-facilityNames {
   width: 275px;
   max-height: 200px;
@@ -108,7 +55,11 @@
 }
 
 .homepage-explore-all-section {
-  height: 400px;
+  height: 360px;
+
+  @media screen and (min-width: 1024px) {
+    height: 400px;
+  }
 
   h1 {
     line-height: 36px;
@@ -195,13 +146,15 @@
   }
 }
 
+.nominate-section {
+  a {
+    width: 169px !important;
+  }
+}
+
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   .ie-welcome-container {
     width: 100% !important;
-  }
-
-  .dm-virus-image-container {
-    margin: 0 auto;
   }
 }
 
@@ -210,9 +163,4 @@
     position: absolute;
     bottom: -117px;
    }
-
-  .dm-virus-image-container {
-    display: block;
-    align-self: center;
-  }
 }
