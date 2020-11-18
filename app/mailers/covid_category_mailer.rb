@@ -11,19 +11,25 @@ class CovidCategoryMailer < ApplicationMailer
     if selected_categories.present?
       text = "Selected Categories:\n"
       selected_categories.each do |sc|
-        text = text + sc.name + "\n"
+        text = "#{text}#{sc.name}\n"
       end
-      text = text + "\n\n\n"
+      text = "#{text}\n\n\n"
     end
     unselected_categories = options[:unselected_categories]
     if unselected_categories.present?
-      text = text + "Unselected Categories:\n"
+      text = "#{text}Unselected Categories:\n"
       unselected_categories.each do |uc|
-        text = text + uc.name + "\n"
+        text = "#{text}#{uc.name}\n"
       end
     end
-    text = text + "\n\n\n" + "Link to " + practice_name + ": " + url
-    subject = "The following covid 19 related categories were added or removed from '" + practice_name + "'"
+    text = "#{text}#{unselected_categories.present? ? "\n\n\n" : ''}Link to #{practice_name} : #{url}"
+    added = selected_categories.present? ? 'added' : nil
+    removed = unselected_categories.present? ? 'removed' : nil
+
+    subject = "The following covid-19 related categor#{selected_categories.count + unselected_categories.count == 1 ? 'y' : 'ies'}
+               w#{selected_categories.count + unselected_categories.count == 1 ? 'as' : 'ere'}
+    #{added} #{added && removed ? 'or' : ''} #{removed} #{added && removed || removed ? 'from' : 'to'}
+              '#{practice_name}'"
     mail(to: 'dm@agile6.com', subject: subject, body: text)
   end
 end
