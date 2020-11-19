@@ -1,11 +1,7 @@
 class PracticesController < ApplicationController
   include CropperUtils
-  before_action :set_practice, only: [:show, :edit, :update, :destroy, :planning_checklist,
-                                      :commit, :committed, :highlight, :un_highlight, :feature,
-                                      :un_feature, :favorite, :instructions, :overview, :origin,
-                                      :collaborators, :impact, :resources, :documentation,
-                                      :departments, :timeline, :risk_and_mitigation, :contact,
-                                      :checklist, :publication_validation, :adoptions,
+  before_action :set_practice, only: [:show, :edit, :update, :destroy, :planning_checklist, :commit, :committed, :highlight, :un_highlight, :feature,
+                                      :un_feature, :favorite, :instructions, :overview, :collaborators, :contact, :checklist, :publication_validation, :adoptions,
                                       :create_or_update_diffusion_history, :implementation, :introduction, :about]
   before_action :set_facility_data, only: [:show, :planning_checklist]
   before_action :set_office_data, only: [:show, :planning_checklist]
@@ -14,12 +10,8 @@ class PracticesController < ApplicationController
   before_action :authenticate_user!, except: [:show, :search, :index]
   before_action :can_view_committed_view, only: [:committed]
   before_action :can_view_practice, only: [:show, :edit, :update, :destroy, :planning_checklist]
-  before_action :can_create_practice, only: [:new, :create]
-  before_action :can_edit_practice, only: [:edit, :update, :instructions,
-                                           :overview, :origin, :impact,
-                                           :documentation, :resources, :complexity,
-                                           :timeline, :risk_and_mitigation,
-                                           :contact, :checklist, :published,
+  before_action :can_create_practice, only: :create
+  before_action :can_edit_practice, only: [:edit, :update, :instructions, :overview, :contact, :checklist, :published,
                                            :publication_validation, :adoptions, :about]
   before_action :set_date_initiated_params, only: [:update, :publication_validation]
   before_action :is_enabled, only: [:show]
@@ -35,6 +27,10 @@ class PracticesController < ApplicationController
     unless @practice.enabled
       redirect_to(root_path)
     end
+  end
+
+  def redirect_to_instructions_path
+    redirect_to practice_instructions_path(@practice)
   end
 
   # GET /practices/1
@@ -107,10 +103,6 @@ class PracticesController < ApplicationController
   def edit
   end
 
-  def new
-    @practice = Practice.new
-  end
-
   # POST /practices
   # POST /practices.json
   def create
@@ -121,7 +113,7 @@ class PracticesController < ApplicationController
         format.html { redirect_to @practice, notice: 'Practice was successfully created.' }
         format.json { render :show, status: :created, location: @practice }
       else
-        format.html { render :new }
+        format.html { redirect_back fallback_location: root_path}
         format.json { render json: @practice.errors, status: :unprocessable_entity }
       end
     end
@@ -294,32 +286,37 @@ class PracticesController < ApplicationController
     render 'practices/form/introduction'
   end
 
-  # GET /practices/1/origin
-  def origin
-  end
-
   # /practices/slug/impact
+  # redirect to instructions page due to removal of impact page 11/19/20
   def impact
+    redirect_to_instructions_path
   end
 
   # /practices/slug/documentation
+  # redirect to instructions page due to removal of impact page 11/19/20
   def documentation
+    redirect_to_instructions_path
   end
 
   # /practices/slug/resources
+  # redirect to instructions page due to removal of impact page 11/19/20
   def resources
+    redirect_to_instructions_path
   end
 
   # /practices/slug/departments
   def departments
+    redirect_to_instructions_path
   end
 
   # /practices/slug/timeline
   def timeline
+    redirect_to_instructions_path
   end
 
   # /practices/slug/risk_and_mitigation
   def risk_and_mitigation
+    redirect_to_instructions_path
   end
 
   # /practices/slug/contact

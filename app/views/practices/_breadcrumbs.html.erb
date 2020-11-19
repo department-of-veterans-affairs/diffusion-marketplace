@@ -1,9 +1,7 @@
 <section class="grid-container">
   <div id="breadcrumbs" class="grid-col-auto usa-breadcrumb breadcrumbs-container" aria-label="Breadcrumbs">
     <ol class="usa-breadcrumb__list">
-      <li class="usa-breadcrumb__list-item">
-        <a href="/">Home</a>
-      </li>
+
       <%
         breadcrumbs = session[:breadcrumbs]
       %>
@@ -25,9 +23,9 @@
               <span><%= b['display'] || b[:display] %></span>
             </li>
           <% else %>
-          <li class="usa-breadcrumb__list-item usa-current" aria-current="page">
-            <span><%= b['display'] || b[:display] %></span>
-          </li>
+            <li class="usa-breadcrumb__list-item usa-current" aria-current="page">
+              <span><%= b['display'] || b[:display] %></span>
+            </li>
           <% end %>
       <% end %>
     </ol>
