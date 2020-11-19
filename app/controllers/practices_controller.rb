@@ -5,21 +5,17 @@ class PracticesController < ApplicationController
                                       :un_feature, :favorite, :instructions, :overview, :origin,
                                       :collaborators, :impact, :resources, :documentation,
                                       :departments, :timeline, :risk_and_mitigation, :contact,
-                                      :checklist, :publication_validation, :adoptions,
+                                      :publication_validation, :adoptions,
                                       :create_or_update_diffusion_history, :implementation, :introduction, :about]
-  before_action :set_facility_data, only: [:show, :planning_checklist]
-  before_action :set_office_data, only: [:show, :planning_checklist]
-  before_action :set_visn_data, only: [:show, :planning_checklist]
-  before_action :set_initiating_facility_other, only: [:show, :planning_checklist]
   before_action :authenticate_user!, except: [:show, :search, :index]
   before_action :can_view_committed_view, only: [:committed]
-  before_action :can_view_practice, only: [:show, :edit, :update, :destroy, :planning_checklist]
+
   before_action :can_create_practice, only: [:new, :create]
   before_action :can_edit_practice, only: [:edit, :update, :instructions,
                                            :overview, :origin, :impact,
                                            :documentation, :resources, :complexity,
                                            :timeline, :risk_and_mitigation,
-                                           :contact, :checklist, :published,
+                                           :contact, :published,
                                            :publication_validation, :adoptions, :about]
   before_action :set_date_initiated_params, only: [:update, :publication_validation]
   before_action :is_enabled, only: [:show]
@@ -186,10 +182,6 @@ class PracticesController < ApplicationController
 
   end
 
-  def planning_checklist
-    @facilities_data = facilities_json
-  end
-
   # GET /practices/1/committed
   def committed
     render 'committed'
@@ -216,7 +208,6 @@ class PracticesController < ApplicationController
         format.html { redirect_to practice_committed_path(practice_id: @practice.slug) } if flash[:notice].blank?
         format.json { render :show, status: :created, location: practice_committed_path }
       else
-        format.html { render :planning_checklist, error: user_practice.errors }
         format.json { render json: user_practice.errors, status: :unprocessable_entity }
       end
     end
