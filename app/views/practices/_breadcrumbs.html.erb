@@ -1,9 +1,11 @@
 <section class="grid-container">
   <div id="breadcrumbs" class="grid-col-auto usa-breadcrumb breadcrumbs-container" aria-label="Breadcrumbs">
     <ol class="usa-breadcrumb__list">
-      <li class="usa-breadcrumb__list-item">
-        <a href="/">Home</a>
-      </li>
+      <% unless params[:action] == 'index' && params[:controller] == 'home' %>
+        <li class="usa-breadcrumb__list-item">
+          <a href="/">Home</a>
+        </li>
+      <% end %>
       <%
         breadcrumbs = session[:breadcrumbs]
       %>

@@ -72,7 +72,7 @@
         <%= yield(:body_attributes) %>
         <% end %>>
     <%= render 'shared/header' %>
-    <%= render 'practices/breadcrumbs' if @breadcrumbs %>
+    <%= render 'practices/breadcrumbs' unless session[:breadcrumbs].empty? %>
     <main id="main-content" class="<%= params[:controller] %> padding-bottom-9 <%= yield(:main_classes) %>">
       <%= yield %>
     </main>
