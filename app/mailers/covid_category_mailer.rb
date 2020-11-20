@@ -23,13 +23,13 @@ class CovidCategoryMailer < ApplicationMailer
       end
     end
     text = "#{text}#{unselected_categories.present? ? "\n\n\n" : ''}Link to #{practice_name} : #{url}"
-    added = selected_categories.present? ? 'added' : nil
-    removed = unselected_categories.present? ? 'removed' : nil
+    added = selected_categories.present? ? 'added ' : nil
+    removed = unselected_categories.present? ? 'removed ' : nil
 
-    subject = "The following covid-19 related categor#{selected_categories.count + unselected_categories.count == 1 ? 'y' : 'ies'}
-               w#{selected_categories.count + unselected_categories.count == 1 ? 'as' : 'ere'}
-    #{added} #{added && removed ? 'or' : ''} #{removed} #{added && removed || removed ? 'from' : 'to'}
-              '#{practice_name}'"
+    subject = "The following covid-19 related categor#{selected_categories.count + unselected_categories.count == 1 ? 'y' : 'ies'} "\
+    "w#{selected_categories.count + unselected_categories.count == 1 ? 'as' : 'ere'} #{added}#{added && removed ? 'or ' : ''}#{removed}#{added && removed || removed ? 'from' : 'to'} "\
+    "'#{practice_name}'"
+
     mail(to: 'dm@agile6.com', subject: subject, body: text)
   end
 end
