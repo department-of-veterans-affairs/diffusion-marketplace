@@ -145,8 +145,9 @@ class SavePracticeService
     category_params = @practice_params[:category]
     practice_category_practices = @practice.category_practices
     practice_categories = @practice.categories
-
-    covid_category_notifications(category_params, practice_categories)
+    if  @current_endpoint.downcase == "introduction"
+      covid_category_notifications(category_params, practice_categories)
+    end
     if category_params.present?
       category_attribute_params = @practice_params[:categories_attributes]
       cat_keys = category_params.keys

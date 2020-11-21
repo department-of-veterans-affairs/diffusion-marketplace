@@ -13,7 +13,6 @@ Rails.application.routes.draw do
   post '/accept_terms', action: 'accept_terms', controller: 'users', as: 'accept_terms'
 
   resources :practices, except: :index do
-    get '/planning-checklist', action: 'planning_checklist', as: 'planning_checklist'
     get '/committed', action: 'committed', as: 'committed'
     get '/edit/instructions', action: 'instructions', as: 'instructions'
     get '/edit/introduction', action: 'introduction', as: 'introduction'
