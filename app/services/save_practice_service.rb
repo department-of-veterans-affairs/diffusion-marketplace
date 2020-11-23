@@ -56,7 +56,9 @@ class SavePracticeService
       rescue_method(:crop_resource_images)
       updated
     rescue => e
-      Rails.logger.error "save_practice error: #{e.message}"
+      if !e.nil?
+        Rails.logger.error "save_practice error: #{e.message}"
+      end
       e
     end
   end
@@ -145,7 +147,7 @@ class SavePracticeService
     category_params = @practice_params[:category]
     practice_category_practices = @practice.category_practices
     practice_categories = @practice.categories
-    if  @current_endpoint.downcase == "introduction"
+    if !@current_endpoint.nil? && @current_endpoint.downcase == "introduction"
       covid_category_notifications(category_params, practice_categories)
     end
     if category_params.present?
