@@ -15,10 +15,6 @@ class UsersController < ApplicationController
   end
 
   def show
-    @breadcrumbs = [
-      { text: 'Home', path: root_path },
-      { text: 'Profile'}
-    ]
     @user = User.find(params[:id])
     @favorite_practices = @user&.favorite_practices || []
     @facilities_data = facilities_json #['features']
@@ -26,11 +22,6 @@ class UsersController < ApplicationController
 
   def edit_profile
     redirect_to new_user_session_path unless current_user.present?
-    @breadcrumbs = [
-      { text: 'Home', path: root_path },
-      { text: 'Profile', path: user_path(current_user)},
-      { text: 'Edit' }
-    ] if current_user.present?
     @user = current_user
   end
 
@@ -109,10 +100,6 @@ class UsersController < ApplicationController
   end
 
   def relevant_to_you
-    @breadcrumbs = [
-        { text: 'Home', path: root_path },
-        { text: 'Relevant to you' }
-    ]
     @user = current_user || nil
     if current_user.present?
       # If a favorited practice has a nil value for the time_favorited attribute, place it at the end of the favorite_practices array

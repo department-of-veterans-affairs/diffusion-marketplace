@@ -23,8 +23,6 @@ module NavigationHelper
       end
     end
 
-    url = URI::parse(request.referer || '')
-
     def practice_by_id
       Practice.friendly.find(params[:id])
     end
@@ -52,15 +50,16 @@ module NavigationHelper
 
     ### PRACTICE BREADCRUMBS
     if controller == 'practices'
-      debugger
       if action == 'index'
         # empty the bread crumbs and start a new path
         empty_breadcrumbs
         session[:breadcrumbs] << {'display': 'Practices', 'path': '/practices'}
       end
 
+      url = URI::parse(request.referer || '')
       # add the search breadcrumb if there is a search query going to the practice page
-      if action == 'show' && url.path.include?('search') && (url.query.present? && url.query.include?('query='))
+      if action == 'search' && url.path.include?('search') && (url.query.present? && url.query.include?('query='))
+        empty_breadcrumbs
         search_breadcrumb = session[:breadcrumbs].find { |bc| bc['display'] == 'Search' || bc[:display] == 'Search'}
         search_breadcrumb['path'] = "#{url.path}?#{url.query}" if search_breadcrumb.present?
         session[:breadcrumbs] << {'display': 'Search', 'path': "#{url.path}?#{url.query}"} if search_breadcrumb.blank?
@@ -181,26 +180,29 @@ module NavigationHelper
     end
 
     ### PAGE-BUILDER BREADCRUMBS
-    def add_landing_page_breadcrumb(path)
-      session[:breadcrumbs] << { 'display': "#{@page.page_group.name}", 'path': path }
-    end
-
-    def add_sub_page_breadcrumb
-      session[:breadcrumbs] << { 'display': "#{@page.title}", 'path': '' }
-    end
-
     if controller == 'page'
       if action == 'show'
-        page_slug = params[:page_slug] ? params[:page_slug] : 'home'
-        @page = Page.includes(:page_group).find_by(slug: page_slug.downcase, page_groups: {slug: params[:page_group_friendly_id].downcase})
+        @page_slug = params[:page_slug] ? params[:page_slug] : 'home'
+        @page = Page.includes(:page_group).find_by(slug: @page_slug.downcase, page_groups: {slug: params[:page_group_friendly_id].downcase})
+        @builder_landing_page = Page.where(slug: 'home', page_group_id: @page.page_group_id)
 
-        empty_breadcrumbs
-        if page_slug == 'home'
-          add_landing_page_breadcrumb("/#{@page.page_group.slug}")
-        elsif Page.where(slug: 'home', page_group_id: @page.page_group_id).exists?
-          add_landing_page_breadcrumb("/#{@page.page_group.slug}")
+        def add_landing_page_breadcrumb(path)
+          session[:breadcrumbs] << { 'display': "#{@page.page_group.name}", 'path': path }
+        end
+
+        def add_sub_page_breadcrumb
           session[:breadcrumbs] << { 'display': "#{@page.title}", 'path': '' }
+        end
+
+        if @page_slug == 'home'
+          empty_breadcrumbs
+          add_landing_page_breadcrumb('')
+        elsif @builder_landing_page.exists?
+          empty_breadcrumbs
+          add_landing_page_breadcrumb("/#{@page.page_group.slug}")
+          add_sub_page_breadcrumb
         else
+          empty_breadcrumbs
           add_landing_page_breadcrumb('')
           add_sub_page_breadcrumb
         end
@@ -240,7 +242,6 @@ module NavigationHelper
 
     ### NOMINATE PRACTICE BREADCRUMBS
     if action == 'index' && controller == 'nominate_practices'
-      debugger
       empty_breadcrumbs
       session[:breadcrumbs] << { 'display': 'Nominate a practice', 'path': '' }
     end

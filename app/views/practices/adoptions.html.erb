@@ -1,3 +1,6 @@
+<% provide :main_classes, 'bg-gray-2' %>
+<% provide :footer_classes, 'bg-gray-2' %>
+
 <% provide :head_tags do %>
   <%= javascript_include_tag '_assign_facility_name', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_facilitySelect', 'data-turbolinks-track': 'reload' %>
@@ -6,7 +9,6 @@
   <% end %>
   <%= javascript_include_tag 'practice_editor_adoptions', 'data-turbolinks-track': 'reload' %>
 <% end %>
-<%= render 'breadcrumbs' %>
 <%= render 'practice_editor_sidenav' %>
 <div class="grid-container position-relative">
   <div class="grid-row grid-gap">
