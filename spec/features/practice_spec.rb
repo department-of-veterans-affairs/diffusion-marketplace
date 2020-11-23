@@ -184,13 +184,6 @@ describe 'Practices', type: :feature do
 
   describe 'Next Steps' do
     describe 'flow' do
-      it 'should not let the user go to the "Next Steps" page if the Practice is not approved/published' do
-        visit practice_planning_checklist_path(practice_id: @user_practice.slug)
-        expect(page).to be_accessible.according_to :wcag2a, :section508
-        expect(page).to have_content('You need to sign in or sign up before continuing.')
-        expect(page).to have_current_path('/users/sign_in')
-      end
-
       it 'should lead the user to the "Next Steps" page' do
         login_as(@user, :scope => :user, :run_callbacks => false)
         @user_practice.update(published: true, approved: true)
@@ -200,110 +193,6 @@ describe 'Practices', type: :feature do
         expect(page).to have_content(@user_practice.name)
         expect(page).to have_content(@user_practice.initiating_facility)
         expect(page).to have_current_path(practice_path(@user_practice))
-
-        # click on next steps link in sticky nav section
-        find(:css, '#next-steps-link-in-nav').click
-        # TODO: why is this timing out?
-        # expect(page).to be_accessible.according_to :wcag2a, :section508
-        expect(page).to have_content(@user_practice.name)
-        expect(page).to have_content(@user_practice.initiating_facility)
-        expect(page).to have_current_path(practice_planning_checklist_path(practice_id: @user_practice.slug))
-      end
-    end
-
-    describe 'checklist' do
-      it 'should have a list of certain items' do
-        login_as(@user, :scope => :user, :run_callbacks => false)
-        @user_practice.update(published: true, approved: true)
-        # Visit an individual Practice that is approved and published
-        visit practice_planning_checklist_path(practice_id: @user_practice.slug)
-        expect(page).to be_accessible.according_to :wcag2a, :section508
-        expect(page).to have_content(@user_practice.name)
-        expect(page).to have_content(@user_practice.initiating_facility)
-        expect(page).to have_current_path(practice_planning_checklist_path(@user_practice))
-
-        # implementation team checkbox
-        expect(page).to have_selector('#implementation-team')
-        find(:css, 'label[for="team"]').set(true)
-        expect(page).to have_content('Here is a step-by-step guide to give you the best chance of success for adopting this practice. After completing these preparatory steps, we will put you in contact with the practice team members for full adoption details.')
-
-        # practice champion checkbox
-        expect(page).to have_selector('#practice-champion')
-        find(:css, 'label[for="practice-champion-input"]').click
-        expect(page).to have_content('Working Group needs to select a dynamic, charismatic individual who will be able to promote the practice, recruit additional team members, and illicit administrative support.')
-
-        # feedback checkbox
-        expect(page).to have_selector('#feedback-section')
-        find(:css, 'label[for="feedback-section-input"]').click
-        expect(page).to have_content('Feedback on the implementation process and sharing the resulting data once the practice is implemented are a requirement/expected.')
-
-        expect(page).not_to have_selector('#permissions-required')
-        expect(page).not_to have_selector('#it-department')
-        expect(page).not_to have_selector('#departments-impacted')
-        expect(page).not_to have_selector('#resource-capabilities')
-        expect(page).not_to have_selector('#costs-list')
-
-        # Add the rest of the checkboxes
-
-        as = AdditionalStaff.create!(title: 'ACOS of Mental Health', hours_per_week: '30', duration_in_weeks: '12', practice: @user_practice)
-        pp = PracticePermission.create!(description: 'Licensing', practice: @user_practice)
-        @user_practice.update(it_required: true)
-        dp = DepartmentPractice.create!(department: @departments[0], practice: @user_practice)
-        ar = AdditionalResource.create!(description: 'Access to Government Car for IPS Specialist', practice: @user_practice)
-        c = Cost.create!(description: 'IPS Supervision and Fidelity Monitoring (Toscano) Travel costs.', practice: @user_practice)
-
-        visit practice_planning_checklist_path(practice_id: @user_practice.slug)
-        expect(page).to be_accessible.according_to :wcag2a, :section508
-        expect(page).to have_content(@user_practice.name)
-        expect(page).to have_content(@user_practice.initiating_facility)
-        expect(page).to have_current_path(practice_planning_checklist_path(@user_practice))
-
-        expect(page).to have_selector('#permissions-required')
-        expect(page).to have_selector('#it-department')
-        expect(page).to have_selector('#departments-impacted')
-        expect(page).to have_selector('#resource-capabilities')
-        expect(page).to have_selector('#costs-list')
-
-        expect(page).to have_content(as.title)
-        expect(page).to have_content(pp.description)
-        expect(page).to have_content('Information technology department required')
-        expect(page).to have_content(dp.department.name)
-        expect(page).to have_content(ar.description)
-        expect(page).to have_content(c.description)
-
-        find(:css, "label[for='additional-staff-#{as.id}']").click
-        find(:css, 'label[for="permissions-required-input"]').click
-        find(:css, 'label[for="it-department-input"]').click
-        find(:css, 'label[for="departments-impacted-input"]').click
-        find(:css, 'label[for="resource-capabilities-input"]').click
-        find(:css, 'label[for="costs-list-input"]').click
-      end
-
-      it 'should not render departments if all or none are selected' do
-        login_as(@user, :scope => :user, :run_callbacks => false)
-        @user_practice.update(published: true, approved: true)
-
-        # none
-        dp = @department_practices[3]
-
-        visit practice_planning_checklist_path(practice_id: @user_practice.slug)
-        expect(page).to be_accessible.according_to :wcag2a, :section508
-        expect(page).to have_content(@user_practice.name)
-        expect(page).to have_content(@user_practice.initiating_facility)
-        expect(page).to have_current_path(practice_planning_checklist_path(@user_practice))
-
-        expect(page).not_to have_selector('#departments-impacted')
-
-        # all
-        dp = @department_practices[4]
-
-        visit practice_planning_checklist_path(practice_id: @user_practice.slug)
-        expect(page).to be_accessible.according_to :wcag2a, :section508
-        expect(page).to have_content(@user_practice.name)
-        expect(page).to have_content(@user_practice.initiating_facility)
-        expect(page).to have_current_path(practice_planning_checklist_path(@user_practice))
-
-        expect(page).not_to have_selector('#departments-impacted')
       end
     end
 
