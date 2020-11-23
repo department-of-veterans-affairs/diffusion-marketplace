@@ -21,6 +21,12 @@ module NavigationHelper
         empty_breadcrumbs
         session[:breadcrumbs] << { 'display': 'PII/PHI Information', 'path': '' }
       end
+
+      # Diffusion map
+      if action == 'diffusion_map'
+        empty_breadcrumbs
+        session[:breadcrumbs] << { 'display': 'Map of diffusion', 'path': '' }
+      end
     end
 
     def practice_by_id
