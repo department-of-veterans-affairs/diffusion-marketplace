@@ -81,8 +81,8 @@ describe 'Practices', type: :feature do
       # Visit a user's practice that is not approved or published
       visit practice_path(@user_practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
-      #expect(page).to have_content('This site is designed to help spread important and life-saving promising practices throughout the VA Healthcare System.')
-      expect(page).to have_current_path('/')
+      expect(page).to have_content('This site is designed to help spread important and life-saving promising practices throughout the VA Healthcare System.')
+      #expect(page).to have_current_path('/')
     end
 
     it 'should let an approver/editor user view the practice if the practice is not approved or published' do
