@@ -9,7 +9,7 @@ class PracticesController < ApplicationController
                                       :create_or_update_diffusion_history, :implementation, :introduction, :about]
   before_action :authenticate_user!, except: [:show, :search, :index]
   before_action :can_view_committed_view, only: [:committed]
-
+  before_action :can_view_practice, only: [:show, :edit, :update, :destroy]
   before_action :can_create_practice, only: [:new, :create]
   before_action :can_edit_practice, only: [:edit, :update, :instructions,
                                            :overview, :origin, :impact,
