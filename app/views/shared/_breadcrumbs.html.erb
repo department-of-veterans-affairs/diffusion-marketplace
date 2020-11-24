@@ -21,26 +21,24 @@
         %>
 
         <%# Check if the page is a page-builder page first %>
-        <% if controller == 'page' && action == 'show' %>
-          <% if !last_crumb && @builder_landing_page.exists? %>
+          <% if !last_crumb && controller == 'page' && action == 'show' && @builder_landing_page.exists? %>
             <%= render partial: 'shared/link_breadcrumb', locals: {breadcrumb: b} %>
-          <% elsif last_crumb %>
+          <% elsif !last_crumb && controller == 'page' && action == 'show' && @builder_landing_page.empty? %>
             <%= render partial: 'shared/text_breadcrumb', locals: {breadcrumb: b} %>
-          <% else %>
+          <% elsif !last_crumb && b['path'] == '' %>
             <%= render partial: 'shared/text_breadcrumb', locals: {breadcrumb: b} %>
-          <% end %>
-        <% else %>
-          <% if !last_crumb %>
-            <%= render partial: 'shared/link_breadcrumb', locals: {breadcrumb: b} %>
           <% elsif !last_crumb && b['display'] == 'Edit' %>
             <%= render partial: 'shared/link_breadcrumb', locals: {breadcrumb: b} %>
+          <% elsif !last_crumb %>
+            <%= render partial: 'shared/link_breadcrumb', locals: {breadcrumb: b} %>
+          <% elsif last_crumb && controller == 'page' && action == 'show' && @builder_landing_page.exists? %>
+            <%= render partial: 'shared/text_breadcrumb', locals: {breadcrumb: b} %>
           <% elsif last_crumb && b['display'] == 'Edit' %>
             <%= render partial: 'shared/text_breadcrumb', locals: {breadcrumb: b} %>
           <% else %>
             <%= render partial: 'shared/text_breadcrumb', locals: {breadcrumb: b} %>
           <% end %>
         <% end %>
-      <% end %>
     </ol>
   </div>
 </section>
