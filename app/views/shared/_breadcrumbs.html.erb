@@ -20,11 +20,12 @@
           last_crumb = breadcrumbs.size - 1 == i
         %>
 
-        <%# Check if the page is a page-builder page first %>
+          <%# Check if the page is a page-builder page using the controller and action names %>
           <% if !last_crumb && controller == 'page' && action == 'show' && @builder_landing_page.exists? %>
             <%= render partial: 'shared/link_breadcrumb', locals: {breadcrumb: b} %>
           <% elsif !last_crumb && controller == 'page' && action == 'show' && @builder_landing_page.empty? %>
             <%= render partial: 'shared/text_breadcrumb', locals: {breadcrumb: b} %>
+          <%# This checks for a page-builder page with no landing page outside of the page controller %>
           <% elsif !last_crumb && b['path'] == '' %>
             <%= render partial: 'shared/text_breadcrumb', locals: {breadcrumb: b} %>
           <% elsif !last_crumb && b['display'] == 'Edit' %>

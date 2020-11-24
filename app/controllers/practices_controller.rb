@@ -1,7 +1,8 @@
 class PracticesController < ApplicationController
   include CropperUtils
   before_action :set_practice, only: [:show, :edit, :update, :destroy, :planning_checklist, :commit, :committed, :highlight, :un_highlight, :feature,
-                                      :un_feature, :favorite, :instructions, :overview, :collaborators, :contact, :checklist, :publication_validation, :adoptions,
+                                      :un_feature, :favorite, :instructions, :overview, :origin, :collaborators, :impact, :resources, :documentation,
+                                      :departments, :timeline, :risk_and_mitigation, :contact, :checklist, :publication_validation, :adoptions,
                                       :create_or_update_diffusion_history, :implementation, :introduction, :about]
   before_action :set_facility_data, only: [:show, :planning_checklist]
   before_action :set_office_data, only: [:show, :planning_checklist]
@@ -269,7 +270,7 @@ class PracticesController < ApplicationController
 
   # /practices/slug/collaborators
   def collaborators
-    redirect_to practice_overview_path(@practice)
+    redirect_to practice_instructions_path(@practice)
   end
 
   # /practices/slug/overview
@@ -331,6 +332,7 @@ class PracticesController < ApplicationController
 
   # /practices/slug/checklist
   def checklist
+    redirect_to_instructions_path
   end
 
   def published
