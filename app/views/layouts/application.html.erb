@@ -73,7 +73,7 @@
         <% end %>>
     <%= render 'shared/header' %>
     <main id="main-content" class="<%= params[:controller] %> padding-bottom-9 <%= yield(:main_classes) %>">
-      <%= render 'shared/breadcrumbs' unless session[:breadcrumbs].empty? %>
+      <%= render 'shared/breadcrumbs' unless session[:breadcrumbs].empty? || params[:controller] == 'devise/sessions' %>
       <%= yield %>
     </main>
     <%= render 'shared/footer' %>
