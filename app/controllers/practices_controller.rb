@@ -1,6 +1,6 @@
 class PracticesController < ApplicationController
   include CropperUtils
-  before_action :set_practice, only: [:show, :edit, :update, :destroy, :planning_checklist,
+  before_action :set_practice, only: [:show, :edit, :update, :destroy,
                                       :commit, :committed, :highlight, :un_highlight, :feature,
                                       :un_feature, :favorite, :instructions, :overview, :origin,
                                       :collaborators, :impact, :resources, :documentation,
@@ -8,7 +8,7 @@ class PracticesController < ApplicationController
                                       :publication_validation, :adoptions,
                                       :create_or_update_diffusion_history, :implementation, :introduction, :about]
   before_action :authenticate_user!, except: [:show, :search, :index]
-  before_action :can_view_committed_view, only: [:committed]
+  #before_action :can_view_committed_view, only: [:committed]
   before_action :can_view_practice, only: [:show, :edit, :update, :destroy]
   before_action :can_create_practice, only: [:new, :create]
   before_action :can_edit_practice, only: [:edit, :update, :instructions,
@@ -523,14 +523,14 @@ class PracticesController < ApplicationController
     @office_data = facilities_json.find{|f|f['']}
   end
 
-  def can_view_committed_view
-    unless UserPractice.find_by(user: current_user, practice: @practice, committed: true)
-      warning = 'You must commit to this practice first!'
-      flash[:warning] = warning
-
-      redirect_to(practice_planning_checklist_path(practice_id: @practice.slug), warning: warning)
-    end
-  end
+  # def can_view_committed_view
+  #   unless UserPractice.find_by(user: current_user, practice: @practice, committed: true)
+  #     warning = 'You must commit to this practice first!'
+  #     flash[:warning] = warning
+  #
+  #     redirect_to(practice_planning_checklist_path(practice_id: @practice.slug), warning: warning)
+  #   end
+  # end
 
   def practices_json(practices)
     # practices = Practice.where(approved: true, published: true)
