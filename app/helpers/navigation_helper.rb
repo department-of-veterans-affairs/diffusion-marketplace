@@ -64,6 +64,7 @@ module NavigationHelper
 
       search_breadcrumb = session[:breadcrumbs].find { |bc| bc['display'] == 'Search' || bc[:display] == 'Search' }
       url = URI::parse(request.referer || '')
+
       # search page
       if action == 'search'
         remove_breadcrumb(search_breadcrumb) if search_breadcrumb.present?
@@ -72,8 +73,10 @@ module NavigationHelper
 
       # add the search breadcrumb if there is a search query going to the practice page
       if action == 'show' && url.path.include?('search') && (url.query.present? && url.query.include?('query='))
+        empty_breadcrumbs
         search_breadcrumb['path'] = "#{url.path}?#{url.query}" if search_breadcrumb.present?
-        session[:breadcrumbs] << {'display': 'Search', 'path': "#{url.path}?#{url.query}"} if search_breadcrumb.blank?
+        session[:breadcrumbs] << {'display': 'Search', 'path': "#{url.path}?#{url.query}"}
+        add_practice_breadcrumb(practice_by_id)
       end
 
       # practice path
