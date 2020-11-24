@@ -7,6 +7,10 @@ class PracticesController < ApplicationController
                                       :departments, :timeline, :risk_and_mitigation, :contact,
                                       :publication_validation, :adoptions,
                                       :create_or_update_diffusion_history, :implementation, :introduction, :about]
+  before_action :set_facility_data, only: [:show]
+  before_action :set_office_data, only: [:show]
+  before_action :set_visn_data, only: [:show]
+  before_action :set_initiating_facility_other, only: [:show]
   before_action :authenticate_user!, except: [:show, :search, :index]
   before_action :can_view_practice, only: [:show, :edit, :update, :destroy]
   before_action :can_create_practice, only: [:new, :create]
@@ -178,38 +182,6 @@ class PracticesController < ApplicationController
     @practices = Practice.searchable_practices
     @facilities_data = facilities_json
     @practices_json = practices_json(@practices)
-
-  end
-
-  # GET /practices/1/committed
-  def committed
-    render 'committed'
-  end
-
-  # POST /practices/1/commit
-  # POST /practices/1/commit.json
-  def commit
-    user_practice = UserPractice.find_by(user: current_user, practice: @practice, committed: true)
-
-    if user_practice.present?
-      flash[:notice] = "You have already committed to this practice. If you did not receive a follow-up email from the practice support team yet, please contact them at #{@practice.support_network_email || ENV['MAILER_SENDER']}"
-    else
-      user_practice = UserPractice.find_or_initialize_by(user: current_user, practice: @practice)
-      user_practice.committed = true
-      user_practice.time_committed = DateTime.now
-      PracticeMailer.commitment_response_email(user: current_user, practice: @practice).deliver_now
-      PracticeMailer.support_team_notification_of_commitment(user: current_user, practice: @practice).deliver_now
-    end
-
-    respond_to do |format|
-      if user_practice.save
-        format.html { redirect_to practice_committed_path(practice_id: @practice.slug), notice: flash[:notice] } if flash[:notice].present?
-        format.html { redirect_to practice_committed_path(practice_id: @practice.slug) } if flash[:notice].blank?
-        format.json { render :show, status: :created, location: practice_committed_path }
-      else
-        format.json { render json: user_practice.errors, status: :unprocessable_entity }
-      end
-    end
   end
 
   # POST /practices/1/favorite.js
