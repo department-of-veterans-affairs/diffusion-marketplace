@@ -171,10 +171,6 @@ module ApplicationHelper
     URI.encode("VA Diffusion Marketplace - #{practice.name} checklist")
   end
 
-  def email_checklist_body(practice)
-    raw("Let's take the next steps to implement #{practice.name}: #{practice.tagline}, from the VA Diffusion Marketplace: %0D%0A%0D%0A#{ENV['HOSTNAME']}/practices/#{practice.slug}/planning-checklist%0D%0A%0D%0AAbout #{practice.name}: %0D%0A%0D%0A#{practice.summary}%0D%0A%0D%0A")
-  end
-
   def show_errors(object, field_name)
     if object.errors.any?
       if !object.errors.messages[field_name].blank?
