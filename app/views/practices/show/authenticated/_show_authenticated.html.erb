@@ -71,7 +71,7 @@
 </div>
 
 <div class="practice-mobile-nav padding-1 z-top desktop:display-none display-flex justify-center">
-  <%= mail_to main_email, 'Email', cc: cc_emails, id: 'email-link-in-mobile-nav', class: 'width-100 usa-button--outline dm-btn-primary display-flex flex-align-center flex-justify-center height-5 x0-875-right', 'aria-label': "Mobile nav email #{main_email}"  %>
+  <%= mail_to main_email, 'Email', cc: cc_emails, id: 'email-link-in-mobile-nav', class: 'width-100 usa-button dm-btn-primary display-flex flex-align-center flex-justify-center height-5 x0-875-right', 'aria-label': "Mobile nav email #{main_email}"  %>
   <% if @practice.user_id == current_user.id || current_user.roles.any? %>
       <%= link_to 'Edit', instructions_path, id: 'edit-link-in-mobile-nav', class: 'width-100 usa-button dm-btn-base x0-right' %>
   <% end %>
