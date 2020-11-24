@@ -56,9 +56,7 @@ class SavePracticeService
       rescue_method(:crop_resource_images)
       updated
     rescue => e
-      if !e.nil?
         Rails.logger.error "save_practice error: #{e.message}"
-      end
       e
     end
   end
