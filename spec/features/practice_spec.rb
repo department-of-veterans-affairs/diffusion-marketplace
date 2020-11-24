@@ -181,19 +181,4 @@ describe 'Practices', type: :feature do
       expect(page).to_not have_link('Edit practice')
     end
   end
-
-  describe 'Next Steps' do
-    describe 'flow' do
-      it 'should lead the user to the "Next Steps" page' do
-        login_as(@user, :scope => :user, :run_callbacks => false)
-        @user_practice.update(published: true, approved: true)
-        # Visit an individual Practice that is approved and published
-        visit practice_path(@user_practice)
-        expect(page).to be_accessible.according_to :wcag2a, :section508
-        expect(page).to have_content(@user_practice.name)
-        expect(page).to have_content(@user_practice.initiating_facility)
-        expect(page).to have_current_path(practice_path(@user_practice))
-      end
-    end
-  end
 end
