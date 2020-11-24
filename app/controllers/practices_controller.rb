@@ -322,10 +322,6 @@ class PracticesController < ApplicationController
     render 'practices/form/about'
   end
 
-  # /practices/slug/checklist
-  def checklist
-  end
-
   def published
   end
 

@@ -68,10 +68,6 @@ class ApplicationController < ActionController::Base
       session[:breadcrumbs] << { 'display': practice.name, 'path': practice_path(practice) }.stringify_keys
     end
 
-    def add_checklist_breadcrumb(practice)
-      session[:breadcrumbs] << { 'display': 'Planning checklist', 'path': practice_planning_checklist_path(practice) }
-    end
-
     def remove_breadcrumb(crumb)
       session[:breadcrumbs].slice!(session[:breadcrumbs].index(crumb))
     end
@@ -101,18 +97,10 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    # practice checklist path
-    if params[:action] == 'planning_checklist' && params[:controller] == 'practices'
-      empty_breadcrumbs
-      add_practice_breadcrumb(practice_by_practice_id)
-      session[:breadcrumbs] << { 'display': 'Planning checklist', 'path': practice_planning_checklist_path(practice_by_practice_id) }
-    end
-
     # practice committed path
     if params[:action] == 'committed' && params[:controller] == 'practices'
       empty_breadcrumbs
       add_practice_breadcrumb(practice_by_practice_id)
-      add_checklist_breadcrumb(practice_by_practice_id)
       session[:breadcrumbs] << { 'display': 'Confirmation', 'path': practice_committed_path(practice_by_practice_id) }
     end
 
