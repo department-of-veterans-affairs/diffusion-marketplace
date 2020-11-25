@@ -1,7 +1,7 @@
 class PracticesController < ApplicationController
   include CropperUtils
   before_action :set_practice, only: [:show, :edit, :update, :destroy,
-                                      :commit, :committed, :highlight, :un_highlight, :feature,
+                                      :highlight, :un_highlight, :feature,
                                       :un_feature, :favorite, :instructions, :overview, :origin,
                                       :collaborators, :impact, :resources, :documentation,
                                       :departments, :timeline, :risk_and_mitigation, :contact,
