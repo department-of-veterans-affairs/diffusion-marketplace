@@ -269,7 +269,7 @@ class PracticesController < ApplicationController
 
   # /practices/slug/collaborators
   def collaborators
-    redirect_to practice_instructions_path(@practice)
+    redirect_to_instructions_path
   end
 
   # /practices/slug/overview
