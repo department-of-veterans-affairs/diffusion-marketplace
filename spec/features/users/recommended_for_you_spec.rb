@@ -52,7 +52,7 @@ describe 'Recommended for you page', type: :feature do
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content('Recommended for you')
       expect(page).to have_content('Based on your location')
-      expect(page.current_path).to eq recommended_to_you_path
+      expect(page.current_path).to eq recommended_for_you_path
     end
   end
 
