@@ -56,13 +56,9 @@
       practice_emails = @practice.practice_emails
       cc_emails = practice_emails.map(&:address).join(', ')
       instructions_path = practice_instructions_path(@practice)
-      checklist_path = practice_planning_checklist_url(practice_id: @practice.slug)
     %>
     <div class="text-center margin-bottom-1">
-      <%= mail_to main_email, 'Email practice', cc: cc_emails, class: 'usa-button--outline dm-btn-primary width-full display-flex flex-align-center flex-justify-center height-5', 'aria-label': "side nav email #{main_email}"  %>
-    </div>
-    <div class="text-center margin-bottom-1">
-      <%= link_to 'Start adoption', checklist_path, id: 'next-steps-link-in-nav', class: 'usa-button dm-btn-primary width-full' %>
+      <%= mail_to main_email, 'Email practice', cc: cc_emails, class: 'usa-button dm-btn-primary width-full display-flex flex-align-center flex-justify-center height-5', 'aria-label': "side nav email #{main_email}"  %>
     </div>
     <% if @practice.user_id == current_user.id || current_user.roles.any? %>
       <div class="text-center">
@@ -75,8 +71,7 @@
 </div>
 
 <div class="practice-mobile-nav padding-1 z-top desktop:display-none display-flex justify-center">
-  <%= mail_to main_email, 'Email', cc: cc_emails, id: 'email-link-in-mobile-nav', class: 'width-100 usa-button--outline dm-btn-primary display-flex flex-align-center flex-justify-center height-5 x0-875-right', 'aria-label': "Mobile nav email #{main_email}"  %>
-  <%= link_to 'Adopt', checklist_path, id: 'next-steps-link-in-mobile-nav', class: "width-100 usa-button #{ @practice.user_id == current_user.id || current_user.roles.any? ? 'x0-875-right' : 'x0-right'}" %>
+  <%= mail_to main_email, 'Email', cc: cc_emails, id: 'email-link-in-mobile-nav', class: 'width-100 usa-button dm-btn-primary display-flex flex-align-center flex-justify-center height-5 x0-875-right', 'aria-label': "Mobile nav email #{main_email}"  %>
   <% if @practice.user_id == current_user.id || current_user.roles.any? %>
       <%= link_to 'Edit', instructions_path, id: 'edit-link-in-mobile-nav', class: 'width-100 usa-button dm-btn-base x0-right' %>
   <% end %>
