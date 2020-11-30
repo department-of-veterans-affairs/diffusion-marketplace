@@ -62,6 +62,53 @@ describe 'Breadcrumbs', type: :feature do
         expect(page).to have_content('The Best Practice Ever!')
       end
     end
+
+    it 'should only allow for one practice breadcrumb at a time in order to prevent having too many breadcrumbs at one time' do
+      visit practice_path(@user_practice)
+
+      within(:css, '#breadcrumbs') do
+        expect(page).to have_content('Home')
+        expect(page).to have_content('The Best Practice Ever!')
+      end
+
+      # Browse to a different practice's show page
+      visit practice_path(@user_practice2)
+
+      within(:css, '#breadcrumbs') do
+        expect(page).to have_content('Home')
+        expect(page).to_not have_content('The Best Practice Ever!')
+        expect(page).to have_content('Another Best Practice')
+      end
+    end
+
+    it 'should show proper breadcrumbs in the practice editor' do
+      login_as(@admin, :scope => :user, :run_callbacks => false)
+      visit practice_instructions_path(@user_practice)
+
+      within(:css, '#breadcrumbs') do
+        expect(page).to have_content('Home')
+        expect(page).to have_content('The Best Practice Ever!')
+        expect(page).to have_content('Edit')
+      end
+
+      find_all('.usa-sidenav__item')[1].click
+
+      within(:css, '#breadcrumbs') do
+        expect(page).to have_content('Home')
+        expect(page).to have_content('The Best Practice Ever!')
+        expect(page).to have_content('Edit')
+        expect(page).to have_content('Introduction')
+      end
+
+      find_all('.usa-sidenav__item')[4].click
+
+      within(:css, '#breadcrumbs') do
+        expect(page).to have_content('Home')
+        expect(page).to have_content('The Best Practice Ever!')
+        expect(page).to have_content('Edit')
+        expect(page).to have_content('Implementation')
+      end
+    end
   end
 
   describe 'Practice Search flow' do
@@ -98,6 +145,31 @@ describe 'Breadcrumbs', type: :feature do
         click_on('Home')
       end
       expect(page).to have_current_path('/')
+    end
+
+    it 'should add a search breadcrumb with no query if the user visits a practice page via the url bar(does not click on the practice\'s card)' do
+      @user_practice.update(published: true, approved: true)
+      visit '/'
+      fill_in('dm-navbar-search-field', with: 'the best')
+      find('#dm-navbar-search-button').click
+
+      expect(page).to have_content('The Best')
+      expect(page).to be_accessible.according_to :wcag2a, :section508
+      within(:css, '#breadcrumbs') do
+        expect(page).to have_content('Home')
+        expect(page).to have_content('Search')
+      end
+
+      # Visit a practice's page from the url bar
+      visit practice_path(@user_practice2)
+
+      within(:css, '#breadcrumbs') do
+        expect(page).to have_content('Home')
+        expect(page).to have_content('Search')
+        # go back to search
+        click_on('Search')
+      end
+      expect(page).to have_current_path('/search')
     end
   end
 
