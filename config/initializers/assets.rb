@@ -17,7 +17,6 @@ Rails.application.config.assets.precompile += %w(
                                                   _facilitySelect.js
                                                   practice_editor_adoptions.js
                                                   practice_page.js
-                                                  practice_editor_checklist.js
                                                   _practice_editor_utilities.js
                                                   _introduction_image_editor.js
                                                   _overview_image_editor.js
