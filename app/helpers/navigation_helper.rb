@@ -50,10 +50,6 @@ module NavigationHelper
       session[:breadcrumbs] << { 'practice': 'true', 'display': practice.name, 'path': practice_path(practice) }.stringify_keys
     end
 
-    def add_checklist_breadcrumb(practice)
-      session[:breadcrumbs] << { 'display': 'Planning checklist', 'path': practice_planning_checklist_path(practice) }
-    end
-
     def remove_breadcrumb(crumb)
       session[:breadcrumbs].slice!(session[:breadcrumbs].index(crumb))
     end
@@ -99,21 +95,6 @@ module NavigationHelper
           remove_breadcrumb(practice_breadcrumb(practice_by_id))
           add_practice_breadcrumb(practice_by_id)
         end
-      end
-
-      # practice checklist path
-      if action == 'planning_checklist'
-        empty_breadcrumbs
-        add_practice_breadcrumb(practice_by_practice_id)
-        session[:breadcrumbs] << { 'display': 'Planning checklist', 'path': practice_planning_checklist_path(practice_by_practice_id) }
-      end
-
-      # practice committed path
-      if action == 'committed'
-        empty_breadcrumbs
-        add_practice_breadcrumb(practice_by_practice_id)
-        add_checklist_breadcrumb(practice_by_practice_id)
-        session[:breadcrumbs] << { 'display': 'Confirmation', 'path': practice_committed_path(practice_by_practice_id) }
       end
 
       ### PRACTICE EDITOR BREADCRUMBS ###
