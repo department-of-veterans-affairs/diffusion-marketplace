@@ -1,3 +1,5 @@
+<% provide :main_classes, 'bg-gray-2' %>
+<% provide :footer_classes, 'bg-gray-2' %>
 <% provide :head_tags do %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     <%= render partial: 'search', formats: [:js] %>
@@ -5,34 +7,48 @@
 <% end %>
 
 <div id="search-page">
-  <div class="bg-white padding-top-1">
-    <section class="grid-container x1-5-bottom">
-      <div id="breadcrumbs" class="dm-font-color-blue-50v p1-top breadcrumbs">
-        <a href="/">Home</a>
-      </div>
-    </section>
-    <section class="grid-container">
-      <%= render partial: "shared/messages", locals: {small_text: false} %>
-      <h1 class="font-sans-2xl margin-top-0 margin-bottom-2">Search results</h1>
-      <div class="grid-row">
-        <form id="dm-practice-search-form" name="dm-practice-search-form" class="usa-search margin-bottom-3 grid-col-12 desktop:grid-col-6">
-          <div role="search" class="flex-column">
-            <label class="margin-bottom-1" for="dm-practice-search-field"></label>
-            <div id="search-bar-container" class="display-flex">
-              <input class="usa-input" id="dm-practice-search-field" required title="Type at least three characters to search." autocomplete="off" type="search" name="search">
-              <button id="dm-practice-search-button" class="usa-button" type="submit">
-                <span class="usa-search__submit-text text-bold">Search</span>
-              </button>
-            </div>
+  <section class="grid-container">
+    <%= render partial: "shared/messages", locals: {small_text: false} %>
+    <div class="grid-row">
+      <form id="dm-practice-search-form" name="dm-practice-search-form" class="usa-search usa-search--big margin-bottom-2 grid-col-12">
+        <div role="search" class="flex-column">
+          <label class="margin-bottom-1" for="dm-practice-search-field"></label>
+          <div id="search-bar-container" class="display-flex">
+            <input class="usa-input" id="dm-practice-search-field" required title="Type at least three characters to search." autocomplete="off" type="search" name="search">
+            <button id="dm-practice-search-button" class="usa-button" type="submit">
+              <span class="usa-search__submit-text text-bold">Search</span>
+            </button>
           </div>
-          <p class="margin-top-1 font-sans-3xs grid-col-12 text-italic">Search by practice name, facility name, clinical condition, category, or keyword</p>
-        </form>
-      </div>
-    </section>
+        </div>
+      </form>
+      <div class="usa-accordion usa-accordion--bordered">
 
-    <section class="dm-search-practices grid-container">
+        <!-- Use the accurate heading level to maintain the document outline -->
+        <h2 class="usa-accordion__heading">
+          <button class="usa-accordion__button"
+                  aria-expanded="false"
+                  aria-controls="b-a1">
+            Filters
+          </button>
+        </h2>
+        <div id="b-a1" class="usa-accordion__content usa-prose">
+          <p>Congress shall make no law respecting an establishment of religion, or prohibiting the free exercise thereof; or abridging the freedom of speech, or of the press; or the right of the people peaceably to assemble, and to petition the Government for a redress of grievances.</p>
+
+        </div>
+      </div>
+    </div>
+
+    <section id="dm-search-practices" class="dm-search-practices display-none">
       <p class="margin-bottom-3 font-sans-lg" id="results-summary"></p>
       <div id="search-results"></div>
     </section>
-  </div>
+
+    <section class="no-search-query-content position-relative margin-x-auto">
+      <p class="position-relative z-100 padding-bottom-3 line-height-26 text-center">
+        Enter a search term or use the filters to find  matching practices
+      </p>
+      <i class="fas fa-search no-search-query-icon position-absolute z-index-0 text-base-lightest"></i>
+    </section>
+  </section>
 </div>
+

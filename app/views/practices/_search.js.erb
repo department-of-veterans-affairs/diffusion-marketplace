@@ -12,6 +12,9 @@ function searchPracticesPage() {
     // Search practices and populate the page
     function search(query) {
 
+        // Remove no search items content
+        document.getElementsByClassName('no-search-query-content')[0].remove();
+
         // Trim whitespace from the query (can cause matching problems)
         query = query.trim();
 
@@ -26,6 +29,9 @@ function searchPracticesPage() {
         results = fuse.search(query);
 
         console.log(results.length)
+
+        // Show the results summary section
+        document.getElementById('dm-search-practices').classList.remove('display-none')
 
         // Print the number of results for the query
         resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? '' : 's') + ' for <span class="text-bold">' + query + '</span>:';
