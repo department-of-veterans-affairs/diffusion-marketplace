@@ -1,9 +1,0 @@
-<% @practice.publications.each do |p| %>
-  <div class="margin-bottom-1 dm-hyphens-auto dm-word-break-break-word">
-    <span>
-      <%= link_to p.link, class: 'publication-link dm-external-link font-sans-xs-2 line-height-sans-505', target: '_blank' do %>
-        <%= p.title.present? ? p.title : p.link %>
-      <% end %>
-    </span>
-  </div>
-<% end %>

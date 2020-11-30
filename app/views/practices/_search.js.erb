@@ -81,10 +81,6 @@ function searchPracticesPage() {
         // Highlight search results where exact keyword matches
         var mark = new Mark('#search-results');
         mark.mark(query);
-
-        if (!$('#results-breadcrumb').length) {
-            addResultsBreadcrumb();
-        }
     }
 
 
@@ -164,13 +160,6 @@ function searchPracticesPage() {
         trackSearchField(decodeURI(query));
         searchField.value = decodeURI(query);
     }
-}
-
-function addResultsBreadcrumb() {
-    $('#search-breadcrumb').html('<a href="/practices">Practices</a>');
-    $('#breadcrumbs').append('<span class="x0-5-left x0-5-right">›</span>' +
-        '<span id="results-breadcrumb" class="text-bold">Search</span>'
-    );
 }
 
 function trackSearchField(searchTerm) {

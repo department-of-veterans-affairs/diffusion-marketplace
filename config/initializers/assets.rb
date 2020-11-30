@@ -10,23 +10,21 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 
 Rails.application.config.assets.precompile += %w(
                                                   _visnSelect.js
-                                                  _officeSelect.js ie.js
+                                                  _officeSelect.js
+                                                  ie.js
                                                   _render_warning_banners.js
                                                   _assign_facility_name.js
                                                   _facilitySelect.js
                                                   practice_editor_adoptions.js
                                                   practice_page.js
-                                                  practice_editor_checklist.js
                                                   _practice_editor_utilities.js
-                                                  _introduction_image_editor.js _overview_image_editor.js
+                                                  _introduction_image_editor.js
+                                                  _overview_image_editor.js
                                                   _usa_file_input.js
-                                                  practice_editor_impact.js
-                                                  practice_editor_documentation.js
                                                   practice_editor_contact.js
                                                   practice_editor_timeline.js
                                                   practice_editor_origin.js
                                                   practice_editor_risk_mitigation.js
-                                                  practice_editor_complexity.js
                                                   practice_editor_overview.js
                                                   practice_editor_introduction.js
                                                   practice_editor_implementation.js
