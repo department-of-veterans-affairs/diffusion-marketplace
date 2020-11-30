@@ -1,26 +1,17 @@
 class PracticesController < ApplicationController
   include CropperUtils
-  before_action :set_practice, only: [:show, :edit, :update, :destroy, :planning_checklist,
-                                      :commit, :committed, :highlight, :un_highlight, :feature,
-                                      :un_feature, :favorite, :instructions, :overview, :origin,
-                                      :collaborators, :impact, :resources, :documentation,
-                                      :departments, :timeline, :risk_and_mitigation, :contact,
-                                      :checklist, :publication_validation, :adoptions,
+  before_action :set_practice, only: [:show, :edit, :update, :destroy, :highlight, :un_highlight, :feature,
+                                      :un_feature, :favorite, :instructions, :overview, :origin, :collaborators, :impact, :resources, :documentation,
+                                      :departments, :timeline, :risk_and_mitigation, :contact, :checklist, :publication_validation, :adoptions,
                                       :create_or_update_diffusion_history, :implementation, :introduction, :about]
-  before_action :set_facility_data, only: [:show, :planning_checklist]
-  before_action :set_office_data, only: [:show, :planning_checklist]
-  before_action :set_visn_data, only: [:show, :planning_checklist]
-  before_action :set_initiating_facility_other, only: [:show, :planning_checklist]
+  before_action :set_facility_data, only: [:show]
+  before_action :set_office_data, only: [:show]
+  before_action :set_visn_data, only: [:show]
+  before_action :set_initiating_facility_other, only: [:show]
   before_action :authenticate_user!, except: [:show, :search, :index]
-  before_action :can_view_committed_view, only: [:committed]
-  before_action :can_view_practice, only: [:show, :edit, :update, :destroy, :planning_checklist]
-  before_action :can_create_practice, only: [:new, :create]
-  before_action :can_edit_practice, only: [:edit, :update, :instructions,
-                                           :overview, :origin, :impact,
-                                           :documentation, :resources, :complexity,
-                                           :timeline, :risk_and_mitigation,
-                                           :contact, :checklist, :published,
-                                           :publication_validation, :adoptions, :about]
+  before_action :can_view_practice, only: [:show, :edit, :update, :destroy]
+  before_action :can_create_practice, only: :create
+  before_action :can_edit_practice, only: [:edit, :update, :instructions, :overview, :contact, :published, :publication_validation, :adoptions, :about]
   before_action :set_date_initiated_params, only: [:update, :publication_validation]
   before_action :is_enabled, only: [:show]
   # GET /practices
@@ -35,6 +26,10 @@ class PracticesController < ApplicationController
     unless @practice.enabled
       redirect_to(root_path)
     end
+  end
+
+  def redirect_to_instructions_path
+    redirect_to practice_instructions_path(@practice)
   end
 
   # GET /practices/1
@@ -107,10 +102,6 @@ class PracticesController < ApplicationController
   def edit
   end
 
-  def new
-    @practice = Practice.new
-  end
-
   # POST /practices
   # POST /practices.json
   def create
@@ -121,7 +112,7 @@ class PracticesController < ApplicationController
         format.html { redirect_to @practice, notice: 'Practice was successfully created.' }
         format.json { render :show, status: :created, location: @practice }
       else
-        format.html { render :new }
+        format.html { redirect_back fallback_location: root_path}
         format.json { render json: @practice.errors, status: :unprocessable_entity }
       end
     end
@@ -183,43 +174,6 @@ class PracticesController < ApplicationController
     @practices = Practice.searchable_practices
     @facilities_data = facilities_json
     @practices_json = practices_json(@practices)
-
-  end
-
-  def planning_checklist
-    @facilities_data = facilities_json
-  end
-
-  # GET /practices/1/committed
-  def committed
-    render 'committed'
-  end
-
-  # POST /practices/1/commit
-  # POST /practices/1/commit.json
-  def commit
-    user_practice = UserPractice.find_by(user: current_user, practice: @practice, committed: true)
-
-    if user_practice.present?
-      flash[:notice] = "You have already committed to this practice. If you did not receive a follow-up email from the practice support team yet, please contact them at #{@practice.support_network_email || ENV['MAILER_SENDER']}"
-    else
-      user_practice = UserPractice.find_or_initialize_by(user: current_user, practice: @practice)
-      user_practice.committed = true
-      user_practice.time_committed = DateTime.now
-      PracticeMailer.commitment_response_email(user: current_user, practice: @practice).deliver_now
-      PracticeMailer.support_team_notification_of_commitment(user: current_user, practice: @practice).deliver_now
-    end
-
-    respond_to do |format|
-      if user_practice.save
-        format.html { redirect_to practice_committed_path(practice_id: @practice.slug), notice: flash[:notice] } if flash[:notice].present?
-        format.html { redirect_to practice_committed_path(practice_id: @practice.slug) } if flash[:notice].blank?
-        format.json { render :show, status: :created, location: practice_committed_path }
-      else
-        format.html { render :planning_checklist, error: user_practice.errors }
-        format.json { render json: user_practice.errors, status: :unprocessable_entity }
-      end
-    end
   end
 
   # POST /practices/1/favorite.js
@@ -277,7 +231,7 @@ class PracticesController < ApplicationController
 
   # /practices/slug/collaborators
   def collaborators
-    redirect_to practice_overview_path(@practice)
+    redirect_to_instructions_path
   end
 
   # /practices/slug/overview
@@ -294,32 +248,37 @@ class PracticesController < ApplicationController
     render 'practices/form/introduction'
   end
 
-  # GET /practices/1/origin
-  def origin
-  end
-
   # /practices/slug/impact
+  # redirect to instructions page due to removal of impact page 11/19/20
   def impact
+    redirect_to_instructions_path
   end
 
   # /practices/slug/documentation
+  # redirect to instructions page due to removal of impact page 11/19/20
   def documentation
+    redirect_to_instructions_path
   end
 
   # /practices/slug/resources
+  # redirect to instructions page due to removal of impact page 11/19/20
   def resources
+    redirect_to_instructions_path
   end
 
   # /practices/slug/departments
   def departments
+    redirect_to_instructions_path
   end
 
   # /practices/slug/timeline
   def timeline
+    redirect_to_instructions_path
   end
 
   # /practices/slug/risk_and_mitigation
   def risk_and_mitigation
+    redirect_to_instructions_path
   end
 
   # /practices/slug/contact
@@ -334,6 +293,7 @@ class PracticesController < ApplicationController
 
   # /practices/slug/checklist
   def checklist
+    redirect_to_instructions_path
   end
 
   def published
@@ -530,15 +490,6 @@ class PracticesController < ApplicationController
 
   def set_office_data
     @office_data = facilities_json.find{|f|f['']}
-  end
-
-  def can_view_committed_view
-    unless UserPractice.find_by(user: current_user, practice: @practice, committed: true)
-      warning = 'You must commit to this practice first!'
-      flash[:warning] = warning
-
-      redirect_to(practice_planning_checklist_path(practice_id: @practice.slug), warning: warning)
-    end
   end
 
   def practices_json(practices)

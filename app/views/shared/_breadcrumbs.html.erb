@@ -1,29 +1,45 @@
-<% if @breadcrumbs %>
-  <div class="grid-container">
-    <div class="grid-row">
-      <div id="breadcrumbs" class="grid-col-auto usa-breadcrumb breadcrumbs-container" aria-label="Breadcrumbs">
-        <ol class="usa-breadcrumb__list">
-          <% @breadcrumbs.each do |crumb| %>
-            <%
-              path = crumb[:path]
-              text = crumb[:text]
-            %>
-            <% if path && path.present? %>
-              <li class="usa-breadcrumb__list-item">
-                <%= link_to(text, path, class: 'dm-external-link breadcrumb-link usa-breadcrumb__link') %>
-              </li>
-            <% elsif path && path.empty? %>
-              <li class="usa-breadcrumb__list-item usa-current" aria-current="page">
-                <span><%= text %></span>
-              </li>
-            <% else %>
-              <li class="usa-breadcrumb__list-item usa-current" aria-current="page">
-                <span><%= text %></span>
-              </li>
-            <% end %>
+<%
+  action = params[:action]
+  controller = params[:controller]
+%>
+
+<section class="grid-container">
+  <div id="breadcrumbs" class="grid-col-auto usa-breadcrumb breadcrumbs-container" aria-label="Breadcrumbs">
+    <ol class="usa-breadcrumb__list">
+      <% unless controller == 'home' && action == 'index' %>
+        <li class="usa-breadcrumb__list-item dm-external-link breadcrumb-link usa-breadcrumb__link">
+          <a href="/">Home</a>
+        </li>
+      <% end %>
+      <%
+        breadcrumbs = session[:breadcrumbs]
+      %>
+
+      <% breadcrumbs.each_with_index do |b, i| %>
+        <%
+          last_crumb = breadcrumbs.size - 1 == i
+        %>
+
+          <%# Check if the page is a page-builder page using the controller and action names %>
+          <% if !last_crumb && controller == 'page' && action == 'show' && @builder_landing_page.exists? %>
+            <%= render partial: 'shared/link_breadcrumb', locals: {breadcrumb: b} %>
+          <% elsif !last_crumb && controller == 'page' && action == 'show' && @builder_landing_page.empty? %>
+            <%= render partial: 'shared/text_breadcrumb', locals: {breadcrumb: b} %>
+          <%# This checks for a page-builder page with no landing page outside of the page controller %>
+          <% elsif !last_crumb && b['path'] == '' %>
+            <%= render partial: 'shared/text_breadcrumb', locals: {breadcrumb: b} %>
+          <% elsif !last_crumb && b['display'] == 'Edit' %>
+            <%= render partial: 'shared/link_breadcrumb', locals: {breadcrumb: b} %>
+          <% elsif !last_crumb %>
+            <%= render partial: 'shared/link_breadcrumb', locals: {breadcrumb: b} %>
+          <% elsif last_crumb && controller == 'page' && action == 'show' && @builder_landing_page.exists? %>
+            <%= render partial: 'shared/text_breadcrumb', locals: {breadcrumb: b} %>
+          <% elsif last_crumb && b['display'] == 'Edit' %>
+            <%= render partial: 'shared/text_breadcrumb', locals: {breadcrumb: b} %>
+          <% else %>
+            <%= render partial: 'shared/text_breadcrumb', locals: {breadcrumb: b} %>
           <% end %>
-        </ol>
-      </div>
-    </div>
+        <% end %>
+    </ol>
   </div>
-<% end %>
+</section>

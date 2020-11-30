@@ -64,9 +64,5 @@ class HomeController < ApplicationController
   end
 
   def pii_phi_information
-    @breadcrumbs = [
-        { text: 'Home', path: root_path },
-        { text: 'PII/PHI Information' }
-    ]
   end
 end
