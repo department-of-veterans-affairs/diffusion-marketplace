@@ -20,10 +20,10 @@ ActiveAdmin.register Practice do
   end
 
   index do
-    Practice.create
+    #Practice.create
     selectable_column unless params[:scope] == "get_practice_owner_emails"
     id_column unless params[:scope] == "get_practice_owner_emails"
-    column(:practice_name) {|practice| practice.name}
+    column(:name, sortable: true) {|practice| practice.name}
     column :support_network_email unless params[:scope] == "get_practice_owner_emails"
     column(:owner_email) {|practice| practice.user&.email}
     column :enabled unless params[:scope] == "get_practice_owner_emails"
