@@ -69,7 +69,7 @@ Rails.application.routes.draw do
 
   get '/users/:id' => 'users#show'
   get '/edit-profile' => 'users#edit_profile'
-  get '/relevant-to-you' => 'users#relevant_to_you'
+  get '/recommended-for-you' => 'users#recommended_for_you'
   post '/edit-profile' => 'users#update_profile'
   delete '/edit-profile-photo' => 'users#delete_photo'
 

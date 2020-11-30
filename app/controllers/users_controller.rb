@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   before_action :require_admin, only: %i[index update destroy re_enable]
   before_action :require_user_or_admin, only: %i[update]
   before_action :final_admin, only: :update
-  before_action :require_user, only: :relevant_to_you
+  before_action :require_user, only: :recommended_for_you
 
   def index
     redirect_to root_path
@@ -99,7 +99,7 @@ class UsersController < ApplicationController
   def terms_and_conditions
   end
 
-  def relevant_to_you
+  def recommended_for_you
     @user = current_user || nil
     if current_user.present?
       # If a favorited practice has a nil value for the time_favorited attribute, place it at the end of the favorite_practices array
