@@ -2,11 +2,6 @@
 class RegistrationsController < Devise::RegistrationsController
   
   def edit
-    @breadcrumbs = [
-      { text: 'Home', path: root_path },
-      { text: 'Profile', path: user_path(current_user)},
-      { text: 'Edit' }
-    ]
     super
   end
 

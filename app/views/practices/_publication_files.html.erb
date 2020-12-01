@@ -1,7 +1,0 @@
-<% @practice.publication_files.each do |pf| %>
-  <div class="display-flex flex-justify margin-bottom-2 dm-hyphens-auto dm-word-break-break-word">
-    <%= link_to pf.attachment_s3_presigned_url, class: 'dm-external-link', download: pf.attachment_file_name do %>
-      <%= pf.attachment_file_name %>
-    <% end %>
-  </div>
-<% end %>

@@ -2,18 +2,18 @@
   <%= javascript_include_tag '_practice_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
-<div id="relevant-to-you" class="usa-section p0-top p0-bottom grid-container">
+<div id="recommended-for-you" class="usa-section p0-top p0-bottom grid-container">
   <div class="grid-col-12">
     <div class="rect-svg-blue-30v border-top-1 margin-top-10"></div>
-    <h1 class="margin-top-2 margin-bottom-10 usa-prose-h1 font-sans-2xl line-height-46px">Relevant to you</h1>
+    <h1 class="margin-top-2 margin-bottom-10 usa-prose-h1 font-sans-2xl line-height-46px">Recommended for you</h1>
     <%
       paginated_favorites = @paginated_favorite_practices
       pagy_favorites = @pagy_favorite_practices
     %>
 
     <% if paginated_favorites.any? %>
-      <section class="relevant-favorite-practices">
-        <%= render partial: 'users/relevant_to_you/practice_cards_container', locals: {
+      <section class="recommended-favorite-practices">
+        <%= render partial: 'users/recommended_for_you/practice_cards_container', locals: {
             container_classes: "paginated-favorite-practices margin-top-0 #{pagy_favorites.count <= 3 ? 'x4-25-bottom' : ''}",
             container_header_classes: 'usa-prose-h2 font-sans-xl line-height-37px margin-bottom-105',
             container_title: 'Your bookmarked practices',
@@ -26,12 +26,12 @@
     <% end %>
 
     <% location_practices = @user_location_practices %>
-    <section class="relevant-user-location-practices">
+    <section class="recommended-user-location-practices">
       <h2 class="usa-prose-h2 font-sans-xl line-height-37px <%= location_practices.any? ? 'margin-bottom-105' : 'margin-bottom-3' %> margin-top-0">
         Based on your location
       </h2>
       <% if location_practices.any? %>
-        <%= render partial: 'users/relevant_to_you/practice_cards_container', locals: {
+        <%= render partial: 'users/recommended_for_you/practice_cards_container', locals: {
             container_classes: "user-location-practices #{location_practices.count > 3 ? 'margin-bottom-105' : ''}",
             container_header_classes: nil,
             container_title: nil,

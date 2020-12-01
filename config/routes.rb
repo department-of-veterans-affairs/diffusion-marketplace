@@ -69,12 +69,11 @@ Rails.application.routes.draw do
 
   get '/users/:id' => 'users#show'
   get '/edit-profile' => 'users#edit_profile'
-  get '/relevant-to-you' => 'users#relevant_to_you'
+  get '/recommended-for-you' => 'users#recommended_for_you'
   post '/edit-profile' => 'users#update_profile'
   delete '/edit-profile-photo' => 'users#delete_photo'
 
   resource :competitions do
-    # show shark tank for now
     get '/shark-tank', action: 'shark_tank', as: 'shark-tank'
     get '/go-fish', action: 'go_fish', as: 'go-fish'
   end
