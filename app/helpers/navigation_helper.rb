@@ -243,9 +243,9 @@ module NavigationHelper
         session[:breadcrumbs] << { 'display': 'Edit', 'path': edit_profile_path } if current_user.present?
       end
 
-      if action == 'relevant_to_you'
+      if action == 'recommended_for_you'
         empty_breadcrumbs
-        session[:breadcrumbs] << { 'display': 'Relevant to you', 'path': relevant_to_you_path } if current_user.present?
+        session[:breadcrumbs] << { 'display': 'Recommended for you', 'path': recommended_for_you_path } if current_user.present?
       end
     end
 
