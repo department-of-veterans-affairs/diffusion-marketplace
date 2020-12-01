@@ -24,6 +24,10 @@ class SavePracticeService
 
   def save_practice
     begin
+      if @practice_params["support_network_email"].present? && @practice.approved == false
+        @practice.approved = true
+        @practice.save
+      end
       if @practice_params["practice_problem_resources_attributes"].present?
         process_problem_resource_params
       end
