@@ -66,6 +66,8 @@ Rails.application.routes.draw do
   get 'practices/planning_checklist' => 'practices#planning_checklist'
   get 'pii_phi_information' => 'home#pii_phi_information'
   get '/search' => 'practices#search'
+  get '/explore' => 'practices#explore'
+  post '/explore' => 'practices#explore_practices'
 
   get '/users/:id' => 'users#show'
   get '/edit-profile' => 'users#edit_profile'
