@@ -56,7 +56,7 @@ class SavePracticeService
       rescue_method(:crop_resource_images)
       if updated
         practice = Practice.find_by_id(@practice.id)
-        practice.updated_at = DateTime.now()
+        practice.practice_pages_updated = DateTime.now()
         practice.save()
       end
       updated
