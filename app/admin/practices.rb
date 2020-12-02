@@ -22,7 +22,7 @@ ActiveAdmin.register Practice do
   index do
     selectable_column unless params[:scope] == "get_practice_owner_emails"
     id_column unless params[:scope] == "get_practice_owner_emails"
-    column 'Practice Name', :name, sortable: 'name'.to_s.downcase
+    column 'Practice Name', :name
     column :support_network_email unless params[:scope] == "get_practice_owner_emails"
     column(:owner_email) {|practice| practice.user&.email}
     column :enabled unless params[:scope] == "get_practice_owner_emails"
