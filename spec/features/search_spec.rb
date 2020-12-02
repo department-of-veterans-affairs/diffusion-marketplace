@@ -156,7 +156,7 @@ describe 'Search', type: :feature do
       expect(cache_keys).to include("searchable_practices_a_to_z")
 
       update_practice_introduction(@practice)
-
+      sleep 2
       expect(cache_keys).not_to include("searchable_practices_a_to_z")
     end
 
