@@ -1,0 +1,52 @@
+<form id="search_filters" class="bg-gray-5 p0-25-bottom">
+  <div class="grid-row">
+    <fieldset class="p0">
+      <legend class="usa-sr-only">Search Filters</legend>
+      <%
+        categories = Category.where(is_other: false).where.not(name: 'Other').order(name: :asc).first(19)
+        # Divide the total by three and round up to the next number to make sure the categories are evenly distributed amongst the columns
+        count = ((categories.count * 2) + 3) / (3 * 2)
+        sliced_categories = categories.each_slice(count).to_a
+      %>
+      <%#= categories.count % 3 == 1 %>
+      <%#= count %>
+      <%# if categories.count % 3 == 1 %>
+        <%# sliced_categories[2] << sliced_categories[3].slice(0) %>
+        <%# sliced_categories[1] << sliced_categories[2].slice(0) %>
+        <%# sliced_categories[1] << sliced_categories[2].slice(1) %>
+        <%# sliced_categories[1].insert(-1, sliced_categories[2][0], sliced_categories[2][1]) %>
+        <%# sliced_categories[0] << sliced_categories[1].slice(0) %>
+        <%# sliced_categories[1].shift %>
+        <%# sliced_categories[2].shift(2) %>
+      <%# end %>
+      <%= sliced_categories[0] << sliced_categories[1].slice(0) %>
+      <%# sliced_categories[2] << sliced_categories[3].slice(0) %>
+      <%# sliced_categories[1].insert(0, sliced_categories[2][0], sliced_categories[2][1]) %>
+      <%# sliced_categories[0] << sliced_categories[1].slice(0) %>
+      <%# sliced_categories[1].shift %>
+      <%# sliced_categories[2].shift(2) %>
+      <div class="padding-x-2 padding-bottom-1 bg-gray-5">
+        <div class="grid-row grid-gap bg-white">
+          <% if sliced_categories.present? %>
+            <p class="text-bold line-height-26 margin-bottom-2 margin-top-1 grid-col-12">Category</p>
+            <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sliced_categories, column: 0 } %>
+            <% if sliced_categories[1].present? %>
+              <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sliced_categories, column: 1 } %>
+            <% end %>
+            <% if sliced_categories[2].present? %>
+              <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sliced_categories, column: 2 } %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+      <div class="bg-white">
+        hello world
+      </div>
+      <%#= collection_check_boxes(:practice, :ids, Practice.all, :id, :name) do |p| %>
+<!--        <div class="grid-col-4">-->
+        <%#= p.check_box class: 'usa-checkbox__input' %> <%#= p.label class: 'usa-checkbox__label' %>
+<!--        </div>-->
+      <%# end %>
+    </fieldset>
+  </div>
+</form>

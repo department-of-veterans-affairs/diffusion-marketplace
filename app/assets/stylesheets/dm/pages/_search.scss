@@ -83,3 +83,17 @@
   top: 50%;
   transform: translate(-50%, -50%);
 }
+
+#search_filters_dropdown {
+  height: 65vh;
+
+  fieldset {
+    border: none !important;
+    margin: 0 !important;
+    width: 100% !important
+  }
+
+  .usa-checkbox__label:before {
+    border-radius: 0 !important;
+  }
+}

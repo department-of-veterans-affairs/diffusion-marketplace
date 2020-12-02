@@ -1,4 +1,5 @@
-<% provide :main_classes, 'bg-gray-2' %>
+<%# Utilized the body instead of just the main because there were white patches below main content on larger viewports %>
+<% provide :body_classes, 'bg-gray-2' %>
 <% provide :footer_classes, 'bg-gray-2' %>
 <% provide :head_tags do %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
@@ -21,19 +22,18 @@
           </div>
         </div>
       </form>
-      <div class="usa-accordion usa-accordion--bordered">
+      <div class="usa-accordion usa-accordion--bordered position-relative">
 
         <!-- Use the accurate heading level to maintain the document outline -->
         <h2 class="usa-accordion__heading">
           <button class="usa-accordion__button"
-                  aria-expanded="false"
-                  aria-controls="b-a1">
+                  aria-expanded="true"
+                  aria-controls="search_filters_dropdown">
             Filters
           </button>
         </h2>
-        <div id="b-a1" class="usa-accordion__content usa-prose">
-          <p>Congress shall make no law respecting an establishment of religion, or prohibiting the free exercise thereof; or abridging the freedom of speech, or of the press; or the right of the people peaceably to assemble, and to petition the Government for a redress of grievances.</p>
-
+        <div id="search_filters_dropdown" class="usa-accordion__content usa-prose position-absolute width-full z-400 bg-gray-5 p0">
+          <%= render partial: 'practices/search_partials/search_filters' %>
         </div>
       </div>
     </div>
