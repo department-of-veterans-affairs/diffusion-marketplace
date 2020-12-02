@@ -3,28 +3,21 @@
     <fieldset class="p0">
       <legend class="usa-sr-only">Search Filters</legend>
       <%
-        categories = Category.where(is_other: false).where.not(name: 'Other').order(name: :asc).first(19)
-        # Divide the total by three and round up to the next number to make sure the categories are evenly distributed amongst the columns
+        categories = Category.where(is_other: false).where.not(name: 'Other').order('LOWER(name)').first(5)
+        # Divide the total by three and round up if possible to make sure the categories are evenly distributed amongst the columns
         count = ((categories.count * 2) + 3) / (3 * 2)
         sliced_categories = categories.each_slice(count).to_a
       %>
-      <%#= categories.count % 3 == 1 %>
-      <%#= count %>
-      <%# if categories.count % 3 == 1 %>
-        <%# sliced_categories[2] << sliced_categories[3].slice(0) %>
-        <%# sliced_categories[1] << sliced_categories[2].slice(0) %>
-        <%# sliced_categories[1] << sliced_categories[2].slice(1) %>
-        <%# sliced_categories[1].insert(-1, sliced_categories[2][0], sliced_categories[2][1]) %>
-        <%# sliced_categories[0] << sliced_categories[1].slice(0) %>
-        <%# sliced_categories[1].shift %>
-        <%# sliced_categories[2].shift(2) %>
-      <%# end %>
-      <%= sliced_categories[0] << sliced_categories[1].slice(0) %>
-      <%# sliced_categories[2] << sliced_categories[3].slice(0) %>
-      <%# sliced_categories[1].insert(0, sliced_categories[2][0], sliced_categories[2][1]) %>
-      <%# sliced_categories[0] << sliced_categories[1].slice(0) %>
-      <%# sliced_categories[1].shift %>
-      <%# sliced_categories[2].shift(2) %>
+      <%# When the category count is divisible by 3 with a remainder of 1, move item(s) from one array to the previous to maintain distribution %>
+      <% if categories.count % 3 == 1 %>
+        <%
+          sliced_categories[2].insert(-1, sliced_categories[3][0])
+          sliced_categories[1].insert(-1, sliced_categories[2][0], sliced_categories[2][1])
+          sliced_categories[0].insert(-1, sliced_categories[1][0])
+          sliced_categories[2].shift(2)
+          sliced_categories[1].shift
+        %>
+      <% end %>
       <div class="padding-x-2 padding-bottom-1 bg-gray-5">
         <div class="grid-row grid-gap bg-white">
           <% if sliced_categories.present? %>
