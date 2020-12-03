@@ -62,6 +62,10 @@ module NavigationHelper
         session[:breadcrumbs] << {'display': 'Practices', 'path': '/practices'}
       end
 
+      if action == 'explore'
+        empty_breadcrumbs
+      end
+
       search_breadcrumb = session[:breadcrumbs].find { |bc| bc['display'] == 'Search' || bc[:display] == 'Search' } || nil
       url = URI::parse(request.referer || '')
 

@@ -28,11 +28,11 @@
   }
 
   .dm-tab {
-    border-bottom: 1px solid #F0F0F0;
+    border-bottom: 1px solid $dm-color-gray-5;
     font-weight: normal;
 
     &.top-tab {
-      border-top: 1px solid #F0F0F0;
+      border-top: 1px solid $dm-color-gray-5;
     }
 
     // &.bottom-tab {
@@ -200,11 +200,6 @@
   margin-right: 8px;
 }
 
-.conversation-line {
-  height: 2px;
-  border: 2px solid #F0F0F0;
-}
-
 .impact-image {
   height: 263px;
   width: 393px;
@@ -301,7 +296,7 @@
 
   &:hover {
     text-decoration: none !important;
-    color: #1a4480 !important
+    color: $dm-color-blue-70v !important
   }
 }
 

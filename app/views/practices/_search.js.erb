@@ -89,7 +89,7 @@ function searchPracticesPage() {
     function highlighter(resultItem) {
         resultItem.matches.forEach(function (matchItem) {
             // don't highlight if match was on category since category is not in practice search result text and can't be highlighted
-            if (matchItem.key != 'categories_name') {
+            if (matchItem.key != 'category_names') {
                 var text = resultItem.item[matchItem.key];
                 var result = [];
                 var matches = [].concat(matchItem.indices); // limpar referencia
@@ -122,7 +122,7 @@ function searchPracticesPage() {
 
     // Set Fuse.js search options
     var search_options = {
-        keys: ['name', 'tagline', 'description', 'summary', 'initiating_facility', 'categories_name', 'maturity_level'],
+        keys: ['name', 'tagline', 'description', 'summary', 'initiating_facility', 'category_names', 'maturity_level'],
         minMatchCharLength: 1,
         tokenize: true,
         shouldSort: true,
