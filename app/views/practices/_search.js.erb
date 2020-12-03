@@ -1,6 +1,13 @@
 var practices = <%= @practices_json %>;
 var results = null;
 
+function test() {
+    // Remove no search items content
+    <% if request.url.include?('query') %>
+      $('#no-search-query-content')
+    <% end %>
+}
+
 function searchPracticesPage() {
     const searchField = document.querySelector('#dm-practice-search-field');
 
@@ -13,7 +20,11 @@ function searchPracticesPage() {
     function search(query) {
 
         // Remove no search items content
-        document.getElementsByClassName('no-search-query-content')[0].remove();
+//        let noContentEle = document.getElementById('no-search-query-content')
+//        if (noContentEle.length > 0) {
+//            console.log('test')
+//          noContentEle.remove();
+//        }
 
         // Trim whitespace from the query (can cause matching problems)
         query = query.trim();
@@ -181,6 +192,8 @@ function trackSearchField(searchTerm) {
         }
     }
 }
+
+$(document).on('turbolinks:load', test)
 
 document.addEventListener('turbolinks:load', function () {
     searchPracticesPage();
