@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_01_133735) do
+ActiveRecord::Schema.define(version: 2020_12_02_101945) do
+
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -935,6 +936,7 @@ ActiveRecord::Schema.define(version: 2020_12_01_133735) do
     t.string "overview_results"
     t.integer "maturity_level"
     t.datetime "date_published"
+    t.datetime "practice_pages_updated"
     t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
   end
