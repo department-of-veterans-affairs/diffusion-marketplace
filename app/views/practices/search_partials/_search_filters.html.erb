@@ -3,7 +3,7 @@
     <fieldset class="p0">
       <legend class="usa-sr-only">Search Filters</legend>
       <%
-        categories = Category.where(is_other: false).where.not(name: 'Other').order('LOWER(name)').first(5)
+        categories = Category.where(is_other: false).where.not(name: 'Other').order(Arel.sql('LOWER(name) ASC'))
         # Divide the total by three and round up if possible to make sure the categories are evenly distributed amongst the columns
         count = ((categories.count * 2) + 3) / (3 * 2)
         sliced_categories = categories.each_slice(count).to_a
@@ -18,11 +18,11 @@
           sliced_categories[1].shift
         %>
       <% end %>
-      <div class="padding-x-2 padding-bottom-1 bg-gray-5">
-        <div class="grid-row grid-gap bg-white">
-          <p class="text-bold line-height-26 margin-bottom-2 margin-top-1 grid-col-12">Originating location</p>
-          <div class="usa-combo-box position">
-            <label for="test">Select a department</label>
+      <div class="padding-bottom-05 bg-gray-5">
+        <div class="grid-row bg-white padding-x-2">
+          <p class="text-bold line-height-26 margin-y-1 grid-col-12">Originating location</p>
+          <div class="usa-combo-box margin-bottom-3">
+            <label for="test" class="line-height-26">Select by VISN or facility</label>
             <select id="test" class="usa-select" name="test">
               <%# all_depts.each do |d| %>
   <!--              <option value="<%#= d.id %>">-->
@@ -33,6 +33,23 @@
           </div>
         </div>
       </div>
+
+      <div class="padding-bottom-05 bg-gray-5">
+        <div class="grid-row bg-white padding-x-2">
+          <p class="text-bold line-height-26 margin-y-1 grid-col-12">Adopting location</p>
+          <div class="usa-combo-box margin-bottom-3">
+            <label for="test" class="line-height-26">Select by VISN or facility</label>
+            <select id="test" class="usa-select" name="test">
+              <%# all_depts.each do |d| %>
+              <!--              <option value="<%#= d.id %>">-->
+              <%#= d.name %>
+              <!--              </option>-->
+              <%# end %>
+            </select>
+          </div>
+        </div>
+      </div>
+
       <div class="padding-x-2 padding-bottom-1 bg-gray-5">
         <div class="grid-row grid-gap bg-white">
           <% if sliced_categories.present? %>
@@ -46,9 +63,6 @@
             <% end %>
           <% end %>
         </div>
-      </div>
-      <div class="bg-white">
-        hello world
       </div>
       <%#= collection_check_boxes(:practice, :ids, Practice.all, :id, :name) do |p| %>
 <!--        <div class="grid-col-4">-->
