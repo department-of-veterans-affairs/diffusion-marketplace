@@ -11,7 +11,6 @@
   }
 
   .dm-results-count {
-    display: flex;
     align-items: center;
   }
 
@@ -28,6 +27,10 @@
   .dm-practice-card {
     &:first-child {
       padding-top: 0;
+
+      .dm-practice-bookmark-btn {
+        top: 8px;
+      }
     }
   }
 
@@ -68,10 +71,26 @@
     }
   }
 
+  @media screen and (min-width: 690px) {
+    .dm-practice-card {
+      &:nth-child(2) {
+        padding-top: 0px;
+
+        .dm-practice-bookmark-btn {
+          top: 8px;
+        }
+      }
+    }
+  }
+
   @media screen and (min-width: 1024px) {
     .dm-practice-card {
-      &:nth-child(2), &:nth-child(3) {
+      &:nth-child(3) {
         padding-top: 0px;
+
+        .dm-practice-bookmark-btn {
+          top: 8px;
+        }
       }
     }
 

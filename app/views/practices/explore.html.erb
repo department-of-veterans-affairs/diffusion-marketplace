@@ -35,8 +35,10 @@
       <% end%>
     </div>
     <div class="grid-row margin-bottom-3 desktop:margin-bottom-1 margin-top-05">
-      <div class="grid-col-12 desktop:grid-col-6 dm-results-count display-flex flex-align-center">
-        <%= "#{@pr_count} result#{@pr_count == 1 ? ':' : 's:'}" %>
+      <div class="grid-col-12 desktop:grid-col-6 display-flex flex-align-center">
+        <span class="dm-results-count">
+          <%= "#{@pr_count} result#{@pr_count == 1 ? ':' : 's:'}" %>
+        </span>
       </div>
       <div class="grid-col-12 desktop:grid-col-6 order-first desktop:order-last margin-bottom-3 margin-top-1 desktop:margin-top-0 dm-sort-container">
         <%= label_tag 'dm_sort_option', '', class: 'usa-label margin-0' %>

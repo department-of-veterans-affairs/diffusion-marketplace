@@ -6,13 +6,16 @@ describe 'Explore all practices page', type: :feature do
     cat_2 = Category.create(name: 'Telehealth')
     cat_3 = Category.create!(name: 'Other')
     cat_4 = Category.create!(name: 'Other Subcategory', is_other: true)
+    cat_5 = Category.create!(name: 'Main Level Cat')
 
     practice_names = ['Cards for Memory', 'BIONE', 'GLOW3', 'Beach VA', 'Virtual Care', 'COPD', 'GERIVETZ', 'Gerofit', 'Pink Gloves Program', 'SOAR', 'Project Happenings', 'REVAMP', 'Telemedicine', 'Different practice']
     @practices = []
     practice_names.each do |name|
       @practices.push(Practice.create!(name: name, approved: true, published: true, tagline: "Tagline for #{name}", support_network_email: 'test@test.com'))
     end
-    Practice.create!(name: 'Unpublished practice', approved: false, published: false)
+
+    pr_1 = Practice.create!(name: 'Unpublished practice', approved: false, published: false)
+    CategoryPractice.create!(practice: pr_1, category: cat_5)
 
     @practices.each_with_index do |pr, index|
       if pr.name == 'Different practice'
@@ -40,6 +43,7 @@ describe 'Explore all practices page', type: :feature do
       visit '/explore'
       expect(page).to have_content('COVID')
       expect(page).to have_content('Telehealth')
+      expect(page).to have_no_content('Main Level Cat')
       expect(page).to have_content('14 results')
       page.has_button?('Load more')
       expect(page).to have_no_content('Other')
