@@ -18,8 +18,13 @@ ActiveAdmin.register Practice do
       end
     end
   end
+  
+    # ensure lowercase practice names are ordered correctly
+    order_by(:name) do |order_clause|
+      ['lower(practices.name)', order_clause.order].join(' ')
+    end
 
-  index do
+    index do
     selectable_column unless params[:scope] == "get_practice_owner_emails"
     id_column unless params[:scope] == "get_practice_owner_emails"
     column 'Practice Name', :name
