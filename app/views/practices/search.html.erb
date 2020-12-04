@@ -5,6 +5,7 @@
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     <%= render partial: 'search', formats: [:js] %>
   <% end %>
+  <%= javascript_include_tag '_practice_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <div id="search-page">
@@ -27,7 +28,7 @@
         <!-- Use the accurate heading level to maintain the document outline -->
         <h2 class="usa-accordion__heading">
           <button class="usa-accordion__button"
-                  aria-expanded="true"
+                  aria-expanded="false"
                   aria-controls="search_filters_dropdown">
             Filters
           </button>
@@ -40,7 +41,7 @@
 
     <section id="dm-search-practices" class="dm-search-practices display-none">
       <p class="margin-bottom-3 font-sans-lg" id="results-summary"></p>
-      <div id="search-results"></div>
+      <div id="search-results" class="grid-row grid-gap-3"></div>
     </section>
 
     <section id="no-search-query-content" class="position-relative margin-x-auto">

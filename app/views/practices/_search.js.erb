@@ -20,7 +20,7 @@ function searchPracticesPage() {
     function search(query, filters) {
 
         // Remove no search items content
-//        let noContentEle = document.getElementById('no-search-query-content')
+//        var noContentEle = document.getElementById('no-search-query-content')
 //        if (noContentEle.length > 0) {
 //            console.log('test')
 //          noContentEle.remove();
@@ -43,9 +43,9 @@ function searchPracticesPage() {
 
         console.log(results.length);
 
-//        let noQueryEle = $('#no-query-p');
-//        let noResultsEle = $('#no-query-results-p');
-//        let queryUrl = <%#= request.url.include?('query') %>
+//        var noQueryEle = $('#no-query-p');
+//        var noResultsEle = $('#no-query-results-p');
+//        var queryUrl = <%#= request.url.include?('query') %>
 //        if (results.length == 0) {
 //          noQueryEle.addClass('display-none');
 //        } else if (queryUrl) {
@@ -65,42 +65,61 @@ function searchPracticesPage() {
 
         // Template out the search results
         results.forEach(function (result) {
-            var noBackgroundImage = result.item.image ? '' : 'class: fas fa-images fa-3x text-base-lighter search-no-image';
-            var background = result.item.image ? 'background: url(' + result.item.image + ')' + ' transparent; background-repeat: no-repeat; background-position: center; background-size: cover;' : 'background-color: #f0f0f0; transparent; background-size: contain; background-repeat: no-repeat; background-position: center; ';
-            var favoriteButtonIcon = result.item.user_favorited ? 'fas text-secondary' : 'far';
+            var practiceImage = result.item.image
+            var practiceName = result.item.name
+            var noBackgroundImage = practiceImage ? '' : 'class: fas fa-images fa-3x text-base-lighter search-no-image';
+            var background = practiceImage ? 'background: url(' + practiceImage + ')' + ' transparent; background-repeat: no-repeat; background-position: center; background-size: cover;' : 'background-color: #f0f0f0; transparent; background-size: contain; background-repeat: no-repeat; background-position: center; ';
+            var favoriteButtonIcon = result.item.user_favorited ? 'fas' : 'far';
+            var practiceLinkClass = practiceImage ? '' : ' dm-alt-practice-link'
             var favoriteButton =
-                '<a aria-label="Favorite ' + result.item.name + '" tabindex="-1" aria-hidden="true" class="search-favorite-practice-button" id="favorite-button-' + result.item.id + '" data-remote="true" rel="nofollow" data-method="post" href="/practices/' + result.item.slug + '/favorite.js">' +
-                '<i class="' + favoriteButtonIcon + ' fa-heart dm-favorite-icon-' + result.item.id + ' text-no-underline"></i>' +
+                '<a aria-label="Bookmark ' + practiceName + '" tabindex="-1" aria-hidden="true" class="dm-practice-bookmark-btn" id="dm-bookmark-button-' + result.item.id + '" data-remote="true" rel="nofollow" data-method="post" href="/practices/' + result.item.slug + '/favorite.js">' +
+                '<i class="' + favoriteButtonIcon + ' fa-bookmark dm-favorite-icon-' + result.item.id + ' text-no-underline"></i>' +
                 '</a>';
+            var cardImageHtml =
+                '<div class="dm-practice-card-img-container">' +
+                '<img alt="' + practiceName + ' Marketplace Card Image" class="grid-row marketplace-card-img radius-top-sm" src="' + practiceImage + '">' +
+                '</div>'
+            var noCardImageHtml =
+                '<div class="dm-bg-gray-80">' +
+                '<h3 class="text-normal font-sans-lg dm-practice-title multiline-ellipses-2 margin-x-2 margin-y-4">' +
+                practiceName +
+                '</h3>' +
+                '</div>'
+            var cardImage = practiceImage ? cardImageHtml : noCardImageHtml
+            var practiceNameHeader =
+                '<h3 class="text-normal font-sans-lg dm-practice-title multiline-ellipses-2 margin-top-0 margin-bottom-2">' +
+                practiceName +
+                '</h3>'
+            var assignPracticeHeader = practiceImage ? practiceNameHeader : ''
             resultsHTML +=
-                '<div class="grid-row search-row radius-sm border-2px border-base-lightest margin-bottom-105 flex-align-center">' +
-                '<div class="tablet:grid-col-3">' +
-                '<div class="img-box">' +
+                '<div class="dm-practice-card padding-y-105">' +
                 <% if current_user.present? %>
                 favoriteButton +
                 <% end %>
-                '<a href="/practices/' + result.item.slug + '" aria-label="Go to ' + result.item.name + '">' +
-                '<div class="img img-box-content border-right border-right-width-2px border-base-lightest position-relative" style="' + background + '">' +
-                '<i class="' + noBackgroundImage + '"></i>' +
+                '<a href="/practices/' + result.item.slug + '" aria-label="Go to ' + result.item.name + '" aria-hidden="true" class="dm-practice-link' + practiceLinkClass + '">' +
+                '<div class=" dm-practice-card-container">' +
+                cardImage +
+                '<div class="padding-105 height-card-mobile">' +
+                assignPracticeHeader +
+                '<div>' +
+                '<p class="multiline-ellipses-1 font-sans-sm practice-card-tagline">' + result.item.tagline + '</p>' +
+                '</div>' +
+                '<div class="dm-practice-card-origin margin-bottom-2">' +
+                '<span class="line-clamp-2 font-sans-3xs text-gray-50 multiline-ellipses-3 line-height-sans-205 dm-practice-card-origin-info">' +
+                'Created in ' + result.item.date_initiated + ' ' + result.item.initiating_facility +
+                '</span>' +
+                '</div>' +
+                '</div>' +
                 '</div>' +
                 '</a>' +
-                '</div>' +
-                '</div>' +
-                '<div class="tablet:grid-col-9 padding-y-105 padding-right-105 padding-left-4">' +
-                '<h2 class="margin-0 truncate-text-search one-line"><a class="dm-link-title" href="/practices/' + result.item.slug + '">' + result.item.name + '</a></h2>' +
-                '<h4 class="truncate-text-search two-lines text-normal margin-y-1">' + result.item.tagline + '</h4>' +
-                '<p class="practice-details margin-y-1 font-sans-3xs">Created in ' + result.item.date_initiated + ' ' + result.item.initiating_facility + '</p>' +
-                '<p class="truncate-text-search three-lines">' + result.item.summary + '</p>' +
+                '</div>';
 
                 '<!-- Uncomment to show Fuse.js diagnostics -->' +
                 '<!--' +
                 '<h3>Fuse.js highlighted character matching</h3>' +
                 '<p class="">' + result.highlight + '</p>' +
                 '<p><b>Score: ' + result.score + '</b></p>' +
-                '-->' +
-
-                '</div>' +
-                '</div>';
+                '-->'
         });
 
         // Print results to the page
