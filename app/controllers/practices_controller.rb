@@ -8,7 +8,7 @@ class PracticesController < ApplicationController
   before_action :set_office_data, only: [:show]
   before_action :set_visn_data, only: [:show]
   before_action :set_initiating_facility_other, only: [:show]
-  before_action :authenticate_user!, except: [:show, :search, :index]
+  before_action :authenticate_user!, except: [:show, :search, :index, :explore, :explore_practices]
   before_action :can_view_practice, only: [:show, :edit, :update, :destroy]
   before_action :can_create_practice, only: :create
   before_action :can_edit_practice, only: [:edit, :update, :instructions, :overview, :contact, :published, :publication_validation, :adoptions, :about]
@@ -171,9 +171,58 @@ class PracticesController < ApplicationController
   end
 
   def search
-    @practices = Practice.searchable_practices
+    @practices = Practice.searchable_practices 'a_to_z'
     @facilities_data = facilities_json
     @practices_json = practices_json(@practices)
+  end
+
+  # GET /explore
+  def explore
+    @categories = Category.with_practices
+    practices = Practice.searchable_practices 'a_to_z'
+    @pagy_practices = pagy_array(
+      practices,
+      items: 12
+    )
+    @pagy_info = @pagy_practices[0]
+    @practices = @pagy_practices[1]
+    @pr_count = practices.size
+
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  # POST /explore
+  def explore_practices
+    @categories = Category.with_practices
+    page = 1
+    page = params[:page].to_i if params[:page].present?
+
+    @sort_option = params[:sort_option] || 'a_to_z'
+    @cat_filters = params[:categories] ? params[:categories].map { |cat| cat.to_i } : []
+    practices = Practice.searchable_practices @sort_option
+    if @cat_filters.length > 0
+      filtered_practices = practices.select { |pr| !(pr.category_ids & @cat_filters).empty? }
+      practices = filtered_practices
+    end
+
+    @pagy_practices = pagy_array(
+      practices,
+      items: 12,
+      page: page
+    )
+    @pagy_info = @pagy_practices[0]
+    @practices = @pagy_practices[1]
+    practice_cards_html = ''
+    @practices.each do |pr|
+      pr_html = render_to_string('shared/_practice_card', layout: false, locals: { practice: pr })
+      practice_cards_html += pr_html
+    end
+    respond_to do |format|
+      format.html
+      format.json { render :json => { practice_cards_html: practice_cards_html, count: practices.size, next: @pagy_info.next } }
+    end
   end
 
   # POST /practices/1/favorite.js
@@ -506,14 +555,14 @@ class PracticesController < ApplicationController
       end
 
       if practice.categories&.length > 0
-        practice_hash['categories_name'] = []
+        practice_hash['category_names'] = []
 
         practice.categories.each do |category|
           if category.name != 'None'
-            practice_hash['categories_name'].push category.name
+            practice_hash['category_names'].push category.name
 
             unless category.related_terms.empty?
-              practice_hash['categories_name'].concat(category.related_terms)
+              practice_hash['category_names'].concat(category.related_terms)
             end
           end
         end
