@@ -153,17 +153,17 @@ describe 'Search', type: :feature do
     it 'Should be reset if certain practice attributes have been updated' do
       add_search_to_cache
 
-      expect(cache_keys).to include("searchable_practices")
+      expect(cache_keys).to include("searchable_practices_a_to_z")
 
       update_practice_introduction(@practice)
-
-      expect(cache_keys).to include("searchable_practices")
+      sleep 2
+      expect(cache_keys).not_to include("searchable_practices_a_to_z")
     end
 
     it 'Should be reset if a new practice is created through the admin panel' do
       add_search_to_cache
 
-      expect(cache_keys).to include("searchable_practices")
+      expect(cache_keys).to include("searchable_practices_a_to_z")
 
       login_as(@admin, :scope => :user, :run_callbacks => false)
       visit '/admin'
@@ -178,7 +178,7 @@ describe 'Search', type: :feature do
       expect(page).to_not have_content(latest_practice.name)
       publish_practice(latest_practice)
       sleep 1
-      expect(cache_keys).to include("searchable_practices")
+      expect(cache_keys).not_to include("searchable_practices_a_to_z")
       # expect(Practice.searchable_practices.last.name).to eq(latest_practice.name)
       # visit '/search?=newest'
       # expect(page).to have_content('1 result for newest')

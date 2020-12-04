@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
 
   def index
-    @practices = Practice.searchable_practices
+    @practices = Practice.searchable_practices 'a_to_z'
     @favorite_practices = current_user&.favorite_practices || []
     @facilities_data = facilities_json
   end
