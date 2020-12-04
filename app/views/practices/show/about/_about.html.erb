@@ -8,7 +8,7 @@
         origin_story = @practice.origin_story
       %>
       <% if origin_story.present? %>
-        <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+        <div class="practice-editor-rect-svg border-top-05 border-primary-dark show-section-padding"></div>
         <h2 class="font-sans-lg text-bold margin-top-2 margin-bottom-1 line-height-25px">Origin story</h2>
         <div class="practice-view-origin-story line-height-26 dm-hyphens-auto dm-word-break-break-word margin-bottom-5 desktop:grid-col-11 grid-col-12">
           <% if origin_story.length > 360 %>
@@ -30,7 +30,7 @@
         team_members = @practice.va_employees
       %>
       <% if team_members.any? %>
-        <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+        <div class="practice-editor-rect-svg border-top-05 border-primary-dark show-section-padding"></div>
         <h2 class="font-sans-lg text-bold margin-top-2 margin-bottom-3 line-height-25px">Original team</h2>
         <div class="desktop:grid-col-11 grid-col-12">
           <div class="grid-row grid-gap">
