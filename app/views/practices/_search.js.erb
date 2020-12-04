@@ -1,12 +1,12 @@
 var practices = <%= @practices_json %>;
 var results = null;
 
-function test() {
-    // Remove no search items content
-    <% if request.url.include?('query') %>
-      $('#no-search-query-content')
-    <% end %>
-}
+//function test() {
+//    // Remove no search items content
+    <%# if request.url.include?('query') %>
+//      $('#no-search-query-content')
+    <%# end %>
+//}
 
 function searchPracticesPage() {
     const searchField = document.querySelector('#dm-practice-search-field');
@@ -17,7 +17,7 @@ function searchPracticesPage() {
     // Search helper functions
 
     // Search practices and populate the page
-    function search(query) {
+    function search(query, filters) {
 
         // Remove no search items content
 //        let noContentEle = document.getElementById('no-search-query-content')
@@ -39,13 +39,24 @@ function searchPracticesPage() {
         // Run the search query
         results = fuse.search(query);
 
-        console.log(results.length)
+        console.log('results', results)
+
+        console.log(results.length);
+
+//        let noQueryEle = $('#no-query-p');
+//        let noResultsEle = $('#no-query-results-p');
+//        let queryUrl = <%#= request.url.include?('query') %>
+//        if (results.length == 0) {
+//          noQueryEle.addClass('display-none');
+//        } else if (queryUrl) {
+//          noResultsEle.addClass('display-none');
+//        }
 
         // Show the results summary section
         document.getElementById('dm-search-practices').classList.remove('display-none')
 
         // Print the number of results for the query
-        resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? '' : 's') + ' for <span class="text-bold">' + query + '</span>:';
+        resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? '' : 's');
 
         // Highlight results (only Fuse.js matching)
         results.forEach(function (result) {
@@ -193,7 +204,7 @@ function trackSearchField(searchTerm) {
     }
 }
 
-$(document).on('turbolinks:load', test)
+//$(document).on('turbolinks:load', test)
 
 document.addEventListener('turbolinks:load', function () {
     searchPracticesPage();
