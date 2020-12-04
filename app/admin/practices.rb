@@ -41,7 +41,7 @@ ActiveAdmin.register Practice do
     column :enabled unless params[:scope] == "get_practice_owner_emails"
     column :created_at unless params[:scope] == "get_practice_owner_emails"
     column 'Last Updated', :updated_at unless params[:scope] == "get_practice_owner_emails"
-    column 'Date Published', :date_published unless params[:scope] == "get_practice_owner_emails"
+    column :date_published unless params[:scope] == "get_practice_owner_emails"
     actions do |practice|
       practice_enabled_action_str = practice.enabled ? "Disable" : "Enable"
       item practice_enabled_action_str, enable_practice_admin_practice_path(practice), method: :post
