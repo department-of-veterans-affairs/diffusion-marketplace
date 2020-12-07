@@ -357,7 +357,7 @@ class PracticesController < ApplicationController
           flash[:error] = "There was an #{updated.message}. The practice was not saved or published."
           format.js { redirect_to self.send("practice_#{current_endpoint}_path", @practice) }
         else
-          @practice.update_attributes(published: true)
+          @practice.update_attributes(published: true, date_published: DateTime.now)
           flash[:notice] = "#{@practice.name} has been successfully published to the Diffusion Marketplace"
           format.js { render js: "window.location='#{practice_path(@practice)}'" }
         end
