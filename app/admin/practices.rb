@@ -24,6 +24,14 @@ ActiveAdmin.register Practice do
       ['lower(practices.name)', order_clause.order].join(' ')
     end
 
+  order_by(:date_published) do |order_clause|
+    if order_clause.order == 'desc'
+      [order_clause.to_sql, 'NULLS LAST'].join(' ')
+    else
+      [order_clause.to_sql, 'NULLS FIRST'].join(' ')
+    end
+  end
+
     index do
     selectable_column unless params[:scope] == "get_practice_owner_emails"
     id_column unless params[:scope] == "get_practice_owner_emails"
@@ -33,6 +41,7 @@ ActiveAdmin.register Practice do
     column :enabled unless params[:scope] == "get_practice_owner_emails"
     column :created_at unless params[:scope] == "get_practice_owner_emails"
     column 'Last Updated', :updated_at unless params[:scope] == "get_practice_owner_emails"
+    column :date_published unless params[:scope] == "get_practice_owner_emails"
     actions do |practice|
       practice_enabled_action_str = practice.enabled ? "Disable" : "Enable"
       item practice_enabled_action_str, enable_practice_admin_practice_path(practice), method: :post
