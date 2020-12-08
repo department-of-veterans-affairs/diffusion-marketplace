@@ -289,7 +289,6 @@ class PracticesController < ApplicationController
   end
 
   def metrics
-    debugger
     render 'practices/form/metrics'
   end
 
@@ -298,7 +297,7 @@ class PracticesController < ApplicationController
   end
 
   def practice_name
-
+    render 'practices/form/instructions'
   end
 
   def implementation

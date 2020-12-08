@@ -3,7 +3,6 @@
 
           <ul id="dm-tabnav" class="usa-sidenav dm-tabnav">
             <li class="usa-sidenav__item">
-              <% debugger %>
               <% if current_page?(practice_metrics_path(@practice)) %>
                 <a href="#" onclick="return false" class="active width-full dm-tab">Metrics</a>
               <% else %>
@@ -20,10 +19,11 @@
               </li>
             <li class="usa-sidenav__item">
               <% if current_page?(practice_practice_name_path(@practice)) %>
-                <a href="#" onclick="return false" class="active width-full dm-tab">Practice name</a><ul class="usa-sidenav__sublist">
+                <a href="#" onclick="return false" class="active width-full dm-tab">Practice name</a>
               <% else %>
                 <%= link_to 'Practice name', practice_practice_name_path(@practice), class: "#{'active' if current_page?( practice_practice_name_path(@practice))} width-full dm-tab" %>
               <% end %>
+              <ul class="usa-sidenav__sublist">
               <li class="usa-sidenav__item">
                 <% if current_page?(practice_introduction_path(@practice)) %>
                   <a href="#" onclick="return false" class="active width-full dm-tab">Introduction</a>
@@ -71,8 +71,6 @@
               </ul>
             </li>
           </ul>
-    <br/><br/>
-
         <% if params[:action] != 'instructions' && params[:action] != 'adoptions' %>
           <div class="text-center">
             <%= button_tag 'Save', class: 'usa-button--outline dm-btn-base width-full', id: 'practice-editor-save-button' %>

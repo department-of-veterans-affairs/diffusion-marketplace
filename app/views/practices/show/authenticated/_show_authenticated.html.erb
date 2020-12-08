@@ -55,7 +55,6 @@
       main_email = @practice.support_network_email
       practice_emails = @practice.practice_emails
       cc_emails = practice_emails.map(&:address).join(', ')
-      debugger
       instructions_path = practice_instructions_path(@practice)
       metrics_path = practice_metrics_path(@practice)
     %>
