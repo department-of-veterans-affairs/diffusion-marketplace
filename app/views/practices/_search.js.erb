@@ -18,9 +18,9 @@ function searchPracticesPage() {
     // Search helper functions
 
     // Search practices and populate the page
-    function search(query, categories, originatingFacility, adoptingFacility) {
+    function search(query) {
         console.log('query', query)
-        console.log('facility', originatingFacility)
+//        console.log('facility', originatingFacility)
 
         // Trim whitespace from the query (can cause matching problems)
 //        query = query.trim();
@@ -33,38 +33,40 @@ function searchPracticesPage() {
         // set the search page search bar input value
         searchField.value = query;
 
-        var categoryFilters = []
-        categories.forEach(function(categorySelection) {
-            categoryFilters.push({'category_names': categorySelection})
-        })
+//        var categoryFilters = []
+//        categories.forEach(function(categorySelection) {
+//            categoryFilters.push({'category_names': categorySelection})
+//        })
 
         // Run the search query
-        if (query == '' && categoryFilters.length > 0) {
-            results = fuse.search({$or: categoryFilters})
-        } else if (query !== '' && categoryFilters.length > 0) {
-            var searchBarQueryArray = []
-            search_options.keys.forEach(function(practiceKey) {
-                var queryObj = {}
-                queryObj[practiceKey] = query
-                searchBarQueryArray.push(queryObj)
-            })
-            console.log('array', searchBarQueryArray)
-            results = fuse.search({
-                $and: [
-                    {
-                        $or: searchBarQueryArray
-                    },
-                    {
-                        $and: categoryFilters
-                    },
-                    {
-                        $and: [{'initiating_facility': originatingFacility}]
-                    }
-                ]
-            })
-        } else {
-            results = fuse.search(query)
-        }
+        results = fuse.search(query)
+//        if (query == '' && categoryFilters.length > 0) {
+//            results = fuse.search({$or: categoryFilters})
+//        } else if (query !== '' && categoryFilters.length > 0) {
+//            var searchBarQueryArray = []
+//            search_options.keys.forEach(function(practiceKey) {
+//                var queryObj = {}
+//                queryObj[practiceKey] = query
+//                searchBarQueryArray.push(queryObj)
+//            })
+//            console.log('array', searchBarQueryArray)
+//            results = fuse.search({
+//                $and: [
+//                    {
+//                        $or: searchBarQueryArray
+//                    },
+//                    {
+//                        $and: categoryFilters
+//                    },
+//                    {
+//                        $and: [{'initiating_facility': originatingFacility}]
+//                    }
+//                ]
+//            })
+//        } else {
+//            console.log('third')
+//            results = fuse.search(query)
+//        }
 
         console.log('results', results)
 
@@ -210,33 +212,33 @@ function searchPracticesPage() {
     // Set up "enter" event handler for search field
     var timeout = null;
 
-//    $(document).on('submit', '#dm-practice-search-form', function (e) {
-//        e.preventDefault();
-
-//        // Make a new timeout set to go off in 500ms
-//        timeout = setTimeout(function () {
-//            search(searchField.value);
-//            window.history.pushState("", "", '/search?query=' + searchField.value);
-//            trackSearchField(decodeURI(searchField.value));
-//        }, 500);
-
-//    });
-
-    $(document).on('submit', '#update-search-results-form', function (e) {
+    $(document).on('submit', '#dm-practice-search-form', function (e) {
         e.preventDefault();
-        var chosenCategories = $('#update-search-results-form [type="checkbox"]:checked').map(function () {
-            return this.value;
-        }).get();
+
+        // Make a new timeout set to go off in 500ms
+        timeout = setTimeout(function () {
+            search(searchField.value);
+            window.history.pushState("", "", '/search?query=' + searchField.value);
+            trackSearchField(decodeURI(searchField.value));
+        }, 500);
+
+    });
+
+//    $(document).on('submit', '#update-search-results-form', function (e) {
+//        e.preventDefault();
+//        var chosenCategories = $('#update-search-results-form [type="checkbox"]:checked').map(function () {
+//            return this.value;
+//        }).get();
 //        var originatingFacility = $('#originating-facility-and-visn-select--list > li[aria-selected=true]').attr('data-value').slice(-1);
 
-        var searchBarText = $('#dm-practice-search-field').val().trim();
+//        var searchBarText = $('#dm-practice-search-field').val().trim();
 
-        if (searchBarText.length > 0) {
-            search(searchField.value, chosenCategories)
-        } else {
-            search('', chosenCategories)
-        }
-    });
+//        if (searchBarText.length > 0) {
+//            search(searchField.value, chosenCategories)
+//        } else {
+//            search(searchField.value)
+//        }
+//    });
 
     if (window.location.pathname === '/search' && window.location.search !== '') {
         const query = window.location.search.split('=')[1];
