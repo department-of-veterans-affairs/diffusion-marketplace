@@ -25,7 +25,7 @@
 //= require jquery-ui/widgets/tooltip
 //= require ahoy
 //= require cable
-//= require fuse-3.4.4
+//= require fuse-6.4.3.js
 //= require mark
 //= require ie
 //= require practices

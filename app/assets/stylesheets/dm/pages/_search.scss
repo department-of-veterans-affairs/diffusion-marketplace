@@ -104,4 +104,8 @@
   .usa-combo-box__input-button-separator {
     top: 2.1em;
   }
+
+  li:not([data-value*="VISN"]) {
+    padding-left: 24px !important;
+  }
 }

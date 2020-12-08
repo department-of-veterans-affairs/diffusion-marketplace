@@ -1,6 +1,7 @@
 var practices = <%= @practices_json %>;
 var results = null;
 
+
 //function test() {
 //    // Remove no search items content
     <%# if request.url.include?('query') %>
@@ -18,16 +19,10 @@ function searchPracticesPage() {
 
     // Search practices and populate the page
     function search(query, filters) {
-
-        // Remove no search items content
-//        var noContentEle = document.getElementById('no-search-query-content')
-//        if (noContentEle.length > 0) {
-//            console.log('test')
-//          noContentEle.remove();
-//        }
+        console.log('query', query)
 
         // Trim whitespace from the query (can cause matching problems)
-        query = query.trim();
+//        query = query.trim();
 
         // Set variables
         var resultsHTML = '';
@@ -36,21 +31,40 @@ function searchPracticesPage() {
 
         // set the search page search bar input value
         searchField.value = query;
+
+        var categoryFilters = []
+        filters.forEach(function(categorySelection) {
+            categoryFilters.push({'category_names': categorySelection})
+        })
+
         // Run the search query
-        results = fuse.search(query);
+        if (query == '' && categoryFilters.length > 0) {
+            results = fuse.search({$or: categoryFilters})
+        } else if (query !== '' && categoryFilters.length > 0) {
+            var searchBarQueryArray = []
+            search_options.keys.forEach(function(practiceKey) {
+                var queryObj = {}
+                queryObj[practiceKey] = query
+                searchBarQueryArray.push(queryObj)
+            })
+            console.log('array', searchBarQueryArray)
+            results = fuse.search({
+                $and: [
+                    {
+                        $or: searchBarQueryArray
+                    },
+                    {
+                        $and: categoryFilters
+                    }
+                ]
+            })
+        } else {
+            results = fuse.search(query)
+        }
 
         console.log('results', results)
 
         console.log(results.length);
-
-//        var noQueryEle = $('#no-query-p');
-//        var noResultsEle = $('#no-query-results-p');
-//        var queryUrl = <%#= request.url.include?('query') %>
-//        if (results.length == 0) {
-//          noQueryEle.addClass('display-none');
-//        } else if (queryUrl) {
-//          noResultsEle.addClass('display-none');
-//        }
 
         // Show the results summary section
         document.getElementById('dm-search-practices').classList.remove('display-none')
@@ -180,25 +194,43 @@ function searchPracticesPage() {
         matchAllTokens: true,
         findAllMatches: true,
         includeMatches: true,
-        includeScore: true
+        includeScore: true,
+        useExtendedSearch: true
     };
+
 
     // Create a search context with practices and search options
     var fuse = new Fuse(practices, search_options);
+    console.log('fuse', fuse)
 
     // Set up "enter" event handler for search field
     var timeout = null;
 
-    $(document).on('submit', '#dm-practice-search-form', function (e) {
+//    $(document).on('submit', '#dm-practice-search-form', function (e) {
+//        e.preventDefault();
+
+//        // Make a new timeout set to go off in 500ms
+//        timeout = setTimeout(function () {
+//            search(searchField.value);
+//            window.history.pushState("", "", '/search?query=' + searchField.value);
+//            trackSearchField(decodeURI(searchField.value));
+//        }, 500);
+
+//    });
+
+    $(document).on('submit', '#update-search-results-form', function (e) {
         e.preventDefault();
+        var chosen_categories = $('#update-search-results-form [type="checkbox"]:checked').map(function () {
+            return this.value;
+        }).get();
 
-        // Make a new timeout set to go off in 500ms
-        timeout = setTimeout(function () {
-            search(searchField.value);
-            window.history.pushState("", "", '/search?query=' + searchField.value);
-            trackSearchField(decodeURI(searchField.value));
-        }, 500);
+        var searchBarText = $('#dm-practice-search-field').val().trim()
 
+        if (searchBarText.length > 0) {
+            search(searchField.value, chosen_categories)
+        } else {
+            search('', chosen_categories)
+        }
     });
 
     if (window.location.pathname === '/search' && window.location.search !== '') {
@@ -222,8 +254,6 @@ function trackSearchField(searchTerm) {
         }
     }
 }
-
-//$(document).on('turbolinks:load', test)
 
 document.addEventListener('turbolinks:load', function () {
     searchPracticesPage();

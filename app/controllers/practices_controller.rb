@@ -173,6 +173,7 @@ class PracticesController < ApplicationController
   def search
     @practices = Practice.searchable_practices 'a_to_z'
     @facilities_data = facilities_json
+    @visn_data = origin_data_json
     @practices_json = practices_json(@practices)
   end
 

@@ -1,20 +1,11 @@
-<form id="search_filters" class="bg-gray-5">
+<form id="update-search-results-form" class="bg-gray-5">
   <div class="grid-row">
     <fieldset class="p0">
       <legend class="usa-sr-only">Originating Facility Filter</legend>
       <div class="padding-bottom-05 bg-gray-5">
         <div class="grid-row bg-white padding-x-2">
           <p class="text-bold line-height-26 margin-y-1 grid-col-12">Originating location</p>
-          <div class="usa-combo-box margin-bottom-3 grid-col-5">
-            <label for="test" class="line-height-26">Select by VISN or facility</label>
-            <select id="test" class="usa-select" name="test">
-              <% @facilities_data.sort_by {|f| [f["StreetAddressState"], f["OfficialStationName"]]}.each do |f| %>
-                <option value="<%= f["StationNumber"] %>">
-                  <%= facility_name_with_common_name(f["OfficialStationName"], f["CommonName"]) %>
-                </option>
-              <% end %>
-            </select>
-          </div>
+          <%= render partial: 'practices/search_partials/visn_facility_combo_box' %>
         </div>
       </div>
     </fieldset>
@@ -24,16 +15,7 @@
       <div class="padding-bottom-05 bg-gray-5">
         <div class="grid-row bg-white padding-x-2">
           <p class="text-bold line-height-26 margin-y-1 grid-col-12">Adopting location</p>
-          <div class="usa-combo-box margin-bottom-3 grid-col-5">
-            <label for="test" class="line-height-26">Select by VISN or facility</label>
-            <select id="test" class="usa-select" name="test">
-              <% @facilities_data.sort_by {|f| [f["StreetAddressState"], f["OfficialStationName"]]}.each do |f| %>
-                <option value="<%= f["StationNumber"] %>">
-                  <%= facility_name_with_common_name(f["OfficialStationName"], f["CommonName"]) %>
-                </option>
-              <% end %>
-            </select>
-          </div>
+          <%= render partial: 'practices/search_partials/visn_facility_combo_box' %>
         </div>
       </div>
     </fieldset>
@@ -71,19 +53,14 @@
           <% end %>
         </div>
       </div>
-      <%#= collection_check_boxes(:practice, :ids, Practice.all, :id, :name) do |p| %>
-<!--        <div class="grid-col-4">-->
-        <%#= p.check_box class: 'usa-checkbox__input' %> <%#= p.label class: 'usa-checkbox__label' %>
-<!--        </div>-->
-      <%# end %>
     </fieldset>
   </div>
+  <div class="bg-gray-5 padding-205">
+    <button type="submit" id="update-search-results-button" class="usa-button dm-btn-primary display-block width-100 margin-bottom-1" name="search-button">
+      Update results
+    </button>
+    <button type="button" class="usa-button dm-btn-base display-block width-100" id="resetSearchFiltersButton">
+      Reset filters
+    </button>
+  </div>
 </form>
-<div class="bg-gray-5 padding-205">
-  <button type="submit" class="usa-button dm-btn-primary display-block update-search-results-button width-100 margin-bottom-1" name="search-button">
-    Update results
-  </button>
-  <button type="button" class="usa-button dm-btn-base display-block width-100" id="resetSearchFiltersButton">
-    Reset filters
-  </button>
-</div>

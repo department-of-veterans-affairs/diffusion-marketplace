@@ -1,9 +1,12 @@
 <div class="grid-col-4">
   <% categories[column].each do |category| %>
-    <% category_id = category.id %>
+    <%
+      category_id = category.id
+      category_name = category.name
+     %>
     <div class="usa-checkbox">
-      <input class="usa-checkbox__input" id="cat-<%= category_id %>-input" type="checkbox" name="checklist" value="<%= category_id %>">
-      <label class="usa-checkbox__label margin-bottom-105" for="cat-<%= category_id %>-input"><span><%= category.name %></span></label>
+      <input class="usa-checkbox__input" id="cat-<%= category_id %>-input" type="checkbox" name="<%= category_name %>" value="<%= category_name %>">
+      <label class="usa-checkbox__label margin-bottom-105" for="cat-<%= category_id %>-input"><span><%= category_name %></span></label>
     </div>
   <% end %>
 </div>
