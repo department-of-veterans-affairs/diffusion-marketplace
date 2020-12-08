@@ -133,7 +133,6 @@ module NavigationHelper
       end
 
       if action == 'practice_name'
-        debugger
         reset_editor_breadcrumbs(practice_by_practice_id)
         session[:breadcrumbs] << { 'display': 'Practice name', 'path': practice_practice_name_path(practice_by_practice_id) }
       end

@@ -1,12 +1,11 @@
 <div class="grid-container position-relative z-top" xmlns="http://www.w3.org/1999/html">
     <div id="dm-practice-nav" class="z-top mobile-hide">
-
+<section>
           <ul id="dm-tabnav" class="usa-sidenav dm-tabnav">
             <li class="usa-sidenav__item">
               <% if current_page?(practice_metrics_path(@practice)) %>
                 <a href="#" onclick="return false" class="active width-full dm-tab">Metrics</a>
               <% else %>
-                <% debugger %>
                 <%= link_to 'Metrics', practice_metrics_path(@practice), class: "#{'active' if current_page?( practice_metrics_path(@practice))} width-full dm-tab" %>
               <% end %>
             </li>
@@ -71,6 +70,7 @@
               </ul>
             </li>
           </ul>
+</section>
         <% if params[:action] != 'instructions' && params[:action] != 'adoptions' %>
           <div class="text-center">
             <%= button_tag 'Save', class: 'usa-button--outline dm-btn-base width-full', id: 'practice-editor-save-button' %>
