@@ -5,7 +5,7 @@
       <div class="padding-bottom-05 bg-gray-5">
         <div class="grid-row bg-white padding-x-2">
           <p class="text-bold line-height-26 margin-y-1 grid-col-12">Originating location</p>
-          <%= render partial: 'practices/search_partials/visn_facility_combo_box' %>
+          <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'originating-facility-and-visn-select'} %>
         </div>
       </div>
     </fieldset>
@@ -15,7 +15,7 @@
       <div class="padding-bottom-05 bg-gray-5">
         <div class="grid-row bg-white padding-x-2">
           <p class="text-bold line-height-26 margin-y-1 grid-col-12">Adopting location</p>
-          <%= render partial: 'practices/search_partials/visn_facility_combo_box' %>
+          <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'adopting-facility-and-visn-select'} %>
         </div>
       </div>
     </fieldset>

@@ -18,8 +18,9 @@ function searchPracticesPage() {
     // Search helper functions
 
     // Search practices and populate the page
-    function search(query, filters) {
+    function search(query, categories, originatingFacility, adoptingFacility) {
         console.log('query', query)
+        console.log('facility', originatingFacility)
 
         // Trim whitespace from the query (can cause matching problems)
 //        query = query.trim();
@@ -33,7 +34,7 @@ function searchPracticesPage() {
         searchField.value = query;
 
         var categoryFilters = []
-        filters.forEach(function(categorySelection) {
+        categories.forEach(function(categorySelection) {
             categoryFilters.push({'category_names': categorySelection})
         })
 
@@ -55,6 +56,9 @@ function searchPracticesPage() {
                     },
                     {
                         $and: categoryFilters
+                    },
+                    {
+                        $and: [{'initiating_facility': originatingFacility}]
                     }
                 ]
             })
@@ -220,16 +224,17 @@ function searchPracticesPage() {
 
     $(document).on('submit', '#update-search-results-form', function (e) {
         e.preventDefault();
-        var chosen_categories = $('#update-search-results-form [type="checkbox"]:checked').map(function () {
+        var chosenCategories = $('#update-search-results-form [type="checkbox"]:checked').map(function () {
             return this.value;
         }).get();
+//        var originatingFacility = $('#originating-facility-and-visn-select--list > li[aria-selected=true]').attr('data-value').slice(-1);
 
-        var searchBarText = $('#dm-practice-search-field').val().trim()
+        var searchBarText = $('#dm-practice-search-field').val().trim();
 
         if (searchBarText.length > 0) {
-            search(searchField.value, chosen_categories)
+            search(searchField.value, chosenCategories)
         } else {
-            search('', chosen_categories)
+            search('', chosenCategories)
         }
     });
 
