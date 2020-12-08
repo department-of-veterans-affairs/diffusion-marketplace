@@ -3,7 +3,7 @@ class PracticesController < ApplicationController
   before_action :set_practice, only: [:show, :edit, :update, :destroy, :highlight, :un_highlight, :feature,
                                       :un_feature, :favorite, :instructions, :overview, :origin, :collaborators, :impact, :resources, :documentation,
                                       :departments, :timeline, :risk_and_mitigation, :contact, :checklist, :publication_validation, :adoptions,
-                                      :create_or_update_diffusion_history, :implementation, :introduction, :about]
+                                      :create_or_update_diffusion_history, :implementation, :introduction, :about, :metrics, :practice_name, :editing_guide]
   before_action :set_facility_data, only: [:show]
   before_action :set_office_data, only: [:show]
   before_action :set_visn_data, only: [:show]
@@ -286,6 +286,19 @@ class PracticesController < ApplicationController
   # /practices/slug/overview
   def overview
     render 'practices/form/overview'
+  end
+
+  def metrics
+    debugger
+    render 'practices/form/metrics'
+  end
+
+  def editing_guide
+    render 'practices/form/instructions'
+  end
+
+  def practice_name
+
   end
 
   def implementation

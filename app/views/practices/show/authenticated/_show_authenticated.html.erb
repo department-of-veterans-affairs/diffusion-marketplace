@@ -55,14 +55,17 @@
       main_email = @practice.support_network_email
       practice_emails = @practice.practice_emails
       cc_emails = practice_emails.map(&:address).join(', ')
+      debugger
       instructions_path = practice_instructions_path(@practice)
+      metrics_path = practice_metrics_path(@practice)
     %>
     <div class="text-center margin-bottom-1">
       <%= mail_to main_email, 'Email practice', subject: "Question about #{@practice.name}", cc: cc_emails, class: 'usa-button dm-btn-primary width-full display-flex flex-align-center flex-justify-center height-5', 'aria-label': "side nav email #{main_email}"  %>
     </div>
     <% if @practice.user_id == current_user.id || current_user.roles.any? %>
       <div class="text-center">
-        <%= link_to instructions_path, id: 'edit-link-in-nav', class: 'usa-button dm-btn-base width-full' do %>
+        <% debugger %>
+        <%= link_to metrics_path, id: 'edit-link-in-nav', class: 'usa-button dm-btn-base width-full' do %>
           <i class="fas fa-edit margin-right-1"></i>Edit practice
         <% end %>
       </div>

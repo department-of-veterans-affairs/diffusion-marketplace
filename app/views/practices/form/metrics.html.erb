@@ -1,0 +1,20 @@
+<% provide :main_classes, 'bg-gray-2' %>
+<% provide :footer_classes, 'bg-gray-2' %>
+
+<% provide :head_tags do %>
+  <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
+<%= render 'practice_editor_sidenav' %>
+<div class="grid-container position-relative">
+  <div class="grid-row grid-gap practice-editor-min-height">
+    <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+
+    <div id="contact" class="desktop:grid-col-9 grid-col-12 p0">
+      <%= render partial: "shared/messages", locals: {small_text: false} %>
+      <section class="usa-section padding-top-0 p0-bottom contact">
+      <h1>Metrics</h1>
+      </section>
+    </div>
+  </div>
+</div>

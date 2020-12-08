@@ -13,6 +13,9 @@ Rails.application.routes.draw do
   post '/accept_terms', action: 'accept_terms', controller: 'users', as: 'accept_terms'
 
   resources :practices, except: :index do
+    get '/edit/metrics', action: 'metrics', as: 'metrics'
+    get '/edit/editing_guide', action: 'editing_guide', as: 'editing_guide'
+    get '/edit/practice_name', action: 'practice_name', as: 'practice_name'
     get '/edit/instructions', action: 'instructions', as: 'instructions'
     get '/edit/introduction', action: 'introduction', as: 'introduction'
     get '/edit/implementation', action: 'implementation', as: 'implementation'
