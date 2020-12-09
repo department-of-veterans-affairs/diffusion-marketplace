@@ -81,9 +81,9 @@
 <section id="overview" class="margin-bottom-5 grid-container nav-header">
   <div class="grid-row grid-gap-2">
     <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
-    <div class="desktop:grid-col-9 grid-col-12">
+    <div class="desktop:grid-col-9 grid-col-12 show-view-section-padding-overview">
       <div class="practice-editor-long-rect-svg border-top-05 border-primary-dark"></div>
-      <h2 class="font-sans-xl line-height-37px margin-top-2 margin-bottom-5">Overview</h2>
+      <h2 class="font-sans-xl line-height-37px margin-top-2 margin-bottom-7">Overview</h2>
       <div class="metric-section practice-section">
         <section id="overview_problem" class="margin-bottom-5">
           <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_problem_resources, statement: @practice.overview_problem, title: 'The problem', s_area: 'problem'} %>
@@ -119,7 +119,7 @@
       <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
       <div class="desktop:grid-col-9 grid-col-12">
         <div class="metric-section practice-section">
-          <div class="practice-editor-rect-svg border-top-05 border-primary-dark show-section-padding"></div>
+          <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
           <h3 class="margin-y-2 line-height-26 font-sans-lg">Diffusion tracker</h3>
           <%= render partial: 'practices/show/overview/diffusion_tracker/diffusion_map' %>
           <%= render partial: 'practices/show/overview/diffusion_tracker/adoptions' %>
@@ -150,9 +150,9 @@
 <section id="implementation" class="grid-container nav-header">
   <div class="grid-row grid-gap-2">
     <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
-    <div class="desktop:grid-col-9 grid-col-12">
+    <div class="desktop:grid-col-9 grid-col-12 show-view-section-padding">
       <div class="practice-editor-long-rect-svg border-top-05 border-primary-dark"></div>
-      <h2 class="font-sans-xl line-height-37px margin-top-2 margin-bottom-5">Implementation</h2>
+      <h2 class="font-sans-xl line-height-37px margin-top-2 margin-bottom-7">Implementation</h2>
       <div class="metric-section practice-section margin-bottom-5">
         <% if @practice.timelines.any? %>
           <section id="dm-implementation-timeline" class="margin-bottom-5">
