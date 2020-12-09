@@ -2,7 +2,7 @@
 <% core_file_attachments = @practice.practice_resources.where(resource_type: 'core', media_type: 'file') %>
 <% core_link_attachments = @practice.practice_resources.where(resource_type: 'core', media_type: 'link') %>
 <% if core_resources.any? || core_file_attachments.any? || core_link_attachments.any? %>
-  <div class="practice-editor-rect-svg border-top-05 border-primary-dark show-section-padding"></div>
+  <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
   <h3 class="margin-top-2 margin-bottom-2 line-height-25px font-sans-lg">Core Resources</h3>
   <% if core_resources.any? %>
     <%= render partial: 'practices/show/implementation/resource_table', locals: {
@@ -32,7 +32,7 @@
 <% optional_file_attachments = @practice.practice_resources.where(resource_type: 'optional', media_type: 'file') %>
 <% optional_link_attachments = @practice.practice_resources.where(resource_type: 'optional', media_type: 'link') %>
 <% if optional_resources.any? || optional_file_attachments.any? || optional_link_attachments.any? %>
-  <div class="practice-editor-rect-svg border-top-05 border-primary-dark show-section-padding"></div>
+  <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
   <h3 class="margin-top-2 margin-bottom-2 line-height-25px font-sans-lg">Optional Resources</h3>
   <% if optional_resources.any? %>
     <%= render partial: 'practices/show/implementation/resource_table', locals: {
@@ -62,7 +62,7 @@
 <% support_file_attachments = @practice.practice_resources.where(resource_type: 'support', media_type: 'file') %>
 <% support_link_attachments = @practice.practice_resources.where(resource_type: 'support', media_type: 'link') %>
 <% if support_resources.any? || support_file_attachments.any? || support_link_attachments.any? %>
-  <div class="practice-editor-rect-svg border-top-05 border-primary-dark show-section-padding"></div>
+  <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
   <h3 class="margin-top-2 margin-bottom-2 line-height-25px font-sans-lg">Support Resources</h3>
   <% if support_resources.any? %>
     <%= render partial: 'practices/show/implementation/resource_table', locals: {
