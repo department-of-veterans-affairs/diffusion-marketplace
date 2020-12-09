@@ -24,7 +24,7 @@
               <% if current_page?(practice_introduction_path(@practice)) %>
                 <a href="#" onclick="return false" class="active width-full dm-tab"><%= @practice.name %></a>
               <% else %>
-                <%= link_to @practice.name, practice_introduction_path(@practice) %>
+                <%= link_to @practice.name, practice_introduction_path(@practice), class: "#{'active' if current_page?( practice_introduction_path(@practice))} dm-tab" %>
               <% end %>
               <ul class="usa-sidenav__sublist">
               <li class="usa-sidenav__item" id="peSideNavIntroduction" <% if params.has_key?(:metrics) %> Style="display: none" <% end %>>
@@ -76,7 +76,7 @@
           </ul>
 </section>
       <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-        <% if params[:action] != 'instructions' && params[:action] != 'adoptions' %>
+        <% if params[:action] != 'instructions' && params[:action] != 'adoptions' && params[:action] != 'metrics' && params[:action] != 'editing_guide' %>
           <div class="text-center">
             <%= button_tag 'Save', class: 'usa-button--outline dm-btn-base width-full', id: 'practice-editor-save-button' %>
           </div>
