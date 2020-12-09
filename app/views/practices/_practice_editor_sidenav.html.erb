@@ -1,3 +1,7 @@
+<% provide :head_tags do %>
+  <%= javascript_include_tag 'practice_page', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
 <div class="grid-container position-relative z-top" xmlns="http://www.w3.org/1999/html">
     <div id="dm-practice-nav" class="z-top mobile-hide">
 <section>
@@ -16,21 +20,21 @@
                   <%= link_to 'Editing guide', practice_instructions_path(@practice), class: "#{'active' if current_page?( practice_instructions_path(@practice))} width-full dm-tab" %>
                 <% end %>
               </li>
-            <li class="usa-sidenav__item">
-              <% if current_page?(practice_practice_name_path(@practice)) %>
-                <a href="#" onclick="return false" class="active width-full dm-tab">Practice name</a>
+            <li class="usa-sidenav__item" id="peSideNavPracticeName">
+              <% if current_page?(practice_introduction_path(@practice)) %>
+                <a href="#" onclick="return false" class="width-full dm-tab"><%= @practice.name %></a>
               <% else %>
-                <%= link_to 'Practice name', practice_practice_name_path(@practice), class: "#{'active' if current_page?( practice_practice_name_path(@practice))} width-full dm-tab" %>
+                <%= link_to @practice.name, practice_introduction_path(@practice) %>
               <% end %>
               <ul class="usa-sidenav__sublist">
-              <li class="usa-sidenav__item">
+              <li class="usa-sidenav__item" style="display: none" id="peSideNavIntroduction">
                 <% if current_page?(practice_introduction_path(@practice)) %>
                   <a href="#" onclick="return false" class="active width-full dm-tab">Introduction</a>
                 <% else %>
                   <%= link_to 'Introduction', practice_introduction_path(@practice), class: "#{'active' if current_page?( practice_introduction_path(@practice))} dm-tab" %>
                 <% end %>
               </li>
-              <li class="usa-sidenav__item">
+              <li class="usa-sidenav__item" style="display: none" id="peSideNavAdoptions">
                 <% if current_page?(practice_adoptions_path(@practice)) %>
                   <a href="#" onclick="return false" class="active width-full dm-tab">Adoptions</a>
                 <% else %>
@@ -39,28 +43,28 @@
               </li>
 
 
-              <li class="usa-sidenav__item">
+              <li class="usa-sidenav__item" style="display: none" id="peSideNavOverview">
                 <% if current_page?(practice_overview_path(@practice)) %>
                   <a href="#" onclick="return false" class="active width-full dm-tab">Overview</a>
                 <% else %>
                   <%= link_to 'Overview', practice_overview_path(@practice), class: "#{'active' if current_page?( practice_overview_path(@practice))} width-full dm-tab" %>
                 <% end %>
               </li>
-            <li class="usa-sidenav__item">
+            <li class="usa-sidenav__item" style="display: none" id="peSideNavImplementation">
               <% if current_page?(practice_implementation_path(@practice)) %>
                 <a href="#" onclick="return false" class="active width-full dm-tab">Implementation</a>
                 <% else %>
                 <%= link_to 'Implementation', practice_implementation_path(@practice), class: "#{'active' if current_page?( practice_implementation_path(@practice))} width-full dm-tab" %>
               <% end %>
             </li>
-              <li class="usa-sidenav__item">
+              <li class="usa-sidenav__item" style="display: none" id="peSideNavContact">
                 <% if current_page?(practice_contact_path(@practice)) %>
                   <a href="#" onclick="return false" class="active width-full dm-tab">Contact</a>
                 <% else %>
                   <%= link_to 'Contact', practice_contact_path(@practice), class: "#{'active' if current_page?( practice_contact_path(@practice))} width-full dm-tab" %>
                 <% end %>
               </li>
-              <li class="usa-sidenav__item">
+              <li class="usa-sidenav__item" style="display: none" id="peSideNavAbout">
                 <% if current_page?(practice_about_path(@practice)) %>
                   <a href="#" onclick="return false" class="active width-full dm-tab">About</a>
                 <% else %>
@@ -71,6 +75,7 @@
             </li>
           </ul>
 </section>
+      <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
         <% if params[:action] != 'instructions' && params[:action] != 'adoptions' %>
           <div class="text-center">
             <%= button_tag 'Save', class: 'usa-button--outline dm-btn-base width-full', id: 'practice-editor-save-button' %>

@@ -14,12 +14,18 @@ class PracticesController < ApplicationController
   before_action :can_edit_practice, only: [:edit, :update, :instructions, :overview, :contact, :published, :publication_validation, :adoptions, :about]
   before_action :set_date_initiated_params, only: [:update, :publication_validation]
   before_action :is_enabled, only: [:show]
+  before_action :log_page_views
   # GET /practices
   # GET /practices.json
   def index
     # @practices = Practice.where(approved: true, published: true).order(name: :asc)
     # @facilities_data = facilities_json['features']
     redirect_to root_path
+  end
+
+  def log_page_views
+    # log page views by practice...
+     x = 0
   end
 
   def is_enabled
