@@ -6,8 +6,7 @@
   see_more_button_text_id = "see_more_" + s_area + "statement"
   statement_with_line_breaks = safe_join(raw(statement).split("\r\n"), tag(:br))
 %>
-
-<div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+<div class="practice-editor-rect-svg border-top-05 border-primary-dark" ></div>
 <h3 class="font-sans-lg line-height-25px margin-top-2 margin-bottom-1"><%= title %></h3>
 <% if statement.present? && statement.length > 360 %>
   <div class="line-height-26 overview-statement-container">
