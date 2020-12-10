@@ -1,9 +1,13 @@
 <% provide :main_classes, 'bg-gray-2' %>
 <% provide :footer_classes, 'bg-gray-2' %>
 
+
 <% provide :head_tags do %>
   <%= javascript_include_tag 'metrics_page', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    let practice_page_views_leader_board = '<%= fetch_page_view_leader_board %>';
+  <% end %>
 <% end %>
 
 <%= render 'practice_editor_sidenav' %>

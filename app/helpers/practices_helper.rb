@@ -38,6 +38,23 @@ module PracticesHelper
     durations.include?('permanent') ? 'Permanent' : "#{durations.map { |d| d.to_i }.sum} weeks" if durations.any?
   end
 
+  def fetch_page_view_leader_board(duration = 30, limit = 5)
+    debugger
+    html = "";
+    sql = "select name, properties, count(properties) as count from ahoy_events where name = 'Practice show' and time >= now() - interval '{#{duration} days' group by name, properties order by count desc limit #{limit}"
+    records_array = ActiveRecord::Base.connection.execute(sql)
+    recs = records_array.values
+    recs.each do |rec|
+      one_rec = rec.properties
+    end
+    debugger
+    # records_array.values each do |r|
+    #   let rec = r.properties
+    # end
+
+    debugger
+  end
+
   def fetch_offices
     @office_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
     @office_data["departments"][0]["offices"].to_json
