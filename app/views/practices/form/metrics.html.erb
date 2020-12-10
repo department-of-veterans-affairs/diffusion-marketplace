@@ -13,12 +13,23 @@
 
     <div id="contact" class="desktop:grid-col-9 grid-col-12 p0">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
+      <br /><br/>
       <section class="usa-section padding-top-0 p0-bottom contact">
-        <div style="font-weight: bold;">
-          <h1>Metrics</h1>
+        <p style="font-weight: bold; font-size: xx-large">
+          Metrics
+          <span style="float: right; font-size: small">
+            <a href="#">Download excel file</a>
+          </span>
+        </p>
+        <br/>
+        <br/>
+        <div>
+          View your metrics for
+          <select style="width: auto" name="metrics_duration" id="metrics_duration">
+            <option value="30">the last 30 days</option>
+            <option value="99">all time</option>
+          </select>
         </div>
-        <br/>
-        <br/>
         <div class="border bg-white padding-2 margin-bottom-2 margin-top-1 radius-md padding-bottom-0">
 
 <!--          <h4 class="margin-0">Search interest in Franklin D. and Theodore Roosevelt for the first week of March, 2020</h4>-->
