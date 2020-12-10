@@ -1,5 +1,6 @@
 var practices = <%= @practices_json %>;
 var facilities = <%= raw @facilities_data.to_json %>;
+var visns = <%= raw @visn_data.to_json %>;
 var results = null;
 
 
@@ -19,7 +20,7 @@ function searchPracticesPage() {
     // Search helper functions
 
     // Search practices and populate the page
-    function search(query, categories, originatingFacility, adoptingFacility) {
+    function search(query, categories, originatingFacility) {
         console.log('query', query)
         console.log('facility', originatingFacility)
 
@@ -34,23 +35,38 @@ function searchPracticesPage() {
         // set the search page search bar input value
         searchField.value = query;
 
-        var categoryFilters = []
-        categories.forEach(function(categorySelection) {
-            categoryFilters.push({'category_names': categorySelection})
-        })
-
-        // Run the search query
-        results = fuse.search(query)
-        if (query == '' && categoryFilters.length > 0) {
-            results = fuse.search({$or: categoryFilters})
-        } else if (query !== '' && categoryFilters.length > 0) {
+        if (query !== '') {
             var searchBarQueryArray = []
             search_options.keys.forEach(function(practiceKey) {
                 var queryObj = {}
                 queryObj[practiceKey] = query
-                searchBarQueryArray.push(queryObj)
+                return searchBarQueryArray.push(queryObj)
             })
             console.log('array', searchBarQueryArray)
+        }
+
+        if (categories) {
+            console.log('in cates')
+            var categoryFilters = []
+            categories.forEach(function (categorySelection) {
+                return categoryFilters.push({'category_names': `'${categorySelection}`})
+            })
+        }
+
+        if (originatingFacility) {
+            if (originatingFacility.includes('VISN')) {
+                // If the originating facility is a VISN, we need to add some text to make sure we get an exact match when searching
+                visns.find(function(v) {
+                    if (v.number === originatingFacility) {
+                        return originatingFacility = `by ${v.number}`
+                    }
+                })
+            } else {
+                console.log('Not a VISN facility')
+            }
+        }
+        function searchWithQueryAndAllFilters() {
+            console.log(categoryFilters)
             results = fuse.search({
                 $and: [
                     {
@@ -60,12 +76,65 @@ function searchPracticesPage() {
                         $and: categoryFilters
                     },
                     {
-                        $and: [{'initiating_facility': `=${originatingFacility}`}]
+                        $and: [{'initiating_facility': `\"=${originatingFacility}\"`}]
                     }
                 ]
             })
-        } else {
+        }
+
+        function searchWithQueryAndCategories() {
+            results = fuse.search({
+                $and: [
+                    {
+                        $or: searchBarQueryArray
+                    },
+                    {
+                        $and: categoryFilters
+                    }
+                ]
+            })
+        }
+
+        function searchWithQueryAndOriginFacility() {
+            results = fuse.search({
+                $and: [
+                    {
+                        $or: searchBarQueryArray
+                    },
+                    {
+                        $and: [{'initiating_facility': `\"=${originatingFacility}\"`}]
+                    }
+                ]
+            })
+        }
+
+        function searchWIthOnlyCategories() {
+            results = fuse.search({$or: categoryFilters})
+        }
+
+        function searchWithOnlyOriginFacility() {
+            results = fuse.search({$and: [{'initiating_facility': `\"=${originatingFacility}\"`}]})
+        }
+
+        function searchWithAllFilters() {
+            results = fuse.search({$or: categoryFilters.concat({'initiating_facility': `\"=${originatingFacility}\"`})})
+        }
+
+        // Run the search query
+//        results = fuse.search(query)
+        console.log('categoryFilters', categoryFilters)
+        if (query !== '' && categoryFilters && originatingFacility) {
+            console.log('Query and all filters')
+            searchWithQueryAndAllFilters()
+        } else if (query !== '' && categoryFilters && !originatingFacility) {
+            console.log('Query and cats')
+            searchWithQueryAndCategories()
+        } else if (query !== '' && !categoryFilters && !originatingFacility) {
+            console.log('Just query')
             results = fuse.search(query)
+        } else if (query === '' && categoryFilters && !originatingFacility) {
+            console.log('Just filter')
+            searchWIthOnlyCategories()
         }
 
         console.log('results', results)
@@ -230,34 +299,45 @@ function searchPracticesPage() {
         var chosenCategories = $('#update-search-results-form [type="checkbox"]:checked').map(function () {
             return this.value;
         }).get();
+        if (chosenCategories.length == 0) {
+            chosenCategories = null;
+        }
         var originatingFacilityInput = $('#originating-facility-and-visn-select');
         var originatingFacilityLi = $('#originating-facility-and-visn-select--list > li[aria-selected=true]');
         var originatingFacility;
-        if (originatingFacilityInput.length == 1 && originatingFacilityLi.length == 1) {
-            originatingFacility = originatingFacilityLi.attr('data-value')
-        } else if (originatingFacilityInput.length == 1 && originatingFacilityLi.length == 0) {
-            facilities.forEach(function(h) {
-                if (originatingFacilityInput.val().includes(h.OfficialStationName)) {
-                    originatingFacility = h.StationName;
-                }
-            })
+        if (originatingFacilityInput.val() !== '' && originatingFacilityLi.length == 1) {
+//            console.log('first')
+            if (originatingFacilityLi.attr('data-value').includes('VISN')) {
+                originatingFacility = originatingFacilityInput.val()
+            } else {
+                facilities.find(function(f) {
+                    if (f.StationNumber === originatingFacilityLi.attr('data-value')) {
+                        originatingFacility = f.StationNumber
+                    }
+                })
+            }
+        } else if (originatingFacilityInput.val() !== '' && originatingFacilityLi.length == 0) {
+//            console.log('second')
+            if (originatingFacilityInput.val().includes('VISN')) {
+                originatingFacility = originatingFacilityInput.val()
+            } else {
+                facilities.find(function(f) {
+                    if (originatingFacilityInput.val().includes(f.OfficialStationName)) {
+                        originatingFacility = f.StationNumber
+                    }
+                })
+            }
         } else {
+//            console.log('third')
             originatingFacility = null;
         }
 
-        if (originatingFacility.includes('VISN')) {
-            originatingFacility.slice(-1)
-        }
-
+        console.log('cate', chosenCategories)
         console.log('orig', originatingFacility)
 
         var searchBarText = $('#dm-practice-search-field').val().trim();
 
-        if (searchBarText.length > 0) {
-            search(searchField.value, chosenCategories, originatingFacility)
-        } else {
-            search(searchField.value)
-        }
+        search(searchField.value, chosenCategories, originatingFacility)
     });
 
     if (window.location.pathname === '/search' && window.location.search !== '') {
