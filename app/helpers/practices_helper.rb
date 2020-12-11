@@ -54,9 +54,49 @@ module PracticesHelper
     page_view_leaders
   end
 
+  def fetch_page_views_leader_board_30_days
+    page_view_leaders = []
+    sql = "select name, properties, count(properties) as count from ahoy_events where name = 'Practice show' and time >= now() - interval '30 days' group by name, properties order by count desc limit 10"
+    records_array = ActiveRecord::Base.connection.execute(sql)
+
+    recs = records_array.values
+    recs.each do |rec|
+      practice_id = JSON.parse(rec[1])['practice_id']
+      leader = PracticeLeaderBoard.new
+      leader.practice_name = Practice.find(practice_id).name
+      leader.count = rec[2]
+      page_view_leaders << leader
+    end
+    page_view_leaders
+  end
+
+  def fetch_page_views_leader_board_all_time
+    page_view_leaders = []
+    sql = "select name, properties, count(properties) as count from ahoy_events where name = 'Practice show' group by name, properties order by count desc limit 10"
+    records_array = ActiveRecord::Base.connection.execute(sql)
+
+    recs = records_array.values
+    recs.each do |rec|
+      practice_id = JSON.parse(rec[1])['practice_id']
+      leader = PracticeLeaderBoard.new
+      leader.practice_name = Practice.find(practice_id).name
+      leader.count = rec[2]
+      page_view_leaders << leader
+    end
+    page_view_leaders
+  end
+
   def fetch_offices
     @office_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
     @office_data["departments"][0]["offices"].to_json
+  end
+
+  def fetch_facilities
+    @facility_data= JSON.parse(File.read("#{Rails.root}/lib/assets/va_gov_facilities_all_response.json"))
+    # @facility_data.each do |f|
+    #   debugger
+    #   x = 0
+    # end
   end
 
   def departments_for_select

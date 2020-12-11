@@ -35,20 +35,45 @@
         </div>
         <br/>
         <br/>
-        <table>
-          <th>Practice</th>
-          <th>Views</th>
-          <% @leader_board_page_views.each do |rec| %>
+        <div class="margin-bottom-3">
+          <table style="width: 100%">
             <tr>
-              <td><%=rec.practice_name %></td>
-              <td><%= rec.count %></td>
+              <td><h2>Leader board</h2></td>
+              <td align="right"><button id="toggle_leader_board_view_30" class="usa-button usa-button--base usa-button--active">Last 30 days</button><button id="toggle_leader_board_view_all_time" class="usa-button usa-button--outline usa-button--active">All time</button></td>
             </tr>
-          <% end %>
-        </table>
+          </table>
+        </div>
+
+        <div id="leader_board_page_views_30_days" class="">
+          <table style="width: 100%">
+            <th align="left" style="width: 80%">Practice</th>
+            <th align="left">Views</th>
+            <% @page_views_leader_board_30_days.each do |rec| %>
+              <tr>
+                <td style="width: 80%"><%=rec.practice_name %></td>
+                <td><%= rec.count %></td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+        <div id="leader_board_page_views_all_time" style="display: none">
+          <table style="width: 100%">
+            <th align="left" style="width: 80%">Practice</th>
+            <th align="left">Views</th>
+            <% @page_views_leader_board_all_time.each do |rec| %>
+              <tr>
+                <td style="width: 80%"><%=rec.practice_name %></td>
+                <td><%= rec.count %></td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
         <br/>
         <br/>
         <br/>
         <br/>
+
+
 
         <div class="border bg-white padding-2 margin-bottom-2 margin-top-1 radius-md padding-bottom-0">
 

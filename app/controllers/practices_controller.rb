@@ -41,6 +41,7 @@ class PracticesController < ApplicationController
   # GET /practices/1
   # GET /practices/1.json
   def show
+    debugger
     ahoy.track "Practice show", {practice_id: @practice.id} if current_user.present?
     # This allows comments thread to show up without the need to click a link
     commontator_thread_show(@practice)
@@ -295,8 +296,13 @@ class PracticesController < ApplicationController
   end
 
   def metrics
-    @duration = params[:duration] || 30
-    @leader_board_page_views = fetch_page_view_leader_board(@duration)
+    # @duration = params[:duration] || 30
+    # @leader_board_page_views = fetch_page_view_leader_board(@duration)
+    #@facility_data = fetch_facilities
+
+    @page_views_leader_board_30_days = fetch_page_views_leader_board_30_days
+    @page_views_leader_board_all_time = fetch_page_views_leader_board_all_time
+
     render 'practices/form/metrics'
 
   end

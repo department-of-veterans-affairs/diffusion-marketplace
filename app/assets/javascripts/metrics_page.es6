@@ -41,6 +41,16 @@ $(document).ready(function(){
         window.location.href = newUrl;
     });
 
+    $("#toggle_leader_board_view_30").click (function(e) {
+        document.getElementById("leader_board_page_views_all_time").style.display = 'none';
+        document.getElementById("leader_board_page_views_30_days").style.display = 'inline';
+    });
+
+    $("#toggle_leader_board_view_all_time").click (function(e) {
+        document.getElementById("leader_board_page_views_30_days").style.display = 'none';
+        document.getElementById("leader_board_page_views_all_time").style.display = 'inline';
+    });
+
 
 
     $("#peSideNavPracticeName").click(function(e){
