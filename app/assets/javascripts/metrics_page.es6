@@ -28,6 +28,18 @@ $(document).ready(function(){
         hideSecondaryNavItems();
     });
 
+    $("#metrics_duration").change (function(e) {
+        //alert(window.location.href);
+        var curUrl = window.location.href;
+        if(curUrl.includes('@duration')) {
+            var pos1 = curUrl.lastIndexOf("&duration");
+            curUrl = curUrl.substring(0, pos1);
+        }
+        //alert(curUrl);
+        let duration = $( "#metrics_duration" ).val();
+        let newUrl = curUrl + "&duration=" + duration;
+        window.location.href = newUrl;
+    });
 
 
 
@@ -55,88 +67,9 @@ $(document).ready(function(){
 
         navItem = document.getElementById('peSideNavAdoptions');
         navItem.style.display = 'inline';
-
-
-
-        if(navItem.style.display == 'none'){
-
-        }
     });
-
-    // $("#peSideNavIntroduction").click(function(e){
-    //     e.stopPropagation();
-    //     alert('introduction');
-    //     debugger
-    //     curPage = 'introduction';
-    //     let navItem = document.getElementById('peSideNavIntroduction');
-    //
-    //     if(navItem.style.display == 'none'){
-    //         navItem.style.display = 'inline';
-    //     }
-    // });
-    //
-    //
-    // $("#peSideNavAdoptions").click(function(e){
-    //     e.stopPropagation();
-    //     alert('adoptions');
-    //     debugger
-    //     let navItem = document.getElementById('peSideNavAdoptions');
-    //
-    //     if(navItem.style.display == 'none'){
-    //         navItem.style.display = 'inline';
-    //     }
-    // });
-    //
-    // $("#peSideNavOverview").click(function(e){
-    //     e.stopPropagation();
-    //     alert('overview');
-    //     debugger
-    //     let navItem = document.getElementById('peSideNavOverview');
-    //
-    //     if(navItem.style.display == 'none'){
-    //         navItem.style.display = 'inline';
-    //     }
-    // });
-    // $("#peSideNavImplementation").click(function(e){
-    //     e.stopPropagation();
-    //     alert('implementations');
-    //     debugger
-    //     let navItem = document.getElementById('peSideNavImplementation');
-    //
-    //     if(navItem.style.display == 'none'){
-    //         navItem.style.display = 'inline';
-    //     }
-    // });
-    //
-    // $("#peSideNavContact").click(function(e){
-    //     e.stopPropagation();
-    //     alert('contact');
-    //     debugger
-    //     let navItem = document.getElementById('peSideNavContact');
-    //
-    //     if(navItem.style.display == 'none'){
-    //         navItem.style.display = 'inline';
-    //     }
-    // });
-    // $("#peSideNavAbout").click(function(e){
-    //     e.stopPropagation();
-    //     alert('about');
-    //     debugger
-    //     let navItem = document.getElementById('peSideNavAbout');
-    //
-    //     if(navItem.style.display == 'none'){
-    //         navItem.style.display = 'inline';
-    //     }
-    // });
 });
 
-// document.addEventListener('DOMContentLoaded', function(e) {
-//     debugger
-//     alert(e.target.id)
-//     if(curPage.length > 0){
-//         alert('in here');
-//     }
-// }, false);
 
 
 

@@ -6,7 +6,6 @@
   <%= javascript_include_tag 'metrics_page', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-    let practice_page_views_leader_board = '<%= fetch_page_view_leader_board %>';
   <% end %>
 <% end %>
 
@@ -30,10 +29,27 @@
         <div>
           View your metrics for
           <select style="width: auto" name="metrics_duration" id="metrics_duration">
-            <option value="30">the last 30 days</option>
-            <option value="99">all time</option>
+            <option id="metrics_30_day_value" value="30" <%= 'selected' if @duration.to_i == 30 %>>the last 30 days</option>
+            <option id="metrics_all_time_value" value="9999" <%= 'selected' if @duration.to_i == 9999 %>>all time</option>
           </select>
         </div>
+        <br/>
+        <br/>
+        <table>
+          <th>Practice</th>
+          <th>Views</th>
+          <% @leader_board_page_views.each do |rec| %>
+            <tr>
+              <td><%=rec.practice_name %></td>
+              <td><%= rec.count %></td>
+            </tr>
+          <% end %>
+        </table>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+
         <div class="border bg-white padding-2 margin-bottom-2 margin-top-1 radius-md padding-bottom-0">
 
 <!--          <h4 class="margin-0">Search interest in Franklin D. and Theodore Roosevelt for the first week of March, 2020</h4>-->

@@ -1,5 +1,5 @@
 class PracticesController < ApplicationController
-  include CropperUtils
+  include CropperUtils, PracticesHelper
   before_action :set_practice, only: [:show, :edit, :update, :destroy, :highlight, :un_highlight, :feature,
                                       :un_feature, :favorite, :instructions, :overview, :origin, :collaborators, :impact, :resources, :documentation,
                                       :departments, :timeline, :risk_and_mitigation, :contact, :checklist, :publication_validation, :adoptions,
@@ -295,7 +295,10 @@ class PracticesController < ApplicationController
   end
 
   def metrics
+    @duration = params[:duration] || 30
+    @leader_board_page_views = fetch_page_view_leader_board(@duration)
     render 'practices/form/metrics'
+
   end
 
   def editing_guide
@@ -502,7 +505,9 @@ class PracticesController < ApplicationController
                                      categories_attributes: [:id, :_destroy, :name, :is_other],
                                      practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :facility_type, :initiating_department_office_id],
                                      practice_metrics_attributes: [:id, :_destroy, :description],
-                                     practice_emails_attributes: [:id, :address, :_destroy]
+                                     practice_emails_attributes: [:id, :address, :_destroy],
+                                     duration: {}
+
     )
   end
 
