@@ -54,6 +54,36 @@ module PracticesHelper
     page_view_leaders
   end
 
+  def fetch_page_view_for_practice(practice_id, duration = 30)
+    page_view_leaders = []
+    sql = "select name, properties, count(properties) as count from ahoy_events where name = 'Practice show' and time >= now() - interval '{#{duration} days' group by name, properties"
+    records_array = ActiveRecord::Base.connection.execute(sql)
+
+    recs = records_array.values
+    recs.each do |rec|
+      if practice_id == JSON.parse(rec[1])['practice_id']
+        leader = PracticeLeaderBoard.new
+        leader.practice_name = Practice.find(practice_id).name
+        leader.count = rec[2]
+        page_view_leaders << leader
+      end
+    end
+    page_view_leaders[0].count
+  end
+
+  def fetch_unique_visitors_by_practice(practice_id, duration = 30)
+    sql = "select distinct user_id from ahoy_events where name = 'Practice show' and properties = '{\"practice_id\": #{practice_id}}'"
+    if duration == "30"
+      sql = sql + " and time >= now() - interval '{#{duration} days'"
+    end
+    records_array = ActiveRecord::Base.connection.execute(sql)
+    recs = records_array.values
+    recs.count
+  end
+
+
+
+
   def fetch_page_views_leader_board_30_days
     page_view_leaders = []
     sql = "select name, properties, count(properties) as count from ahoy_events where name = 'Practice show' and time >= now() - interval '30 days' group by name, properties order by count desc limit 10"
@@ -69,6 +99,9 @@ module PracticesHelper
     end
     page_view_leaders
   end
+
+
+
 
   def fetch_page_views_leader_board_all_time
     page_view_leaders = []

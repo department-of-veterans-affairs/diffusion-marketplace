@@ -28,13 +28,37 @@
         <br/>
         <div>
           View your metrics for
-          <select style="width: auto" name="metrics_duration" id="metrics_duration">
+          <select style="width: 75%" name="metrics_duration" id="metrics_duration">
             <option id="metrics_30_day_value" value="30" <%= 'selected' if @duration.to_i == 30 %>>the last 30 days</option>
             <option id="metrics_all_time_value" value="9999" <%= 'selected' if @duration.to_i == 9999 %>>all time</option>
           </select>
         </div>
         <br/>
         <br/>
+          <div class="grid-col-10"  style="text-align: center;alignment: center; width: 100%">
+          <table style="width: 80%; alignment: center">
+            <td style="font-size: 13px">PAGE VIEWS</td>
+            <td style="font-size: 13px">UNIQUE VISITORS</td>
+            <td style="font-size: 13px">BOOKMARKS</td>
+            <td style="font-size: 13px">ADOPTIONS</td>
+            <tr>
+              <td><h2><%= @page_views_for_practice %></h2></td>
+              <td><h2><%= @unique_visitors_for_practice %></h2></td>
+              <td><h2>9999</h2></td>
+              <td><h2>9999</h2></td>
+            </tr>
+          </table>
+          </div>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+
+
         <div class="margin-bottom-3">
           <table style="width: 100%">
             <tr>
