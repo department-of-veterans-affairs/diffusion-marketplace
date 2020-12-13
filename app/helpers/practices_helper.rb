@@ -74,11 +74,31 @@ module PracticesHelper
   def fetch_unique_visitors_by_practice(practice_id, duration = 30)
     sql = "select distinct user_id from ahoy_events where name = 'Practice show' and properties = '{\"practice_id\": #{practice_id}}'"
     if duration == "30"
-      sql = sql + " and time >= now() - interval '{#{duration} days'"
+      sql += " and time >= now() - interval '#{duration} days'"
     end
     records_array = ActiveRecord::Base.connection.execute(sql)
     recs = records_array.values
     recs.count
+  end
+
+  def fetch_bookmarks_by_practice(practice_id, duration = 30)
+    sql = "select count(*) as the_count from user_practices where practice_id = #{practice_id}"
+    if(duration == "30")
+      sql += " and created_at >= now() - interval '#{duration} days'"
+    end
+    records_array = ActiveRecord::Base.connection.execute(sql)
+    recs = records_array.values
+    recs[0][0]
+  end
+
+  def fetch_adoptions_by_practice(practice_id, duration = 30)
+    sql = "select count(*) as the_count from diffusion_histories where practice_id = #{practice_id}"
+    if(duration == "30")
+      sql += " and created_at >= now() - interval '#{duration} days'"
+    end
+    records_array = ActiveRecord::Base.connection.execute(sql)
+    recs = records_array.values
+    recs[0][0]
   end
 
 

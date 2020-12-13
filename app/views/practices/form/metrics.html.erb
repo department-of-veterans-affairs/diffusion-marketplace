@@ -44,8 +44,8 @@
             <tr>
               <td><h2><%= @page_views_for_practice %></h2></td>
               <td><h2><%= @unique_visitors_for_practice %></h2></td>
-              <td><h2>9999</h2></td>
-              <td><h2>9999</h2></td>
+              <td><h2><%= @bookmarks_by_practice %></h2></td>
+              <td><h2><%= @adoptions_by_practice %></h2></td>
             </tr>
           </table>
           </div>
@@ -63,7 +63,7 @@
           <table style="width: 100%">
             <tr>
               <td><h2>Leader board</h2></td>
-              <td align="right"><button id="toggle_leader_board_view_30" class="usa-button usa-button--base usa-button--active">Last 30 days</button><button id="toggle_leader_board_view_all_time" class="usa-button usa-button--outline usa-button--active">All time</button></td>
+              <td align="right"><button style="alignment: right" id="toggle_leader_board_view_30" class="usa-button usa-button--base usa-button--active">Last 30 days</button><button style="alignment: left" id="toggle_leader_board_view_all_time" class="usa-button usa-button--outline usa-button--active">All time</button></td>
             </tr>
           </table>
         </div>
