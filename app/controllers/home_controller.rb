@@ -4,6 +4,7 @@ class HomeController < ApplicationController
     @practices = Practice.searchable_practices
     @favorite_practices = current_user&.favorite_practices || []
     @facilities_data = facilities_json
+    @highlighted_pr = Practice.where(highlight: true, published: true, enabled: true, approved: true).first
   end
 
   def diffusion_map

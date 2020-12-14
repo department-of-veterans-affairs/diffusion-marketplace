@@ -60,6 +60,24 @@
     <% end %>
   </section>
 
+  <% if @highlighted_pr.present? %>
+    <section class="bg-base-lightest margin-bottom-5 padding-x-2 padding-y-5 desktop:padding-x-0 desktop:margin-y-15 dm-highlighted-practice">
+      <div class="desktop:grid-container dm-highlighted-practice-content">
+        <div class="desktop:grid-col-7 dm-highlighted-practice-text">
+          <h2 class="margin-top-0 font-sans-xl line-height-37px">
+            <%= @highlighted_pr.highlight_title.blank? ? 'Highlighted by the VA this month' : @highlighted_pr.highlight_title %>
+          </h2>
+          <% if @highlighted_pr.highlight_body %>
+            <p class="margin-top-1 line-height-sans-5"><%= @highlighted_pr.highlight_body %></p>
+          <% end %>
+        </div>
+        <div class="margin-top-3 dm-highlighted-practice-card desktop:margin-top-0">
+          <%= render partial: 'shared/practice_card', locals: { practice: @highlighted_pr } %>
+        </div>
+      </div>
+    </section>
+  <% end %>
+
   <section class="grid-container nominate-section">
     <div class="grid-row">
       <div class="display-flex">
