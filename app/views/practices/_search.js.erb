@@ -1,6 +1,7 @@
 var practices = <%= @practices_json %>;
 var facilities = <%= raw @facilities_data.to_json %>;
 var visns = <%= raw @visn_data.to_json %>;
+var adoptions = <%= raw @diffusion_histories.to_json %>;
 var results = null;
 
 
@@ -18,14 +19,18 @@ function searchPracticesPage() {
     if (location.pathname !== '/search') return;
 
     // Search helper functions
+//    function getFacilityDisplayName(stationName, commonName) {
+//        return stationName.toLowerCase().includes(commonName.toLowerCase()) ? stationName : stationName + ' (' + commonName + ')'
+//    }
 
     // Search practices and populate the page
-    function search(query, categories, originatingFacility) {
+    function search(query, categories, originatingFacility, adoptingFacility) {
         console.log('query', query)
-        console.log('facility', originatingFacility)
+        console.log('origin facility', originatingFacility)
+        console.log('adopting facility', adoptingFacility)
 
         // Trim whitespace from the query (can cause matching problems)
-//        query = query.trim();
+        query = query.trim();
 
         // Set variables
         var resultsHTML = '';
@@ -42,29 +47,70 @@ function searchPracticesPage() {
                 queryObj[practiceKey] = query
                 return searchBarQueryArray.push(queryObj)
             })
-            console.log('array', searchBarQueryArray)
         }
 
         if (categories) {
-            console.log('in cates')
             var categoryFilters = []
             categories.forEach(function (categorySelection) {
-                return categoryFilters.push({'category_names': `'${categorySelection}`})
+                return categoryFilters.push({'category_names': "'" + categorySelection})
             })
         }
 
         if (originatingFacility) {
+            var originFacility = []
             if (originatingFacility.includes('VISN')) {
-                // If the originating facility is a VISN, we need to add some text to make sure we get an exact match when searching
-                visns.find(function(v) {
-                    if (v.number === originatingFacility) {
-                        return originatingFacility = `by ${v.number}`
-                    }
+                console.log('in here')
+                var foundVisn = visns.find(function(v) {
+                    return v.number === originatingFacility
                 })
+                originFacility.push({'initiating_facility': "=\"" + foundVisn.id.toString() + "\""})
             } else {
-                console.log('Not a VISN facility')
+                var foundFacility = facilities.find(function(f) {
+                    return originatingFacility === f.StationNumber
+                })
+                originFacility.push({'origin_facilities': "=\"" + foundFacility.StationNumber + "\""})
             }
         }
+
+        function getAdoptionFacilities(stationNumbers, facilityIds) {
+            adoptions.forEach(function(a) {
+                stationNumbers.forEach(function(sn) {
+                    if (a.facility_id === sn) {
+                        return facilityIds.push({'adoption_facilities': "=\"" + sn + "\""})
+                    }
+                })
+            })
+        }
+
+        if (adoptingFacility) {
+            var filteredFacilities;
+            var stationNumbers = [];
+            var adoptionFacilityIds = [];
+            if (adoptingFacility.includes('VISN')) {
+                filteredFacilities = facilities.filter(function(f) {
+                    return 'VISN-' + f.VISN == adoptingFacility
+                });
+
+                filteredFacilities.forEach(function(ff) {
+                    stationNumbers.push(ff.StationNumber)
+                })
+
+                getAdoptionFacilities(stationNumbers, adoptionFacilityIds)
+
+            } else {
+                var matchingFacility;
+                matchingFacility = facilities.find(function(f) {
+                    return f.StationNumber === adoptingFacility
+                });
+
+                stationNumbers.push(matchingFacility.StationNumber)
+
+                getAdoptionFacilities(stationNumbers, adoptionFacilityIds)
+            }
+        }
+
+        console.log('filtered facilities', adoptingFacility)
+        console.log('originatingFacility', originatingFacility)
         function searchWithQueryAndAllFilters() {
             console.log(categoryFilters)
             results = fuse.search({
@@ -76,7 +122,68 @@ function searchPracticesPage() {
                         $and: categoryFilters
                     },
                     {
-                        $and: [{'initiating_facility': `\"=${originatingFacility}\"`}]
+                        $and: originFacility
+                    },
+                    {
+                        $and: [
+                            {$or: adoptionFacilityIds}
+                        ]
+                    }
+                ]
+            })
+        }
+
+        function searchWithQueryAndCategoriesAndOriginFacility() {
+            console.log(categoryFilters)
+            results = fuse.search({
+                $and: [
+                    {
+                        $or: searchBarQueryArray
+                    },
+                    {
+                        $and: categoryFilters
+                    },
+                    {
+                        $and: originFacility
+                    }
+                ]
+            })
+        }
+
+        function searchWithQueryAndCategoriesAndAdoptingFacility() {
+            console.log('cat filters', categoryFilters)
+            console.log('adopt filters', adoptionFacilityIds)
+            results = fuse.search({
+                $and: [
+                    {
+                        $or: searchBarQueryArray
+                    },
+                    {
+                        $and: categoryFilters
+                    },
+                    {
+                        $and: [
+                            {$or: adoptionFacilityIds}
+                        ]
+                    }
+                ]
+            })
+        }
+
+        function searchWithQueryAndBothFacilities() {
+            console.log(categoryFilters)
+            results = fuse.search({
+                $and: [
+                    {
+                        $or: searchBarQueryArray
+                    },
+                    {
+                        $and: originFacility
+                    },
+                    {
+                        $and: [
+                            {$or: adoptionFacilityIds}
+                        ]
                     }
                 ]
             })
@@ -102,10 +209,41 @@ function searchPracticesPage() {
                         $or: searchBarQueryArray
                     },
                     {
-                        $and: [{'initiating_facility': `\"=${originatingFacility}\"`}]
+                        $and: originFacility
                     }
                 ]
             })
+        }
+
+        function searchWithQueryAndAdoptingFacility() {
+            results = fuse.search({
+                $and: [
+                    {
+                        $or: searchBarQueryArray
+                    },
+                    {
+                        $and: [
+                            {$or: adoptionFacilityIds}
+                        ]
+                    }
+                ]
+            })
+        }
+
+        function searchWithAllFilters() {
+            results = fuse.search({$or: categoryFilters.concat(originFacility, adoptionFacilityIds)})
+        }
+
+        function searchWithCategoriesAndOriginFacility() {
+            results = fuse.search({$or: categoryFilters.concat(originFacility)})
+        }
+
+        function searchWithCategoriesAndAdoptingFacility() {
+            results = fuse.search({$or: categoryFilters.concat(adoptionFacilityIds)})
+        }
+
+        function searchWithBothFacilities() {
+            results = fuse.search({$or: adoptionFacilityIds.concat(originFacility)})
         }
 
         function searchWIthOnlyCategories() {
@@ -113,28 +251,66 @@ function searchPracticesPage() {
         }
 
         function searchWithOnlyOriginFacility() {
-            results = fuse.search({$and: [{'initiating_facility': `\"=${originatingFacility}\"`}]})
+            console.log('just origin facility', originatingFacility)
+            results = fuse.search({$or: originFacility})
         }
 
-        function searchWithAllFilters() {
-            results = fuse.search({$or: categoryFilters.concat({'initiating_facility': `\"=${originatingFacility}\"`})})
+        function searchWithOnlyAdoptingFacility() {
+            results = fuse.search({$or: adoptionFacilityIds})
         }
 
         // Run the search query
 //        results = fuse.search(query)
-        console.log('categoryFilters', categoryFilters)
-        if (query !== '' && categoryFilters && originatingFacility) {
+        console.log('originalFilters', originatingFacility)
+        if (query !== '' && categoryFilters && originatingFacility && adoptingFacility) {
             console.log('Query and all filters')
             searchWithQueryAndAllFilters()
-        } else if (query !== '' && categoryFilters && !originatingFacility) {
+        } else if (query !== '' && categoryFilters && originatingFacility && !adoptingFacility) {
+            console.log('Query,cats, and origin')
+            searchWithQueryAndCategoriesAndOriginFacility();
+        } else if (query !== '' && categoryFilters && !originatingFacility && adoptingFacility) {
+            console.log('Query,cats, and adopting')
+            searchWithQueryAndCategoriesAndAdoptingFacility();
+        } else if (query !== '' && !categoryFilters && originatingFacility && adoptingFacility) {
+            console.log('Query and both facilities')
+            searchWithQueryAndBothFacilities();
+        } else if (query !== '' && categoryFilters && !originatingFacility && !adoptingFacility) {
             console.log('Query and cats')
             searchWithQueryAndCategories()
-        } else if (query !== '' && !categoryFilters && !originatingFacility) {
+        } else if (query !== '' && !categoryFilters && originatingFacility && !adoptingFacility) {
+            console.log('Query and origin')
+            searchWithQueryAndOriginFacility()
+        } else if (query !== '' && !categoryFilters && !originatingFacility && adoptingFacility) {
+            console.log('Query and adopting')
+            searchWithQueryAndAdoptingFacility()
+        } else if (query !== '' && !categoryFilters && !originatingFacility && !adoptingFacility) {
             console.log('Just query')
             results = fuse.search(query)
-        } else if (query === '' && categoryFilters && !originatingFacility) {
-            console.log('Just filter')
+        } else if (query === '' && categoryFilters && originatingFacility && adoptingFacility) {
+            console.log('All filters')
+            searchWithAllFilters();
+        } else if (query === '' && categoryFilters && originatingFacility && !adoptingFacility) {
+            console.log('cats and origin')
+            searchWithCategoriesAndOriginFacility();
+        } else if (query === '' && categoryFilters && !originatingFacility && adoptingFacility) {
+            console.log('cats and adopting')
+            searchWithCategoriesAndAdoptingFacility();
+        } else if (query === '' && !categoryFilters && originatingFacility && adoptingFacility) {
+            console.log('Both facilities')
+            searchWithBothFacilities();
+        } else if (query === '' && categoryFilters && !originatingFacility && !adoptingFacility) {
+            console.log('Just cats')
             searchWIthOnlyCategories()
+        } else if (query === '' && !categoryFilters && originatingFacility && !adoptingFacility) {
+            console.log('Just Origin')
+            console.log('originFacility', originFacility)
+            searchWithOnlyOriginFacility();
+        } else if (query === '' && !categoryFilters && !originatingFacility && adoptingFacility) {
+            console.log('Just Adopting')
+            searchWithOnlyAdoptingFacility();
+        } else if (query === '' && !categoryFilters && !originatingFacility && !adoptingFacility) {
+            console.log('No query or filters')
+            results = [];
         }
 
         console.log('results', results)
@@ -195,7 +371,7 @@ function searchPracticesPage() {
                 '</div>' +
                 '<div class="dm-practice-card-origin margin-bottom-2">' +
                 '<span class="line-clamp-2 font-sans-3xs text-gray-50 multiline-ellipses-3 line-height-sans-205 dm-practice-card-origin-info">' +
-                'Created in ' + result.item.date_initiated + ' ' + result.item.initiating_facility +
+                'Created in ' + result.item.date_initiated + ' ' + result.item.initiating_facility_name +
                 '</span>' +
                 '</div>' +
                 '</div>' +
@@ -224,8 +400,9 @@ function searchPracticesPage() {
     // Adapted from: https://github.com/brunocechet/Fuse.js-with-highlight
     function highlighter(resultItem) {
         resultItem.matches.forEach(function (matchItem) {
-            // don't highlight if match was on category since category is not in practice search result text and can't be highlighted
-            if (matchItem.key != 'category_names') {
+            // don't highlight if match was on category or adoption facilities since they are not in practice search result text and can't be highlighted
+            // don't highlight origin_facilities or initiating_facility because they are ids. The initiating_facility_name key will cover any text
+            if (matchItem.key != 'category_names' && matchItem.key != 'adoption_facilities' && matchItem.key != 'origin_facilities' && matchItem.key != 'initiating_facility') {
                 var text = resultItem.item[matchItem.key];
                 var result = [];
                 var matches = [].concat(matchItem.indices); // limpar referencia
@@ -244,6 +421,8 @@ function searchPracticesPage() {
                 }
                 resultItem.highlight = result.join('');
 
+                console.log('result item', resultItem)
+
                 if (resultItem.children && resultItem.children.length > 0) {
                     resultItem.children.forEach(function (child) {
                         highlighter(child);
@@ -258,7 +437,7 @@ function searchPracticesPage() {
 
     // Set Fuse.js search options
     var search_options = {
-        keys: ['name', 'tagline', 'description', 'summary', 'initiating_facility', 'category_names', 'maturity_level'],
+        keys: ['name', 'tagline', 'description', 'summary', 'initiating_facility', 'category_names', 'maturity_level', 'adoption_facilities', 'origin_facilities', 'initiating_facility_name'],
         minMatchCharLength: 1,
         tokenize: true,
         shouldSort: true,
@@ -294,6 +473,34 @@ function searchPracticesPage() {
 
 //    });
 
+    function getComboBoxVal(inputEle, liEle) {
+        var facility;
+        if (inputEle.val() !== '' && liEle.length == 1) {
+            console.log('first')
+            if (liEle.attr('data-value').includes('VISN')) {
+                return inputEle.val()
+            } else {
+                  facility = facilities.find(function(f) {
+                    return f.StationNumber === liEle.attr('data-value')
+                })
+                return facility.StationNumber
+            }
+        } else if (inputEle.val() !== '' && liEle.length == 0) {
+            console.log('second')
+            if (inputEle.val().includes('VISN')) {
+                return inputEle.val()
+            } else {
+                facility = facilities.find(function(f) {
+                    return inputEle.val().toLowerCase().includes(f.OfficialStationName.toLowerCase())
+                })
+                return facility.StationNumber;
+            }
+        } else {
+            console.log('third')
+            return null;
+        }
+    }
+
     $(document).on('submit', '#update-search-results-form', function (e) {
         e.preventDefault();
         var chosenCategories = $('#update-search-results-form [type="checkbox"]:checked').map(function () {
@@ -302,42 +509,73 @@ function searchPracticesPage() {
         if (chosenCategories.length == 0) {
             chosenCategories = null;
         }
+
         var originatingFacilityInput = $('#originating-facility-and-visn-select');
         var originatingFacilityLi = $('#originating-facility-and-visn-select--list > li[aria-selected=true]');
-        var originatingFacility;
-        if (originatingFacilityInput.val() !== '' && originatingFacilityLi.length == 1) {
+        var originatingFacility =  getComboBoxVal(originatingFacilityInput, originatingFacilityLi)
+//        if (originatingFacilityInput.val() !== '' && originatingFacilityLi.length == 1) {
 //            console.log('first')
-            if (originatingFacilityLi.attr('data-value').includes('VISN')) {
-                originatingFacility = originatingFacilityInput.val()
-            } else {
-                facilities.find(function(f) {
-                    if (f.StationNumber === originatingFacilityLi.attr('data-value')) {
-                        originatingFacility = f.StationNumber
-                    }
-                })
-            }
-        } else if (originatingFacilityInput.val() !== '' && originatingFacilityLi.length == 0) {
+//            if (originatingFacilityLi.attr('data-value').includes('VISN')) {
+//                originatingFacility = originatingFacilityInput.val()
+//            } else {
+//                facilities.find(function(f) {
+//                    if (f.StationNumber === originatingFacilityLi.attr('data-value')) {
+//                        originatingFacility = f.StationNumber
+//                    }
+//                })
+//            }
+//        } else if (originatingFacilityInput.val() !== '' && originatingFacilityLi.length == 0) {
 //            console.log('second')
-            if (originatingFacilityInput.val().includes('VISN')) {
-                originatingFacility = originatingFacilityInput.val()
-            } else {
-                facilities.find(function(f) {
-                    if (originatingFacilityInput.val().includes(f.OfficialStationName)) {
-                        originatingFacility = f.StationNumber
-                    }
-                })
-            }
-        } else {
+//            if (originatingFacilityInput.val().includes('VISN')) {
+//                originatingFacility = originatingFacilityInput.val()
+//            } else {
+//                facilities.find(function(f) {
+//                    if (originatingFacilityInput.val().includes(f.OfficialStationName)) {
+//                        originatingFacility = f.StationNumber
+//                    }
+//                })
+//            }
+//        } else {
 //            console.log('third')
-            originatingFacility = null;
-        }
+//            originatingFacility = null;
+//        }
+
+        var adoptingFacilityInput = $('#adopting-facility-and-visn-select');
+        var adoptingFacilityLi = $('#adopting-facility-and-visn-select--list > li[aria-selected=true]');
+        var adoptingFacility = getComboBoxVal(adoptingFacilityInput, adoptingFacilityLi)
+
+//        if (adoptingFacilityInput.val() !== '' && adoptingFacilityLi.length == 1) {
+//            console.log('first')
+//            if (adoptingFacilityLi.attr('data-value').includes('VISN')) {
+//                adoptingFacility = adoptingFacilityInput.val()
+//            } else {
+//                facilities.find(function(f) {
+//                    if (f.StationNumber === adoptingFacilityLi.attr('data-value')) {
+//                        adoptingFacility = f.StationNumber
+//                    }
+//                })
+//            }
+//        } else if (adoptingFacilityInput.val() !== '' && adoptingFacilityLi.length == 0) {
+//            console.log('second')
+//            if (adoptingFacilityInput.val().includes('VISN')) {
+//                adoptingFacility = adoptingFacilityInput.val()
+//            } else {
+//                facilities.find(function(f) {
+//                    if (adoptingFacilityInput.val().includes(f.OfficialStationName)) {
+//                        adoptingFacility = f.StationNumber
+//                    }
+//                })
+//            }
+//        } else {
+//            console.log('third')
+//            adoptingFacility = null;
+//        }
 
         console.log('cate', chosenCategories)
         console.log('orig', originatingFacility)
+        console.log('adop', adoptingFacility)
 
-        var searchBarText = $('#dm-practice-search-field').val().trim();
-
-        search(searchField.value, chosenCategories, originatingFacility)
+        search(searchField.value, chosenCategories, originatingFacility, adoptingFacility)
     });
 
     if (window.location.pathname === '/search' && window.location.search !== '') {
