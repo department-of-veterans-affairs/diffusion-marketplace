@@ -308,13 +308,16 @@ class PracticesController < ApplicationController
     @adoptions_successful_total = fetch_adoptions_total_by_practice(@practice.id, @duration, "Completed")
     @adoptions_in_progress_total = fetch_adoptions_total_by_practice(@practice.id, @duration, "In progress")
     @adoptions_unsuccessful_total = fetch_adoptions_total_by_practice(@practice.id, @duration, "Unsuccessful")
-
-    @facility_data = fetch_facilities
-    debugger
+    @facility_data = fetch_vamc_facilities
     @facility_ids_for_practice = fetch_facility_ids_for_practice(@practice.id, @duration)
-    debugger
-    #@rural_facility(@facility)
-
+    @rural_facility = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice, "Rurality", "R")
+    @urban_facility = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice, "Rurality", "U")
+    @a_high_complexity = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice, "FY17ParentStationComplexityLevel", "1a-High Complexity")
+    @b_high_complexity = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice, "FY17ParentStationComplexityLevel", "1b-High Complexity")
+    @c_high_complexity = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice, "FY17ParentStationComplexityLevel", "1c-High Complexity")
+    @medium_complexity_2 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice, "FY17ParentStationComplexityLevel", "2 -Medium Complexity")
+    @low_complexity_3 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice, "FY17ParentStationComplexityLevel", "3 -Low Complexity")
+    @excluded_98 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice, "FY17ParentStationComplexityLevel", "98-Excluded")
 
     render 'practices/form/metrics'
 

@@ -128,8 +128,22 @@ module PracticesHelper
     facility_ids
   end
 
-
-
+  def get_facility_details_for_practice(facility_data, facility_ids_for_practice, key, value)
+    match_counter = 0
+    rec_counter = 0
+    facility_data.each do |fac|
+      facility_ids_for_practice.each do |fid|
+        if fid[0] == fac["StationNumber"]
+          if fac[key] == value.to_s
+            match_counter += 1
+            next
+          end
+        end
+      end
+      rec_counter += 1
+    end
+    match_counter
+  end
 
   def fetch_page_views_leader_board_30_days
     page_view_leaders = []
@@ -177,6 +191,10 @@ module PracticesHelper
     #   debugger
     #   x = 0
     # end
+  end
+
+  def fetch_vamc_facilities
+    @vamc_facility_data = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
   end
 
   def departments_for_select
