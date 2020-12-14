@@ -1,7 +1,6 @@
 <% provide :main_classes, 'bg-gray-2' %>
 <% provide :footer_classes, 'bg-gray-2' %>
 
-
 <% provide :head_tags do %>
   <%= javascript_include_tag 'metrics_page', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
@@ -26,7 +25,7 @@
         </p>
         <br/>
         <br/>
-        <div>
+        <div class="margin-bottom-5">
           View your metrics for
           <select style="width: 75%" name="metrics_duration" id="metrics_duration">
             <option id="metrics_30_day_value" value="30" <%= 'selected' if @duration.to_i == 30 %>>the last 30 days</option>
@@ -35,12 +34,12 @@
         </div>
         <br/>
         <br/>
-          <div class="grid-col-10"  style="text-align: center;alignment: center; width: 100%">
-          <table style="width: 80%; alignment: center">
-            <td style="font-size: 13px">PAGE VIEWS</td>
-            <td style="font-size: 13px">UNIQUE VISITORS</td>
-            <td style="font-size: 13px">BOOKMARKS</td>
-            <td style="font-size: 13px">ADOPTIONS</td>
+          <div class="grid-col-10 margin-bottom-10"  style="text-align: center;alignment: center; width: 100%" >
+          <table style="width: 100%; alignment: center">
+            <th style="font-size: 13px">PAGE VIEWS</th>
+            <th style="font-size: 13px">UNIQUE VISITORS</th>
+            <th style="font-size: 13px">BOOKMARKS</th>
+            <th style="font-size: 13px">ADOPTIONS</th>
             <tr>
               <td><h2><%= @page_views_for_practice %></h2></td>
               <td><h2><%= @unique_visitors_for_practice %></h2></td>
@@ -49,17 +48,64 @@
             </tr>
           </table>
           </div>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
+
+        <div id="adoptions_by_practice" class="margin-bottom-10">
+          <table style="width: 100%">
+            <th align="left" style="width: 80%">Adoptions</th>
+            <th align="left">Total</th>
+            <tr class="border_bottom">
+              <td style="width: 80%">Total</td>
+              <td><%= @adoptions_total %></td>
+            </tr>
+              <tr class="border_bottom">
+                <td style="width: 80%">Successful</td>
+                <td><%= @adoptions_successful_total %></td>
+              </tr>
+              <tr class="border_bottom">
+                <td style="width: 80%">In-progress</td>
+                <td><%= @adoptions_in_progress_total %></td>
+              </tr>
+              <tr class="border_bottom">
+                <td style="width: 80%">Unsuccessful</td>
+                <td><%= @adoptions_unsuccessful_total %></td>
+              </tr>
+              <tr class="border_bottom">
+                <td style="width: 80%">Rural facility</td>
+                <td><%= @bookmarks_by_practice %></td>
+              </tr>
+              <tr class="border_bottom">
+                <td style="width: 80%">Urban facility</td>
+                <td><%= @bookmarks_by_practice %></td>
+              </tr>
+              <tr class="border_bottom">
+                <td style="width: 80%">1a (High Complexity)</td>
+                <td><%= @bookmarks_by_practice %></td>
+              </tr>
+              <tr class="border_bottom">
+                <td style="width: 80%">1b (High Complexity)</td>
+                <td><%= @bookmarks_by_practice %></td>
+              </tr>
+              <tr class="border_bottom">
+                <td style="width: 80%">1c (High Complexity)</td>
+                <td><%= @bookmarks_by_practice %></td>
+              </tr>
+              <tr class="border_bottom">
+                <td style="width: 80%">2 (Medium Complexity)</td>
+                <td><%= @bookmarks_by_practice %></td>
+              </tr>
+              <tr class="border_bottom">
+                <td style="width: 80%">3 (Low Complexity)</td>
+                <td><%= @bookmarks_by_practice %></td>
+              </tr>
+              <tr class="border_bottom">
+                <td style="width: 80%">Excluded</td>
+                <td><%= @bookmarks_by_practice %></td>
+              </tr>
+          </table>
+        </div>
 
 
-        <div class="margin-bottom-3">
+        <div class="margin-bottom-2">
           <table style="width: 100%">
             <tr>
               <td><h2>Leader board</h2></td>
@@ -68,24 +114,24 @@
           </table>
         </div>
 
-        <div id="leader_board_page_views_30_days" class="">
+        <div id="leader_board_page_views_30_days" class="margin-bottom-3">
           <table style="width: 100%">
             <th align="left" style="width: 80%">Practice</th>
             <th align="left">Views</th>
             <% @page_views_leader_board_30_days.each do |rec| %>
-              <tr>
+              <tr class="border_bottom">
                 <td style="width: 80%"><%=rec.practice_name %></td>
                 <td><%= rec.count %></td>
               </tr>
             <% end %>
           </table>
         </div>
-        <div id="leader_board_page_views_all_time" style="display: none">
+        <div class="margin-bottom-3" id="leader_board_page_views_all_time" style="display: none">
           <table style="width: 100%">
             <th align="left" style="width: 80%">Practice</th>
             <th align="left">Views</th>
             <% @page_views_leader_board_all_time.each do |rec| %>
-              <tr>
+              <tr class="border_bottom">
                 <td style="width: 80%"><%=rec.practice_name %></td>
                 <td><%= rec.count %></td>
               </tr>

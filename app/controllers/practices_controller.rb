@@ -297,7 +297,6 @@ class PracticesController < ApplicationController
   def metrics
     @duration = params[:duration] || 30
     # @leader_board_page_views = fetch_page_view_leader_board(@duration)
-    #@facility_data = fetch_facilities
 
     @page_views_leader_board_30_days = fetch_page_views_leader_board_30_days
     @page_views_leader_board_all_time = fetch_page_views_leader_board_all_time
@@ -305,6 +304,18 @@ class PracticesController < ApplicationController
     @unique_visitors_for_practice = fetch_unique_visitors_by_practice(@practice.id, @duration)
     @bookmarks_by_practice = fetch_bookmarks_by_practice(@practice.id, @duration)
     @adoptions_by_practice = fetch_adoptions_by_practice(@practice.id, @duration)
+    @adoptions_total = fetch_adoptions_total_by_practice(@practice.id, @duration)
+    @adoptions_successful_total = fetch_adoptions_total_by_practice(@practice.id, @duration, "Completed")
+    @adoptions_in_progress_total = fetch_adoptions_total_by_practice(@practice.id, @duration, "In progress")
+    @adoptions_unsuccessful_total = fetch_adoptions_total_by_practice(@practice.id, @duration, "Unsuccessful")
+
+    @facility_data = fetch_facilities
+    debugger
+    @facility_ids_for_practice = fetch_facility_ids_for_practice(@practice.id, @duration)
+    debugger
+    #@rural_facility(@facility)
+
+
     render 'practices/form/metrics'
 
   end

@@ -91,6 +91,19 @@ module PracticesHelper
     recs[0][0]
   end
 
+  def fetch_adoptions_total_by_practice(practice_id, duration = 30, status = "")
+    sql = "select count(*) as count from diffusion_histories dh join diffusion_history_statuses dhs on dh.id = dhs.diffusion_history_id where dh.practice_id = #{practice_id}"
+    if(duration == "30")
+      sql += " and dh.created_at >= now() - interval '#{duration} days'"
+    end
+    if(status.length > 0)
+      sql += " and dhs.status='#{status}'"
+    end
+    records_array = ActiveRecord::Base.connection.execute(sql)
+    recs = records_array.values
+    recs[0][0]
+  end
+
   def fetch_adoptions_by_practice(practice_id, duration = 30)
     sql = "select count(*) as the_count from diffusion_histories where practice_id = #{practice_id}"
     if(duration == "30")
@@ -99,6 +112,20 @@ module PracticesHelper
     records_array = ActiveRecord::Base.connection.execute(sql)
     recs = records_array.values
     recs[0][0]
+  end
+
+  def fetch_facility_ids_for_practice(practice_id, duration=30)
+    facility_ids = []
+    sql = "select facility_id as the_count from diffusion_histories where practice_id=#{practice_id}"
+    if (duration == "30")
+      sql += " and created_at >= now() - interval '#{duration} days'"
+    end
+    records_array = ActiveRecord::Base.connection.execute(sql)
+    recs = records_array.values
+    recs.each do |rec|
+      facility_ids << rec
+    end
+    facility_ids
   end
 
 
