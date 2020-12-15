@@ -27,15 +27,15 @@
         <br/>
         <div class="margin-bottom-5">
           View your metrics for
-          <select style="width: 75%" name="metrics_duration" id="metrics_duration">
+          <select style="width: 75%; height: 40px" name="metrics_duration" id="metrics_duration">
             <option id="metrics_30_day_value" value="30" <%= 'selected' if @duration.to_i == 30 %>>the last 30 days</option>
             <option id="metrics_all_time_value" value="9999" <%= 'selected' if @duration.to_i == 9999 %>>all time</option>
           </select>
         </div>
         <br/>
         <br/>
-          <div class="grid-col-10 margin-bottom-10"  style="text-align: center;alignment: center; width: 100%" >
-          <table style="width: 100%; alignment: center">
+          <div class="grid-col-8 margin-bottom-10"  style="text-align: center; width: 100%" >
+          <table style="width: 80%; display: inline-table">
             <th style="font-size: 13px">PAGE VIEWS</th>
             <th style="font-size: 13px">UNIQUE VISITORS</th>
             <th style="font-size: 13px">BOOKMARKS</th>
@@ -48,107 +48,11 @@
             </tr>
           </table>
           </div>
+        <!--  CHARTS ------------------------------------------------------------>
+        <div class="border bg-white padding-2 margin-bottom-10 margin-top-10 radius-md padding-bottom-0">
 
-        <div id="adoptions_by_practice" class="margin-bottom-10">
-          <table style="width: 100%">
-            <th align="left" style="width: 80%">Adoptions</th>
-            <th align="left">Total</th>
-            <tr class="border_bottom">
-              <td style="width: 80%">Total</td>
-              <td><%= @adoptions_total %></td>
-            </tr>
-              <tr class="border_bottom">
-                <td style="width: 80%">Successful</td>
-                <td><%= @adoptions_successful_total %></td>
-              </tr>
-              <tr class="border_bottom">
-                <td style="width: 80%">In-progress</td>
-                <td><%= @adoptions_in_progress_total %></td>
-              </tr>
-              <tr class="border_bottom">
-                <td style="width: 80%">Unsuccessful</td>
-                <td><%= @adoptions_unsuccessful_total %></td>
-              </tr>
-              <tr class="border_bottom">
-                <td style="width: 80%">Rural facility</td>
-                <td><%= @rural_facility %></td>
-              </tr>
-              <tr class="border_bottom">
-                <td style="width: 80%">Urban facility</td>
-                <td><%= @urban_facility %></td>
-              </tr>
-              <tr class="border_bottom">
-                <td style="width: 80%">1a (High Complexity)</td>
-                <td><%= @a_high_complexity %></td>
-              </tr>
-              <tr class="border_bottom">
-                <td style="width: 80%">1b (High Complexity)</td>
-                <td><%= @b_high_complexity %></td>
-              </tr>
-              <tr class="border_bottom">
-                <td style="width: 80%">1c (High Complexity)</td>
-                <td><%= @c_high_complexity %></td>
-              </tr>
-              <tr class="border_bottom">
-                <td style="width: 80%">2 (Medium Complexity)</td>
-                <td><%= @medium_complexity_2 %></td>
-              </tr>
-              <tr class="border_bottom">
-                <td style="width: 80%">3 (Low Complexity)</td>
-                <td><%= @low_complexity_3 %></td>
-              </tr>
-              <tr class="border_bottom">
-                <td style="width: 80%">Excluded</td>
-                <td><%= @excluded_98 %></td>
-              </tr>
-          </table>
-        </div>
-
-
-        <div class="margin-bottom-2">
-          <table style="width: 100%">
-            <tr>
-              <td><h2>Leader board</h2></td>
-              <td align="right"><button style="alignment: right" id="toggle_leader_board_view_30" class="usa-button usa-button--base usa-button--active">Last 30 days</button><button style="alignment: left" id="toggle_leader_board_view_all_time" class="usa-button usa-button--outline usa-button--active">All time</button></td>
-            </tr>
-          </table>
-        </div>
-
-        <div id="leader_board_page_views_30_days" class="margin-bottom-3">
-          <table style="width: 100%">
-            <th align="left" style="width: 80%">Practice</th>
-            <th align="left">Views</th>
-            <% @page_views_leader_board_30_days.each do |rec| %>
-              <tr class="border_bottom">
-                <td style="width: 80%"><a target="_blank" href="/practices/<%= rec.practice_slug %>/"><%=rec.practice_name %></a></td>
-                <td><%= rec.count %></td>
-              </tr>
-            <% end %>
-          </table>
-        </div>
-        <div class="margin-bottom-3" id="leader_board_page_views_all_time" style="display: none">
-          <table style="width: 100%">
-            <th align="left" style="width: 80%">Practice</th>
-            <th align="left">Views</th>
-            <% @page_views_leader_board_all_time.each do |rec| %>
-              <tr class="border_bottom">
-                <td style="width: 80%"><a target="_blank" href="/practices/<%= rec.practice_slug %>/"><%=rec.practice_name %></a></td>
-                <td><%= rec.count %></td>
-              </tr>
-            <% end %>
-          </table>
-        </div>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-
-
-
-        <div class="border bg-white padding-2 margin-bottom-2 margin-top-1 radius-md padding-bottom-0">
-
-<!--          <h4 class="margin-0">Search interest in Franklin D. and Theodore Roosevelt for the first week of March, 2020</h4>-->
-<!--          <p class="margin-top-1 font-sans-2xs text-base margin-bottom--3">Search interest in Franklin D. Roosevelt has been consistently higher than Theodore Roosevelt. Numbers represent search interest relative to the highest point on the chart for the given region and time. A value of 100 is the peak popularity for the term. A value of 50 means that the term is half as popular. A score of 0 means there was not enough data for this term.</p>-->
+          <!--          <h4 class="margin-0">Search interest in Franklin D. and Theodore Roosevelt for the first week of March, 2020</h4>-->
+          <!--          <p class="margin-top-1 font-sans-2xs text-base margin-bottom--3">Search interest in Franklin D. Roosevelt has been consistently higher than Theodore Roosevelt. Numbers represent search interest relative to the highest point on the chart for the given region and time. A value of 100 is the peak popularity for the term. A value of 50 means that the term is half as popular. A score of 0 means there was not enough data for this term.</p>-->
 
           <!--?xml version="1.0" encoding="utf-8"?-->
           <!-- Generator: Adobe Illustrator 24.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
@@ -329,6 +233,103 @@
           </table>
           <p id="source_line">Source: <a href="https://trends.google.com/trends/explore?date=2020-03-01%202020-03-07&amp;geo=US&amp;q=%2Fm%2F07hyk,%2Fm%2F02yy8">Google Trends</a></p>
         </div>
+
+
+<!-- ADOPTIONS ------------------------------------------------------------->
+        <div id="adoptions_by_practice" class="margin-bottom-10">
+          <table style="width: 100%">
+            <tr class="border_bottom">
+              <td align="left" style="width: 80%; font-weight: bold">Adoptions</td>
+              <td align="left" style="font-weight: bold">Total</td>
+            </tr>
+            <tr class="border_bottom">
+              <td style="width: 80%">Total</td>
+              <td><%= @adoptions_total %></td>
+            </tr>
+              <tr class="border_bottom">
+                <td style="width: 80%">Successful</td>
+                <td><%= @adoptions_successful_total %></td>
+              </tr>
+              <tr class="border_bottom">
+                <td style="width: 80%">In-progress</td>
+                <td><%= @adoptions_in_progress_total %></td>
+              </tr>
+              <tr class="border_bottom">
+                <td style="width: 80%">Unsuccessful</td>
+                <td><%= @adoptions_unsuccessful_total %></td>
+              </tr>
+              <tr class="border_bottom">
+                <td style="width: 80%">Rural facility</td>
+                <td><%= @rural_facility %></td>
+              </tr>
+              <tr class="border_bottom">
+                <td style="width: 80%">Urban facility</td>
+                <td><%= @urban_facility %></td>
+              </tr>
+              <tr class="border_bottom">
+                <td style="width: 80%">1a (High Complexity)</td>
+                <td><%= @a_high_complexity %></td>
+              </tr>
+              <tr class="border_bottom">
+                <td style="width: 80%">1b (High Complexity)</td>
+                <td><%= @b_high_complexity %></td>
+              </tr>
+              <tr class="border_bottom">
+                <td style="width: 80%">1c (High Complexity)</td>
+                <td><%= @c_high_complexity %></td>
+              </tr>
+              <tr class="border_bottom">
+                <td style="width: 80%">2 (Medium Complexity)</td>
+                <td><%= @medium_complexity_2 %></td>
+              </tr>
+              <tr class="border_bottom">
+                <td style="width: 80%">3 (Low Complexity)</td>
+                <td><%= @low_complexity_3 %></td>
+              </tr>
+              <tr class="border_bottom">
+                <td style="width: 80%">Excluded</td>
+                <td><%= @excluded_98 %></td>
+              </tr>
+          </table>
+        </div>
+
+<!-- LEADER BOARD -------------------------------------------------------------------------------------------->
+        <div class="margin-bottom-2">
+          <table style="width: 100%">
+            <tr>
+              <td><h2>Leader board</h2></td>
+              <td align="right"><button style="alignment: right" id="toggle_leader_board_view_30" class="usa-button usa-button--base usa-button--active">Last 30 days</button><button style="alignment: left" id="toggle_leader_board_view_all_time" class="usa-button usa-button--outline usa-button--active">All time</button></td>
+            </tr>
+          </table>
+        </div>
+
+        <div id="leader_board_page_views_30_days" class="margin-bottom-3">
+          <table style="width: 100%">
+            <tr class="border_bottom">
+            <td align="left" style="width: 80%; font-weight: bold">Practice</td>
+            <td align="left" style="font-weight: bold">Views</td>
+            </tr>
+            <% @page_views_leader_board_30_days.each do |rec| %>
+              <tr class="border_bottom">
+                <td style="width: 80%"><a target="_blank" href="/practices/<%= rec.practice_slug %>/"><%=rec.practice_name %></a></td>
+                <td><%= rec.count %></td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+        <div class="margin-bottom-3" id="leader_board_page_views_all_time" style="display: none">
+          <table style="width: 100%">
+            <th align="left" style="width: 80%">Practice</th>
+            <th align="left">Views</th>
+            <% @page_views_leader_board_all_time.each do |rec| %>
+              <tr class="border_bottom">
+                <td style="width: 80%"><a target="_blank" href="/practices/<%= rec.practice_slug %>/"><%=rec.practice_name %></a></td>
+                <td><%= rec.count %></td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+
       </section>
     </div>
   </div>

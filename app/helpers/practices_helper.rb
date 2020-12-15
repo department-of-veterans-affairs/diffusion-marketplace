@@ -162,7 +162,10 @@ module PracticesHelper
       leader.practice_name = Practice.find(practice_id).name
       leader.practice_slug = Practice.find(practice_id).slug
       leader.count = rec[2]
-      page_view_leaders << leader
+      published = Practice.find(practice_id).published
+      if published
+        page_view_leaders << leader
+      end
     end
     page_view_leaders
   end
