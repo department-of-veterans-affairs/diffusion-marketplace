@@ -297,10 +297,8 @@ class PracticesController < ApplicationController
   def metrics
     @duration = params[:duration] || 30
     # @leader_board_page_views = fetch_page_view_leader_board(@duration)
-    debugger
     @page_views_leader_board_30_days = fetch_page_views_leader_board()
-    debugger
-    @page_views_leader_board_all_time = fetch_page_views_leader_board("9999")
+    @page_views_leader_board_all_time = fetch_page_views_leader_board(0)
     @page_views_for_practice = fetch_page_view_for_practice(@practice.id, @duration)
     @unique_visitors_for_practice = fetch_unique_visitors_by_practice(@practice.id, @duration)
     @bookmarks_by_practice = fetch_bookmarks_by_practice(@practice.id, @duration)
