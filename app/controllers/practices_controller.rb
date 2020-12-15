@@ -296,7 +296,6 @@ class PracticesController < ApplicationController
 
   def metrics
     @duration = params[:duration] || 30
-    # @leader_board_page_views = fetch_page_view_leader_board(@duration)
     @page_views_leader_board_30_days = fetch_page_views_leader_board()
     @page_views_leader_board_all_time = fetch_page_views_leader_board(0)
     @page_views_for_practice = fetch_page_view_for_practice(@practice.id, @duration)
@@ -317,7 +316,6 @@ class PracticesController < ApplicationController
     @medium_complexity_2 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice, "FY17ParentStationComplexityLevel", "2 -Medium Complexity")
     @low_complexity_3 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice, "FY17ParentStationComplexityLevel", "3 -Low Complexity")
     @excluded_98 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice, "FY17ParentStationComplexityLevel", "98-Excluded")
-
     render 'practices/form/metrics'
 
   end
