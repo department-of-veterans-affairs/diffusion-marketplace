@@ -11,17 +11,11 @@ var results = null;
 //      $('#no-search-query-content')
     <%# end %>
 //}
-
 function searchPracticesPage() {
     const searchField = document.querySelector('#dm-practice-search-field');
 
     // Skip if not the search page
     if (location.pathname !== '/search') return;
-
-    // Search helper functions
-//    function getFacilityDisplayName(stationName, commonName) {
-//        return stationName.toLowerCase().includes(commonName.toLowerCase()) ? stationName : stationName + ' (' + commonName + ')'
-//    }
 
     // Search practices and populate the page
     function search(query, categories, originatingFacility, adoptingFacility) {
@@ -313,17 +307,8 @@ function searchPracticesPage() {
             results = [];
         }
 
-        console.log('results', results)
-        console.log(results.length);
-
-        // Sort the results
-//        var sortOptions = ['most_relevant', 'a_to_z', 'adoptions', 'added'];
-//        var sortSelect = $('#search_sort_option')
-//        if (results.length > 0) {
-//            sortSelect.on('change', function() {
-
-//            })
-//        }
+//        console.log('results', results)
+//        console.log(results.length);
 
         // Show the results summary section
         document.getElementById('dm-search-practices').classList.remove('display-none')
@@ -336,8 +321,7 @@ function searchPracticesPage() {
             highlighter(result);
         });
 
-        // Template out the search results
-        results.forEach(function (result) {
+        function buildHtml(result) {
             var practiceImage = result.item.image
             var practiceName = result.item.name
             var noBackgroundImage = practiceImage ? '' : 'class: fas fa-images fa-3x text-base-lighter search-no-image';
@@ -386,6 +370,11 @@ function searchPracticesPage() {
                 '</div>' +
                 '</a>' +
                 '</div>';
+        }
+
+        // Template out the search results
+        results.forEach(function (result) {
+            buildHtml(result)
 
                 '<!-- Uncomment to show Fuse.js diagnostics -->' +
                 '<!--' +
@@ -429,7 +418,7 @@ function searchPracticesPage() {
                 }
                 resultItem.highlight = result.join('');
 
-                console.log('result item', resultItem)
+//                console.log('result item', resultItem)
 
                 if (resultItem.children && resultItem.children.length > 0) {
                     resultItem.children.forEach(function (child) {
@@ -439,7 +428,6 @@ function searchPracticesPage() {
             }
         });
     }
-
 
     // Set up search
 
@@ -550,6 +538,17 @@ function searchPracticesPage() {
 
         search(searchField.value, chosenCategories, originatingFacility, adoptingFacility)
     });
+
+    // Sort the results
+//        var sortOptions = ['most_relevant', 'a_to_z', 'adoptions', 'added'];
+//    var sortSelect = $('#search_sort_option')
+//        sortSelect.on('change', function() {
+//              var sorted = practices.sort(function(a, b) {
+//                  return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' })
+//              });
+//            console.log(sorted)
+
+//        })
 
     // Clear all filter options
     $(document).on('click', '#resetSearchFiltersButton', function(e) {
