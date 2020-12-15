@@ -6,6 +6,15 @@ class PracticeLeaderBoard
     @practice_name = practice_name
   end
 
+  def practice_slug
+    @practice_slug
+  end
+  def practice_slug= practice_slug
+    @practice_slug = practice_slug
+  end
+
+
+
   def count
     @count
   end

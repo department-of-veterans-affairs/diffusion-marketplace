@@ -155,6 +155,7 @@ module PracticesHelper
       practice_id = JSON.parse(rec[1])['practice_id']
       leader = PracticeLeaderBoard.new
       leader.practice_name = Practice.find(practice_id).name
+      leader.practice_slug = Practice.find(practice_id).slug
       leader.count = rec[2]
       page_view_leaders << leader
     end
