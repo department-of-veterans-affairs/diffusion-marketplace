@@ -11,34 +11,49 @@
 <div id="search-page">
   <section class="grid-container">
     <%= render partial: "shared/messages", locals: {small_text: false} %>
-    <div class="grid-row">
-      <form id="dm-practice-search-form" name="dm-practice-search-form" class="usa-search usa-search--big margin-bottom-2 grid-col-12">
-        <div role="search" class="flex-column">
-          <label class="margin-bottom-1" for="dm-practice-search-field"></label>
-          <div id="search-bar-container" class="display-flex">
-            <input class="usa-input" id="dm-practice-search-field" required title="Type at least three characters to search." autocomplete="off" type="search" name="search">
-            <button id="dm-practice-search-button" class="usa-button" type="submit" name="search-button">
-              <span class="usa-search__submit-text text-bold">Search</span>
-            </button>
+      <form id="update-search-results-form">
+        <div class="usa-search usa-search--big margin-bottom-2 grid-col-12">
+          <div role="search" class="flex-column">
+            <label class="margin-bottom-1" for="dm-practice-search-field"></label>
+            <div id="search-bar-container" class="display-flex">
+              <input class="usa-input" id="dm-practice-search-field" title="Type at least three characters to search." autocomplete="off" type="search" name="search">
+              <button id="dm-practice-search-button" class="usa-button" type="submit" name="search-button">
+                <span class="usa-search__submit-text text-bold">Search</span>
+              </button>
+            </div>
           </div>
         </div>
+        <div class="usa-accordion usa-accordion--bordered position-relative">
+          <h2 class="usa-accordion__heading">
+            <button class="usa-accordion__button search-filters-accordion-button"
+                    aria-expanded="false"
+                    aria-controls="search_filters_dropdown">
+              Filters
+            </button>
+          </h2>
+            <div id="search_filters_dropdown" class="usa-accordion__content usa-prose position-absolute width-full z-400 bg-gray-5 p0">
+              <%= render partial: 'practices/search_partials/search_filters' %>
+            </div>
+        </div>
       </form>
-      <div class="usa-accordion usa-accordion--bordered position-relative">
-        <h2 class="usa-accordion__heading">
-          <button class="usa-accordion__button"
-                  aria-expanded="false"
-                  aria-controls="search_filters_dropdown">
-            Filters
-          </button>
-        </h2>
-        <div id="search_filters_dropdown" class="usa-accordion__content usa-prose position-absolute width-full z-400 bg-gray-5 p0">
-          <%= render partial: 'practices/search_partials/search_filters' %>
+
+    <%
+      sort_options = [
+          ['Sort by most relevant', 'most_relevant', selected: false, class: 'usa-select'],
+          ['Sort by A to Z', 'a_to_z', class: 'usa-select'],
+          ['Sort by most adoptions', 'adoptions', class: 'usa-select'],
+          ['Sort by most recently added', 'added', class: 'usa-select']
+      ]
+    %>
+
+    <section id="dm-search-practices" class="dm-search-practices display-none margin-top-2">
+      <div class="grid-row margin-bottom-105 flex-align-center">
+        <p class="font-sans-normal grid-col-6 line-height-26" id="results-summary"></p>
+        <div class="grid-col-12 desktop:grid-col-6 order-first desktop:order-last margin-top-1 desktop:margin-top-0 dm-sort-container">
+          <%= label_tag 'search_sort_option', '', class: 'usa-label margin-0' %>
+          <%= select_tag('', options_for_select(sort_options), id: 'search_sort_option', name: 'sort_option', class: 'height-5 usa-select margin-0') %>
         </div>
       </div>
-    </div>
-
-    <section id="dm-search-practices" class="dm-search-practices display-none">
-      <p class="margin-bottom-3 font-sans-lg" id="results-summary"></p>
       <div id="search-results" class="grid-row grid-gap-3"></div>
     </section>
 

@@ -314,14 +314,22 @@ function searchPracticesPage() {
         }
 
         console.log('results', results)
-
         console.log(results.length);
+
+        // Sort the results
+//        var sortOptions = ['most_relevant', 'a_to_z', 'adoptions', 'added'];
+//        var sortSelect = $('#search_sort_option')
+//        if (results.length > 0) {
+//            sortSelect.on('change', function() {
+
+//            })
+//        }
 
         // Show the results summary section
         document.getElementById('dm-search-practices').classList.remove('display-none')
 
         // Print the number of results for the query
-        resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? '' : 's');
+        resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? ':' : 's:');
 
         // Highlight results (only Fuse.js matching)
         results.forEach(function (result) {
@@ -503,6 +511,21 @@ function searchPracticesPage() {
 
     $(document).on('submit', '#update-search-results-form', function (e) {
         e.preventDefault();
+
+        // Close filters accordion if it's open
+        var filterAccordionButton = $('.search-filters-accordion-button')
+        if (filterAccordionButton.attr('aria-expanded') == 'true') {
+            filterAccordionButton.attr('aria-expanded', 'false')
+            $('#search_filters_dropdown').attr('hidden', 'true')
+        }
+
+        // Make a new timeout set to go off in 500ms
+        timeout = setTimeout(function () {
+            if (searchField.value !== '') {
+                window.history.pushState("", "", '/search?query=' + searchField.value);
+                trackSearchField(decodeURI(searchField.value));
+        }}, 500);
+
         var chosenCategories = $('#update-search-results-form [type="checkbox"]:checked').map(function () {
             return this.value;
         }).get();
@@ -512,64 +535,14 @@ function searchPracticesPage() {
 
         var originatingFacilityInput = $('#originating-facility-and-visn-select');
         var originatingFacilityLi = $('#originating-facility-and-visn-select--list > li[aria-selected=true]');
+
         var originatingFacility =  getComboBoxVal(originatingFacilityInput, originatingFacilityLi)
-//        if (originatingFacilityInput.val() !== '' && originatingFacilityLi.length == 1) {
-//            console.log('first')
-//            if (originatingFacilityLi.attr('data-value').includes('VISN')) {
-//                originatingFacility = originatingFacilityInput.val()
-//            } else {
-//                facilities.find(function(f) {
-//                    if (f.StationNumber === originatingFacilityLi.attr('data-value')) {
-//                        originatingFacility = f.StationNumber
-//                    }
-//                })
-//            }
-//        } else if (originatingFacilityInput.val() !== '' && originatingFacilityLi.length == 0) {
-//            console.log('second')
-//            if (originatingFacilityInput.val().includes('VISN')) {
-//                originatingFacility = originatingFacilityInput.val()
-//            } else {
-//                facilities.find(function(f) {
-//                    if (originatingFacilityInput.val().includes(f.OfficialStationName)) {
-//                        originatingFacility = f.StationNumber
-//                    }
-//                })
-//            }
-//        } else {
-//            console.log('third')
-//            originatingFacility = null;
-//        }
 
         var adoptingFacilityInput = $('#adopting-facility-and-visn-select');
         var adoptingFacilityLi = $('#adopting-facility-and-visn-select--list > li[aria-selected=true]');
+
         var adoptingFacility = getComboBoxVal(adoptingFacilityInput, adoptingFacilityLi)
 
-//        if (adoptingFacilityInput.val() !== '' && adoptingFacilityLi.length == 1) {
-//            console.log('first')
-//            if (adoptingFacilityLi.attr('data-value').includes('VISN')) {
-//                adoptingFacility = adoptingFacilityInput.val()
-//            } else {
-//                facilities.find(function(f) {
-//                    if (f.StationNumber === adoptingFacilityLi.attr('data-value')) {
-//                        adoptingFacility = f.StationNumber
-//                    }
-//                })
-//            }
-//        } else if (adoptingFacilityInput.val() !== '' && adoptingFacilityLi.length == 0) {
-//            console.log('second')
-//            if (adoptingFacilityInput.val().includes('VISN')) {
-//                adoptingFacility = adoptingFacilityInput.val()
-//            } else {
-//                facilities.find(function(f) {
-//                    if (adoptingFacilityInput.val().includes(f.OfficialStationName)) {
-//                        adoptingFacility = f.StationNumber
-//                    }
-//                })
-//            }
-//        } else {
-//            console.log('third')
-//            adoptingFacility = null;
-//        }
 
         console.log('cate', chosenCategories)
         console.log('orig', originatingFacility)
@@ -577,6 +550,17 @@ function searchPracticesPage() {
 
         search(searchField.value, chosenCategories, originatingFacility, adoptingFacility)
     });
+
+    // Clear all filter options
+    $(document).on('click', '#resetSearchFiltersButton', function(e) {
+        e.preventDefault();
+        $('.usa-combo-box__clear-input').each(function(e) {
+            console.log('hello')
+            $(this).trigger('click');
+        })
+        $(".usa-combo-box__clear-input__wrapper").attr("tabindex",-1).focus();
+
+    })
 
     if (window.location.pathname === '/search' && window.location.search !== '') {
         const query = window.location.search.split('=')[1];
