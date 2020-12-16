@@ -1,0 +1,70 @@
+<% provide :head_tags do %>
+  <%= javascript_include_tag '_practice_utilities', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_explore', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    <%= render partial: 'explore', formats: [:js] %>
+  <% end %>
+<% end %>
+
+<%
+  sort_options = [
+    ['- Sort by -', nil, selected: false, disabled: true, class: 'usa-select'],
+    ['Sort by A to Z', 'a_to_z', class: 'usa-select'],
+    ['Sort by most adoptions', 'adoptions', class: 'usa-select'],
+    ['Sort by most recently added', 'added', class: 'usa-select']
+  ]
+%>
+
+<div class="dm-explore-practices">
+  <div class="bg-primary-darker padding-4 display-flex flex-align-center flex-justify-center">
+    <h1 class="text-white text-center margin-0 line-height-sans-4">Explore all practices</h1>
+  </div>
+  <div class="grid-container padding-x-2 padding-top-3">
+    <div class="grid-row">
+      <% @categories.each_with_index do |cat, index| %>
+        <% if index < 5 %>
+          <%= button_tag "#{cat.name}", type: 'button', class: "width-auto usa-button--outline dm-btn-primary margin-bottom-2 dm-category-btn", data: { cat_id: cat.id } %>
+          <% else %>
+          <div class="dm-see-more display-none desktop:display-block">
+            <%= button_tag "#{cat.name}", type: 'button', class: "width-auto usa-button--outline dm-btn-primary margin-bottom-2 dm-category-btn", data: { cat_id: cat.id } %>
+          </div>
+        <% end %>
+      <% end %>
+      <% if @categories.count > 5 %>
+        <%= button_tag "See all categories", type: 'button', class: "usa-button--unstyled dm-btn-primary dm-see-all-btn desktop:display-none margin-bottom-2" %>
+      <% end%>
+    </div>
+    <div class="grid-row margin-bottom-3 desktop:margin-bottom-1 margin-top-05">
+      <div class="grid-col-12 desktop:grid-col-6 display-flex flex-align-center">
+        <span class="dm-results-count">
+          <%= "#{@pr_count} result#{@pr_count == 1 ? ':' : 's:'}" %>
+        </span>
+      </div>
+      <div class="grid-col-12 desktop:grid-col-6 order-first desktop:order-last margin-bottom-3 margin-top-1 desktop:margin-top-0 dm-sort-container">
+        <%= label_tag 'dm_sort_option', '', class: 'usa-label margin-0' %>
+        <%= select_tag('', options_for_select(sort_options), id: 'dm_sort_option', name: 'sort_option', class: 'height-5 usa-select margin-0') %>
+      </div>
+    </div>
+    <div class="dm-error-state display-flex flex-align-center flex-justify-center text-center margin-y-10 display-none">
+      <i class="fas fa-heart-broken"></i>
+      <span class="line-height-25px">Oops! Looks like an error occured fetching practices. Please try again later.</span>
+    </div>
+    <div class="dm-practice-card-section">
+      <% if @practices.any? %>
+        <div id="dm-practice-card-list" class="grid-row grid-gap-3">
+          <% @practices.each do |practice| %>
+              <%= render partial: 'shared/practice_card', locals: { practice: practice} %>
+          <% end %>
+        </div>
+      <% end %>
+      <div class="grid-row dm-load-more-container padding-top-2">
+        <% if @pagy_info.next %>
+          <%= button_tag "Load more", type: 'button', class: "usa-button--outline dm-btn-base dm-load-more-btn width-auto", data: { next: @pagy_info.next } %>
+        <% end %>
+      </div>
+    </div>
+    <div class="dm-loading-spinner display-none flex-justify-center flex-align-self-center margin-y-4">
+      <i class="fas fa-circle-notch"></i>
+    </div>
+  </div>
+</div>

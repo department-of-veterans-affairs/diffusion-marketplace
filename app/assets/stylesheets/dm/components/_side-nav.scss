@@ -1,3 +1,5 @@
+@import "../variables/colors";
+
 #sticky-wrapper {
   z-index: 1000;
 }
@@ -14,7 +16,7 @@
   cursor: pointer;
 
   &:hover {
-    background-color: #f0f0f0;
+    background-color: $dm-color-gray-5;
     color: #005ea2;
   }
 }

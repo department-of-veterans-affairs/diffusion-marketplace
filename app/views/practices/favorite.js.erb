@@ -1,5 +1,5 @@
 function refreshPage() {
-  <% if request.referrer.split('/').pop == 'relevant-to-you' %>
+  <% if request.referrer.split('/').pop == 'recommended-for-you' %>
     location.reload();
   <% end %>
 }

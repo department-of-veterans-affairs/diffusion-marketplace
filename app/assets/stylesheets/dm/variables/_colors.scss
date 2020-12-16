@@ -4,12 +4,17 @@ $dm-color-gray-80: #2e2e2e;
 $dm-color-gray-60: #5c5c5c;
 $dm-color-gray-30: #adadad;
 $dm-color-gray-20: #c9c9c9;
+$dm-color-gray-5: #f0f0f0;
 $dm-color-gray-2: #f9f9f9;
-$dm-color-blue-20v: #a1d3ff; // covid-19 banner background color
-$dm-color-blue-30v: #81AEFC;
-$dm-color-blue-50v: #0076d6;
-$dm-color-blue-70v: #0b4778;
-$dm-color-blue-80v: #112f4e;
+
+// Blue warm vivid - https://designsystem.digital.gov/design-tokens/color/system-tokens/#blue-warm
+$dm-color-blue-5v: #edf5ff;
+$dm-color-blue-20v: #adcdff;
+$dm-color-blue-30v: #81aefc; // primary-light
+$dm-color-blue-50v: #2672de;
+$dm-color-blue-70v: #1a4480; // primary-dark
+$dm-color-blue-80v: #162e51;
+
 $dm-color-red-50v: #e52207;
 $dm-color-red-60v: #b50909;
 $dm-color-red-70v: #8b0a03;
@@ -30,7 +35,6 @@ $dm-color-blue-vivid: #2672DE;
 
 // homepage map
 $dm-color-dark-black: #171717;
-$dm-color-primary-5v: #EDF5FF;
 $dm-color-lighter-grey: #DCDEE0;
 
 // TODO: can probably clean up once new designs in place

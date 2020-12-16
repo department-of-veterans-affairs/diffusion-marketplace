@@ -28,11 +28,11 @@
   }
 
   .dm-tab {
-    border-bottom: 1px solid #F0F0F0;
+    border-bottom: 1px solid $dm-color-gray-5;
     font-weight: normal;
 
     &.top-tab {
-      border-top: 1px solid #F0F0F0;
+      border-top: 1px solid $dm-color-gray-5;
     }
 
     // &.bottom-tab {
@@ -200,11 +200,6 @@
   margin-right: 8px;
 }
 
-.conversation-line {
-  height: 2px;
-  border: 2px solid #F0F0F0;
-}
-
 .impact-image {
   height: 263px;
   width: 393px;
@@ -301,7 +296,7 @@
 
   &:hover {
     text-decoration: none !important;
-    color: #1a4480 !important
+    color: $dm-color-blue-70v !important
   }
 }
 
@@ -533,7 +528,7 @@
 }
 
 .practice-editor-origin-li, .practice-editor-timeline-li, .practice-editor-practice-resources-li, .practice-editor-risk-mitigation-li, .practice-editor-contact-li,
-.practice-editor-additional-document-li, .practice-editor-publication-li, .practice-editor-impact-photo-li,
+.practice-editor-additional-document-li, .practice-editor-publication-li,
 .practice-editor-video-file-li, .practice-editor-permission-li, .practice-editor-resource-li, .practice-editor-about-li {
   list-style: none;
 }
@@ -1092,6 +1087,7 @@ li.small-disc:before {
   }
 }
 
+
 .practice-editor-impact-photo-container {
   div {
     @media screen and (max-width: 1023px) {
@@ -1160,3 +1156,4 @@ li.small-disc:before {
 .usa-label--error {
   margin-top: 1.5rem !important;
 }
+

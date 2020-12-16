@@ -328,6 +328,8 @@ describe 'The admin dashboard', type: :feature do
     login_as(@admin, scope: :user, run_callbacks: false)
     visit '/admin'
     click_link('Practices')
+    expect(page).to have_content('Last Updated')
+    expect(page).to have_content('Date Published')
 
     # check if categories display correctly
     click_link('Edit', href: edit_admin_practice_path(@practice))

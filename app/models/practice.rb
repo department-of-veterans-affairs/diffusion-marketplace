@@ -26,9 +26,10 @@ class Practice < ApplicationRecord
   attr_accessor :reset_searchable_cache
 
   def clear_searchable_cache
-    cache_key = "searchable_practices"
-    Rails.cache.delete(cache_key)
-    Practice.searchable_practices
+    cache_keys = ["searchable_practices_a_to_z", "searchable_practices_adoptions", "searchable_practices_added"]
+    cache_keys.each do |cache_key|
+      Rails.cache.delete(cache_key)
+    end
   end
 
   def clear_searchable_cache_on_save
@@ -50,9 +51,19 @@ class Practice < ApplicationRecord
     clear_searchable_cache if self.reset_searchable_cache
   end
 
-  def self.searchable_practices
-    Rails.cache.fetch('searchable_practices') do
-      Practice.get_with_categories
+  def self.searchable_practices(sort = 'a_to_z')
+    if sort == 'a_to_z'
+      Rails.cache.fetch('searchable_practices_a_to_z') do
+        Practice.sort_a_to_z.get_with_categories_and_adoptions_ct
+      end
+    elsif sort == 'adoptions'
+      Rails.cache.fetch('searchable_practices_adoptions') do
+        Practice.sort_adoptions_ct.get_with_categories_and_adoptions_ct
+      end
+    elsif sort == 'added'
+      Rails.cache.fetch('searchable_practices_added') do
+        Practice.sort_added.get_with_categories_and_adoptions_ct
+      end
     end
   end
 
@@ -180,7 +191,11 @@ class Practice < ApplicationRecord
   scope :published,   -> { where(published: true) }
   scope :unpublished,  -> { where(published: false) }
   scope :get_practice_owner_emails, -> {where.not(user_id: nil)}
-  scope :get_with_categories, -> { left_outer_joins(:categories).select("practices.*, categories.name as categories_name").where(practices:{ approved: true, published: true, enabled: true }).order(name: :asc).uniq }
+  scope :get_with_categories_and_adoptions_ct, -> { left_outer_joins(:diffusion_histories).select("practices.*, COUNT(diffusion_histories.*) as adoption_count").left_outer_joins(:categories).select("practices.*, categories.id as category_ids, categories.name as category_names").where(practices:{ approved: true, published: true, enabled: true }).group("practices.id, categories.id").uniq }
+  scope :sort_a_to_z, -> { order(Arel.sql("lower(practices.name) ASC")) }
+  scope :sort_adoptions_ct, -> { order(Arel.sql("adoption_count DESC, lower(practices.name) ASC")) }
+  scope :sort_added, -> { order(Arel.sql("practices.created_at DESC")) }
+  scope :filter_by_category_ids, -> (cat_ids) { where('category_practices.category_id IN (?)', cat_ids)} # cat_ids should be a id number or an array of id numbers
 
   belongs_to :user, optional: true
 

@@ -1,0 +1,131 @@
+var sortOptions = ['a_to_z', 'adoptions', 'added'];
+var sortSelect = '#dm_sort_option';
+var catBtn = '.dm-category-btn';
+var loadMoreBtn = '.dm-load-more-btn';
+var loadMoreContainer = '.dm-load-more-container';
+
+function setExplorePracticesPage() {
+  setAjaxCSRFToken();
+  sortEventListener();
+  filterCategoriesEventListener();
+  loadMoreEventListener();
+}
+
+function filterCategoriesEventListener() {
+  $(catBtn).on('click', function(e) {
+    displaySpinner({ isNextPage: false });
+    setDataAndMakeRequest({ isNextPage: false });
+  })
+}
+
+function loadMoreEventListener() {
+  $(loadMoreBtn).on('click', function(e) {
+    displaySpinner({ isNextPage: true });
+    setDataAndMakeRequest({isNextPage: true});
+  })
+}
+
+function sortEventListener() {
+  $(sortSelect).on('change', function (e) {
+    displaySpinner({ isNextPage: false });
+    setDataAndMakeRequest({ isNextPage: false });
+  });
+}
+
+function displaySpinner(params = { isNextPage }) {
+  $('.dm-results-count').addClass('display-none');
+  $('.dm-error-state').addClass('display-none');
+  $('.dm-loading-spinner').removeClass('display-none');
+  $('.dm-loading-spinner').addClass('display-flex');
+
+  if (params.isNextPage) {
+    $(loadMoreContainer).addClass('display-none');
+    $('.dm-load-more-btn').addClass('display-none');
+  } else {
+    $('.dm-practice-card-section').addClass('display-none');
+  }
+}
+
+function hideSpinner() {
+  $('.dm-loading-spinner').addClass('display-none');
+  $('.dm-loading-spinner').removeClass('display-flex');
+  $('.dm-practice-card-section').removeClass('display-none');
+}
+
+function setDataAndMakeRequest(params = { isNextPage }) {
+  var sortOption = $(sortSelect).val() || 'a_to_z';
+  var categories = setCategories();
+  var page = $(loadMoreBtn).data('next') || null;
+  var data = { sort_option: sortOption };
+
+  if (categories.length > 0) {
+    data.categories = categories;
+  }
+
+  if (params.isNextPage && page !== null) {
+    data.page = page;
+  }
+  sendAjaxRequest(data);
+}
+
+function setCategories() {
+  var selectedBtns = $('.dm-selected');
+  var selectedIds = [];
+  for (var i = 0; i < selectedBtns.length; i++) {
+    var catId = $(selectedBtns[i]).data('catId');
+    selectedIds.push(catId);
+  }
+  return  selectedIds;
+}
+
+function setAjaxCSRFToken() {
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+    }
+  });
+}
+
+function sendAjaxRequest(data) {
+  var countText;
+
+  $.ajax({
+    type: 'POST',
+    dataType: 'json',
+    data: data,
+    url: '/explore',
+    success: function(result) {
+      countText = result.count + ' result' + (result.count == 1 ? ':' : 's:');
+      if (data.page == undefined) {
+        $('#dm-practice-card-list').empty();
+      }
+      $('#dm-practice-card-list').append(result.practice_cards_html);
+      $('.dm-results-count').removeClass('display-none');
+      if ( result.next !== null ) {
+        $(loadMoreContainer).removeClass('display-none');
+        $(loadMoreContainer).empty();
+        $('.dm-load-more-container').append('<button name="button" type="button" class="usa-button--outline dm-btn-base dm-load-more-btn width-auto" data-next="' + result.next + '">Load more</button>');
+        loadMoreEventListener();
+      } else {
+        $(loadMoreContainer).empty();
+        $(loadMoreContainer).addClass('display-none');
+      }
+    },
+    error: function(result) {
+      $('#dm-practice-card-list').addClass('display-none');
+      $('.dm-error-state').removeClass('display-none');
+      $(loadMoreContainer).empty();
+      $(loadMoreContainer).addClass('display-none');
+      countText = '0 results:'
+    },
+    complete: function(result) {
+      $('.dm-results-count').text(countText);
+      $('.dm-results-count').removeClass('display-none');
+      hideSpinner();
+    }
+  });
+}
+
+document.addEventListener('turbolinks:load', function () {
+    setExplorePracticesPage();
+});

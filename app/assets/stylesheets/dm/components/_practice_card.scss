@@ -2,8 +2,6 @@
 
 .dm-practice-card {
   position: relative;
-  min-width: 309px;
-  max-width: 309px;
   max-height: 436px;
 
   .dm-practice-link {
@@ -62,6 +60,10 @@
     height: 412px;
     max-width: 309px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+    @media screen and (min-width: 340px) {
+      min-width: 309px;
+    }
   }
 
   .dm-practice-card-img-container {
@@ -93,6 +95,7 @@
     position: absolute;
     bottom: 12px;
     margin-right: 24px;
+    max-width: 278px;
 
     span {
       height: 30px;
