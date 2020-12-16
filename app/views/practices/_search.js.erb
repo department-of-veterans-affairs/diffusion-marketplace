@@ -26,32 +26,30 @@ function searchPracticesPage() {
         return b.item.created_at.localeCompare(a.item.created_at, undefined, { numeric: true, sensitivity: 'base' })
     }
 
-    function compareAdoptionCounts( a, b ) {
-        if ( a.item.adoption_count > b.item.adoption_count ){
+    function sortByAdoptionCounts(a, b) {
+        if (a.item.adoption_count > b.item.adoption_count){
             return -1;
         }
-        if ( a.item.adoption_count < b.item.adoption_count ){
+        if (a.item.adoption_count < b.item.adoption_count){
             return 1;
         }
         return 0;
     }
 
-    function compareScore( a, b ) {
-        if ( a.score < b.score ){
+    function sortByScore(a, b) {
+        if (a.score < b.score){
             return -1;
         }
-        if ( a.score > b.score ){
+        if (a.score > b.score){
             return 1;
         }
         return 0;
     }
 
-    function buildHtmlCard(result) {
-        var localHtml = '';
+    function buildPracticeCard(result) {
+        var cardHtml = '';
         var practiceImage = result.item.image
         var practiceName = result.item.name
-        var noBackgroundImage = practiceImage ? '' : 'class: fas fa-images fa-3x text-base-lighter search-no-image';
-        var background = practiceImage ? 'background: url(' + practiceImage + ')' + ' transparent; background-repeat: no-repeat; background-position: center; background-size: cover;' : 'background-color: #f0f0f0; transparent; background-size: contain; background-repeat: no-repeat; background-position: center; ';
         var favoriteButtonIcon = result.item.user_favorited ? 'fas' : 'far';
         var practiceLinkClass = practiceImage ? '' : ' dm-alt-practice-link'
         var favoriteButton =
@@ -74,7 +72,7 @@ function searchPracticesPage() {
             practiceName +
             '</h3>'
         var assignPracticeHeader = practiceImage ? practiceNameHeader : ''
-        localHtml +=
+        cardHtml +=
             '<div class="dm-practice-card padding-y-105">' +
             <% if current_user.present? %>
             favoriteButton +
@@ -96,14 +94,14 @@ function searchPracticesPage() {
             '</div>' +
             '</a>' +
             '</div>';
-            return localHtml;
+            return cardHtml;
     }
 
     // Template out the search results
     function buildSearchResults(results, sortOption) {
-        var accumulation = '';
+        var finalResults = '';
         results.sort(sortOption).forEach(function (result) {
-            accumulation += buildHtmlCard(result)
+            finalResults += buildPracticeCard(result)
 
             '<!-- Uncomment to show Fuse.js diagnostics -->' +
             '<!--' +
@@ -113,9 +111,10 @@ function searchPracticesPage() {
             '-->'
         });
 
-        console.log('accum', accumulation);
+        console.log('final', finalResults);
+
         // Print results to the page
-        document.querySelector('#search-results').innerHTML = accumulation;
+        document.querySelector('#search-results').innerHTML = finalResults;
     }
 
 
@@ -130,7 +129,6 @@ function searchPracticesPage() {
 
         // Set variables
         var resultsSummary = document.querySelector('#results-summary');
-        var searchResults = document.querySelector('#search-results');
 
         // set the search page search bar input value
         searchField.value = query;
@@ -411,7 +409,8 @@ function searchPracticesPage() {
         console.log('results', results)
         console.log(results.length);
 
-        buildSearchResults(results, compareScore)
+        // Get the results
+        buildSearchResults(results, sortByScore)
 
         // Show the results summary section
         document.getElementById('dm-search-practices').classList.remove('display-none')
@@ -454,8 +453,6 @@ function searchPracticesPage() {
                     }
                 }
                 resultItem.highlight = result.join('');
-
-//                console.log('result item', resultItem)
 
                 if (resultItem.children && resultItem.children.length > 0) {
                     resultItem.children.forEach(function (child) {
@@ -577,26 +574,24 @@ function searchPracticesPage() {
         search(searchField.value, chosenCategories, originatingFacility, adoptingFacility)
     });
 
-    // Sort the results
-//        var sortOptions = ['most_relevant', 'a_to_z', 'adoptions', 'added'];
-        var sortSelect = $('#search_sort_option')
-        sortSelect.on('change', function() {
-            switch ($(this).val()) {
-                case "a_to_z":
-                    buildSearchResults(results, sortAToZ);
-                    break;
-                case "most_relevant":
-                    buildSearchResults(results, compareScore);
-                    break;
-                case "adoptions":
-                    buildSearchResults(results, compareAdoptionCounts);
-                    break;
-                case "added":
-                    buildSearchResults(results, sortByDateAdded);
-                    break;
-            }
-
-        })
+    // Sort the results based on each sort option
+    var sortSelect = $('#search_sort_option')
+    sortSelect.on('change', function() {
+        switch ($(this).val()) {
+            case "most_relevant":
+                buildSearchResults(results, sortByScore);
+                break;
+            case "a_to_z":
+                buildSearchResults(results, sortAToZ);
+                break;
+            case "adoptions":
+                buildSearchResults(results, sortByAdoptionCounts);
+                break;
+            case "added":
+                buildSearchResults(results, sortByDateAdded);
+                break;
+        }
+    })
 
     // Clear all filter options
     $(document).on('click', '#resetSearchFiltersButton', function(e) {
