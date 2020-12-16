@@ -61,8 +61,8 @@ describe 'Practices', type: :feature do
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@highlighted_practice.name)
       expect(page).to have_content('Find the next important or life-saving practice to adopt at your VA facility.')
-      # expect(page).to have_link(href: '/explore')
-      expect(page).to have_content('Relevant to you')
+      expect(page).to have_link(href: '/explore')
+      expect(page).to have_content('Recommended for you')
       expect(page).to have_content('Explore practices that are relevant to your location, role, and saved searches.')
       expect(page).to have_content('COVID-19')
       expect(page).to have_content('The Diffusion Marketplace has practices that help VHA respond to COVID-19. We have assembled a group of practices for frontline staff and administrators responding to the changing medical landscape.')
