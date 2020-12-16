@@ -3,7 +3,7 @@ var facilities = <%= raw @facilities_data.to_json %>;
 var visns = <%= raw @visn_data.to_json %>;
 var adoptions = <%= raw @diffusion_histories.to_json %>;
 var results = null;
-
+var resultsHTML = '';
 
 //function test() {
 //    // Remove no search items content
@@ -17,6 +17,108 @@ function searchPracticesPage() {
     // Skip if not the search page
     if (location.pathname !== '/search') return;
 
+    // sort functions
+    function sortAToZ(a, b) {
+        return a.item.name.localeCompare(b.item.name, undefined, { numeric: true, sensitivity: 'base' })
+    }
+
+    function sortByDateAdded(a, b) {
+        return b.item.created_at.localeCompare(a.item.created_at, undefined, { numeric: true, sensitivity: 'base' })
+    }
+
+    function compareAdoptionCounts( a, b ) {
+        if ( a.item.adoption_count > b.item.adoption_count ){
+            return -1;
+        }
+        if ( a.item.adoption_count < b.item.adoption_count ){
+            return 1;
+        }
+        return 0;
+    }
+
+    function compareScore( a, b ) {
+        if ( a.score < b.score ){
+            return -1;
+        }
+        if ( a.score > b.score ){
+            return 1;
+        }
+        return 0;
+    }
+
+    function buildHtmlCard(result) {
+        var localHtml = '';
+        var practiceImage = result.item.image
+        var practiceName = result.item.name
+        var noBackgroundImage = practiceImage ? '' : 'class: fas fa-images fa-3x text-base-lighter search-no-image';
+        var background = practiceImage ? 'background: url(' + practiceImage + ')' + ' transparent; background-repeat: no-repeat; background-position: center; background-size: cover;' : 'background-color: #f0f0f0; transparent; background-size: contain; background-repeat: no-repeat; background-position: center; ';
+        var favoriteButtonIcon = result.item.user_favorited ? 'fas' : 'far';
+        var practiceLinkClass = practiceImage ? '' : ' dm-alt-practice-link'
+        var favoriteButton =
+            '<a aria-label="Bookmark ' + practiceName + '" tabindex="-1" aria-hidden="true" class="dm-practice-bookmark-btn" id="dm-bookmark-button-' + result.item.id + '" data-remote="true" rel="nofollow" data-method="post" href="/practices/' + result.item.slug + '/favorite.js">' +
+            '<i class="' + favoriteButtonIcon + ' fa-bookmark dm-favorite-icon-' + result.item.id + ' text-no-underline"></i>' +
+            '</a>';
+        var cardImageHtml =
+            '<div class="dm-practice-card-img-container">' +
+            '<img alt="' + practiceName + ' Marketplace Card Image" class="grid-row marketplace-card-img radius-top-sm" src="' + practiceImage + '">' +
+            '</div>'
+        var noCardImageHtml =
+            '<div class="dm-bg-gray-80">' +
+            '<h3 class="text-normal font-sans-lg dm-practice-title multiline-ellipses-2 margin-x-2 margin-y-4">' +
+            practiceName +
+            '</h3>' +
+            '</div>'
+        var cardImage = practiceImage ? cardImageHtml : noCardImageHtml
+        var practiceNameHeader =
+            '<h3 class="text-normal font-sans-lg dm-practice-title multiline-ellipses-2 margin-top-0 margin-bottom-2">' +
+            practiceName +
+            '</h3>'
+        var assignPracticeHeader = practiceImage ? practiceNameHeader : ''
+        localHtml +=
+            '<div class="dm-practice-card padding-y-105">' +
+            <% if current_user.present? %>
+            favoriteButton +
+            <% end %>
+            '<a href="/practices/' + result.item.slug + '" aria-label="Go to ' + result.item.name + '" aria-hidden="true" class="dm-practice-link' + practiceLinkClass + '">' +
+            '<div class=" dm-practice-card-container">' +
+            cardImage +
+            '<div class="padding-105 height-card-mobile">' +
+            assignPracticeHeader +
+            '<div>' +
+            '<p class="multiline-ellipses-1 font-sans-sm practice-card-tagline">' + result.item.tagline + '</p>' +
+            '</div>' +
+            '<div class="dm-practice-card-origin margin-bottom-2">' +
+            '<span class="line-clamp-2 font-sans-3xs text-gray-50 multiline-ellipses-3 line-height-sans-205 dm-practice-card-origin-info">' +
+            'Created in ' + result.item.date_initiated + ' ' + result.item.initiating_facility_name +
+            '</span>' +
+            '</div>' +
+            '</div>' +
+            '</div>' +
+            '</a>' +
+            '</div>';
+            return localHtml;
+    }
+
+    // Template out the search results
+    function buildSearchResults(results, sortOption) {
+        var accumulation = '';
+        results.sort(sortOption).forEach(function (result) {
+            accumulation += buildHtmlCard(result)
+
+            '<!-- Uncomment to show Fuse.js diagnostics -->' +
+            '<!--' +
+            '<h3>Fuse.js highlighted character matching</h3>' +
+            '<p class="">' + result.highlight + '</p>' +
+            '<p><b>Score: ' + result.score + '</b></p>' +
+            '-->'
+        });
+
+        console.log('accum', accumulation);
+        // Print results to the page
+        document.querySelector('#search-results').innerHTML = accumulation;
+    }
+
+
     // Search practices and populate the page
     function search(query, categories, originatingFacility, adoptingFacility) {
         console.log('query', query)
@@ -27,7 +129,6 @@ function searchPracticesPage() {
         query = query.trim();
 
         // Set variables
-        var resultsHTML = '';
         var resultsSummary = document.querySelector('#results-summary');
         var searchResults = document.querySelector('#search-results');
 
@@ -307,8 +408,10 @@ function searchPracticesPage() {
             results = [];
         }
 
-//        console.log('results', results)
-//        console.log(results.length);
+        console.log('results', results)
+        console.log(results.length);
+
+        buildSearchResults(results, compareScore)
 
         // Show the results summary section
         document.getElementById('dm-search-practices').classList.remove('display-none')
@@ -320,72 +423,6 @@ function searchPracticesPage() {
         results.forEach(function (result) {
             highlighter(result);
         });
-
-        function buildHtml(result) {
-            var practiceImage = result.item.image
-            var practiceName = result.item.name
-            var noBackgroundImage = practiceImage ? '' : 'class: fas fa-images fa-3x text-base-lighter search-no-image';
-            var background = practiceImage ? 'background: url(' + practiceImage + ')' + ' transparent; background-repeat: no-repeat; background-position: center; background-size: cover;' : 'background-color: #f0f0f0; transparent; background-size: contain; background-repeat: no-repeat; background-position: center; ';
-            var favoriteButtonIcon = result.item.user_favorited ? 'fas' : 'far';
-            var practiceLinkClass = practiceImage ? '' : ' dm-alt-practice-link'
-            var favoriteButton =
-                '<a aria-label="Bookmark ' + practiceName + '" tabindex="-1" aria-hidden="true" class="dm-practice-bookmark-btn" id="dm-bookmark-button-' + result.item.id + '" data-remote="true" rel="nofollow" data-method="post" href="/practices/' + result.item.slug + '/favorite.js">' +
-                '<i class="' + favoriteButtonIcon + ' fa-bookmark dm-favorite-icon-' + result.item.id + ' text-no-underline"></i>' +
-                '</a>';
-            var cardImageHtml =
-                '<div class="dm-practice-card-img-container">' +
-                '<img alt="' + practiceName + ' Marketplace Card Image" class="grid-row marketplace-card-img radius-top-sm" src="' + practiceImage + '">' +
-                '</div>'
-            var noCardImageHtml =
-                '<div class="dm-bg-gray-80">' +
-                '<h3 class="text-normal font-sans-lg dm-practice-title multiline-ellipses-2 margin-x-2 margin-y-4">' +
-                practiceName +
-                '</h3>' +
-                '</div>'
-            var cardImage = practiceImage ? cardImageHtml : noCardImageHtml
-            var practiceNameHeader =
-                '<h3 class="text-normal font-sans-lg dm-practice-title multiline-ellipses-2 margin-top-0 margin-bottom-2">' +
-                practiceName +
-                '</h3>'
-            var assignPracticeHeader = practiceImage ? practiceNameHeader : ''
-            resultsHTML +=
-                '<div class="dm-practice-card padding-y-105">' +
-                <% if current_user.present? %>
-                favoriteButton +
-                <% end %>
-                '<a href="/practices/' + result.item.slug + '" aria-label="Go to ' + result.item.name + '" aria-hidden="true" class="dm-practice-link' + practiceLinkClass + '">' +
-                '<div class=" dm-practice-card-container">' +
-                cardImage +
-                '<div class="padding-105 height-card-mobile">' +
-                assignPracticeHeader +
-                '<div>' +
-                '<p class="multiline-ellipses-1 font-sans-sm practice-card-tagline">' + result.item.tagline + '</p>' +
-                '</div>' +
-                '<div class="dm-practice-card-origin margin-bottom-2">' +
-                '<span class="line-clamp-2 font-sans-3xs text-gray-50 multiline-ellipses-3 line-height-sans-205 dm-practice-card-origin-info">' +
-                'Created in ' + result.item.date_initiated + ' ' + result.item.initiating_facility_name +
-                '</span>' +
-                '</div>' +
-                '</div>' +
-                '</div>' +
-                '</a>' +
-                '</div>';
-        }
-
-        // Template out the search results
-        results.forEach(function (result) {
-            buildHtml(result)
-
-                '<!-- Uncomment to show Fuse.js diagnostics -->' +
-                '<!--' +
-                '<h3>Fuse.js highlighted character matching</h3>' +
-                '<p class="">' + result.highlight + '</p>' +
-                '<p><b>Score: ' + result.score + '</b></p>' +
-                '-->'
-        });
-
-        // Print results to the page
-        searchResults.innerHTML = resultsHTML;
 
         // Highlight search results where exact keyword matches
         var mark = new Mark('#search-results');
@@ -428,6 +465,7 @@ function searchPracticesPage() {
             }
         });
     }
+
 
     // Set up search
 
@@ -541,14 +579,24 @@ function searchPracticesPage() {
 
     // Sort the results
 //        var sortOptions = ['most_relevant', 'a_to_z', 'adoptions', 'added'];
-//    var sortSelect = $('#search_sort_option')
-//        sortSelect.on('change', function() {
-//              var sorted = practices.sort(function(a, b) {
-//                  return a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' })
-//              });
-//            console.log(sorted)
+        var sortSelect = $('#search_sort_option')
+        sortSelect.on('change', function() {
+            switch ($(this).val()) {
+                case "a_to_z":
+                    buildSearchResults(results, sortAToZ);
+                    break;
+                case "most_relevant":
+                    buildSearchResults(results, compareScore);
+                    break;
+                case "adoptions":
+                    buildSearchResults(results, compareAdoptionCounts);
+                    break;
+                case "added":
+                    buildSearchResults(results, sortByDateAdded);
+                    break;
+            }
 
-//        })
+        })
 
     // Clear all filter options
     $(document).on('click', '#resetSearchFiltersButton', function(e) {
