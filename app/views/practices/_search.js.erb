@@ -94,14 +94,17 @@ function searchPracticesPage() {
             '</div>' +
             '</a>' +
             '</div>';
+
             return cardHtml;
     }
 
     // Template out the search results
     function buildSearchResults(results, sortOption) {
+        var resultsArray = [];
         var finalResults = '';
         results.sort(sortOption).forEach(function (result) {
             finalResults += buildPracticeCard(result)
+            resultsArray.push(buildPracticeCard(result))
 
             '<!-- Uncomment to show Fuse.js diagnostics -->' +
             '<!--' +
@@ -111,10 +114,59 @@ function searchPracticesPage() {
             '-->'
         });
 
-        console.log('final', finalResults);
+//        $('.pagination').pagination({
+//            dataSource: resultsArray,
+//            pageSize: 12,
+//            getSelectedPageNum: 2,
+//            callback: function(data, pagination) {
+//                console.log('data', data)
+//                console.log('pagination', pagination)
+//                // template method of yourself
+//                $('#search-results').html(data)
+//            }
+//        })
+
+
+//        console.log('final', finalResults);
+//        console.log('final array', resultsArray);
 
         // Print results to the page
         document.querySelector('#search-results').innerHTML = finalResults;
+//        $('#search-results').loadMoreResults({
+//            displayedItems: 12,
+//            showItems: 12,
+//            tag: {
+//                'name': 'div',
+//                'class': 'dm-practice-card'
+//            }
+//        })
+
+//        if ($('.btn-load-more').length > 1) {
+//            console.log('hello')
+//            $('.btn-load-more')[0].remove()
+//        }
+
+        $('#search-results').showMoreItems({
+            startNum: 12,
+            afterNum: 12,
+            moreText: 'Load more',
+            noMoreText: 'No more results'
+        })
+
+        $(document).on('click', '.addListData', function(e) {
+            e.preventDefault()
+            if ($('.addListData').text() !== 'Load more') {
+                $('.addListData').parent().addClass('display-none')
+            }
+        })
+
+
+//        $('#search-results').btnLoadmore({
+//            showItem : 3,
+//            whenClickBtn : 1,
+//            textBtn : 'Load more ...'
+//        });
+
     }
 
 
