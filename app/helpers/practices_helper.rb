@@ -71,7 +71,7 @@ module PracticesHelper
     page_view_leaders[0].count
   end
 
-  def fetch_unique_visitors_by_practice(practice_id, duration = 30)
+  def fetch_unique_visitors_by_practice_count(practice_id, duration = 30)
     sql = "select distinct user_id from ahoy_events where name = 'Practice show' and properties = '{\"practice_id\": #{practice_id}}'"
     if duration == "30"
       sql += " and time >= now() - interval '#{duration} days'"

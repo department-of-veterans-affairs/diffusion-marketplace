@@ -299,7 +299,7 @@ class PracticesController < ApplicationController
     @page_views_leader_board_30_days = fetch_page_views_leader_board()
     @page_views_leader_board_all_time = fetch_page_views_leader_board(0)
     @page_views_for_practice = fetch_page_view_for_practice(@practice.id, @duration)
-    @unique_visitors_for_practice = fetch_unique_visitors_by_practice(@practice.id, @duration)
+    @unique_visitors_for_practice_count = fetch_unique_visitors_by_practice_count(@practice.id, @duration)
     @bookmarks_by_practice = fetch_bookmarks_by_practice(@practice.id, @duration)
     @adoptions_by_practice = fetch_adoptions_by_practice(@practice.id, @duration)
     @adoptions_total = fetch_adoptions_total_by_practice(@practice.id, @duration)

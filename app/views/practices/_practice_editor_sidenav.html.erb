@@ -18,7 +18,7 @@
               </li>
             <li class="usa-sidenav__item" id="peSideNavPracticeName">
               <% if current_page?(practice_introduction_path(@practice)) %>
-                <a href="#" onclick="return false" class="active width-full dm-tab"><%= @practice.name %></a>
+                <a href="#" onclick="return false" style="color: royalblue; font-weight: bold" class="width-full dm-tab"><%= @practice.name %></a>
               <% else %>
                 <%= link_to @practice.name, practice_introduction_path(@practice), class: "#{'active' if current_page?( practice_introduction_path(@practice))} dm-tab" %>
               <% end %>

@@ -29,15 +29,13 @@
         </p>
         <br/>
         <br/>
-        <div class="margin-bottom-5">
+        <div class="margin-bottom-7">
           View your metrics for
           <select style="width: 75%; height: 40px" name="metrics_duration" id="metrics_duration">
             <option id="metrics_30_day_value" value="30" <%= 'selected' if @duration.to_i == 30 %>>the last 30 days</option>
             <option id="metrics_all_time_value" value="9999" <%= 'selected' if @duration.to_i == 9999 %>>all time</option>
           </select>
         </div>
-        <br/>
-        <br/>
           <div class="grid-col-8 margin-bottom-10"  style="text-align: center; width: 100%" >
           <table style="width: 80%; display: inline-table">
             <th style="font-size: 13px">PAGE VIEWS</th>
@@ -46,16 +44,17 @@
             <th style="font-size: 13px">ADOPTIONS</th>
             <tr>
               <td><h2><%= @page_views_for_practice %></h2></td>
-              <td><h2><%= @unique_visitors_for_practice %></h2></td>
+              <td><h2><%= @unique_visitors_for_practice_count %></h2></td>
               <td><h2><%= @bookmarks_by_practice %></h2></td>
               <td><h2><%= @adoptions_by_practice %></h2></td>
             </tr>
           </table>
           </div>
         <!--  CHARTS ------------------------------------------------------------>
-<!--        <div class="border bg-white padding-2 margin-bottom-10 margin-top-10 radius-md padding-bottom-0">-->
-<!--          <div id="chart_div"></div>-->
-<!--         </div>-->
+
+        <div class="border bg-white padding-2 margin-bottom-10 margin-top-10 radius-md padding-bottom-0">
+          <div style="width: 726px; height: 400px" id="chart_div"></div>
+         </div>
 
 
 <!-- ADOPTIONS ------------------------------------------------------------->
@@ -158,53 +157,53 @@
 </div>
 <!-- GOOGLE CHARTS ----------------------------------------------------------->
   <!--Load the AJAX API-->
-<!--  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>-->
-<!--  <script type="text/javascript">-->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
 
-<!--      // Load the Visualization API and the corechart package.-->
-<!--      google.charts.load('current', {'packages':['corechart']});-->
+      // Load the Visualization API and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
 
-<!--      // Set a callback to run when the Google Visualization API is loaded.-->
-<!--      google.charts.setOnLoadCallback(drawLineChart);-->
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.charts.setOnLoadCallback(drawLineChart);
 
-<!--      // Callback that creates and populates a data table,-->
-<!--      // instantiates the pie chart, passes in the data and-->
-<!--      // draws it.-->
-<!--      google.charts.load('current', {-->
-<!--          packages: ['corechart', 'line']-->
-<!--      });-->
-<!--      google.charts.setOnLoadCallback(drawBackgroundColor);-->
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      google.charts.load('current', {
+          packages: ['corechart', 'line']
+      });
+      google.charts.setOnLoadCallback(drawBackgroundColor);
 
-<!--      function drawLineChart() {-->
-<!--          var data = new google.visualization.DataTable();-->
-<!--          data.addColumn('string', 'X');-->
-<!--          data.addColumn('number', 'Page views');-->
-<!--          data.addColumn('number', 'Unique visitors');-->
+      function drawLineChart() {
+          var data = new google.visualization.DataTable();
+          data.addColumn('string', 'X');
+          data.addColumn('number', 'Page views');
+          data.addColumn('number', 'Unique visitors');
 
-<!--          data.addRows([-->
-<!--              ['March 1', 0, 0],-->
-<!--              ['March 2', 10, 13],-->
-<!--              ['March 3', 23, 5],-->
-<!--              ['March 4', 17, 22],-->
-<!--              ['March 5', 18, 23],-->
-<!--              ['March 6', 9, 50],-->
-<!--              ['March 7', 11, 25],-->
-<!--              ['March 8', 27, 7]-->
-<!--          ]);-->
+          data.addRows([
+              ['March 1', 0, 0],
+              ['March 2', 10, 13],
+              ['March 3', 23, 5],
+              ['March 4', 17, 22],
+              ['March 5', 18, 23],
+              ['March 6', 9, 50],
+              ['March 7', 11, 25],
+              ['March 8', 27, 7]
+          ]);
 
-<!--          var options = {-->
-<!--              hAxis: {-->
-<!--                  title: 'Time'-->
-<!--              },-->
-<!--              vAxis: {-->
-<!--                  title: 'Metric Total'-->
-<!--              },-->
-<!--              backgroundColor: '#f1f8e9',-->
-<!--              legend: { position: 'top', alignment: 'start' },-->
-<!--              colors: ['#0000FF', '#FFD700']-->
-<!--          };-->
+          var options = {
+              hAxis: {
+                  title: 'Time'
+              },
+              vAxis: {
+                  title: 'Metric Total'
+              },
+              backgroundColor: '#f1f8e9',
+              legend: { position: 'top', alignment: 'start' },
+              colors: ['#0000FF', '#FFD700']
+          };
 
-<!--          var chart = new google.visualization.LineChart(document.getElementById('chart_div'));-->
-<!--          chart.draw(data, options);-->
-<!--      }-->
-<!--  </script>-->
+          var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+          chart.draw(data, options);
+      }
+  </script>
