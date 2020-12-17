@@ -32,7 +32,7 @@ ActiveAdmin.register Practice do
     end
   end
 
-    index do
+  index do
     selectable_column unless params[:scope] == "get_practice_owner_emails"
     id_column unless params[:scope] == "get_practice_owner_emails"
     column 'Practice Name', :name
@@ -40,11 +40,14 @@ ActiveAdmin.register Practice do
     column(:owner_email) {|practice| practice.user&.email}
     column :enabled unless params[:scope] == "get_practice_owner_emails"
     column :created_at unless params[:scope] == "get_practice_owner_emails"
+    column :highlight
     column 'Last Updated', :updated_at unless params[:scope] == "get_practice_owner_emails"
     column :date_published unless params[:scope] == "get_practice_owner_emails"
     actions do |practice|
       practice_enabled_action_str = practice.enabled ? "Disable" : "Enable"
       item practice_enabled_action_str, enable_practice_admin_practice_path(practice), method: :post
+      practice_highlight_action_str = practice.highlight ? "Unhighlight" : "Highlight"
+      item practice_highlight_action_str, highlight_practice_admin_practice_path(practice), method: :post
     end
   end
 
@@ -56,6 +59,29 @@ ActiveAdmin.register Practice do
     end
     resource.save
     redirect_back fallback_location: root_path, notice: message
+  end
+
+  member_action :highlight_practice, method: :post do
+    to_highlight = !resource.highlight
+
+    highlighted_pr_count = Practice.where(highlight: true, published: true, enabled: true, approved: true).size
+    if to_highlight && !resource.published
+      message = "Practice must be published to be highlighted."
+      redirect_back fallback_location: root_path, :flash => { :error => message }
+    elsif to_highlight && highlighted_pr_count >= 1
+      message = "Only one practice can be highlighted at a time."
+      redirect_back fallback_location: root_path, :flash => { :error => message }
+    else
+      resource.highlight = to_highlight
+      resource.highlight_title = nil
+      resource.highlight_body = nil
+      message = "\"#{resource.name}\" Practice highlighted"
+      unless resource.highlight
+        message = "\"#{resource.name}\" Practice unhighlighted"
+      end
+      resource.save
+      redirect_back fallback_location: root_path, notice: message
+    end
   end
 
   member_action :export_practice_adoptions, method: :get do
@@ -129,6 +155,10 @@ ActiveAdmin.register Practice do
       f.input :name, label: 'Practice name'
       f.input :user, label: 'User email', as: :string, input_html: {name: 'user_email'}
       f.input :categories, as: :select, multiple: true, collection: Category.all.order(name: :asc).map { |cat| ["#{cat.name.capitalize}", cat.id]}, input_html: { value: @practice_categories }
+      if object.highlight
+        f.input :highlight_title, label: 'Highlighted Practice Title'
+        f.input :highlight_body, label: 'Highlighted Practice Body'
+      end
     end        # builds an input field for every attribute
     f.actions         # adds the 'Submit' and 'Cancel' buttons
   end
@@ -150,6 +180,11 @@ ActiveAdmin.register Practice do
       row :published
       row :approved
       row :enabled
+      row :highlight
+      if practice.highlight
+        row :highlight_title
+        row :highlight_body
+      end
     end
     h3 'Versions'
     table_for practice.versions.order(created_at: :desc) do |version|
@@ -175,6 +210,7 @@ ActiveAdmin.register Practice do
     before_action :set_categories_view, only: :edit
     before_action :set_practice_adoption_values, only: [:show, :export_practice_adoptions]
     after_action :update_categories, only: [:create, :update]
+    after_action :update_highlight_attr, only: [:update]
 
     before_create do |practice|
       if params[:user_email].present?
@@ -246,6 +282,10 @@ ActiveAdmin.register Practice do
         end
       end
     end
+
+    def update_highlight_attr
+      practice = Practice.find_by(name: params[:practice][:name])
+      practice.update(highlight_title: params[:practice][:highlight_title], highlight_body: params[:practice][:highlight_body])
+    end
   end
 end
-
