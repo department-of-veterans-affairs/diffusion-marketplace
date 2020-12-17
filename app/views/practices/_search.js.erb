@@ -154,7 +154,7 @@ function searchPracticesPage() {
         })
 
         $(document).on('click', '.addListData', function(e) {
-            e.preventDefault()
+            truncateText()
             if ($('.addListData').text() !== 'Load more') {
                 $('.addListData').parent().addClass('display-none')
             }
@@ -201,20 +201,20 @@ function searchPracticesPage() {
             })
         }
 
-        if (originatingFacility) {
-            var originFacility = []
-            if (originatingFacility.includes('VISN')) {
-                console.log('in here')
-                var foundVisn = visns.find(function(v) {
-                    return v.number === originatingFacility
-                })
-                originFacility.push({'initiating_facility': "=\"" + foundVisn.id.toString() + "\""})
-            } else {
-                var foundFacility = facilities.find(function(f) {
-                    return originatingFacility === f.StationNumber
-                })
-                originFacility.push({'origin_facilities': "=\"" + foundFacility.StationNumber + "\""})
-            }
+        var originFacility = originatingFacility ? [] : null
+
+        if (originatingFacility && originatingFacility.includes('VISN')) {
+            console.log('in here')
+            var foundVisn = visns.find(function(v) {
+                return v.number === originatingFacility
+            })
+            console.log('found visn', foundVisn)
+            originFacility.push({'initiating_facility': "=\"" + foundVisn.id.toString() + "\""})
+        } else if (originatingFacility && !originatingFacility.includes('VISN')){
+            var foundFacility = facilities.find(function(f) {
+                return originatingFacility === f.StationNumber
+            })
+            originFacility.push({'origin_facilities': "=\"" + foundFacility.StationNumber + "\""})
         }
 
         function getAdoptionFacilities(stationNumbers, facilityIds) {
@@ -587,19 +587,37 @@ function searchPracticesPage() {
     $(document).on('submit', '#update-search-results-form', function (e) {
         e.preventDefault();
 
-        // Close filters accordion if it's open
-        var filterAccordionButton = $('.search-filters-accordion-button')
-        if (filterAccordionButton.attr('aria-expanded') == 'true') {
-            filterAccordionButton.attr('aria-expanded', 'false')
+        // Close search filter accordion if it's open
+        var accordionButton = $('.search-filters-accordion-button')
+        if (accordionButton.attr('aria-expanded') == 'true') {
+            accordionButton.attr('aria-expanded', 'false')
             $('#search_filters_dropdown').attr('hidden', 'true')
         }
 
         // Make a new timeout set to go off in 500ms
-        timeout = setTimeout(function () {
-            if (searchField.value !== '') {
-                window.history.pushState("", "", '/search?query=' + searchField.value);
-                trackSearchField(decodeURI(searchField.value));
-        }}, 500);
+
+            console.log('search field is not empty')
+            timeout = setTimeout(function () {
+                if (searchField.value !== '') {
+                  window.history.pushState("", "", '/search?query=' + searchField.value);
+                  trackSearchField(decodeURI(searchField.value));
+            }}, 500);
+
+//        if (searchField.value !== '') {
+//            console.log('search field is not empty')
+//            timeout = setTimeout(function () {
+//                window.history.pushState("", "", '/search?query=' + searchField.value);
+//                trackSearchField(decodeURI(searchField.value));
+//            }, 500);
+//        } else {
+//            console.log('search field is empty')
+//            timeout = setTimeout(function () {
+//                window.history.pushState("", "", '/search');
+//                trackSearchField(decodeURI(searchField.value));
+//            }, 500);
+//        }
+
+        var selectedCheckboxes = $('#update-search-results-form [type="checkbox"]:checked')
 
         var chosenCategories = $('#update-search-results-form [type="checkbox"]:checked').map(function () {
             return this.value;
@@ -607,6 +625,8 @@ function searchPracticesPage() {
         if (chosenCategories.length == 0) {
             chosenCategories = null;
         }
+
+        console.log('chsoen cats', chosenCategories)
 
         var originatingFacilityInput = $('#originating-facility-and-visn-select');
         var originatingFacilityLi = $('#originating-facility-and-visn-select--list > li[aria-selected=true]');
@@ -622,8 +642,39 @@ function searchPracticesPage() {
         console.log('cate', chosenCategories)
         console.log('orig', originatingFacility)
         console.log('adop', adoptingFacility)
+        console.log('search field val', searchField.value)
 
+        // Run the search
         search(searchField.value, chosenCategories, originatingFacility, adoptingFacility)
+
+        // Display the amount of filters used(if any)
+        var checkboxCount = selectedCheckboxes.length
+        var noOriginatingFacilityText = originatingFacilityInput.val() === ''
+        var originatingFacilityTextPresent = originatingFacilityInput.val() !== ''
+        var noAdoptingFacilityText = adoptingFacilityInput.val() === ''
+        var adoptingFacilityTextPresent = adoptingFacilityInput.val() !== ''
+
+        function accordionText(checkboxCount, inputCount) {
+            return accordionButton.text('Filters ' + '(' + (checkboxCount + inputCount) + ')')
+        }
+
+        if (checkboxCount > 0 && originatingFacilityTextPresent && noAdoptingFacilityText) {
+            accordionText(checkboxCount, 1)
+        } else if (checkboxCount > 0 && noOriginatingFacilityText && adoptingFacilityTextPresent) {
+            accordionText(checkboxCount, 1)
+        } else if (checkboxCount > 0 && noOriginatingFacilityText && noAdoptingFacilityText) {
+            accordionText(checkboxCount, 0)
+        } else if (checkboxCount > 0 && originatingFacilityTextPresent && adoptingFacilityTextPresent) {
+            accordionText(checkboxCount, 2)
+        } else if (checkboxCount === 0 && originatingFacilityTextPresent && noAdoptingFacilityText) {
+            accordionText(0, 1)
+        } else if (checkboxCount === 0 && noOriginatingFacilityText && adoptingFacilityTextPresent) {
+            accordionText(0, 1)
+        } else if (checkboxCount === 0 && noOriginatingFacilityText && noAdoptingFacilityText) {
+            return accordionButton.text('Filters')
+        } else if (checkboxCount === 0 && originatingFacilityTextPresent && adoptingFacilityTextPresent) {
+            accordionText(0, 2)
+        }
     });
 
     // Sort the results based on each sort option
