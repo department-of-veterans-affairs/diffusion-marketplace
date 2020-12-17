@@ -325,6 +325,8 @@ describe 'The admin dashboard', type: :feature do
     login_as(@admin, scope: :user, run_callbacks: false)
     visit '/admin'
     click_link('Practices')
+    expect(page).to have_content('Last Updated')
+    expect(page).to have_content('Date Published')
 
     # check if categories display correctly
     click_link('Edit', href: edit_admin_practice_path(@practice))
@@ -359,7 +361,7 @@ describe 'The admin dashboard', type: :feature do
 
     visit '/admin/practices'
     within_table('index_table_practices') do
-      find_all('.table_actions')[1].click_link('View')
+      find_all('.table_actions')[0].click_link('View')
     end
 
     expect(page).to have_selector("input[value='Download Adoption Data']")

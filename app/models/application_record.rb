@@ -6,7 +6,7 @@ class ApplicationRecord < ActiveRecord::Base
   end
 
   def s3_presigned_url(path)
-    signer.presigned_url(:get_object, bucket: ENV['S3_BUCKET_NAME'], key: path )
+    signer.presigned_url(:get_object, bucket: ENV['S3_BUCKET_NAME'], key: path, expires_in: 86400 ) # number of seconds in a day
   end
 
   def object_presigned_url(obj, style = nil)

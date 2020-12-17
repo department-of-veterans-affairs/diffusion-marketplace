@@ -28,7 +28,6 @@
 //= require fuse-3.4.4
 //= require mark
 //= require ie
-//= require next-steps
 //= require practices
 //= require _feedback_survey
 //= require _side_nav

@@ -13,8 +13,6 @@ Rails.application.routes.draw do
   post '/accept_terms', action: 'accept_terms', controller: 'users', as: 'accept_terms'
 
   resources :practices, except: :index do
-    get '/planning-checklist', action: 'planning_checklist', as: 'planning_checklist'
-    get '/committed', action: 'committed', as: 'committed'
     get '/edit/instructions', action: 'instructions', as: 'instructions'
     get '/edit/introduction', action: 'introduction', as: 'introduction'
     get '/edit/implementation', action: 'implementation', as: 'implementation'
@@ -33,7 +31,6 @@ Rails.application.routes.draw do
     post '/edit/create_or_update_diffusion_history/', action: 'create_or_update_diffusion_history', as: 'create_or_update_diffusion_history'
     patch '/publication_validation', action: 'publication_validation', as: 'publication_validation'
     get '/published', action: 'published', as: 'published'
-    post '/commit', action: 'commit', as: 'commit'
     post '/favorite', action: 'favorite', as: 'favorite'
     delete '/diffusion_history/:diffusion_history_id', action: 'destroy_diffusion_history', as: 'destroy_diffusion_history'
     member do
@@ -69,15 +66,16 @@ Rails.application.routes.draw do
   get 'practices/planning_checklist' => 'practices#planning_checklist'
   get 'pii_phi_information' => 'home#pii_phi_information'
   get '/search' => 'practices#search'
+  get '/explore' => 'practices#explore'
+  post '/explore' => 'practices#explore_practices'
 
   get '/users/:id' => 'users#show'
   get '/edit-profile' => 'users#edit_profile'
-  get '/relevant-to-you' => 'users#relevant_to_you'
+  get '/recommended-for-you' => 'users#recommended_for_you'
   post '/edit-profile' => 'users#update_profile'
   delete '/edit-profile-photo' => 'users#delete_photo'
 
   resource :competitions do
-    # show shark tank for now
     get '/shark-tank', action: 'shark_tank', as: 'shark-tank'
     get '/go-fish', action: 'go_fish', as: 'go-fish'
   end

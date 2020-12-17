@@ -2,7 +2,7 @@ function paginatedBookmarkedPractices() {
     var favoritePracticesClass = ".paginated-favorite-practices";
 
     // Append the next set of practice cards to the current set
-    $(favoritePracticesClass).append("<%= escape_javascript render(partial: 'users/relevant_to_you/practice_cards_container', locals: {
+    $(favoritePracticesClass).append("<%= escape_javascript render(partial: 'users/recommended_for_you/practice_cards_container', locals: {
         container_classes:  nil,
         container_header_classes: nil,
         container_title: nil,
