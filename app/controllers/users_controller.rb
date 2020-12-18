@@ -132,6 +132,8 @@ class UsersController < ApplicationController
         # TODO: In the future, if user-locations are recorded as VISNs or Offices, we need to add them here. As of 11/7/2020, we are only using facilities.
       end
       @user_location_practices
+    else
+      redirect_to new_user_session_path
     end
 
     respond_to do |format|
