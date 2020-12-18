@@ -195,20 +195,33 @@ function searchPracticesPage() {
             })
         }
 
-        var originFacility = originatingFacility ? [] : null
+        var originFacilityArray = originatingFacility ? [] : null
 
         if (originatingFacility && originatingFacility.includes('VISN')) {
             console.log('in here')
             var foundVisn = visns.find(function(v) {
                 return v.number === originatingFacility
             })
+
+            originFacilityArray.push({'initiating_facility': "=\"" + foundVisn.id.toString() + "\""})
+
+            var visnFacilities = facilities.filter(function(f) {
+                return f.VISN === foundVisn.number.split('-').pop()
+            })
+
+            visnFacilities.forEach(function(vf) {
+                originFacilityArray.push({'initiating_facility': "=\"" + vf.StationNumber + "\""})
+            })
+
             console.log('found visn', foundVisn)
-            originFacility.push({'initiating_facility': "=\"" + foundVisn.id.toString() + "\""})
+            console.log('visnFacilities', visnFacilities)
+            console.log('Origin facilities with VISN', originFacilityArray)
+
         } else if (originatingFacility && !originatingFacility.includes('VISN')){
             var foundFacility = facilities.find(function(f) {
                 return originatingFacility === f.StationNumber
             })
-            originFacility.push({'origin_facilities': "=\"" + foundFacility.StationNumber + "\""})
+            originFacilityArray.push({'origin_facilities': "=\"" + foundFacility.StationNumber + "\""})
         }
 
         function getAdoptionFacilities(stationNumbers, facilityIds) {
@@ -224,7 +237,7 @@ function searchPracticesPage() {
         if (adoptingFacility) {
             var filteredFacilities;
             var stationNumbers = [];
-            var adoptionFacilityIds = [];
+            var adoptionFacilityArray = [];
             if (adoptingFacility.includes('VISN')) {
                 filteredFacilities = facilities.filter(function(f) {
                     return 'VISN-' + f.VISN == adoptingFacility
@@ -234,7 +247,7 @@ function searchPracticesPage() {
                     stationNumbers.push(ff.StationNumber)
                 })
 
-                getAdoptionFacilities(stationNumbers, adoptionFacilityIds)
+                getAdoptionFacilities(stationNumbers, adoptionFacilityArray)
 
             } else {
                 var matchingFacility;
@@ -244,7 +257,7 @@ function searchPracticesPage() {
 
                 stationNumbers.push(matchingFacility.StationNumber)
 
-                getAdoptionFacilities(stationNumbers, adoptionFacilityIds)
+                getAdoptionFacilities(stationNumbers, adoptionFacilityArray)
             }
         }
 
@@ -261,11 +274,11 @@ function searchPracticesPage() {
                         $and: categoryFilters
                     },
                     {
-                        $and: originFacility
+                        $and: originFacilityArray
                     },
                     {
                         $and: [
-                            {$or: adoptionFacilityIds}
+                            {$or: adoptionFacilityArray}
                         ]
                     }
                 ]
@@ -283,7 +296,7 @@ function searchPracticesPage() {
                         $and: categoryFilters
                     },
                     {
-                        $and: originFacility
+                        $and: originFacilityArray
                     }
                 ]
             })
@@ -291,7 +304,7 @@ function searchPracticesPage() {
 
         function searchWithQueryAndCategoriesAndAdoptingFacility() {
             console.log('cat filters', categoryFilters)
-            console.log('adopt filters', adoptionFacilityIds)
+            console.log('adopt filters', adoptionFacilityArray)
             results = fuse.search({
                 $and: [
                     {
@@ -302,7 +315,7 @@ function searchPracticesPage() {
                     },
                     {
                         $and: [
-                            {$or: adoptionFacilityIds}
+                            {$or: adoptionFacilityArray}
                         ]
                     }
                 ]
@@ -317,11 +330,11 @@ function searchPracticesPage() {
                         $or: searchBarQueryArray
                     },
                     {
-                        $and: originFacility
+                        $and: originFacilityArray
                     },
                     {
                         $and: [
-                            {$or: adoptionFacilityIds}
+                            {$or: adoptionFacilityArray}
                         ]
                     }
                 ]
@@ -348,7 +361,7 @@ function searchPracticesPage() {
                         $or: searchBarQueryArray
                     },
                     {
-                        $and: originFacility
+                        $and: originFacilityArray
                     }
                 ]
             })
@@ -362,7 +375,7 @@ function searchPracticesPage() {
                     },
                     {
                         $and: [
-                            {$or: adoptionFacilityIds}
+                            {$or: adoptionFacilityArray}
                         ]
                     }
                 ]
@@ -370,19 +383,19 @@ function searchPracticesPage() {
         }
 
         function searchWithAllFilters() {
-            results = fuse.search({$or: categoryFilters.concat(originFacility, adoptionFacilityIds)})
+            results = fuse.search({$or: categoryFilters.concat(originFacilityArray, adoptionFacilityArray)})
         }
 
         function searchWithCategoriesAndOriginFacility() {
-            results = fuse.search({$or: categoryFilters.concat(originFacility)})
+            results = fuse.search({$or: categoryFilters.concat(originFacilityArray)})
         }
 
         function searchWithCategoriesAndAdoptingFacility() {
-            results = fuse.search({$or: categoryFilters.concat(adoptionFacilityIds)})
+            results = fuse.search({$or: categoryFilters.concat(adoptionFacilityArray)})
         }
 
         function searchWithBothFacilities() {
-            results = fuse.search({$or: adoptionFacilityIds.concat(originFacility)})
+            results = fuse.search({$or: adoptionFacilityArray.concat(originFacilityArray)})
         }
 
         function searchWIthOnlyCategories() {
@@ -391,11 +404,11 @@ function searchPracticesPage() {
 
         function searchWithOnlyOriginFacility() {
             console.log('just origin facility', originatingFacility)
-            results = fuse.search({$or: originFacility})
+            results = fuse.search({$or: originFacilityArray})
         }
 
         function searchWithOnlyAdoptingFacility() {
-            results = fuse.search({$or: adoptionFacilityIds})
+            results = fuse.search({$or: adoptionFacilityArray})
         }
 
         // Run the search query
@@ -442,7 +455,7 @@ function searchPracticesPage() {
             searchWIthOnlyCategories()
         } else if (query === '' && !categoryFilters && originatingFacility && !adoptingFacility) {
             console.log('Just Origin')
-            console.log('originFacility', originFacility)
+            console.log('originFacilityArray', originFacilityArray)
             searchWithOnlyOriginFacility();
         } else if (query === '' && !categoryFilters && !originatingFacility && adoptingFacility) {
             console.log('Just Adopting')
