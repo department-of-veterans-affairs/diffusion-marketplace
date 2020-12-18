@@ -295,7 +295,7 @@ class PracticesController < ApplicationController
   end
 
   def metrics
-    @duration = params[:duration] || 30
+    @duration = params[:duration] || "30"
     @page_views_leader_board_30_days = fetch_page_views_leader_board()
     @page_views_leader_board_all_time = fetch_page_views_leader_board(0)
     @page_views_for_practice_count = fetch_page_view_for_practice_count(@practice.id, @duration)
@@ -334,20 +334,20 @@ class PracticesController < ApplicationController
           @views << objCtr
           objCtr = 0
         end
-      @unique_visitors = []
-      @dates.each do |date|
-        objCtr = 0
-        @unique_visitors_for_practice.each do |obj|
-          if obj['time'].to_date.to_s == date.to_s
-            if not @unique_visitors.include? obj['user_id']
-              @visitors << obj['user_id']
-              next
-            else
-              @visitors << 0
-            end
-          end
-        end
-      end
+      # @unique_visitors = []
+      # @dates.each do |date|
+      #   objCtr = 0
+      #   @unique_visitors_for_practice.each do |obj|
+      #     if obj['time'].to_date.to_s == date.to_s
+      #       if not @unique_visitors.include? obj['user_id']
+      #         @visitors << obj['user_id']
+      #         next
+      #       else
+      #         @visitors << 0
+      #       end
+      #     end
+      #   end
+      # end
 
     end
     render 'practices/form/metrics'

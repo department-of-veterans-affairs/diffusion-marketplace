@@ -38,7 +38,7 @@ module PracticesHelper
     durations.include?('permanent') ? 'Permanent' : "#{durations.map { |d| d.to_i }.sum} weeks" if durations.any?
   end
 
-  def fetch_page_view_leader_board(duration = 30, limit = 10)
+  def fetch_page_view_leader_board(duration = "30", limit = 10)
     page_view_leaders = []
     sql = "select name, properties, count(properties) as count from ahoy_events where name = 'Practice show' and time >= now() - interval '{#{duration} days' group by name, properties order by count desc limit #{limit}"
     records_array = ActiveRecord::Base.connection.execute(sql)
@@ -54,7 +54,7 @@ module PracticesHelper
     page_view_leaders
   end
 
-  def fetch_page_view_for_practice_count(practice_id, duration = 30)
+  def fetch_page_view_for_practice_count(practice_id, duration = "30")
     page_view_leaders = []
     sql = "select name, properties, count(properties) as count from ahoy_events where name = 'Practice show' and time >= now() - interval '{#{duration} days' group by name, properties"
     records_array = ActiveRecord::Base.connection.execute(sql)
@@ -71,7 +71,7 @@ module PracticesHelper
     page_view_leaders[0].count
   end
 
-  def fetch_page_views_for_practice(practice_id, duration = 30)
+  def fetch_page_views_for_practice(practice_id, duration = "30")
     page_views = []
     sql = "select name, properties, time from ahoy_events where name = 'Practice show' and properties = '{\"practice_id\": #{practice_id}}'"
     if duration == "30"
@@ -91,7 +91,7 @@ module PracticesHelper
     page_views
   end
 
-  def fetch_unique_visitors_by_practice_count(practice_id, duration = 30)
+  def fetch_unique_visitors_by_practice_count(practice_id, duration = "30")
     sql = "select distinct user_id from ahoy_events where name = 'Practice show' and properties = '{\"practice_id\": #{practice_id}}'"
     if duration == "30"
       sql += " and time >= now() - interval '#{duration} days'"
@@ -101,7 +101,7 @@ module PracticesHelper
     recs.count
   end
 
-  def fetch_unique_visitors_by_practice(practice_id, duration = 30)
+  def fetch_unique_visitors_by_practice(practice_id, duration = "30")
     sql = "select user_id, time from ahoy_events where name = 'Practice show' and properties = '{\"practice_id\": #{practice_id}}'"
     if duration == "30"
       sql += " and time >= now() - interval '#{duration} days'"
@@ -110,7 +110,7 @@ module PracticesHelper
     records_array
   end
 
-  def fetch_bookmarks_by_practice(practice_id, duration = 30)
+  def fetch_bookmarks_by_practice(practice_id, duration = "30")
     sql = "select count(*) as the_count from user_practices where practice_id = #{practice_id}"
     if(duration == "30")
       sql += " and created_at >= now() - interval '#{duration} days'"
@@ -120,7 +120,7 @@ module PracticesHelper
     recs[0][0]
   end
 
-  def fetch_adoptions_total_by_practice(practice_id, duration = 30, status = "")
+  def fetch_adoptions_total_by_practice(practice_id, duration = "30", status = "")
     sql = "select count(*) as count from diffusion_histories dh join diffusion_history_statuses dhs on dh.id = dhs.diffusion_history_id where dh.practice_id = #{practice_id}"
     if(duration == "30")
       sql += " and dh.created_at >= now() - interval '#{duration} days'"
@@ -133,9 +133,9 @@ module PracticesHelper
     recs[0][0]
   end
 
-  def fetch_adoptions_by_practice(practice_id, duration = 30)
+  def fetch_adoptions_by_practice(practice_id, duration = "30")
     sql = "select count(*) as the_count from diffusion_histories where practice_id = #{practice_id}"
-    if(duration == "30")
+    if duration == "30"
       sql += " and created_at >= now() - interval '#{duration} days'"
     end
     records_array = ActiveRecord::Base.connection.execute(sql)
@@ -143,7 +143,7 @@ module PracticesHelper
     recs[0][0]
   end
 
-  def fetch_facility_ids_for_practice(practice_id, duration=30)
+  def fetch_facility_ids_for_practice(practice_id, duration="30")
     facility_ids = []
     sql = "select facility_id as the_count from diffusion_histories where practice_id=#{practice_id}"
     if (duration == "30")
@@ -174,10 +174,10 @@ module PracticesHelper
     match_counter
   end
 
-  def fetch_page_views_leader_board(duration = 30)
+  def fetch_page_views_leader_board(duration = "30")
     page_view_leaders = []
     sql = ""
-    if duration == 30
+    if duration == "30"
       sql = "select name, properties, count(properties) as count from ahoy_events where name = 'Practice show' and time >= now() - interval '30 days' group by name, properties order by count desc limit 10"
     else
       sql = "select name, properties, count(properties) as count from ahoy_events where name = 'Practice show' group by name, properties order by count desc limit 10"

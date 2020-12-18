@@ -33,7 +33,7 @@
           View your metrics for
           <select style="width: 75%; height: 40px" name="metrics_duration" id="metrics_duration">
             <option id="metrics_30_day_value" value="30" <%= 'selected' if @duration.to_i == 30 %>>the last 30 days</option>
-            <option id="metrics_all_time_value" value="9999" <%= 'selected' if @duration.to_i == 9999 %>>all time</option>
+            <option id="metrics_all_time_value" value="99999" <%= 'selected' if @duration.to_i == 99999 %>>all time</option>
           </select>
         </div>
           <div class="grid-col-8 margin-bottom-10"  style="text-align: center; width: 100%" >
@@ -181,14 +181,14 @@
           data.addColumn('number', 'Unique visitors');
 
           data.addRows([
-              ['March 1', 100, 0],
-              ['March 2', 78, 13],
-              ['March 3', 60, 5],
-              ['March 4', 125, 22],
-              ['March 5', 93, 23],
-              ['March 6', 75, 0],
-              ['March 7', 55, 16],
-              ['March 8', 64, 7]
+              ['Nov 18', 100, 0],
+              ['Nov 23', 78, 13],
+              ['Nov 28', 60, 5],
+              ['Dec 2', 125, 22],
+              ['Dec 7', 93, 23],
+              ['Dec 12', 75, 0],
+              ['Dec 15', 55, 16],
+              ['Dec 18', 64, 7]
           ]);
 
           var options = {
