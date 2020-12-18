@@ -71,7 +71,7 @@
             <p class="margin-top-1 line-height-sans-5"><%= @highlighted_pr.highlight_body %></p>
           <% end %>
         </div>
-        <div class="margin-top-3 dm-highlighted-practice-card desktop:margin-top-0">
+        <div class="margin-top-3 grid-row grid-gap-3 dm-highlighted-practice-card desktop:margin-top-0">
           <%= render partial: 'shared/practice_card', locals: { practice: @highlighted_pr } %>
         </div>
       </div>
