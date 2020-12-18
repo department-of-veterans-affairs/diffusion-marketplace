@@ -5,12 +5,6 @@ var adoptions = <%= raw @diffusion_histories.to_json %>;
 var results = null;
 var resultsHTML = '';
 
-//function test() {
-//    // Remove no search items content
-    <%# if request.url.include?('query') %>
-//      $('#no-search-query-content')
-    <%# end %>
-//}
 function searchPracticesPage() {
     const searchField = document.querySelector('#dm-practice-search-field');
 
@@ -595,27 +589,15 @@ function searchPracticesPage() {
         }
 
         // Make a new timeout set to go off in 500ms
+        var urlQuery = searchField.value === '' ? '/search' : '/search?query=' + searchField.value;
+        console.log('search field is not empty')
+//        timeout = setTimeout(function () {
+              window.history.pushState({ turbolinks: {} }, "", urlQuery);
+//              trackSearchField(decodeURI(urlQuery));
+//        }, 500);
 
-            console.log('search field is not empty')
-            timeout = setTimeout(function () {
-                if (searchField.value !== '') {
-                  window.history.pushState("", "", '/search?query=' + searchField.value);
-                  trackSearchField(decodeURI(searchField.value));
-            }}, 500);
-
-//        if (searchField.value !== '') {
-//            console.log('search field is not empty')
-//            timeout = setTimeout(function () {
-//                window.history.pushState("", "", '/search?query=' + searchField.value);
-//                trackSearchField(decodeURI(searchField.value));
-//            }, 500);
-//        } else {
-//            console.log('search field is empty')
-//            timeout = setTimeout(function () {
-//                window.history.pushState("", "", '/search');
-//                trackSearchField(decodeURI(searchField.value));
-//            }, 500);
-//        }
+        console.log('search', window.location.search)
+        console.log('history', URL.searchParams)
 
         var selectedCheckboxes = $('#update-search-results-form [type="checkbox"]:checked')
 
@@ -729,6 +711,14 @@ function trackSearchField(searchTerm) {
     }
 }
 
+function hideSearchIconAndText() {
+    // Remove no search items content
+    <% if request.url.include?('query') %>
+    $('#no-search-query-content').hide()
+    <% end %>
+}
+
 document.addEventListener('turbolinks:load', function () {
     searchPracticesPage();
+    hideSearchIconAndText();
 });
