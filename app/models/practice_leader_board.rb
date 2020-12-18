@@ -13,6 +13,13 @@ class PracticeLeaderBoard
     @practice_slug = practice_slug
   end
 
+  def created_at
+    @created_at
+  end
+  def created_at= created_at
+    @created_at = created_at
+  end
+
 
 
   def count

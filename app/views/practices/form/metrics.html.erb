@@ -43,7 +43,7 @@
             <th style="font-size: 13px">BOOKMARKS</th>
             <th style="font-size: 13px">ADOPTIONS</th>
             <tr>
-              <td><h2><%= @page_views_for_practice %></h2></td>
+              <td><h2><%= @page_views_for_practice_count %></h2></td>
               <td><h2><%= @unique_visitors_for_practice_count %></h2></td>
               <td><h2><%= @bookmarks_by_practice %></h2></td>
               <td><h2><%= @adoptions_by_practice %></h2></td>
@@ -181,14 +181,14 @@
           data.addColumn('number', 'Unique visitors');
 
           data.addRows([
-              ['March 1', 0, 0],
-              ['March 2', 10, 13],
-              ['March 3', 23, 5],
-              ['March 4', 17, 22],
-              ['March 5', 18, 23],
-              ['March 6', 9, 50],
-              ['March 7', 11, 25],
-              ['March 8', 27, 7]
+              ['March 1', 100, 0],
+              ['March 2', 78, 13],
+              ['March 3', 60, 5],
+              ['March 4', 125, 22],
+              ['March 5', 93, 23],
+              ['March 6', 75, 0],
+              ['March 7', 55, 16],
+              ['March 8', 64, 7]
           ]);
 
           var options = {

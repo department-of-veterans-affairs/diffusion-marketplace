@@ -298,7 +298,7 @@ class PracticesController < ApplicationController
     @duration = params[:duration] || 30
     @page_views_leader_board_30_days = fetch_page_views_leader_board()
     @page_views_leader_board_all_time = fetch_page_views_leader_board(0)
-    @page_views_for_practice = fetch_page_view_for_practice(@practice.id, @duration)
+    @page_views_for_practice_count = fetch_page_view_for_practice_count(@practice.id, @duration)
     @unique_visitors_for_practice_count = fetch_unique_visitors_by_practice_count(@practice.id, @duration)
     @bookmarks_by_practice = fetch_bookmarks_by_practice(@practice.id, @duration)
     @adoptions_by_practice = fetch_adoptions_by_practice(@practice.id, @duration)
@@ -316,6 +316,40 @@ class PracticesController < ApplicationController
     @medium_complexity_2 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice, "FY17ParentStationComplexityLevel", "2 -Medium Complexity")
     @low_complexity_3 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice, "FY17ParentStationComplexityLevel", "3 -Low Complexity")
     @excluded_98 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice, "FY17ParentStationComplexityLevel", "98-Excluded")
+
+    # Charts.....
+    @unique_visitors_for_practice = fetch_unique_visitors_by_practice(@practice.id, @duration)
+    @page_views_for_practice = fetch_page_views_for_practice(@practice.id, @duration)
+
+    if @duration == "30"
+      ctr = 30
+      @dates = ((ctr.days.ago.to_date .. 0.days.ago.to_date).to_a).map(&:to_s)
+      @views = []
+      @visitors = []
+        @dates.each do |date|
+          objCtr = 0
+          @page_views_for_practice.each do |obj|
+            objCtr += 1 if obj.created_at.to_s == date.to_s
+          end
+          @views << objCtr
+          objCtr = 0
+        end
+      @unique_visitors = []
+      @dates.each do |date|
+        objCtr = 0
+        @unique_visitors_for_practice.each do |obj|
+          if obj['time'].to_date.to_s == date.to_s
+            if not @unique_visitors.include? obj['user_id']
+              @visitors << obj['user_id']
+              next
+            else
+              @visitors << 0
+            end
+          end
+        end
+      end
+
+    end
     render 'practices/form/metrics'
 
   end
