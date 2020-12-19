@@ -51,6 +51,16 @@ $(document).ready(function(){
         document.getElementById("leader_board_page_views_all_time").style.display = 'inline';
     });
 
+    $("#toggle_adoptions_view_30").click (function(e) {
+        document.getElementById("adoptions_by_practice_all_time").style.display = 'none';
+        document.getElementById("adoptions_by_practice_30").style.display = 'inline';
+    });
+
+    $("#toggle_adoptions_view_all_time").click (function(e) {
+        document.getElementById("adoptions_by_practice_30").style.display = 'none';
+        document.getElementById("adoptions_by_practice_all_time").style.display = 'inline';
+    });
+
 
 
     $("#peSideNavPracticeName").click(function(e){

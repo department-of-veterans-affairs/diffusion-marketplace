@@ -302,20 +302,42 @@ class PracticesController < ApplicationController
     @unique_visitors_for_practice_count = fetch_unique_visitors_by_practice_count(@practice.id, @duration)
     @bookmarks_by_practice = fetch_bookmarks_by_practice(@practice.id, @duration)
     @adoptions_by_practice = fetch_adoptions_by_practice(@practice.id, @duration)
-    @adoptions_total = fetch_adoptions_total_by_practice(@practice.id, @duration)
-    @adoptions_successful_total = fetch_adoptions_total_by_practice(@practice.id, @duration, "Completed")
-    @adoptions_in_progress_total = fetch_adoptions_total_by_practice(@practice.id, @duration, "In progress")
-    @adoptions_unsuccessful_total = fetch_adoptions_total_by_practice(@practice.id, @duration, "Unsuccessful")
+
+
+    @adoptions_total_30 = fetch_adoptions_total_by_practice(@practice.id)
+    @adoptions_total_at = fetch_adoptions_total_by_practice(@practice.id, "0")
+
+
+    @adoptions_successful_total_30 = fetch_adoptions_total_by_practice(@practice.id, "30", "Completed")
+    @adoptions_successful_total_at = fetch_adoptions_total_by_practice(@practice.id, "0", "Completed")
+    @adoptions_in_progress_total_30 = fetch_adoptions_total_by_practice(@practice.id, "30", "In progress")
+    @adoptions_in_progress_total_at = fetch_adoptions_total_by_practice(@practice.id, "0", "In progress")
+    @adoptions_unsuccessful_total_30 = fetch_adoptions_total_by_practice(@practice.id, "30", "Unsuccessful")
+    @adoptions_unsuccessful_total_at = fetch_adoptions_total_by_practice(@practice.id, "0", "Unsuccessful")
+
+
     @facility_data = fetch_vamc_facilities
-    @facility_ids_for_practice = fetch_facility_ids_for_practice(@practice.id, @duration)
-    @rural_facility = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice, "Rurality", "R")
-    @urban_facility = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice, "Rurality", "U")
-    @a_high_complexity = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice, "FY17ParentStationComplexityLevel", "1a-High Complexity")
-    @b_high_complexity = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice, "FY17ParentStationComplexityLevel", "1b-High Complexity")
-    @c_high_complexity = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice, "FY17ParentStationComplexityLevel", "1c-High Complexity")
-    @medium_complexity_2 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice, "FY17ParentStationComplexityLevel", "2 -Medium Complexity")
-    @low_complexity_3 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice, "FY17ParentStationComplexityLevel", "3 -Low Complexity")
-    @excluded_98 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice, "FY17ParentStationComplexityLevel", "98-Excluded")
+
+    @facility_ids_for_practice_30 = fetch_facility_ids_for_practice(@practice.id, "30")
+    @rural_facility_30 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_30, "Rurality", "R")
+    @urban_facility_30 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_30, "Rurality", "U")
+    @a_high_complexity_30 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_30, "FY17ParentStationComplexityLevel", "1a-High Complexity")
+    @b_high_complexity_30 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_30, "FY17ParentStationComplexityLevel", "1b-High Complexity")
+    @c_high_complexity_30 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_30, "FY17ParentStationComplexityLevel", "1c-High Complexity")
+    @medium_complexity_2_30 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_30, "FY17ParentStationComplexityLevel", "2 -Medium Complexity")
+    @low_complexity_3_30 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_30, "FY17ParentStationComplexityLevel", "3 -Low Complexity")
+
+    @facility_ids_for_practice_at = fetch_facility_ids_for_practice(@practice.id, "0")
+    @rural_facility_at = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_at, "Rurality", "R")
+    @urban_facility_at = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_at, "Rurality", "U")
+    @a_high_complexity_at = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_at, "FY17ParentStationComplexityLevel", "1a-High Complexity")
+    @b_high_complexity_at = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_at, "FY17ParentStationComplexityLevel", "1b-High Complexity")
+    @c_high_complexity_at = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_at, "FY17ParentStationComplexityLevel", "1c-High Complexity")
+    @medium_complexity_2_at = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_at, "FY17ParentStationComplexityLevel", "2 -Medium Complexity")
+    @low_complexity_3_at = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_at, "FY17ParentStationComplexityLevel", "3 -Low Complexity")
+
+
+
 
     # Charts.....
     @unique_visitors_for_practice = fetch_unique_visitors_by_practice(@practice.id, @duration)
