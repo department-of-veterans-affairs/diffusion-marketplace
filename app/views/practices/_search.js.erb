@@ -5,92 +5,93 @@ var adoptions = <%= raw @diffusion_histories.to_json %>;
 var results = null;
 var resultsHTML = '';
 
+// sort functions
+function sortAToZ(a, b) {
+    return a.item.name.localeCompare(b.item.name, undefined, { numeric: true, sensitivity: 'base' })
+}
+
+function sortByDateAdded(a, b) {
+    return b.item.created_at.localeCompare(a.item.created_at, undefined, { numeric: true, sensitivity: 'base' })
+}
+
+function sortByAdoptionCounts(a, b) {
+    if (a.item.adoption_count > b.item.adoption_count){
+        return -1;
+    }
+    if (a.item.adoption_count < b.item.adoption_count){
+        return 1;
+    }
+    return 0;
+}
+
+function sortByScore(a, b) {
+    if (a.score < b.score){
+        return -1;
+    }
+    if (a.score > b.score){
+        return 1;
+    }
+    return 0;
+}
+
+// Build out practice cards once results come back from Fuse
+function buildPracticeCard(result) {
+    var cardHtml = '';
+    var practiceImage = result.item.image
+    var practiceName = result.item.name
+    var favoriteButtonIcon = result.item.user_favorited ? 'fas' : 'far';
+    var practiceLinkClass = practiceImage ? '' : ' dm-alt-practice-link'
+    var favoriteButton =
+        '<a aria-label="Bookmark ' + practiceName + '" tabindex="-1" aria-hidden="true" class="dm-practice-bookmark-btn" id="dm-bookmark-button-' + result.item.id + '" data-remote="true" rel="nofollow" data-method="post" href="/practices/' + result.item.slug + '/favorite.js">' +
+        '<i class="' + favoriteButtonIcon + ' fa-bookmark dm-favorite-icon-' + result.item.id + ' text-no-underline"></i>' +
+        '</a>';
+    var cardImageHtml =
+        '<div class="dm-practice-card-img-container">' +
+        '<img alt="' + practiceName + ' Marketplace Card Image" class="grid-row marketplace-card-img radius-top-sm" src="' + practiceImage + '">' +
+        '</div>'
+    var noCardImageHtml =
+        '<div class="dm-bg-gray-80">' +
+        '<h3 class="text-normal font-sans-lg dm-practice-title multiline-ellipses-2 margin-x-2 margin-y-4">' +
+        practiceName +
+        '</h3>' +
+        '</div>'
+    var cardImage = practiceImage ? cardImageHtml : noCardImageHtml
+    var practiceNameHeader =
+        '<h3 class="text-normal font-sans-lg dm-practice-title multiline-ellipses-2 margin-top-0 margin-bottom-2">' +
+        practiceName +
+        '</h3>'
+    var assignPracticeHeader = practiceImage ? practiceNameHeader : ''
+    cardHtml +=
+        '<div class="dm-practice-card padding-y-105">' +
+        <% if current_user.present? %>
+        favoriteButton +
+        <% end %>
+        '<a href="/practices/' + result.item.slug + '" aria-label="Go to ' + result.item.name + '" aria-hidden="true" class="dm-practice-link' + practiceLinkClass + '">' +
+        '<div class=" dm-practice-card-container">' +
+        cardImage +
+        '<div class="padding-105 height-card-mobile">' +
+        assignPracticeHeader +
+        '<div>' +
+        '<p class="multiline-ellipses-1 font-sans-sm practice-card-tagline">' + result.item.tagline + '</p>' +
+        '</div>' +
+        '<div class="dm-practice-card-origin margin-bottom-2">' +
+        '<span class="line-clamp-2 font-sans-3xs text-gray-50 multiline-ellipses-3 line-height-sans-205 dm-practice-card-origin-info">' +
+        'Created in ' + result.item.date_initiated + ' ' + result.item.initiating_facility_name +
+        '</span>' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '</a>' +
+        '</div>';
+
+    return cardHtml;
+}
+
 function searchPracticesPage() {
     const searchField = document.querySelector('#dm-practice-search-field');
 
     // Skip if not the search page
     if (location.pathname !== '/search') return;
-
-    // sort functions
-    function sortAToZ(a, b) {
-        return a.item.name.localeCompare(b.item.name, undefined, { numeric: true, sensitivity: 'base' })
-    }
-
-    function sortByDateAdded(a, b) {
-        return b.item.created_at.localeCompare(a.item.created_at, undefined, { numeric: true, sensitivity: 'base' })
-    }
-
-    function sortByAdoptionCounts(a, b) {
-        if (a.item.adoption_count > b.item.adoption_count){
-            return -1;
-        }
-        if (a.item.adoption_count < b.item.adoption_count){
-            return 1;
-        }
-        return 0;
-    }
-
-    function sortByScore(a, b) {
-        if (a.score < b.score){
-            return -1;
-        }
-        if (a.score > b.score){
-            return 1;
-        }
-        return 0;
-    }
-
-    function buildPracticeCard(result) {
-        var cardHtml = '';
-        var practiceImage = result.item.image
-        var practiceName = result.item.name
-        var favoriteButtonIcon = result.item.user_favorited ? 'fas' : 'far';
-        var practiceLinkClass = practiceImage ? '' : ' dm-alt-practice-link'
-        var favoriteButton =
-            '<a aria-label="Bookmark ' + practiceName + '" tabindex="-1" aria-hidden="true" class="dm-practice-bookmark-btn" id="dm-bookmark-button-' + result.item.id + '" data-remote="true" rel="nofollow" data-method="post" href="/practices/' + result.item.slug + '/favorite.js">' +
-            '<i class="' + favoriteButtonIcon + ' fa-bookmark dm-favorite-icon-' + result.item.id + ' text-no-underline"></i>' +
-            '</a>';
-        var cardImageHtml =
-            '<div class="dm-practice-card-img-container">' +
-            '<img alt="' + practiceName + ' Marketplace Card Image" class="grid-row marketplace-card-img radius-top-sm" src="' + practiceImage + '">' +
-            '</div>'
-        var noCardImageHtml =
-            '<div class="dm-bg-gray-80">' +
-            '<h3 class="text-normal font-sans-lg dm-practice-title multiline-ellipses-2 margin-x-2 margin-y-4">' +
-            practiceName +
-            '</h3>' +
-            '</div>'
-        var cardImage = practiceImage ? cardImageHtml : noCardImageHtml
-        var practiceNameHeader =
-            '<h3 class="text-normal font-sans-lg dm-practice-title multiline-ellipses-2 margin-top-0 margin-bottom-2">' +
-            practiceName +
-            '</h3>'
-        var assignPracticeHeader = practiceImage ? practiceNameHeader : ''
-        cardHtml +=
-            '<div class="dm-practice-card padding-y-105">' +
-            <% if current_user.present? %>
-            favoriteButton +
-            <% end %>
-            '<a href="/practices/' + result.item.slug + '" aria-label="Go to ' + result.item.name + '" aria-hidden="true" class="dm-practice-link' + practiceLinkClass + '">' +
-            '<div class=" dm-practice-card-container">' +
-            cardImage +
-            '<div class="padding-105 height-card-mobile">' +
-            assignPracticeHeader +
-            '<div>' +
-            '<p class="multiline-ellipses-1 font-sans-sm practice-card-tagline">' + result.item.tagline + '</p>' +
-            '</div>' +
-            '<div class="dm-practice-card-origin margin-bottom-2">' +
-            '<span class="line-clamp-2 font-sans-3xs text-gray-50 multiline-ellipses-3 line-height-sans-205 dm-practice-card-origin-info">' +
-            'Created in ' + result.item.date_initiated + ' ' + result.item.initiating_facility_name +
-            '</span>' +
-            '</div>' +
-            '</div>' +
-            '</div>' +
-            '</a>' +
-            '</div>';
-
-            return cardHtml;
-    }
 
     // Template out the search results
     function buildSearchResults(results, sortOption) {
@@ -106,60 +107,43 @@ function searchPracticesPage() {
             '<p class="">' + result.highlight + '</p>' +
             '<p><b>Score: ' + result.score + '</b></p>' +
             '-->'
-        });
-
-//        $('.pagination').pagination({
-//            dataSource: resultsArray,
-//            pageSize: 12,
-//            getSelectedPageNum: 2,
-//            callback: function(data, pagination) {
-//                console.log('data', data)
-//                console.log('pagination', pagination)
-//                // template method of yourself
-//                $('#search-results').html(data)
-//            }
-//        })
+    });
 
 
 //        console.log('final', finalResults);
 //        console.log('final array', resultsArray);
 
-        // Print results to the page
-        document.querySelector('#search-results').innerHTML = finalResults;
-//        $('#search-results').loadMoreResults({
-//            displayedItems: 12,
-//            showItems: 12,
-//            tag: {
-//                'name': 'div',
-//                'class': 'dm-practice-card'
-//            }
-//        })
+        if (results.length > 0) {
+            // Show the results summary section
+            $('#dm-search-practices').hasClass('display-none') ? $('#dm-search-practices').removeClass('display-none') : ''
 
-//        if ($('.btn-load-more').length > 1) {
-//            console.log('hello')
-//            $('.btn-load-more')[0].remove()
-//        }
+            $('#no-search-query-content').addClass('display-none')
 
-        $('#search-results').showMoreItems({
-            startNum: 12,
-            afterNum: 12,
-            moreText: 'Load more',
-            noMoreText: 'No more results'
-        })
+            // Print results to the page
+            document.querySelector('#search-results').innerHTML = finalResults;
 
-        $(document).on('click', '.addListData', function(e) {
-            truncateText()
-            if ($('.addListData').text() !== 'Load more') {
-                $('.addListData').parent().addClass('display-none')
-            }
-        })
+            $('#search-results').showMoreItems({
+                startNum: 12,
+                afterNum: 12,
+                moreText: 'Load more',
+                noMoreText: 'No more results'
+            })
 
+            $(document).on('click', '.addListData', function(e) {
+                truncateText()
+                if ($('.addListData').text() !== 'Load more') {
+                    $('.addListData').parent().addClass('display-none')
+                }
+            })
 
-//        $('#search-results').btnLoadmore({
-//            showItem : 3,
-//            whenClickBtn : 1,
-//            textBtn : 'Load more ...'
-//        });
+        } else {
+            console.log('no results')
+            !$('#dm-search-practices').hasClass('display-none') ? $('#dm-search-practices').addClass('display-none') : ''
+            // Show the no results text
+            $('#no-search-query-content').hasClass('display-none') ? $('#no-search-query-content').removeClass('display-none') : ''
+            $('#no-query-p').addClass('display-none')
+            $('#no-query-results-p').removeClass('display-none')
+        }
 
     }
 
@@ -411,8 +395,7 @@ function searchPracticesPage() {
             results = fuse.search({$or: adoptionFacilityArray})
         }
 
-        // Run the search query
-//        results = fuse.search(query)
+        // Run the search query and include filters(if any)
         console.log('originalFilters', originatingFacility)
         if (query !== '' && categoryFilters && originatingFacility && adoptingFacility) {
             console.log('Query and all filters')
@@ -471,9 +454,6 @@ function searchPracticesPage() {
         // Get the results
         buildSearchResults(results, sortByScore)
 
-        // Show the results summary section
-        document.getElementById('dm-search-practices').classList.remove('display-none')
-
         // Print the number of results for the query
         resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? ':' : 's:');
 
@@ -521,9 +501,6 @@ function searchPracticesPage() {
             }
         });
     }
-
-
-    // Set up search
 
     // Set Fuse.js search options
     var search_options = {
@@ -601,38 +578,38 @@ function searchPracticesPage() {
             $('#search_filters_dropdown').attr('hidden', 'true')
         }
 
-        // Make a new timeout set to go off in 500ms
+        // Make a new timeout set to go off in 250ms
         var urlQuery = searchField.value === '' ? '/search' : '/search?query=' + searchField.value;
         console.log('search field is not empty')
-//        timeout = setTimeout(function () {
+        timeout = setTimeout(function () {
               window.history.pushState({ turbolinks: {} }, "", urlQuery);
-//              trackSearchField(decodeURI(urlQuery));
-//        }, 500);
+              trackSearchField(decodeURI(urlQuery));
+        }, 250);
 
         console.log('search', window.location.search)
         console.log('history', URL.searchParams)
 
-        var selectedCheckboxes = $('#update-search-results-form [type="checkbox"]:checked')
+        console.log('chosen cats', chosenCategories)
+        // Get the value of the originating facility combo box
+        var originatingFacilityInput = $('#originating-facility-and-visn-select');
+        var originatingFacilityLi = $('#originating-facility-and-visn-select--list > li[aria-selected=true]');
 
+        var originatingFacility =  getComboBoxVal(originatingFacilityInput, originatingFacilityLi)
+
+        // Get the value of the adopting facility combo box
+        var adoptingFacilityInput = $('#adopting-facility-and-visn-select');
+        var adoptingFacilityLi = $('#adopting-facility-and-visn-select--list > li[aria-selected=true]');
+
+        var adoptingFacility = getComboBoxVal(adoptingFacilityInput, adoptingFacilityLi)
+
+        // Get the values for any chosen categories
+        var selectedCheckboxes = $('#update-search-results-form [type="checkbox"]:checked')
         var chosenCategories = $('#update-search-results-form [type="checkbox"]:checked').map(function () {
             return this.value;
         }).get();
         if (chosenCategories.length == 0) {
             chosenCategories = null;
         }
-
-        console.log('chsoen cats', chosenCategories)
-
-        var originatingFacilityInput = $('#originating-facility-and-visn-select');
-        var originatingFacilityLi = $('#originating-facility-and-visn-select--list > li[aria-selected=true]');
-
-        var originatingFacility =  getComboBoxVal(originatingFacilityInput, originatingFacilityLi)
-
-        var adoptingFacilityInput = $('#adopting-facility-and-visn-select');
-        var adoptingFacilityLi = $('#adopting-facility-and-visn-select--list > li[aria-selected=true]');
-
-        var adoptingFacility = getComboBoxVal(adoptingFacilityInput, adoptingFacilityLi)
-
 
         console.log('cate', chosenCategories)
         console.log('orig', originatingFacility)
@@ -694,12 +671,18 @@ function searchPracticesPage() {
     // Clear all filter options
     $(document).on('click', '#resetSearchFiltersButton', function(e) {
         e.preventDefault();
-        $('.usa-combo-box__clear-input').each(function(e) {
-            console.log('hello')
+
+        $('.usa-combo-box__clear-input').each(function() {
             $(this).trigger('click');
         })
-        $(".usa-combo-box__clear-input__wrapper").attr("tabindex",-1).focus();
 
+        $('.usa-checkbox__input').each(function() {
+            if ($(this).prop('checked')) {
+                $(this).prop('checked', false)
+            }
+        })
+        // Move the focus area back to the top of the filters window
+        $(".usa-combo-box__clear-input__wrapper").attr("tabindex",-1).focus();
     })
 
     if (window.location.pathname === '/search' && window.location.search !== '') {
@@ -712,8 +695,10 @@ function searchPracticesPage() {
 
 function trackSearchField(searchTerm) {
     if (searchTerm !== '') {
+        console.log('ahoy function 1')
         ahoy.track('Practice search', {search_term: searchTerm});
         if (typeof ga === 'function') {
+            console.log('ahoy function 2')
             ga('send', {
                 hitType: 'event',
                 eventCategory: 'search',
@@ -727,7 +712,7 @@ function trackSearchField(searchTerm) {
 function hideSearchIconAndText() {
     // Remove no search items content
     <% if request.url.include?('query') %>
-    $('#no-search-query-content').hide()
+      $('#no-search-query-content').addClass('display-none')
     <% end %>
 }
 

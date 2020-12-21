@@ -1,4 +1,4 @@
-<%# Utilized the body instead of just the main because there were white patches below main content on larger viewports %>
+<%# Utilized the body instead of just the main element because there were white patches below main content on larger viewports %>
 <% provide :body_classes, 'bg-gray-2' %>
 <% provide :footer_classes, 'bg-gray-2' %>
 <% provide :head_tags do %>
@@ -14,7 +14,7 @@
       <form id="update-search-results-form">
         <div class="usa-search usa-search--big margin-bottom-2 grid-col-12">
           <div role="search" class="flex-column">
-            <label class="margin-bottom-1" for="dm-practice-search-field"></label>
+            <label for="dm-practice-search-field"></label>
             <div id="search-bar-container" class="display-flex">
               <input class="usa-input" id="dm-practice-search-field" title="Type at least three characters to search." autocomplete="off" type="search" name="search">
               <button id="dm-practice-search-button" class="usa-button" type="submit" name="search-button">
@@ -58,14 +58,16 @@
       <div class="pagination"></div>
     </section>
 
-    <section id="no-search-query-content" class="position-relative margin-x-auto">
-      <p id="no-query-p" class="position-relative z-100 padding-bottom-3 line-height-26 text-center">
-        Enter a search term or use the filters to find  matching practices
-      </p>
-      <p id="no-query-results-p" class="display-none">
-        There are currently no matches for your search on the Marketplace.
-      </p>
-      <i class="fas fa-search no-search-query-icon position-absolute z-index-0 text-base-lightest"></i>
+    <section id="no-search-query-content" class="margin-x-auto">
+      <div class="text-and-icon-container position-relative">
+        <p id="no-query-p" class="position-absolute z-100 padding-bottom-4 line-height-26 text-center">
+          Enter a search term or use the filters to find matching practices
+        </p>
+        <p id="no-query-results-p" class="position-absolute z-100 padding-bottom-4 line-height-26 text-center display-none">
+          There are currently no matches for your search on the Marketplace.
+        </p>
+        <i class="fas fa-search no-search-query-icon position-absolute z-index-10 text-base-lightest"></i>
+      </div>
     </section>
   </section>
 </div>
