@@ -336,42 +336,30 @@ class PracticesController < ApplicationController
     @medium_complexity_2_at = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_at, "FY17ParentStationComplexityLevel", "2 -Medium Complexity")
     @low_complexity_3_at = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_at, "FY17ParentStationComplexityLevel", "3 -Low Complexity")
 
-
-
-
     # Charts.....
     @unique_visitors_for_practice = fetch_unique_visitors_by_practice(@practice.id, @duration)
     @page_views_for_practice = fetch_page_views_for_practice(@practice.id, @duration)
 
-    if @duration == "30"
-      ctr = 30
-      @dates = ((ctr.days.ago.to_date .. 0.days.ago.to_date).to_a).map(&:to_s)
-      @views = []
-      @visitors = []
-        @dates.each do |date|
-          objCtr = 0
-          @page_views_for_practice.each do |obj|
-            objCtr += 1 if obj.created_at.to_s == date.to_s
-          end
-          @views << objCtr
-          objCtr = 0
-        end
-      # @unique_visitors = []
-      # @dates.each do |date|
-      #   objCtr = 0
-      #   @unique_visitors_for_practice.each do |obj|
-      #     if obj['time'].to_date.to_s == date.to_s
-      #       if not @unique_visitors.include? obj['user_id']
-      #         @visitors << obj['user_id']
-      #         next
-      #       else
-      #         @visitors << 0
-      #       end
-      #     end
-      #   end
-      # end
-
+    if @duration != "30"
+      @duration = get_practice_all_time_duration(@practice.id)
     end
+    @cur_duration = @duration.to_i
+    @dates = ((@cur_duration.days.ago.to_date .. 0.days.ago.to_date).to_a).map(&:to_s)
+    @views = []
+    @visitors = []
+      @dates.each do |date|
+        objCtr = 0
+        @page_views_for_practice.each do |obj|
+          objCtr += 1 if obj.created_at.to_s == date.to_s
+        end
+        @views << objCtr
+        objCtr = 0
+      end
+    @unique_visitors = []
+    @dates.each do |date|
+      @unique_visitors << fetch_unique_visitors_by_practice_and_date(@practice.id, date)
+    end
+
     render 'practices/form/metrics'
 
   end

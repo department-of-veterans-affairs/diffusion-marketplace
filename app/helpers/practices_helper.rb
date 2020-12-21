@@ -110,6 +110,19 @@ module PracticesHelper
     records_array
   end
 
+  def fetch_unique_visitors_by_practice_and_date(practice_id, date)
+    sql = "select distinct user_id from ahoy_events where name = 'Practice show' and properties = '{\"practice_id\": #{practice_id}}' and date(time) = '#{date}'"
+    records_array = ActiveRecord::Base.connection.execute(sql)
+    records_array.count
+  end
+
+  def get_practice_all_time_duration(practice_id)
+    created_date = Practice.find(practice_id).created_at.to_date
+    duration =  (DateTime.now() - created_date).to_i
+    duration
+  end
+
+
   def fetch_bookmarks_by_practice(practice_id, duration = "30")
     sql = "select count(*) as the_count from user_practices where practice_id = #{practice_id}"
     if(duration == "30")

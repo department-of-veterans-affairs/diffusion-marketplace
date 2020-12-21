@@ -33,7 +33,7 @@
           View your metrics for
           <select style="width: 75%; height: 40px" name="metrics_duration" id="metrics_duration">
             <option id="metrics_30_day_value" value="30" <%= 'selected' if @duration.to_i == 30 %>>the last 30 days</option>
-            <option id="metrics_all_time_value" value="99999" <%= 'selected' if @duration.to_i == 99999 %>>all time</option>
+            <option id="metrics_all_time_value" value="99999" <%= 'selected' if @duration.to_i != 30 %>>all time</option>
           </select>
         </div>
           <div class="grid-col-8 margin-bottom-10"  style="text-align: center; width: 100%" >
@@ -251,6 +251,9 @@
   <!--Load the AJAX API-->
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript">
+      const monthNames = ["January", "February", "March", "April", "May", "June",
+          "July", "August", "September", "October", "November", "December"
+      ];
 
       // Load the Visualization API and the corechart package.
       google.charts.load('current', {'packages':['corechart']});
@@ -268,27 +271,23 @@
 
       function drawLineChart() {
           var data = new google.visualization.DataTable();
-          data.addColumn('string', 'X');
+          data.addColumn('string', 'Date');
           data.addColumn('number', 'Page views');
           data.addColumn('number', 'Unique visitors');
-
+          <% ctr = 0 %>
           data.addRows([
-              ['Nov 18', 100, 0],
-              ['Nov 23', 78, 13],
-              ['Nov 28', 60, 5],
-              ['Dec 2', 125, 22],
-              ['Dec 7', 93, 23],
-              ['Dec 12', 75, 0],
-              ['Dec 15', 55, 16],
-              ['Dec 18', 64, 7]
+              <%= while ctr < @dates.count do %>
+              ['<%= @dates[ctr] %>', <%= @views[ctr] %>, <%= @unique_visitors[ctr] %>],
+              <% ctr += 1 %>
+              <% end %>
           ]);
 
           var options = {
               hAxis: {
-                  title: 'Time'
+                  title: 'TIME'
               },
               vAxis: {
-                  title: 'Metric Total'
+                  title: 'METRIC TOTAL'
               },
               backgroundColor: '#f1f8e9',
               legend: { position: 'top', alignment: 'start' },
