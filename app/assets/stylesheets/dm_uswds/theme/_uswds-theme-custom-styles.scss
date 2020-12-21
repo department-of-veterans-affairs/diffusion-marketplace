@@ -344,3 +344,7 @@ p {
 .usa-breadcrumb__list-item:not(:last-child)::after {
   background: asset_url('angle-arrow-right.svg') no-repeat center / 0.84375ex 1.35ex !important;
 }
+
+.usa-header + main {
+  border-top: 0 !important;
+}

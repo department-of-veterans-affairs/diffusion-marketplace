@@ -4,127 +4,152 @@
 
 @import '../variables/colors';
 
-.home .circle {
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
-  text-align: center;
-  background: #009ec1;
-  font-weight: bold;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  float: left;
-}
-
-.homepage-featured-link {
-  width: auto;
-  display: inline-block;
-  margin-bottom: 24px;
-  text-decoration: none;
-  color: $dm-color-dark-black;
-
-  &:hover {
-    color: $dm-color-light-black !important;
-  }
-
-  &:visited {
-    color: $dm-default-visited-purple !important;
-  }
-
-  h2 {
-    margin-top: 0 !important;
-  }
-}
-
-.homepage-featured-section-see-more-link {
-  position: absolute;
-  bottom: 50px;
-  left: 20px;
-}
-
-.homepage-featured-section-container {
-  height: 309px;
-  max-width: 60rem !important;
-  padding-top: 43px !important;
-  padding-left: 33px !important;
-  padding-bottom: 30px;
-  background-color: $dm-color-blue-20v;
-
-  p {
-    margin-bottom: 30px;
-  }
-
-  .usa-button {
-    margin-right: 0 !important;
-    color: $dm-color-base !important;
-    border: 2px solid $dm-color-base !important;
-
-    &:hover {
-      border: 2px solid $dm-color-base !important;
+.dm-homepage {
+  .dm-system-message {
+    .usa-alert {
+      margin-bottom: 0;
     }
   }
-}
 
-.dm-virus-image-container {
-  display: none;
-}
-
-.tt-dataset-facilityNames {
-  width: 275px;
-  max-height: 200px;
-  overflow-y: auto;
-  background-color: $dm-color-white;
-  padding-bottom: 12px;
-}
-
-#facility_name_container {
-  .typeahead {
-    width: 275px;
-  }
-}
-
-.tt-hint {
-  visibility: hidden;
-}
-
-.tt-selectable {
-  padding-left: 8px;
-  padding-right: 8px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: $dm-color-gray-30;
-  }
-}
-
-.map-filters-trigger, #filterClose {
-  width: 100% !important;
-}
-
-#filterClose {
-  color: $dm-color-dark-black !important;
-  background-color: $dm-color-lighter-grey !important;
-}
-
-@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-  .ie-welcome-container {
-    width: 100% !important;
+  a {
+    color: $dm-color-base !important;
   }
 
-  .dm-virus-image-container {
-    margin: 0 auto;
+  .homepage-explore-all-section {
+    height: 360px;
+
+    @media screen and (min-width: 1024px) {
+      height: 400px;
+    }
+
+    h1 {
+      line-height: 36px;
+
+      @media screen and (min-width: 1024px) {
+        line-height: 46px;
+      }
+    }
+
+    .fa-laptop-medical {
+      color: $dm-color-blue-vivid !important;
+    }
+
+    .homepage-explore-all-button {
+      line-height: 19px !important;
+      color: $dm-color-base !important;
+      background-color: $dm-color-white !important;
+      border: none !important;
+      font-weight: bold !important;
+      cursor: pointer;
+      padding: 12px 20px 12px 20px !important;
+      width: 197px !important;
+      font-size: 16px !important;
+      text-decoration: none;
+
+      @media screen and (min-width: 1024px) {
+        line-height: 26px !important;
+        color: $dm-color-base !important;
+        background-color: $dm-color-white !important;
+        border: none !important;
+        padding: 16px 24px 16px 24px !important;
+        font-size: 22px !important;
+        width: 264px !important;
+      }
+
+      &:hover {
+        background-color: $dm-color-alt-lighter-grey !important;
+      }
+
+      &:active {
+        background-color: $dm-color-light-grey !important;
+      }
+    }
+
+    @media screen and (max-width: 1023px) {
+      .fa-laptop-medical {
+        font-size: 4em !important;
+      }
+    }
   }
-}
 
-@media screen and (min-width: 1024px) {
-  .dm-diffusion-map-more {
-    position: absolute;
-    bottom: -117px;
-   }
+  .banner-links-section {
+    .recommended-for-you-banner-link, .covid-banner-link {
+      text-decoration: none !important;
 
-  .dm-virus-image-container {
-    display: block;
-    align-self: center;
+      &:visited {
+        color: $dm-color-base !important;
+      }
+
+      &:hover {
+        h2 {
+          text-decoration: underline !important;
+        }
+      }
+    }
+    .recommended-for-you-banner, .covid-banner {
+      padding: 40px 0 40px 0 !important;
+      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+
+      &:before {
+        background-color: $dm-color-blue-30v !important;
+      }
+    }
+
+    .recommended-for-you-banner {
+      background-color: transparent !important;
+    }
+
+    .fa-user-circle {
+      color: $dm-color-base !important;
+    }
+
+    .covid-banner {
+      background-color: $dm-color-blue-30v;
+    }
+  }
+
+  .nominate-section {
+    a {
+      width: 169px !important;
+    }
+  }
+
+  // Highlighted Practice section
+  .dm-highlighted-practice {
+    .dm-practice-card {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .dm-practice-bookmark-btn {
+      top: 6px;
+    }
+
+    @media screen and (min-width: 1024px) {
+      height: 250px;
+      max-height: 250px;
+
+     .dm-highlighted-practice-content {
+        display: flex;
+        height: 100%;
+        align-items: center;
+      }
+
+      .dm-highlighted-practice-text {
+        max-width: 520px;
+      }
+
+      .dm-highlighted-practice-card{
+        position: absolute;
+        top: 944px;
+        left: calc(100vw - 50vw + 88px);
+      }
+    }
+  }
+
+  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    .ie-welcome-container {
+      width: 100% !important;
+    }
   }
 }

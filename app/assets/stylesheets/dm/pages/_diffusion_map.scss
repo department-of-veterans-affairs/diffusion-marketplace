@@ -1,0 +1,30 @@
+@import '../variables/colors';
+
+#map-of-diffusion {
+  .tt-dataset-facilityNames {
+    width: 275px;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: $dm-color-white;
+    padding-bottom: 12px;
+  }
+
+  #facility_name_container {
+    .typeahead {
+      width: 275px;
+    }
+  }
+
+  .tt-hint {
+    visibility: hidden;
+  }
+
+  .map-filters-trigger, #filterClose {
+    width: 100% !important;
+  }
+
+  #filterClose {
+    color: $dm-color-dark-black !important;
+    background-color: $dm-color-lighter-grey !important;
+  }
+}

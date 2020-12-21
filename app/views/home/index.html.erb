@@ -2,82 +2,90 @@
   <%= javascript_include_tag '_practice_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
-<div class="bg-white">
-  <!-- "Welcome" section -->
-  <section class="grid-container">
+<div class="dm-homepage">
+  <div class="dm-system-message">
     <%= render partial: "shared/messages", locals: {small_text: false} %>
-
-    <div class="margin-y-5 bg-white grid-row">
-      <div class="tablet:grid-col-fill ie-welcome-container">
-        <div class="tablet:grid-col-10">
-          <h1 class="bold font-sans-2xl margin-top-0 margin-bottom-2">Welcome to the Diffusion Marketplace</h1>
+  </div>
+  <!-- "Welcome" section -->
+  <section class="homepage-explore-all-section bg-primary-darker display-flex flex-align-center margin-bottom-5">
+    <div class="grid-container">
+      <div class="grid-row">
+        <div class="grid-col-3 display-flex justify-center desktop:margin-top-2">
+          <div>
+            <i class="fas fa-laptop-medical fa-9x"></i>
+          </div>
+        </div>
+        <div class="tablet:grid-col-9 desktop:grid-col-9 ie-welcome-container text-white">
+          <h1 class="usa-prose-intro font-normal font-sans-lg margin-y-3 desktop:font-bold desktop:usa-prose-h1 desktop:font-sans-2xl desktop:margin-top-0 desktop:margin-bottom-5">
+            Find the next important or life-saving practice to adopt at your VA facility.
+          </h1>
+          <%= link_to 'Explore all practices', explore_path, class: 'usa-button--big homepage-explore-all-button display-block' %>
         </div>
       </div>
-      <div class="grid-row">
-        <div class="tablet:grid-col-8">
-          <p class="measure-none font-sans-lg line-height-sans-505">
-            This site is designed to help spread important and life-saving promising practices throughout the VA
-            Healthcare System.
+    </div>
+  </section>
+
+  <section class="grid-container banner-links-section">
+    <%= link_to '/recommended-for-you', class: 'recommended-for-you-banner-link', 'aria-label': 'Go to recommended for you page', 'tabindex': '-1', 'aria-hidden': 'true' do %>
+      <div class="grid-row usa-alert usa-alert--info usa-alert--no-icon recommended-for-you-banner display-flex margin-bottom-5">
+        <div class="display-none desktop:display-flex desktop:grid-col-3 justify-center">
+          <i class="fas fa-user-circle fa-5x"></i>
+        </div>
+        <div class="grid-col-10 padding-left-4 desktop:grid-col-6 desktop:padding-left-0">
+            <h2 class="usa-prose-h2 font-sans-xl line-height-37px margin-bottom-2 margin-top-0 dm-word-break-break-word dm-hyphens-auto">Recommended for you</h2>
+            <p class="line-height-26">Explore practices that are relevant to your location, role, and saved searches.</p>
+        </div>
+        <div class="grid-col-2 display-flex flex-align-center justify-end padding-right-3 desktop:grid-col-3 desktop:padding-right-5">
+          <i class="fas fa-chevron-right fa-2x"></i>
+        </div>
+      </div>
+    <% end %>
+
+    <%= link_to '/covid-19', class: 'covid-banner-link', 'aria-label': 'Go to COVID-19 landing page', 'tabindex': '-1', 'aria-hidden': 'true' do %>
+      <div class="grid-row covid-banner display-flex margin-bottom-5">
+        <div class="display-none desktop:display-flex desktop:grid-col-3 justify-center desktop:margin-top-105">
+          <i class="fas fa-viruses fa-6x"></i>
+        </div>
+        <div class="grid-col-10 padding-left-3 desktop:grid-col-6 desktop:padding-left-0">
+          <h2 class="usa-prose-h2 font-sans-xl line-height-37px margin-bottom-2 margin-top-0">COVID-19</h2>
+          <p class="line-height-26">
+            The Diffusion Marketplace has practices that help VHA respond to COVID-19. We have assembled a group of practices for frontline staff and administrators responding
+            to the changing medical landscape.
           </p>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section class=" grid-container margin-bottom-5">
-    <div class="grid-row grid-gap-3">
-      <div class="desktop:grid-col-8">
-        <div class="homepage-featured-section-container height-auto position-relative margin-bottom-3 desktop:margin-bottom-0 padding-right-4 desktop:padding-right-0">
-          <div class="grid-row desktop:margin-right-2">
-            <div class="grid-col-12 desktop:grid-col-8">
-              <%= link_to '/covid-19', class: 'dm-internal-link homepage-featured-link' do %>
-                <h2 class="font-sans-xl">COVID-19<span class="fas fa-angle-right margin-left-105"></span></h2>
-              <% end %>
-              <p class="line-height-sans-505 font-sans-sm">
-                The Diffusion Marketplace has practices that help VHA respond to COVID-19.
-                We have assembled a group of practices for frontline staff and administrators responding to the changing
-                medical landscape.
-              </p>
-              <%= link_to 'See more', '/covid-19', class: 'usa-button--outline dm-btn-base' %>
-            </div>
-            <div class="grid-col-fill text-center dm-virus-image-container">
-              <i class="fas fa-viruses fa-9x text-primary-darker"></i>
-            </div>
-          </div>
+        <div class="grid-col-2 display-flex flex-align-center justify-end padding-right-3 desktop:grid-col-3 desktop:padding-right-5">
+          <i class="fas fa-chevron-right fa-2x"></i>
         </div>
       </div>
-      <div class="desktop:grid-col-4">
-        <div class="homepage-featured-section-container height-full dm-primary-5v-background position-relative padding-right-4 desktop:padding-right-0">
-          <div class="grid-row">
-            <div class="grid-col-12">
-              <%= link_to '/diffusion-map', class: 'dm-internal-link homepage-featured-link' do %>
-                <h2 class="font-sans-xl">Diffusion map<span class="fas fa-angle-right margin-left-105"></span></h2>
-              <% end %>
-              <p class="line-height-sans-505 font-sans-sm">
-                See practices mapped out by location.
-              </p>
-              <div class="dm-diffusion-map-more">
-                <%= link_to 'See more', '/diffusion-map', class: 'usa-button--outline dm-btn-base' %>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
+    <% end %>
   </section>
 
-  <section class="padding-top-2">
-    <div class="grid-container">
-      <h4 class="font-sans-xl margin-bottom-2 margin-top-0 line-height-sans-205">All practices</h4>
-      <p class="font-sans-lg margin-bottom-1">View all submitted and accepted practices.</p>
-        <div class="grid-row grid-gap-3">
-          <% @practices.each do |p| %>
-            <% if p.present? %>
-              <%= render partial: 'shared/practice_card', locals: { practice: p } %>
-            <% end %>
+  <% if @highlighted_pr.present? %>
+    <section class="bg-base-lightest margin-bottom-5 padding-x-2 padding-y-5 desktop:padding-x-0 desktop:margin-y-15 dm-highlighted-practice">
+      <div class="desktop:grid-container dm-highlighted-practice-content">
+        <div class="desktop:grid-col-7 dm-highlighted-practice-text">
+          <h2 class="margin-top-0 font-sans-xl line-height-37px">
+            <%= @highlighted_pr.highlight_title.blank? ? 'Highlighted by the VA this month' : @highlighted_pr.highlight_title %>
+          </h2>
+          <% if @highlighted_pr.highlight_body %>
+            <p class="margin-top-1 line-height-sans-5"><%= @highlighted_pr.highlight_body %></p>
           <% end %>
         </div>
-    </div>
+        <div class="margin-top-3 grid-row grid-gap-3 dm-highlighted-practice-card desktop:margin-top-0">
+          <%= render partial: 'shared/practice_card', locals: { practice: @highlighted_pr } %>
+        </div>
+      </div>
+    </section>
+  <% end %>
+
+  <section class="nominate-section grid-container">
+        <div class="desktop:grid-col-7">
+          <h2 class="usa-prose-h2 font-sans-xl line-height-37px margin-bottom-2 margin-top-0">Nominate a practice</h2>
+          <p class="line-height-26 margin-bottom-2">
+            If you have a practice that has been adopted at two or more locations, has been endorsed by a senior executive stakeholder, and is an active practice, click
+            the link below to submit it to the Marketplace.
+          </p>
+          <%= mail_to 'marketplace@va.gov', 'Start nomination', subject: 'Nominate a practice', class: 'usa-button--outline dm-btn-base line-height-19px' %>
+        </div>
   </section>
 </div>
