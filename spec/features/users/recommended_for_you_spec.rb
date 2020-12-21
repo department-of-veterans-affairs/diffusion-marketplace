@@ -38,12 +38,13 @@ describe 'Recommended for you page', type: :feature do
   end
 
   describe 'Authorization' do
-    it 'should redirect the user to the homepage if they are not logged in' do
+    it 'should redirect the user to the login page if they are not logged in' do
       visit '/recommended-for-you'
 
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content('Diffusion Marketplace')
-      expect(page.current_path).to eq root_path
+      expect(page).to have_content('Login')
+      expect(page.current_path).to eq new_user_session_path
     end
 
     it 'should allow the user to visit the recommended for you page if they are logged in' do
