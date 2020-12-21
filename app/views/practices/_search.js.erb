@@ -683,6 +683,9 @@ function searchPracticesPage() {
         })
         // Move the focus area back to the top of the filters window
         $(".usa-combo-box__clear-input__wrapper").attr("tabindex",-1).focus();
+
+        // Reset filter count text
+        $('.search-filters-accordion-button').text('Filters')
     })
 
     if (window.location.pathname === '/search' && window.location.search !== '') {
