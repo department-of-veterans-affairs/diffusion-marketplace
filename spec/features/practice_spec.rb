@@ -12,6 +12,8 @@ describe 'Practices', type: :feature do
     @practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', date_initiated: Time.now())
     @enabled_practice = Practice.create!(name: 'Enabled practice', approved: true, published: true, enabled: true, date_initiated: Time.now())
     @disabled_practice = Practice.create!(name: 'Disabled practice', approved: true, published: true, enabled: false, date_initiated: Time.now())
+    @highlighted_practice = Practice.create!(name: 'Highlighted practice', approved: true, published: true, enabled: true, highlight: true, highlight_body: 'Highlight body text', date_initiated: Time.now())
+
     @departments = [
         Department.create!(name: 'Test department 1', short_name: 'td1'),
         Department.create!(name: 'Test department 2', short_name: 'td2'),
@@ -43,12 +45,6 @@ describe 'Practices', type: :feature do
       expect(page).to have_content('Login to see full practice')
       click_on('Login to see full practice')
       expect(page).to have_current_path('/users/sign_in')
-
-      # Visit the Marketplace
-      visit '/'
-      expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_content('The Best Practice Ever!')
-      expect(page).to have_current_path('/')
     end
 
     it 'should let authenticated users interact with the marketplace' do
@@ -63,7 +59,17 @@ describe 'Practices', type: :feature do
       # Visit the Marketplace
       visit '/'
       expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_content(@practice.name)
+      expect(page).to have_content(@highlighted_practice.name)
+      expect(page).to have_content('Find the next important or life-saving practice to adopt at your VA facility.')
+      expect(page).to have_link(href: '/explore')
+      expect(page).to have_content('Recommended for you')
+      expect(page).to have_content('Explore practices that are relevant to your location, role, and saved searches.')
+      expect(page).to have_content('COVID-19')
+      expect(page).to have_content('The Diffusion Marketplace has practices that help VHA respond to COVID-19. We have assembled a group of practices for frontline staff and administrators responding to the changing medical landscape.')
+      expect(page).to have_link(href: '/covid-19')
+      expect(page).to have_content('Nominate a practice')
+      expect(page).to have_content('If you have a practice that has been adopted at two or more locations, has been endorsed by a senior executive stakeholder, and is an active practice, click the link below to submit it to the Marketplace.')
+      expect(page).to have_link(href: 'mailto:marketplace@va.gov?subject=Nominate%20a%20practice')
     end
 
     it 'should let the practice owner interact with their practice if not approved or published' do
@@ -81,7 +87,7 @@ describe 'Practices', type: :feature do
       # Visit a user's practice that is not approved or published
       visit practice_path(@user_practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_content('This site is designed to help spread important and life-saving promising practices throughout the VA Healthcare System.')
+      expect(page).to have_content('Find the next important or life-saving practice to adopt at your VA facility.')
       expect(page).to have_current_path('/')
     end
 
@@ -116,12 +122,6 @@ describe 'Practices', type: :feature do
       expect(page).to have_content(practice.name)
       expect(page).to have_content('Yakima VA Clinic')
       expect(page).to have_current_path(practice_path(practice))
-
-      # Visit the Marketplace
-      visit root_path
-      expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_content(practice.name)
-      expect(page).to have_content('Yakima VA Clinic')
     end
   end
 
@@ -156,12 +156,6 @@ describe 'Practices', type: :feature do
       expect(page).to have_content(@user_practice.name)
       expect(page).to have_content(@user_practice.initiating_facility)
       expect(page).to have_current_path(practice_path(@user_practice))
-
-      # Visit the Marketplace
-      visit '/practices'
-      expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_content(@user_practice.name)
-      expect(page).to have_content('Page VA Clinic')
     end
 
     it 'should display the practice departments section' do
