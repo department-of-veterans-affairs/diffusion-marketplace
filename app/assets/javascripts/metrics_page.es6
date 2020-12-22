@@ -31,7 +31,7 @@ $(document).ready(function(){
     $("#metrics_duration").change (function(e) {
         //alert(window.location.href);
         var curUrl = window.location.href;
-        if(curUrl.includes('@duration')) {
+        if(curUrl.includes("&duration")) {
             var pos1 = curUrl.lastIndexOf("&duration");
             curUrl = curUrl.substring(0, pos1);
         }
