@@ -95,6 +95,8 @@ function searchPracticesPage() {
 
     // Template out the search results
     function buildSearchResults(results, sortOption) {
+        $('.dm-loading-spinner').addClass('display-none');
+
         var resultsArray = [];
         var finalResults = '';
         results.sort(sortOption).forEach(function (result) {
@@ -107,17 +109,20 @@ function searchPracticesPage() {
             '<p class="">' + result.highlight + '</p>' +
             '<p><b>Score: ' + result.score + '</b></p>' +
             '-->'
-    });
+        });
+
 
 
 //        console.log('final', finalResults);
 //        console.log('final array', resultsArray);
-
+        var resultsSection = $('#dm-search-practices')
         if (results.length > 0) {
-            // Show the results summary section
-            $('#dm-search-practices').hasClass('display-none') ? $('#dm-search-practices').removeClass('display-none') : ''
 
-            $('#no-search-query-content').addClass('display-none')
+            // Hide sorting options if there's only 1 result
+            results.length == 1 ? sortSelect.addClass('display-none') : ''
+
+            // Show the results summary section
+            resultsSection.hasClass('display-none') ? resultsSection.removeClass('display-none') : ''
 
             // Print results to the page
             document.querySelector('#search-results').innerHTML = finalResults;
@@ -129,23 +134,21 @@ function searchPracticesPage() {
                 noMoreText: 'No more results'
             })
 
-            $(document).on('click', '.addListData', function(e) {
-                truncateText()
-                if ($('.addListData').text() !== 'Load more') {
-                    $('.addListData').parent().addClass('display-none')
-                }
-            })
-
         } else {
-            console.log('no results')
-            !$('#dm-search-practices').hasClass('display-none') ? $('#dm-search-practices').addClass('display-none') : ''
+            var noContentEle = $('#no-search-query-content')
+            !resultsSection.hasClass('display-none') ? resultsSection.addClass('display-none') : ''
             // Show the no results text
-            $('#no-search-query-content').hasClass('display-none') ? $('#no-search-query-content').removeClass('display-none') : ''
+            noContentEle.hasClass('display-none') ? noContentEle.removeClass('display-none') : ''
             $('#no-query-p').addClass('display-none')
             $('#no-query-results-p').removeClass('display-none')
         }
-
     }
+
+    // Hide Load more button after clicking
+    $(document).on('click', '.addListData', function() {
+        var loadMoreButton = $('.addListData')
+        loadMoreButton.parent().addClass('display-none')
+    })
 
 
     // Search practices and populate the page
@@ -164,6 +167,7 @@ function searchPracticesPage() {
         searchField.value = query;
 
         if (query !== '') {
+            trackSearchField(query)
             var searchBarQueryArray = []
             search_options.keys.forEach(function(practiceKey) {
                 var queryObj = {}
@@ -451,7 +455,7 @@ function searchPracticesPage() {
         console.log('results', results)
         console.log(results.length);
 
-        // Get the results
+        // Get the results and default to filtering based on score
         buildSearchResults(results, sortByScore)
 
         // Print the number of results for the query
@@ -571,6 +575,12 @@ function searchPracticesPage() {
     $(document).on('submit', '#update-search-results-form', function (e) {
         e.preventDefault();
 
+        $('#no-search-query-content').addClass('display-none')
+
+        $('#dm-search-practices').addClass('display-none')
+        $('.dm-loading-spinner').removeClass('display-none');
+        $('.dm-loading-spinner').addClass('display-flex');
+
         // Close search filter accordion if it's open
         var accordionButton = $('.search-filters-accordion-button')
         if (accordionButton.attr('aria-expanded') == 'true') {
@@ -583,7 +593,6 @@ function searchPracticesPage() {
         console.log('search field is not empty')
         timeout = setTimeout(function () {
               window.history.pushState({ turbolinks: {} }, "", urlQuery);
-              trackSearchField(decodeURI(urlQuery));
         }, 250);
 
         console.log('search', window.location.search)
@@ -617,7 +626,9 @@ function searchPracticesPage() {
         console.log('search field val', searchField.value)
 
         // Run the search
-        search(searchField.value, chosenCategories, originatingFacility, adoptingFacility)
+        setTimeout(function() {
+            search(searchField.value, chosenCategories, originatingFacility, adoptingFacility)
+        }, 1000)
 
         // Display the amount of filters used(if any)
         var checkboxCount = selectedCheckboxes.length
@@ -689,8 +700,13 @@ function searchPracticesPage() {
     })
 
     if (window.location.pathname === '/search' && window.location.search !== '') {
+        $('#dm-search-practices').addClass('display-none')
+        $('.dm-loading-spinner').removeClass('display-none');
+        $('.dm-loading-spinner').addClass('display-flex');
         const query = window.location.search.split('=')[1];
-        search(decodeURI(query));
+        setTimeout(function() {
+            search(decodeURI(query));
+        }, 1000)
         trackSearchField(decodeURI(query));
         searchField.value = decodeURI(query);
     }
@@ -713,7 +729,7 @@ function trackSearchField(searchTerm) {
 }
 
 function hideSearchIconAndText() {
-    // Remove no search items content
+    // Remove initial search page text
     <% if request.url.include?('query') %>
       $('#no-search-query-content').addClass('display-none')
     <% end %>

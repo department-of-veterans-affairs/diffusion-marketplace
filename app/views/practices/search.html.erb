@@ -2,10 +2,10 @@
 <% provide :body_classes, 'bg-gray-2' %>
 <% provide :footer_classes, 'bg-gray-2' %>
 <% provide :head_tags do %>
+  <%= javascript_include_tag '_practice_utilities', 'data-turbolinks-track': 'reload' %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     <%= render partial: 'search', formats: [:js] %>
   <% end %>
-  <%= javascript_include_tag '_practice_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <div id="search-page">
@@ -55,8 +55,11 @@
         </div>
       </div>
       <div id="search-results" class="grid-row grid-gap-3"></div>
-      <div class="pagination"></div>
     </section>
+
+    <div class="dm-loading-spinner display-none flex-justify-center flex-align-self-center margin-y-4">
+      <i class="fas fa-circle-notch"></i>
+    </div>
 
     <section id="no-search-query-content" class="margin-x-auto">
       <div class="text-and-icon-container position-relative">
