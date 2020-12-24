@@ -59,8 +59,14 @@
   .dm-practice-card-container {
     height: 412px;
     max-width: 309px;
+    min-width: -webkit-calc(100vw - 48px);
+    min-width: -moz-calc(100vw - 48px);
+    min-width: calc(100vw - 48px);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 
+    @media all and (min-width: 357px){
+      min-width: 309px;
+    }
   }
 
   .dm-practice-card-img-container {

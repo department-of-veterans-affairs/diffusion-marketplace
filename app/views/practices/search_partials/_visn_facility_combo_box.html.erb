@@ -1,4 +1,4 @@
-<div class="usa-combo-box margin-bottom-3 grid-col-5">
+<div class="usa-combo-box margin-bottom-3 margin-top-1 desktop:margin-top-0 desktop:grid-col-5">
   <label for="<%= facility_type_selector %>" class="line-height-26">Select by VISN or facility</label>
   <select id="<%= facility_type_selector %>" class="usa-select" name="<%= facility_type_selector %>">
     <% visn_grouped_facilities = @facilities_data.group_by{ |f| f["VISN"]} %>

@@ -85,14 +85,14 @@
   }
 
   #no-query-p, #no-query-results-p {
-    top: 50%;
+    top: 59%;
     transform: translateY(-50%);
   }
 
   .no-search-query-icon {
     font-size: 11.25em;
     left: 50%;
-    top: 50%;
+    top: 59%;
     transform: translate(-50%, -50%);
   }
 }
@@ -106,20 +106,20 @@
     margin: 0 !important;
     width: 100% !important
   }
+}
 
-  .usa-checkbox__label:before {
-    border-radius: 0 !important;
-  }
+.usa-checkbox__label:before {
+  border-radius: 0 !important;
+}
 
-  .usa-combo-box__toggle-list, .usa-combo-box__clear-input {
-    top: 2.3em;
-  }
+.usa-combo-box__toggle-list, .usa-combo-box__clear-input {
+  top: 2.3em !important;
+}
 
-  .usa-combo-box__input-button-separator {
-    top: 2.1em;
-  }
+.usa-combo-box__input-button-separator {
+  top: 2.1em !important;
+}
 
-  li:not([data-value*="VISN"]) {
-    padding-left: 24px !important;
-  }
+.usa-combo-box__list-option:not([data-value*="VISN"]) {
+  padding-left: 24px !important;
 }

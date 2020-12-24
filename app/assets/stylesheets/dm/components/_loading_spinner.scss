@@ -1,6 +1,6 @@
 @import "../variables/colors";
 
-.dm-loading-spinner {
+.dm-loading-spinner, .search-spinner {
   .fa-circle-notch {
     color: $dm-color-blue-70v;
     font-size: 40px;

@@ -4,6 +4,11 @@ var visns = <%= raw @visn_data.to_json %>;
 var adoptions = <%= raw @diffusion_histories.to_json %>;
 var results = null;
 var resultsHTML = '';
+var NO_QUERY_CONTENT = '#no-search-query-content';
+var RESULTS_SECTION = '#dm-search-practices';
+var SPINNER = '.dm-loading-spinner';
+var LOAD_MORE_CONTAINER = '.button-box';
+var SEARCH_RESULTS = '#search-results';
 
 // sort functions
 function sortAToZ(a, b) {
@@ -87,6 +92,38 @@ function buildPracticeCard(result) {
     return cardHtml;
 }
 
+function showSpinner() {
+    console.log('show spinner')
+    $(SPINNER).removeClass('display-none');
+    $(SPINNER).addClass('display-flex');
+}
+
+function hideIconAndText() {
+    if (!$(NO_QUERY_CONTENT).hasClass('display-none')) {
+        $(NO_QUERY_CONTENT).addClass('display-none');
+    }
+}
+
+function hideLoadMoreButton() {
+    if (!$(LOAD_MORE_CONTAINER).hasClass('display-none')) {
+        console.log('does not have display none')
+        $(LOAD_MORE_CONTAINER).addClass('display-none')
+    }
+}
+
+function hideResultsSectionElAndShowSpinner() {
+    $(RESULTS_SECTION).addClass('display-none');
+    hideIconAndText();
+    showSpinner();
+}
+
+function hideResultsElAndShowSpinner() {
+    $(SEARCH_RESULTS).addClass('display-none');
+    hideIconAndText();
+    hideLoadMoreButton();
+    showSpinner();
+}
+
 function searchPracticesPage() {
     const searchField = document.querySelector('#dm-practice-search-field');
 
@@ -95,7 +132,7 @@ function searchPracticesPage() {
 
     // Template out the search results
     function buildSearchResults(results, sortOption) {
-        $('.dm-loading-spinner').addClass('display-none');
+        $(SPINNER).addClass('display-none');
 
         var resultsArray = [];
         var finalResults = '';
@@ -115,19 +152,22 @@ function searchPracticesPage() {
 
 //        console.log('final', finalResults);
 //        console.log('final array', resultsArray);
-        var resultsSection = $('#dm-search-practices')
         if (results.length > 0) {
 
             // Hide sorting options if there's only 1 result
             results.length == 1 ? sortSelect.addClass('display-none') : ''
 
             // Show the results summary section
-            resultsSection.hasClass('display-none') ? resultsSection.removeClass('display-none') : ''
+            if ($(RESULTS_SECTION).hasClass('display-none')) {
+                $(RESULTS_SECTION).removeClass('display-none')
+            }
+
+            $(SEARCH_RESULTS).removeClass('display-none')
 
             // Print results to the page
             document.querySelector('#search-results').innerHTML = finalResults;
 
-            $('#search-results').showMoreItems({
+            $(SEARCH_RESULTS).showMoreItems({
                 startNum: 12,
                 afterNum: 12,
                 moreText: 'Load more',
@@ -135,10 +175,13 @@ function searchPracticesPage() {
             })
 
         } else {
-            var noContentEle = $('#no-search-query-content')
-            !resultsSection.hasClass('display-none') ? resultsSection.addClass('display-none') : ''
+            if (!$(RESULTS_SECTION).hasClass('display-none')) {
+                $(RESULTS_SECTION).addClass('display-none');
+            }
             // Show the no results text
-            noContentEle.hasClass('display-none') ? noContentEle.removeClass('display-none') : ''
+            if ($(NO_QUERY_CONTENT).hasClass('display-none')) {
+                $(NO_QUERY_CONTENT).removeClass('display-none');
+            }
             $('#no-query-p').addClass('display-none')
             $('#no-query-results-p').removeClass('display-none')
         }
@@ -177,15 +220,17 @@ function searchPracticesPage() {
         }
 
         if (categories) {
+            // Collect any practice that has a category that matches the selected category/categories.
             var categoryFilters = []
             categories.forEach(function (categorySelection) {
-                return categoryFilters.push({'category_names': "'" + categorySelection})
+                return categoryFilters.push({'category_names': "=\"" + categorySelection + "\""})
             })
         }
 
         var originFacilityArray = originatingFacility ? [] : null
 
         if (originatingFacility && originatingFacility.includes('VISN')) {
+            // Collect any practice that either has the selected VISN as an origin facility, or has an origin facility that belongs to the selected VISN
             console.log('in here')
             var foundVisn = visns.find(function(v) {
                 return v.number === originatingFacility
@@ -206,6 +251,7 @@ function searchPracticesPage() {
             console.log('Origin facilities with VISN', originFacilityArray)
 
         } else if (originatingFacility && !originatingFacility.includes('VISN')){
+            // Collect the practices that have an origin facility matching the selected facility
             var foundFacility = facilities.find(function(f) {
                 return originatingFacility === f.StationNumber
             })
@@ -227,6 +273,7 @@ function searchPracticesPage() {
             var stationNumbers = [];
             var adoptionFacilityArray = [];
             if (adoptingFacility.includes('VISN')) {
+                // Collect any practice that has a diffusion history with a facility that belongs to the selected VISN
                 filteredFacilities = facilities.filter(function(f) {
                     return 'VISN-' + f.VISN == adoptingFacility
                 });
@@ -238,6 +285,7 @@ function searchPracticesPage() {
                 getAdoptionFacilities(stationNumbers, adoptionFacilityArray)
 
             } else {
+                // Collect any practice that has a diffusion history with a facility that matches the selected VISN
                 var matchingFacility;
                 matchingFacility = facilities.find(function(f) {
                     return f.StationNumber === adoptingFacility
@@ -248,6 +296,11 @@ function searchPracticesPage() {
                 getAdoptionFacilities(stationNumbers, adoptionFacilityArray)
             }
         }
+
+        /*
+        IMPORTANT: Per Research and Design, if the user's search contains a string from the search bar, utilize the $and operator so that the result(s) must match all conditions.
+        On the other hand, if the user's search only contains filters, utilize the $or operator so that the results can match ANY of the conditions.
+         */
 
         console.log('filtered facilities', adoptingFacility)
         console.log('originatingFacility', originatingFacility)
@@ -262,7 +315,9 @@ function searchPracticesPage() {
                         $and: categoryFilters
                     },
                     {
-                        $and: originFacilityArray
+                        $and: [
+                            {$or: originFacilityArray}
+                        ]
                     },
                     {
                         $and: [
@@ -284,7 +339,9 @@ function searchPracticesPage() {
                         $and: categoryFilters
                     },
                     {
-                        $and: originFacilityArray
+                        $and: [
+                            {$or: originFacilityArray}
+                        ]
                     }
                 ]
             })
@@ -456,7 +513,9 @@ function searchPracticesPage() {
         console.log(results.length);
 
         // Get the results and default to filtering based on score
-        buildSearchResults(results, sortByScore)
+        setTimeout(function() {
+            buildSearchResults(results, sortByScore)
+        }, 2000)
 
         // Print the number of results for the query
         resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? ':' : 's:');
@@ -532,18 +591,7 @@ function searchPracticesPage() {
     // Set up "enter" event handler for search field
     var timeout = null;
 
-//    $(document).on('submit', '#dm-practice-search-form', function (e) {
-//        e.preventDefault();
-
-//        // Make a new timeout set to go off in 500ms
-//        timeout = setTimeout(function () {
-//            search(searchField.value);
-//            window.history.pushState("", "", '/search?query=' + searchField.value);
-//            trackSearchField(decodeURI(searchField.value));
-//        }, 500);
-
-//    });
-
+    // Get the Combo box values based on user interaction
     function getComboBoxVal(inputEle, liEle) {
         var facility;
         if (inputEle.val() !== '' && liEle.length == 1) {
@@ -575,11 +623,7 @@ function searchPracticesPage() {
     $(document).on('submit', '#update-search-results-form', function (e) {
         e.preventDefault();
 
-        $('#no-search-query-content').addClass('display-none')
-
-        $('#dm-search-practices').addClass('display-none')
-        $('.dm-loading-spinner').removeClass('display-none');
-        $('.dm-loading-spinner').addClass('display-flex');
+        hideResultsSectionElAndShowSpinner();
 
         // Close search filter accordion if it's open
         var accordionButton = $('.search-filters-accordion-button')
@@ -598,7 +642,6 @@ function searchPracticesPage() {
         console.log('search', window.location.search)
         console.log('history', URL.searchParams)
 
-        console.log('chosen cats', chosenCategories)
         // Get the value of the originating facility combo box
         var originatingFacilityInput = $('#originating-facility-and-visn-select');
         var originatingFacilityLi = $('#originating-facility-and-visn-select--list > li[aria-selected=true]');
@@ -613,7 +656,7 @@ function searchPracticesPage() {
 
         // Get the values for any chosen categories
         var selectedCheckboxes = $('#update-search-results-form [type="checkbox"]:checked')
-        var chosenCategories = $('#update-search-results-form [type="checkbox"]:checked').map(function () {
+        var chosenCategories = selectedCheckboxes.map(function () {
             return this.value;
         }).get();
         if (chosenCategories.length == 0) {
@@ -665,16 +708,31 @@ function searchPracticesPage() {
     sortSelect.on('change', function() {
         switch ($(this).val()) {
             case "most_relevant":
-                buildSearchResults(results, sortByScore);
+                hideResultsElAndShowSpinner();
+                setTimeout(function() {
+                    buildSearchResults(results, sortByScore)
+                }, 2000)
                 break;
             case "a_to_z":
-                buildSearchResults(results, sortAToZ);
+                hideResultsElAndShowSpinner();
+                setTimeout(function() {
+                    buildSearchResults(results, sortAToZ)
+                }, 2000)
+//                buildSearchResults(results, sortAToZ);
                 break;
             case "adoptions":
-                buildSearchResults(results, sortByAdoptionCounts);
+                hideResultsElAndShowSpinner();
+                setTimeout(function() {
+                    buildSearchResults(results, sortByAdoptionCounts)
+                }, 2000)
+//                buildSearchResults(results, sortByAdoptionCounts);
                 break;
             case "added":
-                buildSearchResults(results, sortByDateAdded);
+                hideResultsElAndShowSpinner();
+                setTimeout(function() {
+                    buildSearchResults(results, sortByDateAdded)
+                }, 2000)
+//                buildSearchResults(results, sortByDateAdded);
                 break;
         }
     })
@@ -700,9 +758,7 @@ function searchPracticesPage() {
     })
 
     if (window.location.pathname === '/search' && window.location.search !== '') {
-        $('#dm-search-practices').addClass('display-none')
-        $('.dm-loading-spinner').removeClass('display-none');
-        $('.dm-loading-spinner').addClass('display-flex');
+        hideResultsSectionElAndShowSpinner();
         const query = window.location.search.split('=')[1];
         setTimeout(function() {
             search(decodeURI(query));
@@ -728,14 +784,14 @@ function trackSearchField(searchTerm) {
     }
 }
 
-function hideSearchIconAndText() {
+function hideSearchIconAndTextOnLoad() {
     // Remove initial search page text
     <% if request.url.include?('query') %>
-      $('#no-search-query-content').addClass('display-none')
+      $(NO_QUERY_CONTENT).addClass('display-none')
     <% end %>
 }
 
 document.addEventListener('turbolinks:load', function () {
     searchPracticesPage();
-    hideSearchIconAndText();
+    hideSearchIconAndTextOnLoad();
 });

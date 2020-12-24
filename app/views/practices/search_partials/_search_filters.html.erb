@@ -38,8 +38,8 @@
 
   <fieldset class="p0">
     <legend class="usa-sr-only">Category Filter</legend>
-    <div class="padding-x-2 bg-gray-5 padding-bottom-2px">
-      <div class="grid-row grid-gap bg-white">
+    <div class="bg-gray-5 padding-bottom-2px">
+      <div class="grid-row grid-gap bg-white padding-x-2">
         <% if sliced_categories.present? %>
           <p class="text-bold line-height-26 margin-bottom-2 margin-top-1 grid-col-12">Category</p>
           <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sliced_categories, column: 0 } %>
