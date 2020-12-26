@@ -98,13 +98,28 @@
 }
 
 #search_filters_dropdown {
-  height: 60vh;
-  border: 2px solid $dm-color-gray-5 !important;
+  border: 0 !important;
+  background-color: $dm-color-gray-2 !important;
+
+  @media screen and (min-width: 1024px) {
+    height: 60vh;
+    border: 2px solid $dm-color-gray-5 !important;
+    top: unset;
+    right: unset;
+    left: unset;
+    bottom: unset;
+    position: absolute;
+    background-color: $dm-color-white !important;
+  }
 
   fieldset {
     border: none !important;
     margin: 0 !important;
     width: 100% !important
+  }
+
+  .fa-times {
+    display: block !important;
   }
 }
 
@@ -122,4 +137,93 @@
 
 .usa-combo-box__list-option:not([data-value*="VISN"]) {
   padding-left: 24px !important;
+}
+
+#update-search-results-form {
+  .usa-search [type="submit"] {
+    background-image: none !important;
+    width: 85px !important;
+    padding: 8px 16px 8px 16px !important;
+
+    @media screen and (min-width: 480px) {
+      padding-left: 2rem !important;
+      padding-right: 2rem !important;
+      width: auto !important;
+    }
+  }
+
+  .usa-search__submit-text {
+    left: unset !important;
+    position: unset !important;
+  }
+}
+
+//#resetSearchFiltersButton {
+//  @media screen and (max-width: 1023px) {
+//    -moz-osx-font-smoothing: auto;
+//    -webkit-font-smoothing: subpixel-antialiased;
+//    color: $dm-color-blue-vivid;
+//    text-decoration: underline !important;
+//    background-color: transparent;
+//    border: 0;
+//    border-radius: 0;
+//    box-shadow: none;
+//    font-weight: 400;
+//    position: absolute;
+//    top: 25px;
+//    right: 0;
+//    width: auto;
+//    text-align: right;
+//    margin: 0 24px 0 0;
+//    padding: 0 !important;
+//  }
+//}
+
+#close_filters_modal {
+  background: none !important;
+  border: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.category-container, .originating-facility-container, .adopting-facility-container {
+  background-color: $dm-color-gray-2;
+
+  @media screen and (min-width: 1024px) {
+    background-color: $dm-color-white;
+  }
+}
+
+.category-container {
+  div:last-child {
+    .usa-checkbox {
+      &:last-child {
+        .usa-checkbox__label {
+          @media screen and (max-width: 1023px) {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+.mobile-modal-container {
+  position: relative;
+  padding-bottom: 93px;
+  min-height: 100vh;
+
+  @media screen and (min-width: 1024px) {
+    position: unset;
+    padding-bottom: 0;
+    min-height: unset;
+  }
+}
+
+#filter_button_container {
+  @media screen and (max-width: 1023px) {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
 }

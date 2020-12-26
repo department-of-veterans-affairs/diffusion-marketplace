@@ -1,9 +1,17 @@
-<div class="grid-row">
+<div class="padding-x-3 padding-bottom-2 grid-row desktop:padding-bottom-0 desktop:padding-x-0">
   <fieldset class="p0">
     <legend class="usa-sr-only">Originating Facility Filter</legend>
-    <div class="padding-bottom-2px bg-gray-5">
-      <div class="grid-row bg-white padding-x-2">
-        <p class="text-bold line-height-26 margin-top-2 margin-bottom-1 grid-col-12">Originating location</p>
+    <div class="bg-gray-5 margin-bottom-1 desktop:margin-bottom-0 desktop:padding-bottom-2px">
+      <h2 class="usa-accordion__heading">
+        <button class="usa-accordion__button mobile-origin-accordion desktop:display-none"
+                aria-expanded="false"
+                type="button">
+          Originating facility
+        </button>
+      </h2>
+
+      <div class="grid-row originating-facility-container display-none desktop:padding-bottom-3 desktop:display-block desktop:padding-x-2">
+        <p class="text-bold line-height-26 margin-top-2 margin-bottom-1 grid-col-12 display-none desktop:display-block">Originating location</p>
         <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'originating-facility-and-visn-select'} %>
       </div>
     </div>
@@ -11,9 +19,17 @@
 
   <fieldset class="p0">
     <legend class="usa-sr-only">Adopting Facility Filter</legend>
-    <div class="padding-bottom-2px bg-gray-5">
-      <div class="grid-row bg-white padding-x-2">
-        <p class="text-bold line-height-26 margin-top-2 margin-bottom-1 grid-col-12">Adopting location</p>
+    <div class="bg-gray-5 margin-bottom-1 desktop:margin-bottom-0 desktop:padding-bottom-2px">
+      <h2 class="usa-accordion__heading">
+        <button class="usa-accordion__button mobile-adopting-accordion desktop:display-none"
+                aria-expanded="false"
+                type="button">
+          Adopting facility
+        </button>
+      </h2>
+
+      <div class="grid-row adopting-facility-container display-none desktop:padding-bottom-3 desktop:display-block desktop:padding-x-2">
+        <p class="text-bold line-height-26 margin-top-2 margin-bottom-1 grid-col-12 display-none desktop:display-block">Adopting location</p>
         <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'adopting-facility-and-visn-select'} %>
       </div>
     </div>
@@ -38,10 +54,19 @@
 
   <fieldset class="p0">
     <legend class="usa-sr-only">Category Filter</legend>
-    <div class="bg-gray-5 padding-bottom-2px">
-      <div class="grid-row grid-gap bg-white padding-x-2">
+    <div class="bg-gray-5 desktop:padding-bottom-2px">
+      <h2 class="usa-accordion__heading">
+        <button class="usa-accordion__button mobile-category-accordion desktop:display-none"
+                aria-expanded="false"
+                type="button">
+          Category
+        </button>
+      </h2>
+
+<!--      <div class="grid-row grid-gap category-container bg-white display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-block desktop:padding-x-2">-->
+      <div class="grid-row category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex desktop:padding-x-2">
         <% if sliced_categories.present? %>
-          <p class="text-bold line-height-26 margin-bottom-2 margin-top-1 grid-col-12">Category</p>
+          <p class="text-bold line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block">Category</p>
           <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sliced_categories, column: 0 } %>
           <% if sliced_categories[1].present? %>
             <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sliced_categories, column: 1 } %>
@@ -54,11 +79,11 @@
     </div>
   </fieldset>
 </div>
-<div class="bg-white padding-2">
-  <button type="submit" id="update-search-results-button" class="usa-button dm-btn-primary display-block width-100 margin-bottom-1" name="button">
+<div class="padding-3 border-top-2px border-base-lightest bg-white desktop:border-top-0 desktop:padding-2" id="filter_button_container">
+  <button type="submit" id="update-search-results-button" class="usa-button dm-btn-primary display-block width-100 desktop:margin-bottom-1 line-height-19px" name="button">
     Update results
   </button>
-  <button type="button" class="usa-button dm-btn-base display-block width-100" id="resetSearchFiltersButton">
+  <button type="button" class="usa-button dm-btn-base display-none desktop:display-block width-full line-height-19px" id="resetSearchFiltersButton">
     Reset filters
   </button>
 </div>

@@ -9,6 +9,15 @@ var RESULTS_SECTION = '#dm-search-practices';
 var SPINNER = '.dm-loading-spinner';
 var LOAD_MORE_CONTAINER = '.button-box';
 var SEARCH_RESULTS = '#search-results';
+// Add Namespace for scroll position
+var pagePosition = {
+    original: 0,
+    // Log the user's spot on the page when they open the filters modal on mobile
+    getScrollPosition: function() {
+      this.original = $(window).scrollTop();
+      console.log('page position', this.original)
+  }
+}
 
 // sort functions
 function sortAToZ(a, b) {
@@ -122,6 +131,59 @@ function hideResultsElAndShowSpinner() {
     hideIconAndText();
     hideLoadMoreButton();
     showSpinner();
+}
+
+function hideSearchIconAndTextOnLoad() {
+    // Remove initial search page text
+    <% if request.url.include?('query') %>
+    $(NO_QUERY_CONTENT).addClass('display-none')
+    <% end %>
+}
+
+function openMobileFiltersModal() {
+    $(document).on('click', '#mobile_filters_button', function() {
+        $('.search-filters-accordion-button').attr('aria-expanded', 'true');
+        $('#search_filters_dropdown').removeAttr('hidden');
+        // Return the user to their original spot on the page, before opening the mobile modal
+        pagePosition.getScrollPosition();
+    });
+}
+
+function toggleAccordion(accordionEl, containerEl) {
+    if (($(accordionEl).attr('aria-expanded') == 'true')) {
+        $(accordionEl).attr('aria-expanded', 'false');
+        $(containerEl).addClass('display-none');
+    } else {
+        $(accordionEl).attr('aria-expanded', 'true');
+        $(containerEl).removeClass('display-none');
+    }
+}
+
+function toggleMobileCategoriesAccordion() {
+    $(document).on('click', '.mobile-category-accordion', function() {
+          toggleAccordion(this, '.category-container');
+    });
+}
+
+function toggleMobileOriginAccordion() {
+    $(document).on('click', '.mobile-origin-accordion', function() {
+        toggleAccordion(this, '.originating-facility-container');
+    });
+}
+
+function toggleMobileAdoptingAccordion() {
+    $(document).on('click', '.mobile-adopting-accordion', function() {
+        toggleAccordion(this, '.adopting-facility-container');
+    });
+}
+
+function closeMobileFiltersModal() {
+    $(document).on('click', '#close_filters_modal', function () {
+        $('.search-filters-accordion-button').attr('aria-expanded', 'false')
+        $('#search_filters_dropdown').attr('hidden', 'true');
+        // Bring the user back to their original spot on the page, in case they scrolled down while in the modal
+        $(window).scrollTop(pagePosition.original);
+    });
 }
 
 function searchPracticesPage() {
@@ -620,6 +682,11 @@ function searchPracticesPage() {
         }
     }
 
+    function closeAccordion(accordionEl, containerEl) {
+        $(accordionEl).attr('aria-expanded', 'false');
+        $(containerEl).addClass('display-none');
+    }
+
     $(document).on('submit', '#update-search-results-form', function (e) {
         e.preventDefault();
 
@@ -630,6 +697,16 @@ function searchPracticesPage() {
         if (accordionButton.attr('aria-expanded') == 'true') {
             accordionButton.attr('aria-expanded', 'false')
             $('#search_filters_dropdown').attr('hidden', 'true')
+        }
+
+        // Close mobile accordions
+        closeAccordion('.mobile-origin-accordion', '.originating-facility-container');
+        closeAccordion('.mobile-adopting-accordion', '.adopting-facility-container');
+        closeAccordion('.mobile-category-accordion', '.category-container');
+
+        // Bring the user back to their original spot on the page, before they opened the mobile modal
+        if ($(window).width() < 1024) {
+            $(window).scrollTop(pagePosition.original);
         }
 
         // Make a new timeout set to go off in 250ms
@@ -738,7 +815,7 @@ function searchPracticesPage() {
     })
 
     // Clear all filter options
-    $(document).on('click', '#resetSearchFiltersButton', function(e) {
+    $(document).on('click', '#resetSearchFiltersButton, #resetSearchFiltersButtonMobile', function(e) {
         e.preventDefault();
 
         $('.usa-combo-box__clear-input').each(function() {
@@ -784,14 +861,16 @@ function trackSearchField(searchTerm) {
     }
 }
 
-function hideSearchIconAndTextOnLoad() {
-    // Remove initial search page text
-    <% if request.url.include?('query') %>
-      $(NO_QUERY_CONTENT).addClass('display-none')
-    <% end %>
+function execSearchFunctions() {
+    searchPracticesPage();
+    hideSearchIconAndTextOnLoad();
+    openMobileFiltersModal();
+    toggleMobileCategoriesAccordion();
+    toggleMobileOriginAccordion();
+    toggleMobileAdoptingAccordion();
+    closeMobileFiltersModal();
 }
 
 document.addEventListener('turbolinks:load', function () {
-    searchPracticesPage();
-    hideSearchIconAndTextOnLoad();
+    execSearchFunctions();
 });
