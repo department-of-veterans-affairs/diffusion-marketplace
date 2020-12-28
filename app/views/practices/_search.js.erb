@@ -15,7 +15,6 @@ var pagePosition = {
     // Log the user's spot on the page when they open the filters modal on mobile
     getScrollPosition: function() {
       this.original = $(window).scrollTop();
-      console.log('page position', this.original)
   }
 }
 
@@ -80,7 +79,7 @@ function buildPracticeCard(result) {
         <% if current_user.present? %>
         favoriteButton +
         <% end %>
-        '<a href="/practices/' + result.item.slug + '" aria-label="Go to ' + result.item.name + '" aria-hidden="true" class="dm-practice-link' + practiceLinkClass + '">' +
+        '<a href="/practices/' + result.item.slug + '" aria-label="Go to ' + result.item.name + '" tabindex="-1" aria-hidden="true" class="dm-practice-link' + practiceLinkClass + '">' +
         '<div class=" dm-practice-card-container">' +
         cardImage +
         '<div class="padding-105 height-card-mobile">' +
@@ -575,9 +574,8 @@ function searchPracticesPage() {
         console.log(results.length);
 
         // Get the results and default to filtering based on score
-        setTimeout(function() {
-            buildSearchResults(results, sortByScore)
-        }, 2000)
+        buildSearchResults(results, sortByScore)
+
 
         // Print the number of results for the query
         resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? ':' : 's:');
@@ -746,9 +744,7 @@ function searchPracticesPage() {
         console.log('search field val', searchField.value)
 
         // Run the search
-        setTimeout(function() {
-            search(searchField.value, chosenCategories, originatingFacility, adoptingFacility)
-        }, 1000)
+        search(searchField.value, chosenCategories, originatingFacility, adoptingFacility)
 
         // Display the amount of filters used(if any)
         var checkboxCount = selectedCheckboxes.length
@@ -786,30 +782,19 @@ function searchPracticesPage() {
         switch ($(this).val()) {
             case "most_relevant":
                 hideResultsElAndShowSpinner();
-                setTimeout(function() {
-                    buildSearchResults(results, sortByScore)
-                }, 2000)
+                buildSearchResults(results, sortByScore);
                 break;
             case "a_to_z":
                 hideResultsElAndShowSpinner();
-                setTimeout(function() {
-                    buildSearchResults(results, sortAToZ)
-                }, 2000)
-//                buildSearchResults(results, sortAToZ);
+                buildSearchResults(results, sortAToZ);
                 break;
             case "adoptions":
                 hideResultsElAndShowSpinner();
-                setTimeout(function() {
-                    buildSearchResults(results, sortByAdoptionCounts)
-                }, 2000)
-//                buildSearchResults(results, sortByAdoptionCounts);
+                buildSearchResults(results, sortByAdoptionCounts);
                 break;
             case "added":
                 hideResultsElAndShowSpinner();
-                setTimeout(function() {
-                    buildSearchResults(results, sortByDateAdded)
-                }, 2000)
-//                buildSearchResults(results, sortByDateAdded);
+                buildSearchResults(results, sortByDateAdded);
                 break;
         }
     })
@@ -837,9 +822,7 @@ function searchPracticesPage() {
     if (window.location.pathname === '/search' && window.location.search !== '') {
         hideResultsSectionElAndShowSpinner();
         const query = window.location.search.split('=')[1];
-        setTimeout(function() {
-            search(decodeURI(query));
-        }, 1000)
+        search(decodeURI(query));
         trackSearchField(decodeURI(query));
         searchField.value = decodeURI(query);
     }

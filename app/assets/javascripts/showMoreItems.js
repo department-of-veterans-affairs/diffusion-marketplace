@@ -68,7 +68,7 @@ var loadingSpinner = '.search-spinner'
         if(!_.goOut){
             console.log('element', $(element))
             $(element).after(
-                '<div class="button-box p1-75-top"><button class="addListData usa-button--outline dm-btn-base display-block margin-x-auto">' + settings.options.moreText + '</button></div>' +
+                '<div class="button-box p1-75-top"><button class="addListData usa-button--outline dm-btn-base display-block line-height-19px margin-x-auto">' + settings.options.moreText + '</button></div>' +
                 '<div class="search-spinner display-none flex-justify-center flex-align-self-center p1-75-top"><i class="fas fa-circle-notch"></i></div>'
             );
         }
@@ -86,20 +86,19 @@ var loadingSpinner = '.search-spinner'
                 _.goNum = _.sum
                 _.goOut = true
             }
-            setTimeout(function() {
-                for (var i = _.nowNum; i < _.goNum; i++) {
-                    $(element).children().eq(i).show()
-                    _.nowNum += 1
-                    $('.addListData').closest('section').find(loadingSpinner).addClass('display-none');
-                    $(buttonBox).removeClass('display-none');
-                    // If there are no more practice cards to show, hide the 'No more results' button
-                    if (_.nowNum === _.sum) {
-                        $(buttonBox).addClass('display-none');
-                    }
+
+            for (var i = _.nowNum; i < _.goNum; i++) {
+                $(element).children().eq(i).show()
+                _.nowNum += 1
+                $('.addListData').closest('section').find(loadingSpinner).addClass('display-none');
+                $(buttonBox).removeClass('display-none');
+                // If there are no more practice cards to show, hide the 'No more results' button
+                if (_.nowNum === _.sum) {
+                    $(buttonBox).addClass('display-none');
                 }
-                // Truncate the text of the next set of cards
-                truncateText();
-            }, 2000)
+            }
+            // Truncate the text of the next set of cards
+            truncateText();
 
             if (_.goOut && settings.options.original) {
                 $(this).text(settings.options.backMoreText).addClass('original')
