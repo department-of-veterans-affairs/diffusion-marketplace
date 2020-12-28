@@ -1,4 +1,4 @@
-<div class="padding-x-3 padding-bottom-2 grid-row desktop:padding-bottom-0 desktop:padding-x-0">
+<div class="grid-row padding-x-3 padding-bottom-0 desktop:padding-x-0">
   <fieldset class="p0">
     <legend class="usa-sr-only">Originating Facility Filter</legend>
     <div class="bg-gray-5 margin-bottom-1 desktop:margin-bottom-0 desktop:padding-bottom-2px">
@@ -66,7 +66,7 @@
 <!--      <div class="grid-row grid-gap category-container bg-white display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-block desktop:padding-x-2">-->
       <div class="grid-row category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex desktop:padding-x-2">
         <% if sliced_categories.present? %>
-          <p class="text-bold line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block">Category</p>
+          <p class="text-bold line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block desktop:margin-top-1">Category</p>
           <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sliced_categories, column: 0 } %>
           <% if sliced_categories[1].present? %>
             <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sliced_categories, column: 1 } %>
@@ -79,7 +79,7 @@
     </div>
   </fieldset>
 </div>
-<div class="padding-3 border-top-2px border-base-lightest bg-white desktop:border-top-0 desktop:padding-2" id="filter_button_container">
+<div class="padding-y-2 padding-x-3 border-top-2px border-base-lightest bg-white desktop:border-top-0 desktop:padding-2" id="filter_button_container">
   <button type="submit" id="update-search-results-button" class="usa-button dm-btn-primary display-block width-100 desktop:margin-bottom-1 line-height-19px" name="button">
     Update results
   </button>

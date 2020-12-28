@@ -1,5 +1,28 @@
 // Styles for the practice search page
 @import '../variables/colors';
+
+#search-page {
+  .usa-checkbox__label:before {
+    border-radius: 0 !important;
+  }
+
+  .usa-combo-box__toggle-list, .usa-combo-box__clear-input {
+    top: 2.3em !important;
+  }
+
+  .usa-combo-box__input-button-separator {
+    top: 2.1em !important;
+  }
+
+  .usa-combo-box__list-option:not([data-value*="VISN"]) {
+    padding-left: 24px !important;
+  }
+
+  .usa-select {
+    max-width: 100% !important;
+  }
+}
+
 .dm-search-practices {
   hr {
     border: none;
@@ -78,21 +101,22 @@
 
 #no-search-query-content {
   width: 261px !important;
-  height: 42vh;
+  height: 40vh;
+  margin-top: 40px;
 
   .text-and-icon-container {
     height: 100%
   }
 
   #no-query-p, #no-query-results-p {
-    top: 59%;
+    top: 50%;
     transform: translateY(-50%);
   }
 
   .no-search-query-icon {
     font-size: 11.25em;
     left: 50%;
-    top: 59%;
+    top: 50%;
     transform: translate(-50%, -50%);
   }
 }
@@ -123,22 +147,6 @@
   }
 }
 
-.usa-checkbox__label:before {
-  border-radius: 0 !important;
-}
-
-.usa-combo-box__toggle-list, .usa-combo-box__clear-input {
-  top: 2.3em !important;
-}
-
-.usa-combo-box__input-button-separator {
-  top: 2.1em !important;
-}
-
-.usa-combo-box__list-option:not([data-value*="VISN"]) {
-  padding-left: 24px !important;
-}
-
 #update-search-results-form {
   .usa-search [type="submit"] {
     background-image: none !important;
@@ -157,27 +165,6 @@
     position: unset !important;
   }
 }
-
-//#resetSearchFiltersButton {
-//  @media screen and (max-width: 1023px) {
-//    -moz-osx-font-smoothing: auto;
-//    -webkit-font-smoothing: subpixel-antialiased;
-//    color: $dm-color-blue-vivid;
-//    text-decoration: underline !important;
-//    background-color: transparent;
-//    border: 0;
-//    border-radius: 0;
-//    box-shadow: none;
-//    font-weight: 400;
-//    position: absolute;
-//    top: 25px;
-//    right: 0;
-//    width: auto;
-//    text-align: right;
-//    margin: 0 24px 0 0;
-//    padding: 0 !important;
-//  }
-//}
 
 #close_filters_modal {
   background: none !important;
