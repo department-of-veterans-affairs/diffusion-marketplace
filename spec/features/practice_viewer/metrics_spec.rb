@@ -11,14 +11,13 @@ describe 'Metrics section', type: :feature, js: true do
   end
 
   describe 'Authorization' do
-    fit 'Should allow authenticated users to view metrics' do
+    it 'Should allow authenticated users to view metrics' do
       # Login as an authenticated user and visit the practice page
       login_as(@user1, :scope => :user, :run_callbacks => false)
       visit practice_path(@practice)
       click_link('Edit')
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@practice.name)
-      debugger
         #expect(page).to have_current_path(metrics_path(@practice))
         #expect(page).to have_css('.commontator')
     end
