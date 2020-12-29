@@ -14,10 +14,11 @@
     <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
     <div id="contact" class="desktop:grid-col-9 grid-col-12 p0">
+      <div class="margin-bottom-4">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
-      <br /><br/>
+    </div>
       <section class="usa-section padding-top-0 p0-bottom contact">
-        <p style="font-weight: bold; font-size: 40px">
+        <p style="font-weight: bold; font-size: 40px" class="margin-bottom-3">
           Metrics
           <span style="float: right; padding-right: 30px">
             <a class="dm-icon-link text-no-underline font-sans-xs text-primary desktop:grid-col-3 grid-col-6 margin-bottom-0"
@@ -27,9 +28,7 @@
             </a>
           </span>
         </p>
-        <br/>
-        <br/>
-        <div class="margin-bottom-7">
+        <div class="margin-bottom-10">
           View your metrics for
           <select style="width: 559px; height: 40px" name="metrics_duration" id="metrics_duration">
             <option id="metrics_30_day_value" value="30" <%= 'selected' if @duration.to_i == 30 %>>the last 30 days</option>
@@ -61,14 +60,14 @@
         <div class="margin-bottom-2">
           <table style="width: 100%">
             <tr>
-              <td><h2>Adoptions</h2></td>
+              <td style="font-size: 32px">Adoptions</td>
               <td align="right"><button style="alignment: right" id="toggle_adoptions_view_30" class="usa-button usa-button--base usa-button--active">Last 30 days</button><button style="alignment: left" id="toggle_adoptions_view_all_time" class="usa-button usa-button--outline usa-button--active">All time</button></td>
             </tr>
           </table>
         </div>
         <div class="margin-bottom-10">
           <div id="adoptions_by_practice_30">
-            <table style="width: 100%">
+            <table style="width: 100%" class="margin-bottom-5">
               <tr class="border_bottom">
                 <td align="left" style="width: 80%; font-weight: bold">Phase</td>
                 <td align="left" style="font-weight: bold">Adoptions</td>
@@ -90,9 +89,7 @@
                   <td><%= @adoptions_total_30 %></td>
                 </tr>
             </table>
-            <br />
-            <br />
-            <table style="width: 100%">
+            <table style="width: 100%" class="margin-bottom-5">
               <tr class="border_bottom">
                 <td align="left" style="width: 80%; font-weight: bold">Facility type</td>
                 <td align="left" style="font-weight: bold">Adoptions</td>
@@ -106,8 +103,6 @@
                   <td><%= @urban_facility_30 %></td>
                 </tr>
             </table>
-            <br />
-            <br />
             <table style="width: 100%">
             <tr class="border_bottom">
               <td align="left" style="width: 80%; font-weight: bold">Facility complexity</td>
@@ -138,7 +133,7 @@
 
   <!--      ADOPTIONS for ALL TIME -------------------------------------------------------------------->
           <div id="adoptions_by_practice_all_time" class="margin-bottom-10" style="display: none">
-            <table style="width: 100%">
+            <table style="width: 100%" class="margin-bottom-5">
               <tr class="border_bottom">
                 <td align="left" style="width: 80%; font-weight: bold">Phase</td>
                 <td align="left" style="font-weight: bold">Adoptions</td>
@@ -160,9 +155,7 @@
                 <td><%= @adoptions_total_at %></td>
               </tr>
             </table>
-            <br />
-            <br />
-            <table style="width: 100%">
+            <table style="width: 100%" class="margin-bottom-5">
               <tr class="border_bottom">
                 <td align="left" style="width: 80%; font-weight: bold">Facility type</td>
                 <td align="left" style="font-weight: bold">Adoptions</td>
@@ -176,8 +169,6 @@
                 <td><%= @urban_facility_at %></td>
               </tr>
             </table>
-            <br />
-            <br />
             <table style="width: 100%">
               <tr class="border_bottom">
                 <td align="left" style="width: 80%; font-weight: bold">Facility complexity</td>
@@ -211,7 +202,7 @@
         <div class="margin-bottom-2">
           <table style="width: 100%">
             <tr>
-              <td><h2>Leader board</h2></td>
+              <td style="font-size: 32px">Leader board</td>
               <td align="right"><button style="alignment: right" id="toggle_leader_board_view_30" class="usa-button usa-button--base usa-button--active">Last 30 days</button><button style="alignment: left" id="toggle_leader_board_view_all_time" class="usa-button usa-button--outline usa-button--active">All time</button></td>
             </tr>
           </table>
