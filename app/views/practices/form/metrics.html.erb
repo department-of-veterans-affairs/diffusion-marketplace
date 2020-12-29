@@ -267,7 +267,6 @@
       google.charts.load('current', {
           packages: ['corechart', 'line']
       });
-      google.charts.setOnLoadCallback(drawBackgroundColor);
 
       function drawLineChart() {
           var data = new google.visualization.DataTable();
@@ -277,6 +276,7 @@
           <% ctr = 0 %>
           data.addRows([
               <%= while ctr < @dates.count do %>
+              <% debugger %>
               ['<%= @dates[ctr] %>', <%= @views[ctr] %>, <%= @unique_visitors[ctr] %>],
               <% ctr += 1 %>
               <% end %>
