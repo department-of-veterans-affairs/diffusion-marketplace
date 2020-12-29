@@ -17,7 +17,7 @@
       <%= render partial: "shared/messages", locals: {small_text: false} %>
       <br /><br/>
       <section class="usa-section padding-top-0 p0-bottom contact">
-        <p style="font-weight: bold; font-size: xx-large">
+        <p style="font-weight: bold; font-size: 40px">
           Metrics
           <span style="float: right; padding-right: 30px">
             <a class="dm-icon-link text-no-underline font-sans-xs text-primary desktop:grid-col-3 grid-col-6 margin-bottom-0"
@@ -31,7 +31,7 @@
         <br/>
         <div class="margin-bottom-7">
           View your metrics for
-          <select style="width: 75%; height: 40px" name="metrics_duration" id="metrics_duration">
+          <select style="width: 559px; height: 40px" name="metrics_duration" id="metrics_duration">
             <option id="metrics_30_day_value" value="30" <%= 'selected' if @duration.to_i == 30 %>>the last 30 days</option>
             <option id="metrics_all_time_value" value="99999" <%= 'selected' if @duration.to_i != 30 %>>all time</option>
           </select>
@@ -43,10 +43,10 @@
             <th style="font-size: 13px">BOOKMARKS</th>
             <th style="font-size: 13px">ADOPTIONS</th>
             <tr>
-              <td><h2><%= @page_views_for_practice_count %></h2></td>
-              <td><h2><%= @unique_visitors_for_practice_count %></h2></td>
-              <td><h2><%= @bookmarks_by_practice %></h2></td>
-              <td><h2><%= @adoptions_by_practice %></h2></td>
+              <td style="font-size: 32px"><%= @page_views_for_practice_count %></td>
+              <td style="font-size: 32px"><%= @unique_visitors_for_practice_count %></td>
+              <td style="font-size: 32px"><%= @bookmarks_by_practice %></td>
+              <td style="font-size: 32px"><%= @adoptions_by_practice %></td>
             </tr>
           </table>
           </div>
@@ -276,7 +276,6 @@
           <% ctr = 0 %>
           data.addRows([
               <%= while ctr < @dates.count do %>
-              <% debugger %>
               ['<%= @dates[ctr] %>', <%= @views[ctr] %>, <%= @unique_visitors[ctr] %>],
               <% ctr += 1 %>
               <% end %>
