@@ -30,9 +30,9 @@ describe 'Search', type: :feature do
     @practice12 = Practice.create!(name: 'The Most Magnificent Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 12', date_initiated: 'Sun, 27 Jan 2010 00:00:00 UTC +00:00', summary: 'This is the eleventh best practice ever.', published: true, approved: true)
     PracticeOriginFacility.create!(practice: @practice12, facility_type:0, facility_id: '623GB')
     @practice13 = Practice.create!(name: 'The Champion of Practices', initiating_facility_type: 'facility', tagline: 'Test tagline 13', date_initiated: 'Sun, 17 Nov 1991 00:00:00 UTC +00:00', summary: 'This is the twelfth best practice ever.', published: true, approved: true)
-    PracticeOriginFacility.create!(practice: @practice12, facility_type:0, facility_id: '528QK')
+    PracticeOriginFacility.create!(practice: @practice13, facility_type:0, facility_id: '528QK')
     @practice14 = Practice.create!(name: 'The Most Important Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 14', date_initiated: 'Sun, 14 Nov 1999 00:00:00 UTC +00:00', summary: 'This is the thirteenth best practice ever.', published: true, approved: true)
-    PracticeOriginFacility.create!(practice: @practice12, facility_type:0, facility_id: '561BY')
+    PracticeOriginFacility.create!(practice: @practice14, facility_type:0, facility_id: '561BY')
     @cat_1 = Category.create!(name: 'COVID')
     @cat_2 = Category.create!(name: 'Environmental Services')
     @cat_3 = Category.create!(name: 'Follow-up Care')
@@ -41,16 +41,29 @@ describe 'Search', type: :feature do
     CategoryPractice.create!(practice: @practice, category: @cat_1, created_at: Time.now)
     CategoryPractice.create!(practice: @practice, category: @cat_2, created_at: Time.now)
     CategoryPractice.create!(practice: @practice, category: @cat_5, created_at: Time.now)
-    CategoryPractice.create!(practice: @practice2, category: @cat_1, created_at: Time.now)
-    CategoryPractice.create!(practice: @practice2, category: @cat_2, created_at: Time.now)
+    CategoryPractice.create!(practice: @practice3, category: @cat_1, created_at: Time.now)
+    CategoryPractice.create!(practice: @practice3, category: @cat_2, created_at: Time.now)
+    CategoryPractice.create!(practice: @practice4, category: @cat_2, created_at: Time.now)
     CategoryPractice.create!(practice: @practice4, category: @cat_3, created_at: Time.now)
+    CategoryPractice.create!(practice: @practice5, category: @cat_1, created_at: Time.now)
     CategoryPractice.create!(practice: @practice5, category: @cat_3, created_at: Time.now)
+    CategoryPractice.create!(practice: @practice6, category: @cat_1, created_at: Time.now)
     CategoryPractice.create!(practice: @practice7, category: @cat_4, created_at: Time.now)
     CategoryPractice.create!(practice: @practice12, category: @cat_1, created_at: Time.now)
-    DiffusionHistory.create!(practice_id: @practice.id, facility_id: '438GD')
-    DiffusionHistory.create!(practice_id: @practice3.id, facility_id: '438GD')
-    DiffusionHistory.create!(practice_id: @practice6.id, facility_id: '544GG')
-    DiffusionHistory.create!(practice_id: @practice10.id, facility_id: '528QH')
+    dh_1 = DiffusionHistory.create!(practice_id: @practice.id, facility_id: '438GD')
+    DiffusionHistoryStatus.create!(diffusion_history_id: dh_1.id, status: 'Completed')
+    dh_2 = DiffusionHistory.create!(practice_id: @practice.id, facility_id: '561BZ')
+    DiffusionHistoryStatus.create!(diffusion_history_id: dh_2.id, status: 'Completed')
+    dh_3 = DiffusionHistory.create!(practice_id: @practice.id, facility_id: '520')
+    DiffusionHistoryStatus.create!(diffusion_history_id: dh_3.id, status: 'Completed')
+    dh_4 = DiffusionHistory.create!(practice_id: @practice3.id, facility_id: '438GD')
+    DiffusionHistoryStatus.create!(diffusion_history_id: dh_4.id, status: 'Completed')
+    dh_5 = DiffusionHistory.create!(practice_id: @practice3.id, facility_id: '649GA')
+    DiffusionHistoryStatus.create!(diffusion_history_id: dh_5.id, status: 'Completed')
+    dh_6 = DiffusionHistory.create!(practice_id: @practice6.id, facility_id: '544GG')
+    DiffusionHistoryStatus.create!(diffusion_history_id: dh_6.id, status: 'Completed')
+    dh_7 = DiffusionHistory.create!(practice_id: @practice10.id, facility_id: '528QH')
+    DiffusionHistoryStatus.create!(diffusion_history_id: dh_7.id, status: 'Completed')
   end
 
   def user_login
@@ -63,6 +76,10 @@ describe 'Search', type: :feature do
 
   def search
     find('#dm-practice-search-button').click
+  end
+
+  def toggle_filters_accordion
+    find('.search-filters-accordion-button').click
   end
 
   def update_practice_introduction(practice)
@@ -104,8 +121,41 @@ describe 'Search', type: :feature do
     search
   end
 
+  def set_combobox_val(index, value)
+    find_all('.usa-combo-box__input')[index].click
+    find_all('.usa-combo-box__input')[index].set(value)
+    find_all('.usa-combo-box__list-option').first.click
+  end
+
+  def select_category(label_class)
+    find(label_class).click
+  end
+
+  describe 'initial page load' do
+    it 'Should display certain text if the user navigates to the search page with no query' do
+      visit_search_page
+      expect(page).to have_content('Enter a search term or use the filters to find matching practices')
+
+      # Make sure the initial text is not present when there is a query
+      visit '/search?query=text'
+      expect(page).to_not have_content('Enter a search term or use the filters to find matching practices')
+    end
+  end
+
   describe 'results' do
-    it 'should show practices that are approved and published' do
+    it 'should display certain text if no matches are found' do
+      visit_search_page
+      toggle_filters_accordion
+      fill_in('dm-practice-search-field', with: 'test')
+      set_combobox_val(0, 'Lincoln VA Clinic')
+      select_category('.cat-1-label')
+      search
+
+      expect(page).to_not have_content('results')
+      expect(page).to have_content('There are currently no matches for your search on the Marketplace.')
+    end
+
+    it 'should only show approved and published practices' do
       user_login
       visit_search_page
       expect(page).to be_accessible.according_to :wcag2a, :section508
@@ -116,9 +166,10 @@ describe 'Search', type: :feature do
       expect(page).to be_accessible.according_to :wcag2a, :section508
 
       # test facility data map for name, negative case
-      expect(page).to have_content(@practice.name)
-      expect(page).to have_content('Palo Alto VA Medical Center-Menlo Park (Palo Alto-Menlo…')
       expect(page).to have_content('13 results')
+      expect(page).to have_content(@practice.name)
+      expect(page).to have_content(@practice3.name)
+      expect(page).to have_content('Norwood VA Clinic')
 
       # do not show a practice that is not approved/published
       fill_in('dm-practice-search-field', with: 'practice')
@@ -133,16 +184,16 @@ describe 'Search', type: :feature do
       search
 
       expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to have_content('14 results')
       expect(page).to have_content(@practice.name)
       expect(page).to have_content(@practice2.name)
-      expect(page).to have_content('14 results')
 
       # test facility data map for name, positive case
       expect(page).to have_content('Yakima VA Clinic')
     end
 
     it 'should be able to search based on practice categories' do
-      visit '/search'
+      visit_search_page
 
       fill_in('dm-practice-search-field', with: 'Telehealth')
       find('#dm-practice-search-button').click
@@ -155,21 +206,24 @@ describe 'Search', type: :feature do
     it 'should be able to search based on practice categories related terms' do
       @cat_1.update(related_terms: ['Coronavirus'])
 
-      visit '/search'
+      visit_search_page
 
       fill_in('dm-practice-search-field', with: 'Coronavirus')
       find('#dm-practice-search-button').click
 
+      expect(page).to have_content('5 results')
       expect(page).to have_content(@practice.name)
+      expect(page).to have_content(@practice3.name)
+      expect(page).to have_content(@practice5.name)
+      expect(page).to have_content(@practice6.name)
       expect(page).to have_content(@practice12.name)
       expect(page).to have_content(@practice.initiating_facility)
-      expect(page).to have_content('2 results')
     end
 
     it 'should be able to search based on practice maturity level' do
       @practice.update(maturity_level: 'replicate')
 
-      visit '/search'
+      visit_search_page
 
       fill_in('dm-practice-search-field', with: 'replicate')
       find('#dm-practice-search-button').click
@@ -177,23 +231,242 @@ describe 'Search', type: :feature do
       expect(page).to have_content(@practice.name)
       expect(page).to have_content('1 result')
     end
+
+    it 'should be able to search based on originating facility name' do
+      visit_search_page
+
+      fill_in('dm-practice-search-field', with: 'Togus VA Medical Center')
+      find('#dm-practice-search-button').click
+
+      expect(page).to have_content('2 results')
+      expect(page).to have_content(@practice3.name)
+      expect(page).to have_content(@practice5.name)
+    end
+
+    describe 'filters' do
+      it 'should collect practices that match ANY of the conditions if the user selects filters, but does not use the search input' do
+        visit_search_page
+
+        toggle_filters_accordion
+        set_combobox_val(0, 'Norwood VA Clinic')
+        select_category('.cat-1-label')
+        select_category('.cat-4-label')
+        search
+
+        expect(page).to have_content('Filters (3)')
+        expect(page).to have_content('6 results')
+        expect(page).to have_content(@practice.name)
+        expect(page).to have_content(@practice3.name)
+        expect(page).to have_content(@practice5.name)
+        expect(page).to have_content(@practice7.name)
+        expect(page).to have_content(@practice12.name)
+      end
+
+      it 'should collect practices that match ALL of the conditions if the user selects filters AND uses the search input' do
+        # Filter practices down to where there are two matches
+        visit_search_page
+
+        fill_in('dm-practice-search-field', with: 'practice')
+        toggle_filters_accordion
+        set_combobox_val(0, 'Togus VA Medical Center')
+        select_category('.cat-1-label')
+        search
+
+        expect(page).to have_content('Filters (2)')
+        expect(page).to have_content('2 results')
+        expect(page).to have_content(@practice3.name)
+        expect(page).to have_content(@practice5.name)
+
+        # Now add the last filter to eliminate one of the last two practices
+        toggle_filters_accordion
+        set_combobox_val(1, 'Aberdeen VA Clinic')
+        search
+
+        expect(page).to have_content('Filters (3)')
+        expect(page).to have_content('1 result')
+        expect(page).to have_content(@practice3.name)
+        expect(page).to_not have_content(@practice5.name)
+      end
+
+      describe 'Originating Facility Combo Box' do
+        it 'should, when the user selects a VISN, collect practices that either have that VISN as their initiating_facility OR have a practice_origin_facility that belongs to that VISN' do
+          visit_search_page
+
+          toggle_filters_accordion
+          set_combobox_val(0, 'VISN-1')
+          search
+
+          expect(page).to have_content('Filters (1)')
+          expect(page).to have_content('4 results')
+          expect(page).to have_content(@practice3.name)
+          expect(page).to have_content(@practice4.name)
+          expect(page).to have_content(@practice5.name)
+          expect(page).to have_content(@practice6.name)
+        end
+
+        it 'should, when the user selects a facility, only collect practices that have a practice_origin_facility that matches the selected facility' do
+          visit_search_page
+
+          toggle_filters_accordion
+          set_combobox_val(0, 'Vinita VA Clinic')
+          search
+
+          expect(page).to have_content('1 result')
+          expect(page).to have_content(@practice12.name)
+        end
+      end
+
+      describe 'Adopting Facility Combo Box' do
+        it 'should, when the user selects a VISN, collect practices that have an adoption facility that belongs to that VISN' do
+          visit_search_page
+
+          toggle_filters_accordion
+          set_combobox_val(1, 'VISN-23')
+          search
+
+          expect(page).to have_content('2 results')
+          expect(page).to have_content(@practice.name)
+          expect(page).to have_content(@practice3.name)
+        end
+
+        it 'should, when the user selects a facility, only collect practices that have an adopting facility that matches the selected facility' do
+          visit_search_page
+
+          toggle_filters_accordion
+          set_combobox_val(0, 'Vinita VA Clinic')
+          search
+
+          expect(page).to have_content('1 result')
+          expect(page).to have_content(@practice12.name)
+        end
+      end
+    end
+
+    describe 'Sorting' do
+      it 'should sort the results based on the sort option chosen' do
+        visit_search_page
+
+        toggle_filters_accordion
+        set_combobox_val(0, 'VISN-1')
+        select_category('.cat-1-label')
+        search
+
+        # results should be sorted my most relevant(closest match) by default
+        expect(page).to have_content('6 results')
+        expect(first('h3.dm-practice-title').text).to eq(@practice6.name)
+
+        toggle_filters_accordion
+        select_category('.cat-2-label')
+        select_category('.cat-3-label')
+        search
+
+        expect(page).to have_content('6 results')
+        expect(first('h3.dm-practice-title').text).to_not eq(@practice6.name)
+        expect(first('h3.dm-practice-title').text).to eq(@practice4.name)
+
+        # choose 'A to Z' option
+        select('Sort by A to Z', from: 'search_sort_option')
+        expect(all('h3.dm-practice-title').first.text).to eq(@practice4.name)
+        expect(all('h3.dm-practice-title')[1].text).to eq(@practice6.name)
+        expect(all('h3.dm-practice-title')[2].text).to eq(@practice5.name)
+        expect(all('h3.dm-practice-title')[3].text).to eq(@practice3.name)
+        expect(all('h3.dm-practice-title')[4].text).to eq(@practice.name)
+        expect(all('h3.dm-practice-title')[5].text).to eq(@practice12.name)
+
+        # choose 'most adoptions' option
+        select('Sort by most adoptions', from: 'search_sort_option')
+        expect(all('h3.dm-practice-title').first.text).to eq(@practice.name)
+        expect(all('h3.dm-practice-title')[1].text).to eq(@practice3.name)
+        expect(all('h3.dm-practice-title')[2].text).to eq(@practice6.name)
+
+        # choose 'most recently added' option
+        select('Sort by most recently added', from: 'search_sort_option')
+        expect(all('h3.dm-practice-title').first.text).to eq(@practice12.name)
+        expect(all('h3.dm-practice-title')[1].text).to eq(@practice6.name)
+        expect(all('h3.dm-practice-title')[2].text).to eq(@practice5.name)
+        expect(all('h3.dm-practice-title')[3].text).to eq(@practice4.name)
+        expect(all('h3.dm-practice-title')[4].text).to eq(@practice3.name)
+        expect(all('h3.dm-practice-title')[5].text).to eq(@practice.name)
+      end
+    end
+
+    describe 'Load more results feature' do
+      it 'should only display the first twelve results, if there are more than twelve total results' do
+        visit_search_page
+
+        fill_in('dm-practice-search-field', with: 'practice')
+        search
+
+        expect(page).to have_content('13 results')
+        expect(page).to have_selector('div.dm-practice-card', count: 12)
+
+        # show the next set of 12 results
+        click_button('Load more')
+        expect(page).to have_selector('div.dm-practice-card', count: 13)
+      end
+    end
+
+    describe 'Querying' do
+      it 'should not create a query if the user does not enter text into the search input' do
+        visit_search_page
+
+        toggle_filters_accordion
+        set_combobox_val(0, 'VISN-4')
+        select_category('.cat-1-label')
+        select_category('.cat-2-label')
+        select_category('.cat-4-label')
+        search
+
+        expect(page.current_url.split('/').pop).to eq('search')
+      end
+
+      it 'should add a query if the user does enter text into the search input' do
+        visit_search_page
+
+        fill_in('dm-practice-search-field', with: 'test')
+        search
+
+        expect(page.current_url.split('/').pop).to eq('search?query=test')
+      end
+
+      it 'should, if there is no query and the user clicks on a practice card, add a search page breadcrumb that does not include a query' do
+        visit_search_page
+
+        toggle_filters_accordion
+        select_category('.cat-1-label')
+        search
+        all('.dm-practice-link').first.click
+
+        expect(page).to have_link('Search', href: '/search')
+      end
+
+      it 'should, if there is a query and the user clicks on a practice card, add a search page breadcrumb that includes the query' do
+        visit_search_page
+
+        fill_in('dm-practice-search-field', with: 'test')
+        search
+        all('.dm-practice-link').first.click
+
+        expect(page).to have_link('Search', href: '/search?query=test')
+      end
+    end
   end
 
   describe 'Cache' do
     it 'Should be reset if certain practice attributes have been updated' do
       add_search_to_cache
 
-      expect(cache_keys).to include("searchable_practices_a_to_z")
+      expect(cache_keys).to include("searchable_practices")
 
       update_practice_introduction(@practice)
       sleep 2
-      expect(cache_keys).not_to include("searchable_practices_a_to_z")
+      expect(cache_keys).not_to include("searchable_practices")
     end
 
     it 'Should be reset if a new practice is created through the admin panel' do
       add_search_to_cache
 
-      expect(cache_keys).to include("searchable_practices_a_to_z")
+      expect(cache_keys).to include("searchable_practices")
 
       login_as(@admin, :scope => :user, :run_callbacks => false)
       visit '/admin'
@@ -208,11 +481,7 @@ describe 'Search', type: :feature do
       expect(page).to_not have_content(latest_practice.name)
       publish_practice(latest_practice)
       sleep 1
-      expect(cache_keys).not_to include("searchable_practices_a_to_z")
-      # expect(Practice.searchable_practices.last.name).to eq(latest_practice.name)
-      # visit '/search?=newest'
-      # expect(page).to have_content('1 result for newest')
-      # expect(page).to have_content(latest_practice.name)
+      expect(cache_keys).not_to include("searchable_practices")
     end
   end
 end

@@ -101,7 +101,6 @@ function buildPracticeCard(result) {
 }
 
 function showSpinner() {
-    console.log('show spinner')
     $(SPINNER).removeClass('display-none');
     $(SPINNER).addClass('display-flex');
 }
@@ -114,7 +113,6 @@ function hideIconAndText() {
 
 function hideLoadMoreButton() {
     if (!$(LOAD_MORE_CONTAINER).hasClass('display-none')) {
-        console.log('does not have display none')
         $(LOAD_MORE_CONTAINER).addClass('display-none')
     }
 }
@@ -216,7 +214,11 @@ function searchPracticesPage() {
         if (results.length > 0) {
 
             // Hide sorting options if there's only 1 result
-            results.length == 1 ? sortSelect.addClass('display-none') : ''
+            if (results.length === 1) {
+                sortSelect.addClass('display-none');
+            } else if (results.length !== 1 && sortSelect.hasClass('display-none')) {
+                sortSelect.removeClass('display-none');
+            }
 
             // Show the results summary section
             if ($(RESULTS_SECTION).hasClass('display-none')) {
@@ -247,13 +249,6 @@ function searchPracticesPage() {
             $('#no-query-results-p').removeClass('display-none')
         }
     }
-
-    // Hide Load more button after clicking
-    $(document).on('click', '.addListData', function() {
-        var loadMoreButton = $('.addListData')
-        loadMoreButton.parent().addClass('display-none')
-    })
-
 
     // Search practices and populate the page
     function search(query, categories, originatingFacility, adoptingFacility) {
@@ -293,6 +288,7 @@ function searchPracticesPage() {
         if (originatingFacility && originatingFacility.includes('VISN')) {
             // Collect any practice that either has the selected VISN as an origin facility, or has an origin facility that belongs to the selected VISN
             console.log('in here')
+            // Add the VISN to the array
             var foundVisn = visns.find(function(v) {
                 return v.number === originatingFacility
             })
@@ -303,8 +299,9 @@ function searchPracticesPage() {
                 return f.VISN === foundVisn.number.split('-').pop()
             })
 
+            // Now add the facilities
             visnFacilities.forEach(function(vf) {
-                originFacilityArray.push({'initiating_facility': "=\"" + vf.StationNumber + "\""})
+                originFacilityArray.push({'origin_facilities': "=\"" + vf.StationNumber + "\""})
             })
 
             console.log('found visn', foundVisn)
@@ -336,7 +333,7 @@ function searchPracticesPage() {
             if (adoptingFacility.includes('VISN')) {
                 // Collect any practice that has a diffusion history with a facility that belongs to the selected VISN
                 filteredFacilities = facilities.filter(function(f) {
-                    return 'VISN-' + f.VISN == adoptingFacility
+                    return 'VISN-' + f.VISN === adoptingFacility
                 });
 
                 filteredFacilities.forEach(function(ff) {
@@ -346,7 +343,7 @@ function searchPracticesPage() {
                 getAdoptionFacilities(stationNumbers, adoptionFacilityArray)
 
             } else {
-                // Collect any practice that has a diffusion history with a facility that matches the selected VISN
+                // Collect any practice that has a diffusion history with a facility that matches the selected facility
                 var matchingFacility;
                 matchingFacility = facilities.find(function(f) {
                     return f.StationNumber === adoptingFacility
@@ -358,10 +355,81 @@ function searchPracticesPage() {
             }
         }
 
+        console.log('station numbers', stationNumbers)
         /*
         IMPORTANT: Per Research and Design, if the user's search contains a string from the search bar, utilize the $and operator so that the result(s) must match all conditions.
         On the other hand, if the user's search only contains filters, utilize the $or operator so that the results can match ANY of the conditions.
          */
+
+        /*
+        Make a result a closer match if it has more than one matching category, as Fuse.js uses short-circuit evaluation. This means most of the time,
+        the results will have the same score because it stops after the first match.
+        */
+        function improveResultScoreBasedOnAmountOfCategoryMatches(results) {
+            results.map(function(result) {
+                var resultScore = result.score;
+                var cat_names = result.item.category_names
+                if (cat_names && Array.isArray(cat_names)) {
+                    cat_names.forEach(function (cn) {
+                        if (categories.includes(cn)) {
+                            console.log('has array category', result.item.name)
+                            resultScore = result.score / 2
+                        }
+                        result.score = resultScore;
+                    })
+                } else if (cat_names && Array.isArray(cat_names) == false) {
+                    console.log('has string category', result.item.name)
+                    resultScore = result.score / 2
+                    result.score = resultScore;
+                }
+            })
+        }
+
+        /*
+        If the user selects a VISN in the originating facility combo box and the result has an initiating_facility that matches the id of the selected VISN, improve the score of the result.
+        Reasoning explained in the comment above. If the user selects a facility, and the result has a practice_origin_facility that matches the selection, improve the score of the result.
+        */
+        function improveResultsScoreBasedOnOriginatingFacility(results) {
+            results.map(function(result) {
+                var resultScore = result.score;
+                if (originFacilityArray[0].initiating_facility) {
+                    if (result.item.initiating_facility_type === 'visn' && result.item.initiating_facility === originFacilityArray[0].initiating_facility.slice(2, -1)) {
+                        console.log('has visn', result.item.name)
+                        resultScore = result.score / 2
+                    }
+                } else if (!originFacilityArray[0].initiating_facility) {
+                    if (result.item.initiating_facility_type === 'facility' && result.item.origin_facilities.includes(originFacilityArray[0].origin_facilities.slice(2, -1))) {
+                        console.log('has facility', result.item.name)
+                        resultScore = result.score / 2
+                    }
+                }
+                result.score = resultScore
+            })
+        }
+
+        /*
+        If the user selects a VISN in the adopting facility combo box, improve the score of the result for each adoption that has a facility_id that matches any of the facilities
+        that belong to the selected VISN. If VISN is not selected, just improve the score once.
+        */
+        function improveResultsScoreBasedOnAmountOfAdoptingFacilities(results) {
+            results.map(function(result) {
+                var resultScore = result.score;
+                var adoption_facilities = result.item.adoption_facilities
+                if (adoptingFacility.includes('VISN') && adoption_facilities.length > 0) {
+                    adoption_facilities.forEach(function (af) {
+                        if (stationNumbers.includes(af)) {
+                            console.log('has visn adopting facility', result.item.name)
+                            resultScore = result.score / 2
+                        }
+                        result.score = resultScore;
+                    })
+                } else if (!adoptingFacility.includes('VISN')) {
+                    console.log('has adopting facility', result.item.name)
+                    resultScore = result.score / 2
+                }
+                result.score = resultScore
+            })
+        }
 
         console.log('filtered facilities', adoptingFacility)
         console.log('originatingFacility', originatingFacility)
@@ -490,31 +558,42 @@ function searchPracticesPage() {
 
         function searchWithAllFilters() {
             results = fuse.search({$or: categoryFilters.concat(originFacilityArray, adoptionFacilityArray)})
+            improveResultScoreBasedOnAmountOfCategoryMatches(results);
+            improveResultsScoreBasedOnOriginatingFacility(results);
+            improveResultsScoreBasedOnAmountOfAdoptingFacilities(results);
         }
 
         function searchWithCategoriesAndOriginFacility() {
             results = fuse.search({$or: categoryFilters.concat(originFacilityArray)})
+            improveResultScoreBasedOnAmountOfCategoryMatches(results);
+            improveResultsScoreBasedOnOriginatingFacility(results);
         }
 
         function searchWithCategoriesAndAdoptingFacility() {
             results = fuse.search({$or: categoryFilters.concat(adoptionFacilityArray)})
+            improveResultScoreBasedOnAmountOfCategoryMatches(results);
+            improveResultsScoreBasedOnAmountOfAdoptingFacilities(results);
         }
 
         function searchWithBothFacilities() {
             results = fuse.search({$or: adoptionFacilityArray.concat(originFacilityArray)})
+            improveResultsScoreBasedOnOriginatingFacility(results);
+            improveResultsScoreBasedOnAmountOfAdoptingFacilities(results);
         }
 
         function searchWIthOnlyCategories() {
             results = fuse.search({$or: categoryFilters})
+            improveResultScoreBasedOnAmountOfCategoryMatches(results);
         }
 
         function searchWithOnlyOriginFacility() {
-            console.log('just origin facility', originatingFacility)
             results = fuse.search({$or: originFacilityArray})
+            improveResultsScoreBasedOnOriginatingFacility(results);
         }
 
         function searchWithOnlyAdoptingFacility() {
             results = fuse.search({$or: adoptionFacilityArray})
+            improveResultsScoreBasedOnAmountOfAdoptingFacilities(results);
         }
 
         // Run the search query and include filters(if any)
@@ -574,8 +653,10 @@ function searchPracticesPage() {
         console.log(results.length);
 
         // Get the results and default to filtering based on score
+        console.log('sort by score')
         buildSearchResults(results, sortByScore)
-
+        // Reset the select input to default
+        $('#search_sort_option').prop('selectedIndex',0);
 
         // Print the number of results for the query
         resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? ':' : 's:');
@@ -648,14 +729,10 @@ function searchPracticesPage() {
     var fuse = new Fuse(practices, search_options);
     console.log('fuse', fuse)
 
-    // Set up "enter" event handler for search field
-    var timeout = null;
-
     // Get the Combo box values based on user interaction
     function getComboBoxVal(inputEle, liEle) {
         var facility;
         if (inputEle.val() !== '' && liEle.length == 1) {
-            console.log('first')
             if (liEle.attr('data-value').includes('VISN')) {
                 return inputEle.val()
             } else {
@@ -665,7 +742,6 @@ function searchPracticesPage() {
                 return facility.StationNumber
             }
         } else if (inputEle.val() !== '' && liEle.length == 0) {
-            console.log('second')
             if (inputEle.val().includes('VISN')) {
                 return inputEle.val()
             } else {
@@ -675,7 +751,6 @@ function searchPracticesPage() {
                 return facility.StationNumber;
             }
         } else {
-            console.log('third')
             return null;
         }
     }
@@ -686,6 +761,7 @@ function searchPracticesPage() {
     }
 
     $(document).on('submit', '#update-search-results-form', function (e) {
+        console.log('submitted')
         e.preventDefault();
 
         hideResultsSectionElAndShowSpinner();
@@ -707,15 +783,8 @@ function searchPracticesPage() {
             $(window).scrollTop(pagePosition.original);
         }
 
-        // Make a new timeout set to go off in 250ms
         var urlQuery = searchField.value === '' ? '/search' : '/search?query=' + searchField.value;
-        console.log('search field is not empty')
-        timeout = setTimeout(function () {
-              window.history.pushState({ turbolinks: {} }, "", urlQuery);
-        }, 250);
-
-        console.log('search', window.location.search)
-        console.log('history', URL.searchParams)
+        window.history.pushState({ turbolinks: {} }, "", urlQuery);
 
         // Get the value of the originating facility combo box
         var originatingFacilityInput = $('#originating-facility-and-visn-select');
@@ -738,9 +807,9 @@ function searchPracticesPage() {
             chosenCategories = null;
         }
 
-        console.log('cate', chosenCategories)
-        console.log('orig', originatingFacility)
-        console.log('adop', adoptingFacility)
+        console.log('categories', chosenCategories)
+        console.log('originating facility', originatingFacility)
+        console.log('adopting facility', adoptingFacility)
         console.log('search field val', searchField.value)
 
         // Run the search
@@ -781,6 +850,7 @@ function searchPracticesPage() {
     sortSelect.on('change', function() {
         switch ($(this).val()) {
             case "most_relevant":
+                console.log('sort by score')
                 hideResultsElAndShowSpinner();
                 buildSearchResults(results, sortByScore);
                 break;

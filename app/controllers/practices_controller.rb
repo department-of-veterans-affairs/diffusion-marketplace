@@ -171,7 +171,7 @@ class PracticesController < ApplicationController
   end
 
   def search
-    @practices = Practice.searchable_practices 'a_to_z'
+    @practices = Practice.searchable_practices nil
     @facilities_data = facilities_json
     @visn_data = origin_data_json["visns"]
     @practices_json = practices_json(@practices)
@@ -565,7 +565,7 @@ class PracticesController < ApplicationController
         practice_hash['category_names'] = []
 
         practice.categories.each do |category|
-          if category.name != 'None'
+          if category.name != 'None' && category.is_other != true
             practice_hash['category_names'].push category.name
 
             unless category.related_terms.empty?
