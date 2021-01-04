@@ -484,4 +484,36 @@ describe 'Search', type: :feature do
       expect(cache_keys).not_to include("searchable_practices")
     end
   end
+
+  describe 'Mobile flow' do
+    before do
+        page.driver.browser.manage.window.resize_to(340, 580)
+    end
+
+    it 'should function appropriately' do
+      visit_search_page
+
+      # Make sure the overlay is working properly
+      click_button('Filters')
+      expect(page).to have_selector('#no-query-p', visible: false)
+      find('#close_filters_modal').click
+      expect(page).to have_selector('#no-query-p', visible: true)
+
+      click_button('Filters')
+      click_button('Originating facility')
+      set_combobox_val(0, 'Togus VA Medical Center')
+      click_button('Adopting facility')
+      set_combobox_val(1, 'VISN-2')
+      click_button('Category')
+      select_category('.cat-4-label')
+      click_button('Update results')
+
+      expect(page).to have_content('5 results')
+      expect(page).to have_content(@practice.name)
+      expect(page).to have_content(@practice3.name)
+      expect(page).to have_content(@practice5.name)
+      expect(page).to have_content(@practice7.name)
+      expect(page).to have_content(@practice10.name)
+    end
+  end
 end
