@@ -130,13 +130,6 @@ function hideResultsElAndShowSpinner() {
     showSpinner();
 }
 
-function hideSearchIconAndTextOnLoad() {
-    // Remove initial search page text
-    <% if request.url.include?('query') %>
-    $(NO_QUERY_CONTENT).addClass('display-none')
-    <% end %>
-}
-
 function openMobileFiltersModal() {
     $(document).on('click', '#mobile_filters_button', function() {
         $('.search-filters-accordion-button').attr('aria-expanded', 'true');
@@ -894,7 +887,11 @@ function searchPracticesPage() {
         const query = window.location.search.split('=')[1];
         search(decodeURI(query));
         trackSearchField(decodeURI(query));
-        searchField.value = decodeURI(query);
+        if (query !== undefined) {
+            searchField.value = decodeURI(query);
+        } else {
+            searchField.value = '';
+        }
     }
 }
 
@@ -916,7 +913,6 @@ function trackSearchField(searchTerm) {
 
 function execSearchFunctions() {
     searchPracticesPage();
-    hideSearchIconAndTextOnLoad();
     openMobileFiltersModal();
     toggleMobileCategoriesAccordion();
     toggleMobileOriginAccordion();
