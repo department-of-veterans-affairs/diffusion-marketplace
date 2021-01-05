@@ -82,6 +82,10 @@ describe 'Search', type: :feature do
     find('.search-filters-accordion-button').click
   end
 
+  def update_results
+    click_button('Update results')
+  end
+
   def update_practice_introduction(practice)
     login_as(@admin, :scope => :user, :run_callbacks => false)
     visit practice_introduction_path(practice)
@@ -251,7 +255,7 @@ describe 'Search', type: :feature do
         set_combobox_val(0, 'Norwood VA Clinic')
         select_category('.cat-1-label')
         select_category('.cat-4-label')
-        search
+        update_results
 
         expect(page).to have_content('Filters (3)')
         expect(page).to have_content('6 results')
@@ -280,12 +284,44 @@ describe 'Search', type: :feature do
         # Now add the last filter to eliminate one of the last two practices
         toggle_filters_accordion
         set_combobox_val(1, 'Aberdeen VA Clinic')
-        search
+        update_results
 
         expect(page).to have_content('Filters (3)')
         expect(page).to have_content('1 result')
         expect(page).to have_content(@practice3.name)
         expect(page).to_not have_content(@practice5.name)
+
+        # Reset filters and select a VISN from the Originating Facility combo box
+        toggle_filters_accordion
+        click_button('Reset filters')
+        set_combobox_val(0, 'VISN-1')
+        update_results
+
+        expect(page).to have_content('Filters (1)')
+        expect(page).to have_content('4 results')
+        expect(page).to have_content(@practice3.name)
+        expect(page).to have_content(@practice4.name)
+        expect(page).to have_content(@practice5.name)
+        expect(page).to have_content(@practice6.name)
+
+        toggle_filters_accordion
+        select_category('.cat-3-label')
+        update_results
+
+        expect(page).to have_content('Filters (2)')
+        expect(page).to have_content('2 results')
+        expect(page).to have_content(@practice4.name)
+        expect(page).to have_content(@practice5.name)
+
+        # Reset filters and select a VISN from the Adopting Facility combo box
+        toggle_filters_accordion
+        click_button('Reset filters')
+        set_combobox_val(1, 'VISN-7')
+        update_results
+
+        expect(page).to have_content('Filters (1)')
+        expect(page).to have_content('1 result')
+        expect(page).to have_content(@practice6.name)
       end
 
       describe 'Originating Facility Combo Box' do
@@ -294,12 +330,12 @@ describe 'Search', type: :feature do
 
           toggle_filters_accordion
           set_combobox_val(0, 'VISN-1')
-          search
+          update_results
 
           expect(page).to have_content('Filters (1)')
           expect(page).to have_content('4 results')
           expect(page).to have_content(@practice3.name)
-          expect(page).to have_content(@practice4.name)
+          expect(page).to have_content(@practice3.name)
           expect(page).to have_content(@practice5.name)
           expect(page).to have_content(@practice6.name)
         end
@@ -309,7 +345,7 @@ describe 'Search', type: :feature do
 
           toggle_filters_accordion
           set_combobox_val(0, 'Vinita VA Clinic')
-          search
+          update_results
 
           expect(page).to have_content('1 result')
           expect(page).to have_content(@practice12.name)
@@ -322,7 +358,7 @@ describe 'Search', type: :feature do
 
           toggle_filters_accordion
           set_combobox_val(1, 'VISN-23')
-          search
+          update_results
 
           expect(page).to have_content('2 results')
           expect(page).to have_content(@practice.name)
@@ -334,7 +370,7 @@ describe 'Search', type: :feature do
 
           toggle_filters_accordion
           set_combobox_val(0, 'Vinita VA Clinic')
-          search
+          update_results
 
           expect(page).to have_content('1 result')
           expect(page).to have_content(@practice12.name)
@@ -349,7 +385,7 @@ describe 'Search', type: :feature do
         toggle_filters_accordion
         set_combobox_val(0, 'VISN-1')
         select_category('.cat-1-label')
-        search
+        update_results
 
         # results should be sorted my most relevant(closest match) by default
         expect(page).to have_content('6 results')
@@ -358,7 +394,7 @@ describe 'Search', type: :feature do
         toggle_filters_accordion
         select_category('.cat-2-label')
         select_category('.cat-3-label')
-        search
+        update_results
 
         expect(page).to have_content('6 results')
         expect(first('h3.dm-practice-title').text).to_not eq(@practice6.name)
@@ -415,7 +451,7 @@ describe 'Search', type: :feature do
         select_category('.cat-1-label')
         select_category('.cat-2-label')
         select_category('.cat-4-label')
-        search
+        update_results
 
         expect(page.current_url.split('/').pop).to eq('search')
       end
@@ -434,7 +470,7 @@ describe 'Search', type: :feature do
 
         toggle_filters_accordion
         select_category('.cat-1-label')
-        search
+        update_results
         all('.dm-practice-link').first.click
 
         expect(page).to have_link('Search', href: '/search')
@@ -506,7 +542,7 @@ describe 'Search', type: :feature do
       set_combobox_val(1, 'VISN-2')
       click_button('Category')
       select_category('.cat-4-label')
-      click_button('Update results')
+      update_results
 
       expect(page).to have_content('5 results')
       expect(page).to have_content(@practice.name)

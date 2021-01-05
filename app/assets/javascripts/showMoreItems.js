@@ -64,9 +64,7 @@ var loadingSpinner = '.search-spinner'
             $(element).children().eq(i).show()
             _.nowNum+=1;
         }
-        console.log('goOut', _.goOut)
         if(!_.goOut){
-            console.log('element', $(element))
             $(element).after(
                 '<div class="button-box p1-75-top"><button class="addListData usa-button--outline dm-btn-base display-block line-height-19px margin-x-auto">' + settings.options.moreText + '</button></div>' +
                 '<div class="search-spinner display-none flex-justify-center flex-align-self-center p1-75-top"><i class="fas fa-circle-notch"></i></div>'

@@ -9,6 +9,7 @@ var RESULTS_SECTION = '#dm-search-practices';
 var SPINNER = '.dm-loading-spinner';
 var LOAD_MORE_CONTAINER = '.button-box';
 var SEARCH_RESULTS = '#search-results';
+var SORT_EL = '#search_sort_option';
 // Add Namespace for scroll position
 var pagePosition = {
     original: 0,
@@ -20,11 +21,11 @@ var pagePosition = {
 
 // sort functions
 function sortAToZ(a, b) {
-    return a.item.name.localeCompare(b.item.name, undefined, { numeric: true, sensitivity: 'base' })
+    return a.item.name.localeCompare(b.item.name, undefined, { numeric: true, sensitivity: 'base' });
 }
 
 function sortByDateAdded(a, b) {
-    return b.item.created_at.localeCompare(a.item.created_at, undefined, { numeric: true, sensitivity: 'base' })
+    return b.item.created_at.localeCompare(a.item.created_at, undefined, { numeric: true, sensitivity: 'base' });
 }
 
 function sortByAdoptionCounts(a, b) {
@@ -50,10 +51,10 @@ function sortByScore(a, b) {
 // Build out practice cards once results come back from Fuse
 function buildPracticeCard(result) {
     var cardHtml = '';
-    var practiceImage = result.item.image
-    var practiceName = result.item.name
+    var practiceImage = result.item.image;
+    var practiceName = result.item.name;
     var favoriteButtonIcon = result.item.user_favorited ? 'fas' : 'far';
-    var practiceLinkClass = practiceImage ? '' : ' dm-alt-practice-link'
+    var practiceLinkClass = practiceImage ? '' : ' dm-alt-practice-link';
     var favoriteButton =
         '<a aria-label="Bookmark ' + practiceName + '" tabindex="-1" aria-hidden="true" class="dm-practice-bookmark-btn" id="dm-bookmark-button-' + result.item.id + '" data-remote="true" rel="nofollow" data-method="post" href="/practices/' + result.item.slug + '/favorite.js">' +
         '<i class="' + favoriteButtonIcon + ' fa-bookmark dm-favorite-icon-' + result.item.id + ' text-no-underline"></i>' +
@@ -61,19 +62,19 @@ function buildPracticeCard(result) {
     var cardImageHtml =
         '<div class="dm-practice-card-img-container">' +
         '<img alt="' + practiceName + ' Marketplace Card Image" class="grid-row marketplace-card-img radius-top-sm" src="' + practiceImage + '">' +
-        '</div>'
+        '</div>';
     var noCardImageHtml =
         '<div class="dm-bg-gray-80">' +
         '<h3 class="text-normal font-sans-lg dm-practice-title multiline-ellipses-2 margin-x-2 margin-y-4">' +
         practiceName +
         '</h3>' +
-        '</div>'
-    var cardImage = practiceImage ? cardImageHtml : noCardImageHtml
+        '</div>';
+    var cardImage = practiceImage ? cardImageHtml : noCardImageHtml;
     var practiceNameHeader =
         '<h3 class="text-normal font-sans-lg dm-practice-title multiline-ellipses-2 margin-top-0 margin-bottom-2">' +
         practiceName +
-        '</h3>'
-    var assignPracticeHeader = practiceImage ? practiceNameHeader : ''
+        '</h3>';
+    var assignPracticeHeader = practiceImage ? practiceNameHeader : '';
     cardHtml +=
         '<div class="dm-practice-card padding-y-105">' +
         <% if current_user.present? %>
@@ -113,7 +114,7 @@ function hideIconAndText() {
 
 function hideLoadMoreButton() {
     if (!$(LOAD_MORE_CONTAINER).hasClass('display-none')) {
-        $(LOAD_MORE_CONTAINER).addClass('display-none')
+        $(LOAD_MORE_CONTAINER).addClass('display-none');
     }
 }
 
@@ -189,8 +190,8 @@ function searchPracticesPage() {
         var resultsArray = [];
         var finalResults = '';
         results.sort(sortOption).forEach(function (result) {
-            finalResults += buildPracticeCard(result)
-            resultsArray.push(buildPracticeCard(result))
+            finalResults += buildPracticeCard(result);
+            resultsArray.push(buildPracticeCard(result));
 
             '<!-- Uncomment to show Fuse.js diagnostics -->' +
             '<!--' +
@@ -200,10 +201,6 @@ function searchPracticesPage() {
             '-->'
         });
 
-
-
-//        console.log('final', finalResults);
-//        console.log('final array', resultsArray);
         if (results.length > 0) {
 
             // Hide sorting options if there's only 1 result
@@ -215,10 +212,10 @@ function searchPracticesPage() {
 
             // Show the results summary section
             if ($(RESULTS_SECTION).hasClass('display-none')) {
-                $(RESULTS_SECTION).removeClass('display-none')
+                $(RESULTS_SECTION).removeClass('display-none');
             }
 
-            $(SEARCH_RESULTS).removeClass('display-none')
+            $(SEARCH_RESULTS).removeClass('display-none');
 
             // Print results to the page
             document.querySelector('#search-results').innerHTML = finalResults;
@@ -238,17 +235,13 @@ function searchPracticesPage() {
             if ($(NO_QUERY_CONTENT).hasClass('display-none')) {
                 $(NO_QUERY_CONTENT).removeClass('display-none');
             }
-            $('#no-query-p').addClass('display-none')
-            $('#no-query-results-p').removeClass('display-none')
+            $('#no-query-p').addClass('display-none');
+            $('#no-query-results-p').removeClass('display-none');
         }
     }
 
     // Search practices and populate the page
     function search(query, categories, originatingFacility, adoptingFacility) {
-        console.log('query', query)
-        console.log('origin facility', originatingFacility)
-        console.log('adopting facility', adoptingFacility)
-
         // Trim whitespace from the query (can cause matching problems)
         query = query.trim();
 
@@ -259,64 +252,59 @@ function searchPracticesPage() {
         searchField.value = query;
 
         if (query !== '') {
-            trackSearchField(query)
-            var searchBarQueryArray = []
+            trackSearchField(query);
+            var searchBarQueryArray = [];
             search_options.keys.forEach(function(practiceKey) {
-                var queryObj = {}
-                queryObj[practiceKey] = query
-                return searchBarQueryArray.push(queryObj)
-            })
+                var queryObj = {};
+                queryObj[practiceKey] = query;
+                return searchBarQueryArray.push(queryObj);
+            });
         }
 
         if (categories) {
             // Collect any practice that has a category that matches the selected category/categories.
-            var categoryFilters = []
+            var categoryFilters = [];
             categories.forEach(function (categorySelection) {
-                return categoryFilters.push({'category_names': "=\"" + categorySelection + "\""})
-            })
+                return categoryFilters.push({'category_names': "=\"" + categorySelection + "\""});
+            });
         }
 
-        var originFacilityArray = originatingFacility ? [] : null
+        var originFacilityArray = originatingFacility ? [] : null;
 
         if (originatingFacility && originatingFacility.includes('VISN')) {
             // Collect any practice that either has the selected VISN as an origin facility, or has an origin facility that belongs to the selected VISN
-            console.log('in here')
+
             // Add the VISN to the array
             var foundVisn = visns.find(function(v) {
-                return v.number === originatingFacility
-            })
+                return v.number === originatingFacility;
+            });
 
-            originFacilityArray.push({'initiating_facility': "=\"" + foundVisn.id.toString() + "\""})
+            originFacilityArray.push({'initiating_facility': "=\"" + foundVisn.id.toString() + "\""});
 
             var visnFacilities = facilities.filter(function(f) {
-                return f.VISN === foundVisn.number.split('-').pop()
-            })
+                return f.VISN === foundVisn.number.split('-').pop();
+            });
 
             // Now add the facilities
             visnFacilities.forEach(function(vf) {
-                originFacilityArray.push({'origin_facilities': "=\"" + vf.StationNumber + "\""})
-            })
-
-            console.log('found visn', foundVisn)
-            console.log('visnFacilities', visnFacilities)
-            console.log('Origin facilities with VISN', originFacilityArray)
-
+                originFacilityArray.push({'origin_facilities': "=\"" + vf.StationNumber + "\""});
+            });
         } else if (originatingFacility && !originatingFacility.includes('VISN')){
             // Collect the practices that have an origin facility matching the selected facility
             var foundFacility = facilities.find(function(f) {
-                return originatingFacility === f.StationNumber
-            })
-            originFacilityArray.push({'origin_facilities': "=\"" + foundFacility.StationNumber + "\""})
+                return originatingFacility === f.StationNumber;
+            });
+            originFacilityArray.push({'origin_facilities': "=\"" + foundFacility.StationNumber + "\""});
         }
 
         function getAdoptionFacilities(stationNumbers, facilityIds) {
             adoptions.forEach(function(a) {
                 stationNumbers.forEach(function(sn) {
                     if (a.facility_id === sn) {
-                        return facilityIds.push({'adoption_facilities': "=\"" + sn + "\""})
+                        return facilityIds.push({'adoption_facilities': "=\"" + sn + "\""});
                     }
-                })
-            })
+                });
+            });
         }
 
         if (adoptingFacility) {
@@ -326,29 +314,25 @@ function searchPracticesPage() {
             if (adoptingFacility.includes('VISN')) {
                 // Collect any practice that has a diffusion history with a facility that belongs to the selected VISN
                 filteredFacilities = facilities.filter(function(f) {
-                    return 'VISN-' + f.VISN === adoptingFacility
+                    return 'VISN-' + f.VISN === adoptingFacility;
                 });
 
                 filteredFacilities.forEach(function(ff) {
-                    stationNumbers.push(ff.StationNumber)
+                    stationNumbers.push(ff.StationNumber);
                 })
 
-                getAdoptionFacilities(stationNumbers, adoptionFacilityArray)
-
+                getAdoptionFacilities(stationNumbers, adoptionFacilityArray);
             } else {
                 // Collect any practice that has a diffusion history with a facility that matches the selected facility
                 var matchingFacility;
                 matchingFacility = facilities.find(function(f) {
-                    return f.StationNumber === adoptingFacility
+                    return f.StationNumber === adoptingFacility;
                 });
 
-                stationNumbers.push(matchingFacility.StationNumber)
-
-                getAdoptionFacilities(stationNumbers, adoptionFacilityArray)
+                stationNumbers.push(matchingFacility.StationNumber);
+                getAdoptionFacilities(stationNumbers, adoptionFacilityArray);
             }
         }
-
-        console.log('station numbers', stationNumbers)
         /*
         IMPORTANT: Per Research and Design, if the user's search contains a string from the search bar, utilize the $and operator so that the result(s) must match all conditions.
         On the other hand, if the user's search only contains filters, utilize the $or operator so that the results can match ANY of the conditions.
@@ -361,73 +345,62 @@ function searchPracticesPage() {
         function improveResultScoreBasedOnAmountOfCategoryMatches(results) {
             results.map(function(result) {
                 var resultScore = result.score;
-                var cat_names = result.item.category_names
+                var cat_names = result.item.category_names;
                 if (cat_names && Array.isArray(cat_names)) {
                     cat_names.forEach(function (cn) {
                         if (categories.includes(cn)) {
-                            console.log('has array category', result.item.name)
-                            resultScore = result.score / 2
+                            resultScore = result.score / 2;
                         }
                         result.score = resultScore;
-                    })
+                    });
                 } else if (cat_names && Array.isArray(cat_names) == false) {
-                    console.log('has string category', result.item.name)
-                    resultScore = result.score / 2
+                    resultScore = result.score / 2;
                     result.score = resultScore;
                 }
-            })
+            });
         }
-
         /*
         If the user selects a VISN in the originating facility combo box and the result has an initiating_facility that matches the id of the selected VISN, improve the score of the result.
         Reasoning explained in the comment above. If the user selects a facility, and the result has a practice_origin_facility that matches the selection, improve the score of the result.
         */
-        function improveResultsScoreBasedOnOriginatingFacility(results) {
+        function improveResultScoreBasedOnOriginatingFacility(results) {
             results.map(function(result) {
                 var resultScore = result.score;
                 if (originFacilityArray[0].initiating_facility) {
                     if (result.item.initiating_facility_type === 'visn' && result.item.initiating_facility === originFacilityArray[0].initiating_facility.slice(2, -1)) {
-                        console.log('has visn', result.item.name)
-                        resultScore = result.score / 2
+                        resultScore = result.score / 2;
                     }
                 } else if (!originFacilityArray[0].initiating_facility) {
                     if (result.item.initiating_facility_type === 'facility' && result.item.origin_facilities.includes(originFacilityArray[0].origin_facilities.slice(2, -1))) {
-                        console.log('has facility', result.item.name)
-                        resultScore = result.score / 2
+                        resultScore = result.score / 2;
                     }
                 }
-                result.score = resultScore
-            })
+                result.score = resultScore;
+            });
         }
-
         /*
         If the user selects a VISN in the adopting facility combo box, improve the score of the result for each adoption that has a facility_id that matches any of the facilities
         that belong to the selected VISN. If VISN is not selected, just improve the score once.
         */
-        function improveResultsScoreBasedOnAmountOfAdoptingFacilities(results) {
+        function improveResultScoreBasedOnAmountOfAdoptingFacilities(results) {
             results.map(function(result) {
                 var resultScore = result.score;
-                var adoption_facilities = result.item.adoption_facilities
+                var adoption_facilities = result.item.adoption_facilities;
                 if (adoptingFacility.includes('VISN') && adoption_facilities.length > 0) {
                     adoption_facilities.forEach(function (af) {
                         if (stationNumbers.includes(af)) {
-                            console.log('has visn adopting facility', result.item.name)
-                            resultScore = result.score / 2
+                            resultScore = result.score / 2;
                         }
                         result.score = resultScore;
-                    })
+                    });
                 } else if (!adoptingFacility.includes('VISN')) {
-                    console.log('has adopting facility', result.item.name)
-                    resultScore = result.score / 2
+                    resultScore = result.score / 2;
                 }
-                result.score = resultScore
-            })
+                result.score = resultScore;
+            });
         }
 
-        console.log('filtered facilities', adoptingFacility)
-        console.log('originatingFacility', originatingFacility)
         function searchWithQueryAndAllFilters() {
-            console.log(categoryFilters)
             results = fuse.search({
                 $and: [
                     {
@@ -447,11 +420,10 @@ function searchPracticesPage() {
                         ]
                     }
                 ]
-            })
+            });
         }
 
         function searchWithQueryAndCategoriesAndOriginFacility() {
-            console.log(categoryFilters)
             results = fuse.search({
                 $and: [
                     {
@@ -466,12 +438,10 @@ function searchPracticesPage() {
                         ]
                     }
                 ]
-            })
+            });
         }
 
         function searchWithQueryAndCategoriesAndAdoptingFacility() {
-            console.log('cat filters', categoryFilters)
-            console.log('adopt filters', adoptionFacilityArray)
             results = fuse.search({
                 $and: [
                     {
@@ -486,18 +456,19 @@ function searchPracticesPage() {
                         ]
                     }
                 ]
-            })
+            });
         }
 
         function searchWithQueryAndBothFacilities() {
-            console.log(categoryFilters)
             results = fuse.search({
                 $and: [
                     {
                         $or: searchBarQueryArray
                     },
                     {
-                        $and: originFacilityArray
+                        $and: [
+                            {$or: originFacilityArray}
+                        ]
                     },
                     {
                         $and: [
@@ -505,7 +476,7 @@ function searchPracticesPage() {
                         ]
                     }
                 ]
-            })
+            });
         }
 
         function searchWithQueryAndCategories() {
@@ -518,7 +489,7 @@ function searchPracticesPage() {
                         $and: categoryFilters
                     }
                 ]
-            })
+            });
         }
 
         function searchWithQueryAndOriginFacility() {
@@ -528,10 +499,12 @@ function searchPracticesPage() {
                         $or: searchBarQueryArray
                     },
                     {
-                        $and: originFacilityArray
+                        $and: [
+                            {$or: originFacilityArray}
+                        ]
                     }
                 ]
-            })
+            });
         }
 
         function searchWithQueryAndAdoptingFacility() {
@@ -546,99 +519,81 @@ function searchPracticesPage() {
                         ]
                     }
                 ]
-            })
+            });
         }
 
         function searchWithAllFilters() {
-            results = fuse.search({$or: categoryFilters.concat(originFacilityArray, adoptionFacilityArray)})
+            results = fuse.search({$or: categoryFilters.concat(originFacilityArray, adoptionFacilityArray)});
             improveResultScoreBasedOnAmountOfCategoryMatches(results);
-            improveResultsScoreBasedOnOriginatingFacility(results);
-            improveResultsScoreBasedOnAmountOfAdoptingFacilities(results);
+            improveResultScoreBasedOnOriginatingFacility(results);
+            improveResultScoreBasedOnAmountOfAdoptingFacilities(results);
         }
 
         function searchWithCategoriesAndOriginFacility() {
-            results = fuse.search({$or: categoryFilters.concat(originFacilityArray)})
+            results = fuse.search({$or: categoryFilters.concat(originFacilityArray)});
             improveResultScoreBasedOnAmountOfCategoryMatches(results);
-            improveResultsScoreBasedOnOriginatingFacility(results);
+            improveResultScoreBasedOnOriginatingFacility(results);
         }
 
         function searchWithCategoriesAndAdoptingFacility() {
-            results = fuse.search({$or: categoryFilters.concat(adoptionFacilityArray)})
+            results = fuse.search({$or: categoryFilters.concat(adoptionFacilityArray)});
             improveResultScoreBasedOnAmountOfCategoryMatches(results);
-            improveResultsScoreBasedOnAmountOfAdoptingFacilities(results);
+            improveResultScoreBasedOnAmountOfAdoptingFacilities(results);
         }
 
         function searchWithBothFacilities() {
-            results = fuse.search({$or: adoptionFacilityArray.concat(originFacilityArray)})
-            improveResultsScoreBasedOnOriginatingFacility(results);
-            improveResultsScoreBasedOnAmountOfAdoptingFacilities(results);
+            results = fuse.search({$or: adoptionFacilityArray.concat(originFacilityArray)});
+            improveResultScoreBasedOnOriginatingFacility(results);
+            improveResultScoreBasedOnAmountOfAdoptingFacilities(results);
         }
 
         function searchWIthOnlyCategories() {
-            results = fuse.search({$or: categoryFilters})
+            results = fuse.search({$or: categoryFilters});
             improveResultScoreBasedOnAmountOfCategoryMatches(results);
         }
 
         function searchWithOnlyOriginFacility() {
-            results = fuse.search({$or: originFacilityArray})
-            improveResultsScoreBasedOnOriginatingFacility(results);
+            results = fuse.search({$or: originFacilityArray});
+            improveResultScoreBasedOnOriginatingFacility(results);
         }
 
         function searchWithOnlyAdoptingFacility() {
-            results = fuse.search({$or: adoptionFacilityArray})
-            improveResultsScoreBasedOnAmountOfAdoptingFacilities(results);
+            results = fuse.search({$or: adoptionFacilityArray});
+            improveResultScoreBasedOnAmountOfAdoptingFacilities(results);
         }
 
         // Run the search query and include filters(if any)
-        console.log('originalFilters', originatingFacility)
         if (query !== '' && categoryFilters && originatingFacility && adoptingFacility) {
-            console.log('Query and all filters')
-            searchWithQueryAndAllFilters()
+            searchWithQueryAndAllFilters();
         } else if (query !== '' && categoryFilters && originatingFacility && !adoptingFacility) {
-            console.log('Query,cats, and origin')
             searchWithQueryAndCategoriesAndOriginFacility();
         } else if (query !== '' && categoryFilters && !originatingFacility && adoptingFacility) {
-            console.log('Query,cats, and adopting')
             searchWithQueryAndCategoriesAndAdoptingFacility();
         } else if (query !== '' && !categoryFilters && originatingFacility && adoptingFacility) {
-            console.log('Query and both facilities')
             searchWithQueryAndBothFacilities();
         } else if (query !== '' && categoryFilters && !originatingFacility && !adoptingFacility) {
-            console.log('Query and cats')
-            searchWithQueryAndCategories()
+            searchWithQueryAndCategories();
         } else if (query !== '' && !categoryFilters && originatingFacility && !adoptingFacility) {
-            console.log('Query and origin')
-            searchWithQueryAndOriginFacility()
+            searchWithQueryAndOriginFacility();
         } else if (query !== '' && !categoryFilters && !originatingFacility && adoptingFacility) {
-            console.log('Query and adopting')
-            searchWithQueryAndAdoptingFacility()
+            searchWithQueryAndAdoptingFacility();
         } else if (query !== '' && !categoryFilters && !originatingFacility && !adoptingFacility) {
-            console.log('Just query')
-            results = fuse.search(query)
+            results = fuse.search(query);
         } else if (query === '' && categoryFilters && originatingFacility && adoptingFacility) {
-            console.log('All filters')
             searchWithAllFilters();
         } else if (query === '' && categoryFilters && originatingFacility && !adoptingFacility) {
-            console.log('cats and origin')
             searchWithCategoriesAndOriginFacility();
         } else if (query === '' && categoryFilters && !originatingFacility && adoptingFacility) {
-            console.log('cats and adopting')
             searchWithCategoriesAndAdoptingFacility();
         } else if (query === '' && !categoryFilters && originatingFacility && adoptingFacility) {
-            console.log('Both facilities')
             searchWithBothFacilities();
         } else if (query === '' && categoryFilters && !originatingFacility && !adoptingFacility) {
-            console.log('Just cats')
-            searchWIthOnlyCategories()
+            searchWIthOnlyCategories();
         } else if (query === '' && !categoryFilters && originatingFacility && !adoptingFacility) {
-            console.log('Just Origin')
-            console.log('originFacilityArray', originFacilityArray)
             searchWithOnlyOriginFacility();
         } else if (query === '' && !categoryFilters && !originatingFacility && adoptingFacility) {
-            console.log('Just Adopting')
             searchWithOnlyAdoptingFacility();
         } else if (query === '' && !categoryFilters && !originatingFacility && !adoptingFacility) {
-            console.log('No query or filters')
             results = [];
         }
 
@@ -646,10 +601,9 @@ function searchPracticesPage() {
         console.log(results.length);
 
         // Get the results and default to filtering based on score
-        console.log('sort by score')
-        buildSearchResults(results, sortByScore)
+        buildSearchResults(results, sortByScore);
         // Reset the select input to default
-        $('#search_sort_option').prop('selectedIndex',0);
+        $(SORT_EL).prop('selectedIndex',0);
 
         // Print the number of results for the query
         resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? ':' : 's:');
@@ -720,27 +674,26 @@ function searchPracticesPage() {
 
     // Create a search context with practices and search options
     var fuse = new Fuse(practices, search_options);
-    console.log('fuse', fuse)
 
     // Get the Combo box values based on user interaction
     function getComboBoxVal(inputEle, liEle) {
         var facility;
         if (inputEle.val() !== '' && liEle.length == 1) {
             if (liEle.attr('data-value').includes('VISN')) {
-                return inputEle.val()
+                return inputEle.val();
             } else {
-                  facility = facilities.find(function(f) {
-                    return f.StationNumber === liEle.attr('data-value')
-                })
-                return facility.StationNumber
+                facility = facilities.find(function(f) {
+                    return f.StationNumber === liEle.attr('data-value');
+                });
+                return facility.StationNumber;
             }
         } else if (inputEle.val() !== '' && liEle.length == 0) {
             if (inputEle.val().includes('VISN')) {
-                return inputEle.val()
+                return inputEle.val();
             } else {
                 facility = facilities.find(function(f) {
-                    return inputEle.val().toLowerCase().includes(f.OfficialStationName.toLowerCase())
-                })
+                    return inputEle.val().toLowerCase().includes(f.OfficialStationName.toLowerCase());
+                });
                 return facility.StationNumber;
             }
         } else {
@@ -754,7 +707,6 @@ function searchPracticesPage() {
     }
 
     $(document).on('submit', '#update-search-results-form', function (e) {
-        console.log('submitted')
         e.preventDefault();
 
         hideResultsSectionElAndShowSpinner();
@@ -762,8 +714,8 @@ function searchPracticesPage() {
         // Close search filter accordion if it's open
         var accordionButton = $('.search-filters-accordion-button')
         if (accordionButton.attr('aria-expanded') == 'true') {
-            accordionButton.attr('aria-expanded', 'false')
-            $('#search_filters_dropdown').attr('hidden', 'true')
+            accordionButton.attr('aria-expanded', 'false');
+            $('#search_filters_dropdown').attr('hidden', 'true');
         }
 
         // Close mobile accordions
@@ -783,67 +735,60 @@ function searchPracticesPage() {
         var originatingFacilityInput = $('#originating-facility-and-visn-select');
         var originatingFacilityLi = $('#originating-facility-and-visn-select--list > li[aria-selected=true]');
 
-        var originatingFacility =  getComboBoxVal(originatingFacilityInput, originatingFacilityLi)
+        var originatingFacility =  getComboBoxVal(originatingFacilityInput, originatingFacilityLi);
 
         // Get the value of the adopting facility combo box
         var adoptingFacilityInput = $('#adopting-facility-and-visn-select');
         var adoptingFacilityLi = $('#adopting-facility-and-visn-select--list > li[aria-selected=true]');
 
-        var adoptingFacility = getComboBoxVal(adoptingFacilityInput, adoptingFacilityLi)
+        var adoptingFacility = getComboBoxVal(adoptingFacilityInput, adoptingFacilityLi);
 
         // Get the values for any chosen categories
-        var selectedCheckboxes = $('#update-search-results-form [type="checkbox"]:checked')
+        var selectedCheckboxes = $('#update-search-results-form [type="checkbox"]:checked');
         var chosenCategories = selectedCheckboxes.map(function () {
             return this.value;
         }).get();
         if (chosenCategories.length == 0) {
             chosenCategories = null;
         }
-
-        console.log('categories', chosenCategories)
-        console.log('originating facility', originatingFacility)
-        console.log('adopting facility', adoptingFacility)
-        console.log('search field val', searchField.value)
-
         // Run the search
-        search(searchField.value, chosenCategories, originatingFacility, adoptingFacility)
+        search(searchField.value, chosenCategories, originatingFacility, adoptingFacility);
 
         // Display the amount of filters used(if any)
-        var checkboxCount = selectedCheckboxes.length
-        var noOriginatingFacilityText = originatingFacilityInput.val() === ''
-        var originatingFacilityTextPresent = originatingFacilityInput.val() !== ''
-        var noAdoptingFacilityText = adoptingFacilityInput.val() === ''
-        var adoptingFacilityTextPresent = adoptingFacilityInput.val() !== ''
+        var checkboxCount = selectedCheckboxes.length;
+        var noOriginatingFacilityText = originatingFacilityInput.val() === '';
+        var originatingFacilityTextPresent = originatingFacilityInput.val() !== '';
+        var noAdoptingFacilityText = adoptingFacilityInput.val() === '';
+        var adoptingFacilityTextPresent = adoptingFacilityInput.val() !== '';
 
         function accordionText(checkboxCount, inputCount) {
-            return accordionButton.text('Filters ' + '(' + (checkboxCount + inputCount) + ')')
+            return accordionButton.text('Filters ' + '(' + (checkboxCount + inputCount) + ')');
         }
 
         if (checkboxCount > 0 && originatingFacilityTextPresent && noAdoptingFacilityText) {
-            accordionText(checkboxCount, 1)
+            accordionText(checkboxCount, 1);
         } else if (checkboxCount > 0 && noOriginatingFacilityText && adoptingFacilityTextPresent) {
-            accordionText(checkboxCount, 1)
+            accordionText(checkboxCount, 1);
         } else if (checkboxCount > 0 && noOriginatingFacilityText && noAdoptingFacilityText) {
-            accordionText(checkboxCount, 0)
+            accordionText(checkboxCount, 0);
         } else if (checkboxCount > 0 && originatingFacilityTextPresent && adoptingFacilityTextPresent) {
-            accordionText(checkboxCount, 2)
+            accordionText(checkboxCount, 2);
         } else if (checkboxCount === 0 && originatingFacilityTextPresent && noAdoptingFacilityText) {
-            accordionText(0, 1)
+            accordionText(0, 1);
         } else if (checkboxCount === 0 && noOriginatingFacilityText && adoptingFacilityTextPresent) {
-            accordionText(0, 1)
+            accordionText(0, 1);
         } else if (checkboxCount === 0 && noOriginatingFacilityText && noAdoptingFacilityText) {
-            return accordionButton.text('Filters')
+            return accordionButton.text('Filters');
         } else if (checkboxCount === 0 && originatingFacilityTextPresent && adoptingFacilityTextPresent) {
-            accordionText(0, 2)
+            accordionText(0, 2);
         }
     });
 
     // Sort the results based on each sort option
-    var sortSelect = $('#search_sort_option')
+    var sortSelect = $(SORT_EL);
     sortSelect.on('change', function() {
         switch ($(this).val()) {
             case "most_relevant":
-                console.log('sort by score')
                 hideResultsElAndShowSpinner();
                 buildSearchResults(results, sortByScore);
                 break;
@@ -860,7 +805,7 @@ function searchPracticesPage() {
                 buildSearchResults(results, sortByDateAdded);
                 break;
         }
-    })
+    });
 
     // Clear all filter options
     $(document).on('click', '#resetSearchFiltersButton, #resetSearchFiltersButtonMobile', function(e) {
@@ -868,18 +813,17 @@ function searchPracticesPage() {
 
         $('.usa-combo-box__clear-input').each(function() {
             $(this).trigger('click');
-        })
+        });
 
         $('.usa-checkbox__input').each(function() {
             if ($(this).prop('checked')) {
-                $(this).prop('checked', false)
+                $(this).prop('checked', false);
             }
-        })
+        });
         // Move the focus area back to the top of the filters window
         $(".usa-combo-box__clear-input__wrapper").attr("tabindex",-1).focus();
-
         // Reset filter count text
-        $('.search-filters-accordion-button').text('Filters')
+        $('.search-filters-accordion-button').text('Filters');
     })
 
     if (window.location.pathname === '/search' && window.location.search !== '') {
@@ -897,10 +841,8 @@ function searchPracticesPage() {
 
 function trackSearchField(searchTerm) {
     if (searchTerm !== '') {
-        console.log('ahoy function 1')
         ahoy.track('Practice search', {search_term: searchTerm});
         if (typeof ga === 'function') {
-            console.log('ahoy function 2')
             ga('send', {
                 hitType: 'event',
                 eventCategory: 'search',

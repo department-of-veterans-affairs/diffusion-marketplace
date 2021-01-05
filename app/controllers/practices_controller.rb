@@ -565,7 +565,7 @@ class PracticesController < ApplicationController
         practice_hash['category_names'] = []
 
         practice.categories.each do |category|
-          if category.name != 'None' && category.is_other != true
+          if category.name != 'None' && category.name != 'Other' && category.is_other != true
             practice_hash['category_names'].push category.name
 
             unless category.related_terms.empty?
