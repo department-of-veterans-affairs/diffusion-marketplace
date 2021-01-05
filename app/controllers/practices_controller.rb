@@ -343,6 +343,7 @@ class PracticesController < ApplicationController
     if @duration != "30"
       @duration = get_practice_all_time_duration(@practice.id)
     end
+    @month_names = "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     @cur_duration = @duration.to_i
     @dates = ((@cur_duration.days.ago.to_date .. 0.days.ago.to_date).to_a).map(&:to_s)
     @views = []

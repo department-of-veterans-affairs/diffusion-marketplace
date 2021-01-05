@@ -242,10 +242,6 @@
   <!--Load the AJAX API-->
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript">
-      const monthNames = ["January", "February", "March", "April", "May", "June",
-          "July", "August", "September", "October", "November", "December"
-      ];
-
       // Load the Visualization API and the corechart package.
       google.charts.load('current', {'packages':['corechart']});
 
@@ -267,6 +263,16 @@
           <% ctr = 0 %>
           data.addRows([
               <%= while ctr < @dates.count do %>
+              <% if ctr < @dates.count %>
+              <%
+                month = @dates[ctr].split("-")[1]
+                day = @dates[ctr].split("-")[2]
+                if day[0] == "0"
+                  day = day[1]
+                 end
+                @dates[ctr] = @month_names[month.to_i - 1] + ". " + day + " " + @dates[ctr].split("-")[0]
+               %>
+              <% end %>
               ['<%= @dates[ctr] %>', <%= @views[ctr] %>, <%= @unique_visitors[ctr] %>],
               <% ctr += 1 %>
               <% end %>
@@ -277,9 +283,10 @@
                   title: 'TIME'
               },
               vAxis: {
-                  title: 'METRIC TOTAL'
+                  title: 'TOTAL',
+                  format: 'short'
               },
-              backgroundColor: '#f1f8e9',
+              backgroundColor: { fill:'transparent' },
               legend: { position: 'top', alignment: 'start' },
               colors: ['#0000FF', '#FFD700']
           };
