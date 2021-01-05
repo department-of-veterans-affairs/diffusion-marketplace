@@ -219,10 +219,6 @@ module PracticesHelper
 
   def fetch_facilities
     @facility_data= JSON.parse(File.read("#{Rails.root}/lib/assets/va_gov_facilities_all_response.json"))
-    # @facility_data.each do |f|
-    #   debugger
-    #   x = 0
-    # end
   end
 
   def fetch_vamc_facilities

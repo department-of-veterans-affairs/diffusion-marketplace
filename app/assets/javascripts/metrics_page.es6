@@ -1,13 +1,4 @@
-(($) => {
-    const $document = $(document);
-
-
-
-    $document.on('turbolinks:load');
-})(window.jQuery);
-
 function hideSecondaryNavItems(){
-    debugger
     document.getElementById('peSideNavAbout').style.display = 'none';
     document.getElementById('peSideNavContact').style.display = 'none';
     document.getElementById('peSideNavImplementation').style.display = 'none';
@@ -29,13 +20,11 @@ $(document).ready(function(){
     });
 
     $("#metrics_duration").change (function(e) {
-        //alert(window.location.href);
         var curUrl = window.location.href;
         if(curUrl.includes("&duration")) {
             var pos1 = curUrl.lastIndexOf("&duration");
             curUrl = curUrl.substring(0, pos1);
         }
-        //alert(curUrl);
         let duration = $( "#metrics_duration" ).val();
         let newUrl = curUrl + "&duration=" + duration;
         window.location.href = newUrl;
@@ -89,20 +78,3 @@ $(document).ready(function(){
         navItem.style.display = 'inline';
     });
 });
-
-
-
-
-
-
-
-
-
-function showHideSideNavElements(){
-    alert('hello');
-    let nav_item = document.getElementById('pe_side_nav_about');
-    if(nav_item.style.display == 'none')
-    {
-        nav_item.style.display = 'inline';
-    }
-}
