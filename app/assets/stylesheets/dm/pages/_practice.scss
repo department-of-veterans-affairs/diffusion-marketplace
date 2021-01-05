@@ -1161,3 +1161,14 @@ tr.border_bottom td {
   border-bottom: 1px solid darkgray;
 }
 
+.side-nav-highlighted {
+  background-color: transparent;
+  color: $dm-color-blue-50v !important;
+  font-weight: bold !important;
+  position: relative;
+}
+
+.side-nav-hide{
+  display: none !important;
+}
+
