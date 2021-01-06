@@ -4,6 +4,7 @@
 <% provide :head_tags do %>
   <%= javascript_include_tag 'metrics_page', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'https://www.gstatic.com/charts/loader.js' %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
   <% end %>
 <% end %>
@@ -242,7 +243,6 @@
 </div>
 <!-- GOOGLE CHARTS ----------------------------------------------------------->
   <!--Load the AJAX API-->
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript">
       // Load the Visualization API and the corechart package.
       google.charts.load('current', {'packages':['corechart']});

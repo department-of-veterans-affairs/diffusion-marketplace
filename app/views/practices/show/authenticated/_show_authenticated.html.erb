@@ -56,7 +56,6 @@
       practice_emails = @practice.practice_emails
       cc_emails = practice_emails.map(&:address).join(', ')
       instructions_path = practice_instructions_path(@practice)
-      instructions_path = practice_instructions_path(@practice)
       metrics_path = practice_metrics_path(@practice)
     %>
     <div class="text-center margin-bottom-1">
