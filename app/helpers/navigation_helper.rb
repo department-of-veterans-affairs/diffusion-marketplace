@@ -127,7 +127,6 @@ module NavigationHelper
       end
 
       if action == 'editing_guide'
-        debugger
         reset_editor_breadcrumbs(practice_by_practice_id)
         session[:breadcrumbs] << { 'display': 'Editing guide', 'path': practice_editing_guide_path(practice_by_practice_id) }
       end
