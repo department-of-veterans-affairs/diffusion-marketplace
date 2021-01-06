@@ -30,10 +30,12 @@
         </p>
         <div class="margin-bottom-10">
           View your metrics for
-          <select style="width: 559px; height: 40px" name="metrics_duration" id="metrics_duration">
-            <option id="metrics_30_day_value" value="30" <%= 'selected' if @duration.to_i == 30 %>>the last 30 days</option>
-            <option id="metrics_all_time_value" value="99999" <%= 'selected' if @duration.to_i != 30 %>>all time</option>
-          </select>
+          <span class="display-inline-block">
+            <select class="usa-select metrics-select" name="metrics_duration" id="metrics_duration">
+              <option id="metrics_30_day_value" value="30" <%= 'selected' if @duration.to_i == 30 %>>the last 30 days</option>
+              <option id="metrics_all_time_value" value="99999" <%= 'selected' if @duration.to_i != 30 %>>all time</option>
+            </select>
+          </span>
         </div>
           <div class="grid-col-8 margin-bottom-10"  style="text-align: center; width: 100%" >
           <table style="width: 80%; display: inline-table">
