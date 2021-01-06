@@ -38,20 +38,8 @@ module PracticesHelper
     durations.include?('permanent') ? 'Permanent' : "#{durations.map { |d| d.to_i }.sum} weeks" if durations.any?
   end
 
-  def fetch_page_view_leader_board(duration = "30", limit = 10)
-    page_view_leaders = []
-    sql = "select name, properties, count(properties) as count from ahoy_events where name = 'Practice show' and time >= now() - interval '{#{duration} days' group by name, properties order by count desc limit #{limit}"
-    records_array = ActiveRecord::Base.connection.execute(sql)
-
-    recs = records_array.values
-    recs.each do |rec|
-      practice_id = JSON.parse(rec[1])['practice_id']
-      leader = PracticeLeaderBoard.new
-      leader.practice_name = Practice.find(practice_id).name
-      leader.count = rec[2]
-      page_view_leaders << leader
-    end
-    page_view_leaders
+  def practice_leader_board(practice, count, created_at = DateTime.now())
+    {practice_name: practice.name, practice_slug: practice.slug, count: count, created_at: created_at}
   end
 
   def fetch_page_view_for_practice_count(practice_id, duration = "30")
@@ -62,16 +50,14 @@ module PracticesHelper
     recs = records_array.values
     recs.each do |rec|
       if practice_id == JSON.parse(rec[1])['practice_id']
-        leader = PracticeLeaderBoard.new
-        leader.practice_name = Practice.find(practice_id).name
-        leader.count = rec[2]
-        page_view_leaders << leader
+        practice = practice_leader_board(Practice.find(practice_id), rec[2])
+        page_view_leaders << practice
       end
     end
     if page_view_leaders.empty?
       return 0
     else
-      page_view_leaders[0].count
+      page_view_leaders[0][:count]
     end
   end
 
@@ -86,10 +72,8 @@ module PracticesHelper
     recs = records_array.values
     recs.each do |rec|
       if practice_id == JSON.parse(rec[1])['practice_id']
-        leader = PracticeLeaderBoard.new
-        leader.practice_name = Practice.find(practice_id).name
-        leader.created_at = rec[2].to_date
-        page_views << leader
+        practice = practice_leader_board(Practice.find(practice_id), 0, rec[2].to_date)
+        page_views << practice
       end
     end
     page_views
@@ -204,13 +188,10 @@ module PracticesHelper
     recs = records_array.values
     recs.each do |rec|
       practice_id = JSON.parse(rec[1])['practice_id']
-      leader = PracticeLeaderBoard.new
-      leader.practice_name = Practice.find(practice_id).name
-      leader.practice_slug = Practice.find(practice_id).slug
-      leader.count = rec[2]
+      practice = practice_leader_board(Practice.find(practice_id), rec[2])
       published = Practice.find(practice_id).published
       if published
-        page_view_leaders << leader
+        page_view_leaders << practice
       end
     end
     page_view_leaders

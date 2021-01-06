@@ -20,13 +20,14 @@ $(document).ready(function(){
     });
 
     $("#metrics_duration").change (function(e) {
+        debugger
         var curUrl = window.location.href;
-        if(curUrl.includes("&duration")) {
-            var pos1 = curUrl.lastIndexOf("&duration");
+        if(curUrl.includes("?duration")) {
+            var pos1 = curUrl.lastIndexOf("?duration");
             curUrl = curUrl.substring(0, pos1);
         }
         let duration = $( "#metrics_duration" ).val();
-        let newUrl = curUrl + "&duration=" + duration;
+        let newUrl = curUrl + "?duration=" + duration;
         window.location.href = newUrl;
     });
 

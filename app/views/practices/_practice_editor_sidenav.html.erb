@@ -6,14 +6,14 @@
               <% if current_page?(practice_metrics_path(@practice)) %>
                 <a href="#" onclick="return false" class="active width-full dm-tab">Metrics</a>
               <% else %>
-                <%= link_to 'Metrics', practice_metrics_path(@practice) + '?metrics=1', class: "#{'active' if current_page?( practice_metrics_path(@practice))} width-full dm-tab" %>
+                <%= link_to 'Metrics', practice_metrics_path(@practice), class: "#{'active' if current_page?( practice_metrics_path(@practice))} width-full dm-tab" %>
               <% end %>
             </li>
               <li class="usa-sidenav__item" id="peSideNavEditingGuide">
                 <% if current_page?(practice_instructions_path(@practice)) %>
                   <a href="#" onclick="return false" class="active width-full dm-tab">Editing guide</a>
                 <% else %>
-                  <%= link_to 'Editing guide', practice_instructions_path(@practice) + '?metrics=1', class: "#{'active' if current_page?( practice_instructions_path(@practice))} width-full dm-tab" %>
+                  <%= link_to 'Editing guide', practice_instructions_path(@practice), class: "#{'active' if current_page?( practice_instructions_path(@practice))} width-full dm-tab" %>
                 <% end %>
               </li>
             <li class="usa-sidenav__item" id="peSideNavPracticeName">
@@ -22,7 +22,7 @@
               <% else %>
                 <%= link_to @practice.name, practice_introduction_path(@practice), class: "#{'side-nav-highlighted' if !current_page?(practice_instructions_path(@practice)) && !current_page?(practice_metrics_path(@practice))}" %>
               <% end %>
-              <ul class="usa-sidenav__sublist">
+              <ul class="usa-sidenav__sublist <%= params[:controller] == 'practices' && params[:action] == 'instructions' || params[:controller] == 'practices' && params[:action] == 'metrics' ? 'side-nav-hide' : '' %>">
               <li class="usa-sidenav__item <% if params.has_key?(:metrics) %> side-nav-hide <% end %>" id="peSideNavIntroduction">
                 <% if current_page?(practice_introduction_path(@practice)) %>
                   <a href="#" onclick="return false" class="active width-full dm-tab">Introduction</a>
@@ -37,9 +37,7 @@
                   <%= link_to 'Adoptions', practice_adoptions_path(@practice), class: "#{'active' if current_page?( practice_adoptions_path(@practice))} width-full dm-tab" %>
                 <% end %>
               </li>
-
-
-              <li class="usa-sidenav__item <% if params.has_key?(:metrics) %> side-nav-hide <% end %>" id="peSideNavOverview">
+              <li class="usa-sidenav__item" id="peSideNavOverview">
                 <% if current_page?(practice_overview_path(@practice)) %>
                   <a href="#" onclick="return false" class="active width-full dm-tab">Overview</a>
                 <% else %>

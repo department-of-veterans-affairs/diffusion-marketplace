@@ -297,10 +297,8 @@ class PracticesController < ApplicationController
     @bookmarks_by_practice = fetch_bookmarks_by_practice(@practice.id, @duration)
     @adoptions_by_practice = fetch_adoptions_by_practice(@practice.id, @duration)
 
-
     @adoptions_total_30 = fetch_adoptions_total_by_practice(@practice.id)
     @adoptions_total_at = fetch_adoptions_total_by_practice(@practice.id, "0")
-
 
     @adoptions_successful_total_30 = fetch_adoptions_total_by_practice(@practice.id, "30", "Completed")
     @adoptions_successful_total_at = fetch_adoptions_total_by_practice(@practice.id, "0", "Completed")
@@ -308,7 +306,6 @@ class PracticesController < ApplicationController
     @adoptions_in_progress_total_at = fetch_adoptions_total_by_practice(@practice.id, "0", "In progress")
     @adoptions_unsuccessful_total_30 = fetch_adoptions_total_by_practice(@practice.id, "30", "Unsuccessful")
     @adoptions_unsuccessful_total_at = fetch_adoptions_total_by_practice(@practice.id, "0", "Unsuccessful")
-
 
     @facility_data = fetch_vamc_facilities
 
@@ -345,10 +342,9 @@ class PracticesController < ApplicationController
       @dates.each do |date|
         objCtr = 0
         @page_views_for_practice.each do |obj|
-          objCtr += 1 if obj.created_at.to_s == date.to_s
+          objCtr += 1 if obj[:created_at].to_s == date.to_s
         end
         @views << objCtr
-        objCtr = 0
       end
     @unique_visitors = []
     @dates.each do |date|
