@@ -68,7 +68,11 @@ module PracticesHelper
         page_view_leaders << leader
       end
     end
-    page_view_leaders[0].count
+    if page_view_leaders.empty?
+      return 0
+    else
+      page_view_leaders[0].count
+    end
   end
 
   def fetch_page_views_for_practice(practice_id, duration = "30")
