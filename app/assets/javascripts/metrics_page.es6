@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    //event handlers for LIs
+    //event handlers for LI(s)
     $("#metrics_duration").change (function(e) {
         var curUrl = window.location.href;
         if(curUrl.includes("?duration")) {
