@@ -1,26 +1,6 @@
-function hideSecondaryNavItems(){
-    document.getElementById('peSideNavAbout').style.display = 'none';
-    document.getElementById('peSideNavContact').style.display = 'none';
-    document.getElementById('peSideNavImplementation').style.display = 'none';
-    document.getElementById('peSideNavOverview').style.display = 'none';
-    document.getElementById('peSideNavAdoptions').style.display = 'none';
-    document.getElementById('peSideNavIntroduction').style.display = 'none';
-}
-
 $(document).ready(function(){
     //event handlers for LIs
-    $("#peSideNavMetrics").click(function(e){
-        e.stopPropagation();
-        hideSecondaryNavItems();
-    });
-
-    $("#peSideNavEditingGuide").click(function(e){
-        e.stopPropagation();
-        hideSecondaryNavItems();
-    });
-
     $("#metrics_duration").change (function(e) {
-        debugger
         var curUrl = window.location.href;
         if(curUrl.includes("?duration")) {
             var pos1 = curUrl.lastIndexOf("?duration");
