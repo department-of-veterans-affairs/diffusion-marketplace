@@ -31,12 +31,17 @@ $(document).ready(function(){
         document.getElementById("adoptions_by_practice_all_time").style.display = 'inline';
     });
 
+    $("#sideNavPracticeNameLink").mouseenter(function(e){
+        document.getElementById("sideNavPracticeNameLink").classList.add("side-nav-highlighted");
+    });
+
+    $("#sideNavPracticeNameLink").mouseleave(function(e){
+        document.getElementById("sideNavPracticeNameLink").classList.remove("side-nav-highlighted");
+    });
 
 
     $("#peSideNavPracticeName").click(function(e){
         e.stopPropagation();
-        let curAboutState = document.getElementById('peSideNavAbout');
-
         let navItem = document.getElementById('peSideNavAbout');
         navItem.style.display = 'inline';
 
