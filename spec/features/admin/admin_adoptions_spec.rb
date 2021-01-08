@@ -12,7 +12,7 @@ describe 'Admin Adoptions Tab', type: :feature do
     @diffusion_history_3 = DiffusionHistory.create!(practice_id: @practice.id, facility_id: '649GD', created_at: Date.today - 1.months)
     @diffusion_history_status = DiffusionHistoryStatus.create!(diffusion_history_id: @diffusion_history.id, status: 'In progress')
     @diffusion_history_status_2 = DiffusionHistoryStatus.create!(diffusion_history_id: @diffusion_history_2.id, status: 'Unsuccessful')
-    @diffusion_history_status_3 = DiffusionHistoryStatus.create!(diffusion_history_id: @diffusion_history_3.id, status: 'Completed')
+    @diffusion_history_status_3 = DiffusionHistoryStatus.create!(diffusion_history_id: @diffusion_history_3.id, status: 'Successful')
   end
 
   it 'should show all adoptions and adoption counts for practices that have at least one adoption' do

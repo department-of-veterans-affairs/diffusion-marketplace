@@ -256,8 +256,8 @@
   }
 
   .usa-checkbox__input:checked + .usa-checkbox__label.complete::before, .usa-radio__input:checked + .usa-radio__label.complete::before {
-    background-color: #2672DE;
-    box-shadow: 0 0 0 2px #2672DE;
+    background-color: #00A91C;
+    box-shadow: 0 0 0 2px #00A91C;
   }
 
   .usa-checkbox__input:checked + .usa-checkbox__label.in_progress::before, .usa-radio__input:checked + .usa-radio__label.in_progress::before {
@@ -270,8 +270,8 @@
   }
 
   .usa-checkbox__input:checked + .usa-checkbox__label.unsuccessful::before, .usa-radio__input:checked + .usa-radio__label.unsuccessful::before {
-    background-color: #EB5757;
-    box-shadow: 0 0 0 2px #EB5757;
+    background-color: #71767A;
+    box-shadow: 0 0 0 2px #71767A;
   }
 }
 
@@ -844,6 +844,50 @@
     .usa-accordion__heading {
       padding-top: 0 !important;
     }
+  }
+}
+
+#adoptions, .metric-section {
+  .fa-question-circle {
+    font-size: 0.75em;
+  }
+  .usa-tooltip__body {
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    color: $dm-color-white;
+    line-height: 26px !important;
+  }
+}
+
+.metric-section {
+  .usa-tooltip__body {
+    bottom: -12.4px !important;
+  }
+}
+
+#adoptions {
+  .usa-tooltip__body {
+    bottom: -38px !important;
+  }
+
+  .tooltip-after-ajax {
+    margin-bottom: 0;
+    margin-left: 19px;
+    bottom: -40px !important;
+    line-height: 26px;
+    padding: 0.5em;
+    font-family: Public Sans Web,
+    -apple-system,
+    BlinkMacSystemFont,
+    Segoe UI,
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif,
+    Apple Color Emoji,
+    Segoe UI Emoji,
+    Segoe UI Symbol;
+    cursor: pointer;
   }
 }
 

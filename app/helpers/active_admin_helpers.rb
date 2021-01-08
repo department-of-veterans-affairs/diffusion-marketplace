@@ -11,6 +11,10 @@ module ActiveAdminHelpers
     v[:rurality] === 'U' ? 'Urban' : 'Rural'
   end
 
+  def adoption_status(v)
+    v[:status] == 'Completed' || v[:status] == 'Implemented' || v[:status] == 'Complete' ? 'Successful' : v[:status]
+  end
+
   def get_adoption_values(p, complete_map)
     facility_data = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
     practice_diffusion_histories = p.diffusion_histories.map { |dh|
@@ -22,7 +26,7 @@ module ActiveAdminHelpers
         common_name: selected_facility[0]["CommonName"],
         state: selected_facility[0]["MailingAddressState"],
         date: dh_status.status == 'In progress' || dh_status.status == 'Implementing' || dh_status.status == 'Planning' || dh_status.status == 'Unsuccessful' ? dh_status.start_time : dh_status.end_time,
-        status: dh_status.status,
+        status: dh_status.status == 'Completed' || dh_status.status == 'Implemented' || dh_status.status == 'Complete' ? 'Successful' : dh_status.status,
         rurality: selected_facility[0]["Rurality"],
         complexity: selected_facility[0]["FY17ParentStationComplexityLevel"],
         station_number: selected_facility[0]["StationNumber"],

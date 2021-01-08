@@ -23,7 +23,7 @@
             </span>
           </button>
         </h2>
-        <div id="diffusion_history_<%= diffusion_history_status.diffusion_history.id %>" class="usa-accordion__content usa-prose border-0">
+        <div id="diffusion_history_<%= diffusion_history_status.diffusion_history.id %>" class="usa-accordion__content usa-prose border-0 overflow-visible">
           <% if params[:existing_dh] && @dh&.id == diffusion_history_status.diffusion_history.id %>
             <%= render partial: 'existing_adoption_warning', locals: {facility: params[:existing_dh]} %>
           <% end %>

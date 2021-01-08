@@ -11,7 +11,7 @@
           </h2>
           <p class="margin-top-1 margin-bottom-0"><%= in_progress %> in-progress
             adoption<%= in_progress == 1 ? '' : 's' %></p>
-          <p class="margin-top-1 margin-bottom-0"><%= completed %> completed
+          <p class="margin-top-1 margin-bottom-0"><%= completed %> successful
             adoption<%= completed == 1 ? '' : 's' %></p>
           <p class="margin-top-1 margin-bottom-0"><%= unsuccessful %> unsuccessful
             adoption<%= unsuccessful == 1 ? '' : 's' %></p>
@@ -29,9 +29,9 @@
                 # TODO: there is no start time at the moment for diffusion histories
                 # start_date = completed ? dh.diffusion_history_statuses.where(status: 'In progress').first.start_time : dh_status.start_time
                 start_date = completed ? nil : dh_status.start_time
-                formatted_start_date = start_date.strftime('%B %Y') if start_date.present?
+                formatted_start_date = "(started #{start_date.strftime('%B %Y')})" if start_date.present?
                 end_date = completed || unsuccessful ? dh_status.end_time : nil
-                formatted_end_date = end_date.strftime('%B %Y') if end_date.present?
+                formatted_end_date = "(#{completed ? 'completed ' : 'abandoned '}#{end_date.strftime('%B %Y')})" if end_date.present?
                 # TODO: Unsuccessful practices
               %>
 
@@ -40,11 +40,11 @@
                   <%# TODO: Unsuccessful status %>
                   <span class="far fa-calendar"></span>
                   <% if completed %>
-                    Completed <%= formatted_end_date %>
+                    Successful <%= formatted_end_date %>
                   <% elsif in_progress %>
-                    In-progress (started <%= formatted_start_date %>)
+                    In progress <%= formatted_start_date %>
                   <% elsif unsuccessful %>
-                    Unsuccessful (abandoned <%= formatted_end_date %>)
+                    Unsuccessful <%= formatted_end_date %>
                   <% end %>
                 </p>
                 <p class="margin-top-0 margin-bottom-05 truncate-text one-line"><%= dh.practice.description %></p>
