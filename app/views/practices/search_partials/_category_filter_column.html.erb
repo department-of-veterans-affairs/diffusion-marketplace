@@ -1,12 +1,13 @@
 <div class="grid-col-12 desktop:grid-col-4">
+  <% if categories.count > 1 %>
   <% categories[column].each do |category| %>
     <%
       category_id = category.id
       category_name = category.name
-     %>
-    <div class="usa-checkbox">
-      <input class="usa-checkbox__input" id="cat-<%= category_id %>-input" type="checkbox" name="<%= category_name %>" value="<%= category_name %>">
-      <label class="usa-checkbox__label margin-bottom-2 cat-<%= category_id %>-label" for="cat-<%= category_id %>-input"><span><%= category_name %></span></label>
-    </div>
+    %>
+    <%= render partial: 'practices/search_partials/category_checkbox', locals: { category_id: category_id, category_name: category_name } %>
+    <% end %>
+  <% else %>
+    <%= render partial: 'practices/search_partials/category_checkbox', locals: { category_id: categories.first.id, category_name: categories.first.name } %>
   <% end %>
 </div>
