@@ -18,29 +18,17 @@ describe 'Metrics section', type: :feature, js: true do
       click_link('Edit')
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@practice.name)
-        #expect(page).to have_current_path(metrics_path(@practice))
-        #expect(page).to have_css('.commontator')
     end
+    it 'should allow user to toggle between 30 days and All time views' do
+      login_as(@user1, :scope => :user, :run_callbacks => false)
+      visit practice_metrics_path(@practice)
 
-    # it 'Should allow authenticated users to post comments' do
-    #   # Login as an authenticated user, visit the practice page, and create a comment
-    #   login_as(@user2, :scope => :user, :run_callbacks => false)
-    #   visit practice_path(@practice)
-    #   expect(page).to be_accessible.according_to :wcag2a, :section508
-    #   expect(page).to have_content(@practice.name)
-    #   expect(page).to have_css('.commontator')
-    #   fill_in('comment[body]', with: 'Hello world')
-    #   click_button('commit')
-    #   expect(page).to have_css('#commontator-comment-1')
-    # end
-    #
-    # it 'Should not allow unauthenticated users to view or post comments' do
-    #   # Try to visit a practice page without being logged in
-    #   visit practice_path(@practice)
-    #   expect(page).to be_accessible.according_to :wcag2a, :section508
-    #   expect(page).to have_content(@practice.name)
-    #   expect(page).to have_current_path(practice_path(@practice))
-    #   expect(page).to have_content('Login to see full practice')
-    # end
+      select 'all time', from: 'metrics_duration'
+      expect(page).to have_select('metrics_duration', selected: 'all time')
+      expect(page).to have_content('Leader board')
+
+      select 'the last 30 days', from: 'metrics_duration'
+      expect(page).to have_select('metrics_duration', selected: 'the last 30 days')
+    end
   end
 end
