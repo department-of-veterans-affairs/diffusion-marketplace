@@ -169,17 +169,12 @@ describe 'Search', type: :feature do
 
       expect(page).to be_accessible.according_to :wcag2a, :section508
 
-      # test facility data map for name, negative case
-      expect(page).to have_content('13 results')
-      expect(page).to have_content(@practice.name)
-      expect(page).to have_content(@practice3.name)
-      expect(page).to have_content('Norwood VA Clinic')
-
       # do not show a practice that is not approved/published
       fill_in('dm-practice-search-field', with: 'practice')
       find('#dm-practice-search-button').click
 
       expect(page).to have_content('13 results')
+      expect(page).to_not have_content(@practice2.name)
 
       # show practices that are approved/published
       @practice2.update(published: true, approved: true)
@@ -189,11 +184,7 @@ describe 'Search', type: :feature do
 
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content('14 results')
-      expect(page).to have_content(@practice.name)
       expect(page).to have_content(@practice2.name)
-
-      # test facility data map for name, positive case
-      expect(page).to have_content('Yakima VA Clinic')
     end
 
     it 'should be able to search based on practice categories' do
