@@ -44,7 +44,6 @@ module PracticesHelper
 
   def fetch_page_view_for_practice_count(practice_id, duration = "30")
     page_view_leaders = []
-
     sql = "select name, properties, count(properties) as count from ahoy_events where name = 'Practice show' and time >= $1 group by name, properties"
     records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{Time.now - duration.to_i.days}"]])
     # records_array = prepare_sql.execute(sql)
@@ -64,16 +63,17 @@ module PracticesHelper
 
   def fetch_page_views_for_practice(practice_id, duration = "30")
     page_views = []
-    sql = "select name, properties, time from ahoy_events where name = 'Practice show' and properties = '{\"practice_id\": #{practice_id}}'"
+    sql = "select name, properties, time from ahoy_events where name = 'Practice show' and properties = $1"
+    param1 = "{\"practice_id\": #{practice_id}}"
     if duration == "30"
-      sql += " and time >= now() - interval '{#{duration} days'"
+      sql += " and time >= $2"
+      records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, param1], [nil, "#{Time.now - duration.to_i.days}"]])
+    else
+      records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, param1]])
     end
-    records_array = ActiveRecord::Base.connection.execute(sql)
-
-    recs = records_array.values
-    recs.each do |rec|
-      if practice_id == JSON.parse(rec[1])['practice_id']
-        practice = practice_leader_board(Practice.find(practice_id), 0, rec[2].to_date)
+    records_array.each do |rec|
+      if practice_id == JSON.parse(rec["properties"])["practice_id"]
+        practice = practice_leader_board(Practice.find(practice_id), 0, rec["time"].to_date)
         page_views << practice
       end
     end
@@ -81,21 +81,26 @@ module PracticesHelper
   end
 
   def fetch_unique_visitors_by_practice_count(practice_id, duration = "30")
-    sql = "select distinct user_id from ahoy_events where name = 'Practice show' and properties = '{\"practice_id\": #{practice_id}}'"
+    sql = "select distinct user_id from ahoy_events where name = 'Practice show' and properties = $1"
+    param1 = "{\"practice_id\": #{practice_id}}"
     if duration == "30"
-      sql += " and time >= now() - interval '#{duration} days'"
+      sql += " and time >= $2"
+      records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, param1], [nil, "#{Time.now - duration.to_i.days}"]])
+    else
+      records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, param1]])
     end
-    records_array = ActiveRecord::Base.connection.execute(sql)
-    recs = records_array.values
-    recs.count
+    records_array.count
   end
 
   def fetch_unique_visitors_by_practice(practice_id, duration = "30")
-    sql = "select user_id, time from ahoy_events where name = 'Practice show' and properties = '{\"practice_id\": #{practice_id}}'"
+    sql = "select user_id, time from ahoy_events where name = 'Practice show' and properties = $1"
+    param1 = "{\"practice_id\": #{practice_id}}"
     if duration == "30"
-      sql += " and time >= now() - interval '#{duration} days'"
+      sql += " and time >= $2"
+      records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, param1], [nil, "#{Time.now - duration.to_i.days}"]])
+    else
+      records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, param1]])
     end
-    records_array = ActiveRecord::Base.connection.execute(sql)
     records_array
   end
 
