@@ -2,9 +2,9 @@
   <% provide :head_tags do %>
     <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
       var mapData = <%= raw @diffusion_histories.to_json %>;
-      var defaultMarkerIcon = '<%= image_path('map-marker-default.svg') %>';
-      var selectedMarkerIcon = '<%= image_path('map-marker-selected.svg') %>';
-      var hoverMarkerIcon = '<%= image_path('map-marker-hover.svg') %>';
+      var defaultMarkerIcon = '<%= image_path('map-marker-successful-default.svg') %>';
+      var selectedMarkerIcon = '<%= image_path('map-marker-successful-selected.svg') %>';
+      var hoverMarkerIcon = '<%= image_path('map-marker-successful-hover.svg') %>';
       var defaultInProgressMarkerIcon = '<%= image_path('map-marker-in-progress-default.svg') %>';
       var selectedInProgressMarkerIcon = '<%= image_path('map-marker-in-progress-selected.svg') %>';
       var hoverInProgressMarkerIcon = '<%= image_path('map-marker-in-progress-hover.svg') %>';
@@ -29,11 +29,11 @@
             <input id="status_<%= id %>" name="statuses" type="checkbox" value="<%= v %>" class="usa-checkbox__input" checked>
             <label for="status_<%= id %>" class="usa-checkbox__label <%= id %>">
               <% if v == 'In progress' %>
-                In-progress
+                In-progress adoptions
               <% elsif v == 'Complete' %>
-                Successful
+                Successful adoptions
               <% else %>
-                <%= v %>
+                <%= v %> adoptions
               <% end %>
             </label>
           <% end %>

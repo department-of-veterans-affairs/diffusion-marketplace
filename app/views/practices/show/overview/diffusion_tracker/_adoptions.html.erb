@@ -26,15 +26,18 @@
       }
   ]
 %>
-<div class="usa-accordion usa-accordion--bordered">
+<div class="usa-accordion usa-accordion--bordered practice-viewer-adoptions-accordion">
   <% adoption_groups.each do |group, histories| %>
     <h2 class="usa-accordion__heading">
-      <button class="usa-accordion__button"
+      <button class="usa-accordion__button padding-right-205"
               aria-expanded="false"
               aria-controls="<%= group.to_s.underscore %>">
-        <span class="text-middle margin-right-05"><%= group.to_s %> adoptions: <%= histories.count %></span>
+        <span class="text-middle margin-right-05"><%= group.to_s %> adoptions (<%= histories.count %>)</span>
         <% adoption_statuses_and_text.each do |as| %>
-          <%= render partial: 'practices/adoption_status_tooltip', locals: { tooltip_title: as[:text] } if as[:status] === group.to_s %>
+          <% if as[:status] === group.to_s %>
+            <%= render partial: 'practices/adoption_status_tooltip', locals: { tooltip_title: as[:text] } %>
+            <%= render partial: 'practices/show/mobile_partials/adoption_status_modal', locals: { status: as[:status], text: as[:text] } %>
+          <% end %>
         <% end %>
       </button>
     </h2>

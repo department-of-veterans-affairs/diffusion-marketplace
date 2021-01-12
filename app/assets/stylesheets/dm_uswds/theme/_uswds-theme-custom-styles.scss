@@ -32,8 +32,13 @@ $theme-breadcrumb-min-width: 'mobile';
 }
 
 .grid-container {
-  padding-left: 24px;
-  padding-right: 24px;
+  padding-left: 16px;
+  padding-right: 16px;
+
+  @media screen and (min-width: 1024px) {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
 }
 
 /****************************************

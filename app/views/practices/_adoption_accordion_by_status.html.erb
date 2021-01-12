@@ -5,7 +5,7 @@
     <button class="usa-accordion__button parent-accordion-button"
             aria-expanded="false"
             aria-controls="<%= adoption_text.downcase %>_adoptions">
-      <%= adoption_text %> adoptions: <%= adoption_type.count %>
+      <%= adoption_text %> adoptions (<%= adoption_type.count %>)
     </button>
   </h2>
   <div id="<%= adoption_text.downcase %>_adoptions" class="usa-accordion__content border-0 p0-25-bottom p0-top padding-x-05 bg-base-lightest">

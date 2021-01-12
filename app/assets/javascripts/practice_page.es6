@@ -131,6 +131,22 @@
         });
     }
 
+    function openAdoptionStatusModal() {
+        $(document).on('click', '.successful-modal-icon', (e) => {
+            // Click accordion button to close content because when the icon is clicked, so is the button
+            $(e.target).parent().click();
+            $(e.target).next().removeClass('display-none');
+        });
+    }
+
+    function closeAdoptionStatusModal() {
+        $(document).on('click', '#close_successful_status_modal', (e) => {
+            // Click accordion button to close content because when the icon is clicked, so is the button
+            $(e.target).closest('.adoption-status-modal-container').parent().click();
+            $(e.target).closest('.adoption-status-modal-container').addClass('display-none');
+        });
+    }
+
     function executePracticeCommentsFunctions() {
         highlightSidebarSectionWhenInView();
         setUpShowMoreOrLessButtons();
@@ -138,6 +154,8 @@
         createWidthForImageCaption();
         expandCommentTextArea();
         expandReplyTextArea();
+        openAdoptionStatusModal();
+        closeAdoptionStatusModal();
     }
 
     $document.on('turbolinks:load', executePracticeCommentsFunctions);
