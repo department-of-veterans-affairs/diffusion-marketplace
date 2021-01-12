@@ -163,7 +163,7 @@ module PracticesHelper
 
   def fetch_facility_ids_for_practice(practice_id, duration="30")
     facility_ids = []
-    sql = "select facility_id as the_count from diffusion_histories where practice_id = $1"
+    sql = "select facility_id from diffusion_histories where practice_id = $1"
     if duration == "30"
       sql += " and created_at >= $2"
       records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{practice_id}"], [nil, "#{Time.now - duration.to_i.days}"]])
@@ -171,7 +171,7 @@ module PracticesHelper
       records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{practice_id}"]])
     end
     records_array.each do |rec|
-      facility_ids << rec
+      facility_ids << rec["facility_id"]
     end
     facility_ids
   end
@@ -181,7 +181,7 @@ module PracticesHelper
     rec_counter = 0
     facility_data.each do |fac|
       facility_ids_for_practice.each do |fid|
-        if fid[0] == fac["StationNumber"]
+        if fid == fac["StationNumber"]
           if fac[key] == value.to_s
             match_counter += 1
             next
