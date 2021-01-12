@@ -143,24 +143,26 @@ module PracticesHelper
   end
 
   def fetch_adoptions_by_practice(practice_id, duration = "30")
-    sql = "select count(*) as the_count from diffusion_histories where practice_id = #{practice_id}"
+    sql = "select count(*) as the_count from diffusion_histories where practice_id = $1"
     if duration == "30"
-      sql += " and created_at >= now() - interval '#{duration} days'"
+      sql += " and created_at >= $2"
+      records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{practice_id}"], [nil, "#{Time.now - duration.to_i.days}"]])
+    else
+      records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{practice_id}"]])
     end
-    records_array = ActiveRecord::Base.connection.execute(sql)
-    recs = records_array.values
-    recs[0][0]
+    records_array[0]["the_count"]
   end
 
   def fetch_facility_ids_for_practice(practice_id, duration="30")
     facility_ids = []
-    sql = "select facility_id as the_count from diffusion_histories where practice_id=#{practice_id}"
-    if (duration == "30")
-      sql += " and created_at >= now() - interval '#{duration} days'"
+    sql = "select facility_id as the_count from diffusion_histories where practice_id = $1"
+    if duration == "30"
+      sql += " and created_at >= $2"
+      records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{practice_id}"], [nil, "#{Time.now - duration.to_i.days}"]])
+    else
+      records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{practice_id}"]])
     end
-    records_array = ActiveRecord::Base.connection.execute(sql)
-    recs = records_array.values
-    recs.each do |rec|
+    records_array.each do |rec|
       facility_ids << rec
     end
     facility_ids
