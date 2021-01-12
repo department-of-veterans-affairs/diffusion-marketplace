@@ -1,5 +1,181 @@
 var practices = <%= @practices_json %>;
+var facilities = <%= raw @facilities_data.to_json %>;
+var visns = <%= raw @visn_data.to_json %>;
+var adoptions = <%= raw @diffusion_histories.to_json %>;
 var results = null;
+var resultsHTML = '';
+var NO_QUERY_CONTENT = '#no-search-query-content';
+var RESULTS_SECTION = '#dm-search-practices';
+var SPINNER = '.dm-loading-spinner';
+var LOAD_MORE_CONTAINER = '.button-box';
+var SEARCH_RESULTS = '#search-results';
+var SORT_EL = '#search_sort_option';
+// Add Namespace for scroll position
+var pagePosition = {
+    original: 0,
+    // Log the user's spot on the page when they open the filters modal on mobile
+    getScrollPosition: function() {
+      this.original = $(window).scrollTop();
+  }
+}
+
+// sort functions
+function sortAToZ(a, b) {
+    return a.item.name.localeCompare(b.item.name, undefined, { numeric: true, sensitivity: 'base' });
+}
+
+function sortByDateAdded(a, b) {
+    return b.item.created_at.localeCompare(a.item.created_at, undefined, { numeric: true, sensitivity: 'base' });
+}
+
+function sortByAdoptionCounts(a, b) {
+    if (a.item.adoption_count > b.item.adoption_count){
+        return -1;
+    }
+    if (a.item.adoption_count < b.item.adoption_count){
+        return 1;
+    }
+    return 0;
+}
+
+function sortByScore(a, b) {
+    if (a.score < b.score){
+        return -1;
+    }
+    if (a.score > b.score){
+        return 1;
+    }
+    return 0;
+}
+
+// Build out practice cards once results come back from Fuse
+function buildPracticeCard(result) {
+    var cardHtml = '';
+    var practiceImage = result.item.image;
+    var practiceName = result.item.name;
+    var favoriteButtonIcon = result.item.user_favorited ? 'fas' : 'far';
+    var practiceLinkClass = practiceImage ? '' : ' dm-alt-practice-link';
+    var favoriteButton =
+        '<a aria-label="Bookmark ' + practiceName + '" tabindex="-1" aria-hidden="true" class="dm-practice-bookmark-btn" id="dm-bookmark-button-' + result.item.id + '" data-remote="true" rel="nofollow" data-method="post" href="/practices/' + result.item.slug + '/favorite.js">' +
+        '<i class="' + favoriteButtonIcon + ' fa-bookmark dm-favorite-icon-' + result.item.id + ' text-no-underline"></i>' +
+        '</a>';
+    var cardImageHtml =
+        '<div class="dm-practice-card-img-container">' +
+        '<img alt="' + practiceName + ' Marketplace Card Image" class="grid-row marketplace-card-img radius-top-sm" src="' + practiceImage + '">' +
+        '</div>';
+    var noCardImageHtml =
+        '<div class="dm-bg-gray-80">' +
+        '<h3 class="text-normal font-sans-lg dm-practice-title multiline-ellipses-2 margin-x-2 margin-y-4">' +
+        practiceName +
+        '</h3>' +
+        '</div>';
+    var cardImage = practiceImage ? cardImageHtml : noCardImageHtml;
+    var practiceNameHeader =
+        '<h3 class="text-normal font-sans-lg dm-practice-title multiline-ellipses-2 margin-top-0 margin-bottom-2">' +
+        practiceName +
+        '</h3>';
+    var assignPracticeHeader = practiceImage ? practiceNameHeader : '';
+    cardHtml +=
+        '<div class="dm-practice-card padding-y-105">' +
+        <% if current_user.present? %>
+        favoriteButton +
+        <% end %>
+        '<a href="/practices/' + result.item.slug + '" aria-label="Go to ' + result.item.name + '" tabindex="-1" aria-hidden="true" class="dm-practice-link' + practiceLinkClass + '">' +
+        '<div class=" dm-practice-card-container">' +
+        cardImage +
+        '<div class="padding-105 height-card-mobile">' +
+        assignPracticeHeader +
+        '<div>' +
+        '<p class="multiline-ellipses-1 font-sans-sm practice-card-tagline">' + result.item.tagline + '</p>' +
+        '</div>' +
+        '<div class="dm-practice-card-origin margin-bottom-2">' +
+        '<span class="line-clamp-2 font-sans-3xs text-gray-50 multiline-ellipses-3 line-height-sans-205 dm-practice-card-origin-info">' +
+        'Created in ' + result.item.date_initiated + ' ' + result.item.initiating_facility_name +
+        '</span>' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '</a>' +
+        '</div>';
+
+    return cardHtml;
+}
+
+function showSpinner() {
+    $(SPINNER).removeClass('display-none');
+    $(SPINNER).addClass('display-flex');
+}
+
+function hideIconAndText() {
+    if (!$(NO_QUERY_CONTENT).hasClass('display-none')) {
+        $(NO_QUERY_CONTENT).addClass('display-none');
+    }
+}
+
+function hideLoadMoreButton() {
+    if (!$(LOAD_MORE_CONTAINER).hasClass('display-none')) {
+        $(LOAD_MORE_CONTAINER).addClass('display-none');
+    }
+}
+
+function hideResultsSectionElAndShowSpinner() {
+    $(RESULTS_SECTION).addClass('display-none');
+    hideIconAndText();
+    showSpinner();
+}
+
+function hideResultsElAndShowSpinner() {
+    $(SEARCH_RESULTS).addClass('display-none');
+    hideIconAndText();
+    hideLoadMoreButton();
+    showSpinner();
+}
+
+function openMobileFiltersModal() {
+    $(document).on('click', '#mobile_filters_button', function() {
+        $('.search-filters-accordion-button').attr('aria-expanded', 'true');
+        $('#search_filters_dropdown').removeAttr('hidden');
+        // Return the user to their original spot on the page, before opening the mobile modal
+        pagePosition.getScrollPosition();
+    });
+}
+
+function toggleAccordion(accordionEl, containerEl) {
+    if (($(accordionEl).attr('aria-expanded') == 'true')) {
+        $(accordionEl).attr('aria-expanded', 'false');
+        $(containerEl).addClass('display-none');
+    } else {
+        $(accordionEl).attr('aria-expanded', 'true');
+        $(containerEl).removeClass('display-none');
+    }
+}
+
+function toggleMobileCategoriesAccordion() {
+    $(document).on('click', '.mobile-category-accordion', function() {
+          toggleAccordion(this, '.category-container');
+    });
+}
+
+function toggleMobileOriginAccordion() {
+    $(document).on('click', '.mobile-origin-accordion', function() {
+        toggleAccordion(this, '.originating-facility-container');
+    });
+}
+
+function toggleMobileAdoptingAccordion() {
+    $(document).on('click', '.mobile-adopting-accordion', function() {
+        toggleAccordion(this, '.adopting-facility-container');
+    });
+}
+
+function closeMobileFiltersModal() {
+    $(document).on('click', '#close_filters_modal', function () {
+        $('.search-filters-accordion-button').attr('aria-expanded', 'false')
+        $('#search_filters_dropdown').attr('hidden', 'true');
+        // Bring the user back to their original spot on the page, in case they scrolled down while in the modal
+        $(window).scrollTop(pagePosition.original);
+    });
+}
 
 function searchPracticesPage() {
     const searchField = document.querySelector('#dm-practice-search-field');
@@ -7,76 +183,435 @@ function searchPracticesPage() {
     // Skip if not the search page
     if (location.pathname !== '/search') return;
 
-    // Search helper functions
+    // Template out the search results
+    function buildSearchResults(results, sortOption) {
+        $(SPINNER).addClass('display-none');
+
+        var resultsArray = [];
+        var finalResults = '';
+        results.sort(sortOption).forEach(function (result) {
+            finalResults += buildPracticeCard(result);
+            resultsArray.push(buildPracticeCard(result));
+
+            '<!-- Uncomment to show Fuse.js diagnostics -->' +
+            '<!--' +
+            '<h3>Fuse.js highlighted character matching</h3>' +
+            '<p class="">' + result.highlight + '</p>' +
+            '<p><b>Score: ' + result.score + '</b></p>' +
+            '-->'
+        });
+
+        if (results.length > 0) {
+
+            // Hide sorting options if there's only 1 result
+            if (results.length === 1) {
+                sortSelect.addClass('display-none');
+            } else if (results.length !== 1 && sortSelect.hasClass('display-none')) {
+                sortSelect.removeClass('display-none');
+            }
+
+            // Show the results summary section
+            if ($(RESULTS_SECTION).hasClass('display-none')) {
+                $(RESULTS_SECTION).removeClass('display-none');
+            }
+
+            $(SEARCH_RESULTS).removeClass('display-none');
+
+            // Print results to the page
+            document.querySelector('#search-results').innerHTML = finalResults;
+
+            $(SEARCH_RESULTS).showMoreItems({
+                startNum: 12,
+                afterNum: 12,
+                moreText: 'Load more',
+                noMoreText: 'No more results'
+            })
+
+        } else {
+            if (!$(RESULTS_SECTION).hasClass('display-none')) {
+                $(RESULTS_SECTION).addClass('display-none');
+            }
+            // Show the no results text
+            if ($(NO_QUERY_CONTENT).hasClass('display-none')) {
+                $(NO_QUERY_CONTENT).removeClass('display-none');
+            }
+            $('#no-query-p').addClass('display-none');
+            $('#no-query-results-p').removeClass('display-none');
+        }
+    }
 
     // Search practices and populate the page
-    function search(query) {
-
+    function search(query, categories, originatingFacility, adoptingFacility) {
         // Trim whitespace from the query (can cause matching problems)
         query = query.trim();
 
         // Set variables
-        var resultsHTML = '';
         var resultsSummary = document.querySelector('#results-summary');
-        var searchResults = document.querySelector('#search-results');
 
         // set the search page search bar input value
         searchField.value = query;
-        // Run the search query
-        results = fuse.search(query);
 
-        console.log(results.length)
+        if (query !== '') {
+            trackSearchField(query);
+            var searchBarQueryArray = [];
+            search_options.keys.forEach(function(practiceKey) {
+                var queryObj = {};
+                queryObj[practiceKey] = query;
+                return searchBarQueryArray.push(queryObj);
+            });
+        }
+
+        if (categories) {
+            // Collect any practice that has a category that matches the selected category/categories.
+            var categoryFilters = [];
+            categories.forEach(function (categorySelection) {
+                return categoryFilters.push({'category_names': "=\"" + categorySelection + "\""});
+            });
+        }
+
+        var originFacilityArray = originatingFacility ? [] : null;
+
+        if (originatingFacility && originatingFacility.includes('VISN')) {
+            // Collect any practice that either has the selected VISN as an origin facility, or has an origin facility that belongs to the selected VISN
+
+            // Add the VISN to the array
+            var foundVisn = visns.find(function(v) {
+                return v.number === originatingFacility;
+            });
+
+            originFacilityArray.push({'initiating_facility': "=\"" + foundVisn.id.toString() + "\""});
+
+            var visnFacilities = facilities.filter(function(f) {
+                return f.VISN === foundVisn.number.split('-').pop();
+            });
+
+            // Now add the facilities
+            visnFacilities.forEach(function(vf) {
+                originFacilityArray.push({'origin_facilities': "=\"" + vf.StationNumber + "\""});
+            });
+        } else if (originatingFacility && !originatingFacility.includes('VISN')){
+            // Collect the practices that have an origin facility matching the selected facility
+            var foundFacility = facilities.find(function(f) {
+                return originatingFacility === f.StationNumber;
+            });
+            originFacilityArray.push({'origin_facilities': "=\"" + foundFacility.StationNumber + "\""});
+        }
+
+        function getAdoptionFacilities(stationNumbers, facilityIds) {
+            adoptions.forEach(function(a) {
+                stationNumbers.forEach(function(sn) {
+                    if (a.facility_id === sn) {
+                        return facilityIds.push({'adoption_facilities': "=\"" + sn + "\""});
+                    }
+                });
+            });
+        }
+
+        if (adoptingFacility) {
+            var filteredFacilities;
+            var stationNumbers = [];
+            var adoptionFacilityArray = [];
+            if (adoptingFacility.includes('VISN')) {
+                // Collect any practice that has a diffusion history with a facility that belongs to the selected VISN
+                filteredFacilities = facilities.filter(function(f) {
+                    return 'VISN-' + f.VISN === adoptingFacility;
+                });
+
+                filteredFacilities.forEach(function(ff) {
+                    stationNumbers.push(ff.StationNumber);
+                })
+
+                getAdoptionFacilities(stationNumbers, adoptionFacilityArray);
+            } else {
+                // Collect any practice that has a diffusion history with a facility that matches the selected facility
+                var matchingFacility;
+                matchingFacility = facilities.find(function(f) {
+                    return f.StationNumber === adoptingFacility;
+                });
+
+                stationNumbers.push(matchingFacility.StationNumber);
+                getAdoptionFacilities(stationNumbers, adoptionFacilityArray);
+            }
+        }
+        /*
+        IMPORTANT: Per Research and Design, if the user's search contains a string from the search bar, utilize the $and operator so that the result(s) must match all conditions.
+        On the other hand, if the user's search only contains filters, utilize the $or operator so that the results can match ANY of the conditions.
+         */
+
+        /*
+        Make a result a closer match if it has more than one matching category, as Fuse.js uses short-circuit evaluation. This means most of the time,
+        the results will have the same score because it stops after the first match.
+        */
+        function improveResultScoreBasedOnAmountOfCategoryMatches(results) {
+            results.map(function(result) {
+                var resultScore = result.score;
+                var cat_names = result.item.category_names;
+                if (cat_names && Array.isArray(cat_names)) {
+                    cat_names.forEach(function (cn) {
+                        if (categories.includes(cn)) {
+                            resultScore = result.score / 2;
+                        }
+                        result.score = resultScore;
+                    });
+                } else if (cat_names && Array.isArray(cat_names) == false) {
+                    resultScore = result.score / 2;
+                    result.score = resultScore;
+                }
+            });
+        }
+        /*
+        If the user selects a VISN in the originating facility combo box and the result has an initiating_facility that matches the id of the selected VISN, improve the score of the result.
+        Reasoning explained in the comment above. If the user selects a facility, and the result has a practice_origin_facility that matches the selection, improve the score of the result.
+        */
+        function improveResultScoreBasedOnOriginatingFacility(results) {
+            results.map(function(result) {
+                var resultScore = result.score;
+                if (originFacilityArray[0].initiating_facility) {
+                    if (result.item.initiating_facility_type === 'visn' && result.item.initiating_facility === originFacilityArray[0].initiating_facility.slice(2, -1)) {
+                        resultScore = result.score / 2;
+                    }
+                } else if (!originFacilityArray[0].initiating_facility) {
+                    if (result.item.initiating_facility_type === 'facility' && result.item.origin_facilities.includes(originFacilityArray[0].origin_facilities.slice(2, -1))) {
+                        resultScore = result.score / 2;
+                    }
+                }
+                result.score = resultScore;
+            });
+        }
+        /*
+        If the user selects a VISN in the adopting facility combo box, improve the score of the result for each adoption that has a facility_id that matches any of the facilities
+        that belong to the selected VISN. If VISN is not selected, just improve the score once.
+        */
+        function improveResultScoreBasedOnAmountOfAdoptingFacilities(results) {
+            results.map(function(result) {
+                var resultScore = result.score;
+                var adoption_facilities = result.item.adoption_facilities;
+                if (adoptingFacility.includes('VISN') && adoption_facilities.length > 0) {
+                    adoption_facilities.forEach(function (af) {
+                        if (stationNumbers.includes(af)) {
+                            resultScore = result.score / 2;
+                        }
+                        result.score = resultScore;
+                    });
+                } else if (!adoptingFacility.includes('VISN')) {
+                    resultScore = result.score / 2;
+                }
+                result.score = resultScore;
+            });
+        }
+
+        function searchWithQueryAndAllFilters() {
+            results = fuse.search({
+                $and: [
+                    {
+                        $or: searchBarQueryArray
+                    },
+                    {
+                        $and: categoryFilters
+                    },
+                    {
+                        $and: [
+                            {$or: originFacilityArray}
+                        ]
+                    },
+                    {
+                        $and: [
+                            {$or: adoptionFacilityArray}
+                        ]
+                    }
+                ]
+            });
+        }
+
+        function searchWithQueryAndCategoriesAndOriginFacility() {
+            results = fuse.search({
+                $and: [
+                    {
+                        $or: searchBarQueryArray
+                    },
+                    {
+                        $and: categoryFilters
+                    },
+                    {
+                        $and: [
+                            {$or: originFacilityArray}
+                        ]
+                    }
+                ]
+            });
+        }
+
+        function searchWithQueryAndCategoriesAndAdoptingFacility() {
+            results = fuse.search({
+                $and: [
+                    {
+                        $or: searchBarQueryArray
+                    },
+                    {
+                        $and: categoryFilters
+                    },
+                    {
+                        $and: [
+                            {$or: adoptionFacilityArray}
+                        ]
+                    }
+                ]
+            });
+        }
+
+        function searchWithQueryAndBothFacilities() {
+            results = fuse.search({
+                $and: [
+                    {
+                        $or: searchBarQueryArray
+                    },
+                    {
+                        $and: [
+                            {$or: originFacilityArray}
+                        ]
+                    },
+                    {
+                        $and: [
+                            {$or: adoptionFacilityArray}
+                        ]
+                    }
+                ]
+            });
+        }
+
+        function searchWithQueryAndCategories() {
+            results = fuse.search({
+                $and: [
+                    {
+                        $or: searchBarQueryArray
+                    },
+                    {
+                        $and: categoryFilters
+                    }
+                ]
+            });
+        }
+
+        function searchWithQueryAndOriginFacility() {
+            results = fuse.search({
+                $and: [
+                    {
+                        $or: searchBarQueryArray
+                    },
+                    {
+                        $and: [
+                            {$or: originFacilityArray}
+                        ]
+                    }
+                ]
+            });
+        }
+
+        function searchWithQueryAndAdoptingFacility() {
+            results = fuse.search({
+                $and: [
+                    {
+                        $or: searchBarQueryArray
+                    },
+                    {
+                        $and: [
+                            {$or: adoptionFacilityArray}
+                        ]
+                    }
+                ]
+            });
+        }
+
+        function searchWithAllFilters() {
+            results = fuse.search({$or: categoryFilters.concat(originFacilityArray, adoptionFacilityArray)});
+            improveResultScoreBasedOnAmountOfCategoryMatches(results);
+            improveResultScoreBasedOnOriginatingFacility(results);
+            improveResultScoreBasedOnAmountOfAdoptingFacilities(results);
+        }
+
+        function searchWithCategoriesAndOriginFacility() {
+            results = fuse.search({$or: categoryFilters.concat(originFacilityArray)});
+            improveResultScoreBasedOnAmountOfCategoryMatches(results);
+            improveResultScoreBasedOnOriginatingFacility(results);
+        }
+
+        function searchWithCategoriesAndAdoptingFacility() {
+            results = fuse.search({$or: categoryFilters.concat(adoptionFacilityArray)});
+            improveResultScoreBasedOnAmountOfCategoryMatches(results);
+            improveResultScoreBasedOnAmountOfAdoptingFacilities(results);
+        }
+
+        function searchWithBothFacilities() {
+            results = fuse.search({$or: adoptionFacilityArray.concat(originFacilityArray)});
+            improveResultScoreBasedOnOriginatingFacility(results);
+            improveResultScoreBasedOnAmountOfAdoptingFacilities(results);
+        }
+
+        function searchWIthOnlyCategories() {
+            results = fuse.search({$or: categoryFilters});
+            improveResultScoreBasedOnAmountOfCategoryMatches(results);
+        }
+
+        function searchWithOnlyOriginFacility() {
+            results = fuse.search({$or: originFacilityArray});
+            improveResultScoreBasedOnOriginatingFacility(results);
+        }
+
+        function searchWithOnlyAdoptingFacility() {
+            results = fuse.search({$or: adoptionFacilityArray});
+            improveResultScoreBasedOnAmountOfAdoptingFacilities(results);
+        }
+
+        // Run the search query and include filters(if any)
+        if (query !== '' && categoryFilters && originatingFacility && adoptingFacility) {
+            searchWithQueryAndAllFilters();
+        } else if (query !== '' && categoryFilters && originatingFacility && !adoptingFacility) {
+            searchWithQueryAndCategoriesAndOriginFacility();
+        } else if (query !== '' && categoryFilters && !originatingFacility && adoptingFacility) {
+            searchWithQueryAndCategoriesAndAdoptingFacility();
+        } else if (query !== '' && !categoryFilters && originatingFacility && adoptingFacility) {
+            searchWithQueryAndBothFacilities();
+        } else if (query !== '' && categoryFilters && !originatingFacility && !adoptingFacility) {
+            searchWithQueryAndCategories();
+        } else if (query !== '' && !categoryFilters && originatingFacility && !adoptingFacility) {
+            searchWithQueryAndOriginFacility();
+        } else if (query !== '' && !categoryFilters && !originatingFacility && adoptingFacility) {
+            searchWithQueryAndAdoptingFacility();
+        } else if (query !== '' && !categoryFilters && !originatingFacility && !adoptingFacility) {
+            results = fuse.search(query);
+        } else if (query === '' && categoryFilters && originatingFacility && adoptingFacility) {
+            searchWithAllFilters();
+        } else if (query === '' && categoryFilters && originatingFacility && !adoptingFacility) {
+            searchWithCategoriesAndOriginFacility();
+        } else if (query === '' && categoryFilters && !originatingFacility && adoptingFacility) {
+            searchWithCategoriesAndAdoptingFacility();
+        } else if (query === '' && !categoryFilters && originatingFacility && adoptingFacility) {
+            searchWithBothFacilities();
+        } else if (query === '' && categoryFilters && !originatingFacility && !adoptingFacility) {
+            searchWIthOnlyCategories();
+        } else if (query === '' && !categoryFilters && originatingFacility && !adoptingFacility) {
+            searchWithOnlyOriginFacility();
+        } else if (query === '' && !categoryFilters && !originatingFacility && adoptingFacility) {
+            searchWithOnlyAdoptingFacility();
+        } else if (query === '' && !categoryFilters && !originatingFacility && !adoptingFacility) {
+            results = [];
+        }
+
+        console.log('results', results)
+        console.log(results.length);
+
+        // Get the results and default to filtering based on score
+        buildSearchResults(results, sortByScore);
+        // Reset the select input to default
+        $(SORT_EL).prop('selectedIndex',0);
 
         // Print the number of results for the query
-        resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? '' : 's') + ' for <span class="text-bold">' + query + '</span>:';
+        resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? ':' : 's:');
 
         // Highlight results (only Fuse.js matching)
         results.forEach(function (result) {
             highlighter(result);
         });
-
-        // Template out the search results
-        results.forEach(function (result) {
-            var noBackgroundImage = result.item.image ? '' : 'class: fas fa-images fa-3x text-base-lighter search-no-image';
-            var background = result.item.image ? 'background: url(' + result.item.image + ')' + ' transparent; background-repeat: no-repeat; background-position: center; background-size: cover;' : 'background-color: #f0f0f0; transparent; background-size: contain; background-repeat: no-repeat; background-position: center; ';
-            var favoriteButtonIcon = result.item.user_favorited ? 'fas text-secondary' : 'far';
-            var favoriteButton =
-                '<a aria-label="Favorite ' + result.item.name + '" tabindex="-1" aria-hidden="true" class="search-favorite-practice-button" id="favorite-button-' + result.item.id + '" data-remote="true" rel="nofollow" data-method="post" href="/practices/' + result.item.slug + '/favorite.js">' +
-                '<i class="' + favoriteButtonIcon + ' fa-heart dm-favorite-icon-' + result.item.id + ' text-no-underline"></i>' +
-                '</a>';
-            resultsHTML +=
-                '<div class="grid-row search-row radius-sm border-2px border-base-lightest margin-bottom-105 flex-align-center">' +
-                '<div class="tablet:grid-col-3">' +
-                '<div class="img-box">' +
-                <% if current_user.present? %>
-                favoriteButton +
-                <% end %>
-                '<a href="/practices/' + result.item.slug + '" aria-label="Go to ' + result.item.name + '">' +
-                '<div class="img img-box-content border-right border-right-width-2px border-base-lightest position-relative" style="' + background + '">' +
-                '<i class="' + noBackgroundImage + '"></i>' +
-                '</div>' +
-                '</a>' +
-                '</div>' +
-                '</div>' +
-                '<div class="tablet:grid-col-9 padding-y-105 padding-right-105 padding-left-4">' +
-                '<h2 class="margin-0 truncate-text-search one-line"><a class="dm-link-title" href="/practices/' + result.item.slug + '">' + result.item.name + '</a></h2>' +
-                '<h4 class="truncate-text-search two-lines text-normal margin-y-1">' + result.item.tagline + '</h4>' +
-                '<p class="practice-details margin-y-1 font-sans-3xs">Created in ' + result.item.date_initiated + ' ' + result.item.initiating_facility + '</p>' +
-                '<p class="truncate-text-search three-lines">' + result.item.summary + '</p>' +
-
-                '<!-- Uncomment to show Fuse.js diagnostics -->' +
-                '<!--' +
-                '<h3>Fuse.js highlighted character matching</h3>' +
-                '<p class="">' + result.highlight + '</p>' +
-                '<p><b>Score: ' + result.score + '</b></p>' +
-                '-->' +
-
-                '</div>' +
-                '</div>';
-        });
-
-        // Print results to the page
-        searchResults.innerHTML = resultsHTML;
 
         // Highlight search results where exact keyword matches
         var mark = new Mark('#search-results');
@@ -88,8 +623,9 @@ function searchPracticesPage() {
     // Adapted from: https://github.com/brunocechet/Fuse.js-with-highlight
     function highlighter(resultItem) {
         resultItem.matches.forEach(function (matchItem) {
-            // don't highlight if match was on category since category is not in practice search result text and can't be highlighted
-            if (matchItem.key != 'category_names') {
+            // don't highlight if match was on category or adoption facilities since they are not in practice search result text and can't be highlighted
+            // don't highlight origin_facilities or initiating_facility because they are ids. The initiating_facility_name key will cover any text
+            if (matchItem.key != 'category_names' && matchItem.key != 'adoption_facilities' && matchItem.key != 'origin_facilities' && matchItem.key != 'initiating_facility') {
                 var text = resultItem.item[matchItem.key];
                 var result = [];
                 var matches = [].concat(matchItem.indices); // limpar referencia
@@ -117,12 +653,9 @@ function searchPracticesPage() {
         });
     }
 
-
-    // Set up search
-
     // Set Fuse.js search options
     var search_options = {
-        keys: ['name', 'tagline', 'description', 'summary', 'initiating_facility', 'category_names', 'maturity_level'],
+        keys: ['name', 'tagline', 'description', 'summary', 'initiating_facility', 'category_names', 'maturity_level', 'adoption_facilities', 'origin_facilities', 'initiating_facility_name'],
         minMatchCharLength: 1,
         tokenize: true,
         shouldSort: true,
@@ -133,32 +666,176 @@ function searchPracticesPage() {
         matchAllTokens: true,
         findAllMatches: true,
         includeMatches: true,
-        includeScore: true
+        includeScore: true,
+        useExtendedSearch: true,
+        ignoreLocation: true
     };
+
 
     // Create a search context with practices and search options
     var fuse = new Fuse(practices, search_options);
 
-    // Set up "enter" event handler for search field
-    var timeout = null;
+    // Get the Combo box values based on user interaction
+    function getComboBoxVal(inputEle, liEle) {
+        var facility;
+        if (inputEle.val() !== '' && liEle.length == 1) {
+            if (liEle.attr('data-value').includes('VISN')) {
+                return inputEle.val();
+            } else {
+                facility = facilities.find(function(f) {
+                    return f.StationNumber === liEle.attr('data-value');
+                });
+                return facility.StationNumber;
+            }
+        } else if (inputEle.val() !== '' && liEle.length == 0) {
+            if (inputEle.val().includes('VISN')) {
+                return inputEle.val();
+            } else {
+                facility = facilities.find(function(f) {
+                    return inputEle.val().toLowerCase().includes(f.OfficialStationName.toLowerCase());
+                });
+                return facility.StationNumber;
+            }
+        } else {
+            return null;
+        }
+    }
 
-    $(document).on('submit', '#dm-practice-search-form', function (e) {
+    function closeAccordion(accordionEl, containerEl) {
+        $(accordionEl).attr('aria-expanded', 'false');
+        $(containerEl).addClass('display-none');
+    }
+
+    $(document).on('submit', '#update-search-results-form', function (e) {
         e.preventDefault();
 
-        // Make a new timeout set to go off in 500ms
-        timeout = setTimeout(function () {
-            search(searchField.value);
-            window.history.pushState("", "", '/search?query=' + searchField.value);
-            trackSearchField(decodeURI(searchField.value));
-        }, 500);
+        hideResultsSectionElAndShowSpinner();
 
+        // Close search filter accordion if it's open
+        var accordionButton = $('.search-filters-accordion-button')
+        if (accordionButton.attr('aria-expanded') == 'true') {
+            accordionButton.attr('aria-expanded', 'false');
+            $('#search_filters_dropdown').attr('hidden', 'true');
+        }
+
+        // Close mobile accordions
+        closeAccordion('.mobile-origin-accordion', '.originating-facility-container');
+        closeAccordion('.mobile-adopting-accordion', '.adopting-facility-container');
+        closeAccordion('.mobile-category-accordion', '.category-container');
+
+        // Bring the user back to their original spot on the page, before they opened the mobile modal
+        if ($(window).width() < 1024) {
+            $(window).scrollTop(pagePosition.original);
+        }
+
+        var urlQuery = searchField.value === '' ? '/search' : '/search?query=' + searchField.value;
+        window.history.pushState({ turbolinks: {} }, "", urlQuery);
+
+        // Get the value of the originating facility combo box
+        var originatingFacilityInput = $('#originating-facility-and-visn-select');
+        var originatingFacilityLi = $('#originating-facility-and-visn-select--list > li[aria-selected=true]');
+
+        var originatingFacility =  getComboBoxVal(originatingFacilityInput, originatingFacilityLi);
+
+        // Get the value of the adopting facility combo box
+        var adoptingFacilityInput = $('#adopting-facility-and-visn-select');
+        var adoptingFacilityLi = $('#adopting-facility-and-visn-select--list > li[aria-selected=true]');
+
+        var adoptingFacility = getComboBoxVal(adoptingFacilityInput, adoptingFacilityLi);
+
+        // Get the values for any chosen categories
+        var selectedCheckboxes = $('#update-search-results-form [type="checkbox"]:checked');
+        var chosenCategories = selectedCheckboxes.map(function () {
+            return this.value;
+        }).get();
+        if (chosenCategories.length == 0) {
+            chosenCategories = null;
+        }
+        // Run the search
+        search(searchField.value, chosenCategories, originatingFacility, adoptingFacility);
+
+        // Display the amount of filters used(if any)
+        var checkboxCount = selectedCheckboxes.length;
+        var noOriginatingFacilityText = originatingFacilityInput.val() === '';
+        var originatingFacilityTextPresent = originatingFacilityInput.val() !== '';
+        var noAdoptingFacilityText = adoptingFacilityInput.val() === '';
+        var adoptingFacilityTextPresent = adoptingFacilityInput.val() !== '';
+
+        function accordionText(checkboxCount, inputCount) {
+            return accordionButton.text('Filters ' + '(' + (checkboxCount + inputCount) + ')');
+        }
+
+        if (checkboxCount > 0 && originatingFacilityTextPresent && noAdoptingFacilityText) {
+            accordionText(checkboxCount, 1);
+        } else if (checkboxCount > 0 && noOriginatingFacilityText && adoptingFacilityTextPresent) {
+            accordionText(checkboxCount, 1);
+        } else if (checkboxCount > 0 && noOriginatingFacilityText && noAdoptingFacilityText) {
+            accordionText(checkboxCount, 0);
+        } else if (checkboxCount > 0 && originatingFacilityTextPresent && adoptingFacilityTextPresent) {
+            accordionText(checkboxCount, 2);
+        } else if (checkboxCount === 0 && originatingFacilityTextPresent && noAdoptingFacilityText) {
+            accordionText(0, 1);
+        } else if (checkboxCount === 0 && noOriginatingFacilityText && adoptingFacilityTextPresent) {
+            accordionText(0, 1);
+        } else if (checkboxCount === 0 && noOriginatingFacilityText && noAdoptingFacilityText) {
+            return accordionButton.text('Filters');
+        } else if (checkboxCount === 0 && originatingFacilityTextPresent && adoptingFacilityTextPresent) {
+            accordionText(0, 2);
+        }
     });
 
+    // Sort the results based on each sort option
+    var sortSelect = $(SORT_EL);
+    sortSelect.on('change', function() {
+        switch ($(this).val()) {
+            case "most_relevant":
+                hideResultsElAndShowSpinner();
+                buildSearchResults(results, sortByScore);
+                break;
+            case "a_to_z":
+                hideResultsElAndShowSpinner();
+                buildSearchResults(results, sortAToZ);
+                break;
+            case "adoptions":
+                hideResultsElAndShowSpinner();
+                buildSearchResults(results, sortByAdoptionCounts);
+                break;
+            case "added":
+                hideResultsElAndShowSpinner();
+                buildSearchResults(results, sortByDateAdded);
+                break;
+        }
+    });
+
+    // Clear all filter options
+    $(document).on('click', '#resetSearchFiltersButton, #resetSearchFiltersButtonMobile', function(e) {
+        e.preventDefault();
+
+        $('.usa-combo-box__clear-input').each(function() {
+            $(this).trigger('click');
+        });
+
+        $('.usa-checkbox__input').each(function() {
+            if ($(this).prop('checked')) {
+                $(this).prop('checked', false);
+            }
+        });
+        // Move the focus area back to the top of the filters window
+        $(".usa-combo-box__clear-input__wrapper").attr("tabindex",-1).focus();
+        // Reset filter count text
+        $('.search-filters-accordion-button').text('Filters');
+    })
+
     if (window.location.pathname === '/search' && window.location.search !== '') {
+        hideResultsSectionElAndShowSpinner();
         const query = window.location.search.split('=')[1];
         search(decodeURI(query));
         trackSearchField(decodeURI(query));
-        searchField.value = decodeURI(query);
+        if (query !== undefined) {
+            searchField.value = decodeURI(query);
+        } else {
+            searchField.value = '';
+        }
     }
 }
 
@@ -176,6 +853,15 @@ function trackSearchField(searchTerm) {
     }
 }
 
-document.addEventListener('turbolinks:load', function () {
+function execSearchFunctions() {
     searchPracticesPage();
+    openMobileFiltersModal();
+    toggleMobileCategoriesAccordion();
+    toggleMobileOriginAccordion();
+    toggleMobileAdoptingAccordion();
+    closeMobileFiltersModal();
+}
+
+document.addEventListener('turbolinks:load', function () {
+    execSearchFunctions();
 });

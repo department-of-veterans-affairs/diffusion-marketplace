@@ -1,5 +1,28 @@
 // Styles for the practice search page
 @import '../variables/colors';
+
+#search-page {
+  .usa-checkbox__label:before {
+    border-radius: 0 !important;
+  }
+
+  .usa-combo-box__toggle-list, .usa-combo-box__clear-input {
+    top: 2.3em !important;
+  }
+
+  .usa-combo-box__input-button-separator {
+    top: 2.1em !important;
+  }
+
+  .usa-combo-box__list-option:not([data-value*="VISN"]) {
+    padding-left: 24px !important;
+  }
+
+  .usa-select {
+    max-width: 100% !important;
+  }
+}
+
 .dm-search-practices {
   hr {
     border: none;
@@ -69,5 +92,127 @@
 
   .search-no-image {
     top: 36%;
+  }
+}
+
+#dm-search-practices {
+  .addListData {
+    width: 120px !important;
+  }
+}
+
+#no-search-query-content {
+  width: 261px !important;
+  height: 40vh;
+  margin-top: 40px;
+
+  .text-and-icon-container {
+    height: 100%
+  }
+
+  #no-query-p, #no-query-results-p {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .no-search-query-icon {
+    font-size: 11.25em;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+#search_filters_dropdown {
+  border: 0 !important;
+  background-color: $dm-color-gray-2 !important;
+
+  @media screen and (min-width: 1024px) {
+    height: 55vh;
+    border: 2px solid $dm-color-gray-5 !important;
+    top: unset;
+    right: unset;
+    left: unset;
+    bottom: unset;
+    position: absolute;
+    background-color: $dm-color-white !important;
+  }
+
+  fieldset {
+    border: none !important;
+    margin: 0 !important;
+    width: 100% !important
+  }
+
+  .fa-times {
+    display: block !important;
+  }
+}
+
+#update-search-results-form {
+  .usa-search [type="submit"] {
+    background-image: none !important;
+    width: 85px !important;
+    padding: 8px 16px 8px 16px !important;
+
+    @media screen and (min-width: 480px) {
+      padding-left: 2rem !important;
+      padding-right: 2rem !important;
+      width: auto !important;
+    }
+  }
+
+  .usa-search__submit-text {
+    left: unset !important;
+    position: unset !important;
+  }
+}
+
+#close_filters_modal {
+  background: none !important;
+  border: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.category-container, .originating-facility-container, .adopting-facility-container {
+  background-color: $dm-color-gray-2;
+
+  @media screen and (min-width: 1024px) {
+    background-color: $dm-color-white;
+  }
+}
+
+.category-container {
+  div:last-child {
+    .usa-checkbox {
+      &:last-child {
+        .usa-checkbox__label {
+          @media screen and (max-width: 1023px) {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+.mobile-modal-container {
+  position: relative;
+  padding-bottom: 93px;
+  min-height: 100vh;
+
+  @media screen and (min-width: 1024px) {
+    position: unset;
+    padding-bottom: 0;
+    min-height: unset;
+  }
+}
+
+#filter_button_container {
+  @media screen and (max-width: 1023px) {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
   }
 }

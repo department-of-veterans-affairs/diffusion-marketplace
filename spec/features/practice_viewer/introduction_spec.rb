@@ -121,8 +121,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
 
     it 'should take the user to the search results page when a category tag is clicked' do
       all('.category-link').first.click
-      expect(page).to have_content('Search results')
-      expect(page).to have_content('1 result for COVID')
+      expect(page).to have_content('1 result')
       expect(page).to have_content('A public maximum practice')
     end
   end
@@ -141,8 +140,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
 
     it 'should take the user to the search results page when the See more practices link is clicked' do
       click_link('See more emerging practices')
-      expect(page).to have_content('Search results')
-      expect(page).to have_content('1 result for emerging')
+      expect(page).to have_content('1 result')
       expect(page).to have_content('A public maximum practice')
     end
   end

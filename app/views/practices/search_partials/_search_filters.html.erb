@@ -1,0 +1,93 @@
+<div class="grid-row padding-x-3 padding-bottom-0 desktop:padding-x-0">
+  <fieldset class="p0">
+    <legend class="usa-sr-only">Originating Facility Filter</legend>
+    <div class="bg-gray-5 margin-bottom-1 desktop:margin-bottom-0 desktop:padding-bottom-2px">
+      <h2 class="usa-accordion__heading">
+        <button class="usa-accordion__button mobile-origin-accordion desktop:display-none"
+                aria-expanded="false"
+                type="button">
+          Originating facility
+        </button>
+      </h2>
+
+      <div class="grid-row originating-facility-container display-none desktop:padding-bottom-3 desktop:display-block desktop:padding-x-2">
+        <p class="text-bold line-height-26 margin-top-2 margin-bottom-1 grid-col-12 display-none desktop:display-block">Originating location</p>
+        <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'originating-facility-and-visn-select'} %>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset class="p0">
+    <legend class="usa-sr-only">Adopting Facility Filter</legend>
+    <div class="bg-gray-5 margin-bottom-1 desktop:margin-bottom-0 desktop:padding-bottom-2px">
+      <h2 class="usa-accordion__heading">
+        <button class="usa-accordion__button mobile-adopting-accordion desktop:display-none"
+                aria-expanded="false"
+                type="button">
+          Adopting facility
+        </button>
+      </h2>
+
+      <div class="grid-row adopting-facility-container display-none desktop:padding-bottom-3 desktop:display-block desktop:padding-x-2">
+        <p class="text-bold line-height-26 margin-top-2 margin-bottom-1 grid-col-12 display-none desktop:display-block">Adopting location</p>
+        <%= render partial: 'practices/search_partials/visn_facility_combo_box', locals: {facility_type_selector: 'adopting-facility-and-visn-select'} %>
+      </div>
+    </div>
+  </fieldset>
+
+  <%
+    categories = Category.where(is_other: false).where.not(name: 'Other').order(Arel.sql('LOWER(name) ASC')).uniq
+    if categories.count > 1
+      # Divide the total by three and round up if possible to make sure the categories are evenly distributed amongst the columns
+      count = ((categories.count * 2) + 3) / (3 * 2)
+      sliced_categories = categories.each_slice(count).to_a
+
+      # When the category count is divisible by 3 with a remainder of 1, move item(s) from one array to the previous to maintain distribution
+      if categories.count % 3 == 1
+        sliced_categories[2].insert(-1, sliced_categories[3][0])
+        sliced_categories[1].insert(-1, sliced_categories[2][0], sliced_categories[2][1])
+        sliced_categories[0].insert(-1, sliced_categories[1][0])
+        sliced_categories[2].shift(2)
+        sliced_categories[1].shift
+      end
+    end
+  %>
+
+  <fieldset class="p0">
+    <legend class="usa-sr-only">Category Filter</legend>
+    <div class="bg-gray-5 <%= categories.any? ? 'desktop:padding-bottom-2px' : '' %>">
+      <h2 class="usa-accordion__heading">
+        <button class="usa-accordion__button mobile-category-accordion desktop:display-none"
+                aria-expanded="false"
+                type="button">
+          Category
+        </button>
+      </h2>
+
+      <% if categories.any? %>
+        <div class="grid-row category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex desktop:padding-x-2">
+          <p class="text-bold line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block desktop:margin-top-1">Category</p>
+          <% if sliced_categories.present? %>
+            <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sliced_categories, column: 0 } %>
+            <% if sliced_categories[1].present? %>
+              <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sliced_categories, column: 1 } %>
+            <% end %>
+            <% if sliced_categories[2].present? %>
+              <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sliced_categories, column: 2 } %>
+            <% end %>
+          <% elsif sliced_categories.nil? && categories.count == 1 %>
+            <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: categories, column: nil } %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </fieldset>
+</div>
+<div class="padding-y-2 padding-x-3 border-top-2px border-base-lightest bg-white desktop:border-top-0 desktop:padding-2" id="filter_button_container">
+  <button type="submit" id="update-search-results-button" class="usa-button dm-btn-primary display-block width-100 desktop:margin-bottom-1 line-height-19px" name="button">
+    Update results
+  </button>
+  <button type="button" class="usa-button dm-btn-base display-none desktop:display-block width-full line-height-19px" id="resetSearchFiltersButton">
+    Reset filters
+  </button>
+</div>

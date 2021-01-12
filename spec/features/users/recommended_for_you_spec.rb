@@ -92,8 +92,7 @@ describe 'Recommended for you page', type: :feature do
 
       click_link('See more practices')
 
-      expect(page).to have_content('Search results')
-      expect(page).to have_content("4 results for #{@user2.location}:")
+      expect(page).to have_content('4 results')
     end
   end
 
