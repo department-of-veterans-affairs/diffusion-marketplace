@@ -44,13 +44,14 @@ module PracticesHelper
 
   def fetch_page_view_for_practice_count(practice_id, duration = "30")
     page_view_leaders = []
-    sql = "select name, properties, count(properties) as count from ahoy_events where name = 'Practice show' and time >= now() - interval '{#{duration} days' group by name, properties"
-    records_array = ActiveRecord::Base.connection.execute(sql)
 
-    recs = records_array.values
-    recs.each do |rec|
-      if practice_id == JSON.parse(rec[1])['practice_id']
-        practice = practice_leader_board(Practice.find(practice_id), rec[2])
+    sql = "select name, properties, count(properties) as count from ahoy_events where name = 'Practice show' and time >= $1 group by name, properties"
+    records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{Time.now - duration.to_i.days}"]])
+    # records_array = prepare_sql.execute(sql)
+    #recs = records_array.values
+    records_array.each do |rec|
+      if practice_id == JSON.parse(rec["properties"])["practice_id"]
+        practice = practice_leader_board(Practice.find(practice_id), rec["count"])
         page_view_leaders << practice
       end
     end
