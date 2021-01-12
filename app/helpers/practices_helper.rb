@@ -130,16 +130,24 @@ module PracticesHelper
   end
 
   def fetch_adoptions_total_by_practice(practice_id, duration = "30", status = "")
-    sql = "select count(*) as count from diffusion_histories dh join diffusion_history_statuses dhs on dh.id = dhs.diffusion_history_id where dh.practice_id = #{practice_id}"
+    sql = "select count(*) as count from diffusion_histories dh join diffusion_history_statuses dhs on dh.id = dhs.diffusion_history_id where dh.practice_id = $1"
     if(duration == "30")
-      sql += " and dh.created_at >= now() - interval '#{duration} days'"
+      sql += " and dh.created_at >= $2"
+      if(status.length > 0)
+        sql += " and dhs.status= $3"
+        records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{practice_id}"], [nil, "#{Time.now - duration.to_i.days}"], [nil, "#{status}"]])
+      else
+        records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{practice_id}"], [nil, "#{Time.now - duration.to_i.days}"]])
+      end
+    else
+      if(status.length > 0)
+        sql += " and dhs.status= $2"
+        records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{practice_id}"], [nil, "#{status}"]])
+      else
+        records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{practice_id}"]])
+      end
     end
-    if(status.length > 0)
-      sql += " and dhs.status='#{status}'"
-    end
-    records_array = ActiveRecord::Base.connection.execute(sql)
-    recs = records_array.values
-    recs[0][0]
+    records_array[0]["count"]
   end
 
   def fetch_adoptions_by_practice(practice_id, duration = "30")
