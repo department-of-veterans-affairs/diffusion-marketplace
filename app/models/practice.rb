@@ -26,7 +26,7 @@ class Practice < ApplicationRecord
   attr_accessor :reset_searchable_cache
 
   def clear_searchable_cache
-    cache_keys = ["searchable_practices_a_to_z", "searchable_practices_adoptions", "searchable_practices_added"]
+    cache_keys = ["searchable_practices", "searchable_practices_a_to_z", "searchable_practices_adoptions", "searchable_practices_added"]
     cache_keys.each do |cache_key|
       Rails.cache.delete(cache_key)
     end
@@ -63,6 +63,10 @@ class Practice < ApplicationRecord
     elsif sort == 'added'
       Rails.cache.fetch('searchable_practices_added') do
         Practice.sort_added.get_with_categories_and_adoptions_ct
+      end
+    elsif sort == nil
+      Rails.cache.fetch('searchable_practices') do
+        Practice.get_with_categories_and_adoptions_ct
       end
     end
   end

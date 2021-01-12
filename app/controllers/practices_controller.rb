@@ -171,9 +171,16 @@ class PracticesController < ApplicationController
   end
 
   def search
-    @practices = Practice.searchable_practices 'a_to_z'
+    @practices = Practice.searchable_practices nil
     @facilities_data = facilities_json
+    @visn_data = origin_data_json["visns"]
     @practices_json = practices_json(@practices)
+    @diffusion_histories = []
+    @practices.each do |p|
+      p.diffusion_histories.each do |dh|
+        @diffusion_histories << {practice_id: dh.practice_id, facility_id: dh.facility_id}
+      end
+    end
   end
 
   # GET /explore
@@ -635,7 +642,7 @@ class PracticesController < ApplicationController
         practice_hash['category_names'] = []
 
         practice.categories.each do |category|
-          if category.name != 'None'
+          if category.name != 'None' && category.name != 'Other' && category.is_other != true
             practice_hash['category_names'].push category.name
 
             unless category.related_terms.empty?
@@ -646,8 +653,21 @@ class PracticesController < ApplicationController
       end
 
       # display initiating facility
-      practice_hash['initiating_facility'] = helpers.origin_display(practice)
+      practice_hash['initiating_facility_name'] = helpers.origin_display(practice)
+      practice_hash['initiating_facility'] = practice.initiating_facility
+      origin_facilities = []
+      practice.practice_origin_facilities.each do |pof|
+        origin_facilities << pof.facility_id
+      end
+      practice_hash['origin_facilities'] = origin_facilities
       practice_hash['user_favorited'] = current_user.favorite_practice_ids.include?(practice.id) if current_user.present?
+
+      # get diffusion history facilities
+      adoptions = []
+      practice.diffusion_histories.each do |dh|
+        adoptions << dh.facility_id
+      end
+      practice_hash['adoption_facilities'] = adoptions
       practices_array.push practice_hash
     end
 
