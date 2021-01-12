@@ -25,7 +25,7 @@
 //= require jquery-ui/widgets/tooltip
 //= require ahoy
 //= require cable
-//= require fuse-3.4.4
+//= require fuse-6.4.3.js
 //= require mark
 //= require ie
 //= require practices
@@ -51,3 +51,4 @@
 //= require typeahead.bundle.min.js
 //= require _render_warning_banners
 //= require autoResize
+//= require showMoreItems.js

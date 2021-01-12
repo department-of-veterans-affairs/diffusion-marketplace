@@ -37,11 +37,11 @@ body {
   position: relative;
   // Add padding equal to the height of the current footer plus 40px for spacing between 'Return to top' button and the element above it based on Figma designs
 
-  // Mobile footer height + 40px
+  // Mobile footer height + 20px
   padding-bottom: 439px;
   @media screen and (min-width: 1024px) {
-    // Desktop footer height + 40px
-    padding-bottom: 235px;
+    // Desktop footer height + 20px
+    padding-bottom: 215px;
   }
 }
 

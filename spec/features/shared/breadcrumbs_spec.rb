@@ -123,7 +123,7 @@ describe 'Breadcrumbs', type: :feature do
         expect(page).to have_content('Home')
         expect(page).to have_content('Search')
       end
-      click_on('The Best Practice Ever!')
+      click_on('Go to The Best Practice Ever!')
       # TODO: why is this timing out?
       # expect(page).to be_accessible.according_to :wcag2a, :section508
       within(:css, '#breadcrumbs') do

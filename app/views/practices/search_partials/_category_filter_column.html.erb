@@ -1,0 +1,13 @@
+<div class="grid-col-12 desktop:grid-col-4">
+  <% if categories.count > 1 %>
+  <% categories[column].each do |category| %>
+    <%
+      category_id = category.id
+      category_name = category.name
+    %>
+    <%= render partial: 'practices/search_partials/category_checkbox', locals: { category_id: category_id, category_name: category_name } %>
+    <% end %>
+  <% else %>
+    <%= render partial: 'practices/search_partials/category_checkbox', locals: { category_id: categories.first.id, category_name: categories.first.name } %>
+  <% end %>
+</div>
