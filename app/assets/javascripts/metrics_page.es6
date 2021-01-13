@@ -41,15 +41,6 @@ $(document).ready(function(){
         toggleMetricAllTimeVsThirtyTables(ADOPTIONS_BY_PRACTICE_THIRTY_DAYS, ADOPTIONS_BY_PRACTICE_ALL_TIME, "display-inline", "display-none");
     });
 
-    $("#sideNavPracticeNameLink").mouseenter(function(e){
-        document.getElementById("sideNavPracticeNameLink").classList.add("side-nav-highlighted");
-    });
-
-    $("#sideNavPracticeNameLink").mouseleave(function(e){
-        document.getElementById("sideNavPracticeNameLink").classList.remove("side-nav-highlighted");
-    });
-
-
     $("#peSideNavPracticeName").click(function(e){
         e.stopPropagation();
         let navItem = document.getElementById('peSideNavAbout');

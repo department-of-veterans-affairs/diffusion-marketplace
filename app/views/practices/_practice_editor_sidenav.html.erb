@@ -18,9 +18,9 @@
         </li>
         <li class="usa-sidenav__item" id="peSideNavPracticeName">
           <% if current_page?(practice_introduction_path(@practice)) %>
-            <a href="#" onclick="return false" class="width-full dm-tab side-nav-highlighted"><%= @practice.name %></a>
+            <a href="#" onclick="return false" class="width-full side-nav-highlighted"><%= @practice.name %></a>
           <% else %>
-            <%= link_to @practice.name, practice_introduction_path(@practice), id: "sideNavPracticeNameLink", class: "#{'side-nav-highlighted' if !current_page?(practice_instructions_path(@practice)) && !current_page?(practice_metrics_path(@practice))}" %>
+            <%= link_to @practice.name, practice_introduction_path(@practice), id: "sideNavPracticeNameLink", class: "dm-tab #{'side-nav-highlighted' if !current_page?(practice_instructions_path(@practice)) && !current_page?(practice_metrics_path(@practice))}" %>
           <% end %>
           <ul class="usa-sidenav__sublist <%= params[:controller] == 'practices' && params[:action] == 'instructions' || params[:controller] == 'practices' && params[:action] == 'metrics' ? 'side-nav-hide' : '' %>">
             <li class="usa-sidenav__item <% if params.has_key?(:metrics) %> side-nav-hide <% end %>" id="peSideNavIntroduction">
