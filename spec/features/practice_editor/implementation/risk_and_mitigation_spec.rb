@@ -17,8 +17,7 @@ describe 'Practice', type: :feature, js: true do
     end
 
     def visit_pr_edit
-      click_link('Edit')
-      click_link('Implementation')
+      visit practice_implementation_path(@practice)
     end
 
     def add_another
@@ -38,11 +37,6 @@ describe 'Practice', type: :feature, js: true do
     end
 
     it 'should allow the user to update the risks and mitigations for the practice' do
-      # no risks and mitigations should be there
-      visit practice_path(@practice)
-      expect(page).to have_no_content('Risks and mitigations')
-
-
       # navigate to the PE Implementation form
       visit_pr_edit
       expect(page).to have_content('Risk and mitigation')
@@ -63,7 +57,7 @@ describe 'Practice', type: :feature, js: true do
       save_pr
 
       # check risk and mitigation in practice view
-      click_link(@practice.name)
+      visit '/practices/a-public-practice'
       within(:css, '#implementation') do
         expect(page).to have_content('Risks and mitigations')
         expect(page).to have_content('first risk')
@@ -78,7 +72,7 @@ describe 'Practice', type: :feature, js: true do
       save_pr
 
       # check risk and mitigation in practice view
-      click_link(@practice.name)
+      visit '/practices/a-public-practice'
       within(:css, '#implementation') do
         expect(page).to have_content('first edited risk')
         expect(page).to have_content('first edited mitigation')
@@ -96,7 +90,7 @@ describe 'Practice', type: :feature, js: true do
       save_pr
 
       # check risk and mitigation in practice view
-      click_link(@practice.name)
+      visit '/practices/a-public-practice'
       within(:css, '#implementation') do
         expect(page).to have_content('first edited risk')
         expect(page).to have_content('first edited mitigation')
@@ -112,7 +106,7 @@ describe 'Practice', type: :feature, js: true do
       save_pr
 
       # check risk and mitigation in practice view
-      visit practice_path(@practice)
+      visit '/practices/a-public-practice'
       within(:css, '#implementation') do
         expect(page).to have_content('first edited risk')
         expect(page).to have_content('first edited mitigation')
