@@ -126,11 +126,6 @@ module NavigationHelper
         session[:breadcrumbs] << { 'display': 'Metrics', 'path': practice_metrics_path(practice_by_practice_id) }
       end
 
-      if action == 'editing_guide'
-        reset_editor_breadcrumbs(practice_by_practice_id)
-        session[:breadcrumbs] << { 'display': 'Editing guide', 'path': practice_editing_guide_path(practice_by_practice_id) }
-      end
-
       if action == 'practice_name'
         reset_editor_breadcrumbs(practice_by_practice_id)
         session[:breadcrumbs] << { 'display': 'Practice name', 'path': practice_practice_name_path(practice_by_practice_id) }

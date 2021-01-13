@@ -220,10 +220,6 @@ module PracticesHelper
     @office_data["departments"][0]["offices"].to_json
   end
 
-  def fetch_facilities
-    @facility_data= JSON.parse(File.read("#{Rails.root}/lib/assets/va_gov_facilities_all_response.json"))
-  end
-
   def fetch_vamc_facilities
     @vamc_facility_data = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
   end

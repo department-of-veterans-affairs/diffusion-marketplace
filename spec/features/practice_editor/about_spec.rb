@@ -78,7 +78,7 @@ describe 'Practice editor', type: :feature do
 
 
             # check if the origin story with updated text shows up in the show view
-            click_link(@practice.name)
+            visit '/practices/an-awesome-practice'
             expect(page).to have_content('This is an edited origin story.')
         end
 
@@ -95,7 +95,7 @@ describe 'Practice editor', type: :feature do
             expect(page).to have_field(@creator_field_role, with: @creator_role)
 
             # see if the team member shows up in the show view
-            click_link(@practice.name)
+            visit '/practices/an-awesome-practice'
             expect(page).to have_content('Original team')
             expect(page).to have_content(@creator_name)
             expect(page).to have_content(@creator_role)
