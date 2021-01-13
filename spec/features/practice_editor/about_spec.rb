@@ -147,7 +147,7 @@ describe 'Practice editor', type: :feature do
             save_button.click
 
             # make sure the first team member does not show up in the show view
-            click_link(@practice.name)
+            visit '/practices/an-awesome-practice'
             expect(page).to have_content('Original team')
             expect(page).to_not have_content(@creator_name_2)
             expect(page).to_not have_content(@creator_role_2)
@@ -172,7 +172,7 @@ describe 'Practice editor', type: :feature do
             end
 
             # make sure the "Original team" section was removed from the show view
-            click_link(@practice.name)
+            visit '/practices/an-awesome-practice'
             expect(page).to_not have_content('Original team')
             expect(page).to_not have_content(@creator_name)
             expect(page).to_not have_content(@creator_role)
