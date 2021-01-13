@@ -1,6 +1,6 @@
 @import "../variables/colors";
 
-.adoption-status-modal-container {
+.successful-modal-icon, .in-progress-modal-icon, .unsuccessful-modal-icon {
   @media screen and (min-width: 1024px) {
     display: none !important;
   }
@@ -31,6 +31,10 @@
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+
+  .adoption-status-modal-content {
+    top: 25vh;
+  }
 }
 
 /* Modal Content */
@@ -46,10 +50,6 @@
   -webkit-animation-duration: 0.4s;
   animation-name: animatetop;
   animation-duration: 0.4s
-}
-
-.adoption-status-modal-content {
-  top: 25vh;
 }
 
 .terms-modal, .report-abuse-modal, .publication-modal {

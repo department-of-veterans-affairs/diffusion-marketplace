@@ -253,6 +253,7 @@
   fieldset {
     padding: 0;
     border: 0;
+    margin-left: 0;
   }
 
   .usa-checkbox__input:checked + .usa-checkbox__label.complete::before, .usa-radio__input:checked + .usa-radio__label.complete::before {

@@ -131,19 +131,41 @@
         });
     }
 
-    function openAdoptionStatusModal() {
-        $(document).on('click', '.successful-modal-icon', (e) => {
+    function openAdoptionStatusModal(status) {
+        $(document).on('click', `.${status}-modal-icon`, (e) => {
             // Click accordion button to close content because when the icon is clicked, so is the button
             $(e.target).parent().click();
-            $(e.target).next().removeClass('display-none');
+
+            $(`.${status}-status-modal-container`).removeClass('display-none');
+            // Disable pointer events underneath the modal
+            $('body').css('pointer-events', 'none');
+
+            // Allow modal close icon to be the only interactive element
+            $(`#close_${status}_status_modal`).css('pointer-events', 'auto');
         });
     }
 
-    function closeAdoptionStatusModal() {
-        $(document).on('click', '#close_successful_status_modal', (e) => {
-            // Click accordion button to close content because when the icon is clicked, so is the button
-            $(e.target).closest('.adoption-status-modal-container').parent().click();
-            $(e.target).closest('.adoption-status-modal-container').addClass('display-none');
+    function closeAdoptionStatusModal(status) {
+        $(document).on('click', `#close_${status}_status_modal`, (e) => {
+            // Remove pointer-events styling
+            $('body').css('pointer-events', '');
+            $(e.target).css('pointer-events', '');
+
+            $(`.${status}-modal-icon`).parent().focus();
+            $(`.${status}-status-modal-container`).addClass('display-none');
+        });
+    }
+
+    function toggleAdoptionStatusModal() {
+        let adoptionStatuses = [
+            'successful',
+            'unsuccessful',
+            'in-progress'
+        ];
+
+        adoptionStatuses.forEach(status => {
+            openAdoptionStatusModal(status);
+            closeAdoptionStatusModal(status);
         });
     }
 
@@ -154,8 +176,7 @@
         createWidthForImageCaption();
         expandCommentTextArea();
         expandReplyTextArea();
-        openAdoptionStatusModal();
-        closeAdoptionStatusModal();
+        toggleAdoptionStatusModal();
     }
 
     $document.on('turbolinks:load', executePracticeCommentsFunctions);
