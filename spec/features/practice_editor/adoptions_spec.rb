@@ -9,6 +9,8 @@ describe 'Practice editor', type: :feature do
     @admin.add_role(User::USER_ROLES[0].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
     @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline')
+    dh = DiffusionHistory.create!(practice_id: @practice.id, facility_id: '528QH')
+    DiffusionHistoryStatus.create!(diffusion_history_id: dh.id, status: 'Completed')
   end
 
   describe 'Adoptions page' do
@@ -146,6 +148,29 @@ describe 'Practice editor', type: :feature do
       end
       page.accept_alert
       expect(page).to have_content('Adoption entry was successfully deleted.')
+    end
+
+    describe 'Adoption status tooltip' do
+        it 'should display a tooltip with adoption status definitions if the user hovers over the tooltip icon within the new adoption form' do
+          click_button('Add new adoption')
+          expect(page).to have_selector('.usa-tooltip__body', visible: false)
+          find('.usa-tooltip').hover
+          expect(page).to have_selector('.usa-tooltip__body', visible: true)
+          expect(page).to have_content('In-progress: Facilities that have started but not completed adopting the practice.')
+          expect(page).to have_content('Successful: Facilities that have met adoption goals and implemented the practice.')
+          expect(page).to have_content('Unsuccessful: Facilities that started but stopped working towards adoption.')
+        end
+
+        it 'should display a tooltip with adoption status definitions if the user hovers over the tooltip icon within an existing adoption form' do
+
+          debugger
+          expect(page).to have_selector('.usa-tooltip__body', visible: false)
+          find('.usa-tooltip').hover
+          expect(page).to have_selector('.usa-tooltip__body', visible: true)
+          expect(page).to have_content('In-progress: Facilities that have started but not completed adopting the practice.')
+          expect(page).to have_content('Successful: Facilities that have met adoption goals and implemented the practice.')
+          expect(page).to have_content('Unsuccessful: Facilities that started but stopped working towards adoption.')
+        end
     end
   end
 end
