@@ -36,7 +36,6 @@ describe 'Practice editor', type: :feature, js: true do
           expect(page).to_not have_content('Metrics')
           # navigate to the PE Overview form
           click_link('Edit')
-          visit '/practices/a-public-practice/edit/introduction'
           click_link('Overview')
           expect(page).to have_content('Metrics')
 
