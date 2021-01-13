@@ -14,7 +14,6 @@ Rails.application.routes.draw do
 
   resources :practices, except: :index do
     get '/edit/metrics', action: 'metrics', as: 'metrics'
-    get '/edit/practice_name', action: 'practice_name', as: 'practice_name'
     get '/edit/instructions', action: 'instructions', as: 'instructions'
     get '/edit/introduction', action: 'introduction', as: 'introduction'
     get '/edit/implementation', action: 'implementation', as: 'implementation'

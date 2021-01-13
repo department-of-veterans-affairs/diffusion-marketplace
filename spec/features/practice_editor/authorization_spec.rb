@@ -17,7 +17,6 @@ describe 'Practice editor', type: :feature, js: true do
             visit practice_path(@practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).to have_content(@practice.name)
-            expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/instructions")
         end
 
         it 'should let an editor user edit a practice' do

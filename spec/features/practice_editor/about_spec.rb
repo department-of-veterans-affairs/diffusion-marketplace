@@ -130,7 +130,7 @@ describe 'Practice editor', type: :feature do
             end
 
             # see if both team members show up in the show view
-            click_link(@practice.name)
+            visit '/practices/an-awesome-practice'
             expect(page).to have_content('Original team')
             expect(page).to have_content(@creator_name)
             expect(page).to have_content(@creator_role)
