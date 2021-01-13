@@ -43,10 +43,10 @@
         </div>
           <div class="grid-col-8 margin-bottom-10 text-center width-full">
           <table style="width: 80%; display: inline-table">
-            <th style="font-size: 13px">PAGE VIEWS</th>
-            <th style="font-size: 13px">UNIQUE VISITORS</th>
-            <th style="font-size: 13px">BOOKMARKS</th>
-            <th style="font-size: 13px">ADOPTIONS</th>
+            <td class="font-sans-3xs line-height-15px text-ls-1">PAGE VIEWS</td>
+            <td class="font-sans-3xs line-height-15px text-ls-1">UNIQUE VISITORS</td>
+            <td class="font-sans-3xs line-height-15px text-ls-1">BOOKMARKS</td>
+            <td class="font-sans-3xs line-height-15px text-ls-1">ADOPTIONS</td>
             <tr>
               <td style="font-size: 32px"><%= @page_views_for_practice_count %></td>
               <td style="font-size: 32px"><%= @unique_visitors_for_practice_count %></td>
@@ -63,14 +63,17 @@
 
 
 <!-- ADOPTIONS ------------------------------------------------------------->
-        <div class="margin-bottom-3">
-          <table class="width-full">
-            <tr>
-              <td style="font-size: 32px">Adoptions</td>
-              <td align="right"><button style="alignment: right; margin: 0px" id="toggle_adoptions_view_30" class="usa-button usa-button--base usa-button--active">Last 30 days</button><button style="alignment: left; width: 101px; height: 40px; color: black" id="toggle_adoptions_view_all_time" class="usa-button usa-button--outline usa-button--active">All time</button></td>
-            </tr>
-          </table>
-        </div>
+      <div class="grid-row flex-align-center margin-bottom-3">
+        <h2 class="grid-col-6 line-height-36 font-sans-xl margin-y-0">Adoptions</h2>
+        <ul class="grid-col-6 usa-button-group usa-button-group--segmented flex-justify-end">
+          <li class="usa-button-group__item">
+            <button id="toggle_adoptions_view_30" class="usa-button dm-btn-base">Last 30 days</button>
+          </li>
+          <li class="usa-button-group__item">
+            <button id="toggle_adoptions_view_all_time" class="usa-button--outline dm-btn-base">All time</button>
+          </li>
+        </ul>
+      </div>
         <div class="margin-bottom-10">
           <div id="adoptions_by_practice_30">
             <table  class="usa-table usa-table--borderless width-full margin-bottom-5 metrics-table">
@@ -217,17 +220,19 @@
        </div>
 
 <!-- LEADER BOARD -------------------------------------------------------------------------------------------->
-        <div class="margin-bottom-3">
-          <table class="width-full">
-            <tr>
-              <td style="font-size: 32px">Leader board</td>
-              <td align="right"><button style="alignment: right; margin: 0px" id="toggle_leader_board_view_30" class="usa-button usa-button--base usa-button--active">Last 30 days</button><button style="alignment: left;  width: 101px; height: 40px; color: black" id="toggle_leader_board_view_all_time" class="usa-button usa-button--outline usa-button--active">All time</button></td>
-            </tr>
-          </table>
+        <div class="grid-row flex-align-center margin-bottom-3">
+          <h2 class="grid-col-6 line-height-36 font-sans-xl margin-y-0">Leader board</h2>
+          <ul class="grid-col-6 usa-button-group usa-button-group--segmented flex-justify-end">
+            <li class="usa-button-group__item">
+              <button id="toggle_leader_board_view_30" class="usa-button dm-btn-base">Last 30 days</button>
+            </li>
+            <li class="usa-button-group__item">
+              <button id="toggle_leader_board_view_all_time" class="usa-button--outline dm-btn-base">All time</button>
+            </li>
+          </ul>
         </div>
-
-        <div id="leader_board_page_views_30_days" class="margin-bottom-3">
-          <table class="usa-table usa-table--borderless width-full margin-bottom-5 metrics-table">
+        <div id="leader_board_page_views_30_days">
+          <table class="usa-table usa-table--borderless width-full margin-bottom-10 metrics-table">
             <thead>
               <tr>
                 <th scope="col" class="width-80">Practice</th>
@@ -244,8 +249,8 @@
             <% end %>
           </table>
         </div>
-        <div class="margin-bottom-3" id="leader_board_page_views_all_time" style="display: none">
-          <table class="usa-table usa-table--borderless width-full margin-bottom-5 metrics-table">
+        <div class="display-none" id="leader_board_page_views_all_time">
+          <table class="usa-table usa-table--borderless width-full margin-bottom-10 metrics-table">
             <thead>
               <tr>
                 <th scope="col" class="width-80">Practice</th>

@@ -17,6 +17,13 @@ $(document).ready(function(){
         window.location.href = newUrl;
     });
 
+    function changeTimeFrameButtonStyling(el1, el2, class1, class2){
+        document.getElementById(el1).classList.remove(class1);
+        document.getElementById(el2).classList.remove(class2);
+        document.getElementById(el1).classList.add(class2);
+        document.getElementById(el2).classList.add(class1);
+    }
+
     function toggleMetricAllTimeVsThirtyTables(el1, el2, class1, class2){
         document.getElementById(el1).classList.remove(class1);
         document.getElementById(el2).classList.remove(class2);
@@ -25,19 +32,23 @@ $(document).ready(function(){
     }
 
     $("#toggle_leader_board_view_30").click (function(e) {
+        changeTimeFrameButtonStyling("toggle_leader_board_view_all_time", "toggle_leader_board_view_30", "usa-button", "usa-button--outline");
         toggleMetricAllTimeVsThirtyTables(ALL_TIME_LEADER_BOARD, THIRTY_DAY_LEADER_BOARD, "display-inline", "display-none");
     });
 
     $("#toggle_leader_board_view_all_time").click (function(e) {
+        changeTimeFrameButtonStyling("toggle_leader_board_view_30", "toggle_leader_board_view_all_time", "usa-button", "usa-button--outline");
         toggleMetricAllTimeVsThirtyTables(THIRTY_DAY_LEADER_BOARD, ALL_TIME_LEADER_BOARD, "display-inline", "display-none");
     });
 
     $("#toggle_adoptions_view_30").click (function(e) {
+        changeTimeFrameButtonStyling("toggle_adoptions_view_all_time", "toggle_adoptions_view_30", "usa-button", "usa-button--outline");
         toggleMetricAllTimeVsThirtyTables(ADOPTIONS_BY_PRACTICE_ALL_TIME, ADOPTIONS_BY_PRACTICE_THIRTY_DAYS, "display-inline", "display-none");
 
     });
 
     $("#toggle_adoptions_view_all_time").click (function(e) {
+        changeTimeFrameButtonStyling("toggle_adoptions_view_30", "toggle_adoptions_view_all_time", "usa-button", "usa-button--outline");
         toggleMetricAllTimeVsThirtyTables(ADOPTIONS_BY_PRACTICE_THIRTY_DAYS, ADOPTIONS_BY_PRACTICE_ALL_TIME, "display-inline", "display-none");
     });
 
