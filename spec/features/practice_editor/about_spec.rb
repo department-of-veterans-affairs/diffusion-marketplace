@@ -109,7 +109,7 @@ describe 'Practice editor', type: :feature do
             expect(page).to have_field(@creator_field_role, with: @creator_role_2)
 
             # see if the team member with updated data shows up in the show view
-            click_link(@practice.name)
+            visit '/practices/an-awesome-practice'
             expect(page).to have_content(@creator_name_2)
             expect(page).to have_content(@creator_role_2)
 

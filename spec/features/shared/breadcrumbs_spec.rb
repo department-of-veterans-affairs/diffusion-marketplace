@@ -97,7 +97,6 @@ describe 'Breadcrumbs', type: :feature do
         expect(page).to have_content('Home')
         expect(page).to have_content('The Best Practice Ever!')
         expect(page).to have_content('Edit')
-        expect(page).to have_content('Introduction')
       end
 
       find_all('.usa-sidenav__item')[4].click
