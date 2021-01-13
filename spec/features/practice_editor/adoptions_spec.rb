@@ -46,12 +46,12 @@ describe 'Practice editor', type: :feature do
       expect(page).to be_accessible.according_to :wcag2a, :section508
       within(:css, '#adoptions') do
         expect(page).to have_content('Success!')
-        expect(page).to have_content('In-progress adoptions: 1')
+        expect(page).to have_content('In-progress adoptions (1)')
       end
 
       # it should update the overview section with the correct number of facility adoptions
       visit practice_path(@practice)
-      expect(page).to have_content('1 in progress')
+      expect(page).to have_content('1 in-progress')
 
       # make another one
       visit practice_adoptions_path(@practice)
@@ -62,7 +62,7 @@ describe 'Practice editor', type: :feature do
       find('#adoption_form_submit').click
 
       visit practice_path(@practice)
-      expect(page).to have_content('2 in progress')
+      expect(page).to have_content('2 in-progress')
 
       # it shouldn't let the system create the same facility twice for a practice
       visit practice_adoptions_path(@practice)
@@ -135,7 +135,7 @@ describe 'Practice editor', type: :feature do
 
       # check the PV to make sure the adoption count is correct
       visit practice_path(@practice)
-      expect(page).to have_content('1 successful, 1 in progress, 1 unsuccessful')
+      expect(page).to have_content('1 successful, 1 in-progress, 1 unsuccessful')
 
       # it should let the system update delete an adoption entry
       visit practice_adoptions_path(@practice)
