@@ -4,7 +4,7 @@
   width: 207px !important;
 
   #practice-editor-save-button {
-    margin-top: 1rem;
+    margin-top: 0.5rem;
   }
 
   a {
@@ -1174,5 +1174,10 @@ tr.border_bottom td {
 .metrics-select{
   height: 40px !important;
   width: 559px !important;
+}
+.metrics-table-style{
+  width: 80%;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 

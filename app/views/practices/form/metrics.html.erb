@@ -39,7 +39,7 @@
             </select>
           </span>
         </div>
-          <div class="grid-col-8 margin-bottom-10"  style="text-align: center; width: 100%" >
+          <div class="grid-col-8 margin-bottom-10 text-center width-full">
           <table style="width: 80%; display: inline-table">
             <th style="font-size: 13px">PAGE VIEWS</th>
             <th style="font-size: 13px">UNIQUE VISITORS</th>
@@ -62,7 +62,7 @@
 
 <!-- ADOPTIONS ------------------------------------------------------------->
         <div class="margin-bottom-3">
-          <table style="width: 100%">
+          <table class="width-full">
             <tr>
               <td style="font-size: 32px">Adoptions</td>
               <td align="right"><button style="alignment: right; margin: 0px" id="toggle_adoptions_view_30" class="usa-button usa-button--base usa-button--active">Last 30 days</button><button style="alignment: left; width: 101px; height: 40px; color: black" id="toggle_adoptions_view_all_time" class="usa-button usa-button--outline usa-button--active">All time</button></td>
@@ -73,63 +73,63 @@
           <div id="adoptions_by_practice_30">
             <table style="width: 100%" class="margin-bottom-5">
               <tr class="border_bottom">
-                <td align="left" style="width: 80%; font-weight: bold">Phase</td>
+                <td align="left" class="metrics-table-style" style="font-weight: bold">Phase</td>
                 <td align="left" style="font-weight: bold">Adoptions</td>
               </tr>
                 <tr class="border_bottom">
-                  <td style="width: 80%">Completed</td>
+                  <td class="metrics-table-style">Completed</td>
                   <td><%= @adoptions_successful_total_30 %></td>
                 </tr>
                 <tr class="border_bottom">
-                  <td style="width: 80%">In-progress</td>
+                  <td class="metrics-table-style">In-progress</td>
                   <td><%= @adoptions_in_progress_total_30 %></td>
                 </tr>
                 <tr class="border_bottom">
-                  <td style="width: 80%">Unsuccessful</td>
+                  <td class="metrics-table-style">Unsuccessful</td>
                   <td><%= @adoptions_unsuccessful_total_30 %></td>
                 </tr>
                 <tr class="border_bottom">
-                  <td style="width: 80%">Total</td>
+                  <td class="metrics-table-style">Total</td>
                   <td><%= @adoptions_total_30 %></td>
                 </tr>
             </table>
-            <table style="width: 100%" class="margin-bottom-5">
+            <table class="margin-bottom-5 width-full">
               <tr class="border_bottom">
-                <td align="left" style="width: 80%; font-weight: bold">Facility type</td>
+                <td align="left" class="metrics-table-style" style="font-weight: bold">Facility type</td>
                 <td align="left" style="font-weight: bold">Adoptions</td>
               </tr>
                 <tr class="border_bottom">
-                  <td style="width: 80%">Rural facility</td>
+                  <td class="metrics-table-style">Rural</td>
                   <td><%= @rural_facility_30 %></td>
                 </tr>
                 <tr class="border_bottom">
-                  <td style="width: 80%">Urban facility</td>
+                  <td class="metrics-table-style">Urban</td>
                   <td><%= @urban_facility_30 %></td>
                 </tr>
             </table>
-            <table style="width: 100%">
+            <table class="width-full">
             <tr class="border_bottom">
-              <td align="left" style="width: 80%; font-weight: bold">Facility complexity</td>
+              <td align="left" class="metrics-table-style" style="font-weight: bold">Facility complexity</td>
               <td align="left" style="font-weight: bold">Adoptions</td>
             </tr>
                 <tr class="border_bottom">
-                  <td style="width: 80%">1a (High Complexity)</td>
+                  <td class="metrics-table-style">1a (High Complexity)</td>
                   <td><%= @a_high_complexity_30 %></td>
                 </tr>
                 <tr class="border_bottom">
-                  <td style="width: 80%">1b (High Complexity)</td>
+                  <td class="metrics-table-style">1b (High Complexity)</td>
                   <td><%= @b_high_complexity_30 %></td>
                 </tr>
                 <tr class="border_bottom">
-                  <td style="width: 80%">1c (High Complexity)</td>
+                  <td class="metrics-table-style">1c (High Complexity)</td>
                   <td><%= @c_high_complexity_30 %></td>
                 </tr>
                 <tr class="border_bottom">
-                  <td style="width: 80%">2 (Medium Complexity)</td>
+                  <td class="metrics-table-style">2 (Medium Complexity)</td>
                   <td><%= @medium_complexity_2_30 %></td>
                 </tr>
                 <tr class="border_bottom">
-                  <td style="width: 80%">3 (Low Complexity)</td>
+                  <td class="metrics-table-style">3 (Low Complexity)</td>
                   <td><%= @low_complexity_3_30 %></td>
                 </tr>
             </table>
@@ -137,65 +137,65 @@
 
   <!--      ADOPTIONS for ALL TIME -------------------------------------------------------------------->
           <div id="adoptions_by_practice_all_time" class="margin-bottom-10" style="display: none">
-            <table style="width: 100%" class="margin-bottom-5">
+            <table class="width-full" class="margin-bottom-5">
               <tr class="border_bottom">
-                <td align="left" style="width: 80%; font-weight: bold">Phase</td>
+                <td align="left" class="metrics-table-style" style="font-weight: bold">Phase</td>
                 <td align="left" style="font-weight: bold">Adoptions</td>
               </tr>
               <tr class="border_bottom">
-                <td style="width: 80%">Completed</td>
+                <td class="metrics-table-style">Completed</td>
                 <td><%= @adoptions_successful_total_at %></td>
               </tr>
               <tr class="border_bottom">
-                <td style="width: 80%">In-progress</td>
+                <td class="metrics-table-style">In-progress</td>
                 <td><%= @adoptions_in_progress_total_at %></td>
               </tr>
               <tr class="border_bottom">
-                <td style="width: 80%">Unsuccessful</td>
+                <td class="metrics-table-style">Unsuccessful</td>
                 <td><%= @adoptions_unsuccessful_total_at %></td>
               </tr>
               <tr class="border_bottom">
-                <td style="width: 80%">Total</td>
+                <td class="metrics-table-style">Total</td>
                 <td><%= @adoptions_total_at %></td>
               </tr>
             </table>
-            <table style="width: 100%" class="margin-bottom-5">
+            <table class="width-full" class="margin-bottom-5">
               <tr class="border_bottom">
-                <td align="left" style="width: 80%; font-weight: bold">Facility type</td>
+                <td align="left" class="metrics-table-style" style="font-weight: bold">Facility type</td>
                 <td align="left" style="font-weight: bold">Adoptions</td>
               </tr>
               <tr class="border_bottom">
-                <td style="width: 80%">Rural facility</td>
+                <td class="metrics-table-style">Rural</td>
                 <td><%= @rural_facility_at %></td>
               </tr>
               <tr class="border_bottom">
-                <td style="width: 80%">Urban facility</td>
+                <td class="metrics-table-style">Urban</td>
                 <td><%= @urban_facility_at %></td>
               </tr>
             </table>
-            <table style="width: 100%">
+            <table class="width-full">
               <tr class="border_bottom">
-                <td align="left" style="width: 80%; font-weight: bold">Facility complexity</td>
+                <td align="left" class="metrics-table-style" style="font-weight: bold">Facility complexity</td>
                 <td align="left" style="font-weight: bold">Adoptions</td>
               </tr>
               <tr class="border_bottom">
-                <td style="width: 80%">1a (High Complexity)</td>
+                <td class="metrics-table-style">1a (High Complexity)</td>
                 <td><%= @a_high_complexity_at %></td>
               </tr>
               <tr class="border_bottom">
-                <td style="width: 80%">1b (High Complexity)</td>
+                <td class="metrics-table-style">1b (High Complexity)</td>
                 <td><%= @b_high_complexity_at %></td>
               </tr>
               <tr class="border_bottom">
-                <td style="width: 80%">1c (High Complexity)</td>
+                <td class="metrics-table-style">1c (High Complexity)</td>
                 <td><%= @c_high_complexity_at %></td>
               </tr>
               <tr class="border_bottom">
-                <td style="width: 80%">2 (Medium Complexity)</td>
+                <td class="metrics-table-style">2 (Medium Complexity)</td>
                 <td><%= @medium_complexity_2_at %></td>
               </tr>
               <tr class="border_bottom">
-                <td style="width: 80%">3 (Low Complexity)</td>
+                <td class="metrics-table-style">3 (Low Complexity)</td>
                 <td><%= @low_complexity_3_at %></td>
               </tr>
             </table>
@@ -204,7 +204,7 @@
 
 <!-- LEADER BOARD -------------------------------------------------------------------------------------------->
         <div class="margin-bottom-3">
-          <table style="width: 100%">
+          <table class="width-full">
             <tr>
               <td style="font-size: 32px">Leader board</td>
               <td align="right"><button style="alignment: right; margin: 0px" id="toggle_leader_board_view_30" class="usa-button usa-button--base usa-button--active">Last 30 days</button><button style="alignment: left;  width: 101px; height: 40px; color: black" id="toggle_leader_board_view_all_time" class="usa-button usa-button--outline usa-button--active">All time</button></td>
@@ -213,28 +213,32 @@
         </div>
 
         <div id="leader_board_page_views_30_days" class="margin-bottom-3">
-          <table style="width: 100%">
+          <table class="width-full">
             <tr class="border_bottom">
             <td align="left" style="width: 80%; font-weight: bold">Practice</td>
             <td align="left" style="font-weight: bold">Views</td>
             </tr>
+            <%cur_rec = 1 %>
             <% @page_views_leader_board_30_days.each do |rec| %>
               <tr class="border_bottom">
-                <td style="width: 80%"><a target="_blank" href="/practices/<%= rec[:practice_slug] %>/"><%= rec[:practice_name] %></a></td>
+                <td class="metrics-table-style"><%= cur_rec %>. <a target="_blank" href="/practices/<%= rec[:practice_slug] %>/"><%= rec[:practice_name] %></a></td>
                 <td><%= rec[:count] %></td>
               </tr>
+              <% cur_rec += 1 %>
             <% end %>
           </table>
         </div>
         <div class="margin-bottom-3" id="leader_board_page_views_all_time" style="display: none">
-          <table style="width: 100%">
+          <table class="width-full">
             <th align="left" style="width: 80%">Practice</th>
             <th align="left">Views</th>
+            <%cur_rec = 1 %>
             <% @page_views_leader_board_all_time.each do |rec| %>
               <tr class="border_bottom">
-                <td style="width: 80%"><a target="_blank" href="/practices/<%= rec[:practice_slug] %>/"><%= rec[:practice_name] %></a></td>
+                <td class="metrics-table-style"><%= cur_rec %>. <a target="_blank" href="/practices/<%= rec[:practice_slug] %>/"><%= rec[:practice_name] %></a></td>
                 <td><%= rec[:count] %></td>
               </tr>
+              <% cur_rec += 1 %>
             <% end %>
           </table>
         </div>
