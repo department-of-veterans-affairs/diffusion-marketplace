@@ -97,16 +97,15 @@ describe 'Breadcrumbs', type: :feature do
         expect(page).to have_content('Home')
         expect(page).to have_content('The Best Practice Ever!')
         expect(page).to have_content('Edit')
-        expect(page).to have_content('Introduction')
       end
 
-      find_all('.usa-sidenav__item')[4].click
+      find_all('.usa-sidenav__item')[0].click
 
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
         expect(page).to have_content('The Best Practice Ever!')
         expect(page).to have_content('Edit')
-        expect(page).to have_content('Implementation')
+        expect(page).to have_content('Metrics')
       end
     end
   end

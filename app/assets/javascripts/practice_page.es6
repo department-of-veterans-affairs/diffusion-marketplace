@@ -131,7 +131,7 @@
         });
     }
 
-    function executePracticeCommentsFunctions() {
+     function executePracticeCommentsFunctions() {
         highlightSidebarSectionWhenInView();
         setUpShowMoreOrLessButtons();
         setUpShowMoreOrLessOnArrive();
@@ -239,3 +239,4 @@ function seeMoreTextOriginStory() {
         moreText.style.display = "inline";
     }
 }
+

@@ -54,7 +54,7 @@ describe 'Practice editor', type: :feature, js: true do
             @save_button.click
 
             # see if the main email shows up in the show view
-            click_link(@practice.name)
+            visit '/practices/a-public-practice'
             expect(page).to have_content('Email')
             within(:css, '#contact') do
                 expect(page).to have_content(@practice_main_email)
@@ -68,7 +68,7 @@ describe 'Practice editor', type: :feature, js: true do
 
 
             # check if the main email with updated text shows up in the show view
-            click_link(@practice.name)
+            visit '/practices/a-public-practice'
             expect(page).to have_content('main_test@test.com')
 
             # create one cc email and save
