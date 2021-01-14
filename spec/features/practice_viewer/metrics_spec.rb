@@ -30,7 +30,7 @@ describe 'Metrics section', type: :feature, js: true do
 
       select 'all time', from: 'metrics_duration'
       expect(page).to have_select('metrics_duration', selected: 'all time')
-      expect(page).to have_content('Leader board')
+      expect(page).to have_content('Leaderboard')
 
       select 'the last 30 days', from: 'metrics_duration'
       expect(page).to have_select('metrics_duration', selected: 'the last 30 days')
