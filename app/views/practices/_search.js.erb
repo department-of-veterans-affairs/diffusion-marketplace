@@ -21,7 +21,7 @@ var pagePosition = {
 
 // sort functions
 function sortAToZ(a, b) {
-    return a.item.name.localeCompare(b.item.name, undefined, { numeric: true, sensitivity: 'base' });
+    return a.item.name.trim().localeCompare(b.item.name.trim(), undefined, { numeric: true, sensitivity: 'base' });
 }
 
 function sortByDateAdded(a, b) {
