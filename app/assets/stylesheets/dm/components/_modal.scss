@@ -33,7 +33,19 @@
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 
   .adoption-status-modal-content {
-    top: 25vh;
+    // get the height of the modal and divide by two so it's in the middle of the screen
+    top: calc(50vh - 80px);
+
+    .fa-times-circle {
+      font-size: 1.5em !important;
+      &:hover {
+        color: $dm-color-alt-lighter-grey;
+      }
+
+      &:active {
+        color: $dm-color-light-grey;
+      }
+    }
   }
 }
 

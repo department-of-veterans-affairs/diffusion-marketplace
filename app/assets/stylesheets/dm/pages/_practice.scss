@@ -271,8 +271,12 @@
   }
 
   .usa-checkbox__input:checked + .usa-checkbox__label.unsuccessful::before, .usa-radio__input:checked + .usa-radio__label.unsuccessful::before {
-    background-color: #71767A;
-    box-shadow: 0 0 0 2px #71767A;
+    background-color: $dm-color-light-grey;
+    box-shadow: 0 0 0 2px $dm-color-light-grey;
+  }
+
+  .usa-checkbox__input:checked + .usa-checkbox__label.unsuccessful::before, .usa-checkbox__input:checked:disabled + .usa-checkbox__label.unsuccessful::before {
+    background-image: asset-url('uswds/correct8-alt.svg')
   }
 }
 
