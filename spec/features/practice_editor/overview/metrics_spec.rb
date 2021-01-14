@@ -32,14 +32,8 @@ describe 'Practice editor', type: :feature, js: true do
 
         it 'should allow the user to update the data on the page' do
           # no metrics should be there
-          visit practice_path(@practice)
-          expect(page).to_not have_content('Metrics')
-
-          # navigate to the PE Overview form
-          click_link('Edit')
-          click_link('Overview')
+          visit '/practices/a-public-practice/edit/overview'
           expect(page).to have_content('Metrics')
-
           # create one metric and save
           save_button = find('#practice-editor-save-button')
           within(:css, '.practice-editor-metrics-ul') do
@@ -49,9 +43,8 @@ describe 'Practice editor', type: :feature, js: true do
           within(:css, '.practice-editor-metrics-ul') do
             expect(page).to have_field(first_metric_field_input[:name], with: 'Hello world')
           end
-
           # see if the metric shows up in the show view
-          click_link(@practice.name)
+          visit '/practices/a-public-practice'
           expect(page).to have_content('Metrics')
           within(:css, '#practice-metrics-ul') do
             expect(page).to have_content('Hello world')
@@ -68,7 +61,7 @@ describe 'Practice editor', type: :feature, js: true do
           end
 
           # see if the metric with updated text shows up in the show view
-          click_link(@practice.name)
+          visit '/practices/a-public-practice'
           expect(page).to have_content('Metrics')
           within(:css, '#practice-metrics-ul') do
             expect(page).to have_content('Hello world update 1')
@@ -87,7 +80,7 @@ describe 'Practice editor', type: :feature, js: true do
           end
 
           # see if the metrics with updated text shows up in the show view
-          click_link(@practice.name)
+          visit '/practices/a-public-practice'
           expect(page).to have_content('Metrics')
           within(:css, '#practice-metrics-ul') do
             expect(page).to have_content('Hello world update 1')
@@ -107,7 +100,7 @@ describe 'Practice editor', type: :feature, js: true do
           end
 
           # see if the metrics with deleted metric does not show up show view
-          click_link(@practice.name)
+          visit '/practices/a-public-practice'
           expect(page).to have_content('Metrics')
           within(:css, '#practice-metrics-ul') do
             expect(page).to_not have_content('Hello world update 1')
@@ -131,7 +124,7 @@ describe 'Practice editor', type: :feature, js: true do
           end
 
           # see if the metrics with deleted metric does not show up show view
-          click_link(@practice.name)
+          visit '/practices/a-public-practice'
           expect(page).to_not have_content('Metrics')
           expect(page).to_not have_content('This is the second metric')
         end

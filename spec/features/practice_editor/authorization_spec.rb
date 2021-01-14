@@ -17,7 +17,6 @@ describe 'Practice editor', type: :feature, js: true do
             visit practice_path(@practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).to have_content(@practice.name)
-            expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/instructions")
         end
 
         it 'should let an editor user edit a practice' do
@@ -25,7 +24,7 @@ describe 'Practice editor', type: :feature, js: true do
             @user_practice.update(approved: true, published: true)
             visit practice_path(@user_practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508
-            expect(page).to have_link(href: "/practices/#{@user_practice.slug}/edit/instructions")
+            expect(page).to have_link(href: "/practices/#{@user_practice.slug}/edit/metrics")
         end
 
         it 'should not allow non-admin level users to edit a practice' do

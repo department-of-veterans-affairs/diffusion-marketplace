@@ -1,0 +1,56 @@
+//Load the AJAX API
+  // Load the Visualization API and the corechart package.
+  google.charts.load('current', {'packages':['corechart']});
+
+  // Set a callback to run when the Google Visualization API is loaded.
+  google.charts.setOnLoadCallback(drawLineChart);
+
+  // Callback that creates and populates a data table,
+  // instantiates the pie chart, passes in the data and
+  // draws it.
+  google.charts.load('current', {
+    packages: ['corechart', 'line']
+});
+
+  function drawLineChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Date');
+    data.addColumn('number', 'Page views');
+    data.addColumn('number', 'Unique visitors');
+    <% ctr = 0 %>
+    data.addRows([
+    <%= while ctr < @dates.count do %>
+    <% if ctr < @dates.count %>
+    <%
+      month = @dates[ctr].split("-")[1]
+      day = @dates[ctr].split("-")[2]
+      if day[0] == "0"
+        day = day[1]
+       end
+      @dates[ctr] = @month_names[month.to_i - 1] + ". " + day + " " + @dates[ctr].split("-")[0]
+     %>
+    <% end %>
+    ['<%= @dates[ctr] %>', <%= @views[ctr] %>, <%= @unique_visitors[ctr] %>],
+    <% ctr += 1 %>
+    <% end %>
+    ]);
+
+    var options = {
+    hAxis: {
+    title: 'TIME'
+},
+    vAxis: {
+    title: 'TOTAL',
+    format: 'short'
+},
+    series: {
+    1: { lineDashStyle: [2, 2] }
+},
+    backgroundColor: { fill:'transparent' },
+    legend: { position: 'top', alignment: 'start' },
+    colors: ['#1A4480', '#D6AB3A']
+};
+
+    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+}

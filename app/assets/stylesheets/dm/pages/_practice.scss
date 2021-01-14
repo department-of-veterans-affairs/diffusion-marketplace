@@ -4,7 +4,7 @@
   width: 207px !important;
 
   #practice-editor-save-button {
-    margin-top: 1rem;
+    margin-top: 0.5rem;
   }
 
   a {
@@ -852,7 +852,7 @@
   }
 }
 
-#adoptions, .metric-section {
+#adoptions, .practice-section {
   .fa-question-circle {
     font-size: 0.75em;
   }
@@ -864,7 +864,7 @@
   }
 }
 
-.metric-section {
+.practice-section {
   .usa-tooltip__body {
     bottom: -12.4px !important;
   }
@@ -1214,6 +1214,39 @@ li.small-disc:before {
 
 .usa-label--error {
   margin-top: 1.5rem !important;
+}
+
+tr.border_bottom td {
+  border-bottom: 1px solid darkgray;
+}
+
+.side-nav-highlighted {
+  background-color: transparent;
+  color: $dm-color-blue-50v !important;
+  font-weight: bold !important;
+  position: relative;
+}
+
+.side-nav-hide{
+  display: none !important;
+}
+.metrics-select{
+  max-width: 100% !important;
+}
+
+.metrics-table {
+  th, td {
+    padding-left: 10px !important;
+  }
+  td {
+    background-color: $dm-color-gray-2 !important;
+  }
+}
+
+#toggle_adoptions_view_30, #toggle_leader_board_view_30 {
+  &:before {
+    border-right: $dm-color-base !important;
+  }
 }
 
 .practice-viewer-adoptions-accordion {

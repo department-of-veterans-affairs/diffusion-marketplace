@@ -1,0 +1,274 @@
+<% provide :main_classes, 'bg-gray-2' %>
+<% provide :footer_classes, 'bg-gray-2' %>
+
+<% provide :head_tags do %>
+  <%= javascript_include_tag 'metrics_page', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'https://www.gstatic.com/charts/loader.js' %>
+  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    <%= render partial: 'practices/form/metrics', formats: [:js] %>
+  <% end %>
+<% end %>
+
+<%= render 'practice_editor_sidenav' %>
+<div class="grid-container position-relative">
+  <div class="grid-row grid-gap practice-editor-min-height">
+    <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+
+    <div id="metrics" class="desktop:grid-col-9 grid-col-12 p0">
+      <div>
+      <%= render partial: "shared/messages", locals: {small_text: false} %>
+    </div>
+      <section class="usa-section padding-top-0 p0-bottom" aria-label="Metrics">
+        <div class="grid-row flex-align-end margin-top-4">
+          <h1 class="margin-bottom-3 margin-y-0 grid-col-3 font-sans-2xl">
+            Metrics
+          </h1>
+          <div class="grid-col-9 text-right">
+            <a class="dm-icon-link text-no-underline text-super"
+               onclick="window.print(); return false;">
+              <i class="fas fa-print margin-right-05"></i>
+              <span>Print</span>
+            </a>
+          </div>
+        </div>
+        <div class="margin-bottom-10 grid-row flex-align-center margin-top-3">
+          <label for="metrics_duration" class="usa-label grid-col-3 x0-top">View your metrics for</label>
+          <div class="grid-col-9">
+            <select class="usa-select metrics-select x0-top" name="metrics_duration" id="metrics_duration">
+              <option id="metrics_30_day_value" value="30" <%= 'selected' if @duration.to_i == 30 %>>the last 30 days</option>
+              <option id="metrics_all_time_value" value="99999" <%= 'selected' if @duration.to_i != 30 %>>all time</option>
+            </select>
+          </div>
+        </div>
+          <div class="grid-col-8 margin-bottom-10 text-center width-full">
+          <table style="width: 80%; display: inline-table">
+            <td class="font-sans-3xs line-height-15px text-ls-1">PAGE VIEWS</td>
+            <td class="font-sans-3xs line-height-15px text-ls-1">UNIQUE VISITORS</td>
+            <td class="font-sans-3xs line-height-15px text-ls-1">BOOKMARKS</td>
+            <td class="font-sans-3xs line-height-15px text-ls-1">ADOPTIONS</td>
+            <tr>
+              <td style="font-size: 32px"><%= @page_views_for_practice_count %></td>
+              <td style="font-size: 32px"><%= @unique_visitors_for_practice_count %></td>
+              <td style="font-size: 32px"><%= @bookmarks_by_practice %></td>
+              <td style="font-size: 32px"><%= @adoptions_by_practice %></td>
+            </tr>
+          </table>
+          </div>
+        <!--  CHARTS ------------------------------------------------------------>
+
+        <div class="border bg-white padding-2 margin-bottom-10 radius-md padding-bottom-0">
+          <div style="width: 726px; height: 400px" id="chart_div"></div>
+         </div>
+
+
+<!-- ADOPTIONS ------------------------------------------------------------->
+      <div class="grid-row flex-align-center margin-bottom-3">
+        <h2 class="grid-col-6 line-height-36 font-sans-xl margin-y-0">Adoptions</h2>
+        <ul class="grid-col-6 usa-button-group usa-button-group--segmented flex-justify-end">
+          <li class="usa-button-group__item">
+            <button id="toggle_adoptions_view_30" class="usa-button dm-btn-base">Last 30 days</button>
+          </li>
+          <li class="usa-button-group__item">
+            <button id="toggle_adoptions_view_all_time" class="usa-button--outline dm-btn-base">All time</button>
+          </li>
+        </ul>
+      </div>
+        <div class="margin-bottom-10">
+          <div id="adoptions_by_practice_30">
+            <table  class="usa-table usa-table--borderless width-full margin-bottom-5 metrics-table">
+              <thead>
+                <tr>
+                  <th scope="col" class="width-80">Phase</th>
+                  <th scope="col">Adoptions</th>
+                </tr>
+              </thead>
+                <tr>
+                  <td class="width-80">Completed</td>
+                  <td><%= @adoptions_successful_total_30 %></td>
+                </tr>
+                <tr>
+                  <td class="width-80">In-progress</td>
+                  <td><%= @adoptions_in_progress_total_30 %></td>
+                </tr>
+                <tr>
+                  <td class="width-80">Unsuccessful</td>
+                  <td><%= @adoptions_unsuccessful_total_30 %></td>
+                </tr>
+                <tr>
+                  <td class="width-80">Total</td>
+                  <td><%= @adoptions_total_30 %></td>
+                </tr>
+            </table>
+            <table class="usa-table usa-table--borderless width-full margin-bottom-5 metrics-table">
+              <thead>
+              <tr>
+                <th scope="col" class="width-80">Facility type</th>
+                <th scope="col">Adoptions</th>
+              </tr>
+              <thead>
+              <tr>
+                <td class="width-80">Rural</td>
+                <td><%= @rural_facility_30 %></td>
+              </tr>
+              <tr>
+                <td class="width-80">Urban</td>
+                <td><%= @urban_facility_30 %></td>
+              </tr>
+            </table>
+            <table class="usa-table usa-table--borderless width-full margin-bottom-5 metrics-table">
+             <thead>
+                <tr>
+                  <th scope="col" class="width-80">Facility complexity</th>
+                  <th scope="col">Adoptions</th>
+                </tr>
+             </thead>
+                <tr>
+                  <td class="width-80">1a (High Complexity)</td>
+                  <td><%= @a_high_complexity_30 %></td>
+                </tr>
+                <tr>
+                  <td class="width-80">1b (High Complexity)</td>
+                  <td><%= @b_high_complexity_30 %></td>
+                </tr>
+                <tr>
+                  <td class="width-80">1c (High Complexity)</td>
+                  <td><%= @c_high_complexity_30 %></td>
+                </tr>
+                <tr>
+                  <td class="width-80">2 (Medium Complexity)</td>
+                  <td><%= @medium_complexity_2_30 %></td>
+                </tr>
+                <tr>
+                  <td class="width-80">3 (Low Complexity)</td>
+                  <td><%= @low_complexity_3_30 %></td>
+                </tr>
+            </table>
+          </div>
+
+  <!--      ADOPTIONS for ALL TIME -------------------------------------------------------------------->
+          <div id="adoptions_by_practice_all_time" class="margin-bottom-10" style="display: none">
+            <table class="usa-table usa-table--borderless width-full margin-bottom-5 metrics-table">
+              <thead>
+                <tr>
+                  <th scope="col" class="width-80">Phase</th>
+                  <th scope="col">Adoptions</th>
+                </tr>
+              </thead>
+              <tr>
+                <td class="width-80">Completed</td>
+                <td><%= @adoptions_successful_total_at %></td>
+              </tr>
+              <tr>
+                <td class="width-80">In-progress</td>
+                <td><%= @adoptions_in_progress_total_at %></td>
+              </tr>
+              <tr>
+                <td class="width-80">Unsuccessful</td>
+                <td><%= @adoptions_unsuccessful_total_at %></td>
+              </tr>
+              <tr>
+                <td class="width-80">Total</td>
+                <td><%= @adoptions_total_at %></td>
+              </tr>
+            </table>
+            <table class="usa-table usa-table--borderless width-full margin-bottom-5 metrics-table">
+              <thead>
+                <tr>
+                  <th scope="col" class="width-80">Facility type</th>
+                  <th scope="col">Adoptions</th>
+                </tr>
+              </thead>
+              <tr>
+                <td class="width-80">Rural</td>
+                <td><%= @rural_facility_at %></td>
+              </tr>
+              <tr>
+                <td class="width-80">Urban</td>
+                <td><%= @urban_facility_at %></td>
+              </tr>
+            </table>
+            <table class="usa-table usa-table--borderless width-full margin-bottom-5 metrics-table">
+              <thead>
+                <tr>
+                  <th scope="col" class="width-80">Facility complexity</th>
+                  <th scope="col">Adoptions</th>
+                </tr>
+              </thead>
+              <tr>
+                <td class="width-80">1a (High Complexity)</td>
+                <td><%= @a_high_complexity_at %></td>
+              </tr>
+              <tr>
+                <td class="width-80">1b (High Complexity)</td>
+                <td><%= @b_high_complexity_at %></td>
+              </tr>
+              <tr>
+                <td class="width-80">1c (High Complexity)</td>
+                <td><%= @c_high_complexity_at %></td>
+              </tr>
+              <tr>
+                <td class="width-80">2 (Medium Complexity)</td>
+                <td><%= @medium_complexity_2_at %></td>
+              </tr>
+              <tr>
+                <td class="width-80">3 (Low Complexity)</td>
+                <td><%= @low_complexity_3_at %></td>
+              </tr>
+            </table>
+          </div>
+       </div>
+
+<!-- LEADER BOARD -------------------------------------------------------------------------------------------->
+        <div class="grid-row flex-align-center margin-bottom-3">
+          <h2 class="grid-col-6 line-height-36 font-sans-xl margin-y-0">Leaderboard</h2>
+          <ul class="grid-col-6 usa-button-group usa-button-group--segmented flex-justify-end">
+            <li class="usa-button-group__item">
+              <button id="toggle_leader_board_view_30" class="usa-button dm-btn-base">Last 30 days</button>
+            </li>
+            <li class="usa-button-group__item">
+              <button id="toggle_leader_board_view_all_time" class="usa-button--outline dm-btn-base">All time</button>
+            </li>
+          </ul>
+        </div>
+        <div id="leader_board_page_views_30_days">
+          <table class="usa-table usa-table--borderless width-full margin-bottom-10 metrics-table">
+            <thead>
+              <tr>
+                <th scope="col" class="width-80">Practice</th>
+                <th scope="col">Views</th>
+              </tr>
+            </thead>
+            <%cur_rec = 1 %>
+            <% @page_views_leader_board_30_days.each do |rec| %>
+              <tr>
+                <td class="width-80"><%= cur_rec %>. <a class="dm-internal-link" target="_blank" href="/practices/<%= rec[:practice_slug] %>/"><%= rec[:practice_name] %></a></td>
+                <td><%= rec[:count] %></td>
+              </tr>
+              <% cur_rec += 1 %>
+            <% end %>
+          </table>
+        </div>
+        <div class="display-none" id="leader_board_page_views_all_time">
+          <table class="usa-table usa-table--borderless width-full margin-bottom-10 metrics-table">
+            <thead>
+              <tr>
+                <th scope="col" class="width-80">Practice</th>
+                <th scope="col">Views</th>
+              </tr>
+            </thead>
+            <%cur_rec = 1 %>
+            <% @page_views_leader_board_all_time.each do |rec| %>
+              <tr>
+                <td class="width-80"><%= cur_rec %>. <a class="dm-internal-link" target="_blank" href="/practices/<%= rec[:practice_slug] %>/"><%= rec[:practice_name] %></a></td>
+                <td><%= rec[:count] %></td>
+              </tr>
+              <% cur_rec += 1 %>
+            <% end %>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+

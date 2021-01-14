@@ -15,7 +15,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         it 'should be there' do
-            expect(page).to have_css('.usa-sidenav__item', count: 7)
+            expect(page).to have_css('.usa-sidenav__item', count: 3)
         end
 
         it 'should not have a link to Collaborators' do
@@ -23,7 +23,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         it 'should navigate the user around the editor when they click on the section names' do
-            click_link 'Introduction'
+          visit '/practices/a-public-practice/edit/introduction'
             page.has_css?('#introduction')
             expect(page).to have_content('Introduce your practice and provide a brief summary to people who may be unfamiliar with it.')
 

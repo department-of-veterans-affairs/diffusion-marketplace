@@ -1,9 +1,9 @@
 class PracticesController < ApplicationController
-  include CropperUtils
+  include CropperUtils, PracticesHelper
   before_action :set_practice, only: [:show, :edit, :update, :destroy, :highlight, :un_highlight, :feature,
                                       :un_feature, :favorite, :instructions, :overview, :origin, :collaborators, :impact, :resources, :documentation,
                                       :departments, :timeline, :risk_and_mitigation, :contact, :checklist, :publication_validation, :adoptions,
-                                      :create_or_update_diffusion_history, :implementation, :introduction, :about]
+                                      :create_or_update_diffusion_history, :implementation, :introduction, :about, :metrics]
   before_action :set_facility_data, only: [:show]
   before_action :set_office_data, only: [:show]
   before_action :set_visn_data, only: [:show]
@@ -295,6 +295,77 @@ class PracticesController < ApplicationController
     render 'practices/form/overview'
   end
 
+  def metrics
+    @duration = params[:duration] || "30"
+    @page_views_leader_board_30_days = fetch_page_views_leader_board()
+    @page_views_leader_board_all_time = fetch_page_views_leader_board(0)
+    @page_views_for_practice_count = fetch_page_view_for_practice_count(@practice.id, @duration)
+    @unique_visitors_for_practice_count = fetch_unique_visitors_by_practice_count(@practice.id, @duration)
+    @bookmarks_by_practice = fetch_bookmarks_by_practice(@practice.id, @duration)
+    @adoptions_by_practice = fetch_adoptions_by_practice(@practice.id, @duration)
+
+    @adoptions_total_30 = fetch_adoptions_total_by_practice(@practice.id)
+    @adoptions_total_at = fetch_adoptions_total_by_practice(@practice.id, "0")
+
+    @adoptions_successful_total_30 = fetch_adoptions_total_by_practice(@practice.id, "30", "Completed")
+    @adoptions_successful_total_at = fetch_adoptions_total_by_practice(@practice.id, "0", "Completed")
+    @adoptions_in_progress_total_30 = fetch_adoptions_total_by_practice(@practice.id, "30", "In progress")
+    @adoptions_in_progress_total_at = fetch_adoptions_total_by_practice(@practice.id, "0", "In progress")
+    @adoptions_unsuccessful_total_30 = fetch_adoptions_total_by_practice(@practice.id, "30", "Unsuccessful")
+    @adoptions_unsuccessful_total_at = fetch_adoptions_total_by_practice(@practice.id, "0", "Unsuccessful")
+
+    @facility_data = fetch_vamc_facilities
+
+    @facility_ids_for_practice_30 = fetch_facility_ids_for_practice(@practice.id, "30")
+    @rural_facility_30 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_30, "Rurality", "R")
+    @urban_facility_30 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_30, "Rurality", "U")
+    @a_high_complexity_30 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_30, "FY17ParentStationComplexityLevel", "1a-High Complexity")
+    @b_high_complexity_30 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_30, "FY17ParentStationComplexityLevel", "1b-High Complexity")
+    @c_high_complexity_30 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_30, "FY17ParentStationComplexityLevel", "1c-High Complexity")
+    @medium_complexity_2_30 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_30, "FY17ParentStationComplexityLevel", "2 -Medium Complexity")
+    @low_complexity_3_30 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_30, "FY17ParentStationComplexityLevel", "3 -Low Complexity")
+
+    @facility_ids_for_practice_at = fetch_facility_ids_for_practice(@practice.id, "0")
+    @rural_facility_at = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_at, "Rurality", "R")
+    @urban_facility_at = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_at, "Rurality", "U")
+    @a_high_complexity_at = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_at, "FY17ParentStationComplexityLevel", "1a-High Complexity")
+    @b_high_complexity_at = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_at, "FY17ParentStationComplexityLevel", "1b-High Complexity")
+    @c_high_complexity_at = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_at, "FY17ParentStationComplexityLevel", "1c-High Complexity")
+    @medium_complexity_2_at = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_at, "FY17ParentStationComplexityLevel", "2 -Medium Complexity")
+    @low_complexity_3_at = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_at, "FY17ParentStationComplexityLevel", "3 -Low Complexity")
+
+    # Charts.....
+    @unique_visitors_for_practice = fetch_unique_visitors_by_practice(@practice.id, @duration)
+    @page_views_for_practice = fetch_page_views_for_practice(@practice.id, @duration)
+
+    if @duration != "30"
+      @duration = get_practice_all_time_duration(@practice.id)
+    end
+    @month_names = "Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    @cur_duration = @duration.to_i
+    @dates = ((@cur_duration.days.ago.to_date .. 0.days.ago.to_date).to_a).map(&:to_s)
+    @views = []
+    @visitors = []
+      @dates.each do |date|
+        objCtr = 0
+        @page_views_for_practice.each do |obj|
+          objCtr += 1 if obj[:created_at].to_s == date.to_s
+        end
+        @views << objCtr
+      end
+    @unique_visitors = []
+    @dates.each do |date|
+      @unique_visitors << fetch_unique_visitors_by_practice_and_date(@practice.id, date)
+    end
+
+    render 'practices/form/metrics'
+
+  end
+
+  def practice_name
+    render 'practices/form/instructions'
+  end
+
   def implementation
     render 'practices/form/implementation'
   end
@@ -491,7 +562,9 @@ class PracticesController < ApplicationController
                                      categories_attributes: [:id, :_destroy, :name, :is_other],
                                      practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :facility_type, :initiating_department_office_id],
                                      practice_metrics_attributes: [:id, :_destroy, :description],
-                                     practice_emails_attributes: [:id, :address, :_destroy]
+                                     practice_emails_attributes: [:id, :address, :_destroy],
+                                     duration: {}
+
     )
   end
 

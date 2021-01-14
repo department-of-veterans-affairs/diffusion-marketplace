@@ -1,71 +1,91 @@
 <div class="grid-container position-relative z-top">
-    <div id="dm-practice-nav" class="z-top mobile-hide">
-
-          <ul id="dm-tabnav" class="usa-sidenav dm-tabnav">
-              <li class="usa-sidenav__item">
-                <% if current_page?(practice_instructions_path(@practice)) %>
-                  <a href="#" onclick="return false" class="active width-full dm-tab">Instructions</a>
-                <% else %>
-                  <%= link_to 'Instructions', practice_instructions_path(@practice), class: "#{'active' if current_page?( practice_instructions_path(@practice))} width-full dm-tab" %>
-                <% end %>
-              </li>
-              <li class="usa-sidenav__item">
-                <% if current_page?(practice_introduction_path(@practice)) %>
-                  <a href="#" onclick="return false" class="active width-full dm-tab">Introduction</a>
-                <% else %>
-                  <%= link_to 'Introduction', practice_introduction_path(@practice), class: "#{'active' if current_page?( practice_introduction_path(@practice))} dm-tab" %>
-                <% end %>
-              </li>
-              <li class="usa-sidenav__item">
-                <% if current_page?(practice_adoptions_path(@practice)) %>
-                  <a href="#" onclick="return false" class="active width-full dm-tab">Adoptions</a>
-                <% else %>
-                  <%= link_to 'Adoptions', practice_adoptions_path(@practice), class: "#{'active' if current_page?( practice_adoptions_path(@practice))} width-full dm-tab" %>
-                <% end %>
-              </li>
-              <li class="usa-sidenav__item">
-                <% if current_page?(practice_overview_path(@practice)) %>
-                  <a href="#" onclick="return false" class="active width-full dm-tab">Overview</a>
-                <% else %>
-                  <%= link_to 'Overview', practice_overview_path(@practice), class: "#{'active' if current_page?( practice_overview_path(@practice))} width-full dm-tab" %>
-                <% end %>
-              </li>
-            <li class="usa-sidenav__item">
+  <div id="dm-practice-nav" class="z-top mobile-hide">
+    <section>
+      <ul id="dm-tabnav" class="usa-sidenav dm-tabnav">
+        <li class="usa-sidenav__item" id="peSideNavMetrics">
+          <% if current_page?(practice_metrics_path(@practice)) %>
+            <a href="#" onclick="return false" class="active width-full dm-tab">Metrics</a>
+          <% else %>
+            <%= link_to 'Metrics', practice_metrics_path(@practice), class: "#{'active' if current_page?( practice_metrics_path(@practice))} width-full dm-tab" %>
+          <% end %>
+        </li>
+        <li class="usa-sidenav__item" id="peSideNavEditingGuide">
+          <% if current_page?(practice_instructions_path(@practice)) %>
+            <a href="#" onclick="return false" class="active width-full dm-tab">Editing guide</a>
+          <% else %>
+            <%= link_to 'Editing guide', practice_instructions_path(@practice), class: "#{'active' if current_page?( practice_instructions_path(@practice))} width-full dm-tab" %>
+          <% end %>
+        </li>
+        <li class="usa-sidenav__item" id="peSideNavPracticeName">
+          <% if current_page?(practice_introduction_path(@practice)) %>
+            <a href="#" onclick="return false" class="width-full side-nav-highlighted"><%= @practice.name %></a>
+          <% else %>
+            <%= link_to @practice.name, practice_introduction_path(@practice), id: "sideNavPracticeNameLink", class: "dm-tab #{'side-nav-highlighted' if !current_page?(practice_instructions_path(@practice)) && !current_page?(practice_metrics_path(@practice))}" %>
+          <% end %>
+          <ul class="usa-sidenav__sublist <%= params[:controller] == 'practices' && params[:action] == 'instructions' || params[:controller] == 'practices' && params[:action] == 'metrics' ? 'side-nav-hide' : '' %>">
+            <li class="usa-sidenav__item <% if params.has_key?(:metrics) %> side-nav-hide <% end %>" id="peSideNavIntroduction">
+              <% if current_page?(practice_introduction_path(@practice)) %>
+                <a href="#" onclick="return false" class="active width-full dm-tab">Introduction</a>
+              <% else %>
+                <%= link_to 'Introduction', practice_introduction_path(@practice), class: "#{'active' if current_page?( practice_introduction_path(@practice))} dm-tab" %>
+              <% end %>
+            </li>
+            <li class="usa-sidenav__item <% if params.has_key?(:metrics) %> side-nav-hide <% end %>" id="peSideNavAdoptions">
+              <% if current_page?(practice_adoptions_path(@practice)) %>
+                <a href="#" onclick="return false" class="active width-full dm-tab">Adoptions</a>
+              <% else %>
+                <%= link_to 'Adoptions', practice_adoptions_path(@practice), class: "#{'active' if current_page?( practice_adoptions_path(@practice))} width-full dm-tab" %>
+              <% end %>
+            </li>
+            <li class="usa-sidenav__item" id="peSideNavOverview">
+              <% if current_page?(practice_overview_path(@practice)) %>
+                <a href="#" onclick="return false" class="active width-full dm-tab">Overview</a>
+              <% else %>
+                <%= link_to 'Overview', practice_overview_path(@practice), class: "#{'active' if current_page?( practice_overview_path(@practice))} width-full dm-tab" %>
+              <% end %>
+            </li>
+            <li class="usa-sidenav__item <% if params.has_key?(:metrics) %> side-nav-hide <% end %>" id="peSideNavImplementation">
               <% if current_page?(practice_implementation_path(@practice)) %>
                 <a href="#" onclick="return false" class="active width-full dm-tab">Implementation</a>
-                <% else %>
+              <% else %>
                 <%= link_to 'Implementation', practice_implementation_path(@practice), class: "#{'active' if current_page?( practice_implementation_path(@practice))} width-full dm-tab" %>
               <% end %>
             </li>
-              <li class="usa-sidenav__item">
-                <% if current_page?(practice_contact_path(@practice)) %>
-                  <a href="#" onclick="return false" class="active width-full dm-tab">Contact</a>
-                <% else %>
-                  <%= link_to 'Contact', practice_contact_path(@practice), class: "#{'active' if current_page?( practice_contact_path(@practice))} width-full dm-tab" %>
-                <% end %>
+            <li class="usa-sidenav__item <% if params.has_key?(:metrics) %> side-nav-hide <% end %>" id="peSideNavContact">
+              <% if current_page?(practice_contact_path(@practice)) %>
+                <a href="#" onclick="return false" class="active width-full dm-tab">Contact</a>
+              <% else %>
+                <%= link_to 'Contact', practice_contact_path(@practice), class: "#{'active' if current_page?( practice_contact_path(@practice))} width-full dm-tab" %>
+              <% end %>
+            </li>
+            <li class="usa-sidenav__item <% if params.has_key?(:metrics) %> side-nav-hide <% end %>" id="peSideNavAbout">
+              <% if current_page?(practice_about_path(@practice)) %>
+                <a href="#" onclick="return false" class="active width-full dm-tab">About</a>
+              <% else %>
+                <%= link_to 'About', practice_about_path(@practice), class: "#{'active' if current_page?( practice_about_path(@practice))} width-full dm-tab" %>
+              <% end %>
+            </li>
+            <% if params[:action] != 'instructions' && params[:action] != 'adoptions' && params[:action] != 'metrics' %>
+              <li>
+                <div class="text-center">
+                  <%= button_tag 'Save', class: 'usa-button--outline dm-btn-base width-full', id: 'practice-editor-save-button' %>
+                </div>
               </li>
-              <li class="usa-sidenav__item">
-                <% if current_page?(practice_about_path(@practice)) %>
-                  <a href="#" onclick="return false" class="active width-full dm-tab">About</a>
-                <% else %>
-                  <%= link_to 'About', practice_about_path(@practice), class: "#{'active' if current_page?( practice_about_path(@practice))} width-full dm-tab" %>
-                <% end %>
-              </li>
-          </ul>
-
-        <% if params[:action] != 'instructions' && params[:action] != 'adoptions' %>
-          <div class="text-center">
-            <%= button_tag 'Save', class: 'usa-button--outline dm-btn-base width-full', id: 'practice-editor-save-button' %>
-          </div>
-        <% end %>
-        <% if !@practice.published && params[:action] != 'instructions' %>
-          <div class="text-center">
-            <% if params[:action] == 'adoptions' %>
-                <%= link_to 'Publish practice', practice_publication_validation_path(@practice), class: 'usa-button width-full padding-y-2 margin-top-1', id: 'publish-practice-button', method: :patch, remote: true %>
-            <% else %>
-                <%= button_tag 'Publish practice', class: 'usa-button dm-btn-primary width-full margin-top-1', id: 'publish-practice-button', data: { form_action: "#{practice_publication_validation_path(@practice)}.js"}%>
             <% end %>
-          </div>
-        <% end %>
-    </div>
+            <% if !@practice.published && params[:action] != 'instructions' && params[:action] != 'metrics' %>
+              <li>
+                <div class="text-center">
+                  <% if params[:action] == 'adoptions' %>
+                    <%= link_to 'Publish practice', practice_publication_validation_path(@practice), class: 'usa-button width-full padding-y-2 margin-top-1', id: 'publish-practice-button', method: :patch, remote: true %>
+                  <% else %>
+                    <%= button_tag 'Publish practice', class: 'usa-button dm-btn-primary width-full margin-top-1', id: 'publish-practice-button', data: { form_action: "#{practice_publication_validation_path(@practice)}.js"}%>
+                  <% end %>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+        </li>
+      </ul>
+    </section>
+  </div>
 </div>
