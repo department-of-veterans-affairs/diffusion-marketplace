@@ -184,7 +184,7 @@ describe 'Practice editor', type: :feature do
         create_adoption('Florida', 'Boca Raton VA Clinic')
       end
 
-      describe 'on page load' do
+      context 'on page load' do
         it 'should display a tooltip with adoption status definitions if the user hovers over the tooltip icon within the new adoption form' do
           new_adoption_form_tooltip_flow
         end
@@ -196,7 +196,7 @@ describe 'Practice editor', type: :feature do
         end
       end
 
-      describe 'after ajax call' do
+      context 'after ajax call' do
         it 'should display a tooltip with adoption status definitions if the user hovers over the tooltip icon within the new adoption form' do
           create_adoption('Alaska', 'Anchorage VA Medical Center')
           new_adoption_form_tooltip_flow
