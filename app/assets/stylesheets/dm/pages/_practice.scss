@@ -1184,3 +1184,9 @@ tr.border_bottom td {
   }
 }
 
+#toggle_adoptions_view_30, #toggle_leader_board_view_30 {
+  &:before {
+    border-right: $dm-color-base !important;
+  }
+}
+
