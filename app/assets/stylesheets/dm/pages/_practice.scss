@@ -262,8 +262,8 @@
   }
 
   .usa-checkbox__input:checked + .usa-checkbox__label.in_progress::before, .usa-radio__input:checked + .usa-radio__label.in_progress::before {
-    background-color: $dm-color-yellow;
-    box-shadow: 0 0 0 2px $dm-color-yellow;
+    background-color: #face00;
+    box-shadow: 0 0 0 2px #face00;
   }
 
   .usa-checkbox__input:checked + .usa-checkbox__label.in_progress::before, .usa-checkbox__input:checked:disabled + .usa-checkbox__label.in_progress::before {
