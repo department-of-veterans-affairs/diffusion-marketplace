@@ -195,11 +195,11 @@ module PracticesHelper
 
   def fetch_page_views_leader_board(duration = "30")
     page_view_leaders = []
-    sql = ""
+    ctr = 0
     if duration == "30"
-      sql = "select name, properties, count(properties) as count from ahoy_events where name = 'Practice show' and time >= now() - interval '30 days' group by name, properties order by count desc limit 10"
+      sql = "select name, properties, count(properties) as count from ahoy_events where name = 'Practice show' and time >= now() - interval '30 days' group by name, properties order by count desc"
     else
-      sql = "select name, properties, count(properties) as count from ahoy_events where name = 'Practice show' group by name, properties order by count desc limit 10"
+      sql = "select name, properties, count(properties) as count from ahoy_events where name = 'Practice show' group by name, properties order by count desc"
     end
     records_array = ActiveRecord::Base.connection.execute(sql)
 
@@ -210,6 +210,10 @@ module PracticesHelper
       published = Practice.find(practice_id).published
       if published
         page_view_leaders << practice
+        ctr += 1
+        if ctr == 10
+          return page_view_leaders
+        end
       end
     end
     page_view_leaders
