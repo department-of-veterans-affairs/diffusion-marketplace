@@ -1,5 +1,4 @@
 <%
-
   adoption_groups = {
       'Successful': @diffusion_histories
           .find_all { |dh| dh[:status] == 'Complete' }
@@ -11,14 +10,35 @@
           .find_all { |dh| dh[:status] == 'Unsuccessful' }
           .sort_by { |dh| [dh[:facility]['MailingAddressState'], dh[:facility]['OfficialStationName']] }
   }
+
+  adoption_statuses_and_text = [
+      {
+          status: 'Successful',
+          text: 'Facilities that have met adoption goals and implemented the practice.'
+      },
+      {
+          status: 'In-progress',
+          text: 'Facilities that have started but not completed adopting the practice.'
+      },
+      {
+          status: 'Unsuccessful',
+          text: 'Facilities that started but stopped working towards adoption.'
+      }
+  ]
 %>
-<div class="usa-accordion usa-accordion--bordered">
+<div class="usa-accordion usa-accordion--bordered practice-viewer-adoptions-accordion">
   <% adoption_groups.each do |group, histories| %>
     <h2 class="usa-accordion__heading">
-      <button class="usa-accordion__button"
+      <button class="usa-accordion__button padding-right-205"
               aria-expanded="false"
               aria-controls="<%= group.to_s.underscore %>">
-        <%= group.to_s %> adoptions: <%= histories.count %>
+        <span class="text-middle margin-right-05"><%= group.to_s %> adoptions (<%= histories.count %>)</span>
+        <% adoption_statuses_and_text.each do |as| %>
+          <% if as[:status] === group.to_s %>
+            <%= render partial: 'practices/adoption_status_tooltip', locals: { tooltip_title: as[:text] } %>
+            <span class="fas fa-question-circle fa-2x <%= as[:status].downcase %>-modal-icon cursor-pointer desktop:display-none"></span>
+          <% end %>
+        <% end %>
       </button>
     </h2>
     <div id="<%= group.to_s.underscore %>" class="usa-accordion__content usa-prose">
@@ -30,5 +50,9 @@
         <p>There are no <%= group.to_s.downcase %> adoptions for this practice.</p>
       <% end %>
     </div>
+    <%# Calling the modal outside of the accordion button prevents any semantic issues %>
+    <% adoption_statuses_and_text.each do |as| %>
+      <%= render partial: 'practices/show/mobile_partials/adoption_status_modal', locals: { status: as[:status], text: as[:text] } if as[:status] === group.to_s %>
+    <% end %>
   <% end %>
 </div>

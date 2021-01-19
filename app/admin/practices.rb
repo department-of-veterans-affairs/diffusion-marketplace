@@ -96,7 +96,7 @@ ActiveAdmin.register Practice do
         sheet.add_row ['Please Note'], style: @xlsx_legend_no_bottom_border
         sheet.add_row ['Adoption date is based on the adoption status.'], style: @xlsx_legend_no_y_border
         sheet.add_row [''], style: @xlsx_divider
-        sheet.add_row ['Completed/Unsuccessful: End Date'], style: @xlsx_legend_no_y_border
+        sheet.add_row ['Successful/Unsuccessful: End Date'], style: @xlsx_legend_no_y_border
         sheet.add_row ['In Progress: Start Date'], style: @xlsx_legend_no_top_border
         sheet.merge_cells 'A1:C1'
         sheet.add_row [''], style: @xlsx_divider
@@ -133,7 +133,7 @@ ActiveAdmin.register Practice do
                   v[:visn],
                   v[:station_number],
                   adoption_date(v),
-                  v[:status],
+                  adoption_status(v),
                   adoption_rurality(v),
                   v[:complexity]
               ], style: @xlsx_entry
@@ -204,6 +204,7 @@ ActiveAdmin.register Practice do
     helper_method :adoption_facility_name
     helper_method :adoption_date
     helper_method :adoption_rurality
+    helper_method :adoption_status
     helper_method :get_adoption_values
     helper_method :adoption_counts_by_practice
     helper_method :adoption_xlsx_styles

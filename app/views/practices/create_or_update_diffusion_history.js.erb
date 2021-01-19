@@ -53,3 +53,36 @@ $("#adoptions").html("<%= escape_javascript(render partial: 'adoptions_content',
     }
   })
 <% end %>
+
+function addTooltipHtmlAfterAjax() {
+    // Add the tooltip element
+    $('.usa-tooltip').append(
+        '<span class="usa-tooltip__body usa-tooltip__body--right tooltip-after-ajax" role="tooltip" aria-hidden="true">' +
+        'In-progress: ' +
+        '<i>Facilities that have started but not completed adopting the practice</i>.\n' +
+        'Successful: ' +
+        '<i>Facilities that have met adoption goals and implemented the practice.</i>\n' +
+        'Unsuccessful: ' +
+        '<i>Facilities that started but stopped working towards adoption.</i>\n' +
+        '</span>'
+    );
+
+    function setSpanAttr(el, attrName, attrVal) {
+        $(el).find('span').attr(attrName, attrVal);
+    }
+    // Assign the hover styles
+    $(document).on({
+        mouseenter: function () {
+            $(this).addClass('usa-tooltip__trigger');
+            $(this).find('span').addClass('is-set is-visible');
+            setSpanAttr(this, 'aria-hidden', false);
+            $(this).removeAttr('title');
+        },
+        mouseleave: function () {
+            $(this).find('span').removeClass('is-set is-visible');
+            setSpanAttr(this, 'aria-hidden', true);
+        }
+    }, '.usa-tooltip');
+}
+
+$(addTooltipHtmlAfterAjax);

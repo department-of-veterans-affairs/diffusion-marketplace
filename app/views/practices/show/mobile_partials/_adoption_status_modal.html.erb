@@ -1,0 +1,15 @@
+<div class="text-middle <%= status.downcase %>-status-modal-container display-none">
+  <div class="adoption-status-modal">
+    <div class="bg-white radius-md adoption-status-modal-content">
+      <div class="bg-base-darkest text-white radius-top-md padding-x-2 padding-y-105 grid-row flex-align-center">
+        <h2 class="grid-col-6 margin-0 text-bold font-sans-sm line-height-18px">More info</h2>
+        <i id="close_<%= status.downcase %>_status_modal" class="display-block grid-col-6 text-right width-auto margin-left-auto far fa-times-circle cursor-pointer"></i>
+      </div>
+      <div class="padding-2">
+        <p class="text-normal font-sans-sm line-height-26">
+          <span class="text-bold"><%= status %>: </span><span><%= text %></span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

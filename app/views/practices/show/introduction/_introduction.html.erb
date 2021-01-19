@@ -100,7 +100,7 @@
               <%= completed_adoptions %>&nbsp;successful<%= ', ' if in_progress_adoptions > 0 || unsuccessful_adoptions > 0 %>
             <% end %>
             <% if in_progress_adoptions > 0 %>
-              <%= in_progress_adoptions %>&nbsp;in-progress<% ', ' if unsuccessful_adoptions > 0 %>
+              <%= in_progress_adoptions %>&nbsp;in-progress<%= ', ' if unsuccessful_adoptions > 0 %>
             <% end %>
             <% if unsuccessful_adoptions > 0 %>
               <%= unsuccessful_adoptions %>&nbsp;unsuccessful

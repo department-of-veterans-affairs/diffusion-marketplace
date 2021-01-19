@@ -26,22 +26,25 @@
   <%= f.hidden_field('diffusion_history_status_id', value: adoption.id) if adoption %>
   <div class="margin-bottom-3 margin-top-1">
 
-    <p class="margin-bottom-1"><span class="text-bold">Status:&nbsp;</span>
-      Select the appropriate status of adoption for the facility.</p>
+    <p class="margin-bottom-2">
+      <span class="margin-right-05 text-middle">Status</span>
+      <%= render partial: 'practices/adoption_status_tooltip',
+         locals: {
+             tooltip_title: 'In-progress: <i>Facilities that have started but not completed adopting the practice</i>.&#10;Successful: <i>Facilities that have met adoption goals and implemented the practice.</i>&#10;Unsuccessful: <i>Facilities that started but stopped working towards adoption.</i>'
+         }
+      %>
+    </p>
     <div class="usa-radio position-relative">
       <%= radio_button(nil, 'status', 'In progress', class: 'usa-radio__input adoptions-radio-button', required: true, checked: status == in_progress ? 'checked' : false, id: "status_in_progress#{adoption&.diffusion_history&.id}") %>
-      <label class='usa-radio__label' for='<%= "status_in_progress#{adoption&.diffusion_history&.id}" %>'>In progress
-        adoption</label>
+      <label class='usa-radio__label' for='<%= "status_in_progress#{adoption&.diffusion_history&.id}" %>'>In-progress</label>
     </div>
     <div class="usa-radio position-relative">
       <%= radio_button(nil, 'status', 'Completed', class: 'usa-radio__input adoptions-radio-button', required: true, checked: status == complete ? 'checked' : false, id: "status_completed#{adoption&.diffusion_history&.id}") %>
-      <label class='usa-radio__label' for='<%= "status_completed#{adoption&.diffusion_history&.id}" %>'>Successful
-        adoption</label>
+      <label class='usa-radio__label' for='<%= "status_completed#{adoption&.diffusion_history&.id}" %>'>Successful</label>
     </div>
     <div class="usa-radio position-relative">
       <%= radio_button(nil, 'status', 'Unsuccessful', class: 'usa-radio__input adoptions-radio-button', required: true, checked: status == unsuccessful ? 'checked' : false, id: "status_unsuccessful#{adoption&.diffusion_history&.id}") %>
-      <label class='usa-radio__label' for='<%= "status_unsuccessful#{adoption&.diffusion_history&.id}" %>'>Unsuccessful
-        adoption</label>
+      <label class='usa-radio__label' for='<%= "status_unsuccessful#{adoption&.diffusion_history&.id}" %>'>Unsuccessful</label>
     </div>
   </div>
 

@@ -49,7 +49,7 @@ class PracticesController < ApplicationController
       marker.lng facility['Longitude']
 
       current_diffusion_status = dhg[1][0].diffusion_history_statuses.order(id: :desc).first
-      marker_url = view_context.image_path('map-marker-default.svg')
+      marker_url = view_context.image_path('map-marker-successful-default.svg')
       status = 'Complete'
       if current_diffusion_status.status == 'In progress' || current_diffusion_status.status == 'Planning' || current_diffusion_status.status == 'Implementing'
         marker_url = view_context.image_path('map-marker-in-progress-default.svg')

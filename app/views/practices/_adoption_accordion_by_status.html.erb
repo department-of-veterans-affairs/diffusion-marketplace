@@ -5,7 +5,7 @@
     <button class="usa-accordion__button parent-accordion-button"
             aria-expanded="false"
             aria-controls="<%= adoption_text.downcase %>_adoptions">
-      <%= adoption_text %> adoptions: <%= adoption_type.count %>
+      <%= adoption_text %> adoptions (<%= adoption_type.count %>)
     </button>
   </h2>
   <div id="<%= adoption_text.downcase %>_adoptions" class="usa-accordion__content border-0 p0-25-bottom p0-top padding-x-05 bg-base-lightest">
@@ -23,7 +23,7 @@
             </span>
           </button>
         </h2>
-        <div id="diffusion_history_<%= diffusion_history_status.diffusion_history.id %>" class="usa-accordion__content usa-prose border-0">
+        <div id="diffusion_history_<%= diffusion_history_status.diffusion_history.id %>" class="usa-accordion__content usa-prose border-0 overflow-visible">
           <% if params[:existing_dh] && @dh&.id == diffusion_history_status.diffusion_history.id %>
             <%= render partial: 'existing_adoption_warning', locals: {facility: params[:existing_dh]} %>
           <% end %>
