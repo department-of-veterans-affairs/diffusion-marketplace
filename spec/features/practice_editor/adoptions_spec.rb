@@ -46,7 +46,7 @@ describe 'Practice editor', type: :feature do
       expect(page).to be_accessible.according_to :wcag2a, :section508
       within(:css, '#adoptions') do
         expect(page).to have_content('Success!')
-        expect(page).to have_content('In-progress adoptions: 1')
+        expect(page).to have_content('In-progress adoptions (1)')
       end
 
       # it should update the overview section with the correct number of facility adoptions
@@ -135,7 +135,7 @@ describe 'Practice editor', type: :feature do
 
       # check the PV to make sure the adoption count is correct
       visit practice_path(@practice)
-      expect(page).to have_content('1 successful, 1 in-progress 1 unsuccessful')
+      expect(page).to have_content('1 successful, 1 in-progress, 1 unsuccessful')
 
       # it should let the system update delete an adoption entry
       visit practice_adoptions_path(@practice)
@@ -146,6 +146,69 @@ describe 'Practice editor', type: :feature do
       end
       page.accept_alert
       expect(page).to have_content('Adoption entry was successfully deleted.')
+    end
+
+    describe 'Adoption status tooltip' do
+      def open_new_adoption_form
+        click_button('Add new adoption')
+      end
+
+      def open_successful_adoption_accordion
+        click_button('Successful adoptions (1)')
+        click_button('FL: Boca Raton VA Clinic (TBD - TBD)')
+      end
+
+      def tooltip_expectations
+        expect(page).to have_selector('.usa-tooltip__body', visible: false)
+        find('.usa-tooltip').hover
+        expect(page).to have_selector('.usa-tooltip__body', visible: true)
+        expect(page).to have_content('In-progress: Facilities that have started but not completed adopting the practice.')
+        expect(page).to have_content('Successful: Facilities that have met adoption goals and implemented the practice.')
+        expect(page).to have_content('Unsuccessful: Facilities that started but stopped working towards adoption.')
+      end
+
+      def new_adoption_form_tooltip_flow
+        open_new_adoption_form
+        tooltip_expectations
+      end
+
+      def create_adoption(state, facility)
+        open_new_adoption_form
+        find('label[for="status_completed"').click
+        select("#{state}", :from => 'editor_state_select')
+        select("#{facility}", :from => 'editor_facility_select')
+        find('#adoption_form_submit').click
+      end
+
+      before do
+        create_adoption('Florida', 'Boca Raton VA Clinic')
+      end
+
+      context 'on page load' do
+        it 'should display a tooltip with adoption status definitions if the user hovers over the tooltip icon within the new adoption form' do
+          new_adoption_form_tooltip_flow
+        end
+
+        it 'should display a tooltip with adoption status definitions if the user hovers over the tooltip icon within an existing adoption form' do
+          click_button('Successful adoptions (1)')
+          click_button('FL: Boca Raton VA Clinic (TBD - TBD)')
+          tooltip_expectations
+        end
+      end
+
+      context 'after ajax call' do
+        it 'should display a tooltip with adoption status definitions if the user hovers over the tooltip icon within the new adoption form' do
+          create_adoption('Alaska', 'Anchorage VA Medical Center')
+          new_adoption_form_tooltip_flow
+        end
+
+        it 'should display a tooltip with adoption status definitions if the user hovers over the tooltip icon within an existing adoption form' do
+          create_adoption('Alaska', 'Homer VA Clinic')
+          click_button('Successful adoptions (2)')
+          click_button('AK: Homer VA Clinic (TBD - TBD)')
+          tooltip_expectations
+        end
+      end
     end
   end
 end
