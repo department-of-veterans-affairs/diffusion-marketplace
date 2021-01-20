@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   include NavigationHelper
   include Pagy::Backend
+  include MicroSessionable
   
   protect_from_forgery with: :exception
 
@@ -11,6 +12,7 @@ class ApplicationController < ActionController::Base
   before_action :user_accepted_terms?
   before_action :track_visit
   before_action :track_role
+  before_action :set_micro_session
 
   protect_from_forgery with: :exception, prepend: true
 
@@ -69,5 +71,9 @@ class ApplicationController < ActionController::Base
     if current_user.present?
       ahoy.track "User role", {user: current_user.email, role: current_user.user_role}
     end
+  end
+
+  def set_micro_session
+    micro_session
   end
 end

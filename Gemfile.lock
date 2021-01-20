@@ -13,6 +13,14 @@ GIT
       rails (~> 5)
 
 GIT
+  remote: https://github.com/agilesix/micro_sessions.git
+  revision: f05cf790563f9d99143d9f15c712606873cf6610
+  branch: master
+  specs:
+    micro_sessions (0.4.0)
+      rails (>= 3.0, <= 6)
+
+GIT
   remote: https://github.com/agilesix/ntlm-sso.git
   revision: 32807d619a8cd930b0f1ae549f2eeb32e6154f87
   ref: master
@@ -599,6 +607,7 @@ DEPENDENCIES
   listen (= 3.1.5)
   lodash-rails
   mechanize (= 2.7.6)
+  micro_sessions!
   mini_racer
   nested_form
   net-ldap
