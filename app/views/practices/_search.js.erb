@@ -10,6 +10,7 @@ var SPINNER = '.dm-loading-spinner';
 var LOAD_MORE_CONTAINER = '.button-box';
 var SEARCH_RESULTS = '#search-results';
 var SORT_EL = '#search_sort_option';
+var isBlankSearch = false;
 // Add Namespace for scroll position
 var pagePosition = {
     original: 0,
@@ -200,7 +201,6 @@ function searchPracticesPage() {
             '<p><b>Score: ' + result.score + '</b></p>' +
             '-->'
         });
-
         if (results.length > 0) {
 
             // Hide sorting options if there's only 1 result
@@ -235,8 +235,14 @@ function searchPracticesPage() {
             if ($(NO_QUERY_CONTENT).hasClass('display-none')) {
                 $(NO_QUERY_CONTENT).removeClass('display-none');
             }
-            $('#no-query-p').addClass('display-none');
-            $('#no-query-results-p').removeClass('display-none');
+            if (isBlankSearch) {
+                $('#no-query-p').removeClass('display-none');
+                $('#no-query-results-p').addClass('display-none');
+            }
+            else{
+                $('#no-query-p').addClass('display-none');
+                $('#no-query-results-p').removeClass('display-none');
+            }
         }
     }
 
@@ -244,10 +250,9 @@ function searchPracticesPage() {
     function search(query, categories, originatingFacility, adoptingFacility) {
         // Trim whitespace from the query (can cause matching problems)
         query = query.trim();
-
+        isBlankSearch = !Boolean(query) && categories == undefined && originatingFacility == undefined && adoptingFacility == undefined ? true : false;
         // Set variables
         var resultsSummary = document.querySelector('#results-summary');
-
         // set the search page search bar input value
         searchField.value = query;
 
