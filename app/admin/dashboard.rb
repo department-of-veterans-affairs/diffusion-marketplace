@@ -48,21 +48,22 @@ ActiveAdmin.register_page "Dashboard" do
           total_committed: UserPractice.where(committed: true).count
       }
 
-      start_month = Date.today.prev_year.beginning_of_month
-      end_month = Date.today.end_of_month
-      while start_month < end_month
-        Practice.where(published: true, enabled: true, approved: true).order(Arel.sql("lower(practices.name) ASC")).each do |p|
-          site_visits = []
-          beg_of_month = start_month.beginning_of_day
-          end_of_month = start_month.end_of_month.end_of_day
-          # counter = (Date.today.prev_year >> 1).month
-          # # start_month = Date.today.prev_year
-          pr_visit_ct = Ahoy::Event.where_props(practice_id: p[:id]).where(time: beg_of_month...end_of_month).count
-          site_visits.push({month: beg_of_month, visit_ct: pr_visit_ct})
-          puts %Q(#{p[:name]} | ID: #{p[:id]});site_visits.each { |sv| puts %Q(#{sv[:month]}: #{sv[:visit_ct]})}
-        end
-        start_month += 1.months
-      end
+      # start_month = Date.today.prev_year.beginning_of_month
+      # end_month = Date.today.end_of_month
+      # @practice_stats = []
+      # while start_month < end_month
+      #   Practice.where(published: true, enabled: true, approved: true).order(Arel.sql("lower(practices.name) ASC")).each do |p|
+      #     site_visits = []
+      #     beg_of_month = start_month.beginning_of_day
+      #     end_of_month = start_month.end_of_month.end_of_day
+      #     # counter = (Date.today.prev_year >> 1).month
+      #     # # start_month = Date.today.prev_year
+      #     pr_visit_ct = Ahoy::Event.where_props(practice_id: p[:id]).where(time: beg_of_month...end_of_month).count
+      #     site_visits.push({month: beg_of_month, visit_ct: pr_visit_ct})
+      #     @practice_stats << %Q(#{p[:name]} | ID: #{p[:id]});site_visits.each { |sv| puts %Q(#{sv[:month]}: #{sv[:visit_ct]})}
+      #   end
+      #   start_month += 1.months
+      # end
       # @practices.each { |pr| site_visits = []; start_month = Date.new(2020,2,1); start_month = Date.new(2020,2,1); (beg_of_month = start_month.at_beginning_of_month.beginning_of_day; end_of_month = start_month.at_end_of_month.end_of_day; pr_visit_ct = Ahoy::Event.where_props(practice_id: pr[:id]).where(time: beg_of_month...end_of_month).count; site_visits.push({month: beg_of_month, visit_ct: pr_visit_ct}); start_month += 1.months;) while start_month < end_month; puts %Q(#{pr[:name]} | ID: #{pr[:id]});site_visits.each { |sv| puts %Q(#{sv[:month]}: #{sv[:visit_ct]})};};
     end
 

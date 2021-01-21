@@ -1,6 +1,35 @@
 class HomeController < ApplicationController
 
   def index
+    @practice_stats = []
+    start_month = Date.today.prev_year.beginning_of_month
+    end_month = Date.today.end_of_month
+    @practice_stats = []
+    while start_month < end_month
+      Practice.where(published: true, enabled: true, approved: true).order(Arel.sql("lower(practices.name) ASC")).each do |p|
+        site_visits = []
+        beg_of_month = start_month.beginning_of_day
+        end_of_month = start_month.end_of_month.end_of_day
+        # counter = (Date.today.prev_year >> 1).month
+        # # start_month = Date.today.prev_year
+        pr_visit_ct = Ahoy::Event.where_props(practice_id: p[:id]).where(time: beg_of_month...end_of_month).count
+        site_visits.push({month: beg_of_month, visit_ct: pr_visit_ct})
+        @practice_stats << ["#{p[:id]}", site_visits.each { |sv| puts %Q(#{sv[:month]}: #{sv[:visit_ct]})}]
+      end
+      start_month += 1.months
+    end
+
+    @test11 = []
+    Practice.where(published: true, enabled: true, approved: true).order(Arel.sql("lower(practices.name) ASC")).each do |p|
+      @practice_stats.each do |ps|
+        if p.id.to_s === ps.first.to_s
+          @test11 << [p.name, ps.last]
+        end
+      end
+    end
+
+
+
     @practices = Practice.searchable_practices 'a_to_z'
     @favorite_practices = current_user&.favorite_practices || []
     @facilities_data = facilities_json

@@ -50,8 +50,6 @@ gem 'kaminari'
 gem 'rolify'
 # pagination gem
 gem 'pagy', '~> 3.5'
-# micro_sessions for tab sessions
-gem 'micro_sessions', github: 'agilesix/micro_sessions', branch: 'master'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
