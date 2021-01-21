@@ -137,20 +137,11 @@
             $(e.target).parent().click();
 
             $(`.${status}-status-modal-container`).removeClass('display-none');
-            // Disable pointer events underneath the modal
-            $('body').css('pointer-events', 'none');
-
-            // Allow modal close icon to be the only interactive element
-            $(`#close_${status}_status_modal`).css('pointer-events', 'auto');
         });
     }
 
     function closeAdoptionStatusModal(status) {
-        $(document).on('click', `#close_${status}_status_modal`, (e) => {
-            // Remove pointer-events styling
-            $('body').css('pointer-events', '');
-            $(e.target).css('pointer-events', '');
-
+        $(document).on('click', `#close_${status}_status_modal`, () => {
             $(`.${status}-modal-icon`).parent().focus();
             $(`.${status}-status-modal-container`).addClass('display-none');
         });
