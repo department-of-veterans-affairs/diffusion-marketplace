@@ -6,6 +6,7 @@ describe 'Practice editor', type: :feature, js: true do
     @admin.add_role(User::USER_ROLES[0].to_sym)
     @practice = Practice.create!(name: 'A practice with no resources', slug: 'test-practice', approved: true, published: true, date_initiated: Date.new(2011, 12, 31))
     PracticeResource.create(practice: @practice, resource: 'core person 1', resource_type: 'core', media_type: 'resource', resource_type_label: 'people', position: 1 )
+    PracticeResource.create(practice: @practice, resource: 'core person 1', resource_type: 'core', media_type: 'file', position: 2, name: '', description: '', attachment_content_type: 'image/jpeg', attachment_file_name: 'file.jpg' )
     @file_path_1 = "#{Rails.root}/spec/assets/dummy.pdf"
     @file_path_2 = "#{Rails.root}/spec/assets/SpongeBob.txt"
     @file_path_3 = "#{Rails.root}/spec/assets/charmander.png"
@@ -123,6 +124,11 @@ describe 'Practice editor', type: :feature, js: true do
           expect(page).to have_no_content("first edited practice #{area} file")
           expect(page).to have_content("second new practice #{area} file")
         end
+      end
+
+      it 'should render file_attachment_name if name and description are blank' do
+        visit practice_path(@practice)
+        expect(page).to have_content("file.jpg")
       end
 
       it 'should save, edit, and delete files' do
