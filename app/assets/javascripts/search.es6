@@ -4,6 +4,10 @@ addEventListener('turbolinks:load', function () {
     $searchField.val(''); // clear form
     $('#dm-navbar-search-form').submit(function(e) {
         e.preventDefault();
-        window.location = `${location.protocol}//${location.host}/search?query=${encodeURI($searchField.val())}`;
+        var sUrl = `${location.protocol}//${location.host}/search`;
+        if(Boolean($searchField.val())){
+            sUrl += `?query=${encodeURI($searchField.val())}`;
+        }
+        window.location = sUrl;
     });
 });
