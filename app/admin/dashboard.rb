@@ -48,23 +48,33 @@ ActiveAdmin.register_page "Dashboard" do
           total_committed: UserPractice.where(committed: true).count
       }
 
-      # start_month = Date.today.prev_year.beginning_of_month
-      # end_month = Date.today.end_of_month
-      # @practice_stats = []
-      # while start_month < end_month
-      #   Practice.where(published: true, enabled: true, approved: true).order(Arel.sql("lower(practices.name) ASC")).each do |p|
-      #     site_visits = []
-      #     beg_of_month = start_month.beginning_of_day
-      #     end_of_month = start_month.end_of_month.end_of_day
-      #     # counter = (Date.today.prev_year >> 1).month
-      #     # # start_month = Date.today.prev_year
-      #     pr_visit_ct = Ahoy::Event.where_props(practice_id: p[:id]).where(time: beg_of_month...end_of_month).count
-      #     site_visits.push({month: beg_of_month, visit_ct: pr_visit_ct})
-      #     @practice_stats << %Q(#{p[:name]} | ID: #{p[:id]});site_visits.each { |sv| puts %Q(#{sv[:month]}: #{sv[:visit_ct]})}
-      #   end
-      #   start_month += 1.months
-      # end
-      # @practices.each { |pr| site_visits = []; start_month = Date.new(2020,2,1); start_month = Date.new(2020,2,1); (beg_of_month = start_month.at_beginning_of_month.beginning_of_day; end_of_month = start_month.at_end_of_month.end_of_day; pr_visit_ct = Ahoy::Event.where_props(practice_id: pr[:id]).where(time: beg_of_month...end_of_month).count; site_visits.push({month: beg_of_month, visit_ct: pr_visit_ct}); start_month += 1.months;) while start_month < end_month; puts %Q(#{pr[:name]} | ID: #{pr[:id]});site_visits.each { |sv| puts %Q(#{sv[:month]}: #{sv[:visit_ct]})};};
+      start_month = Date.today.prev_year.beginning_of_month
+      end_month = Date.today.end_of_month
+      @practice_stats = []
+      @month_and_year = []
+      while start_month < end_month
+        Practice.where(published: true, enabled: true, approved: true).order(Arel.sql("lower(practices.name) ASC")).each do |p|
+          site_visits = []
+          beg_of_month = start_month.beginning_of_day
+          end_of_month = start_month.end_of_month.end_of_day
+          pr_visit_ct = Ahoy::Event.where_props(practice_id: p[:id]).where(time: beg_of_month...end_of_month).count
+          site_visits.push({month: beg_of_month, visit_ct: pr_visit_ct})
+          site_visits.each do |sv|
+            @practice_stats << [p.id, sv[:month], sv[:visit_ct]]
+          end
+        end
+        @month_and_year << [Date::MONTHNAMES[start_month.month] + " #{ start_month.year.to_s}"]
+        start_month += 1.months
+      end
+
+      @practice_views_array = []
+      Practice.where(published: true, enabled: true, approved: true).order(Arel.sql("lower(practices.name) ASC")).each do |p|
+        @practice_stats.each do |ps|
+          if p.id === ps.first
+            @practice_views_array << [p.name, ps[2]]
+          end
+        end
+      end
     end
 
     def export_metrics
@@ -81,9 +91,6 @@ ActiveAdmin.register_page "Dashboard" do
 
         # building out xlsx file
         p.workbook.add_worksheet(:name => "DM Metrics - #{Date.today}") do |sheet|
-          sheet.add_row ["Practice Views"], style: xlsx_sub_header_1
-          sheet.add_row ["Adoptions by Practice - #{Date.today}"], style: xlsx_main_header
-          sheet.add_row [''], style: xlsx_divider
           sheet.add_row ['Please Note'], style: @xlsx_legend_no_bottom_border
           sheet.add_row ['Adoptions and commits are defined by the following:'], style: @xlsx_legend_no_y_border
           sheet.add_row [''], style: xlsx_divider
@@ -102,6 +109,42 @@ ActiveAdmin.register_page "Dashboard" do
           sheet.add_row [""], style: xlsx_divider
 
           sheet.add_row ["Practice Engagement & Commitment"], style: xlsx_sub_header_1
+          sheet.add_row ['Practice Views by Month'], style: xlsx_sub_header_2
+          sheet.add_row [
+              'Practice name',
+              @month_and_year[0].join(' '),
+              @month_and_year[1].join(' '),
+              @month_and_year[2].join(' '),
+              @month_and_year[3].join(' '),
+              @month_and_year[4].join(' '),
+              @month_and_year[5].join(' '),
+              @month_and_year[6].join(' '),
+              @month_and_year[7].join(' '),
+              @month_and_year[8].join(' '),
+              @month_and_year[9].join(' '),
+              @month_and_year[10].join(' '),
+              @month_and_year[11].join(' '),
+              @month_and_year[12].join(' ')
+          ], style: xlsx_sub_header_3
+          @views_array_by_practice.in_groups_of(13).each do |practice_views|
+            sheet.add_row [
+                "#{practice_views[0][0]}",
+                "#{practice_views[0][1]}",
+                "#{practice_views[1][1]}",
+                "#{practice_views[2][1]}",
+                "#{practice_views[3][1]}",
+                "#{practice_views[4][1]}",
+                "#{practice_views[5][1]}",
+                "#{practice_views[0][1]}",
+                "#{practice_views[7][1]}",
+                "#{practice_views[8][1]}",
+                "#{practice_views[9][1]}",
+                "#{practice_views[10][1]}",
+                "#{practice_views[11][1]}",
+                "#{practice_views[12][1]}"
+            ], style: xlsx_entry
+          end
+          sheet.add_row [''], style: xlsx_divider
           sheet.add_row ["Favorited Counts"], style: xlsx_sub_header_2
           @practices_favorited_stats.each { |key, value| sheet.add_row [key.to_s.tr!('_', ' ').titleize, value], style: xlsx_entry }
           sheet.add_row [""], style: xlsx_divider
