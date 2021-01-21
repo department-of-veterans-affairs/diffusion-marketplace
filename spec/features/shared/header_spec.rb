@@ -81,14 +81,6 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       end
     end
 
-    it 'should prevent submit an empty string' do
-      find('#dm-navbar-search-button').click
-      # source https://stackoverflow.com/questions/17384428/testing-html-5-form-validations-when-using-simple-form-rails
-      message = find("#dm-navbar-search-field").native.attribute("validationMessage")
-      expect(message).to eq "Please fill out this field."
-      expect(page).to have_current_path(practice_overview_path(@practice))
-    end
-
     it 'should redirect to the search results page' do
       within('header.usa-header') do
         fill_in('dm-navbar-search-field', with: 'test')
