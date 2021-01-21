@@ -130,6 +130,13 @@ describe 'Practice editor', type: :feature, js: true do
         complete_add_file_test 'optional'
         complete_add_file_test 'support'
       end
+
+      it 'should render file_attachment_name if name and description are blank' do
+        PracticeResource.create(practice: @practice, resource: 'core person 99', resource_type: 'optional', media_type: 'file', position: 2, name: '', description: '', attachment_content_type: 'image/jpeg', attachment_file_name: 'file.jpg' )
+        visit practice_path(@practice)
+        expect(page).to have_content("file.jpg")
+        PracticeResource.delete(2)
+      end
     end
   end
 
