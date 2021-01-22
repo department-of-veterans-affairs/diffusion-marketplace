@@ -50,12 +50,14 @@ ActiveAdmin.register_page "Dashboard" do
 
       @approved_enabled_published_practices = Practice.where(published: true, enabled: true, approved: true).order(Arel.sql("lower(practices.name) ASC"))
 
-      @practice_stats = []
+      @practice_views_array = []
       @site_visits_by_month = []
+      @total_users_by_month = []
+      @new_users_by_month = []
       @month_and_year_array = []
       start_date = Date.today.prev_year.beginning_of_month
       end_date = Date.today
-      # debugger
+
       while start_date <= end_date
         beg_of_month = start_date.beginning_of_day
         end_of_month = start_date.end_of_month.end_of_day
@@ -64,31 +66,85 @@ ActiveAdmin.register_page "Dashboard" do
         @approved_enabled_published_practices.each do |p|
           practice_visits_by_month = []
           pr_visit_ct = Ahoy::Event.where_props(practice_id: p[:id]).where(time: beg_of_month...end_of_month).count
-          practice_visits_by_month.push(pr_visit_ct)
+          practice_visits_by_month << pr_visit_ct
           practice_visits_by_month.each do |visit_count|
-            @practice_stats << [p.id, visit_count]
+            @practice_views_array << [p.id, visit_count]
           end
         end
 
         # Get site visits by month
         site_visit_by_ip = Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where(time: beg_of_month..end_of_month).group("properties->>'ip_address'").count
         site_visit_ct = site_visit_by_ip.sum {|_k, v| v}
-        @site_visits_by_month.push([month_and_year, site_visit_ct])
+        @site_visits_by_month << [month_and_year, site_visit_ct]
+
+        # Get new users by month
+        new_user_count = User.where(created_at: beg_of_month..end_of_month).count
+        @new_users_by_month << new_user_count
+
+        # Get total users by month
+        total_user_count = User.where(current_sign_in_at: beg_of_month..end_of_month).count
+        @total_users_by_month << total_user_count
 
         @month_and_year_array << [month_and_year]
         start_date += 1.months
       end
 
-      @practice_views_array = []
+      # Assign the monthly practice views to the correct practice based on its id
+      @practice_views_by_month = []
       @approved_enabled_published_practices.each do |p|
-        @practice_stats.each do |ps|
-          if p.id === ps.first
-            @practice_views_array << [p.name, ps[1]]
+        @practice_views_array.each do |array|
+          if p.id === array.first
+            @practice_views_by_month << [p.name, array.last]
           end
         end
       end
 
-      # site_visits = []; start_month = Date.new(2020,2,1); end_month = Date.new(2021,1,31); (beg_of_month = start_month.at_beginning_of_month.beginning_of_day; end_of_month = start_month.at_end_of_month.end_of_day; site_visit_by_ip = Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where(time: beg_of_month..end_of_month).group("properties->>'ip_address'").count; site_visit_ct = site_visit_by_ip.sum {|_k, v| v}; site_visits.push({month: beg_of_month, visit_ct: site_visit_ct}); start_month += 1.months;) while start_month < end_month; site_visits.each { |sv| puts %Q(#{sv[:month]}: #{sv[:visit_ct]})};
+
+      # Add user stats hash to make it easier to format spreadsheet data
+      @user_statistics = {
+          new_users: @new_users_by_month,
+          total_users: @total_users_by_month
+      }
+    end
+
+    def add_header_row_for_month_and_year(sheet, first_column_text, array, row_style)
+      sheet.add_row [
+          "#{first_column_text}",
+          array[0].join(' '),
+          array[1].join(' '),
+          array[2].join(' '),
+          array[3].join(' '),
+          array[4].join(' '),
+          array[5].join(' '),
+          array[6].join(' '),
+          array[7].join(' '),
+          array[8].join(' '),
+          array[9].join(' '),
+          array[10].join(' '),
+          array[11].join(' '),
+          array[12].join(' ')
+      ], style: row_style
+    end
+
+    def add_monthly_array_values_to_columns(hash, sheet, row_style)
+      hash.each do |key, value|
+        sheet.add_row [
+            key.to_s.tr!('_', ' ').titleize,
+            value[0],
+            value[1],
+            value[2],
+            value[3],
+            value[4],
+            value[5],
+            value[6],
+            value[7],
+            value[8],
+            value[9],
+            value[10],
+            value[11],
+            value[12]
+        ], style: row_style
+      end
     end
 
     def export_metrics
@@ -103,25 +159,6 @@ ActiveAdmin.register_page "Dashboard" do
         xlsx_entry = s.add_style sz: 12, alignment: { horizontal: :left, vertical: :center, wrap_text: true}
         xlsx_divider = s.add_style sz: 12
 
-        def add_header_row_for_month_and_year(sheet, first_column_text, array, row_style)
-          sheet.add_row [
-              "#{first_column_text}",
-              array[0].join(' '),
-              array[1].join(' '),
-              array[2].join(' '),
-              array[3].join(' '),
-              array[4].join(' '),
-              array[5].join(' '),
-              array[6].join(' '),
-              array[7].join(' '),
-              array[8].join(' '),
-              array[9].join(' '),
-              array[10].join(' '),
-              array[11].join(' '),
-              array[12].join(' ')
-          ], style: row_style
-        end
-
         # building out xlsx file
         p.workbook.add_worksheet(:name => "DM Metrics - #{Date.today}") do |sheet|
           sheet.add_row ['Please Note'], style: @xlsx_legend_no_bottom_border
@@ -133,9 +170,8 @@ ActiveAdmin.register_page "Dashboard" do
           sheet.add_row [''], style: xlsx_divider
           sheet.add_row ["Diffusion Marketplace Metrics - #{Date.today}"], style: xlsx_main_header
           sheet.add_row ["General Traffic"], style: xlsx_sub_header_1
-          @general_traffic_stats.each { |key, value| sheet.add_row [key.to_s.tr!('_', ' ').titleize, value], style: xlsx_entry }
+          @general_traffic_stats.each { |key, value| sheet.add_row [key.to_s === 'unique_visitors' || key.to_s === 'number_of_site_visits' ? key.to_s.tr!('_', ' ').titleize + ' (last month)' : key.to_s.tr!('_', ' ').titleize + ' (all-time)', value], style: xlsx_entry }
           sheet.add_row ['Site Visits per Month'], style: xlsx_sub_header_2
-          sheet.add_row ['Month', 'Visits'], style: xlsx_sub_header_3
           @site_visits_by_month.each do |month_and_count|
             sheet.add_row [month_and_count[0], month_and_count[1]], style: xlsx_entry
           end
@@ -148,7 +184,7 @@ ActiveAdmin.register_page "Dashboard" do
           sheet.add_row ["Practice Engagement & Commitment"], style: xlsx_sub_header_1
           sheet.add_row ['Practice Views by Month'], style: xlsx_sub_header_2
           add_header_row_for_month_and_year(sheet, 'Practice name', @month_and_year_array, xlsx_sub_header_3)
-          @practice_views_array.in_groups_of(13).each do |practice_views|
+          @practice_views_by_month.in_groups_of(13).each do |practice_views|
             sheet.add_row [
                 "#{practice_views[0][0]}",
                 "#{practice_views[0][1]}",
@@ -214,6 +250,12 @@ ActiveAdmin.register_page "Dashboard" do
                 value.commits_count
             ], style: xlsx_entry
           end
+          sheet.add_row [""], style: xlsx_divider
+
+          sheet.add_row ['User Statistics'], style: xlsx_sub_header_1
+          sheet.add_row ['Users per Month'], style: xlsx_sub_header_2
+          add_header_row_for_month_and_year(sheet, '', @month_and_year_array, xlsx_sub_header_3)
+          add_monthly_array_values_to_columns(@user_statistics, sheet, xlsx_entry)
         end
       end
 
@@ -401,9 +443,9 @@ ActiveAdmin.register_page "Dashboard" do
 
         panel 'General Traffic' do
           table_for general_traffic_stats do
-            column :unique_visitors
-            column :number_of_site_visits
-            column :total_accounts
+            column('unique visitors (last month)', :unique_visitors)
+            column('number of site visits (last month)', :number_of_site_visits)
+            column('total accounts (all-time)', :total_accounts)
           end
         end # panel
 
