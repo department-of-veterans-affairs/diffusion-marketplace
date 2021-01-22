@@ -21,6 +21,12 @@
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
+.successful-status-modal-container, .in-progress-status-modal-container, .unsuccessful-status-modal-container {
+  @media screen and (min-width: 1024px) {
+    display: none;
+  }
+}
+
 .adoption-status-modal {
   position: fixed; /* Stay in place */
   z-index: 100000; /* Sit on top */
@@ -35,6 +41,7 @@
   .adoption-status-modal-content {
     // get the height of the modal and divide by two so it's in the middle of the screen
     top: calc(50vh - 80px);
+    border: 0;
 
     .fa-times-circle {
       font-size: 1.5em !important;
