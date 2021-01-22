@@ -147,6 +147,11 @@ describe 'Search', type: :feature do
   end
 
   describe 'results' do
+    it 'should display empty query and filters message' do
+      visit '/'
+      find('#dm-navbar-search-button').click
+      expect(page).to have_content('Enter a search term or use the filters to find matching practices')
+    end
     it 'should display certain text if no matches are found' do
       visit_search_page
       toggle_filters_accordion
