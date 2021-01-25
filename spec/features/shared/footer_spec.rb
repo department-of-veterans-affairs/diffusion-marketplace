@@ -27,6 +27,9 @@ describe 'Diffusion Marketplace footer', type: :feature, js: true do
         expect(page).to have_link('Nominate a practice')
       end
     end
+    it 'should open feedback modal' do
+      find('#feedback-modal').click
+    end
   end
 
   describe 'footer diffusion marketplace text' do
