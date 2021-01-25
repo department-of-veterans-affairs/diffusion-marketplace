@@ -182,7 +182,7 @@ ActiveAdmin.register_page "Dashboard" do
           sheet.add_row [""], style: xlsx_divider
 
           sheet.add_row ["Practice Engagement & Commitment"], style: xlsx_sub_header_1
-          sheet.add_row ['Practice Views by Month'], style: xlsx_sub_header_2
+          sheet.add_row ['Practice Views per Month'], style: xlsx_sub_header_2
           add_header_row_for_month_and_year(sheet, 'Practice name', @month_and_year_array, xlsx_sub_header_3)
           @practice_views_by_month.in_groups_of(13).each do |practice_views|
             sheet.add_row [
