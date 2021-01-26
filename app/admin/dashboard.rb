@@ -6,11 +6,16 @@ ActiveAdmin.register_page "Dashboard" do
     helper_method :set_date_values
     helper_method :adoption_xlsx_styles
     before_action :set_dashboard_values
+
+    def site_visits(start_time, end_time)
+      Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where(time: start_time..end_time).group("properties->>'ip_address'").count
+    end
+
     def set_dashboard_values
       set_date_values
       @enabled_published_practices = Practice.where(enabled: true, published: true)
 
-      site_visit_stats = Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where(time: @beginning_of_last_month..@end_of_last_month).group("properties->>'ip_address'").count
+      site_visit_stats = site_visits(@beginning_of_last_month, @end_of_last_month)
       @practices = @enabled_published_practices.order(name: :asc)
       @practices_views = @enabled_published_practices.sort_by(&:current_month_views).reverse!
 
@@ -73,8 +78,8 @@ ActiveAdmin.register_page "Dashboard" do
         end
 
         # Get site visits by month
-        site_visit_by_ip = Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where(time: beg_of_month..end_of_month).group("properties->>'ip_address'").count
-        site_visit_ct = site_visit_by_ip.sum {|_k, v| v}
+        site_visits = site_visits(beg_of_month, end_of_month)
+        site_visit_ct = site_visits.sum {|_k, v| v}
         @site_visits_by_month << [month_and_year, site_visit_ct]
 
         # Get new users by month
@@ -108,42 +113,14 @@ ActiveAdmin.register_page "Dashboard" do
     end
 
     def add_header_row_for_month_and_year(sheet, first_column_text, array, row_style)
-      sheet.add_row [
-          "#{first_column_text}",
-          array[0].join(' '),
-          array[1].join(' '),
-          array[2].join(' '),
-          array[3].join(' '),
-          array[4].join(' '),
-          array[5].join(' '),
-          array[6].join(' '),
-          array[7].join(' '),
-          array[8].join(' '),
-          array[9].join(' '),
-          array[10].join(' '),
-          array[11].join(' '),
-          array[12].join(' ')
-      ], style: row_style
+      sheet_row = ["#{first_column_text}"] + array.map { |a| a.join(' ') }
+      sheet.add_row sheet_row, style: row_style
     end
 
     def add_monthly_array_values_to_columns(hash, sheet, row_style)
       hash.each do |key, value|
-        sheet.add_row [
-            key.to_s.tr!('_', ' ').titleize,
-            value[0],
-            value[1],
-            value[2],
-            value[3],
-            value[4],
-            value[5],
-            value[6],
-            value[7],
-            value[8],
-            value[9],
-            value[10],
-            value[11],
-            value[12]
-        ], style: row_style
+        sheet_row = [key.to_s.tr!('_', ' ').titleize] + value.map { |v| v }
+        sheet.add_row sheet_row, style: row_style
       end
     end
 
@@ -184,23 +161,9 @@ ActiveAdmin.register_page "Dashboard" do
           sheet.add_row ["Practice Engagement & Commitment"], style: xlsx_sub_header_1
           sheet.add_row ['Practice Views per Month'], style: xlsx_sub_header_2
           add_header_row_for_month_and_year(sheet, 'Practice name', @month_and_year_array, xlsx_sub_header_3)
-          @practice_views_by_month.in_groups_of(13).each do |practice_views|
-            sheet.add_row [
-                "#{practice_views[0][0]}",
-                "#{practice_views[0][1]}",
-                "#{practice_views[1][1]}",
-                "#{practice_views[2][1]}",
-                "#{practice_views[3][1]}",
-                "#{practice_views[4][1]}",
-                "#{practice_views[5][1]}",
-                "#{practice_views[0][1]}",
-                "#{practice_views[7][1]}",
-                "#{practice_views[8][1]}",
-                "#{practice_views[9][1]}",
-                "#{practice_views[10][1]}",
-                "#{practice_views[11][1]}",
-                "#{practice_views[12][1]}"
-            ], style: xlsx_entry
+          @practice_views_by_month.in_groups_of(13) do |practice_views|
+            sheet_row = ["#{practice_views[0][0]}"] + practice_views.map { |pv| pv[1]}
+            sheet.add_row sheet_row, style: xlsx_entry
           end
           sheet.add_row [''], style: xlsx_divider
 
