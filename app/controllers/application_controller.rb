@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   include NavigationHelper
   include Pagy::Backend
-  
+
   protect_from_forgery with: :exception
 
   before_action :setup_breadcrumb_navigation
