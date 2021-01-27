@@ -14,6 +14,10 @@ class PracticesController < ApplicationController
   before_action :can_edit_practice, only: [:edit, :update, :instructions, :overview, :contact, :published, :publication_validation, :adoptions, :about]
   before_action :set_date_initiated_params, only: [:update, :publication_validation]
   before_action :is_enabled, only: [:show]
+  before_action :practice_locked_for_editing, only: [:edit, :update, :destroy, :highlight, :un_highlight, :feature,
+                                   :un_feature, :favorite, :instructions, :overview, :origin, :collaborators, :impact, :resources, :documentation,
+                                   :departments, :timeline, :risk_and_mitigation, :contact, :checklist, :publication_validation, :adoptions,
+                                   :create_or_update_diffusion_history, :implementation, :introduction, :about, :metrics]
   # GET /practices
   # GET /practices.json
   def index
@@ -520,6 +524,26 @@ class PracticesController < ApplicationController
   def set_practice
     id = params[:id] || params[:practice_id]
     @practice = Practice.friendly.find(id)
+  end
+
+  def practice_locked_for_editing
+    cur_user_id = current_user[:id]
+    locked_by = ""
+    locked_rec = PracticeEditorSession.practice_locked(cur_user_id, @practice.id)
+    # if not locked - lock the practice for editing (for the current user)
+    if locked_rec == 0
+      PracticeEditorSession.lock_practice_for_user(cur_user_id, @practice.id)
+    else
+      locked_by_user_id = PracticeEditorSession.locked_by_user_id(locked_rec)
+      if locked_by_user_id != cur_user_id
+        locked_by = PracticeEditorSession.locked_by(locked_rec)
+        debugger
+        redirect_to "/practices/" + @practice.slug
+        # redirect to show page... display modal with "locked_by" info.
+      end
+
+    end
+
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

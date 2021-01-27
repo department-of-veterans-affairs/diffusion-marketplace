@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_09_223407) do
+ActiveRecord::Schema.define(version: 2021_01_26_142526) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -671,6 +671,17 @@ ActiveRecord::Schema.define(version: 2020_12_09_223407) do
     t.index ["user_id"], name: "index_practice_creators_on_user_id"
   end
 
+  create_table "practice_editor_sessions", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "practice_id"
+    t.datetime "session_start_time"
+    t.datetime "session_end_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["practice_id"], name: "index_practice_editor_sessions_on_practice_id"
+    t.index ["user_id"], name: "index_practice_editor_sessions_on_user_id"
+  end
+
   create_table "practice_emails", force: :cascade do |t|
     t.bigint "practice_id"
     t.string "address"
@@ -1246,6 +1257,7 @@ ActiveRecord::Schema.define(version: 2020_12_09_223407) do
   add_foreign_key "practice_awards", "practices"
   add_foreign_key "practice_creators", "practices"
   add_foreign_key "practice_creators", "users"
+  add_foreign_key "practice_editor_sessions", "practices"
   add_foreign_key "practice_emails", "practices"
   add_foreign_key "practice_management_practices", "practice_managements"
   add_foreign_key "practice_management_practices", "practices"
