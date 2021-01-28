@@ -3,8 +3,7 @@ class PracticeEditorSession < ApplicationRecord
 
   # returns 0 if not locked and returns the practice_editor_session id if locked
   def self.practice_locked(cur_user_id, practice_id)
-    rec = PracticeEditorSession.where(:practice_id == practice_id && :session_start_time != nil && :session_end_time == nil).order("session_start_time DESC")
-    debugger
+    rec = PracticeEditorSession.where(practice_id: practice_id, session_end_time: nil).where.not(session_start_time: nil).order("session_start_time DESC")
     return 0 if rec.count == 0
     return rec[0].id
   end
@@ -15,7 +14,9 @@ class PracticeEditorSession < ApplicationRecord
     rec = PracticeEditorSession.find_by_id(rec_id)
     user_id = rec.user_id
     user = User.find_by_id(user_id)
-    return user.first_name + " " + user.last_name + " @" + rec.session_start_time.to_s
+    first_name = user.first_name.nil? ? "?" : user.first_name
+    last_name = user.last_name.nil? ? "?" : user.last_name
+    return first_name + " " + last_name + " @" + rec.session_start_time.to_s
   end
   def self.locked_by_user_id(rec_id)
     rec = PracticeEditorSession.find_by_id(rec_id)
