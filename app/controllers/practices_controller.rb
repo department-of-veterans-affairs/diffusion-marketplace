@@ -536,7 +536,12 @@ class PracticesController < ApplicationController
       locked_by_user_id = PracticeEditorSession.locked_by_user_id(locked_rec)
       if locked_by_user_id != cur_user_id
         locked_by = PracticeEditorSession.locked_by(locked_rec)
-        redirect_to practice_metrics_path(@practice), notice: 'You cannot edit this page since it is currently being edited by ' +  locked_by
+        is_admin = PracticeEditorSession.is_admin(cur_user_id)
+        msg = 'You cannot edit this page since it is currently being edited by ' +  locked_by
+        if is_admin then
+          msg += " (Site Admin)"
+        end
+        redirect_to practice_metrics_path(@practice), notice: msg
         # redirect to show page... display modal with "locked_by" info.
        end
     end

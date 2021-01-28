@@ -24,4 +24,15 @@ class PracticeEditorSession < ApplicationRecord
     user = User.find_by_id(user_id)
     return user.blank? ? 0 : user.id
   end
+  def self.is_admin(user_id)
+    sql = "select r.id from roles r join users_roles ur on r.id = ur.role_id join users u on ur.user_id = u.id where u.id = $1"
+    param1 = "#{user_id}"
+    records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, param1]])
+    if records_array.count == 1 then
+      if records_array[0]["id"] == 1 then
+        return true
+      end
+    end
+    return false
+  end
 end
