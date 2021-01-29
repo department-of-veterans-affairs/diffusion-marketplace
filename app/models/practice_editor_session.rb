@@ -16,10 +16,9 @@ class PracticeEditorSession < ApplicationRecord
     user = User.find_by_id(user_id)
     first_name = user.first_name.nil? ? "?" : user.first_name
     last_name = user.last_name.nil? ? "?" : user.last_name
-    if include_time
-      return first_name + " " + last_name + " @" + rec.session_start_time.to_s
-    end
-    return first_name + " " + last_name
+    ret_val = first_name + " " + last_name
+    ret_val += " @" + rec.session_start_time.to_s if include_time
+    ret_val
   end
   def self.locked_by_user_id(rec_id)
     rec = PracticeEditorSession.find_by_id(rec_id)

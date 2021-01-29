@@ -9,7 +9,6 @@
     <%= render partial: 'practices/form/metrics', formats: [:js] %>
   <% end %>
 <% end %>
-
 <%= render 'practice_editor_sidenav' %>
 <div class="grid-container position-relative">
   <div class="grid-row grid-gap practice-editor-min-height">
@@ -31,11 +30,15 @@
             </a>
           </div>
           <div class="margin-top-2 margin-bottom-2">
-            <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
+            <% if params.has_key?(:session_locked) %>
+              <div class="practice-session-messages margin-top-2">
+                <%= params[:session_locked] %>
+              </div>
+             <% else %>
+                <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
+            <% end %>
           </div>
-          <div class="practice-session-messages">
-            Hello there bub...
-          </div>
+
         </div>
         <div class="margin-bottom-10 grid-row flex-align-center margin-top-3">
           <label for="metrics_duration" class="usa-label grid-col-3 x0-top">View your metrics for</label>
