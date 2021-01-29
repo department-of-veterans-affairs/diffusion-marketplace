@@ -42,6 +42,9 @@
       <%= render partial: "shared/messages", locals: {small_text: false} %>
       <section class="usa-section padding-top-0 p2-bottom introduction">
         <h1 class="font-sans-2xl line-height-sans-205">Introduction</h1>
+        <div class="margin-top-2 margin-bottom-2">
+          <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
+        </div>
         <h2 class="text-normal">Introduce your practice and provide a brief summary to people who may be unfamiliar
           with it.</h2>
         <%= render 'pii_phi_alert' %>

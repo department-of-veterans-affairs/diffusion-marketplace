@@ -18,6 +18,9 @@
       <%= render partial: "shared/messages", locals: {small_text: false} %>
       <section class="usa-section padding-top-0 p0-bottom introduction">
         <h1 class="font-sans-2xl line-height-46px">Adoptions</h1>
+        <div class="margin-top-2 margin-bottom-2">
+          <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
+        </div>
         <h2 class="text-normal font-sans-lg line-height-36">
           Share which facilities have successfully adopted your practice. All adoptions roll up to the VAMC level. Aim to update this data quarterly.
         </h2>

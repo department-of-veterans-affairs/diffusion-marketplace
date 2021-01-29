@@ -1,0 +1,6 @@
+<% last_updated = PracticeEditorSession.practice_last_updated(@practice.id) %>
+<% if !last_updated.blank? %>
+  <div class="practice-last-updated-text">
+    <%= last_updated %>
+  </div>
+<% end %>

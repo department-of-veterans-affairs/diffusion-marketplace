@@ -14,7 +14,6 @@
 <div class="grid-container position-relative">
   <div class="grid-row grid-gap practice-editor-min-height">
     <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-
     <div id="metrics" class="desktop:grid-col-9 grid-col-12 p0">
       <div>
       <%= render partial: "shared/messages", locals: {small_text: true} %>
@@ -30,6 +29,12 @@
               <i class="fas fa-print margin-right-05"></i>
               <span>Print</span>
             </a>
+          </div>
+          <div class="margin-top-2 margin-bottom-2">
+            <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
+          </div>
+          <div class="practice-session-messages">
+            Hello there bub...
           </div>
         </div>
         <div class="margin-bottom-10 grid-row flex-align-center margin-top-3">

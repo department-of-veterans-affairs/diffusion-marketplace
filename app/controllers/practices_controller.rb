@@ -527,6 +527,7 @@ class PracticesController < ApplicationController
   end
 
   def practice_locked_for_editing
+    practice_last_updated = PracticeEditorSession.practice_last_updated(@practice.id)
     cur_user_id = current_user[:id]
     locked_rec = PracticeEditorSession.practice_locked(cur_user_id, @practice.id)
     # if not locked - lock the practice for editing (for the current user)
