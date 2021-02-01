@@ -46,6 +46,11 @@ en:
         commontable: Commontable
     errors:
       models:
+        practice:
+          attributes:
+            user:
+              blank: can't be blank
+              invalid: must be a valid VA email address
         commontator/comment:
           attributes:
             body:

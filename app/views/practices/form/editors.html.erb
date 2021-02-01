@@ -1,9 +1,11 @@
-<% provide :main_classes, 'bg-gray-2' %>
+<% provide :body_classes, 'bg-gray-2' %>
 <% provide :footer_classes, 'bg-gray-2' %>
 
-<%# provide :head_tags do %>
-  <%#= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
-<%# end %>
+<% provide :head_tags do %>
+  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    <%= render partial: 'editors', formats: [:js] %>
+  <% end %>
+<% end %>
 
 <%= render 'practice_editor_sidenav' %>
 <div class="grid-container position-relative">
@@ -14,13 +16,61 @@
       <%= render partial: "shared/messages", locals: {small_text: false} %>
       <section class="usa-section padding-top-0 p0-bottom editors">
         <h1 class="font-sans-2xl line-height-46px margin-bottom-3">Editors</h1>
-        <div class="margin-top-3">
-          <%= render 'pii_phi_alert' %>
-        </div>
-        <%= nested_form_for(@practice, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
-          <fieldset class="usa-fieldset grid-col-11">
-            <legend class="usa-sr-only">Practice Contact</legend>
+        <% editors = @practice.practice_editors %>
+        <% editors.each do |pe| %>
+          <%
+            user = pe.user
+            first_name = user.first_name
+            last_name = user.last_name
+            first_and_last = [user.first_name, user.last_name].join(' ')
+            email = user.email
+          %>
+          <div class="grid-row flex-align-center border-bottom-1px practice-editor-entry">
+            <div class="grid-col-11 padding-y-3">
+              <p><%= first_and_last if first_name.present? && last_name.present? %></p>
+              <a target="_blank" href="mailto:<%= email %>" class="dm-external-link line-height-26">
+                <%= email %>
+              </a>
+              <%
+                invited = pe.invited_at
+                accepted = pe.accepted_at
+                last_edited = pe.last_edited_at
+              %>
+              <% if invited.present? && accepted.nil? %>
+                <p>Invitation sent on <%= get_local_date_and_time(invited) %></p>
+              <% elsif invited.present? && accepted.present? && last_edited.nil? %>
+                <p>Invitation accepted on <%= get_local_date_and_time(accepted) %></p>
+              <% elsif invited.present? && accepted.present? && last_edited.present? %>
+                <p>Last edited on <%= get_local_date_and_time(last_edited) %></p>
+              <% end %>
+            </div>
+            <div class="grid-col-1 display-flex justify-center">
+              <%= link_to '', practice_path(@practice,
+                    practice: { practice_editors_attributes: { id: pe.id, _destroy: true } }),
+                    data: { confirm: "Are you sure you want to remove #{first_name.present? && last_name.present? ? first_and_last : email} from the editors list?" },
+                    method: 'put',
+                    class: 'fas fa-trash-alt fa-2x text-middle'
+              %>
+            </div>
+          </div>
+        <% end %>
+        <%= nested_form_for(@practice, html: {style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
+          <fieldset class="usa-fieldset grid-col-12">
+            <legend class="usa-sr-only">Practice Editors</legend>
+            <div class="grid-col-12">
+              <h2 class="line-height-37px font-sans-xl margin-bottom-3">Add editors</h2>
+              <%= f.fields_for :practice_editors, include_id: false, wrapper: false do |pe| %>
+                <div class="editor-input-container">
+                  <%= pe.label :email, 'E-mail the people who can help you edit this practice page. Only @va.gov emails are allowed.', class: 'usa-label editor-label margin-top-0' %>
+                  <%= pe.text_field :email, class: 'usa-input editor-input' %>
+                </div>
+              <% end %>
+              <p><%= f.link_to_add "Add a task", :practice_editors %></p>
+            </div>
           </fieldset>
+          <div>
+            <%= f.submit "Send invite", class: 'usa-button dm-btn-primary x1-top practice-editors-button' %>
+          </div>
         <% end %>
       </section>
     </div>

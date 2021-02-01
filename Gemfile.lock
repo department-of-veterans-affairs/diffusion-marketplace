@@ -291,6 +291,7 @@ GEM
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
+    local_time (2.1.0)
     lodash-rails (4.17.14)
       railties (>= 3.1)
     loofah (2.7.0)
@@ -597,6 +598,7 @@ DEPENDENCIES
   kaminari
   letter_opener
   listen (= 3.1.5)
+  local_time
   lodash-rails
   mechanize (= 2.7.6)
   mini_racer

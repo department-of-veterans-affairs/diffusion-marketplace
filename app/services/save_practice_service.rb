@@ -42,6 +42,9 @@ class SavePracticeService
       if @practice_params["risk_mitigations_attributes"].present?
         process_risk_mitigations_params
       end
+      if @practice_params["practice_editors_attributes"].present?
+        update_practice_editors
+      end
 
       updated = @practice.update(@practice_params)
       rescue_method(:update_practice_partner_practices)
@@ -54,6 +57,7 @@ class SavePracticeService
       rescue_method(:update_practice_awards)
       rescue_method(:update_category_practices)
       rescue_method(:crop_resource_images)
+
       if updated
         practice = Practice.find_by_id(@practice.id)
         practice.practice_pages_updated = DateTime.now()
@@ -67,6 +71,8 @@ class SavePracticeService
   end
 
   private
+
+  attr_accessor :flash
 
   def rescue_method(method_name)
     begin
@@ -391,6 +397,29 @@ class SavePracticeService
           @practice_params["risk_mitigations_attributes"].delete(rm[0])
         end
       end
+    end
+  end
+
+  def update_practice_editors
+    editors = @practice_params[:practice_editors_attributes]
+    includes_destroy = editors.keys.include?('_destroy')
+    if includes_destroy
+      editor_count = @practice.practice_editors.count
+      if editor_count > 1
+        PracticeEditor.find_by(id: editors[:id]).destroy
+      else
+        raise StandardError.new "error. At least one editor is required"
+      end
+    else
+      email_param = editors.values.first.values.first
+      user = User.find_by(email: email_param)
+      if user.present?
+        PracticeEditor.create!(practice: @practice, user: user, email: email_param, invited_at: DateTime.current)
+      end
+    end
+    # Remove params keys before updating practice to avoid any errors
+    editors.keys.each do |k|
+      editors.delete(k)
     end
   end
 end

@@ -1,0 +1,11 @@
+function hide() {
+    console.log('hello', $('.editor-input-container').length)
+
+        $('.editor-input-container').remove();
+
+
+    $('.add_nested_fields').click()
+    $('.add_nested_fields').addClass('display-none')
+}
+
+$(document).on('turbolinks:load', hide);

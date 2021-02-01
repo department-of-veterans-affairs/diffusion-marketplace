@@ -11,7 +11,7 @@ class PracticesController < ApplicationController
   before_action :authenticate_user!, except: [:show, :search, :index, :explore, :explore_practices]
   before_action :can_view_practice, only: [:show, :edit, :update, :destroy]
   before_action :can_create_practice, only: :create
-  before_action :can_edit_practice, only: [:edit, :update, :instructions, :overview, :contact, :published, :publication_validation, :adoptions, :about]
+  before_action :can_edit_practice, only: [:edit, :update, :instructions, :overview, :contact, :published, :publication_validation, :adoptions, :about, :editors]
   before_action :set_date_initiated_params, only: [:update, :publication_validation]
   before_action :is_enabled, only: [:show]
   # GET /practices
@@ -568,7 +568,8 @@ class PracticesController < ApplicationController
                                      practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :facility_type, :initiating_department_office_id],
                                      practice_metrics_attributes: [:id, :_destroy, :description],
                                      practice_emails_attributes: [:id, :address, :_destroy],
-                                     duration: {}
+                                     duration: {},
+                                     practice_editors_attributes: [:id, :email, :_destroy]
 
     )
   end

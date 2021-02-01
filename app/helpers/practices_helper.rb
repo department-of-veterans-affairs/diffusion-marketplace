@@ -341,4 +341,8 @@ module PracticesHelper
     }
     content[resource_type.to_sym]
   end
+
+  def va_email_validation
+    /\A([^@\s]+)@(va.gov)\z/i
+  end
 end
