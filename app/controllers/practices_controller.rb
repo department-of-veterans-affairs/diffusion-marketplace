@@ -129,14 +129,17 @@ class PracticesController < ApplicationController
           format.html { redirect_back fallback_location: root_path }
           format.json { render json: updated, status: :unprocessable_entity }
         else
+          editor_notice = "#{params[:practice][:practice_editors_attributes].keys.include?('_destroy') ? 'Editor was removed from the list. ' : 'Editor was added to the list. '}"
           if params[:next]
             path = eval("practice_#{Practice::PRACTICE_EDITOR_SLUGS.key(current_endpoint)}_path(@practice)")
             format.html { redirect_to path, notice: params[:practice].present? ? 'Practice was successfully updated.' : nil }
             format.json { render :show, status: :ok, location: @practice }
           else
-            format.html { redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.' }
+            format.html { redirect_back fallback_location: root_path, notice: editor_notice + 'Practice was successfully updated.' }
             format.json { render json: @practice, status: :ok }
           end
+          # Update last_edited field for user
+          PracticeEditor.find_by(practice: @practice, user: current_user).update_attributes(last_edited_at: DateTime.current) if current_user.present?
         end
       else
         flash[:error] = "There was an #{@practice.errors.messages}. The practice was not saved."

@@ -26,8 +26,8 @@
             email = user.email
           %>
           <div class="grid-row flex-align-center border-bottom-1px practice-editor-entry">
-            <div class="grid-col-11 padding-y-3">
-              <p><%= first_and_last if first_name.present? && last_name.present? %></p>
+            <div class="grid-col-11 padding-y-3 line-height-26">
+              <p class="text-bold"><%= first_and_last if first_name.present? && last_name.present? %></p>
               <a target="_blank" href="mailto:<%= email %>" class="dm-external-link line-height-26">
                 <%= email %>
               </a>
@@ -37,11 +37,11 @@
                 last_edited = pe.last_edited_at
               %>
               <% if invited.present? && accepted.nil? %>
-                <p>Invitation sent on <%= get_local_date_and_time(invited) %></p>
+                <%= render partial: 'practices/practice_editor_status', locals: { status_text: 'Invitation sent on', status: invited } %>
               <% elsif invited.present? && accepted.present? && last_edited.nil? %>
-                <p>Invitation accepted on <%= get_local_date_and_time(accepted) %></p>
-              <% elsif invited.present? && accepted.present? && last_edited.present? %>
-                <p>Last edited on <%= get_local_date_and_time(last_edited) %></p>
+                <%= render partial: 'practices/practice_editor_status', locals: { status_text: 'Invitation accepted on', status: accepted } %>
+              <% elsif invited.present? && accepted.present? && last_edited.present? || user == @practice.user && last_edited.present? %>
+                <%= render partial: 'practices/practice_editor_status', locals: { status_text: 'Last edited on', status: last_edited } %>
               <% end %>
             </div>
             <div class="grid-col-1 display-flex justify-center">

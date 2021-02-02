@@ -414,10 +414,20 @@ class SavePracticeService
       email_param = editors.values.first.values.first
       user = User.find_by(email: email_param)
       if user.present?
-        PracticeEditor.create!(practice: @practice, user: user, email: email_param, invited_at: DateTime.current)
+        PracticeEditor.create_and_invite(@practice, user, email_param)
+      else
+        # create a new user if they do not exist
+        user = User.new(email: email_param)
+        # set the user's attributes based on ldap entry
+        user.skip_password_validation = true
+        user.skip_va_validation = true
+        user.confirm unless ENV['USE_NTLM'] == 'true'
+        user.save
+        # create a new practice editor for the new user
+        PracticeEditor.create_and_invite(@practice, user, email_param)
       end
     end
-    # Remove params keys before updating practice to avoid any errors
+    # Remove params keys before updating practice
     editors.keys.each do |k|
       editors.delete(k)
     end

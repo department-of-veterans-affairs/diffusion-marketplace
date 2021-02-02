@@ -234,10 +234,6 @@ ActiveAdmin.register Practice do
       @adoption_counts = adoption_counts_by_practice(resource)
     end
 
-    def add_practice_user_to_practice_editors(practice, user)
-      practice.editors << user unless practice.editors.include?(user)
-    end
-
     def set_practice_user(practice)
       email = params[:user_email].downcase
       user = User.find_by(email: email)
@@ -253,9 +249,6 @@ ActiveAdmin.register Practice do
       user.save
       practice.user = user
       practice.commontator_thread.subscribe(user)
-
-      # add the user to the practice editors array
-      add_practice_user_to_practice_editors(practice, user)
     end
 
     def find_resource
