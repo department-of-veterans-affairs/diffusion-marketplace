@@ -60,21 +60,22 @@ class PracticeEditorSession < ApplicationRecord
 
   def self.monitor_editing_session(practice_id, user_id)
     Thread.new do
-      monitor_session(practice_id, user_id)
-    end
-
+        monitor_session(practice_id, user_id, Thread)
+      end
   end
-  def self.monitor_session(practice_id, user_id)
+  def self.monitor_session(practice_id, user_id, thread)
     ctr = 0
+    rec_id = PracticeEditorSession.where(practice_id: practice_id, user_id: user_id, session_end_time: nil).order("session_start_time DESC").first()
     loop do
       sleep 5
-      rec_id = PracticeEditorSession.where(practice_id: practice_id, user_id: user_id, session_end_time: nil).order("session_start_time DESC").first()
-      puts 'rec_id ' + rec_id.id.to_s
+      puts 'rec_id: ' + rec_id.id.to_s
+      puts 'thread_id: ' + Thread.current.object_id.to_s
       puts practice_id.to_s + ", " + user_id.to_s
       ctr += 1
+      puts 'ctr: ' + ctr.to_s
       if ctr == 5
         puts 'done'
-        break
+        Thread.exit
       end
     end
   end
