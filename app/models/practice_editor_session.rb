@@ -1,8 +1,17 @@
 class PracticeEditorSession < ApplicationRecord
   belongs_to :practice
 
+
+  def self.practice_locked_for_current_user(cur_user_id, practice_id)
+    rec = PracticeEditorSession.where(practice_id: practice_id, session_end_time: nil).where.not(session_start_time: nil).order("session_start_time DESC")
+    return false if rec.count == 0
+    if rec[0].user_id == cur_user_id
+      return false
+    end
+    return true
+  end
   # returns 0 if not locked and returns the practice_editor_session id if locked
-  def self.practice_locked(cur_user_id, practice_id)
+  def self.practice_locked(practice_id)
     rec = PracticeEditorSession.where(practice_id: practice_id, session_end_time: nil).where.not(session_start_time: nil).order("session_start_time DESC")
     return 0 if rec.count == 0
     return rec[0].id
@@ -47,5 +56,26 @@ class PracticeEditorSession < ApplicationRecord
       s_text += " (Site Admin)"
     end
     s_text
+  end
+
+  def self.monitor_editing_session(practice_id, user_id)
+    Thread.new do
+      monitor_session(practice_id, user_id)
+    end
+
+  end
+  def self.monitor_session(practice_id, user_id)
+    ctr = 0
+    loop do
+      sleep 5
+      rec_id = PracticeEditorSession.where(practice_id: practice_id, user_id: user_id, session_end_time: nil).order("session_start_time DESC").first()
+      puts 'rec_id ' + rec_id.id.to_s
+      puts practice_id.to_s + ", " + user_id.to_s
+      ctr += 1
+      if ctr == 5
+        puts 'done'
+        break
+      end
+    end
   end
 end
