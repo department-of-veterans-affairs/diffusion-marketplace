@@ -20,7 +20,6 @@ Rails.application.routes.draw do
     get '/edit/implementation', action: 'implementation', as: 'implementation'
     get '/edit/about', action: 'about', as: 'about'
     get '/edit/overview', action: 'overview', as: 'overview'
-    get '/edit/collaborators', action: 'collaborators', as: 'collaborators'
     get '/edit/impact', action: 'impact', as: 'impact'
     get '/edit/resources', action: 'resources', as: 'resources'
     get '/edit/documentation', action: 'documentation', as: 'documentation'

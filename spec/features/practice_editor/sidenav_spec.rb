@@ -18,10 +18,6 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_css('.usa-sidenav__item', count: 3)
         end
 
-        it 'should not have a link to Collaborators' do
-            expect(page).not_to have_link('Collaborators', href: "/practices/#{@practice.slug}/edit/collaborators")
-        end
-
         it 'should navigate the user around the editor when they click on the section names' do
           visit '/practices/a-public-practice/edit/introduction'
             page.has_css?('#introduction')

@@ -16,8 +16,7 @@
       <%= render partial: "shared/messages", locals: {small_text: false} %>
       <section class="usa-section padding-top-0 p0-bottom editors">
         <h1 class="font-sans-2xl line-height-46px margin-bottom-3">Editors</h1>
-        <% editors = @practice.practice_editors %>
-        <% editors.each do |pe| %>
+        <% PracticeEditor.where(practice: @practice).order(created_at: :asc).each do |pe| %>
           <%
             user = pe.user
             first_name = user.first_name
@@ -62,7 +61,7 @@
               <%= f.fields_for :practice_editors, include_id: false, wrapper: false do |pe| %>
                 <div class="editor-input-container">
                   <%= pe.label :email, 'E-mail the people who can help you edit this practice page. Only @va.gov emails are allowed.', class: 'usa-label editor-label margin-top-0' %>
-                  <%= pe.text_field :email, class: 'usa-input editor-input' %>
+                  <%= pe.text_field :email, class: 'usa-input editor-input', type: 'email', pattern: '.+@va.gov' %>
                 </div>
               <% end %>
               <p><%= f.link_to_add "Add a task", :practice_editors %></p>
@@ -72,6 +71,10 @@
             <%= f.submit "Send invite", class: 'usa-button dm-btn-primary x1-top practice-editors-button' %>
           </div>
         <% end %>
+
+        <div class="grid-row margin-top-10">
+          <%= render partial: 'practices/back_and_continue_buttons', locals: { back_path: practice_introduction_path(@practice), continue_path: practice_introduction_path(@practice) }%>
+        </div>
       </section>
     </div>
   </div>

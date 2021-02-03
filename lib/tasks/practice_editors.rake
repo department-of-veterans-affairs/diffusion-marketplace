@@ -5,7 +5,7 @@ namespace :practice_editors do
 
     practices.each do |practice|
       if practice.user.present? && practice.practice_editors.where(user: practice.user).empty?
-        PracticeEditor.create!(practice: practice, user: practice.user)
+        PracticeEditor.create!(practice: practice, user: practice.user, email: practice.user.email)
       end
     end
 

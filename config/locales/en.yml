@@ -51,6 +51,11 @@ en:
             user:
               blank: can't be blank
               invalid: must be a valid VA email address
+        practice_editor:
+          attributes:
+            email:
+              blank: error. Email cannot be blank
+              invalid: error. Must be a valid @va.gov email address
         commontator/comment:
           attributes:
             body:

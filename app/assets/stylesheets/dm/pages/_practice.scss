@@ -351,11 +351,7 @@
   color: #DADADA;
 }
 
-.collaborators-form {
-  max-width: 100% !important;
-}
-
-.collab-trash, .staff-trash, .timeline-trash, .risk-mitigation-trash, .impact-trash,
+.staff-trash, .timeline-trash, .risk-mitigation-trash, .impact-trash,
 .va-employee-trash, .dm-origin-trash, .documentation-trash, .permission-trash, .resource-trash {
   color: #D83933 !important;
 
@@ -393,28 +389,6 @@
 .documentation-trash-container, .contact-trash-container,
 .permission-trash-container, .resource-trash-container {
   margin-left: 33px;
-}
-
-.clear-collaborator-button, .add-collaborator-button {
-  text-decoration: none !important;
-}
-
-.clear-collaborator-button {
-  margin-bottom: 28px !important;
-  margin-top: 4px !important;
-}
-
-.add-collaborator-button {
-  margin-top: 28px !important;
-  margin-bottom: 44px !important;
-}
-
-.clear-collaborator-button:hover {
-  color: #D83933 !important;
-}
-
-.add-collaborator-button:hover {
-  color: #005EA2 !important;
 }
 
 .green-check {

@@ -1,0 +1,8 @@
+<%= link_to back_path, class: 'usa-button--outline dm-btn-base editor-back-to-link margin-right-1 margin-bottom-5 text-no-underline' do %>
+  Back
+<% end %>
+<%# Add ternary for Adoptions page because it behaves differently than the other PE pages %>
+<%= link_to continue_path,
+      class: "usa-button dm-btn-base pe-continue editor-continue-link #{params[:controller] === 'practices' && params[:action] === 'adoptions' ? '' : 'continue-and-save'} margin-right-1 margin-bottom-5" do %>
+  Save and continue
+<% end %>

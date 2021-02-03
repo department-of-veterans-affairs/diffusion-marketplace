@@ -1,7 +1,7 @@
 class PracticesController < ApplicationController
   include CropperUtils, PracticesHelper
   before_action :set_practice, only: [:show, :edit, :update, :destroy, :highlight, :un_highlight, :feature,
-                                      :un_feature, :favorite, :instructions, :overview, :origin, :collaborators, :impact, :resources, :documentation,
+                                      :un_feature, :favorite, :instructions, :overview, :origin, :impact, :resources, :documentation,
                                       :departments, :timeline, :risk_and_mitigation, :contact, :checklist, :publication_validation, :adoptions,
                                       :create_or_update_diffusion_history, :implementation, :introduction, :about, :metrics, :editors]
   before_action :set_facility_data, only: [:show]
@@ -124,21 +124,30 @@ class PracticesController < ApplicationController
     updated = update_conditions
     respond_to do |format|
       if updated
+        editor_params = params[:practice][:practice_editors_attributes]
         if updated.is_a?(StandardError)
-          flash[:error] = "There was an #{updated.message}. The practice was not saved."
+          # Add back end validation error messages for Editors page just as a safety measure
+          invalid_email_field = updated.message.split(' ').slice(3..-1).join(' ')
+          flash[:error] = "There was an #{editor_params.present? && updated.message.include?('Validation') ? invalid_email_field : updated.message}. The practice was not saved."
           format.html { redirect_back fallback_location: root_path }
           format.json { render json: updated, status: :unprocessable_entity }
         else
-          editor_notice = "#{params[:practice][:practice_editors_attributes].keys.include?('_destroy') ? 'Editor was removed from the list. ' : 'Editor was added to the list. '}"
+          # Add notice messages specific to the Editors page
+          editor_notice = ''
+          if editor_params.present? && editor_params.keys.include?('_destroy')
+            editor_notice = 'Editor was removed from the list. '
+          elsif editor_params.present? && editor_params.values.first.values.first.present?
+            editor_notice = 'Editor was added to the list. '
+          end
           if params[:next]
             path = eval("practice_#{Practice::PRACTICE_EDITOR_SLUGS.key(current_endpoint)}_path(@practice)")
-            format.html { redirect_to path, notice: params[:practice].present? ? 'Practice was successfully updated.' : nil }
+            format.html { redirect_to path, notice: params[:practice].present? ? editor_notice + 'Practice was successfully updated.' : nil }
             format.json { render :show, status: :ok, location: @practice }
           else
             format.html { redirect_back fallback_location: root_path, notice: editor_notice + 'Practice was successfully updated.' }
             format.json { render json: @practice, status: :ok }
           end
-          # Update last_edited field for user
+          # Update last_edited field for Practice Editor
           PracticeEditor.find_by(practice: @practice, user: current_user).update_attributes(last_edited_at: DateTime.current) if current_user.present?
         end
       else
@@ -286,11 +295,6 @@ class PracticesController < ApplicationController
   # GET /practices/1/instructions
   def instructions
     render 'practices/form/instructions'
-  end
-
-  # /practices/slug/collaborators
-  def collaborators
-    redirect_to_instructions_path
   end
 
   # /practices/slug/overview
