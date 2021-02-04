@@ -59,27 +59,43 @@ class PracticeEditorSession < ApplicationRecord
   end
 
   def self.monitor_editing_session(practice_id, user_id)
+    #TODO update session record with process ID...
+    session_rec = PracticeEditorSession.where(practice_id: practice_id, user_id: user_id, session_end_time: nil, process_id: nil).order("session_start_time DESC").first()
     Thread.new do
-        monitor_session(practice_id, user_id, Thread)
+      if !session_rec.blank?
+        session_rec.process_id = Thread.current.object_id.to_i
+        session_rec.save
+      else
+        debugger
+        Thread.exit
+        return
+      end
+        monitor_session(practice_id, user_id, session_rec.id, session_rec.session_start_time)
       end
   end
-  def self.monitor_session(practice_id, user_id, thread)
+  def self.monitor_session(practice_id, user_id, session_rec_id, session_start)
     ctr = 0
-    session_rec = PracticeEditorSession.where(practice_id: practice_id, user_id: user_id, session_end_time: nil).order("session_start_time DESC").first()
-    session_start = session_rec.session_start_time
     loop do
-      sleep 8
+      sleep 2
       diff = minutes_in_session(session_start)
+      puts 'diff: ' + diff.to_s
+      if diff == 13
+        #TODO call  method to display modal confirm - do you want to continue editing...
+      end
+      #PracticesController.hello_brad()
+      if diff > 0
+        puts 'done'
+        rec = PracticeEditorSession.find_by_id(session_rec_id)
+        rec.session_end_time = DateTime.now
+        rec.save
+        Thread.exit
+      end
       puts diff.to_s
-      puts 'rec_id: ' + session_rec.id.to_s
+      puts 'rec_id: ' + session_rec_id.to_s
       puts 'thread_id: ' + Thread.current.object_id.to_s
       puts practice_id.to_s + ", " + user_id.to_s
       ctr += 1
       puts 'ctr: ' + ctr.to_s
-      if ctr == 5
-        puts 'done'
-        Thread.exit
-      end
     end
   end
   def self.minutes_in_session(session_start_time)

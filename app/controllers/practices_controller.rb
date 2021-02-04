@@ -518,6 +518,15 @@ class PracticesController < ApplicationController
     end
   end
 
+  def self.hello_brad
+    redirect_to root_path
+    debugger
+    # message = "what up boyyyyyyyy!"
+    # respond_to do |format|
+    #   format.js { render js: "alert(#{message});" }
+    # end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -525,6 +534,7 @@ class PracticesController < ApplicationController
     id = params[:id] || params[:practice_id]
     @practice = Practice.friendly.find(id)
   end
+
 
   def practice_locked_for_editing
     practice_last_updated = PracticeEditorSession.practice_last_updated(@practice.id)
