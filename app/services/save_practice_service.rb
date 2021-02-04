@@ -1,5 +1,6 @@
 class SavePracticeService
   include CropperUtils
+  include UsersHelper
 
   def initialize(params)
     @practice = params[:practice]
@@ -405,6 +406,7 @@ class SavePracticeService
     includes_destroy = editors.keys.include?('_destroy')
     if includes_destroy
       editor_count = @practice.practice_editors.count
+      # delete practice editor if there is at least one left after deletion. If not, raise an error.
       if editor_count > 1
         PracticeEditor.find_by(id: editors[:id]).destroy
       else
@@ -413,8 +415,14 @@ class SavePracticeService
     else
       email_param = editors.values.first.values.first
       user = User.find_by(email: email_param)
-      if user.present?
+      practice_editor = PracticeEditor.find_by(practice: @practice, user: user)
+
+      if user.present? && practice_editor.nil?
+        # create a new practice editor for the existing user
         PracticeEditor.create_and_invite(@practice, user, email_param)
+      # make sure a duplicate practice editor is not created
+      elsif user.present? && practice_editor.present?
+        raise StandardError.new "error. A user with the email \"#{user.email}\" is already an editor for this practice"
       else
         # create a new user if they do not exist
         user = User.new(email: email_param)
@@ -427,7 +435,7 @@ class SavePracticeService
         PracticeEditor.create_and_invite(@practice, user, email_param)
       end
     end
-    # Remove params keys before updating practice
+    # remove params keys before updating practice
     editors.keys.each do |k|
       editors.delete(k)
     end

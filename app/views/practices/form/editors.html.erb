@@ -19,34 +19,27 @@
         <% PracticeEditor.where(practice: @practice).order(created_at: :asc).each do |pe| %>
           <%
             user = pe.user
-            first_name = user.first_name
-            last_name = user.last_name
-            first_and_last = [user.first_name, user.last_name].join(' ')
             email = user.email
           %>
           <div class="grid-row flex-align-center border-bottom-1px practice-editor-entry">
             <div class="grid-col-11 padding-y-3 line-height-26">
-              <p class="text-bold"><%= first_and_last if first_name.present? && last_name.present? %></p>
+              <p class="text-bold <%= 'display-none' unless is_full_name_present(user) %>"><%= user_full_name(user) %></p>
               <a target="_blank" href="mailto:<%= email %>" class="dm-external-link line-height-26">
                 <%= email %>
               </a>
               <%
-                invited = pe.invited_at
-                accepted = pe.accepted_at
                 last_edited = pe.last_edited_at
               %>
-              <% if invited.present? && accepted.nil? %>
-                <%= render partial: 'practices/practice_editor_status', locals: { status_text: 'Invitation sent on', status: invited } %>
-              <% elsif invited.present? && accepted.present? && last_edited.nil? %>
-                <%= render partial: 'practices/practice_editor_status', locals: { status_text: 'Invitation accepted on', status: accepted } %>
-              <% elsif invited.present? && accepted.present? && last_edited.present? || user == @practice.user && last_edited.present? %>
+              <% if last_edited.present? %>
                 <%= render partial: 'practices/practice_editor_status', locals: { status_text: 'Last edited on', status: last_edited } %>
+              <% elsif last_edited.nil? && user != @practice.user %>
+                <%= render partial: 'practices/practice_editor_status', locals: { status_text: 'Added to the team on', status: pe.created_at } %>
               <% end %>
             </div>
             <div class="grid-col-1 display-flex justify-center">
               <%= link_to '', practice_path(@practice,
                     practice: { practice_editors_attributes: { id: pe.id, _destroy: true } }),
-                    data: { confirm: "Are you sure you want to remove #{first_name.present? && last_name.present? ? first_and_last : email} from the editors list?" },
+                    data: { confirm: "Are you sure you want to remove #{show_user_full_name_or_email(user)} from the editors list?" },
                     method: 'put',
                     class: 'fas fa-trash-alt fa-2x text-middle'
               %>
@@ -61,7 +54,8 @@
               <%= f.fields_for :practice_editors, include_id: false, wrapper: false do |pe| %>
                 <div class="editor-input-container">
                   <%= pe.label :email, 'E-mail the people who can help you edit this practice page. Only @va.gov emails are allowed.', class: 'usa-label editor-label margin-top-0' %>
-                  <%= pe.text_field :email, class: 'usa-input editor-input', type: 'email', pattern: '.+@va.gov' %>
+                  <%#= pe.text_field :email, class: 'usa-input editor-input', type: 'email', pattern: '.+@va.gov' %>
+                  <%= pe.text_field :email, class: 'usa-input editor-input', type: 'email' %>
                 </div>
               <% end %>
               <p><%= f.link_to_add "Add a task", :practice_editors %></p>
@@ -73,7 +67,7 @@
         <% end %>
 
         <div class="grid-row margin-top-10">
-          <%= render partial: 'practices/back_and_continue_buttons', locals: { back_path: practice_introduction_path(@practice), continue_path: practice_introduction_path(@practice) }%>
+          <%= render partial: 'practices/back_and_continue_buttons', locals: { back_path: practice_instructions_path(@practice), continue_path: practice_introduction_path(@practice) } %>
         </div>
       </section>
     </div>

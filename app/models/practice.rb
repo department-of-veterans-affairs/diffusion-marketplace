@@ -146,7 +146,8 @@ class Practice < ApplicationRecord
 
   PRACTICE_EDITOR_SLUGS =
       {
-          'introduction': 'instructions',
+          'editors': 'instructions',
+          'introduction': 'editors',
           'adoptions': 'introduction',
           'overview': 'adoptions',
           'implementation': 'overview',

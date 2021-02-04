@@ -674,8 +674,6 @@ ActiveRecord::Schema.define(version: 2021_01_27_210024) do
   create_table "practice_editors", force: :cascade do |t|
     t.bigint "practice_id"
     t.bigint "user_id"
-    t.datetime "invited_at"
-    t.datetime "accepted_at"
     t.datetime "last_edited_at"
     t.string "email"
     t.integer "position"

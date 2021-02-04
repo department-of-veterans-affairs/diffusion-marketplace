@@ -1,5 +1,5 @@
 class PracticesController < ApplicationController
-  include CropperUtils, PracticesHelper
+  include CropperUtils, PracticesHelper, PracticeEditorsHelper
   before_action :set_practice, only: [:show, :edit, :update, :destroy, :highlight, :un_highlight, :feature,
                                       :un_feature, :favorite, :instructions, :overview, :origin, :impact, :resources, :documentation,
                                       :departments, :timeline, :risk_and_mitigation, :contact, :checklist, :publication_validation, :adoptions,
@@ -11,7 +11,7 @@ class PracticesController < ApplicationController
   before_action :authenticate_user!, except: [:show, :search, :index, :explore, :explore_practices]
   before_action :can_view_practice, only: [:show, :edit, :update, :destroy]
   before_action :can_create_practice, only: :create
-  before_action :can_edit_practice, only: [:edit, :update, :instructions, :overview, :contact, :published, :publication_validation, :adoptions, :about, :editors]
+  before_action :can_edit_practice, only: [:edit, :update, :instructions, :overview, :contact, :published, :publication_validation, :adoptions, :about, :editors, :introduction, :implementation, :metrics]
   before_action :set_date_initiated_params, only: [:update, :publication_validation]
   before_action :is_enabled, only: [:show]
   # GET /practices
@@ -147,8 +147,11 @@ class PracticesController < ApplicationController
             format.html { redirect_back fallback_location: root_path, notice: editor_notice + 'Practice was successfully updated.' }
             format.json { render json: @practice, status: :ok }
           end
-          # Update last_edited field for Practice Editor
-          PracticeEditor.find_by(practice: @practice, user: current_user).update_attributes(last_edited_at: DateTime.current) if current_user.present?
+          # Update last_edited field for Practice Editor unless the current_user is the Practice Editor and they're trying to delete their own Practice Editor associated with the current practice
+          practice_editor = PracticeEditor.find_by(practice: @practice, user: current_user)
+          if current_user.present? && practice_editor.present?
+            practice_editor.update_attributes(last_edited_at: DateTime.current)
+          end
         end
       else
         flash[:error] = "There was an #{@practice.errors.messages}. The practice was not saved."
@@ -598,8 +601,8 @@ class PracticesController < ApplicationController
   end
 
   def prevent_practice_permissions
-    # if the user is the practice owner or the user is an admin or approver/editor
-    unless @practice.user_id == current_user.id || current_user&.roles.any?
+    # if the user is the practice owner or the user is an admin or approver/practice_editor
+    unless @practice.user_id == current_user.id || current_user&.roles.any? || is_user_an_editor_for_practice(@practice, current_user)
       unauthorized_response
     end
   end
