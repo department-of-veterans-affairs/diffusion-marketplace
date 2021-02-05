@@ -2,10 +2,10 @@ require 'rails_helper'
 
 describe 'Admin Adoptions Tab', type: :feature do
   before do
-    @admin = User.create!(email: 'dokugamine.riruka@execution.com', password: 'Password123',
+    @admin = User.create!(email: 'dokugamine.riruka@va.gov', password: 'Password123',
                           password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(:admin)
-    @practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility_type: 'facility', initiating_facility: '678GC', tagline: 'Test tagline')
+    @practice = Practice.create!(name: 'The Best Practice Ever!', user: @admin, initiating_facility_type: 'facility', initiating_facility: '678GC', tagline: 'Test tagline')
     login_as(@admin, scope: :user, run_callbacks: false)
     @diffusion_history = DiffusionHistory.create!(practice_id: @practice.id, facility_id: '600GC')
     @diffusion_history_2 = DiffusionHistory.create!(practice_id: @practice.id, facility_id: '516')

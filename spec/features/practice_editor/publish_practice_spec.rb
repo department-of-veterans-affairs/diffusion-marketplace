@@ -2,9 +2,9 @@ require 'rails_helper'
 
 describe 'Practice editor', type: :feature, js: true do
   before do
-    @admin = User.create!(email: 'toshiro.hitsugaya@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: false)
-    @practice2 = Practice.create!(name: 'Another public practice', tagline: 'practice_tagline', summary: 'practice summary', slug: 'another-public-practice', date_initiated: '10/12/2019', initiating_facility: 'practice initiating facility', initiating_facility_type: 3, approved: true, published: false)
+    @admin = User.create!(email: 'toshiro.hitsugaya@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+    @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: false, user: @admin)
+    @practice2 = Practice.create!(name: 'Another public practice', tagline: 'practice_tagline', summary: 'practice summary', slug: 'another-public-practice', date_initiated: '10/12/2019', initiating_facility: 'practice initiating facility', initiating_facility_type: 3, approved: true, published: false, user: @admin)
     @practice_partner = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative', icon: 'fas fa-heart', color: '#E4A002')
     @admin.add_role(User::USER_ROLES[0].to_sym)
     Category.create!(name: 'Pulmonary Care')

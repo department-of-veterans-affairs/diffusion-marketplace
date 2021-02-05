@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe 'Practice editor', type: :feature, js: true do
   before do
-    @admin = User.create!(email: 'retsu.unohana@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline')
+    @admin = User.create!(email: 'retsu.unohana@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+    @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', user: @admin)
     @admin.add_role(User::USER_ROLES[0].to_sym)
   end
 

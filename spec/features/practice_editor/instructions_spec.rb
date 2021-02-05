@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe 'Practice editor', type: :feature, js: true do
     before do
-        @admin = User.create!(email: 'toshiro.hitsugaya@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-        @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline')
+        @admin = User.create!(email: 'toshiro.hitsugaya@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+        @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', user: @admin)
         @admin.add_role(User::USER_ROLES[0].to_sym)
     end
 
@@ -28,16 +28,5 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_link(href: "https://vaww.rtp.portal.va.gov/DEAN/IE/DOE/10-5345.pdf")
             expect(page).to have_link(href: practice_path('project-happen'))
         end
-
-        it 'should take the user to the introduction page after clicking the continue button' do
-            find(".editor-continue-link").click
-            wait_for_page_load('Introduction')
-            expect(page).to have_content('Introduction')
-            expect(page).to have_current_path(practice_introduction_path(@practice))
-        end
-    end
-
-    def wait_for_page_load(title)
-        find('div#introduction', text: title)
     end
 end

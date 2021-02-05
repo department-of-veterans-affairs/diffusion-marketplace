@@ -1,6 +1,14 @@
 class Practice < ApplicationRecord
   include ActiveModel::Dirty
 
+  #... all your other stuff
+  # validate :require_two_options
+  #
+  # private
+  # def require_two_options
+  #   errors.add(:base, "You must provide at least two options") if options.size < 2
+  # end
+
   before_save :clear_searchable_cache_on_save
   after_save :reset_searchable_practices
 
