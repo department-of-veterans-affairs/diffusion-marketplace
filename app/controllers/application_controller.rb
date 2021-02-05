@@ -62,7 +62,11 @@ class ApplicationController < ActionController::Base
   end
 
   def track_visit
-    ahoy.track "Site visit", {controller: request.params[:controller], action: request.params[:action], query: request.params[:query], ip_address: request.remote_ip}
+    properties = {controller: request.params[:controller], action: request.params[:action], query: request.params[:query], ip_address: request.remote_ip}
+    if request.params[:page_group_friendly_id] && request.params[:page_slug].nil?
+      properties[:page_group] = request.params[:page_group_friendly_id]
+    end
+    ahoy.track "Site visit", properties
   end
 
   def track_role

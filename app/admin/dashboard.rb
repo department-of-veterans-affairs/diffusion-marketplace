@@ -23,7 +23,7 @@ ActiveAdmin.register_page "Dashboard" do
 
       @general_traffic_stats = {
           unique_visitors: site_visit_stats.keys.length,
-          number_of_site_visits: site_visit_stats.sum {|_k, v| v},
+          number_of_page_views: site_visit_stats.sum {|_k, v| v},
           total_accounts: User.all.count
       }
 
@@ -147,7 +147,7 @@ ActiveAdmin.register_page "Dashboard" do
           sheet.add_row [''], style: xlsx_divider
           sheet.add_row ["Diffusion Marketplace Metrics - #{Date.today}"], style: xlsx_main_header
           sheet.add_row ["General Traffic"], style: xlsx_sub_header_1
-          @general_traffic_stats.each { |key, value| sheet.add_row [key.to_s === 'unique_visitors' || key.to_s === 'number_of_site_visits' ? key.to_s.tr!('_', ' ').titleize + ' (last month)' : key.to_s.tr!('_', ' ').titleize + ' (all-time)', value], style: xlsx_entry }
+          @general_traffic_stats.each { |key, value| sheet.add_row [key.to_s === 'unique_visitors' || key.to_s === 'number_of_page_views' ? key.to_s.tr!('_', ' ').titleize + ' (last month)' : key.to_s.tr!('_', ' ').titleize + ' (all-time)', value], style: xlsx_entry }
           sheet.add_row ['Site Visits per Month'], style: xlsx_sub_header_2
           @site_visits_by_month.each do |month_and_count|
             sheet.add_row [month_and_count[0], month_and_count[1]], style: xlsx_entry
@@ -235,19 +235,19 @@ ActiveAdmin.register_page "Dashboard" do
           'Please Note'
         end
         h4 do
-          span 'Adoptions '
+          span('Adoptions', class: 'dm-text-bold')
           span 'and '
-          span 'commits '
-          span 'are defined by the following:'
+          span('users', class: 'dm-text-bold')
+          span 'are defined as the following:'
         end
         ul do
           li do
-            span 'Adoptions: '
-            span 'Number of adoptions Practice Owner has added for Diffusion Map.'
+            span('Adoptions:', class: 'dm-text-bold')
+            span 'Number of adoptions Practice Owner has added for Diffusion Map'
           end
           li do
-            span 'Commits: '
-            span 'Number of users committed to practice through Diffusion Marketplace.'
+            span('Users:', class: 'dm-text-bold')
+            span 'Unique visitors to Diffusion Marketplace'
           end
         end
       end
@@ -256,11 +256,10 @@ ActiveAdmin.register_page "Dashboard" do
       tab :users_information do
         columns do
           column do
-            panel 'New Users This Month' do
+            panel('New Users This Month', class: 'dm-panel-container', id: 'dm-new-users-this-month') do
               column_chart User.where('created_at >= ?', 1.week.ago).group_by_month(:created_at, format: '%b').count, ytitle: 'Users'
             end
-
-            panel 'New Users by Month' do
+            panel('New Users by Month', class: 'dm-panel-container', id: 'dm-new-users-by-month') do
               column_chart User.group_by_month(:current_sign_in_at, format: '%b').count, ytitle: 'Users'
             end
           end # column
@@ -283,8 +282,10 @@ ActiveAdmin.register_page "Dashboard" do
         columns do
           column do
             panel 'User statistics' do
-              table_for user_info do |_info|
-                column :in_the_last
+              table_for user_info.each do
+                column(:in_the_last) { |info|
+                  span(info[:in_the_last], class: "dm-tooltip", title: info[:in_the_last] === 'New Users' ? 'Number of first time visitors to the site' : 'Total number of unique visitors to the site')
+                }
                 column :'24_hours'
                 column :week
                 column :month
@@ -299,7 +300,7 @@ ActiveAdmin.register_page "Dashboard" do
       tab :practice_leaderboards do
         columns do
           column do
-            panel "Practice Views Leaderboard" do
+            panel('Practice Views Leaderboard', class: 'dm-panel-container', id: 'dm-practice-views-leaderboard') do
               table_for practices_views.each, id: 'practice-views-table' do
                 column(:name) {|practice| link_to(practice.name, admin_practice_path(practice))}
                 column("#{date_headers[:current]}") {|practice| practice.current_month_views}
@@ -317,29 +318,6 @@ ActiveAdmin.register_page "Dashboard" do
                 total_lifetime_views = enabled_published_practices.sum(&:views)
                 raw "$(document).ready(function($) {
                         $('#practice-views-table').append('<tr><td><b>Totals</b></td><td><b>#{total_current_month_views}</b></td><td><b>#{total_last_month_views}</b></td><td><b>#{total_two_months_ago_views}</b></td><td><b>#{total_three_months_ago_views}</b></td><td><b>#{total_lifetime_views}</b></td></tr>');
-                      });
-                    "
-              end
-            end
-
-            panel "Practice Commits Leaderboard" do
-              table_for practices_views.each, id: 'practice-commits-table' do
-                column(:name) {|practice| link_to(practice.name, admin_practice_path(practice))}
-                column("#{date_headers[:current]}") {|practice| practice.committed_user_count_by_range(beginning_of_current_month, end_of_current_month)}
-                column("#{date_headers[:one_month_ago]}") {|practice| practice.committed_user_count_by_range(beginning_of_last_month, end_of_last_month)}
-                column("#{date_headers[:two_month_ago]}") {|practice| practice.committed_user_count_by_range(beginning_of_two_months_ago, end_of_two_months_ago)}
-                column("#{date_headers[:three_month_ago]}") {|practice| practice.committed_user_count_by_range(beginning_of_three_months_ago, end_of_three_months_ago)}
-                column("Total lifetime commits") {|practice| practice.committed_user_count}
-              end
-
-              script do
-                total_current_month_commits = enabled_published_practices.sum(&:current_month_commits)
-                total_last_month_commits = enabled_published_practices.sum(&:last_month_commits)
-                total_two_months_ago_commits = enabled_published_practices.sum(&:two_months_ago_commits)
-                total_three_months_ago_commits = enabled_published_practices.sum(&:three_months_ago_commits)
-                total_lifetime_commits = enabled_published_practices.sum(&:committed_user_count)
-                raw "$(document).ready(function($) {
-                        $('#practice-commits-table').append('<tr><td><b>Totals</b></td><td><b>#{total_current_month_commits}</b></td><td><b>#{total_last_month_commits}</b></td><td><b>#{total_two_months_ago_commits}</b></td><td><b>#{total_three_months_ago_commits}</b></td><td><b>#{total_lifetime_commits}</b></td></tr>');
                       });
                     "
               end
@@ -407,7 +385,7 @@ ActiveAdmin.register_page "Dashboard" do
         panel 'General Traffic' do
           table_for general_traffic_stats do
             column('unique visitors (last month)', :unique_visitors)
-            column('number of site visits (last month)', :number_of_site_visits)
+            column('number of page views (last month)', :number_of_page_views)
             column('total accounts (all-time)', :total_accounts)
           end
         end # panel
@@ -421,18 +399,15 @@ ActiveAdmin.register_page "Dashboard" do
         end # panel
 
         panel 'Practice Engagement & Commitment' do
-          h4 do
-            "Favorited Counts"
-          end
+          h4("Favorited Counts", title: "Number of times a practice was favorited", class: "dm-tooltip")
 
           table_for practices_favorited_stats, id: 'favorited_stats' do
             column("#{date_headers[:current]}") {|ps| ps[:favorited_this_month]}
             column("Last Month") {|ps| ps[:favorited_one_month_ago]}
             column :total_favorited
           end
-          h4 do
-            "Favorited Counts by Practice"
-          end
+
+          h4("Favorited Counts by Practice", title: "Number of times each practice has been favorited", class: "dm-tooltip")
 
           table_for practices do
             column(:name) {|pr| link_to(pr.name, admin_practice_path(pr))}
@@ -441,9 +416,7 @@ ActiveAdmin.register_page "Dashboard" do
             column("#{date_headers[:total]}") {|pr| pr.favorited_count}
           end
 
-          h4 do
-            "Comment Counts"
-          end
+          h4("Comment Counts", title: "Number of comments made this month, last month, and overall on any practice page", class: "dm-tooltip")
 
           table_for practices_comment_stats do
             column("#{date_headers[:current]}") {|ps| ps[:comments_this_month]}
@@ -451,9 +424,7 @@ ActiveAdmin.register_page "Dashboard" do
             column :total_comments
           end
 
-          h4 do
-            "Comment Counts by Practice"
-          end
+          h4("Comment Counts by Practice", title: "Number of comments on each practice page", class: "dm-tooltip")
 
           table_for practices do
             column(:name) {|pr| link_to(pr.name, admin_practice_path(pr))}
@@ -461,27 +432,7 @@ ActiveAdmin.register_page "Dashboard" do
             column("Last Month") {|pr| pr.commontator_thread.comments.where(created_at: beginning_of_last_month...end_of_last_month).count}
             column("#{date_headers[:total]}") {|pr| pr.commontator_thread.comments.count}
           end
-
-          h4 do
-            "Commit Counts"
-          end
-
-          table_for practices_commitment_stats, id: 'adopted_stats' do
-            column("#{date_headers[:current]}") {|ps| ps[:committed_this_month]}
-            column("Last Month") {|ps| ps[:committed_one_month_ago]}
-            column :total_committed
-          end
-
-          h4 do
-            "Commit Counts by Practice"
-          end
-
-          table_for practices do
-            column(:name) {|pr| link_to(pr.name, admin_practice_path(pr))}
-            column("#{date_headers[:current]}") {|pr| pr.current_month_commits}
-            column("Last Month") {|pr| pr.last_month_commits}
-            column("#{date_headers[:total]}") {|pr| pr.commits_count}
-          end
+          #TODO: add practice email counts
         end # panel
       end # tab
     end # tabs

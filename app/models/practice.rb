@@ -102,23 +102,6 @@ class Practice < ApplicationRecord
     date_range_views((Date.today - 3.months).at_beginning_of_month, (Date.today - 3.months).at_end_of_month)
   end
 
-  # commits
-  def current_month_commits
-    committed_user_count_by_range(Date.today.beginning_of_month, Date.today.end_of_month)
-  end
-
-  def last_month_commits
-    committed_user_count_by_range((Date.today - 1.months).at_beginning_of_month, (Date.today - 1.months).at_end_of_month)
-  end
-
-  def two_months_ago_commits
-    committed_user_count_by_range((Date.today - 2.months).at_beginning_of_month, (Date.today - 2.months).at_end_of_month)
-  end
-
-  def three_months_ago_commits
-    committed_user_count_by_range((Date.today - 3.months).at_beginning_of_month, (Date.today - 3.months).at_end_of_month)
-  end
-
   # favorited
   def current_month_favorited
     favorited_count_by_range(Date.today.beginning_of_month, Date.today.end_of_month)
@@ -315,9 +298,6 @@ class Practice < ApplicationRecord
   NUMBER_DEPARTMENTS_OPTIONS = ['1. Single department', '2. Two departments', '3. Three departments', '4. Four or more departments']
   def committed_user_count
     user_practices.where(committed: true).count
-  end
-  def committed_user_count_by_range(start_date, end_date)
-    user_practices.where(time_committed: start_date...end_date).count
   end
   def number_of_adopted_facilities
     number_adopted
