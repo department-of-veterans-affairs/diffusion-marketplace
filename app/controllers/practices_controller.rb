@@ -517,14 +517,12 @@ class PracticesController < ApplicationController
       format.json { head :no_content }
     end
   end
-
-  def self.hello_brad
-    redirect_to root_path
-    debugger
-    # message = "what up boyyyyyyyy!"
-    # respond_to do |format|
-    #   format.js { render js: "alert(#{message});" }
-    # end
+  def session_time_remaining
+    #practice_id = @practice.id
+    user_id = current_user[:id]
+    #PracticeEditorSession.get_minutes_remaining_in_session(practice_id, user_id)
+    data = user_id.to_s
+    render :json => data
   end
 
   private

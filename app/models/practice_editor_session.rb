@@ -75,13 +75,17 @@ class PracticeEditorSession < ApplicationRecord
   def self.monitor_session(practice_id, user_id, session_rec_id)
     loop do
       session_rec = PracticeEditorSession.where(practice_id: practice_id, user_id: user_id, session_end_time: nil).order("session_start_time DESC").first()
-      Thread.exit if session_rec.blank?
-      sleep 5
+      if session_rec.blank?
+        debugger
+        Thread.exit
+      end
+      sleep 30
       diff = minutes_in_session(session_rec.session_start_time)
 
-      puts 'session_start_time ' + session_rec.session_start_time.to_s
-      puts 'diff: ' + diff.to_s
+      puts 'session_start_time: ' + session_rec.session_start_time.to_s
+      puts 'diff from now: ' + diff.to_s
       puts 'rec_id: ' + session_rec_id.to_s
+      puts 'process id: ' + session_rec.process_id.to_s
       puts 'thread_id: ' + Thread.current.object_id.to_s
       puts practice_id.to_s + ", " + user_id.to_s
 
@@ -89,9 +93,7 @@ class PracticeEditorSession < ApplicationRecord
         #TODO call  method to display modal confirm - do you want to continue editing...
       end
       #PracticesController.hello_brad()
-      if diff > 0
-        debugger
-        PracticesController.alert_user_session_is_ending
+      if diff > 5
         #PracticesController.hello_brad
         puts 'done'
         rec = PracticeEditorSession.find_by_id(session_rec_id)
@@ -101,6 +103,10 @@ class PracticeEditorSession < ApplicationRecord
       end
     end
   end
+  def self.get_minutes_remaining_in_session(practice_id, user_id)
+    rec_session = Practice.where(process_id: process_id, session_end_time: nil).order("session_start_time DESC").first()
+  end
+
   def self.minutes_in_session(session_start_time)
     minutes = ((DateTime.now - session_start_time.to_datetime) * 24 * 60).to_i
     return minutes

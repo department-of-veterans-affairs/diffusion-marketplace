@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   get '/terms_and_conditions' => 'users#terms_and_conditions'
   get '/dashboard/export', action: 'export_metrics', controller: 'admin/dashboard', as: 'export_metrics'
+  post '/session_time_remaining', action: 'session_time_remaining', controller: 'practices', as: 'session_time_remaining'
   post '/accept_terms', action: 'accept_terms', controller: 'users', as: 'accept_terms'
 
   resources :practices, except: :index do
