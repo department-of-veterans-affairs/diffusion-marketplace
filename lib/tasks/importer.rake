@@ -27,6 +27,8 @@ namespace :importer do
     @given_answers = sheet.sheet(0).row(2)
     last_row = sheet.last_row
 
+    @user = User.create!(email: 'marketplace@va.gov', password: 'Password123', password_confirmation: 'Password123', confirmed_at: Time.now)
+
     (3..last_row).each do |row_num|
       @answers = sheet.sheet(0).row(row_num)
       @respondent_id = @answers[0].to_i
@@ -43,6 +45,9 @@ namespace :importer do
       @practice = Practice.find_by_name(@name)
 
       if @practice.present?
+        unless practice.user.present?
+          practice.user = @user
+        end
         puts "This practice already exists in the system.".white.on_blue
         # puts "Would you like to destroy and re-import this practice?. [Y/N]".white.on_blue
         # answer = STDIN.gets.chomp
@@ -79,7 +84,7 @@ namespace :importer do
         #   next
         # end
       else
-        @practice = Practice.create(name: @name)
+        @practice = Practice.create(name: @name, user: @user)
       end
 
 
