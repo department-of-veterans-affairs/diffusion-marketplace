@@ -70,12 +70,6 @@ ActiveAdmin.register_page "Dashboard" do
         total_comments: Commontator::Comment.count
       }
 
-      @practices_commitment_stats = {
-        committed_this_month: UserPractice.where(time_committed: @beginning_of_current_month..@end_of_current_month, committed: true).count,
-        committed_one_month_ago: UserPractice.where(time_committed: @beginning_of_last_month..@end_of_last_month,committed: true).count,
-        total_committed: UserPractice.where(committed: true).count
-      }
-
       @approved_enabled_published_practices = Practice.where(published: true, enabled: true, approved: true).order(Arel.sql("lower(practices.name) ASC"))
 
       @practice_views_array = []
@@ -127,7 +121,6 @@ ActiveAdmin.register_page "Dashboard" do
         end
       end
 
-
       # Add user stats hash to make it easier to format spreadsheet data
       @user_statistics = {
           new_users: @new_users_by_month,
@@ -162,10 +155,10 @@ ActiveAdmin.register_page "Dashboard" do
         # building out xlsx file
         p.workbook.add_worksheet(:name => "DM Metrics - #{Date.today}") do |sheet|
           sheet.add_row ['Please Note'], style: @xlsx_legend_no_bottom_border
-          sheet.add_row ['Adoptions and commits are defined by the following:'], style: @xlsx_legend_no_y_border
+          sheet.add_row ['Adoptions and users are defined by the following:'], style: @xlsx_legend_no_y_border
           sheet.add_row [''], style: xlsx_divider
           sheet.add_row ['Adoptions: Number of adoptions Practice Owner has added for Diffusion Map.'], style: @xlsx_legend_no_y_border
-          sheet.add_row ['Commits: Number of users committed to practice through Diffusion Marketplace.'], style: @xlsx_legend_no_top_border
+          sheet.add_row ['Users: Unique visitors to Diffusion Marketplace'], style: @xlsx_legend_no_top_border
           sheet.merge_cells 'A1:C1'
           sheet.add_row [''], style: xlsx_divider
           sheet.add_row ["Diffusion Marketplace Metrics - #{Date.today}"], style: xlsx_main_header
@@ -181,7 +174,7 @@ ActiveAdmin.register_page "Dashboard" do
           @practices_added_stats.each { |key, value| sheet.add_row [key.to_s.tr!('_', ' ').titleize, value], style: xlsx_entry }
           sheet.add_row [""], style: xlsx_divider
 
-          sheet.add_row ["Practice Engagement & Commitment"], style: xlsx_sub_header_1
+          sheet.add_row ["Practice Engagement"], style: xlsx_sub_header_1
           sheet.add_row ['Practice Views per Month'], style: xlsx_sub_header_2
           add_header_row_for_month_and_year(sheet, 'Practice name', @month_and_year_array, xlsx_sub_header_3)
           @practice_views_by_month.in_groups_of(13) do |practice_views|
@@ -219,22 +212,6 @@ ActiveAdmin.register_page "Dashboard" do
                               value.commontator_thread.comments.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
                               value.commontator_thread.comments.count
                           ], style: xlsx_entry
-          end
-          sheet.add_row [""], style: xlsx_divider
-
-          sheet.add_row ["Commit Counts"], style: xlsx_sub_header_2
-          @practices_commitment_stats.each { |key, value| sheet.add_row [key.to_s.tr!('_', ' ').titleize, value], style: xlsx_entry }
-          sheet.add_row [""], style: xlsx_divider
-
-          sheet.add_row ["Commit Counts by Practice"], style: xlsx_sub_header_2
-          sheet.add_row @practices_headers, style: xlsx_sub_header_3
-          @practices.each do |value|
-            sheet.add_row [
-                value.name,
-                value.current_month_commits,
-                value.last_month_commits,
-                value.commits_count
-            ], style: xlsx_entry
           end
           sheet.add_row [""], style: xlsx_divider
 
@@ -432,7 +409,7 @@ ActiveAdmin.register_page "Dashboard" do
           end
         end # panel
 
-        panel 'Practice Engagement & Commitment' do
+        panel 'Practice Engagement' do
           h4("Favorited Counts", title: "Number of times a practice was favorited", class: "dm-tooltip")
 
           table_for practices_favorited_stats, id: 'favorited_stats' do
