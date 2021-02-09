@@ -107,8 +107,7 @@ class PracticeEditorSession < ApplicationRecord
   def self.extend_current_session(user_id, practice_id)
     rec = PracticeEditorSession.where(practice_id: practice_id, user_id: user_id, session_end_time: nil).order("session_start_time DESC").first()
     debugger
-    the_time = DateTime.now + 15.minutes
-    rec.session_start_time = DateTime.now + 15.minutes
+    rec.session_start_time = DateTime.now
     rec.save
   end
 

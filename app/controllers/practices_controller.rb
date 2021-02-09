@@ -518,7 +518,7 @@ class PracticesController < ApplicationController
     end
   end
 
-  def extend_session_time
+  def extend_editor_session_time
     practice_id = params[:practice_id].to_i
     user_id = current_user[:id]
     PracticeEditorSession.extend_current_session(user_id, practice_id)

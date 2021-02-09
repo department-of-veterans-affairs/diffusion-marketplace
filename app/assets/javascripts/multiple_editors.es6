@@ -8,11 +8,16 @@ function getTimeRemainingForCurrentSession(practice_id) {
             debugger
             var timeLeft =  data;
             if(timeLeft == 2){
-                var response = confirm(data);
+                var response = confirm("Your session is about to expire.  Continue editing?");
 
                 if (response){
                     //TODO extend session...
-                    alert (response);
+                    Rails.ajax({
+                        type: 'get',
+                        url: "/extend_editor_session_time",
+                        data: jQuery.param({practice_id: practice_id}),
+                    });
+                    //alert (response);
                 }
                 else{
                     //TODO end session... and navigate to Metrics...
