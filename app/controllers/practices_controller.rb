@@ -518,10 +518,11 @@ class PracticesController < ApplicationController
     end
   end
   def session_time_remaining
-    #practice_id = @practice.id
+    debugger
+    practice_id = params[:practice_id].to_i
     user_id = current_user[:id]
-    #PracticeEditorSession.get_minutes_remaining_in_session(practice_id, user_id)
-    data = user_id.to_s
+    minutes_left = PracticeEditorSession.get_minutes_remaining_in_session(user_id, practice_id)
+    data = minutes_left.to_s
     render :json => data
   end
 
@@ -533,7 +534,6 @@ class PracticesController < ApplicationController
     @practice = Practice.friendly.find(id)
   end
 
-
   def practice_locked_for_editing
     practice_last_updated = PracticeEditorSession.practice_last_updated(@practice.id)
     cur_user_id = current_user[:id]
@@ -542,7 +542,7 @@ class PracticesController < ApplicationController
     if locked_rec == 0
       PracticeEditorSession.lock_practice_for_user(cur_user_id, @practice.id)
     else
-      locked_by_user_id = PracticeEditorSession.locked_by_user_id(locked_rec)
+      locked_by_user_id = PracticeEditorSession.locked_by_user(locked_rec)
       if locked_by_user_id != cur_user_id
         locked_by = PracticeEditorSession.locked_by(locked_rec, false)
         is_admin = PracticeEditorSession.is_admin(cur_user_id)

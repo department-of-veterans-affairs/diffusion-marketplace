@@ -1,11 +1,10 @@
 class PracticeEditorSession < ApplicationRecord
   belongs_to :practice
 
-
-  def self.practice_locked_for_current_user(cur_user_id, practice_id)
-    rec = PracticeEditorSession.where(practice_id: practice_id, session_end_time: nil).where.not(session_start_time: nil).order("session_start_time DESC")
-    return false if rec.count == 0
-    if rec[0].user_id == cur_user_id
+   def self.practice_locked_for_current_user(cur_user_id, practice_id)
+    rec = PracticeEditorSession.where(practice_id: practice_id, session_end_time: nil).where.not(session_start_time: nil).order("session_start_time DESC").first()
+    return false if rec.blank?
+    if rec.user_id == cur_user_id
       return false
     end
     return true
@@ -29,7 +28,7 @@ class PracticeEditorSession < ApplicationRecord
     ret_val += " @" + rec.session_start_time.to_s if include_time
     ret_val
   end
-  def self.locked_by_user_id(rec_id)
+  def self.locked_by_user(rec_id)
     rec = PracticeEditorSession.find_by_id(rec_id)
     user_id = rec.user_id
     user = User.find_by_id(user_id)
@@ -47,6 +46,7 @@ class PracticeEditorSession < ApplicationRecord
     return false
   end
   def self.practice_last_updated(practice_id)
+    #debugger
     session = PracticeEditorSession.where(practice_id: practice_id).where.not(session_end_time: nil).order("session_end_time DESC").first()
     return "" if session.blank?
     lock_user = locked_by(session.id, false)
@@ -93,7 +93,7 @@ class PracticeEditorSession < ApplicationRecord
         #TODO call  method to display modal confirm - do you want to continue editing...
       end
       #PracticesController.hello_brad()
-      if diff > 5
+      if diff > 14
         #PracticesController.hello_brad
         puts 'done'
         rec = PracticeEditorSession.find_by_id(session_rec_id)
@@ -103,8 +103,13 @@ class PracticeEditorSession < ApplicationRecord
       end
     end
   end
-  def self.get_minutes_remaining_in_session(practice_id, user_id)
-    rec_session = Practice.where(process_id: process_id, session_end_time: nil).order("session_start_time DESC").first()
+  def self.get_minutes_remaining_in_session(user_id, practice_id)
+    rec_session = PracticeEditorSession.where(practice_id: practice_id, user_id: user_id, session_end_time: nil).order("session_start_time DESC").first()
+    if rec_session.blank?
+      return 0
+    end
+    ret_val =  15 - minutes_in_session(rec_session.session_start_time).to_i
+    ret_val
   end
 
   def self.minutes_in_session(session_start_time)
