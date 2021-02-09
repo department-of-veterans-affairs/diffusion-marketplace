@@ -9,8 +9,8 @@ class ApplicationController < ActionController::Base
   before_action :set_paper_trail_whodunnit
   before_action :log_in_va_user
   before_action :user_accepted_terms?
-  before_action :track_visit
-  before_action :track_role
+  before_action :set_visit_props
+  before_action :set_visitor_props
 
   protect_from_forgery with: :exception, prepend: true
 
@@ -61,17 +61,16 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def track_visit
-    properties = {controller: request.params[:controller], action: request.params[:action], query: request.params[:query], ip_address: request.remote_ip}
+  def set_visit_props
+    @visit_properties = {controller: request.params[:controller], action: request.params[:action], query: request.params[:query], ip_address: request.remote_ip, timestamp: Time.now.utc}
     if request.params[:page_group_friendly_id] && request.params[:page_slug].nil?
-      properties[:page_group] = request.params[:page_group_friendly_id]
+      @visit_properties[:page_group] = request.params[:page_group_friendly_id]
     end
-    ahoy.track "Site visit", properties
   end
 
-  def track_role
+  def set_visitor_props
     if current_user.present?
-      ahoy.track "User role", {user: current_user.email, role: current_user.user_role}
+      @visitor_properties = {user: current_user.email, role: current_user.user_role}
     end
   end
 end
