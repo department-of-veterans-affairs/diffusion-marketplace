@@ -8,20 +8,27 @@ function getTimeRemainingForCurrentSession(practice_id) {
             debugger
             var timeLeft =  data;
             if(timeLeft == 2){
-                var response = confirm("Your session is about to expire.  Continue editing?");
+                //var response = confirm("Your session is about to expire.  Continue editing?");
 
-                if (response){
+                if (confirm("Your session is about to expire.  Continue editing?")){
                     //TODO extend session...
                     Rails.ajax({
                         type: 'get',
                         url: "/extend_editor_session_time",
-                        data: jQuery.param({practice_id: practice_id}),
+                        data: jQuery.param({practice_id: practice_id})
                     });
-                    //alert (response);
                 }
                 else{
-                    //TODO end session... and navigate to Metrics...
-                    alert('no');
+                    //TODO save... and navigate to Metrics...
+                    let save_id = document.getElementById('practice-editor-save-button');
+                    if(save_id){
+                        save_id.click();
+                    }
+                    Rails.ajax({
+                        type: 'get',
+                        url: "/redirect_to_metrics",
+                        data: jQuery.param({practice_id: practice_id})
+                    });
                 }
             }
         }

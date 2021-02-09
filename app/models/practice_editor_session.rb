@@ -79,7 +79,7 @@ class PracticeEditorSession < ApplicationRecord
         debugger
         Thread.exit
       end
-      sleep 30
+      sleep 50
       diff = minutes_in_session(session_rec.session_start_time)
 
       puts 'session_start_time: ' + session_rec.session_start_time.to_s
@@ -88,17 +88,17 @@ class PracticeEditorSession < ApplicationRecord
       puts 'process id: ' + session_rec.process_id.to_s
       puts 'thread_id: ' + Thread.current.object_id.to_s
       puts practice_id.to_s + ", " + user_id.to_s
-
-      if diff == 13
-        #TODO call  method to display modal confirm - do you want to continue editing...
-      end
-      #PracticesController.hello_brad()
       if diff > 14
+        debugger
         #PracticesController.hello_brad
         puts 'done'
         rec = PracticeEditorSession.find_by_id(session_rec_id)
-        rec.session_end_time = DateTime.now
-        rec.save
+        if !rec.blank?
+          if rec.session_end_time.blank?
+            rec.session_end_time = DateTime.now
+            rec.save
+          end
+        end
         Thread.exit
       end
     end
@@ -107,8 +107,19 @@ class PracticeEditorSession < ApplicationRecord
   def self.extend_current_session(user_id, practice_id)
     rec = PracticeEditorSession.where(practice_id: practice_id, user_id: user_id, session_end_time: nil).order("session_start_time DESC").first()
     debugger
-    rec.session_start_time = DateTime.now
-    rec.save
+    if !rec.blank?
+      rec.session_start_time = DateTime.now
+      rec.save
+    end
+  end
+
+  def self.close_current_session(user_id, practice_id)
+    rec = PracticeEditorSession.where(practice_id: practice_id, user_id: user_id, session_end_time: nil).order("session_start_time DESC").first()
+    debugger
+    if !rec.blank?
+      rec.session_end_time = DateTime.now
+      rec.save
+    end
   end
 
 

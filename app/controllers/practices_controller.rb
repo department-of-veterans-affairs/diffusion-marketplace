@@ -522,7 +522,6 @@ class PracticesController < ApplicationController
     practice_id = params[:practice_id].to_i
     user_id = current_user[:id]
     PracticeEditorSession.extend_current_session(user_id, practice_id)
-    return "ok"
   end
 
   def session_time_remaining
@@ -531,6 +530,15 @@ class PracticesController < ApplicationController
     minutes_left = PracticeEditorSession.get_minutes_remaining_in_session(user_id, practice_id)
     data = minutes_left.to_s
     render :json => data
+  end
+
+  def redirect_to_metrics
+    debugger
+    practice_id = params[:practice_id].to_i
+    user_id = current_user[:id]
+    PracticeEditorSession.close_current_session(user_id, practice_id)
+    msg = "Due to 15 minutes of inactivity while editing " + @practice.name + " your edits have been saved and you have been returned to the Metrics page."
+    redirect_to practice_metrics_path(@practice, :session_locked => msg)
   end
 
   private
