@@ -1,13 +1,9 @@
-$('document').ready(function(){
-    let timerId = setInterval(() => getTimeRemainingForCurrentSession(), 20000);
-});
-
-function getTimeRemainingForCurrentSession() {
+function getTimeRemainingForCurrentSession(practice_id) {
     debugger
     Rails.ajax({
         type: 'get',
         url: "/session_time_remaining",
-        data: jQuery.param({ practice_id: '<%= @practice.id %>'}),
+        data: jQuery.param({ practice_id: practice_id}),
         success: function (data) {
             debugger
             var timeLeft =  data;
@@ -26,4 +22,3 @@ function getTimeRemainingForCurrentSession() {
         }
     });
 }
-

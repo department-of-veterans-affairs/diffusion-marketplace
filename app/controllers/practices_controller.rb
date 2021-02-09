@@ -518,7 +518,7 @@ class PracticesController < ApplicationController
     end
   end
   def session_time_remaining
-    debugger
+    #debugger
     practice_id = params[:practice_id].to_i
     user_id = current_user[:id]
     minutes_left = PracticeEditorSession.get_minutes_remaining_in_session(user_id, practice_id)
