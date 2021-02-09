@@ -59,7 +59,8 @@
       metrics_path = practice_metrics_path(@practice)
     %>
     <div class="text-center margin-bottom-1">
-      <%= mail_to main_email, 'Email practice', subject: "Question about #{@practice.name}", cc: cc_emails, class: 'usa-button dm-btn-primary width-full display-flex flex-align-center flex-justify-center height-5', 'aria-label': "side nav email #{main_email}"  %>
+      <%= mail_to main_email, 'Email practice', subject: "Question about #{@practice.name}", cc: cc_emails, class: 'usa-button dm-btn-primary width-full display-flex flex-align-center flex-justify-center height-5
+      dm-email-practice', 'aria-label': "side nav email #{main_email}", data: {practice_id: @practice.id} %>
     </div>
     <% if @practice.user_id == current_user.id || current_user.roles.any? %>
       <div class="text-center">
