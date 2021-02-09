@@ -103,6 +103,16 @@ class PracticeEditorSession < ApplicationRecord
       end
     end
   end
+
+  def self.extend_current_session(user_id, practice_id)
+    rec = PracticeEditorSession.where(practice_id: practice_id, user_id: user_id, session_end_time: nil).order("session_start_time DESC").first()
+    debugger
+    the_time = DateTime.now + 15.minutes
+    rec.session_start_time = DateTime.now + 15.minutes
+    rec.save
+  end
+
+
   def self.get_minutes_remaining_in_session(user_id, practice_id)
     rec_session = PracticeEditorSession.where(practice_id: practice_id, user_id: user_id, session_end_time: nil).order("session_start_time DESC").first()
     if rec_session.blank?

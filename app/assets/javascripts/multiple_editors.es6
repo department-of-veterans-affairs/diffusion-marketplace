@@ -9,7 +9,7 @@ function getTimeRemainingForCurrentSession(practice_id) {
             var timeLeft =  data;
             if(timeLeft == 2){
                 var response = confirm(data);
-                alert(data.toString());
+
                 if (response){
                     //TODO extend session...
                     alert (response);

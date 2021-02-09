@@ -517,8 +517,15 @@ class PracticesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def extend_session_time
+    practice_id = params[:practice_id].to_i
+    user_id = current_user[:id]
+    PracticeEditorSession.extend_current_session(user_id, practice_id)
+    return "ok"
+  end
+
   def session_time_remaining
-    #debugger
     practice_id = params[:practice_id].to_i
     user_id = current_user[:id]
     minutes_left = PracticeEditorSession.get_minutes_remaining_in_session(user_id, practice_id)
