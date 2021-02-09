@@ -12,6 +12,8 @@
       "Number of first time visitors to the site each month",
     "dm-practice-views-leaderboard":
       "Most to least number of practice page views sorted by practice with the most views this month",
+    "dm-custom-page-traffic":
+      "Includes only the landing page of the custom page (excludes subpages)"
   };
 
   var COL_HEADER_TOOLTIPS = {
@@ -26,6 +28,12 @@
     "col-total_accounts_all-time": "Total number of users",
     "col-total_practices_created":
       "Number of enabled and published practice pages on the site",
+    "col-unique_visitors_custom_page":
+      "Number of distinct IP addresses that visited the landing page of each custom page in the previous month",
+    "col-page_views_custom_page":
+      "Number of landing page views for each custom page by new and returning users in the previous month",
+    "col-total_views_custom_page":
+      "Total number of landing page views for each custom page",
   };
 
   // sets the `title` attribute for the `h3`s on the `panel` class on `/admin/dashboard` page

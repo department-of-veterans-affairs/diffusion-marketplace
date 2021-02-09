@@ -11,46 +11,69 @@ ActiveAdmin.register_page "Dashboard" do
       Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where(time: start_time..end_time).group("properties->>'ip_address'").count
     end
 
+    def custom_page_visits(start_time, end_time, page_slug)
+      Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'page_group' = '#{page_slug}'").where(time: start_time..end_time).group("properties->>'ip_address'").count
+    end
+
+    def get_custom_pages_stats(custom_pages)
+      traffic_stats = []
+      custom_pages.each do |cp|
+        stats = custom_page_visits(@beginning_of_last_month, @end_of_last_month, cp)
+        prop = {
+          slug: cp,
+          unique_visitors: 0,
+          number_of_page_views: 0
+        }
+        if !stats.empty?
+          prop[:unique_visitors] = stats.keys.length
+          prop[:number_of_page_views] = stats.sum {|_k, v| v}
+        end
+        traffic_stats.push(prop)
+      end
+      traffic_stats
+    end
+
     def set_dashboard_values
       set_date_values
       @enabled_published_practices = Practice.where(enabled: true, published: true)
-
       site_visit_stats = site_visits(@beginning_of_last_month, @end_of_last_month)
       @practices = @enabled_published_practices.order(name: :asc)
       @practices_views = @enabled_published_practices.sort_by(&:current_month_views).reverse!
-
       @practices_headers = ['Practice Name', "#{@date_headers[:current]}", "Last Month", "#{@date_headers[:total]}"]
 
+      custom_pages = PageGroup.all.map { |pg| pg.slug }
+      @custom_pages_traffic_stats = get_custom_pages_stats(custom_pages)
+
       @general_traffic_stats = {
-          unique_visitors: site_visit_stats.keys.length,
-          number_of_page_views: site_visit_stats.sum {|_k, v| v},
-          total_accounts: User.all.count
+        unique_visitors: site_visit_stats.keys.length,
+        number_of_page_views: site_visit_stats.sum {|_k, v| v},
+        total_accounts: User.all.count
       }
 
       @practices_added_stats = {
-          added_this_month: @enabled_published_practices.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
-          added_one_month_ago: @enabled_published_practices.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
-          total_practices_created: @enabled_published_practices.count
+        added_this_month: @enabled_published_practices.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
+        added_one_month_ago: @enabled_published_practices.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
+        total_practices_created: @enabled_published_practices.count
       }
 
       @practices_favorited_stats = {
-          favorited_this_month: UserPractice.where(time_favorited: @beginning_of_current_month..@end_of_current_month).count,
-          favorited_one_month_ago: UserPractice.where(time_favorited: @beginning_of_last_month..@end_of_last_month).count,
-          total_favorited: UserPractice.where(favorited: true).count
+        favorited_this_month: UserPractice.where(time_favorited: @beginning_of_current_month..@end_of_current_month).count,
+        favorited_one_month_ago: UserPractice.where(time_favorited: @beginning_of_last_month..@end_of_last_month).count,
+        total_favorited: UserPractice.where(favorited: true).count
       }
 
       @practices_favorites = @enabled_published_practices.sort_by(&:current_month_favorited).reverse!
 
       @practices_comment_stats = {
-          comments_this_month: Commontator::Comment.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
-          comments_one_month_ago: Commontator::Comment.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
-          total_comments: Commontator::Comment.count
+        comments_this_month: Commontator::Comment.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
+        comments_one_month_ago: Commontator::Comment.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
+        total_comments: Commontator::Comment.count
       }
 
       @practices_commitment_stats = {
-          committed_this_month: UserPractice.where(time_committed: @beginning_of_current_month..@end_of_current_month, committed: true).count,
-          committed_one_month_ago: UserPractice.where(time_committed: @beginning_of_last_month..@end_of_last_month,committed: true).count,
-          total_committed: UserPractice.where(committed: true).count
+        committed_this_month: UserPractice.where(time_committed: @beginning_of_current_month..@end_of_current_month, committed: true).count,
+        committed_one_month_ago: UserPractice.where(time_committed: @beginning_of_last_month..@end_of_last_month,committed: true).count,
+        total_committed: UserPractice.where(committed: true).count
       }
 
       @approved_enabled_published_practices = Practice.where(published: true, enabled: true, approved: true).order(Arel.sql("lower(practices.name) ASC"))
@@ -383,10 +406,21 @@ ActiveAdmin.register_page "Dashboard" do
         end
 
         panel 'General Traffic' do
+          span("Note: An error in general traffic tracking was corrected in February 2021")
           table_for general_traffic_stats do
             column('unique visitors (last month)', :unique_visitors)
             column('number of page views (last month)', :number_of_page_views)
             column('total accounts (all-time)', :total_accounts)
+          end
+        end # panel
+
+        panel('Custom Page Traffic', class: 'dm-panel-container', id: 'dm-custom-page-traffic') do
+          span("Note: Custom page traffic tracking began in February 2021")
+          table_for custom_pages_traffic_stats do
+            column("Page") {|pg| link_to(pg[:slug], "/#{pg[:slug]}")}
+            column('unique visitors (last month)', class: 'col-unique_visitors_custom_page') {|pg| pg[:unique_visitors]}
+            column('number of page views (last month)', class: 'col-page_views_custom_page') {|pg| pg[:number_of_page_views]}
+            column('total page views (all-time)', class: 'col-total_views_custom_page') {|pg| Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'page_group' = '#{pg[:slug]}'").count}
           end
         end # panel
 
