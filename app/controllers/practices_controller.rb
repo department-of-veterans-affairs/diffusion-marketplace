@@ -519,9 +519,18 @@ class PracticesController < ApplicationController
   end
 
   def extend_editor_session_time
+    if @practice.blank?
+      @practice = set_practice
+    end
     practice_id = params[:practice_id].to_i
     user_id = current_user[:id]
-    PracticeEditorSession.extend_current_session(user_id, practice_id)
+    if !PracticeEditorSession.extend_current_session(user_id, practice_id, @practice)
+      #//Session has already ended bc they did not close the modal in time ... sending to introduction in order to begin new session.
+      # There is a chance that someone could lock the record between the time he session expired and they clicked "OK" on the modal... in
+      # which case they would just be sent back to the metrics page with the info of who has it locked.
+      s_url = "/practices/" + @practice.slug + "/edit/introduction"
+      render :js => "window.location = '#{s_url}'"
+    end
   end
 
   def session_time_remaining
@@ -540,7 +549,7 @@ class PracticesController < ApplicationController
     user_id = current_user[:id]
     PracticeEditorSession.close_current_session(user_id, practice_id)
     msg = "Due to 15 minutes of inactivity while editing " + @practice.name + ", your edits have been saved and you have been returned to the Metrics page."
-    s_url = "/practices/" + @practice.slug + "/edit/metrics"
+    s_url = "/practices/" + @practice.slug + "/edit/metrics?se=1"
     render :js => "window.location = '#{s_url}'"
   end
 

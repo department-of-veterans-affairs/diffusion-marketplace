@@ -9,7 +9,7 @@ function getTimeRemainingForCurrentSession(practice_id) {
         success: function (data) {
             var timeLeft =  data;
             if(timeLeft == 2){
-                if (confirm("Your session is about to expire.  Continue editing?")){
+                if (confirm("Your editing session is about to expire.  Continue editing?")){
                     //TODO extend session...
                     Rails.ajax({
                         type: 'get',

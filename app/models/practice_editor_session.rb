@@ -87,7 +87,7 @@ class PracticeEditorSession < ApplicationRecord
       puts 'process id: ' + session_rec.process_id.to_s
       puts 'thread_id: ' + Thread.current.object_id.to_s
       puts practice_id.to_s + ", " + user_id.to_s
-      if diff > 2
+      if diff > 1
         #PracticesController.hello_brad
         rec = PracticeEditorSession.find_by_id(session_rec_id)
         if !rec.blank?
@@ -102,12 +102,14 @@ class PracticeEditorSession < ApplicationRecord
     end
   end
 
-  def self.extend_current_session(user_id, practice_id)
+  def self.extend_current_session(user_id, practice_id, practice)
     rec = PracticeEditorSession.where(practice_id: practice_id, user_id: user_id, session_end_time: nil).order("session_start_time DESC").first()
-    debugger
     if !rec.blank?
       rec.session_start_time = DateTime.now
       rec.save
+      return true
+    else
+      return false
     end
   end
 
