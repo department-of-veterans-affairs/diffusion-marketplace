@@ -325,10 +325,10 @@ class Practice < ApplicationRecord
     user_practices.where({time_favorited: start_date...end_date}).count
   end
   def emailed_count
-    Ahoy::Event.where(name: 'Practice email').where("properties->>'practice_slug' = '#{slug}'").count
+    Ahoy::Event.where(name: 'Practice email').where("properties->>'practice_id' = '#{id}'").count
   end
   def emailed_count_by_range(start_date, end_date)
-    Ahoy::Event.where(name: 'Practice email').where("properties->>'practice_slug' = '#{slug}'").where(time: start_date..end_date).count
+    Ahoy::Event.where(name: 'Practice email').where("properties->>'practice_id' = '#{id}'").where(time: start_date..end_date).count
   end
   def get_adoptions_by_status(adoption_array, hash_array)
     vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))

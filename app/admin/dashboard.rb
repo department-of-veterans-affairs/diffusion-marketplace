@@ -40,7 +40,7 @@ ActiveAdmin.register_page "Dashboard" do
     end
 
     def get_practice_emails_totals(start_time, end_time)
-      Ahoy::Event.where(name: 'Practice email').where("properties->>'practice_slug' is not null").where(time: start_time..end_time).count
+      Ahoy::Event.where(name: 'Practice email').where("properties->>'practice_id' is not null").where(time: start_time..end_time).count
     end
 
     def set_dashboard_values
@@ -77,7 +77,7 @@ ActiveAdmin.register_page "Dashboard" do
       @practices_emailed = {
         emails_this_month: get_practice_emails_totals(@beginning_of_current_month, @end_of_current_month),
         emails_one_month_ago: get_practice_emails_totals(@beginning_of_last_month, @end_of_last_month),
-        total_emails: Ahoy::Event.where(name: 'Practice email').where("properties->>'practice_slug' is not null").count
+        total_emails: Ahoy::Event.where(name: 'Practice email').where("properties->>'practice_id' is not null").count
       }
 
       @practices_comment_stats = {

@@ -27,7 +27,7 @@
         <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
         <h2 id="email" class="font-sans-lg text-bold margin-top-2 margin-bottom-1 line-height-25px">Email</h2>
         <p class="line-height-26 margin-bottom-105 main-email-address-container">
-          Email <%= mail_to main_email, main_email, cc: practice_emails.map(&:address).join(', '), class: 'dm-external-link dm-email-practice', 'aria-label': "Email #{main_email}", data: {practice_slug: @practice.slug} %> with questions about this practice.
+          Email <%= mail_to main_email, main_email, cc: practice_emails.map(&:address).join(', '), class: 'dm-external-link dm-email-practice', 'aria-label': "Email #{main_email}", data: {practice_id: @practice.id} %> with questions about this practice.
         </p>
       <% end %>
     </div>

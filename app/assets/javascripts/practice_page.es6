@@ -162,8 +162,8 @@
 
     function trackPracticeContact() {
         $('.dm-email-practice').on('click', (e) => {
-            let practiceSlug = e.currentTarget.dataset.practiceSlug;
-            ahoy.track('Practice email', {practice_slug: practiceSlug})
+            let practiceId = parseInt(e.currentTarget.dataset.practiceId);
+            ahoy.track('Practice email', {practice_id: practiceId})
         })
     }
 
