@@ -180,19 +180,17 @@ ActiveAdmin.register_page "Dashboard" do
           sheet.add_row ["Diffusion Marketplace Metrics - #{Date.today}"], style: xlsx_main_header
           sheet.add_row ["General Traffic"], style: xlsx_sub_header_1
           @general_traffic_stats.each { |key, value| sheet.add_row [key.to_s === 'unique_visitors' || key.to_s === 'number_of_page_views' ? key.to_s.tr!('_', ' ').titleize + ' (last month)' : key.to_s.tr!('_', ' ').titleize + ' (all-time)', value], style: xlsx_entry }
+          sheet.add_row ['Site Visits per Month'], style: xlsx_sub_header_2
+          @site_visits_by_month.each do |month_and_count|
+            sheet.add_row [month_and_count[0], month_and_count[1]], style: xlsx_entry
+          end
           sheet.add_row [""], style: xlsx_divider
           sheet.add_row ["Custom Page Traffic"], style: xlsx_sub_header_1
           sheet.add_row ['Page', 'Unique Visitors (last month)', 'Number Of Page Views (last month)', 'Total Page Views (all-time)'], style: xlsx_sub_header_3
           @custom_pages_traffic_stats.each do |stat|
             sheet.add_row [stat[:slug], stat[:unique_visitors], stat[:number_of_page_views], stat[:total_views]], style: xlsx_entry
           end
-
-          sheet.add_row ['Site Visits per Month'], style: xlsx_sub_header_2
-          @site_visits_by_month.each do |month_and_count|
-            sheet.add_row [month_and_count[0], month_and_count[1]], style: xlsx_entry
-          end
           sheet.add_row [""], style: xlsx_divider
-
           sheet.add_row ["Practices"], style: xlsx_sub_header_1
           @practices_added_stats.each { |key, value| sheet.add_row [key.to_s.tr!('_', ' ').titleize, value], style: xlsx_entry }
           sheet.add_row [""], style: xlsx_divider
