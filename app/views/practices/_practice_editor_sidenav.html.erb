@@ -49,7 +49,7 @@
                   <% if params[:action] == 'adoptions' %>
                     <%= link_to 'Publish practice', practice_publication_validation_path(@practice), class: 'usa-button width-full padding-y-2 margin-top-1', id: 'publish-practice-button', method: :patch, remote: true %>
                   <% else %>
-                    <%= button_tag 'Publish practice', class: 'usa-button dm-btn-primary width-full margin-top-1', id: 'publish-practice-button', data: { form_action: "#{practice_publication_validation_path(@practice)}.js"}%>
+                    <%= button_tag 'Publish practice', class: 'usa-button dm-btn-primary width-full margin-top-2', id: 'publish-practice-button', data: { form_action: "#{practice_publication_validation_path(@practice)}.js"}%>
                   <% end %>
                 </div>
               </li>

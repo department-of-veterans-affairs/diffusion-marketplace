@@ -10,12 +10,4 @@ module UsersHelper
   def show_user_full_name(user)
     user_full_name(user) if is_full_name_present(user)
   end
-
-  def show_user_full_name_or_email(user)
-    if is_full_name_present(user)
-      show_user_full_name(user)
-    else
-      "#{user.email}"
-    end
-  end
 end

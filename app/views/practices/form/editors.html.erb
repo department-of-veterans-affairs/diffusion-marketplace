@@ -39,9 +39,10 @@
             <div class="grid-col-1 display-flex justify-center">
               <%= link_to '', practice_path(@practice,
                     practice: { practice_editors_attributes: { id: pe.id, _destroy: true } }),
-                    data: { confirm: "Are you sure you want to remove #{show_user_full_name_or_email(user)} from the editors list?" },
+                    data: { confirm: "Are you sure you want to remove #{user.email} from the editors list?" },
                     method: 'put',
-                    class: 'fas fa-trash-alt fa-2x text-middle'
+                    class: 'fas fa-trash-alt fa-2x text-middle',
+                    'aria-label': "Remove #{user.email} from practice editors"
               %>
             </div>
           </div>
@@ -54,14 +55,14 @@
               <%= f.fields_for :practice_editors, include_id: false, wrapper: false do |pe| %>
                 <div class="editor-input-container">
                   <%= pe.label :email, 'E-mail the people who can help you edit this practice page. Only @va.gov emails are allowed.', class: 'usa-label editor-label margin-top-0' %>
-                  <%= pe.text_field :email, class: 'usa-input editor-input', type: 'email', pattern: '.+@va.gov' %>
+                  <%= pe.text_field :email, class: 'usa-input editor-input', type: 'email' %>
                 </div>
               <% end %>
               <p><%= f.link_to_add "Add a task", :practice_editors %></p>
             </div>
           </fieldset>
           <div>
-            <%= f.submit "Send invite", class: 'usa-button dm-btn-primary x1-top practice-editors-button' %>
+            <%= f.submit "Send invite", class: 'usa-button dm-btn-primary x1-top invite-practice-editor-button' %>
           </div>
         <% end %>
 

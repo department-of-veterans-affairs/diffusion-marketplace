@@ -1,16 +1,11 @@
 class Practice < ApplicationRecord
   include ActiveModel::Dirty
-
-  #... all your other stuff
-  # validate :require_two_options
-  #
-  # private
-  # def require_two_options
-  #   errors.add(:base, "You must provide at least two options") if options.size < 2
-  # end
+  include PracticeEditorUtils
+  include VaEmail
 
   before_save :clear_searchable_cache_on_save
-  after_save :reset_searchable_practices
+  after_create :create_practice_editor_for_practice
+  after_save :reset_searchable_practices, :create_practice_editor_for_practice
 
   extend FriendlyId
   friendly_id :name, use: :slugged
@@ -199,7 +194,7 @@ class Practice < ApplicationRecord
   validates_attachment_content_type :main_display_image, content_type: /\Aimage\/.*\z/
   validates_attachment_content_type :origin_picture, content_type: /\Aimage\/.*\z/
   validates_uniqueness_of :name, {message: 'Practice name already exists'}
-  validates :user, presence: true, format: ApplicationController.helpers.va_email_validation
+  validates :user, presence: true, format: valid_va_email
   # validates :tagline, presence: { message: 'Practice tagline can\'t be blank'}
 
   scope :published,   -> { where(published: true) }
@@ -370,5 +365,9 @@ class Practice < ApplicationRecord
       hash_array.push(facility: facility, diffusion_history: adoption)
     end
     hash_array.sort_by { |a| [a[:facility]["StreetAddressState"], a[:facility]["OfficialStationName"]] }
+  end
+
+  def create_practice_editor_for_practice
+    PracticeEditor.create_and_invite(self, self.user, self.user.email) unless is_user_an_editor_for_practice(self, self.user)
   end
 end

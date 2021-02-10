@@ -1,5 +1,5 @@
 class PracticesController < ApplicationController
-  include CropperUtils, PracticesHelper, PracticeEditorsHelper
+  include CropperUtils, PracticesHelper, PracticeEditorUtils
   before_action :set_practice, only: [:show, :edit, :update, :destroy, :highlight, :un_highlight, :feature,
                                       :un_feature, :favorite, :instructions, :overview, :origin, :impact, :resources, :documentation,
                                       :departments, :timeline, :risk_and_mitigation, :contact, :checklist, :publication_validation, :adoptions,
@@ -127,8 +127,8 @@ class PracticesController < ApplicationController
         editor_params = params[:practice][:practice_editors_attributes]
         if updated.is_a?(StandardError)
           # Add back end validation error messages for Editors page just as a safety measure
-          invalid_email_field = updated.message.split(' ').slice(3..-1).join(' ')
-          flash[:error] = "There was an #{editor_params.present? && updated.message.include?('Validation') ? invalid_email_field : updated.message}. The practice was not saved."
+          invalid_editor_email_field = updated.message.split(' ').slice(3..-1).join(' ')
+          flash[:error] = "There was an #{editor_params.present? && updated.message.include?('valid @va.gov') ? invalid_editor_email_field : updated.message}. The practice was not saved."
           format.html { redirect_back fallback_location: root_path }
           format.json { render json: updated, status: :unprocessable_entity }
         else

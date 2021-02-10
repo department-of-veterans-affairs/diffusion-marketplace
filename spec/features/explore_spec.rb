@@ -12,7 +12,7 @@ describe 'Explore all practices page', type: :feature do
     practice_names = ['Cards for Memory', 'BIONE', 'GLOW3', 'Beach VA', 'Virtual Care', 'COPD', 'GERIVETZ', 'Gerofit', 'Pink Gloves Program', 'SOAR', 'Project Happenings', 'REVAMP', 'Telemedicine', 'Different practice']
     @practices = []
     practice_names.each do |name|
-      @practices.push(Practice.create!(name: name, approved: true, published: true, tagline: "Tagline for #{name}", support_network_email: 'test@test.com'), user: user)
+      @practices.push(Practice.create!(name: name, approved: true, published: true, tagline: "Tagline for #{name}", support_network_email: 'test@test.com', user: user))
     end
     pr_1 = Practice.create!(name: 'Unpublished practice', approved: false, published: false, user: user)
     CategoryPractice.create!(practice: pr_1, category: cat_5)
