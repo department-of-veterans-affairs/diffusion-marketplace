@@ -484,7 +484,7 @@ ActiveAdmin.register_page "Dashboard" do
           h4("Email Counts", title: "Number of times a practice was emailed via the practice page this month, last month, and overall", class: "dm-tooltip")
           span("Note: Email counts tracking began in February 2021")
 
-          table_for practices_emailed do
+          table_for(practices_emailed, id: "dm-practices-emailed-total") do
             column("#{date_headers[:current]}") {|pe| pe[:emails_this_month]}
             column("Last Month") {|pe| pe[:emails_one_month_ago]}
             column :total_emails
@@ -492,11 +492,11 @@ ActiveAdmin.register_page "Dashboard" do
 
           h4("Email Counts by Practice", title: "Number of times a practice was emailed via the practice page for each practice", class: "dm-tooltip")
 
-          table_for practices do
+          table_for(practices, id: "dm-practices-emailed-by-practice") do
             column(:name) {|pr| link_to(pr.name, admin_practice_path(pr))}
-            column("#{date_headers[:current]}") {|pr| pr.emailed_count_by_range(beginning_of_current_month, end_of_current_month)}
-            column("Last Month") {|pr| pr.emailed_count_by_range(beginning_of_last_month, end_of_last_month)}
-            column("#{date_headers[:total]}") {|pr| pr.emailed_count}
+            column("#{date_headers[:current]}") {|pr| pr.emailed_count_by_range(beginning_of_current_month, end_of_current_month) || 0 }
+            column("Last Month") {|pr| pr.emailed_count_by_range(beginning_of_last_month, end_of_last_month) || 0}
+            column("#{date_headers[:total]}") {|pr| pr.emailed_count || 0}
           end
           #TODO: add practice email counts
         end # panel
