@@ -1,4 +1,6 @@
 (($) => {
+
+    const $document = $(document);
     const facilityOption = '#initiating_facility_type_facility';
     const visnOption = '#initiating_facility_type_visn';
     const departmentOption = '#initiating_facility_type_department';

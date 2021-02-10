@@ -9,8 +9,9 @@
   <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_introduction', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_introduction_image_editor', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_include_tag 'multiple_editors', 'data-turbolinks-track': 'reload' %>
+
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    <%= render partial: 'practices/form/session_monitor', formats: [:js] %>
     var facilityData = <%= raw JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json")).to_json %>;
     <%# initiating_facility = @practice.initiating_facility || false%>
     var officeData = '<%= raw fetch_offices %>';
@@ -615,9 +616,3 @@
     </div>
   </div>
 </div>
-
-<script type="text/javascript">
-    $('document').ready(function(){
-        let timerId = setInterval(() => getTimeRemainingForCurrentSession(<%= @practice.id %>), 20000);
-    });
-</script>

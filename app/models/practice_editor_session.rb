@@ -76,7 +76,6 @@ class PracticeEditorSession < ApplicationRecord
     loop do
       session_rec = PracticeEditorSession.where(practice_id: practice_id, user_id: user_id, session_end_time: nil).order("session_start_time DESC").first()
       if session_rec.blank?
-        debugger
         Thread.exit
       end
       sleep 50
@@ -88,10 +87,8 @@ class PracticeEditorSession < ApplicationRecord
       puts 'process id: ' + session_rec.process_id.to_s
       puts 'thread_id: ' + Thread.current.object_id.to_s
       puts practice_id.to_s + ", " + user_id.to_s
-      if diff > 14
-        debugger
+      if diff > 2
         #PracticesController.hello_brad
-        puts 'done'
         rec = PracticeEditorSession.find_by_id(session_rec_id)
         if !rec.blank?
           if rec.session_end_time.blank?
@@ -99,6 +96,7 @@ class PracticeEditorSession < ApplicationRecord
             rec.save
           end
         end
+        puts 'session end ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
         Thread.exit
       end
     end
@@ -115,7 +113,6 @@ class PracticeEditorSession < ApplicationRecord
 
   def self.close_current_session(user_id, practice_id)
     rec = PracticeEditorSession.where(practice_id: practice_id, user_id: user_id, session_end_time: nil).order("session_start_time DESC").first()
-    debugger
     if !rec.blank?
       rec.session_end_time = DateTime.now
       rec.save
@@ -128,7 +125,7 @@ class PracticeEditorSession < ApplicationRecord
     if rec_session.blank?
       return 0
     end
-    ret_val =  15 - minutes_in_session(rec_session.session_start_time).to_i
+    ret_val =  3 - minutes_in_session(rec_session.session_start_time).to_i
     ret_val
   end
 
@@ -136,4 +133,14 @@ class PracticeEditorSession < ApplicationRecord
     minutes = ((DateTime.now - session_start_time.to_datetime) * 24 * 60).to_i
     return minutes
   end
+  def self.get_practice_record(practice_id)
+    practice_rec = Practice.find_by_id(practice_id)
+    if !practice_rec.blank?
+      return practice_rec
+    else
+      return nil
+    end
+  end
+
+
 end

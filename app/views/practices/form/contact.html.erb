@@ -3,7 +3,9 @@
 
 <% provide :head_tags do %>
   <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
-  <%= javascript_include_tag 'multiple_editors', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    <%= render partial: 'practices/form/session_monitor', formats: [:js] %>
+  <% end %>
 <% end %>
 
 <%= render 'practice_editor_sidenav' %>
@@ -116,8 +118,3 @@
     </div>
   </div>
 </div>
-<script type="text/javascript">
-    $('document').ready(function(){
-        let timerId = setInterval(() => getTimeRemainingForCurrentSession(<%= @practice.id %>), 20000);
-    });
-</script>

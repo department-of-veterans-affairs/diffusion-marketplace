@@ -1,3 +1,6 @@
+
+let timerId = setInterval(function(){getTimeRemainingForCurrentSession(<%= @practice.id %>); }, 31000);
+
 function getTimeRemainingForCurrentSession(practice_id) {
     Rails.ajax({
         type: 'get',
