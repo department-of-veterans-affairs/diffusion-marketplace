@@ -540,7 +540,6 @@ class PracticesController < ApplicationController
     user_id = current_user[:id]
     PracticeEditorSession.close_current_session(user_id, practice_id)
     msg = "Due to 15 minutes of inactivity while editing " + @practice.name + ", your edits have been saved and you have been returned to the Metrics page."
-    debugger
     s_url = "/practices/" + @practice.slug + "/edit/metrics"
     render :js => "window.location = '#{s_url}'"
   end
