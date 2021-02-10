@@ -1,7 +1,6 @@
 ActiveAdmin.register_page "Dashboard" do
   menu priority: 1, label: proc {I18n.t("active_admin.dashboard")}
 
-
   controller do
     helper_method :set_date_values
     helper_method :adoption_xlsx_styles
@@ -11,26 +10,37 @@ ActiveAdmin.register_page "Dashboard" do
       Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where(time: start_time..end_time).group("properties->>'ip_address'").count
     end
 
-    def custom_page_visits(start_time, end_time, page_slug)
+    def custom_page_visits_by_range(start_time, end_time, page_slug)
       Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'page_group' = '#{page_slug}'").where(time: start_time..end_time).group("properties->>'ip_address'").count
+    end
+
+    def custom_page_visits(page_slug)
+      Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'page_group' = '#{page_slug}'").count
     end
 
     def get_custom_pages_stats(custom_pages)
       traffic_stats = []
       custom_pages.each do |cp|
-        stats = custom_page_visits(@beginning_of_last_month, @end_of_last_month, cp)
+        stats = custom_page_visits_by_range(@beginning_of_last_month, @end_of_last_month, cp)
         prop = {
           slug: cp,
           unique_visitors: 0,
-          number_of_page_views: 0
+          number_of_page_views: 0,
+          total_views: custom_page_visits(cp)
         }
+
         if !stats.empty?
           prop[:unique_visitors] = stats.keys.length
           prop[:number_of_page_views] = stats.sum {|_k, v| v}
         end
+
         traffic_stats.push(prop)
       end
       traffic_stats
+    end
+
+    def get_practice_emails_totals(start_time, end_time)
+      Ahoy::Event.where(name: 'Practice email').where("properties->>'practice_slug' is not null").where(time: start_time..end_time).count
     end
 
     def set_dashboard_values
@@ -62,7 +72,13 @@ ActiveAdmin.register_page "Dashboard" do
         total_favorited: UserPractice.where(favorited: true).count
       }
 
-      @practices_favorites = @enabled_published_practices.sort_by(&:current_month_favorited).reverse!
+      @practices_favorites = @enabled_published_practices.sort_by(&:current_month_favorited).reverse
+
+      @practices_emailed = {
+        emails_this_month: get_practice_emails_totals(@beginning_of_current_month, @end_of_current_month),
+        emails_one_month_ago: get_practice_emails_totals(@beginning_of_last_month, @end_of_last_month),
+        total_emails: Ahoy::Event.where(name: 'Practice email').where("properties->>'practice_slug' is not null").count
+      }
 
       @practices_comment_stats = {
         comments_this_month: Commontator::Comment.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
@@ -164,6 +180,13 @@ ActiveAdmin.register_page "Dashboard" do
           sheet.add_row ["Diffusion Marketplace Metrics - #{Date.today}"], style: xlsx_main_header
           sheet.add_row ["General Traffic"], style: xlsx_sub_header_1
           @general_traffic_stats.each { |key, value| sheet.add_row [key.to_s === 'unique_visitors' || key.to_s === 'number_of_page_views' ? key.to_s.tr!('_', ' ').titleize + ' (last month)' : key.to_s.tr!('_', ' ').titleize + ' (all-time)', value], style: xlsx_entry }
+          sheet.add_row [""], style: xlsx_divider
+          sheet.add_row ["Custom Page Traffic"], style: xlsx_sub_header_1
+          sheet.add_row ['Page', 'Unique Visitors (last month)', 'Number Of Page Views (last month)', 'Total Page Views (all-time)'], style: xlsx_sub_header_3
+          @custom_pages_traffic_stats.each do |stat|
+            sheet.add_row [stat[:slug], stat[:unique_visitors], stat[:number_of_page_views], stat[:total_views]], style: xlsx_entry
+          end
+
           sheet.add_row ['Site Visits per Month'], style: xlsx_sub_header_2
           @site_visits_by_month.each do |month_and_count|
             sheet.add_row [month_and_count[0], month_and_count[1]], style: xlsx_entry
@@ -214,7 +237,21 @@ ActiveAdmin.register_page "Dashboard" do
                           ], style: xlsx_entry
           end
           sheet.add_row [""], style: xlsx_divider
+          sheet.add_row ["Email Counts"], style: xlsx_sub_header_2
+          @practices_emailed.each { |key, value| sheet.add_row [key.to_s.tr!('_', ' ').titleize, value], style: xlsx_entry }
+          sheet.add_row [""], style: xlsx_divider
 
+          sheet.add_row ["Email Counts by Practice"], style: xlsx_sub_header_2
+          sheet.add_row @practices_headers, style: xlsx_sub_header_3
+          @practices.each do |value|
+            sheet.add_row [
+                              value.name,
+                              value.emailed_count_by_range(@beginning_of_current_month, @end_of_current_month),
+                              value.emailed_count_by_range(@beginning_of_last_month, @end_of_last_month),
+                              value.emailed_count
+                          ], style: xlsx_entry
+          end
+          sheet.add_row [""], style: xlsx_divider
           sheet.add_row ['User Statistics'], style: xlsx_sub_header_1
           sheet.add_row ['Users per Month'], style: xlsx_sub_header_2
           add_header_row_for_month_and_year(sheet, '', @month_and_year_array, xlsx_sub_header_3)
@@ -397,7 +434,7 @@ ActiveAdmin.register_page "Dashboard" do
             column("Page") {|pg| link_to(pg[:slug], "/#{pg[:slug]}")}
             column('unique visitors (last month)', class: 'col-unique_visitors_custom_page') {|pg| pg[:unique_visitors]}
             column('number of page views (last month)', class: 'col-page_views_custom_page') {|pg| pg[:number_of_page_views]}
-            column('total page views (all-time)', class: 'col-total_views_custom_page') {|pg| Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'page_group' = '#{pg[:slug]}'").count}
+            column('total page views (all-time)', class: 'col-total_views_custom_page') {|pg| pg[:total_views]}
           end
         end # panel
 
@@ -442,6 +479,24 @@ ActiveAdmin.register_page "Dashboard" do
             column("#{date_headers[:current]}") {|pr| pr.commontator_thread.comments.where(created_at: beginning_of_current_month...end_of_current_month).count}
             column("Last Month") {|pr| pr.commontator_thread.comments.where(created_at: beginning_of_last_month...end_of_last_month).count}
             column("#{date_headers[:total]}") {|pr| pr.commontator_thread.comments.count}
+          end
+
+          h4("Email Counts", title: "Number of times a practice was emailed via the practice page this month, last month, and overall", class: "dm-tooltip")
+          span("Note: Email counts tracking began in February 2021")
+
+          table_for practices_emailed do
+            column("#{date_headers[:current]}") {|pe| pe[:emails_this_month]}
+            column("Last Month") {|pe| pe[:emails_one_month_ago]}
+            column :total_emails
+          end
+
+          h4("Email Counts by Practice", title: "Number of times a practice was emailed via the practice page for each practice", class: "dm-tooltip")
+
+          table_for practices do
+            column(:name) {|pr| link_to(pr.name, admin_practice_path(pr))}
+            column("#{date_headers[:current]}") {|pr| pr.emailed_count_by_range(beginning_of_current_month, end_of_current_month)}
+            column("Last Month") {|pr| pr.emailed_count_by_range(beginning_of_last_month, end_of_last_month)}
+            column("#{date_headers[:total]}") {|pr| pr.emailed_count}
           end
           #TODO: add practice email counts
         end # panel
