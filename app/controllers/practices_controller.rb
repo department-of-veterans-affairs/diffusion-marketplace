@@ -127,10 +127,8 @@ class PracticesController < ApplicationController
   # PATCH/PUT /practices/1
   # PATCH/PUT /practices/1.json
   def update
-    debugger
     updated = update_conditions
     session_open = PracticeEditorSession.where(practice: @practice, user_id: current_user.id).last.session_end_time.present?
-    debugger
     #check to see if current session has expired.... if  not
     respond_to do |format|
       if updated
@@ -139,8 +137,7 @@ class PracticesController < ApplicationController
           format.html { redirect_back fallback_location: root_path }
           format.json { render json: updated, status: :unprocessable_entity }
         elsif session_open
-          debugger
-          format.html { redirect_to practice_metrics_path(@practice), notice: params[:practice].present? ? 'Session ended and practice was successfully updated.' : nil }
+          format.html { redirect_to practice_metrics_path(@practice), notice: params[:practice].present? ? 'Your editing session for ' + @practice.name + ' has ended.  Your edits have been saved and you have been returned to the Metrics page.' : nil }
         else
           if params[:next]
             path = eval("practice_#{Practice::PRACTICE_EDITOR_SLUGS.key(current_endpoint)}_path(@practice)")
@@ -550,15 +547,23 @@ class PracticesController < ApplicationController
     render :json => data
   end
 
-  def redirect_to_metrics
+  def close_edit_session
+    debugger
     if @practice.blank?
       @practice = set_practice
     end
     practice_id = params[:practice_id].to_i
     user_id = current_user[:id]
     PracticeEditorSession.close_current_session(user_id, practice_id)
-    #s_url = "/practices/" + @practice.slug + "/edit/metrics?se=1"
-    #render :js => "window.location = '#{s_url}'"
+  end
+
+  def redirect_to_metrics
+    debugger
+    if @practice.blank?
+      @practice = set_practice
+    end
+    s_url = "/practices/" + @practice.slug + "/edit/metrics?se=1"
+    render :js => "window.location = '#{s_url}'"
   end
 
 

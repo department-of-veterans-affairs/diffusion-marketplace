@@ -17,7 +17,7 @@
       <div>
       <%= render partial: "shared/messages", locals: {small_text: true} %>
       <% if params.has_key?(:se) %>
-        <% notice = 'Your editing session has ended and you have been returned to the metrics page.' %>
+        <% notice = 'Your editing session for ' + @practice.name + ' has ended.  Your edits have been saved and you have been returned to the Metrics page.' %>
         <div class="usa-alert usa-alert--info margin-bottom-2 message-icon-bg-position">
           <div class="usa-alert__body grid-row flex-align-center">
             <div class="usa-alert__heading font-sans-sm x0-bottom"><%= notice %></div>

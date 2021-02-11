@@ -22,7 +22,7 @@ function getTimeRemainingForCurrentSession(practice_id) {
                     //TODO save... and navigate to Metrics...
                     Rails.ajax({
                         type: 'get',
-                        url: "/redirect_to_metrics",
+                        url: "/close_edit_session",
                         data: jQuery.param({practice_id: practice_id, session_ended: true}),
                         success: function(result) {
                             let save_id = document.getElementById('practice-editor-save-button');
@@ -30,7 +30,11 @@ function getTimeRemainingForCurrentSession(practice_id) {
                                 save_id.click();
                             }
                             else{
-                                //redirect... to metrics..
+                                Rails.ajax({
+                                    type: 'get',
+                                    url: "/redirect_to_metrics",
+                                    data: jQuery.param({practice_id: practice_id, session_ended: true}),
+                                });
                             }
                         }
                     });

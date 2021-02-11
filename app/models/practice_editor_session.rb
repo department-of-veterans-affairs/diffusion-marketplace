@@ -88,6 +88,7 @@ class PracticeEditorSession < ApplicationRecord
       puts 'process id: ' + session_rec.process_id.to_s
       puts 'thread_id: ' + Thread.current.object_id.to_s
       puts practice_id.to_s + ", " + user_id.to_s
+      #TODO: set back to diff > 14 .set to one only for testing.. bj_2_10_2021
       if diff > 1
         #PracticesController.hello_brad
         rec = PracticeEditorSession.find_by_id(session_rec_id)
@@ -128,6 +129,7 @@ class PracticeEditorSession < ApplicationRecord
     if rec_session.blank?
       return 0
     end
+    #TODO: change this back to 15......... set to 2 only for testing..... bj_2_10_2021
     ret_val =  2 - minutes_in_session(rec_session.session_start_time).to_i
     ret_val
   end
