@@ -11,13 +11,15 @@ class PracticesController < ApplicationController
   before_action :authenticate_user!, except: [:show, :search, :index, :explore, :explore_practices]
   before_action :can_view_practice, only: [:show, :edit, :update, :destroy]
   before_action :can_create_practice, only: :create
-  before_action :can_edit_practice, only: [:edit, :update, :instructions, :overview, :contact, :published, :publication_validation, :adoptions, :about]
+  before_action :can_edit_practice, only: [:introduction, :implementation, :edit, :update, :instructions, :overview, :contact, :published, :publication_validation, :adoptions, :about]
   before_action :set_date_initiated_params, only: [:update, :publication_validation]
   before_action :is_enabled, only: [:show]
-  before_action :practice_locked_for_editing, only: [:edit, :update, :destroy, :highlight, :un_highlight, :feature,
-                                   :un_feature, :favorite, :overview, :origin, :collaborators, :impact, :resources, :documentation,
-                                   :departments, :timeline, :risk_and_mitigation, :contact, :checklist, :publication_validation, :adoptions,
-                                   :create_or_update_diffusion_history, :implementation, :introduction, :about]
+  before_action :practice_locked_for_editing, only: [:introduction, :overview, :contact, :adoptions, :about, :implementation]
+
+  # before_action :practice_locked_for_editing, only: [:edit, :update, :destroy, :highlight, :un_highlight, :feature,
+  #                                  :un_feature, :favorite, :overview, :origin, :collaborators, :impact, :resources, :documentation,
+  #                                  :departments, :timeline, :risk_and_mitigation, :contact, :checklist, :publication_validation, :adoptions,
+  #                                  :create_or_update_diffusion_history, :implementation, :introduction, :about]
   # GET /practices
   # GET /practices.json
   def index
@@ -125,20 +127,27 @@ class PracticesController < ApplicationController
   # PATCH/PUT /practices/1
   # PATCH/PUT /practices/1.json
   def update
+    debugger
     updated = update_conditions
+    session_open = PracticeEditorSession.where(practice: @practice, user_id: current_user.id).last.session_end_time.present?
+    debugger
+    #check to see if current session has expired.... if  not
     respond_to do |format|
       if updated
         if updated.is_a?(StandardError)
           flash[:error] = "There was an #{updated.message}. The practice was not saved."
           format.html { redirect_back fallback_location: root_path }
           format.json { render json: updated, status: :unprocessable_entity }
+        elsif session_open
+          debugger
+          format.html { redirect_to practice_metrics_path(@practice), notice: params[:practice].present? ? 'Session ended and practice was successfully updated.' : nil }
         else
           if params[:next]
             path = eval("practice_#{Practice::PRACTICE_EDITOR_SLUGS.key(current_endpoint)}_path(@practice)")
             format.html { redirect_to path, notice: params[:practice].present? ? 'Practice was successfully updated.' : nil }
             format.json { render :show, status: :ok, location: @practice }
           else
-            format.html { redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.' }
+            format.html {redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.' }
             format.json { render json: @practice, status: :ok }
           end
         end
@@ -548,10 +557,10 @@ class PracticesController < ApplicationController
     practice_id = params[:practice_id].to_i
     user_id = current_user[:id]
     PracticeEditorSession.close_current_session(user_id, practice_id)
-    msg = "Due to 15 minutes of inactivity while editing " + @practice.name + ", your edits have been saved and you have been returned to the Metrics page."
-    s_url = "/practices/" + @practice.slug + "/edit/metrics?se=1"
-    render :js => "window.location = '#{s_url}'"
+    #s_url = "/practices/" + @practice.slug + "/edit/metrics?se=1"
+    #render :js => "window.location = '#{s_url}'"
   end
+
 
   private
 
@@ -562,7 +571,6 @@ class PracticesController < ApplicationController
   end
 
   def practice_locked_for_editing
-    practice_last_updated = PracticeEditorSession.practice_last_updated(@practice.id)
     cur_user_id = current_user[:id]
     locked_rec = PracticeEditorSession.practice_locked(@practice.id)
     # if not locked - lock the practice for editing (for the current user)

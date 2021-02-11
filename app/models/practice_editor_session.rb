@@ -11,11 +11,12 @@ class PracticeEditorSession < ApplicationRecord
   end
   # returns 0 if not locked and returns the practice_editor_session id if locked
   def self.practice_locked(practice_id)
-    rec = PracticeEditorSession.where(practice_id: practice_id, session_end_time: nil).where.not(session_start_time: nil).order("session_start_time DESC")
-    return 0 if rec.count == 0
-    return rec[0].id
+    rec = PracticeEditorSession.where(practice_id: practice_id, session_end_time: nil).where.not(session_start_time: nil).last
+    return 0 if rec.nil?
+    return rec.id
   end
   def self.lock_practice_for_user(user_id, practice_id)
+    #TODO clean up???
     PracticeEditorSession.create user_id: user_id, practice_id: practice_id, session_start_time: DateTime.now, session_end_time: nil
   end
   def self.locked_by(rec_id, include_time = true)
@@ -127,7 +128,7 @@ class PracticeEditorSession < ApplicationRecord
     if rec_session.blank?
       return 0
     end
-    ret_val =  3 - minutes_in_session(rec_session.session_start_time).to_i
+    ret_val =  2 - minutes_in_session(rec_session.session_start_time).to_i
     ret_val
   end
 

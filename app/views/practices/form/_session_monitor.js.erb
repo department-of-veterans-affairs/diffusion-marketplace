@@ -20,28 +20,20 @@ function getTimeRemainingForCurrentSession(practice_id) {
                 else{
                     //window.location = "/practices/brads-1st-practice/edit/metrics";
                     //TODO save... and navigate to Metrics...
-                    //debugger
                     Rails.ajax({
                         type: 'get',
                         url: "/redirect_to_metrics",
-                        data: jQuery.param({practice_id: practice_id})
+                        data: jQuery.param({practice_id: practice_id, session_ended: true}),
+                        success: function(result) {
+                            let save_id = document.getElementById('practice-editor-save-button');
+                            if(save_id){
+                                save_id.click();
+                            }
+                            else{
+                                //redirect... to metrics..
+                            }
+                        }
                     });
-
-                    // let save_id = document.getElementById('practice-editor-save-button');
-                    // if(save_id){
-                    //     save_id.click();
-                    // }
-
-
-                    //window.location = "/practices/brads-1st-practice/edit/metrics";
-                    // setTimeout(function(){
-                    //     //window.location = "/practices/brads-1st-practice/edit/metrics";
-                    //     Rails.ajax({
-                    //         type: 'get',
-                    //         url: "/redirect_to_metrics",
-                    //         data: jQuery.param({practice_id: practice_id})
-                    //     });
-                    // },5000);
                 }
             }
         }

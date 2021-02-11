@@ -16,13 +16,14 @@
     <div id="metrics" class="desktop:grid-col-9 grid-col-12 p0">
       <div>
       <%= render partial: "shared/messages", locals: {small_text: true} %>
-        <% if params.has_key?(:se) %>
-          <%
-            notice = 'Your editing session has ended and you have been returned to the metrics page.'
-            flash[:notice] = notice
-          %>
-          <%= render partial: "shared/messages", locals: {small_text: true, notice: flash[:notice]} %>
-        <% end %>
+      <% if params.has_key?(:se) %>
+        <% notice = 'Your editing session has ended and you have been returned to the metrics page.' %>
+        <div class="usa-alert usa-alert--info margin-bottom-2 message-icon-bg-position">
+          <div class="usa-alert__body grid-row flex-align-center">
+            <div class="usa-alert__heading font-sans-sm x0-bottom"><%= notice %></div>
+          </div>
+        </div>
+      <% end %>
     </div>
       <section class="usa-section padding-top-0 p0-bottom" aria-label="Metrics">
         <div class="grid-row flex-align-end margin-top-4">
