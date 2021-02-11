@@ -525,9 +525,7 @@ class PracticesController < ApplicationController
   end
 
   def extend_editor_session_time
-    if @practice.blank?
-      @practice = set_practice
-    end
+    @practice = set_practice if @practice.blank?
     practice_id = params[:practice_id].to_i
     user_id = current_user[:id]
     if !PracticeEditorSession.extend_current_session(user_id, practice_id, @practice)
@@ -548,24 +546,17 @@ class PracticesController < ApplicationController
   end
 
   def close_edit_session
-    debugger
-    if @practice.blank?
-      @practice = set_practice
-    end
+    @practice = set_practice if @practice.blank?
     practice_id = params[:practice_id].to_i
     user_id = current_user[:id]
     PracticeEditorSession.close_current_session(user_id, practice_id)
   end
 
   def redirect_to_metrics
-    debugger
-    if @practice.blank?
-      @practice = set_practice
-    end
+    @practice = set_practice if @practice.blank?
     s_url = "/practices/" + @practice.slug + "/edit/metrics?se=1"
     render :js => "window.location = '#{s_url}'"
   end
-
 
   private
 
@@ -598,7 +589,7 @@ class PracticesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def practice_params
-    params.require(:practice).permit(:need_training, :short_name, :tagline, :process, :it_required, :need_new_license, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :cost_to_implement_aggregate, :sustainability_aggregate, :veteran_satisfaction_aggregate, :difficulty_aggregate, :date_initiated,
+    params.require(:practice).permit(:need_training, :check_session, :short_name, :tagline, :process, :it_required, :need_new_license, :description, :name, :initiating_facility, :summary, :origin_title, :origin_story, :cost_to_implement_aggregate, :sustainability_aggregate, :veteran_satisfaction_aggregate, :difficulty_aggregate, :date_initiated,
                                      :number_adopted, :number_departments, :number_failed, :implementation_time_estimate, :implementation_time_estimate_description, :implentation_summary, :implentation_fte,
                                      :training_provider, :training_length, :training_test, :training_provider_role, :required_training_summary, :support_network_email,
                                      :initiating_facility_type, :initiating_department_office_id,

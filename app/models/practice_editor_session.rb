@@ -47,7 +47,6 @@ class PracticeEditorSession < ApplicationRecord
     return false
   end
   def self.practice_last_updated(practice_id)
-    #debugger
     session = PracticeEditorSession.where(practice_id: practice_id).where.not(session_end_time: nil).order("session_end_time DESC").first()
     return "" if session.blank?
     lock_user = locked_by(session.id, false)
@@ -88,7 +87,7 @@ class PracticeEditorSession < ApplicationRecord
       puts 'process id: ' + session_rec.process_id.to_s
       puts 'thread_id: ' + Thread.current.object_id.to_s
       puts practice_id.to_s + ", " + user_id.to_s
-      #TODO: set back to diff > 14 .set to one only for testing.. bj_2_10_2021
+      #TODO: set back to diff > 14 .set to 0 only for testing.. bj_2_10_2021
       if diff > 1
         #PracticesController.hello_brad
         rec = PracticeEditorSession.find_by_id(session_rec_id)
@@ -146,6 +145,19 @@ class PracticeEditorSession < ApplicationRecord
       return nil
     end
   end
-
-
+  def self.check_session_info(practice)
+    ctr = 0
+    recs = PracticeEditorSession.where(practice_id: practice.id).order("session_start_time DESC")
+    if !recs.blank? && recs.count > 1
+      recs.each do |rec|
+        if ctr > 0
+          if minutes_in_session(rec.session_start_time) > 19
+            rec.destroy!
+            rec.save
+          end
+        end
+        ctr += 1
+      end
+    end
+  end
 end

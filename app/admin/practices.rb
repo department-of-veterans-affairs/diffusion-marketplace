@@ -235,7 +235,6 @@ ActiveAdmin.register Practice do
     end
 
     def set_practice_user(practice)
-      debugger
       email = params[:user_email].downcase
       user = User.find_by(email: email)
 

@@ -3,13 +3,11 @@ $('document').ready(function(){
 });
 
 function getTimeRemainingForCurrentSession() {
-    debugger
     Rails.ajax({
         type: 'get',
         url: "/session_time_remaining",
         data: jQuery.param({ practice_id: '<%= @practice.id %>'}),
         success: function (data) {
-            debugger
             var timeLeft =  data;
             if(timeLeft == 2){
                 var response = confirm(data);
