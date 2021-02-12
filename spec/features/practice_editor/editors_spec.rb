@@ -89,6 +89,8 @@ describe 'Practice Editor', type: :feature, js: true do
         fill_in_email_field('test@va.gov')
         # make sure the mailer count increases by 1
         expect { add_editor }.to change { ActionMailer::Base.deliveries.count }.by(1)
+        # make sure the mailer subject is for a practice editor that's not also the practice user
+        expect(ActionMailer::Base.deliveries.last.subject).to eq('You are invited to edit the A public practice Diffusion Marketplace Page!')
       end
     end
 
