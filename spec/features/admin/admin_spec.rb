@@ -16,6 +16,7 @@ describe 'The admin dashboard', type: :feature do
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
     @practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true)
+    @practice_2 = Practice.create!(name: 'The Second Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true)
     @categories = [
       Category.create!(name: 'COVID', description: 'COVID related practices', related_terms: ['COVID-19, Coronavirus']),
       Category.create!(name: 'Telehealth', description: 'Telelhealth related practices')
@@ -312,6 +313,107 @@ describe 'The admin dashboard', type: :feature do
     click_link("#{practice_overview_path(Practice.last)}")
 
     expect(page).to have_current_path(practice_overview_path(Practice.last))
+  end
+
+  it 'should not allow an admin to create a new practice if they do not enter the required information' do
+    login_as(@admin, scope: :user, run_callbacks: false)
+    visit '/admin'
+
+    click_link('Practices')
+    click_link('New Practice')
+
+    fill_in('Practice name', with: 'The Newest Practice')
+    click_button('Create Practice')
+    # check for blank email
+    expect(page).to have_content('There was an error. Email cannot be blank.')
+    expect(page).to_not have_selector("input[value='The Newest Practice']")
+    # check for invalid email
+    fill_in('Practice name', with: 'The Newest Practice')
+    fill_in('User email', with: 'practice_owner@test.com')
+    click_button('Create Practice')
+
+    expect(page).to have_content('There was an error. Email must be a valid @va.gov address.')
+    expect(page).to_not have_selector("input[value='The Newest Practice']")
+    expect(page).to_not have_selector("input[value='practice_owner@test.com']")
+
+    # check for blank practice name
+    fill_in('User email', with: 'practice_owner@test.com')
+    click_button('Create Practice')
+
+    expect(page).to have_content('There was an error. Practice name cannot be blank.')
+    expect(page).to_not have_selector("input[value='practice_owner@test.com']")
+  end
+
+  it 'should allow an admin to update the name of a practice as long as the updated name does not already belong to an existing practice' do
+    login_as(@admin, scope: :user, run_callbacks: false)
+    visit '/admin'
+
+    click_link('Practices')
+    click_link('Edit', href: edit_admin_practice_path(@practice))
+    fill_in('Practice name', with: @practice_2.name)
+    click_button('Update Practice')
+
+    expect(page).to have_content('There was an error. Practice name already exists.')
+    expect(page).to have_selector("input[value='The Best Practice Ever!']")
+
+    fill_in('Practice name', with: 'Test Practice 1')
+    click_button('Update Practice')
+
+    expect(page).to have_content('Practice was successfully updated.')
+    expect(page).to have_content('Test Practice 1')
+  end
+
+  it 'should not allow an admin to update an existing practice if they do not enter the required information' do
+    login_as(@admin, scope: :user, run_callbacks: false)
+    visit '/admin'
+
+    click_link('Practices')
+    click_link('Edit', href: edit_admin_practice_path(@practice))
+    # check for blank practice name
+    fill_in('Practice name', with: '')
+    click_button('Update Practice')
+
+    expect(page).to have_content('There was an error. Practice name cannot be blank.')
+    expect(page).to have_selector("input[value='The Best Practice Ever!']")
+
+    # check for blank email
+    fill_in('Practice name', with: 'Test Practice')
+    fill_in('User email', with: '')
+    click_button('Update Practice')
+
+    expect(page).to have_content('There was an error. Email cannot be blank.')
+    expect(page).to have_selector("input[value='spongebob.squarepants@va.gov']")
+
+    # check for invalid email
+    fill_in('User email', with: 'practice_owner@test.com')
+    click_button('Update Practice')
+
+    expect(page).to have_content('There was an error. Email must be a valid @va.gov address.')
+    expect(page).to have_selector("input[value='spongebob.squarepants@va.gov']")
+  end
+
+  it 'should send an invitation to edit practice for a newly assigned practice user as long as the user is not already an editor for the practice' do
+    login_as(@admin, scope: :user, run_callbacks: false)
+    visit '/admin'
+
+    click_link('Practices')
+    click_link('Edit', href: edit_admin_practice_path(@practice))
+    fill_in('User email', with: 'test@va.gov')
+    # make sure the mailer count increases by 1
+    expect { click_button('Update Practice') }.to change { ActionMailer::Base.deliveries.count }.by(1)
+    expect(page).to have_content('Practice was successfully updated.')
+
+    visit practice_editors_path(@practice)
+    expect(page).to have_content('test@va.gov')
+
+    visit '/admin'
+
+    click_link('Practices')
+    click_link('Edit', href: edit_admin_practice_path(@practice))
+    fill_in('User email', with: @user.email)
+
+    # make sure the mailer count does not increase by 1
+    expect { click_button('Update Practice') }.to_not change { ActionMailer::Base.deliveries.count }
   end
 
   it 'practice owner emails are downloaded when user clicks csv link and get_practice_owner_emails scope specified' do

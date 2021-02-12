@@ -42,6 +42,7 @@
                     data: { confirm: "Are you sure you want to remove #{user.email} from the editors list?" },
                     method: 'put',
                     class: 'fas fa-trash-alt fa-2x text-middle',
+                    id: "delete-practice-editor-#{pe.id}",
                     'aria-label': "Remove #{user.email} from practice editors"
               %>
             </div>
@@ -55,7 +56,7 @@
               <%= f.fields_for :practice_editors, include_id: false, wrapper: false do |pe| %>
                 <div class="editor-input-container">
                   <%= pe.label :email, 'E-mail the people who can help you edit this practice page. Only @va.gov emails are allowed.', class: 'usa-label editor-label margin-top-0' %>
-                  <%= pe.text_field :email, class: 'usa-input editor-input', type: 'email' %>
+                  <%= pe.text_field :email, class: 'usa-input editor-input', type: 'email', pattern: '.+@va.gov' %>
                 </div>
               <% end %>
               <p><%= f.link_to_add "Add a task", :practice_editors %></p>

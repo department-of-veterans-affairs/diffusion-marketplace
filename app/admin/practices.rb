@@ -1,4 +1,5 @@
 include ActiveAdminHelpers
+include PracticeEditorUtils
 
 ActiveAdmin.register Practice do
   actions :all, except: [:destroy]
@@ -213,16 +214,58 @@ ActiveAdmin.register Practice do
     after_action :update_categories, only: [:create, :update]
     after_action :update_highlight_attr, only: [:update]
 
-    before_create do |practice|
-      if params[:user_email].present?
-        set_practice_user(practice)
+    def create_or_update_practice
+      begin
+        practice_name = params[:practice][:name]
+        blank_practice_name = params[:practice][:name].blank?
+        practice_slug = params[:id]
+        email = params[:user_email]
+        # raise an error if practice name is left blank
+        raise StandardError.new 'There was an error. Practice name cannot be blank.' if blank_practice_name
+
+        practice = Practice.find_by(slug: practice_slug)
+        practice_by_name = Practice.find_by(name: practice_name)
+        # raise an error if there's already a practice with a name that matches the user's input for the name field
+        raise StandardError.new 'There was an error. Practice name already exists.' if practice_by_name.present? && practice_by_name != practice
+
+        practice ||= Practice.create(name: practice_name)
+
+
+        # raise an error if practice email does not meet validation requirements
+        blank_email = email.blank?
+        invalid_email = email.split('@').last != 'va.gov'
+
+        if blank_email
+          raise StandardError.new 'There was an error. Email cannot be blank.'
+        elsif invalid_email
+          raise StandardError.new 'There was an error. Email must be a valid @va.gov address.'
+        end
+
+        set_practice_user(practice) if email.present?
+        practice.user = nil unless email.present?
+        if practice.user.present? && !is_user_an_editor_for_practice(practice, practice.user)
+          PracticeEditor.create_and_invite(practice, practice.user, practice.user.email) unless is_user_an_editor_for_practice(practice, practice.user) && practice.user.present?
+        end
+        respond_to do |format|
+          format.html { redirect_to admin_practice_path(practice), notice: "Practice was successfully updated." }
+        end
+      rescue => e
+        respond_to do |format|
+          if params[:action] === 'update'
+            format.html { redirect_to edit_admin_practice_path(Practice.find_by(slug: practice_slug)), flash: { error:  "#{e.message}"} }
+          else
+            format.html { redirect_to new_admin_practice_path, flash: { error:  "#{e.message}"} }
+          end
+        end
       end
-      practice.approved = true
     end
 
-    before_update do |practice|
-      set_practice_user(practice) if params[:user_email].present?
-      practice.user = nil unless params[:user_email].present?
+    def create
+      create_or_update_practice
+    end
+
+    def update
+      create_or_update_practice
     end
 
     def set_practice_adoption_values
@@ -236,6 +279,7 @@ ActiveAdmin.register Practice do
 
     def set_practice_user(practice)
       email = params[:user_email].downcase
+      name = params[:practice][:name]
       user = User.find_by(email: email)
 
       # create a new user if they do not exist
@@ -249,6 +293,9 @@ ActiveAdmin.register Practice do
       user.save
       practice.user = user
       practice.commontator_thread.subscribe(user)
+      practice.approved = true
+      practice.name = name
+      practice.save
     end
 
     def find_resource
@@ -270,8 +317,8 @@ ActiveAdmin.register Practice do
       selected_categories = params[:practice][:category_ids].drop(1)
       selected_categories.map! { |cat| cat.to_i }
       practice = Practice.find_by(name: params[:practice][:name])
-      current_categories = CategoryPractice.where(practice_id: practice[:id])
-      if selected_categories.length > 0
+      current_categories = CategoryPractice.where(practice_id: practice[:id]) unless practice.nil?
+      if selected_categories.length > 0 && practice.present?
         selected_categories.map { |cat| CategoryPractice.find_or_create_by!(category_id: cat, practice_id: practice[:id]) }
       end
 
@@ -285,7 +332,8 @@ ActiveAdmin.register Practice do
     end
 
     def update_highlight_attr
-      practice = Practice.find_by(name: params[:practice][:name])
+      practice_slug = params[:id]
+      practice = Practice.find_by(slug: practice_slug)
       practice.update(highlight_title: params[:practice][:highlight_title], highlight_body: params[:practice][:highlight_body])
     end
   end

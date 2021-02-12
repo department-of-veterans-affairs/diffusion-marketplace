@@ -4,8 +4,8 @@ class Practice < ApplicationRecord
   include VaEmail
 
   before_save :clear_searchable_cache_on_save
+  after_save :reset_searchable_practices
   after_create :create_practice_editor_for_practice
-  after_save :reset_searchable_practices, :create_practice_editor_for_practice
 
   extend FriendlyId
   friendly_id :name, use: :slugged

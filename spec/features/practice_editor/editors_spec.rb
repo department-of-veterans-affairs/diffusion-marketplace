@@ -10,7 +10,7 @@ describe 'Practice Editor', type: :feature, js: true do
     end
 
     def save_practice
-      find('#practice-editor-save-button').click
+      click_on 'Save'
     end
 
     def add_editor
@@ -19,6 +19,11 @@ describe 'Practice Editor', type: :feature, js: true do
 
     def fill_in_email_field(email)
       fill_in('E-mail the people who can help you edit this practice page. Only @va.gov emails are allowed.', with: email)
+    end
+
+    def delete_practice_editor(editor_id)
+      find("#delete-practice-editor-#{editor_id}").click
+      page.accept_alert
     end
 
     def login_and_visit_editors(user)
@@ -34,12 +39,12 @@ describe 'Practice Editor', type: :feature, js: true do
     end
 
     describe 'Authorization' do
-      it 'should not allow the user to reach the Editors page unless they are at least one of the following: practice user, admin, or practice editor' do
+      it 'should not allow a user to reach the Editors page unless they are at least one of the following: practice user, admin, or practice editor' do
         login_and_visit_editors(@user)
-        expect(page).to have_content('You are not authorized to view this content')
+        expect(page).to have_content('You are not authorized to view this content.')
       end
 
-      it 'should allow the user to reach the Editors page if they are at least one of the following: practice user, admin, or practice editor' do
+      it 'should allow a user to reach the Editors page if they are at least one of the following: practice user, admin, or practice editor' do
         PracticeEditor.create!(practice: @practice, user: @user, email: @user.email)
         login_and_visit_editors(@user)
         expect(page).to have_content('Editors')
@@ -48,7 +53,28 @@ describe 'Practice Editor', type: :feature, js: true do
     end
 
     describe 'Adding editors' do
-      it 'should allow the user to add editors to the practice' do
+      it 'should not allow a user to add an editor that already exists for the practice' do
+        login_and_visit_editors(@admin)
+        fill_in_email_field('yuji.itadori@va.gov')
+        add_editor
+        expect(page).to have_content('There was an error. A user with the email "yuji.itadori@va.gov" is already an editor for this practice.')
+      end
+
+      it 'should not allow a user to add an editor if they hit the save button with an empty email field' do
+        login_and_visit_editors(@admin)
+        save_practice
+        expect(page).to have_content('There was an error. Email field cannot be blank.')
+      end
+
+      it 'should not allow a user to add an editor with an email that doesn\'t end with @va.gov' do
+        login_and_visit_editors(@admin)
+        fill_in_email_field('yuji.itadori@test.com')
+        add_editor
+        editor_email_message = page.find('.editor-input').native.attribute('validationMessage')
+        expect(editor_email_message).to eq('Please match the requested format.')
+      end
+
+      it 'should allow a user to add editors to the practice if all requirements are met' do
         login_and_visit_editors(@admin)
         fill_in_email_field('test@va.gov')
         add_editor
@@ -58,11 +84,51 @@ describe 'Practice Editor', type: :feature, js: true do
         expect(page).to have_content('Added to the team')
       end
 
-      it 'should not allow the user to add an editor that already exists for the practice' do
+      it 'should send an email to each newly added practice editor' do
         login_and_visit_editors(@admin)
-        fill_in_email_field('yuji.itadori@va.gov')
+        fill_in_email_field('test@va.gov')
+        # make sure the mailer count increases by 1
+        expect { add_editor }.to change { ActionMailer::Base.deliveries.count }.by(1)
+      end
+    end
+
+    describe 'Deleting editors' do
+      it 'should not allow a user to delete an editor if that editor is the last one for the practice' do
+        login_and_visit_editors(@admin)
+        delete_practice_editor(1)
+        expect(page).to have_content('There was an error. At least one editor is required.')
+      end
+
+      it 'should allow a user to delete an editor if they aren\'t the last editor' do
+        login_and_visit_editors(@admin)
+        fill_in_email_field(@user.email)
         add_editor
-        expect(page).to have_content('There was an error. A user with the email "yuji.itadori@va.gov" is already an editor for this practice.')
+        delete_practice_editor(1)
+        expect(page).to have_content('Editor was removed from the list.')
+      end
+
+      describe 'edge cases' do
+        it 'should no longer allow a user to edit the practice if they choose to delete themselves AND they are not the practice user or admin' do
+          login_and_visit_editors(@admin)
+          fill_in_email_field(@user.email)
+          add_editor
+          logout(@admin)
+          login_and_visit_editors(@user)
+          delete_practice_editor(2)
+          expect(page).to have_content('You are not authorized to view this content.')
+        end
+
+        it 'should allow a user to delete the practice editor associated with the practice user' do
+          login_and_visit_editors(@admin)
+          fill_in_email_field(@user.email)
+          add_editor
+          logout(@admin)
+          login_and_visit_editors(@user)
+          expect(page).to have_content(@admin.email)
+          delete_practice_editor(1)
+          expect(page).to have_content('Editor was removed from the list.')
+          expect(page).to_not have_content(@admin.email)
+        end
       end
     end
   end

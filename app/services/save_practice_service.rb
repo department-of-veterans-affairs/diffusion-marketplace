@@ -417,9 +417,10 @@ class SavePracticeService
       user = User.find_by(email: email_param)
       practice_editor = PracticeEditor.find_by(practice: @practice, user: user)
 
+      # if the user tries to save with a blank email field, raise an error
+      raise StandardError.new "error. Email field cannot be blank" if email_param.blank?
+
       if user.present? && practice_editor.nil?
-        # if the user tries to save with a blank email field, raise an error
-        raise StandardError.new "error. Email field cannot be blank" if email_param.blank?
         # create a new practice editor for the existing user
         PracticeEditor.create_and_invite(@practice, user, email_param)
       # make sure a duplicate practice editor is not created

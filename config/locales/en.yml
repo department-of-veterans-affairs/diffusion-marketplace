@@ -50,7 +50,7 @@ en:
           attributes:
             user:
               blank: can't be blank
-              invalid: must be a valid VA email address
+              invalid: must be a valid @va.gov email address
         practice_editor:
           attributes:
             email:
