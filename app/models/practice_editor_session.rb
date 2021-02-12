@@ -15,6 +15,8 @@ class PracticeEditorSession < ApplicationRecord
     return 0 if rec.nil?
     return rec.id
   end
+
+
   def self.lock_practice_for_user(user_id, practice_id)
     #TODO clean up???
     PracticeEditorSession.create user_id: user_id, practice_id: practice_id, session_start_time: DateTime.now, session_end_time: nil
@@ -88,7 +90,7 @@ class PracticeEditorSession < ApplicationRecord
       puts 'thread_id: ' + Thread.current.object_id.to_s
       puts practice_id.to_s + ", " + user_id.to_s
       #TODO: set back to diff > 14 .set to 0 only for testing.. bj_2_10_2021
-      if diff > 1
+      if diff > 4
         #PracticesController.hello_brad
         rec = PracticeEditorSession.find_by_id(session_rec_id)
         if !rec.blank?
@@ -129,7 +131,7 @@ class PracticeEditorSession < ApplicationRecord
       return 0
     end
     #TODO: change this back to 15......... set to 2 only for testing..... bj_2_10_2021
-    ret_val =  2 - minutes_in_session(rec_session.session_start_time).to_i
+    ret_val =  5 - minutes_in_session(rec_session.session_start_time).to_i
     ret_val
   end
 
@@ -147,7 +149,7 @@ class PracticeEditorSession < ApplicationRecord
   end
   def self.check_session_info(practice)
     ctr = 0
-    recs = PracticeEditorSession.where(practice_id: practice.id).order("session_start_time DESC")
+    recs = PracticeEditorSession.where(practice_id: practice.id).where.not(session_end_time: nil).order("session_start_time DESC")
     if !recs.blank? && recs.count > 1
       recs.each do |rec|
         if ctr > 0
@@ -157,6 +159,19 @@ class PracticeEditorSession < ApplicationRecord
           end
         end
         ctr += 1
+      end
+    end
+    remove_expired_open_sessions(practice.id)
+  end
+  def self.remove_expired_open_sessions(practice_id)
+    debugger
+    recs = PracticeEditorSession.where(practice_id: practice_id, session_end_time: nil).where.not(session_start_time: nil)
+    if !recs.blank?
+      recs.each do |rec|
+        if minutes_in_session(rec.session_start_time) > 19
+          rec.destroy!
+          rec.save
+        end
       end
     end
   end

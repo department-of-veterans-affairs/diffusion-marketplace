@@ -1,5 +1,5 @@
 
-let timerId = setInterval(function(){getTimeRemainingForCurrentSession(<%= @practice.id %>); }, 31000);
+let timerId = setInterval(function(){getTimeRemainingForCurrentSession(<%= @practice.id %>); }, 15000);
 
 function getTimeRemainingForCurrentSession(practice_id) {
     Rails.ajax({
