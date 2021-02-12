@@ -164,7 +164,6 @@ class PracticeEditorSession < ApplicationRecord
     remove_expired_open_sessions(practice.id)
   end
   def self.remove_expired_open_sessions(practice_id)
-    debugger
     recs = PracticeEditorSession.where(practice_id: practice_id, session_end_time: nil).where.not(session_start_time: nil)
     if !recs.blank?
       recs.each do |rec|
