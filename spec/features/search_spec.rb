@@ -8,14 +8,14 @@ describe 'Search', type: :feature do
     @approver = User.create!(email: 'squidward.tentacles@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
-    @practice = Practice.create!(name: 'The Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', published: true, approved: true)
+    @practice = Practice.create!(name: 'The Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', published: true, approved: true)
     PracticeOriginFacility.create!(practice: @practice, facility_type: 0, facility_id: '640A0')
     @practice2 = Practice.create!(name: 'Another Best Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 2', date_initiated: 'Sun, 24 Oct 2004 00:00:00 UTC +00:00', summary: 'This is another best practice.')
     PracticeOriginFacility.create!(practice: @practice2, facility_type:0, facility_id: '687HA')
-    @practice3 = Practice.create!(name: 'Some Cool Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 3', date_initiated: 'Mon, 08 Mar 1994 00:00:00 UTC +00:00', summary: 'This is the second best practice ever.', published: true, approved: true)
+    @practice3 = Practice.create!(name: 'Some Cool Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 3', date_initiated: 'Mon, 08 Mar 1994 00:00:00 UTC +00:00', summary: 'This is the second best practice ever.', overview_solution: 'overviwew-solution', published: true, approved: true)
     PracticeOriginFacility.create!(practice: @practice3, facility_type:0, facility_id: '402')
     @practice4 = Practice.create!(name: 'A Fantastic Practice', initiating_facility_type: 'visn', initiating_facility: '1', tagline: 'Test tagline 4', date_initiated: 'Wed, 15 May 2008 00:00:00 UTC +00:00', summary: 'This is the third best practice ever.', published: true, approved: true)
-    @practice5 = Practice.create!(name: 'Random Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 5', date_initiated: 'Fri, 27 Feb 1990 00:00:00 UTC +00:00', summary: 'This is the fourth best practice ever.', published: true, approved: true)
+    @practice5 = Practice.create!(name: 'Random Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 5', date_initiated: 'Fri, 27 Feb 1990 00:00:00 UTC +00:00', summary: 'This is the fourth best practice ever.', overview_results: 'overview-results', published: true, approved: true)
     PracticeOriginFacility.create!(practice: @practice5, facility_type:0, facility_id: '402')
     @practice6 = Practice.create!(name: 'One Practice to Rule Them All', initiating_facility_type: 'visn', initiating_facility: '1', tagline: 'Test tagline 6', date_initiated: 'Sun, 21 Oct 2001 00:00:00 UTC +00:00', summary: 'This is the fifth best practice ever.', published: true, approved: true)
     @practice7 = Practice.create!(name: 'Practice of the Ages', initiating_facility_type: 'facility', tagline: 'Test tagline 7', date_initiated: 'Mon, 26 Feb 1986 00:00:00 UTC +00:00', summary: 'This is the sixth best practice ever.', published: true, approved: true)
@@ -240,6 +240,26 @@ describe 'Search', type: :feature do
 
       expect(page).to have_content('2 results')
       expect(page).to have_content(@practice3.name)
+      expect(page).to have_content(@practice5.name)
+    end
+
+    it 'should be able to search based on overview problem, solution, and results' do
+      visit_search_page
+      fill_in('dm-practice-search-field', with: 'overview-problem')
+      find('#dm-practice-search-button').click
+      expect(page).to have_content('1 result')
+      expect(page).to have_content(@practice.name)
+
+      visit_search_page
+      fill_in('dm-practice-search-field', with: 'overview-solution')
+      find('#dm-practice-search-button').click
+      expect(page).to have_content('1 result')
+      expect(page).to have_content(@practice3.name)
+
+      visit_search_page
+      fill_in('dm-practice-search-field', with: 'overview-results')
+      find('#dm-practice-search-button').click
+      expect(page).to have_content('1 result')
       expect(page).to have_content(@practice5.name)
     end
 
