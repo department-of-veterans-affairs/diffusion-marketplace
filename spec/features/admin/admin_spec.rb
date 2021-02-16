@@ -392,7 +392,7 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_selector("input[value='spongebob.squarepants@va.gov']")
   end
 
-  it 'should send an email for a newly assigned practice user as long as the user is not already an editor for the practice' do
+  it 'should send an email for a newly assigned practice owner as long as the user is not already an editor for the practice' do
     login_as(@admin, scope: :user, run_callbacks: false)
     visit '/admin'
 
@@ -402,7 +402,7 @@ describe 'The admin dashboard', type: :feature do
     # make sure the mailer count increases by 1
     expect { click_button('Update Practice') }.to change { ActionMailer::Base.deliveries.count }.by(1)
     expect(page).to have_content('Practice was successfully updated.')
-    # make sure the mailer subject is for a practice user that is now also a practice editor
+    # make sure the mailer subject is for a practice owner that is now also a practice editor
     expect(ActionMailer::Base.deliveries.last.subject).to eq('You have been added to the list of practice editors for the A public practice Diffusion Marketplace Page!')
 
     visit practice_editors_path(@practice)

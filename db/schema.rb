@@ -676,7 +676,6 @@ ActiveRecord::Schema.define(version: 2021_01_27_210024) do
     t.bigint "user_id"
     t.datetime "last_edited_at"
     t.string "email"
-    t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["practice_id"], name: "index_practice_editors_on_practice_id"

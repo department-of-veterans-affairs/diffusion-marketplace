@@ -37,7 +37,7 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_content('Introduce your practice and provide a brief summary to people who may be unfamiliar with it.')
         end
 
-        it 'should not allow the following user types to edit a practice: non-admins, non-practice users, and non-practice editors' do
+        it 'should not allow the following user types to edit a practice: non-admins, non-practice owners, and non-practice editors' do
             login_as(@user, :scope => :user, :run_callbacks => false)
             visit practice_path(@practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508

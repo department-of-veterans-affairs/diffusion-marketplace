@@ -1,5 +1,5 @@
 namespace :practice_editors do
-  desc 'Add practice owner to practice editors array'
+  desc 'Adds practice owner to the list of practice editors for their practice'
   task add_practice_owners_to_practice_editors: :environment do
     practices = Practice.all
 

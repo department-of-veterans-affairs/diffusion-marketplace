@@ -39,12 +39,12 @@ describe 'Practice Editor', type: :feature, js: true do
     end
 
     describe 'Authorization' do
-      it 'should not allow a user to reach the Editors page unless they are at least one of the following: practice user, admin, or practice editor' do
+      it 'should not allow a user to reach the Editors page unless they are at least one of the following: practice owner, admin, or practice editor' do
         login_and_visit_editors(@user)
         expect(page).to have_content('You are not authorized to view this content.')
       end
 
-      it 'should allow a user to reach the Editors page if they are at least one of the following: practice user, admin, or practice editor' do
+      it 'should allow a user to reach the Editors page if they are at least one of the following: practice owner, admin, or practice editor' do
         PracticeEditor.create!(practice: @practice, user: @user, email: @user.email)
         login_and_visit_editors(@user)
         expect(page).to have_content('Editors')
@@ -89,7 +89,7 @@ describe 'Practice Editor', type: :feature, js: true do
         fill_in_email_field('test@va.gov')
         # make sure the mailer count increases by 1
         expect { add_editor }.to change { ActionMailer::Base.deliveries.count }.by(1)
-        # make sure the mailer subject is for a practice editor that's not also the practice user
+        # make sure the mailer subject is for a practice editor that's not also the practice owner
         expect(ActionMailer::Base.deliveries.last.subject).to eq('You are invited to edit the A public practice Diffusion Marketplace Page!')
       end
     end
@@ -110,7 +110,7 @@ describe 'Practice Editor', type: :feature, js: true do
       end
 
       describe 'edge cases' do
-        it 'should no longer allow a user to edit the practice if they choose to delete themselves AND they are not the practice user or admin' do
+        it 'should no longer allow a user to edit the practice if they choose to delete themselves AND they are not the practice owner or admin' do
           login_and_visit_editors(@admin)
           fill_in_email_field(@user.email)
           add_editor
@@ -120,7 +120,7 @@ describe 'Practice Editor', type: :feature, js: true do
           expect(page).to have_content('You are not authorized to view this content.')
         end
 
-        it 'should allow a user to delete the practice editor associated with the practice user' do
+        it 'should allow a user to delete the practice editor associated with the practice owner' do
           login_and_visit_editors(@admin)
           fill_in_email_field(@user.email)
           add_editor
