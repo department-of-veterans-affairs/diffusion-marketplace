@@ -368,6 +368,6 @@ class Practice < ApplicationRecord
   end
 
   def create_practice_editor_for_practice
-    PracticeEditor.create_and_invite(self, self.user, self.user.email) unless is_user_an_editor_for_practice(self, self.user)
+    PracticeEditor.create_and_invite(self, self.user) unless is_user_an_editor_for_practice(self, self.user)
   end
 end

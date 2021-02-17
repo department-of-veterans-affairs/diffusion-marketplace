@@ -45,7 +45,7 @@ describe 'Practice Editor', type: :feature, js: true do
       end
 
       it 'should allow a user to reach the Editors page if they are at least one of the following: practice owner, admin, or practice editor' do
-        PracticeEditor.create!(practice: @practice, user: @user, email: @user.email)
+        PracticeEditor.create!(practice: @practice, user: @user)
         login_and_visit_editors(@user)
         expect(page).to have_content('Editors')
         expect(page).to have_content('Add editors')

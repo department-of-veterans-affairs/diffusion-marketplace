@@ -244,7 +244,7 @@ ActiveAdmin.register Practice do
         set_practice_user(practice) if email.present?
         practice.user = nil unless email.present?
         if practice.user.present? && !is_user_an_editor_for_practice(practice, practice.user)
-          PracticeEditor.create_and_invite(practice, practice.user, practice.user.email) unless is_user_an_editor_for_practice(practice, practice.user) && practice.user.present?
+          PracticeEditor.create_and_invite(practice, practice.user)
         end
         respond_to do |format|
           format.html { redirect_to admin_practice_path(practice), notice: "Practice was successfully updated." }

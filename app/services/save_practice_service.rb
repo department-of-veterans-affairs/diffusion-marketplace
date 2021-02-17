@@ -425,7 +425,7 @@ class SavePracticeService
 
       if user.present? && practice_editor.nil?
         # create a new practice editor for the existing user
-        PracticeEditor.create_and_invite(@practice, user, email_param)
+        PracticeEditor.create_and_invite(@practice, user)
       # make sure a duplicate practice editor is not created
       elsif user.present? && practice_editor.present?
         raise StandardError.new "error. A user with the email \"#{user.email}\" is already an editor for this practice"
@@ -434,7 +434,7 @@ class SavePracticeService
         user = User.new(email: email_param)
         skip_validations_and_save_user(user)
         # create a new practice editor for the new user
-        PracticeEditor.create_and_invite(@practice, user, email_param)
+        PracticeEditor.create_and_invite(@practice, user)
       end
     end
     # remove params keys before updating practice
