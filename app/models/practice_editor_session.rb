@@ -125,13 +125,17 @@ class PracticeEditorSession < ApplicationRecord
   end
 
 
-  def self.get_minutes_remaining_in_session(user_id, practice_id)
+  def self.get_minutes_remaining_in_session(user_id, practice_id, is_published)
     rec_session = PracticeEditorSession.where(practice_id: practice_id, user_id: user_id, session_end_time: nil).order("session_start_time DESC").first()
     if rec_session.blank?
       return 0
     end
     #TODO: change this back to 15......... set to 2...? only for testing..... bj_2_10_2021
-    ret_val =  2 - minutes_in_session(rec_session.session_start_time).to_i
+    if is_published
+      ret_val =  15 - minutes_in_session(rec_session.session_start_time).to_i
+    else
+      ret_val =  30 - minutes_in_session(rec_session.session_start_time).to_i
+    end
     ret_val
   end
 

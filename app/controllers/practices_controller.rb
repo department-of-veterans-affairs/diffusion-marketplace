@@ -540,7 +540,8 @@ class PracticesController < ApplicationController
   def session_time_remaining
     practice_id = params[:practice_id].to_i
     user_id = current_user[:id]
-    minutes_left = PracticeEditorSession.get_minutes_remaining_in_session(user_id, practice_id)
+    is_published = Practice.find_by_id(practice_id).published
+    minutes_left = PracticeEditorSession.get_minutes_remaining_in_session(user_id, practice_id, is_published)
     data = minutes_left.to_s
     render :json => data
   end
