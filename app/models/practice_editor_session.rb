@@ -158,7 +158,7 @@ class PracticeEditorSession < ApplicationRecord
     if !recs.blank? && recs.count > 1
       recs.each do |rec|
         if ctr > 0
-          if minutes_in_session(rec.session_start_time) > 19
+          if ((practice.published && minutes_in_session(rec.session_start_time) > 19) || (!practice.published && minutes_in_session(rec.session_start_time) > 34))
             rec.destroy!
             rec.save
           end
