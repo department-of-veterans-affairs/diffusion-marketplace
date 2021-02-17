@@ -1,5 +1,6 @@
 class SavePracticeService
   include CropperUtils
+  include UserUtils
   include UsersHelper
 
   def initialize(params)
@@ -419,6 +420,8 @@ class SavePracticeService
 
       # if the user tries to save with a blank email field, raise an error
       raise StandardError.new "error. Email field cannot be blank" if email_param.blank?
+      # if the user tries to save with an invalid email field, raise an error
+      raise StandardError.new "There was an error. Must be a valid @va.gov email address" if is_invalid_va_email(email_param)
 
       if user.present? && practice_editor.nil?
         # create a new practice editor for the existing user
@@ -429,11 +432,7 @@ class SavePracticeService
       else
         # create a new user if they do not exist
         user = User.new(email: email_param)
-        # set the user's attributes based on ldap entry
-        user.skip_password_validation = true
-        user.skip_va_validation = true
-        user.confirm unless ENV['USE_NTLM'] == 'true'
-        user.save
+        skip_validations_and_save_user(user)
         # create a new practice editor for the new user
         PracticeEditor.create_and_invite(@practice, user, email_param)
       end

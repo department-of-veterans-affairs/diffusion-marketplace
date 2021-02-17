@@ -149,7 +149,7 @@ class PracticesController < ApplicationController
           end
           # Update last_edited field for Practice Editor unless the current_user is the Practice Editor and they're trying to delete their own Practice Editor associated with the current practice
           practice_editor = PracticeEditor.find_by(practice: @practice, user: current_user)
-          if current_user.present? && practice_editor.present?
+          if practice_editor.present?
             practice_editor.update_attributes(last_edited_at: DateTime.current)
           end
         end

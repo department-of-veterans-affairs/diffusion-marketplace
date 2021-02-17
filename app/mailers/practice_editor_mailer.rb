@@ -9,7 +9,6 @@ class PracticeEditorMailer < ApplicationMailer
         to: email,
         subject: practice.user === user ? practice_user_editor_text : practice_editor_text
     ) do |format|
-      format.text
       format.html { render "practice_editor_mailer/invite_to_edit_practice_email".html_safe, locals: { practice: practice } }
     end
   end

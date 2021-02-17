@@ -1,5 +1,6 @@
 include ActiveAdminHelpers
 include PracticeEditorUtils
+include UserUtils
 
 ActiveAdmin.register Practice do
   actions :all, except: [:destroy]
@@ -233,11 +234,10 @@ ActiveAdmin.register Practice do
 
         # raise an error if practice email does not meet validation requirements
         blank_email = email.blank?
-        invalid_email = email.split('@').last != 'va.gov'
 
         if blank_email
           raise StandardError.new 'There was an error. Email cannot be blank.'
-        elsif invalid_email
+        elsif is_invalid_va_email(email)
           raise StandardError.new 'There was an error. Email must be a valid @va.gov address.'
         end
 
@@ -284,13 +284,8 @@ ActiveAdmin.register Practice do
 
       # create a new user if they do not exist
       user = User.new(email: email) if user.blank?
+      skip_validations_and_save_user(user)
 
-      # set the user's attributes based on ldap entry
-      user.skip_password_validation = true
-      user.skip_va_validation = true
-      # TODO: public site: do we want created users to confirm their accounts?
-      user.confirm unless ENV['USE_NTLM'] == 'true'
-      user.save
       practice.user = user
       practice.commontator_thread.subscribe(user)
       practice.approved = true
