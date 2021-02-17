@@ -82,6 +82,7 @@ class PracticeEditorSession < ApplicationRecord
       end
       sleep 50
       diff = minutes_in_session(session_rec.session_start_time)
+      is_published = Practice.find_by_id(practice_id).published
 
       puts 'session_start_time: ' + session_rec.session_start_time.to_s
       puts 'diff from now: ' + diff.to_s
@@ -90,7 +91,7 @@ class PracticeEditorSession < ApplicationRecord
       puts 'thread_id: ' + Thread.current.object_id.to_s
       puts practice_id.to_s + ", " + user_id.to_s
       #TODO: set back to diff > 14 .set to 0 only for testing.. bj_2_10_2021
-      if diff > 0
+      if (is_published && diff > 14) || (!is_published && diff > 28)
         #PracticesController.hello_brad
         rec = PracticeEditorSession.find_by_id(session_rec_id)
         if !rec.blank?
