@@ -14,7 +14,8 @@ class PracticeEditor < ApplicationRecord
   validates :email, presence: true, format: valid_va_email, on: :create
 
   def self.create_and_invite(practice, user)
-    self.create!(practice: practice, user: user)
+    # Email param ensures the user associated with the practice editor has a valid va.gov email address
+    self.create!(practice: practice, user: user, email: user.email)
     PracticeEditorMailer.invite_to_edit_practice_email(practice, user).deliver
   end
 

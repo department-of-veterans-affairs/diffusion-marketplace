@@ -147,9 +147,9 @@ class PracticesController < ApplicationController
             format.html { redirect_back fallback_location: root_path, notice: editor_notice + 'Practice was successfully updated.' }
             format.json { render json: @practice, status: :ok }
           end
-          # Update last_edited field for Practice Editor unless the current_user is the Practice Editor and they're trying to delete their own Practice Editor associated with the current practice
+          # Update last_edited field for the Practice Editor unless the current_user is the Practice Editor and their Practice Editor record was just created
           practice_editor = PracticeEditor.find_by(practice: @practice, user: current_user)
-          if practice_editor.present?
+          if practice_editor.present? && Time.current - practice_editor.created_at > 2
             practice_editor.update_attributes(last_edited_at: DateTime.current)
           end
         end
