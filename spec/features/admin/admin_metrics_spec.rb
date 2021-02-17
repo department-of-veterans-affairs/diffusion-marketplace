@@ -8,6 +8,7 @@ describe 'Admin Dashboard Metrics Tab', type: :feature do
     @admin.add_role(:admin)
     @practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', enabled: true, published: true, support_network_email: 'sandy.cheeks@bikinibottom.net')
     @page_group = PageGroup.create(name: 'programming', description: 'Pages about programming go in this group.')
+    @page_group_1 = PageGroup.create(name: 'ghost_page', description: 'Pages should not be in the metrics')
     @page = Page.create!(title: 'Test', description: 'This is a test page', slug: 'home', page_group: @page_group)
     login_as(@admin, scope: :user, run_callbacks: false)
   end
@@ -103,6 +104,7 @@ describe 'Admin Dashboard Metrics Tab', type: :feature do
 
   it 'should update the custom page view counts' do
     visit_metrics_tab
+    expect(page).to have_no_content(@page_group_1.name)
     expect(page).to have_link(href: '/programming')
     within(:css, '#dm-custom-page-traffic') do
       td_unique = find('td[class*="total_views_custom_page"]')

@@ -51,7 +51,7 @@ ActiveAdmin.register_page "Dashboard" do
       @practices_views = @enabled_published_practices.sort_by(&:current_month_views).reverse!
       @practices_headers = ['Practice Name', "#{@date_headers[:current]}", "Last Month", "#{@date_headers[:total]}"]
 
-      custom_pages = PageGroup.all.map { |pg| pg.slug }
+      custom_pages = PageGroup.all.select { |pg| pg.pages.where(slug: 'home').present? }.map{ |pg| pg.slug }
       @custom_pages_traffic_stats = get_custom_pages_stats(custom_pages)
 
       @general_traffic_stats = {
