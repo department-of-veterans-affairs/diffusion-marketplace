@@ -51,8 +51,8 @@ ActiveAdmin.register_page "Dashboard" do
       @practices_views = @enabled_published_practices.sort_by(&:current_month_views).reverse!
       @practices_headers = ['Practice Name', "#{@date_headers[:current]}", "Last Month", "#{@date_headers[:total]}"]
 
-      custom_pages = PageGroup.all.select { |pg| pg.pages.where(slug: 'home').present? }.map{ |pg| pg.slug }
-      @custom_pages_traffic_stats = get_custom_pages_stats(custom_pages)
+      @custom_pages = PageGroup.all.select { |pg| pg.pages.where(slug: 'home').present? }.map{ |pg| pg.slug }
+      @custom_pages_traffic_stats = get_custom_pages_stats(@custom_pages)
 
       @general_traffic_stats = {
         unique_visitors: site_visit_stats.keys.length,
@@ -185,12 +185,14 @@ ActiveAdmin.register_page "Dashboard" do
             sheet.add_row [month_and_count[0], month_and_count[1]], style: xlsx_entry
           end
           sheet.add_row [""], style: xlsx_divider
-          sheet.add_row ["Custom Page Traffic"], style: xlsx_sub_header_1
-          sheet.add_row ['Page', 'Unique Visitors (last month)', 'Number Of Page Views (last month)', 'Total Page Views (all-time)'], style: xlsx_sub_header_3
-          @custom_pages_traffic_stats.each do |stat|
-            sheet.add_row [stat[:slug], stat[:unique_visitors], stat[:number_of_page_views], stat[:total_views]], style: xlsx_entry
+          if @custom_pages.present?
+            sheet.add_row ["Custom Page Traffic"], style: xlsx_sub_header_1
+            sheet.add_row ['Page', 'Unique Visitors (last month)', 'Number Of Page Views (last month)', 'Total Page Views (all-time)'], style: xlsx_sub_header_3
+            @custom_pages_traffic_stats.each do |stat|
+              sheet.add_row [stat[:slug], stat[:unique_visitors], stat[:number_of_page_views], stat[:total_views]], style: xlsx_entry
+            end
+            sheet.add_row [""], style: xlsx_divider
           end
-          sheet.add_row [""], style: xlsx_divider
           sheet.add_row ["Practices"], style: xlsx_sub_header_1
           @practices_added_stats.each { |key, value| sheet.add_row [key.to_s.tr!('_', ' ').titleize, value], style: xlsx_entry }
           sheet.add_row [""], style: xlsx_divider
@@ -426,15 +428,17 @@ ActiveAdmin.register_page "Dashboard" do
           end
         end # panel
 
-        panel('Custom Page Traffic', class: 'dm-panel-container', id: 'dm-custom-page-traffic') do
-          span("Note: Custom page traffic tracking began in February 2021")
-          table_for custom_pages_traffic_stats do
-            column("Page") {|pg| link_to(pg[:slug], "/#{pg[:slug]}")}
-            column('unique visitors (last month)', class: 'col-unique_visitors_custom_page') {|pg| pg[:unique_visitors]}
-            column('number of page views (last month)', class: 'col-page_views_custom_page') {|pg| pg[:number_of_page_views]}
-            column('total page views (all-time)', class: 'col-total_views_custom_page') {|pg| pg[:total_views]}
-          end
-        end # panel
+        if custom_pages.present?
+          panel('Custom Page Traffic', class: 'dm-panel-container', id: 'dm-custom-page-traffic') do
+            span("Note: Custom page traffic tracking began in February 2021")
+            table_for custom_pages_traffic_stats do
+              column("Page") {|pg| link_to(pg[:slug], "/#{pg[:slug]}")}
+              column('unique visitors (last month)', class: 'col-unique_visitors_custom_page') {|pg| pg[:unique_visitors]}
+              column('number of page views (last month)', class: 'col-page_views_custom_page') {|pg| pg[:number_of_page_views]}
+              column('total page views (all-time)', class: 'col-total_views_custom_page') {|pg| pg[:total_views]}
+            end
+          end # panel
+        end
 
         panel 'Practices' do
           table_for practices_added_stats do
