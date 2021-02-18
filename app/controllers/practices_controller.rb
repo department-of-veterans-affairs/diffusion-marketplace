@@ -15,11 +15,6 @@ class PracticesController < ApplicationController
   before_action :set_date_initiated_params, only: [:update, :publication_validation]
   before_action :is_enabled, only: [:show]
   before_action :practice_locked_for_editing, only: [:introduction, :overview, :contact, :adoptions, :about, :implementation]
-
-  # before_action :practice_locked_for_editing, only: [:edit, :update, :destroy, :highlight, :un_highlight, :feature,
-  #                                  :un_feature, :favorite, :overview, :origin, :collaborators, :impact, :resources, :documentation,
-  #                                  :departments, :timeline, :risk_and_mitigation, :contact, :checklist, :publication_validation, :adoptions,
-  #                                  :create_or_update_diffusion_history, :implementation, :introduction, :about]
   # GET /practices
   # GET /practices.json
   def index

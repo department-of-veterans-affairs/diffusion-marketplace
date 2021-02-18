@@ -42,8 +42,10 @@
           </div>
           <div class="margin-top-2 margin-bottom-2">
             <% if params.has_key?(:session_locked) %>
-              <div class="practice-session-messages margin-top-2">
-                <%= params[:session_locked] %>
+              <div class="usa-alert usa-alert--warning margin-bottom-2 message-icon-bg-position">
+                <div class="usa-alert__body grid-row flex-align-center">
+                  <div class="usa-alert__heading font-sans-sm x0-bottom"><%= params[:session_locked] %></div>
+                </div>
               </div>
              <% else %>
                 <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
