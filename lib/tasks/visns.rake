@@ -4,6 +4,9 @@ namespace :visns do
   task :create_visns_and_transfer_data => :environment do
     origin_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
 
-    debugger
+    origin_data["visns"].each do |v|
+      Visn.create!(name: v["name"], number: v["number"].split('-').pop.to_i)
+    end
+
   end
 end

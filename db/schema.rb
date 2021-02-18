@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_09_223407) do
+ActiveRecord::Schema.define(version: 2021_02_17_223013) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -671,6 +671,16 @@ ActiveRecord::Schema.define(version: 2020_12_09_223407) do
     t.index ["user_id"], name: "index_practice_creators_on_user_id"
   end
 
+  create_table "practice_editors", force: :cascade do |t|
+    t.bigint "practice_id"
+    t.bigint "user_id"
+    t.datetime "last_edited_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["practice_id"], name: "index_practice_editors_on_practice_id"
+    t.index ["user_id"], name: "index_practice_editors_on_user_id"
+  end
+
   create_table "practice_emails", force: :cascade do |t|
     t.bigint "practice_id"
     t.string "address"
@@ -934,8 +944,8 @@ ActiveRecord::Schema.define(version: 2020_12_09_223407) do
     t.string "overview_solution"
     t.string "overview_results"
     t.integer "maturity_level"
-    t.datetime "date_published"
     t.datetime "practice_pages_updated"
+    t.datetime "date_published"
     t.string "highlight_title"
     t.string "highlight_body"
     t.index ["slug"], name: "index_practices_on_slug", unique: true
@@ -1152,6 +1162,67 @@ ActiveRecord::Schema.define(version: 2020_12_09_223407) do
     t.index ["va_secretary_priority_id"], name: "idx_priority_practices_priority_id"
   end
 
+  create_table "vamcs", force: :cascade do |t|
+    t.bigint "visn_id"
+    t.integer "sta3n"
+    t.integer "station_number"
+    t.string "official_station_name"
+    t.string "common_name"
+    t.string "classification"
+    t.string "classification_status"
+    t.string "mobile"
+    t.integer "parent_station_number"
+    t.string "official_parent_station_name"
+    t.string "fy17_parent_station_complexity_level"
+    t.string "operational_status"
+    t.string "ownership_type"
+    t.string "delivery_mechanism"
+    t.string "staffing_type"
+    t.string "va_secretary_10n_approved_date"
+    t.string "planned_activation_date"
+    t.date "station_number_suffix_reservation_effective_date"
+    t.string "operational_date"
+    t.string "date_of_first_workload"
+    t.integer "points_of_service"
+    t.string "street_address"
+    t.string "street_address_city"
+    t.string "street_address_state"
+    t.integer "street_address_zip_code"
+    t.integer "street_address_zip_code_extension"
+    t.string "county_street_address"
+    t.string "mailing_address"
+    t.string "mailing_address_city"
+    t.string "mailing_address_state"
+    t.integer "mailing_address_zip_code"
+    t.integer "mailing_address_zip_code_extension"
+    t.string "county_mailing_address"
+    t.string "station_phone_number"
+    t.string "station_main_fax_number"
+    t.string "after_hours_phone_number"
+    t.string "pharmacy_phone_number"
+    t.string "enrollment_coordinator_phone_number"
+    t.string "patient_advocate_phone_number"
+    t.decimal "latitude"
+    t.decimal "longitude"
+    t.string "congressional_district"
+    t.string "market"
+    t.string "sub_market"
+    t.string "sector"
+    t.integer "fips_code"
+    t.string "rurality"
+    t.string "monday"
+    t.string "tuesday"
+    t.string "wednesday"
+    t.string "thursday"
+    t.string "friday"
+    t.string "saturday"
+    t.string "sunday"
+    t.text "hours_note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["visn_id"], name: "index_vamcs_on_visn_id"
+  end
+
   create_table "versions", force: :cascade do |t|
     t.string "item_type", null: false
     t.bigint "item_id", null: false
@@ -1176,6 +1247,13 @@ ActiveRecord::Schema.define(version: 2020_12_09_223407) do
     t.integer "attachment_file_size"
     t.datetime "attachment_updated_at"
     t.index ["practice_id"], name: "index_video_files_on_practice_id"
+  end
+
+  create_table "visns", force: :cascade do |t|
+    t.string "name"
+    t.integer "number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "votes", id: :serial, force: :cascade do |t|
@@ -1246,6 +1324,8 @@ ActiveRecord::Schema.define(version: 2020_12_09_223407) do
   add_foreign_key "practice_awards", "practices"
   add_foreign_key "practice_creators", "practices"
   add_foreign_key "practice_creators", "users"
+  add_foreign_key "practice_editors", "practices"
+  add_foreign_key "practice_editors", "users"
   add_foreign_key "practice_emails", "practices"
   add_foreign_key "practice_management_practices", "practice_managements"
   add_foreign_key "practice_management_practices", "practices"
@@ -1274,5 +1354,6 @@ ActiveRecord::Schema.define(version: 2020_12_09_223407) do
   add_foreign_key "va_employee_practices", "va_employees"
   add_foreign_key "va_secretary_priority_practices", "practices"
   add_foreign_key "va_secretary_priority_practices", "va_secretary_priorities"
+  add_foreign_key "vamcs", "visns"
   add_foreign_key "video_files", "practices"
 end
