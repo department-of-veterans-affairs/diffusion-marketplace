@@ -300,61 +300,94 @@
   "visns":
   [
     {
-      "id": 1, "number": "VISN-1"
+      "id": 1,
+      "number": "VISN-1",
+      "name": "VA New England Healthcare System"
     },
     {
-      "id": 2, "number": "VISN-2"
+      "id": 2,
+      "number": "VISN-2",
+      "name": "New York/New Jersey VA Health Care Network"
     },
     {
-      "id": 3, "number": "VISN-4"
+      "id": 3,
+      "number": "VISN-4",
+      "name": "VA Healthcare - VISN 4"
     },
     {
-      "id": 4, "number": "VISN-5"
+      "id": 4,
+      "number": "VISN-5",
+      "name": "VA Capitol Health Care Network"
     },
     {
-      "id": 5, "number": "VISN-6"
+      "id": 5,
+      "number": "VISN-6",
+      "name": "VA Mid-Atlantic Health Care Network"
     },
     {
-      "id": 6, "number": "VISN-7"
+      "id": 6,
+      "number": "VISN-7",
+      "name": "VA Southeast Network"
     },
     {
-      "id": 7, "number": "VISN-8"
+      "id": 7,
+      "number": "VISN-8",
+      "name": "VA Sunshine Healthcare Network"
     },
     {
-      "id": 8, "number": "VISN-9"
+      "id": 8,
+      "number": "VISN-9",
+      "name": "VA MidSouth Healthcare Network"
     },
     {
-      "id": 9, "number": "VISN-10"
+      "id": 9,
+      "number": "VISN-10",
+      "name": "VA Healthcare System"
     },
     {
-      "id": 10, "number": "VISN-12"
+      "id": 10,
+      "number": "VISN-12",
+      "name": "VA Great Lakes Health Care System"
     },
     {
-      "id": 11, "number": "VISN-15"
+      "id": 11,
+      "number": "VISN-15",
+      "name": "VA Heartland Network"
     },
     {
-      "id": 12, "number": "VISN-16"
+      "id": 12,
+      "number": "VISN-16",
+      "name": "South Central VA Health Care Network"
     },
     {
-      "id": 13, "number": "VISN-17"
+      "id": 13,
+      "number": "VISN-17",
+      "name": "VA Heart of Texas Health Care Network"
     },
     {
-      "id": 14, "number": "VISN-18"
+      "id": 15,
+      "number": "VISN-19",
+      "name": "Rocky Mountain Network"
     },
     {
-      "id": 15, "number": "VISN-19"
+      "id": 16,
+      "number": "VISN-20",
+      "name": "Northwest Network"
     },
     {
-      "id": 16, "number": "VISN-20"
+      "id": 17,
+      "number": "VISN-21",
+      "name": "Sierra Pacific Network"
     },
     {
-      "id": 17, "number": "VISN-21"
+      "id": 18,
+      "number": "VISN-22",
+      "name": "Desert Pacific Healthcare Network"
     },
     {
-      "id": 18, "number": "VISN-22"
-    },
-    {
-      "id": 19, "number": "VISN-23"
+      "id": 19,
+      "number": "VISN-23",
+      "name": "VA Midwest Health Care Network"
     }
   ]
 }
