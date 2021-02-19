@@ -85,7 +85,9 @@
             If you have a practice that has been adopted at two or more locations, has been endorsed by a senior executive stakeholder, and is an active practice, click
             the link below to submit it to the Marketplace.
           </p>
-          <%= mail_to 'marketplace@va.gov', 'Start nomination', subject: 'Nominate a practice', class: 'usa-button--outline dm-btn-base line-height-19px' %>
+          <a target="_blank" href="mailto:marketplace@va.gov?subject=<%= URI.encode('Nominate a Practice')%>&body=<%= URI.encode("I am writing to nominate a practice for the Diffusion Marketplace.\n\nName of practice:\nOriginating facility:\nPoint of contact:\nSenior executive stakeholder (if known):\nAdoptions (if known):")%>" class="usa-button--outline dm-btn-base line-height-19px">
+            Start nomination
+          </a>
         </div>
   </section>
 </div>
