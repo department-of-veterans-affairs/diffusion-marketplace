@@ -573,12 +573,14 @@ class PracticesController < ApplicationController
       if locked_by_user_id != cur_user_id
         locked_by = PracticeEditorSession.locked_by(locked_rec, false)
         is_admin = PracticeEditorSession.is_admin(cur_user_id)
-        msg = 'You cannot edit this practice since it is currently being edited by ' +  locked_by
+        msg = "You cannot edit this practice since it is currently being edited by #{locked_by}"
         if is_admin then
           msg += " (Site Admin)"
         end
-        redirect_to practice_metrics_path(@practice, :session_locked => msg)
-        # redirect to show page... display modal with "locked_by" info.
+        respond_to do |format|
+          flash[:warning] = msg
+          format.html { redirect_to practice_metrics_path(@practice), warning: msg }
+        end
        end
     end
   end
