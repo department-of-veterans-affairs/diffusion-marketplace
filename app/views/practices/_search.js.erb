@@ -835,7 +835,6 @@ function searchPracticesPage() {
         hideResultsSectionElAndShowSpinner();
         const query = window.location.search.split('=')[1];
         search(decodeURI(query));
-        trackSearchField(decodeURI(query));
         if (query !== undefined) {
             searchField.value = decodeURI(query);
         } else {

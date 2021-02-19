@@ -1,0 +1,50 @@
+var VISIT_KEY = 'site-visit';
+var VISITOR_KEY = 'site-visitor';
+
+function saveSiteVisit(visit, visitor) {
+  sessionStorage.setItem(VISIT_KEY, JSON.stringify(visit));
+  sessionStorage.setItem(VISITOR_KEY, JSON.stringify(visitor));
+}
+
+function shouldTrackVisit(currentVisit, currentVisitor) {
+  var prevVisit = JSON.parse(sessionStorage.getItem(VISIT_KEY));
+  var prevVisitor = JSON.parse(sessionStorage.getItem(VISITOR_KEY));
+
+  if (prevVisit && prevVisitor) {
+    var prevVisitTime = new Date(prevVisit.timestamp);
+    var currentVisitTime = new Date(currentVisit.timestamp);
+    var isSameVisit = (currentVisitTime - prevVisitTime) <= 5000;
+
+    var isSameLocation = currentVisit.query === prevVisit.query && currentVisit.action === prevVisit.action && currentVisit.controller === prevVisit.controller;
+    var isSameUser = currentVisitor.role === prevVisitor.role && currentVisitor.user === prevVisitor.user;
+
+    // make sure we aren't logging the same exact visit (difference between visits is 5ms) by same user for the same req
+    return !(isSameVisit && isSameLocation && isSameUser);
+  } else {
+    return true;
+  }
+}
+
+function trackVisit(visit, visitor) {
+  saveSiteVisit(visit, visitor);
+  // remove the timestamp key/value from the prevVisit object
+  delete visit.timestamp;
+  ahoy.track('Site visit', visit);
+  if (visitor) {
+    ahoy.track('User role', visitor);
+  }
+}
+
+
+document.addEventListener('turbolinks:load', function () {
+  var visitProps = <%= raw @visit_properties.to_json %>;
+  var visitorProps = <%= raw @visitor_properties.to_json %>;
+
+  if (visitProps && visitorProps) {
+    if (shouldTrackVisit(visitProps, visitorProps)) {
+      trackVisit(visitProps, visitorProps);
+    }
+  } else {
+    trackVisit(visitProps, visitorProps);
+  }
+});
