@@ -102,23 +102,6 @@ class Practice < ApplicationRecord
     date_range_views((Date.today - 3.months).at_beginning_of_month, (Date.today - 3.months).at_end_of_month)
   end
 
-  # commits
-  def current_month_commits
-    committed_user_count_by_range(Date.today.beginning_of_month, Date.today.end_of_month)
-  end
-
-  def last_month_commits
-    committed_user_count_by_range((Date.today - 1.months).at_beginning_of_month, (Date.today - 1.months).at_end_of_month)
-  end
-
-  def two_months_ago_commits
-    committed_user_count_by_range((Date.today - 2.months).at_beginning_of_month, (Date.today - 2.months).at_end_of_month)
-  end
-
-  def three_months_ago_commits
-    committed_user_count_by_range((Date.today - 3.months).at_beginning_of_month, (Date.today - 3.months).at_end_of_month)
-  end
-
   # favorited
   def current_month_favorited
     favorited_count_by_range(Date.today.beginning_of_month, Date.today.end_of_month)
@@ -316,9 +299,6 @@ class Practice < ApplicationRecord
   def committed_user_count
     user_practices.where(committed: true).count
   end
-  def committed_user_count_by_range(start_date, end_date)
-    user_practices.where(time_committed: start_date...end_date).count
-  end
   def number_of_adopted_facilities
     number_adopted
   end
@@ -344,13 +324,12 @@ class Practice < ApplicationRecord
   def favorited_count_by_range(start_date, end_date)
     user_practices.where({time_favorited: start_date...end_date}).count
   end
-  def commits_count
-    user_practices.where({committed: true}).count
+  def emailed_count
+    Ahoy::Event.where(name: 'Practice email').where("properties->>'practice_id' = '#{id}'").count
   end
-  def commits_count_by_range(start_date, end_date)
-    user_practices.where({time_committed: start_date...end_date}).count
+  def emailed_count_by_range(start_date, end_date)
+    Ahoy::Event.where(name: 'Practice email').where("properties->>'practice_id' = '#{id}'").where(time: start_date..end_date).count
   end
-
   def get_adoptions_by_status(adoption_array, hash_array)
     vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
     adoption_array.each do |adoption|

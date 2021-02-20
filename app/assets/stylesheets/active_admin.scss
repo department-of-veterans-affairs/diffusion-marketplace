@@ -14,206 +14,211 @@
 @import 'active_skin';
 @import 'wigu/active_admin_theme';
 @import 'activeadmin/quill_editor_input';
+@import "font-awesome-sprockets";
+@import "font-awesome";
+@import '/dm/variables/colors';
 
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:
 //
 //   .status_tag { background: #6090DB; }
 
-@import '/dm/variables/colors';
-
-#header {
-  h1.site_title {
-    background-color: transparent;
-    background: none;
-    padding-left: 30px;
-    text-indent: 0px;
-  }
-
-  #utility_nav {
-    background: transparent;
-    padding-right: 26px;
-  }
+@mixin tooltip-icon {
+  margin-left: 0.25rem;
+  font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f059";
 }
 
-.attributes_table {
-  table {
+@mixin bold($font-color: $black) {
+  color: $font-color;
+  font-weight: bold;
+}
+
+.active_admin {
+  #header {
+    h1.site_title {
+      background-color: transparent;
+      background: none;
+      padding-left: 30px;
+      text-indent: 0px;
+    }
+
+    #utility_nav {
+      background: transparent;
+      padding-right: 26px;
+    }
+  }
+
+  .attributes_table {
+    table {
+      th, td {
+        color: black;
+      }
+    }
+  }
+
+  table.index_table {
     th, td {
       color: black;
     }
   }
-}
 
-table.index_table {
-  th, td {
-    color: black;
+  .attributes_table {
+    white-space: pre-line;
   }
-}
 
-.attributes_table {
-  white-space: pre-line;
-}
-
-.panel {
-  h3 {
-    font-size: 1rem;
-    margin-top: 0;
+  .panel {
+    h3 {
+      font-size: 1rem;
+      margin-top: 0;
+    }
   }
-}
 
-form fieldset legend {
-  width: 10%;
-}
+  form fieldset legend {
+    width: 10%;
+  }
 
-form fieldset.inputs legend {
-  border: none;
-}
+  form fieldset.inputs legend {
+    border: none;
+  }
 
-.polyform {
-  display: none
-}
+  .polyform {
+    display: none
+  }
 
-.active_admin_action_button{
-  background-image: none;
-  border: none;
-  box-shadow: none;
-  text-shadow: none;
-  border-radius: 4px;
-  background-color: #5ea3d3;
-  color: $dm-color-white;
-  display: inline-block;
-  font-weight: bold;
-  font-size: 1.0em;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  text-decoration: none;
-  padding: 10px 20px;
-  line-height: 12px;
-    &:link,&:visited{
-        color: $dm-color-white;
+  .active_admin_action_button{
+    @include bold($dm-color-white);
+    background-image: none;
+    border: none;
+    box-shadow: none;
+    text-shadow: none;
+    border-radius: 4px;
+    background-color: #5ea3d3;
+    display: inline-block;
+    font-size: 1.0em;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-decoration: none;
+    padding: 10px 20px;
+    line-height: 12px;
+      &:link,&:visited{
+          color: $dm-color-white;
+        text-decoration: none;
+      }
+    &:hover{
+      background-color: #72aed8 !important;
       text-decoration: none;
     }
-  &:hover{
-    background-color: #72aed8 !important;
-    text-decoration: none;
-  }
-}
-
-fieldset.page_components.inputs.has_many_fields {
-  padding-top: 0;
-}
-
-.max-width-15 {
-  max-width: 15rem;
-}
-
-.max-height-15 {
-  max-height: 15rem;
-}
-
-
-.aa-downloadable-file-link {
-  margin: 0.5em 0 0 20%;
-  font-size: 14px;
-
-  span {
-    padding-right: 5px;
-  }
-}
-
-.form-and-legend-container {
-  position: relative;
-  margin-top: 5.15rem;
-}
-
-.adoptions-legend {
-  border: 1px solid #5ea3d3;
-  padding: 10px;
-  margin-bottom: 1rem;
-  border-radius: 4px;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-
-  h3 {
-    margin-top: 0;
-    color: #000000;
-    font-weight: bold;
-    text-decoration: underline;
   }
 
-  h4 {
-    margin-top: 0;
+  fieldset.page_components.inputs.has_many_fields {
+    padding-top: 0;
+  }
 
-    span:first-child {
-      color: $dm-color-black;
-      font-weight: bold;
+  .max-width-15 {
+    max-width: 15rem;
+  }
+
+  .max-height-15 {
+    max-height: 15rem;
+  }
+
+
+  .aa-downloadable-file-link {
+    margin: 0.5em 0 0 20%;
+    font-size: 14px;
+
+    span {
+      padding-right: 5px;
     }
   }
 
-  ul {
-    padding: 0;
-    margin-bottom: 0;
+  .form-and-legend-container {
+    position: relative;
+    margin-top: 5.15rem;
+  }
 
-    li {
-      color: #5E6469;
-      list-style-type: none;
-      font-size: 13px;
+  .adoptions-legend {
+    border: 1px solid #5ea3d3;
+    padding: 10px;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    h3 {
+      @include bold($dm-color-black);
+      margin-top: 0;
+      text-decoration: underline;
+    }
+
+    h4 {
+      margin-top: 0;
 
       span:first-child {
         color: $dm-color-black;
         font-weight: bold;
       }
     }
-  }
-}
 
-.no-adoptions-div {
-  text-align: center;
-}
+    ul {
+      padding: 0;
+      margin-bottom: 0;
 
-.dashboard-legend-container {
-  position: relative;
-  margin-bottom: 8.3rem;
-}
-
-.dashboard-legend {
-  border: 1px solid #5ea3d3;
-  padding: 10px;
-  border-radius: 4px;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-
-  h3 {
-    margin-top: 0;
-    color: #000000;
-    font-weight: bold;
-    text-decoration: underline;
-  }
-
-  h4 {
-    margin-top: 0;
-
-    span:first-child, span:nth-child(3) {
-      color: #000000;
-      font-weight: bold;
+      li {
+        color: #5E6469;
+        list-style-type: none;
+        font-size: 13px;
+      }
     }
   }
 
-  ul {
-    padding: 0;
-    margin-bottom: 0;
-    margin-right: 0;
+  .dm-text-bold {
+    @include bold($dm-color-black);
+  }
 
-    li {
-      color: #5E6469;
-      list-style-type: none;
-      font-size: 13px;
+  .no-adoptions-div {
+    text-align: center;
+  }
 
-      span:first-child {
-        color: #000000;
-        font-weight: bold;
+  .dashboard-legend-container {
+    position: relative;
+    margin-bottom: 8.3rem;
+  }
+
+  .dashboard-legend {
+    border: 1px solid #5ea3d3;
+    padding: 10px;
+    border-radius: 4px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+
+    h3 {
+      @include bold($dm-color-black);
+      margin-top: 0;
+      text-decoration: underline;
+    }
+
+    h4 {
+      margin-top: 0;
+    }
+
+    ul {
+      padding: 0;
+      margin-bottom: 0;
+      margin-right: 0;
+
+      li {
+        color: #5E6469;
+        list-style-type: none;
+        font-size: 13px;
       }
+    }
+  }
+
+  .dm-tooltip {
+    &::after {
+      @include tooltip-icon();
     }
   }
 }
