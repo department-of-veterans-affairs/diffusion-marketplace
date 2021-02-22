@@ -116,15 +116,15 @@ ActiveAdmin.register_page "Adoptions" do
           'Please Note'
         end
         h4 do
-          span 'Adoption date is based on the adoption status.'
+          span('Adoption date is based on the adoption status.', class: 'dm-text-bold')
         end
         ul do
           li do
-            span 'Successful/Unsuccessful: '
+            span('Successful/Unsuccessful: ', class: 'dm-text-bold')
             span 'End Date'
           end
           li do
-            span 'In Progress: '
+            span('In Progress: ', class: 'dm-text-bold')
             span 'Start Date'
           end
         end
