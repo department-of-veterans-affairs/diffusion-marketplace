@@ -1,15 +1,16 @@
 
-let timerId = setInterval(function(){getTimeRemainingForCurrentSession(<%= @practice.id %>); }, 25000);
+let timerId = setInterval(function(){getTimeRemainingForCurrentSession(<%= @practice.id %>, <%= @practice.published %>); }, 25000);
 
-function getTimeRemainingForCurrentSession(practice_id) {
+function getTimeRemainingForCurrentSession(practice_id, is_published) {
     Rails.ajax({
         type: 'get',
         url: "/session_time_remaining",
         data: jQuery.param({ practice_id: practice_id}),
         success: function (data) {
             var timeLeft =  data;
+            var extendTime = is_published ? '15' : '30';
             if(timeLeft <= 2){
-                if (confirm("Your editing session is about to expire.  Continue editing?")){
+                if (confirm(`Your editing session is about to expire. Choosing 'OK' will extend your session by ${extendTime} minutes.  Choosing 'Cancel' will immediately save your data and end your session.`)){
                     //TODO extend session...
                     Rails.ajax({
                         type: 'get',

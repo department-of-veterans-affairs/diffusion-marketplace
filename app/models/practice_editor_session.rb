@@ -83,12 +83,12 @@ class PracticeEditorSession < ApplicationRecord
       sleep 50
       diff = minutes_in_session(session_rec.session_start_time)
       is_published = Practice.find_by_id(practice_id).published
-      puts 'session_start_time: ' + session_rec.session_start_time.to_s
+      # puts 'session_start_time: ' + session_rec.session_start_time.to_s
       puts 'diff from now: ' + diff.to_s
-      puts 'rec_id: ' + session_rec_id.to_s
-      puts 'process id: ' + session_rec.process_id.to_s
-      puts 'thread_id: ' + Thread.current.object_id.to_s
-      puts practice_id.to_s + ", " + user_id.to_s
+      # puts 'rec_id: ' + session_rec_id.to_s
+      # puts 'process id: ' + session_rec.process_id.to_s
+      # puts 'thread_id: ' + Thread.current.object_id.to_s
+      # puts practice_id.to_s + ", " + user_id.to_s
       #TODO: set back to diff > 14 .set to 0 only for testing.. bj_2_10_2021
       if (is_published && diff > 14) || (!is_published && diff > 29)
         rec = PracticeEditorSession.find_by_id(session_rec_id)
@@ -98,7 +98,7 @@ class PracticeEditorSession < ApplicationRecord
             rec.save
           end
         end
-        puts 'session end ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+        #puts 'session end ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
         Thread.exit
       end
     end
