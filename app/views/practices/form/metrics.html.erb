@@ -20,7 +20,7 @@
       <div>
       <%= render partial: "shared/messages", locals: {small_text: true} %>
       <% if params.has_key?(:se) %>
-        <% notice = 'Your editing session for ' + @practice.name + ' has ended.  Your edits have been saved and you have been returned to the Metrics page.' %>
+        <% notice = "Your editing session for #{@practice.name} has ended.  Your edits have been saved and you have been returned to the Metrics page." %>
         <div class="usa-alert usa-alert--info margin-bottom-2 message-icon-bg-position">
           <div class="usa-alert__body grid-row flex-align-center">
             <div class="usa-alert__heading font-sans-sm x0-bottom"><%= notice %></div>
@@ -42,16 +42,11 @@
           </div>
           <div class="margin-top-2 margin-bottom-2">
             <% if params.has_key?(:session_locked) %>
-              <div class="usa-alert usa-alert--warning margin-bottom-2 message-icon-bg-position">
-                <div class="usa-alert__body grid-row flex-align-center">
-                  <div class="usa-alert__heading font-sans-sm x0-bottom"><%= params[:session_locked] %></div>
-                </div>
-              </div>
-             <% else %>
-                <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
+              <%= render partial: "practices/form/practice_locked_message" %>>
+           <% else %>
+              <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
             <% end %>
           </div>
-
         </div>
         <div class="margin-bottom-10 grid-row flex-align-center margin-top-3">
           <label for="metrics_duration" class="usa-label grid-col-3 x0-top">View your metrics for</label>

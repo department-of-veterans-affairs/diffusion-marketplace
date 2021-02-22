@@ -132,14 +132,14 @@ class PracticesController < ApplicationController
           format.html { redirect_back fallback_location: root_path }
           format.json { render json: updated, status: :unprocessable_entity }
         elsif session_open
-          format.html { redirect_to practice_metrics_path(@practice), notice: params[:practice].present? ? 'Your editing session for ' + @practice.name + ' has ended.  Your edits have been saved and you have been returned to the Metrics page.' : nil }
+          format.html { redirect_to practice_metrics_path(@practice), notice: params[:practice].present? ? "Your editing session for #{@practice.name}  has ended.  Your edits have been saved and you have been returned to the Metrics page." : nil }
         else
           if params[:next]
             path = eval("practice_#{Practice::PRACTICE_EDITOR_SLUGS.key(current_endpoint)}_path(@practice)")
             format.html { redirect_to path, notice: params[:practice].present? ? 'Practice was successfully updated.' : nil }
             format.json { render :show, status: :ok, location: @practice }
           else
-            format.html {redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.' }
+            format.html { redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.' }
             format.json { render json: @practice, status: :ok }
           end
         end
@@ -550,7 +550,7 @@ class PracticesController < ApplicationController
 
   def redirect_to_metrics
     @practice = set_practice if @practice.blank?
-    s_url = "/practices/" + @practice.slug + "/edit/metrics?se=1"
+    s_url = "/practices/#{@practice.slug}/edit/metrics?se=1"
     render :js => "window.location = '#{s_url}'"
   end
 
