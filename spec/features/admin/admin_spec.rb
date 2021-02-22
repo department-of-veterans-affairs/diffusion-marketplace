@@ -43,7 +43,9 @@ describe 'The admin dashboard', type: :feature do
   def visit_practice_show
     visit '/admin/practices'
     within_table('index_table_practices') do
-      first('.table_actions').click_link('View')
+      within ".even" do
+        first('.table_actions').click_link('View')
+      end
     end
   end
 
@@ -243,7 +245,9 @@ describe 'The admin dashboard', type: :feature do
     end
 
     within_table('index_table_practices') do
-      first('.table_actions').click_link('View')
+      within ".even" do
+        first('.table_actions').click_link('View')
+      end
     end
     expect(page).to have_current_path(admin_practice_path(@practice))
   end
@@ -403,7 +407,7 @@ describe 'The admin dashboard', type: :feature do
     expect { click_button('Update Practice') }.to change { ActionMailer::Base.deliveries.count }.by(1)
     expect(page).to have_content('Practice was successfully updated.')
     # make sure the mailer subject is for a practice owner that is now also a practice editor
-    expect(ActionMailer::Base.deliveries.last.subject).to eq('You have been added to the list of practice editors for the A public practice Diffusion Marketplace Page!')
+    expect(ActionMailer::Base.deliveries.last.subject).to eq('You have been added to the list of practice editors for the The Best Practice Ever! Diffusion Marketplace Page!')
 
     visit practice_editors_path(@practice)
     expect(page).to have_content('test@va.gov')
@@ -425,7 +429,7 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_current_path(admin_practices_path)
     click_link 'Get Practice Owner Emails'
     expect(page).to have_current_path('/admin/practices?scope=get_practice_owner_emails')
-    expect(page).to have_content('Displaying 1 Practice')
+    expect(page).to have_content('Displaying all 2 Practices')
   end
 
   it 'should be able to view existing and add categories to a Practice' do
@@ -470,7 +474,7 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_content('Highlight')
     click_link('Highlight', href: highlight_practice_admin_practice_path(@practice))
     expect(page).to have_content("\"#{@practice.name}\" Practice highlighted")
-    expect(find_all('.col-highlight > span')[2].text).to eq 'YES'
+    expect(find_all('.col-highlight > span')[3].text).to eq 'YES'
     click_link('Highlight', href: highlight_practice_admin_practice_path(pr_2))
     expect(page).to have_content("Only one practice can be highlighted at a time.")
     expect(find_all('.col-highlight > span')[1].text).to eq 'NO'
@@ -515,11 +519,7 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to_not have_selector("input[value='Download Adoption Data']")
 
     create_diffusion_history
-
-    visit '/admin/practices'
-    within_table('index_table_practices') do
-      find_all('.table_actions')[0].click_link('View')
-    end
+    visit_practice_show
 
     expect(page).to have_selector("input[value='Download Adoption Data']")
   end

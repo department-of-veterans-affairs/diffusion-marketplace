@@ -127,7 +127,8 @@ RSpec.describe ApplicationHelper, type: :helper do
 
   describe "#origin_display_name and #origin_display" do
     before do
-      @practice = Practice.create(name: 'test-practice', initiating_facility_type: 'facility')
+      user = User.create!(email: 'spongebob.squarepants@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+      @practice = Practice.create(name: 'test-practice', initiating_facility_type: 'facility', user: user)
       PracticeOriginFacility.create(practice: @practice, facility_id: '546', facility_type: 0)
     end
 
