@@ -3,7 +3,7 @@ require 'rails_helper'
 
 describe 'Admin Dashboard Metrics Tab', type: :feature do
   before do
-    @admin = User.create!(email: 'sandy.cheeks@bikinibottom.net', password: 'Password123',
+    @admin = User.create!(email: 'sandy.cheeks@va.gov', password: 'Password123',
                           password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(:admin)
     @practice = Practice.create!(name: 'The Best Practice Ever!', user: @admin, initiating_facility: 'Test facility name', tagline: 'Test tagline', enabled: true, published: true, support_network_email: 'sandy.cheeks@bikinibottom.net')
