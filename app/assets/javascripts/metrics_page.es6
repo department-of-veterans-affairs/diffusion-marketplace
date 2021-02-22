@@ -15,10 +15,10 @@ $(document).ready(function(){
         let duration = $( "#metrics_duration" ).val();
         let newUrl = ""
         if(curUrl.includes("?")){
-            newUrl = curUrl + "&duration=" + duration;
+            newUrl = `${curUrl}&duration=${duration}`;
         }
         else{
-            newUrl = curUrl + "?duration=" + duration;
+            newUrl = `${curUrl}?duration=${duration}`;
         }
         window.location.href = newUrl;
     });
