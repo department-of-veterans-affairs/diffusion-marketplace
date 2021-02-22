@@ -84,7 +84,7 @@ class PracticeEditorSession < ApplicationRecord
       diff = minutes_in_session(session_rec.session_start_time)
       is_published = Practice.find_by_id(practice_id).published
       # puts 'session_start_time: ' + session_rec.session_start_time.to_s
-      puts 'diff from now: ' + diff.to_s
+      # puts 'diff from now: ' + diff.to_s
       # puts 'rec_id: ' + session_rec_id.to_s
       # puts 'process id: ' + session_rec.process_id.to_s
       # puts 'thread_id: ' + Thread.current.object_id.to_s
