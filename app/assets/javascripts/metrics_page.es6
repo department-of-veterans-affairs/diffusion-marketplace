@@ -13,13 +13,11 @@ $(document).ready(function(){
             curUrl = curUrl.substring(0, pos1);
         }
         let duration = $( "#metrics_duration" ).val();
-        let newUrl = ""
-        if(curUrl.includes("?")){
-            newUrl = `${curUrl}&duration=${duration}`;
+
+        if( curUrl.includes("?check_session=1")){
+            curUrl = curUrl.substring(0, curUrl.length - 16);
         }
-        else{
-            newUrl = `${curUrl}?duration=${duration}`;
-        }
+        let newUrl = `${curUrl}?duration=${duration}`;
         window.location.href = newUrl;
     });
 
