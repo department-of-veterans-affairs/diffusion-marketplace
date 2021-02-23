@@ -671,6 +671,18 @@ ActiveRecord::Schema.define(version: 2021_02_17_223013) do
     t.index ["user_id"], name: "index_practice_creators_on_user_id"
   end
 
+  create_table "practice_editor_sessions", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "practice_id"
+    t.datetime "session_start_time"
+    t.datetime "session_end_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "process_id"
+    t.index ["practice_id"], name: "index_practice_editor_sessions_on_practice_id"
+    t.index ["user_id"], name: "index_practice_editor_sessions_on_user_id"
+  end
+
   create_table "practice_editors", force: :cascade do |t|
     t.bigint "practice_id"
     t.bigint "user_id"
@@ -1202,8 +1214,8 @@ ActiveRecord::Schema.define(version: 2021_02_17_223013) do
     t.string "pharmacy_phone_number"
     t.string "enrollment_coordinator_phone_number"
     t.string "patient_advocate_phone_number"
-    t.decimal "latitude"
-    t.decimal "longitude"
+    t.decimal "latitude", precision: 11, scale: 8
+    t.decimal "longitude", precision: 11, scale: 8
     t.string "congressional_district"
     t.string "market"
     t.string "sub_market"
@@ -1218,6 +1230,7 @@ ActiveRecord::Schema.define(version: 2021_02_17_223013) do
     t.string "saturday"
     t.string "sunday"
     t.text "hours_note"
+    t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["visn_id"], name: "index_vamcs_on_visn_id"
@@ -1324,6 +1337,7 @@ ActiveRecord::Schema.define(version: 2021_02_17_223013) do
   add_foreign_key "practice_awards", "practices"
   add_foreign_key "practice_creators", "practices"
   add_foreign_key "practice_creators", "users"
+  add_foreign_key "practice_editor_sessions", "practices"
   add_foreign_key "practice_editors", "practices"
   add_foreign_key "practice_editors", "users"
   add_foreign_key "practice_emails", "practices"

@@ -40,8 +40,8 @@ class CreateVamcs < ActiveRecord::Migration[5.2]
       t.string :pharmacy_phone_number
       t.string :enrollment_coordinator_phone_number
       t.string :patient_advocate_phone_number
-      t.decimal :latitude
-      t.decimal :longitude
+      t.decimal :latitude, precision: 11, scale: 8
+      t.decimal :longitude, precision: 11, scale: 8
       t.string :congressional_district
       t.string :market
       t.string :sub_market
@@ -56,8 +56,7 @@ class CreateVamcs < ActiveRecord::Migration[5.2]
       t.string :saturday
       t.string :sunday
       t.text :hours_note
-
-
+      t.string :slug, unique: true
 
       t.timestamps
     end

@@ -8,5 +8,6 @@ namespace :visns do
       Visn.create!(name: v["name"], number: v["number"].split('-').pop.to_i)
     end
 
+    puts "All VISNs have now been added to the DB!"
   end
 end
