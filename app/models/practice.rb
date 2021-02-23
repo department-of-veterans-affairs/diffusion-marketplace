@@ -1,8 +1,11 @@
 class Practice < ApplicationRecord
   include ActiveModel::Dirty
+  include PracticeEditorUtils
+  include VaEmail
 
   before_save :clear_searchable_cache_on_save
   after_save :reset_searchable_practices
+  after_create :create_practice_editor_for_practice
 
   extend FriendlyId
   friendly_id :name, use: :slugged
@@ -129,7 +132,8 @@ class Practice < ApplicationRecord
 
   PRACTICE_EDITOR_SLUGS =
       {
-          'introduction': 'instructions',
+          'editors': 'instructions',
+          'introduction': 'editors',
           'adoptions': 'introduction',
           'overview': 'adoptions',
           'implementation': 'overview',
@@ -173,6 +177,7 @@ class Practice < ApplicationRecord
   validates_attachment_content_type :main_display_image, content_type: /\Aimage\/.*\z/
   validates_attachment_content_type :origin_picture, content_type: /\Aimage\/.*\z/
   validates_uniqueness_of :name, {message: 'Practice name already exists'}
+  validates :user, presence: true, format: valid_va_email
   # validates :tagline, presence: { message: 'Practice tagline can\'t be blank'}
 
   scope :published,   -> { where(published: true) }
@@ -247,6 +252,7 @@ class Practice < ApplicationRecord
   has_many :practice_emails, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_resources, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_editor_sessions, -> {order(id: :asc) }, dependent: :destroy
+  has_many :practice_editors, -> {order(created_at: :asc) }, dependent: :destroy
 
   # This allows the practice model to be commented on with the use of the Commontator gem
   acts_as_commontable dependent: :destroy
@@ -291,6 +297,7 @@ class Practice < ApplicationRecord
   }
   accepts_nested_attributes_for :publications, allow_destroy: true, reject_if: proc { |attributes| attributes['title'].blank? || attributes['link'].blank? }
   accepts_nested_attributes_for :practice_emails, allow_destroy: true, reject_if: proc { |attributes| attributes['address'].blank? }
+  accepts_nested_attributes_for :practice_editors, allow_destroy: true, reject_if: proc { |attributes| attributes['email'].blank? }
   SATISFACTION_LABELS = ['Little or no impact', 'Some impact', 'Significant impact', 'High or large impact'].freeze
   COST_LABELS = ['0-$10,000', '$10,000-$50,000', '$50,000-$250,000', 'More than $250,000'].freeze
   # also known as "Difficulty"
@@ -338,5 +345,9 @@ class Practice < ApplicationRecord
       hash_array.push(facility: facility, diffusion_history: adoption)
     end
     hash_array.sort_by { |a| [a[:facility]["StreetAddressState"], a[:facility]["OfficialStationName"]] }
+  end
+
+  def create_practice_editor_for_practice
+    PracticeEditor.create_and_invite(self, self.user) unless is_user_an_editor_for_practice(self, self.user)
   end
 end

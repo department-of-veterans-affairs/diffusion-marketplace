@@ -2,11 +2,11 @@ require 'rails_helper'
 
 describe 'Practice viewer - introduction', type: :feature, js: true do
   before do
-    @admin = User.create!(email: 'toshiro.hitsugaya@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+    @admin = User.create!(email: 'toshiro.hitsugaya@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(User::USER_ROLES[0].to_sym)
-    @pr_min = Practice.create!(name: 'A public minimum practice', slug: 'a-public-min-practice', approved: true, published: true, summary: 'Test summary', date_initiated: Date.new(2011, 12, 31), initiating_facility_type: 'other', initiating_facility: 'foobar facility')
+    @pr_min = Practice.create!(name: 'A public minimum practice', slug: 'a-public-min-practice', approved: true, published: true, summary: 'Test summary', date_initiated: Date.new(2011, 12, 31), initiating_facility_type: 'other', initiating_facility: 'foobar facility', user: @admin)
     img_path = "#{Rails.root}/spec/assets/acceptable_img.jpg"
-    @pr_max = Practice.create!(name: 'A public maximum practice', short_name: 'LALA', slug: 'a-public-max-practice', approved: true, published: true, summary: 'Test summary', date_initiated: Date.new(2016, 8, 20), initiating_facility_type: 'facility', main_display_image: File.new(img_path))
+    @pr_max = Practice.create!(name: 'A public maximum practice', short_name: 'LALA', slug: 'a-public-max-practice', approved: true, published: true, summary: 'Test summary', date_initiated: Date.new(2016, 8, 20), initiating_facility_type: 'facility', main_display_image: File.new(img_path), user: @admin)
     PracticeOriginFacility.create!(practice: @pr_max, facility_type: 0, facility_id: '640A0')
     PracticeOriginFacility.create!(practice: @pr_max, facility_type: 0, facility_id: '603')
     PracticeOriginFacility.create!(practice: @pr_max, facility_type: 0, facility_id: '636')

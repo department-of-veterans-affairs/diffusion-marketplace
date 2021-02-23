@@ -55,28 +55,4 @@ $(document).ready(function(){
         changeTimeFrameButtonStyling("toggle_adoptions_view_30", "toggle_adoptions_view_all_time", "usa-button", "usa-button--outline");
         toggleMetricAllTimeVsThirtyTables(ADOPTIONS_BY_PRACTICE_THIRTY_DAYS, ADOPTIONS_BY_PRACTICE_ALL_TIME, "display-inline", "display-none");
     });
-
-    $("#peSideNavPracticeName").click(function(e){
-        e.stopPropagation();
-        let navItem = document.getElementById('peSideNavAbout');
-        navItem.style.display = 'inline';
-
-        navItem = document.getElementById('peSideNavIntroduction');
-        navItem.style.display = 'inline';
-
-        navItem = document.getElementById('peSideNavOverview');
-        navItem.style.display = 'inline';
-
-        navItem = document.getElementById('peSideNavContact');
-        navItem.style.display = 'inline';
-
-        navItem = document.getElementById('peSideNavImplementation');
-        navItem.style.display = 'inline';
-
-        navItem = document.getElementById('peSideNavOverview');
-        navItem.style.display = 'inline';
-
-        navItem = document.getElementById('peSideNavAdoptions');
-        navItem.style.display = 'inline';
-    });
 });

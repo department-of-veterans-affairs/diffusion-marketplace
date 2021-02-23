@@ -107,12 +107,7 @@
         <% end %>
 
         <div class="grid-row">
-          <%= link_to practice_implementation_path(@practice), class: 'usa-button--outline dm-btn-base editor-back-to-link margin-right-1 text-no-underline' do %>
-            Back
-          <% end %>
-          <%= link_to practice_about_path(@practice), class: 'usa-button dm-btn-base pe-continue editor-continue-link continue-and-save margin-right-1' do %>
-            Continue
-          <% end %>
+          <%= render partial: 'practices/back_and_continue_buttons', locals: { back_path: practice_implementation_path(@practice), continue_path: practice_about_path(@practice) }%>
         </div>
       </section>
     </div>

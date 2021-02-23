@@ -1,0 +1,11 @@
+function configureEditorsPage() {
+    // Remove any existing inputs from the DOM so the user only interacts with the new input
+    $('.editor-input-container').remove();
+
+    // Show the new email input on page load, then hide the 'Add another' link
+    let addAnotherLink = '.add_nested_fields';
+    $(addAnotherLink).click()
+    $(addAnotherLink).addClass('display-none')
+}
+
+$(document).on('turbolinks:load', configureEditorsPage);

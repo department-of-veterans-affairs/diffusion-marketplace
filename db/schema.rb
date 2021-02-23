@@ -12,6 +12,7 @@
 
 ActiveRecord::Schema.define(version: 2021_02_03_152832) do
 
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -682,6 +683,15 @@ ActiveRecord::Schema.define(version: 2021_02_03_152832) do
     t.index ["practice_id"], name: "index_practice_editor_sessions_on_practice_id"
     t.index ["user_id"], name: "index_practice_editor_sessions_on_user_id"
   end
+  create_table "practice_editors", force: :cascade do |t|
+    t.bigint "practice_id"
+    t.bigint "user_id"
+    t.datetime "last_edited_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["practice_id"], name: "index_practice_editors_on_practice_id"
+    t.index ["user_id"], name: "index_practice_editors_on_user_id"
+  end
 
   create_table "practice_emails", force: :cascade do |t|
     t.bigint "practice_id"
@@ -946,8 +956,8 @@ ActiveRecord::Schema.define(version: 2021_02_03_152832) do
     t.string "overview_solution"
     t.string "overview_results"
     t.integer "maturity_level"
-    t.datetime "date_published"
     t.datetime "practice_pages_updated"
+    t.datetime "date_published"
     t.string "highlight_title"
     t.string "highlight_body"
     t.index ["slug"], name: "index_practices_on_slug", unique: true
@@ -1259,6 +1269,8 @@ ActiveRecord::Schema.define(version: 2021_02_03_152832) do
   add_foreign_key "practice_creators", "practices"
   add_foreign_key "practice_creators", "users"
   add_foreign_key "practice_editor_sessions", "practices"
+  add_foreign_key "practice_editors", "practices"
+  add_foreign_key "practice_editors", "users"
   add_foreign_key "practice_emails", "practices"
   add_foreign_key "practice_management_practices", "practice_managements"
   add_foreign_key "practice_management_practices", "practices"

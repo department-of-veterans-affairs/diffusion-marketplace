@@ -455,12 +455,7 @@
           </fieldset>
         <% end %>
         <div class="grid-row">
-          <%= link_to practice_adoptions_path(@practice), class: 'usa-button--outline dm-btn-base editor-back-to-link margin-right-1' do %>
-            <i class="fas fa-sm text-no-underline margin-right-1"></i>Back
-          <% end %>
-          <%= link_to practice_implementation_path(@practice), class: 'usa-button dm-btn-base  pe-continue editor-continue-link continue-and-save margin-right-1' do %>
-            Continue<i class="fas fa-sm margin-left-1 text-no-underline"></i>
-          <% end %>
+          <%= render partial: 'practices/back_and_continue_buttons', locals: { back_path: practice_adoptions_path(@practice), continue_path: practice_implementation_path(@practice) }%>
         </div>
       </section>
     </div>

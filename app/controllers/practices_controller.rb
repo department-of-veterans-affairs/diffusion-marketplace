@@ -1,9 +1,9 @@
 class PracticesController < ApplicationController
-  include CropperUtils, PracticesHelper
+  include CropperUtils, PracticesHelper, PracticeEditorUtils
   before_action :set_practice, only: [:show, :edit, :update, :destroy, :highlight, :un_highlight, :feature,
-                                      :un_feature, :favorite, :instructions, :overview, :origin, :collaborators, :impact, :resources, :documentation,
+                                      :un_feature, :favorite, :instructions, :overview, :origin, :impact, :resources, :documentation,
                                       :departments, :timeline, :risk_and_mitigation, :contact, :checklist, :publication_validation, :adoptions,
-                                      :create_or_update_diffusion_history, :implementation, :introduction, :about, :metrics]
+                                      :create_or_update_diffusion_history, :implementation, :introduction, :about, :metrics, :editors]
   before_action :set_facility_data, only: [:show]
   before_action :set_office_data, only: [:show]
   before_action :set_visn_data, only: [:show]
@@ -11,7 +11,7 @@ class PracticesController < ApplicationController
   before_action :authenticate_user!, except: [:show, :search, :index, :explore, :explore_practices]
   before_action :can_view_practice, only: [:show, :edit, :update, :destroy]
   before_action :can_create_practice, only: :create
-  before_action :can_edit_practice, only: [:introduction, :implementation, :edit, :update, :instructions, :overview, :contact, :published, :publication_validation, :adoptions, :about]
+  before_action :can_edit_practice, only: [:edit, :update, :instructions, :overview, :contact, :published, :publication_validation, :adoptions, :about, :editors, :introduction, :implementation, :metrics]
   before_action :set_date_initiated_params, only: [:update, :publication_validation]
   before_action :is_enabled, only: [:show]
   before_action :practice_locked_for_editing, only: [:introduction, :overview, :contact, :adoptions, :about, :implementation]
@@ -127,20 +127,35 @@ class PracticesController < ApplicationController
     #check to see if current session has expired.... if  not
     respond_to do |format|
       if updated
+        editor_params = params[:practice][:practice_editors_attributes]
         if updated.is_a?(StandardError)
-          flash[:error] = "There was an #{updated.message}. The practice was not saved."
+          # Add back end validation error messages for Editors page just as a safety measure
+          invalid_editor_email_field = updated.message.split(' ').slice(3..-1).join(' ')
+          flash[:error] = "There was an #{editor_params.present? && updated.message.include?('valid @va.gov') ? invalid_editor_email_field : updated.message}. The practice was not saved."
           format.html { redirect_back fallback_location: root_path }
           format.json { render json: updated, status: :unprocessable_entity }
         elsif session_open
           format.html { redirect_to practice_metrics_path(@practice), notice: params[:practice].present? ? "Your editing session for #{@practice.name}  has ended.  Your edits have been saved and you have been returned to the Metrics page." : nil }
         else
+          # Add notice messages specific to the Editors page
+          editor_notice = ''
+          if editor_params.present? && editor_params.keys.include?('_destroy')
+            editor_notice = 'Editor was removed from the list. '
+          elsif editor_params.present? && editor_params.values.first.values.first.present?
+            editor_notice = 'Editor was added to the list. '
+          end
           if params[:next]
             path = eval("practice_#{Practice::PRACTICE_EDITOR_SLUGS.key(current_endpoint)}_path(@practice)")
-            format.html { redirect_to path, notice: params[:practice].present? ? 'Practice was successfully updated.' : nil }
+            format.html { redirect_to path, notice: params[:practice].present? ? editor_notice + 'Practice was successfully updated.' : nil }
             format.json { render :show, status: :ok, location: @practice }
           else
-            format.html { redirect_back fallback_location: root_path, notice: 'Practice was successfully updated.' }
+            format.html { redirect_back fallback_location: root_path, notice: editor_notice + 'Practice was successfully updated.' }
             format.json { render json: @practice, status: :ok }
+          end
+          # Update last_edited field for the Practice Editor unless the current_user is the Practice Editor and their Practice Editor record was just created
+          practice_editor = PracticeEditor.find_by(practice: @practice, user: current_user)
+          if practice_editor.present? && Time.current - practice_editor.created_at > 2
+            practice_editor.update_attributes(last_edited_at: DateTime.current)
           end
         end
       else
@@ -290,11 +305,6 @@ class PracticesController < ApplicationController
     render 'practices/form/instructions'
   end
 
-  # /practices/slug/collaborators
-  def collaborators
-    redirect_to_instructions_path
-  end
-
   # /practices/slug/overview
   def overview
     render 'practices/form/overview'
@@ -373,6 +383,11 @@ class PracticesController < ApplicationController
 
   def implementation
     render 'practices/form/implementation'
+  end
+
+  # /practices/slug/editors
+  def editors
+    render 'practices/form/editors'
   end
 
   # /practices/slug/introduction
@@ -626,7 +641,8 @@ class PracticesController < ApplicationController
                                      practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :facility_type, :initiating_department_office_id],
                                      practice_metrics_attributes: [:id, :_destroy, :description],
                                      practice_emails_attributes: [:id, :address, :_destroy],
-                                     duration: {}
+                                     duration: {},
+                                     practice_editors_attributes: [:id, :email, :_destroy]
 
     )
   end
@@ -648,8 +664,8 @@ class PracticesController < ApplicationController
   end
 
   def prevent_practice_permissions
-    # if the user is the practice owner or the user is an admin or approver/editor
-    unless @practice.user_id == current_user.id || current_user&.roles.any?
+    # if the user is the practice owner or the user is an admin or approver/practice_editor
+    unless @practice.user_id == current_user.id || current_user&.roles.any? || is_user_an_editor_for_practice(@practice, current_user)
       unauthorized_response
     end
   end
