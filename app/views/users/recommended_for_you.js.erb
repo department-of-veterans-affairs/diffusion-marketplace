@@ -1,31 +1,42 @@
 function paginatedBookmarkedPractices() {
-    var favoritePracticesClass = ".paginated-favorite-practices";
+    var type = "<%= @pagy_type %>";
+    var practicesClass = ".paginated-" + type + "-practices";
+
+    <% if @pagy_type === 'favorite' %>
+        <% data_set = @paginated_favorite_practices %>
+        <% pagy = @pagy_favorite_practices %>
+    <% elsif @pagy_type === 'created' %>
+        <% data_set = @paginated_created_practices %>
+        <% pagy = @pagy_created_practices %>
+    <% end %>
+
+    <% current_page = pagy.page %>
+    <% next_page = pagy.next %>
 
     // Append the next set of practice cards to the current set
-    $(favoritePracticesClass).append("<%= escape_javascript render(partial: 'users/recommended_for_you/practice_cards_container', locals: {
+    $(practicesClass).append("<%= escape_javascript render(partial: 'users/recommended_for_you/practice_cards_container', locals: {
         container_classes:  nil,
         container_header_classes: nil,
         container_title: nil,
-        practice_data_set: @paginated_favorite_practices
+        practice_data_set: data_set
     }) %>")
 
     // Remove the first 'Load more' link to make room for the next one
-    $('.paginated-favorite-practices-page-2-link').remove();
+    var loadMoreClass = ".paginated-" + type + "-practices-page-2-link";
+    $(loadMoreClass).remove();
 
     // If there's another set of cards, remove the current 'Load more' link and then add one for the next page
-    <% pagy_favorites = @pagy_favorite_practices %>
-    <% current_page = pagy_favorites.page %>
-    <% next_page = pagy_favorites.next %>
-    var currentPageClass = ".paginated-favorite-practices-page-<%= current_page %>-link";
+    var currentPageClass = ".paginated-" + type + "-practices-page-<%= current_page %>-link";
+
     <% if next_page.present? %>
         $(currentPageClass).remove();
 
-        <% link = pagy_link_proc(pagy_favorites) %>
-        $(favoritePracticesClass).append(`<%= link.call(next_page, 'Load more').html_safe %>`);
+        <% link = pagy_link_proc(pagy) %>
+        $(practicesClass).append(`<%= link.call(next_page, 'Load more').html_safe %>`);
     <% else %>
     // If there isn't another set, remove the current 'Load more' link and add proper margin to the container
         $(currentPageClass).remove();
-        $(favoritePracticesClass).css('margin-bottom', '68px');
+        $(practicesClass).css('margin-bottom', '68px');
     <% end %>
 }
 

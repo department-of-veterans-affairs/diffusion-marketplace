@@ -76,7 +76,8 @@ describe 'The user index', type: :feature do
   it 'should have a created practice and a favorited' do
     @practice1 = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user)
     @practice2 = Practice.create!(name: 'The Best Practice Ever!', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user2)
-    @user_practice = UserPractice.create!(user: @user, practice: @practice2, favorited: true)
+    UserPractice.create!(user: @user, practice: @practice2, favorited: true)
+    PracticeEditor.create!(practice: @practice1, user: @user, email: @user.email)
 
     login_as(@user, scope: :user, run_callbacks: false)
     visit "/users/#{@user.id}"

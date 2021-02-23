@@ -74,6 +74,15 @@ class User < ApplicationRecord
     "#{email}"
   end
 
+  def editor_practices
+    editor_list = PracticeEditor.where(user_id: id)
+    practices = []
+    editor_list.each do |e|
+      practices.push(Practice.find(e.practice_id))
+    end
+    practices
+  end
+
   def password_uniqueness
     return true unless encrypted_password_changed?
     return true if password.split('').uniq.length > 6
