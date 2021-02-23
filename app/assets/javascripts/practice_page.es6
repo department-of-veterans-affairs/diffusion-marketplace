@@ -160,6 +160,13 @@
         });
     }
 
+    function trackPracticeContact() {
+        $('.dm-email-practice').on('click', (e) => {
+            let practiceId = parseInt(e.currentTarget.dataset.practiceId);
+            ahoy.track('Practice email', {practice_id: practiceId})
+        })
+    }
+
     function executePracticeCommentsFunctions() {
         highlightSidebarSectionWhenInView();
         setUpShowMoreOrLessButtons();
@@ -168,6 +175,7 @@
         expandCommentTextArea();
         expandReplyTextArea();
         toggleAdoptionStatusModal();
+        trackPracticeContact();
     }
 
     $document.on('turbolinks:load', executePracticeCommentsFunctions);
