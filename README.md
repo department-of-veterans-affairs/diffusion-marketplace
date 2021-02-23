@@ -32,6 +32,7 @@
 | `rails documentation:port_additional_documents_to_practice_resources ` | Ports additional documents to practice_resources
 | `rails documentation:port_publications_to_practice_resources` | Ports publications (links) to practice_resources
 | `rails risk_and_mitigation:remove_unpaired_risks_and_mitigation` | Removes risks without a corresponding mitigation AND removes mitigations without a corresponding risk.
+| `rails practice_editors:add_practice_owners_to_practice_editors` | Adds each practice owner to the practice editors list of their corresponding practice
 #### Ruby version
 
 - `ruby 2.6.3`
@@ -162,6 +163,7 @@ This will run:
 9. `rails practice_origin_facilities:move_practice_initiating_facility` - moves practice initiating facilities to the practice_origin_facilities table
 10. `rails practice_multimedia:transfer_practice_impact_photos` - moves practice impact photos to practice multimedia
 10. `rails practice_multimedia:transfer_practice_videos` - moves practice videos to practice multimedia
+11. `rails practice_editors:add_practice_owners_to_practice_editors` - Adds each practice owner to the practice editors list of their corresponding practice
 
 To reset all of the data and do the process all over again, run:
 ```bash

@@ -3,10 +3,10 @@ require 'rails_helper'
 
 describe 'Admin Dashboard Metrics Tab', type: :feature do
   before do
-    @admin = User.create!(email: 'sandy.cheeks@bikinibottom.net', password: 'Password123',
+    @admin = User.create!(email: 'sandy.cheeks@va.gov', password: 'Password123',
                           password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(:admin)
-    @practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', enabled: true, published: true, support_network_email: 'sandy.cheeks@bikinibottom.net')
+    @practice = Practice.create!(name: 'The Best Practice Ever!', user: @admin, initiating_facility: 'Test facility name', tagline: 'Test tagline', enabled: true, published: true, support_network_email: 'sandy.cheeks@bikinibottom.net')
     @page_group = PageGroup.create(name: 'programming', description: 'Pages about programming go in this group.')
     @page_group_1 = PageGroup.create(name: 'ghost_page', description: 'Pages should not be in the metrics')
     login_as(@admin, scope: :user, run_callbacks: false)
@@ -33,23 +33,23 @@ describe 'Admin Dashboard Metrics Tab', type: :feature do
   end
 
   it 'favorite should display in current month but not in total if unfavorited' do
-   user_practice_favorited = UserPractice.create(time_favorited: DateTime.now, user: @admin, practice: @practice, favorited: true)
-   visit_metrics_tab
-   within(:css, '#favorited_stats') do
-     td_element = find('td[class*="-_current_month"]')
-     expect(td_element.text).to eq('1')
-     td_total = find('td[class*="total_favorited"]')
-     expect(td_total.text).to eq('1')
-   end
-   user_practice_favorited.favorited = false
-   user_practice_favorited.save
-   visit_metrics_tab
-   within(:css, '#favorited_stats') do
-     td_element = find('td[class*="-_current_month"]')
-     expect(td_element.text).to eq('1')
-     td_total = find('td[class*="total_favorited"]')
-     expect(td_total.text).to eq('0')
-   end
+    user_practice_favorited = UserPractice.create(time_favorited: DateTime.now, user: @admin, practice: @practice, favorited: true)
+    visit_metrics_tab
+    within(:css, '#favorited_stats') do
+      td_element = find('td[class*="-_current_month"]')
+      expect(td_element.text).to eq('1')
+      td_total = find('td[class*="total_favorited"]')
+      expect(td_total.text).to eq('1')
+    end
+    user_practice_favorited.favorited = false
+    user_practice_favorited.save
+    visit_metrics_tab
+    within(:css, '#favorited_stats') do
+      td_element = find('td[class*="-_current_month"]')
+      expect(td_element.text).to eq('1')
+      td_total = find('td[class*="total_favorited"]')
+      expect(td_total.text).to eq('0')
+    end
   end
 
   it 'should display at least one time_favorited' do

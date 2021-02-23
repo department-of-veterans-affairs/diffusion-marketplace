@@ -1,0 +1,76 @@
+<% provide :body_classes, 'bg-gray-2' %>
+<% provide :footer_classes, 'bg-gray-2' %>
+
+<% provide :head_tags do %>
+  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    <%= render partial: 'editors', formats: [:js] %>
+  <% end %>
+<% end %>
+
+<%= render 'practice_editor_sidenav' %>
+<div class="grid-container position-relative">
+  <div class="grid-row grid-gap">
+    <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
+
+    <div id="editors" class="desktop:grid-col-9 grid-col-12 p0">
+      <%= render partial: "shared/messages", locals: {small_text: false} %>
+      <section class="usa-section padding-top-0 p0-bottom editors">
+        <h1 class="font-sans-2xl line-height-46px margin-bottom-3">Editors</h1>
+        <% PracticeEditor.where(practice: @practice).order(created_at: :asc).each do |pe| %>
+          <%
+            user = pe.user
+            email = user.email
+          %>
+          <div class="grid-row flex-align-center border-bottom-1px practice-editor-entry">
+            <div class="grid-col-11 padding-y-3 line-height-26">
+              <p class="text-bold <%= 'display-none' unless is_full_name_present(user) %>"><%= user_full_name(user) %></p>
+              <a target="_blank" href="mailto:<%= email %>" class="dm-external-link line-height-26">
+                <%= email %>
+              </a>
+              <%
+                last_edited = pe.last_edited_at
+              %>
+              <% if last_edited.present? %>
+                <%= render partial: 'practices/practice_editor_status', locals: { status_text: 'Last edited on', status: last_edited } %>
+              <% else %>
+                <%= render partial: 'practices/practice_editor_status', locals: { status_text: 'Added to the team on', status: pe.created_at } %>
+              <% end %>
+            </div>
+            <div class="grid-col-1 display-flex justify-center">
+              <%= link_to '', practice_path(@practice,
+                    practice: { practice_editors_attributes: { id: pe.id, _destroy: true } }),
+                    data: { confirm: "Are you sure you want to remove #{user.email} from the editors list?" },
+                    method: 'put',
+                    class: 'fas fa-trash-alt fa-2x text-middle',
+                    id: "delete-practice-editor-#{pe.id}",
+                    'aria-label': "Remove #{user.email} from practice editors"
+              %>
+            </div>
+          </div>
+        <% end %>
+        <%= nested_form_for(@practice, html: {style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
+          <fieldset class="usa-fieldset grid-col-12">
+            <legend class="usa-sr-only">Practice Editors</legend>
+            <div class="grid-col-12">
+              <h2 class="line-height-37px font-sans-xl margin-bottom-3 margin-top-10">Add editors</h2>
+              <%= f.fields_for :practice_editors, include_id: false, wrapper: false do |pe| %>
+                <div class="editor-input-container">
+                  <%= pe.label :email, 'E-mail the people who can help you edit this practice page. Only @va.gov emails are allowed.', class: 'usa-label editor-label margin-top-0' %>
+                  <%= pe.text_field :email, class: 'usa-input editor-input', type: 'email', pattern: '.+@va.gov' %>
+                </div>
+              <% end %>
+              <p><%= f.link_to_add "Add a task", :practice_editors %></p>
+            </div>
+          </fieldset>
+          <div>
+            <%= f.submit "Send invite", class: 'usa-button dm-btn-primary x1-top invite-practice-editor-button' %>
+          </div>
+        <% end %>
+
+        <div class="grid-row margin-top-10">
+          <%= render partial: 'practices/back_and_continue_buttons', locals: { back_path: practice_instructions_path(@practice), continue_path: practice_introduction_path(@practice) } %>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

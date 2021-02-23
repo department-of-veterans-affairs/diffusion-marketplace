@@ -4,7 +4,7 @@ describe 'Recommended for you page', type: :feature do
   before do
     @user1 = User.create!(email: 'kuchiki.byakuya@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @user2 = User.create!(
-        email: 'kuchiki.rukia@soulsociety.com',
+        email: 'kuchiki.rukia@va.gov',
         password: 'Password123',
         password_confirmation: 'Password123',
         skip_va_validation: true,
@@ -17,11 +17,12 @@ describe 'Recommended for you page', type: :feature do
         approved: true,
         published: true,
         tagline: 'Test tagline',
-        support_network_email: 'test@test.com'
+        support_network_email: 'test@test.com',
+        user: @user2
     )
-    @practice2 = Practice.create!(name: 'A second public practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: 'test@test.com')
-    @practice3 = Practice.create!(name: 'A third public practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: 'test@test.com')
-    @practice4 = Practice.create!(name: 'A fourth public practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: 'test@test.com')
+    @practice2 = Practice.create!(name: 'A second public practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: 'test@test.com', user: @user2)
+    @practice3 = Practice.create!(name: 'A third public practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: 'test@test.com', user: @user2)
+    @practice4 = Practice.create!(name: 'A fourth public practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: 'test@test.com', user: @user2)
     @practice_facility = PracticeOriginFacility.create!(practice: @practice, facility_id: '516')
     @practice_facility2 = PracticeOriginFacility.create!(practice: @practice2, facility_id: '516')
     @practice_facility3 = PracticeOriginFacility.create!(practice: @practice3, facility_id: '516')

@@ -2,9 +2,9 @@ require 'rails_helper'
 
 describe 'Practice editor', type: :feature, js: true do
   before do
-    @admin = User.create!(email: 'toshiro.hitsugaya@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+    @admin = User.create!(email: 'toshiro.hitsugaya@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(User::USER_ROLES[0].to_sym)
-    @practice = Practice.create!(name: 'A practice with no resources', slug: 'test-practice', approved: true, published: true, date_initiated: Date.new(2011, 12, 31))
+    @practice = Practice.create!(name: 'A practice with no resources', slug: 'test-practice', approved: true, published: true, date_initiated: Date.new(2011, 12, 31), user: @admin)
     PracticeResource.create(practice: @practice, resource: 'core person 1', resource_type: 'core', media_type: 'resource', resource_type_label: 'people', position: 1 )
     @file_path_1 = "#{Rails.root}/spec/assets/dummy.pdf"
     @file_path_2 = "#{Rails.root}/spec/assets/SpongeBob.txt"

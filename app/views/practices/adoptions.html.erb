@@ -36,12 +36,7 @@
         </div>
 
         <div class="grid-row margin-top-7">
-          <%= link_to practice_introduction_path(@practice), class: 'usa-button--outline dm-btn-base editor-back-to-link margin-right-1' do %>
-            <i class="fas fa-sm text-no-underline margin-right-1"></i>Back
-          <% end %>
-          <%= link_to practice_overview_path(@practice), class: 'usa-button dm-btn-base  pe-continue editor-continue-link margin-right-1' do %>
-            Continue<i class="fas fa-sm margin-left-1 text-no-underline"></i>
-          <% end %>
+          <%= render partial: 'practices/back_and_continue_buttons', locals: { back_path: practice_introduction_path(@practice), continue_path: practice_overview_path(@practice) }%>
         </div>
       </section>
     </div>

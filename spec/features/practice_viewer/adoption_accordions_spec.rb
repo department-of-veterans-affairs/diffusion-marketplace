@@ -3,8 +3,8 @@ require 'rails_helper'
 describe 'Adoption accordions', type: :feature, js: true do
   before do
     ENV['GOOGLE_API_KEY'] = ENV['GOOGLE_TEST_API_KEY']
-    @user = User.create!(email: 'renji.abarai@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    @practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: 'test@test.com')
+    @user = User.create!(email: 'renji.abarai@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+    @practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: 'test@test.com', user: @user)
     dh_1 = DiffusionHistory.create!(practice_id: @practice.id, facility_id: '649GA')
     DiffusionHistoryStatus.create!(diffusion_history_id: dh_1.id, status: 'Completed')
     dh_2 = DiffusionHistory.create!(practice_id: @practice.id, facility_id: '544GG')

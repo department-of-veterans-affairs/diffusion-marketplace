@@ -8,13 +8,13 @@ describe 'Explore all practices page', type: :feature do
     cat_4 = Category.create!(name: 'Other Subcategory', is_other: true)
     cat_5 = Category.create!(name: 'Main Level Cat')
 
+    user = User.create!(email: 'test@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     practice_names = ['Cards for Memory', 'BIONE', 'GLOW3', 'Beach VA', 'Virtual Care', 'COPD', 'GERIVETZ', 'Gerofit', 'Pink Gloves Program', 'SOAR', 'Project Happenings', 'REVAMP', 'Telemedicine', 'Different practice']
     @practices = []
     practice_names.each do |name|
-      @practices.push(Practice.create!(name: name, approved: true, published: true, tagline: "Tagline for #{name}", support_network_email: 'test@test.com'))
+      @practices.push(Practice.create!(name: name, approved: true, published: true, tagline: "Tagline for #{name}", support_network_email: 'test@test.com', user: user))
     end
-
-    pr_1 = Practice.create!(name: 'Unpublished practice', approved: false, published: false)
+    pr_1 = Practice.create!(name: 'Unpublished practice', approved: false, published: false, user: user)
     CategoryPractice.create!(practice: pr_1, category: cat_5)
 
     @practices.each_with_index do |pr, index|

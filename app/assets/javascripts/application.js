@@ -52,3 +52,4 @@
 //= require _render_warning_banners
 //= require autoResize
 //= require showMoreItems.js
+//= require local-time

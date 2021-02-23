@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe 'Practice editor', type: :feature, js: true do
     before do
-        @admin = User.create!(email: 'toshiro.hitsugaya@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-        @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', number_adopted: 1, date_initiated: Date.new(2011, 12, 31), initiating_facility_type: 'facility', overview_problem: 'problem statement', overview_solution: 'solution statement', overview_results: 'results statement')
+        @admin = User.create!(email: 'toshiro.hitsugaya@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+        @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', number_adopted: 1, date_initiated: Date.new(2011, 12, 31), initiating_facility_type: 'facility', overview_problem: 'problem statement', overview_solution: 'solution statement', overview_results: 'results statement', user: @admin)
         @practice_partner = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative', icon: 'fas fa-heart', color: '#E4A002')
         @admin.add_role(User::USER_ROLES[0].to_sym)
         @choose_image_text= 'Choose an image to represent this practice. Use a high-quality .jpg, .jpeg, or .png files less than 32MB. PII/PHI Waivers are required for photos featuring Veterans. Waivers must be filled out with the ‘External to VA’ check box selected.'

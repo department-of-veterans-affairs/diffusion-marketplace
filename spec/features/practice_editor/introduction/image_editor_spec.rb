@@ -2,15 +2,15 @@ require 'rails_helper'
 
 describe 'Diffusion Marketplace image editor', type: :feature, js: true do
   before do
-    admin = User.create!(email: 'admin-dmva@example-dmva.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+    admin = User.create!(email: 'admin-dmva@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     admin.add_role(User::USER_ROLES[0].to_sym)
 
     @acceptable_img_path = "#{Rails.root}/spec/assets/acceptable_img.jpg"
     @unacceptable_img_dimension_path = "#{Rails.root}/spec/assets/unacceptable_img_dimension.jpg"
     @unacceptable_img_size_path = "#{Rails.root}/spec/assets/unacceptable_img_size.png"
 
-    @pr_with_thumbnail = Practice.create!(name: 'A practice with a thumbnail', tagline: 'A public tagline',  slug: 'a-thumbnail-practice', summary: 'test summary', date_initiated: Time.now, initiating_facility: 'test facility', approved: true, published: true, main_display_image: File.new(@acceptable_img_path))
-    @pr_without_thumbnail = Practice.create!(name: 'A practice without a thumbnail', tagline: 'A public tagline', slug: 'a-no-thumbnail-practice', summary: 'test summary', date_initiated: Time.now, initiating_facility: 'test facility', initiating_facility_type: 'other', approved: true, published: true)
+    @pr_with_thumbnail = Practice.create!(name: 'A practice with a thumbnail', tagline: 'A public tagline',  slug: 'a-thumbnail-practice', summary: 'test summary', date_initiated: Time.now, initiating_facility: 'test facility', approved: true, published: true, main_display_image: File.new(@acceptable_img_path), user: admin)
+    @pr_without_thumbnail = Practice.create!(name: 'A practice without a thumbnail', tagline: 'A public tagline', slug: 'a-no-thumbnail-practice', summary: 'test summary', date_initiated: Time.now, initiating_facility: 'test facility', initiating_facility_type: 'other', approved: true, published: true, user: admin)
 
     login_as(admin, :scope => :user, :run_callbacks => false)
   end

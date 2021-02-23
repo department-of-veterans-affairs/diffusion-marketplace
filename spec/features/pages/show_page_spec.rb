@@ -2,9 +2,12 @@ require 'rails_helper'
 
 describe 'Page Builder - Show', type: :feature do
   before do
+    user = User.create!(email: 'sandy.cheeks@va.gov', password: 'Password123',
+                        password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+    user.add_role(:admin)
     @practices = [
-      Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline'),
-      Practice.create!(name: 'A cool practice', approved: true, published: true, tagline: 'Test tagline')
+      Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', user: user),
+      Practice.create!(name: 'A cool practice', approved: true, published: true, tagline: 'Test tagline', user: user)
     ]
     page_group = PageGroup.create(name: 'programming', slug: 'programming', description: 'Pages about programming go in this group.')
     page = Page.create(page_group: page_group, title: 'ruby', description: 'what a gem', slug: 'ruby-rocks', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
@@ -24,10 +27,6 @@ describe 'Page Builder - Show', type: :feature do
     PageComponent.create(page: page, component: cta_component, created_at: Time.now)
     PageComponent.create(page: page, component: youtube_video_component, created_at: Time.now)
     PageComponent.create(page: page, component: downloadable_file_component, created_at: Time.now)
-
-    user = User.create!(email: 'sandy.cheeks@bikinibottom.net', password: 'Password123',
-      password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    user.add_role(:admin)
     # must be logged in to view pages
     login_as(user, scope: :user, run_callbacks: false)
     visit '/programming/ruby-rocks'
