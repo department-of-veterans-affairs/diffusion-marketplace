@@ -4,7 +4,8 @@ require_relative '../../app/services/save_practice_service.rb'
 RSpec.describe SavePracticeService do
   describe 'when save_practice errors' do
     before do
-      practice = Practice.create!(name: 'A public practice', tagline: 'Test tagline', initiating_facility: '687HA', date_initiated: Date.new(2011, 12, 31), summary: 'practice summary', support_network_email: 'fake-support-email@example.com')
+      user = User.create!(email: 'test@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+      practice = Practice.create!(name: 'A public practice', tagline: 'Test tagline', initiating_facility: '687HA', date_initiated: Date.new(2011, 12, 31), summary: 'practice summary', support_network_email: 'fake-support-email@example.com', user: user)
       @save_practice = SavePracticeService.new({ practice: practice, practice_params: {}})
     end
 
@@ -70,8 +71,9 @@ RSpec.describe SavePracticeService do
   end
 
   describe 'when save_practice succeeds' do
-    before do 
-      @practice = Practice.create!(name: 'A public practice 2', tagline: 'Test tagline', initiating_facility: '687HA', date_initiated: Date.new(2011, 12, 31), summary: 'practice summary', support_network_email: 'fake-support-email@example.com', main_display_image: File.new("#{Rails.root}/spec/assets/charmander.png"))
+    before do
+      @user = User.create!(email: 'test2@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+      @practice = Practice.create!(name: 'A public practice 2', tagline: 'Test tagline', initiating_facility: '687HA', date_initiated: Date.new(2011, 12, 31), summary: 'practice summary', support_network_email: 'fake-support-email@example.com', main_display_image: File.new("#{Rails.root}/spec/assets/charmander.png"), user: @user)
     end
 
     context 'while crop_main_display_image' do

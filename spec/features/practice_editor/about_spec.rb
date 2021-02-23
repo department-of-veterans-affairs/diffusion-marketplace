@@ -3,8 +3,8 @@ require 'rails_helper'
 describe 'Practice editor', type: :feature do
     describe 'About page' do
         before do
-            @admin = User.create!(email: 'toshiro.hitsugaya@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-            @practice = Practice.create!(name: 'An awesome practice', slug: 'an-awesome-practice', approved: true, published: true, tagline: 'Test tagline', date_initiated: Date.new(2011, 12, 31))
+            @admin = User.create!(email: 'toshiro.hitsugaya@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+            @practice = Practice.create!(name: 'An awesome practice', slug: 'an-awesome-practice', approved: true, published: true, tagline: 'Test tagline', date_initiated: Date.new(2011, 12, 31), user: @admin)
             @admin.add_role(User::USER_ROLES[0].to_sym)
             login_as(@admin, :scope => :user, :run_callbacks => false)
             @origin_story = 'This practice was founded on the basis of being awesome.'

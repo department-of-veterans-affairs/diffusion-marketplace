@@ -145,13 +145,13 @@ ActiveAdmin.register_page "Dashboard" do
     end
 
     def add_header_row_for_month_and_year(sheet, first_column_text, array, row_style)
-      sheet_row = ["#{first_column_text}"] + array.map { |a| a.join(' ') }
+      sheet_row = ["#{first_column_text}"] + array.reverse.map { |a| a.join(' ') }
       sheet.add_row sheet_row, style: row_style
     end
 
     def add_monthly_array_values_to_columns(hash, sheet, row_style)
       hash.each do |key, value|
-        sheet_row = [key.to_s.tr!('_', ' ').titleize] + value.map { |v| v }
+        sheet_row = [key.to_s.tr!('_', ' ').titleize] + value.reverse.map { |v| v }
         sheet.add_row sheet_row, style: row_style
       end
     end
@@ -181,7 +181,7 @@ ActiveAdmin.register_page "Dashboard" do
           sheet.add_row ["General Traffic"], style: xlsx_sub_header_1
           @general_traffic_stats.each { |key, value| sheet.add_row [key.to_s === 'unique_visitors' || key.to_s === 'number_of_page_views' ? key.to_s.tr!('_', ' ').titleize + ' (last month)' : key.to_s.tr!('_', ' ').titleize + ' (all-time)', value], style: xlsx_entry }
           sheet.add_row ['Site Visits per Month'], style: xlsx_sub_header_2
-          @site_visits_by_month.each do |month_and_count|
+          @site_visits_by_month.reverse.each do |month_and_count|
             sheet.add_row [month_and_count[0], month_and_count[1]], style: xlsx_entry
           end
           sheet.add_row [""], style: xlsx_divider
@@ -201,7 +201,7 @@ ActiveAdmin.register_page "Dashboard" do
           sheet.add_row ['Practice Views per Month'], style: xlsx_sub_header_2
           add_header_row_for_month_and_year(sheet, 'Practice name', @month_and_year_array, xlsx_sub_header_3)
           @practice_views_by_month.in_groups_of(13) do |practice_views|
-            sheet_row = ["#{practice_views[0][0]}"] + practice_views.map { |pv| pv[1]}
+            sheet_row = ["#{practice_views[0][0]}"] + practice_views.reverse.map { |pv| pv[1]}
             sheet.add_row sheet_row, style: xlsx_entry
           end
           sheet.add_row [''], style: xlsx_divider

@@ -5,9 +5,9 @@ require 'rails_helper'
 
 describe 'The user index', type: :feature do
   before do
-    @user = User.create!(email: 'spongebob.squarepants@bikinibottom.net', password: 'Password123',
+    @user = User.create!(email: 'spongebob.squarepants@va.gov', password: 'Password123',
                          password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    @user2 = User.create!(email: 'patrick@bikinibottom.net', password: 'Password123',
+    @user2 = User.create!(email: 'patrick@va.gov', password: 'Password123',
                          password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
   end
 
@@ -75,7 +75,7 @@ describe 'The user index', type: :feature do
 
   it 'should have a created practice and a favorited' do
     @practice1 = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user)
-    @practice2 = Practice.create!(name: 'The Best Practice Ever!', approved: true, published: true, tagline: 'Test tagline', featured: true)
+    @practice2 = Practice.create!(name: 'The Best Practice Ever!', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user2)
     @user_practice = UserPractice.create!(user: @user, practice: @practice2, favorited: true)
 
     login_as(@user, scope: :user, run_callbacks: false)
