@@ -2,14 +2,14 @@ class CreateVamcs < ActiveRecord::Migration[5.2]
   def change
     create_table :vamcs do |t|
       t.belongs_to :visn, foreign_key: true
-      t.integer :sta3n
-      t.integer :station_number
+      t.string :sta3n
+      t.string :station_number
       t.string :official_station_name
       t.string :common_name
       t.string :classification
       t.string :classification_status
       t.string :mobile
-      t.integer :parent_station_number
+      t.string :parent_station_number
       t.string :official_parent_station_name
       t.string :fy17_parent_station_complexity_level
       t.string :operational_status
@@ -21,18 +21,18 @@ class CreateVamcs < ActiveRecord::Migration[5.2]
       t.date :station_number_suffix_reservation_effective_date
       t.string :operational_date
       t.string :date_of_first_workload
-      t.integer :points_of_service
+      t.string :points_of_service
       t.string :street_address
       t.string :street_address_city
       t.string :street_address_state
-      t.integer :street_address_zip_code
-      t.integer :street_address_zip_code_extension
+      t.string :street_address_zip_code
+      t.string :street_address_zip_code_extension
       t.string :county_street_address
       t.string :mailing_address
       t.string :mailing_address_city
       t.string :mailing_address_state
-      t.integer :mailing_address_zip_code
-      t.integer :mailing_address_zip_code_extension
+      t.string :mailing_address_zip_code
+      t.string :mailing_address_zip_code_extension
       t.string :county_mailing_address
       t.string :station_phone_number
       t.string :station_main_fax_number
@@ -46,7 +46,7 @@ class CreateVamcs < ActiveRecord::Migration[5.2]
       t.string :market
       t.string :sub_market
       t.string :sector
-      t.integer :fips_code
+      t.string :fips_code
       t.string :rurality
       t.string :monday
       t.string :tuesday
