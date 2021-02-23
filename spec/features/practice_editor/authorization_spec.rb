@@ -30,7 +30,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         it 'should allow practice editors to edit a practice they\'re associated with' do
-            login_as(@practice_editor, :scope => :user, :run_callbacks => false)
+            login_as(@user_2, :scope => :user, :run_callbacks => false)
             visit practice_introduction_path(@practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).to have_content('Introduction')
