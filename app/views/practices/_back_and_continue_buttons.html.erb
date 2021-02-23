@@ -1,0 +1,15 @@
+<%
+  editors_path = params[:controller] === 'practices' && params[:action] === 'editors'
+  adoptions_path = params[:controller] === 'practices' && params[:action] === 'adoptions'
+%>
+
+<% unless editors_path %>
+  <%= link_to back_path, class: 'usa-button--outline dm-btn-base editor-back-to-link margin-right-1 margin-bottom-5 text-no-underline' do %>
+    Back
+  <% end %>
+<% end %>
+
+<%= link_to continue_path,
+      class: "usa-button dm-btn-base pe-continue editor-continue-link #{editors_path || adoptions_path ? '' : 'continue-and-save'} margin-right-1 margin-bottom-5" do %>
+  <%= editors_path || adoptions_path ? 'Continue' : 'Save and continue' %>
+<% end %>

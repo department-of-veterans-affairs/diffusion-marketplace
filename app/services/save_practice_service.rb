@@ -1,5 +1,7 @@
 class SavePracticeService
   include CropperUtils
+  include UserUtils
+  include UsersHelper
 
   def initialize(params)
     @practice = params[:practice]
@@ -42,6 +44,9 @@ class SavePracticeService
       if @practice_params["risk_mitigations_attributes"].present?
         process_risk_mitigations_params
       end
+      if @practice_params["practice_editors_attributes"].present?
+        update_practice_editors
+      end
 
       updated = @practice.update(@practice_params)
       rescue_method(:update_practice_partner_practices)
@@ -54,6 +59,7 @@ class SavePracticeService
       rescue_method(:update_practice_awards)
       rescue_method(:update_category_practices)
       rescue_method(:crop_resource_images)
+
       if updated
         practice = Practice.find_by_id(@practice.id)
         practice.practice_pages_updated = DateTime.now()
@@ -67,6 +73,8 @@ class SavePracticeService
   end
 
   private
+
+  attr_accessor :flash
 
   def rescue_method(method_name)
     begin
@@ -391,6 +399,47 @@ class SavePracticeService
           @practice_params["risk_mitigations_attributes"].delete(rm[0])
         end
       end
+    end
+  end
+
+  def update_practice_editors
+    editors = @practice_params[:practice_editors_attributes]
+    includes_destroy = editors.keys.include?('_destroy')
+    if includes_destroy
+      editor_count = @practice.practice_editors.count
+      # delete practice editor if there is at least one left after deletion. If not, raise an error.
+      if editor_count > 1
+        PracticeEditor.find_by(id: editors[:id]).destroy
+      else
+        raise StandardError.new "error. At least one editor is required"
+      end
+    else
+      email_param = editors.values.first.values.first
+      user = User.find_by(email: email_param)
+      practice_editor = PracticeEditor.find_by(practice: @practice, user: user)
+
+      # if the user tries to save with a blank email field, raise an error
+      raise StandardError.new "error. Email field cannot be blank" if email_param.blank?
+      # if the user tries to save with an invalid email field, raise an error
+      raise StandardError.new "There was an error. Must be a valid @va.gov email address" if is_invalid_va_email(email_param)
+
+      if user.present? && practice_editor.nil?
+        # create a new practice editor for the existing user
+        PracticeEditor.create_and_invite(@practice, user)
+      # make sure a duplicate practice editor is not created
+      elsif user.present? && practice_editor.present?
+        raise StandardError.new "error. A user with the email \"#{user.email}\" is already an editor for this practice"
+      else
+        # create a new user if they do not exist
+        user = User.new(email: email_param)
+        skip_validations_and_save_user(user)
+        # create a new practice editor for the new user
+        PracticeEditor.create_and_invite(@practice, user)
+      end
+    end
+    # remove params keys before updating practice
+    editors.keys.each do |k|
+      editors.delete(k)
     end
   end
 end

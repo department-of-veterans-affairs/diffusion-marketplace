@@ -2,17 +2,17 @@ require 'rails_helper'
 
 describe 'Practices', type: :feature do
   before do
-    @user = User.create!(email: 'spongebob.squarepants@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    @user2 = User.create!(email: 'patrick.star@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+    @user = User.create!(email: 'spongebob.squarepants@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+    @user2 = User.create!(email: 'patrick.star@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin = User.create!(email: 'sandy.cheeks@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @approver = User.create!(email: 'squidward.tentacles@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
     @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test Facility', initiating_facility_type: 'other', tagline: 'Test tagline')
-    @practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', date_initiated: Time.now())
-    @enabled_practice = Practice.create!(name: 'Enabled practice', approved: true, published: true, enabled: true, date_initiated: Time.now())
-    @disabled_practice = Practice.create!(name: 'Disabled practice', approved: true, published: true, enabled: false, date_initiated: Time.now())
-    @highlighted_practice = Practice.create!(name: 'Highlighted practice', approved: true, published: true, enabled: true, highlight: true, highlight_body: 'Highlight body text', date_initiated: Time.now())
+    @practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', date_initiated: Time.now(), user: @user2)
+    @enabled_practice = Practice.create!(name: 'Enabled practice', approved: true, published: true, enabled: true, date_initiated: Time.now(), user: @user2)
+    @disabled_practice = Practice.create!(name: 'Disabled practice', approved: true, published: true, enabled: false, date_initiated: Time.now(), user: @user2)
+    @highlighted_practice = Practice.create!(name: 'Highlighted practice', approved: true, published: true, enabled: true, highlight: true, highlight_body: 'Highlight body text', date_initiated: Time.now(), user: @user2)
 
     @departments = [
         Department.create!(name: 'Test department 1', short_name: 'td1'),
@@ -115,7 +115,7 @@ describe 'Practices', type: :feature do
       login_as(@user, :scope => :user, :run_callbacks => false)
 
       # Visit an individual Practice that is approved and published
-      practice = Practice.create!(name: 'Another public practice', date_initiated: Time.now(), approved: true, published: true, initiating_facility_type: 'facility', tagline: 'Test tagline')
+      practice = Practice.create!(name: 'Another public practice', date_initiated: Time.now(), approved: true, published: true, initiating_facility_type: 'facility', tagline: 'Test tagline', user: @user2)
       PracticeOriginFacility.create!(practice: practice, facility_type: 0, facility_id: '687HA')
       visit practice_path(practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508

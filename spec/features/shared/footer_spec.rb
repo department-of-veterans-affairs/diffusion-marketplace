@@ -2,9 +2,9 @@ require 'rails_helper'
 
 describe 'Diffusion Marketplace footer', type: :feature, js: true do
   before do
-    admin = User.create!(email: 'admin-dmva@example-dmva.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+    admin = User.create!(email: 'admin-dmva@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     admin.add_role(User::USER_ROLES[0].to_sym)
-    @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline')
+    @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', user: admin)
     login_as(admin, :scope => :user, :run_callbacks => false)
     visit practice_overview_path(@practice)
   end

@@ -5,7 +5,7 @@ require 'rails_helper'
 
 describe 'The admin dashboard', type: :feature do
   before do
-    @user = User.create!(email: 'spongebob.squarepants@bikinibottom.net', password: 'Password123',
+    @user = User.create!(email: 'spongebob.squarepants@va.gov', password: 'Password123',
                          password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @user2 = User.create!(email: 'patrick.star@bikinibottom.net', password: 'Password123',
                           password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
@@ -16,6 +16,7 @@ describe 'The admin dashboard', type: :feature do
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
     @practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true)
+    @practice_2 = Practice.create!(name: 'The Second Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true)
     @categories = [
       Category.create!(name: 'COVID', description: 'COVID related practices', related_terms: ['COVID-19, Coronavirus']),
       Category.create!(name: 'Telehealth', description: 'Telelhealth related practices')
@@ -42,7 +43,9 @@ describe 'The admin dashboard', type: :feature do
   def visit_practice_show
     visit '/admin/practices'
     within_table('index_table_practices') do
-      first('.table_actions').click_link('View')
+      within ".even" do
+        first('.table_actions').click_link('View')
+      end
     end
   end
 
@@ -242,7 +245,9 @@ describe 'The admin dashboard', type: :feature do
     end
 
     within_table('index_table_practices') do
-      first('.table_actions').click_link('View')
+      within ".even" do
+        first('.table_actions').click_link('View')
+      end
     end
     expect(page).to have_current_path(admin_practice_path(@practice))
   end
@@ -314,6 +319,109 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_current_path(practice_overview_path(Practice.last))
   end
 
+  it 'should not allow an admin to create a new practice if they do not enter the required information' do
+    login_as(@admin, scope: :user, run_callbacks: false)
+    visit '/admin'
+
+    click_link('Practices')
+    click_link('New Practice')
+
+    fill_in('Practice name', with: 'The Newest Practice')
+    click_button('Create Practice')
+    # check for blank email
+    expect(page).to have_content('There was an error. Email cannot be blank.')
+    expect(page).to_not have_selector("input[value='The Newest Practice']")
+    # check for invalid email
+    fill_in('Practice name', with: 'The Newest Practice')
+    fill_in('User email', with: 'practice_owner@test.com')
+    click_button('Create Practice')
+
+    expect(page).to have_content('There was an error. Email must be a valid @va.gov address.')
+    expect(page).to_not have_selector("input[value='The Newest Practice']")
+    expect(page).to_not have_selector("input[value='practice_owner@test.com']")
+
+    # check for blank practice name
+    fill_in('User email', with: 'practice_owner@test.com')
+    click_button('Create Practice')
+
+    expect(page).to have_content('There was an error. Practice name cannot be blank.')
+    expect(page).to_not have_selector("input[value='practice_owner@test.com']")
+  end
+
+  it 'should allow an admin to update the name of a practice as long as the updated name does not already belong to an existing practice' do
+    login_as(@admin, scope: :user, run_callbacks: false)
+    visit '/admin'
+
+    click_link('Practices')
+    click_link('Edit', href: edit_admin_practice_path(@practice))
+    fill_in('Practice name', with: @practice_2.name)
+    click_button('Update Practice')
+
+    expect(page).to have_content('There was an error. Practice name already exists.')
+    expect(page).to have_selector("input[value='The Best Practice Ever!']")
+
+    fill_in('Practice name', with: 'Test Practice 1')
+    click_button('Update Practice')
+
+    expect(page).to have_content('Practice was successfully updated.')
+    expect(page).to have_content('Test Practice 1')
+  end
+
+  it 'should not allow an admin to update an existing practice if they do not enter the required information' do
+    login_as(@admin, scope: :user, run_callbacks: false)
+    visit '/admin'
+
+    click_link('Practices')
+    click_link('Edit', href: edit_admin_practice_path(@practice))
+    # check for blank practice name
+    fill_in('Practice name', with: '')
+    click_button('Update Practice')
+
+    expect(page).to have_content('There was an error. Practice name cannot be blank.')
+    expect(page).to have_selector("input[value='The Best Practice Ever!']")
+
+    # check for blank email
+    fill_in('Practice name', with: 'Test Practice')
+    fill_in('User email', with: '')
+    click_button('Update Practice')
+
+    expect(page).to have_content('There was an error. Email cannot be blank.')
+    expect(page).to have_selector("input[value='spongebob.squarepants@va.gov']")
+
+    # check for invalid email
+    fill_in('User email', with: 'practice_owner@test.com')
+    click_button('Update Practice')
+
+    expect(page).to have_content('There was an error. Email must be a valid @va.gov address.')
+    expect(page).to have_selector("input[value='spongebob.squarepants@va.gov']")
+  end
+
+  it 'should send an email for a newly assigned practice owner as long as the user is not already an editor for the practice' do
+    login_as(@admin, scope: :user, run_callbacks: false)
+    visit '/admin'
+
+    click_link('Practices')
+    click_link('Edit', href: edit_admin_practice_path(@practice))
+    fill_in('User email', with: 'test@va.gov')
+    # make sure the mailer count increases by 1
+    expect { click_button('Update Practice') }.to change { ActionMailer::Base.deliveries.count }.by(1)
+    expect(page).to have_content('Practice was successfully updated.')
+    # make sure the mailer subject is for a practice owner that is now also a practice editor
+    expect(ActionMailer::Base.deliveries.last.subject).to eq('You have been added to the list of practice editors for the The Best Practice Ever! Diffusion Marketplace Page!')
+
+    visit practice_editors_path(@practice)
+    expect(page).to have_content('test@va.gov')
+
+    visit '/admin'
+
+    click_link('Practices')
+    click_link('Edit', href: edit_admin_practice_path(@practice))
+    fill_in('User email', with: @user.email)
+
+    # make sure the mailer count does not increase by 1
+    expect { click_button('Update Practice') }.to_not change { ActionMailer::Base.deliveries.count }
+  end
+
   it 'practice owner emails are downloaded when user clicks csv link and get_practice_owner_emails scope specified' do
     login_as(@admin, scope: :user, run_callbacks: false)
     visit '/admin'
@@ -321,7 +429,7 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_current_path(admin_practices_path)
     click_link 'Get Practice Owner Emails'
     expect(page).to have_current_path('/admin/practices?scope=get_practice_owner_emails')
-    expect(page).to have_content('Displaying 1 Practice')
+    expect(page).to have_content('Displaying all 2 Practices')
   end
 
   it 'should be able to view existing and add categories to a Practice' do
@@ -366,7 +474,7 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_content('Highlight')
     click_link('Highlight', href: highlight_practice_admin_practice_path(@practice))
     expect(page).to have_content("\"#{@practice.name}\" Practice highlighted")
-    expect(find_all('.col-highlight > span')[2].text).to eq 'YES'
+    expect(find_all('.col-highlight > span')[3].text).to eq 'YES'
     click_link('Highlight', href: highlight_practice_admin_practice_path(pr_2))
     expect(page).to have_content("Only one practice can be highlighted at a time.")
     expect(find_all('.col-highlight > span')[1].text).to eq 'NO'
@@ -411,11 +519,7 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to_not have_selector("input[value='Download Adoption Data']")
 
     create_diffusion_history
-
-    visit '/admin/practices'
-    within_table('index_table_practices') do
-      find_all('.table_actions')[0].click_link('View')
-    end
+    visit_practice_show
 
     expect(page).to have_selector("input[value='Download Adoption Data']")
   end
