@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Register', type: :feature, js: true do
+describe 'Register', type: :feature do
   it 'should not let the user sign up with a weak password or without a va.gov email address' do
 
     visit '/'
