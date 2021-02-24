@@ -4,6 +4,7 @@
 <% provide :head_tags do %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     <%= render partial: 'editors', formats: [:js] %>
+    <%= render partial: 'practices/form/session_monitor', formats: [:js] %>
   <% end %>
 <% end %>
 

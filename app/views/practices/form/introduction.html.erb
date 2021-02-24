@@ -34,9 +34,6 @@
   partners = PracticePartner.all
   p_partners = @practice.practice_partners
 %>
-<% if !PracticeEditorSession.practice_locked_for_current_user(current_user[:id], @practice.id) %>
-  <% PracticeEditorSession.monitor_editing_session(@practice.id, current_user[:id]) %>
-<% end %>
 <%= render 'practice_editor_sidenav' %>
 <div class="grid-container position-relative">
   <div class="grid-row grid-gap practice-editor-min-height">

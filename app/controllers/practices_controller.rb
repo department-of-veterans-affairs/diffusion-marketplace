@@ -14,7 +14,7 @@ class PracticesController < ApplicationController
   before_action :can_edit_practice, only: [:edit, :update, :instructions, :overview, :contact, :published, :publication_validation, :adoptions, :about, :editors, :introduction, :implementation, :metrics]
   before_action :set_date_initiated_params, only: [:update, :publication_validation]
   before_action :is_enabled, only: [:show]
-  before_action :practice_locked_for_editing, only: [:introduction, :overview, :contact, :adoptions, :about, :implementation]
+  before_action :practice_locked_for_editing, only: [:editors, :introduction, :overview, :contact, :adoptions, :about, :implementation]
   # GET /practices
   # GET /practices.json
   def index
@@ -584,6 +584,10 @@ class PracticesController < ApplicationController
     if locked_rec == 0
       PracticeEditorSession.lock_practice_for_user(cur_user_id, @practice.id)
     else
+      if PracticeEditorSession.session_out_of_time(locked_rec)
+        PracticeEditorSession.lock_practice_for_user(cur_user_id, @practice.id)
+        return
+      end
       locked_by_user_id = PracticeEditorSession.locked_by_user(locked_rec)
       if locked_by_user_id != cur_user_id
         locked_by = PracticeEditorSession.locked_by(locked_rec, false)

@@ -16,9 +16,19 @@ class PracticeEditorSession < ApplicationRecord
     return rec.id
   end
 
+  def self.session_out_of_time(rec_id)
+    rec = PracticeEditorSession.find_by_id(rec_id)
+    is_published = Practice.find_by_id(rec.practice_id).published
+    is_published ? session_end = DateTime.now.utc - 15.minutes : session_end = DateTime.now.utc - 30.minutes
+    if rec.session_start_time < session_end
+      rec.session_end_time = DateTime.now
+      rec.save
+      return true
+    end
+    return false
+  end
 
   def self.lock_practice_for_user(user_id, practice_id)
-    #TODO clean up???
     PracticeEditorSession.create user_id: user_id, practice_id: practice_id, session_start_time: DateTime.now, session_end_time: nil
   end
   def self.locked_by(rec_id, include_time = true)
@@ -60,50 +70,6 @@ class PracticeEditorSession < ApplicationRecord
     s_text
   end
 
-  def self.monitor_editing_session(practice_id, user_id)
-    #TODO update session record with process ID...
-    session_rec = PracticeEditorSession.where(practice_id: practice_id, user_id: user_id, session_end_time: nil, process_id: nil).order("session_start_time DESC").first()
-    Thread.new do
-      if !session_rec.blank?
-        session_rec.process_id = Thread.current.object_id.to_i
-        session_rec.save
-      else
-        Thread.exit
-        return
-      end
-        monitor_session(practice_id, user_id, session_rec.id)
-    end
-  end
-  def self.monitor_session(practice_id, user_id, session_rec_id)
-    loop do
-      session_rec = PracticeEditorSession.where(practice_id: practice_id, user_id: user_id, session_end_time: nil).order("session_start_time DESC").first()
-      if session_rec.blank?
-        Thread.exit
-      end
-      sleep 50
-      diff = minutes_in_session(session_rec.session_start_time)
-      is_published = Practice.find_by_id(practice_id).published
-      # puts 'session_start_time: ' + session_rec.session_start_time.to_s
-      # puts 'diff from now: ' + diff.to_s
-      # puts 'rec_id: ' + session_rec_id.to_s
-      # puts 'process id: ' + session_rec.process_id.to_s
-      # puts 'thread_id: ' + Thread.current.object_id.to_s
-      # puts practice_id.to_s + ", " + user_id.to_s
-      #TODO: set back to diff > 14 .set to 0 only for testing.. bj_2_10_2021
-      if (is_published && diff > 14) || (!is_published && diff > 29)
-        rec = PracticeEditorSession.find_by_id(session_rec_id)
-        if !rec.blank?
-          if rec.session_end_time.blank?
-            rec.session_end_time = DateTime.now
-            rec.save
-          end
-        end
-        #puts 'session end ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
-        Thread.exit
-      end
-    end
-  end
-
   def self.extend_current_session(user_id, practice_id, practice)
     rec = PracticeEditorSession.where(practice_id: practice_id, user_id: user_id, session_end_time: nil).order("session_start_time DESC").first()
     if !rec.blank?
@@ -131,7 +97,7 @@ class PracticeEditorSession < ApplicationRecord
     end
     #TODO: change this back to 15......... set to 2...? only for testing..... bj_2_10_2021
     if is_published
-      ret_val =  15 - minutes_in_session(rec_session.session_start_time).to_i
+      ret_val =  3 - minutes_in_session(rec_session.session_start_time).to_i
     else
       ret_val =  30 - minutes_in_session(rec_session.session_start_time).to_i
     end
