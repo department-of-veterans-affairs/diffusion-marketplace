@@ -72,7 +72,12 @@ describe 'VAMC pages', type: :feature do
 
   describe 'show page' do
     it 'should be there if the VAMC common name (friendly id) or id exists in the DB' do
+      # visit using the friendly id
       visit '/vamc/test-common-name'
+      expect(page).to_not have_current_path(visn_path(@vamc))
+
+      # visit using the id
+      visit '/vamc/1'
       expect(page).to_not have_current_path(visn_path(@vamc))
     end
   end
