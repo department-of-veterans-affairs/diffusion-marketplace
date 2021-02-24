@@ -33,6 +33,8 @@
 | `rails documentation:port_publications_to_practice_resources` | Ports publications (links) to practice_resources
 | `rails risk_and_mitigation:remove_unpaired_risks_and_mitigation` | Removes risks without a corresponding mitigation AND removes mitigations without a corresponding risk.
 | `rails practice_editors:add_practice_owners_to_practice_editors` | Adds each practice owner to the practice editors list of their corresponding practice
+| `rails visns:create_visns_and_transfer_data` | Creates new VISN records based on the data from the "practice_origin_lookup.json" file
+| `rails vamcs:create_vamcs_and_transfer_data` | Creates new VAMC records based on the data from the "vamc.json" file
 #### Ruby version
 
 - `ruby 2.6.3`
@@ -164,6 +166,8 @@ This will run:
 10. `rails practice_multimedia:transfer_practice_impact_photos` - moves practice impact photos to practice multimedia
 10. `rails practice_multimedia:transfer_practice_videos` - moves practice videos to practice multimedia
 11. `rails practice_editors:add_practice_owners_to_practice_editors` - Adds each practice owner to the practice editors list of their corresponding practice
+12. `rails visns:create_visns_and_transfer_data` - Creates new VISN records based on the data from the "practice_origin_lookup.json" file
+13. `rails vamcs:create_vamcs_and_transfer_data` - Creates new VAMC records based on the data from the "vamc.json" file
 
 To reset all of the data and do the process all over again, run:
 ```bash
