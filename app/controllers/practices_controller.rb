@@ -542,7 +542,7 @@ class PracticesController < ApplicationController
       #//Session has already ended bc they did not close the modal in time ... sending to introduction in order to begin new session.
       # There is a chance that someone could lock the record between the time he session expired and they clicked "OK" on the modal... in
       # which case they would just be sent back to the metrics page with the info of who has it locked.
-      s_url = "/practices/" + @practice.slug + "/edit/introduction"
+      s_url = "/practices/#{@practice.slug}/edit/introduction"
       render :js => "window.location = '#{s_url}'"
     end
   end

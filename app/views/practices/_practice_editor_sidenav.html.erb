@@ -13,7 +13,7 @@
             <a href="#" onclick="return false" class="width-full side-nav-highlighted"><%= @practice.name %></a>
           <% else %>
             <% if !PracticeEditorSession.practice_locked_for_current_user(current_user[:id], @practice.id) %>
-              <a id="sideNavPracticeNameLinkStartTimer" href="<%=practice_introduction_path(@practice)%>" class="dm-tab <% if !current_page?(practice_instructions_path(@practice)) && !current_page?(practice_metrics_path(@practice)) %>side-nav-highlighted<% end %>"><%= @practice.name %></a>
+              <%= link_to @practice.name, practice_introduction_path(@practice), id: "sideNavPracticeNameLinkStartTimer", class: "dm-tab #{'side-nav-highlighted' if !current_page?(practice_instructions_path(@practice)) && !current_page?(practice_metrics_path(@practice))}" %>
             <% else %>
               <%= link_to @practice.name, practice_introduction_path(@practice), id: "sideNavPracticeNameLink", class: "dm-tab #{'side-nav-highlighted' if !current_page?(practice_instructions_path(@practice)) && !current_page?(practice_metrics_path(@practice))}" %>
             <% end %>

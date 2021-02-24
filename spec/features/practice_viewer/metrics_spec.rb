@@ -41,7 +41,8 @@ describe 'Metrics section', type: :feature, js: true do
       PracticeEditorSession.create(user_id: @user1.id, practice_id: @practice.id, session_start_time: DateTime.now, session_end_time: DateTime.now, created_at: DateTime.now, updated_at: DateTime.now, process_id: 232323)
       visit practice_metrics_path(@practice)
       expect(page).to have_content('Practice last updated on')
-      expect(page).to have_content(@user1.first_name + " " + @user1.last_name)
+      space = " "
+      expect(page).to have_content("#{@user1.first_name}#{space}#{@user1.last_name}")
     end
   end
 end

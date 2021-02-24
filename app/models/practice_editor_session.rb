@@ -72,7 +72,7 @@ class PracticeEditorSession < ApplicationRecord
 
   def self.extend_current_session(user_id, practice_id, practice)
     rec = PracticeEditorSession.where(practice_id: practice_id, user_id: user_id, session_end_time: nil).order("session_start_time DESC").first()
-    if !rec.blank?
+    if rec.present?
       rec.session_start_time = DateTime.now
       rec.save
       return true
@@ -97,7 +97,7 @@ class PracticeEditorSession < ApplicationRecord
     end
     #TODO: change this back to 15......... set to 2...? only for testing..... bj_2_10_2021
     if is_published
-      ret_val =  3 - minutes_in_session(rec_session.session_start_time).to_i
+      ret_val =  15 - minutes_in_session(rec_session.session_start_time).to_i
     else
       ret_val =  30 - minutes_in_session(rec_session.session_start_time).to_i
     end
@@ -117,23 +117,23 @@ class PracticeEditorSession < ApplicationRecord
     end
   end
   def self.check_session_info(practice)
-    ctr = 0
+    session_counter = 0
     recs = PracticeEditorSession.where(practice_id: practice.id).where.not(session_end_time: nil).order("session_start_time DESC")
-    if !recs.blank? && recs.count > 1
+    if recs.present? && recs.count > 1
       recs.each do |rec|
-        if ctr > 0
+        if session_counter > 0
           if ((practice.published && minutes_in_session(rec.session_start_time) > 19) || (!practice.published && minutes_in_session(rec.session_start_time) > 34))
             rec.destroy!
           end
         end
-        ctr += 1
+        session_counter += 1
       end
     end
     remove_expired_open_sessions(practice.id)
   end
   def self.remove_expired_open_sessions(practice_id)
     recs = PracticeEditorSession.where(practice_id: practice_id, session_end_time: nil).where.not(session_start_time: nil)
-    if !recs.blank?
+    if recs.present?
       recs.each do |rec|
         if minutes_in_session(rec.session_start_time) > 19
           rec.destroy!
