@@ -13,12 +13,12 @@ function shouldTrackVisit(currentVisit, currentVisitor) {
   if (prevVisit && prevVisitor) {
     var prevVisitTime = new Date(prevVisit.timestamp);
     var currentVisitTime = new Date(currentVisit.timestamp);
-    var isSameVisit = (currentVisitTime - prevVisitTime) <= 5000;
-
+    var isSameVisit = (currentVisitTime - prevVisitTime) <= 1000;
     var isSameLocation = currentVisit.query === prevVisit.query && currentVisit.action === prevVisit.action && currentVisit.controller === prevVisit.controller;
     var isSameUser = currentVisitor.role === prevVisitor.role && currentVisitor.user === prevVisitor.user;
 
-    // make sure we aren't logging the same exact visit (difference between visits is 5ms) by same user for the same req
+    // make sure we aren't logging the same exact visit (difference between visits is <= 1000ms) by same user for the same request
+    // this occurs because of turbolinks reloading the page
     return !(isSameVisit && isSameLocation && isSameUser);
   } else {
     return true;
