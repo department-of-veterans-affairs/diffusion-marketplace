@@ -14,9 +14,6 @@ $(document).ready(function(){
         }
         let duration = $( "#metrics_duration" ).val();
 
-        if( curUrl.includes("?check_session=1")){
-            curUrl = curUrl.substring(0, curUrl.length - 16);
-        }
         let newUrl = `${curUrl}?duration=${duration}`;
         window.location.href = newUrl;
     });

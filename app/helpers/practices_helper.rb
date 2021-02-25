@@ -341,8 +341,4 @@ module PracticesHelper
     }
     content[resource_type.to_sym]
   end
-
-  def check_sessions
-    PracticeEditorSession.check_session_info(@practice)
-  end
 end

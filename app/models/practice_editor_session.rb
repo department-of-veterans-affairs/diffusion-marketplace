@@ -116,21 +116,6 @@ class PracticeEditorSession < ApplicationRecord
       return nil
     end
   end
-  def self.check_session_info(practice)
-    session_counter = 0
-    recs = PracticeEditorSession.where(practice_id: practice.id).where.not(session_end_time: nil).order("session_start_time DESC")
-    if recs.present? && recs.count > 1
-      recs.each do |rec|
-        if session_counter > 0
-          if ((practice.published && minutes_in_session(rec.session_start_time) > 19) || (!practice.published && minutes_in_session(rec.session_start_time) > 34))
-            rec.destroy!
-          end
-        end
-        session_counter += 1
-      end
-    end
-    remove_expired_open_sessions(practice.id)
-  end
   def self.remove_expired_open_sessions(practice_id)
     recs = PracticeEditorSession.where(practice_id: practice_id, session_end_time: nil).where.not(session_start_time: nil)
     if recs.present?

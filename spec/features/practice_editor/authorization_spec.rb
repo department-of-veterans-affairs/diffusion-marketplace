@@ -26,7 +26,7 @@ describe 'Practice editor', type: :feature, js: true do
             @user_practice.update(approved: true, published: true)
             visit practice_path(@user_practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508
-            expect(page).to have_link(href: "/practices/#{@user_practice.slug}/edit/metrics?check_session=1")
+            expect(page).to have_link(href: "/practices/#{@user_practice.slug}/edit/metrics")
         end
 
         it 'should allow practice editors to edit a practice they\'re associated with' do
