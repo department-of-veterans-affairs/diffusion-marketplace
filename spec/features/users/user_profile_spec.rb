@@ -73,11 +73,10 @@ describe 'The user index', type: :feature do
     expect(sb.bio).to eq('Lives in a pineapple')
   end
 
-  it 'should have a created practice and a favorited' do
+  it 'should have a favorited practice' do
     @practice1 = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user)
     @practice2 = Practice.create!(name: 'The Best Practice Ever!', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user2)
     UserPractice.create!(user: @user, practice: @practice2, favorited: true)
-    PracticeEditor.create!(practice: @practice1, user: @user, email: @user.email)
 
     login_as(@user, scope: :user, run_callbacks: false)
     visit "/users/#{@user.id}"
@@ -86,10 +85,40 @@ describe 'The user index', type: :feature do
       expect(page).to have_content('The Best Practice Ever!')
       expect(page).to_not have_content('A public practice')
     end
+  end
+
+    it 'should have created practices' do
+    @practice1 = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user)
+    @practice2 = Practice.create!(name: 'The Best Practice Ever!', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user2)
+    @user_pr1_editor = PracticeEditor.create!(practice: @practice1, user: @user, email: @user.email)
+
+    login_as(@user, scope: :user, run_callbacks: false)
+    visit "/users/#{@user.id}"
 
     within(:css, '.dm-created-practices') do
       expect(page).to have_content('A public practice')
+      expect(page).to have_selector('.dm-practice-card', count: 1)
       expect(page).to_not have_content('The Best Practice Ever!')
+    end
+
+    # make user owner of practice1
+    @practice1.user = @user
+    @practice1.save
+    visit "/users/#{@user.id}"
+
+    within(:css, '.dm-created-practices') do
+      expect(page).to have_selector('.dm-practice-card', count: 1)
+      expect(page).to have_content('A public practice')
+    end
+
+    # add user as just an editor of practice2
+    PracticeEditor.create!(practice: @practice2, user: @user, email: @user.email)
+    visit "/users/#{@user.id}"
+
+    within(:css, '.dm-created-practices') do
+      expect(page).to have_selector('.dm-practice-card', count: 2)
+      expect(page).to have_content('A public practice')
+      expect(page).to have_content('The Best Practice Ever!')
     end
   end
 end

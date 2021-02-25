@@ -17,7 +17,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @favorite_practices = @user&.favorite_practices || []
     @facilities_data = facilities_json #['features']
-    @created_practices = @user.editor_practices
+    @created_practices = @user.created_practices
   end
 
   def edit_profile
@@ -118,7 +118,7 @@ class UsersController < ApplicationController
           link_extra: "data-remote='true' class='paginated-favorite-practices-page-#{params[:favorite].nil? ? 2 : params[:favorite].to_i + 1}-link usa-button--outline dm-btn-base margin-bottom-10 x075-top width-15'"
       )
 
-      created_practices = @user.editor_practices
+      created_practices = @user.created_practices
       @pagy_created_practices, @paginated_created_practices = pagy_array(
           created_practices,
           # assigning a unique page_param allows for multiple pagy instances to be used in a single action, in case we need multiple 'Load more' sections

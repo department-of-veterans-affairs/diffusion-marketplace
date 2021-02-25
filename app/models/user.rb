@@ -74,13 +74,15 @@ class User < ApplicationRecord
     "#{email}"
   end
 
-  def editor_practices
+  def created_practices
+    # returns a list of Practices a user has created or can edit
     editor_list = PracticeEditor.where(user_id: id)
-    practices = []
+    editor_practices = []
     editor_list.each do |e|
-      practices.push(Practice.find(e.practice_id))
+      editor_practices.push(Practice.find(e.practice_id))
     end
-    practices
+    created_practices = Practice.where(user_id: id)
+    return (editor_practices + created_practices).uniq
   end
 
   def password_uniqueness

@@ -25,13 +25,4 @@ class PracticeEditor < ApplicationRecord
       throw :abort
     end
   end
-
-  def self.get_editor_practices(user)
-    editor_list = PracticeEditor.where(user: user)
-    practices = []
-    editor_list.each do |e|
-      practices.push(Practice.find(e.practice_id))
-    end
-    practices
-  end
 end
