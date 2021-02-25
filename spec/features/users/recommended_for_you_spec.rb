@@ -31,6 +31,10 @@ describe 'Recommended for you page', type: :feature do
     @user_practice2 = UserPractice.create!(practice: @practice2, user: @user2, favorited: true, time_favorited: DateTime.now.midnight - 8.days)
     @user_practice3 = UserPractice.create!(practice: @practice3, user: @user2, favorited: true, time_favorited: DateTime.now.midnight - 6.days)
     @user_practice4 = UserPractice.create!(practice: @practice4, user: @user2, favorited: true, time_favorited: nil)
+    PracticeEditor.create!(practice: @practice, user: @user2, email: @user2.email)
+    PracticeEditor.create!(practice: @practice2, user: @user2, email: @user2.email)
+    PracticeEditor.create!(practice: @practice3, user: @user2, email: @user2.email)
+    PracticeEditor.create!(practice: @practice4, user: @user2, email: @user2.email)
   end
 
   def login_and_visit_recommended_path(user)
@@ -59,10 +63,11 @@ describe 'Recommended for you page', type: :feature do
   end
 
   describe 'Page content' do
-    it 'should not display the bookmarked practices section if the user does not have any bookmarked practices' do
+    it 'should not display the bookmarked practices section if the user does not have any bookmarked or created practices' do
       login_and_visit_recommended_path(@user1)
 
       expect(page).to_not have_content('Your bookmarked practices')
+      expect(page).to_not have_content('Your created practices')
     end
 
     it 'should display a link to yourit.va.gov along with some copy if the user does not have any practices based on their location' do
@@ -80,6 +85,15 @@ describe 'Recommended for you page', type: :feature do
       expect(page).to have_content('A second public practice')
     end
 
+    it 'should display the created practices section if the user has any created practices' do
+      login_and_visit_recommended_path(@user2)
+
+      expect(page).to have_content('Your created practices')
+      expect(page).to have_content('A public practice')
+      expect(page).to have_content('A second public practice')
+      expect(page).to have_content('A third public practice')
+    end
+
     it 'should display up to three practices that share the same location as the user' do
       login_and_visit_recommended_path(@user2)
 
@@ -92,7 +106,7 @@ describe 'Recommended for you page', type: :feature do
       login_and_visit_recommended_path(@user2)
 
       click_link('See more practices')
-
+      find("#search-page")
       expect(page).to have_content('4 results')
     end
   end
@@ -127,6 +141,30 @@ describe 'Recommended for you page', type: :feature do
 
       all('.dm-practice-bookmark-btn').first.click
       expect(page).to_not have_selector('.paginated-favorite-practices-page-2-link')
+    end
+
+    it 'should only show the first three created practices on initial page load' do
+      login_and_visit_recommended_path(@user2)
+
+      expect(page).to have_content('Your created practices')
+      within(:css, '.paginated-created-practices') do
+        expect(page).to have_selector('.dm-practice-card', count: 3)
+      end
+    end
+
+    it 'should display the next set of created practices when the user clicks on the load more link' do
+      login_and_visit_recommended_path(@user2)
+
+      within(:css, '.paginated-created-practices') do
+        expect(page).to have_selector('.dm-practice-card', count: 3)
+      end
+      find('.paginated-created-practices-page-2-link').click
+      within(:css, '.paginated-created-practices') do
+        expect(page).to have_content('A public practice')
+        expect(page).to have_content('A second public practice')
+        expect(page).to have_content('A third public practice')
+        expect(page).to have_content('A fourth public practice')
+      end
     end
   end
 end

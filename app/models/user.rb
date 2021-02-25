@@ -74,6 +74,13 @@ class User < ApplicationRecord
     "#{email}"
   end
 
+  def created_practices
+    # returns a list of Practices a user has created or can edit
+    editor_practices = PracticeEditor.where(user: self).collect { |pe| pe.practice }
+    created_practices = Practice.where(user_id: id)
+    return (editor_practices + created_practices).uniq
+  end
+
   def password_uniqueness
     return true unless encrypted_password_changed?
     return true if password.split('').uniq.length > 6

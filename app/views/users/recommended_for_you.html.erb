@@ -25,6 +25,24 @@
       </section>
     <% end %>
 
+    <%
+      paginated_created = @paginated_created_practices
+      pagy_created = @pagy_created_practices
+    %>
+    <% if paginated_created.any? %>
+      <section class="recommended-created-practices">
+        <%= render partial: 'users/recommended_for_you/practice_cards_container', locals: {
+            container_classes: "paginated-created-practices margin-top-0 #{pagy_created.count <= 3 ? 'x4-25-bottom' : ''}",
+            container_header_classes: 'usa-prose-h2 font-sans-xl line-height-37px margin-bottom-105',
+            container_title: 'Your created practices',
+            practice_data_set: paginated_created
+        }
+        %>
+        <% link = pagy_link_proc(pagy_created) %>
+        <%=  link.call(pagy_created.vars[:page] + 1, 'Load more', 'class="margin-bottom-10"').html_safe if pagy_created.count > 3 %>
+      </section>
+    <% end %>
+
     <% location_practices = @user_location_practices %>
     <section class="recommended-user-location-practices">
       <h2 class="usa-prose-h2 font-sans-xl line-height-37px <%= location_practices.any? ? 'margin-bottom-105' : 'margin-bottom-3' %> margin-top-0">
