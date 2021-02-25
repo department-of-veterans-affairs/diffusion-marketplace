@@ -126,7 +126,6 @@ describe 'Practice Editor', type: :feature, js: true do
           add_editor
           logout(@admin)
           login_and_visit_editors(@user)
-          debugger
           expect(page).to have_content('You cannot edit this practice since it is currently being edited by Yuji Itadori')
         end
 
