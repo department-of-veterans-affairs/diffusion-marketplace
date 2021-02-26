@@ -17,6 +17,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @favorite_practices = @user&.favorite_practices || []
     @facilities_data = facilities_json #['features']
+    @created_practices = @user.created_practices
   end
 
   def edit_profile
@@ -89,7 +90,7 @@ class UsersController < ApplicationController
   def accept_terms
     if current_user.update_attribute(:accepted_terms, true)
       redirect_to root_path
-    else 
+    else
       flash[:error] = 'Something went wrong. Please contact us marketplace@va.gov for assistance.'
       redirect_to terms_and_conditions_path
     end
@@ -101,6 +102,8 @@ class UsersController < ApplicationController
   def recommended_for_you
     @user = current_user || nil
     if current_user.present?
+      @pagy_type = params.keys.first.to_s
+
       # If a favorited practice has a nil value for the time_favorited attribute, place it at the end of the favorite_practices array
       no_time_favorite_practices = UserPractice.where(user: @user, favorited: true, time_favorited: nil).map { |up| up.practice }
       favorite_practices = UserPractice.where(user: @user, favorited: true).where.not(time_favorited: nil).order('time_favorited DESC').map { |up| up.practice }
@@ -110,10 +113,20 @@ class UsersController < ApplicationController
       @pagy_favorite_practices, @paginated_favorite_practices = pagy_array(
           favorite_practices,
           # assigning a unique page_param allows for multiple pagy instances to be used in a single action, in case we need multiple 'Load more' sections
-          page_param: 'favorites',
+          page_param: 'favorite',
           items: 3,
-          link_extra: "data-remote='true' class='paginated-favorite-practices-page-#{params[:favorites].nil? ? 2 : params[:favorites].to_i + 1}-link usa-button--outline dm-btn-base margin-bottom-10 x075-top width-15'"
+          link_extra: "data-remote='true' class='paginated-favorite-practices-page-#{params[:favorite].nil? ? 2 : params[:favorite].to_i + 1}-link usa-button--outline dm-btn-base margin-bottom-10 x075-top width-15'"
       )
+
+      created_practices = @user.created_practices
+      @pagy_created_practices, @paginated_created_practices = pagy_array(
+          created_practices,
+          # assigning a unique page_param allows for multiple pagy instances to be used in a single action, in case we need multiple 'Load more' sections
+          page_param: 'created',
+          items: 3,
+          link_extra: "data-remote='true' class='paginated-created-practices-page-#{params[:created].nil? ? 2 : params[:created].to_i + 1}-link usa-button--outline dm-btn-base margin-bottom-10 x075-top width-15'"
+      )
+
 
       # Practices based on the user's location
       @practices = Practice.searchable_practices 'a_to_z'
