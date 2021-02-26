@@ -1,21 +1,33 @@
 
-let timerId = setInterval(function(){getTimeRemainingForCurrentSession(<%= @practice.id %>, <%= @practice.published %>); }, 25000);
+var practiceId = <%= @practice.id %>;
+var isPublished = <%= @practice.published %>;
 
-function getTimeRemainingForCurrentSession(practice_id, is_published) {
+function setIntervalAndExecute(prId, isPub, time) {
+    getTimeRemainingForCurrentSession(prId, isPub)
+    return(setInterval(function(){getTimeRemainingForCurrentSession(prId, isPub)}, time));
+}
+
+var sessionCheckInterval = setIntervalAndExecute(practiceId, isPublished, 10000);
+
+function getTimeRemainingForCurrentSession(prId, isPub) {
     Rails.ajax({
         type: 'get',
         url: "/session_time_remaining",
-        data: jQuery.param({ practice_id: practice_id}),
+        data: jQuery.param({ practice_id: prId}),
         success: function (data) {
             var timeLeft =  data;
-            var extendTime = is_published ? '15' : '30';
-            if(timeLeft <= 2){
-                if (confirm(`Your editing session is expiring soon. Choosing 'OK' will extend your session by ${extendTime} minutes. Choosing 'Cancel' will immediately save your data (unless there are required fields that have not been filled out) and end your session.`)){
-                    //TODO extend session...
+            var extendTime = isPub ? '15' : '30';
+            if (timeLeft <= 2) {
+                clearInterval(sessionCheckInterval);
+                var confirmMsg = "Your editing session is expiring soon. Choosing 'OK' will extend your session by " + extendTime + " minutes. Choosing 'Cancel' will immediately save your data (unless there are required fields that have not been filled out) and end your session."
+                if (confirm(confirmMsg)) {
                     Rails.ajax({
                         type: 'get',
                         url: "/extend_editor_session_time",
-                        data: jQuery.param({practice_id: practice_id})
+                        data: jQuery.param({practice_id: prId}),
+                        success: function() {
+                            sessionCheckInterval = setIntervalAndExecute(prId, isPub, 10000)
+                        }
                     });
                 }
                 else {
@@ -31,15 +43,20 @@ function getTimeRemainingForCurrentSession(practice_id, is_published) {
                     if (blankRequiredFields.length > 0) {
                         anyBlankRequiredFields = true;
                     }
-                    //TODO save... and navigate to Metrics...
                     Rails.ajax({
                         type: 'get',
                         url: "/close_edit_session",
-                        data: jQuery.param({practice_id: practice_id, session_ended: true, any_blank_required_fields: anyBlankRequiredFields, current_action: "<%= params[:action] %>"}),
+                        data: jQuery.param({practice_id: prId, session_ended: true, any_blank_required_fields: anyBlankRequiredFields, current_action: "<%= params[:action] %>"}),
                         success: function(result) {
                             let save_id = document.getElementById('practice-editor-save-button');
                             if (save_id && blankRequiredFields.length === 0) {
                                 save_id.click();
+                            } else {
+                                Rails.ajax({
+                                    type: 'get',
+                                    url: "/redirect_to_metrics",
+                                    data: jQuery.param({practice_id: prId, session_ended: true}),
+                                });
                             }
                         }
                     });
