@@ -538,13 +538,7 @@ class PracticesController < ApplicationController
     @practice = set_practice if @practice.blank?
     practice_id = params[:practice_id].to_i
     user_id = current_user[:id]
-    unless PracticeEditorSession.extend_current_session(user_id, practice_id, @practice)
-      #//Session has already ended bc they did not close the modal in time ... sending to introduction in order to begin new session.
-      # There is a chance that someone could lock the record between the time he session expired and they clicked "OK" on the modal... in
-      # which case they would just be sent back to the metrics page with the info of who has it locked.
-      s_url = "/practices/#{@practice.slug}/edit/introduction"
-      render :js => "window.location = '#{s_url}'"
-    end
+    PracticeEditorSession.extend_current_session(user_id, practice_id, @practice)
   end
 
   def session_time_remaining
@@ -561,12 +555,11 @@ class PracticesController < ApplicationController
     practice_id = params[:practice_id].to_i
     user_id = current_user[:id]
     PracticeEditorSession.close_current_session(user_id, practice_id)
-  end
 
-  def redirect_to_metrics
-    @practice = set_practice if @practice.blank?
-    s_url = "/practices/#{@practice.slug}/edit/metrics?se=1"
-    render :js => "window.location = '#{s_url}'"
+    if params[:any_blank_required_fields] === 'true' || params[:current_action] === 'adoptions'
+      render :js => "window.location = '#{practice_metrics_path(@practice)}'"
+      flash[:error] = "The practice was not saved#{params[:any_blank_required_fields] === 'true' ? ' due to one or more required fields not being filled out' : ''}."
+    end
   end
 
   private

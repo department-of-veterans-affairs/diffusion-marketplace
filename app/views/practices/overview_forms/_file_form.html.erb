@@ -23,7 +23,7 @@
           message: 'Please upload a file'
       }
       %>
-      <input <%= resource&.id ? 'required' : '' %> id="practice_<%= area %>_attributes_<%= placeholder %>_attachment" class="usa-file-input usa-hint <%= area %>-file-attachment" type="file" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" />
+      <input <%= resource&.id ? 'required' : '' %> id="practice_<%= area %>_attributes_<%= placeholder %>_attachment" class="usa-file-input usa-hint <%= area %>-file-attachment <%= resource&.id ? 'dm-required-field' : '' %>" type="file" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][attachment]" accept=".pdf,.docx,.xlxs,.jpg,.jpeg,.png" />
     </div>
   <% end %>
   <div class="<%= area %>-input-container">
@@ -34,7 +34,7 @@
         message: 'Please enter a file name'
     }
     %>
-    <input <%= resource&.id ? 'required' : '' %> class="usa-input grid-col-8" value="<%= resource&.name %>" type="text" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][name]" id="practice_<%= area %>_attributes_<%= placeholder %>_name"/>
+    <input <%= resource&.id ? 'required' : '' %> class="usa-input grid-col-8 <%= resource&.id ? 'dm-required-field' : '' %>" value="<%= resource&.name %>" type="text" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][name]" id="practice_<%= area %>_attributes_<%= placeholder %>_name"/>
   </div>
   <div class="<%= area %>-input-container">
     <%= label_tag "practice_#{area}_description", 'File description', class: 'usa-label overview-resource-label', for: "practice_#{area}_attributes_#{placeholder}_description" %>
@@ -44,7 +44,7 @@
         message: 'Please enter a file description'
     }
     %>
-    <input <%= resource&.id ? 'required' : '' %> class="usa-input grid-col-12" value="<%= resource&.description %>"  type="text" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][description]" id="practice_<%= area %>_attributes_<%= placeholder %>_description"/>
+    <input <%= resource&.id ? 'required' : '' %> class="usa-input grid-col-12 <%= resource&.id ? 'dm-required-field' : '' %>" value="<%= resource&.description %>"  type="text" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][description]" id="practice_<%= area %>_attributes_<%= placeholder %>_description"/>
   </div>
 
   <%# action buttons %>

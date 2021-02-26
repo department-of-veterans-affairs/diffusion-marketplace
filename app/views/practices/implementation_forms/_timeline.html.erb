@@ -43,11 +43,11 @@
                     <div class="grid-row">
                       <div class="grid-col-12">
                         <%= tl.label :timeline, 'Time frame', class: 'usa-label display-inline-block timeline-duration' %>&nbsp;
-                        <%= tl.text_field :timeline, class: 'usa-input practice-input timeline-input grid-col-6', min: 1, required: true %>
+                        <%= tl.text_field :timeline, class: 'usa-input practice-input timeline-input grid-col-6 dm-required-field', min: 1, required: true %>
                       </div>
                         <div class="grid-col-12">
                             <%= tl.label :milestone, 'Description of milestones (include context or disclaimers as needed)', class: 'usa-label width-full maxw-full grid-col-12' %>
-                            <%= tl.text_area :milestone, class: 'usa-input practice-input height-10 milestone-textarea', 'counter-id': "milestone_#{tl_id}_textarea", required: true %>
+                            <%= tl.text_area :milestone, class: 'usa-input practice-input height-10 milestone-textarea dm-required-field', 'counter-id': "milestone_#{tl_id}_textarea", required: true %>
                         </div>
                       <div class="grid-col-12 trash-container">
                         <%= tl.link_to_remove 'Delete entry',

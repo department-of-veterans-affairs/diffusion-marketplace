@@ -62,8 +62,8 @@ class PracticeEditorSession < ApplicationRecord
     session = PracticeEditorSession.where(practice_id: practice_id).where.not(session_end_time: nil).order("session_end_time DESC").first()
     return "" if session.blank?
     lock_user = locked_by(session.id, false)
-    s_text = "Practice last updated on " + session.session_end_time.strftime("%B %d, %Y") + " at " + session.session_end_time.strftime("%I:%M %p").gsub(/^0/,'')
-    s_text += " by " +  lock_user
+    s_text = "Practice last updated on #{session.session_end_time.strftime("%B %d, %Y")} at #{session.session_end_time.strftime("%I:%M %p")}".gsub(/^0/,'')
+    s_text += " by #{lock_user}"
     if is_admin(session.user_id)
       s_text += " (Site Admin)"
     end
@@ -82,8 +82,8 @@ class PracticeEditorSession < ApplicationRecord
   end
 
   def self.close_current_session(user_id, practice_id)
-    rec = PracticeEditorSession.where(practice_id: practice_id, user_id: user_id, session_end_time: nil).order("session_start_time DESC").first()
-    if !rec.blank?
+    rec = PracticeEditorSession.where(practice_id: practice_id, user_id: user_id, session_end_time: nil).order("session_start_time DESC").first
+    unless rec.blank?
       rec.session_end_time = DateTime.now
       rec.save
     end
@@ -91,7 +91,7 @@ class PracticeEditorSession < ApplicationRecord
 
 
   def self.get_minutes_remaining_in_session(user_id, practice_id, is_published)
-    rec_session = PracticeEditorSession.where(practice_id: practice_id, user_id: user_id, session_end_time: nil).order("session_start_time DESC").first()
+    rec_session = PracticeEditorSession.where(practice_id: practice_id, user_id: user_id, session_end_time: nil).order("session_start_time DESC").first
     if rec_session.blank?
       return 0
     end

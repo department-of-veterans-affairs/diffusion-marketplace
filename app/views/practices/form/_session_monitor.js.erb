@@ -10,7 +10,7 @@ function getTimeRemainingForCurrentSession(practice_id, is_published) {
             var timeLeft =  data;
             var extendTime = is_published ? '15' : '30';
             if(timeLeft <= 2){
-                if (confirm(`Your editing session is about to expire. Choosing 'OK' will extend your session by ${extendTime} minutes.  Choosing 'Cancel' will immediately save your data and end your session.`)){
+                if (confirm(`Your editing session is expiring soon. Choosing 'OK' will extend your session by ${extendTime} minutes. Choosing 'Cancel' will immediately save your data (unless there are required fields that have not been filled out) and end your session.`)){
                     //TODO extend session...
                     Rails.ajax({
                         type: 'get',
@@ -18,23 +18,28 @@ function getTimeRemainingForCurrentSession(practice_id, is_published) {
                         data: jQuery.param({practice_id: practice_id})
                     });
                 }
-                else{
+                else {
+                    // Check for any required fields on the page that are not filled out. If there are any, redirect to the metrics page without saving the user's changes.
+                    var requiredFields = $('.dm-required-field').attr('visibility', 'visible');
+                    var blankRequiredFields = [];
+                    $(requiredFields).each(function() {
+                        if ($(this).val() === '') {
+                            blankRequiredFields.push($(this));
+                        }
+                    })
+                    var anyBlankRequiredFields = false;
+                    if (blankRequiredFields.length > 0) {
+                        anyBlankRequiredFields = true;
+                    }
                     //TODO save... and navigate to Metrics...
                     Rails.ajax({
                         type: 'get',
                         url: "/close_edit_session",
-                        data: jQuery.param({practice_id: practice_id, session_ended: true}),
+                        data: jQuery.param({practice_id: practice_id, session_ended: true, any_blank_required_fields: anyBlankRequiredFields, current_action: "<%= params[:action] %>"}),
                         success: function(result) {
                             let save_id = document.getElementById('practice-editor-save-button');
-                            if(save_id){
+                            if (save_id && blankRequiredFields.length === 0) {
                                 save_id.click();
-                            }
-                            else{
-                                Rails.ajax({
-                                    type: 'get',
-                                    url: "/redirect_to_metrics",
-                                    data: jQuery.param({practice_id: practice_id, session_ended: true}),
-                                });
                             }
                         }
                     });
