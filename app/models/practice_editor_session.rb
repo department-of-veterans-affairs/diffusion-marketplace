@@ -108,14 +108,6 @@ class PracticeEditorSession < ApplicationRecord
     minutes = ((DateTime.now - session_start_time.to_datetime) * 24 * 60).to_i
     return minutes
   end
-  def self.get_practice_record(practice_id)
-    practice_rec = Practice.find_by_id(practice_id)
-    if !practice_rec.blank?
-      return practice_rec
-    else
-      return nil
-    end
-  end
   def self.remove_expired_open_sessions(practice_id)
     recs = PracticeEditorSession.where(practice_id: practice_id, session_end_time: nil).where.not(session_start_time: nil)
     if recs.present?
