@@ -22,7 +22,7 @@ function getTimeRemainingForCurrentSession(prId, isPub) {
                 var confirmMsg = "Your editing session is expiring soon. Choosing 'OK' will extend your session by " + extendTime + " minutes. Choosing 'Cancel' will immediately save your data (unless there are required fields that have not been filled out) and end your session."
                 if (confirm(confirmMsg)) {
                     Rails.ajax({
-                        type: 'get',
+                        type: 'patch',
                         url: "/extend_editor_session_time",
                         data: jQuery.param({practice_id: prId}),
                         success: function() {
@@ -46,7 +46,7 @@ function getTimeRemainingForCurrentSession(prId, isPub) {
 
                     var current_action = "<%= params[:action] %>";
                     Rails.ajax({
-                        type: 'get',
+                        type: 'patch',
                         url: "/close_edit_session",
                         data: jQuery.param({practice_id: prId, session_ended: true, any_blank_required_fields: anyBlankRequiredFields, current_action: current_action}),
                         success: function(result) {
