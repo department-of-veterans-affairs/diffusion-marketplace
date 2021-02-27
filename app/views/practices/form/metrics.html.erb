@@ -29,11 +29,7 @@
               <span>Print</span>
             </a>
           </div>
-          <% if params.has_key?(:session_locked) %>
-            <%= render partial: "practices/form/practice_locked_message" %>>
-         <% else %>
-            <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
-          <% end %>
+          <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
         </div>
         <div class="margin-bottom-10 grid-row flex-align-center margin-top-3">
           <label for="metrics_duration" class="usa-label grid-col-3 x0-top">View your metrics for</label>

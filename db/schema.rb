@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_03_152832) do
-
+ActiveRecord::Schema.define(version: 2021_01_27_210024) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -679,10 +678,10 @@ ActiveRecord::Schema.define(version: 2021_02_03_152832) do
     t.datetime "session_end_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "process_id"
     t.index ["practice_id"], name: "index_practice_editor_sessions_on_practice_id"
     t.index ["user_id"], name: "index_practice_editor_sessions_on_user_id"
   end
+
   create_table "practice_editors", force: :cascade do |t|
     t.bigint "practice_id"
     t.bigint "user_id"
