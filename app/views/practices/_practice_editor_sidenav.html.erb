@@ -12,11 +12,7 @@
           <% if current_page?(practice_introduction_path(@practice)) %>
             <a href="#" onclick="return false" class="width-full side-nav-highlighted"><%= @practice.name %></a>
           <% else %>
-            <% if !PracticeEditorSession.practice_locked_for_current_user(current_user[:id], @practice.id) %>
-              <%= link_to @practice.name, practice_introduction_path(@practice), id: "sideNavPracticeNameLinkStartTimer", class: "dm-tab #{'side-nav-highlighted' if !current_page?(practice_instructions_path(@practice)) && !current_page?(practice_metrics_path(@practice))}" %>
-            <% else %>
-              <%= link_to @practice.name, practice_introduction_path(@practice), id: "sideNavPracticeNameLink", class: "dm-tab #{'side-nav-highlighted' if !current_page?(practice_instructions_path(@practice)) && !current_page?(practice_metrics_path(@practice))}" %>
-            <% end %>
+            <%= link_to @practice.name, practice_introduction_path(@practice), id: "sideNavPracticeNameLink", class: "dm-tab #{'side-nav-highlighted' if !current_page?(practice_instructions_path(@practice)) && !current_page?(practice_metrics_path(@practice))}" %>
           <% end %>
           <ul class="usa-sidenav__sublist <%= params[:controller] == 'practices' && params[:action] == 'instructions' || params[:controller] == 'practices' && params[:action] == 'metrics' ? 'side-nav-hide' : '' %>">
             <li class="usa-sidenav__item">

@@ -3,21 +3,6 @@ class PracticeEditorSession < ApplicationRecord
   belongs_to :practice
   belongs_to :user
 
-   def self.practice_locked_for_current_user(cur_user_id, practice_id)
-    rec = PracticeEditorSession.where(practice_id: practice_id, session_end_time: nil).where.not(session_start_time: nil).order("session_start_time DESC").first()
-    return false if rec.blank?
-    if rec.user_id == cur_user_id
-      return false
-    end
-    return true
-  end
-  # returns 0 if not locked and returns the practice_editor_session id if locked
-  def self.practice_locked(practice_id)
-    rec = PracticeEditorSession.where(practice_id: practice_id, session_end_time: nil).where.not(session_start_time: nil).last
-    return 0 if rec.nil?
-    return rec.id
-  end
-
   def self.session_out_of_time(session)
     is_published = session.practice.published
     is_published ? session_end = DateTime.now.utc - 15.minutes : session_end = DateTime.now.utc - 30.minutes
@@ -54,7 +39,6 @@ class PracticeEditorSession < ApplicationRecord
     session.session_end_time = DateTime.now
     session.save
   end
-
 
   def self.get_minutes_remaining_in_session(session, is_published)
     #TODO: change this back to 15......... set to 2...? only for testing..... bj_2_10_2021
