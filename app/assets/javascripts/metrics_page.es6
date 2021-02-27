@@ -13,10 +13,6 @@ $(document).ready(function(){
             curUrl = curUrl.substring(0, pos1);
         }
         let duration = $( "#metrics_duration" ).val();
-
-        if( curUrl.includes("?se=1")){
-            curUrl = curUrl.substring(0, curUrl.length - 5);
-        }
         let newUrl = `${curUrl}?duration=${duration}`;
         window.location.href = newUrl;
     });
