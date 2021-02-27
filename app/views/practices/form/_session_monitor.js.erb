@@ -7,7 +7,7 @@ function setIntervalAndExecute(prId, isPub, time) {
     return(setInterval(function(){getTimeRemainingForCurrentSession(prId, isPub)}, time));
 }
 
-var sessionCheckInterval = setIntervalAndExecute(practiceId, isPublished, 10000);
+var sessionCheckInterval = setIntervalAndExecute(practiceId, isPublished, 25000);
 
 function getTimeRemainingForCurrentSession(prId, isPub) {
     Rails.ajax({
