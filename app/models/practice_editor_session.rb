@@ -20,7 +20,7 @@ class PracticeEditorSession < ApplicationRecord
 
   def self.session_out_of_time(session)
     is_published = session.practice.published
-    is_published ? session_end = DateTime.now.utc - 2.minutes : session_end = DateTime.now.utc - 2.minutes
+    is_published ? session_end = DateTime.now.utc - 15.minutes : session_end = DateTime.now.utc - 30.minutes
     if session.session_start_time < session_end
       session.session_end_time = DateTime.now
       session.save
@@ -32,17 +32,6 @@ class PracticeEditorSession < ApplicationRecord
   def self.lock_practice_for_user(user_id, practice_id)
     PracticeEditorSession.create user_id: user_id, practice_id: practice_id, session_start_time: DateTime.now, session_end_time: nil
   end
-
-  # def self.practice_last_updated(session)
-  #   return "" if session.blank?
-  #   lock_user = session.user.full_name === 'User' ? session.user.email : session.user.full_name
-  #   s_text = "Practice last updated on #{session.session_end_time.strftime("%B %d, %Y")} at #{session.session_end_time.strftime("%I:%M %p")}".gsub(/^0/,'')
-  #   s_text += " by #{lock_user}"
-  #   if session.user.roles.find_by(name: 'admin').present?
-  #     s_text += " (Site Admin)"
-  #   end
-  #   s_text
-  # end
 
   def self.practice_last_updated(practice_id)
     session = PracticeEditorSession.where(practice_id: practice_id).where.not(session_end_time: nil).order("session_end_time DESC").first
@@ -70,9 +59,9 @@ class PracticeEditorSession < ApplicationRecord
   def self.get_minutes_remaining_in_session(session, is_published)
     #TODO: change this back to 15......... set to 2...? only for testing..... bj_2_10_2021
     if is_published
-      ret_val =  2 - minutes_in_session(session.session_start_time).to_i
+      ret_val =  15 - minutes_in_session(session.session_start_time).to_i
     else
-      ret_val =  2 - minutes_in_session(session.session_start_time).to_i
+      ret_val =  30 - minutes_in_session(session.session_start_time).to_i
     end
     ret_val
   end

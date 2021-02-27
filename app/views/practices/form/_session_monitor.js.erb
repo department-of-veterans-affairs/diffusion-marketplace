@@ -16,7 +16,7 @@ function getTimeRemainingForCurrentSession(prId, isPub) {
         data: jQuery.param({ practice_id: prId}),
         success: function (data) {
             var timeLeft =  data;
-            var extendTime = isPub ? '2' : '2';
+            var extendTime = isPub ? '15' : '30';
             if (timeLeft <= 1) {
                 clearInterval(sessionCheckInterval);
                 var confirmMsg = "Your editing session is expiring soon. Choosing 'OK' will extend your session by " + extendTime + " minutes. Choosing 'Cancel' will immediately save your data (unless there are required fields that have not been filled out) and end your session."
@@ -26,7 +26,7 @@ function getTimeRemainingForCurrentSession(prId, isPub) {
                         url: "/extend_editor_session_time",
                         data: jQuery.param({practice_id: prId}),
                         success: function() {
-                            sessionCheckInterval = setIntervalAndExecute(prId, isPub, 10000)
+                            sessionCheckInterval = setIntervalAndExecute(prId, isPub, 25000)
                         }
                     });
                 }
@@ -53,12 +53,6 @@ function getTimeRemainingForCurrentSession(prId, isPub) {
                             let save_id = document.getElementById('practice-editor-save-button');
                             if (save_id && blankRequiredFields.length === 0 && current_action !== 'editors') {
                                 save_id.click();
-                            } else {
-                                Rails.ajax({
-                                    type: 'get',
-                                    url: "/redirect_to_metrics",
-                                    data: jQuery.param({practice_id: prId, session_ended: true}),
-                                });
                             }
                         }
                     });

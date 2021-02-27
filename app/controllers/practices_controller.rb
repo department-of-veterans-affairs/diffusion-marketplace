@@ -537,7 +537,16 @@ class PracticesController < ApplicationController
   end
 
   def extend_editor_session_time
-    PracticeEditorSession.extend_current_session(@current_session)
+    if @current_session.present? && @current_session.user === current_user
+      PracticeEditorSession.extend_current_session(@current_session)
+    else
+      msg = "You cannot edit this practice since it is currently being edited by #{@current_session.user.full_name === 'User' ? @current_session.user.email : @current_session.user.full_name}"
+      if @current_session.user.roles.find_by(name: 'admin').present?
+        msg += " (Site Admin)"
+      end
+      render :js => "window.location = '#{practice_metrics_path(@practice)}'"
+      flash[:warning] = msg
+    end
   end
 
   def session_time_remaining
@@ -564,7 +573,7 @@ class PracticesController < ApplicationController
   end
 
   def set_current_session
-    @current_session = current_session(@practice.id, current_user.id)
+    @current_session = current_session(@practice.id)
   end
 
   def practice_locked_for_editing
