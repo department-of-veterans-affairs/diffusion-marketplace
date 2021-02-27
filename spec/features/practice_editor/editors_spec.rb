@@ -110,15 +110,17 @@ describe 'Practice Editor', type: :feature, js: true do
       end
 
       describe 'edge cases' do
-        # it 'should no longer allow a user to edit the practice if they choose to delete themselves AND they are not the practice owner or admin' do
-        #   login_and_visit_editors(@admin)
-        #   fill_in_email_field(@user.email)
-        #   add_editor
-        #   logout(@admin)
-        #   login_and_visit_editors(@user)
-        #   delete_practice_editor(2)
-        #   expect(page).to have_content('You are not authorized to view this content.')
-        # end
+        it 'should no longer allow a user to edit the practice if they choose to delete themselves AND they are not the practice owner or admin' do
+          login_and_visit_editors(@admin)
+          fill_in_email_field(@user.email)
+          add_editor
+          logout(@admin)
+          visit '/'
+          PracticeEditorSession.last.destroy!
+          login_and_visit_editors(@user)
+          delete_practice_editor(2)
+          expect(page).to have_content('You are not authorized to view this content.')
+        end
 
         it 'should not allow a user to edit practice if practice is locked for editing' do
           login_and_visit_editors(@admin)
