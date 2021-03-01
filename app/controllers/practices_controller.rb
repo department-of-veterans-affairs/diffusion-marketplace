@@ -125,7 +125,8 @@ class PracticesController < ApplicationController
   # PATCH/PUT /practices/1.json
   def update
     session_open = PracticeEditorSession.find_by(practice: @practice, user_id: current_user.id, session_end_time: nil).present?
-    updated = update_conditions if session_open
+    latest_session_user_is_current_user = PracticeEditorSession.where(practice: @practice).last.user === current_user
+    updated = update_conditions if session_open || latest_session_user_is_current_user
 
     #check to see if current session has expired.... if  not
     respond_to do |format|
@@ -137,6 +138,9 @@ class PracticesController < ApplicationController
           flash[:error] = "There was an #{editor_params.present? && updated.message.include?('valid @va.gov') ? invalid_editor_email_field : updated.message}. The practice was not saved."
           format.html { redirect_back fallback_location: root_path }
           format.json { render json: updated, status: :unprocessable_entity }
+        elsif !session_open && latest_session_user_is_current_user
+          flash[:notice] = "Your editing session for #{@practice.name} has ended. Your edits have been saved and you have been returned to the Metrics page."
+          format.html { redirect_to practice_metrics_path(@practice) }
         else
           # Add notice messages specific to the Editors page
           editor_notice = ''
