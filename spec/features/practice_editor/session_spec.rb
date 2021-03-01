@@ -37,4 +37,14 @@ describe 'Practice editor sessions', type: :feature, js: true do
     visit practice_about_path(@practice)
     expect(page).to have_content(locked_msg)
   end
+  it 'should allow a user to extend their current session' do
+    login_as(@user, :scope => :user, :run_callbacks => false)
+    visit practice_introduction_path(@practice_2)
+    session_start_time = DateTime.current - 14.minutes
+    PracticeEditorSession.last.update_attributes(session_start_time: session_start_time)
+    visit practice_introduction_path(@practice_2)
+    page.driver.browser.switch_to.alert.accept
+    new_session_start_time = PracticeEditorSession.last.session_start_time
+    expect(new_session_start_time).not_to eq(session_start_time)
+  end
 end
