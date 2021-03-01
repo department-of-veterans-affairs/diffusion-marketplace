@@ -38,7 +38,7 @@ describe 'Metrics section', type: :feature, js: true do
 
     it 'should display last time practice was updated.' do
       login_as(@user1, :scope => :user, :run_callbacks => false)
-      PracticeEditorSession.create(user_id: @user1.id, practice_id: @practice.id, session_start_time: DateTime.now, session_end_time: DateTime.now, created_at: DateTime.now, updated_at: DateTime.now, process_id: 232323)
+      PracticeEditorSession.create(user_id: @user1.id, practice_id: @practice.id, session_start_time: DateTime.now, session_end_time: DateTime.now, created_at: DateTime.now, updated_at: DateTime.now)
       visit practice_metrics_path(@practice)
       expect(page).to have_content('Practice last updated on')
       space = " "
