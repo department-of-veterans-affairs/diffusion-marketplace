@@ -17,7 +17,7 @@ function getTimeRemainingForCurrentSession(prId, isPub) {
         success: function (data) {
             var timeLeft =  data;
             var extendTime = isPub ? '15' : '30';
-            if (timeLeft <= 1) {
+            if (timeLeft <= 2) {
                 clearInterval(sessionCheckInterval);
                 var confirmMsg = "Your editing session is expiring soon. Choosing 'OK' will extend your session by " + extendTime + " minutes. Choosing 'Cancel' will immediately save your data (unless there are required fields that have not been filled out) and end your session."
                 if (confirm(confirmMsg)) {
