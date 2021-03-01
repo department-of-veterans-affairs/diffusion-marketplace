@@ -124,8 +124,9 @@ class PracticesController < ApplicationController
   # PATCH/PUT /practices/1
   # PATCH/PUT /practices/1.json
   def update
-    updated = update_conditions
     session_open = PracticeEditorSession.find_by(practice: @practice, user_id: current_user.id, session_end_time: nil).present?
+    updated = update_conditions if session_open
+
     #check to see if current session has expired.... if  not
     respond_to do |format|
       if updated
@@ -136,8 +137,6 @@ class PracticesController < ApplicationController
           flash[:error] = "There was an #{editor_params.present? && updated.message.include?('valid @va.gov') ? invalid_editor_email_field : updated.message}. The practice was not saved."
           format.html { redirect_back fallback_location: root_path }
           format.json { render json: updated, status: :unprocessable_entity }
-        elsif !session_open
-          format.html { redirect_to practice_metrics_path(@practice), notice: params[:practice].present? ? "Your editing session for #{@practice.name} has ended.  Your edits have been saved and you have been returned to the Metrics page." : nil }
         else
           # Add notice messages specific to the Editors page
           editor_notice = ''
@@ -161,9 +160,14 @@ class PracticesController < ApplicationController
           end
         end
       else
-        flash[:error] = "There was an #{@practice.errors.messages}. The practice was not saved."
-        format.html { redirect_back fallback_location: root_path }
-        format.json { render json: updated, status: :unprocessable_entity }
+        if !session_open
+          flash[:error] = "Your editing session for #{@practice.name} has ended. Your edits have not been saved and you have been returned to the Metrics page."
+          format.html { redirect_to practice_metrics_path(@practice) }
+        else
+          flash[:error] = "There was an #{@practice.errors.messages}. The practice was not saved."
+          format.html { redirect_back fallback_location: root_path }
+          format.json { render json: updated, status: :unprocessable_entity }
+        end
       end
     end
   end
