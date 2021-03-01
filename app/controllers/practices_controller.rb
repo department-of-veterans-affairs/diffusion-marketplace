@@ -556,8 +556,9 @@ class PracticesController < ApplicationController
   end
 
   def close_edit_session
-    PracticeEditorSession.close_current_session(@current_session)
-
+    if @current_session.present? && @current_session.user === current_user
+      PracticeEditorSession.close_current_session(@current_session)
+    end
     if params[:any_blank_required_fields] === 'true' || params[:current_action] === 'adoptions' || params[:current_action] === 'editors'
       render :js => "window.location = '#{practice_metrics_path(@practice)}'"
       flash[:error] = "The practice was not saved#{params[:any_blank_required_fields] === 'true' ? ' due to one or more required fields not being filled out' : ''}."
