@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-describe 'Practice Editor', type: :feature, js: true do
-  describe 'Editors Page' do
+describe 'Practice editor', type: :feature, js: true do
+  describe 'Editors page' do
     before do
       @user = User.create!(email: 'satoru.gojo@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
       @admin = User.create!(email: 'yuji.itadori@va.gov', first_name: 'Yuji', last_name: 'Itadori', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
