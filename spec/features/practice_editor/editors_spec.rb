@@ -122,15 +122,6 @@ describe 'Practice Editor', type: :feature, js: true do
           expect(page).to have_content('You are not authorized to view this content.')
         end
 
-        it 'should not allow a user to edit practice if practice is locked for editing' do
-          login_and_visit_editors(@admin)
-          fill_in_email_field(@user.email)
-          add_editor
-          logout(@admin)
-          login_and_visit_editors(@user)
-          expect(page).to have_content('You cannot edit this practice since it is currently being edited by Yuji Itadori')
-        end
-
         it 'should allow a user to delete the practice editor associated with the practice owner' do
           login_and_visit_editors(@admin)
           fill_in_email_field(@user.email)
