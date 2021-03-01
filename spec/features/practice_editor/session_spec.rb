@@ -10,7 +10,7 @@ describe 'Practice editor sessions', type: :feature do
   end
 
   it 'should not allow a user to edit a practice that is locked' do
-    #intorduction page.
+    #introduction page.
     login_as(@user, :scope => :user, :run_callbacks => false)
     visit practice_introduction_path(@practice)
     logout(@user)
@@ -48,7 +48,7 @@ describe 'Practice editor sessions', type: :feature do
     expect(new_session_start_time).not_to eq(session_start_time)
   end
 
-  it 'should save updates made to the practice editor page the user is currently on if they choose to end their session' do
+  it 'should save updates made to the practice if the user chooses to end their session and there are no required fields' do
     login_as(@user, :scope => :user, :run_callbacks => false)
     visit practice_overview_path(@practice)
 
@@ -58,6 +58,7 @@ describe 'Practice editor sessions', type: :feature do
     PracticeEditorSession.last.update_attributes(session_start_time: DateTime.current - 28.minutes)
     click_button('Save')
     page.driver.browser.switch_to.alert.dismiss
+
     expect(page).to have_current_path(practice_metrics_path(@practice))
     expect(page).to have_content("Your editing session for #{@practice.name} has ended. Your edits have been saved and you have been returned to the Metrics page.")
   end
