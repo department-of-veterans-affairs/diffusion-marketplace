@@ -29,7 +29,8 @@
         message: 'Please enter a link title'
     }
     %>
-    <input <%= resource&.id ? 'required' : '' %> class="usa-input grid-col-6" value="<%= resource&.name %>" type="text" name="practice[practice_resources_attributes][<%= placeholder %>][name]" id="practice_<%= area %>_attributes_<%= placeholder %>_name"/>
+    <input <%= resource&.id ? 'required' : '' %> class="usa-input grid-col-6
+    <%= resource&.id ? 'dm-required-field' : '' %>" value="<%= resource&.name %>" type="text" name="practice[practice_resources_attributes][<%= placeholder %>][name]" id="practice_<%= area %>_attributes_<%= placeholder %>_name"/>
   </div>
 
   <div class="<%= area %>-input-container">
