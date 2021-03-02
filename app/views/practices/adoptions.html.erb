@@ -5,6 +5,7 @@
   <%= javascript_include_tag '_assign_facility_name', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_facilitySelect', 'data-turbolinks-track': 'reload' %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    <%= render partial: 'practices/form/session_monitor', formats: [:js] %>
     var facilityData = <%= raw JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json")).to_json %>;
   <% end %>
   <%= javascript_include_tag 'practice_editor_adoptions', 'data-turbolinks-track': 'reload' %>
@@ -18,6 +19,7 @@
       <%= render partial: "shared/messages", locals: {small_text: false} %>
       <section class="usa-section padding-top-0 p0-bottom introduction">
         <h1 class="font-sans-2xl line-height-46px">Adoptions</h1>
+          <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
         <h2 class="text-normal font-sans-lg line-height-36">
           Share which facilities have successfully adopted your practice. All adoptions roll up to the VAMC level. Aim to update this data quarterly.
         </h2>

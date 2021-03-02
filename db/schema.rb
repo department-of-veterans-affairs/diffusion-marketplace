@@ -671,6 +671,17 @@ ActiveRecord::Schema.define(version: 2021_01_27_210024) do
     t.index ["user_id"], name: "index_practice_creators_on_user_id"
   end
 
+  create_table "practice_editor_sessions", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "practice_id"
+    t.datetime "session_start_time"
+    t.datetime "session_end_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["practice_id"], name: "index_practice_editor_sessions_on_practice_id"
+    t.index ["user_id"], name: "index_practice_editor_sessions_on_user_id"
+  end
+
   create_table "practice_editors", force: :cascade do |t|
     t.bigint "practice_id"
     t.bigint "user_id"
@@ -1256,6 +1267,7 @@ ActiveRecord::Schema.define(version: 2021_01_27_210024) do
   add_foreign_key "practice_awards", "practices"
   add_foreign_key "practice_creators", "practices"
   add_foreign_key "practice_creators", "users"
+  add_foreign_key "practice_editor_sessions", "practices"
   add_foreign_key "practice_editors", "practices"
   add_foreign_key "practice_editors", "users"
   add_foreign_key "practice_emails", "practices"

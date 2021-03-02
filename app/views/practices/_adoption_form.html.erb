@@ -35,15 +35,15 @@
       %>
     </p>
     <div class="usa-radio position-relative">
-      <%= radio_button(nil, 'status', 'In progress', class: 'usa-radio__input adoptions-radio-button', required: true, checked: status == in_progress ? 'checked' : false, id: "status_in_progress#{adoption&.diffusion_history&.id}") %>
+      <%= radio_button(nil, 'status', 'In progress', class: 'usa-radio__input adoptions-radio-button dm-required-field', required: true, checked: status == in_progress ? 'checked' : false, id: "status_in_progress#{adoption&.diffusion_history&.id}") %>
       <label class='usa-radio__label' for='<%= "status_in_progress#{adoption&.diffusion_history&.id}" %>'>In-progress</label>
     </div>
     <div class="usa-radio position-relative">
-      <%= radio_button(nil, 'status', 'Completed', class: 'usa-radio__input adoptions-radio-button', required: true, checked: status == complete ? 'checked' : false, id: "status_completed#{adoption&.diffusion_history&.id}") %>
+      <%= radio_button(nil, 'status', 'Completed', class: 'usa-radio__input adoptions-radio-button dm-required-field', required: true, checked: status == complete ? 'checked' : false, id: "status_completed#{adoption&.diffusion_history&.id}") %>
       <label class='usa-radio__label' for='<%= "status_completed#{adoption&.diffusion_history&.id}" %>'>Successful</label>
     </div>
     <div class="usa-radio position-relative">
-      <%= radio_button(nil, 'status', 'Unsuccessful', class: 'usa-radio__input adoptions-radio-button', required: true, checked: status == unsuccessful ? 'checked' : false, id: "status_unsuccessful#{adoption&.diffusion_history&.id}") %>
+      <%= radio_button(nil, 'status', 'Unsuccessful', class: 'usa-radio__input adoptions-radio-button dm-required-field', required: true, checked: status == unsuccessful ? 'checked' : false, id: "status_unsuccessful#{adoption&.diffusion_history&.id}") %>
       <label class='usa-radio__label' for='<%= "status_unsuccessful#{adoption&.diffusion_history&.id}" %>'>Unsuccessful</label>
     </div>
   </div>
@@ -120,11 +120,11 @@
           <% end %>
         <% end %>
         <%= label_tag state_select_selector, 'State', class: 'usa-label margin-0' %>
-        <%= select_tag('', options_for_select(us_states), id: state_select_selector, name: state_select_selector, class: 'width-card-lg height-5 usa-select', required: true) %>
+        <%= select_tag('', options_for_select(us_states), id: state_select_selector, name: state_select_selector, class: 'width-card-lg height-5 usa-select dm-required-field', required: true) %>
       </div>
       <div class="grid-col-fill">
         <%= label_tag facility_select_selector, 'Facility', class: 'usa-label margin-0' %>
-        <%= select_tag(:facility_id, options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-gray-20']]), id: facility_select_selector, class: 'width-full height-5 usa-select', required: true) %>
+        <%= select_tag(:facility_id, options_for_select([['-Select-', nil, selected: true, disabled: true, class: 'usa-select dm-color-gray-20']]), id: facility_select_selector, class: 'width-full height-5 usa-select dm-required-field', required: true) %>
       </div>
     </div>
   </div>

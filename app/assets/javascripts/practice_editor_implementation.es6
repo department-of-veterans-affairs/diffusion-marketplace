@@ -14,9 +14,11 @@
                 let is_published = document.getElementById("hidden_publish").value;
                 if(is_published == "true") {
                     $(this).attr('required', 'true');
+                    $(this).addClass('dm-required-field');
                 }
                 else{
                     $(this).removeAttr('required');
+                    $(this).removeClass('dm-required-field');
                 }
             }
         })

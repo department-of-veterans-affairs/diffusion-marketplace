@@ -64,7 +64,7 @@
     </div>
     <% if @practice.user_id == current_user.id || current_user.roles.any? || is_user_an_editor_for_practice(@practice, current_user) %>
       <div class="text-center">
-        <%= link_to metrics_path, id: 'edit-link-in-nav', class: 'usa-button dm-btn-base width-full' do %>
+        <%= link_to practice_metrics_path(@practice), id: 'edit-link-in-nav', class: 'usa-button dm-btn-base width-full' do %>
           <i class="fas fa-edit margin-right-1"></i>Edit practice
         <% end %>
       </div>

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-describe 'Practice Editor', type: :feature, js: true do
-  describe 'Editors Page' do
+describe 'Practice editor', type: :feature, js: true do
+  describe 'Editors page' do
     before do
       @user = User.create!(email: 'satoru.gojo@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
       @admin = User.create!(email: 'yuji.itadori@va.gov', first_name: 'Yuji', last_name: 'Itadori', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
@@ -115,6 +115,8 @@ describe 'Practice Editor', type: :feature, js: true do
           fill_in_email_field(@user.email)
           add_editor
           logout(@admin)
+          visit '/'
+          PracticeEditorSession.last.destroy!
           login_and_visit_editors(@user)
           delete_practice_editor(2)
           expect(page).to have_content('You are not authorized to view this content.')
@@ -125,7 +127,7 @@ describe 'Practice Editor', type: :feature, js: true do
           fill_in_email_field(@user.email)
           add_editor
           logout(@admin)
-          login_and_visit_editors(@user)
+          login_and_visit_editors(@admin)
           expect(page).to have_content(@admin.email)
           delete_practice_editor(1)
           expect(page).to have_content('Editor was removed from the list.')

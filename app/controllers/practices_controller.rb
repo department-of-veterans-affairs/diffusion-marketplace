@@ -1,9 +1,10 @@
 class PracticesController < ApplicationController
-  include CropperUtils, PracticesHelper, PracticeEditorUtils
+  include CropperUtils, PracticesHelper, PracticeEditorUtils, EditorSessionUtils
   before_action :set_practice, only: [:show, :edit, :update, :destroy, :highlight, :un_highlight, :feature,
-                                      :un_feature, :favorite, :instructions, :overview, :origin, :impact, :resources, :documentation,
+                                      :un_feature, :favorite, :instructions, :overview, :impact, :resources, :documentation,
                                       :departments, :timeline, :risk_and_mitigation, :contact, :checklist, :publication_validation, :adoptions,
-                                      :create_or_update_diffusion_history, :implementation, :introduction, :about, :metrics, :editors]
+                                      :create_or_update_diffusion_history, :implementation, :introduction, :about, :metrics, :editors,
+                                      :extend_editor_session_time, :session_time_remaining, :close_edit_session]
   before_action :set_facility_data, only: [:show]
   before_action :set_office_data, only: [:show]
   before_action :set_visn_data, only: [:show]
@@ -14,6 +15,8 @@ class PracticesController < ApplicationController
   before_action :can_edit_practice, only: [:edit, :update, :instructions, :overview, :contact, :published, :publication_validation, :adoptions, :about, :editors, :introduction, :implementation, :metrics]
   before_action :set_date_initiated_params, only: [:update, :publication_validation]
   before_action :is_enabled, only: [:show]
+  before_action :set_current_session, only: [:extend_editor_session_time, :session_time_remaining, :close_edit_session]
+  before_action :practice_locked_for_editing, only: [:editors, :introduction, :overview, :contact, :adoptions, :about, :implementation]
   # GET /practices
   # GET /practices.json
   def index
@@ -121,7 +124,11 @@ class PracticesController < ApplicationController
   # PATCH/PUT /practices/1
   # PATCH/PUT /practices/1.json
   def update
-    updated = update_conditions
+    session_open = PracticeEditorSession.find_by(practice: @practice, user_id: current_user.id, session_end_time: nil).present?
+    latest_session_user_is_current_user = PracticeEditorSession.where(practice: @practice).last.user === current_user
+    updated = update_conditions if session_open || latest_session_user_is_current_user
+
+    #check to see if current session has expired.... if  not
     respond_to do |format|
       if updated
         editor_params = params[:practice][:practice_editors_attributes]
@@ -131,6 +138,9 @@ class PracticesController < ApplicationController
           flash[:error] = "There was an #{editor_params.present? && updated.message.include?('valid @va.gov') ? invalid_editor_email_field : updated.message}. The practice was not saved."
           format.html { redirect_back fallback_location: root_path }
           format.json { render json: updated, status: :unprocessable_entity }
+        elsif !session_open && latest_session_user_is_current_user
+          flash[:notice] = "Your editing session for #{@practice.name} has ended. Your edits have been saved and you have been returned to the Metrics page."
+          format.html { redirect_to practice_metrics_path(@practice) }
         else
           # Add notice messages specific to the Editors page
           editor_notice = ''
@@ -154,9 +164,14 @@ class PracticesController < ApplicationController
           end
         end
       else
-        flash[:error] = "There was an #{@practice.errors.messages}. The practice was not saved."
-        format.html { redirect_back fallback_location: root_path }
-        format.json { render json: updated, status: :unprocessable_entity }
+        if !session_open
+          flash[:error] = "Your editing session for #{@practice.name} has ended. Your edits have not been saved and you have been returned to the Metrics page."
+          format.html { redirect_to practice_metrics_path(@practice) }
+        else
+          flash[:error] = "There was an #{@practice.errors.messages}. The practice was not saved."
+          format.html { redirect_back fallback_location: root_path }
+          format.json { render json: updated, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -529,12 +544,65 @@ class PracticesController < ApplicationController
     end
   end
 
+  def extend_editor_session_time
+    if @current_session.present? && @current_session.user === current_user
+      PracticeEditorSession.extend_current_session(@current_session)
+    else
+      msg = "You cannot edit this practice since it is currently being edited by #{@current_session.user.full_name === 'User' ? @current_session.user.email : @current_session.user.full_name}"
+      if @current_session.user.roles.find_by(name: 'admin').present?
+        msg += " (Site Admin)"
+      end
+      render :js => "window.location = '#{practice_metrics_path(@practice)}'"
+      flash[:warning] = msg
+    end
+  end
+
+  def session_time_remaining
+    minutes_left = PracticeEditorSession.get_minutes_remaining_in_session(@current_session, @practice.published)
+    data = minutes_left.to_s
+    render :json => data
+  end
+
+  def close_edit_session
+    if @current_session.present? && @current_session.user === current_user
+      PracticeEditorSession.close_current_session(@current_session)
+    end
+    if params[:any_blank_required_fields] === 'true' || params[:current_action] === 'adoptions' || params[:current_action] === 'editors'
+      render :js => "window.location = '#{practice_metrics_path(@practice)}'"
+      flash[:error] = "The practice was not saved#{params[:any_blank_required_fields] === 'true' ? ' due to one or more required fields not being filled out' : ''}."
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
   def set_practice
     id = params[:id] || params[:practice_id]
     @practice = Practice.friendly.find(id)
+  end
+
+  def set_current_session
+    @current_session = current_session(@practice.id)
+  end
+
+  def practice_locked_for_editing
+    set_current_session
+    cur_user_id = current_user[:id]
+    # if not locked - lock the practice for editing (for the current user)
+    if @current_session.nil? || PracticeEditorSession.session_out_of_time(@current_session)
+      PracticeEditorSession.lock_practice_for_user(cur_user_id, @practice.id)
+    else
+      if @current_session.user != current_user
+        msg = "You cannot edit this practice since it is currently being edited by #{@current_session.user.full_name === 'User' ? @current_session.user.email : @current_session.user.full_name}"
+        if @current_session.user.roles.find_by(name: 'admin').present?
+          msg += " (Site Admin)"
+        end
+        respond_to do |format|
+          flash[:warning] = msg
+          format.html { redirect_to practice_metrics_path(@practice), warning: msg }
+        end
+       end
+    end
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

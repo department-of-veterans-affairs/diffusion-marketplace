@@ -45,7 +45,10 @@ class Practice < ApplicationRecord
         self.published_changed? ||
         self.enabled_changed? ||
         self.date_initiated_changed? ||
-        self.maturity_level_changed?
+        self.maturity_level_changed? ||
+        self.overview_problem_changed? ||
+        self.overview_solution_changed? ||
+        self.overview_results_changed?
       self.reset_searchable_cache = true
     end
   end
@@ -251,6 +254,7 @@ class Practice < ApplicationRecord
   has_many :practice_results_resources, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_emails, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_resources, -> {order(id: :asc) }, dependent: :destroy
+  has_many :practice_editor_sessions, -> {order(id: :asc) }, dependent: :destroy
   has_many :practice_editors, -> {order(created_at: :asc) }, dependent: :destroy
 
   # This allows the practice model to be commented on with the use of the Commontator gem

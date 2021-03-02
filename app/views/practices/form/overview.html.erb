@@ -5,6 +5,9 @@
   <%= javascript_include_tag 'practice_editor_overview', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_overview_image_editor', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_usa_file_input', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    <%= render partial: 'practices/form/session_monitor', formats: [:js] %>
+  <% end %>
 <% end %>
 
 <%= render 'practice_editor_sidenav' %>
@@ -16,6 +19,7 @@
       <%= render partial: "shared/messages", locals: {small_text: false} %>
       <section class="usa-section padding-top-0 p0-bottom introduction">
         <h1 class="font-sans-2xl line-height-46px margin-bottom-3">Overview</h1>
+        <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
         <h2 class="text-normal line-height-36 font-sans-lg">
           Describe the journey of your practice from problem identification and the implementation of your solution
           through to measured results and outcomes.
@@ -32,7 +36,7 @@
               <div class="margin-bottom-5 margin-top-3">
                 <%= label_tag 'practice_overview_problem', 'Problem statement', class: 'usa-label text-bold display-inline overview-problem-statement-label' %><span class="text-gray-50 text-bold line-height-18px"> (required field)</span>
                 <p class="line-height-26 margin-top-2">Type the main problem your practice attempted to address and include context and any initial goals.</p>
-                <%= f.text_area :overview_problem, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-overview-statement-input", required: @practice.published %>
+                <%= f.text_area :overview_problem, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-overview-statement-input #{'dm-required-field' if @practice.published}", required: @practice.published %>
               </div>
               <div class="practice-editor-rect-svg border-top-05 border-primary-dark margin-top-5"></div>
               <div class="margin-top-3">
