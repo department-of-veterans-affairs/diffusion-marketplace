@@ -13,6 +13,7 @@ function showHideTrashElements(liSelector, attr1, value1, attr2, value2) {
     // Removed required attribute from hidden input(s) to avoid 'not focusable' js validation error
     $(`.${corePeopleResourceLi}:not(:visible)`).find('input.practice-input').each(function() {
         $(this).removeAttr('required');
+        $(this).removeClass('dm-required-field');
     });
 
     if (liSelector.hasClass(corePeopleResourceLi)) {
@@ -105,7 +106,9 @@ function observePracticeEditorLiArrival($document,
 
         if (liElSelector === '.core-people-resource-li') {
             if(is_published) {
-                $(`${liElSelector}:visible`).find('.practice-input').attr('required', 'true');
+                let practiceInput = $(`${liElSelector}:visible`).find('.practice-input')
+                practiceInput.attr('required', 'true');
+                practiceInput.addClass('dm-required-field');
             }
         }
 
@@ -204,6 +207,7 @@ function attachAddResourceListener(formSelector, container, sArea, sType) {
         link_form.append(deleteEntryHtml);
         $.each(link_form.find('input'), function (i, ele) {
             ele.required = true;
+            $(ele).addClass('dm-required-field');
             $(ele).attr('name', ele.name.replace(/RANDOM_NUMBER_OR_SOMETHING/g, nGuid));
             $(ele).attr('id', ele.name.replace(/RANDOM_NUMBER_OR_SOMETHING/g, nGuid));
         });

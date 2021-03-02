@@ -9,7 +9,9 @@
   <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_introduction', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_introduction_image_editor', 'data-turbolinks-track': 'reload' %>
+
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    <%= render partial: 'practices/form/session_monitor', formats: [:js] %>
     var facilityData = <%= raw JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json")).to_json %>;
     <%# initiating_facility = @practice.initiating_facility || false%>
     var officeData = '<%= raw fetch_offices %>';
@@ -32,7 +34,6 @@
   partners = PracticePartner.all
   p_partners = @practice.practice_partners
 %>
-
 <%= render 'practice_editor_sidenav' %>
 <div class="grid-container position-relative">
   <div class="grid-row grid-gap practice-editor-min-height">
@@ -42,6 +43,7 @@
       <%= render partial: "shared/messages", locals: {small_text: false} %>
       <section class="usa-section padding-top-0 p2-bottom introduction">
         <h1 class="font-sans-2xl line-height-sans-205">Introduction</h1>
+        <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
         <h2 class="text-normal">Introduce your practice and provide a brief summary to people who may be unfamiliar
           with it.</h2>
         <%= render 'pii_phi_alert' %>
@@ -56,7 +58,7 @@
                 <% end %>
                 <span>Type the official name of your practice.</span>&nbsp;
               </div>
-              <%= f.text_field :name, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input", required: true %>
+              <%= f.text_field :name, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-name-input dm-required-field", required: true %>
 
               <p class="usa-error-message <%= @practice.errors[:name].any? ? 'fas fa-exclamation-circle fon' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@practice, :name) %></span>
               </p>
@@ -86,7 +88,7 @@
                     <% end %>
                     <span>Type a short sentence summarizing the key outcomes of your practice.  This text will display on the practice card.</span>&nbsp&nbsp;
                     <span id="practice-editor-tagline-character-counter" class="text-base-light">(0/72 characters)</span>
-                     <%= f.text_area :tagline, class: "usa-textarea #{ @practice.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-tagline-textarea", required: @practice.published %>
+                     <%= f.text_area :tagline, class: "usa-textarea #{ @practice.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-tagline-textarea #{ @practice.published ? 'dm-required-field' : '' }", required: @practice.published %>
                     <p class="usa-error-message <%= @practice.errors[:tagline].any? ? 'fas fa-exclamation-circle' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@practice, :tagline) %></span></p>
                   </div>
                 </div>
@@ -106,7 +108,7 @@
               <span class="line-height-26">
                 Type a short 1-3 sentence summary of your practice’s mission to engage the audience and provide initial context.
               </span>
-              <%= f.text_area :summary, class: 'usa-textarea display-block practice-editor-summary-textarea', required: @practice.published %>
+              <%= f.text_area :summary, class: "usa-textarea display-block practice-editor-summary-textarea #{ @practice.published ? 'dm-required-field' : '' }", required: @practice.published %>
             </div>
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
             <div class="margin-top-3 margin-bottom-5">
@@ -118,11 +120,11 @@
                 <div class="grid-col-7">
                   <%= label_tag 'editor_date_initiated_month', 'Month', class: 'usa-label' %>
                   <%= select_month(@practice.date_initiated.present? ? date_get_month(@practice.date_initiated) : nil,
-                                   {prompt: '-Select-', prefix: 'date_initiated'}, {id: 'editor_date_initiated_month', class: 'height-5 usa-select', required: @practice.published  }) %>
+                                   {prompt: '-Select-', prefix: 'date_initiated'}, {id: 'editor_date_initiated_month', class: "height-5 usa-select #{ @practice.published ? 'dm-required-field' : '' }", required: @practice.published  }) %>
                 </div>
                 <div class="grid-col-2">
                   <%= label_tag 'editor_date_initiated_year', 'Year', class: 'usa-label' %>
-                  <input class="usa-input"
+                  <input class="usa-input <%= @practice.published ? 'dm-required-field' : '' %>"
                          id="editor_date_initiated_year"
                          type="number"
                          min="1970"
