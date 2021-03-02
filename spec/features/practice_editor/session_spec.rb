@@ -65,4 +65,74 @@ describe 'Practice editor sessions', type: :feature do
     expect(page).to have_current_path(practice_metrics_path(@practice))
     expect(page).to have_content("Your editing session for #{@practice.name} has ended. Your edits have been saved and you have been returned to the Metrics page.")
   end
+
+  describe 'practice with required fields when a user cancels the session' do
+    before do
+      login_as(@user, :scope => :user, :run_callbacks => false)
+    end
+
+    it 'should not save and redirect to metrics when there are required fields for publishing' do
+      visit practice_introduction_path(@practice)
+      last_updated_initial = @practice[:updated_at]
+      session = PracticeEditorSession.last
+      session.update(session_start_time: DateTime.now - 29.minutes)
+      visit practice_introduction_path(@practice)
+      page.driver.browser.switch_to.alert.dismiss
+      find('.usa-alert')
+      practice_updated_at = Practice.find(@practice[:id])[:updated_at]
+      expect(last_updated_initial).to eq(practice_updated_at)
+      expect(page).to have_current_path(practice_metrics_path(@practice))
+      expect(page).to have_content('Your editing session for An unpublished practice has ended. Your edits have not been saved and you have been returned to the Metrics page.')
+    end
+
+    it 'should not save and redirect to metrics when required fields for saving' do
+      visit practice_introduction_path(@practice_2)
+      last_updated_initial = @practice_2[:updated_at]
+      session = PracticeEditorSession.last
+      session.update(session_start_time: DateTime.now - 14.minutes)
+      visit practice_introduction_path(@practice_2)
+      page.driver.browser.switch_to.alert.dismiss
+      find('.usa-alert')
+      practice_updated_at = Practice.find(@practice_2[:id])[:updated_at]
+      expect(last_updated_initial).to eq(practice_updated_at)
+      expect(page).to have_current_path(practice_metrics_path(@practice_2))
+      expect(page).to have_content('The practice was not saved due to one or more required fields not being filled out.')
+    end
+
+    it 'should not save and redirect to metrics with required nested inputs' do
+      visit practice_implementation_path(@practice_2)
+      find_all('.practice-input').first.set('Fred')
+      find('#practice-editor-save-button').click
+      expect(page).to have_content('Practice was successfully updated')
+      expect(page).to have_current_path(practice_implementation_path(@practice_2))
+      PracticeResource.create!(practice: @practice_2, link_url:'www.google.com', name: "search stuff", resource_type: "core", media_type: "link")
+      visit practice_implementation_path(@practice_2)
+      last_updated_initial = Practice.find(@practice_2[:id])[:updated_at]
+      session = PracticeEditorSession.last
+      session.update(session_start_time: DateTime.now - 14.minutes)
+      visit practice_implementation_path(@practice_2)
+      page.driver.browser.switch_to.alert.dismiss
+      find('.usa-alert')
+      practice_updated_at = Practice.find(@practice_2[:id])[:updated_at]
+      expect(last_updated_initial).to eq(practice_updated_at)
+      expect(page).to have_current_path(practice_metrics_path(@practice_2))
+      expect(page).to have_content('The practice was not saved due to one or more required fields not being filled out.')
+    end
+  end
+
+  describe 'session expires' do
+    it 'should let another user take a session' do
+      visit practice_introduction_path(@practice_2)
+      session = PracticeEditorSession.last
+      session.update(session_start_time: DateTime.now - 15.minutes)
+      logout(@user)
+      login_as(@user_2, :scope => :user, :run_callbacks => false)
+      visit practice_introduction_path(@practice_2)
+      first_session = PracticeEditorSession.first
+      last_session = PracticeEditorSession.last
+      expect(first_session[:session_end_time]).not_to eq(nil)
+      expect(last_session.user[:email]).to eq("yuji.itadori@va.gov")
+      expect(page).to have_current_path(practice_introduction_path(@practice_2))
+    end
+  end
 end
