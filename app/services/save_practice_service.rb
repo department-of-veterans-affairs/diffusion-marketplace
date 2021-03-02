@@ -414,7 +414,7 @@ class SavePracticeService
         raise StandardError.new "error. At least one editor is required"
       end
     else
-      email_param = editors.values.first.values.first
+      email_param = editors.values.first.values.first.downcase
       user = User.find_by(email: email_param)
       practice_editor = PracticeEditor.find_by(practice: @practice, user: user)
 
