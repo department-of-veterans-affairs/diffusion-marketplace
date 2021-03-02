@@ -71,20 +71,6 @@ describe 'Practice editor sessions', type: :feature do
       login_as(@user, :scope => :user, :run_callbacks => false)
     end
 
-    it 'should not save and redirect to metrics when there are required fields for publishing' do
-      visit practice_introduction_path(@practice)
-      last_updated_initial = @practice[:updated_at]
-      session = PracticeEditorSession.last
-      session.update(session_start_time: DateTime.now - 29.minutes)
-      visit practice_introduction_path(@practice)
-      page.driver.browser.switch_to.alert.dismiss
-      find('.usa-alert')
-      practice_updated_at = Practice.find(@practice[:id])[:updated_at]
-      expect(last_updated_initial).to eq(practice_updated_at)
-      expect(page).to have_current_path(practice_metrics_path(@practice))
-      expect(page).to have_content('Your editing session for An unpublished practice has ended. Your edits have not been saved and you have been returned to the Metrics page.')
-    end
-
     it 'should not save and redirect to metrics when required fields for saving' do
       visit practice_introduction_path(@practice_2)
       last_updated_initial = @practice_2[:updated_at]
@@ -122,9 +108,10 @@ describe 'Practice editor sessions', type: :feature do
 
   describe 'session expires' do
     it 'should let another user take a session' do
+      login_as(@user, :scope => :user, :run_callbacks => false)
       visit practice_introduction_path(@practice_2)
       session = PracticeEditorSession.last
-      session.update(session_start_time: DateTime.now - 15.minutes)
+      session.update(session_start_time: DateTime.now - 20.minutes)
       logout(@user)
       login_as(@user_2, :scope => :user, :run_callbacks => false)
       visit practice_introduction_path(@practice_2)
