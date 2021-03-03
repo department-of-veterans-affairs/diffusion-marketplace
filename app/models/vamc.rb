@@ -1,5 +1,4 @@
 class Vamc < ApplicationRecord
-
   extend FriendlyId
   friendly_id :common_name, use: :slugged
 
