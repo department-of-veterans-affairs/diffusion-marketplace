@@ -150,19 +150,6 @@ function initialize() {
             });
         }
 
-        // practice complexity
-        // if (data.complexities && data.complexities.length) {
-        //     const complexities = data.complexities.map(c => c.value);
-        //     result = result.filter(function (d) {
-        //         const practicesComplexities = d.practices
-        //             .map(p => Math.max(...[p.difficulty_aggregate || 0, p.sustainability_aggregate || 0, p.number_departments || 0]));
-        //         const anyComplexities = complexities.filter(function (c) {
-        //             return this.includes(+c);
-        //         }, practicesComplexities);
-        //         return anyComplexities.length;
-        //     });
-        // }
-
         // practice cost
         if (data.costs && data.costs.length) {
             const costs = data.costs.map(c => c.value);
