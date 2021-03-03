@@ -69,7 +69,7 @@ namespace :vamcs do
       end
     end
 
-    puts "All VAMcs have now been added to the DB!"
+    puts "All VAMCs have now been added to the DB!"
 
   end
 end

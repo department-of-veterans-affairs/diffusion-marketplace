@@ -1,6 +1,8 @@
 class VisnsController < ApplicationController
   before_action :set_visn, only: :show
+
   def index
+    @visns = Visn.all
   end
 
   def show
