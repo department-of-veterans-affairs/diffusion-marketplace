@@ -1,0 +1,48 @@
+var PRACTICE_SHOW_KEY = 'practice-show';
+
+function savePracticeShow(visit) {
+  sessionStorage.setItem(PRACTICE_SHOW_KEY, JSON.stringify(visit));
+}
+
+function shouldTrackPracticeShow(currentVisit) {
+  var prevVisit = JSON.parse(sessionStorage.getItem(PRACTICE_SHOW_KEY));
+
+  if (prevVisit) {
+    var prevVisitTime = prevVisit.timestamp;
+    var currentVisitTime = currentVisit.timestamp;
+    var isSameVisit = (currentVisitTime - prevVisitTime) <= 1000;
+    var isSamePractice = currentVisit["practice_id"] === prevVisit["practice_id"];
+    var isSameUser = currentVisit.userId === prevVisit.userId
+
+    // make sure we aren't logging the same exact practice show (difference between visits is <= 1000ms) by same user for the same request
+    // this occurs because of turbolinks reloading the page
+    return !(isSameVisit && isSamePractice && isSameUser);
+  } else {
+    return true;
+  }
+}
+
+function trackPracticeShow(visit) {
+  savePracticeShow(visit);
+  // remove the timestamp and userId key/value from the prevVisit object
+  delete visit.timestamp;
+  delete visit.userId;
+  ahoy.track('Practice show', visit);
+}
+
+
+document.addEventListener('turbolinks:load', function () {
+  var action = "<%= params[:action] %>";
+  // only track on the show action
+  if (action === 'show') {
+    var userId = <%= current_user.id %>;
+    var practiceId = <%= @practice.id %>;
+    // only track if there is a current user and practice
+    if (userId && practiceId) {
+      var practiceShowProps = { "practice_id": practiceId, timestamp: Date.now(), userId: userId };
+      if (shouldTrackPracticeShow(practiceShowProps)) {
+        trackPracticeShow(practiceShowProps);
+      }
+    }
+  }
+});

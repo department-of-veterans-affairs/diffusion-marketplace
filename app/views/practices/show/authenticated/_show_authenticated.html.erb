@@ -1,5 +1,8 @@
 <% provide :head_tags do %>
   <%= javascript_include_tag 'practice_page', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    <%= render partial: 'practices/show/authenticated/ahoy_event_tracking', formats: [:js] %>
+  <% end %>
 <% end %>
 
 <section class="usa-section padding-y-0">
