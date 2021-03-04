@@ -6,8 +6,14 @@ class Vamc < ApplicationRecord
   belongs_to :visn
 
   def self.get_all_vamcs
-    all_vamcs = Vamc.all.order('common_name')
+    Vamc.all.order('common_name')
+  end
 
-      #all_vamcs.order('official_station_name')
+  def self.get_visns
+    Visn.all.order('number')
+  end
+
+  def self.get_types
+    Vamc.select(:fy17_parent_station_complexity_level).distinct.order(:fy17_parent_station_complexity_level)
   end
 end

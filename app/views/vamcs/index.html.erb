@@ -1,4 +1,4 @@
-<section class="usa-section padding-y-0">
+<section class="usa-section padding-y-0 grid-col-12">
   <div class="grid-container position-relative grid-col-12">
     <div class="grid-row grid-gap">
       <div class="grid-col-12">
@@ -8,9 +8,24 @@
         <div class="text-base">
           Looking for a full list of VISNs? <a href="/visn">Click here</a>
         </div>
-        <div class="desktop:margin-top-5 grid-col-5">
-          <%= render partial: 'vamcs/vamc_directory_combo_box', locals: {vamc_selector: 'vamc_directory_select'} %>
+        <div class="desktop:margin-top-5 desktop:margin-bottom-3">
+          <table>
+            <tr>
+              <td width="380px"><%= render partial: 'vamcs/vamc_directory_combo_box', locals: {vamc_selector: 'vamc_directory_select'} %></td>
+              <td width="25px"></td>
+              <td width="236px"><%= render partial: 'vamcs/visn_combo_box', locals: {visn_selector: 'vamc_directory_visn_select'} %></td>
+              <td width="25px"></td>
+              <td width="308px"><%= render partial: 'vamcs/vamc_directory_type_combo_box', locals: {vamc_type_selector: 'vamc_type_select'} %></td>
+            </tr>
+          </table>
         </div>
+        <div class="desktop:margin-bottom-3">
+          <%= @vamcs.count %> results:
+        </div>
+        <div>
+          SPREAD SHEET
+        </div>
+
       </div>
     </div>
   </div>

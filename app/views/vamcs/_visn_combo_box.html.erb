@@ -1,0 +1,11 @@
+<div class="margin-top-1 margin-bottom-2 desktop:margin-y-0">
+  <label for="<%= visn_selector %>" class="line-height-26">VISN</label>
+  <select id="<%= visn_selector %>" class="usa-select" name="<%= visn_selector %>">
+    <option value>- Select -</option>
+    <% @visns.each do |v| %>
+      <option value=<%= v.id %>>
+        <%= v.number %>
+      </option>
+    <% end %>
+  </select>
+</div>
