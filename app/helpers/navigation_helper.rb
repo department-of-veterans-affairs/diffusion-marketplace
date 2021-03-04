@@ -169,6 +169,13 @@ module NavigationHelper
       end
     end
 
+    if controller == 'vamcs'
+      if action == 'index'
+        empty_breadcrumbs
+        session[:breadcrumbs] << { 'display': 'vamcs', 'path': vamcs_path }
+      end
+    end
+
     ### PRACTICE PARTNER BREADCRUMBS
     def add_partners_breadcrumb
       session[:breadcrumbs] << { 'display': 'Partners', 'path': practice_partners_path }

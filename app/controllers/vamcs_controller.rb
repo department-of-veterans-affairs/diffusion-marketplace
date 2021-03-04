@@ -1,6 +1,9 @@
 class VamcsController < ApplicationController
   before_action :set_vamc, only: :show
   def index
+
+    @vamcs = Vamc.get_all_vamcs
+
   end
 
   def show
