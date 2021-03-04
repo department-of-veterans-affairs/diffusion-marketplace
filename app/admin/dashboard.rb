@@ -104,7 +104,7 @@ ActiveAdmin.register_page "Dashboard" do
         # Get practice views by month
         @approved_enabled_published_practices.each do |p|
           practice_visits_by_month = []
-          pr_visit_ct = Ahoy::Event.where_props(practice_id: p[:id]).where(time: beg_of_month...end_of_month).count
+          pr_visit_ct = p.date_range_views(beg_of_month, end_of_month)
           practice_visits_by_month << pr_visit_ct
           practice_visits_by_month.each do |visit_count|
             @practice_views_array << [p.id, visit_count]
