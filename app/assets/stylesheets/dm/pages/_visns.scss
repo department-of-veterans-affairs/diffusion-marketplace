@@ -1,0 +1,31 @@
+@import '../variables/colors';
+
+#visns-index {
+  .visn-card-link {
+    text-decoration: none;
+
+    .visn-card-text {
+      border: 1px solid $dm-color-alt-lighter-grey;
+    }
+
+    .visn-name {
+      color: $dm-color-blue-50v !important;
+    }
+
+    .visn-data-ul {
+      color: $dm-color-base !important;
+    }
+
+    &:hover {
+      .visn-name {
+        text-decoration: underline;
+      }
+    }
+
+    &:visited {
+      .visn-name {
+        color: $dm-default-visited-purple !important;
+      }
+    }
+  }
+}
