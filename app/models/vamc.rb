@@ -6,10 +6,8 @@ class Vamc < ApplicationRecord
   belongs_to :visn
 
   def self.get_all_vamcs
-    all_vamcs = Vamc.all
+    all_vamcs = Vamc.all.order('common_name')
 
-    all_vamcs.each do |v|
-
-    end
+      #all_vamcs.order('official_station_name')
   end
 end
