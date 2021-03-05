@@ -14,6 +14,15 @@ class VamcsController < ApplicationController
       @filtered_vamcs = @vamcs.where(id: params[:vamc].to_i)
     end
 
+    if params[:visn].present?
+      @filtered_vamcs = @vamcs.where(visn_id: params[:visn].to_i)
+    end
+
+    if params[:type].present?
+      @filtered_vamcs = @vamcs.where(fy17_parent_station_complexity_level: params[:type])
+      debugger
+    end
+
 
   end
 
