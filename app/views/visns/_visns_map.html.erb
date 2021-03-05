@@ -1,0 +1,17 @@
+<% if ENV['GOOGLE_API_KEY'].present? %>
+  <% provide :head_tags do %>
+    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+      var visnMapData = <%= raw @visn_markers.to_json %>;
+      var defaultMarkerIcon = '<%= image_path('map-marker-successful-default.svg') %>';
+      var selectedMarkerIcon = '<%= image_path('map-marker-successful-selected.svg') %>';
+      var hoverMarkerIcon = '<%= image_path('map-marker-successful-hover.svg') %>';
+    <% end %>
+    <%= javascript_include_tag 'visns/visns_map', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'visns/_map_utilities', 'data-turbolinks-track': 'reload' %>
+  <% end %>
+  <section class="margin-bottom-0 padding-0" id="map-of-diffusion">
+    <div class="width-full position-relative grid-row margin-bottom-2">
+      <div id="map" class="dm-practice-diffusion-map"></div>
+    </div>
+  </section>
+<% end %>
