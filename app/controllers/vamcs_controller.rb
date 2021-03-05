@@ -1,7 +1,7 @@
 class VamcsController < ApplicationController
   before_action :set_vamc, only: :show
   def index
-
+    debugger
     @vamcs = Vamc.get_all_vamcs
     @visns = Vamc.get_visns
     @types = []
@@ -9,14 +9,10 @@ class VamcsController < ApplicationController
     all_types.each do |t|
       @types << t
     end
-    # @vamcs.each do  |v|
-    #   @types << v.fy17_parent_station_complexity_level
-    # end
-    # @types = @types.sort
-    # debugger
   end
 
   def show
+    debugger
   end
 
   private

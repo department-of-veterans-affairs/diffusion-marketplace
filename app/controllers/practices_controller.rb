@@ -321,6 +321,7 @@ class PracticesController < ApplicationController
   end
 
   def metrics
+
     @duration = params[:duration] || "30"
     @page_views_leader_board_30_days = fetch_page_views_leader_board()
     @page_views_leader_board_all_time = fetch_page_views_leader_board(0)

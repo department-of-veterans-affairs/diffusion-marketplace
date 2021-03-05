@@ -35,6 +35,7 @@ Rails.application.config.assets.precompile += %w(
                                                   diffusion_history/_map_utilities.js
                                                   _practice_utilities.js
                                                   metrics_page.js
+                                                  vamc_directory.js
                                               )
 
 # Precompile additional assets.

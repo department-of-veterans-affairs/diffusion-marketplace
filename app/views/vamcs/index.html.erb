@@ -1,3 +1,10 @@
+<% provide :main_classes, 'bg-gray-2' %>
+<% provide :footer_classes, 'bg-gray-2' %>
+
+<% provide :head_tags do %>
+  <%= javascript_include_tag 'vamc_directory', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
 <section class="usa-section padding-y-0 grid-col-12">
   <div class="grid-container position-relative grid-col-12">
     <div class="grid-row grid-gap">
@@ -23,9 +30,36 @@
           <%= @vamcs.count %> results:
         </div>
         <div>
-          SPREAD SHEET
+          <table class="usa-table usa-table--borderless grid-col-12">
+            <thead>
+            <tr>
+              <th scope="col">Facility</th>
+              <th scope="col">Common name</th>
+              <th scope="col">VISN</th>
+              <th scope="col">Type</th>
+              <th scope="col">Created</th>
+              <th scope="col">Adopted</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% ctr = 0 %>
+            <%= @vamcs.each do |v| %>
+              <tr>
+                <td><%= v.official_station_name %></td>
+                <td><%= v.common_name %></td>
+                <td><%= v.visn_id %></td>
+                <td><%= v.fy17_parent_station_complexity_level %></td>
+                <td></td>
+                <td></td>
+              </tr>
+            <% ctr += 1 %>
+              <% if ctr > 20 %>
+              <% break %>
+              <% end %>
+            <% end %>
+            </tbody>
+          </table>
         </div>
-
       </div>
     </div>
   </div>
