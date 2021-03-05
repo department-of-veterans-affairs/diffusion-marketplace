@@ -122,13 +122,11 @@ module PracticesHelper
     sql = "select count(*) as the_count from user_practices where practice_id = $1"
     if duration == "30"
       sql += " and created_at >= $2"
-      debugger
       records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{practice_id}"], [nil, "#{Time.now - duration.to_i.days}"]])
     else
-      debugger
       records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{practice_id}"]])
     end
-    records_array.count
+    records_array[0]["the_count"]
   end
 
   def fetch_adoptions_total_by_practice(practice_id, duration = "30", status = "")
