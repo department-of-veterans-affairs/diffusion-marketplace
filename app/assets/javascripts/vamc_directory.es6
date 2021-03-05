@@ -32,6 +32,7 @@ $(document).ready(function(){
     $("#vamc_type_select").change (function(e) {
 
         var curUrl = window.location.href;
+        debugger
         let type = this.options[e.target.selectedIndex].text;
         alert(type);
 

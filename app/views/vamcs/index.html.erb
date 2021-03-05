@@ -27,7 +27,7 @@
           </table>
         </div>
         <div class="desktop:margin-bottom-3">
-          <%= @filtered_vamcs.count %> result<% if @filtered_vamcs.count > 1%>s<% end %>:
+          <%= @results_count %> result<% if @results_count > 1%>s<% end %>:
         </div>
         <div>
           <table class="usa-table usa-table--borderless grid-col-12">
@@ -45,12 +45,12 @@
             <% ctr = 0 %>
             <%= @filtered_vamcs.each do |v| %>
               <tr>
-                <td><%= v.official_station_name %></td>
-                <td><%= v.common_name %></td>
-                <td><%= v.visn_id %></td>
-                <td><%= v.fy17_parent_station_complexity_level %></td>
-                <td>9999</td>
-                <td>9999</td>
+                <td><%= v["official_station_name"] %></td>
+                <td><%= v["common_name"] %></td>
+                <td><%= v["visn_number"] %></td>
+                <td><%= v["fy17_parent_station_complexity_level"] %></td>
+                <td><%= v["practices_created"] %></td>
+                <td><%= v["adoptions"] %></td>
               </tr>
             <% ctr += 1 %>
               <% if ctr > 20 %>
