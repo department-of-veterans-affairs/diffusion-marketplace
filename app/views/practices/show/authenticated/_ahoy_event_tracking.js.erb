@@ -31,10 +31,12 @@ function trackPracticeShow(visit) {
 }
 
 
-document.addEventListener('turbolinks:load', function () {
+function ahoyEventTrackingFns() {
   var action = "<%= params[:action] %>";
+  var controller = "<%= params[:controller] %>";
+
   // only track on the show action
-  if (action === 'show') {
+  if (action === 'show' && controller === 'practices') {
     var userId = <%= current_user.id %>;
     var practiceId = <%= @practice.id %>;
     // only track if there is a current user and practice
@@ -45,4 +47,6 @@ document.addEventListener('turbolinks:load', function () {
       }
     }
   }
-});
+};
+
+ahoyEventTrackingFns();
