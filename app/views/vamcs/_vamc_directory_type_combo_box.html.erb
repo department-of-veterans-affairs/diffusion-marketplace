@@ -6,7 +6,11 @@
   <select id="<%= vamc_type_selector %>" class="usa-select" name="<%= vamc_type_selector %>">
     <option value>- Select -</option>
     <% @types.each do |type| %>
-      <option value=<%= type[:fy17_parent_station_complexity_level] %>>
+      <option value=<%= type[:fy17_parent_station_complexity_level] %>
+          <% if params[:type].present? && type[:fy17_parent_station_complexity_level] == params[:type].to_s%>
+            selected
+          <% end %>
+       >
           <%= type[:fy17_parent_station_complexity_level] %>
         </option>
     <% end %>

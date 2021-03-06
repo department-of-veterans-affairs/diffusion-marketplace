@@ -2,8 +2,12 @@
 <div class="usa-combo-box margin-top-1 margin-bottom-2 desktop:margin-y-0">
   <select id="<%= vamc_selector %>" class="usa-select" name="<%= vamc_selector %>">
     <% @vamcs.each do |va| %>
-      <option value=<%= va["id"] %>>
-        <%= va["common_name"] %>
+      <option value=<%= va["id"] %>
+          <% if params[:vamc].present? && va["id"] == params[:vamc].to_i%>
+            selected
+          <% end %>
+      >
+        <%= va["official_station_name"] + ' (' + va["common_name"] + ')' %>
       </option>
     <% end %>
   </select>
