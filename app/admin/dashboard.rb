@@ -7,15 +7,16 @@ ActiveAdmin.register_page "Dashboard" do
     before_action :set_dashboard_values
 
     def site_visits(start_time, end_time)
-      Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where(time: start_time..end_time).group("properties->>'ip_address'").count
+      # is_duplicate was added to "properties" to remove duplicate 'Site visit' and 'Practice show' counts as a result of turbolinks loading the page twice, triggering two ahoy_event to be saved
+      Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where(time: start_time..end_time).group("properties->>'ip_address'").count
     end
 
     def custom_page_visits_by_range(start_time, end_time, page_slug)
-      Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'page_group' = '#{page_slug}'").where(time: start_time..end_time).group("properties->>'ip_address'").count
+      Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where("properties->>'page_group' = '#{page_slug}'").where(time: start_time..end_time).group("properties->>'ip_address'").count
     end
 
     def custom_page_visits(page_slug)
-      Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'page_group' = '#{page_slug}'").count
+      Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where("properties->>'page_group' = '#{page_slug}'").count
     end
 
     def get_custom_pages_stats(custom_pages)
@@ -103,7 +104,7 @@ ActiveAdmin.register_page "Dashboard" do
         # Get practice views by month
         @approved_enabled_published_practices.each do |p|
           practice_visits_by_month = []
-          pr_visit_ct = Ahoy::Event.where_props(practice_id: p[:id]).where(time: beg_of_month...end_of_month).count
+          pr_visit_ct = p.date_range_views(beg_of_month, end_of_month)
           practice_visits_by_month << pr_visit_ct
           practice_visits_by_month.each do |visit_count|
             @practice_views_array << [p.id, visit_count]

@@ -35,7 +35,6 @@ function trackVisit(visit, visitor) {
   }
 }
 
-
 document.addEventListener('turbolinks:load', function () {
   var visitProps = <%= raw @visit_properties.to_json %>;
   var visitorProps = <%= raw @visitor_properties.to_json %>;
@@ -44,7 +43,5 @@ document.addEventListener('turbolinks:load', function () {
     if (shouldTrackVisit(visitProps, visitorProps)) {
       trackVisit(visitProps, visitorProps);
     }
-  } else {
-    trackVisit(visitProps, visitorProps);
   }
 });

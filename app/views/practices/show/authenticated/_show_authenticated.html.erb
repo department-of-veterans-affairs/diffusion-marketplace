@@ -189,3 +189,7 @@
 <% if @practice.origin_story.present? || @practice.va_employees.any? %>
   <%= render partial: 'practices/show/about/about' %>
 <% end %>
+
+<script type="text/javascript">
+  <%= render partial: 'practices/show/authenticated/ahoy_event_tracking.js' %>
+</script>
