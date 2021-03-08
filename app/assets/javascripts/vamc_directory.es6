@@ -8,7 +8,7 @@ $(document).ready(function(){
         var curUrl = window.location.href;
         let vamcId = e.target.options[e.target.selectedIndex].value;
         //alert(vamcId);
-        curUrl = stripParams(curUrl);
+        curUrl = stripQsParams(curUrl);
         let newUrl = `${curUrl}?vamc=${vamcId}`;
         window.location.href = newUrl;
     });
@@ -18,7 +18,7 @@ $(document).ready(function(){
         var curUrl = window.location.href;
         let visnId = e.target.options[e.target.selectedIndex].value;
         //alert(visnId);
-        curUrl = stripParams(curUrl);
+        curUrl = stripQsParams(curUrl);
         let newUrl = `${curUrl}?visn=${visnId}`;
         window.location.href = newUrl;
     });
@@ -28,12 +28,12 @@ $(document).ready(function(){
         var curUrl = window.location.href;
         let type = this.options[e.target.selectedIndex].text;
         //alert(type);
-        curUrl = stripParams(curUrl);
+        curUrl = stripQsParams(curUrl);
         let newUrl = `${curUrl}?type=${type}`;
         window.location.href = newUrl;
     });
 
-    function stripParams(s){
+    function stripQsParams(s){
         if (s.includes("?")){
             var pos1 = s.indexOf("?");
             return s.substring(0, pos1);
