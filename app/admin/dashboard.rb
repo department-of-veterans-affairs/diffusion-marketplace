@@ -207,11 +207,11 @@ ActiveAdmin.register_page "Dashboard" do
           end
           sheet.add_row [''], style: xlsx_divider
 
-          sheet.add_row ["Favorited Counts"], style: xlsx_sub_header_2
+          sheet.add_row ["Bookmarked Counts"], style: xlsx_sub_header_2
           @practices_favorited_stats.each { |key, value| sheet.add_row [key.to_s.tr!('_', ' ').titleize, value], style: xlsx_entry }
           sheet.add_row [""], style: xlsx_divider
 
-          sheet.add_row ["Favorited Counts by Practice"], style: xlsx_sub_header_2
+          sheet.add_row ["Bookmarked Counts by Practice"], style: xlsx_sub_header_2
           sheet.add_row @practices_headers, style: xlsx_sub_header_3
           @practices.each do |value|
             sheet.add_row [
@@ -450,7 +450,7 @@ ActiveAdmin.register_page "Dashboard" do
         end # panel
 
         panel 'Practice Engagement' do
-          h4("Favorited Counts", title: "Number of times a practice was favorited", class: "dm-tooltip")
+          h4("Bookmarked Counts", title: "Number of times a practice was bookmarked", class: "dm-tooltip")
 
           table_for practices_favorited_stats, id: 'favorited_stats' do
             column("#{date_headers[:current]}") {|ps| ps[:favorited_this_month]}
@@ -458,7 +458,7 @@ ActiveAdmin.register_page "Dashboard" do
             column :total_favorited
           end
 
-          h4("Favorited Counts by Practice", title: "Number of times each practice has been favorited", class: "dm-tooltip")
+          h4("Bookmarked Counts by Practice", title: "Number of times each practice has been bookmarked", class: "dm-tooltip")
 
           table_for practices do
             column(:name) {|pr| link_to(pr.name, admin_practice_path(pr))}
