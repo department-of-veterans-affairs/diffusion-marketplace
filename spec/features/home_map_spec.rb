@@ -33,6 +33,9 @@ describe 'HomeMap', type: :feature do
       open_filters
       expect(page).to be_accessible.within '#filterResults'
 
+      #Practice complexity removed..
+      expect(page).to_not have_content('Practice complexity')
+
       # click a checkbox
       test_filter_checkbox = find(:css, 'label[for="1c_high_complexity"]')
       test_filter_checkbox.click
