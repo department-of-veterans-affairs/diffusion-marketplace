@@ -4,10 +4,8 @@ $(document).ready(function(){
         //set VISN and TYPE filters back to - Select
         document.getElementById('vamc_directory_visn_select').value = '- Select -';
         document.getElementById('vamc_type_select').value = '- Select -';
-
         var curUrl = window.location.href;
         let vamcId = e.target.options[e.target.selectedIndex].value;
-        //alert(vamcId);
         curUrl = stripQsParams(curUrl);
         let newUrl = `${curUrl}?vamc=${vamcId}`;
         window.location.href = newUrl;
@@ -18,13 +16,11 @@ $(document).ready(function(){
         let type =  document.getElementById('vamc_type_select').value;
         var curUrl = window.location.href;
         let visnId = e.target.options[e.target.selectedIndex].value;
-        //alert(type);
         curUrl = stripQsParams(curUrl);
         let newUrl = `${curUrl}?visn=${visnId}`;
         if (type.length > 0){
             newUrl += `&type=${type}`;
         }
-
         window.location.href = newUrl;
     });
 
@@ -32,9 +28,12 @@ $(document).ready(function(){
         document.getElementById('vamc_directory_select').value = '';
         var curUrl = window.location.href;
         let type = this.options[e.target.selectedIndex].text;
-        //alert(type);
+        let visnId = e.target.options[e.target.selectedIndex].value;
         curUrl = stripQsParams(curUrl);
         let newUrl = `${curUrl}?type=${type}`;
+        if(visnId.length > 0){
+            newUrl += `&visn=${visnId}`;
+        }
         window.location.href = newUrl;
     });
 
