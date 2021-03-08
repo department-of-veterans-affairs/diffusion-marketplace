@@ -13,12 +13,11 @@ class VamcsController < ApplicationController
     if params[:vamc].present?
       @filtered_vamcs = @vamcs.select { |x| x["id"] == params[:vamc].to_i}
     end
-
     if params[:visn].present?
-      @filtered_vamcs = @vamcs.select { |x| x["visn_number"] == params[:visn].to_i}
+      @filtered_vamcs = @filtered_vamcs.select { |x| x["visn_number"] == params[:visn].to_i}
     end
     if params[:type].present?
-      @filtered_vamcs = @vamcs.select { |x| x["fy17_parent_station_complexity_level"] == params[:type].to_s}
+      @filtered_vamcs = @filtered_vamcs.select { |x| x["fy17_parent_station_complexity_level"].include? params[:type].to_s}
     end
     @results_count = @filtered_vamcs.count
   end

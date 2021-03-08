@@ -3,7 +3,11 @@
   <select id="<%= visn_selector %>" class="usa-select" name="<%= visn_selector %>">
     <option value>- Select -</option>
     <% @visns.each do |v| %>
-      <option value=<%= v.number %>>
+      <option value=<%= v.number %>
+                <% if params[:visn].present? && v.number == params[:visn].to_i%>
+                  selected
+          <% end %>
+      >
         <%= v.number %> - <%= v.name %>
       </option>
     <% end %>

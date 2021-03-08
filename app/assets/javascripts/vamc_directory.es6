@@ -15,11 +15,16 @@ $(document).ready(function(){
 
     $("#vamc_directory_visn_select").change (function(e) {
         document.getElementById('vamc_directory_select').value = '';
+        let type =  document.getElementById('vamc_type_select').value;
         var curUrl = window.location.href;
         let visnId = e.target.options[e.target.selectedIndex].value;
-        //alert(visnId);
+        //alert(type);
         curUrl = stripQsParams(curUrl);
         let newUrl = `${curUrl}?visn=${visnId}`;
+        if (type.length > 0){
+            newUrl += `&type=${type}`;
+        }
+
         window.location.href = newUrl;
     });
 
