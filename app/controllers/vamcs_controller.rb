@@ -1,7 +1,7 @@
 class VamcsController < ApplicationController
   before_action :set_vamc, only: :show
   def index
-    @num_recs = params[:load_more] || "20"
+    @num_recs = params[:more] || "20"
     @vamcs = Vamc.get_all_vamcs
     @visns = Vamc.get_visns
     @types = []
@@ -21,6 +21,11 @@ class VamcsController < ApplicationController
       @filtered_vamcs = @filtered_vamcs.select { |x| x["fy17_parent_station_complexity_level"].include? params[:type].to_s}
     end
     @results_count = @filtered_vamcs.count
+    #debugger
+    if @filtered_vamcs.count > @num_recs.to_i
+      @filtered_vamcs = @filtered_vamcs.take(@num_recs.to_i)
+    end
+
     if params[:asc].present? && params[:asc] == "false"
       @filtered_vamcs = @filtered_vamcs.reverse
     end

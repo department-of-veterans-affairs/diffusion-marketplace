@@ -27,7 +27,7 @@
           </table>
         </div>
         <div class="desktop:margin-bottom-3">
-          <%= @results_count %> result<% if @results_count > 1 %>s<% end %>:
+          Displaying <%= @filtered_vamcs.count %> of <%= @results_count %> result<% if @results_count > 1 %>s<% end %>:
         </div>
         <% if @results_count > 0 %>
           <div>
@@ -64,17 +64,19 @@
                   <td><%= v["practices_created"] %></td>
                   <td><%= v["adoptions"] %></td>
                 </tr>
-              <% ctr += 1 %>
-                <% if ctr == @num_recs.to_i %>
-                  <% break %>
-                <% end %>
+              <%# ctr += 1 %>
+                <%# if ctr == @num_recs.to_i %>
+                  <%# break %>
+                <%# end %>
               <% end %>
               </tbody>
             </table>
           </div>
-          <div align="center" class="desktop:margin-top-5 desktop:margin-bottom-3">
-            <%= button_tag "Load more", type: 'button', id: "btn_vamc_directory_load_more", class: "usa-button--outline dm-btn-base dm-load-more-btn width-auto" %>
-          </div>
+          <% if @num_recs.to_i <= @results_count %>
+            <div align="center" class="desktop:margin-top-5 desktop:margin-bottom-3">
+              <%= button_tag "Load more", num_recs: @num_recs, type: 'button', id: "btn_vamc_directory_load_more", class: "usa-button--outline dm-btn-base dm-load-more-btn width-auto" %>
+            </div>
+           <% end %>
         <% end %>
       </div>
     </div>

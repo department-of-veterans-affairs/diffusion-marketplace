@@ -109,7 +109,16 @@ $(document).ready(function(){
     }
 
     function loadMoreRecords(){
-        alert('hello');
+        debugger
+        let btn = document.getElementById("btn_vamc_directory_load_more");
+        let numRecs = parseInt(btn.getAttribute("num_recs"));
+        numRecs += 20;
+        let curUrl = window.location.href;
+        let paramMore = getParameterByName("more", newUrl)
+        let newUrl = removeParam("more", curUrl);
+        newUrl.includes("?") ? newUrl += "&" : newUrl += "?";
+        newUrl += `more=${numRecs}`;
+        window.location.href = newUrl;
     }
 
 });
