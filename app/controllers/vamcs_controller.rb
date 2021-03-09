@@ -20,6 +20,9 @@ class VamcsController < ApplicationController
       @filtered_vamcs = @filtered_vamcs.select { |x| x["fy17_parent_station_complexity_level"].include? params[:type].to_s}
     end
     @results_count = @filtered_vamcs.count
+    if params[:asc].present? && params[:asc] == "false"
+      @filtered_vamcs = @filtered_vamcs.reverse
+    end
   end
 
   def show

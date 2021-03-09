@@ -1,5 +1,11 @@
 $(document).ready(function(){
-    //event handlers for LI(s)
+    var asc = false;
+
+    var resultsExist = document.getElementById ("toggle_by_facility");
+    if(resultsExist){
+        resultsExist.addEventListener ("click", toggleByFacility, false);
+    }
+
     $("#vamc_directory_select").change (function(e) {
         //set VISN and TYPE filters back to - Select
         document.getElementById('vamc_directory_visn_select').value = '- Select -';
@@ -54,5 +60,47 @@ $(document).ready(function(){
         }
         return s;
     }
+
+    function toggleByFacility(){
+        var curUrl = window.location.href;
+        var paramAsc = getParameterByName("asc", newUrl)
+        var newUrl = removeParam("asc", curUrl);
+        newUrl.includes("?") ? newUrl += "&" : newUrl += "?";
+        newUrl += "asc=";
+        if(paramAsc == null){
+            newUrl += "false";
+        }
+        else{
+            paramAsc == "true" ? newUrl += "false" : newUrl += "true";
+        }
+        window.location.href = newUrl;
+    }
+    function removeParam(key, sourceURL) {
+        var rtn = sourceURL.split("?")[0],
+            param,
+            params_arr = [],
+            queryString = (sourceURL.indexOf("?") !== -1) ? sourceURL.split("?")[1] : "";
+        if (queryString !== "") {
+            params_arr = queryString.split("&");
+            for (var i = params_arr.length - 1; i >= 0; i -= 1) {
+                param = params_arr[i].split("=")[0];
+                if (param === key) {
+                    params_arr.splice(i, 1);
+                }
+            }
+            if (params_arr.length) rtn = rtn + "?" + params_arr.join("&");
+        }
+        return rtn;
+    }
+
+    function getParameterByName(name, url = window.location.href) {
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+
 });
 
