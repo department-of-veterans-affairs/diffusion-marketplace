@@ -16,10 +16,15 @@ $(document).ready(function(){
         let type =  document.getElementById('vamc_type_select').value;
         var curUrl = window.location.href;
         let visnId = e.target.options[e.target.selectedIndex].value;
+        var isDefault = visnId.length == 0 ? true : false;
         curUrl = stripQsParams(curUrl);
-        let newUrl = `${curUrl}?visn=${visnId}`;
-        if (type.length > 0){
-            newUrl += `&type=${type}`;
+        var newUrl = curUrl;
+        if(!isDefault){
+            newUrl = `?visn=${visnId}`;
+        }
+        if (type.length > 0 && type != '- Select -'){
+            isDefault ? newUrl += "?" : newUrl += "&";
+            newUrl += `type=${type}`;
         }
         window.location.href = newUrl;
     });
@@ -28,11 +33,16 @@ $(document).ready(function(){
         document.getElementById('vamc_directory_select').value = '';
         var curUrl = window.location.href;
         let type = this.options[e.target.selectedIndex].text;
-        let visnId = e.target.options[e.target.selectedIndex].value;
+        var isDefault = type == "- Select -" ? true : false;
+        let visnId =  document.getElementById('vamc_directory_visn_select').value;
         curUrl = stripQsParams(curUrl);
-        let newUrl = `${curUrl}?type=${type}`;
-        if(visnId.length > 0){
-            newUrl += `&visn=${visnId}`;
+        var newUrl = curUrl;
+        if (!isDefault){
+            newUrl = `?type=${type}`;
+        }
+        if(visnId.length > 0 && visnId != '- Select -'){
+            isDefault ? newUrl += "?" : newUrl += "&";
+            newUrl += `visn=${visnId}`;
         }
         window.location.href = newUrl;
     });

@@ -7,7 +7,7 @@
             selected
           <% end %>
       >
-        <%= va["official_station_name"] + ' (' + va["common_name"] + ')' %>
+        <%= va["common_name"].to_s + ' - ' + va["official_station_name"].to_s %>
       </option>
     <% end %>
   </select>

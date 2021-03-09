@@ -27,39 +27,41 @@
           </table>
         </div>
         <div class="desktop:margin-bottom-3">
-          <%= @results_count %> result<% if @results_count > 1%>s<% end %>:
+          <%= @results_count %> result<% if @results_count > 1 %>s<% end %>:
         </div>
-        <div>
-          <table class="usa-table usa-table--borderless grid-col-12">
-            <thead>
-            <tr>
-              <th scope="col">Facility</th>
-              <th scope="col">Common name</th>
-              <th scope="col">VISN</th>
-              <th scope="col">Type</th>
-              <th scope="col">Created</th>
-              <th scope="col">Adopted</th>
-            </tr>
-            </thead>
-            <tbody>
-            <% ctr = 0 %>
-            <%= @filtered_vamcs.each do |v| %>
+        <% if @results_count > 0 %>
+          <div>
+            <table class="usa-table usa-table--borderless grid-col-12">
+              <thead>
               <tr>
-                <td><%= v["official_station_name"] %></td>
-                <td><%= v["common_name"] %></td>
-                <td><%= v["visn_number"] %></td>
-                <td><%= v["fy17_parent_station_complexity_level"] %></td>
-                <td><%= v["practices_created"] %></td>
-                <td><%= v["adoptions"] %></td>
+                <th scope="col">Facility</th>
+                <th scope="col">Common name</th>
+                <th scope="col">VISN</th>
+                <th scope="col">Type</th>
+                <th scope="col">Created</th>
+                <th scope="col">Adopted</th>
               </tr>
-            <% ctr += 1 %>
-              <% if ctr > 20 %>
-                <% break %>
+              </thead>
+              <tbody>
+              <% ctr = 0 %>
+              <% @filtered_vamcs.each do |v| %>
+                <tr>
+                  <td><%= v["official_station_name"] %></td>
+                  <td><%= v["common_name"] %></td>
+                  <td><%= v["visn_number"] %></td>
+                  <td><%= v["fy17_parent_station_complexity_level"] %></td>
+                  <td><%= v["practices_created"] %></td>
+                  <td><%= v["adoptions"] %></td>
+                </tr>
+              <% ctr += 1 %>
+                <% if ctr > 20 %>
+                  <% break %>
+                <% end %>
               <% end %>
-            <% end %>
-            </tbody>
-          </table>
-        </div>
+              </tbody>
+            </table>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
