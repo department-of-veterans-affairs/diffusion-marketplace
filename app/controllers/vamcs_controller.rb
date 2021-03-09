@@ -1,6 +1,7 @@
 class VamcsController < ApplicationController
   before_action :set_vamc, only: :show
   def index
+    @num_recs = params[:load_more] || "20"
     @vamcs = Vamc.get_all_vamcs
     @visns = Vamc.get_visns
     @types = []

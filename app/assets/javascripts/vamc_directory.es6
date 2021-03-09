@@ -6,6 +6,12 @@ $(document).ready(function(){
         resultsExist.addEventListener ("click", toggleByFacility, false);
     }
 
+    var loadMoreBtn = document.getElementById ("btn_vamc_directory_load_more");
+    if(loadMoreBtn){
+        loadMoreBtn.addEventListener ("click", loadMoreRecords, false);
+    }
+
+
     $("#vamc_directory_select").change (function(e) {
         //set VISN and TYPE filters back to - Select
         document.getElementById('vamc_directory_visn_select').value = '- Select -';
@@ -100,6 +106,10 @@ $(document).ready(function(){
         if (!results) return null;
         if (!results[2]) return '';
         return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+
+    function loadMoreRecords(){
+        alert('hello');
     }
 
 });

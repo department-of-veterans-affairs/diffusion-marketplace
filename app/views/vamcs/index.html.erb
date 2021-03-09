@@ -34,7 +34,18 @@
             <table class="usa-table usa-table--borderless grid-col-12">
               <thead>
               <tr>
-                <th scope="col">Facility <a class="fake-link" id="toggle_by_facility">&#x25BC;</a> </th>
+                <th scope="col">Facility <a class="fake-link" id="toggle_by_facility">
+                  <% if params[:asc] == "true" %>
+                    &#9650;
+                  <% end %>
+                  <% if params[:asc] == "false" %>
+                    &#x25BC;
+                  <% end %>
+                  <% if params[:asc].blank? %>
+                    &#9650;
+                  <% end %>
+                 </a>
+                </th>
                 <th scope="col">Common name</th>
                 <th scope="col">VISN</th>
                 <th scope="col">Type</th>
@@ -46,7 +57,7 @@
               <% ctr = 0 %>
               <% @filtered_vamcs.each do |v| %>
                 <tr>
-                  <td><%= v["official_station_name"] %></td>
+                  <td><a href="/vamc/1"><%= v["official_station_name"] %></a></td>
                   <td><%= v["common_name"] %></td>
                   <td><%= v["visn_number"] %></td>
                   <td><%= v["fy17_parent_station_complexity_level"] %></td>
@@ -54,12 +65,15 @@
                   <td><%= v["adoptions"] %></td>
                 </tr>
               <% ctr += 1 %>
-                <% if ctr > 20 %>
+                <% if ctr == @num_recs.to_i %>
                   <% break %>
                 <% end %>
               <% end %>
               </tbody>
             </table>
+          </div>
+          <div align="center" class="desktop:margin-top-5 desktop:margin-bottom-3">
+            <%= button_tag "Load more", type: 'button', id: "btn_vamc_directory_load_more", class: "usa-button--outline dm-btn-base dm-load-more-btn width-auto" %>
           </div>
         <% end %>
       </div>
