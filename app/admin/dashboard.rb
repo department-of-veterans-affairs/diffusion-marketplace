@@ -96,6 +96,8 @@ ActiveAdmin.register_page "Dashboard" do
       @month_and_year_array = []
       start_date = Date.today.prev_year.beginning_of_month
       end_date = Date.today
+      @new_users = {}
+      @user_visitors = {}
 
       while start_date <= end_date
         beg_of_month = start_date.beginning_of_day
@@ -111,18 +113,13 @@ ActiveAdmin.register_page "Dashboard" do
           end
         end
 
+        @new_users[month_and_year] = User.where(created_at: beg_of_month..end_of_month).count
+        @user_visitors[month_and_year] = Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where.not(user_id: nil).where(time: beg_of_month..end_of_month).group(:user_id).count.keys.length
+
         # Get site visits by month
         site_visits = site_visits(beg_of_month, end_of_month)
         site_visit_ct = site_visits.sum {|_k, v| v}
         @site_visits_by_month << [month_and_year, site_visit_ct]
-
-        # Get new users by month
-        new_user_count = User.where(created_at: beg_of_month..end_of_month).count
-        @new_users_by_month << new_user_count
-
-        # Get total users by month
-        total_user_count = User.where(current_sign_in_at: beg_of_month..end_of_month).count
-        @total_users_by_month << total_user_count
 
         @month_and_year_array << [month_and_year]
         start_date += 1.months
@@ -140,8 +137,8 @@ ActiveAdmin.register_page "Dashboard" do
 
       # Add user stats hash to make it easier to format spreadsheet data
       @user_statistics = {
-          new_users: @new_users_by_month,
-          total_users: @total_users_by_month
+        new_users: @new_users.values,
+        total_users: @user_visitors.values
       }
     end
 
@@ -294,14 +291,14 @@ ActiveAdmin.register_page "Dashboard" do
       tab :users_information do
         columns do
           column do
-            panel('New Users This Month', class: 'dm-panel-container', id: 'dm-new-users-this-month') do
-              column_chart User.where('created_at >= ?', 1.week.ago).group_by_month(:created_at, format: '%b').count, ytitle: 'Users'
-            end
             panel('New Users by Month', class: 'dm-panel-container', id: 'dm-new-users-by-month') do
-              column_chart User.group_by_month(:current_sign_in_at, format: '%b').count, ytitle: 'Users'
+              column_chart new_users.reverse_each.to_h, ytitle: 'Users'
+            end
+            panel('Unique User Visits by Month', class: 'dm-panel-container', id: 'dm-user-visits-by-month') do
+              column_chart user_visitors.reverse_each.to_h, ytitle: 'Users'
             end
           end # column
-        end # columns
+        end # column
         user_info = [{
                          in_the_last: 'New Users',
                          '24_hours': User.where('created_at >= ?', 1.day.ago).count,
@@ -310,19 +307,19 @@ ActiveAdmin.register_page "Dashboard" do
                          three_months: User.where('created_at >= ?', 3.months.ago).count,
                          year: User.where('created_at >= ?', 1.year.ago).count
                      }, {
-                         in_the_last: 'Total Users',
-                         '24_hours': User.where('current_sign_in_at >= ?', 1.day.ago).count,
-                         week: User.where('current_sign_in_at >= ?', 1.week.ago).count,
-                         month: User.where('current_sign_in_at >= ?', 1.month.ago).count,
-                         three_months: User.where('current_sign_in_at >= ?', 3.months.ago).count,
-                         year: User.where('current_sign_in_at >= ?', 1.year.ago).count
+                         in_the_last: 'Unique User Visits',
+                         '24_hours': Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where.not(user_id: nil).where('time >= ?', 1.day.ago).group(:user_id).count.keys.length,
+                         week: Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where.not(user_id: nil).where('time >= ?', 1.week.ago).group(:user_id).count.keys.length,
+                         month: Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where.not(user_id: nil).where('time >= ?', 1.month.ago).group(:user_id).count.keys.length,
+                         three_months: Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where.not(user_id: nil).where('time >= ?', 3.months.ago).group(:user_id).count.keys.length,
+                         year: Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where.not(user_id: nil).where('time >= ?', 1.year.ago).group(:user_id).count.keys.length
                      }]
         columns do
           column do
-            panel 'User statistics' do
+            panel 'User Statistics' do
               table_for user_info.each do
                 column(:in_the_last) { |info|
-                  span(info[:in_the_last], class: "dm-tooltip", title: info[:in_the_last] === 'New Users' ? 'Number of first time visitors to the site' : 'Total number of unique visitors to the site')
+                  span(info[:in_the_last], class: "dm-tooltip", title: info[:in_the_last] === 'New Users' ? 'Number of first time visitors to the site within the specified time period' : 'Number of unique user visits to the site within the specified time period')
                 }
                 column :'24_hours'
                 column :week
