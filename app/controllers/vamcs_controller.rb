@@ -21,7 +21,7 @@ class VamcsController < ApplicationController
       @filtered_vamcs = @filtered_vamcs.select { |x| x["fy17_parent_station_complexity_level"].include? params[:type].to_s}
     end
     @results_count = @filtered_vamcs.count
-    #debugger
+
     if @filtered_vamcs.count > @num_recs.to_i
       @filtered_vamcs = @filtered_vamcs.take(@num_recs.to_i)
     end
