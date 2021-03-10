@@ -32,8 +32,10 @@ class VamcsController < ApplicationController
   end
 
   def show
-    debugger
+    @created_practices = 20
+    @adoptions = 134
   end
+
 
   private
 

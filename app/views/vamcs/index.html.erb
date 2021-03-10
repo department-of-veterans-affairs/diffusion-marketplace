@@ -54,20 +54,15 @@
               </tr>
               </thead>
               <tbody>
-              <% ctr = 0 %>
-              <% @filtered_vamcs.each do |v| %>
+              <% @filtered_vamcs.each do |vamc| %>
                 <tr>
-                  <td><a href="/vamc/1"><%= v["official_station_name"] %></a></td>
-                  <td><%= v["common_name"] %></td>
-                  <td><%= v["visn_number"] %></td>
-                  <td><%= v["fy17_parent_station_complexity_level"] %></td>
-                  <td><%= v["practices_created"] %></td>
-                  <td><%= v["adoptions"] %></td>
+                  <td><a href='/vamc/<%= vamc["id"] %>'><%= vamc["official_station_name"] %></a></td>
+                  <td><%= vamc["common_name"] %></td>
+                  <td><%= vamc["visn_number"] %></td>
+                  <td><%= vamc["fy17_parent_station_complexity_level"] %></td>
+                  <td><%= vamc["practices_created"] %></td>
+                  <td><%= vamc["adoptions"] %></td>
                 </tr>
-              <%# ctr += 1 %>
-                <%# if ctr == @num_recs.to_i %>
-                  <%# break %>
-                <%# end %>
               <% end %>
               </tbody>
             </table>
