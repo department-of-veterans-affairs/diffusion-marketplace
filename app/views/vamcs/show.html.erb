@@ -21,7 +21,7 @@
             urban
             <% end %>
             <%= @vamc.fy17_parent_station_complexity_level %>
-            facility and serves veterans in <%= @vamc.mailing_address_city %>.  This facility opened in <%= @vamc.station_number_suffix_reservation_effective_date.to_s[0..3] %>.
+            facility and serves veterans in <%= @vamc.mailing_address_city %>.  <% unless @vamc.station_number_suffix_reservation_effective_date.blank? %>This facility opened in <%= @vamc.station_number_suffix_reservation_effective_date.to_s[0..3] %>.<% end %>
             <div class="desktop:margin-top-2 vamc-address">
               Address
             </div>
@@ -35,7 +35,11 @@
               <%= @vamc.street_address_city %>, <%= @vamc.street_address_state %> <%= @vamc.street_address_zip_code %>
             </div>
             <div class="desktop:margin-top-2">
-              <%= @vamc.station_phone_number %>
+              <% if @vamc.station_phone_number[-1, 1] == "x" %>
+                <%= @vamc.station_phone_number[0..@vamc.station_phone_number.length - 3] %>
+              <% else %>
+                <%= @vamc.station_phone_number %>
+              <% end %>
             </div>
           </div>
           <div id="map"></div>
