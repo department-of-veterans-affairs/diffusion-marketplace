@@ -123,12 +123,12 @@
               <tbody>
               <% @filtered_vamcs.each do |vamc| %>
                 <tr>
-                  <td><a href='/vamc/<%= vamc["id"] %>'><%= vamc["official_station_name"] %></a></td>
-                  <td><%= vamc["common_name"] %></td>
-                  <td><%= vamc["visn_number"] %></td>
-                  <td><%= vamc["fy17_parent_station_complexity_level"] %></td>
-                  <td><%= vamc["practices_created"] %></td>
-                  <td><%= vamc["adoptions"] %></td>
+                  <td width="30%"><a href='/vamc/<%= vamc["id"] %>'><%= vamc["official_station_name"] %></a></td>
+                  <td width="20%"><%= vamc["common_name"] %></td>
+                  <td width="10%"><%= vamc["visn_number"] %></td>
+                  <td width="10%"><%= vamc["fy17_parent_station_complexity_level"][0..1].upcase %></td>
+                  <td width="15%"><%= vamc["practices_created"] %></td>
+                  <td width="15%"><%= vamc["adoptions"] %></td>
                 </tr>
               <% end %>
               </tbody>
