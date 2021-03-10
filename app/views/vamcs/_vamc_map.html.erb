@@ -2,10 +2,10 @@
     // Initialize and add the map
     function initMap() {
         //default marker
-        var pinImage = new google.maps.MarkerImage('<%= image_path('map-marker-selected.svg') %>',
-            new google.maps.Size(29, 42),
-            new google.maps.Point(0,0),
-            new google.maps.Point(10, 34));
+<!--        var pinImage = new google.maps.MarkerImage('<%= image_path('map-marker-selected.svg') %>',-->
+<!--            new google.maps.Size(29, 42),-->
+<!--            new google.maps.Point(0,0),-->
+<!--            new google.maps.Point(10, 34));-->
 
         // The location of Uluru
         const uluru = { lat: <%= @vamc.latitude %>, lng: <%= @vamc.longitude %> };
@@ -19,7 +19,7 @@
         const marker = new google.maps.Marker({
             position: uluru,
             map: map,
-            icon: pinImage
+            //icon: pinImage
         });
     }
 </script>
