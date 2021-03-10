@@ -119,14 +119,13 @@ module PracticesHelper
 
 
   def fetch_bookmarks_by_practice(practice_id, duration = "30")
-    sql = "select count(*) as the_count from user_practices where practice_id = $1"
+    practice = Practice.find(practice_id)
+    bookmarked = practice.user_practices.where(favorited: true)
     if duration == "30"
-      sql += " and created_at >= $2"
-      records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{practice_id}"], [nil, "#{Time.now - duration.to_i.days}"]])
+      return bookmarked.where('time_favorited >= ?', 30.days.ago).count
     else
-      records_array = ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{practice_id}"]])
+      return bookmarked.count
     end
-    records_array.count
   end
 
   def fetch_adoptions_total_by_practice(practice_id, duration = "30", status = "")
