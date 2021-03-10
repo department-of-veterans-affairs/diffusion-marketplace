@@ -3,9 +3,32 @@ $(document).ready(function(){
 
     var resultsExist = document.getElementById ("toggle_by_facility");
     if(resultsExist){
-        resultsExist.addEventListener ("click", toggleByFacility, false);
+        resultsExist.addEventListener ("click", toggle_by_facility, false);
     }
 
+    resultsExist = document.getElementById ("toggle_by_common_name");
+    if(resultsExist){
+        resultsExist.addEventListener ("click", toggle_by_common_name, false);
+    }
+
+    resultsExist = document.getElementById ("toggle_by_visn");
+    if(resultsExist){
+        resultsExist.addEventListener ("click", toggle_by_visn, false);
+    }
+
+    resultsExist = document.getElementById ("toggle_by_type");
+    if(resultsExist){
+        resultsExist.addEventListener ("click", toggle_by_type, false);
+    }
+
+    resultsExist = document.getElementById ("toggle_by_practices_created");
+    if(resultsExist){
+        resultsExist.addEventListener ("click", toggle_by_practices_created, false);
+    }
+    resultsExist = document.getElementById ("toggle_by_adoptions");
+    if(resultsExist){
+        resultsExist.addEventListener ("click", toggle_by_adoptions, false);
+    }
     var loadMoreBtn = document.getElementById ("btn_vamc_directory_load_more");
     if(loadMoreBtn){
         loadMoreBtn.addEventListener ("click", loadMoreRecords, false);
@@ -67,10 +90,41 @@ $(document).ready(function(){
         return s;
     }
 
-    function toggleByFacility(){
+    function toggle_by_facility(){
+        let newUrl = addSortParams() + "facility";
+        window.location.href = newUrl;
+    }
+
+    function toggle_by_common_name(){
+        let newUrl = addSortParams() + "common_name";
+        window.location.href = newUrl;
+    }
+
+    function toggle_by_visn(){
+        let newUrl = addSortParams() + "visn";
+        window.location.href = newUrl;
+    }
+
+    function toggle_by_type(){
+        let newUrl = addSortParams() + "type";
+        window.location.href = newUrl;
+    }
+
+    function toggle_by_practices_created(){
+        let newUrl = addSortParams() + "practices_created";
+        window.location.href = newUrl;
+    }
+
+    function toggle_by_adoptions(){
+        let newUrl = addSortParams() + "adoptions";
+        window.location.href = newUrl;
+    }
+
+    function addSortParams(){
         var curUrl = window.location.href;
         var paramAsc = getParameterByName("asc", newUrl)
         var newUrl = removeParam("asc", curUrl);
+        newUrl = removeParam("sortby", newUrl);
         newUrl.includes("?") ? newUrl += "&" : newUrl += "?";
         newUrl += "asc=";
         if(paramAsc == null){
@@ -79,8 +133,12 @@ $(document).ready(function(){
         else{
             paramAsc == "true" ? newUrl += "false" : newUrl += "true";
         }
-        window.location.href = newUrl;
+        newUrl += "&sortby=";
+        return newUrl;
     }
+
+
+
     function removeParam(key, sourceURL) {
         var rtn = sourceURL.split("?")[0],
             param,

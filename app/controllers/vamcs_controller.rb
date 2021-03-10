@@ -2,13 +2,23 @@ class VamcsController < ApplicationController
   before_action :set_vamc, only: :show
   def index
     @num_recs = params[:more] || "20"
-    @vamcs = Vamc.get_all_vamcs
+    if params[:sortby].present?
+      @vamcs = Vamc.get_all_vamcs(params[:sortby])
+    else
+      @vamcs = Vamc.get_all_vamcs
+    end
+
     @visns = Vamc.get_visns
     @types = []
     all_types = Vamc.get_types
     all_types.each do |t|
       @types << t
     end
+    if params[:asc].present? && params[:asc] == "false"
+      @vamcs = @vamcs.reverse
+    end
+
+
     @filtered_vamcs= @vamcs
     #check params and filters...
     if params[:vamc].present?
@@ -26,9 +36,7 @@ class VamcsController < ApplicationController
       @filtered_vamcs = @filtered_vamcs.take(@num_recs.to_i)
     end
 
-    if params[:asc].present? && params[:asc] == "false"
-      @filtered_vamcs = @filtered_vamcs.reverse
-    end
+
   end
 
   def show
