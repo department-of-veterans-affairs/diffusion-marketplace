@@ -1,8 +1,9 @@
-<% last_updated = PracticeEditorSession.practice_last_updated(@practice.id) %>
-<% unless last_updated.blank? %>
+<% session = PracticeEditorSession.where(practice_id: @practice.id).where.not(session_end_time: nil).last %>
+<% if session.present? %>
   <div class="margin-y-2">
     <div class="text-base">
-      <%= last_updated %>
+      Practice last updated on
+      <%= get_local_date_and_time(session.session_end_time) %> by <%= session_username(session) %>
     </div>
   </div>
 <% end %>

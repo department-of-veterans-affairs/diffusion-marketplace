@@ -1,5 +1,5 @@
 class PracticesController < ApplicationController
-  include CropperUtils, PracticesHelper, PracticeEditorUtils, EditorSessionUtils
+  include CropperUtils, PracticesHelper, PracticeEditorUtils, EditorSessionUtils, PracticeEditorSessionsHelper
   before_action :set_practice, only: [:show, :edit, :update, :destroy, :highlight, :un_highlight, :feature,
                                       :un_feature, :favorite, :instructions, :overview, :impact, :resources, :documentation,
                                       :departments, :timeline, :risk_and_mitigation, :contact, :checklist, :publication_validation, :adoptions,
@@ -38,7 +38,6 @@ class PracticesController < ApplicationController
   # GET /practices/1
   # GET /practices/1.json
   def show
-    ahoy.track "Practice show", {practice_id: @practice.id} if current_user.present?
     # This allows comments thread to show up without the need to click a link
     commontator_thread_show(@practice)
 
@@ -549,10 +548,7 @@ class PracticesController < ApplicationController
     if @current_session.present? && @current_session.user === current_user
       PracticeEditorSession.extend_current_session(@current_session)
     else
-      msg = "You cannot edit this practice since it is currently being edited by #{@current_session.user.full_name === 'User' ? @current_session.user.email : @current_session.user.full_name}"
-      if @current_session.user.roles.find_by(name: 'admin').present?
-        msg += " (Site Admin)"
-      end
+      msg = "You cannot edit this practice since it is currently being edited by #{session_username(@current_session)}"
       render :js => "window.location = '#{practice_metrics_path(@practice)}'"
       flash[:warning] = msg
     end
@@ -594,10 +590,7 @@ class PracticesController < ApplicationController
       PracticeEditorSession.lock_practice_for_user(cur_user_id, @practice.id)
     else
       if @current_session.user != current_user
-        msg = "You cannot edit this practice since it is currently being edited by #{@current_session.user.full_name === 'User' ? @current_session.user.email : @current_session.user.full_name}"
-        if @current_session.user.roles.find_by(name: 'admin').present?
-          msg += " (Site Admin)"
-        end
+        msg = "You cannot edit this practice since it is currently being edited by #{session_username(@current_session)}"
         respond_to do |format|
           flash[:warning] = msg
           format.html { redirect_to practice_metrics_path(@practice), warning: msg }
