@@ -13,12 +13,18 @@
           <%= @vamc.official_station_name %>
         </h1>
         <div style="width: 100%; overflow: hidden;">
-          <div class="grid-col-6" style="float: left;"> This facility has created <%= @created_practices %> practices and has adopted <%= @adoptions %> practices.  It's a<% if @vamc.rurality == "U" %>n<% end %>
+          <div class="grid-col-6" style="float: left;"> This facility has created <%= @created_practices %> practices and has adopted <%= @adoptions %> practices.  It's a<% if @vamc.rurality == "U" || @vamc.rurality == "I" %>n<% end %>
             <% if @vamc.rurality == "R" %>
-            rural
+              rural
             <% end %>
             <% if @vamc.rurality == "U" %>
-            urban
+              urban
+            <% end %>
+            <% if @vamc.rurality == "H" %>
+              highly rural
+            <% end %>
+            <% if @vamc.rurality == "I" %>
+              isolated
             <% end %>
             <%= @vamc.fy17_parent_station_complexity_level %>
             facility and serves veterans in <%= @vamc.mailing_address_city %>.  <% unless @vamc.station_number_suffix_reservation_effective_date.blank? %>This facility opened in <%= @vamc.station_number_suffix_reservation_effective_date.to_s[0..3] %>.<% end %>
