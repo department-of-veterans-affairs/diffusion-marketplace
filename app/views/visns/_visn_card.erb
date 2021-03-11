@@ -1,17 +1,8 @@
 <div class="dm-visn-card grid-col-4">
-  <%= link_to visn_path(visn), 'aria-label': "Go to VISN #{visn.number}", 'tabindex': '-1', 'aria-hidden': 'true', class: 'visn-card-link' do %>
-    <div class="visn-card-text margin-bottom-3 padding-3 radius-md bg-white">
+  <%= link_to visn_path(visn), 'aria-label': "Go to VISN #{visn.number}", 'tabindex': '-1', 'aria-hidden': 'true', id: "visn-#{visn.number}-card-link", class: 'visn-card-link' do %>
+    <div class="visn-card-text margin-bottom-3 padding-top-2 padding-bottom-3 padding-x-3 radius-md bg-white">
       <p class="visn-name font-sans-lg line-height-25px margin-bottom-3">VISN <%= visn.number %></p>
-      <ul class="line-height-26 p0 x0 visn-data-ul">
-        <% visn_vamc_count = visn.vamcs.count %>
-        <li class="small-disc visn-vamc-count"><%= visn_vamc_count %> facilit<%= visn_vamc_count != 1 ? 'ies' : 'y' %></li>
-        <%
-          visn_created_practices_count = get_created_practices_count_by_visn(visn)
-          visn_adoption_count = get_adopted_practices_count_by_visn(visn)
-        %>
-        <li class="small-disc visn-practice-creations-count"><%= visn_created_practices_count %> practice<%= visn_created_practices_count != 1 ? 's' : '' %> created here</li>
-        <li class="small-disc visn-adoptions-count"><%= visn_adoption_count %> practice<%= visn_adoption_count != 1 ? 's' : '' %> adopted here</li>
-      </ul>
+      <%= render partial: 'visn_metadata_list', locals: { visn: visn, grid: true } %>
     </div>
   <% end %>
 </div>

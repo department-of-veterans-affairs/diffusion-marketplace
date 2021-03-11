@@ -1,6 +1,22 @@
 @import '../variables/colors';
 
 #visns-index {
+  .visn-modal-link {
+    text-decoration: none !important;
+
+    &:hover {
+      color: $dm-color-blue-70v !important;
+    }
+
+    &:active {
+      color: $dm-color-blue-80v !important;
+    }
+
+    &:visited {
+      color: $dm-color-blue-50v;
+    }
+  }
+
   .visn-card-link {
     text-decoration: none;
 
@@ -18,14 +34,25 @@
 
     &:hover {
       .visn-name {
-        text-decoration: underline;
+        text-decoration: none;
+        color: $dm-color-blue-70v !important;
+      }
+    }
+
+    &:active {
+      .visn-name {
+        color: $dm-color-blue-80v !important;
       }
     }
 
     &:visited {
       .visn-name {
-        color: $dm-default-visited-purple !important;
+        color: $dm-color-blue-50v;
       }
     }
+  }
+
+  .visn-marker-container {
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
   }
 }

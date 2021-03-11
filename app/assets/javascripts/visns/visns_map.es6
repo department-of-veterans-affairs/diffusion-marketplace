@@ -1,7 +1,7 @@
 function initialize() {
     const handler = Gmaps.build('Google', {
         builders: {
-            Marker: InfoBoxBuilder
+            Marker: VisnInfoBoxBuilder
         }, markers: {
             clusterer: null
         }
@@ -14,59 +14,32 @@ function initialize() {
     function setIcon(json, icon) {
         json.marker.getServiceObject().setIcon({
             url: icon,
-            scaledSize: new google.maps.Size(31, 54),
-            size: new google.maps.Size(31, 44)
+            scaledSize: new google.maps.Size(48, 64),
+            size: new google.maps.Size(48, 64)
         });
     }
 
     function clickCallback(json) {
-        if (json.id !== selectedMarker.id) {
-            if (selectedMarker.id) {
-                const prevSelected = dataMarkers.find(m => m.id === selectedMarker.id);
-                if (prevSelected.status.toLowerCase() === 'complete') {
-                    setIcon(prevSelected, defaultMarkerIcon);
-                } else if (prevSelected.status.toLowerCase() === 'in progress') {
-                    setIcon(prevSelected, defaultInProgressMarkerIcon);
-                } else {
-                    setIcon(prevSelected, defaultUnsuccessfulMarkerIcon);
-                }
+        if (json.number !== selectedMarker.number) {
+            if (selectedMarker.number) {
+                const prevSelected = dataMarkers.find(m => m.number === selectedMarker.number);
+                setIcon(prevSelected, defaultVisnMarkerIcon);
             }
+
             selectedMarker = json;
-
-            if (json.status.toLowerCase() === 'complete') {
-                setIcon(json, selectedMarkerIcon);
-            } else if (json.status.toLowerCase() === 'in progress') {
-                setIcon(json, selectedInProgressMarkerIcon);
-            } else {
-                setIcon(json, selectedUnsuccessfulMarkerIcon);
-            }
-
-            $('#filterResultsTrigger').show();
-            $('#filterResults').hide();
+            setIcon(json, selectedVisnMarkerIcon);
         }
     }
 
     function mouseoverCallback(json) {
-        if (json.id !== selectedMarker.id) {
-            if (json.status.toLowerCase() === 'complete') {
-                setIcon(json, hoverMarkerIcon);
-            } else if (json.status.toLowerCase() === 'in progress') {
-                setIcon(json, hoverInProgressMarkerIcon);
-            } else {
-                setIcon(json, hoverUnsuccessfulMarkerIcon);
-            }
+        if (json.number !== selectedMarker.number) {
+            setIcon(json, hoverVisnMarkerIcon);
         }
     }
 
     function mouseoutCallback(json) {
-        if (json.id !== selectedMarker.id) {
-            if (json.status.toLowerCase() === 'complete') {
-                setIcon(json, defaultMarkerIcon);
-            } else if (json.status.toLowerCase() === 'in progress') {
-                setIcon(json, defaultInProgressMarkerIcon);
-            } else {
-                setIcon(json, defaultUnsuccessfulMarkerIcon);
-            }
+        if (json.number !== selectedMarker.number) {
+            setIcon(json, defaultVisnMarkerIcon);
         }
     }
 
@@ -83,23 +56,17 @@ function initialize() {
     }
 
     function closeInfoWindow() {
-        if (selectedMarker.id) {
-            const json = dataMarkers.find(dm => dm.id === selectedMarker.id);
+        if (selectedMarker.number) {
+            const json = dataMarkers.find(dm => dm.number === selectedMarker.number);
             json.marker.infowindow.close();
-            if (json.status.toLowerCase() === 'complete') {
-                setIcon(json, defaultMarkerIcon);
-            } else if (json.status.toLowerCase() === 'in progress') {
-                setIcon(json, defaultInProgressMarkerIcon);
-            } else {
-                setIcon(json, defaultUnsuccessfulMarkerIcon);
-            }
+            setIcon(json, defaultVisnMarkerIcon);
             selectedMarker = {};
         }
     }
 
     handler.buildMap({
             provider: {
-                zoom: 4.45,
+                zoom: 4,
                 center: {lat: 38.928865, lng:  -95.795342},
                 zoomControlOptions: {
                     position: google.maps.ControlPosition.TOP_RIGHT
