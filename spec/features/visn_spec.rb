@@ -125,6 +125,14 @@ describe 'VISN pages', type: :feature do
     page.driver.browser.switch_to.window(window.last)
   end
 
+  def expect_metadata(element)
+    within(:css, element) do
+      expect(find('.visn-vamc-count').text).to eq('1 facility')
+      expect(find('.visn-practice-creations-count').text).to eq('0 practices created here')
+      expect(find('.visn-adoptions-count').text).to eq('0 practices adopted here')
+    end
+  end
+
   describe 'index page' do
     before do
       visit '/visn'
@@ -142,6 +150,12 @@ describe 'VISN pages', type: :feature do
 
       it 'should be there with the correct amount of markers' do
         expect(@markers.count).to eq(2)
+      end
+
+      it 'should show metadata for each visn' do
+        @markers.last.click
+
+        expect_metadata('#visn-5-marker-modal')
       end
 
       it 'should allow the user to visit a visn\'s show page via clicking on a visn link within a marker modal' do
@@ -165,11 +179,7 @@ describe 'VISN pages', type: :feature do
       end
 
       it 'should show metadata for each visn' do
-        within(:css, '#visn-2-card-link') do
-          expect(find('.visn-vamc-count').text).to eq('1 facility')
-          expect(find('.visn-practice-creations-count').text).to eq('0 practices created here')
-          expect(find('.visn-adoptions-count').text).to eq('0 practices adopted here')
-        end
+        expect_metadata('#visn-2-card-link')
       end
 
       it 'should allow the user to visit a visn\'s show page via clicking on a visn card' do

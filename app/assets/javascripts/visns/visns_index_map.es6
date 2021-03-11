@@ -64,6 +64,19 @@ function initialize() {
         }
     }
 
+    function changeMarkerIconOnInfoWindowClose() {
+        // When a user clicks on the close button for a marker modal, change the marker icon back to the default color
+        $(document).arrive("img[src='http://www.google.com/intl/en_us/mapfiles/close.gif']", function(newElem) {
+            $(newElem).on('click', function() {
+                if (selectedMarker.number) {
+                    const json = dataMarkers.find(dm => dm.number === selectedMarker.number);
+                    setIcon(json, defaultVisnMarkerIcon);
+                    selectedMarker = {};
+                }
+            });
+        });
+    }
+
     handler.buildMap({
             provider: {
                 zoom: 4,
@@ -75,7 +88,7 @@ function initialize() {
                 mapTypeControl: false,
                 streetViewControl: false
             },
-            internal: {id: 'map'},
+            internal: {id: 'visn-index-map'},
             markers: {
                 options: {
                     rich_marker: true
@@ -92,5 +105,9 @@ function initialize() {
 
     google.maps.event.addListener(handler.getMap(), 'click', function () {
         closeInfoWindow();
+    });
+
+    google.maps.event.addListener(handler.getMap(), 'tilesloaded', function () {
+        changeMarkerIconOnInfoWindowClose();
     });
 }

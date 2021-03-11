@@ -1,10 +1,46 @@
 class VisnsController < ApplicationController
   before_action :set_visn, only: :show
+  before_action :set_visn_coordinates, only: :index
 
   def index
     @visns = Visn.cached_visns
 
-    visn_coordinates = [
+    @visn_markers = Gmaps4rails.build_markers(@visns) do |visn, marker|
+
+      current_visn = @visn_coordinates.find { |vc| vc[:number] == visn.number }
+
+      marker.lat current_visn[:latitude]
+      marker.lng current_visn[:longitude]
+
+      marker.picture({
+                       url: view_context.image_path('visn-map-marker-default.svg'),
+                       width: 48,
+                       height: 64,
+                       scaledWidth: 48,
+                       scaledHeight: 64
+                     })
+
+      marker.shadow nil
+      marker.json({
+                    number: current_visn[:number]
+                  })
+
+      marker.infowindow render_to_string(partial: 'visns/maps/infowindow', locals: { visn: visn })
+    end
+  end
+
+  def show
+  end
+
+  private
+
+  def set_visn
+    # use find_by! in order to throw an exception if a visn with the number param does not exist
+    @visn = Visn.find_by!(number: params[:number])
+  end
+
+  def set_visn_coordinates
+    @visn_coordinates = [
       {"number": 1, "latitude": "44.038318", "longitude": "-70.812705"},
       {"number": 2, "latitude": "43.339237", "longitude": "-74.946322"},
       {"number": 4, "latitude": "40.587924", "longitude": "-79.398574"},
@@ -24,39 +60,6 @@ class VisnsController < ApplicationController
       {"number": 22, "latitude": "34.335098", "longitude": "-109.141066"},
       {"number": 23, "latitude": "44.481282", "longitude": "-96.695541"}
     ]
-
-    @visn_markers = Gmaps4rails.build_markers(@visns) do |visn, marker|
-
-      current_visn = visn_coordinates.find { |vc| vc[:number] == visn.number }
-
-      marker.lat current_visn[:latitude]
-      marker.lng current_visn[:longitude]
-
-      marker.picture({
-                       url: view_context.image_path('visn-map-marker-default.svg'),
-                       width: 48,
-                       height: 64,
-                       scaledWidth: 48,
-                       scaledHeight: 64
-                     })
-
-      marker.shadow nil
-      marker.json({
-                    number: current_visn[:number]
-                  })
-
-      marker.infowindow render_to_string(partial: 'visns/map/infowindow', locals: { visn: visn })
-    end
-  end
-
-  def show
-  end
-
-  private
-
-  def set_visn
-    # use find_by! in order to throw an exception if a visn with the number param does not exist
-    @visn = Visn.find_by!(number: params[:number])
   end
 
 end
