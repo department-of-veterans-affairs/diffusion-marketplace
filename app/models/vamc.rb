@@ -6,7 +6,11 @@ class Vamc < ApplicationRecord
   belongs_to :visn
 
   def self.get_practices_created_by_vamc(station_number)
-    PracticeOriginFacility.where(facility_id: station_number).count
+    #Practice.joins("join practice_origin_facilities on practice_origin_facilities.practice_id = practice.id WHERE practice_origin_facilities.station_number = '#{station_number}';").to_a
+
+    #PracticeOriginFacility.where(facility_id: station_number)
+    sql = "select p.* from practices p join practice_origin_facilities pof on pof.practice_id = p.id where pof.facility_id = '#{station_number}'";
+    ActiveRecord::Base.connection.execute(sql)
   end
 
   def self.get_adoptions_by_vamc(station_number)
