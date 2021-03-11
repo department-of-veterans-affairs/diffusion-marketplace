@@ -4,7 +4,7 @@
     <% @vamcs.each do |va| %>
       <option value=<%= va["id"] %>
           <% if params[:vamc].present? && va["id"] == params[:vamc].to_i%>
-            selected="selected"
+            selected
           <% end %>
       >
         <%= va["official_station_name"].to_s + ' (' + va["common_name"].to_s + ')' %>

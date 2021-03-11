@@ -1,7 +1,5 @@
 $(document).ready(function(){
-    var asc = false;
-
-    var resultsExist = document.getElementById ("toggle_by_facility");
+    let resultsExist = document.getElementById ("toggle_by_facility");
     if(resultsExist){
         resultsExist.addEventListener ("click", toggle_by_facility, false);
     }
@@ -29,7 +27,7 @@ $(document).ready(function(){
     if(resultsExist){
         resultsExist.addEventListener ("click", toggle_by_adoptions, false);
     }
-    var loadMoreBtn = document.getElementById ("btn_vamc_directory_load_more");
+    let loadMoreBtn = document.getElementById ("btn_vamc_directory_load_more");
     if(loadMoreBtn){
         loadMoreBtn.addEventListener ("click", loadMoreRecords, false);
     }
@@ -39,7 +37,7 @@ $(document).ready(function(){
         //set VISN and TYPE filters back to - Select
         document.getElementById('vamc_directory_visn_select').value = '- Select -';
         document.getElementById('vamc_type_select').value = '- Select -';
-        var curUrl = window.location.href;
+        let curUrl = window.location.href;
         let vamcId = e.target.options[e.target.selectedIndex].value;
         curUrl = stripQsParams(curUrl);
         let newUrl = `${curUrl}?vamc=${vamcId}`;
@@ -47,13 +45,14 @@ $(document).ready(function(){
     });
 
     $("#vamc_directory_visn_select").change (function(e) {
+        debugger
         document.getElementById('vamc_directory_select').value = '';
         let type =  document.getElementById('vamc_type_select').value;
-        var curUrl = window.location.href;
+        let curUrl = window.location.href;
         let visnId = e.target.options[e.target.selectedIndex].value;
-        var isDefault = visnId.length == 0 ? true : false;
+        let isDefault = visnId.length == 0 ? true : false;
         curUrl = stripQsParams(curUrl);
-        var newUrl = curUrl;
+        let newUrl = curUrl;
         if(!isDefault){
             newUrl = `?visn=${visnId}`;
         }
@@ -71,7 +70,7 @@ $(document).ready(function(){
         var isDefault = type == "- Select -" ? true : false;
         let visnId =  document.getElementById('vamc_directory_visn_select').value;
         curUrl = stripQsParams(curUrl);
-        var newUrl = curUrl;
+        let newUrl = curUrl;
         if (!isDefault){
             newUrl = `?type=${type}`;
         }
@@ -121,9 +120,9 @@ $(document).ready(function(){
     }
 
     function addSortParams(){
-        var curUrl = window.location.href;
-        var paramAsc = getParameterByName("asc", newUrl)
-        var newUrl = removeParam("asc", curUrl);
+        let curUrl = window.location.href;
+        let paramAsc = getParameterByName("asc", newUrl)
+        let newUrl = removeParam("asc", curUrl);
         newUrl = removeParam("sortby", newUrl);
         newUrl.includes("?") ? newUrl += "&" : newUrl += "?";
         newUrl += "asc=";
@@ -140,7 +139,7 @@ $(document).ready(function(){
 
 
     function removeParam(key, sourceURL) {
-        var rtn = sourceURL.split("?")[0],
+        let rtn = sourceURL.split("?")[0],
             param,
             params_arr = [],
             queryString = (sourceURL.indexOf("?") !== -1) ? sourceURL.split("?")[1] : "";
@@ -159,7 +158,7 @@ $(document).ready(function(){
 
     function getParameterByName(name, url = window.location.href) {
         name = name.replace(/[\[\]]/g, '\\$&');
-        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        let regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
             results = regex.exec(url);
         if (!results) return null;
         if (!results[2]) return '';

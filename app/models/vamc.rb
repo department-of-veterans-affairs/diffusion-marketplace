@@ -5,6 +5,14 @@ class Vamc < ApplicationRecord
 
   belongs_to :visn
 
+  def self.get_practices_created_by_vamc(station_number)
+    PracticeOriginFacility.where(facility_id: station_number).count
+  end
+
+  def self.get_adoptions_by_vamc(station_number)
+    DiffusionHistory.where(facility_id: station_number).count
+  end
+
   def self.get_all_vamcs(order_by = "facility")
     sql = "select va.id, va.visn_id, va.station_number, va.common_name, va.official_station_name, va.fy17_parent_station_complexity_level, vi.number as visn_number, "
     sql += "(select count(*) from practice_origin_facilities p where p.facility_id = va.station_number) practices_created, "
