@@ -1,0 +1,10 @@
+<div class="margin-top-1 margin-bottom-2 desktop:margin-y-0">
+  <select id="<%= vamc_category_selector %>" class="usa-select" name="<%= vamc_category_selector %>">
+    <option value>All categories</option>
+    <% @categories.each do |c| %>
+      <option value=<%= c.id %>>
+        <%= c.name %>
+      </option>
+    <% end %>
+  </select>
+</div>

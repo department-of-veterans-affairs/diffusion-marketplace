@@ -45,8 +45,7 @@ $(document).ready(function(){
     });
 
     $("#vamc_directory_visn_select").change (function(e) {
-        debugger
-        document.getElementById('vamc_directory_select').value = '';
+        //document.getElementById('vamc_directory_select').value = '';
         let type =  document.getElementById('vamc_type_select').value;
         let curUrl = window.location.href;
         let visnId = e.target.options[e.target.selectedIndex].value;
@@ -64,7 +63,7 @@ $(document).ready(function(){
     });
 
     $("#vamc_type_select").change (function(e) {
-        document.getElementById('vamc_directory_select').value = '';
+        //document.getElementById('vamc_directory_select').value = '';
         var curUrl = window.location.href;
         let type = this.options[e.target.selectedIndex].text;
         var isDefault = type == "- Select -" ? true : false;

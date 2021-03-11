@@ -13,6 +13,10 @@ class Vamc < ApplicationRecord
     DiffusionHistory.where(facility_id: station_number).count
   end
 
+  def self.get_categories
+    Category.all.order('name')
+  end
+
   def self.get_all_vamcs(order_by = "facility")
     sql = "select va.id, va.visn_id, va.station_number, va.common_name, va.official_station_name, va.fy17_parent_station_complexity_level, vi.number as visn_number, "
     sql += "(select count(*) from practice_origin_facilities p where p.facility_id = va.station_number) practices_created, "

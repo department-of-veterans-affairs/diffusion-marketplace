@@ -42,6 +42,7 @@ class VamcsController < ApplicationController
   def show
     @created_practices = Vamc.get_practices_created_by_vamc(@vamc.station_number)
     @adoptions = Vamc.get_adoptions_by_vamc(@vamc.station_number)
+    @categories = Vamc.get_categories
   end
 
 
