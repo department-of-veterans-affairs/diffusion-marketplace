@@ -1264,6 +1264,13 @@ ActiveRecord::Schema.define(version: 2021_02_17_223013) do
   create_table "visns", force: :cascade do |t|
     t.string "name"
     t.integer "number"
+    t.string "street_address"
+    t.string "city"
+    t.string "state"
+    t.string "zip_code"
+    t.decimal "latitude", precision: 11, scale: 8
+    t.decimal "longitude", precision: 11, scale: 8
+    t.string "phone_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

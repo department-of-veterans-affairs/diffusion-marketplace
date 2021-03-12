@@ -48,6 +48,12 @@ function initialize() {
             json.marker = markers[index];
             const serviceObj = json.marker.getServiceObject();
 
+            serviceObj.label = {
+                color: '#FFFFFF',
+                text: `${json.number}`,
+                fontFamily: 'Open Sans'
+            };
+
             google.maps.event.addListener(serviceObj, 'click', clickCallback.bind(this, json));
             google.maps.event.addListener(serviceObj, 'mouseover', mouseoverCallback.bind(this, json));
             google.maps.event.addListener(serviceObj, 'mouseout', mouseoutCallback.bind(this, json));
