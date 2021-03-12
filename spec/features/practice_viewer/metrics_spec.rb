@@ -9,14 +9,15 @@ describe 'Metrics section', type: :feature, js: true do
     @practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: 'test@va.gov', user: @admin)
     @practice_partner = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative', icon: 'fas fa-heart', color: '#E4A002')
     @practice_email = PracticeEmail.create!(practice: @practice, address: 'test2@va.gov')
+    login_as(@admin, :scope => :user, :run_callbacks => false)
+    visit practice_metrics_path(@practice)
   end
 
   describe 'Authorization' do
     before do
-      login_as(@admin, :scope => :user, :run_callbacks => false)
-      visit practice_metrics_path(@practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
     end
+
     it 'Should allow authenticated users to view metrics' do
       # Login as an authenticated user and visit the practice page
       login_as(@user1, :scope => :user, :run_callbacks => false)
@@ -43,6 +44,39 @@ describe 'Metrics section', type: :feature, js: true do
       expect(page).to have_content('Practice last updated on')
       space = " "
       expect(page).to have_content("#{@user1.first_name}#{space}#{@user1.last_name}")
+    end
+  end
+
+  describe 'Bookmark counts' do
+    before do
+      UserPractice.create(user: @user1, practice: @practice, favorited: true, time_favorited: DateTime.now - 60.days)
+      UserPractice.create(user: @user2, practice: @practice, favorited: true, time_favorited: DateTime.now - 60.days)
+    end
+
+    it 'should display the correct number of bookmarks' do
+      within(:css, '.dm-metrics-overall-stats') do
+        bookmark_ct = find_all('td[style="font-size: 32px"]')[2].text
+        expect(bookmark_ct).to eq("0")
+      end
+      select 'all time', from: 'metrics_duration'
+      within(:css, '.dm-metrics-overall-stats') do
+        bookmark_ct = find_all('td[style="font-size: 32px"]')[2].text
+        expect(bookmark_ct).to eq("2")
+      end
+
+      visit practice_path(@practice)
+      click_link 'Bookmark'
+      click_link 'Edit practice'
+
+      within(:css, '.dm-metrics-overall-stats') do
+        bookmark_ct = find_all('td[style="font-size: 32px"]')[2].text
+        expect(bookmark_ct).to eq("1")
+      end
+      select 'all time', from: 'metrics_duration'
+      within(:css, '.dm-metrics-overall-stats') do
+        bookmark_ct = find_all('td[style="font-size: 32px"]')[2].text
+        expect(bookmark_ct).to eq("3")
+      end
     end
   end
 end
