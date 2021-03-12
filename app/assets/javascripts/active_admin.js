@@ -6,10 +6,10 @@
 //= require activeadmin/quill_editor_input
 (function () {
   var PANEL_TOOLTIPS = {
-    "dm-new-users-this-month":
-      "Number of first time visitors to the site this month",
     "dm-new-users-by-month":
-      "Number of first time visitors to the site each month",
+      "Number of first time visitors to the site by month",
+    "dm-user-visits-by-month":
+      "Number of unique user visits to the site by month",
     "dm-practice-views-leaderboard":
       "Most to least number of practice page views sorted by practice with the most views this month",
     "dm-custom-page-traffic":

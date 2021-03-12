@@ -1,0 +1,23 @@
+@import "../variables/colors";
+
+#dm-practice-nav {
+  a {
+    &#publish-practice-button {
+      padding: 0.75rem 0 !important;
+      font-weight: bold;
+      color: $dm-color-white;
+
+      &:visited {
+        background-color: $dm-color-blue-50v;
+      }
+
+      &:hover {
+        background-color: $dm-color-blue-70v !important;
+      }
+
+      &:active {
+        background-color: $dm-color-blue-80v !important;
+      }
+    }
+  }
+}

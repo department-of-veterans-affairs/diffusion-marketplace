@@ -4,20 +4,21 @@
 ### Environments:
 | Environment  | url  |
 |---|---|
-| development  | http://localhost:3200  |  
-| ftl staging  | http://va-diffusion-marketplace-staging.efgnfj8pjn.us-west-2.elasticbeanstalk.com/  |  
+| development  | http://localhost:3200  |
+| ftl staging  | http://va-diffusion-marketplace-staging.efgnfj8pjn.us-west-2.elasticbeanstalk.com/  |
 | ftl production | https://marketplace.vaftl.us |
+| vaec development | https://dev.marketplace.va.gov |
 | vaec staging | https://staging.marketplace.va.gov |
 | vaec production | https://marketplace.va.gov |
 ### Custom Rails Tasks:
 | Task command  | description  |
 |---|---|
-| `rails dm:db_setup` |  Set up database. Runs `rails db:create` `rails db:migrate` `rails db:seed`  |  
-| `rails dm:full_import` | Set up data using the full flow of the importer  |  
-| `rails dm:reset_up` | Re-sets up database and imports all data from the full flow of the importer  |  
-| `rails importer:import_answers` | import an xlsx and create practices  | 
-| `rails importer:initial_featured` | sets up the "original" featured practices to show up on the landing page - depends on spreadsheet being imported | 
-| `rails surveymonkey:download_response_files` (DEPRECATED) | Rake task to download files from our SurveyMonkey practice submission form. **Do not use this anymore. Ever.**  | 
+| `rails dm:db_setup` |  Set up database. Runs `rails db:create` `rails db:migrate` `rails db:seed`  |
+| `rails dm:full_import` | Set up data using the full flow of the importer  |
+| `rails dm:reset_up` | Re-sets up database and imports all data from the full flow of the importer  |
+| `rails importer:import_answers` | import an xlsx and create practices  |
+| `rails importer:initial_featured` | sets up the "original" featured practices to show up on the landing page - depends on spreadsheet being imported |
+| `rails surveymonkey:download_response_files` (DEPRECATED) | Rake task to download files from our SurveyMonkey practice submission form. **Do not use this anymore. Ever.**  |
 | `rails diffusion_history:all`| Imports all of the diffusion history we have so far for practices - used to populate the geolocation feature (Practice <-> Facility mappings) |
 | `rails milestones:milestones_transfer` | Transfers all of the original timeline entry milestones to the new milestone model  |
 | `rails go_fish_practices:assign_go_fish_badge` | Assigns the Go Fish badge to all Go Fish practices  |
@@ -58,11 +59,11 @@
   - OSX: if you have Homebrew: `brew install redis`
   - Windows: https://github.com/dmajkic/redis/downloads
   - ubuntu: https://tecadmin.net/install-redis-ubuntu/
-    - you probably don't need the php extension 
+    - you probably don't need the php extension
 
 #### Configuration
 
-Check out `database.yml` to change the `username`/`password` for the database user. 
+Check out `database.yml` to change the `username`/`password` for the database user.
 Be sure to create that user/role in the local postgres instance
 
 #### Development Environment Variables
