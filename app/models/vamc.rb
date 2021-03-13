@@ -6,11 +6,15 @@ class Vamc < ApplicationRecord
   belongs_to :visn
 
   def self.get_practices_created_by_vamc(station_number)
-    #Practice.joins("join practice_origin_facilities on practice_origin_facilities.practice_id = practice.id WHERE practice_origin_facilities.station_number = '#{station_number}';").to_a
-
-    #PracticeOriginFacility.where(facility_id: station_number)
     sql = "select p.* from practices p join practice_origin_facilities pof on pof.practice_id = p.id where pof.facility_id = '#{station_number}'";
-    ActiveRecord::Base.connection.execute(sql)
+    results =  ActiveRecord::Base.connection.execute(sql)
+    fields = results.fields
+     results.values.map { |value_set|
+      hash = Hash[fields.zip(value_set)]
+      model = Practice.new(hash)
+      model.instance_variable_set :@new_record, false
+      model
+     }
   end
 
   def self.get_adoptions_by_vamc(station_number)
@@ -39,8 +43,8 @@ class Vamc < ApplicationRecord
     elsif order_by == "adoptions"
       sql += "order by adoptions;"
     end
-
-    ActiveRecord::Base.connection.execute(sql).to_a
+    ActiveRecord::Base.connection.exec_query(sql)
+      #ActiveRecord::Base.connection.execute(sql).to_a
   end
 
   def self.get_visns

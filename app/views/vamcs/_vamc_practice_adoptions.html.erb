@@ -1,0 +1,29 @@
+<h1 class="font-sans-2x1 desktop:margin-top-5 desktop:margin-bottom-3">
+  Practices adopted at this VAMC
+</h1>
+<div style="width: 100%; overflow: hidden;">
+  <div class="usa-search margin-bottom-2 vamc-search-field">
+    <div role="search" class="flex-column">
+      <label for="dm-practice-search-field"></label>
+      <div id="search-bar-container" class="display-flex">
+        <input class="usa-input" id="dm-practice-search-field" title="Type at least three characters to search." autocomplete="off" type="search" name="search">
+        <button id="dm-practice-search-button" class="usa-button" type="submit" name="search-button">
+          <span class="usa-search__submit-text text-bold">Search</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="vamc-category-select desktop:margin-bottom-3">
+    <%= render partial: 'vamcs/vamc_categories_combo_box', locals: {vamc_category_selector: 'vamc_category_select_adoptions'} %>
+  </div>
+</div>
+<div style="width: 100%; overflow: hidden;">
+  <div class="usa-search margin-bottom-2 vamc-search-field">
+    # results:
+  </div>
+  <div class="vamc-category-select">
+  </div>
+</div>
+<div class="grid-col-12">
+
+</div>
