@@ -41,13 +41,10 @@
         <% end %>
       </div>
     <% end %>
-    <div class="grid-row dm-load-more-container padding-top-2">
-      <%# if @pagy_info.next %>
-        <%#= button_tag "Load more", type: 'button', class: "usa-button--outline dm-btn-base dm-load-more-btn width-auto", data: { next: @pagy_info.next } %>
-      <%# end %>
-    </div>
-    <div align="center" class="desktop:margin-bottom-3">
-      <%= button_tag "Load more", num_recs: @num_recs, type: 'button', id: "btn_vamc_directory_load_more", class: "usa-button--outline dm-btn-base dm-load-more-btn width-auto" %>
-    </div>
+    <% if @created_practices_count < @practice_results_count %>
+      <div align="center" class="desktop:margin-bottom-3">
+        <%= button_tag "Load more", num_practice_recs: @num_practice_recs, type: 'button', id: "btn_vamc_show_page_load_more", class: "usa-button--outline dm-btn-base dm-load-more-btn width-auto" %>
+      </div>
+    <% end %>
   </div>
 </div>

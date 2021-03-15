@@ -32,6 +32,11 @@ $(document).ready(function(){
         loadMoreBtn.addEventListener ("click", loadMoreRecords, false);
     }
 
+    let loadMorePracticesBtn = document.getElementById ("btn_vamc_show_page_load_more");
+    if(loadMorePracticesBtn){
+        loadMorePracticesBtn.addEventListener ("click", loadMorePractices, false);
+    }
+
 
     $("#vamc_directory_select").change (function(e) {
         //set VISN and TYPE filters back to - Select
@@ -173,6 +178,19 @@ $(document).ready(function(){
         let newUrl = removeParam("more", curUrl);
         newUrl.includes("?") ? newUrl += "&" : newUrl += "?";
         newUrl += `more=${numRecs}`;
+        window.location.href = newUrl;
+    }
+
+    function loadMorePractices(){
+        debugger
+        let btn = document.getElementById("btn_vamc_show_page_load_more");
+        let numPracticeRecs = parseInt(btn.getAttribute("num_practice_recs"));
+        numPracticeRecs += 3;
+        let curUrl = window.location.href;
+        let paramMore = getParameterByName("more", newUrl)
+        let newUrl = removeParam("more", curUrl);
+        newUrl.includes("?") ? newUrl += "&" : newUrl += "?";
+        newUrl += `practices=${numPracticeRecs}`;
         window.location.href = newUrl;
     }
 

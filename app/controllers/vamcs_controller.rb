@@ -40,7 +40,12 @@ class VamcsController < ApplicationController
   end
 
   def show
+    @num_practice_recs = params[:practices] || "3"
     @created_practices = Vamc.get_practices_created_by_vamc(@vamc.station_number)
+    @practice_results_count = @created_practices.count
+
+
+    @created_practices = @created_practices.take(@num_practice_recs.to_i)
     @created_practices_count = @created_practices.count
     @adoptions = Vamc.get_adoptions_by_vamc(@vamc.station_number)
     @categories = Vamc.get_categories
