@@ -307,8 +307,8 @@
       "city": "Bedford",
       "state": "MA",
       "zip_code": "01730",
-      "latitude": "42.504070",
-      "longitude": "-71.275330",
+      "latitude": "42.507380",
+      "longitude": "-71.275534",
       "phone_number": "781-687-4821"
     },
     {
@@ -319,8 +319,8 @@
       "city": "Bronx",
       "state": "NY",
       "zip_code": "10468",
-      "latitude": "40.867481",
-      "longitude": "-73.898331",
+      "latitude": "40.867622",
+      "longitude": "-73.906372",
       "phone_number": "718-741-4134"
     },
     {
@@ -331,8 +331,8 @@
       "city": "Pittsburgh",
       "state": "PA",
       "zip_code": "15215",
-      "latitude": "40.498032",
-      "longitude": "-79.889557",
+      "latitude": "40.494436",
+      "longitude": "-79.888479",
       "phone_number": "412-822-3316"
     },
     {
@@ -343,8 +343,8 @@
       "city": "Linthicum",
       "state": "MD",
       "zip_code": "21090",
-      "latitude": "39.206219",
-      "longitude": "-76.673843",
+      "latitude": "39.205863",
+      "longitude": "-76.672969",
       "phone_number": "410-691-1131"
     },
     {
@@ -355,8 +355,8 @@
       "city": "Durham",
       "state": "NC",
       "zip_code": "27707",
-      "latitude": "35.963779",
-      "longitude": "-78.960762",
+      "latitude": "35.963796",
+      "longitude": "-78.960694",
       "phone_number": "919-956-5541"
     },
     {
@@ -367,8 +367,8 @@
       "city": "Duluth",
       "state": "GA",
       "zip_code": "30096",
-      "latitude": "33.946605",
-      "longitude": "-84.129440",
+      "latitude": "33.945946",
+      "longitude": "-84.128073",
       "phone_number": "678-924-5700"
     },
     {
@@ -379,8 +379,8 @@
       "city": "St. Petersburg",
       "state": "FL",
       "zip_code": "33716",
-      "latitude": "27.890321",
-      "longitude": "-82.660553",
+      "latitude": "27.892280",
+      "longitude": "-82.656235",
       "phone_number": "727-575-8069"
     },
     {
@@ -391,8 +391,8 @@
       "city": "Nashville",
       "state": "TN",
       "zip_code": "37203",
-      "latitude": "36.153095",
-      "longitude": "-86.795814",
+      "latitude": "36.152716",
+      "longitude": "-86.796089",
       "phone_number": "615-695-2200"
     },
     {
@@ -403,8 +403,8 @@
       "city": "Cincinnati",
       "state": "OH",
       "zip_code": "45249",
-      "latitude": "39.276234",
-      "longitude": "-84.347218",
+      "latitude": "39.275373",
+      "longitude": "-84.347703",
       "phone_number": "513-247-4610"
     },
     {
@@ -415,8 +415,8 @@
       "city": "Westchester",
       "state": "IL",
       "zip_code": "60154",
-      "latitude": "41.848176",
-      "longitude": "-87.903095",
+      "latitude": "41.846910",
+      "longitude": "-87.905130",
       "phone_number": "708-492-3900"
     },
     {
@@ -427,8 +427,8 @@
       "city": "Kansas City",
       "state": "MO",
       "zip_code": "64106",
-      "latitude": "39.099757",
-      "longitude": "-94.581972",
+      "latitude": "39.099796",
+      "longitude": "-94.581732",
       "phone_number": "816-701-3002"
     },
     {
@@ -439,8 +439,8 @@
       "city": "Ridgeland",
       "state": "MS",
       "zip_code": "39157",
-      "latitude": "32.403422",
-      "longitude": "-90.123611",
+      "latitude": "32.405493",
+      "longitude": "-90.125014",
       "phone_number": "601-206-6900"
     },
     {
@@ -451,8 +451,8 @@
       "city": "Arlington",
       "state": "TX",
       "zip_code": "76006",
-      "latitude": "32.761640",
-      "longitude": "-97.072166",
+      "latitude": "32.762672",
+      "longitude": "-97.068927",
       "phone_number": "817-652-1111"
     },
     {
@@ -463,8 +463,8 @@
       "city": "Glendale",
       "state": "CO",
       "zip_code": "80246",
-      "latitude": "39.696203",
-      "longitude": "-104.938861",
+      "latitude": "39.696223",
+      "longitude": "-104.938850",
       "phone_number": "303-202-8165"
     },
     {
@@ -475,8 +475,8 @@
       "city": "Vancouver",
       "state": "WA",
       "zip_code": "98661",
-      "latitude": "45.639157",
-      "longitude": "-122.658105",
+      "latitude": "45.639180",
+      "longitude": "-122.658137",
       "phone_number": "360-619-5925"
     },
     {
@@ -487,8 +487,8 @@
       "city": "Pleasant Hill",
       "state": "CA",
       "zip_code": "94523",
-      "latitude": "37.960834",
-      "longitude": "-122.070673",
+      "latitude": "37.960893",
+      "longitude": "-122.070705",
       "phone_number": "916-923-4530"
     },
     {
@@ -499,8 +499,8 @@
       "city": "Long Beach",
       "state": "CA",
       "zip_code": "90802",
-      "latitude": "33.766686",
-      "longitude": "-118.200342",
+      "latitude": "33.766677",
+      "longitude": "-118.200375",
       "phone_number": "562-826-5963"
     },
     {
@@ -511,8 +511,8 @@
       "city": "Eagan",
       "state": "MN",
       "zip_code": "55121",
-      "latitude": "44.855160",
-      "longitude": "-93.130503",
+      "latitude": "44.855145",
+      "longitude": "-93.130460",
       "phone_number": "651-405-5600"
     }
   ]
