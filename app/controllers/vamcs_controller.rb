@@ -15,7 +15,7 @@ class VamcsController < ApplicationController
       @types << t
     end
     if params[:asc].present? && params[:asc] == "false"
-      @vamcs = @vamcs.reverse
+      @vamcs = @vamcs.to_a.reverse
     end
 
 
