@@ -271,8 +271,8 @@
   }
 
   .usa-checkbox__input:checked + .usa-checkbox__label.unsuccessful::before, .usa-radio__input:checked + .usa-radio__label.unsuccessful::before {
-    background-color: $dm-color-light-grey;
-    box-shadow: 0 0 0 2px $dm-color-light-grey;
+    background-color: $dm-color-base-light;
+    box-shadow: 0 0 0 2px $dm-color-base-light;
   }
 
   .usa-checkbox__input:checked + .usa-checkbox__label.unsuccessful::before, .usa-checkbox__input:checked:disabled + .usa-checkbox__label.unsuccessful::before {

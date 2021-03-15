@@ -1,204 +1,62 @@
 @import "../../variables/colors";
-@import "../../../dm_uswds/theme/uswds-theme-components";
 
-header {
-  .usa-nav {
-    width: 65%;
-    max-width: 65%;
-    padding: 0 !important;
+#dm-nav-header {
+  // mobile
+  .dm-nav-header-profile {
+    min-width: 100%;
   }
 
-  .usa-navbar {
-    width: 100% !important;
+  .usa-nav__secondary {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 0rem;
   }
 
-  .usa-logo {
-    margin-left: 1rem;
-
-    a {
-      &:visited {
-        color: $dm-color-base !important;
-      }
+  .usa-accordion, .usa-nav__submenu, .usa-nav__submenu-list {
+    > li {
+      border-top-width: 1px;
+      border-top-color: $dm-color-base-light;
     }
   }
 
-  .usa-nav__link {
-    color: $dm-color-gray-60 !important;
-    padding: 1rem;
-  }
-
-  .usa-nav__submenu-item {
-    margin: 0.5rem 0;
-  }
-
-  // mobile menu
-  .usa-nav.is-visible {
-    width: 100% ;
-    margin: 0 !important;
-    padding: 2rem 1rem !important;
-
-    .usa-nav__close {
-      margin-bottom: 0;
-    }
-
-    .usa-nav__primary-item, .usa-nav__submenu-item {
-      border-top: 0.0625rem solid $dm-color-gray-30 !important;
-    }
-
-    .usa-nav__submenu {
-      width: 100%;
-
-      &:last-child {
-        border-bottom: 0.0625rem solid $dm-color-gray-30 !important;
-      }
-    }
-
-    .dm-last-nav-link {
-      border-bottom: 0.0625rem solid $dm-color-gray-30 !important;
-    }
-
-    .usa-nav__submenu-item {
-      margin: 0;
-      font-size: 1rem !important;
-
-      a {
-        color: $dm-color-base !important;
-
-        &:visited {
-          color: $dm-color-base !important;
-        }
-
-        &:hover, &:active, &:focus {
-          background-color: $dm-color-white !important;
-          color: $dm-color-blue-50v !important;
-          font-weight: bold;
-        }
-      }
-    }
-
-    .usa-nav__link {
-      color: $dm-color-base !important;
-      border-left: 0.25rem transparent !important;
-      padding-left: 0.75rem;
-
-      &:visited {
-        color: $dm-color-base;
-      }
-
-      &.dm-current-link, &:hover, &:active, &:focus, &[aria-expanded="true"] {
-        border-left: 0.25rem solid $dm-color-blue-50v !important;
-        color: $dm-color-blue-50v !important;
-        font-weight: bold;
-      }
-
-      &:hover, &:active, &:focus, &[aria-expanded="true"] {
-        background-color: $dm-color-white;
-      }
-
-      &[aria-expanded="false"] {
-        border-bottom: 0.0625rem solid $dm-color-gray-30 !important;
-      }
-    }
-
-    .dm-sub-nav-display {
-      display: block !important;
-
-      //remove usa accordion button image
-      &[aria-expanded="true"], &[aria-expanded="false"]  {
-        background-image: none;
-      }
-
-      &.usa-nav__link {
-        border-bottom: none !important;
-      }
-
-      li > .dm-current-link {
-        color: $dm-color-blue-50v !important;
-        font-weight: bold;
-      }
-    }
-  }
-
-  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-    .dm-logo-container {
-      width: 50%;
-      margin-left: 0 !important;
-      padding-left: 1rem;
-    }
-
-    .mobile-menu-container {
-      width: 50%;
-      text-align: right;
-    }
-
-    .usa-nav__close img {
-      width: auto;
-    }
+  .dm-nav-header-profile {
+    border-bottom: 1px solid $dm-color-base-light;
   }
 
   // desktop
   @media screen and (min-width: 64rem) {
-    .usa-navbar {
-      width: 35% !important;
+    #extended-logo {
+      max-width: 45%;
     }
 
-    .usa-logo {
-      margin: 1.75rem 0 1.6875rem;
+    .usa-nav__secondary {
+      min-width: 40%;
+      justify-content: flex-end;
+      margin-top: 1rem;
+      flex-wrap: nowrap;
     }
 
-    .usa-nav__submenu {
-      right: -1rem;
-      width: 14.25rem;
-      height: 6.0625rem;
-    }
+    .dm-nav-header-profile {
+      display: flex;
+      min-width: 0%;
+      border-bottom: none;
 
-    .usa-nav__link {
-      margin: 0rem 1rem!important;
-      padding: 1.75rem 0 !important;
-      border-bottom: 0.3125rem solid transparent !important;
-
-      &:hover, &:focus, &.dm-current-link {
-        border-bottom: 0.3125rem solid $dm-color-blue-50v !important;
+      &.dm-nav-header-profile-sign-in {
+        max-width: 5.75rem;
       }
 
-      &:active {
-        color: $dm-color-blue-70v !important;
-        text-decoration: none;
-        border-bottom: 0.3125rem solid $dm-color-blue-70v !important;
+      .dm-nav-header-profile-link {
+        margin-left: auto;
+      }
 
-        &:after {
-          background-color: transparent !important;
+      #dm-user-profile-options {
+        &::before, &::after {
+          background-color: transparent;
         }
       }
 
-      &:after {
-        background-color: initial !important;
-      }
-
-      &.usa-accordion__button {
-        padding: 1.75rem 0 1.75rem 0.5rem !important;
-
-        span {
-          margin: 0 !important;
-          padding-right: 0 !important;
-        }
-
-        &[aria-expanded="true"] {
-          border: none !important;
-          color: $dm-color-white !important;
-          padding: 1.75rem 0 2.0625rem 0.5rem !important;
-          margin: 0 1rem !important;
-        }
-      }
-    }
-  }
-
-  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-    @media screen and (min-width: 64rem) {
-      .dm-logo-container {
-        width: 100%;
-        margin-left: 0 !important;
-        padding-left: 0;
+      .usa-nav__submenu[hidden] {
+        display: none; // makes sure hidden submenu doesn't flash when loading page
       }
     }
   }

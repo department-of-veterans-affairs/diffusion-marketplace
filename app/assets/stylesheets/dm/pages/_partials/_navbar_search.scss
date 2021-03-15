@@ -2,13 +2,11 @@
 
 #dm-navbar-search-form {
   margin: 1.25rem 0.25rem;
-  order: 4; // make it the last option on mobile nav view
+  order: 5; // make it the last option on mobile nav view
 
   #dm-navbar-search-field {
     min-width: calc(100% - 3.0625rem) !important;
     max-width: calc(100% - 3.0625rem) !important;
-    height: 2.0625rem !important;
-
     // remove red outline for required search input field
     &:invalid {
       box-shadow: none !important;
@@ -31,6 +29,10 @@
     #dm-navbar-search-field {
       margin: 0;
       width: 13.4375rem !important;
+    }
+
+    .dm-navbar-search-container {
+      margin-top: 0.5rem;
     }
   }
 }

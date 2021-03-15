@@ -1,68 +1,85 @@
 <%= render 'shared/usa_banner' %>
-<%# source: https://designsystem.digital.gov/components/header/ (basic header) %>
+<!-- source: https://designsystem.digital.gov/components/header/#extended -->
 <div class="usa-overlay"></div>
-<header class="usa-header usa-header--basic border-bottom bg-white">
-  <div class="usa-nav-container">
-    <div class="usa-navbar">
-      <div class="usa-logo dm-logo-container">
-        <em class="usa-logo__text">
-          <a href="/" title="Home" aria-label="Home">
-            VA <span class="text-normal"> | Diffusion Marketplace</span>
-          </a>
-        </em>
-      </div>
-      <div class="mobile-menu-container">
-        <button class="usa-menu-btn">Menu</button>
-      </div>
+<header id="dm-nav-header" class="usa-header usa-header--extended">
+  <div class="usa-navbar">
+    <div class="usa-logo" id="extended-logo">
+      <a href="/" title="Home" aria-label="Home"><span class="text-bold">VA</span> | Diffusion Marketplace</a>
     </div>
-    <nav aria-label="Primary navigation" class="usa-nav">
+    <button class="usa-menu-btn">Menu</button>
+  </div>
+  <nav aria-label="Primary navigation" class="usa-nav">
+    <div class="usa-nav__inner">
       <button class="usa-nav__close">
         <img src="<%= image_url 'uswds/close.svg' %>" role="img" alt="close">
       </button>
       <ul class="usa-nav__primary usa-accordion">
         <li class="usa-nav__primary-item">
-          <a class="usa-nav__link <%= 'dm-current-link' if request.fullpath == '/diffusion-map' %>" href="/diffusion-map">
+          <a class="usa-nav__link <%= 'usa-current' if request.fullpath == '/competitions/shark-tank' %>" href="/competitions/shark-tank">
+            <span>Shark Tank</span>
+          </a>
+        </li>
+        <!-- WIP: UNCOMMENT WHEN ADDING VISN & VAMC FEATURE WORK
+        <li class="usa-nav__primary-item">
+          <button class="usa-accordion__button usa-nav__link" aria-expanded="false" aria-controls="dm-navbar-directories">
+            <span>Directories</span>
+          </button>
+          <ul id="dm-navbar-directories" class="usa-nav__submenu">
+            <li class="usa-nav__submenu-item">
+              <a href="#" class="">VISNs</a>
+            </li>
+            <li class="usa-nav__submenu-item">
+              <a href="#" class="">VA Medical Centers</a>
+            </li>
+          </ul>
+        </li>
+        -->
+        <li class="usa-nav__primary-item">
+          <a class="usa-nav__link <%= 'usa-current' if request.fullpath == '/diffusion-map' %>" href="/diffusion-map">
             <span>Diffusion map</span>
           </a>
         </li>
-        <li class="usa-nav__primary-item">
-          <a class="usa-nav__link <%= 'dm-current-link' if request.fullpath == '/covid-19' %>" href="/covid-19">
-            <span>COVID-19</span>
-          </a>
-        </li>
       </ul>
-      <%= render 'shared/navbar_search' %>
-      <ul class="usa-nav__primary usa-accordion margin-top-0">
-        <% if user_signed_in? %>
-          <% if ENV['USE_NTLM'] == 'true' %>
-            <li class="usa-nav__primary-item">
-              <a class="usa-nav__link dm-last-nav-link <%= 'dm-current-link' if request.fullpath == user_path(current_user) %>" href="<%= user_path(current_user) %>">
-                <span>Your profile</span>
-              </a>
-            </li>
+      <div class="usa-nav__secondary">
+        <%= render 'shared/navbar_search' %>
+        <ul class="usa-nav__primary usa-accordion margin-top-0 dm-nav-header-profile <%= 'dm-nav-header-profile-sign-in' if !user_signed_in? %>">
+          <% if user_signed_in? %>
+            <% if ENV['USE_NTLM'] == 'true' %>
+              <li class="usa-nav__primary-item dm-nav-header-profile-link">
+                <a class="usa-nav__link dm-user-nav-link dm-last-nav-link <%= 'dm-current-link' if request.fullpath == user_path(current_user) %>" href="<%= user_path(current_user) %>">
+                  <span>Your profile</span>
+                </a>
+              </li>
+            <% else %>
+              <li class="usa-nav__primary-item dm-nav-header-profile-link">
+                <button class="usa-accordion__button usa-nav__link" aria-expanded="false" aria-controls="dm-user-profile-options">
+                  <span>Your profile</span>
+                </button>
+                <div id="dm-user-profile-options" class="usa-nav__submenu usa-megamenu">
+                  <div class="grid-row grid-gap-4">
+                    <div class="usa-col">
+                      <ul class="usa-nav__submenu-list">
+                        <li class="usa-nav__submenu-item">
+                          <a class="<%= 'dm-current-link' if request.fullpath == user_path(current_user) %>" href="<%= user_path(current_user) %>">
+                            <span>Profile</span>
+                          </a>
+                        </li>
+                        <li class="usa-nav__submenu-item">
+                          <%= link_to('Sign out', destroy_user_session_path, method: :delete) %>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            <% end %>
           <% else %>
-            <li class="usa-nav__primary-item">
-              <button class="usa-accordion__button usa-nav__link <%= 'dm-current-link dm-sub-nav-display' if request.fullpath == user_path(current_user) %>" aria-expanded="false" aria-controls="dm-user-profile-options">
-                <span>Your profile</span>
-              </button>
-              <ul id="dm-user-profile-options" class="usa-nav__submenu <%= 'dm-sub-nav-display' if request.fullpath == user_path(current_user) %>" hidden="true">
-                <li class="usa-nav__submenu-item">
-                  <a class="<%= 'dm-current-link' if request.fullpath == user_path(current_user) %>" href="<%= user_path(current_user) %>">
-                    <span>Profile</span>
-                  </a>
-                </li>
-                <li class="usa-nav__submenu-item">
-                  <%= link_to('Sign out', destroy_user_session_path, method: :delete) %>
-                </li>
-              </ul>
+            <li class="usa-nav__primary-item dm-nav-header-profile-link">
+              <%= link_to 'Sign in', new_user_session_path, class: 'usa-nav__link dm-user-nav-link' %>
             </li>
           <% end %>
-        <% else %>
-          <li class="usa-nav__primary-item">
-            <%= link_to 'Sign in', new_user_session_path, class: 'usa-nav__link' %>
-          </li>
-        <% end %>
-      </ul>
-    </nav>
-  </div>
+        </ul>
+      </div>
+    </div>
+  </nav>
 </header>
