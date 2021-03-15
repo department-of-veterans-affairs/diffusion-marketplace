@@ -2,8 +2,28 @@ require 'rails_helper'
 
 describe 'VISN pages', type: :feature do
   before do
-    @visn = Visn.create!(name: 'Test VISN', number: 2)
-    @visn_2 = Visn.create!(name: 'Test VISN', number: 5)
+    @visn = Visn.create!(
+      name: 'Test VISN',
+      number: 2,
+      street_address: "100 Test Avenue",
+      city: "Tampa",
+      state: "FL",
+      zip_code: "33728",
+      latitude: "28.063901",
+      longitude: "-82.466679",
+      phone_number: "111-111-1111"
+    )
+    @visn_2 = Visn.create!(
+      name: 'Test VISN',
+      number: 5,
+      street_address: "111 Test Street",
+      city: "Dallas",
+      state: "TX",
+      zip_code: "75211",
+      latitude: "32.880578",
+      longitude: "-96.754906",
+      phone_number: "111-000-0000"
+    )
     @vamc = Vamc.create!(
       visn: @visn,
       sta3n: 421,

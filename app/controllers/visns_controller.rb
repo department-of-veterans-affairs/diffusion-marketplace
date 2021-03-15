@@ -8,8 +8,8 @@ class VisnsController < ApplicationController
 
       current_visn = @visns.find { |vc| vc[:number] == visn.number }
 
-      marker.lat current_visn[:latitude]
-      marker.lng current_visn[:longitude]
+      marker.lat current_visn[:latitude].to_s
+      marker.lng current_visn[:longitude].to_s
 
       marker.picture({
                        url: view_context.image_path('visn-map-marker-default.svg'),

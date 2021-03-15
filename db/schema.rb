@@ -1273,6 +1273,7 @@ ActiveRecord::Schema.define(version: 2021_02_17_223013) do
     t.string "phone_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["number"], name: "index_visns_on_number", unique: true
   end
 
   create_table "votes", id: :serial, force: :cascade do |t|
