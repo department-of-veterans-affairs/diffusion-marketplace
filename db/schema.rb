@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_17_223013) do
+ActiveRecord::Schema.define(version: 2021_03_16_152538) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1261,11 +1261,30 @@ ActiveRecord::Schema.define(version: 2021_02_17_223013) do
     t.index ["practice_id"], name: "index_video_files_on_practice_id"
   end
 
+  create_table "visn_liaisons", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "email"
+    t.boolean "primary", default: false
+    t.bigint "visn_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["visn_id"], name: "index_visn_liaisons_on_visn_id"
+  end
+
   create_table "visns", force: :cascade do |t|
     t.string "name"
     t.integer "number"
+    t.string "street_address"
+    t.string "city"
+    t.string "state"
+    t.string "zip_code"
+    t.decimal "latitude", precision: 11, scale: 8
+    t.decimal "longitude", precision: 11, scale: 8
+    t.string "phone_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["number"], name: "index_visns_on_number", unique: true
   end
 
   create_table "votes", id: :serial, force: :cascade do |t|
@@ -1369,4 +1388,5 @@ ActiveRecord::Schema.define(version: 2021_02_17_223013) do
   add_foreign_key "va_secretary_priority_practices", "va_secretary_priorities"
   add_foreign_key "vamcs", "visns"
   add_foreign_key "video_files", "practices"
+  add_foreign_key "visn_liaisons", "visns"
 end

@@ -302,92 +302,352 @@
     {
       "id": 1,
       "number": "VISN-1",
-      "name": "VA New England Healthcare System"
+      "name": "VA New England Healthcare System",
+      "liaisons": [
+        {
+          "id": 1,
+          "first_name": "Sharon",
+          "last_name": "Croteau",
+          "email": "sharon.croteau2@va.gov",
+          "primary": true
+        },
+        {
+          "id": 2,
+          "first_name": "Lisa",
+          "last_name": "Doyon",
+          "email": "lisa.doyon@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 2,
       "number": "VISN-2",
-      "name": "New York/New Jersey VA Health Care Network"
+      "name": "New York/New Jersey VA Health Care Network",
+      "liaisons": [
+        {
+          "id": 3,
+          "first_name": "Cranston",
+          "last_name": "Darris",
+          "email": "cranston.darris@va.gov",
+          "primary": true
+        },
+        {
+          "id": 4,
+          "first_name": "Linda",
+          "last_name": "Mock",
+          "email": "linda.mock@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 3,
       "number": "VISN-4",
-      "name": "VA Healthcare - VISN 4"
+      "name": "VA Healthcare - VISN 4",
+      "liaisons": [
+        {
+          "id": 5,
+          "first_name": "Michael",
+          "last_name": "Ricci",
+          "email": "michael.ricci2@va.gov",
+          "primary": true
+        },
+        {
+          "id": 6,
+          "first_name": "Shannon",
+          "last_name": "Reichel",
+          "email": "shannon.reichel@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 4,
       "number": "VISN-5",
-      "name": "VA Capitol Health Care Network"
+      "name": "VA Capitol Health Care Network",
+      "liaisons": [
+        {
+          "id": 7,
+          "first_name": "Ivy",
+          "last_name": "Pacis",
+          "email": "ivy.pacis@va.gov",
+          "primary": true
+        },
+        {
+          "id": 8,
+          "first_name": "Michael",
+          "last_name": "Towstopiat",
+          "email": "michael.towstopiat@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 5,
       "number": "VISN-6",
-      "name": "VA Mid-Atlantic Health Care Network"
+      "name": "VA Mid-Atlantic Health Care Network",
+      "liaisons": [
+        {
+          "id": 9,
+          "first_name": "Catherine",
+          "last_name": "McCrimmon",
+          "email": "catherine.mccrimmon@va.gov",
+          "primary": true
+        },
+        {
+          "id": 10,
+          "first_name": "Matt",
+          "last_name": "Grabner",
+          "email": "matthew.grabner@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 6,
       "number": "VISN-7",
-      "name": "VA Southeast Network"
+      "name": "VA Southeast Network",
+      "liaisons": [
+        {
+          "id": 11,
+          "first_name": "Janelle",
+          "last_name": "Seenath",
+          "email": "janelle.seenath@va.gov",
+          "primary": true
+        },
+        {
+          "id": 12,
+          "first_name": "Michael",
+          "last_name": "Parrinello",
+          "email": "michael.parrinello@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 7,
       "number": "VISN-8",
-      "name": "VA Sunshine Healthcare Network"
+      "name": "VA Sunshine Healthcare Network",
+      "liaisons": [
+        {
+          "id": 13,
+          "first_name": "Ashley",
+          "last_name": "Benedict",
+          "email": "ashley.benedict@va.gov",
+          "primary": true
+        },
+        {
+          "id": 14,
+          "first_name": "Rebecca",
+          "last_name": "Tiffault",
+          "email": "rebecca.tiffault@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 8,
       "number": "VISN-9",
-      "name": "VA MidSouth Healthcare Network"
+      "name": "VA MidSouth Healthcare Network",
+      "liaisons": [
+        {
+          "id": 15,
+          "first_name": "Lori",
+          "last_name": "Hagen",
+          "email": "lori.hagen@va.gov",
+          "primary": true
+        },
+        {
+          "id": 16,
+          "first_name": "Bonnie",
+          "last_name": "Haupt",
+          "email": "bonnie.haupt@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 9,
       "number": "VISN-10",
-      "name": "VA Healthcare System"
+      "name": "VA Healthcare System",
+      "liaisons": [
+        {
+          "id": 17,
+          "first_name": "James",
+          "last_name": "Dusenberry",
+          "email": "james.dusenberry@va.gov",
+          "primary": true
+        },
+        {
+          "id": 18,
+          "first_name": "Lori",
+          "last_name": "Deleeuw",
+          "email": "lori.deleeuw@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 10,
       "number": "VISN-12",
-      "name": "VA Great Lakes Health Care System"
+      "name": "VA Great Lakes Health Care System",
+      "liaisons": [
+        {
+          "id": 19,
+          "first_name": "Kelly",
+          "last_name": "Mikulecky",
+          "email": "kelly.mikulecky@va.gov",
+          "primary": true
+        },
+        {
+          "id": 20,
+          "first_name": "Rhonda",
+          "last_name": "Stark",
+          "email": "rhonda.stark@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 11,
       "number": "VISN-15",
-      "name": "VA Heartland Network"
+      "name": "VA Heartland Network",
+      "liaisons": [
+        {
+          "id": 21,
+          "first_name": "Robert",
+          "last_name": "Libberton",
+          "email": "robert.libberton@va.gov",
+          "primary": true
+        }
+      ]
     },
     {
       "id": 12,
       "number": "VISN-16",
-      "name": "South Central VA Health Care Network"
+      "name": "South Central VA Health Care Network",
+      "liaisons": [
+        {
+          "id": 22,
+          "first_name": "Melody",
+          "last_name": "Link",
+          "email": "melody.link@va.gov",
+          "primary": true
+        },
+        {
+          "id": 23,
+          "first_name": "Denarieka",
+          "last_name": "Gaines",
+          "email": "denarieka.gaines@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 13,
       "number": "VISN-17",
-      "name": "VA Heart of Texas Health Care Network"
+      "name": "VA Heart of Texas Health Care Network",
+      "liaisons": [
+        {
+          "id": 24,
+          "first_name": "Daren",
+          "last_name": "Cortez",
+          "email": "daren.cortez@va.gov",
+          "primary": true
+        }
+      ]
     },
     {
       "id": 15,
       "number": "VISN-19",
-      "name": "Rocky Mountain Network"
+      "name": "Rocky Mountain Network",
+      "liaisons": [
+        {
+          "id": 25,
+          "first_name": "Erica",
+          "last_name": "Deveau",
+          "email": "erica.deveau2@va.gov",
+          "primary": true
+        },
+        {
+          "id": 26,
+          "first_name": "Kari",
+          "last_name": "Campiotti",
+          "email": "kari.campiotti@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 16,
       "number": "VISN-20",
-      "name": "Northwest Network"
+      "name": "Northwest Network",
+      "liaisons": [
+        {
+          "id": 27,
+          "first_name": "David",
+          "last_name": "Terrini",
+          "email": "david.terrini@va.gov",
+          "primary": true
+        }
+      ]
     },
     {
       "id": 17,
       "number": "VISN-21",
-      "name": "Sierra Pacific Network"
+      "name": "Sierra Pacific Network",
+      "liaisons": [
+        {
+          "id": 28,
+          "first_name": "Katie",
+          "last_name": "Mosby",
+          "email": "katie.mosby@va.gov",
+          "primary": true
+        },
+        {
+          "id": 29,
+          "first_name": "Michael",
+          "last_name": "McCann",
+          "email": "michael.mccann@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 18,
       "number": "VISN-22",
-      "name": "Desert Pacific Healthcare Network"
+      "name": "Desert Pacific Healthcare Network",
+      "liaisons": [
+        {
+          "id": 30,
+          "first_name": "Scott",
+          "last_name": "McRoberts",
+          "email": "scott.mcroberts@va.gov",
+          "primary": true
+        }
+      ]
     },
     {
       "id": 19,
       "number": "VISN-23",
-      "name": "VA Midwest Health Care Network"
+      "name": "VA Midwest Health Care Network",
+      "liaisons": [
+        {
+          "id": 31,
+          "first_name": "Carrie",
+          "last_name": "Henderson",
+          "email": "carrie.henderson1@va.gov",
+          "primary": true
+        },
+        {
+          "id": 32,
+          "first_name": "Michelle",
+          "last_name": "Fleming",
+          "email": "michelle.fleming@va.gov",
+          "primary": false
+        }
+      ]
     }
   ]
 }
