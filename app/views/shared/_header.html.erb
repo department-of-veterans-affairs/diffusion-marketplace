@@ -8,7 +8,7 @@
     </div>
     <button class="usa-menu-btn">Menu</button>
   </div>
-  <nav aria-label="Primary navigation" class="usa-nav">
+  <nav aria-label="Primary navigation" class="usa-nav desktop:border-bottom desktop:border-base-lighter">
     <div class="usa-nav__inner">
       <button class="usa-nav__close">
         <img src="<%= image_url 'uswds/close.svg' %>" role="img" alt="close">
@@ -46,7 +46,7 @@
           <% if user_signed_in? %>
             <% if ENV['USE_NTLM'] == 'true' %>
               <li class="usa-nav__primary-item dm-nav-header-profile-link">
-                <a class="usa-nav__link dm-user-nav-link dm-last-nav-link <%= 'dm-current-link' if request.fullpath == user_path(current_user) %>" href="<%= user_path(current_user) %>">
+                <a class="usa-nav__link <%= 'dm-current-link' if request.fullpath == user_path(current_user) %>" href="<%= user_path(current_user) %>">
                   <span>Your profile</span>
                 </a>
               </li>
@@ -75,7 +75,7 @@
             <% end %>
           <% else %>
             <li class="usa-nav__primary-item dm-nav-header-profile-link">
-              <%= link_to 'Sign in', new_user_session_path, class: 'usa-nav__link dm-user-nav-link' %>
+              <%= link_to 'Sign in', new_user_session_path, class: 'usa-nav__link' %>
             </li>
           <% end %>
         </ul>
