@@ -17,9 +17,23 @@ function shouldTrackVisit(currentVisit, currentVisitor) {
     var isSameLocation = currentVisit.query === prevVisit.query && currentVisit.action === prevVisit.action && currentVisit.controller === prevVisit.controller;
     var isSameUser = currentVisitor.role === prevVisitor.role && currentVisitor.user === prevVisitor.user;
 
+    var isSamePageGroup;
+    if (currentVisit["page_group"] && prevVisit["page_group"]) {
+      isSamePageGroup = currentVisit["page_group"] === prevVisit["page_group"];
+    } else {
+      isSamePageGroup = false;
+    }
+
+    var isSamePageSlug;
+    if (currentVisit["page_slug"] && prevVisit["page_slug"]) {
+      isSamePageSlug = currentVisit["page_slug"] === prevVisit["page_slug"];
+    } else {
+      isSamePageSlug = false;
+    }
+
     // make sure we aren't logging the same exact visit (difference between visits is <= 1000ms) by same user for the same request
     // this occurs because of turbolinks reloading the page
-    return !(isSameVisit && isSameLocation && isSameUser);
+    return !(isSameVisit && isSameLocation && isSameUser && isSamePageGroup && isSamePageSlug);
   } else {
     return true;
   }

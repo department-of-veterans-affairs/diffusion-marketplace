@@ -11,20 +11,29 @@ ActiveAdmin.register_page "Dashboard" do
       Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where(time: start_time..end_time).group("properties->>'ip_address'").count
     end
 
-    def custom_page_visits_by_range(start_time, end_time, page_slug)
-      Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where("properties->>'page_group' = '#{page_slug}'").where(time: start_time..end_time).group("properties->>'ip_address'").count
+    def custom_page_visits_by_range(start_time, end_time, page)
+      if page[:slug] === 'home'
+        Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where("properties->>'page_group' = '#{page[:group]}'").where("properties->>'page_slug' is null").where(time: start_time..end_time).group("properties->>'ip_address'").count
+      else
+        Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where("properties->>'page_group' = '#{page[:group]}'").where("properties->>'page_slug' = '#{page[:slug]}'").where(time: start_time..end_time).group("properties->>'ip_address'").count
+      end
     end
 
-    def custom_page_visits(page_slug)
-      Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where("properties->>'page_group' = '#{page_slug}'").count
+    def custom_page_visits(page)
+      if page[:slug] === 'home'
+        Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where("properties->>'page_group' = '#{page[:group]}'").where("properties->>'page_slug' is null").count
+      else
+        Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where("properties->>'page_group' = '#{page[:group]}'").where("properties->>'page_slug' = '#{page[:slug]}'").count
+      end
     end
 
     def get_custom_pages_stats(custom_pages)
       traffic_stats = []
       custom_pages.each do |cp|
         stats = custom_page_visits_by_range(@beginning_of_last_month, @end_of_last_month, cp)
+        slug = cp[:slug] === 'home' ? cp[:group] : "#{cp[:group]}/#{cp[:slug]}"
         prop = {
-          slug: cp,
+          slug: slug,
           unique_visitors: 0,
           number_of_page_views: 0,
           total_views: custom_page_visits(cp)
@@ -37,7 +46,7 @@ ActiveAdmin.register_page "Dashboard" do
 
         traffic_stats.push(prop)
       end
-      traffic_stats
+      traffic_stats.sort_by { |pg| pg[:slug] }
     end
 
     def get_practice_emails_totals(start_time, end_time)
@@ -52,7 +61,7 @@ ActiveAdmin.register_page "Dashboard" do
       @practices_views = @enabled_published_practices.sort_by(&:current_month_views).reverse!
       @practices_headers = ['Practice Name', "#{@date_headers[:current]}", "Last Month", "#{@date_headers[:total]}"]
 
-      @custom_pages = PageGroup.all.select { |pg| pg.pages.where(slug: 'home').present? }.map{ |pg| pg.slug }
+      @custom_pages = Page.all.map{ |pg| {slug: pg.slug, group: PageGroup.find(pg.page_group_id).slug }}
       @custom_pages_traffic_stats = get_custom_pages_stats(@custom_pages)
 
       @general_traffic_stats = {

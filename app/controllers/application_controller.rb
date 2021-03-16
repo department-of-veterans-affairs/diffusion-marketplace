@@ -63,8 +63,11 @@ class ApplicationController < ActionController::Base
 
   def set_visit_props
     @visit_properties = {controller: request.params[:controller], action: request.params[:action], query: request.params[:query], ip_address: request.remote_ip, timestamp: Time.now.utc}
-    if request.params[:page_group_friendly_id] && request.params[:page_slug].nil?
+    if request.params[:page_group_friendly_id]
       @visit_properties[:page_group] = request.params[:page_group_friendly_id]
+    end
+    if request.params[:page_slug]
+      @visit_properties[:page_slug] = request.params[:page_slug]
     end
   end
 
