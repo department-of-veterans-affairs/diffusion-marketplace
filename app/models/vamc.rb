@@ -18,7 +18,7 @@ class Vamc < ApplicationRecord
   end
 
   def self.get_adoptions_by_vamc(station_number)
-    DiffusionHistory.where(facility_id: station_number).count
+    DiffusionHistory.where(facility_id: station_number)
   end
 
   def self.get_categories
