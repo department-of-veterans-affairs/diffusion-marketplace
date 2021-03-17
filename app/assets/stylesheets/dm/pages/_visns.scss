@@ -1,8 +1,9 @@
 @import '../variables/colors';
 
 #visns-index {
-  .visn-modal-link {
+  .visn-modal-link, .vamc-index-link {
     text-decoration: none !important;
+    color: $dm-color-blue-50v;
 
     &:hover {
       color: $dm-color-blue-70v !important;
