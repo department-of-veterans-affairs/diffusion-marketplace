@@ -169,10 +169,25 @@ module NavigationHelper
       end
     end
 
+    ### VAMC breadcrumbs
+
+    def add_vamc_index_breadcrumb
+      session[:breadcrumbs] << { 'display': 'VAMC', 'path': vamcs_path }
+    end
+
+    def vamc_by_id
+      Vamc.find_by!(id: params[:id])
+    end
+
     if controller == 'vamcs'
       if action == 'index'
         empty_breadcrumbs
         session[:breadcrumbs] << { 'display': 'vamcs', 'path': vamcs_path }
+      end
+      if action == 'show'
+        empty_breadcrumbs
+        add_vamc_index_breadcrumb
+        session[:breadcrumbs] << { 'display': "#{params[:id]}", 'path': vamcs_path(vamc_by_id) }
       end
     end
 
