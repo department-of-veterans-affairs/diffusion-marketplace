@@ -10,7 +10,7 @@
     <div class="grid-row grid-gap">
       <div class="grid-col-12">
         <h1 class="font-sans-2x1 desktop:margin-top-5 desktop:margin-bottom-3">
-          VAMC directory
+          Facility directory
         </h1>
         <div class="text-base">
           Looking for a full list of VISNs? <a href="/visn">Click here</a>
@@ -134,7 +134,7 @@
               </tbody>
             </table>
           </div>
-          <% if @num_recs.to_i <= @results_count %>
+          <% if @num_recs.to_i < @results_count %>
             <div align="center" class="desktop:margin-top-5 desktop:margin-bottom-3">
               <%= button_tag "Load more", num_recs: @num_recs, type: 'button', id: "btn_vamc_directory_load_more", class: "usa-button--outline dm-btn-base dm-load-more-btn width-auto" %>
             </div>
