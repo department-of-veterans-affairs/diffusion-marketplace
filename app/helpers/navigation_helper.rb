@@ -179,6 +179,10 @@ module NavigationHelper
       Vamc.find_by!(id: params[:id])
     end
 
+    def vmac_common_name
+      Vamc.find_by!(id: params[:id]).common_name
+    end
+
     if controller == 'vamcs'
       if action == 'index'
         empty_breadcrumbs
@@ -187,7 +191,7 @@ module NavigationHelper
       if action == 'show'
         empty_breadcrumbs
         add_vamc_index_breadcrumb
-        session[:breadcrumbs] << { 'display': "#{params[:id]}", 'path': vamcs_path(vamc_by_id) }
+        session[:breadcrumbs] << { 'display': vmac_common_name, 'path': vamcs_path(vamc_by_id) }
       end
     end
 
