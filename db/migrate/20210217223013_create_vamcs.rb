@@ -1,6 +1,6 @@
-class CreateVaFacilities < ActiveRecord::Migration[5.2]
+class CreateVamcs < ActiveRecord::Migration[5.2]
   def change
-    create_table :va_facilities do |t|
+    create_table :vamcs do |t|
       t.belongs_to :visn, foreign_key: true
       t.string :sta3n
       t.string :station_number
