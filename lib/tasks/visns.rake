@@ -12,7 +12,17 @@ namespace :visns do
     puts "All VISNs have now been added to the DB!"
   end
 
-  task :create_visn_liaisons => :environment do
-
+  task :create_visn_liaisons_and_transfer_data => :environment do
+    @origin_data["visns"].each do |v|
+      v["liaisons"].each do |vl|
+        VisnLiaison.create!(
+          first_name: vl["first_name"],
+          last_name: vl["last_name"],
+          email: vl["email"],
+          primary: vl["primary"]
+        )
+      end
+    end
+    puts "All VISN liaisons have been added to the DB!"
   end
 end
