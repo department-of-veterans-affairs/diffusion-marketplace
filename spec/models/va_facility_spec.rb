@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Vamc, type: :model do
+RSpec.describe VaFacility, type: :model do
   describe 'associations' do
     it { should belong_to(:visn) }
   end
