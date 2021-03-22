@@ -4,6 +4,16 @@
 <div id="visns-show" class="grid-container">
   <%= render partial: "shared/messages", locals: { small_text: false } %>
   <section id="visn-introduction" class="margin-bottom-3">
-    <h1 class="font-sans-2xl line-height-46px"></h1>
+    <h1 class="font-sans-2xl line-height-46px">VISN <%= @visn.number %>: <%= @visn.name %></h1>
+    <div class="grid-row">
+      <div class="grid-col-6 line-height-26">
+        <p>
+          This VISN has <%= @visn.vamcs.count %> facilities and serves Veterans in <%= get_facility_locations_by_visn(@visn) %>. Collectively, its facilities have created 8 practices and have adopted 29 practices.
+        </p>
+      </div>
+      <div class="grid-col-6">
+
+      </div>
+    </div>
   </section>
 </div>
