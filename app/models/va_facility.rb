@@ -1,4 +1,4 @@
-class Vamc < ApplicationRecord
+class VaFacility < ApplicationRecord
 
   extend FriendlyId
   friendly_id :common_name, use: :slugged
@@ -55,3 +55,4 @@ class Vamc < ApplicationRecord
     Vamc.select(:fy17_parent_station_complexity_level).distinct.order(:fy17_parent_station_complexity_level)
   end
 end
+
