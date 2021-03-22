@@ -1,5 +1,5 @@
 class Visn < ApplicationRecord
-  has_many :vamcs, dependent: :destroy
+  has_many :va_facilities, dependent: :destroy
 
   before_save :clear_visn_cache_on_save
   after_save :reset_visn_cache

@@ -159,6 +159,7 @@ describe 'VISN pages', type: :feature do
     end
 
     it 'should be there' do
+      visit '/visns'
       expect(page).to have_current_path(visns_path)
     end
 
@@ -216,7 +217,7 @@ describe 'VISN pages', type: :feature do
 
   describe 'show page' do
     it 'should be there if the VISN number exists in the DB' do
-      visit '/visn/2'
+      visit '/visns/2'
       expect(page).to have_current_path(visn_path(@visn))
     end
   end
