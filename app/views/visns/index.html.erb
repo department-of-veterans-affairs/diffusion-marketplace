@@ -1,0 +1,20 @@
+<% provide :body_classes, 'bg-gray-2' %>
+<% provide :footer_classes, 'bg-gray-2' %>
+
+<div id="visns-index" class="grid-container">
+  <%= render partial: "shared/messages", locals: { small_text: false } %>
+  <section id="visns-map" class="margin-bottom-3">
+    <h1 class="font-sans-2xl margin-top-8 margin-bottom-3 line-height-46px">VISN directory</h1>
+    <div class="margin-bottom-10">
+      <span class="line-height-26">Looking for a list of VAMCs?</span> <%= link_to 'Click here', vamcs_path, class: 'vamc-index-link' %>
+    </div>
+    <%= render partial: 'visns/maps/visns_index_map' %>
+  </section>
+  <section id="visn-cards-section">
+    <div class="grid-row grid-gap-3">
+      <% @visns.each do |visn| %>
+          <%= render partial: 'visns/visn_card', locals: { visn: visn } %>
+      <% end %>
+    </div>
+  </section>
+</div>

@@ -269,5 +269,27 @@ module NavigationHelper
       empty_breadcrumbs
       session[:breadcrumbs] << { 'display': 'Nominate a practice', 'path': nominate_a_practice_path }
     end
+
+    ### VISN BREADCRUMBS
+    def add_visn_index_breadcrumb
+      session[:breadcrumbs] << { 'display': 'VISN', 'path': visns_path }
+    end
+
+    def visn_by_number
+      Visn.find_by!(number: params[:number])
+    end
+
+    if controller == 'visns'
+      if action == 'index'
+        empty_breadcrumbs
+        add_visn_index_breadcrumb
+      end
+
+      if action == 'show'
+        empty_breadcrumbs
+        add_visn_index_breadcrumb
+        session[:breadcrumbs] << { 'display': "#{params[:number]}", 'path': visn_path(visn_by_number) }
+      end
+    end
   end
 end

@@ -22,7 +22,7 @@ namespace :vamcs do
             fy17_parent_station_complexity_level: vamc["FY17ParentStationComplexityLevel"],
             operational_status: vamc["OperationalStatus"],
             ownership_type: vamc["OwnershipType"],
-            delivery_mechanism: vamc["DeliveryMechanism"] || nil,
+            delivery_mechanism: vamc["DeliveryMechanism"],
             staffing_type: vamc["StaffingType"],
             va_secretary_10n_approved_date: vamc["VASecretary10NApprovedDate"],
             planned_activation_date: vamc["PlannedActivationDate"],
@@ -69,7 +69,7 @@ namespace :vamcs do
       end
     end
 
-    puts "All VAMcs have now been added to the DB!"
+    puts "All VAMCs have now been added to the DB!"
 
   end
 end
