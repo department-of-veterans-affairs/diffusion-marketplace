@@ -171,27 +171,26 @@ module NavigationHelper
 
     ### VAMC breadcrumbs
 
-    def add_vamc_index_breadcrumb
-      session[:breadcrumbs] << { 'display': 'VAMC', 'path': vamcs_path }
+    def add_facility_index_breadcrumb
+      session[:breadcrumbs] << { 'display': 'Facilities', 'path': va_facilities_path }
     end
 
-    def vamc_by_id
-      Vamc.find_by!(id: params[:id])
+    def facility_by_id
+      VaFacility.find_by!(id: params[:id])
     end
 
-    def vmac_common_name
-      Vamc.find_by!(id: params[:id]).common_name
+    def facility_common_name
+      VaFacility.find_by!(id: params[:id]).common_name
     end
-
-    if controller == 'vamcs'
+    if controller == 'va_facilities'
       if action == 'index'
         empty_breadcrumbs
-        session[:breadcrumbs] << { 'display': 'vamcs', 'path': vamcs_path }
+        session[:breadcrumbs] << { 'display': 'Facilities', 'path': va_facilities_path }
       end
       if action == 'show'
         empty_breadcrumbs
-        add_vamc_index_breadcrumb
-        session[:breadcrumbs] << { 'display': vmac_common_name, 'path': vamcs_path(vamc_by_id) }
+        add_facility_index_breadcrumb
+        session[:breadcrumbs] << { 'display': facility_common_name, 'path': va_facilities_path(facility_by_id) }
       end
     end
 
