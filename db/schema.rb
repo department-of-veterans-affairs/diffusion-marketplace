@@ -1155,25 +1155,7 @@ ActiveRecord::Schema.define(version: 2021_03_16_152538) do
     t.datetime "avatar_updated_at"
   end
 
-  create_table "va_secretary_priorities", force: :cascade do |t|
-    t.string "name"
-    t.string "short_name"
-    t.text "description"
-    t.integer "position"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "va_secretary_priority_practices", force: :cascade do |t|
-    t.bigint "va_secretary_priority_id"
-    t.bigint "practice_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["practice_id"], name: "index_va_secretary_priority_practices_on_practice_id"
-    t.index ["va_secretary_priority_id"], name: "idx_priority_practices_priority_id"
-  end
-
-  create_table "vamcs", force: :cascade do |t|
+  create_table "va_facilities", force: :cascade do |t|
     t.bigint "visn_id"
     t.string "sta3n"
     t.string "station_number"
@@ -1232,7 +1214,25 @@ ActiveRecord::Schema.define(version: 2021_03_16_152538) do
     t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["visn_id"], name: "index_vamcs_on_visn_id"
+    t.index ["visn_id"], name: "index_va_facilities_on_visn_id"
+  end
+
+  create_table "va_secretary_priorities", force: :cascade do |t|
+    t.string "name"
+    t.string "short_name"
+    t.text "description"
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "va_secretary_priority_practices", force: :cascade do |t|
+    t.bigint "va_secretary_priority_id"
+    t.bigint "practice_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["practice_id"], name: "index_va_secretary_priority_practices_on_practice_id"
+    t.index ["va_secretary_priority_id"], name: "idx_priority_practices_priority_id"
   end
 
   create_table "versions", force: :cascade do |t|
@@ -1384,9 +1384,9 @@ ActiveRecord::Schema.define(version: 2021_03_16_152538) do
   add_foreign_key "user_practices", "practices"
   add_foreign_key "va_employee_practices", "practices"
   add_foreign_key "va_employee_practices", "va_employees"
+  add_foreign_key "va_facilities", "visns"
   add_foreign_key "va_secretary_priority_practices", "practices"
   add_foreign_key "va_secretary_priority_practices", "va_secretary_priorities"
-  add_foreign_key "vamcs", "visns"
   add_foreign_key "video_files", "practices"
   add_foreign_key "visn_liaisons", "visns"
 end
