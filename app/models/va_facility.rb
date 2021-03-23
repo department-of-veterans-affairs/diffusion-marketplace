@@ -4,28 +4,28 @@ class VaFacility < ApplicationRecord
 
   belongs_to :visn
 
-  before_save :clear_vamc_cache_on_save
-  after_save :reset_vamc_cache
+  before_save :clear_va_facility_cache_on_save
+  after_save :reset_va_facility_cache
 
-  attr_accessor :reset_cached_vamcs
+  attr_accessor :reset_cached_va_facilities
 
-  def clear_vamc_cache
-    Rails.cache.delete('vamcs')
+  def clear_va_facility_cache
+    Rails.cache.delete('va_facilities')
   end
 
-  def reset_vamc_cache
-    clear_vamc_cache if self.reset_cached_vamcs
+  def reset_va_facility_cache
+    clear_va_facility_cache if self.reset_cached_va_facilities
   end
 
-  def clear_vamc_cache_on_save
+  def clear_va_facility_cache_on_save
     if self.changed?
-      self.reset_cached_vamcs = true
+      self.reset_cached_va_facilities = true
     end
   end
 
-  def self.cached_vamcs
-    Rails.cache.fetch('vamcs') do
-      Vamc.all
+  def self.cached_va_facilities
+    Rails.cache.fetch('va_facilities') do
+      VaFacility.all
     end
   end
 end

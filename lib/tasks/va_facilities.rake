@@ -22,7 +22,7 @@ namespace :va_facilities do
             fy17_parent_station_complexity_level: vaf["FY17ParentStationComplexityLevel"],
             operational_status: vaf["OperationalStatus"],
             ownership_type: vaf["OwnershipType"],
-            delivery_mechanism: vaf["DeliveryMechanism"] || nil,
+            delivery_mechanism: vaf["DeliveryMechanism"],
             staffing_type: vaf["StaffingType"],
             va_secretary_10n_approved_date: vaf["VASecretary10NApprovedDate"],
             planned_activation_date: vaf["PlannedActivationDate"],
@@ -70,6 +70,5 @@ namespace :va_facilities do
     end
 
     puts "All VA facilities have now been added to the DB!"
-
   end
 end

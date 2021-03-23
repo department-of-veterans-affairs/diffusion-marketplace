@@ -24,7 +24,7 @@ describe 'VISN pages', type: :feature do
       longitude: "-96.754906",
       phone_number: "111-000-0000"
     )
-    @vamc = Vamc.create!(
+    @va_facility = VaFacility.create!(
       visn: @visn,
       sta3n: 421,
       station_number: 421,
@@ -81,7 +81,7 @@ describe 'VISN pages', type: :feature do
       sunday: '24/7',
       hours_note: 'This is a test'
     )
-    @vamc_2 = Vamc.create!(
+    @va_facility_2 = VaFacility.create!(
       visn: @visn_2,
       sta3n: 421,
       station_number: 421,
@@ -147,7 +147,7 @@ describe 'VISN pages', type: :feature do
 
   def expect_metadata(element)
     within(:css, element) do
-      expect(find('.visn-vamc-count').text).to eq('1 facility')
+      expect(find('.visn-facility-count').text).to eq('1 facility')
       expect(find('.visn-practice-creations-count').text).to eq('0 practices created here')
       expect(find('.visn-adoptions-count').text).to eq('0 practices adopted here')
     end
@@ -155,11 +155,10 @@ describe 'VISN pages', type: :feature do
 
   describe 'index page' do
     before do
-      visit '/visn'
+      visit '/visns'
     end
 
     it 'should be there' do
-      visit '/visns'
       expect(page).to have_current_path(visns_path)
     end
 
