@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe 'VISN pages', type: :feature do
   before do
+    ENV['GOOGLE_API_KEY'] = ENV['GOOGLE_TEST_API_KEY']
     @visn = Visn.create!(
       name: 'Test VISN',
       number: 2,
@@ -24,7 +25,7 @@ describe 'VISN pages', type: :feature do
       longitude: "-96.754906",
       phone_number: "111-000-0000"
     )
-    @vamc = Vamc.create!(
+    @va_facility = VaFacility.create!(
       visn: @visn,
       sta3n: 421,
       station_number: 421,
@@ -81,7 +82,7 @@ describe 'VISN pages', type: :feature do
       sunday: '24/7',
       hours_note: 'This is a test'
     )
-    @vamc_2 = Vamc.create!(
+    @va_facility_2 = VaFacility.create!(
       visn: @visn_2,
       sta3n: 421,
       station_number: 421,
@@ -140,14 +141,13 @@ describe 'VISN pages', type: :feature do
     )
   end
 
-  def switch_browser_windows
-    window = page.driver.browser.window_handles
-    page.driver.browser.switch_to.window(window.last)
+  after do
+    ENV['GOOGLE_API_KEY'] = nil
   end
 
   def expect_metadata(element)
     within(:css, element) do
-      expect(find('.visn-vamc-count').text).to eq('1 facility')
+      expect(find('.visn-facility-count').text).to eq('1 facility')
       expect(find('.visn-practice-creations-count').text).to eq('0 practices created here')
       expect(find('.visn-adoptions-count').text).to eq('0 practices adopted here')
     end
@@ -155,7 +155,7 @@ describe 'VISN pages', type: :feature do
 
   describe 'index page' do
     before do
-      visit '/visn'
+      visit '/visns'
     end
 
     it 'should be there' do
@@ -178,14 +178,12 @@ describe 'VISN pages', type: :feature do
         expect_metadata('#visn-5-marker-modal')
       end
 
-      it 'should allow the user to visit a visn\'s show page via clicking on a visn link within a marker modal' do
+      it 'should have a link to a given visn\'s show page within that visn\'s marker modal' do
         @markers.last.click
-        click_link 'VISN 5'
 
-        switch_browser_windows
-
-        expect(page).to have_current_path(visn_path(@visn_2))
-        expect(page).to have_content('5')
+        within(:css, '#visn-5-marker-modal') do
+          expect(find('.visn-modal-link')[:href]).to include('/visns/5')
+        end
       end
     end
 
@@ -205,8 +203,6 @@ describe 'VISN pages', type: :feature do
       it 'should allow the user to visit a visn\'s show page via clicking on a visn card' do
         @cards.first.click
 
-        switch_browser_windows
-
         expect(page).to have_content('2')
         expect(page).to have_current_path(visn_path(@visn))
       end
@@ -216,7 +212,7 @@ describe 'VISN pages', type: :feature do
 
   describe 'show page' do
     it 'should be there if the VISN number exists in the DB' do
-      visit '/visn/2'
+      visit '/visns/2'
       expect(page).to have_current_path(visn_path(@visn))
     end
   end

@@ -5,9 +5,9 @@ module VisnsHelper
 
     visn_adopted_practices = []
     practices.each do |p|
-      Vamc.cached_vamcs.where(visn: visn).each do |vamc|
+      VaFacility.cached_va_facilities.where(visn: visn).each do |vaf|
         p.diffusion_histories.each do |dh|
-          visn_adopted_practices << dh.facility_id if dh.facility_id === vamc.station_number
+          visn_adopted_practices << dh.facility_id if dh.facility_id === vaf.station_number
         end
       end
     end
@@ -22,9 +22,9 @@ module VisnsHelper
       origin_facilities = p.practice_origin_facilities
       initiating_facility = p.initiating_facility
       if p.facility? && origin_facilities.any?
-        Vamc.cached_vamcs.where(visn: visn).each do |vamc|
+        VaFacility.cached_va_facilities.where(visn: visn).each do |vaf|
           origin_facilities.each do |of|
-            visn_created_practices << { "vamc": of.facility_id } if of.facility_id === vamc.station_number
+            visn_created_practices << { "va_facility": of.facility_id } if of.facility_id === vaf.station_number
           end
         end
       elsif p.visn? && initiating_facility.present?

@@ -1,6 +1,6 @@
 <ul class="line-height-26 p0 x0 visn-data-ul">
-  <% visn_vamc_count = visn.vamcs.count %>
-  <li class="small-disc visn-vamc-count x0-5-bottom"><%= visn_vamc_count %> facilit<%= visn_vamc_count != 1 ? 'ies' : 'y' %></li>
+  <% visn_facility_count = visn.va_facilities.count %>
+  <li class="small-disc visn-facility-count x0-5-bottom"><%= visn_facility_count %> facilit<%= visn_facility_count != 1 ? 'ies' : 'y' %></li>
   <%
     visn_created_practices_count = get_created_practices_count_by_visn(visn)
     visn_adoption_count = get_adopted_practices_count_by_visn(visn)

@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-describe 'VAMC pages', type: :feature do
+describe 'VA facility pages', type: :feature do
 
   before do
     @visn = Visn.create!(name: 'Test VISN', number: 2)
-    @vamc = Vamc.create!(
+    @va_facility = VaFacility.create!(
           visn: @visn,
           sta3n: 421,
           station_number: 421,
@@ -65,20 +65,20 @@ describe 'VAMC pages', type: :feature do
 
   describe 'index page' do
     it 'should be there' do
-      visit '/vamc'
-      expect(page).to have_current_path(vamcs_path)
+      visit '/facilities'
+      expect(page).to have_current_path(va_facilities_path)
     end
   end
 
   describe 'show page' do
-    it 'should be there if the VAMC common name (friendly id) or id exists in the DB' do
+    it 'should be there if the VA facility common name (friendly id) or id exists in the DB' do
       # visit using the friendly id
-      visit '/vamc/test-common-name'
-      expect(page).to_not have_current_path(visn_path(@vamc))
+      visit '/facilities/test-common-name'
+      expect(page).to have_current_path(va_facility_path(@va_facility))
 
       # visit using the id
-      visit '/vamc/1'
-      expect(page).to_not have_current_path(visn_path(@vamc))
+      visit '/facilities/1'
+      expect(page).to have_current_path('/facilities/1')
     end
   end
 end
