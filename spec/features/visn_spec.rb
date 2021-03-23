@@ -178,16 +178,12 @@ describe 'VISN pages', type: :feature do
         expect_metadata('#visn-5-marker-modal')
       end
 
-      it 'should allow the user to visit a visn\'s show page via clicking on a visn link within a marker modal' do
+      it 'should have a link to a given visn\'s show page within that visn\'s marker modal' do
         @markers.last.click
-        click_link 'VISN 5'
 
-        # switch browser windows
-        window = page.driver.browser.window_handles
-        page.driver.browser.switch_to.window(window.last)
-
-        expect(page).to have_current_path(visn_path(@visn_2))
-        expect(page).to have_content('5')
+        within(:css, '#visn-5-marker-modal') do
+          expect(find('.visn-modal-link')[:href]).to include('/visns/5')
+        end
       end
     end
 
