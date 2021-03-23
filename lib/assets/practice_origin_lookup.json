@@ -456,7 +456,7 @@
       "phone_number": "817-652-1111"
     },
     {
-      "id": 15,
+      "id": 14,
       "number": "VISN-19",
       "name": "Rocky Mountain Network",
       "street_address": "4100 East Mississippi Avenue, Suite 1100",
@@ -468,7 +468,7 @@
       "phone_number": "303-202-8165"
     },
     {
-      "id": 16,
+      "id": 15,
       "number": "VISN-20",
       "name": "Northwest Network",
       "street_address": "1601 East 4th Plain Boulevard",
@@ -480,7 +480,7 @@
       "phone_number": "360-619-5925"
     },
     {
-      "id": 17,
+      "id": 16,
       "number": "VISN-21",
       "name": "Sierra Pacific Network",
       "street_address": "391 Taylor Boulevard, Suite 200",
@@ -492,7 +492,7 @@
       "phone_number": "916-923-4530"
     },
     {
-      "id": 18,
+      "id": 17,
       "number": "VISN-22",
       "name": "Desert Pacific Healthcare Network",
       "street_address": "300 Oceangate, Suite 700",
@@ -504,7 +504,7 @@
       "phone_number": "562-826-5963"
     },
     {
-      "id": 19,
+      "id": 18,
       "number": "VISN-23",
       "name": "VA Midwest Health Care Network",
       "street_address": "2805 Dodd Road, Suite 250",
