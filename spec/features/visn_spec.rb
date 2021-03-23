@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe 'VISN pages', type: :feature do
   before do
+    ENV['GOOGLE_API_KEY'] = ENV['GOOGLE_TEST_API_KEY']
     @visn = Visn.create!(
       name: 'Test VISN',
       number: 2,
@@ -138,6 +139,10 @@ describe 'VISN pages', type: :feature do
       sunday: '-',
       hours_note: 'This is a second test'
     )
+  end
+
+  after do
+    ENV['GOOGLE_API_KEY'] = nil
   end
 
   def switch_browser_windows
