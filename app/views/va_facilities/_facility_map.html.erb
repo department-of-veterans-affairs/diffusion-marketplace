@@ -8,7 +8,7 @@
 <!--            new google.maps.Point(10, 34));-->
 
         // The location of Uluru
-        const uluru = { lat: <%= @vamc.latitude %>, lng: <%= @vamc.longitude %> };
+        const uluru = { lat: <%= @va_facility.latitude %>, lng: <%= @va_facility.longitude %> };
         // The map, centered at Uluru
         const map = new google.maps.Map(document.getElementById("map"), {
             zoom: 8,

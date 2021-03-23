@@ -9,7 +9,7 @@
   Practices created at this facility
 </h1>
 <div style="width: 100%; overflow: hidden;">
-  <div class="usa-search margin-bottom-2 vamc-search-field">
+  <div class="usa-search margin-bottom-2 facility-search-field">
     <div role="search" class="flex-column">
       <label for="dm-practice-search-field"></label>
       <div id="search-bar-container" class="display-flex">
@@ -20,16 +20,16 @@
       </div>
     </div>
   </div>
-  <div class="vamc-category-select desktop:margin-bottom-3">
-    <%= render partial: 'vamcs/vamc_categories_combo_box', locals: {vamc_category_selector: 'vamc_category_select'} %>
+  <div class="facility-category-select desktop:margin-bottom-3">
+    <%= render partial: 'va_facilities/facility_categories_combo_box', locals: {facility_category_selector: 'facility_category_select'} %>
   </div>
 </div>
 <div style="width: 100%; overflow: hidden;">
-  <div class="usa-search margin-bottom-2 vamc-search-field">
+  <div class="usa-search margin-bottom-2 facility-search-field">
     # results:
   </div>
-  <div class="vamc-category-select">
-    <%= select_tag('', options_for_select(sort_options), id: 'vamc_sort_option', name: 'sort_option', class: 'height-5 usa-select margin-0') %>
+  <div class="facility-category-select">
+    <%= select_tag('', options_for_select(sort_options), id: 'facility_sort_option', name: 'sort_option', class: 'height-5 usa-select margin-0') %>
   </div>
 </div>
 <div class="grid-col-12">
@@ -43,7 +43,7 @@
     <% end %>
     <% if @created_practices_count < @practice_results_count %>
       <div align="center" class="desktop:margin-bottom-3">
-        <%= button_tag "Load more", num_practice_recs: @num_practice_recs, type: 'button', id: "btn_vamc_show_page_load_more", class: "usa-button--outline dm-btn-base dm-load-more-btn width-auto" %>
+        <%= button_tag "Load more", num_practice_recs: @num_practice_recs, type: 'button', id: "btn_facility_show_page_load_more", class: "usa-button--outline dm-btn-base dm-load-more-btn width-auto" %>
       </div>
     <% end %>
   </div>

@@ -27,31 +27,31 @@ $(document).ready(function(){
     if(resultsExist){
         resultsExist.addEventListener ("click", toggle_by_adoptions, false);
     }
-    let loadMoreBtn = document.getElementById ("btn_vamc_directory_load_more");
+    let loadMoreBtn = document.getElementById ("btn_facility_directory_load_more");
     if(loadMoreBtn){
         loadMoreBtn.addEventListener ("click", loadMoreRecords, false);
     }
 
-    let loadMorePracticesBtn = document.getElementById ("btn_vamc_show_page_load_more");
+    let loadMorePracticesBtn = document.getElementById ("btn_factility_show_page_load_more");
     if(loadMorePracticesBtn){
         loadMorePracticesBtn.addEventListener ("click", loadMorePractices, false);
     }
 
 
-    $("#vamc_directory_select").change (function(e) {
+    $("#facility_directory_select").change (function(e) {
         //set VISN and TYPE filters back to - Select
-        document.getElementById('vamc_directory_visn_select').value = '- Select -';
-        document.getElementById('vamc_type_select').value = '- Select -';
+        document.getElementById('facility_directory_visn_select').value = '- Select -';
+        document.getElementById('facility_type_select').value = '- Select -';
         let curUrl = window.location.href;
-        let vamcId = e.target.options[e.target.selectedIndex].value;
+        let facilityId = e.target.options[e.target.selectedIndex].value;
         curUrl = stripQsParams(curUrl);
-        let newUrl = `${curUrl}?vamc=${vamcId}`;
+        let newUrl = `${curUrl}?facility=${facilityId}`;
         window.location.href = newUrl;
     });
 
-    $("#vamc_directory_visn_select").change (function(e) {
-        //document.getElementById('vamc_directory_select').value = '';
-        let type =  document.getElementById('vamc_type_select').value;
+    $("#facility_directory_visn_select").change (function(e) {
+        //document.getElementById('facility_directory_select').value = '';
+        let type =  document.getElementById('facility_type_select').value;
         let curUrl = window.location.href;
         let visnId = e.target.options[e.target.selectedIndex].value;
         let isDefault = visnId.length == 0 ? true : false;
@@ -67,12 +67,12 @@ $(document).ready(function(){
         window.location.href = newUrl;
     });
 
-    $("#vamc_type_select").change (function(e) {
-        //document.getElementById('vamc_directory_select').value = '';
+    $("#facility_type_select").change (function(e) {
+        //document.getElementById('facility_directory_select').value = '';
         var curUrl = window.location.href;
         let type = this.options[e.target.selectedIndex].text;
         var isDefault = type == "- Select -" ? true : false;
-        let visnId =  document.getElementById('vamc_directory_visn_select').value;
+        let visnId =  document.getElementById('facility_directory_visn_select').value;
         curUrl = stripQsParams(curUrl);
         let newUrl = curUrl;
         if (!isDefault){
@@ -170,7 +170,7 @@ $(document).ready(function(){
     }
 
     function loadMoreRecords(){
-        let btn = document.getElementById("btn_vamc_directory_load_more");
+        let btn = document.getElementById("btn_facility_directory_load_more");
         let numRecs = parseInt(btn.getAttribute("num_recs"));
         numRecs += 20;
         let curUrl = window.location.href;
@@ -183,7 +183,7 @@ $(document).ready(function(){
 
     function loadMorePractices(){
         debugger
-        let btn = document.getElementById("btn_vamc_show_page_load_more");
+        let btn = document.getElementById("btn_facility_show_page_load_more");
         let numPracticeRecs = parseInt(btn.getAttribute("num_practice_recs"));
         numPracticeRecs += 3;
         let curUrl = window.location.href;
