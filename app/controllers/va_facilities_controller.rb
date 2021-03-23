@@ -1,7 +1,6 @@
 class VaFacilitiesController < ApplicationController
   before_action :set_va_facility, only: :show
   def index
-    debugger
     @num_recs = params[:more] || "20"
     if params[:sortby].present?
       @facilities = VaFacility.get_all_facilities(params[:sortby])
