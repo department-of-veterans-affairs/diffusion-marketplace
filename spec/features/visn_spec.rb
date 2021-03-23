@@ -145,11 +145,6 @@ describe 'VISN pages', type: :feature do
     ENV['GOOGLE_API_KEY'] = nil
   end
 
-  def switch_browser_windows
-    window = page.driver.browser.window_handles
-    page.driver.browser.switch_to.window(window.last)
-  end
-
   def expect_metadata(element)
     within(:css, element) do
       expect(find('.visn-facility-count').text).to eq('1 facility')
@@ -187,7 +182,9 @@ describe 'VISN pages', type: :feature do
         @markers.last.click
         click_link 'VISN 5'
 
-        switch_browser_windows
+        # switch browser windows
+        window = page.driver.browser.window_handles
+        page.driver.browser.switch_to.window(window.last)
 
         expect(page).to have_current_path(visn_path(@visn_2))
         expect(page).to have_content('5')
@@ -209,8 +206,6 @@ describe 'VISN pages', type: :feature do
 
       it 'should allow the user to visit a visn\'s show page via clicking on a visn card' do
         @cards.first.click
-
-        switch_browser_windows
 
         expect(page).to have_content('2')
         expect(page).to have_current_path(visn_path(@visn))
