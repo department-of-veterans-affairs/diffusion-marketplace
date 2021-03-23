@@ -272,7 +272,7 @@ module NavigationHelper
 
     ### VISN BREADCRUMBS
     def add_visn_index_breadcrumb
-      session[:breadcrumbs] << { 'display': 'VISN', 'path': visns_path }
+      session[:breadcrumbs] << { 'display': 'VISNs', 'path': visns_path }
     end
 
     def visn_by_number
