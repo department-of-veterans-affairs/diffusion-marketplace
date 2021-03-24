@@ -67,6 +67,29 @@ describe 'VA facility pages', type: :feature do
     it 'should be there' do
       visit '/facilities'
       expect(page).to have_current_path(va_facilities_path)
+      expect(page).to have_content("Facility directory")
+      expect(page).to have_content("Looking for a full list of VISNs?")
+      expect(page).to have_content("Facilities")
+      expect(page).to have_content("VISN")
+      expect(page).to have_content("Type")
+      expect(find_all('.usa-select').first.value).to eq ''
+      expect(find('#facility_directory_visn_select').first.value).to eq '- Select -'
+      expect(find('#facility_type_select').first.value).to eq '- Select -'
+      expect(find('#facility_directory_select').first.value).to eq ''
+      # test combo/select boxes..
+      first_element = find("#facility_directory_select > option:nth-child(1)").text
+      select(first_element, :from => "facility_directory_select")
+      expect(page).to have_content("Aberdeen VA Clinic")
+
+      first_element = find("#facility_directory_visn_select > option:nth-child(1)").text
+      select(first_element, :from => "facility_directory_visn_select")
+      expect(page).to have_content("Displaying 20 of 59 results:")
+
+      first_element = find("#facility_type_select > option:nth-child(1)").text
+      select(first_element, :from => "facility_type_select")
+      expect(page).to have_content("1A")
+      expect(page).to have_content("Displaying 17 of 17 results:")
+
     end
   end
 
