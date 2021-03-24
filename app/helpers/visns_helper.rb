@@ -38,7 +38,7 @@ module VisnsHelper
     visn_facility_locations = []
 
     # add facility locations to empty array
-    Vamc.cached_vamcs.where(visn: visn).each do |vamc|
+    VaFacility.cached_va_facilities.where(visn: visn).each do |vamc|
       facility_location = vamc.street_address_state
 
       visn_facility_locations << facility_location unless visn_facility_locations.include?(facility_location)
@@ -68,12 +68,39 @@ module VisnsHelper
           elsif sorted_facility_locations.count > 2
             location_list += "#{full_name}, "
           else
-            location_list += "#{full_name} "
+            location_list += sorted_facility_locations.count == 1 ? "#{full_name}" : "#{full_name} "
           end
         end
       end
     end
 
     location_list
+  end
+
+  def facility_type_count(facility_type_array, facility_type)
+    facility_type_array.select { |type| type === facility_type }.count
+  end
+
+
+  def get_facility_types_and_counts_by_visn(visn)
+    visn_facility_types = []
+
+
+    # add facility types and counts to empty array
+    VaFacility.cached_va_facilities.where(visn: visn).each do |vamc|
+      facility_type = vamc.classification
+
+      visn_facility_types << facility_type
+    end
+
+    visn_facility_type_text = ''
+
+    hcc_count = facility_type_count(visn_facility_types, 'Health Care Center (HCC)')
+    multi_specialty_cboc_count = facility_type_count(visn_facility_types, 'Multi-Specialty CBOC')
+    oos_count = facility_type_count(visn_facility_types, 'Other Outpatient Services (OOS)')
+    primary_care_cboc = facility_type_count(visn_facility_types, 'Primary Care CBOC')
+    stand_alone_count = facility_type_count(visn_facility_types, 'Residential Care Site (MH RRTP/DRRTP) (Stand-Alone)')
+    unclassified_count = facility_type_count(visn_facility_types, 'Unclassified')
+    vamc_count = facility_type_count(visn_facility_types, 'VA Medical Center (VAMC)')
   end
 end

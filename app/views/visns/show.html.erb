@@ -8,7 +8,9 @@
     <div class="grid-row">
       <div class="grid-col-6 line-height-26">
         <p>
-          This VISN has <%= @visn.vamcs.count %> facilities and serves Veterans in <%= get_facility_locations_by_visn(@visn) %>. Collectively, its facilities have created 8 practices and have adopted 29 practices.
+          This VISN has <%= @visn.va_facilities.count %> facilities and serves Veterans in <%= get_facility_locations_by_visn(@visn) %>.
+          Collectively, its facilities have created <%= get_created_practices_count_by_visn(@visn) %> practices and have adopted <%= get_adopted_practices_count_by_visn(@visn) %> practices.
+
         </p>
       </div>
       <div class="grid-col-6">
