@@ -18,12 +18,13 @@
       <section class="usa-section padding-top-0 p0-bottom editors">
         <h1 class="font-sans-2xl line-height-46px margin-bottom-3">Editors</h1>
         <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
-        <% PracticeEditor.where(practice: @practice).order(created_at: :asc).each do |pe| %>
+        <% practice_editors = PracticeEditor.where(practice: @practice).order(created_at: :asc) %>
+        <% practice_editors.each do |pe| %>
           <%
             user = pe.user
             email = user.email
           %>
-          <div class="grid-row flex-align-center border-bottom-1px practice-editor-entry">
+          <div class="grid-row flex-align-center border-bottom-1px <%= 'border-top-1px' if practice_editors.first === pe %> practice-editor-entry">
             <div class="grid-col-11 padding-y-3 line-height-26">
               <p class="text-bold <%= 'display-none' unless is_full_name_present(user) %>"><%= user_full_name(user) %></p>
               <a target="_blank" href="mailto:<%= email %>" class="dm-external-link line-height-26">
