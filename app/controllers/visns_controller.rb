@@ -27,6 +27,7 @@ class VisnsController < ApplicationController
   end
 
   def show
+    @primary_visn_liaison = VisnLiaison.find_by(visn: @visn, primary: true)
   end
 
   private
