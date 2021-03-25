@@ -22,12 +22,35 @@ class VisnsController < ApplicationController
       marker.shadow nil
       marker.json({ number: current_visn[:number] })
 
-      marker.infowindow render_to_string(partial: 'visns/maps/infowindow', locals: { visn: visn })
+      marker.infowindow render_to_string(partial: 'visns/maps/index_infowindow', locals: { visn: visn })
     end
   end
 
   def show
     @primary_visn_liaison = VisnLiaison.find_by(visn: @visn, primary: true)
+
+    @visn_va_facilities = @visn.va_facilities
+
+    @visn_va_facility_markers = Gmaps4rails.build_markers(@visn_va_facilities) do |facility, marker|
+
+      va_facility = @visn_va_facilities.find { |vaf| vaf.id == facility.id }
+
+      marker.lat va_facility[:latitude].to_s
+      marker.lng va_facility[:longitude].to_s
+
+      marker.picture({
+                       url: view_context.image_path('visn-map-marker-default.svg'),
+                       width: 48,
+                       height: 64,
+                       scaledWidth: 48,
+                       scaledHeight: 64
+                     })
+
+      marker.shadow nil
+      marker.json({ id: va_facility.id })
+
+      marker.infowindow render_to_string(partial: 'visns/maps/show_infowindow', locals: { visn: visn })
+    end
   end
 
   private
