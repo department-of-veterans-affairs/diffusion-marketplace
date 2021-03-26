@@ -7,23 +7,33 @@ ActiveAdmin.register_page "Dashboard" do
     before_action :set_dashboard_values
 
     def site_visits(start_time, end_time)
-      Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where(time: start_time..end_time).group("properties->>'ip_address'").count
+      # is_duplicate was added to "properties" to remove duplicate 'Site visit' and 'Practice show' counts as a result of turbolinks loading the page twice, triggering two ahoy_event to be saved
+      Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where(time: start_time..end_time).group("properties->>'ip_address'").count
     end
 
-    def custom_page_visits_by_range(start_time, end_time, page_slug)
-      Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'page_group' = '#{page_slug}'").where(time: start_time..end_time).group("properties->>'ip_address'").count
+    def custom_page_visits_by_range(start_time, end_time, page)
+      if page[:slug] === 'home'
+        Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where("properties->>'page_group' = '#{page[:group]}'").where("properties->>'page_slug' is null").where(time: start_time..end_time).group("properties->>'ip_address'").count
+      else
+        Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where("properties->>'page_group' = '#{page[:group]}'").where("properties->>'page_slug' = '#{page[:slug]}'").where(time: start_time..end_time).group("properties->>'ip_address'").count
+      end
     end
 
-    def custom_page_visits(page_slug)
-      Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'page_group' = '#{page_slug}'").count
+    def custom_page_visits(page)
+      if page[:slug] === 'home'
+        Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where("properties->>'page_group' = '#{page[:group]}'").where("properties->>'page_slug' is null").count
+      else
+        Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where("properties->>'page_group' = '#{page[:group]}'").where("properties->>'page_slug' = '#{page[:slug]}'").count
+      end
     end
 
     def get_custom_pages_stats(custom_pages)
       traffic_stats = []
       custom_pages.each do |cp|
         stats = custom_page_visits_by_range(@beginning_of_last_month, @end_of_last_month, cp)
+        slug = cp[:slug] === 'home' ? cp[:group] : "#{cp[:group]}/#{cp[:slug]}"
         prop = {
-          slug: cp,
+          slug: slug,
           unique_visitors: 0,
           number_of_page_views: 0,
           total_views: custom_page_visits(cp)
@@ -36,7 +46,7 @@ ActiveAdmin.register_page "Dashboard" do
 
         traffic_stats.push(prop)
       end
-      traffic_stats
+      traffic_stats.sort_by { |pg| pg[:slug] }
     end
 
     def get_practice_emails_totals(start_time, end_time)
@@ -51,7 +61,7 @@ ActiveAdmin.register_page "Dashboard" do
       @practices_views = @enabled_published_practices.sort_by(&:current_month_views).reverse!
       @practices_headers = ['Practice Name', "#{@date_headers[:current]}", "Last Month", "#{@date_headers[:total]}"]
 
-      @custom_pages = PageGroup.all.select { |pg| pg.pages.where(slug: 'home').present? }.map{ |pg| pg.slug }
+      @custom_pages = Page.all.map{ |pg| {slug: pg.slug, group: PageGroup.find(pg.page_group_id).slug }}
       @custom_pages_traffic_stats = get_custom_pages_stats(@custom_pages)
 
       @general_traffic_stats = {
@@ -95,6 +105,8 @@ ActiveAdmin.register_page "Dashboard" do
       @month_and_year_array = []
       start_date = Date.today.prev_year.beginning_of_month
       end_date = Date.today
+      @new_users = {}
+      @user_visitors = {}
 
       while start_date <= end_date
         beg_of_month = start_date.beginning_of_day
@@ -103,25 +115,20 @@ ActiveAdmin.register_page "Dashboard" do
         # Get practice views by month
         @approved_enabled_published_practices.each do |p|
           practice_visits_by_month = []
-          pr_visit_ct = Ahoy::Event.where_props(practice_id: p[:id]).where(time: beg_of_month...end_of_month).count
+          pr_visit_ct = p.date_range_views(beg_of_month, end_of_month)
           practice_visits_by_month << pr_visit_ct
           practice_visits_by_month.each do |visit_count|
             @practice_views_array << [p.id, visit_count]
           end
         end
 
+        @new_users[month_and_year] = User.where(created_at: beg_of_month..end_of_month).count
+        @user_visitors[month_and_year] = Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where.not(user_id: nil).where(time: beg_of_month..end_of_month).group(:user_id).count.keys.length
+
         # Get site visits by month
         site_visits = site_visits(beg_of_month, end_of_month)
         site_visit_ct = site_visits.sum {|_k, v| v}
         @site_visits_by_month << [month_and_year, site_visit_ct]
-
-        # Get new users by month
-        new_user_count = User.where(created_at: beg_of_month..end_of_month).count
-        @new_users_by_month << new_user_count
-
-        # Get total users by month
-        total_user_count = User.where(current_sign_in_at: beg_of_month..end_of_month).count
-        @total_users_by_month << total_user_count
 
         @month_and_year_array << [month_and_year]
         start_date += 1.months
@@ -139,8 +146,8 @@ ActiveAdmin.register_page "Dashboard" do
 
       # Add user stats hash to make it easier to format spreadsheet data
       @user_statistics = {
-          new_users: @new_users_by_month,
-          total_users: @total_users_by_month
+        new_users: @new_users.values,
+        total_users: @user_visitors.values
       }
     end
 
@@ -206,11 +213,11 @@ ActiveAdmin.register_page "Dashboard" do
           end
           sheet.add_row [''], style: xlsx_divider
 
-          sheet.add_row ["Favorited Counts"], style: xlsx_sub_header_2
+          sheet.add_row ["Bookmarked Counts"], style: xlsx_sub_header_2
           @practices_favorited_stats.each { |key, value| sheet.add_row [key.to_s.tr!('_', ' ').titleize, value], style: xlsx_entry }
           sheet.add_row [""], style: xlsx_divider
 
-          sheet.add_row ["Favorited Counts by Practice"], style: xlsx_sub_header_2
+          sheet.add_row ["Bookmarked Counts by Practice"], style: xlsx_sub_header_2
           sheet.add_row @practices_headers, style: xlsx_sub_header_3
           @practices.each do |value|
             sheet.add_row [
@@ -293,14 +300,14 @@ ActiveAdmin.register_page "Dashboard" do
       tab :users_information do
         columns do
           column do
-            panel('New Users This Month', class: 'dm-panel-container', id: 'dm-new-users-this-month') do
-              column_chart User.where('created_at >= ?', 1.week.ago).group_by_month(:created_at, format: '%b').count, ytitle: 'Users'
-            end
             panel('New Users by Month', class: 'dm-panel-container', id: 'dm-new-users-by-month') do
-              column_chart User.group_by_month(:current_sign_in_at, format: '%b').count, ytitle: 'Users'
+              column_chart new_users.reverse_each.to_h, ytitle: 'Users'
+            end
+            panel('Unique User Visits by Month', class: 'dm-panel-container', id: 'dm-user-visits-by-month') do
+              column_chart user_visitors.reverse_each.to_h, ytitle: 'Users'
             end
           end # column
-        end # columns
+        end # column
         user_info = [{
                          in_the_last: 'New Users',
                          '24_hours': User.where('created_at >= ?', 1.day.ago).count,
@@ -309,19 +316,19 @@ ActiveAdmin.register_page "Dashboard" do
                          three_months: User.where('created_at >= ?', 3.months.ago).count,
                          year: User.where('created_at >= ?', 1.year.ago).count
                      }, {
-                         in_the_last: 'Total Users',
-                         '24_hours': User.where('current_sign_in_at >= ?', 1.day.ago).count,
-                         week: User.where('current_sign_in_at >= ?', 1.week.ago).count,
-                         month: User.where('current_sign_in_at >= ?', 1.month.ago).count,
-                         three_months: User.where('current_sign_in_at >= ?', 3.months.ago).count,
-                         year: User.where('current_sign_in_at >= ?', 1.year.ago).count
+                         in_the_last: 'Unique User Visits',
+                         '24_hours': Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where.not(user_id: nil).where('time >= ?', 1.day.ago).group(:user_id).count.keys.length,
+                         week: Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where.not(user_id: nil).where('time >= ?', 1.week.ago).group(:user_id).count.keys.length,
+                         month: Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where.not(user_id: nil).where('time >= ?', 1.month.ago).group(:user_id).count.keys.length,
+                         three_months: Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where.not(user_id: nil).where('time >= ?', 3.months.ago).group(:user_id).count.keys.length,
+                         year: Ahoy::Event.where(name: 'Site visit').where("properties->>'ip_address' is not null").where("properties->>'is_duplicate' is null").where.not(user_id: nil).where('time >= ?', 1.year.ago).group(:user_id).count.keys.length
                      }]
         columns do
           column do
-            panel 'User statistics' do
+            panel 'User Statistics' do
               table_for user_info.each do
                 column(:in_the_last) { |info|
-                  span(info[:in_the_last], class: "dm-tooltip", title: info[:in_the_last] === 'New Users' ? 'Number of first time visitors to the site' : 'Total number of unique visitors to the site')
+                  span(info[:in_the_last], class: "dm-tooltip", title: info[:in_the_last] === 'New Users' ? 'Number of first time visitors to the site within the specified time period' : 'Number of unique user visits to the site within the specified time period')
                 }
                 column :'24_hours'
                 column :week
@@ -449,7 +456,7 @@ ActiveAdmin.register_page "Dashboard" do
         end # panel
 
         panel 'Practice Engagement' do
-          h4("Favorited Counts", title: "Number of times a practice was favorited", class: "dm-tooltip")
+          h4("Bookmarked Counts", title: "Number of times a practice was bookmarked", class: "dm-tooltip")
 
           table_for practices_favorited_stats, id: 'favorited_stats' do
             column("#{date_headers[:current]}") {|ps| ps[:favorited_this_month]}
@@ -457,7 +464,7 @@ ActiveAdmin.register_page "Dashboard" do
             column :total_favorited
           end
 
-          h4("Favorited Counts by Practice", title: "Number of times each practice has been favorited", class: "dm-tooltip")
+          h4("Bookmarked Counts by Practice", title: "Number of times each practice has been bookmarked", class: "dm-tooltip")
 
           table_for practices do
             column(:name) {|pr| link_to(pr.name, admin_practice_path(pr))}
