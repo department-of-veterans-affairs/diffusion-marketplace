@@ -5,15 +5,7 @@ class VaFacility < ApplicationRecord
   belongs_to :visn
 
   def self.get_practices_created_by_facility(station_number)
-    sql = "select p.* from practices p join practice_origin_facilities pof on pof.practice_id = p.id where pof.facility_id = '#{station_number}'";
-    results =  ActiveRecord::Base.connection.execute(sql)
-    fields = results.fields
-     results.values.map { |value_set|
-      hash = Hash[fields.zip(value_set)]
-      model = Practice.new(hash)
-      model.instance_variable_set :@new_record, false
-      model
-     }
+    Practice.joins(:practice_origin_facilities).where(practice_origin_facilities: {facility_id: station_number}).to_a
   end
 
   def self.get_adoptions_by_facility(station_number)

@@ -13,7 +13,7 @@
           <%= @va_facility.official_station_name %>
         </h1>
         <div style="width: 100%; overflow: hidden;">
-          <div class="grid-col-6" style="float: left;"> This facility has created <%= @created_practices_count %> practices and has adopted <%= @adoptions_count %> practices.  It's a<% if @va_facility.rurality == "U" || @va_facility.rurality == "I" %>n<% end %>
+          <div class="grid-col-6" style="float: left;"> This facility has created <%= @practice_results_count %> practices and has adopted <%= @adoptions_count %> practices.  It's a<% if @va_facility.rurality == "U" || @va_facility.rurality == "I" %>n<% end %>
             <% if @va_facility.rurality == "R" %>
               rural
             <% end %>
