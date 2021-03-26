@@ -6,8 +6,8 @@
     <div role="search" class="flex-column">
       <label for="dm-practice-search-field"></label>
       <div id="search-bar-container" class="display-flex">
-        <input class="usa-input" id="dm-practice-search-field" title="Type at least three characters to search." autocomplete="off" type="search" name="search">
-        <button id="dm-practice-search-button" class="usa-button" type="submit" name="search-button">
+        <input class="usa-input" id="dm-adopted-practices-search-field" title="Type at least three characters to search." autocomplete="off" type="search" name="search">
+        <button id="dm-adopted-practices-search-button" class="usa-button" type="submit" name="search-button">
           <span class="usa-search__submit-text text-bold">Search</span>
         </button>
       </div>
@@ -23,6 +23,22 @@
     # results:
   </div>
   <div id="va_facility_adoption_results" class="grid-col-12">
+    <table class="usa-table usa-table--borderless grid-col-12">
+      <thead>
+        <th>Practice name</th>
+        <th>Status</th>
+        <th>Start date</th>
+        <th>Total adoptions &#x25BC;</th>
+      <% @adoptions_at_facility.each do |ad| %>
+        <tr>
+          <td><%=ad["name"] %></td>
+          <td><%=ad["status"] %></td>
+          <td><%=ad["start_time"] %></td>
+          <td><%=ad["name"] %></td>
+        </tr>
+        <% end %>
 
+      </thead>
+    </table>
   </div>
 </div>

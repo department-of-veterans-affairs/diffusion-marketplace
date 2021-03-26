@@ -9,7 +9,12 @@ class VaFacility < ApplicationRecord
   end
 
   def self.get_adoptions_by_facility(station_number)
-    DiffusionHistory.where(facility_id: station_number)
+    #DiffusionHistory.where(facility_id: station_number)
+    sql = "SELECT  p.name, dh.facility_id, dhs.status, dhs.start_time FROM practices p
+          JOIN diffusion_histories dh on p.id = dh.practice_id
+          JOIN diffusion_history_statuses dhs on dh.id = dhs.diffusion_history_id
+          WHERE dh.facility_id = $1"
+    ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"]]).to_a
   end
 
   def self.get_categories

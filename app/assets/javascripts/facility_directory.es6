@@ -193,6 +193,15 @@ $(document).ready(function(){
         newUrl += `practices=${numPracticeRecs}`;
         window.location.href = newUrl;
     }
+    $("#dm-adopted-practices-search-button").click (function(e) {
+        var result = document.getElementById("dm-adopted-practices-search-field").value
+        alert(result);
+    });
+
+    $("#facility_category_select_adoptions").change (function(e) {
+        alert('what up g');
+    });
+
 
 });
 

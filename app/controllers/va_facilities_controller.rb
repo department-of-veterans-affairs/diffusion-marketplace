@@ -46,8 +46,8 @@ class VaFacilitiesController < ApplicationController
 
     @created_practices = @created_practices.take(@num_practice_recs.to_i)
     @created_practices_count = @created_practices.count
-    @adoptions = VaFacility.get_adoptions_by_facility(@va_facility.station_number)
-    @adoptions_count = @adoptions.count
+    @adoptions_at_facility = VaFacility.get_adoptions_by_facility(@va_facility.station_number)
+    @adoptions_count = @adoptions_at_facility.count
     @categories = VaFacility.get_categories
   end
 
