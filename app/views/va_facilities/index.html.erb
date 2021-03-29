@@ -123,9 +123,9 @@
               <tbody>
               <% @filtered_facilities.each do |facility| %>
                 <tr>
-                  <td width="30%"><a href='/facilities/<%= facility["id"] %>'><%= facility["official_station_name"] %></a></td>
+                  <td width="30%"><a class="dm-internal-link" href='/facilities/<%= facility["id"] %>'><%= facility["official_station_name"] %></a></td>
                   <td width="20%"><%= facility["common_name"] %></td>
-                  <td width="10%"><a href='/visns/<%= facility["visn_number"] %>'><%= facility["visn_number"] %></a></td>
+                  <td width="10%"><a class="dm-internal-link" href='/visns/<%= facility["visn_number"] %>'><%= facility["visn_number"] %></a></td>
                   <td width="10%"><%= facility["fy17_parent_station_complexity_level"][0..1].upcase %></td>
                   <td width="15%"><%= facility["practices_created"] %></td>
                   <td width="15%"><%= facility["adoptions"] %></td>
