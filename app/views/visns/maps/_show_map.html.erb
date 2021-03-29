@@ -1,17 +1,17 @@
 <% if ENV['GOOGLE_API_KEY'].present? %>
   <% provide :head_tags do %>
     <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-      var visnMapData = <%= raw @visn_markers.to_json %>;
+      var visnVaFacilityMapData = <%= raw @visn_va_facility_markers.to_json %>;
       var defaultVisnMarkerIcon = '<%= image_path('visn-map-marker-default.svg') %>';
       var hoverVisnMarkerIcon = '<%= image_path('visn-map-marker-hover.svg') %>';
       var selectedVisnMarkerIcon = '<%= image_path('visn-map-marker-selected.svg') %>';
     <% end %>
-    <%= javascript_include_tag 'visns/visns_index_map', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'visns/maps', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'visns/_map_utilities', 'data-turbolinks-track': 'reload' %>
   <% end %>
-  <section class="margin-bottom-0 padding-0" id="map-of-diffusion">
+  <section class="margin-bottom-0 padding-0">
     <div class="width-full position-relative grid-row margin-bottom-2">
-      <div id="visn-index-map" style="width: 100%; height: 462px" class="dm-practice-diffusion-map"></div>
+      <div id="visns-show-map" style="width: 100%; height: 452px"></div>
     </div>
   </section>
 <% end %>

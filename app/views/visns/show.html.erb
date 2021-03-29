@@ -7,23 +7,22 @@
     <h1 class="font-sans-2xl line-height-46px">VISN <%= @visn.number %>: <%= @visn.name %></h1>
     <div class="grid-row grid-gap-3">
       <div class="grid-col-6 line-height-26">
-        <p>
+        <p class="margin-bottom-2">
           This VISN has <%= @visn.va_facilities.count %> facilities and serves Veterans in <%= get_facility_locations_by_visn(@visn) %>.
           Collectively, its facilities have created <%= get_created_practices_count_by_visn(@visn) %> practices and have adopted <%= get_adopted_practices_count_by_visn(@visn) %> practices.
           This VISN has <%= get_facility_types_and_counts_by_visn(@visn) %>.
         </p>
+        <%= link_to 'Jump to list of VA facilities', va_facilities_path, class: 'dm-external-link' %>
       </div>
       <div class="grid-col-6 ">
           <div class="visn-liaison-info padding-3 line-height-26 bg-base-lightest">
             <p class="text-bold margin-bottom-2">VISN Marketplace Liaison</p>
             <p class="margin-bottom-105"><%= @primary_visn_liaison.first_name %> <%= @primary_visn_liaison.last_name %></p>
             <% primary_liaison_email = @primary_visn_liaison.email %>
-            <p><%= mail_to primary_liaison_email, primary_liaison_email, class: 'dm-external-link' %></p>
+            <p><%= mail_to primary_liaison_email, primary_liaison_email, class: 'visn-liaison-email' %></p>
           </div>
       </div>
     </div>
   </section>
-  <section id="visn-show-map">
-
-  </section>
+  <%= render partial: 'visns/maps/show_map' %>
 </div>

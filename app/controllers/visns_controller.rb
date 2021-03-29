@@ -20,7 +20,10 @@ class VisnsController < ApplicationController
                      })
 
       marker.shadow nil
-      marker.json({ number: current_visn[:number] })
+      marker.json({
+        id: current_visn[:id],
+        number: current_visn[:number]
+      })
 
       marker.infowindow render_to_string(partial: 'visns/maps/index_infowindow', locals: { visn: visn })
     end
@@ -40,16 +43,16 @@ class VisnsController < ApplicationController
 
       marker.picture({
                        url: view_context.image_path('visn-map-marker-default.svg'),
-                       width: 48,
-                       height: 64,
-                       scaledWidth: 48,
-                       scaledHeight: 64
+                       width: 34,
+                       height: 46,
+                       scaledWidth: 34,
+                       scaledHeight: 46
                      })
 
       marker.shadow nil
       marker.json({ id: va_facility.id })
 
-      marker.infowindow render_to_string(partial: 'visns/maps/show_infowindow', locals: { visn: visn })
+      marker.infowindow render_to_string(partial: 'visns/maps/show_infowindow', locals: { va_facility: va_facility })
     end
   end
 

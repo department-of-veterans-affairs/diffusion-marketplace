@@ -1,15 +1,17 @@
 module VisnsHelper
   include StatesHelper
 
+  def approved_published_enabled_practices
+    Practice.where(approved: true, published: true, enabled: true)
+  end
+
   def visn_va_facilities(visn)
     VaFacility.cached_va_facilities.where(visn: visn)
   end
 
   def get_adopted_practices_count_by_visn(visn)
-    practices = Practice.where(approved: true, published: true, enabled: true)
-
     visn_adopted_practices = []
-    practices.each do |p|
+    approved_published_enabled_practices.each do |p|
       visn_va_facilities(visn).each do |vaf|
         p.diffusion_histories.each do |dh|
           visn_adopted_practices << dh.facility_id if dh.facility_id === vaf.station_number
@@ -20,10 +22,8 @@ module VisnsHelper
   end
 
   def get_created_practices_count_by_visn(visn)
-    practices = Practice.where(approved: true, published: true, enabled: true)
-
     visn_created_practices = []
-    practices.each do |p|
+    approved_published_enabled_practices.each do |p|
       origin_facilities = p.practice_origin_facilities
       initiating_facility = p.initiating_facility
       if p.facility? && origin_facilities.any?

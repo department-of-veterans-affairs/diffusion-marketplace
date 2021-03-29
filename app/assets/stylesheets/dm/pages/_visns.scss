@@ -1,23 +1,23 @@
 @import '../variables/colors';
 
-#visns-index {
-  .visn-modal-link, .va-facility-index-link {
-    text-decoration: none !important;
-    color: $dm-color-blue-50v;
+.visn-modal-link, .va-facility-index-link, .visn-liaison-email, .marker-modal-va-facility-link {
+  text-decoration: none !important;
+  color: $dm-color-blue-50v;
 
-    &:hover {
-      color: $dm-color-blue-70v !important;
-    }
-
-    &:active {
-      color: $dm-color-blue-80v !important;
-    }
-
-    &:visited {
-      color: $dm-color-blue-50v;
-    }
+  &:hover {
+    color: $dm-color-blue-70v !important;
   }
 
+  &:active {
+    color: $dm-color-blue-80v !important;
+  }
+
+  &:visited {
+    color: $dm-color-blue-50v;
+  }
+}
+
+#visns-index {
   .visn-card-link {
     text-decoration: none;
 
