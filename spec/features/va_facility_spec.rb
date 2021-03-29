@@ -66,6 +66,7 @@ describe 'VA facility pages', type: :feature do
   describe 'index page' do
     it 'should be there' do
       visit '/facilities'
+      expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_current_path(va_facilities_path)
       expect(page).to have_content("Facility directory")
       expect(page).to have_content("Looking for a full list of VISNs?")
