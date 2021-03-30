@@ -12,7 +12,7 @@
         <h1 class="font-sans-2x1 desktop:margin-top-5 desktop:margin-bottom-3">
           <%= @va_facility.official_station_name %>
         </h1>
-        <div style="width: 100%; overflow: hidden;">
+        <div class="grid-col-12">
           <div class="grid-col-6" style="float: left;"> This facility has created <%= @practice_results_count %> practices and has adopted <%= @adoptions_count %> practices.  It's a<% if @va_facility.rurality == "U" || @va_facility.rurality == "I" %>n<% end %>
             <% if @va_facility.rurality == "R" %>
               rural
@@ -28,7 +28,7 @@
             <% end %>
             <%= @va_facility.fy17_parent_station_complexity_level %>
             facility and serves veterans in <%= @va_facility.mailing_address_city %>.  <% unless @va_facility.station_number_suffix_reservation_effective_date.blank? %>This facility opened in <%= @va_facility.station_number_suffix_reservation_effective_date.to_s[0..3] %>.<% end %>
-            <div class="desktop:margin-top-2 facility-address">
+            <div class="desktop:margin-top-2 text-bold">
               Address
             </div>
             <div class="desktop:margin-top-1">

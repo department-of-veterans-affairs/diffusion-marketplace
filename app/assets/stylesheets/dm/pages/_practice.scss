@@ -1245,7 +1245,7 @@ tr.border_bottom td {
 }
 
 .fake-link{
-  color: black;
+  color: $dm-color-black;
   cursor: pointer;
 }
 
@@ -1255,10 +1255,6 @@ tr.border_bottom td {
   width: 472px;
   /* The width is the width of the web page */
   margin-left: 500px;
-}
-
-.facility-address{
-  font-weight: bold !important;
 }
 
 .facility-phone-number{
