@@ -12,7 +12,7 @@ class @VisnVaFacilityInfoBoxBuilder extends Gmaps.Google.Builders.Marker # inher
 
   infobox: (boxText)->
     content: boxText
-    pixelOffset: new google.maps.Size(-310, -70)
+    pixelOffset: new google.maps.Size(-265, -55)
     boxStyle:
       width: "243px"
       height: "89px"

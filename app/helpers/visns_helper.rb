@@ -1,8 +1,8 @@
 module VisnsHelper
   include StatesHelper
 
-  def approved_published_enabled_practices
-    Practice.where(approved: true, published: true, enabled: true)
+  def published_enabled_approved_practices
+    Practice.published_enabled_approved
   end
 
   def visn_va_facilities(visn)
@@ -11,7 +11,7 @@ module VisnsHelper
 
   def get_adopted_practices_count_by_visn(visn)
     visn_adopted_practices = []
-    approved_published_enabled_practices.each do |p|
+    published_enabled_approved_practices.each do |p|
       visn_va_facilities(visn).each do |vaf|
         p.diffusion_histories.each do |dh|
           visn_adopted_practices << dh.facility_id if dh.facility_id === vaf.station_number
@@ -23,15 +23,17 @@ module VisnsHelper
 
   def get_created_practices_count_by_visn(visn)
     visn_created_practices = []
-    approved_published_enabled_practices.each do |p|
+    published_enabled_approved_practices.each do |p|
       origin_facilities = p.practice_origin_facilities
       initiating_facility = p.initiating_facility
+      # add practices that have practice_origin_facilities
       if p.facility? && origin_facilities.any?
         visn_va_facilities(visn).each do |vaf|
           origin_facilities.each do |of|
             visn_created_practices << { "va_facility": of.facility_id } if of.facility_id === vaf.station_number
           end
         end
+      # add practices that have an initiating_facility
       elsif p.visn? && initiating_facility.present?
         visn_created_practices << { "visn": initiating_facility } if initiating_facility === visn.id.to_s
       end

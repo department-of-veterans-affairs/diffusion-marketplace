@@ -17,6 +17,10 @@
   }
 }
 
+.visn-marker-container, .visn-va-facility-marker-container {
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+}
+
 #visns-index {
   .visn-card-link {
     text-decoration: none;
@@ -51,10 +55,6 @@
         color: $dm-color-blue-50v;
       }
     }
-  }
-
-  .visn-marker-container {
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
   }
 }
 

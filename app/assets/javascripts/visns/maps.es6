@@ -1,7 +1,11 @@
 function initialize() {
+    // get the current endpoint
+    let endpoint = window.location.href.split('/').pop()
+    let isVisnsIndexPage = endpoint === 'visns' || endpoint === ''
+
     const handler = Gmaps.build('Google', {
         builders: {
-            Marker: VisnInfoBoxBuilder
+            Marker: isVisnsIndexPage ? VisnInfoBoxBuilder : VisnVaFacilityInfoBoxBuilder
         }, markers: {
             clusterer: null
         }
@@ -10,12 +14,6 @@ function initialize() {
     let markers = null;
     let selectedMarker = {};
     let dataMarkers = null;
-
-    // get the current endpoint
-    let endpoint = window.location.href.split('/').pop()
-    console.log(endpoint === '')
-    let isVisnsIndexPage = endpoint === 'visns' || endpoint === ''
-    console.log(isVisnsIndexPage)
 
     function setIcon(json, icon) {
         json.marker.getServiceObject().setIcon({
