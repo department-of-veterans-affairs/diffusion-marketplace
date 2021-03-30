@@ -1,32 +1,21 @@
 $(document).ready(function(){
-    let resultsExist = document.getElementById ("toggle_by_facility");
-    if(resultsExist){
-        resultsExist.addEventListener ("click", toggle_by_facility, false);
+    let sortTypes = ["facility", "common_name", "visn", "type", "practices_created", "adoptions"];
+    for(let i=0; i < sortTypes.length; i++){
+        let eleId = 'toggle_by_' +  sortTypes[i];
+        let resultsExist = document.getElementById (eleId);
+        if(resultsExist){
+            document.addEventListener('click', function(e){
+                if(e.target && e.target.id == eleId){
+                    toggleByFieldName(sortTypes[i]);
+                }
+            })
+        }
+    }
+    function toggleByFieldName(fieldName){
+        let newUrl = addSortParams() + fieldName;
+        window.location.href = newUrl;
     }
 
-    resultsExist = document.getElementById ("toggle_by_common_name");
-    if(resultsExist){
-        resultsExist.addEventListener ("click", toggle_by_common_name, false);
-    }
-
-    resultsExist = document.getElementById ("toggle_by_visn");
-    if(resultsExist){
-        resultsExist.addEventListener ("click", toggle_by_visn, false);
-    }
-
-    resultsExist = document.getElementById ("toggle_by_type");
-    if(resultsExist){
-        resultsExist.addEventListener ("click", toggle_by_type, false);
-    }
-
-    resultsExist = document.getElementById ("toggle_by_practices_created");
-    if(resultsExist){
-        resultsExist.addEventListener ("click", toggle_by_practices_created, false);
-    }
-    resultsExist = document.getElementById ("toggle_by_adoptions");
-    if(resultsExist){
-        resultsExist.addEventListener ("click", toggle_by_adoptions, false);
-    }
     let loadMoreBtn = document.getElementById ("btn_facility_directory_load_more");
     if(loadMoreBtn){
         loadMoreBtn.addEventListener ("click", loadMoreRecords, false);
@@ -36,7 +25,6 @@ $(document).ready(function(){
     if(loadMorePracticesBtn){
         loadMorePracticesBtn.addEventListener ("click", loadMorePractices, false);
     }
-
 
     $("#facility_directory_select").change (function(e) {
         //set VISN and TYPE filters back to - Select
@@ -93,36 +81,6 @@ $(document).ready(function(){
         return s;
     }
 
-    function toggle_by_facility(){
-        let newUrl = addSortParams() + "facility";
-        window.location.href = newUrl;
-    }
-
-    function toggle_by_common_name(){
-        let newUrl = addSortParams() + "common_name";
-        window.location.href = newUrl;
-    }
-
-    function toggle_by_visn(){
-        let newUrl = addSortParams() + "visn";
-        window.location.href = newUrl;
-    }
-
-    function toggle_by_type(){
-        let newUrl = addSortParams() + "type";
-        window.location.href = newUrl;
-    }
-
-    function toggle_by_practices_created(){
-        let newUrl = addSortParams() + "practices_created";
-        window.location.href = newUrl;
-    }
-
-    function toggle_by_adoptions(){
-        let newUrl = addSortParams() + "adoptions";
-        window.location.href = newUrl;
-    }
-
     function addSortParams(){
         let curUrl = window.location.href;
         let paramAsc = getParameterByName("asc", newUrl)
@@ -139,8 +97,6 @@ $(document).ready(function(){
         newUrl += "&sortby=";
         return newUrl;
     }
-
-
 
     function removeParam(key, sourceURL) {
         let rtn = sourceURL.split("?")[0],
