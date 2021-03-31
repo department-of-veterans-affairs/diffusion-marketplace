@@ -5,7 +5,7 @@ class VaFacility < ApplicationRecord
   belongs_to :visn
 
   def self.get_practices_created_by_facility(station_number)
-    Practice.joins(:practice_origin_facilities).where(practice_origin_facilities: {facility_id: station_number}).to_a
+    Practice.where(published: true).joins(:practice_origin_facilities).where(practice_origin_facilities: {facility_id: station_number}).to_a
   end
 
   def self.get_adoptions_by_facility(station_number)
