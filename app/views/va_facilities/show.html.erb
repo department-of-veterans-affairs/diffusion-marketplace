@@ -13,17 +13,15 @@
           <%= @va_facility.official_station_name %>
         </h1>
         <div class="grid-col-12">
-          <div class="grid-col-6" style="float: left;"> This facility has created <%= @practice_results_count %> practices and has adopted <%= @adoptions_count %> practices.  It's a<% if @va_facility.rurality == "U" || @va_facility.rurality == "I" %>n<% end %>
-            <% if @va_facility.rurality == "R" %>
+          <div class="grid-col-6 float-left"> This facility has created <%= @practice_results_count %> practices and has adopted <%= @adoptions_count %> practices.  It's a<% if @va_facility.rurality == "U" || @va_facility.rurality == "I" %>n<% end %>
+            <% case @va_facility.rurality %>
+            <% when "R" %>
               rural
-            <% end %>
-            <% if @va_facility.rurality == "U" %>
+            <% when "U" %>
               urban
-            <% end %>
-            <% if @va_facility.rurality == "H" %>
+            <% when "H" %>
               highly rural
-            <% end %>
-            <% if @va_facility.rurality == "I" %>
+            <% when "I" %>
               isolated
             <% end %>
             <%= @va_facility.fy17_parent_station_complexity_level %>
