@@ -12,7 +12,7 @@
         <h1 class="margin-top-5 margin-bottom-3">
           <%= @va_facility.official_station_name %>
         </h1>
-        <div class="grid-col-12">
+        <div class="grid-col-12 facility-summary-line-height">
           <div class="grid-col-6 float-left margin-right-2"> This facility has created <%= @practice_results_count %> practices and has adopted <%= @adoptions_count %> practices.  It's a<% if @va_facility.rurality == "U" || @va_facility.rurality == "I" %>n<% end %>
             <% case @va_facility.rurality %>
               <% when "R" %>
