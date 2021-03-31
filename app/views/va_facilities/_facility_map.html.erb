@@ -1,11 +1,6 @@
 <script>
     // Initialize and add the map
     function initMap() {
-        //default marker
-<!--        var pinImage = new google.maps.MarkerImage('<%= image_path('map-marker-selected.svg') %>',-->
-<!--            new google.maps.Size(29, 42),-->
-<!--            new google.maps.Point(0,0),-->
-<!--            new google.maps.Point(10, 34));-->
 
         // The location of Uluru
         const uluru = { lat: <%= @va_facility.latitude %>, lng: <%= @va_facility.longitude %> };
@@ -13,13 +8,11 @@
         const map = new google.maps.Map(document.getElementById("map"), {
             zoom: 8,
             center: uluru,
-            //disableDefaultUI: true
         });
         // The marker, positioned at Uluru
         const marker = new google.maps.Marker({
             position: uluru,
             map: map,
-            //icon: pinImage
         });
     }
 </script>

@@ -1,11 +1,11 @@
 <label for="<%= visn_selector %>" class="usa-label line-height-26">VISN</label>
-<div class="margin-top-1 margin-bottom-2 desktop:margin-y-0">
+<div class="margin-top-1 margin-bottom-2">
   <select id="<%= visn_selector %>" class="usa-select" name="<%= visn_selector %>">
     <option value>- Select -</option>
     <% @visns.each do |v| %>
       <option value=<%= v.number %>
-                <% if params[:visn].present? && v.number == params[:visn].to_i%>
-                  selected
+          <% if params[:visn].present? && v.number == params[:visn].to_i%>
+            selected
           <% end %>
       >
         <%= v.number %> - <%= v.name %>
