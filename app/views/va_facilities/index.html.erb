@@ -9,13 +9,13 @@
   <div class="grid-container position-relative grid-col-12">
     <div class="grid-row grid-gap">
       <div class="grid-col-12">
-        <h1 class="font-sans-2x1 desktop:margin-top-5 desktop:margin-bottom-3">
+        <h1 class="font-sans-2x1 margin-top-5 margin-bottom-3">
           Facility directory
         </h1>
         <div class="text-base">
           Looking for a full list of VISNs? <a href="/visns">Click here</a>
         </div>
-        <div class="desktop:margin-top-5 desktop:margin-bottom-3">
+        <div class="margin-top-5 margin-bottom-3">
           <table>
             <tr>
               <td class="facility_directory_combo_box"><%= render partial: 'va_facilities/facility_directory_combo_box', locals: {facility_selector: 'facility_directory_select'} %></td>
@@ -26,7 +26,7 @@
             </tr>
           </table>
         </div>
-        <div class="desktop:margin-bottom-3">
+        <div class="margin-bottom-3">
           Displaying <%= @filtered_facilities.count %> of <%= @results_count %> result<% if @results_count > 1 %>s<% end %>:
         </div>
         <% if @results_count > 0 %>
@@ -135,7 +135,7 @@
             </table>
           </div>
           <% if @num_recs.to_i < @results_count %>
-            <div align="center" class="desktop:margin-top-5 desktop:margin-bottom-3">
+            <div align="center" class="margin-top-5 margin-bottom-3">
               <%= button_tag "Load more", num_recs: @num_recs, type: 'button', id: "btn_facility_directory_load_more", class: "usa-button--outline dm-btn-base dm-load-more-btn width-auto" %>
             </div>
           <% end %>
