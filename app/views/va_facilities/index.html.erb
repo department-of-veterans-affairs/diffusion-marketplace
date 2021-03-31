@@ -18,11 +18,11 @@
         <div class="margin-top-5 margin-bottom-3">
           <table>
             <tr>
-              <td class="facility_directory_combo_box"><%= render partial: 'va_facilities/facility_directory_combo_box', locals: {facility_selector: 'facility_directory_select'} %></td>
-              <td class="facility_directory_combo_box_spacing"></td>
-              <td class="visn_combo_box"><%= render partial: 'va_facilities/visn_combo_box', locals: {visn_selector: 'facility_directory_visn_select'} %></td>
-              <td class="facility_directory_combo_box_spacing"></td>
-              <td class="facility_directory_type_combo_box"><%= render partial: 'va_facilities/facility_directory_type_combo_box', locals: {facility_type_selector: 'facility_type_select'} %></td>
+              <td class="facility-directory-combo-box"><%= render partial: 'va_facilities/facility_directory_combo_box', locals: {facility_selector: 'facility_directory_select'} %></td>
+              <td class="facility-directory-combo-box-spacing"></td>
+              <td class="visn-combo-box"><%= render partial: 'va_facilities/visn_combo_box', locals: {visn_selector: 'facility_directory_visn_select'} %></td>
+              <td class="facility-directory-combo-box-spacing"></td>
+              <td class="facility-directory-type-combo-box"><%= render partial: 'va_facilities/facility_directory_type_combo_box', locals: {facility_type_selector: 'facility_type_select'} %></td>
             </tr>
           </table>
         </div>
@@ -135,7 +135,7 @@
             </table>
           </div>
           <% if @num_recs.to_i < @results_count %>
-            <div align="center" class="margin-top-5 margin-bottom-3">
+            <div class="margin-top-5 margin-bottom-3 text-center">
               <%= button_tag "Load more", num_recs: @num_recs, type: 'button', id: "btn_facility_directory_load_more", class: "usa-button--outline dm-btn-base dm-load-more-btn width-auto" %>
             </div>
           <% end %>

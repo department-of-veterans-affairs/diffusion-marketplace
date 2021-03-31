@@ -955,8 +955,8 @@ ActiveRecord::Schema.define(version: 2021_03_18_224819) do
     t.string "overview_solution"
     t.string "overview_results"
     t.integer "maturity_level"
-    t.datetime "date_published"
     t.datetime "practice_pages_updated"
+    t.datetime "date_published"
     t.string "highlight_title"
     t.string "highlight_body"
     t.index ["slug"], name: "index_practices_on_slug", unique: true
