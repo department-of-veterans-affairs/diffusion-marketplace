@@ -14,7 +14,7 @@ module VisnsHelper
     published_enabled_approved_practices.each do |p|
       visn_va_facilities(visn).each do |vaf|
         p.diffusion_histories.each do |dh|
-          visn_adopted_practices << dh.facility_id if dh.facility_id === vaf.station_number
+          visn_adopted_practices << dh.facility_id if dh.facility_id === vaf.station_number.to_s
         end
       end
     end
@@ -30,7 +30,7 @@ module VisnsHelper
       if p.facility? && origin_facilities.any?
         visn_va_facilities(visn).each do |vaf|
           origin_facilities.each do |of|
-            visn_created_practices << { "va_facility": of.facility_id } if of.facility_id === vaf.station_number
+            visn_created_practices << { "va_facility": of.facility_id } if of.facility_id === vaf.station_number.to_s
           end
         end
       # add practices that have an initiating_facility
