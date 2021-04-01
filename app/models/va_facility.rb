@@ -18,7 +18,7 @@ class VaFacility < ApplicationRecord
   end
 
   def self.get_categories
-    Category.all.order('name')
+    Category.order_by_name
   end
 
   def self.get_all_facilities(order_by = "facility")
@@ -40,11 +40,10 @@ class VaFacility < ApplicationRecord
       sql += "order by adoptions;"
     end
     ActiveRecord::Base.connection.exec_query(sql)
-      #ActiveRecord::Base.connection.execute(sql).to_a
   end
 
   def self.get_visns
-    Visn.all.order('number')
+    Visn.order_by_number
   end
 
   def self.get_types
