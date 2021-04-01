@@ -6,6 +6,8 @@ class Visn < ApplicationRecord
 
   attr_accessor :reset_cached_visns
 
+  scope :order_by_number, -> { order('number') }
+
   # Add a custom friendly URL that uses the visn number and not the id
   def to_param
     number.to_s

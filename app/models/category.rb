@@ -8,6 +8,7 @@ class Category < ApplicationRecord
   has_many :practices, through: :category_practices
 
   scope :with_practices,   -> { joins(:practices).where.not(categories: {name: 'Other', is_other: true}).where(practices: {approved: true, published: true, enabled: true} ).order(Arel.sql("lower(categories.name) ASC")).uniq }
+  scope :order_by_name, -> { order('name') }
 
   attr_accessor :related_terms_raw
 
