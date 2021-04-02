@@ -4,18 +4,18 @@ describe 'VA facility pages', type: :feature do
 
   before do
     @visn = Visn.create!(name: 'Test VISN', number: 2)
-    @va_facility = VaFacility.create!(
+    @va_facility1 = VaFacility.create!(
           visn: @visn,
           sta3n: 421,
           station_number: 421,
-          official_station_name: 'Test name',
-          common_name: 'Test Common Name',
+          official_station_name: 'A Test name',
+          common_name: 'A Test Common Name',
           classification: 'VA Medical Center (VAMC)',
           classification_status: 'Firm',
           mobile: 'No',
           parent_station_number: 414,
           official_parent_station_name: 'Test station',
-          fy17_parent_station_complexity_level: '1c-High Complexity',
+          fy17_parent_station_complexity_level: '1a-High Complexity',
           operational_status: 'A',
           ownership_type: 'VA Owned Asset',
           delivery_mechanism: nil,
@@ -61,11 +61,38 @@ describe 'VA facility pages', type: :feature do
           sunday: '24/7',
           hours_note: 'This is a test'
       )
+    @va_facility2 = VaFacility.create!(
+        visn: @visn,
+        sta3n: 422,
+        station_number: 422,
+        official_station_name: 'B Test name',
+        common_name: 'B Test Common Name',
+        classification: 'VA Medical Center (VAMC)',
+        classification_status: 'Firm',
+        mobile: 'No',
+        parent_station_number: 414,
+        official_parent_station_name: 'Test station',
+        fy17_parent_station_complexity_level: '1b-High Complexity',
+    )
+    @va_facility3 = VaFacility.create!(
+        visn: @visn,
+        sta3n: 4223,
+        station_number: 4223,
+        official_station_name: 'C Test name',
+        common_name: 'C Test Common Name',
+        classification: 'VA Medical Center (VAMC)',
+        classification_status: 'Firm',
+        mobile: 'No',
+        parent_station_number: 414,
+        official_parent_station_name: 'Test station',
+        fy17_parent_station_complexity_level: '1c-High Complexity',
+        )
   end
 
   describe 'index page' do
     it 'should be there' do
       visit '/facilities'
+      debugger
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_current_path(va_facilities_path)
       expect(page).to have_content("Facility directory")
@@ -77,32 +104,49 @@ describe 'VA facility pages', type: :feature do
       expect(find('#facility_directory_visn_select').first.value).to eq '- Select -'
       expect(find('#facility_type_select').first.value).to eq '- Select -'
       expect(find('#facility_directory_select').first.value).to eq ''
+
+      debugger
       # test combo/select boxes..
       first_element = find("#facility_directory_select > option:nth-child(1)").text
       select(first_element, :from => "facility_directory_select")
-      expect(page).to have_content("Aberdeen VA Clinic")
+      expect(page).to have_content(@va_facility1.common_name)
 
       first_element = find("#facility_directory_visn_select > option:nth-child(1)").text
       select(first_element, :from => "facility_directory_visn_select")
-      expect(page).to have_content("Displaying 20 of 59 results:")
+      expect(page).to have_content("Displaying 3 of 3 results:")
 
       first_element = find("#facility_type_select > option:nth-child(1)").text
       select(first_element, :from => "facility_type_select")
       expect(page).to have_content("1A")
-      expect(page).to have_content("Displaying 17 of 17 results:")
-
+      expect(page).to have_content("1B")
+      expect(page).to have_content("1C")
     end
   end
 
   describe 'show page' do
     it 'should be there if the VA facility common name (friendly id) or id exists in the DB' do
       # visit using the friendly id
-      visit '/facilities/test-common-name'
-      expect(page).to have_current_path(va_facility_path(@va_facility))
+      visit '/facilities/a-test-common-name'
+      expect(page).to have_current_path(va_facility_path(@va_facility1))
 
       # visit using the id
       visit '/facilities/1'
       expect(page).to have_current_path('/facilities/1')
+      visit '/facilities/a-test-common-name'
+      expect(page).to have_current_path('/facilities/a-test-common-name')
+
     end
+  end
+
+  describe 'Sorting' do
+    it 'should sort the results in asc and desc order' do
+      visit '/facilities'
+      expect(page).to have_content(@va_facility1.common_name)
+      toggle_by_column('facility')
+    end
+  end
+
+  def toggle_by_column(column_name)
+    find('.toggle_by_' + column_name).click
   end
 end

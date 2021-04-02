@@ -1,0 +1,9 @@
+@import '../variables/colors';
+
+#dm-va-facilities-index {
+  .usa-table--borderless {
+    th, td {
+      background-color:$dm-color-gray-2;
+    }
+  }
+}
