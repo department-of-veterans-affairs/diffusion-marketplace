@@ -38,6 +38,7 @@ Rails.application.config.assets.precompile += %w(
                                                   facility_directory.js
                                                   visns/visns_index_map.js
                                                   visns/_map_utilities.js
+                                                  facility_map.js
                                               )
 
 # Precompile additional assets.
