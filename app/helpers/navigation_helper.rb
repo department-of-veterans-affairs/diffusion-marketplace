@@ -170,16 +170,21 @@ module NavigationHelper
     end
 
     ### VAMC breadcrumbs
+    #
+    def is_number? string
+       true if Float(string) rescue false
+    end
 
     def add_facility_index_breadcrumb
       session[:breadcrumbs] << { 'display': 'Facilities', 'path': va_facilities_path }
     end
 
     def facility_by_id
+      debugger
       VaFacility.find_by!(id: params[:id])
     end
 
-    def facility_common_name
+    def get_facility_common_name
       VaFacility.find_by!(id: params[:id]).common_name
     end
     if controller == 'va_facilities'
@@ -190,9 +195,14 @@ module NavigationHelper
       if action == 'show'
         empty_breadcrumbs
         add_facility_index_breadcrumb
-        session[:breadcrumbs] << { 'display': facility_common_name, 'path': va_facilities_path(facility_by_id) }
+        if is_number?(params[:id].to_s)
+          session[:breadcrumbs] << { 'display': get_facility_common_name, 'path': va_facilities_path }
+        else
+          session[:breadcrumbs] << { 'display': params[:id], 'path': va_facilities_path }
+         end
       end
     end
+
 
     ### PRACTICE PARTNER BREADCRUMBS
     def add_partners_breadcrumb
