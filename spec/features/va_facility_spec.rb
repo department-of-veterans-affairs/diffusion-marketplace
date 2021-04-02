@@ -377,9 +377,13 @@ describe 'VA facility pages', type: :feature do
     it 'should sort the results in asc and desc order' do
       visit '/facilities'
       expect(page).to have_content(@va_facility1.common_name)
+      expect(page).to have_content("Load more")
       toggle_by_column('facility')
       expect(page).to have_content("last facility")
       expect(page).to have_no_content('first facility')
+      find('#btn_facility_directory_load_more').click
+      expect(page).to have_content("last facility")
+      expect(page).to have_content('first facility')
     end
   end
 
