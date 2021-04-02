@@ -126,12 +126,15 @@ describe 'VA facility pages', type: :feature do
   describe 'show page' do
     it 'should be there if the VA facility common name (friendly id) or id exists in the DB' do
       # visit using the friendly id
-      visit '/facilities/test-common-name'
+      visit '/facilities/a-test-common-name'
       expect(page).to have_current_path(va_facility_path(@va_facility1))
 
       # visit using the id
       visit '/facilities/1'
       expect(page).to have_current_path('/facilities/1')
+      visit '/facilities/a-test-common-name'
+      expect(page).to have_current_path('/facilities/a-test-common-name')
+
     end
   end
 
