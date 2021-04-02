@@ -8,12 +8,20 @@ class VaFacility < ApplicationRecord
     Practice.where(published: true).joins(:practice_origin_facilities).where(practice_origin_facilities: {facility_id: station_number}).to_a
   end
 
+  def self.get_total_adoptions_for_each_practice(va_facilities)
+    total_adoptions = []
+    va_facilities.each do |f|
+      total_adoptions << DiffusionHistory.where(practice_id: f["id"]).count
+    end
+    total_adoptions
+  end
+
   def self.get_adoptions_by_facility(station_number)
     #DiffusionHistory.where(facility_id: station_number)
-    sql = "SELECT  p.name, dh.facility_id, dhs.status, dhs.start_time FROM practices p
+    sql = "SELECT p.id, p.name, dh.facility_id, dhs.status, dhs.start_time FROM practices p
           JOIN diffusion_histories dh on p.id = dh.practice_id
           JOIN diffusion_history_statuses dhs on dh.id = dhs.diffusion_history_id
-          WHERE dh.facility_id = $1"
+          WHERE p.published = true AND dh.facility_id = $1"
     ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"]]).to_a
   end
 

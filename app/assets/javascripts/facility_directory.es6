@@ -155,7 +155,20 @@ $(document).ready(function(){
     });
 
     $("#facility_category_select_adoptions").change (function(e) {
-        alert('what up g');
+        let selectedCategory = document.getElementById("facility_category_select_adoptions").value
+        //alert(result);
+        Rails.ajax({
+            type: 'post',
+            url: "/update_practices_adopted_at_facility",
+            data: jQuery.param({selected_category: selectedCategory}),
+            success: function(result) {
+                alert('made it');
+                // let save_id = document.getElementById('practice-editor-save-button');
+                // if (save_id && blankRequiredFields.length === 0 && current_action !== 'editors') {
+                //     save_id.click();
+                // }
+            }
+        });
     });
 
 

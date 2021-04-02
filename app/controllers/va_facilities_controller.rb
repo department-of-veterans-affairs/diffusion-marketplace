@@ -43,12 +43,18 @@ class VaFacilitiesController < ApplicationController
     @num_practice_recs = params[:practices] || "3"
     @created_practices = VaFacility.get_practices_created_by_facility(@va_facility.station_number)
     @practice_results_count = @created_practices.count
-
     @created_practices = @created_practices.take(@num_practice_recs.to_i)
     @created_practices_count = @created_practices.count
     @adoptions_at_facility = VaFacility.get_adoptions_by_facility(@va_facility.station_number)
-    @adoptions_count = @adoptions_at_facility.count
+    @total_adoptions_for_practice = VaFacility.get_total_adoptions_for_each_practice(@adoptions_at_facility)
     @categories = VaFacility.get_categories
+  end
+
+  def update_practices_adopted_at_facility
+    debugger
+    data = params["selected_category"].to_s
+    debugger
+    render :json => data
   end
 
 

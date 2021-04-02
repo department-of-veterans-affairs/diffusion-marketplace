@@ -1,7 +1,7 @@
 <h1 class="font-sans-2x1 desktop:margin-top-5 desktop:margin-bottom-3">
   Practices adopted at this facility
 </h1>
-<div class="grid-col-12">
+<div style="width: 100%; overflow: hidden;">
   <div class="usa-search margin-bottom-2 facility-search-field">
     <div role="search" class="flex-column">
       <label for="dm-practice-search-field"></label>
@@ -16,11 +16,10 @@
   <div class="facility-category-select desktop:margin-bottom-3">
     <%= render partial: 'va_facilities/facility_categories_combo_box', locals: {facility_category_selector: 'facility_category_select_adoptions'} %>
   </div>
-
 </div>
 <div class="grid-col-12">
   <div class="usa-search margin-bottom-2 facility-search-field">
-    # results:
+    <%= @adoptions_at_facility.count %> results:
   </div>
   <div id="va_facility_adoption_results" class="grid-col-12">
     <table class="usa-table usa-table--borderless grid-col-12">
@@ -29,15 +28,16 @@
         <th>Status</th>
         <th>Start date</th>
         <th>Total VA adoptions &#x25BC;</th>
+        <% ctr = 0 %>
       <% @adoptions_at_facility.each do |ad| %>
         <tr>
           <td><%=ad["name"] %></td>
           <td><%=ad["status"] %></td>
           <td><%=ad["start_time"] %></td>
-          <td><%=ad["name"] %></td>
+          <td><%= @total_adoptions_for_practice[ctr] %></td>
         </tr>
-        <% end %>
-
+      <% ctr += 1 %>
+      <% end %>
       </thead>
     </table>
   </div>
