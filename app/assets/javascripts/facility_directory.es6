@@ -162,7 +162,7 @@ $(document).ready(function(){
             url: "/update_practices_adopted_at_facility",
             data: jQuery.param({selected_category: selectedCategory}),
             success: function(result) {
-                alert('made it');
+                alert(result);
                 // let save_id = document.getElementById('practice-editor-save-button');
                 // if (save_id && blankRequiredFields.length === 0 && current_action !== 'editors') {
                 //     save_id.click();

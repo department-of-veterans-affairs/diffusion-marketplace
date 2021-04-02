@@ -51,10 +51,9 @@ class VaFacilitiesController < ApplicationController
   end
 
   def update_practices_adopted_at_facility
-    debugger
+    selected_category = Category.find_by_id(params["selected_category"].to_i).name
     data = params["selected_category"].to_s
-    debugger
-    render :json => data
+    render :json => selected_category
   end
 
 
