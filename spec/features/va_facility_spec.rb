@@ -9,7 +9,7 @@ describe 'VA facility pages', type: :feature do
           sta3n: 421,
           station_number: 421,
           official_station_name: 'A Test name',
-          common_name: 'A Test Common Name',
+          common_name: 'A first facility Test Common Name',
           classification: 'VA Medical Center (VAMC)',
           classification_status: 'Firm',
           mobile: 'No',
@@ -87,6 +87,240 @@ describe 'VA facility pages', type: :feature do
         official_parent_station_name: 'Test station',
         fy17_parent_station_complexity_level: '1c-High Complexity',
         )
+    @va_facility4 = VaFacility.create!(
+        visn: @visn,
+        sta3n: 4224,
+        station_number: 4224,
+        official_station_name: 'D Test name',
+        common_name: 'D Test Common Name',
+        classification: 'VA Medical Center (VAMC)',
+        classification_status: 'Firm',
+        mobile: 'No',
+        parent_station_number: 414,
+        official_parent_station_name: 'Test station',
+        fy17_parent_station_complexity_level: '1c-High Complexity',
+        )
+    @va_facility5 = VaFacility.create!(
+        visn: @visn,
+        sta3n: 5,
+        station_number: 5,
+        official_station_name: 'E Test name',
+        common_name: 'E Test Common Name',
+        classification: 'VA Medical Center (VAMC)',
+        classification_status: 'Firm',
+        mobile: 'No',
+        parent_station_number: 414,
+        official_parent_station_name: 'Test station',
+        fy17_parent_station_complexity_level: '1c-High Complexity',
+        )
+    @va_facility6 = VaFacility.create!(
+        visn: @visn,
+        sta3n: 6,
+        station_number: 6,
+        official_station_name: 'F Test name',
+        common_name: 'F Test Common Name',
+        classification: 'VA Medical Center (VAMC)',
+        classification_status: 'Firm',
+        mobile: 'No',
+        parent_station_number: 414,
+        official_parent_station_name: 'Test station',
+        fy17_parent_station_complexity_level: '1c-High Complexity',
+        )
+    @va_facility7 = VaFacility.create!(
+        visn: @visn,
+        sta3n: 7,
+        station_number: 7,
+        official_station_name: 'G Test name',
+        common_name: 'G Test Common Name',
+        classification: 'VA Medical Center (VAMC)',
+        classification_status: 'Firm',
+        mobile: 'No',
+        parent_station_number: 414,
+        official_parent_station_name: 'Test station',
+        fy17_parent_station_complexity_level: '1c-High Complexity',
+        )
+    @va_facility8 = VaFacility.create!(
+        visn: @visn,
+        sta3n: 8,
+        station_number: 8,
+        official_station_name: 'H Test name',
+        common_name: 'H Test Common Name',
+        classification: 'VA Medical Center (VAMC)',
+        classification_status: 'Firm',
+        mobile: 'No',
+        parent_station_number: 414,
+        official_parent_station_name: 'Test station',
+        fy17_parent_station_complexity_level: '1c-High Complexity',
+        )
+    @va_facility9 = VaFacility.create!(
+        visn: @visn,
+        sta3n: 9,
+        station_number: 9,
+        official_station_name: 'I Test name',
+        common_name: 'I Test Common Name',
+        classification: 'VA Medical Center (VAMC)',
+        classification_status: 'Firm',
+        mobile: 'No',
+        parent_station_number: 414,
+        official_parent_station_name: 'Test station',
+        fy17_parent_station_complexity_level: '1c-High Complexity',
+        )
+    @va_facility10 = VaFacility.create!(
+        visn: @visn,
+        sta3n: 10,
+        station_number: 10,
+        official_station_name: 'J Test name',
+        common_name: 'J Test Common Name',
+        classification: 'VA Medical Center (VAMC)',
+        classification_status: 'Firm',
+        mobile: 'No',
+        parent_station_number: 414,
+        official_parent_station_name: 'Test station',
+        fy17_parent_station_complexity_level: '1c-High Complexity',
+        )
+    @va_facility11 = VaFacility.create!(
+        visn: @visn,
+        sta3n: 11,
+        station_number: 11,
+        official_station_name: 'K Test name',
+        common_name: 'K Test Common Name',
+        classification: 'VA Medical Center (VAMC)',
+        classification_status: 'Firm',
+        mobile: 'No',
+        parent_station_number: 414,
+        official_parent_station_name: 'Test station',
+        fy17_parent_station_complexity_level: '1c-High Complexity',
+        )
+    @va_facility12 = VaFacility.create!(
+        visn: @visn,
+        sta3n: 12,
+        station_number: 12,
+        official_station_name: 'L Test name',
+        common_name: 'L Test Common Name',
+        classification: 'VA Medical Center (VAMC)',
+        classification_status: 'Firm',
+        mobile: 'No',
+        parent_station_number: 414,
+        official_parent_station_name: 'Test station',
+        fy17_parent_station_complexity_level: '1c-High Complexity',
+        )
+    @va_facility13 = VaFacility.create!(
+        visn: @visn,
+        sta3n: 13,
+        station_number: 13,
+        official_station_name: 'M Test name',
+        common_name: 'M Test Common Name',
+        classification: 'VA Medical Center (VAMC)',
+        classification_status: 'Firm',
+        mobile: 'No',
+        parent_station_number: 414,
+        official_parent_station_name: 'Test station',
+        fy17_parent_station_complexity_level: '1c-High Complexity',
+        )
+    @va_facility14 = VaFacility.create!(
+        visn: @visn,
+        sta3n: 14,
+        station_number: 14,
+        official_station_name: 'N Test name',
+        common_name: 'N Test Common Name',
+        classification: 'VA Medical Center (VAMC)',
+        classification_status: 'Firm',
+        mobile: 'No',
+        parent_station_number: 414,
+        official_parent_station_name: 'Test station',
+        fy17_parent_station_complexity_level: '1c-High Complexity',
+        )
+    @va_facility15 = VaFacility.create!(
+        visn: @visn,
+        sta3n: 15,
+        station_number: 15,
+        official_station_name: 'O Test name',
+        common_name: 'O Test Common Name',
+        classification: 'VA Medical Center (VAMC)',
+        classification_status: 'Firm',
+        mobile: 'No',
+        parent_station_number: 414,
+        official_parent_station_name: 'Test station',
+        fy17_parent_station_complexity_level: '1c-High Complexity',
+        )
+    @va_facility16 = VaFacility.create!(
+        visn: @visn,
+        sta3n: 16,
+        station_number: 16,
+        official_station_name: 'P Test name',
+        common_name: 'P Test Common Name',
+        classification: 'VA Medical Center (VAMC)',
+        classification_status: 'Firm',
+        mobile: 'No',
+        parent_station_number: 414,
+        official_parent_station_name: 'Test station',
+        fy17_parent_station_complexity_level: '1c-High Complexity',
+        )
+    @va_facility17 = VaFacility.create!(
+        visn: @visn,
+        sta3n: 17,
+        station_number: 17,
+        official_station_name: 'Q Test name',
+        common_name: 'Q Test Common Name',
+        classification: 'VA Medical Center (VAMC)',
+        classification_status: 'Firm',
+        mobile: 'No',
+        parent_station_number: 414,
+        official_parent_station_name: 'Test station',
+        fy17_parent_station_complexity_level: '1c-High Complexity',
+        )
+    @va_facility18 = VaFacility.create!(
+        visn: @visn,
+        sta3n: 18,
+        station_number: 18,
+        official_station_name: 'R Test name',
+        common_name: 'R Test Common Name',
+        classification: 'VA Medical Center (VAMC)',
+        classification_status: 'Firm',
+        mobile: 'No',
+        parent_station_number: 414,
+        official_parent_station_name: 'Test station',
+        fy17_parent_station_complexity_level: '1c-High Complexity',
+        )
+    @va_facility19 = VaFacility.create!(
+        visn: @visn,
+        sta3n: 19,
+        station_number: 19,
+        official_station_name: 'S Test name',
+        common_name: 'S Test Common Name',
+        classification: 'VA Medical Center (VAMC)',
+        classification_status: 'Firm',
+        mobile: 'No',
+        parent_station_number: 414,
+        official_parent_station_name: 'Test station',
+        fy17_parent_station_complexity_level: '1c-High Complexity',
+        )
+    @va_facility20 = VaFacility.create!(
+        visn: @visn,
+        sta3n: 20,
+        station_number: 20,
+        official_station_name: 'T Test name',
+        common_name: 'T Test Common Name',
+        classification: 'VA Medical Center (VAMC)',
+        classification_status: 'Firm',
+        mobile: 'No',
+        parent_station_number: 414,
+        official_parent_station_name: 'Test station',
+        fy17_parent_station_complexity_level: '1c-High Complexity',
+        )
+    @va_facility21 = VaFacility.create!(
+        visn: @visn,
+        sta3n: 21,
+        station_number: 21,
+        official_station_name: 'U Test name',
+        common_name: 'U last facility Common Name',
+        classification: 'VA Medical Center (VAMC)',
+        classification_status: 'Firm',
+        mobile: 'No',
+        parent_station_number: 414,
+        official_parent_station_name: 'Test station',
+        fy17_parent_station_complexity_level: '1c-High Complexity',
+        )
   end
 
   describe 'index page' do
@@ -100,6 +334,8 @@ describe 'VA facility pages', type: :feature do
       expect(page).to have_content("Facilities")
       expect(page).to have_content("VISN")
       expect(page).to have_content("Type")
+      expect(page).to have_content("first facility")
+      expect(page).to have_no_content('last facility')
       expect(find_all('.usa-select').first.value).to eq ''
       expect(find('#facility_directory_visn_select').first.value).to eq '- Select -'
       expect(find('#facility_type_select').first.value).to eq '- Select -'
@@ -134,7 +370,6 @@ describe 'VA facility pages', type: :feature do
       expect(page).to have_current_path('/facilities/1')
       visit '/facilities/a-test-common-name'
       expect(page).to have_current_path('/facilities/a-test-common-name')
-
     end
   end
 
@@ -143,6 +378,8 @@ describe 'VA facility pages', type: :feature do
       visit '/facilities'
       expect(page).to have_content(@va_facility1.common_name)
       toggle_by_column('facility')
+      expect(page).to have_content("last facility")
+      expect(page).to have_no_content('first facility')
     end
   end
 
