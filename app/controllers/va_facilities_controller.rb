@@ -15,7 +15,7 @@ class VaFacilitiesController < ApplicationController
       @types << t
     end
     if params[:asc].present? && params[:asc] == "false"
-      @facilities.to_a.reverse
+      @facilities = @facilities.to_a.reverse
     end
 
 
