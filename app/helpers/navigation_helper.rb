@@ -171,21 +171,8 @@ module NavigationHelper
 
     ### VAMC breadcrumbs
     #
-    def is_number? string
-       true if Float(string) rescue false
-    end
-
     def add_facility_index_breadcrumb
       session[:breadcrumbs] << { 'display': 'Facilities', 'path': va_facilities_path }
-    end
-
-    def facility_by_id
-      debugger
-      VaFacility.find_by!(id: params[:id])
-    end
-
-    def get_facility_common_name
-      VaFacility.find_by!(id: params[:id]).common_name
     end
     if controller == 'va_facilities'
       if action == 'index'
