@@ -1,0 +1,11 @@
+<% if ENV['GOOGLE_API_KEY'].present? %>
+  <% provide :head_tags do %>
+    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+      var mapData = <%= raw @va_facility_marker.to_json %>;
+      var defaultVisnVaFacilityMarkerIcon = '<%= image_path('visn-va-facility-map-marker-default.svg') %>'
+    <% end %>
+    <%= javascript_include_tag 'facility_map', 'data-turbolinks-track': 'reload' %>
+  <% end %>
+  <div id="va_facility_map" style="width: 100%; height: 275px;"></div>
+<% end %>
+

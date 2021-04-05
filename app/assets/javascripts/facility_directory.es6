@@ -138,7 +138,6 @@ $(document).ready(function(){
     }
 
     function loadMorePractices(){
-        debugger
         let btn = document.getElementById("btn_facility_show_page_load_more");
         let numPracticeRecs = parseInt(btn.getAttribute("num_practice_recs"));
         numPracticeRecs += 3;

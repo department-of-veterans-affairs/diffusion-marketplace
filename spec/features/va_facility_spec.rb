@@ -326,7 +326,6 @@ describe 'VA facility pages', type: :feature do
   describe 'index page' do
     it 'should be there' do
       visit '/facilities'
-      debugger
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_current_path(va_facilities_path)
       expect(page).to have_content("Facility directory")
@@ -341,7 +340,6 @@ describe 'VA facility pages', type: :feature do
       expect(find('#facility_type_select').first.value).to eq '- Select -'
       expect(find('#facility_directory_select').first.value).to eq ''
 
-      debugger
       # test combo/select boxes..
       first_element = find("#facility_directory_select > option:nth-child(1)").text
       select(first_element, :from => "facility_directory_select")
