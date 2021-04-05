@@ -193,13 +193,10 @@ module NavigationHelper
         session[:breadcrumbs] << { 'display': 'Facilities', 'path': va_facilities_path }
       end
       if action == 'show'
+        va_facility = VaFacility.find_by(slug: params[:id])
         empty_breadcrumbs
         add_facility_index_breadcrumb
-        if is_number?(params[:id].to_s)
-          session[:breadcrumbs] << { 'display': get_facility_common_name, 'path': va_facilities_path }
-        else
-          session[:breadcrumbs] << { 'display': params[:id], 'path': va_facilities_path }
-         end
+        session[:breadcrumbs] << { 'display': va_facility.common_name, 'path': va_facilities_path }
       end
     end
 

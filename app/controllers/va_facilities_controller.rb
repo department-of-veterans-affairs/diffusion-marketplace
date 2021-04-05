@@ -15,7 +15,7 @@ class VaFacilitiesController < ApplicationController
       @types << t
     end
     if params[:asc].present? && params[:asc] == "false"
-      @facilities = @facilities.to_a.reverse
+      @facilities.to_a.reverse
     end
 
 
@@ -49,8 +49,22 @@ class VaFacilitiesController < ApplicationController
     @adoptions = VaFacility.get_adoptions_by_facility(@va_facility.station_number)
     @adoptions_count = @adoptions.count
     @categories = VaFacility.get_categories
-  end
+    #google maps implementation
+    @va_facility_marker = Gmaps4rails.build_markers(@va_facility) do |facility, marker|
 
+      marker.lat facility.latitude
+      marker.lng facility.longitude
+      marker.picture({
+                         url: view_context.image_path('visn-va-facility-map-marker-default.svg'),
+                         width: 34,
+                         height: 46,
+                         scaledWidth: 34,
+                         scaledHeight: 46
+                     })
+      marker.shadow nil
+      marker.json({ id: facility.id })
+    end
+  end
 
   private
 
