@@ -183,7 +183,8 @@ module NavigationHelper
         va_facility = VaFacility.find_by(slug: params[:id])
         empty_breadcrumbs
         add_facility_index_breadcrumb
-        session[:breadcrumbs] << { 'display': va_facility.common_name, 'path': va_facilities_path }
+        common_name = va_facility.common_name
+        session[:breadcrumbs] << { 'display': common_name, 'path': va_facilities_path }
       end
     end
 

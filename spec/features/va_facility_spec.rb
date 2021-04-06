@@ -361,12 +361,6 @@ describe 'VA facility pages', type: :feature do
       # visit using the friendly id
       visit '/facilities/a-first-facility-test-common-name'
       expect(page).to have_current_path(va_facility_path(@va_facility1))
-
-      # visit using the id
-      visit '/facilities/1'
-      expect(page).to have_current_path('/facilities/1')
-      visit '/facilities/a-first-facility-test-common-name'
-      expect(page).to have_current_path('/facilities/a-first-facility-test-common-name')
     end
   end
 
