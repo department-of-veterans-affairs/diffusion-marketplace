@@ -59,7 +59,8 @@ describe 'VA facility pages', type: :feature do
         friday: '24/7',
         saturday: '24/7',
         sunday: '24/7',
-        hours_note: 'This is a test'
+        hours_note: 'This is a test',
+        slug: 'a-first-facility-test-common-name'
     )
     @va_facility2 = VaFacility.create!(
         visn: @visn,
@@ -320,6 +321,7 @@ describe 'VA facility pages', type: :feature do
         parent_station_number: 414,
         official_parent_station_name: 'Test station',
         fy17_parent_station_complexity_level: '1c-High Complexity',
+        slug: 'u-last-facility-common-name'
         )
   end
 
