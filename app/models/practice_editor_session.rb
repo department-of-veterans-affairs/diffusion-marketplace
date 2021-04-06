@@ -18,18 +18,6 @@ class PracticeEditorSession < ApplicationRecord
     PracticeEditorSession.create user_id: user_id, practice_id: practice_id, session_start_time: DateTime.now, session_end_time: nil
   end
 
-  def self.practice_last_updated(practice_id)
-    session = PracticeEditorSession.where(practice_id: practice_id).where.not(session_end_time: nil).order("session_end_time DESC").first
-    return "" if session.blank?
-    lock_user = session.user.full_name === 'User' ? session.user.email : session.user.full_name
-    s_text = "Practice last updated on #{session.session_end_time.strftime("%B %d, %Y")} at #{session.session_end_time.strftime("%I:%M %p")}".gsub(/^0/,'')
-    s_text += " by #{lock_user}"
-    if session.user.roles.find_by(name: 'admin').present?
-      s_text += " (Site Admin)"
-    end
-    s_text
-  end
-
   def self.extend_current_session(session)
     session.session_start_time = DateTime.now
     session.save

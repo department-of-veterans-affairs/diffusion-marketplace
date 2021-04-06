@@ -6,8 +6,8 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
     @admin.add_role(User::USER_ROLES[0].to_sym)
     @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', user: @admin)
     login_as(@admin, :scope => :user, :run_callbacks => false)
-    page_group = PageGroup.create(name: 'covid-19', slug: 'covid-19', description: 'Pages about COVID-19 in this group.')
-    Page.create(page_group: page_group, title: 'covid home page', description: 'covid practices', slug: 'home', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
+    page_group = PageGroup.create(name: 'competitions', slug: 'competitions', description: 'competitions page')
+    Page.create(page_group: page_group, title: 'Shark Tank', description: 'Shark Tank page', slug: 'shark-tank', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
     visit practice_overview_path(@practice)
   end
 
@@ -30,8 +30,8 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       within('header.usa-header') do
         expect(page).to have_content('Diffusion map')
         expect(page).to have_link(href: '/diffusion-map')
-        expect(page).to have_content('COVID-19')
-        expect(page).to have_link(href: '/covid-19')
+        expect(page).to have_content('Shark Tank')
+        expect(page).to have_link(href: '/competitions/shark-tank')
         expect(page).to have_content('Your profile')
       end
     end
@@ -43,11 +43,10 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       end
     end
 
-    context 'clicking on the covid-19 link' do
-      it 'should redirect to covid-19 page' do
-        click_on 'COVID-19'
-        expect(page).to have_current_path('/covid-19')
-        expect(page).to have_content('covid home page')
+    context 'clicking on the shark tank link' do
+      it 'should redirect to shark tank page' do
+        click_on 'Shark Tank'
+        expect(page).to have_current_path('/competitions/shark-tank')
       end
     end
 

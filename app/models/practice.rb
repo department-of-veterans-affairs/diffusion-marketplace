@@ -89,7 +89,11 @@ class Practice < ApplicationRecord
 
   # views
   def views
-    Ahoy::Event.where_props(practice_id: id).count
+    Ahoy::Event.where(name: 'Practice show').where_props(practice_id: id).where("properties->>'is_duplicate' is null").count
+  end
+
+  def date_range_views(start_date, end_date)
+    Ahoy::Event.where(name: 'Practice show').where_props(practice_id: id).where("properties->>'is_duplicate' is null").where(time: start_date...end_date).count
   end
 
   def current_month_views
@@ -327,9 +331,6 @@ class Practice < ApplicationRecord
     diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Unsuccessful'}).count
   end
 
-  def date_range_views(start_date, end_date)
-    Ahoy::Event.where_props(practice_id: id).where(time: start_date...end_date).count
-  end
   def favorited_count
     user_practices.where({favorited: true}).count
   end
