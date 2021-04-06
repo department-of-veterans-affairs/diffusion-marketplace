@@ -344,20 +344,15 @@ describe 'VA facility pages', type: :feature do
       expect(section).to have_no_content('1B')
       expect(section).to have_no_content('1C')
 
-      # test combo/select boxes..
-      first_element = find("#facility_directory_select > option:nth-child(1)").text
-      select(first_element, :from => "facility_directory_select")
-      expect(page).to have_content(@va_facility1.common_name)
+      select "1b-High Complexity", :from => "facility_type_select"
+      expect(section).to have_content('1B')
+      expect(section).to have_no_content('1A')
+      expect(section).to have_no_content('1C')
 
-      first_element = find("#facility_directory_visn_select > option:nth-child(1)").text
-      select(first_element, :from => "facility_directory_visn_select")
-      expect(page).to have_content("Displaying 3 of 3 results:")
-
-      first_element = find("#facility_type_select > option:nth-child(1)").text
-      select(first_element, :from => "facility_type_select")
-      expect(page).to have_content("1A")
-      expect(page).to have_content("1B")
-      expect(page).to have_content("1C")
+      select "1c-High Complexity", :from => "facility_type_select"
+      expect(section).to have_content('1C')
+      expect(section).to have_no_content('1A')
+      expect(section).to have_no_content('1B')
     end
   end
 
