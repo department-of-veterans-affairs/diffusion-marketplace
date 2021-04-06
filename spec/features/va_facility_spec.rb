@@ -374,18 +374,21 @@ describe 'VA facility pages', type: :feature do
   describe 'Sorting' do
     it 'should sort the results in asc and desc order' do
       visit '/facilities'
+      section = find(:css, '#directory_table') #the :css may be optional depending on your Capybara.default_selector setting
       expect(page).to have_content(@va_facility1.common_name)
       expect(page).to have_content("Load more")
+      expect(section).to have_no_content("last facility")
+      expect(section).to have_content('first facility')
       toggle_by_column('facility')
-      expect(page).to have_content("last facility")
-      expect(page).to have_no_content('first facility')
+      expect(section).to have_content("last facility")
+      expect(section).to have_no_content('first facility')
       find('#btn_facility_directory_load_more').click
-      expect(page).to have_content("last facility")
-      expect(page).to have_content('first facility')
+      expect(section).to have_content("last facility")
+      expect(section).to have_content('first facility')
     end
   end
 
   def toggle_by_column(column_name)
-    find('.toggle_by_' + column_name).click
+    find('#toggle_by_' + column_name).click
   end
 end

@@ -32,7 +32,7 @@
           Displaying <%= @filtered_facilities.count %> of <%= @results_count %> results:
         </div>
         <% if @results_count > 0 %>
-          <div>
+          <div id="directory_table">
             <table class="usa-table usa-table--borderless grid-col-12">
               <%= render partial: 'va_facilities/facility_results_table_header' %>
               <tbody>
