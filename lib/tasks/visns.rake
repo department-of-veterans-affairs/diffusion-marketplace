@@ -1,5 +1,5 @@
 namespace :visns do
-  desc 'Create new VISN records based on the data from the practice_origin_lookup.json file'
+  desc 'Create new VISN and VISN liaison records based on the data from the practice_origin_lookup.json file'
 
   @origin_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
 
