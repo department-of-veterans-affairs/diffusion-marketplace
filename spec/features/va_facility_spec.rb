@@ -334,7 +334,7 @@ describe 'VA facility pages', type: :feature do
       expect(page).to have_content("VISN")
       expect(page).to have_content("Type")
       expect(page).to have_content("first facility")
-      expect(page).to have_no_content('last facility')
+      expect(page).to have_content('last facility')
       expect(find_all('.usa-select').first.value).to eq ''
       expect(find('#facility_directory_visn_select').first.value).to eq '- Select -'
       expect(find('#facility_type_select').first.value).to eq '- Select -'
