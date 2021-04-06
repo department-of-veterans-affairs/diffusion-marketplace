@@ -15,16 +15,18 @@
         <div class="text-base">
           Looking for a full list of VISNs? <a href="/visns">Click here</a>
         </div>
-        <div class="margin-top-5 margin-bottom-3">
-          <table class="usa-table--borderless">
-            <tr>
-              <td class="facility-directory-combo-box"><%= render partial: 'va_facilities/facility_directory_combo_box', locals: {facility_selector: 'facility_directory_select'} %></td>
-              <td class="facility-directory-combo-box-spacing"></td>
-              <td class="visn-combo-box"><%= render partial: 'va_facilities/visn_combo_box', locals: {visn_selector: 'facility_directory_visn_select'} %></td>
-              <td class="facility-directory-combo-box-spacing"></td>
-              <td class="facility-directory-type-combo-box"><%= render partial: 'va_facilities/facility_directory_type_combo_box', locals: {facility_type_selector: 'facility_type_select'} %></td>
-            </tr>
-          </table>
+        <div class="margin-top-5 margin-bottom-3 grid-col-12">
+          <div class="grid-row grid-gap">
+            <div class="grid-col-5">
+              <%= render partial: 'va_facilities/facility_directory_combo_box', locals: {facility_selector: 'facility_directory_select'} %>
+            </div>
+            <div class="grid-col-3">
+              <%= render partial: 'va_facilities/visn_combo_box', locals: {visn_selector: 'facility_directory_visn_select'} %>
+            </div>
+            <div class="grid-col-4">
+              <%= render partial: 'va_facilities/facility_directory_type_combo_box', locals: {facility_type_selector: 'facility_type_select'} %>
+            </div>
+          </div>
         </div>
         <div class="margin-bottom-3">
           Displaying <%= @filtered_facilities.count %> of <%= @results_count %> results:
