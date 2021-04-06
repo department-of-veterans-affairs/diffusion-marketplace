@@ -36,7 +36,6 @@ Rails.application.config.assets.precompile += %w(
                                                   _practice_utilities.js
                                                   metrics_page.js
                                                   visns/maps.js
-                                                  visns/_map_utilities.js
                                               )
 
 # Precompile additional assets.

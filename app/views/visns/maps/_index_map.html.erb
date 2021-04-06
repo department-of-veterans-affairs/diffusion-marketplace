@@ -2,12 +2,12 @@
   <% provide :head_tags do %>
     <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
       var visnMapData = <%= raw @visn_markers.to_json %>;
-      var defaultVisnMarkerIcon = '<%= image_path('visn-map-marker-default.svg') %>';
-      var hoverVisnMarkerIcon = '<%= image_path('visn-map-marker-hover.svg') %>';
-      var selectedVisnMarkerIcon = '<%= image_path('visn-map-marker-selected.svg') %>';
+      var defaultVisnVaFacilityMarkerIcon = '<%= image_path('visn-va-facility-map-marker-default.svg') %>';
+      var hoverVisnVaFacilityMarkerIcon = '<%= image_path('visn-va-facility-map-marker-hover.svg') %>';
+      var selectedVisnVaFacilityMarkerIcon = '<%= image_path('visn-va-facility-map-marker-selected.svg') %>';
     <% end %>
     <%= javascript_include_tag 'visns/maps', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'visns/_map_utilities', 'data-turbolinks-track': 'reload' %>
+    <%#= javascript_include_tag 'visns/_map_utilities', 'data-turbolinks-track': 'reload' %>
   <% end %>
   <section class="margin-bottom-0 padding-0">
     <div class="width-full position-relative grid-row margin-bottom-2">

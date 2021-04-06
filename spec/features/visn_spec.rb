@@ -3,6 +3,7 @@ require 'rails_helper'
 describe 'VISN pages', type: :feature do
   before do
     ENV['GOOGLE_API_KEY'] = ENV['GOOGLE_TEST_API_KEY']
+
     @visn = Visn.create!(
       name: 'Test VISN',
       number: 1,
@@ -46,7 +47,7 @@ describe 'VISN pages', type: :feature do
       visn: @visn,
       sta3n: 421,
       station_number: 421,
-      official_station_name: 'Test name',
+      official_station_name: 'Test Name',
       common_name: 'Test Common Name',
       classification: 'VA Medical Center (VAMC)',
       classification_status: 'Firm',
@@ -103,7 +104,7 @@ describe 'VISN pages', type: :feature do
       visn: @visn_2,
       sta3n: 454,
       station_number: 424,
-      official_station_name: 'Second test name',
+      official_station_name: 'Second Test Name',
       common_name: 'Second Test Common Name',
       classification: 'VA Medical Center (VAMC)',
       classification_status: 'Firm',
@@ -160,7 +161,7 @@ describe 'VISN pages', type: :feature do
       visn: @visn_2,
       sta3n: 454,
       station_number: 443,
-      official_station_name: 'Third test name',
+      official_station_name: 'Third Test Name',
       common_name: 'Third Test Common Name',
       classification: 'Primary Care CBOC',
       classification_status: 'Firm',
@@ -217,8 +218,8 @@ describe 'VISN pages', type: :feature do
       visn: @visn_2,
       sta3n: 454,
       station_number: 431,
-      official_station_name: 'Fourth test name',
-      common_name: 'Fourth Test Common Name',
+      official_station_name: 'Fourth Test Name',
+      common_name: 'Fourth Common Name',
       classification: 'Residential Care Site (MH RRTP/DRRTP) (Stand-Alone)',
       classification_status: 'Firm',
       mobile: 'Yes',
@@ -285,7 +286,7 @@ describe 'VISN pages', type: :feature do
     ENV['GOOGLE_API_KEY'] = nil
   end
 
-  def expect_metadata(element, facility_count_text, practices_created_count_text, practices_adopted_count_text)
+  def expect_visn_metadata(element, facility_count_text, practices_created_count_text, practices_adopted_count_text)
     within(:css, element) do
       expect(find('.visn-facility-count').text).to eq(facility_count_text)
       expect(find('.visn-practice-creations-count').text).to eq(practices_created_count_text)
@@ -304,22 +305,22 @@ describe 'VISN pages', type: :feature do
 
     describe 'visns index map' do
       before do
-        @marker_div = 'div[style*="width: 48px"][title=""]'
-        @markers = find_all(:css, @marker_div)
+        @visn_marker_div = 'div[style*="width: 48px"][title=""]'
+        @visn_markers = find_all(:css, @visn_marker_div)
       end
 
       it 'should be there with the correct amount of markers' do
-        expect(@markers.count).to eq(2)
+        expect(@visn_markers.count).to eq(2)
       end
 
       it 'should show metadata for each visn' do
-        @markers.last.click
+        @visn_markers.last.click
 
-        expect_metadata('#visn-2-marker-modal', '3 facilities', '1 practice created here', '2 practices adopted here')
+        expect_visn_metadata('#visn-2-marker-modal', '3 facilities', '1 practice created here', '2 practices adopted here')
       end
 
       it 'should have a link to a given visn\'s show page within that visn\'s marker modal' do
-        @markers.last.click
+        @visn_markers.last.click
 
         within(:css, '#visn-2-marker-modal') do
           expect(find('.visn-modal-link')[:href]).to include('/visns/2')
@@ -329,30 +330,30 @@ describe 'VISN pages', type: :feature do
 
     describe 'visn cards' do
       before do
-        @cards = find_all(:css, '.dm-visn-card')
+        @visn_cards = find_all(:css, '.dm-visn-card')
       end
 
       it 'should show a card for every visn' do
-        expect(@cards.count).to eq(2)
+        expect(@visn_cards.count).to eq(2)
       end
 
       it 'should show metadata for each visn' do
-        expect_metadata('#visn-1-card-link', '1 facility', '1 practice created here', '0 practices adopted here')
+        expect_visn_metadata('#visn-1-card-link', '1 facility', '1 practice created here', '0 practices adopted here')
       end
 
       it 'should allow the user to visit a visn\'s show page via clicking on a visn card' do
-        @cards.first.click
+        @visn_cards.first.click
 
         expect(page).to have_content('1')
         expect(page).to have_current_path(visn_path(@visn))
       end
     end
-
   end
 
   describe 'show page' do
     it 'should be there if the VISN number exists in the DB' do
       visit '/visns/1'
+
       expect(page).to have_current_path(visn_path(@visn))
     end
 
@@ -361,12 +362,34 @@ describe 'VISN pages', type: :feature do
 
       expect(page).to have_content('This VISN has 3 facilities and serves Veterans in Florida and Georgia.')
       expect(page).to have_content('Collectively, its facilities have created 1 practice and have adopted 2 practices.')
+      expect(page).to have_content('Toge Inumaki')
     end
 
     describe 'visns show map' do
-      before do
-        @marker_div = 'div[style*="width: 48px"][title=""]'
-        @markers = find_all(:css, @marker_div)
+      it 'should be there with the correct amount of markers' do
+        visit '/visns/1'
+
+        expect(find_all(:css, 'div[style*="width: 34px"][title=""]').count).to eq(1)
+      end
+
+      it 'should show metadata for each facility' do
+        visit '/visns/2'
+        find_all(:css, 'div[style*="width: 34px"][title=""]').last.click
+
+        within(:css, '#visn-va-facility-4-marker-modal') do
+          expect(find('.visn-va-facility-marker-modal-link').text).to eq('Fourth Test Name (Fourth Common Name)')
+          expect(find('.visn-va-facility-modal-practices-created-count').text).to eq('0 practices created here')
+          expect(find('.visn-va-facility-modal-practices-adopted-count').text).to eq('1 practice adopted here')
+        end
+      end
+
+      it 'should have a link to a given facility\'s show page within that facility\'s marker modal' do
+        visit '/visns/1'
+        find_all(:css, 'div[style*="width: 34px"][title=""]').first.click
+
+        within(:css, '#visn-va-facility-1-marker-modal') do
+          expect(find('.visn-va-facility-marker-modal-link')[:href]).to include('/facilities/test-common-name')
+        end
       end
     end
   end

@@ -12,7 +12,7 @@ class VisnsController < ApplicationController
       marker.lng current_visn[:longitude].to_s
 
       marker.picture({
-                       url: view_context.image_path('visn-map-marker-default.svg'),
+                       url: view_context.image_path('visn-va-facility-map-marker-default.svg'),
                        width: 48,
                        height: 64,
                        scaledWidth: 48,
@@ -42,7 +42,7 @@ class VisnsController < ApplicationController
       marker.lng va_facility[:longitude].to_s
 
       marker.picture({
-                       url: view_context.image_path('visn-map-marker-default.svg'),
+                       url: view_context.image_path('visn-va-facility-map-marker-default.svg'),
                        width: 34,
                        height: 46,
                        scaledWidth: 34,

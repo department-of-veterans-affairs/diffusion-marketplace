@@ -27,23 +27,23 @@ function initialize() {
         if (json.id !== selectedMarker.id) {
             if (selectedMarker.id) {
                 const prevSelected = dataMarkers.find(m => m.id === selectedMarker.id);
-                setIcon(prevSelected, defaultVisnMarkerIcon);
+                setIcon(prevSelected, defaultVisnVaFacilityMarkerIcon);
             }
 
             selectedMarker = json;
-            setIcon(json, selectedVisnMarkerIcon);
+            setIcon(json, selectedVisnVaFacilityMarkerIcon);
         }
     }
 
     function mouseoverCallback(json) {
         if (json.id !== selectedMarker.id) {
-            setIcon(json, hoverVisnMarkerIcon);
+            setIcon(json, hoverVisnVaFacilityMarkerIcon);
         }
     }
 
     function mouseoutCallback(json) {
         if (json.id !== selectedMarker.id) {
-            setIcon(json, defaultVisnMarkerIcon);
+            setIcon(json, defaultVisnVaFacilityMarkerIcon);
         }
     }
 
@@ -71,7 +71,7 @@ function initialize() {
         if (selectedMarker.id) {
             const json = dataMarkers.find(dm => dm.id === selectedMarker.id);
             json.marker.infowindow.close();
-            setIcon(json, defaultVisnMarkerIcon);
+            setIcon(json, defaultVisnVaFacilityMarkerIcon);
             selectedMarker = {};
         }
     }
@@ -82,7 +82,7 @@ function initialize() {
             $(newElem).on('click', function() {
                 if (selectedMarker.id) {
                     const json = dataMarkers.find(dm => dm.id === selectedMarker.id);
-                    setIcon(json, defaultVisnMarkerIcon);
+                    setIcon(json, defaultVisnVaFacilityMarkerIcon);
                     selectedMarker = {};
                 }
             });
@@ -151,3 +151,5 @@ function initialize() {
         changeMarkerIconOnInfoWindowClose();
     });
 }
+
+google.maps.event.addDomListener(window, 'load', initialize);
