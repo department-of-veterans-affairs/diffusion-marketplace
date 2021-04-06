@@ -334,7 +334,7 @@ describe 'VA facility pages', type: :feature do
       expect(page).to have_content("VISN")
       expect(page).to have_content("Type")
       expect(page).to have_content("first facility")
-      expect(page).to have_no_content('last facility')
+      expect(page).to have_content('last facility')
       expect(find_all('.usa-select').first.value).to eq ''
       expect(find('#facility_directory_visn_select').first.value).to eq '- Select -'
       expect(find('#facility_type_select').first.value).to eq '- Select -'
@@ -360,32 +360,35 @@ describe 'VA facility pages', type: :feature do
   describe 'show page' do
     it 'should be there if the VA facility common name (friendly id) or id exists in the DB' do
       # visit using the friendly id
-      visit '/facilities/a-test-common-name'
+      visit '/facilities/a-first-facility-test-common-name'
       expect(page).to have_current_path(va_facility_path(@va_facility1))
 
       # visit using the id
       visit '/facilities/1'
       expect(page).to have_current_path('/facilities/1')
-      visit '/facilities/a-test-common-name'
-      expect(page).to have_current_path('/facilities/a-test-common-name')
+      visit '/facilities/a-first-facility-test-common-name'
+      expect(page).to have_current_path('/facilities/a-first-facility-test-common-name')
     end
   end
 
   describe 'Sorting' do
     it 'should sort the results in asc and desc order' do
       visit '/facilities'
+      section = find(:css, '#directory_table') #the :css may be optional depending on your Capybara.default_selector setting
       expect(page).to have_content(@va_facility1.common_name)
       expect(page).to have_content("Load more")
+      expect(section).to have_no_content("last facility")
+      expect(section).to have_content('first facility')
       toggle_by_column('facility')
-      expect(page).to have_content("last facility")
-      expect(page).to have_no_content('first facility')
+      expect(section).to have_content("last facility")
+      expect(section).to have_no_content('first facility')
       find('#btn_facility_directory_load_more').click
-      expect(page).to have_content("last facility")
-      expect(page).to have_content('first facility')
+      expect(section).to have_content("last facility")
+      expect(section).to have_content('first facility')
     end
   end
 
   def toggle_by_column(column_name)
-    find('.toggle_by_' + column_name).click
+    find('#toggle_by_' + column_name).click
   end
 end
