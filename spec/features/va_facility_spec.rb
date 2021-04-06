@@ -338,7 +338,11 @@ describe 'VA facility pages', type: :feature do
       expect(page).to have_content("first facility")
       expect(page).to have_content('last facility')
       expect(find_all('.usa-select').first.value).to eq ''
-      expect(find('#facility_directory_select').first.value).to eq ''
+      select "1a-HighComplexity", :from => "facility_type_select"
+      section = find(:css, '#directory_table')
+      expect(section).to have_content('1A')
+      expect(section).to have_no_content('1B')
+      expect(section).to have_no_content('1C')
 
       # test combo/select boxes..
       first_element = find("#facility_directory_select > option:nth-child(1)").text
