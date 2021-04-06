@@ -27,7 +27,7 @@ RSpec.describe ExternalUrlValidator do
     end
 
     context 'given a URL with http' do
-      it 'should add an error message' do
+      it 'should have no errors' do
         component = PageImageComponent.new(page_image: @attachment, alt_text: 'alt image', url: 'http://www.google.com')
         component.valid?
         expect(component.errors[:url][0]).to eq(nil)
@@ -43,7 +43,7 @@ RSpec.describe ExternalUrlValidator do
     end
 
     context 'given an malformed URL' do
-      it 'should have no errors' do
+      it 'should add an error message' do
         component = PageImageComponent.new(page_image: @attachment, alt_text: 'alt image', url: 'https//wwwgooglecom')
         component.valid?
         expect(component.errors[:url]).to eq(["Not a valid external URL"])

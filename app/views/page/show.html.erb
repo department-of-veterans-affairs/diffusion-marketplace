@@ -97,10 +97,10 @@
           <div class="grid-row margin-bottom-3 <%= get_grid_alignment_css_class(component.alignment.downcase) %> <%= page_narrow_classes %>">
             <% if component.url.present? %>
               <a href="<%= component.url %>" target="<%= component.url.chars.first === '/' ? '' : '_blank' %>" title="Go to <%= component.url %>">
-                <img class="width-auto maxh-15rem" src="<%= component.page_image_s3_presigned_url %>" alt="<%= component.alt_text %>"/>
+                <%= render partial: "page/page_image", locals: { component: component } %>
               </a>
             <% else %>
-              <img class="width-auto maxh-15rem" src="<%= component.page_image_s3_presigned_url %>" alt="<%= component.alt_text %>"/>
+                <%= render partial: "page/page_image", locals: { component: component } %>
             <% end %>
           </div>
 
