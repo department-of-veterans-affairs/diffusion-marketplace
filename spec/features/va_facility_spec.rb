@@ -338,8 +338,6 @@ describe 'VA facility pages', type: :feature do
       expect(page).to have_content("first facility")
       expect(page).to have_content('last facility')
       expect(find_all('.usa-select').first.value).to eq ''
-      expect(find('#facility_directory_visn_select').first.value).to eq '- Select -'
-      expect(find('#facility_type_select').first.value).to eq '- Select -'
       expect(find('#facility_directory_select').first.value).to eq ''
 
       # test combo/select boxes..
