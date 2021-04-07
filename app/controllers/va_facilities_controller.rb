@@ -66,6 +66,8 @@ class VaFacilitiesController < ApplicationController
   end
 
   def update_practices_adopted_at_facility
+    debugger
+    @adoptions_at_facility = VaFacility.get_adoptions_by_facility_and_category(params["station_number"], params["selected_category"])
     selected_category = Category.find_by_id(params["selected_category"].to_i).name
     data = params["selected_category"].to_s
     render :json => selected_category

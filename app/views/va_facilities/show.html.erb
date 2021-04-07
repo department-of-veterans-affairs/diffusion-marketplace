@@ -38,6 +38,7 @@
                 Main number: <a class="facility-phone-number" href="tel:<%= ph_number %>"><%= ph_number %></a>
               </div>
             </div>
+        <input type="hidden" id="facility_station_number" value="<%= @va_facility.station_number %>"/>
         <div class="grid-col-6">
             <%= render partial: 'va_facilities/map/facility_map' %>
         </div>

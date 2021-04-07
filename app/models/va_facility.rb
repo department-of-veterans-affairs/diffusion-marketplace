@@ -25,6 +25,15 @@ class VaFacility < ApplicationRecord
     ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"]]).to_a
   end
 
+  def self.get_adoptions_by_facility_and_category(station_number, category_id)
+    #DiffusionHistory.where(facility_id: station_number)
+    sql = "SELECT p.id, p.name, dh.facility_id, dhs.status, dhs.start_time FROM practices p
+          JOIN diffusion_histories dh on p.id = dh.practice_id
+          JOIN diffusion_history_statuses dhs on dh.id = dhs.diffusion_history_id
+          WHERE p.published = true AND dh.facility_id = $1"
+    ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"]]).to_a
+  end
+
   def self.get_categories
     Category.order_by_name
   end
@@ -82,5 +91,7 @@ class VaFacility < ApplicationRecord
       VaFacility.all
     end
   end
+
+
 end
 

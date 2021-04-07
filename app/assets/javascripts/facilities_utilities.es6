@@ -155,11 +155,12 @@ $(document).ready(function(){
 
     $("#facility_category_select_adoptions").change (function(e) {
         let selectedCategory = document.getElementById("facility_category_select_adoptions").value
+        let facilityStationNumber = document.getElementById("facility_station_number").value
         //alert(result);
         Rails.ajax({
             type: 'post',
             url: "/update_practices_adopted_at_facility",
-            data: jQuery.param({selected_category: selectedCategory}),
+            data: jQuery.param({selected_category: selectedCategory, station_number: facilityStationNumber}),
             success: function(result) {
                 alert(result);
                 // let save_id = document.getElementById('practice-editor-save-button');
