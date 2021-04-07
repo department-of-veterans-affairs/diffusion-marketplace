@@ -103,24 +103,18 @@ module VisnsHelper
   end
 
   def get_facility_type_text_by_visn(visn)
-    health_care_center_count = facility_type_counts_by_visn(visn)[0]
-    multi_specialty_cboc_count = facility_type_counts_by_visn(visn)[1]
-    other_outpatient_services_count = facility_type_counts_by_visn(visn)[2]
-    primary_care_cboc_count = facility_type_counts_by_visn(visn)[3]
-    stand_alone_count = facility_type_counts_by_visn(visn)[4]
-    unclassified_count = facility_type_counts_by_visn(visn)[5]
-    vamc_count = facility_type_counts_by_visn(visn)[6]
+    facility_type_counts = facility_type_counts_by_visn(visn)
 
     # create an array of hashes for each facility type that contains their corresponding text and count
     visn_facility_types_hash_arr = []
 
-    visn_facility_types_hash_arr << { "text": "#{health_care_center_count} Health Care Center#{health_care_center_count != 1 ? 's' : ''}", "count": health_care_center_count } if health_care_center_count > 0
-    visn_facility_types_hash_arr << { "text": "#{multi_specialty_cboc_count} Multi-Specialty CBOC#{multi_specialty_cboc_count != 1 ? 's' : ''}", "count": multi_specialty_cboc_count } if multi_specialty_cboc_count > 0
-    visn_facility_types_hash_arr << { "text": "#{other_outpatient_services_count} Other Outpatient Service facilit#{other_outpatient_services_count != 1 ? 'ies' : 'y'}", "count": other_outpatient_services_count } if other_outpatient_services_count > 0
-    visn_facility_types_hash_arr << { "text": "#{primary_care_cboc_count} Primary Care CBOC#{primary_care_cboc_count != 1 ? 's' : ''}", "count": primary_care_cboc_count } if primary_care_cboc_count > 0
-    visn_facility_types_hash_arr << { "text": "#{stand_alone_count} Residential Care Site#{stand_alone_count != 1 ? 's' : ''}", "count": stand_alone_count } if stand_alone_count > 0
-    visn_facility_types_hash_arr << { "text": "#{unclassified_count} Unclassified facilit#{unclassified_count != 1 ? 'ies' : 'y'}", "count": unclassified_count } if unclassified_count > 0
-    visn_facility_types_hash_arr << { "text": "#{vamc_count} VA Medical Center#{vamc_count != 1 ? 's' : ''}", "count": vamc_count } if vamc_count > 0
+    visn_facility_types_hash_arr << { "text": "#{facility_type_counts[0]} Health Care Center#{facility_type_counts[0] != 1 ? 's' : ''}", "count": facility_type_counts[0] } if facility_type_counts[0] > 0
+    visn_facility_types_hash_arr << { "text": "#{facility_type_counts[1]} Multi-Specialty CBOC#{facility_type_counts[1] != 1 ? 's' : ''}", "count": facility_type_counts[1] } if facility_type_counts[1] > 0
+    visn_facility_types_hash_arr << { "text": "#{facility_type_counts[2]} Other Outpatient Service facilit#{facility_type_counts[2] != 1 ? 'ies' : 'y'}", "count": facility_type_counts[2] } if facility_type_counts[2] > 0
+    visn_facility_types_hash_arr << { "text": "#{facility_type_counts[3]} Primary Care CBOC#{facility_type_counts[3] != 1 ? 's' : ''}", "count": facility_type_counts[3] } if facility_type_counts[3] > 0
+    visn_facility_types_hash_arr << { "text": "#{facility_type_counts[4]} Residential Care Site#{facility_type_counts[4] != 1 ? 's' : ''}", "count": facility_type_counts[4] } if facility_type_counts[4] > 0
+    visn_facility_types_hash_arr << { "text": "#{facility_type_counts[5]} Unclassified facilit#{facility_type_counts[5] != 1 ? 'ies' : 'y'}", "count": facility_type_counts[5] } if facility_type_counts[5] > 0
+    visn_facility_types_hash_arr << { "text": "#{facility_type_counts[6]} VA Medical Center#{facility_type_counts[6] != 1 ? 's' : ''}", "count": facility_type_counts[6] } if facility_type_counts[6] > 0
 
     # sort the facility types by count and then add punctuation where necessary
     sorted_facility_types_hash_arr = visn_facility_types_hash_arr.sort_by { |c| -c[:count] }
