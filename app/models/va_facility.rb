@@ -37,7 +37,7 @@ class VaFacility < ApplicationRecord
   end
 
   def self.rewrite_practices_adopted_at_this_facility_filtered_by_category(adoptions_at_facility, total_adoptions_for_practice)
-    ret_val = "<table class='usa-table usa-table--borderless grid-col-12'>"
+    ret_val = "<table class='usa-table usa-table--borderless grid-col-12 margin-top-2'>"
     ret_val += "<thead><th>Practice name</th><th>Status</th><th>Start date</th><th>Total VA adoptions &#x25BC;</th></thead>"
       if adoptions_at_facility.count > 0
         ctr = 0

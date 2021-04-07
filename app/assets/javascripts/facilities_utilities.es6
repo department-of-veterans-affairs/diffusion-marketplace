@@ -162,16 +162,10 @@ $(document).ready(function(){
             url: "/update_practices_adopted_at_facility",
             data: jQuery.param({selected_category: selectedCategory, station_number: facilityStationNumber}),
             success: function(result) {
-                document.getElementById("va_facility_adoption_results").innerHTML = result
-                //alert(result);
-                // let save_id = document.getElementById('practice-editor-save-button');
-                // if (save_id && blankRequiredFields.length === 0 && current_action !== 'editors') {
-                //     save_id.click();
-                // }
+                document.getElementById("va_facility_adoption_results").innerHTML = result[0]
+                document.getElementById("practices_adopted_at_facility_count").innerHTML = result[1]
             }
         });
     });
-
-
 });
 

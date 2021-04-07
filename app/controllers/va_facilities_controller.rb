@@ -66,10 +66,23 @@ class VaFacilitiesController < ApplicationController
   end
 
   def update_practices_adopted_at_facility
-    @adoptions_at_facility = VaFacility.get_adoptions_by_facility_and_category(params["station_number"], params["selected_category"])
+    selected_cat = params["selected_category"]
+    if selected_cat.blank?
+      @adoptions_at_facility = VaFacility.get_adoptions_by_facility(params["station_number"])
+    else
+      @adoptions_at_facility = VaFacility.get_adoptions_by_facility_and_category(params["station_number"], selected_cat)
+    end
     @total_adoptions_for_practice = VaFacility.get_total_adoptions_for_each_practice(@adoptions_at_facility)
     data = VaFacility.rewrite_practices_adopted_at_this_facility_filtered_by_category(@adoptions_at_facility, @total_adoptions_for_practice)
-    render :json => data
+    results = []
+    results << data
+    result_count =  @adoptions_at_facility.count.to_s + " result"
+      if @adoptions_at_facility.count != 1
+        result_count += "s"
+      end
+    result_count += ":"
+    results << result_count
+    render :json => results
   end
 
   private
