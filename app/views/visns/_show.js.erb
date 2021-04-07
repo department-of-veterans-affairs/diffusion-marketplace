@@ -1,0 +1,72 @@
+var results = null;
+var resultsHTML = '';
+var RESULTS_SECTION = '#visn-practices-search-results';
+var SPINNER = '.dm-loading-spinner';
+var LOAD_MORE_CONTAINER = '.button-box';
+var SEARCH_RESULTS = '#search-results';
+var SORT_EL = '#search_sort_option';
+
+function hello() {
+    console.log('hey');
+  $(document).on('change', '.visn-created-practices-radio, .visn-adopted-practices-radio', function (e) {
+      e.preventDefault();
+      console.log('hello')
+  });
+}
+
+function test() {
+  $(document).on('submit', '#visns-show-search-form', function (e) {
+      e.preventDefault();
+      console.log('submitted')
+  });
+}
+
+function searchPracticesCreatedByVisn() {
+    const searchField = document.querySelector('#practices-created-by-visn-search-field');
+
+    function buildSearchResults(results, sortOption) {
+        $(SPINNER).addClass('display-none');
+
+        var resultsArray = [];
+        var finalResults = '';
+
+        results.sort(sortOption).forEach(function (result) {
+            finalResults += buildPracticeCard(result);
+            resultsArray.push(buildPracticeCard(result));
+        });
+
+        if (results.length > 0) {
+
+            // Hide sorting options if there's only 1 result
+            if (results.length === 1) {
+                sortSelect.addClass('display-none');
+            } else if (results.length !== 1 && sortSelect.hasClass('display-none')) {
+                sortSelect.removeClass('display-none');
+            }
+
+            // Show the results summary section
+            if ($(RESULTS_SECTION).hasClass('display-none')) {
+                $(RESULTS_SECTION).removeClass('display-none');
+            }
+
+            $(SEARCH_RESULTS).removeClass('display-none');
+
+            // Print results to the page
+            document.querySelector('#search-results').innerHTML = finalResults;
+
+            $(SEARCH_RESULTS).showMoreItems({
+                startNum: 12,
+                afterNum: 12,
+                moreText: 'Load more',
+                noMoreText: 'No more results'
+            })
+
+        }
+}
+
+function execVisnSearchFunctions() {
+    hello();
+    test();
+}
+
+$(document).on('turbolinks:load', execVisnSearchFunctions);
