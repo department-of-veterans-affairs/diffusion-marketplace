@@ -13,6 +13,7 @@ class VaFacility < ApplicationRecord
     va_facilities.each do |f|
       total_adoptions << DiffusionHistory.where(practice_id: f["id"]).count
     end
+    debugger
     total_adoptions
   end
 
@@ -30,9 +31,31 @@ class VaFacility < ApplicationRecord
     sql = "SELECT p.id, p.name, dh.facility_id, dhs.status, dhs.start_time FROM practices p
           JOIN diffusion_histories dh on p.id = dh.practice_id
           JOIN diffusion_history_statuses dhs on dh.id = dhs.diffusion_history_id
-          WHERE p.published = true AND dh.facility_id = $1"
-    ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"]]).to_a
+          JOIN category_practices cp on p.id = cp.practice_id
+          JOIN categories c on cp.category_id = c.id
+          WHERE p.published = true AND dh.facility_id = $1 AND c.id = $2"
+    ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"], [nil, "#{category_id}"]])
   end
+
+  def self.rewrite_practices_adopted_at_this_facility_filtered_by_category(adoptions_at_facility, total_adoptions_for_practice)
+    debugger
+    ret_val = "<table class='usa-table usa-table--borderless grid-col-12'>"
+    ret_val += "<thead><th>Practice name</th><th>Status</th><th>Start date</th><th>Total VA adoptions &#x25BC;</th></thead>"
+      if adoptions_at_facility.count > 0
+        ctr = 0
+          adoptions_at_facility.each do |ad|
+            ret_val += "<tr>"
+            ret_val += "<td>" + ad["name"] + "</td>"
+            ret_val += "<td>" + ad["status"] + "</td>"
+            ret_val += "<td>" + ad["start_time"].to_s + "</td>"
+            ret_val += "<td>" + total_adoptions_for_practice[ctr] + "</td>"
+            ret_val += "</tr>"
+            ctr += 1
+          end
+        ret_val += "</table>"
+      end
+    ret_val
+    end
 
   def self.get_categories
     Category.order_by_name
