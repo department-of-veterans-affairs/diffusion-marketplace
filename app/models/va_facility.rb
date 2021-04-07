@@ -34,7 +34,7 @@ class VaFacility < ApplicationRecord
           JOIN diffusion_history_statuses dhs on dh.id = dhs.diffusion_history_id
           JOIN category_practices cp on p.id = cp.practice_id
           JOIN categories c on cp.category_id = c.id
-          WHERE p.published = true AND dh.facility_id = $1 AND c.id = $2  order by adoptions desc"
+          WHERE p.published = true AND dh.facility_id = $1 AND c.id = $2 order by adoptions desc"
     ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"], [nil, "#{category_id}"]]).to_a
   end
 
