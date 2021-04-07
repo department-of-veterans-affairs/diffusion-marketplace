@@ -1,18 +1,10 @@
 module VisnsHelper
   include StatesHelper
 
-  def published_enabled_approved_practices
-    Practice.published_enabled_approved
-  end
-
-  def visn_va_facilities(visn)
-    VaFacility.cached_va_facilities.where(visn: visn)
-  end
-
   def get_adopted_practices_count_by_visn(visn)
     visn_adopted_practices = []
-    published_enabled_approved_practices.each do |p|
-      visn_va_facilities(visn).each do |vaf|
+    Practice.published_enabled_approved.each do |p|
+      visn.get_va_facilities.each do |vaf|
         p.diffusion_histories.each do |dh|
           visn_adopted_practices << dh.facility_id if dh.facility_id === vaf.station_number.to_s
         end
@@ -23,12 +15,12 @@ module VisnsHelper
 
   def get_created_practices_count_by_visn(visn)
     visn_created_practices = []
-    published_enabled_approved_practices.each do |p|
+    Practice.published_enabled_approved.each do |p|
       origin_facilities = p.practice_origin_facilities
       initiating_facility = p.initiating_facility
       # add practices that have practice_origin_facilities
       if p.facility? && origin_facilities.any?
-        visn_va_facilities(visn).each do |vaf|
+        visn.get_va_facilities.each do |vaf|
           origin_facilities.each do |of|
             visn_created_practices << { "va_facility": of.facility_id } if of.facility_id === vaf.station_number.to_s
           end
@@ -45,7 +37,7 @@ module VisnsHelper
     visn_facility_locations = []
 
     # add facility locations to empty array
-    visn_va_facilities(visn).each do |vaf|
+    visn.get_va_facilities.each do |vaf|
       facility_location = vaf.street_address_state
 
       visn_facility_locations << facility_location unless visn_facility_locations.include?(facility_location)
@@ -88,31 +80,43 @@ module VisnsHelper
     facility_type_array.select { |type| type === facility_type }.count
   end
 
-  def get_facility_types_and_counts_by_visn(visn)
+  def facility_type_counts_by_visn(visn)
     visn_facility_types_arr = []
 
     # add facility types to empty array
-    visn_va_facilities(visn).each do |vaf|
+    visn.get_va_facilities.each do |vaf|
       facility_type = vaf.classification
 
       visn_facility_types_arr << facility_type
     end
 
-    # get the counts for each facility type
-    hcc_count = facility_type_count(visn_facility_types_arr, 'Health Care Center (HCC)')
-    multi_specialty_cboc_count = facility_type_count(visn_facility_types_arr, 'Multi-Specialty CBOC')
-    oos_count = facility_type_count(visn_facility_types_arr, 'Other Outpatient Services (OOS)')
-    primary_care_cboc_count = facility_type_count(visn_facility_types_arr, 'Primary Care CBOC')
-    stand_alone_count = facility_type_count(visn_facility_types_arr, 'Residential Care Site (MH RRTP/DRRTP) (Stand-Alone)')
-    unclassified_count = facility_type_count(visn_facility_types_arr, 'Unclassified')
-    vamc_count = facility_type_count(visn_facility_types_arr, 'VA Medical Center (VAMC)')
+    # return the counts for each facility type
+    [
+      facility_type_count(visn_facility_types_arr, 'Health Care Center (HCC)'),
+      facility_type_count(visn_facility_types_arr, 'Multi-Specialty CBOC'),
+      facility_type_count(visn_facility_types_arr, 'Other Outpatient Services (OOS)'),
+      facility_type_count(visn_facility_types_arr, 'Primary Care CBOC'),
+      facility_type_count(visn_facility_types_arr, 'Residential Care Site (MH RRTP/DRRTP) (Stand-Alone)'),
+      facility_type_count(visn_facility_types_arr, 'Unclassified'),
+      facility_type_count(visn_facility_types_arr, 'VA Medical Center (VAMC)')
+    ]
+  end
+
+  def get_facility_type_text_by_visn(visn)
+    health_care_center_count = facility_type_counts_by_visn(visn)[0]
+    multi_specialty_cboc_count = facility_type_counts_by_visn(visn)[1]
+    other_outpatient_services_count = facility_type_counts_by_visn(visn)[2]
+    primary_care_cboc_count = facility_type_counts_by_visn(visn)[3]
+    stand_alone_count = facility_type_counts_by_visn(visn)[4]
+    unclassified_count = facility_type_counts_by_visn(visn)[5]
+    vamc_count = facility_type_counts_by_visn(visn)[6]
 
     # create an array of hashes for each facility type that contains their corresponding text and count
     visn_facility_types_hash_arr = []
 
-    visn_facility_types_hash_arr << { "text": "#{hcc_count} Health Care Center#{hcc_count != 1 ? 's' : ''}", "count": hcc_count } if hcc_count > 0
+    visn_facility_types_hash_arr << { "text": "#{health_care_center_count} Health Care Center#{health_care_center_count != 1 ? 's' : ''}", "count": health_care_center_count } if health_care_center_count > 0
     visn_facility_types_hash_arr << { "text": "#{multi_specialty_cboc_count} Multi-Specialty CBOC#{multi_specialty_cboc_count != 1 ? 's' : ''}", "count": multi_specialty_cboc_count } if multi_specialty_cboc_count > 0
-    visn_facility_types_hash_arr << { "text": "#{oos_count} Other Outpatient Service facilit#{oos_count != 1 ? 'ies' : 'y'}", "count": oos_count } if oos_count > 0
+    visn_facility_types_hash_arr << { "text": "#{other_outpatient_services_count} Other Outpatient Service facilit#{other_outpatient_services_count != 1 ? 'ies' : 'y'}", "count": other_outpatient_services_count } if other_outpatient_services_count > 0
     visn_facility_types_hash_arr << { "text": "#{primary_care_cboc_count} Primary Care CBOC#{primary_care_cboc_count != 1 ? 's' : ''}", "count": primary_care_cboc_count } if primary_care_cboc_count > 0
     visn_facility_types_hash_arr << { "text": "#{stand_alone_count} Residential Care Site#{stand_alone_count != 1 ? 's' : ''}", "count": stand_alone_count } if stand_alone_count > 0
     visn_facility_types_hash_arr << { "text": "#{unclassified_count} Unclassified facilit#{unclassified_count != 1 ? 'ies' : 'y'}", "count": unclassified_count } if unclassified_count > 0
