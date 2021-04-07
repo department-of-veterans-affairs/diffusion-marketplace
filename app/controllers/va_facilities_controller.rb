@@ -46,7 +46,6 @@ class VaFacilitiesController < ApplicationController
     @created_practices = @created_practices.take(@num_practice_recs.to_i)
     @created_practices_count = @created_practices.count
     @adoptions_at_facility = VaFacility.get_adoptions_by_facility(@va_facility.station_number)
-    @total_adoptions_for_practice = VaFacility.get_total_adoptions_for_each_practice(@adoptions_at_facility)
     @categories = VaFacility.get_categories
     #google maps implementation
     @va_facility_marker = Gmaps4rails.build_markers(@va_facility) do |facility, marker|
@@ -72,7 +71,6 @@ class VaFacilitiesController < ApplicationController
     else
       @adoptions_at_facility = VaFacility.get_adoptions_by_facility_and_category(params["station_number"], selected_cat)
     end
-    @total_adoptions_for_practice = VaFacility.get_total_adoptions_for_each_practice(@adoptions_at_facility)
     data = VaFacility.rewrite_practices_adopted_at_this_facility_filtered_by_category(@adoptions_at_facility, @total_adoptions_for_practice)
     results = []
     results << data

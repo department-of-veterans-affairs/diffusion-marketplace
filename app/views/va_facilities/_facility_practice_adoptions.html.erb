@@ -26,20 +26,22 @@
       <table class="usa-table usa-table--borderless grid-col-12">
         <thead>
           <th>Practice name</th>
-          <th>Status</th>
+          <th>Status <img src="/assets/question_tooltip.svg" title="In-progress: Facilities that have started but not completed adopting the practice.&#10;&#10;Successful: Facilities that have met adoption goals and implemented the practice.&#10;&#10;Unsuccessful: Facilities that started but stopped working towards adoption." class="usa-tooltip" data-position="bottom"/></th>
           <th>Start date</th>
           <th>Total VA adoptions &#x25BC;</th>
         </thead>
-          <% ctr = 0 %>
-        <% @adoptions_at_facility.each do |ad| %>
-          <tr>
-            <td><%=ad["name"] %></td>
-            <td><%=ad["status"] %></td>
-            <td><%=ad["start_time"] %></td>
-            <td><%= @total_adoptions_for_practice[ctr] %></td>
-          </tr>
-        <% ctr += 1 %>
-        <% end %>
+        <tbody>
+            <% ctr = 0 %>
+          <% @adoptions_at_facility.each do |ad| %>
+            <tr>
+              <td><%=ad["name"] %></td>
+              <td><%=ad["status"] %></td>
+              <td><%=ad["start_time"] %></td>
+              <td><%= ad["adoptions"] %></td>
+            </tr>
+          <% ctr += 1 %>
+          <% end %>
+        </tbody>
       </table>
     </div>
   </div>
