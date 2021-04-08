@@ -40,12 +40,12 @@
               <tbody>
               <% @filtered_facilities.each do |facility| %>
                 <tr>
-                  <td width="30%"><a class="dm-internal-link" href='/facilities/<%= facility["slug"] %>'><%= facility["official_station_name"] %></a></td>
-                  <td width="20%"><%= facility["common_name"] %></td>
-                  <td width="10%"><a class="dm-internal-link" href='/visns/<%= facility["visn_number"] %>'><%= facility["visn_number"] %></a></td>
-                  <td width="10%"><%= facility["fy17_parent_station_complexity_level"][0..1].upcase %></td>
-                  <td width="15%"><%= facility["practices_created"] %></td>
-                  <td width="15%"><%= facility["adoptions"] %></td>
+                  <td class="grid-col-4"><a class="dm-internal-link" href='/facilities/<%= facility["slug"] %>'><%= facility["official_station_name"] %></a></td>
+                  <td class="grid-col-3"><%= facility["common_name"] %></td>
+                  <td class="grid-col-2"><a class="dm-internal-link" href='/visns/<%= facility["visn_number"] %>'><%= facility["visn_number"] %></a></td>
+                  <td class="grid-col-1"><%= facility["fy17_parent_station_complexity_level"][0..1].upcase %></td>
+                  <td class="grid-col-1"><%= facility["practices_created"] %></td>
+                  <td class="grid-col-1"><%= facility["adoptions"] %></td>
                 </tr>
               <% end %>
               </tbody>
