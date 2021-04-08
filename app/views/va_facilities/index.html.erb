@@ -34,7 +34,11 @@
         <% if @results_count > 0 %>
           <div id="directory_table">
             <table class="usa-table usa-table--borderless grid-col-12">
-              <%= render partial: 'va_facilities/facility_results_table_header' %>
+              <thead>
+              <tr>
+                <%= render partial: 'va_facilities/facility_results_table_header' %>
+              </tr>
+              </thead>
               <tbody>
               <% @filtered_facilities.each do |facility| %>
                 <tr>

@@ -42,7 +42,7 @@ $(document).ready(function(){
         let type =  document.getElementById('facility_type_select').value;
         let curUrl = window.location.href;
         let visnId = e.target.options[e.target.selectedIndex].value;
-        let isDefault = visnId.length == 0 ? true : false;
+        let isDefault = visnId.length === 0
         curUrl = stripQsParams(curUrl);
         let newUrl = curUrl;
         if(!isDefault){
@@ -59,7 +59,7 @@ $(document).ready(function(){
         //document.getElementById('facility_directory_select').value = '';
         var curUrl = window.location.href;
         let type = this.options[e.target.selectedIndex].text;
-        var isDefault = type == "- Select -" ? true : false;
+        let isDefault = type === "- Select -"
         let visnId =  document.getElementById('facility_directory_visn_select').value;
         curUrl = stripQsParams(curUrl);
         let newUrl = curUrl;
