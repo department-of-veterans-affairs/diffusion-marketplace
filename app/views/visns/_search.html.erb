@@ -27,6 +27,14 @@
       </div>
     </fieldset>
 
+    <%
+      sort_options = [
+        ['Sort by most adoptions', 'adoptions', class: 'usa-select'],
+        ['Sort by A to Z', 'a_to_z', class: 'usa-select'],
+        ['Sort by most recently added', 'added', class: 'usa-select']
+      ]
+    %>
+
     <section id="visn-practices-search-results">
       <div class="grid-row margin-bottom-105 flex-align-center">
         <p class="font-sans-normal grid-col-8 line-height-26" id="results-summary"></p>

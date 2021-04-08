@@ -25,7 +25,7 @@ function searchPracticesCreatedByVisn() {
     const searchField = document.querySelector('#practices-created-by-visn-search-field');
 
     function buildSearchResults(results, sortOption) {
-        $(SPINNER).addClass('display-none');
+//        $(SPINNER).addClass('display-none');
 
         var resultsArray = [];
         var finalResults = '';
@@ -35,33 +35,164 @@ function searchPracticesCreatedByVisn() {
             resultsArray.push(buildPracticeCard(result));
         });
 
-        if (results.length > 0) {
-
-            // Hide sorting options if there's only 1 result
-            if (results.length === 1) {
-                sortSelect.addClass('display-none');
-            } else if (results.length !== 1 && sortSelect.hasClass('display-none')) {
-                sortSelect.removeClass('display-none');
-            }
-
-            // Show the results summary section
-            if ($(RESULTS_SECTION).hasClass('display-none')) {
-                $(RESULTS_SECTION).removeClass('display-none');
-            }
-
-            $(SEARCH_RESULTS).removeClass('display-none');
-
-            // Print results to the page
-            document.querySelector('#search-results').innerHTML = finalResults;
-
-            $(SEARCH_RESULTS).showMoreItems({
-                startNum: 12,
-                afterNum: 12,
-                moreText: 'Load more',
-                noMoreText: 'No more results'
-            })
-
+        // Hide sorting options if there's only 1 result
+        if (results.length === 1) {
+            sortSelect.addClass('display-none');
+        } else if (results.length !== 1 && sortSelect.hasClass('display-none')) {
+            sortSelect.removeClass('display-none');
         }
+
+        // Show the results summary section
+        if ($(RESULTS_SECTION).hasClass('display-none')) {
+            $(RESULTS_SECTION).removeClass('display-none');
+        }
+
+        $(SEARCH_RESULTS).removeClass('display-none');
+
+        // Print results to the page
+        document.querySelector('#visn-practices-search-results').innerHTML = finalResults;
+
+        $(SEARCH_RESULTS).showMoreItems({
+            startNum: 12,
+            afterNum: 12,
+            moreText: 'Load more',
+            noMoreText: 'No more results'
+        })
+
+        // Sort the results based on each sort option
+        var sortSelect = $(SORT_EL);
+        sortSelect.on('change', function() {
+            switch ($(this).val()) {
+                case "adoptions":
+//                    hideResultsElAndShowSpinner();
+                    buildSearchResults(results, sortByAdoptionCounts);
+                    break;
+                case "a_to_z":
+//                    hideResultsElAndShowSpinner();
+                    buildSearchResults(results, sortAToZ);
+                    break;
+                case "added":
+//                    hideResultsElAndShowSpinner();
+                    buildSearchResults(results, sortByDateAdded);
+                    break;
+            }
+        });
+
+    }
+
+    // Search practices and populate the page
+    function search(query, categories, originatingFacility, adoptingFacility) {
+        // Trim whitespace from the query (can cause matching problems)
+        query = query.trim();
+        // Set variables
+        var resultsSummary = document.querySelector('#results-summary');
+        // set the search page search bar input value
+        searchField.value = query;
+
+        if (query !== '') {
+            trackSearchField(query);
+            var searchBarQueryArray = [];
+            search_options.keys.forEach(function(practiceKey) {
+                var queryObj = {};
+                queryObj[practiceKey] = query;
+                return searchBarQueryArray.push(queryObj);
+            });
+        }
+
+        if (categories) {
+            // Collect any practice that has a category that matches the selected category/categories.
+            var categoryFilters = [];
+            categories.forEach(function (categorySelection) {
+                return categoryFilters.push({'category_names': "=\"" + categorySelection + "\""});
+            });
+        }
+
+        var originFacilityArray = originatingFacility ? [] : null;
+
+        if (originatingFacility && originatingFacility.includes('VISN')) {
+            // Collect any practice that either has the selected VISN as an origin facility, or has an origin facility that belongs to the selected VISN
+
+            // Add the VISN to the array
+            var foundVisn = visns.find(function(v) {
+                return v.number === originatingFacility;
+            });
+
+            originFacilityArray.push({'initiating_facility': "=\"" + foundVisn.id.toString() + "\""});
+
+            var visnFacilities = facilities.filter(function(f) {
+                return f.VISN === foundVisn.number.split('-').pop();
+            });
+
+            // Now add the facilities
+            visnFacilities.forEach(function(vf) {
+                originFacilityArray.push({'origin_facilities': "=\"" + vf.StationNumber + "\""});
+            });
+        } else if (originatingFacility && !originatingFacility.includes('VISN')){
+            // Collect the practices that have an origin facility matching the selected facility
+            var foundFacility = facilities.find(function(f) {
+                return originatingFacility === f.StationNumber;
+            });
+            originFacilityArray.push({'origin_facilities': "=\"" + foundFacility.StationNumber + "\""});
+        }
+
+        function getAdoptionFacilities(stationNumbers, facilityIds) {
+            adoptions.forEach(function(a) {
+                stationNumbers.forEach(function(sn) {
+                    if (a.facility_id === sn) {
+                        return facilityIds.push({'adoption_facilities': "=\"" + sn + "\""});
+                    }
+                });
+            });
+        }
+
+        if (adoptingFacility) {
+            var filteredFacilities;
+            var stationNumbers = [];
+            var adoptionFacilityArray = [];
+            if (adoptingFacility.includes('VISN')) {
+                // Collect any practice that has a diffusion history with a facility that belongs to the selected VISN
+                filteredFacilities = facilities.filter(function(f) {
+                    return 'VISN-' + f.VISN === adoptingFacility;
+                });
+
+                filteredFacilities.forEach(function(ff) {
+                    stationNumbers.push(ff.StationNumber);
+                })
+
+                getAdoptionFacilities(stationNumbers, adoptionFacilityArray);
+            } else {
+                // Collect any practice that has a diffusion history with a facility that matches the selected facility
+                var matchingFacility;
+                matchingFacility = facilities.find(function(f) {
+                    return f.StationNumber === adoptingFacility;
+                });
+
+                stationNumbers.push(matchingFacility.StationNumber);
+                getAdoptionFacilities(stationNumbers, adoptionFacilityArray);
+            }
+        }
+
+        console.log('results', results)
+        console.log(results.length);
+
+        // Get the results and default to filtering based on score
+        buildSearchResults(results, sortByScore);
+
+        // Reset the select input to default
+        $(SORT_EL).prop('selectedIndex', 0);
+
+        // Print the number of results for the query
+        resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? ':' : 's:');
+
+        // Highlight results (only Fuse.js matching)
+        results.forEach(function (result) {
+            highlighter(result);
+        });
+
+        // Highlight search results where exact keyword matches
+        var mark = new Mark('#search-results');
+        mark.mark(query);
+    }
 }
 
 function execVisnSearchFunctions() {
