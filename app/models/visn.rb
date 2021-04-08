@@ -1,5 +1,6 @@
 class Visn < ApplicationRecord
   has_many :va_facilities, dependent: :destroy
+  has_many :visn_liaisons, dependent: :destroy
 
   before_save :clear_visn_cache_on_save
   after_save :reset_visn_cache
@@ -29,5 +30,9 @@ class Visn < ApplicationRecord
     Rails.cache.fetch('visns') do
       Visn.all
     end
+  end
+
+  def get_va_facilities
+    VaFacility.cached_va_facilities.where(visn: self)
   end
 end

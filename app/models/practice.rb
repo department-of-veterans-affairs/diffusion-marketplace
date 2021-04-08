@@ -195,6 +195,7 @@ class Practice < ApplicationRecord
   scope :sort_adoptions_ct, -> { order(Arel.sql("adoption_count DESC, lower(practices.name) ASC")) }
   scope :sort_added, -> { order(Arel.sql("practices.created_at DESC")) }
   scope :filter_by_category_ids, -> (cat_ids) { where('category_practices.category_id IN (?)', cat_ids)} # cat_ids should be a id number or an array of id numbers
+  scope :published_enabled_approved,   -> { where(published: true, enabled: true, approved: true) }
 
   belongs_to :user, optional: true
 
