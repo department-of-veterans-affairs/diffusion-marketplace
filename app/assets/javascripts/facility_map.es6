@@ -35,9 +35,6 @@ function initialize() {
         function () {
             markers = handler.addMarkers(mapData);
             buildMapMarkers(mapData);
-            console.log(mapData);
-            //handler.bounds.extendWith(markers);
-            //handler.map.centerOn(markers);
         });
 }
 google.maps.event.addDomListener(window, 'load', initialize);
