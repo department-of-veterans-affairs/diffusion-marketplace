@@ -11,7 +11,30 @@
 #dm-va-facilities-adoption-index {
   .usa-table--borderless {
     th, td {
-      background-color:$dm-color-white;
+      background-color: $dm-color-white;
     }
   }
 }
+
+  .fake-link {
+    color: $dm-color-black;
+    cursor: pointer;
+  }
+
+  .facility-phone-number {
+    text-decoration: none;
+    color: $dm-color-blue-50v;
+  }
+
+  .facility-category-select {
+    width: 309px;
+    height: 40px;
+    float: right;
+  }
+
+  .facility-search-field {
+    width: 641px;
+    height: 37px;
+    float: left;
+  }
+

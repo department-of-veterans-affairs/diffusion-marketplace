@@ -1243,39 +1243,7 @@ tr.border_bottom td {
     }
   }
 }
-
-.fake-link{
-  color: $dm-color-black;
-  cursor: pointer;
-}
-
-#map {
-  height: 275px;
-  /* The height is 400 pixels */
-  width: 472px;
-  /* The width is the width of the web page */
-  margin-left: 500px;
-}
-
-.facility-phone-number{
-  text-decoration: none;
-  color: $dm-color-blue-50v;
-}
-.facility-category-select{
-  width: 309px;
-  height: 40px;
-  float: right;
-}
-.facility-search-field{
-  margin-top: 12px;
-  width: 641px;
-  height: 40px;
-  float: left;
-}
-
 .text-center {text-align: center;}
 
-.facility-summary-line-height{
-    line-height: 1.4;
-}
+
 

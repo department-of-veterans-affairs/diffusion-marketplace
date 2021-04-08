@@ -4,10 +4,6 @@ class VaFacility < ApplicationRecord
 
   belongs_to :visn
 
-  def self.get_practices_created_by_facility(station_number)
-    Practice.where(published: true).joins(:practice_origin_facilities).where(practice_origin_facilities: {facility_id: station_number}).to_a
-  end
-
   def self.get_total_adoptions_for_each_practice(va_facilities)
     total_adoptions = []
     va_facilities.each do |f|
@@ -59,9 +55,6 @@ class VaFacility < ApplicationRecord
     ret_val
     end
 
-  def self.get_categories
-    Category.order_by_name
-  end
 
   def self.get_all_facilities(order_by = "facility")
     sql = "select va.id, va.visn_id, va.slug, va.station_number, va.common_name, va.official_station_name, va.fy17_parent_station_complexity_level, vi.number as visn_number, "
@@ -82,10 +75,6 @@ class VaFacility < ApplicationRecord
       sql += "order by adoptions;"
     end
     ActiveRecord::Base.connection.exec_query(sql)
-  end
-
-  def self.get_visns
-    Visn.order_by_number
   end
 
   def self.get_types
