@@ -8,7 +8,7 @@ class VaFacilitiesController < ApplicationController
       @facilities = VaFacility.get_all_facilities
     end
 
-    @visns = VaFacility.get_visns
+    @visns = Visn.order_by_number
     @types = []
     all_types = VaFacility.get_types
     all_types.each do |t|
@@ -41,14 +41,13 @@ class VaFacilitiesController < ApplicationController
 
   def show
     @num_practice_recs = params[:practices] || "3"
-    @created_practices = VaFacility.get_practices_created_by_facility(@va_facility.station_number)
+    @created_practices = Practice.get_practices_created_by_facility(@va_facility.station_number)
     @practice_results_count = @created_practices.count
-
     @created_practices = @created_practices.take(@num_practice_recs.to_i)
     @created_practices_count = @created_practices.count
-    @adoptions = VaFacility.get_adoptions_by_facility(@va_facility.station_number)
+    @adoptions = DiffusionHistory.get_adoptions_by_facility(@va_facility.station_number)
     @adoptions_count = @adoptions.count
-    @categories = VaFacility.get_categories
+    @categories = Category.order_by_name
     #google maps implementation
     @va_facility_marker = Gmaps4rails.build_markers(@va_facility) do |facility, marker|
 
