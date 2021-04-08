@@ -1261,6 +1261,17 @@ ActiveRecord::Schema.define(version: 2021_03_18_224819) do
     t.index ["practice_id"], name: "index_video_files_on_practice_id"
   end
 
+  create_table "visn_liaisons", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "email"
+    t.boolean "primary", default: false
+    t.bigint "visn_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["visn_id"], name: "index_visn_liaisons_on_visn_id"
+  end
+
   create_table "visns", force: :cascade do |t|
     t.string "name"
     t.integer "number"
@@ -1377,4 +1388,5 @@ ActiveRecord::Schema.define(version: 2021_03_18_224819) do
   add_foreign_key "va_secretary_priority_practices", "practices"
   add_foreign_key "va_secretary_priority_practices", "va_secretary_priorities"
   add_foreign_key "video_files", "practices"
+  add_foreign_key "visn_liaisons", "visns"
 end

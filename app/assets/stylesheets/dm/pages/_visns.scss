@@ -1,23 +1,27 @@
 @import '../variables/colors';
 
-#visns-index {
-  .visn-modal-link, .va-facility-index-link {
-    text-decoration: none !important;
-    color: $dm-color-blue-50v;
+.visn-modal-link, .va-facility-index-link, .visn-liaison-email, .visn-va-facility-marker-modal-link {
+  text-decoration: none !important;
+  color: $dm-color-blue-50v;
 
-    &:hover {
-      color: $dm-color-blue-70v !important;
-    }
-
-    &:active {
-      color: $dm-color-blue-80v !important;
-    }
-
-    &:visited {
-      color: $dm-color-blue-50v;
-    }
+  &:hover {
+    color: $dm-color-blue-70v !important;
   }
 
+  &:active {
+    color: $dm-color-blue-80v !important;
+  }
+
+  &:visited {
+    color: $dm-color-blue-50v;
+  }
+}
+
+.visn-marker-container, .visn-va-facility-marker-container {
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+#visns-index {
   .visn-card-link {
     text-decoration: none;
 
@@ -52,8 +56,10 @@
       }
     }
   }
+}
 
-  .visn-marker-container {
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+#visns-show {
+  .visn-liaison-info {
+    border-radius: 10px;
   }
 }

@@ -309,19 +309,51 @@
       "zip_code": "01730",
       "latitude": "42.507380",
       "longitude": "-71.275534",
-      "phone_number": "781-687-4821"
+      "phone_number": "781-687-4821",
+      "liaisons": [
+        {
+          "id": 1,
+          "first_name": "Sharon",
+          "last_name": "Croteau",
+          "email": "sharon.croteau2@va.gov",
+          "primary": true
+        },
+        {
+          "id": 2,
+          "first_name": "Lisa",
+          "last_name": "Doyon",
+          "email": "lisa.doyon@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 2,
       "number": "VISN-2",
       "name": "New York/New Jersey VA Health Care Network",
-      "street_address": "130 W. Kingsbridge Road, Building 16",
+      "street_address": "130 West Kingsbridge Road, Building 16",
       "city": "Bronx",
       "state": "NY",
       "zip_code": "10468",
       "latitude": "40.867622",
       "longitude": "-73.906372",
-      "phone_number": "718-741-4134"
+      "phone_number": "718-741-4134",
+      "liaisons": [
+        {
+          "id": 3,
+          "first_name": "Cranston",
+          "last_name": "Darris",
+          "email": "cranston.darris@va.gov",
+          "primary": true
+        },
+        {
+          "id": 4,
+          "first_name": "Linda",
+          "last_name": "Mock",
+          "email": "linda.mock@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 3,
@@ -333,7 +365,23 @@
       "zip_code": "15215",
       "latitude": "40.494436",
       "longitude": "-79.888479",
-      "phone_number": "412-822-3316"
+      "phone_number": "412-822-3316",
+      "liaisons": [
+        {
+          "id": 5,
+          "first_name": "Michael",
+          "last_name": "Ricci",
+          "email": "michael.ricci2@va.gov",
+          "primary": true
+        },
+        {
+          "id": 6,
+          "first_name": "Shannon",
+          "last_name": "Reichel",
+          "email": "shannon.reichel@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 4,
@@ -345,7 +393,23 @@
       "zip_code": "21090",
       "latitude": "39.205863",
       "longitude": "-76.672969",
-      "phone_number": "410-691-1131"
+      "phone_number": "410-691-1131",
+      "liaisons": [
+        {
+          "id": 7,
+          "first_name": "Ivy",
+          "last_name": "Pacis",
+          "email": "ivy.pacis@va.gov",
+          "primary": true
+        },
+        {
+          "id": 8,
+          "first_name": "Michael",
+          "last_name": "Towstopiat",
+          "email": "michael.towstopiat@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 5,
@@ -357,7 +421,23 @@
       "zip_code": "27707",
       "latitude": "35.963796",
       "longitude": "-78.960694",
-      "phone_number": "919-956-5541"
+      "phone_number": "919-956-5541",
+      "liaisons": [
+        {
+          "id": 9,
+          "first_name": "Catherine",
+          "last_name": "McCrimmon",
+          "email": "catherine.mccrimmon@va.gov",
+          "primary": true
+        },
+        {
+          "id": 10,
+          "first_name": "Matt",
+          "last_name": "Grabner",
+          "email": "matthew.grabner@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 6,
@@ -369,7 +449,23 @@
       "zip_code": "30096",
       "latitude": "33.945946",
       "longitude": "-84.128073",
-      "phone_number": "678-924-5700"
+      "phone_number": "678-924-5700",
+      "liaisons": [
+        {
+          "id": 11,
+          "first_name": "Janelle",
+          "last_name": "Seenath",
+          "email": "janelle.seenath@va.gov",
+          "primary": true
+        },
+        {
+          "id": 12,
+          "first_name": "Michael",
+          "last_name": "Parrinello",
+          "email": "michael.parrinello@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 7,
@@ -381,7 +477,23 @@
       "zip_code": "33716",
       "latitude": "27.892280",
       "longitude": "-82.656235",
-      "phone_number": "727-575-8069"
+      "phone_number": "727-575-8069",
+      "liaisons": [
+        {
+          "id": 13,
+          "first_name": "Ashley",
+          "last_name": "Benedict",
+          "email": "ashley.benedict@va.gov",
+          "primary": true
+        },
+        {
+          "id": 14,
+          "first_name": "Rebecca",
+          "last_name": "Tiffault",
+          "email": "rebecca.tiffault@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 8,
@@ -393,7 +505,23 @@
       "zip_code": "37203",
       "latitude": "36.152716",
       "longitude": "-86.796089",
-      "phone_number": "615-695-2200"
+      "phone_number": "615-695-2200",
+      "liaisons": [
+        {
+          "id": 15,
+          "first_name": "Lori",
+          "last_name": "Hagen",
+          "email": "lori.hagen@va.gov",
+          "primary": true
+        },
+        {
+          "id": 16,
+          "first_name": "Bonnie",
+          "last_name": "Haupt",
+          "email": "bonnie.haupt@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 9,
@@ -405,7 +533,23 @@
       "zip_code": "45249",
       "latitude": "39.275373",
       "longitude": "-84.347703",
-      "phone_number": "513-247-4610"
+      "phone_number": "513-247-4610",
+      "liaisons": [
+        {
+          "id": 17,
+          "first_name": "James",
+          "last_name": "Dusenberry",
+          "email": "james.dusenberry@va.gov",
+          "primary": true
+        },
+        {
+          "id": 18,
+          "first_name": "Lori",
+          "last_name": "Deleeuw",
+          "email": "lori.deleeuw@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 10,
@@ -417,7 +561,23 @@
       "zip_code": "60154",
       "latitude": "41.846910",
       "longitude": "-87.905130",
-      "phone_number": "708-492-3900"
+      "phone_number": "708-492-3900",
+      "liaisons": [
+        {
+          "id": 19,
+          "first_name": "Kelly",
+          "last_name": "Mikulecky",
+          "email": "kelly.mikulecky@va.gov",
+          "primary": true
+        },
+        {
+          "id": 20,
+          "first_name": "Rhonda",
+          "last_name": "Stark",
+          "email": "rhonda.stark@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 11,
@@ -429,7 +589,16 @@
       "zip_code": "64106",
       "latitude": "39.099796",
       "longitude": "-94.581732",
-      "phone_number": "816-701-3002"
+      "phone_number": "816-701-3002",
+      "liaisons": [
+        {
+          "id": 21,
+          "first_name": "Robert",
+          "last_name": "Libberton",
+          "email": "robert.libberton@va.gov",
+          "primary": true
+        }
+      ]
     },
     {
       "id": 12,
@@ -441,7 +610,23 @@
       "zip_code": "39157",
       "latitude": "32.405493",
       "longitude": "-90.125014",
-      "phone_number": "601-206-6900"
+      "phone_number": "601-206-6900",
+      "liaisons": [
+        {
+          "id": 22,
+          "first_name": "Melody",
+          "last_name": "Link",
+          "email": "melody.link@va.gov",
+          "primary": true
+        },
+        {
+          "id": 23,
+          "first_name": "Denarieka",
+          "last_name": "Gaines",
+          "email": "denarieka.gaines@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 13,
@@ -453,7 +638,16 @@
       "zip_code": "76006",
       "latitude": "32.762672",
       "longitude": "-97.068927",
-      "phone_number": "817-652-1111"
+      "phone_number": "817-652-1111",
+      "liaisons": [
+        {
+          "id": 24,
+          "first_name": "Daren",
+          "last_name": "Cortez",
+          "email": "daren.cortez@va.gov",
+          "primary": true
+        }
+      ]
     },
     {
       "id": 14,
@@ -465,7 +659,23 @@
       "zip_code": "80246",
       "latitude": "39.696223",
       "longitude": "-104.938850",
-      "phone_number": "303-202-8165"
+      "phone_number": "303-202-8165",
+      "liaisons": [
+        {
+          "id": 25,
+          "first_name": "Erica",
+          "last_name": "Deveau",
+          "email": "erica.deveau2@va.gov",
+          "primary": true
+        },
+        {
+          "id": 26,
+          "first_name": "Kari",
+          "last_name": "Campiotti",
+          "email": "kari.campiotti@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 15,
@@ -477,7 +687,16 @@
       "zip_code": "98661",
       "latitude": "45.639180",
       "longitude": "-122.658137",
-      "phone_number": "360-619-5925"
+      "phone_number": "360-619-5925",
+      "liaisons": [
+        {
+          "id": 27,
+          "first_name": "David",
+          "last_name": "Terrini",
+          "email": "david.terrini@va.gov",
+          "primary": true
+        }
+      ]
     },
     {
       "id": 16,
@@ -489,7 +708,23 @@
       "zip_code": "94523",
       "latitude": "37.960893",
       "longitude": "-122.070705",
-      "phone_number": "916-923-4530"
+      "phone_number": "916-923-4530",
+      "liaisons": [
+        {
+          "id": 28,
+          "first_name": "Katie",
+          "last_name": "Mosby",
+          "email": "katie.mosby@va.gov",
+          "primary": true
+        },
+        {
+          "id": 29,
+          "first_name": "Michael",
+          "last_name": "McCann",
+          "email": "michael.mccann@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
       "id": 17,
@@ -501,7 +736,16 @@
       "zip_code": "90802",
       "latitude": "33.766677",
       "longitude": "-118.200375",
-      "phone_number": "562-826-5963"
+      "phone_number": "562-826-5963",
+      "liaisons": [
+        {
+          "id": 30,
+          "first_name": "Scott",
+          "last_name": "McRoberts",
+          "email": "scott.mcroberts@va.gov",
+          "primary": true
+        }
+      ]
     },
     {
       "id": 18,
@@ -513,7 +757,23 @@
       "zip_code": "55121",
       "latitude": "44.855145",
       "longitude": "-93.130460",
-      "phone_number": "651-405-5600"
+      "phone_number": "651-405-5600",
+      "liaisons": [
+        {
+          "id": 31,
+          "first_name": "Carrie",
+          "last_name": "Henderson",
+          "email": "carrie.henderson1@va.gov",
+          "primary": true
+        },
+        {
+          "id": 32,
+          "first_name": "Michelle",
+          "last_name": "Fleming",
+          "email": "michelle.fleming@va.gov",
+          "primary": false
+        }
+      ]
     }
   ]
 }

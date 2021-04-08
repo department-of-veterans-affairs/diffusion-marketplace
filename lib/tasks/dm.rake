@@ -30,6 +30,7 @@ namespace :dm do
     Rake::Task['practice_editors:add_practice_owners_to_practice_editors'].execute
     Rake::Task['visns:create_visns_and_transfer_data'].execute
     Rake::Task['va_facilities:create_va_facilities_and_transfer_data'].execute
+    Rake::Task['visns:create_visn_liaisons_and_transfer_data'].execute
   end
 
   # rails dm:reset_up
