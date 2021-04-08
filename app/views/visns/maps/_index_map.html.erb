@@ -1,0 +1,16 @@
+<% if ENV['GOOGLE_API_KEY'].present? %>
+  <% provide :head_tags do %>
+    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+      var visnMapData = <%= raw @visn_markers.to_json %>;
+      var defaultVisnVaFacilityMarkerIcon = '<%= image_path('visn-va-facility-map-marker-default.svg') %>';
+      var hoverVisnVaFacilityMarkerIcon = '<%= image_path('visn-va-facility-map-marker-hover.svg') %>';
+      var selectedVisnVaFacilityMarkerIcon = '<%= image_path('visn-va-facility-map-marker-selected.svg') %>';
+    <% end %>
+    <%= javascript_include_tag 'visns/maps', 'data-turbolinks-track': 'reload' %>
+  <% end %>
+  <section class="margin-bottom-0 padding-0">
+    <div class="width-full position-relative grid-row margin-bottom-2">
+      <div id="visns-index-map" style="width: 100%; height: 462px"></div>
+    </div>
+  </section>
+<% end %>
