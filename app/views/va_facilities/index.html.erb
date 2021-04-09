@@ -27,7 +27,11 @@
           </div>
         </div>
         <div class="margin-bottom-3">
-          Displaying <%= @filtered_facilities.count %> of <%= @results_count %> results:
+          <% if @filtered_facilities.count > 0 %>
+            Displaying <%= @filtered_facilities.count %> of <%= @results_count %> results:
+          <% else %>
+            No results
+          <% end %>
         </div>
         <% if @results_count > 0 %>
           <div id="directory_table">

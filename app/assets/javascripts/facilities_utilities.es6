@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    const curUrl = window.location.href
     let sortTypes = ["facility", "common_name", "visn", "type", "practices_created", "adoptions"];
     for(let i=0; i < sortTypes.length; i++){
         let eleId = 'toggle_by_' +  sortTypes[i];
@@ -30,21 +31,18 @@ $(document).ready(function(){
         //set VISN and TYPE filters back to - Select
         document.getElementById('facility_directory_visn_select').value = '- Select -';
         document.getElementById('facility_type_select').value = '- Select -';
-        let curUrl = window.location.href;
         let facilityId = e.target.options[e.target.selectedIndex].value;
-        curUrl = stripQsParams(curUrl);
-        let newUrl = `${curUrl}?facility=${facilityId}`;
+        let strippedUrl = stripQsParams(curUrl);
+        let newUrl = `${strippedUrl}?facility=${facilityId}`;
         window.location.href = newUrl;
     });
 
     $("#facility_directory_visn_select").change (function(e) {
-        //document.getElementById('facility_directory_select').value = '';
         let type =  document.getElementById('facility_type_select').value;
-        let curUrl = window.location.href;
         let visnId = e.target.options[e.target.selectedIndex].value;
         let isDefault = visnId.length === 0
-        curUrl = stripQsParams(curUrl);
-        let newUrl = curUrl;
+        let strippedUrl = stripQsParams(curUrl);
+        let newUrl = strippedUrl;
         if(!isDefault){
             newUrl = `?visn=${visnId}`;
         }
@@ -56,13 +54,11 @@ $(document).ready(function(){
     });
 
     $("#facility_type_select").change (function(e) {
-        //document.getElementById('facility_directory_select').value = '';
-        var curUrl = window.location.href;
         let type = this.options[e.target.selectedIndex].text;
         let isDefault = type === "- Select -"
         let visnId =  document.getElementById('facility_directory_visn_select').value;
-        curUrl = stripQsParams(curUrl);
-        let newUrl = curUrl;
+        let strippedUrl = stripQsParams(curUrl);
+        let newUrl = strippedUrl;
         if (!isDefault){
             newUrl = `?type=${type}`;
         }
@@ -75,14 +71,13 @@ $(document).ready(function(){
 
     function stripQsParams(s){
         if (s.includes("?")){
-            var pos1 = s.indexOf("?");
+            let pos1 = s.indexOf("?");
             return s.substring(0, pos1);
         }
         return s;
     }
 
     function addSortParams(){
-        let curUrl = window.location.href;
         let paramAsc = getParameterByName("asc", newUrl)
         let newUrl = removeParam("asc", curUrl);
         newUrl = removeParam("sortby", newUrl);
@@ -105,7 +100,7 @@ $(document).ready(function(){
             queryString = (sourceURL.indexOf("?") !== -1) ? sourceURL.split("?")[1] : "";
         if (queryString !== "") {
             params_arr = queryString.split("&");
-            for (var i = params_arr.length - 1; i >= 0; i -= 1) {
+            for (let i = params_arr.length - 1; i >= 0; i -= 1) {
                 param = params_arr[i].split("=")[0];
                 if (param === key) {
                     params_arr.splice(i, 1);
@@ -129,7 +124,6 @@ $(document).ready(function(){
         let btn = document.getElementById("btn_facility_directory_load_more");
         let numRecs = parseInt(btn.getAttribute("num_recs"));
         numRecs += 20;
-        let curUrl = window.location.href;
         let paramMore = getParameterByName("more", newUrl)
         let newUrl = removeParam("more", curUrl);
         newUrl.includes("?") ? newUrl += "&" : newUrl += "?";
@@ -141,7 +135,6 @@ $(document).ready(function(){
         let btn = document.getElementById("btn_facility_show_page_load_more");
         let numPracticeRecs = parseInt(btn.getAttribute("num_practice_recs"));
         numPracticeRecs += 3;
-        let curUrl = window.location.href;
         let paramMore = getParameterByName("more", newUrl)
         let newUrl = removeParam("more", curUrl);
         newUrl.includes("?") ? newUrl += "&" : newUrl += "?";
