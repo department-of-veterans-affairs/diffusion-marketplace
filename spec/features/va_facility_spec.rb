@@ -338,6 +338,12 @@ describe 'VA facility pages', type: :feature do
       expect(page).to have_content("first facility")
       expect(page).to have_content('last facility')
       expect(find_all('.usa-select').first.value).to eq ''
+    end
+  end
+
+  describe 'index page complexity filter' do
+    it 'should filter by complexity type' do
+      visit '/facilities'
       select "1a-High Complexity", :from => "facility_type_select"
       section = find(:css, '#directory_table')
       expect(section).to have_content('1A')
