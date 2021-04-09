@@ -8,6 +8,8 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
     login_as(@admin, :scope => :user, :run_callbacks => false)
     page_group = PageGroup.create(name: 'competitions', slug: 'competitions', description: 'competitions page')
     Page.create(page_group: page_group, title: 'Shark Tank', description: 'Shark Tank page', slug: 'shark-tank', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
+    page_group_2 = PageGroup.create(name: 'covid-19', slug: 'covid-19', description: 'covid-19 page')
+    Page.create(page_group: page_group_2, title: 'Vaccine Acceptance', description: 'Vaccine Acceptance page', slug: 'vaccine-acceptance', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
     visit practice_overview_path(@practice)
   end
 
@@ -32,6 +34,8 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
         expect(page).to have_link(href: '/diffusion-map')
         expect(page).to have_content('Shark Tank')
         expect(page).to have_link(href: '/competitions/shark-tank')
+        expect(page).to have_content('Vaccine Acceptance')
+        expect(page).to have_link(href: '/covid-19/vaccine-acceptance')
         expect(page).to have_content('Your profile')
       end
     end
@@ -47,6 +51,13 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       it 'should redirect to shark tank page' do
         click_on 'Shark Tank'
         expect(page).to have_current_path('/competitions/shark-tank')
+      end
+    end
+
+    context 'clicking on the Vaccine Acceptance link' do
+      it 'should redirect to covid-19 Vaccine Acceptance page' do
+        click_on 'Vaccine Acceptance'
+        expect(page).to have_current_path('/covid-19/vaccine-acceptance')
       end
     end
 
