@@ -38,7 +38,6 @@ $(document).ready(function(){
     });
 
     $("#facility_directory_visn_select").change (function(e) {
-        //document.getElementById('facility_directory_select').value = '';
         let type =  document.getElementById('facility_type_select').value;
         let curUrl = window.location.href;
         let visnId = e.target.options[e.target.selectedIndex].value;
@@ -56,8 +55,7 @@ $(document).ready(function(){
     });
 
     $("#facility_type_select").change (function(e) {
-        //document.getElementById('facility_directory_select').value = '';
-        var curUrl = window.location.href;
+        let curUrl = window.location.href;
         let type = this.options[e.target.selectedIndex].text;
         let isDefault = type === "- Select -"
         let visnId =  document.getElementById('facility_directory_visn_select').value;
@@ -75,7 +73,7 @@ $(document).ready(function(){
 
     function stripQsParams(s){
         if (s.includes("?")){
-            var pos1 = s.indexOf("?");
+            let pos1 = s.indexOf("?");
             return s.substring(0, pos1);
         }
         return s;
@@ -105,7 +103,7 @@ $(document).ready(function(){
             queryString = (sourceURL.indexOf("?") !== -1) ? sourceURL.split("?")[1] : "";
         if (queryString !== "") {
             params_arr = queryString.split("&");
-            for (var i = params_arr.length - 1; i >= 0; i -= 1) {
+            for (let i = params_arr.length - 1; i >= 0; i -= 1) {
                 param = params_arr[i].split("=")[0];
                 if (param === key) {
                     params_arr.splice(i, 1);
