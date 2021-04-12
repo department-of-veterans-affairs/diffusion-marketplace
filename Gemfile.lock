@@ -29,10 +29,10 @@ GIT
 
 GIT
   remote: https://github.com/agilesix/uswds-rails.git
-  revision: 3ab4e30ba00173a8d2f6eee6a6e18a32144760ab
-  branch: 2.8.1
+  revision: 4d2c706b3fdc50124ea9089d52e64c69846edbd9
+  branch: 2.11.1
   specs:
-    uswds-rails (2.8.1)
+    uswds-rails (2.11.1)
       bourbon (= 4.2.7)
       neat (= 1.8)
       rails-assets-normalize-css (= 3.0.3)
@@ -121,6 +121,8 @@ GEM
     arbre (1.2.1)
       activesupport (>= 3.0.0)
     arel (9.0.0)
+    autoprefixer-rails (10.0.1.0)
+      execjs
     aws-eventstream (1.0.3)
     aws-partitions (1.202.0)
     aws-sdk-core (3.63.0)
@@ -567,6 +569,7 @@ DEPENDENCIES
   acts_as_list
   acts_as_votable
   ahoy_matey
+  autoprefixer-rails
   aws-sdk-s3
   axe-matchers
   babel-transpiler

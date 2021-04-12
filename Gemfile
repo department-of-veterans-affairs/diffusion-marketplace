@@ -102,7 +102,7 @@ gem 'ffi', '1.11.1'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-gem 'uswds-rails', github: 'agilesix/uswds-rails', branch: '2.8.1'
+gem 'uswds-rails', github: 'agilesix/uswds-rails', branch: '2.11.1'
 
 gem 'activerecord-nulldb-adapter'
 gem 'acts_as_list'
@@ -152,3 +152,5 @@ gem 'gmaps4rails', github: 'agilesix/Google-Maps-for-Rails', ref: 'master'
 gem 'lodash-rails'
 
 gem 'route_downcaser'
+
+gem "autoprefixer-rails"
