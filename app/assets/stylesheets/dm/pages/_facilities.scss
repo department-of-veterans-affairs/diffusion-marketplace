@@ -9,8 +9,11 @@
 }
 
 .fake-link{
-  color: $dm-color-black;
-  cursor: pointer;
+  color: $dm-color-black !important;
+  font-weight: bold !important;
+  outline-style: none !important;
+  background-color: transparent !important;
+  padding: 0 !important;
 }
 
 .facility-phone-number{
