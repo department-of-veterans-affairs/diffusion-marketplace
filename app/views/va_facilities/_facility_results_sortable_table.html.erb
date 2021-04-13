@@ -1,0 +1,34 @@
+<div id="directory_table" class="usa-table-container--scrollable">
+  <table class="usa-table grid-col-12">
+    <thead>
+    <tr>
+      <th data-sortable scope="col" role="columnheader" aria-sort="descending">
+        Facility
+      </th>
+      <th data-sortable scope="col" role="columnheader" aria-sort="descending">
+        VISN
+      </th>
+      <th data-sortable scope="col" role="columnheader">
+        Complexity <img src="/assets/question_tooltip.svg" title="Complexity definitions 1&#10;&#10;Complexity Definition 2&#10;&#10;Complexity definition 3" class="usa-tooltip" data-position="bottom"/>
+      </th>
+      <th data-sortable scope="col" role="columnheader">
+        Created
+      </th>
+      <th data-sortable scope="col" role="columnheader">
+        Adopted
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @filtered_facilities.each do |facility| %>
+      <tr>
+        <td class="grid-col-4"><a class="dm-internal-link" href='/facilities/<%= facility["slug"] %>'><%= facility["official_station_name"] %> (<%= facility["common_name"] %>)</a></td>
+        <td class="grid-col-2"><a class="dm-internal-link" href='/visns/<%= facility["visn_number"] %>'><%= facility["visn_number"] %></a></td>
+        <td class="grid-col-2"><%= facility["fy17_parent_station_complexity_level"][0..1].upcase %></td>
+        <td class="grid-col-2"><%= facility["practices_created"] %></td>
+        <td class="grid-col-2"><%= facility["adoptions"] %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
