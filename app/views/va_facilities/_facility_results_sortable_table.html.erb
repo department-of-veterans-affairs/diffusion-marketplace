@@ -22,11 +22,11 @@
     <tbody>
     <% @filtered_facilities.each do |facility| %>
       <tr>
-        <td class="grid-col-4"><a class="dm-internal-link" href='/facilities/<%= facility["slug"] %>'><%= facility["official_station_name"] %> (<%= facility["common_name"] %>)</a></td>
-        <td class="grid-col-2"><a class="dm-internal-link" href='/visns/<%= facility["visn_number"] %>'><%= facility["visn_number"] %></a></td>
-        <td class="grid-col-2"><%= facility["fy17_parent_station_complexity_level"][0..1].upcase %></td>
-        <td class="grid-col-2"><%= facility["practices_created"] %></td>
-        <td class="grid-col-2"><%= facility["adoptions"] %></td>
+        <th scope="row" role="rowheader" class="grid-col-4"><a class="dm-internal-link" href='/facilities/<%= facility["slug"] %>'><%= facility["official_station_name"] %> (<%= facility["common_name"] %>)</a></th>
+        <td data-sort-value="<%= facility["visn_number"] %>" class="grid-col-2"><a class="dm-internal-link" href='/visns/<%= facility["visn_number"] %>'><%= facility["visn_number"] %></a></td>
+        <td data-sort-value="<%= facility["fy17_parent_station_complexity_level"][0..1].upcase %>" class="grid-col-2"><%= facility["fy17_parent_station_complexity_level"][0..1].upcase %></td>
+        <td data-sort-value="<%= facility["practices_created"] %>" class="grid-col-2"><%= facility["practices_created"] %></td>
+        <td data-sort-value="<%= facility["adoptions"] %>" class="grid-col-2"><%= facility["adoptions"] %></td>
       </tr>
     <% end %>
     </tbody>
