@@ -10,6 +10,10 @@
     display: flex;
     flex-wrap: wrap;
     margin-top: 0rem;
+
+    .usa-accordion__button.usa-nav__link {
+      padding: 0.5rem 1rem;
+    }
   }
 
   .usa-accordion, .usa-nav__submenu, .usa-nav__submenu-list {
@@ -31,9 +35,22 @@
 
     .usa-nav__secondary {
       min-width: 40%;
-      justify-content: flex-end;
+      flex-direction: unset;
       margin-top: 1rem;
-      flex-wrap: nowrap;
+
+      &.dm-signed-out-nav-secondary {
+        min-width: 35%;
+      }
+
+      .usa-nav__primary-item {
+        position: absolute;
+        top: 0;
+        right: -0.625rem;
+      }
+
+      .usa-accordion__button.usa-nav__link {
+        padding: 1rem 1rem;
+      }
     }
 
     .dm-nav-header-profile {
@@ -43,10 +60,6 @@
 
       &.dm-nav-header-profile-sign-in {
         max-width: 5.75rem;
-      }
-
-      .dm-nav-header-profile-link {
-        margin-left: auto;
       }
 
       #dm-user-profile-options {
