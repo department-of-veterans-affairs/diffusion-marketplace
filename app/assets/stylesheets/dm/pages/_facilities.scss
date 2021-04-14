@@ -45,3 +45,24 @@
     float: left;
   }
 
+.divTable
+{
+  display:  table;
+  width:auto;
+  //background-color:#eee;
+  border:1px solid  #666666;
+  border-spacing:5px;
+}
+
+.divRow
+{
+  display:table-row;
+}
+
+.divCell
+{
+  float:left;/*fix for  buggy browsers*/
+  display:table-column;
+  //background-color:#ccc;
+}
+
