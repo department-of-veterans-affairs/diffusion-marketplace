@@ -35,20 +35,20 @@ class VaFacility < ApplicationRecord
   end
 
   def self.rewrite_practices_adopted_at_this_facility_filtered_by_category(adoptions_at_facility, total_adoptions_for_practice)
-    ret_val = "<table class='usa-table usa-table--borderless grid-col-12 margin-top-2'>"
-    ret_val += "<thead><th>Practice name</th><th>Status "
-    ret_val += "<span class='usa-tooltip'><img src='/assets/question_tooltip.svg' alt:'status' class='usa-tooltip__trigger' title='In-progress: Facilities that have started but not completed adopting the practice.&#10;&#10;Successful: Facilities that have met adoption goals and implemented the practice.&#10;&#10;Unsuccessful: Facilities that started but stopped working towards adoption.' data-position='bottom'/></span>"
-    ret_val += "</th><th>Start date</th><th>Total VA adoptions &#x25BC;</th></thead><tbody>"
+    ret_val = "<table class='usa-table grid-col-12 margin-top-2'>"
+    ret_val += "<thead><tr><th data-sortable scope='col' role='columnheader' aria-sort='descending'>Practice name</th>"
+    ret_val += "<th data-sortable scope='col' role='columnheader'>Status "
+    ret_val += "<span class='usa-tooltip'><img src='/assets/question_tooltip.svg' alt:'status' class='usa-tooltip__trigger' title='In-progress: Facilities that have started but not completed adopting the practice.&#10;&#10;Successful: Facilities that have met adoption goals and implemented the practice.&#10;&#10;Unsuccessful: Facilities that started but stopped working towards adoption.' data-position='bottom'/></span></th>"
+    ret_val += "<th data-sortable scope='col' role='columnheader'>Start date</th>"
+    ret_val += "<th data-sortable scope='col' role='columnheader'>Total VA adoptions</th></tr></thead><tbody>"
     if adoptions_at_facility.count > 0
-      ctr = 0
         adoptions_at_facility.each do |ad|
           ret_val += "<tr>"
-          ret_val += "<td>" + ad["name"] + "</td>"
-          ret_val += "<td>" + ad["status"] + "</td>"
-          ret_val += "<td>" + ad["start_time"].to_s + "</td>"
-          ret_val += "<td>" + ad["adoptions"].to_s + "</td>"
+          ret_val += "<th scope='row' role='rowheader'>" + ad["name"] + "</th>"
+          ret_val += "<td data-sort-value=" + ad["status"] +  ">" + ad["status"] + "</td>"
+          ret_val += "<td data-sort-value=" + ad["start_time"].to_s +  ">" + ad["start_time"].to_s + "</td>"
+          ret_val += "<td data-sort-value=" + ad["adoptions"].to_s +  ">" + ad["adoptions"].to_s + "</td>"
           ret_val += "</tr>"
-          ctr += 1
         end
     end
     ret_val += "</tbody></table>"
