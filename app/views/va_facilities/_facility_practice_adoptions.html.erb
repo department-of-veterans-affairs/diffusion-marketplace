@@ -1,19 +1,19 @@
 <section id="dm-va-facilities-adoption-index">
-<h1 class="font-sans-2xl margin-top-5 margin-bottom-3">
-  Practices adopted at this facility
-</h1>
-<div class="grid-col-12">
-  <div class="usa-search margin-bottom-2 margin-top-2 facility-search-field">
-    <div role="search" class="flex-column">
-      <label for="dm-practice-search-field"></label>
-      <div id="search-bar-container" class="display-flex">
-        <input class="usa-input" id="dm-practice-search-field" title="Type at least three characters to search." autocomplete="off" type="search" name="search">
-        <button id="dm-practice-search-button" class="usa-button" type="submit" name="search-button">
-          <span class="usa-search__submit-text text-bold">Search</span>
-        </button>
+  <h1 class="font-sans-2xl margin-top-5 margin-bottom-3">
+    Practices adopted at this facility
+  </h1>
+  <div style="width: 100%; overflow: hidden;">
+    <div class="usa-search margin-bottom-2 margin-top-2 facility-search-field">
+      <div role="search" class="flex-column">
+        <label for="dm-practice-search-field"></label>
+        <div id="search-bar-container" class="display-flex">
+          <input class="usa-input" id="dm-adopted-practices-search-field" title="Type at least three characters to search." autocomplete="off" type="search" name="search">
+          <button id="dm-adopted-practices-search-button" class="usa-button" type="submit" name="search-button">
+            <span class="usa-search__submit-text text-bold">Search</span>
+          </button>
+        </div>
       </div>
     </div>
-  </div>
     <div class="facility-category-select margin-bottom-2 margin-top-1">
       <%= render partial: 'va_facilities/facility_categories_combo_box', locals: {facility_category_selector: 'facility_category_select_adoptions'} %>
     </div>
@@ -22,25 +22,25 @@
     <div id="practices_adopted_at_facility_count" class="usa-search margin-bottom-2 facility-search-field">
       <%= @adoptions_at_facility.count %> results:
     </div>
-    <div id="va_facility_adoption_results" class="grid-col-12">
-      <table class="usa-table usa-table--borderless grid-col-12">
+    <div id="va_facility_adoption_results" class="usa-table-container--scrollable">
+      <table class="usa-table grid-col-12">
         <thead>
-          <th>Practice name</th>
-          <th>Status <img src="/assets/question_tooltip.svg" title="In-progress: Facilities that have started but not completed adopting the practice.&#10;&#10;Successful: Facilities that have met adoption goals and implemented the practice.&#10;&#10;Unsuccessful: Facilities that started but stopped working towards adoption." class="usa-tooltip" data-position="bottom"/></th>
-          <th>Start date</th>
-          <th>Total VA adoptions &#x25BC;</th>
+        <th data-sortable scope="col" role="columnheader" aria-sorting="descending">Practice name</th>
+        <th data-sortable scope="col" role="columnheader">Status <img src="/assets/question_tooltip.svg" title="In-progress: Facilities that have started but not completed adopting the practice.&#10;&#10;Successful: Facilities that have met adoption goals and implemented the practice.&#10;&#10;Unsuccessful: Facilities that started but stopped working towards adoption." class="usa-tooltip" data-position="bottom"/></th>
+        <th data-sortable scope="col" role="columnheader">Start date</th>
+        <th data-sortable scope="col" role="columnheader">Total VA adoptions</th>
         </thead>
         <tbody>
-            <% ctr = 0 %>
-          <% @adoptions_at_facility.each do |ad| %>
-            <tr>
-              <td><%=ad["name"] %></td>
-              <td><%=ad["status"] %></td>
-              <td><%=ad["start_time"] %></td>
-              <td><%= ad["adoptions"] %></td>
-            </tr>
+        <% ctr = 0 %>
+        <% @adoptions_at_facility.each do |ad| %>
+          <tr>
+            <th scope="row" role="rowheader"><%=ad["name"] %></th>
+            <td data-sort-value="<%=ad["status"] %>"><%=ad["status"] %></td>
+            <td data-sort-value="<%=ad["start_time"] %>"><%=ad["start_time"] %></td>
+            <td data-sort-value="<%=ad["adoptions"] %>"><%= ad["adoptions"] %></td>
+          </tr>
           <% ctr += 1 %>
-          <% end %>
+        <% end %>
         </tbody>
       </table>
     </div>
