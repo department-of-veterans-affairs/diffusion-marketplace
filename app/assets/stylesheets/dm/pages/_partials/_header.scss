@@ -31,12 +31,15 @@
   @media screen and (min-width: 64rem) {
     #extended-logo {
       max-width: 45%;
+      margin: 0 !important;
+      line-height: 80px;
     }
 
     .usa-nav__secondary {
       min-width: 40%;
       flex-direction: unset;
       margin-top: 1rem;
+      bottom: 4.3rem !important;
 
       &.dm-signed-out-nav-secondary {
         min-width: 35%;
@@ -71,6 +74,10 @@
       .usa-nav__submenu[hidden] {
         display: none; // makes sure hidden submenu doesn't flash when loading page
       }
+    }
+
+    .usa-navbar {
+      height: 80px !important;
     }
   }
 }
