@@ -2,7 +2,6 @@
     const $document = $(document);
 
     function facilityComplexityDefinitions() {
-        debugger
         // Get the modal
         var modal = document.getElementById("facility_complexity_definitions");
 
