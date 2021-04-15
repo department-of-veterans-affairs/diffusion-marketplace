@@ -1,12 +1,12 @@
-var results = null;
-var created_practices = <%= @practices_created_json %>;
-var adopted_practices = <%= @practices_adopted_json %>;
-var resultsHTML = '';
-var RESULTS_SECTION = '#visn-practices-search-results';
-var SPINNER = '.dm-loading-spinner';
-var LOAD_MORE_CONTAINER = '.button-box';
-var SEARCH_RESULTS = '#search-results';
-var SORT_EL = '#search_sort_option';
+//var results = null;
+//var created_practices = <%#= @practices_created_json %>;
+//var adopted_practices = <%#= @practices_adopted_json %>;
+//var resultsHTML = '';
+//var RESULTS_SECTION = '#visn-practices-search-results';
+//var SPINNER = '.dm-loading-spinner';
+//var LOAD_MORE_CONTAINER = '.button-box';
+//var SEARCH_RESULTS = '#search-results';
+//var SORT_EL = '#search_sort_option';
 
 //function hello() {
 //    console.log('hey');
@@ -22,357 +22,244 @@ var SORT_EL = '#search_sort_option';
 //    });
 //}
 
-function searchPracticesByVisn() {
-    const searchField = document.querySelector('#practices-created-by-visn-search-field');
+//function searchPracticesByVisn() {
+//    const searchField = document.querySelector('#practices-created-by-visn-search-field');
 
-    function buildSearchResults(results, sortOption) {
+//    function buildSearchResults(results, sortOption) {
 //        $(SPINNER).addClass('display-none');
-        var resultsArray = [];
-        var finalResults = '';
+//        var resultsArray = [];
+//        var finalResults = '';
 
-        results.sort(sortOption).forEach(function (result) {
-            finalResults += buildPracticeCard(result);
-            resultsArray.push(buildPracticeCard(result));
-        });
-        // Hide sorting options if there's only 1 result
-        if (results.length === 1) {
-            sortSelect.addClass('display-none');
-        } else if (results.length !== 1 && sortSelect.hasClass('display-none')) {
-            sortSelect.removeClass('display-none');
-        }
-        // Show the results summary section
-        if ($(RESULTS_SECTION).hasClass('display-none')) {
-            $(RESULTS_SECTION).removeClass('display-none');
-        }
-        $(SEARCH_RESULTS).removeClass('display-none');
-        // Print results to the page
-        document.querySelector('#visn-practices-search-results').innerHTML = finalResults;
-        $(SEARCH_RESULTS).showMoreItems({
-            startNum: 12,
-            afterNum: 12,
-            moreText: 'Load more',
-            noMoreText: 'No more results'
-        })
-        // Sort the results based on each sort option
-        var sortSelect = $(SORT_EL);
-        sortSelect.on('change', function() {
-            switch ($(this).val()) {
-                case "adoptions":
+//        results.sort(sortOption).forEach(function (result) {
+//            finalResults += buildPracticeCard(result);
+//            resultsArray.push(buildPracticeCard(result));
+//        });
+//        // Hide sorting options if there's only 1 result
+//        if (results.length === 1) {
+//            sortSelect.addClass('display-none');
+//        } else if (results.length !== 1 && sortSelect.hasClass('display-none')) {
+//            sortSelect.removeClass('display-none');
+//        }
+//        // Show the results summary section
+//        if ($(RESULTS_SECTION).hasClass('display-none')) {
+//            $(RESULTS_SECTION).removeClass('display-none');
+//        }
+//        $(SEARCH_RESULTS).removeClass('display-none');
+//        // Print results to the page
+//        document.querySelector('#visn-practices-search-results').innerHTML = finalResults;
+//        $(SEARCH_RESULTS).showMoreItems({
+//            startNum: 12,
+//            afterNum: 12,
+//            moreText: 'Load more',
+//            noMoreText: 'No more results'
+//        })
+//        // Sort the results based on each sort option
+//        var sortSelect = $(SORT_EL);
+//        sortSelect.on('change', function() {
+//            switch ($(this).val()) {
+//                case "adoptions":
 //                    hideResultsElAndShowSpinner();
-                    buildSearchResults(results, sortByAdoptionCounts);
-                    break;
-                case "a_to_z":
+//                    buildSearchResults(results, sortByAdoptionCounts);
+//                    break;
+//                case "a_to_z":
 //                    hideResultsElAndShowSpinner();
-                    buildSearchResults(results, sortAToZ);
-                    break;
-                case "added":
+//                    buildSearchResults(results, sortAToZ);
+//                    break;
+//                case "added":
 //                    hideResultsElAndShowSpinner();
-                    buildSearchResults(results, sortByDateAdded);
-                    break;
-            }
-        });
-    }
-    // Search practices and populate the page
-    function search(query, category, radioOption) {
-        // Trim whitespace from the query (can cause matching problems)
-        query = query.trim();
-        // Set variables
-        var resultsSummary = document.querySelector('#results-summary');
-        // set the search page search bar input value
-        searchField.value = query;
-        if (query !== '') {
-            trackSearchField(query);
-            var searchBarQueryArray = [];
-            search_options.keys.forEach(function(practiceKey) {
-                var queryObj = {};
-                queryObj[practiceKey] = query;
-                return searchBarQueryArray.push(queryObj);
-            });
-        }
-        if (category) {
-            var categoryFilter;
-            // Collect any practice that has a category that matches the selected category
-            return categoryFilter = {'category': "=\"" + category + "\""};
-        }
-        if (radioOption === 'created') {
+//                    buildSearchResults(results, sortByDateAdded);
+//                    break;
+//            }
+//        });
+//    }
+//    // Search practices and populate the page
+//    function search(query, category) {
+//        // Trim whitespace from the query (can cause matching problems)
+//        query = query.trim();
+//        // Set variables
+//        var resultsSummary = document.querySelector('#results-summary');
+//        // Get the value for the created/adopted practices radio input
+//        var radioVal = $()
+//        // set the search page search bar input value
+//        searchField.value = query;
+//        if (query !== '') {
+//            trackSearchField(query);
+//            var searchBarQueryArray = [];
+//            search_options.keys.forEach(function(practiceKey) {
+//                var queryObj = {};
+//                queryObj[practiceKey] = query;
+//                return searchBarQueryArray.push(queryObj);
+//            });
+//        }
 
-            // Now add the facilities
-            visnFacilities.forEach(function(vf) {
-                originFacilityArray.push({'origin_facilities': "=\"" + vf.StationNumber + "\""});
-            });
-        } else {
-            // Collect the practices that have an origin facility matching the selected facility
-            var foundFacility = facilities.find(function(f) {
-                return originatingFacility === f.StationNumber;
-            });
-            originFacilityArray.push({'origin_facilities': "=\"" + foundFacility.StationNumber + "\""});
-        }
+//        if (category) {
+//            var categoryFilter;
+//            // Collect any practice that has a category that matches the selected category
+//            return categoryFilter = {'category': "=\"" + category + "\""};
+//        }
 
-        function searchWithQueryAndAllFilters(radioVal) {
-            results = fuse.search({
-                $and: [
-                    {
-                        $or: searchBarQueryArray
-                    },
-                    {
-                        $and: categoryFilter
-                    },
-                    {
-                        $and: radioVal
-                    }
-                ]
-            });
-        }
+//        function resultsForQueryAndCategory(fuseVar) {
+//            results = fuseVar.search({
+//                $and: [
+//                    {
+//                        $or: searchBarQueryArray
+//                    },
+//                    {
+//                        $and: categoryFilter
+//                    }
+//                ]
+//            });
+//        }
 
-        function searchWithQueryAndCategoriesAndOriginFacility() {
-            results = fuse.search({
-                $and: [
-                    {
-                        $or: searchBarQueryArray
-                    },
-                    {
-                        $and: categoryFilters
-                    },
-                    {
-                        $and: [
-                            {$or: originFacilityArray}
-                        ]
-                    }
-                ]
-            });
-        }
+//        function searchWithQueryAndCategory(radioVal) {
+//            if (radioVal === 'created') {
+//                resultsForQueryAndCategory(createdPracticesFuse)
+//            } else {
+//                resultsForQueryAndCategory(adoptedPracticesFuse)
+//            }
+//        }
 
-        function searchWithQueryAndCategoriesAndAdoptingFacility() {
-            results = fuse.search({
-                $and: [
-                    {
-                        $or: searchBarQueryArray
-                    },
-                    {
-                        $and: categoryFilters
-                    },
-                    {
-                        $and: [
-                            {$or: adoptionFacilityArray}
-                        ]
-                    }
-                ]
-            });
-        }
+//        function resultsForOnlyQuery(fuseVar) {
+//            results = fuseVar.search({
+//                $and: [
+//                    {
+//                        $or: searchBarQueryArray
+//                    }
+//                ]
+//            });
+//        }
 
-        function searchWithQueryAndBothFacilities() {
-            results = fuse.search({
-                $and: [
-                    {
-                        $or: searchBarQueryArray
-                    },
-                    {
-                        $and: [
-                            {$or: originFacilityArray}
-                        ]
-                    },
-                    {
-                        $and: [
-                            {$or: adoptionFacilityArray}
-                        ]
-                    }
-                ]
-            });
-        }
+//        function searchWithOnlyQuery(radioVal) {
+//            if (radioVal === 'created') {
+//                resultsForOnlyQuery(created_practices)
+//            } else {
+//                resultsForOnlyQuery(adopted_practices)
+//            }
+//        }
 
-        function searchWithQueryAndCategories() {
-            results = fuse.search({
-                $and: [
-                    {
-                        $or: searchBarQueryArray
-                    },
-                    {
-                        $and: categoryFilters
-                    }
-                ]
-            });
-        }
+//        function resultsForOnlyCategory(fuseVar) {
+//            results = fuse.search({categoryFilter});
+//        }
 
-        function searchWithQueryAndOriginFacility() {
-            results = fuse.search({
-                $and: [
-                    {
-                        $or: searchBarQueryArray
-                    },
-                    {
-                        $and: [
-                            {$or: originFacilityArray}
-                        ]
-                    }
-                ]
-            });
-        }
+//        function searchWithOnlyCategory(radioVal) {
+//            if (radioVal === 'created') {
+//                resultsForOnlyCategory(created_practices)
+//            } else {
+//                resultsForOnlyCategory(adopted_practices)
+//            }
+//        }
 
-        function searchWithQueryAndAdoptingFacility() {
-            results = fuse.search({
-                $and: [
-                    {
-                        $or: searchBarQueryArray
-                    },
-                    {
-                        $and: [
-                            {$or: adoptionFacilityArray}
-                        ]
-                    }
-                ]
-            });
-        }
+//        // Run the search query and include filters(if any)
+//        if (query !== '' && categoryFilter) {
+//            searchWithQueryAndCategory();
+//        } else if (query !== '' && categoryFilters && originatingFacility && !adoptingFacility) {
+//            searchWithQueryAndCategoriesAndOriginFacility();
+//        } else if (query !== '' && categoryFilters && !originatingFacility && adoptingFacility) {
+//            searchWithQueryAndCategoriesAndAdoptingFacility();
+//        } else if (query !== '' && !categoryFilters && originatingFacility && adoptingFacility) {
+//            searchWithQueryAndBothFacilities();
+//        } else if (query !== '' && categoryFilters && !originatingFacility && !adoptingFacility) {
+//            searchWithQueryAndCategories();
+//        } else if (query !== '' && !categoryFilters && originatingFacility && !adoptingFacility) {
+//            searchWithQueryAndOriginFacility();
+//        } else if (query !== '' && !categoryFilters && !originatingFacility && adoptingFacility) {
+//            searchWithQueryAndAdoptingFacility();
+//        } else if (query !== '' && !categoryFilters && !originatingFacility && !adoptingFacility) {
+//            results = fuse.search(query);
+//        } else if (query === '' && categoryFilters && originatingFacility && adoptingFacility) {
+//            searchWithAllFilters();
+//        } else if (query === '' && categoryFilters && originatingFacility && !adoptingFacility) {
+//            searchWithCategoriesAndOriginFacility();
+//        } else if (query === '' && categoryFilters && !originatingFacility && adoptingFacility) {
+//            searchWithCategoriesAndAdoptingFacility();
+//        } else if (query === '' && !categoryFilters && originatingFacility && adoptingFacility) {
+//            searchWithBothFacilities();
+//        } else if (query === '' && categoryFilters && !originatingFacility && !adoptingFacility) {
+//            searchWIthOnlyCategories();
+//        } else if (query === '' && !categoryFilters && originatingFacility && !adoptingFacility) {
+//            searchWithOnlyOriginFacility();
+//        } else if (query === '' && !categoryFilters && !originatingFacility && adoptingFacility) {
+//            searchWithOnlyAdoptingFacility();
+//        } else if (query === '' && !categoryFilters && !originatingFacility && !adoptingFacility) {
+//            results = [];
+//        }
 
-        function searchWithAllFilters() {
-            results = fuse.search({$or: categoryFilters.concat(originFacilityArray, adoptionFacilityArray)});
-            improveResultScoreBasedOnAmountOfCategoryMatches(results);
-            improveResultScoreBasedOnOriginatingFacility(results);
-            improveResultScoreBasedOnAmountOfAdoptingFacilities(results);
-        }
+//        console.log('results', results)
+//        console.log(results.length);
+//        // Get the results and default to filtering based on score
+//        buildSearchResults(results, sortByScore);
+//        // Reset the select input to default
+//        $(SORT_EL).prop('selectedIndex', 0);
+//        // Print the number of results for the query
+//        resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? ':' : 's:');
+//        // Highlight results (only Fuse.js matching)
+//        results.forEach(function (result) {
+//            highlighter(result);
+//        });
+//        // Highlight search results where exact keyword matches
+//        var mark = new Mark('#search-results');
+//        mark.mark(query);
+//    }
 
-        function searchWithCategoriesAndOriginFacility() {
-            results = fuse.search({$or: categoryFilters.concat(originFacilityArray)});
-            improveResultScoreBasedOnAmountOfCategoryMatches(results);
-            improveResultScoreBasedOnOriginatingFacility(results);
-        }
+//    // Highlight Fuse.js results
+//    // Adapted from: https://github.com/brunocechet/Fuse.js-with-highlight
+//    function highlighter(resultItem) {
+//        resultItem.matches.forEach(function (matchItem) {
+//            // don't highlight if match was on category or adoption facilities since they are not in practice search result text and can't be highlighted
+//            // don't highlight origin_facilities or initiating_facility because they are ids. The initiating_facility_name key will cover any text
+//            if (matchItem.key != 'category_names' && matchItem.key != 'adoption_facilities' && matchItem.key != 'origin_facilities' && matchItem.key != 'initiating_facility') {
+//                var text = resultItem.item[matchItem.key];
+//                var result = [];
+//                var matches = [].concat(matchItem.indices); // limpar referencia
+//                var pair = matches.shift();
 
-        function searchWithCategoriesAndAdoptingFacility() {
-            results = fuse.search({$or: categoryFilters.concat(adoptionFacilityArray)});
-            improveResultScoreBasedOnAmountOfCategoryMatches(results);
-            improveResultScoreBasedOnAmountOfAdoptingFacilities(results);
-        }
+//                for (var i = 0; i < text.length; i++) {
+//                    var char = text.charAt(i);
+//                    if (pair && i === pair[0]) {
+//                        result.push('<mark>')
+//                    }
+//                    result.push(char);
+//                    if (pair && i === pair[1]) {
+//                        result.push('</mark>');
+//                        pair = matches.shift()
+//                    }
+//                }
+//                resultItem.highlight = result.join('');
 
-        function searchWithBothFacilities() {
-            results = fuse.search({$or: adoptionFacilityArray.concat(originFacilityArray)});
-            improveResultScoreBasedOnOriginatingFacility(results);
-            improveResultScoreBasedOnAmountOfAdoptingFacilities(results);
-        }
+//                if (resultItem.children && resultItem.children.length > 0) {
+//                    resultItem.children.forEach(function (child) {
+//                        highlighter(child);
+//                    });
+//                }
+//            }
+//        });
+//    }
 
-        function searchWIthOnlyCategories() {
-            results = fuse.search({$or: categoryFilters});
-            improveResultScoreBasedOnAmountOfCategoryMatches(results);
-        }
-
-        function searchWithOnlyOriginFacility() {
-            results = fuse.search({$or: originFacilityArray});
-            improveResultScoreBasedOnOriginatingFacility(results);
-        }
-
-        function searchWithOnlyAdoptingFacility() {
-            results = fuse.search({$or: adoptionFacilityArray});
-            improveResultScoreBasedOnAmountOfAdoptingFacilities(results);
-        }
-
-        // Run the search query and include filters(if any)
-        if (query !== '' && categoryFilters && originatingFacility && adoptingFacility) {
-            searchWithQueryAndAllFilters();
-        } else if (query !== '' && categoryFilters && originatingFacility && !adoptingFacility) {
-            searchWithQueryAndCategoriesAndOriginFacility();
-        } else if (query !== '' && categoryFilters && !originatingFacility && adoptingFacility) {
-            searchWithQueryAndCategoriesAndAdoptingFacility();
-        } else if (query !== '' && !categoryFilters && originatingFacility && adoptingFacility) {
-            searchWithQueryAndBothFacilities();
-        } else if (query !== '' && categoryFilters && !originatingFacility && !adoptingFacility) {
-            searchWithQueryAndCategories();
-        } else if (query !== '' && !categoryFilters && originatingFacility && !adoptingFacility) {
-            searchWithQueryAndOriginFacility();
-        } else if (query !== '' && !categoryFilters && !originatingFacility && adoptingFacility) {
-            searchWithQueryAndAdoptingFacility();
-        } else if (query !== '' && !categoryFilters && !originatingFacility && !adoptingFacility) {
-            results = fuse.search(query);
-        } else if (query === '' && categoryFilters && originatingFacility && adoptingFacility) {
-            searchWithAllFilters();
-        } else if (query === '' && categoryFilters && originatingFacility && !adoptingFacility) {
-            searchWithCategoriesAndOriginFacility();
-        } else if (query === '' && categoryFilters && !originatingFacility && adoptingFacility) {
-            searchWithCategoriesAndAdoptingFacility();
-        } else if (query === '' && !categoryFilters && originatingFacility && adoptingFacility) {
-            searchWithBothFacilities();
-        } else if (query === '' && categoryFilters && !originatingFacility && !adoptingFacility) {
-            searchWIthOnlyCategories();
-        } else if (query === '' && !categoryFilters && originatingFacility && !adoptingFacility) {
-            searchWithOnlyOriginFacility();
-        } else if (query === '' && !categoryFilters && !originatingFacility && adoptingFacility) {
-            searchWithOnlyAdoptingFacility();
-        } else if (query === '' && !categoryFilters && !originatingFacility && !adoptingFacility) {
-            results = [];
-        }
-
-        console.log('results', results)
-        console.log(results.length);
-        // Get the results and default to filtering based on score
-        buildSearchResults(results, sortByScore);
-        // Reset the select input to default
-        $(SORT_EL).prop('selectedIndex', 0);
-        // Print the number of results for the query
-        resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? ':' : 's:');
-        // Highlight results (only Fuse.js matching)
-        results.forEach(function (result) {
-            highlighter(result);
-        });
-        // Highlight search results where exact keyword matches
-        var mark = new Mark('#search-results');
-        mark.mark(query);
-    }
-
-    // Highlight Fuse.js results
-    // Adapted from: https://github.com/brunocechet/Fuse.js-with-highlight
-    function highlighter(resultItem) {
-        resultItem.matches.forEach(function (matchItem) {
-            // don't highlight if match was on category or adoption facilities since they are not in practice search result text and can't be highlighted
-            // don't highlight origin_facilities or initiating_facility because they are ids. The initiating_facility_name key will cover any text
-            if (matchItem.key != 'category_names' && matchItem.key != 'adoption_facilities' && matchItem.key != 'origin_facilities' && matchItem.key != 'initiating_facility') {
-                var text = resultItem.item[matchItem.key];
-                var result = [];
-                var matches = [].concat(matchItem.indices); // limpar referencia
-                var pair = matches.shift();
-
-                for (var i = 0; i < text.length; i++) {
-                    var char = text.charAt(i);
-                    if (pair && i === pair[0]) {
-                        result.push('<mark>')
-                    }
-                    result.push(char);
-                    if (pair && i === pair[1]) {
-                        result.push('</mark>');
-                        pair = matches.shift()
-                    }
-                }
-                resultItem.highlight = result.join('');
-
-                if (resultItem.children && resultItem.children.length > 0) {
-                    resultItem.children.forEach(function (child) {
-                        highlighter(child);
-                    });
-                }
-            }
-        });
-    }
-
-    // Set Fuse.js search options
-    var search_options = {
-        keys: ['name', 'tagline', 'description', 'summary', 'initiating_facility', 'category_names', 'maturity_level', 'adoption_facilities', 'origin_facilities', 'initiating_facility_name', 'overview_problem', 'overview_solution', 'overview_results'],
-        minMatchCharLength: 1,
-        tokenize: true,
-        shouldSort: true,
-        threshold: 0.2,
-        location: 0,
-        distance: 100,
-        maxPatternLength: 32,
-        matchAllTokens: true,
-        findAllMatches: true,
-        includeMatches: true,
-        includeScore: true,
-        useExtendedSearch: true,
-        ignoreLocation: true
-    };
+//    // Set Fuse.js search options
+//    var search_options = {
+//        keys: ['name', 'tagline', 'description', 'summary', 'initiating_facility', 'category_names', 'maturity_level', 'adoption_facilities', 'origin_facilities', 'initiating_facility_name', 'overview_problem', 'overview_solution', 'overview_results'],
+//        minMatchCharLength: 1,
+//        tokenize: true,
+//        shouldSort: true,
+//        threshold: 0.2,
+//        location: 0,
+//        distance: 100,
+//        maxPatternLength: 32,
+//        matchAllTokens: true,
+//        findAllMatches: true,
+//        includeMatches: true,
+//        includeScore: true,
+//        useExtendedSearch: true,
+//        ignoreLocation: true
+//    };
 
 
-    // Create a search context with practices and search options
-    var fuse = new Fuse(practices, search_options);
-}
-function execVisnSearchFunctions() {
-    hello();
-    test();
-}
-$(document).on('turbolinks:load', execVisnSearchFunctions);
+//    // Create a search context with practices and search options
+//    var createdPracticesFuse = new Fuse(created_practices, search_options);
+//    var adoptedPracticesFuse = new Fuse(adopted_practices, search_options);
+//}
+//function execVisnSearchFunctions() {
+//    hello();
+//    test();
+//}
+//$(document).on('turbolinks:load', execVisnSearchFunctions);
