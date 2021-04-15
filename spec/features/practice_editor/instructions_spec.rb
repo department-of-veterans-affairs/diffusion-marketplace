@@ -23,8 +23,8 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_no_content('Save')
             expect(page).to have_no_content('Publish practice')
             expect(page).to have_link(href: pii_phi_information_path)
-            expect(page).to have_link(href: "https://vaww.va.gov/vaforms/medical/pdf/VA%20Form%2010-3203%20Fill.pdf")
-            expect(page).to have_link(href: "https://vaww.va.gov/vaforms/medical/pdf/VHA%20Form%2010-5345%20Fill-revision.pdf")
+            expect(page).to have_link(href: Constants::FORM_3203_URL)
+            expect(page).to have_link(href: Constants::FORM_5345_URL)
             expect(page).to have_link(href: practice_path('project-happen'))
         end
     end
