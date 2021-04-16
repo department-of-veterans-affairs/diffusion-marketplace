@@ -367,19 +367,19 @@ describe 'VISN pages', type: :feature do
 
     describe 'visns show map' do
       it 'should be there with the correct amount of markers' do
-        visit '/visns/1'
+        visit '/visns/2'
 
-        expect(find_all(:css, 'div[style*="width: 34px"][title=""]').count).to eq(1)
+        expect(find_all(:css, 'div[style*="width: 34px"][title=""]').count).to eq(3)
       end
 
       it 'should show metadata for each facility' do
-        visit '/visns/2'
-        find_all(:css, 'div[style*="width: 34px"][title=""]').last.click
+        visit '/visns/1'
+        find_all(:css, 'div[style*="width: 34px"][title=""]').first.click
 
-        within(:css, '#visn-va-facility-4-marker-modal') do
-          expect(find('.visn-va-facility-marker-modal-link').text).to eq('Fourth Test Name (Fourth Common Name)')
-          expect(find('.visn-va-facility-modal-practices-created-count').text).to eq('0 practices created here')
-          expect(find('.visn-va-facility-modal-practices-adopted-count').text).to eq('1 practice adopted here')
+        within(:css, '#visn-va-facility-1-marker-modal') do
+          expect(find('.visn-va-facility-marker-modal-link').text).to eq('Test Name (Test Common Name)')
+          expect(find('.visn-va-facility-modal-practices-created-count').text).to eq('1 practice created here')
+          expect(find('.visn-va-facility-modal-practices-adopted-count').text).to eq('0 practices adopted here')
         end
       end
 

@@ -1,18 +1,10 @@
 module VisnsHelper
   include StatesHelper
 
-  def published_enabled_approved_practices
-    Practice.published_enabled_approved
-  end
-
-  def visn_va_facilities(visn)
-    VaFacility.cached_va_facilities.where(visn: visn)
-  end
-
   def get_adopted_practices_count_by_visn(visn)
     visn_adopted_practices = []
-    published_enabled_approved_practices.each do |p|
-      visn_va_facilities(visn).each do |vaf|
+    Practice.published_enabled_approved.each do |p|
+      visn.get_va_facilities.each do |vaf|
         p.diffusion_histories.each do |dh|
           visn_adopted_practices << dh.facility_id if dh.facility_id === vaf.station_number.to_s
         end
@@ -23,17 +15,17 @@ module VisnsHelper
 
   def get_created_practices_count_by_visn(visn)
     visn_created_practices = []
-    published_enabled_approved_practices.each do |p|
+    Practice.published_enabled_approved.each do |p|
       origin_facilities = p.practice_origin_facilities
       initiating_facility = p.initiating_facility
       # add practices that have practice_origin_facilities
       if p.facility? && origin_facilities.any?
-        visn_va_facilities(visn).each do |vaf|
+        visn.get_va_facilities.each do |vaf|
           origin_facilities.each do |of|
             visn_created_practices << { "va_facility": of.facility_id } if of.facility_id === vaf.station_number.to_s
           end
         end
-      # add practices that have an initiating_facility
+        # add practices that have an initiating_facility
       elsif p.visn? && initiating_facility.present?
         visn_created_practices << { "visn": initiating_facility } if initiating_facility === visn.id.to_s
       end
@@ -45,7 +37,7 @@ module VisnsHelper
     visn_facility_locations = []
 
     # add facility locations to empty array
-    visn_va_facilities(visn).each do |vaf|
+    visn.get_va_facilities.each do |vaf|
       facility_location = vaf.street_address_state
 
       visn_facility_locations << facility_location unless visn_facility_locations.include?(facility_location)
@@ -58,10 +50,10 @@ module VisnsHelper
     # Add other US territories to us_states helper method array
     va_facility_locations = us_states.concat(
       [
-       ["Virgin Islands", "VI"],
-       ["Philippines Islands", "PI"],
-       ["Guam", "GU"],
-       ["American Samoa", "AS"]
+        ["Virgin Islands", "VI"],
+        ["Philippines Islands", "PI"],
+        ["Guam", "GU"],
+        ["American Samoa", "AS"]
       ]
     )
 
@@ -88,35 +80,41 @@ module VisnsHelper
     facility_type_array.select { |type| type === facility_type }.count
   end
 
-  def get_facility_types_and_counts_by_visn(visn)
+  def facility_type_counts_by_visn(visn)
     visn_facility_types_arr = []
 
     # add facility types to empty array
-    visn_va_facilities(visn).each do |vaf|
+    visn.get_va_facilities.each do |vaf|
       facility_type = vaf.classification
 
       visn_facility_types_arr << facility_type
     end
 
-    # get the counts for each facility type
-    hcc_count = facility_type_count(visn_facility_types_arr, 'Health Care Center (HCC)')
-    multi_specialty_cboc_count = facility_type_count(visn_facility_types_arr, 'Multi-Specialty CBOC')
-    oos_count = facility_type_count(visn_facility_types_arr, 'Other Outpatient Services (OOS)')
-    primary_care_cboc_count = facility_type_count(visn_facility_types_arr, 'Primary Care CBOC')
-    stand_alone_count = facility_type_count(visn_facility_types_arr, 'Residential Care Site (MH RRTP/DRRTP) (Stand-Alone)')
-    unclassified_count = facility_type_count(visn_facility_types_arr, 'Unclassified')
-    vamc_count = facility_type_count(visn_facility_types_arr, 'VA Medical Center (VAMC)')
+    # return the counts for each facility type
+    [
+      facility_type_count(visn_facility_types_arr, 'Health Care Center (HCC)'),
+      facility_type_count(visn_facility_types_arr, 'Multi-Specialty CBOC'),
+      facility_type_count(visn_facility_types_arr, 'Other Outpatient Services (OOS)'),
+      facility_type_count(visn_facility_types_arr, 'Primary Care CBOC'),
+      facility_type_count(visn_facility_types_arr, 'Residential Care Site (MH RRTP/DRRTP) (Stand-Alone)'),
+      facility_type_count(visn_facility_types_arr, 'Unclassified'),
+      facility_type_count(visn_facility_types_arr, 'VA Medical Center (VAMC)')
+    ]
+  end
+
+  def get_facility_type_text_by_visn(visn)
+    facility_type_counts = facility_type_counts_by_visn(visn)
 
     # create an array of hashes for each facility type that contains their corresponding text and count
     visn_facility_types_hash_arr = []
 
-    visn_facility_types_hash_arr << { "text": "#{hcc_count} Health Care Center#{hcc_count != 1 ? 's' : ''}", "count": hcc_count } if hcc_count > 0
-    visn_facility_types_hash_arr << { "text": "#{multi_specialty_cboc_count} Multi-Specialty CBOC#{multi_specialty_cboc_count != 1 ? 's' : ''}", "count": multi_specialty_cboc_count } if multi_specialty_cboc_count > 0
-    visn_facility_types_hash_arr << { "text": "#{oos_count} Other Outpatient Service facilit#{oos_count != 1 ? 'ies' : 'y'}", "count": oos_count } if oos_count > 0
-    visn_facility_types_hash_arr << { "text": "#{primary_care_cboc_count} Primary Care CBOC#{primary_care_cboc_count != 1 ? 's' : ''}", "count": primary_care_cboc_count } if primary_care_cboc_count > 0
-    visn_facility_types_hash_arr << { "text": "#{stand_alone_count} Residential Care Site#{stand_alone_count != 1 ? 's' : ''}", "count": stand_alone_count } if stand_alone_count > 0
-    visn_facility_types_hash_arr << { "text": "#{unclassified_count} Unclassified facilit#{unclassified_count != 1 ? 'ies' : 'y'}", "count": unclassified_count } if unclassified_count > 0
-    visn_facility_types_hash_arr << { "text": "#{vamc_count} VA Medical Center#{vamc_count != 1 ? 's' : ''}", "count": vamc_count } if vamc_count > 0
+    visn_facility_types_hash_arr << { "text": "#{facility_type_counts[0]} Health Care Center#{facility_type_counts[0] != 1 ? 's' : ''}", "count": facility_type_counts[0] } if facility_type_counts[0] > 0
+    visn_facility_types_hash_arr << { "text": "#{facility_type_counts[1]} Multi-Specialty CBOC#{facility_type_counts[1] != 1 ? 's' : ''}", "count": facility_type_counts[1] } if facility_type_counts[1] > 0
+    visn_facility_types_hash_arr << { "text": "#{facility_type_counts[2]} Other Outpatient Service facilit#{facility_type_counts[2] != 1 ? 'ies' : 'y'}", "count": facility_type_counts[2] } if facility_type_counts[2] > 0
+    visn_facility_types_hash_arr << { "text": "#{facility_type_counts[3]} Primary Care CBOC#{facility_type_counts[3] != 1 ? 's' : ''}", "count": facility_type_counts[3] } if facility_type_counts[3] > 0
+    visn_facility_types_hash_arr << { "text": "#{facility_type_counts[4]} Residential Care Site#{facility_type_counts[4] != 1 ? 's' : ''}", "count": facility_type_counts[4] } if facility_type_counts[4] > 0
+    visn_facility_types_hash_arr << { "text": "#{facility_type_counts[5]} Unclassified facilit#{facility_type_counts[5] != 1 ? 'ies' : 'y'}", "count": facility_type_counts[5] } if facility_type_counts[5] > 0
+    visn_facility_types_hash_arr << { "text": "#{facility_type_counts[6]} VA Medical Center#{facility_type_counts[6] != 1 ? 's' : ''}", "count": facility_type_counts[6] } if facility_type_counts[6] > 0
 
     # sort the facility types by count and then add punctuation where necessary
     sorted_facility_types_hash_arr = visn_facility_types_hash_arr.sort_by { |c| -c[:count] }
