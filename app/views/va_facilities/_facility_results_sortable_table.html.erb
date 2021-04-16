@@ -1,5 +1,6 @@
 <div id="directory_table" class="usa-table-container--scrollable">
   <table class="usa-table grid-col-12">
+    <caption></caption>
     <thead>
     <tr>
       <th data-sortable scope="col" role="columnheader" aria-sort="descending">
@@ -12,8 +13,7 @@
         VISN
       </th>
       <th data-sortable scope="col" role="columnheader">
-        Complexity <img class="fake-link_2" id="facility-complexity-modal" src="/assets/question_tooltip.svg"/>
-<!--        <img src="/assets/question_tooltip.svg" title="Complexity definitions 1&#10;&#10;Complexity Definition 2&#10;&#10;Complexity definition 3" class="usa-tooltip" data-position="bottom"/>-->
+        Complexity <a href="#facility_complexity_def" class="usa-button" aria-controls="facility_complexity_def" data-open-modal><span><img class="fake-link_2" id="facility-complexity-modal" src="/assets/question_tooltip.svg"/></span></a>
       </th>
       <th data-sortable scope="col" role="columnheader">
         Created
@@ -36,4 +36,7 @@
     <% end %>
     </tbody>
   </table>
+  <div class="usa-sr-only usa-table__announcement-region" aria-live="polite">
+    <!-- this content will change when sort changes -->
+  </div>
 </div>
