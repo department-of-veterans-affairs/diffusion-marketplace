@@ -38,7 +38,7 @@ class VaFacility < ApplicationRecord
     ret_val = "<table class='usa-table grid-col-12 margin-top-2'>"
     ret_val += "<thead><tr><th data-sortable scope='col' role='columnheader' aria-sort='descending'>Practice name</th>"
     ret_val += "<th data-sortable scope='col' role='columnheader'>Status "
-    ret_val += "<span class='usa-tooltip'><img src='/assets/question_tooltip.svg' alt:'status' class='usa-tooltip__trigger' title='In-progress: Facilities that have started but not completed adopting the practice.&#10;&#10;Successful: Facilities that have met adoption goals and implemented the practice.&#10;&#10;Unsuccessful: Facilities that started but stopped working towards adoption.' data-position='bottom'/></span></th>"
+    ret_val += "<a href='#facility_status_def' class='usa-button' aria-controls='facility_status_def' data-open-modal><span><img class='fake-link_2' id='facility-status-modal' src='/assets/question_tooltip.svg'/></span></a></th>"
     ret_val += "<th data-sortable scope='col' role='columnheader'>Start date</th>"
     ret_val += "<th data-sortable scope='col' role='columnheader'>Total VA adoptions</th></tr></thead><tbody>"
     if adoptions_at_facility.count > 0

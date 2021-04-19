@@ -42,7 +42,6 @@ class VaFacilitiesController < ApplicationController
   end
 
   def show
-    debugger
     @num_practice_recs = params[:practices] || "3"
     @created_practices = Practice.get_practices_created_by_facility(@va_facility.station_number)
     @practice_results_count = @created_practices.count
