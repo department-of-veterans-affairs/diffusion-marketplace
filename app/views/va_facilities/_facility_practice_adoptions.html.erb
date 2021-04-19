@@ -2,7 +2,7 @@
   <h1 class="font-sans-2xl margin-top-5 margin-bottom-3">
     Practices adopted at this facility
   </h1>
-  <div style="width: 100%; overflow: hidden;">
+  <div class="grid-col-12" style="width: 100%; overflow: hidden;">
     <div class="usa-search margin-bottom-2 margin-top-2 facility-search-field">
       <div role="search" class="flex-column">
         <label for="dm-practice-search-field"></label>
@@ -22,7 +22,8 @@
     <div id="practices_adopted_at_facility_count" class="usa-search margin-bottom-2 facility-search-field">
       <%= @adoptions_at_facility.count %> results:
     </div>
-    <div id="va_facility_adoption_results" class="usa-table-container--scrollable">
+  </div>
+    <div id="va_facility_adoption_results" class="grid-col-12 usa-table-container--scrollable">
       <table class="usa-table grid-col-12">
         <thead>
         <th data-sortable scope="col" role="columnheader" aria-sorting="descending">Practice name</th>
@@ -44,7 +45,6 @@
         </tbody>
       </table>
     </div>
-  </div>
 </section>
 <!--=======-->
 <!--<h1 class="font-sans-2xl margin-top-5 margin-bottom-3">-->
