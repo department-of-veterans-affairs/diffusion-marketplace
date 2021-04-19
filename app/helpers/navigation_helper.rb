@@ -169,6 +169,26 @@ module NavigationHelper
       end
     end
 
+    ### VAMC breadcrumbs
+    #
+    def add_facility_index_breadcrumb
+      session[:breadcrumbs] << { 'display': 'Facilities', 'path': va_facilities_path }
+    end
+    if controller == 'va_facilities'
+      if action == 'index'
+        empty_breadcrumbs
+        session[:breadcrumbs] << { 'display': 'Facilities', 'path': va_facilities_path }
+      end
+      if action == 'show'
+        va_facility = VaFacility.find_by(slug: params[:id])
+        empty_breadcrumbs
+        add_facility_index_breadcrumb
+        common_name = va_facility.common_name
+        session[:breadcrumbs] << { 'display': common_name, 'path': va_facilities_path }
+      end
+    end
+
+
     ### PRACTICE PARTNER BREADCRUMBS
     def add_partners_breadcrumb
       session[:breadcrumbs] << { 'display': 'Partners', 'path': practice_partners_path }

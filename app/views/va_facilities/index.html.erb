@@ -1,0 +1,67 @@
+<% provide :main_classes, 'bg-gray-2' %>
+<% provide :footer_classes, 'bg-gray-2' %>
+
+<% provide :head_tags do %>
+  <%= javascript_include_tag 'facilities_utilities', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
+<section class="usa-section padding-y-0 grid-col-12" id="dm-va-facilities-index">
+  <div class="grid-container position-relative grid-col-12">
+    <div class="grid-row grid-gap">
+      <div class="grid-col-12">
+        <h1 class="font-sans-2xl margin-top-5 margin-bottom-3">
+          Facility directory
+        </h1>
+        <span>Looking for a full list of VISNs? <a href="/visns">Click here</a></span>
+        <div class="margin-top-5 margin-bottom-3 grid-col-12">
+          <div class="grid-row grid-gap">
+            <div class="grid-col-5">
+              <%= render partial: 'va_facilities/facility_directory_combo_box', locals: {facility_selector: 'facility_directory_select'} %>
+            </div>
+            <div class="grid-col-3">
+              <%= render partial: 'va_facilities/visn_combo_box', locals: {visn_selector: 'facility_directory_visn_select'} %>
+            </div>
+            <div class="grid-col-4">
+              <%= render partial: 'va_facilities/facility_directory_type_combo_box', locals: {facility_type_selector: 'facility_type_select'} %>
+            </div>
+          </div>
+        </div>
+        <div class="margin-bottom-3">
+          <% if @filtered_facilities.count > 0 %>
+            Displaying <%= @filtered_facilities.count %> of <%= @results_count %> results:
+          <% else %>
+            No results
+          <% end %>
+        </div>
+        <% if @results_count > 0 %>
+          <div id="directory_table">
+            <table class="usa-table usa-table--borderless grid-col-12">
+              <thead>
+              <tr>
+                <%= render partial: 'va_facilities/facility_results_table_header' %>
+              </tr>
+              </thead>
+              <tbody>
+              <% @filtered_facilities.each do |facility| %>
+                <tr>
+                  <td class="grid-col-4"><a class="dm-internal-link" href='/facilities/<%= facility["slug"] %>'><%= facility["official_station_name"] %> (<%= facility["common_name"] %>)</a></td>
+                  <td class="grid-col-2"><a class="dm-internal-link" href='/visns/<%= facility["visn_number"] %>'><%= facility["visn_number"] %></a></td>
+                  <td class="grid-col-2"><%= facility["fy17_parent_station_complexity_level"][0..1].upcase %></td>
+                  <td class="grid-col-2"><%= facility["practices_created"] %></td>
+                  <td class="grid-col-2"><%= facility["adoptions"] %></td>
+                </tr>
+              <% end %>
+              </tbody>
+            </table>
+          </div>
+          <% if @num_recs.to_i < @results_count %>
+            <div class="margin-top-5 margin-bottom-3 text-center">
+              <%= button_tag "Load more", num_recs: @num_recs, type: 'button', id: "btn_facility_directory_load_more", class: "usa-button--outline dm-btn-base dm-load-more-btn width-auto" %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>
+

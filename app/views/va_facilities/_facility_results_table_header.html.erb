@@ -1,0 +1,60 @@
+<%
+  sort_by = params[:sortby]
+  ascending = params[:asc] ||= nil
+%>
+
+  <th scope="col"><button class="usa-button fake-link" id="toggle_by_facility">Facility
+    <% if ascending.blank? || sort_by == "facility" %>
+      <% if ascending == "true" || ascending.blank? %>
+        &#9650;
+      <% end %>
+      <% if ascending == "false" %>
+        &#x25BC;
+      <% end %>
+    <% end %>
+  </button>
+  </th>
+  <th scope="col"><button class="usa-button fake-link" id="toggle_by_visn">VISN
+    <% if sort_by == "visn" %>
+      <% if ascending == "true" || ascending.blank? %>
+        &#9650;
+      <% end %>
+      <% if ascending == "false" %>
+        &#x25BC;
+      <% end %>
+    <% end %>
+  </button>
+  </th>
+  <th scope="col"><button class="usa-button fake-link" id="toggle_by_type">Type
+    <% if sort_by == "type" %>
+      <% if ascending == "true" || ascending.blank? %>
+        &#9650;
+      <% end %>
+      <% if ascending == "false" %>
+        &#x25BC;
+      <% end %>
+    <% end %>
+  </button>
+  </th>
+  <th scope="col"><button class="usa-button fake-link" id="toggle_by_practices_created">Created
+    <% if sort_by == "practices_created" %>
+      <% if ascending == "true" || ascending.blank?%>
+        &#9650;
+      <% end %>
+      <% if ascending == "false" %>
+        &#x25BC;
+      <% end %>
+    <% end %>
+  </button>
+  </th>
+  <th scope="col"><button class="usa-button fake-link" id="toggle_by_adoptions">Adopted
+    <% if sort_by == "adoptions" %>
+      <% if ascending == "true" || ascending.blank? %>
+        &#9650;
+      <% end %>
+      <% if ascending == "false" %>
+        &#x25BC;
+      <% end %>
+    <% end %>
+  </button>
+  </th>

@@ -57,6 +57,10 @@ class Practice < ApplicationRecord
     clear_searchable_cache if self.reset_searchable_cache
   end
 
+  def self.get_practices_created_by_facility(station_number)
+    Practice.where(published: true).joins(:practice_origin_facilities).where(practice_origin_facilities: {facility_id: station_number}).to_a
+  end
+
   def self.searchable_practices(sort = 'a_to_z')
     if sort == 'a_to_z'
       Rails.cache.fetch('searchable_practices_a_to_z') do
