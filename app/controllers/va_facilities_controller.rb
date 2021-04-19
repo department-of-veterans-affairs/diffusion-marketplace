@@ -1,7 +1,7 @@
 class VaFacilitiesController < ApplicationController
   before_action :set_va_facility, only: :show
   def index
-    @num_recs = params[:more] || "20"
+    # @num_recs = params[:more] || "20"
     if params[:sortby].present?
       @facilities = VaFacility.get_all_facilities(params[:sortby])
     else
@@ -34,9 +34,9 @@ class VaFacilitiesController < ApplicationController
     end
     @results_count = @filtered_facilities.count
 
-    if @filtered_facilities.count > @num_recs.to_i
-      @filtered_facilities = @filtered_facilities.take(@num_recs.to_i)
-    end
+    # if @filtered_facilities.count > @num_recs.to_i
+    #   @filtered_facilities = @filtered_facilities.take(@num_recs.to_i)
+    # end
 
 
   end

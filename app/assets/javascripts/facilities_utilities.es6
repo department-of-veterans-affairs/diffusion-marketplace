@@ -17,16 +17,6 @@ $(document).ready(function(){
         window.location.href = newUrl;
     }
 
-    let loadMoreBtn = document.getElementById ("btn_facility_directory_load_more");
-    if(loadMoreBtn){
-        loadMoreBtn.addEventListener ("click", loadMoreRecords, false);
-    }
-
-    let loadMorePracticesBtn = document.getElementById ("btn_factility_show_page_load_more");
-    if(loadMorePracticesBtn){
-        loadMorePracticesBtn.addEventListener ("click", loadMorePractices, false);
-    }
-
     $("#facility_directory_select").change (function(e) {
         //set VISN and TYPE filters back to - Select
         document.getElementById('facility_directory_visn_select').value = '- Select -';
@@ -120,17 +110,6 @@ $(document).ready(function(){
         if (!results) return null;
         if (!results[2]) return '';
         return decodeURIComponent(results[2].replace(/\+/g, ' '));
-    }
-
-    function loadMoreRecords(){
-        let btn = document.getElementById("btn_facility_directory_load_more");
-        let numRecs = parseInt(btn.getAttribute("num_recs"));
-        numRecs += 20;
-        let paramMore = getParameterByName("more", newUrl)
-        let newUrl = removeParam("more", curUrl);
-        newUrl.includes("?") ? newUrl += "&" : newUrl += "?";
-        newUrl += `more=${numRecs}`;
-        window.location.href = newUrl;
     }
 
     function loadMorePractices(){
