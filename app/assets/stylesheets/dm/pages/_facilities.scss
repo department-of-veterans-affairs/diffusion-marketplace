@@ -15,6 +15,7 @@
     }
   }
 }
+
 .fake-link{
   color: $dm-color-black !important;
   font-weight: bold !important;
@@ -23,7 +24,7 @@
   padding: 0 !important;
 }
 
-  .fake-link_2 {
+.fake-link_2 {
     color: $dm-color-black;
     cursor: pointer;
     background-image: none !important;
@@ -67,3 +68,17 @@
   //background-color:#ccc;
 }
 
+.facility-phone-number{
+  text-decoration: none;
+  color: $dm-color-blue-50v;
+}
+.facility-category-select{
+  width: 309px;
+  height: 40px;
+  float: right;
+}
+.facility-search-field{
+  width: 641px;
+  height: 37px;
+  float: left;
+}

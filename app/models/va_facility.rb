@@ -105,7 +105,5 @@ class VaFacility < ApplicationRecord
       VaFacility.all
     end
   end
-
-
 end
 

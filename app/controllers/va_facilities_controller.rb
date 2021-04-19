@@ -47,12 +47,10 @@ class VaFacilitiesController < ApplicationController
     @practice_results_count = @created_practices.count
     @created_practices = @created_practices.take(@num_practice_recs.to_i)
     @created_practices_count = @created_practices.count
-
     @adoptions_at_facility = VaFacility.get_adoptions_by_facility(@va_facility.station_number)
     @adoptions = DiffusionHistory.get_adoptions_by_facility(@va_facility.station_number)
     @adoptions_count = @adoptions.count
     @categories = Category.order_by_name
-
     #google maps implementation
     @va_facility_marker = Gmaps4rails.build_markers(@va_facility) do |facility, marker|
 
