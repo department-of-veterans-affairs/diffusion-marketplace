@@ -2,6 +2,9 @@
 <% provide :footer_classes, 'bg-gray-2' %>
 
 <% provide :head_tags do %>
+  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    var facilityParam = "<%= @selected_facility || '' %>";
+  <% end %>
   <%= javascript_include_tag 'facilities_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
@@ -16,7 +19,7 @@
         <div class="margin-top-5 margin-bottom-3 grid-col-12">
           <div class="grid-row grid-gap">
             <div class="grid-col-5">
-              <%= render partial: 'va_facilities/facility_directory_combo_box', locals: {facility_selector: 'facility_directory_select'} %>
+              <%= render partial: 'va_facilities/facility_directory_combo_box', locals: {facility_selector: 'facility_directory_select', default_value: @selected_facility} %>
             </div>
             <div class="grid-col-3">
               <%= render partial: 'va_facilities/visn_combo_box', locals: {visn_selector: 'facility_directory_visn_select'} %>

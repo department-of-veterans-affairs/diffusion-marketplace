@@ -32,9 +32,11 @@ $(document).ready(function(){
         document.getElementById('facility_directory_visn_select').value = '- Select -';
         document.getElementById('facility_type_select').value = '- Select -';
         let facilityId = e.target.options[e.target.selectedIndex].value;
-        let strippedUrl = stripQsParams(curUrl);
-        let newUrl = `${strippedUrl}?facility=${facilityId}`;
-        window.location.href = newUrl;
+        if (facilityId != facilityParam) {
+          let strippedUrl = stripQsParams(curUrl);
+          let newUrl = `${strippedUrl}?facility=${facilityId}`;
+          window.location.href = newUrl;
+        }
     });
 
     $("#facility_directory_visn_select").change (function(e) {

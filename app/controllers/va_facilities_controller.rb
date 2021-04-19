@@ -20,9 +20,11 @@ class VaFacilitiesController < ApplicationController
 
 
     @filtered_facilities= @facilities
+    @selected_facility
     #check params and filters...
     if params[:facility].present?
       @filtered_facilities = @facilities.select { |x| x["id"] == params[:facility].to_i}
+      @selected_facility = params[:facility].to_i
     end
     if params[:visn].present?
       @filtered_facilities = @filtered_facilities.select { |x| x["visn_number"] == params[:visn].to_i}
