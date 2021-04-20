@@ -1,0 +1,26 @@
+<div id="va_facility_adoption_results" class="grid-col-12 usa-table-container--scrollable">
+  <table class="usa-table grid-col-12">
+    <caption></caption>
+    <thead>
+    <tr>
+      <th data-sortable scope="col" role="columnheader" aria-sort="descending">Practice name</th>
+      <th data-sortable scope="col" role="columnheader">Status <a href="#facility_status_def" aria-controls="facility_status_def" data-open-modal><span><img class="fake-link_2" id="facility-status-modal" src="/assets/question_tooltip.svg"/></span></a>
+      <th data-sortable scope="col" role="columnheader">Start date</th>
+      <th data-sortable scope="col" role="columnheader">Total VA adoptions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @adoptions_at_facility.each do |ad| %>
+      <tr>
+        <th scope="row" role="rowheader"><%=ad["name"] %></th>
+        <td data-sort-value="<%=ad["status"] %>"><%=ad["status"] %></td>
+        <td data-sort-value="<%=ad["start_time"] %>"><%=ad["start_time"] %></td>
+        <td data-sort-value="<%=ad["adoptions"] %>"><%= ad["adoptions"] %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+  <div class="usa-sr-only usa-table__announcement-region" aria-live="polite">
+    <!-- this content will change when sort changes -->
+  </div>
+</div>

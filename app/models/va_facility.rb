@@ -48,6 +48,7 @@ class VaFacility < ApplicationRecord
   end
 
   def self.get_adoptions_by_facility_category_and_keyword(station_number, category_id, key_word)
+    key_word = "%" + key_word.downcase + "%"
     sql = "SELECT p.id, p.name, dh.facility_id, dhs.status, dhs.start_time,
           (select count(*) from diffusion_histories where p.id = diffusion_histories.practice_id) adoptions
           FROM practices p
@@ -55,8 +56,10 @@ class VaFacility < ApplicationRecord
           JOIN diffusion_history_statuses dhs on dh.id = dhs.diffusion_history_id
           JOIN category_practices cp on p.id = cp.practice_id
           JOIN categories c on cp.category_id = c.id
-          WHERE p.published = true AND dh.facility_id = $1 AND c.id = $2 order by adoptions desc"
-    ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"], [nil, "#{category_id}"]]).to_a
+          WHERE p.published = true AND dh.facility_id = $1 AND c.id = $2
+          AND (p.name ilike ($3) OR p.description ilike ($3) OR p.short_name ilike ($3))
+          order by adoptions desc"
+    ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"], [nil, "#{category_id}"], [nil, "#{key_word}"],]).to_a
   end
 
 
