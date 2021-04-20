@@ -70,10 +70,16 @@ class VaFacilitiesController < ApplicationController
 
   def update_practices_adopted_at_facility
     selected_cat = params["selected_category"]
-    if selected_cat.blank?
-      @adoptions_at_facility = VaFacility.get_adoptions_by_facility(params["station_number"])
-    else
-      @adoptions_at_facility = VaFacility.get_adoptions_by_facility_and_category(params["station_number"], selected_cat)
+    key_word = params["key_word"]
+    station_number = params["station_number"]
+    if selected_cat.blank? && key_word.blank?
+      @adoptions_at_facility = VaFacility.get_adoptions_by_facility(station_number)
+    elsif !selected_cat.blank? && key_word.blank?
+      @adoptions_at_facility = VaFacility.get_adoptions_by_facility_and_category(station_number, selected_cat)
+    elsif !key_word.blank? && selected_cat.blank?
+      @adoptions_at_facility = VaFacility.get_adoptions_by_facility_and_keyword(station_number, key_word)
+    elsif !selected_cat.blank? && !key_word.blank?
+      @adoptions_at_facility = VaFacility.get_adoptions_by_facility_category_and_keyword(station_number, selected_cat, key_word)
     end
     data = VaFacility.rewrite_practices_adopted_at_this_facility_filtered_by_category(@adoptions_at_facility, @total_adoptions_for_practice)
     results = []

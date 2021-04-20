@@ -124,18 +124,32 @@ $(document).ready(function(){
     }
 
     $("#dm-adopted-practices-search-button").click (function(e) {
-        var result = document.getElementById("dm-adopted-practices-search-field").value
-        alert(result);
-    });
-
-    $("#facility_category_select_adoptions").change (function(e) {
         let selectedCategory = document.getElementById("facility_category_select_adoptions").value
+        let keyWord = document.getElementById("dm-adopted-practices-search-field").value
         let facilityStationNumber = document.getElementById("facility_station_number").value
         //alert(result);
         Rails.ajax({
             type: 'post',
             url: "/update_practices_adopted_at_facility",
-            data: jQuery.param({selected_category: selectedCategory, station_number: facilityStationNumber}),
+            data: jQuery.param({selected_category: selectedCategory, key_word: keyWord, station_number: facilityStationNumber}),
+            success: function(result) {
+                document.getElementById("va_facility_adoption_results").innerHTML = result[0]
+                document.getElementById("practices_adopted_at_facility_count").innerHTML = result[1]
+            }
+        });
+
+
+    });
+
+    $("#facility_category_select_adoptions").change (function(e) {
+        let selectedCategory = document.getElementById("facility_category_select_adoptions").value
+        let keyWord = document.getElementById("dm-adopted-practices-search-field").value
+        let facilityStationNumber = document.getElementById("facility_station_number").value
+        //alert(result);
+        Rails.ajax({
+            type: 'post',
+            url: "/update_practices_adopted_at_facility",
+            data: jQuery.param({selected_category: selectedCategory, key_word: keyWord, station_number: facilityStationNumber}),
             success: function(result) {
                 document.getElementById("va_facility_adoption_results").innerHTML = result[0]
                 document.getElementById("practices_adopted_at_facility_count").innerHTML = result[1]

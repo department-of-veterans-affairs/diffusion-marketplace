@@ -34,6 +34,33 @@ class VaFacility < ApplicationRecord
     ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"], [nil, "#{category_id}"]]).to_a
   end
 
+  def self.get_adoptions_by_facility_and_keyword(station_number, key_word)
+    key_word = "%" + key_word.downcase + "%"
+    sql = "SELECT p.id, p.name, dh.facility_id, dhs.status, dhs.start_time,
+          (select count(*) from diffusion_histories where p.id = diffusion_histories.practice_id) adoptions
+          FROM practices p
+          JOIN diffusion_histories dh on p.id = dh.practice_id
+          JOIN diffusion_history_statuses dhs on dh.id = dhs.diffusion_history_id
+          WHERE p.published = true AND dh.facility_id = $1
+          AND (p.name ilike ($2) OR p.description ilike ($2) OR p.short_name ilike ($2))
+          order by adoptions desc"
+    ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"], [nil, "#{key_word}"]]).to_a
+  end
+
+  def self.get_adoptions_by_facility_category_and_keyword(station_number, category_id, key_word)
+    sql = "SELECT p.id, p.name, dh.facility_id, dhs.status, dhs.start_time,
+          (select count(*) from diffusion_histories where p.id = diffusion_histories.practice_id) adoptions
+          FROM practices p
+          JOIN diffusion_histories dh on p.id = dh.practice_id
+          JOIN diffusion_history_statuses dhs on dh.id = dhs.diffusion_history_id
+          JOIN category_practices cp on p.id = cp.practice_id
+          JOIN categories c on cp.category_id = c.id
+          WHERE p.published = true AND dh.facility_id = $1 AND c.id = $2 order by adoptions desc"
+    ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"], [nil, "#{category_id}"]]).to_a
+  end
+
+
+
   def self.rewrite_practices_adopted_at_this_facility_filtered_by_category(adoptions_at_facility, total_adoptions_for_practice)
     # ret_val = "<div id='va_facility_adoption_results' class='grid-col-12 usa-table-container--scrollable'>"
     ret_val = '<table class="usa-table grid-col-12">'
