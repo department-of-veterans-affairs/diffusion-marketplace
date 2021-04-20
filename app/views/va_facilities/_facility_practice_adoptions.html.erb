@@ -25,11 +25,14 @@
   </div>
     <div id="va_facility_adoption_results" class="grid-col-12 usa-table-container--scrollable">
       <table class="usa-table grid-col-12">
+        <caption></caption>
         <thead>
+        <tr>
         <th data-sortable scope="col" role="columnheader" aria-sorting="descending">Practice name</th>
-        <th data-sortable scope="col" role="columnheader">Status <a href="#facility_status_def" class="usa-button" aria-controls="facility_status_def" data-open-modal><span><img class="fake-link_2" id="facility-status-modal" src="/assets/question_tooltip.svg"/></span></a>
+        <th data-sortable scope="col" role="columnheader">Status <a href="#facility_status_def" aria-controls="facility_status_def" data-open-modal><span><img class="fake-link_2" id="facility-status-modal" src="/assets/question_tooltip.svg"/></span></a>
         <th data-sortable scope="col" role="columnheader">Start date</th>
         <th data-sortable scope="col" role="columnheader">Total VA adoptions</th>
+        </tr>
         </thead>
         <tbody>
         <% ctr = 0 %>
@@ -44,37 +47,8 @@
         <% end %>
         </tbody>
       </table>
+      <div class="usa-sr-only usa-table__announcement-region" aria-live="polite">
+        <!-- this content will change when sort changes -->
+      </div>
     </div>
 </section>
-<!--=======-->
-<!--<h1 class="font-sans-2xl margin-top-5 margin-bottom-3">-->
-<!--  Practices adopted at this facility-->
-<!--</h1>-->
-<!--<div class="grid-col-12">-->
-<!--  <div class="usa-search margin-bottom-2 facility-search-field">-->
-<!--    <div role="search" class="flex-column">-->
-<!--      <label for="dm-practice-search-field"></label>-->
-<!--      <div id="search-bar-container" class="display-flex">-->
-<!--        <input class="usa-input" id="dm-practice-search-field" title="Type at least three characters to search." autocomplete="off" type="search" name="search">-->
-<!--        <button id="dm-practice-search-button" class="usa-button" type="submit" name="search-button">-->
-<!--          <span class="usa-search__submit-text text-bold">Search</span>-->
-<!--        </button>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--  <div class="facility-category-select desktop:margin-bottom-3">-->
-    <%#= render partial: 'va_facilities/facility_categories_combo_box', locals: {facility_category_selector: 'facility_category_select_adoptions'} %>
-<!--  </div>-->
-
-<!--</div>-->
-<!--<div class="grid-col-12">-->
-<!--  <div class="usa-search margin-bottom-2 facility-search-field">-->
-<!--    # results:-->
-<!--  </div>-->
-<!--  <div class="facility-category-select">-->
-<!--  </div>-->
-<!--</div>-->
-<!--<div class="grid-col-12">-->
-
-<!--</div>-->
-<!-- feature/vamc-visn-->
