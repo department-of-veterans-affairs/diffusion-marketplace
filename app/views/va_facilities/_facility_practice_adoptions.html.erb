@@ -1,25 +1,45 @@
 <section id="dm-va-facilities-adoption-index">
-  <h1 class="font-sans-2xl margin-top-5 margin-bottom-3">
+  <h2 class="font-sans-2xl margin-top-5 margin-bottom-3">
     Practices adopted at this facility
-  </h1>
-  <div class="grid-col-12" style="width: 100%; overflow: hidden;">
-    <div class="usa-search margin-bottom-2 margin-top-1 facility-search-field">
+  </h2>
+  <div class="grid-col-12 display-flex">
+    <div class="usa-search float-left grid-col-8">
       <div role="search" class="flex-column">
-        <label for="dm-practice-search-field"></label>
-        <div id="search-bar-container" class="display-flex">
-          <input class="usa-input" id="dm-adopted-practices-search-field" title="Type at least three characters to search." autocomplete="off" type="search" name="search">
+        <div class="display-flex dm-search-container grid-col-12 margin-top-4">
+          <label for="created-practice-search" class="usa-label usa-sr-only">
+            Search
+          </label>
+          <input class="usa-input" id="dm-adopted-practices-search-field" title="Type at least three characters to search." autocomplete="off" type="search" name="search" data-search="">
           <button id="dm-adopted-practices-search-button" class="usa-button" type="submit" name="search-button">
-            <span class="usa-search__submit-text text-bold">Search</span>
+            <span class="usa-search__submit-text text-bold">
+              Search
+            </span>
           </button>
         </div>
       </div>
     </div>
-    <div class="facility-category-select">
+    <div class="grid-col-4 margin-left-5 top-neg-3">
       <%= render partial: 'va_facilities/facility_categories_combo_box', locals: {facility_category_selector: 'facility_category_select_adoptions'} %>
     </div>
   </div>
+<!--  <div class="grid-col-12" style="width: 100%; overflow: hidden;">-->
+<!--    <div class="usa-search margin-bottom-2 margin-top-1 facility-search-field">-->
+<!--      <div role="search" class="flex-column">-->
+<!--        <label for="dm-practice-search-field"></label>-->
+<!--        <div id="search-bar-container" class="display-flex">-->
+<!--          <input class="usa-input" id="dm-adopted-practices-search-field" title="Type at least three characters to search." autocomplete="off" type="search" name="search">-->
+<!--          <button id="dm-adopted-practices-search-button" class="usa-button" type="submit" name="search-button">-->
+<!--            <span class="usa-search__submit-text text-bold">Search</span>-->
+<!--          </button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="facility-category-select">-->
+      <%#= render partial: 'va_facilities/facility_categories_combo_box', locals: {facility_category_selector: 'facility_category_select_adoptions'} %>
+<!--    </div>-->
+<!--  </div>-->
   <div class="grid-col-12">
-    <div id="practices_adopted_at_facility_count" class="usa-search margin-bottom-3 facility-search-field">
+    <div id="practices_adopted_at_facility_count" class="usa-search margin-bottom-2 facility-search-field">
       <%= @adoptions_at_facility.count %> results:
     </div>
   </div>

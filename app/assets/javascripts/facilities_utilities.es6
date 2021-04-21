@@ -124,6 +124,7 @@ $(document).ready(function(){
     }
 
     $("#dm-adopted-practices-search-button").click (function(e) {
+        debugger
         let selectedCategory = document.getElementById("facility_category_select_adoptions").value
         let keyWord = document.getElementById("dm-adopted-practices-search-field").value
         let facilityStationNumber = document.getElementById("facility_station_number").value
