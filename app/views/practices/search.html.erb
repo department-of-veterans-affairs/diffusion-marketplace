@@ -75,18 +75,7 @@
     <div class="dm-loading-spinner display-none flex-justify-center flex-align-self-center margin-y-8 desktop:margin-y-10">
       <i class="fas fa-circle-notch"></i>
     </div>
-
-    <section id="no-search-query-content" class="margin-x-auto">
-      <div class="text-and-icon-container position-relative">
-        <p id="no-query-p" class="position-absolute z-100 padding-bottom-4 line-height-26 text-center">
-          Enter a search term or use the filters to find matching practices
-        </p>
-        <p id="no-query-results-p" class="position-absolute z-100 padding-bottom-4 line-height-26 text-center display-none">
-            There are currently no matches for your search on the Marketplace.
-        </p>
-        <i class="fas fa-search no-search-query-icon position-absolute z-index-10 text-base-lightest"></i>
-      </div>
-    </section>
+    <%= render partial: 'shared/search_no_results', locals: { display_no_query_msg: true } %>
   </section>
 </div>
 

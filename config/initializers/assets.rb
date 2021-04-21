@@ -40,6 +40,7 @@ Rails.application.config.assets.precompile += %w(
                                                   visns/_map_utilities.js
                                                   facility_map.js
                                                   visns/maps.js
+                                                  facilities/facility_created_practice_search.js
                                               )
 
 # Precompile additional assets.

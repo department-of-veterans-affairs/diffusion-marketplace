@@ -30,3 +30,38 @@
   height: 37px;
   float: left;
 }
+
+// individual facility page created practices section
+.dm-facility-created-practice-search {
+  @media screen and (min-width: 64rem) {
+    .usa-search {
+      top: 0.625rem;
+    }
+
+    #dm-created-practice-categories {
+      margin-top: 0;
+
+      &::placeholder {
+        color: $dm-color-black !important;
+      }
+    }
+
+    .search-no-results {
+      margin-top: 0;
+    }
+
+    #dm-created-practice-search-button {
+      height: 2.375rem;
+    }
+
+    #dm-created-practice-search-field {
+      padding: 1.125rem 0.625rem;
+      line-height: 1.75rem;
+    }
+
+    .dm-search-container {
+      position: absolute;
+      top: -0.625rem;
+    }
+  }
+}

@@ -547,9 +547,9 @@ describe 'Search', type: :feature do
 
       # Make sure the overlay is working properly
       click_button('Filters')
-      expect(page).to have_selector('#no-query-p', visible: false)
+      expect(page).to have_selector('.no-query-p', visible: false)
       find('#close_filters_modal').click
-      expect(page).to have_selector('#no-query-p', visible: true)
+      expect(page).to have_selector('.no-query-p', visible: true)
 
       click_button('Filters')
       click_button('Originating facility')
