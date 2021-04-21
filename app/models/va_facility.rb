@@ -65,18 +65,19 @@ class VaFacility < ApplicationRecord
 
 
   def self.rewrite_practices_adopted_at_this_facility_filtered_by_category(adoptions_at_facility, total_adoptions_for_practice)
-    ret_val = '<div class="usa-table-container--scrollable grid-col-12">'
-    ret_val += '<table class="usa-table grid-col-12">'
-    ret_val += '<caption></caption>'
-    ret_val += '<thead>'
-    ret_val += '<tr>'
-    ret_val += '<th data-sortable scope="col" role="columnheader" aria-sort="descending">Practice name</th>'
-    ret_val += '<th data-sortable scope="col" role="columnheader">Status <a href="#facility_status_def" aria-controls="facility_status_def" data-open-modal><span><img class="fake-link_2" id="facility-status-modal" src="/assets/question_tooltip.svg"/></span></a>'
-    ret_val += '<th data-sortable scope="col" role="columnheader">Start date</th>'
-    ret_val += '<th data-sortable scope="col" role="columnheader">Total VA adoptions</th>'
-    ret_val += '</tr>'
-    ret_val += '</thead>'
-    ret_val += '<tbody>'
+    # ret_val = '<div class="usa-table-container--scrollable grid-col-12">'
+    # ret_val += '<table class="usa-table grid-col-12">'
+    # ret_val += '<caption></caption>'
+    # ret_val += '<thead>'
+    # ret_val += '<tr>'
+    # ret_val += '<th data-sortable scope="col" role="columnheader" aria-sort="descending">Practice name</th>'
+    # ret_val += '<th data-sortable scope="col" role="columnheader">Status <a href="#facility_status_def" aria-controls="facility_status_def" data-open-modal><span><img class="fake-link_2" id="facility-status-modal" src="/assets/question_tooltip.svg"/></span></a>'
+    # ret_val += '<th data-sortable scope="col" role="columnheader">Start date</th>'
+    # ret_val += '<th data-sortable scope="col" role="columnheader">Total VA adoptions</th>'
+    # ret_val += '</tr>'
+    # ret_val += '</thead>'
+    # ret_val += '<tbody>'
+    ret_val = ""
 
     if adoptions_at_facility.count > 0
       adoptions_at_facility.each do |ad|
@@ -88,12 +89,12 @@ class VaFacility < ApplicationRecord
         ret_val += '</tr>'
       end
     end
-    ret_val += '</tbody>'
-    ret_val += '</table>'
-    ret_val += '<div class="usa-sr-only usa-table__announcement-region" aria-live="polite">'
-    ret_val += '</div>'
-    ret_val += '</div>'
-    ret_val += '</div>'
+    # ret_val += '</tbody>'
+    # ret_val += '</table>'
+    # ret_val += '<div class="usa-sr-only usa-table__announcement-region" aria-live="polite">'
+    # ret_val += '</div>'
+    # ret_val += '</div>'
+    # ret_val += '</div>'
     ret_val
   end
 

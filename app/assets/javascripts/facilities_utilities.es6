@@ -133,7 +133,7 @@ $(document).ready(function(){
             url: "/update_practices_adopted_at_facility",
             data: jQuery.param({selected_category: selectedCategory, key_word: keyWord, station_number: facilityStationNumber}),
             success: function(result) {
-                document.getElementById("va_facility_adoption_results").innerHTML = result[0]
+                document.getElementById("practices_adopted_by_facility_dyn").innerHTML = result[0]
                 document.getElementById("practices_adopted_at_facility_count").innerHTML = result[1]
             }
         });
@@ -151,7 +151,7 @@ $(document).ready(function(){
             url: "/update_practices_adopted_at_facility",
             data: jQuery.param({selected_category: selectedCategory, key_word: keyWord, station_number: facilityStationNumber}),
             success: function(result) {
-                document.getElementById("va_facility_adoption_results").innerHTML = result[0]
+                document.getElementById("practices_adopted_by_facility_dyn").innerHTML = result[0]
                 document.getElementById("practices_adopted_at_facility_count").innerHTML = result[1]
             }
         });
