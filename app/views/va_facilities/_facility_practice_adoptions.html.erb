@@ -1,0 +1,30 @@
+<h1 class="font-sans-2xl margin-top-5 margin-bottom-3">
+  Practices adopted at this facility
+</h1>
+<div class="grid-col-12">
+  <div class="usa-search margin-bottom-2 facility-search-field">
+    <div role="search" class="flex-column">
+      <label for="dm-practice-search-field"></label>
+      <div id="search-bar-container" class="display-flex">
+        <input class="usa-input" id="dm-practice-search-field" title="Type at least three characters to search." autocomplete="off" type="search" name="search">
+        <button id="dm-practice-search-button" class="usa-button" type="submit" name="search-button">
+          <span class="usa-search__submit-text text-bold">Search</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="facility-category-select desktop:margin-bottom-3">
+    <%= render partial: 'va_facilities/facility_categories_combo_box', locals: {facility_category_selector: 'facility_category_select_adoptions'} %>
+  </div>
+
+</div>
+<div class="grid-col-12">
+  <div class="usa-search margin-bottom-2 facility-search-field">
+    # results:
+  </div>
+  <div class="facility-category-select">
+  </div>
+</div>
+<div class="grid-col-12">
+
+</div>

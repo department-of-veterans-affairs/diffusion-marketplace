@@ -1,0 +1,32 @@
+@import '../variables/colors';
+
+#dm-va-facilities-index {
+  .usa-table--borderless {
+    th, td {
+      background-color:$dm-color-gray-2;
+    }
+  }
+}
+
+.fake-link{
+  color: $dm-color-black !important;
+  font-weight: bold !important;
+  outline-style: none !important;
+  background-color: transparent !important;
+  padding: 0 !important;
+}
+
+.facility-phone-number{
+  text-decoration: none;
+  color: $dm-color-blue-50v;
+}
+.facility-category-select{
+  width: 309px;
+  height: 40px;
+  float: right;
+}
+.facility-search-field{
+  width: 641px;
+  height: 37px;
+  float: left;
+}

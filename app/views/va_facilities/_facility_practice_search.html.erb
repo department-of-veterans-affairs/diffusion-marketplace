@@ -1,0 +1,50 @@
+<%
+  sort_options = [
+      ['Sort by A to Z', 'a_to_z', class: 'usa-select'],
+      ['Sort by most adoptions', 'adoptions', class: 'usa-select'],
+      ['Sort by most recently added', 'added', class: 'usa-select']
+  ]
+%>
+<h1 class="font-sans-2xl margin-top-5 margin-bottom-3">
+  Practices created at this facility
+</h1>
+<div style="width: 100%; overflow: hidden;">
+  <div class="usa-search margin-bottom-2 facility-search-field">
+    <div role="search" class="flex-column">
+      <label for="dm-practice-search-field"></label>
+      <div id="search-bar-container" class="display-flex">
+        <input class="usa-input" id="dm-practice-search-field" title="Type at least three characters to search." autocomplete="off" type="search" name="search">
+        <button id="dm-practice-search-button" class="usa-button" type="submit" name="search-button">
+          <span class="usa-search__submit-text text-bold">Search</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="facility-category-select desktop:margin-bottom-3">
+    <%= render partial: 'va_facilities/facility_categories_combo_box', locals: {facility_category_selector: 'facility_category_select'} %>
+  </div>
+</div>
+<div style="width: 100%; overflow: hidden;">
+  <div class="usa-search margin-bottom-2 facility-search-field">
+    # results:
+  </div>
+  <div class="facility-category-select">
+    <%= select_tag('', options_for_select(sort_options), id: 'facility_sort_option', name: 'sort_option', class: 'height-5 usa-select margin-0') %>
+  </div>
+</div>
+<div class="grid-col-12">
+  <div class="dm-practice-card-section">
+    <% if @created_practices.present? %>
+      <div id="dm-practice-card-list" class="grid-row grid-gap-3">
+        <% @created_practices.each do |practice| %>
+          <%= render partial: 'shared/practice_card', locals: { practice: practice} %>
+        <% end %>
+      </div>
+    <% end %>
+    <% if @created_practices_count < @practice_results_count %>
+      <div align="center" class="desktop:margin-bottom-3">
+        <%= button_tag "Load more", num_practice_recs: @num_practice_recs, type: 'button', id: "btn_facility_show_page_load_more", class: "usa-button--outline dm-btn-base dm-load-more-btn width-auto" %>
+      </div>
+    <% end %>
+  </div>
+</div>

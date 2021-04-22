@@ -35,6 +35,10 @@ Rails.application.config.assets.precompile += %w(
                                                   diffusion_history/_map_utilities.js
                                                   _practice_utilities.js
                                                   metrics_page.js
+                                                  facilities_utilities.js
+                                                  visns/visns_index_map.js
+                                                  visns/_map_utilities.js
+                                                  facility_map.js
                                                   visns/maps.js
                                               )
 
