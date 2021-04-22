@@ -1,6 +1,5 @@
 module PracticeUtils
   def practices_json(practices)
-    # practices = Practice.where(approved: true, published: true)
     practices_array = []
 
     practices.each do |practice|

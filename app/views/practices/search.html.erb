@@ -53,28 +53,39 @@
         </div>
       </form>
 
-    <%
-      sort_options = [
-          ['Sort by most relevant', 'most_relevant', selected: true, class: 'usa-select'],
-          ['Sort by A to Z', 'a_to_z', class: 'usa-select'],
-          ['Sort by most adoptions', 'adoptions', class: 'usa-select'],
-          ['Sort by most recently added', 'added', class: 'usa-select']
-      ]
+    <%#
+<!--      sort_options = [-->
+<!--          ['Sort by most relevant', 'most_relevant', selected: true, class: 'usa-select'],-->
+<!--          ['Sort by A to Z', 'a_to_z', class: 'usa-select'],-->
+<!--          ['Sort by most adoptions', 'adoptions', class: 'usa-select'],-->
+<!--          ['Sort by most recently added', 'added', class: 'usa-select']-->
+<!--      ]-->
     %>
 
-    <section id="dm-search-practices" class="dm-search-practices display-none margin-top-2">
-      <div class="grid-row margin-bottom-105 flex-align-center">
-        <p class="font-sans-normal grid-col-8 line-height-26" id="results-summary"></p>
-        <div class="grid-col-12 order-first margin-top-0 dm-sort-container margin-bottom-3 desktop:margin-top-1 desktop:margin-bottom-0 desktop:margin-top-0 desktop:order-last desktop:grid-col-4">
-          <%= label_tag 'search_sort_option', '', class: 'usa-label margin-0', 'aria-label': 'Search sort options'%>
-          <%= select_tag('', options_for_select(sort_options), id: 'search_sort_option', name: 'search_sort_option', class: 'height-5 usa-select margin-0') %>
-        </div>
-      </div>
-      <div id="search-results" class="grid-row grid-gap-3"></div>
-    </section>
-    <div class="dm-loading-spinner display-none flex-justify-center flex-align-self-center margin-y-8 desktop:margin-y-10">
-      <i class="fas fa-circle-notch"></i>
-    </div>
+    <%= render partial: 'shared/search_sort_select_section', locals: {
+      sort_options: [
+        ['Sort by most relevant', 'most_relevant', selected: true, class: 'usa-select'],
+        ['Sort by A to Z', 'a_to_z', class: 'usa-select'],
+        ['Sort by most adoptions', 'adoptions', class: 'usa-select'],
+        ['Sort by most recently added', 'added', class: 'usa-select']
+      ],
+      section_id: 'dm-search-practices',
+      section_classes: 'dm-search-practices display-none margin-top-2',
+      first_div_classes: 'grid-row margin-bottom-105 flex-align-center',
+      second_div_classes: 'grid-col-12 order-first margin-top-0 dm-sort-container margin-bottom-3 desktop:margin-top-1 desktop:margin-bottom-0 desktop:margin-top-0 desktop:order-last desktop:grid-col-4'
+      }
+    %>
+<!--    <section id="dm-search-practices" class="dm-search-practices display-none margin-top-2">-->
+<!--      <div class="grid-row margin-bottom-105 flex-align-center">-->
+<!--        <p class="font-sans-normal grid-col-8 line-height-26" id="results-summary"></p>-->
+<!--        <div class="grid-col-12 order-first margin-top-0 dm-sort-container margin-bottom-3 desktop:margin-top-1 desktop:margin-bottom-0 desktop:margin-top-0 desktop:order-last desktop:grid-col-4">-->
+          <%#= label_tag 'search_sort_option', '', class: 'usa-label margin-0', 'aria-label': 'Search sort options'%>
+          <%#= select_tag('', options_for_select(sort_options), id: 'search_sort_option', name: 'search_sort_option', class: 'height-5 usa-select margin-0') %>
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div id="search-results" class="grid-row grid-gap-3"></div>-->
+<!--    </section>-->
+    <%= render partial: 'shared/search_loading_spinner' %>
 
     <section id="no-search-query-content" class="margin-x-auto">
       <div class="text-and-icon-container position-relative">

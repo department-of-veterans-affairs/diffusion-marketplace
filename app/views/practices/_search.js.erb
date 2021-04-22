@@ -1,23 +1,25 @@
-var practices = <%= @practices_json %>;
-var facilities = <%= raw @facilities_data.to_json %>;
-var visns = <%= raw @visn_data.to_json %>;
-var adoptions = <%= raw @diffusion_histories.to_json %>;
-var results = null;
-var resultsHTML = '';
-var NO_QUERY_CONTENT = '#no-search-query-content';
-var RESULTS_SECTION = '#dm-search-practices';
-var SPINNER = '.dm-loading-spinner';
-var LOAD_MORE_CONTAINER = '.button-box';
-var SEARCH_RESULTS = '#search-results';
-var SORT_EL = '#search_sort_option';
-var isBlankSearch = false;
-// Add Namespace for scroll position
-var pagePosition = {
-    original: 0,
-    // Log the user's spot on the page when they open the filters modal on mobile
-    getScrollPosition: function() {
-      this.original = $(window).scrollTop();
-  }
+if (window.location.pathname === '/search') {
+    var practices = <%= @practices_json %>;
+    var facilities = <%= raw @facilities_data.to_json %>;
+    var visns = <%= raw @visn_data.to_json %>;
+    var adoptions = <%= raw @diffusion_histories.to_json %>;
+    var results = null;
+    var resultsHTML = '';
+    var NO_QUERY_CONTENT = '#no-search-query-content';
+    var RESULTS_SECTION = '#dm-search-practices';
+    var SPINNER = '.dm-loading-spinner';
+    var LOAD_MORE_CONTAINER = '.button-box';
+    var SEARCH_RESULTS = '#search-results';
+    var SORT_EL = '#search_sort_option';
+    var isBlankSearch = false;
+    // Add Namespace for scroll position
+    var pagePosition = {
+        original: 0,
+        // Log the user's spot on the page when they open the filters modal on mobile
+        getScrollPosition: function () {
+            this.original = $(window).scrollTop();
+        }
+    }
 }
 
 // sort functions

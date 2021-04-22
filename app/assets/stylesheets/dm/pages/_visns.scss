@@ -62,4 +62,44 @@
   .visn-liaison-info {
     border-radius: 10px;
   }
+
+  #visn-search-field, #visn-search-button {
+    height: 38px !important;
+  }
+
+  .usa-combo-box__toggle-list, .usa-combo-box__clear-input {
+    top: 1.8em;
+  }
+
+  .usa-combo-box__toggle-list {
+    right: 0.8em;
+  }
+
+  .usa-combo-box__clear-input {
+    right: 3.2em;
+  }
+
+  .usa-combo-box__input-button-separator {
+    top: 1.7em;
+    right: 3.35em;
+  }
+
+  .usa-combo-box__input {
+    margin-top: 0 !important;
+  }
+
+  .usa-combo-box__list {
+    width: calc(100% - 24px);
+  }
+
+  hr {
+    border: none;
+    height: 2px;
+    background: #dcdee0;
+  }
+
+  mark {
+    background: $dm-color-gold-20v;
+    font-weight: bold;
+  }
 }

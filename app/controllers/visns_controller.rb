@@ -1,4 +1,5 @@
 class VisnsController < ApplicationController
+  include PracticeUtils
   before_action :set_visn, only: :show
 
   def index
@@ -55,6 +56,8 @@ class VisnsController < ApplicationController
     end
 
     searchable_practices = Practice.searchable_practices
+    # set '@practices_json' to avoid js console error when utilizing the practices/search.js.erb file
+    @practices_json = practices_json(searchable_practices)
 
     practices_created_by_visn = []
     searchable_practices.each do |p|
@@ -64,7 +67,7 @@ class VisnsController < ApplicationController
       if p.facility? && origin_facilities.any?
         @visn_va_facilities.each do |vaf|
           origin_facilities.each do |of|
-            practices_created_by_visn << p if of.facility_id === vaf.station_number.to_s
+            practices_created_by_visn << p if of.facility_id === vaf.station_number.to_s && !practices_created_by_visn.include?(p)
           end
         end
       # add practices that have an initiating_facility
@@ -73,18 +76,34 @@ class VisnsController < ApplicationController
       end
     end
 
+    def get_categories_by_practices(practices, practice_categories)
+      practices.each do |p|
+        p.categories.where(is_other: false).where.not(name: 'Other').each do |c|
+          practice_categories << c.name unless practice_categories.include?(c.name)
+        end
+      end
+      practice_categories.sort_by! { |pc| pc.downcase }
+    end
+
     @practices_created_json = practices_json(practices_created_by_visn)
+    # get the unique categories for practices created in a VISN
+    @practices_created_categories = []
+    get_categories_by_practices(practices_created_by_visn, @practices_created_categories)
+
 
     practices_adopted_by_visn = []
     searchable_practices.each do |p|
       @visn_va_facilities.each do |vaf|
         p.diffusion_histories.each do |dh|
-          practices_adopted_by_visn << p if dh.facility_id === vaf.station_number.to_s
+          practices_adopted_by_visn << p if dh.facility_id === vaf.station_number.to_s && !practices_adopted_by_visn.include?(p)
         end
       end
     end
 
     @practices_adopted_json = practices_json(practices_adopted_by_visn)
+    # get the unique categories for practices adopted in a VISN
+    @practices_adopted_categories = []
+    get_categories_by_practices(practices_adopted_by_visn, @practices_adopted_categories)
   end
 
   private
