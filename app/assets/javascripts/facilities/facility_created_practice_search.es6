@@ -38,6 +38,7 @@ function filterCategoriesEventListener() {
 
 function searchEventListener() {
   $(searchBtn).on("click", function(e) {
+    e.preventDefault();
     let searchTerm = $(searchField).val();
     $(searchField).data("search", searchTerm);
     setDataAndMakeRequest({searchTerm: searchTerm});
@@ -112,6 +113,12 @@ function sendAjaxRequest(data) {
 
       if (result.count === 0) {
         $(searchNoResults).removeClass('display-none');
+      }
+
+      if (result.count <= 1) {
+        $(sortSelect).parent().addClass('display-none');
+      } else {
+        $(sortSelect).parent().removeClass("display-none");
       }
 
       if (result.next != null) {

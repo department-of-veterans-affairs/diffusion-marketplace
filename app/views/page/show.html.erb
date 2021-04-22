@@ -2,7 +2,6 @@
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     <%= render partial: 'show', formats: [:js] %>
   <% end %>
-  <%= javascript_include_tag '_practice_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <% page_narrow_classes = 'grid-col-8 margin-x-auto' if @page.narrow? %>

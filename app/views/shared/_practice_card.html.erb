@@ -1,3 +1,7 @@
+<% provide :head_tags do %>
+  <%= javascript_include_tag '_practice_card_utilities', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
 <div class="dm-practice-card padding-y-105">
   <% if current_user %>
     <%= link_to practice_favorite_path(practice, format: :js), method: :post, remote: true, 'title': "Bookmark #{practice.name}", 'aria-label': "Bookmark #{practice.name}", 'tabindex': '-1', 'aria-hidden': 'true', 'class': "dm-practice-bookmark-btn", 'id': "dm-bookmark-button-#{practice.id}" do %>
@@ -6,7 +10,7 @@
   <% end %>
 
   <%= link_to practice, 'aria-label': "Go to #{practice.name}", 'tabindex': '-1', 'aria-hidden': 'true', class: "dm-practice-link#{practice.main_display_image.present? ? '' : ' dm-alt-practice-link'}" do %>
-    <div class=" dm-practice-card-container">
+    <div class=" dm-practice-card-container bg-white">
       <% if practice.main_display_image.present? %>
         <div class="dm-practice-card-img-container">
           <img alt="<%= practice.name %> Marketplace Card Image" class="grid-row marketplace-card-img radius-top-sm" src="<%= practice.main_display_image_s3_presigned_url(:thumb) %>">
@@ -19,7 +23,7 @@
         </div>
       <% end %>
 
-      <div class="padding-105 height-card-mobile bg-white">
+      <div class="padding-105 height-card-mobile">
         <% if practice.main_display_image.present? %>
           <h3 class="text-normal font-sans-lg dm-practice-title multiline-ellipses-2 margin-top-0 margin-bottom-2">
             <%= practice.name%>
