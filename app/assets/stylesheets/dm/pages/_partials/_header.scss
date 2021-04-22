@@ -16,6 +16,10 @@
     }
   }
 
+  .usa-col {
+    min-width: 100%;
+  }
+
   .usa-accordion, .usa-nav__submenu, .usa-nav__submenu-list {
     > li {
       border-top-width: 1px;
@@ -70,10 +74,6 @@
           background-color: transparent;
         }
         width: 125.422px !important;
-      }
-
-      .usa-nav__submenu[hidden] {
-        display: none; // makes sure hidden submenu doesn't flash when loading page
       }
     }
 

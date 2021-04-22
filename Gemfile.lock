@@ -30,7 +30,7 @@ GIT
 GIT
   remote: https://github.com/agilesix/uswds-rails.git
   revision: ebd25cc1053f623ece1eb351b31d3672b6475a60
-  branch: 2.11.1
+  ref: ebd25cc
   specs:
     uswds-rails (2.11.1)
       bourbon (= 4.2.7)
