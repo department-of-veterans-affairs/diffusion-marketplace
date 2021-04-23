@@ -35,66 +35,74 @@ class VaFacility < ApplicationRecord
   end
 
   def self.get_adoptions_by_facility_and_keyword(station_number, key_word)
+    search_term = key_word
     key_word = "%" + key_word.downcase + "%"
-    sql = "SELECT p.id, p.name, dh.facility_id, dhs.status, dhs.start_time,
-          (select count(*) from diffusion_histories where p.id = diffusion_histories.practice_id) adoptions
-          FROM practices p
-          JOIN diffusion_histories dh on p.id = dh.practice_id
-          JOIN diffusion_history_statuses dhs on dh.id = dhs.diffusion_history_id
-          WHERE p.published = true AND dh.facility_id = $1
-          AND (p.name ilike ($2) OR p.description ilike ($2) OR p.short_name ilike ($2) OR p.summary ilike ($2) OR p.tagline ilike ($2))
-          order by adoptions desc"
-    ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"], [nil, "#{key_word}"]]).to_a
-  end
-
-  def self.get_adoptions_by_facility_category_and_keyword(station_number, category_id, key_word)
-    key_word = "%" + key_word.downcase + "%"
-    sql = "SELECT p.id, p.name, dh.facility_id, dhs.status, dhs.start_time,
+    sql = "SELECT distinct p.id, p.name, dh.facility_id, dhs.status, dhs.start_time,
           (select count(*) from diffusion_histories where p.id = diffusion_histories.practice_id) adoptions
           FROM practices p
           JOIN diffusion_histories dh on p.id = dh.practice_id
           JOIN diffusion_history_statuses dhs on dh.id = dhs.diffusion_history_id
           JOIN category_practices cp on p.id = cp.practice_id
           JOIN categories c on cp.category_id = c.id
+          JOIN va_facilities vaf on dh.facility_id = vaf.station_number
+          WHERE p.published = true AND dh.facility_id = $1
+          AND (p.name ilike ($2) OR p.description ilike ($2) OR p.short_name ilike ($2) OR p.summary ilike ($2) OR p.tagline ilike ($2)
+          OR p.overview_problem ilike ($2) OR p.overview_solution ilike ($2) OR p.overview_results ilike ($2) "
+    if search_term.downcase == "emerging"
+      sql += "OR p.maturity_level = 0 "
+    elsif search_term.downcase == "replicate"
+      sql += "OR p.maturity_level = 1 "
+    elsif search_term.downcase == "scale"
+      sql += "AND p.maturity_level = 2 "
+    end
+    #sql += "OR ($2) = ANY(lower(c.related_terms)::character varying[]) "
+    sql += "OR c.name ilike ($2) OR vaf.official_station_name ilike ($2) "
+    sql += "OR vaf.common_name ilike ($2)) order by adoptions desc"
+    ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"], [nil, "#{key_word}"]]).to_a
+  end
+
+  def self.get_adoptions_by_facility_category_and_keyword(station_number, category_id, key_word)
+    search_term = key_word
+    key_word = "%" + key_word.downcase + "%"
+    sql = "SELECT distinct p.id, p.name, dh.facility_id, dhs.status, dhs.start_time,
+          (select count(*) from diffusion_histories where p.id = diffusion_histories.practice_id) adoptions
+          FROM practices p
+          JOIN diffusion_histories dh on p.id = dh.practice_id
+          JOIN diffusion_history_statuses dhs on dh.id = dhs.diffusion_history_id
+          JOIN category_practices cp on p.id = cp.practice_id
+          JOIN categories c on cp.category_id = c.id
+          JOIN va_facilities vaf on dh.facility_id = vaf.station_number
           WHERE p.published = true AND dh.facility_id = $1 AND c.id = $2
-          AND (p.name ilike ($3) OR p.description ilike ($3) OR p.short_name ilike ($3) OR p.summary ilike ($3) OR p.tagline ilike ($3))
-          order by adoptions desc"
+          AND (p.name ilike ($3) OR p.description ilike ($3) OR p.short_name ilike ($3) OR p.summary ilike ($3) OR p.tagline ilike ($3)
+          OR p.overview_problem ilike ($3) OR p.overview_solution ilike ($3) OR p.overview_results ilike ($3) "
+        if search_term.downcase == "emerging"
+          sql += "OR p.maturity_level = 0 "
+        elsif search_term.downcase == "replicate"
+          sql += "OR p.maturity_level = 1 "
+        elsif search_term == "scale"
+          sql += "OR p.maturity_level = 2 "
+        end
+    #sql += "OR ($2) = ANY(lower(c.related_terms)::character varying[]) "
+        sql += "OR c.name ilike ($3) OR vaf.official_station_name ilike ($3) "
+        sql += "OR vaf.common_name ilike ($3)) order by adoptions desc"
     ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"], [nil, "#{category_id}"], [nil, "#{key_word}"],]).to_a
   end
 
 
 
   def self.rewrite_practices_adopted_at_this_facility_filtered_by_category(adoptions_at_facility, total_adoptions_for_practice)
-    # ret_val = '<div class="usa-table-container--scrollable grid-col-12">'
-    # ret_val += '<table class="usa-table grid-col-12">'
-    # ret_val += '<caption></caption>'
-    # ret_val += '<thead>'
-    # ret_val += '<tr>'
-    # ret_val += '<th data-sortable scope="col" role="columnheader" aria-sort="descending">Practice name</th>'
-    # ret_val += '<th data-sortable scope="col" role="columnheader">Status <a href="#facility_status_def" aria-controls="facility_status_def" data-open-modal><span><img class="fake-link_2" id="facility-status-modal" src="/assets/question_tooltip.svg"/></span></a>'
-    # ret_val += '<th data-sortable scope="col" role="columnheader">Start date</th>'
-    # ret_val += '<th data-sortable scope="col" role="columnheader">Total VA adoptions</th>'
-    # ret_val += '</tr>'
-    # ret_val += '</thead>'
-    # ret_val += '<tbody>'
     ret_val = ""
-
     if adoptions_at_facility.count > 0
       adoptions_at_facility.each do |ad|
+        start_date = ad["start_time"].to_date.strftime("%m/%d/%Y")
         ret_val += '<tr>'
         ret_val += '<th scope="row" role="rowheader">' + ad["name"] + '</th>'
         ret_val += '<td data-sort-value='  + ad["status"] + '>' + ad["status"] + '</td>'
-        ret_val += '<td data-sort-value='  + ad["start_time"] + '>' + ad["start_time"] + '</td>'
+        ret_val += '<td data-sort-value='  + start_date + '>' + start_date + '</td>'
         ret_val += '<td data-sort-value='  + ad["adoptions"].to_s + '>' + ad["adoptions"].to_s + '</td>'
         ret_val += '</tr>'
       end
     end
-    # ret_val += '</tbody>'
-    # ret_val += '</table>'
-    # ret_val += '<div class="usa-sr-only usa-table__announcement-region" aria-live="polite">'
-    # ret_val += '</div>'
-    # ret_val += '</div>'
-    # ret_val += '</div>'
     ret_val
   end
 

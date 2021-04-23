@@ -12,9 +12,10 @@
     <tbody id="practices_adopted_by_facility_dyn">
     <% @adoptions_at_facility.each do |ad| %>
       <tr>
+        <% start_date = ad["start_time"].to_date.strftime("%m/%d/%Y") %>
         <th scope="row" role="rowheader"><%=ad["name"] %></th>
         <td data-sort-value="<%=ad["status"] %>"><%=ad["status"] %></td>
-        <td data-sort-value="<%=ad["start_time"] %>"><%=ad["start_time"] %></td>
+        <td data-sort-value="<%=start_date %>"><%=start_date %></td>
         <td data-sort-value="<%=ad["adoptions"] %>"><%= ad["adoptions"] %></td>
       </tr>
     <% end %>
