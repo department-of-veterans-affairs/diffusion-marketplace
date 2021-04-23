@@ -45,22 +45,22 @@
           </a>
         </li>
       </ul>
-      <div class="usa-nav__secondary">
+      <div class="usa-nav__secondary<%= ' dm-signed-out-nav-secondary' if !user_signed_in? %>">
         <%= render 'shared/navbar_search' %>
         <ul class="usa-nav__primary usa-accordion margin-top-0 dm-nav-header-profile <%= 'dm-nav-header-profile-sign-in' if !user_signed_in? %>">
           <% if user_signed_in? %>
             <% if ENV['USE_NTLM'] == 'true' %>
-              <li class="usa-nav__primary-item dm-nav-header-profile-link">
+              <li class="usa-nav__primary-item">
                 <a class="usa-nav__link <%= 'dm-current-link' if request.fullpath == user_path(current_user) %>" href="<%= user_path(current_user) %>">
                   <span>Your profile</span>
                 </a>
               </li>
             <% else %>
-              <li class="usa-nav__primary-item dm-nav-header-profile-link">
+              <li class="usa-nav__primary-item">
                 <button class="usa-accordion__button usa-nav__link" aria-expanded="false" aria-controls="dm-user-profile-options">
                   <span>Your profile</span>
                 </button>
-                <div id="dm-user-profile-options" class="usa-nav__submenu usa-megamenu">
+                <div id="dm-user-profile-options" class="usa-nav__submenu">
                   <div class="grid-row grid-gap-4">
                     <div class="usa-col">
                       <ul class="usa-nav__submenu-list">
@@ -79,7 +79,7 @@
               </li>
             <% end %>
           <% else %>
-            <li class="usa-nav__primary-item dm-nav-header-profile-link">
+            <li class="usa-nav__primary-item">
               <%= link_to 'Sign in', new_user_session_path, class: 'usa-nav__link' %>
             </li>
           <% end %>
