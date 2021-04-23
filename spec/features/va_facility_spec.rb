@@ -190,11 +190,10 @@ describe 'VA facility pages', type: :feature do
         DiffusionHistoryStatus.create!(diffusion_history_id: dh_5.id, status: 'Completed')
         dh_6 = DiffusionHistory.create!(practice_id: @practices[4].id, facility_id: '403')
         DiffusionHistoryStatus.create!(diffusion_history_id: dh_6.id, status: 'Completed')
-
-        visit '/facilities/a-first-facility-test-common-name'
       end
 
       it 'should display the correct default content' do
+        visit '/facilities/a-first-facility-test-common-name'
         within(:css, '.dm-facility-created-practice-search') do
           # should see all the categories
           within(:css, '.dm-created-practice-categories') do
@@ -234,6 +233,7 @@ describe 'VA facility pages', type: :feature do
       end
 
       it 'should sort the content by most adopted practices' do
+        visit '/facilities/a-first-facility-test-common-name'
         within(:css, '.dm-facility-created-practice-search') do
           select 'Sort by most adopted practices', from: 'dm-created-practices-sort-option'
           expect(page).to have_content('8 results')
@@ -256,6 +256,7 @@ describe 'VA facility pages', type: :feature do
       end
 
       it 'should sort the content by most recently added' do
+        visit '/facilities/a-first-facility-test-common-name'
         within(:css, '.dm-facility-created-practice-search') do
           select 'Sort by most recently added', from: 'dm-created-practices-sort-option'
           expect(page).to have_content('8 results')
@@ -278,6 +279,7 @@ describe 'VA facility pages', type: :feature do
       end
 
       it 'should filter by categories and allow for sorting' do
+        visit '/facilities/a-first-facility-test-common-name'
         within(:css, '.dm-facility-created-practice-search') do
           select 'COVID', from: 'dm-created-practice-categories'
           expect(page).to have_content('Cards for Memory')
@@ -288,6 +290,7 @@ describe 'VA facility pages', type: :feature do
       end
 
       it 'should allow search for practice info' do
+        visit '/facilities/a-first-facility-test-common-name'
         within(:css, '.dm-facility-created-practice-search') do
           fill_in 'dm-created-practice-search-field', :with => 'Cards'
           find('#dm-created-practice-search-button').click
@@ -321,6 +324,7 @@ describe 'VA facility pages', type: :feature do
       end
 
       it 'should allow search for practice origin facility and adopting facility' do
+        visit '/facilities/a-first-facility-test-common-name'
         within(:css, '.dm-facility-created-practice-search') do
           fill_in 'dm-created-practice-search-field', :with => 'd test name'
           find('#dm-created-practice-search-button').click
@@ -336,6 +340,7 @@ describe 'VA facility pages', type: :feature do
       end
 
       it 'should allow search for categories and related terms' do
+        visit '/facilities/a-first-facility-test-common-name'
         within(:css, '.dm-facility-created-practice-search') do
           fill_in 'dm-created-practice-search-field', :with => 'coronavirus'
           find('#dm-created-practice-search-button').click
