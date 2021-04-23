@@ -29,10 +29,10 @@ GIT
 
 GIT
   remote: https://github.com/agilesix/uswds-rails.git
-  revision: 3ab4e30ba00173a8d2f6eee6a6e18a32144760ab
-  branch: 2.8.1
+  revision: ebd25cc1053f623ece1eb351b31d3672b6475a60
+  ref: ebd25cc
   specs:
-    uswds-rails (2.8.1)
+    uswds-rails (2.11.1)
       bourbon (= 4.2.7)
       neat (= 1.8)
       rails-assets-normalize-css (= 3.0.3)

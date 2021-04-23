@@ -1,0 +1,37 @@
+<h2 class="line-height-37px font-sans-xl margin-top-10 margin-bottom-05">List of VA facilities in this VISN</h2>
+<div class="usa-table-container--scrollable">
+  <table class="usa-table usa-table--borderless width-100">
+    <caption class="usa-sr-only">VISN <%= @visn.number %> facilities</caption>
+    <thead>
+    <tr>
+      <th data-sortable scope="col" role="columnheader" class="">
+        Facility name
+      </th>
+      <th data-sortable scope="col" role="columnheader" class="grid-col-2">
+        Complexity
+      </th>
+      <th data-sortable scope="col" role="columnheader" class="grid-col-2">
+        Created
+      </th>
+      <th data-sortable scope="col" role="columnheader" class="grid-col-2">
+        Adopted
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+      <% @visn_va_facilities.each do |facility| %>
+        <tr>
+          <th scope="row" role="rowheader">
+            <%= link_to "#{facility_name_with_common_name(facility.official_station_name, facility.common_name)}", va_facility_path(facility), class: 'dm-internal-link' %>
+          </th>
+          <td><%= facility.fy17_parent_station_complexity_level %></td>
+          <td><%= get_practices_created_count_by_va_facility(facility) %></td>
+          <td><%= get_practices_adopted_count_by_va_facility(facility) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="usa-sr-only usa-table__announcement-region" aria-live="polite">
+    <!-- this content will change when sort changes -->
+  </div>
+</div>
