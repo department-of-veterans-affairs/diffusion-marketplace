@@ -112,18 +112,8 @@ $(document).ready(function(){
         return decodeURIComponent(results[2].replace(/\+/g, ' '));
     }
 
-    function loadMorePractices(){
-        let btn = document.getElementById("btn_facility_show_page_load_more");
-        let numPracticeRecs = parseInt(btn.getAttribute("num_practice_recs"));
-        numPracticeRecs += 3;
-        let paramMore = getParameterByName("more", newUrl)
-        let newUrl = removeParam("more", curUrl);
-        newUrl.includes("?") ? newUrl += "&" : newUrl += "?";
-        newUrl += `practices=${numPracticeRecs}`;
-        window.location.href = newUrl;
-    }
-
     $("#dm-adopted-practices-search-button").click (function(e) {
+        e.preventDefault();
         let selectedCategory = document.getElementById("facility_category_select_adoptions").value
         let keyWord = document.getElementById("dm-adopted-practices-search-field").value
         let facilityStationNumber = document.getElementById("facility_station_number").value
