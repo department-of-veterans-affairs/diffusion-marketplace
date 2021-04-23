@@ -145,214 +145,214 @@ describe 'VA facility pages', type: :feature do
       visit '/facilities/a-first-facility-test-common-name'
       expect(page).to have_current_path(va_facility_path(@va_facility1))
     end
+  end
 
-    context 'created practices search' do
-      before do
-        cat_1 = Category.create!(name: 'COVID', related_terms: ["COVID-19", "COVID 19", "Coronavirus"] )
-        cat_2 = Category.create(name: 'Telehealth')
-        cat_3 = Category.create!(name: 'Other')
-        cat_4 = Category.create!(name: 'Other Subcategory', is_other: true)
-        cat_5 = Category.create!(name: 'Main Level Cat')
+  describe 'show page created practices search' do
+    before do
+      cat_1 = Category.create!(name: 'COVID', related_terms: ["COVID-19", "COVID 19", "Coronavirus"] )
+      cat_2 = Category.create(name: 'Telehealth')
+      cat_3 = Category.create!(name: 'Other')
+      cat_4 = Category.create!(name: 'Other Subcategory', is_other: true)
+      cat_5 = Category.create!(name: 'Main Level Cat')
 
-        user = User.create!(email: 'test@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-        practice_names = ['Cards for Memory', 'BIONE', 'GERIVETZ', 'Gerofit', 'Pink Gloves Program', 'REVAMP', 'Telemedicine', 'Different practice']
-        @practices = []
-        practice_names.each do |name|
-          @practices.push(Practice.create!(name: name, approved: true, published: true, enabled: true, initiating_facility_type: "facility", tagline: "Tagline for #{name}", support_network_email: 'test@test.com', user: user, summary: "Summary for #{name}", overview_problem: "Overview problem for #{name}", overview_solution: "Overview solution for #{name}", overview_results: "Overview results for #{name}", maturity_level: 0 ))
-        end
-
-        pr_1 = Practice.create!(name: 'Unpublished practice', approved: false, published: false, user: user)
-        CategoryPractice.create!(practice: pr_1, category: cat_5)
-
-        @practices.each_with_index do |pr, index|
-          PracticeOriginFacility.create!(practice: pr, facility_id: '421', facility_type: 0)
-          if pr.name == 'Different practice'
-            CategoryPractice.create!(practice: pr, category: cat_3)
-            CategoryPractice.create!(practice: pr, category: cat_4)
-          elsif index < 3
-            CategoryPractice.create!(practice: pr, category: cat_1)
-          elsif index >= 3
-            CategoryPractice.create!(practice: pr, category: cat_2)
-            CategoryPractice.create!(practice: pr, category: cat_4)
-            PracticeOriginFacility.create!(practice: pr, facility_id: '402', facility_type: 0)
-          end
-        end
-
-        dh_1 = DiffusionHistory.create!(practice_id: @practices[4].id, facility_id: '401')
-        DiffusionHistoryStatus.create!(diffusion_history_id: dh_1.id, status: 'Completed')
-        dh_2 = DiffusionHistory.create!(practice_id: @practices[4].id, facility_id: '402')
-        DiffusionHistoryStatus.create!(diffusion_history_id: dh_2.id, status: 'Completed')
-        dh_3 = DiffusionHistory.create!(practice_id: @practices[3].id, facility_id: '401')
-        DiffusionHistoryStatus.create!(diffusion_history_id: dh_3.id, status: 'Completed')
-        dh_4 = DiffusionHistory.create!(practice_id: @practices[6].id, facility_id: '401')
-        DiffusionHistoryStatus.create!(diffusion_history_id: dh_4.id, status: 'Completed')
-        dh_5 = DiffusionHistory.create!(practice_id: @practices[0].id, facility_id: '402')
-        DiffusionHistoryStatus.create!(diffusion_history_id: dh_5.id, status: 'Completed')
-        dh_6 = DiffusionHistory.create!(practice_id: @practices[4].id, facility_id: '403')
-        DiffusionHistoryStatus.create!(diffusion_history_id: dh_6.id, status: 'Completed')
-
-        visit '/facilities/a-first-facility-test-common-name'
-        find('.dm-facility-created-practice-search')
+      user = User.create!(email: 'test@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+      practice_names = ['Cards for Memory', 'BIONE', 'GERIVETZ', 'Gerofit', 'Pink Gloves Program', 'REVAMP', 'Telemedicine', 'Different practice']
+      @practices = []
+      practice_names.each do |name|
+        @practices.push(Practice.create!(name: name, approved: true, published: true, enabled: true, initiating_facility_type: "facility", tagline: "Tagline for #{name}", support_network_email: 'test@test.com', user: user, summary: "Summary for #{name}", overview_problem: "Overview problem for #{name}", overview_solution: "Overview solution for #{name}", overview_results: "Overview results for #{name}", maturity_level: 0 ))
       end
 
-      it 'should display the correct default content' do
-        within(:css, '.dm-facility-created-practice-search') do
-          # should see all the categories
-          within(:css, '.dm-created-practice-categories') do
-            expect(page).to have_content('COVID')
-            expect(page).to have_content('Telehealth')
-            expect(page).to have_no_content('Other')
-            expect(page).to have_no_content('Other Subcategory')
-            expect(page).to have_no_content('Main Level Cat')
-          end
-          expect(find(".dm-created-practice-categories.usa-select").value).to eq("")
-          expect(find("#dm-created-practice-search-field").value).to eq("")
-          expect(find(".dm-created-practice-results-count").text).to eq("8 results:")
-          expect(find("#dm-created-practices-sort-option").value).to eq("a_to_z")
-          # should see 3 sort filters
-          within(:css, "#dm-created-practices-sort-option") do
-            expect(page).to have_content('Sort by A to Z')
-            expect(page).to have_content('Sort by most adopted practices')
-            expect(page).to have_content('Sort by most recently added')
-          end
-          page.has_button?('Load more')
-          expect(find_all('.dm-practice-title')[0]).to have_text('BIONE')
-          expect(find_all('.dm-practice-title')[1]).to have_text('Cards for Memory')
-          expect(find_all('.dm-practice-title').last).to have_text('Different practice')
-          expect(page).to have_css('.dm-practice-card', count: 3)
-          find('.dm-load-more-created-practices-btn').click
-          page.has_button?('Load more')
-          expect(page).to have_css('.dm-practice-card', count: 6)
-          expect(find_all('.dm-practice-title')[3]).to have_text('GERIVETZ')
-          expect(find_all('.dm-practice-title')[4]).to have_text('Gerofit')
-          expect(find_all('.dm-practice-title')[5]).to have_text('Pink Gloves Program')
-          find('.dm-load-more-created-practices-btn').click
-          expect(page).to have_css('.dm-practice-card', count: 8)
-          expect(find_all('.dm-practice-title')[6]).to have_text('REVAMP')
-          expect(find_all('.dm-practice-title')[7]).to have_text('Telemedicine')
-          page.has_no_button?('Load more')
+      pr_1 = Practice.create!(name: 'Unpublished practice', approved: false, published: false, user: user)
+      CategoryPractice.create!(practice: pr_1, category: cat_5)
+
+      @practices.each_with_index do |pr, index|
+        PracticeOriginFacility.create!(practice: pr, facility_id: '421', facility_type: 0)
+        if pr.name == 'Different practice'
+          CategoryPractice.create!(practice: pr, category: cat_3)
+          CategoryPractice.create!(practice: pr, category: cat_4)
+        elsif index < 3
+          CategoryPractice.create!(practice: pr, category: cat_1)
+        elsif index >= 3
+          CategoryPractice.create!(practice: pr, category: cat_2)
+          CategoryPractice.create!(practice: pr, category: cat_4)
+          PracticeOriginFacility.create!(practice: pr, facility_id: '402', facility_type: 0)
         end
       end
 
-      it 'should sort the content by most adopted practices' do
-        within(:css, '.dm-facility-created-practice-search') do
-          select 'Sort by most adopted practices', from: 'dm-created-practices-sort-option'
-          expect(page).to have_content('8 results')
-          page.has_button?('Load more')
-          expect(find_all('.dm-practice-title')[0]).to have_text('Pink Gloves Program')
-          expect(find_all('.dm-practice-title')[1]).to have_text('Gerofit')
-          expect(find_all('.dm-practice-title').last).to have_text('Telemedicine')
-          expect(page).to have_css('.dm-practice-card', count: 3)
-          find('.dm-load-more-created-practices-btn').click
-          expect(page).to have_css('.dm-practice-card', count: 6)
-          expect(find_all('.dm-practice-title')[3]).to have_text('Cards for Memory')
-          expect(find_all('.dm-practice-title')[4]).to have_text('BIONE')
-          expect(find_all('.dm-practice-title')[5]).to have_text('Different practice')
-          find('.dm-load-more-created-practices-btn').click
-          expect(page).to have_css('.dm-practice-card', count: 8)
-          expect(find_all('.dm-practice-title')[6]).to have_text('GERIVETZ')
-          expect(find_all('.dm-practice-title').last).to have_text('REVAMP')
-          page.has_no_button?('Load more')
-        end
-      end
+      dh_1 = DiffusionHistory.create!(practice_id: @practices[4].id, facility_id: '401')
+      DiffusionHistoryStatus.create!(diffusion_history_id: dh_1.id, status: 'Completed')
+      dh_2 = DiffusionHistory.create!(practice_id: @practices[4].id, facility_id: '402')
+      DiffusionHistoryStatus.create!(diffusion_history_id: dh_2.id, status: 'Completed')
+      dh_3 = DiffusionHistory.create!(practice_id: @practices[3].id, facility_id: '401')
+      DiffusionHistoryStatus.create!(diffusion_history_id: dh_3.id, status: 'Completed')
+      dh_4 = DiffusionHistory.create!(practice_id: @practices[6].id, facility_id: '401')
+      DiffusionHistoryStatus.create!(diffusion_history_id: dh_4.id, status: 'Completed')
+      dh_5 = DiffusionHistory.create!(practice_id: @practices[0].id, facility_id: '402')
+      DiffusionHistoryStatus.create!(diffusion_history_id: dh_5.id, status: 'Completed')
+      dh_6 = DiffusionHistory.create!(practice_id: @practices[4].id, facility_id: '403')
+      DiffusionHistoryStatus.create!(diffusion_history_id: dh_6.id, status: 'Completed')
 
-      it 'should sort the content by most recently added' do
-        within(:css, '.dm-facility-created-practice-search') do
-          select 'Sort by most recently added', from: 'dm-created-practices-sort-option'
-          expect(page).to have_content('8 results')
-          page.has_button?('Load more')
-          expect(find_all('.dm-practice-title')[0]).to have_text('Different practice')
-          expect(find_all('.dm-practice-title')[1]).to have_text('Telemedicine')
-          expect(find_all('.dm-practice-title').last).to have_text('REVAMP')
-          expect(page).to have_css('.dm-practice-card', count: 3)
-          find('.dm-load-more-created-practices-btn').click
-          expect(page).to have_css('.dm-practice-card', count: 6)
-          expect(find_all('.dm-practice-title')[3]).to have_text('Pink Gloves Program')
-          expect(find_all('.dm-practice-title')[4]).to have_text('Gerofit')
-          expect(find_all('.dm-practice-title')[5]).to have_text('GERIVETZ')
-          find('.dm-load-more-created-practices-btn').click
-          expect(page).to have_css('.dm-practice-card', count: 8)
-          expect(find_all('.dm-practice-title')[6]).to have_text('BIONE')
-          expect(find_all('.dm-practice-title').last).to have_text('Cards for Memory')
-          page.has_no_button?('Load more')
-        end
-      end
+      visit va_facility_path(@va_facility1)
+      find('.dm-facility-created-practice-search')
+    end
 
-      it 'should filter by categories and allow for sorting' do
-        within(:css, '.dm-facility-created-practice-search') do
-          select 'COVID', from: 'dm-created-practice-categories'
-          expect(page).to have_content('Cards for Memory')
-          expect(page).to have_content('BIONE')
-          expect(page).to have_content('GERIVETZ')
-          expect(page).to have_content('3 results')
+    it 'should display the correct default content' do
+      within(:css, '.dm-facility-created-practice-search') do
+        # should see all the categories
+        within(:css, '.dm-created-practice-categories') do
+          expect(page).to have_content('COVID')
+          expect(page).to have_content('Telehealth')
+          expect(page).to have_no_content('Other')
+          expect(page).to have_no_content('Other Subcategory')
+          expect(page).to have_no_content('Main Level Cat')
         end
+        expect(find(".dm-created-practice-categories.usa-select").value).to eq("")
+        expect(find("#dm-created-practice-search-field").value).to eq("")
+        expect(find(".dm-created-practice-results-count").text).to eq("8 results:")
+        expect(find("#dm-created-practices-sort-option").value).to eq("a_to_z")
+        # should see 3 sort filters
+        within(:css, "#dm-created-practices-sort-option") do
+          expect(page).to have_content('Sort by A to Z')
+          expect(page).to have_content('Sort by most adopted practices')
+          expect(page).to have_content('Sort by most recently added')
+        end
+        page.has_button?('Load more')
+        expect(find_all('.dm-practice-title')[0]).to have_text('BIONE')
+        expect(find_all('.dm-practice-title')[1]).to have_text('Cards for Memory')
+        expect(find_all('.dm-practice-title').last).to have_text('Different practice')
+        expect(page).to have_css('.dm-practice-card', count: 3)
+        find('.dm-load-more-created-practices-btn').click
+        page.has_button?('Load more')
+        expect(page).to have_css('.dm-practice-card', count: 6)
+        expect(find_all('.dm-practice-title')[3]).to have_text('GERIVETZ')
+        expect(find_all('.dm-practice-title')[4]).to have_text('Gerofit')
+        expect(find_all('.dm-practice-title')[5]).to have_text('Pink Gloves Program')
+        find('.dm-load-more-created-practices-btn').click
+        expect(page).to have_css('.dm-practice-card', count: 8)
+        expect(find_all('.dm-practice-title')[6]).to have_text('REVAMP')
+        expect(find_all('.dm-practice-title')[7]).to have_text('Telemedicine')
+        page.has_no_button?('Load more')
       end
+    end
 
-      it 'should allow search for practice info' do
-        within(:css, '.dm-facility-created-practice-search') do
-          fill_in 'dm-created-practice-search-field', :with => 'Cards'
-          find('#dm-created-practice-search-button').click
-          expect(page).to have_content('1 result')
-          expect(page).to have_content('Cards for Memory')
-          fill_in 'dm-created-practice-search-field', :with => 'tagline for BIONE'
-          find('#dm-created-practice-search-button').click
-          expect(page).to have_content('1 result')
-          expect(page).to have_content('BIONE')
-          fill_in 'dm-created-practice-search-field', :with => 'summary for Telemedicine'
-          find('#dm-created-practice-search-button').click
-          expect(page).to have_content('1 result')
-          expect(page).to have_content('Telemedicine')
-          fill_in 'dm-created-practice-search-field', :with => 'overview problem for GERIVETZ'
-          find('#dm-created-practice-search-button').click
-          expect(page).to have_content('1 result')
-          expect(page).to have_content('GERIVETZ')
-          fill_in 'dm-created-practice-search-field', :with => 'overview solution for Pink gloves ProGram'
-          find('#dm-created-practice-search-button').click
-          expect(page).to have_content('1 result')
-          expect(page).to have_content('Pink Gloves Program')
-          fill_in 'dm-created-practice-search-field', :with => 'Overview Results for REVAmp'
-          find('#dm-created-practice-search-button').click
-          expect(page).to have_content('1 result')
-          expect(page).to have_content('REVAMP')
-          fill_in 'dm-created-practice-search-field', :with => 'emerging'
-          find('#dm-created-practice-search-button').click
-          expect(page).to have_content('8 results')
-          page.has_button?('Load more')
-        end
+    it 'should sort the content by most adopted practices' do
+      within(:css, '.dm-facility-created-practice-search') do
+        select 'Sort by most adopted practices', from: 'dm-created-practices-sort-option'
+        expect(page).to have_content('8 results')
+        page.has_button?('Load more')
+        expect(find_all('.dm-practice-title')[0]).to have_text('Pink Gloves Program')
+        expect(find_all('.dm-practice-title')[1]).to have_text('Gerofit')
+        expect(find_all('.dm-practice-title').last).to have_text('Telemedicine')
+        expect(page).to have_css('.dm-practice-card', count: 3)
+        find('.dm-load-more-created-practices-btn').click
+        expect(page).to have_css('.dm-practice-card', count: 6)
+        expect(find_all('.dm-practice-title')[3]).to have_text('Cards for Memory')
+        expect(find_all('.dm-practice-title')[4]).to have_text('BIONE')
+        expect(find_all('.dm-practice-title')[5]).to have_text('Different practice')
+        find('.dm-load-more-created-practices-btn').click
+        expect(page).to have_css('.dm-practice-card', count: 8)
+        expect(find_all('.dm-practice-title')[6]).to have_text('GERIVETZ')
+        expect(find_all('.dm-practice-title').last).to have_text('REVAMP')
+        page.has_no_button?('Load more')
       end
+    end
 
-      it 'should allow search for practice origin facility and adopting facility' do
-        find('.dm-facility-created-practice-search')
-        within(:css, '.dm-facility-created-practice-search') do
-          fill_in 'dm-created-practice-search-field', :with => 'd test name'
-          find('#dm-created-practice-search-button').click
-          expect(page).to have_content('5 results')
-          expect(page).to have_content('Cards for Memory')
-          expect(page).to have_content('Gerofit')
-          expect(page).to have_content('Pink Gloves Program')
-          find('.dm-load-more-created-practices-btn').click
-          expect(page).to have_css('.dm-practice-card', count: 5)
-          expect(page).to have_content('REVAMP')
-          expect(page).to have_content('Telemedicine')
-        end
+    it 'should sort the content by most recently added' do
+      within(:css, '.dm-facility-created-practice-search') do
+        select 'Sort by most recently added', from: 'dm-created-practices-sort-option'
+        expect(page).to have_content('8 results')
+        page.has_button?('Load more')
+        expect(find_all('.dm-practice-title')[0]).to have_text('Different practice')
+        expect(find_all('.dm-practice-title')[1]).to have_text('Telemedicine')
+        expect(find_all('.dm-practice-title').last).to have_text('REVAMP')
+        expect(page).to have_css('.dm-practice-card', count: 3)
+        find('.dm-load-more-created-practices-btn').click
+        expect(page).to have_css('.dm-practice-card', count: 6)
+        expect(find_all('.dm-practice-title')[3]).to have_text('Pink Gloves Program')
+        expect(find_all('.dm-practice-title')[4]).to have_text('Gerofit')
+        expect(find_all('.dm-practice-title')[5]).to have_text('GERIVETZ')
+        find('.dm-load-more-created-practices-btn').click
+        expect(page).to have_css('.dm-practice-card', count: 8)
+        expect(find_all('.dm-practice-title')[6]).to have_text('BIONE')
+        expect(find_all('.dm-practice-title').last).to have_text('Cards for Memory')
+        page.has_no_button?('Load more')
       end
+    end
 
-      it 'should allow search for categories and related terms' do
-        within(:css, '.dm-facility-created-practice-search') do
-          fill_in 'dm-created-practice-search-field', :with => 'coronavirus'
-          find('#dm-created-practice-search-button').click
-          expect(page).to have_content('3 results')
-          expect(page).to have_content('Cards for Memory')
-          expect(page).to have_content('BIONE')
-          expect(page).to have_content('GERIVETZ')
-          fill_in 'dm-created-practice-search-field', :with => 'telehealth'
-          find('#dm-created-practice-search-button').click
-          expect(page).to have_content('4 results')
-          expect(page).to have_content('Gerofit')
-          expect(page).to have_content('Pink Gloves Program')
-          expect(page).to have_content('REVAMP')
-          page.has_button?('Load more')
-        end
+    it 'should filter by categories and allow for sorting' do
+      within(:css, '.dm-facility-created-practice-search') do
+        select 'COVID', from: 'dm-created-practice-categories'
+        expect(page).to have_content('Cards for Memory')
+        expect(page).to have_content('BIONE')
+        expect(page).to have_content('GERIVETZ')
+        expect(page).to have_content('3 results')
+      end
+    end
+
+    it 'should allow search for practice info' do
+      within(:css, '.dm-facility-created-practice-search') do
+        fill_in 'dm-created-practice-search-field', :with => 'Cards'
+        find('#dm-created-practice-search-button').click
+        expect(page).to have_content('1 result')
+        expect(page).to have_content('Cards for Memory')
+        fill_in 'dm-created-practice-search-field', :with => 'tagline for BIONE'
+        find('#dm-created-practice-search-button').click
+        expect(page).to have_content('1 result')
+        expect(page).to have_content('BIONE')
+        fill_in 'dm-created-practice-search-field', :with => 'summary for Telemedicine'
+        find('#dm-created-practice-search-button').click
+        expect(page).to have_content('1 result')
+        expect(page).to have_content('Telemedicine')
+        fill_in 'dm-created-practice-search-field', :with => 'overview problem for GERIVETZ'
+        find('#dm-created-practice-search-button').click
+        expect(page).to have_content('1 result')
+        expect(page).to have_content('GERIVETZ')
+        fill_in 'dm-created-practice-search-field', :with => 'overview solution for Pink gloves ProGram'
+        find('#dm-created-practice-search-button').click
+        expect(page).to have_content('1 result')
+        expect(page).to have_content('Pink Gloves Program')
+        fill_in 'dm-created-practice-search-field', :with => 'Overview Results for REVAmp'
+        find('#dm-created-practice-search-button').click
+        expect(page).to have_content('1 result')
+        expect(page).to have_content('REVAMP')
+        fill_in 'dm-created-practice-search-field', :with => 'emerging'
+        find('#dm-created-practice-search-button').click
+        expect(page).to have_content('8 results')
+        page.has_button?('Load more')
+      end
+    end
+
+    it 'should allow search for practice origin facility and adopting facility' do
+      find('.dm-facility-created-practice-search')
+      within(:css, '.dm-facility-created-practice-search') do
+        fill_in 'dm-created-practice-search-field', :with => 'd test name'
+        find('#dm-created-practice-search-button').click
+        expect(page).to have_content('5 results')
+        expect(page).to have_content('Cards for Memory')
+        expect(page).to have_content('Gerofit')
+        expect(page).to have_content('Pink Gloves Program')
+        find('.dm-load-more-created-practices-btn').click
+        expect(page).to have_css('.dm-practice-card', count: 5)
+        expect(page).to have_content('REVAMP')
+        expect(page).to have_content('Telemedicine')
+      end
+    end
+
+    it 'should allow search for categories and related terms' do
+      within(:css, '.dm-facility-created-practice-search') do
+        fill_in 'dm-created-practice-search-field', :with => 'coronavirus'
+        find('#dm-created-practice-search-button').click
+        expect(page).to have_content('3 results')
+        expect(page).to have_content('Cards for Memory')
+        expect(page).to have_content('BIONE')
+        expect(page).to have_content('GERIVETZ')
+        fill_in 'dm-created-practice-search-field', :with => 'telehealth'
+        find('#dm-created-practice-search-button').click
+        expect(page).to have_content('4 results')
+        expect(page).to have_content('Gerofit')
+        expect(page).to have_content('Pink Gloves Program')
+        expect(page).to have_content('REVAMP')
+        page.has_button?('Load more')
       end
     end
   end
