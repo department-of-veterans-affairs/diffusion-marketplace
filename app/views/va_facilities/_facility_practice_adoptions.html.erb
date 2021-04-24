@@ -4,7 +4,7 @@
   </h2>
   <div class="grid-col-12 display-flex">
     <div class="usa-search float-left grid-col-8">
-      <div role="search" class="flex-column">
+        <form role="search" class="flex-column">
         <div class="display-flex dm-search-container grid-col-12 margin-top-4">
           <label for="created-practice-search" class="usa-label usa-sr-only">
             Search
@@ -16,7 +16,7 @@
             </span>
           </button>
         </div>
-      </div>
+        </form>
     </div>
     <div class="grid-col-4 margin-left-5 top-neg-3">
       <%= render partial: 'va_facilities/facility_categories_combo_box', locals: {facility_category_selector: 'facility_category_select_adoptions'} %>
