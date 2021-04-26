@@ -53,9 +53,9 @@ class VaFacility < ApplicationRecord
     elsif search_term.downcase == "replicate"
       sql += "OR p.maturity_level = 1 "
     elsif search_term.downcase == "scale"
-      sql += "AND p.maturity_level = 2 "
+      sql += "OR p.maturity_level = 2 "
     end
-    #sql += "OR ($2) = ANY(lower(c.related_terms)::character varying[]) "
+    sql += "OR ($2) = ANY(c.related_terms) "
     sql += "OR c.name ilike ($2) OR vaf.official_station_name ilike ($2) "
     sql += "OR vaf.common_name ilike ($2)) order by adoptions desc"
     ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"], [nil, "#{key_word}"]]).to_a
@@ -82,7 +82,7 @@ class VaFacility < ApplicationRecord
         elsif search_term == "scale"
           sql += "OR p.maturity_level = 2 "
         end
-    #sql += "OR ($2) = ANY(lower(c.related_terms)::character varying[]) "
+        sql += "OR ($3) = ANY(c.related_terms) "
         sql += "OR c.name ilike ($3) OR vaf.official_station_name ilike ($3) "
         sql += "OR vaf.common_name ilike ($3)) order by adoptions desc"
     ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"], [nil, "#{category_id}"], [nil, "#{key_word}"],]).to_a
