@@ -4,16 +4,17 @@
     <caption class="usa-sr-only">VISN <%= @visn.number %> facilities</caption>
     <thead>
     <tr>
-      <th data-sortable scope="col" role="columnheader" class="">
+      <th data-sortable scope="col" role="columnheader">
         Facility name
       </th>
-      <th data-sortable scope="col" role="columnheader" class="grid-col-2">
+      <th data-sortable scope="col" role="columnheader" class="p0-right">
         Complexity
+        <%= render partial: 'shared/facility_complexity_modal' %>
       </th>
-      <th data-sortable scope="col" role="columnheader" class="grid-col-2">
+      <th data-sortable scope="col" role="columnheader">
         Created
       </th>
-      <th data-sortable scope="col" role="columnheader" class="grid-col-2">
+      <th data-sortable scope="col" role="columnheader">
         Adopted
       </th>
     </tr>
@@ -21,12 +22,12 @@
     <tbody>
       <% @visn_va_facilities.each do |facility| %>
         <tr>
-          <th scope="row" role="rowheader">
+          <th scope="row" role="rowheader" class="grid-col-6">
             <%= link_to "#{facility_name_with_common_name(facility.official_station_name, facility.common_name)}", va_facility_path(facility), class: 'dm-internal-link' %>
           </th>
-          <td><%= facility.fy17_parent_station_complexity_level %></td>
-          <td><%= get_practices_created_count_by_va_facility(facility) %></td>
-          <td><%= get_practices_adopted_count_by_va_facility(facility) %></td>
+          <td class="grid-col-2"><%= facility.fy17_parent_station_complexity_level.split('-').shift %></td>
+          <td class="grid-col-2"><%= get_practices_created_count_by_va_facility(facility) %></td>
+          <td class="grid-col-2"><%= get_practices_adopted_count_by_va_facility(facility) %></td>
         </tr>
       <% end %>
     </tbody>
