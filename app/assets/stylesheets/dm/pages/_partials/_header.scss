@@ -10,6 +10,14 @@
     display: flex;
     flex-wrap: wrap;
     margin-top: 0rem;
+
+    .usa-accordion__button.usa-nav__link {
+      padding: 0.5rem 1rem;
+    }
+  }
+
+  .usa-col {
+    min-width: 100%;
   }
 
   .usa-accordion, .usa-nav__submenu, .usa-nav__submenu-list {
@@ -27,13 +35,29 @@
   @media screen and (min-width: 64rem) {
     #extended-logo {
       max-width: 45%;
+      margin: 0 !important;
+      line-height: 80px;
     }
 
     .usa-nav__secondary {
       min-width: 40%;
-      justify-content: flex-end;
+      flex-direction: unset;
       margin-top: 1rem;
-      flex-wrap: nowrap;
+      bottom: 4.3rem !important;
+
+      &.dm-signed-out-nav-secondary {
+        min-width: 35%;
+      }
+
+      .usa-nav__primary-item {
+        position: absolute;
+        top: 0;
+        right: -0.625rem;
+      }
+
+      .usa-accordion__button.usa-nav__link {
+        padding: 1rem 1rem;
+      }
     }
 
     .dm-nav-header-profile {
@@ -45,19 +69,16 @@
         max-width: 5.75rem;
       }
 
-      .dm-nav-header-profile-link {
-        margin-left: auto;
-      }
-
       #dm-user-profile-options {
         &::before, &::after {
           background-color: transparent;
         }
+        width: 125.422px !important;
       }
+    }
 
-      .usa-nav__submenu[hidden] {
-        display: none; // makes sure hidden submenu doesn't flash when loading page
-      }
+    .usa-navbar {
+      height: 80px !important;
     }
   }
 }

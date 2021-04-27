@@ -17,6 +17,9 @@ describe 'Page Builder - Show', type: :feature do
     image_path = File.join(Rails.root, '/spec/assets/charmander.png')
     image_file = File.new(image_path)
     image_component = PageImageComponent.create(alignment: 'right', alt_text: 'best pokemon ever', page_image: image_file)
+    image_path_2 = File.join(Rails.root, '/spec/assets/SpongeBob.png')
+    image_file_2 = File.new(image_path_2)
+    image_component_2 = PageImageComponent.create(alignment: 'center', alt_text: 'image with link', page_image: image_file_2, url: 'https://va.gov')
     cta_component = PageCtaComponent.create(url: 'https://www.google.com', button_text:'Search now', cta_text: 'Curious about programming languages?')
     youtube_video_component = PageYouTubePlayerComponent.create(url: 'https://www.youtube.com/watch?v=C0DPdy98e4c', caption: 'Test Video')
     downloadable_file = File.new(File.join(Rails.root, '/spec/assets/dummy.pdf'))
@@ -24,6 +27,7 @@ describe 'Page Builder - Show', type: :feature do
     PageComponent.create(page: page, component: practice_list_component, created_at: Time.now)
     PageComponent.create(page: page, component: subpage_hyperlink_component, created_at: Time.now)
     PageComponent.create(page: page, component: image_component, created_at: Time.now)
+    PageComponent.create(page: page, component: image_component_2, created_at: Time.now)
     PageComponent.create(page: page, component: cta_component, created_at: Time.now)
     PageComponent.create(page: page, component: youtube_video_component, created_at: Time.now)
     PageComponent.create(page: page, component: downloadable_file_component, created_at: Time.now)
@@ -52,6 +56,15 @@ describe 'Page Builder - Show', type: :feature do
   it 'Should display the page image' do
     expect(page).to have_css("img[src*='charmander.png']")
     page.should have_css('.justify-end')
+  end
+
+  it 'should display the page image with a url' do
+    expect(page).to have_css("img[src*='SpongeBob.png']")
+    page.should have_css('.justify-center')
+
+    # get the parent element of the image's URL
+    link = page.find("img[src*='SpongeBob.png']").find(:xpath, '..')
+    link[:href].should == "https://va.gov/"
   end
 
   it 'Should display the call to action' do
