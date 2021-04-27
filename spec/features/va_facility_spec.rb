@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'VA facility pages', type: :feature do
+describe 'VA facility pages', type: :feature, js: true do
   before do
     @visn = Visn.create!(name: 'Test VISN', number: 2)
     @va_facility1 = VaFacility.create!(
@@ -61,27 +61,29 @@ describe 'VA facility pages', type: :feature do
         hours_note: 'This is a test',
         slug: 'a-first-facility-test-common-name'
     )
-
-    va_facilities_name = "BCDEFGHIJKLMNOPQRSTU".split(//)
-    va_facilities_name.each_with_index do | name, i |
-      station_num = i + 400
-      VaFacility.create!(
-        visn: @visn,
-        sta3n: station_num,
-        station_number: station_num,
-        official_station_name: "#{name} Test name",
-        common_name: "#{name} Test Common Name",
-        classification: 'VA Medical Center (VAMC)',
-        classification_status: 'Firm',
-        mobile: 'No',
-        parent_station_number: 414,
-        official_parent_station_name: 'Test station',
-        fy17_parent_station_complexity_level: i > 0 ? '1c-High Complexity' : '1b-High Complexity',
-      )
-    end
   end
 
   describe 'index page' do
+    before do
+      va_facilities_name = "BCDEFGHIJKLMNOPQRSTU".split(//)
+      va_facilities_name.each_with_index do | name, i |
+        station_num = i + 400
+        VaFacility.create!(
+          visn: @visn,
+          sta3n: station_num,
+          station_number: station_num,
+          official_station_name: "#{name} Test name",
+          common_name: "#{name} Test Common Name",
+          classification: 'VA Medical Center (VAMC)',
+          classification_status: 'Firm',
+          mobile: 'No',
+          parent_station_number: 414,
+          official_parent_station_name: 'Test station',
+          fy17_parent_station_complexity_level: i > 0 ? '1c-High Complexity' : '1b-High Complexity',
+        )
+      end
+    end
+
     it 'should be there' do
       visit '/facilities'
       expect(page).to be_accessible.according_to :wcag2a, :section508
@@ -92,7 +94,7 @@ describe 'VA facility pages', type: :feature do
       expect(page).to have_content("VISN")
       expect(page).to have_content("Type")
       expect(page).to have_content("A Test name")
-      expect(page).to have_content('U Test name')
+      expect(page).to have_no_content('U Test name')
       expect(find_all('.usa-select').first.value).to eq ''
     end
 
@@ -140,14 +142,6 @@ describe 'VA facility pages', type: :feature do
   end
 
   describe 'show page' do
-    it 'should be there if the VA facility common name (friendly id) or id exists in the DB' do
-      # visit using the friendly id
-      visit '/facilities/a-first-facility-test-common-name'
-      expect(page).to have_current_path(va_facility_path(@va_facility1))
-    end
-  end
-
-  describe 'show page created practices search' do
     before do
       cat_1 = Category.create!(name: 'COVID', related_terms: ["COVID-19", "COVID 19", "Coronavirus"] )
       cat_2 = Category.create(name: 'Telehealth')
@@ -192,21 +186,32 @@ describe 'VA facility pages', type: :feature do
       dh_6 = DiffusionHistory.create!(practice_id: @practices[4].id, facility_id: '403')
       DiffusionHistoryStatus.create!(diffusion_history_id: dh_6.id, status: 'Completed')
 
+      VaFacility.create!(
+        visn: @visn,
+        sta3n: 402,
+        station_number: 402,
+        official_station_name: "D Test name",
+        common_name: "D Test Common Name",
+      )
       visit va_facility_path(@va_facility1)
-      find('.dm-facility-created-practice-search')
     end
 
-    it 'should display the correct default content' do
-      within(:css, '.dm-facility-created-practice-search') do
-        # should see all the categories
-        within(:css, '.dm-created-practice-categories') do
+    it 'should be there if the VA facility common name (friendly id) or id exists in the DB' do
+      visit '/facilities/a-first-facility-test-common-name'
+      expect(page).to have_current_path(va_facility_path(@va_facility1))
+    end
+
+    context 'when searching for created practices' do
+      it 'should display the correct default content' do
+        find('#dm-created-practice-categories').click
+        within(:css, '#dm-created-practice-categories--list') do
           expect(page).to have_content('COVID')
           expect(page).to have_content('Telehealth')
           expect(page).to have_no_content('Other')
           expect(page).to have_no_content('Other Subcategory')
           expect(page).to have_no_content('Main Level Cat')
         end
-        expect(find(".dm-created-practice-categories.usa-select").value).to eq("")
+        expect(find(".dm-created-practice-categories.usa-select", visible: false).value).to eq("")
         expect(find("#dm-created-practice-search-field").value).to eq("")
         expect(find(".dm-created-practice-results-count").text).to eq("8 results:")
         expect(find("#dm-created-practices-sort-option").value).to eq("a_to_z")
@@ -216,13 +221,13 @@ describe 'VA facility pages', type: :feature do
           expect(page).to have_content('Sort by most adopted practices')
           expect(page).to have_content('Sort by most recently added')
         end
-        page.has_button?('Load more')
+        expect(page).to have_css('.dm-load-more-created-practices-btn')
         expect(find_all('.dm-practice-title')[0]).to have_text('BIONE')
         expect(find_all('.dm-practice-title')[1]).to have_text('Cards for Memory')
         expect(find_all('.dm-practice-title').last).to have_text('Different practice')
         expect(page).to have_css('.dm-practice-card', count: 3)
         find('.dm-load-more-created-practices-btn').click
-        page.has_button?('Load more')
+        expect(page).to have_css('.dm-load-more-created-practices-btn')
         expect(page).to have_css('.dm-practice-card', count: 6)
         expect(find_all('.dm-practice-title')[3]).to have_text('GERIVETZ')
         expect(find_all('.dm-practice-title')[4]).to have_text('Gerofit')
@@ -231,15 +236,13 @@ describe 'VA facility pages', type: :feature do
         expect(page).to have_css('.dm-practice-card', count: 8)
         expect(find_all('.dm-practice-title')[6]).to have_text('REVAMP')
         expect(find_all('.dm-practice-title')[7]).to have_text('Telemedicine')
-        page.has_no_button?('Load more')
+        expect(page).to have_no_css('.dm-load-more-created-practices-btn')
       end
-    end
 
-    it 'should sort the content by most adopted practices' do
-      within(:css, '.dm-facility-created-practice-search') do
-        select 'Sort by most adopted practices', from: 'dm-created-practices-sort-option'
+      it 'should sort the content by most adopted practices' do
+        select('Sort by most adopted practices', from: 'created-practices-sort-option')
         expect(page).to have_content('8 results')
-        page.has_button?('Load more')
+        expect(page).to have_css('.dm-load-more-created-practices-btn')
         expect(find_all('.dm-practice-title')[0]).to have_text('Pink Gloves Program')
         expect(find_all('.dm-practice-title')[1]).to have_text('Gerofit')
         expect(find_all('.dm-practice-title').last).to have_text('Telemedicine')
@@ -253,15 +256,13 @@ describe 'VA facility pages', type: :feature do
         expect(page).to have_css('.dm-practice-card', count: 8)
         expect(find_all('.dm-practice-title')[6]).to have_text('GERIVETZ')
         expect(find_all('.dm-practice-title').last).to have_text('REVAMP')
-        page.has_no_button?('Load more')
+        expect(page).to have_no_css('.dm-load-more-created-practices-btn')
       end
-    end
 
-    it 'should sort the content by most recently added' do
-      within(:css, '.dm-facility-created-practice-search') do
-        select 'Sort by most recently added', from: 'dm-created-practices-sort-option'
+      it 'should sort the content by most recently added' do
+        select('Sort by most recently added', from: 'created-practices-sort-option')
         expect(page).to have_content('8 results')
-        page.has_button?('Load more')
+        expect(page).to have_css('.dm-load-more-created-practices-btn')
         expect(find_all('.dm-practice-title')[0]).to have_text('Different practice')
         expect(find_all('.dm-practice-title')[1]).to have_text('Telemedicine')
         expect(find_all('.dm-practice-title').last).to have_text('REVAMP')
@@ -275,58 +276,53 @@ describe 'VA facility pages', type: :feature do
         expect(page).to have_css('.dm-practice-card', count: 8)
         expect(find_all('.dm-practice-title')[6]).to have_text('BIONE')
         expect(find_all('.dm-practice-title').last).to have_text('Cards for Memory')
-        page.has_no_button?('Load more')
+        expect(page).to have_no_css('.dm-load-more-created-practices-btn')
       end
-    end
 
-    it 'should filter by categories and allow for sorting' do
-      within(:css, '.dm-facility-created-practice-search') do
-        select 'COVID', from: 'dm-created-practice-categories'
+      it 'should filter by categories and allow for sorting' do
+        find('#dm-created-practice-categories').click
+        find_all('.usa-combo-box__list-option').first.click
         expect(page).to have_content('Cards for Memory')
         expect(page).to have_content('BIONE')
         expect(page).to have_content('GERIVETZ')
         expect(page).to have_content('3 results')
       end
-    end
 
-    it 'should allow search for practice info' do
-      within(:css, '.dm-facility-created-practice-search') do
-        fill_in 'dm-created-practice-search-field', :with => 'Cards'
+      it 'should allow search for practice info' do
+        fill_in('dm-created-practice-search-field', with: 'Cards')
         find('#dm-created-practice-search-button').click
         expect(page).to have_content('1 result')
         expect(page).to have_content('Cards for Memory')
-        fill_in 'dm-created-practice-search-field', :with => 'tagline for BIONE'
+        fill_in('dm-created-practice-search-field', with: 'tagline for BIONE')
         find('#dm-created-practice-search-button').click
         expect(page).to have_content('1 result')
         expect(page).to have_content('BIONE')
-        fill_in 'dm-created-practice-search-field', :with => 'summary for Telemedicine'
+        fill_in('dm-created-practice-search-field', with: 'summary for Telemedicine')
         find('#dm-created-practice-search-button').click
         expect(page).to have_content('1 result')
         expect(page).to have_content('Telemedicine')
-        fill_in 'dm-created-practice-search-field', :with => 'overview problem for GERIVETZ'
+        fill_in('dm-created-practice-search-field', with: 'overview problem for GERIVETZ')
         find('#dm-created-practice-search-button').click
         expect(page).to have_content('1 result')
         expect(page).to have_content('GERIVETZ')
-        fill_in 'dm-created-practice-search-field', :with => 'overview solution for Pink gloves ProGram'
+        fill_in('dm-created-practice-search-field', with: 'overview solution for Pink gloves ProGram')
         find('#dm-created-practice-search-button').click
         expect(page).to have_content('1 result')
         expect(page).to have_content('Pink Gloves Program')
-        fill_in 'dm-created-practice-search-field', :with => 'Overview Results for REVAmp'
+        fill_in('dm-created-practice-search-field', with: 'Overview Results for REVAmp')
         find('#dm-created-practice-search-button').click
         expect(page).to have_content('1 result')
         expect(page).to have_content('REVAMP')
-        fill_in 'dm-created-practice-search-field', :with => 'emerging'
+        fill_in('dm-created-practice-search-field', with: 'emerging')
         find('#dm-created-practice-search-button').click
         expect(page).to have_content('8 results')
-        page.has_button?('Load more')
+        expect(page).to have_css('.dm-load-more-created-practices-btn')
       end
-    end
 
-    it 'should allow search for practice origin facility and adopting facility' do
-      find('.dm-facility-created-practice-search')
-      within(:css, '.dm-facility-created-practice-search') do
-        fill_in 'dm-created-practice-search-field', :with => 'd test name'
+      it 'should allow search for practice origin facility and adopting facility' do
+        fill_in('dm-created-practice-search-field', with: 'd test name')
         find('#dm-created-practice-search-button').click
+        expect(page).to have_css('.dm-created-practice-results-count')
         expect(page).to have_content('5 results')
         expect(page).to have_content('Cards for Memory')
         expect(page).to have_content('Gerofit')
@@ -336,23 +332,21 @@ describe 'VA facility pages', type: :feature do
         expect(page).to have_content('REVAMP')
         expect(page).to have_content('Telemedicine')
       end
-    end
 
-    it 'should allow search for categories and related terms' do
-      within(:css, '.dm-facility-created-practice-search') do
-        fill_in 'dm-created-practice-search-field', :with => 'coronavirus'
+      it 'should allow search for categories and related terms' do
+        fill_in('dm-created-practice-search-field', with: 'coronavirus')
         find('#dm-created-practice-search-button').click
         expect(page).to have_content('3 results')
         expect(page).to have_content('Cards for Memory')
         expect(page).to have_content('BIONE')
         expect(page).to have_content('GERIVETZ')
-        fill_in 'dm-created-practice-search-field', :with => 'telehealth'
+        fill_in('dm-created-practice-search-field', with: 'telehealth')
         find('#dm-created-practice-search-button').click
         expect(page).to have_content('4 results')
         expect(page).to have_content('Gerofit')
         expect(page).to have_content('Pink Gloves Program')
         expect(page).to have_content('REVAMP')
-        page.has_button?('Load more')
+        expect(page).to have_css('.dm-load-more-created-practices-btn')
       end
     end
   end

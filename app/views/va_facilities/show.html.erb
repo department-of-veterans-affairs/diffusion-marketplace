@@ -1,49 +1,47 @@
 <% provide :main_classes, 'bg-gray-2' %>
 <% provide :footer_classes, 'bg-gray-2' %>
-<% if ENV['GOOGLE_API_KEY'].present? %>
 <% provide :head_tags do %>
   <%= javascript_include_tag 'facilities_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
-  <section class="usa-section padding-y-0 grid-col-12">
-    <div class="grid-container position-relative grid-col-12">
-      <h1 class="margin-top-5 margin-bottom-3">
-        <%= @va_facility.official_station_name %>
-      </h1>
-      <div class="grid-row grid-gap-3">
-        <div class="grid-col-6 line-height-26"> This facility has created <%= @practice_results_count %> practices and has adopted <%= @adoptions_count %> practice<% if @adoptions_count != 1 %>s<% end %>.  It's a<% if @va_facility.rurality == "U" || @va_facility.rurality == "I" %>n<% end %>
-          <% case @va_facility.rurality %>
-            <% when "R" %>
-              rural
-            <% when "U" %>
-              urban
-            <% when "H" %>
-              highly rural
-            <% when "I" %>
-              isolated
+<section class="usa-section padding-y-0 grid-col-12">
+  <div class="grid-container position-relative grid-col-12">
+    <h1 class="margin-top-5 margin-bottom-3">
+      <%= @va_facility.official_station_name %>
+    </h1>
+    <div class="grid-row grid-gap-3">
+      <div class="grid-col-6 line-height-26"> This facility has created <%= @practice_results_count %> practices and has adopted <%= @adoptions_count %> practice<% if @adoptions_count != 1 %>s<% end %>.  It's a<% if @va_facility.rurality == "U" || @va_facility.rurality == "I" %>n<% end %>
+        <% case @va_facility.rurality %>
+          <% when "R" %>
+            rural
+          <% when "U" %>
+            urban
+          <% when "H" %>
+            highly rural
+          <% when "I" %>
+            isolated
+        <% end %>
+        <%= @va_facility.fy17_parent_station_complexity_level %>
+        facility and serves veterans in <%= @va_facility.mailing_address_city %>.  <% unless @va_facility.station_number_suffix_reservation_effective_date.blank? %>This facility opened in <%= @va_facility.station_number_suffix_reservation_effective_date.to_s[0..3] %>.<% end %>
+        <p class="margin-top-2 line-height-26">
+          <span class="display-block text-bold">Address</span>
+          <span class="display-block"><%= @va_facility.official_station_name %></span>
+          <span class="display-block"><%= @va_facility.street_address %></span>
+          <span class="display-block"><%= @va_facility.street_address_city %>, <%= @va_facility.street_address_state %> <%= @va_facility.street_address_zip_code %></span>
+        </p>
+        <div class="margin-top-2">
+          <% if @va_facility.station_phone_number[-1, 1] == "x" %>
+            <% ph_number = @va_facility.station_phone_number[0..@va_facility.station_phone_number.length - 3] %>
+          <% else %>
+            <% ph_number = @va_facility.station_phone_number %>
           <% end %>
-          <%= @va_facility.fy17_parent_station_complexity_level %>
-          facility and serves veterans in <%= @va_facility.mailing_address_city %>.  <% unless @va_facility.station_number_suffix_reservation_effective_date.blank? %>This facility opened in <%= @va_facility.station_number_suffix_reservation_effective_date.to_s[0..3] %>.<% end %>
-          <p class="margin-top-2 line-height-26">
-            <span class="display-block text-bold">Address</span>
-            <span class="display-block"><%= @va_facility.official_station_name %></span>
-            <span class="display-block"><%= @va_facility.street_address %></span>
-            <span class="display-block"><%= @va_facility.street_address_city %>, <%= @va_facility.street_address_state %> <%= @va_facility.street_address_zip_code %></span>
-          </p>
-          <div class="margin-top-2">
-            <% if @va_facility.station_phone_number[-1, 1] == "x" %>
-              <% ph_number = @va_facility.station_phone_number[0..@va_facility.station_phone_number.length - 3] %>
-            <% else %>
-              <% ph_number = @va_facility.station_phone_number %>
-            <% end %>
-            Main number: <a class="facility-phone-number" href="tel:<%= ph_number %>"><%= ph_number %></a>
-          </div>
-        </div>
-        <div class="grid-col-6">
-          <%= render partial: 'va_facilities/map/facility_map' %>
+          Main number: <a class="facility-phone-number" href="tel:<%= ph_number %>"><%= ph_number %></a>
         </div>
       </div>
-      <%= render partial: 'va_facilities/facility_created_practice_search', locals: {facility_category_selector: 'facility_category_select'} %>
-      <%= render partial: 'va_facilities/facility_practice_adoptions' %>
+      <div class="grid-col-6">
+        <%= render partial: 'va_facilities/map/facility_map' %>
+      </div>
     </div>
-  </section>
-<% end %>
+    <%= render partial: 'va_facilities/facility_created_practice_search', locals: {facility_category_selector: 'facility_category_select'} %>
+    <%= render partial: 'va_facilities/facility_practice_adoptions' %>
+  </div>
+</section>

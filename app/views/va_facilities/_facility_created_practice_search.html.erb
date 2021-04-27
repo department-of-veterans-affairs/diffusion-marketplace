@@ -21,10 +21,10 @@
     <div class="usa-search float-left grid-col-8">
       <form role="search" class="flex-column">
         <div class="display-flex dm-search-container grid-col-12">
-          <label for="created-practice-search" class="usa-label usa-sr-only">
+          <label for="dm-created-practice-search-field" class="usa-label usa-sr-only">
             Search
           </label>
-          <input class="usa-input" id="dm-created-practice-search-field" title="Type at least three characters to search." autocomplete="off" type="search" name="created-practice-search" data-search="">
+          <input class="usa-input" id="dm-created-practice-search-field" autocomplete="off" type="search" name="created-practice-search" data-search="">
           <button id="dm-created-practice-search-button" class="usa-button" type="submit" name="search-button">
             <span class="usa-search__submit-text text-bold">
               Search
@@ -45,7 +45,7 @@
     </div>
     <div class="grid-col-4 margin-left-5">
       <%= label_tag 'dm-created-practices-sort-option', 'created practice sort option', class: 'usa-label usa-sr-only margin-0' %>
-      <%= select_tag('', options_for_select(sort_options), id: 'dm-created-practices-sort-option', name: 'dm-created-practices-sort-option', class: 'height-5 usa-select margin-0') %>
+      <%= select_tag('created-practices-sort-option', options_for_select(sort_options), id: 'dm-created-practices-sort-option', class: 'height-5 usa-select margin-0') %>
     </div>
   </div>
   <div class="dm-created-practice-card-section desktop:margin-bottom-5">
