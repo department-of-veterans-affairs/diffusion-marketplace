@@ -20,6 +20,7 @@
 //= require activestorage
 //= require turbolinks
 //= require arrive.min
+//= require uswds/uswds-init.min.js
 //= require uswds/uswds
 //= require jquery_nested_form
 //= require jquery-ui/widgets/tooltip
