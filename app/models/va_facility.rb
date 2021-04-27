@@ -30,7 +30,7 @@ class VaFacility < ApplicationRecord
           JOIN diffusion_history_statuses dhs on dh.id = dhs.diffusion_history_id
           JOIN category_practices cp on p.id = cp.practice_id
           JOIN categories c on cp.category_id = c.id
-          WHERE p.published = true AND dh.facility_id = $1 AND c.id = $2 order by adoptions desc"
+          WHERE p.published = true AND p.enabled = true AND p.approved = true AND dh.facility_id = $1 AND c.id = $2 order by adoptions desc"
     ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"], [nil, "#{category_id}"]]).to_a
   end
 
@@ -45,7 +45,7 @@ class VaFacility < ApplicationRecord
           JOIN category_practices cp on p.id = cp.practice_id
           JOIN categories c on cp.category_id = c.id
           JOIN va_facilities vaf on dh.facility_id = vaf.station_number
-          WHERE p.published = true AND dh.facility_id = $1
+          WHERE p.published = true AND p.enabled = true AND p.approved = true AND dh.facility_id = $1
           AND (p.name ilike ($2) OR p.description ilike ($2) OR p.short_name ilike ($2) OR p.summary ilike ($2) OR p.tagline ilike ($2)
           OR p.overview_problem ilike ($2) OR p.overview_solution ilike ($2) OR p.overview_results ilike ($2) "
     if search_term.downcase == "emerging"
@@ -72,7 +72,7 @@ class VaFacility < ApplicationRecord
           JOIN category_practices cp on p.id = cp.practice_id
           JOIN categories c on cp.category_id = c.id
           JOIN va_facilities vaf on dh.facility_id = vaf.station_number
-          WHERE p.published = true AND dh.facility_id = $1 AND c.id = $2
+          WHERE p.published = true AND p.enabled = true AND p.approved = true AND dh.facility_id = $1 AND c.id = $2
           AND (p.name ilike ($3) OR p.description ilike ($3) OR p.short_name ilike ($3) OR p.summary ilike ($3) OR p.tagline ilike ($3)
           OR p.overview_problem ilike ($3) OR p.overview_solution ilike ($3) OR p.overview_results ilike ($3) "
         if search_term.downcase == "emerging"
