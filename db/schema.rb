@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_18_224819) do
+ActiveRecord::Schema.define(version: 2021_04_06_142716) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -582,6 +582,7 @@ ActiveRecord::Schema.define(version: 2021_03_18_224819) do
     t.string "page_image_content_type"
     t.integer "page_image_file_size"
     t.datetime "page_image_updated_at"
+    t.string "url"
     t.index ["page_component_id"], name: "index_page_image_components_on_page_component_id"
   end
 
@@ -955,8 +956,8 @@ ActiveRecord::Schema.define(version: 2021_03_18_224819) do
     t.string "overview_solution"
     t.string "overview_results"
     t.integer "maturity_level"
-    t.datetime "practice_pages_updated"
     t.datetime "date_published"
+    t.datetime "practice_pages_updated"
     t.string "highlight_title"
     t.string "highlight_body"
     t.index ["slug"], name: "index_practices_on_slug", unique: true

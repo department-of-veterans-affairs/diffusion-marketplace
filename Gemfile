@@ -152,3 +152,5 @@ gem 'gmaps4rails', github: 'agilesix/Google-Maps-for-Rails', ref: 'master'
 gem 'lodash-rails'
 
 gem 'route_downcaser'
+
+gem "autoprefixer-rails"

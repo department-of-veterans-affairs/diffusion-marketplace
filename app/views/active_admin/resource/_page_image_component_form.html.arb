@@ -31,14 +31,21 @@ html = Arbre::Context.new do
           input value: component&.page_image || nil, type: 'file', required: 'required', accept: '.jpg, .jpeg, .png',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_page_image",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][page_image]"
-          para 'Alternate text that gets rendered in case the image cannot load.', class: 'inline-hints'
+          para 'File types allowed: jpg, png. Max file size: 25MB', class: 'inline-hints'
         end
         li class: 'string input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_alt_text_input" do
           label 'Alternative Text', for: "page_page_components_attributes_#{placeholder}_component_attributes_alt_text", class: 'label'
           input value: component&.alt_text || nil, type: 'text', required: 'required',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_alt_text",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][alt_text]"
-          para 'File types allowed: jpg, png. Max file size: 25MB', class: 'inline-hints'
+          para 'Alternate text that gets rendered in case the image cannot load.', class: 'inline-hints'
+        end
+        li class: 'url input required stringish', id: "page_page_components_attributes_#{placeholder}_component_attributes_url_input" do
+          label 'Url', for: "page_page_components_attributes_#{placeholder}_component_attributes_url", class: 'label'
+          input value: component&.url || nil, type: 'text',
+                id: "page_page_components_attributes_#{placeholder}_component_attributes_url",
+                name: "page[page_components_attributes][#{placeholder}][component_attributes][url]"
+          para 'Enter a URL suffix to any internal page of the marketplace (Ex: "/practices/vione", "/partners", "/covid-19/telehealth" or a complete external URL (Ex. https://www.va.gov/) that you would like the image to link to', class: 'inline-hints'
         end
       end
     end
