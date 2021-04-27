@@ -30,24 +30,6 @@
     </fieldset>
   </form>
 
-  <%
-    sort_options = [
-      ['Sort by most adoptions', 'adoptions', class: 'usa-select'],
-      ['Sort by A to Z', 'a_to_z', class: 'usa-select'],
-      ['Sort by most recently added', 'added', class: 'usa-select']
-    ]
-  %>
-
-<!--  <section id="dm-visn-search-practices" class="display-none">-->
-<!--    <div class="grid-row grid-gap-3 margin-bottom-105 flex-align-center">-->
-<!--      <p class="font-sans-normal grid-col-8 line-height-26" id="results-summary"></p>-->
-<!--      <div class="grid-col-4">-->
-        <%#= label_tag 'search_sort_option', '', class: 'usa-label margin-0', 'aria-label': 'Sort options'%>
-        <%#= select_tag('', options_for_select(sort_options), id: 'search_sort_option', name: 'search_sort_option', class: 'height-5 usa-select margin-0') %>
-<!--      </div>-->
-<!--    </div>-->
-<!--    <div id="search-results" class="grid-row grid-gap-3"></div>-->
-<!--  </section>-->
   <%= render partial: 'shared/search_sort_select_section', locals: {
     sort_options: [
       ['Sort by most adoptions', 'adoptions', class: 'usa-select'],
