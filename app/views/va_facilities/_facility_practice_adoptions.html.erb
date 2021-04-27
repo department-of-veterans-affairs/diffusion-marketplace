@@ -22,22 +22,6 @@
       <%= render partial: 'va_facilities/facility_categories_combo_box', locals: {facility_category_selector: 'facility_category_select_adoptions'} %>
     </div>
   </div>
-<!--  <div class="grid-col-12" style="width: 100%; overflow: hidden;">-->
-<!--    <div class="usa-search margin-bottom-2 margin-top-1 facility-search-field">-->
-<!--      <div role="search" class="flex-column">-->
-<!--        <label for="dm-practice-search-field"></label>-->
-<!--        <div id="search-bar-container" class="display-flex">-->
-<!--          <input class="usa-input" id="dm-adopted-practices-search-field" title="Type at least three characters to search." autocomplete="off" type="search" name="search">-->
-<!--          <button id="dm-adopted-practices-search-button" class="usa-button" type="submit" name="search-button">-->
-<!--            <span class="usa-search__submit-text text-bold">Search</span>-->
-<!--          </button>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--    <div class="facility-category-select">-->
-      <%#= render partial: 'va_facilities/facility_categories_combo_box', locals: {facility_category_selector: 'facility_category_select_adoptions'} %>
-<!--    </div>-->
-<!--  </div>-->
   <div class="grid-col-12">
     <div id="practices_adopted_at_facility_count" class="usa-search margin-bottom-2 facility-search-field">
       <%= @adoptions_at_facility.count %> results:
