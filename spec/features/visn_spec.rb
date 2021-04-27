@@ -291,7 +291,7 @@ describe 'VISN pages', type: :feature do
 
     @dh = DiffusionHistory.create!(practice_id: @practice.id, facility_id: '443')
     @dh_2 = DiffusionHistory.create!(practice_id: @practice_2.id, facility_id: '431')
-    @dh = DiffusionHistory.create!(practice_id: @practice_3.id, facility_id: '443')
+    @dh_3 = DiffusionHistory.create!(practice_id: @practice_3.id, facility_id: '443')
 
     @cat_1 = Category.create!(name: 'COVID')
     @cat_2 = Category.create!(name: 'Test Cat')
@@ -333,7 +333,7 @@ describe 'VISN pages', type: :feature do
       it 'should show metadata for each visn' do
         @visn_markers.last.click
 
-        expect_visn_metadata('#visn-2-marker-modal', '3 facilities', '1 practice created here', '2 practices adopted here')
+        expect_visn_metadata('#visn-2-marker-modal', '3 facilities', '7 practices created here', '3 practices adopted here')
       end
 
       it 'should have a link to a given visn\'s show page within that visn\'s marker modal' do
@@ -378,7 +378,7 @@ describe 'VISN pages', type: :feature do
       visit '/visns/2'
 
       expect(page).to have_content('This VISN has 3 facilities and serves Veterans in Florida and Georgia.')
-      expect(page).to have_content('Collectively, its facilities have created 1 practice and have adopted 2 practices.')
+      expect(page).to have_content('Collectively, its facilities have created 7 practices and have adopted 3 practices.')
       expect(page).to have_content('Toge Inumaki')
     end
 
@@ -447,6 +447,35 @@ describe 'VISN pages', type: :feature do
         find_all('.usa-combo-box__list-option').first.click
 
         expect(practice_cards.count).to eq(1)
+      end
+
+      it 'should allow users to visit a visns\'s show page with a search query' do
+        visit '/visns/2?query=cool'
+
+        expect(practice_cards.count).to eq(2)
+      end
+    end
+
+    describe 'facilities table' do
+      it 'should display a modal when the user clicks on the question mark icon next to the complexity column in the facilities table' do
+        visit '/visns/1'
+        find('.fa-question-circle').click
+
+        expect(page).to have_content('1a-Highest complexity')
+        expect(page).to have_content('Facilities with high volume, high risk patients, most complex clinical programs, and large research and teaching programs')
+
+        # check to make sure it closes properly
+        find('.usa-modal__close').click
+
+        expect(page).to_not have_content('1a-Highest complexity')
+      end
+
+      it 'should take the user to the show page of the facility they click on within the facilities table' do
+        visit '/visns/2'
+        click_link('Fourth Test Name (Fourth Common Name)')
+        sleep 0.1
+
+        expect(page).to have_current_path('/facilities/fourth-common-name')
       end
     end
   end

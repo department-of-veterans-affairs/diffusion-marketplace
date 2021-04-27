@@ -1,6 +1,7 @@
 <%= render 'practices/search' %>
 
 var results = null;
+var visn = <%= raw @visn.to_json %>;
 var created_practices = <%= @practices_created_json %>;
 var adopted_practices = <%= @practices_adopted_json %>;
 var resultsHTML = '';
@@ -247,9 +248,13 @@ function searchPracticesByVisn() {
 
         hideResultsSectionElAndShowSpinner();
 
-        var path = window.location.pathname;
-        var urlQuery = searchField.value === '' ? path : path + '?query=' + searchField.value;
-        window.history.pushState({ turbolinks: {} }, "", urlQuery);
+        // Add a search query to the URL when necessary
+        var visnShowUrl = '/visns/' + visn["number"];
+        var urlQuery = searchField.value === '' ? visnShowUrl : visnShowUrl + '?query=' + searchField.value;
+        // due to turbolinks reloading the page after clicking on a facility link, don't add a history if the URL contains 'facilities'
+        if (window.location.href.split('/').slice(-2).join('') !== urlQuery && !window.location.href.includes('facilities')) {
+            window.history.pushState({ turbolinks: {} }, "", urlQuery);
+        }
 
         // Get the value for the created/adopted practices radio input
         var createdOrAdoptedRadio = $('input[name=visns-show-radio-buttons]:checked').val();
@@ -329,7 +334,6 @@ function submitFormOnRadioInputClick() {
 function submitFormOnPageLoadWithCreatedPracticesAsDefault() {
     // set the categories combo box value to an empty string
     $("#visn-search-created-categories").val('');
-
     $(RADIO_OPTIONS).first().click();
 }
 
