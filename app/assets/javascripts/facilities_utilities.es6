@@ -114,10 +114,10 @@ $(document).ready(function(){
 
     $("#dm-adopted-practices-search-button").click (function(e) {
         e.preventDefault();
-        let selectedCategory = document.getElementById("facility_category_select_adoptions").value
-        let keyWord = document.getElementById("dm-adopted-practices-search-field").value
-        let facilityStationNumber = document.getElementById("facility_station_number").value
-        //alert(result);
+        let selectedCategories = document.getElementsByName("facility_category_select_adoptions");
+        let selectedCategory = selectedCategories[0].value;
+        let keyWord = document.getElementById("dm-adopted-practices-search-field").value;
+        let facilityStationNumber = document.getElementById("facility_station_number").value;
         Rails.ajax({
             type: 'post',
             url: "/update_practices_adopted_at_facility",
@@ -132,10 +132,10 @@ $(document).ready(function(){
     });
 
     $("#facility_category_select_adoptions").change (function(e) {
-        let selectedCategory = document.getElementById("facility_category_select_adoptions").value
-        let keyWord = document.getElementById("dm-adopted-practices-search-field").value
-        let facilityStationNumber = document.getElementById("facility_station_number").value
-        //alert(result);
+        let selectedCategories = document.getElementsByName("facility_category_select_adoptions");
+        let selectedCategory = selectedCategories[0].value;
+        let keyWord = document.getElementById("dm-adopted-practices-search-field").value;
+        let facilityStationNumber = document.getElementById("facility_station_number").value;
         Rails.ajax({
             type: 'post',
             url: "/update_practices_adopted_at_facility",
