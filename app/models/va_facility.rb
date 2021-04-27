@@ -82,13 +82,11 @@ class VaFacility < ApplicationRecord
         elsif search_term == "scale"
           sql += "OR p.maturity_level = 2 "
         end
-    sql += "OR '" + search_term + "' ilike any(c.related_terms) "
+        sql += "OR '" + search_term + "' ilike any(c.related_terms) "
         sql += "OR c.name ilike ($3) OR vaf.official_station_name ilike ($3) "
         sql += "OR vaf.common_name ilike ($3)) order by adoptions desc"
     ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"], [nil, "#{category_id}"], [nil, "#{key_word}"],]).to_a
   end
-
-
 
   def self.rewrite_practices_adopted_at_this_facility_filtered_by_category(adoptions_at_facility, total_adoptions_for_practice)
     ret_val = ""
