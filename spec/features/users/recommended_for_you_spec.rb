@@ -106,7 +106,7 @@ describe 'Recommended for you page', type: :feature do
       login_and_visit_recommended_path(@user2)
 
       click_link('See more practices')
-      find("#search-page")
+      expect(page).to have_selector('#search-page', visible: true)
       expect(page).to have_content('4 results')
     end
   end
