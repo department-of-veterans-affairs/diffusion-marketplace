@@ -310,17 +310,19 @@ describe 'VISN pages', type: :feature do
       end
 
       it 'should be there with the correct amount of markers' do
+        expect(page).to have_selector('#visns-index-map', visible: true)
         expect(@visn_markers.count).to eq(2)
       end
 
       it 'should show metadata for each visn' do
         @visn_markers.last.click
-
+        expect(page).to have_selector('#visn-2-marker-modal', visible: true)
         expect_visn_metadata('#visn-2-marker-modal', '3 facilities', '1 practice created here', '2 practices adopted here')
       end
 
       it 'should have a link to a given visn\'s show page within that visn\'s marker modal' do
         @visn_markers.last.click
+        expect(page).to have_selector('#visn-2-marker-modal', visible: true)
 
         within(:css, '#visn-2-marker-modal') do
           expect(find('.visn-modal-link')[:href]).to include('/visns/2')

@@ -14,17 +14,7 @@
     </div>
   </div>
   <div class="facility-category-select desktop:margin-bottom-3">
-    <%= render partial: 'va_facilities/facility_categories_combo_box', locals: {facility_category_selector: 'facility_category_select_adoptions'} %>
+    <%= render partial: 'va_facilities/facility_categories_combo_box', locals: {combo_box_id: 'facility_category_select_adoptions', categories: @created_practices_categories } %>
+    <%# TODO: change categories value %>
   </div>
-
-</div>
-<div class="grid-col-12">
-  <div class="usa-search margin-bottom-2 facility-search-field">
-    # results:
-  </div>
-  <div class="facility-category-select">
-  </div>
-</div>
-<div class="grid-col-12">
-
 </div>

@@ -94,6 +94,7 @@ Rails.application.routes.draw do
   # set the param to the visn number instead of the visn id
   resources :visns, param: :number
   resources :va_facilities, path: :facilities
+  get '/facilities/:id/created-practices', controller: 'va_facilities', action: 'created_practices', as: 'created_practices'
 
   # Custom route for reporting a comment
   # get '/practices/:practice_id/comments/:comment_id/report', action: 'report_comment', controller: 'commontator/comments', as: 'report_comment'
