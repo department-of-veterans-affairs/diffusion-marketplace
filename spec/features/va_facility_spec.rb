@@ -203,6 +203,30 @@ describe 'VA facility pages', type: :feature, js: true do
       expect(page).to have_content("Practices adopted at this facility")
     end
 
+    context 'when searching for adopted practices' do
+        it 'should display default content' do
+          find('#facility_category_select_adoptions').click
+          within(:css, '#facility_category_select_adoptions--list') do
+            expect(page).to have_content('COVID')
+            expect(page).to have_content('Telehealth')
+            expect(page).to have_no_content('Other')
+            expect(page).to have_no_content('Other Subcategory')
+            expect(page).to have_no_content('Main Level Cat')
+          end
+          expect(find(".facility_category_select_adoptions.usa-select", visible: false).value).to eq("")
+          expect(find("#dm-adopted-practices-search-field").value).to eq("")
+          expect(find(".practices_adopted_at_facility_count").text).to eq("8 results:")
+        end
+        it 'should filter by categories and allow for sorting' do
+          find('#facility_category_select_adoptions').click
+          find_all('.usa-combo-box__list-option').first.click
+          expect(page).to have_content('Cards for Memory')
+          expect(page).to have_content('BIONE')
+          expect(page).to have_content('GERIVETZ')
+          expect(page).to have_content('3 results')
+        end
+      end
+
     context 'when searching for created practices' do
       it 'should display the correct default content' do
         find('#dm-created-practice-categories').click
