@@ -101,28 +101,6 @@
   }
 }
 
-#no-search-query-content {
-  width: 261px !important;
-  height: 40vh;
-  margin-top: 40px;
-
-  .text-and-icon-container {
-    height: 100%
-  }
-
-  #no-query-p, #no-query-results-p {
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  .no-search-query-icon {
-    font-size: 11.25em;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
-}
-
 #search_filters_dropdown {
   border: 0 !important;
   background-color: $dm-color-gray-2 !important;

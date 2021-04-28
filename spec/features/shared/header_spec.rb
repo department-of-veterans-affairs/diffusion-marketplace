@@ -57,6 +57,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
     context 'clicking on the Vaccine Acceptance link' do
       it 'should redirect to covid-19 Vaccine Acceptance page' do
         click_on 'Vaccine Acceptance'
+        expect(page).to have_selector('.dm-page-content', visible: true)
         expect(page).to have_current_path('/covid-19/vaccine-acceptance')
       end
     end
@@ -65,7 +66,8 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       it 'should redirect to user profile page' do
         click_on 'Your profile'
         click_on 'Profile'
-        expect(page).to have_current_path(user_path(@admin))
+        expect(page).to have_selector('.profile-h1 ', visible: true)
+        expect(page).to have_current_path('/users/1')
       end
     end
 
@@ -96,6 +98,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
         fill_in('dm-navbar-search-field', with: 'test')
         find('#dm-navbar-search-button').click
       end
+
       expect(page).to have_content('1 result')
       expect(page).to have_content('A public practice')
       expect(page).to have_current_path('/search?query=test')
