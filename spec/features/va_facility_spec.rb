@@ -1,7 +1,6 @@
 require 'rails_helper'
 
-describe 'VA facility pages', type: :feature do
-
+describe 'VA facility pages', type: :feature, js: true do
   before do
     @visn = Visn.create!(name: 'Test VISN', number: 2)
     @va_facility1 = VaFacility.create!(
@@ -62,270 +61,29 @@ describe 'VA facility pages', type: :feature do
         hours_note: 'This is a test',
         slug: 'a-first-facility-test-common-name'
     )
-    @va_facility2 = VaFacility.create!(
-        visn: @visn,
-        sta3n: 422,
-        station_number: 422,
-        official_station_name: 'B Test name',
-        common_name: 'B Test Common Name',
-        classification: 'VA Medical Center (VAMC)',
-        classification_status: 'Firm',
-        mobile: 'No',
-        parent_station_number: 414,
-        official_parent_station_name: 'Test station',
-        fy17_parent_station_complexity_level: '1b-High Complexity',
-        )
-    @va_facility3 = VaFacility.create!(
-        visn: @visn,
-        sta3n: 4223,
-        station_number: 4223,
-        official_station_name: 'C Test name',
-        common_name: 'C Test Common Name',
-        classification: 'VA Medical Center (VAMC)',
-        classification_status: 'Firm',
-        mobile: 'No',
-        parent_station_number: 414,
-        official_parent_station_name: 'Test station',
-        fy17_parent_station_complexity_level: '1c-High Complexity',
-        )
-    @va_facility4 = VaFacility.create!(
-        visn: @visn,
-        sta3n: 4224,
-        station_number: 4224,
-        official_station_name: 'D Test name',
-        common_name: 'D Test Common Name',
-        classification: 'VA Medical Center (VAMC)',
-        classification_status: 'Firm',
-        mobile: 'No',
-        parent_station_number: 414,
-        official_parent_station_name: 'Test station',
-        fy17_parent_station_complexity_level: '1c-High Complexity',
-        )
-    @va_facility5 = VaFacility.create!(
-        visn: @visn,
-        sta3n: 5,
-        station_number: 5,
-        official_station_name: 'E Test name',
-        common_name: 'E Test Common Name',
-        classification: 'VA Medical Center (VAMC)',
-        classification_status: 'Firm',
-        mobile: 'No',
-        parent_station_number: 414,
-        official_parent_station_name: 'Test station',
-        fy17_parent_station_complexity_level: '1c-High Complexity',
-        )
-    @va_facility6 = VaFacility.create!(
-        visn: @visn,
-        sta3n: 6,
-        station_number: 6,
-        official_station_name: 'F Test name',
-        common_name: 'F Test Common Name',
-        classification: 'VA Medical Center (VAMC)',
-        classification_status: 'Firm',
-        mobile: 'No',
-        parent_station_number: 414,
-        official_parent_station_name: 'Test station',
-        fy17_parent_station_complexity_level: '1c-High Complexity',
-        )
-    @va_facility7 = VaFacility.create!(
-        visn: @visn,
-        sta3n: 7,
-        station_number: 7,
-        official_station_name: 'G Test name',
-        common_name: 'G Test Common Name',
-        classification: 'VA Medical Center (VAMC)',
-        classification_status: 'Firm',
-        mobile: 'No',
-        parent_station_number: 414,
-        official_parent_station_name: 'Test station',
-        fy17_parent_station_complexity_level: '1c-High Complexity',
-        )
-    @va_facility8 = VaFacility.create!(
-        visn: @visn,
-        sta3n: 8,
-        station_number: 8,
-        official_station_name: 'H Test name',
-        common_name: 'H Test Common Name',
-        classification: 'VA Medical Center (VAMC)',
-        classification_status: 'Firm',
-        mobile: 'No',
-        parent_station_number: 414,
-        official_parent_station_name: 'Test station',
-        fy17_parent_station_complexity_level: '1c-High Complexity',
-        )
-    @va_facility9 = VaFacility.create!(
-        visn: @visn,
-        sta3n: 9,
-        station_number: 9,
-        official_station_name: 'I Test name',
-        common_name: 'I Test Common Name',
-        classification: 'VA Medical Center (VAMC)',
-        classification_status: 'Firm',
-        mobile: 'No',
-        parent_station_number: 414,
-        official_parent_station_name: 'Test station',
-        fy17_parent_station_complexity_level: '1c-High Complexity',
-        )
-    @va_facility10 = VaFacility.create!(
-        visn: @visn,
-        sta3n: 10,
-        station_number: 10,
-        official_station_name: 'J Test name',
-        common_name: 'J Test Common Name',
-        classification: 'VA Medical Center (VAMC)',
-        classification_status: 'Firm',
-        mobile: 'No',
-        parent_station_number: 414,
-        official_parent_station_name: 'Test station',
-        fy17_parent_station_complexity_level: '1c-High Complexity',
-        )
-    @va_facility11 = VaFacility.create!(
-        visn: @visn,
-        sta3n: 11,
-        station_number: 11,
-        official_station_name: 'K Test name',
-        common_name: 'K Test Common Name',
-        classification: 'VA Medical Center (VAMC)',
-        classification_status: 'Firm',
-        mobile: 'No',
-        parent_station_number: 414,
-        official_parent_station_name: 'Test station',
-        fy17_parent_station_complexity_level: '1c-High Complexity',
-        )
-    @va_facility12 = VaFacility.create!(
-        visn: @visn,
-        sta3n: 12,
-        station_number: 12,
-        official_station_name: 'L Test name',
-        common_name: 'L Test Common Name',
-        classification: 'VA Medical Center (VAMC)',
-        classification_status: 'Firm',
-        mobile: 'No',
-        parent_station_number: 414,
-        official_parent_station_name: 'Test station',
-        fy17_parent_station_complexity_level: '1c-High Complexity',
-        )
-    @va_facility13 = VaFacility.create!(
-        visn: @visn,
-        sta3n: 13,
-        station_number: 13,
-        official_station_name: 'M Test name',
-        common_name: 'M Test Common Name',
-        classification: 'VA Medical Center (VAMC)',
-        classification_status: 'Firm',
-        mobile: 'No',
-        parent_station_number: 414,
-        official_parent_station_name: 'Test station',
-        fy17_parent_station_complexity_level: '1c-High Complexity',
-        )
-    @va_facility14 = VaFacility.create!(
-        visn: @visn,
-        sta3n: 14,
-        station_number: 14,
-        official_station_name: 'N Test name',
-        common_name: 'N Test Common Name',
-        classification: 'VA Medical Center (VAMC)',
-        classification_status: 'Firm',
-        mobile: 'No',
-        parent_station_number: 414,
-        official_parent_station_name: 'Test station',
-        fy17_parent_station_complexity_level: '1c-High Complexity',
-        )
-    @va_facility15 = VaFacility.create!(
-        visn: @visn,
-        sta3n: 15,
-        station_number: 15,
-        official_station_name: 'O Test name',
-        common_name: 'O Test Common Name',
-        classification: 'VA Medical Center (VAMC)',
-        classification_status: 'Firm',
-        mobile: 'No',
-        parent_station_number: 414,
-        official_parent_station_name: 'Test station',
-        fy17_parent_station_complexity_level: '1c-High Complexity',
-        )
-    @va_facility16 = VaFacility.create!(
-        visn: @visn,
-        sta3n: 16,
-        station_number: 16,
-        official_station_name: 'P Test name',
-        common_name: 'P Test Common Name',
-        classification: 'VA Medical Center (VAMC)',
-        classification_status: 'Firm',
-        mobile: 'No',
-        parent_station_number: 414,
-        official_parent_station_name: 'Test station',
-        fy17_parent_station_complexity_level: '1c-High Complexity',
-        )
-    @va_facility17 = VaFacility.create!(
-        visn: @visn,
-        sta3n: 17,
-        station_number: 17,
-        official_station_name: 'Q Test name',
-        common_name: 'Q Test Common Name',
-        classification: 'VA Medical Center (VAMC)',
-        classification_status: 'Firm',
-        mobile: 'No',
-        parent_station_number: 414,
-        official_parent_station_name: 'Test station',
-        fy17_parent_station_complexity_level: '1c-High Complexity',
-        )
-    @va_facility18 = VaFacility.create!(
-        visn: @visn,
-        sta3n: 18,
-        station_number: 18,
-        official_station_name: 'R Test name',
-        common_name: 'R Test Common Name',
-        classification: 'VA Medical Center (VAMC)',
-        classification_status: 'Firm',
-        mobile: 'No',
-        parent_station_number: 414,
-        official_parent_station_name: 'Test station',
-        fy17_parent_station_complexity_level: '1c-High Complexity',
-        )
-    @va_facility19 = VaFacility.create!(
-        visn: @visn,
-        sta3n: 19,
-        station_number: 19,
-        official_station_name: 'S Test name',
-        common_name: 'S Test Common Name',
-        classification: 'VA Medical Center (VAMC)',
-        classification_status: 'Firm',
-        mobile: 'No',
-        parent_station_number: 414,
-        official_parent_station_name: 'Test station',
-        fy17_parent_station_complexity_level: '1c-High Complexity',
-        )
-    @va_facility20 = VaFacility.create!(
-        visn: @visn,
-        sta3n: 20,
-        station_number: 20,
-        official_station_name: 'T Test name',
-        common_name: 'T Test Common Name',
-        classification: 'VA Medical Center (VAMC)',
-        classification_status: 'Firm',
-        mobile: 'No',
-        parent_station_number: 414,
-        official_parent_station_name: 'Test station',
-        fy17_parent_station_complexity_level: '1c-High Complexity',
-        )
-    @va_facility21 = VaFacility.create!(
-        visn: @visn,
-        sta3n: 21,
-        station_number: 21,
-        official_station_name: 'U Test name',
-        common_name: 'U last facility Common Name',
-        classification: 'VA Medical Center (VAMC)',
-        classification_status: 'Firm',
-        mobile: 'No',
-        parent_station_number: 414,
-        official_parent_station_name: 'Test station',
-        fy17_parent_station_complexity_level: '1c-High Complexity',
-        slug: 'u-last-facility-common-name'
-        )
   end
 
   describe 'index page' do
+    before do
+      va_facilities_name = "BCDEFGHIJKLMNOPQRSTU".split(//)
+      va_facilities_name.each_with_index do | name, i |
+        station_num = i + 400
+        VaFacility.create!(
+          visn: @visn,
+          sta3n: station_num,
+          station_number: station_num,
+          official_station_name: "#{name} Test name",
+          common_name: "#{name} Test Common Name",
+          classification: 'VA Medical Center (VAMC)',
+          classification_status: 'Firm',
+          mobile: 'No',
+          parent_station_number: 414,
+          official_parent_station_name: 'Test station',
+          fy17_parent_station_complexity_level: i > 0 ? '1c-High Complexity' : '1b-High Complexity',
+        )
+      end
+    end
+
     it 'should be there' do
       visit '/facilities'
       expect(page).to be_accessible.according_to :wcag2a, :section508
@@ -335,61 +93,263 @@ describe 'VA facility pages', type: :feature do
       expect(page).to have_content("Facilities")
       expect(page).to have_content("VISN")
       expect(page).to have_content("Type")
-      expect(page).to have_content("first facility")
-      expect(page).to have_content('last facility')
+      expect(page).to have_content("A Test name")
+      expect(page).to have_no_content('U Test name')
       expect(find_all('.usa-select').first.value).to eq ''
     end
-  end
 
-  describe 'index page complexity filter' do
-    it 'should filter by complexity type' do
-      visit '/facilities'
-      select "1a-High Complexity", :from => "facility_type_select"
-      section = find(:css, '#directory_table')
-      expect(section).to have_content('1A')
-      expect(section).to have_no_content('1B')
-      expect(section).to have_no_content('1C')
+    context 'index page complexity filter' do
+      it 'should filter by complexity type' do
+        visit '/facilities'
+        select "1a-High Complexity", :from => "facility_type_select"
+        section = find(:css, '#directory_table')
+        expect(section).to have_content('1A')
+        expect(section).to have_no_content('1B')
+        expect(section).to have_no_content('1C')
 
-      select "1b-High Complexity", :from => "facility_type_select"
-      expect(section).to have_content('1B')
-      expect(section).to have_no_content('1A')
-      expect(section).to have_no_content('1C')
+        select "1b-High Complexity", :from => "facility_type_select"
+        expect(section).to have_content('1B')
+        expect(section).to have_no_content('1A')
+        expect(section).to have_no_content('1C')
 
-      select "1c-High Complexity", :from => "facility_type_select"
-      expect(section).to have_content('1C')
-      expect(section).to have_no_content('1A')
-      expect(section).to have_no_content('1B')
+        select "1c-High Complexity", :from => "facility_type_select"
+        expect(section).to have_content('1C')
+        expect(section).to have_no_content('1A')
+        expect(section).to have_no_content('1B')
+      end
     end
-  end
 
-  describe 'show page' do
-    it 'should be there if the VA facility common name (friendly id) or id exists in the DB' do
-      # visit using the friendly id
-      visit '/facilities/a-first-facility-test-common-name'
-      expect(page).to have_current_path(va_facility_path(@va_facility1))
-      expect(page).to have_content("This facility has created 0 practices and has adopted 0 practices.")
-      expect(page).to have_content("Practices adopted at this facility")
-    end
-  end
-
-  describe 'Sorting' do
-    it 'should sort the results in asc and desc order' do
-      visit '/facilities'
-      section = find(:css, '#directory_table') #the :css may be optional depending on your Capybara.default_selector setting
-      expect(page).to have_content(@va_facility1.common_name)
-      expect(page).to have_content("Load more")
-      expect(section).to have_no_content("last facility")
-      expect(section).to have_content('first facility')
-      toggle_by_column('facility')
-      expect(section).to have_content("last facility")
-      expect(section).to have_no_content('first facility')
-      find('#btn_facility_directory_load_more').click
-      expect(section).to have_content("last facility")
-      expect(section).to have_content('first facility')
+    context 'Sorting' do
+      it 'should sort the results in asc and desc order' do
+        visit '/facilities'
+        section = find(:css, '#directory_table') #the :css may be optional depending on your Capybara.default_selector setting
+        expect(page).to have_content(@va_facility1.common_name)
+        expect(page).to have_content("Load more")
+        expect(section).to have_no_content("U Test name")
+        expect(section).to have_content('first facility')
+        toggle_by_column('facility')
+        expect(section).to have_content("U Test name")
+        expect(section).to have_no_content('first facility')
+        find('#btn_facility_directory_load_more').click
+        expect(section).to have_content("U Test name")
+        expect(section).to have_content('first facility')
+      end
     end
   end
 
   def toggle_by_column(column_name)
     find('#toggle_by_' + column_name).click
+  end
+
+  describe 'show page' do
+    before do
+      cat_1 = Category.create!(name: 'COVID', related_terms: ["COVID-19", "COVID 19", "Coronavirus"] )
+      cat_2 = Category.create(name: 'Telehealth')
+      cat_3 = Category.create!(name: 'Other')
+      cat_4 = Category.create!(name: 'Other Subcategory', is_other: true)
+      cat_5 = Category.create!(name: 'Main Level Cat')
+
+      user = User.create!(email: 'test@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+      practice_names = ['Cards for Memory', 'BIONE', 'GERIVETZ', 'Gerofit', 'Pink Gloves Program', 'REVAMP', 'Telemedicine', 'Different practice']
+      @practices = []
+      practice_names.each do |name|
+        @practices.push(Practice.create!(name: name, approved: true, published: true, enabled: true, initiating_facility_type: "facility", tagline: "Tagline for #{name}", support_network_email: 'test@test.com', user: user, summary: "Summary for #{name}", overview_problem: "Overview problem for #{name}", overview_solution: "Overview solution for #{name}", overview_results: "Overview results for #{name}", maturity_level: 0 ))
+      end
+
+      pr_1 = Practice.create!(name: 'Unpublished practice', approved: false, published: false, user: user)
+      CategoryPractice.create!(practice: pr_1, category: cat_5)
+
+      @practices.each_with_index do |pr, index|
+        PracticeOriginFacility.create!(practice: pr, facility_id: '421', facility_type: 0)
+        if pr.name == 'Different practice'
+          CategoryPractice.create!(practice: pr, category: cat_3)
+          CategoryPractice.create!(practice: pr, category: cat_4)
+        elsif index < 3
+          CategoryPractice.create!(practice: pr, category: cat_1)
+        elsif index >= 3
+          CategoryPractice.create!(practice: pr, category: cat_2)
+          CategoryPractice.create!(practice: pr, category: cat_4)
+          PracticeOriginFacility.create!(practice: pr, facility_id: '402', facility_type: 0)
+        end
+      end
+
+      dh_1 = DiffusionHistory.create!(practice_id: @practices[4].id, facility_id: '401')
+      DiffusionHistoryStatus.create!(diffusion_history_id: dh_1.id, status: 'Completed')
+      dh_2 = DiffusionHistory.create!(practice_id: @practices[4].id, facility_id: '402')
+      DiffusionHistoryStatus.create!(diffusion_history_id: dh_2.id, status: 'Completed')
+      dh_3 = DiffusionHistory.create!(practice_id: @practices[3].id, facility_id: '401')
+      DiffusionHistoryStatus.create!(diffusion_history_id: dh_3.id, status: 'Completed')
+      dh_4 = DiffusionHistory.create!(practice_id: @practices[6].id, facility_id: '401')
+      DiffusionHistoryStatus.create!(diffusion_history_id: dh_4.id, status: 'Completed')
+      dh_5 = DiffusionHistory.create!(practice_id: @practices[0].id, facility_id: '402')
+      DiffusionHistoryStatus.create!(diffusion_history_id: dh_5.id, status: 'Completed')
+      dh_6 = DiffusionHistory.create!(practice_id: @practices[4].id, facility_id: '403')
+      DiffusionHistoryStatus.create!(diffusion_history_id: dh_6.id, status: 'Completed')
+
+      VaFacility.create!(
+        visn: @visn,
+        sta3n: 402,
+        station_number: 402,
+        official_station_name: "D Test name",
+        common_name: "D Test Common Name",
+      )
+      visit va_facility_path(@va_facility1)
+    end
+
+    it 'should be there if the VA facility common name (friendly id) or id exists in the DB' do
+      visit '/facilities/a-first-facility-test-common-name'
+      expect(page).to have_current_path(va_facility_path(@va_facility1))
+      expect(page).to have_content("This facility has created 0 practices and has adopted 0 practices.")
+      expect(page).to have_content("Practices adopted at this facility")
+    end
+
+    context 'when searching for created practices' do
+      it 'should display the correct default content' do
+        find('#dm-created-practice-categories').click
+        within(:css, '#dm-created-practice-categories--list') do
+          expect(page).to have_content('COVID')
+          expect(page).to have_content('Telehealth')
+          expect(page).to have_no_content('Other')
+          expect(page).to have_no_content('Other Subcategory')
+          expect(page).to have_no_content('Main Level Cat')
+        end
+        expect(find(".dm-created-practice-categories.usa-select", visible: false).value).to eq("")
+        expect(find("#dm-created-practice-search-field").value).to eq("")
+        expect(find(".dm-created-practice-results-count").text).to eq("8 results:")
+        expect(find("#dm-created-practices-sort-option").value).to eq("a_to_z")
+        # should see 3 sort filters
+        within(:css, "#dm-created-practices-sort-option") do
+          expect(page).to have_content('Sort by A to Z')
+          expect(page).to have_content('Sort by most adopted practices')
+          expect(page).to have_content('Sort by most recently added')
+        end
+        expect(page).to have_css('.dm-load-more-created-practices-btn')
+        expect(find_all('.dm-practice-title')[0]).to have_text('BIONE')
+        expect(find_all('.dm-practice-title')[1]).to have_text('Cards for Memory')
+        expect(find_all('.dm-practice-title').last).to have_text('Different practice')
+        expect(page).to have_css('.dm-practice-card', count: 3)
+        find('.dm-load-more-created-practices-btn').click
+        expect(page).to have_css('.dm-load-more-created-practices-btn')
+        expect(page).to have_css('.dm-practice-card', count: 6)
+        expect(find_all('.dm-practice-title')[3]).to have_text('GERIVETZ')
+        expect(find_all('.dm-practice-title')[4]).to have_text('Gerofit')
+        expect(find_all('.dm-practice-title')[5]).to have_text('Pink Gloves Program')
+        find('.dm-load-more-created-practices-btn').click
+        expect(page).to have_css('.dm-practice-card', count: 8)
+        expect(find_all('.dm-practice-title')[6]).to have_text('REVAMP')
+        expect(find_all('.dm-practice-title')[7]).to have_text('Telemedicine')
+        expect(page).to have_no_css('.dm-load-more-created-practices-btn')
+      end
+
+      it 'should sort the content by most adopted practices' do
+        select('Sort by most adopted practices', from: 'created-practices-sort-option')
+        expect(page).to have_content('8 results')
+        expect(page).to have_css('.dm-load-more-created-practices-btn')
+        expect(find_all('.dm-practice-title')[0]).to have_text('Pink Gloves Program')
+        expect(find_all('.dm-practice-title')[1]).to have_text('Gerofit')
+        expect(find_all('.dm-practice-title').last).to have_text('Telemedicine')
+        expect(page).to have_css('.dm-practice-card', count: 3)
+        find('.dm-load-more-created-practices-btn').click
+        expect(page).to have_css('.dm-practice-card', count: 6)
+        expect(find_all('.dm-practice-title')[3]).to have_text('Cards for Memory')
+        expect(find_all('.dm-practice-title')[4]).to have_text('BIONE')
+        expect(find_all('.dm-practice-title')[5]).to have_text('Different practice')
+        find('.dm-load-more-created-practices-btn').click
+        expect(page).to have_css('.dm-practice-card', count: 8)
+        expect(find_all('.dm-practice-title')[6]).to have_text('GERIVETZ')
+        expect(find_all('.dm-practice-title').last).to have_text('REVAMP')
+        expect(page).to have_no_css('.dm-load-more-created-practices-btn')
+      end
+
+      it 'should sort the content by most recently added' do
+        select('Sort by most recently added', from: 'created-practices-sort-option')
+        expect(page).to have_content('8 results')
+        expect(page).to have_css('.dm-load-more-created-practices-btn')
+        expect(find_all('.dm-practice-title')[0]).to have_text('Different practice')
+        expect(find_all('.dm-practice-title')[1]).to have_text('Telemedicine')
+        expect(find_all('.dm-practice-title').last).to have_text('REVAMP')
+        expect(page).to have_css('.dm-practice-card', count: 3)
+        find('.dm-load-more-created-practices-btn').click
+        expect(page).to have_css('.dm-practice-card', count: 6)
+        expect(find_all('.dm-practice-title')[3]).to have_text('Pink Gloves Program')
+        expect(find_all('.dm-practice-title')[4]).to have_text('Gerofit')
+        expect(find_all('.dm-practice-title')[5]).to have_text('GERIVETZ')
+        find('.dm-load-more-created-practices-btn').click
+        expect(page).to have_css('.dm-practice-card', count: 8)
+        expect(find_all('.dm-practice-title')[6]).to have_text('BIONE')
+        expect(find_all('.dm-practice-title').last).to have_text('Cards for Memory')
+        expect(page).to have_no_css('.dm-load-more-created-practices-btn')
+      end
+
+      it 'should filter by categories and allow for sorting' do
+        find('#dm-created-practice-categories').click
+        find_all('.usa-combo-box__list-option').first.click
+        expect(page).to have_content('Cards for Memory')
+        expect(page).to have_content('BIONE')
+        expect(page).to have_content('GERIVETZ')
+        expect(page).to have_content('3 results')
+      end
+
+      it 'should allow search for practice info' do
+        fill_in('dm-created-practice-search-field', with: 'Cards')
+        find('#dm-created-practice-search-button').click
+        expect(page).to have_content('1 result')
+        expect(page).to have_content('Cards for Memory')
+        fill_in('dm-created-practice-search-field', with: 'tagline for BIONE')
+        find('#dm-created-practice-search-button').click
+        expect(page).to have_content('1 result')
+        expect(page).to have_content('BIONE')
+        fill_in('dm-created-practice-search-field', with: 'summary for Telemedicine')
+        find('#dm-created-practice-search-button').click
+        expect(page).to have_content('1 result')
+        expect(page).to have_content('Telemedicine')
+        fill_in('dm-created-practice-search-field', with: 'overview problem for GERIVETZ')
+        find('#dm-created-practice-search-button').click
+        expect(page).to have_content('1 result')
+        expect(page).to have_content('GERIVETZ')
+        fill_in('dm-created-practice-search-field', with: 'overview solution for Pink gloves ProGram')
+        find('#dm-created-practice-search-button').click
+        expect(page).to have_content('1 result')
+        expect(page).to have_content('Pink Gloves Program')
+        fill_in('dm-created-practice-search-field', with: 'Overview Results for REVAmp')
+        find('#dm-created-practice-search-button').click
+        expect(page).to have_content('1 result')
+        expect(page).to have_content('REVAMP')
+        fill_in('dm-created-practice-search-field', with: 'emerging')
+        find('#dm-created-practice-search-button').click
+        expect(page).to have_content('8 results')
+        expect(page).to have_css('.dm-load-more-created-practices-btn')
+      end
+
+      it 'should allow search for practice origin facility and adopting facility' do
+        fill_in('dm-created-practice-search-field', with: 'd test name')
+        find('#dm-created-practice-search-button').click
+        expect(page).to have_css('.dm-created-practice-results-count')
+        expect(page).to have_content('5 results')
+        expect(page).to have_content('Cards for Memory')
+        expect(page).to have_content('Gerofit')
+        expect(page).to have_content('Pink Gloves Program')
+        find('.dm-load-more-created-practices-btn').click
+        expect(page).to have_css('.dm-practice-card', count: 5)
+        expect(page).to have_content('REVAMP')
+        expect(page).to have_content('Telemedicine')
+      end
+
+      it 'should allow search for categories and related terms' do
+        fill_in('dm-created-practice-search-field', with: 'coronavirus')
+        find('#dm-created-practice-search-button').click
+        expect(page).to have_content('3 results')
+        expect(page).to have_content('Cards for Memory')
+        expect(page).to have_content('BIONE')
+        expect(page).to have_content('GERIVETZ')
+        fill_in('dm-created-practice-search-field', with: 'telehealth')
+        find('#dm-created-practice-search-button').click
+        expect(page).to have_content('4 results')
+        expect(page).to have_content('Gerofit')
+        expect(page).to have_content('Pink Gloves Program')
+        expect(page).to have_content('REVAMP')
+        expect(page).to have_css('.dm-load-more-created-practices-btn')
+      end
+    end
   end
 end

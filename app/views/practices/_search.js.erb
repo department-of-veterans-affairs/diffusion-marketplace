@@ -4,7 +4,7 @@ var visns = <%= raw @visn_data.to_json %>;
 var adoptions = <%= raw @diffusion_histories.to_json %>;
 var results = null;
 var resultsHTML = '';
-var NO_QUERY_CONTENT = '#no-search-query-content';
+var NO_QUERY_CONTENT = '.search-no-results';
 var RESULTS_SECTION = '#dm-search-practices';
 var SPINNER = '.dm-loading-spinner';
 var LOAD_MORE_CONTAINER = '.button-box';
@@ -236,12 +236,12 @@ function searchPracticesPage() {
                 $(NO_QUERY_CONTENT).removeClass('display-none');
             }
             if (isBlankSearch) {
-                $('#no-query-p').removeClass('display-none');
-                $('#no-query-results-p').addClass('display-none');
+                $('.no-query-p').removeClass('display-none');
+                $('.no-query-results-p').addClass('display-none');
             }
             else{
-                $('#no-query-p').addClass('display-none');
-                $('#no-query-results-p').removeClass('display-none');
+                $('.no-query-p').addClass('display-none');
+                $('.no-query-results-p').removeClass('display-none');
             }
         }
     }

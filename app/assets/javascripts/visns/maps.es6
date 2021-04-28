@@ -152,4 +152,6 @@ function initialize() {
     });
 }
 
-google.maps.event.addDomListener(window, 'load', initialize);
+$(document).on("turbolinks:load", function () {
+    google.maps.event.addDomListener(window, "load", initialize);
+});

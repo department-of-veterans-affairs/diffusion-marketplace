@@ -1,10 +1,11 @@
-<label class="usa-label margin-top-4" for="<%= facility_category_selector %>">All categories</label>
+<label for="<%= combo_box_id %>" class="usa-label margin-top-0 margin-bottom-05">
+  All categories
+</label>
 <div class="usa-combo-box" data-placeholder="- Select or start typing -">
-  <select id="<%= facility_category_selector %>" class="usa-select facility_category_select_adoptions" name="<%= facility_category_selector %>">
-<!--    <option value>- Select or start typing -</option>-->
-    <% @categories.each do |c| %>
-      <option value=<%= c.id %>>
-        <%= c.name %>
+  <select id="<%= combo_box_id %>" class="<%= combo_box_id %> usa-select margin-top-0" name="<%= combo_box_id %>">
+    <% categories.each do |c| %>
+      <option value=<%= c[:id] %>>
+        <%= c[:name] %>
       </option>
     <% end %>
   </select>

@@ -5,7 +5,7 @@
   <div class="grid-col-12 display-flex">
     <div class="usa-search float-left grid-col-8">
         <form role="search" class="flex-column">
-        <div class="display-flex dm-search-container grid-col-12 margin-top-4">
+        <div class="display-flex dm-search-container grid-col-12 margin-top-0">
           <label for="created-practice-search" class="usa-label usa-sr-only">
             Search
           </label>
@@ -19,9 +19,10 @@
         </form>
     </div>
     <div class="grid-col-4 margin-left-5 top-neg-3">
-      <%= render partial: 'va_facilities/facility_categories_combo_box', locals: {facility_category_selector: 'facility_category_select_adoptions'} %>
+      <%= render partial: 'va_facilities/facility_categories_combo_box', locals: {combo_box_id: 'facility_category_select_adoptions', categories: @created_practices_categories} %>
     </div>
   </div>
+<!-- HEAD-->
   <div class="grid-col-12">
     <div id="practices_adopted_at_facility_count" class="usa-search margin-bottom-2 facility-search-field">
       <%= @adoptions_at_facility.count %> results:
@@ -29,3 +30,10 @@
   </div>
     <%= render partial: 'va_facilities/facility_adoption_results' %>
 </section>
+<!--=======-->
+<!--  <div class="facility-category-select desktop:margin-bottom-3">-->
+    <%#= render partial: 'va_facilities/facility_categories_combo_box', locals: {combo_box_id: 'facility_category_select_adoptions', categories: @created_practices_categories } %>
+    <%# TODO: change categories value %>
+<!--  </div>-->
+<!--</div>-->
+<!-- feature/vamc-visn-->
