@@ -65,7 +65,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       it 'should redirect to user profile page' do
         click_on 'Your profile'
         click_on 'Profile'
-        expect(page).to have_current_path(user_path(@admin))
+        expect(page).to have_current_path('/users/1')
       end
     end
 
@@ -96,6 +96,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
         fill_in('dm-navbar-search-field', with: 'test')
         find('#dm-navbar-search-button').click
       end
+
       expect(page).to have_content('1 result')
       expect(page).to have_content('A public practice')
       expect(page).to have_current_path('/search?query=test')
