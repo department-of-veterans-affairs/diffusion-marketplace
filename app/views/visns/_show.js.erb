@@ -249,10 +249,11 @@ function searchPracticesByVisn() {
         hideResultsSectionElAndShowSpinner();
 
         // Add a search query to the URL when necessary
+        url = window.location.href
         var visnShowUrl = '/visns/' + visn["number"];
         var urlQuery = searchField.value === '' ? visnShowUrl : visnShowUrl + '?query=' + searchField.value;
-        // due to turbolinks reloading the page after clicking on a facility link, don't add a history if the URL contains 'facilities'
-        if (window.location.href.split('/').slice(-2).join('') !== urlQuery && !window.location.href.includes('facilities')) {
+        // due to turbolinks reloading the page after clicking on a link, don't add a history if the URL contains 'facilities' or 'practices'
+        if (url.split('/').slice(-2).join('') !== urlQuery && !url.includes('facilities') && !url.includes('practices')) {
             window.history.pushState({ turbolinks: {} }, "", urlQuery);
         }
 
