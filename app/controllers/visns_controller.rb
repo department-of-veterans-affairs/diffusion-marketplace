@@ -55,7 +55,7 @@ class VisnsController < ApplicationController
       marker.infowindow render_to_string(partial: 'visns/maps/show_infowindow', locals: { va_facility: va_facility })
     end
 
-    searchable_practices = Practice.searchable_practices
+    searchable_practices = Practice.searchable_practices nil
     # set '@practices_json' to avoid js console error when utilizing the practices/search.js.erb file
     @practices_json = practices_json(searchable_practices)
 
@@ -72,7 +72,7 @@ class VisnsController < ApplicationController
         end
       # add practices that have an initiating_facility
       elsif p.visn? && initiating_facility.present?
-        practices_created_by_visn << p if initiating_facility === @visn.id.to_s
+        practices_created_by_visn << p if initiating_facility === @visn.id.to_s && !practices_created_by_visn.include?(p)
       end
     end
 

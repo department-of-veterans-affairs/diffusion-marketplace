@@ -1,3 +1,4 @@
+// only initialize the following variable while on the search page
 if (window.location.pathname === '/search') {
     var practices = <%= @practices_json %>;
     var facilities = <%= raw @facilities_data.to_json %>;

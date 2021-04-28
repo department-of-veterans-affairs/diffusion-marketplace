@@ -73,7 +73,7 @@ function searchPracticesByVisn() {
         // set the search page search bar input value
         searchField.value = query;
         if (query !== '') {
-            trackSearchField(query);
+            trackVisnSearchField(query);
             var searchBarQueryArray = [];
             search_options.keys.forEach(function(practiceKey) {
                 var queryObj = {};
@@ -260,27 +260,36 @@ function searchPracticesByVisn() {
         var createdOrAdoptedRadio = $('input[name=visns-show-radio-buttons]:checked').val();
 
         // hide one of the category combo boxes based on the radio value
-        var createdComboBox = '.practice-created-categories-combo-box';
-        var adoptedComboBox = '.practice-adopted-categories-combo-box';
+        var createdComboBoxDiv = '.practice-created-categories-combo-box';
+        var adoptedComboBoxDiv = '.practice-adopted-categories-combo-box';
+        var createdComboBox = '#visn-search-created-categories';
+        var adoptedComboBox = '#visn-search-adopted-categories';
 
-        function showAndHideComboBoxes(comboBoxOne, comboBoxTwo) {
-            if ($(comboBoxOne).hasClass('display-none')) {
-                $(comboBoxOne).removeClass('display-none');
+        function showAndHideComboBoxes(comboBoxDivOne, comboBoxDivTwo) {
+            if ($(comboBoxDivOne).hasClass('display-none')) {
+                $(comboBoxDivOne).removeClass('display-none');
             }
-            $(comboBoxTwo).addClass('display-none');
+            $(comboBoxDivTwo).addClass('display-none');
         }
 
         // Get the value of the category combo box
         var categoryComboBoxVal;
 
         if (createdOrAdoptedRadio === 'created') {
-            showAndHideComboBoxes(createdComboBox, adoptedComboBox);
-            categoryComboBoxVal = $("#visn-search-created-categories").val();
+            showAndHideComboBoxes(createdComboBoxDiv, adoptedComboBoxDiv);
+            categoryComboBoxVal = $(createdComboBox).val();
+            // clear the adopted categories combo box
+            if ($(adoptedComboBox).val() !== '') {
+                $(adoptedComboBox).next().find('button').click();
+            }
         } else {
-            showAndHideComboBoxes(adoptedComboBox, createdComboBox);
-            categoryComboBoxVal = $("#visn-search-adopted-categories").val();
+            showAndHideComboBoxes(adoptedComboBoxDiv, createdComboBoxDiv);
+            categoryComboBoxVal = $(adoptedComboBox).val();
+            // clear the created categories combo box
+            if ($(createdComboBox).val() !== '') {
+                $(createdComboBox).next().find('button').click();
+            }
         }
-
         // Run the search
         search(searchField.value, categoryComboBoxVal, createdOrAdoptedRadio);
     });
@@ -312,6 +321,20 @@ function searchPracticesByVisn() {
             searchField.value = decodeURI(query);
         } else {
             searchField.value = '';
+        }
+    }
+}
+
+function trackVisnSearchField(searchTerm) {
+    if (searchTerm !== '') {
+        ahoy.track('VISN practice search', {search_term: searchTerm});
+        if (typeof ga === 'function') {
+            ga('send', {
+                hitType: 'event',
+                eventCategory: 'VISN search',
+                eventAction: 'VISN search',
+                location: '/visns/' + visn["number"] + '/?query=' + searchTerm
+            });
         }
     }
 }
