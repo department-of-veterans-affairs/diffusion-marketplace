@@ -31,6 +31,29 @@
         </div>
       <% end %>
     </div>
+    <div class="grid-row">
+      <form class="usa-form width-full display-flex">
+        <fieldset class="usa-fieldset display-flex">
+          <legend class="usa-legend text-normal font-sans-sm">Display on map: </legend>
+          <div class="usa-checkbox">
+            <input class="usa-checkbox__input" id="check-historical-truth" type="checkbox" name="historical-figures" value="sojourner-truth" checked>
+            <label class="usa-checkbox__label" for="check-historical-truth">VAMCs</label>
+          </div>
+          <div class="usa-checkbox">
+            <input class="usa-checkbox__input" id="check-historical-douglass" type="checkbox" name="historical-figures" value="frederick-douglass">
+            <label class="usa-checkbox__label" for="check-historical-douglass">CBOCs</label>
+          </div>
+          <div class="usa-checkbox">
+            <input class="usa-checkbox__input" id="check-historical-washington" type="checkbox" name="historical-figures" value="booker-t-washington">
+            <label class="usa-checkbox__label" for="check-historical-washington">Clinics</label>
+          </div>
+          <div class="usa-checkbox">
+            <input class="usa-checkbox__input" id="check-historical-carver" type="checkbox" name="historical-figures"  value="george-washington-carver">
+            <label class="usa-checkbox__label" for="check-historical-carver">Unclassified</label>
+          </div>
+        </fieldset>
+      </form>
+    </div>
   </section>
   <%= render partial: 'visns/maps/show_map' %>
 </div>

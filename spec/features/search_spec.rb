@@ -426,7 +426,7 @@ describe 'Search', type: :feature do
         expect(all('h3.dm-practice-title')[5].text).to eq(@practice12.name)
 
         # choose 'most adoptions' option
-        select('Sort by most adoptions', from: 'search_sort_option')
+        select('Sort by most adopted practices', from: 'search_sort_option')
         expect(all('h3.dm-practice-title').first.text).to eq(@practice.name)
         expect(all('h3.dm-practice-title')[1].text).to eq(@practice3.name)
         expect(all('h3.dm-practice-title')[2].text).to eq(@practice6.name)

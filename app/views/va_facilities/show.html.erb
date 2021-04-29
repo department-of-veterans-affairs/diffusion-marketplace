@@ -41,7 +41,9 @@
         <%= render partial: 'va_facilities/map/facility_map' %>
       </div>
     </div>
-    <%= render partial: 'va_facilities/facility_created_practice_search', locals: {facility_category_selector: 'facility_category_select'} %>
+    <% if @created_practices.present? %>
+      <%= render partial: 'va_facilities/facility_created_practice_search', locals: {facility_category_selector: 'facility_category_select'} %>
+    <% end %>
     <%= render partial: 'va_facilities/facility_practice_adoptions' %>
   </div>
 </section>

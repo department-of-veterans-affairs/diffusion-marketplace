@@ -65,7 +65,7 @@ describe 'Explore all practices page', type: :feature do
 
     it 'should sort the content by most adoptions' do
       visit '/explore'
-      select 'Sort by most adoptions', from: 'dm_sort_option'
+      select 'Sort by most adopted practices', from: 'dm_sort_option'
       expect(page).to have_content('14 results')
       page.has_button?('Load more')
       expect(find_all('.dm-practice-title')[0]).to have_text('Cards for Memory')
@@ -107,8 +107,8 @@ describe 'Explore all practices page', type: :feature do
       expect(find_all('.dm-practice-title')[0]).to have_text('Beach VA')
       expect(find_all('.dm-practice-title')[1]).to have_text('BIONE')
       expect(find_all('.dm-practice-title')[5]).to have_text('Virtual Care')
-      # sort by most adoptions
-      select 'Sort by most adoptions', from: 'dm_sort_option'
+      # Sort by most adopted practices
+      select 'Sort by most adopted practices', from: 'dm_sort_option'
       expect(page).to have_content('6 results')
       expect(find_all('.dm-practice-title')[0]).to have_text('Cards for Memory')
       expect(find_all('.dm-practice-title')[1]).to have_text('Beach VA')
@@ -136,8 +136,8 @@ describe 'Explore all practices page', type: :feature do
       expect(find_all('.dm-practice-title')[0]).to have_text('Beach VA')
       expect(find_all('.dm-practice-title')[1]).to have_text('BIONE')
       expect(find_all('.dm-practice-title')[11]).to have_text('Telemedicine')
-      # sort by most adoptions
-      select 'Sort by most adoptions', from: 'dm_sort_option'
+      # Sort by most adopted practices
+      select 'Sort by most adopted practices', from: 'dm_sort_option'
       expect(page).to have_content('13 results')
       page.has_button?('Load more')
       expect(find_all('.dm-practice-title')[0]).to have_text('Cards for Memory')
@@ -180,7 +180,7 @@ describe 'Explore all practices page', type: :feature do
       expect(cache_keys).not_to include("searchable_practices_added")
       expect(cache_keys).not_to include("searchable_practices_adoptions")
 
-      select 'Sort by most adoptions', from: 'dm_sort_option'
+      select 'Sort by most adopted practices', from: 'dm_sort_option'
       sleep 1
       expect(cache_keys).to include("searchable_practices_adoptions")
 
