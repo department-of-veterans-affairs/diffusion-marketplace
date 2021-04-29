@@ -1,7 +1,6 @@
 class VaFacilitiesController < ApplicationController
   before_action :set_va_facility, only: [:show, :created_practices]
   def index
-    # @num_recs = params[:more] || "20"
     if params[:sortby].present?
       @facilities = VaFacility.get_all_facilities(params[:sortby])
     else
@@ -38,13 +37,8 @@ class VaFacilitiesController < ApplicationController
   def show
     station_number = @va_facility.station_number
     @num_practice_recs = params[:practices] || "3"
-    @created_practices = Practice.get_practices_created_by_facility(@va_facility.station_number)
-    @practice_results_count = @created_practices.count
-    @created_practices = @created_practices.take(@num_practice_recs.to_i)
-    @created_practices_count = @created_practices.count
     @adoptions_at_facility = VaFacility.get_adoptions_by_facility(@va_facility.station_number)
     @adoptions = DiffusionHistory.get_adoptions_by_facility(station_number)
-    @adoptions_count = @adoptions.count
     @categories = Category.order_by_name
     #google maps implementation
     @va_facility_marker = Gmaps4rails.build_markers(@va_facility) do |facility, marker|

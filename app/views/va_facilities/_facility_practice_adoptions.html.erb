@@ -22,7 +22,6 @@
       <%= render partial: 'va_facilities/facility_categories_combo_box', locals: {combo_box_id: 'facility_category_select_adoptions', categories: @categories} %>
     </div>
   </div>
-<!-- HEAD-->
   <div class="grid-col-12">
     <div id="practices_adopted_at_facility_count" class="usa-search margin-bottom-2 facility-search-field">
       <%= @adoptions_at_facility.count %> results:
@@ -30,10 +29,4 @@
   </div>
     <%= render partial: 'va_facilities/facility_adoption_results' %>
 </section>
-<!--=======-->
-<!--  <div class="facility-category-select desktop:margin-bottom-3">-->
-    <%#= render partial: 'va_facilities/facility_categories_combo_box', locals: {combo_box_id: 'facility_category_select_adoptions', categories: @created_practices_categories } %>
-    <%# TODO: change categories value %>
-<!--  </div>-->
-<!--</div>-->
-<!-- feature/vamc-visn-->
+
