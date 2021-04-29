@@ -13,7 +13,7 @@ class VaFacility < ApplicationRecord
   end
 
   def self.get_adoptions_by_facility(station_number)
-    sql = "SELECT p.id, p.name, dh.facility_id, dhs.status, dhs.start_time,
+    sql = "SELECT p.id, p.name, p.summary, p.slug, dh.facility_id, dhs.status, dhs.start_time,
           (select count(*) from diffusion_histories where p.id = diffusion_histories.practice_id) adoptions
           FROM practices p
           JOIN diffusion_histories dh on p.id = dh.practice_id
@@ -23,7 +23,7 @@ class VaFacility < ApplicationRecord
   end
 
   def self.get_adoptions_by_facility_and_category(station_number, category_id)
-    sql = "SELECT p.id, p.name, dh.facility_id, dhs.status, dhs.start_time,
+    sql = "SELECT distinct p.id, p.name, p.summary, p.slug, dh.facility_id, dhs.status, dhs.start_time,
           (select count(*) from diffusion_histories where p.id = diffusion_histories.practice_id) adoptions
           FROM practices p
           JOIN diffusion_histories dh on p.id = dh.practice_id
@@ -37,7 +37,7 @@ class VaFacility < ApplicationRecord
   def self.get_adoptions_by_facility_and_keyword(station_number, key_word)
     search_term = key_word
     key_word = "%" + key_word.downcase + "%"
-    sql = "SELECT distinct p.id, p.name, dh.facility_id, dhs.status, dhs.start_time,
+    sql = "SELECT distinct p.id, p.name, p.summary, p.slug, dh.facility_id, dhs.status, dhs.start_time,
           (select count(*) from diffusion_histories where p.id = diffusion_histories.practice_id) adoptions
           FROM practices p
           JOIN diffusion_histories dh on p.id = dh.practice_id
@@ -64,7 +64,7 @@ class VaFacility < ApplicationRecord
   def self.get_adoptions_by_facility_category_and_keyword(station_number, category_id, key_word)
     search_term = key_word
     key_word = "%" + key_word.downcase + "%"
-    sql = "SELECT distinct p.id, p.name, dh.facility_id, dhs.status, dhs.start_time,
+    sql = "SELECT distinct p.id, p.name, p.summary, p.slug, dh.facility_id, dhs.status, dhs.start_time,
           (select count(*) from diffusion_histories where p.id = diffusion_histories.practice_id) adoptions
           FROM practices p
           JOIN diffusion_histories dh on p.id = dh.practice_id
@@ -94,7 +94,9 @@ class VaFacility < ApplicationRecord
       adoptions_at_facility.each do |ad|
         start_date = ad["start_time"].to_date.strftime("%m/%d/%Y")
         ret_val += '<tr>'
-        ret_val += '<th scope="row" role="rowheader">' + ad["name"] + '</th>'
+        ret_val += '<th scope="row" role="rowheader">'
+        ret_val += '<a class="dm-internal-link" href="/practices/' + ad["slug"] + '"> ' + ad["name"] + '</a>'
+        ret_val += '<br />' + ad["summary"] + '</th>'
         ret_val += '<td data-sort-value='  + ad["status"] + '>' + ad["status"] + '</td>'
         ret_val += '<td data-sort-value='  + start_date + '>' + start_date + '</td>'
         ret_val += '<td data-sort-value='  + ad["adoptions"].to_s + '>' + ad["adoptions"].to_s + '</td>'

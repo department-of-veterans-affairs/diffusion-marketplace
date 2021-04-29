@@ -13,7 +13,14 @@
     <% @adoptions_at_facility.each do |ad| %>
       <tr>
         <% start_date = ad["start_time"].to_date.strftime("%m/%d/%Y") %>
-        <th scope="row" role="rowheader"><%=ad["name"] %></th>
+        <th scope="row" role="rowheader"><a class="dm-internal-link" href="<%= practice_path(ad["slug"]) %>"><%=ad["name"]%></a>
+          <% if current_user %>
+            <%= link_to practice_favorite_path(ad["id"], format: :js), method: :post, remote: true, 'title': "Bookmark #{ad["name"]}", 'aria-label': "Bookmark #{ad["name"]}", 'tabindex': '-1', 'aria-hidden': 'true', 'class': "dm-practice-bookmark-btn", 'id': "dm-bookmark-button-#{ad["id"]}" do %>
+              <i class="<% if current_user.favorite_practice_ids.include?(ad["id"]) %>fas fa-bookmark<% else %>far fa-bookmark<% end %> dm-favorite-icon-<%= ad["id"] %>"></i>
+            <% end %>
+          <% end %>
+          <br /> <%=ad["summary"] %>
+        </th>
         <td data-sort-value="<%=ad["status"] %>"><%=ad["status"] %></td>
         <td data-sort-value="<%=start_date %>"><%=start_date %></td>
         <td data-sort-value="<%=ad["adoptions"] %>"><%= ad["adoptions"] %></td>
