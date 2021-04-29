@@ -15,9 +15,11 @@
       <div class="<%= @primary_visn_liaison.present? ? 'grid-col-6' : 'grid-col-12' %> line-height-26">
         <p class="margin-bottom-3">
           <%
-            visn_facilities_count = @visn.va_facilities.count
-            visn_practices_created_count = get_created_practices_count_by_visn(@visn)
-            visn_practices_adopted_count = get_adopted_practices_count_by_visn(@visn)
+            visn_facilities_count = @visn.get_va_facilities.count
+            practices_created_by_visn = []
+            visn_practices_created_count = get_created_practices_by_visn(Practice.published_enabled_approved, @visn, practices_created_by_visn).count
+            practices_adopted_by_visn = []
+            visn_practices_adopted_count = get_adopted_practices_by_visn(Practice.published_enabled_approved, @visn, practices_adopted_by_visn).count
           %>
           This VISN has <%= visn_facilities_count %> facilit<%= visn_facilities_count != 1 ? 'ies' : 'y' %> and serves Veterans in <%= get_facility_locations_by_visn(@visn) %>.
           Collectively, its facilities have created <%= visn_practices_created_count %> practice<%= 's' if visn_practices_created_count != 1 %> and have adopted

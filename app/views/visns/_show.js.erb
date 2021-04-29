@@ -169,7 +169,7 @@ function searchPracticesByVisn() {
         console.log('results', results)
         console.log(results.length);
 
-        // Get the results and default to filtering based on score
+        // Get the results and default to filtering based on most adoptions
         buildSearchResults(results, sortByAdoptionCounts);
         // Reset the select input to default
         $(SORT_EL).prop('selectedIndex', 0);

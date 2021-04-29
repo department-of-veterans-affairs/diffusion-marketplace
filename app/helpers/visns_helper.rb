@@ -1,21 +1,19 @@
 module VisnsHelper
   include StatesHelper
 
-  def get_adopted_practices_count_by_visn(visn)
-    visn_adopted_practices = []
-    Practice.published_enabled_approved.each do |p|
+  def get_adopted_practices_by_visn(practices, visn, visn_adopted_practices)
+    practices.each do |p|
       visn.get_va_facilities.each do |vaf|
         p.diffusion_histories.each do |dh|
           visn_adopted_practices << p if dh.facility_id === vaf.station_number.to_s && !visn_adopted_practices.include?(p)
         end
       end
     end
-    visn_adopted_practices.count
+    visn_adopted_practices
   end
 
-  def get_created_practices_count_by_visn(visn)
-    visn_created_practices = []
-    Practice.published_enabled_approved.each do |p|
+  def get_created_practices_by_visn(practices, visn, visn_created_practices)
+    practices.each do |p|
       origin_facilities = p.practice_origin_facilities
       initiating_facility = p.initiating_facility
       # add practices that have practice_origin_facilities
@@ -30,7 +28,7 @@ module VisnsHelper
         visn_created_practices << p if initiating_facility === visn.id.to_s && !visn_created_practices.include?(p)
       end
     end
-    visn_created_practices.count
+    visn_created_practices
   end
 
   def get_facility_locations_by_visn(visn)

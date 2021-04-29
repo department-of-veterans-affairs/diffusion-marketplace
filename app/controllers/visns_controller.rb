@@ -32,7 +32,7 @@ class VisnsController < ApplicationController
 
   def show
     @primary_visn_liaison = VisnLiaison.find_by(visn: @visn, primary: true)
-    @visn_va_facilities = @visn.va_facilities
+    @visn_va_facilities = @visn.get_va_facilities
 
     @visn_va_facility_markers = Gmaps4rails.build_markers(@visn_va_facilities) do |facility, marker|
 
@@ -60,21 +60,7 @@ class VisnsController < ApplicationController
     @practices_json = practices_json(searchable_practices)
 
     practices_created_by_visn = []
-    searchable_practices.each do |p|
-      origin_facilities = p.practice_origin_facilities
-      initiating_facility = p.initiating_facility
-      # add practices that have practice_origin_facilities
-      if p.facility? && origin_facilities.any?
-        @visn_va_facilities.each do |vaf|
-          origin_facilities.each do |of|
-            practices_created_by_visn << p if of.facility_id === vaf.station_number.to_s && !practices_created_by_visn.include?(p)
-          end
-        end
-      # add practices that have an initiating_facility
-      elsif p.visn? && initiating_facility.present?
-        practices_created_by_visn << p if initiating_facility === @visn.id.to_s && !practices_created_by_visn.include?(p)
-      end
-    end
+    helpers.get_created_practices_by_visn(searchable_practices, @visn, practices_created_by_visn)
 
     def get_categories_by_practices(practices, practice_categories)
       practices.each do |p|
@@ -92,13 +78,7 @@ class VisnsController < ApplicationController
 
 
     practices_adopted_by_visn = []
-    searchable_practices.each do |p|
-      @visn_va_facilities.each do |vaf|
-        p.diffusion_histories.each do |dh|
-          practices_adopted_by_visn << p if dh.facility_id === vaf.station_number.to_s && !practices_adopted_by_visn.include?(p)
-        end
-      end
-    end
+    helpers.get_adopted_practices_by_visn(searchable_practices, @visn, practices_adopted_by_visn)
 
     @practices_adopted_json = practices_json(practices_adopted_by_visn)
     # get the unique categories for practices adopted in a VISN
