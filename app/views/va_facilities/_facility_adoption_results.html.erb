@@ -22,7 +22,7 @@
           <br /> <%=ad["summary"] %>
         </th>
         <td data-sort-value="<%=ad["status"] %>"><%=ad["status"] %></td>
-        <td data-sort-value="<%=start_date %>"><%=start_date %></td>
+        <td data-sort-value="<%=start_date.to_date.strftime("%m/%d/%Y") %>"><%=start_date %></td>
         <td data-sort-value="<%=ad["adoptions"] %>"><%= ad["adoptions"] %></td>
       </tr>
     <% end %>
