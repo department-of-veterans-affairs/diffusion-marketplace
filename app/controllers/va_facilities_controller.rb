@@ -39,7 +39,7 @@ class VaFacilitiesController < ApplicationController
     @num_practice_recs = params[:practices] || "3"
     @adoptions_at_facility = VaFacility.get_adoptions_by_facility(@va_facility.station_number)
     @adoptions = DiffusionHistory.get_adoptions_by_facility(station_number)
-    @categories = Category.order_by_name
+    @categories = Category.with_practices
     #google maps implementation
     @va_facility_marker = Gmaps4rails.build_markers(@va_facility) do |facility, marker|
 

@@ -124,7 +124,6 @@ describe 'VA facility pages', type: :feature, js: true do
         visit '/facilities'
         section = find(:css, '#directory_table') #the :css may be optional depending on your Capybara.default_selector setting
         expect(page).to have_content(@va_facility1.common_name)
-        expect(page).to have_content("Load more")
         expect(section).to have_no_content("U Test name")
         expect(section).to have_content('first facility')
         toggle_by_column('facility')
@@ -199,7 +198,6 @@ describe 'VA facility pages', type: :feature, js: true do
     it 'should be there if the VA facility common name (friendly id) or id exists in the DB' do
       visit '/facilities/a-first-facility-test-common-name'
       expect(page).to have_current_path(va_facility_path(@va_facility1))
-      expect(page).to have_content("This facility has created 0 practices and has adopted 0 practices.")
       expect(page).to have_content("Practices adopted at this facility")
     end
 
