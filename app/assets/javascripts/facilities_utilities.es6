@@ -127,8 +127,6 @@ $(document).ready(function(){
                 document.getElementById("practices_adopted_at_facility_count").innerHTML = result[1]
             }
         });
-
-
     });
 
     $("#facility_category_select_adoptions").change (function(e) {

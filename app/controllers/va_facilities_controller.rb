@@ -163,7 +163,8 @@ class VaFacilitiesController < ApplicationController
         end
         ret_val += '</a>'
         ret_val += '<br />' + ad["summary"] + '</th>'
-        ret_val += '<td data-sort-value='  + ad["status"] + '>' + ad["status"] + '</td>'
+        status = ad["status"] == "Completed" ? "Successful" : ad["status"]
+        ret_val += '<td data-sort-value='  + status + '>' + status + '</td>'
         ret_val += '<td data-sort-value='  + start_date_tm + '>' + start_date + '</td>'
         ret_val += '<td data-sort-value='  + ad["adoptions"].to_s + '>' + ad["adoptions"].to_s + '</td>'
         ret_val += '</tr>'

@@ -23,7 +23,8 @@
           <% end %>
           <br /> <%=ad["summary"] %>
         </th>
-        <td data-sort-value="<%=ad["status"] %>"><%=ad["status"] %></td>
+        <% status = ad["status"] == "Completed" ? "Successful" : ad["status"] %>
+        <td data-sort-value="<%= status %>>"><%= status %></td>
         <td data-sort-value="<%=start_date_tm %>"><%=start_date %></td>
         <td data-sort-value="<%=ad["adoptions"] %>"><%= ad["adoptions"] %></td>
       </tr>
