@@ -50,10 +50,10 @@ class VaFacility < ApplicationRecord
           WHERE p.published = $4 AND p.enabled = $4 AND p.approved = $4 AND dh.facility_id = $1
           AND (p.name ilike ($2) OR p.description ilike ($2) OR p.short_name ilike ($2) OR p.summary ilike ($2) OR p.tagline ilike ($2)
           OR p.overview_problem ilike ($2) OR p.overview_solution ilike ($2) OR p.overview_results ilike ($2) OR p.maturity_level = ($3) "
-    sql += "OR '" + search_term + "' ilike any(c.related_terms) "
+    sql += "OR $5 ilike any(c.related_terms) "
     sql += "OR c.name ilike ($2) OR vaf.official_station_name ilike ($2) "
     sql += "OR vaf.common_name ilike ($2)) order by adoptions desc"
-    ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"], [nil, "#{key_word}"], [nil, maturity_level], [nil, true]]).to_a
+    ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"], [nil, "#{key_word}"], [nil, maturity_level], [nil, true], [nil, search_term]]).to_a
   end
 
   def self.get_adoptions_by_facility_category_and_keyword(station_number, category_id, key_word)
@@ -71,10 +71,10 @@ class VaFacility < ApplicationRecord
           WHERE p.published = $5 AND p.enabled = $5 AND p.approved = $5 AND dh.facility_id = $1 AND c.id = $2
           AND (p.name ilike ($3) OR p.description ilike ($3) OR p.short_name ilike ($3) OR p.summary ilike ($3) OR p.tagline ilike ($3)
           OR p.overview_problem ilike ($3) OR p.overview_solution ilike ($3) OR p.overview_results ilike ($3) OR p.maturity_level = ($4) "
-        sql += "OR '" + search_term + "' ilike any(c.related_terms) "
+        sql += "OR $6 ilike any(c.related_terms) "
         sql += "OR c.name ilike ($3) OR vaf.official_station_name ilike ($3) "
         sql += "OR vaf.common_name ilike ($3)) order by adoptions desc"
-    ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"], [nil, "#{category_id}"], [nil, "#{key_word}"], [nil, maturity_level], [nil, true]]).to_a
+    ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"], [nil, "#{category_id}"], [nil, "#{key_word}"], [nil, maturity_level], [nil, true], [nil, search_term]]).to_a
   end
 
   def self.get_maturity_level(search_term)
