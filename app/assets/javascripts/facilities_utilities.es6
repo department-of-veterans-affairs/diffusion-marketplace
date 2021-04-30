@@ -119,7 +119,7 @@ $(document).ready(function(){
         let keyWord = document.getElementById("dm-adopted-practices-search-field").value;
         let facilityStationNumber = document.getElementById("facility_station_number").value;
         Rails.ajax({
-            type: 'post',
+            type: 'get',
             url: "/update_practices_adopted_at_facility",
             data: jQuery.param({selected_category: selectedCategory, key_word: keyWord, station_number: facilityStationNumber}),
             success: function(result) {
@@ -137,7 +137,7 @@ $(document).ready(function(){
         let keyWord = document.getElementById("dm-adopted-practices-search-field").value;
         let facilityStationNumber = document.getElementById("facility_station_number").value;
         Rails.ajax({
-            type: 'post',
+            type: 'get',
             url: "/update_practices_adopted_at_facility",
             data: jQuery.param({selected_category: selectedCategory, key_word: keyWord, station_number: facilityStationNumber}),
             success: function(result) {
