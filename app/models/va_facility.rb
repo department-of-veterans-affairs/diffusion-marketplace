@@ -68,13 +68,13 @@ class VaFacility < ApplicationRecord
           JOIN category_practices cp on p.id = cp.practice_id
           JOIN categories c on cp.category_id = c.id
           JOIN va_facilities vaf on dh.facility_id = vaf.station_number
-          WHERE p.published = true AND p.enabled = true AND p.approved = true AND dh.facility_id = $1 AND c.id = $2
+          WHERE p.published = $5 AND p.enabled = $5 AND p.approved = $5 AND dh.facility_id = $1 AND c.id = $2
           AND (p.name ilike ($3) OR p.description ilike ($3) OR p.short_name ilike ($3) OR p.summary ilike ($3) OR p.tagline ilike ($3)
           OR p.overview_problem ilike ($3) OR p.overview_solution ilike ($3) OR p.overview_results ilike ($3) OR p.maturity_level = ($4) "
         sql += "OR '" + search_term + "' ilike any(c.related_terms) "
         sql += "OR c.name ilike ($3) OR vaf.official_station_name ilike ($3) "
         sql += "OR vaf.common_name ilike ($3)) order by adoptions desc"
-    ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"], [nil, "#{category_id}"], [nil, "#{key_word}"], [nil, maturity_level]]).to_a
+    ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"], [nil, "#{category_id}"], [nil, "#{key_word}"], [nil, maturity_level], [nil, true]]).to_a
   end
 
   def self.get_maturity_level(search_term)
