@@ -213,7 +213,7 @@ describe 'VA facility pages', type: :feature, js: true do
           end
           expect(find(".facility_category_select_adoptions.usa-select", visible: false).value).to eq("")
           expect(find("#dm-adopted-practices-search-field").value).to eq("")
-          expect(find(".practices_adopted_at_facility_count").text).to eq("8 results:")
+          expect(find("#practices_adopted_at_facility_count").text).to eq("8 results:")
         end
         it 'should filter by categories and allow for sorting' do
           find('#facility_category_select_adoptions').click
