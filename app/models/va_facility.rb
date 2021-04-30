@@ -1,7 +1,6 @@
 class VaFacility < ApplicationRecord
   extend FriendlyId
   friendly_id :common_name, use: :slugged
-
   belongs_to :visn
 
   def self.get_total_adoptions_for_each_practice(va_facilities)
@@ -88,45 +87,6 @@ class VaFacility < ApplicationRecord
     end
     maturity_level
   end
-
-  def self.rewrite_practices_adopted_at_this_facility_filtered_by_category(adoptions_at_facility, total_adoptions_for_practice)
-    ret_val = ""
-    if adoptions_at_facility.count > 0
-      adoptions_at_facility.each do |ad|
-        start_date = ad["start_time"].to_date.strftime("%m/%d/%Y")
-        start_date_tm = ad["start_time"].to_date.strftime("%Y/%m/%d")
-        ret_val += '<tr>'
-        ret_val += '<th scope="row" role="rowheader">'
-        ret_val += '<a class="dm-internal-link" href="/practices/' + ad["slug"] + '"> ' + ad["name"] + '</a>'
-
-
-
-        #<a class="dm-internal-link" href="<%= practice_path(ad["slug"]) %>"><%=ad["name"]%></a>
-
-        # if @current_user
-
-
-        # ret_val += '<a href="<%= practice_favorite_path(' + ad["id"].to_s + ', format: :js) %>" data-method="post" data-remote="true" rel="nofollow" aria-label="Bookmark <%= @practice.name %>" tabindex="-1" aria-hidden="true" class="dm-favorite-practice-link dm-icon-link text-no-underline font-sans-xs text-primary desktop:grid-col-3 grid-col-6 desktop:margin-bottom-0 margin-bottom-2">'
-        # ret_val += '<i class="<%= current_user.favorite_practice_ids.include?(' + ad["id"].to_s + ' ? "fas" : "far" %> fa-bookmark dm-favorite-icon-<%= @practice.id %>  margin-right-05"></i>'
-        # ret_val += '</a>'
-
-        # <a href="<%= practice_favorite_path(@practice, format: :js) %>" data-method="post" data-remote="true" rel="nofollow" aria-label="Bookmark <%= @practice.name %>" tabindex="-1" aria-hidden="true" class="dm-favorite-practice-link dm-icon-link text-no-underline font-sans-xs text-primary desktop:grid-col-3 grid-col-6 desktop:margin-bottom-0 margin-bottom-2">
-        # <i class="<%= current_user.favorite_practice_ids.include?(@practice.id) ? 'fas' : 'far '%> fa-bookmark dm-favorite-icon-<%= @practice.id %>  margin-right-05"></i>
-        #   <span class="dm-favorite-practice-link-text">
-        #     <%= current_user.favorite_practice_ids.include?(@practice.id) ? 'Bookmarked' : 'Bookmark' %>
-        #   </span>
-        # </a>
-
-        ret_val += '<br />' + ad["summary"] + '</th>'
-        ret_val += '<td data-sort-value='  + ad["status"] + '>' + ad["status"] + '</td>'
-        ret_val += '<td data-sort-value='  + start_date_tm + '>' + start_date + '</td>'
-        ret_val += '<td data-sort-value='  + ad["adoptions"].to_s + '>' + ad["adoptions"].to_s + '</td>'
-        ret_val += '</tr>'
-      end
-    end
-    ret_val
-  end
-
 
   def self.get_all_facilities(order_by = "facility")
     sql = "select va.id, va.visn_id, va.slug, va.station_number, va.common_name, va.official_station_name, va.fy17_parent_station_complexity_level, vi.number as visn_number, street_address_state as state, "

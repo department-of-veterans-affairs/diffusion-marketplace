@@ -1,5 +1,7 @@
 class VaFacilitiesController < ApplicationController
   before_action :set_va_facility, only: [:show, :created_practices]
+  before_action :authenticate_user!
+
   def index
     if params[:sortby].present?
       @facilities = VaFacility.get_all_facilities(params[:sortby])
@@ -110,7 +112,7 @@ class VaFacilitiesController < ApplicationController
     elsif !selected_cat.blank? && !key_word.blank?
       @adoptions_at_facility = VaFacility.get_adoptions_by_facility_category_and_keyword(station_number, selected_cat, key_word)
     end
-    data = VaFacility.rewrite_practices_adopted_at_this_facility_filtered_by_category(@adoptions_at_facility, @total_adoptions_for_practice)
+    data = rewrite_practices_adopted_at_this_facility_filtered_by_category(@adoptions_at_facility, @total_adoptions_for_practice)
     results = []
     results << data
     result_count =  @adoptions_at_facility.count.to_s + " result"
@@ -142,5 +144,31 @@ class VaFacilitiesController < ApplicationController
       end
     end
     return created_pr_categories.sort_by! { |k| k[:name].downcase.strip }
+  end
+
+  def rewrite_practices_adopted_at_this_facility_filtered_by_category(adoptions_at_facility, total_adoptions_for_practice)
+    ret_val = ""
+    if adoptions_at_facility.count > 0
+      adoptions_at_facility.each do |ad|
+        start_date = ad["start_time"].to_date.strftime("%m/%d/%Y")
+        start_date_tm = ad["start_time"].to_date.strftime("%Y/%m/%d")
+        ret_val += '<tr>'
+        ret_val += '<th scope="row" role="rowheader">'
+        ret_val += '<a class="dm-internal-link" href="/practices/' + ad["slug"] + '"> ' + ad["name"] + '</a> '
+        ret_val += '<a title="' + ad["name"] + '" aria-label="' + ad["name"] + '" tabindex="-1" aria-hidden="true" class="dm-practice-bookmark-btn" id="dm-bookmark-button-25" data-remote="true" rel="nofollow" data-method="post" href="/practices/a-solid-practice/favorite.js"> '
+        if current_user.favorite_practice_ids.include?(ad["id"])
+          ret_val += '<i class="fas fa-bookmark dm-favorite-icon-' + ad["id"].to_s + '"></i>'
+        else
+          ret_val += '<i class="far fa-bookmark dm-favorite-icon-' + ad["id"].to_s + '"></i>'
+        end
+        ret_val += '</a>'
+        ret_val += '<br />' + ad["summary"] + '</th>'
+        ret_val += '<td data-sort-value='  + ad["status"] + '>' + ad["status"] + '</td>'
+        ret_val += '<td data-sort-value='  + start_date_tm + '>' + start_date + '</td>'
+        ret_val += '<td data-sort-value='  + ad["adoptions"].to_s + '>' + ad["adoptions"].to_s + '</td>'
+        ret_val += '</tr>'
+      end
+    end
+    ret_val
   end
 end
