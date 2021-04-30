@@ -155,7 +155,7 @@ class VaFacilitiesController < ApplicationController
         ret_val += '<tr>'
         ret_val += '<th scope="row" role="rowheader">'
         ret_val += '<a class="dm-internal-link" href="/practices/' + ad["slug"] + '"> ' + ad["name"] + '</a> '
-        ret_val += '<a title="Bookmark ' + ad["name"] + '" aria-label="' + ad["name"] + '" tabindex="-1" aria-hidden="true" class="dm-practice-bookmark-btn" id="dm-bookmark-button-25" data-remote="true" rel="nofollow" data-method="post" href="/practices/a-solid-practice/favorite.js"> '
+        ret_val += '<a title="Bookmark ' + ad["name"] + '" aria-label="' + ad["name"] + '" tabindex="-1" aria-hidden="true" class="dm-practice-bookmark-btn" id="dm-bookmark-button-' + ad["id"].to_s + '" data-remote="true" rel="nofollow" data-method="post" href="/practices/a-solid-practice/favorite.js"> '
         if current_user.favorite_practice_ids.include?(ad["id"])
           ret_val += '<i class="fas fa-bookmark dm-favorite-icon-' + ad["id"].to_s + '"></i>'
         else
