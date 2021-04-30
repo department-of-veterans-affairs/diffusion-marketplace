@@ -94,6 +94,7 @@ class VaFacility < ApplicationRecord
     if adoptions_at_facility.count > 0
       adoptions_at_facility.each do |ad|
         start_date = ad["start_time"].to_date.strftime("%m/%d/%Y")
+        start_date_tm = ad["start_time"].to_date.strftime("%Y/%m/%d")
         ret_val += '<tr>'
         ret_val += '<th scope="row" role="rowheader">'
         ret_val += '<a class="dm-internal-link" href="/practices/' + ad["slug"] + '"> ' + ad["name"] + '</a>'
@@ -118,7 +119,7 @@ class VaFacility < ApplicationRecord
 
         ret_val += '<br />' + ad["summary"] + '</th>'
         ret_val += '<td data-sort-value='  + ad["status"] + '>' + ad["status"] + '</td>'
-        ret_val += '<td data-sort-value='  + start_date + '>' + start_date + '</td>'
+        ret_val += '<td data-sort-value='  + start_date_tm + '>' + start_date + '</td>'
         ret_val += '<td data-sort-value='  + ad["adoptions"].to_s + '>' + ad["adoptions"].to_s + '</td>'
         ret_val += '</tr>'
       end
