@@ -13,7 +13,11 @@ var SEARCH_RESULTS = '#search-results';
 var SORT_EL = '#search_sort_option';
 var RADIO_OPTIONS = 'input[name=visns-show-radio-buttons]';
 
-function searchPracticesByVisn() {
+function setFieldsetAttr(boolean) {
+    $('fieldset').attr('data-search-filter', boolean);
+}
+
+    function searchPracticesByVisn() {
     const searchField = document.querySelector('#visn-search-field');
 
     function buildSearchResults(results, sortOption) {
@@ -62,7 +66,7 @@ function searchPracticesByVisn() {
             afterNum: 6,
             moreText: 'Load more',
             noMoreText: 'No more results'
-        })
+        });
     }
     // Search practices and populate the page
     function search(query, category, radioVal) {
@@ -73,7 +77,6 @@ function searchPracticesByVisn() {
         // set the search page search bar input value
         searchField.value = query;
         if (query !== '') {
-            trackVisnSearchField(query);
             var searchBarQueryArray = [];
             search_options.keys.forEach(function(practiceKey) {
                 var queryObj = {};
@@ -149,9 +152,9 @@ function searchPracticesByVisn() {
 
         function searchWithOnlyRadioVal() {
             if (radioVal === 'created') {
-                resultsForOnlyRadioVal(created_practices)
+                resultsForOnlyRadioVal(created_practices);
             } else {
-                resultsForOnlyRadioVal(adopted_practices)
+                resultsForOnlyRadioVal(adopted_practices);
             }
         }
 
@@ -166,7 +169,7 @@ function searchPracticesByVisn() {
             searchWithOnlyRadioVal();
         }
 
-        console.log('results', results)
+        console.log('results', results);
         console.log(results.length);
 
         // Get the results and default to filtering based on most adoptions
@@ -185,6 +188,8 @@ function searchPracticesByVisn() {
         // Highlight search results where exact keyword matches
         var mark = new Mark('#search-results');
         mark.mark(query);
+
+        trackVisnSearchField(query);
     }
 
     // Highlight Fuse.js results
@@ -249,7 +254,7 @@ function searchPracticesByVisn() {
         hideResultsSectionElAndShowSpinner();
 
         // Add a search query to the URL when necessary
-        url = window.location.href
+        var url = window.location.href;
         var visnShowUrl = '/visns/' + visn["number"];
         var urlQuery = searchField.value === '' ? visnShowUrl : visnShowUrl + '?query=' + searchField.value;
         // due to turbolinks reloading the page after clicking on a link, don't add a history if the URL contains 'facilities' or 'practices'
@@ -282,6 +287,7 @@ function searchPracticesByVisn() {
             // clear the adopted categories combo box
             if ($(adoptedComboBox).val() !== '') {
                 $(adoptedComboBox).next().find('button').click();
+                setFieldsetAttr('true')
             }
         } else {
             showAndHideComboBoxes(adoptedComboBoxDiv, createdComboBoxDiv);
@@ -289,6 +295,7 @@ function searchPracticesByVisn() {
             // clear the created categories combo box
             if ($(createdComboBox).val() !== '') {
                 $(createdComboBox).next().find('button').click();
+                setFieldsetAttr('true')
             }
         }
         // Run the search
@@ -328,21 +335,25 @@ function searchPracticesByVisn() {
 
 function trackVisnSearchField(searchTerm) {
     if (searchTerm !== '') {
-        ahoy.track('VISN practice search', {search_term: searchTerm});
-        if (typeof ga === 'function') {
-            ga('send', {
-                hitType: 'event',
-                eventCategory: 'VISN search',
-                eventAction: 'VISN search',
-                location: '/visns/' + visn["number"] + '/?query=' + searchTerm
-            });
+        if ($('fieldset').attr('data-search-filter') === 'false') {
+            ahoy.track('VISN practice search', {search_term: searchTerm});
+            if (typeof ga === 'function') {
+                ga('send', {
+                    hitType: 'event',
+                    eventCategory: 'VISN search',
+                    eventAction: 'VISN search',
+                    location: '/visns/' + visn["number"] + '/?query=' + searchTerm
+                });
+            }
         }
     }
+    setFieldsetAttr('false')
 }
 
 // submit the form if the combo box value is changed
 function submitFormOnComboBoxChange() {
     $(document).on('change', '#visn-search-created-categories, #visn-search-adopted-categories', function() {
+        setFieldsetAttr('true')
         $(this).closest('form').submit();
     });
 }
@@ -350,6 +361,10 @@ function submitFormOnComboBoxChange() {
 // submit the form when a radio input is clicked on
 function submitFormOnRadioInputClick() {
     $(document).on('click', RADIO_OPTIONS, function() {
+        setFieldsetAttr('false')
+        if ($('#visn-search-field').val() !== '') {
+            setFieldsetAttr('true')
+        }
         $(this).closest('form').submit();
     });
 }
