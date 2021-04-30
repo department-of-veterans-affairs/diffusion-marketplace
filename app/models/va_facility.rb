@@ -18,8 +18,8 @@ class VaFacility < ApplicationRecord
           FROM practices p
           JOIN diffusion_histories dh on p.id = dh.practice_id
           JOIN diffusion_history_statuses dhs on dh.id = dhs.diffusion_history_id
-          WHERE p.published = true AND dh.facility_id = $1 order by adoptions desc"
-    ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"]]).to_a
+          WHERE p.published = $1 AND dh.facility_id = $2 order by adoptions desc"
+    ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, true], [nil, "#{station_number}"]]).to_a
   end
 
   def self.get_adoptions_by_facility_and_category(station_number, category_id)
@@ -30,15 +30,15 @@ class VaFacility < ApplicationRecord
           JOIN diffusion_history_statuses dhs on dh.id = dhs.diffusion_history_id
           JOIN category_practices cp on p.id = cp.practice_id
           JOIN categories c on cp.category_id = c.id
-          WHERE p.published = true AND p.enabled = true AND p.approved = true AND dh.facility_id = $1 AND c.id = $2 order by adoptions desc"
-    ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"], [nil, "#{category_id}"]]).to_a
+          WHERE p.published = $3 AND p.enabled = $3 AND p.approved = $3 AND dh.facility_id = $1 AND c.id = $2 order by adoptions desc"
+    ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"], [nil, "#{category_id}"], [nil, true]]).to_a
   end
 
   def self.get_adoptions_by_facility_and_keyword(station_number, key_word)
     search_term = key_word
     key_word = "%" + key_word.downcase + "%"
     maturity_level = get_maturity_level(search_term)
-
+    debugger
     sql = "SELECT distinct p.id, p.name, p.summary, p.slug, dh.facility_id, dhs.status, dhs.start_time,
           (select count(*) from diffusion_histories where p.id = diffusion_histories.practice_id) adoptions
           FROM practices p
@@ -47,16 +47,13 @@ class VaFacility < ApplicationRecord
           JOIN category_practices cp on p.id = cp.practice_id
           JOIN categories c on cp.category_id = c.id
           JOIN va_facilities vaf on dh.facility_id = vaf.station_number
-          WHERE p.published = true AND p.enabled = true AND p.approved = true AND dh.facility_id = $1
+          WHERE p.published = $4 AND p.enabled = $4 AND p.approved = $4 AND dh.facility_id = $1
           AND (p.name ilike ($2) OR p.description ilike ($2) OR p.short_name ilike ($2) OR p.summary ilike ($2) OR p.tagline ilike ($2)
-          OR p.overview_problem ilike ($2) OR p.overview_solution ilike ($2) OR p.overview_results ilike ($2) "
-    if !maturity_level.nil?
-      sql += "OR p.maturity_level = ($3) "
-    end
+          OR p.overview_problem ilike ($2) OR p.overview_solution ilike ($2) OR p.overview_results ilike ($2) OR p.maturity_level = ($3) "
     sql += "OR '" + search_term + "' ilike any(c.related_terms) "
     sql += "OR c.name ilike ($2) OR vaf.official_station_name ilike ($2) "
     sql += "OR vaf.common_name ilike ($2)) order by adoptions desc"
-    ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"], [nil, "#{key_word}"], [nil, maturity_level]]).to_a
+    ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, "#{station_number}"], [nil, "#{key_word}"], [nil, maturity_level], [nil, true]]).to_a
   end
 
   def self.get_adoptions_by_facility_category_and_keyword(station_number, category_id, key_word)
@@ -73,10 +70,7 @@ class VaFacility < ApplicationRecord
           JOIN va_facilities vaf on dh.facility_id = vaf.station_number
           WHERE p.published = true AND p.enabled = true AND p.approved = true AND dh.facility_id = $1 AND c.id = $2
           AND (p.name ilike ($3) OR p.description ilike ($3) OR p.short_name ilike ($3) OR p.summary ilike ($3) OR p.tagline ilike ($3)
-          OR p.overview_problem ilike ($3) OR p.overview_solution ilike ($3) OR p.overview_results ilike ($3) "
-        if !maturity_level.nil?
-          sql += "OR p.maturity_level = ($4) "
-        end
+          OR p.overview_problem ilike ($3) OR p.overview_solution ilike ($3) OR p.overview_results ilike ($3) OR p.maturity_level = ($4) "
         sql += "OR '" + search_term + "' ilike any(c.related_terms) "
         sql += "OR c.name ilike ($3) OR vaf.official_station_name ilike ($3) "
         sql += "OR vaf.common_name ilike ($3)) order by adoptions desc"
@@ -84,7 +78,7 @@ class VaFacility < ApplicationRecord
   end
 
   def self.get_maturity_level(search_term)
-    maturity_level = nil
+    maturity_level = 99
     search_term = search_term.downcase
     if search_term.include?("emerging")
       maturity_level = 0
