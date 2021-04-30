@@ -38,7 +38,6 @@ class VaFacility < ApplicationRecord
     search_term = key_word
     key_word = "%" + key_word.downcase + "%"
     maturity_level = get_maturity_level(search_term)
-    debugger
     sql = "SELECT distinct p.id, p.name, p.summary, p.slug, dh.facility_id, dhs.status, dhs.start_time,
           (select count(*) from diffusion_histories where p.id = diffusion_histories.practice_id) adoptions
           FROM practices p
