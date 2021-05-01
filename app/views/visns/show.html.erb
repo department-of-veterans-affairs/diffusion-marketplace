@@ -31,29 +31,34 @@
         </div>
       <% end %>
     </div>
-    <div class="grid-row">
-      <form class="usa-form width-full display-flex">
+    <div class="dm-visn-show-map display-none">
+      <%
+        visn_map_filters = [
+          { label: 'vamc', value: 'VA Medical Center (VAMC)', checked: true },
+          { label: 'primary-cboc', value: 'Primary Care CBOC', checked: false },
+          { label: 'multi-cboc', value: 'Multi-Specialty CBOC', checked: false },
+          { label: 'hcc', value: 'Health Care Center (HCC)', checked: false },
+          { label: 'stand-alone', value: 'Residential Care Site (MH RRTP/DRRTP) (Stand-Alone)', checked: false },
+          { label: 'oos', value: 'Other Outpatient Services (OOS)', checked: false },
+          { label: 'Unclassified', value: 'Unclassified', checked: false }
+        ]
+      %>
+
+      <form class="usa-form width-full display-flex ">
         <fieldset class="usa-fieldset display-flex">
           <legend class="usa-legend text-normal font-sans-sm">Display on map: </legend>
-          <div class="usa-checkbox">
-            <input class="usa-checkbox__input" id="check-historical-truth" type="checkbox" name="historical-figures" value="sojourner-truth" checked>
-            <label class="usa-checkbox__label" for="check-historical-truth">VAMCs</label>
-          </div>
-          <div class="usa-checkbox">
-            <input class="usa-checkbox__input" id="check-historical-douglass" type="checkbox" name="historical-figures" value="frederick-douglass">
-            <label class="usa-checkbox__label" for="check-historical-douglass">CBOCs</label>
-          </div>
-          <div class="usa-checkbox">
-            <input class="usa-checkbox__input" id="check-historical-washington" type="checkbox" name="historical-figures" value="booker-t-washington">
-            <label class="usa-checkbox__label" for="check-historical-washington">Clinics</label>
-          </div>
-          <div class="usa-checkbox">
-            <input class="usa-checkbox__input" id="check-historical-carver" type="checkbox" name="historical-figures"  value="george-washington-carver">
-            <label class="usa-checkbox__label" for="check-historical-carver">Unclassified</label>
-          </div>
+          <% visn_map_filters.each do |filter| %>
+            <div class="usa-checkbox margin-right-4">
+              <%= check_box_tag("visn-show-filter-#{filter[:label]}", value = "#{filter[:value]}", checked = filter[:checked], options = { class: 'usa-checkbox__input dm-visn-map-filter-checkbox'}) %>
+              <%= label_tag "visn-show-filter-#{filter[:label]}", "#{filter[:value]}", class: 'usa-checkbox__label' %>
+            </div>
+          <% end %>
         </fieldset>
       </form>
+      <%= render partial: 'visns/maps/show_map' %>
+    </div>
+    <div class="dm-loading-spinner flex-justify-center flex-align-self-center margin-y-4">
+      <i class="fas fa-circle-notch"></i>
     </div>
   </section>
-  <%= render partial: 'visns/maps/show_map' %>
 </div>
