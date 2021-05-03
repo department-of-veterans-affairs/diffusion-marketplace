@@ -150,8 +150,13 @@ class VaFacilitiesController < ApplicationController
     ret_val = ""
     if adoptions_at_facility.count > 0
       adoptions_at_facility.each do |ad|
-        start_date = ad["start_time"].to_date.strftime("%-d %B %Y")
-        start_date_tm = ad["start_time"].to_date.strftime("%Y/%m/%d")
+        if ad["start_time"].blank?
+          start_date = ""
+          start_date_tm = ""
+        else
+          start_date = ad["start_time"].to_date.strftime("%-d %B %Y")
+          start_date_tm = ad["start_time"].to_date.strftime("%Y/%m/%d")
+        end
         ret_val += '<tr>'
         ret_val += '<th scope="row" role="rowheader">'
         ret_val += '<a class="dm-internal-link" href="/practices/' + ad["slug"] + '"> ' + ad["name"] + '</a> '
