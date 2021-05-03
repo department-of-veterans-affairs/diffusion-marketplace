@@ -150,7 +150,7 @@ class VaFacilitiesController < ApplicationController
     ret_val = ""
     if adoptions_at_facility.count > 0
       adoptions_at_facility.each do |ad|
-        start_date = ad["start_time"].to_date.strftime("%m/%d/%Y")
+        start_date = ad["start_time"].to_date.strftime("%-d %B %Y")
         start_date_tm = ad["start_time"].to_date.strftime("%Y/%m/%d")
         ret_val += '<tr>'
         ret_val += '<th scope="row" role="rowheader">'

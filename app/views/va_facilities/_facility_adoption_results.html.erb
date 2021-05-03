@@ -12,7 +12,7 @@
     <tbody id="practices_adopted_by_facility_dyn">
     <% @adoptions_at_facility.each do |ad| %>
       <tr>
-        <% start_date = ad["start_time"].to_date.strftime("%m/%d/%Y") %>
+        <% start_date = ad["start_time"].to_date.strftime("%-d %B %Y") %>
         <% start_date_tm = ad["start_time"].to_date.strftime("%Y/%m/%d") %>
         <% practice = Practice.find_by_id(ad["id"]) %>
         <th scope="row" role="rowheader"><a class="dm-internal-link" href="<%= practice_path(ad["slug"]) %>"><%=ad["name"]%></a>
