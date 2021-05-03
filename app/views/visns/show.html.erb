@@ -41,6 +41,6 @@
     </div>
   </section>
   <%= render partial: 'visns/maps/show_map' %>
-  <%= render partial: 'visns/search' %>
+  <%= render partial: 'visns/search' unless visn_practices_created_count == 0 && visn_practices_adopted_count == 0 %>
   <%= render partial: 'visn_facilities_table' %>
 </div>

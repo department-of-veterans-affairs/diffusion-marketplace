@@ -12,7 +12,10 @@ var LOAD_MORE_CONTAINER = '.button-box';
 var SEARCH_RESULTS = '#search-results';
 var SORT_EL = '#search_sort_option';
 var RADIO_OPTIONS = 'input[name=visns-show-radio-buttons]';
+var CREATED_COMBO_BOX = '#visn-search-created-categories';
+var ADOPTED_COMBO_BOX = '#visn-search-adopted-categories';
 
+// add a data attribute to the fieldset in order to trigger an ahoy tracking event only when the search field has been updated/populated
 function setFieldsetAttr(boolean) {
     $('fieldset').attr('data-search-filter', boolean);
 }
@@ -265,11 +268,9 @@ function setFieldsetAttr(boolean) {
         // Get the value for the created/adopted practices radio input
         var createdOrAdoptedRadio = $('input[name=visns-show-radio-buttons]:checked').val();
 
-        // hide one of the category combo boxes based on the radio value
+        // hide one of the category combo boxes based on which radio input is chosen
         var createdComboBoxDiv = '.practice-created-categories-combo-box';
         var adoptedComboBoxDiv = '.practice-adopted-categories-combo-box';
-        var createdComboBox = '#visn-search-created-categories';
-        var adoptedComboBox = '#visn-search-adopted-categories';
 
         function showAndHideComboBoxes(comboBoxDivOne, comboBoxDivTwo) {
             if ($(comboBoxDivOne).hasClass('display-none')) {
@@ -283,19 +284,19 @@ function setFieldsetAttr(boolean) {
 
         if (createdOrAdoptedRadio === 'created') {
             showAndHideComboBoxes(createdComboBoxDiv, adoptedComboBoxDiv);
-            categoryComboBoxVal = $(createdComboBox).val();
+            categoryComboBoxVal = $(CREATED_COMBO_BOX).val();
             // clear the adopted categories combo box
-            if ($(adoptedComboBox).val() !== '') {
-                $(adoptedComboBox).next().find('button').click();
-                setFieldsetAttr('true')
+            if ($(ADOPTED_COMBO_BOX).val() !== '') {
+                $(ADOPTED_COMBO_BOX).next().find('button').click();
+                setFieldsetAttr('true');
             }
         } else {
             showAndHideComboBoxes(adoptedComboBoxDiv, createdComboBoxDiv);
-            categoryComboBoxVal = $(adoptedComboBox).val();
+            categoryComboBoxVal = $(ADOPTED_COMBO_BOX).val();
             // clear the created categories combo box
-            if ($(createdComboBox).val() !== '') {
-                $(createdComboBox).next().find('button').click();
-                setFieldsetAttr('true')
+            if ($(CREATED_COMBO_BOX).val() !== '') {
+                $(CREATED_COMBO_BOX).next().find('button').click();
+                setFieldsetAttr('true');
             }
         }
         // Run the search
@@ -347,23 +348,43 @@ function trackVisnSearchField(searchTerm) {
             }
         }
     }
-    setFieldsetAttr('false')
+    setFieldsetAttr('false');
 }
 
-// submit the form if the combo box value is changed
-function submitFormOnComboBoxChange() {
-    $(document).on('change', '#visn-search-created-categories, #visn-search-adopted-categories', function() {
-        setFieldsetAttr('true')
-        $(this).closest('form').submit();
+// submit the form if the combo box value changed
+function submitFormOnComboBoxChange(comboBox) {
+    var previousVal;
+    // capture the previous value for the combo box
+    $(document).on('focus', comboBox, function() {
+        previousVal = $(comboBox).val();
+    });
+
+    $(document).on('change', comboBox, function() {
+        setFieldsetAttr('true');
+        // only submit the form if the combo box's container is visible and the previous value is different from the current value
+        if (!$(this).parent().hasClass('display-none') && $(this).val() !== previousVal) {
+            $(this).closest('form').submit();
+        }
     });
 }
 
 // submit the form when a radio input is clicked on
 function submitFormOnRadioInputClick() {
     $(document).on('click', RADIO_OPTIONS, function() {
-        setFieldsetAttr('false')
+        // reset the combo box for the previously selected input
+        var comboBoxCloseButton = 'usa-combo-box__clear-input';
+
+        // when a different radio input is selected, clear the combo box associated with the previously selected input
+        if ($(RADIO_OPTIONS).val() === 'created') {
+        $(comboBoxCloseButton).last().click();
+        } else {
+        $(comboBoxCloseButton).first().click();
+        }
+
+        setFieldsetAttr('false');
+
         if ($('#visn-search-field').val() !== '') {
-            setFieldsetAttr('true')
+            setFieldsetAttr('true');
         }
         $(this).closest('form').submit();
     });
@@ -371,14 +392,21 @@ function submitFormOnRadioInputClick() {
 
 // on page load, submit the form with the first radio button chosen by default (per design)
 function submitFormOnPageLoadWithCreatedPracticesAsDefault() {
-    // set the categories combo box value to an empty string
-    $("#visn-search-created-categories").val('');
-    $(RADIO_OPTIONS).first().click();
+    // set both combo box values to empty strings to avoid filtering practices on initial page load
+    $(CREATED_COMBO_BOX).val('');
+    $(ADOPTED_COMBO_BOX).val('');
+    // choose one of the radio inputs based on if the VISN has created practices or adopted practices
+    if (created_practices.length > 0) {
+        $(RADIO_OPTIONS).first().click();
+    } else if (adopted_practices.length > 0) {
+        $(RADIO_OPTIONS).last().click();
+    }
 }
 
 function execVisnSearchFunctions() {
     searchPracticesByVisn();
-    submitFormOnComboBoxChange();
+    submitFormOnComboBoxChange(CREATED_COMBO_BOX);
+    submitFormOnComboBoxChange(ADOPTED_COMBO_BOX);
     submitFormOnRadioInputClick();
 }
 
