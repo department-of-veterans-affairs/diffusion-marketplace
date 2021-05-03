@@ -123,8 +123,18 @@ $(document).ready(function(){
             url: "/update_practices_adopted_at_facility",
             data: jQuery.param({selected_category: selectedCategory, key_word: keyWord, station_number: facilityStationNumber}),
             success: function(result) {
-                document.getElementById("practices_adopted_by_facility_dyn").innerHTML = result[0]
-                document.getElementById("practices_adopted_at_facility_count").innerHTML = result[1]
+                debugger;
+                if(result[1] === "0 results:"){
+                    document.getElementById("practices_adopted_no_results").style.display = "block";
+                    document.getElementById("practices_adopted_at_this_facility_table").style.display = "none";
+                    document.getElementById("practices_adopted_at_facility_count").innerHTML = result[1];
+                }
+                else{
+                    document.getElementById("practices_adopted_no_results").style.display = "none";
+                    document.getElementById("practices_adopted_at_this_facility_table").style.display = "block";
+                    document.getElementById("practices_adopted_by_facility_dyn").innerHTML = result[0];
+                    document.getElementById("practices_adopted_at_facility_count").innerHTML = result[1];
+                }
             }
         });
     });
@@ -139,8 +149,17 @@ $(document).ready(function(){
             url: "/update_practices_adopted_at_facility",
             data: jQuery.param({selected_category: selectedCategory, key_word: keyWord, station_number: facilityStationNumber}),
             success: function(result) {
-                document.getElementById("practices_adopted_by_facility_dyn").innerHTML = result[0]
-                document.getElementById("practices_adopted_at_facility_count").innerHTML = result[1]
+                if(result[1] === "0 results:"){
+                    document.getElementById("practices_adopted_no_results").style.display = "block";
+                    document.getElementById("practices_adopted_at_this_facility_table").style.display = "none";
+                    document.getElementById("practices_adopted_at_facility_count").innerHTML = result[1];
+                }
+                else{
+                    document.getElementById("practices_adopted_no_results").style.display = "none";
+                    document.getElementById("practices_adopted_at_this_facility_table").style.display = "block";
+                    document.getElementById("practices_adopted_by_facility_dyn").innerHTML = result[0];
+                    document.getElementById("practices_adopted_at_facility_count").innerHTML = result[1];
+                }
             }
         });
     });
