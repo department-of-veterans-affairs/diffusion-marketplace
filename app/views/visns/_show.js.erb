@@ -335,10 +335,8 @@ function setFieldsetAttr(boolean) {
 }
 
 function trackVisnSearchField(searchTerm) {
-    console.log($('fieldset').attr('data-search-filter'))
     if (searchTerm !== '') {
         if ($('fieldset').attr('data-search-filter') === 'false') {
-            debugger
             ahoy.track('VISN practice search', {search_term: searchTerm});
             if (typeof ga === 'function') {
                 ga('send', {
