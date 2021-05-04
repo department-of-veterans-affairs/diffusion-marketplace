@@ -19,7 +19,8 @@ var ADOPTED_COMBO_BOX = '#visn-search-adopted-categories';
 function setFieldsetAttr(boolean) {
     $('fieldset').attr('data-search-filter', boolean);
 }
-    function searchPracticesByVisn() {
+
+function searchPracticesByVisn() {
     const searchField = document.querySelector('#visn-search-field');
 
     function buildSearchResults(results, sortOption) {
