@@ -19,7 +19,6 @@ var ADOPTED_COMBO_BOX = '#visn-search-adopted-categories';
 function setFieldsetAttr(boolean) {
     $('fieldset').attr('data-search-filter', boolean);
 }
-
     function searchPracticesByVisn() {
     const searchField = document.querySelector('#visn-search-field');
 
@@ -171,9 +170,6 @@ function setFieldsetAttr(boolean) {
         } else if (query === '' && !categoryFilter) {
             searchWithOnlyRadioVal();
         }
-
-        console.log('results', results);
-        console.log(results.length);
 
         // Get the results and default to filtering based on most adoptions
         buildSearchResults(results, sortByAdoptionCounts);
