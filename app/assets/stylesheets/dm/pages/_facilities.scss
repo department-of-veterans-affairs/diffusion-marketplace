@@ -130,3 +130,106 @@
     }
   }
 }
+
+#practices_adopted_at_this_facility_table {
+  .visn-liaison-info {
+    border-radius: 10px;
+  }
+
+  #visn-search-field, #visn-search-button {
+    height: 38px !important;
+  }
+
+  .usa-combo-box__toggle-list, .usa-combo-box__clear-input {
+    top: 1.8em;
+  }
+
+  .usa-combo-box__toggle-list {
+    right: 0.8em;
+  }
+
+  .usa-combo-box__clear-input {
+    right: 3.2em;
+  }
+
+  .usa-combo-box__input-button-separator {
+    top: 1.7em;
+    right: 3.35em;
+  }
+
+  .usa-combo-box__input {
+    margin-top: 0 !important;
+
+    &::placeholder {
+      color: $dm-color-black !important;
+    }
+  }
+
+  .usa-combo-box__list {
+    width: calc(100% - 24px);
+  }
+
+  hr {
+    border: none;
+    height: 2px;
+    background: #dcdee0;
+  }
+
+  mark {
+    background: $dm-color-gold-20v;
+    font-weight: bold;
+  }
+
+  .button-box {
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+  }
+
+  .va-facilities-header {
+    margin-top: 68px;
+  }
+
+  .usa-table {
+    th, td {
+      background-color: $dm-color-gray-2 !important;
+    }
+
+    tr:first-of-type {
+      th {
+        border-bottom: 0 !important;
+        button {
+          position: absolute;
+        }
+      }
+
+      th:first-of-type {
+        button {
+          left: 8em;
+        }
+      }
+
+      th:nth-of-type(2) {
+        button {
+          left: 4.2em;
+        }
+      }
+
+      th:nth-of-type(3) {
+        button {
+          left: 5.9em;
+        }
+      }
+
+      th:nth-of-type(4) {
+        button {
+          left: 10.1em;
+        }
+      }
+    }
+  }
+
+  .fa-question-circle {
+    margin-left: 1.8em;
+    padding: 4px;
+  }
+}
