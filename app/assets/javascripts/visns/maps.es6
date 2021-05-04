@@ -6,9 +6,7 @@ function initialize() {
 
   const handler = Gmaps.build("Google", {
     builders: {
-      Marker: isVisnsIndexPage
-        ? VisnInfoBoxBuilder
-        : VisnVaFacilityInfoBoxBuilder,
+      Marker: isVisnsIndexPage ? VisnInfoBoxBuilder : VisnVaFacilityInfoBoxBuilder,
     },
     markers: {
       clusterer: null,
@@ -22,12 +20,8 @@ function initialize() {
   function setIcon(json, icon) {
     json.marker.getServiceObject().setIcon({
       url: icon,
-      scaledSize: isVisnsIndexPage
-        ? new google.maps.Size(48, 64)
-        : new google.maps.Size(34, 46),
-      size: isVisnsIndexPage
-        ? new google.maps.Size(48, 64)
-        : new google.maps.Size(34, 46),
+      scaledSize: isVisnsIndexPage ? new google.maps.Size(48, 64) : new google.maps.Size(34, 46),
+      size: isVisnsIndexPage ? new google.maps.Size(48, 64) : new google.maps.Size(34, 46),
     });
   }
 
@@ -89,6 +83,7 @@ function initialize() {
     });
   }
 
+  // if the user clicks on the map, outside of the open modal, close the modal and reset the marker image to default
   function closeInfoWindow() {
     if (selectedMarker.id) {
       const json = dataMarkers.find((dm) => dm.id === selectedMarker.id);
@@ -135,6 +130,14 @@ function initialize() {
         }
       });
     }
+
+    google.maps.event.addListener(handler.getMap(), 'tilesloaded', function () {
+        changeMarkerIconOnInfoWindowClose();
+    });
+
+    google.maps.event.addListener(handler.getMap(), 'click', function () {
+        closeInfoWindow();
+    });
 
     Gmaps.filter(markerData);
   }
@@ -221,18 +224,26 @@ function initialize() {
   function setVisnShowMapEventListener() {
     if (!isVisnsIndexPage) {
       google.maps.event.addListenerOnce(handler.getMap(), "bounds_changed", function () {
-        $(".dm-visn-show-map").removeClass("display-none");
-        $(".dm-loading-spinner").addClass("display-none");
+          $(".dm-visn-show-map").removeClass("display-none");
+          $(".dm-loading-spinner").addClass("display-none");
       });
     }
+  }
+
+  // zoom in or out depending on marker bounds
+  function resetMarkerBounds() {
+      google.maps.event.addListenerOnce(handler.getMap(), 'tilesloaded', function () {
+          google.maps.event.addListener(handler.getMap(), "zoom_changed", function () {
+              handler.resetBounds();
+          });
+      });
   }
 
   setVisnShowMapEventListener();
   setDefaultCheckbox();
   addVisnShowFilterListener();
+  resetMarkerBounds();
 }
-
-function displayVisnShowMap() {}
 
 $(document).on("turbolinks:load", function () {
   google.maps.event.addDomListener(window, "load", initialize);

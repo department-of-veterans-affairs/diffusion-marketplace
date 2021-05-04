@@ -44,14 +44,21 @@
         ]
       %>
 
-      <form class="usa-form width-full display-flex ">
-        <fieldset class="usa-fieldset display-flex">
-          <legend class="usa-legend text-normal font-sans-sm">Display on map: </legend>
-          <% visn_map_filters.each do |filter| %>
-            <div class="usa-checkbox margin-right-4">
-              <%= check_box_tag("visn-show-filter-#{filter[:label]}", value = "#{filter[:value]}", checked = filter[:checked], options = { class: 'usa-checkbox__input dm-visn-map-filter-checkbox'}) %>
-              <%= label_tag "visn-show-filter-#{filter[:label]}", "#{filter[:value]}", class: 'usa-checkbox__label' %>
-            </div>
+      <form class="usa-form width-full">
+        <fieldset class="usa-fieldset grid-row flex-no-wrap">
+          <legend class="usa-legend text-normal font-sans-sm usa-sr-only">Display on map</legend>
+          <p class="grid-col-auto margin-right-1 flex-align-self-center">Display:</p>
+          <% facility_types = get_facility_types_by_visn(@visn) %>
+
+          <% facility_types.sort { |a, b| b <=> a }.each do |ft| %>
+            <% visn_map_filters.each do |filter| %>
+              <% if ft === filter[:value] %>
+                <div class="usa-checkbox grid-col-auto margin-right-3 facility-type-checkbox-container">
+                  <%= check_box_tag("visn-show-filter-#{filter[:label]}", value = "#{filter[:value]}", checked = filter[:checked], options = { class: 'usa-checkbox__input dm-visn-map-filter-checkbox'}) %>
+                  <%= label_tag "visn-show-filter-#{filter[:label]}", "#{filter[:value]}", class: 'usa-checkbox__label' %>
+                </div>
+              <% end %>
+            <% end %>
           <% end %>
         </fieldset>
       </form>
