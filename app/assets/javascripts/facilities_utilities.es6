@@ -118,6 +118,7 @@ $(document).ready(function(){
         let selectedCategory = selectedCategories[0].value;
         let keyWord = document.getElementById("dm-adopted-practices-search-field").value;
         let facilityStationNumber = document.getElementById("facility_station_number").value;
+        let searchNoResults = ".facility-search-no-results";
         Rails.ajax({
             type: 'get',
             url: "/update_practices_adopted_at_facility",
@@ -128,6 +129,7 @@ $(document).ready(function(){
                     document.getElementById("practices_adopted_no_results").style.display = "block";
                     document.getElementById("practices_adopted_at_this_facility_table").style.display = "none";
                     document.getElementById("practices_adopted_at_facility_count").innerHTML = result[1];
+                    document.getElementById("search-no-results").style.display = "block";
                 }
                 else{
                     document.getElementById("practices_adopted_no_results").style.display = "none";
