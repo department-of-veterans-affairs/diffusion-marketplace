@@ -31,7 +31,7 @@
         </div>
       <% end %>
     </div>
-    <div class="dm-visn-show-map display-none">
+    <div class="dm-visn-show-map display-none margin-top-2">
       <%
         visn_map_filters = [
           { label: 'vamc', value: 'VA Medical Center (VAMC)', checked: true },
@@ -45,26 +45,31 @@
       %>
 
       <form class="usa-form width-full">
-        <fieldset class="usa-fieldset grid-row flex-no-wrap">
+        <fieldset class="usa-fieldset grid-row">
           <legend class="usa-legend text-normal font-sans-sm usa-sr-only">Display on map</legend>
-          <p class="grid-col-auto margin-right-1 flex-align-self-center">Display:</p>
+          <p class="grid-col-1 filters-p">Display:</p>
           <% facility_types = get_facility_types_by_visn(@visn) %>
 
-          <% facility_types.sort { |a, b| b <=> a }.each do |ft| %>
-            <% visn_map_filters.each do |filter| %>
-              <% if ft === filter[:value] %>
-                <div class="usa-checkbox grid-col-auto margin-right-3 facility-type-checkbox-container">
-                  <%= check_box_tag("visn-show-filter-#{filter[:label]}", value = "#{filter[:value]}", checked = filter[:checked], options = { class: 'usa-checkbox__input dm-visn-map-filter-checkbox'}) %>
-                  <%= label_tag "visn-show-filter-#{filter[:label]}", "#{filter[:value]}", class: 'usa-checkbox__label' %>
-                </div>
+          <div class="grid-col-11">
+            <div class="grid-row grid-gap-3">
+              <!-- order the facility types in ascending alphabetical, and then place VAMC at the front (per research) -->
+              <% facility_types.sort { |a, b| a <=> b }.rotate(-1).each do |ft| %>
+                <% visn_map_filters.each do |filter| %>
+                  <% if ft === filter[:value] %>
+                    <div class="usa-checkbox facility-type-checkbox-container grid-col-4 margin-bottom-2">
+                      <%= check_box_tag("visn-show-filter-#{filter[:label]}", value = "#{filter[:value]}", checked = filter[:checked], options = { class: 'usa-checkbox__input dm-visn-map-filter-checkbox'}) %>
+                      <%= label_tag "visn-show-filter-#{filter[:label]}", "#{filter[:value]}", class: 'usa-checkbox__label x0-top facility-type-checkbox-label' %>
+                    </div>
+                  <% end %>
+                <% end %>
               <% end %>
-            <% end %>
-          <% end %>
+            </div>
+          </div>
         </fieldset>
       </form>
       <%= render partial: 'visns/maps/show_map' %>
     </div>
-    <div class="dm-loading-spinner flex-justify-center flex-align-self-center margin-y-4">
+    <div class="dm-loading-spinner text-center margin-y-4">
       <i class="fas fa-circle-notch"></i>
     </div>
   </section>

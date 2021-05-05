@@ -93,8 +93,8 @@ function initialize() {
     }
   }
 
+  // When a user clicks on the close button for a marker modal, change the marker icon back to the default color
   function changeMarkerIconOnInfoWindowClose() {
-    // When a user clicks on the close button for a marker modal, change the marker icon back to the default color
     $(document).arrive(
       "img[src='http://www.google.com/intl/en_us/mapfiles/close.gif']",
       function (newElem) {
@@ -130,14 +130,6 @@ function initialize() {
         }
       });
     }
-
-    google.maps.event.addListener(handler.getMap(), 'tilesloaded', function () {
-        changeMarkerIconOnInfoWindowClose();
-    });
-
-    google.maps.event.addListener(handler.getMap(), 'click', function () {
-        closeInfoWindow();
-    });
 
     Gmaps.filter(markerData);
   }
@@ -230,14 +222,20 @@ function initialize() {
     }
   }
 
-  // zoom in or out depending on marker bounds
+  // zoom in/out when facility type filters are selected/unselected
   function resetMarkerBounds() {
-      google.maps.event.addListenerOnce(handler.getMap(), 'tilesloaded', function () {
-          google.maps.event.addListener(handler.getMap(), "zoom_changed", function () {
-              handler.resetBounds();
-          });
+      $(document).on('click', '.facility-type-checkbox-label', function() {
+          handler.resetBounds();
       });
   }
+
+  google.maps.event.addListener(handler.getMap(), 'tilesloaded', function () {
+      changeMarkerIconOnInfoWindowClose();
+  });
+
+  google.maps.event.addListener(handler.getMap(), 'click', function () {
+      closeInfoWindow();
+  });
 
   setVisnShowMapEventListener();
   setDefaultCheckbox();
@@ -246,5 +244,5 @@ function initialize() {
 }
 
 $(document).on("turbolinks:load", function () {
-  google.maps.event.addDomListener(window, "load", initialize);
+    google.maps.event.addDomListener(window, "load", initialize);
 });
