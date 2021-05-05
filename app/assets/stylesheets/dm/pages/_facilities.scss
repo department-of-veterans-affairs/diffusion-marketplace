@@ -229,7 +229,6 @@
 
     tr:first-of-type {
       th {
-        border-bottom: 0 !important;
         button {
           position: absolute;
         }
@@ -243,7 +242,7 @@
 
       th:nth-of-type(2) {
         button {
-          left: 4.2em;
+          left: 6.2em;
         }
       }
 
@@ -262,8 +261,14 @@
   }
 
   .fa-question-circle {
-    margin-left: 1.8em;
+    margin-left: 0.3em;
     padding: 4px;
+    text-decoration: none !important;
+
+    &:visited {
+      text-decoration: none !important;
+      color: $dm-color-base !important;
+    }
   }
 }
 
@@ -365,7 +370,6 @@
 
     tr:first-of-type {
       th {
-        border-bottom: 0 !important;
         button {
           position: absolute;
         }
@@ -391,7 +395,7 @@
 
       th:nth-of-type(4) {
         button {
-          left: 6.5em;
+          left: 8.5em;
         }
       }
       th:nth-of-type(5) {
@@ -408,7 +412,7 @@
   }
 
   .fa-question-circle {
-    margin-left: 1.8em;
+    margin-left: 0.3em;
     padding: 4px;
   }
 }
