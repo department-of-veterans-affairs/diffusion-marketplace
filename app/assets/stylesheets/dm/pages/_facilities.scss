@@ -194,6 +194,39 @@
       background-color: $dm-color-gray-2 !important;
     }
 
+    th {
+      .dm-practice-bookmark-btn {
+        width: 28px;
+        height: 28px;
+        padding: 5px;
+        margin-left: 6px;
+
+        .fas {
+          color: $dm-color-blue-50v;
+
+          &:hover {
+            color: $dm-color-blue-70v;
+          }
+
+          &:active {
+            color: $dm-color-blue-80v;
+          }
+        }
+
+        .far {
+          color: $dm-color-black;
+
+          &:hover {
+            color: $dm-color-blue-50v;
+          }
+
+          &:active {
+            color: $dm-color-blue-70v;
+          }
+        }
+      }
+    }
+
     tr:first-of-type {
       th {
         border-bottom: 0 !important;
@@ -233,3 +266,4 @@
     padding: 4px;
   }
 }
+
