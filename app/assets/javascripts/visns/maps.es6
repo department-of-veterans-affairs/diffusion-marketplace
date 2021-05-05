@@ -1,7 +1,9 @@
 function initialize() {
+  const url = window.location.href;
   // get the current endpoint
-  const endpoint = window.location.href.split("/").pop();
-  const isVisnsIndexPage = endpoint === "visns" || endpoint === "";
+  const endpoint = url.split("/").pop() === "" ? url.split("/").slice(-2)[0] : url.split("/").pop();
+  // set a boolean for whether or not the user is on the VISN index page
+  const isVisnsIndexPage = endpoint === "visns";
   const checkboxes = "input.dm-visn-map-filter-checkbox";
 
   const handler = Gmaps.build("Google", {
