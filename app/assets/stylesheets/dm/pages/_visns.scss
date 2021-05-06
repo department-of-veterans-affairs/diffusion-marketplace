@@ -137,7 +137,7 @@
 
       th:nth-of-type(2) {
         button {
-          left: 6.5em;
+          left: 8em;
         }
       }
 
@@ -156,7 +156,13 @@
   }
 
   .fa-question-circle {
-    margin-left: 1.8em;
+    color: $dm-color-base !important;
+    text-decoration: none !important;
+    margin-left: -3px;
     padding: 4px;
+
+    &:visited {
+      text-decoration: none !important;
+    }
   }
 }
