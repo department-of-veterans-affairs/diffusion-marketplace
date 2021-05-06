@@ -112,7 +112,7 @@ function sendAjaxRequest(data) {
       $(practiceCardList).append(result.practice_cards_html);
 
       if (result.count === 0) {
-        $(searchNoResults).removeClass('display-none');
+        $(searchNoResults).first().removeClass("display-none");
       }
 
       if (result.count <= 1) {
