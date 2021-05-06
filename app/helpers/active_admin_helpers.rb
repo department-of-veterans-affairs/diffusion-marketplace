@@ -88,4 +88,21 @@ module ActiveAdminHelpers
     @xlsx_legend_no_top_border = s.add_style b: true, border: {style: :thin, color: 'FFFFFF', edges: [:top]}
     @xlsx_legend_no_y_border = s.add_style b: true, border: {style: :thin, color: 'FFFFFF', edges: [:bottom, :top]}
   end
+
+  def get_search_term_counts(ahoy_event_name, search_terms_array)
+    events = Ahoy::Event.where(name: ahoy_event_name).where("properties->>'search_term' is not null").group("properties->>'search_term'").order('count_all desc').count
+    events.each do |e|
+      search_terms_array << {
+        query: e[0],
+        lifetime_count: e[1],
+        current_month_count: Ahoy::Event.count_for_range(beginning_of_current_month, end_of_current_month, e[0]),
+        last_month_count: Ahoy::Event.count_for_range(beginning_of_last_month, end_of_last_month, e[0]),
+        two_months_ago_count: Ahoy::Event.count_for_range(beginning_of_two_months_ago, end_of_two_months_ago, e[0]),
+        three_months_ago_count: Ahoy::Event.count_for_range(beginning_of_three_months_ago, end_of_three_months_ago, e[0]),
+      }
+    end
+
+    search_terms_array.sort_by {|k| k["current_month_count"]}.reverse!
+    search_terms_array
+  end
 end
