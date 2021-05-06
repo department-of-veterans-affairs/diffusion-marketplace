@@ -21,7 +21,7 @@
         <% end %>
 
         <% practice = Practice.find_by_id(ad["id"]) %>
-        <th class="bg-gray-2 grid-col-6" scope="row" role="rowheader">
+        <th class="bg-gray-2 grid-col-5" scope="row" role="rowheader">
           <a class="dm-internal-link" href="<%= practice_path(ad["slug"]) %>"><%=ad["name"]%></a>
           <% if current_user %>
             <%= link_to practice_favorite_path(practice, format: :js), method: :post, remote: true, 'title': "Bookmark #{ad["name"]}", 'aria-label': "Bookmark #{ad["name"]}", 'tabindex': '-1', 'aria-hidden': 'true', 'class': "dm-practice-bookmark-btn", 'id': "dm-bookmark-button-#{ad["id"]}" do %>
@@ -31,7 +31,7 @@
           <br /> <%=ad["summary"] %>
         </th>
         <% status = ad["status"] == "Completed" ? "Successful" : ad["status"] %>
-        <td class="bg-gray-2 grid-col-2" data-sort-value="<%= status %>>"><%= status %></td>
+        <td class="bg-gray-2 grid-col-3" data-sort-value="<%= status %>>"><%= status %></td>
         <td class="bg-gray-2 grid-col-2" data-sort-value="<%=start_date_tm %>"><%=start_date %></td>
         <td class="bg-gray-2 grid-col-2" data-sort-value="<%=ad["adoptions"] %>"><%= ad["adoptions"] %></td>
       </tr>
