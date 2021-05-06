@@ -34,7 +34,7 @@
           <% if @filtered_facilities.count > 0 %>
             Displaying <%= @results_count %> result<% if @results_count != 1 %>s<% end %>:
           <% else %>
-            <%= render partial: 'shared/search_no_results', locals: { display_no_query_msg: true, is_facility_page: true } %>
+            <%= render partial: 'shared/search_no_results', locals: { display_no_query_msg: true } %>
           <% end %>
         </div>
         <% if @results_count > 0 %>

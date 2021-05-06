@@ -123,12 +123,9 @@ $(document).ready(function(){
             url: "/update_practices_adopted_at_facility",
             data: jQuery.param({selected_category: selectedCategory, key_word: keyWord, station_number: facilityStationNumber}),
             success: function(result) {
-                debugger;
-
                 if(result[1] === "0 results:"){
                     console.log(document.querySelectorAll(".search-no-results:last-child"));
                     document.getElementById("practices_adopted_no_results").style.display = "block";
-                    document.getElementById("practices_adopted_at_this_facility_table").style.display = "none";
                     document.getElementById("practices_adopted_at_facility_count").innerHTML = result[1];
                     $(".search-no-results").last().removeClass("display-none");
                 }
