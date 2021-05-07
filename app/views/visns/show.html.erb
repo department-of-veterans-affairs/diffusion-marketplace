@@ -21,6 +21,7 @@
             practices_adopted_by_visn = []
             visn_practices_adopted_count = get_adopted_practices_by_visn(Practice.published_enabled_approved, @visn, practices_adopted_by_visn).count
           %>
+
           This VISN has <%= visn_facilities_count %> facilit<%= visn_facilities_count != 1 ? 'ies' : 'y' %> and serves Veterans in <%= get_facility_locations_by_visn(@visn) %>.
           Collectively, its facilities have created <%= visn_practices_created_count %> practice<%= 's' if visn_practices_created_count != 1 %> and have adopted
           <%= visn_practices_adopted_count %> practice<%= 's' if visn_practices_adopted_count != 1 %>.
@@ -39,8 +40,49 @@
         </div>
       <% end %>
     </div>
+    <div class="dm-visn-show-map display-none margin-top-2">
+      <%
+        visn_map_filters = [
+          { label: 'vamc', value: 'VA Medical Center (VAMC)', checked: true },
+          { label: 'primary-cboc', value: 'Primary Care CBOC', checked: false },
+          { label: 'multi-cboc', value: 'Multi-Specialty CBOC', checked: false },
+          { label: 'hcc', value: 'Health Care Center (HCC)', checked: false },
+          { label: 'stand-alone', value: 'Residential Care Site (MH RRTP/DRRTP) (Stand-Alone)', checked: false },
+          { label: 'oos', value: 'Other Outpatient Services (OOS)', checked: false },
+          { label: 'Unclassified', value: 'Unclassified', checked: false }
+        ]
+      %>
+
+      <form class="usa-form width-full">
+        <fieldset class="usa-fieldset grid-row">
+          <legend class="usa-legend text-normal font-sans-sm usa-sr-only">Display on map</legend>
+          <p class="grid-col-1 filters-p">Display:</p>
+          <% facility_types = get_facility_types_by_visn(@visn) %>
+
+          <div class="grid-col-11">
+            <div class="grid-row grid-gap-3">
+              <!-- order the facility types in ascending alphabetical, and then place VAMC at the front (per research) -->
+              <% facility_types.sort { |a, b| a <=> b }.rotate(-1).each do |ft| %>
+                <% visn_map_filters.each do |filter| %>
+                  <% if ft === filter[:value] %>
+                    <div class="usa-checkbox facility-type-checkbox-container grid-col-4 margin-bottom-2">
+                      <%= check_box_tag("visn-show-filter-#{filter[:label]}", value = "#{filter[:value]}", checked = filter[:checked], options = { class: 'usa-checkbox__input dm-visn-map-filter-checkbox'}) %>
+                      <%= label_tag "visn-show-filter-#{filter[:label]}", "#{filter[:value]}", class: 'usa-checkbox__label x0-top facility-type-checkbox-label' %>
+                    </div>
+                  <% end %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+      <%= render partial: 'visns/maps/show_map' %>
+    </div>
+    <div class="dm-loading-spinner text-center margin-y-4">
+      <i class="fas fa-circle-notch"></i>
+    </div>
   </section>
-  <%= render partial: 'visns/maps/show_map' %>
   <%= render partial: 'visns/search' unless visn_practices_created_count == 0 && visn_practices_adopted_count == 0 %>
   <%= render partial: 'visn_facilities_table', locals: { practices_created: visn_practices_created_count, practices_adopted: visn_practices_adopted_count } %>
 </div>
+

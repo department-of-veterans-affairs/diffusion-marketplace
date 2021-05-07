@@ -50,7 +50,10 @@ class VisnsController < ApplicationController
                      })
 
       marker.shadow nil
-      marker.json({ id: va_facility.id })
+      marker.json({
+        id: va_facility.id,
+        type: va_facility.classification
+      })
 
       marker.infowindow render_to_string(partial: 'visns/maps/show_infowindow', locals: { va_facility: va_facility })
     end

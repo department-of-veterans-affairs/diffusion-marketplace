@@ -303,9 +303,8 @@ describe 'VISN pages', type: :feature do
     ENV['GOOGLE_API_KEY'] = nil
   end
 
-  def expect_visn_metadata(element, facility_count_text, practices_created_count_text, practices_adopted_count_text)
+  def expect_visn_metadata(element, practices_created_count_text, practices_adopted_count_text)
     within(:css, element) do
-      expect(find('.visn-facility-count').text).to eq(facility_count_text)
       expect(find('.visn-practice-creations-count').text).to eq(practices_created_count_text)
       expect(find('.visn-adoptions-count').text).to eq(practices_adopted_count_text)
     end
@@ -334,7 +333,7 @@ describe 'VISN pages', type: :feature do
       it 'should show metadata for each visn' do
         @visn_markers.last.click
         expect(page).to have_selector('#visn-2-marker-modal', visible: true)
-        expect_visn_metadata('#visn-2-marker-modal', '3 facilities', '7 practices created here', '3 practices adopted here')
+        expect_visn_metadata('#visn-2-marker-modal', '7 practices created here', '3 practices adopted here')
       end
 
       it 'should have a link to a given visn\'s show page within that visn\'s marker modal' do
@@ -357,7 +356,7 @@ describe 'VISN pages', type: :feature do
       end
 
       it 'should show metadata for each visn' do
-        expect_visn_metadata('#visn-1-card-link', '1 facility', '1 practice created here', '0 practices adopted here')
+        expect_visn_metadata('#visn-1-card-link', '1 practice created here', '0 practices adopted here')
       end
 
       it 'should allow the user to visit a visn\'s show page via clicking on a visn card' do
@@ -385,9 +384,32 @@ describe 'VISN pages', type: :feature do
     end
 
     describe 'visns show map' do
-      it 'should be there with the correct amount of markers' do
+      it 'should be there with the correct amount of markers (defaulted to VAMC facilities on initial load)' do
         visit '/visns/2'
 
+        expect(find_all(:css, 'div[style*="width: 34px"][title=""]').count).to eq(1)
+      end
+
+      it 'should show facility markers based on which facility type filters are selected' do
+        visit '/visns/2'
+        facility_type_labels = find_all('.facility-type-checkbox-label')
+
+        # make sure the filter count is based on which facility types belong to the VISN
+        expect(facility_type_labels.count).to eq(3)
+        # make sure labels are in alphabetical order except for the first one, which should be VAMC
+        expect(facility_type_labels.first.text).to eq('VA Medical Center (VAMC)')
+        expect(facility_type_labels[1].text).to eq('Primary Care CBOC')
+        expect(facility_type_labels.last.text).to eq('Residential Care Site (MH RRTP/DRRTP) (Stand-Alone)')
+        # add each filter and make sure the visible facility markers update
+        facility_type_labels[1].click
+        expect(find_all(:css, 'div[style*="width: 34px"][title=""]').count).to eq(2)
+
+        facility_type_labels.last.click
+        expect(find_all(:css, 'div[style*="width: 34px"][title=""]').count).to eq(3)
+        # now remove all filters and make sure the total facility marker count is correct
+        facility_type_labels.first.click
+        facility_type_labels[1].click
+        facility_type_labels.last.click
         expect(find_all(:css, 'div[style*="width: 34px"][title=""]').count).to eq(3)
       end
 
