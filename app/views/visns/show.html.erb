@@ -20,8 +20,6 @@
             visn_practices_created_count = get_created_practices_by_visn(Practice.published_enabled_approved, @visn, practices_created_by_visn).count
             practices_adopted_by_visn = []
             visn_practices_adopted_count = get_adopted_practices_by_visn(Practice.published_enabled_approved, @visn, practices_adopted_by_visn).count
-            # visn_practices_created_count = 0
-            # visn_practices_adopted_count = 0
           %>
           This VISN has <%= visn_facilities_count %> facilit<%= visn_facilities_count != 1 ? 'ies' : 'y' %> and serves Veterans in <%= get_facility_locations_by_visn(@visn) %>.
           Collectively, its facilities have created <%= visn_practices_created_count %> practice<%= 's' if visn_practices_created_count != 1 %> and have adopted
