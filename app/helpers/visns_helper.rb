@@ -133,4 +133,17 @@ module VisnsHelper
 
     visn_facility_types_text_and_count_str
   end
+
+  def get_facility_types_by_visn(visn)
+    visn_facility_types = []
+
+    # add facility types to empty array
+    visn.get_va_facilities.each do |vaf|
+      facility_type = vaf.classification
+
+      visn_facility_types << facility_type unless visn_facility_types.include?(facility_type)
+    end
+
+    visn_facility_types
+  end
 end

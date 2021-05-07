@@ -1,6 +1,4 @@
 <ul class="line-height-26 p0 x0 visn-data-ul">
-  <% visn_facility_count = visn.get_va_facilities.count %>
-  <li class="small-disc visn-facility-count x0-5-bottom"><%= visn_facility_count %> facilit<%= visn_facility_count != 1 ? 'ies' : 'y' %></li>
   <%
     practices_created_by_visn = []
     visn_created_practices_count = get_created_practices_by_visn(Practice.published_enabled_approved, visn, practices_created_by_visn).count
