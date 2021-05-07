@@ -54,6 +54,10 @@ module NavigationHelper
       session[:breadcrumbs].slice!(session[:breadcrumbs].index(crumb))
     end
 
+    def add_visn_index_breadcrumb
+      session[:breadcrumbs] << { 'display': 'VISNs', 'path': visns_path }
+    end
+
     ### PRACTICE BREADCRUMBS
     if controller == 'practices'
       if action == 'index'
@@ -80,6 +84,20 @@ module NavigationHelper
         empty_breadcrumbs
         search_breadcrumb['path'] = "#{url.path}?#{url.query}" if search_breadcrumb.present?
         session[:breadcrumbs] << {'display': 'Search', 'path': "#{url.path}?#{url.query}"}
+        add_practice_breadcrumb(practice_by_id)
+      end
+
+      def add_visn_search_breadcrumb(visn_number, url)
+        session[:breadcrumbs] << { 'display': visn_number, 'path': "#{url.path}?#{url.query}" }
+      end
+
+      # add the VISN search query to breadcrumb if there is a VISN search query going to the practice page
+      if action == 'show' && (url.query.present? && url.query.include?('query=')) && url.to_s.split('?').first.last.to_i.between?(1, 23)
+        visn_number = session[:breadcrumbs].last['path'].split('/').pop
+
+        empty_breadcrumbs
+        add_visn_index_breadcrumb
+        add_visn_search_breadcrumb(visn_number, url)
         add_practice_breadcrumb(practice_by_id)
       end
 
@@ -291,10 +309,6 @@ module NavigationHelper
     end
 
     ### VISN BREADCRUMBS
-    def add_visn_index_breadcrumb
-      session[:breadcrumbs] << { 'display': 'VISNs', 'path': visns_path }
-    end
-
     def visn_by_number
       Visn.find_by!(number: params[:number])
     end
