@@ -44,7 +44,9 @@
       </div>
     </div>
     <%= render partial: 'va_facilities/facility_created_practice_search', locals: {facility_category_selector: 'facility_category_select'} %>
-    <%= render partial: 'va_facilities/facility_practice_adoptions' %>
+    <% if @adoptions_at_facility.count > 0 %>
+      <%= render partial: 'va_facilities/facility_practice_adoptions' %>
+    <% end %>
   </div>
   <%= render 'facility_status_definitions' %>
 </section>

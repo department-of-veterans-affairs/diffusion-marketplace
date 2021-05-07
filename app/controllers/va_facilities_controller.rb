@@ -158,7 +158,7 @@ class VaFacilitiesController < ApplicationController
           start_date_tm = ad["start_time"].to_date.strftime("%Y/%m/%d")
         end
         ret_val += '<tr>'
-        ret_val += '<th scope="row" role="rowheader">'
+        ret_val += '<th class="bg-gray-2 grid-col-5" scope="row" role="rowheader">'
         ret_val += '<a class="dm-internal-link" href="/practices/' + ad["slug"] + '"> ' + ad["name"] + '</a> '
         ret_val += '<a title="Bookmark ' + ad["name"] + '" aria-label="' + ad["name"] + '" tabindex="-1" aria-hidden="true" class="dm-practice-bookmark-btn" id="dm-bookmark-button-' + ad["id"].to_s + '" data-remote="true" rel="nofollow" data-method="post" href="/practices/' + ad["slug"] + '/favorite.js"> '
         if current_user.favorite_practice_ids.include?(ad["id"])
@@ -169,9 +169,9 @@ class VaFacilitiesController < ApplicationController
         ret_val += '</a>'
         ret_val += '<br />' + ad["summary"] + '</th>'
         status = ad["status"] == "Completed" ? "Successful" : ad["status"]
-        ret_val += '<td data-sort-value='  + status + '>' + status + '</td>'
-        ret_val += '<td data-sort-value='  + start_date_tm + '>' + start_date + '</td>'
-        ret_val += '<td data-sort-value='  + ad["adoptions"].to_s + '>' + ad["adoptions"].to_s + '</td>'
+        ret_val += '<td class="bg-gray-2 grid-col-3" data-sort-value='  + status + '>' + status + '</td>'
+        ret_val += '<td class="bg-gray-2 grid-col-2" data-sort-value='  + start_date_tm + '>' + start_date + '</td>'
+        ret_val += '<td class="bg-gray-2 grid-col-2" data-sort-value='  + ad["adoptions"].to_s + '>' + ad["adoptions"].to_s + '</td>'
         ret_val += '</tr>'
       end
     end

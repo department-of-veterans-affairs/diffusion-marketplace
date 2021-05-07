@@ -27,12 +27,9 @@
       <%= @adoptions_at_facility.count %> results:
     </div>
   </div>
-  <% display_class =  @adoptions_at_facility.count == 0 ? " display-inline-block" : " display-none" %>
-    <div id="practices_adopted_no_results" class="<%= display_class %>">
+    <div id="practices_adopted_no_results">
       <%= render partial: 'shared/search_no_results', locals: { display_no_query_msg: false } %>
     </div>
-    <% if @adoptions_at_facility.count > 0 %>
       <%= render partial: 'va_facilities/facility_adoption_results' %>
-    <% end %>
 </section>
 
