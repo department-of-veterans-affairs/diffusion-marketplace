@@ -276,10 +276,27 @@ describe 'VISN pages', type: :feature do
 
     @practice = Practice.create!(name: 'The Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
     PracticeOriginFacility.create!(practice: @practice, facility_type: 0, facility_id: '421')
-    @practice_2 = Practice.create!(name: 'The Second Best Practice Ever!', initiating_facility_type: 'visn', initiating_facility: '2', tagline: 'Test tagline 2', date_initiated: 'Sun, 24 Oct 2004 00:00:00 UTC +00:00', summary: 'This is another best practice.', published: true, enabled: true, approved: true, user: @user)
+    @practice_2 = Practice.create!(name: 'An Awesome Practice!', initiating_facility_type: 'visn', initiating_facility: '2', tagline: 'Test tagline 2', date_initiated: 'Sun, 24 Oct 2004 00:00:00 UTC +00:00', summary: 'This is an awesome practice.', published: true, enabled: true, approved: true, user: @user)
+    @practice_3 = Practice.create!(name: 'A Very Cool Practice!', initiating_facility_type: 'facility', tagline: 'Super cool tagline', date_initiated: 'Mon, 09 Mar 1999 00:00:00 UTC +00:00', summary: 'This is a very cool practice.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
+    PracticeOriginFacility.create!(practice: @practice_3, facility_type: 0, facility_id: '443')
+    @practice_4 = Practice.create!(name: 'A Fantastic Practice!', initiating_facility_type: 'facility', tagline: 'Cool tagline', date_initiated: 'Fri, 21 Oct 2001 00:00:00 UTC +00:00', summary: 'This is a fantastic practice.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
+    PracticeOriginFacility.create!(practice: @practice_4, facility_type: 0, facility_id: '424')
+    @practice_5 = Practice.create!(name: 'A Magnificent Practice!', initiating_facility_type: 'facility', tagline: 'Test tagline 5', date_initiated: 'Sat, 30 Nov 1995 00:00:00 UTC +00:00', summary: 'This is a magnificent practice.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
+    PracticeOriginFacility.create!(practice: @practice_5, facility_type: 0, facility_id: '424')
+    @practice_6 = Practice.create!(name: 'A Spectacular Practice!', initiating_facility_type: 'visn', initiating_facility: '2', tagline: 'Test tagline 6', date_initiated: 'Sun, 09 Oct 2008 00:00:00 UTC +00:00', summary: 'This is a spectacular practice.', published: true, enabled: true, approved: true, user: @user)
+    @practice_7 = Practice.create!(name: 'A Meaningful Practice!', initiating_facility_type: 'facility', tagline: 'Test tagline 7', date_initiated: 'Wed, 11 Feb 1991 00:00:00 UTC +00:00', summary: 'This is a meaningful practice.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
+    PracticeOriginFacility.create!(practice: @practice_7, facility_type: 0, facility_id: '443')
+    @practice_8 = Practice.create!(name: 'A Ground-breaking Practice!', initiating_facility_type: 'facility', tagline: 'Test tagline 8', date_initiated: 'Thu, 15 Feb 2015 00:00:00 UTC +00:00', summary: 'This is a ground-breaking practice.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
+    PracticeOriginFacility.create!(practice: @practice_8, facility_type: 0, facility_id: '424')
 
     @dh = DiffusionHistory.create!(practice_id: @practice.id, facility_id: '443')
     @dh_2 = DiffusionHistory.create!(practice_id: @practice_2.id, facility_id: '431')
+    @dh_3 = DiffusionHistory.create!(practice_id: @practice_3.id, facility_id: '443')
+
+    @cat_1 = Category.create!(name: 'COVID')
+    @cat_2 = Category.create!(name: 'Test Cat')
+    CategoryPractice.create!(practice: @practice_3, category: @cat_1, created_at: Time.now)
+    CategoryPractice.create!(practice: @practice_4, category: @cat_2, created_at: Time.now)
   end
 
   after do
@@ -362,7 +379,7 @@ describe 'VISN pages', type: :feature do
       visit '/visns/2'
 
       expect(page).to have_content('This VISN has 3 facilities and serves Veterans in Florida and Georgia.')
-      expect(page).to have_content('Collectively, its facilities have created 1 practice and have adopted 2 practices.')
+      expect(page).to have_content('Collectively, its facilities have created 7 practices and have adopted 3 practices.')
       expect(page).to have_content('Toge Inumaki')
     end
 
@@ -414,6 +431,75 @@ describe 'VISN pages', type: :feature do
         within(:css, '#visn-va-facility-1-marker-modal') do
           expect(find('.visn-va-facility-marker-modal-link')[:href]).to include('/facilities/test-common-name')
         end
+      end
+    end
+
+    def practice_cards
+      find_all('.dm-practice-card', visible: true)
+    end
+
+    describe 'visn search section' do
+      it 'should allow users to search for practices that were created or adopted within a given visn' do
+        visit '/visns/2'
+
+        # defaults to created practices
+        # make sure 'Load more' feature is working
+        expect(practice_cards.count).to eq(6)
+        click_button('Load more')
+        expect(practice_cards.count).to eq(7)
+
+        # switch to adopted practices
+        find_all('.usa-radio__label').last.click
+        expect(practice_cards.count).to eq(3)
+
+        # run the search on created practices
+        find_all('.usa-radio__label').first.click
+        fill_in('visn-search-field', with: 'cool')
+        find('#visn-search-button').click
+
+        expect(practice_cards.count).to eq(2)
+
+        # now sort by A to Z
+        expect(all('h3.dm-practice-title').first.text).to eq(@practice_3.name)
+        select('Sort by A to Z', from: 'search_sort_option')
+
+        expect(all('h3.dm-practice-title').first.text).to eq(@practice_4.name)
+
+        # now filter the results by category
+        find_all('.usa-combo-box__input')[0].click
+        find_all('.usa-combo-box__input')[0].set('COVID')
+        find_all('.usa-combo-box__list-option').first.click
+
+        expect(practice_cards.count).to eq(1)
+      end
+
+      it 'should allow users to visit a visns\'s show page with a search query' do
+        visit '/visns/2?query=cool'
+
+        expect(practice_cards.count).to eq(2)
+      end
+    end
+
+    describe 'facilities table' do
+      it 'should display a modal when the user clicks on the question mark icon next to the complexity column in the facilities table' do
+        visit '/visns/1'
+        find('.fa-question-circle').click
+
+        expect(page).to have_content('1a-Highest complexity')
+        expect(page).to have_content('Facilities with high volume, high risk patients, most complex clinical programs, and large research and teaching programs')
+
+        # check to make sure it closes properly
+        find('.usa-modal__close').click
+
+        expect(page).to_not have_content('1a-Highest complexity')
+      end
+
+      it 'should take the user to the show page of the facility they click on within the facilities table' do
+        visit '/visns/2'
+        click_link('Fourth Test Name (Fourth Common Name)')
+        sleep 0.1
+
+        expect(page).to have_current_path('/facilities/fourth-common-name')
       end
     end
   end

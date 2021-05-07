@@ -1,0 +1,413 @@
+<%= render 'practices/search' %>
+
+var results = null;
+var visn = <%= raw @visn.to_json %>;
+var created_practices = <%= @practices_created_json %>;
+var adopted_practices = <%= @practices_adopted_json %>;
+var resultsHTML = '';
+var RESULTS_SECTION = '#dm-visn-search-practices';
+var NO_QUERY_CONTENT = '.search-no-results';
+var SPINNER = '.dm-loading-spinner';
+var LOAD_MORE_CONTAINER = '.button-box';
+var SEARCH_RESULTS = '#search-results';
+var SORT_EL = '#search_sort_option';
+var RADIO_OPTIONS = 'input[name=visns-show-radio-buttons]';
+var CREATED_COMBO_BOX = '#visn-search-created-categories';
+var ADOPTED_COMBO_BOX = '#visn-search-adopted-categories';
+
+// add a data attribute to the fieldset in order to trigger an ahoy tracking event only when the search field has been updated/populated
+function setFieldsetAttr(boolean) {
+    $('fieldset').attr('data-search-filter', boolean);
+}
+
+function searchPracticesByVisn() {
+    const searchField = document.querySelector('#visn-search-field');
+
+    function buildSearchResults(results, sortOption) {
+        $(SPINNER).addClass('display-none');
+
+        var resultsArray = [];
+        var finalResults = '';
+
+        results.sort(sortOption).forEach(function (result) {
+            finalResults += buildPracticeCard(result);
+            resultsArray.push(buildPracticeCard(result));
+        });
+
+        var visnSortSelect = $(SORT_EL);
+
+        if (results.length > 0) {
+            // Hide sorting options if there's only 1 result
+            if (results.length === 1) {
+                visnSortSelect.addClass('display-none');
+            } else if (results.length !== 1 && sortSelect.hasClass('display-none')) {
+                visnSortSelect.removeClass('display-none');
+            }
+            // Show the results summary section
+            if ($(RESULTS_SECTION).hasClass('display-none')) {
+                $(RESULTS_SECTION).removeClass('display-none');
+            }
+        } else {
+            if (!$(RESULTS_SECTION).hasClass('display-none')) {
+                $(RESULTS_SECTION).addClass('display-none');
+            }
+            // Show the no results text
+            if ($(NO_QUERY_CONTENT).hasClass('display-none')) {
+                $(NO_QUERY_CONTENT).removeClass('display-none');
+            } else {
+                $('.no-query-p').addClass('display-none');
+                $('.no-query-results-p').removeClass('display-none');
+            }
+        }
+
+        $(SEARCH_RESULTS).removeClass('display-none');
+        // Print results to the page
+        document.querySelector('#search-results').innerHTML = finalResults;
+
+        $(SEARCH_RESULTS).showMoreItems({
+            startNum: 6,
+            afterNum: 6,
+            moreText: 'Load more',
+            noMoreText: 'No more results'
+        });
+    }
+    // Search practices and populate the page
+    function search(query, category, radioVal) {
+        // Trim whitespace from the query (can cause matching problems)
+        query = query.trim();
+        // Set variables
+        var resultsSummary = document.querySelector('#results-summary');
+        // set the search page search bar input value
+        searchField.value = query;
+        if (query !== '') {
+            var searchBarQueryArray = [];
+            search_options.keys.forEach(function(practiceKey) {
+                var queryObj = {};
+                queryObj[practiceKey] = query;
+                return searchBarQueryArray.push(queryObj);
+            });
+        }
+
+        if (category) {
+            var categoryFilter;
+            // Collect any practice that has a category that matches the selected category
+            categoryFilter = {'category_names': "=\"" + category + "\""};
+        }
+
+        function resultsForQueryAndCategory(fuseVar) {
+            results = fuseVar.search({
+                $and: [
+                    {
+                        $or: searchBarQueryArray
+                    },
+                    categoryFilter
+                ]
+            });
+        }
+
+        function searchWithQueryAndCategory() {
+            if (radioVal === 'created') {
+                resultsForQueryAndCategory(createdPracticesFuse);
+            } else {
+                resultsForQueryAndCategory(adoptedPracticesFuse);
+            }
+        }
+
+        function resultsForOnlyQuery(fuseVar) {
+            results = fuseVar.search({
+                $and: [
+                    {
+                        $or: searchBarQueryArray
+                    }
+                ]
+            });
+        }
+
+        function searchWithOnlyQuery() {
+            if (radioVal === 'created') {
+                resultsForOnlyQuery(createdPracticesFuse);
+            } else {
+                resultsForOnlyQuery(adoptedPracticesFuse);
+            }
+        }
+
+        function resultsForOnlyCategory(fuseVar) {
+            results = fuseVar.search(categoryFilter);
+        }
+
+        function searchWithOnlyCategory() {
+            if (radioVal === 'created') {
+                resultsForOnlyCategory(createdPracticesFuse);
+            } else {
+                resultsForOnlyCategory(adoptedPracticesFuse);
+            }
+        }
+
+        // if the radio input is the only filter, return all of the results that correspond to whichever input is chosen (created/adopted)
+        function resultsForOnlyRadioVal(jsonPractices) {
+            results = jsonPractices.map((jsonPractice, index) => ({
+                item: jsonPractice,
+                score: 1,
+                refIndex: index,
+                matches: null
+            }));
+        }
+
+        function searchWithOnlyRadioVal() {
+            if (radioVal === 'created') {
+                resultsForOnlyRadioVal(created_practices);
+            } else {
+                resultsForOnlyRadioVal(adopted_practices);
+            }
+        }
+
+        // Run the search query, if present, and include filters, if present.
+        if (query !== '' && categoryFilter) {
+            searchWithQueryAndCategory();
+        } else if (query === '' && categoryFilter) {
+            searchWithOnlyCategory();
+        } else if (query !== '' && !categoryFilter) {
+            searchWithOnlyQuery();
+        } else if (query === '' && !categoryFilter) {
+            searchWithOnlyRadioVal();
+        }
+
+        // Get the results and default to filtering based on most adoptions
+        buildSearchResults(results, sortByAdoptionCounts);
+        // Reset the select input to default
+        $(SORT_EL).prop('selectedIndex', 0);
+        // Print the number of results for the query
+        resultsSummary.innerHTML = results.length + ' result' + (results.length === 1 ? ':' : 's:');
+        // Highlight results (only Fuse.js matching)
+        results.forEach(function (result) {
+            // add condition to prevent highlighting when only the radio inputs are used
+            if (result.item.matches) {
+              highlighter(result);
+            }
+        });
+        // Highlight search results where exact keyword matches
+        var mark = new Mark('#search-results');
+        mark.mark(query);
+
+        trackVisnSearchField(query);
+    }
+
+    // Highlight Fuse.js results
+    // Adapted from: https://github.com/brunocechet/Fuse.js-with-highlight
+    function highlighter(resultItem) {
+        resultItem.matches.forEach(function (matchItem) {
+            // don't highlight if match was on category or adoption facilities since they are not in practice search result text and can't be highlighted
+            // don't highlight origin_facilities or initiating_facility because they are ids. The initiating_facility_name key will cover any text
+            if (matchItem.key != 'category_names' && matchItem.key != 'adoption_facilities' && matchItem.key != 'origin_facilities' && matchItem.key != 'initiating_facility') {
+                var text = resultItem.item[matchItem.key];
+                var result = [];
+                var matches = [].concat(matchItem.indices); // limpar referencia
+                var pair = matches.shift();
+
+                for (var i = 0; i < text.length; i++) {
+                    var char = text.charAt(i);
+                    if (pair && i === pair[0]) {
+                        result.push('<mark>')
+                    }
+                    result.push(char);
+                    if (pair && i === pair[1]) {
+                        result.push('</mark>');
+                        pair = matches.shift()
+                    }
+                }
+                resultItem.highlight = result.join('');
+
+                if (resultItem.children && resultItem.children.length > 0) {
+                    resultItem.children.forEach(function (child) {
+                        highlighter(child);
+                    });
+                }
+            }
+        });
+    }
+
+    // Set Fuse.js search options
+    var search_options = {
+        keys: ['name', 'tagline', 'description', 'summary', 'initiating_facility', 'category_names', 'maturity_level', 'adoption_facilities', 'origin_facilities', 'initiating_facility_name', 'overview_problem', 'overview_solution', 'overview_results'],
+        minMatchCharLength: 1,
+        tokenize: true,
+        shouldSort: true,
+        threshold: 0.2,
+        location: 0,
+        distance: 100,
+        maxPatternLength: 32,
+        matchAllTokens: true,
+        findAllMatches: true,
+        includeMatches: true,
+        includeScore: true,
+        useExtendedSearch: true,
+        ignoreLocation: true
+    };
+
+    // Create a search context with practices and search options
+    var createdPracticesFuse = new Fuse(created_practices, search_options);
+    var adoptedPracticesFuse = new Fuse(adopted_practices, search_options);
+
+    $(document).on('submit', '#visns-show-search-form', function (e) {
+        e.preventDefault();
+
+        hideResultsSectionElAndShowSpinner();
+
+        // Add a search query to the URL when necessary
+        var url = window.location.href;
+        var visnShowUrl = '/visns/' + visn["number"];
+        var urlQuery = searchField.value === '' ? visnShowUrl : visnShowUrl + '?query=' + searchField.value;
+        // due to turbolinks reloading the page after clicking on a link, don't add a history if the URL contains 'facilities' or 'practices'
+        if (url.split('/').slice(-2).join('') !== urlQuery && !url.includes('facilities') && !url.includes('practices')) {
+            window.history.pushState({ turbolinks: {} }, "", urlQuery);
+        }
+
+        // Get the value for the created/adopted practices radio input
+        var createdOrAdoptedRadio = $('input[name=visns-show-radio-buttons]:checked').val();
+
+        // hide one of the category combo boxes based on which radio input is chosen
+        var createdComboBoxDiv = '.practice-created-categories-combo-box';
+        var adoptedComboBoxDiv = '.practice-adopted-categories-combo-box';
+
+        function showAndHideComboBoxes(comboBoxDivOne, comboBoxDivTwo) {
+            if ($(comboBoxDivOne).hasClass('display-none')) {
+                $(comboBoxDivOne).removeClass('display-none');
+            }
+            $(comboBoxDivTwo).addClass('display-none');
+        }
+
+        // Get the value of the category combo box
+        var categoryComboBoxVal;
+
+        if (createdOrAdoptedRadio === 'created') {
+            showAndHideComboBoxes(createdComboBoxDiv, adoptedComboBoxDiv);
+            categoryComboBoxVal = $(CREATED_COMBO_BOX).val();
+            // clear the adopted categories combo box
+            if ($(ADOPTED_COMBO_BOX).val() !== '') {
+                $(ADOPTED_COMBO_BOX).next().find('button').click();
+                setFieldsetAttr('true');
+            }
+        } else {
+            showAndHideComboBoxes(adoptedComboBoxDiv, createdComboBoxDiv);
+            categoryComboBoxVal = $(ADOPTED_COMBO_BOX).val();
+            // clear the created categories combo box
+            if ($(CREATED_COMBO_BOX).val() !== '') {
+                $(CREATED_COMBO_BOX).next().find('button').click();
+                setFieldsetAttr('true');
+            }
+        }
+        // Run the search
+        search(searchField.value, categoryComboBoxVal, createdOrAdoptedRadio);
+    });
+
+    // Sort the results based on each sort option
+    var sortSelect = $(SORT_EL);
+    sortSelect.on('change', function() {
+        switch ($(this).val()) {
+            case "a_to_z":
+                hideResultsElAndShowSpinner();
+                buildSearchResults(results, sortAToZ);
+                break;
+            case "adoptions":
+                hideResultsElAndShowSpinner();
+                buildSearchResults(results, sortByAdoptionCounts);
+                break;
+            case "added":
+                hideResultsElAndShowSpinner();
+                buildSearchResults(results, sortByDateAdded);
+                break;
+        }
+    });
+
+    if (window.location.pathname.includes('visns') && window.location.search !== '') {
+        hideResultsSectionElAndShowSpinner();
+        const query = window.location.search.split('=')[1];
+        search(decodeURI(query));
+        if (query !== undefined) {
+            searchField.value = decodeURI(query);
+        } else {
+            searchField.value = '';
+        }
+    }
+}
+
+function trackVisnSearchField(searchTerm) {
+    if (searchTerm !== '') {
+        if ($('fieldset').attr('data-search-filter') === 'false') {
+            ahoy.track('VISN practice search', {search_term: searchTerm});
+            if (typeof ga === 'function') {
+                ga('send', {
+                    hitType: 'event',
+                    eventCategory: 'VISN search',
+                    eventAction: 'VISN search',
+                    location: '/visns/' + visn["number"] + '/?query=' + searchTerm
+                });
+            }
+        }
+    }
+    setFieldsetAttr('false');
+}
+
+// submit the form if the combo box value changed
+function submitFormOnComboBoxChange(comboBox) {
+    var previousVal;
+    // capture the previous value for the combo box
+    $(document).on('focus', comboBox, function() {
+        previousVal = $(comboBox).val();
+    });
+
+    $(document).on('change', comboBox, function() {
+        // only submit the form if the combo box's container is visible and the previous value is different from the current value
+        if (!$(this).parent().hasClass('display-none') && $(this).val() !== previousVal) {
+            setFieldsetAttr('true');
+            $(this).closest('form').submit();
+        }
+    });
+}
+
+// submit the form when a radio input is clicked on
+function submitFormOnRadioInputClick() {
+    $(document).on('click', RADIO_OPTIONS, function() {
+        // reset the combo box for the previously selected input
+        var comboBoxCloseButton = 'usa-combo-box__clear-input';
+
+        // when a different radio input is selected, clear the combo box associated with the previously selected input
+        if ($(RADIO_OPTIONS).val() === 'created') {
+        $(comboBoxCloseButton).last().click();
+        } else {
+        $(comboBoxCloseButton).first().click();
+        }
+
+        setFieldsetAttr('false');
+
+        if ($('#visn-search-field').val() !== '') {
+            setFieldsetAttr('true');
+        }
+        $(this).closest('form').submit();
+    });
+}
+
+// on page load, submit the form with the first radio button chosen by default (per design)
+function submitFormOnPageLoadWithCreatedPracticesAsDefault() {
+    // set both combo box values to empty strings to avoid filtering practices on initial page load
+    $(CREATED_COMBO_BOX).val('');
+    $(ADOPTED_COMBO_BOX).val('');
+    // choose one of the radio inputs based on if the VISN has created practices or adopted practices
+    if (created_practices.length > 0) {
+        $(RADIO_OPTIONS).first().click();
+    } else if (adopted_practices.length > 0) {
+        $(RADIO_OPTIONS).last().click();
+    }
+}
+
+function execVisnSearchFunctions() {
+    searchPracticesByVisn();
+    submitFormOnComboBoxChange(CREATED_COMBO_BOX);
+    submitFormOnComboBoxChange(ADOPTED_COMBO_BOX);
+    submitFormOnRadioInputClick();
+}
+
+document.addEventListener('turbolinks:load', function() {
+    execVisnSearchFunctions();
+    submitFormOnPageLoadWithCreatedPracticesAsDefault();
+});

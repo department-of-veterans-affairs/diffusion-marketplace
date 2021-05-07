@@ -1,36 +1,34 @@
 module VisnsHelper
   include StatesHelper
 
-  def get_adopted_practices_count_by_visn(visn)
-    visn_adopted_practices = []
-    Practice.published_enabled_approved.each do |p|
+  def get_adopted_practices_by_visn(practices, visn, visn_adopted_practices)
+    practices.each do |p|
       visn.get_va_facilities.each do |vaf|
         p.diffusion_histories.each do |dh|
-          visn_adopted_practices << dh.facility_id if dh.facility_id === vaf.station_number.to_s
+          visn_adopted_practices << p if dh.facility_id === vaf.station_number.to_s && !visn_adopted_practices.include?(p)
         end
       end
     end
-    visn_adopted_practices.count
+    visn_adopted_practices
   end
 
-  def get_created_practices_count_by_visn(visn)
-    visn_created_practices = []
-    Practice.published_enabled_approved.each do |p|
+  def get_created_practices_by_visn(practices, visn, visn_created_practices)
+    practices.each do |p|
       origin_facilities = p.practice_origin_facilities
       initiating_facility = p.initiating_facility
       # add practices that have practice_origin_facilities
       if p.facility? && origin_facilities.any?
         visn.get_va_facilities.each do |vaf|
           origin_facilities.each do |of|
-            visn_created_practices << { "va_facility": of.facility_id } if of.facility_id === vaf.station_number.to_s
+            visn_created_practices << p if of.facility_id === vaf.station_number.to_s && !visn_created_practices.include?(p)
           end
         end
-      # add practices that have an initiating_facility
+        # add practices that have an initiating_facility
       elsif p.visn? && initiating_facility.present?
-        visn_created_practices << { "visn": initiating_facility } if initiating_facility === visn.id.to_s
+        visn_created_practices << p if initiating_facility === visn.id.to_s && !visn_created_practices.include?(p)
       end
     end
-    visn_created_practices.count
+    visn_created_practices
   end
 
   def get_facility_locations_by_visn(visn)
@@ -50,10 +48,10 @@ module VisnsHelper
     # Add other US territories to us_states helper method array
     va_facility_locations = us_states.concat(
       [
-       ["Virgin Islands", "VI"],
-       ["Philippines Islands", "PI"],
-       ["Guam", "GU"],
-       ["American Samoa", "AS"]
+        ["Virgin Islands", "VI"],
+        ["Philippines Islands", "PI"],
+        ["Guam", "GU"],
+        ["American Samoa", "AS"]
       ]
     )
 
