@@ -2,6 +2,7 @@
 <% provide :body_classes, 'bg-gray-2' %>
 <% provide :footer_classes, 'bg-gray-2' %>
 <% provide :head_tags do %>
+  <%= javascript_include_tag '_practice_card_utilities', 'data-turbolinks-track': 'reload' %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     <%= render partial: 'search', formats: [:js] %>
   <% end %>
@@ -10,70 +11,62 @@
 <div id="search-page">
   <section class="grid-container">
     <%= render partial: "shared/messages", locals: {small_text: false} %>
-      <form id="update-search-results-form">
-        <div class="usa-search usa-search--big margin-bottom-2 grid-col-12">
-          <div role="search" class="flex-column">
-            <label for="dm-practice-search-field"></label>
-            <div id="search-bar-container" class="display-flex">
-              <input class="usa-input" id="dm-practice-search-field" title="Type at least three characters to search." autocomplete="off" type="search" name="search">
-              <button id="dm-practice-search-button" class="usa-button" type="submit" name="search-button">
-                <span class="usa-search__submit-text text-bold">Search</span>
-              </button>
-            </div>
+    <form id="update-search-results-form">
+      <div class="usa-search usa-search--big margin-bottom-2 grid-col-12">
+        <div role="search" class="flex-column">
+          <label for="dm-practice-search-field"></label>
+          <div id="search-bar-container" class="display-flex">
+            <input class="usa-input" id="dm-practice-search-field" title="Type at least three characters to search." autocomplete="off" type="search" name="search">
+            <button id="dm-practice-search-button" class="usa-button" type="submit" name="search-button">
+              <span class="usa-search__submit-text text-bold">Search</span>
+            </button>
           </div>
         </div>
-        <div class="usa-accordion usa-accordion--bordered position-relative">
-          <button id="mobile_filters_button" class="usa-button dm-btn-primary width-full line-height-19px desktop:display-none" type="button">Filters</button>
-          <h2 class="usa-accordion__heading display-none desktop:display-block">
-            <button class="usa-accordion__button search-filters-accordion-button"
-                    aria-expanded="false"
-                    aria-controls="search_filters_dropdown">
-              Filters
-            </button>
-          </h2>
-            <div id="search_filters_dropdown" class="usa-accordion__content position-fixed top-0 right-0 left-0 bottom-0 width-full z-400 p0">
-              <div class="mobile-modal-container">
-                <div class="grid-container grid-row height-10 display-flex flex-align-center desktop:display-none">
-                  <div class="grid-col-3">
-                    <button type="button" class="fas fa-times fa-2x display-block" id="close_filters_modal"></button>
-                  </div>
-                  <div class="grid-col-6">
-                    <h2 class="margin-top-0 font-sans-xl line-height-37px text-center">Filters</h2>
-                  </div>
-                  <div class="grid-col-3">
-                    <div class="text-right">
-                      <button type="button" class="usa-button--unstyled dm-btn-primary width-auto" id="resetSearchFiltersButtonMobile">Reset</button>
-                    </div>
-                  </div>
+      </div>
+      <div class="usa-accordion usa-accordion--bordered position-relative">
+        <button id="mobile_filters_button" class="usa-button dm-btn-primary width-full line-height-19px desktop:display-none" type="button">Filters</button>
+        <h2 class="usa-accordion__heading display-none desktop:display-block">
+          <button class="usa-accordion__button search-filters-accordion-button"
+                  aria-expanded="false"
+                  aria-controls="search_filters_dropdown">
+            Filters
+          </button>
+        </h2>
+        <div id="search_filters_dropdown" class="usa-accordion__content position-fixed top-0 right-0 left-0 bottom-0 width-full z-400 p0">
+          <div class="mobile-modal-container">
+            <div class="grid-container grid-row height-10 display-flex flex-align-center desktop:display-none">
+              <div class="grid-col-3">
+                <button type="button" class="fas fa-times fa-2x display-block" id="close_filters_modal"></button>
+              </div>
+              <div class="grid-col-6">
+                <h2 class="margin-top-0 font-sans-xl line-height-37px text-center">Filters</h2>
+              </div>
+              <div class="grid-col-3">
+                <div class="text-right">
+                  <button type="button" class="usa-button--unstyled dm-btn-primary width-auto" id="resetSearchFiltersButtonMobile">Reset</button>
                 </div>
-              <%= render partial: 'practices/search_partials/search_filters' %>
               </div>
             </div>
-        </div>
-      </form>
-
-    <%
-      sort_options = [
-          ['Sort by most relevant', 'most_relevant', selected: true, class: 'usa-select'],
-          ['Sort by A to Z', 'a_to_z', class: 'usa-select'],
-          ['Sort by most adoptions', 'adoptions', class: 'usa-select'],
-          ['Sort by most recently added', 'added', class: 'usa-select']
-      ]
-    %>
-
-    <section id="dm-search-practices" class="dm-search-practices display-none margin-top-2">
-      <div class="grid-row margin-bottom-105 flex-align-center">
-        <p class="font-sans-normal grid-col-8 line-height-26" id="results-summary"></p>
-        <div class="grid-col-12 order-first margin-top-0 dm-sort-container margin-bottom-3 desktop:margin-top-1 desktop:margin-bottom-0 desktop:margin-top-0 desktop:order-last desktop:grid-col-4">
-          <%= label_tag 'search_sort_option', '', class: 'usa-label margin-0', 'aria-label': 'Search sort options'%>
-          <%= select_tag('', options_for_select(sort_options), id: 'search_sort_option', name: 'search_sort_option', class: 'height-5 usa-select margin-0') %>
+            <%= render partial: 'practices/search_partials/search_filters' %>
+          </div>
         </div>
       </div>
-      <div id="search-results" class="grid-row grid-gap-3"></div>
-    </section>
-    <div class="dm-loading-spinner display-none flex-justify-center flex-align-self-center margin-y-8 desktop:margin-y-10">
-      <i class="fas fa-circle-notch"></i>
-    </div>
+    </form>
+
+    <%= render partial: 'shared/search_sort_select_section', locals: {
+      sort_options: [
+        ['Sort by most relevant', 'most_relevant', selected: true, class: 'usa-select'],
+        ['Sort by A to Z', 'a_to_z', class: 'usa-select'],
+        ['Sort by most adoptions', 'adoptions', class: 'usa-select'],
+        ['Sort by most recently added', 'added', class: 'usa-select']
+      ],
+      section_id: 'dm-search-practices',
+      section_classes: 'dm-search-practices display-none margin-top-2',
+      first_div_classes: 'grid-row margin-bottom-105 flex-align-center',
+      second_div_classes: 'grid-col-12 order-first margin-top-0 dm-sort-container margin-bottom-3 desktop:margin-top-1 desktop:margin-bottom-0 desktop:margin-top-0 desktop:order-last desktop:grid-col-4'
+    }
+    %>
+    <%= render partial: 'shared/search_loading_spinner' %>
     <%= render partial: 'shared/search_no_results', locals: { display_no_query_msg: true } %>
   </section>
 </div>

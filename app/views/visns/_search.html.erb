@@ -1,0 +1,47 @@
+<section id="visns-show-search">
+  <h2 class="font-sans-xl line-height-37px margin-bottom-3">Search for practices</h2>
+  <form id="visns-show-search-form" class="usa-form max-width-unset margin-bottom-3">
+    <fieldset class="usa-fieldset" data-search-filter="false">
+      <legend class="usa-sr-only">Search for practices by VISN</legend>
+      <div class="grid-row" role="radiogroup">
+        <div class="usa-radio grid-col-4">
+          <input class="usa-radio__input visn-created-practices-radio" id="created-practices" type="radio" name="visns-show-radio-buttons" value="created">
+          <label class="usa-radio__label x0-bottom" for="created-practices">Practices created in this VISN</label>
+        </div>
+        <div class="usa-radio grid-col-4">
+          <input class="usa-radio__input visn-adopted-practices-radio" id="adopted-practices" type="radio" name="visns-show-radio-buttons" value="adopted">
+          <label class="usa-radio__label x0-bottom" for="adopted-practices">Practices adopted in this VISN</label>
+        </div>
+      </div>
+
+      <div class="grid-row grid-gap-3 display-flex flex-align-end">
+        <div class="grid-col-8">
+          <div class="usa-search" role="search">
+            <label class="usa-sr-only" for="visn-search-field">Search</label>
+            <input class="usa-input" id="visn-search-field" type="search" name="search" autocomplete="off">
+            <button id="visn-search-button" class="usa-button dm-btn-primary x0-top" type="submit">
+              <span class="usa-search__submit-text">Search</span>
+            </button>
+          </div>
+        </div>
+        <%= render partial: 'categories_combo_box', locals: { practice_type: 'created', practice_categories: @practices_created_categories } %>
+        <%= render partial: 'categories_combo_box', locals: { practice_type: 'adopted', practice_categories: @practices_adopted_categories } %>
+      </div>
+    </fieldset>
+  </form>
+
+  <%= render partial: 'shared/search_sort_select_section', locals: {
+    sort_options: [
+      ['Sort by most adopted practices', 'adoptions', class: 'usa-select'],
+      ['Sort by A to Z', 'a_to_z', class: 'usa-select'],
+      ['Sort by most recently added', 'added', class: 'usa-select']
+    ],
+    section_id: 'dm-visn-search-practices',
+    section_classes: 'display-none',
+    first_div_classes: 'grid-row grid-gap-3 margin-bottom-105 flex-align-center',
+    second_div_classes: 'grid-col-4'
+  }
+  %>
+  <%= render partial: 'shared/search_loading_spinner' %>
+  <%= render partial: 'shared/search_no_results', locals: { display_no_query_msg: false } %>
+</section>
