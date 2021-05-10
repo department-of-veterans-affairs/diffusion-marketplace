@@ -50,11 +50,9 @@
   // sets `title` for table column headers on `/admin/dashboard` page
   var setColHeaderTooltipTitle = function () {
     Object.keys(COL_HEADER_TOOLTIPS).map(function (key, index) {
-      var $colHeader = $("." + key).first();
-      var colText = $colHeader.text();
-      $colHeader
-        .contents()
-        .wrap('<span title="' + COL_HEADER_TOOLTIPS[key] + '" class="dm-tooltip"></span>');
+      $('table').each(function() {
+        $(this).find("." + key).first().contents().wrap('<span title="' + COL_HEADER_TOOLTIPS[key] + '" class="dm-tooltip"></span>');
+      });
     });
   };
 

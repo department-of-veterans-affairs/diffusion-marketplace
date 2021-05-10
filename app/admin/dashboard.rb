@@ -1,9 +1,15 @@
+include ActiveAdminHelpers
+
 ActiveAdmin.register_page "Dashboard" do
   menu priority: 1, label: proc {I18n.t("active_admin.dashboard")}
 
   controller do
     helper_method :set_date_values
     helper_method :adoption_xlsx_styles
+    helper_method :get_search_term_counts_by_type
+    helper_method :create_search_terms_table_by_type
+    helper_method :get_search_count_totals_by_date_range
+    helper_method :create_search_count_totals_table
     before_action :set_dashboard_values
 
     def site_visits(start_time, end_time)
@@ -371,49 +377,27 @@ ActiveAdmin.register_page "Dashboard" do
       end # tab
 
       tab :'Practice search terms' do
-        h3 do
+        h2 do
           "List of all practice search terms sorted by the current month's hits"
         end
 
-        search_terms = []
-        events = Ahoy::Event.where(name: 'Practice search').where("properties->>'search_term' is not null").group("properties->>'search_term'").order('count_all desc').count
-        events.each do |e|
-          search_terms << {
-              query: e[0],
-              lifetime_count: e[1],
-              current_month_count: Ahoy::Event.count_for_range(beginning_of_current_month, end_of_current_month, e[0]),
-              last_month_count: Ahoy::Event.count_for_range(beginning_of_last_month, end_of_last_month, e[0]),
-              two_months_ago_count: Ahoy::Event.count_for_range(beginning_of_two_months_ago, end_of_two_months_ago, e[0]),
-              three_months_ago_count: Ahoy::Event.count_for_range(beginning_of_three_months_ago, end_of_three_months_ago, e[0]),
-          }
-        end
+        # create a table for search totals across all three search types
+        search_totals_array = []
+        get_search_count_totals_by_date_range(search_totals_array)
+        create_search_count_totals_table(search_totals_array)
 
-        search_terms.sort_by {|k| k["current_month_count"]}.reverse!
+        # create a table for general searches, VISN searches, and facility searches
+        general_search_terms = []
+        get_search_term_counts_by_type('Practice search', general_search_terms)
+        create_search_terms_table_by_type('General search', general_search_terms, 'general-practice-search-terms-table')
 
-        columns do
-          column do
-            table_for search_terms.each, id: 'practice-search-terms-table' do
-              column('Term') {|st| st[:query]}
-              column("#{date_headers[:current]}") {|st| st[:current_month_count]}
-              column("#{date_headers[:one_month_ago]}") {|st| st[:last_month_count]}
-              column("#{date_headers[:two_month_ago]}") {|st| st[:two_months_ago_count]}
-              column("#{date_headers[:three_month_ago]}") {|st| st[:three_months_ago_count]}
-              column("Lifetime") {|st| st[:lifetime_count]}
-            end
-          end
-        end
+        visn_search_terms = []
+        get_search_term_counts_by_type('VISN practice search', visn_search_terms)
+        create_search_terms_table_by_type('VISN search', visn_search_terms, 'visn-practice-search-terms-table')
 
-        script do
-          total_current_month_searches = search_terms.sum {|st| st[:current_month_count] }
-          total_last_month_searches = search_terms.sum {|st| st[:last_month_count]}
-          total_two_months_ago_searches = search_terms.sum {|st| st[:two_months_ago_count]}
-          total_three_months_ago_searches = search_terms.sum {|st| st[:three_months_ago_count]}
-          total_lifetime_searches = search_terms.sum {|st| st[:lifetime_count]}
-          raw "$(document).ready(function($) {
-                        $('#practice-search-terms-table').append('<tr><td><b>Totals</b></td><td><b>#{total_current_month_searches}</b></td><td><b>#{total_last_month_searches}</b></td><td><b>#{total_two_months_ago_searches}</b></td><td><b>#{total_three_months_ago_searches}</b></td><td><b>#{total_lifetime_searches}</b></td></tr>');
-                      });
-                    "
-        end
+        facility_search_terms = []
+        get_search_term_counts_by_type('Facility practice search', facility_search_terms)
+        create_search_terms_table_by_type('Facility search', facility_search_terms, 'facility-practice-search-terms-table')
 
         script do
           raw "$(document).ready(function(){$('tr').attr('id', '')});"
