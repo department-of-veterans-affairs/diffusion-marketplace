@@ -1,15 +1,19 @@
 require 'rails_helper'
 
 describe 'Contact section', type: :feature, js: true do
-  before do
+  def set_data
     @user1 = User.create!(email: 'hisagi.shuhei@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    @user2 = User.create!(email: 'momo.hinamori@soulsociety.com', first_name: 'Momo', last_name: 'H', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    @practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: 'test@test.com', user: @user1)
+    @user2 = User.create!(email: 'momo.hinamori@va.gov', first_name: 'Momo', last_name: 'H', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+    @practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: 'testp13423041@va.gov', user: @user1)
     @practice_partner = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative', icon: 'fas fa-heart', color: '#E4A002')
-    @practice_email = PracticeEmail.create!(practice: @practice, address: 'test2@test.com')
+    @practice_email = PracticeEmail.create!(practice: @practice, address: 'testp13423041@va.gov')
   end
 
   describe 'Authorization' do
+    before do
+      set_data
+    end
+
     it 'Should allow authenticated users to view comments' do
       # Login as an authenticated user and visit the practice page
       login_as(@user1, :scope => :user, :run_callbacks => false)
@@ -44,17 +48,17 @@ describe 'Contact section', type: :feature, js: true do
 
   describe 'Commenting flow' do
     before do
+      set_data
       login_as(@user2, :scope => :user, :run_callbacks => false)
       visit practice_path(@practice)
-      expect(page).to have_content(@practice.name)
-      expect(page).to have_current_path(practice_path(@practice))
+      expect(page).to have_selector('.comments-section', visible: true)
+      expect(page).to have_content('A public practice')
       expect(page).to have_css('.commontator')
     end
 
     it 'Should allow a user to edit their existing comment' do
       fill_in('comment[body]', with: 'Hello world')
       click_button('commit')
-      visit practice_path(@practice)
       find("#commontator-comment-1-edit").click
       fill_in('commontator-comment-1-edit-body', with: 'This is a test.')
       within(:css, '.comment') do
@@ -66,9 +70,9 @@ describe 'Contact section', type: :feature, js: true do
     it 'Should allow a user to delete their existing comment' do
       fill_in('comment[body]', with: 'Hello world')
       click_button('commit')
-      visit practice_path(@practice)
       find("#commontator-comment-1-delete").click
       page.accept_alert
+      expect(page).to have_selector('.comments-section', visible: true)
       expect(page).to have_content('deleted')
     end
 
@@ -84,19 +88,23 @@ describe 'Contact section', type: :feature, js: true do
     end
 
     it 'Should display the verified implementer tag if the user selects the "I am currently adopting this practice" radio button' do
-      find('label', text: 'I am currently adopting this practice').click
       fill_in('comment[body]', with: 'Hello world')
+      find('label', text: 'I am currently adopting this practice').click
       click_button('commit')
+      visit practice_path(@practice)
+      expect(page).to have_selector('.comments-section', visible: true)
       expect(page).to have_content('PRACTICE ADOPTER')
     end
 
     it 'Should show the amount of likes each comment or reply has' do
       fill_in('comment[body]', with: 'Hello world')
       click_button('commit')
-      visit practice_path(@practice)
+      expect(page).to have_selector('.comments-section', visible: true)
       logout(@user2)
+      visit practice_path(@practice)
       login_as(@user1, :scope => :user, :run_callbacks => false)
       visit practice_path(@practice)
+      expect(page).to have_selector('.comments-section', visible: true)
       find(".like").click
       expect(page).to have_css('.comment-1-1-vote')
     end
@@ -104,18 +112,19 @@ describe 'Contact section', type: :feature, js: true do
     it 'Allow the user to view the profile of a commentator if they click on their name next to the comment' do
       fill_in('comment[body]', with: 'Hello world')
       click_button('commit')
+      expect(page).to have_selector('#submit-comment', visible: true)
       click_link('Momo H')
       expect(page).to have_content('Profile')
-      expect(page).to have_content('momo.hinamori@soulsociety.com')
+      expect(page).to have_content('momo.hinamori@va.gov')
     end
   end
 
   describe 'Reporting a comment' do
     before do
+      set_data
       login_as(@user2, :scope => :user, :run_callbacks => false)
       visit practice_path(@practice)
       expect(page).to have_content(@practice.name)
-      expect(page).to have_current_path(practice_path(@practice))
       expect(page).to have_css('.commontator')
       fill_in('comment[body]', with: 'Hello world')
       click_button('commit')
@@ -150,15 +159,20 @@ describe 'Contact section', type: :feature, js: true do
 
       find(".report-abuse-submit").click
       page.accept_alert
+      expect(page).to have_selector('.usa-alert', visible: true)
       expect(page).to have_content('Comment has been reported and will be reviewed shortly')
     end
   end
 
   describe 'Email' do
+    before do
+      set_data
+    end
+
     it 'should send an email to the main email address and include any cc email addresses' do
       login_as(@user1, :scope => :user, :run_callbacks => false)
       visit practice_path(@practice)
-      expect(page).to have_link(href: 'mailto:test@test.com?cc=test2%40test.com')
+      expect(page).to have_link(href: 'mailto:testp13423041@va.gov?cc=testp13423041%40va.gov')
     end
   end
 end
