@@ -50,7 +50,7 @@ function displaySpinner({ isNextPage }) {
   $(errorState).addClass("display-none");
   $(loadingSpinner).removeClass("display-none");
   $(loadingSpinner).addClass("display-flex");
-  $(searchNoResults).addClass("display-none");
+  $(searchNoResults).first().addClass("display-none");
   if (isNextPage) {
     $(loadMoreContainer).addClass("display-none");
     $(loadMoreBtn).addClass("display-none");
