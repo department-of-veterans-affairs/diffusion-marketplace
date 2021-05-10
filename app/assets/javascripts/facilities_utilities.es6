@@ -124,20 +124,10 @@ $(document).ready(function(){
             data: jQuery.param({selected_category: selectedCategory, key_word: keyWord, station_number: facilityStationNumber}),
             success: function(result) {
                 if(result[1] === "0 results:"){
-                    console.log(document.querySelectorAll(".search-no-results:last-child"));
-                    document.getElementById("practices_adopted_no_results").style.display = "block";
-                    let facilityTable = document.getElementById("practices_adopted_at_this_facility_table");
-                    if(facilityTable != null) {
-                        document.getElementById("practices_adopted_at_this_facility_table").style.display = "none";
-                    }
-                    document.getElementById("practices_adopted_at_facility_count").innerHTML = result[1];
-                    $(".search-no-results").last().removeClass("display-none");
+                    practicesAdoptedAtThisFacilityNoResults(result[1]);
                 }
                 else{
-                    document.getElementById("practices_adopted_no_results").style.display = "none";
-                    document.getElementById("practices_adopted_at_this_facility_table").style.display = "block";
-                    document.getElementById("practices_adopted_by_facility_dyn").innerHTML = result[0];
-                    document.getElementById("practices_adopted_at_facility_count").innerHTML = result[1];
+                    practicesAdoptedAtThisFacilityResults(result[0], result[1]);
                 }
             }
         });
@@ -154,19 +144,37 @@ $(document).ready(function(){
             data: jQuery.param({selected_category: selectedCategory, key_word: keyWord, station_number: facilityStationNumber}),
             success: function(result) {
                 if(result[1] === "0 results:"){
-                    document.getElementById("practices_adopted_no_results").style.display = "block";
-                    document.getElementById("practices_adopted_at_this_facility_table").style.display = "none";
-                    document.getElementById("practices_adopted_at_facility_count").innerHTML = result[1];
-                    document.querySelectorAll(".search-no-results:last-child").style.display = "block";
+                    practicesAdoptedAtThisFacilityNoResults(result[1]);
                 }
                 else{
-                    document.getElementById("practices_adopted_no_results").style.display = "none";
-                    document.getElementById("practices_adopted_at_this_facility_table").style.display = "block";
-                    document.getElementById("practices_adopted_by_facility_dyn").innerHTML = result[0];
-                    document.getElementById("practices_adopted_at_facility_count").innerHTML = result[1];
+                    practicesAdoptedAtThisFacilityResults(result[0], result[1]);
                 }
             }
         });
     });
 });
 
+function practicesAdoptedAtThisFacilityNoResults(resultMsg1)
+{
+    let practicesAdoptedNoResults =  document.getElementById("practices_adopted_no_results");
+    let facilityTable = document.getElementById("practices_adopted_at_this_facility_table");
+    let practicesAdoptedAtFacilityCount = document.getElementById("practices_adopted_at_facility_count");
+    if (practicesAdoptedNoResults){
+        practicesAdoptedNoResults.style.display = "block";
+    }
+    if (facilityTable){
+        facilityTable.style.display = "none";
+    }
+    if (practicesAdoptedAtFacilityCount){
+        practicesAdoptedAtFacilityCount.innerHTML = resultMsg1;
+    }
+    $(".search-no-results").last().removeClass("display-none");
+}
+
+function practicesAdoptedAtThisFacilityResults(result0, result1)
+{
+    document.getElementById("practices_adopted_no_results").style.display = "none";
+    document.getElementById("practices_adopted_at_this_facility_table").style.display = "block";
+    document.getElementById("practices_adopted_by_facility_dyn").innerHTML = result0;
+    document.getElementById("practices_adopted_at_facility_count").innerHTML = result1;
+}
