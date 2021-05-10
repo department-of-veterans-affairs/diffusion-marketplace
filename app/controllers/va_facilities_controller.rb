@@ -1,6 +1,5 @@
 class VaFacilitiesController < ApplicationController
   before_action :set_va_facility, only: [:show, :created_practices]
-  before_action :authenticate_user!
 
   def index
     if params[:sortby].present?

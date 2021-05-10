@@ -24,27 +24,6 @@
   padding: 0 !important;
 }
 
-.divTable
-{
-  display:  table;
-  width:auto;
-  //background-color:#eee;
-  border:1px solid  #666666;
-  border-spacing:5px;
-}
-
-.divRow
-{
-  display:table-row;
-}
-
-.divCell
-{
-  float:left;/*fix for  buggy browsers*/
-  display:table-column;
-  //background-color:#ccc;
-}
-
 .facility-phone-number{
   text-decoration: none;
   color: $dm-color-blue-50v;
