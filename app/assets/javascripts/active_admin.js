@@ -51,9 +51,13 @@
   var setColHeaderTooltipTitle = function () {
     Object.keys(COL_HEADER_TOOLTIPS).map(function (key, index) {
       $('table').each(function() {
-        $(this).find("." + key).first().contents().wrap('<span title="' + COL_HEADER_TOOLTIPS[key] + '" class="dm-tooltip"></span>');
+          if (!$(this).hasClass('total-search-counts')) {
+              $(this).find("." + key).first().contents().wrap('<span title="' + COL_HEADER_TOOLTIPS[key] + '" class="dm-tooltip"></span>');
+          }
       });
     });
+
+    $('.total-search-counts').find('th').last().contents().wrap('<span title="Total number of times the search functionality has been utilized across all pages" class="dm-tooltip"></span>');
   };
 
   var loadComponents = function () {

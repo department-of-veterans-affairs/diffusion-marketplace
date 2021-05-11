@@ -125,42 +125,6 @@ module ActiveAdminHelpers
       end
     end
 
-    def get_search_count_totals_by_date_range(search_totals_array)
-      set_date_values
-      search_term_not_null = "properties->>'search_term' is not null"
-
-      total_search_events_count = Ahoy::Event.where(
-        name: 'Practice search').where(search_term_not_null).or(
-        Ahoy::Event.where(name: 'VISN practice search').where(search_term_not_null)).or(
-        Ahoy::Event.where(name: 'Facility practice search').where(search_term_not_null)).count
-
-      search_totals_array << {
-        current_month_count: Ahoy::Event.total_search_term_counts_for_range(@beginning_of_current_month, @end_of_current_month),
-        last_month_count: Ahoy::Event.total_search_term_counts_for_range(@beginning_of_last_month, @end_of_last_month),
-        two_months_ago_count: Ahoy::Event.total_search_term_counts_for_range(@beginning_of_two_months_ago, @end_of_two_months_ago),
-        three_months_ago_count: Ahoy::Event.total_search_term_counts_for_range(@beginning_of_three_months_ago, @end_of_three_months_ago),
-        total: total_search_events_count
-      }
-
-      search_totals_array
-    end
-
-    def create_search_count_totals_table(search_totals_array)
-      panel 'Total search counts' do
-        columns do
-          column do
-            table_for search_totals_array, id: 'total-search-counts' do
-              column("#{@date_headers[:current]}") {|ast| ast[:current_month_count]}
-              column("#{@date_headers[:one_month_ago]}") {|ast| ast[:last_month_count]}
-              column("#{@date_headers[:two_month_ago]}") {|ast| ast[:two_months_ago_count]}
-              column("#{@date_headers[:three_month_ago]}") {|ast| ast[:three_months_ago_count]}
-              column("Lifetime") {|ast| ast[:total]}
-            end
-          end
-        end
-      end
-    end
-
     script do
       total_current_month_searches = search_terms_array.sum {|st| st[:current_month_count] }
       total_last_month_searches = search_terms_array.sum {|st| st[:last_month_count]}
@@ -171,6 +135,42 @@ module ActiveAdminHelpers
               $('##{table_id}').append('<tr><td><b>Totals</b></td><td><b>#{total_current_month_searches}</b></td><td><b>#{total_last_month_searches}</b></td><td><b>#{total_two_months_ago_searches}</b></td><td><b>#{total_three_months_ago_searches}</b></td><td><b>#{total_lifetime_searches}</b></td></tr>');
             });
           "
+    end
+  end
+
+  def get_search_count_totals_by_date_range(search_totals_array)
+    set_date_values
+    search_term_not_null = "properties->>'search_term' is not null"
+
+    total_search_events_count = Ahoy::Event.where(
+      name: 'Practice search').where(search_term_not_null).or(
+      Ahoy::Event.where(name: 'VISN practice search').where(search_term_not_null)).or(
+      Ahoy::Event.where(name: 'Facility practice search').where(search_term_not_null)).count
+
+    search_totals_array << {
+      current_month_count: Ahoy::Event.total_search_term_counts_for_range(@beginning_of_current_month, @end_of_current_month),
+      last_month_count: Ahoy::Event.total_search_term_counts_for_range(@beginning_of_last_month, @end_of_last_month),
+      two_months_ago_count: Ahoy::Event.total_search_term_counts_for_range(@beginning_of_two_months_ago, @end_of_two_months_ago),
+      three_months_ago_count: Ahoy::Event.total_search_term_counts_for_range(@beginning_of_three_months_ago, @end_of_three_months_ago),
+      total: total_search_events_count
+    }
+
+    search_totals_array
+  end
+
+  def create_search_count_totals_table(search_totals_array)
+    panel 'Total search counts' do
+      columns do
+        column do
+          table_for search_totals_array, class: 'total-search-counts' do
+            column("#{@date_headers[:current]}") {|ast| ast[:current_month_count]}
+            column("#{@date_headers[:one_month_ago]}") {|ast| ast[:last_month_count]}
+            column("#{@date_headers[:two_month_ago]}") {|ast| ast[:two_months_ago_count]}
+            column("#{@date_headers[:three_month_ago]}") {|ast| ast[:three_months_ago_count]}
+            column("Lifetime") {|ast| ast[:total]}
+          end
+        end
+      end
     end
   end
 end
