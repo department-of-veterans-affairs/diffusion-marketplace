@@ -28,7 +28,7 @@
               <i class="<% if current_user.favorite_practice_ids.include?(ad["id"]) %>fas fa-bookmark<% else %>far fa-bookmark<% end %> dm-favorite-icon-<%= ad["id"] %>"></i>
             <% end %>
           <% end %>
-          <br /> <%=ad["summary"] %>
+          <br /> <%=ad["summary"][0...125] %><%if ad["summary"] != nil && ad["summary"].length > 125 %>...<% end %>
         </th>
         <% status = ad["status"] == "Completed" ? "Successful" : ad["status"] %>
         <td class="bg-gray-2 grid-col-3" data-sort-value="<%= status %>>"><%= status %></td>

@@ -3,14 +3,6 @@ class VaFacility < ApplicationRecord
   friendly_id :common_name, use: :slugged
   belongs_to :visn
 
-  def self.get_total_adoptions_for_each_practice(va_facilities)
-    total_adoptions = []
-    va_facilities.each do |f|
-      total_adoptions << DiffusionHistory.where(practice_id: f["id"]).count
-    end
-    total_adoptions
-  end
-
   def self.get_adoptions_by_facility(station_number)
     sql = "SELECT p.id, p.name, p.summary, p.slug, dh.facility_id, dhs.status, dhs.start_time,
           (select count(*) from diffusion_histories where p.id = diffusion_histories.practice_id) adoptions
@@ -34,7 +26,7 @@ class VaFacility < ApplicationRecord
   end
 
   def self.get_adoptions_by_facility_and_keyword(station_number, key_word)
-    search_term = key_word
+    search_term = sanitize_sql_like(key_word)
     key_word = "%" + key_word.downcase + "%"
     maturity_level = get_maturity_level(search_term)
     sql = "SELECT distinct p.id, p.name, p.summary, p.slug, dh.facility_id, dhs.status, dhs.start_time,
