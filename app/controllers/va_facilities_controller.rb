@@ -1,4 +1,5 @@
 class VaFacilitiesController < ApplicationController
+  include PracticeUtils
   before_action :set_va_facility, only: [:show, :created_practices]
 
   def index
@@ -32,16 +33,14 @@ class VaFacilitiesController < ApplicationController
     if params[:type].present?
       @filtered_facilities = @filtered_facilities.select { |x| x["fy17_parent_station_complexity_level"].include? params[:type].to_s}
     end
-    @results_count = @filtered_facilities.count
   end
 
   def show
     station_number = @va_facility.station_number
     @num_practice_recs = params[:practices] || "3"
-    @adoptions_at_facility = VaFacility.get_adopted_practices_by_facility(@va_facility.station_number)
-    @categories = Category.with_practices
-    @adopted_practices_categories = get_adopted_practices_categories(@adoptions_at_facility)
-    debugger
+    @adoptions_at_facility = helpers.get_practices_adopted_count_by_va_facility(@va_facility)
+    categories = [] #Category.with_practices
+    @adopted_practices_categories = get_categories_by_practices(@adoptions_at_facility, categories)
     #google maps implementation
     @va_facility_marker = Gmaps4rails.build_markers(@va_facility) do |facility, marker|
 
@@ -72,14 +71,23 @@ class VaFacilitiesController < ApplicationController
   def get_adopted_practices_categories(adoptions_at_facility)
     relevant_categories = []
     adoptions_at_facility.each do |ads|
-      cats = CategoryPractice.where(practice_id: ads["id"] )
-      cats.each do |ct|
-        if !relevant_categories.include?(ct)
-          relevant_categories << cats
+      cat_practice = CategoryPractice.where(practice_id: ads["id"] )
+      cat_practice.each do |cp|
+        cat = Category.where(id: cp.category_id)
+        if !relevant_categories.include?(cp)
+          relevant_categories << cp
         end
       end
+
+
+        #debugger
+      # cats = cat_practice.where(category_id: cat_practice.category_id)
+      # cats.each do |ct|
+      #   if !relevant_categories.include?(ct)
+      #     relevant_categories << cats
+      #   end
+      # end
     end
-    debugger
   end
 
   # GET /facilities/:id/created_practices

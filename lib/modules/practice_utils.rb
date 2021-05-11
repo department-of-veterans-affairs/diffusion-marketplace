@@ -46,4 +46,13 @@ module PracticeUtils
 
     practices_array.to_json.html_safe
   end
+
+  def get_categories_by_practices(practices, practice_categories)
+    practices.each do |p|
+      p.categories.where(is_other: false).where.not(name: 'Other').each do |c|
+        practice_categories << c unless practice_categories.include?(c)
+      end
+    end
+    practice_categories.sort_by! { |pc| pc.name.downcase }
+  end
 end

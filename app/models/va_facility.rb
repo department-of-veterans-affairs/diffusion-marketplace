@@ -3,15 +3,15 @@ class VaFacility < ApplicationRecord
   friendly_id :common_name, use: :slugged
   belongs_to :visn
 
-  def self.get_adopted_practices_by_facility(station_number)
-    sql = "SELECT p.id, p.name, p.summary, p.slug, dh.facility_id, dhs.status, dhs.start_time,
-          (select count(*) from diffusion_histories where p.id = diffusion_histories.practice_id) adoptions
-          FROM practices p
-          JOIN diffusion_histories dh on p.id = dh.practice_id
-          JOIN diffusion_history_statuses dhs on dh.id = dhs.diffusion_history_id
-          WHERE p.published = $1 AND dh.facility_id = $2 order by adoptions desc"
-    ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, true], [nil, "#{station_number}"]]).to_a
-  end
+  # def self.get_adopted_practices_by_facility(station_number)
+  #   sql = "SELECT p.id, p.name, p.summary, p.slug, dh.facility_id, dhs.status, dhs.start_time,
+  #         (select count(*) from diffusion_histories where p.id = diffusion_histories.practice_id) adoptions
+  #         FROM practices p
+  #         JOIN diffusion_histories dh on p.id = dh.practice_id
+  #         JOIN diffusion_history_statuses dhs on dh.id = dhs.diffusion_history_id
+  #         WHERE p.published = $1 AND dh.facility_id = $2 order by adoptions desc"
+  #   ActiveRecord::Base.connection.exec_query(sql, "SQL", [[nil, true], [nil, "#{station_number}"]]).to_a
+  # end
 
   def self.get_adoptions_by_facility_and_category(station_number, category_id)
     sql = "SELECT distinct p.id, p.name, p.summary, p.slug, dh.facility_id, dhs.status, dhs.start_time,
