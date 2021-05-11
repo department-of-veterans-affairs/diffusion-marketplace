@@ -38,9 +38,10 @@ class VaFacilitiesController < ApplicationController
   def show
     station_number = @va_facility.station_number
     @num_practice_recs = params[:practices] || "3"
-    @adoptions_at_facility = VaFacility.get_adoptions_by_facility(@va_facility.station_number)
-    @adoptions = DiffusionHistory.get_adoptions_by_facility(station_number)
+    @adoptions_at_facility = VaFacility.get_adopted_practices_by_facility(@va_facility.station_number)
     @categories = Category.with_practices
+    @adopted_practices_categories = get_adopted_practices_categories(@adoptions_at_facility)
+    debugger
     #google maps implementation
     @va_facility_marker = Gmaps4rails.build_markers(@va_facility) do |facility, marker|
 
@@ -66,6 +67,19 @@ class VaFacilitiesController < ApplicationController
 
     @created_pr_count = created_practices.count
     @created_practices_categories = get_created_practices_categories(created_practices)
+  end
+
+  def get_adopted_practices_categories(adoptions_at_facility)
+    relevant_categories = []
+    adoptions_at_facility.each do |ads|
+      cats = CategoryPractice.where(practice_id: ads["id"] )
+      cats.each do |ct|
+        if !relevant_categories.include?(ct)
+          relevant_categories << cats
+        end
+      end
+    end
+    debugger
   end
 
   # GET /facilities/:id/created_practices
@@ -103,7 +117,7 @@ class VaFacilitiesController < ApplicationController
     key_word = params["key_word"]
     station_number = params["station_number"]
     if selected_cat.blank? && key_word.blank?
-      @adoptions_at_facility = VaFacility.get_adoptions_by_facility(station_number)
+      @adoptions_at_facility = VaFacility.get_adopted_practices_by_facility(station_number)
     elsif !selected_cat.blank? && key_word.blank?
       @adoptions_at_facility = VaFacility.get_adoptions_by_facility_and_category(station_number, selected_cat)
     elsif !key_word.blank? && selected_cat.blank?
@@ -166,7 +180,11 @@ class VaFacilitiesController < ApplicationController
           ret_val += '<i class="far fa-bookmark dm-favorite-icon-' + ad["id"].to_s + '"></i>'
         end
         ret_val += '</a>'
-        ret_val += '<br />' + ad["summary"] + '</th>'
+        ret_val += '<br />' + ad["summary"][0...120]
+        if ad["summary"] != nil && ad["summary"].length > 120
+          ret_val += '...'
+        end
+        ret_val += '</th>'
         status = ad["status"] == "Completed" ? "Successful" : ad["status"]
         ret_val += '<td class="bg-gray-2 grid-col-3" data-sort-value='  + status + '>' + status + '</td>'
         ret_val += '<td class="bg-gray-2 grid-col-2" data-sort-value='  + start_date_tm + '>' + start_date + '</td>'

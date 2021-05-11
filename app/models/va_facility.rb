@@ -3,7 +3,7 @@ class VaFacility < ApplicationRecord
   friendly_id :common_name, use: :slugged
   belongs_to :visn
 
-  def self.get_adoptions_by_facility(station_number)
+  def self.get_adopted_practices_by_facility(station_number)
     sql = "SELECT p.id, p.name, p.summary, p.slug, dh.facility_id, dhs.status, dhs.start_time,
           (select count(*) from diffusion_histories where p.id = diffusion_histories.practice_id) adoptions
           FROM practices p
