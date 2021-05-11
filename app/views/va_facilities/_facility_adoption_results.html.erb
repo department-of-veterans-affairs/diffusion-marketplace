@@ -11,30 +11,7 @@
     </thead>
     <tbody id="practices_adopted_by_facility_dyn">
     <% @adoptions_at_facility.each do |ad| %>
-      <tr>
-        <% if ad["start_time"].blank? %>
-           <% start_date = "" %>
-           <% start_date_tm = "" %>
-         <% else %>
-           <% start_date = ad["start_time"].to_date.strftime("%-d %B %Y") %>
-           <% start_date_tm = ad["start_time"].to_date.strftime("%Y/%m/%d") %>
-        <% end %>
-
-        <% practice = Practice.find_by_id(ad["id"]) %>
-        <th class="bg-gray-2 grid-col-5" scope="row" role="rowheader">
-          <a class="dm-internal-link" href="<%= practice_path(ad["slug"]) %>"><%=ad["name"]%></a>
-          <% if current_user %>
-            <%= link_to practice_favorite_path(practice, format: :js), method: :post, remote: true, 'title': "Bookmark #{ad["name"]}", 'aria-label': "Bookmark #{ad["name"]}", 'tabindex': '-1', 'aria-hidden': 'true', 'class': "dm-practice-bookmark-btn", 'id': "dm-bookmark-button-#{ad["id"]}" do %>
-              <i class="<% if current_user.favorite_practice_ids.include?(ad["id"]) %>fas fa-bookmark<% else %>far fa-bookmark<% end %> dm-favorite-icon-<%= ad["id"] %>"></i>
-            <% end %>
-          <% end %>
-          <br /> <%=ad["summary"][0...120] %><%if ad["summary"] != nil && ad["summary"].length > 120 %>...<% end %>
-        </th>
-        <% status = ad["status"] == "Completed" ? "Successful" : ad["status"] %>
-        <td class="bg-gray-2 grid-col-3" data-sort-value="<%= status %>>"><%= status %></td>
-        <td class="bg-gray-2 grid-col-2" data-sort-value="<%=start_date_tm %>"><%=start_date %></td>
-        <td class="bg-gray-2 grid-col-2" data-sort-value="<%=ad["adoptions"] %>"><%= ad["adoptions"] %></td>
-      </tr>
+      <%= render partial: 'va_facilities/adopted_facility_table_row', locals: { ad: ad} %>
     <% end %>
     </tbody>
   </table>

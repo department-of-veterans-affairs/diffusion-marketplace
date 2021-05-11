@@ -405,4 +405,9 @@ class Practice < ApplicationRecord
     created_pr = Practice.where(practice_origin_facilities: {facility_id: station_number}).left_outer_joins(:practice_origin_facilities).pluck(:id)
     return all_practices.filter { |ap| created_pr.include?(ap.id)}
   end
+
+  def diffusion_history_status_by_facility(facility)
+    diffusion_histories.find_by(facility_id: facility.station_number).diffusion_history_statuses.first
+      #diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Completed'}).or(diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Implemented'})).or(diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Complete'})).count
+  end
 end

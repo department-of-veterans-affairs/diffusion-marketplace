@@ -1,6 +1,6 @@
 class VaFacilitiesController < ApplicationController
   include PracticeUtils
-  before_action :set_va_facility, only: [:show, :created_practices]
+  before_action :set_va_facility, only: [:show, :created_practices, :update_practices_adopted_at_facility]
 
   def index
     if params[:sortby].present?
@@ -68,28 +68,6 @@ class VaFacilitiesController < ApplicationController
     @created_practices_categories = get_created_practices_categories(created_practices)
   end
 
-  def get_adopted_practices_categories(adoptions_at_facility)
-    relevant_categories = []
-    adoptions_at_facility.each do |ads|
-      cat_practice = CategoryPractice.where(practice_id: ads["id"] )
-      cat_practice.each do |cp|
-        cat = Category.where(id: cp.category_id)
-        if !relevant_categories.include?(cp)
-          relevant_categories << cp
-        end
-      end
-
-
-        #debugger
-      # cats = cat_practice.where(category_id: cat_practice.category_id)
-      # cats.each do |ct|
-      #   if !relevant_categories.include?(ct)
-      #     relevant_categories << cats
-      #   end
-      # end
-    end
-  end
-
   # GET /facilities/:id/created_practices
   def created_practices
     station_number = @va_facility.station_number
@@ -125,24 +103,36 @@ class VaFacilitiesController < ApplicationController
     key_word = params["key_word"]
     station_number = params["station_number"]
     if selected_cat.blank? && key_word.blank?
-      @adoptions_at_facility = VaFacility.get_adopted_practices_by_facility(station_number)
-    elsif !selected_cat.blank? && key_word.blank?
-      @adoptions_at_facility = VaFacility.get_adoptions_by_facility_and_category(station_number, selected_cat)
-    elsif !key_word.blank? && selected_cat.blank?
+      @adoptions_at_facility = helpers.get_practices_adopted_count_by_va_facility(@va_facility)
+    elsif selected_cat.present? && key_word.blank?
+      @adoptions_at_facility =  helpers.get_practices_adopted_count_by_va_facility(@va_facility).filter {|p| p.categories.pluck(:id).include?(selected_cat.to_i) }
+    elsif key_word.present? && selected_cat.blank?
       @adoptions_at_facility = VaFacility.get_adoptions_by_facility_and_keyword(station_number, key_word)
-    elsif !selected_cat.blank? && !key_word.blank?
+    elsif selected_cat.present? && !key_word.blank?
       @adoptions_at_facility = VaFacility.get_adoptions_by_facility_category_and_keyword(station_number, selected_cat, key_word)
     end
-    data = rewrite_practices_adopted_at_this_facility_filtered_by_category(@adoptions_at_facility, @total_adoptions_for_practice)
-    results = []
-    results << data
-    result_count =  @adoptions_at_facility.count.to_s + " result"
-      if @adoptions_at_facility.count != 1
-        result_count += "s"
-      end
-    result_count += ":"
-    results << result_count
-    render :json => results
+    # data = rewrite_practices_adopted_at_this_facility_filtered_by_category(@adoptions_at_facility, @total_adoptions_for_practice)
+    # results = []
+    # results << data
+    # result_count =  @adoptions_at_facility.count.to_s + " result"
+    #   if @adoptions_at_facility.count != 1
+    #     result_count += "s"
+    #   end
+    # result_count += ":"
+    # results << result_count
+    # render :json => results
+    adopted_facility_results_html = ''
+    @adoptions_at_facility.each do |pr|
+      pr_html = render_to_string('va_facilities/_adopted_facility_table_row', layout: false, locals: { ad: pr })
+      adopted_facility_results_html += pr_html
+    end
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => {adopted_facility_results_html: adopted_facility_results_html, count: @adoptions_at_facility.count } }
+    end
+
+
   end
 
   private

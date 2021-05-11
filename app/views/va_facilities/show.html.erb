@@ -1,7 +1,11 @@
 <% provide :main_classes, 'bg-gray-2' %>
 <% provide :body_classes, 'bg-gray-2' %>
 <% provide :footer_classes, 'bg-gray-2' %>
+
 <% provide :head_tags do %>
+  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    var facilitySlug = "<%= @va_facility.slug %>";
+  <% end %>
   <%= javascript_include_tag 'va_facilities/facility_adopted_practice_search', 'data-turbolinks-track': 'reload' %>
 <% end %>
 <section class="usa-section padding-y-0 grid-col-12">

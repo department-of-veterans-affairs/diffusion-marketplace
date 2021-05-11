@@ -1,4 +1,4 @@
-function practicesAdoptedAtThisFacilityNoResults(resultMsg1)
+function practicesAdoptedAtThisFacilityNoResults()
 {
     let practicesAdoptedNoResults =  document.getElementById("practices_adopted_no_results");
     let facilityTable = document.getElementById("practices_adopted_at_this_facility_table");
@@ -10,17 +10,18 @@ function practicesAdoptedAtThisFacilityNoResults(resultMsg1)
         facilityTable.style.display = "none";
     }
     if (practicesAdoptedAtFacilityCount){
-        practicesAdoptedAtFacilityCount.innerHTML = resultMsg1;
+        practicesAdoptedAtFacilityCount.innerHTML = "0 results: ";
     }
     $(".search-no-results").last().removeClass("display-none");
 }
 
-function practicesAdoptedAtThisFacilityResults(result0, result1)
+function practicesAdoptedAtThisFacilityResults(result)
 {
     document.getElementById("practices_adopted_no_results").style.display = "none";
     document.getElementById("practices_adopted_at_this_facility_table").style.display = "block";
-    document.getElementById("practices_adopted_by_facility_dyn").innerHTML = result0;
-    document.getElementById("practices_adopted_at_facility_count").innerHTML = result1;
+    $("#practices_adopted_by_facility_dyn").empty();
+    $("#practices_adopted_by_facility_dyn").append(result.adopted_facility_results_html);
+    document.getElementById("practices_adopted_at_facility_count").innerHTML = `${result.count} result${result.count != 1 ? 's' : ''}:`;
 }
 
 function ajaxUpdateSearchResults(){
@@ -29,14 +30,15 @@ function ajaxUpdateSearchResults(){
     let facilityStationNumber = document.getElementById("facility_station_number").value;
     Rails.ajax({
         type: 'get',
-        url: "/update_practices_adopted_at_facility",
+        dataType: 'json',
+        url: `/facilities/${facilitySlug}/update_practices_adopted_at_facility`,
         data: jQuery.param({selected_category: selectedCategory, key_word: keyWord, station_number: facilityStationNumber}),
         success: function(result) {
-            if(result[1] === "0 results:"){
-                practicesAdoptedAtThisFacilityNoResults(result[1]);
+            if(result.count === 0){
+                practicesAdoptedAtThisFacilityNoResults();
             }
             else{
-                practicesAdoptedAtThisFacilityResults(result[0], result[1]);
+                practicesAdoptedAtThisFacilityResults(result);
             }
         }
     });
