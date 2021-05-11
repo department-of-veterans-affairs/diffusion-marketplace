@@ -32,14 +32,12 @@
         </div>
         <div class="margin-bottom-3">
           <% if @filtered_facilities.count > 0 %>
-            Displaying <%= @results_count %> result<% if @results_count != 1 %>s<% end %>:
+            Displaying <%= @filtered_facilities.count %> result<% if @filtered_facilities.count != 1 %>s<% end %>:
+            <%= render partial: 'va_facilities/facility_results_sortable_table' %>
           <% else %>
-            <%= render partial: 'facility_no_results' %>
+            <%= render partial: 'shared/search_no_results', locals: { display_no_query_msg: true, no_query_p: false } %>
           <% end %>
         </div>
-        <% if @results_count > 0 %>
-          <%= render partial: 'va_facilities/facility_results_sortable_table' %>
-        <% end %>
       </div>
     </div>
   </div>
