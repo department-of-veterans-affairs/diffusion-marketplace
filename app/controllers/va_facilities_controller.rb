@@ -108,7 +108,7 @@ class VaFacilitiesController < ApplicationController
       @adoptions_at_facility =  helpers.get_practices_adopted_count_by_va_facility(@va_facility).filter {|p| p.categories.pluck(:id).include?(selected_cat.to_i) }
     elsif key_word.present? && selected_cat.blank?
       @adoptions_at_facility = VaFacility.get_adoptions_by_facility_and_keyword(station_number, key_word)
-    elsif selected_cat.present? && !key_word.blank?
+    elsif selected_cat.present? && key_word.present?
       @adoptions_at_facility = VaFacility.get_adoptions_by_facility_category_and_keyword(station_number, selected_cat, key_word)
     end
     # data = rewrite_practices_adopted_at_this_facility_filtered_by_category(@adoptions_at_facility, @total_adoptions_for_practice)
