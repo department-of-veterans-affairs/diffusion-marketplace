@@ -203,6 +203,7 @@ class Practice < ApplicationRecord
   scope :sort_added, -> { order(Arel.sql("practices.created_at DESC")) }
   scope :filter_by_category_ids, -> (cat_ids) { where('category_practices.category_id IN (?)', cat_ids)} # cat_ids should be a id number or an array of id numbers
   scope :published_enabled_approved,   -> { where(published: true, enabled: true, approved: true) }
+  scope :get_by_adopted_facility, -> (station_number) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {facility_id: station_number}) }
 
   belongs_to :user, optional: true
 
@@ -367,26 +368,8 @@ class Practice < ApplicationRecord
     query = with_categories_and_adoptions_ct.left_outer_joins(:practice_origin_facilities)
 
     if search_term
-      sanitized_search_term = ActiveRecord::Base.sanitize_sql_like(search_term)
-      search_query = "practices.name ILIKE :search OR practices.tagline ILIKE :search OR practices.description ILIKE :search OR practices.summary ILIKE :search OR practices.overview_problem ILIKE :search OR practices.overview_solution ILIKE :search OR practices.overview_results ILIKE :search OR categories.name ILIKE :search OR array_to_string(categories.related_terms, ' ') ILIKE :search"
-      search_params = { search: "%#{sanitized_search_term}%" }
-
-      maturity_levels = { emerging: 0, replicate: 1, scale: 2 }
-      mat_level = search_term.split.map {|st| maturity_levels[st.to_sym] || ''}
-      mat_level.reject!(&:blank?)
-
-      if mat_level.length > 0
-        search_query = search_query + " OR (practices.maturity_level = :maturity_level)"
-        search_params[:maturity_level] = mat_level
-      end
-
-      va_fac_matches = VaFacility.where("official_station_name ILIKE :search OR common_name ILIKE :search", search: "%#{sanitized_search_term}%").select("station_number")
-      if va_fac_matches.length > 0
-        facilities =  va_fac_matches.map {|st| st.station_number}
-        search_query = search_query + " OR diffusion_histories.facility_id IN (:facilities) OR practice_origin_facilities.facility_id IN (:facilities)"
-        search_params[:facilities] = facilities
-      end
-      query = query.where(search_query, search_params)
+      search = search_by_term(search_term)
+      query = query.where(search[:query], search[:params])
     end
 
     if categories
@@ -404,6 +387,30 @@ class Practice < ApplicationRecord
     all_practices = query.group("practices.id, categories.id").uniq
     created_pr = Practice.where(practice_origin_facilities: {facility_id: station_number}).left_outer_joins(:practice_origin_facilities).pluck(:id)
     return all_practices.filter { |ap| created_pr.include?(ap.id)}
+  end
+
+  def self.search_by_term(search_term)
+    sanitized_search_term = ActiveRecord::Base.sanitize_sql_like(search_term)
+    search_query = "practices.name ILIKE :search OR practices.tagline ILIKE :search OR practices.description ILIKE :search OR practices.summary ILIKE :search OR practices.overview_problem ILIKE :search OR practices.overview_solution ILIKE :search OR practices.overview_results ILIKE :search OR categories.name ILIKE :search OR array_to_string(categories.related_terms, ' ') ILIKE :search"
+    search_params = { search: "%#{sanitized_search_term}%" }
+
+    maturity_levels = { emerging: 0, replicate: 1, scale: 2 }
+    mat_level = search_term.split.map {|st| maturity_levels[st.to_sym] || ''}
+    mat_level.reject!(&:blank?)
+
+    if mat_level.length > 0
+      search_query = search_query + " OR (practices.maturity_level = :maturity_level)"
+      search_params[:maturity_level] = mat_level
+    end
+
+    va_fac_matches = VaFacility.where("official_station_name ILIKE :search OR common_name ILIKE :search", search: "%#{sanitized_search_term}%").select("station_number")
+    if va_fac_matches.length > 0
+      facilities =  va_fac_matches.map {|st| st.station_number}
+      search_query = search_query + " OR diffusion_histories.facility_id IN (:facilities) OR practice_origin_facilities.facility_id IN (:facilities)"
+      search_params[:facilities] = facilities
+    end
+    search = { query: search_query, params: search_params }
+    return search
   end
 
   def diffusion_history_status_by_facility(facility)
