@@ -7,7 +7,7 @@ namespace :va_facilities do
 
     visns.each do |visn|
       va_facilities.each do |vaf|
-        if visn.number === vaf["VISN"].to_i
+        if visn.number === vaf["VISN"].to_i && VaFacility.where(station_number: vaf["StationNumber"]).empty?
           VaFacility.create!(
             visn: visn,
             sta3n: vaf["STA3N"],
