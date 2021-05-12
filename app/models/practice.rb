@@ -58,7 +58,7 @@ class Practice < ApplicationRecord
   end
 
   def self.get_practices_created_by_facility(station_number)
-    Practice.where(published: true).joins(:practice_origin_facilities).where(practice_origin_facilities: {facility_id: station_number}).to_a
+    Practice.published_enabled_approved.joins(:practice_origin_facilities).where(practice_origin_facilities: {facility_id: station_number})
   end
 
   def self.searchable_practices(sort = 'a_to_z')
@@ -388,6 +388,21 @@ class Practice < ApplicationRecord
     created_pr = Practice.where(practice_origin_facilities: {facility_id: station_number}).left_outer_joins(:practice_origin_facilities).pluck(:id)
     return all_practices.filter { |ap| created_pr.include?(ap.id)}
   end
+
+  def self.get_facility_adopted_practices(station_number, search_term = nil, categories = nil)
+
+    query = with_categories_and_adoptions_ct.left_outer_joins(:practice_origin_facilities).get_by_adopted_facility(station_number)
+
+    if search_term
+      search = search_by_term(search_term)
+      query = query.where(search[:query], search[:params])
+    end
+    if categories
+      query = query.filter_by_category_ids(categories)
+    end
+   query.group("practices.id, categories.id").uniq
+  end
+
 
   def self.search_by_term(search_term)
     sanitized_search_term = ActiveRecord::Base.sanitize_sql_like(search_term)

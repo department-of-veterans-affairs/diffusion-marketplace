@@ -28,11 +28,11 @@
     <% @filtered_facilities.each do |facility| %>
       <tr>
         <th scope="row" role="rowheader" class="grid-col-4"><a class="dm-internal-link" href='/facilities/<%= facility["slug"] %>'><%= facility["official_station_name"] %> (<%= facility["common_name"] %>)</a></th>
-        <td data-sort-value="<%= facility["state"] %>" class="grid-col-1"><%= facility["state"] %></td>
-        <td data-sort-value="<%= facility["visn_number"] %>" class="grid-col-1"><a class="dm-internal-link" href='/visns/<%= facility["visn_number"] %>'><%= facility["visn_number"] %></a></td>
-        <td data-sort-value="<%= facility["fy17_parent_station_complexity_level"][0..1].upcase %>" class="grid-col-2"><%= facility["fy17_parent_station_complexity_level"][0..1].upcase %></td>
-        <td data-sort-value="<%= facility["practices_created"] %>" class="grid-col-2"><%= facility["practices_created"] %></td>
-        <td data-sort-value="<%= facility["adoptions"] %>" class="grid-col-2"><%= facility["adoptions"] %></td>
+        <td data-sort-value="<%= facility.street_address_state %>" class="grid-col-1"><%= facility.street_address_state %></td>
+        <td data-sort-value="<%= facility.visn.number %>" class="grid-col-1"><a class="dm-internal-link" href='/visns/<%= facility.visn.number %>'><%= facility.visn.number %></a></td>
+        <td data-sort-value="<%= facility.fy17_parent_station_complexity_level[0..1].upcase %>" class="grid-col-2"><%= facility.fy17_parent_station_complexity_level[0..1].upcase %></td>
+        <td data-sort-value="<%= Practice.get_practices_created_by_facility(facility.station_number).count %>" class="grid-col-2"><%= Practice.get_practices_created_by_facility(facility.station_number).count %></td>
+        <td data-sort-value="<%= Practice.published_enabled_approved.get_by_adopted_facility(facility.station_number).count %>" class="grid-col-2"><%= Practice.published_enabled_approved.get_by_adopted_facility(facility.station_number).count %></td>
       </tr>
     <% end %>
     </tbody>

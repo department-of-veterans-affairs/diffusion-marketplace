@@ -3,22 +3,9 @@ class VaFacilitiesController < ApplicationController
   before_action :set_va_facility, only: [:show, :created_practices, :update_practices_adopted_at_facility]
 
   def index
-    if params[:sortby].present?
-      @facilities = VaFacility.get_all_facilities(params[:sortby])
-    else
-      @facilities = VaFacility.get_all_facilities
-    end
-
-    @visns = Visn.order_by_number
-    @types = []
-    all_types = VaFacility.get_types
-    all_types.each do |t|
-      @types << t
-    end
-
-    if params[:asc].present? && params[:asc] == "false"
-      @facilities = @facilities.to_a.reverse
-    end
+    @facilities = VaFacility.cached_va_facilities
+    @visns = Visn.cached_visns
+    @types = VaFacility.get_types
 
     @filtered_facilities= @facilities
     @selected_facility
@@ -38,7 +25,7 @@ class VaFacilitiesController < ApplicationController
   def show
     station_number = @va_facility.station_number
     @num_practice_recs = params[:practices] || "3"
-    @adoptions_at_facility = helpers.get_practices_adopted_count_by_va_facility(@va_facility)
+    @adoptions_at_facility = Practice.get_facility_adopted_practices(@va_facility.station_number)
     categories = [] #Category.with_practices
     @adopted_practices_categories = get_categories_by_practices(@adoptions_at_facility, categories)
     #google maps implementation
@@ -99,28 +86,9 @@ class VaFacilitiesController < ApplicationController
   end
 
   def update_practices_adopted_at_facility
-    selected_cat = params["selected_category"]
+    selected_cat = params["selected_category"].present? ?  params["selected_category"] : nil
     key_word = params["key_word"]
-    station_number = params["station_number"]
-    if selected_cat.blank? && key_word.blank?
-      @adoptions_at_facility = helpers.get_practices_adopted_count_by_va_facility(@va_facility)
-    elsif selected_cat.present? && key_word.blank?
-      @adoptions_at_facility =  helpers.get_practices_adopted_count_by_va_facility(@va_facility).filter {|p| p.categories.pluck(:id).include?(selected_cat.to_i) }
-    elsif key_word.present? && selected_cat.blank?
-      @adoptions_at_facility = VaFacility.get_adoptions_by_facility_and_keyword(station_number, key_word)
-    elsif selected_cat.present? && key_word.present?
-      @adoptions_at_facility = VaFacility.get_adoptions_by_facility_category_and_keyword(station_number, selected_cat, key_word)
-    end
-    # data = rewrite_practices_adopted_at_this_facility_filtered_by_category(@adoptions_at_facility, @total_adoptions_for_practice)
-    # results = []
-    # results << data
-    # result_count =  @adoptions_at_facility.count.to_s + " result"
-    #   if @adoptions_at_facility.count != 1
-    #     result_count += "s"
-    #   end
-    # result_count += ":"
-    # results << result_count
-    # render :json => results
+    @adoptions_at_facility = Practice.get_facility_adopted_practices(@va_facility.station_number, key_word, selected_cat)
     adopted_facility_results_html = ''
     @adoptions_at_facility.each do |pr|
       pr_html = render_to_string('va_facilities/_adopted_facility_table_row', layout: false, locals: { ad: pr })
@@ -131,8 +99,6 @@ class VaFacilitiesController < ApplicationController
       format.html
       format.json { render :json => {adopted_facility_results_html: adopted_facility_results_html, count: @adoptions_at_facility.count } }
     end
-
-
   end
 
   private
@@ -155,41 +121,5 @@ class VaFacilitiesController < ApplicationController
       end
     end
     return created_pr_categories.sort_by! { |k| k[:name].downcase.strip }
-  end
-
-  def rewrite_practices_adopted_at_this_facility_filtered_by_category(adoptions_at_facility, total_adoptions_for_practice)
-    ret_val = ""
-    if adoptions_at_facility.count > 0
-      adoptions_at_facility.each do |ad|
-        if ad["start_time"].blank?
-          start_date = ""
-          start_date_tm = ""
-        else
-          start_date = ad["start_time"].to_date.strftime("%-d %B %Y")
-          start_date_tm = ad["start_time"].to_date.strftime("%Y/%m/%d")
-        end
-        ret_val += '<tr>'
-        ret_val += '<th class="bg-gray-2 grid-col-5" scope="row" role="rowheader">'
-        ret_val += '<a class="dm-internal-link" href="/practices/' + ad["slug"] + '"> ' + ad["name"] + '</a> '
-        ret_val += '<a title="Bookmark ' + ad["name"] + '" aria-label="' + ad["name"] + '" tabindex="-1" aria-hidden="true" class="dm-practice-bookmark-btn" id="dm-bookmark-button-' + ad["id"].to_s + '" data-remote="true" rel="nofollow" data-method="post" href="/practices/' + ad["slug"] + '/favorite.js"> '
-        if current_user.favorite_practice_ids.include?(ad["id"])
-          ret_val += '<i class="fas fa-bookmark dm-favorite-icon-' + ad["id"].to_s + '"></i>'
-        else
-          ret_val += '<i class="far fa-bookmark dm-favorite-icon-' + ad["id"].to_s + '"></i>'
-        end
-        ret_val += '</a>'
-        ret_val += '<br />' + ad["summary"][0...120]
-        if ad["summary"] != nil && ad["summary"].length > 120
-          ret_val += '...'
-        end
-        ret_val += '</th>'
-        status = ad["status"] == "Completed" ? "Successful" : ad["status"]
-        ret_val += '<td class="bg-gray-2 grid-col-3" data-sort-value='  + status + '>' + status + '</td>'
-        ret_val += '<td class="bg-gray-2 grid-col-2" data-sort-value='  + start_date_tm + '>' + start_date + '</td>'
-        ret_val += '<td class="bg-gray-2 grid-col-2" data-sort-value='  + ad["adoptions"].to_s + '>' + ad["adoptions"].to_s + '</td>'
-        ret_val += '</tr>'
-      end
-    end
-    ret_val
   end
 end
