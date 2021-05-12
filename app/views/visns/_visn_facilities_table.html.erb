@@ -26,8 +26,8 @@
             <%= link_to "#{facility_name_with_common_name(facility.official_station_name, facility.common_name)}", va_facility_path(facility), class: 'dm-internal-link' %>
           </th>
           <td class="grid-col-2"><%= facility.fy17_parent_station_complexity_level.split('-').shift.upcase %></td>
-          <td class="grid-col-2"><%= Practice.get_facility_created_practices(facility.station_number).count %></td>
-          <td class="grid-col-2"><%= Practice.get_facility_adopted_practices(facility.station_number).count %></td>
+          <td class="grid-col-2"><%= facility.practices_created_count %></td>
+          <td class="grid-col-2"><%= facility.practices_adopted_count  %></td>
         </tr>
       <% end %>
     </tbody>

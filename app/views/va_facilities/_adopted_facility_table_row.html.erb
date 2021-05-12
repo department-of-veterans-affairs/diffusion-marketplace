@@ -17,7 +17,7 @@
     <br /> <%=ad[:summary][0...120] %><%if ad[:summary] != nil && ad[:summary].length > 120 %>...<% end %>
   </th>
   <% status = dh_status.status == "Completed" ? "Successful" : dh_status.status %>
-  <td class="bg-gray-2 grid-col-3" data-sort-value="<%= status %>>"><%= status %></td>
-  <td class="bg-gray-2 grid-col-2" data-sort-value="<%=start_date_tm %>"><%= start_date %></td>
-  <td class="bg-gray-2 grid-col-2" data-sort-value="<%= ad.diffusion_histories.count %>"><%= ad.diffusion_histories.count %></td>
+  <td class="bg-gray-2 grid-col-3"><%= status %></td>
+  <td class="bg-gray-2 grid-col-2"><%= start_date %></td>
+  <td class="bg-gray-2 grid-col-2"><%= ad.diffusion_histories.count %></td>
 </tr>
