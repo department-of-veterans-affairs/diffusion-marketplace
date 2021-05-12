@@ -25,9 +25,9 @@
           <th scope="row" role="rowheader" class="grid-col-6">
             <%= link_to "#{facility_name_with_common_name(facility.official_station_name, facility.common_name)}", va_facility_path(facility), class: 'dm-internal-link' %>
           </th>
-          <td class="grid-col-2"><%= facility.fy17_parent_station_complexity_level.split('-').shift %></td>
-          <td class="grid-col-2"><%= get_practices_created_count_by_va_facility(facility) %></td>
-          <td class="grid-col-2"><%= get_practices_adopted_count_by_va_facility(facility) %></td>
+          <td class="grid-col-2"><%= facility.fy17_parent_station_complexity_level.split('-').shift.upcase %></td>
+          <td class="grid-col-2"><%= Practice.get_facility_created_practices(facility.station_number).count %></td>
+          <td class="grid-col-2"><%= Practice.get_facility_adopted_practices(facility.station_number).count %></td>
         </tr>
       <% end %>
     </tbody>

@@ -1,3 +1,17 @@
+function trackSearch(term) {
+    if (term !== '') {
+        ahoy.track("Facility practice search", { search_term: term });
+        if (typeof ga === "function") {
+            ga("send", {
+                hitType: "event",
+                eventCategory: "Facility search",
+                eventAction: "Facility search",
+                location: `/facilities/${facilitySlug}`
+            });
+        }
+    }
+}
+
 function practicesAdoptedAtThisFacilityNoResults()
 {
     let practicesAdoptedNoResults =  document.getElementById("practices_adopted_no_results");
@@ -48,6 +62,8 @@ function updateSearchResultsOnSearchButtonClick(){
     $("#dm-adopted-practices-search-button").click (function(e) {
         e.preventDefault();
         ajaxUpdateSearchResults();
+        let keyWord = document.getElementById("dm-adopted-practices-search-field").value;
+        trackSearch(keyWord);
     });
 }
 
