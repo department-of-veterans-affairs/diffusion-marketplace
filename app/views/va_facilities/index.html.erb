@@ -23,10 +23,10 @@
               <%= render partial: 'va_facilities/facility_directory_combo_box', locals: {facility_selector: 'facility_directory_select', default_value: @selected_facility} %>
             </div>
             <div class="grid-col-3">
-              <%= render partial: 'va_facilities/visn_combo_box', locals: {visn_selector: 'facility_directory_visn_select'} %>
+              <%= render partial: 'va_facilities/visn_select', locals: {visn_selector: 'facility_directory_visn_select'} %>
             </div>
             <div class="grid-col-4">
-              <%= render partial: 'va_facilities/facility_directory_type_combo_box', locals: {facility_type_selector: 'facility_type_select'} %>
+              <%= render partial: 'va_facilities/facility_directory_type_select', locals: {facility_type_selector: 'facility_type_select'} %>
             </div>
           </div>
         </div>
@@ -41,6 +41,5 @@
       </div>
     </div>
   </div>
-  <%= render 'facility_complexity_definitions' %>
 </section>
 

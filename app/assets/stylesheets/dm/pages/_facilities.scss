@@ -43,33 +43,6 @@
   height: 38px !important;
 }
 
-//#dm-va-facilities-adoption-index {
-//  .usa-combo-box__toggle-list, .usa-combo-box__clear-input {
-//    top: 1.8em;
-//  }
-//
-//  .usa-combo-box__toggle-list {
-//    right: 0.8em;
-//  }
-//
-//  .usa-combo-box__clear-input {
-//    right: 3.2em;
-//  }
-//
-//  .usa-combo-box__input-button-separator {
-//    top: 1.7em;
-//    right: 3.35em;
-//  }
-//
-//  .usa-combo-box__input {
-//    margin-top: 0 !important;
-//  }
-//
-//  .usa-combo-box__list {
-//    width: calc(100% - 24px);
-//  }
-//}
-
 // individual facility page created practices section
 .dm-facility-created-practice-search {
   @media screen and (min-width: 64rem) {
@@ -401,6 +374,10 @@
 
 #facility_category_select_adoptions{
   margin-top: 0;
+
+  &::placeholder {
+    color: $dm-color-black !important;
+  }
 }
 
 

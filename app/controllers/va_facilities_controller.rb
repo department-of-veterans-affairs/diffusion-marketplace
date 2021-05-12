@@ -15,10 +15,10 @@ class VaFacilitiesController < ApplicationController
       @selected_facility = params[:facility].to_i
     end
     if params[:visn].present?
-      @filtered_facilities = @filtered_facilities.select { |x| x["visn_number"] == params[:visn].to_i}
+      @filtered_facilities = @filtered_facilities.select { |x| x.visn.number == params[:visn].to_i}
     end
     if params[:type].present?
-      @filtered_facilities = @filtered_facilities.select { |x| x["fy17_parent_station_complexity_level"].include? params[:type].to_s}
+      @filtered_facilities = @filtered_facilities.select { |x| x.fy17_parent_station_complexity_level.include? params[:type].to_s}
     end
   end
 

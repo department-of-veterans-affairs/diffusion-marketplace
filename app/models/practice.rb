@@ -430,6 +430,5 @@ class Practice < ApplicationRecord
 
   def diffusion_history_status_by_facility(facility)
     diffusion_histories.find_by(facility_id: facility.station_number).diffusion_history_statuses.first
-      #diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Completed'}).or(diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Implemented'})).or(diffusion_histories.joins(:diffusion_history_statuses).where(diffusion_history_statuses: {status: 'Complete'})).count
   end
 end
