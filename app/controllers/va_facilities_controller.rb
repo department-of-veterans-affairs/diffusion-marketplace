@@ -1,48 +1,32 @@
 class VaFacilitiesController < ApplicationController
-  before_action :set_va_facility, only: [:show, :created_practices]
+  include PracticeUtils
+  before_action :set_va_facility, only: [:show, :created_practices, :update_practices_adopted_at_facility]
+
   def index
-    @num_recs = params[:more] || "20"
-    if params[:sortby].present?
-      @facilities = VaFacility.get_all_facilities(params[:sortby])
-    else
-      @facilities = VaFacility.get_all_facilities
-    end
-
-    @visns = Visn.order_by_number
-    @types = []
-    all_types = VaFacility.get_types
-    all_types.each do |t|
-      @types << t
-    end
-
-    if params[:asc].present? && params[:asc] == "false"
-      @facilities = @facilities.to_a.reverse
-    end
+    @facilities = VaFacility.cached_va_facilities
+    @visns = Visn.cached_visns
+    @types = VaFacility.get_types
 
     @filtered_facilities= @facilities
+    @selected_facility
     #check params and filters...
     if params[:facility].present?
       @filtered_facilities = @facilities.select { |x| x["id"] == params[:facility].to_i}
+      @selected_facility = params[:facility].to_i
     end
     if params[:visn].present?
-      @filtered_facilities = @filtered_facilities.select { |x| x["visn_number"] == params[:visn].to_i}
+      @filtered_facilities = @filtered_facilities.select { |x| x.visn.number == params[:visn].to_i}
     end
     if params[:type].present?
-      @filtered_facilities = @filtered_facilities.select { |x| x["fy17_parent_station_complexity_level"].include? params[:type].to_s}
-    end
-    @results_count = @filtered_facilities.count
-
-    if @filtered_facilities.count > @num_recs.to_i
-      @filtered_facilities = @filtered_facilities.take(@num_recs.to_i)
+      @filtered_facilities = @filtered_facilities.select { |x| x.fy17_parent_station_complexity_level.include? params[:type].to_s}
     end
   end
 
   def show
     station_number = @va_facility.station_number
     @num_practice_recs = params[:practices] || "3"
-    @adoptions = DiffusionHistory.get_adoptions_by_facility(station_number)
-    @adoptions_count = @adoptions.count
-    @categories = Category.order_by_name
+    @adoptions_at_facility = Practice.get_facility_adopted_practices(@va_facility.station_number)
+    @adopted_practices_categories = get_categories_by_practices(@adoptions_at_facility, [])
     #google maps implementation
     @va_facility_marker = Gmaps4rails.build_markers(@va_facility) do |facility, marker|
 
@@ -97,6 +81,22 @@ class VaFacilitiesController < ApplicationController
     respond_to do |format|
       format.html
       format.json { render :json => { practice_cards_html: practice_cards_html, count: created_practices.length, next: @pagy_created_info.next } }
+    end
+  end
+
+  def update_practices_adopted_at_facility
+    selected_cat = params["selected_category"].present? ?  params["selected_category"] : nil
+    key_word = params["key_word"]
+    @adoptions_at_facility = Practice.get_facility_adopted_practices(@va_facility.station_number, key_word, selected_cat)
+    adopted_facility_results_html = ''
+    @adoptions_at_facility.each do |pr|
+      pr_html = render_to_string('va_facilities/_adopted_facility_table_row', layout: false, locals: { ad: pr })
+      adopted_facility_results_html += pr_html
+    end
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => {adopted_facility_results_html: adopted_facility_results_html, count: @adoptions_at_facility.count } }
     end
   end
 

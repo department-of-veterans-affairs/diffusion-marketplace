@@ -1,0 +1,43 @@
+<div id="dm-va-facilities-directory-table" class="usa-table-container--scrollable">
+  <table class="usa-table usa-table--borderless grid-col-12">
+    <caption></caption>
+    <thead>
+    <tr>
+      <th data-sortable scope="col" role="columnheader" aria-sort="descending">
+        Facility
+      </th>
+      <th data-sortable scope="col" role="columnheader">
+        State
+      </th>
+      <th data-sortable scope="col" role="columnheader">
+        VISN
+      </th>
+      <th class="p0-right" data-sortable scope="col" role="columnheader">
+        Complexity
+        <%= render partial: 'shared/facility_complexity_modal' %>
+      </th>
+      <th data-sortable scope="col" role="columnheader">
+        Created
+      </th>
+      <th data-sortable scope="col" role="columnheader">
+        Adoptions
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @filtered_facilities.each do |facility| %>
+      <tr>
+        <th scope="row" role="rowheader" class="grid-col-4"><a class="dm-internal-link" href='/facilities/<%= facility["slug"] %>'><%= facility["official_station_name"] %> (<%= facility["common_name"] %>)</a></th>
+        <td class="grid-col-1"><%= facility.street_address_state %></td>
+        <td class="grid-col-1"><a class="dm-internal-link" href='/visns/<%= facility.visn.number %>'><%= facility.visn.number %></a></td>
+        <td class="grid-col-2"><%= facility.fy17_parent_station_complexity_level[0..1].upcase %></td>
+        <td class="grid-col-2"><%= facility.practices_created_count %></td>
+        <td class="grid-col-2"><%= facility.practices_adopted_count  %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+  <div class="usa-sr-only usa-table__announcement-region" aria-live="polite">
+    <!-- this content will change when sort changes -->
+  </div>
+</div>

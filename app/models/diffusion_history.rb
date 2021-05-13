@@ -12,10 +12,6 @@ class DiffusionHistory < ApplicationRecord
     facility['OfficialStationName']
   end
 
-  def self.get_adoptions_by_facility(station_number)
-    DiffusionHistory.where(facility_id: station_number)
-  end
-
   def clear_searchable_practices_cache
     practice.clear_searchable_cache
   end
