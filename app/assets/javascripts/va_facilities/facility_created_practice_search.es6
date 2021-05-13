@@ -36,11 +36,26 @@ function filterCategoriesEventListener() {
   })
 }
 
+function trackSearch(term) {
+  if (term !== '') {
+    ahoy.track("Facility practice search", { search_term: term });
+    if (typeof ga === "function") {
+      ga("send", {
+        hitType: "event",
+        eventCategory: "Facility search",
+        eventAction: "Facility search",
+        location: `/facilities/${facilitySlug}`
+      });
+    }
+  }
+}
+
 function searchEventListener() {
   $(searchBtn).on("click", function(e) {
     e.preventDefault();
     let searchTerm = $(searchField).val();
     $(searchField).data("search", searchTerm);
+    trackSearch(searchTerm)
     setDataAndMakeRequest({searchTerm: searchTerm});
   })
 }

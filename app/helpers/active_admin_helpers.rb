@@ -48,11 +48,11 @@ module ActiveAdminHelpers
     @end_of_three_months_ago = (Date.today - 3.months).at_end_of_month.end_of_day
 
     @date_headers = {
-        total: 'Current Total',
-        current: "#{@beginning_of_current_month.strftime('%B %Y')} - current month",
-        one_month_ago: "#{@beginning_of_last_month.strftime('%B %Y')} - last month",
-        two_month_ago: "#{@beginning_of_two_months_ago.strftime('%B %Y')} - 2 months ago",
-        three_month_ago: "#{@beginning_of_three_months_ago.strftime('%B %Y')} - 3 months ago"
+      total: 'Current Total',
+      current: "#{@beginning_of_current_month.strftime('%B %Y')} - current month",
+      one_month_ago: "#{@beginning_of_last_month.strftime('%B %Y')} - last month",
+      two_month_ago: "#{@beginning_of_two_months_ago.strftime('%B %Y')} - 2 months ago",
+      three_month_ago: "#{@beginning_of_three_months_ago.strftime('%B %Y')} - 3 months ago"
     }
   end
 
@@ -69,10 +69,10 @@ module ActiveAdminHelpers
   def adoption_counts_by_practice(p)
     set_date_values
     {
-        adopted_this_month: p.diffusion_histories.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
-        adopted_one_month_ago: p.diffusion_histories.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
-        adopted_two_months_ago: p.diffusion_histories.where(created_at: @beginning_of_two_months_ago..@end_of_two_months_ago).count,
-        total_adopted: p.diffusion_histories.count
+      adopted_this_month: p.diffusion_histories.where(created_at: @beginning_of_current_month..@end_of_current_month).count,
+      adopted_one_month_ago: p.diffusion_histories.where(created_at: @beginning_of_last_month..@end_of_last_month).count,
+      adopted_two_months_ago: p.diffusion_histories.where(created_at: @beginning_of_two_months_ago..@end_of_two_months_ago).count,
+      total_adopted: p.diffusion_histories.count
     }
   end
 
@@ -87,5 +87,90 @@ module ActiveAdminHelpers
     @xlsx_legend_no_bottom_border = s.add_style b: true, u: true, border: {style: :thin, color: 'FFFFFF', edges: [:bottom]}
     @xlsx_legend_no_top_border = s.add_style b: true, border: {style: :thin, color: 'FFFFFF', edges: [:top]}
     @xlsx_legend_no_y_border = s.add_style b: true, border: {style: :thin, color: 'FFFFFF', edges: [:bottom, :top]}
+  end
+
+  def get_search_term_counts_by_type(ahoy_event_name, search_terms_array)
+    set_date_values
+    events = Ahoy::Event.where(name: ahoy_event_name).where("properties->>'search_term' is not null").group("properties->>'search_term'").order('count_all desc').count
+    events.each do |e|
+      search_terms_array << {
+        query: e[0],
+        lifetime_count: e[1],
+        current_month_count: Ahoy::Event.count_for_range(ahoy_event_name, @beginning_of_current_month, @end_of_current_month, e[0]),
+        last_month_count: Ahoy::Event.count_for_range(ahoy_event_name, @beginning_of_last_month, @end_of_last_month, e[0]),
+        two_months_ago_count: Ahoy::Event.count_for_range(ahoy_event_name, @beginning_of_two_months_ago, @end_of_two_months_ago, e[0]),
+        three_months_ago_count: Ahoy::Event.count_for_range(ahoy_event_name, @beginning_of_three_months_ago, @end_of_three_months_ago, e[0])
+      }
+    end
+
+    search_terms_array.sort_by {|k| k["current_month_count"]}.reverse!
+    search_terms_array
+  end
+
+  def create_search_terms_table_by_type(panel_title, search_terms_array, table_id)
+    set_date_values
+
+    panel panel_title do
+      columns do
+        column do
+          table_for search_terms_array, id: table_id do
+            column('Term') {|st| st[:query]}
+            column("#{@date_headers[:current]}") {|st| st[:current_month_count]}
+            column("#{@date_headers[:one_month_ago]}") {|st| st[:last_month_count]}
+            column("#{@date_headers[:two_month_ago]}") {|st| st[:two_months_ago_count]}
+            column("#{@date_headers[:three_month_ago]}") {|st| st[:three_months_ago_count]}
+            column("Lifetime") {|st| st[:lifetime_count]}
+          end
+        end
+      end
+    end
+
+    script do
+      total_current_month_searches = search_terms_array.sum {|st| st[:current_month_count] }
+      total_last_month_searches = search_terms_array.sum {|st| st[:last_month_count]}
+      total_two_months_ago_searches = search_terms_array.sum {|st| st[:two_months_ago_count]}
+      total_three_months_ago_searches = search_terms_array.sum {|st| st[:three_months_ago_count]}
+      total_lifetime_searches = search_terms_array.sum {|st| st[:lifetime_count]}
+      raw "$(document).ready(function($) {
+              $('##{table_id}').append('<tr><td><b>Totals</b></td><td><b>#{total_current_month_searches}</b></td><td><b>#{total_last_month_searches}</b></td><td><b>#{total_two_months_ago_searches}</b></td><td><b>#{total_three_months_ago_searches}</b></td><td><b>#{total_lifetime_searches}</b></td></tr>');
+            });
+          "
+    end
+  end
+
+  def get_search_count_totals_by_date_range(search_totals_array)
+    set_date_values
+    search_term_not_null = "properties->>'search_term' is not null"
+
+    total_search_events_count = Ahoy::Event.where(
+      name: 'Practice search').where(search_term_not_null).or(
+      Ahoy::Event.where(name: 'VISN practice search').where(search_term_not_null)).or(
+      Ahoy::Event.where(name: 'Facility practice search').where(search_term_not_null)).count
+
+    search_totals_array << {
+      current_month_count: Ahoy::Event.total_search_term_counts_for_range(@beginning_of_current_month, @end_of_current_month),
+      last_month_count: Ahoy::Event.total_search_term_counts_for_range(@beginning_of_last_month, @end_of_last_month),
+      two_months_ago_count: Ahoy::Event.total_search_term_counts_for_range(@beginning_of_two_months_ago, @end_of_two_months_ago),
+      three_months_ago_count: Ahoy::Event.total_search_term_counts_for_range(@beginning_of_three_months_ago, @end_of_three_months_ago),
+      total: total_search_events_count
+    }
+
+    search_totals_array
+  end
+
+  def create_search_count_totals_table(search_totals_array)
+    panel 'Total search counts' do
+      columns do
+        column do
+          table_for search_totals_array, class: 'total-search-counts' do
+            column("#{@date_headers[:current]}") {|ast| ast[:current_month_count]}
+            column("#{@date_headers[:one_month_ago]}") {|ast| ast[:last_month_count]}
+            column("#{@date_headers[:two_month_ago]}") {|ast| ast[:two_months_ago_count]}
+            column("#{@date_headers[:three_month_ago]}") {|ast| ast[:three_months_ago_count]}
+            column("Lifetime") {|ast| ast[:total]}
+          end
+        end
+      end
+    end
   end
 end
