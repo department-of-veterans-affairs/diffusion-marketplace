@@ -290,8 +290,11 @@ describe 'VISN pages', type: :feature do
     PracticeOriginFacility.create!(practice: @practice_8, facility_type: 0, facility_id: '424')
 
     @dh = DiffusionHistory.create!(practice_id: @practice.id, facility_id: '443')
+    DiffusionHistoryStatus.create!(diffusion_history: @dh, status: 'Completed', start_time: Time.now)
     @dh_2 = DiffusionHistory.create!(practice_id: @practice_2.id, facility_id: '431')
+    DiffusionHistoryStatus.create!(diffusion_history: @dh_2, status: 'Completed', start_time: Time.now)
     @dh_3 = DiffusionHistory.create!(practice_id: @practice_3.id, facility_id: '443')
+    DiffusionHistoryStatus.create!(diffusion_history: @dh_3, status: 'Completed', start_time: Time.now)
 
     @cat_1 = Category.create!(name: 'COVID')
     @cat_2 = Category.create!(name: 'Test Cat')
@@ -416,7 +419,7 @@ describe 'VISN pages', type: :feature do
       it 'should show metadata for each facility' do
         visit '/visns/1'
         find_all(:css, 'div[style*="width: 34px"][title=""]').first.click
-
+        expect(page).to have_selector('#visn-va-facility-1-marker-modal', visible: true)
         within(:css, '#visn-va-facility-1-marker-modal') do
           expect(find('.visn-va-facility-marker-modal-link').text).to eq('Test Name (Test Common Name)')
           expect(find('.visn-va-facility-modal-practices-created-count').text).to eq('1 practice created here')
@@ -427,6 +430,7 @@ describe 'VISN pages', type: :feature do
       it 'should have a link to a given facility\'s show page within that facility\'s marker modal' do
         visit '/visns/1'
         find_all(:css, 'div[style*="width: 34px"][title=""]').first.click
+        expect(page).to have_selector('#visn-va-facility-1-marker-modal', visible: true)
 
         within(:css, '#visn-va-facility-1-marker-modal') do
           expect(find('.visn-va-facility-marker-modal-link')[:href]).to include('/facilities/test-common-name')
@@ -497,8 +501,7 @@ describe 'VISN pages', type: :feature do
       it 'should take the user to the show page of the facility they click on within the facilities table' do
         visit '/visns/2'
         click_link('Fourth Test Name (Fourth Common Name)')
-        sleep 0.1
-
+        expect(page).to have_selector('#va_facility_map', visible: true)
         expect(page).to have_current_path('/facilities/fourth-common-name')
       end
     end

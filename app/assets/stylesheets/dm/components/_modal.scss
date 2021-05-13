@@ -146,10 +146,9 @@
   height: 20px;
 }
 
-#facility-complexity-modal {
+#facility-complexity-modal, #facility_status_def_modal {
   .usa-modal {
     border-radius: 4px !important;
-
     .usa-modal__main {
       padding: 0.5rem 2.5rem 2.5rem !important;
     }
@@ -158,10 +157,9 @@
   button {
     color: $dm-color-base !important;
     margin-right: 4px;
-
-     i {
-       font-size: 32px;
-     }
+    i {
+      font-size: 32px;
+    }
   }
 }
 

@@ -2,7 +2,7 @@
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     var facilitySlug = "<%= @va_facility.slug %>";
   <% end %>
-  <%= javascript_include_tag 'facilities/facility_created_practice_search', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'va_facilities/facility_created_practice_search', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
 <%
@@ -43,7 +43,7 @@
         <%= "#{@created_pr_count} result#{@created_pr_count == 1 ? ':' : 's:'}" %>
       </span>
     </div>
-    <div class="grid-col-4 margin-left-5">
+    <div class="grid-col-4 margin-left-5 <%= 'display-none' unless @created_pr_count > 1 %>">
       <%= label_tag 'dm-created-practices-sort-option', 'created practice sort option', class: 'usa-label usa-sr-only margin-0' %>
       <%= select_tag('created-practices-sort-option', options_for_select(sort_options), id: 'dm-created-practices-sort-option', class: 'height-5 usa-select margin-0') %>
     </div>

@@ -2,8 +2,8 @@
   <label for="visn-search-<%= practice_type %>-categories" class="line-height-26">All categories</label>
   <select id="visn-search-<%= practice_type %>-categories" class="usa-select" name="visn-search-<%= practice_type %>-categories">
     <% practice_categories.each do |cat| %>
-      <option value="<%= cat %>">
-        <%= cat %>
+      <option value="<%= cat.name %>">
+        <%= cat.name %>
       </option>
     <% end %>
   </select>

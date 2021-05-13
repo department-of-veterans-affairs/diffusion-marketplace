@@ -65,7 +65,7 @@ function displaySpinner({ isNextPage }) {
   $(errorState).addClass("display-none");
   $(loadingSpinner).removeClass("display-none");
   $(loadingSpinner).addClass("display-flex");
-  $(searchNoResults).addClass("display-none");
+  $(searchNoResults).first().addClass("display-none");
   if (isNextPage) {
     $(loadMoreContainer).addClass("display-none");
     $(loadMoreBtn).addClass("display-none");
@@ -127,7 +127,7 @@ function sendAjaxRequest(data) {
       $(practiceCardList).append(result.practice_cards_html);
 
       if (result.count === 0) {
-        $(searchNoResults).removeClass('display-none');
+        $(searchNoResults).first().removeClass("display-none");
       }
 
       if (result.count <= 1) {
