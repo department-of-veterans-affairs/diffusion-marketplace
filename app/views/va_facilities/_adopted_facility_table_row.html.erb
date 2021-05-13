@@ -1,0 +1,23 @@
+<tr>
+  <% dh_status = ad.diffusion_history_status_by_facility(@va_facility) %>
+  <% if dh_status.start_time.blank? %>
+    <% start_date = "" %>
+    <% start_date_tm = "" %>
+  <% else %>
+    <% start_date = dh_status.start_time.to_date.strftime("%-d %B %Y") %>
+    <% start_date_tm = dh_status.start_time.to_date.strftime("%Y/%m/%d") %>
+  <% end %>
+  <th class="bg-gray-2 grid-col-5" scope="row" role="rowheader">
+    <a class="dm-internal-link" href="<%= practice_path(ad[:slug]) %>"><%=ad[:name]%></a>
+    <% if current_user %>
+      <%= link_to practice_favorite_path(ad, format: :js), method: :post, remote: true, 'title': "Bookmark #{ad[:name]}", 'aria-label': "Bookmark #{ad[:name]}", 'tabindex': '-1', 'aria-hidden': 'true', 'class': "dm-practice-bookmark-btn", 'id': "dm-bookmark-button-#{ad[:id]}" do %>
+        <i class="<% if current_user.favorite_practice_ids.include?(ad[:id]) %>fas fa-bookmark<% else %>far fa-bookmark<% end %> dm-favorite-icon-<%= ad[:id] %>"></i>
+      <% end %>
+    <% end %>
+    <br /> <%=ad[:summary][0...120] %><%if ad[:summary] != nil && ad[:summary].length > 120 %>...<% end %>
+  </th>
+  <% status = dh_status.status == "Completed" ? "Successful" : dh_status.status %>
+  <td class="bg-gray-2 grid-col-3"><%= status %></td>
+  <td class="bg-gray-2 grid-col-2"><%= start_date %></td>
+  <td class="bg-gray-2 grid-col-2"><%= ad.diffusion_histories.count %></td>
+</tr>

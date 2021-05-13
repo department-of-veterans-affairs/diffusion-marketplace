@@ -1,0 +1,21 @@
+<div id="practices_adopted_at_this_facility_table" class="usa-table-container--scrollable grid-col-12">
+  <table class="usa-table usa-table--borderless grid-col-12 bg-gray-2">
+    <caption></caption>
+    <thead>
+    <tr>
+      <th class="bg-gray-2" data-sortable scope="col" role="columnheader" aria-sort="descending">Practice name</th>
+      <th class="bg-gray-2"  data-sortable scope="col" role="columnheader">Status <a class="fas fa-question-circle" href="#facility_status_def_modal" aria-controls="facility_status_def_modal" data-open-modal></a>
+      <th class="bg-gray-2"  data-sortable scope="col" role="columnheader">Start date</th>
+      <th class="bg-gray-2"  data-sortable scope="col" role="columnheader">Total VA adoptions</th>
+    </tr>
+    </thead>
+    <tbody id="practices_adopted_by_facility_dyn">
+    <% @adoptions_at_facility.each do |ad| %>
+      <%= render partial: 'va_facilities/adopted_facility_table_row', locals: { ad: ad} %>
+    <% end %>
+    </tbody>
+  </table>
+  <div class="usa-sr-only usa-table__announcement-region" aria-live="polite">
+    <!-- this content will change when sort changes -->
+  </div>
+</div>

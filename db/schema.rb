@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_06_142716) do
+ActiveRecord::Schema.define(version: 2021_05_12_214347) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -956,8 +956,8 @@ ActiveRecord::Schema.define(version: 2021_04_06_142716) do
     t.string "overview_solution"
     t.string "overview_results"
     t.integer "maturity_level"
-    t.datetime "date_published"
     t.datetime "practice_pages_updated"
+    t.datetime "date_published"
     t.string "highlight_title"
     t.string "highlight_body"
     t.index ["slug"], name: "index_practices_on_slug", unique: true
@@ -1215,6 +1215,7 @@ ActiveRecord::Schema.define(version: 2021_04_06_142716) do
     t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["station_number"], name: "index_va_facilities_on_station_number", unique: true
     t.index ["visn_id"], name: "index_va_facilities_on_visn_id"
   end
 
@@ -1270,6 +1271,7 @@ ActiveRecord::Schema.define(version: 2021_04_06_142716) do
     t.bigint "visn_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_visn_liaisons_on_email", unique: true
     t.index ["visn_id"], name: "index_visn_liaisons_on_visn_id"
   end
 

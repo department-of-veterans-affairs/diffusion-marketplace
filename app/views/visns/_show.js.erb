@@ -400,11 +400,18 @@ function submitFormOnPageLoadWithCreatedPracticesAsDefault() {
     }
 }
 
+function preventComplexityModalFlickerOnPageLoad() {
+    $(document).arrive('.visn-facilities-table', { existing: true }, () => {
+        $('#facility-complexity-modal').find('.usa-modal').removeClass('display-none');
+    });
+}
+
 function execVisnSearchFunctions() {
     searchPracticesByVisn();
     submitFormOnComboBoxChange(CREATED_COMBO_BOX);
     submitFormOnComboBoxChange(ADOPTED_COMBO_BOX);
     submitFormOnRadioInputClick();
+    preventComplexityModalFlickerOnPageLoad();
 }
 
 document.addEventListener('turbolinks:load', function() {

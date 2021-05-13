@@ -86,13 +86,4 @@ class VisnsController < ApplicationController
     # use find_by! in order to throw an exception if a visn with the number param does not exist
     @visn = Visn.find_by!(number: params[:number])
   end
-
-  def get_categories_by_practices(practices, practice_categories)
-    practices.each do |p|
-      p.categories.where(is_other: false).where.not(name: 'Other').each do |c|
-        practice_categories << c.name unless practice_categories.include?(c.name)
-      end
-    end
-    practice_categories.sort_by! { |pc| pc.downcase }
-  end
 end
