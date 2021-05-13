@@ -61,11 +61,18 @@ function updateResultsBasedOnComplexitySelect() {
     });
 }
 
+function preventComplexityModalFlickerOnPageLoad() {
+    $(document).arrive('#directory_table', { existing: true }, () => {
+        $('#facility-complexity-modal').find('.usa-modal').removeClass('display-none');
+    });
+}
+
 
 function execAdoptedSearchFunctions(){
     updateResultsBasedOnFacilityComboSelect();
     updateResultsBasedOnComplexitySelect();
     updateResultsBasedOnVisnSelect();
+    preventComplexityModalFlickerOnPageLoad();
 }
 
 document.addEventListener('turbolinks:load', function() {

@@ -857,6 +857,12 @@ function trackSearchField(searchTerm) {
     }
 }
 
+function preventFiltersAccordionContentFlickerOnPageLoad() {
+    $(document).arrive('.desktop-filters-accordion-heading', { existing: true }, (el) => {
+        $(el).next().removeClass('desktop:display-none');
+    });
+}
+
 function execSearchFunctions() {
     searchPracticesPage();
     openMobileFiltersModal();
@@ -864,6 +870,7 @@ function execSearchFunctions() {
     toggleMobileOriginAccordion();
     toggleMobileAdoptingAccordion();
     closeMobileFiltersModal();
+    preventFiltersAccordionContentFlickerOnPageLoad();
 }
 
 document.addEventListener('turbolinks:load', function () {
