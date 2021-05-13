@@ -393,11 +393,11 @@ ActiveAdmin.register_page "Dashboard" do
 
         visn_search_terms = []
         get_search_term_counts_by_type('VISN practice search', visn_search_terms)
-        create_search_terms_table_by_type('VISN search', visn_search_terms, 'visn-practice-search-terms-table')
+        create_search_terms_table_by_type('VISN search', visn_search_terms, 'visn-practice-search-terms-table') if visn_search_terms.count > 0
 
         facility_search_terms = []
         get_search_term_counts_by_type('Facility practice search', facility_search_terms)
-        create_search_terms_table_by_type('Facility search', facility_search_terms, 'facility-practice-search-terms-table')
+        create_search_terms_table_by_type('Facility search', facility_search_terms, 'facility-practice-search-terms-table') if facility_search_terms.count > 0
 
         script do
           raw "$(document).ready(function(){$('tr').attr('id', '')});"
