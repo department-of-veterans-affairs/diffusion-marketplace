@@ -62,7 +62,7 @@ function updateResultsBasedOnComplexitySelect() {
 }
 
 function preventComplexityModalFlickerOnPageLoad() {
-    $(document).arrive('#directory_table', { existing: true }, () => {
+    $(document).arrive('#dm-va-facilities-directory-table', { existing: true }, () => {
         $('#facility-complexity-modal').find('.usa-modal').removeClass('display-none');
     });
 }
