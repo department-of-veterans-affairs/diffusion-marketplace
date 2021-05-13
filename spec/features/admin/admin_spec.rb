@@ -74,31 +74,31 @@ describe 'The admin dashboard', type: :feature do
 
     expect(page).to have_selector('#users-information', visible: true)
     expect(page).to have_selector('#practice-leaderboards', visible: false)
-    expect(page).to have_selector('#practice-search-terms-table', visible: false)
+    expect(page).to have_selector('#general-practice-search-terms-table', visible: false)
 
     within(:css, '.tabs.ui-tabs') do
       click_link('Practice Leaderboards')
       expect(page).to have_selector('#users-information', visible: false)
       expect(page).to have_selector('#practice-leaderboards', visible: true)
-      expect(page).to have_selector('#practice-search-terms-table', visible: false)
+      expect(page).to have_selector('#general-practice-search-terms-table', visible: false)
       expect(page).to have_css("input[value='Export as .xlsx']", visible: false)
 
       click_link('Practice Search Terms')
       expect(page).to have_selector('#users-information', visible: false)
       expect(page).to have_selector('#practice-leaderboards', visible: false)
-      expect(page).to have_selector('#practice-search-terms-table', visible: true)
+      expect(page).to have_selector('#general-practice-search-terms-table', visible: true)
       expect(page).to have_css("input[value='Export as .xlsx']", visible: false)
 
       click_link('Users Information')
       expect(page).to have_selector('#users-information', visible: true)
       expect(page).to have_selector('#practice-leaderboards', visible: false)
-      expect(page).to have_selector('#practice-search-terms-table', visible: false)
+      expect(page).to have_selector('#general-practice-search-terms-table', visible: false)
       expect(page).to have_css("input[value='Export as .xlsx']", visible: false)
 
       click_link('Metrics')
       expect(page).to have_selector('#users-information', visible: false)
       expect(page).to have_selector('#practice-leaderboards', visible: false)
-      expect(page).to have_selector('#practice-search-terms-table', visible: false)
+      expect(page).to have_selector('#general-practice-search-terms-table', visible: false)
       expect(page).to have_css("input[value='Export as .xlsx']", visible: true)
     end
   end
