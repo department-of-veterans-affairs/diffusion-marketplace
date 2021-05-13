@@ -87,12 +87,12 @@ describe 'VA facility pages', type: :feature, js: true do
     it 'should be there' do
       visit '/facilities'
       expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_css('#directory_table')
+      expect(page).to have_css('#dm-va-facilities-directory-table')
       expect(page).to have_current_path(va_facilities_path)
       expect(page).to have_content("Facilities")
       expect(page).to have_content("Looking for a full list of VISNs?")
       expect(page).to have_content("Displaying 3 results:")
-      within(:css, '#directory_table') do
+      within(:css, '#dm-va-facilities-directory-table') do
         expect(page).to have_content("Facility")
         expect(page).to have_content("State")
         expect(page).to have_content("VISN")
@@ -110,7 +110,7 @@ describe 'VA facility pages', type: :feature, js: true do
       it 'should filter by complexity type' do
         visit '/facilities'
         select "1a-High Complexity", :from => "facility_type_select"
-        section = find(:css, '#directory_table')
+        section = find(:css, '#dm-va-facilities-directory-table')
         expect(section).to have_content('1A')
         expect(section).to have_no_content('1B')
         expect(section).to have_no_content('1C')
@@ -196,7 +196,7 @@ describe 'VA facility pages', type: :feature, js: true do
 
     context 'when searching for adopted practices' do
       it 'should display default content' do
-        within(:css, '#dm-va-facilities-adoption-index') do
+        within(:css, '#dm-facility-adopted-practice-search') do
           expect(page).to have_content("Practices adopted at this facility")
           find('#facility_category_select_adoptions').click
           within(:css, '#facility_category_select_adoptions--list') do
@@ -215,7 +215,7 @@ describe 'VA facility pages', type: :feature, js: true do
       end
 
       it 'should filter by categories' do
-        within(:css, '#dm-va-facilities-adoption-index') do
+        within(:css, '#dm-facility-adopted-practice-search') do
           find('#facility_category_select_adoptions').click
           find_all('.usa-combo-box__list-option').first.click
           expect(page).to have_content('GERIVETZ')
@@ -224,7 +224,7 @@ describe 'VA facility pages', type: :feature, js: true do
       end
 
       it 'should allow search for practice origin facility and adopting facility' do
-        within(:css, '#dm-va-facilities-adoption-index') do
+        within(:css, '#dm-facility-adopted-practice-search') do
           fill_in('dm-adopted-practices-search-field', with: ' d test name')
           find('#dm-adopted-practices-search-button').click
           expect(page).to have_content('2 results:')
