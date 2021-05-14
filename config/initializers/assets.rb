@@ -38,8 +38,8 @@ Rails.application.config.assets.precompile += %w(
                                                   facilities_utilities.js
                                                   visns/visns_index_map.js
                                                   visns/_map_utilities.js
-                                                  facility_map.js
                                                   visns/maps.js
+                                                  va_facilities/map.js
                                                   va_facilities/facility_created_practice_search.js
                                                   va_facilities/facility_adopted_practice_search.js
                                               )
