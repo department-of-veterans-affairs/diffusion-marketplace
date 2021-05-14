@@ -51,7 +51,7 @@ class VaFacilitiesController < ApplicationController
     @created_practices = @pagy_created_practices[1]
 
     @created_pr_count = created_practices.count
-    @created_practices_categories = get_created_practices_categories(created_practices)
+    @created_practices_categories = get_categories_by_practices(created_practices, [])
   end
 
   # GET /facilities/:id/created_practices
@@ -104,21 +104,5 @@ class VaFacilitiesController < ApplicationController
 
   def set_va_facility
     @va_facility = VaFacility.friendly.find(params[:id])
-  end
-
-  def get_created_practices_categories(practices_array)
-    created_pr_categories =  []
-    practices_array.each do |pr|
-      categories = pr.categories
-      categories.each do |cat|
-        unless cat.is_other || cat.name === 'None' || cat.name === 'Other'
-          category = {id: cat.id, name: cat.name}
-          unless created_pr_categories.include?(category)
-            created_pr_categories.push(category)
-          end
-        end
-      end
-    end
-    return created_pr_categories.sort_by! { |k| k[:name].downcase.strip }
   end
 end
