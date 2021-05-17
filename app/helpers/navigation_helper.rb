@@ -202,7 +202,7 @@ module NavigationHelper
         empty_breadcrumbs
         add_facility_index_breadcrumb
         common_name = va_facility.common_name
-        session[:breadcrumbs] << { 'display': common_name, 'path': va_facilities_path }
+        session[:breadcrumbs] << { 'display': common_name, 'path': va_facility_path(va_facility) }
       end
     end
 
