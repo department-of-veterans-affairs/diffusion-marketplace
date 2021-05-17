@@ -1,0 +1,176 @@
+@import '../variables/colors';
+
+.visn-modal-link, .va-facility-index-link, .visn-liaison-email, .visn-va-facility-marker-modal-link {
+  text-decoration: none !important;
+  color: $dm-color-blue-50v;
+
+  &:hover {
+    color: $dm-color-blue-70v !important;
+  }
+
+  &:active {
+    color: $dm-color-blue-80v !important;
+  }
+
+  &:visited {
+    color: $dm-color-blue-50v;
+  }
+}
+
+.visn-marker-container, .visn-va-facility-marker-container {
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+#visns-index {
+  .visn-card-link {
+    text-decoration: none;
+
+    .visn-card-text {
+      border: 1px solid $dm-color-alt-lighter-grey;
+    }
+
+    .visn-name {
+      color: $dm-color-blue-50v !important;
+    }
+
+    .visn-data-ul {
+      color: $dm-color-base !important;
+    }
+
+    &:hover {
+      .visn-name {
+        text-decoration: none;
+        color: $dm-color-blue-70v !important;
+      }
+    }
+
+    &:active {
+      .visn-name {
+        color: $dm-color-blue-80v !important;
+      }
+    }
+
+    &:visited {
+      .visn-name {
+        color: $dm-color-blue-50v;
+      }
+    }
+  }
+}
+
+#visns-show {
+  .visn-liaison-info {
+    border-radius: 10px;
+  }
+
+  .usa-form {
+    max-width: 100%;
+  }
+
+  .filters-p {
+    width: 7%;
+  }
+
+  #visn-search-field, #visn-search-button {
+    height: 38px !important;
+  }
+
+  .usa-combo-box__toggle-list, .usa-combo-box__clear-input {
+    top: 1.8em;
+  }
+
+  .usa-combo-box__toggle-list {
+    right: 0.8em;
+  }
+
+  .usa-combo-box__clear-input {
+    right: 3.2em;
+  }
+
+  .usa-combo-box__input-button-separator {
+    top: 1.7em;
+    right: 3.35em;
+  }
+
+  .usa-combo-box__input {
+    margin-top: 0 !important;
+
+    &::placeholder {
+      color: $dm-color-black !important;
+    }
+  }
+
+  .usa-combo-box__list {
+    width: calc(100% - 24px);
+  }
+
+  hr {
+    border: none;
+    height: 2px;
+    background: #dcdee0;
+  }
+
+  mark {
+    background: $dm-color-gold-20v;
+    font-weight: bold;
+  }
+
+  .button-box {
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+  }
+
+  .va-facilities-header {
+    margin-top: 68px;
+  }
+
+  .usa-table {
+    th, td {
+      background-color: $dm-color-gray-2 !important;
+    }
+
+    tr:first-of-type {
+      th {
+        border-bottom: 0 !important;
+        button {
+          position: absolute;
+        }
+      }
+
+      th:first-of-type {
+        button {
+          left: 7.4em;
+        }
+      }
+
+      th:nth-of-type(2) {
+        button {
+          left: 8em;
+        }
+      }
+
+      th:nth-of-type(3) {
+        button {
+          left: 4.9em;
+        }
+      }
+
+      th:nth-of-type(4) {
+        button {
+          left: 5.1em;
+        }
+      }
+    }
+  }
+
+  .fa-question-circle {
+    color: $dm-color-base !important;
+    text-decoration: none !important;
+    margin-left: -3px;
+    padding: 4px;
+
+    &:visited {
+      text-decoration: none !important;
+    }
+  }
+}

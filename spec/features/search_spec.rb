@@ -426,7 +426,7 @@ describe 'Search', type: :feature do
         expect(all('h3.dm-practice-title')[5].text).to eq(@practice12.name)
 
         # choose 'most adoptions' option
-        select('Sort by most adoptions', from: 'search_sort_option')
+        select('Sort by most adopted practices', from: 'search_sort_option')
         expect(all('h3.dm-practice-title').first.text).to eq(@practice.name)
         expect(all('h3.dm-practice-title')[1].text).to eq(@practice3.name)
         expect(all('h3.dm-practice-title')[2].text).to eq(@practice6.name)
@@ -547,9 +547,9 @@ describe 'Search', type: :feature do
 
       # Make sure the overlay is working properly
       click_button('Filters')
-      expect(page).to have_selector('#no-query-p', visible: false)
+      expect(page).to have_selector('.no-query-p', visible: false)
       find('#close_filters_modal').click
-      expect(page).to have_selector('#no-query-p', visible: true)
+      expect(page).to have_selector('.no-query-p', visible: true)
 
       click_button('Filters')
       click_button('Originating facility')

@@ -28,6 +28,9 @@ namespace :dm do
     Rake::Task['documentation:port_publications_to_practice_resources'].execute
     Rake::Task['risk_and_mitigation:remove_unpaired_risks_and_mitigation'].execute
     Rake::Task['practice_editors:add_practice_owners_to_practice_editors'].execute
+    Rake::Task['visns:create_visns_and_transfer_data'].execute
+    Rake::Task['va_facilities:create_va_facilities_and_transfer_data'].execute
+    Rake::Task['visns:create_visn_liaisons_and_transfer_data'].execute
   end
 
   # rails dm:reset_up

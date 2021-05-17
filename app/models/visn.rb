@@ -1,0 +1,40 @@
+class Visn < ApplicationRecord
+  has_many :va_facilities, dependent: :destroy
+  has_many :visn_liaisons, dependent: :destroy
+
+  before_save :clear_visn_cache_on_save
+  after_save :reset_visn_cache
+
+  attr_accessor :reset_cached_visns
+
+  scope :order_by_number, -> { order('number') }
+
+  # Add a custom friendly URL that uses the visn number and not the id
+  def to_param
+    number.to_s
+  end
+
+  def clear_visn_cache
+    Rails.cache.delete('visns')
+  end
+
+  def reset_visn_cache
+    clear_visn_cache if self.reset_cached_visns
+  end
+
+  def clear_visn_cache_on_save
+    if self.changed?
+      self.reset_cached_visns = true
+    end
+  end
+
+  def self.cached_visns
+    Rails.cache.fetch('visns') do
+      Visn.all
+    end
+  end
+
+  def get_va_facilities
+    VaFacility.cached_va_facilities.where(visn: self)
+  end
+end

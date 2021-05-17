@@ -1,0 +1,10 @@
+<div class="usa-combo-box grid-col-4 practice-<%= practice_type %>-categories-combo-box" data-placeholder="- Select or start typing -">
+  <label for="visn-search-<%= practice_type %>-categories" class="line-height-26">All categories</label>
+  <select id="visn-search-<%= practice_type %>-categories" class="usa-select" name="visn-search-<%= practice_type %>-categories">
+    <% practice_categories.each do |cat| %>
+      <option value="<%= cat.name %>">
+        <%= cat.name %>
+      </option>
+    <% end %>
+  </select>
+</div>

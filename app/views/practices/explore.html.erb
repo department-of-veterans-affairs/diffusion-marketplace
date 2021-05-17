@@ -1,5 +1,4 @@
 <% provide :head_tags do %>
-  <%= javascript_include_tag '_practice_utilities', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_explore', 'data-turbolinks-track': 'reload' %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     <%= render partial: 'explore', formats: [:js] %>
@@ -10,7 +9,7 @@
   sort_options = [
     ['- Sort by -', nil, selected: false, disabled: true, class: 'usa-select'],
     ['Sort by A to Z', 'a_to_z', class: 'usa-select'],
-    ['Sort by most adoptions', 'adoptions', class: 'usa-select'],
+    ['Sort by most adopted practices', 'adoptions', class: 'usa-select'],
     ['Sort by most recently added', 'added', class: 'usa-select']
   ]
 %>

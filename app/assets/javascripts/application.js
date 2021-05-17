@@ -54,3 +54,5 @@
 //= require autoResize
 //= require showMoreItems.js
 //= require local-time
+//= require visns/visn_infowindow
+//= require visns/visn_va_facility_infowindow

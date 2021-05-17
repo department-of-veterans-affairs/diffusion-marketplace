@@ -300,61 +300,480 @@
   "visns":
   [
     {
-      "id": 1, "number": "VISN-1"
+      "id": 1,
+      "number": "VISN-1",
+      "name": "VA New England Healthcare System",
+      "street_address": "200 Springs Road, Building 61",
+      "city": "Bedford",
+      "state": "MA",
+      "zip_code": "01730",
+      "latitude": "42.507380",
+      "longitude": "-71.275534",
+      "phone_number": "781-687-4821",
+      "liaisons": [
+        {
+          "id": 1,
+          "first_name": "Sharon",
+          "last_name": "Croteau",
+          "email": "sharon.croteau2@va.gov",
+          "primary": true
+        },
+        {
+          "id": 2,
+          "first_name": "Lisa",
+          "last_name": "Doyon",
+          "email": "lisa.doyon@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
-      "id": 2, "number": "VISN-2"
+      "id": 2,
+      "number": "VISN-2",
+      "name": "New York/New Jersey VA Health Care Network",
+      "street_address": "130 West Kingsbridge Road, Building 16",
+      "city": "Bronx",
+      "state": "NY",
+      "zip_code": "10468",
+      "latitude": "40.867622",
+      "longitude": "-73.906372",
+      "phone_number": "718-741-4134",
+      "liaisons": [
+        {
+          "id": 3,
+          "first_name": "Cranston",
+          "last_name": "Darris",
+          "email": "cranston.darris@va.gov",
+          "primary": true
+        },
+        {
+          "id": 4,
+          "first_name": "Linda",
+          "last_name": "Mock",
+          "email": "linda.mock@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
-      "id": 3, "number": "VISN-4"
+      "id": 3,
+      "number": "VISN-4",
+      "name": "VA Healthcare - VISN 4",
+      "street_address": "1010 Delafield Road",
+      "city": "Pittsburgh",
+      "state": "PA",
+      "zip_code": "15215",
+      "latitude": "40.494436",
+      "longitude": "-79.888479",
+      "phone_number": "412-822-3316",
+      "liaisons": [
+        {
+          "id": 5,
+          "first_name": "Michael",
+          "last_name": "Ricci",
+          "email": "michael.ricci2@va.gov",
+          "primary": true
+        },
+        {
+          "id": 6,
+          "first_name": "Shannon",
+          "last_name": "Reichel",
+          "email": "shannon.reichel@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
-      "id": 4, "number": "VISN-5"
+      "id": 4,
+      "number": "VISN-5",
+      "name": "VA Capitol Health Care Network",
+      "street_address": "849 International Drive, Suite 275",
+      "city": "Linthicum",
+      "state": "MD",
+      "zip_code": "21090",
+      "latitude": "39.205863",
+      "longitude": "-76.672969",
+      "phone_number": "410-691-1131",
+      "liaisons": [
+        {
+          "id": 7,
+          "first_name": "Ivy",
+          "last_name": "Pacis",
+          "email": "ivy.pacis@va.gov",
+          "primary": true
+        },
+        {
+          "id": 8,
+          "first_name": "Michael",
+          "last_name": "Towstopiat",
+          "email": "michael.towstopiat@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
-      "id": 5, "number": "VISN-6"
+      "id": 5,
+      "number": "VISN-6",
+      "name": "VA Mid-Atlantic Health Care Network",
+      "street_address": "3518 Westgate Drive",
+      "city": "Durham",
+      "state": "NC",
+      "zip_code": "27707",
+      "latitude": "35.963796",
+      "longitude": "-78.960694",
+      "phone_number": "919-956-5541",
+      "liaisons": [
+        {
+          "id": 9,
+          "first_name": "Catherine",
+          "last_name": "McCrimmon",
+          "email": "catherine.mccrimmon@va.gov",
+          "primary": true
+        },
+        {
+          "id": 10,
+          "first_name": "Matt",
+          "last_name": "Grabner",
+          "email": "matthew.grabner@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
-      "id": 6, "number": "VISN-7"
+      "id": 6,
+      "number": "VISN-7",
+      "name": "VA Southeast Network",
+      "street_address": "3700 Crestwood Parkway, Suite 500",
+      "city": "Duluth",
+      "state": "GA",
+      "zip_code": "30096",
+      "latitude": "33.945946",
+      "longitude": "-84.128073",
+      "phone_number": "678-924-5700",
+      "liaisons": [
+        {
+          "id": 11,
+          "first_name": "Janelle",
+          "last_name": "Seenath",
+          "email": "janelle.seenath@va.gov",
+          "primary": true
+        },
+        {
+          "id": 12,
+          "first_name": "Michael",
+          "last_name": "Parrinello",
+          "email": "michael.parrinello@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
-      "id": 7, "number": "VISN-8"
+      "id": 7,
+      "number": "VISN-8",
+      "name": "VA Sunshine Healthcare Network",
+      "street_address": "140 Fountain Parkway, Suite 600",
+      "city": "St. Petersburg",
+      "state": "FL",
+      "zip_code": "33716",
+      "latitude": "27.892280",
+      "longitude": "-82.656235",
+      "phone_number": "727-575-8069",
+      "liaisons": [
+        {
+          "id": 13,
+          "first_name": "Ashley",
+          "last_name": "Benedict",
+          "email": "ashley.benedict@va.gov",
+          "primary": true
+        },
+        {
+          "id": 14,
+          "first_name": "Rebecca",
+          "last_name": "Tiffault",
+          "email": "rebecca.tiffault@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
-      "id": 8, "number": "VISN-9"
+      "id": 8,
+      "number": "VISN-9",
+      "name": "VA MidSouth Healthcare Network",
+      "street_address": "1801 West End Avenue, Suite 600",
+      "city": "Nashville",
+      "state": "TN",
+      "zip_code": "37203",
+      "latitude": "36.152716",
+      "longitude": "-86.796089",
+      "phone_number": "615-695-2200",
+      "liaisons": [
+        {
+          "id": 15,
+          "first_name": "Lori",
+          "last_name": "Hagen",
+          "email": "lori.hagen@va.gov",
+          "primary": true
+        },
+        {
+          "id": 16,
+          "first_name": "Bonnie",
+          "last_name": "Haupt",
+          "email": "bonnie.haupt@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
-      "id": 9, "number": "VISN-10"
+      "id": 9,
+      "number": "VISN-10",
+      "name": "VA Healthcare System",
+      "street_address": "11500 Northlake Drive, Suite 200",
+      "city": "Cincinnati",
+      "state": "OH",
+      "zip_code": "45249",
+      "latitude": "39.275373",
+      "longitude": "-84.347703",
+      "phone_number": "513-247-4610",
+      "liaisons": [
+        {
+          "id": 17,
+          "first_name": "James",
+          "last_name": "Dusenberry",
+          "email": "james.dusenberry@va.gov",
+          "primary": true
+        },
+        {
+          "id": 18,
+          "first_name": "Lori",
+          "last_name": "Deleeuw",
+          "email": "lori.deleeuw@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
-      "id": 10, "number": "VISN-12"
+      "id": 10,
+      "number": "VISN-12",
+      "name": "VA Great Lakes Health Care System",
+      "street_address": "Four Westbrook Corporate Tower, 11301 West Cermak Road, Suite 810",
+      "city": "Westchester",
+      "state": "IL",
+      "zip_code": "60154",
+      "latitude": "41.846910",
+      "longitude": "-87.905130",
+      "phone_number": "708-492-3900",
+      "liaisons": [
+        {
+          "id": 19,
+          "first_name": "Kelly",
+          "last_name": "Mikulecky",
+          "email": "kelly.mikulecky@va.gov",
+          "primary": true
+        },
+        {
+          "id": 20,
+          "first_name": "Rhonda",
+          "last_name": "Stark",
+          "email": "rhonda.stark@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
-      "id": 11, "number": "VISN-15"
+      "id": 11,
+      "number": "VISN-15",
+      "name": "VA Heartland Network",
+      "street_address": "1201 Walnut Street, Suite 800",
+      "city": "Kansas City",
+      "state": "MO",
+      "zip_code": "64106",
+      "latitude": "39.099796",
+      "longitude": "-94.581732",
+      "phone_number": "816-701-3002",
+      "liaisons": [
+        {
+          "id": 21,
+          "first_name": "Robert",
+          "last_name": "Libberton",
+          "email": "robert.libberton@va.gov",
+          "primary": true
+        }
+      ]
     },
     {
-      "id": 12, "number": "VISN-16"
+      "id": 12,
+      "number": "VISN-16",
+      "name": "South Central VA Health Care Network",
+      "street_address": "715 South Pear Orchard Road, Plaza 1",
+      "city": "Ridgeland",
+      "state": "MS",
+      "zip_code": "39157",
+      "latitude": "32.405493",
+      "longitude": "-90.125014",
+      "phone_number": "601-206-6900",
+      "liaisons": [
+        {
+          "id": 22,
+          "first_name": "Melody",
+          "last_name": "Link",
+          "email": "melody.link@va.gov",
+          "primary": true
+        },
+        {
+          "id": 23,
+          "first_name": "Denarieka",
+          "last_name": "Gaines",
+          "email": "denarieka.gaines@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
-      "id": 13, "number": "VISN-17"
+      "id": 13,
+      "number": "VISN-17",
+      "name": "VA Heart of Texas Health Care Network",
+      "street_address": "2301 East Lamar Boulevard, Suite 650",
+      "city": "Arlington",
+      "state": "TX",
+      "zip_code": "76006",
+      "latitude": "32.762672",
+      "longitude": "-97.068927",
+      "phone_number": "817-652-1111",
+      "liaisons": [
+        {
+          "id": 24,
+          "first_name": "Daren",
+          "last_name": "Cortez",
+          "email": "daren.cortez@va.gov",
+          "primary": true
+        }
+      ]
     },
     {
-      "id": 14, "number": "VISN-18"
+      "id": 14,
+      "number": "VISN-19",
+      "name": "Rocky Mountain Network",
+      "street_address": "4100 East Mississippi Avenue, Suite 1100",
+      "city": "Glendale",
+      "state": "CO",
+      "zip_code": "80246",
+      "latitude": "39.696223",
+      "longitude": "-104.938850",
+      "phone_number": "303-202-8165",
+      "liaisons": [
+        {
+          "id": 25,
+          "first_name": "Erica",
+          "last_name": "Deveau",
+          "email": "erica.deveau2@va.gov",
+          "primary": true
+        },
+        {
+          "id": 26,
+          "first_name": "Kari",
+          "last_name": "Campiotti",
+          "email": "kari.campiotti@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
-      "id": 15, "number": "VISN-19"
+      "id": 15,
+      "number": "VISN-20",
+      "name": "Northwest Network",
+      "street_address": "1601 East 4th Plain Boulevard",
+      "city": "Vancouver",
+      "state": "WA",
+      "zip_code": "98661",
+      "latitude": "45.639180",
+      "longitude": "-122.658137",
+      "phone_number": "360-619-5925",
+      "liaisons": [
+        {
+          "id": 27,
+          "first_name": "David",
+          "last_name": "Terrini",
+          "email": "david.terrini@va.gov",
+          "primary": true
+        }
+      ]
     },
     {
-      "id": 16, "number": "VISN-20"
+      "id": 16,
+      "number": "VISN-21",
+      "name": "Sierra Pacific Network",
+      "street_address": "391 Taylor Boulevard, Suite 200",
+      "city": "Pleasant Hill",
+      "state": "CA",
+      "zip_code": "94523",
+      "latitude": "37.960893",
+      "longitude": "-122.070705",
+      "phone_number": "916-923-4530",
+      "liaisons": [
+        {
+          "id": 28,
+          "first_name": "Katie",
+          "last_name": "Mosby",
+          "email": "katie.mosby@va.gov",
+          "primary": true
+        },
+        {
+          "id": 29,
+          "first_name": "Michael",
+          "last_name": "McCann",
+          "email": "michael.mccann@va.gov",
+          "primary": false
+        }
+      ]
     },
     {
-      "id": 17, "number": "VISN-21"
+      "id": 17,
+      "number": "VISN-22",
+      "name": "Desert Pacific Healthcare Network",
+      "street_address": "300 Oceangate, Suite 700",
+      "city": "Long Beach",
+      "state": "CA",
+      "zip_code": "90802",
+      "latitude": "33.766677",
+      "longitude": "-118.200375",
+      "phone_number": "562-826-5963",
+      "liaisons": [
+        {
+          "id": 30,
+          "first_name": "Scott",
+          "last_name": "McRoberts",
+          "email": "scott.mcroberts@va.gov",
+          "primary": true
+        }
+      ]
     },
     {
-      "id": 18, "number": "VISN-22"
-    },
-    {
-      "id": 19, "number": "VISN-23"
+      "id": 18,
+      "number": "VISN-23",
+      "name": "VA Midwest Health Care Network",
+      "street_address": "2805 Dodd Road, Suite 250",
+      "city": "Eagan",
+      "state": "MN",
+      "zip_code": "55121",
+      "latitude": "44.855145",
+      "longitude": "-93.130460",
+      "phone_number": "651-405-5600",
+      "liaisons": [
+        {
+          "id": 31,
+          "first_name": "Carrie",
+          "last_name": "Henderson",
+          "email": "carrie.henderson1@va.gov",
+          "primary": true
+        },
+        {
+          "id": 32,
+          "first_name": "Michelle",
+          "last_name": "Fleming",
+          "email": "michelle.fleming@va.gov",
+          "primary": false
+        }
+      ]
     }
   ]
 }

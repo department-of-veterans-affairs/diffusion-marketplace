@@ -1,0 +1,17 @@
+.search-no-results {
+  width: 261px !important;
+  height: 40vh;
+  margin-top: 40px;
+
+  .no-query-p, .no-query-results-p {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  i {
+    font-size: 11.25em;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

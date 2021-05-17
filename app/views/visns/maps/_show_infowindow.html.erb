@@ -1,0 +1,9 @@
+<div id="visn-va-facility-<%= va_facility.id %>-marker-modal" class="font-sans-sm padding-2">
+  <%= link_to "#{facility_name_with_common_name(va_facility.official_station_name, va_facility.common_name)}", va_facility_path(va_facility), target: '_blank', class: 'visn-va-facility-marker-modal-link display-block text-bold margin-bottom-2' %>
+  <%
+    practices_created_count = va_facility.practices_created_count
+    practices_adopted_count = va_facility.practices_adopted_count
+  %>
+  <p class="margin-bottom-2 visn-va-facility-modal-practices-created-count"><%= practices_created_count %> practice<%= 's' if practices_created_count != 1 %> created here</p>
+  <p class="visn-va-facility-modal-practices-adopted-count"><%= practices_adopted_count %> practice<%= 's' if practices_adopted_count != 1 %> adopted here</p>
+</div>

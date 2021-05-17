@@ -98,6 +98,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
         fill_in('dm-navbar-search-field', with: 'test')
         find('#dm-navbar-search-button').click
       end
+
       expect(page).to have_content('1 result')
       expect(page).to have_content('A public practice')
       expect(page).to have_current_path('/search?query=test')

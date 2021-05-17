@@ -1,7 +1,7 @@
 <%= render 'shared/usa_banner' %>
 <!-- source: https://designsystem.digital.gov/components/header/#extended -->
 <div class="usa-overlay"></div>
-<header id="dm-nav-header" class="usa-header usa-header--extended">
+<header id="dm-nav-header" class="usa-header usa-header--extended bg-white">
   <div class="usa-navbar">
     <div class="usa-logo" id="extended-logo">
       <a href="/" title="Home" aria-label="Home"><span class="text-bold">VA</span> | Diffusion Marketplace</a>
@@ -24,21 +24,16 @@
             <span>Vaccine Acceptance</span>
           </a>
         </li>
-        <!-- WIP: UNCOMMENT WHEN ADDING VISN & VAMC FEATURE WORK
         <li class="usa-nav__primary-item">
-          <button class="usa-accordion__button usa-nav__link" aria-expanded="false" aria-controls="dm-navbar-directories">
-            <span>Directories</span>
-          </button>
-          <ul id="dm-navbar-directories" class="usa-nav__submenu">
-            <li class="usa-nav__submenu-item">
-              <a href="#" class="">VISNs</a>
-            </li>
-            <li class="usa-nav__submenu-item">
-              <a href="#" class="">VA Medical Centers</a>
-            </li>
-          </ul>
+          <a class="usa-nav__link <%= 'usa-current' if request.fullpath == '/visns' %>" href="<%= visns_path %>">
+            <span>VISNs</span>
+          </a>
         </li>
-        -->
+        <li class="usa-nav__primary-item">
+          <a class="usa-nav__link <%= 'usa-current' if request.fullpath == '/facilities' %>" href="<%= va_facilities_path %>">
+            <span>Facilities</span>
+          </a>
+        </li>
         <li class="usa-nav__primary-item">
           <a class="usa-nav__link <%= 'usa-current' if request.fullpath == '/diffusion-map' %>" href="/diffusion-map">
             <span>Diffusion map</span>

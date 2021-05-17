@@ -190,11 +190,17 @@ class Practice < ApplicationRecord
   scope :published,   -> { where(published: true) }
   scope :unpublished,  -> { where(published: false) }
   scope :get_practice_owner_emails, -> {where.not(user_id: nil)}
-  scope :get_with_categories_and_adoptions_ct, -> { left_outer_joins(:diffusion_histories).select("practices.*, COUNT(diffusion_histories.*) as adoption_count").left_outer_joins(:categories).select("practices.*, categories.id as category_ids, categories.name as category_names").where(practices:{ approved: true, published: true, enabled: true }).group("practices.id, categories.id").uniq }
+  scope :get_with_category_names, -> { left_outer_joins(:categories).select("practices.*, categories.id as category_ids, categories.name as category_names") }
+  scope :get_with_adoptions_ct, -> { left_outer_joins(:diffusion_histories).select("practices.*, COUNT(diffusion_histories.*) as adoption_count") }
+  scope :with_categories_and_adoptions_ct, -> { published_enabled_approved.get_with_adoptions_ct.get_with_category_names }
+  scope :get_with_categories_and_adoptions_ct, -> { with_categories_and_adoptions_ct.group("practices.id, categories.id").uniq }
   scope :sort_a_to_z, -> { order(Arel.sql("lower(practices.name) ASC")) }
-  scope :sort_adoptions_ct, -> { order(Arel.sql("adoption_count DESC, lower(practices.name) ASC")) }
+  scope :sort_adoptions_ct, -> { order(Arel.sql("COUNT(diffusion_histories) DESC, lower(practices.name) ASC")) }
   scope :sort_added, -> { order(Arel.sql("practices.created_at DESC")) }
   scope :filter_by_category_ids, -> (cat_ids) { where('category_practices.category_id IN (?)', cat_ids)} # cat_ids should be a id number or an array of id numbers
+  scope :published_enabled_approved,   -> { where(published: true, enabled: true, approved: true) }
+  scope :get_by_adopted_facility, -> (station_number) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {facility_id: station_number}) }
+  scope :get_by_created_facility, -> (station_number) { joins(:practice_origin_facilities).where(practice_origin_facilities: { facility_id: station_number }) }
 
   belongs_to :user, optional: true
 
@@ -353,5 +359,65 @@ class Practice < ApplicationRecord
 
   def create_practice_editor_for_practice
     PracticeEditor.create_and_invite(self, self.user) unless is_user_an_editor_for_practice(self, self.user)
+  end
+
+  def self.search_practices(search_term = nil, sort = 'a_to_z', categories = nil)
+    query = with_categories_and_adoptions_ct.left_outer_joins(:practice_origin_facilities)
+    if search_term
+      search = get_query_for_search_term(search_term)
+      query = query.where(search[:query], search[:params])
+    end
+
+    if categories
+      query = query.filter_by_category_ids(categories)
+    end
+
+    if sort === 'a_to_z'
+      query = query.sort_a_to_z
+    elsif sort === 'adoptions'
+      query = query.sort_adoptions_ct
+    elsif sort === 'added'
+      query = query.sort_added
+    end
+    query.group("practices.id, categories.id, practice_origin_facilities.id").uniq
+  end
+
+  def self.get_facility_created_practices(station_number, search_term = nil, sort = 'a_to_z', categories = nil)
+    practices = search_practices(search_term, sort, categories)
+    practices.select { |pr| pr.practice_origin_facilities.pluck(:facility_id).include?(station_number)}
+  end
+
+  def self.get_facility_adopted_practices(station_number, search_term = nil, categories = nil)
+    practices = search_practices(search_term, 'a_to_z', categories)
+    practices.select { |pr| pr.diffusion_histories.pluck(:facility_id).include?(station_number)}
+  end
+
+  def self.get_query_for_search_term(search_term)
+    search_term = search_term.lstrip.rstrip
+    sanitized_search_term = ActiveRecord::Base.sanitize_sql_like(search_term)
+    search_query = "practices.name ILIKE :search OR practices.tagline ILIKE :search OR practices.description ILIKE :search OR practices.summary ILIKE :search OR practices.overview_problem ILIKE :search OR practices.overview_solution ILIKE :search OR practices.overview_results ILIKE :search OR categories.name ILIKE :search OR array_to_string(categories.related_terms, ' ') ILIKE :search"
+    search_params = { search: "%#{sanitized_search_term}%" }
+
+    maturity_levels = { emerging: 0, replicate: 1, scale: 2 }
+    mat_level = search_term.split.map {|st| maturity_levels[st.to_sym] || ''}
+    mat_level.reject!(&:blank?)
+
+    if mat_level.length > 0
+      search_query = search_query + " OR (practices.maturity_level = :maturity_level)"
+      search_params[:maturity_level] = mat_level
+    end
+
+    va_fac_matches = VaFacility.where("official_station_name ILIKE :search OR common_name ILIKE :search", search: "%#{sanitized_search_term}%").select("station_number")
+
+    if va_fac_matches.length > 0
+      facilities = va_fac_matches.map {|st| st.station_number}
+      search_query = search_query + " OR diffusion_histories.facility_id IN (:facilities) OR practice_origin_facilities.facility_id IN (:facilities)"
+      search_params[:facilities] = facilities
+    end
+    return { query: search_query, params: search_params }
+  end
+
+  def diffusion_history_status_by_facility(facility)
+    diffusion_histories.find_by(facility_id: facility.station_number).diffusion_history_statuses.first
   end
 end

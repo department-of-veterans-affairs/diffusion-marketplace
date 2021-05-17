@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_06_142716) do
+ActiveRecord::Schema.define(version: 2021_05_12_214347) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -956,8 +956,8 @@ ActiveRecord::Schema.define(version: 2021_04_06_142716) do
     t.string "overview_solution"
     t.string "overview_results"
     t.integer "maturity_level"
-    t.datetime "date_published"
     t.datetime "practice_pages_updated"
+    t.datetime "date_published"
     t.string "highlight_title"
     t.string "highlight_body"
     t.index ["slug"], name: "index_practices_on_slug", unique: true
@@ -1156,6 +1156,69 @@ ActiveRecord::Schema.define(version: 2021_04_06_142716) do
     t.datetime "avatar_updated_at"
   end
 
+  create_table "va_facilities", force: :cascade do |t|
+    t.bigint "visn_id"
+    t.string "sta3n"
+    t.string "station_number"
+    t.string "official_station_name"
+    t.string "common_name"
+    t.string "classification"
+    t.string "classification_status"
+    t.string "mobile"
+    t.string "parent_station_number"
+    t.string "official_parent_station_name"
+    t.string "fy17_parent_station_complexity_level"
+    t.string "operational_status"
+    t.string "ownership_type"
+    t.string "delivery_mechanism"
+    t.string "staffing_type"
+    t.string "va_secretary_10n_approved_date"
+    t.string "planned_activation_date"
+    t.date "station_number_suffix_reservation_effective_date"
+    t.string "operational_date"
+    t.string "date_of_first_workload"
+    t.string "points_of_service"
+    t.string "street_address"
+    t.string "street_address_city"
+    t.string "street_address_state"
+    t.string "street_address_zip_code"
+    t.string "street_address_zip_code_extension"
+    t.string "county_street_address"
+    t.string "mailing_address"
+    t.string "mailing_address_city"
+    t.string "mailing_address_state"
+    t.string "mailing_address_zip_code"
+    t.string "mailing_address_zip_code_extension"
+    t.string "county_mailing_address"
+    t.string "station_phone_number"
+    t.string "station_main_fax_number"
+    t.string "after_hours_phone_number"
+    t.string "pharmacy_phone_number"
+    t.string "enrollment_coordinator_phone_number"
+    t.string "patient_advocate_phone_number"
+    t.decimal "latitude", precision: 11, scale: 8
+    t.decimal "longitude", precision: 11, scale: 8
+    t.string "congressional_district"
+    t.string "market"
+    t.string "sub_market"
+    t.string "sector"
+    t.string "fips_code"
+    t.string "rurality"
+    t.string "monday"
+    t.string "tuesday"
+    t.string "wednesday"
+    t.string "thursday"
+    t.string "friday"
+    t.string "saturday"
+    t.string "sunday"
+    t.text "hours_note"
+    t.string "slug"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["station_number"], name: "index_va_facilities_on_station_number", unique: true
+    t.index ["visn_id"], name: "index_va_facilities_on_visn_id"
+  end
+
   create_table "va_secretary_priorities", force: :cascade do |t|
     t.string "name"
     t.string "short_name"
@@ -1198,6 +1261,33 @@ ActiveRecord::Schema.define(version: 2021_04_06_142716) do
     t.integer "attachment_file_size"
     t.datetime "attachment_updated_at"
     t.index ["practice_id"], name: "index_video_files_on_practice_id"
+  end
+
+  create_table "visn_liaisons", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "email"
+    t.boolean "primary", default: false
+    t.bigint "visn_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_visn_liaisons_on_email", unique: true
+    t.index ["visn_id"], name: "index_visn_liaisons_on_visn_id"
+  end
+
+  create_table "visns", force: :cascade do |t|
+    t.string "name"
+    t.integer "number"
+    t.string "street_address"
+    t.string "city"
+    t.string "state"
+    t.string "zip_code"
+    t.decimal "latitude", precision: 11, scale: 8
+    t.decimal "longitude", precision: 11, scale: 8
+    t.string "phone_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["number"], name: "index_visns_on_number", unique: true
   end
 
   create_table "votes", id: :serial, force: :cascade do |t|
@@ -1297,7 +1387,9 @@ ActiveRecord::Schema.define(version: 2021_04_06_142716) do
   add_foreign_key "user_practices", "practices"
   add_foreign_key "va_employee_practices", "practices"
   add_foreign_key "va_employee_practices", "va_employees"
+  add_foreign_key "va_facilities", "visns"
   add_foreign_key "va_secretary_priority_practices", "practices"
   add_foreign_key "va_secretary_priority_practices", "va_secretary_priorities"
   add_foreign_key "video_files", "practices"
+  add_foreign_key "visn_liaisons", "visns"
 end
