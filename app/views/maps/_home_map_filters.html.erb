@@ -92,14 +92,15 @@
       </div>
 
       <div class="margin-bottom-2">
-        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0">Facility complexity</h4>
+        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0 display-inline-block">Facility complexity</h4>
+        <%= render partial: 'shared/facility_complexity_modal', locals: { hide_modal_on_initial_load: false } %>
         <% complexity_levels = @vamc_facilities.map {|f| f["FY17ParentStationComplexityLevel"]}.uniq.sort %>
         <fieldset>
           <legend class="usa-sr-only">Facility Complexity Levels</legend>
           <% complexity_levels.each do |c| %>
             <input id="<%= c.gsub(' ', '').underscore %>" name="facility_complexities" type="checkbox" value="<%= c %>" class="usa-checkbox__input">
             <label for="<%= c.gsub(' ', '').underscore %>" class="usa-checkbox__label">
-              <%= c %>
+              <%= c.split('-').shift.upcase %> (<%= c.include?('High') ? 'High' : c.delete('-').split(' ')[1] %> complexity)
             </label>
           <% end %>
         </fieldset>
