@@ -7,6 +7,12 @@ class VaFacility < ApplicationRecord
 
   attr_accessor :reset_cached_va_facilities
 
+  scope :get_by_visn, -> (visn) { cached_va_facilities.where(visn: visn) }
+  scope :get_classification_counts, -> (facility_type) { where(classification: facility_type).size }
+  scope :get_classifications, -> { pluck(:classification).uniq }
+  scope :get_station_numbers, -> { pluck(:station_number) }
+  scope :get_locations, -> { order(:street_address_state).pluck(:street_address_state).uniq }
+
   def self.get_types
     select(:fy17_parent_station_complexity_level).distinct.order(:fy17_parent_station_complexity_level)
   end
