@@ -2,27 +2,22 @@ module VisnsHelper
   include StatesHelper
 
   def get_adopted_practices_by_visn(practices, visn, visn_adopted_practices)
+    visn_facilities = VaFacility.get_by_visn(visn).get_station_numbers
     practices.each do |p|
-      visn.get_va_facilities.each do |vaf|
-        p.diffusion_histories.each do |dh|
-          visn_adopted_practices << p if dh.facility_id === vaf.station_number.to_s && !visn_adopted_practices.include?(p)
-        end
-      end
+      diffusion_history_facilities = p.diffusion_histories.pluck(:facility_id)
+      visn_adopted_practices << p if (diffusion_history_facilities & visn_facilities).present?
     end
     visn_adopted_practices
   end
 
   def get_created_practices_by_visn(practices, visn, visn_created_practices)
+    visn_facilities = VaFacility.get_by_visn(visn).get_station_numbers
     practices.each do |p|
-      origin_facilities = p.practice_origin_facilities
+      origin_facilities = p.practice_origin_facilities.pluck(:facility_id)
       initiating_facility = p.initiating_facility
       # add practices that have practice_origin_facilities
       if p.facility? && origin_facilities.any?
-        visn.get_va_facilities.each do |vaf|
-          origin_facilities.each do |of|
-            visn_created_practices << p if of.facility_id === vaf.station_number.to_s && !visn_created_practices.include?(p)
-          end
-        end
+        visn_created_practices << p if (origin_facilities & visn_facilities).present?
         # add practices that have an initiating_facility
       elsif p.visn? && initiating_facility.present?
         visn_created_practices << p if initiating_facility === visn.id.to_s && !visn_created_practices.include?(p)
@@ -32,18 +27,9 @@ module VisnsHelper
   end
 
   def get_facility_locations_by_visn(visn)
-    visn_facility_locations = []
-
-    # add facility locations to empty array
-    visn.get_va_facilities.each do |vaf|
-      facility_location = vaf.street_address_state
-
-      visn_facility_locations << facility_location unless visn_facility_locations.include?(facility_location)
-    end
+    sorted_facility_locations = VaFacility.get_by_visn(visn).get_locations
 
     location_list = ''
-    # sort the locations alphabetically
-    sorted_facility_locations = visn_facility_locations.sort
 
     # Add other US territories to us_states helper method array
     va_facility_locations = us_states.concat(
@@ -74,29 +60,15 @@ module VisnsHelper
     location_list
   end
 
-  def facility_type_count(facility_type_array, facility_type)
-    facility_type_array.select { |type| type === facility_type }.count
-  end
-
   def facility_type_counts_by_visn(visn)
-    visn_facility_types_arr = []
-
-    # add facility types to empty array
-    visn.get_va_facilities.each do |vaf|
-      facility_type = vaf.classification
-
-      visn_facility_types_arr << facility_type
-    end
-
-    # return the counts for each facility type
     [
-      facility_type_count(visn_facility_types_arr, 'Health Care Center (HCC)'),
-      facility_type_count(visn_facility_types_arr, 'Multi-Specialty CBOC'),
-      facility_type_count(visn_facility_types_arr, 'Other Outpatient Services (OOS)'),
-      facility_type_count(visn_facility_types_arr, 'Primary Care CBOC'),
-      facility_type_count(visn_facility_types_arr, 'Residential Care Site (MH RRTP/DRRTP) (Stand-Alone)'),
-      facility_type_count(visn_facility_types_arr, 'Unclassified'),
-      facility_type_count(visn_facility_types_arr, 'VA Medical Center (VAMC)')
+      VaFacility.get_by_visn(visn).get_classification_counts('Health Care Center (HCC)'),
+      VaFacility.get_by_visn(visn).get_classification_counts('Multi-Specialty CBOC'),
+      VaFacility.get_by_visn(visn).get_classification_counts('Other Outpatient Services (OOS)'),
+      VaFacility.get_by_visn(visn).get_classification_counts('Primary Care CBOC'),
+      VaFacility.get_by_visn(visn).get_classification_counts('Residential Care Site (MH RRTP/DRRTP) (Stand-Alone)'),
+      VaFacility.get_by_visn(visn).get_classification_counts('Unclassified'),
+      VaFacility.get_by_visn(visn).get_classification_counts('VA Medical Center (VAMC)')
     ]
   end
 
@@ -135,15 +107,6 @@ module VisnsHelper
   end
 
   def get_facility_types_by_visn(visn)
-    visn_facility_types = []
-
-    # add facility types to empty array
-    visn.get_va_facilities.each do |vaf|
-      facility_type = vaf.classification
-
-      visn_facility_types << facility_type unless visn_facility_types.include?(facility_type)
-    end
-
-    visn_facility_types
+    VaFacility.get_by_visn(visn).get_classifications
   end
 end

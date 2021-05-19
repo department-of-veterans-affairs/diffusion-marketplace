@@ -4,7 +4,8 @@ class VisnsController < ApplicationController
 
   def index
     @visns = Visn.cached_visns
-
+    practices = Practice.searchable_practices nil
+    @visns_counts = set_visns_counts(practices)
     @visn_markers = Gmaps4rails.build_markers(@visns) do |visn, marker|
 
       current_visn = @visns.find { |vc| vc[:number] == visn.number }
@@ -32,7 +33,7 @@ class VisnsController < ApplicationController
 
   def show
     @primary_visn_liaison = VisnLiaison.find_by(visn: @visn, primary: true)
-    @visn_va_facilities = @visn.get_va_facilities
+    @visn_va_facilities = VaFacility.get_by_visn(@visn)
 
     @visn_va_facility_markers = Gmaps4rails.build_markers(@visn_va_facilities) do |facility, marker|
 
@@ -62,22 +63,20 @@ class VisnsController < ApplicationController
     # set '@practices_json' to avoid js console error when utilizing the practices/search.js.erb file
     @practices_json = practices_json(searchable_practices)
 
-    practices_created_by_visn = []
-    helpers.get_created_practices_by_visn(searchable_practices, @visn, practices_created_by_visn)
+    @practices_created_by_visn = helpers.get_created_practices_by_visn(searchable_practices, @visn, [])
 
-    @practices_created_json = practices_json(practices_created_by_visn)
+    @practices_created_json = practices_json(@practices_created_by_visn)
     # get the unique categories for practices created in a VISN
     @practices_created_categories = []
-    get_categories_by_practices(practices_created_by_visn, @practices_created_categories)
+    get_categories_by_practices(@practices_created_by_visn, @practices_created_categories)
 
 
-    practices_adopted_by_visn = []
-    helpers.get_adopted_practices_by_visn(searchable_practices, @visn, practices_adopted_by_visn)
+    @practices_adopted_by_visn = helpers.get_adopted_practices_by_visn(searchable_practices, @visn, [])
 
-    @practices_adopted_json = practices_json(practices_adopted_by_visn)
+    @practices_adopted_json = practices_json(@practices_adopted_by_visn)
     # get the unique categories for practices adopted in a VISN
     @practices_adopted_categories = []
-    get_categories_by_practices(practices_adopted_by_visn, @practices_adopted_categories)
+    get_categories_by_practices(@practices_adopted_by_visn, @practices_adopted_categories)
   end
 
   private
@@ -85,5 +84,15 @@ class VisnsController < ApplicationController
   def set_visn
     # use find_by! in order to throw an exception if a visn with the number param does not exist
     @visn = Visn.find_by!(number: params[:number])
+  end
+
+  def set_visns_counts(practices)
+    visn_counts = []
+    @visns.each do |visn|
+      created = helpers.get_created_practices_by_visn(practices, visn, []).count
+      adopted = helpers.get_adopted_practices_by_visn(practices, visn, []).count
+      visn_counts.push({number: visn[:number], created: created, adopted: adopted})
+    end
+    visn_counts
   end
 end
