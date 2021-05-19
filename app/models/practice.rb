@@ -422,7 +422,7 @@ class Practice < ApplicationRecord
     diffusion_histories.find_by(facility_id: facility.station_number).diffusion_history_statuses.first
   end
 
-  # add other practice attributes that need trimmed whitespace as needed
+  # add other practice attributes that need whitespace trimmed as needed
   def trim_whitespace
     self.name&.strip!
   end
