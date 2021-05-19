@@ -23,7 +23,6 @@ function initialize() {
             }
             selectedMarker = json;
             setIcon(json, selectedMarkerIcon);
-            $('#filterResultsTrigger').show();
             $('#filterResults').hide();
         }
     }
@@ -281,7 +280,7 @@ function toggleFilterResultsAndFilterCloseButtons() {
     $(document).on('click', '#map img', () => {
         addHiddenClass(filterClose);
         removeHiddenClass(resultsTrigger);
-    })
+    });
 }
 
 $(toggleFilterResultsAndFilterCloseButtons());

@@ -90,6 +90,18 @@
     height: 413px;
     overflow-x: hidden;
     overflow-y: auto;
+
+    .fa-question-circle {
+      color: $dm-color-base !important;
+      padding: 4px;
+      text-decoration: none !important;
+      display: inline-block !important;
+
+      &:visited {
+        text-decoration: none !important;
+        color: $dm-color-base !important;
+      }
+    }
   }
 
   .map-filters-list {

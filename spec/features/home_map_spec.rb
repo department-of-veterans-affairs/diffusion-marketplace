@@ -36,6 +36,16 @@ describe 'HomeMap', type: :feature do
       #Practice complexity removed..
       expect(page).to_not have_content('Practice complexity')
 
+      # open facility complexity modal
+      modal_text = 'Facilities with high volume, high risk patients, most complex clinical programs, and large research and teaching programs'
+
+      expect(page).to_not have_content(modal_text)
+      find('.fa-question-circle').click
+      expect(page).to have_content(modal_text)
+      # close the modal
+      find('.fa-times').click
+      expect(page).to_not have_content(modal_text)
+
       # click a checkbox
       test_filter_checkbox = find(:css, 'label[for="1c_high_complexity"]')
       test_filter_checkbox.click
@@ -47,7 +57,6 @@ describe 'HomeMap', type: :feature do
       marker_div = 'div[style*="width: 31px"][title=""]'
       marker_count = find_all(:css, marker_div).count
       expect(marker_count).to be(2)
-
     end
 
     it 'autocompletes facility names' do
