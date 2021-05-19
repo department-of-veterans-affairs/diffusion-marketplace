@@ -33,8 +33,4 @@ class Visn < ApplicationRecord
       Visn.all
     end
   end
-
-  def get_va_facilities
-    VaFacility.cached_va_facilities.where(visn: self)
-  end
 end

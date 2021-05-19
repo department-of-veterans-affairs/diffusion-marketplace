@@ -9,7 +9,7 @@
       </th>
       <th data-sortable scope="col" role="columnheader" class="p0-right">
         Complexity
-        <%= render partial: 'shared/facility_complexity_modal' %>
+        <%= render partial: 'shared/facility_complexity_modal', locals: { hide_modal_on_initial_load: true } %>
       </th>
       <th data-sortable scope="col" role="columnheader">
         Created
