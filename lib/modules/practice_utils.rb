@@ -28,18 +28,12 @@ module PracticeUtils
       # display initiating facility
       practice_hash['initiating_facility_name'] = helpers.origin_display(practice)
       practice_hash['initiating_facility'] = practice.initiating_facility
-      origin_facilities = []
-      practice.practice_origin_facilities.each do |pof|
-        origin_facilities << pof.facility_id
-      end
+      origin_facilities = practice.practice_origin_facilities.pluck(:facility_id)
       practice_hash['origin_facilities'] = origin_facilities
       practice_hash['user_favorited'] = current_user.favorite_practice_ids.include?(practice.id) if current_user.present?
 
       # get diffusion history facilities
-      adoptions = []
-      practice.diffusion_histories.each do |dh|
-        adoptions << dh.facility_id
-      end
+      adoptions = practice.diffusion_histories.pluck(:facility_id)
       practice_hash['adoption_facilities'] = adoptions
       practices_array.push practice_hash
     end
