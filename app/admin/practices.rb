@@ -4,7 +4,7 @@ include UserUtils
 
 ActiveAdmin.register Practice do
   actions :all, except: [:destroy]
-  permit_params :name, :user_email
+  permit_params :name, :user_email, :retired, :retired_reason
   config.create_another = true
 
   scope :published
@@ -43,6 +43,7 @@ ActiveAdmin.register Practice do
     column :enabled unless params[:scope] == "get_practice_owner_emails"
     column :created_at unless params[:scope] == "get_practice_owner_emails"
     column :highlight
+    column :retired unless params[:scope] == "get_practice_owner_emails"
     column 'Last Updated', :updated_at unless params[:scope] == "get_practice_owner_emails"
     column :date_published unless params[:scope] == "get_practice_owner_emails"
     actions do |practice|
@@ -50,9 +51,21 @@ ActiveAdmin.register Practice do
       item practice_enabled_action_str, enable_practice_admin_practice_path(practice), method: :post
       practice_highlight_action_str = practice.highlight ? "Unhighlight" : "Highlight"
       item practice_highlight_action_str, highlight_practice_admin_practice_path(practice), method: :post
+      practice_retired_action_str = practice.retired ? "Activate" : "Retire"
+      item practice_retired_action_str, retire_practice_admin_practice_path(practice), method: :post
     end
   end
 
+  member_action :retire_practice, method: :post do
+    resource.retired = !resource.retired
+    message = "\"#{resource.name}\" was retired"
+    unless resource.retired
+      message = "\"#{resource.name}\" was activated"
+    end
+    resource.retired_reason = nil if resource.retired == false
+    resource.save
+    redirect_back fallback_location: root_path, notice: message
+  end
   member_action :enable_practice, method: :post do
     resource.enabled = !resource.enabled
     message = "\"#{resource.name}\" Practice enabled"
@@ -152,6 +165,7 @@ ActiveAdmin.register Practice do
 
 
   form do |f|
+    debugger
     f.semantic_errors *f.object.errors.keys# shows errors on :base
     f.inputs  do
       f.input :name, label: 'Practice name'
@@ -160,6 +174,10 @@ ActiveAdmin.register Practice do
       if object.highlight
         f.input :highlight_title, label: 'Highlighted Practice Title'
         f.input :highlight_body, label: 'Highlighted Practice Body'
+      end
+      if !object.retired
+        f.input :retired, label: 'Retire Practice?'
+        f.input :retired_reason, label: 'Retired reason', as: :string, input_html: {name: 'retired_reason'}
       end
     end        # builds an input field for every attribute
     f.actions         # adds the 'Submit' and 'Cancel' buttons
@@ -187,6 +205,7 @@ ActiveAdmin.register Practice do
         row :highlight_title
         row :highlight_body
       end
+      row :retired
     end
     h3 'Versions'
     table_for practice.versions.order(created_at: :desc) do |version|
@@ -217,14 +236,19 @@ ActiveAdmin.register Practice do
 
     def create_or_update_practice
       begin
+        debugger
         practice_name = params[:practice][:name]
         blank_practice_name = params[:practice][:name].blank?
         practice_slug = params[:id]
         email = params[:user_email]
+        retired = params[:practice][:retired] == "1" ? true : false
+        retired_reason = params[:retired_reason]
         # raise an error if practice name is left blank
         raise StandardError.new 'There was an error. Practice name cannot be blank.' if blank_practice_name
 
         practice = Practice.find_by(slug: practice_slug)
+        practice.retired = retired
+        practice.retired_reason = retired_reason
         practice_by_name = Practice.find_by(name: practice_name)
         # raise an error if there's already a practice with a name that matches the user's input for the name field
         raise StandardError.new 'There was an error. Practice name already exists.' if practice_by_name.present? && practice_by_name != practice
