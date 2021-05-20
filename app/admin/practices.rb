@@ -165,7 +165,6 @@ ActiveAdmin.register Practice do
 
 
   form do |f|
-    debugger
     f.semantic_errors *f.object.errors.keys# shows errors on :base
     f.inputs  do
       f.input :name, label: 'Practice name'
@@ -175,10 +174,8 @@ ActiveAdmin.register Practice do
         f.input :highlight_title, label: 'Highlighted Practice Title'
         f.input :highlight_body, label: 'Highlighted Practice Body'
       end
-      if !object.retired
-        f.input :retired, label: 'Retire Practice?'
-        f.input :retired_reason, label: 'Retired reason', as: :string, input_html: {name: 'retired_reason'}
-      end
+      f.input :retired, label: 'Practice retired?'
+      f.input :retired_reason, label: 'Retired reason', as: :string, input_html: {name: 'retired_reason'}
     end        # builds an input field for every attribute
     f.actions         # adds the 'Submit' and 'Cancel' buttons
   end
@@ -236,7 +233,6 @@ ActiveAdmin.register Practice do
 
     def create_or_update_practice
       begin
-        debugger
         practice_name = params[:practice][:name]
         blank_practice_name = params[:practice][:name].blank?
         practice_slug = params[:id]
