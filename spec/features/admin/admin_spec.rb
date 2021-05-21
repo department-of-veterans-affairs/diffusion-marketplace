@@ -23,9 +23,9 @@ describe 'The admin dashboard', type: :feature do
     ]
     CategoryPractice.create(practice_id: @practice[:id], category_id: @categories[1][:id])
     @departments = [
-        Department.create!(name: 'Admissions', short_name: 'admissions'),
-        Department.create!(name: 'None', short_name: 'none'),
-        Department.create!(name: 'All departments equally - not a search differentiator', short_name: 'all'),
+      Department.create!(name: 'Admissions', short_name: 'admissions'),
+      Department.create!(name: 'None', short_name: 'none'),
+      Department.create!(name: 'All departments equally - not a search differentiator', short_name: 'all'),
     ]
     @practice_partner = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative', icon: 'fas fa-heart', color: '#E4A002')
   end
@@ -308,10 +308,12 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_no_content('Highlighted Practice Title')
     expect(page).to have_no_content('Highlighted Practice Body')
 
-    fill_in('Practice name', with: 'The Newest Practice')
+    # add extra whitespace to practice name
+    fill_in('Practice name', with: ' The Newest Practice   ')
     fill_in('User email', with: 'practice_owner@va.gov')
     click_button('Create Practice')
-
+    # make sure white space is trimmed from practice name
+    expect(Practice.last.name).to eq('The Newest Practice')
     expect(page).to have_current_path(admin_practice_path(Practice.last))
     expect(page).to have_content(User.last.email)
     click_link("#{practice_overview_path(Practice.last)}")
@@ -360,11 +362,15 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_content('There was an error. Practice name already exists.')
     expect(page).to have_selector("input[value='The Best Practice Ever!']")
 
-    fill_in('Practice name', with: 'Test Practice 1')
+    # add extra whitespace to practice name
+    fill_in('Practice name', with: '       Test Practice 1 ')
     click_button('Update Practice')
 
     expect(page).to have_content('Practice was successfully updated.')
     expect(page).to have_content('Test Practice 1')
+    # make sure white space is trimmed from practice name
+    click_link('Edit Practice')
+    expect(page).to have_field('Practice name', with: 'Test Practice 1')
   end
 
   it 'should not allow an admin to update an existing practice if they do not enter the required information' do
