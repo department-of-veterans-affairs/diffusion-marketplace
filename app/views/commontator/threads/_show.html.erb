@@ -12,7 +12,9 @@
 %>
 
 <% if thread.config.comment_order != :e %>
-  <%= render partial: 'commontator/threads/reply', locals: { thread: thread, user: user } %>
+  <% if !@practice.retired %>
+    <%= render partial: 'commontator/threads/reply', locals: { thread: thread, user: user } %>
+  <% end %>
   <h5 class="font-sans-3xs line-height-15px text-bold text-ls-1 text-uppercase">
         <span id="practice-comment-count">
           <%= thread.comments.count  %>
