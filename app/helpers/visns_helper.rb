@@ -1,31 +1,6 @@
 module VisnsHelper
   include StatesHelper
 
-  def get_adopted_practices_by_visn(practices, visn, visn_adopted_practices)
-    visn_facilities = VaFacility.get_by_visn(visn).get_station_numbers
-    practices.each do |p|
-      diffusion_history_facilities = p.diffusion_histories.pluck(:facility_id)
-      visn_adopted_practices << p if (diffusion_history_facilities & visn_facilities).present?
-    end
-    visn_adopted_practices
-  end
-
-  def get_created_practices_by_visn(practices, visn, visn_created_practices)
-    visn_facilities = VaFacility.get_by_visn(visn).get_station_numbers
-    practices.each do |p|
-      origin_facilities = p.practice_origin_facilities.pluck(:facility_id)
-      initiating_facility = p.initiating_facility
-      # add practices that have practice_origin_facilities
-      if p.facility? && origin_facilities.any?
-        visn_created_practices << p if (origin_facilities & visn_facilities).present?
-        # add practices that have an initiating_facility
-      elsif p.visn? && initiating_facility.present?
-        visn_created_practices << p if initiating_facility === visn.id.to_s && !visn_created_practices.include?(p)
-      end
-    end
-    visn_created_practices
-  end
-
   def get_facility_locations_by_visn(visn)
     sorted_facility_locations = VaFacility.get_by_visn(visn).get_locations
 

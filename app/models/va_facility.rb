@@ -12,17 +12,14 @@ class VaFacility < ApplicationRecord
   scope :get_classifications, -> { pluck(:classification).uniq }
   scope :get_station_numbers, -> { pluck(:station_number) }
   scope :get_locations, -> { order(:street_address_state).pluck(:street_address_state).uniq }
-
-  def self.get_types
-    select(:fy17_parent_station_complexity_level).distinct.order(:fy17_parent_station_complexity_level)
-  end
+  scope :get_complexity, -> { order(:fy17_parent_station_complexity_level).pluck(:fy17_parent_station_complexity_level).uniq }
 
   def practices_created_count
-    Practice.published_enabled_approved.get_by_created_facility(station_number).count
+    Practice.published_enabled_approved.get_by_created_facility(station_number).size
   end
 
   def practices_adopted_count
-    Practice.published_enabled_approved.get_by_adopted_facility(station_number).count
+    Practice.published_enabled_approved.get_by_adopted_facility(station_number).size
   end
 
   def clear_va_facility_cache

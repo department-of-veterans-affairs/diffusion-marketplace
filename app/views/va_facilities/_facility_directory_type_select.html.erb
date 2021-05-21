@@ -3,13 +3,12 @@
   <select id="<%= facility_type_selector %>" class="usa-select" name="<%= facility_type_selector %>">
     <option value="">- Select -</option>
     <% @types.each do |type| %>
-      <% complexity_level =  type[:fy17_parent_station_complexity_level].to_s %>
-      <option value=<%= type[:fy17_parent_station_complexity_level] %>
-          <% if params[:type].present? && (complexity_level.include? params[:type].to_s) %>
+      <option value=<%= type %>
+          <% if params[:type].present? && type.include?(params[:type].to_s) %>
             selected
           <% end %>
        >
-          <%= type[:fy17_parent_station_complexity_level] %>
+          <%= type %>
         </option>
     <% end %>
   </select>
