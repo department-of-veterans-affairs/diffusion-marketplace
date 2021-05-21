@@ -1,34 +1,52 @@
 <% provide :head_tags do %>
   <%= javascript_include_tag 'practice_page', 'data-turbolinks-track': 'reload' %>
 <% end %>
-
-<section class="usa-section padding-y-0">
-  <div class="grid-container position-relative">
-    <div class="grid-row grid-gap">
-      <div id="practice_show" class="grid-col-12 overview-section practice-section">
-        <%= render partial: "shared/messages", locals: {small_text: false} %>
-        <% unless @practice.published && @practice.approved %>
-          <div class="usa-alert usa-alert--warning">
-            <div class="usa-alert__body">
-              <h3 class="usa-alert__heading">This practice will not be shown in the marketplace because it is:</h3>
-              <% unless @practice.published %>
-                <div class="badge-container un-published-practice">
-                  Not Published
-                </div>
-              <% end %>
-              <% unless @practice.approved %>
-                <div class="badge-container un-approved-practice">
-                  Not Approved
-                </div>
-              <% end %>
+<% debugger %>
+<% if @practice.retired %>
+  <div class="margin-bottom-3">
+    <section class="usa-section padding-y-0">
+      <div class="grid-container position-relative">
+        <div class="grid-row grid-gap">
+          <div id="practice_show" class="grid-col-12 overview-section practice-section">
+            <div class="usa-alert usa-alert--info">
+              <div class="usa-alert__body">
+                <h4 class="usa-alert__heading">Retired Practice</h4>
+                <p class="usa-alert__text"><%= @practice.retired_reason %></p>
+              </div>
             </div>
           </div>
-        <% end %>
+        </div>
+      </div>
+    </section>
+  </div>
+<% else %>
+  <section class="usa-section padding-y-0">
+    <div class="grid-container position-relative">
+      <div class="grid-row grid-gap">
+        <div id="practice_show" class="grid-col-12 overview-section practice-section">
+          <%= render partial: "shared/messages", locals: {small_text: false} %>
+          <% unless @practice.published && @practice.approved %>
+            <div class="usa-alert usa-alert--warning">
+              <div class="usa-alert__body">
+                <h3 class="usa-alert__heading">This practice will not be shown in the marketplace because it is:</h3>
+                <% unless @practice.published %>
+                  <div class="badge-container un-published-practice">
+                    Not Published
+                  </div>
+                <% end %>
+                <% unless @practice.approved %>
+                  <div class="badge-container un-approved-practice">
+                    Not Approved
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
-  </div>
-</section>
-
+  </section>
+<% end %>
 <!-- "Practice nav" section -->
 <!-- Overview Implementation Contact About -->
 

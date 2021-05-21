@@ -66,6 +66,7 @@ ActiveAdmin.register Practice do
     resource.save
     redirect_back fallback_location: root_path, notice: message
   end
+
   member_action :enable_practice, method: :post do
     resource.enabled = !resource.enabled
     message = "\"#{resource.name}\" Practice enabled"
