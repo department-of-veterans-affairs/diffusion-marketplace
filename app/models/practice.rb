@@ -3,6 +3,7 @@ class Practice < ApplicationRecord
   include PracticeEditorUtils
   include VaEmail
 
+  before_validation :trim_whitespace
   before_save :clear_searchable_cache_on_save
   after_save :reset_searchable_practices
   after_create :create_practice_editor_for_practice
@@ -419,5 +420,10 @@ class Practice < ApplicationRecord
 
   def diffusion_history_status_by_facility(facility)
     diffusion_histories.find_by(facility_id: facility.station_number).diffusion_history_statuses.first
+  end
+
+  # add other practice attributes that need whitespace trimmed as needed
+  def trim_whitespace
+    self.name&.strip!
   end
 end
