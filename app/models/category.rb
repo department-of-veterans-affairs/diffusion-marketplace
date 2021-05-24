@@ -7,8 +7,10 @@ class Category < ApplicationRecord
   has_many :practices, through: :categories
   has_many :practices, through: :category_practices
 
-  scope :with_practices,   -> { joins(:practices).where.not(categories: {name: 'Other', is_other: true}).where(practices: {approved: true, published: true, enabled: true} ).order(Arel.sql("lower(categories.name) ASC")).uniq }
-  scope :order_by_name, -> { order('name') }
+  scope :with_practices,   -> { not_other.not_none.joins(:practices).where(practices: {approved: true, published: true, enabled: true} ).order_by_name.uniq }
+  scope :order_by_name, -> { order(Arel.sql("lower(categories.name) ASC")) }
+  scope :not_other, -> { where(is_other: false).where.not(name: 'Other').where.not(name: 'other') }
+  scope :not_none, -> { where.not(name: 'None').where.not(name: 'none') }
 
   attr_accessor :related_terms_raw
 

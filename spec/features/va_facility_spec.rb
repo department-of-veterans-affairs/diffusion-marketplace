@@ -3,6 +3,7 @@ require 'rails_helper'
 describe 'VA facility pages', type: :feature, js: true do
   before do
     @visn = Visn.create!(name: 'Test VISN', number: 2)
+    @visn_3 = Visn.create!(name: 'VISN 3', number: 3)
     @va_facility1 = VaFacility.create!(
         visn: @visn,
         sta3n: 421,
@@ -69,7 +70,7 @@ describe 'VA facility pages', type: :feature, js: true do
       va_facilities_name.each_with_index do | name, i |
         station_num = i + 400
         VaFacility.create!(
-          visn: @visn,
+          visn: name === "B" ? @visn : @visn_3,
           sta3n: station_num,
           station_number: station_num,
           official_station_name: "#{name} Test name",
@@ -98,7 +99,7 @@ describe 'VA facility pages', type: :feature, js: true do
         expect(page).to have_content("VISN")
         expect(page).to have_content("Complexity")
         expect(page).to have_content("Created")
-        expect(page).to have_content("Adoptions")
+        expect(page).to have_content("Adopted")
         expect(page).to have_content("A Test name")
         expect(page).to have_content('C Test name')
         expect(page).to have_content("NV")
@@ -106,24 +107,49 @@ describe 'VA facility pages', type: :feature, js: true do
       expect(find_all('.usa-select').first.value).to eq ''
     end
 
-    context 'index page complexity filter' do
-      it 'should filter by complexity type' do
+    context 'index page filters' do
+      it 'should filter by complexity type and visn' do
         visit '/facilities'
+        # filter by complexity
         select "1a-High Complexity", :from => "facility_type_select"
         section = find(:css, '#dm-va-facilities-directory-table')
-        expect(section).to have_content('1A')
+        expect(section).to have_content('A Test name')
         expect(section).to have_no_content('1B')
         expect(section).to have_no_content('1C')
-
-        select "1b-High Complexity", :from => "facility_type_select"
-        expect(section).to have_content('1B')
-        expect(section).to have_no_content('1A')
-        expect(section).to have_no_content('1C')
-
+        # filter by complexity and visn - no results
         select "1c-High Complexity", :from => "facility_type_select"
-        expect(section).to have_content('1C')
-        expect(section).to have_no_content('1A')
-        expect(section).to have_no_content('1B')
+        select "3 - VISN 3", :from => "facility_directory_visn_select"
+        expect(page).to have_content('There are currently no matches for your search on the Marketplace')
+        # filter by visn - results
+        select "- Select -", :from => "facility_type_select"
+        section = find(:css, '#dm-va-facilities-directory-table')
+        expect(section).to have_content('C Test name')
+        expect(section).to have_no_content('B Test name')
+        expect(section).to have_no_content('A Test name')
+        # filter by complexity and visn - results
+        select "2 - Test VISN", :from => "facility_directory_visn_select"
+        expect(section).to have_content('B Test name')
+        expect(section).to have_content('A Test name')
+        expect(section).to have_no_content('C Test mame')
+        select "1a-High Complexity", :from => "facility_type_select"
+        expect(section).to have_content('A Test name')
+        expect(section).to have_no_content('B Test name')
+        expect(section).to have_no_content('C Test name')
+      end
+
+      it 'should filter by facility' do
+        visit '/facilities'
+        section = find(:css, '#dm-va-facilities-directory-table')
+        find('#facility_directory_select').click
+        find_all('.usa-combo-box__list-option').first.click
+        expect(section).to have_content('A Test name')
+        expect(section).to have_no_content('B Test name')
+        expect(section).to have_no_content('C Test name')
+
+        find('.usa-combo-box__clear-input').click
+        expect(section).to have_content('A Test name')
+        expect(section).to have_content('B Test name')
+        expect(section).to have_content('C Test name')
       end
     end
   end
