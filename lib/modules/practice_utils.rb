@@ -33,6 +33,7 @@ module PracticeUtils
       # get diffusion history facilities
       adoptions = practice.diffusion_histories.pluck(:facility_id)
       practice_hash['adoption_facilities'] = adoptions
+      practice_hash['adoption_count'] = adoptions.size
       practices_array.push practice_hash
     end
 
