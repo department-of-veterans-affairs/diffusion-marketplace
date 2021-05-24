@@ -99,7 +99,7 @@ describe 'VA facility pages', type: :feature, js: true do
         expect(page).to have_content("VISN")
         expect(page).to have_content("Complexity")
         expect(page).to have_content("Created")
-        expect(page).to have_content("Adoptions")
+        expect(page).to have_content("Adopted")
         expect(page).to have_content("A Test name")
         expect(page).to have_content('C Test name')
         expect(page).to have_content("NV")
