@@ -238,11 +238,20 @@ function initialize() {
     };
 
     $(document).on('click', '#filterResultsTrigger', function () {
+        console.log('hello')
         $('#filterResults').show();
         $('#filterClose').focus();
         closeInfoWindow();
     });
 
+    function setHomeMapEventListener() {
+        google.maps.event.addListenerOnce(handler.getMap(), "bounds_changed", function () {
+            $('.diffusion-map-container').removeClass('display-none');
+            $(".dm-loading-spinner").addClass('display-none');
+        });
+    }
+
+    setHomeMapEventListener();
 }
 
 function openMarkerModal(id) {

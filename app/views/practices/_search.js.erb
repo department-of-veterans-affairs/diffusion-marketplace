@@ -859,7 +859,7 @@ function trackSearchField(searchTerm) {
 
 function preventFiltersAccordionContentFlickerOnPageLoad() {
     $(document).arrive('.desktop-filters-accordion-heading', { existing: true }, (el) => {
-        $(el).next().removeClass('desktop:display-none');
+        $(el).next().removeClass('display-none');
     });
 }
 
