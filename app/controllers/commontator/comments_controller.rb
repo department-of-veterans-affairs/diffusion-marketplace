@@ -14,6 +14,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
 
   # GET /threads/1/comments/new
   def new
+    return if @practice.retired
     @comment = Commontator::Comment.new(thread: @commontator_thread, creator: @commontator_user)
     parent_id = params.dig(:comment, :parent_id)
     unless parent_id.blank?
@@ -35,6 +36,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
 
   # POST /threads/1/comments
   def create
+    return if @practice.retired
     @comment = Commontator::Comment.new(
       thread: @commontator_thread, creator: @commontator_user, body: params.dig(:comment, :body)
     )
@@ -76,6 +78,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
 
   # GET /comments/1/edit
   def edit
+    return if @practice.retired
     @comment.editor = @commontator_user
     security_transgression_unless @comment.can_be_edited_by?(@commontator_user)
 
@@ -87,6 +90,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
 
   # PUT /comments/1
   def update
+    return if @practice.retired
     @comment.editor = @commontator_user
     @comment.body = params.dig(:comment, :body)
     security_transgression_unless @comment.can_be_edited_by?(@commontator_user)
@@ -121,6 +125,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
 
   # PUT /comments/1/delete
   def delete
+    return if @practice.retired
     security_transgression_unless @comment.can_be_deleted_by?(@commontator_user)
 
     if @comment.delete_by(@commontator_user)
@@ -137,6 +142,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
 
   # PUT /comments/1/undelete
   def undelete
+    return if @practice.retired
     security_transgression_unless @comment.can_be_deleted_by?(@commontator_user)
 
     if @comment.undelete_by(@commontator_user)
@@ -153,6 +159,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
 
   # PUT /comments/1/upvote
   def upvote
+    return if @practice.retired
     security_transgression_unless @comment.can_be_voted_on_by?(@commontator_user)
 
     @comment.upvote_from @commontator_user
@@ -165,6 +172,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
 
   # PUT /comments/1/downvote
   def downvote
+    return if @practice.retired
     security_transgression_unless @comment.can_be_voted_on_by?(@commontator_user) &&\
       @comment.thread.config.comment_voting.to_sym == :ld
 
@@ -178,6 +186,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
 
   # PUT /comments/1/unvote
   def unvote
+    return if @practice.retired
     security_transgression_unless @comment.can_be_voted_on_by?(@commontator_user)
 
     @comment.unvote voter: @commontator_user
