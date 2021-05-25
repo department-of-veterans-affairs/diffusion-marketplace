@@ -33,4 +33,12 @@ class Visn < ApplicationRecord
       Visn.all
     end
   end
+
+  def get_adopted_practices(station_numbers)
+    Practice.published_enabled_approved.load_associations.get_by_adopted_facility(station_numbers)
+  end
+
+  def get_created_practices(station_numbers)
+    (Practice.published_enabled_approved.load_associations.where(initiating_facility_type: 'facility').get_by_created_facility(station_numbers)).or(Practice.published_enabled_approved.load_associations.joins(:practice_origin_facilities).where(initiating_facility_type: 'visn').where(initiating_facility: id.to_s))
+  end
 end
