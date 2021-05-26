@@ -204,6 +204,7 @@ ActiveAdmin.register Practice do
         row :highlight_body
       end
       row :retired
+      row :retired_reason
     end
     h3 'Versions'
     table_for practice.versions.order(created_at: :desc) do |version|
