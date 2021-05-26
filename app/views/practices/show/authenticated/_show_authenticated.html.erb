@@ -10,7 +10,11 @@
             <div class="usa-alert usa-alert--info">
               <div class="usa-alert__body">
                 <h4 class="usa-alert__heading">Retired Practice</h4>
-                <p class="usa-alert__text"><%= @practice.retired_reason %></p>
+                <p class="usa-alert__text">This practice is no longer being updated.
+                <% if @practice.retired_reason.present? %>
+                    It was retired because... <%= @practice.retired_reason %>
+                 <% end %>
+                </p>
               </div>
             </div>
           </div>
