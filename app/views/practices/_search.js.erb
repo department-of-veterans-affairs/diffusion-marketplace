@@ -59,20 +59,28 @@ function buildPracticeCard(result) {
     var practiceName = result.item.name;
     var favoriteButtonIcon = result.item.user_favorited ? 'fas' : 'far';
     var practiceLinkClass = practiceImage ? '' : ' dm-alt-practice-link';
-    var favoriteButton =
-        '<a aria-label="Bookmark ' + practiceName + '" tabindex="-1" aria-hidden="true" class="dm-practice-bookmark-btn" id="dm-bookmark-button-' + result.item.id + '" data-remote="true" rel="nofollow" data-method="post" href="/practices/' + result.item.slug + '/favorite.js">' +
-        '<i class="' + favoriteButtonIcon + ' fa-bookmark dm-favorite-icon-' + result.item.id + ' text-no-underline"></i>' +
-        '</a>';
+    var favoriteButton = '';
+    if (!result.item.retired) {
+        favoriteButton =
+          '<a aria-label="Bookmark ' + practiceName + '" tabindex="-1" aria-hidden="true" class="dm-practice-bookmark-btn" id="dm-bookmark-button-' + result.item.id + '" data-remote="true" rel="nofollow" data-method="post" href="/practices/' + result.item.slug + '/favorite.js">' +
+          '<i class="' + favoriteButtonIcon + ' fa-bookmark dm-favorite-icon-' + result.item.id + ' text-no-underline"></i>' +
+          '</a>';
+    }
     var cardImageHtml =
         '<div class="dm-practice-card-img-container">' +
-        '<img alt="' + practiceName + ' Marketplace Card Image" class="grid-row marketplace-card-img radius-top-sm" src="' + practiceImage + '">' +
-        '</div>';
+        '<img alt="' + practiceName + ' Marketplace Card Image" class="grid-row marketplace-card-img radius-top-sm" src="' + practiceImage + '">';
+        if(result.item.retired){
+            cardImageHtml += '<div class="dm-practice-retired-banner"><h5>Retired</h5></div>';
+        }
+    cardImageHtml += '</div>';
     var noCardImageHtml =
         '<div class="dm-bg-gray-80">' +
         '<h3 class="text-normal font-sans-lg dm-practice-title multiline-ellipses-2 margin-x-2 margin-y-4">' +
-        practiceName +
-        '</h3>' +
-        '</div>';
+        practiceName + '</h3>';
+        if(result.item.retired){
+            noCardImageHtml += '<div class="dm-practice-retired-banner"><h5>Retired</h5></div>';
+        }
+    noCardImageHtml += '</div>';
     var cardImage = practiceImage ? cardImageHtml : noCardImageHtml;
     var practiceNameHeader =
         '<h3 class="text-normal font-sans-lg dm-practice-title multiline-ellipses-2 margin-top-0 margin-bottom-2">' +
