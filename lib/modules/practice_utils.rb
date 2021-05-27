@@ -26,6 +26,7 @@ module PracticeUtils
       end
 
       # display initiating facility
+      practice_hash['retired'] = practice.retired
       practice_hash['initiating_facility_name'] = helpers.origin_display(practice)
       practice_hash['initiating_facility'] = practice.initiating_facility
       origin_facilities = practice.practice_origin_facilities.pluck(:facility_id)

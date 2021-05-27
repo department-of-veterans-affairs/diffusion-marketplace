@@ -48,7 +48,7 @@ class VaFacilitiesController < ApplicationController
       items: 3
     )
     @pagy_created_info = @pagy_created_practices[0]
-    @created_practices = @pagy_created_practices[1]
+    @created_practices = @pagy_created_practices[1].sort_by{ |a| a.retired ? 1 : 0 }
 
     @created_pr_count = created_practices.count
     @created_practices_categories = get_categories_by_practices(created_practices, [])
@@ -64,7 +64,7 @@ class VaFacilitiesController < ApplicationController
     categories = params[:categories] || nil
 
     created_practices = Practice.get_facility_created_practices(station_number, search_term, sort_option, categories)
-
+    created_practices = created_practices.sort_by{ |a| a.retired ? 1 : 0 }
     @pagy_created_practices = pagy_array(
       created_practices,
       items: 3,

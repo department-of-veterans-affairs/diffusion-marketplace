@@ -61,19 +61,19 @@ class Practice < ApplicationRecord
   def self.searchable_practices(sort = 'a_to_z')
     if sort == 'a_to_z'
       Rails.cache.fetch('searchable_practices_a_to_z') do
-        Practice.sort_a_to_z.get_with_categories_and_adoptions_ct
+        Practice.sort_by_retired.sort_a_to_z.get_with_categories_and_adoptions_ct
       end
     elsif sort == 'adoptions'
       Rails.cache.fetch('searchable_practices_adoptions') do
-        Practice.sort_adoptions_ct.get_with_categories_and_adoptions_ct
+        Practice.sort_by_retired.sort_adoptions_ct.get_with_categories_and_adoptions_ct
       end
     elsif sort == 'added'
       Rails.cache.fetch('searchable_practices_added') do
-        Practice.sort_added.get_with_categories_and_adoptions_ct
+        Practice.sort_by_retired.sort_added.get_with_categories_and_adoptions_ct
       end
     elsif sort == nil
       Rails.cache.fetch('searchable_practices') do
-        Practice.get_with_categories_and_adoptions_ct
+        Practice.sort_by_retired.get_with_categories_and_adoptions_ct
       end
     end
   end
@@ -202,6 +202,7 @@ class Practice < ApplicationRecord
   scope :published_enabled_approved,   -> { where(published: true, enabled: true, approved: true) }
   scope :get_by_adopted_facility, -> (station_number) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {facility_id: station_number}) }
   scope :get_by_created_facility, -> (station_number) { joins(:practice_origin_facilities).where(practice_origin_facilities: { facility_id: station_number }) }
+  scope :sort_by_retired, -> { order("retired asc") }
 
   belongs_to :user, optional: true
 
@@ -363,7 +364,7 @@ class Practice < ApplicationRecord
   end
 
   def self.search_practices(search_term = nil, sort = 'a_to_z', categories = nil)
-    query = with_categories_and_adoptions_ct.left_outer_joins(:practice_origin_facilities)
+    query = sort_by_retired.with_categories_and_adoptions_ct.left_outer_joins(:practice_origin_facilities)
     if search_term
       search = get_query_for_search_term(search_term)
       query = query.where(search[:query], search[:params])
@@ -385,6 +386,7 @@ class Practice < ApplicationRecord
 
   def self.get_facility_created_practices(station_number, search_term = nil, sort = 'a_to_z', categories = nil)
     practices = search_practices(search_term, sort, categories)
+
     practices.select { |pr| pr.practice_origin_facilities.pluck(:facility_id).include?(station_number)}
   end
 

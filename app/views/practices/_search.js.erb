@@ -23,6 +23,7 @@ if (window.location.pathname === '/search') {
     }
 }
 
+
 // sort functions
 function sortAToZ(a, b) {
     return a.item.name.trim().localeCompare(b.item.name.trim(), undefined, { numeric: true, sensitivity: 'base' });
@@ -50,6 +51,10 @@ function sortByScore(a, b) {
         return 1;
     }
     return 0;
+}
+
+function sortByRetired(a, b){
+    return a.item.retired - b.item.retired
 }
 
 // Build out practice cards once results come back from Fuse
@@ -198,10 +203,12 @@ function searchPracticesPage() {
     // Template out the search results
     function buildSearchResults(results, sortOption) {
         $(SPINNER).addClass('display-none');
+        console.log(results);
+        var tmpResults = results.sort(sortOption);
 
         var resultsArray = [];
         var finalResults = '';
-        results.sort(sortOption).forEach(function (result) {
+        tmpResults.sort(sortByRetired).forEach(function (result) {
             finalResults += buildPracticeCard(result);
             resultsArray.push(buildPracticeCard(result));
 
