@@ -176,7 +176,7 @@ ActiveAdmin.register Practice do
         f.input :highlight_body, label: 'Highlighted Practice Body'
       end
       f.input :retired, label: 'Practice retired?'
-      f.input :retired_reason, label: 'Retired reason', as: :string, input_html: {name: 'retired_reason'}
+      f.input :retired_reason, label: 'Retired reason', as: :quill_editor
     end        # builds an input field for every attribute
     f.actions         # adds the 'Submit' and 'Cancel' buttons
   end
@@ -240,7 +240,7 @@ ActiveAdmin.register Practice do
         practice_slug = params[:id]
         email = params[:user_email]
         retired = params[:practice][:retired] == "1" ? true : false
-        retired_reason = params[:retired_reason]
+        retired_reason = params[:practice][:retired_reason]
         # raise an error if practice name is left blank
         raise StandardError.new 'There was an error. Practice name cannot be blank.' if blank_practice_name
 
