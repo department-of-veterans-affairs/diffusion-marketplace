@@ -203,6 +203,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
   protected
 
   def set_comment_and_thread
+    debugger
     @comment = Commontator::Comment.find(params[:id])
     @commontator_thread = @comment.thread
   end
