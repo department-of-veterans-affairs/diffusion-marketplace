@@ -29,7 +29,7 @@ class User < ApplicationRecord
 
   # This allows users to post comments with the use of the Commontator gem
   acts_as_commontator
-  
+
   acts_as_voter
 
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
@@ -131,62 +131,69 @@ class User < ApplicationRecord
   # Authenticates and signs in the User via LDAP
   def self.authenticate_ldap(domain_username)
     user = nil
-    ldap = Net::LDAP.new(
-        host: LDAP_CONFIG['host'], # Thankfully this is a standard name
-        port: LDAP_CONFIG['port'],
-        auth: {method: :simple, username: ENV['LDAP_USERNAME'], password: ENV['LDAP_PASSWORD']},
-        base: LDAP_CONFIG['base']
-    )
-    if ldap.bind
-      # Yay, the login credentials were valid!
-      # Get the user's full name and return it
-      ldap.search(
-          filter: Net::LDAP::Filter.eq("sAMAccountName", domain_username),
-          attributes: %w[ displayName mail givenName sn title photo jpegphoto thumbnailphoto telephoneNumber postalCode physicalDeliveryOffice streetAddress ],
-          return_result: true
-      ) do |entry|
 
-        return nil if entry[:mail].blank?
-        email = entry[:mail][0].downcase
-        user = User.find_by(email: email)
+    begin
+      ldap = Net::LDAP.new(
+          host: LDAP_CONFIG['host'], # Thankfully this is a standard name
+          port: LDAP_CONFIG['port'],
+          auth: {method: :simple, username: ENV['LDAP_USERNAME'], password: ENV['LDAP_PASSWORD']},
+          base: LDAP_CONFIG['base']
+      )
+      if ldap.bind
+        # Yay, the login credentials were valid!
+        # Get the user's full name and return it
+        ldap.search(
+            filter: Net::LDAP::Filter.eq("sAMAccountName", domain_username),
+            attributes: %w[ displayName mail givenName sn title photo jpegphoto thumbnailphoto telephoneNumber postalCode physicalDeliveryOffice streetAddress ],
+            return_result: true
+        ) do |entry|
 
-        # create a new user if they do not exist
-        user = User.new(email: email) if user.blank?
+          return nil if entry[:mail].blank?
+          email = entry[:mail][0].downcase
+          user = User.find_by(email: email)
 
-        # set the user's attributes based on ldap entry
-        user.skip_password_validation = true
-        user.skip_va_validation = true
+          # create a new user if they do not exist
+          user = User.new(email: email) if user.blank?
 
-        user.first_name = entry[:givenName][0]
-        user.last_name = entry[:sn][0]
-        user.job_title = entry[:title][0]
-        user.phone_number = entry[:telephoneNumber][0]
+          # set the user's attributes based on ldap entry
+          user.skip_password_validation = true
+          user.skip_va_validation = true
 
-        # attempt to resolve where the User is VA facility wise
-        facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
-        address = entry[:streetAddress][0]
-        postal_code = entry[:postalCode][0]
-        # Underscore for _location variable to not get confused with the User attribute location
-        _location = entry[:physicalDeliveryOffice][0]
-        facility = nil
-        if address.present?
-          # Find the facility by the street address
-          facility = facilities.find { |f| f['StreetAddress'] == address }
-          # If the address doesn't match, find it by the postal code
-          facility = facilities.find { |f| f['StreetAddressZipCode'] == postal_code } if facility.blank?
-        else
-          # If the address is not prsent, find the facility by the postal code
-          facility = facilities.find { |f| f['StreetAddressZipCode'] == postal_code }
+          user.first_name = entry[:givenName][0]
+          user.last_name = entry[:sn][0]
+          user.job_title = entry[:title][0]
+          user.phone_number = entry[:telephoneNumber][0]
+
+          # attempt to resolve where the User is VA facility wise
+          facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
+          address = entry[:streetAddress][0]
+          postal_code = entry[:postalCode][0]
+          # Underscore for _location variable to not get confused with the User attribute location
+          _location = entry[:physicalDeliveryOffice][0]
+          facility = nil
+          if address.present?
+            # Find the facility by the street address
+            facility = facilities.find { |f| f['StreetAddress'] == address }
+            # If the address doesn't match, find it by the postal code
+            facility = facilities.find { |f| f['StreetAddressZipCode'] == postal_code } if facility.blank?
+          else
+            # If the address is not prsent, find the facility by the postal code
+            facility = facilities.find { |f| f['StreetAddressZipCode'] == postal_code }
+          end
+
+          # If we found the facility, use it as the location, otherwise, use the physicalDeliveryOffice attribute from AD
+          user.facility = facility['StationNumber'] if facility.present?
+          user.location = facility.present? ? facility['OfficialStationName'] : _location
+          user.save
         end
-
-        # If we found the facility, use it as the location, otherwise, use the physicalDeliveryOffice attribute from AD
-        user.facility = facility['StationNumber'] if facility.present?
-        user.location = facility.present? ? facility['OfficialStationName'] : _location
-        user.save
       end
+    # if the .bind method for ldap returns an error, return the user default value (nil)
+    rescue
+      user
+    else
+      get_ldap_response(ldap)
+      user
     end
-    get_ldap_response(ldap)
-    user
   end
 
   attr_accessor :skip_password_validation # virtual attribute to skip password validation while saving
@@ -205,5 +212,4 @@ class User < ApplicationRecord
 
     raise msg unless ldap.get_operation_result.code == 0
   end
-
 end

@@ -7,10 +7,11 @@ class ApplicationController < ActionController::Base
   before_action :setup_breadcrumb_navigation
   before_action :store_user_location!, if: :storable_location?
   before_action :set_paper_trail_whodunnit
-  before_action :log_in_va_user
+  # before_action :log_in_va_user
   before_action :user_accepted_terms?
   before_action :set_visit_props
   before_action :set_visitor_props
+  before_action :set_user_param
 
   protect_from_forgery with: :exception, prepend: true
 
@@ -54,10 +55,25 @@ class ApplicationController < ActionController::Base
     store_location_for(:user, request.fullpath)
   end
 
-  def log_in_va_user
-    if current_user.blank? && ENV['USE_NTLM'] == 'true'
+  # def log_in_va_user
+  #   if current_user.blank? && ENV['USE_NTLM'] == 'true'
+  #     user = User.authenticate_ldap(request.env["REMOTE_USER"])
+  #     sign_in(user) unless user.blank?
+  #   end
+  # end
+
+  def set_user_param
+    if current_user.blank?
+      # check to see if the user is using NTLM
       user = User.authenticate_ldap(request.env["REMOTE_USER"])
-      sign_in(user) unless user.blank?
+      # if so, log them in and set the attr_accessor to false
+      if user.present?
+        @user_is_guest = false
+        sign_in(user)
+      # if not, set the attr_accessor to true
+      else
+        @user_is_guest = true
+      end
     end
   end
 
