@@ -12,7 +12,6 @@
   <div id="commontator-thread-<%= thread.id %>" class="commontator thread">
     <% if @commontator_thread_show %>
       <%=
-        debugger
         render partial: 'commontator/threads/show', locals: {
           thread: thread, user: user, page: page, show_all: show_all, practice: @practice
         }

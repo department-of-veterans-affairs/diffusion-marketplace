@@ -121,8 +121,6 @@ class Commontator::CommentsController < Commontator::ApplicationController
 
   # PUT /comments/1/delete
   def delete
-    debugger
-
     security_transgression_unless @comment.can_be_deleted_by?(@commontator_user)
 
     if @comment.delete_by(@commontator_user)
@@ -203,7 +201,6 @@ class Commontator::CommentsController < Commontator::ApplicationController
   protected
 
   def set_comment_and_thread
-    debugger
     @comment = Commontator::Comment.find(params[:id])
     @commontator_thread = @comment.thread
   end
