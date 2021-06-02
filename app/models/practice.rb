@@ -200,9 +200,11 @@ class Practice < ApplicationRecord
   scope :sort_added, -> { order(Arel.sql("practices.created_at DESC")) }
   scope :filter_by_category_ids, -> (cat_ids) { where('category_practices.category_id IN (?)', cat_ids)} # cat_ids should be a id number or an array of id numbers
   scope :published_enabled_approved,   -> { where(published: true, enabled: true, approved: true) }
-  scope :get_by_adopted_facility, -> (station_number) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {facility_id: station_number}) }
-  scope :get_by_created_facility, -> (station_number) { joins(:practice_origin_facilities).where(practice_origin_facilities: { facility_id: station_number }) }
   scope :sort_by_retired, -> { order("retired asc") }
+  scope :get_by_adopted_facility, -> (station_number) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {facility_id: station_number}).uniq }
+  scope :get_by_created_facility, -> (station_number) { where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { facility_id: station_number }) }
+  scope :load_associations, -> { includes(:categories, :diffusion_histories, :practice_origin_facilities) }
+
 
   belongs_to :user, optional: true
 

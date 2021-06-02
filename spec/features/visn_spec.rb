@@ -277,6 +277,7 @@ describe 'VISN pages', type: :feature do
     @practice = Practice.create!(name: 'The Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
     PracticeOriginFacility.create!(practice: @practice, facility_type: 0, facility_id: '421')
     @practice_2 = Practice.create!(name: 'An Awesome Practice!', initiating_facility_type: 'visn', initiating_facility: '2', tagline: 'Test tagline 2', date_initiated: 'Sun, 24 Oct 2004 00:00:00 UTC +00:00', summary: 'This is an awesome practice.', published: true, enabled: true, approved: true, user: @user)
+    PracticeOriginFacility.create!(practice: @practice_2, facility_type: 0, facility_id: '424')
     @practice_3 = Practice.create!(name: 'A Very Cool Practice!', initiating_facility_type: 'facility', tagline: 'Super cool tagline', date_initiated: 'Mon, 09 Mar 1999 00:00:00 UTC +00:00', summary: 'This is a very cool practice.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
     PracticeOriginFacility.create!(practice: @practice_3, facility_type: 0, facility_id: '443')
     @practice_4 = Practice.create!(name: 'A Fantastic Practice!', initiating_facility_type: 'facility', tagline: 'Cool tagline', date_initiated: 'Fri, 21 Oct 2001 00:00:00 UTC +00:00', summary: 'This is a fantastic practice.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
@@ -284,6 +285,7 @@ describe 'VISN pages', type: :feature do
     @practice_5 = Practice.create!(name: 'A Magnificent Practice!', initiating_facility_type: 'facility', tagline: 'Test tagline 5', date_initiated: 'Sat, 30 Nov 1995 00:00:00 UTC +00:00', summary: 'This is a magnificent practice.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
     PracticeOriginFacility.create!(practice: @practice_5, facility_type: 0, facility_id: '424')
     @practice_6 = Practice.create!(name: 'A Spectacular Practice!', initiating_facility_type: 'visn', initiating_facility: '2', tagline: 'Test tagline 6', date_initiated: 'Sun, 09 Oct 2008 00:00:00 UTC +00:00', summary: 'This is a spectacular practice.', published: true, enabled: true, approved: true, user: @user)
+    PracticeOriginFacility.create!(practice: @practice_6, facility_type: 0, facility_id: '424')
     @practice_7 = Practice.create!(name: 'A Meaningful Practice!', initiating_facility_type: 'facility', tagline: 'Test tagline 7', date_initiated: 'Wed, 11 Feb 1991 00:00:00 UTC +00:00', summary: 'This is a meaningful practice.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
     PracticeOriginFacility.create!(practice: @practice_7, facility_type: 0, facility_id: '443')
     @practice_8 = Practice.create!(name: 'A Ground-breaking Practice!', initiating_facility_type: 'facility', tagline: 'Test tagline 8', date_initiated: 'Thu, 15 Feb 2015 00:00:00 UTC +00:00', summary: 'This is a ground-breaking practice.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
@@ -364,7 +366,7 @@ describe 'VISN pages', type: :feature do
 
       it 'should allow the user to visit a visn\'s show page via clicking on a visn card' do
         @visn_cards.first.click
-
+        expect(page).to have_selector('#visns-show', visible: true)
         expect(page).to have_content('1')
         expect(page).to have_current_path(visn_path(@visn))
       end
@@ -413,6 +415,7 @@ describe 'VISN pages', type: :feature do
         facility_type_labels.first.click
         facility_type_labels[1].click
         facility_type_labels.last.click
+        expect(page).to have_selector('div[style*="width: 34px"][title=""]', visible: true)
         expect(find_all(:css, 'div[style*="width: 34px"][title=""]').count).to eq(3)
       end
 
@@ -462,7 +465,6 @@ describe 'VISN pages', type: :feature do
         find('#visn-search-button').click
 
         expect(practice_cards.count).to eq(2)
-
         # now sort by A to Z
         expect(all('h3.dm-practice-title').first.text).to eq(@practice_3.name)
         select('Sort by A to Z', from: 'search_sort_option')

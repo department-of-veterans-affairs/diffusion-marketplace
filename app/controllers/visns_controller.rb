@@ -4,14 +4,10 @@ class VisnsController < ApplicationController
 
   def index
     @visns = Visn.cached_visns
-    practices = Practice.searchable_practices nil
-    @visns_counts = set_visns_counts(practices)
+    @visns_counts = set_visns_counts
     @visn_markers = Gmaps4rails.build_markers(@visns) do |visn, marker|
-
-      current_visn = @visns.find { |vc| vc[:number] == visn.number }
-
-      marker.lat current_visn[:latitude].to_s
-      marker.lng current_visn[:longitude].to_s
+      marker.lat visn[:latitude].to_s
+      marker.lng visn[:longitude].to_s
 
       marker.picture({
                        url: view_context.image_path('visn-va-facility-map-marker-default.svg'),
@@ -23,8 +19,8 @@ class VisnsController < ApplicationController
 
       marker.shadow nil
       marker.json({
-        id: current_visn[:id],
-        number: current_visn[:number]
+        id: visn[:id],
+        number: visn[:number]
       })
 
       marker.infowindow render_to_string(partial: 'visns/maps/index_infowindow', locals: { visn: visn })
@@ -36,11 +32,8 @@ class VisnsController < ApplicationController
     @visn_va_facilities = VaFacility.get_by_visn(@visn)
 
     @visn_va_facility_markers = Gmaps4rails.build_markers(@visn_va_facilities) do |facility, marker|
-
-      va_facility = @visn_va_facilities.find { |vaf| vaf.id == facility.id }
-
-      marker.lat va_facility[:latitude].to_s
-      marker.lng va_facility[:longitude].to_s
+      marker.lat facility[:latitude].to_s
+      marker.lng facility[:longitude].to_s
 
       marker.picture({
                        url: view_context.image_path('visn-va-facility-map-marker-default.svg'),
@@ -52,27 +45,23 @@ class VisnsController < ApplicationController
 
       marker.shadow nil
       marker.json({
-        id: va_facility.id,
-        type: va_facility.classification
+        id: facility.id,
+        type: facility.classification
       })
 
-      marker.infowindow render_to_string(partial: 'visns/maps/show_infowindow', locals: { va_facility: va_facility })
+      marker.infowindow render_to_string(partial: 'visns/maps/show_infowindow', locals: { va_facility: facility })
     end
 
-    searchable_practices = Practice.searchable_practices nil
     # set '@practices_json' to avoid js console error when utilizing the practices/search.js.erb file
-    @practices_json = practices_json(searchable_practices)
-
-    @practices_created_by_visn = helpers.get_created_practices_by_visn(searchable_practices, @visn, [])
-
+    @practices_json = []
+    visn_va_facilities_station_numbers = @visn_va_facilities.get_station_numbers
+    @practices_created_by_visn = @visn.get_created_practices(visn_va_facilities_station_numbers)
     @practices_created_json = practices_json(@practices_created_by_visn)
     # get the unique categories for practices created in a VISN
     @practices_created_categories = []
     get_categories_by_practices(@practices_created_by_visn, @practices_created_categories)
 
-
-    @practices_adopted_by_visn = helpers.get_adopted_practices_by_visn(searchable_practices, @visn, [])
-
+    @practices_adopted_by_visn = @visn.get_adopted_practices(visn_va_facilities_station_numbers)
     @practices_adopted_json = practices_json(@practices_adopted_by_visn)
     # get the unique categories for practices adopted in a VISN
     @practices_adopted_categories = []
@@ -86,11 +75,12 @@ class VisnsController < ApplicationController
     @visn = Visn.find_by!(number: params[:number])
   end
 
-  def set_visns_counts(practices)
+  def set_visns_counts
     visn_counts = []
     @visns.each do |visn|
-      created = helpers.get_created_practices_by_visn(practices, visn, []).count
-      adopted = helpers.get_adopted_practices_by_visn(practices, visn, []).count
+      station_numbers = VaFacility.get_by_visn(visn).get_station_numbers
+      created = visn.get_created_practices(station_numbers).size
+      adopted = visn.get_adopted_practices(station_numbers).size
       visn_counts.push({number: visn[:number], created: created, adopted: adopted})
     end
     visn_counts

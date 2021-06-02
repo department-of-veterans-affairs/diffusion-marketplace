@@ -3,23 +3,24 @@ class VaFacilitiesController < ApplicationController
   before_action :set_va_facility, only: [:show, :created_practices, :update_practices_adopted_at_facility]
 
   def index
-    @facilities = VaFacility.cached_va_facilities
+    @facilities = VaFacility.cached_va_facilities.select(:common_name, :fy17_parent_station_complexity_level, :id, :official_station_name, :slug, :station_number, :street_address_state, :visn_id).order(:official_station_name).includes(:visn)
     @visns = Visn.cached_visns
-    @types = VaFacility.get_types
-
-    @filtered_facilities= @facilities
+    @types = VaFacility.cached_va_facilities.get_complexity
+    @filtered_facilities = @facilities
     @selected_facility
     #check params and filters...
     if params[:facility].present?
-      @filtered_facilities = @facilities.select { |x| x["id"] == params[:facility].to_i}
+      @filtered_facilities = [@facilities.find(params[:facility])]
       @selected_facility = params[:facility].to_i
+    end
+    if params[:type].present?
+      @filtered_facilities = @filtered_facilities.where(fy17_parent_station_complexity_level: params[:type].to_s)
     end
     if params[:visn].present?
       @filtered_facilities = @filtered_facilities.select { |x| x.visn.number == params[:visn].to_i}
     end
-    if params[:type].present?
-      @filtered_facilities = @filtered_facilities.select { |x| x.fy17_parent_station_complexity_level.include? params[:type].to_s}
-    end
+
+    @filtered_facilities_count = @filtered_facilities.size
   end
 
   def show
@@ -50,7 +51,7 @@ class VaFacilitiesController < ApplicationController
     @pagy_created_info = @pagy_created_practices[0]
     @created_practices = @pagy_created_practices[1].sort_by{ |a| a.retired ? 1 : 0 }
 
-    @created_pr_count = created_practices.count
+    @created_pr_count = created_practices.size
     @created_practices_categories = get_categories_by_practices(created_practices, [])
   end
 
@@ -80,7 +81,7 @@ class VaFacilitiesController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render :json => { practice_cards_html: practice_cards_html, count: created_practices.length, next: @pagy_created_info.next } }
+      format.json { render :json => { practice_cards_html: practice_cards_html, count: created_practices.size, next: @pagy_created_info.next } }
     end
   end
 
@@ -96,7 +97,7 @@ class VaFacilitiesController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render :json => {adopted_facility_results_html: adopted_facility_results_html, count: @adoptions_at_facility.count } }
+      format.json { render :json => {adopted_facility_results_html: adopted_facility_results_html, count: @adoptions_at_facility.size } }
     end
   end
 

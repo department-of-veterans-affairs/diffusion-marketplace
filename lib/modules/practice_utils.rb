@@ -11,16 +11,14 @@ module PracticeUtils
         practice_hash['date_initiated'] = '(start date unknown)'
       end
 
-      if practice.categories&.length > 0
+      if practice.categories&.size > 0
         practice_hash['category_names'] = []
+        categories = practice.categories.not_other.not_none
+        categories.each do |category|
+          practice_hash['category_names'].push category.name
 
-        practice.categories.each do |category|
-          if category.name != 'None' && category.name != 'Other' && category.is_other != true
-            practice_hash['category_names'].push category.name
-
-            unless category.related_terms.empty?
-              practice_hash['category_names'].concat(category.related_terms)
-            end
+          unless category.related_terms.empty?
+            practice_hash['category_names'].concat(category.related_terms)
           end
         end
       end
@@ -36,6 +34,7 @@ module PracticeUtils
       # get diffusion history facilities
       adoptions = practice.diffusion_histories.pluck(:facility_id)
       practice_hash['adoption_facilities'] = adoptions
+      practice_hash['adoption_count'] = adoptions.size
       practices_array.push practice_hash
     end
 
@@ -44,7 +43,8 @@ module PracticeUtils
 
   def get_categories_by_practices(practices, practice_categories)
     practices.each do |p|
-      p.categories.where(is_other: false).where.not(name: 'Other').each do |c|
+      categories = p.categories.not_other.not_none
+      categories.each do |c|
         practice_categories << c unless practice_categories.include?(c)
       end
     end
