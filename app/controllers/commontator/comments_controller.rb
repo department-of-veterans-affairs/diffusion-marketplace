@@ -3,7 +3,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
   before_action :set_comment_and_thread, except: [ :new, :create, :report_comment ]
   before_action :commontator_set_thread_variables, only: [ :show, :update, :delete, :undelete ]
   before_action :commontator_set_new_comment, only: [ :create ], unless: proc { params[:comment].present? && params[:comment][:parent_id].present? }
-  before_action :set_practice
+
   # GET /comments/1
   def show
     respond_to do |format|
@@ -121,6 +121,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
 
   # PUT /comments/1/delete
   def delete
+    set_practice
     security_transgression_unless @comment.can_be_deleted_by?(@commontator_user)
     if @comment.delete_by(@commontator_user)
       ahoy.track "Practice comment deleted", { comment_id: params[:id] }
@@ -136,6 +137,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
 
   # PUT /comments/1/undelete
   def undelete
+    set_practice
     security_transgression_unless @comment.can_be_deleted_by?(@commontator_user)
 
     if @comment.undelete_by(@commontator_user)
@@ -199,11 +201,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
   protected
 
   def set_comment_and_thread
-    if params[:id].blank?
-      @comment = Commontator::Comment.find(params[:thread_id])
-    else
-      @comment = Commontator::Comment.find(params[:id])
-    end
+    @comment = Commontator::Comment.find(params[:id])
     @commontator_thread = @comment.thread
   end
 
@@ -213,12 +211,5 @@ class Commontator::CommentsController < Commontator::ApplicationController
                .each do |user|
       @commontator_thread.subscribe(user)
     end
-  end
-
-  def set_practice
-    if @comment.blank?
-      set_comment_and_thread
-    end
-    @practice = Practice.find_by_id(@comment.thread.commontable_id)
   end
 end
