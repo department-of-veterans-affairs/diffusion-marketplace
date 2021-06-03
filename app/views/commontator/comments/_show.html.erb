@@ -67,28 +67,39 @@
       <% end %>
 
       <span id="commontator-comment-<%= comment.id %>-actions" class="actions text-middle">
-        <%=
-          link_to(
-              '',
-              commontator.edit_comment_path(comment),
-              id: "commontator-comment-#{comment.id}-edit",
-              class: "fas fa-edit fa-lg edit-comment-icon #{ creator.first_name.blank? && creator.last_name.blank? ? '' : 'margin-left-1' }",
-              remote: true
-          ) if comment.can_be_edited_by?(user)
-        %>
+        <% if !@practice.retired %>
+          <%=
+            link_to(
+                '',
+                commontator.edit_comment_path(comment),
+                id: "commontator-comment-#{comment.id}-edit",
+                class: "fas fa-edit fa-lg edit-comment-icon #{ creator.first_name.blank? && creator.last_name.blank? ? '' : 'margin-left-1' }",
+                remote: true
+            ) if comment.can_be_edited_by?(user)
+          %>
+         <% else %>
+          <a class="fas fa-edit fa-lg edit-comment-icon margin-left-1"></a>
+        <% end %>
 
-
-        <% if comment.can_be_deleted_by?(user) %>
-          <% is_deleted = comment.is_deleted? %>
-          <% del_string = is_deleted ? 'undelete' : 'delete' %>
-              <%= link_to  '',
-                      is_deleted ? commontator.undelete_comment_path(comment) : commontator.delete_comment_path(comment),
-                      data: is_deleted ? { confirm: "Are you sure you want to restore this #{comment.parent.nil? ? 'comment' : 'reply'}?"} : { confirm: "Are you sure you want to delete this #{comment.parent.nil? ? 'comment' : 'reply'}?" },
-                      method: :put,
-                      id: "commontator-comment-#{comment.id}-#{del_string}",
-                      class: is_deleted ? "fas fa-trash-restore-alt fa-lg margin-left-1" : "fas fa-trash-alt fa-lg delete-comment-icon margin-left-1",
-                      remote: true %>
-         <% end %>
+          <% if comment.can_be_deleted_by?(user) %>
+            <% is_deleted = comment.is_deleted? %>
+            <% del_string = is_deleted ? 'undelete' : 'delete' %>
+            <% if !@practice.retired %>
+                <%= link_to  '',
+                             is_deleted ? commontator.undelete_comment_path(comment) : commontator.delete_comment_path(comment),
+                             data: is_deleted ? { confirm: "Are you sure you want to restore this #{comment.parent.nil? ? 'comment' : 'reply'}?"} : { confirm: "Are you sure you want to delete this #{comment.parent.nil? ? 'comment' : 'reply'}?" },
+                             method: :put,
+                             id: "commontator-comment-#{comment.id}-#{del_string}",
+                             class: is_deleted ? "fas fa-trash-restore-alt fa-lg margin-left-1" : "fas fa-trash-alt fa-lg delete-comment-icon margin-left-1",
+                             remote: true %>
+            <% else %>
+                  <% if is_deleted %>
+                        <a class="fas fa-trash-restore-alt fa-lg margin-left-1"></a>
+                  <% else %>
+                    <a class="fas fa-trash-alt fa-lg delete-comment-icon margin-left-1"></a>
+                  <% end %>
+             <% end %>
+          <% end %>
       </span>
 
       <% if current_user != creator %>
@@ -128,6 +139,7 @@
           <%= render partial: 'commontator/comments/votes', locals: { comment: comment, user: user } %>
         </span>
           <% unless comment.is_deleted? %>
+          <% if !@practice.retired %>
             <span id="commontator-comment-<%= comment.id %>-reply-link" class="reply display-inline-block">
               <%=
                 link_to(
@@ -137,6 +149,11 @@
                 ) if thread.config.comment_reply_style != :n && !thread.is_closed?
               %>
             </span>
+            <% else %>
+              <span>
+                <a href="#" onclick="return false">Reply</a>
+              </span>
+            <% end %>
           <% end %>
       </div>
 
