@@ -11,16 +11,18 @@
   nested_comments = thread.nested_comments_for(user, comments, show_all)
 %>
 
-<% if thread.config.comment_order != :e %>
-  <%= render partial: 'commontator/threads/reply', locals: { thread: thread, user: user } %>
-  <h5 class="font-sans-3xs line-height-15px text-bold text-ls-1 text-uppercase">
-        <span id="practice-comment-count">
-          <%= thread.comments.count  %>
-        </span>
-    <span id="practice-comment-label">
-          <%= thread.comments.count == 1  ? 'comment' : 'comments' %>:
-        </span>
-  </h5>
+<% if @practice.present? && !@practice.retired %>
+  <% if thread.config.comment_order != :e %>
+    <%= render partial: 'commontator/threads/reply', locals: { thread: thread, user: user } %>
+    <h5 class="font-sans-3xs line-height-15px text-bold text-ls-1 text-uppercase">
+          <span id="practice-comment-count">
+            <%= thread.comments.count  %>
+          </span>
+      <span id="practice-comment-label">
+            <%= thread.comments.count == 1  ? 'comment' : 'comments' %>:
+          </span>
+    </h5>
+  <% end %>
 <% end %>
 
 <div id="commontator-thread-<%= thread.id %>-show" class="show hidden">
