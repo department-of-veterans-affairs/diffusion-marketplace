@@ -39,7 +39,8 @@
         <%= render 'shared/navbar_search' %>
         <ul class="usa-nav__primary usa-accordion margin-top-0 dm-nav-header-profile <%= 'dm-nav-header-profile-sign-in' if !user_signed_in? %>">
           <% if user_signed_in? %>
-            <% if ENV['USE_NTLM'] == 'true' %>
+            <% user_type = session[:user_type] %>
+            <% if user_type === 'ntlm' || user_type === 'public' %>
               <li class="usa-nav__primary-item">
                 <a class="usa-nav__link <%= 'dm-current-link' if request.fullpath == user_path(current_user) %>" href="<%= user_path(current_user) %>">
                   <span>Your profile</span>

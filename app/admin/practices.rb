@@ -52,7 +52,7 @@ ActiveAdmin.register Practice do
       practice_highlight_action_str = practice.highlight ? "Unhighlight" : "Highlight"
       item practice_highlight_action_str, highlight_practice_admin_practice_path(practice), method: :post
       practice_highlight_action_str = practice.is_public ? "Make Private" : "Make Public"
-      item practice_highlight_action_str, set_practice_privacy_admin_practice_path(practice), method: :post
+      item practice_highlight_action_str, set_practice_privacy_admin_practice_path(practice), class: 'toggle-practice-privacy-link', method: :post
     end
   end
 

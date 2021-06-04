@@ -542,4 +542,19 @@ describe 'The admin dashboard', type: :feature do
     # should not navigate away from metrics page
     expect(page).to have_current_path(admin_practice_path(@practice))
   end
+
+  it 'should allow an admin to toggle the \'is_public\' attribute on or off for any given practice' do
+    login_as(@admin, scope: :user, run_callbacks: false)
+    visit '/admin/practices'
+
+    expect(first('.col-public .status_tag')).to have_content('NO')
+
+    first('.toggle-practice-privacy-link').click
+    expect(page).to have_content("\"#{@practice_2.name}\" is now a public-facing practice")
+    expect(first('.col-public .status_tag')).to have_content('YES')
+
+    first('.toggle-practice-privacy-link').click
+    expect(page).to have_content("\"#{@practice_2.name}\" is now a VAEC internal-facing practice")
+    expect(first('.col-public .status_tag')).to have_content('NO')
+  end
 end

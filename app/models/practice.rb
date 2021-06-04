@@ -203,7 +203,7 @@ class Practice < ApplicationRecord
   scope :get_by_adopted_facility, -> (station_number) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {facility_id: station_number}).uniq }
   scope :get_by_created_facility, -> (station_number) { where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { facility_id: station_number }) }
   scope :load_associations, -> { includes(:categories, :diffusion_histories, :practice_origin_facilities) }
-  scope :public, -> { published_enabled_approved.where(is_public: true) }
+  scope :public_facing, -> { published_enabled_approved.where(is_public: true) }
 
   belongs_to :user, optional: true
 

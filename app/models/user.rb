@@ -12,8 +12,7 @@ class User < ApplicationRecord
          :password_expirable, :password_archivable, :trackable
   #:timeoutable
 
-  devise :timeoutable unless ENV['USE_NTLM'] == 'true'
-  devise :confirmable unless ENV['USE_NTLM'] == 'true'
+  devise :timeoutable
 
   rolify before_add: :remove_all_roles
 
