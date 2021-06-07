@@ -43,13 +43,13 @@ class VaFacilitiesController < ApplicationController
       marker.shadow nil
       marker.json({ id: facility.id })
     end
-    created_practices = Practice.get_facility_created_practices(station_number, nil, 'a_to_z', nil)
+    created_practices = Practice.sort_by_retired.get_facility_created_practices(station_number, nil, 'a_to_z', nil)
     @pagy_created_practices = pagy_array(
       created_practices,
       items: 3
     )
     @pagy_created_info = @pagy_created_practices[0]
-    @created_practices = @pagy_created_practices[1].sort_by{ |a| a.retired ? 1 : 0 }
+    @created_practices = @pagy_created_practices[1]
 
     @created_pr_count = created_practices.size
     @created_practices_categories = get_categories_by_practices(created_practices, [])
@@ -64,8 +64,8 @@ class VaFacilitiesController < ApplicationController
     search_term = params[:search_term] ? params[:search_term].downcase : nil
     categories = params[:categories] || nil
 
-    created_practices = Practice.get_facility_created_practices(station_number, search_term, sort_option, categories)
-    created_practices = created_practices.sort_by{ |a| a.retired ? 1 : 0 }
+    created_practices = Practice.sort_by_retired.get_facility_created_practices(station_number, search_term, sort_option, categories)
+    created_practices = created_practices
     @pagy_created_practices = pagy_array(
       created_practices,
       items: 3,

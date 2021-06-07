@@ -49,7 +49,9 @@ class Practice < ApplicationRecord
         self.maturity_level_changed? ||
         self.overview_problem_changed? ||
         self.overview_solution_changed? ||
-        self.overview_results_changed?
+        self.overview_results_changed?  ||
+        self.retired_changed? ||
+        self.retired_reason_changed?
       self.reset_searchable_cache = true
     end
   end
