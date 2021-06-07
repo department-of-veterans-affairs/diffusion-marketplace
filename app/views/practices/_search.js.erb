@@ -203,7 +203,6 @@ function searchPracticesPage() {
     // Template out the search results
     function buildSearchResults(results, sortOption) {
         $(SPINNER).addClass('display-none');
-        console.log(results);
         var tmpResults = results.sort(sortOption);
 
         var resultsArray = [];
