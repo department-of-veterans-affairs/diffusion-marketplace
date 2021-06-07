@@ -368,7 +368,7 @@ class Practice < ApplicationRecord
   end
 
   def self.search_practices(search_term = nil, sort = 'a_to_z', categories = nil)
-    query = sort_by_retired.with_categories_and_adoptions_ct.left_outer_joins(:practice_origin_facilities)
+    query = with_categories_and_adoptions_ct.left_outer_joins(:practice_origin_facilities)
     if search_term
       search = get_query_for_search_term(search_term)
       query = query.where(search[:query], search[:params])
@@ -385,6 +385,7 @@ class Practice < ApplicationRecord
     elsif sort === 'added'
       query = query.sort_added
     end
+    query = query.sort_by_retired
     query.group("practices.id, categories.id, practice_origin_facilities.id").uniq
   end
 
