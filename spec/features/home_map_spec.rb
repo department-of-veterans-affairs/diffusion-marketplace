@@ -83,7 +83,7 @@ describe 'HomeMap', type: :feature do
       test_filter_checkbox.click
 
       update_results
-      find('#map > div > div > div:nth-child(1) > div:nth-child(3) > div > div:nth-child(3) > div > img', visible: false).click
+      find('#map > div > div > div:nth-child(2) > div:nth-child(3) > div > div:nth-child(3) > div > img', visible: false).click
       expect(page).to have_content('James H. Quillen Department of Veterans Affairs Medical Center')
       expect(page).to have_content('0 unsuccessful adoptions')
     end
