@@ -6,11 +6,29 @@
     <div class="grid-row grid-gap">
       <div id="practice_show" class="grid-col-12 overview-section practice-section">
         <%= render partial: "shared/messages", locals: {small_text: false} %>
+        <% unless @practice.published && @practice.approved %>
+          <div class="usa-alert usa-alert--warning">
+            <div class="usa-alert__body">
+              <h3 class="usa-alert__heading">This practice will not be shown in the marketplace because it is:</h3>
+              <% unless @practice.published %>
+                <div class="badge-container un-published-practice">
+                  Not Published
+                </div>
+              <% end %>
+              <% unless @practice.approved %>
+                <div class="badge-container un-approved-practice">
+                  Not Approved
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
         <% if @practice.retired %>
-          <div class="usa-alert usa-alert--info">
+          <div class="usa-alert usa-alert--info margin-bottom-3 margin-top-1">
             <div class="usa-alert__body">
               <h4 class="usa-alert__heading">Retired Practice</h4>
-              <p class="usa-alert__text">This practice is no longer being updated.
+              <div class="usa-alert__text">
+                This practice is no longer being updated.
                 <% if @practice.retired_reason.present? %>
                   <p>
                     <%
@@ -19,28 +37,10 @@
                     Reason for retirement: <%= retired_reason_html.html_safe %>
                   </p>
                 <% end %>
-              </p>
+              </div>
             </div>
           </div>
-        <% else %>
-            <% unless @practice.published && @practice.approved %>
-              <div class="usa-alert usa-alert--warning">
-                <div class="usa-alert__body">
-                  <h3 class="usa-alert__heading">This practice will not be shown in the marketplace because it is:</h3>
-                  <% unless @practice.published %>
-                    <div class="badge-container un-published-practice">
-                      Not Published
-                    </div>
-                  <% end %>
-                  <% unless @practice.approved %>
-                    <div class="badge-container un-approved-practice">
-                      Not Approved
-                    </div>
-                  <% end %>
-                </div>
-              </div>
-            <% end %>
-         <% end %>
+        <% end %>
       </div>
     </div>
   </div>
