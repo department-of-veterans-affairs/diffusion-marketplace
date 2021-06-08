@@ -138,6 +138,7 @@
         <span id="commontator-comment-<%= comment.id %>-votes" class="votes">
           <%= render partial: 'commontator/comments/votes', locals: { comment: comment, user: user } %>
         </span>
+        <% if !comment.parent_id? %>
           <% unless comment.is_deleted? %>
           <% if !@practice.retired %>
             <span id="commontator-comment-<%= comment.id %>-reply-link" class="reply display-inline-block">
@@ -154,6 +155,7 @@
                 <a href="#" onclick="return false">Reply</a>
               </span>
             <% end %>
+          <% end %>
           <% end %>
       </div>
 
