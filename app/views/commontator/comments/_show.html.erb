@@ -93,11 +93,7 @@
                              class: is_deleted ? "fas fa-trash-restore-alt fa-lg margin-left-1" : "fas fa-trash-alt fa-lg delete-comment-icon margin-left-1",
                              remote: true %>
             <% else %>
-                  <% if is_deleted %>
-                        <a class="fas fa-trash-restore-alt fa-lg margin-left-1"></a>
-                  <% else %>
-                    <a class="fas fa-trash-alt fa-lg delete-comment-icon margin-left-1"></a>
-                  <% end %>
+              <a class="<%= is_deleted ? 'fas fa-trash-restore-alt fa-lg margin-left-1' : 'fas fa-trash-alt fa-lg delete-comment-icon margin-left-1' %>"></a>
              <% end %>
           <% end %>
       </span>
@@ -152,7 +148,7 @@
             </span>
             <% else %>
               <span>
-                <a href="#" onclick="return false">Reply</a>
+                <a class="usa-button--unstyled dm-btn-primary reply-link" href="#" onclick="return false">Reply</a>
               </span>
             <% end %>
           <% end %>
