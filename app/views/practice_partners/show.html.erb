@@ -20,7 +20,7 @@
       <% @partner_practices = @practice_partner.practices %>
       <% if @partner_practices.any? %>
         <div class="grid-row grid-gap-3">
-          <% @partner_practices.order(retired: :desc, name: :asc).each do |p| %>
+          <% @partner_practices.order(retired: :asc, name: :asc).each do |p| %>
             <%= render partial: 'shared/practice_card', locals: {practice: p, featured: false} %>
           <% end %>
         </div>

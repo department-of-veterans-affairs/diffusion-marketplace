@@ -61,8 +61,8 @@ ActiveAdmin.register Practice do
     message = "\"#{resource.name}\" was retired"
     unless resource.retired
       message = "\"#{resource.name}\" was activated"
+      resource.retired_reason = nil if resource.retired == false
     end
-    resource.retired_reason = nil if resource.retired == false
     resource.save
     redirect_back fallback_location: root_path, notice: message
   end
@@ -240,7 +240,7 @@ ActiveAdmin.register Practice do
         practice_slug = params[:id]
         email = params[:user_email]
         retired = params[:practice][:retired] == "1" ? true : false
-        retired_reason = params[:practice][:retired_reason]
+        retired_reason = retired ? params[:practice][:retired_reason] : nil
         # raise an error if practice name is left blank
         raise StandardError.new 'There was an error. Practice name cannot be blank.' if blank_practice_name
 

@@ -119,7 +119,7 @@
   <section class="shark-tank-winners">
     <h3 class="font-sans-lg text-center grid-col-8 margin-top-2 margin-bottom-3 margin-x-auto">Previous Shark Tank Winners</h3>
     <% shark_tank_badge = Badge.find_by(name: 'Shark Tank') %>
-    <% @shark_tank_winners = Practice.joins(:badge_practices).where(badge_practices: { badge: shark_tank_badge}).order(retired: :desc, name: :asc) %>
+    <% @shark_tank_winners = Practice.joins(:badge_practices).where(badge_practices: { badge: shark_tank_badge}).order(retired: :asc, name: :asc) %>
     <% if @shark_tank_winners.any? %>
       <div class="grid-row grid-gap-3">
         <% @shark_tank_winners.each do |practice| %>
