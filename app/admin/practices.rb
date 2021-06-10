@@ -20,7 +20,7 @@ ActiveAdmin.register Practice do
       end
     end
   end
-  
+
     # ensure lowercase practice names are ordered correctly
     order_by(:name) do |order_clause|
       ['lower(practices.name)', order_clause.order].join(' ')
@@ -278,6 +278,7 @@ ActiveAdmin.register Practice do
     end
 
     def set_practice_user(practice)
+      previous_practice_user = practice.user
       email = params[:user_email].downcase
       name = params[:practice][:name]
       user = User.find_by(email: email)
@@ -287,6 +288,10 @@ ActiveAdmin.register Practice do
       skip_validations_and_save_user(user)
 
       practice.user = user
+      # if the practice user is updated, remove the previous practice user from the commontator_thread subscribers list if the following conditions are also true
+      if previous_practice_user.present? && previous_practice_user != practice.user && practice.commontator_thread.comments.where(creator_id: previous_practice_user.id).empty?
+        practice.commontator_thread.unsubscribe(previous_practice_user)
+      end
       practice.commontator_thread.subscribe(user)
       practice.approved = true
       practice.name = name
