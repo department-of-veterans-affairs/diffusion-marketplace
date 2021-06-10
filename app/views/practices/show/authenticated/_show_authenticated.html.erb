@@ -34,7 +34,7 @@
                     <%
                       retired_reason_html = @practice.retired_reason.gsub("<p>", "").gsub("</p>", "")
                     %>
-                    Reason for retirement: <%= retired_reason_html.html_safe %>
+                    Reason for retirement: <%= sanitize retired_reason_html.html_safe %>
                   </p>
                 <% end %>
               </div>
