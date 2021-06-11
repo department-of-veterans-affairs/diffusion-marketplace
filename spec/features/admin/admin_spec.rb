@@ -16,7 +16,7 @@ describe 'The admin dashboard', type: :feature do
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
     @practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true, retired: false)
-    @practice_2 = Practice.create!(name: 'The Second Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true)
+    @practice_2 = Practice.create!(name: 'The Second Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true, retired: false)
     @categories = [
       Category.create!(name: 'COVID', description: 'COVID related practices', related_terms: ['COVID-19, Coronavirus']),
       Category.create!(name: 'Telehealth', description: 'Telelhealth related practices')
