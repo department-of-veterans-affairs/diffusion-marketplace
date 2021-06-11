@@ -245,14 +245,13 @@ ActiveAdmin.register Practice do
         raise StandardError.new 'There was an error. Practice name cannot be blank.' if blank_practice_name
 
         practice = Practice.find_by(slug: practice_slug)
-        practice.retired = retired
-        practice.retired_reason = retired_reason
+
         practice_by_name = Practice.find_by(name: practice_name)
         # raise an error if there's already a practice with a name that matches the user's input for the name field
         raise StandardError.new 'There was an error. Practice name already exists.' if practice_by_name.present? && practice_by_name != practice
-
         practice ||= Practice.create(name: practice_name)
-
+        practice.retired = retired
+        practice.retired_reason = retired_reason
 
         # raise an error if practice email does not meet validation requirements
         blank_email = email.blank?
