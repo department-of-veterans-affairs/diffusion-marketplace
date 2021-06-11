@@ -5,6 +5,8 @@ describe 'Diffusion Marketplace footer', type: :feature, js: true do
     admin = User.create!(email: 'admin-dmva@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     admin.add_role(User::USER_ROLES[0].to_sym)
     @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', user: admin)
+    page_group = PageGroup.create(name: 'Open Calls', slug: 'open-calls', description: 'open calls page')
+    Page.create(page_group: page_group, title: 'Vaccine Acceptance Open Calls', description: 'Vaccine Acceptance Open Calls page', slug: 'home', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
     login_as(admin, :scope => :user, :run_callbacks => false)
     visit practice_overview_path(@practice)
   end
@@ -22,14 +24,23 @@ describe 'Diffusion Marketplace footer', type: :feature, js: true do
       within('footer') do
         expect(page).to have_link('Home')
         expect(page).to have_link('Partners')
+        expect(page).to have_link('Open calls')
         expect(page).to have_link('Report a bug')
         expect(page).to have_link('Send feedback')
         expect(page).to have_link('Nominate a practice')
       end
     end
+
     it 'should open feedback modal' do
       find('#feedback-modal').click
       expect(page).to have_content('We would love to hear from you!')
+    end
+
+    context 'clicking on the open calls link' do
+      it 'should redirect to diffusion map page' do
+        click_on 'Open calls'
+        expect(page).to have_current_path('/open-calls')
+      end
     end
   end
 
