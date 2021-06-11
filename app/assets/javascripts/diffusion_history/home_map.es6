@@ -107,7 +107,7 @@ function initialize() {
         const practiceCount = _.chain(result.map(r => r.practices)).flatten().uniqBy('id').value().length;
 
         $('#facility-results-count').text(facilityCount);
-        $('#practice-results-count').text(practiceCount + ' practice' + (practiceCount !== 1 ? 's' : ''));
+        $('#practice-results-count').text(`${practiceCount} practice${practiceCount !== 1 ? 's' : ''}`);
     }
 
     Gmaps.filter = function (data) {

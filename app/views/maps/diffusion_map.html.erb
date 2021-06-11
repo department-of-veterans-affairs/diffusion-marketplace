@@ -26,11 +26,10 @@
           <%= render 'maps/home_map_filters' %>
         </div>
       </div>
+      <div class="dm-loading-spinner text-center margin-y-8">
+        <i class="fas fa-circle-notch"></i>
+      </div>
     <% else %>
       <p>The map is not enabled for this site.</p>
     <% end %>
-  <div class="dm-loading-spinner text-center margin-y-8">
-    <p class="margin-bottom-2">Loading diffusion map...</p>
-    <i class="fas fa-circle-notch"></i>
-  </div>
 </section>
