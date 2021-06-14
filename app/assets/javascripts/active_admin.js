@@ -76,6 +76,19 @@
     setDashboardPanelTooltipTitle();
     setColHeaderTooltipTitle();
 
+  $("#practice_retired").click(function() {
+      var practiceRetired = document.getElementById("practice_retired").checked;
+      var htmlContent = document.getElementsByClassName("ql-editor");
+      if (!practiceRetired){
+          if(htmlContent.length > 0){
+              htmlContent[0].innerHTML = "";
+          }
+          $(".ql-editor").attr('contenteditable', false);
+      }
+      else{
+          $(".ql-editor").attr('contenteditable', true);
+      }
+  });
     // switches out polymorphic forms in page component
     $(document).on("change", ".polyselect", function () {
       $(".polyform.component-" + $(this).data("component-id")).hide();
@@ -103,3 +116,4 @@
 
   $(document).on("turbolinks:load", ready);
 }).call(this);
+

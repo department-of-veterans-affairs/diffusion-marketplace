@@ -16,6 +16,26 @@
       }
     }
   }
+  // retired banner button
+  .dm-practice-retired-banner {
+    position: absolute;
+    width: 73px;
+    height: 24px;
+    justify-content: center;
+    background-color: $dm-color-gray-30;
+    padding: 5px;
+    border-radius: 0px 2px 2px 0px;
+    z-index: 2;
+    top: 20px;
+    left: 12px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: $dm-color-base;
+    font-size: 13px;
+    line-height: 115%;
+  }
 
   // bookmark button
   .dm-practice-bookmark-btn {
@@ -28,8 +48,8 @@
     border-radius: 50%;
     z-index: 2;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    top: 18px;
-    right: 18px;
+    top: 20px;
+    right: 20px;
 
     .fas {
       color: $dm-color-blue-50v;
