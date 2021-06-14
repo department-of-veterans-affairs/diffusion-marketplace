@@ -569,7 +569,6 @@ describe 'The admin dashboard', type: :feature do
 
     # change the practice user
     visit '/admin/practices/the-best-practice-ever/edit'
-    fill_in('User email', with: '')
     fill_in('User email', with: @user2.email)
     click_button('Update Practice')
 
@@ -587,7 +586,6 @@ describe 'The admin dashboard', type: :feature do
     logout(@user2)
     login_as(@admin, :scope => :user, :run_callbacks => false)
     visit '/admin/practices/the-best-practice-ever/edit'
-    fill_in('User email', with: '')
     fill_in('User email', with: @user.email)
     click_button('Update Practice')
 
