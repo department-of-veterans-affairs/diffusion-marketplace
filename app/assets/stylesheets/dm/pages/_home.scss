@@ -127,6 +127,10 @@
       right: 6px;
     }
 
+    .dm-highlighted-practice-card {
+      max-width: 309px;
+    }
+
     @media screen and (min-width: 40rem) {
       height: 250px;
       max-height: 250px;
@@ -148,7 +152,6 @@
       .dm-highlighted-practice-card {
         position: absolute;
         right: 5%;
-        max-width: 309px;
       }
     }
 
