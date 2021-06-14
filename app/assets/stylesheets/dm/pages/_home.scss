@@ -124,6 +124,7 @@
 
     .dm-practice-bookmark-btn {
       top: 6px;
+      right: 6px;
     }
 
     @media screen and (min-width: 40rem) {
@@ -147,6 +148,7 @@
       .dm-highlighted-practice-card {
         position: absolute;
         right: 5%;
+        max-width: 309px;
       }
     }
 
