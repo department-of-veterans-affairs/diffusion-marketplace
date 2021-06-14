@@ -1,11 +1,8 @@
 class UpdateCategoryGroupings < ActiveRecord::Migration[5.2]
   def change
-    debugger
     strategic_rec = Category.create(name: "Strategic", short_name: "strategic", description: "Categories on strategical domain's",
                                   position: Category.maximum(:position).next, created_at: Time.now,
                                   updated_at: Time.now, is_other: false)
-
-    # NONE Cats......
 
     strategy_id = strategic_rec.id
     clinical_rec = Category.find_by(name: 'Clinical')
@@ -13,27 +10,21 @@ class UpdateCategoryGroupings < ActiveRecord::Migration[5.2]
     operational_rec = Category.find_by(name: 'Operational')
     operational_id = operational_rec.id
 
-    #Category.update_all(parent_category_id: nil)
-    none_operational_rec = Category.where(name: 'None', parent_category_id: operational_id)
-    none_operational_rec.update(description: 'No operational impact')
-
-    Category.create(name: "None", short_name: "none", description: "No strategic impact",
-                   parent_category_id: strategy_id,  position: Category.maximum(:position).next,
-                   created_at: Time.now, updated_at: Time.now, is_other: false)
-    #Other clinical, operational, strategic
     cur_others = Category.where(name: 'Other', parent_category_id: nil)
-    cur_others.delete_all
+    if cur_others.blank?
+      Category.create(name: "Other", short_name: "other", description: "Other",
+                      parent_category_id: clinical_id,  position: Category.maximum(:position).next,
+                      created_at: Time.now, updated_at: Time.now, is_other: false)
+    else
+      cur_others.update(parent_category_id: clinical_id)
+    end
 
     Category.create(name: "Other", short_name: "other", description: "Other",
-                   parent_category_id: strategy_id,  position: Category.maximum(:position).next,
-                   created_at: Time.now, updated_at: Time.now, is_other: false)
-
-    Category.create(name: "Other", short_name: "other", description: "Other",
-                    parent_category_id: clinical_id,  position: Category.maximum(:position).next,
+                    parent_category_id: operational_id,  position: Category.maximum(:position).next,
                     created_at: Time.now, updated_at: Time.now, is_other: false)
 
     Category.create(name: "Other", short_name: "other", description: "Other",
-                   parent_category_id: operational_id,  position: Category.maximum(:position).next,
+                   parent_category_id: strategy_id,  position: Category.maximum(:position).next,
                    created_at: Time.now, updated_at: Time.now, is_other: false)
 
     Category.find_each do |cat|
@@ -46,7 +37,10 @@ class UpdateCategoryGroupings < ActiveRecord::Migration[5.2]
       end
     end
 
-    debugger
-    raise Exception
+    #is_other ?  set any is_other = true's to parent_category_id clinical for now.. may need to adjust manually.
+    is_others = Category.where(is_other: true)
+    is_others.each do |rec|
+      rec.update(parent_category_id: clinical_id)
+    end
   end
 end
