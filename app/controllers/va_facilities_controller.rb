@@ -65,7 +65,6 @@ class VaFacilitiesController < ApplicationController
     categories = params[:categories] || nil
 
     created_practices = Practice.get_facility_created_practices(station_number, search_term, sort_option, categories)
-
     @pagy_created_practices = pagy_array(
       created_practices,
       items: 3,

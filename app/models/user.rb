@@ -80,7 +80,9 @@ class User < ApplicationRecord
     # returns a list of Practices a user has created or can edit
     editor_practices = PracticeEditor.where(user: self).collect { |pe| pe.practice }
     created_practices = Practice.where(user_id: id)
-    return (editor_practices + created_practices).uniq
+    all_created_practices = (editor_practices + created_practices).uniq
+    all_created_practices = all_created_practices.sort_by{ |a| a.retired ? 1 : 0 }
+    return all_created_practices
   end
 
   def password_uniqueness
