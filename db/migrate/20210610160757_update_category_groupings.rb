@@ -1,22 +1,40 @@
 class UpdateCategoryGroupings < ActiveRecord::Migration[5.2]
   def change
-    #enable_extension 'pgcrypto'
-
+    debugger
     strategic_rec = Category.create(name: "Strategic", short_name: "strategic", description: "Categories on strategical domain's",
                                   position: Category.maximum(:position).next, created_at: Time.now,
                                   updated_at: Time.now, is_other: false)
 
     # NONE Cats......
-    #
-    #
+
     strategy_id = strategic_rec.id
     clinical_rec = Category.find_by(name: 'Clinical')
     clinical_id = clinical_rec.id
     operational_rec = Category.find_by(name: 'Operational')
     operational_id = operational_rec.id
 
-    Category.update_all(parent_category_id: nil)
+    #Category.update_all(parent_category_id: nil)
+    none_operational_rec = Category.where(name: 'None', parent_category_id: operational_id)
+    none_operational_rec.update(description: 'No operational impact')
 
+    Category.create(name: "None", short_name: "none", description: "No strategic impact",
+                   parent_category_id: strategy_id,  position: Category.maximum(:position).next,
+                   created_at: Time.now, updated_at: Time.now, is_other: false)
+    #Other clinical, operational, strategic
+    cur_others = Category.where(name: 'Other', parent_category_id: nil)
+    cur_others.delete_all
+
+    Category.create(name: "Other", short_name: "other", description: "Other",
+                   parent_category_id: strategy_id,  position: Category.maximum(:position).next,
+                   created_at: Time.now, updated_at: Time.now, is_other: false)
+
+    Category.create(name: "Other", short_name: "other", description: "Other",
+                    parent_category_id: clinical_id,  position: Category.maximum(:position).next,
+                    created_at: Time.now, updated_at: Time.now, is_other: false)
+
+    Category.create(name: "Other", short_name: "other", description: "Other",
+                   parent_category_id: operational_id,  position: Category.maximum(:position).next,
+                   created_at: Time.now, updated_at: Time.now, is_other: false)
 
     Category.find_each do |cat|
       if cat.name = "Access to Care" || "Age-Friendly" || "COVID-19" || "Employee Experience" || "Health Equity" || "High Reliability" || "Moving Forward" || "Suicide Prevention"
