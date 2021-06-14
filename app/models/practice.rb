@@ -49,7 +49,9 @@ class Practice < ApplicationRecord
         self.maturity_level_changed? ||
         self.overview_problem_changed? ||
         self.overview_solution_changed? ||
-        self.overview_results_changed?
+        self.overview_results_changed?  ||
+        self.retired_changed? ||
+        self.retired_reason_changed?
       self.reset_searchable_cache = true
     end
   end
@@ -61,19 +63,19 @@ class Practice < ApplicationRecord
   def self.searchable_practices(sort = 'a_to_z')
     if sort == 'a_to_z'
       Rails.cache.fetch('searchable_practices_a_to_z') do
-        Practice.sort_a_to_z.get_with_categories_and_adoptions_ct
+        Practice.sort_by_retired.sort_a_to_z.get_with_categories_and_adoptions_ct
       end
     elsif sort == 'adoptions'
       Rails.cache.fetch('searchable_practices_adoptions') do
-        Practice.sort_adoptions_ct.get_with_categories_and_adoptions_ct
+        Practice.sort_by_retired.sort_adoptions_ct.get_with_categories_and_adoptions_ct
       end
     elsif sort == 'added'
       Rails.cache.fetch('searchable_practices_added') do
-        Practice.sort_added.get_with_categories_and_adoptions_ct
+        Practice.sort_by_retired.sort_added.get_with_categories_and_adoptions_ct
       end
     elsif sort == nil
       Rails.cache.fetch('searchable_practices') do
-        Practice.get_with_categories_and_adoptions_ct
+        Practice.sort_by_retired.get_with_categories_and_adoptions_ct
       end
     end
   end
@@ -200,9 +202,11 @@ class Practice < ApplicationRecord
   scope :sort_added, -> { order(Arel.sql("practices.created_at DESC")) }
   scope :filter_by_category_ids, -> (cat_ids) { where('category_practices.category_id IN (?)', cat_ids)} # cat_ids should be a id number or an array of id numbers
   scope :published_enabled_approved,   -> { where(published: true, enabled: true, approved: true) }
+  scope :sort_by_retired, -> { order("retired asc") }
   scope :get_by_adopted_facility, -> (station_number) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {facility_id: station_number}).uniq }
   scope :get_by_created_facility, -> (station_number) { where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { facility_id: station_number }) }
   scope :load_associations, -> { includes(:categories, :diffusion_histories, :practice_origin_facilities) }
+
 
   belongs_to :user, optional: true
 
@@ -381,11 +385,13 @@ class Practice < ApplicationRecord
     elsif sort === 'added'
       query = query.sort_added
     end
+    query = query.sort_by_retired
     query.group("practices.id, categories.id, practice_origin_facilities.id").uniq
   end
 
   def self.get_facility_created_practices(station_number, search_term = nil, sort = 'a_to_z', categories = nil)
     practices = search_practices(search_term, sort, categories)
+
     practices.select { |pr| pr.practice_origin_facilities.pluck(:facility_id).include?(station_number)}
   end
 

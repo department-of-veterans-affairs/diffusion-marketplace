@@ -15,8 +15,8 @@ describe 'The admin dashboard', type: :feature do
                              password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
-    @practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true)
-    @practice_2 = Practice.create!(name: 'The Second Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true)
+    @practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true, retired: false)
+    @practice_2 = Practice.create!(name: 'The Second Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true, retired: false)
     @categories = [
       Category.create!(name: 'COVID', description: 'COVID related practices', related_terms: ['COVID-19, Coronavirus']),
       Category.create!(name: 'Telehealth', description: 'Telelhealth related practices')
@@ -516,6 +516,22 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_no_content('Highlighted by the VA this month')
     expect(page).to have_no_content(@practice.name)
   end
+
+  it 'should be able to toggle between retired and active states from actions column' do
+    login_as(@admin, scope: :user, run_callbacks: false)
+    pr_2 = Practice.create!(name: 'Another Test Practice', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true, retired: false)
+    # Retire practice
+    visit '/admin'
+    click_link('Practices')
+    expect(page).to have_content('Retire')
+    click_link('Retire', href: retire_practice_admin_practice_path(pr_2))
+    expect(page).to have_content("\"#{pr_2.name}\" was retired")
+
+    # Activate practice
+    click_link('Activate', href: retire_practice_admin_practice_path(pr_2))
+    expect(page).to have_content("\"#{pr_2.name}\" was activated")
+  end
+
 
   it 'should only display a button to download adoptions if the practice has any' do
     login_as(@admin, scope: :user, run_callbacks: false)
