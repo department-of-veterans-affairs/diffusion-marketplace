@@ -457,8 +457,9 @@
 
             <div class="margin-top-3 margin-bottom-5">
               <div class="margin-bottom-105">
-                <p class="text-bold margin-bottom-2">
-                  Categories
+                <p class="text-bold margin-bottom-1">
+                  Categories <span><a href="#facility-complexity-modal" aria-controls="facility-complexity-modal" data-open-modal="" class="fas fa-question-circle cursor-pointer" role="button">
+                  <span class="usa-sr-only">Open facility complexity modal</span></a></span>
                 </p>
                 <span>Select the categories most relevant to your practice (suggested: up to 10).</span>
               </div>
@@ -470,7 +471,6 @@
                   clinical_categories = Category.where(parent_category_id: clinical_category_id, is_other: false).where.not(name: 'Other')
                   clin_other = Category.where(name: 'Other', parent_category_id: clinical_category_id)
                   clinical_categories_list = clinical_categories + clin_other
-                  debugger
 
                   operational_category = Category.where(name: 'Operational', parent_category_id: nil).first
                   operational_category_id = operational_category.id
@@ -490,7 +490,16 @@
                   #categories = Category.where.not(id: other.ids, is_other: true).order(name: :asc)
                   #categories_list = categories + other
                 %>
-                <p>Clinical</p>
+                <div class="margin-bottom-2">Clinical</div>
+                <div class="usa-checkbox pe-category-checkbox position-relative">
+                  <input type="checkbox"
+                         class="usa-checkbox__input category-input"
+                         id="all_clinical_input"
+                         name="all_clinical_input"/>
+                  <label class="usa-checkbox__label" id="all_clinical_label" for="all_clinical_input">
+                    All clinical
+                  </label>
+                </div>
                 <% clinical_categories_list.each do |cat| %>
                   <% underscore_cat = cat.name.split(' ').join('').underscore %>
                   <div class="usa-checkbox pe-category-checkbox position-relative">
@@ -500,19 +509,14 @@
                            name="practice[category][<%= cat.id %>][value]"
                            <%= 'checked="true"' if practice_categories_ids.include?(cat.id) %>
                       />
-                    <label class="usa-checkbox__label"
-                           id="category_<%= underscore_cat %>_label"
-                           for="category_<%= underscore_cat %>"
-                    >
+                    <label class="usa-checkbox__label" id="category_<%= underscore_cat %>_label" for="category_<%= underscore_cat %>">
                       <%= cat.name %>
                     </label>
                   </div>
                 <% end %>
-
                 <div id="other_categories_container" class="display-none position-relative">
                   <%
                     other_categories = @practice.categories.where(is_other: true)
-                    debugger
                     other_category_ids = other_categories.ids
                   %>
 
