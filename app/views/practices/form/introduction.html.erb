@@ -497,6 +497,12 @@
                   strategic_categories = Category.where(parent_category_id: strategic_category_id, is_other: false)
                   strategic_other = Category.where(name: 'Other', parent_category_id: strategic_category_id)
                   strategic_categories_list = strategic_categories + strategic_other
+                  strategic_cat_count = strategic_categories_list.count
+                  grp_count = strategic_cat_count/3
+                  if strategic_cat_count > grp_count*3
+                    grp_count = grp_count + 1
+                  end
+                  strategic_categories_groups = strategic_categories_list.in_groups_of(grp_count)
 
                   practice_categories = @practice.category_practices
                   practice_categories_ids = practice_categories.map(&:category_id)
