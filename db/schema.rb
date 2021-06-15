@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_12_214347) do
+ActiveRecord::Schema.define(version: 2021_05_19_132320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -956,10 +956,12 @@ ActiveRecord::Schema.define(version: 2021_05_12_214347) do
     t.string "overview_solution"
     t.string "overview_results"
     t.integer "maturity_level"
-    t.datetime "practice_pages_updated"
     t.datetime "date_published"
+    t.datetime "practice_pages_updated"
     t.string "highlight_title"
     t.string "highlight_body"
+    t.boolean "retired", default: false, null: false
+    t.string "retired_reason"
     t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
   end

@@ -5,9 +5,9 @@ require 'rails_helper'
 
 describe 'The admin dashboard', type: :feature do
   before do
-    @user = User.create!(email: 'spongebob.squarepants@va.gov', password: 'Password123',
+    @user = User.create!(email: 'spongebob.squarepants@va.gov', first_name: 'Spongebob', last_name: 'Squarepants', password: 'Password123',
                          password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    @user2 = User.create!(email: 'patrick.star@bikinibottom.net', password: 'Password123',
+    @user2 = User.create!(email: 'patrick.star@va.gov', first_name: 'Patrick', last_name: 'Star', password: 'Password123',
                           password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin = User.create!(email: 'sandy.cheeks@bikinibottom.net', password: 'Password123',
                           password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
@@ -15,8 +15,8 @@ describe 'The admin dashboard', type: :feature do
                              password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
-    @practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true)
-    @practice_2 = Practice.create!(name: 'The Second Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true)
+    @practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true, retired: false)
+    @practice_2 = Practice.create!(name: 'The Second Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true, retired: false)
     @categories = [
       Category.create!(name: 'COVID', description: 'COVID related practices', related_terms: ['COVID-19, Coronavirus']),
       Category.create!(name: 'Telehealth', description: 'Telelhealth related practices')
@@ -517,6 +517,22 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_no_content(@practice.name)
   end
 
+  it 'should be able to toggle between retired and active states from actions column' do
+    login_as(@admin, scope: :user, run_callbacks: false)
+    pr_2 = Practice.create!(name: 'Another Test Practice', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true, retired: false)
+    # Retire practice
+    visit '/admin'
+    click_link('Practices')
+    expect(page).to have_content('Retire')
+    click_link('Retire', href: retire_practice_admin_practice_path(pr_2))
+    expect(page).to have_content("\"#{pr_2.name}\" was retired")
+
+    # Activate practice
+    click_link('Activate', href: retire_practice_admin_practice_path(pr_2))
+    expect(page).to have_content("\"#{pr_2.name}\" was activated")
+  end
+
+
   it 'should only display a button to download adoptions if the practice has any' do
     login_as(@admin, scope: :user, run_callbacks: false)
     visit '/admin'
@@ -541,5 +557,38 @@ describe 'The admin dashboard', type: :feature do
 
     # should not navigate away from metrics page
     expect(page).to have_current_path(admin_practice_path(@practice))
+  end
+
+  it 'if the practice user is changed, it should remove the previous practice user from the comment thread subscribers list for that practice, unless they created at least one comment on the thread' do
+    # trigger the create_or_update_practice method in the admin controller
+    login_as(@admin, scope: :user, run_callbacks: false)
+    visit '/admin/practices/the-best-practice-ever/edit'
+    click_button('Update Practice')
+
+    expect(Practice.first.commontator_thread.subscribers.first).to eq(@user)
+
+    # change the practice user
+    visit '/admin/practices/the-best-practice-ever/edit'
+    fill_in('User email', with: @user2.email)
+    click_button('Update Practice')
+
+    expect(Practice.first.commontator_thread.subscribers.first).to_not eq(@user)
+    expect(Practice.first.commontator_thread.subscribers.first).to eq(@user2)
+
+    # create a comment with the current practice user
+    logout(@admin)
+    login_as(@user2, :scope => :user, :run_callbacks => false)
+    visit practice_path(@practice)
+    fill_in('comment[body]', with: 'This is a test comment')
+    click_button('commit')
+
+    # change the practice user back to the original user
+    logout(@user2)
+    login_as(@admin, :scope => :user, :run_callbacks => false)
+    visit '/admin/practices/the-best-practice-ever/edit'
+    fill_in('User email', with: @user.email)
+    click_button('Update Practice')
+
+    expect(Practice.first.commontator_thread.subscribers).to include(@user, @user2)
   end
 end

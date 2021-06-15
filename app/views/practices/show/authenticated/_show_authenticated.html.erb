@@ -1,7 +1,6 @@
 <% provide :head_tags do %>
   <%= javascript_include_tag 'practice_page', 'data-turbolinks-track': 'reload' %>
 <% end %>
-
 <section class="usa-section padding-y-0">
   <div class="grid-container position-relative">
     <div class="grid-row grid-gap">
@@ -21,6 +20,24 @@
                   Not Approved
                 </div>
               <% end %>
+            </div>
+          </div>
+        <% end %>
+        <% if @practice.retired %>
+          <div class="usa-alert usa-alert--info margin-bottom-3 margin-top-1">
+            <div class="usa-alert__body">
+              <h4 class="usa-alert__heading">Retired Practice</h4>
+              <div class="usa-alert__text">
+                This practice is no longer being updated.
+                <% if @practice.retired_reason.present? %>
+                  <p>
+                    <%
+                      retired_reason_html = @practice.retired_reason.gsub("<p>", "").gsub("</p>", "")
+                    %>
+                    Reason for retirement: <%= sanitize retired_reason_html.html_safe %>
+                  </p>
+                <% end %>
+              </div>
             </div>
           </div>
         <% end %>
