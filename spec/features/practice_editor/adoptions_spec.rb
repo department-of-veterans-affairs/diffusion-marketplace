@@ -2,6 +2,9 @@ require 'rails_helper'
 
 describe 'Practice editor', type: :feature do
   before do
+    Rake::Task['visns:create_visns_and_transfer_data'].execute
+    Rake::Task['va_facilities:create_va_facilities_and_transfer_data'].execute
+
     @admin = User.create!(email: 'toshiro.hitsugaya@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @approver = User.create!(email: 'tosen.kaname@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @user = User.create!(email: 'jushiro.ukitake@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)

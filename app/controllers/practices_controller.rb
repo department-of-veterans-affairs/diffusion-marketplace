@@ -41,14 +41,16 @@ class PracticesController < ApplicationController
     # This allows comments thread to show up without the need to click a link
     commontator_thread_show(@practice)
 
-    @vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
+    @vamc_facilities = VaFacility.cached_va_facilities.select(
+      :street_address_state, :official_station_name, :station_number, :common_name, :latitude, :longitude, :rurality, :fy17_parent_station_complexity_level, :visn_id, :mailing_address_state
+    ).includes(:visn).order(:street_address_state, :official_station_name)
 
     @diffused_practices = @practice.diffusion_histories
     @diffusion_histories = Gmaps4rails.build_markers(@diffused_practices.group_by(&:facility_id)) do |dhg, marker|
 
-      facility = @vamc_facilities.find { |f| f['StationNumber'] == dhg[0] }
-      marker.lat facility['Latitude']
-      marker.lng facility['Longitude']
+      facility = @vamc_facilities.find { |f| f.station_number == dhg[0] }
+      marker.lat facility.latitude
+      marker.lng facility.longitude
 
       current_diffusion_status = dhg[1][0].diffusion_history_statuses.order(id: :desc).first
       marker_url = view_context.image_path('map-marker-successful-default.svg')
@@ -81,12 +83,12 @@ class PracticesController < ApplicationController
       end
       practices = dhg[1].map(&:practice)
       marker.json({
-                      id: facility["StationNumber"],
+                      id: facility.station_number,
                       practices: practices,
-                      name: facility["OfficialStationName"],
-                      complexity: facility["FY17ParentStationComplexityLevel"],
-                      visn: facility["VISN"],
-                      rurality: facility["Rurality"],
+                      name: facility.official_station_name,
+                      complexity: facility.fy17_parent_station_complexity_level,
+                      visn: facility.visn.number,
+                      rurality: facility.rurality,
                       completed: completed,
                       in_progress: in_progress,
                       unsuccessful: unsuccessful,

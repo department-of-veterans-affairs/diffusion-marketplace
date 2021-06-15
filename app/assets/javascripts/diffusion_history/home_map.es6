@@ -107,7 +107,7 @@ function initialize() {
         const practiceCount = _.chain(result.map(r => r.practices)).flatten().uniqBy('id').value().length;
 
         $('#facility-results-count').text(facilityCount);
-        $('#practice-results-count').text(practiceCount);
+        $('#practice-results-count').text(`${practiceCount} practice${practiceCount !== 1 ? 's' : ''}`);
     }
 
     Gmaps.filter = function (data) {
@@ -166,7 +166,7 @@ function initialize() {
         if (data.visns && data.visns.length) {
             const visns = data.visns.map(v => v.value);
             result = result.filter(function (d) {
-                return visns.includes(d.visn);
+                return visns.includes(d.visn.toString());
             });
         }
 
@@ -174,7 +174,7 @@ function initialize() {
         if (data.facility_name && data.facility_name[0].value) {
             const facilityName = data.facility_name[0].value;
             result = result.filter(function (d) {
-                return facilityName.toLowerCase().includes(d.facility.OfficialStationName.toLowerCase());
+                return facilityName.toLowerCase().includes(d.facility.official_station_name.toLowerCase());
             });
         }
 
@@ -243,6 +243,14 @@ function initialize() {
         closeInfoWindow();
     });
 
+    function setHomeMapEventListener() {
+        google.maps.event.addListenerOnce(handler.getMap(), "bounds_changed", function () {
+            $('.diffusion-map-container').removeClass('display-none');
+            $(".dm-loading-spinner").addClass('display-none');
+        });
+    }
+
+    setHomeMapEventListener();
 }
 
 function openMarkerModal(id) {

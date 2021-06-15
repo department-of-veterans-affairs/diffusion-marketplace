@@ -1,4 +1,4 @@
-<div id="homeMapMarkerViewMoreModal-<%= facility["StationNumber"] %>" class="modal home-marker-modal">
+<div id="homeMapMarkerViewMoreModal-<%= facility.station_number %>" class="modal home-marker-modal">
   <div class="modal-content width-tablet padding-y-205 padding-x-3">
     <div class="first_el" tabindex="0" aria-label="Closing feedback form"></div>
     <div class="modal-body padding-0">
@@ -6,8 +6,8 @@
         <span class="close text-base-darkest" tabindex="0" role="button" aria-label="Close modal"><span class="fas fa-times"></span></span>
         <div class="margin-bottom-2">
           <h2 class="margin-top-0 margin-bottom-1">
-            <%= facility['OfficialStationName'] %>
-            <%= show_common_name(facility["OfficialStationName"], facility["CommonName"]) %>
+            <%= facility.official_station_name %>
+            <%= show_common_name(facility.official_station_name, facility.common_name) %>
           </h2>
           <p class="margin-top-1 margin-bottom-0"><%= in_progress %> in-progress
             adoption<%= in_progress == 1 ? '' : 's' %></p>

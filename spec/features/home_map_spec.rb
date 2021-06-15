@@ -6,6 +6,8 @@ require 'rake'
 describe 'HomeMap', type: :feature do
   before do
     Rake::Task['db:seed'].execute
+    Rake::Task['visns:create_visns_and_transfer_data'].execute
+    Rake::Task['va_facilities:create_va_facilities_and_transfer_data'].execute
     Rake::Task['importer:import_answers'].execute
     Rake::Task['diffusion_history:flow3'].execute
     ENV['GOOGLE_API_KEY'] = ENV['GOOGLE_TEST_API_KEY']
@@ -63,9 +65,9 @@ describe 'HomeMap', type: :feature do
       open_filters
 
       find('#facility_name').set('Ja')
-      expect(page).to have_content('Jamaica Plain VA Medical Center')
-      expect(page).to have_content('Jamestown VA Clinic')
-      expect(page).to have_content('James J. Howard Veterans\' Outpatient Clinic')
+      expect(page).to have_content('Jasper')
+      expect(page).to have_content('PFC James Dunn VA Clinic')
+      expect(page).to have_content('Jacksonville 1 VA Clinic')
     end
 
     it 'displays alternate facility name' do
