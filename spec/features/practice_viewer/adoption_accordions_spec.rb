@@ -2,6 +2,9 @@ require 'rails_helper'
 
 describe 'Adoption accordions', type: :feature, js: true do
   before do
+    Rake::Task['visns:create_visns_and_transfer_data'].execute
+    Rake::Task['va_facilities:create_va_facilities_and_transfer_data'].execute
+
     ENV['GOOGLE_API_KEY'] = ENV['GOOGLE_TEST_API_KEY']
     @user = User.create!(email: 'renji.abarai@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: 'test@test.com', user: @user)

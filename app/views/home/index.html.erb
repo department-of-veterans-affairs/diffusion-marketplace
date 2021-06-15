@@ -6,13 +6,13 @@
   <section class="homepage-explore-all-section bg-primary-darker display-flex flex-align-center margin-bottom-5">
     <div class="grid-container">
       <div class="grid-row">
-        <div class="grid-col-3 display-flex justify-center desktop:margin-top-2">
+        <div class="grid-col-3 display-flex tablet:flex-justify-center desktop:margin-top-2">
           <div>
             <i class="fas fa-laptop-medical fa-9x"></i>
           </div>
         </div>
         <div class="tablet:grid-col-9 desktop:grid-col-9 ie-welcome-container text-white">
-          <h1 class="usa-prose-intro font-normal font-sans-lg margin-y-3 desktop:font-bold desktop:usa-prose-h1 desktop:font-sans-2xl desktop:margin-top-0 desktop:margin-bottom-5">
+          <h1 class="usa-prose-intro font-normal font-sans-lg margin-y-3 tablet:font-bold tablet:usa-prose-h1 tablet:font-sans-2xl tablet:margin-top-0 tablet:margin-bottom-5">
             Find the next important or life-saving practice to adopt at your VA facility.
           </h1>
           <%= link_to 'Explore all practices', explore_path, class: 'usa-button--big homepage-explore-all-button display-block' %>
@@ -57,9 +57,9 @@
   </section>
 
   <% if @highlighted_pr.present? %>
-    <section class="bg-base-lightest margin-bottom-5 padding-x-2 padding-y-5 desktop:padding-x-0 desktop:margin-y-15 dm-highlighted-practice">
-      <div class="desktop:grid-container dm-highlighted-practice-content">
-        <div class="desktop:grid-col-7 dm-highlighted-practice-text">
+    <section class="bg-base-lightest margin-bottom-5 padding-x-2 padding-y-5 tablet:padding-x-0 tablet:margin-y-15 dm-highlighted-practice">
+      <div class="tablet:grid-container dm-highlighted-practice-content">
+        <div class="tablet:grid-col-5 desktop:grid-col-7 dm-highlighted-practice-text">
           <h2 class="margin-top-0 font-sans-xl line-height-37px">
             <%= @highlighted_pr.highlight_title.blank? ? 'Highlighted by the VA this month' : @highlighted_pr.highlight_title %>
           </h2>
@@ -67,7 +67,7 @@
             <p class="margin-top-1 line-height-sans-5"><%= @highlighted_pr.highlight_body %></p>
           <% end %>
         </div>
-        <div class="margin-top-3 grid-row grid-gap-3 dm-highlighted-practice-card desktop:margin-top-0">
+        <div class="margin-top-3 desktop:grid-row desktop:grid-gap-3 dm-highlighted-practice-card tablet:margin-top-0">
           <%= render partial: 'shared/practice_card', locals: { practice: @highlighted_pr } %>
         </div>
       </div>

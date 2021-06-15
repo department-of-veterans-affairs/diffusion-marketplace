@@ -6,6 +6,8 @@ class DiffusionHistory < ApplicationRecord
 
   attr_accessor :facility_name
 
+  scope :with_published_enabled_approved_practices, -> { joins(:practice).where(practices: { published: true, enabled: true, approved: true }) }
+
   def facility_name
     facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
     facility = facilities.find { |f| f['StationNumber'] == facility_id }

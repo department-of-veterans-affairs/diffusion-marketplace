@@ -3,6 +3,9 @@ require 'rails_helper'
 
 describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
   before do
+    Rake::Task['visns:create_visns_and_transfer_data'].execute
+    Rake::Task['va_facilities:create_va_facilities_and_transfer_data'].execute
+
     @user = User.create!(email: 'spongebob.squarepants@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test Facility', initiating_facility_type: 'other', tagline: 'Test tagline')
     ENV['GOOGLE_API_KEY'] = ENV['GOOGLE_TEST_API_KEY']

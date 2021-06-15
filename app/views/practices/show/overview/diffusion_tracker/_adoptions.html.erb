@@ -2,13 +2,13 @@
   adoption_groups = {
       'Successful': @diffusion_histories
           .find_all { |dh| dh[:status] == 'Complete' }
-          .sort_by { |dh| [dh[:facility]['MailingAddressState'], dh[:facility]['OfficialStationName']] },
+          .sort_by { |dh| [dh[:facility]["mailing_address_state"], dh[:facility]["official_station_name"]] },
       'In-progress': @diffusion_histories
           .find_all { |dh| dh[:status] == 'In progress' }
-          .sort_by { |dh| [dh[:facility]['MailingAddressState'], dh[:facility]['OfficialStationName']] },
+          .sort_by { |dh| [dh[:facility]["mailing_address_state"], dh[:facility]["official_station_name"]] },
       'Unsuccessful': @diffusion_histories
           .find_all { |dh| dh[:status] == 'Unsuccessful' }
-          .sort_by { |dh| [dh[:facility]['MailingAddressState'], dh[:facility]['OfficialStationName']] }
+          .sort_by { |dh| [dh[:facility]["mailing_address_state"], dh[:facility]["official_station_name"]] }
   }
 
   adoption_statuses_and_text = [
@@ -44,7 +44,7 @@
     <div id="<%= group.to_s.underscore %>" class="usa-accordion__content usa-prose">
       <% if histories.any? %>
         <% histories.each do |h| %>
-          <p class="line-height-26 margin-top-1"><%= "#{h[:facility]['MailingAddressState']}: #{facility_name_with_common_name(h[:facility]['OfficialStationName'], h[:facility]['CommonName'])}" %></p>
+          <p class="line-height-26 margin-top-1"><%= "#{h[:facility]["mailing_address_state"]}: #{facility_name_with_common_name(h[:facility]["official_station_name"], h[:facility]["common_name"])}" %></p>
         <% end %>
       <% else %>
         <p>There are no <%= group.to_s.downcase %> adoptions for this practice.</p>

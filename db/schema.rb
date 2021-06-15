@@ -960,8 +960,8 @@ ActiveRecord::Schema.define(version: 2021_06_10_160757) do
     t.string "overview_solution"
     t.string "overview_results"
     t.integer "maturity_level"
-    t.datetime "date_published"
     t.datetime "practice_pages_updated"
+    t.datetime "date_published"
     t.string "highlight_title"
     t.string "highlight_body"
     t.boolean "retired", default: false, null: false

@@ -25,7 +25,7 @@
     h1 {
       line-height: 36px;
 
-      @media screen and (min-width: 1024px) {
+      @media screen and (min-width: 640px) {
         line-height: 46px;
       }
     }
@@ -97,6 +97,7 @@
 
     .recommended-for-you-banner {
       background-color: transparent !important;
+      border-left-color: $dm-color-blue-30v !important;
     }
 
     .fa-user-circle {
@@ -123,9 +124,14 @@
 
     .dm-practice-bookmark-btn {
       top: 6px;
+      right: 6px;
     }
 
-    @media screen and (min-width: 64rem) {
+    .dm-highlighted-practice-card {
+      max-width: 309px;
+    }
+
+    @media screen and (min-width: 40rem) {
       height: 250px;
       max-height: 250px;
 
@@ -143,9 +149,16 @@
         max-width: 520px;
       }
 
-      .dm-highlighted-practice-card{
+      .dm-highlighted-practice-card {
         position: absolute;
+        right: 5%;
+      }
+    }
+
+    @media screen and (min-width: 64rem) {
+      .dm-highlighted-practice-card {
         top: 944px;
+        right: 0;
         left: calc(100vw - 50vw + 88px);
       }
     }

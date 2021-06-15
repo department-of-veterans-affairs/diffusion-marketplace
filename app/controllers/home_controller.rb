@@ -8,15 +8,19 @@ class HomeController < ApplicationController
   end
 
   def diffusion_map
-    @vamc_facilities = facilities_json
+    @visn_numbers = Visn.cached_visns.pluck(:number)
+    @vamc_facilities = VaFacility.cached_va_facilities.select(
+      :street_address_state, :official_station_name, :station_number, :common_name, :latitude, :longitude, :rurality, :fy17_parent_station_complexity_level, :visn_id
+    ).includes(:visn).order(:street_address_state, :official_station_name)
 
-    @diffused_practices = DiffusionHistory.all.reject { |dh| !dh.practice.published }
+    @diffusion_history_practices = Practice.get_with_diffusion_histories.sort_by(&:name)
+    @diffusion_histories = DiffusionHistory.with_published_enabled_approved_practices
 
-    @diffusion_histories = Gmaps4rails.build_markers(@diffused_practices.group_by(&:facility_id)) do |dhg, marker|
+    @diffusion_history_markers = Gmaps4rails.build_markers(@diffusion_histories.group_by(&:facility_id)) do |dhg, marker|
 
-      facility = @vamc_facilities.find {|f| f['StationNumber'] == dhg[0]}
-      marker.lat facility['Latitude']
-      marker.lng facility['Longitude']
+      facility = @vamc_facilities.find {|f| f.station_number == dhg[0]}
+      marker.lat facility.latitude
+      marker.lng facility.longitude
 
       marker.picture({
                          url: view_context.image_path('map-marker-default.svg'),
@@ -31,19 +35,20 @@ class HomeController < ApplicationController
       in_progress = 0
       unsuccessful = 0
       dhg[1].each do |dh|
-        dh_status = dh.diffusion_history_statuses.order(id: :desc).first
+        dh_status = dh.diffusion_history_statuses.first
         in_progress += 1 if dh_status.status == 'In progress' || dh_status.status ==  'Planning' || dh_status.status == 'Implementing'
         completed += 1 if dh_status.status == 'Completed' || dh_status.status ==  'Implemented' || dh_status.status == 'Complete'
         unsuccessful += 1 if dh_status.status == 'Unsuccessful'
       end
+
       practices = dhg[1].map(&:practice)
       marker.json({
-                      id: facility["StationNumber"],
+                      id: facility.station_number,
                       practices: practices,
-                      name: facility["OfficialStationName"],
-                      complexity: facility["FY17ParentStationComplexityLevel"],
-                      visn: facility["VISN"],
-                      rurality: facility["Rurality"],
+                      name: facility.official_station_name,
+                      complexity: facility.fy17_parent_station_complexity_level,
+                      visn: facility.visn.number,
+                      rurality: facility.rurality,
                       completed: completed,
                       in_progress: in_progress,
                       unsuccessful: unsuccessful,

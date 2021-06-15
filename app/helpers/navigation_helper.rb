@@ -29,7 +29,7 @@ module NavigationHelper
       # Diffusion map
       if action == 'diffusion_map'
         empty_breadcrumbs
-        session[:breadcrumbs] << { 'display': 'Map of diffusion', 'path': diffusion_map_path }
+        session[:breadcrumbs] << { 'display': 'Diffusion map', 'path': diffusion_map_path }
       end
     end
 
