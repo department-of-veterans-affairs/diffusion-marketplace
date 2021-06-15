@@ -460,18 +460,38 @@
                 <p class="text-bold margin-bottom-2">
                   Categories
                 </p>
-                <span>Select any categories that apply to your practice.</span>
+                <span>Select the categories most relevant to your practice (suggested: up to 10).</span>
               </div>
               <div>
                 <%
+                  debugger
+                  clinical_category = Category.where(name: 'Clinical', parent_category_id: nil).first
+                  clinical_category_id = clinical_category.id
+                  clinical_categories = Category.where(parent_category_id: clinical_category_id, is_other: false).where.not(name: 'Other')
+                  clin_other = Category.where(name: 'Other', parent_category_id: clinical_category_id)
+                  clinical_categories_list = clinical_categories + clin_other
+                  debugger
+
+                  operational_category = Category.where(name: 'Operational', parent_category_id: nil).first
+                  operational_category_id = operational_category.id
+                  operational_categories = Category.where(parent_category_id: operational_category_id, is_other: false)
+                  ops_other = Category.where(name: 'Other', parent_category_id: operational_category_id)
+                  operational_categories_list = operational_categories + ops_other
+
+                  strategic_category = Category.where(name: 'Strategic', parent_category_id: nil).first
+                  strategic_category_id = strategic_category.id
+                  strategic_categories = Category.where(parent_category_id: strategic_category_id, is_other: false)
+                  strategic_other = Category.where(name: 'Other', parent_category_id: strategic_category_id)
+                  strategic_categories_list = strategic_categories + strategic_other
+
                   practice_categories = @practice.category_practices
                   practice_categories_ids = practice_categories.map(&:category_id)
-                  other = Category.where(name: 'Other')
-                  categories = Category.where.not(id: other.ids, is_other: true).order(name: :asc)
-                  categories_list = categories + other
-                %>
 
-                <% categories_list.each do |cat| %>
+                  #categories = Category.where.not(id: other.ids, is_other: true).order(name: :asc)
+                  #categories_list = categories + other
+                %>
+                <p>Clinical</p>
+                <% clinical_categories_list.each do |cat| %>
                   <% underscore_cat = cat.name.split(' ').join('').underscore %>
                   <div class="usa-checkbox pe-category-checkbox position-relative">
                     <input type="checkbox"
@@ -492,6 +512,7 @@
                 <div id="other_categories_container" class="display-none position-relative">
                   <%
                     other_categories = @practice.categories.where(is_other: true)
+                    debugger
                     other_category_ids = other_categories.ids
                   %>
 
@@ -501,7 +522,6 @@
                         other_category_id = cat.object.id || "new_categories"
                         show_other_category_form = other_category_ids.include?(other_category_id) || other_category_id == "new_categories"
                       %>
-
                       <% if show_other_category_form %>
                         <% if cat.object.id %>
                           <% provide :head_tags do %>
