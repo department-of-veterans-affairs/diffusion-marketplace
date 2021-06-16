@@ -9,16 +9,29 @@ ActiveAdmin.register Category do
     id_column
     column :name
     column :description
+    column "Parent Category" do |p|
+      if !p.nil?
+        parent_cat = Category.find_by_id(p.parent_category_id)
+       end
+    end
     column :related_terms
+    column :is_other
     actions
   end
 
   show do
+    debugger
     attributes_table do
       row :id
       row :name
       row :description
+      row "Parent Category" do |p|
+        if !p.nil?
+          parent_cat = Category.find_by_id(p.parent_category_id)
+        end
+      end
       row :related_terms
+      row :is_other
     end
   end
 
@@ -26,8 +39,10 @@ ActiveAdmin.register Category do
     f.inputs do
       f.input :name
       f.input :description, as: :string
+      f.input :parent_category_id, as: :select, multiple: false, collection: Category.where(parent_category_id: nil, is_other: false).order(name: :asc).map {|category| ["#{category.name}", category.id]}, input_html: { value: object[:parent_category_id] }
       # ensures input is displayed as comma separated list
       f.input :related_terms_raw, label: 'Related Terms', hint: 'Comma separated list (e.g., COVID-19, Coronavirus)'
+      f.input :is_other
     end
     f.actions
   end
