@@ -20,7 +20,6 @@ ActiveAdmin.register Category do
   end
 
   show do
-    debugger
     attributes_table do
       row :id
       row :name
@@ -77,7 +76,7 @@ ActiveAdmin.register Category do
     private
 
     def category_params
-      params.require(:category).permit(:name, :description, related_terms:[])
+      params.require(:category).permit(:name, :description, :parent_category_id, :is_other, related_terms:[])
     end
 
     def modify_related_terms_for_db
