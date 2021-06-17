@@ -206,7 +206,7 @@ class Practice < ApplicationRecord
   scope :get_by_adopted_facility, -> (station_number) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {facility_id: station_number}).uniq }
   scope :get_by_created_facility, -> (station_number) { where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { facility_id: station_number }) }
   scope :load_associations, -> { includes(:categories, :diffusion_histories, :practice_origin_facilities) }
-  scope :get_with_diffusion_histories, -> { published_enabled_approved.joins(:diffusion_histories).uniq }
+  scope :get_with_diffusion_histories, -> { published_enabled_approved.sort_a_to_z.joins(:diffusion_histories).uniq }
 
 
   belongs_to :user, optional: true
@@ -354,14 +354,6 @@ class Practice < ApplicationRecord
   end
   def emailed_count_by_range(start_date, end_date)
     Ahoy::Event.where(name: 'Practice email').where("properties->>'practice_id' = '#{id}'").where(time: start_date..end_date).count
-  end
-  def get_adoptions_by_status(adoption_array, hash_array)
-    vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
-    adoption_array.each do |adoption|
-      facility = vamc_facilities.find { |f| f['StationNumber'] == adoption.facility_id }
-      hash_array.push(facility: facility, diffusion_history: adoption)
-    end
-    hash_array.sort_by { |a| [a[:facility]["StreetAddressState"], a[:facility]["OfficialStationName"]] }
   end
 
   def create_practice_editor_for_practice

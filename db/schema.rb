@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_19_132320) do
+ActiveRecord::Schema.define(version: 2021_05_25_180248) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -347,6 +347,8 @@ ActiveRecord::Schema.define(version: 2021_05_19_132320) do
     t.datetime "end_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "unsuccessful_reasons", default: [], array: true
+    t.text "unsuccessful_reasons_other"
     t.index ["diffusion_history_id"], name: "index_diffusion_history_statuses_on_diffusion_history_id"
   end
 

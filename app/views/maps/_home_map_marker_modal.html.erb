@@ -17,35 +17,23 @@
             adoption<%= unsuccessful == 1 ? '' : 's' %></p>
         </div>
         <div class="practice-list">
-          <% diffusion_histories.sort_by {|dh| dh.practice.name}.each_with_index do |dh, i| %>
+          <% diffusion_histories.each_with_index do |dh, i| %>
             <a href="<%= practice_path(dh.practice) %>" target="_blank" class="display-block padding-y-105 padding-x-2 map-marker-practice margin-bottom-1">
               <p class="margin-0 map-marker-practice-name margin-bottom-1"><%= dh.practice.name %></p>
 
               <%
                 dh_status = dh.diffusion_history_statuses.order(id: :desc).first
-                completed = dh_status.status == 'Implemented' || dh_status.status == 'Complete' || dh_status.status == 'Completed'
-                in_progress = dh_status.status ==  'Planning' || dh_status.status == 'In progress'
-                unsuccessful = dh_status.status ==  'Unsuccessful'
-                # TODO: there is no start time at the moment for diffusion histories
-                # start_date = completed ? dh.diffusion_history_statuses.where(status: 'In progress').first.start_time : dh_status.start_time
-                start_date = completed ? nil : dh_status.start_time
+                status = dh_status.get_status_display_name
+                start_date = dh_status.start_time
                 formatted_start_date = "(started #{start_date.strftime('%B %Y')})" if start_date.present?
-                end_date = completed || unsuccessful ? dh_status.end_time : nil
-                formatted_end_date = "(#{completed ? 'completed ' : 'abandoned '}#{end_date.strftime('%B %Y')})" if end_date.present?
-                # TODO: Unsuccessful practices
+                end_date = dh_status.end_time
+                formatted_end_date = "(#{status === DiffusionHistoryStatus::STATUSES[0] ? 'completed ' : 'abandoned '}#{end_date.strftime('%B %Y')})" if end_date.present?
               %>
 
               <div class="map-marker-practice-content">
                 <p class="margin-top-0 margin-bottom-105">
-                  <%# TODO: Unsuccessful status %>
                   <span class="far fa-calendar"></span>
-                  <% if completed %>
-                    Successful <%= formatted_end_date %>
-                  <% elsif in_progress %>
-                    In progress <%= formatted_start_date %>
-                  <% elsif unsuccessful %>
-                    Unsuccessful <%= formatted_end_date %>
-                  <% end %>
+                  <%= status %> <%= status === DiffusionHistoryStatus::STATUSES[1] ? formatted_start_date : formatted_end_date %>
                 </p>
                 <p class="margin-top-0 margin-bottom-05 truncate-text one-line"><%= dh.practice.description %></p>
               </div>

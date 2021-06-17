@@ -17,22 +17,11 @@ class PracticesController < ApplicationController
   before_action :is_enabled, only: [:show]
   before_action :set_current_session, only: [:extend_editor_session_time, :session_time_remaining, :close_edit_session]
   before_action :practice_locked_for_editing, only: [:editors, :introduction, :overview, :contact, :adoptions, :about, :implementation]
+
   # GET /practices
   # GET /practices.json
   def index
-    # @practices = Practice.where(approved: true, published: true).order(name: :asc)
-    # @facilities_data = facilities_json['features']
     redirect_to root_path
-  end
-
-  def is_enabled
-    unless @practice.enabled
-      redirect_to(root_path)
-    end
-  end
-
-  def redirect_to_instructions_path
-    redirect_to practice_instructions_path(@practice)
   end
 
   # GET /practices/1
@@ -41,62 +30,43 @@ class PracticesController < ApplicationController
     # This allows comments thread to show up without the need to click a link
     commontator_thread_show(@practice)
 
-    @vamc_facilities = VaFacility.cached_va_facilities.select(
-      :street_address_state, :official_station_name, :station_number, :common_name, :latitude, :longitude, :rurality, :fy17_parent_station_complexity_level, :visn_id, :mailing_address_state
-    ).includes(:visn).order(:street_address_state, :official_station_name)
-
-    @diffused_practices = @practice.diffusion_histories
-    @diffusion_histories = Gmaps4rails.build_markers(@diffused_practices.group_by(&:facility_id)) do |dhg, marker|
-
-      facility = @vamc_facilities.find { |f| f.station_number == dhg[0] }
+    @facilities = VaFacility.cached_va_facilities.select(:street_address_state, :official_station_name, :id, :visn_id, :common_name, :station_number, :latitude, :longitude, :slug).includes(:visn).order(:street_address_state, :official_station_name)
+    @pr_diffusion_histories = @practice.diffusion_histories
+    @diffusion_history_markers = Gmaps4rails.build_markers(@pr_diffusion_histories) do |dhg, marker|
+      facility = @facilities.find { |f| f.station_number === dhg.facility_id }
       marker.lat facility.latitude
       marker.lng facility.longitude
 
-      current_diffusion_status = dhg[1][0].diffusion_history_statuses.order(id: :desc).first
+      current_diffusion_status = dhg.diffusion_history_statuses.first
       marker_url = view_context.image_path('map-marker-successful-default.svg')
       status = 'Complete'
+      start_time = current_diffusion_status.start_time
+      end_time = current_diffusion_status.end_time
       if current_diffusion_status.status == 'In progress' || current_diffusion_status.status == 'Planning' || current_diffusion_status.status == 'Implementing'
         marker_url = view_context.image_path('map-marker-in-progress-default.svg')
         status = 'In progress'
       elsif current_diffusion_status.status == 'Unsuccessful'
         marker_url = view_context.image_path('map-marker-unsuccessful-default.svg')
         status = 'Unsuccessful'
+        unsuccessful_reasons = current_diffusion_status.unsuccessful_reasons
+        unsuccessful_reasons_other = current_diffusion_status.unsuccessful_reasons_other
       end
 
       marker.picture({
-                         url: marker_url,
-                         width: 31,
-                         height: 44,
-                         scaledWidth: 31,
-                         scaledHeight: 44
+                      url: marker_url,
+                      width: 31,
+                      height: 44,
+                      scaledWidth: 31,
+                      scaledHeight: 44
                      })
-
       marker.shadow nil
-      completed = 0
-      in_progress = 0
-      unsuccessful = 0
-      dhg[1].each do |dh|
-        dh_status = dh.diffusion_history_statuses.order(created_at: :desc).first
-        in_progress += 1 if dh_status.status == 'In progress' || dh_status.status == 'Planning' || dh_status.status == 'Implementing'
-        completed += 1 if dh_status.status == 'Completed' || dh_status.status == 'Implemented' || dh_status.status == 'Complete'
-        unsuccessful += 1 if dh_status.status == 'Unsuccessful'
-      end
-      practices = dhg[1].map(&:practice)
       marker.json({
-                      id: facility.station_number,
-                      practices: practices,
-                      name: facility.official_station_name,
-                      complexity: facility.fy17_parent_station_complexity_level,
-                      visn: facility.visn.number,
-                      rurality: facility.rurality,
-                      completed: completed,
-                      in_progress: in_progress,
-                      unsuccessful: unsuccessful,
-                      facility: facility,
-                      status: status
+                    id: facility.station_number,
+                    facility: facility,
+                    diffusion_history_status: current_diffusion_status,
+                    status: current_diffusion_status.get_status_display_name
                   })
-
-      marker.infowindow render_to_string(partial: 'maps/infowindow', locals: {diffusion_histories: dhg[1], completed: completed, in_progress: in_progress, facility: facility})
+      marker.infowindow render_to_string(partial: 'maps/infowindow', locals: { diffusion_histories: dhg[1], facility: facility })
     end
 
     render 'practices/show/show'
@@ -174,30 +144,6 @@ class PracticesController < ApplicationController
           format.json { render json: updated, status: :unprocessable_entity }
         end
       end
-    end
-  end
-
-  def clear_origin_facilities
-    origin_facilities = @practice.practice_origin_facilities
-    origin_facilities.destroy_all
-  end
-
-  def set_initiating_fac_params(params)
-    facility_type = params[:practice][:initiating_facility_type]
-    if facility_type == "facility" && params[:practice][:practice_origin_facilities_attributes].present?
-      @practice.initiating_facility = ""
-      @practice.initiating_department_office_id = ""
-    elsif facility_type == "visn" && params[:editor_visn_select].present?
-      @practice.initiating_facility = params[:editor_visn_select]
-      @practice.initiating_department_office_id = ""
-    elsif facility_type == "department" && params[:editor_office_state_select].present? && params[:practice][:initiating_department_office_id].present? && params[:practice][:initiating_facility]
-      @practice.initiating_facility = params[:practice][:initiating_facility]
-      @practice.initiating_department_office_id = params[:practice][:initiating_department_office_id]
-    elsif facility_type == "other" && params[:initiating_facility_other].present?
-      @practice.initiating_facility = params[:initiating_facility_other]
-      @practice.initiating_department_office_id = ""
-    else
-      params[:practice][:initiating_facility_type] = ""
     end
   end
 
@@ -323,7 +269,6 @@ class PracticesController < ApplicationController
   end
 
   def metrics
-
     @duration = params[:duration] || "30"
     @page_views_leader_board_30_days = fetch_page_views_leader_board()
     @page_views_leader_board_all_time = fetch_page_views_leader_board(0)
@@ -387,7 +332,6 @@ class PracticesController < ApplicationController
     end
 
     render 'practices/form/metrics'
-
   end
 
   def practice_name
@@ -459,6 +403,12 @@ class PracticesController < ApplicationController
   def published
   end
 
+  # /practices/slug/adoptions
+  def adoptions
+    @facilities = VaFacility.cached_va_facilities.select(:street_address_state, :official_station_name, :id, :common_name, :station_number).order(:street_address_state, :official_station_name)
+    render 'practices/form/adoptions'
+  end
+
   def publication_validation
     updated = update_conditions
     respond_to do |format|
@@ -482,6 +432,11 @@ class PracticesController < ApplicationController
     # set attributes for later use
     facility_id = params[:facility_id]
     status = params[:status]
+    unsuccessful_reasons = params[:unsuccessful_reasons] || []
+    unsuccessful_reasons_other = params[:unsuccessful_reasons_other] || nil
+
+    @facilities = VaFacility.cached_va_facilities.select(:street_address_state, :official_station_name, :id, :common_name, :station_number).order(:street_address_state, :official_station_name)
+
     if params[:date_started].present? && !(params[:date_started].values.include?(''))
       start_time = DateTime.new(params[:date_started][:year].to_i, params[:date_started][:month].to_i)
     end
@@ -496,13 +451,7 @@ class PracticesController < ApplicationController
       # if so, tell them no
       existing_dh = DiffusionHistory.find_by(practice: @practice, facility_id: facility_id)
       if existing_dh && existing_dh.id != @dh.id
-        vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
-        params[:existing_dh] = vamc_facilities.find { |f| f['StationNumber'] == facility_id }
-      else
-        # if not,
-        # update it
-        @dh.update_attributes(facility_id: facility_id)
-        params[:facility_changed] = true
+        params[:existing_dh] = @facilities.find_by(station_number: facility_id)
       end
     else
       # or else, we're creating something
@@ -510,22 +459,21 @@ class PracticesController < ApplicationController
       @dh = DiffusionHistory.find_by(practice: @practice, facility_id: facility_id)
       # if so, tell them!
       if @dh
-        vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
-        params[:exists] = vamc_facilities.find { |f| f['StationNumber'] == facility_id }
+        params[:exists] = @facilities.find_by(station_number: facility_id)
       else
         # if not, create a new one
         @dh = DiffusionHistory.create(practice: @practice, facility_id: facility_id)
       end
     end
 
-    if params[:exists].blank? && params[existing_dh].blank?
+    if params[:exists].blank? && params[:existing_dh].blank?
       if params[:diffusion_history_status_id]
         # update the diffusion history status
         dhs = DiffusionHistoryStatus.find(params[:diffusion_history_status_id])
-        dhs.update_attributes(status: status, start_time: start_time, end_time: end_time)
+        params[:updated] = dhs.update_attributes(status: status, start_time: start_time, end_time: end_time, unsuccessful_reasons: unsuccessful_reasons, unsuccessful_reasons_other: unsuccessful_reasons_other)
       else
         # create a new status.
-        DiffusionHistoryStatus.create!(diffusion_history: @dh, status: status, start_time: start_time, end_time: end_time)
+        DiffusionHistoryStatus.create!(diffusion_history: @dh, status: status, start_time: start_time, end_time: end_time, unsuccessful_reasons: unsuccessful_reasons, unsuccessful_reasons_other: unsuccessful_reasons_other)
       end
     end
 
@@ -534,7 +482,7 @@ class PracticesController < ApplicationController
         params[:created] = true
       end
       params[:reload] = true
-      format.js
+      format.js { render 'practices/form/adoptions_forms/create_or_update_diffusion_history.js.erb' }
     end
   end
 
@@ -542,7 +490,7 @@ class PracticesController < ApplicationController
     dh = DiffusionHistory.find(params[:diffusion_history_id])
     dh.destroy
     respond_to do |format|
-      format.html { redirect_to practice_adoptions_path(dh.practice), notice: 'Adoption entry was successfully deleted.' }
+      format.html { redirect_to practice_adoptions_path(dh.practice), notice: 'Adoption was successfully deleted.' }
       format.json { head :no_content }
     end
   end
@@ -574,6 +522,16 @@ class PracticesController < ApplicationController
   end
 
   private
+
+  def is_enabled
+    unless @practice.enabled
+      redirect_to(root_path)
+    end
+  end
+
+  def redirect_to_instructions_path
+    redirect_to practice_instructions_path(@practice)
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_practice
@@ -737,5 +695,29 @@ class PracticesController < ApplicationController
       clear_origin_facilities if facility_type != "facility" && current_endpoint == 'introduction'
       updated
     end
+  end
+end
+
+def clear_origin_facilities
+  origin_facilities = @practice.practice_origin_facilities
+  origin_facilities.destroy_all
+end
+
+def set_initiating_fac_params(params)
+  facility_type = params[:practice][:initiating_facility_type]
+  if facility_type == "facility" && params[:practice][:practice_origin_facilities_attributes].present?
+    @practice.initiating_facility = ""
+    @practice.initiating_department_office_id = ""
+  elsif facility_type == "visn" && params[:editor_visn_select].present?
+    @practice.initiating_facility = params[:editor_visn_select]
+    @practice.initiating_department_office_id = ""
+  elsif facility_type == "department" && params[:editor_office_state_select].present? && params[:practice][:initiating_department_office_id].present? && params[:practice][:initiating_facility]
+    @practice.initiating_facility = params[:practice][:initiating_facility]
+    @practice.initiating_department_office_id = params[:practice][:initiating_department_office_id]
+  elsif facility_type == "other" && params[:initiating_facility_other].present?
+    @practice.initiating_facility = params[:initiating_facility_other]
+    @practice.initiating_department_office_id = ""
+  else
+    params[:practice][:initiating_facility_type] = ""
   end
 end
