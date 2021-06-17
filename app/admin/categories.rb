@@ -33,10 +33,26 @@ ActiveAdmin.register Category do
       end
       row :related_terms
       row :is_other
+
+      category_practice = CategoryPractice.where(category_id: params["id"])
+      practices = []
+      cat = Category.find_by_id(params["id"]).name
+      category_practice.each do |cat_pract|
+        practices << Practice.find_by_id(cat_pract.practice_id).name
+      end
+      practices_with_cat = ""
+      practices.each do |practice|
+        practices_with_cat += practice + ", "
+      end
+      if practices_with_cat.length > 0
+        div do
+          h3 'PRACTICES WITH ' + cat + ' CATEGORY: ' +  practices_with_cat[0..practices_with_cat.length - 3]
+        end
+      end
     end
   end
 
-  form do |f|
+ form do |f|
     f.inputs do
       f.input :name
       f.input :short_name
