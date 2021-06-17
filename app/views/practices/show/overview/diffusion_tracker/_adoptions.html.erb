@@ -34,7 +34,7 @@
       <button class="usa-accordion__button padding-right-205"
               aria-expanded="false"
               aria-controls="<%= group_name.underscore %>">
-        <span class="text-middle margin-right-05"><%= group_name %> adoption<%= histories.size === 1 ? '' : 's' %> (<%= histories.size %>)</span>
+        <span class="text-middle margin-right-05"><%= group_name %> adoption<%= histories&.length === 1 ? '' : 's' %> (<%= histories&.length || 0 %>)</span>
         <% adoption_statuses_and_text.each do |as| %>
           <% if as[:status] === group_name %>
             <%= render partial: 'practices/adoption_status_tooltip', locals: { tooltip_title: as[:text] } %>
@@ -44,7 +44,7 @@
       </button>
     </h2>
     <div id="<%= group_name.underscore %>" class="usa-accordion__content usa-prose">
-      <% if histories.any? %>
+      <% if histories.present? %>
         <% histories.each do |h| %>
           <%
             dhs = h.diffusion_history_statuses.first
