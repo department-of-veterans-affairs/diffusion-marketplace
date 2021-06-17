@@ -8,10 +8,11 @@ ActiveAdmin.register Category do
   index do
     id_column
     column :name
+    column :short_name
     column :description
     column "Parent Category" do |p|
       if !p.nil?
-        parent_cat = Category.find_by_id(p.parent_category_id)
+        Category.find_by_id(p.parent_category_id)
        end
     end
     column :related_terms
@@ -23,6 +24,7 @@ ActiveAdmin.register Category do
     attributes_table do
       row :id
       row :name
+      row :short_name
       row :description
       row "Parent Category" do |p|
         if !p.nil?
@@ -37,6 +39,7 @@ ActiveAdmin.register Category do
   form do |f|
     f.inputs do
       f.input :name
+      f.input :short_name
       f.input :description, as: :string
       f.input :parent_category_id, as: :select, multiple: false, collection: Category.where(parent_category_id: nil, is_other: false).order(name: :asc).map {|category| ["#{category.name}", category.id]}, input_html: { value: object[:parent_category_id] }
       # ensures input is displayed as comma separated list
@@ -76,7 +79,7 @@ ActiveAdmin.register Category do
     private
 
     def category_params
-      params.require(:category).permit(:name, :description, :parent_category_id, :is_other, related_terms:[])
+      params.require(:category).permit(:name, :short_name, :description, :parent_category_id, :is_other, related_terms:[])
     end
 
     def modify_related_terms_for_db
