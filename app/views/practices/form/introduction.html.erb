@@ -464,26 +464,48 @@
                 <span>Select the categories most relevant to your practice (suggested: up to 10).</span>
               </div>
                 <%
-                  debugger
                   # clinical cats
                   clinical_category = Category.where(name: 'Clinical', parent_category_id: nil).first
                   clinical_category_id = clinical_category.id
+                  #create tmp category obj for all_clinical..
+                  all_clinical = Category.new
+                  all_clinical.name = 'All clinical'
+                  all_clinical.short_name = 'all clinical'
+                  all_clinical.description = ' All Clinical'
+                  all_clinical.parent_category_id = clinical_category_id
+                  all_clinical.is_other = false
+                  all_clinical.updated_at = DateTime.now
+                  all_clinical.created_at = DateTime.now
+                  all_clinical_arr = []
+                  all_clinical_arr << all_clinical
+
                   clinical_categories = Category.where(parent_category_id: clinical_category_id, is_other: false).where.not(name: 'Other')
                   clin_other = Category.where(name: 'Other', parent_category_id: clinical_category_id)
-                  clinical_categories_list = clinical_categories + clin_other
+                  clinical_categories_list = all_clinical_arr +  clinical_categories + clin_other
                   clin_cat_count = clinical_categories_list.count
                   grp_count = clin_cat_count/3
                   if clin_cat_count > grp_count*3
                     grp_count = grp_count + 1
                   end
                   clinical_categories_groups = clinical_categories_list.in_groups_of(grp_count)
-                  debugger
                   # operational cats
                   operational_category = Category.where(name: 'Operational', parent_category_id: nil).first
                   operational_category_id = operational_category.id
+                  #create tmp category obj for all_operational..
+                  all_operational = Category.new
+                  all_operational.name = 'All operational'
+                  all_operational.short_name = 'all operational'
+                  all_operational.description = ' All operational'
+                  all_operational.parent_category_id = operational_category_id
+                  all_operational.is_other = false
+                  all_operational.updated_at = DateTime.now
+                  all_operational.created_at = DateTime.now
+                  all_operational_arr = []
+                  all_operational_arr << all_operational
+
                   operational_categories = Category.where(parent_category_id: operational_category_id, is_other: false)
                   ops_other = Category.where(name: 'Other', parent_category_id: operational_category_id)
-                  operational_categories_list = operational_categories + ops_other
+                  operational_categories_list = all_operational_arr + operational_categories + ops_other
                   ops_cat_count = operational_categories_list.count
                   grp_count = ops_cat_count/3
                   if ops_cat_count > grp_count*3
@@ -494,9 +516,21 @@
                   #strategic cats..
                   strategic_category = Category.where(name: 'Strategic', parent_category_id: nil).first
                   strategic_category_id = strategic_category.id
+                  #create tmp category obj for all_strategic..
+                  all_strategic = Category.new
+                  all_strategic.name = 'All strategic'
+                  all_strategic.short_name = 'all strategic'
+                  all_strategic.description = ' All strategic'
+                  all_strategic.parent_category_id = strategic_category_id
+                  all_strategic.is_other = false
+                  all_strategic.updated_at = DateTime.now
+                  all_strategic.created_at = DateTime.now
+                  all_strategic_arr = []
+                  all_strategic_arr << all_strategic
+
                   strategic_categories = Category.where(parent_category_id: strategic_category_id, is_other: false)
                   strategic_other = Category.where(name: 'Other', parent_category_id: strategic_category_id)
-                  strategic_categories_list = strategic_categories + strategic_other
+                  strategic_categories_list = all_strategic_arr + strategic_categories + strategic_other
                   strategic_cat_count = strategic_categories_list.count
                   grp_count = strategic_cat_count/3
                   if strategic_cat_count > grp_count*3
@@ -516,14 +550,6 @@
                   <tr>
                     <td style="width: 33%">
                       <% clinical_categories_groups[0].each do |cat| %>
-                        <%# if cat_ctr == 0 %>
-<!--                          <input type="checkbox" class="usa-checkbox__input category-input"-->
-<!--                                 id="all_clinical_input" name="all_clinical_input"/>-->
-<!--                          <label class="usa-checkbox__label" id="all_clinical_label" for="all_clinical_input">-->
-<!--                            All clinical-->
-<!--                          </label>-->
-                          <%# cat_ctr = cat_ctr + 1 %>
-                        <%# end %>
                         <% underscore_cat = cat.name.split(' ').join('').underscore %>
                         <div class="usa-checkbox pe-category-checkbox position-relative">
                           <input type="checkbox"
@@ -546,8 +572,8 @@
                                  id="category_<%= underscore_cat %>"
                                  name="practice[category][<%= cat.id %>][value]"
                                  <%= 'checked="true"' if practice_categories_ids.include?(cat.id) %>/>
-                          <label class="usa-checkbox__label" id="category_<%= underscore_cat %>_label" for="category_<%= underscore_cat %>">
-                            <%= cat.name %>
+                          <label title="<%= cat.name %>" class="usa-checkbox__label" id="category_<%= underscore_cat %>_label" for="category_<%= underscore_cat %>">
+                            <%= truncate(cat.name, length: 20) %>
                           </label>
                         </div>
                       <% end %>
@@ -561,10 +587,9 @@
                                  class="usa-checkbox__input category-input"
                                  id="category_<%= underscore_cat %>"
                                  name="practice[category][<%= cat.id %>][value]"
-                                 <%= 'checked="true"' if practice_categories_ids.include?(cat.id) %>
-                            />
-                          <label class="usa-checkbox__label" id="category_<%= underscore_cat %>_label" for="category_<%= underscore_cat %>">
-                            <%= cat.name %>
+                                 <%= 'checked="true"' if practice_categories_ids.include?(cat.id) %>/>
+                          <label title="<%= cat.name %>" class="usa-checkbox__label" id="category_<%= underscore_cat %>_label" for="category_<%= underscore_cat %>">
+                            <%= truncate(cat.name, length: 20) %>
                           </label>
                         </div>
                       <% end %>
