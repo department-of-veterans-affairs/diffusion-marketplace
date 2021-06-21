@@ -4,6 +4,7 @@ class SavePracticeService
   include UsersHelper
 
   def initialize(params)
+    @other_parent_category = params[:other_parent_category]
     @practice = params[:practice]
     @practice_params = params[:practice_params]
     @avatars = ['practice_creators', 'va_employees']
@@ -155,6 +156,16 @@ class SavePracticeService
   end
 
   def update_category_practices
+    category = Category.new
+    parent_category_id = nil
+    if @other_parent_category == 'clinical'
+      parent_category_id = category.get_clinical_category_id
+    elsif @other_parent_category == 'operational'
+      parent_category_id = category.get_operational_category_id
+    elsif @other_parent_category == 'strategic'
+      parent_category_id = category.get_strategic_category_id
+    end if
+
     category_params = @practice_params[:category]
     practice_category_practices = @practice.category_practices
     practice_categories = @practice.categories
@@ -170,7 +181,6 @@ class SavePracticeService
           practice_category_practices.find_or_create_by(category_id: key.to_i)
         end
       end
-      
       other_cat_id = Category.find_by(name: 'Other').id
 
       if cat_keys.include?(other_cat_id.to_s)
@@ -179,7 +189,7 @@ class SavePracticeService
         categories_to_process.each do |category|
           unless category[:name] == ""
             if category[:_destroy] == 'false' && category[:id].nil?
-              cate = Category.create(name: category[:name], is_other: true)
+              cate = Category.create(name: category[:name], is_other: true, parent_category_id: parent_category_id)
               practice_category_practices.create(category_id: cate.id)
             elsif category[:_destroy] == 'false' && category[:id].present?
               practice_categories.find_by(id: category[:id].to_i).update_attributes(name: category[:name])

@@ -540,9 +540,6 @@
 
                   practice_categories = @practice.category_practices
                   practice_categories_ids = practice_categories.map(&:category_id)
-
-                  #categories = Category.where.not(id: other.ids, is_other: true).order(name: :asc)
-                  #categories_list = categories + other
                 %>
                 <% cat_ctr = 0 %>
                 <div class="margin-bottom-2">Clinical</div>
@@ -582,6 +579,11 @@
                       <% clinical_categories_groups[2].each do |cat| %>
                         <% next if cat.blank? %>
                         <% underscore_cat = cat.name.split(' ').join('').underscore %>
+
+                        <% if underscore_cat == 'other' && practice_categories_ids.include?(cat.id) %>
+                          <input type="hidden" name="clinical_other" id="clinical_other" value="<%= clinical_category_id %>"/>
+                        <% end %>
+
                         <div class="usa-checkbox pe-category-checkbox position-relative">
                           <input type="checkbox"
                                  class="usa-checkbox__input category-input"

@@ -639,7 +639,7 @@ class PracticesController < ApplicationController
                                      practice_email: {},
                                      practice_testimonials_attributes: [:id, :_destroy, :testimonial, :author, :position],
                                      practice_awards_attributes: [:id, :_destroy, :name],
-                                     categories_attributes: [:id, :_destroy, :name, :is_other],
+                                     categories_attributes: [:id, :_destroy, :name, :parent_category_id, :is_other],
                                      practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :facility_type, :initiating_department_office_id],
                                      practice_metrics_attributes: [:id, :_destroy, :description],
                                      practice_emails_attributes: [:id, :address, :_destroy],
@@ -727,12 +727,22 @@ class PracticesController < ApplicationController
   end
 
   def update_conditions
+    other_parent = ""
+    if params["clinical_other"].present?
+      other_parent = "clinical"
+    elsif params["operational_other"]
+      other_parent = "operational"
+    elsif params["strategic_other"]
+      other_parent = "strategic"
+    end
+
+
     if params[:practice].present?
       facility_type = params[:practice][:initiating_facility_type] || nil
       if facility_type.present?
         set_initiating_fac_params params
       end
-      pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
+      pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint, other_parent_category: other_parent}
       updated = SavePracticeService.new(pr_params).save_practice
       clear_origin_facilities if facility_type != "facility" && current_endpoint == 'introduction'
       updated

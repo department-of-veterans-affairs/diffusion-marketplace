@@ -1,4 +1,5 @@
 class Category < ApplicationRecord
+
   has_many :sub_categories, class_name: 'Category', foreign_key: 'parent_category_id', dependent: :destroy
   belongs_to :parent_category, class_name: 'Category', optional: true
   acts_as_list
@@ -13,6 +14,19 @@ class Category < ApplicationRecord
   scope :not_none, -> { where.not(name: 'None').where.not(name: 'none') }
 
   attr_accessor :related_terms_raw
+
+  def get_clinical_category_id
+    return Category.where(name: 'Clinical', is_other: false, parent_category_id: nil).first().id
+  end
+
+  def get_operational_category_id
+    return Category.where(name: 'Operational', is_other: false, parent_category_id: nil).first().id
+  end
+
+  def get_strategic_category_id
+    return Category.where(name: 'Strategic', is_other: false, parent_category_id: nil).first().id
+  end
+
 
   def related_terms_raw
     self[:related_terms].join(", ") unless self[:related_terms].nil?
