@@ -599,7 +599,7 @@
                   </tr>
                 </table>
 
-                <div id="other_categories_container" class="display-none position-relative">
+                <div id="clinical_other_categories_container" class="display-none position-relative">
                   <%
                     other_categories = @practice.categories.where(is_other: true)
                     other_category_ids = other_categories.ids
@@ -665,7 +665,7 @@
                         );
                         attachTrashListener(
                           $(document),
-                          '#other_categories_container',
+                          '#clinical_other_categories_container',
                           '.practice-editor-category-li'
                         );
                         $(document).arrive('#categories_fields_blueprint',
