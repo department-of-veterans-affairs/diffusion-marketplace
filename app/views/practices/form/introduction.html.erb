@@ -601,7 +601,7 @@
 
                 <div id="clinical_other_categories_container" class="display-none position-relative">
                   <%
-                    other_categories = @practice.categories.where(is_other: true)
+                    other_categories = @practice.categories.where(is_other: true, parent_category_id: clinical_category_id)
                     other_category_ids = other_categories.ids
                   %>
 
@@ -678,6 +678,7 @@
                     <% end %>
                   <% end %>
                 </div>
+              <!--------------------------------- END CLINICAL CATS ----------------------------------------------------->
               <!----------------------------------OPERATIONAL CATS START-------------------------------------------------->
               <div class="margin-bottom-1">Operational</div>
               <table style="width: 100%">
@@ -718,7 +719,7 @@
                       <% underscore_cat = cat.name.split(' ').join('').underscore %>
 
                       <% if underscore_cat == 'other' && practice_categories_ids.include?(cat.id) %>
-                        <input type="hidden" name="operational_other" id="clinical_other" value="<%= clinical_category_id %>"/>
+                        <input type="hidden" name="operational_other" id="operational_other" value="<%= operational_category_id %>"/>
                       <% end %>
 
                       <div class="usa-checkbox pe-category-checkbox position-relative">
@@ -737,7 +738,9 @@
               </table>
 
 
-              <!----------------------------END OEPRATIONAL CATS ----------------------------------------------------->
+
+
+              <!----------------------------END OPERATIONAL CATS ----------------------------------------------------->
               <!------------------------------START STRATEGIC CATS --------------------------------------------------->
               <div class="margin-bottom-1">Strategic</div>
               <table style="width: 100%">
@@ -778,7 +781,7 @@
                       <% underscore_cat = cat.name.split(' ').join('').underscore %>
 
                       <% if underscore_cat == 'other' && practice_categories_ids.include?(cat.id) %>
-                        <input type="hidden" name="operational_other" id="clinical_other" value="<%= clinical_category_id %>"/>
+                        <input type="hidden" name="strategic_other" id="strategic_other" value="<%= strategic_category_id %>"/>
                       <% end %>
 
                       <div class="usa-checkbox pe-category-checkbox position-relative">
