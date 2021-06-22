@@ -580,7 +580,11 @@
                         <% next if cat.blank? %>
                         <% underscore_cat = cat.name.split(' ').join('').underscore %>
 
-                        <% if underscore_cat == 'other' && practice_categories_ids.include?(cat.id) %>
+                        <% if underscore_cat == 'other' %>
+                            <% underscore_cat = 'other_clinical' %>
+                          <% end %>
+
+                        <% if underscore_cat == 'other_clinical' && practice_categories_ids.include?(cat.id) %>
                           <input type="hidden" name="clinical_other" id="clinical_other" value="<%= clinical_category_id %>"/>
                         <% end %>
 
