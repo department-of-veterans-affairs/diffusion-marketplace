@@ -110,7 +110,7 @@
         showOtherAwardFields();
     }
 
-    function attachShowOtherCategoryFields() {
+    function attachShowOtherClinicalCategoryFields() {
         observePracticeEditorLiArrival(
             $document,
             '.practice-editor-category-li',
@@ -118,15 +118,15 @@
             '8'
         );
         $document.on('change', '#category_other', function() {
-            showOtherCategoryFields();
+            showOtherClinicalCategoryFields();
         });
 
         attachTrashListener(
             $document,
-            '#other_categories_container',
+            '#clinical_other_categories_container',
             '.practice-editor-category-li'
         );
-        showOtherCategoryFields();
+        showOtherClinicalCategoryFields();
     }
 
     function expandSummaryTextArea() {
@@ -141,7 +141,7 @@
         maxCharacters();
         attachFacilitySelectListener();
         attachShowOtherAwardFields();
-        attachShowOtherCategoryFields();
+        attachShowOtherClinicalCategoryFields();
         toggleInputsOnRadioSelect();
         toggleInputsOnLoad();
         expandSummaryTextArea();
@@ -173,10 +173,10 @@ function showOtherAwardFields() {
     }
 }
 
-function showOtherCategoryFields() {
+function showOtherClinicalCategoryFields() {
     if ($('#category_other').prop('checked')) {
-        $('#other_categories_container').removeClass('display-none');
+        $('#clinical_other_categories_container').removeClass('display-none');
     } else {
-        $('#other_categories_container').addClass('display-none');
+        $('#clinical_other_categories_container').addClass('display-none');
     }
 }
