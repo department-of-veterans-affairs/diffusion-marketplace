@@ -351,6 +351,8 @@ ActiveRecord::Schema.define(version: 2021_06_10_160757) do
     t.datetime "end_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "unsuccessful_reasons", default: [], array: true
+    t.text "unsuccessful_reasons_other"
     t.index ["diffusion_history_id"], name: "index_diffusion_history_statuses_on_diffusion_history_id"
   end
 

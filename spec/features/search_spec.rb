@@ -36,11 +36,11 @@ describe 'Search', type: :feature do
     PracticeOriginFacility.create!(practice: @practice13, facility_type: 0, facility_id: '528QK')
     @practice14 = Practice.create!(name: 'The Most Important Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 14', date_initiated: 'Sun, 14 Nov 1999 00:00:00 UTC +00:00', summary: 'This is the thirteenth best practice ever.', published: true, approved: true, user: @user2)
     PracticeOriginFacility.create!(practice: @practice14, facility_type: 0, facility_id: '561BY')
-    @cat_1 = Category.create!(name: 'COVID')
-    @cat_2 = Category.create!(name: 'Environmental Services')
-    @cat_3 = Category.create!(name: 'Follow-up Care')
-    @cat_4 = Category.create!(name: 'Pulmonary Care')
-    @cat_5 = Category.create!(name: 'Telehealth')
+    @cat_1 = Category.create!(name: 'COVID', is_other: false)
+    @cat_2 = Category.create!(name: 'Environmental Services', is_other: false)
+    @cat_3 = Category.create!(name: 'Follow-up Care', is_other: false)
+    @cat_4 = Category.create!(name: 'Pulmonary Care', is_other: false)
+    @cat_5 = Category.create!(name: 'Telehealth', is_other: false)
     CategoryPractice.create!(practice: @practice, category: @cat_1, created_at: Time.now)
     CategoryPractice.create!(practice: @practice, category: @cat_2, created_at: Time.now)
     CategoryPractice.create!(practice: @practice, category: @cat_5, created_at: Time.now)
@@ -108,9 +108,9 @@ describe 'Search', type: :feature do
     update_practice_introduction(practice)
     visit(practice_adoptions_path(practice))
     find('#add_adoption_button').click
-    find('label[for="status_in_progress"').click
-    select('Alaska', :from => 'editor_state_select')
-    select('Anchorage VA Medical Center', :from => 'editor_facility_select')
+    find("label[for*='status_completed']").click
+    find('#editor_facility_select').click
+    find("#editor_facility_select--list--option-0").click
     find('#adoption_form_submit').click
     visit(practice_contact_path(practice))
     fill_in('practice_support_network_email', with: 'dm@va.gov')
@@ -510,19 +510,16 @@ describe 'Search', type: :feature do
   describe 'Cache' do
     it 'Should be reset if certain practice attributes have been updated' do
       add_search_to_cache
-
       expect(cache_keys).to include("searchable_practices")
-
       update_practice_introduction(@practice)
-      sleep 2
+      expect(page).to have_content("Practice was successfully updated.")
+      expect(page).to have_selector(".usa-alert__heading", visible: true)
       expect(cache_keys).not_to include("searchable_practices")
     end
 
     it 'Should be reset if a new practice is created through the admin panel' do
       add_search_to_cache
-
       expect(cache_keys).to include("searchable_practices")
-
       login_as(@admin, :scope => :user, :run_callbacks => false)
       visit '/admin'
       click_link('Practices')
@@ -534,8 +531,13 @@ describe 'Search', type: :feature do
 
       visit '/search?=newest'
       expect(page).to_not have_content(latest_practice.name)
+      visit(practice_overview_path(latest_practice))
+      fill_in('practice_overview_problem', with: 'Practice overview problem statement')
+      fill_in('practice_overview_solution', with: 'Practice overview solution statement')
+      fill_in('practice_overview_results', with: 'Practice overview results statement')
+      find('#practice-editor-save-button').click
       publish_practice(latest_practice)
-      sleep 1
+      expect(page).to have_selector(".usa-alert__heading", visible: true)
       expect(cache_keys).not_to include("searchable_practices")
     end
   end

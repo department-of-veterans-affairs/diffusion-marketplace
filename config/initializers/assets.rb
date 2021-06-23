@@ -43,6 +43,7 @@ Rails.application.config.assets.precompile += %w(
                                                   va_facilities/facility_created_practice_search.js
                                                   va_facilities/facility_adopted_practice_search.js
                                                   _otherCategories.js
+                                                  shared/_textarea_counter.js
                                               )
 
 # Precompile additional assets.

@@ -181,9 +181,10 @@ class SavePracticeService
           practice_category_practices.find_or_create_by(category_id: key.to_i)
         end
       end
-      other_cat_id = Category.find_by(name: 'Other').id
 
-      if cat_keys.include?(other_cat_id.to_s)
+      other_cat_id = Category.find_by(name: 'Other')&.id
+
+      if other_cat_id.present? && cat_keys.include?(other_cat_id.to_s)
         categories_to_process = category_attribute_params.values.map { |param| {id: param[:id], name: param[:name], _destroy: param[:_destroy]} }
         # If Other was checked, create a new category with is_other true and create a category_practice linking to the new category
         categories_to_process.each do |category|
