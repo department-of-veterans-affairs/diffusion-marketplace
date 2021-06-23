@@ -10,6 +10,15 @@
   function onAdoptionFormArriveListener() {
     $document.arrive("#adoption_form", (e) => {
       submitFormListener();
+      let radioBtn = $(e.currentTarget).find('.adoptions-radio-button:checked');
+      let target = $(e.currentTarget).closest(".adoption-form");
+      if (radioBtn.length > 0) {
+        let status = $(radioBtn[0]).val();
+        _toggleViewsByStatus({ status, target });
+      } else {
+        _toggleDateRangeView({ target, visible: false });
+        _toggleUnsuccessfulReasonsView({ target, visible: false });
+      }
     });
   }
 
@@ -167,31 +176,31 @@
     });
   }
 
-  function _toggleDateRangeView({ visible }) {
+  function _toggleDateRangeView({ visible, target }) {
     if (visible) {
-      $(".dm-adoption-end-date").removeClass('display-none');
-      $(".dm-date-range-text").removeClass("display-none");
+      $(target).find(".dm-adoption-end-date").removeClass("display-none");
+      $(target).find(".dm-date-range-text").removeClass("display-none");
     } else {
-      $(".dm-adoption-end-date").addClass("display-none");
-      $(".dm-date-range-text").addClass("display-none");
+      $(target).find(".dm-adoption-end-date").addClass("display-none");
+      $(target).find(".dm-date-range-text").addClass("display-none");
     }
   }
 
-  function _toggleUnsuccessfulReasonsView({ visible }) {
+  function _toggleUnsuccessfulReasonsView({ visible, target }) {
     if (visible) {
-      $(".dm-unsuccessful-adoption-reasons").removeClass("display-none");
+      $(target).find(".dm-unsuccessful-adoption-reasons").removeClass("display-none");
     } else {
-      $(".dm-unsuccessful-adoption-reasons").addClass("display-none");
+      $(target).find(".dm-unsuccessful-adoption-reasons").addClass("display-none");
     }
   }
 
-  function _toggleOtherReasonTextAreaView({ visible }) {
+  function _toggleOtherReasonTextAreaView({ visible, target }) {
     if (visible) {
-      $(".ur-other-character-counter").removeClass("display-none");
-      $(".dm-unsuccessful-adoption-other-reason").removeClass("display-none");
+      $(target).find(".ur-other-character-counter").removeClass("display-none");
+      $(target).find(".dm-unsuccessful-adoption-other-reason").removeClass("display-none");
     } else {
-      $(".ur-other-character-counter").addClass("display-none");
-      $(".dm-unsuccessful-adoption-other-reason").addClass('display-none')
+      $(target).find(".ur-other-character-counter").addClass("display-none");
+      $(target).find(".dm-unsuccessful-adoption-other-reason").addClass('display-none')
     }
   }
 
@@ -209,31 +218,36 @@
         checkedList.includes("5") ||
         ($currentCheck.val() === "5" && $currentCheck.is(":checked"));
 
-      _toggleOtherReasonTextAreaView({ visible: showOtherReasonTextArea });
+      let target = $currentCheck.closest('.adoption-form')
+      _toggleOtherReasonTextAreaView({ visible: showOtherReasonTextArea, target });
     });
+  }
+
+  function _toggleViewsByStatus({status, target}) {
+    switch (status) {
+      case "Completed":
+        _toggleDateRangeView({ visible: true, target });
+        _toggleUnsuccessfulReasonsView({ visible: false, target });
+        break;
+      case "In progress":
+        _toggleDateRangeView({ visible: false, target });
+        _toggleUnsuccessfulReasonsView({ visible: false, target });
+        break;
+      case "Unsuccessful":
+        _toggleDateRangeView({ visible: true, target });
+        _toggleUnsuccessfulReasonsView({ visible: true, target });
+        break;
+    }
   }
 
   function adoptionStatusRadioBtnListener() {
     $document.on('change', '.adoptions-radio-button', (e) => {
       let $adoptionStatus = $(e.currentTarget);
       let isChecked = $adoptionStatus.is(":checked");
-      let value = $adoptionStatus.val();
+      let status = $adoptionStatus.val();
+      let target = $adoptionStatus.closest('.adoption-form');
       if (isChecked) {
-        switch (value) {
-          case 'Completed':
-            _toggleDateRangeView({ visible: true });
-            _toggleUnsuccessfulReasonsView({ visible: false });
-
-            break;
-          case 'In progress':
-            _toggleDateRangeView({ visible: false });
-            _toggleUnsuccessfulReasonsView({ visible: false });
-            break;
-          case 'Unsuccessful':
-            _toggleDateRangeView({ visible: true });
-            _toggleUnsuccessfulReasonsView({ visible: true });
-            break;
-        }
+        _toggleViewsByStatus({ status, target });
       }
     })
   }

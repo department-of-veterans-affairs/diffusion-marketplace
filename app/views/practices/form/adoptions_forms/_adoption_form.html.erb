@@ -93,7 +93,7 @@
           <input class="usa-checkbox__input dm-unsuccessful-adoption-checkbox" id=<%= "unsuccessful_reason_#{form_id}_#{key}" %> type="checkbox" name="unsuccessful_reasons[]" value=<%= key %> <%= 'checked' if adoption&.unsuccessful_reasons&.include?(key) %>>
           <%= label_tag "unsuccessful_reason_#{form_id}_#{key}", value, class: 'usa-checkbox__label display-inline-block' %>
           <% if key === 5 %>
-            <%= render partial: 'shared/textarea_counter', locals: { counter_class: "ur-other-character-counter#{ key === 5 && adoption&.unsuccessful_reasons&.include?(5) ? "" : " display-none" }", textarea_class: "dm-unsuccessful-reasons-other", max_char_count: 50 } %>
+            <%= render partial: 'shared/textarea_counter', locals: { counter_class: "ur-other-character-counter", classes:"#{ key === 5 && adoption&.unsuccessful_reasons&.include?(5) ? "" : " display-none" }", textarea_class: "dm-unsuccessful-reasons-other", max_char_count: 50 } %>
           <% end %>
         </div>
       <% end %>

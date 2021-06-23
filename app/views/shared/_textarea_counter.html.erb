@@ -1,3 +1,4 @@
+<% classes ||= "" %>
 <% provide :head_tags do %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     var textareaClass = "<%= textarea_class %>";
@@ -6,4 +7,4 @@
   <% end %>
   <%= javascript_include_tag 'shared/_textarea_counter', 'data-turbolinks-track': 'reload' %>
 <% end %>
-<span class="text-base-light <%= counter_class %>">(0/<%= max_char_count %> characters)</span>
+<span class="text-base-light <%= counter_class %> <%= classes %>">(0/<%= max_char_count %> characters)</span>

@@ -6,33 +6,12 @@
   const TEXTAREA_CLASS = `.${textareaClass}`;
   const COUNTER_CLASS = `.${counterClass}`;
 
-  function characterCounter(e, maxlength) {
-    const t = e.target;
-    let currentLength = $(t).val().length;
-    let counter = $(t).parent().parent().find(COUNTER_CLASS);
-    let characterCounter = `(${currentLength}/${maxlength} characters)`;
-
-    $(counter).css("color", CHARACTER_COUNTER_VALID_COLOR);
-    $(counter).text(characterCounter);
-
-    if (currentLength >= maxlength) {
-      $(counter).css("color", CHARACTER_COUNTER_INVALID_COLOR);
-    }
-  }
-
-  function countCharsOnPageLoad() {
-    let $textareas = $(TEXTAREA_CLASS);
-
-    $textareas.each((k, ta) => {
-      _countChars(ta)
-    })
-  }
-
-  function _countChars(ta) {
-    let currentLength = $(ta).val().length;
-    if (currentLength > 0) {
-      let characterCounter = `(${currentLength}/${MAX_CHARACTER_COUNT} characters)`;
-      let counter = $(ta).parent().parent().find(COUNTER_CLASS);
+  function _countChars(textarea) {
+    let currentLength = $(textarea).val().length;
+    if (currentLength >= 0) {
+      let characterCounter = `(${currentLength}/${MAX_CHARACTER_COUNT} character${currentLength !== 1 ? 's' : ''})`;
+      let counter = $(textarea).parent().parent().find(COUNTER_CLASS);
+      $(counter).css("color", CHARACTER_COUNTER_VALID_COLOR);
       $(counter).text(characterCounter);
       if (currentLength >= MAX_CHARACTER_COUNT) {
         $(counter).css("color", CHARACTER_COUNTER_INVALID_COLOR);
@@ -43,26 +22,23 @@
   function onTextAreaArriveListener() {
     $document.arrive(TEXTAREA_CLASS, (e) => {
       _countChars(e)
-      maxCharactersListener();
+      maxCharactersListener(e);
     });
   }
 
-
-
-  function maxCharactersListener() {
-    let $textareas = $(TEXTAREA_CLASS);
-    $(TEXTAREA_CLASS).off("input")
-    $(TEXTAREA_CLASS).on("input", (e) => {
-      characterCounter(
-        e,
-        MAX_CHARACTER_COUNT
-      );
+  function maxCharactersListener(textarea) {
+    $(textarea).off("input")
+    $(textarea).on("input", (e) => {
+      _countChars(e.currentTarget)
     });
   }
 
   function loadTextareaCounterFns() {
-    countCharsOnPageLoad();
-    maxCharactersListener();
+    let $textareas = $(TEXTAREA_CLASS);
+    $textareas.each((k, ta) => {
+      _countChars(ta)
+      maxCharactersListener(ta)
+    });
     onTextAreaArriveListener();
   }
 
