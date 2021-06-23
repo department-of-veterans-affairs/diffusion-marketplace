@@ -1,20 +1,20 @@
-
+let $document = $(document);
 
 function attachShowOtherClinicalCategoryFields() {
     observePracticeEditorLiArrival(
         $document,
-        '.practice-editor-category-li',
-        '.practice-editor-categories-ul',
+        '.clinical-li',
+        '.practice-editor-clinical-categories-ul',
         '8'
     );
-    $document.on('change', '#category_other_clinical', function() {
+    $document.on('click', '#clinical_category_other', function() {
         showOtherClinicalCategoryFields();
     });
 
     attachTrashListener(
         $document,
         '#clinical_other_categories_container',
-        '.practice-editor-category-li'
+        '.clinical-li'
     );
     showOtherClinicalCategoryFields();
 }
@@ -22,18 +22,18 @@ function attachShowOtherClinicalCategoryFields() {
 function attachShowOtherOperationalCategoryFields() {
     observePracticeEditorLiArrival(
         $document,
-        '.practice-editor-category-li',
-        '.practice-editor-categories-ul',
+        '.operational-li',
+        '.practice-editor-operational-categories-ul',
         '8'
     );
-    $document.on('change', '#category_other_operational', function() {
+    $document.on('change', '#operational_category_other', function() {
         showOtherOperationalCategoryFields();
     });
 
     attachTrashListener(
         $document,
-        '#clinical_other_categories_container',
-        '.practice-editor-category-li'
+        '#operational_other_categories_container',
+        '.operational-li'
     );
     showOtherOperationalCategoryFields();
 }
@@ -41,32 +41,34 @@ function attachShowOtherOperationalCategoryFields() {
 function attachShowOtherStrategicCategoryFields() {
     observePracticeEditorLiArrival(
         $document,
-        '.practice-editor-category-li',
-        '.practice-editor-categories-ul',
+        '.strategic-li',
+        '.practice-editor-strategic-categories-ul',
         '8'
     );
-    $document.on('change', '#category_other_strategic', function() {
+    $document.on('change', '#strategic_category_other', function() {
         showOtherStrategicCategoryFields();
     });
 
     attachTrashListener(
         $document,
         '#strategic_other_categories_container',
-        '.practice-editor-category-li'
+        '.strategic-li'
     );
     showOtherStrategicCategoryFields();
 }
 
 function showOtherClinicalCategoryFields() {
-    if ($('#category_other_clinical').prop('checked')) {
+    if ($('#clinical_category_other').prop('checked')) {
         $('#clinical_other_categories_container').removeClass('display-none');
     } else {
         $('#clinical_other_categories_container').addClass('display-none');
     }
 }
 
+
+
 function showOtherOperationalCategoryFields() {
-    if ($('#category_other_operational').prop('checked')) {
+    if ($('#operational_category_other').prop('checked')) {
         $('#operational_other_categories_container').removeClass('display-none');
     } else {
         $('#operational_other_categories_container').addClass('display-none');
@@ -74,17 +76,16 @@ function showOtherOperationalCategoryFields() {
 }
 
 function showOtherStrategicCategoryFields() {
-    if ($('#category_other_strategic').prop('checked')) {
+    if ($('#strategic_category_other').prop('checked')) {
         $('#strategic_other_categories_container').removeClass('display-none');
     } else {
         $('#strategic_other_categories_container').addClass('display-none');
     }
 }
 
-function executeOtherCategoryFunctions(){
+function executeOtherCategoryFunctions() {
     attachShowOtherClinicalCategoryFields();
     attachShowOtherOperationalCategoryFields();
     attachShowOtherStrategicCategoryFields();
 }
-
-$(document).on('turbolinks:load', executeOtherCategoryFunctions);
+$(executeOtherCategoryFunctions);

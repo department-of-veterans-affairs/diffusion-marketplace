@@ -127,8 +127,10 @@ function styleOriginFacility($newEl,
         .detach()
         .appendTo(ulSelector);
 
-    $newEl.css('list-style', 'none');
+    console.log('were here' + $newEl);
 
+    $newEl.css('list-style', 'none');
+    console.log('were here' + $newEl);
     const $originFacilityElements =
         $(liElSelector)
             .not(function(i, el) {

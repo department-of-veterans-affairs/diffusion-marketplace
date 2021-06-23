@@ -122,9 +122,6 @@
         maxCharacters();
         attachFacilitySelectListener();
         attachShowOtherAwardFields();
-        attachShowOtherClinicalCategoryFields();
-        attachShowOtherOperationalCategoryFields();
-        attachShowOtherStrategicCategoryFields();
         toggleInputsOnRadioSelect();
         toggleInputsOnLoad();
         expandSummaryTextArea();
