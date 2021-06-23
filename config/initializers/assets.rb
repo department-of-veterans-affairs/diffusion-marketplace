@@ -42,6 +42,7 @@ Rails.application.config.assets.precompile += %w(
                                                   va_facilities/map.js
                                                   va_facilities/facility_created_practice_search.js
                                                   va_facilities/facility_adopted_practice_search.js
+                                                  shared/_textarea_counter.js
                                                   _header_utilities.js
                                               )
 

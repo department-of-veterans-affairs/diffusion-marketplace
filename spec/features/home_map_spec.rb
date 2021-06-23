@@ -1,17 +1,64 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
-require 'rake'
 
-describe 'HomeMap', type: :feature do
+describe 'Map of Diffusion', type: :feature, js: true do
   before do
-    Rake::Task['db:seed'].execute
-    Rake::Task['visns:create_visns_and_transfer_data'].execute
-    Rake::Task['va_facilities:create_va_facilities_and_transfer_data'].execute
-    Rake::Task['importer:import_answers'].execute
-    Rake::Task['diffusion_history:flow3'].execute
+    @user = User.create!(email: 'spongebob.squarepants@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+    @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test Facility', initiating_facility_type: 'other', tagline: 'Test tagline')
+    @pr_1 = Practice.create!(name: 'Practice A', approved: true, published: true, tagline: 'Practice A Tagline', date_initiated: Time.now(), user: @user)
+    @pr_2 = Practice.create!(name: 'Practice B', approved: true, published: true, tagline: 'Practice B Tagline', date_initiated: Time.now(), user: @user)
+    @pr_3 = Practice.create!(name: 'Practice C', approved: true, published: true, tagline: 'Practice C Tagline', date_initiated: Time.now(), user: @user)
+    @pr_4 = Practice.create!(name: 'Practice D', approved: true, published: true, tagline: 'Practice D Tagline', date_initiated: Time.now(), user: @user)
+    @visn_1 = Visn.create!(name: 'VISN 1', number: 2)
+    @visn_2 = Visn.create!(name: 'VISN 2', number: 3)
+    @fac_1 = VaFacility.create!(
+      visn: @visn_1,
+      station_number: "402GA",
+      official_station_name: "Caribou VA Clinic",
+      common_name: "Caribou",
+      latitude: "44.2802701",
+      longitude: "-69.70413586",
+      street_address_state: "ME",
+      rurality: "R",
+      fy17_parent_station_complexity_level: '1c-High Complexity'
+    )
+    @fac_2 = VaFacility.create!(
+      visn: @visn_2,
+      station_number: "526GA",
+      official_station_name: "White Plains VA Clinic",
+      common_name: "White Plains",
+      latitude: "41.03280396",
+      longitude: "-73.76256942",
+      street_address_state: "NY",
+      rurality: "U",
+      fy17_parent_station_complexity_level: '1b-High Complexity'
+    )
+    @fac_3 = VaFacility.create!(
+      visn: @visn_2,
+      station_number: "526GB",
+      official_station_name: "Yonkers VA Clinic",
+      common_name: "Yonkers",
+      latitude: "40.93287478",
+      longitude: "-73.89691934",
+      street_address_state: "NY",
+      rurality: "U",
+      fy17_parent_station_complexity_level: '1a-High Complexity'
+    )
+    dh_1 = DiffusionHistory.create!(practice: @pr_1, facility_id: @fac_1.station_number)
+    DiffusionHistoryStatus.create!(diffusion_history: dh_1, status: 'Completed')
+    dh_2 = DiffusionHistory.create!(practice: @pr_1, facility_id: @fac_2.station_number)
+    DiffusionHistoryStatus.create!(diffusion_history: dh_2, status: 'Implemented')
+    dh_3 = DiffusionHistory.create!(practice: @pr_2, facility_id: @fac_1.station_number)
+    DiffusionHistoryStatus.create!(diffusion_history: dh_3, status: 'Planning')
+    dh_4 = DiffusionHistory.create!(practice: @pr_3, facility_id: @fac_1.station_number)
+    DiffusionHistoryStatus.create!(diffusion_history: dh_4, status: 'In progress')
+    dh_5 = DiffusionHistory.create!(practice: @pr_3, facility_id: @fac_2.station_number)
+    DiffusionHistoryStatus.create!(diffusion_history: dh_5, status: 'Implementing')
+    dh_6 = DiffusionHistory.create!(practice: @pr_4, facility_id: @fac_3.station_number)
+    DiffusionHistoryStatus.create!(diffusion_history: dh_6, status: 'Unsuccessful', unsuccessful_reasons: [0])
     ENV['GOOGLE_API_KEY'] = ENV['GOOGLE_TEST_API_KEY']
     visit '/diffusion-map'
+    expect(page).to have_selector(".diffusion-map-container", visible: true)
+    expect(page).to have_selector("#filterResultsTrigger", visible: true)
   end
 
   after do
@@ -23,71 +70,179 @@ describe 'HomeMap', type: :feature do
   end
 
   def update_results
-    click_on('Update results')
+    find('.update-map-results-button').click
   end
 
-  context 'when visiting the homepage' do
-    it 'the map shows up and filters are working' do
-      # filters button
-      expect(page).to be_accessible.within '#filterResultsTrigger'
+  def reset_filters
+    find("#allMarkersButton").click
+  end
 
-      # filters area
-      open_filters
-      expect(page).to be_accessible.within '#filterResults'
+  def expect_marker_ct(count)
+    marker_div = 'div[style*="width: 31px"][title=""]'
+    expect(page).to have_selector(marker_div, visible: true)
+    marker_count = find_all(:css, marker_div).count
+    expect(marker_count).to be(count)
+  end
 
-      #Practice complexity removed..
-      expect(page).to_not have_content('Practice complexity')
+  def click_first_map_marker
+    find('#map > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > div:nth-child(3) > div:nth-child(1) > img', visible: true).click
+  end
 
-      # open facility complexity modal
-      modal_text = 'Facilities with high volume, high risk patients, most complex clinical programs, and large research and teaching programs'
+  it 'displays and filters the map' do
+    expect_marker_ct(3)
 
-      expect(page).to_not have_content(modal_text)
-      find('.fa-question-circle').click
-      expect(page).to have_content(modal_text)
-      # close the modal
-      find('.fa-times').click
-      expect(page).to_not have_content(modal_text)
+    # filters button
+    expect(page).to be_accessible.within '#filterResultsTrigger'
+    expect(page).to have_css('#filterResultsTrigger')
+    expect(page).to have_no_css('#filterClose')
 
-      # click a checkbox
-      test_filter_checkbox = find(:css, 'label[for="1c_high_complexity"]')
-      test_filter_checkbox.click
+    # filters on load
+    open_filters
+    expect(page).to have_no_css('modal-content')
+    expect(page).to be_accessible.within '#filterResults'
+    expect(page).to have_no_css('#filterResultsTrigger')
+    expect(page).to have_css('#filterClose')
+    expect(page).to have_content('3 facility matches (of 3)')
+    expect(page).to have_content('4 practices matched (of 4)')
 
-      # filter the markers
-      update_results
+    # open facility complexity modal
+    modal_text = 'Facilities with high volume, high risk patients, most complex clinical programs, and large research and teaching programs'
+    expect(page).to_not have_content(modal_text)
+    find('.fa-question-circle').click
+    expect(page).to have_content(modal_text)
+    find('.fa-times').click
+    expect(page).to_not have_content(modal_text)
 
-      # need to select by title since there are duplicate divs with the same width
-      marker_div = 'div[style*="width: 31px"][title=""]'
-      marker_count = find_all(:css, marker_div).count
-      expect(marker_count).to be(2)
+    # filters by practices
+    find('.usa-checkbox__label[for="practice_ids_3"]').click
+    find('.usa-checkbox__label[for="practice_ids_4"]').click
+    update_results
+    expect_marker_ct(2)
+    expect(page).to have_content('2 facility matches (of 3)')
+    expect(page).to have_content('3 practices matched (of 4)')
+    reset_filters
+
+    # filters by status
+    # in-progress adoptions
+    find('.adoption-status-label[for="status_in-progress"]').click
+    update_results
+    expect_marker_ct(2)
+    expect(page).to have_content('2 facility matches (of 3)')
+    expect(page).to have_content('3 practices matched (of 4)')
+    # in-progress & unsuccessful adoptions
+    find('.adoption-status-label[for="status_unsuccessful"]').click
+    update_results
+    expect_marker_ct(3)
+    expect(page).to have_content('3 facility matches (of 3)')
+    expect(page).to have_content('4 practices matched (of 4)')
+    # successful adoptions
+    find('.adoption-status-label[for="status_in-progress"]').click
+    update_results
+    expect_marker_ct(1)
+    expect(page).to have_content('1 facility match (of 3)')
+    expect(page).to have_content('1 practice matched (of 4)')
+    reset_filters
+
+    # filters by visn
+    # @visn_1
+    find('.usa-checkbox__label[for="VISN_1"]').click
+    update_results
+    expect_marker_ct(1)
+    expect(page).to have_content('1 facility match (of 3)')
+    expect(page).to have_content('3 practices matched (of 4)')
+    # @visn_2
+    find('.usa-checkbox__label[for="VISN_1"]').click
+    find('.usa-checkbox__label[for="VISN_2"]').click
+    update_results
+    expect_marker_ct(2)
+    expect(page).to have_content('2 facility matches (of 3)')
+    expect(page).to have_content('3 practices matched (of 4)')
+    reset_filters
+
+    # filters by facility
+    find('.usa-combo-box__input').click
+    find('#facility_name--list--option-0').click
+    update_results
+    expect_marker_ct(1)
+    expect(page).to have_content('1 facility match (of 3)')
+    expect(page).to have_content('3 practices matched (of 4)')
+    find('.usa-combo-box__clear-input').click
+    update_results
+    expect_marker_ct(3)
+    expect(page).to have_content('3 facility matches (of 3)')
+    expect(page).to have_content('4 practices matched (of 4)')
+    reset_filters
+
+    # filters by facilities
+    expect(page).to have_css('#facilityListTrigger')
+    expect(page).to have_content('View list of facilities')
+    expect(page).to have_no_css('#facilityListContainer')
+    find('#facilityListTrigger').click
+    expect(page).to have_no_content('View list of facilities')
+    expect(page).to have_content('Hide list of facilities')
+    expect(page).to have_css('#facilityListContainer')
+    find('.usa-checkbox__label[for="526GB"]').click
+    update_results
+    expect_marker_ct(1)
+    expect(page).to have_content('1 facility match (of 3)')
+    expect(page).to have_content('1 practice matched (of 4)')
+    find('.usa-checkbox__label[for="526GA"]').click
+    update_results
+    expect_marker_ct(2)
+    expect(page).to have_content('2 facility matches (of 3)')
+    expect(page).to have_content('3 practices matched (of 4)')
+    find('#facilityListTrigger').click
+    expect(page).to have_content('View list of facilities')
+    expect(page).to have_no_content('Hide list of facilities')
+    expect(page).to have_no_css('#facilityListContainer')
+    reset_filters
+
+    # filters by complexity
+    find('.usa-checkbox__label[for="1a_high_complexity"]').click
+    update_results
+    expect_marker_ct(1)
+    expect(page).to have_content('1 facility match (of 3)')
+    expect(page).to have_content('1 practice matched (of 4)')
+    reset_filters
+
+    # filters by rurality
+    find('.usa-checkbox__label[for="rurality_U"]').click
+    update_results
+    expect_marker_ct(2)
+    expect(page).to have_content('2 facility matches (of 3)')
+    expect(page).to have_content('3 practices matched (of 4)')
+    reset_filters
+
+    #filters by multiple filters and resets
+    find('.usa-checkbox__label[for="rurality_U"]').click
+    find('.usa-checkbox__label[for="practice_ids_4"]').click
+    update_results
+    expect_marker_ct(1)
+    expect(page).to have_content('1 facility match (of 3)')
+    expect(page).to have_content('2 practices matched (of 4)')
+    find('.adoption-status-label[for="status_unsuccessful"]').click
+    update_results
+    expect(page).to have_content('0 facility matches (of 3)')
+    expect(page).to have_content('0 practices matched (of 4)')
+    find("#allMarkersButton").click
+    expect_marker_ct(3)
+    expect(page).to have_content('3 facility matches (of 3)')
+    expect(page).to have_content('4 practices matched (of 4)')
+
+    # map modal
+    click_first_map_marker
+    expect(page).to have_content('Caribou VA Clinic')
+    expect(page).to have_content('1 successful adoption')
+    expect(page).to have_content('2 in-progress adoptions')
+    expect(page).to have_content('0 unsuccessful adoptions')
+    expect(page).to have_content('View more')
+    click_button('View more')
+    within(:css, '.modal-content') do
+      expect(page).to have_content('Practice A')
+      expect(page).to have_content('Practice B')
+      expect(page).to have_content('Practice C')
     end
-
-    it 'autocompletes facility names' do
-      open_filters
-
-      find('#facility_name').set('Ja')
-      expect(page).to have_content('Jasper')
-      expect(page).to have_content('PFC James Dunn VA Clinic')
-      expect(page).to have_content('Jacksonville 1 VA Clinic')
-    end
-
-    it 'displays alternate facility name' do
-      open_filters
-
-      find('#practiceListTrigger').click
-      expect(page).to have_content('(Birmingham-Alabama)')
-    end
-
-    it 'should show unsuccessful adoptions' do
-      open_filters
-      all('.usa-checkbox__label').first.click
-      find('.adoption-status-label:nth-of-type(2)').click
-      test_filter_checkbox = find(:css, 'label[for="1c_high_complexity"]')
-      test_filter_checkbox.click
-
-      update_results
-      find('#map > div > div > div:nth-child(2) > div:nth-child(3) > div > div:nth-child(3) > div > img', visible: false).click
-      expect(page).to have_content('James H. Quillen Department of Veterans Affairs Medical Center')
-      expect(page).to have_content('0 unsuccessful adoptions')
-    end
+    find('.close').click
+    expect(page).to have_no_css('.modal-content')
   end
 end

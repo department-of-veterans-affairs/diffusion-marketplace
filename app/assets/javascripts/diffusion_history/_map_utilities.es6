@@ -2,10 +2,6 @@ $(document).on("turbolinks:load", function () {
   google.maps.event.addDomListener(window, "load", initialize);
 });
 
-$(document).on("click", "#allMarkersButton", function (e) {
-  Gmaps.allMarkers();
-});
-
 $(document).on("click", ".close", function (e) {
   const modal = $(e.target).closest(".modal");
   modal.hide();
@@ -15,13 +11,6 @@ $(document).on("keypress", ".close", function (e) {
   if (e.which === 13) {
     const modal = $(e.target).closest(".modal");
     modal.hide();
-  }
-});
-
-$(document).on("keypress", "#filterClose", function (e) {
-  if (e.which === 13) {
-    $("#filterResultsTrigger").show();
-    $("#filterResults").hide();
   }
 });
 
@@ -58,26 +47,4 @@ $(document).on("submit", "#mapFilters", function (e) {
   // Gather filter data
   const data = _.groupBy($("#mapFilters").serializeArray(), "name");
   Gmaps.filter(data);
-});
-
-$(document).on("click", "#filterClose", function () {
-  $("#filterResultsTrigger").show();
-  $("#filterResults").hide();
-});
-
-$(document).on("click", "#practiceListTrigger", function () {
-  if ($(this).text() === "Hide list of facilities") {
-    $(this).text("View list of facilities");
-  } else {
-    $(this).text("Hide list of facilities");
-  }
-  $("#practiceListContainer").toggle();
-});
-
-$(document).on("click", "label", function (e) {
-  e.target.focus({ preventScroll: true });
-});
-
-$(document).on("click", ".update-map-results-button", function (e) {
-  $("#mapFilters").submit();
 });

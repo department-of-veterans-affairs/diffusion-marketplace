@@ -8,17 +8,15 @@ class HomeController < ApplicationController
   end
 
   def diffusion_map
-    @visn_numbers = Visn.cached_visns.pluck(:number)
-    @vamc_facilities = VaFacility.cached_va_facilities.select(
-      :street_address_state, :official_station_name, :station_number, :common_name, :latitude, :longitude, :rurality, :fy17_parent_station_complexity_level, :visn_id
-    ).includes(:visn).order(:street_address_state, :official_station_name)
+    @diffusion_history_practices = Practice.select(:id, :name).get_with_diffusion_histories
+    @vamc_facilities = VaFacility.cached_va_facilities.select(:street_address_state, :official_station_name, :id, :common_name, :station_number, :latitude, :longitude, :slug, :fy17_parent_station_complexity_level, :visn_id, :rurality).order(:street_address_state, :official_station_name)
+    @visns = Visn.cached_visns.select(:id, :number)
+    @diffusion_histories = DiffusionHistory.get_with_practices.order(Arel.sql("lower(practices.name)"))
 
-    @diffusion_history_practices = Practice.get_with_diffusion_histories.sort_by(&:name)
-    @diffusion_histories = DiffusionHistory.with_published_enabled_approved_practices
-
-    @diffusion_history_markers = Gmaps4rails.build_markers(@diffusion_histories.group_by(&:facility_id)) do |dhg, marker|
-
-      facility = @vamc_facilities.find {|f| f.station_number == dhg[0]}
+    @dh_markers = Gmaps4rails.build_markers(@diffusion_histories.group_by(&:facility_id)) do |dhg, marker|
+      station_number = dhg[0]
+      diffusion_histories = dhg[1]
+      facility = @vamc_facilities.find {|f| f.station_number === station_number}
       marker.lat facility.latitude
       marker.lng facility.longitude
 
@@ -34,14 +32,13 @@ class HomeController < ApplicationController
       completed = 0
       in_progress = 0
       unsuccessful = 0
-      dhg[1].each do |dh|
-        dh_status = dh.diffusion_history_statuses.first
-        in_progress += 1 if dh_status.status == 'In progress' || dh_status.status ==  'Planning' || dh_status.status == 'Implementing'
-        completed += 1 if dh_status.status == 'Completed' || dh_status.status ==  'Implemented' || dh_status.status == 'Complete'
-        unsuccessful += 1 if dh_status.status == 'Unsuccessful'
+      diffusion_histories.each do |dh|
+        dh_status = dh.diffusion_history_statuses.order(id: :desc).first
+        completed += 1 if dh_status.get_status_display_name === DiffusionHistoryStatus::STATUSES[0]
+        in_progress += 1 if dh_status.get_status_display_name === DiffusionHistoryStatus::STATUSES[1]
+        unsuccessful += 1 if dh_status.get_status_display_name === DiffusionHistoryStatus::STATUSES[2]
       end
-
-      practices = dhg[1].map(&:practice)
+      practices = diffusion_histories.map(&:practice)
       marker.json({
                       id: facility.station_number,
                       practices: practices,
@@ -54,7 +51,7 @@ class HomeController < ApplicationController
                       unsuccessful: unsuccessful,
                       modal: render_to_string(partial: "maps/home_map_marker_modal",
                                               locals: {
-                                                  diffusion_histories: dhg[1],
+                                                  diffusion_histories: diffusion_histories,
                                                   completed: completed,
                                                   in_progress: in_progress,
                                                   unsuccessful: unsuccessful,
@@ -64,7 +61,7 @@ class HomeController < ApplicationController
                       facility: facility
                   })
 
-      marker.infowindow render_to_string(partial: 'maps/infowindow', locals: {diffusion_histories: dhg[1], completed: completed, in_progress: in_progress, unsuccessful: unsuccessful, facility: facility, home_page: true})
+      marker.infowindow render_to_string(partial: 'maps/infowindow', locals: {diffusion_histories: diffusion_histories, completed: completed, in_progress: in_progress, unsuccessful: unsuccessful, facility: facility, home_page: true})
     end
     render 'maps/diffusion_map'
   end

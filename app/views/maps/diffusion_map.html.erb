@@ -1,35 +1,36 @@
 <section class="grid-container margin-top-3" id="map-of-diffusion">
-    <% if ENV['GOOGLE_API_KEY'].present? %>
-      <% provide :head_tags do %>
-        <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-          <%= render partial: 'maps/marker_icons', formats: [:js] %>
-          <%= render partial: 'maps/map_data', formats: [:js] %>
-        <% end %>
-        <%= javascript_include_tag 'diffusion_history/home_map', 'data-turbolinks-track': 'reload' %>
-        <%= javascript_include_tag 'diffusion_history/_map_utilities', 'data-turbolinks-track': 'reload' %>
+  <% if ENV['GOOGLE_API_KEY'].present? %>
+    <% provide :head_tags do %>
+      <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+        <%= render partial: 'maps/marker_icons', formats: [:js] %>
+        <%= render partial: 'maps/map_data', formats: [:js] %>
+        var statuses = <%= raw DiffusionHistoryStatus::STATUSES.to_json %>;
       <% end %>
-
-      <h4 class="font-sans-xl margin-bottom-1 margin-top-0 line-height-sans-205">Diffusion map</h4>
-      <p class="font-sans-lg margin-bottom-2">Explore how practices are being adopted across the country.</p>
-      <div class="padding-y-105 padding-x-2 bg-gold radius-md margin-bottom-205">
-        <span class="text-bold">Note:</span>&nbsp;<span>More practices will be added to this map in the next few months.</span>
-      </div>
-      <div class="diffusion-map-container display-none">
-        <button id="filterResultsTrigger" class="map-filters-trigger usa-button text-bold display-block margin-bottom-105 padding-2">
-          Filter results
-        </button>
-        <button type="button" class="usa-button text-bold display-none margin-bottom-105 padding-2 bg-base-lightest text-ink" id="filterClose" aria-label="Close map filters">Close
-          filters
-        </button>
-        <div class="width-full position-relative">
-          <div id="map" style="width: 100%; height: 633px;"></div>
-          <%= render 'maps/home_map_filters' %>
-        </div>
-      </div>
-      <div class="dm-loading-spinner text-center margin-y-8">
-        <i class="fas fa-circle-notch"></i>
-      </div>
-    <% else %>
-      <p>The map is not enabled for this site.</p>
+      <%= javascript_include_tag 'diffusion_history/home_map', 'data-turbolinks-track': 'reload' %>
+      <%= javascript_include_tag 'diffusion_history/_map_utilities', 'data-turbolinks-track': 'reload' %>
     <% end %>
+
+    <h4 class="font-sans-xl margin-bottom-1 margin-top-0 line-height-sans-205">Diffusion map</h4>
+    <p class="font-sans-lg margin-bottom-2">Explore how practices are being adopted across the country.</p>
+    <div class="padding-y-105 padding-x-2 bg-gold radius-md margin-bottom-205">
+      <span class="text-bold">Note:</span>&nbsp;<span>More practices will be added to this map in the next few months.</span>
+    </div>
+    <div class="diffusion-map-container display-none">
+      <button id="filterResultsTrigger" class="map-filters-trigger usa-button text-bold display-block margin-bottom-105 padding-2">
+        Filter results
+      </button>
+      <button type="button" class="usa-button text-bold display-none margin-bottom-105 padding-2 bg-base-lightest text-ink" id="filterClose" aria-label="Close map filters">Close
+        filters
+      </button>
+      <div class="width-full position-relative">
+        <div id="map" style="width: 100%; height: 633px;"></div>
+        <%= render 'maps/home_map_filters' %>
+      </div>
+    </div>
+    <div class="dm-loading-spinner text-center margin-y-8">
+      <i class="fas fa-circle-notch"></i>
+    </div>
+  <% else %>
+    <p>The map is not enabled for this site.</p>
+  <% end %>
 </section>
