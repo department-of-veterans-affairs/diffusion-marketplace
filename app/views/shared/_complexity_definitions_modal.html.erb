@@ -1,0 +1,35 @@
+<%
+  hide_modal_on_initial_load = hide_modal_on_initial_load
+  debugger
+%>
+<a href="#complexity-definitions-modal" aria-controls="complexity-definitions-modal" data-open-modal class="fas fa-question-circle cursor-pointer">
+  <span class="usa-sr-only">Open complexity definitions modal</span>
+</a>
+<div class="usa-modal <%= 'display-none' if !hide_modal_on_initial_load %>" id="complexity-definitions-modal" aria-labelledby="complexity-definitions-modal-heading" aria-describedby="complexity-definitions-modal-description">
+  <div class="usa-modal__content">
+    <div class="usa-modal__main">
+      <div class="margin-bottom-5">
+        <p class="line-height-18px text-bold">Clinical:</p>
+        <p class="line-height-26 margin-top-1">
+          Practices related to patient care.
+        </p>
+      </div>
+      <div class="margin-bottom-5">
+        <p class="line-height-18px text-bold">Operational:</p>
+        <p class="line-height-26 margin-top-1">
+          Practices related to VA administrative and logistical functions.
+        </p>
+      </div>
+      <div class="margin-bottom-5">
+        <p class="line-height-18px text-bold">2-Medium complexity</p>
+        <p class="line-height-26 margin-top-1">
+          Practices that support initiatives identified by VA leadership.
+        </p>
+      </div>
+    </div>
+    <button class="usa-button usa-modal__close text-base-darkest" aria-label="Close this window" data-close-modal>
+      <span class="usa-sr-only">Close this window</span>
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+</div>
