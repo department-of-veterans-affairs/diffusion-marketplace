@@ -1,53 +1,82 @@
 <%
+  successful_adoptions = @practice.diffusion_histories.get_by_successful_status
+  sorted_successful = successful_adoptions.sort_by { |a| fac = a.get_facility; [fac.street_address_state, fac.official_station_name] } if successful_adoptions.any?
+  in_progress_adoptions = @practice.diffusion_histories.get_by_in_progress_status
+  sorted_in_progress = in_progress_adoptions.sort_by { |a| fac = a.get_facility; [fac.street_address_state, fac.official_station_name] } if in_progress_adoptions.any?
+  unsuccessful_adoptions = @practice.diffusion_histories.get_by_unsuccessful_status
+  sorted_unsuccessful = unsuccessful_adoptions.sort_by { |a| fac = a.get_facility; [fac.street_address_state, fac.official_station_name] } if unsuccessful_adoptions.any?
+
   adoption_groups = {
-      'Successful': @diffusion_histories
-          .find_all { |dh| dh[:status] == 'Complete' }
-          .sort_by { |dh| [dh[:facility]["mailing_address_state"], dh[:facility]["official_station_name"]] },
-      'In-progress': @diffusion_histories
-          .find_all { |dh| dh[:status] == 'In progress' }
-          .sort_by { |dh| [dh[:facility]["mailing_address_state"], dh[:facility]["official_station_name"]] },
-      'Unsuccessful': @diffusion_histories
-          .find_all { |dh| dh[:status] == 'Unsuccessful' }
-          .sort_by { |dh| [dh[:facility]["mailing_address_state"], dh[:facility]["official_station_name"]] }
+    DiffusionHistoryStatus::STATUSES[0] => sorted_successful,
+    DiffusionHistoryStatus::STATUSES[1] => sorted_in_progress,
+    DiffusionHistoryStatus::STATUSES[2] => sorted_unsuccessful
   }
 
   adoption_statuses_and_text = [
-      {
-          status: 'Successful',
-          text: 'Facilities that have met adoption goals and implemented the practice.'
-      },
-      {
-          status: 'In-progress',
-          text: 'Facilities that have started but not completed adopting the practice.'
-      },
-      {
-          status: 'Unsuccessful',
-          text: 'Facilities that started but stopped working towards adoption.'
-      }
+    {
+      status: DiffusionHistoryStatus::STATUSES[0],
+      text: 'Facilities that have met adoption goals and implemented the practice.'
+    },
+    {
+      status: DiffusionHistoryStatus::STATUSES[1],
+      text: 'Facilities that have started but not completed adopting the practice.'
+    },
+    {
+      status: DiffusionHistoryStatus::STATUSES[2],
+      text: 'Facilities that started but stopped working towards adoption.'
+    }
   ]
 %>
-<div class="usa-accordion usa-accordion--bordered practice-viewer-adoptions-accordion">
+<div class="usa-accordion usa-accordion--borderless practice-viewer-adoptions-accordion margin-top-3">
   <% adoption_groups.each do |group, histories| %>
+    <% group_name = group.to_s %>
     <h2 class="usa-accordion__heading">
       <button class="usa-accordion__button padding-right-205"
               aria-expanded="false"
-              aria-controls="<%= group.to_s.underscore %>">
-        <span class="text-middle margin-right-05"><%= group.to_s %> adoptions (<%= histories.count %>)</span>
+              aria-controls="<%= group_name.underscore %>">
+        <span class="text-middle margin-right-05"><%= group_name %> adoption<%= histories&.length === 1 ? '' : 's' %> (<%= histories&.length || 0 %>)</span>
         <% adoption_statuses_and_text.each do |as| %>
-          <% if as[:status] === group.to_s %>
+          <% if as[:status] === group_name %>
             <%= render partial: 'practices/adoption_status_tooltip', locals: { tooltip_title: as[:text] } %>
             <span class="fas fa-question-circle fa-2x <%= as[:status].downcase %>-modal-icon cursor-pointer desktop:display-none"></span>
           <% end %>
         <% end %>
       </button>
     </h2>
-    <div id="<%= group.to_s.underscore %>" class="usa-accordion__content usa-prose">
-      <% if histories.any? %>
+    <div id="<%= group_name.underscore %>" class="usa-accordion__content usa-prose">
+      <% if histories.present? %>
         <% histories.each do |h| %>
-          <p class="line-height-26 margin-top-1"><%= "#{h[:facility]["mailing_address_state"]}: #{facility_name_with_common_name(h[:facility]["official_station_name"], h[:facility]["common_name"])}" %></p>
+          <%
+            dhs = h.diffusion_history_statuses.first
+            fac = h.get_facility
+            display_info = (dhs.get_status_display_name === DiffusionHistoryStatus::STATUSES[2] && dhs.unsuccessful_reasons.present?) || dhs.start_time.present?
+          %>
+          <%= link_to "#{fac[:street_address_state]}: #{fac[:official_station_name]} (#{fac[:common_name]})", va_facility_path(fac), class: "dm-internal-link display-block #{'margin-bottom-2' unless display_info }" %>
+          <% if display_info %>
+            <ul class="dm-adoption-info">
+              <% if dhs.start_time.present? %>
+                <li class="font-sans-sm">
+                  <span class="font-sans-3xs">
+                    Started adoption on <%= dhs.start_time&.strftime("%m/%Y") %><% if dhs.end_time.present? %>, ended on <%= dhs.end_time&.strftime("%m/%Y") %><% end %>.
+                  </span>
+                </li>
+              <% end %>
+              <% dhs.unsuccessful_reasons.each do |ur| %>
+                <li class="font-sans-sm">
+                  <span class="font-sans-3xs">
+                    <% if ur === 5 %>
+                      <%= dhs.unsuccessful_reasons_other.truncate(50) %>
+                    <% else %>
+                      <%= DiffusionHistoryStatus::ADOPTION_REASONS[ur] %>
+                    <% end %>
+                  </span>
+                </li>
+              <% end %>
+            </ul>
+          <% end %>
         <% end %>
       <% else %>
-        <p>There are no <%= group.to_s.downcase %> adoptions for this practice.</p>
+        <p>There are no <%= group_name.downcase %> adoptions for this practice.</p>
       <% end %>
     </div>
     <%# Calling the modal outside of the accordion button prevents any semantic issues %>

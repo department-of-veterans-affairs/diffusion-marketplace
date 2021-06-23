@@ -249,37 +249,6 @@
   }
 }
 
-.practice-map-filters {
-  fieldset {
-    padding: 0;
-    border: 0;
-    margin-left: 0;
-  }
-
-  .usa-checkbox__input:checked + .usa-checkbox__label.complete::before, .usa-radio__input:checked + .usa-radio__label.complete::before {
-    background-color: #00A91C;
-    box-shadow: 0 0 0 2px #00A91C;
-  }
-
-  .usa-checkbox__input:checked + .usa-checkbox__label.in_progress::before, .usa-radio__input:checked + .usa-radio__label.in_progress::before {
-    background-color: #face00;
-    box-shadow: 0 0 0 2px #face00;
-  }
-
-  .usa-checkbox__input:checked + .usa-checkbox__label.in_progress::before, .usa-checkbox__input:checked:disabled + .usa-checkbox__label.in_progress::before {
-    background-image: asset-url('uswds/correct8-alt.svg')
-  }
-
-  .usa-checkbox__input:checked + .usa-checkbox__label.unsuccessful::before, .usa-radio__input:checked + .usa-radio__label.unsuccessful::before {
-    background-color: $dm-color-base-light;
-    box-shadow: 0 0 0 2px $dm-color-base-light;
-  }
-
-  .usa-checkbox__input:checked + .usa-checkbox__label.unsuccessful::before, .usa-checkbox__input:checked:disabled + .usa-checkbox__label.unsuccessful::before {
-    background-image: asset-url('uswds/correct8-alt.svg')
-  }
-}
-
 .practice-editor-link {
   padding-left: 1rem !important;
 }
@@ -736,17 +705,6 @@
 }
 
 /* Adoptions */
-.usa-accordion__button[aria-expanded=false].adoptions-edit {
-  background-image: asset_url('edit.svg'), linear-gradient(transparent, transparent);
-  background-position-x: 98.6%;
-  background-size: 22.5px 20px;
-}
-
-.usa-accordion__button[aria-expanded=true].adoptions-edit {
-  background-image: asset_url('minus.svg'), linear-gradient(transparent, transparent);
-  background-position-x: 97.8%;
-}
-
 .child-accordion-button {
   span {
     margin-left: -4px;
@@ -775,11 +733,6 @@
 
 .action-button-width {
   width: 6%;
-}
-
-.delete-entry-link {
-  height: 47px;
-  padding-top: 15px !important;
 }
 
 .adoptions-radio-button {
@@ -916,6 +869,51 @@
   }
 }
 
+// Diffusion Tracker
+#dm-pv-diffusion-tracker {
+  .dm-adoption-info {
+    margin-top: 0 !important;
+
+    li {
+      margin-bottom: 0 !important;
+      color: $dm-color-gray-cool-50;
+    }
+  }
+
+  .practice-map-filters {
+    fieldset {
+      padding: 0;
+      border: 0;
+      margin-left: 0;
+    }
+
+    .usa-checkbox__input:checked + .usa-checkbox__label.successful::before, .usa-radio__input:checked + .usa-radio__label.successful::before {
+      background-color: #00A91C;
+      box-shadow: 0 0 0 2px #00A91C;
+    }
+
+    .usa-checkbox__input:checked + .usa-checkbox__label.in-progress::before, .usa-radio__input:checked + .usa-radio__label.in-progress::before {
+      background-color: #face00;
+      box-shadow: 0 0 0 2px #face00;
+    }
+
+    .usa-checkbox__input:checked + .usa-checkbox__label.in_progress::before, .usa-checkbox__input:checked:disabled + .usa-checkbox__label.in_progress::before {
+      background-image: asset-url('uswds/correct8-alt.svg')
+    }
+
+    .usa-checkbox__input:checked + .usa-checkbox__label.unsuccessful::before, .usa-radio__input:checked + .usa-radio__label.unsuccessful::before {
+      background-color: $dm-color-gray-cool-30;
+      box-shadow: 0 0 0 2px $dm-color-gray-cool-30;
+    }
+
+    .usa-checkbox__input:checked + .usa-checkbox__label.unsuccessful::before, .usa-checkbox__input:checked:disabled + .usa-checkbox__label.unsuccessful::before {
+      background-image: asset-url('uswds/correct8-alt.svg')
+    }
+  }
+}
+
+
+
 .dm-add-another-link {
   position: absolute;
   bottom: 0;
@@ -994,7 +992,7 @@ li.small-disc:before {
 #implementation {
   .usa-table--borderless {
     min-width: 100%;
-  
+
     tr {
       th:first-child, td:first-child {
         border-right: 1px solid $dm-color-base;
@@ -1176,6 +1174,21 @@ li.small-disc:before {
 
   .usa-label {
     max-width: 100% !important;
+  }
+}
+
+// adoptions
+#dm-pe-adoptions {
+  .usa-accordion__button[aria-expanded=false].adoptions-edit {
+    background-image: asset_url('edit.svg'), linear-gradient(transparent, transparent);
+    background-position-x: 98.6%;
+    background-size: 22.5px 20px;
+  }
+
+  .usa-accordion__button[aria-expanded=true].adoptions-edit {
+    background-image: asset_url('minus.svg'), linear-gradient(transparent, transparent);
+    background-position-x: 97.8%;
+    border-bottom: 4px $dm-color-gray-5 solid;
   }
 }
 

@@ -1,7 +1,8 @@
 <% if ENV['GOOGLE_API_KEY'].present? %>
   <% provide :head_tags do %>
     <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-      var mapData = <%= raw @diffusion_histories.to_json %>;
+      var mapData = <%= raw @diffusion_history_markers.to_json %>;
+      var statuses = <%= raw DiffusionHistoryStatus::STATUSES.to_json %>;
       var defaultMarkerIcon = '<%= image_path('map-marker-successful-default.svg') %>';
       var selectedMarkerIcon = '<%= image_path('map-marker-successful-selected.svg') %>';
       var hoverMarkerIcon = '<%= image_path('map-marker-successful-hover.svg') %>';
@@ -20,21 +21,15 @@
       <div id="map" class="dm-practice-diffusion-map"></div>
     </div>
     <div class="display-inline-block">
-      <% statuses = ['Complete', 'In progress', 'Unsuccessful'] %>
+      <% statuses = DiffusionHistoryStatus::STATUSES %>
       <form id="mapFilters" name="mapFilters" class="practice-map-filters margin-bottom-05">
         <fieldset>
           <legend class="usa-sr-only">Statuses</legend>
-          <% statuses.each do |v| %>
+          <% statuses.each do |k, v| %>
             <% id = v.downcase.gsub(' ', '_') %>
             <input id="status_<%= id %>" name="statuses" type="checkbox" value="<%= v %>" class="usa-checkbox__input" checked>
             <label for="status_<%= id %>" class="usa-checkbox__label <%= id %>">
-              <% if v == 'In progress' %>
-                In-progress adoptions
-              <% elsif v == 'Complete' %>
-                Successful adoptions
-              <% else %>
                 <%= v %> adoptions
-              <% end %>
             </label>
           <% end %>
         </fieldset>

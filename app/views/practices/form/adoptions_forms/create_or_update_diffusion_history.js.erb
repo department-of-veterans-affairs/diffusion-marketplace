@@ -8,8 +8,7 @@ function hideParentAccordionContent() {
 }
 
 $('.usa-alert:not(.pii-phi-alert)').remove();
-$(".sidenav-adoptions-link").find('i').addClass('green-check');
-$("#adoptions").html("<%= escape_javascript(render partial: 'adoptions_content', formats: [ :html ]) %>");
+$("#adoptions").html("<%= escape_javascript(render partial: 'practices/form/adoptions_forms/adoptions_content', formats: [ :html ]) %>");
 <% if params[:exists] %>
   /* show the top form, hide the 'Add New Adoption' button, and close any open parent accordions when the page loads.
   This will only affect the top form alert. Any created adoptions will still have their parent accordion exposed on load */
