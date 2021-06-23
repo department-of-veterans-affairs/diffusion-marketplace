@@ -216,7 +216,7 @@ describe 'Practice editor', type: :feature, js: true do
       expect(page).to have_selector(".usa-alert__heading", visible: true)
       expect(page).to have_selector("button[aria-controls*='in-progress_adoptions']", visible: true)
       click_button('In-progress adoption: 1')
-      expect(page).to have_content('NY: White Plains VA Clinic (TBD - TBD)')
+      sleep 0.1
       expect(page).to have_selector("button[aria-controls='diffusion_history_2']", visible: true)
       find_all("button[aria-controls*='diffusion_history']").first.click
       form_id = '2'
