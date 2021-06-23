@@ -137,7 +137,7 @@ describe 'Practice editor', type: :feature, js: true do
       expect(page).to have_selector("#map", visible: true)
       within(:css, ".practice-viewer-adoptions-accordion") do
         expect(page).to have_content('In-progress adoptions (2)')
-        find("button[aria-controls='in_progress'").click
+        find("button[aria-controls='in_progress']").click
       end
       within(:css, "#in_progress") do
         expect(page).to have_content("ME: Caribou VA Clinic (Caribou)")
@@ -193,14 +193,14 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_no_content('There was a problem with your adoption.')
         expect(page).to have_content('Success!')
       end
-      find("button[aria-controls='successful_adoptions'").click
+      find("button[aria-controls='successful_adoptions']").click
       within(:css, '#adoptions') do
         expect(page).to have_content('NY: Yonkers VA Clinic (11/1998 - 03/1999)')
         expect(page).to have_content('Successful adoption: 1')
       end
 
       # it should delete an adoption entry
-      find("button[aria-controls='in-progress_adoptions'").click
+      find("button[aria-controls='in-progress_adoptions']").click
       expect(page).to have_selector("#in-progress_adoptions", visible: true)
       find("button[aria-controls='diffusion_history_#{@practice.diffusion_histories.first.id}']").click
       within(:css, "#diffusion_history_#{@practice.diffusion_histories.first.id}") do
@@ -214,7 +214,8 @@ describe 'Practice editor', type: :feature, js: true do
 
       # it shouldn't update an unsuccessful adoption if no reasons are selected
       expect(page).to have_selector(".usa-alert__heading", visible: true)
-      find("button[aria-controls*='in-progress_adoptions'").click
+      expect(page).to have_selector("button[aria-controls*='in-progress_adoptions']", visible: true)
+      find("button[aria-controls*='in-progress_adoptions']").click
       expect(page).to have_selector("button[aria-controls='diffusion_history_2']", visible: true)
       find_all("button[aria-controls*='diffusion_history']").first.click
       form_id = '2'
@@ -256,7 +257,7 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_content('Success!')
         expect(page).to have_no_content('In-progress adoption')
         expect(page).to have_content('Unsuccessful adoption: 1')
-        find_all("button[aria-controls*='adoptions'").last.click
+        find_all("button[aria-controls*='adoptions']").last.click
         find_all("button[aria-controls*='diffusion_history']").first.click
         expect(page).to have_content('NY: White Plains VA Clinic (11/2000 - 03/2001)')
         within(:css, "#diffusion_history_#{form_id}") do
@@ -284,12 +285,12 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_content('In-progress adoptions (0)')
         expect(page).to have_content('Unsuccessful adoption (1)')
       end
-      find("button[aria-controls='successful'").click
+      find("button[aria-controls='successful']").click
       within(:css, "#successful") do
         expect(page).to have_content("NY: Yonkers VA Clinic (Yonkers)")
         expect(page).to have_content("Started adoption on 11/1998, ended on 03/1999.")
       end
-      find("button[aria-controls='unsuccessful'").click
+      find("button[aria-controls='unsuccessful']").click
       within(:css, "#unsuccessful") do
         expect(page).to have_content("NY: White Plains VA Clinic (White Plains)")
         expect(page).to have_content("Started adoption on 11/2000, ended on 03/2001.")
@@ -301,7 +302,7 @@ describe 'Practice editor', type: :feature, js: true do
 
     describe 'Adoption status tooltip' do
       def open_successful_adoption_accordion
-        find("button[aria-controls='successful_adoptions'").click
+        find("button[aria-controls='successful_adoptions']").click
       end
 
       def tooltip_expectations
