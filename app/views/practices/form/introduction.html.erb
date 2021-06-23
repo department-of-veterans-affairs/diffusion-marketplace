@@ -483,6 +483,7 @@
                   clin_other = Category.where(name: 'Other', parent_category_id: clinical_category_id)
                   clinical_categories_list = all_clinical_arr +  clinical_categories + clin_other
                   clin_cat_count = clinical_categories_list.count
+                  #grp_count = get_group_count_for_categories(clin_cat_count)
                   grp_count = clin_cat_count/3
                   if clin_cat_count > grp_count*3
                     grp_count = grp_count + 1
@@ -664,7 +665,7 @@
                 </tr>
               </table>
 
-              <%#= render partial: 'practices/form/other_categories', locals: { other_parent_category: operational_category.name.downcase, parent_category_id: clinical_category_id, form: f }%>
+              <%= render partial: 'practices/form/other_categories', locals: { other_parent_category: operational_category.name.downcase, parent_category_id: operational_category_id, form: f }%>
 
 
 
@@ -726,6 +727,7 @@
                   </td>
                 </tr>
               </table>
+              <%= render partial: 'practices/form/other_categories', locals: { other_parent_category: strategic_category.name.downcase, parent_category_id: strategic_category_id, form: f }%>
 
               <!------------------------------END STRATEGIC CATS ----------------------------------------------------->
 

@@ -110,68 +110,6 @@
         showOtherAwardFields();
     }
 
-    function attachShowOtherClinicalCategoryFields() {
-        observePracticeEditorLiArrival(
-            $document,
-            '.practice-editor-category-li',
-            '.practice-editor-categories-ul',
-            '8'
-        );
-        $document.on('change', '#category_other_clinical', function() {
-            alert('Clinical');
-            showOtherClinicalCategoryFields();
-        });
-
-        attachTrashListener(
-            $document,
-            '#clinical_other_categories_container',
-            '.practice-editor-category-li'
-        );
-        showOtherClinicalCategoryFields();
-    }
-
-    function attachShowOtherOperationalCategoryFields() {
-        observePracticeEditorLiArrival(
-            $document,
-            '.practice-editor-category-li',
-            '.practice-editor-categories-ul',
-            '8'
-        );
-        $document.on('change', '#category_other_operational', function() {
-            alert('ops');
-            showOtherOperationalCategoryFields();
-        });
-
-        attachTrashListener(
-            $document,
-            '#clinical_other_categories_container',
-            '.practice-editor-category-li'
-        );
-        showOtherOperationalCategoryFields();
-    }
-
-    function attachShowOtherStrategicCategoryFields() {
-        observePracticeEditorLiArrival(
-            $document,
-            '.practice-editor-category-li',
-            '.practice-editor-categories-ul',
-            '8'
-        );
-        $document.on('change', '#category_other_strategic', function() {
-            alert('ops');
-            showOtherStrategicCategoryFields();
-        });
-
-        attachTrashListener(
-            $document,
-            '#strategic_other_categories_container',
-            '.practice-editor-category-li'
-        );
-        showOtherStrategicCategoryFields();
-    }
-
-
-
     function expandSummaryTextArea() {
         let summaryEl = $('#practice_summary');
         summaryEl.autoResize();
@@ -218,26 +156,4 @@ function showOtherAwardFields() {
     }
 }
 
-function showOtherClinicalCategoryFields() {
-    if ($('#category_other_clinical').prop('checked')) {
-        $('#clinical_other_categories_container').removeClass('display-none');
-    } else {
-        $('#clinical_other_categories_container').addClass('display-none');
-    }
-}
 
-function showOtherOperationalCategoryFields() {
-    if ($('#category_other_operational').prop('checked')) {
-        $('#operational_other_categories_container').removeClass('display-none');
-    } else {
-        $('#operational_other_categories_container').addClass('display-none');
-    }
-}
-
-function showOtherStrategicCategoryFields() {
-    if ($('#category_other_strategic').prop('checked')) {
-        $('#strategic_other_categories_container').removeClass('display-none');
-    } else {
-        $('#strategic_other_categories_container').addClass('display-none');
-    }
-}
