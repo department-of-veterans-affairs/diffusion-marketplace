@@ -542,7 +542,6 @@
                   practice_categories = @practice.category_practices
                   practice_categories_ids = practice_categories.map(&:category_id)
                 %>
-                <% cat_ctr = 0 %>
                 <div class="margin-bottom-1">Clinical</div>
                 <table style="width: 100%">
                   <tr>
@@ -581,7 +580,7 @@
                         <% next if cat.blank? %>
                         <% underscore_cat = cat.name.split(' ').join('').underscore %>
 
-                        <% if underscore_cat == 'other_clinical' && practice_categories_ids.include?(cat.id) %>
+                        <% if underscore_cat == 'other' && practice_categories_ids.include?(cat.id) %>
                           <input type="hidden" name="clinical_other" id="clinical_other" value="<%= clinical_category_id %>"/>
                         <% end %>
 
