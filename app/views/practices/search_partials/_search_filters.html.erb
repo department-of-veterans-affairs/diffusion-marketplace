@@ -36,26 +36,62 @@
   </fieldset>
 
   <%
-    categories = Category.where(is_other: false).where.not(name: 'Other').order(Arel.sql('LOWER(name) ASC')).uniq
-    if categories.count > 1
+    clinical_category = Category.where(name: 'Clinical', parent_category_id: nil).first
+    clinical_categories = Category.where(is_other: false, parent_category_id: clinical_category.id).where.not(name: 'Other').order(Arel.sql('LOWER(name) ASC')).uniq
+    if clinical_categories.count > 1
       # Divide the total by three and round up if possible to make sure the categories are evenly distributed amongst the columns
-      count = ((categories.count * 2) + 3) / (3 * 2)
-      sliced_categories = categories.each_slice(count).to_a
+      clinical_count = ((clinical_categories.count * 2) + 3) / (3 * 2)
+      clinical_sliced_categories = clinical_categories.each_slice(clinical_count).to_a
 
       # When the category count is divisible by 3 with a remainder of 1, move item(s) from one array to the previous to maintain distribution
-      if categories.count % 3 == 1
-        sliced_categories[2].insert(-1, sliced_categories[3][0])
-        sliced_categories[1].insert(-1, sliced_categories[2][0], sliced_categories[2][1])
-        sliced_categories[0].insert(-1, sliced_categories[1][0])
-        sliced_categories[2].shift(2)
-        sliced_categories[1].shift
+      if clinical_categories.count % 3 == 1
+        clinical_sliced_categories[2].insert(-1, clinical_sliced_categories[3][0])
+        clinical_sliced_categories[1].insert(-1, clinical_sliced_categories[2][0], clinical_sliced_categories[2][1])
+        clinical_sliced_categories[0].insert(-1, clinical_sliced_categories[1][0])
+        clinical_sliced_categories[2].shift(2)
+        clinical_sliced_categories[1].shift
+      end
+    end
+
+    operational_category = Category.where(name: 'Operational', parent_category_id: nil).first
+    operational_categories = Category.where(is_other: false, parent_category_id: operational_category.id).where.not(name: 'Other').order(Arel.sql('LOWER(name) ASC')).uniq
+    if operational_categories.count > 1
+      # Divide the total by three and round up if possible to make sure the categories are evenly distributed amongst the columns
+      operational_count = ((operational_categories.count * 2) + 3) / (3 * 2)
+      operational_sliced_categories = operational_categories.each_slice(operational_count).to_a
+
+      # When the category count is divisible by 3 with a remainder of 1, move item(s) from one array to the previous to maintain distribution
+      if operational_categories.count % 3 == 1
+        operational_sliced_categories[2].insert(-1, operational_sliced_categories[3][0])
+        operational_sliced_categories[1].insert(-1, operational_sliced_categories[2][0], operational_sliced_categories[2][1])
+        operational_sliced_categories[0].insert(-1, operational_sliced_categories[1][0])
+        operational_sliced_categories[2].shift(2)
+        operational_sliced_categories[1].shift
+      end
+    end
+
+
+    strategic_category = Category.where(name: 'Strategic', parent_category_id: nil).first
+    strategic_categories = Category.where(is_other: false, parent_category_id: strategic_category.id).where.not(name: 'Other').order(Arel.sql('LOWER(name) ASC')).uniq
+    if strategic_categories.count > 1
+      # Divide the total by three and round up if possible to make sure the categories are evenly distributed amongst the columns
+      strategic_count = ((strategic_categories.count * 2) + 3) / (3 * 2)
+      strategic_sliced_categories = strategic_categories.each_slice(strategic_count).to_a
+
+      # When the category count is divisible by 3 with a remainder of 1, move item(s) from one array to the previous to maintain distribution
+      if strategic_categories.count % 3 == 1
+        strategic_sliced_categories[2].insert(-1, strategic_sliced_categories[3][0])
+        strategic_sliced_categories[1].insert(-1, strategic_sliced_categories[2][0], strategic_sliced_categories[2][1])
+        strategic_sliced_categories[0].insert(-1, strategic_sliced_categories[1][0])
+        strategic_sliced_categories[2].shift(2)
+        strategic_sliced_categories[1].shift
       end
     end
   %>
 
   <fieldset class="p0">
     <legend class="usa-sr-only">Category Filter</legend>
-    <div class="bg-gray-5 <%= categories.any? ? 'desktop:padding-bottom-2px' : '' %>">
+    <div class="bg-gray-5 <%= clinical_categories.any? ? 'desktop:padding-bottom-2px' : '' %>">
       <h2 class="usa-accordion__heading">
         <button class="usa-accordion__button mobile-category-accordion desktop:display-none"
                 aria-expanded="false"
@@ -64,19 +100,57 @@
         </button>
       </h2>
 
-      <% if categories.any? %>
+      <% if clinical_categories.any? %>
         <div class="grid-row category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex desktop:padding-x-2">
           <p class="text-bold line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block desktop:margin-top-1">Category</p>
-          <% if sliced_categories.present? %>
-            <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sliced_categories, column: 0 } %>
-            <% if sliced_categories[1].present? %>
-              <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sliced_categories, column: 1 } %>
+          <p class="text-bold line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block desktop:margin-top-1">Clinical</p>
+          <% if clinical_sliced_categories.present? %>
+            <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: clinical_sliced_categories, column: 0 } %>
+            <% if clinical_sliced_categories[1].present? %>
+              <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: clinical_sliced_categories, column: 1 } %>
             <% end %>
-            <% if sliced_categories[2].present? %>
-              <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sliced_categories, column: 2 } %>
+            <% if clinical_sliced_categories[2].present? %>
+              <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: clinical_sliced_categories, column: 2 } %>
             <% end %>
-          <% elsif sliced_categories.nil? && categories.count == 1 %>
-            <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: categories, column: nil } %>
+          <% elsif clinical_sliced_categories.nil? && clinical_categories.count == 1 %>
+            <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: clinical_categories, column: nil } %>
+          <% end %>
+        </div>
+      <% end %>
+
+      <!--- operational ----------------------------->
+      <% if operational_categories.any? %>
+        <div class="grid-row category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex desktop:padding-x-2">
+          <p class="text-bold line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block desktop:margin-top-1">Operational</p>
+          <% if operational_sliced_categories.present? %>
+            <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: operational_sliced_categories, column: 0 } %>
+            <% if operational_sliced_categories[1].present? %>
+              <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: operational_sliced_categories, column: 1 } %>
+            <% end %>
+            <% if operational_sliced_categories[2].present? %>
+              <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: operational_sliced_categories, column: 2 } %>
+            <% end %>
+          <% elsif operational_sliced_categories.nil? && operational_categories.count == 1 %>
+            <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: operational_sliced_categories, column: nil } %>
+          <% end %>
+        </div>
+      <% end %>
+
+      <!-----------------------Strategic --------------------------------------------------------------->
+      <% if strategic_categories.any? %>
+        <% debugger %>
+        <div class="grid-row category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex desktop:padding-x-2">
+          <p class="text-bold line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block desktop:margin-top-1">Strategic</p>
+          <% if strategic_categories.present? %>
+            <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: strategic_categories, column: 0 } %>
+            <% if strategic_categories[1].present? %>
+              <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: strategic_categories, column: 1 } %>
+            <% end %>
+            <% if strategic_categories[2].present? %>
+              <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: strategic_categories, column: 2 } %>
+            <% end %>
+          <% elsif strategic_categories.nil? && strategic_categories.count == 1 %>
+            <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: strategic_categories, column: nil } %>
           <% end %>
         </div>
       <% end %>
