@@ -7,7 +7,10 @@ function attachShowOtherClinicalCategoryFields() {
         '.practice-editor-clinical-categories-ul',
         '8'
     );
-    $document.on('click', '#clinical_category_other', function() {
+    $document.on('change', '#clinical_category_other', function() {
+        if ($('#clinical').children().length === 0) {
+            $('#link_to_add_link_slug_clinical').click();
+        }
         showOtherClinicalCategoryFields();
     });
 
@@ -27,9 +30,11 @@ function attachShowOtherOperationalCategoryFields() {
         '8'
     );
     $document.on('change', '#operational_category_other', function() {
+        if ($('#operational').children().length === 0) {
+            $('#link_to_add_link_slug_operational').click();
+        }
         showOtherOperationalCategoryFields();
     });
-
     attachTrashListener(
         $document,
         '#operational_other_categories_container',
@@ -46,6 +51,9 @@ function attachShowOtherStrategicCategoryFields() {
         '8'
     );
     $document.on('change', '#strategic_category_other', function() {
+        if ($('#strategic').children().length === 0) {
+            $('#link_to_add_link_slug_strategic').click();
+        }
         showOtherStrategicCategoryFields();
     });
 
