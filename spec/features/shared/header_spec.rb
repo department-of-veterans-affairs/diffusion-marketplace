@@ -93,4 +93,26 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
       expect(page).to have_current_path('/search?query=test')
     end
   end
+
+  describe 'Veterans Crisis Line Modal' do
+    it 'should allow the user to open the modal and view the contents' do
+      visit '/'
+
+      # open the modal
+      click_link('Talk to the Veterans Crisis Line now')
+
+      expect(page).to have_content('We’re here anytime, day or night – 24/7')
+      expect(page).to have_content('If you are a Veteran in crisis or concerned about one, connect with our caring, qualified responders for confidential help. Many of them are Veterans themselves.')
+      expect(page).to have_link('Call 800-273-8255 and select 1')
+
+      # close the modal
+      within(:css, '#va-crisis-line-modal') do
+        find('.usa-button').click
+      end
+
+      expect(page).to_not have_content('We’re here anytime, day or night – 24/7')
+      expect(page).to_not have_content('If you are a Veteran in crisis or concerned about one, connect with our caring, qualified responders for confidential help. Many of them are Veterans themselves.')
+      expect(page).to_not have_link('Call 800-273-8255 and select 1')
+    end
+  end
 end
