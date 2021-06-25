@@ -15,15 +15,15 @@ class Category < ApplicationRecord
 
   attr_accessor :related_terms_raw
 
-  def get_clinical_category_id
+  def self.get_clinical_category_id
     return Category.where(name: 'Clinical', is_other: false, parent_category_id: nil).first().id
   end
 
-  def get_operational_category_id
+  def self.get_operational_category_id
     return Category.where(name: 'Operational', is_other: false, parent_category_id: nil).first().id
   end
 
-  def get_strategic_category_id
+  def self.get_strategic_category_id
     return Category.where(name: 'Strategic', is_other: false, parent_category_id: nil).first().id
   end
 

@@ -685,22 +685,7 @@ class PracticesController < ApplicationController
   end
 
   def update_conditions
-    debugger
     other_categories = request.request_parameters[:practice][:categories_attributes].to_a
-
-    # debugger
-    # other_parent_category = request.request_parameters[:practice][:categories_attributes][other_parent_category_key]["parent_category"]
-
-    other_parent = ""
-    # if params["clinical_other"].present?
-    #   other_parent = "clinical"
-    # elsif params["operational_other"]
-    #   other_parent = "operational"
-    # elsif params["strategic_other"]
-    #   other_parent = "strategic"
-    # end
-    # debugger
-
     if params[:practice].present?
       facility_type = params[:practice][:initiating_facility_type] || nil
       if facility_type.present?
