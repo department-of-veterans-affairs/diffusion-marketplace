@@ -612,10 +612,10 @@
                       <div class="usa-checkbox pe-category-checkbox position-relative">
                         <input type="checkbox"
                                class="usa-checkbox__input category-input"
-                               id="category_<%= underscore_cat %>"
+                               id="operational_category_<%= underscore_cat %>"
                                name="practice[category][<%= cat.id %>][value]"
                                <%= 'checked="true"' if practice_categories_ids.include?(cat.id) %>/>
-                        <label title="<%= cat.name %>" class="usa-checkbox__label" id="category_<%= underscore_cat %>_label" for="category_<%= underscore_cat %>">
+                        <label title="<%= cat.name %>" class="usa-checkbox__label" id="category_<%= underscore_cat %>_label" for="operational_category_<%= underscore_cat %>">
                           <%= truncate(cat.name, length: 20) %>
                         </label>
                       </div>
@@ -627,7 +627,7 @@
                       <div class="usa-checkbox pe-category-checkbox position-relative">
                         <input type="checkbox"
                                class="usa-checkbox__input category-input"
-                               id="category_<%= underscore_cat %>"
+                               id="operational_category_<%= underscore_cat %>"
                                name="practice[category][<%= cat.id %>][value]"
                                <%= 'checked="true"' if practice_categories_ids.include?(cat.id) %>/>
                         <label title="<%= cat.name %>" class="usa-checkbox__label" id="category_<%= underscore_cat %>_label" for="operational_category_<%= underscore_cat %>">
@@ -675,7 +675,7 @@
                       <div class="usa-checkbox pe-category-checkbox position-relative">
                         <input type="checkbox"
                                class="usa-checkbox__input category-input"
-                               id="category_<%= underscore_cat %>"
+                               id="strategic_category_<%= underscore_cat %>"
                                name="practice[category][<%= cat.id %>][value]"
                                <%= 'checked="true"' if practice_categories_ids.include?(cat.id) %>/>
                         <label title="<%= cat.name %>" class="usa-checkbox__label" id="category_<%= underscore_cat %>_label" for="strategic_category_<%= underscore_cat %>">
@@ -690,7 +690,7 @@
                       <div class="usa-checkbox pe-category-checkbox position-relative">
                         <input type="checkbox"
                                class="usa-checkbox__input category-input"
-                               id="category_<%= underscore_cat %>"
+                               id="strategic_category_<%= underscore_cat %>"
                                name="practice[category][<%= cat.id %>][value]"
                                <%= 'checked="true"' if practice_categories_ids.include?(cat.id) %>/>
                         <label title="<%= cat.name %>" class="usa-checkbox__label" id="category_<%= underscore_cat %>_label" for="strategic_category_<%= underscore_cat %>">
