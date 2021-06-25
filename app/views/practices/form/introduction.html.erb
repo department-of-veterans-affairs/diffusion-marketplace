@@ -579,11 +579,6 @@
                       <% clinical_categories_groups[2].each do |cat| %>
                         <% next if cat.blank? %>
                         <% underscore_cat = cat.name.split(' ').join('').underscore %>
-
-                        <% if underscore_cat == 'other' && practice_categories_ids.include?(cat.id) %>
-                          <input type="hidden" name="clinical_other" id="clinical_other" value="<%= clinical_category_id %>"/>
-                        <% end %>
-
                         <div class="usa-checkbox pe-category-checkbox position-relative">
                           <input type="checkbox"
                                  class="usa-checkbox__input category-input"
@@ -640,11 +635,6 @@
                     <% ops_categories_groups[2].each do |cat| %>
                       <% next if cat.blank? %>
                       <% underscore_cat = cat.name.split(' ').join('').underscore %>
-
-                      <% if underscore_cat == 'other' && practice_categories_ids.include?(cat.id) %>
-                        <input type="hidden" name="operational_other" id="operational_other" value="<%= operational_category_id %>"/>
-                      <% end %>
-
                       <div class="usa-checkbox pe-category-checkbox position-relative">
                         <input type="checkbox"
                                class="usa-checkbox__input category-input"
@@ -703,11 +693,6 @@
                     <% strategic_categories_groups[2].each do |cat| %>
                       <% next if cat.blank? %>
                       <% underscore_cat = cat.name.split(' ').join('').underscore %>
-
-                      <% if underscore_cat == 'other' && practice_categories_ids.include?(cat.id) %>
-                        <input type="hidden" name="strategic_other" id="strategic_other" value="<%= strategic_category_id %>"/>
-                      <% end %>
-
                       <div class="usa-checkbox pe-category-checkbox position-relative">
                         <input type="checkbox"
                                class="usa-checkbox__input category-input"
