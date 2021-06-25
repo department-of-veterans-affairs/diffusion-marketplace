@@ -171,7 +171,6 @@ class SavePracticeService
           practice_category_practices.find_or_create_by(category_id: key.to_i)
         end
       end
-      debugger
       other_cat_id = Category.find_by(name: 'Other')&.id
       other_categories_present = @other_parent_categories.present? ? true : false
 
