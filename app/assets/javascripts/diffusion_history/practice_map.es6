@@ -1,4 +1,5 @@
 function initialize() {
+    const STATUSES = statuses
     const handler = Gmaps.build('Google', {
         builders: {
             Marker: InfoBoxBuilder
@@ -23,9 +24,9 @@ function initialize() {
         if (json.id !== selectedMarker.id) {
             if (selectedMarker.id) {
                 const prevSelected = dataMarkers.find(m => m.id === selectedMarker.id);
-                if (prevSelected.status.toLowerCase() === 'complete') {
+                if (prevSelected.status === STATUSES[0]) {
                     setIcon(prevSelected, defaultMarkerIcon);
-                } else if (prevSelected.status.toLowerCase() === 'in progress') {
+                } else if (prevSelected.status === STATUSES[1]) {
                     setIcon(prevSelected, defaultInProgressMarkerIcon);
                 } else {
                     setIcon(prevSelected, defaultUnsuccessfulMarkerIcon);
@@ -33,24 +34,22 @@ function initialize() {
             }
             selectedMarker = json;
 
-            if (json.status.toLowerCase() === 'complete') {
+            if (json.status === STATUSES[0]) {
                 setIcon(json, selectedMarkerIcon);
-            } else if (json.status.toLowerCase() === 'in progress') {
+            } else if (json.status === STATUSES[1]) {
                 setIcon(json, selectedInProgressMarkerIcon);
             } else {
                 setIcon(json, selectedUnsuccessfulMarkerIcon);
             }
 
-            $('#filterResultsTrigger').show();
-            $('#filterResults').hide();
         }
     }
 
     function mouseoverCallback(json) {
         if (json.id !== selectedMarker.id) {
-            if (json.status.toLowerCase() === 'complete') {
+            if (json.status === STATUSES[0]) {
                 setIcon(json, hoverMarkerIcon);
-            } else if (json.status.toLowerCase() === 'in progress') {
+            } else if (json.status === STATUSES[1]) {
                 setIcon(json, hoverInProgressMarkerIcon);
             } else {
                 setIcon(json, hoverUnsuccessfulMarkerIcon);
@@ -60,9 +59,9 @@ function initialize() {
 
     function mouseoutCallback(json) {
         if (json.id !== selectedMarker.id) {
-            if (json.status.toLowerCase() === 'complete') {
+            if (json.status === STATUSES[0]) {
                 setIcon(json, defaultMarkerIcon);
-            } else if (json.status.toLowerCase() === 'in progress') {
+            } else if (json.status === STATUSES[1]) {
                 setIcon(json, defaultInProgressMarkerIcon);
             } else {
                 setIcon(json, defaultUnsuccessfulMarkerIcon);
@@ -86,9 +85,9 @@ function initialize() {
         if (selectedMarker.id) {
             const json = dataMarkers.find(dm => dm.id === selectedMarker.id);
             json.marker.infowindow.close();
-            if (json.status.toLowerCase() === 'complete') {
+            if (json.status === STATUSES[0]) {
                 setIcon(json, defaultMarkerIcon);
-            } else if (json.status.toLowerCase() === 'in progress') {
+            } else if (json.status === STATUSES[1]) {
                 setIcon(json, defaultInProgressMarkerIcon);
             } else {
                 setIcon(json, defaultUnsuccessfulMarkerIcon);
@@ -138,16 +137,8 @@ function initialize() {
             result = result.filter(function (d) {
                 let hasStatus = false;
                 statuses.forEach(function (s) {
-                    if (s === 'Complete') {
-                        hasStatus = d.completed > 0;
-                    }
-
-                    if (s === 'In progress' && !hasStatus) {
-                        hasStatus = d.in_progress > 0;
-                    }
-
-                    if (s === 'Unsuccessful' && !hasStatus) {
-                        hasStatus = d.unsuccessful > 0;
+                    if (!hasStatus) {
+                        hasStatus = d.status === s;
                     }
                 });
                 return hasStatus;
@@ -172,5 +163,16 @@ function initialize() {
         // submit the form to get the data
         $('#mapFilters').submit();
     });
-
 }
+
+function _resetCheckboxes() {
+    let $checkboxes = $(".practice-map-filters").find(".usa-checkbox__input");
+    $checkboxes.each((k, v) => {
+        $(v).prop('checked', true);
+    })
+}
+
+$(document).on("turbolinks:load", function () {
+    _resetCheckboxes();
+    google.maps.event.addDomListener(window, "load", initialize);
+});

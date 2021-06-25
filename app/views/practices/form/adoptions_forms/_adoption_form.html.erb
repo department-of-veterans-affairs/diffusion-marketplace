@@ -1,0 +1,117 @@
+<%
+  practice ||= @practice
+  # an "adoption" is a DiffusionHistoryStatus: if is not nil, we are editing an adoption, otherwise, we are creating
+  adoption ||= nil
+  status = adoption&.get_status_display_name || nil
+  submit_button_text = adoption ? 'Save edits' : 'Add adoption'
+  form_id = "#{adoption&.diffusion_history&.id}"
+
+  complete = DiffusionHistoryStatus::STATUSES[0]
+  in_progress = DiffusionHistoryStatus::STATUSES[1]
+  unsuccessful = DiffusionHistoryStatus::STATUSES[2]
+%>
+<%= form_with(url: "#{practice_create_or_update_diffusion_history_path(practice)}.js", local: false, html: {id: "adoption_form#{form_id}", class: 'adoption-form'}) do |f| %>
+  <%= f.hidden_field('diffusion_history_id', value: form_id) if adoption %>
+  <%= f.hidden_field('diffusion_history_status_id', value: adoption.id) if adoption %>
+  <div class="margin-bottom-5 margin-top-1">
+    <p class="margin-bottom-2">
+      <span class="margin-right-05 text-middle">Status</span>
+      <%= render partial: 'practices/adoption_status_tooltip',
+         locals: {
+             tooltip_title: 'In-progress: <i>Facilities that have started but not completed adopting the practice</i>.&#10;Successful: <i>Facilities that have met adoption goals and implemented the practice.</i>&#10;Unsuccessful: <i>Facilities that started but stopped working towards adoption.</i>'
+         }
+      %>
+    </p>
+    <div class="usa-radio position-relative">
+      <%= radio_button(nil, 'status', 'In progress', class: 'usa-radio__input adoptions-radio-button dm-required-field', required: true, checked: status == in_progress ? 'checked' : false, id: "status_in_progress#{form_id}") %>
+      <label class='usa-radio__label margin-top-1' for='<%= "status_in_progress#{form_id}" %>'>In-progress</label>
+    </div>
+    <div class="usa-radio position-relative">
+      <%= radio_button(nil, 'status', 'Completed', class: 'usa-radio__input adoptions-radio-button dm-required-field', required: true, checked: status == complete ? 'checked' : false, id: "status_completed#{form_id}") %>
+      <label class='usa-radio__label margin-top-1' for='<%= "status_completed#{form_id}" %>'>Successful</label>
+    </div>
+    <div class="usa-radio position-relative">
+      <%= radio_button(nil, 'status', 'Unsuccessful', class: 'usa-radio__input adoptions-radio-button dm-required-field', required: true, checked: status == unsuccessful ? 'checked' : false, id: "status_unsuccessful#{form_id}") %>
+      <label class='usa-radio__label margin-top-1' for='<%= "status_unsuccessful#{form_id}" %>'>Unsuccessful</label>
+    </div>
+  </div>
+
+  <% if adoption %>
+    <%= f.hidden_field("facility_id", value: adoption.diffusion_history.facility_id, id: "editor_facility_select_#{form_id}") %>
+  <% else %>
+    <div class="margin-bottom-5">
+    <% facility_select_selector = 'editor_facility_select' %>
+    <label for="<%= facility_select_selector %>" class="usa-label line-height-26">Facility</label>
+    <div class="usa-combo-box margin-top-1 margin-bottom-2">
+      <select id="<%= facility_select_selector %>" class="usa-select" name="facility_id">
+        <% @facilities.all.each do |va| %>
+          <option value=<%= va[:station_number] %>>
+            <%= va[:street_address_state] + ': ' + va[:official_station_name] + ' (' + va[:common_name] + ')' %>
+          </option>
+        <% end %>
+      </select>
+    </div>
+  </div>
+  <% end %>
+
+  <div class="grid-row flex-align-end margin-bottom-5">
+    <fieldset class="usa-fieldset grid-col-2">
+      <legend class="usa-legend margin-top-0">Start date <span class="text-base">(optional)</span></legend>
+      <div class="usa-memorable-date">
+        <div class="usa-form-group usa-form-group--month">
+          <%= label_tag "date_started_month#{form_id}", 'Month', class: 'usa-label margin-0' %>
+          <input class="usa-input usa-input--inline" id=<%= "date_started_month#{form_id}" %> name="date_started[month]" type="text" maxlength="2" pattern="[0-9]*" inputmode="numeric" value="<%= adoption&.start_time&.present? ? date_get_month(adoption.start_time) : nil %>">
+        </div>
+        <div class="usa-form-group usa-form-group--year">
+          <%= label_tag "date_started_year#{form_id}", 'Year', class: 'usa-label margin-0' %>
+          <input class="usa-input usa-input--inline" id=<%= "date_started_year#{form_id}" %> name="date_started[year]" type="text" minlength="4" maxlength="4" pattern="[0-9]*" inputmode="numeric" value="<%= adoption&.start_time&.present? ? date_get_year(adoption.start_time) : nil %>">
+        </div>
+      </div>
+    </fieldset>
+    <p class="grid-col-auto dm-date-range-text margin-bottom-1 margin-right-2<%= " display-none" if status === in_progress || status === nil %>">
+    to
+    </p>
+    <fieldset class="usa-fieldset dm-adoption-end-date grid-col-2<%= " display-none" if status === in_progress || status === nil %>">
+    <legend class="usa-legend margin-top-0">End date <span class="text-base">(optional)</span></legend>
+    <div class="usa-memorable-date">
+      <div class="usa-form-group usa-form-group--month">
+        <%= label_tag "date_ended_month#{form_id}", 'Month', class: 'usa-label margin-0' %>
+        <input class="usa-input usa-input--inline" id=<%= "date_ended_month#{form_id}" %> name="date_ended[month]" type="text" maxlength="2" pattern="[0-9]*" inputmode="numeric" value=<%= adoption&.end_time&.present? ? date_get_month(adoption.end_time) : nil %>>
+      </div>
+      <div class="usa-form-group usa-form-group--year">
+          <%= label_tag "date_ended_year#{form_id}", 'Year', class: 'usa-label margin-0' %>
+          <input class="usa-input usa-input--inline" id=<%= "date_ended_year#{form_id}" %> name="date_ended[year]" type="text" minlength="4" maxlength="4" pattern="[0-9]*" inputmode="numeric" value="<%= adoption&.end_time&.present? ? date_get_year(adoption.end_time) : nil %>">
+      </div>
+    </div>
+    </fieldset>
+  </div>
+    <fieldset class="usa-fieldset margin-bottom-5 dm-unsuccessful-adoption-reasons<%= status === unsuccessful ? "" : " display-none" %>">
+      <legend class="usa-legend">Why was this adoption unsuccessful?</legend>
+      <% ua_reasons = DiffusionHistoryStatus::ADOPTION_REASONS %>
+      <% ua_reasons.each do |key, value| %>
+        <div class="usa-checkbox">
+          <input class="usa-checkbox__input dm-unsuccessful-adoption-checkbox" id=<%= "unsuccessful_reason_#{form_id}_#{key}" %> type="checkbox" name="unsuccessful_reasons[]" value=<%= key %> <%= 'checked' if adoption&.unsuccessful_reasons&.include?(key) %>>
+          <%= label_tag "unsuccessful_reason_#{form_id}_#{key}", value, class: 'usa-checkbox__label display-inline-block' %>
+          <% if key === 5 %>
+            <%= render partial: 'shared/textarea_counter', locals: { counter_class: "ur-other-character-counter", classes:"#{ key === 5 && adoption&.unsuccessful_reasons&.include?(5) ? "" : " display-none" }", textarea_class: "dm-unsuccessful-reasons-other", max_char_count: 50 } %>
+          <% end %>
+        </div>
+      <% end %>
+      <div class="dm-unsuccessful-adoption-other-reason<%= status === unsuccessful && adoption&.unsuccessful_reasons&.include?(5) && adoption&.unsuccessful_reasons_other.present? ? "" : " display-none" %>">
+        <%= label_tag "unsuccessful_reasons_other_#{form_id}", 'Other Reason', class: 'usa-label usa-sr-only' %>
+        <textarea class="usa-textarea margin-left-4 dm-unsuccessful-reasons-other" id=<%= "unsuccessful_reasons_other_#{form_id}" %> name="unsuccessful_reasons_other"><%= adoption&.unsuccessful_reasons_other %></textarea>
+      </div>
+    </fieldset>
+
+  <div>
+    <% if adoption %>
+      <%= f.button 'Cancel', class: 'usa-button--outline dm-btn-primary margin-right-1 padding-x-3', type: 'button', id: "cancel_edits_#{form_id}", 'data-selector': "diffusion_history_#{form_id}" %>
+    <% else %>
+      <%= f.button 'Cancel', class: 'usa-button--outline dm-btn-primary margin-right-1 padding-x-3', type: 'button', id: 'clear_entry' %>
+    <% end %>
+    <button type="button" class="usa-button dm-btn-primary padding-x-3" id="adoption_form<%= form_id %>_submit" data-disable-with="<%= submit_button_text %>" data-form-id="adoption_form<%= form_id %>"><%= submit_button_text %></button>
+    <% if adoption %>
+      <%= link_to 'Delete', practice_destroy_diffusion_history_path(adoption.diffusion_history.practice, adoption.diffusion_history), method: :delete, class: 'usa-button usa-button--secondary float-right padding-x-3', data: {confirm: 'Are you sure you want to delete this adoption entry?'} %>
+    <% end %>
+  </div>
+<% end %>

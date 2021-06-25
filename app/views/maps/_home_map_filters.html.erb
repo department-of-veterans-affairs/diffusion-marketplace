@@ -1,9 +1,3 @@
-<% provide :head_tags do %>
-  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-    <%= render partial: 'maps/facility_auto_complete', formats: [:js] %>
-  <% end %>
-<% end %>
-
 <% diffused_practices = @diffusion_history_practices %>
 <div id="filterResults" class="map-filters padding-y-0 position-absolute display-none">
   <div class="padding-left-1">
@@ -11,8 +5,12 @@
       <h3 class="font-sans-lg bold-height-2 margin-0 ">Filter results</h3>
     </div>
     <div class="margin-bottom-1">
-      <p class="margin-bottom-1 margin-top-0"><span id="facility-results-count"><%= @diffusion_history_markers.size %></span>
-        facility matches (of <%= @diffusion_history_markers.size %>)</p>
+      <p class="margin-bottom-1 margin-top-0">
+        <span id="facility-results-count">
+          <%= @dh_markers.size %> facility match<%= @dh_markers.size != 1 ? 'es' : '' %>
+        </span>
+        (of <%= @dh_markers.size %>)
+      </p>
       <p class="margin-0">
         <span id="practice-results-count">
           <%= diffused_practices.size %> practice<%= 's' unless diffused_practices.size === 1 %>
@@ -41,13 +39,12 @@
 
       <div class="margin-bottom-2">
         <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0">Practice status</h4>
-        <% statuses = ['Complete', 'In progress', 'Unsuccessful'] %>
         <fieldset>
           <legend class="usa-sr-only">Statuses</legend>
-          <% statuses.each do |v| %>
+          <% DiffusionHistoryStatus::STATUSES.each do |i, v| %>
             <input id="status_<%= v.downcase.gsub(' ', '_') %>" name="statuses" type="checkbox" value="<%= v %>" class="usa-checkbox__input">
             <label for="status_<%= v.downcase.gsub(' ', '_') %>" class="usa-checkbox__label adoption-status-label">
-              <%= v == 'Complete' ? 'Successful' : v %>
+              <%= v %>
             </label>
           <% end %>
         </fieldset>
@@ -57,26 +54,32 @@
         <div id="visn-list-container" class="map-filters-list">
           <fieldset>
             <legend class="usa-sr-only">VISNs</legend>
-            <% @visn_numbers.each do |v| %>
-              <input id="VISN<%= v %>" name="visns" type="checkbox" value="<%= v %>" class="usa-checkbox__input">
-              <label for="VISN<%= v %>" class="usa-checkbox__label">
-                VISN <%= v %>
+            <% @visns.each do |v| %>
+              <input id="VISN_<%= v.id %>" name="visns" type="checkbox" value="<%= v.id %>" class="usa-checkbox__input">
+              <label for="VISN_<%= v.id %>" class="usa-checkbox__label">
+                VISN <%= v.number %>
               </label>
             <% end %>
           </fieldset>
         </div>
       </div>
 
+      <label for="facility_name" class="usa-label line-height-26 text-bold">Facility name</label>
+      <div class="usa-combo-box margin-top-1 margin-bottom-2" data-set-facility="false">
+        <select id="facility_name" class="usa-select" name="facility_name">
+          <% @vamc_facilities.each do |f| %>
+            <option value=<%= f.station_number %>>
+              <%= f.street_address_state %>: <%= f.official_station_name + ' (' + f.common_name + ')' %>
+            </option>
+          <% end %>
+        </select>
+      </div>
+
       <div class="margin-bottom-2 clearfix">
-        <div class="usa-search usa-search--small" id="facility_name_container">
-          <label class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0 text-bold" for="facility_name">Facility
-            name</label>
-          <input id="facility_name" class="usa-input typeahead" name="facility_name">
-        </div>
-        <button type="button" class="usa-button--unstyled dm-btn-primary float-right padding-top-1 padding-bottom-05 padding-right-1" id="practiceListTrigger">
+        <button type="button" class="usa-button--unstyled dm-btn-primary float-right padding-top-1 padding-bottom-05 padding-right-1" id="facilityListTrigger">
           View list of facilities
         </button>
-        <div id="practiceListContainer" class="map-filters-list display-none">
+        <div id="facilityListContainer" class="map-filters-list display-none">
           <fieldset>
             <legend class="usa-sr-only">Facilities</legend>
             <% @vamc_facilities.each do |f| %>
@@ -97,7 +100,7 @@
       <div class="margin-bottom-2">
         <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0 display-inline-block">Facility complexity</h4>
         <%= render partial: 'shared/facility_complexity_modal', locals: { hide_modal_on_initial_load: false } %>
-        <% complexity_levels = @vamc_facilities.get_complexity.sort %>
+        <% complexity_levels = VaFacility.get_complexity %>
         <fieldset>
           <legend class="usa-sr-only">Facility Complexity Levels</legend>
           <% complexity_levels.each do |c| %>
