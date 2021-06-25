@@ -95,7 +95,7 @@ function attachAllClinicalListener(){
     $document.on('change', '#clinical_category_allclinical', function() {
         let clinicalChkBoxes = $('[id^="clinical_category_"]');
         for(let i = 0; i < clinicalChkBoxes.length; i++){
-            if(!clinicalChkBoxes[i].id.includes("_other")){
+            if(!clinicalChkBoxes[i].id.includes("_other") && !clinicalChkBoxes[i].id.includes("_allclinical")){
                 clinicalChkBoxes[i].checked = this.checked;
             }
         }
@@ -106,7 +106,7 @@ function attachAllOperationalListener(){
     $document.on('change', '#operational_category_alloperational', function() {
         let operationalChkBoxes = $('[id^="operational_category_"]');
         for(let i = 0; i < operationalChkBoxes.length; i++){
-            if(!operationalChkBoxes[i].id.includes("_other")){
+            if(!operationalChkBoxes[i].id.includes("_other") && !operationalChkBoxes[i].id.includes("_alloperational")){
                 operationalChkBoxes[i].checked = this.checked;
             }
         }
@@ -117,7 +117,7 @@ function attachAllStrategicListener(){
     $document.on('change', '#strategic_category_allstrategic', function() {
         let strategicChkBoxes = $('[id^="strategic_category_"]');
         for(let i = 0; i < strategicChkBoxes.length; i++){
-            if(!strategicChkBoxes[i].id.includes("_other")){
+            if(!strategicChkBoxes[i].id.includes("_other") && !strategicChkBoxes[i].id.includes("_allstrategic")){
                 strategicChkBoxes[i].checked = this.checked;
             }
         }
