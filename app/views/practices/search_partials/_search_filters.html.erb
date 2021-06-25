@@ -87,7 +87,6 @@
         strategic_sliced_categories[1].shift
       end
     end
-    debugger
   %>
 
   <fieldset class="p0">
@@ -141,23 +140,22 @@
       <% end %>
 
       <!-----------------------Strategic --------------------------------------------------------------->
-      <%# if strategic_categories.any? %>
-        <%# debugger %>
-<!--        <div class="grid-row category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex desktop:padding-x-2">-->
-<!--          <p class="line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block desktop:margin-top-1">Strategic</p>-->
-          <%# if strategic_categories[0].present? %>
-            <%#= render partial: 'practices/search_partials/category_filter_column', locals: { categories: strategic_categories, column: 0 } %>
-            <%# if strategic_categories[1].present? %>
-              <%#= render partial: 'practices/search_partials/category_filter_column', locals: { categories: strategic_categories, column: 1 } %>
-            <%# end %>
-            <%# if strategic_categories[2].present? %>
-              <%#= render partial: 'practices/search_partials/category_filter_column', locals: { categories: strategic_categories, column: 2 } %>
-            <%# end %>
-          <%# elsif strategic_categories.nil? && strategic_categories.count == 1 %>
-            <%#= render partial: 'practices/search_partials/category_filter_column', locals: { categories: strategic_categories, column: nil } %>
-          <%# end %>
-<!--        </div>-->
-      <%# end %>
+      <% if strategic_categories.any? %>
+        <div class="grid-row category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex desktop:padding-x-2">
+          <p class="line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block desktop:margin-top-1">Strategic</p>
+          <% if strategic_sliced_categories.present? %>
+            <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: strategic_sliced_categories, column: 0 } %>
+            <% if strategic_sliced_categories[1].present? %>
+              <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: strategic_sliced_categories, column: 1 } %>
+            <% end %>
+            <% if strategic_sliced_categories[2].present? %>
+              <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: strategic_sliced_categories, column: 2 } %>
+            <% end %>
+          <% elsif strategic_sliced_categories.nil? && strategic_categories.count == 1 %>
+            <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: strategic_sliced_categories, column: nil } %>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   </fieldset>
 </div>
