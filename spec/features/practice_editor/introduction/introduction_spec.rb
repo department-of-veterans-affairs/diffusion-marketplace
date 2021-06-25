@@ -48,7 +48,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
       expect(page).to have_content('Partners')
       expect(page).to have_content('Select any of the following partners your practice is associated with.')
       expect(page).to have_content('Categories')
-      expect(page).to have_content('Select any categories that apply to your practice.')
+      expect(page).to have_content('Select the categories most relevant to your practice (suggested: up to 10).')
       expect(page).to have_content('Diffusion phase')
       expect(page).to have_content('Select the diffusion phase that applies to your practice.')
       expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/instructions")
