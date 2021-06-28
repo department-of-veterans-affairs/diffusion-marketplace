@@ -449,6 +449,8 @@ describe 'VISN pages', type: :feature do
       it 'should allow users to search for practices that were created or adopted within a given visn' do
         visit '/visns/2'
 
+        debugger
+
         # defaults to created practices
         # make sure 'Load more' feature is working
         expect(practice_cards.count).to eq(6)
