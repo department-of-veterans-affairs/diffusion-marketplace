@@ -705,7 +705,13 @@ end
 
 def set_initiating_fac_params(params)
   facility_type = params[:practice][:initiating_facility_type]
-  if facility_type == "facility" && params[:practice][:practice_origin_facilities_attributes].present?
+
+  if facility_type == "facility"
+    params[:practice][:practice_origin_facilities_attributes].values.each do |value|
+      if value[:facility_id].nil?
+        params[:practice][:practice_origin_facilities_attributes] = nil
+      end
+    end
     @practice.initiating_facility = ""
     @practice.initiating_department_office_id = ""
   elsif facility_type == "visn"
