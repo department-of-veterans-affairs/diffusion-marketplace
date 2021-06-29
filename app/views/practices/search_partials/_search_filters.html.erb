@@ -102,8 +102,11 @@
 
       <% if clinical_categories.any? %>
         <div class="grid-row category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex desktop:padding-x-2">
-          <p class="text-bold line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block desktop:margin-top-1">Category</p>
-          <p class="text-bold line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block desktop:margin-top-1">Clinical</p>
+          <p class="text-bold line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block margin-top-2">
+            Categories
+            <%= render partial: 'shared/complexity_definitions_modal', locals: { hide_modal_on_initial_load: true } %>
+          </p>
+          <p class="line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block desktop:margin-top-1">Clinical</p>
           <% if clinical_sliced_categories.present? %>
             <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: clinical_sliced_categories, column: 0 } %>
             <% if clinical_sliced_categories[1].present? %>
@@ -121,7 +124,7 @@
       <!--- operational ----------------------------->
       <% if operational_categories.any? %>
         <div class="grid-row category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex desktop:padding-x-2">
-          <p class="text-bold line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block desktop:margin-top-1">Operational</p>
+          <p class="line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block desktop:margin-top-1">Operational</p>
           <% if operational_sliced_categories.present? %>
             <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: operational_sliced_categories, column: 0 } %>
             <% if operational_sliced_categories[1].present? %>
@@ -138,19 +141,18 @@
 
       <!-----------------------Strategic --------------------------------------------------------------->
       <% if strategic_categories.any? %>
-        <% debugger %>
         <div class="grid-row category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex desktop:padding-x-2">
-          <p class="text-bold line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block desktop:margin-top-1">Strategic</p>
-          <% if strategic_categories.present? %>
-            <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: strategic_categories, column: 0 } %>
-            <% if strategic_categories[1].present? %>
-              <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: strategic_categories, column: 1 } %>
+          <p class="line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block desktop:margin-top-1">Strategic</p>
+          <% if strategic_sliced_categories.present? %>
+            <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: strategic_sliced_categories, column: 0 } %>
+            <% if strategic_sliced_categories[1].present? %>
+              <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: strategic_sliced_categories, column: 1 } %>
             <% end %>
-            <% if strategic_categories[2].present? %>
-              <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: strategic_categories, column: 2 } %>
+            <% if strategic_sliced_categories[2].present? %>
+              <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: strategic_sliced_categories, column: 2 } %>
             <% end %>
-          <% elsif strategic_categories.nil? && strategic_categories.count == 1 %>
-            <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: strategic_categories, column: nil } %>
+          <% elsif strategic_sliced_categories.nil? && strategic_categories.count == 1 %>
+            <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: strategic_sliced_categories, column: nil } %>
           <% end %>
         </div>
       <% end %>

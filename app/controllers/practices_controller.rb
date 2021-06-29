@@ -685,22 +685,13 @@ class PracticesController < ApplicationController
   end
 
   def update_conditions
-    other_parent = ""
-    if params["clinical_other"].present?
-      other_parent = "clinical"
-    elsif params["operational_other"]
-      other_parent = "operational"
-    elsif params["strategic_other"]
-      other_parent = "strategic"
-    end
-
-
+    other_categories = request.request_parameters[:practice][:categories_attributes].to_a
     if params[:practice].present?
       facility_type = params[:practice][:initiating_facility_type] || nil
       if facility_type.present?
         set_initiating_fac_params params
       end
-      pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint, other_parent_category: other_parent}
+      pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint, other_parent_categories: other_categories}
       updated = SavePracticeService.new(pr_params).save_practice
       clear_origin_facilities if facility_type != "facility" && current_endpoint == 'introduction'
       updated

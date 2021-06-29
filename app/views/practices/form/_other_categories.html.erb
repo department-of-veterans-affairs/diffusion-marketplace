@@ -66,7 +66,6 @@
 
   <% unless other_categories.any? %>
     <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-      console.log('hello')
       observePracticeEditorLiArrival(
       $(document),
       '.<%= other_parent_category %>-li',
@@ -81,7 +80,6 @@
     $(document).arrive('#categories_fields_blueprint',
       function(blueprint) {
       console.log('hello 2', blueprint)
-      $('#<%= link_to_add_link_slug %>').click();
       var cloned_blue_print =  $(blueprint).clone(true);
       var link_to_add_buttons = $('a[data-dm-blueprint-id="<%= blue_print_id %>"]');
             link_to_add_buttons.data('blueprint-id', '<%= blue_print_id %>');

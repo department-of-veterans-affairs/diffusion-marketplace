@@ -7,7 +7,10 @@ function attachShowOtherClinicalCategoryFields() {
         '.practice-editor-clinical-categories-ul',
         '8'
     );
-    $document.on('click', '#clinical_category_other', function() {
+    $document.on('change', '#clinical_category_other', function() {
+        if ($('#clinical').children().length === 0) {
+            $('#link_to_add_link_slug_clinical').click();
+        }
         showOtherClinicalCategoryFields();
     });
 
@@ -27,9 +30,11 @@ function attachShowOtherOperationalCategoryFields() {
         '8'
     );
     $document.on('change', '#operational_category_other', function() {
+        if ($('#operational').children().length === 0) {
+            $('#link_to_add_link_slug_operational').click();
+        }
         showOtherOperationalCategoryFields();
     });
-
     attachTrashListener(
         $document,
         '#operational_other_categories_container',
@@ -46,6 +51,9 @@ function attachShowOtherStrategicCategoryFields() {
         '8'
     );
     $document.on('change', '#strategic_category_other', function() {
+        if ($('#strategic').children().length === 0) {
+            $('#link_to_add_link_slug_strategic').click();
+        }
         showOtherStrategicCategoryFields();
     });
 
@@ -83,9 +91,45 @@ function showOtherStrategicCategoryFields() {
     }
 }
 
+function attachAllClinicalListener(){
+    $document.on('change', '#clinical_category_allclinical', function() {
+        let clinicalChkBoxes = $('[id^="clinical_category_"]');
+        for(let i = 0; i < clinicalChkBoxes.length; i++){
+            if(!clinicalChkBoxes[i].id.includes("_other") && !clinicalChkBoxes[i].id.includes("_allclinical")){
+                clinicalChkBoxes[i].checked = this.checked;
+            }
+        }
+    });
+}
+
+function attachAllOperationalListener(){
+    $document.on('change', '#operational_category_alloperational', function() {
+        let operationalChkBoxes = $('[id^="operational_category_"]');
+        for(let i = 0; i < operationalChkBoxes.length; i++){
+            if(!operationalChkBoxes[i].id.includes("_other") && !operationalChkBoxes[i].id.includes("_alloperational")){
+                operationalChkBoxes[i].checked = this.checked;
+            }
+        }
+    });
+}
+
+function attachAllStrategicListener(){
+    $document.on('change', '#strategic_category_allstrategic', function() {
+        let strategicChkBoxes = $('[id^="strategic_category_"]');
+        for(let i = 0; i < strategicChkBoxes.length; i++){
+            if(!strategicChkBoxes[i].id.includes("_other") && !strategicChkBoxes[i].id.includes("_allstrategic")){
+                strategicChkBoxes[i].checked = this.checked;
+            }
+        }
+    });
+}
+
 function executeOtherCategoryFunctions() {
     attachShowOtherClinicalCategoryFields();
     attachShowOtherOperationalCategoryFields();
     attachShowOtherStrategicCategoryFields();
+    attachAllClinicalListener();
+    attachAllOperationalListener();
+    attachAllStrategicListener();
 }
 $(executeOtherCategoryFunctions);

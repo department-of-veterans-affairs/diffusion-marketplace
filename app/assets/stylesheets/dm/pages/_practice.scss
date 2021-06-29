@@ -30,6 +30,7 @@
   .dm-tab {
     border-bottom: 1px solid $dm-color-gray-5;
     font-weight: normal;
+    color: $dm-color-black;
 
     &.top-tab {
       border-top: 1px solid $dm-color-gray-5;
@@ -1254,5 +1255,16 @@ tr.border_bottom td {
     @media screen and (max-width: 1023px) {
       display: none;
     }
+  }
+}
+
+.fa-question-circle {
+  color: $dm-color-base !important;
+  padding: 4px;
+  text-decoration: none !important;
+
+  &:visited {
+    text-decoration: none !important;
+    color: $dm-color-base !important;
   }
 }

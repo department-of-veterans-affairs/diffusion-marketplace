@@ -1,0 +1,52 @@
+<div class="desktop:grid-container va-crisis-line-modal-container position-relative">
+  <div class="desktop:top-0 desktop:right-0 desktop:z-200">
+    <a href="#va-crisis-line-modal"
+       class="usa-button width-full text-left radius-0 desktop:text-center desktop:width-auto desktop:radius-top-0 desktop:radius-bottom-md font-sans-3xs x0-right va-crisis-line-modal-button"
+       aria-controls="va-crisis-line-modal"
+       data-open-modal
+    >
+      Talk to the Veterans Crisis Line now <i class="fas fa-chevron-right margin-left-105"></i>
+    </a>
+    <div class="usa-modal usa-modal--lg display-none" id="va-crisis-line-modal" aria-labelledby="va-crisis-line-header" aria-describedby="va-crisis-line-info">
+      <div class="usa-modal__content flex-align-center p0-top">
+        <div class="usa-modal__main x0">
+          <div class="margin-bottom-3 line-height-37px desktop:margin-bottom-0">
+          <%= image_tag 'crisis-line-logo.png', class: 'crisis-line-logo margin-right-1' %>
+          <h2 class="display-inline font-sans-xl x0-top" id="va-crisis-line-header">
+            We’re here anytime, day or night – 24/7
+          </h2>
+          </div>
+          <p class="line-height-26 margin-bottom-3" id="va-crisis-line-info">
+            If you are a Veteran in crisis or concerned about one, connect with our caring, qualified responders for confidential help. Many of them are Veterans themselves.
+          </p>
+          <ul class="va-crisis-line-contact-list padding-0 x0 line-height-26">
+            <li class="display-flex flex-align-center margin-bottom-3">
+              <i class="fas fa-phone fa-2x margin-right-2 text-center"></i>
+              <a href="tel:18002738255" aria-label="Call the Veterans Crisis Line" class="dm-external-link">Call 800-273-8255 and select 1</a>
+            </li>
+            <li class="display-flex flex-align-center margin-bottom-3">
+              <i class="fas fa-mobile-alt fa-2x margin-right-2 text-center"></i><a href="sms:838255" aria-label="Text the Veterans Crisis Line" class="dm-external-link">Text 838255</a>
+            </li>
+            <li class="display-flex flex-align-center margin-bottom-3">
+              <i class="fas fa-comments fa-2x margin-right-2 text-center"></i>
+              <a href="https://www.veteranscrisisline.net/ChatTermsOfService.aspx?account=Veterans%20Chat" target="_blank" aria-label="Start a confidential chat with the Veterans Crisis Line" class="dm-external-link">
+                Start a confidential chat
+              </a>
+            </li>
+            <li class="display-flex flex-align-center margin-bottom-3">
+              <i class="fas fa-deaf fa-2x margin-right-2 text-center"></i>
+              <p>Call TTY if you have hearing loss&nbsp;<a href="tel:+18007994889" aria-label="8 0 0. 7 9 9. 4 8 8 9." class="dm-external-link">800-799-4889</a></p>
+            </li>
+          </ul>
+          <p>
+            Get more resources at <a href="https://www.veteranscrisisline.net/" target="_blank" aria-label="Visit the Veterans Crisis Line website" class="dm-external-link">VeteransCrisisLine.net</a>.
+          </p>
+        </div>
+        <button class="usa-button usa-modal__close text-base-darkest" aria-label="Close this window" data-close-modal>
+          <span class="usa-sr-only">Close this window</span>
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

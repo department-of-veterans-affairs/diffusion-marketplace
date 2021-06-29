@@ -4,7 +4,7 @@ class SavePracticeService
   include UsersHelper
 
   def initialize(params)
-    @other_parent_category = params[:other_parent_category]
+    @other_parent_categories = params[:other_parent_categories]
     @practice = params[:practice]
     @practice_params = params[:practice_params]
     @avatars = ['practice_creators', 'va_employees']
@@ -156,16 +156,6 @@ class SavePracticeService
   end
 
   def update_category_practices
-    category = Category.new
-    parent_category_id = nil
-    if @other_parent_category == 'clinical'
-      parent_category_id = category.get_clinical_category_id
-    elsif @other_parent_category == 'operational'
-      parent_category_id = category.get_operational_category_id
-    elsif @other_parent_category == 'strategic'
-      parent_category_id = category.get_strategic_category_id
-    end if
-
     category_params = @practice_params[:category]
     practice_category_practices = @practice.category_practices
     practice_categories = @practice.categories
@@ -181,15 +171,19 @@ class SavePracticeService
           practice_category_practices.find_or_create_by(category_id: key.to_i)
         end
       end
-
       other_cat_id = Category.find_by(name: 'Other')&.id
+      other_categories_present = @other_parent_categories.present? ? true : false
 
-      if other_cat_id.present? && cat_keys.include?(other_cat_id.to_s)
+      if other_categories_present || cat_keys.include?(other_cat_id.to_s)
         categories_to_process = category_attribute_params.values.map { |param| {id: param[:id], name: param[:name], _destroy: param[:_destroy]} }
         # If Other was checked, create a new category with is_other true and create a category_practice linking to the new category
+        ctr = 0
         categories_to_process.each do |category|
           unless category[:name] == ""
-            if category[:_destroy] == 'false' && category[:id].nil?
+            parent_category_name = @other_parent_categories[ctr][1]["parent_category"]
+            parent_category_id = get_other_parent_id(parent_category_name)
+            ctr = ctr + 1
+            if category[:_destroy] == 'false' && category[:id].blank?
               cate = Category.create(name: category[:name], is_other: true, parent_category_id: parent_category_id)
               practice_category_practices.create(category_id: cate.id)
             elsif category[:_destroy] == 'false' && category[:id].present?
@@ -451,6 +445,16 @@ class SavePracticeService
     # remove params keys before updating practice
     editors.keys.each do |k|
       editors.delete(k)
+    end
+  end
+
+  def get_other_parent_id(s_type)
+    if s_type == 'clinical'
+      return Category.get_clinical_category_id
+    elsif s_type == 'operational'
+      return Category.get_operational_category_id
+    elsif s_type == 'strategic'
+      return Category.get_strategic_category_id
     end
   end
 end
