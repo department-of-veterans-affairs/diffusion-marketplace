@@ -24,7 +24,7 @@ function searchPracticesByVisn() {
     const searchField = document.querySelector('#visn-search-field');
 
     function buildSearchResults(results, sortOption) {
-        $(SPINNER).addClass('display-none');
+        $(SPINNER).eq(1).addClass('display-none');
 
         var resultsArray = [];
         var finalResults = '';

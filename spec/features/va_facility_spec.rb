@@ -87,6 +87,7 @@ describe 'VA facility pages', type: :feature, js: true do
 
     it 'should be there' do
       visit '/facilities'
+      expect(page).to have_selector('.dm-loading-spinner', visible: false)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_css('#dm-va-facilities-directory-table')
       expect(page).to have_current_path(va_facilities_path)
@@ -110,6 +111,7 @@ describe 'VA facility pages', type: :feature, js: true do
     context 'index page filters' do
       it 'should filter by complexity type and visn' do
         visit '/facilities'
+        expect(page).to have_selector('.dm-loading-spinner', visible: false)
         # filter by complexity
         select "1a-High Complexity", :from => "facility_type_select"
         section = find(:css, '#dm-va-facilities-directory-table')
@@ -117,8 +119,8 @@ describe 'VA facility pages', type: :feature, js: true do
         expect(section).to have_no_content('1B')
         expect(section).to have_no_content('1C')
         # filter by complexity and visn - no results
-        select "1c-High Complexity", :from => "facility_type_select"
-        select "3 - VISN 3", :from => "facility_directory_visn_select"
+        select "1b-High Complexity", :from => "facility_type_select"
+        select "3 - VISN 3", :from => "facility_visn_select"
         expect(page).to have_content('There are currently no matches for your search on the Marketplace')
         # filter by visn - results
         select "- Select -", :from => "facility_type_select"
@@ -127,7 +129,7 @@ describe 'VA facility pages', type: :feature, js: true do
         expect(section).to have_no_content('B Test name')
         expect(section).to have_no_content('A Test name')
         # filter by complexity and visn - results
-        select "2 - Test VISN", :from => "facility_directory_visn_select"
+        select "2 - Test VISN", :from => "facility_visn_select"
         expect(section).to have_content('B Test name')
         expect(section).to have_content('A Test name')
         expect(section).to have_no_content('C Test mame')
@@ -139,8 +141,9 @@ describe 'VA facility pages', type: :feature, js: true do
 
       it 'should filter by facility' do
         visit '/facilities'
+        expect(page).to have_selector('.dm-loading-spinner', visible: false)
         section = find(:css, '#dm-va-facilities-directory-table')
-        find('#facility_directory_select').click
+        find('#facility_facilities_combo_box').click
         find_all('.usa-combo-box__list-option').first.click
         expect(section).to have_content('A Test name')
         expect(section).to have_no_content('B Test name')
@@ -217,6 +220,7 @@ describe 'VA facility pages', type: :feature, js: true do
 
     it 'should be there if the VA facility common name (friendly id) or id exists in the DB' do
       visit '/facilities/a-first-facility-test-common-name'
+      expect(page).to have_selector('.dm-loading-spinner', visible: false)
       expect(page).to have_current_path(va_facility_path(@va_facility1))
     end
 

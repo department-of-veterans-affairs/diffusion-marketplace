@@ -1,6 +1,6 @@
 <h2 class="va-facilities-header line-height-37px font-sans-xl<% ' margin-top-10' unless practices_created == 0 && practices_adopted == 0 %> margin-bottom-05">List of VA facilities in this VISN</h2>
 <div class="usa-table-container--scrollable">
-  <table class="usa-table usa-table--borderless width-100 visn-facilities-table">
+  <table class="usa-table usa-table--borderless width-100 visn-facilities-table display-none">
     <caption class="usa-sr-only">VISN <%= @visn.number %> facilities</caption>
     <thead>
     <tr>
@@ -19,20 +19,10 @@
       </th>
     </tr>
     </thead>
-    <tbody>
-      <% @visn_va_facilities.each do |facility| %>
-        <tr>
-          <th scope="row" role="rowheader" class="grid-col-6">
-            <%= link_to "#{facility_name_with_common_name(facility.official_station_name, facility.common_name)}", va_facility_path(facility), class: 'dm-internal-link' %>
-          </th>
-          <td class="grid-col-2"><%= facility.fy17_parent_station_complexity_level.split('-').shift.upcase %></td>
-          <td class="grid-col-2"><%= facility.practices_created_count %></td>
-          <td class="grid-col-2"><%= facility.practices_adopted_count  %></td>
-        </tr>
-      <% end %>
-    </tbody>
+    <tbody class="dm-visns-table-rows"></tbody>
   </table>
   <div class="usa-sr-only usa-table__announcement-region" aria-live="polite">
     <!-- this content will change when sort changes -->
   </div>
+  <%= render partial: 'shared/loading_spinner', locals: { display: true, classes: 'dm-visn-practices-created-loading-spinner flex-justify-center flex-align-self-center margin-y-8 desktop:margin-y-10' } %>
 </div>

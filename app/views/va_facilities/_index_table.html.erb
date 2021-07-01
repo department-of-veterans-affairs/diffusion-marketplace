@@ -1,0 +1,32 @@
+<div id="dm-va-facilities-directory-table" class="usa-table-container--scrollable">
+  <table class="usa-table usa-table--borderless grid-col-12">
+    <caption></caption>
+    <thead>
+      <tr>
+        <th data-sortable scope="col" role="columnheader" aria-sort="descending">
+          Facility
+        </th>
+        <th data-sortable scope="col" role="columnheader">
+          State
+        </th>
+        <th data-sortable scope="col" role="columnheader">
+          VISN
+        </th>
+        <th class="p0-right" data-sortable scope="col" role="columnheader">
+          Complexity
+          <%= render partial: 'shared/facility_complexity_modal', locals: { hide_modal_on_initial_load: false } %>
+        </th>
+        <th data-sortable scope="col" role="columnheader">
+          Created
+        </th>
+        <th data-sortable scope="col" role="columnheader">
+          Adopted
+        </th>
+      </tr>
+    </thead>
+    <tbody class="dm-facilities-table-rows"></tbody>
+  </table>
+  <div class="usa-sr-only usa-table__announcement-region" aria-live="polite">
+    <!-- this content will change when sort changes -->
+  </div>
+</div>

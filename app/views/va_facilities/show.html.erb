@@ -7,7 +7,9 @@
     var facilitySlug = "<%= @va_facility.slug %>";
   <% end %>
   <%= javascript_include_tag 'va_facilities/facility_adopted_practice_search', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'va_facilities/facility_created_practice_search', 'data-turbolinks-track': 'reload' %>
 <% end %>
+
 <section class="usa-section padding-y-0 grid-col-12" id="dm-va-facilities-show">
   <input type="hidden" id="facility_station_number" value="<%= @va_facility.station_number %>"/>
   <div class="grid-container position-relative grid-col-12">
@@ -16,7 +18,7 @@
     </h1>
     <div class="grid-row grid-gap-3">
 
-      <div class="grid-col-6 line-height-26"> This facility has created <%= @created_pr_count %> practice<%= 's' unless @created_practices.count === 1 %> and has adopted <%= @adoptions_at_facility.count %> practice<% if @adoptions_at_facility.count != 1 %>s<% end %>.  It's a<% if @va_facility.rurality == "U" || @va_facility.rurality == "I" %>n<% end %>
+      <div class="grid-col-6 line-height-26"> This facility has created <%= @created_pr_count %> practice<%= 's' unless @created_pr_count === 1 %> and has adopted <%= @adopted_pr_count %> practice<% if @adopted_pr_count != 1 %>s<% end %>.  It's a<% if @va_facility.rurality == "U" || @va_facility.rurality == "I" %>n<% end %>
         <% case @va_facility.rurality %>
           <% when "R" %>
             rural
@@ -48,12 +50,11 @@
         <%= render partial: 'va_facilities/map/facility_map' %>
       </div>
     </div>
-    <% if @created_practices.present? %>
+    <% if @created_pr_count > 0 %>
       <%= render partial: 'va_facilities/facility_created_practice_search', locals: {facility_category_selector: 'facility_category_select'} %>
     <% end %>
-    <% if @adoptions_at_facility.count > 0 %>
+    <% if @adopted_pr_count > 0 %>
       <%= render partial: 'va_facilities/facility_practice_adoptions' %>
     <% end %>
   </div>
-  <%= render 'facility_status_definitions_modal' %>
 </section>

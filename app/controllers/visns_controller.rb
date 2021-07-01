@@ -1,6 +1,6 @@
 class VisnsController < ApplicationController
   include PracticeUtils
-  before_action :set_visn, only: :show
+  before_action :set_visn, only: [:show, :load_facilities_show_rows]
 
   def index
     @visns = Visn.cached_visns
@@ -29,7 +29,7 @@ class VisnsController < ApplicationController
 
   def show
     @primary_visn_liaison = VisnLiaison.find_by(visn: @visn, primary: true)
-    @visn_va_facilities = VaFacility.get_by_visn(@visn)
+    @visn_va_facilities = VaFacility.get_by_visn(@visn).select(:common_name, :id, :official_station_name, :latitude, :longitude, :classification, :slug, :station_number)
 
     @visn_va_facility_markers = Gmaps4rails.build_markers(@visn_va_facilities) do |facility, marker|
       marker.lat facility[:latitude].to_s
@@ -66,6 +66,17 @@ class VisnsController < ApplicationController
     # get the unique categories for practices adopted in a VISN
     @practices_adopted_categories = []
     get_categories_by_practices(@practices_adopted_by_visn, @practices_adopted_categories)
+  end
+
+  def load_facilities_show_rows
+    @facilities = VaFacility.get_by_visn(@visn).select(:common_name, :id, :official_station_name, :slug, :station_number, :fy17_parent_station_complexity_level)
+
+    table_rows_html = render_to_string('visns/_show_table_row', layout: false, locals: { facilities: @facilities })
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => { rowsHtml: table_rows_html, count: @facilities.length } }
+    end
   end
 
   private
