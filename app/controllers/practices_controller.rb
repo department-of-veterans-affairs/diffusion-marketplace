@@ -1,5 +1,5 @@
 class PracticesController < ApplicationController
-  include CropperUtils, PracticesHelper, PracticeEditorUtils, EditorSessionUtils, PracticeEditorSessionsHelper, PracticeUtils
+  include CropperUtils, PracticesHelper, PracticeEditorUtils, EditorSessionUtils, PracticeEditorSessionsHelper, PracticeUtils, ThreeColumnDataHelper
   before_action :set_practice, only: [:show, :edit, :update, :destroy, :highlight, :un_highlight, :feature,
                                       :un_feature, :favorite, :instructions, :overview, :impact, :resources, :documentation,
                                       :departments, :timeline, :risk_and_mitigation, :contact, :checklist, :publication_validation, :adoptions,
@@ -159,6 +159,7 @@ class PracticesController < ApplicationController
         @diffusion_histories << {practice_id: dh.practice_id, facility_id: dh.facility_id}
       end
     end
+    @parent_categories = Category.get_parent_categories
   end
 
   # GET /explore
@@ -349,6 +350,7 @@ class PracticesController < ApplicationController
 
   # /practices/slug/introduction
   def introduction
+    @parent_categories = Category.get_parent_categories
     render 'practices/form/introduction'
   end
 
@@ -685,13 +687,12 @@ class PracticesController < ApplicationController
   end
 
   def update_conditions
-    other_categories = request.request_parameters[:practice][:categories_attributes].to_a
     if params[:practice].present?
       facility_type = params[:practice][:initiating_facility_type] || nil
       if facility_type.present?
         set_initiating_fac_params params
       end
-      pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint, other_parent_categories: other_categories}
+      pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
       updated = SavePracticeService.new(pr_params).save_practice
       clear_origin_facilities if facility_type != "facility" && current_endpoint == 'introduction'
       updated

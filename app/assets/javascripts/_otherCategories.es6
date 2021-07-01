@@ -1,25 +1,34 @@
 let $document = $(document);
 
+function showOtherCategoryFields(otherUlSelector, linkToAddSelector, otherCheckboxSelector, otherContainerSelector) {
+    if ($(otherUlSelector).children().length === 0) {
+        $(linkToAddSelector).click();
+    } else if ($(otherUlSelector).children().length > 0) {
+        $(otherContainerSelector).removeClass('display-none');
+    }
+
+    $document.on('change', otherCheckboxSelector, function() {
+        if ($(otherCheckboxSelector).prop('checked')) {
+            $(otherContainerSelector).removeClass('display-none');
+        } else {
+            $(otherContainerSelector).addClass('display-none');
+        }
+    });
+}
+
 function attachShowOtherClinicalCategoryFields() {
     observePracticeEditorLiArrival(
         $document,
         '.clinical-li',
         '.practice-editor-clinical-categories-ul',
-        '8'
+        '12'
     );
-    $document.on('change', '#clinical_category_other', function() {
-        if ($('#clinical').children().length === 0) {
-            $('#link_to_add_link_slug_clinical').click();
-        }
-        showOtherClinicalCategoryFields();
-    });
-
     attachTrashListener(
         $document,
         '#clinical_other_categories_container',
         '.clinical-li'
     );
-    showOtherClinicalCategoryFields();
+    showOtherCategoryFields('#clinical', '#link_to_add_link_slug_clinical', '.clinical-other-checkbox', '#clinical_other_categories_container');
 }
 
 function attachShowOtherOperationalCategoryFields() {
@@ -27,20 +36,14 @@ function attachShowOtherOperationalCategoryFields() {
         $document,
         '.operational-li',
         '.practice-editor-operational-categories-ul',
-        '8'
+        '12'
     );
-    $document.on('change', '#operational_category_other', function() {
-        if ($('#operational').children().length === 0) {
-            $('#link_to_add_link_slug_operational').click();
-        }
-        showOtherOperationalCategoryFields();
-    });
     attachTrashListener(
         $document,
         '#operational_other_categories_container',
         '.operational-li'
     );
-    showOtherOperationalCategoryFields();
+    showOtherCategoryFields('#operational', '#link_to_add_link_slug_operational', '.operational-other-checkbox', '#operational_other_categories_container');
 }
 
 function attachShowOtherStrategicCategoryFields() {
@@ -48,78 +51,32 @@ function attachShowOtherStrategicCategoryFields() {
         $document,
         '.strategic-li',
         '.practice-editor-strategic-categories-ul',
-        '8'
+        '12'
     );
-    $document.on('change', '#strategic_category_other', function() {
-        if ($('#strategic').children().length === 0) {
-            $('#link_to_add_link_slug_strategic').click();
-        }
-        showOtherStrategicCategoryFields();
-    });
-
     attachTrashListener(
         $document,
         '#strategic_other_categories_container',
         '.strategic-li'
     );
-    showOtherStrategicCategoryFields();
+    showOtherCategoryFields('#strategic', '#link_to_add_link_slug_strategic', '.strategic-other-checkbox', '#strategic_other_categories_container');
 }
 
-function showOtherClinicalCategoryFields() {
-    if ($('#clinical_category_other').prop('checked')) {
-        $('#clinical_other_categories_container').removeClass('display-none');
-    } else {
-        $('#clinical_other_categories_container').addClass('display-none');
-    }
-}
+function addAllCheckBoxListener(allCheckboxSelector, standardCheckboxSelector) {
+    let allClinicalCheckbox = allCheckboxSelector;
+    let clinicalCheckbox = standardCheckboxSelector;
 
-
-
-function showOtherOperationalCategoryFields() {
-    if ($('#operational_category_other').prop('checked')) {
-        $('#operational_other_categories_container').removeClass('display-none');
-    } else {
-        $('#operational_other_categories_container').addClass('display-none');
-    }
-}
-
-function showOtherStrategicCategoryFields() {
-    if ($('#strategic_category_other').prop('checked')) {
-        $('#strategic_other_categories_container').removeClass('display-none');
-    } else {
-        $('#strategic_other_categories_container').addClass('display-none');
-    }
-}
-
-function attachAllClinicalListener(){
-    $document.on('change', '#clinical_category_allclinical', function() {
-        let clinicalChkBoxes = $('[id^="clinical_category_"]');
-        for(let i = 0; i < clinicalChkBoxes.length; i++){
-            if(!clinicalChkBoxes[i].id.includes("_other") && !clinicalChkBoxes[i].id.includes("_allclinical")){
-                clinicalChkBoxes[i].checked = this.checked;
-            }
+    $document.on('change', allClinicalCheckbox, function() {
+        if ($(this).prop('checked')) {
+            $(clinicalCheckbox).prop('checked', true);
         }
     });
-}
 
-function attachAllOperationalListener(){
-    $document.on('change', '#operational_category_alloperational', function() {
-        let operationalChkBoxes = $('[id^="operational_category_"]');
-        for(let i = 0; i < operationalChkBoxes.length; i++){
-            if(!operationalChkBoxes[i].id.includes("_other") && !operationalChkBoxes[i].id.includes("_alloperational")){
-                operationalChkBoxes[i].checked = this.checked;
-            }
-        }
-    });
-}
-
-function attachAllStrategicListener(){
-    $document.on('change', '#strategic_category_allstrategic', function() {
-        let strategicChkBoxes = $('[id^="strategic_category_"]');
-        for(let i = 0; i < strategicChkBoxes.length; i++){
-            if(!strategicChkBoxes[i].id.includes("_other") && !strategicChkBoxes[i].id.includes("_allstrategic")){
-                strategicChkBoxes[i].checked = this.checked;
-            }
+    $document.on('change', clinicalCheckbox, function() {
+        let catCheckboxesCountMinusAllAndOther = $(clinicalCheckbox).length;
+        if ($(`input${clinicalCheckbox}:checked`).length === catCheckboxesCountMinusAllAndOther) {
+            $(allClinicalCheckbox).prop('checked', true);
+        } else {
+            $(allClinicalCheckbox).prop('checked', false);
         }
     });
 }
@@ -128,8 +85,9 @@ function executeOtherCategoryFunctions() {
     attachShowOtherClinicalCategoryFields();
     attachShowOtherOperationalCategoryFields();
     attachShowOtherStrategicCategoryFields();
-    attachAllClinicalListener();
-    attachAllOperationalListener();
-    attachAllStrategicListener();
+    addAllCheckBoxListener('.all-clinical-checkbox', '.clinical-checkbox');
+    addAllCheckBoxListener('.all-operational-checkbox', '.operational-checkbox');
+    addAllCheckBoxListener('.all-operational-checkbox', '.operational-checkbox');
 }
+
 $(executeOtherCategoryFunctions);

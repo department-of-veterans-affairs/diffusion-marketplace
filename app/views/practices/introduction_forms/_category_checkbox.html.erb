@@ -1,0 +1,28 @@
+<%
+  parent_category = category.parent_category
+  parent_category_name = parent_category.name.downcase
+  category_name = category.name
+  category_id = category.id.nil? ? "#{category_name.split(' ').first.downcase}-#{parent_category_name}" : category.id
+  hyphenated_category_name = category_name.split(' ').join('-').downcase
+  has_all_categories = parent_category.sub_categories.where(is_other: false).count === CategoryPractice.where(practice: @practice).joins(:category).where(categories: {is_other: false, parent_category_id: parent_category.id}).count
+  is_checked = false
+  if @practice.categories.include?(Category.where(id: category_id).first)
+    is_checked = true
+  elsif category_name.include?('Other') && @practice.categories.where(is_other: true, parent_category: parent_category).any?
+    is_checked = true
+  elsif has_all_categories
+    is_checked = true
+  end
+%>
+
+<div class="usa-checkbox">
+  <input
+    class="usa-checkbox__input <%= if category_name.include?('All') then hyphenated_category_name elsif category_name == 'Other' then parent_category_name + '-' + hyphenated_category_name else parent_category_name end  %>-checkbox"
+    id="cat-<%= category_id %>-input"
+    type="checkbox"
+    name="practice[category][<%= category_id %>][value]"
+    value="<%= category_id %>"
+    <%= 'checked="true"' if is_checked %>
+  >
+  <label class="usa-checkbox__label margin-bottom-2 cat-<%= category_id %>-label" for="cat-<%= category_id %>-input" title="<%= category_name %>"><span><%= category_name.truncate(20) %></span></label>
+</div>

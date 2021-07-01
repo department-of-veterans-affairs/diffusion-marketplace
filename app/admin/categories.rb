@@ -57,8 +57,11 @@ ActiveAdmin.register Category do
       f.input :name
       f.input :short_name
       f.input :description, as: :string
-      f.input :parent_category_id, as: :select, multiple: false, collection: Category.where(parent_category_id: nil, is_other: false).order(name: :asc).map {|category| ["#{category.name}", category.id]}, input_html: { value: object[:parent_category_id] }
-      # ensures input is displayed as comma separated list
+      f.input :parent_category_id,
+              as: :select, multiple: false,
+              include_blank: false, collection: Category.get_parent_categories,
+              input_html: { value: object[:parent_category_id] }, wrapper_html: { class: object.sub_categories.any? ? 'display-none' : '' }
+        # ensures input is displayed as comma separated list
       f.input :related_terms_raw, label: 'Related Terms', hint: 'Comma separated list (e.g., COVID-19, Coronavirus)'
       f.input :is_other
     end

@@ -2,25 +2,24 @@
   <%= javascript_include_tag '_practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 <%
-  other_parent_category = other_parent_category
-  parent_category_id = parent_category_id
+  parent_category_name = parent_category.name.downcase
+  parent_category_id = parent_category.id
   f = form
-  link_to_add_link_slug = 'link_to_add_link_slug_' + other_parent_category
-  add_category_link = "add-category-link-" + other_parent_category
-  blue_print_id = "categories_fields_blueprint_" + other_parent_category
-  # other_parent_category_place_holder = "OTHER_PARENT_CATEGORY_PLACE_HOLDER"
+  link_to_add_link_slug = 'link_to_add_link_slug_' + parent_category_name
+  add_category_link = "add-category-link-" + parent_category_name
+  blue_print_id = "categories_fields_blueprint_" + parent_category_name
   li_class_place_holder = "LI_PLACE_HOLDER"
 %>
-<div id="<%= other_parent_category %>_other_categories_container" class="display-none position-relative">
+<div id="<%= parent_category_name %>_other_categories_container" class="display-none position-relative">
   <%
-    other_categories = @practice.categories.where(is_other: true, parent_category_id: parent_category_id)
+    other_categories = @practice.categories.where(is_other: true, parent_category: parent_category)
     other_category_ids = other_categories.ids
   %>
-  <ul id="<%= other_parent_category %>" class="practice-editor-<%= other_parent_category %>-categories-ul padding-left-0 x0" role="listbox" title="Practice categories" aria-label="Practice editor category list">
+  <ul id="<%= parent_category_name %>" class="practice-editor-<%= parent_category_name %>-categories-ul padding-left-0 x0" role="listbox" title="Practice categories" aria-label="Practice editor category list">
     <%= f.fields_for :categories, wrapper: false do |cat| %>
       <%
         other_category_id = cat.object.id || "new_categories"
-        show_other_category_form = (cat.object.parent_category && cat.object.parent_category.name.downcase == other_parent_category && cat.object.is_other) || other_category_id == "new_categories"
+        show_other_category_form = (cat.object.parent_category && cat.object.parent_category.name.downcase == parent_category_name && cat.object.is_other) || other_category_id == "new_categories"
       %>
       <% if show_other_category_form %>
         <% if cat.object.id %>
@@ -31,9 +30,9 @@
               styleOriginFacility(
               $(newElem).closest('li'),
               <%= other_category_id %>,
-              '.<%= other_parent_category %>-li',
-              '.practice-editor-<%= other_parent_category %>-categories-ul',
-              '8'
+              '.<%= parent_category_name %>-li',
+              '.practice-editor-<%= parent_category_name %>-categories-ul',
+              '12'
               );
               $(document).unbindArrive('<%= "#practice_categories_attributes_#{cat.index}_name" %>', newElem);
               }
@@ -42,13 +41,13 @@
           <% end %>
         <% end %>
 
-        <li class="<%= cat.object.id ? other_parent_category : li_class_place_holder %>-li fields" data-id="<%= other_category_id %>">
+        <li class="<%= cat.object.id ? parent_category_name : li_class_place_holder %>-li fields margin-y-2" data-id="<%= other_category_id %>">
         <%= cat.hidden_field :id %>
           <div class="grid-row">
             <div class="grid-col-12">
               <%= cat.label :name, 'Category name', class: 'usa-label display-inline-block other-category-name x0-top' %>&nbsp;
               <%= cat.text_field :name, class: 'usa-input practice-input timeline-input grid-col-12' %>
-              <%= cat.hidden_field :parent_category, value: cat.object.id ? other_parent_category : li_class_place_holder %>
+              <%= cat.hidden_field :parent_category_id, value: cat.object.id ? parent_category_id : li_class_place_holder %>
             </div>
             <div class="grid-col-12 trash-container">
               <%= cat.link_to_remove 'Delete entry',
@@ -64,37 +63,30 @@
     <span class="text-normal">Add another</span>
   <% end %>
 
-  <% unless other_categories.any? %>
-    <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-      observePracticeEditorLiArrival(
-      $(document),
-      '.<%= other_parent_category %>-li',
-      '.practice-editor-<%= other_parent_category %>-categories-ul',
-      '12'
-      );
-      attachTrashListener(
-      $(document),
-      '#<%= other_parent_category %>_other_categories_container',
-      '.<%= "#{li_class_place_holder}_clinical" %>-li'
-      );
-    $(document).arrive('#categories_fields_blueprint',
-      function(blueprint) {
-      console.log('hello 2', blueprint)
-      var cloned_blue_print =  $(blueprint).clone(true);
-      var link_to_add_buttons = $('a[data-dm-blueprint-id="<%= blue_print_id %>"]');
-            link_to_add_buttons.data('blueprint-id', '<%= blue_print_id %>');
-<!--      console.log('clone', cloned_blue_print.data('blueprint'))-->
-      cloned_blue_print.attr('id', '<%= blue_print_id %>');
-<!--      console.log('parent cate', '<%#= other_parent_category %>')-->
-      $(blueprint).before(cloned_blue_print);
-<!--      console.log('clone 1', cloned_blue_print.data('blueprint'));-->
-      cloned_blue_print.data('blueprint', cloned_blue_print.data('blueprint').replace('<%= li_class_place_holder %>', '<%= other_parent_category %>'));
-      cloned_blue_print.data('blueprint', cloned_blue_print.data('blueprint').replace('<%= li_class_place_holder %>', '<%= other_parent_category %>'));
-<!--      console.log('clone 2', cloned_blue_print.data('blueprint'));-->
-      $(document).unbindArrive('#categories_fields_blueprint', blueprint);
-      }
-      );
-    <% end %>
+  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+    observePracticeEditorLiArrival(
+    $(document),
+    '.<%= parent_category_name %>-li',
+    '.practice-editor-<%= parent_category_name %>-categories-ul',
+    '12'
+    );
+    attachTrashListener(
+    $(document),
+    '#<%= parent_category_name %>_other_categories_container',
+    '.<%= "#{li_class_place_holder}_#{parent_category_name}" %>-li'
+    );
+  $(document).arrive('#categories_fields_blueprint',
+    function(blueprint) {
+    var cloned_blue_print =  $(blueprint).clone(true);
+    var link_to_add_buttons = $('a[data-dm-blueprint-id="<%= blue_print_id %>"]');
+    link_to_add_buttons.data('blueprint-id', '<%= blue_print_id %>');
+    cloned_blue_print.attr('id', '<%= blue_print_id %>');
+    $(blueprint).before(cloned_blue_print);
+    cloned_blue_print.data('blueprint', cloned_blue_print.data('blueprint').replace('<%= li_class_place_holder %>', '<%= parent_category_name %>'));
+    cloned_blue_print.data('blueprint', cloned_blue_print.data('blueprint').replace('<%= li_class_place_holder %>', '<%= parent_category_name %>'));
+    $(document).unbindArrive('#categories_fields_blueprint', blueprint);
+    }
+    );
   <% end %>
 </div>
 

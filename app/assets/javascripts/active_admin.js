@@ -117,3 +117,16 @@
   $(document).on("turbolinks:load", ready);
 }).call(this);
 
+function showHideParentCategorySelect() {
+    $(document).on('click', '#category_is_parent_category', function() {
+        let parent_category_select = $(this).closest('ol').find('#category_parent_category_id_input');
+        if ($(this).prop('checked')) {
+            parent_category_select.addClass('display-none');
+        } else {
+            parent_category_select.removeClass('display-none');
+        }
+    });
+}
+
+$(showHideParentCategorySelect());
+

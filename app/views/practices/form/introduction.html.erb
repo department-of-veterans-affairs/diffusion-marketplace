@@ -463,259 +463,37 @@
                 </p>
                 <span>Select the categories most relevant to your practice (suggested: up to 10).</span>
               </div>
+              <% @parent_categories.each do |pc| %>
                 <%
-                  # clinical cats
-                  clinical_category = Category.where(name: 'Clinical', parent_category_id: nil).first
-                  clinical_category_id = clinical_category.id
-                  #create tmp category obj for all_clinical..
-                  all_clinical = Category.new
-                  all_clinical.name = 'All clinical'
-                  all_clinical.short_name = 'all clinical'
-                  all_clinical.description = ' All Clinical'
-                  all_clinical.parent_category_id = clinical_category_id
-                  all_clinical.is_other = false
-                  all_clinical.updated_at = DateTime.now
-                  all_clinical.created_at = DateTime.now
-                  all_clinical_arr = []
-                  all_clinical_arr << all_clinical
-
-                  clinical_categories = Category.where(parent_category_id: clinical_category_id, is_other: false).where.not(name: 'Other')
-                  clin_other = Category.where(name: 'Other', parent_category_id: clinical_category_id)
-                  clinical_categories_list = all_clinical_arr +  clinical_categories + clin_other
-                  clin_cat_count = clinical_categories_list.count
-                  #grp_count = get_group_count_for_categories(clin_cat_count)
-                  grp_count = clin_cat_count/3
-                  if clin_cat_count > grp_count*3
-                    grp_count = grp_count + 1
+                  non_other_sub_categories = pc.sub_categories.where(is_other: false).order_by_name
+                  cat_placeholders = []
+                  if non_other_sub_categories.any?
+                    cat_placeholders << [Category.new(name: "All #{pc.name.downcase}", parent_category: pc)]
+                    cat_placeholders << [Category.new(name: 'Other', parent_category: pc)]
                   end
-                  clinical_categories_groups = clinical_categories_list.in_groups_of(grp_count)
-                  # operational cats
-                  operational_category = Category.where(name: 'Operational', parent_category_id: nil).first
-                  operational_category_id = operational_category.id
-                  #create tmp category obj for all_operational..
-                  all_operational = Category.new
-                  all_operational.name = 'All operational'
-                  all_operational.short_name = 'all operational'
-                  all_operational.description = ' All operational'
-                  all_operational.parent_category_id = operational_category_id
-                  all_operational.is_other = false
-                  all_operational.updated_at = DateTime.now
-                  all_operational.created_at = DateTime.now
-                  all_operational_arr = []
-                  all_operational_arr << all_operational
 
-                  operational_categories = Category.where(parent_category_id: operational_category_id, is_other: false).where.not(name: 'Other')
-                  ops_other = Category.where(name: 'Other', parent_category_id: operational_category_id)
-                  operational_categories_list = all_operational_arr + operational_categories + ops_other
-                  ops_cat_count = operational_categories_list.count
-                  grp_count = ops_cat_count/3
-                  if ops_cat_count > grp_count*3
-                    grp_count = grp_count + 1
-                  end
-                  ops_categories_groups = operational_categories_list.in_groups_of(grp_count)
+                  categories = non_other_sub_categories.any? ? cat_placeholders.first + non_other_sub_categories + cat_placeholders.last : []
 
-                  #strategic cats..
-                  strategic_category = Category.where(name: 'Strategic', parent_category_id: nil).first
-                  strategic_category_id = strategic_category.id
-                  #create tmp category obj for all_strategic..
-                  all_strategic = Category.new
-                  all_strategic.name = 'All strategic'
-                  all_strategic.short_name = 'all strategic'
-                  all_strategic.description = ' All strategic'
-                  all_strategic.parent_category_id = strategic_category_id
-                  all_strategic.is_other = false
-                  all_strategic.updated_at = DateTime.now
-                  all_strategic.created_at = DateTime.now
-                  all_strategic_arr = []
-                  all_strategic_arr << all_strategic
-
-                  strategic_categories = Category.where(parent_category_id: strategic_category_id, is_other: false).where.not(name: 'Other')
-                  strategic_other = Category.where(name: 'Other', parent_category_id: strategic_category_id)
-                  strategic_categories_list = all_strategic_arr + strategic_categories + strategic_other
-                  strategic_cat_count = strategic_categories_list.count
-                  grp_count = strategic_cat_count/3
-                  if strategic_cat_count > grp_count*3
-                    grp_count = grp_count + 1
-                  end
-                  strategic_categories_groups = strategic_categories_list.in_groups_of(grp_count)
-
-                  practice_categories = @practice.category_practices
-                  practice_categories_ids = practice_categories.map(&:category_id)
+                  sliced_categories = split_data_into_three_columns(categories)
                 %>
-                <div class="margin-bottom-1">Clinical</div>
-                <table style="width: 100%">
-                  <tr>
-                    <td style="width: 33%">
-                      <% clinical_categories_groups[0].each do |cat| %>
-                        <% underscore_cat = cat.name.split(' ').join('').underscore %>
-                        <div class="usa-checkbox pe-category-checkbox position-relative">
-                          <input type="checkbox"
-                                 class="usa-checkbox__input category-input"
-                                 id="clinical_category_<%= underscore_cat %>"
-                                 name="practice[category][<%= cat.id %>][value]"
-                                 <%= 'checked="true"' if practice_categories_ids.include?(cat.id) %>/>
-                          <label title="<%= cat.name %>" class="usa-checkbox__label" id="category_<%= underscore_cat %>_label" for="clinical_category_<%= underscore_cat %>">
-                            <%= truncate(cat.name, length: 20) %>
-                          </label>
-                        </div>
+
+                <% if non_other_sub_categories.any? %>
+                  <div class="grid-row">
+                    <p class="text-bold line-height-26 margin-bottom-05 grid-col-12 display-none desktop:display-block desktop:margin-top-1"><%= pc.name %></p>
+                    <% if sliced_categories.present? %>
+                      <%= render partial: 'practices/introduction_forms/category_column', locals: { categories: sliced_categories, parent_category: pc, column: 0 } %>
+                      <% if sliced_categories[1].present? %>
+                        <%= render partial: 'practices/introduction_forms/category_column', locals: { categories: sliced_categories, parent_category: pc, column: 1 } %>
                       <% end %>
-                    </td>
-                    <td style="width: 33%">
-                      <% clinical_categories_groups[1].each do |cat| %>
-                        <% underscore_cat = cat.name.split(' ').join('').underscore %>
-                        <div class="usa-checkbox pe-category-checkbox position-relative">
-                          <input type="checkbox"
-                                 class="usa-checkbox__input category-input"
-                                 id="clinical_category_<%= underscore_cat %>"
-                                 name="practice[category][<%= cat.id %>][value]"
-                                 <%= 'checked="true"' if practice_categories_ids.include?(cat.id) %>/>
-                          <label title="<%= cat.name %>" class="usa-checkbox__label" id="category_<%= underscore_cat %>_label" for="clinical_category_<%= underscore_cat %>">
-                            <%= truncate(cat.name, length: 20) %>
-                          </label>
-                        </div>
+                      <% if sliced_categories[2].present? %>
+                        <%= render partial: 'practices/introduction_forms/category_column', locals: { categories: sliced_categories, parent_category: pc, column: 2 } %>
                       <% end %>
-                    </td>
-                    <td style="width: 33%">
-                      <% clinical_categories_groups[2].each do |cat| %>
-                        <% next if cat.blank? %>
-                        <% underscore_cat = cat.name.split(' ').join('').underscore %>
-                        <div class="usa-checkbox pe-category-checkbox position-relative">
-                          <input type="checkbox"
-                                 class="usa-checkbox__input category-input"
-                                 id="clinical_category_<%= underscore_cat %>"
-                                 name="practice[category][<%= cat.id %>][value]"
-                                 <%= 'checked="true"' if practice_categories_ids.include?(cat.id) %>/>
-                          <label title="<%= cat.name %>" class="usa-checkbox__label" id="category_<%= underscore_cat %>_label" for="clinical_category_<%= underscore_cat %>">
-                            <%= truncate(cat.name, length: 20) %>
-                          </label>
-                        </div>
-                      <% end %>
-                    </td>
-                  </tr>
-                </table>
-              <%= render partial: 'practices/form/other_categories', locals: { other_parent_category: clinical_category.name.downcase, parent_category_id: clinical_category_id, form: f }%>
-
-
-              <!--------------------------------- END CLINICAL CATS ----------------------------------------------------->
-              <!----------------------------------OPERATIONAL CATS START-------------------------------------------------->
-              <div class="margin-bottom-1">Operational</div>
-              <table style="width: 100%">
-                <tr>
-                  <td style="width: 33%">
-                    <% ops_categories_groups[0].each do |cat| %>
-                      <% underscore_cat = cat.name.split(' ').join('').underscore %>
-                      <div class="usa-checkbox pe-category-checkbox position-relative">
-                        <input type="checkbox"
-                               class="usa-checkbox__input category-input"
-                               id="operational_category_<%= underscore_cat %>"
-                               name="practice[category][<%= cat.id %>][value]"
-                               <%= 'checked="true"' if practice_categories_ids.include?(cat.id) %>/>
-                        <label title="<%= cat.name %>" class="usa-checkbox__label" id="category_<%= underscore_cat %>_label" for="operational_category_<%= underscore_cat %>">
-                          <%= truncate(cat.name, length: 20) %>
-                        </label>
-                      </div>
                     <% end %>
-                  </td>
-                  <td style="width: 33%">
-                    <% ops_categories_groups[1].each do |cat| %>
-                      <% underscore_cat = cat.name.split(' ').join('').underscore %>
-                      <div class="usa-checkbox pe-category-checkbox position-relative">
-                        <input type="checkbox"
-                               class="usa-checkbox__input category-input"
-                               id="operational_category_<%= underscore_cat %>"
-                               name="practice[category][<%= cat.id %>][value]"
-                               <%= 'checked="true"' if practice_categories_ids.include?(cat.id) %>/>
-                        <label title="<%= cat.name %>" class="usa-checkbox__label" id="category_<%= underscore_cat %>_label" for="operational_category_<%= underscore_cat %>">
-                          <%= truncate(cat.name, length: 20) %>
-                        </label>
-                      </div>
-                    <% end %>
-                  </td>
-                  <td style="width: 33%; vertical-align: top">
-                    <% ops_categories_groups[2].each do |cat| %>
-                      <% next if cat.blank? %>
-                      <% underscore_cat = cat.name.split(' ').join('').underscore %>
-                      <div class="usa-checkbox pe-category-checkbox position-relative">
-                        <input type="checkbox"
-                               class="usa-checkbox__input category-input"
-                               id="operational_category_<%= underscore_cat %>"
-                               name="practice[category][<%= cat.id %>][value]"
-                               <%= 'checked="true"' if practice_categories_ids.include?(cat.id) %>/>
-                        <label title="<%= cat.name %>" class="usa-checkbox__label" id="category_<%= underscore_cat %>_label" for="operational_category_<%= underscore_cat %>">
-                          <%= truncate(cat.name, length: 20) %>
-                        </label>
-                      </div>
-                    <% end %>
-                  </td>
-                </tr>
-              </table>
-
-              <%= render partial: 'practices/form/other_categories', locals: { other_parent_category: operational_category.name.downcase, parent_category_id: operational_category_id, form: f }%>
-
-
-
-              <!----------------------------END OPERATIONAL CATS ----------------------------------------------------->
-              <!------------------------------START STRATEGIC CATS --------------------------------------------------->
-              <div class="margin-bottom-1">Strategic</div>
-              <table style="width: 100%">
-                <tr>
-                  <td style="width: 33%">
-                    <% strategic_categories_groups[0].each do |cat| %>
-                      <% underscore_cat = cat.name.split(' ').join('').underscore %>
-                      <div class="usa-checkbox pe-category-checkbox position-relative">
-                        <input type="checkbox"
-                               class="usa-checkbox__input category-input"
-                               id="strategic_category_<%= underscore_cat %>"
-                               name="practice[category][<%= cat.id %>][value]"
-                               <%= 'checked="true"' if practice_categories_ids.include?(cat.id) %>/>
-                        <label title="<%= cat.name %>" class="usa-checkbox__label" id="category_<%= underscore_cat %>_label" for="strategic_category_<%= underscore_cat %>">
-                          <%= truncate(cat.name, length: 20) %>
-                        </label>
-                      </div>
-                    <% end %>
-                  </td>
-                  <td style="width: 33%">
-                    <% strategic_categories_groups[1].each do |cat| %>
-                      <% underscore_cat = cat.name.split(' ').join('').underscore %>
-                      <div class="usa-checkbox pe-category-checkbox position-relative">
-                        <input type="checkbox"
-                               class="usa-checkbox__input category-input"
-                               id="strategic_category_<%= underscore_cat %>"
-                               name="practice[category][<%= cat.id %>][value]"
-                               <%= 'checked="true"' if practice_categories_ids.include?(cat.id) %>/>
-                        <label title="<%= cat.name %>" class="usa-checkbox__label" id="category_<%= underscore_cat %>_label" for="strategic_category_<%= underscore_cat %>">
-                          <%= truncate(cat.name, length: 20) %>
-                        </label>
-                      </div>
-                    <% end %>
-                  </td>
-                  <td style="width: 33%; vertical-align: top">
-                    <% strategic_categories_groups[2].each do |cat| %>
-                      <% next if cat.blank? %>
-                      <% underscore_cat = cat.name.split(' ').join('').underscore %>
-                      <div class="usa-checkbox pe-category-checkbox position-relative">
-                        <input type="checkbox"
-                               class="usa-checkbox__input category-input"
-                               id="strategic_category_<%= underscore_cat %>"
-                               name="practice[category][<%= cat.id %>][value]"
-                               <%= 'checked="true"' if practice_categories_ids.include?(cat.id) %>/>
-                        <label title="<%= cat.name %>" class="usa-checkbox__label" id="category_<%= underscore_cat %>_label" for="strategic_category_<%= underscore_cat %>">
-                          <%= truncate(cat.name, length: 20) %>
-                        </label>
-                      </div>
-                    <% end %>
-                  </td>
-                </tr>
-              </table>
-              <%= render partial: 'practices/form/other_categories', locals: { other_parent_category: strategic_category.name.downcase, parent_category_id: strategic_category_id, form: f }%>
-
-              <!------------------------------END STRATEGIC CATS ----------------------------------------------------->
-
-
-
+                  </div>
+                <% end %>
+                <%= render partial: 'practices/form/other_categories', locals: { parent_category: pc, form: f } %>
+              <% end %>
             </div>
-
-            <!---------------------------------------END CATEGORIES ---------------------------------------------------->
 
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
 

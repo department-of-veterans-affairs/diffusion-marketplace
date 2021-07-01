@@ -1,5 +1,7 @@
 class Category < ApplicationRecord
 
+  before_validation :trim_whitespace
+
   has_many :sub_categories, class_name: 'Category', foreign_key: 'parent_category_id', dependent: :destroy
   belongs_to :parent_category, class_name: 'Category', optional: true
   acts_as_list
@@ -27,8 +29,15 @@ class Category < ApplicationRecord
     return Category.where(name: 'Strategic', is_other: false, parent_category_id: nil).first().id
   end
 
-
   def related_terms_raw
     self[:related_terms].join(", ") unless self[:related_terms].nil?
+  end
+
+  def trim_whitespace
+    self.name&.strip
+  end
+
+  def self.get_parent_categories
+    Category.select { |cat| cat.is_other === false && cat.sub_categories.any? }
   end
 end
