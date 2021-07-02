@@ -49,7 +49,7 @@
       <div class="grid-row category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex desktop:padding-x-2">
         <p class="text-bold line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block margin-top-2">
           Categories
-          <%= render partial: 'shared/complexity_definitions_modal', locals: { hide_modal_on_initial_load: true } %>
+          <%= render partial: 'shared/parent_category_modal' %>
         </p>
         <% @parent_categories.each do |pc| %>
           <%
