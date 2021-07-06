@@ -1,4 +1,17 @@
+<%
+  parent_category = category.parent_category
+  parent_category_name = parent_category.name.downcase
+  category_name = category.name
+  category_id = category.id.nil? ? "#{category_name.split(' ').first.downcase}-#{parent_category_name}" : category.id
+  hyphenated_category_name = category_name.split(' ').join('-').downcase
+%>
+
 <div class="usa-checkbox">
-  <input class="usa-checkbox__input" id="cat-<%= category_id %>-input" type="checkbox" name="<%= category_name %>" value="<%= category_name %>">
+  <input class="usa-checkbox__input <%= if category_name.include?('All') then hyphenated_category_name else parent_category_name end  %>-checkbox"
+         id="cat-<%= category_id %>-input"
+         type="checkbox"
+         name="<%= category_name %>"
+         value="<%= category_name %>"
+  >
   <label class="usa-checkbox__label margin-bottom-2 cat-<%= category_id %>-label" for="cat-<%= category_id %>-input" title="<%= category_name %>"><span><%= category_name.truncate(20) %></span></label>
 </div>

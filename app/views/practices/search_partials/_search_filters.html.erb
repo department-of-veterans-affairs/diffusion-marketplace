@@ -59,7 +59,7 @@
               cat_placeholders << [Category.new(name: "All #{pc.name.downcase}", parent_category: pc)]
             end
 
-            categories = non_other_sub_categories.any? ? cat_placeholders.first + non_other_sub_categories + cat_placeholders.last : []
+            categories = non_other_sub_categories.any? ? cat_placeholders.first + non_other_sub_categories : []
 
             sliced_categories = split_data_into_three_columns(categories)
           %>
