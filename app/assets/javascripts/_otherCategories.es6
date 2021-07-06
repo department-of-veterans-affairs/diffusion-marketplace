@@ -62,21 +62,23 @@ function attachShowOtherStrategicCategoryFields() {
 }
 
 function addAllCheckBoxListener(allCheckboxSelector, standardCheckboxSelector) {
-    let allClinicalCheckbox = allCheckboxSelector;
-    let clinicalCheckbox = standardCheckboxSelector;
+    let allCheckbox = allCheckboxSelector;
+    let checkbox = standardCheckboxSelector;
 
-    $document.on('change', allClinicalCheckbox, function() {
+    $document.on('change', allCheckbox, function() {
         if ($(this).prop('checked')) {
-            $(clinicalCheckbox).prop('checked', true);
+            $(checkbox).prop('checked', true);
+        } else {
+            $(checkbox).prop("checked", false);
         }
     });
 
-    $document.on('change', clinicalCheckbox, function() {
-        let catCheckboxesCountMinusAllAndOther = $(clinicalCheckbox).length;
-        if ($(`input${clinicalCheckbox}:checked`).length === catCheckboxesCountMinusAllAndOther) {
-            $(allClinicalCheckbox).prop('checked', true);
+    $document.on('change', checkbox, function() {
+        let catCheckboxesCountMinusAllAndOther = $(checkbox).length;
+        if ($(`input${checkbox}:checked`).length === catCheckboxesCountMinusAllAndOther) {
+            $(allCheckbox).prop('checked', true);
         } else {
-            $(allClinicalCheckbox).prop('checked', false);
+            $(allCheckbox).prop('checked', false);
         }
     });
 }
