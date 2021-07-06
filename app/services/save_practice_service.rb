@@ -273,6 +273,11 @@ class SavePracticeService
         end
       end
     end
+
+    # sort the category arrays by category name
+    selected_categories_obj.sort_by! { |sc| sc.name.downcase }
+    unselected_categories_obj.sort_by! { |uc| uc.name.downcase }
+
     if unselected_categories_obj.present? || selected_categories_obj.present?
       CovidCategoryMailer.send_covid_category_selections(selected_categories: selected_categories_obj, unselected_categories: unselected_categories_obj, practice_name: @practice.name, url: "#{ENV.fetch('HOSTNAME')}/practices/#{@practice.slug}").deliver_now
     end
