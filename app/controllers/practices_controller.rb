@@ -692,7 +692,7 @@ class PracticesController < ApplicationController
       end
       pr_params = {practice: @practice, practice_params: practice_params, current_endpoint: current_endpoint}
       updated = SavePracticeService.new(pr_params).save_practice
-      clear_origin_facilities if facility_type != "facility" && current_endpoint == 'introduction'
+      clear_origin_facilities if facility_type != "facility" && current_endpoint == 'introduction' && !updated.is_a?(StandardError)
       updated
     end
   end
@@ -705,19 +705,35 @@ end
 
 def set_initiating_fac_params(params)
   facility_type = params[:practice][:initiating_facility_type]
-  if facility_type == "facility" && params[:practice][:practice_origin_facilities_attributes].present?
+
+  if facility_type == "facility"
+    params[:practice][:practice_origin_facilities_attributes].values.each do |value|
+      if value[:facility_id].nil?
+        params[:practice][:practice_origin_facilities_attributes] = nil
+      end
+    end
     @practice.initiating_facility = ""
     @practice.initiating_department_office_id = ""
-  elsif facility_type == "visn" && params[:editor_visn_select].present?
-    @practice.initiating_facility = params[:editor_visn_select]
-    @practice.initiating_department_office_id = ""
-  elsif facility_type == "department" && params[:editor_office_state_select].present? && params[:practice][:initiating_department_office_id].present? && params[:practice][:initiating_facility]
-    @practice.initiating_facility = params[:practice][:initiating_facility]
-    @practice.initiating_department_office_id = params[:practice][:initiating_department_office_id]
-  elsif facility_type == "other" && params[:initiating_facility_other].present?
-    @practice.initiating_facility = params[:initiating_facility_other]
-    @practice.initiating_department_office_id = ""
-  else
-    params[:practice][:initiating_facility_type] = ""
+  elsif facility_type == "visn"
+    if params[:editor_visn_select].present?
+      @practice.initiating_facility = params[:editor_visn_select]
+      @practice.initiating_department_office_id = ""
+    else
+      @practice.initiating_facility = ""
+    end
+  elsif facility_type == "department"
+    if params[:editor_office_state_select].present? && params[:practice][:initiating_department_office_id].present? && params[:practice][:initiating_facility]
+      @practice.initiating_facility = params[:practice][:initiating_facility]
+      @practice.initiating_department_office_id = params[:practice][:initiating_department_office_id]
+    else
+      @practice.initiating_facility = ""
+    end
+  elsif facility_type == "other"
+    if params[:initiating_facility_other].present?
+      @practice.initiating_facility = params[:initiating_facility_other]
+      @practice.initiating_department_office_id = ""
+    else
+      @practice.initiating_facility = ""
+    end
   end
 end
