@@ -1,4 +1,4 @@
-const loadingSpinner = ".dm-visn-practices-created-loading-spinner";
+const loadingSpinner = ".dm-visn-facilities-loading-spinner";
 const tableRows = ".dm-visns-table-rows";
 const table = ".visn-facilities-table";
 const visnsShow = "#visns-show"
@@ -12,7 +12,7 @@ function _sendAjaxRequest() {
     success: function (data) {
       $(tableRows).append(data.rowsHtml);
       $(table).removeClass("display-none");
-      $(loadingSpinner).eq(2).addClass("display-none");
+      $(loadingSpinner).addClass("display-none");
       $(visnsShow).data('reload', false);
     },
   });
