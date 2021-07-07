@@ -4,10 +4,13 @@
   <%= javascript_include_tag '_practice_card_utilities', 'data-turbolinks-track': 'reload' %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     <%= render partial: 'show', formats: [:js] %>
+    <%# set visnNumber before loading the visns/show file %>
+    var visnNumber = '<%= @visn.number %>';
   <% end %>
+  <%= javascript_include_tag 'visns/show', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
-<div id="visns-show" class="grid-container">
+<div id="visns-show" class="grid-container" data-reload="true">
   <%= render partial: "shared/messages", locals: { small_text: false } %>
   <section id="visn-introduction" class="margin-bottom-3 margin-top-8">
     <h1 class="font-sans-2xl line-height-46px x0-top">VISN <%= @visn.number %>: <%= @visn.name %></h1>
@@ -15,9 +18,9 @@
       <div class="<%= @primary_visn_liaison.present? ? 'grid-col-6' : 'grid-col-12' %> line-height-26">
         <p class="margin-bottom-3">
           <%
-            visn_facilities_count = @visn_va_facilities.count
-            visn_practices_created_count = @practices_created_by_visn.count
-            visn_practices_adopted_count = @practices_adopted_by_visn.count
+            visn_facilities_count = @visn_va_facilities.size
+            visn_practices_created_count = @practices_created_by_visn.size
+            visn_practices_adopted_count = @practices_adopted_by_visn.size
           %>
 
           This VISN has <%= visn_facilities_count %> facilit<%= visn_facilities_count != 1 ? 'ies' : 'y' %> and serves Veterans in <%= get_facility_locations_by_visn(@visn) %>.
@@ -76,11 +79,11 @@
       </form>
       <%= render partial: 'visns/maps/show_map' %>
     </div>
-    <div class="dm-loading-spinner text-center margin-y-4">
-      <i class="fas fa-circle-notch"></i>
-    </div>
+    <%= render partial: 'shared/loading_spinner', locals: { display: true, classes: 'flex-justify-center flex-align-self-center margin-y-8 desktop:margin-y-10' } %>
   </section>
   <%= render partial: 'visns/search' unless visn_practices_created_count == 0 && visn_practices_adopted_count == 0 %>
-  <%= render partial: 'visn_facilities_table', locals: { practices_created: visn_practices_created_count, practices_adopted: visn_practices_adopted_count } %>
+  <div>
+    <%= render partial: 'visn_facilities_table', locals: { practices_created: visn_practices_created_count, practices_adopted: visn_practices_adopted_count } %>
+  </div>
 </div>
 

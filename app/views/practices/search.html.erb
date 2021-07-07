@@ -67,7 +67,7 @@
       second_div_classes: 'grid-col-12 order-first margin-top-0 dm-sort-container margin-bottom-3 desktop:margin-top-1 desktop:margin-bottom-0 desktop:margin-top-0 desktop:order-last desktop:grid-col-4'
     }
     %>
-    <%= render partial: 'shared/search_loading_spinner' %>
+    <%= render partial: 'shared/loading_spinner', locals: { display: false, classes: "dm-loading-spinner display-none flex-justify-center flex-align-self-center margin-y-8 desktop:margin-y-10" } %>
     <%= render partial: 'shared/search_no_results', locals: { display_no_query_msg: true } %>
   </section>
 </div>

@@ -1,5 +1,6 @@
+<% classes ||= '' %>
 <% no_query_p = true if local_assigns[:no_query_p].nil? %>
-<div class="search-no-results margin-x-auto<%= display_no_query_msg ? "" : " display-none" %>">
+<div class="search-no-results margin-x-auto<%= display_no_query_msg ? "" : " display-none" %> <%= classes %>">
   <div class="height-full position-relative">
     <p class="no-query-p position-absolute z-100 padding-bottom-4 line-height-26 text-center<%= display_no_query_msg && no_query_p ? "" : " display-none" %>">
       Enter a search term or use the filters to find matching practices

@@ -10,7 +10,8 @@
   <% end %>
   <section class="margin-bottom-0 padding-0">
     <div class="width-full position-relative grid-row margin-bottom-2">
-      <div id="visns-index-map" style="width: 100%; height: 462px"></div>
+      <%= render partial: 'shared/loading_spinner', locals: { display: true, classes: 'grid-col-full text-center margin-bottom-6 desktop:margin-bottom-10' } %>
+      <div id="visns-index-map" class="display-none" style="width: 100%; height: 462px"></div>
     </div>
   </section>
 <% end %>
