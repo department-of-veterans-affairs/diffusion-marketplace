@@ -3,13 +3,9 @@
   <select id="<%= facility_type_selector %>" class="usa-select" name="<%= facility_type_selector %>">
     <option value="">- Select -</option>
     <% @types.each do |type| %>
-      <option value=<%= type %>
-          <% if params[:type].present? && type.include?(params[:type].to_s) %>
-            selected
-          <% end %>
-       >
-          <%= type %>
-        </option>
+      <option value="<%= type %>">
+        <%= type %>
+      </option>
     <% end %>
   </select>
 </div>

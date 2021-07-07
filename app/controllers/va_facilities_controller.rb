@@ -3,34 +3,38 @@ class VaFacilitiesController < ApplicationController
   before_action :set_va_facility, only: [:show, :created_practices, :update_practices_adopted_at_facility]
 
   def index
-    @facilities = VaFacility.cached_va_facilities.select(:common_name, :fy17_parent_station_complexity_level, :id, :official_station_name, :slug, :station_number, :street_address_state, :visn_id).order(:official_station_name).includes(:visn)
-    @visns = Visn.cached_visns
+    @facilities = VaFacility.cached_va_facilities.select(:common_name, :id, :official_station_name).order(:official_station_name)
+    @visns = Visn.cached_visns.select(:name, :number)
     @types = VaFacility.cached_va_facilities.get_complexity
-    @filtered_facilities = @facilities
-    @selected_facility
-    #check params and filters...
+  end
+
+  def load_facilities_index_rows
     if params[:facility].present?
-      @filtered_facilities = [@facilities.find(params[:facility])]
-      @selected_facility = params[:facility].to_i
-    end
-    if params[:type].present?
-      @filtered_facilities = @filtered_facilities.where(fy17_parent_station_complexity_level: params[:type].to_s)
-    end
-    if params[:visn].present?
-      @filtered_facilities = @filtered_facilities.select { |x| x.visn.number == params[:visn].to_i}
+      @facilities = [VaFacility.cached_va_facilities.find(params[:facility])]
+    else
+      @facilities = VaFacility.cached_va_facilities.select(:common_name, :fy17_parent_station_complexity_level, :id, :official_station_name, :slug, :station_number, :street_address_state, :visn_id).order(:official_station_name).includes(:visn)
+
+      if params[:visn].present?
+        @facilities = @facilities.where(visns: { number: params[:visn] })
+      end
+
+      if params[:complexity].present?
+        @facilities = @facilities.where(va_facilities: { fy17_parent_station_complexity_level: params[:complexity] })
+      end
     end
 
-    @filtered_facilities_count = @filtered_facilities.size
+    table_rows_html = render_to_string('va_facilities/_index_table_row', layout: false, locals: { facilities: @facilities })
+
+    respond_to do |format|
+      format.html
+      format.json { render :json => { rowsHtml: table_rows_html, count: @facilities.length } }
+    end
   end
 
   def show
     station_number = @va_facility.station_number
-    @num_practice_recs = params[:practices] || "3"
-    @adoptions_at_facility = Practice.get_facility_adopted_practices(@va_facility.station_number)
-    @adopted_practices_categories = get_categories_by_practices(@adoptions_at_facility, [])
     #google maps implementation
     @va_facility_marker = Gmaps4rails.build_markers(@va_facility) do |facility, marker|
-
       marker.lat facility.latitude
       marker.lng facility.longitude
       marker.picture({
@@ -43,14 +47,10 @@ class VaFacilitiesController < ApplicationController
       marker.shadow nil
       marker.json({ id: facility.id })
     end
+    adopted_practices = Practice.get_facility_adopted_practices(@va_facility.station_number)
+    @adopted_pr_count = adopted_practices.size
+    @adopted_practices_categories = get_categories_by_practices(adopted_practices, [])
     created_practices = Practice.get_facility_created_practices(station_number, nil, 'a_to_z', nil)
-    @pagy_created_practices = pagy_array(
-      created_practices,
-      items: 3
-    )
-    @pagy_created_info = @pagy_created_practices[0]
-    @created_practices = @pagy_created_practices[1]
-
     @created_pr_count = created_practices.size
     @created_practices_categories = get_categories_by_practices(created_practices, [])
   end
@@ -86,7 +86,7 @@ class VaFacilitiesController < ApplicationController
 
   def update_practices_adopted_at_facility
     selected_cat = params["selected_category"].present? ?  params["selected_category"] : nil
-    key_word = params["key_word"]
+    key_word = params["key_word"].present? ? params["key_word"] : nil
     @adoptions_at_facility = Practice.get_facility_adopted_practices(@va_facility.station_number, key_word, selected_cat)
     adopted_facility_results_html = ''
     @adoptions_at_facility.each do |pr|
@@ -103,6 +103,6 @@ class VaFacilitiesController < ApplicationController
   private
 
   def set_va_facility
-    @va_facility = VaFacility.friendly.find(params[:id])
+    @va_facility = VaFacility.select(:id, :common_name, :fy17_parent_station_complexity_level, :mailing_address_city, :station_number, :station_number_suffix_reservation_effective_date, :official_station_name, :street_address, :street_address_city, :street_address_zip_code, :station_phone_number, :street_address_state, :latitude, :longitude, :slug, :rurality).friendly.find(params[:id])
   end
 end
