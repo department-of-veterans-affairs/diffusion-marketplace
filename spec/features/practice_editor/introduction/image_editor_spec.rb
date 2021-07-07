@@ -9,7 +9,7 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
     @unacceptable_img_dimension_path = "#{Rails.root}/spec/assets/unacceptable_img_dimension.jpg"
     @unacceptable_img_size_path = "#{Rails.root}/spec/assets/unacceptable_img_size.png"
 
-    @pr_with_thumbnail = Practice.create!(name: 'A practice with a thumbnail', tagline: 'A public tagline',  slug: 'a-thumbnail-practice', summary: 'test summary', date_initiated: Time.now, initiating_facility: 'test facility', approved: true, published: true, main_display_image: File.new(@acceptable_img_path), user: admin)
+    @pr_with_thumbnail = Practice.create!(name: 'A practice with a thumbnail', tagline: 'A public tagline',  slug: 'a-thumbnail-practice', summary: 'test summary', date_initiated: Time.now, initiating_facility: 'test facility', initiating_facility_type: 'other', approved: true, published: true, main_display_image: File.new(@acceptable_img_path), user: admin)
     @pr_without_thumbnail = Practice.create!(name: 'A practice without a thumbnail', tagline: 'A public tagline', slug: 'a-no-thumbnail-practice', summary: 'test summary', date_initiated: Time.now, initiating_facility: 'test facility', initiating_facility_type: 'other', approved: true, published: true, user: admin)
 
     login_as(admin, :scope => :user, :run_callbacks => false)

@@ -47,8 +47,13 @@ class SavePracticeService
       if @practice_params["practice_editors_attributes"].present?
         update_practice_editors
       end
+
       if @practice_params["categories_attributes"].present?
         process_categories_params
+      end
+
+      if @practice_params["initiating_facility_type"].present?
+        update_initiating_facility
       end
 
       updated = @practice.update(@practice_params)
@@ -336,18 +341,16 @@ class SavePracticeService
 
   def update_initiating_facility
     initiating_facility_type = @practice_params[:initiating_facility_type]
-    initiating_facility = @practice_params[:initiating_facility]
-    if initiating_facility_type.present? && initiating_facility.present?
-      if initiating_facility_type != 'department'
-        @practice.update_attributes(initiating_department_office_id: nil)
-      end
-      # if @current_endpoint == 'overview'
+    initiating_facility = @practice.initiating_facility
+    if @current_endpoint === 'introduction'
       if initiating_facility_type.present? && initiating_facility.present?
+        if initiating_facility_type != 'department'
+          @practice.update_attributes(initiating_department_office_id: nil)
+        end
         @practice.update_attributes({initiating_facility_type: initiating_facility_type, initiating_facility: initiating_facility})
-      else
+      elsif initiating_facility.blank? && @practice_params[:practice_origin_facilities_attributes].nil?
         raise StandardError.new @error_messages[:update_initiating_facility]
       end
-      # end
     end
   end
 

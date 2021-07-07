@@ -188,6 +188,30 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         expect(page).to have_no_content('Montgomery Regional Office')
         expect(page).to have_content('Xavier Institute')
       end
+
+      it 'should display an error and revert changes if fields are not populated' do
+        # select the VISN radio option, but do not select a VISN
+        click_origin_type('initiating_facility_type_visn')
+        click_save
+        expect(page).to_not have_content('Practice was successfully updated.')
+        expect(page).to have_content('There was an error updating initiating facility. The practice was not saved.')
+
+        # now change initiating_facility_type to VISN, save, and then choose the Office radio option without choosing a facility
+        click_origin_type('initiating_facility_type_visn')
+        select('VISN-1', :from => 'editor_visn_select')
+        click_save
+        visit_practice_show
+        expect(page).to have_no_content('Birmingham VA Medical Center (Birmingham-Alabama)')
+        expect(page).to have_content('VISN-1')
+
+        visit_practice_edit
+        click_origin_type('initiating_facility_type_department')
+        select('VBA', :from => 'editor_department_select')
+        select('Alabama', :from => 'editor_office_state_select')
+        click_save
+        expect(page).to_not have_content('Practice was successfully updated.')
+        expect(page).to have_content('There was an error updating initiating facility. The practice was not saved.')
+      end
     end
 
     context 'awards and recognition' do
