@@ -89,6 +89,7 @@ describe 'Map of Diffusion', type: :feature, js: true do
   end
 
   it 'displays and filters the map' do
+    expect(page).to have_content('Explore how practices are being adopted across the country. There are currently 2 completed adoptions, 3 in-progress adoptions, and 1 unsuccessful adoption.')
     expect_marker_ct(3)
 
     # filters button
