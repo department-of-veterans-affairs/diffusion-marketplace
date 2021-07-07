@@ -478,20 +478,22 @@
                 %>
 
                 <% if non_other_sub_categories.any? %>
-                  <div class="grid-row">
-                    <p class="text-bold line-height-26 margin-bottom-05 grid-col-12 display-none desktop:display-block desktop:margin-top-1"><%= pc.name %></p>
-                    <% if sliced_categories.present? %>
-                      <%= render partial: 'practices/introduction_forms/category_column', locals: { categories: sliced_categories, parent_category: pc, column: 0 } %>
-                      <% if sliced_categories[1].present? %>
-                        <%= render partial: 'practices/introduction_forms/category_column', locals: { categories: sliced_categories, parent_category: pc, column: 1 } %>
+                  <div class="dm-<%= pc.name.downcase %>-category-columns-container">
+                    <div class="grid-row">
+                      <p class="text-bold line-height-26 margin-bottom-05 grid-col-12 display-none desktop:display-block desktop:margin-top-1"><%= pc.name %></p>
+                      <% if sliced_categories.present? %>
+                        <%= render partial: 'practices/introduction_forms/category_column', locals: { categories: sliced_categories, parent_category: pc, column: 0 } %>
+                        <% if sliced_categories[1].present? %>
+                          <%= render partial: 'practices/introduction_forms/category_column', locals: { categories: sliced_categories, parent_category: pc, column: 1 } %>
+                        <% end %>
+                        <% if sliced_categories[2].present? %>
+                          <%= render partial: 'practices/introduction_forms/category_column', locals: { categories: sliced_categories, parent_category: pc, column: 2 } %>
+                        <% end %>
                       <% end %>
-                      <% if sliced_categories[2].present? %>
-                        <%= render partial: 'practices/introduction_forms/category_column', locals: { categories: sliced_categories, parent_category: pc, column: 2 } %>
-                      <% end %>
-                    <% end %>
+                    </div>
+                    <%= render partial: 'practices/introduction_forms/other_categories', locals: { parent_category: pc, form: f } %>
                   </div>
                 <% end %>
-                <%= render partial: 'practices/form/other_categories', locals: { parent_category: pc, form: f } %>
               <% end %>
             </div>
 

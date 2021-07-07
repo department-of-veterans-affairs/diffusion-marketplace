@@ -424,6 +424,6 @@ class Practice < ApplicationRecord
 
   # add other practice attributes that need whitespace trimmed as needed
   def trim_whitespace
-    self.name&.strip
+    self.name&.strip!
   end
 end

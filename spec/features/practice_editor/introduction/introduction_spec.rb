@@ -13,11 +13,15 @@ describe 'Practice editor - introduction', type: :feature, js: true do
     @pr_partner_2 = PracticePartner.create!(name: 'Office of Rural Health', short_name: 'ORH', description: 'Congress established the Veterans Health Administration Office of Rural Health in 2006 to conduct, coordinate, promote and disseminate research on issues that affect the nearly five million Veterans who reside in rural communities. Working through its three Veterans Rural Health Resource Centers, as well as partners from academia, state and local governments, private industry, and non-profit organizations, ORH strives to break down the barriers separating rural Veterans from quality care.', icon: 'fas fa-mountain', color: '#1CC2AE')
     PracticePartnerPractice.create!(practice: @practice, practice_partner: @pr_partner_1, created_at: Time.now)
     PracticePartnerPractice.create!(practice: @practice, practice_partner: @pr_partner_2, created_at: Time.now)
-    @cat_1 = Category.create!(name: 'COVID')
-    @cat_2 = Category.create!(name: 'Environmental Services')
-    Category.create!(name: 'Follow-up Care')
-    Category.create!(name: 'Pulmonary Care')
-    Category.create!(name: 'Other')
+    @parent_cat_1 = Category.create!(name: 'Strategic')
+    @parent_cat_2 = Category.create!(name: 'Operational')
+    @parent_cat_3 = Category.create!(name: 'Clinical')
+    @cat_1 = Category.create!(name: 'COVID', parent_category: @parent_cat_1)
+    Category.create!(name: 'Environmental Services', parent_category: @parent_cat_2)
+    Category.create!(name: 'Follow-up Care', parent_category: @parent_cat_3)
+    Category.create!(name: 'Pulmonary Care', parent_category: @parent_cat_3)
+    Category.create!(name: 'Hidden Cat')
+    @cat_2 = Category.create!(name: 'Foobar', parent_category: @parent_cat_2, is_other: true)
     CategoryPractice.create!(practice: @practice, category: @cat_1, created_at: Time.now)
     CategoryPractice.create!(practice: @practice, category: @cat_2, created_at: Time.now)
 
@@ -47,12 +51,42 @@ describe 'Practice editor - introduction', type: :feature, js: true do
       expect(page).to have_content('Awards and recognition')
       expect(page).to have_content('Partners')
       expect(page).to have_content('Select any of the following partners your practice is associated with.')
-      expect(page).to have_content('Categories')
-      expect(page).to have_content('Select the categories most relevant to your practice (suggested: up to 10).')
       expect(page).to have_content('Diffusion phase')
       expect(page).to have_content('Select the diffusion phase that applies to your practice.')
       expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/instructions")
       expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/adoptions")
+      # categories
+      expect(page).to have_content('Categories')
+      expect(page).to have_content('Select the categories most relevant to your practice (suggested: up to 10).')
+      expect(page).to have_no_content('Hidden Cat')
+      expect(page).to have_content('Clinical')
+      expect(page).to have_content('Operational')
+      expect(page).to have_content('Strategic')
+      within(:css, '.dm-clinical-category-columns-container') do
+        page.has_unchecked_field?('Follow-up Care')
+        page.has_unchecked_field?('Pulmonary Care')
+        page.has_unchecked_field?('All clinical')
+        page.has_unchecked_field?('Other')
+      end
+      within(:css, '.dm-operational-category-columns-container') do
+        page.has_unchecked_field?('Environmental Ser...')
+        page.has_unchecked_field?('All operational')
+        page.has_checked_field?('Other')
+        expect(page).to have_content('Add another')
+        expect(page).to have_no_content('Delete entry')
+        expect(page).to have_content('Category name')
+        expect(find_field('Category name', visible: true).value).to eq('Foobar')
+      end
+      within(:css, '.dm-strategic-category-columns-container') do
+        page.has_checked_field?('COVID')
+        page.has_checked_field?('All strategic')
+        page.has_unchecked_field?('Other')
+      end
+      find('.fa-question-circle').click
+      expect(page).to have_selector(".usa-modal__content", visible: true)
+      expect(page).to have_content('Practices related to patient care.')
+      expect(page).to have_content('Practices related to VA administrative and logistical functions.')
+      expect(page).to have_content('Practices that support initiatives identified by VA leadership.')
     end
   end
 
@@ -190,22 +224,72 @@ describe 'Practice editor - introduction', type: :feature, js: true do
 
     context 'categories' do
       it 'should allow changing categories' do
-        expect(page).to have_checked_field('COVID')
-        expect(page).to have_checked_field('Environmental Services')
-        expect(page).to have_unchecked_field('Pulmonary Care')
-        expect(page).to have_unchecked_field('Follow-up Care')
-        expect(page).to have_no_content('Name of category')
-        find('#category_pulmonary_care_label').click # selects Pulmonary Care
-        find('#category_other_label').click # selects other
-        find('#category_environmental_services_label').click # deselects Environmental Services
-        expect(page).to have_content('Name of category')
-        fill_in('Name of category', with: 'Cool category')
+        within(:css, '.dm-strategic-category-columns-container') do
+          # uncheck "All strategic" button
+          find('.usa-checkbox__label[for="cat-all-strategic-input"]').click
+          page.has_unchecked_field?('COVID')
+          page.has_unchecked_field?('All strategic')
+          page.has_unchecked_field?('Other')
+          # add "Other" category
+          find('.usa-checkbox__label[for="cat-other-strategic-input"]').click
+          fill_in('Category name', with: 'other strategic category')
+          expect(page).to have_content('Add another')
+        end
+        within(:css, '.dm-operational-category-columns-container') do
+          # add another "Other" category
+          find('.add-category-link-operational').click
+          other_cat_2 = find_all('.practice-input')[1]
+          other_cat_2.set 'other operational category'
+          # remove the exisiting "Other" category
+          find_all('.remove_nested_fields')[0].click
+          # add subcategory
+          find('.usa-checkbox__label[title="Environmental Services"]').click
+        end
+        within(:css, '.dm-clinical-category-columns-container') do
+          # add categories
+          find('.usa-checkbox__label[title="Pulmonary Care"]').click
+          find('.usa-checkbox__label[title="Follow-up Care"]').click
+          page.has_checked_field?('All clinical')
+          # uncheck one category
+          find('.usa-checkbox__label[title="Pulmonary Care"]').click
+          page.has_unchecked_field?('All clinical')
+          # check "All clinical" button
+          find('.usa-checkbox__label[for="cat-all-clinical-input"]').click
+          page.has_checked_field?('Pulmonary Care')
+          page.has_checked_field?('Follow-up Care')
+          page.has_checked_field?('All clinical')
+        end
         click_save
+        within(:css, '.dm-strategic-category-columns-container') do
+          expect(find_field('Category name', visible: true).value).to eq('other strategic category')
+          page.has_unchecked_field?('COVID')
+          page.has_unchecked_field?('All strategic')
+          page.has_checked_field?('Other')
+        end
+        within(:css, '.dm-operational-category-columns-container') do
+          other_cat_ct = find_all('.practice-input').count
+          expect(other_cat_ct).to eq(1)
+          expect(find_field('Category name', visible: true).value).to eq('other operational category')
+          page.has_checked_field?('Other')
+          page.has_checked_field?('Environmental Ser...')
+          find('.usa-checkbox__label[for="cat-other-operational-input"]').click
+        end
+        within(:css, '.dm-clinical-category-columns-container') do
+          page.has_checked_field?('Pulmonary Care')
+          page.has_checked_field?('Follow-up Care')
+          page.has_checked_field?('All clinical')
+        end
+        click_save
+        within(:css, '.dm-operational-category-columns-container') do
+          page.has_unchecked_field?('Other')
+          page.has_checked_field?('Environmental Ser...')
+        end
         visit_practice_show
-        expect(page).to have_no_content('Environmental Services')
         expect(page).to have_no_content('Other')
-        expect(page).to have_content('COVID')
+        expect(page).to have_no_content('COVID')
+        expect(page).to have_content('ENVIRONMENTAL SERVICES')
         expect(page).to have_content('PULMONARY CARE')
+        expect(page).to have_content('FOLLOW-UP CARE')
       end
     end
 

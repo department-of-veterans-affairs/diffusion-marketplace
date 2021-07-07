@@ -41,7 +41,7 @@
           <% end %>
         <% end %>
 
-        <li class="<%= cat.object.id ? parent_category_name : li_class_place_holder %>-li fields margin-y-2" data-id="<%= other_category_id %>">
+        <li class="<%= cat.object.id ? parent_category_name : li_class_place_holder %>-li fields margin-y-2" role="option" data-id="<%= other_category_id %>">
         <%= cat.hidden_field :id %>
           <div class="grid-row">
             <div class="grid-col-12">
