@@ -1,10 +1,10 @@
 const ap = {
   loadingSpinner: ".dm-adopted-practices-loading-spinner",
   searchField: "#dm-adopted-practices-search-field",
-  noResults: "#practices_adopted_no_results",
+  noResults: ".dm-adopted-practices-no-results",
   table: "#practices_adopted_at_this_facility_table",
   counter: "#practices_adopted_at_facility_count",
-  tableRows: "#practices_adopted_by_facility_dyn"
+  tableRows: "#practices_adopted_by_facility_dyn",
 };
 
 function trackSearch(term) {
