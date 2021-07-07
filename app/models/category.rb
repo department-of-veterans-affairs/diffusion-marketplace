@@ -38,6 +38,6 @@ class Category < ApplicationRecord
   end
 
   def self.get_parent_categories
-    Category.select { |cat| cat.is_other === false && cat.sub_categories.any? }
+    Category.order_by_name.select { |cat| cat.is_other === false && cat.sub_categories.any? }
   end
 end
