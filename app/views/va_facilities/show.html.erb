@@ -6,6 +6,7 @@
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     var facilitySlug = "<%= @va_facility.slug %>";
   <% end %>
+  <%= javascript_include_tag '_practice_card_utilities', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'va_facilities/facility_adopted_practice_search', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'va_facilities/facility_created_practice_search', 'data-turbolinks-track': 'reload' %>
 <% end %>
