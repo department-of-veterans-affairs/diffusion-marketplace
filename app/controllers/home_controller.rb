@@ -12,6 +12,9 @@ class HomeController < ApplicationController
     @vamc_facilities = VaFacility.cached_va_facilities.select(:street_address_state, :official_station_name, :id, :common_name, :station_number, :latitude, :longitude, :slug, :fy17_parent_station_complexity_level, :visn_id, :rurality).order(:street_address_state, :official_station_name)
     @visns = Visn.cached_visns.select(:id, :number)
     @diffusion_histories = DiffusionHistory.get_with_practices.order(Arel.sql("lower(practices.name)"))
+    @successful_ct = @diffusion_histories.get_by_successful_status.size
+    @in_progress_ct = @diffusion_histories.get_by_in_progress_status.size
+    @unsuccessful_ct = @diffusion_histories.get_by_unsuccessful_status.size
 
     @dh_markers = Gmaps4rails.build_markers(@diffusion_histories.group_by(&:facility_id)) do |dhg, marker|
       station_number = dhg[0]

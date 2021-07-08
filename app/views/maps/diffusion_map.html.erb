@@ -11,10 +11,9 @@
     <% end %>
 
     <h4 class="font-sans-xl margin-bottom-1 margin-top-0 line-height-sans-205">Diffusion map</h4>
-    <p class="font-sans-lg margin-bottom-2">Explore how practices are being adopted across the country.</p>
-    <div class="padding-y-105 padding-x-2 bg-gold radius-md margin-bottom-205">
-      <span class="text-bold">Note:</span>&nbsp;<span>More practices will be added to this map in the next few months.</span>
-    </div>
+    <p class="font-sans-lg margin-bottom-5 line-height-sans-5">
+      Explore how practices are being adopted across the country. There are currently <%= @successful_ct %> completed adoption<%= @successful_ct === 1 ? '' : 's' %>, <%= @in_progress_ct %> in-progress adoption<%= @in_progress_ct === 1 ? '' : 's' %>, and <%= @unsuccessful_ct %> unsuccessful adoption<%= @unsuccessful_ct === 1 ? '' : 's' %>.
+    </p>
     <div class="diffusion-map-container display-none">
       <button id="filterResultsTrigger" class="map-filters-trigger usa-button text-bold display-block margin-bottom-105 padding-2">
         Filter results
