@@ -67,14 +67,8 @@
           <% if non_other_sub_categories.any? %>
             <div class="grid-row grid-col-12 category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex p0-left p0-right">
               <p class="line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block desktop:margin-top-1 desktop:margin-bottom-0"><%= pc.name %></p>
-              <% if sliced_categories[0].present? %>
-                <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sliced_categories, column: 0 } %>
-                <% if sliced_categories[1].present? %>
-                  <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sliced_categories, column: 1 } %>
-                <% end %>
-                <% if sliced_categories[2].present? %>
-                  <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sliced_categories, column: 2 } %>
-                <% end %>
+              <% sliced_categories.each_with_index do |sc, i| %>
+                <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sc, column: i } unless i === 3 %>
               <% end %>
             </div>
           <% end %>
