@@ -79,7 +79,7 @@
       </form>
       <%= render partial: 'visns/maps/show_map' %>
     </div>
-    <%= render partial: 'shared/loading_spinner', locals: { display: true, classes: 'flex-justify-center flex-align-self-center margin-y-8 desktop:margin-y-10' } %>
+    <%= render partial: 'shared/loading_spinner', locals: { display: true, classes: 'dm-visn-map-loading-spinner flex-justify-center flex-align-self-center margin-y-8 desktop:margin-y-10 text-center' } %>
   </section>
   <%= render partial: 'visns/search' unless visn_practices_created_count == 0 && visn_practices_adopted_count == 0 %>
   <div>

@@ -219,7 +219,7 @@ function initialize() {
     if (!isVisnsIndexPage) {
       google.maps.event.addListenerOnce(handler.getMap(), "bounds_changed", function () {
         $(".dm-visn-show-map").removeClass("display-none");
-        $(".dm-loading-spinner").eq(0).addClass("display-none");
+        $(".dm-visn-map-loading-spinner").addClass("display-none");
       });
     }
   }
@@ -234,7 +234,7 @@ function initialize() {
   if (isVisnsIndexPage) {
     google.maps.event.addListener(handler.getMap(), 'idle', function () {
       $("#visns-index-map").removeClass("display-none");
-      $(".dm-loading-spinner").eq(0).addClass("display-none");
+      $(".dm-loading-spinner").addClass("display-none");
     });
   }
 
