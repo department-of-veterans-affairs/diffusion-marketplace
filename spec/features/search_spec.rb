@@ -160,7 +160,6 @@ describe 'Search', type: :feature do
       toggle_filters_accordion
       fill_in('dm-practice-search-field', with: 'test')
       set_combobox_val(0, 'Lincoln VA Clinic')
-      select_category('.cat-1-label')
       search
 
       expect(page).to_not have_content('results')
@@ -272,7 +271,6 @@ describe 'Search', type: :feature do
 
         toggle_filters_accordion
         set_combobox_val(0, 'Norwood VA Clinic')
-        select_category('.cat-1-label')
         select_category('.cat-4-label')
         update_results
 
@@ -292,7 +290,6 @@ describe 'Search', type: :feature do
         fill_in('dm-practice-search-field', with: 'practice')
         toggle_filters_accordion
         set_combobox_val(0, 'Togus VA Medical Center')
-        select_category('.cat-1-label')
         search
 
         expect(page).to have_content('Filters (2)')
@@ -403,7 +400,6 @@ describe 'Search', type: :feature do
 
         toggle_filters_accordion
         set_combobox_val(0, 'VISN-1')
-        select_category('.cat-1-label')
         update_results
 
         # results should be sorted my most relevant(closest match) by default
@@ -467,7 +463,6 @@ describe 'Search', type: :feature do
 
         toggle_filters_accordion
         set_combobox_val(0, 'VISN-4')
-        select_category('.cat-1-label')
         select_category('.cat-2-label')
         select_category('.cat-4-label')
         update_results
@@ -488,7 +483,6 @@ describe 'Search', type: :feature do
         visit_search_page
 
         toggle_filters_accordion
-        select_category('.cat-1-label')
         update_results
         all('.dm-practice-link').first.click
 
