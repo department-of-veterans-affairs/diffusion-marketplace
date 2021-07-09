@@ -44,11 +44,6 @@ ActiveAdmin.register Category do
       practices.each do |practice|
         practices_with_cat += practice + ", "
       end
-      if practices_with_cat.length > 0
-        div do
-          h3 'PRACTICES WITH ' + cat + ' CATEGORY: ' +  practices_with_cat[0..practices_with_cat.length - 3]
-        end
-      end
     end
   end
 
