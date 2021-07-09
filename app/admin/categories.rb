@@ -11,7 +11,7 @@ ActiveAdmin.register Category do
     column :short_name
     column :description
     column "Parent Category" do |p|
-      if !p.nil?
+      if !p.present?
         Category.find_by_id(p.parent_category_id)
        end
     end
@@ -27,7 +27,7 @@ ActiveAdmin.register Category do
       row :short_name
       row :description
       row "Parent Category" do |p|
-        if !p.nil?
+        if !p.present?
           parent_cat = Category.find_by_id(p.parent_category_id)
         end
       end
