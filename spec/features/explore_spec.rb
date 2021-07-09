@@ -207,7 +207,6 @@ describe 'Explore all practices page', type: :feature do
       login_as(admin, :scope => :user, :run_callbacks => false)
       # cache clears when adding a practice category
       visit practice_introduction_path(pr)
-      find('#category_covid_label').click # selects Telehealth
       find('#practice-editor-save-button').click
       sleep 1
       expect(cache_keys).not_to include("searchable_practices_a_to_z")
