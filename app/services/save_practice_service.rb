@@ -204,9 +204,7 @@ class SavePracticeService
           end
         end
       end
-
       other_practice_categories = practice_categories.where(is_other: true)
-
       if other_practice_categories.any?
         other_parent_cat_options = ['other-clinical', 'other-operational', 'other-strategic']
         other_parent_cat_options.each do |opc|
@@ -214,7 +212,7 @@ class SavePracticeService
           if cat_keys.exclude?(opc)
             practice_category_practices.joins(:category).where(categories: { parent_category_id: parent_cat.id, is_other: true }).destroy_all
             other_practice_categories.each do |oc|
-              oc.destroy unless oc.parent_category != parent_cat && CategoryPractice.where(category: oc).where.not(practice: @practice)
+                oc.destroy unless oc.parent_category != parent_cat && CategoryPractice.where(category: oc).present?
             end
           end
         end
