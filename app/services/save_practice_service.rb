@@ -163,7 +163,6 @@ class SavePracticeService
   end
 
   def update_category_practices
-    debugger
     category_params = @practice_params[:category]
     practice_category_practices = @practice.category_practices
     practice_categories = @practice.categories
@@ -183,7 +182,6 @@ class SavePracticeService
 
       other_parent_cats = []
       cat_keys.each { |ck| if ck.include?('other') then other_parent_cats << Category.where('lower(name) = ?', ck.split('-').pop.downcase).first end }
-      debugger
       if other_parent_cats.present?
         category_attribute_params.values.each do |category|
           # If Other was checked, create a new category with is_other true and create a category_practice linking to the new category
@@ -193,7 +191,6 @@ class SavePracticeService
           parent_cat_id_param = category[:parent_category_id]
           # if the 'other' category has not yet been created, the :parent_category_id will be a string, so we need to find the corresponding parent category
           parent_cat_id = parent_cat_id_param.to_i === 0 ? Category.where('lower(name) = ?', parent_cat_id_param.downcase).first.id : parent_cat_id_param
-          debugger
           unless name == ""
             if destroy == 'false' && id.blank?
               cate = Category.find_by('lower(name) = ?', name.strip.downcase, is_other: true, parent_category_id: parent_cat_id)
