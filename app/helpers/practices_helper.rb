@@ -340,7 +340,4 @@ module PracticesHelper
     }
     content[resource_type.to_sym]
   end
-  def get_group_count_for_categories(cat_count)
-
-  end
 end

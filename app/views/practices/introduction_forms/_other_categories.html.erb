@@ -46,7 +46,7 @@
           <div class="grid-row">
             <div class="grid-col-12">
               <%= cat.label :name, 'Category name', class: 'usa-label display-inline-block other-category-name x0-top' %>&nbsp;
-              <%= cat.text_field :name, class: 'usa-input practice-input timeline-input grid-col-12' %>
+              <%= cat.text_field :name, class: 'usa-input practice-input grid-col-12' %>
               <%= cat.hidden_field :parent_category_id, value: cat.object.id ? parent_category_id : li_class_place_holder %>
             </div>
             <div class="grid-col-12 trash-container">
