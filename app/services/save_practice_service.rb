@@ -163,6 +163,7 @@ class SavePracticeService
   end
 
   def update_category_practices
+    debugger
     category_params = @practice_params[:category]
     practice_category_practices = @practice.category_practices
     practice_categories = @practice.categories
@@ -182,7 +183,7 @@ class SavePracticeService
 
       other_parent_cats = []
       cat_keys.each { |ck| if ck.include?('other') then other_parent_cats << Category.where('lower(name) = ?', ck.split('-').pop.downcase).first end }
-
+      debugger
       if other_parent_cats.present?
         category_attribute_params.values.each do |category|
           # If Other was checked, create a new category with is_other true and create a category_practice linking to the new category
@@ -192,12 +193,14 @@ class SavePracticeService
           parent_cat_id_param = category[:parent_category_id]
           # if the 'other' category has not yet been created, the :parent_category_id will be a string, so we need to find the corresponding parent category
           parent_cat_id = parent_cat_id_param.to_i === 0 ? Category.where('lower(name) = ?', parent_cat_id_param.downcase).first.id : parent_cat_id_param
+          debugger
           unless name == ""
             if destroy == 'false' && id.blank?
-              cate = Category.find_or_create_by!(name: name.strip.downcase, is_other: true, parent_category_id: parent_cat_id)
-              CategoryPractice.create(category: cate, practice: @practice)
+              cate = Category.find_by('lower(name) = ?', name.strip.downcase, is_other: true, parent_category_id: parent_cat_id)
+              cate = Category.create(name: name.strip.downcase, is_other: true, parent_category_id: parent_cat_id) unless cate.present?
+              CategoryPractice.find_or_create_by(category: cate, practice: @practice)
             elsif destroy == 'false' && id.present?
-              practice_categories.find_by(id: id.to_i).update_attributes(name: name, parent_category_id: parent_cat_id)
+              practice_categories.find_by(id: id.to_i).update_attributes(name: name.strip.downcase, parent_category_id: parent_cat_id)
             elsif destroy == 'true' && id.present?
               practice_category_practices.where(category_id: id).destroy_all
             end
@@ -215,7 +218,7 @@ class SavePracticeService
             practice_category_practices.joins(:category).where(categories: { parent_category_id: parent_cat.id, is_other: true }).destroy_all
 
             other_practice_categories.each do |oc|
-              oc.destroy unless oc.parent_category != parent_cat && CategoryPractice.where(category: oc).where.not(practice: @practice)
+              oc.destroy unless oc.parent_category != parent_cat && CategoryPractice.where(category: oc).where.not(practice: @practice).present?
             end
           end
         end

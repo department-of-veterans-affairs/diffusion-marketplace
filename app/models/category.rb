@@ -22,7 +22,7 @@ class Category < ApplicationRecord
   end
 
   def trim_whitespace
-    self.name&.strip
+    self.name&.strip!
   end
 
   def self.get_parent_categories
