@@ -160,8 +160,6 @@ describe 'Search', type: :feature do
       toggle_filters_accordion
       fill_in('dm-practice-search-field', with: 'test')
       set_combobox_val(0, 'Lincoln VA Clinic')
-      search
-
       expect(page).to_not have_content('results')
       expect(page).to have_content('There are currently no matches for your search on the Marketplace.')
     end
@@ -290,8 +288,6 @@ describe 'Search', type: :feature do
         fill_in('dm-practice-search-field', with: 'practice')
         toggle_filters_accordion
         set_combobox_val(0, 'Togus VA Medical Center')
-        search
-
         expect(page).to have_content('Filters (2)')
         expect(page).to have_content('2 results')
         expect(page).to have_content(@practice3.name)
