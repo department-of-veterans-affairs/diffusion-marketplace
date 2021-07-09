@@ -193,7 +193,7 @@ class SavePracticeService
           parent_cat_id = parent_cat_id_param.to_i === 0 ? Category.where('lower(name) = ?', parent_cat_id_param.downcase).first.id : parent_cat_id_param
           unless name == ""
             if destroy == 'false' && id.blank?
-              cate = Category.find_by('lower(name) = ?', name.strip.downcase, is_other: true, parent_category_id: parent_cat_id)
+              cate = Category.find_by(name: name.strip.downcase, is_other: true, parent_category_id: parent_cat_id)
               cate = Category.create(name: name.strip.downcase, is_other: true, parent_category_id: parent_cat_id) unless cate.present?
               CategoryPractice.find_or_create_by(category: cate, practice: @practice)
             elsif destroy == 'false' && id.present?
@@ -213,9 +213,8 @@ class SavePracticeService
           parent_cat = Category.where('lower(name) = ?', opc.split('-').pop).first
           if cat_keys.exclude?(opc)
             practice_category_practices.joins(:category).where(categories: { parent_category_id: parent_cat.id, is_other: true }).destroy_all
-
             other_practice_categories.each do |oc|
-              oc.destroy unless oc.parent_category != parent_cat && CategoryPractice.where(category: oc).where.not(practice: @practice).present?
+              oc.destroy unless oc.parent_category != parent_cat && CategoryPractice.where(category: oc).where.not(practice: @practice)
             end
           end
         end
