@@ -117,3 +117,4 @@
   $(document).on("turbolinks:load", ready);
 }).call(this);
 
+

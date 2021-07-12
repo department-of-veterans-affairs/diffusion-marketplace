@@ -763,7 +763,7 @@ function searchPracticesPage() {
         var adoptingFacility = getComboBoxVal(adoptingFacilityInput, adoptingFacilityLi);
 
         // Get the values for any chosen categories
-        var selectedCheckboxes = $('#update-search-results-form [type="checkbox"]:checked');
+        var selectedCheckboxes = $('#update-search-results-form [type="checkbox"]:checked:not(".all-clinical-checkbox"):not(".all-operational-checkbox"):not(".all-strategic-checkbox")');
         var chosenCategories = selectedCheckboxes.map(function () {
             return this.value;
         }).get();

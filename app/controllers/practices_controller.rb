@@ -1,5 +1,5 @@
 class PracticesController < ApplicationController
-  include CropperUtils, PracticesHelper, PracticeEditorUtils, EditorSessionUtils, PracticeEditorSessionsHelper, PracticeUtils
+  include CropperUtils, PracticesHelper, PracticeEditorUtils, EditorSessionUtils, PracticeEditorSessionsHelper, PracticeUtils, ThreeColumnDataHelper
   before_action :set_practice, only: [:show, :edit, :update, :destroy, :highlight, :un_highlight, :feature,
                                       :un_feature, :favorite, :instructions, :overview, :impact, :resources, :documentation,
                                       :departments, :timeline, :risk_and_mitigation, :contact, :checklist, :publication_validation, :adoptions,
@@ -159,6 +159,7 @@ class PracticesController < ApplicationController
         @diffusion_histories << {practice_id: dh.practice_id, facility_id: dh.facility_id}
       end
     end
+    @parent_categories = Category.get_parent_categories
   end
 
   # GET /explore
@@ -349,6 +350,7 @@ class PracticesController < ApplicationController
 
   # /practices/slug/introduction
   def introduction
+    @parent_categories = Category.get_parent_categories
     render 'practices/form/introduction'
   end
 
@@ -597,7 +599,7 @@ class PracticesController < ApplicationController
                                      practice_email: {},
                                      practice_testimonials_attributes: [:id, :_destroy, :testimonial, :author, :position],
                                      practice_awards_attributes: [:id, :_destroy, :name],
-                                     categories_attributes: [:id, :_destroy, :name, :is_other],
+                                     categories_attributes: [:id, :_destroy, :name, :parent_category_id, :is_other],
                                      practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :facility_type, :initiating_department_office_id],
                                      practice_metrics_attributes: [:id, :_destroy, :description],
                                      practice_emails_attributes: [:id, :address, :_destroy],

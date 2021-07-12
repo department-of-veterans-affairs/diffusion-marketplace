@@ -35,27 +35,9 @@
     </div>
   </fieldset>
 
-  <%
-    categories = Category.where(is_other: false).where.not(name: 'Other').order(Arel.sql('LOWER(name) ASC')).uniq
-    if categories.count > 1
-      # Divide the total by three and round up if possible to make sure the categories are evenly distributed amongst the columns
-      count = ((categories.count * 2) + 3) / (3 * 2)
-      sliced_categories = categories.each_slice(count).to_a
-
-      # When the category count is divisible by 3 with a remainder of 1, move item(s) from one array to the previous to maintain distribution
-      if categories.count % 3 == 1
-        sliced_categories[2].insert(-1, sliced_categories[3][0])
-        sliced_categories[1].insert(-1, sliced_categories[2][0], sliced_categories[2][1])
-        sliced_categories[0].insert(-1, sliced_categories[1][0])
-        sliced_categories[2].shift(2)
-        sliced_categories[1].shift
-      end
-    end
-  %>
-
   <fieldset class="p0">
     <legend class="usa-sr-only">Category Filter</legend>
-    <div class="bg-gray-5 <%= categories.any? ? 'desktop:padding-bottom-2px' : '' %>">
+    <div class="bg-gray-5 desktop:padding-bottom-2px">
       <h2 class="usa-accordion__heading">
         <button class="usa-accordion__button mobile-category-accordion desktop:display-none"
                 aria-expanded="false"
@@ -64,25 +46,38 @@
         </button>
       </h2>
 
-      <% if categories.any? %>
-        <div class="grid-row category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex desktop:padding-x-2">
-          <p class="text-bold line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block desktop:margin-top-1">Category</p>
-          <% if sliced_categories.present? %>
-            <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sliced_categories, column: 0 } %>
-            <% if sliced_categories[1].present? %>
-              <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sliced_categories, column: 1 } %>
-            <% end %>
-            <% if sliced_categories[2].present? %>
-              <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sliced_categories, column: 2 } %>
-            <% end %>
-          <% elsif sliced_categories.nil? && categories.count == 1 %>
-            <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: categories, column: nil } %>
+      <div class="grid-row category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex desktop:padding-x-2">
+        <p class="text-bold line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block margin-top-2">
+          Categories
+          <%= render partial: 'shared/parent_category_modal' %>
+        </p>
+        <% @parent_categories.each do |pc| %>
+          <%
+            non_other_sub_categories = pc.sub_categories.where(is_other: false).order_by_name
+            cat_placeholders = []
+            if non_other_sub_categories.any?
+              cat_placeholders << [Category.new(name: "All #{pc.name.downcase}", parent_category: pc)]
+            end
+
+            categories = non_other_sub_categories.any? ? cat_placeholders.first + non_other_sub_categories : []
+
+            sliced_categories = split_data_into_three_columns(categories)
+          %>
+
+          <% if non_other_sub_categories.any? %>
+            <div class="grid-row grid-col-12 category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex p0-left p0-right">
+              <p class="line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block desktop:margin-top-1 desktop:margin-bottom-0"><%= pc.name %></p>
+              <% sliced_categories.each_with_index do |sc, i| %>
+                <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sc, column: i } unless i === 3 %>
+              <% end %>
+            </div>
           <% end %>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
   </fieldset>
 </div>
+
 <div class="padding-y-2 padding-x-3 border-top-2px border-base-lightest bg-white desktop:border-top-0 desktop:padding-2" id="filter_button_container">
   <button type="submit" id="update-search-results-button" class="usa-button dm-btn-primary display-block width-100 desktop:margin-bottom-1 line-height-19px" name="button">
     Update results

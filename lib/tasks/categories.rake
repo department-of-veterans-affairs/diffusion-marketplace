@@ -84,4 +84,120 @@ namespace :categories do
     end
     puts "#{covid_practices.length} practices have been assigned categories."
   end
+
+  desc 'Create parent categories'
+  task :create_parent_categories => :environment do
+    parent_categories = ['Clinical', 'Operational', 'Strategic']
+
+    parent_categories.each do |pc|
+      unless Category.where('lower(name) = ?', pc.downcase).first.present?
+        Category.create(name: pc)
+        puts "#{pc} is now a parent category."
+      end
+    end
+    puts "All parent categories have been successfully created!"
+  end
+
+  desc 'Assign a parent category to each existing category'
+  task :assign_parent_category_to_existing_categories => :environment do
+    clinical_categories = [
+      'Anesthesiology',
+      'Chaplain Care',
+      'Continuity of Care',
+      'Coordinated Care',
+      'COVID-19 Testing and Screening',
+      'Curbside Care',
+      'Dentistry',
+      'Dermatology',
+      'Emergency Care',
+      'Environmental Services',
+      'Ethics in Health Care',
+      'Geriatric Health',
+      'Home Health',
+      'Hospital Medicine',
+      'Inpatient Care',
+      'LGBT Health',
+      'Medication Management',
+      'Mental Health',
+      'Nephrology',
+      'Neurology',
+      'Nursing',
+      'Nutrition & Food',
+      'Oncology',
+      'Ophthalmology',
+      'Outpatient Care',
+      'Pathology',
+      'Pharmacy',
+      'Primary Care',
+      'Prosthetic and Sensory Aids',
+      'Psychiatry',
+      'Pulmonary Care',
+      'Radiology',
+      'Rural Health',
+      'Specialty Care',
+      'Surgery',
+      'Telehealth',
+      'Urology',
+      'Veteran Experience',
+      'Whole Health',
+      'Women\'s Health'
+    ]
+
+    operational_categories = [
+      'Building Management',
+      'Contracting',
+      'Healthcare Administration',
+      'Information Technology',
+      'Logistics',
+      'Veterans Benefits',
+      'Workforce Development'
+    ]
+
+    strategic_categories = [
+      'Access to Care',
+      'Age-Friendly',
+      'COVID-19',
+      'Employee Experience',
+      'Health Equity',
+      'High Reliability',
+      'Moving Forward',
+      'Suicide Prevention'
+    ]
+
+    def assign_parent_cat(cat, parent_cat)
+      cat_record = Category.where('lower(name) = ?', cat.downcase).first
+      if cat_record.present?
+        cat_record.update_attributes(parent_category: parent_cat)
+        puts "#{cat} now has a parent category of #{parent_cat.name}."
+      else
+        puts "#{cat} does not exist."
+      end
+    end
+
+    clinical_parent_cat = Category.where('lower(name) = ?', 'Clinical'.downcase).first
+    operational_parent_cat = Category.where('lower(name) = ?', 'Operational'.downcase).first
+    strategic_parent_cat = Category.where('lower(name) = ?', 'Strategic'.downcase).first
+    # assign clinical parent category to clinical categories
+    clinical_categories.each do |cc|
+      assign_parent_cat(cc, clinical_parent_cat)
+    end
+    # assign operational parent category to operational categories
+    operational_categories.each do |oc|
+      assign_parent_cat(oc, operational_parent_cat)
+    end
+    # assign strategic parent category to strategic categories
+    strategic_categories.each do |sc|
+      assign_parent_cat(sc, strategic_parent_cat)
+    end
+
+    puts "Existing categories have been successfully updated!"
+  end
+
+  # Instead of having an 'Other' category record, we will make it view-only in the introduction section of the practice editor
+  desc "Delete 'Other' category"
+  task :delete_other_category => :environment do
+    Category.find_by(name: 'Other').destroy
+
+    puts "'Other' category has been successfully deleted!"
+  end
 end
