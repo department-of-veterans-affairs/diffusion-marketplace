@@ -36,11 +36,12 @@ describe 'Search', type: :feature do
     PracticeOriginFacility.create!(practice: @practice13, facility_type: 0, facility_id: '528QK')
     @practice14 = Practice.create!(name: 'The Most Important Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 14', date_initiated: 'Sun, 14 Nov 1999 00:00:00 UTC +00:00', summary: 'This is the thirteenth best practice ever.', published: true, approved: true, user: @user2)
     PracticeOriginFacility.create!(practice: @practice14, facility_type: 0, facility_id: '561BY')
-    @cat_1 = Category.create!(name: 'COVID', is_other: false)
-    @cat_2 = Category.create!(name: 'Environmental Services', is_other: false)
-    @cat_3 = Category.create!(name: 'Follow-up Care', is_other: false)
-    @cat_4 = Category.create!(name: 'Pulmonary Care', is_other: false)
-    @cat_5 = Category.create!(name: 'Telehealth', is_other: false)
+    parent_cat_1 = Category.create!(name: 'Strategic')
+    @cat_1 = Category.create!(name: 'COVID', is_other: false, parent_category: parent_cat_1)
+    @cat_2 = Category.create!(name: 'Environmental Services', is_other: false, parent_category: parent_cat_1)
+    @cat_3 = Category.create!(name: 'Follow-up Care', is_other: false, parent_category: parent_cat_1)
+    @cat_4 = Category.create!(name: 'Pulmonary Care', is_other: false, parent_category: parent_cat_1)
+    @cat_5 = Category.create!(name: 'Telehealth', is_other: false, parent_category: parent_cat_1)
     CategoryPractice.create!(practice: @practice, category: @cat_1, created_at: Time.now)
     CategoryPractice.create!(practice: @practice, category: @cat_2, created_at: Time.now)
     CategoryPractice.create!(practice: @practice, category: @cat_5, created_at: Time.now)
@@ -160,6 +161,8 @@ describe 'Search', type: :feature do
       toggle_filters_accordion
       fill_in('dm-practice-search-field', with: 'test')
       set_combobox_val(0, 'Lincoln VA Clinic')
+      select_category('.cat-2-label')
+      search
       expect(page).to_not have_content('results')
       expect(page).to have_content('There are currently no matches for your search on the Marketplace.')
     end
@@ -269,7 +272,8 @@ describe 'Search', type: :feature do
 
         toggle_filters_accordion
         set_combobox_val(0, 'Norwood VA Clinic')
-        select_category('.cat-4-label')
+        select_category('.cat-2-label')
+        select_category('.cat-5-label')
         update_results
 
         expect(page).to have_content('Filters (3)')
@@ -288,6 +292,8 @@ describe 'Search', type: :feature do
         fill_in('dm-practice-search-field', with: 'practice')
         toggle_filters_accordion
         set_combobox_val(0, 'Togus VA Medical Center')
+        select_category('.cat-2-label')
+        search
         expect(page).to have_content('Filters (2)')
         expect(page).to have_content('2 results')
         expect(page).to have_content(@practice3.name)
@@ -317,7 +323,7 @@ describe 'Search', type: :feature do
         expect(page).to have_content(@practice6.name)
 
         toggle_filters_accordion
-        select_category('.cat-3-label')
+        select_category('.cat-4-label')
         update_results
 
         expect(page).to have_content('Filters (2)')
@@ -396,6 +402,7 @@ describe 'Search', type: :feature do
 
         toggle_filters_accordion
         set_combobox_val(0, 'VISN-1')
+        select_category('.cat-2-label')
         update_results
 
         # results should be sorted my most relevant(closest match) by default
@@ -403,8 +410,8 @@ describe 'Search', type: :feature do
         expect(first('h3.dm-practice-title').text).to eq(@practice6.name)
 
         toggle_filters_accordion
-        select_category('.cat-2-label')
         select_category('.cat-3-label')
+        select_category('.cat-4-label')
         update_results
 
         expect(page).to have_content('6 results')
@@ -460,7 +467,8 @@ describe 'Search', type: :feature do
         toggle_filters_accordion
         set_combobox_val(0, 'VISN-4')
         select_category('.cat-2-label')
-        select_category('.cat-4-label')
+        select_category('.cat-3-label')
+        select_category('.cat-5-label')
         update_results
 
         expect(page.current_url.split('/').pop).to eq('search')
@@ -479,6 +487,7 @@ describe 'Search', type: :feature do
         visit_search_page
 
         toggle_filters_accordion
+        select_category('.cat-2-label')
         update_results
         all('.dm-practice-link').first.click
 
@@ -552,7 +561,7 @@ describe 'Search', type: :feature do
       click_button('Adopting facility')
       set_combobox_val(1, 'VISN-2')
       click_button('Category')
-      select_category('.cat-4-label')
+      select_category('.cat-5-label')
       update_results
 
       expect(page).to have_content('5 results')
