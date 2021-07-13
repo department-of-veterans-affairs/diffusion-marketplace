@@ -62,7 +62,6 @@ describe 'Explore all practices page', type: :feature do
       expect(page).to have_no_content('Main Level Cat')
       expect(page).to have_content('14 results')
       page.has_button?('Load more')
-      expect(page).to have_no_content('Other')
       expect(page).to have_no_content('Other Subcategory')
       expect(page).to have_no_css('.dm-selected')
       expect(page).to have_select('dm_sort_option', selected: 'Sort by A to Z')
