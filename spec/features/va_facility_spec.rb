@@ -271,7 +271,6 @@ describe 'VA facility pages', type: :feature, js: true do
           within(:css, '#dm-created-practice-categories--list') do
             expect(page).to have_content('COVID')
             expect(page).to have_content('Telehealth')
-            expect(page).to have_no_content('Other')
             expect(page).to have_no_content('Other Subcategory')
             expect(page).to have_no_content('Main Level Cat')
           end
