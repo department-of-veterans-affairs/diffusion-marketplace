@@ -192,7 +192,8 @@ class SavePracticeService
           parent_cat_id = parent_cat_id_param.to_i === 0 ? Category.get_category_by_name(parent_cat_id_param).first.id : parent_cat_id_param
           unless name == ""
             if destroy != '1' && id.blank?
-              cate = Category.find_by(name: name.strip, is_other: true, parent_category_id: parent_cat_id)
+              cat_name = name.strip.downcase
+              cate = Category.where('lower(name) = ?', cat_name).where(is_other: true, parent_category_id: parent_cat_id).first
               cate = Category.create(name: name.strip, is_other: true, parent_category_id: parent_cat_id) unless cate.present?
               CategoryPractice.find_or_create_by(category: cate, practice: @practice)
             elsif destroy != '1' && id.present?
