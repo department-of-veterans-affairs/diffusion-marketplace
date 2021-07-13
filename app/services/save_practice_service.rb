@@ -225,7 +225,10 @@ class SavePracticeService
       end
 
     elsif category_params.blank? && @current_endpoint == 'introduction'
-      practice_category_practices.destroy_all
+      practice_category_practices.each do |pcp|
+        pcp.destroy
+        pcp.category.destroy if CategoryPractice.where(category: pcp.category).where('practice_id != ?', @practice.id).blank?
+      end
     end
   end
 
