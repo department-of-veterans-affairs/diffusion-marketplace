@@ -138,7 +138,6 @@ describe 'Explore all practices page', type: :feature do
       # filter by COVID and Telehealth category practices
       find_all('.dm-category-btn')[1].click
       expect(page).to have_css('.dm-selected', count: 2)
-      expect(page).to have_css('.dm-practice-card', count: 12)
       page.has_button?('Load more')
       expect(find_all('.dm-practice-title')[0]).to have_text('Telemedicine')
       expect(find_all('.dm-practice-title')[1]).to have_text('REVAMP')
