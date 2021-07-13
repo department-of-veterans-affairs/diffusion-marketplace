@@ -16,7 +16,7 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @favorite_practices = @user&.favorite_practices || []
-    @facilities_data = facilities_json #['features']
+    @facilities_data = VaFacility.cached_va_facilities
     @created_practices = @user.created_practices
   end
 
@@ -130,7 +130,7 @@ class UsersController < ApplicationController
 
       # Practices based on the user's location
       @practices = Practice.searchable_practices 'a_to_z'
-      @facilities_data = facilities_json
+      @facilities_data = VaFacility.cached_va_facilities
       @offices_data = origin_data_json
       @user_location_practices = []
 

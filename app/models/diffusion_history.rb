@@ -1,5 +1,6 @@
 class DiffusionHistory < ApplicationRecord
   belongs_to :practice
+  belongs_to :va_facility
   has_many :diffusion_history_statuses, dependent: :destroy
   after_save :clear_searchable_practices_cache
   after_destroy :clear_searchable_practices_cache

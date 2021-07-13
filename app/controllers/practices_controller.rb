@@ -149,7 +149,7 @@ class PracticesController < ApplicationController
 
   def search
     @practices = Practice.searchable_practices nil
-    @facilities_data = facilities_json
+    @facilities_data = VaFacility.cached_va_facilities
     @visn_data = origin_data_json["visns"]
     # due to some practices/search.js.erb functions being reused for other pages (VISNs/VA Facilities), set the @practices_json variable to nil unless it's being used for the practices/search page
     @practices_json = practices_json(@practices)
@@ -656,10 +656,6 @@ class PracticesController < ApplicationController
 
   def set_initiating_facility_other
     @initiating_facility_other = @practice.initiating_facility if @practice.other?
-  end
-
-  def set_office_data
-    @office_data = facilities_json.find{|f|f['']}
   end
 
   def create_date_initiated(date_initiated)

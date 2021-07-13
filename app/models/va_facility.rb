@@ -2,6 +2,7 @@ class VaFacility < ApplicationRecord
   extend FriendlyId
   friendly_id :common_name, use: :slugged
   belongs_to :visn
+  has_many :diffusion_histories
   before_save :clear_va_facility_cache_on_save
   after_save :reset_va_facility_cache
 
