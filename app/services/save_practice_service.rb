@@ -191,33 +191,31 @@ class SavePracticeService
           # if the 'other' category has not yet been created, the :parent_category_id will be a string, so we need to find the corresponding parent category
           parent_cat_id = parent_cat_id_param.to_i === 0 ? Category.get_category_by_name(parent_cat_id_param).first.id : parent_cat_id_param
           unless name == ""
-            if destroy == 'false' && id.blank?
+            if destroy != '1' && id.blank?
               cate = Category.find_by(name: name.strip, is_other: true, parent_category_id: parent_cat_id)
               cate = Category.create(name: name.strip, is_other: true, parent_category_id: parent_cat_id) unless cate.present?
               CategoryPractice.find_or_create_by(category: cate, practice: @practice)
-            elsif destroy == 'false' && id.present?
+            elsif destroy != '1' && id.present?
               practice_categories.find_by(id: id.to_i).update_attributes(name: name.strip, parent_category_id: parent_cat_id)
-            elsif destroy == 'true' && id.present?
+            elsif destroy == '1' && id.present?
               practice_category_practices.where(category_id: id).destroy_all
+              Category.find(id).destroy if CategoryPractice.where(category_id: id).where('practice_id != ?', @practice.id).blank?
             end
           end
         end
       end
-      other_practice_categories =  practice_categories.where(is_other: true)
+      other_practice_categories = practice_categories.where(is_other: true)
       if other_practice_categories.any?
         other_parent_cat_options = ['other-clinical', 'other-operational', 'other-strategic']
         other_parent_cat_options.each do |opc|
           parent_cat = Category.get_category_by_name(opc.split('-').pop).first
           if cat_keys.exclude?(opc)
-            debugger
             other_practice_categories.each do |oc|
-              if  CategoryPractice.where(category: oc).where.not(practice: @practice).blank?
-                debugger
+              if oc.parent_category == parent_cat && CategoryPractice.where(category: oc).where('practice_id != ?', @practice.id).blank?
                 oc.destroy
               end
             end
             practice_category_practices.joins(:category).where(categories: { parent_category_id: parent_cat.id, is_other: true }).destroy_all
-
           end
         end
       end
