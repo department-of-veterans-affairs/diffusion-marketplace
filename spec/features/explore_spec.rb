@@ -62,6 +62,7 @@ describe 'Explore all practices page', type: :feature do
       expect(page).to have_no_content('Main Level Cat')
       expect(page).to have_content('14 results')
       page.has_button?('Load more')
+      expect(page).to have_no_content('Other')
       expect(page).to have_no_content('Other Subcategory')
       expect(page).to have_no_css('.dm-selected')
       expect(page).to have_select('dm_sort_option', selected: 'Sort by A to Z')
@@ -137,7 +138,9 @@ describe 'Explore all practices page', type: :feature do
 
       # filter by COVID and Telehealth category practices
       find_all('.dm-category-btn')[1].click
+      expect(page).to have_content('13 results')
       expect(page).to have_css('.dm-selected', count: 2)
+      expect(page).to have_css('.dm-practice-card', count: 12)
       page.has_button?('Load more')
       expect(find_all('.dm-practice-title')[0]).to have_text('Telemedicine')
       expect(find_all('.dm-practice-title')[1]).to have_text('REVAMP')
