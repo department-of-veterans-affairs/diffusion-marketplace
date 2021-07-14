@@ -30,6 +30,7 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
 
 EXPOSE 80
 
+USER nginx
 STOPSIGNAL SIGTERM
 RUN nginx -V
 CMD ["nginx","-g","daemon off;"]
