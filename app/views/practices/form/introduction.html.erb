@@ -1,7 +1,6 @@
 <% provide :main_classes, 'bg-gray-2' %>
 <% provide :footer_classes, 'bg-gray-2' %>
 <% provide :head_tags do %>
-  <!--  <script type="text/javascript" src="../../../practice_origin_office_lookup.json"></script>-->
   <%= javascript_include_tag '_assign_facility_name', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_facilitySelect', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_visnSelect', 'data-turbolinks-track': 'reload' %>
@@ -9,6 +8,7 @@
   <%= javascript_include_tag 'practice_editor_utilities', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'practice_editor_introduction', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag '_introduction_image_editor', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_otherCategories', 'data-turbolinks-track': 'reload' %>
 
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     <%= render partial: 'practices/form/session_monitor', formats: [:js] %>
@@ -87,8 +87,8 @@
                       Tagline <span class="text-gray-50">(required field)</span>
                     <% end %>
                     <span>Type a short sentence summarizing the key outcomes of your practice.  This text will display on the practice card.</span>&nbsp&nbsp;
-                    <span id="practice-editor-tagline-character-counter" class="text-base-light">(0/72 characters)</span>
-                     <%= f.text_area :tagline, class: "usa-textarea #{ @practice.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-tagline-textarea #{ @practice.published ? 'dm-required-field' : '' }", required: @practice.published %>
+                    <%= render partial: 'shared/textarea_counter', locals: { counter_class: "practice-editor-tagline-character-counter", textarea_class: "practice-editor-tagline-textarea", max_char_count: 72 } %>
+                    <%= f.text_area :tagline, class: "usa-textarea #{ @practice.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-tagline-textarea #{ @practice.published ? 'dm-required-field' : '' }", required: @practice.published %>
                     <p class="usa-error-message <%= @practice.errors[:tagline].any? ? 'fas fa-exclamation-circle' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@practice, :tagline) %></span></p>
                   </div>
                 </div>
@@ -456,120 +456,39 @@
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
 
             <div class="margin-top-3 margin-bottom-5">
-              <div class="margin-bottom-105">
-                <p class="text-bold margin-bottom-2">
+              <div class="margin-bottom-2">
+                <p class="text-bold margin-bottom-1">
                   Categories
+                  <%= render partial: 'shared/parent_category_modal' %>
                 </p>
-                <span>Select any categories that apply to your practice.</span>
+                <span>Select the categories most relevant to your practice (suggested: up to 10).</span>
               </div>
-              <div>
+              <% @parent_categories.each do |pc| %>
                 <%
-                  practice_categories = @practice.category_practices
-                  practice_categories_ids = practice_categories.map(&:category_id)
-                  other = Category.where(name: 'Other')
-                  categories = Category.where.not(id: other.ids, is_other: true).order(name: :asc)
-                  categories_list = categories + other
+                  non_other_sub_categories = pc.sub_categories.where(is_other: false).order_by_name
+                  cat_placeholders = []
+                  if non_other_sub_categories.any?
+                    cat_placeholders << [Category.new(name: "All #{pc.name.downcase}", parent_category: pc)]
+                    cat_placeholders << [Category.new(name: 'Other', parent_category: pc)]
+                  end
+
+                  categories = non_other_sub_categories.any? ? cat_placeholders.first + non_other_sub_categories + cat_placeholders.last : []
+
+                  sliced_categories = split_data_into_three_columns(categories)
                 %>
 
-                <% categories_list.each do |cat| %>
-                  <% underscore_cat = cat.name.split(' ').join('').underscore %>
-                  <div class="usa-checkbox pe-category-checkbox position-relative">
-                    <input type="checkbox"
-                           class="usa-checkbox__input category-input"
-                           id="category_<%= underscore_cat %>"
-                           name="practice[category][<%= cat.id %>][value]"
-                           <%= 'checked="true"' if practice_categories_ids.include?(cat.id) %>
-                      />
-                    <label class="usa-checkbox__label"
-                           id="category_<%= underscore_cat %>_label"
-                           for="category_<%= underscore_cat %>"
-                    >
-                      <%= cat.name %>
-                    </label>
+                <% if non_other_sub_categories.any? %>
+                  <div class="dm-<%= pc.name.downcase %>-category-columns-container">
+                    <div class="grid-row">
+                      <p class="text-bold line-height-26 margin-bottom-05 grid-col-12 display-none desktop:display-block desktop:margin-top-1"><%= pc.name %></p>
+                      <% sliced_categories.each_with_index do |sc, i| %>
+                        <%= render partial: 'practices/introduction_forms/category_column', locals: { categories: sc, parent_category: pc, column: i } unless i === 3 %>
+                      <% end %>
+                    </div>
+                    <%= render partial: 'practices/introduction_forms/other_categories', locals: { parent_category: pc, form: f } %>
                   </div>
                 <% end %>
-
-                <div id="other_categories_container" class="display-none position-relative">
-                  <%
-                    other_categories = @practice.categories.where(is_other: true)
-                    other_category_ids = other_categories.ids
-                  %>
-
-                  <ul class="practice-editor-categories-ul padding-left-0" role="listbox" title="Practice categories" aria-label="Practice editor category list">
-                    <%= f.fields_for :categories, wrapper: false do |cat| %>
-                      <%
-                        other_category_id = cat.object.id || "new_categories"
-                        show_other_category_form = other_category_ids.include?(other_category_id) || other_category_id == "new_categories"
-                      %>
-
-                      <% if show_other_category_form %>
-                        <% if cat.object.id %>
-                          <% provide :head_tags do %>
-                            <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                              $(document).arrive('<%= "#practice_categories_attributes_#{cat.index}_name" %>',
-                              function(newElem) {
-                              var $li = $(newElem).closest('li');
-                              styleOriginFacility(
-                              $li,
-                              <%= other_category_id %>,
-                              '.practice-editor-category-li',
-                              '.practice-editor-categories-ul',
-                              '8'
-                              );
-                              var $_destroy = $li.find('.trash-container input[name="practice[_destroy]"]');
-                              $_destroy.attr('name', 'practice[categories_attributes][<%= cat.index %>][_destroy]');
-                              $_destroy.attr('id', 'practice_categories_attributes_<%= cat.index %>__destroy');
-                              $(document).unbindArrive('<%= "#practice_categories_attributes_#{cat.index}_name" %>', newElem);
-                              }
-                              );
-                            <% end %>
-                          <% end %>
-                        <% end %>
-                        <li class="practice-editor-category-li fields" <%= "id=practice_categories_attributes_#{cat.index}_li" if cat.object.id %> role="option" data-id="<%= other_category_id %>">
-                          <div class="grid-row">
-                            <div class="grid-col-8">
-                              <%= cat.label :name, 'Name of category', class: 'usa-label x0-top margin-bottom-1 grid-col-12' %>
-                              <%= cat.text_field :name, class: 'usa-input x0-top', 'aria-label': 'Name' %>
-                            </div>
-
-                            <div class="grid-col-8 trash-container">
-                              <%= cat.link_to_remove 'Delete entry',
-                                                    class: "dm-origin-trash usa-button--unstyled dm-btn-warning float-right line-height-26"
-                              %>
-                            </div>
-                          </div>
-                        </li>
-                      <% end %>
-                    <% end %>
-                  </ul>
-                  <%= f.link_to_add :categories, class: 'dm-add-another-link add-category-link usa-button--unstyled dm-btn-primary line-height-26 cursor-pointer' do %>
-                    <span class="text-normal">Add another</span>
-                  <% end %>
-                  <% unless other_categories.any? %>
-                    <% provide :head_tags do %>
-                      <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                        observePracticeEditorLiArrival(
-                          $(document),
-                          '.practice-editor-category-li',
-                          '.practice-editor-categories-ul',
-                          '8'
-                        );
-                        attachTrashListener(
-                          $(document),
-                          '#other_categories_container',
-                          '.practice-editor-category-li'
-                        );
-                        $(document).arrive('#categories_fields_blueprint',
-                          function(blueprint) {
-                            $('.add-category-link').click();
-                            $(document).unbindArrive('#categories_fields_blueprint', blueprint);
-                          }
-                        );
-                      <% end %>
-                    <% end %>
-                  <% end %>
-                </div>
-              </div>
+              <% end %>
             </div>
 
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>

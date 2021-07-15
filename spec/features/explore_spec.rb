@@ -28,14 +28,30 @@ describe 'Explore all practices page', type: :feature do
       end
     end
 
-    dh_1 = DiffusionHistory.create!(practice_id: @practices[0].id, facility_id: '516')
-    DiffusionHistoryStatus.create!(diffusion_history_id: dh_1.id, status: 'Completed')
-    dh_2 = DiffusionHistory.create!(practice_id: @practices[0].id, facility_id: '600GC')
-    DiffusionHistoryStatus.create!(diffusion_history_id: dh_2.id, status: 'Completed')
-    dh_3 = DiffusionHistory.create!(practice_id: @practices[3].id, facility_id: '516')
-    DiffusionHistoryStatus.create!(diffusion_history_id: dh_3.id, status: 'Completed')
-    dh_4 = DiffusionHistory.create!(practice_id: @practices[4].id, facility_id: '516')
-    DiffusionHistoryStatus.create!(diffusion_history_id: dh_4.id, status: 'Completed')
+    visn_1 = Visn.create!(name: 'VISN 1', number: 2)
+    @fac_1 = VaFacility.create!(
+      visn: visn_1,
+      station_number: "402GA",
+      official_station_name: "Caribou VA Clinic",
+      common_name: "Caribou",
+      street_address_state: "ME"
+    )
+    @fac_2 = VaFacility.create!(
+      visn: visn_1,
+      station_number: "526GA",
+      official_station_name: "White Plains VA Clinic",
+      common_name: "White Plains",
+      street_address_state: "NY"
+    )
+
+    dh_1 = DiffusionHistory.create!(practice: @practices[0], facility_id: @fac_1.station_number)
+    DiffusionHistoryStatus.create!(diffusion_history: dh_1, status: 'Completed')
+    dh_2 = DiffusionHistory.create!(practice: @practices[0], facility_id: @fac_2.station_number)
+    DiffusionHistoryStatus.create!(diffusion_history: dh_2, status: 'Completed')
+    dh_3 = DiffusionHistory.create!(practice: @practices[3], facility_id: @fac_1.station_number)
+    DiffusionHistoryStatus.create!(diffusion_history: dh_3, status: 'Completed')
+    dh_4 = DiffusionHistory.create!(practice: @practices[4], facility_id: @fac_1.station_number)
+    DiffusionHistoryStatus.create!(diffusion_history: dh_4, status: 'Completed')
   end
 
   describe 'Page content' do
@@ -191,7 +207,6 @@ describe 'Explore all practices page', type: :feature do
       login_as(admin, :scope => :user, :run_callbacks => false)
       # cache clears when adding a practice category
       visit practice_introduction_path(pr)
-      find('#category_covid_label').click # selects Telehealth
       find('#practice-editor-save-button').click
       sleep 1
       expect(cache_keys).not_to include("searchable_practices_a_to_z")
@@ -203,9 +218,9 @@ describe 'Explore all practices page', type: :feature do
       # cache clears when adding an adoption
       visit practice_adoptions_path(pr)
       find('#add_adoption_button').click
-      find('label[for="status_unsuccessful"').click
-      select('Alaska', :from => 'editor_state_select')
-      select('Anchorage VA Medical Center', :from => 'editor_facility_select')
+      find('label[for="status_in_progress"').click
+      find('#editor_facility_select').click
+      find('#editor_facility_select--list--option-0').click
       find('#adoption_form_submit').click
       sleep 1
       expect(cache_keys).not_to include("searchable_practices_a_to_z")
@@ -214,10 +229,10 @@ describe 'Explore all practices page', type: :feature do
 
       # cache clears when removing an adoption
       visit practice_adoptions_path(pr)
-      find("button[aria-controls='unsuccessful_adoptions'").click
+      find("button[aria-controls='in-progress_adoptions'").click
       find("button[aria-controls='diffusion_history_#{pr.diffusion_histories.first.id}']").click
       within(:css, "#diffusion_history_#{pr.diffusion_histories.first.id}") do
-        click_link('Delete entry')
+        click_link('Delete')
       end
       page.accept_alert
       sleep 1

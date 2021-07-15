@@ -2,8 +2,9 @@ require 'rails_helper'
 
 describe 'Contact section', type: :feature, js: true do
   def set_data
-    @user1 = User.create!(email: 'hisagi.shuhei@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+    @user1 = User.create!(email: 'hisagi.shuhei@va.gov', first_name: 'Shuhei', last_name: 'Hisagi', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @user2 = User.create!(email: 'momo.hinamori@va.gov', first_name: 'Momo', last_name: 'H', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+    @user3 = User.create!(email: 'testp13423041@va.gov', first_name: 'Test', last_name: 'Account', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: 'testp13423041@va.gov', user: @user1)
     @practice_partner = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative', icon: 'fas fa-heart', color: '#E4A002')
     @practice_email = PracticeEmail.create!(practice: @practice, address: 'testp13423041@va.gov')
@@ -117,6 +118,44 @@ describe 'Contact section', type: :feature, js: true do
       expect(page).to have_content('Profile')
       expect(page).to have_content('momo.hinamori@va.gov')
     end
+
+    describe 'comment mailer' do
+      it 'if the practice user is not the comment creator and the practice user\'s email is the same as the practice\'s support network email, it should send an email to the practice user' do
+        @practice.update(support_network_email: @user1.email)
+        expect { create_comment }.to change { ActionMailer::Base.deliveries.count }.by(1)
+
+        expect(ActionMailer::Base.deliveries.last.bcc.count).to eq(1)
+        expect(ActionMailer::Base.deliveries.last.bcc.first).to eq(@user1.email)
+      end
+
+      it 'if the practice user\'s email is not the same as the practice\'s support network email and neither is the comment creator, it should send an email to both the practice user and the support network email' do
+        expect { create_comment }.to change { ActionMailer::Base.deliveries.count }.by(1)
+
+        expect(ActionMailer::Base.deliveries.last.bcc.count).to eq(2)
+        expect(ActionMailer::Base.deliveries.last.bcc.first).to eq(@user1.email)
+        expect(ActionMailer::Base.deliveries.last.bcc.last).to eq(@practice.support_network_email)
+      end
+
+      it 'if the practice user is the creator of a comment, it should not send an email to the practice user' do
+        @practice.update(user: @user2)
+        expect { create_comment }.to change { ActionMailer::Base.deliveries.count }.by(1)
+
+        expect(ActionMailer::Base.deliveries.last.bcc.count).to eq(1)
+        expect(ActionMailer::Base.deliveries.last.bcc.first).to_not eq(@user2.email)
+        expect(ActionMailer::Base.deliveries.last.bcc.first).to eq(@practice.support_network_email)
+      end
+
+      it 'if a user exists with the an email address that matches the practice\'s support network email and that user is the comment creator, it should not send an email to the support network email address' do
+        logout(@user2)
+        login_as(@user3, :scope => :user, :run_callbacks => false)
+        visit practice_path(@practice)
+        expect { create_comment }.to change { ActionMailer::Base.deliveries.count }.by(1)
+
+        expect(ActionMailer::Base.deliveries.last.bcc.count).to eq(1)
+        expect(ActionMailer::Base.deliveries.last.bcc.first).to_not eq(@user3.email)
+        expect(ActionMailer::Base.deliveries.last.bcc.first).to eq(@user1.email)
+      end
+    end
   end
 
   describe 'Reporting a comment' do
@@ -174,5 +213,10 @@ describe 'Contact section', type: :feature, js: true do
       visit practice_path(@practice)
       expect(page).to have_link(href: 'mailto:testp13423041@va.gov?cc=testp13423041%40va.gov')
     end
+  end
+
+  def create_comment
+    fill_in('comment[body]', with: 'This is a test comment')
+    click_button('commit')
   end
 end

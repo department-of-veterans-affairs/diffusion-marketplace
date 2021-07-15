@@ -1,79 +1,90 @@
+const ap = {
+  loadingSpinner: ".dm-adopted-practices-loading-spinner",
+  searchField: "#dm-adopted-practices-search-field",
+  noResults: ".dm-adopted-practices-no-results",
+  table: "#practices_adopted_at_this_facility_table",
+  counter: "#practices_adopted_at_facility_count",
+  tableRows: "#practices_adopted_by_facility_dyn",
+};
+
 function trackSearch(term) {
-    if (term !== '') {
-        ahoy.track("Facility practice search", { search_term: term });
-        if (typeof ga === "function") {
-            ga("send", {
-                hitType: "event",
-                eventCategory: "Facility search",
-                eventAction: "Facility search",
-                location: `/facilities/${facilitySlug}`
-            });
-        }
+  if (term !== '') {
+    ahoy.track("Facility practice search", { search_term: term });
+    if (typeof ga === "function") {
+      ga("send", {
+        hitType: "event",
+        eventCategory: "Facility search",
+        eventAction: "Facility search",
+        location: `/facilities/${facilitySlug}`
+      });
     }
+  }
 }
 
-function practicesAdoptedAtThisFacilityNoResults()
-{
-    let practicesAdoptedNoResults =  document.getElementById("practices_adopted_no_results");
-    let facilityTable = document.getElementById("practices_adopted_at_this_facility_table");
-    let practicesAdoptedAtFacilityCount = document.getElementById("practices_adopted_at_facility_count");
-    if (practicesAdoptedNoResults){
-        practicesAdoptedNoResults.style.display = "block";
+function ajaxUpdateSearchResults() {
+  _displaySpinner({ display: true })
+  let selectedCategory = $('select[name="facility_category_select_adoptions"]').val();
+  let keyWord = $(ap.searchField).data("search").length > 0 ? $(ap.searchField).data("search") : null;
+
+  // sets the search term only when the user clicks search and is less confusing if a user updates the search input but never hits the search button
+  $(ap.searchField).val(keyWord);
+
+  Rails.ajax({
+    type: 'get',
+    dataType: 'json',
+    url: `/facilities/${facilitySlug}/update_practices_adopted_at_facility`,
+    data: jQuery.param({ selected_category: selectedCategory, key_word: keyWord }),
+    success: function(result) {
+      _setResultCount({ count: result.count })
+      if (result.count === 0) {
+        $(ap.noResults).removeClass('display-none');
+      }
+      else {
+        $(ap.table).removeClass("display-none");
+        $(ap.tableRows).removeClass('display-none');
+        $(ap.tableRows).empty();
+        $(ap.tableRows).append(result.adopted_facility_results_html);
+      }
+      _displaySpinner({ display: false })
     }
-    if (facilityTable){
-        facilityTable.style.display = "none";
-    }
-    if (practicesAdoptedAtFacilityCount){
-        practicesAdoptedAtFacilityCount.innerHTML = "0 results: ";
-    }
-    $(".search-no-results").last().removeClass("display-none");
+  });
 }
 
-function practicesAdoptedAtThisFacilityResults(result)
-{
-    document.getElementById("practices_adopted_no_results").style.display = "none";
-    document.getElementById("practices_adopted_at_this_facility_table").style.display = "block";
-    $("#practices_adopted_by_facility_dyn").empty();
-    $("#practices_adopted_by_facility_dyn").append(result.adopted_facility_results_html);
-    document.getElementById("practices_adopted_at_facility_count").innerHTML = `${result.count} result${result.count != 1 ? 's' : ''}:`;
+function _displaySpinner({ display }) {
+  if (display) {
+    $(ap.noResults).addClass("display-none");
+    $(ap.counter).addClass('display-none');
+    $(ap.table).addClass('display-none');
+    $(ap.loadingSpinner).removeClass('display-none');
+  } else {
+    $(ap.counter).removeClass("display-none");
+    $(ap.loadingSpinner).addClass("display-none")
+  }
 }
 
-function ajaxUpdateSearchResults(){
-    let selectedCategory = document.getElementsByName("facility_category_select_adoptions")[0].value;
-    let keyWord = document.getElementById("dm-adopted-practices-search-field").value;
-    let facilityStationNumber = document.getElementById("facility_station_number").value;
-    Rails.ajax({
-        type: 'get',
-        dataType: 'json',
-        url: `/facilities/${facilitySlug}/update_practices_adopted_at_facility`,
-        data: jQuery.param({selected_category: selectedCategory, key_word: keyWord, station_number: facilityStationNumber}),
-        success: function(result) {
-            if(result.count === 0){
-                practicesAdoptedAtThisFacilityNoResults();
-            }
-            else{
-                practicesAdoptedAtThisFacilityResults(result);
-            }
-        }
-    });
+function _setResultCount({ count }) {
+  let text = `${count} result${count != 1 ? "s" : ""}:`;
+  $(ap.counter).text(text);
 }
 
-function updateSearchResultsOnSearchButtonClick(){
-    $("#dm-adopted-practices-search-button").click (function(e) {
-        e.preventDefault();
-        ajaxUpdateSearchResults();
-        let keyWord = document.getElementById("dm-adopted-practices-search-field").value;
-        trackSearch(keyWord);
-    });
+function attachSearchButtonClickListener() {
+  $("#dm-adopted-practices-search-button").click (function(e) {
+    e.preventDefault();
+    let keyWord = $(ap.searchField).val();
+    $(ap.searchField).data("search", keyWord);
+    trackSearch(keyWord);
+    ajaxUpdateSearchResults();
+  });
 }
 
-function updateSearchResultsBasedOnCategorySelect(){
-    $("#facility_category_select_adoptions").change (function(e) {
-        ajaxUpdateSearchResults();
-    });
+function attachCategorySelectListener() {
+  $("#facility_category_select_adoptions").change (function() {
+    ajaxUpdateSearchResults();
+  });
 }
 
 document.addEventListener('turbolinks:load', function() {
-    updateSearchResultsOnSearchButtonClick();
-    updateSearchResultsBasedOnCategorySelect();
+  attachSearchButtonClickListener();
+  attachCategorySelectListener();
+  ajaxUpdateSearchResults();
 });

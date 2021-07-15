@@ -3,6 +3,7 @@
 </label>
 <div class="usa-combo-box" data-placeholder="- Select or start typing -">
   <select id="<%= combo_box_id %>" class="<%= combo_box_id %> usa-select margin-top-0" name="<%= combo_box_id %>">
+    <option value=""></option>
     <% categories.each do |c| %>
       <option value=<%= c[:id] %>>
         <%= c[:name] %>

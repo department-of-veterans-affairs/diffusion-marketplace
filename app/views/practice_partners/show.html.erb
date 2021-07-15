@@ -2,16 +2,12 @@
   <section class="grid-container">
     <%= render partial: "shared/messages", locals: {small_text: false} %>
   </section>
-  <div class="grid-container margin-top-3 margin-bottom-205">
-      <%= link_to practice_partners_path(@practices), class: 'usa-button--unstyled dm-btn-primary' do %>
-          <span class="fas fa-chevron-left margin-right-1"></span><span class="font-sans-md">Return to all partners</span>
-      <% end %>
-  </div>
-  <section class="margin-bottom-4 grid-container">
+
+  <section class="margin-bottom-5 margin-top-8 grid-container">
     <div class="grid-row">
-      <div class="grid-col-11">
-        <h1 class="font-sans-2xl margin-top-0 margin-bottom-0"><%= "#{@practice_partner.name}#{@practice_partner.short_name.present? ? " (#{@practice_partner.short_name.upcase})" : ''}"%></h1>
-        <p class="margin-0 font-sans-lg line-height-sans-6"><%= @practice_partner.description %></p>
+      <div>
+        <h1 class="grid-col-12 font-sans-2xl margin-top-0 margin-bottom-2"><%= "#{@practice_partner.name}#{@practice_partner.short_name.present? ? " (#{@practice_partner.short_name.upcase})" : ''}"%></h1>
+        <p class="grid-col-12 margin-0 line-height-26 tablet:grid-col-8"><%= @practice_partner.description %></p>
       </div>
     </div>
   </section>
@@ -20,7 +16,7 @@
       <% @partner_practices = @practice_partner.practices %>
       <% if @partner_practices.any? %>
         <div class="grid-row grid-gap-3">
-          <% @partner_practices.order(name: :asc).each do |p| %>
+          <% @partner_practices.order(retired: :asc, name: :asc).each do |p| %>
             <%= render partial: 'shared/practice_card', locals: {practice: p, featured: false} %>
           <% end %>
         </div>

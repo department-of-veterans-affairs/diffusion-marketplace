@@ -1,7 +1,6 @@
 <% provide :head_tags do %>
   <%= javascript_include_tag 'practice_page', 'data-turbolinks-track': 'reload' %>
 <% end %>
-
 <section class="usa-section padding-y-0">
   <div class="grid-container position-relative">
     <div class="grid-row grid-gap">
@@ -21,6 +20,24 @@
                   Not Approved
                 </div>
               <% end %>
+            </div>
+          </div>
+        <% end %>
+        <% if @practice.retired %>
+          <div class="usa-alert usa-alert--info margin-bottom-3 margin-top-1">
+            <div class="usa-alert__body">
+              <h4 class="usa-alert__heading">Retired Practice</h4>
+              <div class="usa-alert__text">
+                This practice is no longer being updated.
+                <% if @practice.retired_reason.present? %>
+                  <p>
+                    <%
+                      retired_reason_html = @practice.retired_reason.gsub("<p>", "").gsub("</p>", "")
+                    %>
+                    Reason for retirement: <%= sanitize retired_reason_html.html_safe %>
+                  </p>
+                <% end %>
+              </div>
             </div>
           </div>
         <% end %>
@@ -79,7 +96,7 @@
   <% end %>
 </div>
 
-<!--//Overview-Problem-->
+<!-- Overview-Problem-->
 <section id="overview" class="margin-bottom-5 grid-container nav-header">
   <div class="grid-row grid-gap-2">
     <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
@@ -114,9 +131,9 @@
   </section>
 <% end %>
 
-<!--//Overview-Problem-->
+<!-- Diffusion Tracker -->
 <% if @practice.diffusion_histories.any? && ENV['GOOGLE_API_KEY'] %>
-  <section class="margin-bottom-5 grid-container">
+  <section id="dm-pv-diffusion-tracker" class="margin-bottom-5 grid-container">
     <div class="grid-row grid-gap-2">
       <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
       <div class="desktop:grid-col-9 grid-col-12">

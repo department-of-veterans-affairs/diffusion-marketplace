@@ -8,8 +8,15 @@ ActiveAdmin.register Category do
   index do
     id_column
     column :name
+    column :short_name
     column :description
+    column "Parent Category" do |p|
+      if p.present?
+        Category.find_by_id(p.parent_category_id)
+       end
+    end
     column :related_terms
+    column :is_other
     actions
   end
 
@@ -17,17 +24,30 @@ ActiveAdmin.register Category do
     attributes_table do
       row :id
       row :name
+      row :short_name
       row :description
+      row "Parent Category" do |p|
+        if p.present?
+          parent_cat = Category.find_by_id(p.parent_category_id)
+        end
+      end
       row :related_terms
+      row :is_other
     end
   end
 
-  form do |f|
+ form do |f|
     f.inputs do
       f.input :name
+      f.input :short_name
       f.input :description, as: :string
-      # ensures input is displayed as comma separated list
+      f.input :parent_category_id,
+              as: :select, multiple: false,
+              include_blank: false, collection: Category.get_parent_categories,
+              input_html: { value: object[:parent_category_id] }, wrapper_html: { class: object.sub_categories.any? ? 'display-none' : '' }
+        # ensures input is displayed as comma separated list
       f.input :related_terms_raw, label: 'Related Terms', hint: 'Comma separated list (e.g., COVID-19, Coronavirus)'
+      f.input :is_other
     end
     f.actions
   end
@@ -62,7 +82,7 @@ ActiveAdmin.register Category do
     private
 
     def category_params
-      params.require(:category).permit(:name, :description, related_terms:[])
+      params.require(:category).permit(:name, :short_name, :description, :parent_category_id, :is_other, related_terms:[])
     end
 
     def modify_related_terms_for_db

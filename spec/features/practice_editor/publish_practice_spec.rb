@@ -9,6 +9,16 @@ describe 'Practice editor', type: :feature, js: true do
     @admin.add_role(User::USER_ROLES[0].to_sym)
     Category.create!(name: 'Pulmonary Care')
     Category.create!(name: 'Other')
+    visn_1 = Visn.create!(name: 'VISN 1', number: 2)
+    VaFacility.create!(
+      visn: visn_1,
+      station_number: "402GA",
+      official_station_name: "Caribou VA Clinic",
+      common_name: "Caribou",
+      latitude: "44.2802701",
+      longitude: "-69.70413586",
+      street_address_state: "ME"
+    )
   end
 
   describe 'Publish practice flow' do
@@ -42,9 +52,9 @@ describe 'Practice editor', type: :feature, js: true do
 
     def set_adoption
       find('#add_adoption_button').click
-      find('label[for="status_in_progress"').click
-      select('Alaska', :from => 'editor_state_select')
-      select('Anchorage VA Medical Center', :from => 'editor_facility_select')
+      find("label[for*='status_completed']").click
+      find('#editor_facility_select').click
+      find("#editor_facility_select--list--option-0").click
       find('#adoption_form_submit').click
     end
 
@@ -56,7 +66,7 @@ describe 'Practice editor', type: :feature, js: true do
 
     it 'should display an error modal only when missing required fields exists' do
       @publish_button.click
-      page.has_css?('.publication-modal-body')
+      expect(page).to have_selector(".publication-modal-body", visible: true)
       expect(page).to have_content('Cannot publish yet')
       expect(page).to have_content('This is what you need to do before publishing your practice to the Diffusion Marketplace')
       expect(page).to have_content('You must include a tagline for your practice')
@@ -72,7 +82,7 @@ describe 'Practice editor', type: :feature, js: true do
       set_pr_required_fields
       set_initiating_fac
       @publish_button.click
-      page.has_css?('.publication-modal-body')
+      expect(page).to have_selector(".publication-modal-body", visible: true)
       expect(page).to have_content('Cannot publish yet')
       expect(page).to have_content('This is what you need to do before publishing your practice to the Diffusion Marketplace')
       expect(page).to have_no_content('You must include the initiation date for your practice')

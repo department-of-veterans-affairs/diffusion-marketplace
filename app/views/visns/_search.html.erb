@@ -42,6 +42,6 @@
     second_div_classes: 'grid-col-4'
   }
   %>
-  <%= render partial: 'shared/search_loading_spinner' %>
+  <%= render partial: 'shared/loading_spinner', locals: { display: false, classes: 'dm-visn-search-loading-spinner flex-justify-center flex-align-self-center margin-y-8 desktop:margin-y-10' } %>
   <%= render partial: 'shared/search_no_results', locals: { display_no_query_msg: false } %>
 </section>

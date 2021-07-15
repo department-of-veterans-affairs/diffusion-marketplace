@@ -6,7 +6,7 @@
     <div class="usa-search grid-col-8">
         <form role="search" class="flex-column">
         <div class="display-flex dm-search-container grid-col-12 margin-top-05">
-          <label for="created-practice-search" class="usa-label usa-sr-only">
+          <label for="dm-adopted-practices-search-field" class="usa-label usa-sr-only">
             Search
           </label>
           <input class="usa-input" id="dm-adopted-practices-search-field" title="Type at least three characters to search." autocomplete="off" type="search" name="search" data-search="">
@@ -23,15 +23,13 @@
     </div>
   </div>
   <div class="grid-col-12">
-    <div id="practices_adopted_at_facility_count" class="usa-search margin-bottom-2 facility-search-field">
-      <%= @adoptions_at_facility.count %> results:
+    <div id="practices_adopted_at_facility_count" class="usa-search margin-bottom-2">
     </div>
   </div>
-  <div id="practices_adopted_no_results">
-    <%= render partial: 'shared/search_no_results', locals: { display_no_query_msg: false } %>
-  </div>
-  <% if @adoptions_at_facility.count > 0 %>
+  <%= render partial: 'shared/search_no_results', locals: { display_no_query_msg: false, classes: 'dm-adopted-practices-no-results' } %>
+  <% if @adopted_pr_count > 0 %>
     <%= render partial: 'va_facilities/facility_adoption_results' %>
   <% end %>
+  <%= render partial: 'shared/loading_spinner', locals: { display: true, classes: "width-full dm-adopted-practices-loading-spinner text-center margin-y-10" } %>
 </section>
 

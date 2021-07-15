@@ -18,8 +18,10 @@ class Commontator::SubscriptionsMailer < ActionMailer::Base
     @thread = @comment.thread
     @creator = @comment.creator
     @mail_params = { from: @thread.config.email_from_proc.call(@thread) }
+    practice = Practice.find(@comment.thread.commontable_id)
+    support_network_email = practice.support_network_email || nil
     @recipient_emails = recipients.map do |recipient|
-      Commontator.commontator_email(recipient, self)
+      support_network_email.present? && recipient === support_network_email.downcase ? recipient : Commontator.commontator_email(recipient, self)
     end
     @using_mailgun = Rails.application.config.action_mailer.delivery_method == :mailgun
     if @using_mailgun

@@ -128,7 +128,6 @@ function styleOriginFacility($newEl,
         .appendTo(ulSelector);
 
     $newEl.css('list-style', 'none');
-
     const $originFacilityElements =
         $(liElSelector)
             .not(function(i, el) {

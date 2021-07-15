@@ -4,7 +4,6 @@
     <div class="desktop:grid-col-9 grid-col-12 padding-top-10">
       <div class="practice-editor-long-rect-svg border-top-05 border-primary-dark"></div>
       <h2 class="font-sans-xl line-height-37px margin-top-2 margin-bottom-10">Contact</h2>
-
       <!--Comments-->
       <% if current_user.present? %>
         <div class="desktop:grid-col-11 comments-section practice-section">
@@ -12,6 +11,13 @@
             <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
             <h2 id="comments" class="font-sans-lg text-bold margin-top-2 margin-bottom-3">Comment</h2>
           </div>
+          <% if @practice.retired %>
+            <div class="usa-alert usa-alert--info margin-bottom-3">
+              <div class="usa-alert__body">
+                <p class="usa-alert__text">Comments and replies are disabled for retired practices.</p>
+              </div>
+            </div>
+          <% end %>
           <div>
             <%= commontator_thread(@practice) %>
           </div>

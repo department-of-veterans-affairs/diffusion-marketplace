@@ -4,7 +4,7 @@ include UserUtils
 
 ActiveAdmin.register Practice do
   actions :all, except: [:destroy]
-  permit_params :name, :user_email
+  permit_params :name, :user_email, :retired, :retired_reason
   config.create_another = true
 
   scope :published
@@ -20,7 +20,7 @@ ActiveAdmin.register Practice do
       end
     end
   end
-  
+
     # ensure lowercase practice names are ordered correctly
     order_by(:name) do |order_clause|
       ['lower(practices.name)', order_clause.order].join(' ')
@@ -44,6 +44,7 @@ ActiveAdmin.register Practice do
     column :highlight
     column 'Public', :is_public
     column :created_at unless params[:scope] == "get_practice_owner_emails"
+    column :retired unless params[:scope] == "get_practice_owner_emails"
     column 'Last Updated', :updated_at unless params[:scope] == "get_practice_owner_emails"
     column :date_published unless params[:scope] == "get_practice_owner_emails"
     actions do |practice|
@@ -53,7 +54,20 @@ ActiveAdmin.register Practice do
       item practice_highlight_action_str, highlight_practice_admin_practice_path(practice), method: :post
       practice_highlight_action_str = practice.is_public ? "Make Private" : "Make Public"
       item practice_highlight_action_str, set_practice_privacy_admin_practice_path(practice), class: 'toggle-practice-privacy-link', method: :post
+      practice_retired_action_str = practice.retired ? "Activate" : "Retire"
+      item practice_retired_action_str, retire_practice_admin_practice_path(practice), method: :post
     end
+  end
+
+  member_action :retire_practice, method: :post do
+    resource.retired = !resource.retired
+    message = "\"#{resource.name}\" was retired"
+    unless resource.retired
+      message = "\"#{resource.name}\" was activated"
+      resource.retired_reason = nil if resource.retired == false
+    end
+    resource.save
+    redirect_back fallback_location: root_path, notice: message
   end
 
   member_action :enable_practice, method: :post do
@@ -164,6 +178,8 @@ ActiveAdmin.register Practice do
         f.input :highlight_title, label: 'Highlighted Practice Title'
         f.input :highlight_body, label: 'Highlighted Practice Body'
       end
+      f.input :retired, label: 'Practice retired?'
+      f.input :retired_reason, label: 'Retired reason', as: :quill_editor
     end        # builds an input field for every attribute
     f.actions         # adds the 'Submit' and 'Cancel' buttons
   end
@@ -191,6 +207,8 @@ ActiveAdmin.register Practice do
         row :highlight_title
         row :highlight_body
       end
+      row :retired
+      row :retired_reason
     end
     h3 'Versions'
     table_for practice.versions.order(created_at: :desc) do |version|
@@ -225,16 +243,19 @@ ActiveAdmin.register Practice do
         blank_practice_name = params[:practice][:name].blank?
         practice_slug = params[:id]
         email = params[:user_email]
+        retired = params[:practice][:retired] == "1" ? true : false
+        retired_reason = retired ? params[:practice][:retired_reason] : nil
         # raise an error if practice name is left blank
         raise StandardError.new 'There was an error. Practice name cannot be blank.' if blank_practice_name
 
         practice = Practice.find_by(slug: practice_slug)
+
         practice_by_name = Practice.find_by(name: practice_name)
         # raise an error if there's already a practice with a name that matches the user's input for the name field
         raise StandardError.new 'There was an error. Practice name already exists.' if practice_by_name.present? && practice_by_name != practice
-
         practice ||= Practice.create(name: practice_name)
-
+        practice.retired = retired
+        practice.retired_reason = retired_reason
 
         # raise an error if practice email does not meet validation requirements
         blank_email = email.blank?
@@ -282,6 +303,7 @@ ActiveAdmin.register Practice do
     end
 
     def set_practice_user(practice)
+      previous_practice_user = practice.user
       email = params[:user_email].downcase
       name = params[:practice][:name]
       user = User.find_by(email: email)
@@ -291,6 +313,10 @@ ActiveAdmin.register Practice do
       skip_validations_and_save_user(user)
 
       practice.user = user
+      # if the practice user is updated, remove the previous practice user from the commontator_thread subscribers list if the following conditions are also true
+      if previous_practice_user.present? && previous_practice_user != practice.user && practice.commontator_thread.comments.where(creator_id: previous_practice_user.id).empty?
+        practice.commontator_thread.unsubscribe(previous_practice_user)
+      end
       practice.commontator_thread.subscribe(user)
       practice.approved = true
       practice.name = name

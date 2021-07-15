@@ -6,39 +6,6 @@
     const departmentOption = '#initiating_facility_type_department';
     const otherOption = '#initiating_facility_type_other';
 
-    const CHARACTER_COUNTER_INVALID_COLOR = '#e52207';
-    const CHARACTER_COUNTER_VALID_COLOR =  '#a9aeb1';
-    const TAGLINE_CHARACTER_COUNT = 72;
-
-    function characterCounter(e, $element, maxlength) {
-        const t = e.target;
-        let currentLength = $(t).val().length;
-
-        let characterCounter = `(${currentLength}/${maxlength} characters)`;
-
-        $element.css('color', CHARACTER_COUNTER_VALID_COLOR);
-        $element.text(characterCounter);
-
-        if (currentLength >= maxlength) {
-            $element.css('color', CHARACTER_COUNTER_INVALID_COLOR);
-        }
-    }
-
-    function countCharsOnPageLoad() {
-        let practiceTaglineCurrentLength = $('.practice-editor-tagline-textarea').val().length;
-        let practiceTaglineCharacterCounter = `(${practiceTaglineCurrentLength}/${TAGLINE_CHARACTER_COUNT} characters)`;
-        $('#practice-editor-tagline-character-counter').text(practiceTaglineCharacterCounter);
-        if (practiceTaglineCurrentLength >= TAGLINE_CHARACTER_COUNT) {
-            $('#practice-editor-tagline-character-counter').css('color', CHARACTER_COUNTER_INVALID_COLOR);
-        }
-    }
-
-    function maxCharacters() {
-        $('.practice-editor-tagline-textarea').on('input', (e) => {
-            characterCounter(e, $('#practice-editor-tagline-character-counter'), TAGLINE_CHARACTER_COUNT);
-        });
-    }
-
     function showCurrentlySelectedOptions(currentSelectForm){
         $(`#${currentSelectForm}`).show();
         $(`#${currentSelectForm} :input`).prop("disabled", false);
@@ -110,25 +77,6 @@
         showOtherAwardFields();
     }
 
-    function attachShowOtherCategoryFields() {
-        observePracticeEditorLiArrival(
-            $document,
-            '.practice-editor-category-li',
-            '.practice-editor-categories-ul',
-            '8'
-        );
-        $document.on('change', '#category_other', function() {
-            showOtherCategoryFields();
-        });
-
-        attachTrashListener(
-            $document,
-            '#other_categories_container',
-            '.practice-editor-category-li'
-        );
-        showOtherCategoryFields();
-    }
-
     function expandSummaryTextArea() {
         let summaryEl = $('#practice_summary');
         summaryEl.autoResize();
@@ -137,11 +85,8 @@
 
 
     function loadPracticeIntroductionFunctions() {
-        countCharsOnPageLoad();
-        maxCharacters();
         attachFacilitySelectListener();
         attachShowOtherAwardFields();
-        attachShowOtherCategoryFields();
         toggleInputsOnRadioSelect();
         toggleInputsOnLoad();
         expandSummaryTextArea();
@@ -173,10 +118,4 @@ function showOtherAwardFields() {
     }
 }
 
-function showOtherCategoryFields() {
-    if ($('#category_other').prop('checked')) {
-        $('#other_categories_container').removeClass('display-none');
-    } else {
-        $('#other_categories_container').addClass('display-none');
-    }
-}
+
