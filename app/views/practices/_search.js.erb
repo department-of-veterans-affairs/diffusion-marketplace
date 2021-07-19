@@ -57,6 +57,24 @@ function sortByRetired(a, b){
     return a.item.retired - b.item.retired
 }
 
+function getVisn(visnsArray, facility) {
+    return visnsArray.find(function(v) {
+        return v.number.toString() === facility.split('-').pop();
+    });
+}
+
+function getVaFacility(facilitiesArray, facility) {
+    return facilitiesArray.find(function(f) {
+        return facility === f.station_number;
+    });
+}
+
+function getVaFacilitiesByVisn(facilitiesArray, facility) {
+    return facilitiesArray.filter(function(f) {
+        return f.visn_id === facility.id;
+    });
+}
+
 // Build out practice cards once results come back from Fuse
 function buildPracticeCard(result) {
     var cardHtml = '';
@@ -67,24 +85,24 @@ function buildPracticeCard(result) {
     var favoriteButton = '';
     if (!result.item.retired) {
         favoriteButton =
-          '<a aria-label="Bookmark ' + practiceName + '" tabindex="-1" aria-hidden="true" class="dm-practice-bookmark-btn" id="dm-bookmark-button-' + result.item.id + '" data-remote="true" rel="nofollow" data-method="post" href="/practices/' + result.item.slug + '/favorite.js">' +
-          '<i class="' + favoriteButtonIcon + ' fa-bookmark dm-favorite-icon-' + result.item.id + ' text-no-underline"></i>' +
-          '</a>';
+            '<a aria-label="Bookmark ' + practiceName + '" tabindex="-1" aria-hidden="true" class="dm-practice-bookmark-btn" id="dm-bookmark-button-' + result.item.id + '" data-remote="true" rel="nofollow" data-method="post" href="/practices/' + result.item.slug + '/favorite.js">' +
+            '<i class="' + favoriteButtonIcon + ' fa-bookmark dm-favorite-icon-' + result.item.id + ' text-no-underline"></i>' +
+            '</a>';
     }
     var cardImageHtml =
         '<div class="dm-practice-card-img-container">' +
         '<img alt="' + practiceName + ' Marketplace Card Image" class="grid-row marketplace-card-img radius-top-sm" src="' + practiceImage + '">';
-        if(result.item.retired){
-            cardImageHtml += '<div class="dm-practice-retired-banner"><h5>Retired</h5></div>';
-        }
+    if(result.item.retired){
+        cardImageHtml += '<div class="dm-practice-retired-banner"><h5>Retired</h5></div>';
+    }
     cardImageHtml += '</div>';
     var noCardImageHtml =
         '<div class="dm-bg-gray-80">' +
         '<h3 class="text-normal font-sans-lg dm-practice-title multiline-ellipses-2 margin-x-2 margin-y-4">' +
         practiceName + '</h3>';
-        if(result.item.retired){
-            noCardImageHtml += '<div class="dm-practice-retired-banner"><h5>Retired</h5></div>';
-        }
+    if(result.item.retired){
+        noCardImageHtml += '<div class="dm-practice-retired-banner"><h5>Retired</h5></div>';
+    }
     noCardImageHtml += '</div>';
     var cardImage = practiceImage ? cardImageHtml : noCardImageHtml;
     var practiceNameHeader =
@@ -169,7 +187,7 @@ function toggleAccordion(accordionEl, containerEl) {
 
 function toggleMobileCategoriesAccordion() {
     $(document).on('click', '.mobile-category-accordion', function() {
-          toggleAccordion(this, '.category-container');
+        toggleAccordion(this, '.category-container');
     });
 }
 
@@ -297,32 +315,29 @@ function searchPracticesPage() {
             // Collect any practice that either has the selected VISN as an origin facility, or has an origin facility that belongs to the selected VISN
 
             // Add the VISN to the array
-            var foundVisn = visns.find(function(v) {
-                return v.number === originatingFacility;
-            });
+            var originatingFacilityVisn = getVisn(visns, originatingFacility);
 
-            originFacilityArray.push({'initiating_facility': "=\"" + foundVisn.id.toString() + "\""});
+            originFacilityArray.push({'initiating_facility': "=\"" + originatingFacilityVisn.id.toString() + "\""});
 
-            var visnFacilities = facilities.filter(function(f) {
-                return f.VISN === foundVisn.number.split('-').pop();
-            });
+            var visnFacilities = getVaFacilitiesByVisn(facilities, originatingFacilityVisn)
 
             // Now add the facilities
             visnFacilities.forEach(function(vf) {
-                originFacilityArray.push({'origin_facilities': "=\"" + vf.StationNumber + "\""});
+                originFacilityArray.push({'origin_facilities': "=\"" + vf.station_number + "\""});
             });
         } else if (originatingFacility && !originatingFacility.includes('VISN')){
             // Collect the practices that have an origin facility matching the selected facility
-            var foundFacility = facilities.find(function(f) {
-                return originatingFacility === f.StationNumber;
+            var foundOriginatingFacility = facilities.find(function(f) {
+                return originatingFacility === f.station_number;
             });
-            originFacilityArray.push({'origin_facilities': "=\"" + foundFacility.StationNumber + "\""});
+
+            originFacilityArray.push({'origin_facilities': "=\"" + foundOriginatingFacility.station_number + "\""});
         }
 
         function getAdoptionFacilities(stationNumbers, facilityIds) {
             adoptions.forEach(function(a) {
                 stationNumbers.forEach(function(sn) {
-                    if (a.facility_id === sn) {
+                    if (a.facility_number === sn) {
                         return facilityIds.push({'adoption_facilities': "=\"" + sn + "\""});
                     }
                 });
@@ -334,24 +349,25 @@ function searchPracticesPage() {
             var stationNumbers = [];
             var adoptionFacilityArray = [];
             if (adoptingFacility.includes('VISN')) {
+                var adoptingFacilityVisn = getVisn(visns, adoptingFacility);
+
+                console.log('adoptingFacilityVisn', adoptingFacilityVisn)
+
                 // Collect any practice that has a diffusion history with a facility that belongs to the selected VISN
-                filteredFacilities = facilities.filter(function(f) {
-                    return 'VISN-' + f.VISN === adoptingFacility;
-                });
+                filteredFacilities = getVaFacilitiesByVisn(facilities, adoptingFacilityVisn)
+
+                console.log('filtered facilities', filteredFacilities)
 
                 filteredFacilities.forEach(function(ff) {
-                    stationNumbers.push(ff.StationNumber);
+                    stationNumbers.push(ff.station_number);
                 })
 
                 getAdoptionFacilities(stationNumbers, adoptionFacilityArray);
             } else {
                 // Collect any practice that has a diffusion history with a facility that matches the selected facility
-                var matchingFacility;
-                matchingFacility = facilities.find(function(f) {
-                    return f.StationNumber === adoptingFacility;
-                });
+                var foundAdoptingFacility = getVaFacility(facilities, adoptingFacility)
 
-                stationNumbers.push(matchingFacility.StationNumber);
+                stationNumbers.push(foundAdoptingFacility.station_number);
                 getAdoptionFacilities(stationNumbers, adoptionFacilityArray);
             }
         }
@@ -702,18 +718,18 @@ function searchPracticesPage() {
                 return inputEle.val();
             } else {
                 facility = facilities.find(function(f) {
-                    return f.StationNumber === liEle.attr('data-value');
+                    return f.station_number === liEle.attr('data-value');
                 });
-                return facility.StationNumber;
+                return facility.station_number;
             }
         } else if (inputEle.val() !== '' && liEle.length == 0) {
             if (inputEle.val().includes('VISN')) {
                 return inputEle.val();
             } else {
                 facility = facilities.find(function(f) {
-                    return inputEle.val().toLowerCase().includes(f.OfficialStationName.toLowerCase());
+                    return inputEle.val().toLowerCase().includes(f.official_station_name.toLowerCase());
                 });
-                return facility.StationNumber;
+                return facility.station_number;
             }
         } else {
             return null;

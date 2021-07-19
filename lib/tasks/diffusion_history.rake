@@ -47,20 +47,26 @@ namespace :diffusion_history do |diffusion_history_namespace|
 
   desc 'Assign VA facility to each existing diffusion history'
   task :assign_va_facility_to_diffusion_histories => :environment do
-    DiffusionHistory.where(va_facility_id: nil).each do |dh|
-      dh_facility = dh.get_facility
-      dh.update_attributes(va_facility_id: dh_facility.id)
+    no_facility_diffusion_histories = DiffusionHistory.where(va_facility_id: nil)
 
-      puts "Diffusion history (id: #{dh.id}) has been assigned a VA facility!"
+    if no_facility_diffusion_histories.any?
+      no_facility_diffusion_histories.each do |dh|
+        dh_facility = dh.get_facility
+        dh.update_attributes(va_facility_id: dh_facility.id)
+
+        puts "DiffusionHistory #{dh.id} has been assigned a VA facility!"
+      end
+      puts "All diffusion histories that did not have an associated VA facility have been successfully updated with one!"
+    else
+      puts "All existing diffusion histories are associated with a VA facility. No changes were made."
     end
-    puts "All diffusion histories that did not have an associated VA facility have now been successfully updated with one!"
   end
 
   # rails diffusion_history:all
-  desc 'Run all of the tasks within the diffusion_history namespace'
+  desc 'Run all of the tasks within the diffusion_history namespace, except for assign_va_facility_to_diffusion_histories'
   task :all do
     diffusion_history_namespace.tasks.each do |task|
-      Rake::Task[task].invoke
+      Rake::Task[task].invoke unless task.name === 'diffusion_history:assign_va_facility_to_diffusion_histories'
     end
   end
 

@@ -12,4 +12,24 @@ namespace :practice_origin_facilities do
     end
     puts "#{initiating_facilities_practices.length} practice origin facilities have been added"
   end
+
+  desc 'Assign VA facility to each existing practice origin facility'
+  task :assign_va_facility_to_practice_origin_facilities => :environment do
+    no_facility_practice_origin_facilities = PracticeOriginFacility.where(va_facility_id: nil)
+
+    if no_facility_practice_origin_facilities.any?
+      no_facility_practice_origin_facilities.each do |pof|
+        pof_facility = pof.get_facility
+        if pof_facility.present?
+          pof.update_attributes(va_facility_id: pof_facility.id)
+          puts "PracticeOriginFacility #{pof.id} has been assigned a VA facility!"
+        else
+          puts "Error: A VA facility could not be not be found for PracticeOriginFacility #{pof.id}, based on it's facility_id. It was not updated."
+        end
+      end
+      puts "All practice origin facilities, which have a facility_id that corresponds to an existing VA facility's station_number, have been successfully updated!"
+    else
+      puts "All existing practice origin facilities are associated with a VA facility. No changes were made."
+    end
+  end
 end

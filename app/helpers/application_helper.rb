@@ -82,16 +82,6 @@ module ApplicationHelper
     end
   end
 
-  def facility_name(facility_id, facilities_data = nil)
-    facilities_data = facilities_data || @facilities_data || facilities_data_json
-    facility_data = @facility_data || facilities_data.find {|f| f['StationNumber'] == facility_id }
-    if facility_data.present?
-      facility_name_with_common_name(facility_data["OfficialStationName"], facility_data["CommonName"])
-    else
-      facility_id
-    end
-  end
-
   def facility_name_with_common_name(official_station_name, common_name)
     common_name = show_common_name(official_station_name, common_name)
     official_station_name + (common_name.present? ? " #{common_name}" : '')
@@ -120,7 +110,10 @@ module ApplicationHelper
         locs = practice.practice_origin_facilities.where(facility_type: fac_type)
         facility_names = String.new
         locs.each_with_index do |loc, index|
-          facility_names += (facility_name(loc.facility_id) + (locs.size != index + 1 && locs.size > 1 ? ', ' : ''))
+          official_station_name = loc.va_facility.official_station_name
+          common_name = loc.va_facility.common_name
+
+          facility_names += "#{loc.va_facility_id.present? ? facility_name_with_common_name(official_station_name, common_name) : loc.facility_id}#{locs.size != index + 1 && locs.size > 1 ? ', ' : ''}"
         end
         facility_names
       elsif practice.initiating_facility?

@@ -150,13 +150,13 @@ class PracticesController < ApplicationController
   def search
     @practices = Practice.searchable_practices nil
     @facilities_data = VaFacility.cached_va_facilities
-    @visn_data = origin_data_json["visns"]
+    @visn_data = Visn.cached_visns
     # due to some practices/search.js.erb functions being reused for other pages (VISNs/VA Facilities), set the @practices_json variable to nil unless it's being used for the practices/search page
     @practices_json = practices_json(@practices)
     @diffusion_histories = []
     @practices.each do |p|
       p.diffusion_histories.each do |dh|
-        @diffusion_histories << {practice_id: dh.practice_id, facility_id: dh.facility_id}
+        @diffusion_histories << {practice_id: dh.practice_id, facility_number: dh.va_facility.station_number}
       end
     end
     @parent_categories = Category.get_parent_categories
@@ -458,13 +458,13 @@ class PracticesController < ApplicationController
     else
       # or else, we're creating something
       # figure out if the user already has this diffusion history
-      @dh = DiffusionHistory.find_by(practice: @practice, facility_id: facility_id)
+      @dh = DiffusionHistory.find_by(practice: @practice, facility_id: facility_id, va_facility: VaFacility.find_by(station_number: facility_id))
       # if so, tell them!
       if @dh
         params[:exists] = @facilities.find_by(station_number: facility_id)
       else
         # if not, create a new one
-        @dh = DiffusionHistory.create(practice: @practice, facility_id: facility_id)
+        @dh = DiffusionHistory.create(practice: @practice, facility_id: facility_id, va_facility: VaFacility.find_by(station_number: facility_id))
       end
     end
 
@@ -642,7 +642,12 @@ class PracticesController < ApplicationController
   end
 
   def set_facility_data
-    @facility_data = facilities_json.find { |f| f['StationNumber'] == @practice.initiating_facility } if @practice.facility?
+    if @practice.facility?
+      @facility_data = []
+      @practice.practice_origin_facilities.each do |pof|
+        @facility_data << pof.va_facility
+      end
+    end
   end
 
   def set_office_data

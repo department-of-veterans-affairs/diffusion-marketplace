@@ -23,10 +23,14 @@ describe 'Recommended for you page', type: :feature do
     @practice2 = Practice.create!(name: 'A second public practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: 'test@test.com', user: @user2)
     @practice3 = Practice.create!(name: 'A third public practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: 'test@test.com', user: @user2)
     @practice4 = Practice.create!(name: 'A fourth public practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: 'test@test.com', user: @user2)
-    @practice_facility = PracticeOriginFacility.create!(practice: @practice, facility_id: '516')
-    @practice_facility2 = PracticeOriginFacility.create!(practice: @practice2, facility_id: '516')
-    @practice_facility3 = PracticeOriginFacility.create!(practice: @practice3, facility_id: '516')
-    @practice_facility4 = PracticeOriginFacility.create!(practice: @practice4, facility_id: '516')
+
+    visn_8 = Visn.create!(id: 7, name: "VA Sunshine Healthcare Network", number: 8)
+    facility_1 = VaFacility.create!(visn: visn_8, station_number: "516", official_station_name: "C.W. Bill Young Department of Veterans Affairs Medical Center", common_name: "Bay Pines", street_address_state: "FL")
+
+    @practice_facility = PracticeOriginFacility.create!(practice: @practice, facility_id: '516', va_facility: facility_1)
+    @practice_facility2 = PracticeOriginFacility.create!(practice: @practice2, facility_id: '516', va_facility: facility_1)
+    @practice_facility3 = PracticeOriginFacility.create!(practice: @practice3, facility_id: '516', va_facility: facility_1)
+    @practice_facility4 = PracticeOriginFacility.create!(practice: @practice4, facility_id: '516', va_facility: facility_1)
     @user_practice = UserPractice.create!(practice: @practice, user: @user2, favorited: true, time_favorited: DateTime.now.midnight - 10.days)
     @user_practice2 = UserPractice.create!(practice: @practice2, user: @user2, favorited: true, time_favorited: DateTime.now.midnight - 8.days)
     @user_practice3 = UserPractice.create!(practice: @practice3, user: @user2, favorited: true, time_favorited: DateTime.now.midnight - 6.days)
