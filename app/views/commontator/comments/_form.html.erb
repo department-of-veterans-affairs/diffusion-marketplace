@@ -33,7 +33,7 @@
   <% end %>
 
   <div class="field <%= comment.parent.nil? && new_record ? 'comment-field' : 'reply-field' %>">
-    <% is_public_user = session[:user_type] === 'public' ? true : false %>
+    <% is_public_user = session[:user_type] === 'public' %>
     <% if !is_public_user %>
         <%=
           form.text_area :body, rows: '7', aria: { label: 'comment text area' }, placeholder: "#{comment.parent.nil? && new_record ? 'Type your comment here...' : 'Type your reply here...' }",
