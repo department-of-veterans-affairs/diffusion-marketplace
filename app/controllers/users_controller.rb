@@ -92,7 +92,7 @@ class UsersController < ApplicationController
       redirect_to root_path
     else
       flash[:error] = 'Something went wrong. Please contact us marketplace@va.gov for assistance.'
-      redirect_to terms_and_conditions_path
+      redirect_to root_path
     end
   end
 
