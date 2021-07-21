@@ -28,7 +28,7 @@
         <% if session[:user_type] != 'public' %>
           <%= link_to "#{name} #{job_title ? '(' + job_title + ')' : ''}", "/users/#{creator.id}", class:'dm-link-title' %>
         <% else %>
-            <%= "#{name} #{job_title ? '(' + job_title + ')' : ''}" %>
+          <b><%= "#{name} #{job_title ? '(' + job_title + ')' : ''}" %></b>
         <% end %>
       </span>
       
@@ -81,8 +81,6 @@
                 remote: true
             ) if comment.can_be_edited_by?(user)
           %>
-         <% else %>
-<!--          <a class="fas fa-edit fa-lg edit-comment-icon margin-left-1"></a>-->
         <% end %>
 
           <% if comment.can_be_deleted_by?(user) %>
