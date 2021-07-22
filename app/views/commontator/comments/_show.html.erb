@@ -4,6 +4,7 @@
   # comment
   # nested_children or page
   # show_all
+  comments_disabled = @practice.retired || session[:user_type] === 'public'
   thread = comment.thread
   nested_children ||= begin
     children = thread.paginated_comments(page, comment.id, show_all)
@@ -161,8 +162,8 @@
 
       <!-- Replies -->
       <% if nested_children.count > 0 %>
-        <div class="show-hide-buttons-container display-inline-block text-bold position-absolute top-0 left-0" id="comment-<%= comment.id %>-button-container">
-          <button
+        <div class="<% if comments_disabled %>text-bold grid-row flex-align-left<% else %>show-hide-buttons-container display-inline-block text-bold position-absolute top-0 left-0<% end %>" id="comment-<%= comment.id %>-button-container">
+        <button
             id="comments-show-hide-button-<%= comment.id %>"
             data-number-replies="<%= nested_children.count %>"
             <%= 'disabled' if comment.is_deleted? %>
