@@ -90,7 +90,7 @@ namespace :categories do
     parent_categories = ['Clinical', 'Operational', 'Strategic']
 
     parent_categories.each do |pc|
-      unless Category.where('lower(name) = ?', pc.downcase).first.present?
+      unless Category.get_category_by_name(pc).first.present?
         Category.create(name: pc)
         puts "#{pc} is now a parent category."
       end
@@ -165,7 +165,7 @@ namespace :categories do
     ]
 
     def assign_parent_cat(cat, parent_cat)
-      cat_record = Category.where('lower(name) = ?', cat.downcase).first
+      cat_record = Category.get_category_by_name(cat).first
       if cat_record.present?
         cat_record.update_attributes(parent_category: parent_cat)
         puts "#{cat} now has a parent category of #{parent_cat.name}."
@@ -174,9 +174,9 @@ namespace :categories do
       end
     end
 
-    clinical_parent_cat = Category.where('lower(name) = ?', 'Clinical'.downcase).first
-    operational_parent_cat = Category.where('lower(name) = ?', 'Operational'.downcase).first
-    strategic_parent_cat = Category.where('lower(name) = ?', 'Strategic'.downcase).first
+    clinical_parent_cat = Category.get_category_by_name('Clinical').first
+    operational_parent_cat = Category.get_category_by_name('Operational').first
+    strategic_parent_cat = Category.get_category_by_name('Strategic').first
     # assign clinical parent category to clinical categories
     clinical_categories.each do |cc|
       assign_parent_cat(cc, clinical_parent_cat)
@@ -196,8 +196,15 @@ namespace :categories do
   # Instead of having an 'Other' category record, we will make it view-only in the introduction section of the practice editor
   desc "Delete 'Other' category"
   task :delete_other_category => :environment do
-    Category.find_by(name: 'Other').destroy
+    other_cats = Category.get_category_by_name('Other')
 
-    puts "'Other' category has been successfully deleted!"
+    if other_cats.present?
+      other_cats.each do |oc|
+        oc.destroy
+      end
+      puts "'Other' category has been successfully deleted!"
+    else
+      puts "'Other' category does not exist"
+    end
   end
 end
