@@ -16,20 +16,20 @@ class HomeController < ApplicationController
     @in_progress_ct = @diffusion_histories.get_by_in_progress_status.size
     @unsuccessful_ct = @diffusion_histories.get_by_unsuccessful_status.size
 
-    @dh_markers = Gmaps4rails.build_markers(@diffusion_histories.group_by(&:facility_id)) do |dhg, marker|
-      station_number = dhg[0]
+    @dh_markers = Gmaps4rails.build_markers(@diffusion_histories.group_by(&:va_facility_id)) do |dhg, marker|
+      station_number = @vamc_facilities.find(dhg[0]).station_number
       diffusion_histories = dhg[1]
-      facility = @vamc_facilities.find {|f| f.station_number === station_number}
+      facility = @vamc_facilities.find { |f| f.station_number === station_number }
       marker.lat facility.latitude
       marker.lng facility.longitude
 
       marker.picture({
-                         url: view_context.image_path('map-marker-default.svg'),
-                         width: 31,
-                         height: 44,
-                         scaledWidth: 31,
-                         scaledHeight: 44
-                     })
+        url: view_context.image_path('map-marker-default.svg'),
+        width: 31,
+        height: 44,
+        scaledWidth: 31,
+        scaledHeight: 44
+      })
 
       marker.shadow nil
       completed = 0

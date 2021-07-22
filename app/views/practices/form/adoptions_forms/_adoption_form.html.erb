@@ -44,7 +44,7 @@
     <label for="<%= facility_select_selector %>" class="usa-label line-height-26">Facility</label>
     <div class="usa-combo-box margin-top-1 margin-bottom-2">
       <select id="<%= facility_select_selector %>" class="usa-select" name="facility_id">
-        <% @facilities.all.each do |va| %>
+        <% @va_facilities.all.each do |va| %>
           <option value=<%= va[:station_number] %>>
             <%= va[:street_address_state] + ': ' + va[:official_station_name] + ' (' + va[:common_name] + ')' %>
           </option>

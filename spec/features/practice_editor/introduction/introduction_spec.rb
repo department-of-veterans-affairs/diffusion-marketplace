@@ -2,11 +2,17 @@ require 'rails_helper'
 
 describe 'Practice editor - introduction', type: :feature, js: true do
   before do
+    visn_7 = Visn.create!(id: 6, name: "VA Southeast Network", number: 7)
+    visn_21 = Visn.create!(id: 16, name: "Sierra Pacific Network", number: 21)
+
+    facility_1 = VaFacility.create!(visn: visn_21, station_number: "640A0", official_station_name: "Palo Alto VA Medical Center-Menlo Park", common_name: "Palo Alto-Menlo Park", street_address_state: "CA")
+    VaFacility.create!(visn: visn_7, station_number: "521", official_station_name: "Birmingham VA Medical Center", common_name: "Birmingham-Alabama", street_address_state: "AL")
+
     @admin = User.create!(email: 'toshiro.hitsugaya@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(User::USER_ROLES[0].to_sym)
     img_path = "#{Rails.root}/spec/assets/acceptable_img.jpg"
     @practice = Practice.create!(name: 'A public maximum practice', tagline: 'A public tagline', short_name: 'LALA', slug: 'a-public-max-practice', approved: true, published: true, summary: 'Test summary', date_initiated: Date.new(2016, 8, 20), initiating_facility_type: 'facility', main_display_image: File.new(img_path), user: @admin)
-    @pr_facility = PracticeOriginFacility.create!(practice: @practice, facility_type: 0, facility_id: '640A0')
+    @pr_facility = PracticeOriginFacility.create!(practice: @practice, facility_type: 0, va_facility: facility_1)
     PracticeAward.create!(practice: @practice, name: 'QUERI Veterans Choice Act Award', created_at: Time.now)
     PracticeAward.create!(practice: @practice, name: 'Diffusion of Excellence Promising Practice', created_at: Time.now)
     @pr_partner_1 = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative helps to identify and disseminate clinical and administrative best practices through a learning environment that empowers its top performers to apply their innovative ideas throughout the system — further establishing VA as a leader in health care, while promoting positive outcomes for Veterans.', icon: 'fas fa-heart', color: '#E4A002')
@@ -140,13 +146,13 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         expect(find(:css, '#initiating_facility_type_department').selected?).to eq(false)
         expect(find(:css, '#initiating_facility_type_other').selected?).to eq(false)
         expect(find(:css, 'select#editor_state_select_1').value).to eq('CA')
-        expect(find(:css, 'select#practice_practice_origin_facilities_attributes_0_facility_id').value).to eq(@pr_facility.facility_id)
+        expect(find(:css, 'select#practice_practice_origin_facilities_attributes_0_va_facility_id').value).to eq(@pr_facility.va_facility_id.to_s)
 
         # add another facility
         find('.dm-add-practice-originating-facilities-link').click
         last_fac_field = find_all('.practice-editor-origin-facility-li').last
         last_fac_state_select = last_fac_field.find('select[id*="editor_state_select"]')
-        last_fac_fac_select = last_fac_field.find('select[id*="facility_id"]')
+        last_fac_fac_select = last_fac_field.find('select[id*="va_facility_id"]')
         select('Alabama', from: last_fac_state_select[:name])
         select('Birmingham VA Medical Center (Birmingham-Alabama)', from: last_fac_fac_select[:name])
         # delete first facility

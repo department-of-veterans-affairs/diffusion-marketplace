@@ -14,6 +14,7 @@ class VaFacility < ApplicationRecord
   scope :get_station_numbers, -> { pluck(:station_number) }
   scope :get_locations, -> { order(:street_address_state).pluck(:street_address_state).uniq }
   scope :get_complexity, -> { order(:fy17_parent_station_complexity_level).pluck(:fy17_parent_station_complexity_level).uniq }
+  scope :get_relevant_attributes, -> { order(:street_address_state, :official_station_name).select(:street_address_state, :mailing_address_state, :official_station_name, :id, :visn_id, :common_name, :station_number, :latitude, :longitude, :slug, :fy17_parent_station_complexity_level, :rurality).includes(:visn)}
 
   def practices_created_count
     Practice.published_enabled_approved.get_by_created_facility(station_number).size

@@ -9,10 +9,10 @@ function enableSelect(select, selectLabel) {
 // select the state and facility if the practice already has one
 function selectFacility(facilityData, selectedFacility, facilitySelector = 'editor_facility_select', stateSelector = 'editor_state_select') {
     // based on the facilityData, which is the selected facility?
-    const facility = facilityData.find(f => f.StationNumber === String(selectedFacility));
+    const facility = facilityData.find(f => f.id === Number(selectedFacility));
 
     // select the state and set it in the dropdown
-    const state = facility.MailingAddressState;
+    const state = facility.mailing_address_state;
     const stateSelect = $(`#${stateSelector}`);
     stateSelect.val(state);
 
@@ -22,7 +22,7 @@ function selectFacility(facilityData, selectedFacility, facilitySelector = 'edit
     filterFacilities(facilityData, facilitySelect, facilitySelectLabel, stateSelector);
 
     // select the facility and display it in the dropdown
-    facilitySelect.val(facility.StationNumber);
+    facilitySelect.val(facility.id);
 }
 
 function getFacilitiesByState(facilityData, facilitySelector = 'editor_facility_select', stateSelector = 'editor_state_select') {
@@ -43,13 +43,13 @@ function filterFacilities(facilityData, facilitySelect, facilitySelectLabel, sta
     facilitySelect.find('option:not([value=""])').remove();
     facilitySelect.val('');
 
-    let filteredFacilities = facilityData.filter(f => f.MailingAddressState === selectedState);
+    let filteredFacilities = facilityData.filter(f => f.mailing_address_state === selectedState);
     filteredFacilities
-        .sort((a,b) => a['OfficialStationName'].localeCompare(b['OfficialStationName']))
+        .sort((a,b) => a['official_station_name'].localeCompare(b['official_station_name']))
         .forEach(facility => {
         facilitySelect
             .append($("<option></option>")
-                .attr("value", facility.StationNumber)
+                .attr("value", facility.id)
                 .attr("class", 'usa-select')
                 .text(assignFacilityName(facility)))
     });

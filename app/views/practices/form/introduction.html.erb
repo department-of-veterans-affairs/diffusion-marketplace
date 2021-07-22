@@ -12,7 +12,7 @@
 
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     <%= render partial: 'practices/form/session_monitor', formats: [:js] %>
-    var facilityData = <%= raw JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json")).to_json %>;
+    var facilityData = <%= raw @va_facilities.to_json %>;
     <%# initiating_facility = @practice.initiating_facility || false%>
     var officeData = '<%= raw fetch_offices %>';
     var originData = <%= raw JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json")).to_json %>;
@@ -33,7 +33,9 @@
   origin_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
   partners = PracticePartner.all
   p_partners = @practice.practice_partners
+  li_class_place_holder = "LI_PLACE_HOLDER"
 %>
+
 <%= render 'practice_editor_sidenav' %>
 <div class="grid-container position-relative">
   <div class="grid-row grid-gap practice-editor-min-height">
@@ -205,18 +207,18 @@
                     <%
                       orig_facility_id = pof.object.id || "new_practice_origin_facilities"
                     %>
-                    <% if pof.object.facility_id %>
+                    <% if pof.object.va_facility_id %>
                       <% provide :head_tags do %>
                         <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-                          $(document).arrive('<%= "#practice_practice_origin_facilities_attributes_#{pof.index}_facility_id" %>',
+                          $(document).arrive('<%= "#practice_practice_origin_facilities_attributes_#{pof.index}_va_facility_id" %>',
                             function(newElem) {
                               styleOriginFacility($(newElem).closest('li'));
-                              var facility_id = '<%= pof.object.facility_id %>';
-                              var facilitySelector = '<%= "practice_practice_origin_facilities_attributes_#{pof.index}_facility_id" %>';
+                              var facility_id = '<%= pof.object.va_facility_id %>';
+                              var facilitySelector = '<%= "practice_practice_origin_facilities_attributes_#{pof.index}_va_facility_id" %>';
                               var stateSelector ='<%= "editor_state_select_#{orig_facility_id}" %>';
                               getFacilitiesByState(facilityData, facilitySelector, stateSelector);
                               selectFacility(facilityData, facility_id, facilitySelector, stateSelector);
-                              $(document).unbindArrive('<%= "#practice_practice_origin_facilities_attributes_#{pof.index}_facility_id" %>', newElem);
+                              $(document).unbindArrive('<%= "#practice_practice_origin_facilities_attributes_#{pof.index}_va_facility_id" %>', newElem);
                             }
                           );
                         <% end %>
@@ -231,8 +233,8 @@
                       </div>
                       <div class="grid-row">
                         <div class="grid-col-12">
-                          <%= pof.label :facility_id, 'Facility', class: 'usa-label x0-top margin-bottom-1 grid-col-12' %>
-                          <%= pof.select :facility_id,
+                          <%= pof.label :va_facility_id, 'Facility', class: 'usa-label x0-top margin-bottom-1 grid-col-12' %>
+                          <%= pof.select :va_facility_id,
                                          options_for_select([['-Select-', nil, selected: true, disabled: true,
                                                               class: 'usa-select dm-color-gray-20']]),
                                          {},
