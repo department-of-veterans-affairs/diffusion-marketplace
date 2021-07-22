@@ -28,7 +28,7 @@
         <% if session[:user_type] != 'public' %>
           <%= link_to "#{name} #{job_title ? '(' + job_title + ')' : ''}", "/users/#{creator.id}", class:'dm-link-title' %>
         <% else %>
-          <b><%= "#{name} #{job_title ? '(' + job_title + ')' : ''}" %></b>
+          <span class="text-bold"><%= "#{name} #{job_title ? '(' + job_title + ')' : ''}" %></span>
         <% end %>
       </span>
       
@@ -94,8 +94,6 @@
                              id: "commontator-comment-#{comment.id}-#{del_string}",
                              class: is_deleted ? "fas fa-trash-restore-alt fa-lg margin-left-1" : "fas fa-trash-alt fa-lg delete-comment-icon margin-left-1",
                              remote: true %>
-            <% else %>
-<!--              <a class="<%#= is_deleted ? 'fas fa-trash-restore-alt fa-lg margin-left-1' : 'fas fa-trash-alt fa-lg delete-comment-icon margin-left-1' %>"></a>-->
              <% end %>
           <% end %>
       </span>
@@ -149,10 +147,6 @@
                 ) if thread.config.comment_reply_style != :n && !thread.is_closed?
               %>
             </span>
-            <% else %>
-<!--              <span>-->
-<!--                <a class="usa-button--unstyled dm-btn-primary reply-link" href="#" onclick="return false">Reply</a>-->
-<!--              </span>-->
             <% end %>
           <% end %>
           <% end %>
