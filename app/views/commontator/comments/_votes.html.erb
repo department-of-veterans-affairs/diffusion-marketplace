@@ -19,21 +19,27 @@
   <% vtype = (comment_voting == :ld) ? 'upvote' : 'like' %>
   <span id="commontator-comment-<%= comment.id %>-<%= vtype %>" class="<%= vtype %>">
     <% if can_vote && (vote.blank? || !vote.vote_flag) %>
-      <%= form_tag commontator.upvote_comment_path(comment),
+      <% if !@practice.retired && session[:user_type] != 'public'  %>
+        <%= form_tag commontator.upvote_comment_path(comment),
             method: :put,
             class: 'vote-form',
             remote: true do %>
-        <%= button_tag '', type: 'submit', class: "fas fa-thumbs-up empty-vote" %>
+            <%= button_tag '', type: 'submit', class: "fas fa-thumbs-up empty-vote" %>
+          <% end %>
       <% end %>
     <% elsif can_vote %>
-      <%= form_tag commontator.unvote_comment_path(comment),
-            method: :put,
-            class: 'vote-form',
-            remote: true do %>
-        <%= button_tag '', type: 'submit', class: "fas fa-thumbs-up voted" %>
+      <% if !@practice.retired && session[:user_type] != 'public'  %>
+        <%= form_tag commontator.unvote_comment_path(comment),
+              method: :put,
+              class: 'vote-form',
+              remote: true do %>
+          <%= button_tag '', type: 'submit', class: "fas fa-thumbs-up voted" %>
+        <% end %>
       <% end %>
     <% else %>
-      <button class="fas fa-thumbs-up vote-disabled" disabled="disabled"></button>
+      <% if !@practice.retired && session[:user_type] != 'public'  %>
+        <button class="fas fa-thumbs-up vote-disabled" disabled="disabled"></button>
+      <% end %>
     <% end %>
   </span>
   <% end %>

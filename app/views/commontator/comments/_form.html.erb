@@ -33,70 +33,72 @@
   <% end %>
 
   <div class="field <%= comment.parent.nil? && new_record ? 'comment-field' : 'reply-field' %>">
-
-    <%=
-      form.text_area :body, rows: '7', aria: { label: 'comment text area' }, placeholder: "#{comment.parent.nil? && new_record ? 'Type your comment here...' : 'Type your reply here...' }",
-        class: comment.parent.nil? && new_record ? 'usa-textarea comment-textarea line-height-26' : 'usa-textarea reply-textarea line-height-26', id: new_record ?
-        comment.parent.nil? ? "commontator-thread-#{@commontator_thread.id}-new-comment-body" :
-                              "commontator-comment-#{comment.parent.id}-reply" :
-        "commontator-comment-#{comment.id}-edit-body"
-    %>
-    <%= javascript_tag('Commontator.initMentions();') if config.mentions_enabled %>
-  </div>
-
-  <div class="submit">
-    <div class="text-left usa-fieldset" role="radiogroup">
-      <%# Radio buttons go here %>
-      <% if comment.parent_id.present? && new_record %>
-        <div class="usa-radio">
-          <%= radio_button_tag 'user_practice_status', :verified_implementer, verified_practice_implementer ? true : false, class: 'usa-radio__input', id: "verified-implementer-#{comment.parent_id}" %>
-          <%= label_tag 'user_practice_status_verified_implementer', 'I am currently adopting this practice', class: 'usa-radio__label implementer-label margin-bottom-1', for: "verified-implementer-#{comment.parent_id}" %>
-        </div>
-        <div class="usa-radio">
-          <%= radio_button_tag 'user_practice_status', :team_member, practice_team_member ? true : false, class: 'usa-radio__input', id: "team-member-#{comment.parent_id}" %>
-          <%= label_tag 'user_practice_status_team_member', 'I am a member of this practice team', class: 'usa-radio__label team-member-label', for: "team-member-#{comment.parent_id}" %>
-        </div>
-      <% elsif new_record %>
-        <div class="usa-radio">
-          <%= radio_button_tag 'user_practice_status', :verified_implementer, verified_practice_implementer ? true : false, class: 'usa-radio__input', id: 'verified-implementer' %>
-          <%= label_tag 'user_practice_status_verified_implementer', 'I am currently adopting this practice', class: 'usa-radio__label implementer-label margin-bottom-1', for: 'verified-implementer' %>
-        </div>
-        <div class="usa-radio">
-          <%= radio_button_tag 'user_practice_status', :team_member, practice_team_member ? true : false, class: 'usa-radio__input', id: 'team-member' %>
-          <%= label_tag 'user_practice_status_team_member', 'I am a member of this practice team', class: 'usa-radio__label team-member-label', for: 'team-member' %>
-        </div>
-      <% end %>
-      <% if !new_record %>
-        <div class="usa-radio">
-          <%= radio_button_tag 'user_practice_status', :verified_implementer, verified_practice_implementer ? true : false, class: 'usa-radio__input', id: "verified-implementer-#{comment.id}" %>
-          <%= label_tag 'user_practice_status_verified_implementer', 'I am currently adopting this practice', class: 'usa-radio__label implementer-label margin-bottom-1', for: "verified-implementer-#{comment.id}" %>
-        </div>
-        <div class="usa-radio">
-          <%= radio_button_tag 'user_practice_status', :team_member, practice_team_member ? true : false, class: 'usa-radio__input', id: "team-member-#{comment.id}" %>
-          <%= label_tag 'user_practice_status_team_member', 'I am a member of this practice team', class: 'usa-radio__label team-member-label', for: "team-member-#{comment.id}" %>
-        </div>
-      <% end %>
-    </div>
-    <div class="text-left margin-top-2">
-      <% if config.new_comment_style == :t && new_record && comment.parent.nil? %>
+    <% is_public_user = session[:user_type] === 'public' %>
+    <% if !is_public_user %>
         <%=
-          form.submit(
-            t('commontator.comment.actions.cancel'), name: 'cancel', class: 'comment-cancel usa-button--outline dm-btn-primary',
-              id: "commontator-thread-#{@commontator_thread.id}-new-comment-submit"
-          )
+          form.text_area :body, rows: '7', aria: { label: 'comment text area' }, placeholder: "#{comment.parent.nil? && new_record ? 'Type your comment here...' : 'Type your reply here...' }",
+            class: comment.parent.nil? && new_record ? 'usa-textarea comment-textarea line-height-26' : 'usa-textarea reply-textarea line-height-26', id: new_record ?
+            comment.parent.nil? ? "commontator-thread-#{@commontator_thread.id}-new-comment-body" :
+                                  "commontator-comment-#{comment.parent.id}-reply" :
+            "commontator-comment-#{comment.id}-edit-body"
         %>
-      <% else %>
-        <%=
-          form.submit(
-            t('commontator.comment.actions.cancel'), name: 'cancel', class: 'usa-button usa-button--outline dm-btn-primary comment-cancel'
-          )
-        %>
+        <%= javascript_tag('Commontator.initMentions();') if config.mentions_enabled %>
+      </div>
+
+      <div class="submit">
+        <div class="text-left usa-fieldset" role="radiogroup">
+          <%# Radio buttons go here %>
+          <% if comment.parent_id.present? && new_record %>
+            <div class="usa-radio">
+              <%= radio_button_tag 'user_practice_status', :verified_implementer, verified_practice_implementer ? true : false, class: 'usa-radio__input', id: "verified-implementer-#{comment.parent_id}" %>
+              <%= label_tag 'user_practice_status_verified_implementer', 'I am currently adopting this practice', class: 'usa-radio__label implementer-label margin-bottom-1', for: "verified-implementer-#{comment.parent_id}" %>
+            </div>
+            <div class="usa-radio">
+              <%= radio_button_tag 'user_practice_status', :team_member, practice_team_member ? true : false, class: 'usa-radio__input', id: "team-member-#{comment.parent_id}" %>
+              <%= label_tag 'user_practice_status_team_member', 'I am a member of this practice team', class: 'usa-radio__label team-member-label', for: "team-member-#{comment.parent_id}" %>
+            </div>
+          <% elsif new_record %>
+            <div class="usa-radio">
+              <%= radio_button_tag 'user_practice_status', :verified_implementer, verified_practice_implementer ? true : false, class: 'usa-radio__input', id: 'verified-implementer' %>
+              <%= label_tag 'user_practice_status_verified_implementer', 'I am currently adopting this practice', class: 'usa-radio__label implementer-label margin-bottom-1', for: 'verified-implementer' %>
+            </div>
+            <div class="usa-radio">
+              <%= radio_button_tag 'user_practice_status', :team_member, practice_team_member ? true : false, class: 'usa-radio__input', id: 'team-member' %>
+              <%= label_tag 'user_practice_status_team_member', 'I am a member of this practice team', class: 'usa-radio__label team-member-label', for: 'team-member' %>
+            </div>
+          <% end %>
+          <% if !new_record %>
+            <div class="usa-radio">
+              <%= radio_button_tag 'user_practice_status', :verified_implementer, verified_practice_implementer ? true : false, class: 'usa-radio__input', id: "verified-implementer-#{comment.id}" %>
+              <%= label_tag 'user_practice_status_verified_implementer', 'I am currently adopting this practice', class: 'usa-radio__label implementer-label margin-bottom-1', for: "verified-implementer-#{comment.id}" %>
+            </div>
+            <div class="usa-radio">
+              <%= radio_button_tag 'user_practice_status', :team_member, practice_team_member ? true : false, class: 'usa-radio__input', id: "team-member-#{comment.id}" %>
+              <%= label_tag 'user_practice_status_team_member', 'I am a member of this practice team', class: 'usa-radio__label team-member-label', for: "team-member-#{comment.id}" %>
+            </div>
+          <% end %>
+        </div>
+        <div class="text-left margin-top-2">
+          <% if config.new_comment_style == :t && new_record && comment.parent.nil? %>
+            <%=
+              form.submit(
+                t('commontator.comment.actions.cancel'), name: 'cancel', class: 'comment-cancel usa-button--outline dm-btn-primary',
+                  id: "commontator-thread-#{@commontator_thread.id}-new-comment-submit"
+              )
+            %>
+          <% else %>
+            <%=
+              form.submit(
+                t('commontator.comment.actions.cancel'), name: 'cancel', class: 'usa-button usa-button--outline dm-btn-primary comment-cancel'
+              )
+            %>
+          <% end %>
+            <% if comment.parent %>
+              <%= form.submit t("commontator.comment.actions.#{new_record ? 'create' : 'update'}"), name: 'reply', class: 'comment-submit margin-right-0 usa-button dm-btn-primary', id: "#{comment.parent && new_record ? 'submit-reply' : 'submit-reply-edit'}" %>
+            <% else %>
+              <%= form.submit t("commontator.comment.actions.#{new_record ? 'create' : 'update'}"), class: "comment-submit margin-right-0 usa-button dm-btn-primary", id: "#{new_record ? 'submit-comment' : 'submit-comment-edit'}", value: 'Post' %>
+            <% end %>
       <% end %>
-        <% if comment.parent %>
-          <%= form.submit t("commontator.comment.actions.#{new_record ? 'create' : 'update'}"), name: 'reply', class: 'comment-submit margin-right-0 usa-button dm-btn-primary', id: "#{comment.parent && new_record ? 'submit-reply' : 'submit-reply-edit'}" %>
-        <% else %>
-          <%= form.submit t("commontator.comment.actions.#{new_record ? 'create' : 'update'}"), class: "comment-submit margin-right-0 usa-button dm-btn-primary", id: "#{new_record ? 'submit-comment' : 'submit-comment-edit'}", value: 'Post' %>
-        <% end %>
     </div>
   </div>
 <% end %>

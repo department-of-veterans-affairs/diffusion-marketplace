@@ -12,7 +12,6 @@
 
 ActiveRecord::Schema.define(version: 2021_06_02_143652) do
 
-
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -959,13 +958,13 @@ ActiveRecord::Schema.define(version: 2021_06_02_143652) do
     t.string "overview_solution"
     t.string "overview_results"
     t.integer "maturity_level"
-    t.datetime "practice_pages_updated"
     t.datetime "date_published"
+    t.datetime "practice_pages_updated"
     t.string "highlight_title"
     t.string "highlight_body"
-    t.boolean "is_public", default: false
     t.boolean "retired", default: false, null: false
     t.string "retired_reason"
+    t.boolean "is_public", default: false
     t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
   end

@@ -97,28 +97,6 @@ describe 'Contact section', type: :feature, js: true do
       expect(page).to have_content('PRACTICE ADOPTER')
     end
 
-    it 'Should show the amount of likes each comment or reply has' do
-      fill_in('comment[body]', with: 'Hello world')
-      click_button('commit')
-      expect(page).to have_selector('.comments-section', visible: true)
-      logout(@user2)
-      visit practice_path(@practice)
-      login_as(@user1, :scope => :user, :run_callbacks => false)
-      visit practice_path(@practice)
-      expect(page).to have_selector('.comments-section', visible: true)
-      find(".like").click
-      expect(page).to have_css('.comment-1-1-vote')
-    end
-
-    it 'Allow the user to view the profile of a commentator if they click on their name next to the comment' do
-      fill_in('comment[body]', with: 'Hello world')
-      click_button('commit')
-      expect(page).to have_selector('#submit-comment', visible: true)
-      click_link('Momo H')
-      expect(page).to have_content('Profile')
-      expect(page).to have_content('momo.hinamori@va.gov')
-    end
-
     describe 'comment mailer' do
       it 'if the practice user is not the comment creator and the practice user\'s email is the same as the practice\'s support network email, it should send an email to the practice user' do
         @practice.update(support_network_email: @user1.email)
