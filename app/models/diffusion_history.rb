@@ -14,10 +14,6 @@ class DiffusionHistory < ApplicationRecord
   scope :get_by_unsuccessful_status, -> { by_status('Unsuccessful') }
   scope :get_with_practices, -> { joins(:practice).where(practices: { published: true, enabled: true, approved: true }).select("diffusion_histories.*, practices.id as practices_id") }
 
-  def get_facility
-    VaFacility.find_by(station_number: facility_id)
-  end
-
   def clear_searchable_practices_cache
     practice.clear_searchable_cache
   end

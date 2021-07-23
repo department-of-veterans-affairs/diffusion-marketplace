@@ -43,10 +43,6 @@ module PracticesHelper
     @office_data["departments"][0]["offices"].to_json
   end
 
-  def fetch_vamc_facilities
-    @vamc_facility_data = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
-  end
-
   def departments_for_select
     @department_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
     @department_data = @department_data["departments"]

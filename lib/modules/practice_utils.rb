@@ -27,12 +27,12 @@ module PracticeUtils
       practice_hash['retired'] = practice.retired
       practice_hash['initiating_facility_name'] = helpers.origin_display(practice)
       practice_hash['initiating_facility'] = practice.initiating_facility
-      origin_facilities = practice.practice_origin_facilities.pluck(:facility_id)
+      origin_facilities = practice.practice_origin_facilities.collect{ |pof| pof.va_facility.station_number }
       practice_hash['origin_facilities'] = origin_facilities
       practice_hash['user_favorited'] = current_user.favorite_practice_ids.include?(practice.id) if current_user.present?
 
       # get diffusion history facilities
-      adoptions = practice.diffusion_histories.pluck(:facility_id)
+      adoptions = practice.diffusion_histories.collect{ |dh| dh.va_facility.station_number }
       practice_hash['adoption_facilities'] = adoptions
       practice_hash['adoption_count'] = adoptions.size
       practices_array.push practice_hash

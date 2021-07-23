@@ -203,8 +203,8 @@ class Practice < ApplicationRecord
   scope :filter_by_category_ids, -> (cat_ids) { where('category_practices.category_id IN (?)', cat_ids)} # cat_ids should be a id number or an array of id numbers
   scope :published_enabled_approved,   -> { where(published: true, enabled: true, approved: true) }
   scope :sort_by_retired, -> { order("retired asc") }
-  scope :get_by_adopted_facility, -> (station_number) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {facility_id: station_number}).uniq }
-  scope :get_by_created_facility, -> (station_number) { where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { facility_id: station_number }) }
+  scope :get_by_adopted_facility, -> (facility_id) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {va_facility_id: facility_id}).uniq }
+  scope :get_by_created_facility, -> (facility_id) { where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { va_facility_id: facility_id }) }
   scope :load_associations, -> { includes(:categories, :diffusion_histories, :practice_origin_facilities) }
   scope :get_with_diffusion_histories, -> { published_enabled_approved.sort_a_to_z.joins(:diffusion_histories).uniq }
 
@@ -412,8 +412,9 @@ class Practice < ApplicationRecord
 
     if va_fac_matches.length > 0
       facilities = va_fac_matches.map {|st| st.station_number}
-      search_query = search_query + " OR diffusion_histories.facility_id IN (:facilities) OR practice_origin_facilities.facility_id IN (:facilities)"
+      search_query = search_query + " OR diffusion_histories.va_facility_id IN (:facilities) OR practice_origin_facilities.va_facility_id IN (:facilities)"
       search_params[:facilities] = facilities
+      debugger
     end
     return { query: search_query, params: search_params }
   end

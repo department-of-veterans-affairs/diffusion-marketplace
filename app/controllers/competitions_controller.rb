@@ -12,6 +12,6 @@ class CompetitionsController < ApplicationController
   private
 
   def set_facility_data
-    @facilities_data = VaFacility.cached_va_facilities
+    @facilities_data = VaFacility.cached_va_facilities.get_relevant_attributes
   end
 end

@@ -3,9 +3,9 @@
   successful_adoptions = @practice.diffusion_histories.get_by_successful_status
   in_progress_adoptions = @practice.diffusion_histories.get_by_in_progress_status
   unsuccessful_adoptions = @practice.diffusion_histories.get_by_unsuccessful_status
-  sorted_successful_adoptions = successful_adoptions.sort_by { |a| fac = a.get_facility; [fac.street_address_state, fac.official_station_name] } if successful_adoptions.any?
-  sorted_in_progress_adoptions = in_progress_adoptions.sort_by { |a| fac = a.get_facility; [fac.street_address_state, fac.official_station_name] } if in_progress_adoptions.any?
-  sorted_unsuccessful_adoptions = unsuccessful_adoptions.sort_by { |a| fac = a.get_facility; [fac.street_address_state, fac.official_station_name] } if unsuccessful_adoptions.any?
+  sorted_successful_adoptions = successful_adoptions.sort_by { |a| fac = a.va_facility; [fac.street_address_state, fac.official_station_name] } if successful_adoptions.any?
+  sorted_in_progress_adoptions = in_progress_adoptions.sort_by { |a| fac = a.va_facility; [fac.street_address_state, fac.official_station_name] } if in_progress_adoptions.any?
+  sorted_unsuccessful_adoptions = unsuccessful_adoptions.sort_by { |a| fac = a.va_facility; [fac.street_address_state, fac.official_station_name] } if unsuccessful_adoptions.any?
 %>
 
 <% if sorted_successful_adoptions %>

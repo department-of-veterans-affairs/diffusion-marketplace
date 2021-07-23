@@ -6,7 +6,7 @@ namespace :practice_origin_facilities do
     initiating_facilities_practices = Practice.where(initiating_facility_type: 'facility')
 
     initiating_facilities_practices.each do |pr|
-      if (pr.initiating_facility.present?)
+      if pr.initiating_facility.present?
         PracticeOriginFacility.find_or_create_by!(practice: pr, facility_id: pr.initiating_facility, facility_type: 0)
       end
     end
@@ -19,7 +19,7 @@ namespace :practice_origin_facilities do
 
     if no_facility_practice_origin_facilities.any?
       no_facility_practice_origin_facilities.each do |pof|
-        pof_facility = pof.get_facility
+        pof_facility = VaFacility.cached_va_facilities.find_by(station_number: pof.facility_id)
         if pof_facility.present?
           pof.update_attributes(va_facility_id: pof_facility.id)
           puts "PracticeOriginFacility #{pof.id} has been assigned a VA facility!"

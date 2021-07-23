@@ -428,7 +428,7 @@ class PracticesController < ApplicationController
 
   def create_or_update_diffusion_history
     # set attributes for later use
-    facility_id = params[:facility_id]
+    facility_id = params[:va_facility_id].to_i
     status = params[:status]
     unsuccessful_reasons = params[:unsuccessful_reasons] || []
     unsuccessful_reasons_other = params[:unsuccessful_reasons_other] || nil
@@ -445,20 +445,20 @@ class PracticesController < ApplicationController
     if @dh.present?
       # is the user changing to a facility that they already have listed?
       # if so, tell them no
-      existing_dh = DiffusionHistory.find_by(practice: @practice, facility_id: facility_id)
+      existing_dh = DiffusionHistory.find_by(practice: @practice, va_facility_id: facility_id)
       if existing_dh && existing_dh.id != @dh.id
-        params[:existing_dh] = @facilities.find_by(station_number: facility_id)
+        params[:existing_dh] = @va_facilities.find(facility_id)
       end
     else
       # or else, we're creating something
       # figure out if the user already has this diffusion history
-      @dh = DiffusionHistory.find_by(practice: @practice, facility_id: facility_id, va_facility: VaFacility.find_by(station_number: facility_id))
+      @dh = DiffusionHistory.find_by(practice: @practice, va_facility_id: facility_id)
       # if so, tell them!
       if @dh
-        params[:exists] = @facilities.find_by(station_number: facility_id)
+        params[:exists] = @va_facilities.find(facility_id)
       else
         # if not, create a new one
-        @dh = DiffusionHistory.create(practice: @practice, facility_id: facility_id, va_facility: VaFacility.find_by(station_number: facility_id))
+        @dh = DiffusionHistory.create(practice: @practice, va_facility_id: facility_id)
       end
     end
 

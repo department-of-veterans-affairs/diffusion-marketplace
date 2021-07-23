@@ -136,7 +136,7 @@ class UsersController < ApplicationController
       @practices.each do |p|
         if p.facility? && p.practice_origin_facilities.any?
           p.practice_origin_facilities.each do |pof|
-            origin_facility = @facilities_data.find { |f| f.station_number === pof.facility_id } || nil
+            origin_facility = @facilities_data.find { |f| f.id === pof.va_facility_id } || nil
             @user_location_practices << p if origin_facility.present? && origin_facility.official_station_name === @user.location
           end
         end

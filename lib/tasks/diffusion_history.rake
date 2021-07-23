@@ -51,7 +51,7 @@ namespace :diffusion_history do |diffusion_history_namespace|
 
     if no_facility_diffusion_histories.any?
       no_facility_diffusion_histories.each do |dh|
-        dh_facility = dh.get_facility
+        dh_facility = VaFacility.find_by(station_number: dh.facility_id)
         dh.update_attributes(va_facility_id: dh_facility.id)
 
         puts "DiffusionHistory #{dh.id} has been assigned a VA facility!"

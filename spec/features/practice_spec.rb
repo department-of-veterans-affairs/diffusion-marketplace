@@ -14,6 +14,9 @@ describe 'Practices', type: :feature do
     @disabled_practice = Practice.create!(name: 'Disabled practice', approved: true, published: true, enabled: false, date_initiated: Time.now(), user: @user2)
     @highlighted_practice = Practice.create!(name: 'Highlighted practice', approved: true, published: true, enabled: true, highlight: true, highlight_body: 'Highlight body text', date_initiated: Time.now(), user: @user2)
 
+    visn_20 = Visn.create!(id: 15, name: "Northwest Network", number: 20)
+    @facility_1 = VaFacility.create!(visn: visn_20, station_number: "687HA", official_station_name: "Yakima VA Clinic", common_name: "Yakima", street_address_state: "WA")
+
     @departments = [
         Department.create!(name: 'Test department 1', short_name: 'td1'),
         Department.create!(name: 'Test department 2', short_name: 'td2'),
@@ -116,7 +119,7 @@ describe 'Practices', type: :feature do
 
       # Visit an individual Practice that is approved and published
       practice = Practice.create!(name: 'Another public practice', date_initiated: Time.now(), approved: true, published: true, initiating_facility_type: 'facility', tagline: 'Test tagline', user: @user2)
-      PracticeOriginFacility.create!(practice: practice, facility_type: 0, facility_id: '687HA')
+      PracticeOriginFacility.create!(practice: practice, facility_type: 0, va_facility: @facility_1)
       visit practice_path(practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(practice.name)

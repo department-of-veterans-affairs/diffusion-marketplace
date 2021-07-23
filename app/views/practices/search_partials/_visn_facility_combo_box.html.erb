@@ -1,7 +1,10 @@
 <div class="usa-combo-box margin-top-1 margin-bottom-2 desktop:margin-y-0 desktop:grid-col-5">
   <label for="<%= facility_type_selector %>" class="line-height-26">Select by VISN or facility</label>
   <select id="<%= facility_type_selector %>" class="usa-select" name="<%= facility_type_selector %>">
-    <% visn_grouped_facilities = @va_facilities.group_by{ |f| f.visn.number } %>
+    <% visn_grouped_facilities = @va_facilities.group_by { |f| f.visn.number }.sort_by { |vgf| vgf[0] } %>
+    <div>
+      <%= visn_grouped_facilities %>
+    </div>
     <% visn_grouped_facilities.each_with_index do |group_array, i| %>
       <%
         visn_number = group_array[0]

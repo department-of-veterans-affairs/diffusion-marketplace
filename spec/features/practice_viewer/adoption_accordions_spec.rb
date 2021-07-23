@@ -33,11 +33,11 @@ describe 'Adoption accordions', type: :feature, js: true do
       longitude: "-73.89691934",
       street_address_state: "NY"
     )
-    dh_1 = DiffusionHistory.create!(practice: @practice, facility_id: @fac_1.station_number)
+    dh_1 = DiffusionHistory.create!(practice: @practice, va_facility: @fac_1)
     DiffusionHistoryStatus.create!(diffusion_history: dh_1, status: 'Completed')
-    dh_2 = DiffusionHistory.create!(practice: @practice, facility_id: @fac_2.station_number)
+    dh_2 = DiffusionHistory.create!(practice: @practice, va_facility: @fac_2)
     DiffusionHistoryStatus.create!(diffusion_history: dh_2, status: 'In progress')
-    dh_3 = DiffusionHistory.create!(practice: @practice, facility_id: @fac_3.station_number)
+    dh_3 = DiffusionHistory.create!(practice: @practice, va_facility: @fac_3)
     DiffusionHistoryStatus.create!(diffusion_history: dh_3, status: 'Unsuccessful', unsuccessful_reasons: [0])
   end
 

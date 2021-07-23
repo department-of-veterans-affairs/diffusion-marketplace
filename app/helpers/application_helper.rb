@@ -113,7 +113,7 @@ module ApplicationHelper
           official_station_name = loc.va_facility.official_station_name
           common_name = loc.va_facility.common_name
 
-          facility_names += "#{loc.va_facility_id.present? ? facility_name_with_common_name(official_station_name, common_name) : loc.facility_id}#{locs.size != index + 1 && locs.size > 1 ? ', ' : ''}"
+          facility_names += "#{facility_name_with_common_name(official_station_name, common_name) if loc.va_facility_id.present?}#{locs.size != index + 1 && locs.size > 1 ? ', ' : ''}"
         end
         facility_names
       elsif practice.initiating_facility?

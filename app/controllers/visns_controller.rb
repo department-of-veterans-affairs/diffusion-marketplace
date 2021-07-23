@@ -54,14 +54,14 @@ class VisnsController < ApplicationController
 
     # set '@practices_json' to avoid js console error when utilizing the practices/search.js.erb file
     @practices_json = []
-    visn_va_facilities_station_numbers = @visn_va_facilities.get_station_numbers
-    @practices_created_by_visn = @visn.get_created_practices(visn_va_facilities_station_numbers)
+    visn_va_facilities_ids = @visn_va_facilities.get_ids
+    @practices_created_by_visn = @visn.get_created_practices(visn_va_facilities_ids)
     @practices_created_json = practices_json(@practices_created_by_visn)
     # get the unique categories for practices created in a VISN
     @practices_created_categories = []
     get_categories_by_practices(@practices_created_by_visn, @practices_created_categories)
 
-    @practices_adopted_by_visn = @visn.get_adopted_practices(visn_va_facilities_station_numbers)
+    @practices_adopted_by_visn = @visn.get_adopted_practices(visn_va_facilities_ids)
     @practices_adopted_json = practices_json(@practices_adopted_by_visn)
     # get the unique categories for practices adopted in a VISN
     @practices_adopted_categories = []
@@ -89,9 +89,9 @@ class VisnsController < ApplicationController
   def set_visns_counts
     visn_counts = []
     @visns.each do |visn|
-      station_numbers = VaFacility.get_by_visn(visn).get_station_numbers
-      created = visn.get_created_practices(station_numbers).size
-      adopted = visn.get_adopted_practices(station_numbers).size
+      va_facility_ids = VaFacility.get_by_visn(visn).get_ids
+      created = visn.get_created_practices(va_facility_ids).size
+      adopted = visn.get_adopted_practices(va_facility_ids).size
       visn_counts.push({number: visn[:number], created: created, adopted: adopted})
     end
     visn_counts
