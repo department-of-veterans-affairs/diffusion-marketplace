@@ -10,10 +10,15 @@
     children = thread.paginated_comments(page, comment.id, show_all)
     thread.nested_comments_for(user, children, show_all)
   end
-  creator = comment.creator
-  name = Commontator.commontator_name(creator) || ''
-  job_title = creator.job_title
-  creator_practice = creator.user_practices.find_by(practice_id: comment.thread.commontable_id, user: creator)
+  if comments_disabled
+    name = "VA User"
+    creator = nil
+  else
+    creator = comment.creator
+    name = Commontator.commontator_name(creator) || ''
+    job_title = creator.job_title
+    creator_practice = creator.user_practices.find_by(practice_id: comment.thread.commontable_id, user: creator)
+  end
   if creator_practice
     practice_team_member = creator_practice.team_member
     verified_practice_implementer = creator_practice.verified_implementer
