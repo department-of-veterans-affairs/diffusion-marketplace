@@ -19,7 +19,7 @@ describe 'Map of Diffusion', type: :feature, js: true do
       longitude: "-69.70413586",
       street_address_state: "ME",
       rurality: "R",
-      fy17_parent_station_complexity_level: '1c-High Complexity'
+      fy17_parent_station_complexity_level: "1c-High Complexity"
     )
     @fac_2 = VaFacility.create!(
       visn: @visn_2,
@@ -30,7 +30,7 @@ describe 'Map of Diffusion', type: :feature, js: true do
       longitude: "-73.76256942",
       street_address_state: "NY",
       rurality: "U",
-      fy17_parent_station_complexity_level: '1b-High Complexity'
+      fy17_parent_station_complexity_level: "1b-High Complexity"
     )
     @fac_3 = VaFacility.create!(
       visn: @visn_2,
@@ -41,7 +41,7 @@ describe 'Map of Diffusion', type: :feature, js: true do
       longitude: "-73.89691934",
       street_address_state: "NY",
       rurality: "U",
-      fy17_parent_station_complexity_level: '1a-High Complexity'
+      fy17_parent_station_complexity_level: "1a-High Complexity"
     )
     dh_1 = DiffusionHistory.create!(practice: @pr_1, va_facility: @fac_1)
     DiffusionHistoryStatus.create!(diffusion_history: dh_1, status: 'Completed')

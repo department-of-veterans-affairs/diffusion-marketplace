@@ -10,12 +10,12 @@ class VisnsController < ApplicationController
       marker.lng visn[:longitude].to_s
 
       marker.picture({
-                       url: view_context.image_path('visn-va-facility-map-marker-default.svg'),
-                       width: 48,
-                       height: 64,
-                       scaledWidth: 48,
-                       scaledHeight: 64
-                     })
+        url: view_context.image_path('visn-va-facility-map-marker-default.svg'),
+        width: 48,
+        height: 64,
+        scaledWidth: 48,
+        scaledHeight: 64
+      })
 
       marker.shadow nil
       marker.json({
@@ -29,19 +29,19 @@ class VisnsController < ApplicationController
 
   def show
     @primary_visn_liaison = VisnLiaison.find_by(visn: @visn, primary: true)
-    @visn_va_facilities = VaFacility.get_by_visn(@visn).select(:common_name, :id, :official_station_name, :latitude, :longitude, :classification, :slug, :station_number)
+    @visn_va_facilities = VaFacility.get_by_visn(@visn).get_relevant_attributes
 
     @visn_va_facility_markers = Gmaps4rails.build_markers(@visn_va_facilities) do |facility, marker|
       marker.lat facility[:latitude].to_s
       marker.lng facility[:longitude].to_s
 
       marker.picture({
-                       url: view_context.image_path('visn-va-facility-map-marker-default.svg'),
-                       width: 34,
-                       height: 46,
-                       scaledWidth: 34,
-                       scaledHeight: 46
-                     })
+       url: view_context.image_path('visn-va-facility-map-marker-default.svg'),
+       width: 34,
+       height: 46,
+       scaledWidth: 34,
+       scaledHeight: 46
+     })
 
       marker.shadow nil
       marker.json({

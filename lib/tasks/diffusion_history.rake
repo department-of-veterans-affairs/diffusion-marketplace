@@ -52,9 +52,12 @@ namespace :diffusion_history do |diffusion_history_namespace|
     if no_facility_diffusion_histories.any?
       no_facility_diffusion_histories.each do |dh|
         dh_facility = VaFacility.find_by(station_number: dh.facility_id)
-        dh.update_attributes(va_facility_id: dh_facility.id)
-
-        puts "DiffusionHistory #{dh.id} has been assigned a VA facility!"
+        if dh_facility.present?
+          dh.update_attributes(va_facility_id: dh_facility.id)
+          puts "DiffusionHistory #{dh.id} has been assigned a VA facility!"
+        else
+          puts "Error - DiffusionHistory #{dh.id} was not assigned a VA facility because #{dh.facility_id.nil? ? 'it\'s facility_id is nil.' : %Q(a VaFacility with the station_number #{dh.facility_id} does not exist.) }"
+        end
       end
       puts "All diffusion histories that did not have an associated VA facility have been successfully updated with one!"
     else

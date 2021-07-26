@@ -24,7 +24,7 @@ namespace :practice_origin_facilities do
           pof.update_attributes(va_facility_id: pof_facility.id)
           puts "PracticeOriginFacility #{pof.id} has been assigned a VA facility!"
         else
-          puts "Error: A VA facility could not be not be found for PracticeOriginFacility #{pof.id}, based on it's facility_id. It was not updated."
+          puts "Error - PracticeOriginFacility #{pof.id} was not assigned a VA facility because #{pof.facility_id.nil? ? 'it\'s facility_id is nil.' : %Q(a VaFacility with the station_number '#{pof.facility_id}' does not exist.) }"
         end
       end
       puts "All practice origin facilities, which have a facility_id that corresponds to an existing VA facility's station_number, have been successfully updated!"

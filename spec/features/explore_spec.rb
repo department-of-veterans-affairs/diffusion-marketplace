@@ -30,6 +30,7 @@ describe 'Explore all practices page', type: :feature do
 
     visn_1 = Visn.create!(name: 'VISN 1', number: 2)
     visn_20 = Visn.create!(id: 15, name: "Northwest Network", number: 20)
+
     @fac_1 = VaFacility.create!(
       visn: visn_1,
       station_number: "402GA",

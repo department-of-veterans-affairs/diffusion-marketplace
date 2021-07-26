@@ -382,15 +382,15 @@ class Practice < ApplicationRecord
     query.group("practices.id, categories.id, practice_origin_facilities.id").uniq
   end
 
-  def self.get_facility_created_practices(station_number, search_term = nil, sort = 'a_to_z', categories = nil)
+  def self.get_facility_created_practices(facility_id, search_term = nil, sort = 'a_to_z', categories = nil)
     practices = search_practices(search_term, sort, categories)
 
-    practices.select { |pr| pr.practice_origin_facilities.pluck(:facility_id).include?(station_number)}
+    practices.select { |pr| pr.practice_origin_facilities.pluck(:va_facility_id).include?(facility_id)}
   end
 
-  def self.get_facility_adopted_practices(station_number, search_term = nil, categories = nil)
+  def self.get_facility_adopted_practices(facility_id, search_term = nil, categories = nil)
     practices = search_practices(search_term, 'a_to_z', categories)
-    practices.select { |pr| pr.diffusion_histories.pluck(:facility_id).include?(station_number)}
+    practices.select { |pr| pr.diffusion_histories.pluck(:va_facility_id).include?(facility_id)}
   end
 
   def self.get_query_for_search_term(search_term)
@@ -408,19 +408,18 @@ class Practice < ApplicationRecord
       search_params[:maturity_level] = mat_level
     end
 
-    va_fac_matches = VaFacility.where("official_station_name ILIKE :search OR common_name ILIKE :search", search: "%#{sanitized_search_term}%").select("station_number")
+    va_fac_matches = VaFacility.where("official_station_name ILIKE :search OR common_name ILIKE :search", search: "%#{sanitized_search_term}%").select("id")
 
     if va_fac_matches.length > 0
-      facilities = va_fac_matches.map {|st| st.station_number}
+      facilities = va_fac_matches.map { |st| st.id }
       search_query = search_query + " OR diffusion_histories.va_facility_id IN (:facilities) OR practice_origin_facilities.va_facility_id IN (:facilities)"
       search_params[:facilities] = facilities
-      debugger
     end
     return { query: search_query, params: search_params }
   end
 
   def diffusion_history_status_by_facility(facility)
-    diffusion_histories.find_by(facility_id: facility.station_number).diffusion_history_statuses.first
+    diffusion_histories.find_by(va_facility_id: facility.id).diffusion_history_statuses.first
   end
 
   # add other practice attributes that need whitespace trimmed as needed
