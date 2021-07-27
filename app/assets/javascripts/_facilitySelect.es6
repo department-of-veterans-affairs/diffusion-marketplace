@@ -12,7 +12,7 @@ function selectFacility(facilityData, selectedFacility, facilitySelector = 'edit
     const facility = facilityData.find(f => f.id === Number(selectedFacility));
 
     // select the state and set it in the dropdown
-    const state = facility.mailing_address_state;
+    const state = facility.street_address_state;
     const stateSelect = $(`#${stateSelector}`);
     stateSelect.val(state);
 
@@ -43,7 +43,7 @@ function filterFacilities(facilityData, facilitySelect, facilitySelectLabel, sta
     facilitySelect.find('option:not([value=""])').remove();
     facilitySelect.val('');
 
-    let filteredFacilities = facilityData.filter(f => f.mailing_address_state === selectedState);
+    let filteredFacilities = facilityData.filter(f => f.street_address_state === selectedState);
     filteredFacilities
         .sort((a,b) => a['official_station_name'].localeCompare(b['official_station_name']))
         .forEach(facility => {

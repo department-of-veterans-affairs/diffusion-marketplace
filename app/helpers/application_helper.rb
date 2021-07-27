@@ -87,10 +87,6 @@ module ApplicationHelper
     official_station_name + (common_name.present? ? " #{common_name}" : '')
   end
 
-  def facilities_data_json
-    JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
-  end
-
   def origin_data_json
     JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
   end

@@ -19,6 +19,9 @@
 | `rails importer:import_answers` | import an xlsx and create practices  |
 | `rails importer:initial_featured` | sets up the "original" featured practices to show up on the landing page - depends on spreadsheet being imported |
 | `rails surveymonkey:download_response_files` (DEPRECATED) | Rake task to download files from our SurveyMonkey practice submission form. **Do not use this anymore. Ever.**  |
+| `rails visns:create_visns_and_transfer_data` | Creates new VISN records based on the data from the "practice_origin_lookup.json" file
+| `rails va_facilities:create_va_facilities_and_transfer_data` | Creates new VA facility records based on the data from the "vamc.json" file
+| `rails visns:create_visn_liaisons_and_transfer_data` | Creates new VISN liaison records based on the data from the "practice_origin_lookup.json" file
 | `rails diffusion_history:all`| Imports all of the diffusion history we have so far for practices - used to populate the geolocation feature (Practice <-> Facility mappings) |
 | `rails milestones:milestones_transfer` | Transfers all of the original timeline entry milestones to the new milestone model  |
 | `rails go_fish_practices:assign_go_fish_badge` | Assigns the Go Fish badge to all Go Fish practices  |
@@ -34,9 +37,6 @@
 | `rails documentation:port_publications_to_practice_resources` | Ports publications (links) to practice_resources
 | `rails risk_and_mitigation:remove_unpaired_risks_and_mitigation` | Removes risks without a corresponding mitigation AND removes mitigations without a corresponding risk.
 | `rails practice_editors:add_practice_owners_to_practice_editors` | Adds each practice owner to the practice editors list of their corresponding practice
-| `rails visns:create_visns_and_transfer_data` | Creates new VISN records based on the data from the "practice_origin_lookup.json" file
-| `rails va_facilities:create_va_facilities_and_transfer_data` | Creates new VA facility records based on the data from the "vamc.json" file
-| `rails visns:create_visn_liaisons_and_transfer_data` | Creates new VISN liaison records based on the data from the "practice_origin_lookup.json" file
 #### Ruby version
 
 - `ruby 2.6.3`
@@ -159,18 +159,18 @@ This will run:
 1. `rails dm:db_setup` - sets up the db with `rails db:create db:migrate db:seed`
 2. `rails importer:import_answers` - imports the initial practice data the Diffusion Marketplace team collected via Survey Monkey, images and all~
 3. `rails importer:initial_featured` - sets the first three initial featured practices for the homepage
-4. `rails diffusion_history:all` - set up the initial diffusion history for the first five practices. Individual commands can be found here:  `lib/tasks/diffusion_history.rake`
-5. `rails go_fish_practices:assign_go_fish_badge` - assigns the Go Fish badge to all Go Fish practices
-6. `rails shark_tank_practices:assign_shark_tank_badge` - assigns the Shark Tank badge to all previous Shark Tank winners
-7. `rails inet_partner_practices:assign_inet_partner` - assigns the iNET practice partner to practices that have iNET as a partner
-8. `rails categories:add_covid_cats` - adds COVID related categories and assigns them to practices
-9. `rails practice_origin_facilities:move_practice_initiating_facility` - moves practice initiating facilities to the practice_origin_facilities table
-10. `rails practice_multimedia:transfer_practice_impact_photos` - moves practice impact photos to practice multimedia
-10. `rails practice_multimedia:transfer_practice_videos` - moves practice videos to practice multimedia
-11. `rails practice_editors:add_practice_owners_to_practice_editors` - Adds each practice owner to the practice editors list of their corresponding practice
-12. `rails visns:create_visns_and_transfer_data` - Creates new VISN records based on the data from the "practice_origin_lookup.json" file
-13. `rails va_facilities:create_va_facilities_and_transfer_data` - Creates new VA facility records based on the data from the "vamc.json" file
-14. `rails visns:create_visn_liaisons_and_transfer_data` - Creates new VISN liaison records based on the data from the "practice_origin_lookup.json" file
+4. `rails visns:create_visns_and_transfer_data` - Creates new VISN records based on the data from the "practice_origin_lookup.json" file
+5. `rails va_facilities:create_va_facilities_and_transfer_data` - Creates new VA facility records based on the data from the "vamc.json" file
+6. `rails visns:create_visn_liaisons_and_transfer_data` - Creates new VISN liaison records based on the data from the "practice_origin_lookup.json" file
+7. `rails diffusion_history:all` - set up the initial diffusion history for the first five practices. Individual commands can be found here:  `lib/tasks/diffusion_history.rake`
+8. `rails go_fish_practices:assign_go_fish_badge` - assigns the Go Fish badge to all Go Fish practices
+9. `rails shark_tank_practices:assign_shark_tank_badge` - assigns the Shark Tank badge to all previous Shark Tank winners
+10. `rails inet_partner_practices:assign_inet_partner` - assigns the iNET practice partner to practices that have iNET as a partner
+11. `rails categories:add_covid_cats` - adds COVID related categories and assigns them to practices
+12. `rails practice_origin_facilities:move_practice_initiating_facility` - moves practice initiating facilities to the practice_origin_facilities table
+13. `rails practice_multimedia:transfer_practice_impact_photos` - moves practice impact photos to practice multimedia
+14. `rails practice_multimedia:transfer_practice_videos` - moves practice videos to practice multimedia
+15. `rails practice_editors:add_practice_owners_to_practice_editors` - Adds each practice owner to the practice editors list of their corresponding practice
 
 To reset all of the data and do the process all over again, run:
 ```bash

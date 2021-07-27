@@ -19,6 +19,9 @@ describe 'Practice editor', type: :feature, js: true do
       longitude: "-69.70413586",
       street_address_state: "ME"
     )
+    visn_7 = Visn.create!(id: 6, name: "VA Southeast Network", number: 7)
+
+    VaFacility.create!(visn: visn_7, station_number: "521", official_station_name: "Birmingham VA Medical Center", common_name: "Birmingham-Alabama", street_address_state: "AL")
   end
 
   describe 'Publish practice flow' do

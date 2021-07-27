@@ -76,20 +76,20 @@ namespace :diffusion_history do |diffusion_history_namespace|
   def load_practice_facilities_data(practice, data_file_name)
     puts "==> Importing Diffusion History for Practice: #{practice.name}...".light_blue
     # load vamc facility data
-    facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
+    facilities = VaFacility.all.get_relevant_attributes
     # load practice <-> facility json data
     practice_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/#{data_file_name}.json"))
 
     # create diffusion histories with matching facilities to practice's data
     practice_facilities.each do |pf|
-      facility_id = facilities.find {|f| f['StationNumber'] == pf['StationNumber']}['StationNumber']
+      facility_id = facilities.find { |f| f.station_number === pf['StationNumber'] }.id
       status = if pf['Status'].present?
                  pf['Status'] == 'Planning' ? 'In progress' : 'Complete'
                else
                  'Complete'
                end
       start_time = DateTime.parse(pf['DateImplemented'])
-      dh = DiffusionHistory.find_or_create_by!(practice: practice, facility_id: facility_id)
+      dh = DiffusionHistory.find_or_create_by!(practice: practice, va_facility_id: facility_id)
       DiffusionHistoryStatus.find_or_create_by!(diffusion_history: dh, status: status, start_time: start_time)
     end
     puts "==> Completed importing Diffusion History for Practice: #{practice.name}!".green
