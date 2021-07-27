@@ -34,7 +34,7 @@ describe 'Contact section', type: :feature, js: true do
       expect(page).to have_css('.commontator')
       fill_in('comment[body]', with: 'Hello world')
       click_button('commit')
-      expect(page).to have_css('#commontator-comment-1')
+      expect(page).to_not have_css('#commontator-comment-1')
     end
 
     it 'Should not allow unauthenticated users to view or post comments' do
