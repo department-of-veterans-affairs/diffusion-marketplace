@@ -25,16 +25,13 @@ describe 'Contact section', type: :feature, js: true do
       expect(page).to have_css('.commontator')
     end
 
-    it 'Should allow authenticated users to post comments' do
+    it 'Should not allow public users to post comments' do
       # Login as an authenticated user, visit the practice page, and create a comment
-      #login_as(@user2, :scope => :user, :run_callbacks => false)
+      login_as(@user2, :scope => :user, :run_callbacks => false)
       visit practice_path(@practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@practice.name)
-      expect(page).to_not have_css('.commontator')
-      fill_in('comment[body]', with: 'Hello world')
-      click_button('commit')
-      expect(page).to_not have_css('#commontator-comment-1')
+      expect(page).to have_css('.commontator')
     end
 
     # it 'Should not allow unauthenticated users to view or post comments' do
