@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe 'Practice editor - introduction', type: :feature, js: true do
   before do
+    Visn.create!(id: 1, name: "VA New England Healthcare System", number: 1)
     visn_7 = Visn.create!(id: 6, name: "VA Southeast Network", number: 7)
     visn_21 = Visn.create!(id: 16, name: "Sierra Pacific Network", number: 21)
 

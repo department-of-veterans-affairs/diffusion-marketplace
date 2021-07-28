@@ -12,7 +12,7 @@ class VaFacilitiesController < ApplicationController
     if params[:facility].present?
       @facilities = [VaFacility.cached_va_facilities.find(params[:facility])]
     else
-      @facilities = VaFacility.cached_va_facilities.select(:common_name, :fy17_parent_station_complexity_level, :id, :official_station_name, :slug, :station_number, :street_address_state, :visn_id).order(:official_station_name).includes(:visn)
+      @facilities = VaFacility.cached_va_facilities.get_relevant_attributes
 
       if params[:visn].present?
         @facilities = @facilities.where(visns: { number: params[:visn] })

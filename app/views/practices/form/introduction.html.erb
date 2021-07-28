@@ -16,7 +16,7 @@
     <%# initiating_facility = @practice.initiating_facility || false%>
     var officeData = '<%= raw fetch_offices %>';
     var originData = <%= raw JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json")).to_json %>;
-    var visnData = '<%= raw fetch_visns %>';
+    var visnData = '<%= raw @visns.to_json %>';
     var selectedFacility = "<%= @practice.facility? && @practice.initiating_facility || false %>"
     var selectedFacilityType = "<%= @practice.initiating_facility_type %>"
     var selectedDepartment = "<%= @practice.initiating_department_office_id %>"
@@ -31,9 +31,7 @@
 
 <%
   origin_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
-  partners = PracticePartner.all
   p_partners = @practice.practice_partners
-  li_class_place_holder = "LI_PLACE_HOLDER"
 %>
 
 <%= render 'practice_editor_sidenav' %>
@@ -193,7 +191,7 @@
                 <div class="margin-bottom-2 grid-col-8">
                   <%= label_tag 'editor_visn_select', 'VISN', class: 'usa-label x0-top' %>
                   <%= select_tag('practice[initiating_facility]',
-                                 options_for_select(origin_data['visns'].collect { |v| [v['number'], v['id']] }),
+                                 options_for_select(@visns.collect { |v| ["VISN-#{v.number}", v.id] }),
                                  id: 'editor_visn_select', name: "editor_visn_select",
                                  class: 'height-5 usa-select',
                                  include_blank: '-Select-')

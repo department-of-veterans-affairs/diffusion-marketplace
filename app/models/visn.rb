@@ -8,6 +8,7 @@ class Visn < ApplicationRecord
   attr_accessor :reset_cached_visns
 
   scope :order_by_number, -> { order('number') }
+  scope :get_by_initiating_facility, -> (initiating_facility) { cached_visns.find_by(id: initiating_facility) }
 
   # Add a custom friendly URL that uses the visn number and not the id
   def to_param

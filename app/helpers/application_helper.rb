@@ -116,8 +116,8 @@ module ApplicationHelper
       # TODO: Modify once visn, dept, other is moved from Practice to a separate table
         case practice.initiating_facility_type
         when 'visn'
-          visn = origin_data_json['visns'].find { |v| v['id'] == practice.initiating_facility.to_i }
-          visn['number']
+          visn = Visn.cached_visns.get_by_initiating_facility(practice.initiating_facility.to_i)
+          return "VISN-#{visn.number.to_s}"
         when 'department'
           dept_id = practice.initiating_department_office_id
           office = origin_data_json['departments'][dept_id - 1]['offices'].find { |o| o['id'] == practice.initiating_facility.to_i }

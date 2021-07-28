@@ -130,6 +130,7 @@ RSpec.describe ApplicationHelper, type: :helper do
       user = User.create!(email: 'spongebob.squarepants@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
       @practice = Practice.create(name: 'test-practice', initiating_facility_type: 'facility', user: user)
 
+      Visn.create!(id: 5, name: "VA Mid-Atlantic Health Care Network", number: 6)
       visn_8 = Visn.create!(id: 7, name: "VA Sunshine Healthcare Network", number: 8)
       visn_9 = Visn.create!(id: 8, name: "VA MidSouth Healthcare Network", number: 9)
 

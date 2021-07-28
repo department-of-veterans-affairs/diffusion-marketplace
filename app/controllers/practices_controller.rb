@@ -17,6 +17,7 @@ class PracticesController < ApplicationController
   before_action :is_enabled, only: [:show]
   before_action :set_current_session, only: [:extend_editor_session_time, :session_time_remaining, :close_edit_session]
   before_action :practice_locked_for_editing, only: [:editors, :introduction, :overview, :contact, :adoptions, :about, :implementation]
+  before_action :fetch_visns, only: [:show, :search, :introduction]
   before_action :fetch_va_facilities, only: [:show, :search, :metrics, :adoptions, :create_or_update_diffusion_history, :introduction]
 
   # GET /practices
@@ -149,7 +150,6 @@ class PracticesController < ApplicationController
 
   def search
     @practices = Practice.searchable_practices nil
-    @visn_data = Visn.cached_visns
     # due to some practices/search.js.erb functions being reused for other pages (VISNs/VA Facilities), set the @practices_json variable to nil unless it's being used for the practices/search page
     @practices_json = practices_json(@practices)
     @diffusion_histories = []
@@ -653,8 +653,12 @@ class PracticesController < ApplicationController
     @office_data = origin_data_json['departments'][practice_department_id - 1]['offices'].find { |o| o['id'] == @practice.initiating_facility.to_i } if @practice.department?
   end
 
+  def fetch_visns
+    @visns = Visn.cached_visns
+  end
+
   def set_visn_data
-    @visn_data = origin_data_json['visns'].find { |v| v['id'] == @practice.initiating_facility.to_i } if @practice.visn?
+    @visn_data = Visn.cached_visns.get_by_initiating_facility(@practice.initiating_facility.to_i) if @practice.visn?
   end
 
   def set_initiating_facility_other

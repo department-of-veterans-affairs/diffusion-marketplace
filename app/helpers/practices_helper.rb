@@ -55,17 +55,6 @@ module PracticesHelper
     @office_data.map {|c| [ c['name'], c['id'] ] }
   end
 
-  def fetch_visns
-    @visn_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
-    @visn_data = @visn_data["visns"]
-  end
-
-  def visns_for_select
-    @visn_data = JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
-    @visn_data = @visn_data["visns"]
-    @visn_data.map {|c| [ c['number'], c['id'] ] }
-  end
-
   def options_for_states
     @state_options = us_states
     x = 0
