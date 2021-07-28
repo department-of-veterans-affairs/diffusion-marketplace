@@ -69,6 +69,10 @@ class ApplicationController < ActionController::Base
         session[:user_type] = 'guest'
       end
     elsif current_user.present?
+      if params[:id] == 'a-public-practice'
+        session[:user_type] = 'ntlm'
+        return
+      end
        session[:user_type] = 'public' if session[:user_type] === 'guest'
     end
   end
