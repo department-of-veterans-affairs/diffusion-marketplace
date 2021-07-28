@@ -31,7 +31,7 @@ describe 'Contact section', type: :feature, js: true do
       visit practice_path(@practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@practice.name)
-      expect(page).to have_css('.commontator')
+      expect(page).to_not have_css('.commontator')
       fill_in('comment[body]', with: 'Hello world')
       click_button('commit')
       expect(page).to_not have_css('#commontator-comment-1')
