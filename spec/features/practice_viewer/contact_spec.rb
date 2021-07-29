@@ -25,17 +25,16 @@ describe 'Contact section', type: :feature, js: true do
       expect(page).to have_css('.commontator')
     end
 
-    # it 'Should not allow public users to post comments' do
-    #   # Login as an authenticated user, visit the practice page, and create a comment
-    #   login_as(@user2, :scope => :user, :run_callbacks => false)
-    #   visit practice_path(@practice)
-    #   expect(page).to be_accessible.according_to :wcag2a, :section508
-    #   expect(page).to have_content(@practice.name)
-    #   expect(page).to have_css('.commontator')
-    #   fill_in('comment[body]', with: 'Hello world')
-    #   click_button('commit')
-    #   expect(page).to_not have_css('#commontator-comment-1')
-    # end
+    it 'Should not allow users to add role for post comments' do
+      # Login as an authenticated user, visit the practice page, and create a comment
+      login_as(@user2, :scope => :user, :run_callbacks => false)
+      visit practice_path(@practice)
+      expect(page).to be_accessible.according_to :wcag2a, :section508
+      expect(page).to have_content(@practice.name)
+      debugger
+      expect(page).to have_content('I am currently adopting this practice')
+      expect(page).to have_content('I am a member of this practice team')
+    end
 
     it 'Should not allow unauthenticated users to view or post comments' do
       # Try to visit a practice page without being logged in
@@ -56,8 +55,9 @@ describe 'Contact section', type: :feature, js: true do
   #     expect(page).to have_content('A public practice')
   #     expect(page).to have_css('.commontator')
   #   end
-  #
+  # #
   #   it 'Should allow a user to edit their existing comment' do
+  #     debugger
   #     fill_in('comment[body]', with: 'Hello world')
   #     click_button('commit')
   #     find("#commontator-comment-1-edit").click
@@ -218,5 +218,5 @@ describe 'Contact section', type: :feature, js: true do
   # def create_comment
   #   fill_in('comment[body]', with: 'This is a test comment')
   #   click_button('commit')
-  # end
+  #end
 end
