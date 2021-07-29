@@ -1,4 +1,5 @@
 @import "../variables/colors";
+@import "../../dm/components/_links";
 
 #dm-practice-nav {
   width: 207px !important;
@@ -1266,5 +1267,11 @@ tr.border_bottom td {
   &:visited {
     text-decoration: none !important;
     color: $dm-color-base !important;
+  }
+}
+
+#practice_origin_facilities_text {
+  a:not(.dm-btn-primary) {
+    @extend .dm-internal-link
   }
 }

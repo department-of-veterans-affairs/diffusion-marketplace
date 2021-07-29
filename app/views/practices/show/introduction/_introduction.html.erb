@@ -75,14 +75,33 @@
             %>
             <%= @practice_date %><%= origin_facilities.present? || initiating_facility.present? ? ',' : '' %>
               <% if origin_display_name(@practice).length > 180 %>
-                <span id="origin_facility_truncated"><%= origin_display_name_trunc(@practice) %></span>
+                <span id="origin_facility_truncated">
+                  <%= render partial: 'practices/show/introduction/origin_facility_links', locals: {
+                    origin_facility_text_1: origin_display_name_trunc(@practice).split(','),
+                    origin_facility_text_2: origin_display_name_trunc(@practice, 0, 180)
+                    }
+                  %>
+                </span>
                 <span id="dots">...</span>
                 <span id="more_text" class="display-none">
-                  <%= origin_display_name_trunc(@practice, 0, 99999) %>
+                  <% origin_display_name_trunc(@practice, 0, 99999).split(',').each_with_index do |pof, index| %>
+                  <% if pof.include?('(') %>
+                <%= link_to pof, va_facility_path(VaFacility.cached_va_facilities.where(official_station_name: pof.split('(').shift.strip).first) %><%= ', ' unless index === origin_display_name_trunc(@practice, 0, 99999).split(',').size - 1 %>
+              <% else %>
+                <%= link_to pof, va_facility_path(VaFacility.cached_va_facilities.where(official_station_name: pof)) %><%= ', ' unless index === origin_display_name_trunc(@practice, 0, 99999).split(',').size - 1 %>
+              <% end %>
+            <% end %>
                 </span><a class="usa-button--unstyled dm-btn-primary" href="" onclick="seeMoreText(); return false" id="seeMore">See more</a>
               <% else %>
-                <%= origin_display_name(@practice) %>
+            <% origin_display_name(@practice).split(',').each_with_index do |pof, index| %>
+              <% if pof.include?('(') %>
+                <%= link_to pof, va_facility_path(VaFacility.cached_va_facilities.where(official_station_name: pof.split('(').shift.strip).first) %><%= ', ' unless index === origin_display_name_trunc(@practice, 0, 180).split(',').size - 1 %>
+              <% else %>
+                <%= link_to pof, va_facility_path(VaFacility.cached_va_facilities.where(official_station_name: pof.strip).first) %><%= ', ' unless index === origin_display_name_trunc(@practice, 0, 180).split(',').size - 1 %>
               <% end %>
+                <%#= origin_display_name(@practice) %>
+              <% end %>
+            <% end %>
             <!-- display department --->
             <% if @practice.department? %>
               <span>, <%= origin_display_department_name(@practice) %> Administration</span>

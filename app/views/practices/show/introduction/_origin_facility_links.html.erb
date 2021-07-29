@@ -1,0 +1,13 @@
+<%
+  va_facilities = VaFacility.cached_va_facilities.get_relevant_attributes
+  last_array_item = origin_facility_text_2.split(',').size - 1
+%>
+
+<% origin_facility_text_1.each_with_index do |pof, index| %>
+  <%# turn the origin display text into links to each VaFacility's show page %>
+  <% if pof.include?('(') %>
+    <%= link_to pof, va_facility_path(va_facilities.where(official_station_name: pof.split('(').shift.strip).first) %><%= ', ' unless index === last_array_item %>
+  <% else %>
+    <%= link_to pof, va_facility_path(va_facilities.where(official_station_name: pof.strip).first) %><%= ', ' unless index === last_array_item %>
+  <% end %>
+<% end %>

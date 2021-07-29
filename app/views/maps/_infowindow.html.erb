@@ -4,10 +4,7 @@
       station_name = facility.official_station_name
       station_number = facility.station_number
     %>
-    <b>
-      <%= station_name %>
-      <%= show_common_name(station_name, facility.common_name) %>
-    </b>
+    <%= link_to "#{station_name} #{ show_common_name(station_name, facility.common_name)}", va_facility_path(facility), class: 'dm-internal-link' %>
   </p>
   <% if home_page ||= false %>
     <p class="margin-top-1"><%= completed %> successful adoption<%= completed == 1 ? '' : 's' %></p>
