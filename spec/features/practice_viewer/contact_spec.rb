@@ -45,26 +45,26 @@ describe 'Contact section', type: :feature, js: true do
     end
   end
 
-  describe 'Commenting flow' do
-    before do
-      set_data
-      login_as(@user2, :scope => :user, :run_callbacks => false)
-      visit practice_path(@practice)
-      expect(page).to have_selector('.comments-section', visible: true)
-      expect(page).to have_content('A public practice')
-      expect(page).to have_css('.commontator')
-    end
-  #
-    it 'Should allow a user to edit their existing comment' do
-      fill_in('comment[body]', with: 'Hello world')
-      click_button('commit')
-      find("#commontator-comment-1-edit").click
-      fill_in('commontator-comment-1-edit-body', with: 'This is a test.')
-      within(:css, '.comment') do
-        click_button('Post')
-      end
-      expect(page).to have_content('edited')
-    end
+  # describe 'Commenting flow' do
+  #   before do
+  #     set_data
+  #     login_as(@user2, :scope => :user, :run_callbacks => false)
+  #     visit practice_path(@practice)
+  #     expect(page).to have_selector('.comments-section', visible: true)
+  #     expect(page).to have_content('A public practice')
+  #     expect(page).to have_css('.commontator')
+  #   end
+  # #
+  #   it 'Should allow a user to edit their existing comment' do
+  #     fill_in('comment[body]', with: 'Hello world')
+  #     click_button('commit')
+  #     find("#commontator-comment-1-edit").click
+  #     fill_in('commontator-comment-1-edit-body', with: 'This is a test.')
+  #     within(:css, '.comment') do
+  #       click_button('Post')
+  #     end
+  #     expect(page).to have_content('edited')
+  #   end
   #
   #   it 'Should allow a user to delete their existing comment' do
   #     fill_in('comment[body]', with: 'Hello world')
@@ -216,5 +216,5 @@ describe 'Contact section', type: :feature, js: true do
   # def create_comment
   #   fill_in('comment[body]', with: 'This is a test comment')
   #   click_button('commit')
-  end
+  #end
 end
