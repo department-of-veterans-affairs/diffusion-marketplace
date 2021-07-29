@@ -37,14 +37,14 @@ describe 'Contact section', type: :feature, js: true do
       expect(page).to_not have_css('#commontator-comment-1')
     end
 
-    it 'Should not allow unauthenticated users to view or post comments' do
-      # Try to visit a practice page without being logged in
-      visit practice_path(@practice)
-      expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_content(@practice.name)
-      expect(page).to have_current_path(practice_path(@practice))
-      expect(page).to have_content('Login to see full practice')
-    end
+    # it 'Should not allow unauthenticated users to view or post comments' do
+    #   # Try to visit a practice page without being logged in
+    #   visit practice_path(@practice)
+    #   expect(page).to be_accessible.according_to :wcag2a, :section508
+    #   expect(page).to have_content(@practice.name)
+    #   expect(page).to have_current_path(practice_path(@practice))
+    #   expect(page).to have_content('Login to see full practice')
+    # end
   end
 
   # describe 'Commenting flow' do
