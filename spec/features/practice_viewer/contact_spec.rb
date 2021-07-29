@@ -2,19 +2,12 @@ require 'rails_helper'
 
 describe 'Contact section', type: :feature, js: true do
   def set_data
-    @admin = User.create!(email: 'yuji.itadori@va.gov', first_name: 'Yuji', last_name: 'Itadori', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    @admin.add_role(User::USER_ROLES[0].to_sym)
     @user1 = User.create!(email: 'hisagi.shuhei@va.gov', first_name: 'Shuhei', last_name: 'Hisagi', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @user2 = User.create!(email: 'momo.hinamori@va.gov', first_name: 'Momo', last_name: 'H', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @user3 = User.create!(email: 'testp13423041@va.gov', first_name: 'Test', last_name: 'Account', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @practice = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', support_network_email: 'testp13423041@va.gov', user: @user1)
     @practice_partner = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative', icon: 'fas fa-heart', color: '#E4A002')
     @practice_email = PracticeEmail.create!(practice: @practice, address: 'testp13423041@va.gov')
-  end
-
-  def login_and_visit_show_page(user)
-    login_as(user, :scope => :user, :run_callbacks => false)
-    visit practice_path(@practice)
   end
 
   describe 'Authorization' do
@@ -24,22 +17,24 @@ describe 'Contact section', type: :feature, js: true do
 
     it 'Should allow authenticated users to view comments' do
       # Login as an authenticated user and visit the practice page
-      login_and_visit_show_page(@admin)
+      login_as(@user1, :scope => :user, :run_callbacks => false)
+      visit practice_path(@practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@practice.name)
       expect(page).to have_current_path(practice_path(@practice))
       expect(page).to have_css('.commontator')
     end
 
-    it 'Should allow authenticated users to post comments' do
+    it 'Should not allow public users to post comments' do
       # Login as an authenticated user, visit the practice page, and create a comment
-      login_and_visit_show_page(@admin)
+      login_as(@user2, :scope => :user, :run_callbacks => false)
+      visit practice_path(@practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@practice.name)
       expect(page).to have_css('.commontator')
       fill_in('comment[body]', with: 'Hello world')
       click_button('commit')
-      expect(page).to have_css('#commontator-comment-1')
+      expect(page).to_not have_css('#commontator-comment-1')
     end
 
     it 'Should not allow unauthenticated users to view or post comments' do
@@ -55,7 +50,8 @@ describe 'Contact section', type: :feature, js: true do
   # describe 'Commenting flow' do
   #   before do
   #     set_data
-  #     login_and_visit_show_page(@admin)
+  #     login_as(@user2, :scope => :user, :run_callbacks => false)
+  #     visit practice_path(@practice)
   #     expect(page).to have_selector('.comments-section', visible: true)
   #     expect(page).to have_content('A public practice')
   #     expect(page).to have_css('.commontator')
@@ -161,11 +157,12 @@ describe 'Contact section', type: :feature, js: true do
   #     end
   #   end
   # end
-
+  #
   # describe 'Reporting a comment' do
   #   before do
   #     set_data
-  #     login_and_visit_show_page(@admin)
+  #     login_as(@user2, :scope => :user, :run_callbacks => false)
+  #     visit practice_path(@practice)
   #     expect(page).to have_content(@practice.name)
   #     expect(page).to have_css('.commontator')
   #     fill_in('comment[body]', with: 'Hello world')
@@ -173,14 +170,16 @@ describe 'Contact section', type: :feature, js: true do
   #   end
   #
   #   it 'should display the report abuse modal if the user clicks on the flag icon' do
-  #     login_and_visit_show_page(@admin)
+  #     login_as(@user1, :scope => :user, :run_callbacks => false)
+  #     visit practice_path(@practice)
   #     find(".report-abuse-container").click
   #     expect(page).to have_content('Report a comment')
   #     expect(page).to have_css('.report-abuse-submit')
   #   end
   #
   #   it 'should hide the report abuse modal if the user clicks the cancel button' do
-  #     login_and_visit_show_page(@admin)
+  #     login_as(@user1, :scope => :user, :run_callbacks => false)
+  #     visit practice_path(@practice)
   #     find(".report-abuse-container").click
   #     expect(page).to have_content('Report a comment')
   #     expect(page).to have_css('.report-abuse-cancel')
@@ -191,7 +190,8 @@ describe 'Contact section', type: :feature, js: true do
   #   end
   #
   #   it 'should show a success banner after the user successfully reports a comment' do
-  #     login_and_visit_show_page(@admin)
+  #     login_as(@user1, :scope => :user, :run_callbacks => false)
+  #     visit practice_path(@practice)
   #     find(".report-abuse-container").click
   #     expect(page).to have_content('Report a comment')
   #     expect(page).to have_css('.report-abuse-cancel')
@@ -202,7 +202,7 @@ describe 'Contact section', type: :feature, js: true do
   #     expect(page).to have_content('Comment has been reported and will be reviewed shortly')
   #   end
   # end
-
+  #
   # describe 'Email' do
   #   before do
   #     set_data
@@ -214,9 +214,9 @@ describe 'Contact section', type: :feature, js: true do
   #     expect(page).to have_link(href: 'mailto:testp13423041@va.gov?cc=testp13423041%40va.gov')
   #   end
   # end
-
-  def create_comment
-    fill_in('comment[body]', with: 'This is a test comment')
-    click_button('commit')
-  end
+  #
+  # def create_comment
+  #   fill_in('comment[body]', with: 'This is a test comment')
+  #   click_button('commit')
+  # end
 end
