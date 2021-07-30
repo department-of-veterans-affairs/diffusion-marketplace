@@ -100,7 +100,7 @@ end
 gem 'ffi', '1.11.1'
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-gem 'jquery-rails'
+gem 'jquery-rails', '>= 4.4.0'
 gem 'jquery-ui-rails'
 gem 'uswds-rails', github: 'agilesix/uswds-rails', ref: 'ebd25cc'
 
