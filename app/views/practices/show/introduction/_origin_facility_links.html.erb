@@ -1,9 +1,9 @@
 <%
   visns = Visn.cached_visns.select(:id, :number)
-  va_facilities = VaFacility.cached_va_facilities.get_relevant_attributes
   origin_facilities = @practice.practice_origin_facilities
   origin_facilities_count = @practice.practice_origin_facilities.count
 %>
+
 <% if @practice.facility? %>
   <% origin_facilities.each_with_index do |pof, index| %>
     <% facility = pof.va_facility %>

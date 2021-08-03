@@ -168,9 +168,9 @@
     }
 
     function seeMoreText() {
-        $("#practice_origin_facilities_text").collapser({
+        $(".origin-display-text").collapser({
             mode: 'chars',
-            truncate: 252
+            truncate: 191 // jquery collapser includes 'See more' and the ellipsis in the total character count, so the count for those was added to the original 180 char count
         });
     }
 

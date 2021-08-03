@@ -73,8 +73,8 @@
               origin_facilities = @practice.practice_origin_facilities
               initiating_facility = @practice.initiating_facility
             %>
-            <%= @practice_date %><%= origin_facilities.present? || initiating_facility.present? ? ',' : '' %>
-            <%= render partial: 'practices/show/introduction/origin_facility_links', locals: { origin_facility_text: origin_display_name(@practice) } %>
+            <%= @practice_date %><%= ',' if origin_facilities.present? || initiating_facility.present? %>
+            <span class="origin-display-text"><%= render partial: 'practices/show/introduction/origin_facility_links', locals: { origin_facility_text: origin_display_name(@practice) } %></span>
           </p>
         </div>
 
