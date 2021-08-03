@@ -167,6 +167,16 @@
         })
     }
 
+    function seeMoreText() {
+        let originFacilityTextEle = "#practice_origin_facilities_text";
+        if ($(originFacilityTextEle).text().length > 180) {
+            $(originFacilityTextEle).collapser({
+                mode: 'chars',
+                truncate: 252
+            });
+        }
+    }
+
     function executePracticeCommentsFunctions() {
         highlightSidebarSectionWhenInView();
         setUpShowMoreOrLessButtons();
@@ -176,28 +186,12 @@
         expandReplyTextArea();
         toggleAdoptionStatusModal();
         trackPracticeContact();
+        seeMoreText();
     }
 
     $document.on('turbolinks:load', executePracticeCommentsFunctions);
 })(window.jQuery);
 
-function seeMoreText() {
-    var dots = document.getElementById("dots");
-    var moreText = document.getElementById("more_text");
-    var btnText = document.getElementById("seeMore");
-    var originFacilityTruncated = document.getElementById("origin_facility_truncated");
-    if (dots.style.display === "none") {
-        dots.style.display = "inline";
-        btnText.innerHTML = "See more";
-        originFacilityTruncated.style.display = "inline";
-        moreText.style.display = "none";
-    } else {
-        dots.style.display = "none";
-        btnText.innerHTML = "See less";
-        originFacilityTruncated.style.display = "none";
-        moreText.style.display = "inline";
-    }
-}
 function seeMoreTextAwards() {
     var dots = document.getElementById("dots_award");
     var moreText = document.getElementById("more_text_award");

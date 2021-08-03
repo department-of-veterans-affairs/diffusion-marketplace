@@ -1,13 +1,17 @@
 <%
+  visns = Visn.cached_visns.select(:id, :number)
   va_facilities = VaFacility.cached_va_facilities.get_relevant_attributes
-  last_array_item = origin_facility_text_2.split(',').size - 1
+  origin_facilities = @practice.practice_origin_facilities
+  origin_facilities_count = @practice.practice_origin_facilities.count
 %>
-
-<% origin_facility_text_1.each_with_index do |pof, index| %>
-  <%# turn the origin display text into links to each VaFacility's show page %>
-  <% if pof.include?('(') %>
-    <%= link_to pof, va_facility_path(va_facilities.where(official_station_name: pof.split('(').shift.strip).first) %><%= ', ' unless index === last_array_item %>
-  <% else %>
-    <%= link_to pof, va_facility_path(va_facilities.where(official_station_name: pof.strip).first) %><%= ', ' unless index === last_array_item %>
+<% if @practice.facility? %>
+  <% origin_facilities.each_with_index do |pof, index| %>
+    <% facility = pof.va_facility %>
+    <%= link_to "#{facility_name_with_common_name(facility.official_station_name, facility.common_name)}", va_facility_path(pof.va_facility),
+        target: '_blank' %><%= ', ' unless index + 1 === origin_facilities_count %>
   <% end %>
+<% elsif @practice.visn? %>
+  <%= link_to origin_facility_text, visn_path(visns.get_by_initiating_facility(@practice.initiating_facility.to_i)), target: '_blank' %>
+<% else %>
+  <%= origin_facility_text %>
 <% end %>

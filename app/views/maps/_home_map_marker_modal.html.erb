@@ -6,7 +6,7 @@
         <span class="close text-base-darkest" tabindex="0" role="button" aria-label="Close modal"><span class="fas fa-times"></span></span>
         <div class="margin-bottom-2">
           <h2 class="margin-top-0 margin-bottom-1">
-            <%= link_to "#{facility.official_station_name} #{ show_common_name(facility.official_station_name, facility.common_name)}", va_facility_path(facility), class: 'dm-internal-link' %>
+            <%= link_to "#{facility.official_station_name} #{ show_common_name(facility.official_station_name, facility.common_name)}", va_facility_path(facility), target: '_blank', class: 'dm-internal-link' %>
           </h2>
           <p class="margin-top-1 margin-bottom-0"><%= in_progress %> in-progress
             adoption<%= in_progress == 1 ? '' : 's' %></p>
