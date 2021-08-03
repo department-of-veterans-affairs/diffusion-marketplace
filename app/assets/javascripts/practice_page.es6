@@ -168,13 +168,10 @@
     }
 
     function seeMoreText() {
-        let originFacilityTextEle = "#practice_origin_facilities_text";
-        if ($(originFacilityTextEle).text().length > 180) {
-            $(originFacilityTextEle).collapser({
-                mode: 'chars',
-                truncate: 252
-            });
-        }
+        $("#practice_origin_facilities_text").collapser({
+            mode: 'chars',
+            truncate: 252
+        });
     }
 
     function executePracticeCommentsFunctions() {
