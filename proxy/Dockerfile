@@ -20,14 +20,19 @@ WORKDIR $PROXY_ROOT
 # create log directory
 RUN mkdir log
 
+
 RUN mkdir /home/nginx && \
-    mkdir /home/nginx/log && \
-    touch /home/nginx/log/error.log && \
-    touch /home/nginx/log/access.log && \
-    chown -R nginx:nginx /home/nginx
+    mkdir /home/nginx/public
 
 # copy over static assets
-COPY public public/
+COPY public /home/nginx/public
+
+RUN mkdir /home/nginx/log && \
+    touch /home/nginx/log/error.log && \
+    touch /home/nginx/log/access.log && \
+    chown -R nginx:nginx /home/nginx && \
+    chmod -R 755 /home/nginx/public
+
 # Copy Nginx config template
 #COPY proxy/nginx.conf /tmp/docker.nginx
 COPY proxy/nginx.conf /etc/nginx/nginx.conf
