@@ -12,7 +12,11 @@ RUN update-ca-trust extract
 
 RUN gem install bundler --force
 
-ENV RAILS_ROOT /app
+RUN groupadd -g 1443 nginx
+RUN adduser -u 1443 nginx
+RUN usermod -a -G nginx nginx
+
+ENV RAILS_ROOT /home/nginx/public
 RUN mkdir -p $RAILS_ROOT
 # Set working directory
 WORKDIR $RAILS_ROOT
@@ -32,4 +36,8 @@ RUN EDITOR="vim --wait" bundle exec rails credentials:edit > /dev/null 2>&1
 
 RUN DB_ADAPTER=nulldb RAILS_ENV=production SES_SMTP_USERNAME=diffusion_marketplace SES_SMTP_PASSWORD=diffusion_marketplace bundle exec rails assets:precompile HOSTNAME=diffusion-marketplace.va.gov
 EXPOSE 3000
+
+RUN chown -R nginx:nginx /home/nginx/public
+USER nginx
+
 CMD bash scripts/start_server.sh
