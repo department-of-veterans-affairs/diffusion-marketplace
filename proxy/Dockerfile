@@ -38,7 +38,8 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
 RUN chown -R nginx:nginx /var/www && chmod -R 755 /var/www && \
         chown -R nginx:nginx /var/cache/nginx && \
         chown -R nginx:nginx /var/log/nginx && \
-        chown -R nginx:nginx /etc/nginx/conf.d
+        chown -R nginx:nginx /etc/nginx/conf.d && \
+        chown -R nginx:nginx /etc/nginx/nginx.conf
 RUN touch /var/run/web-nginx.pid && \
         chown -R nginx:nginx /var/run/web-nginx.pid && \
         touch /var/log/nginx/web-nginx-error.log && \
