@@ -2,7 +2,7 @@ FROM agilesix/centos:7.6
 
 MAINTAINER Agile Six Applications, Inc. <contact@agile6.com>
 
-ENV nginxversion="1.17.3-1" \
+ENV nginxversion="1.21.1-1" \
     elversion="7"
 
 RUN yum install -y yum-plugin-ovl
@@ -19,6 +19,13 @@ ENV PROXY_ROOT /var/www
 WORKDIR $PROXY_ROOT
 # create log directory
 RUN mkdir log
+
+RUN mkdir /home/nginx && \
+    mkdir /home/nginx/log && \
+    touch /home/nginx/log/error.log && \
+    touch /home/nginx/log/access.log && \
+    chown -R nginx:nginx /home/nginx
+
 # copy over static assets
 COPY public public/
 # Copy Nginx config template
@@ -28,9 +35,20 @@ COPY proxy/nginx.conf /etc/nginx/nginx.conf
 RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
     ln -sf /dev/stderr /var/log/nginx/error.log
 
-EXPOSE 80
+RUN chown -R nginx:nginx /var/www && chmod -R 755 /var/www && \
+        chown -R nginx:nginx /var/cache/nginx && \
+        chown -R nginx:nginx /var/log/nginx && \
+        chown -R nginx:nginx /etc/nginx/conf.d
+RUN touch /var/run/web-nginx.pid && \
+        chown -R nginx:nginx /var/run/web-nginx.pid && \
+        touch /var/log/nginx/web-nginx-error.log && \
+        chown nginx:nginx /var/log/nginx/web-nginx-error.log
+
+RUN ls -la /var/log/nginx
+
+EXPOSE 8080
 
 USER nginx
 STOPSIGNAL SIGTERM
 RUN nginx -V
-CMD ["nginx","-g","daemon off;"]
+CMD ["nginx", "-e", "/home/nginx/log/error.log", "-g","daemon off;"]
