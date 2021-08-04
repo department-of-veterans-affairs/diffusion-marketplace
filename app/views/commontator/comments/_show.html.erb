@@ -10,12 +10,12 @@
     children = thread.paginated_comments(page, comment.id, show_all)
     thread.nested_comments_for(user, children, show_all)
   end
+  creator = comment.creator
   if comments_disabled
     name = "VA User"
   else
     name = Commontator.commontator_name(creator) || ''
   end
-  creator = comment.creator
   job_title = creator.job_title
   creator_practice = creator.user_practices.find_by(practice_id: comment.thread.commontable_id, user: creator)
   if creator_practice
@@ -137,7 +137,7 @@
     <div id="commontator-comment-<%= comment.id %>-section-bottom" class="section bottom position-relative">
       <div class="display-inline-block">
         <span id="commontator-comment-<%= comment.id %>-votes" class="votes">
-          <%= render partial: 'commontator/comments/votes', locals: { comment: comment, user: user } %>
+          <%= render partial: 'commontator/comments/votes', locals: { comment: comment, user: user, comments_disabled: comments_disabled } %>
         </span>
         <% if !comment.parent_id? %>
           <% unless comment.is_deleted? %>
