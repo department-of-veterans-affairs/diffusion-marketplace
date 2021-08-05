@@ -11,13 +11,19 @@ ARG AWS_REGION
 
 RUN git config --global http.sslVerify false
 
-COPY VA-Internal-S2-RCA1-v1.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-RCA1-v1.cer
-RUN update-ca-trust extract
+#COPY VA-Internal-S2-RCA1-v1.cer /etc/pki/ca-trust/source/anchors/VA-Internal-S2-RCA1-v1.cer
+#RUN update-ca-trust extract
 
 RUN gem install bundler --force
 
 ENV RAILS_ROOT /home/nginx/app
-RUN mkdir -p $RAILS_ROOT && chown -R nginx:nginx /home/nginx/app
+ENV PROXY_ROOT /home/nginx/www
+RUN mkdir -p $RAILS_ROOT && \
+    chown -R nginx:nginx $RAILS_ROOT && \
+    mkdir -p $PROXY_ROOT && \
+    chown -R nginx:nginx $RAILS_ROOT
+
+RUN chmod g+rwx $RAILS_ROOT && chmod g+rwx /home/nginx/www
 # Set working directory
 WORKDIR $RAILS_ROOT
 # Setting env up

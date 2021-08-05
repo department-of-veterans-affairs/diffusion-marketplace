@@ -6,8 +6,8 @@ services:
       context: .
       dockerfile: ./proxy/Dockerfile
     volumes:
-      - ./logs:/var/log
-      - app:/var/www
+      - ./logs:/home/nginx/app/log
+      - app:/home/nginx/www
     ports:
       - "80:8080"
     depends_on:
@@ -19,8 +19,9 @@ services:
     env_file:
       - .env
     volumes:
-      - ./logs:/app/log
-      - app:/var/www
+      - ./logs:/home/nginx/app/log
+      - app:/home/nginx/www
+    command: sleep infinity
     build:
       context: .
       dockerfile: Dockerfile
@@ -54,7 +55,7 @@ services:
       SURVEY_MONKEY_USERNAME: ${SURVEY_MONKEY_USERNAME}
     networks:
       - default
-      
+        
 volumes:
   app:
     external: false

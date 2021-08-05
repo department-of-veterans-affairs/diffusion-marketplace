@@ -14,43 +14,47 @@ RUN yum install -y wget openssl sed gettext &&\
     rpm -iv nginx-$nginxversion.el$elversion.ngx.x86_64.rpm
 
 # establish where Nginx should look for files
-ENV PROXY_ROOT /var/www
+ENV RAILS_ROOT /home/nginx/app
+ENV PROXY_ROOT /home/nginx/www
+RUN mkdir -p $RAILS_ROOT && \
+    chown -R nginx:nginx $RAILS_ROOT && \
+    mkdir -p $PROXY_ROOT && \
+    chown -R nginx:nginx $RAILS_ROOT
+
+RUN chmod g+rwx $RAILS_ROOT && chmod g+rwx $PROXY_ROOT
+
 # Set our working directory inside the image
 WORKDIR $PROXY_ROOT
-# create log directory
-RUN mkdir log
 
 
-RUN mkdir /home/nginx && \
-    mkdir /home/nginx/public
 
-# copy over static assets
-COPY public /home/nginx/public
+
+
+## copy over static assets
+COPY --chown=nginx public $PROXY_ROOT/public/
 
 RUN mkdir /home/nginx/log && \
     touch /home/nginx/log/error.log && \
     touch /home/nginx/log/access.log && \
     chown -R nginx:nginx /home/nginx && \
-    chmod -R 755 /home/nginx/public
+    chmod -R 755 /home/nginx/www
 
 # Copy Nginx config template
 #COPY proxy/nginx.conf /tmp/docker.nginx
 COPY proxy/nginx.conf /etc/nginx/nginx.conf
 
-RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
-    ln -sf /dev/stderr /var/log/nginx/error.log
+#RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
+#    ln -sf /dev/stderr /var/log/nginx/error.log
 
-RUN chown -R nginx:nginx /var/www && chmod -R 755 /var/www && \
-        chown -R nginx:nginx /var/cache/nginx && \
-        chown -R nginx:nginx /var/log/nginx && \
-        chown -R nginx:nginx /etc/nginx/conf.d && \
-        chown -R nginx:nginx /etc/nginx/nginx.conf
+RUN chown -R nginx:nginx /var/cache/nginx && \
+    chown -R nginx:nginx /var/log/nginx && \
+    chown -R nginx:nginx /etc/nginx/conf.d && \
+    chown -R nginx:nginx /etc/nginx/nginx.conf
+
 RUN touch /var/run/web-nginx.pid && \
         chown -R nginx:nginx /var/run/web-nginx.pid && \
         touch /var/log/nginx/web-nginx-error.log && \
         chown nginx:nginx /var/log/nginx/web-nginx-error.log
-
-RUN ls -la /var/log/nginx
 
 EXPOSE 8080
 

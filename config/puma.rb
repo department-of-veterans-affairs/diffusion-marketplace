@@ -5,7 +5,7 @@ if ENV['RAILS_ENV'] == 'production'
   bind "unix:///home/nginx/app/web-puma-app.sock?umask=0000"
   port ENV.fetch("PORT") { 3000 }
 
-  stdout_redirect "/home/nginx/app/log/web-puma.stdout.log", "/home/nginx/app/log/web-puma.stderr.log", true
+  stdout_redirect "/home/nginx/www/log/web-puma.stdout.log", "/home/nginx/www/log/web-puma.stderr.log", true
 
   environment ENV.fetch("RAILS_ENV") { "development" }
 
