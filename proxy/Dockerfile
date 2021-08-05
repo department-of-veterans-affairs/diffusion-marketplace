@@ -17,27 +17,21 @@ RUN yum install -y wget openssl sed gettext &&\
 ENV RAILS_ROOT /home/nginx/app
 ENV PROXY_ROOT /home/nginx/www
 RUN mkdir -p $RAILS_ROOT && \
-    chown -R nginx:nginx $RAILS_ROOT && \
     mkdir -p $PROXY_ROOT && \
-    chown -R nginx:nginx $RAILS_ROOT
+    mkdir -p $PROXY_ROOT/log
 
 RUN chmod g+rwx $RAILS_ROOT && chmod g+rwx $PROXY_ROOT
-
-# Set our working directory inside the image
-WORKDIR $PROXY_ROOT
-
-
-
-
-
-## copy over static assets
-COPY --chown=nginx public $PROXY_ROOT/public/
 
 RUN mkdir /home/nginx/log && \
     touch /home/nginx/log/error.log && \
     touch /home/nginx/log/access.log && \
-    chown -R nginx:nginx /home/nginx && \
-    chmod -R 755 /home/nginx/www
+    chown -R nginx:nginx /home/nginx
+
+# Set our working directory inside the image
+WORKDIR $PROXY_ROOT
+
+## copy over static assets
+COPY --chown=nginx public $PROXY_ROOT/public/
 
 # Copy Nginx config template
 #COPY proxy/nginx.conf /tmp/docker.nginx
