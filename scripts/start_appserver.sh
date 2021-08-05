@@ -8,12 +8,12 @@ sudo docker-compose up -d
 
 # change the owner of the log directory within the container to the app user, nginx
 echo "change the owner of the log directory within the container to the app user, nginx"
-sudo docker exec -u 0:0 diffusion-marketplace_app_1 chown nginx:nginx /home/nginx/app/log
+sudo docker exec -u 0:0 diffusion-marketplace_app_1 chown nginx:nginx -R /home/nginx/app/log
 
 # change the owner of the app directory within the container to the web server user, nginx
 # this is from another volume, which docker makes "root" the owner
 echo "change the owner of the app directory within the container to the web server user, nginx"
-sudo docker exec -u 0:0 diffusion-marketplace_app_1 chown nginx:nginx /home/nginx/www
+sudo docker exec -u 0:0 diffusion-marketplace_app_1 chown nginx:nginx -R /home/nginx/www
 
 # copy over the newly created assets
 echo "copy over the newly created assets"
