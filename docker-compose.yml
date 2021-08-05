@@ -29,7 +29,7 @@ services:
         AWS_ACCESS_KEY_ID: ABCD
         AWS_SECRET_ACCESS_KEY: 1234
         AWS_REGION: us-gov-west-1
-    environment: &app_server_enviroment_vars
+    environment: &app_server_environment_vars
       # The AWS key and secret access key refer to the S3 bucket user
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_REGION: ${AWS_REGION}
@@ -52,6 +52,8 @@ services:
       SURVEY_MONKEY_PASSWORD: ${SURVEY_MONKEY_PASSWORD}
       SURVEY_MONKEY_TOKEN: ${SURVEY_MONKEY_TOKEN}
       SURVEY_MONKEY_USERNAME: ${SURVEY_MONKEY_USERNAME}
+    networks:
+      - default
       
 volumes:
   app:
