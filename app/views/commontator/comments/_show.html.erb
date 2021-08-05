@@ -11,7 +11,11 @@
     thread.nested_comments_for(user, children, show_all)
   end
   creator = comment.creator
-  name = Commontator.commontator_name(creator) || ''
+  if comments_disabled
+    name = "VA User"
+  else
+    name = Commontator.commontator_name(creator) || ''
+  end
   job_title = creator.job_title
   creator_practice = creator.user_practices.find_by(practice_id: comment.thread.commontable_id, user: creator)
   if creator_practice
@@ -26,13 +30,12 @@
   <div class="grid-col-fill comment-width-ie">
     <div id="commontator-comment-<%= comment.id %>-section-top" class="section top margin-bottom-1 line-height-26">
       <span id="commontator-comment-<%= comment.id %>-author" class="author line-height-26 text-middle">
-        <% if session[:user_type] != 'public' %>
+        <% if !comments_disabled %>
           <%= link_to "#{name} #{job_title ? '(' + job_title + ')' : ''}", "/users/#{creator.id}", class:'dm-link-title' %>
         <% else %>
           <span class="text-bold"><%= "#{name} #{job_title ? '(' + job_title + ')' : ''}" %></span>
         <% end %>
       </span>
-      
       <% if practice_team_member %>
         <span
           class="radius-sm font-sans-3xs bg-blue-20v text-uppercase text-bold line-height-15px padding-y-1px padding-x-05 text-ls-1 text-center display-inline-block
@@ -134,7 +137,7 @@
     <div id="commontator-comment-<%= comment.id %>-section-bottom" class="section bottom position-relative">
       <div class="display-inline-block">
         <span id="commontator-comment-<%= comment.id %>-votes" class="votes">
-          <%= render partial: 'commontator/comments/votes', locals: { comment: comment, user: user } %>
+          <%= render partial: 'commontator/comments/votes', locals: { comment: comment, user: user, comments_disabled: comments_disabled } %>
         </span>
         <% if !comment.parent_id? %>
           <% unless comment.is_deleted? %>

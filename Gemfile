@@ -64,6 +64,7 @@ group :development, :test do
   gem 'simplecov'
   gem 'shoulda-matchers', require: false
   gem 'pry', '~> 0.12.2'
+  gem 'rack_session_access'
 
   # gem 'sniffybara', git: 'https://github.com/department-of-veterans-affairs/sniffybara.git'
   gem 'figaro'

@@ -8,7 +8,8 @@
 
 <% if comment.can_be_voted_on? %>
   <%
-    can_vote = comment.can_be_voted_on_by?(user)
+    comments_disabled ||= false
+    can_vote = comment.can_be_voted_on_by?(user) && !comments_disabled
     vote = comment.get_vote_by(user)
     comment_voting = thread.config.comment_voting.to_sym
     config = thread.config
@@ -16,32 +17,26 @@
   %>
 
   <% if comment_voting == :ld || comment_voting == :l %>
-  <% vtype = (comment_voting == :ld) ? 'upvote' : 'like' %>
-  <span id="commontator-comment-<%= comment.id %>-<%= vtype %>" class="<%= vtype %>">
-    <% if can_vote && (vote.blank? || !vote.vote_flag) %>
-      <% if !@practice.retired && session[:user_type] != 'public'  %>
+    <% vtype = (comment_voting == :ld) ? 'upvote' : 'like' %>
+    <span id="commontator-comment-<%= comment.id %>-<%= vtype %>" class="<%= vtype %>">
+      <% if can_vote && (vote.blank? || !vote.vote_flag) %>
         <%= form_tag commontator.upvote_comment_path(comment),
             method: :put,
             class: 'vote-form',
             remote: true do %>
             <%= button_tag '', type: 'submit', class: "fas fa-thumbs-up empty-vote" %>
           <% end %>
-      <% end %>
-    <% elsif can_vote %>
-      <% if !@practice.retired && session[:user_type] != 'public'  %>
+      <% elsif can_vote %>
         <%= form_tag commontator.unvote_comment_path(comment),
               method: :put,
               class: 'vote-form',
               remote: true do %>
           <%= button_tag '', type: 'submit', class: "fas fa-thumbs-up voted" %>
         <% end %>
-      <% end %>
-    <% else %>
-      <% if !@practice.retired && session[:user_type] != 'public'  %>
+      <% else %>
         <button class="fas fa-thumbs-up vote-disabled" disabled="disabled"></button>
       <% end %>
-    <% end %>
-  </span>
+    </span>
   <% end %>
 
   <span id="commontator-comment-<%= comment.id %>-vote-count" class="vote-count comment-<%= comment.id %>-<%= comment.cached_votes_up %>-vote<%=comment.cached_votes_up == 1 ? '' : 's' %>">
