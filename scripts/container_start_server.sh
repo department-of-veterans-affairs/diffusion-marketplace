@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# This script starts the app within the container
+
 # sleep 999999   # if you need to debug the container before starting server uncomment this line
 
 if [ "$CONTAINER_ROLE" == "bg_worker" ]

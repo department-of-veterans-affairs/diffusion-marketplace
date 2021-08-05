@@ -19,10 +19,9 @@ RUN gem install bundler --force
 ENV RAILS_ROOT /home/nginx/app
 ENV PROXY_ROOT /home/nginx/www
 RUN mkdir -p $RAILS_ROOT && \
-    chown -R nginx:nginx $RAILS_ROOT && \
     mkdir -p $PROXY_ROOT && \
     mkdir -p $PROXY_ROOT/log && \
-    chown -R nginx:nginx $PROXY_ROOT
+    chown -R nginx:nginx /home/nginx
 
 RUN chmod g+rwx $RAILS_ROOT && chmod g+rwx /home/nginx/www
 # Set working directory

@@ -21,6 +21,7 @@ services:
     volumes:
       - ./logs:/home/nginx/app/log
       - app:/home/nginx/www
+    command: sleep infinity
     build:
       context: .
       dockerfile: Dockerfile
