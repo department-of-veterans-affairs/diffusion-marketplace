@@ -30,7 +30,7 @@
         </p>
         <%= link_to 'Jump to list of VA facilities', va_facilities_path, class: 'dm-external-link' %>
       </div>
-      <% if @primary_visn_liaison.present? && session[:user_type] === "ntlm" %>
+      <% if @primary_visn_liaison.present? %>
         <div class="grid-col-6">
           <div class="visn-liaison-info padding-3 line-height-26 bg-base-lightest">
             <p class="text-bold margin-bottom-2">VISN Marketplace Liaison</p>
