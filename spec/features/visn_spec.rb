@@ -382,6 +382,7 @@ describe 'VISN pages', type: :feature do
     end
 
     it 'should display a brief breakdown of the visn\'s metadata' do
+      login_as(@user, :scope => :user, :run_callbacks => false)
       page.set_rack_session(:user_type => 'ntlm')
       visit '/visns/2'
 
