@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'spec_helper'
 
 describe 'VISN pages', type: :feature do
   before do
@@ -381,6 +382,7 @@ describe 'VISN pages', type: :feature do
     end
 
     it 'should display a brief breakdown of the visn\'s metadata' do
+      page.set_rack_session(:user_type => 'ntlm')
       visit '/visns/2'
 
       expect(page).to have_content('This VISN has 3 facilities and serves Veterans in Florida and Georgia.')
