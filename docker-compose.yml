@@ -21,7 +21,6 @@ services:
     volumes:
       - ./logs:/home/nginx/app/log
       - app:/home/nginx/www
-    command: sleep infinity
     build:
       context: .
       dockerfile: Dockerfile
@@ -55,7 +54,7 @@ services:
       SURVEY_MONKEY_USERNAME: ${SURVEY_MONKEY_USERNAME}
     networks:
       - default
-        
+
 volumes:
   app:
     external: false

@@ -7,6 +7,7 @@ then
 elif [ "$CONTAINER_ROLE" == "app_server" ]
 then
   echo "web start: bundle exec rails db:migrate && bundle exec puma -C config/puma.rb"
+  cp -R /home/nginx/app/public /home/nginx/www
   bundle exec rails db:migrate && bundle exec puma -C config/puma.rb
 else
   echo "Error: unknown CONTAINER_ROLE"
