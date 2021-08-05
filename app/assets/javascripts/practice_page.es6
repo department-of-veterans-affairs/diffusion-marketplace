@@ -167,11 +167,10 @@
         })
     }
 
-    function seeMoreText() {
-        $(".origin-display-text").collapser({
+    function seeMoreLinkText() {
+        $(".origin-facilities-display-text").collapser({
             mode: 'chars',
             truncate: 180
-            // jquery collapser includes 'See more' and the ellipsis in the total character count, so the count for those was added to the original 180 char count
         });
     }
 
@@ -184,11 +183,29 @@
         expandReplyTextArea();
         toggleAdoptionStatusModal();
         trackPracticeContact();
-        seeMoreText();
+        seeMoreLinkText();
     }
 
     $document.on('turbolinks:load', executePracticeCommentsFunctions);
 })(window.jQuery);
+
+function seeMoreText() {
+    var dots = document.getElementById("dots");
+    var moreText = document.getElementById("more_text");
+    var btnText = document.getElementById("seeMore");
+    var originFacilityTruncated = document.getElementById("origin_facility_truncated");
+    if (dots.style.display === "none") {
+        dots.style.display = "inline";
+        btnText.innerHTML = "See more";
+        originFacilityTruncated.style.display = "inline";
+        moreText.style.display = "none";
+    } else {
+        dots.style.display = "none";
+        btnText.innerHTML = "See less";
+        originFacilityTruncated.style.display = "none";
+        moreText.style.display = "inline";
+    }
+}
 
 function seeMoreTextAwards() {
     var dots = document.getElementById("dots_award");

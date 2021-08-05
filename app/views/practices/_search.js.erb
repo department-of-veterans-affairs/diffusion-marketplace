@@ -351,12 +351,8 @@ function searchPracticesPage() {
             if (adoptingFacility.includes('VISN')) {
                 var adoptingFacilityVisn = getVisn(visns, adoptingFacility);
 
-                console.log('adoptingFacilityVisn', adoptingFacilityVisn)
-
                 // Collect any practice that has a diffusion history with a facility that belongs to the selected VISN
                 filteredFacilities = getVaFacilitiesByVisn(facilities, adoptingFacilityVisn)
-
-                console.log('filtered facilities', filteredFacilities)
 
                 filteredFacilities.forEach(function(ff) {
                     stationNumbers.push(ff.station_number);

@@ -48,7 +48,7 @@
 
             s.mode = s.o.mode;
             s.remaining = null;
-            s.ctrlButton = $.isFunction(s.o.controlBtn) ? s.o.controlBtn.call(s.e) : $('<a href="#" class="usa-button--unstyled dm-btn-primary margin-left-05" data-ctrl></a>');
+            s.ctrlButton = $.isFunction(s.o.controlBtn) ? s.o.controlBtn.call(s.e) : $('<a href="#" class="usa-button--unstyled dm-btn-primary padding-left-05" data-ctrl></a>');
 
             if(s.mode == 'lines'){
                 s.e.wrapInner('<div>');
@@ -259,11 +259,13 @@
             var itemsFound = 0;
             var slicePoint = 0;
             var hasLessItems = true;
+            var cleanedFullHTML = fullHTML.trim().replace(/(\r\n|\n|\r)/gm, "").replace(/\s\s+/g, ' ');
+            var char;
 
             // Iterate over the full HTML and find the point to break the HTML.
-            for(var i = 0; i <= fullHTML.trim().replace(/(\r\n|\n|\r)/gm, "").replace(/\s\s+/g, ' ').length; i++){
+            for(var i = 0; i <= cleanedFullHTML.length; i++){
 
-                char = fullHTML.trim().replace(/(\r\n|\n|\r)/gm, "").replace(/\s\s+/g, ' ').charAt(i);
+                char = cleanedFullHTML.charAt(i);
                 if(char == '<') inTag = true;
                 if(char == '>') inTag = false;
 
@@ -292,7 +294,7 @@
             if ($(fullHTML).text().length === truncateAt + 1) {
                 slicedHTML = fullHTML.slice(0, fullHTML.length - 5);
             } else if ($(fullHTML).text().split(',').slice(0, -1).join(',').length === truncateAt) {
-                slicedHTML = fullHTML.slice(0, fullHTML.split(',').slice(0, -1).join(',').length)
+                slicedHTML = fullHTML.slice(0, fullHTML.split(',').slice(0, -1).join(',').length);
             } else {
                 slicedHTML = fullHTML.slice(0, slicePoint + 7);
             }
@@ -301,7 +303,7 @@
             if ($(fullHTML).text().length > truncateAt) {
                 return balancedHTML + '<span class="coll-ellipsis">' + this.o.ellipsis + '</span>';
             } else {
-                return balancedHTML;
+                return fullHTML;
             }
         },
 
@@ -312,6 +314,7 @@
                 string = string.substring(0, string.lastIndexOf("<"));
             }
 
+            var tag;
             var tags = string.match(/<[^>]+>/g);
             var stack = new Array();
             for (tag in tags) {
