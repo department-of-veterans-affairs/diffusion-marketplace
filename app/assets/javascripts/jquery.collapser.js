@@ -10,6 +10,7 @@
     var name = "collapser",
         defaults = {
             mode: 'words',
+            speed: 'slow',
             truncate: 10,
             ellipsis: '...',
             controlBtn: null,
@@ -19,6 +20,7 @@
             hideClass: 'hide-class',
             atStart: 'hide',
             blockTarget: 'next',
+            blockEffect: 'fade',
             lockHide: false,
             changeText: false,
             beforeShow: null,
@@ -46,7 +48,7 @@
 
             s.mode = s.o.mode;
             s.remaining = null;
-            s.ctrlButton = $.isFunction(s.o.controlBtn) ? s.o.controlBtn.call(s.e) : $('<a href="#" class="usa-button--unstyled dm-btn-primary width-auto margin-left-05" data-ctrl></a>');
+            s.ctrlButton = $.isFunction(s.o.controlBtn) ? s.o.controlBtn.call(s.e) : $('<a href="#" class="usa-button--unstyled dm-btn-primary margin-left-05" data-ctrl></a>');
 
             if(s.mode == 'lines'){
                 s.e.wrapInner('<div>');
@@ -65,12 +67,14 @@
         },
 
         // SHOW METHOD
-        show: function(){
+        show: function(speed){
 
             var s = this;
             var e = s.e;
 
             s.collapsed = false;
+
+            if(typeof speed === 'undefined') speed = s.o.speed;
 
             if($.isFunction(s.o.beforeShow))
                 s.o.beforeShow.call(s.e, s);
@@ -85,7 +89,7 @@
             // Modes chars, words and lines follow the same sequence to show the collapsed data.
             if(s.mode == 'block'){
 
-                s.blockMode(e, 'show', afterShow);
+                s.blockMode(e, 'show', speed, afterShow);
 
             }else{
 
@@ -115,6 +119,7 @@
                 if(!$.isFunction(s.o.controlBtn)){
                     e.append(s.ctrlButton);
                 }
+
                 s.ctrlButton.html(s.o.hideText);
 
             }
@@ -130,12 +135,14 @@
         },
 
         // HIDE METHOD
-        hide: function(){
+        hide: function(speed){
 
             var s = this;
             var e = s.e;
 
             s.collapsed = true;
+
+            if(typeof speed === 'undefined') speed = s.o.speed;
 
             if($.isFunction(s.o.beforeHide)){
                 s.o.beforeHide.call(s.e, s);
@@ -151,12 +158,14 @@
             // Mode - chars & words
             if(s.mode == 'chars' || s.mode == 'words'){
 
-                var fullHTML = e.html();
+                var fullHTML = e.html().replace(/(\r\n|\n|\r)/gm, "").replace(/\s\s+/g, ' ').trim();
                 var collapsedHTML = s.getCollapsedHTML(fullHTML, s.mode, s.o.truncate) // returns false if content is very small and cannot collapse.
 
                 if(collapsedHTML){
-                    var plainText = e.text();
-                    s.remaining = plainText.split(s.mode == 'words' ? ' ' : '').length - s.o.truncate;
+                    var plainText = $(e).text().replace(/(\r\n|\n|\r)/gm, "").replace(/\s\s+/g, ' ').trim();
+
+                    s.remaining = plainText.length - s.o.truncate;
+                    s.remaining < 0 ? s.remaining = 0 : s.remaining
 
                     e.data('collHTML', fullHTML);
                     e.html(collapsedHTML);
@@ -198,7 +207,7 @@
 
             // Mode - block
             if(s.mode == 'block'){
-                s.blockMode(e, 'hide', afterHide);
+                s.blockMode(e, 'hide', speed, afterHide);
             }
 
             afterHide();
@@ -211,6 +220,7 @@
                 if(!$.isFunction(s.o.controlBtn) && s.remaining > 0){
                     e.append(s.ctrlButton);
                 }
+
                 s.ctrlButton.html(s.o.showText);
             }
 
@@ -219,14 +229,17 @@
 
         },
 
-        blockMode: function(e, type){
+        blockMode: function(e, type, speed, callback){
             var s = this
+            var effects = ['fadeOut', 'slideUp', 'fadeIn', 'slideDown'];
+            var inc = (s.o.blockEffect == 'fade') ? 0 : 1;
+            var effect = (type == 'hide') ? effects[inc] : effects [inc + 2];
 
             if(!$.isFunction(s.o.blockTarget)){
                 if($.fn[s.o.blockTarget])
-                    $(e)[s.o.blockTarget]();
+                    $(e)[s.o.blockTarget]()[effect](speed, callback);
             }else{
-                s.o.blockTarget.call(s.e);
+                s.o.blockTarget.call(s.e)[effect](speed, callback);
             }
 
             if(type == 'show'){
@@ -248,9 +261,9 @@
             var hasLessItems = true;
 
             // Iterate over the full HTML and find the point to break the HTML.
-            for(var i = 0; i <= fullHTML.length; i++){
+            for(var i = 0; i <= fullHTML.trim().replace(/(\r\n|\n|\r)/gm, "").replace(/\s\s+/g, ' ').length; i++){
 
-                char = fullHTML.charAt(i);
+                char = fullHTML.trim().replace(/(\r\n|\n|\r)/gm, "").replace(/\s\s+/g, ' ').charAt(i);
                 if(char == '<') inTag = true;
                 if(char == '>') inTag = false;
 
@@ -264,7 +277,7 @@
                     if(mode == 'words' && char == ' '){
                         itemsFound++;
                     }
-                    if(mode == 'chars'){
+                    if(mode == 'chars' && char !== ','){
                         itemsFound++;
                     }
                 }
@@ -274,10 +287,22 @@
             if(hasLessItems)
                 return false;
 
-            var slicedHTML = fullHTML.slice(0, slicePoint);
-            var balancedHTML = this.balanceTags(slicedHTML) ;
+            var slicedHTML;
 
-            return balancedHTML + '<span class="coll-ellipsis">' + this.o.ellipsis + '</span>';
+            if ($(fullHTML).text().length === truncateAt + 1) {
+                slicedHTML = fullHTML.slice(0, fullHTML.length - 5);
+            } else if ($(fullHTML).text().split(',').slice(0, -1).join(',').length === truncateAt) {
+                slicedHTML = fullHTML.slice(0, fullHTML.split(',').slice(0, -1).join(',').length)
+            } else {
+                slicedHTML = fullHTML.slice(0, slicePoint + 7);
+            }
+            var balancedHTML = this.balanceTags(slicedHTML);
+
+            if ($(fullHTML).text().length > truncateAt) {
+                return balancedHTML + '<span class="coll-ellipsis">' + this.o.ellipsis + '</span>';
+            } else {
+                return balancedHTML;
+            }
         },
 
         balanceTags: function(string){

@@ -170,7 +170,8 @@
     function seeMoreText() {
         $(".origin-display-text").collapser({
             mode: 'chars',
-            truncate: 191 // jquery collapser includes 'See more' and the ellipsis in the total character count, so the count for those was added to the original 180 char count
+            truncate: 180
+            // jquery collapser includes 'See more' and the ellipsis in the total character count, so the count for those was added to the original 180 char count
         });
     }
 
