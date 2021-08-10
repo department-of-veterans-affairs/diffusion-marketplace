@@ -3,6 +3,10 @@
   .usa-nav__link {
     &:hover {
       color: color($theme-color-primary-vivid) !important;
+
+      &::after {
+        background-color: color($theme-color-primary-vivid) !important;
+      }
     }
   }
 }
