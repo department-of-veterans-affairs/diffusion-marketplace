@@ -4,7 +4,7 @@
       maturity = @practice.maturity_level
       maturity_map = Practice::MATURITY_LEVEL_MAP[maturity.to_sym]
     %>
-    <p class="usa-alert__text x0-bottom">
+    <p class="usa-alert__text margin-bottom-0">
       <%= maturity_map[:description] %>
       <a href="/search?query=<%= maturity %>" class="usa-link">See more <%= maturity_map[:link_text] %> practices.</a>
     </p>

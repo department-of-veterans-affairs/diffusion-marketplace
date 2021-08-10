@@ -15,7 +15,7 @@
     other_categories = @practice.categories.where(is_other: true, parent_category: parent_category)
     other_category_ids = other_categories.ids
   %>
-  <ul id="<%= parent_category_name %>" class="practice-editor-<%= parent_category_name %>-categories-ul padding-left-0 x0" role="listbox" title="Practice categories" aria-label="Practice editor category list">
+  <ul id="<%= parent_category_name %>" class="practice-editor-<%= parent_category_name %>-categories-ul padding-left-0 margin-0" role="listbox" title="Practice categories" aria-label="Practice editor category list">
     <%= f.fields_for :categories, wrapper: false do |cat| %>
       <%
         other_category_id = cat.object.id || "new_categories"
@@ -45,7 +45,7 @@
         <%= cat.hidden_field :id %>
           <div class="grid-row">
             <div class="grid-col-12">
-              <%= cat.label :name, 'Category name', class: 'usa-label display-inline-block other-category-name x0-top' %>&nbsp;
+              <%= cat.label :name, 'Category name', class: 'usa-label display-inline-block other-category-name margin-top-0' %>&nbsp;
               <%= cat.text_field :name, class: 'usa-input practice-input grid-col-12' %>
               <%= cat.hidden_field :parent_category_id, value: cat.object.id ? parent_category_id : li_class_place_holder %>
             </div>

@@ -4,7 +4,7 @@
   <% end %>
 <% end %>
 
-<div class="x0-top">
+<div class="margin-top-0">
   <section class="usa-section p0-top p0-bottom" style="min-height: calc(100vh - 286px)">
     <div class="grid-container">
       <%= render partial: 'shared/messages', locals: {small_text: true} %>
@@ -22,7 +22,7 @@
             </div>
           </div>
           <div class="login-body">
-            <%= form_for(@user, url: edit_profile_path, html: {method: :post, class: 'x1-top'}) do |f| %>
+            <%= form_for(@user, url: edit_profile_path, html: {method: :post, class: 'margin-top-2'}) do |f| %>
               <div class="display-inline-block margin-right-1">
                 <%= link_to "/users/#{@user.id}", class: 'cancel-edit-profile-link' do %>
                   <button class="usa-button usa-button--base cancel-edit-profile-button margin-right-0">
@@ -48,7 +48,7 @@
                 </div>
               </div>
               <% end %>
-              <div class="grid-container p0">
+              <div class="grid-container padding-0">
                 <div class="grid-row margin-bottom-3 dm-cropper-boundary">
                   <div class="grid-col-4 margin-right-1 profile-image-left-col-setter">
                     <div class="dm-cropper-images-container avatar-profile-photo-container" data-type="user">
@@ -102,41 +102,41 @@
               <div class="usa-form edit-profile-form">
                 <div class="grid-row width-full">
                   <div class="field grid-col-9">
-                    <%= f.label :first_name, class: 'x1-top x1-bottom' %><br/>
+                    <%= f.label :first_name, class: 'margin-top-2 margin-bottom-2' %><br/>
                     <%= f.text_field :first_name, autofocus: true, class: 'usa-input bg-base-lightest border-base-light text-base', disabled: ENV['USE_NTLM'] == 'true' %>
                   </div>
                 </div>
 
                 <div class="grid-row width-full">
                   <div class="field margin-top-3 grid-col-9">
-                    <%= f.label :last_name, class: 'x0 x1-top' %><br/>
+                    <%= f.label :last_name, class: 'margin-0 margin-top-2' %><br/>
                     <%= f.text_field :last_name, class: 'usa-input bg-base-lightest border-base-light text-base', disabled: ENV['USE_NTLM'] == 'true' %>
                   </div>
                 </div>
 
                 <div class="grid-row width-full">
                   <div class="field margin-top-3 grid-col-9">
-                    <%= f.label :location, 'Facility', class: 'x0 x1-top' %><br/>
+                    <%= f.label :location, 'Facility', class: 'margin-0 margin-top-2' %><br/>
                     <%= f.text_field :location, class: 'usa-input bg-base-lightest border-base-light text-base', disabled: ENV['USE_NTLM'] == 'true' %>
                   </div>
                 </div>
 
                 <div class="grid-row width-full">
                   <div class="field margin-top-3 grid-col-9">
-                    <%= f.label :phone_number, 'Work phone number', class: 'x0 x1-top' %><br/>
+                    <%= f.label :phone_number, 'Work phone number', class: 'margin-0 margin-top-2' %><br/>
                     <%= f.phone_field :phone_number, autofocus: true, class: 'usa-input bg-base-lightest border-base-light text-base', disabled: ENV['USE_NTLM'] == 'true' %>
                   </div>
                 </div>
 
                 <div class="grid-row width-full">
                   <div class="field margin-top-3 grid-col-9">
-                    <%= f.label :job_title, class: 'x0 x1-top' %><br/>
+                    <%= f.label :job_title, class: 'margin-0 margin-top-2' %><br/>
                     <%= f.text_field :job_title, class: 'usa-input usa-input__disabled bg-base-lightest border-base-light text-base disabled', disabled: ENV['USE_NTLM'] == 'true' %>
                   </div>
                 </div>
               </div>
               <div class="field margin-top-3 grid-col-9">
-                <%= f.label :bio, class: 'x0 x1-top' do %>
+                <%= f.label :bio, class: 'margin-0 margin-top-2' do %>
                   <span>Bio</span>&nbsp;<span class="text-base-light profile-bio-character-count" id="user_<%= @user.id %>_profile_bio_character_count">(0/50 characters)</span>
                   <p>Tell other users about yourself and your professional background.</p>
                 <% end %>

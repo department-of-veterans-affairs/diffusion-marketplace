@@ -15,7 +15,7 @@
   <div class="grid-row grid-gap practice-editor-min-height">
     <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
-    <div id="overview" class="desktop:grid-col-9 grid-col-12 p0">
+    <div id="overview" class="desktop:grid-col-9 grid-col-12 padding-0">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
       <section class="usa-section padding-top-0 p0-bottom introduction">
         <h1>Overview</h1>
@@ -356,7 +356,7 @@
                     <li class="practice-editor-metric-li fields" <%= "id=practice_practice_metrics_attributes_#{pm.index}_li" if pm.object.id %> data-id="<%= metric_id %>">
                       <div class="grid-row">
                         <div class="grid-col-12">
-                          <%= pm.text_field :description, class: 'usa-input x0-top', 'aria-label': 'Description' %>
+                          <%= pm.text_field :description, class: 'usa-input margin-top-0', 'aria-label': 'Description' %>
                         </div>
 
                         <div class="grid-col-12 trash-container">
