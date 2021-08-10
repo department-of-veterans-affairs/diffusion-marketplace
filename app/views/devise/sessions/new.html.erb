@@ -1,6 +1,6 @@
 <!-- Login Page -->
 <div class="x0-top">
-  <section class="usa-section dm-background-linear-gradient-up-dark-blue" style="min-height: calc(100vh - 286px)">
+  <section class="usa-section" style="min-height: calc(100vh - 286px)">
     <div class="grid-container">
       <div class="login-card box-shadow-card">
         <%= render "devise/shared/login_header" %>
@@ -26,7 +26,7 @@
             <% end -%>
 
             <div class="actions display-flex justify-center x1-top">
-              <%= f.submit "Log in", class: 'usa-button dm-btn-primary' %>
+              <%= f.submit "Log in", class: 'usa-button' %>
             </div>
           <% end %>
           <%= render "devise/shared/links" %>

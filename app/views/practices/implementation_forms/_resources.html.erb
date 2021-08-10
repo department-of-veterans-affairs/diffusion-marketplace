@@ -73,7 +73,7 @@
                 </div>
                 <div class="grid-col-12 trash-container">
                   <%= pr.link_to_remove 'Delete entry',
-                                        class: "dm-origin-trash usa-button--unstyled dm-btn-warning float-right line-height-26"
+                                        class: "dm-origin-trash dm-button--unstyled-warning float-right"
                   %>
                 </div>
               </div>
@@ -82,11 +82,11 @@
         <% end %>
         </ul>
         <% cur_resources = @practice.practice_resources.where(resource_type_label: resource_type_label, resource_type: resource_type, media_type: media_type) %>
-        <%= f.link_to_add :practice_resources, id: link_to_add_link_slug, 'data-dm-blueprint-id': blue_print_id, class: add_practice_resources_link + " dm-add-another-link usa-button--unstyled dm-btn-primary line-height-26 cursor-pointer #{'display-none' unless cur_resources.any?}" do %>
+        <%= f.link_to_add :practice_resources, id: link_to_add_link_slug, 'data-dm-blueprint-id': blue_print_id, class: add_practice_resources_link + " dm-add-another-link dm-button--unstyled-primary #{'display-none' unless cur_resources.any?}" do %>
           <span class="text-normal">Add another</span>
         <% end %>
-        <%= f.link_to_add :practice_resources, id: link_to_add_button_slug, 'data-dm-blueprint-id': blue_print_id, class: add_practice_resources_link + " usa-button--outline dm-btn-primary #{'display-none' if cur_resources.any?}" do %>
-          <span class="font-sans-md text-bold text-no-underline">Add resource</span>
+        <%= f.link_to_add :practice_resources, id: link_to_add_button_slug, 'data-dm-blueprint-id': blue_print_id, class: add_practice_resources_link + " usa-button usa-button--outline #{'display-none' if cur_resources.any?}" do %>
+          Add resource
         <% end %>
         <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
           observePracticeEditorLiArrival(

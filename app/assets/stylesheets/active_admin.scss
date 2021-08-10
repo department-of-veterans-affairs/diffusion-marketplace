@@ -16,7 +16,8 @@
 @import 'activeadmin/quill_editor_input';
 @import "font-awesome-sprockets";
 @import "font-awesome";
-@import '/dm/variables/colors';
+@import "uswds/uswds";
+@import "/dm_uswds/theme/uswds-theme-color";
 
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:
@@ -29,7 +30,7 @@
 }
 
 @mixin bold($font-color: $black) {
-  color: $font-color;
+  color: color($font-color);
   font-weight: bold;
 }
 
@@ -86,7 +87,7 @@
   }
 
   .active_admin_action_button{
-    @include bold($dm-color-white);
+    @include bold($theme-color-base-ink);
     background-image: none;
     border: none;
     box-shadow: none;
@@ -100,7 +101,7 @@
     padding: 10px 20px;
     line-height: 12px;
       &:link,&:visited{
-          color: $dm-color-white;
+        color: $theme-color-dm-white;
         text-decoration: none;
       }
     &:hover{
@@ -146,7 +147,7 @@
     bottom: 0;
 
     h3 {
-      @include bold($dm-color-black);
+      @include bold($theme-color-base-ink);
       margin-top: 0;
       text-decoration: underline;
     }
@@ -155,8 +156,7 @@
       margin-top: 0;
 
       span:first-child {
-        color: $dm-color-black;
-        font-weight: bold;
+        @include bold($theme-color-base-ink);
       }
     }
 
@@ -173,7 +173,7 @@
   }
 
   .dm-text-bold {
-    @include bold($dm-color-black);
+    @include bold($theme-color-base-ink);
   }
 
   .no-adoptions-div {
@@ -194,7 +194,7 @@
     bottom: 0;
 
     h3 {
-      @include bold($dm-color-black);
+      @include bold($theme-color-base-ink);
       margin-top: 0;
       text-decoration: underline;
     }

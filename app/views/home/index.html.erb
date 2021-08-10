@@ -12,10 +12,11 @@
           </div>
         </div>
         <div class="tablet:grid-col-9 desktop:grid-col-9 ie-welcome-container text-white">
-          <h1 class="usa-prose-intro font-normal font-sans-lg margin-y-3 tablet:font-bold tablet:usa-prose-h1 tablet:font-sans-2xl tablet:margin-top-0 tablet:margin-bottom-5">
+          <h1 class="desktop:usa-prose-h1
+          font-normal usa-prose-intro tablet:margin-top-0 ">
             Find the next important or life-saving practice to adopt at your VA facility.
           </h1>
-          <%= link_to 'Explore all practices', explore_path, class: 'usa-button--big homepage-explore-all-button display-block' %>
+          <%= link_to 'Explore all practices', explore_path, class: 'usa-button dm-button--inverse-secondary desktop:usa-button--big homepage-explore-all-button width-auto' %>
         </div>
       </div>
     </div>
@@ -74,16 +75,14 @@
     </section>
   <% end %>
 
-  <section class="nominate-section grid-container">
-    <div class="desktop:grid-col-7">
-      <h2 class="usa-prose-h2 font-sans-xl line-height-37px margin-bottom-2 margin-top-0">Nominate a practice</h2>
-      <p class="line-height-26 margin-bottom-2">
-        If you have a practice that has been adopted at two or more locations, has been endorsed by a senior executive stakeholder, and is an active practice, click
-        the link below to submit it to the Marketplace.
-      </p>
-      <a target="_blank" href="mailto:marketplace@va.gov?subject=<%= URI.encode('Nominate a Practice')%>&body=<%= URI.encode("I am writing to nominate a practice for the Diffusion Marketplace.\n\nName of practice:\nOriginating facility:\nPoint of contact:\nSenior executive stakeholder (if known):\nAdoptions (if known):")%>" class="usa-button--outline dm-btn-base line-height-19px">
-        Start nomination
-      </a>
-    </div>
+  <section class="grid-container">
+        <div class="desktop:grid-col-7">
+          <h2 class="usa-prose-h2 font-sans-xl line-height-37px margin-bottom-2 margin-top-0">Nominate a practice</h2>
+          <p class="line-height-26 margin-bottom-2">
+            If you have a practice that has been adopted at two or more locations, has been endorsed by a senior executive stakeholder, and is an active practice, click
+            the link below to submit it to the Marketplace.
+          </p>
+          <a class="dm-button--outline-secondary" href="<%= nominate_a_practice_path %>">Start nomination</a>
+        </div>
   </section>
 </div>

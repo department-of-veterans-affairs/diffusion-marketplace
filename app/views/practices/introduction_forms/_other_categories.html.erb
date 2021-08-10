@@ -51,7 +51,7 @@
             </div>
             <div class="grid-col-12 trash-container">
               <%= cat.link_to_remove 'Delete entry',
-                                    class: "dm-origin-trash usa-button--unstyled dm-btn-warning float-right line-height-26"
+                                    class: "dm-origin-trash dm-button--unstyled-warning float-right"
               %>
             </div>
           </div>
@@ -59,8 +59,8 @@
       <% end %>
     <% end %>
   </ul>
-  <%= f.link_to_add :categories, id: link_to_add_link_slug, 'data-dm-blueprint-id': blue_print_id, class: add_category_link + " dm-add-another-link usa-button--unstyled dm-btn-primary line-height-26 cursor-pointer" do %>
-    <span class="text-normal">Add another</span>
+  <%= f.link_to_add :categories, id: link_to_add_link_slug, 'data-dm-blueprint-id': blue_print_id, class: add_category_link + " dm-add-another-link dm-button--unstyled-primary" do %>
+    Add another
   <% end %>
 
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>

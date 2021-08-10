@@ -51,7 +51,7 @@
                         </div>
                       <div class="grid-col-12 trash-container">
                         <%= tl.link_to_remove 'Delete entry',
-                                              class: "dm-origin-trash usa-button--unstyled dm-btn-warning float-right line-height-26"
+                                              class: "dm-origin-trash dm-button--unstyled-warning float-right"
                         %>
                       </div>
                     </div>
@@ -59,11 +59,11 @@
                 <% end %>
               </ul>
 
-                  <%= f.link_to_add :timelines, id: 'link_to_add_link_timeline', class: "dm-add-another-link add-practice-timeline-link usa-button--unstyled dm-btn-primary line-height-26 cursor-pointer #{'display-none' unless @practice.timelines.any?}" do %>
+                  <%= f.link_to_add :timelines, id: 'link_to_add_link_timeline', class: "dm-add-another-link add-practice-timeline-link dm-button--unstyled-primary #{'display-none' unless @practice.timelines.any?}" do %>
                     <span class="text-normal">Add another</span>
                   <% end %>
-                  <%= f.link_to_add :timelines, id: 'link_to_add_button_timeline', class: "usa-button--outline dm-btn-primary add-timeline-link #{'display-none' if @practice.timelines.any?}" do %>
-                    <span class="padding-left-1 text-normal text-no-underline">Add timeline step</span>
+                  <%= f.link_to_add :timelines, id: 'link_to_add_button_timeline', class: "usa-button usa-button--outline #{'display-none' if @practice.timelines.any?}" do %>
+                    Add timeline step
                   <% end %>
               <% provide :head_tags do %>
                 <%= javascript_tag 'data-turbolinks-track': 'reload' do %>

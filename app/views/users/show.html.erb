@@ -15,7 +15,7 @@
           <h1 class='profile-h1 font-sans-2xl display-inline-block margin-bottom-1 margin-top-0'><%= @user.full_name %></h1>
           <div class="display-inline-block margin-left-2">
             <% if current_user == @user %>
-              <%= link_to '', edit_profile_path, class: 'edit-profile-link fas fa-edit display-inline-block text-ttop' %>
+              <%= link_to '', edit_profile_path, class: 'edit-profile-link fas fa-edit display-inline-block text-no-underline' %>
             <% end %>
           </div>
           <div class='profile-job-title font-sans-lg margin-top-1'><%= @user.job_title %></div>

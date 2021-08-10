@@ -1,19 +1,17 @@
-@import '../variables/colors';
-
 .visn-modal-link, .va-facility-index-link, .visn-liaison-email, .visn-va-facility-marker-modal-link {
   text-decoration: none !important;
-  color: $dm-color-blue-50v;
+  color: color($theme-color-primary);
 
   &:hover {
-    color: $dm-color-blue-70v !important;
+    color: color($theme-color-primary-dark) !important;
   }
 
   &:active {
-    color: $dm-color-blue-80v !important;
+    color: color($theme-color-primary-darker) !important;
   }
 
   &:visited {
-    color: $dm-color-blue-50v;
+    color: color($theme-color-primary);
   }
 }
 
@@ -26,33 +24,33 @@
     text-decoration: none;
 
     .visn-card-text {
-      border: 1px solid $dm-color-alt-lighter-grey;
+      border: 1px solid color($theme-color-base-lightest);
     }
 
     .visn-name {
-      color: $dm-color-blue-50v !important;
+      color: color($theme-color-primary) !important;
     }
 
     .visn-data-ul {
-      color: $dm-color-base !important;
+      color: color($theme-color-base-ink) !important;
     }
 
     &:hover {
       .visn-name {
         text-decoration: none;
-        color: $dm-color-blue-70v !important;
+        color: color($theme-color-primary-dark) !important;
       }
     }
 
     &:active {
       .visn-name {
-        color: $dm-color-blue-80v !important;
+        color: color($theme-color-primary-darker) !important;
       }
     }
 
     &:visited {
       .visn-name {
-        color: $dm-color-blue-50v;
+        color: color($theme-color-primary);
       }
     }
   }
@@ -96,7 +94,7 @@
     margin-top: 0 !important;
 
     &::placeholder {
-      color: $dm-color-black !important;
+      color: color($theme-color-base-ink) !important;
     }
   }
 
@@ -111,7 +109,7 @@
   }
 
   mark {
-    background: $dm-color-gold-20v;
+    background: color($theme-color-accent-warm);
     font-weight: bold;
   }
 
@@ -126,7 +124,7 @@
 
   .usa-table {
     th, td {
-      background-color: $dm-color-gray-2 !important;
+      background-color: color($theme-color-secondary-light) !important;
     }
 
     tr:first-of-type {
@@ -164,7 +162,7 @@
   }
 
   .fa-question-circle {
-    color: $dm-color-base !important;
+    color: color($theme-color-base-ink) !important;
     text-decoration: none !important;
     margin-left: -3px;
     padding: 4px;
