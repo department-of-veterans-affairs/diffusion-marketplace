@@ -117,7 +117,7 @@
           <%# Subpage Hyperlink %>
         <% when 'PageSubpageHyperlinkComponent' %>
           <div class="grid-row margin-bottom-5 grid-col-12 desktop:grid-col-8 <%= 'margin-x-auto' if @page.narrow? %>">
-            <a href="<%= component.url %>" class="width-100 dm-internal-link subpage-hyperlink-component">
+            <a href="<%= component.url %>" class="width-100">
               <h2 class="font-sans-xl display-inline x0-top text-underline"><%= component.title %></h2>
               <span class="x0-5-left fas fa-chevron-right fa-icon-125 vertical-align-middle p1-bottom"></span>
             </a>
@@ -148,7 +148,7 @@
           %>
           <div class="grid-row <%= page_narrow_classes %> <%= next_component != nil && next_component.component_type == pc.component_type ? 'margin-bottom-1' : 'margin-bottom-3 ' %> font-sans-sm line-height-162">
             <%= content_tag(:span, description, class: 'margin-right-1') if description != '' %>
-            <%= link_to component.attachment_s3_presigned_url, class: 'dm-external-link', target: '_blank', download: display_name != '' ? display_name : component.attachment_file_name do %>
+            <%= link_to component.attachment_s3_presigned_url, class: 'usa-link usa-link--external', target: '_blank', download: display_name != '' ? display_name : component.attachment_file_name do %>
               <i class="far fa-file margin-right-1"></i><%= display_name != '' ? display_name : component.attachment_file_name %>
             <% end %>
           </div>

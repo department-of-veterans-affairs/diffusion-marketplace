@@ -51,7 +51,7 @@
             fac = h.get_facility
             display_info = (dhs.get_status_display_name === DiffusionHistoryStatus::STATUSES[2] && dhs.unsuccessful_reasons.present?) || dhs.start_time.present?
           %>
-          <%= link_to "#{fac[:street_address_state]}: #{fac[:official_station_name]} (#{fac[:common_name]})", va_facility_path(fac), class: "dm-internal-link display-block #{'margin-bottom-2' unless display_info }" %>
+          <%= link_to "#{fac[:street_address_state]}: #{fac[:official_station_name]} (#{fac[:common_name]})", va_facility_path(fac), class: "usa-link display-block #{'margin-bottom-2' unless display_info }" %>
           <% if display_info %>
             <ul class="dm-adoption-info">
               <% if dhs.start_time.present? %>

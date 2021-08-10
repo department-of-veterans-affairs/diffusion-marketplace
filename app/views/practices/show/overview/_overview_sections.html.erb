@@ -33,7 +33,7 @@
         <% if pr.name.present? %>
           <div class="margin-top-1">
             <h5 class="text-uppercase display-inline margin-y-0">Above:</h5>
-            <p class="display-inline font-normal line-height-26"><%= pr.name %></p>
+            <p class="display-inline line-height-26"><%= pr.name %></p>
           </div>
         <% end %>
       </div>
@@ -49,7 +49,7 @@
       <% if pr.name.present? %>
         <div class="margin-top-1 width-100">
           <h5 class="text-uppercase display-inline margin-y-0">Above:</h5>
-          <p class="display-inline font-normal line-height-26"><%= pr.name %></p>
+          <p class="display-inline line-height-26"><%= pr.name %></p>
         </div>
       <% end %>
     </div>
@@ -63,7 +63,7 @@
     <div class="margin-bottom-1">
       <% if pr.name.present? %>
         <div class="margin-top-1 width-100 line-height-26">
-          <li class="small-disc"><%= pr.description %> <%= link_to(pr.name || pr.attachment&.original_filename, pr.attachment_s3_presigned_url, target: '_blank', class: 'dm-external-link') %>
+          <li class="small-disc"><%= pr.description %> <%= link_to(pr.name || pr.attachment&.original_filename, pr.attachment_s3_presigned_url, target: '_blank', class: 'usa-link usa-link--external') %>
         </div>
       <% end %>
     </div>
@@ -81,7 +81,7 @@
           <% pr.link_url = "http://" + pr.link_url %>
         <% end %>
         <div class="margin-top-1 width-100 line-height-26">
-          <li class="small-disc"><%= pr.description %> <a class="<%= pr.link_url.downcase().include?('marketplace.gov') ? 'dm-internal-link' : 'dm-external-link usa-link--external' %>" href="<%= pr.link_url %>" target="_blank"><%= pr.name %></a></li>
+          <li class="small-disc"><%= pr.description %> <a class="usa-link <%= pr.link_url.downcase().include?('marketplace.gov') ? '' : 'usa-link--external' %>" href="<%= pr.link_url %>" target="_blank"><%= pr.name %></a></li>
         </div>
       <% end %>
     </div>

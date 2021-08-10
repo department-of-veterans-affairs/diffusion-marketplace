@@ -25,7 +25,7 @@
   <div class="grid-col-fill comment-width-ie">
     <div id="commontator-comment-<%= comment.id %>-section-top" class="section top margin-bottom-1 line-height-26">
       <span id="commontator-comment-<%= comment.id %>-author" class="author line-height-26 text-middle">
-        <%= link_to "#{name} #{job_title ? '(' + job_title + ')' : ''}", "/users/#{creator.id}", class:'dm-link-title' %>
+        <%= link_to "#{name} #{job_title ? '(' + job_title + ')' : ''}", "/users/#{creator.id}" %>
       </span>
       
       <% if practice_team_member %>

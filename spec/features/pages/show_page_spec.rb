@@ -48,7 +48,7 @@ describe 'Page Builder - Show', type: :feature do
   end
 
   it 'Should display the subpage hyperlink' do
-    expect(find('.dm-internal-link')[:href]).to include('/programming/javascript')
+    expect(find('.usa-link')[:href]).to include('/programming/javascript')
     expect(page).to have_content('Check out JavaScript')
     expect(page).to have_content('It is pretty cool too')
   end
@@ -79,7 +79,7 @@ describe 'Page Builder - Show', type: :feature do
   end
 
   it 'Should display the downloadable file' do
-    expect(page).to have_css('.dm-external-link')
+    expect(page).to have_css('.usa-link--external')
     expect(page).to have_content('Test file')
   end
 

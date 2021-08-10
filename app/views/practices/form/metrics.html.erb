@@ -241,7 +241,7 @@
             <%cur_rec = 1 %>
             <% @page_views_leader_board_30_days.each do |rec| %>
               <tr>
-                <td class="width-80"><%= cur_rec %>. <a class="dm-internal-link" target="_blank" href="/practices/<%= rec[:practice_slug] %>/"><%= rec[:practice_name] %></a></td>
+                <td class="width-80"><%= cur_rec %>. <a class="usa-link" target="_blank" href="/practices/<%= rec[:practice_slug] %>/"><%= rec[:practice_name] %></a></td>
                 <td><%= rec[:count] %></td>
               </tr>
               <% cur_rec += 1 %>
@@ -259,7 +259,7 @@
             <%cur_rec = 1 %>
             <% @page_views_leader_board_all_time.each do |rec| %>
               <tr>
-                <td class="width-80"><%= cur_rec %>. <a class="dm-internal-link" target="_blank" href="/practices/<%= rec[:practice_slug] %>/"><%= rec[:practice_name] %></a></td>
+                <td class="width-80"><%= cur_rec %>. <a class="usa-link" target="_blank" href="/practices/<%= rec[:practice_slug] %>/"><%= rec[:practice_name] %></a></td>
                 <td><%= rec[:count] %></td>
               </tr>
               <% cur_rec += 1 %>

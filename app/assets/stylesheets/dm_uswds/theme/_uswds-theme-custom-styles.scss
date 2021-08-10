@@ -35,28 +35,6 @@ i.e.
   width: 40px;
 }
 
-.usa-sidenav .usa-current {
-  color: color($theme-color-base-ink);
-  font-weight: 600;
-}
-
-.usa-sidenav a, .usa-sidenav p {
-  color: color($theme-color-base-ink);
-  font-weight: normal;
-}
-
-.usa-sidenav li {
-  height: 40px !important;
-}
-
-.usa-sidenav p {
-  font-weight: normal;
-}
-
-.usa-sidenav a:hover {
-  background-color: color($theme-color-dm-white) !important;
-}
-
 .dm-link-title {
   color: color($theme-color-base-ink);
   text-decoration: none;

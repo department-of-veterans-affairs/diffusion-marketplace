@@ -114,7 +114,7 @@ describe 'Explore all practices page', type: :feature do
       visit '/explore'
       # filter by COVID category practices
       expect(page).to have_no_css('.dm-selected')
-      find_all('.dm-category-btn')[0].click
+      find_all('.js-category-tag')[0].click
       expect(page).to have_css('.dm-selected', count: 1)
       expect(page).to have_no_content('Different practice')
       expect(page).to have_content('6 results')
@@ -137,7 +137,7 @@ describe 'Explore all practices page', type: :feature do
       expect(find_all('.dm-practice-title')[5]).to have_text('Cards for Memory')
 
       # filter by COVID and Telehealth category practices
-      find_all('.dm-category-btn')[1].click
+      find_all('.js-category-tag')[1].click
       expect(page).to have_content('13 results')
       expect(page).to have_css('.dm-selected', count: 2)
       expect(page).to have_css('.dm-practice-card', count: 12)

@@ -8,7 +8,7 @@
       <%= adoption_text %> adoption<%= adoptions_by_type.count === 1 ? '' : 's' %>: <%= adoptions_by_type.count %>
     </button>
   </h2>
-  <div id="<%= adoption_text.downcase %>_adoptions" class="usa-accordion__content border-0 p0-25-bottom p0-top padding-x-05 bg-base-lightest" hidden="true">
+  <div id="<%= adoption_text.downcase %>_adoptions" class="usa-accordion__content p0-25-bottom p0-top padding-x-05 bg-base-lightest" hidden="true">
     <% adoptions_by_type.each do |a| %>
       <% dhs = a.diffusion_history_statuses[0] %>
       <div class="usa-accordion x0-top child-adoption-accordion">
@@ -24,7 +24,7 @@
             </span>
           </button>
         </h2>
-        <div id="diffusion_history_<%= a.id %>" class="usa-accordion__content usa-prose border-0 overflow-visible">
+        <div id="diffusion_history_<%= a.id %>" class="usa-accordion__content usa-prose overflow-visible">
           <% if params[:existing_dh] && @dh&.id == a.id %>
             <%= render partial: 'practices/form/adoptions_forms/existing_adoption_warning', locals: {facility: params[:existing_dh]} %>
           <% end %>

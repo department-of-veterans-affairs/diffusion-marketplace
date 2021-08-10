@@ -15,87 +15,7 @@ to confirm the class DOES NOT EXIST before adding a new class
 
 // TODO: check if we need this file
 
-/* Font colors */
-.dm-color-gray-20 {
-  color: color($theme-color-secondary-dark) !important;
-}
-
-/* Font Weight */
-
-.fw-100 {
-  font-weight: 100;
-}
-
-/* Font Size */
-
-.fs0-5 {
-  font-size: 0.5em;
-}
-
-.fs-h5 {
-  font-size: 0.83em;
-}
-
-.fs1 {
-  font-size: 1em;
-}
-
-/* 18px font size */
-.fs1-125 {
-  font-size: 1.125em;
-}
-
-.fs1-5 {
-  font-size: 1.5em !important;
-}
-
-.fs2 {
-  font-size: 2em !important;
-}
-
-.fs2-25 {
-  font-size: 2.25em !important;
-}
-
-.fs2-5 {
-  font-size: 2.5em !important;
-}
-
-.fs3 {
-  font-size: 3em !important;
-}
-
-.fs3-5 {
-  font-size: 3.5em !important;
-}
-
-.fs4 {
-  font-size: 4em !important;
-}
-
-.fs6 {
-  font-size: 6em !important;
-}
-
-/* Text style */
-.uppercase {
-  text-transform: uppercase;
-}
-
-.font-normal {
-  font-weight: normal !important;
-}
-
-/* Text Align */
-
-.text-center {
-  text-align: center !important;
-}
-
 /* Position */
-.absolute {
-  position: absolute !important;
-}
 
 .relative {
   position: relative !important;
@@ -117,14 +37,14 @@ to confirm the class DOES NOT EXIST before adding a new class
   left: 0;
 }
 
-.right {
-  right: 0;
-}
+// .right {
+//   right: 0;
+// }
 
 /* Overflow */
-.overflow-hidden {
-  overflow: hidden;
-}
+// .overflow-hidden {
+//   overflow: hidden;
+// }
 
 /* Display */
 
@@ -132,48 +52,48 @@ to confirm the class DOES NOT EXIST before adding a new class
   visibility: hidden !important;
 }
 
-.display-inline {
-  display: inline !important;
-}
+// .display-inline {
+//   display: inline !important;
+// }
 
-.display-inline-block {
-  display: inline-block !important;
-}
+// .display-inline-block {
+//   display: inline-block !important;
+// }
 
-.display-grid,
-.display-grid-align-items-center,
-.display-grid-justify-items-end {
-  display: grid !important;
-}
+// .display-grid,
+// .display-grid-align-items-center,
+// .display-grid-justify-items-end {
+//   display: grid !important;
+// }
 
-.display-grid-align-items-center {
-  align-items: center !important;
-}
+// .display-grid-align-items-center {
+//   align-items: center !important;
+// }
 
 //.display-flex,
-.display-flex-align-items-center {
-  display: flex !important;
-}
+// .display-flex-align-items-center {
+//   display: flex !important;
+// }
 
-.display-flex-align-items-center {
-  align-items: center !important;
-}
+// .display-flex-align-items-center {
+//   align-items: center !important;
+// }
 
-.display-grid-justify-items-end {
-  justify-items: end !important;
-}
+// .display-grid-justify-items-end {
+//   justify-items: end !important;
+// }
 
-.bottom-1-and-half-rem {
-  bottom: 1.5rem !important;
-}
+// .bottom-1-and-half-rem {
+//   bottom: 1.5rem !important;
+// }
 
-.bottom-2rem {
-  bottom: 2rem !important;
-}
+// .bottom-2rem {
+//   bottom: 2rem !important;
+// }
 
-.maxw-675px {
-  max-width: 675px !important;
-}
+// .maxw-675px {
+//   max-width: 675px !important;
+// }
 
 .maxw-30rem {
   max-width: 30rem !important;
@@ -554,14 +474,6 @@ to confirm the class DOES NOT EXIST before adding a new class
 
 .p5 {
   padding: 5rem !important;
-}
-
-.p6 {
-  padding: 6rem !important;
-}
-
-.p7 {
-  padding: 7rem !important
 }
 
 /* Padding Left */
@@ -996,10 +908,6 @@ ul.no-list-style {
 
 .bg-gray-2{
   background-color: color($theme-color-secondary-light) !important;
-}
-
-.border-0 {
-  border: 0 !important;
 }
 
 .rect-svg-blue-30v {

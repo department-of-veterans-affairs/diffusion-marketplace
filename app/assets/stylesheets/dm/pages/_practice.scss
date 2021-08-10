@@ -17,51 +17,6 @@
   position: absolute;
 }
 
-#dm-tabnav {
-
-  border: none !important;
-
-  .usa-sidenav__item {
-    border: none !important;
-  }
-
-  .dm-tab {
-    border-bottom: 1px solid color($theme-color-base-lightest);
-    font-weight: normal;
-    color: color($theme-color-base-ink);
-
-    &.top-tab {
-      border-top: 1px solid color($theme-color-base-lightest);
-    }
-
-    &.active, &.tab-active, &:hover {
-      font-weight: bold;
-      color: color($theme-color-primary);
-      background-color: transparent;
-      position:relative;
-    }
-
-    &:hover:before, &.active:before {
-      content:"";
-      background:color($theme-color-primary);
-      position:absolute;
-      bottom:10%;
-      left:0;
-      height:75%;
-      width:4px;
-      border-radius: 12px;
-    }
-
-    &.active, &.tab-active {
-      font-weight: bold;
-      //border-left: 4px solid color($theme-color-primary);
-      color: color($theme-color-primary);
-      background-color: transparent;
-      position:relative;
-    }
-  }
-}
-
 .practice-mobile-nav {
   background: color($theme-color-dm-white);
   border-top: 1px solid color($theme-color-base-ink);
@@ -77,36 +32,6 @@
 
 .tab-active {
   display: block;
-}
-
-.practice-tab-container {
-  background-color: color($theme-color-dm-white);
-  border-radius: 0 20px 20px 20px;
-}
-
-.practice-learn-more {
-  width: 100%;
-  border-radius: 20px;
-}
-
-.practice-aggregate-container {
-  background-color: rgba(255, 255, 255, 0.8);
-  width: 75%;
-  margin: auto;
-}
-
-.aggregate-icon {
-  font-size: 2rem;
-}
-
-.practice-facility {
-  font-weight: 100;
-}
-
-.risk-border {
-  width: 80%;
-  border-top: 1px solid rgba(0, 0, 0, 0.2);
-  margin: 1rem auto;
 }
 
 .aggregate-circles-position {
@@ -125,17 +50,8 @@
   }
 }
 
-.origin-picture-container {
-  width: 150px;
-  height: 150px;
-}
-
 .practice-input {
   max-width: 100% !important;
-}
-
-.tall-practice-input {
-  height: 10em !important;
 }
 
 .hidden-upload {
@@ -152,15 +68,6 @@
   &:focus {
     outline: none !important;
   }
-}
-
-.hidden-impact-photo-upload {
-  margin-left: -30px;
-  margin-top: 18px;
-}
-
-.practice-edit-nav {
-  width: 14rem !important;
 }
 
 .video-container {
@@ -181,22 +88,6 @@
   left: 0;
   width: 100%;
   height: 100%;
-}
-
-.conversation-h2 {
-  margin-top: 0;
-  margin-right: 8px;
-}
-
-.impact-image {
-  height: 263px;
-  width: 393px;
-  object-fit: cover;
-}
-
-.practice-video-container {
-  height: 263px;
-  width: 393px;
 }
 
 .fa-circle {
@@ -278,11 +169,6 @@
   }
 }
 
-.fa-check-circle {
-  text-decoration: none !important;
-  color: #DADADA;
-}
-
 .staff-trash, .timeline-trash, .risk-mitigation-trash, .impact-trash,
 .va-employee-trash, .dm-origin-trash, .documentation-trash, .permission-trash, .resource-trash {
   color: #D83933 !important;
@@ -317,35 +203,6 @@
   padding-right: 0.2rem;
   margin-top: 8px;
 }
-
-.documentation-trash-container, .contact-trash-container,
-.permission-trash-container, .resource-trash-container {
-  margin-left: 33px;
-}
-
-.green-check {
-  color: limegreen;
-}
-
-.clear-additional-staff-link, .clear-required-staff-link {
-  margin-top: 0 !important;
-  margin-bottom: 24px !important;
-  color: #D83933 !important;
-
-  &:hover {
-    color: #b51d09 !important;
-  }
-}
-
-// .clear-timeline-link, .clear-risk-mitigation-link, .clear-va-employee-link {
-//   margin-top: 24px !important;
-//   margin-bottom: 24px !important;
-//   color: #D83933 !important;
-
-//   &:hover {
-//     color: #b51d09 !important;
-//   }
-// }
 
 .dm-cropper-delete-image-label {
   margin-top: 6px;
@@ -384,22 +241,13 @@
   width: 640px !important;
 }
 
-.move-timeline-button, .move-risk-mitigation-button, .move-impact-button, .move-va-employee-button, .move-practice-creator-button {
-  margin-top: 0 !important;
-  margin-right: 21px !important;
-
-  &:hover {
-    color: #565c65 !important;
-  }
-}
-
 .hidden-timeline, .hidden-risk-mitigation, .hidden-impact, .hidden-va-employee, .hidden-practice-creator {
   display: none;
 }
 
-.editor-sidenav-link {
-  padding: 0.6rem !important;
-}
+// .editor-sidenav-link {
+//   padding: 0.6rem !important;
+// }
 
 .practice-editor-impact-photo {
   max-width: 100% !important;
@@ -423,14 +271,6 @@
   margin-top: 1.5rem;
 }
 
-.headshot-filler {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
-}
-
 .practice-editor-origin-ul, .practice-editor-timeline-ul, .practice-editor-practice-resources-ul, .practice-editor-risk-mitigation-ul, .practice-editor-contact-ul,
 .practice-editor-additional-document-ul, .practice-editor-publication-ul, .practice-editor-impact-photo-ul,
 .practice-editor-video-file-ul, .practice-editor-permission-ul, .practice-editor-resource-ul, .practice-editor-about-ul {
@@ -448,7 +288,7 @@
   margin-top: 24px;
   display: block !important;
   height: 250px !important;
-  border: 2px solid #005ea2;
+  border: 2px solid color($theme-color-primary-vivid);
   border-radius: 4px;
 }
 
@@ -467,27 +307,6 @@
 
 .delete-documentation-attachment-input {
   left: 8px !important;
-}
-
-.resource-radio {
-  left: 10px !important;
-  height: 2px;
-  width: 2px;
-  top: 10px;
-}
-
-.impact-radio {
-  left: 34px !important;
-  height: 1px;
-  width: 1px;
-  margin-top: 5px;
-}
-
-.complexity-radio {
-  left: 10px !important;
-  height: 1px;
-  width: 1px;
-  margin-top: 11px;
 }
 
 .origin-errors-ul, .dm-publish-errors-ul, .complexity-errors-ul, .complexity-errors-ul, .resources-errors-ul,
@@ -518,14 +337,6 @@
 
 .delete-impact-attachment-input {
   left: 5px !important;
-}
-
-.video-file-url-input {
-  width: 335px !important;
-}
-
-.hidden-radio {
-  display: none !important;
 }
 
 .hidden-documentation-field {
@@ -583,14 +394,6 @@
   width: 1px;
 }
 
-.headshot-col {
-  max-width: 8.9375rem !important;
-}
-
-.headshot-img {
-  min-height: 8.9375rem !important;
-}
-
 .headshot-container {
   min-height: 8.9375rem !important;
   text-align: center;
@@ -632,31 +435,6 @@
   .share-checklist-container {
     margin-bottom: 2px !important;
   }
-}
-
-.side-nav-active {
-  background-color: transparent;
-  color: color($theme-color-primary) !important;
-  font-weight: bold !important;
-  position: relative;
-
-  &:before {
-    content:"";
-    background:color($theme-color-primary);
-    position:absolute;
-    bottom:10%;
-    left:0;
-    height:75%;
-    width:4px;
-    border-radius: 12px;
-  }
-}
-
-.side-nav-inactive {
-  font-weight: normal;
-  border-left: none;
-  color: inherit;
-  background-color: transparent;
 }
 
 .add-milestone-link {
