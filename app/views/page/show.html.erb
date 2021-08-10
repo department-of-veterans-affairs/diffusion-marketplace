@@ -34,7 +34,7 @@
               <%= component.subtopic_title %>
             </h2>
             <% if component.subtopic_description.present? %>
-              <div class="grid-col-12 desktop:grid-col-8 line-height-26 <%= 'margin-x-auto' if @page.narrow? %> x1-top">
+              <div class="grid-col-12 desktop:grid-col-8 line-height-26 <%= 'margin-x-auto' if @page.narrow? %> margin-top-2">
                 <%= component.subtopic_description %>
               </div>
             <% end %>
@@ -47,7 +47,7 @@
               <%= component.title %>
             </h3>
             <% if component.description.present? %>
-              <div class="grid-col-12 <%= 'desktop:grid-col-8' unless @page.narrow? %> x1-top line-height-26">
+              <div class="grid-col-12 <%= 'desktop:grid-col-8' unless @page.narrow? %> margin-top-2 line-height-26">
                 <%= component.description %>
               </div>
             <% end %>
@@ -79,7 +79,7 @@
           <%# CTA %>
         <% when 'PageCtaComponent' %>
           <div class="grid-row margin-bottom-3 <%= page_narrow_classes %>">
-            <div class="font-sans-lg grid-col-12 x1-bottom">
+            <div class="font-sans-lg grid-col-12 margin-bottom-2">
               <span><%= component.cta_text %></span>
             </div>
             <a href="<%= component.url %>"
@@ -105,7 +105,7 @@
           <%# note: everything EXCEPT Practice List has the page_narrow_classes applied %>
         <% when 'PagePracticeListComponent' %>
           <% practices_ids = component.practices %> <%# array of id strings %>
-          <div class="grid-row grid-gap-3 x1-bottom">
+          <div class="grid-row grid-gap-3 margin-bottom-2">
             <% practices_ids.each do |pr_id| %>
               <% pr = Practice.find(pr_id.to_i) %>
               <% if pr.present? %>
@@ -118,11 +118,11 @@
         <% when 'PageSubpageHyperlinkComponent' %>
           <div class="grid-row margin-bottom-5 grid-col-12 desktop:grid-col-8 <%= 'margin-x-auto' if @page.narrow? %>">
             <a href="<%= component.url %>" class="width-100">
-              <h2 class="font-sans-xl display-inline x0-top text-underline"><%= component.title %></h2>
-              <span class="x0-5-left fas fa-chevron-right fa-icon-125 vertical-align-middle p1-bottom"></span>
+              <h2 class="font-sans-xl display-inline margin-top-0 text-underline"><%= component.title %></h2>
+              <span class="margin-left-1 fas fa-chevron-right fa-icon-125 text-middle p1-bottom"></span>
             </a>
             <% if component.description.present? %>
-              <div class="font-sans-sm x1-top width-100 line-height-26">
+              <div class="font-sans-sm margin-top-2 width-100 line-height-26">
                 <%= component.description %>
               </div>
             <% end %>

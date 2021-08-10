@@ -12,7 +12,7 @@
   <div class="grid-row grid-gap practice-editor-min-height">
     <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
-    <div id="about" class="desktop:grid-col-9 grid-col-12 p0">
+    <div id="about" class="desktop:grid-col-9 grid-col-12 padding-0">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
       <section class="usa-section padding-top-0 p0-bottom about">
         <h1 class="font-sans-2xl line-height-46px margin-bottom-3">About</h1>
@@ -67,7 +67,7 @@
                         <div class="grid-row">
                           <div class="grid-col-12">
 
-                              <%= vae.label :name, 'Name', class: 'usa-label x0-top', alt: 'hello' %>
+                              <%= vae.label :name, 'Name', class: 'usa-label margin-top-0', alt: 'hello' %>
                             <div>Type the name of the team member.</div>
                             <%= vae.text_field :name, class: 'usa-input practice-input va-employee-name-input' %>
                             <%= vae.label :role, 'Role', class: 'usa-label' %>

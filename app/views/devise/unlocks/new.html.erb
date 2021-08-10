@@ -1,18 +1,18 @@
 <!-- Resend confirmation instructions Page -->
-<div class="x0-top">
+<div class="margin-top-0">
   <section class="usa-section" style="min-height: calc(100vh - 286px)">
     <div class="grid-container">
       <div class="login-card box-shadow-card">
         <div class="login-header">
           <div class="login-header-overlay">
-            <h2 class="x0"> Diffusion Marketplace</h2>
+            <h2 class="margin-0"> Diffusion Marketplace</h2>
             <p> Saving lives by diffusing best practices.</p>
           </div>
         </div>
         <div class="login-body">
           <h2>Resend unlock instructions</h2>
 
-          <%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: {method: :post, class: 'usa-form x1-top'}) do |f| %>
+          <%= form_for(resource, as: resource_name, url: unlock_path(resource_name), html: {method: :post, class: 'usa-form margin-top-2'}) do |f| %>
             <% if devise_error_messages!.present? %>
               <div class="usa-alert usa-alert--error" >
                 <div class="usa-alert__body">
@@ -26,7 +26,7 @@
               <%= f.email_field :email, autofocus: true, autocomplete: "email", required: true %>
             </div>
 
-            <div class="actions display-flex justify-center x1-top">
+            <div class="actions display-flex justify-center margin-top-2">
               <%= f.submit "Resend unlock instructions", class: 'usa-button' %>
             </div>
           <% end %>

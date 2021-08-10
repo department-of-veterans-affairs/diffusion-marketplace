@@ -13,7 +13,7 @@
 <div class="grid-container position-relative">
   <div class="grid-row grid-gap practice-editor-min-height">
     <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-    <div id="metrics" class="desktop:grid-col-9 grid-col-12 p0">
+    <div id="metrics" class="desktop:grid-col-9 grid-col-12 padding-0">
       <div>
       <%= render partial: "shared/messages", locals: {small_text: true} %>
     </div>
@@ -32,9 +32,9 @@
           <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
         </div>
         <div class="margin-bottom-10 grid-row flex-align-center margin-top-3">
-          <label for="metrics_duration" class="usa-label grid-col-3 x0-top">View your metrics for</label>
+          <label for="metrics_duration" class="usa-label grid-col-3 margin-top-0">View your metrics for</label>
           <div class="grid-col-9">
-            <select class="usa-select metrics-select x0-top" name="metrics_duration" id="metrics_duration">
+            <select class="usa-select metrics-select margin-top-0" name="metrics_duration" id="metrics_duration">
               <option id="metrics_30_day_value" value="30" <%= 'selected' if @duration.to_i == 30 %>>the last 30 days</option>
               <option id="metrics_all_time_value" value="99999" <%= 'selected' if @duration.to_i != 30 %>>all time</option>
             </select>

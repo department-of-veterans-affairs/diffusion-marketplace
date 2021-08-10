@@ -39,7 +39,7 @@
   <div class="grid-row grid-gap practice-editor-min-height">
     <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
-    <div id="introduction" class="desktop:grid-col-9 grid-col-12 p0">
+    <div id="introduction" class="desktop:grid-col-9 grid-col-12 padding-0">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
       <section class="usa-section padding-top-0 p2-bottom introduction">
         <h1>Introduction</h1>
@@ -156,7 +156,7 @@
                                        id: "initiating_facility_type_facility"
                   %>
                   <%= label_tag 'initiating_facility_type_facility', 'Facility', class: 'usa-radio__label
-                initiating-facility-type-label x0-bottom margin-top-105', for: "initiating_facility_type_facility" %>
+                initiating-facility-type-label margin-bottom-0 margin-top-105', for: "initiating_facility_type_facility" %>
                 </div>
                 <div class="usa-radio position-relative">
                   <%= radio_button_tag 'practice[initiating_facility_type]',
@@ -166,7 +166,7 @@
                                        id: "initiating_facility_type_visn"
                   %>
                   <%= label_tag 'initiating_facility_type_visn', 'VISN', class: 'usa-radio__label
-                initiating-facility-type-label x0-bottom margin-top-105', for: "initiating_facility_type_visn" %>
+                initiating-facility-type-label margin-bottom-0 margin-top-105', for: "initiating_facility_type_visn" %>
                 </div>
                 <div class="usa-radio position-relative">
                   <%= radio_button_tag 'practice[initiating_facility_type]',
@@ -175,7 +175,7 @@
                                        id: "initiating_facility_type_department"
                   %>
                   <%= label_tag 'initiating_facility_type_department', 'Office', class: 'usa-radio__label
-                initiating-facility-type-label x0-bottom margin-top-105', for: "initiating_facility_type_department" %>
+                initiating-facility-type-label margin-bottom-0 margin-top-105', for: "initiating_facility_type_department" %>
                 </div>
                 <div class="usa-radio position-relative">
                   <%= radio_button_tag 'practice[initiating_facility_type]', 'other',
@@ -184,13 +184,13 @@
                                        id: "initiating_facility_type_other"
                   %>
                   <%= label_tag 'initiating_facility_type_other', 'Other', class: 'usa-radio__label
-                initiating-facility-type-label x0-bottom margin-top-105', for: "initiating_facility_type_other" %>
+                initiating-facility-type-label margin-bottom-0 margin-top-105', for: "initiating_facility_type_other" %>
                 </div>
               </div>
 
               <div id="visn_select_form" class="grid-row">
                 <div class="margin-bottom-2 grid-col-8">
-                  <%= label_tag 'editor_visn_select', 'VISN', class: 'usa-label x0-top' %>
+                  <%= label_tag 'editor_visn_select', 'VISN', class: 'usa-label margin-top-0' %>
                   <%= select_tag('practice[initiating_facility]',
                                  options_for_select(origin_data['visns'].collect { |v| [v['number'], v['id']] }),
                                  id: 'editor_visn_select', name: "editor_visn_select",
@@ -226,18 +226,18 @@
                     <li class="practice-editor-origin-facility-li fields" role="option" data-id="<%= orig_facility_id %>">
                       <div class="margin-bottom-3">
                         <%= label_tag "editor_state_select_#{orig_facility_id}", 'State',
-                                      class: 'usa-label x0-top margin-bottom-1' %>
+                                      class: 'usa-label margin-top-0 margin-bottom-1' %>
                         <%= select_tag('', options_for_select(us_states), id: "editor_state_select_#{orig_facility_id}",
                                        name: "editor_state_select_#{orig_facility_id}", class: 'width-card-lg height-5 usa-select') %>
                       </div>
                       <div class="grid-row">
                         <div class="grid-col-12">
-                          <%= pof.label :facility_id, 'Facility', class: 'usa-label x0-top margin-bottom-1 grid-col-12' %>
+                          <%= pof.label :facility_id, 'Facility', class: 'usa-label margin-top-0 margin-bottom-1 grid-col-12' %>
                           <%= pof.select :facility_id,
                                          options_for_select([['-Select-', nil, selected: true, disabled: true,
                                                               class: 'usa-select color-disabled']]),
                                          {},
-                                         {class: 'height-5 usa-select desktop:grid-col-8 x0-top'}
+                                         {class: 'height-5 usa-select desktop:grid-col-8 margin-top-0'}
                           %>
                         </div>
 
@@ -271,30 +271,30 @@
 
               <div id="office_select_form" class="grid-row">
                 <div class="margin-bottom-3 grid-col-8">
-                  <%= label_tag 'editor_department_select', 'Administration', class: 'usa-label x0-top margin-bottom-1
+                  <%= label_tag 'editor_department_select', 'Administration', class: 'usa-label margin-top-0 margin-bottom-1
                 grid-col-12' %>
                   <%= select_tag('practice[initiating_department_office_id]',
                                  options_for_select(origin_data['departments'].collect { |d| [d['name'], d['id']] }), id:
-                                     'editor_department_select', class: 'height-5 usa-select x0-top', include_blank: '-Select-') %>
+                                     'editor_department_select', class: 'height-5 usa-select margin-top-0', include_blank: '-Select-') %>
                 </div>
                 <div class="margin-bottom-3 grid-row">
-                  <%= label_tag 'editor_office_state_select', 'State', class: 'usa-label x0-top margin-bottom-1
+                  <%= label_tag 'editor_office_state_select', 'State', class: 'usa-label margin-top-0 margin-bottom-1
                 grid-col-12' %>
                   <%= select_tag('', options_for_select(us_states), id: 'editor_office_state_select', name:
-                      'editor_office_state_select', class: 'width-card-lg height-5 usa-select x0-top') %>
+                      'editor_office_state_select', class: 'width-card-lg height-5 usa-select margin-top-0') %>
                 </div>
                 <div class="margin-bottom-3 grid-col-8">
-                  <%= label_tag 'editor_office_select', 'Office', class: 'usa-label x0-top margin-bottom-1 grid-col-12' %>
+                  <%= label_tag 'editor_office_select', 'Office', class: 'usa-label margin-top-0 margin-bottom-1 grid-col-12' %>
                   <%= select_tag('practice[initiating_facility]', options_for_select([['-Select-', nil, selected: true,
                                                                                        disabled: true, class: 'usa-select color-disabled']]),
                                  id: 'editor_office_select',
-                                 class: 'height-5 usa-select x0-top') %>
+                                 class: 'height-5 usa-select margin-top-0') %>
                 </div>
               </div>
 
               <div id="other_select_form" class="grid-row">
                 <div id="init_facility_other" class="grid-col-auto grid-col-8">
-                  <%= label_tag 'initiating_facility_other', 'Other', class: 'usa-label x0-top' %>
+                  <%= label_tag 'initiating_facility_other', 'Other', class: 'usa-label margin-top-0' %>
                   <%= f.text_field :initiating_facility, name: 'initiating_facility_other', id:
                       'initiating_facility_other', class: 'usa-input width-full margin-bottom-1', required: false %>
                 </div>
@@ -366,8 +366,8 @@
                         <li class="practice-editor-other-awards-li fields" role="option" data-id="<%= other_award_id %>">
                           <div class="grid-row">
                             <div class="grid-col-12">
-                              <%= pa.label :name, 'Name of award or recognition', class: 'usa-label x0-top margin-bottom-1 grid-col-12' %>
-                              <%= pa.text_field :name, class: 'usa-input desktop:grid-col-8 x0-top' %>
+                              <%= pa.label :name, 'Name of award or recognition', class: 'usa-label margin-top-0 margin-bottom-1 grid-col-12' %>
+                              <%= pa.text_field :name, class: 'usa-input desktop:grid-col-8 margin-top-0' %>
                             </div>
                             <div class="grid-col-8 trash-container">
                               <%= f.link_to_remove 'Delete entry',
