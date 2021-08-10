@@ -22,10 +22,13 @@
     <div class="grid-row">
       <% @categories.each_with_index do |cat, index| %>
         <% if index < 5 %>
-          <%= button_tag "#{cat.name}", type: 'button', class: "width-auto usa-button usa-button--outline margin-bottom-2 dm-category-btn", data: { cat_id: cat.id } %>
+          <span class="usa-tag usa-tag--big js-category-tag" data-cat-id="<%= cat.id %>"><%= cat.name %></span>
+          <%#= button_tag "#{cat.name}", type: 'button', class: "width-auto usa-button usa-button--outline margin-bottom-2 dm-category-btn", data: { cat_id: cat.id } %>
           <% else %>
           <div class="dm-see-more display-none desktop:display-block">
-            <%= button_tag "#{cat.name}", type: 'button', class: "width-auto usa-button usa-button--outline margin-bottom-2 dm-category-btn", data: { cat_id: cat.id } %>
+            <span class="usa-tag usa-tag--big js-category-tag" data-cat-id="<%= cat.id %>"><%= cat.name %></span>
+
+            <%#= button_tag "#{cat.name}", type: 'button', class: "width-auto usa-button usa-button--outline margin-bottom-2 dm-category-btn", data: { cat_id: cat.id } %>
           </div>
         <% end %>
       <% end %>

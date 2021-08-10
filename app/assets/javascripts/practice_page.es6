@@ -7,12 +7,10 @@
     }
 
     function addActiveClass(selector) {
-        $(selector).removeClass('side-nav-inactive');
-        $(selector).addClass('side-nav-active');
+        $(selector).addClass('usa-current');
     }
     function removeActiveClass(selector) {
-        $(selector).removeClass('side-nav-active');
-        $(selector).addClass('side-nav-inactive');
+        $(selector).removeClass('usa-current');
     }
 
     function highlightSidebarSectionWhenInView() {

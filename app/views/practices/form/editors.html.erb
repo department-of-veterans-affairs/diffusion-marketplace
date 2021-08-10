@@ -27,7 +27,7 @@
           <div class="grid-row flex-align-center border-bottom-1px <%= 'border-top-1px' if practice_editors.first === pe %> practice-editor-entry">
             <div class="grid-col-11 padding-y-3 line-height-26">
               <p class="text-bold <%= 'display-none' unless is_full_name_present(user) %>"><%= user_full_name(user) %></p>
-              <a target="_blank" href="mailto:<%= email %>" class="dm-external-link line-height-26">
+              <a target="_blank" href="mailto:<%= email %>" class="usa-link usa-link--external line-height-26">
                 <%= email %>
               </a>
               <%

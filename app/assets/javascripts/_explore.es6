@@ -1,6 +1,6 @@
 (($) => {
   const $document = $(document);
-  const catBtn = '.dm-category-btn';
+  const catBtn = ".js-category-tag";
   const seeAllBtn = '.dm-see-all-btn';
 
   function setSortDefault() {

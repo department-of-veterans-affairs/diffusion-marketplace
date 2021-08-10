@@ -1,5 +1,3 @@
-@import "../../dm/components/links";
-
 .dm-page-content {
   p, li {
     margin-top: 1rem;
@@ -30,10 +28,6 @@
       > p, span, a, li, blockquote, pre, strong, em, u {
         text-align: right;
       }
-    }
-
-    a {
-      @extend .dm-external-link;
     }
   }
 }

@@ -235,7 +235,7 @@
                           <%= pof.label :va_facility_id, 'Facility', class: 'usa-label x0-top margin-bottom-1 grid-col-12' %>
                           <%= pof.select :va_facility_id,
                                          options_for_select([['-Select-', nil, selected: true, disabled: true,
-                                                              class: 'usa-select dm-color-gray-20']]),
+                                                              class: 'usa-select color-disabled']]),
                                          {},
                                          {class: 'height-5 usa-select desktop:grid-col-8 x0-top'}
                           %>
@@ -286,7 +286,7 @@
                 <div class="margin-bottom-3 grid-col-8">
                   <%= label_tag 'editor_office_select', 'Office', class: 'usa-label x0-top margin-bottom-1 grid-col-12' %>
                   <%= select_tag('practice[initiating_facility]', options_for_select([['-Select-', nil, selected: true,
-                                                                                       disabled: true, class: 'usa-select dm-color-gray-20']]),
+                                                                                       disabled: true, class: 'usa-select color-disabled']]),
                                  id: 'editor_office_select',
                                  class: 'height-5 usa-select x0-top') %>
                 </div>

@@ -1,10 +1,18 @@
-// USA BUTTON OVERRIDES
+// `usa-button` OVERRIDES
 .usa-button {
   @include u-line-height('sans', 2);
+  background-color: color($theme-color-primary-vivid);
   text-decoration: none !important;
 }
 
+.usa-button--outline {
+  background-color: transparent;
+  color: color($theme-color-primary-vivid);
+  box-shadow: inset 0 0 0 2px color($theme-color-primary-vivid);
+}
+
 .usa-button--unstyled {
+  background-color: transparent;
   text-decoration: underline !important;
 }
 

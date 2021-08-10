@@ -67,7 +67,7 @@
         <%# practice origin date and location %>
         <div>
           <h5 class="text-uppercase display-inline margin-y-0">Origin:</h5>
-          <p id="practice_origin_facilities_text" class="font-normal line-height-26 display-inline">
+          <p id="practice_origin_facilities_text" class="display-inline line-height-sans-5">
             <%
               @practice_date =  @practice.date_initiated.present? ? date_format(@practice.date_initiated) : '(start date unknown)'
               origin_facilities = @practice.practice_origin_facilities
@@ -95,7 +95,7 @@
           <div class="grid-col-12">
             <h5 class="text-uppercase display-inline margin-y-0">Adoptions:</h5>
             <%# TODO: link adoptions to new diffusion tracker map %>
-            <p class="display-inline font-normal line-height-26">
+            <p class="display-inline line-height-26">
             <% if completed_adoptions > 0 %>
               <%= completed_adoptions %>&nbsp;successful<%= ', ' if in_progress_adoptions > 0 || unsuccessful_adoptions > 0 %>
             <% end %>
@@ -113,7 +113,7 @@
         <% if has_practice_awards %>
           <div>
             <h5 class="text-uppercase display-inline margin-y-0">Awards and Recognition:</h5>
-            <p class="display-inline font-normal line-height-26">
+            <p class="display-inline line-height-26">
               <% all_awards = get_all_awards(@practice) %>
               <% if all_awards.length > 180 %>
                 <%#= truncate(@all_awards.to_s, start: 0, length: 180) %>
@@ -138,9 +138,9 @@
         <% if has_practice_partners %>
           <div>
             <h5 class="text-uppercase display-inline margin-y-0">Partners:</h5>
-            <p class="display-inline font-normal line-height-26">
+            <p class="display-inline line-height-26">
               <% @practice.practice_partners.each_with_index do |partner, index| %>
-                <a href="<%= practice_partner_path(partner) %>" class="dm-internal-link">
+                <a href="<%= practice_partner_path(partner) %>" class="usa-link">
                   <%= partner.name %>
                 </a>
                 <%= ", " if @practice.practice_partners.size != index + 1 && @practice.practice_partners.size > 1 %>
