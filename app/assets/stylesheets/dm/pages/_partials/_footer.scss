@@ -3,24 +3,4 @@ footer {
   position: absolute;
   bottom: 0;
   width: 100%;
-
-  .dm-footer-link {
-    color: color($theme-color-base-ink);
-    text-decoration: none;
-
-    &:hover {
-      color: color($theme-color-primary);
-      text-decoration: underline;
-    }
-
-    &:visited {
-      color: color($theme-color-base-ink);
-      text-decoration: none;
-
-      &:hover {
-        color: color($theme-color-primary);
-        text-decoration: underline;
-      }
-    }
-  }
 }
