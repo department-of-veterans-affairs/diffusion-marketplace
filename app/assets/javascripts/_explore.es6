@@ -9,12 +9,12 @@
 
   function attachCategoryBtnEventListener() {
     $(catBtn).on('click', function(e) {
-      if ($(e.target).hasClass('dm-selected')) {
-        $(e.target).removeClass('dm-selected usa-button');
-        $(e.target).addClass('usa-button--outline');
+      if ($(e.target).hasClass("dm-tag--big--action-primary--selected")) {
+        $(e.target).removeClass("dm-tag--big--action-primary--selected");
+        $(e.target).addClass("dm-tag--big--action-primary");
       } else {
-        $(e.target).addClass('dm-selected usa-button');
-        $(e.target).removeClass('usa-button--outline');
+        $(e.target).removeClass("dm-tag--big--action-primary");
+        $(e.target).addClass("dm-tag--big--action-primary--selected");
       }
     })
   }

@@ -16,13 +16,4 @@
   .tt-hint {
     visibility: hidden;
   }
-
-  .map-filters-trigger, #filterClose {
-    width: 100% !important;
-  }
-
-  #filterClose {
-    color: color($theme-color-base-ink) !important;
-    background-color: color($theme-color-base-lighter) !important;
-  }
 }

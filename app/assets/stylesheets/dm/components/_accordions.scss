@@ -1,4 +1,4 @@
 // `usa-accordion` OVERRIDES
 .usa-accordion__content {
-  border: none !important;
+  @include u-border(0, !important);
 }

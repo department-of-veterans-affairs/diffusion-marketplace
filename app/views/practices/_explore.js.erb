@@ -68,7 +68,7 @@ function setDataAndMakeRequest(params = { isNextPage }) {
 }
 
 function setCategories() {
-  var selectedBtns = $('.dm-selected');
+  var selectedBtns = $('.dm-tag--big--action-primary--selected');
   var selectedIds = [];
   for (var i = 0; i < selectedBtns.length; i++) {
     var catId = $(selectedBtns[i]).data('catId');

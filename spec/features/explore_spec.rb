@@ -73,7 +73,7 @@ describe 'Explore all practices page', type: :feature do
       page.has_button?('Load more')
       expect(page).to have_no_content('Other')
       expect(page).to have_no_content('Other Subcategory')
-      expect(page).to have_no_css('.dm-selected')
+      expect(page).to have_no_css('.dm-tag--big--action-primary--selected')
       expect(page).to have_select('dm_sort_option', selected: 'Sort by A to Z')
       expect(page).to have_content('14 results')
       expect(find_all('.dm-practice-title')[0]).to have_text('Beach VA')
@@ -122,9 +122,9 @@ describe 'Explore all practices page', type: :feature do
     it 'should filter by categories and allow for sorting' do
       visit '/explore'
       # filter by COVID category practices
-      expect(page).to have_no_css('.dm-selected')
+      expect(page).to have_no_css('.dm-tag--big--action-primary--selected')
       find_all('.js-category-tag')[0].click
-      expect(page).to have_css('.dm-selected', count: 1)
+      expect(page).to have_css('.dm-tag--big--action-primary--selected', count: 1)
       expect(page).to have_no_content('Different practice')
       expect(page).to have_content('6 results')
       expect(page).to have_css('.dm-practice-card', count: 6)
@@ -148,7 +148,7 @@ describe 'Explore all practices page', type: :feature do
       # filter by COVID and Telehealth category practices
       find_all('.js-category-tag')[1].click
       expect(page).to have_content('13 results')
-      expect(page).to have_css('.dm-selected', count: 2)
+      expect(page).to have_css('.dm-tag--big--action-primary--selected', count: 2)
       expect(page).to have_css('.dm-practice-card', count: 12)
       page.has_button?('Load more')
       expect(find_all('.dm-practice-title')[0]).to have_text('Telemedicine')
@@ -175,7 +175,7 @@ describe 'Explore all practices page', type: :feature do
       # refresh the page
       visit current_path
       # make sure the defaults are all set again
-      expect(page).to have_no_css('.dm-selected')
+      expect(page).to have_no_css('.dm-tag--big--action-primary--selected')
       expect(page).to have_content('14 results')
       expect(page).to have_css('.dm-practice-card', count: 12)
       expect(page).to have_select('dm_sort_option', selected: 'Sort by A to Z')

@@ -132,7 +132,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
     end
 
     it 'should take the user to the search results page when a category tag is clicked' do
-      all('.category-link').first.click
+      all('.dm-tag--big--action-primary').first.click
       expect(page).to have_selector('#search-page', visible: true)
       expect(page).to have_content('1 result')
       expect(page).to have_content('A public maximum practice')

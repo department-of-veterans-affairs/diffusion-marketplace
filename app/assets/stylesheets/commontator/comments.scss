@@ -115,7 +115,7 @@
 }
 
 .commontator-timestamp {
-  color: color($theme-color-base-dark) !important;
+  color: color($theme-color-base-dark, !important);
 }
 
 // Hiding pagination for now due to extra padding
@@ -210,7 +210,7 @@ body {
 }
 
 .usa-radio__input:focus + .team-member-label::before, .usa-radio__input:focus + .implementer-label::before {
-  outline: 0.25rem solid color($theme-color-accent-warm) !important;
+  outline: 0.25rem solid color($theme-color-accent-warm, !important);
   outline-offset: 0.25rem !important;
 }
 
@@ -235,7 +235,7 @@ body {
 }
 
 ::-webkit-input-placeholder {
-  color: color($theme-color-base-light) !important;
+  color: color($theme-color-base-light, !important);
 }
 
 :-moz-placeholder { /* Firefox 18- */
