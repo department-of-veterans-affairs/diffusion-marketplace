@@ -1,5 +1,3 @@
-@import "../../variables/colors";
-
 footer {
   // Keeps footer at the bottom of the page
   position: absolute;
@@ -7,20 +5,20 @@ footer {
   width: 100%;
 
   .dm-footer-link {
-    color: $dm-color-base;
+    color: color($theme-color-base-ink);
     text-decoration: none;
 
     &:hover {
-      color: $dm-color-blue-50v;
+      color: color($theme-color-primary);
       text-decoration: underline;
     }
 
     &:visited {
-      color: $dm-color-base;
+      color: color($theme-color-base-ink);
       text-decoration: none;
 
       &:hover {
-        color: $dm-color-blue-50v;
+        color: color($theme-color-primary);
         text-decoration: underline;
       }
     }

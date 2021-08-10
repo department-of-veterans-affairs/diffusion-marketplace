@@ -1,18 +1,16 @@
-@import '../variables/colors';
-
 .dm-practice-card {
   position: relative;
   max-height: 436px;
 
   .dm-practice-link {
-    color: $dm-color-base;
+    color: color($theme-color-base-ink);
     text-decoration: none;
 
     &:hover {
       h3 {
         cursor: pointer;
         text-decoration: underline;
-        text-decoration-color: $dm-color-yellow-20v;
+        text-decoration-color: color($theme-color-accent-warm);
       }
     }
   }
@@ -22,7 +20,7 @@
     width: 73px;
     height: 24px;
     justify-content: center;
-    background-color: $dm-color-gray-30;
+    background-color: color($theme-color-base-light);
     padding: 5px;
     border-radius: 0px 2px 2px 0px;
     z-index: 2;
@@ -32,7 +30,7 @@
     align-items: center;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    color: $dm-color-base;
+    color: color($theme-color-base-ink);
     font-size: 13px;
     line-height: 115%;
   }
@@ -43,7 +41,7 @@
     width: 28px;
     height: 28px;
     text-align: center;
-    background-color: $dm-color-white;
+    background-color: color($theme-color-dm-white);
     padding: 5px;
     border-radius: 50%;
     z-index: 2;
@@ -52,26 +50,26 @@
     right: 20px;
 
     .fas {
-      color: $dm-color-blue-50v;
+      color: color($theme-color-primary);
 
       &:hover {
-        color: $dm-color-blue-70v;
+        color: color($theme-color-primary-dark);
       }
 
       &:active {
-        color: $dm-color-blue-80v;
+        color: color($theme-color-primary-darker);
       }
     }
 
     .far {
-      color: $dm-color-black;
+      color: color($theme-color-base-ink);
 
       &:hover {
-        color: $dm-color-blue-50v;
+        color: color($theme-color-primary);
       }
 
       &:active {
-        color: $dm-color-blue-70v;
+        color: color($theme-color-primary-dark);
       }
     }
   }
@@ -128,12 +126,12 @@
   // styling for when there is no practice thumbnail
   .dm-bg-gray-80 {
     height: 165px;
-    background-color: $dm-color-gray-80;
+    background-color: color($theme-color-base-darkest);
     display: flex;
 
     h3 {
       align-self: flex-end;
-      color: $dm-color-white;
+      color: color($theme-color-dm-white);
     }
   }
 

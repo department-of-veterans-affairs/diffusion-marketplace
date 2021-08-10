@@ -1,5 +1,3 @@
-@import "../variables/colors";
-
 /****************************************
   LINKS
   To use: <a class="dm-internal-link"...>
@@ -7,7 +5,7 @@
 a {
   // pages internal to DM
   &.dm-internal-link {
-    color: $dm-color-base !important;
+    color: color($theme-color-base-ink) !important;
     text-decoration: underline;
 
     &:visited, &:hover, &:active {
@@ -19,21 +17,21 @@ a {
     }
 
     &:visited {
-      color: $dm-color-base !important;
+      color: color($theme-color-base-ink) !important;
     }
 
     &:hover {
-      color: $dm-color-blue-50v !important;
+      color: color($theme-color-primary) !important;
     }
 
     &:active {
-      color: $dm-color-blue-70v !important;
+      color: color($theme-color-primary-dark) !important;
     }
   }
 
   // pages external to DM
   &.dm-external-link {
-    color: $dm-color-blue-50v !important;
+    color: color($theme-color-primary) !important;
     text-decoration: underline;
 
     &:visited, &:hover, &:active {
@@ -45,28 +43,28 @@ a {
     }
 
     &:visited {
-      color: $dm-default-visited-purple !important;
+      color: color($theme-link-visited-color) !important;
     }
 
     &:hover {
-      color: $dm-color-blue-70v !important;
+      color: color($theme-color-primary-dark) !important;
     }
 
     &:active {
-      color: $dm-color-blue-80v !important;
+      color: color($theme-color-primary-darker) !important;
     }
   }
 
   // links within a banner
   // TODO: Confirm with Becca on this
   &.dm-banner-link {
-    color: $dm-color-base;
+    color: color($theme-color-base-ink);
 
     &:hover {
       text-decoration: none;
     }
     &:visited {
-      color: $dm-color-base;
+      color: color($theme-color-base-ink);
     }
   }
 }

@@ -10,16 +10,16 @@
       <%= javascript_include_tag 'diffusion_history/_map_utilities', 'data-turbolinks-track': 'reload' %>
     <% end %>
 
-    <h4 class="font-sans-xl margin-bottom-1 margin-top-0 line-height-sans-205">Diffusion map</h4>
-    <p class="font-sans-lg margin-bottom-5 line-height-sans-5">
+    <h1>Diffusion map</h1>
+    <p class="usa-prose-intro margin-bottom-4">
       Explore how practices are being adopted across the country. There are currently <%= @successful_ct %> completed adoption<%= @successful_ct === 1 ? '' : 's' %>, <%= @in_progress_ct %> in-progress adoption<%= @in_progress_ct === 1 ? '' : 's' %>, and <%= @unsuccessful_ct %> unsuccessful adoption<%= @unsuccessful_ct === 1 ? '' : 's' %>.
     </p>
     <div class="diffusion-map-container display-none">
-      <button id="filterResultsTrigger" class="map-filters-trigger usa-button text-bold display-block margin-bottom-105 padding-2">
+      <button id="filterResultsTrigger" class="map-filters-trigger usa-button display-block margin-bottom-105">
         Filter results
       </button>
-      <button type="button" class="usa-button text-bold display-none margin-bottom-105 padding-2 bg-base-lightest text-ink" id="filterClose" aria-label="Close map filters">Close
-        filters
+      <button type="button" class="usa-button usa-button--secondary display-none margin-bottom-105" id="filterClose" aria-label="Close map filters">
+        Close filters
       </button>
       <div class="width-full position-relative">
         <div id="map" style="width: 100%; height: 633px;"></div>

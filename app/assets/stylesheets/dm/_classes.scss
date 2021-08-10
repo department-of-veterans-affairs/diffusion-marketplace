@@ -13,34 +13,11 @@ to confirm the class DOES NOT EXIST before adding a new class
 ----------------------------------------
 */
 
-@import "variables/colors";
-
-.dm-primary-5v-background {
-  background-color: $dm-color-blue-5v !important;
-}
-
-/* Linear Gradient backgrounds */
-// TODO: we can probably remove with new designs
-.dm-background-linear-gradient-down-cool {
-  background: linear-gradient(180deg, rgba(0, 150, 246, 0.35) 0%, rgba(255, 255, 255, 0) 100%) !important;
-}
-
-.dm-background-linear-gradient-up-cool {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 150, 246, 0.35) 100%) !important;
-}
-
-// fades from the bottom from a darker blue to clear
-.dm-background-linear-gradient-up-dark-blue {
-  background: linear-gradient(180deg, $dm-color-light-blue 8.75%, rgba(255, 255, 255, 0) 100%), $dm-color-blue-50v;
-}
+// TODO: check if we need this file
 
 /* Font colors */
 .dm-color-gray-20 {
-  color: $dm-color-gray-20 !important;
-}
-
-.dm-font-color-blue-50v {
-  color: $dm-color-blue-50v;
+  color: color($theme-color-secondary-dark) !important;
 }
 
 /* Font Weight */
@@ -913,19 +890,19 @@ ul.no-list-style {
 #breadcrumbs {
 
   a {
-    color: $dm-color-blue-50v !important;
+    color: color($theme-color-primary) !important;
 
     &:hover {
-      color: $dm-color-blue-70v !important;
+      color: color($theme-color-primary-dark) !important;
       text-decoration: underline;
     }
 
     &:visited {
-      color: $dm-color-blue-50v;
+      color: color($theme-color-primary);
     }
 
     &:active {
-      color: $dm-color-blue-80v !important;
+      color: color($theme-color-primary-darker) !important;
     }
   }
 }
@@ -1000,13 +977,7 @@ ul.no-list-style {
 }
 
 .disabled-label {
-  color: $dm-color-gray-20 !important;
-}
-
-.disabled-input {
-  color: $dm-color-gray-20 !important;
-  border-color: $dm-color-gray-20 !important;
-  background-color: $dm-color-white !important;
+  color: color($theme-color-secondary-dark) !important;
 }
 
 .enabled-label {
@@ -1024,15 +995,7 @@ ul.no-list-style {
 }
 
 .bg-gray-2{
-  background-color: $dm-color-gray-2 !important;
-}
-
-.bg-gold-10v {
-  background-color: $dm-color-gold-10v;
-}
-
-.bg-blue-20v {
-  background-color: $dm-color-blue-20v;
+  background-color: color($theme-color-secondary-light) !important;
 }
 
 .border-0 {
@@ -1042,7 +1005,7 @@ ul.no-list-style {
 .rect-svg-blue-30v {
   height: 8px;
   width: 292px;
-  color: $dm-color-blue-30v;
+  color: color($theme-color-primary-light);
 }
 
 .width-80 {

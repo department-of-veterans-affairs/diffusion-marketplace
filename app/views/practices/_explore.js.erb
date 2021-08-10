@@ -103,7 +103,7 @@ function sendAjaxRequest(data) {
       if ( result.next !== null ) {
         $(loadMoreContainer).removeClass('display-none');
         $(loadMoreContainer).empty();
-        $('.dm-load-more-container').append('<button name="button" type="button" class="usa-button--outline dm-btn-base dm-load-more-btn width-auto" data-next="' + result.next + '">Load more</button>');
+        $('.dm-load-more-container').append('<button name="button" type="button" class="dm-button--outline-secondary dm-load-more-btn width-auto" data-next="' + result.next + '">Load more</button>');
         loadMoreEventListener();
       } else {
         $(loadMoreContainer).empty();

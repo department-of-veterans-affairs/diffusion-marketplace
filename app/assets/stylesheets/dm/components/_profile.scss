@@ -1,5 +1,3 @@
-@import "../variables/colors";
-
 .dm-user {
   bottom: -15px;
   position: relative;
@@ -39,11 +37,11 @@
 }
 
 .edit-profile-link {
-  color: #005ea2 !important;
+  color: color($theme-color-primary-vivid) !important;
    
   &:hover {
     text-decoration: none !important;
-    color: $dm-color-blue-70v !important;
+    color: color($theme-color-primary-dark) !important;
   }
 
   .edit-profile-icon {
@@ -81,7 +79,7 @@
 .dm-cropper-delete-image {
   margin-top: 0;
   margin-bottom: 24px;
-  color: $dm-color-red-50v;
+  color: color($theme-color-error);
   text-decoration: underline;
 
   &:hover {
@@ -91,12 +89,12 @@
 }
 
 .user-avatar-upload-label {
-  color: $dm-color-blue-50v;
+  color: color($theme-color-primary);
   text-decoration: underline;
   margin-top: 0 !important;
   border: none !important;
   &:hover {
-    color: $dm-color-blue-50v !important;
+    color: color($theme-color-primary) !important;
     cursor: pointer;
   }
 }

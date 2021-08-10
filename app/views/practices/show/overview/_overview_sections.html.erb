@@ -6,7 +6,7 @@
   see_more_button_text_id = "see_more_" + s_area + "statement"
   statement_with_line_breaks = safe_join(raw(statement).split("\r\n"), tag(:br))
 %>
-<div class="practice-editor-rect-svg border-top-05 border-primary-dark" ></div>
+<div class="height-05 width-8 border-top-05 border-primary-dark" ></div>
 <h3 class="font-sans-lg line-height-25px margin-top-2 margin-bottom-1"><%= title %></h3>
 <% if statement.present? && statement.length > 360 %>
   <div class="line-height-26 overview-statement-container">
@@ -15,7 +15,7 @@
     <span id=<%= more_text_id %> class="display-none">
       <%= overview_statement(statement, 0, 99999) %>
       </span>
-    <a class="usa-button--unstyled dm-btn-primary" href="" onclick="seeMoreStatementText(<%= dots_id %>, <%= more_text_id %>, <%= see_more_button_text_id %>, <%= truncated_id %> ); return false" id=<%= see_more_button_text_id.to_s %>>See
+    <a class="dm-button--unstyled-primary" href="" onclick="seeMoreStatementText(<%= dots_id %>, <%= more_text_id %>, <%= see_more_button_text_id %>, <%= truncated_id %> ); return false" id=<%= see_more_button_text_id.to_s %>>See
       more</a>
   </div>
 <% else %>
@@ -32,7 +32,7 @@
         <%= image_tag pr.attachment_s3_presigned_url(:thumb), class: 'height-mobile practice-editor-impact-photo' %>
         <% if pr.name.present? %>
           <div class="margin-top-1">
-            <h5 class="font-sans-3xs text-uppercase text-ls-1 line-height-15px display-inline margin-y-0">Above:</h5>
+            <h5 class="text-uppercase display-inline margin-y-0">Above:</h5>
             <p class="display-inline font-normal line-height-26"><%= pr.name %></p>
           </div>
         <% end %>
@@ -48,7 +48,7 @@
       <%= youtube_embed(pr.link_url) %>
       <% if pr.name.present? %>
         <div class="margin-top-1 width-100">
-          <h5 class="font-sans-3xs text-uppercase text-ls-1 line-height-15px display-inline margin-y-0">Above:</h5>
+          <h5 class="text-uppercase display-inline margin-y-0">Above:</h5>
           <p class="display-inline font-normal line-height-26"><%= pr.name %></p>
         </div>
       <% end %>

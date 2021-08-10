@@ -1,19 +1,18 @@
-@import '../variables/colors';
-
+// unused file but keep for records
 .shark-tank-eligibility-p, .shark-tank-faq-p {
   max-width: unset !important;
 }
 
 .shark-tank-support-link, .shark-tank-faq-link, .shark-tank-application-link {
-  color: $dm-color-blue-50v;
+  color: color($theme-color-primary);
   text-decoration: underline;
 
   &:hover {
-    color: $dm-color-blue-50v !important;
+    color: color($theme-color-primary) !important;
   }
 
   &:visited {
-    color: $dm-default-visited-purple !important;
+    color: color($theme-link-visited-color) !important;
   }
 }
 .shark-tank-apply-button {

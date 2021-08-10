@@ -2,8 +2,6 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-@import '../variables/colors';
-
 .dm-homepage {
   .dm-system-message {
     .usa-alert {
@@ -12,7 +10,7 @@
   }
 
   a {
-    color: $dm-color-base !important;
+    color: color($theme-color-base-ink) !important;
   }
 
   .homepage-explore-all-section {
@@ -22,48 +20,48 @@
       height: 400px;
     }
 
-    h1 {
-      line-height: 36px;
+    // h1 {
+    //   line-height: 36px;
 
-      @media screen and (min-width: 640px) {
-        line-height: 46px;
-      }
-    }
+    //   @media screen and (min-width: 640px) {
+    //     line-height: 46px;
+    //   }
+    // }
 
     .fa-laptop-medical {
-      color: $dm-color-blue-vivid !important;
+      color: color($theme-color-primary-light) !important;
     }
 
-    .homepage-explore-all-button {
-      line-height: 19px !important;
-      color: $dm-color-base !important;
-      background-color: $dm-color-white !important;
-      border: none !important;
-      font-weight: bold !important;
-      cursor: pointer;
-      padding: 12px 20px 12px 20px !important;
-      width: 197px !important;
-      font-size: 16px !important;
-      text-decoration: none;
+    // .homepage-explore-all-button {
+    //   // line-height: 19px !important;
+    //   color: color($theme-color-base-ink) !important;
+    //   background-color: color($theme-color-dm-white) !important;
+    //   // border: none !important;
+    //   // font-weight: bold !important;
+    //   // cursor: pointer;
+    //   // padding: 12px 20px 12px 20px !important;
+    //   // width: 197px !important;
+    //   // font-size: 16px !important;
+    //   // text-decoration: none;
 
-      @media screen and (min-width: 1024px) {
-        line-height: 26px !important;
-        color: $dm-color-base !important;
-        background-color: $dm-color-white !important;
-        border: none !important;
-        padding: 16px 24px 16px 24px !important;
-        font-size: 22px !important;
-        width: 264px !important;
-      }
+    //   @media screen and (min-width: 1024px) {
+    //     // line-height: 26px !important;
+    //     color: color($theme-color-base-ink) !important;
+    //     background-color: color($theme-color-dm-white) !important;
+    //     // border: none !important;
+    //     // padding: 16px 24px 16px 24px !important;
+    //     font-size: 22px !important;
+    //     width: 264px !important;
+    //   }
 
-      &:hover {
-        background-color: $dm-color-alt-lighter-grey !important;
-      }
+    //   &:hover {
+    //     background-color: color($theme-color-base-lightest) !important;
+    //   }
 
-      &:active {
-        background-color: $dm-color-gray-cool-30 !important;
-      }
-    }
+    //   &:active {
+    //     background-color: color($theme-color-base-light) !important;
+    //   }
+    // }
 
     @media screen and (max-width: 1023px) {
       .fa-laptop-medical {
@@ -77,7 +75,7 @@
       text-decoration: none !important;
 
       &:visited {
-        color: $dm-color-base !important;
+        color: color($theme-color-base-ink) !important;
       }
 
       &:hover {
@@ -91,27 +89,21 @@
       box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
 
       &:before {
-        background-color: $dm-color-blue-30v !important;
+        background-color: color($theme-color-primary-light) !important;
       }
     }
 
     .recommended-for-you-banner {
       background-color: transparent !important;
-      border-left-color: $dm-color-blue-30v !important;
+      border-left-color: color($theme-color-primary-light) !important;
     }
 
     .fa-user-circle {
-      color: $dm-color-base !important;
+      color: color($theme-color-base-ink) !important;
     }
 
     .covid-banner {
-      background-color: $dm-color-blue-30v;
-    }
-  }
-
-  .nominate-section {
-    a {
-      width: 169px !important;
+      background-color: color($theme-color-primary-light);
     }
   }
 

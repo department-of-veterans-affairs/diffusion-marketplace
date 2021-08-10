@@ -1,7 +1,6 @@
-@import '../variables/colors';
 .dm-marker-container {
+  background-color: color($theme-color-dm-white);
   min-height: 146px;
-  background-color: $dm-color-white;
   border-radius: 4px;
   padding: 8px 15px;
 }
@@ -17,12 +16,12 @@
     overflow-y: auto;
 
     .map-marker-practice {
-      border: 2px solid #DCDEE0;
+      border: 2px solid color($theme-color-base-lightest);
       box-sizing: border-box;
       border-radius: 4px;
 
       &:hover {
-        border: 2px solid $dm-color-blue-50v;
+        border: 2px solid color($theme-color-primary);
       }
     }
 
@@ -31,14 +30,14 @@
       .map-marker-practice-content {
         text-decoration: none !important;
         font-size: 16.96px;
-        color: #171717;
+        color: color($theme-color-base-ink);
       }
 
       .map-marker-practice-name {
         text-decoration: none !important;
         font-weight: bold;
         font-size: 16.96px;
-        color: #171717;
+        color: color($theme-color-base-ink);
       }
 
       &:hover {
@@ -53,7 +52,7 @@
           p {
             text-decoration: none !important;
             font-size: 16.96px;
-            color: #171717;
+            color: color($theme-color-base-ink);
           }
         }
       }
@@ -63,7 +62,7 @@
 }
 
 .map-filters {
-  background: #FFFFFF;
+  background: color($theme-color-dm-white);
   border: 2px solid #DCDEE0;
   border-radius: 4px;
   height: 617px;
@@ -92,20 +91,20 @@
     overflow-y: auto;
 
     .fa-question-circle {
-      color: $dm-color-base !important;
+      color: color($theme-color-base-ink) !important;
       padding: 4px;
       text-decoration: none !important;
       display: inline-block !important;
 
       &:visited {
         text-decoration: none !important;
-        color: $dm-color-base !important;
+        color: color($theme-color-base-ink) !important;
       }
     }
   }
 
   .map-filters-list {
-    border: 1px solid #000000;
+    border: 1px solid color($theme-color-base-ink);
     box-sizing: border-box;
     height: 147px;
     padding: 14px 12px;

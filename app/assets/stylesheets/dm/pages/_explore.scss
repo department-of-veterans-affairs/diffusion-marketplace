@@ -1,14 +1,7 @@
-// styles for /explore
-@import '../variables/colors';
-
 .dm-explore-practices {
   // need the next two properties to remove weird whitespace below header
   top: -1px;
   position: relative;
-
-  .bg-primary-darker {
-    height: 160px;
-  }
 
   .dm-results-count {
     align-items: center;
@@ -43,7 +36,7 @@
 
     i {
       font-size: 160px;
-      color: $dm-color-gray-5;
+      color: color($theme-color-base-lightest);
       z-index: 0;
     }
 

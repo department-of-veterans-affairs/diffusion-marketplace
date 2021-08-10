@@ -68,7 +68,7 @@ describe 'Page Builder - Show', type: :feature do
   end
 
   it 'Should display the call to action' do
-    expect(find('.usa-button.dm-btn-primary')[:href]).to include('https://www.google.com')
+    expect(find('.usa-button')[:href]).to include('https://www.google.com')
     expect(page).to have_content('Curious about programming languages?')
     expect(page).to have_content('Search now')
   end
