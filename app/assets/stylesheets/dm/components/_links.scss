@@ -1,0 +1,28 @@
+// header nav links
+.usa-nav__primary-item {
+  .usa-nav__link {
+    &:hover {
+      color: color($theme-color-primary-vivid) !important;
+    }
+  }
+}
+
+.dm-footer-link {
+  color: color($theme-color-base-ink);
+  text-decoration: none;
+
+  &:hover {
+    color: color($theme-color-primary-vivid);
+    text-decoration: underline;
+  }
+
+  &:visited {
+    color: color($theme-color-base-ink);
+    text-decoration: none;
+
+    &:hover {
+      color: color($theme-color-primary-vivid);
+      text-decoration: underline;
+    }
+  }
+}
