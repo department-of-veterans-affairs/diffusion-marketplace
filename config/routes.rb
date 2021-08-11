@@ -8,7 +8,6 @@ Rails.application.routes.draw do
   mount Ahoy::Engine => '/ahoy', as: :dm_ahoy
   mount Commontator::Engine => '/commontator' #, as: :dm_commontator
 
-  get '/terms_and_conditions' => 'users#terms_and_conditions'
   get '/dashboard/export', action: 'export_metrics', controller: 'admin/dashboard', as: 'export_metrics'
   get '/session_time_remaining', action: 'session_time_remaining', controller: 'practices', as: 'session_time_remaining'
   patch '/extend_editor_session_time', action: 'extend_editor_session_time', controller: 'practices', as: 'extend_editor_session_time'

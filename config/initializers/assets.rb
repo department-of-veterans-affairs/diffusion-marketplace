@@ -46,6 +46,7 @@ Rails.application.config.assets.precompile += %w(
                                                   _otherCategories.js
                                                   shared/_textarea_counter.js
                                                   _header_utilities.js
+                                                  _terms_and_conditions.js
                                               )
 
 # Precompile additional assets.
