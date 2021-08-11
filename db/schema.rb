@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_13_143835) do
+ActiveRecord::Schema.define(version: 2021_08_11_151550) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -214,6 +214,10 @@ ActiveRecord::Schema.define(version: 2021_07_13_143835) do
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "clinical_id", id: false, force: :cascade do |t|
+    t.bigint "id"
   end
 
   create_table "clinical_location_practices", force: :cascade do |t|
@@ -968,6 +972,7 @@ ActiveRecord::Schema.define(version: 2021_07_13_143835) do
     t.string "highlight_body"
     t.boolean "retired", default: false, null: false
     t.string "retired_reason"
+    t.boolean "is_public", default: false
     t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
   end
@@ -1082,6 +1087,7 @@ ActiveRecord::Schema.define(version: 2021_07_13_143835) do
     t.boolean "team_member", default: false
     t.datetime "time_favorited"
     t.datetime "time_committed"
+    t.boolean "other", default: false
     t.index ["practice_id"], name: "index_user_practices_on_practice_id"
     t.index ["user_id"], name: "index_user_practices_on_user_id"
   end
