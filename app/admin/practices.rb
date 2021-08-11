@@ -290,7 +290,7 @@ ActiveAdmin.register Practice do
     end
 
     def set_practice_adoption_values
-      @facility_data = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
+      @facility_data = VaFacility.cached_va_facilities
       @practice_name = resource.name
       @complete_map = {}
       @adoption_counts = {}

@@ -1,10 +1,10 @@
 <%
   successful_adoptions = @practice.diffusion_histories.get_by_successful_status
-  sorted_successful = successful_adoptions.sort_by { |a| fac = a.get_facility; [fac.street_address_state, fac.official_station_name] } if successful_adoptions.any?
+  sorted_successful = successful_adoptions.sort_by { |a| fac = a.va_facility; [fac.street_address_state, fac.official_station_name] } if successful_adoptions.any?
   in_progress_adoptions = @practice.diffusion_histories.get_by_in_progress_status
-  sorted_in_progress = in_progress_adoptions.sort_by { |a| fac = a.get_facility; [fac.street_address_state, fac.official_station_name] } if in_progress_adoptions.any?
+  sorted_in_progress = in_progress_adoptions.sort_by { |a| fac = a.va_facility; [fac.street_address_state, fac.official_station_name] } if in_progress_adoptions.any?
   unsuccessful_adoptions = @practice.diffusion_histories.get_by_unsuccessful_status
-  sorted_unsuccessful = unsuccessful_adoptions.sort_by { |a| fac = a.get_facility; [fac.street_address_state, fac.official_station_name] } if unsuccessful_adoptions.any?
+  sorted_unsuccessful = unsuccessful_adoptions.sort_by { |a| fac = a.va_facility; [fac.street_address_state, fac.official_station_name] } if unsuccessful_adoptions.any?
 
   adoption_groups = {
     DiffusionHistoryStatus::STATUSES[0] => sorted_successful,
@@ -48,10 +48,10 @@
         <% histories.each do |h| %>
           <%
             dhs = h.diffusion_history_statuses.first
-            fac = h.get_facility
+            fac = h.va_facility
             display_info = (dhs.get_status_display_name === DiffusionHistoryStatus::STATUSES[2] && dhs.unsuccessful_reasons.present?) || dhs.start_time.present?
           %>
-          <%= link_to "#{fac[:street_address_state]}: #{fac[:official_station_name]} (#{fac[:common_name]})", va_facility_path(fac), class: "dm-internal-link display-block #{'margin-bottom-2' unless display_info }" %>
+          <%= link_to "#{fac.street_address_state}: #{fac.official_station_name} (#{fac.common_name})", va_facility_path(fac), class: "dm-internal-link display-block #{'margin-bottom-2' unless display_info }" %>
           <% if display_info %>
             <ul class="dm-adoption-info">
               <% if dhs.start_time.present? %>

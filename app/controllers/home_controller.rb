@@ -1,35 +1,34 @@
 class HomeController < ApplicationController
+  before_action :fetch_va_facilities, only: [:index, :diffusion_map]
 
   def index
     @practices = Practice.searchable_practices 'a_to_z'
     @favorite_practices = current_user&.favorite_practices || []
-    @facilities_data = facilities_json
     @highlighted_pr = Practice.where(highlight: true, published: true, enabled: true, approved: true).first
   end
 
   def diffusion_map
     @diffusion_history_practices = Practice.select(:id, :name).get_with_diffusion_histories
-    @vamc_facilities = VaFacility.cached_va_facilities.select(:street_address_state, :official_station_name, :id, :common_name, :station_number, :latitude, :longitude, :slug, :fy17_parent_station_complexity_level, :visn_id, :rurality).order(:street_address_state, :official_station_name)
     @visns = Visn.cached_visns.select(:id, :number)
     @diffusion_histories = DiffusionHistory.get_with_practices.order(Arel.sql("lower(practices.name)"))
     @successful_ct = @diffusion_histories.get_by_successful_status.size
     @in_progress_ct = @diffusion_histories.get_by_in_progress_status.size
     @unsuccessful_ct = @diffusion_histories.get_by_unsuccessful_status.size
 
-    @dh_markers = Gmaps4rails.build_markers(@diffusion_histories.group_by(&:facility_id)) do |dhg, marker|
-      station_number = dhg[0]
+    @dh_markers = Gmaps4rails.build_markers(@diffusion_histories.group_by(&:va_facility_id)) do |dhg, marker|
+      station_number = @va_facilities.find(dhg[0]).station_number
       diffusion_histories = dhg[1]
-      facility = @vamc_facilities.find {|f| f.station_number === station_number}
+      facility = @va_facilities.find { |f| f.station_number === station_number }
       marker.lat facility.latitude
       marker.lng facility.longitude
 
       marker.picture({
-                         url: view_context.image_path('map-marker-default.svg'),
-                         width: 31,
-                         height: 44,
-                         scaledWidth: 31,
-                         scaledHeight: 44
-                     })
+        url: view_context.image_path('map-marker-default.svg'),
+        width: 31,
+        height: 44,
+        scaledWidth: 31,
+        scaledHeight: 44
+      })
 
       marker.shadow nil
       completed = 0
@@ -70,5 +69,11 @@ class HomeController < ApplicationController
   end
 
   def pii_phi_information
+  end
+
+  private
+
+  def fetch_va_facilities
+    @va_facilities = VaFacility.cached_va_facilities.get_relevant_attributes
   end
 end

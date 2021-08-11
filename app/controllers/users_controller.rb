@@ -16,7 +16,6 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @favorite_practices = @user&.favorite_practices || []
-    @facilities_data = facilities_json #['features']
     @created_practices = @user.created_practices
   end
 
@@ -130,15 +129,15 @@ class UsersController < ApplicationController
 
       # Practices based on the user's location
       @practices = Practice.searchable_practices 'a_to_z'
-      @facilities_data = facilities_json
+      @facilities_data = VaFacility.cached_va_facilities.get_relevant_attributes
       @offices_data = origin_data_json
       @user_location_practices = []
 
       @practices.each do |p|
         if p.facility? && p.practice_origin_facilities.any?
           p.practice_origin_facilities.each do |pof|
-            origin_facility = @facilities_data.find { |f| f['StationNumber'] == pof.facility_id } || nil
-            @user_location_practices << p if origin_facility.present? && origin_facility['OfficialStationName'] == @user.location
+            origin_facility = @facilities_data.find { |f| f.id === pof.va_facility_id } || nil
+            @user_location_practices << p if origin_facility.present? && origin_facility.official_station_name === @user.location
           end
         end
         # TODO: In the future, if user-locations are recorded as VISNs or Offices, we need to add them here. As of 11/7/2020, we are only using facilities.

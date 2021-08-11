@@ -165,7 +165,7 @@ class User < ApplicationRecord
         user.phone_number = entry[:telephoneNumber][0]
 
         # attempt to resolve where the User is VA facility wise
-        facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
+        facilities = VaFacility.cached_va_facilities.select(:street_address, :street_address_zip_code, :station_number, :official_station_name)
         address = entry[:streetAddress][0]
         postal_code = entry[:postalCode][0]
         # Underscore for _location variable to not get confused with the User attribute location
@@ -173,17 +173,17 @@ class User < ApplicationRecord
         facility = nil
         if address.present?
           # Find the facility by the street address
-          facility = facilities.find { |f| f['StreetAddress'] == address }
+          facility = facilities.find { |f| f.street_address == address }
           # If the address doesn't match, find it by the postal code
-          facility = facilities.find { |f| f['StreetAddressZipCode'] == postal_code } if facility.blank?
+          facility = facilities.find { |f| f.street_address_zip_code == postal_code } if facility.blank?
         else
           # If the address is not prsent, find the facility by the postal code
-          facility = facilities.find { |f| f['StreetAddressZipCode'] == postal_code }
+          facility = facilities.find { |f| f.street_address_zip_code == postal_code }
         end
 
         # If we found the facility, use it as the location, otherwise, use the physicalDeliveryOffice attribute from AD
-        user.facility = facility['StationNumber'] if facility.present?
-        user.location = facility.present? ? facility['OfficialStationName'] : _location
+        user.facility = facility.station_number if facility.present?
+        user.location = facility.present? ? facility.official_station_name : _location
         user.save
       end
     end

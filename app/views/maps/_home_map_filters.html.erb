@@ -67,7 +67,7 @@
       <label for="facility_name" class="usa-label line-height-26 text-bold">Facility name</label>
       <div class="usa-combo-box margin-top-1 margin-bottom-2" data-set-facility="false">
         <select id="facility_name" class="usa-select" name="facility_name">
-          <% @vamc_facilities.each do |f| %>
+          <% @va_facilities.each do |f| %>
             <option value=<%= f.station_number %>>
               <%= f.street_address_state %>: <%= f.official_station_name + ' (' + f.common_name + ')' %>
             </option>
@@ -82,7 +82,7 @@
         <div id="facilityListContainer" class="map-filters-list display-none">
           <fieldset>
             <legend class="usa-sr-only">Facilities</legend>
-            <% @vamc_facilities.each do |f| %>
+            <% @va_facilities.each do |f| %>
               <%
                 station_number = f.station_number
                 station_name = f.official_station_name

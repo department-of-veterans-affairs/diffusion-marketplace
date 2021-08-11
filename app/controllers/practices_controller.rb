@@ -17,6 +17,8 @@ class PracticesController < ApplicationController
   before_action :is_enabled, only: [:show]
   before_action :set_current_session, only: [:extend_editor_session_time, :session_time_remaining, :close_edit_session]
   before_action :practice_locked_for_editing, only: [:editors, :introduction, :overview, :contact, :adoptions, :about, :implementation]
+  before_action :fetch_visns, only: [:show, :search, :introduction]
+  before_action :fetch_va_facilities, only: [:show, :search, :metrics, :adoptions, :create_or_update_diffusion_history, :introduction]
 
   # GET /practices
   # GET /practices.json
@@ -30,10 +32,9 @@ class PracticesController < ApplicationController
     # This allows comments thread to show up without the need to click a link
     commontator_thread_show(@practice)
 
-    @facilities = VaFacility.cached_va_facilities.select(:street_address_state, :official_station_name, :id, :visn_id, :common_name, :station_number, :latitude, :longitude, :slug).includes(:visn).order(:street_address_state, :official_station_name)
     @pr_diffusion_histories = @practice.diffusion_histories
     @diffusion_history_markers = Gmaps4rails.build_markers(@pr_diffusion_histories) do |dhg, marker|
-      facility = @facilities.find { |f| f.station_number === dhg.facility_id }
+      facility = @va_facilities.find { |f| f.station_number === dhg.va_facility.station_number }
       marker.lat facility.latitude
       marker.lng facility.longitude
 
@@ -149,14 +150,12 @@ class PracticesController < ApplicationController
 
   def search
     @practices = Practice.searchable_practices nil
-    @facilities_data = facilities_json
-    @visn_data = origin_data_json["visns"]
     # due to some practices/search.js.erb functions being reused for other pages (VISNs/VA Facilities), set the @practices_json variable to nil unless it's being used for the practices/search page
     @practices_json = practices_json(@practices)
     @diffusion_histories = []
     @practices.each do |p|
       p.diffusion_histories.each do |dh|
-        @diffusion_histories << {practice_id: dh.practice_id, facility_id: dh.facility_id}
+        @diffusion_histories << {practice_id: dh.practice_id, facility_number: dh.va_facility.station_number}
       end
     end
     @parent_categories = Category.get_parent_categories
@@ -271,7 +270,7 @@ class PracticesController < ApplicationController
 
   def metrics
     @duration = params[:duration] || "30"
-    @page_views_leader_board_30_days = fetch_page_views_leader_board()
+    @page_views_leader_board_30_days = fetch_page_views_leader_board
     @page_views_leader_board_all_time = fetch_page_views_leader_board(0)
     @page_views_for_practice_count = fetch_page_view_for_practice_count(@practice.id, @duration)
     @unique_visitors_for_practice_count = fetch_unique_visitors_by_practice_count(@practice.id, @duration)
@@ -288,25 +287,23 @@ class PracticesController < ApplicationController
     @adoptions_unsuccessful_total_30 = fetch_adoptions_total_by_practice(@practice.id, "30", "Unsuccessful")
     @adoptions_unsuccessful_total_at = fetch_adoptions_total_by_practice(@practice.id, "0", "Unsuccessful")
 
-    @facility_data = fetch_vamc_facilities
+    @facility_ids_for_practice_30 = fetch_adoption_facilities_for_practice(@practice.id, "30", @va_facilities)
+    @rural_facility_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "rurality", "R")
+    @urban_facility_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "rurality", "U")
+    @a_high_complexity_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "fy17_parent_station_complexity_level", "1a-High Complexity")
+    @b_high_complexity_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "fy17_parent_station_complexity_level", "1b-High Complexity")
+    @c_high_complexity_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "fy17_parent_station_complexity_level", "1c-High Complexity")
+    @medium_complexity_2_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "fy17_parent_station_complexity_level", "2 -Medium Complexity")
+    @low_complexity_3_30 = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_30, "fy17_parent_station_complexity_level", "3 -Low Complexity")
 
-    @facility_ids_for_practice_30 = fetch_facility_ids_for_practice(@practice.id, "30")
-    @rural_facility_30 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_30, "Rurality", "R")
-    @urban_facility_30 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_30, "Rurality", "U")
-    @a_high_complexity_30 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_30, "FY17ParentStationComplexityLevel", "1a-High Complexity")
-    @b_high_complexity_30 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_30, "FY17ParentStationComplexityLevel", "1b-High Complexity")
-    @c_high_complexity_30 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_30, "FY17ParentStationComplexityLevel", "1c-High Complexity")
-    @medium_complexity_2_30 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_30, "FY17ParentStationComplexityLevel", "2 -Medium Complexity")
-    @low_complexity_3_30 = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_30, "FY17ParentStationComplexityLevel", "3 -Low Complexity")
-
-    @facility_ids_for_practice_at = fetch_facility_ids_for_practice(@practice.id, "0")
-    @rural_facility_at = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_at, "Rurality", "R")
-    @urban_facility_at = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_at, "Rurality", "U")
-    @a_high_complexity_at = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_at, "FY17ParentStationComplexityLevel", "1a-High Complexity")
-    @b_high_complexity_at = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_at, "FY17ParentStationComplexityLevel", "1b-High Complexity")
-    @c_high_complexity_at = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_at, "FY17ParentStationComplexityLevel", "1c-High Complexity")
-    @medium_complexity_2_at = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_at, "FY17ParentStationComplexityLevel", "2 -Medium Complexity")
-    @low_complexity_3_at = get_facility_details_for_practice(@facility_data, @facility_ids_for_practice_at, "FY17ParentStationComplexityLevel", "3 -Low Complexity")
+    @facility_ids_for_practice_at = fetch_adoption_facilities_for_practice(@practice.id, "0", @va_facilities)
+    @rural_facility_at = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_at, "rurality", "R")
+    @urban_facility_at = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_at, "rurality", "U")
+    @a_high_complexity_at = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_at, "fy17_parent_station_complexity_level", "1a-High Complexity")
+    @b_high_complexity_at = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_at, "fy17_parent_station_complexity_level", "1b-High Complexity")
+    @c_high_complexity_at = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_at, "fy17_parent_station_complexity_level", "1c-High Complexity")
+    @medium_complexity_2_at = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_at, "fy17_parent_station_complexity_level", "2 -Medium Complexity")
+    @low_complexity_3_at = get_adoption_facility_details_for_practice(@va_facilities, @facility_ids_for_practice_at, "fy17_parent_station_complexity_level", "3 -Low Complexity")
 
     # Charts.....
     @unique_visitors_for_practice = fetch_unique_visitors_by_practice(@practice.id, @duration)
@@ -407,7 +404,6 @@ class PracticesController < ApplicationController
 
   # /practices/slug/adoptions
   def adoptions
-    @facilities = VaFacility.cached_va_facilities.select(:street_address_state, :official_station_name, :id, :common_name, :station_number).order(:street_address_state, :official_station_name)
     render 'practices/form/adoptions'
   end
 
@@ -432,12 +428,10 @@ class PracticesController < ApplicationController
 
   def create_or_update_diffusion_history
     # set attributes for later use
-    facility_id = params[:facility_id]
+    facility_id = params[:va_facility_id].to_i
     status = params[:status]
     unsuccessful_reasons = params[:unsuccessful_reasons] || []
     unsuccessful_reasons_other = params[:unsuccessful_reasons_other] || nil
-
-    @facilities = VaFacility.cached_va_facilities.select(:street_address_state, :official_station_name, :id, :common_name, :station_number).order(:street_address_state, :official_station_name)
 
     if params[:date_started].present? && !(params[:date_started].values.include?(''))
       start_time = DateTime.new(params[:date_started][:year].to_i, params[:date_started][:month].to_i)
@@ -451,20 +445,20 @@ class PracticesController < ApplicationController
     if @dh.present?
       # is the user changing to a facility that they already have listed?
       # if so, tell them no
-      existing_dh = DiffusionHistory.find_by(practice: @practice, facility_id: facility_id)
+      existing_dh = DiffusionHistory.find_by(practice: @practice, va_facility_id: facility_id)
       if existing_dh && existing_dh.id != @dh.id
-        params[:existing_dh] = @facilities.find_by(station_number: facility_id)
+        params[:existing_dh] = @va_facilities.find(facility_id)
       end
     else
       # or else, we're creating something
       # figure out if the user already has this diffusion history
-      @dh = DiffusionHistory.find_by(practice: @practice, facility_id: facility_id)
+      @dh = DiffusionHistory.find_by(practice: @practice, va_facility_id: facility_id)
       # if so, tell them!
       if @dh
-        params[:exists] = @facilities.find_by(station_number: facility_id)
+        params[:exists] = @va_facilities.find(facility_id)
       else
         # if not, create a new one
-        @dh = DiffusionHistory.create(practice: @practice, facility_id: facility_id)
+        @dh = DiffusionHistory.create(practice: @practice, va_facility_id: facility_id)
       end
     end
 
@@ -600,7 +594,7 @@ class PracticesController < ApplicationController
                                      practice_testimonials_attributes: [:id, :_destroy, :testimonial, :author, :position],
                                      practice_awards_attributes: [:id, :_destroy, :name],
                                      categories_attributes: [:id, :_destroy, :name, :parent_category_id, :is_other],
-                                     practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :facility_type, :initiating_department_office_id],
+                                     practice_origin_facilities_attributes: [:id, :_destroy, :facility_id, :facility_type, :initiating_department_office_id, :va_facility_id],
                                      practice_metrics_attributes: [:id, :_destroy, :description],
                                      practice_emails_attributes: [:id, :address, :_destroy],
                                      duration: {},
@@ -641,8 +635,17 @@ class PracticesController < ApplicationController
     end
   end
 
+  def fetch_va_facilities
+    @va_facilities = VaFacility.cached_va_facilities.get_relevant_attributes
+  end
+
   def set_facility_data
-    @facility_data = facilities_json.find { |f| f['StationNumber'] == @practice.initiating_facility } if @practice.facility?
+    if @practice.facility?
+      @facility_data = []
+      @practice.practice_origin_facilities.each do |pof|
+        @facility_data << pof.va_facility
+      end
+    end
   end
 
   def set_office_data
@@ -650,16 +653,16 @@ class PracticesController < ApplicationController
     @office_data = origin_data_json['departments'][practice_department_id - 1]['offices'].find { |o| o['id'] == @practice.initiating_facility.to_i } if @practice.department?
   end
 
+  def fetch_visns
+    @visns = Visn.cached_visns
+  end
+
   def set_visn_data
-    @visn_data = origin_data_json['visns'].find { |v| v['id'] == @practice.initiating_facility.to_i } if @practice.visn?
+    @visn_data = Visn.cached_visns.get_by_initiating_facility(@practice.initiating_facility.to_i) if @practice.visn?
   end
 
   def set_initiating_facility_other
     @initiating_facility_other = @practice.initiating_facility if @practice.other?
-  end
-
-  def set_office_data
-    @office_data = facilities_json.find{|f|f['']}
   end
 
   def create_date_initiated(date_initiated)
@@ -710,7 +713,7 @@ def set_initiating_fac_params(params)
 
   if facility_type == "facility"
     params[:practice][:practice_origin_facilities_attributes].values.each do |value|
-      if value[:facility_id].nil?
+      if value[:va_facility_id].nil?
         params[:practice][:practice_origin_facilities_attributes] = nil
       end
     end
