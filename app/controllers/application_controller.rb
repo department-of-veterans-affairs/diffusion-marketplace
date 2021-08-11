@@ -26,10 +26,6 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def facilities_json
-    JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
-  end
-
   def origin_data_json
     JSON.parse(File.read("#{Rails.root}/lib/assets/practice_origin_lookup.json"))
   end

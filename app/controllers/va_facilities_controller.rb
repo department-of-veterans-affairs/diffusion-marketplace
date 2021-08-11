@@ -12,7 +12,7 @@ class VaFacilitiesController < ApplicationController
     if params[:facility].present?
       @facilities = [VaFacility.cached_va_facilities.find(params[:facility])]
     else
-      @facilities = VaFacility.cached_va_facilities.select(:common_name, :fy17_parent_station_complexity_level, :id, :official_station_name, :slug, :station_number, :street_address_state, :visn_id).order(:official_station_name).includes(:visn)
+      @facilities = VaFacility.cached_va_facilities.get_relevant_attributes
 
       if params[:visn].present?
         @facilities = @facilities.where(visns: { number: params[:visn] })
@@ -47,24 +47,23 @@ class VaFacilitiesController < ApplicationController
       marker.shadow nil
       marker.json({ id: facility.id })
     end
-    adopted_practices = Practice.get_facility_adopted_practices(@va_facility.station_number)
+    adopted_practices = Practice.get_facility_adopted_practices(@va_facility.id)
     @adopted_pr_count = adopted_practices.size
     @adopted_practices_categories = get_categories_by_practices(adopted_practices, [])
-    created_practices = Practice.get_facility_created_practices(station_number, nil, 'a_to_z', nil)
+    created_practices = Practice.get_facility_created_practices(@va_facility.id, nil, 'a_to_z', nil)
     @created_pr_count = created_practices.size
     @created_practices_categories = get_categories_by_practices(created_practices, [])
   end
 
   # GET /facilities/:id/created_practices
   def created_practices
-    station_number = @va_facility.station_number
     page = 1
     page = params[:page].to_i if params[:page].present?
     sort_option = params[:sort_option] || 'a_to_z'
     search_term = params[:search_term] ? params[:search_term].downcase : nil
     categories = params[:categories] || nil
 
-    created_practices = Practice.get_facility_created_practices(station_number, search_term, sort_option, categories)
+    created_practices = Practice.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories)
     @pagy_created_practices = pagy_array(
       created_practices,
       items: 3,
@@ -87,7 +86,7 @@ class VaFacilitiesController < ApplicationController
   def update_practices_adopted_at_facility
     selected_cat = params["selected_category"].present? ?  params["selected_category"] : nil
     key_word = params["key_word"].present? ? params["key_word"] : nil
-    @adoptions_at_facility = Practice.get_facility_adopted_practices(@va_facility.station_number, key_word, selected_cat)
+    @adoptions_at_facility = Practice.get_facility_adopted_practices(@va_facility.id, key_word, selected_cat)
     adopted_facility_results_html = ''
     @adoptions_at_facility.each do |pr|
       pr_html = render_to_string('va_facilities/_adopted_facility_table_row', layout: false, locals: { ad: pr })

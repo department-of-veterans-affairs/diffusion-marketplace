@@ -29,6 +29,8 @@ describe 'Explore all practices page', type: :feature do
     end
 
     visn_1 = Visn.create!(name: 'VISN 1', number: 2)
+    visn_20 = Visn.create!(id: 15, name: "Northwest Network", number: 20)
+
     @fac_1 = VaFacility.create!(
       visn: visn_1,
       station_number: "402GA",
@@ -43,14 +45,21 @@ describe 'Explore all practices page', type: :feature do
       common_name: "White Plains",
       street_address_state: "NY"
     )
+    @fac_3 = VaFacility.create!(
+      visn: visn_20,
+      station_number: "687HA",
+      official_station_name: "Yakima VA Clinic",
+      common_name: "Yakima",
+      street_address_state: "WA"
+    )
 
-    dh_1 = DiffusionHistory.create!(practice: @practices[0], facility_id: @fac_1.station_number)
+    dh_1 = DiffusionHistory.create!(practice: @practices[0], va_facility: @fac_1)
     DiffusionHistoryStatus.create!(diffusion_history: dh_1, status: 'Completed')
-    dh_2 = DiffusionHistory.create!(practice: @practices[0], facility_id: @fac_2.station_number)
+    dh_2 = DiffusionHistory.create!(practice: @practices[0], va_facility: @fac_2)
     DiffusionHistoryStatus.create!(diffusion_history: dh_2, status: 'Completed')
-    dh_3 = DiffusionHistory.create!(practice: @practices[3], facility_id: @fac_1.station_number)
+    dh_3 = DiffusionHistory.create!(practice: @practices[3], va_facility: @fac_1)
     DiffusionHistoryStatus.create!(diffusion_history: dh_3, status: 'Completed')
-    dh_4 = DiffusionHistory.create!(practice: @practices[4], facility_id: @fac_1.station_number)
+    dh_4 = DiffusionHistory.create!(practice: @practices[4], va_facility: @fac_1)
     DiffusionHistoryStatus.create!(diffusion_history: dh_4, status: 'Completed')
   end
 
@@ -184,7 +193,7 @@ describe 'Explore all practices page', type: :feature do
 
       pr = @practices[7]
       pr.update(summary: 'test summary', date_initiated: Time.now())
-      PracticeOriginFacility.create!(practice: pr, facility_type: 0, facility_id: '687HA')
+      PracticeOriginFacility.create!(practice: pr, facility_type: 0, va_facility: @fac_3)
 
       Rails.cache.clear
       expect(cache_keys).not_to include("searchable_practices_a_to_z")

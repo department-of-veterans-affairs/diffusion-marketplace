@@ -203,8 +203,8 @@ class Practice < ApplicationRecord
   scope :filter_by_category_ids, -> (cat_ids) { where('category_practices.category_id IN (?)', cat_ids)} # cat_ids should be a id number or an array of id numbers
   scope :published_enabled_approved,   -> { where(published: true, enabled: true, approved: true) }
   scope :sort_by_retired, -> { order("retired asc") }
-  scope :get_by_adopted_facility, -> (station_number) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {facility_id: station_number}).uniq }
-  scope :get_by_created_facility, -> (station_number) { where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { facility_id: station_number }) }
+  scope :get_by_adopted_facility, -> (facility_id) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {va_facility_id: facility_id}).uniq }
+  scope :get_by_created_facility, -> (facility_id) { where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { va_facility_id: facility_id }) }
   scope :load_associations, -> { includes(:categories, :diffusion_histories, :practice_origin_facilities) }
   scope :get_with_diffusion_histories, -> { published_enabled_approved.sort_a_to_z.joins(:diffusion_histories).uniq }
 
@@ -279,7 +279,7 @@ class Practice < ApplicationRecord
 
   #accepts_nested_attributes_for :practices_origin_facilities?
   accepts_nested_attributes_for :practice_origin_facilities, allow_destroy: true, reject_if: proc { |attributes|
-    attributes['facility_id'].blank?
+    attributes['va_facility_id'].blank?
   }
   accepts_nested_attributes_for :practice_metrics, allow_destroy: true, reject_if: proc { |attributes| attributes['description'].blank? }
   accepts_nested_attributes_for :practice_awards, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
@@ -382,15 +382,15 @@ class Practice < ApplicationRecord
     query.group("practices.id, categories.id, practice_origin_facilities.id").uniq
   end
 
-  def self.get_facility_created_practices(station_number, search_term = nil, sort = 'a_to_z', categories = nil)
+  def self.get_facility_created_practices(facility_id, search_term = nil, sort = 'a_to_z', categories = nil)
     practices = search_practices(search_term, sort, categories)
 
-    practices.select { |pr| pr.practice_origin_facilities.pluck(:facility_id).include?(station_number)}
+    practices.select { |pr| pr.practice_origin_facilities.pluck(:va_facility_id).include?(facility_id)}
   end
 
-  def self.get_facility_adopted_practices(station_number, search_term = nil, categories = nil)
+  def self.get_facility_adopted_practices(facility_id, search_term = nil, categories = nil)
     practices = search_practices(search_term, 'a_to_z', categories)
-    practices.select { |pr| pr.diffusion_histories.pluck(:facility_id).include?(station_number)}
+    practices.select { |pr| pr.diffusion_histories.pluck(:va_facility_id).include?(facility_id)}
   end
 
   def self.get_query_for_search_term(search_term)
@@ -408,18 +408,18 @@ class Practice < ApplicationRecord
       search_params[:maturity_level] = mat_level
     end
 
-    va_fac_matches = VaFacility.where("official_station_name ILIKE :search OR common_name ILIKE :search", search: "%#{sanitized_search_term}%").select("station_number")
+    va_fac_matches = VaFacility.where("official_station_name ILIKE :search OR common_name ILIKE :search", search: "%#{sanitized_search_term}%").select("id")
 
     if va_fac_matches.length > 0
-      facilities = va_fac_matches.map {|st| st.station_number}
-      search_query = search_query + " OR diffusion_histories.facility_id IN (:facilities) OR practice_origin_facilities.facility_id IN (:facilities)"
+      facilities = va_fac_matches.map { |st| st.id }
+      search_query = search_query + " OR diffusion_histories.va_facility_id IN (:facilities) OR practice_origin_facilities.va_facility_id IN (:facilities)"
       search_params[:facilities] = facilities
     end
     return { query: search_query, params: search_params }
   end
 
   def diffusion_history_status_by_facility(facility)
-    diffusion_histories.find_by(facility_id: facility.station_number).diffusion_history_statuses.first
+    diffusion_histories.find_by(va_facility_id: facility.id).diffusion_history_statuses.first
   end
 
   # add other practice attributes that need whitespace trimmed as needed
