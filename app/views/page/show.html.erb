@@ -117,12 +117,12 @@
           <%# Subpage Hyperlink %>
         <% when 'PageSubpageHyperlinkComponent' %>
           <div class="grid-row margin-bottom-5 grid-col-12 desktop:grid-col-8 <%= 'margin-x-auto' if @page.narrow? %>">
-            <a href="<%= component.url %>" class="width-100">
+            <a href="<%= component.url %>" class="width-full">
               <h2 class="font-sans-xl display-inline margin-top-0 text-underline"><%= component.title %></h2>
-              <span class="margin-left-1 fas fa-chevron-right fa-icon-125 text-middle p1-bottom"></span>
+              <span class="margin-left-1 fas fa-chevron-right fa-icon-125 text-middle padding-bottom-2"></span>
             </a>
             <% if component.description.present? %>
-              <div class="font-sans-sm margin-top-2 width-100 line-height-26">
+              <div class="font-sans-sm margin-top-2 width-full line-height-26">
                 <%= component.description %>
               </div>
             <% end %>
@@ -133,7 +133,7 @@
           <div class="grid-row margin-bottom-3  <%= page_narrow_classes %>">
             <%= youtube_embed(component.url) %>
             <% if component.caption.present? %>
-              <div class="font-sans-2xs line-height-135 margin-top-1 width-100 line-height-15px">
+              <div class="font-sans-2xs line-height-135 margin-top-1 width-full line-height-15px">
                 <span class="text-bold">ABOVE:</span> <%= component.caption %>
               </div>
             <% end %>

@@ -105,3 +105,8 @@
     @include u-text('error-darker');
   }
 }
+
+.dm-modal-close-button {
+  @include u-bg($theme-color-dm-white, !important);
+  @include u-text('base-darkest', !important);
+}

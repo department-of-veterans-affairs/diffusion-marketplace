@@ -8,7 +8,7 @@
       <%= adoption_text %> adoption<%= adoptions_by_type.count === 1 ? '' : 's' %>: <%= adoptions_by_type.count %>
     </button>
   </h2>
-  <div id="<%= adoption_text.downcase %>_adoptions" class="usa-accordion__content p0-25-bottom p0-top padding-x-05 bg-base-lightest" hidden="true">
+  <div id="<%= adoption_text.downcase %>_adoptions" class="usa-accordion__content padding-bottom-05 padding-top-0 padding-x-05 bg-base-lightest" hidden="true">
     <% adoptions_by_type.each do |a| %>
       <% dhs = a.diffusion_history_statuses[0] %>
       <div class="usa-accordion margin-top-0 child-adoption-accordion">

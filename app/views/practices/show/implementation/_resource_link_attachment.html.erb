@@ -7,7 +7,7 @@
           <% la.link_url = "http://" + la.link_url %>
         <% end %>
         <% la.name = la.link_url unless la.name.present? %>
-        <div class="margin-top-1 width-100 line-height-26">
+        <div class="margin-top-1 width-full line-height-26">
           <li class="small-disc"><%= la.description %> <a class="usa-link <%= la.link_url.downcase().include?('marketplace.gov') ? '' : 'usa-link--external' %>" href="<%= la.link_url %>" target="_blank"><%= la.name || la.link_url %></a></li>
         </div>
       <% end %>

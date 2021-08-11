@@ -51,14 +51,14 @@ RSpec.describe ApplicationHelper, type: :helper do
 
   describe "#get_grid_alignment_css_class" do
     context "when given a 'right' alignment" do
-      it "returns 'justify-end'" do
+      it "returns 'flex-justify-end'" do
         mock_alignment = 'RiGht'
-        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('justify-end')
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('flex-justify-end')
       end
 
-      it "returns 'justify-end'" do
+      it "returns 'flex-justify-end'" do
         mock_alignment = 'right'
-        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('justify-end')
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('flex-justify-end')
       end
     end
 
@@ -89,14 +89,14 @@ RSpec.describe ApplicationHelper, type: :helper do
 
   describe "#get_link_target_attribute" do
     context "when given a" do
-      it "returns 'justify-end'" do
+      it "returns 'flex-justify-end'" do
         mock_alignment = 'RiGht'
-        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('justify-end')
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('flex-justify-end')
       end
 
-      it "returns 'justify-end'" do
+      it "returns 'flex-justify-end'" do
         mock_alignment = 'right'
-        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('justify-end')
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('flex-justify-end')
       end
     end
 

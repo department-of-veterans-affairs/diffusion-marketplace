@@ -26,7 +26,7 @@
               <%= f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: 'usa-input', required: true %>
             </div>
 
-            <div class="actions display-flex justify-center margin-top-2">
+            <div class="actions display-flex flex-justify-center margin-top-2">
               <%= f.submit "Resend confirmation instructions", class: 'usa-button' %>
             </div>
           <% end %>
