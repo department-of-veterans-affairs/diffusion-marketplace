@@ -7,7 +7,7 @@
           s_name = fa.name.blank? ? fa.attachment_file_name : fa.name
           s_description = fa.description.blank? ? fa.attachment_file_name : fa.description
         %>
-        <div class="margin-top-1 width-100 line-height-26">
+        <div class="margin-top-1 width-full line-height-26">
           <li class="small-disc"><%= s_description %> <%= link_to(s_name || fa.attachment&.original_filename, fa.attachment_s3_presigned_url, target: '_blank', class: 'usa-link usa-link--external') %>
         </div>
       <% end %>

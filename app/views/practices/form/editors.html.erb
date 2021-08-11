@@ -15,7 +15,7 @@
 
     <div id="editors" class="desktop:grid-col-9 grid-col-12 padding-0">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
-      <section class="usa-section padding-top-0 p0-bottom editors">
+      <section class="usa-section padding-top-0 padding-bottom-0 editors">
         <h1 class="font-sans-2xl line-height-46px margin-bottom-3">Editors</h1>
         <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
         <% practice_editors = PracticeEditor.where(practice: @practice).order(created_at: :asc) %>
@@ -39,7 +39,7 @@
                 <%= render partial: 'practices/practice_editor_status', locals: { status_text: 'Added to the team on', status: pe.created_at } %>
               <% end %>
             </div>
-            <div class="grid-col-1 display-flex justify-center">
+            <div class="grid-col-1 display-flex flex-justify-center">
               <%= link_to '', practice_path(@practice,
                     practice: { practice_editors_attributes: { id: pe.id, _destroy: true } }),
                     data: { confirm: "Are you sure you want to remove #{user.email} from the editors list?" },

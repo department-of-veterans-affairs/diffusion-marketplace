@@ -123,258 +123,62 @@ to confirm the class DOES NOT EXIST before adding a new class
 }
 
 /* Padding Left */
-.p0-left {
-  padding-left: 0 !important;
+.padding-left-0 {
+  @include u-padding-left(0, !important);
 }
 
-.p1-left {
-  padding-left: 1rem !important;
-}
-
-.p1-5-left {
-  padding-left: 1.5rem !important;
-}
-
-.p2-left {
-  padding-left: 2rem !important;
-}
-
-.p3-left {
-  padding-left: 3rem !important;
-}
-
-.p4-left {
-  padding-left: 4rem !important;
-}
-
-.p5-left {
-  padding-left: 5rem !important;
-}
-
-.p6-left {
-  padding-left: 6rem !important;
-}
-
-.p7-left {
-  padding-left: 7rem !important;
+.padding-left-2 {
+  @include u-padding-left(2, !important);
 }
 
 /* Padding Right */
-
-.p0-right {
-  padding-right: 0 !important;
-}
-
-.p1-right {
-  padding-right: 1rem !important;
-}
-
-.p1-5-right {
-  padding-right: 1.5rem !important
-}
-
-.p2-right {
-  padding-right: 2rem !important;
-}
-
-.p3-right {
-  padding-right: 3rem !important;
-}
-
-.p4-right {
-  padding-right: 4rem !important;
-}
-
-.p5-right {
-  padding-right: 5rem !important;
-}
-
-.p6-right {
-  padding-right: 6rem !important;
-}
-
-.p7-right {
-  padding-right: 7rem !important
+.padding-right-0 {
+  @include u-padding-right(0, !important);
 }
 
 /* Padding Bottom */
-
-.p0-bottom {
-  padding-bottom: 0 !important;
+.padding-bottom-0 {
+  @include u-padding-bottom(0, !important);
 }
 
-.p0-25-bottom {
-  padding-bottom: 0.25rem !important;
+.padding-bottom-05 {
+  @include u-padding-bottom('05', !important);
 }
 
-.p0-75-bottom {
-  padding-bottom: 0.75rem !important;
+.padding-bottom-2 {
+  @include u-padding-bottom(2, !important);
 }
 
-.p1-bottom {
-  padding-bottom: 1rem !important;
-}
-
-.p1-5-bottom {
-  padding-bottom: 1.5rem !important
-}
-
-.p2-bottom {
-  padding-bottom: 2rem !important;
-}
-
-.p3-bottom {
-  padding-bottom: 3rem !important;
-}
-
-.p4-bottom {
-  padding-bottom: 4rem !important;
-}
-
-.p5-bottom {
-  padding-bottom: 5rem !important;
-}
-
-.p6-bottom {
-  padding-bottom: 6rem !important;
-}
-
-.p7-bottom {
-  padding-bottom: 7rem !important
+.padding-bottom-4 {
+  @include u-padding-bottom(4, !important);
 }
 
 /* Padding Top */
-
-.p0-top {
-  padding-top: 0 !important;
-}
-
-.p0-25-top {
-  padding-top: 0.25rem !important;
-}
-
-.p0-75-top {
-  padding-top: 0.75rem !important;
-}
-
-.p1-top {
-  padding-top: 1rem !important;
-}
-
-.p1-5-top {
-  padding-top: 1.5rem !important
+.padding-top-0 {
+  @include u-padding-top(0, !important);
 }
 
 .p1-75-top {
   padding-top: 1.75rem !important
 }
 
-.p2-top {
-  padding-top: 2rem !important;
-}
-
-.p3-top {
-  padding-top: 3rem !important;
-}
-
-.p4-top {
-  padding-top: 4rem !important;
-}
-
-.p5-top {
-  padding-top: 5rem !important;
-}
-
-.p6-top {
-  padding-top: 6rem !important;
-}
-
-.p7-top {
-  padding-top: 7rem !important
-}
-
-/* Responsive Utils */
-
-.responsive-100-percent-width {
-  &.px900 {
-    @media screen and (min-width: 900px) {
-      width: 100% !important;
-    }
-  }
-
-  &.max-width {
-    max-width: 100% !important;
-  }
+.padding-top-4 {
+  @include u-padding-top(4, !important);
 }
 
 /* z-index */
-.z-index-negative {
-  z-index: -1;
-}
-
-.z-index-0 {
-  z-index: 0 !important;
-}
 
 .z-index-10 {
   z-index: 10;
 }
 
-.z-index-100 {
-  z-index: 100;
-}
-
-.z-index-1000 {
-  z-index: 1000;
-}
-
-/* FLEXBOX */
-// CAUTION: Element must have display: flex;
-
-// easy way to put things on the end of a row
-.flex-direction-row-reverse {
-  flex-direction: row-reverse !important;
-}
-
-.space-around {
-  justify-content: space-around;
-}
-
-.space-between {
-  justify-content: space-between;
-}
-
-.space-evenly {
-  justify-content: space-evenly;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.justify-end {
-  justify-content: flex-end;
-}
-
-/* unordered lists <ul><li></li></ul> */
-
-ul.no-list-style {
-  li {
-    list-style-type: none;
-  }
-}
-
 /* Height and width setters */
-.height-100 {
-  height: 100%;
-}
-
 .height-200px {
   height: 200px !important;
 }
 
-.width-100 {
-  width: 100% !important;
+.width-full {
+  @include u-width('full', !important);
 }
 
 /* box-shadows */
@@ -382,34 +186,13 @@ ul.no-list-style {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
 }
 
-.box-shadow-bottom {
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-.box-shadow-all {
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-}
-
-.hide {
-  display: none;
-}
-
 /* Breaking/Truncating lines */
-
 .dm-hyphens-auto {
   hyphens: auto;
 }
 
 .dm-word-break-break-word {
   word-break: break-word;
-}
-
-.margin-top-auto {
-  margin-top: auto;
-}
-
-.margin-bottom-auto {
-  margin-bottom: auto;
 }
 
 /* Truncate text a given line amount */
@@ -423,31 +206,15 @@ ul.no-list-style {
   text-overflow: ellipsis;
   padding: 0 !important;
 }
+
 .one-line {
   -webkit-line-clamp: 1;
   height: calc(1em * 1.2 * 1);
 }
-.two-lines {
-  -webkit-line-clamp: 2;
-  height: calc(1em * 1.2 * 2);
-}
-.three-lines {
-  -webkit-line-clamp : 3;
-  height: calc(1em * 1.2 * 3);
-}
-.four-lines {
-  -webkit-line-clamp: 4;
-  height: calc(1em * 1.2 * 4);
-}
-.five-lines {
-  -webkit-line-clamp: 5;
-  height: calc(1em * 1.2 * 5);
-}
 
 #breadcrumbs {
-
   a {
-    color: color($theme-color-primary) !important;
+    color: color($theme-color-primary-vivid) !important;
 
     &:hover {
       color: color($theme-color-primary-dark) !important;
@@ -455,7 +222,7 @@ ul.no-list-style {
     }
 
     &:visited {
-      color: color($theme-color-primary);
+      color: color($theme-color-primary) !important;
     }
 
     &:active {
@@ -464,36 +231,12 @@ ul.no-list-style {
   }
 }
 
-.margin-right-305 {
-  margin-right: 26px;
-}
-
-.width-1505 {
-  height: 126px;
-}
-
 .margin-bottom-405 {
   margin-bottom: 36px;
 }
 
-.margin-bottom-28px {
-  margin-bottom: 28px;
-}
-
-.margin-top-44px {
+.margin-top-505 {
   margin-top: 44px;
-}
-
-.font-size-17px {
-  font-size: 17px !important;
-}
-
-.margin-right-305 {
-  margin-right: 28px;
-}
-
-.margin-bottom-30px {
-  margin-bottom: 30px;
 }
 
 .message-icon-bg-position {
@@ -503,10 +246,6 @@ ul.no-list-style {
 /* Font Awesome icon */
 .fa-icon-125 {
   font-size: 1.25rem;
-}
-
-.underline {
-  text-decoration: underline;
 }
 
 .line-height-15px {
@@ -565,6 +304,6 @@ ul.no-list-style {
   width: 80% !important;
 }
 
-.max-width-unset {
-  max-width: unset !important;
+.maxw-none {
+  @include u-maxw('none', !important);
 }
