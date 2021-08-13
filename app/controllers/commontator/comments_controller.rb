@@ -57,8 +57,8 @@ class Commontator::CommentsController < Commontator::ApplicationController
           @practice = Practice.find_by_id(@comment.thread.commontable_id)
           params[:refresh_page] = user_practice.verified_implementer != (params[:user_practice_status] == 'verified_implementer')
           user_practice.update_attributes(verified_implementer: true, team_member: false, other: false) if params[:user_practice_status] == 'verified_implementer'
-          user_practice.update_attributes(verified_implementer: false, other: false, team_member: true) if params[:user_practice_status] == 'team_member'
-          user_practice.update_attributes(verified_implementer: false, other: true, team_member: false) if params[:user_practice_status] == 'other'
+          user_practice.update_attributes(verified_implementer: false, team_member: true, other: false) if params[:user_practice_status] == 'team_member'
+          user_practice.update_attributes(verified_implementer: false, team_member: false, other: true) if params[:user_practice_status] == 'other'
           @comment.save
           ahoy.track "Practice comment created", { comment_id: @comment.id, creator_id: @comment.creator_id, editor_id: @comment.editor_id, body: @comment.body }
 
