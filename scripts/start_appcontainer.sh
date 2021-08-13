@@ -20,11 +20,16 @@ sudo docker exec -u 0:0 diffusion-marketplace_app_1 chown nginx:nginx -R /home/n
 echo "copy over the newly created assets"
 sudo docker exec diffusion-marketplace_app_1 cp -R /home/nginx/app/public /home/nginx/www
 
+# change the owner of the public directory within the proxy container to the web server user, nginx
+# this is from another volume, which docker makes "root" the owner
+echo "change the owner of the app directory within the container to the web server user, nginx"
+sudo docker exec -u 0:0 diffusion-marketplace_proxy_1 chown nginx:nginx -R /home/nginx/www
+
 # run things as normal to start the app server:
 # run the migrations
 echo "run the migrations"
-sudo docker-compose exec app bundle exec rails db:migrate
+sudo docker exec diffusion-marketplace_app_1 bundle exec rails db:migrate
 
 # run the app server, puma
 echo "run the app server, puma"
-sudo docker-compose exec -d app bundle exec puma -C config/puma.rb
+sudo docker exec -d diffusion-marketplace_app_1 bundle exec puma -C config/puma.rb
