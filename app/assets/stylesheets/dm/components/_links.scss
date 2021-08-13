@@ -30,3 +30,24 @@
     }
   }
 }
+
+.dm-external-link {
+  color: color($theme-color-primary-vivid) !important;
+
+  &:hover {
+    color: color($theme-color-primary-dark) !important;
+  }
+
+  &:visited {
+    color: color($theme-color-primary-vivid) !important;
+
+    &:hover {
+      color: color($theme-color-primary-dark) !important;
+      text-decoration: underline;
+    }
+  }
+
+  &:active {
+    color: color($theme-color-primary-darker) !important;
+  }
+}

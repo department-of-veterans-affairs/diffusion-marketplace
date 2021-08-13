@@ -14,4 +14,32 @@ function browsePageBuilderPageHappy() {
     }
 }
 
-$(document).on('turbolinks:load', browsePageBuilderPageHappy);
+function containerizeSubpageHyperlinkCards() {
+
+    function addContainerAndAppendElements(container, elementOne, elementTwo) {
+        elementOne.before(container);
+        elementOne.prev().append(elementOne, elementTwo);
+    }
+
+    $('.dm-page-content').children().each(function() {
+        var ele = $(this);
+        var prevEle = ele.prev();
+        var nextEle = ele.next();
+        var cardClass = 'usa-card';
+        var containerDiv = "<div class='grid-row grid-gap-6'></div>";
+
+        if (ele.hasClass(cardClass) && prevEle.hasClass(cardClass)) {
+            addContainerAndAppendElements(containerDiv, prevEle, ele);
+        } else if (ele.hasClass(cardClass) && nextEle.hasClass(cardClass)) {
+            addContainerAndAppendElements(containerDiv, ele, nextEle);
+        }
+    });
+
+}
+
+function executePageBuilderFunctions() {
+    browsePageBuilderPageHappy();
+    containerizeSubpageHyperlinkCards();
+}
+
+$(document).on('turbolinks:load', executePageBuilderFunctions);

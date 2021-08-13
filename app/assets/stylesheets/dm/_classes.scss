@@ -300,6 +300,10 @@ to confirm the class DOES NOT EXIST before adding a new class
   color: color($theme-color-primary-light);
 }
 
+.width-50 {
+  width: 50% !important;
+}
+
 .width-80 {
   width: 80% !important;
 }

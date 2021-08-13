@@ -116,17 +116,34 @@
 
           <%# Subpage Hyperlink %>
         <% when 'PageSubpageHyperlinkComponent' %>
-          <div class="grid-row margin-bottom-5 grid-col-12 desktop:grid-col-8 <%= 'margin-x-auto' if @page.narrow? %>">
-            <a href="<%= component.url %>" class="width-full">
-              <h2 class="font-sans-xl display-inline margin-top-0 text-underline"><%= component.title %></h2>
-              <span class="margin-left-1 fas fa-chevron-right fa-icon-125 text-middle padding-bottom-2"></span>
-            </a>
-            <% if component.description.present? %>
-              <div class="font-sans-sm margin-top-2 width-full line-height-26">
-                <%= component.description %>
+            <% if component.card? %>
+              <div class="grid-col-6 usa-card margin-bottom-5">
+                <div class="usa-card__container margin-0">
+                  <a class="usa-card__heading text-bold font-sans-lg line-height-25px dm-external-link padding-x-2 padding-top-4" href="<%= component.url %>">
+                    <%= component.title %>
+                  </a>
+                  <div class="usa-card__body padding-x-2 padding-bottom-4">
+                    <p class="line-height-26">
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis earum
+                      tenetur quo cupiditate, eaque qui officia recusandae. Excepturi nobis
+                      dolores molestias! Quas quisquam a officia eos.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            <% else %>
+              <div class="grid-row margin-bottom-5 grid-col-12 desktop:grid-col-8 <%= 'margin-x-auto' if @page.narrow? %>">
+                <a href="<%= component.url %>" class="width-full">
+                  <h2 class="font-sans-xl display-inline margin-top-0 text-underline"><%= component.title %></h2>
+                  <span class="margin-left-1 fas fa-chevron-right fa-icon-125 text-middle padding-bottom-2"></span>
+                </a>
+                <% if component.description.present? %>
+                  <div class="font-sans-sm margin-top-2 width-full line-height-26">
+                    <%= component.description %>
+                  </div>
+                <% end %>
               </div>
             <% end %>
-          </div>
 
           <%# YouTube Player %>
         <% when 'PageYouTubePlayerComponent' %>

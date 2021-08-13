@@ -4,8 +4,12 @@ ActiveAdmin.register Page do
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
   permit_params :title, :page_group_id, :slug, :description, :published, :ever_published, :is_visible, :template_type, :has_chrome_warning_banner,
-                page_components_attributes: [:id, :component_type, :position, :_destroy,
-                component_attributes: [:url, :description, :title, :text, :heading_type, :subtopic_title, :subtopic_description, :alignment, :page_image, :caption, :alt_text, :html_tag, :display_name, :attachment, :cta_text, :button_text, practices: []]]
+                page_components_attributes: [
+                  :id, :component_type, :position, :_destroy, component_attributes: [
+                    :url, :description, :title, :text, :heading_type, :subtopic_title, :subtopic_description, :alignment,
+                    :page_image, :caption, :alt_text, :html_tag, :display_name, :attachment, :cta_text, :button_text, :card, practices: []
+                  ]
+                ]
 
   #
   # or
