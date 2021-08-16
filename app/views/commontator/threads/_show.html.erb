@@ -28,7 +28,7 @@
 <div id="commontator-thread-<%= thread.id %>-show" class="show hidden">
   <%= link_to t('commontator.thread.actions.show'),
               '#',
-              id: "commontator-thread-#{thread.id}-show-link" %>
+              id: "commontator-thread-#{thread.id}-show-link", class: "usa-link" %>
 </div>
 
 <div id="commontator-thread-<%= thread.id %>-content" class="content">
@@ -37,7 +37,7 @@
       <span id="commontator-thread-<%= thread.id %>-hide" class="display-none hidden">
         <%= link_to t('commontator.thread.actions.hide'),
                     '#',
-                    id: "commontator-thread-#{thread.id}-hide-link" %>
+                    id: "commontator-thread-#{thread.id}-hide-link", class: "usa-link" %>
       </span>
 
       <% if can_subscribe %>

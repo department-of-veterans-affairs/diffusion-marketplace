@@ -21,31 +21,31 @@
       border-radius: 4px;
 
       &:hover {
-        border: 2px solid color($theme-color-primary);
+        border: 2px solid color($theme-color-primary-vivid);
       }
     }
 
     a {
       text-decoration: none;
       .map-marker-practice-content {
+        @include u-text('ink');
         text-decoration: none !important;
         font-size: 16.96px;
-        color: color($theme-color-base-ink);
       }
 
       .map-marker-practice-name {
+        @include u-text('ink');
         text-decoration: none !important;
         font-weight: bold;
         font-size: 16.96px;
-        color: color($theme-color-base-ink);
       }
 
       &:hover {
         text-decoration: none;
 
         .map-marker-practice-name {
+          @include u-text('primary-vivid');
           text-decoration: underline;
-          color: #005ea2;
         }
 
         .map-marker-practice-content {
