@@ -98,6 +98,10 @@ to confirm the class DOES NOT EXIST before adding a new class
   @include u-margin-bottom(4, !important);
 }
 
+.margin-bottom-5 {
+  @include u-margin-bottom(5, !important);
+}
+
 /* 68px */
 .x4-25-bottom {
   margin-bottom: 4.25rem !important;
