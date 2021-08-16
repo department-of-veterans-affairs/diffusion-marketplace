@@ -132,9 +132,14 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
       expect(page).to have_selector(marker_div, visible: true)
       marker_count = find_all(:css, marker_div).count
       expect(marker_count).to eq(3)
+    end
 
-      # click on the first generated marker
-      all(marker_div).first.click
+    it 'should allow the user to visit each adoption\'s VA facility page' do
+      DiffusionHistory.where.not(va_facility: @fac_6).destroy_all
+      VaFacility.where.not(official_station_name: 'Farmington VA Clinic').destroy_all
+      visit practice_path(@practice)
+      # click on the generated marker to open the modal
+      find('div[style*="width: 31px"][title=""]').click
       # make sure the user is taken to the VA facility's show page that corresponds with that marker's diffusion history
       new_window = window_opened_by { click_link('Farmington VA Clinic (Farmington-New Mexico)') }
       within_window new_window do
