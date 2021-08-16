@@ -1,3 +1,7 @@
+require 'uri'
+require 'net/http'
+require 'json'
+
 namespace :va_facilities do
   desc 'Create new VA facility records based on the data from the vamc.json file'
 
@@ -71,4 +75,35 @@ namespace :va_facilities do
 
     puts "All VA facilities have now been added to the DB!"
   end
+
+  task :update_va_facilities_via_lighthouse_api => :environment do
+    API_KEY = "s4He5m5fEWbqJmoJzuomJ5eLBso92GUz"
+    # Sandbox: https://sandbox-api.va.gov/services/va_facilities/v0  Key: s4He5m5fEWbqJmoJzuomJ5eLBso92GUz
+    # Production: https://api.va.gov/services/va_facilities/v0      Key: TBD - need to request prod key
+    # uri = URI('https://sandbox-api.va.gov/services/va_facilities/v0/facilities/vha_688?apikey=s4He5m5fEWbqJmoJzuomJ5eLBso92GUz')
+    # res = Net::HTTP.get_response(uri)
+    # puts res.body if res.is_a?(Net::HTTPSuccess)
+    # facility_obj = JSON.parse(res.body)
+    # puts res.body
+    uri = URI('https://sandbox-api.va.gov/services/va_facilities/v0/facilities/all?apikey=' + API_KEY)
+    res = Net::HTTP.get_response(uri)
+    debugger
+    if valid_json?(res.body)
+      puts "VALID"
+    else
+      puts "IN-VALID"
+    end
+    facilities_obj = JSON.parse(res.body) if res.is_a?(Net::HTTPSuccess)
+    puts facilities_obj[0...100].to_s
+    debugger
+      #puts facilities_obj["Hours"]
+  end
+
+  def valid_json?(json)
+    JSON.parse(json)
+    return true
+  rescue JSON::ParserError => e
+    return false
+  end
+
 end
