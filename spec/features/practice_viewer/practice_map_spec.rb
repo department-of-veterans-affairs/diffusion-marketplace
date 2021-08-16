@@ -140,7 +140,7 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
       # click on the first generated marker
       all(marker_div).first.click
       # make sure the user is taken to the VA facility's show page that corresponds with that marker's diffusion history
-      new_window = window_opened_by { click_link('Farmington VA Clinic (Farmington-New Mexico)') }
+      new_window = window_opened_by { all('.practice-map-facility-link').first.click }
       within_window new_window do
         expect(page).to have_content('Farmington VA Clinic')
         expect(page).to have_content('This facility has created')

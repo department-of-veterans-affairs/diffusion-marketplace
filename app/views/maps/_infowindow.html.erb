@@ -1,10 +1,10 @@
 <div class="font-sans-sm line-height-sans-1">
-  <p class="margin-top-1p5">
+  <p class="margin-top-1">
     <%
       station_name = facility.official_station_name
       station_number = facility.station_number
     %>
-    <%= link_to "#{station_name} #{ show_common_name(station_name, facility.common_name)}", va_facility_path(facility), target: '_blank', class: 'dm-internal-link' %>
+    <%= link_to "#{station_name} #{ show_common_name(station_name, facility.common_name)}", va_facility_path(facility), target: '_blank', class: 'dm-internal-link practice-map-facility-link' %>
   </p>
   <% if home_page ||= false %>
     <p class="margin-top-1"><%= completed %> successful adoption<%= completed == 1 ? '' : 's' %></p>
