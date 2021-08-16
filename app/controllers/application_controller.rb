@@ -16,9 +16,15 @@ class ApplicationController < ActionController::Base
 
   def authenticate_active_admin_user!
     authenticate_user!
-    unless current_user.has_role?(:admin)
-      flash[:alert] = "Unauthorized Access!"
-      redirect_to root_path
+    if current_user.present?
+      is_admin = current_user.has_role?(:admin)
+      terms_accepted = current_user.accepted_terms
+      flash[:alert] = "Unauthorized Access!" if !is_admin
+      flash[:alert] = "Accept terms and conditions" if !terms_accepted
+
+      if !is_admin || !terms_accepted
+        redirect_to root_path
+      end
     end
   end
 
@@ -31,9 +37,7 @@ class ApplicationController < ActionController::Base
   end
 
   def user_accepted_terms?
-    if current_user.present? && !current_user.accepted_terms && params[:controller] != 'users' && params[:action] != 'terms_and_conditions'
-      redirect_to terms_and_conditions_path
-    end
+    @force_terms_and_conditions_modal = current_user.present? && !current_user.accepted_terms
   end
 
   # Its important that the location is NOT stored if:
