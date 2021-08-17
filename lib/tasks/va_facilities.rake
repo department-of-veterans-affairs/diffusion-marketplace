@@ -80,23 +80,32 @@ namespace :va_facilities do
     API_KEY = "s4He5m5fEWbqJmoJzuomJ5eLBso92GUz"
     # Sandbox: https://sandbox-api.va.gov/services/va_facilities/v0  Key: s4He5m5fEWbqJmoJzuomJ5eLBso92GUz
     # Production: https://api.va.gov/services/va_facilities/v0      Key: TBD - need to request prod key
-    # uri = URI('https://sandbox-api.va.gov/services/va_facilities/v0/facilities/vha_688?apikey=s4He5m5fEWbqJmoJzuomJ5eLBso92GUz')
+
+    # uri = URI('https://sandbox-api.va.gov/services/va_facilities/v0/facilities/all?apikey=' + API_KEY)
     # res = Net::HTTP.get_response(uri)
-    # puts res.body if res.is_a?(Net::HTTPSuccess)
-    # facility_obj = JSON.parse(res.body)
-    # puts res.body
+    # debugger
+    # if valid_json?(res.body)
+    #   #save file
+    #   # open file with JSON.parse
+    #   #File.delete("#{Rails.root}/lib/assets/va_facility.json")
+    #   #File.write("#{Rails.root}/lib/assets/va_facility.json", res.body)
+    #   va_facilities = File.read("#{Rails.root}/lib/assets/va_facility.json")
+    # else
+    #   puts "IN-VALID"
+    # end
+
+    debugger
+
     uri = URI('https://sandbox-api.va.gov/services/va_facilities/v0/facilities/all?apikey=' + API_KEY)
-    res = Net::HTTP.get_response(uri)
+    req = Net::HTTP::Get.new(uri)
+    req['ACCEPT'] = "application/geo+json"
+
+    res = Net::HTTP.get_response(req)
     debugger
-    if valid_json?(res.body)
-      puts "VALID"
-    else
-      puts "IN-VALID"
+    response = Net::HTTP.start(uri.hostname) do |http|
+      http.request(req)
     end
-    facilities_obj = JSON.parse(res.body) if res.is_a?(Net::HTTPSuccess)
-    puts facilities_obj[0...100].to_s
     debugger
-      #puts facilities_obj["Hours"]
   end
 
   def valid_json?(json)
