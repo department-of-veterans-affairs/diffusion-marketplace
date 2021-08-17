@@ -65,7 +65,7 @@
           %>
 
           <% if non_other_sub_categories.any? %>
-            <div class="grid-row grid-col-12 category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex p0-left p0-right">
+            <div class="grid-row grid-col-12 category-container display-none padding-top-2 desktop:padding-bottom-1 desktop:padding-top-0 desktop:display-flex padding-left-0 padding-right-0">
               <p class="line-height-26 margin-y-2 grid-col-12 display-none desktop:display-block desktop:margin-top-1 desktop:margin-bottom-0"><%= pc.name %></p>
               <% sliced_categories.each_with_index do |sc, i| %>
                 <%= render partial: 'practices/search_partials/category_filter_column', locals: { categories: sc, column: i } unless i === 3 %>
@@ -79,7 +79,7 @@
 </div>
 
 <div class="padding-y-2 padding-x-3 border-top-2px border-base-lightest bg-white desktop:border-top-0 desktop:padding-2" id="filter_button_container">
-  <button type="submit" id="update-search-results-button" class="usa-button usa-button--primary display-block width-100 desktop:margin-bottom-1 line-height-19px" name="button">
+  <button type="submit" id="update-search-results-button" class="usa-button usa-button--primary display-block width-full desktop:margin-bottom-1 line-height-19px" name="button">
     Update results
   </button>
   <button type="button" class="usa-button usa-button--secondary display-none desktop:display-block width-full line-height-19px" id="resetSearchFiltersButton">

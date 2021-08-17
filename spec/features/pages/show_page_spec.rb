@@ -55,12 +55,12 @@ describe 'Page Builder - Show', type: :feature do
 
   it 'Should display the page image' do
     expect(page).to have_css("img[src*='charmander.png']")
-    page.should have_css('.justify-end')
+    page.should have_css('.flex-justify-end')
   end
 
   it 'should display the page image with a url' do
     expect(page).to have_css("img[src*='SpongeBob.png']")
-    page.should have_css('.justify-center')
+    page.should have_css('.flex-justify-center')
 
     # get the parent element of the image's URL
     link = page.find("img[src*='SpongeBob.png']").find(:xpath, '..')

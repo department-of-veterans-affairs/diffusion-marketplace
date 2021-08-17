@@ -1,3 +1,10 @@
+<%= javascript_tag 'data-turbolinks-track': 'reload' do %>
+  var forceModal = <%= @force_terms_and_conditions_modal %>;
+<% end %>
+<%= javascript_include_tag '_terms_and_conditions', 'data-turbolinks-track': 'reload' %>
+
+<%= render partial: 'shared/terms_and_conditions_modal' %>
+
 <footer class="<%= yield(:footer_classes) %>">
   <%# return to top %>
   <div class="grid-container usa-footer__return-to-top">
@@ -24,6 +31,9 @@
         </a>
         <a class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base-light desktop:margin-right-5 grid-col-12 padding-y-2 padding-x-2 text-bold dm-footer-link" href="<%= nominate_a_practice_path %>" >
           Nominate a practice
+        </a>
+        <a href="#dm-terms-and-conditions-modal" class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base-light desktop:margin-right-5 grid-col-12 padding-y-2 padding-x-2 text-bold dm-footer-link" aria-controls="dm-terms-and-conditions-modal" data-open-modal>
+          Terms
         </a>
       </div>
     </div>

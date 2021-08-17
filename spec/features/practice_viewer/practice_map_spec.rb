@@ -60,12 +60,12 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
       street_address_state: "NM"
     )
 
-    @dh = DiffusionHistory.create!(practice: @practice, facility_id: @fac_1.station_number)
-    @dh_1 = DiffusionHistory.create!(practice: @practice, facility_id: @fac_2.station_number)
-    @dh_2 = DiffusionHistory.create!(practice: @practice, facility_id: @fac_3.station_number)
-    @dh_3 = DiffusionHistory.create!(practice: @practice, facility_id: @fac_4.station_number)
-    @dh_4 = DiffusionHistory.create!(practice: @practice, facility_id: @fac_5.station_number)
-    @dh_5 = DiffusionHistory.create!(practice: @practice, facility_id: @fac_6.station_number)
+    @dh = DiffusionHistory.create!(practice: @practice, va_facility: @fac_1)
+    @dh_1 = DiffusionHistory.create!(practice: @practice, va_facility: @fac_2)
+    @dh_2 = DiffusionHistory.create!(practice: @practice, va_facility: @fac_3)
+    @dh_3 = DiffusionHistory.create!(practice: @practice, va_facility: @fac_4)
+    @dh_4 = DiffusionHistory.create!(practice: @practice, va_facility: @fac_5)
+    @dh_5 = DiffusionHistory.create!(practice: @practice, va_facility: @fac_6)
     @dhs = DiffusionHistoryStatus.create!(diffusion_history: @dh, status: 'In progress')
     @dhs_1 = DiffusionHistoryStatus.create!(diffusion_history: @dh_1, status: 'Unsuccessful', unsuccessful_reasons: [0])
     @dhs_2 = DiffusionHistoryStatus.create!(diffusion_history: @dh_2, status: 'Unsuccessful', unsuccessful_reasons: [0])

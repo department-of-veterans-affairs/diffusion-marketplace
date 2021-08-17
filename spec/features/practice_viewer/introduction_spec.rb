@@ -7,11 +7,23 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
     @pr_min = Practice.create!(name: 'A public minimum practice', slug: 'a-public-min-practice', approved: true, published: true, summary: 'Test summary', date_initiated: Date.new(2011, 12, 31), initiating_facility_type: 'other', initiating_facility: 'foobar facility', user: @admin)
     img_path = "#{Rails.root}/spec/assets/acceptable_img.jpg"
     @pr_max = Practice.create!(name: 'A public maximum practice', short_name: 'LALA', slug: 'a-public-max-practice', approved: true, published: true, summary: 'Test summary', date_initiated: Date.new(2016, 8, 20), initiating_facility_type: 'facility', main_display_image: File.new(img_path), user: @admin)
-    PracticeOriginFacility.create!(practice: @pr_max, facility_type: 0, facility_id: '640A0')
-    PracticeOriginFacility.create!(practice: @pr_max, facility_type: 0, facility_id: '603')
-    PracticeOriginFacility.create!(practice: @pr_max, facility_type: 0, facility_id: '636')
-    PracticeOriginFacility.create!(practice: @pr_max, facility_type: 0, facility_id: '590')
-    PracticeOriginFacility.create!(practice: @pr_max, facility_type: 0, facility_id: '652')
+
+    visn_6 = Visn.create!(id: 5, name: "VA Mid-Atlantic Health Care Network", number: 6)
+    visn_9 = Visn.create!(id: 8, name: "VA MidSouth Healthcare Network", number: 9)
+    visn_21 = Visn.create!(id: 16, name: "Sierra Pacific Network", number: 21)
+    visn_23 = Visn.create!(id: 18, name: "VA Midwest Health Care Network", number: 23)
+
+    facility_1 = VaFacility.create!(visn: visn_21, station_number: "640A0", official_station_name: "Palo Alto VA Medical Center-Menlo Park", common_name: "Palo Alto-Menlo Park", street_address_state: "CA")
+    facility_2 = VaFacility.create!(visn: visn_9, station_number: "603", official_station_name: "Robley Rex Department of Veterans Affairs Medical Center", common_name: "Louisville", street_address_state: "KY")
+    facility_3 = VaFacility.create!(visn: visn_23, station_number: "636", official_station_name: "Omaha VA Medical Center", common_name: "Omaha-Nebraska", street_address_state: "NE")
+    facility_4 = VaFacility.create!(visn: visn_6, station_number: "590", official_station_name: "Hampton VA Medical Center", common_name: "Hampton", street_address_state: "VA")
+    facility_5 = VaFacility.create!(visn: visn_6, station_number: "652", official_station_name: "Hunter Holmes McGuire Hospital", common_name: "Richmond-Virginia", street_address_state: "VA")
+
+    PracticeOriginFacility.create!(practice: @pr_max, facility_type: 0, va_facility: facility_1)
+    PracticeOriginFacility.create!(practice: @pr_max, facility_type: 0, va_facility: facility_2)
+    PracticeOriginFacility.create!(practice: @pr_max, facility_type: 0, va_facility: facility_3)
+    PracticeOriginFacility.create!(practice: @pr_max, facility_type: 0, va_facility: facility_4)
+    PracticeOriginFacility.create!(practice: @pr_max, facility_type: 0, va_facility: facility_5)
     PracticeAward.create!(practice: @pr_max, name: 'QUERI Veterans Choice Act Award', created_at: Time.now)
     PracticeAward.create!(practice: @pr_max, name: 'Diffusion of Excellence Promising Practice', created_at: Time.now)
     PracticeAward.create!(practice: @pr_max, name: 'VHA Shark Tank Winner', created_at: Time.now)

@@ -28,6 +28,7 @@ describe 'Diffusion Marketplace footer', type: :feature, js: true do
         expect(page).to have_link('Report a bug')
         expect(page).to have_link('Send feedback')
         expect(page).to have_link('Nominate a practice')
+        expect(page).to have_link('Terms')
       end
     end
 

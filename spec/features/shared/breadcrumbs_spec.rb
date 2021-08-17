@@ -183,7 +183,7 @@ describe 'Breadcrumbs', type: :feature do
     it 'Should show three breadcrumbs with only one link for a page that has a page group without a landing page' do
       visit '/test/test-page'
 
-      expect(page).to have_css('.breadcrumb-link', count: 1)
+      expect(page).to have_css('.usa-breadcrumb__link', count: 1)
       expect(page).to have_css('.breadcrumbs-container a:first-child', text: 'Home')
       expect(page).to have_css('.breadcrumbs-container .usa-breadcrumb__list-item:nth-of-type(2)', text: @page_group2.name)
       expect(page).to have_css('.breadcrumbs-container .usa-breadcrumb__list-item:last-child', text: @page.title)
@@ -192,7 +192,7 @@ describe 'Breadcrumbs', type: :feature do
     it 'Should show three breadcrumbs with two links for a page that has a page group a landing page' do
       visit '/programming/test-page'
 
-      expect(page).to have_css('.breadcrumb-link', count: 2)
+      expect(page).to have_css('.usa-breadcrumb__link', count: 2)
       expect(page).to have_css('.breadcrumbs-container a:first-child', text: 'Home')
       expect(page).to have_css('.breadcrumbs-container .usa-breadcrumb__list-item:nth-of-type(2) a', text: @page_group.name)
       expect(page).to have_css('.breadcrumbs-container .usa-breadcrumb__list-item:last-child', text: @page.title)

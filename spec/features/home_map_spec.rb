@@ -19,7 +19,7 @@ describe 'Map of Diffusion', type: :feature, js: true do
       longitude: "-69.70413586",
       street_address_state: "ME",
       rurality: "R",
-      fy17_parent_station_complexity_level: '1c-High Complexity'
+      fy17_parent_station_complexity_level: "1c-High Complexity"
     )
     @fac_2 = VaFacility.create!(
       visn: @visn_2,
@@ -30,7 +30,7 @@ describe 'Map of Diffusion', type: :feature, js: true do
       longitude: "-73.76256942",
       street_address_state: "NY",
       rurality: "U",
-      fy17_parent_station_complexity_level: '1b-High Complexity'
+      fy17_parent_station_complexity_level: "1b-High Complexity"
     )
     @fac_3 = VaFacility.create!(
       visn: @visn_2,
@@ -41,19 +41,19 @@ describe 'Map of Diffusion', type: :feature, js: true do
       longitude: "-73.89691934",
       street_address_state: "NY",
       rurality: "U",
-      fy17_parent_station_complexity_level: '1a-High Complexity'
+      fy17_parent_station_complexity_level: "1a-High Complexity"
     )
-    dh_1 = DiffusionHistory.create!(practice: @pr_1, facility_id: @fac_1.station_number)
+    dh_1 = DiffusionHistory.create!(practice: @pr_1, va_facility: @fac_1)
     DiffusionHistoryStatus.create!(diffusion_history: dh_1, status: 'Completed')
-    dh_2 = DiffusionHistory.create!(practice: @pr_1, facility_id: @fac_2.station_number)
+    dh_2 = DiffusionHistory.create!(practice: @pr_1, va_facility: @fac_2)
     DiffusionHistoryStatus.create!(diffusion_history: dh_2, status: 'Implemented')
-    dh_3 = DiffusionHistory.create!(practice: @pr_2, facility_id: @fac_1.station_number)
+    dh_3 = DiffusionHistory.create!(practice: @pr_2, va_facility: @fac_1)
     DiffusionHistoryStatus.create!(diffusion_history: dh_3, status: 'Planning')
-    dh_4 = DiffusionHistory.create!(practice: @pr_3, facility_id: @fac_1.station_number)
+    dh_4 = DiffusionHistory.create!(practice: @pr_3, va_facility: @fac_1)
     DiffusionHistoryStatus.create!(diffusion_history: dh_4, status: 'In progress')
-    dh_5 = DiffusionHistory.create!(practice: @pr_3, facility_id: @fac_2.station_number)
+    dh_5 = DiffusionHistory.create!(practice: @pr_3, va_facility: @fac_2)
     DiffusionHistoryStatus.create!(diffusion_history: dh_5, status: 'Implementing')
-    dh_6 = DiffusionHistory.create!(practice: @pr_4, facility_id: @fac_3.station_number)
+    dh_6 = DiffusionHistory.create!(practice: @pr_4, va_facility: @fac_3)
     DiffusionHistoryStatus.create!(diffusion_history: dh_6, status: 'Unsuccessful', unsuccessful_reasons: [0])
     ENV['GOOGLE_API_KEY'] = ENV['GOOGLE_TEST_API_KEY']
     visit '/diffusion-map'

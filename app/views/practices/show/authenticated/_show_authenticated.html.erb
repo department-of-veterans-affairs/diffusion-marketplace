@@ -89,10 +89,10 @@
   </div>
 </div>
 
-<div class="practice-mobile-nav padding-1 z-top desktop:display-none display-flex justify-center">
-  <%= mail_to main_email, 'Email', cc: cc_emails, id: 'email-link-in-mobile-nav', class: 'width-100 usa-button  display-flex flex-align-center flex-justify-center margin-right-2', 'aria-label': "Mobile nav email #{main_email}"  %>
+<div class="practice-mobile-nav padding-1 z-top desktop:display-none display-flex flex-justify-center">
+  <%= mail_to main_email, 'Email', cc: cc_emails, id: 'email-link-in-mobile-nav', class: 'width-full usa-button  display-flex flex-align-center flex-justify-center margin-right-2', 'aria-label': "Mobile nav email #{main_email}"  %>
   <% if @practice.user_id == current_user.id || current_user.roles.any? %>
-      <%= link_to 'Edit', instructions_path, id: 'edit-link-in-mobile-nav', class: 'width-100 usa-button usa-button--secondary margin-right-0' %>
+      <%= link_to 'Edit', instructions_path, id: 'edit-link-in-mobile-nav', class: 'width-full usa-button usa-button--secondary margin-right-0' %>
   <% end %>
 </div>
 

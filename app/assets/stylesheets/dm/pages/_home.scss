@@ -20,48 +20,9 @@
       height: 400px;
     }
 
-    // h1 {
-    //   line-height: 36px;
-
-    //   @media screen and (min-width: 640px) {
-    //     line-height: 46px;
-    //   }
-    // }
-
     .fa-laptop-medical {
       color: color($theme-color-primary-light) !important;
     }
-
-    // .homepage-explore-all-button {
-    //   // line-height: 19px !important;
-    //   color: color($theme-color-base-ink) !important;
-    //   background-color: color($theme-color-dm-white) !important;
-    //   // border: none !important;
-    //   // font-weight: bold !important;
-    //   // cursor: pointer;
-    //   // padding: 12px 20px 12px 20px !important;
-    //   // width: 197px !important;
-    //   // font-size: 16px !important;
-    //   // text-decoration: none;
-
-    //   @media screen and (min-width: 1024px) {
-    //     // line-height: 26px !important;
-    //     color: color($theme-color-base-ink) !important;
-    //     background-color: color($theme-color-dm-white) !important;
-    //     // border: none !important;
-    //     // padding: 16px 24px 16px 24px !important;
-    //     font-size: 22px !important;
-    //     width: 264px !important;
-    //   }
-
-    //   &:hover {
-    //     background-color: color($theme-color-base-lightest) !important;
-    //   }
-
-    //   &:active {
-    //     background-color: color($theme-color-base-light) !important;
-    //   }
-    // }
 
     @media screen and (max-width: 1023px) {
       .fa-laptop-medical {

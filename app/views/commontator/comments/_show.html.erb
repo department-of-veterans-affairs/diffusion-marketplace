@@ -25,9 +25,8 @@
   <div class="grid-col-fill comment-width-ie">
     <div id="commontator-comment-<%= comment.id %>-section-top" class="section top margin-bottom-1 line-height-26">
       <span id="commontator-comment-<%= comment.id %>-author" class="author line-height-26 text-middle">
-        <%= link_to "#{name} #{job_title ? '(' + job_title + ')' : ''}", "/users/#{creator.id}" %>
+        <%= link_to "#{name} #{job_title ? '(' + job_title + ')' : ''}", "/users/#{creator.id}", class: "usa-link" %>
       </span>
-      
       <% if practice_team_member %>
         <span
           class="radius-sm font-sans-3xs bg-primary-lighter text-uppercase text-bold line-height-15px padding-y-1px padding-x-05 text-ls-1 text-center display-inline-block
@@ -102,7 +101,7 @@
         <div class="report-comment fas fa-flag text-base padding-x-1 text-middle report-abuse-container" id="comment-<%= comment.id %>-report-abuse-container">
           <div class="report-abuse-modal hidden font-family-sans" id="comment-<%= comment.id %>-report-abuse-modal">
             <div class="bg-white radius-md report-abuse-modal-content width-tablet">
-              <div class="bg-secondary text-white radius-top-md">
+              <div class="bg-primary-vivid text-white radius-top-md">
                   <h2 class="margin-0 padding-3">Report a comment</h2>
               </div>
               <div class="padding-3">
@@ -113,7 +112,7 @@
                   </p>
                 </div>
                 <div class="text-right">
-                  <button class="usa-button usa-button--outline margin-0 padding-2 margin-top-5 margin-right-05 report-abuse-cancel">Cancel</button>
+                  <button class="usa-button usa-button--outline margin-0 margin-top-5 margin-right-05 report-abuse-cancel">Cancel</button>
                   <%= link_to 'Submit Report', "/practices/#{practice.id}/comments/#{comment.id}/report", class: 'usa-button  report-abuse-submit', data: {confirm: 'Are you sure you want to report this comment?'} %>
                 </div>
               </div>

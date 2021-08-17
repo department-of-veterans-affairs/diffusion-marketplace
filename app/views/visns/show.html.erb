@@ -36,7 +36,7 @@
             <p class="text-bold margin-bottom-2">VISN Marketplace Liaison</p>
             <p class="margin-bottom-2"><%= @primary_visn_liaison.first_name %> <%= @primary_visn_liaison.last_name %></p>
             <% primary_liaison_email = @primary_visn_liaison.email %>
-            <p><%= mail_to primary_liaison_email, primary_liaison_email, class: 'visn-liaison-email' %></p>
+            <p><%= mail_to primary_liaison_email, primary_liaison_email, class: 'usa-link usa-link--external' %></p>
           </div>
         </div>
       <% end %>

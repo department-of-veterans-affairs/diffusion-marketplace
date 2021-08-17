@@ -62,7 +62,7 @@
 
       th:nth-of-type(4) {
         button {
-          left: 8.5em;
+          left: 8.3em;
         }
       }
       th:nth-of-type(5) {
@@ -139,7 +139,7 @@
     margin-left: 6px;
 
     .fas {
-      color: color($theme-color-primary);
+      color: color($theme-color-primary-vivid);
 
       &:hover {
         color: color($theme-color-primary-dark);
@@ -154,7 +154,7 @@
       color: color($theme-color-base-ink);
 
       &:hover {
-        color: color($theme-color-primary);
+        color: color($theme-color-primary-vivid);
       }
 
       &:active {

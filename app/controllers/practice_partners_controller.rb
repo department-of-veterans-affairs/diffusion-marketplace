@@ -10,7 +10,7 @@ class PracticePartnersController < ApplicationController
   # GET /practice_partners/1
   # GET /practice_partners/1.json
   def show
-    @facilities_data = facilities_json
+    @facilities_data = VaFacility.cached_va_facilities
   end
 
   private

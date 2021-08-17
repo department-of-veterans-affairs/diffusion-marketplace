@@ -15,6 +15,10 @@ describe 'The admin dashboard', type: :feature do
                              password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
+
+    visn_8 = Visn.create!(id: 7, name: "VA Sunshine Healthcare Network", number: 8)
+    @facility_1 = VaFacility.create!(visn: visn_8, station_number: "516", official_station_name: "C.W. Bill Young Department of Veterans Affairs Medical Center", common_name: "Bay Pines", street_address_state: "FL")
+
     @practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true, retired: false)
     @practice_2 = Practice.create!(name: 'The Second Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true, retired: false)
     @categories = [
@@ -36,7 +40,7 @@ describe 'The admin dashboard', type: :feature do
   end
 
   def create_diffusion_history
-    diffusion_history = DiffusionHistory.create!(practice_id: @practice.id, facility_id: '516')
+    diffusion_history = DiffusionHistory.create!(practice_id: @practice.id, va_facility: @facility_1)
     DiffusionHistoryStatus.create!(diffusion_history_id: diffusion_history.id, status: 'Completed')
   end
 

@@ -82,23 +82,9 @@ module ApplicationHelper
     end
   end
 
-  def facility_name(facility_id, facilities_data = nil)
-    facilities_data = facilities_data || @facilities_data || facilities_data_json
-    facility_data = @facility_data || facilities_data.find {|f| f['StationNumber'] == facility_id }
-    if facility_data.present?
-      facility_name_with_common_name(facility_data["OfficialStationName"], facility_data["CommonName"])
-    else
-      facility_id
-    end
-  end
-
   def facility_name_with_common_name(official_station_name, common_name)
     common_name = show_common_name(official_station_name, common_name)
     official_station_name + (common_name.present? ? " #{common_name}" : '')
-  end
-
-  def facilities_data_json
-    JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
   end
 
   def origin_data_json
@@ -120,15 +106,18 @@ module ApplicationHelper
         locs = practice.practice_origin_facilities.where(facility_type: fac_type)
         facility_names = String.new
         locs.each_with_index do |loc, index|
-          facility_names += (facility_name(loc.facility_id) + (locs.size != index + 1 && locs.size > 1 ? ', ' : ''))
+          official_station_name = loc.va_facility.official_station_name
+          common_name = loc.va_facility.common_name
+
+          facility_names += "#{facility_name_with_common_name(official_station_name, common_name) if loc.va_facility_id.present?}#{locs.size != index + 1 && locs.size > 1 ? ', ' : ''}"
         end
         facility_names
       elsif practice.initiating_facility?
       # TODO: Modify once visn, dept, other is moved from Practice to a separate table
         case practice.initiating_facility_type
         when 'visn'
-          visn = origin_data_json['visns'].find { |v| v['id'] == practice.initiating_facility.to_i }
-          visn['number']
+          visn = Visn.cached_visns.get_by_initiating_facility(practice.initiating_facility.to_i)
+          return "VISN-#{visn.number.to_s}"
         when 'department'
           dept_id = practice.initiating_department_office_id
           office = origin_data_json['departments'][dept_id - 1]['offices'].find { |o| o['id'] == practice.initiating_facility.to_i }
@@ -185,9 +174,9 @@ module ApplicationHelper
 
   def get_grid_alignment_css_class(alignment)
     if alignment&.downcase == 'center'
-      'justify-center'
+      'flex-justify-center'
     elsif alignment&.downcase == 'right'
-      'justify-end'
+      'flex-justify-end'
     else
       ''
     end

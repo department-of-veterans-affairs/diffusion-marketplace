@@ -17,7 +17,7 @@
       <div>
       <%= render partial: "shared/messages", locals: {small_text: true} %>
     </div>
-      <section class="usa-section padding-top-0 p0-bottom" aria-label="Metrics">
+      <section class="usa-section padding-top-0 padding-bottom-0" aria-label="Metrics">
         <div class="grid-row flex-align-end margin-top-4">
           <h1 class="margin-bottom-3 margin-y-0 grid-col-3 font-sans-2xl">
             Metrics
@@ -106,13 +106,13 @@
                 <th scope="col">Adoptions</th>
               </tr>
               <thead>
-              <tr>
+              <tr id="rural-adoptions-row-last-30">
                 <td class="width-80">Rural</td>
-                <td><%= @rural_facility_30 %></td>
+                <td class="rural-adoptions-count-last-30"><%= @rural_facility_30 %></td>
               </tr>
-              <tr>
+              <tr id="urban-adoptions-row-last-30">
                 <td class="width-80">Urban</td>
-                <td><%= @urban_facility_30 %></td>
+                <td class="urban-adoptions-count-last-30"><%= @urban_facility_30 %></td>
               </tr>
             </table>
             <table class="usa-table usa-table--borderless width-full margin-bottom-5 metrics-table">
@@ -178,13 +178,13 @@
                   <th scope="col">Adoptions</th>
                 </tr>
               </thead>
-              <tr>
+              <tr id="rural-adoptions-row-at">
                 <td class="width-80">Rural</td>
-                <td><%= @rural_facility_at %></td>
+                <td class="rural-adoptions-count-at"><%= @rural_facility_at %></td>
               </tr>
-              <tr>
+              <tr id="urban-adoptions-row-at">
                 <td class="width-80">Urban</td>
-                <td><%= @urban_facility_at %></td>
+                <td class="urban-adoptions-count-at"><%= @urban_facility_at %></td>
               </tr>
             </table>
             <table class="usa-table usa-table--borderless width-full margin-bottom-5 metrics-table">

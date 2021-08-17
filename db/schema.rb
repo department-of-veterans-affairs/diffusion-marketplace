@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_25_180248) do
+ActiveRecord::Schema.define(version: 2021_07_13_143835) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -337,7 +337,9 @@ ActiveRecord::Schema.define(version: 2021_05_25_180248) do
     t.string "facility_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "va_facility_id"
     t.index ["practice_id"], name: "index_diffusion_histories_on_practice_id"
+    t.index ["va_facility_id"], name: "index_diffusion_histories_on_va_facility_id"
   end
 
   create_table "diffusion_history_statuses", force: :cascade do |t|
@@ -753,7 +755,9 @@ ActiveRecord::Schema.define(version: 2021_05_25_180248) do
     t.integer "initiating_department_office_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "va_facility_id"
     t.index ["practice_id"], name: "index_practice_origin_facilities_on_practice_id"
+    t.index ["va_facility_id"], name: "index_practice_origin_facilities_on_va_facility_id"
   end
 
   create_table "practice_partner_practices", force: :cascade do |t|
@@ -958,8 +962,8 @@ ActiveRecord::Schema.define(version: 2021_05_25_180248) do
     t.string "overview_solution"
     t.string "overview_results"
     t.integer "maturity_level"
-    t.datetime "practice_pages_updated"
     t.datetime "date_published"
+    t.datetime "practice_pages_updated"
     t.string "highlight_title"
     t.string "highlight_body"
     t.boolean "retired", default: false, null: false
@@ -1334,6 +1338,7 @@ ActiveRecord::Schema.define(version: 2021_05_25_180248) do
   add_foreign_key "developing_facility_type_practices", "practices"
   add_foreign_key "difficulties", "practices"
   add_foreign_key "diffusion_histories", "practices"
+  add_foreign_key "diffusion_histories", "va_facilities"
   add_foreign_key "diffusion_history_statuses", "diffusion_histories"
   add_foreign_key "domain_practices", "domains"
   add_foreign_key "domain_practices", "practices"
@@ -1371,6 +1376,7 @@ ActiveRecord::Schema.define(version: 2021_05_25_180248) do
   add_foreign_key "practice_metrics", "practices"
   add_foreign_key "practice_multimedia", "practices"
   add_foreign_key "practice_origin_facilities", "practices"
+  add_foreign_key "practice_origin_facilities", "va_facilities"
   add_foreign_key "practice_partner_practices", "practice_partners"
   add_foreign_key "practice_partner_practices", "practices"
   add_foreign_key "practice_permissions", "practices"
