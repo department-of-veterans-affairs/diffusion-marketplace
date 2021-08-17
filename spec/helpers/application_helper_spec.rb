@@ -63,14 +63,14 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
 
     context "when given a 'center' alignment" do
-      it "returns 'justify-center'" do
+      it "returns 'flex-justify-center'" do
         mock_alignment = 'Center'
-        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('justify-center')
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('flex-justify-center')
       end
 
-      it "returns 'justify-center'" do
+      it "returns 'flex-justify-center'" do
         mock_alignment = 'center'
-        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('justify-center')
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('flex-justify-center')
       end
     end
 
@@ -80,7 +80,7 @@ RSpec.describe ApplicationHelper, type: :helper do
         expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('')
       end
 
-      it "returns 'justify-center'" do
+      it "returns 'flex-justify-center'" do
         mock_alignment = 'foobar'
         expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('')
       end
@@ -103,12 +103,12 @@ RSpec.describe ApplicationHelper, type: :helper do
     context "when given a 'center' alignment" do
       it "returns 'justify-center'" do
         mock_alignment = 'Center'
-        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('justify-center')
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('flex-justify-center')
       end
 
-      it "returns 'justify-center'" do
+      it "returns 'flex-justify-center'" do
         mock_alignment = 'center'
-        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('justify-center')
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('flex-justify-center')
       end
     end
 
@@ -118,7 +118,7 @@ RSpec.describe ApplicationHelper, type: :helper do
         expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('')
       end
 
-      it "returns 'justify-center'" do
+      it "returns 'flex-justify-center'" do
         mock_alignment = 'foobar'
         expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('')
       end
