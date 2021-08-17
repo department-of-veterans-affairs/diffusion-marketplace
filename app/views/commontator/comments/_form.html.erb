@@ -82,7 +82,7 @@
         </div>
         <div class="usa-radio">
           <%= radio_button_tag 'user_practice_status', :team_member, practice_team_member ? true : false, class: 'usa-radio__input', id: "team-member-#{comment.id}" %>
-          <%= label_tag 'user_practice_status_team_member', 'Other', class: 'usa-radio__label team-member-label', for: "team-member-#{comment.id}" %>
+          <%= label_tag 'user_practice_status_team_member', 'I am a member of this practice team', class: 'usa-radio__label team-member-label', for: "team-member-#{comment.id}" %>
         </div>
         <div class="usa-radio">
           <%= radio_button_tag 'user_practice_status', :other, practice_other ? true : false, class: 'usa-radio__input', id: "practice-other-#{comment.parent_id}" %>
