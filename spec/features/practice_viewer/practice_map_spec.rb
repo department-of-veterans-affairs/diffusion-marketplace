@@ -12,7 +12,9 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
       common_name: "Caribou",
       latitude: "44.2802701",
       longitude: "-69.70413586",
-      street_address_state: "ME"
+      street_address_state: "ME",
+      station_phone_number: "207-623-2123 x",
+      fy17_parent_station_complexity_level: "1c-High Complexity"
     )
     @fac_2 = VaFacility.create!(
       visn: visn_1,
@@ -21,7 +23,9 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
       common_name: "White Plains",
       latitude: "41.03280396",
       longitude: "-73.76256942",
-      street_address_state: "NY"
+      street_address_state: "NY",
+      station_phone_number: "207-623-2123 x",
+      fy17_parent_station_complexity_level: "1c-High Complexity"
     )
     @fac_3 = VaFacility.create!(
       visn: visn_1,
@@ -30,7 +34,9 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
       common_name: "Yonkers",
       latitude: "40.93287478",
       longitude: "-73.89691934",
-      street_address_state: "NY"
+      street_address_state: "NY",
+      station_phone_number: "207-623-2123 x",
+      fy17_parent_station_complexity_level: "1c-High Complexity"
     )
     @fac_4 = VaFacility.create!(
       visn: visn_1,
@@ -39,7 +45,9 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
       common_name: "Coatesville",
       latitude: "39.99732257",
       longitude: "-75.80470313",
-      street_address_state: "PA"
+      street_address_state: "PA",
+      station_phone_number: "207-623-2123 x",
+      fy17_parent_station_complexity_level: "1c-High Complexity"
     )
     @fac_5 = VaFacility.create!(
       visn: visn_1,
@@ -48,7 +56,9 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
       common_name: "Morehead City",
       latitude: "34.73635963",
       longitude: "-76.79874362",
-      street_address_state: "NC"
+      street_address_state: "NC",
+      station_phone_number: "207-623-2123 x",
+      fy17_parent_station_complexity_level: "1c-High Complexity"
     )
     @fac_6 = VaFacility.create!(
       visn: visn_1,
@@ -57,7 +67,9 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
       common_name: "Farmington-New Mexico",
       latitude: "36.76236081",
       longitude: "-108.14840433",
-      street_address_state: "NM"
+      street_address_state: "NM",
+      station_phone_number: "207-623-2123 x",
+      fy17_parent_station_complexity_level: "1c-High Complexity"
     )
 
     @dh = DiffusionHistory.create!(practice: @practice, va_facility: @fac_1)
@@ -120,6 +132,21 @@ describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
       expect(page).to have_selector(marker_div, visible: true)
       marker_count = find_all(:css, marker_div).count
       expect(marker_count).to eq(3)
+    end
+
+    it 'should allow the user to visit each adoption\'s VA facility page' do
+      DiffusionHistory.where.not(va_facility: @fac_6).destroy_all
+      VaFacility.where.not(official_station_name: 'Farmington VA Clinic').destroy_all
+      visit practice_path(@practice)
+      # click on the generated marker to open the modal
+      find('div[style*="width: 31px"][title=""]').click
+      # make sure the user is taken to the VA facility's show page that corresponds with that marker's diffusion history
+      new_window = window_opened_by { click_link('Farmington VA Clinic (Farmington-New Mexico)') }
+      within_window new_window do
+        expect(page).to have_content('Farmington VA Clinic')
+        expect(page).to have_content('This facility has created')
+        expect(page).to have_content('Main number:')
+      end
     end
   end
 end
