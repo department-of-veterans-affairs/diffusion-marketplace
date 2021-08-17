@@ -81,31 +81,31 @@ namespace :va_facilities do
     # Sandbox: https://sandbox-api.va.gov/services/va_facilities/v0  Key: s4He5m5fEWbqJmoJzuomJ5eLBso92GUz
     # Production: https://api.va.gov/services/va_facilities/v0      Key: TBD - need to request prod key
 
-    # uri = URI('https://sandbox-api.va.gov/services/va_facilities/v0/facilities/all?apikey=' + API_KEY)
-    # res = Net::HTTP.get_response(uri)
-    # debugger
-    # if valid_json?(res.body)
-    #   #save file
-    #   # open file with JSON.parse
-    #   #File.delete("#{Rails.root}/lib/assets/va_facility.json")
-    #   #File.write("#{Rails.root}/lib/assets/va_facility.json", res.body)
-    #   va_facilities = File.read("#{Rails.root}/lib/assets/va_facility.json")
-    # else
-    #   puts "IN-VALID"
-    # end
-
-    debugger
-
     uri = URI('https://sandbox-api.va.gov/services/va_facilities/v0/facilities/all?apikey=' + API_KEY)
-    req = Net::HTTP::Get.new(uri)
-    req['ACCEPT'] = "application/geo+json"
-
-    res = Net::HTTP.get_response(req)
+    res = Net::HTTP.get_response(uri)
     debugger
-    response = Net::HTTP.start(uri.hostname) do |http|
-      http.request(req)
+    if valid_json?(res.body)
+      #save file
+      # open file with JSON.parse
+      #File.delete("#{Rails.root}/lib/assets/va_facility.json")
+      #File.write("#{Rails.root}/lib/assets/va_facility.csv", res.body)
+      va_facilities = File.read("#{Rails.root}/lib/assets/va_facility.json")
+    else
+      puts "IN-VALID"
     end
+
     debugger
+
+    # uri = URI('https://sandbox-api.va.gov/services/va_facilities/v0/facilities/all?apikey=' + API_KEY)
+    # req = Net::HTTP::Get.new(uri)
+    # req['ACCEPT'] = "application/geo+json"
+    #
+    # res = Net::HTTP.get_response(req)
+    # debugger
+    # response = Net::HTTP.start(uri.hostname) do |http|
+    #   http.request(req)
+    # end
+    # debugger
   end
 
   def valid_json?(json)
