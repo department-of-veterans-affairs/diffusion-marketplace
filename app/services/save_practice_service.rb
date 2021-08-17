@@ -56,6 +56,10 @@ class SavePracticeService
         update_initiating_facility
       end
 
+      if @practice_params["practice_origin_facilities_attributes"].present?
+        filter_practice_origin_facilities
+      end
+
       updated = @practice.update(@practice_params)
       rescue_method(:update_practice_partner_practices)
       rescue_method(:update_department_practices)
@@ -473,6 +477,20 @@ class SavePracticeService
       cat_hash = cat[1]
       if cat_hash[:_destroy] == 'false' && cat_hash[:name].blank? && cat_hash[:id].blank?
         @practice_params["categories_attributes"].delete(cat[0])
+      end
+    end
+  end
+
+  # remove duplicate practice origin facilities that have not yet been created
+  def filter_practice_origin_facilities
+    pof_params = @practice_params[:practice_origin_facilities_attributes]
+    unsaved_va_facility_ids = []
+    pof_params.each do |pof|
+      pof_hash = pof[1]
+      pof_va_facility_id = pof_hash[:va_facility_id]
+      if pof_hash[:id].blank?
+        pof_params.delete(pof[0]) if unsaved_va_facility_ids.include?(pof_va_facility_id)
+        unsaved_va_facility_ids << pof_va_facility_id
       end
     end
   end

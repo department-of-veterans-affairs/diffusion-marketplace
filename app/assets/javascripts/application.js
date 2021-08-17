@@ -56,3 +56,4 @@
 //= require local-time
 //= require visns/visn_infowindow
 //= require visns/visn_va_facility_infowindow
+//= require jquery.collapser.js
