@@ -48,7 +48,7 @@ describe 'Page Builder - Show', type: :feature do
   end
 
   it 'Should display the subpage hyperlink' do
-    expect(find('.usa-link')[:href]).to include('/programming/javascript')
+    expect(find_all('.usa-link').first[:href]).to include('/programming/javascript')
     expect(page).to have_content('Check out JavaScript')
     expect(page).to have_content('It is pretty cool too')
   end
@@ -68,7 +68,7 @@ describe 'Page Builder - Show', type: :feature do
   end
 
   it 'Should display the call to action' do
-    expect(find('.usa-button')[:href]).to include('https://www.google.com')
+    expect(find_all('.usa-button').last[:href]).to include('https://www.google.com')
     expect(page).to have_content('Curious about programming languages?')
     expect(page).to have_content('Search now')
   end
