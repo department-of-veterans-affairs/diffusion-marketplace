@@ -216,10 +216,6 @@ ActiveRecord::Schema.define(version: 2021_08_11_151550) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "clinical_id", id: false, force: :cascade do |t|
-    t.bigint "id"
-  end
-
   create_table "clinical_location_practices", force: :cascade do |t|
     t.bigint "clinical_location_id"
     t.bigint "practice_id"
@@ -972,7 +968,6 @@ ActiveRecord::Schema.define(version: 2021_08_11_151550) do
     t.string "highlight_body"
     t.boolean "retired", default: false, null: false
     t.string "retired_reason"
-    t.boolean "is_public", default: false
     t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
   end
