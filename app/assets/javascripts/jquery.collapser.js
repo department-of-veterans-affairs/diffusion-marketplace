@@ -48,7 +48,11 @@
 
             s.mode = s.o.mode;
             s.remaining = null;
-            s.ctrlButton = $.isFunction(s.o.controlBtn) ? s.o.controlBtn.call(s.e) : $('<a href="#" class="usa-button--unstyled dm-btn-primary padding-left-05" data-ctrl></a>');
+            s.ctrlButton = $.isFunction(s.o.controlBtn)
+              ? s.o.controlBtn.call(s.e)
+              : $(
+                  '<a href="#" class="dm-button--unstyled-primary padding-left-05" data-ctrl></a>'
+                );
 
             if(s.mode == 'lines'){
                 s.e.wrapInner('<div>');
