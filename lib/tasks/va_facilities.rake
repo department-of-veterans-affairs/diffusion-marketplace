@@ -85,6 +85,17 @@ namespace :va_facilities do
     res = Net::HTTP.get_response(uri)
     debugger
     if valid_json?(res.body)
+      @va_facs = JSON.parse(res.body)
+      @va_facs['features'].each do |fac|
+        puts fac
+      end
+
+ #      <% @plaqy['products'].each do |product|%>
+ # Name: <%= product['name'] %>
+ #      Price: $<%= product['price'] %>
+ #          <% end %>
+
+
       #save file
       # open file with JSON.parse
       #File.delete("#{Rails.root}/lib/assets/va_facility.json")
