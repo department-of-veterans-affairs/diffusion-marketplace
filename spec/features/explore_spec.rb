@@ -67,7 +67,7 @@ describe 'Explore all practices page', type: :feature do
     it 'should display the correct default content' do
       visit '/explore'
       expect(page).to have_content('COVID')
-      expect(page).to have_content('Telehealth')
+      expect(page).to have_content('TELEHEALTH')
       expect(page).to have_no_content('Main Level Cat')
       expect(page).to have_content('14 results')
       page.has_button?('Load more')
