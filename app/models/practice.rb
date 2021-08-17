@@ -277,10 +277,7 @@ class Practice < ApplicationRecord
   # This allows the practice model to be commented on with the use of the Commontator gem
   acts_as_commontable dependent: :destroy
 
-  #accepts_nested_attributes_for :practices_origin_facilities?
-  accepts_nested_attributes_for :practice_origin_facilities, allow_destroy: true, reject_if: proc { |attributes|
-    attributes['va_facility_id'].blank?
-  }
+  accepts_nested_attributes_for :practice_origin_facilities, allow_destroy: true, reject_if: :reject_practice_origin_facilities
   accepts_nested_attributes_for :practice_metrics, allow_destroy: true, reject_if: proc { |attributes| attributes['description'].blank? }
   accepts_nested_attributes_for :practice_awards, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
   accepts_nested_attributes_for :categories, allow_destroy: true, reject_if: proc { true }
@@ -425,5 +422,10 @@ class Practice < ApplicationRecord
   # add other practice attributes that need whitespace trimmed as needed
   def trim_whitespace
     self.name&.strip!
+  end
+
+  # reject the PracticeOriginFacility if the facility field is blank OR the practice already has a PracticeOriginFacility with the same va_facility_id
+  def reject_practice_origin_facilities(attributes)
+    attributes['va_facility_id'].blank? || self.practice_origin_facilities.where(va_facility_id: attributes['va_facility_id'].to_i).exists?
   end
 end

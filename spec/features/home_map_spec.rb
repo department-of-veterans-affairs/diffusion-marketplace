@@ -4,10 +4,10 @@ describe 'Map of Diffusion', type: :feature, js: true do
   before do
     @user = User.create!(email: 'spongebob.squarepants@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test Facility', initiating_facility_type: 'other', tagline: 'Test tagline')
-    @pr_1 = Practice.create!(name: 'Practice A', approved: true, published: true, tagline: 'Practice A Tagline', date_initiated: Time.now(), user: @user)
-    @pr_2 = Practice.create!(name: 'Practice B', approved: true, published: true, tagline: 'Practice B Tagline', date_initiated: Time.now(), user: @user)
-    @pr_3 = Practice.create!(name: 'Practice C', approved: true, published: true, tagline: 'Practice C Tagline', date_initiated: Time.now(), user: @user)
-    @pr_4 = Practice.create!(name: 'Practice D', approved: true, published: true, tagline: 'Practice D Tagline', date_initiated: Time.now(), user: @user)
+    @pr_1 = Practice.create!(name: 'Practice A', approved: true, summary: 'Test summary', published: true, tagline: 'Practice A Tagline', date_initiated: Time.now(), user: @user)
+    @pr_2 = Practice.create!(name: 'Practice B', approved: true, summary: 'Test summary', published: true, tagline: 'Practice B Tagline', date_initiated: Time.now(), user: @user)
+    @pr_3 = Practice.create!(name: 'Practice C', approved: true, summary: 'Test summary', published: true, tagline: 'Practice C Tagline', date_initiated: Time.now(), user: @user)
+    @pr_4 = Practice.create!(name: 'Practice D', approved: true, summary: 'Test summary', published: true, tagline: 'Practice D Tagline', date_initiated: Time.now(), user: @user)
     @visn_1 = Visn.create!(name: 'VISN 1', number: 2)
     @visn_2 = Visn.create!(name: 'VISN 2', number: 3)
     @fac_1 = VaFacility.create!(
@@ -19,7 +19,8 @@ describe 'Map of Diffusion', type: :feature, js: true do
       longitude: "-69.70413586",
       street_address_state: "ME",
       rurality: "R",
-      fy17_parent_station_complexity_level: "1c-High Complexity"
+      fy17_parent_station_complexity_level: "1c-High Complexity",
+      station_phone_number: "207-623-2123 x"
     )
     @fac_2 = VaFacility.create!(
       visn: @visn_2,
@@ -30,7 +31,8 @@ describe 'Map of Diffusion', type: :feature, js: true do
       longitude: "-73.76256942",
       street_address_state: "NY",
       rurality: "U",
-      fy17_parent_station_complexity_level: "1b-High Complexity"
+      fy17_parent_station_complexity_level: "1b-High Complexity",
+      station_phone_number: "207-623-2123 x"
     )
     @fac_3 = VaFacility.create!(
       visn: @visn_2,
@@ -41,7 +43,8 @@ describe 'Map of Diffusion', type: :feature, js: true do
       longitude: "-73.89691934",
       street_address_state: "NY",
       rurality: "U",
-      fy17_parent_station_complexity_level: "1a-High Complexity"
+      fy17_parent_station_complexity_level: "1a-High Complexity",
+      station_phone_number: "207-623-2123 x"
     )
     dh_1 = DiffusionHistory.create!(practice: @pr_1, va_facility: @fac_1)
     DiffusionHistoryStatus.create!(diffusion_history: dh_1, status: 'Completed')
@@ -245,5 +248,31 @@ describe 'Map of Diffusion', type: :feature, js: true do
     end
     find('.close').click
     expect(page).to have_no_css('.modal-content')
+  end
+
+  it 'should allow the user to visit each adoption\'s VA facility page' do
+    marker_div = 'div[style*="width: 31px"][title=""]'
+    # click on the first generated marker
+    all(marker_div).first.click
+    # in the marker modal, make sure the user is taken to the VA facility's show page that corresponds with that marker's diffusion history
+    new_window_1 = window_opened_by { click_link('Caribou VA Clinic') }
+    within_window new_window_1 do
+      expect(page).to have_content('Caribou VA Clinic')
+      expect(page).to have_content('This facility has created')
+      expect(page).to have_content('Main number:')
+    end
+
+    # switch back to the first window and test the larger modal after clicking 'View more'
+    page.driver.browser.switch_to.window(page.driver.browser.window_handles.first)
+    find('#homeMapMarkerViewMoreTrigger-402GA').click
+
+    within(:css, '#homeMapMarkerViewMoreModal-402GA') do
+      new_window_2 = window_opened_by { click_link('Caribou VA Clinic') }
+      within_window new_window_2 do
+        expect(page).to have_content('Caribou VA Clinic')
+        expect(page).to have_content('This facility has created')
+        expect(page).to have_content('Main number:')
+      end
+    end
   end
 end
