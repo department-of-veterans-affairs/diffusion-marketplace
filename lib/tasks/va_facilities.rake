@@ -86,6 +86,7 @@ namespace :va_facilities do
     res = Net::HTTP.get_response(uri)
     debugger
     ctr = 0
+    tot_ctr = 0
     if valid_json?(res.body)
       @va_facs = JSON.parse(res.body)
       @va_facs['features'].each do |facs|
@@ -97,15 +98,23 @@ namespace :va_facilities do
               uri_2 = URI('https://sandbox-api.va.gov/services/va_facilities/v0/facilities/' + facs["properties"]["id"] + '?apikey=' + API_KEY)
               res_2 = Net::HTTP.get_response(uri_2)
               if valid_json?(res_2.body)
+                #debugger
+                #File.write("#{Rails.root}/lib/assets/va_facility.json", res_2.body)
+                #debugger
                 #puts res_2.body
                 @va_fac = JSON.parse(res_2.body)
+                #insert record if ID - 'station_number' in DB..  not found.. otherwise just update the meta data if changed....
+                # 
+
               end
               ctr += 1
               if ctr % 10 == 0
                 puts ctr
               end
         end
+        tot_ctr += 1
       end
+      puts tot_ctr
     end
 
     debugger
