@@ -81,28 +81,31 @@ namespace :va_facilities do
     # Sandbox: https://sandbox-api.va.gov/services/va_facilities/v0  Key: s4He5m5fEWbqJmoJzuomJ5eLBso92GUz
     # Production: https://api.va.gov/services/va_facilities/v0      Key: TBD - need to request prod key
 
+    # get all facilities....  fyi - doesn't contain all the facility meta data.... have to call individual facility json for all properties.
     uri = URI('https://sandbox-api.va.gov/services/va_facilities/v0/facilities/all?apikey=' + API_KEY)
     res = Net::HTTP.get_response(uri)
     debugger
+    ctr = 0
     if valid_json?(res.body)
       @va_facs = JSON.parse(res.body)
-      @va_facs['features'].each do |fac|
-        puts fac
+      @va_facs['features'].each do |facs|
+        vha_id = facs["properties"]["id"]
+        if vha_id.include?("vha_")  #only care about VHA facilities...
+              # puts facs["properties"]["id"]
+              # puts facs["properties"]["name"]
+              # get the individual facility meta data....
+              uri_2 = URI('https://sandbox-api.va.gov/services/va_facilities/v0/facilities/' + facs["properties"]["id"] + '?apikey=' + API_KEY)
+              res_2 = Net::HTTP.get_response(uri_2)
+              if valid_json?(res_2.body)
+                #puts res_2.body
+                @va_fac = JSON.parse(res_2.body)
+              end
+              ctr += 1
+              if ctr % 10 == 0
+                puts ctr
+              end
+        end
       end
-
- #      <% @plaqy['products'].each do |product|%>
- # Name: <%= product['name'] %>
- #      Price: $<%= product['price'] %>
- #          <% end %>
-
-
-      #save file
-      # open file with JSON.parse
-      #File.delete("#{Rails.root}/lib/assets/va_facility.json")
-      #File.write("#{Rails.root}/lib/assets/va_facility.csv", res.body)
-      va_facilities = File.read("#{Rails.root}/lib/assets/va_facility.json")
-    else
-      puts "IN-VALID"
     end
 
     debugger
