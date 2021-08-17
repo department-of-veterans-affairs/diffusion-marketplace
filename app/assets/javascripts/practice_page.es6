@@ -167,6 +167,13 @@
         })
     }
 
+    function seeMoreLinkText() {
+        $(".origin-facilities-display-text").collapser({
+            mode: 'chars',
+            truncate: 180
+        });
+    }
+
     function executePracticeCommentsFunctions() {
         highlightSidebarSectionWhenInView();
         setUpShowMoreOrLessButtons();
@@ -176,6 +183,7 @@
         expandReplyTextArea();
         toggleAdoptionStatusModal();
         trackPracticeContact();
+        seeMoreLinkText();
     }
 
     $document.on('turbolinks:load', executePracticeCommentsFunctions);
@@ -198,6 +206,7 @@ function seeMoreText() {
         moreText.style.display = "inline";
     }
 }
+
 function seeMoreTextAwards() {
     var dots = document.getElementById("dots_award");
     var moreText = document.getElementById("more_text_award");
