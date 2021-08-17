@@ -165,7 +165,7 @@ class User < ApplicationRecord
         user.phone_number = entry[:telephoneNumber][0]
 
         # attempt to resolve where the User is VA facility wise
-        facilities = VaFacility.cached_va_facilities.select(:street_address, :street_address_zip_code, :station_number, :official_station_name)
+        facilities = VaFacility.cached_va_facilities
         address = entry[:streetAddress][0]
         postal_code = entry[:postalCode][0]
         # Underscore for _location variable to not get confused with the User attribute location
