@@ -104,7 +104,15 @@ namespace :va_facilities do
                 #puts res_2.body
                 @va_fac = JSON.parse(res_2.body)
                 #insert record if ID - 'station_number' in DB..  not found.. otherwise just update the meta data if changed....
-                # 
+                #Does Record exist?
+                debugger
+                if facility_exists(facs["properties"]["id"])
+                  debugger
+                  #update....
+                else
+                  debugger
+                  #insert...
+                end
 
               end
               ctr += 1
@@ -136,6 +144,14 @@ namespace :va_facilities do
     return true
   rescue JSON::ParserError => e
     return false
+  end
+
+  def facility_exists(facility_station_number)
+    return VaFacility.exists?(station_number: strip_station_number_text(facility_station_number))
+  end
+  def strip_station_number_text(facility_station_number)
+    debugger
+    return facility_station_number.include?('_') ? facility_station_number.split('_')[1] : facility_station_number
   end
 
 end
