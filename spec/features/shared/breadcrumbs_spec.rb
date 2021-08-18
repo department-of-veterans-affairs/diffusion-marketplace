@@ -32,6 +32,7 @@ describe 'Breadcrumbs', type: :feature do
       end
 
       click_on('Diffusion of Excellence')
+      sleep 0.2
       expect(page).to be_accessible.according_to :wcag2a, :section508
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
