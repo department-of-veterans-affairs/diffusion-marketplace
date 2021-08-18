@@ -30,9 +30,8 @@ describe 'Breadcrumbs', type: :feature do
         expect(page).to have_content('Home')
         expect(page).to have_content('Partners')
       end
-
       click_on('Diffusion of Excellence')
-      sleep 0.2
+      sleep 0.1
       expect(page).to be_accessible.according_to :wcag2a, :section508
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
@@ -91,7 +90,7 @@ describe 'Breadcrumbs', type: :feature do
         expect(page).to have_content('The Best Practice Ever!')
         expect(page).to have_content('Edit')
       end
-
+      expect(page).to have_selector('#instructions', visible: true)
       find_all('.usa-sidenav__item')[1].click
 
       within(:css, '#breadcrumbs') do
@@ -99,7 +98,7 @@ describe 'Breadcrumbs', type: :feature do
         expect(page).to have_content('The Best Practice Ever!')
         expect(page).to have_content('Edit')
       end
-
+      expect(page).to have_selector('#dm-practice-nav', visible: true)
       find_all('.usa-sidenav__item')[0].click
 
       within(:css, '#breadcrumbs') do

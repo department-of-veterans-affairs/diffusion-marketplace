@@ -241,7 +241,6 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         click_save
         visit_practice_show
         expect(page).to have_no_content('VHA Shark Tank Winnder')
-        expect(page).to have_no_content('Other')
         expect(page).to have_content('QUERI Veterans Choice Act Award')
         expect(page).to have_content('Diffusion of Excellence Promising Practice')
       end
@@ -322,7 +321,6 @@ describe 'Practice editor - introduction', type: :feature, js: true do
           page.has_checked_field?('Environmental Ser...')
         end
         visit_practice_show
-        expect(page).to have_no_content('Other')
         expect(page).to have_no_content('COVID')
         expect(page).to have_content('ENVIRONMENTAL SERVICES')
         expect(page).to have_content('PULMONARY CARE')
