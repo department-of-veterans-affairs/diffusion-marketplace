@@ -3,24 +3,34 @@
     <%= render partial: "shared/messages", locals: {small_text: false} %>
   </div>
   <!-- "Welcome" section -->
-  <section class="dm-gradient-banner-282 margin-bottom-9" role="region" aria-label="Homepage welcome banner">
+  <div class="dm-gradient-banner-318 position-absolute pin-x">
+  </div>
+  <section class="homepage-welcome-banner" role="region" aria-label="Homepage welcome banner">
     <div class="grid-container height-full">
       <div class="grid-row height-full flex-align-center">
-        <div class="grid-col-7">
-          <h2 class="usa-prose-h2 text-white margin-top-0 margin-bottom-105">Welcome to the Diffusion Marketplace</h2>
-          <p class="usa-prose-body text-white margin-bottom-2">
-            The Diffusion Marketplace is hosted by VHA’s Diffusion of Excellence, whose mission is to identify, test, and spread promising healthcare practices across VA and beyond.
-          </p>
-          <%= link_to 'Learn more', explore_path, class: 'dm-homepage-link-alt-gold' %>
-        </div>
-        <div class="grid-col-5">
-
+        <div class="grid-col-12">
+          <h1 class="usa-prose-h1 text-white margin-top-0 margin-bottom-4">Welcome to the Diffusion Marketplace</h1>
+          <div class="grid-row grid-gap-3">
+            <div class="grid-col-7">
+              <p class="usa-prose-body text-white margin-bottom-2">
+                The Diffusion Marketplace is hosted by VHA’s Diffusion of Excellence, whose mission is to identify, test, and spread promising healthcare practices across VA and beyond.
+              </p>
+              <%= link_to 'Learn more', explore_path, class: 'dm-alt-link-gold' %>
+            </div>
+            <div class="grid-col-5 homepage-banner-image-container position-absolute right-neg-105 text-white">
+              <img
+                class="display-block"
+                src="<%= Practice.where(id: 25).first.main_display_image_s3_presigned_url(:thumb) %>"
+                alt="Welcome banner image"/>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
-  <section class="homepage-search grid-container padding-top-5" role="region" aria-label="Homepage search section">
-    <form id="dm-homepage-search-form" class="usa-search margin-bottom-205" role="search">
+
+  <section class="homepage-search grid-container margin-top-10 margin-bottom-128" role="region" aria-label="Homepage search section">
+    <form id="dm-homepage-search-form" class="usa-search margin-bottom-2" role="search">
       <label class="usa-sr-only" for="dm-homepage-search-form">
         Homepage search
       </label>
@@ -32,78 +42,41 @@
       </div>
     </form>
     <p class="usa-prose-body">
-      <span>Just browsing?</span> <%= link_to 'Explore all practices', explore_path, class: 'dm-homepage-link-alt' %>
+      <span>Just browsing?</span> <%= link_to 'Explore all practices', explore_path, class: 'dm-primary-link' %>
     </p>
   </section>
-<!--  <section class="homepage-explore-all-section bg-primary-darker display-flex flex-align-center margin-bottom-5">-->
-<!--    <div class="grid-container">-->
-<!--      <div class="grid-row">-->
-<!--        <div class="grid-col-3 display-flex tablet:flex-justify-center desktop:margin-top-2">-->
-<!--          <div>-->
-<!--            <i class="fas fa-laptop-medical fa-9x"></i>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div class="tablet:grid-col-9 desktop:grid-col-9 ie-welcome-container text-white">-->
-<!--          <h1 class="desktop:usa-prose-h1 usa-prose-intro tablet:margin-top-0">-->
-<!--            Find the next important or life-saving practice to adopt at your VA facility.-->
-<!--          </h1>-->
-          <%#= link_to 'Explore all practices', explore_path, class: 'usa-button dm-button--inverse-secondary desktop:usa-button--big homepage-explore-all-button width-auto' %>
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </section>-->
-
-  <section class="grid-container banner-links-section">
-    <%= link_to '/recommended-for-you', class: 'recommended-for-you-banner-link', 'aria-label': 'Go to recommended for you page', 'tabindex': '-1', 'aria-hidden': 'true' do %>
-      <div class="grid-row usa-alert usa-alert--info usa-alert--no-icon recommended-for-you-banner display-flex margin-bottom-5">
-        <div class="display-none desktop:display-flex desktop:grid-col-3 flex-justify-center">
-          <i class="fas fa-user-circle fa-5x"></i>
-        </div>
-        <div class="grid-col-10 padding-left-4 desktop:grid-col-6 desktop:padding-left-0">
-            <h2 class="usa-prose-h2 font-sans-xl line-height-37px margin-bottom-2 margin-top-0 dm-word-break-break-word dm-hyphens-auto">Recommended for you</h2>
-            <p class="line-height-26">Explore practices that are relevant to your location, role, and saved searches.</p>
-        </div>
-        <div class="grid-col-2 display-flex flex-align-center flex-justify-end padding-right-3 desktop:grid-col-3 desktop:padding-right-5">
-          <i class="fas fa-chevron-right fa-2x"></i>
-        </div>
-      </div>
-    <% end %>
-
-    <%= link_to '/covid-19', class: 'covid-banner-link', 'aria-label': 'Go to COVID-19 landing page', 'tabindex': '-1', 'aria-hidden': 'true' do %>
-      <div class="grid-row covid-banner display-flex margin-bottom-5">
-        <div class="display-none desktop:display-flex desktop:grid-col-3 flex-justify-center desktop:margin-top-105">
-          <i class="fas fa-viruses fa-6x"></i>
-        </div>
-        <div class="grid-col-10 padding-left-3 desktop:grid-col-6 desktop:padding-left-0">
-          <h2 class="usa-prose-h2 font-sans-xl line-height-37px margin-bottom-2 margin-top-0">COVID-19</h2>
-          <p class="line-height-26">
-            The Diffusion Marketplace has practices that help VHA respond to COVID-19. We have assembled a group of practices for frontline staff and administrators responding
-            to the changing medical landscape.
-          </p>
-        </div>
-        <div class="grid-col-2 display-flex flex-align-center flex-justify-end padding-right-3 desktop:grid-col-3 desktop:padding-right-5">
-          <i class="fas fa-chevron-right fa-2x"></i>
-        </div>
-      </div>
-    <% end %>
-  </section>
+  <%# TODO: Write conditional to only show this partial if there's a currently selected 'Featured' topic %>
+  <%= render partial: 'home/featured_section', locals: {
+      section_name: 'topic',
+      text_alignment: 'right',
+      # TODO: Add topic image source
+      image_source: "#{Practice.where(id: 25).first.main_display_image_s3_presigned_url(:thumb)}",
+      # TODO: Interpolate topic name in front of 'featured topic image' for alt text
+      image_alt_text: 'featured topic image',
+      # TODO: Add name of topic for h2
+      featured_h2: 'Featured topic name',
+      # TODO: Add topic text for body text
+      featured_body_text: 'Proin blandit felis tincidunt justo luctus, rutrum bibendum ante accumsan. Duis eros lorem, ullamcorper a semper nec, rhoncus eu sapien. Sed tortor nisi, consequat a neque sed,
+          posuere ornare felis. Maecenas rutrum quis orci sed porta. Proin posuere metus in lorem placerat semper. Aenean felis mi, auctor sed pretium fringilla, ornare quis ex.',
+      # TODO: Add topic URL here
+      featured_topic_url: '/',
+      featured_link_text: 'topic page'
+    }
+  %>
 
   <% if @highlighted_pr.present? %>
-    <section class="bg-base-lightest margin-bottom-5 padding-x-2 padding-y-5 tablet:padding-x-0 tablet:margin-y-15 dm-highlighted-practice">
-      <div class="tablet:grid-container dm-highlighted-practice-content">
-        <div class="tablet:grid-col-5 desktop:grid-col-7 dm-highlighted-practice-text">
-          <h2 class="margin-top-0 font-sans-xl line-height-37px">
-            <%= @highlighted_pr.highlight_title.blank? ? 'Highlighted by the VA this month' : @highlighted_pr.highlight_title %>
-          </h2>
-          <% if @highlighted_pr.highlight_body %>
-            <p class="margin-top-1 line-height-sans-5"><%= @highlighted_pr.highlight_body %></p>
-          <% end %>
-        </div>
-        <div class="margin-top-3 desktop:grid-row desktop:grid-gap-3 dm-highlighted-practice-card tablet:margin-top-0">
-          <%= render partial: 'shared/practice_card', locals: { practice: @highlighted_pr } %>
-        </div>
-      </div>
-    </section>
+    <%= render partial: 'home/featured_section', locals: {
+        section_name: 'practice',
+        text_alignment: 'left',
+        # TODO: Change the image source to the new image type
+        image_source: "#{@highlighted_pr.main_display_image_s3_presigned_url(:thumb)}",
+        image_alt_text: "#{@highlighted_pr.name} featured practice image",
+        featured_h2: "#{@highlighted_pr.name}",
+        featured_body_text: "#{@highlighted_pr.highlight_body}",
+        featured_topic_url: "/practices/#{@highlighted_pr.tagline}",
+        featured_link_text: 'practice'
+      }
+    %>
   <% end %>
 
   <section class="grid-container">

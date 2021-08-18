@@ -1,0 +1,19 @@
+<section class="featured-<%= section_name %> margin-bottom-128 grid-container" role="region" aria-label="Featured <%= section_name %> section">
+  <div class="grid-row grid-gap-3<%= ' reverse-featured-rows' if text_alignment === 'left' %>">
+    <div class="grid-col-5 homepage-featured-<%= section_name %>-image-container">
+      <img
+        class="display-block"
+        src="<%= image_source %>"
+        alt="<%= image_alt_text %>"/>
+    </div>
+    <div class="grid-col-1"></div>
+    <div class="grid-col-6">
+      <h6 class="usa-prose-h6 margin-top-0 margin-bottom-2">Featured <%= section_name %></h6>
+      <h2 class="usa-prose-h2 margin-top-0 margin-bottom-2"><%= featured_h2 %></h2>
+      <p class="usa-prose-body margin-bottom-2">
+        <%= featured_body_text %>
+      </p>
+      <a href="<%= featured_topic_url %>" class="dm-primary-link">See <%= featured_link_text %></a>
+    </div>
+  </div>
+</section>
