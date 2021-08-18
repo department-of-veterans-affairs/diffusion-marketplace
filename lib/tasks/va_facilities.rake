@@ -78,17 +78,21 @@ namespace :va_facilities do
 
   task :update_va_facilities_via_lighthouse_api => :environment do
     API_KEY = "s4He5m5fEWbqJmoJzuomJ5eLBso92GUz"
+    deleted_facilities = []
     # Sandbox: https://sandbox-api.va.gov/services/va_facilities/v0  Key: s4He5m5fEWbqJmoJzuomJ5eLBso92GUz
     # Production: https://api.va.gov/services/va_facilities/v0      Key: TBD - need to request prod key
 
     # get all facilities....  fyi - doesn't contain all the facility meta data.... have to call individual facility json for all properties.
     uri = URI('https://sandbox-api.va.gov/services/va_facilities/v0/facilities/all?apikey=' + API_KEY)
     res = Net::HTTP.get_response(uri)
-    debugger
     ctr = 0
     tot_ctr = 0
     if valid_json?(res.body)
+      debugger
       @va_facs = JSON.parse(res.body)
+      deleted_facilities = get_deleted_facilities(@va_facs)
+
+
       @va_facs['features'].each do |facs|
         vha_id = facs["properties"]["id"]
         if vha_id.include?("vha_")  #only care about VHA facilities...
@@ -150,8 +154,24 @@ namespace :va_facilities do
     return VaFacility.exists?(station_number: strip_station_number_text(facility_station_number))
   end
   def strip_station_number_text(facility_station_number)
-    debugger
     return facility_station_number.include?('_') ? facility_station_number.split('_')[1] : facility_station_number
+  end
+
+  def get_deleted_facilities(va_facilities)
+    deleted_facilities = []
+    debugger
+    VaFacility.all.each do |fac|
+      found = false
+      va_facilities["features"].each do |api_fac|
+        if strip_station_number_text(api_fac["properties"]["id"]) == fac.station_number
+          found = true
+          break
+        end
+      end
+      deleted_facilities << fac.station_number if !found
+    end
+    debugger
+    deleted_facilities
   end
 
 end
