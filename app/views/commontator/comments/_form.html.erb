@@ -94,21 +94,21 @@
       <% if config.new_comment_style == :t && new_record && comment.parent.nil? %>
         <%=
           form.submit(
-            t('commontator.comment.actions.cancel'), name: 'cancel', class: 'comment-cancel usa-button--outline dm-btn-primary',
+            t('commontator.comment.actions.cancel'), name: 'cancel', class: 'comment-cancel usa-button usa-button--outline',
               id: "commontator-thread-#{@commontator_thread.id}-new-comment-submit"
           )
         %>
       <% else %>
         <%=
           form.submit(
-            t('commontator.comment.actions.cancel'), name: 'cancel', class: 'usa-button usa-button--outline dm-btn-primary comment-cancel'
+            t('commontator.comment.actions.cancel'), name: 'cancel', class: 'usa-button usa-button--outline comment-cancel'
           )
         %>
       <% end %>
         <% if comment.parent %>
-          <%= form.submit t("commontator.comment.actions.#{new_record ? 'create' : 'update'}"), name: 'reply', class: 'comment-submit margin-right-0 usa-button dm-btn-primary', id: "#{comment.parent && new_record ? 'submit-reply' : 'submit-reply-edit'}" %>
+          <%= form.submit t("commontator.comment.actions.#{new_record ? 'create' : 'update'}"), name: 'reply', class: 'margin-right-0 usa-button usa-button--primary', id: "#{comment.parent && new_record ? 'submit-reply' : 'submit-reply-edit'}" %>
         <% else %>
-          <%= form.submit t("commontator.comment.actions.#{new_record ? 'create' : 'update'}"), class: "comment-submit margin-right-0 usa-button dm-btn-primary", id: "#{new_record ? 'submit-comment' : 'submit-comment-edit'}", value: 'Post' %>
+          <%= form.submit t("commontator.comment.actions.#{new_record ? 'create' : 'update'}"), class: "margin-right-0 usa-button usa-button--primary", id: "#{new_record ? 'submit-comment' : 'submit-comment-edit'}", value: 'Post' %>
         <% end %>
     </div>
   </div>

@@ -1,7 +1,7 @@
 <% provide :head_tags do %>
   <%= javascript_include_tag 'practice_page', 'data-turbolinks-track': 'reload' %>
 <% end %>
-<section class="usa-section padding-y-0">
+<section class="usa-section padding-y-0 margin-bottom-1">
   <div class="grid-container position-relative">
     <div class="grid-row grid-gap">
       <div id="practice_show" class="grid-col-12 overview-section practice-section">
@@ -11,12 +11,12 @@
             <div class="usa-alert__body">
               <h3 class="usa-alert__heading">This practice will not be shown in the marketplace because it is:</h3>
               <% unless @practice.published %>
-                <div class="badge-container un-published-practice">
+                <div>
                   Not Published
                 </div>
               <% end %>
               <% unless @practice.approved %>
-                <div class="badge-container un-approved-practice">
+                <div>
                   Not Approved
                 </div>
               <% end %>
@@ -52,19 +52,19 @@
 <%= render partial: 'practices/show/introduction/introduction' %>
 <div class="grid-container position-relative z-top">
   <div id="dm-practice-nav" class="z-top mobile-hide">
-    <ul id="dm-tabnav" class="usa-sidenav dm-tabnav margin-bottom-1 show-page-sidenav">
+    <ul class="usa-sidenav margin-bottom-1 show-page-sidenav">
       <li class="usa-sidenav__item">
-        <a href="#overview" class="dm-tab top-tab scroll-to sidebar-overview" data-target="#overview" data-turbolinks="false">Overview</a>
+        <a href="#overview" class="top-tab scroll-to sidebar-overview" data-target="#overview" data-turbolinks="false">Overview</a>
       </li>
       <li class="usa-sidenav__item">
-        <a href="#implementation" class="dm-tab bottom-tab scroll-to sidebar-implementation" data-target="#implementation" data-turbolinks="false">Implementation</a>
+        <a href="#implementation" class="bottom-tab scroll-to sidebar-implementation" data-target="#implementation" data-turbolinks="false">Implementation</a>
       </li>
       <li class="usa-sidenav__item">
-        <a href="#contact" class="dm-tab bottom-tab scroll-to sidebar-contact" data-target="#contact" data-turbolinks="false">Contact</a>
+        <a href="#contact" class="bottom-tab scroll-to sidebar-contact" data-target="#contact" data-turbolinks="false">Contact</a>
       </li>
       <% if @practice.origin_story.present? || @practice.va_employees.any? %>
         <li class="usa-sidenav__item">
-          <a href="#about" class="dm-tab bottom-tab scroll-to sidebar-about" data-target="#about" data-turbolinks="false">About</a>
+          <a href="#about" class="bottom-tab scroll-to sidebar-about" data-target="#about" data-turbolinks="false">About</a>
         </li>
       <% end %>
     </ul>
@@ -76,12 +76,12 @@
       metrics_path = practice_metrics_path(@practice)
     %>
     <div class="text-center margin-bottom-1">
-      <%= mail_to main_email, 'Email practice', subject: "Question about #{@practice.name}", cc: cc_emails, class: 'usa-button dm-btn-primary width-full display-flex flex-align-center flex-justify-center height-5
+      <%= mail_to main_email, 'Email practice', subject: "Question about #{@practice.name}", cc: cc_emails, class: 'usa-button  width-full display-flex flex-align-center flex-justify-center
       dm-email-practice', 'aria-label': "side nav email #{main_email}", data: {practice_id: @practice.id} %>
     </div>
     <% if @practice.user_id == current_user.id || current_user.roles.any? || is_user_an_editor_for_practice(@practice, current_user) %>
       <div class="text-center">
-        <%= link_to practice_metrics_path(@practice), id: 'edit-link-in-nav', class: 'usa-button dm-btn-base width-full' do %>
+        <%= link_to practice_metrics_path(@practice), id: 'edit-link-in-nav', class: 'usa-button usa-button--secondary width-full' do %>
           <i class="fas fa-edit margin-right-1"></i>Edit practice
         <% end %>
       </div>
@@ -89,10 +89,10 @@
   </div>
 </div>
 
-<div class="practice-mobile-nav padding-1 z-top desktop:display-none display-flex justify-center">
-  <%= mail_to main_email, 'Email', cc: cc_emails, id: 'email-link-in-mobile-nav', class: 'width-100 usa-button dm-btn-primary display-flex flex-align-center flex-justify-center height-5 x0-875-right', 'aria-label': "Mobile nav email #{main_email}"  %>
+<div class="practice-mobile-nav padding-1 z-top desktop:display-none display-flex flex-justify-center">
+  <%= mail_to main_email, 'Email', cc: cc_emails, id: 'email-link-in-mobile-nav', class: 'width-full usa-button  display-flex flex-align-center flex-justify-center margin-right-2', 'aria-label': "Mobile nav email #{main_email}"  %>
   <% if @practice.user_id == current_user.id || current_user.roles.any? %>
-      <%= link_to 'Edit', instructions_path, id: 'edit-link-in-mobile-nav', class: 'width-100 usa-button dm-btn-base x0-right' %>
+      <%= link_to 'Edit', instructions_path, id: 'edit-link-in-mobile-nav', class: 'width-full usa-button usa-button--secondary margin-right-0' %>
   <% end %>
 </div>
 
@@ -138,7 +138,7 @@
       <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
       <div class="desktop:grid-col-9 grid-col-12">
         <div class="metric-section practice-section">
-          <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+          <div class="height-05 width-8 border-top-05 border-primary-dark"></div>
           <h3 class="margin-y-2 line-height-26 font-sans-lg">Diffusion tracker</h3>
           <%= render partial: 'practices/show/overview/diffusion_tracker/diffusion_map' %>
           <%= render partial: 'practices/show/overview/diffusion_tracker/adoptions' %>

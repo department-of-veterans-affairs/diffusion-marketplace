@@ -1,5 +1,3 @@
-@import "../variables/colors";
-
 .successful-modal-icon, .in-progress-modal-icon, .unsuccessful-modal-icon {
   @media screen and (min-width: 1024px) {
     display: none !important;
@@ -46,11 +44,11 @@
     .fa-times-circle {
       font-size: 1.5em !important;
       &:hover {
-        color: $dm-color-alt-lighter-grey;
+        color: color($theme-color-base-lightest);
       }
 
       &:active {
-        color: $dm-color-gray-cool-30;
+        color: color($theme-color-base-light);
       }
     }
   }
@@ -97,7 +95,7 @@
 
 /* The Close Button */
 .close {
-  color: white;
+  color: color($theme-color-dm-white);
   float: right;
   font-size: 23.3px;
   font-weight: bold;
@@ -115,16 +113,16 @@
 
 .modal-header {
   padding: 2px 16px;
-  background-color: $dm-color-blue-50v;
-  color: white;
+  background-color: color($theme-color-primary);
+  color: color($theme-color-dm-white);
 }
 
 .modal-body {padding: 2px 16px;}
 
 .modal-footer {
   padding: 2px 16px;
-  background-color: $dm-color-blue-50v;
-  color: white;
+  background-color: color($theme-color-primary);
+  color: color($theme-color-dm-white);
 }
 
 /* map marker modal */
@@ -150,7 +148,7 @@
   }
 
   button {
-    color: $dm-color-base !important;
+    color: color($theme-color-base-ink) !important;
     margin-right: 4px;
 
     i {

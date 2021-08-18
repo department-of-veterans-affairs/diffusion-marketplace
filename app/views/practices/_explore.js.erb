@@ -1,5 +1,5 @@
 var sortSelect = '#dm_sort_option';
-var catBtn = '.dm-category-btn';
+var catBtn = '.js-category-tag';
 var loadMoreBtn = '.dm-load-more-btn';
 var loadMoreContainer = '.dm-load-more-container';
 
@@ -68,7 +68,7 @@ function setDataAndMakeRequest(params = { isNextPage }) {
 }
 
 function setCategories() {
-  var selectedBtns = $('.dm-selected');
+  var selectedBtns = $('.dm-tag--big--action-primary--selected');
   var selectedIds = [];
   for (var i = 0; i < selectedBtns.length; i++) {
     var catId = $(selectedBtns[i]).data('catId');
@@ -103,7 +103,7 @@ function sendAjaxRequest(data) {
       if ( result.next !== null ) {
         $(loadMoreContainer).removeClass('display-none');
         $(loadMoreContainer).empty();
-        $('.dm-load-more-container').append('<button name="button" type="button" class="usa-button--outline dm-btn-base dm-load-more-btn width-auto" data-next="' + result.next + '">Load more</button>');
+        $('.dm-load-more-container').append('<button name="button" type="button" class="dm-button--outline-secondary dm-load-more-btn width-auto" data-next="' + result.next + '">Load more</button>');
         loadMoreEventListener();
       } else {
         $(loadMoreContainer).empty();

@@ -10,29 +10,27 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
- *= require_tree ./dm
- *= require_tree ./dm_uswds
- *= require_self
  *= require jquery-ui/tooltip
-  *= require cropper
+ *= require cropper
  *= require commontator/application
  */
 
-@import 'dm_uswds/theme/uswds-theme-typography';
-@import 'dm_uswds/theme/_uswds-theme-custom-styles';
 @import "font-awesome-sprockets";
 @import "font-awesome";
+// import of uswds files matter, see: https://designsystem.digital.gov/documentation/developers/#sass-and-theme-settings
+@import 'dm_uswds/theme/uswds-theme-general';
+@import 'dm_uswds/theme/uswds-theme-typography';
+@import 'dm_uswds/theme/uswds-theme-spacing';
+@import 'dm_uswds/theme/uswds-theme-color';
+@import 'dm_uswds/theme/uswds-theme-utilities';
+@import "uswds/uswds";
+@import 'dm_uswds/theme/uswds-theme-custom-styles';
+@import "dm_uswds/theme/uswds-theme-components";
+@import "../stylesheets/commontator/**/*";
+@import "../stylesheets/dm/elements";
+@import "../stylesheets/dm/**/*";
 
-html {
-  height: 100%;
-  box-sizing: border-box;
-}
-
-body {
-  min-height: 100%;
-  position: relative;
-}
-
+// TODO: move these styles
 #main-content {
   position: relative;
   // Add padding equal to the height of the current footer plus 40px for spacing between 'Return to top' button and the element above it based on Figma designs
@@ -43,11 +41,6 @@ body {
     // Desktop footer height + 20px
     padding-bottom: 215px;
   }
-}
-
-.practice-editor-rect-svg {
-  height: 4px;
-  width: 60px;
 }
 
 .practice-editor-long-rect-svg{
