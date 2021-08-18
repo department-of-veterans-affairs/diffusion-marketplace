@@ -40,19 +40,22 @@ ActiveAdmin.register Practice do
     column 'Practice Name', :name
     column :support_network_email unless params[:scope] == "get_practice_owner_emails"
     column(:owner_email) {|practice| practice.user&.email}
-    column :enabled unless params[:scope] == "get_practice_owner_emails"
     column :created_at unless params[:scope] == "get_practice_owner_emails"
-    column :highlight
+    column :date_published unless params[:scope] == "get_practice_owner_emails"
+    column :enabled unless params[:scope] == "get_practice_owner_emails"
+    column :hidden unless params[:scope] == "get_practice_owner_emails"
+    column :highlight unless params[:scope] == "get_practice_owner_emails"
     column :retired unless params[:scope] == "get_practice_owner_emails"
     column 'Last Updated', :updated_at unless params[:scope] == "get_practice_owner_emails"
-    column :date_published unless params[:scope] == "get_practice_owner_emails"
     actions do |practice|
       practice_enabled_action_str = practice.enabled ? "Disable" : "Enable"
       item practice_enabled_action_str, enable_practice_admin_practice_path(practice), method: :post
-      practice_highlight_action_str = practice.highlight ? "Unhighlight" : "Highlight"
-      item practice_highlight_action_str, highlight_practice_admin_practice_path(practice), method: :post
+      practice_hidden_action_str = practice.hidden ? "Show" : "Hide"
+      item practice_hidden_action_str, hide_practice_admin_practice_path(practice), method: :post
       practice_retired_action_str = practice.retired ? "Activate" : "Retire"
       item practice_retired_action_str, retire_practice_admin_practice_path(practice), method: :post
+      practice_highlight_action_str = practice.highlight ? "Unhighlight" : "Highlight"
+      item practice_highlight_action_str, highlight_practice_admin_practice_path(practice), method: :post
     end
   end
 
@@ -98,6 +101,16 @@ ActiveAdmin.register Practice do
       resource.save
       redirect_back fallback_location: root_path, notice: message
     end
+  end
+
+  member_action :hide_practice, method: :post do
+    resource.hidden = !resource.hidden
+    message = "\"#{resource.name}\" is hidden from search"
+    unless resource.hidden
+      message = "\"#{resource.name}\" is no longer hidden from search"
+    end
+    resource.save
+    redirect_back fallback_location: root_path, notice: message
   end
 
   member_action :export_practice_adoptions, method: :get do
@@ -217,8 +230,9 @@ ActiveAdmin.register Practice do
     active_admin_comments
   end
 
-  filter :nameYou
+  filter :name
   filter :support_network_email
+  filter :owner_email
 
   controller do
     helper_method :adoption_facility_name

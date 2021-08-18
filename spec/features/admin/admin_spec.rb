@@ -536,6 +536,17 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_content("\"#{pr_2.name}\" was activated")
   end
 
+  it 'should be able to toggle between hidden and visible states from the actions column' do
+    login_as(@admin, scope: :user, run_callbacks: false)
+    visit '/admin'
+    click_link('Practices')
+    expect(page).to have_content('Hide')
+    click_link('Hide', href: hide_practice_admin_practice_path(@practice))
+    expect(page).to have_content("\"#{@practice.name}\" is hidden from search")
+    click_link('Show', href: hide_practice_admin_practice_path(@practice))
+    expect(page).to have_content("\"#{@practice.name}\" is no longer hidden from search")
+  end
+
 
   it 'should only display a button to download adoptions if the practice has any' do
     login_as(@admin, scope: :user, run_callbacks: false)
