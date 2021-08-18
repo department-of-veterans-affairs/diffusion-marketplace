@@ -168,9 +168,9 @@ module ApplicationHelper
 
   def get_grid_alignment_css_class(alignment)
     if alignment&.downcase == 'center'
-      'justify-center'
+      'flex-justify-center'
     elsif alignment&.downcase == 'right'
-      'justify-end'
+      'flex-justify-end'
     else
       ''
     end

@@ -85,7 +85,7 @@ describe 'Practice editor', type: :feature, js: true do
           expect(page).to have_content("second new #{area} file")
           expect(page).to have_content("first new practice #{area} file")
           expect(page).to have_content("second new practice #{area} file")
-          expect(page).to have_css(".dm-external-link")
+          expect(page).to have_css(".usa-link--external")
         end
 
         # edit practice
@@ -103,7 +103,7 @@ describe 'Practice editor', type: :feature, js: true do
           expect(page).to have_content("second new #{area} file")
           expect(page).to have_content("first edited practice #{area} file")
           expect(page).to have_content("second new practice #{area} file")
-          expect(page).to have_css(".dm-external-link")
+          expect(page).to have_css(".usa-link--external")
           expect(page).to have_no_content("first new #{area} file")
           expect(page).to have_no_content("first new practice #{area} file")
         end

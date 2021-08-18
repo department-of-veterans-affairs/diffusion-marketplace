@@ -1,6 +1,4 @@
 // Styles for the practice search page
-@import '../variables/colors';
-
 #search-page {
   .usa-checkbox__label:before {
     border-radius: 0 !important;
@@ -35,7 +33,7 @@
   }
 
   mark {
-    background: $dm-color-gold-20v;
+    background: color($theme-color-accent-warm);
     font-weight: bold;
   }
 
@@ -107,17 +105,17 @@
 
 #search_filters_dropdown {
   border: 0 !important;
-  background-color: $dm-color-gray-2 !important;
+  background-color: color($theme-color-secondary-light) !important;
 
   @media screen and (min-width: 1024px) {
     height: 55vh;
-    border: 2px solid $dm-color-gray-5 !important;
+    border: 2px solid color($theme-color-base-lightest) !important;
     top: unset;
     right: unset;
     left: unset;
     bottom: unset;
     position: absolute;
-    background-color: $dm-color-white !important;
+    background-color: color($theme-color-dm-white) !important;
   }
 
   fieldset {
@@ -158,10 +156,10 @@
 }
 
 .category-container, .originating-facility-container, .adopting-facility-container {
-  background-color: $dm-color-gray-2;
+  background-color: color($theme-color-secondary-light);
 
   @media screen and (min-width: 1024px) {
-    background-color: $dm-color-white;
+    background-color: color($theme-color-dm-white);
   }
 }
 

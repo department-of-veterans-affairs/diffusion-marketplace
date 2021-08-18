@@ -1,7 +1,5 @@
-@import '../variables/colors';
-
 .login-card {
-  background-color: white;
+  background-color: color($theme-color-dm-white);
   margin: auto;
   width: 600px;
   border-radius: 20px;
@@ -10,11 +8,11 @@
     background-image: image-url('login-header.jpg');
     background-position: center;
     background-size: cover;
-    color: white;
+    color: color($theme-color-dm-white);
     border-radius: 20px 20px 0 0;
 
     .login-header-overlay {
-      background-color: rgba($dm-color-blue-50v, 0.8);
+      background-color: rgba(color($theme-color-primary), 0.8);
       padding: 2rem 5rem;
       text-align: center;
       border-radius: 20px 20px 0 0;

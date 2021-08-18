@@ -2,8 +2,8 @@
   all_depts = Department.where.not(name: 'None').order(:name)
 %>
 
-<div id="dm-practice-editor-departments" class="desktop:grid-col-10 grid-col-12 p0">
-  <section class="usa-section padding-top-0 p0-bottom">
+<div id="dm-practice-editor-departments" class="desktop:grid-col-10 grid-col-12 padding-0">
+  <section class="usa-section padding-top-0 padding-bottom-0">
     <h4 class="font-sans-sm margin-top-3 margin-bottom-2 line-height-18px">Departments</h4>
     <p class="text-normal line-height-26 margin-bottom-2">
       Which departments may be involved during implementation of your practice?
@@ -50,14 +50,14 @@
                 </div>
                 <div class="grid-col-12 trash-container">
                   <input type="hidden" name="practice[department][<%= dp_id %>][_destroy]" value="false"/>
-                  <a class="dm-origin-trash usa-button--unstyled dm-btn-warning float-right line-height-26 remove_nested_fields">Delete entry</a>
+                  <a class="dm-origin-trash dm-button--unstyled-warning float-right remove_nested_fields">Delete entry</a>
                 </div>
               </div>
             </li>
           <% end %>
         </ul>
-        <%= f.link_to_add :department_practices, id: 'link_to_add_link_department_practices', class: "dm-add-another-link dm-add-practice-department-link usa-button--unstyled dm-btn-primary line-height-26 cursor-pointer" do %>
-          <span class="text-normal">Add another</span>
+        <%= f.link_to_add :department_practices, id: 'link_to_add_link_department_practices', class: "dm-add-another-link dm-add-practice-department-link dm-button--unstyled-primary" do %>
+          Add another
         <% end %>
         <% provide :head_tags do %>
           <%= javascript_tag 'data-turbolinks-track': 'reload' do %>

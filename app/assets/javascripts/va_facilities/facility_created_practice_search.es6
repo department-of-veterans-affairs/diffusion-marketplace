@@ -145,7 +145,7 @@ function sendAjaxRequest(data) {
       if (result.next != null) {
         $(cp.loadMoreContainer).empty();
         $(cp.loadMoreContainer).append(
-          `<button name="button" type="button" class="usa-button--outline dm-btn-base dm-load-more-created-practices-btn" data-next="${result.next}">Load more</button>`
+          `<button name="button" type="button" class="dm-button--outline-secondary dm-load-more-created-practices-btn" data-next="${result.next}">Load more</button>`
         );
         loadMoreEventListener();
       } else {

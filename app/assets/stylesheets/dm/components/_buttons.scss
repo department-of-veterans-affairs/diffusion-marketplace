@@ -1,0 +1,112 @@
+// `usa-button` OVERRIDES
+.usa-button {
+  @include u-bg('primary-vivid');
+  @include u-line-height('sans', 2);
+  @include u-text('no-underline', !important);
+}
+
+.usa-button--outline {
+  @include u-bg('transparent');
+  @include u-text('primary-vivid');
+  box-shadow: inset 0 0 0 2px color($theme-color-primary-vivid);
+}
+
+.usa-button--unstyled {
+  @include u-bg('transparent');
+  @include u-text('underline', !important);
+}
+
+.usa-button--secondary {
+  @include u-bg('ink');
+  @include u-text($theme-color-dm-white, !important);
+
+  &:hover {
+    @include u-bg('base-darker');
+  }
+
+  &:active {
+    @include u-bg('base-dark');
+  }
+
+  &:disabled {
+    @include u-bg('disabled');
+  }
+}
+
+// CUSTOM BUTTONS
+.dm-button--inverse-secondary {
+  @extend .usa-button;
+  @include u-bg($theme-color-dm-white);
+  @include u-text('ink', !important);
+
+  &:hover {
+    @include u-bg('base-lightest');
+  }
+
+  &:active {
+    @include u-bg('base-lighter');
+  }
+
+  &:disabled {
+    @include u-bg('base');
+  }
+}
+
+.dm-button--error {
+  @extend .usa-button;
+  @include u-bg('error');
+
+  &:hover {
+    @include u-bg('error-dark');
+  }
+
+  &:active {
+    @include u-bg('error-darker');
+  }
+}
+
+.dm-button--outline-secondary {
+  @extend .usa-button;
+  @extend .usa-button--outline;
+  @include u-text('ink', !important);
+  box-shadow: inset 0 0 0 2px color($theme-color-base-ink);
+
+  &:hover {
+    @include u-text('base-dark', !important);
+    box-shadow: inset 0 0 0 2px color($theme-color-base-dark);
+  }
+
+  &:active {
+    @include u-text('base', !important);
+    box-shadow: inset 0 0 0 2px color($theme-color-base);
+  }
+
+  &:disabled {
+    @include u-text('disabled', !important);
+    box-shadow: inset 0 0 0 2px color($theme-color-disabled);
+  }
+}
+
+.dm-button--unstyled-primary {
+  @extend .usa-button;
+  @extend .usa-button--unstyled;
+}
+
+.dm-button--unstyled-warning {
+  @extend .usa-button;
+  @extend .usa-button--unstyled;
+  @include u-text('error');
+
+  &:hover {
+    @include u-text('error-dark');
+  }
+
+  &:active {
+    @include u-text('error-darker');
+  }
+}
+
+.dm-modal-close-button {
+  @include u-bg($theme-color-dm-white, !important);
+  @include u-text('base-darkest', !important);
+}

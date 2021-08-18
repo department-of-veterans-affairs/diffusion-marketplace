@@ -12,9 +12,9 @@
 <div class="grid-container position-relative">
   <div class="grid-row grid-gap practice-editor-min-height">
     <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-    <div id="contact" class="desktop:grid-col-9 grid-col-12 p0">
+    <div id="contact" class="desktop:grid-col-9 grid-col-12 padding-0">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
-      <section class="usa-section padding-top-0 p0-bottom contact">
+      <section class="usa-section padding-top-0 padding-bottom-0 contact">
         <h1 class="font-sans-2xl line-height-46px margin-bottom-3">Contact</h1>
         <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
         <h2 class="text-normal line-height-36 font-sans-lg">
@@ -27,13 +27,13 @@
           <fieldset class="usa-fieldset grid-col-11">
             <legend class="usa-sr-only">Practice Contact</legend>
             <div class="margin-bottom-5">
-              <div class="practice-editor-rect-svg border-top-05 border-primary-dark"></div>
+              <div class="height-05 width-8 border-top-05 border-primary-dark"></div>
               <h4 class="line-height-18px margin-top-3 font-sans-sm text-bold margin-bottom-2">Email <span class="text-gray-50">(required field)</span></h4>
               <p class="line-height-26 margin-bottom-2">Type at least one email address dedicated to responding to messages for this practice.
               </p>
 
               <div class="grid-col-7 main-practice-email-container">
-                <%= f.label :support_network_email, 'Main email address', class: 'usa-label line-height-26 x0-top main-practice-email-label' %>
+                <%= f.label :support_network_email, 'Main email address', class: 'usa-label line-height-26 margin-top-0 main-practice-email-label' %>
                 <%= f.text_field :support_network_email, class: 'usa-input practice-input width-tablet main-practice-email-input margin-bottom-2 dm-required-field', required: @practice.published %>
               </div>
 
@@ -68,14 +68,14 @@
                             <%= pe.text_field :address, class: 'usa-input practice-input width-tablet pe-address-input' %>
                           </div>
                           <div class="trash-container grid-col-12">
-                            <%= pe.link_to_remove 'Delete entry', class: "dm-origin-trash usa-button--unstyled dm-btn-warning float-right line-height-26" %>
+                            <%= pe.link_to_remove 'Delete entry', class: "dm-origin-trash dm-button--unstyled-warning float-right" %>
                           </div>
                         </div>
                       </li>
                     <% end %>
                   </ul>
-                  <%= f.link_to_add :practice_emails, class: 'dm-add-another-link add-practice-email-link usa-button--unstyled dm-btn-primary line-height-26' do %>
-                    <span class="text-normal">Add another</span>
+                  <%= f.link_to_add :practice_emails, class: 'dm-add-another-link add-practice-email-link dm-button--unstyled-primary' do %>
+                    Add another
                   <% end %>
                   <% provide :head_tags do %>
                     <%= javascript_tag 'data-turbolinks-track': 'reload' do %>

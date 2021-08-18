@@ -1,4 +1,4 @@
-@import "../dm/variables/colors";
+@import "../dm_uswds/theme/uswds-theme-color";
 
 .commontator .comment {
   &, .body blockquote {
@@ -65,12 +65,12 @@
     font-size: 100%;
     //margin-right: 24px;
     width: 31px;
-    color: $dm-color-blue-50v;
+    color: color($theme-color-primary);
     margin-left: 5px;
   }
 
   .blocked {
-    color: $dm-color-gray-30;
+    color: color($theme-color-base-light);
   }
 
   .body {
@@ -115,7 +115,7 @@
 }
 
 .commontator-timestamp {
-  color: $dm-color-gray-60 !important;
+  color: color($theme-color-base-dark, !important);
 }
 
 // Hiding pagination for now due to extra padding
@@ -155,42 +155,31 @@ body {
 .fa-thumbs-up, .edit-comment-icon {
   text-decoration: none;
   padding: 0;
-  color: $dm-color-blue-50v;
+  color: color($theme-color-primary);
   background-color: transparent !important;
 
   &:hover {
-    color: $dm-color-blue-70v;
+    color: color($theme-color-primary-dark);
     cursor: pointer;
   }
 
   &:active {
-    color: $dm-color-blue-80v;
+    color: color($theme-color-primary-darker);
   }
 }
 
 .vote-disabled {
-  color: #C9C9C9;
+  color: color($theme-color-disabled);
   background-color: transparent;
-   &:hover {
-     color: #C9C9C9 !important;
-   }
-}
 
-.show-hide-button {
-  text-decoration: none;
-  font-weight: bold;
-  color: black;
-  
   &:hover {
-    text-decoration: underline;
-    color: #005EA2;
+    color: color($theme-color-disabled);
   }
 }
 
 .comments-show-hide-button {
-
   &:disabled {
-    color: $dm-color-gray-30;
+    color: color($theme-color-base-light);
     background-color: initial;
   }
 }
@@ -209,19 +198,19 @@ body {
 }
 
 .fa-flag, .fa-trash-alt, .fa-trash-restore-alt {
-  color: $dm-color-red-50v;
+  color: color($theme-color-error);
 
   &:hover {
-    color: $dm-color-red-60v;
+    color: color($theme-color-error-dark);
   }
 
   &:active {
-    color: $dm-color-red-70v;
+    color: color($theme-color-error-darker);
   }
 }
 
 .usa-radio__input:focus + .team-member-label::before, .usa-radio__input:focus + .implementer-label::before {
-  outline: 0.25rem solid $dm-color-gold-20v !important;
+  outline: 0.25rem solid color($theme-color-accent-warm, !important);
   outline-offset: 0.25rem !important;
 }
 
@@ -246,19 +235,19 @@ body {
 }
 
 ::-webkit-input-placeholder {
-  color: $dm-color-gray-30 !important;
+  color: color($theme-color-base-light, !important);
 }
 
 :-moz-placeholder { /* Firefox 18- */
-  color: $dm-color-gray-30 !important;
+  color: color($theme-color-base-light) !important;
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
-  color: $dm-color-gray-30 !important;
+  color: color($theme-color-base-light) !important;
 }
 
 :-ms-input-placeholder {
-  color: $dm-color-gray-30 !important;
+  color: color($theme-color-base-light) !important;
 }
 
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
@@ -276,7 +265,7 @@ body {
 }
 
 .fa-user-circle {
-  color: $dm-color-blue-80v !important;
+  color: color($theme-color-primary-darker) !important;
   text-align: center;
 }
 

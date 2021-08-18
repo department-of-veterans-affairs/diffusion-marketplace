@@ -8,7 +8,7 @@
     <% start_date_tm = dh_status.start_time.to_date.strftime("%Y/%m/%d") %>
   <% end %>
   <th class="bg-gray-2 grid-col-5" scope="row" role="rowheader">
-    <a class="dm-internal-link" href="<%= practice_path(ad[:slug]) %>"><%=ad[:name]%></a>
+    <a class="usa-link" href="<%= practice_path(ad[:slug]) %>"><%=ad[:name]%></a>
     <% if ad[:retired] %>
       (Retired)
     <% end %>
