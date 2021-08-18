@@ -9,7 +9,7 @@
   in_progress_adoptions = @practice.number_of_in_progress_adoptions
   unsuccessful_adoptions = @practice.number_of_unsuccessful_adoptions
   has_practice_partners = @practice.practice_partners.any? && @practice.practice_partners.find_by(name: 'None of the above, or Unsure').nil?
-  has_practice_awards = @practice.practice_awards.any? && @practice.practice_awards.find_by(name: 'Other').nil?
+  has_practice_awards = @practice.practice_awards.any? && (@practice.practice_awards.size === 1 ? @practice.practice_awards.find_by(name: 'Other').nil? : true )
 %>
 
 <section id="pr-view-introduction" class="grid-container margin-bottom-3">

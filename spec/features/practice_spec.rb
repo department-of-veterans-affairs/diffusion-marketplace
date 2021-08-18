@@ -72,7 +72,7 @@ describe 'Practices', type: :feature do
       expect(page).to have_link(href: '/covid-19')
       expect(page).to have_content('Nominate a practice')
       expect(page).to have_content('If you have a practice that has been adopted at two or more locations, has been endorsed by a senior executive stakeholder, and is an active practice, click the link below to submit it to the Marketplace.')
-      expect(page).to have_link('Start nomination', href: "mailto:marketplace@va.gov?subject=Nominate%20a%20Practice&body=I%20am%20writing%20to%20nominate%20a%20practice%20for%20the%20Diffusion%20Marketplace.%0A%0AName%20of%20practice:%0AOriginating%20facility:%0APoint%20of%20contact:%0ASenior%20executive%20stakeholder%20(if%20known):%0AAdoptions%20(if%20known):")
+      expect(page).to have_link('Start nomination', href: nominate_a_practice_path )
     end
 
     it 'should let the practice owner interact with their practice if not approved or published' do
