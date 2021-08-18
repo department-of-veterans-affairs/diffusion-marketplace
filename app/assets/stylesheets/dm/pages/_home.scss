@@ -13,6 +13,30 @@
     color: color($theme-color-base-ink) !important;
   }
 
+  .dm-homepage-link-alt {
+    color: color($theme-link-color) !important;
+
+    &:hover {
+      color: color($theme-link-hover-color) !important;
+    }
+
+    &:active {
+      color: color($theme-link-active-color) !important;
+    }
+
+    &-gold {
+      color: color($theme-color-accent-warm) !important;
+
+      &:hover {
+        color: color($theme-color-accent-warm-dark) !important;
+      }
+
+      &:active {
+        color: color($theme-color-accent-warm-darker) !important;
+      }
+    }
+  }
+
   .homepage-explore-all-section {
     height: 360px;
 

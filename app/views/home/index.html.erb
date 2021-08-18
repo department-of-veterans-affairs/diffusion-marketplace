@@ -3,23 +3,55 @@
     <%= render partial: "shared/messages", locals: {small_text: false} %>
   </div>
   <!-- "Welcome" section -->
-  <section class="homepage-explore-all-section bg-primary-darker display-flex flex-align-center margin-bottom-5">
-    <div class="grid-container">
-      <div class="grid-row">
-        <div class="grid-col-3 display-flex tablet:flex-justify-center desktop:margin-top-2">
-          <div>
-            <i class="fas fa-laptop-medical fa-9x"></i>
-          </div>
+  <section class="dm-gradient-banner-282 margin-bottom-9" role="region" aria-label="Homepage welcome banner">
+    <div class="grid-container height-full">
+      <div class="grid-row height-full flex-align-center">
+        <div class="grid-col-7">
+          <h2 class="usa-prose-h2 text-white margin-top-0 margin-bottom-105">Welcome to the Diffusion Marketplace</h2>
+          <p class="usa-prose-body text-white margin-bottom-2">
+            The Diffusion Marketplace is hosted by VHA’s Diffusion of Excellence, whose mission is to identify, test, and spread promising healthcare practices across VA and beyond.
+          </p>
+          <%= link_to 'Learn more', explore_path, class: 'dm-homepage-link-alt-gold' %>
         </div>
-        <div class="tablet:grid-col-9 desktop:grid-col-9 ie-welcome-container text-white">
-          <h1 class="desktop:usa-prose-h1 usa-prose-intro tablet:margin-top-0">
-            Find the next important or life-saving practice to adopt at your VA facility.
-          </h1>
-          <%= link_to 'Explore all practices', explore_path, class: 'usa-button dm-button--inverse-secondary desktop:usa-button--big homepage-explore-all-button width-auto' %>
+        <div class="grid-col-5">
+
         </div>
       </div>
     </div>
   </section>
+  <section class="homepage-search grid-container padding-top-5" role="region" aria-label="Homepage search section">
+    <form id="dm-homepage-search-form" class="usa-search margin-bottom-205" role="search">
+      <label class="usa-sr-only" for="dm-homepage-search-form">
+        Homepage search
+      </label>
+      <div class="dm-homepage-search-container width-full">
+        <input class="usa-input height-5" id="dm-homepage-search-field" type="search" name="search" title="Search for practices" placeholder="&quot;Search terms&quot;">
+        <button id="dm-homepage-search-button" class="usa-button height-5" type="submit">
+          <span class="usa-search__submit-text">Search</span>
+        </button>
+      </div>
+    </form>
+    <p class="usa-prose-body">
+      <span>Just browsing?</span> <%= link_to 'Explore all practices', explore_path, class: 'dm-homepage-link-alt' %>
+    </p>
+  </section>
+<!--  <section class="homepage-explore-all-section bg-primary-darker display-flex flex-align-center margin-bottom-5">-->
+<!--    <div class="grid-container">-->
+<!--      <div class="grid-row">-->
+<!--        <div class="grid-col-3 display-flex tablet:flex-justify-center desktop:margin-top-2">-->
+<!--          <div>-->
+<!--            <i class="fas fa-laptop-medical fa-9x"></i>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="tablet:grid-col-9 desktop:grid-col-9 ie-welcome-container text-white">-->
+<!--          <h1 class="desktop:usa-prose-h1 usa-prose-intro tablet:margin-top-0">-->
+<!--            Find the next important or life-saving practice to adopt at your VA facility.-->
+<!--          </h1>-->
+          <%#= link_to 'Explore all practices', explore_path, class: 'usa-button dm-button--inverse-secondary desktop:usa-button--big homepage-explore-all-button width-auto' %>
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </section>-->
 
   <section class="grid-container banner-links-section">
     <%= link_to '/recommended-for-you', class: 'recommended-for-you-banner-link', 'aria-label': 'Go to recommended for you page', 'tabindex': '-1', 'aria-hidden': 'true' do %>

@@ -173,6 +173,10 @@ to confirm the class DOES NOT EXIST before adding a new class
 }
 
 /* Height and width setters */
+.height-5 {
+  height: 40px !important;
+}
+
 .height-200px {
   height: 200px !important;
 }
@@ -214,19 +218,15 @@ to confirm the class DOES NOT EXIST before adding a new class
 
 #breadcrumbs {
   a {
-    color: color($theme-color-primary-vivid) !important;
+    color: color($theme-link-color) !important;
 
     &:hover {
-      color: color($theme-color-primary-dark) !important;
+      color: color($theme-link-hover-color) !important;
       text-decoration: underline;
     }
 
-    &:visited {
-      color: color($theme-color-primary) !important;
-    }
-
     &:active {
-      color: color($theme-color-primary-darker) !important;
+      color: color($theme-link-active-color) !important;
     }
   }
 }
