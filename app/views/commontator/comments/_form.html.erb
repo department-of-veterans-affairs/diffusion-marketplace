@@ -9,6 +9,7 @@
   current_user_practice = current_user.user_practices.find_by(practice_id: comment.thread.commontable_id, user: current_user)
   practice_team_member = current_user_practice.team_member if current_user_practice.present?
   verified_practice_implementer = current_user_practice.verified_implementer if current_user_practice.present?
+  practice_other = current_user_practice.other if current_user_practice.present?
   name = Commontator.commontator_name(current_user) || ''
 %>
 
@@ -56,6 +57,10 @@
           <%= radio_button_tag 'user_practice_status', :team_member, practice_team_member ? true : false, class: 'usa-radio__input', id: "team-member-#{comment.parent_id}" %>
           <%= label_tag 'user_practice_status_team_member', 'I am a member of this practice team', class: 'usa-radio__label team-member-label', for: "team-member-#{comment.parent_id}" %>
         </div>
+        <div class="usa-radio">
+          <%= radio_button_tag 'user_practice_status', :other, practice_other ? true : false, class: 'usa-radio__input', id: "practice-other-#{comment.parent_id}" %>
+          <%= label_tag 'user_practice_status_practice_other', 'Other', class: 'usa-radio__label other-label', for: "practice-other-#{comment.parent_id}" %>
+        </div>
       <% elsif new_record %>
         <div class="usa-radio">
           <%= radio_button_tag 'user_practice_status', :verified_implementer, verified_practice_implementer ? true : false, class: 'usa-radio__input', id: 'verified-implementer' %>
@@ -64,6 +69,10 @@
         <div class="usa-radio">
           <%= radio_button_tag 'user_practice_status', :team_member, practice_team_member ? true : false, class: 'usa-radio__input', id: 'team-member' %>
           <%= label_tag 'user_practice_status_team_member', 'I am a member of this practice team', class: 'usa-radio__label team-member-label', for: 'team-member' %>
+        </div>
+        <div class="usa-radio">
+          <%= radio_button_tag 'user_practice_status', :other, practice_other ? true : false, class: 'usa-radio__input', id: "practice-other" %>
+          <%= label_tag 'user_practice_status_practice_other', 'Other', class: 'usa-radio__label other-label', for: "practice-other" %>
         </div>
       <% end %>
       <% if !new_record %>
@@ -74,6 +83,10 @@
         <div class="usa-radio">
           <%= radio_button_tag 'user_practice_status', :team_member, practice_team_member ? true : false, class: 'usa-radio__input', id: "team-member-#{comment.id}" %>
           <%= label_tag 'user_practice_status_team_member', 'I am a member of this practice team', class: 'usa-radio__label team-member-label', for: "team-member-#{comment.id}" %>
+        </div>
+        <div class="usa-radio">
+          <%= radio_button_tag 'user_practice_status', :other, practice_other ? true : false, class: 'usa-radio__input', id: "practice-other-#{comment.parent_id}" %>
+          <%= label_tag 'user_practice_status_practice_other', 'Other', class: 'usa-radio__label other-label', for: "practice-other-#{comment.parent_id}" %>
         </div>
       <% end %>
     </div>

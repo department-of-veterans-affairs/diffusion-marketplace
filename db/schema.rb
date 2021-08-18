@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_13_143835) do
+ActiveRecord::Schema.define(version: 2021_08_11_151550) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1082,6 +1082,7 @@ ActiveRecord::Schema.define(version: 2021_07_13_143835) do
     t.boolean "team_member", default: false
     t.datetime "time_favorited"
     t.datetime "time_committed"
+    t.boolean "other", default: false
     t.index ["practice_id"], name: "index_user_practices_on_practice_id"
     t.index ["user_id"], name: "index_user_practices_on_user_id"
   end

@@ -30,9 +30,7 @@ describe 'Breadcrumbs', type: :feature do
         expect(page).to have_content('Home')
         expect(page).to have_content('Partners')
       end
-
       click_on('Diffusion of Excellence')
-      expect(page).to be_accessible.according_to :wcag2a, :section508
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
         expect(page).to have_content('Partners')
