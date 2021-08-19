@@ -36,64 +36,7 @@
     -webkit-flex-direction: row-reverse;
   }
 
-  .homepage-explore-all-section {
-    height: 360px;
-
-    @media screen and (min-width: 1024px) {
-      height: 400px;
-    }
-
-    .fa-laptop-medical {
-      color: color($theme-color-primary-light) !important;
-    }
-
-    @media screen and (max-width: 1023px) {
-      .fa-laptop-medical {
-        font-size: 4em !important;
-      }
-    }
-  }
-
-  .banner-links-section {
-    .recommended-for-you-banner-link, .covid-banner-link {
-      text-decoration: none !important;
-
-      &:visited {
-        color: color($theme-color-base-ink) !important;
-      }
-
-      &:hover {
-        h2 {
-          text-decoration: underline !important;
-        }
-      }
-    }
-    .recommended-for-you-banner, .covid-banner {
-      padding: 40px 0 40px 0 !important;
-      box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
-
-      &:before {
-        background-color: color($theme-color-primary-light) !important;
-      }
-    }
-
-    .recommended-for-you-banner {
-      background-color: transparent !important;
-      border-left-color: color($theme-color-primary-light) !important;
-    }
-
-    .fa-user-circle {
-      color: color($theme-color-base-ink) !important;
-    }
-
-    .covid-banner {
-      background-color: color($theme-color-primary-light);
-    }
-  }
-
-  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-    .ie-welcome-container {
-      width: 100% !important;
-    }
+  .nominate-practice-section {
+    height: 441px;
   }
 }

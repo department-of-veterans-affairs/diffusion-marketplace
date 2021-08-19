@@ -16,7 +16,7 @@
         <%= @page.description %>
       </p>
     </div>
-    <div class="dm-page-content">
+    <div class="dm-page-content margin-bottom-5">
       <% @page.page_components.each do |pc| %>
         <% component = pc.component_type.constantize.find(pc.component_id) %>
 

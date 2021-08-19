@@ -57,4 +57,17 @@
       color: color($theme-color-accent-warm-darker) !important;
     }
   }
+
+  &-light {
+    @include u-text('bold', !important);
+    color: color($theme-color-primary-light) !important;
+
+    &:hover {
+      color: color($theme-color-primary) !important;
+    }
+
+    &:active {
+      color: color($theme-link-color) !important;
+    }
+  }
 }

@@ -79,14 +79,21 @@
     %>
   <% end %>
 
-  <section class="grid-container">
-        <div class="desktop:grid-col-7">
-          <h2 class="usa-prose-h2 font-sans-xl line-height-37px margin-bottom-2 margin-top-0">Nominate a practice</h2>
-          <p class="line-height-26 margin-bottom-2">
+  <section class="nominate-practice-section bg-ink" role="region" aria-label="Nominate a practice section">
+    <div class="grid-container height-full">
+      <div class="grid-row grid-gap-3 height-full flex-align-center">
+        <div class="grid-col-4 display-flex flex-justify-center text-white">
+          <img src="<%= asset_path('nominate-practice-logo.svg') %>" alt="Nominate a practice logo" />
+        </div>
+        <div class="grid-col-8">
+          <h2 class="usa-prose-h2 font-sans-xl line-height-37px margin-bottom-2 margin-top-0 text-white">Nominate a practice</h2>
+          <p class="line-height-26 margin-bottom-2 text-white">
             If you have a practice that has been adopted at two or more locations, has been endorsed by a senior executive stakeholder, and is an active practice, click
             the link below to submit it to the Marketplace.
           </p>
-          <a class="dm-button--outline-secondary" href="<%= nominate_a_practice_path %>">Start nomination</a>
+          <a class="dm-alt-link-light" href="<%= nominate_a_practice_path %>">Start nomination</a>
         </div>
+      </div>
+    </div>
   </section>
 </div>
