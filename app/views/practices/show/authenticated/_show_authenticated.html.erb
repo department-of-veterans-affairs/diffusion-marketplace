@@ -6,41 +6,7 @@
     <div class="grid-row grid-gap">
       <div id="practice_show" class="grid-col-12 overview-section practice-section">
         <%= render partial: "shared/messages", locals: {small_text: false} %>
-        <% unless @practice.published && @practice.approved %>
-          <div class="usa-alert usa-alert--warning">
-            <div class="usa-alert__body">
-              <h3 class="usa-alert__heading">This practice will not be shown in the marketplace because it is:</h3>
-              <% unless @practice.published %>
-                <div>
-                  Not Published
-                </div>
-              <% end %>
-              <% unless @practice.approved %>
-                <div>
-                  Not Approved
-                </div>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
-        <% if @practice.retired %>
-          <div class="usa-alert usa-alert--info margin-bottom-3 margin-top-1">
-            <div class="usa-alert__body">
-              <h4 class="usa-alert__heading">Retired Practice</h4>
-              <div class="usa-alert__text">
-                This practice is no longer being updated.
-                <% if @practice.retired_reason.present? %>
-                  <p>
-                    <%
-                      retired_reason_html = @practice.retired_reason.gsub("<p>", "").gsub("</p>", "")
-                    %>
-                    Reason for retirement: <%= sanitize retired_reason_html.html_safe %>
-                  </p>
-                <% end %>
-              </div>
-            </div>
-          </div>
-        <% end %>
+        <%= render partial: "practices/show/authenticated/practice_status_banner", locals: { practice: @practice } %>
       </div>
     </div>
   </div>
