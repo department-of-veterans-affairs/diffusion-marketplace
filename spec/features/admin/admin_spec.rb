@@ -586,8 +586,6 @@ describe 'The admin dashboard', type: :feature do
     visit '/admin/practices/the-best-practice-ever/edit'
     fill_in('User email', with: @user2.email)
     click_button('Update Practice')
-    sleep 0.2
-    expect(page).to have_selector('#practice_user_id')
     expect(Practice.first.commontator_thread.subscribers.first).to_not eq(@user)
     expect(Practice.first.commontator_thread.subscribers.first).to eq(@user2)
 
@@ -602,7 +600,6 @@ describe 'The admin dashboard', type: :feature do
     logout(@user2)
     login_as(@admin, :scope => :user, :run_callbacks => false)
     visit '/admin/practices/the-best-practice-ever/edit'
-    sleep 0.2
     expect(page).to have_selector('#practice_user_id')
     fill_in('User email', with: @user.email)
     click_button('Update Practice')
