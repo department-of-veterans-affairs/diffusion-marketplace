@@ -20,7 +20,7 @@
             <div class="grid-col-5 homepage-banner-image-container position-absolute right-neg-105 text-white">
               <img
                 class="display-block"
-                src="<%= Practice.where(id: 25).first.main_display_image_s3_presigned_url(:thumb) %>"
+                src=""
                 alt="Welcome banner image"/>
             </div>
           </div>
@@ -50,7 +50,7 @@
       section_name: 'topic',
       text_alignment: 'right',
       # TODO: Add topic image source
-      image_source: "#{Practice.where(id: 25).first.main_display_image_s3_presigned_url(:thumb)}",
+      image_source: "",
       # TODO: Interpolate topic name in front of 'featured topic image' for alt text
       image_alt_text: 'featured topic image',
       # TODO: Add name of topic for h2
@@ -59,7 +59,7 @@
       featured_body_text: 'Proin blandit felis tincidunt justo luctus, rutrum bibendum ante accumsan. Duis eros lorem, ullamcorper a semper nec, rhoncus eu sapien. Sed tortor nisi, consequat a neque sed,
           posuere ornare felis. Maecenas rutrum quis orci sed porta. Proin posuere metus in lorem placerat semper. Aenean felis mi, auctor sed pretium fringilla, ornare quis ex.',
       # TODO: Add topic URL here
-      featured_topic_url: '/',
+      featured_topic_url: '',
       featured_link_text: 'topic page'
     }
   %>
@@ -69,11 +69,11 @@
         section_name: 'practice',
         text_alignment: 'left',
         # TODO: Change the image source to the new image type
-        image_source: "#{@highlighted_pr.main_display_image_s3_presigned_url(:thumb)}",
+        image_source: "",
         image_alt_text: "#{@highlighted_pr.name} featured practice image",
         featured_h2: "#{@highlighted_pr.name}",
         featured_body_text: "#{@highlighted_pr.highlight_body}",
-        featured_topic_url: "/practices/#{@highlighted_pr.tagline}",
+        featured_topic_url: "/practices/#{@highlighted_pr.slug}",
         featured_link_text: 'practice'
       }
     %>
@@ -92,6 +92,19 @@
             the link below to submit it to the Marketplace.
           </p>
           <a class="dm-alt-link-light" href="<%= nominate_a_practice_path %>">Start nomination</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="newsletter-subscription-section bg-primary-darker" role="region" aria-label="Subscribe to monthly newsletter section">
+    <div class="grid-container height-full">
+      <div class="grid-row grid-gap-3 height-full flex-align-center">
+        <div class="grid-col-6 text-white">
+          <h3 class="usa-prose-h3 margin-top-0 margin-bottom-2 text-bold">Subscribe to the monthly newsletter</h3>
+          <p class="usa-prose-body">Keep up to date on the latest Diffusion Marketplace news.</p>
+        </div>
+        <div class="grid-col-6 text-right">
+          <button class="dm-button--inverse-secondary margin-right-0">Subscribe today</button>
         </div>
       </div>
     </div>
