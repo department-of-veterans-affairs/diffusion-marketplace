@@ -491,6 +491,16 @@ class PracticesController < ApplicationController
     end
   end
 
+  def update_category_usage
+    query_val = params["query"]
+    chosen_categories = params["chosenCategories"]
+    puts query_val
+    debugger
+    chosen_categories.each do |category|
+      puts category
+    end
+  end
+
   def extend_editor_session_time
     if @current_session.present? && @current_session.user === current_user
       PracticeEditorSession.extend_current_session(@current_session)

@@ -739,7 +739,6 @@ function searchPracticesPage() {
 
     $(document).on('submit', '#update-search-results-form', function (e) {
         e.preventDefault();
-
         hideResultsSectionElAndShowSpinner();
 
         // Close search filter accordion if it's open
@@ -782,6 +781,19 @@ function searchPracticesPage() {
         if (chosenCategories.length == 0) {
             chosenCategories = null;
         }
+
+        // Update Category Usage....
+        debugger
+        Rails.ajax({
+            type: 'patch',
+            url: "/update_category_usage",
+            data: jQuery.param({query: searchField.value, chosenCategories: chosenCategories}),
+            success: function() {
+                alert('success');
+                //sessionCheckInterval = setIntervalAndExecute(prId, isPub, 25000)
+            }
+        });
+
         // Run the search
         search(searchField.value, chosenCategories, originatingFacility, adoptingFacility);
 
