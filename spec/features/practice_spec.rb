@@ -72,7 +72,7 @@ describe 'Practices', type: :feature do
       expect(page).to have_link(href: '/covid-19')
       expect(page).to have_content('Nominate a practice')
       expect(page).to have_content('If you have a practice that has been adopted at two or more locations, has been endorsed by a senior executive stakeholder, and is an active practice, click the link below to submit it to the Marketplace.')
-      expect(page).to have_link('Start nomination', href: "mailto:marketplace@va.gov?subject=Nominate%20a%20Practice&body=I%20am%20writing%20to%20nominate%20a%20practice%20for%20the%20Diffusion%20Marketplace.%0A%0AName%20of%20practice:%0AOriginating%20facility:%0APoint%20of%20contact:%0ASenior%20executive%20stakeholder%20(if%20known):%0AAdoptions%20(if%20known):")
+      expect(page).to have_link('Start nomination', href: nominate_a_practice_path )
     end
 
     it 'should let the practice owner interact with their practice if not approved or published' do
@@ -112,6 +112,18 @@ describe 'Practices', type: :feature do
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@user_practice.name)
       expect(page).to have_current_path(practice_path(@user_practice))
+    end
+
+    it 'should let a user view the practice if it is hidden but not search for it' do
+      login_as(@user2, :scope => :user, :run_callbacks => false)
+      hidden_practice = Practice.create!(name: 'A secret practice', approved: true, published: true, hidden: true, tagline: 'Test secret tagline', date_initiated: Time.now(), user: @user)
+      visit practice_path(hidden_practice)
+      expect(page).to have_content(hidden_practice.name)
+      expect(page).to have_content('Hidden practice')
+      fill_in('search', with: 'A secret practice')
+      find("#dm-navbar-search-button").click
+      expect(page).to have_selector("#search-page")
+      expect(page).to have_content('There are currently no matches for your search on the Marketplace.')
     end
 
     it 'should display the initiating facility\'s name' do

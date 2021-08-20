@@ -51,7 +51,8 @@ class Practice < ApplicationRecord
         self.overview_solution_changed? ||
         self.overview_results_changed?  ||
         self.retired_changed? ||
-        self.retired_reason_changed?
+        self.retired_reason_changed? ||
+        self.hidden_changed?
       self.reset_searchable_cache = true
     end
   end
@@ -201,7 +202,7 @@ class Practice < ApplicationRecord
   scope :sort_adoptions_ct, -> { order(Arel.sql("COUNT(diffusion_histories) DESC, lower(practices.name) ASC")) }
   scope :sort_added, -> { order(Arel.sql("practices.created_at DESC")) }
   scope :filter_by_category_ids, -> (cat_ids) { where('category_practices.category_id IN (?)', cat_ids)} # cat_ids should be a id number or an array of id numbers
-  scope :published_enabled_approved,   -> { where(published: true, enabled: true, approved: true) }
+  scope :published_enabled_approved,   -> { where(published: true, enabled: true, approved: true, hidden: false) }
   scope :sort_by_retired, -> { order("retired asc") }
   scope :get_by_adopted_facility, -> (facility_id) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {va_facility_id: facility_id}).uniq }
   scope :get_by_created_facility, -> (facility_id) { where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { va_facility_id: facility_id }) }
@@ -277,10 +278,7 @@ class Practice < ApplicationRecord
   # This allows the practice model to be commented on with the use of the Commontator gem
   acts_as_commontable dependent: :destroy
 
-  #accepts_nested_attributes_for :practices_origin_facilities?
-  accepts_nested_attributes_for :practice_origin_facilities, allow_destroy: true, reject_if: proc { |attributes|
-    attributes['va_facility_id'].blank?
-  }
+  accepts_nested_attributes_for :practice_origin_facilities, allow_destroy: true, reject_if: :reject_practice_origin_facilities
   accepts_nested_attributes_for :practice_metrics, allow_destroy: true, reject_if: proc { |attributes| attributes['description'].blank? }
   accepts_nested_attributes_for :practice_awards, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
   accepts_nested_attributes_for :categories, allow_destroy: true, reject_if: proc { true }
@@ -425,5 +423,10 @@ class Practice < ApplicationRecord
   # add other practice attributes that need whitespace trimmed as needed
   def trim_whitespace
     self.name&.strip!
+  end
+
+  # reject the PracticeOriginFacility if the facility field is blank OR the practice already has a PracticeOriginFacility with the same va_facility_id
+  def reject_practice_origin_facilities(attributes)
+    attributes['va_facility_id'].blank? || self.practice_origin_facilities.where(va_facility_id: attributes['va_facility_id'].to_i).exists?
   end
 end

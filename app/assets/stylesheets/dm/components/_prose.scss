@@ -1,0 +1,54 @@
+.usa-prose-intro {
+  @include u-font('sans', 'lg');
+  @include u-line-height('alt', 5);
+  @include u-measure(6);
+  @include u-text('normal');
+}
+
+.usa-prose-body {
+  @include u-font('body', 'sm');
+  @include u-line-height('body', 5);
+  @include u-measure(6);
+  @include u-text('normal');
+}
+
+.usa-prose-h1 {
+  @include u-font('sans', '2xl');
+}
+
+.usa-prose-h2 {
+  @include u-font('sans', 'xl');
+}
+
+.usa-prose-h3 {
+  @include u-font('sans', 'lg');
+}
+
+.usa-prose-h4 {
+  @include u-font('heading', 'sm');
+  @include u-line-height('heading', 2);
+  @include u-measure(6);
+  @include u-text('bold');
+}
+
+.usa-prose-h5 {
+  @include u-font('heading', 'xs');
+  @include u-line-height('heading', 2);
+  @include u-measure(6);
+  @include u-text('bold');
+}
+
+.usa-prose-h6 {
+  @include u-font('sans', '3xs');
+  @include u-line-height('heading', 2);
+  @include u-measure(6);
+  @include u-text('ls-1');
+  @include u-text('normal');
+  @include u-text('uppercase');
+}
+
+.usa-prose-ul {
+  @include u-font('body', 'sm');
+  @include u-line-height('body', 5);
+  @include u-text('normal');
+}

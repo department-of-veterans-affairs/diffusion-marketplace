@@ -15,7 +15,7 @@
     other_categories = @practice.categories.where(is_other: true, parent_category: parent_category)
     other_category_ids = other_categories.ids
   %>
-  <ul id="<%= parent_category_name %>" class="practice-editor-<%= parent_category_name %>-categories-ul padding-left-0 x0" role="listbox" title="Practice categories" aria-label="Practice editor category list">
+  <ul id="<%= parent_category_name %>" class="practice-editor-<%= parent_category_name %>-categories-ul padding-left-0 margin-0" role="listbox" title="Practice categories" aria-label="Practice editor category list">
     <%= f.fields_for :categories, wrapper: false do |cat| %>
       <%
         other_category_id = cat.object.id || "new_categories"
@@ -45,13 +45,13 @@
         <%= cat.hidden_field :id %>
           <div class="grid-row">
             <div class="grid-col-12">
-              <%= cat.label :name, 'Category name', class: 'usa-label display-inline-block other-category-name x0-top' %>&nbsp;
+              <%= cat.label :name, 'Category name', class: 'usa-label display-inline-block other-category-name margin-top-0' %>&nbsp;
               <%= cat.text_field :name, class: 'usa-input practice-input grid-col-12' %>
               <%= cat.hidden_field :parent_category_id, value: cat.object.id ? parent_category_id : li_class_place_holder %>
             </div>
             <div class="grid-col-12 trash-container">
               <%= cat.link_to_remove 'Delete entry',
-                                    class: "dm-origin-trash usa-button--unstyled dm-btn-warning float-right line-height-26"
+                                    class: "dm-origin-trash dm-button--unstyled-warning float-right"
               %>
             </div>
           </div>
@@ -59,8 +59,8 @@
       <% end %>
     <% end %>
   </ul>
-  <%= f.link_to_add :categories, id: link_to_add_link_slug, 'data-dm-blueprint-id': blue_print_id, class: add_category_link + " dm-add-another-link usa-button--unstyled dm-btn-primary line-height-26 cursor-pointer" do %>
-    <span class="text-normal">Add another</span>
+  <%= f.link_to_add :categories, id: link_to_add_link_slug, 'data-dm-blueprint-id': blue_print_id, class: add_category_link + " dm-add-another-link dm-button--unstyled-primary" do %>
+    Add another
   <% end %>
 
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>

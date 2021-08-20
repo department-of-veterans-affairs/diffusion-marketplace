@@ -1,0 +1,37 @@
+// `usa-tag` OVERRIDES
+.usa-tag {
+  @include u-font('sans', '3xs');
+  @include u-display('inline-block');
+  @include u-margin-bottom(1);
+  @include u-margin-right(1);
+  @include u-padding-y(2px);
+  @include u-text('no-underline');
+}
+
+.usa-tag--big {
+  @include u-padding-y('05');
+}
+
+// CUSTOM TAGS
+.dm-tag--big--action-primary {
+  @extend .usa-tag;
+  @extend .usa-tag--big;
+  @include u-bg('primary-vivid');
+  cursor: pointer;
+
+  &:hover {
+    @include u-bg('primary-dark');
+  }
+
+  &:active {
+    @include u-bg('primary-darker');
+  }
+
+  &--selected {
+    @extend .usa-tag;
+    @extend .usa-tag--big;
+    @include u-bg('base-lighter');
+    @include u-text('ink');
+    cursor: pointer;
+  }
+}

@@ -114,7 +114,7 @@ class UsersController < ApplicationController
           # assigning a unique page_param allows for multiple pagy instances to be used in a single action, in case we need multiple 'Load more' sections
           page_param: 'favorite',
           items: 3,
-          link_extra: "data-remote='true' class='paginated-favorite-practices-page-#{params[:favorite].nil? ? 2 : params[:favorite].to_i + 1}-link usa-button--outline dm-btn-base margin-bottom-10 x075-top width-15'"
+          link_extra: "data-remote='true' class='paginated-favorite-practices-page-#{params[:favorite].nil? ? 2 : params[:favorite].to_i + 1}-link dm-button--outline-secondary margin-bottom-10 margin-top-105 width-15'"
       )
 
       created_practices = @user.created_practices
@@ -123,7 +123,7 @@ class UsersController < ApplicationController
           # assigning a unique page_param allows for multiple pagy instances to be used in a single action, in case we need multiple 'Load more' sections
           page_param: 'created',
           items: 3,
-          link_extra: "data-remote='true' class='paginated-created-practices-page-#{params[:created].nil? ? 2 : params[:created].to_i + 1}-link usa-button--outline dm-btn-base margin-bottom-10 x075-top width-15'"
+          link_extra: "data-remote='true' class='paginated-created-practices-page-#{params[:created].nil? ? 2 : params[:created].to_i + 1}-link dm-button--outline-secondary margin-bottom-10 margin-top-105 width-15'"
       )
 
 

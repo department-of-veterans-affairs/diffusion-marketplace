@@ -10,7 +10,7 @@
     <label for="practice[practice_resources_attributes][<%= placeholder %>][id]">
       File:
     </label>
-    <%= link_to(resource&.attachment&.original_filename, resource&.attachment_s3_presigned_url, target: '_blank', class: 'dm-external-link')%>
+    <%= link_to(resource&.attachment&.original_filename, resource&.attachment_s3_presigned_url, target: '_blank', class: 'usa-link usa-link--external')%>
     <input value="<%= resource&.id %>" type="hidden" name="practice[practice_resources_attributes][<%= placeholder %>][id]"/>
   <% else %>
     <div class="grid-col-12 margin-x-auto dm-usa-file-input-container" data-area="<%= area %>">

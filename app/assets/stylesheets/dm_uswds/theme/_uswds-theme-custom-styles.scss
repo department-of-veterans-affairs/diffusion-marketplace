@@ -20,170 +20,6 @@ i.e.
 ----------------------------------------
 */
 
-// Breadcrumb min-width
-$theme-breadcrumb-min-width: 'mobile';
-
-@import "uswds-theme-color";
-@import "uswds/uswds";
-@import "../../dm/variables/colors";
-
-* {
-  box-sizing: border-box;
-}
-
-.grid-container {
-  padding-left: 16px;
-  padding-right: 16px;
-
-  @media screen and (min-width: 1024px) {
-    padding-left: 24px;
-    padding-right: 24px;
-  }
-}
-
-/****************************************
-  BUTTONS
-*****************************************/
-// solid btns - to use: class="usa-button dm-btn-primary"
-.usa-button {
-  text-decoration: none !important;
-  font-weight: bold;
-  color: $dm-color-white;
-
-  &:visited, &:active, &:hover {
-    text-decoration: none;
-    cursor: pointer;
-    color: $dm-color-white;
-  }
-
-  // solid blue-50v btn
-  &.dm-btn-primary {
-    background-color: $dm-color-blue-50v;
-
-    &:visited, &:active, &:hover {
-      background-color: $dm-color-blue-50v;
-    }
-
-    &:visited {
-      background-color: $dm-color-blue-50v;
-    }
-
-    &:hover {
-      background-color: $dm-color-blue-70v;
-    }
-
-    &:active {
-      background-color: $dm-color-blue-80v;
-    }
-  }
-
-  // solid gray-90 btn
-  &.dm-btn-base {
-    background-color: $dm-color-base;
-
-    &:visited, &:active, &:hover {
-      background-color: $dm-color-base;
-    }
-  }
-}
-
-// outline btns - to use: class="usa-button--outline dm-btn-primary"
-.usa-button--outline {
-  @extend .usa-button;
-  border-style: solid;
-  background-color: transparent !important;
-  margin-top: 0;
-
-  &:visited, &:active, &:hover {
-    background-color: transparent !important;
-    border-style: solid;
-  }
-
-  // outline blue-50v btn
-  &.dm-btn-primary {
-  color: $dm-color-blue-50v !important;
-  border-color: $dm-color-blue-50v !important;
-  box-shadow: inset 0 0 0 2px $dm-color-blue-50v;
-
-    &:visited {
-      color: $dm-color-blue-50v !important;
-      border-color: $dm-color-blue-50v !important;
-    }
-
-    &:hover {
-      color: $dm-color-blue-70v !important;
-      border-color: $dm-color-blue-70v !important;
-      box-shadow: inset 0 0 0 2px $dm-color-blue-70v;
-    }
-
-    &:active {
-      color: $dm-color-blue-80v !important;
-      border-color: $dm-color-blue-80v !important;
-      box-shadow: inset 0 0 0 2px $dm-color-blue-80v;
-    }
-  }
-
-  // outline gray-90 btn
-  &.dm-btn-base {
-    color: $dm-color-base !important;;
-    border-color: $dm-color-base;
-    box-shadow: inset 0 0 0 2px $dm-color-base;
-
-    &:visited, &:active, &:hover {
-      color: $dm-color-base !important;;
-      border-color: $dm-color-base;
-      box-shadow: inset 0 0 0 2px $dm-color-base;
-    }
-  }
-}
-
-// unstyled btns - to use: class="usa-button--unstyled dm-btn-primary"
-.usa-button--unstyled {
-  @extend .usa-button;
-  background-color: transparent !important;
-  font-weight: normal !important;
-  text-decoration: underline !important;
-
-  &:visited, &:active, &:hover {
-    background-color: transparent !important;
-    font-weight: normal;
-    text-decoration: underline;
-  }
-
-  // unstyled blue-50v btn
-  &.dm-btn-primary {
-  color: $dm-color-blue-50v;
-
-    &:visited {
-      color: $dm-color-blue-50v;
-    }
-
-    &:hover {
-      color: $dm-color-blue-70v;
-    }
-
-    &:active {
-      color: $dm-color-blue-80v;
-    }
-  }
-
-  // unstyled red-50v btn
-  &.dm-btn-warning {
-    color: $dm-color-red-50v;
-
-    &:visited {
-      color: $dm-color-red-50v;
-    }
-
-    &:hover {
-      color: $dm-color-red-60v;
-    }
-
-    &:active {
-      color: $dm-color-red-70v;
-    }
-  }
-}
 
 .usa-form {
   .usa-button, .usa-button--unstyled, .usa-button--unstyled {
@@ -193,49 +29,23 @@ $theme-breadcrumb-min-width: 'mobile';
 
 // Custom styles
 
-p {
-  @extend .measure-none;
-}
-
 .badge {
   position: relative;
   top: 15px;
   width: 40px;
 }
 
-.usa-sidenav .usa-current {
-  color: #000000;
-  font-weight: 600;
-}
-
-.usa-sidenav a, .usa-sidenav p {
-  color: #000000;
-  font-weight: normal;
-}
-
-.usa-sidenav li {
-  height: 40px !important;
-}
-
-.usa-sidenav p {
-  font-weight: normal;
-}
-
-.usa-sidenav a:hover {
-  background-color: #ffffff !important;
-}
-
 .dm-link-title {
-  color: black;
+  color: color($theme-color-base-ink);
   text-decoration: none;
 
   &:visited {
-    color: black;
+    color: color($theme-color-base-ink);
   }
 
   &:hover {
     text-decoration: underline;
-    color: $dm-color-blue-50v;
+    color: color($theme-color-primary);
 
     > * {
       text-decoration: underline;
@@ -247,7 +57,7 @@ p {
     }
 
     &:visited {
-      color: $dm-color-blue-50v;
+      color: color($theme-color-primary);
     }
 
   }
@@ -269,48 +79,6 @@ p {
   }
 }
 
-.favorite-practice-button, .featured-favorite-practice-button, .search-favorite-practice-button {
-  color: $dm-color-black;
-  position: absolute;
-  width: 28px;
-  height: 28px;
-  text-align: center;
-  background-color: white;
-  padding: 5px;
-  border-radius: 50%;
-  z-index: 2;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-.featured-favorite-practice-button {
-  right: 20px !important;
-  top: 20px !important;
-
-  i {
-    margin-top: 2px;
-  }
-}
-
-.favorite-practice-button, .favorite-practice-button {
-  right: 22px;
-  top: 22px;
-}
-
-.col-4-not-featured-favorite-button {
-  right: 26px;
-  top: 10px;
-}
-
-.search-favorite-practice-button {
-  right: -8px;
-  top: 4.5px;
-}
-
-.highlighted-practice > .favorite-practice-button {
-  top: 2%;
-  right: 2%;
-}
-
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   .usa-checkbox__input:checked + .usa-checkbox__label::before, .usa-radio__input:checked + .usa-radio__label::before {
     border: 3px solid #005ea2 !important;
@@ -321,25 +89,25 @@ p {
 /* line 214, ../../.rvm/gems/ruby-2.6.3/bundler/gems/uswds-rails-642a358220dc/app/assets/stylesheets/uswds/elements/_inputs.scss */
 .usa-checkbox__input:checked + .usa-checkbox__label::before,
 .usa-radio__input:checked + .usa-radio__label::before {
-  background-color: $dm-color-blue-70v;
-  box-shadow: 0 0 0 2px $dm-color-blue-70v;
+  background-color: color($theme-color-primary-dark);
+  box-shadow: 0 0 0 2px color($theme-color-primary-dark);
 }
 
 /* line 220, ../../.rvm/gems/ruby-2.6.3/bundler/gems/uswds-rails-642a358220dc/app/assets/stylesheets/uswds/elements/_inputs.scss */
 .usa-radio__input:checked + .usa-radio__label::before {
-  box-shadow: 0 0 0 2px $dm-color-blue-70v, inset 0 0 0 2px white;
+  box-shadow: 0 0 0 2px color($theme-color-primary-dark), inset 0 0 0 2px color($theme-color-dm-white);
 }
 
 @media print {
   /* line 220, ../../.rvm/gems/ruby-2.6.3/bundler/gems/uswds-rails-642a358220dc/app/assets/stylesheets/uswds/elements/_inputs.scss */
   .usa-radio__input:checked + .usa-radio__label::before {
-    box-shadow: inset 0 0 0 2px white, inset 0 0 0 1rem $dm-color-blue-70v, 0 0 0 2px $dm-color-blue-70v;
+    box-shadow: inset 0 0 0 2px color($theme-color-dm-white), inset 0 0 0 1rem color($theme-color-primary-dark), 0 0 0 2px color($theme-color-primary-dark);
   }
 }
 
 // File input choose text
 .usa-file-input__choose {
-  color: $dm-color-blue-50v !important;
+  color: color($theme-color-primary) !important;
 }
 
 .usa-breadcrumb {

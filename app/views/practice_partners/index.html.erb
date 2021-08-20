@@ -18,7 +18,7 @@
         <% else %>
           <div class="grid-row">
             <div class="grid-col-8 margin-bottom-3">
-              <h3 class="font-sans-lg margin-top-0 margin-bottom-05"><%= link_to "#{ss.name}#{ss.short_name.present? ? " (#{ss.short_name.upcase})" : ''}", practice_partner_path(ss), class: 'dm-internal-link', title: "Go to #{ss.name} partner page" %></h3>
+              <h3 class="font-sans-lg margin-top-0 margin-bottom-05"><%= link_to "#{ss.name}#{ss.short_name.present? ? " (#{ss.short_name.upcase})" : ''}", practice_partner_path(ss), class: 'usa-link', title: "Go to #{ss.name} partner page" %></h3>
               <p class="font-sans-md line-height-sans-505"><%= ss.description %></p>
             </div>
           </div>

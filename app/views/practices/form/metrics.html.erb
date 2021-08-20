@@ -13,11 +13,11 @@
 <div class="grid-container position-relative">
   <div class="grid-row grid-gap practice-editor-min-height">
     <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
-    <div id="metrics" class="desktop:grid-col-9 grid-col-12 p0">
+    <div id="metrics" class="desktop:grid-col-9 grid-col-12 padding-0">
       <div>
       <%= render partial: "shared/messages", locals: {small_text: true} %>
     </div>
-      <section class="usa-section padding-top-0 p0-bottom" aria-label="Metrics">
+      <section class="usa-section padding-top-0 padding-bottom-0" aria-label="Metrics">
         <div class="grid-row flex-align-end margin-top-4">
           <h1 class="margin-bottom-3 margin-y-0 grid-col-3 font-sans-2xl">
             Metrics
@@ -32,9 +32,9 @@
           <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
         </div>
         <div class="margin-bottom-10 grid-row flex-align-center margin-top-3">
-          <label for="metrics_duration" class="usa-label grid-col-3 x0-top">View your metrics for</label>
+          <label for="metrics_duration" class="usa-label grid-col-3 margin-top-0">View your metrics for</label>
           <div class="grid-col-9">
-            <select class="usa-select metrics-select x0-top" name="metrics_duration" id="metrics_duration">
+            <select class="usa-select metrics-select margin-top-0" name="metrics_duration" id="metrics_duration">
               <option id="metrics_30_day_value" value="30" <%= 'selected' if @duration.to_i == 30 %>>the last 30 days</option>
               <option id="metrics_all_time_value" value="99999" <%= 'selected' if @duration.to_i != 30 %>>all time</option>
             </select>
@@ -66,10 +66,10 @@
         <h2 class="grid-col-6 line-height-36 font-sans-xl margin-y-0">Adoptions</h2>
         <ul class="grid-col-6 usa-button-group usa-button-group--segmented flex-justify-end">
           <li class="usa-button-group__item">
-            <button id="toggle_adoptions_view_30" class="usa-button dm-btn-base">Last 30 days</button>
+            <button id="toggle_adoptions_view_30" class="usa-button usa-button--secondary">Last 30 days</button>
           </li>
           <li class="usa-button-group__item">
-            <button id="toggle_adoptions_view_all_time" class="usa-button--outline dm-btn-base">All time</button>
+            <button id="toggle_adoptions_view_all_time" class="dm-button--outline-secondary">All time</button>
           </li>
         </ul>
       </div>
@@ -146,7 +146,7 @@
           </div>
 
   <!--      ADOPTIONS for ALL TIME -------------------------------------------------------------------->
-          <div id="adoptions_by_practice_all_time" class="margin-bottom-10" style="display: none">
+          <div id="adoptions_by_practice_all_time" class="margin-bottom-10 display-none">
             <table class="usa-table usa-table--borderless width-full margin-bottom-5 metrics-table">
               <thead>
                 <tr>
@@ -223,10 +223,10 @@
           <h2 class="grid-col-6 line-height-36 font-sans-xl margin-y-0">Leaderboard</h2>
           <ul class="grid-col-6 usa-button-group usa-button-group--segmented flex-justify-end">
             <li class="usa-button-group__item">
-              <button id="toggle_leader_board_view_30" class="usa-button dm-btn-base">Last 30 days</button>
+              <button id="toggle_leader_board_view_30" class="usa-button usa-button--secondary">Last 30 days</button>
             </li>
             <li class="usa-button-group__item">
-              <button id="toggle_leader_board_view_all_time" class="usa-button--outline dm-btn-base">All time</button>
+              <button id="toggle_leader_board_view_all_time" class="dm-button--outline-secondary">All time</button>
             </li>
           </ul>
         </div>
@@ -241,7 +241,7 @@
             <%cur_rec = 1 %>
             <% @page_views_leader_board_30_days.each do |rec| %>
               <tr>
-                <td class="width-80"><%= cur_rec %>. <a class="dm-internal-link" target="_blank" href="/practices/<%= rec[:practice_slug] %>/"><%= rec[:practice_name] %></a></td>
+                <td class="width-80"><%= cur_rec %>. <a class="usa-link" target="_blank" href="/practices/<%= rec[:practice_slug] %>/"><%= rec[:practice_name] %></a></td>
                 <td><%= rec[:count] %></td>
               </tr>
               <% cur_rec += 1 %>
@@ -259,7 +259,7 @@
             <%cur_rec = 1 %>
             <% @page_views_leader_board_all_time.each do |rec| %>
               <tr>
-                <td class="width-80"><%= cur_rec %>. <a class="dm-internal-link" target="_blank" href="/practices/<%= rec[:practice_slug] %>/"><%= rec[:practice_name] %></a></td>
+                <td class="width-80"><%= cur_rec %>. <a class="usa-link" target="_blank" href="/practices/<%= rec[:practice_slug] %>/"><%= rec[:practice_name] %></a></td>
                 <td><%= rec[:count] %></td>
               </tr>
               <% cur_rec += 1 %>

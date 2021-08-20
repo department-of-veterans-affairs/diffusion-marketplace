@@ -1,0 +1,41 @@
+html {
+  box-sizing: border-box;
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  position: relative;
+}
+
+p {
+  @extend .measure-none;
+}
+
+h1 {
+  @extend .usa-prose-h1;
+}
+
+h2 {
+  @extend .usa-prose-h2;
+}
+
+h3 {
+  @extend .usa-prose-h3;
+}
+
+h4 {
+  @extend .usa-prose-h4;
+}
+
+h5 {
+  @extend .usa-prose-h5;
+}
+
+h6 {
+  @extend .usa-prose-h6;
+}
+
+ul {
+  @extend .usa-prose-ul;
+}

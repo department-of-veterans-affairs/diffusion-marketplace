@@ -48,19 +48,19 @@ describe 'Page Builder - Show', type: :feature do
   end
 
   it 'Should display the subpage hyperlink' do
-    expect(find('.dm-internal-link')[:href]).to include('/programming/javascript')
+    expect(find_all('.usa-link').first[:href]).to include('/programming/javascript')
     expect(page).to have_content('Check out JavaScript')
     expect(page).to have_content('It is pretty cool too')
   end
 
   it 'Should display the page image' do
     expect(page).to have_css("img[src*='charmander.png']")
-    page.should have_css('.justify-end')
+    page.should have_css('.flex-justify-end')
   end
 
   it 'should display the page image with a url' do
     expect(page).to have_css("img[src*='SpongeBob.png']")
-    page.should have_css('.justify-center')
+    page.should have_css('.flex-justify-center')
 
     # get the parent element of the image's URL
     link = page.find("img[src*='SpongeBob.png']").find(:xpath, '..')
@@ -68,7 +68,7 @@ describe 'Page Builder - Show', type: :feature do
   end
 
   it 'Should display the call to action' do
-    expect(find('.usa-button.dm-btn-primary')[:href]).to include('https://www.google.com')
+    expect(find_all('.usa-button').last[:href]).to include('https://www.google.com')
     expect(page).to have_content('Curious about programming languages?')
     expect(page).to have_content('Search now')
   end
@@ -79,7 +79,7 @@ describe 'Page Builder - Show', type: :feature do
   end
 
   it 'Should display the downloadable file' do
-    expect(page).to have_css('.dm-external-link')
+    expect(page).to have_css('.usa-link--external')
     expect(page).to have_content('Test file')
   end
 
