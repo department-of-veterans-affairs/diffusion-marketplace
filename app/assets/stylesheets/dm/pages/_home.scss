@@ -73,15 +73,12 @@
     .dm-practice-card {
       padding-top: 0;
       padding-bottom: 0;
+      min-width: 309px;
+      max-width: 309px;
     }
 
     .dm-practice-bookmark-btn {
-      top: 6px;
-      right: 6px;
-    }
-
-    .dm-highlighted-practice-card {
-      max-width: 309px;
+      right: 0.5em;
     }
 
     @media screen and (min-width: 40rem) {
