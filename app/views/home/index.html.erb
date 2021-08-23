@@ -15,12 +15,13 @@
               <p class="usa-prose-body text-white margin-bottom-2">
                 The Diffusion Marketplace is hosted by VHA’s Diffusion of Excellence, whose mission is to identify, test, and spread promising healthcare practices across VA and beyond.
               </p>
-              <%= link_to 'Learn more', explore_path, class: 'dm-alt-link-gold' %>
+              <%# TODO: Change the path to the new about page %>
+              <%= link_to 'Learn more', root_path, class: 'dm-alt-link-gold' %>
             </div>
-            <div class="homepage-banner-image-container grid-col-12 desktop:grid-col-5">
+            <div class="homepage-banner-image-container text-white grid-col-12 desktop:grid-col-5">
               <img
                 class="display-block"
-                src="<%= Practice.where(id: 25).first.main_display_image_s3_presigned_url(:thumb) %>"
+                src=""
                 alt="Welcome banner image"/>
             </div>
           </div>
@@ -49,7 +50,7 @@
   <%= render partial: 'home/featured_section', locals: {
       section_name: 'topic',
       # TODO: Add topic image source
-      image_source: "#{Practice.where(id: 25).first.main_display_image_s3_presigned_url(:thumb)}",
+      image_source: "",
       # TODO: Interpolate topic name in front of 'featured topic image' for alt text
       image_alt_text: 'featured topic image',
       # TODO: Add name of topic for h2
@@ -67,7 +68,7 @@
     <%= render partial: 'home/featured_section', locals: {
         section_name: 'practice',
         # TODO: Change the image source to the new image type
-        image_source: "#{Practice.where(id: 25).first.main_display_image_s3_presigned_url(:thumb)}",
+        image_source: "",
         image_alt_text: "#{@highlighted_pr.name} featured practice image",
         featured_h2: "#{@highlighted_pr.name}",
         featured_body_text: "#{@highlighted_pr.highlight_body}",
@@ -79,11 +80,11 @@
 
   <section class="nominate-practice-section bg-ink" role="region" aria-label="Nominate a practice section">
     <div class="grid-container height-full">
-      <div class="grid-row grid-gap-3 height-full flex-align-center">
-        <div class="grid-col-4 display-flex flex-justify-center text-white">
+      <div class="grid-row grid-gap-3">
+        <div class="grid-col-2 desktop:display-flex desktop:flex-justify-center desktop:grid-col-4">
           <img src="<%= asset_path('nominate-practice-logo.svg') %>" alt="Nominate a practice logo" />
         </div>
-        <div class="grid-col-8">
+        <div class="grid-col-12 desktop:grid-col-8">
           <h2 class="usa-prose-h2 font-sans-xl line-height-37px margin-bottom-2 margin-top-0 text-white">Nominate a practice</h2>
           <p class="line-height-26 margin-bottom-2 text-white">
             If you have a practice that has been adopted at two or more locations, has been endorsed by a senior executive stakeholder, and is an active practice, click
@@ -96,12 +97,12 @@
   </section>
   <section class="newsletter-subscription-section bg-primary-darker" role="region" aria-label="Subscribe to monthly newsletter section">
     <div class="grid-container height-full">
-      <div class="grid-row grid-gap-3 height-full flex-align-center">
-        <div class="grid-col-6 text-white">
+      <div class="grid-row grid-gap-3">
+        <div class="grid-col-12 desktop:grid-col-6 text-white">
           <h3 class="usa-prose-h3 margin-top-0 margin-bottom-2 text-bold">Subscribe to the monthly newsletter</h3>
-          <p class="usa-prose-body">Keep up to date on the latest Diffusion Marketplace news.</p>
+          <p class="usa-prose-body margin-bottom-2 desktop:margin-bottom-0">Keep up to date on the latest Diffusion Marketplace news.</p>
         </div>
-        <div class="grid-col-6 text-right">
+        <div class="grid-col-12 desktop:grid-col-6 subscribe-button-container">
           <button class="dm-button--inverse-secondary margin-right-0">Subscribe today</button>
         </div>
       </div>
