@@ -184,11 +184,11 @@ ActiveRecord::Schema.define(version: 2021_08_20_135643) do
     t.index ["practice_id"], name: "index_category_practices_on_practice_id"
   end
 
-  create_table "category_usage", force: :cascade do |t|
+  create_table "category_usages", force: :cascade do |t|
     t.bigint "category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["category_id"], name: "index_category_usage_on_category_id"
+    t.index ["category_id"], name: "index_category_usages_on_category_id"
   end
 
   create_table "checklist_files", force: :cascade do |t|
@@ -221,6 +221,10 @@ ActiveRecord::Schema.define(version: 2021_08_20_135643) do
     t.integer "position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "clinical_id", id: false, force: :cascade do |t|
+    t.bigint "id"
   end
 
   create_table "clinical_location_practices", force: :cascade do |t|
@@ -975,6 +979,7 @@ ActiveRecord::Schema.define(version: 2021_08_20_135643) do
     t.string "highlight_body"
     t.boolean "retired", default: false, null: false
     t.string "retired_reason"
+    t.boolean "is_public", default: false
     t.boolean "hidden", default: false, null: false
     t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
@@ -1332,7 +1337,7 @@ ActiveRecord::Schema.define(version: 2021_08_20_135643) do
   add_foreign_key "business_case_files", "practices"
   add_foreign_key "category_practices", "categories"
   add_foreign_key "category_practices", "practices"
-  add_foreign_key "category_usage", "categories"
+  add_foreign_key "category_usages", "categories"
   add_foreign_key "checklist_files", "practices"
   add_foreign_key "clinical_condition_practices", "clinical_conditions"
   add_foreign_key "clinical_condition_practices", "practices"

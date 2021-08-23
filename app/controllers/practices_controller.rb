@@ -494,13 +494,7 @@ class PracticesController < ApplicationController
   def update_category_usage
     query_val = params["query"]
     chosen_categories = params["chosenCategories"]
-    debugger
-    puts query_val unless query_val.blank?
-    if !chosen_categories.blank?
-      chosen_categories.each do |category|
-        puts category
-      end
-    end
+    CategoryUsage.store_chosen_categories(query_val, chosen_categories)
   end
 
   def extend_editor_session_time
