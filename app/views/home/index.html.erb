@@ -11,16 +11,16 @@
         <div class="grid-col-12">
           <h1 class="usa-prose-h1 text-white margin-top-0 margin-bottom-4">Welcome to the Diffusion Marketplace</h1>
           <div class="grid-row grid-gap-3">
-            <div class="grid-col-7">
+            <div class="grid-col-12 margin-bottom-2 desktop:grid-col-7 desktop:margin-bottom-0">
               <p class="usa-prose-body text-white margin-bottom-2">
                 The Diffusion Marketplace is hosted by VHA’s Diffusion of Excellence, whose mission is to identify, test, and spread promising healthcare practices across VA and beyond.
               </p>
               <%= link_to 'Learn more', explore_path, class: 'dm-alt-link-gold' %>
             </div>
-            <div class="grid-col-5 homepage-banner-image-container position-absolute right-neg-105 text-white">
+            <div class="homepage-banner-image-container grid-col-12 desktop:grid-col-5">
               <img
                 class="display-block"
-                src=""
+                src="<%= Practice.where(id: 25).first.main_display_image_s3_presigned_url(:thumb) %>"
                 alt="Welcome banner image"/>
             </div>
           </div>
@@ -48,9 +48,8 @@
   <%# TODO: Write conditional to only show this partial if there's a currently selected 'Featured' topic %>
   <%= render partial: 'home/featured_section', locals: {
       section_name: 'topic',
-      text_alignment: 'right',
       # TODO: Add topic image source
-      image_source: "",
+      image_source: "#{Practice.where(id: 25).first.main_display_image_s3_presigned_url(:thumb)}",
       # TODO: Interpolate topic name in front of 'featured topic image' for alt text
       image_alt_text: 'featured topic image',
       # TODO: Add name of topic for h2
@@ -67,9 +66,8 @@
   <% if @highlighted_pr.present? %>
     <%= render partial: 'home/featured_section', locals: {
         section_name: 'practice',
-        text_alignment: 'left',
         # TODO: Change the image source to the new image type
-        image_source: "",
+        image_source: "#{Practice.where(id: 25).first.main_display_image_s3_presigned_url(:thumb)}",
         image_alt_text: "#{@highlighted_pr.name} featured practice image",
         featured_h2: "#{@highlighted_pr.name}",
         featured_body_text: "#{@highlighted_pr.highlight_body}",
