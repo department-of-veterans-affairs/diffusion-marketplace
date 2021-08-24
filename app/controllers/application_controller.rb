@@ -59,7 +59,7 @@ class ApplicationController < ActionController::Base
   def set_user_param
     if current_user.blank?
       # check to see if the user is using NTLM
-      logger.debug "REMOTE_USER: #{request.env["REMOTE_USER"]}"
+      logger.debug "request.env: #{request.env}"
       user = User.authenticate_ldap(request.env["REMOTE_USER"])
       # if so, log them in and set the user_type to 'ntlm' in the session
       if user.present?
