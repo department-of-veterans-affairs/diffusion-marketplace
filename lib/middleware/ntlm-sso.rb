@@ -9,7 +9,6 @@ class NTLMAuthentication
 
   def call(env)
     auth = Rack::Auth::NTLMSSO.new(@app)
-    logger.debug "auth: #{auth}"
     auth.call(env)
   end
 end

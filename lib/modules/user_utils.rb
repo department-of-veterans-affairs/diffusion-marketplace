@@ -13,7 +13,6 @@ module UserUtils
 
   def check_for_ntlm
     ntlm_auth = NTLMAuthentication.new(main_app)
-    logger.debug "ntlm_auth: #{ntlm_auth}"
     ntlm_auth.call(request.env)
   end
 end
