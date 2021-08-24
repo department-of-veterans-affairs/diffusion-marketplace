@@ -41,6 +41,6 @@ module DiffusionMarketplace
     config.active_job.queue_adapter = :sidekiq
 
     # Keep this commented out to test if 'check_for_ntlm' method is working
-    config.middleware.use NTLMAuthentication
+    # config.middleware.use NTLMAuthentication if ENV['USE_NTLM'] == 'true'
   end
 end
