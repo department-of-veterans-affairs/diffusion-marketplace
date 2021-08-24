@@ -9,6 +9,15 @@
 
   function attachCategoryBtnEventListener() {
     $(catBtn).on('click', function(e) {
+        //update category usage/selected..
+        Rails.ajax({
+            type: 'patch',
+            url: "/update_category_usage",
+            data: jQuery.param({query: e.target.innerText, chosenCategories: null}),
+            success: function() {
+            }
+        });
+
       if ($(e.target).hasClass("dm-tag--big--action-primary--selected")) {
         $(e.target).removeClass("dm-tag--big--action-primary--selected");
         $(e.target).addClass("dm-tag--big--action-primary");
