@@ -11,10 +11,10 @@
             <div class="height-05 width-8 border-top-05 border-primary-dark"></div>
             <h2 id="comments" class="font-sans-lg text-bold margin-top-2 margin-bottom-3">Comment</h2>
           </div>
-          <% if @practice.retired %>
+          <% if @practice.retired || session[:user_type] === 'public' %>
             <div class="usa-alert usa-alert--info margin-bottom-3">
               <div class="usa-alert__body">
-                <p class="usa-alert__text">Comments and replies are disabled for retired practices.</p>
+                <p class="usa-alert__text">Comments and replies are disabled for retired practices and public users.</p>
               </div>
             </div>
           <% end %>

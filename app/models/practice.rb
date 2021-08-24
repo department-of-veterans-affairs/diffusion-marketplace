@@ -202,14 +202,13 @@ class Practice < ApplicationRecord
   scope :sort_adoptions_ct, -> { order(Arel.sql("COUNT(diffusion_histories) DESC, lower(practices.name) ASC")) }
   scope :sort_added, -> { order(Arel.sql("practices.created_at DESC")) }
   scope :filter_by_category_ids, -> (cat_ids) { where('category_practices.category_id IN (?)', cat_ids)} # cat_ids should be a id number or an array of id numbers
-  scope :published_enabled_approved, -> { where(published: true, enabled: true, approved: true, hidden: false) }
+  scope :published_enabled_approved,   -> { where(published: true, enabled: true, approved: true) }
   scope :sort_by_retired, -> { order("retired asc") }
   scope :get_by_adopted_facility, -> (facility_id) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {va_facility_id: facility_id}).uniq }
   scope :get_by_created_facility, -> (facility_id) { where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { va_facility_id: facility_id }) }
   scope :load_associations, -> { includes(:categories, :diffusion_histories, :practice_origin_facilities) }
-  scope :get_with_diffusion_histories, -> { published_enabled_approved.sort_a_to_z.joins(:diffusion_histories).uniq }
-
   scope :public_facing, -> { published_enabled_approved.where(is_public: true) }
+  scope :get_with_diffusion_histories, -> { published_enabled_approved.sort_a_to_z.joins(:diffusion_histories).uniq }
 
   belongs_to :user, optional: true
 

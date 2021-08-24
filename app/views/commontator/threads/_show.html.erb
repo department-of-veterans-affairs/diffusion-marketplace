@@ -11,7 +11,7 @@
   nested_comments = thread.nested_comments_for(user, comments, show_all)
 %>
 
-<% if @practice.present? && !@practice.retired %>
+<% if @practice.present? && !@practice.retired && session[:user_type] != 'public' %>
   <% if thread.config.comment_order != :e %>
     <%= render partial: 'commontator/threads/reply', locals: { thread: thread, user: user } %>
     <h5 class="font-sans-3xs line-height-15px text-bold text-ls-1 text-uppercase">
@@ -77,11 +77,12 @@
                     remote: true %>
       <% end %>
     </span>
-
-    <span id="commontator-thread-<%= thread.id %>-status" class="status">
-      <%= t "commontator.thread.status.#{thread.is_closed? ? 'closed' : 'open'}",
-            closer_name: (thread.is_closed? ? Commontator.commontator_name(thread.closer) : '') %>
-    </span>
+    <% if session[:user_type] != 'public' %>>
+      <span id="commontator-thread-<%= thread.id %>-status" class="status">
+        <%= t "commontator.thread.status.#{thread.is_closed? ? 'closed' : 'open'}",
+              closer_name: (thread.is_closed? ? Commontator.commontator_name(thread.closer) : '') %>
+      </span>
+    <% end %>
   </div>
 
   <% if thread.config.comment_order == :e %>

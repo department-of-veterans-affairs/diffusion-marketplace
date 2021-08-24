@@ -69,7 +69,7 @@ class ApplicationController < ActionController::Base
         session[:user_type] = 'guest'
       end
     elsif current_user.present?
-       session[:user_type] = 'public' if session[:user_type] === 'guest'
+      session[:user_type] = 'public' if session[:user_type] === 'guest'
     end
   end
 
