@@ -1,7 +1,8 @@
+<!-- unused file but keep for records -->
 <div class="grid-container position-relative">
   <div class="grid-row flex-align-center position-relative margin-bottom-405 grid-col-8 margin-top-0 margin-bottom-3 margin-x-auto">
     <div class="width-full">
-      <div class="margin-top-44px margin-bottom-3">
+      <div class="margin-top-505 margin-bottom-3">
         <%= image_tag('shark-tank-logo.png', alt: 'Shark Tank 2020 Logo') %>
       </div>
       <div class="font-sans-lg">
@@ -119,7 +120,7 @@
   <section class="shark-tank-winners">
     <h3 class="font-sans-lg text-center grid-col-8 margin-top-2 margin-bottom-3 margin-x-auto">Previous Shark Tank Winners</h3>
     <% shark_tank_badge = Badge.find_by(name: 'Shark Tank') %>
-    <% @shark_tank_winners = Practice.joins(:badge_practices).where(badge_practices: { badge: shark_tank_badge}).order(name: :asc) %>
+    <% @shark_tank_winners = Practice.joins(:badge_practices).where(badge_practices: { badge: shark_tank_badge}).order(retired: :asc, name: :asc) %>
     <% if @shark_tank_winners.any? %>
       <div class="grid-row grid-gap-3">
         <% @shark_tank_winners.each do |practice| %>

@@ -1,17 +1,20 @@
-const searchBtn = "#dm-created-practice-search-button";
-const searchField = "#dm-created-practice-search-field";
-const categoriesInput = "#dm-created-practice-categories";
-const sortSelect = "#dm-created-practices-sort-option";
-const loadMoreBtn = ".dm-load-more-created-practices-btn";
-const loadMoreContainer = ".dm-load-more-created-practices-container";
-const practiceCardList = "#dm-created-practice-card-list";
-const practiceCardSection = ".dm-created-practice-card-section";
-const resultsCount = ".dm-created-practice-results-count";
-const errorState = ".dm-created-practice-error-state ";
-const loadingSpinner = ".dm-created-practices-loading-spinner";
-const searchNoResults = ".search-no-results";
+const cp = {
+  searchBtn: "#dm-created-practice-search-button",
+  searchField: "#dm-created-practice-search-field",
+  categoriesInput: "#dm-created-practice-categories",
+  sortSelect: "#dm-created-practices-sort-option",
+  loadMoreBtn: ".dm-load-more-created-practices-btn",
+  loadMoreContainer:".dm-load-more-created-practices-container",
+  practiceCardList: "#dm-created-practice-card-list",
+  practiceCardSection: ".dm-created-practice-card-section",
+  resultsCount: ".dm-created-practice-results-count",
+  errorState: ".dm-created-practice-error-state",
+  loadingSpinner: ".dm-created-practices-loading-spinner",
+  searchNoResults: ".dm-created-practices-no-results"
+}
 
 function setFacilityCreatedPracticeSearchPage() {
+  $(cp.sortSelect).val("a_to_z");
   searchEventListener();
   loadMoreEventListener();
   filterCategoriesEventListener();
@@ -19,19 +22,19 @@ function setFacilityCreatedPracticeSearchPage() {
 }
 
 function sortEventListener() {
-  $(sortSelect).on("change", function (e) {
+  $(cp.sortSelect).on("change", function (e) {
     setDataAndMakeRequest({ isNextPage: false });
   });
 }
 
 function loadMoreEventListener() {
-  $(loadMoreBtn).on("click", function(e) {
+  $(cp.loadMoreBtn).on("click", function(e) {
     setDataAndMakeRequest({isNextPage: true});
   })
 }
 
 function filterCategoriesEventListener() {
-  $(categoriesInput).on("change", function(e) {
+  $(cp.categoriesInput).on("change", function(e) {
     setDataAndMakeRequest({ isNextPage: false });
   })
 }
@@ -51,44 +54,48 @@ function trackSearch(term) {
 }
 
 function searchEventListener() {
-  $(searchBtn).on("click", function(e) {
+  $(cp.searchBtn).on("click", function(e) {
     e.preventDefault();
-    let searchTerm = $(searchField).val();
-    $(searchField).data("search", searchTerm);
+    let searchTerm = $(cp.searchField).val();
+    $(cp.searchField).data("search", searchTerm);
     trackSearch(searchTerm)
-    setDataAndMakeRequest({searchTerm: searchTerm});
+    setDataAndMakeRequest({ searchTerm: searchTerm });
   })
 }
 
 function displaySpinner({ isNextPage }) {
-  $(resultsCount).addClass("display-none");
-  $(errorState).addClass("display-none");
-  $(loadingSpinner).removeClass("display-none");
-  $(loadingSpinner).addClass("display-flex");
-  $(searchNoResults).first().addClass("display-none");
+  $(cp.resultsCount).addClass("display-none");
+  $(cp.errorState).addClass("display-none");
+  $(cp.loadingSpinner).removeClass("display-none");
+  $(cp.searchNoResults).first().addClass("display-none");
   if (isNextPage) {
-    $(loadMoreContainer).addClass("display-none");
-    $(loadMoreBtn).addClass("display-none");
+    $(cp.loadMoreContainer).addClass("display-none");
+    $(cp.loadMoreBtn).addClass("display-none");
   } else {
-    $(practiceCardSection).addClass("display-none");
+    $(cp.practiceCardSection).addClass("display-none");
   }
 }
 
 function hideSpinner() {
-  $(loadingSpinner).addClass("display-none");
-  $(loadingSpinner).removeClass("display-flex");
-  $(practiceCardSection).removeClass("display-none");
-  $(loadMoreContainer).removeClass("display-none");
-  $(loadMoreBtn).removeClass("display-none");
+  $(cp.loadingSpinner).addClass("display-none");
+  $(cp.practiceCardSection).removeClass("display-none");
+  $(cp.loadMoreContainer).removeClass("display-none");
+  $(cp.loadMoreBtn).removeClass("display-none");
 }
 
 function setDataAndMakeRequest({ isNextPage = false, searchTermInput }) {
-  let page = $(loadMoreBtn).data('next') || null;
-  let sortOption = $(sortSelect).val() || 'a_to_z';
-  let category = $(categoriesInput).parent().find(".usa-select")[0].value
-    ? parseInt($(categoriesInput).parent().find(".usa-select")[0].value)
+  let page = $(cp.loadMoreBtn).data("next") || null;
+  let sortOption = $(cp.sortSelect).val() || "a_to_z";
+  let category = $(cp.categoriesInput).parent().find(".usa-select")[0].value
+    ? parseInt($(cp.categoriesInput).parent().find(".usa-select")[0].value)
     : null;
-  let searchTerm = $(searchField).data('search').length > 0 ? $(searchField).data('search') : null;
+
+  let searchTerm =
+    $(cp.searchField).data("search").length > 0
+      ? $(cp.searchField).data("search")
+      : null;
+   // sets the search term only when the user clicks search and is less confusing if a user updates the search input but never hits the search button
+   $(cp.searchField).val(searchTerm);
 
   let data = { sort_option: sortOption };
 
@@ -105,7 +112,6 @@ function setDataAndMakeRequest({ isNextPage = false, searchTermInput }) {
   if (category) {
     data.categories = [category]
   }
-
   sendAjaxRequest(data);
 }
 
@@ -121,47 +127,47 @@ function sendAjaxRequest(data) {
     success: function(result) {
       countText = result.count + ' result' + (result.count == 1 ? ':' : 's:');
       if (data.page == undefined) {
-        $(practiceCardList).empty();
+        $(cp.practiceCardList).empty();
       }
 
-      $(practiceCardList).append(result.practice_cards_html);
+      $(cp.practiceCardList).append(result.practice_cards_html);
 
       if (result.count === 0) {
-        $(searchNoResults).first().removeClass("display-none");
+        $(cp.searchNoResults).first().removeClass("display-none");
       }
 
       if (result.count <= 1) {
-        $(sortSelect).parent().addClass('display-none');
+        $(cp.sortSelect).parent().addClass("display-none");
       } else {
-        $(sortSelect).parent().removeClass("display-none");
+        $(cp.sortSelect).parent().removeClass("display-none");
       }
 
       if (result.next != null) {
-        $(loadMoreContainer).empty();
-        $(loadMoreContainer).append(
-          `<button name="button" type="button" class="usa-button--outline dm-btn-base dm-load-more-created-practices-btn" data-next="${result.next}">Load more</button>`
+        $(cp.loadMoreContainer).empty();
+        $(cp.loadMoreContainer).append(
+          `<button name="button" type="button" class="dm-button--outline-secondary dm-load-more-created-practices-btn" data-next="${result.next}">Load more</button>`
         );
         loadMoreEventListener();
       } else {
-        $(loadMoreContainer).empty();
+        $(cp.loadMoreContainer).empty();
       }
     },
     error: function(result) {
-      $(practiceCardList).addClass("display-none");
-      $(errorState).removeClass("display-none");
-      $(loadMoreContainer).empty();
-      $(loadMoreContainer).addClass("display-none");
+      $(cp.practiceCardList).addClass("display-none");
+      $(cp.errorState).removeClass("display-none");
+      $(cp.loadMoreContainer).empty();
+      $(cp.loadMoreContainer).addClass("display-none");
       countText = "0 results:";
     },
     complete: function(result) {
-      $(resultsCount).text(countText);
-      $(resultsCount).removeClass("display-none");
+      $(cp.resultsCount).text(countText);
+      $(cp.resultsCount).removeClass("display-none");
       hideSpinner();
     }
   });
 }
 
 document.addEventListener('turbolinks:load', function () {
-  $(sortSelect).val("a_to_z");
   setFacilityCreatedPracticeSearchPage();
+  sendAjaxRequest({isNexPage: false});
 });

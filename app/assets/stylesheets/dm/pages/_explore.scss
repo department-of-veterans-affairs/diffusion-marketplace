@@ -1,37 +1,16 @@
-// styles for /explore
-@import '../variables/colors';
-
 .dm-explore-practices {
   // need the next two properties to remove weird whitespace below header
   top: -1px;
   position: relative;
 
-  .bg-primary-darker {
-    height: 160px;
-  }
-
   .dm-results-count {
     align-items: center;
-  }
-
-  .dm-category-btn {
-    border-radius: 100px;
   }
 
   .dm-load-more-container {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-
-  .dm-practice-card {
-    &:first-child {
-      padding-top: 0;
-
-      .dm-practice-bookmark-btn {
-        top: 8px;
-      }
-    }
   }
 
   .dm-error-state {
@@ -43,7 +22,7 @@
 
     i {
       font-size: 160px;
-      color: $dm-color-gray-5;
+      color: color($theme-color-base-lightest);
       z-index: 0;
     }
 
@@ -54,29 +33,7 @@
     }
   }
 
-  @media screen and (min-width: 690px) {
-    .dm-practice-card {
-      &:nth-child(2) {
-        padding-top: 0px;
-
-        .dm-practice-bookmark-btn {
-          top: 8px;
-        }
-      }
-    }
-  }
-
   @media screen and (min-width: 1024px) {
-    .dm-practice-card {
-      &:nth-child(3) {
-        padding-top: 0px;
-
-        .dm-practice-bookmark-btn {
-          top: 8px;
-        }
-      }
-    }
-
     .dm-sort-container {
       // need this to make sure sort select is all the way to the right
       left: 8px;

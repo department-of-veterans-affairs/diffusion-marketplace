@@ -51,19 +51,19 @@
       </div>
 
       <div class="grid-col-12 margin-bottom-2">
-        <a class="dm-cropper-cancel-edit usa-button--outline dm-btn-primary display-none margin-right-1" aria-controls='image-cancel-edit' aria-expanded='false'>
+        <a class="dm-cropper-cancel-edit usa-button usa-button--outline display-none margin-right-1" aria-controls='image-cancel-edit' aria-expanded='false'>
           Cancel edits
         </a>
-        <a class="dm-cropper-save-edit usa-button dm-btn-primary display-none" aria-controls='image-save-edit' aria-expanded='false'>
+        <a class="dm-cropper-save-edit usa-button display-none" aria-controls='image-save-edit' aria-expanded='false'>
           Save edits
         </a>
-        <a class="dm-cropper-edit-mode usa-button--outline dm-btn-primary <%= resource.present? ? '' : 'display-none' %>" aria-controls="image-crop" aria-expanded='false'>
+        <a class="dm-cropper-edit-mode usa-button usa-button--outline <%= resource.present? ? '' : 'display-none' %>" aria-controls="image-crop" aria-expanded='false'>
           Edit image
         </a>
       </div>
 
       <%# remove image %>
-      <button type="button" class="usa-button--unstyled dm-btn-warning text-secondary dm-cropper-delete-image display-none">
+      <button type="button" class="dm-button--unstyled-warning dm-cropper-delete-image display-none">
         Remove image
       </button>
 

@@ -1,0 +1,29 @@
+<%
+  visns = Visn.cached_visns.select(:id, :number)
+  origin_facilities = @practice.practice_origin_facilities
+  origin_facilities_count = @practice.practice_origin_facilities.count
+  display_name = origin_display_name(@practice)
+%>
+
+<% if @practice.facility? %>
+  <span class="origin-facilities-display-text">
+    <% origin_facilities.each_with_index do |pof, index| %>
+      <% facility = pof.va_facility %>
+      <%= link_to "#{facility_name_with_common_name(facility.official_station_name, facility.common_name)}", va_facility_path(pof.va_facility), class: "usa-link",
+          target: '_blank' %><%= ', ' unless index + 1 === origin_facilities_count %>
+    <% end %>
+  </span>
+<% elsif @practice.visn? %>
+  <%= link_to display_name, visn_path(visns.get_by_initiating_facility(@practice.initiating_facility.to_i)), target: '_blank', class: "usa-link" %>
+<% else %>
+  <% if display_name.length > 180 %>
+    <span id="origin_facility_truncated"><%= origin_display_name_trunc(@practice) %></span>
+    <span id="dots">...</span>
+    <span id="more_text" class="display-none">
+      <%= origin_display_name_trunc(@practice, 0, 99999) %>
+    </span>
+    <a class="dm-button--unstyled-primary" href="" onclick="seeMoreText(); return false" id="seeMore">See more</a>
+  <% else %>
+    <%= display_name %>
+  <% end %>
+<% end %>

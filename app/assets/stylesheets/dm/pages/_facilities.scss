@@ -1,12 +1,10 @@
-@import '../variables/colors';
-
 // index & show page
 #dm-va-facilities-index, #dm-va-facilities-show {
   .usa-combo-box__input {
     margin-top: 0 !important;
 
     &::placeholder {
-      color: $dm-color-black !important;
+      color: color($theme-color-base-ink) !important;
     }
   }
 
@@ -16,17 +14,17 @@
 
   .usa-table--borderless {
     th, td {
-      background-color:$dm-color-gray-2;
+      background-color: color($theme-color-secondary-light);
     }
 
     .fa-question-circle {
-      color: $dm-color-base !important;
+      color: color($theme-color-base-ink) !important;
       padding: 4px;
       text-decoration: none !important;
 
       &:visited {
         text-decoration: none !important;
-        color: $dm-color-base !important;
+        color: color($theme-color-base-ink) !important;
       }
     }
 
@@ -64,7 +62,7 @@
 
       th:nth-of-type(4) {
         button {
-          left: 8.5em;
+          left: 8.3em;
         }
       }
       th:nth-of-type(5) {
@@ -85,14 +83,14 @@
 #dm-va-facilities-show {
   .facility-phone-number {
     text-decoration: none;
-    color: $dm-color-blue-50v;
+    color: color($theme-color-primary);
   }
 
   .usa-combo-box__select {
     margin-top: 0;
 
     &::placeholder {
-      color: $dm-color-black !important;
+      color: color($theme-color-base-ink) !important;
     }
   }
 }
@@ -132,37 +130,6 @@
 
   #dm-adopted-practices-search-field, #dm-adopted-practices-search-button {
     height: 38px !important;
-  }
-
-  .dm-practice-bookmark-btn {
-    width: 28px;
-    height: 28px;
-    padding: 5px;
-    margin-left: 6px;
-
-    .fas {
-      color: $dm-color-blue-50v;
-
-      &:hover {
-        color: $dm-color-blue-70v;
-      }
-
-      &:active {
-        color: $dm-color-blue-80v;
-      }
-    }
-
-    .far {
-      color: $dm-color-black;
-
-      &:hover {
-        color: $dm-color-blue-50v;
-      }
-
-      &:active {
-        color: $dm-color-blue-70v;
-      }
-    }
   }
 
   .usa-table--borderless {

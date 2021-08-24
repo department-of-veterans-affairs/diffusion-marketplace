@@ -1,21 +1,21 @@
 <!-- Login Page -->
-<div class="x0-top">
-  <section class="usa-section dm-background-linear-gradient-up-dark-blue" style="min-height: calc(100vh - 286px)">
+<div class="margin-top-0">
+  <section class="usa-section" style="min-height: calc(100vh - 286px)">
     <div class="grid-container">
       <div class="login-card box-shadow-card">
         <%= render "devise/shared/login_header" %>
         <div class="login-body">
           <h2>Login</h2>
           <%= render partial: "shared/messages", locals: {small_text: false} %>
-          <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: 'usa-form x1-top'}) do |f| %>
-            <%= f.label :email, class: 'usa-label x0' %>
+          <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: 'usa-form margin-top-2'}) do |f| %>
+            <%= f.label :email, class: 'usa-label margin-0' %>
             <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'usa-input', required: true %>
 
             <%= f.label :password, class: 'usa-label' %>
             <%= f.password_field :password, autocomplete: "current-password", class: 'usa-input', required: true %>
 
             <% if devise_mapping.rememberable? -%>
-              <div class="usa-fieldset x1-top">
+              <div class="usa-fieldset margin-top-2">
                 <div class="usa-checkbox">
                   <%= f.check_box :remember_me, class: 'usa-checkbox__input' %>
                   <%= f.label :remember_me, class: 'usa-checkbox__label' do %>
@@ -25,8 +25,8 @@
               </div>
             <% end -%>
 
-            <div class="actions display-flex justify-center x1-top">
-              <%= f.submit "Log in", class: 'usa-button dm-btn-primary' %>
+            <div class="actions display-flex flex-justify-center margin-top-2">
+              <%= f.submit "Log in", class: 'usa-button' %>
             </div>
           <% end %>
           <%= render "devise/shared/links" %>

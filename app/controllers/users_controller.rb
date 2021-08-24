@@ -16,7 +16,6 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @favorite_practices = @user&.favorite_practices || []
-    @facilities_data = facilities_json #['features']
     @created_practices = @user.created_practices
   end
 
@@ -92,7 +91,7 @@ class UsersController < ApplicationController
       redirect_to root_path
     else
       flash[:error] = 'Something went wrong. Please contact us marketplace@va.gov for assistance.'
-      redirect_to terms_and_conditions_path
+      redirect_to root_path
     end
   end
 
@@ -115,7 +114,7 @@ class UsersController < ApplicationController
           # assigning a unique page_param allows for multiple pagy instances to be used in a single action, in case we need multiple 'Load more' sections
           page_param: 'favorite',
           items: 3,
-          link_extra: "data-remote='true' class='paginated-favorite-practices-page-#{params[:favorite].nil? ? 2 : params[:favorite].to_i + 1}-link usa-button--outline dm-btn-base margin-bottom-10 x075-top width-15'"
+          link_extra: "data-remote='true' class='paginated-favorite-practices-page-#{params[:favorite].nil? ? 2 : params[:favorite].to_i + 1}-link dm-button--outline-secondary margin-bottom-10 margin-top-105 width-15'"
       )
 
       created_practices = @user.created_practices
@@ -124,21 +123,21 @@ class UsersController < ApplicationController
           # assigning a unique page_param allows for multiple pagy instances to be used in a single action, in case we need multiple 'Load more' sections
           page_param: 'created',
           items: 3,
-          link_extra: "data-remote='true' class='paginated-created-practices-page-#{params[:created].nil? ? 2 : params[:created].to_i + 1}-link usa-button--outline dm-btn-base margin-bottom-10 x075-top width-15'"
+          link_extra: "data-remote='true' class='paginated-created-practices-page-#{params[:created].nil? ? 2 : params[:created].to_i + 1}-link dm-button--outline-secondary margin-bottom-10 margin-top-105 width-15'"
       )
 
 
       # Practices based on the user's location
       @practices = Practice.searchable_practices 'a_to_z'
-      @facilities_data = facilities_json
+      @facilities_data = VaFacility.cached_va_facilities.get_relevant_attributes
       @offices_data = origin_data_json
       @user_location_practices = []
 
       @practices.each do |p|
         if p.facility? && p.practice_origin_facilities.any?
           p.practice_origin_facilities.each do |pof|
-            origin_facility = @facilities_data.find { |f| f['StationNumber'] == pof.facility_id } || nil
-            @user_location_practices << p if origin_facility.present? && origin_facility['OfficialStationName'] == @user.location
+            origin_facility = @facilities_data.find { |f| f.id === pof.va_facility_id } || nil
+            @user_location_practices << p if origin_facility.present? && origin_facility.official_station_name === @user.location
           end
         end
         # TODO: In the future, if user-locations are recorded as VISNs or Offices, we need to add them here. As of 11/7/2020, we are only using facilities.

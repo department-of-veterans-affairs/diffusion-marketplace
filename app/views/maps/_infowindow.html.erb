@@ -1,10 +1,10 @@
-
 <div class="font-sans-sm line-height-sans-1">
-  <p class="margin-top-1p5">
-  <b>
-    <%= facility['OfficialStationName'] %>
-    <%= show_common_name(facility["OfficialStationName"], facility["CommonName"]) %>
-  </b>
+  <p class="margin-top-1">
+    <%
+      station_name = facility.official_station_name
+      station_number = facility.station_number
+    %>
+    <%= link_to "#{station_name} #{ show_common_name(station_name, facility.common_name)}", va_facility_path(facility), target: '_blank', class: 'usa-link' %>
   </p>
   <% if home_page ||= false %>
     <p class="margin-top-1"><%= completed %> successful adoption<%= completed == 1 ? '' : 's' %></p>
@@ -12,9 +12,9 @@
     <p class="margin-top-1"><%= unsuccessful %> unsuccessful adoption<%= unsuccessful == 1 ? '' : 's' %></p>
     <button
       type="button"
-      onclick="openMarkerModal('homeMapMarkerViewMoreModal-<%= facility["StationNumber"] %>')"
-      id="homeMapMarkerViewMoreTrigger-<%= facility["StationNumber"] %>" data-marker-id="<%= facility["StationNumber"] %>"
-      class="margin-bottom-2 display-block usa-button--unstyled dm-btn-primary margin-top-1">
+      onclick="openMarkerModal('homeMapMarkerViewMoreModal-<%= station_number %>')"
+      id="homeMapMarkerViewMoreTrigger-<%= station_number %>" data-marker-id="<%= station_number %>"
+      class="margin-bottom-2 display-block dm-button--unstyled-primary margin-top-1">
       View more
     </button>
   <% end %>

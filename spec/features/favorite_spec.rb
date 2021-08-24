@@ -84,7 +84,7 @@ describe 'Favorites', type: :feature do
       end
 
       it 'should not show a favorite button' do
-        expect(page).not_to have_selector('.favorite-practice-button')
+        expect(page).not_to have_selector('.dm-practice-bookmark-btn')
       end
     end
 

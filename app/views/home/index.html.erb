@@ -6,16 +6,16 @@
   <section class="homepage-explore-all-section bg-primary-darker display-flex flex-align-center margin-bottom-5">
     <div class="grid-container">
       <div class="grid-row">
-        <div class="grid-col-3 display-flex justify-center desktop:margin-top-2">
+        <div class="grid-col-3 display-flex tablet:flex-justify-center desktop:margin-top-2">
           <div>
             <i class="fas fa-laptop-medical fa-9x"></i>
           </div>
         </div>
         <div class="tablet:grid-col-9 desktop:grid-col-9 ie-welcome-container text-white">
-          <h1 class="usa-prose-intro font-normal font-sans-lg margin-y-3 desktop:font-bold desktop:usa-prose-h1 desktop:font-sans-2xl desktop:margin-top-0 desktop:margin-bottom-5">
+          <h1 class="desktop:usa-prose-h1 usa-prose-intro tablet:margin-top-0">
             Find the next important or life-saving practice to adopt at your VA facility.
           </h1>
-          <%= link_to 'Explore all practices', explore_path, class: 'usa-button--big homepage-explore-all-button display-block' %>
+          <%= link_to 'Explore all practices', explore_path, class: 'usa-button dm-button--inverse-secondary desktop:usa-button--big homepage-explore-all-button width-auto' %>
         </div>
       </div>
     </div>
@@ -24,14 +24,14 @@
   <section class="grid-container banner-links-section">
     <%= link_to '/recommended-for-you', class: 'recommended-for-you-banner-link', 'aria-label': 'Go to recommended for you page', 'tabindex': '-1', 'aria-hidden': 'true' do %>
       <div class="grid-row usa-alert usa-alert--info usa-alert--no-icon recommended-for-you-banner display-flex margin-bottom-5">
-        <div class="display-none desktop:display-flex desktop:grid-col-3 justify-center">
+        <div class="display-none desktop:display-flex desktop:grid-col-3 flex-justify-center">
           <i class="fas fa-user-circle fa-5x"></i>
         </div>
         <div class="grid-col-10 padding-left-4 desktop:grid-col-6 desktop:padding-left-0">
             <h2 class="usa-prose-h2 font-sans-xl line-height-37px margin-bottom-2 margin-top-0 dm-word-break-break-word dm-hyphens-auto">Recommended for you</h2>
             <p class="line-height-26">Explore practices that are relevant to your location, role, and saved searches.</p>
         </div>
-        <div class="grid-col-2 display-flex flex-align-center justify-end padding-right-3 desktop:grid-col-3 desktop:padding-right-5">
+        <div class="grid-col-2 display-flex flex-align-center flex-justify-end padding-right-3 desktop:grid-col-3 desktop:padding-right-5">
           <i class="fas fa-chevron-right fa-2x"></i>
         </div>
       </div>
@@ -39,7 +39,7 @@
 
     <%= link_to '/covid-19', class: 'covid-banner-link', 'aria-label': 'Go to COVID-19 landing page', 'tabindex': '-1', 'aria-hidden': 'true' do %>
       <div class="grid-row covid-banner display-flex margin-bottom-5">
-        <div class="display-none desktop:display-flex desktop:grid-col-3 justify-center desktop:margin-top-105">
+        <div class="display-none desktop:display-flex desktop:grid-col-3 flex-justify-center desktop:margin-top-105">
           <i class="fas fa-viruses fa-6x"></i>
         </div>
         <div class="grid-col-10 padding-left-3 desktop:grid-col-6 desktop:padding-left-0">
@@ -49,7 +49,7 @@
             to the changing medical landscape.
           </p>
         </div>
-        <div class="grid-col-2 display-flex flex-align-center justify-end padding-right-3 desktop:grid-col-3 desktop:padding-right-5">
+        <div class="grid-col-2 display-flex flex-align-center flex-justify-end padding-right-3 desktop:grid-col-3 desktop:padding-right-5">
           <i class="fas fa-chevron-right fa-2x"></i>
         </div>
       </div>
@@ -57,9 +57,9 @@
   </section>
 
   <% if @highlighted_pr.present? %>
-    <section class="bg-base-lightest margin-bottom-5 padding-x-2 padding-y-5 desktop:padding-x-0 desktop:margin-y-15 dm-highlighted-practice">
-      <div class="desktop:grid-container dm-highlighted-practice-content">
-        <div class="desktop:grid-col-7 dm-highlighted-practice-text">
+    <section class="bg-base-lightest margin-bottom-5 padding-x-2 padding-y-5 tablet:padding-x-0 tablet:margin-y-15 dm-highlighted-practice">
+      <div class="tablet:grid-container dm-highlighted-practice-content">
+        <div class="dm-highlighted-practice-text tablet:grid-col-6">
           <h2 class="margin-top-0 font-sans-xl line-height-37px">
             <%= @highlighted_pr.highlight_title.blank? ? 'Highlighted by the VA this month' : @highlighted_pr.highlight_title %>
           </h2>
@@ -67,23 +67,21 @@
             <p class="margin-top-1 line-height-sans-5"><%= @highlighted_pr.highlight_body %></p>
           <% end %>
         </div>
-        <div class="margin-top-3 grid-row grid-gap-3 dm-highlighted-practice-card desktop:margin-top-0">
+        <div class="margin-top-3 desktop:grid-row desktop:grid-gap-3 dm-highlighted-practice-card tablet:margin-top-0">
           <%= render partial: 'shared/practice_card', locals: { practice: @highlighted_pr } %>
         </div>
       </div>
     </section>
   <% end %>
 
-  <section class="nominate-section grid-container">
+  <section class="grid-container">
         <div class="desktop:grid-col-7">
           <h2 class="usa-prose-h2 font-sans-xl line-height-37px margin-bottom-2 margin-top-0">Nominate a practice</h2>
           <p class="line-height-26 margin-bottom-2">
             If you have a practice that has been adopted at two or more locations, has been endorsed by a senior executive stakeholder, and is an active practice, click
             the link below to submit it to the Marketplace.
           </p>
-          <a target="_blank" href="mailto:marketplace@va.gov?subject=<%= URI.encode('Nominate a Practice')%>&body=<%= URI.encode("I am writing to nominate a practice for the Diffusion Marketplace.\n\nName of practice:\nOriginating facility:\nPoint of contact:\nSenior executive stakeholder (if known):\nAdoptions (if known):")%>" class="usa-button--outline dm-btn-base line-height-19px">
-            Start nomination
-          </a>
+          <a class="dm-button--outline-secondary" href="<%= nominate_a_practice_path %>">Start nomination</a>
         </div>
   </section>
 </div>

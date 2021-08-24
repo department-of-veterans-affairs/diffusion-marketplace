@@ -36,6 +36,11 @@ function initialize() {
     markers = handler.addMarkers(mapData);
     buildMapMarkers(mapData);
   });
+
+  google.maps.event.addListener(handler.getMap(), "idle", function () {
+    $("#va_facility_map").removeClass("display-none");
+    $(".dm-facilities-show-map-loading-spinner").addClass("display-none");
+  });
 }
 
 $(document).on("turbolinks:load", function () {

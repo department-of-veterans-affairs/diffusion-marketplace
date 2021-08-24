@@ -15,6 +15,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
   # GET /threads/1/comments/new
   def new
     @comment = Commontator::Comment.new(thread: @commontator_thread, creator: @commontator_user)
+    @practice = Practice.find_by_id(@comment.thread.commontable_id)
     parent_id = params.dig(:comment, :parent_id)
     unless parent_id.blank?
       parent = Commontator::Comment.find parent_id
@@ -53,12 +54,11 @@ class Commontator::CommentsController < Commontator::ApplicationController
             @comment.parent_id, @commontator_show_all
           )
           user_practice = UserPractice.find_or_create_by(practice_id: @comment.thread.commontable_id, user: @commontator_user)
-
+          @practice = Practice.find_by_id(@comment.thread.commontable_id)
           params[:refresh_page] = user_practice.verified_implementer != (params[:user_practice_status] == 'verified_implementer')
-
-          user_practice.update_attributes(verified_implementer: true, team_member: false) if params[:user_practice_status] == 'verified_implementer'
-          user_practice.update_attributes(verified_implementer: false, team_member: true) if params[:user_practice_status] == 'team_member'
-
+          user_practice.update_attributes(verified_implementer: true, team_member: false, other: false) if params[:user_practice_status] == 'verified_implementer'
+          user_practice.update_attributes(verified_implementer: false, team_member: true, other: false) if params[:user_practice_status] == 'team_member'
+          user_practice.update_attributes(verified_implementer: false, team_member: false, other: true) if params[:user_practice_status] == 'other'
           @comment.save
           ahoy.track "Practice comment created", { comment_id: @comment.id, creator_id: @comment.creator_id, editor_id: @comment.editor_id, body: @comment.body }
 
@@ -78,7 +78,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
   def edit
     @comment.editor = @commontator_user
     security_transgression_unless @comment.can_be_edited_by?(@commontator_user)
-
+    @practice = Practice.find_by_id(@comment.thread.commontable_id)
     respond_to do |format|
       format.html { redirect_to commontable_url }
       format.js
@@ -90,7 +90,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
     @comment.editor = @commontator_user
     @comment.body = params.dig(:comment, :body)
     security_transgression_unless @comment.can_be_edited_by?(@commontator_user)
-
+    @practice = Practice.find_by_id(@comment.thread.commontable_id)
     respond_to do |format|
       if params[:cancel].blank?
         if @comment.save
@@ -121,8 +121,8 @@ class Commontator::CommentsController < Commontator::ApplicationController
 
   # PUT /comments/1/delete
   def delete
+    @practice = Practice.find_by_id(@comment.thread.commontable_id)
     security_transgression_unless @comment.can_be_deleted_by?(@commontator_user)
-
     if @comment.delete_by(@commontator_user)
       ahoy.track "Practice comment deleted", { comment_id: params[:id] }
     else
@@ -137,6 +137,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
 
   # PUT /comments/1/undelete
   def undelete
+    @practice = Practice.find_by_id(@comment.thread.commontable_id)
     security_transgression_unless @comment.can_be_deleted_by?(@commontator_user)
 
     if @comment.undelete_by(@commontator_user)
@@ -144,7 +145,6 @@ class Commontator::CommentsController < Commontator::ApplicationController
     else
       @comment.errors.add(:base, t('commontator.comment.errors.not_deleted')) \
     end
-
     respond_to do |format|
       format.html { redirect_to commontable_url }
       format.js { render :delete }
@@ -165,6 +165,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
 
   # PUT /comments/1/downvote
   def downvote
+    @practice = Practice.find_by_id(@comment.thread.commontable_id)
     security_transgression_unless @comment.can_be_voted_on_by?(@commontator_user) &&\
       @comment.thread.config.comment_voting.to_sym == :ld
 
@@ -178,6 +179,7 @@ class Commontator::CommentsController < Commontator::ApplicationController
 
   # PUT /comments/1/unvote
   def unvote
+    @practice = Practice.find_by_id(@comment.thread.commontable_id)
     security_transgression_unless @comment.can_be_voted_on_by?(@commontator_user)
 
     @comment.unvote voter: @commontator_user

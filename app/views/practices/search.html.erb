@@ -3,12 +3,13 @@
 <% provide :footer_classes, 'bg-gray-2' %>
 <% provide :head_tags do %>
   <%= javascript_include_tag '_practice_card_utilities', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag '_otherCategories', 'data-turbolinks-track': 'reload' %>
   <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
     <%= render partial: 'search', formats: [:js] %>
   <% end %>
 <% end %>
 
-<div id="search-page">
+<div id="search-page" class="margin-bottom-10">
   <section class="grid-container">
     <%= render partial: "shared/messages", locals: {small_text: false} %>
     <form id="update-search-results-form">
@@ -24,7 +25,7 @@
         </div>
       </div>
       <div class="usa-accordion usa-accordion--bordered position-relative">
-        <button id="mobile_filters_button" class="usa-button dm-btn-primary width-full line-height-19px desktop:display-none" type="button">Filters</button>
+        <button id="mobile_filters_button" class="usa-button width-full desktop:display-none" type="button">Filters</button>
         <h2 class="usa-accordion__heading desktop-filters-accordion-heading display-none desktop:display-block">
           <button class="usa-accordion__button search-filters-accordion-button"
                   aria-expanded="false"
@@ -32,7 +33,7 @@
             Filters
           </button>
         </h2>
-        <div id="search_filters_dropdown" class="usa-accordion__content position-fixed top-0 right-0 left-0 bottom-0 width-full z-400 p0 desktop:display-none">
+        <div id="search_filters_dropdown" class="usa-accordion__content position-fixed top-0 right-0 left-0 bottom-0 width-full z-400 padding-0 display-none">
           <div class="mobile-modal-container">
             <div class="grid-container grid-row height-10 display-flex flex-align-center desktop:display-none">
               <div class="grid-col-3">
@@ -43,7 +44,7 @@
               </div>
               <div class="grid-col-3">
                 <div class="text-right">
-                  <button type="button" class="usa-button--unstyled dm-btn-primary width-auto" id="resetSearchFiltersButtonMobile">Reset</button>
+                  <button type="button" class="dm-button--unstyled-primary width-auto" id="resetSearchFiltersButtonMobile">Reset</button>
                 </div>
               </div>
             </div>
@@ -66,7 +67,7 @@
       second_div_classes: 'grid-col-12 order-first margin-top-0 dm-sort-container margin-bottom-3 desktop:margin-top-1 desktop:margin-bottom-0 desktop:margin-top-0 desktop:order-last desktop:grid-col-4'
     }
     %>
-    <%= render partial: 'shared/search_loading_spinner' %>
+    <%= render partial: 'shared/loading_spinner', locals: { display: false, classes: "dm-loading-spinner display-none flex-justify-center flex-align-self-center margin-y-8 desktop:margin-y-10" } %>
     <%= render partial: 'shared/search_no_results', locals: { display_no_query_msg: true } %>
   </section>
 </div>

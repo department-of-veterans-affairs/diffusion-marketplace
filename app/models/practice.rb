@@ -49,7 +49,10 @@ class Practice < ApplicationRecord
         self.maturity_level_changed? ||
         self.overview_problem_changed? ||
         self.overview_solution_changed? ||
-        self.overview_results_changed?
+        self.overview_results_changed?  ||
+        self.retired_changed? ||
+        self.retired_reason_changed? ||
+        self.hidden_changed?
       self.reset_searchable_cache = true
     end
   end
@@ -61,19 +64,19 @@ class Practice < ApplicationRecord
   def self.searchable_practices(sort = 'a_to_z')
     if sort == 'a_to_z'
       Rails.cache.fetch('searchable_practices_a_to_z') do
-        Practice.sort_a_to_z.get_with_categories_and_adoptions_ct
+        Practice.sort_by_retired.sort_a_to_z.get_with_categories_and_adoptions_ct
       end
     elsif sort == 'adoptions'
       Rails.cache.fetch('searchable_practices_adoptions') do
-        Practice.sort_adoptions_ct.get_with_categories_and_adoptions_ct
+        Practice.sort_by_retired.sort_adoptions_ct.get_with_categories_and_adoptions_ct
       end
     elsif sort == 'added'
       Rails.cache.fetch('searchable_practices_added') do
-        Practice.sort_added.get_with_categories_and_adoptions_ct
+        Practice.sort_by_retired.sort_added.get_with_categories_and_adoptions_ct
       end
     elsif sort == nil
       Rails.cache.fetch('searchable_practices') do
-        Practice.get_with_categories_and_adoptions_ct
+        Practice.sort_by_retired.get_with_categories_and_adoptions_ct
       end
     end
   end
@@ -199,10 +202,13 @@ class Practice < ApplicationRecord
   scope :sort_adoptions_ct, -> { order(Arel.sql("COUNT(diffusion_histories) DESC, lower(practices.name) ASC")) }
   scope :sort_added, -> { order(Arel.sql("practices.created_at DESC")) }
   scope :filter_by_category_ids, -> (cat_ids) { where('category_practices.category_id IN (?)', cat_ids)} # cat_ids should be a id number or an array of id numbers
-  scope :published_enabled_approved, -> { where(published: true, enabled: true, approved: true) }
-  scope :get_by_adopted_facility, -> (station_number) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {facility_id: station_number}).uniq }
-  scope :get_by_created_facility, -> (station_number) { where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { facility_id: station_number }) }
+  scope :published_enabled_approved, -> { where(published: true, enabled: true, approved: true, hidden: false) }
+  scope :sort_by_retired, -> { order("retired asc") }
+  scope :get_by_adopted_facility, -> (facility_id) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {va_facility_id: facility_id}).uniq }
+  scope :get_by_created_facility, -> (facility_id) { where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { va_facility_id: facility_id }) }
   scope :load_associations, -> { includes(:categories, :diffusion_histories, :practice_origin_facilities) }
+  scope :get_with_diffusion_histories, -> { published_enabled_approved.sort_a_to_z.joins(:diffusion_histories).uniq }
+
   scope :public_facing, -> { published_enabled_approved.where(is_public: true) }
 
   belongs_to :user, optional: true
@@ -273,10 +279,7 @@ class Practice < ApplicationRecord
   # This allows the practice model to be commented on with the use of the Commontator gem
   acts_as_commontable dependent: :destroy
 
-  #accepts_nested_attributes_for :practices_origin_facilities?
-  accepts_nested_attributes_for :practice_origin_facilities, allow_destroy: true, reject_if: proc { |attributes|
-    attributes['facility_id'].blank?
-  }
+  accepts_nested_attributes_for :practice_origin_facilities, allow_destroy: true, reject_if: :reject_practice_origin_facilities
   accepts_nested_attributes_for :practice_metrics, allow_destroy: true, reject_if: proc { |attributes| attributes['description'].blank? }
   accepts_nested_attributes_for :practice_awards, allow_destroy: true, reject_if: proc { |attributes| attributes['name'].blank? }
   accepts_nested_attributes_for :categories, allow_destroy: true, reject_if: proc { true }
@@ -351,14 +354,6 @@ class Practice < ApplicationRecord
   def emailed_count_by_range(start_date, end_date)
     Ahoy::Event.where(name: 'Practice email').where("properties->>'practice_id' = '#{id}'").where(time: start_date..end_date).count
   end
-  def get_adoptions_by_status(adoption_array, hash_array)
-    vamc_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
-    adoption_array.each do |adoption|
-      facility = vamc_facilities.find { |f| f['StationNumber'] == adoption.facility_id }
-      hash_array.push(facility: facility, diffusion_history: adoption)
-    end
-    hash_array.sort_by { |a| [a[:facility]["StreetAddressState"], a[:facility]["OfficialStationName"]] }
-  end
 
   def create_practice_editor_for_practice
     PracticeEditor.create_and_invite(self, self.user) unless is_user_an_editor_for_practice(self, self.user)
@@ -382,17 +377,19 @@ class Practice < ApplicationRecord
     elsif sort === 'added'
       query = query.sort_added
     end
+    query = query.sort_by_retired
     query.group("practices.id, categories.id, practice_origin_facilities.id").uniq
   end
 
-  def self.get_facility_created_practices(station_number, search_term = nil, sort = 'a_to_z', categories = nil)
+  def self.get_facility_created_practices(facility_id, search_term = nil, sort = 'a_to_z', categories = nil)
     practices = search_practices(search_term, sort, categories)
-    practices.select { |pr| pr.practice_origin_facilities.pluck(:facility_id).include?(station_number)}
+
+    practices.select { |pr| pr.practice_origin_facilities.pluck(:va_facility_id).include?(facility_id)}
   end
 
-  def self.get_facility_adopted_practices(station_number, search_term = nil, categories = nil)
+  def self.get_facility_adopted_practices(facility_id, search_term = nil, categories = nil)
     practices = search_practices(search_term, 'a_to_z', categories)
-    practices.select { |pr| pr.diffusion_histories.pluck(:facility_id).include?(station_number)}
+    practices.select { |pr| pr.diffusion_histories.pluck(:va_facility_id).include?(facility_id)}
   end
 
   def self.get_query_for_search_term(search_term)
@@ -410,22 +407,27 @@ class Practice < ApplicationRecord
       search_params[:maturity_level] = mat_level
     end
 
-    va_fac_matches = VaFacility.where("official_station_name ILIKE :search OR common_name ILIKE :search", search: "%#{sanitized_search_term}%").select("station_number")
+    va_fac_matches = VaFacility.where("official_station_name ILIKE :search OR common_name ILIKE :search", search: "%#{sanitized_search_term}%").select("id")
 
     if va_fac_matches.length > 0
-      facilities = va_fac_matches.map {|st| st.station_number}
-      search_query = search_query + " OR diffusion_histories.facility_id IN (:facilities) OR practice_origin_facilities.facility_id IN (:facilities)"
+      facilities = va_fac_matches.map { |st| st.id }
+      search_query = search_query + " OR diffusion_histories.va_facility_id IN (:facilities) OR practice_origin_facilities.va_facility_id IN (:facilities)"
       search_params[:facilities] = facilities
     end
     return { query: search_query, params: search_params }
   end
 
   def diffusion_history_status_by_facility(facility)
-    diffusion_histories.find_by(facility_id: facility.station_number).diffusion_history_statuses.first
+    diffusion_histories.find_by(va_facility_id: facility.id).diffusion_history_statuses.first
   end
 
   # add other practice attributes that need whitespace trimmed as needed
   def trim_whitespace
     self.name&.strip!
+  end
+
+  # reject the PracticeOriginFacility if the facility field is blank OR the practice already has a PracticeOriginFacility with the same va_facility_id
+  def reject_practice_origin_facilities(attributes)
+    attributes['va_facility_id'].blank? || self.practice_origin_facilities.where(va_facility_id: attributes['va_facility_id'].to_i).exists?
   end
 end

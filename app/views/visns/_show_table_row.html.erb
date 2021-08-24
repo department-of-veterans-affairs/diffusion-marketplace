@@ -1,0 +1,10 @@
+<% facilities.each do |facility| %>
+  <tr>
+    <th scope="row" role="rowheader" class="grid-col-6">
+      <%= link_to "#{facility.official_station_name} (#{facility.common_name})", va_facility_path(facility), class: 'usa-link' %>
+    </th>
+    <td class="grid-col-2"><%= facility.fy17_parent_station_complexity_level.split('-').shift.upcase %></td>
+    <td class="grid-col-2"><%= facility.practices_created_count %></td>
+    <td class="grid-col-2"><%= facility.practices_adopted_count  %></td>
+  </tr>
+<% end %>

@@ -3,41 +3,39 @@
 <% provide :footer_classes, 'bg-gray-2' %>
 
 <% provide :head_tags do %>
-  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-    var facilityParam = "<%= @selected_facility || '' %>";
-  <% end %>
-  <%= javascript_include_tag 'facilities_utilities', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'va_facilities/facilities_utilities', 'data-turbolinks-track': 'reload' %>
 <% end %>
 
-<section class="usa-section padding-y-0 grid-col-12" id="dm-va-facilities-index">
+<section class="usa-section padding-y-0 grid-col-12" id="dm-va-facilities-index" data-reload="true">
   <div class="grid-container position-relative grid-col-12">
     <div class="grid-row grid-gap">
       <div class="grid-col-12">
         <h1 class="font-sans-2xl margin-top-5 margin-bottom-3">
           Facilities
         </h1>
-        <span>Looking for a full list of VISNs? <a href="/visns">Click here</a></span>
-        <div class="margin-top-5 margin-bottom-3 grid-col-12">
-          <div class="grid-row grid-gap">
-            <div class="grid-col-5">
-              <%= render partial: 'va_facilities/facility_directory_combo_box', locals: {facility_selector: 'facility_directory_select', default_value: @selected_facility} %>
-            </div>
-            <div class="grid-col-3">
-              <%= render partial: 'va_facilities/visn_select', locals: {visn_selector: 'facility_directory_visn_select'} %>
-            </div>
-            <div class="grid-col-4">
-              <%= render partial: 'va_facilities/facility_directory_type_select', locals: {facility_type_selector: 'facility_type_select'} %>
+        <span>Looking for a full list of VISNs? <a class="usa-link" href="<%= visns_path %>">Click here</a></span>
+        <div class="dm-facilities-index-view display-none">
+          <div class="margin-top-5 margin-bottom-3 grid-col-12">
+            <div class="grid-row grid-gap">
+              <div class="grid-col-5">
+                <%= render partial: 'va_facilities/index_facilities_combo_box', locals: { facility_selector: 'facility_facilities_combo_box', facilities: @facilities } %>
+              </div>
+              <div class="grid-col-3">
+                <%= render partial: 'va_facilities/index_visn_select', locals: { visn_selector: 'facility_visn_select' } %>
+              </div>
+              <div class="grid-col-4">
+                <%= render partial: 'va_facilities/index_complexity_select', locals: { facility_type_selector: 'facility_type_select' } %>
+              </div>
             </div>
           </div>
+          <div class="margin-bottom-3">
+            <span class="dm-results-count">
+            </span>
+            <%= render partial: 'va_facilities/index_table' %>
+            <%= render partial: 'shared/search_no_results', locals: { display_no_query_msg: false, no_query_p: false } %>
+          </div>
         </div>
-        <div class="margin-bottom-3">
-          <% if @filtered_facilities_count > 0 %>
-            Displaying <%= @filtered_facilities_count %> result<% if @filtered_facilities_count != 1 %>s<% end %>:
-            <%= render partial: 'va_facilities/facility_results_sortable_table' %>
-          <% else %>
-            <%= render partial: 'shared/search_no_results', locals: { display_no_query_msg: true, no_query_p: false } %>
-          <% end %>
-        </div>
+        <%= render partial: 'shared/loading_spinner', locals: { display: true, classes: 'text-center margin-y-10' } %>
       </div>
     </div>
   </div>

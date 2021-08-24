@@ -1,8 +1,6 @@
-@import "../variables/colors";
-
 .dm-loading-spinner, .search-spinner {
   .fa-circle-notch {
-    color: $dm-color-blue-70v;
+    color: color($theme-color-primary-dark);
     font-size: 40px;
     animation: rotation 1s infinite linear;
   }

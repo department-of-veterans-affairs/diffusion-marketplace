@@ -8,6 +8,7 @@ class Visn < ApplicationRecord
   attr_accessor :reset_cached_visns
 
   scope :order_by_number, -> { order('number') }
+  scope :get_by_initiating_facility, -> (initiating_facility) { cached_visns.find_by(id: initiating_facility) }
 
   # Add a custom friendly URL that uses the visn number and not the id
   def to_param
@@ -39,6 +40,9 @@ class Visn < ApplicationRecord
   end
 
   def get_created_practices(station_numbers)
-    (Practice.published_enabled_approved.load_associations.where(initiating_facility_type: 'facility').get_by_created_facility(station_numbers)).or(Practice.published_enabled_approved.load_associations.joins(:practice_origin_facilities).where(initiating_facility_type: 'visn').where(initiating_facility: id.to_s))
+    facility_created_practices = Practice.published_enabled_approved.load_associations.where(initiating_facility_type: 'facility').get_by_created_facility(station_numbers)
+    visn_created_practices = Practice.published_enabled_approved.load_associations.where(initiating_facility_type: 'visn').where(initiating_facility: id.to_s)
+
+    facility_created_practices + visn_created_practices
   end
 end

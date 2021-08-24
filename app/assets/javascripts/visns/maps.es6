@@ -218,8 +218,8 @@ function initialize() {
   function setVisnShowMapEventListener() {
     if (!isVisnsIndexPage) {
       google.maps.event.addListenerOnce(handler.getMap(), "bounds_changed", function () {
-          $(".dm-visn-show-map").removeClass("display-none");
-          $(".dm-loading-spinner").addClass("display-none");
+        $(".dm-visn-show-map").removeClass("display-none");
+        $(".dm-visn-map-loading-spinner").addClass("display-none");
       });
     }
   }
@@ -227,16 +227,23 @@ function initialize() {
   // zoom in/out when facility type filters are selected/unselected
   function resetMarkerBounds() {
       $(document).on('click', '.facility-type-checkbox-label', function() {
-          handler.resetBounds();
+        handler.resetBounds();
       });
   }
 
-  google.maps.event.addListener(handler.getMap(), 'tilesloaded', function () {
-      changeMarkerIconOnInfoWindowClose();
+  if (isVisnsIndexPage) {
+    google.maps.event.addListener(handler.getMap(), 'idle', function () {
+      $("#visns-index-map").removeClass("display-none");
+      $(".dm-loading-spinner").addClass("display-none");
+    });
+  }
+
+  google.maps.event.addListener(handler.getMap(), "tilesloaded", function () {
+    changeMarkerIconOnInfoWindowClose();
   });
 
   google.maps.event.addListener(handler.getMap(), 'click', function () {
-      closeInfoWindow();
+    closeInfoWindow();
   });
 
   setVisnShowMapEventListener();
@@ -246,5 +253,5 @@ function initialize() {
 }
 
 $(document).on("turbolinks:load", function () {
-    google.maps.event.addDomListener(window, "load", initialize);
+  google.maps.event.addDomListener(window, "load", initialize);
 });

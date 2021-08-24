@@ -51,26 +51,26 @@ RSpec.describe ApplicationHelper, type: :helper do
 
   describe "#get_grid_alignment_css_class" do
     context "when given a 'right' alignment" do
-      it "returns 'justify-end'" do
+      it "returns 'flex-justify-end'" do
         mock_alignment = 'RiGht'
-        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('justify-end')
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('flex-justify-end')
       end
 
-      it "returns 'justify-end'" do
+      it "returns 'flex-justify-end'" do
         mock_alignment = 'right'
-        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('justify-end')
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('flex-justify-end')
       end
     end
 
     context "when given a 'center' alignment" do
-      it "returns 'justify-center'" do
+      it "returns 'flex-justify-center'" do
         mock_alignment = 'Center'
-        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('justify-center')
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('flex-justify-center')
       end
 
-      it "returns 'justify-center'" do
+      it "returns 'flex-justify-center'" do
         mock_alignment = 'center'
-        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('justify-center')
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('flex-justify-center')
       end
     end
 
@@ -80,7 +80,7 @@ RSpec.describe ApplicationHelper, type: :helper do
         expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('')
       end
 
-      it "returns 'justify-center'" do
+      it "returns 'flex-justify-center'" do
         mock_alignment = 'foobar'
         expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('')
       end
@@ -89,26 +89,26 @@ RSpec.describe ApplicationHelper, type: :helper do
 
   describe "#get_link_target_attribute" do
     context "when given a" do
-      it "returns 'justify-end'" do
+      it "returns 'flex-justify-end'" do
         mock_alignment = 'RiGht'
-        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('justify-end')
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('flex-justify-end')
       end
 
-      it "returns 'justify-end'" do
+      it "returns 'flex-justify-end'" do
         mock_alignment = 'right'
-        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('justify-end')
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('flex-justify-end')
       end
     end
 
     context "when given a 'center' alignment" do
       it "returns 'justify-center'" do
         mock_alignment = 'Center'
-        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('justify-center')
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('flex-justify-center')
       end
 
-      it "returns 'justify-center'" do
+      it "returns 'flex-justify-center'" do
         mock_alignment = 'center'
-        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('justify-center')
+        expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('flex-justify-center')
       end
     end
 
@@ -118,7 +118,7 @@ RSpec.describe ApplicationHelper, type: :helper do
         expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('')
       end
 
-      it "returns 'justify-center'" do
+      it "returns 'flex-justify-center'" do
         mock_alignment = 'foobar'
         expect(helper.get_grid_alignment_css_class(mock_alignment)).to eq('')
       end
@@ -129,7 +129,16 @@ RSpec.describe ApplicationHelper, type: :helper do
     before do
       user = User.create!(email: 'spongebob.squarepants@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
       @practice = Practice.create(name: 'test-practice', initiating_facility_type: 'facility', user: user)
-      PracticeOriginFacility.create(practice: @practice, facility_id: '546', facility_type: 0)
+
+      Visn.create!(id: 5, name: "VA Mid-Atlantic Health Care Network", number: 6)
+      visn_8 = Visn.create!(id: 7, name: "VA Sunshine Healthcare Network", number: 8)
+      visn_9 = Visn.create!(id: 8, name: "VA MidSouth Healthcare Network", number: 9)
+
+      facility_1 = VaFacility.create!(visn: visn_8, station_number: "546", official_station_name: "Bruce W. Carter Department of Veterans Affairs Medical Center", common_name: "Miami", street_address_state: "FL")
+      @facility_2 = VaFacility.create!(visn: visn_8, station_number: "516", official_station_name: "C.W. Bill Young Department of Veterans Affairs Medical Center", common_name: "Bay Pines", street_address_state: "FL")
+      @facility_3 = VaFacility.create!(visn: visn_9, station_number: "614", official_station_name: "Memphis VA Medical Center", common_name: "Memphis", street_address_state: "TN")
+
+      PracticeOriginFacility.create(practice: @practice, va_facility: facility_1, facility_type: 0)
     end
 
     context "when given a practice with a facility" do
@@ -141,8 +150,8 @@ RSpec.describe ApplicationHelper, type: :helper do
 
     context "when given a practice with multiple facilities" do
       before do
-        PracticeOriginFacility.create(practice: @practice, facility_id: '516')
-        PracticeOriginFacility.create(practice: @practice, facility_id: '614')
+        PracticeOriginFacility.create(practice: @practice, va_facility: @facility_2)
+        PracticeOriginFacility.create(practice: @practice, va_facility: @facility_3)
 
       end
       it "returns the name" do

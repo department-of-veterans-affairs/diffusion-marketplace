@@ -6,12 +6,20 @@ describe 'Admin Adoptions Tab', type: :feature do
                           password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(:admin)
     @practice = Practice.create!(name: 'The Best Practice Ever!', user: @admin, initiating_facility_type: 'facility', initiating_facility: '678GC', tagline: 'Test tagline')
+
+    visn_8 = Visn.create!(id: 7, name: "VA Sunshine Healthcare Network", number: 8)
+    visn_22 = Visn.create!(id: 17, name: "Desert Pacific Healthcare Network", number: 22)
+
+    facility_1 = VaFacility.create!(visn: visn_22, station_number: "600GC", official_station_name: "Cabrillo VA Clinic", common_name: "Cabrillo", street_address_state: "CA")
+    facility_2 = VaFacility.create!(visn: visn_8, station_number: "516", official_station_name: "C.W. Bill Young Department of Veterans Affairs Medical Center", common_name: "Bay Pines", street_address_state: "FL")
+    facility_3 = VaFacility.create!(visn: visn_22, station_number: "649GD", official_station_name: "Anthem VA Clinic", common_name: "Anthem", street_address_state: "AZ")
+
     login_as(@admin, scope: :user, run_callbacks: false)
-    @diffusion_history = DiffusionHistory.create!(practice_id: @practice.id, facility_id: '600GC')
-    @diffusion_history_2 = DiffusionHistory.create!(practice_id: @practice.id, facility_id: '516')
-    @diffusion_history_3 = DiffusionHistory.create!(practice_id: @practice.id, facility_id: '649GD', created_at: Date.today - 1.months)
+    @diffusion_history = DiffusionHistory.create!(practice_id: @practice.id, va_facility: facility_1)
+    @diffusion_history_2 = DiffusionHistory.create!(practice_id: @practice.id, va_facility: facility_2)
+    @diffusion_history_3 = DiffusionHistory.create!(practice_id: @practice.id, va_facility: facility_3, created_at: Date.today - 1.months)
     @diffusion_history_status = DiffusionHistoryStatus.create!(diffusion_history_id: @diffusion_history.id, status: 'In progress')
-    @diffusion_history_status_2 = DiffusionHistoryStatus.create!(diffusion_history_id: @diffusion_history_2.id, status: 'Unsuccessful')
+    @diffusion_history_status_2 = DiffusionHistoryStatus.create!(diffusion_history_id: @diffusion_history_2.id, status: 'Unsuccessful', unsuccessful_reasons: [0])
     @diffusion_history_status_3 = DiffusionHistoryStatus.create!(diffusion_history_id: @diffusion_history_3.id, status: 'Successful')
   end
 

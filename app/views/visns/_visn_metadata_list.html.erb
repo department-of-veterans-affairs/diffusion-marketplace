@@ -1,9 +1,9 @@
-<ul class="line-height-26 p0 x0 visn-data-ul">
+<ul class="line-height-26 padding-0 margin-0 visn-data-ul">
   <%
     visn_count = @visns_counts.select { |vc| vc[:number] === visn.number }.first
     visn_created_practices_count = visn_count[:created]
     visn_adoption_count = visn_count[:adopted]
   %>
-  <li class="small-disc visn-practice-creations-count x0-5-bottom"><%= visn_created_practices_count %> practice<%= visn_created_practices_count != 1 ? 's' : '' %> created here</li>
+  <li class="small-disc visn-practice-creations-count margin-bottom-1"><%= visn_created_practices_count %> practice<%= visn_created_practices_count != 1 ? 's' : '' %> created here</li>
   <li class="small-disc visn-adoptions-count"><%= visn_adoption_count %> practice<%= visn_adoption_count != 1 ? 's' : '' %> adopted here</li>
 </ul>

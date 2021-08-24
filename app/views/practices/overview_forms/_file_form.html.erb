@@ -7,7 +7,7 @@
 <div id="<%= area %>_file_form<%= "_#{placeholder}" if resource %>" <% if resource %> class="resource_container margin-bottom-5 grid-col-12" <% end %> class="grid-col-12">
   <input type="hidden" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][resource_type]" value="file"/>
   <% if resource&.id  %>
-    <span class="line-height-26">File: <%= link_to(resource&.attachment&.original_filename, resource&.attachment_s3_presigned_url, target: '_blank', class: 'dm-external-link')%></span>
+    <span class="line-height-26">File: <%= link_to(resource&.attachment&.original_filename, resource&.attachment_s3_presigned_url, target: '_blank', class: 'usa-link usa-link--external')%></span>
     <input value="<%= resource&.id %>" type="hidden" name="practice[practice_<%= area %>_attributes][<%= placeholder %>][id]"/>
   <% else %>
     <div class="grid-col-12 margin-x-auto dm-usa-file-input-container" data-area="<%= area %>">

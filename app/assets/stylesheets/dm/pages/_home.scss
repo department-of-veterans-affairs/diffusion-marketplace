@@ -2,8 +2,6 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-@import '../variables/colors';
-
 .dm-homepage {
   .dm-system-message {
     .usa-alert {
@@ -12,7 +10,7 @@
   }
 
   a {
-    color: $dm-color-base !important;
+    color: color($theme-color-base-ink) !important;
   }
 
   .homepage-explore-all-section {
@@ -22,47 +20,8 @@
       height: 400px;
     }
 
-    h1 {
-      line-height: 36px;
-
-      @media screen and (min-width: 1024px) {
-        line-height: 46px;
-      }
-    }
-
     .fa-laptop-medical {
-      color: $dm-color-blue-vivid !important;
-    }
-
-    .homepage-explore-all-button {
-      line-height: 19px !important;
-      color: $dm-color-base !important;
-      background-color: $dm-color-white !important;
-      border: none !important;
-      font-weight: bold !important;
-      cursor: pointer;
-      padding: 12px 20px 12px 20px !important;
-      width: 197px !important;
-      font-size: 16px !important;
-      text-decoration: none;
-
-      @media screen and (min-width: 1024px) {
-        line-height: 26px !important;
-        color: $dm-color-base !important;
-        background-color: $dm-color-white !important;
-        border: none !important;
-        padding: 16px 24px 16px 24px !important;
-        font-size: 22px !important;
-        width: 264px !important;
-      }
-
-      &:hover {
-        background-color: $dm-color-alt-lighter-grey !important;
-      }
-
-      &:active {
-        background-color: $dm-color-base-light !important;
-      }
+      color: color($theme-color-primary-light) !important;
     }
 
     @media screen and (max-width: 1023px) {
@@ -77,7 +36,7 @@
       text-decoration: none !important;
 
       &:visited {
-        color: $dm-color-base !important;
+        color: color($theme-color-base-ink) !important;
       }
 
       &:hover {
@@ -91,26 +50,21 @@
       box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
 
       &:before {
-        background-color: $dm-color-blue-30v !important;
+        background-color: color($theme-color-primary-light) !important;
       }
     }
 
     .recommended-for-you-banner {
       background-color: transparent !important;
+      border-left-color: color($theme-color-primary-light) !important;
     }
 
     .fa-user-circle {
-      color: $dm-color-base !important;
+      color: color($theme-color-base-ink) !important;
     }
 
     .covid-banner {
-      background-color: $dm-color-blue-30v;
-    }
-  }
-
-  .nominate-section {
-    a {
-      width: 169px !important;
+      background-color: color($theme-color-primary-light);
     }
   }
 
@@ -119,13 +73,15 @@
     .dm-practice-card {
       padding-top: 0;
       padding-bottom: 0;
+      min-width: 309px;
+      max-width: 309px;
     }
 
     .dm-practice-bookmark-btn {
-      top: 6px;
+      right: 0.5em;
     }
 
-    @media screen and (min-width: 64rem) {
+    @media screen and (min-width: 40rem) {
       height: 250px;
       max-height: 250px;
 
@@ -143,9 +99,16 @@
         max-width: 520px;
       }
 
-      .dm-highlighted-practice-card{
+      .dm-highlighted-practice-card {
         position: absolute;
+        right: 5%;
+      }
+    }
+
+    @media screen and (min-width: 64rem) {
+      .dm-highlighted-practice-card {
         top: 944px;
+        right: 0;
         left: calc(100vw - 50vw + 88px);
       }
     }

@@ -8,7 +8,6 @@ Rails.application.routes.draw do
   mount Ahoy::Engine => '/ahoy', as: :dm_ahoy
   mount Commontator::Engine => '/commontator' #, as: :dm_commontator
 
-  get '/terms_and_conditions' => 'users#terms_and_conditions'
   get '/dashboard/export', action: 'export_metrics', controller: 'admin/dashboard', as: 'export_metrics'
   get '/session_time_remaining', action: 'session_time_remaining', controller: 'practices', as: 'session_time_remaining'
   patch '/extend_editor_session_time', action: 'extend_editor_session_time', controller: 'practices', as: 'extend_editor_session_time'
@@ -93,9 +92,14 @@ Rails.application.routes.draw do
 
   # set the param to the visn number instead of the visn id
   resources :visns, param: :number
-  resources :va_facilities, path: :facilities
-  get '/facilities/:id/created-practices', controller: 'va_facilities', action: 'created_practices', as: 'created_practices'
-  get '/facilities/:id/update_practices_adopted_at_facility', action: 'update_practices_adopted_at_facility', controller: 'va_facilities', as: 'update_practices_adopted_at_facility'
+  get '/visns/:number/load-facilities-rows', controller: 'visns', action: 'load_facilities_show_rows'
+  resources :va_facilities, path: :facilities do
+    collection do
+      get '/load-facilities-rows', controller: 'va_facilities', action: 'load_facilities_index_rows'
+    end
+  end
+  get '/facilities/:id/created-practices', controller: 'va_facilities', action: 'created_practices'
+  get '/facilities/:id/update_practices_adopted_at_facility', action: 'update_practices_adopted_at_facility', controller: 'va_facilities'
 
 
   # Custom route for reporting a comment

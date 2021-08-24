@@ -1,72 +1,82 @@
-@import '../variables/colors';
-
 .dm-practice-card {
   position: relative;
   max-height: 436px;
 
   .dm-practice-link {
-    color: $dm-color-base;
+    color: color($theme-color-base-ink);
     text-decoration: none;
 
     &:hover {
       h3 {
         cursor: pointer;
         text-decoration: underline;
-        text-decoration-color: $dm-color-yellow-20v;
+        text-decoration-color: color($theme-color-accent-warm);
       }
     }
+  }
+  // retired banner button
+  .dm-practice-retired-banner {
+    position: absolute;
+    width: 80px;
+    height: 24px;
+    justify-content: center;
+    background-color: color($theme-color-base-light);
+    padding: 5px;
+    border-radius: 0px 2px 2px 0px;
+    z-index: 2;
+    top: 20px;
+    left: 12px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: color($theme-color-base-ink);
+    font-size: 13px;
+    line-height: 115%;
   }
 
   // bookmark button
   .dm-practice-bookmark-btn {
-    position: absolute;
     width: 28px;
     height: 28px;
     text-align: center;
-    background-color: $dm-color-white;
+    background-color: color($theme-color-dm-white);
     padding: 5px;
     border-radius: 50%;
     z-index: 2;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    top: 18px;
-    right: 18px;
+    position: absolute;
+    top: 0.5em;
+    right: 1.25em;
 
     .fas {
-      color: $dm-color-blue-50v;
+      color: color($theme-color-primary-vivid);
 
       &:hover {
-        color: $dm-color-blue-70v;
+        color: color($theme-color-primary-dark);
       }
 
       &:active {
-        color: $dm-color-blue-80v;
+        color: color($theme-color-primary-darker);
       }
     }
 
     .far {
-      color: $dm-color-black;
+      color: color($theme-color-base-ink);
 
       &:hover {
-        color: $dm-color-blue-50v;
+        color: color($theme-color-primary-vivid);
       }
 
       &:active {
-        color: $dm-color-blue-70v;
+        color: color($theme-color-primary-dark);
       }
     }
   }
 
   .dm-practice-card-container {
     height: 412px;
-    max-width: 309px;
-    min-width: -webkit-calc(100vw - 48px);
-    min-width: -moz-calc(100vw - 48px);
-    min-width: calc(100vw - 48px);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-    @media all and (min-width: 357px){
-      min-width: 309px;
-    }
   }
 
   .dm-practice-card-img-container {
@@ -96,7 +106,7 @@
     display: flex;
     align-items: flex-end;
     position: absolute;
-    bottom: 12px;
+    bottom: 18px;
     margin-right: 24px;
     max-width: 278px;
 
@@ -108,12 +118,12 @@
   // styling for when there is no practice thumbnail
   .dm-bg-gray-80 {
     height: 165px;
-    background-color: $dm-color-gray-80;
+    background-color: color($theme-color-base-darkest);
     display: flex;
 
     h3 {
       align-self: flex-end;
-      color: $dm-color-white;
+      color: color($theme-color-dm-white);
     }
   }
 

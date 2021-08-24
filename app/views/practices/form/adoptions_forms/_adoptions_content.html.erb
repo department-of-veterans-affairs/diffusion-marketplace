@@ -1,0 +1,21 @@
+<!-- Use the accurate heading level to maintain the document outline -->
+<button id="add_adoption_button" class="usa-button usa-button--outline margin-bottom-3">
+  Add new adoption
+</button>
+<% if params[:created] || params[:updated] %>
+  <div class="usa-alert usa-alert--info adoption-success-alert margin-bottom-3 margin-top-0" role="alert">
+    <div class="usa-alert__body">
+      <h3 class="usa-alert__heading">Success!</h3>
+      <p class="usa-alert__text">Adoption was successfully <%= params[:created] ? 'created' : 'updated'%>.</p>
+    </div>
+  </div>
+<% end %>
+<div id="adoption_form_container" class="display-none margin-bottom-2">
+  <% if params[:exists] %>
+    <%= render partial: 'practices/form/adoptions_forms/existing_adoption_warning', locals: {facility: params[:exists]} %>
+  <% end %>
+  <!-- New/Create Adoption form -->
+  <%= render partial: 'practices/form/adoptions_forms/adoption_form' %>
+</div>
+<!-- start repeatable -->
+<%= render partial: 'practices/form/adoptions_forms/adoptions_list' %>

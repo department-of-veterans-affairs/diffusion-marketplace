@@ -16,21 +16,21 @@ module ActiveAdminHelpers
   end
 
   def get_adoption_values(p, complete_map)
-    facility_data = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
+    facility_data = VaFacility.cached_va_facilities.get_relevant_attributes
     practice_diffusion_histories = p.diffusion_histories.map { |dh|
-      selected_facility = facility_data.select { |fd| fd["StationNumber"] === dh.facility_id }
+      selected_facility = facility_data.select { |fd| fd.station_number === dh.va_facility.station_number }
 
       dh_status = dh.diffusion_history_statuses.first
       {
-        facility_name: selected_facility[0]["OfficialStationName"],
-        common_name: selected_facility[0]["CommonName"],
-        state: selected_facility[0]["MailingAddressState"],
+        facility_name: selected_facility[0].official_station_name,
+        common_name: selected_facility[0].common_name,
+        state: selected_facility[0].street_address_state,
         date: dh_status.status == 'In progress' || dh_status.status == 'Implementing' || dh_status.status == 'Planning' || dh_status.status == 'Unsuccessful' ? dh_status.start_time : dh_status.end_time,
         status: dh_status.status == 'Completed' || dh_status.status == 'Implemented' || dh_status.status == 'Complete' ? 'Successful' : dh_status.status,
-        rurality: selected_facility[0]["Rurality"],
-        complexity: selected_facility[0]["FY17ParentStationComplexityLevel"],
-        station_number: selected_facility[0]["StationNumber"],
-        visn: selected_facility[0]["VISN"]
+        rurality: selected_facility[0].rurality,
+        complexity: selected_facility[0].fy17_parent_station_complexity_level,
+        station_number: selected_facility[0].station_number,
+        visn: selected_facility[0].visn
       }
     }
     sorted_diffusion_histories = practice_diffusion_histories.sort_by { |pdh| [pdh[:state], pdh[:facility_name]] }

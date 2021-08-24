@@ -1,72 +1,32 @@
-@import "../variables/colors";
-
-/****************************************
-  LINKS
-  To use: <a class="dm-internal-link"...>
-*****************************************/
-a {
-  // pages internal to DM
-  &.dm-internal-link {
-    color: $dm-color-base !important;
-    text-decoration: underline;
-
-    &:visited, &:hover, &:active {
-      text-decoration: underline;
-    }
-
-    &:hover, &:active {
-      cursor: pointer;
-    }
-
-    &:visited {
-      color: $dm-color-base !important;
-    }
-
+// header nav links
+.usa-nav__primary-item {
+  .usa-nav__link {
     &:hover {
-      color: $dm-color-blue-50v !important;
-    }
+      color: color($theme-color-primary-vivid) !important;
 
-    &:active {
-      color: $dm-color-blue-70v !important;
+      &::after {
+        background-color: color($theme-color-primary-vivid) !important;
+      }
     }
   }
+}
 
-  // pages external to DM
-  &.dm-external-link {
-    color: $dm-color-blue-50v !important;
+.dm-footer-link {
+  color: color($theme-color-base-ink);
+  text-decoration: none;
+
+  &:hover {
+    color: color($theme-color-primary-vivid);
     text-decoration: underline;
-
-    &:visited, &:hover, &:active {
-      text-decoration: underline;
-    }
-
-    &:hover, &:active {
-      cursor: pointer;
-    }
-
-    &:visited {
-      color: $dm-default-visited-purple !important;
-    }
-
-    &:hover {
-      color: $dm-color-blue-70v !important;
-    }
-
-    &:active {
-      color: $dm-color-blue-80v !important;
-    }
   }
 
-  // links within a banner
-  // TODO: Confirm with Becca on this
-  &.dm-banner-link {
-    color: $dm-color-base;
+  &:visited {
+    color: color($theme-color-base-ink);
+    text-decoration: none;
 
     &:hover {
-      text-decoration: none;
-    }
-    &:visited {
-      color: $dm-color-base;
+      color: color($theme-color-primary-vivid);
+      text-decoration: underline;
     }
   }
 }

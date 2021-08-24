@@ -1,10 +1,3 @@
-<% provide :head_tags do %>
-  <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
-    var facilitySlug = "<%= @va_facility.slug %>";
-  <% end %>
-  <%= javascript_include_tag 'va_facilities/facility_created_practice_search', 'data-turbolinks-track': 'reload' %>
-<% end %>
-
 <%
   sort_options = [
     ['Sort by A to Z', 'a_to_z', class: 'usa-select'],
@@ -48,26 +41,18 @@
       <%= select_tag('created-practices-sort-option', options_for_select(sort_options), id: 'dm-created-practices-sort-option', class: 'height-5 usa-select margin-0') %>
     </div>
   </div>
-  <div class="dm-created-practice-card-section desktop:margin-bottom-5">
-    <% if @created_practices.present? %>
-      <div id="dm-created-practice-card-list" class="grid-row grid-gap-3">
-        <% @created_practices.each do |practice| %>
-          <%= render partial: 'shared/practice_card', locals: { practice: practice} %>
-        <% end %>
-      </div>
-    <% end %>
+  <div class="dm-created-practice-card-section grid-col-12 desktop:margin-bottom-5">
+    <div id="dm-created-practice-card-list" class="grid-row grid-gap-3">
+      <!-- loaded asnychronously in `app/assets/javascripts/va_facilities/facility_created_practice_search.es6` -->
+    </div>
     <div class="grid-col-12 dm-load-more-created-practices-container padding-top-2 text-center">
-      <% if @pagy_created_info.next %>
-        <%= button_tag "Load more", type: 'button', class: "usa-button--outline dm-btn-base dm-load-more-created-practices-btn", data: { next: @pagy_created_info.next } %>
-      <% end %>
+      <!-- loaded asnychronously in `app/assets/javascripts/va_facilities/facility_created_practice_search.es6` -->
     </div>
   </div>
   <div class="grid-col-12 dm-created-practice-error-state display-flex flex-align-center flex-justify-center text-center margin-y-10 display-none">
     <i class="fas fa-heart-broken margin-right-2 font-sans-2xl"></i>
     <span class="line-height-25px"> Oops! Looks like an error occured fetching practices. Please try again later.</span>
   </div>
-  <div class="width-full dm-created-practices-loading-spinner dm-loading-spinner flex-justify-center flex-align-self-center margin-y-4 display-none">
-    <i class="fas fa-circle-notch font-sans-2xl"></i>
-  </div>
-  <%= render partial: 'shared/search_no_results', locals: { display_no_query_msg: false } %>
+  <%= render partial: 'shared/loading_spinner', locals: { display: false, classes: "width-full dm-created-practices-loading-spinner dm-loading-spinner flex-justify-center flex-align-self-center margin-y-4 display-flex" } %>
+  <%= render partial: 'shared/search_no_results', locals: { display_no_query_msg: false, classes: "dm-created-practices-no-results" } %>
 </div>
