@@ -148,4 +148,9 @@ module PracticesHelper
     }
     content[resource_type.to_sym]
   end
+
+  def update_category_usages
+    s_query = params["query"]
+    CategoryUsage.store_chosen_categories(s_query, nil)
+  end
 end

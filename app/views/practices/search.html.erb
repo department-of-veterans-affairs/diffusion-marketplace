@@ -8,7 +8,11 @@
     <%= render partial: 'search', formats: [:js] %>
   <% end %>
 <% end %>
-
+<%
+  if !params["query"].blank?
+    update_category_usages
+  end
+%>
 <div id="search-page">
   <section class="grid-container">
     <%= render partial: "shared/messages", locals: {small_text: false} %>
