@@ -296,6 +296,18 @@ function searchPracticesByVisn() {
                 setFieldsetAttr('true');
             }
         }
+        debugger
+        //update Category usage info....
+        if(searchField.value.length == 0 && categoryComboBoxVal != null){
+            updateSelectedCategoriesUsage(categoryComboBoxVal, null, null);
+        }
+        else if(categoryComboBoxVal == null && searchField.value.length > 0){
+            updateSelectedCategoriesUsage(searchField.value, null, null);
+        }
+        else if(categoryComboBoxVal != null && searchField.value.length > 0){
+            updateSelectedCategoriesUsage(categoryComboBoxVal, null, null);
+            updateSelectedCategoriesUsage(searchField.value, null, null);
+        }
         // Run the search
         search(searchField.value, categoryComboBoxVal, createdOrAdoptedRadio);
     });
@@ -418,3 +430,13 @@ document.addEventListener('turbolinks:load', function() {
     execVisnSearchFunctions();
     submitFormOnPageLoadWithCreatedPracticesAsDefault();
 });
+
+function updateSelectedCategoriesUsage(sQuery, chosenCategories, category_id){
+    Rails.ajax({
+        type: 'patch',
+        url: "/update_category_usage",
+        data: jQuery.param({query: sQuery, chosenCategories: chosenCategories, catId: category_id }),
+        success: function() {
+        }
+    });
+}
