@@ -45,10 +45,9 @@ function updateSelectedCategoriesUsage(sQuery, chosenCategories, category_id){
 
 function filterCategoriesEventListener() {
   $(cp.categoriesInput).on("change", function(e) {
-      var selectedCat = e.target[e.target.selectedIndex].text;
       var catId = e.target[e.target.selectedIndex].value;
       //update category usage/selected..
-      updateSelectedCategoriesUsage(selectedCat, null, catId);
+      updateSelectedCategoriesUsage(null, null, catId);
 
     setDataAndMakeRequest({ isNextPage: false });
   })

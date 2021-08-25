@@ -27,7 +27,7 @@ function ajaxUpdateSearchResults() {
   let keyWord = $(ap.searchField).data("search").length > 0 ? $(ap.searchField).data("search") : null;
 
   //updates selected category for usage stats..... dm-2800
-  updateSelectedCategoriesUsage(keyWord, null, selectedCategory);
+  updateSelectedCategoriesUsage(null, null, selectedCategory);
   // sets the search term only when the user clicks search and is less confusing if a user updates the search input but never hits the search button
   $(ap.searchField).val(keyWord);
 
