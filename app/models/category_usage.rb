@@ -34,7 +34,7 @@ class CategoryUsage < ApplicationRecord
     if !cats.blank?
       cats.each do |internal_cat|
         if internal_cat != nil
-          if s_query.include?(internal_cat) || internal_cat.include?(s_query)  || s_query == internal_cat   #.split(":")[1]
+          if s_query.include?(internal_cat)  || s_query == internal_cat  #internal_cat.include?(s_query)
             CategoryUsage.create(category_id: cat_ids[id_ctr])
           end
         end

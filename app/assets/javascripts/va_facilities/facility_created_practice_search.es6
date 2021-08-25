@@ -33,8 +33,23 @@ function loadMoreEventListener() {
   })
 }
 
+function updateSelectedCategoriesUsage(sQuery, chosenCategories, category_id){
+    Rails.ajax({
+        type: 'patch',
+        url: "/update_category_usage",
+        data: jQuery.param({query: sQuery, chosenCategories: chosenCategories, catId: category_id }),
+        success: function() {
+        }
+    });
+}
+
 function filterCategoriesEventListener() {
   $(cp.categoriesInput).on("change", function(e) {
+      var selectedCat = e.target[e.target.selectedIndex].text;
+      var catId = e.target[e.target.selectedIndex].value;
+      //update category usage/selected..
+      updateSelectedCategoriesUsage(selectedCat, null, catId);
+
     setDataAndMakeRequest({ isNextPage: false });
   })
 }
@@ -57,6 +72,7 @@ function searchEventListener() {
   $(cp.searchBtn).on("click", function(e) {
     e.preventDefault();
     let searchTerm = $(cp.searchField).val();
+    updateSelectedCategoriesUsage(searchTerm, null, null);
     $(cp.searchField).data("search", searchTerm);
     trackSearch(searchTerm)
     setDataAndMakeRequest({ searchTerm: searchTerm });

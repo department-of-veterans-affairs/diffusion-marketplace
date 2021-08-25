@@ -494,7 +494,12 @@ class PracticesController < ApplicationController
   def update_category_usage
     query_val = params["query"]
     chosen_categories = params["chosenCategories"]
-    CategoryUsage.store_chosen_categories(query_val, chosen_categories)
+    cat_id = params["catId"]
+    if !cat_id.blank?
+      CategoryUsage.create(category_id: cat_id)
+    else
+      CategoryUsage.store_chosen_categories(query_val, chosen_categories)
+    end
   end
 
   def extend_editor_session_time

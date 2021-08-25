@@ -26,6 +26,8 @@ function ajaxUpdateSearchResults() {
   let selectedCategory = $('select[name="facility_category_select_adoptions"]').val();
   let keyWord = $(ap.searchField).data("search").length > 0 ? $(ap.searchField).data("search") : null;
 
+  //updates selected category for usage stats..... dm-2800
+  updateSelectedCategoriesUsage(keyWord, null, selectedCategory);
   // sets the search term only when the user clicks search and is less confusing if a user updates the search input but never hits the search button
   $(ap.searchField).val(keyWord);
 
@@ -71,6 +73,7 @@ function attachSearchButtonClickListener() {
   $("#dm-adopted-practices-search-button").click (function(e) {
     e.preventDefault();
     let keyWord = $(ap.searchField).val();
+    updateSelectedCategoriesUsage(keyWord, null, null);
     $(ap.searchField).data("search", keyWord);
     trackSearch(keyWord);
     ajaxUpdateSearchResults();
