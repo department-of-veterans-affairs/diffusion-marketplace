@@ -1,10 +1,13 @@
 class HomeController < ApplicationController
   before_action :fetch_va_facilities, only: [:index, :diffusion_map]
+  include CategoryUsageUtils
+
 
   def index
     @practices = Practice.searchable_practices 'a_to_z'
     @favorite_practices = current_user&.favorite_practices || []
     @highlighted_pr = Practice.where(highlight: true, published: true, enabled: true, approved: true).first
+    @popular_categories = get_top_six_categories
   end
 
   def diffusion_map
