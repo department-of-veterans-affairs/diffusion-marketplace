@@ -73,7 +73,7 @@ to confirm the class DOES NOT EXIST before adding a new class
   @include u-margin-top(2, !important);
 }
 
-.margin-top-4 {
+.margin-top-4-important {
   @include u-margin-top(4, !important);
 }
 
@@ -98,7 +98,7 @@ to confirm the class DOES NOT EXIST before adding a new class
   margin-bottom: 1.75rem !important;
 }
 
-.margin-bottom-4 {
+.margin-bottom-4-important {
   @include u-margin-bottom(4, !important);
 }
 

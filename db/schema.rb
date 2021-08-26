@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_11_151550) do
+ActiveRecord::Schema.define(version: 2021_08_25_174729) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -968,6 +968,11 @@ ActiveRecord::Schema.define(version: 2021_08_11_151550) do
     t.string "highlight_body"
     t.boolean "retired", default: false, null: false
     t.string "retired_reason"
+    t.boolean "hidden", default: false, null: false
+    t.string "highlight_attachment_file_name"
+    t.string "highlight_attachment_content_type"
+    t.integer "highlight_attachment_file_size"
+    t.datetime "highlight_attachment_updated_at"
     t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
   end

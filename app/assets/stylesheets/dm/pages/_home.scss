@@ -9,10 +9,17 @@
     }
   }
 
+  .homepage-welcome-banner {
+    @media screen and (min-width: 1024px) {
+      background: linear-gradient(230.27deg, color($theme-color-primary-vivid) 0%, color($theme-color-primary-darker) 100%);
+    }
+  }
+
   .homepage-banner-image-container {
-    height: 223px;
+    height: 174px;
 
     @media screen and (min-width: 1024px) {
+      height: 223px;
       position: absolute;
       right: -12px;
     }
@@ -23,7 +30,11 @@
       width: 100%;
       height: auto;
       object-fit: cover;
-      max-height: 223px;
+      max-height: 174px;
+
+      @media screen and (min-width: 1024px) {
+        max-height: 223px;
+      }
 
       @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
         display: none !important;
@@ -39,8 +50,16 @@
     }
   }
 
+  .featured-topic, featured-practice {
+    @media screen and (min-width: 1024px) {
+      margin-bottom: 128px !important;
+    }
+  }
+
   .nominate-practice-section {
-    height: 441px;
+    @media screen and (min-width: 1024px) {
+      height: 441px;
+    }
 
     .grid-row {
       @media screen and (min-width: 1024px) {
@@ -51,7 +70,9 @@
   }
 
   .newsletter-subscription-section {
-    height: 190px;
+    @media screen and (min-width: 1024px) {
+      height: 190px;
+    }
 
     .grid-row {
       @media screen and (min-width: 1024px) {

@@ -42,14 +42,14 @@ ActiveAdmin.register Practice do
     column(:owner_email) {|practice| practice.user&.email}
     column :enabled unless params[:scope] == "get_practice_owner_emails"
     column :created_at unless params[:scope] == "get_practice_owner_emails"
-    column :highlight
+    column 'Featured', :highlight
     column :retired unless params[:scope] == "get_practice_owner_emails"
     column 'Last Updated', :updated_at unless params[:scope] == "get_practice_owner_emails"
     column :date_published unless params[:scope] == "get_practice_owner_emails"
     actions do |practice|
       practice_enabled_action_str = practice.enabled ? "Disable" : "Enable"
       item practice_enabled_action_str, enable_practice_admin_practice_path(practice), method: :post
-      practice_highlight_action_str = practice.highlight ? "Unhighlight" : "Highlight"
+      practice_highlight_action_str = practice.highlight ? "Unfeature" : "Feature"
       item practice_highlight_action_str, highlight_practice_admin_practice_path(practice), method: :post
       practice_retired_action_str = practice.retired ? "Activate" : "Retire"
       item practice_retired_action_str, retire_practice_admin_practice_path(practice), method: :post
@@ -82,18 +82,19 @@ ActiveAdmin.register Practice do
 
     highlighted_pr_count = Practice.where(highlight: true, published: true, enabled: true, approved: true).size
     if to_highlight && !resource.published
-      message = "Practice must be published to be highlighted."
+      message = "Practice must be published to be featured."
       redirect_back fallback_location: root_path, :flash => { :error => message }
     elsif to_highlight && highlighted_pr_count >= 1
-      message = "Only one practice can be highlighted at a time."
+      message = "Only one practice can be featured at a time."
       redirect_back fallback_location: root_path, :flash => { :error => message }
     else
       resource.highlight = to_highlight
       resource.highlight_title = nil
       resource.highlight_body = nil
-      message = "\"#{resource.name}\" Practice highlighted"
+      resource.highlight_attachment = nil
+      message = "\"#{resource.name}\" is now the featured practice."
       unless resource.highlight
-        message = "\"#{resource.name}\" Practice unhighlighted"
+        message = "\"#{resource.name}\" is no longer the featured practice."
       end
       resource.save
       redirect_back fallback_location: root_path, notice: message
@@ -172,11 +173,18 @@ ActiveAdmin.register Practice do
       f.input :user, label: 'User email', as: :string, input_html: {name: 'user_email'}
       f.input :categories, as: :select, multiple: true, collection: Category.all.order(name: :asc).map { |cat| ["#{cat.name.capitalize}", cat.id]}, input_html: { value: @practice_categories }
       if object.highlight
-        f.input :highlight_title, label: 'Highlighted Practice Title'
-        f.input :highlight_body, label: 'Highlighted Practice Body'
+        f.input :highlight_title, label: 'Featured Practice Title', as: :string
+        f.input :highlight_body, label: 'Featured Practice Body', as: :string
+        f.input :highlight_attachment, label: 'Featured Practice Attachment (.jpg, .jpeg, or .png files only)', as: :file, input_html: { accept: '.jpg,.jpeg,.png' }
+        if practice.highlight_attachment.present?
+          div '', style: 'width: 20%', class: 'display-inline-block'
+          div class: 'display-inline-block' do
+            image_tag(practice.highlight_attachment_s3_presigned_url(:thumb))
+          end
+        end
       end
       f.input :retired, label: 'Practice retired?'
-      f.input :retired_reason, label: 'Retired reason', as: :quill_editor
+      f.input :retired_reason, label: 'Retired reason', as: :quill_editor, wrapper_html: { class: 'retired-reason-container' }
     end        # builds an input field for every attribute
     f.actions         # adds the 'Submit' and 'Cancel' buttons
   end
@@ -202,10 +210,22 @@ ActiveAdmin.register Practice do
       if practice.highlight
         row :highlight_title
         row :highlight_body
+        row "Featured Attachment" do
+          if practice.highlight_attachment.present?
+            div do
+              image_tag(practice.highlight_attachment_s3_presigned_url(:thumb))
+            end
+          else
+            div do
+              "None"
+            end
+          end
+        end
       end
       row :retired
       row :retired_reason
     end
+
     h3 'Versions'
     table_for practice.versions.order(created_at: :desc) do |version|
       column :event
@@ -235,12 +255,13 @@ ActiveAdmin.register Practice do
 
     def create_or_update_practice
       begin
-        practice_name = params[:practice][:name]
-        blank_practice_name = params[:practice][:name].blank?
+        practice_params = params[:practice]
+        practice_name = practice_params[:name]
+        blank_practice_name = practice_params[:name].blank?
         practice_slug = params[:id]
         email = params[:user_email]
-        retired = params[:practice][:retired] == "1" ? true : false
-        retired_reason = retired ? params[:practice][:retired_reason] : nil
+        retired = practice_params[:retired] == "1" ? true : false
+        retired_reason = retired ? practice_params[:retired_reason] : nil
         # raise an error if practice name is left blank
         raise StandardError.new 'There was an error. Practice name cannot be blank.' if blank_practice_name
 
@@ -260,6 +281,18 @@ ActiveAdmin.register Practice do
           raise StandardError.new 'There was an error. Email cannot be blank.'
         elsif is_invalid_va_email(email)
           raise StandardError.new 'There was an error. Email must be a valid @va.gov address.'
+        end
+
+        # raise an error if the practice's 'highlight_title', 'highlight_body', or 'highlight_attachment' are blank
+        highlight_title_param_blank = practice_params[:highlight_title].blank?
+        highlight_body_param_blank = practice_params[:highlight_body].blank?
+        highlight_attachment_param_blank = practice_params[:highlight_attachment].blank?
+        highlight_err_str = []
+        if practice_params.include?('highlight_title') && (highlight_title_param_blank || highlight_body_param_blank || highlight_attachment_param_blank)
+          highlight_err_str << "'featured practice title' cannot be blank" if highlight_title_param_blank
+          highlight_err_str << "'featured practice body' cannot be blank" if highlight_body_param_blank
+          highlight_err_str << "'featured practice attachment' must be uploaded" if highlight_attachment_param_blank
+          raise StandardError.new "The practice was not saved due to the following 'featured' error#{'s' if highlight_err_str.length > 1 }: " + highlight_err_str.join(', ')
         end
 
         set_practice_user(practice) if email.present?
@@ -353,9 +386,15 @@ ActiveAdmin.register Practice do
     end
 
     def update_highlight_attr
+      practice_highlight_title = params[:practice][:highlight_title]
+      practice_highlight_body = params[:practice][:highlight_body]
+      practice_highlight_attachment = params[:practice][:highlight_attachment]
       practice_slug = params[:id]
+
       practice = Practice.find_by(slug: practice_slug)
-      practice.update(highlight_title: params[:practice][:highlight_title], highlight_body: params[:practice][:highlight_body])
+      if practice_highlight_title.present? && practice_highlight_body.present? && practice_highlight_attachment.present?
+        practice.update(highlight_title: params[:practice][:highlight_title], highlight_body: params[:practice][:highlight_body], highlight_attachment: params[:practice][:highlight_attachment])
+      end
     end
   end
 end

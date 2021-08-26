@@ -7,14 +7,10 @@
 .dm-gradient-banner {
   background: linear-gradient(230.27deg, color($theme-color-primary-vivid) 0%, color($theme-color-primary-darker) 100%);
 
-  // Per research, the banner may have varying heights. As of 8/10/21, the designs use 400px. Add any other height options as an extension class here
+  // Per research, the banner may have varying heights. As of 8/10/21, the designs use 318px (desktop version). Add any other height options as an extension class here
   &-318 {
     @extend .dm-gradient-banner;
-    height: 818px;
-
-    + section {
-      height: 818px
-    }
+    height: 485px;
 
     @media screen and (min-width: 1024px) {
       height: 318px;
@@ -23,10 +19,5 @@
         height: 318px
       }
     }
-  }
-
-  &-400 {
-    @extend .dm-gradient-banner;
-    height: 400px;
   }
 }

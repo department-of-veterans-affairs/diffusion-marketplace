@@ -3,25 +3,24 @@
     <%= render partial: "shared/messages", locals: {small_text: false} %>
   </div>
   <!-- "Welcome" section -->
-  <div class="dm-gradient-banner-318 position-absolute pin-x">
+  <div class="dm-gradient-banner-318 position-absolute pin-x desktop:display-none">
   </div>
   <section class="homepage-welcome-banner" role="region" aria-label="Homepage welcome banner">
     <div class="grid-container height-full">
       <div class="grid-row height-full flex-align-center">
         <div class="grid-col-12">
-          <h1 class="usa-prose-h1 text-white margin-top-0 margin-bottom-4">Welcome to the Diffusion Marketplace</h1>
+          <h1 class="usa-prose-h1 text-white margin-top-4 margin-bottom-4 desktop:margin-top-0">Welcome to the Diffusion Marketplace</h1>
           <div class="grid-row grid-gap-3">
-            <div class="grid-col-12 margin-bottom-2 desktop:grid-col-7 desktop:margin-bottom-0">
+            <div class="grid-col-12 margin-bottom-4 desktop:margin-bottom-0 desktop:grid-col-7">
               <p class="usa-prose-body text-white margin-bottom-2">
-                The Diffusion Marketplace is hosted by VHA’s Diffusion of Excellence, whose mission is to identify, test, and spread promising healthcare practices across VA and beyond.
+                We’re a discovery and collaboration tool that curates VA’s promising practices, encourages their diffusion, and fosters engagement with greater healthcare communities.
               </p>
-              <%# TODO: Change the path to the new about page %>
-              <%= link_to 'Learn more', root_path, class: 'dm-alt-link-gold' %>
+              <%= link_to 'Learn more', about_path, class: 'dm-alt-link-gold' %>
             </div>
             <div class="homepage-banner-image-container text-white grid-col-12 desktop:grid-col-5">
               <img
                 class="display-block"
-                src=""
+                src="<%= Practice.find(25).main_display_image_s3_presigned_url(:thumb) %>"
                 alt="Welcome banner image"/>
             </div>
           </div>
@@ -30,7 +29,7 @@
     </div>
   </section>
 
-  <section class="homepage-search grid-container margin-top-10 margin-bottom-128" role="region" aria-label="Homepage search section">
+  <section class="homepage-search grid-container margin-top-4 margin-bottom-4 desktop:margin-bottom-8 desktop:margin-top-10" role="region" aria-label="Homepage search section">
     <form id="dm-homepage-search-form" class="usa-search margin-bottom-2" role="search">
       <label class="usa-sr-only" for="dm-homepage-search-form">
         Homepage search
@@ -43,7 +42,7 @@
       </div>
     </form>
     <p class="usa-prose-body">
-      <span>Just browsing?</span> <%= link_to 'Explore all practices', explore_path, class: 'dm-primary-link' %>
+      <%= link_to 'Browse all practices', explore_path, class: 'dm-primary-link' %>
     </p>
   </section>
   <%# TODO: Write conditional to only show this partial if there's a currently selected 'Featured' topic %>
@@ -64,11 +63,10 @@
     }
   %>
 
-  <% if @highlighted_pr.present? %>
+  <% if @highlighted_pr.present? && @highlighted_pr.name.present? && @highlighted_pr.highlight_body.present? && @highlighted_pr.slug.present? && @highlighted_pr.highlight_attachment.present? %>
     <%= render partial: 'home/featured_section', locals: {
         section_name: 'practice',
-        # TODO: Change the image source to the new image type
-        image_source: "",
+        image_source: "#{@highlighted_pr.highlight_attachment_s3_presigned_url}",
         image_alt_text: "#{@highlighted_pr.name} featured practice image",
         featured_h2: "#{@highlighted_pr.name}",
         featured_body_text: "#{@highlighted_pr.highlight_body}",
@@ -81,7 +79,7 @@
   <section class="nominate-practice-section bg-ink" role="region" aria-label="Nominate a practice section">
     <div class="grid-container height-full">
       <div class="grid-row grid-gap-3">
-        <div class="grid-col-2 desktop:display-flex desktop:flex-justify-center desktop:grid-col-4">
+        <div class="grid-col-4 margin-top-8 margin-bottom-4 desktop:margin-bottom-0 desktop:margin-top-0 desktop:display-flex desktop:flex-justify-center">
           <img src="<%= asset_path('nominate-practice-logo.svg') %>" alt="Nominate a practice logo" />
         </div>
         <div class="grid-col-12 desktop:grid-col-8">
@@ -90,7 +88,7 @@
             If you have a practice that has been adopted at two or more locations, has been endorsed by a senior executive stakeholder, and is an active practice, click
             the link below to submit it to the Marketplace.
           </p>
-          <a class="dm-alt-link-light" href="<%= nominate_a_practice_path %>">Start nomination</a>
+          <a class="dm-alt-link-light display-inline-block margin-bottom-8 desktop:margin-bottom-0" href="<%= nominate_a_practice_path %>">Start nomination</a>
         </div>
       </div>
     </div>
@@ -99,10 +97,10 @@
     <div class="grid-container height-full">
       <div class="grid-row grid-gap-3">
         <div class="grid-col-12 desktop:grid-col-6 text-white">
-          <h3 class="usa-prose-h3 margin-top-0 margin-bottom-2 text-bold">Subscribe to the monthly newsletter</h3>
-          <p class="usa-prose-body margin-bottom-2 desktop:margin-bottom-0">Keep up to date on the latest Diffusion Marketplace news.</p>
+          <h3 class="usa-prose-h3 margin-top-4 margin-bottom-2 desktop:margin-top-0 text-bold">Subscribe to the monthly newsletter</h3>
+          <p class="usa-prose-body margin-bottom-4 desktop:margin-bottom-0">Keep up to date on the latest Diffusion Marketplace news.</p>
         </div>
-        <div class="grid-col-12 desktop:grid-col-6 subscribe-button-container">
+        <div class="grid-col-12 desktop:grid-col-6 subscribe-button-container margin-bottom-4 desktop:margin-bottom-0">
           <button class="dm-button--inverse-secondary margin-right-0">Subscribe today</button>
         </div>
       </div>

@@ -19,7 +19,7 @@
           <li class="usa-button-group__item">
             <% if @force_terms_and_conditions_modal %>
               <%= form_tag({action: 'accept_terms', controller: 'users'}, method: :post) do |f| %>
-                <%= submit_tag 'I acknowledge the terms', class: 'usa-button margin-0 padding-2 margin-bottom-4' %>
+                <%= submit_tag 'I acknowledge the terms', class: 'usa-button margin-0 padding-2 margin-bottom-4-important' %>
               <% end %>
             <% else %>
               <button

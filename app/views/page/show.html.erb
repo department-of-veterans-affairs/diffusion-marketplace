@@ -22,7 +22,7 @@
 
         <%# Page Header and Paragraph %>
         <% if (pc.component_type == 'PageHeaderComponent' || pc.component_type == 'PageParagraphComponent') && component.text.present? %>
-          <div class="margin-bottom-4 <%= page_narrow_classes %>">
+          <div class="margin-bottom-4-important <%= page_narrow_classes %>">
             <%= component.text.html_safe %>
           </div>
         <% end %>
