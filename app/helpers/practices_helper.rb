@@ -156,9 +156,7 @@ module PracticesHelper
   end
 
   def key_exists(s_key)
-    if s_key.blank? || s_key.length == 0
-      s_key = ".."
-    end
+    return false unless !s_key.blank?
     cat_usage_rec = CategoryUsage.where(key: s_key)
     cat_usage_rec.blank? ? false : true
     end
