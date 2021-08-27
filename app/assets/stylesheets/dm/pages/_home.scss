@@ -20,24 +20,23 @@
 
     @media screen and (min-width: 1024px) {
       height: 223px;
-      position: absolute;
-      right: -12px;
+      @include u-position('absolute');
+      @include u-right('neg-105')
     }
   }
 
   .homepage-banner-image-container, .homepage-featured-topic-image-container, .homepage-featured-practice-image-container {
     img {
-      width: 100%;
-      height: auto;
+      @include u-width('full');
       object-fit: cover;
-      max-height: 174px;
+      height: 174px !important;
 
       @media screen and (min-width: 1024px) {
-        max-height: 223px;
+        height: 223px !important;
       }
 
       @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-        display: none !important;
+        @include u-display('none', !important);
       }
     }
   }
@@ -50,7 +49,7 @@
     }
   }
 
-  .featured-topic, featured-practice {
+  .featured-topic, .featured-practice {
     @media screen and (min-width: 1024px) {
       margin-bottom: 128px !important;
     }

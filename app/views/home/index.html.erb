@@ -10,8 +10,8 @@
       <div class="grid-row height-full flex-align-center">
         <div class="grid-col-12">
           <h1 class="usa-prose-h1 text-white margin-top-4 margin-bottom-4 desktop:margin-top-0">Welcome to the Diffusion Marketplace</h1>
-          <div class="grid-row grid-gap-3">
-            <div class="grid-col-12 margin-bottom-4 desktop:margin-bottom-0 desktop:grid-col-7">
+          <div class="grid-row desktop:grid-gap-3">
+            <div class="grid-col-12 margin-bottom-4 desktop:margin-bottom-0 desktop:grid-col-7 padding-right-0">
               <p class="usa-prose-body text-white margin-bottom-2">
                 We’re a discovery and collaboration tool that curates VA’s promising practices, encourages their diffusion, and fosters engagement with greater healthcare communities.
               </p>
@@ -20,7 +20,8 @@
             <div class="homepage-banner-image-container text-white grid-col-12 desktop:grid-col-5">
               <img
                 class="display-block"
-                src="<%= Practice.find(25).main_display_image_s3_presigned_url(:thumb) %>"
+                <%# TODO: Add homepage banner image source here %>
+                src=""
                 alt="Welcome banner image"/>
             </div>
           </div>
@@ -51,7 +52,7 @@
       # TODO: Add topic image source
       image_source: "",
       # TODO: Interpolate topic name in front of 'featured topic image' for alt text
-      image_alt_text: 'featured topic image',
+      image_alt_text: 'Featured topic image',
       # TODO: Add name of topic for h2
       featured_h2: 'Featured topic name',
       # TODO: Add topic text for body text
@@ -59,7 +60,7 @@
           posuere ornare felis. Maecenas rutrum quis orci sed porta. Proin posuere metus in lorem placerat semper. Aenean felis mi, auctor sed pretium fringilla, ornare quis ex.',
       # TODO: Add topic URL here
       featured_topic_url: '',
-      featured_link_text: 'topic page'
+      featured_link_text: 'View topic page'
     }
   %>
 
@@ -67,18 +68,18 @@
     <%= render partial: 'home/featured_section', locals: {
         section_name: 'practice',
         image_source: "#{@highlighted_pr.highlight_attachment_s3_presigned_url}",
-        image_alt_text: "#{@highlighted_pr.name} featured practice image",
+        image_alt_text: "#{@highlighted_pr.name} Featured practice image",
         featured_h2: "#{@highlighted_pr.name}",
         featured_body_text: "#{@highlighted_pr.highlight_body}",
         featured_topic_url: "/practices/#{@highlighted_pr.slug}",
-        featured_link_text: 'practice'
+        featured_link_text: 'View practice'
       }
     %>
   <% end %>
 
   <section class="nominate-practice-section bg-ink" role="region" aria-label="Nominate a practice section">
     <div class="grid-container height-full">
-      <div class="grid-row grid-gap-3">
+      <div class="grid-row desktop:grid-gap-3">
         <div class="grid-col-4 margin-top-8 margin-bottom-4 desktop:margin-bottom-0 desktop:margin-top-0 desktop:display-flex desktop:flex-justify-center">
           <img src="<%= asset_path('nominate-practice-logo.svg') %>" alt="Nominate a practice logo" />
         </div>
@@ -95,7 +96,7 @@
   </section>
   <section class="newsletter-subscription-section bg-primary-darker" role="region" aria-label="Subscribe to monthly newsletter section">
     <div class="grid-container height-full">
-      <div class="grid-row grid-gap-3">
+      <div class="grid-row desktop:grid-gap-3">
         <div class="grid-col-12 desktop:grid-col-6 text-white">
           <h3 class="usa-prose-h3 margin-top-4 margin-bottom-2 desktop:margin-top-0 text-bold">Subscribe to the monthly newsletter</h3>
           <p class="usa-prose-body margin-bottom-4 desktop:margin-bottom-0">Keep up to date on the latest Diffusion Marketplace news.</p>
