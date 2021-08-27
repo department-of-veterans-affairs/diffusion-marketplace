@@ -156,7 +156,7 @@ module PracticesHelper
   end
 
   def key_exists(s_key)
-    if s_key.length == 0
+    if s_key.blank? || s_key.length == 0
       s_key = ".."
     end
     cat_usage_rec = CategoryUsage.where(key: s_key)
