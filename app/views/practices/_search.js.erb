@@ -873,7 +873,7 @@ function searchPracticesPage() {
         const query = window.location.search.split('=')[1];
         search(decodeURI(query));
         if (query !== undefined) {
-            searchField.value = decodeURI(query);
+            searchField.value = decodeURI(query.split('&')[0]);
         } else {
             searchField.value = '';
         }

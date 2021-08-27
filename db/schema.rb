@@ -186,6 +186,7 @@ ActiveRecord::Schema.define(version: 2021_08_20_135643) do
 
   create_table "category_usages", force: :cascade do |t|
     t.bigint "category_id"
+    t.string "key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_category_usages_on_category_id"

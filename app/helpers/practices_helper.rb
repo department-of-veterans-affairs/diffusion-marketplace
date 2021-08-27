@@ -151,6 +151,15 @@ module PracticesHelper
 
   def update_category_usages
     s_query = params["query"]
-    CategoryUsage.store_chosen_categories(s_query, nil) unless s_query.blank?
+    s_key = params["key"]
+    CategoryUsage.store_chosen_categories(s_query, nil, s_key) unless s_query.blank?
   end
+
+  def key_exists(s_key)
+    if s_key.length == 0
+      s_key = ".."
+    end
+    cat_usage_rec = CategoryUsage.where(key: s_key)
+    cat_usage_rec.blank? ? false : true
+    end
 end
