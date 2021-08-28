@@ -14,6 +14,8 @@ var SORT_EL = '#search_sort_option';
 var RADIO_OPTIONS = 'input[name=visns-show-radio-buttons]';
 var CREATED_COMBO_BOX = '#visn-search-created-categories';
 var ADOPTED_COMBO_BOX = '#visn-search-adopted-categories';
+var is_combo_box_submitted = false;
+var is_page_load = 0
 
 // add a data attribute to the fieldset in order to trigger an ahoy tracking event only when the search field has been updated/populated
 function setFieldsetAttr(boolean) {
@@ -297,17 +299,13 @@ function searchPracticesByVisn() {
             }
         }
         debugger
-        //update Category usage info....
-        if(searchField.value.length == 0 && categoryComboBoxVal != null){
-            updateSelectedCategoriesUsage(categoryComboBoxVal, null, null);
+        if ( searchField.value.length > 0 && !is_combo_box_submitted){
+            if (is_page_load > 0){
+                updateSelectedCategoriesUsage(searchField.value, null, null);
+            }
+            is_page_load = 1
         }
-        else if(categoryComboBoxVal == null && searchField.value.length > 0){
-            updateSelectedCategoriesUsage(searchField.value, null, null);
-        }
-        else if(categoryComboBoxVal != null && searchField.value.length > 0){
-            updateSelectedCategoriesUsage(categoryComboBoxVal, null, null);
-            updateSelectedCategoriesUsage(searchField.value, null, null);
-        }
+        is_combo_box_submitted = false;
         // Run the search
         search(searchField.value, categoryComboBoxVal, createdOrAdoptedRadio);
     });
@@ -371,6 +369,11 @@ function submitFormOnComboBoxChange(comboBox) {
     $(document).on('change', comboBox, function() {
         // only submit the form if the combo box's container is visible and the previous value is different from the current value
         if (!$(this).parent().hasClass('display-none') && $(this).val() !== previousVal) {
+            var categoryComboBoxVal = $(CREATED_COMBO_BOX).val()
+            if(categoryComboBoxVal != null){
+                updateSelectedCategoriesUsage(categoryComboBoxVal, null, null);
+                is_combo_box_submitted = true;
+            }
             setFieldsetAttr('true');
             $(this).closest('form').submit();
         }
