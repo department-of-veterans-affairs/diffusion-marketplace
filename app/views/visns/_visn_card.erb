@@ -1,4 +1,4 @@
-<div class="dm-visn-card grid-col-4 margin-bottom-3">
+<div class="dm-visn-card tablet:grid-col-6 desktop:grid-col-4 margin-bottom-3">
   <%= link_to visn_path(visn), 'aria-label': "Go to VISN #{visn.number}", 'tabindex': '-1', 'aria-hidden': 'true', id: "visn-#{visn.number}-card-link", class: 'visn-card-link' do %>
     <div class="visn-card-text padding-top-2 padding-bottom-3 padding-x-3 radius-md bg-white">
       <p class="visn-name font-sans-lg line-height-25px margin-bottom-3">VISN <%= visn.number %></p>

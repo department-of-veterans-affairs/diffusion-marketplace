@@ -51,7 +51,8 @@ class Practice < ApplicationRecord
         self.overview_solution_changed? ||
         self.overview_results_changed?  ||
         self.retired_changed? ||
-        self.retired_reason_changed?
+        self.retired_reason_changed? ||
+        self.hidden_changed?
       self.reset_searchable_cache = true
     end
   end
@@ -208,7 +209,7 @@ class Practice < ApplicationRecord
   scope :sort_adoptions_ct, -> { order(Arel.sql("COUNT(diffusion_histories) DESC, lower(practices.name) ASC")) }
   scope :sort_added, -> { order(Arel.sql("practices.created_at DESC")) }
   scope :filter_by_category_ids, -> (cat_ids) { where('category_practices.category_id IN (?)', cat_ids)} # cat_ids should be a id number or an array of id numbers
-  scope :published_enabled_approved,   -> { where(published: true, enabled: true, approved: true) }
+  scope :published_enabled_approved,   -> { where(published: true, enabled: true, approved: true, hidden: false) }
   scope :sort_by_retired, -> { order("retired asc") }
   scope :get_by_adopted_facility, -> (facility_id) { left_outer_joins(:diffusion_histories).where(diffusion_histories: {va_facility_id: facility_id}).uniq }
   scope :get_by_created_facility, -> (facility_id) { where(initiating_facility_type: 'facility').joins(:practice_origin_facilities).where(practice_origin_facilities: { va_facility_id: facility_id }) }

@@ -114,6 +114,18 @@ describe 'Practices', type: :feature do
       expect(page).to have_current_path(practice_path(@user_practice))
     end
 
+    it 'should let a user view the practice if it is hidden but not search for it' do
+      login_as(@user2, :scope => :user, :run_callbacks => false)
+      hidden_practice = Practice.create!(name: 'A secret practice', approved: true, published: true, hidden: true, tagline: 'Test secret tagline', date_initiated: Time.now(), user: @user)
+      visit practice_path(hidden_practice)
+      expect(page).to have_content(hidden_practice.name)
+      expect(page).to have_content('Hidden practice')
+      fill_in('search', with: 'A secret practice')
+      find("#dm-navbar-search-button").click
+      expect(page).to have_selector("#search-page")
+      expect(page).to have_content('There are currently no matches for your search on the Marketplace.')
+    end
+
     it 'should display the initiating facility\'s name' do
       login_as(@user, :scope => :user, :run_callbacks => false)
 
