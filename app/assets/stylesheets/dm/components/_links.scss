@@ -1,6 +1,8 @@
 // header nav links
 .usa-nav__primary-item {
   .usa-nav__link {
+    @include u-text(700, !important);
+
     &:hover {
       color: color($theme-color-primary-vivid) !important;
 
@@ -14,6 +16,7 @@
 .dm-footer-link {
   color: color($theme-color-base-ink);
   text-decoration: none;
+  @include u-text(700, !important);
 
   &:hover {
     color: color($theme-color-primary-vivid);

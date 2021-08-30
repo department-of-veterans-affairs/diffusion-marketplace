@@ -11,7 +11,13 @@
 
   .homepage-welcome-banner {
     @media screen and (min-width: 1024px) {
-      background: linear-gradient(230.27deg, color($theme-color-primary-vivid) 0%, color($theme-color-primary-darker) 100%);
+      background: linear-gradient(236.03deg, color($theme-color-primary-vivid) 10.06%, #182F4C 93.13%);
+      transform: matrix(1, 0, 0, -1, 0, 0);
+
+      // since the transform style above flips the text along with the gradient colors, flip the text again to return it to its original state
+      .grid-container {
+        transform: matrix(1, 0, 0, -1, 0, 0);
+      }
     }
   }
 
@@ -21,7 +27,7 @@
     @media screen and (min-width: 1024px) {
       height: 223px;
       @include u-position('absolute');
-      @include u-right('neg-105')
+      @include u-right(0)
     }
   }
 
@@ -39,6 +45,10 @@
         @include u-display('none', !important);
       }
     }
+  }
+
+  #dm-homepage-search-field::placeholder {
+  color: color($theme-color-base-ink) !important;
   }
 
   .featured-practice-content-container {

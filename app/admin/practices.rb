@@ -92,7 +92,6 @@ ActiveAdmin.register Practice do
       redirect_back fallback_location: root_path, :flash => { :error => message }
     else
       resource.highlight = to_highlight
-      resource.highlight_title = nil
       resource.highlight_body = nil
       resource.highlight_attachment = nil
       message = "\"#{resource.name}\" is now the featured practice."
@@ -186,7 +185,6 @@ ActiveAdmin.register Practice do
       f.input :user, label: 'User email *Required*', as: :string, input_html: {name: 'user_email'}
       f.input :categories, as: :select, multiple: true, collection: Category.all.order(name: :asc).map { |cat| ["#{cat.name.capitalize}", cat.id]}, input_html: { value: @practice_categories }
       if object.highlight
-        f.input :highlight_title, label: 'Featured Practice Title *Required*', as: :string
         f.input :highlight_body, label: 'Featured Practice Body *Required*', as: :string
         f.input :highlight_attachment, label: 'Featured Practice Attachment (.jpg, .jpeg, or .png files only) *Required*', as: :file, input_html: { accept: '.jpg, .jpeg, .png' }
         if practice.highlight_attachment.present?
@@ -221,7 +219,6 @@ ActiveAdmin.register Practice do
       row :enabled
       row :highlight
       if practice.highlight
-        row :highlight_title
         row :highlight_body
         row "Featured Attachment" do
           if practice.highlight_attachment.present?
@@ -297,15 +294,14 @@ ActiveAdmin.register Practice do
           raise StandardError.new 'There was an error. Email must be a valid @va.gov address.'
         end
 
-        # raise an error if the practice's 'highlight_title', 'highlight_body', or 'highlight_attachment' are blank
-        highlight_title_param_blank = practice_params[:highlight_title].blank?
+        # raise an error if the practice's 'highlight_body' and/or 'highlight_attachment' are blank
         highlight_body_param_blank = practice_params[:highlight_body].blank?
         highlight_attachment_param_blank = practice_params[:highlight_attachment].blank?
+        highlight_attachment = practice.highlight_attachment
         highlight_err_str = []
-        if practice_params.include?('highlight_title') && (highlight_title_param_blank || highlight_body_param_blank) || (highlight_attachment_param_blank && practice.highlight_attachment.nil?)
-          highlight_err_str << "'featured practice title'" if highlight_title_param_blank
+        if practice_params.include?('highlight_body') && (highlight_body_param_blank || (highlight_attachment_param_blank && !highlight_attachment.exists?))
           highlight_err_str << "'featured practice body'" if highlight_body_param_blank
-          highlight_err_str << "'featured practice attachment'" if highlight_attachment_param_blank && practice.highlight_attachment.nil?
+          highlight_err_str << "'featured practice attachment'" if highlight_attachment_param_blank && !highlight_attachment.exists?
           raise StandardError.new "ERROR - The following required 'featured' field#{'s' if highlight_err_str.length > 1 } #{highlight_err_str.length > 1 ? 'were' : 'was' } not completed: " + highlight_err_str.join(', ')
         end
 
@@ -400,14 +396,13 @@ ActiveAdmin.register Practice do
     end
 
     def update_highlight_attr
-      practice_highlight_title_params = params[:practice][:highlight_title]
       practice_highlight_body_params = params[:practice][:highlight_body]
       practice_highlight_attachment_params = params[:practice][:highlight_attachment]
       practice_slug = params[:id]
 
       practice = Practice.find_by(slug: practice_slug)
-      if practice_highlight_title_params.present? && practice_highlight_body_params.present? && (practice_highlight_attachment_params.present? || practice.highlight_attachment.present?)
-        practice.update_attributes(highlight_title: params[:practice][:highlight_title], highlight_body: params[:practice][:highlight_body])
+      if practice_highlight_body_params.present? && (practice_highlight_attachment_params.present? || practice.highlight_attachment.exists?)
+        practice.update_attributes(highlight_body: params[:practice][:highlight_body])
         practice.update_attributes(highlight_attachment: params[:practice][:highlight_attachment]) if practice_highlight_attachment_params.present?
       end
     end

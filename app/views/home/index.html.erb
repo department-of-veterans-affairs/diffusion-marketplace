@@ -10,16 +10,16 @@
       <div class="grid-row height-full flex-align-center">
         <div class="grid-col-12">
           <h1 class="usa-prose-h1 text-white margin-top-4 margin-bottom-4 desktop:margin-top-0">Welcome to the Diffusion Marketplace</h1>
-          <div class="grid-row desktop:grid-gap-3">
-            <div class="grid-col-12 margin-bottom-4 desktop:margin-bottom-0 desktop:grid-col-7 padding-right-0">
+          <div class="grid-row">
+            <div class="grid-col-12 margin-bottom-4 desktop:margin-bottom-0 desktop:grid-col-7 padding-right-105">
               <p class="usa-prose-body text-white margin-bottom-2">
                 We’re a discovery and collaboration tool that curates VA’s promising practices, encourages their diffusion, and fosters engagement with greater healthcare communities.
               </p>
               <%= link_to 'Learn more', about_path, class: 'dm-alt-link-gold' %>
             </div>
-            <div class="homepage-banner-image-container text-white grid-col-12 desktop:grid-col-5">
+            <div class="homepage-banner-image-container text-white grid-col-12 desktop:grid-col-5 desktop:padding-left-105">
               <img
-                class="display-block"
+                class="display-block padding-left-0"
                 <%# TODO: Add homepage banner image source here %>
                 src=""
                 alt="Welcome banner image"/>
@@ -64,7 +64,7 @@
     }
   %>
 
-  <% if @highlighted_pr.present? && @highlighted_pr.name.present? && @highlighted_pr.highlight_body.present? && @highlighted_pr.slug.present? && @highlighted_pr.highlight_attachment.present? %>
+  <% if @highlighted_pr.present? && @highlighted_pr.name.present? && @highlighted_pr.highlight_body.present? && @highlighted_pr.slug.present? && @highlighted_pr.highlight_attachment.exists? %>
     <%= render partial: 'home/featured_section', locals: {
         section_name: 'practice',
         image_source: "#{@highlighted_pr.highlight_attachment_s3_presigned_url}",
@@ -86,8 +86,7 @@
         <div class="grid-col-12 desktop:grid-col-8">
           <h2 class="usa-prose-h2 font-sans-xl line-height-37px margin-bottom-2 margin-top-0 text-white">Nominate a practice</h2>
           <p class="line-height-26 margin-bottom-2 text-white">
-            If you have a practice that has been adopted at two or more locations, has been endorsed by a senior executive stakeholder, and is an active practice, click
-            the link below to submit it to the Marketplace.
+            Are you working on an innovative practice that’s making a difference at VA? Submit a nomination for the practice to be included on the Diffusion Marketplace.
           </p>
           <a class="dm-alt-link-light display-inline-block margin-bottom-8 desktop:margin-bottom-0" href="<%= nominate_a_practice_path %>">Start nomination</a>
         </div>
