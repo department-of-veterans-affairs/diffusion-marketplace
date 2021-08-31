@@ -2,9 +2,10 @@ namespace :va_facilities do
   desc 'Create new VA facility records based on the data from the vamc.json file'
 
   task :create_va_facilities_and_transfer_data => :environment do
-    va_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/vamc.json"))
+    va_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/va_facilities.json"))
     visns = Visn.all
-
+    debugger
+    debugger
     visns.each do |visn|
       va_facilities.each do |vaf|
         if visn.number === vaf["VISN"].to_i && VaFacility.where(station_number: vaf["StationNumber"]).empty?
