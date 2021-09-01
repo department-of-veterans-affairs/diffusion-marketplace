@@ -217,9 +217,9 @@ ActiveAdmin.register Practice do
       row :published
       row :approved
       row :enabled
-      row :highlight
+      row('Featured') { |practice| status_tag practice.highlight? }
       if practice.highlight
-        row :highlight_body
+        row('Featured Body') { |practice| p practice.highlight_body } if practice.highlight_body
         row "Featured Attachment" do
           if practice.highlight_attachment.exists?
             div do
