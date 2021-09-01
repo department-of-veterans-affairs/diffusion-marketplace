@@ -4,7 +4,7 @@ class CategoryUsage < ApplicationRecord
 
   def self.store_chosen_categories(s_query, chosen_categories, s_key = "")
     match_search_query_to_categories s_query, s_key unless s_query.blank?
-    if !chosen_categories.blank?
+    if chosen_categories.present?
       cat_ids = get_chosen_category_ids(chosen_categories)
       cat_ids.each do |cat_id|
         CategoryUsage.create(category_id: cat_id, key: s_key)
@@ -31,10 +31,10 @@ class CategoryUsage < ApplicationRecord
       cat_ids << cat_rec.id
     end
     id_ctr = 0
-    if !cats.blank?
+    if cats.present?
       cats.each do |internal_cat|
-        if internal_cat != nil
-          if s_query.include?(internal_cat)  || s_query == internal_cat  #internal_cat.include?(s_query)
+        if internal_cat.present?
+          if s_query.include?(internal_cat)  || s_query == internal_cat
             CategoryUsage.create(category_id: cat_ids[id_ctr], key: s_key)
           end
         end

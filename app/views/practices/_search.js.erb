@@ -786,11 +786,7 @@ function searchPracticesPage() {
         Rails.ajax({
             type: 'patch',
             url: "/update_category_usage",
-            data: jQuery.param({query: searchField.value, chosenCategories: chosenCategories}),
-            success: function() {
-                //alert('success');
-                //sessionCheckInterval = setIntervalAndExecute(prId, isPub, 25000)
-            }
+            data: jQuery.param({query: searchField.value, chosenCategories: chosenCategories})
         });
 
         // Run the search

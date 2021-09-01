@@ -369,7 +369,7 @@ function submitFormOnComboBoxChange(comboBox) {
         // only submit the form if the combo box's container is visible and the previous value is different from the current value
         if (!$(this).parent().hasClass('display-none') && $(this).val() !== previousVal) {
             var categoryComboBoxVal = $(CREATED_COMBO_BOX).val()
-            if(categoryComboBoxVal != null){
+            if(categoryComboBoxVal){
                 updateSelectedCategoriesUsage(categoryComboBoxVal, null, null);
                 is_combo_box_submitted = true;
             }

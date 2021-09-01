@@ -158,6 +158,6 @@ module PracticesHelper
   def key_exists(s_key)
     return false unless !s_key.blank?
     cat_usage_rec = CategoryUsage.where(key: s_key)
-    cat_usage_rec.blank? ? false : true
+    cat_usage_rec.present? ? true : false
     end
 end
