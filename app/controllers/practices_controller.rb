@@ -495,7 +495,7 @@ class PracticesController < ApplicationController
     query_val = params["query"]
     chosen_categories = params["chosenCategories"]
     cat_id = params["catId"]
-    if !cat_id.blank?
+    if cat_id.present?
       CategoryUsage.create(category_id: cat_id)
     else
       CategoryUsage.store_chosen_categories(query_val, chosen_categories)
