@@ -10,29 +10,36 @@
   }
 
   .homepage-welcome-banner {
-    @media screen and (min-width: 1024px) {
-      background: linear-gradient(236.03deg, color($theme-color-primary-vivid) 10.06%, #182F4C 93.13%);
+    // since the transform style from dm-gradient-banner flips the text along with the gradient colors, we need to flip the text inside of the grid-container to return it to its original state
+    .grid-container {
       transform: matrix(1, 0, 0, -1, 0, 0);
+    }
 
-      // since the transform style above flips the text along with the gradient colors, flip the text again to return it to its original state
-      .grid-container {
-        transform: matrix(1, 0, 0, -1, 0, 0);
+    .homepage-welcome-banner-body-text-container {
+      margin-bottom: 119px;
+
+      @media screen and (min-width: 1024px) {
+        @include u-margin-bottom(0);
       }
     }
   }
 
-  .homepage-banner-image-container {
-    height: 174px;
+  .homepage-welcome-banner-image-container {
+    @include u-position('absolute');
+    bottom: -87px;
 
     @media screen and (min-width: 1024px) {
       height: 223px;
-      @include u-position('absolute');
-      @include u-right(0)
+      @include u-right(0);
+      bottom: unset;
     }
   }
 
-  .homepage-banner-image-container, .homepage-featured-topic-image-container, .homepage-featured-practice-image-container {
+  .homepage-welcome-banner-image-container, .homepage-featured-topic-image-container, .homepage-featured-practice-image-container {
+    max-width: 308px;
+
     img {
+      @include u-height('full');
       @include u-width('full');
       object-fit: cover;
       height: 174px !important;
@@ -45,10 +52,22 @@
         @include u-display('none', !important);
       }
     }
+
+    @media screen and (min-width: 1024px) {
+      max-width: unset;
+    }
   }
 
-  #dm-homepage-search-field::placeholder {
-  color: color($theme-color-base-ink) !important;
+  .homepage-search {
+    @media screen and (max-width: 1023px) {
+      margin-top: 119px;
+    }
+
+    #dm-homepage-search-field {
+      &::placeholder {
+        color: color($theme-color-base-ink) !important;
+      }
+    }
   }
 
   .featured-practice-content-container {
@@ -79,10 +98,6 @@
   }
 
   .newsletter-subscription-section {
-    @media screen and (min-width: 1024px) {
-      height: 190px;
-    }
-
     .grid-row {
       @media screen and (min-width: 1024px) {
         @include u-height('full');

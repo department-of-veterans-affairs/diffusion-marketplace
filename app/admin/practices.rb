@@ -187,7 +187,7 @@ ActiveAdmin.register Practice do
       if object.highlight
         f.input :highlight_body, label: 'Featured Practice Body *Required*', as: :string
         f.input :highlight_attachment, label: 'Featured Practice Attachment (.jpg, .jpeg, or .png files only) *Required*', as: :file, input_html: { accept: '.jpg, .jpeg, .png' }
-        if practice.highlight_attachment.present?
+        if practice.highlight_attachment.exists?
           div '', style: 'width: 20%', class: 'display-inline-block'
           div class: 'display-inline-block' do
             image_tag(practice.highlight_attachment_s3_presigned_url(:thumb))
@@ -221,7 +221,7 @@ ActiveAdmin.register Practice do
       if practice.highlight
         row :highlight_body
         row "Featured Attachment" do
-          if practice.highlight_attachment.present?
+          if practice.highlight_attachment.exists?
             div do
               image_tag(practice.highlight_attachment_s3_presigned_url(:thumb))
             end

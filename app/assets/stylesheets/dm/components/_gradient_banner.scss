@@ -11,14 +11,9 @@
   // Per research, the banner may have varying heights. As of 8/10/21, the designs use 318px (desktop version). Add any other height options as an extension class here
   &-318 {
     @extend .dm-gradient-banner;
-    height: 485px;
 
     @media screen and (min-width: 1024px) {
       height: 318px;
-
-      + section {
-        height: 318px
-      }
     }
   }
 }

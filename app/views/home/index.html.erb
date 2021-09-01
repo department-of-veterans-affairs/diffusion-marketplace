@@ -3,21 +3,19 @@
     <%= render partial: "shared/messages", locals: {small_text: false} %>
   </div>
   <!-- "Welcome" section -->
-  <div class="dm-gradient-banner-318 position-absolute pin-x desktop:display-none">
-  </div>
-  <section class="homepage-welcome-banner" role="region" aria-label="Homepage welcome banner">
+  <section class="homepage-welcome-banner dm-gradient-banner-318" role="region" aria-label="Homepage welcome banner">
     <div class="grid-container height-full">
       <div class="grid-row height-full flex-align-center">
         <div class="grid-col-12">
           <h1 class="usa-prose-h1 text-white margin-top-4 margin-bottom-4 desktop:margin-top-0">Welcome to the Diffusion Marketplace</h1>
-          <div class="grid-row">
-            <div class="grid-col-12 margin-bottom-4 desktop:margin-bottom-0 desktop:grid-col-7 padding-right-105">
+          <div class="grid-row position-relative">
+            <div class="homepage-welcome-banner-body-text-container grid-col-12 desktop:grid-col-7 padding-right-105">
               <p class="usa-prose-body text-white margin-bottom-2">
                 We’re a discovery and collaboration tool that curates VA’s promising practices, encourages their diffusion, and fosters engagement with greater healthcare communities.
               </p>
               <%= link_to 'Learn more', about_path, class: 'dm-alt-link-gold' %>
             </div>
-            <div class="homepage-banner-image-container text-white grid-col-12 desktop:grid-col-5 desktop:padding-left-105">
+            <div class="homepage-welcome-banner-image-container text-white grid-col-12 tablet:grid-col-6 desktop:grid-col-5 desktop:padding-left-105">
               <img
                 class="display-block padding-left-0"
                 <%# TODO: Add homepage banner image source here %>
@@ -43,7 +41,7 @@
       </div>
     </form>
     <p class="usa-prose-body">
-      <%= link_to 'Browse all practices', explore_path, class: 'dm-primary-link' %>
+      <%= link_to 'Browse all practices', search_path, class: 'dm-primary-link' %>
     </p>
   </section>
   <%# TODO: Write conditional to only show this partial if there's a currently selected 'Featured' topic %>
@@ -80,7 +78,7 @@
   <section class="nominate-practice-section bg-ink" role="region" aria-label="Nominate a practice section">
     <div class="grid-container height-full">
       <div class="grid-row desktop:grid-gap-3">
-        <div class="grid-col-4 margin-top-8 margin-bottom-4 desktop:margin-bottom-0 desktop:margin-top-0 desktop:display-flex desktop:flex-justify-center">
+        <div class="grid-col-2 margin-top-8 margin-bottom-4 desktop:margin-bottom-0 desktop:margin-top-0 desktop:display-flex desktop:flex-justify-center">
           <img src="<%= asset_path('nominate-practice-logo.svg') %>" alt="Nominate a practice logo" />
         </div>
         <div class="grid-col-12 desktop:grid-col-8">
@@ -93,7 +91,7 @@
       </div>
     </div>
   </section>
-  <section class="newsletter-subscription-section bg-primary-darker" role="region" aria-label="Subscribe to monthly newsletter section">
+  <section class="newsletter-subscription-section bg-primary-darker padding-y-4 desktop:padding-y-8" role="region" aria-label="Subscribe to monthly newsletter section">
     <div class="grid-container height-full">
       <div class="grid-row desktop:grid-gap-3">
         <div class="grid-col-12 desktop:grid-col-6 text-white">
