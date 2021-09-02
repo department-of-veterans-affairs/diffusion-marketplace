@@ -35,7 +35,7 @@
 }
 
 .dm-primary-link {
-  color: color($theme-link-color) !important;
+  @include u-text('primary-vivid');
   @include u-text('bold', !important);
 
   &:hover {
