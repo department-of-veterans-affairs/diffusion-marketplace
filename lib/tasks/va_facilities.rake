@@ -80,7 +80,6 @@ namespace :va_facilities do
     if valid_json?(file)
       va_facilities = JSON.parse(file)
     end
-    #va_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/va_facilities.json"))
     visns = Visn.all
     visns.each do |visn|
       puts 'VISN: ' +  visn.number.to_s
@@ -153,8 +152,8 @@ namespace :va_facilities do
               facility.sta3n = vaf["STA3N"]
               facility.station_number = vaf["Station_Number"]
               facility.official_station_name = vaf["Official_Station_Name"]
-              puts facility.official_station_name
               facility.common_name = vaf["LocationDescriptiveName"]
+              puts 'Common_name: ' + facility.common_name
               facility.classification = vaf["CoCClassification"]
               facility.classification_status = vaf["CoCClassificationAttribute"]
               facility.mobile = vaf["Mobile"]
