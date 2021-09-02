@@ -1,8 +1,5 @@
-<%
-  require 'securerandom'
-%>
 <a
   class="dm-tag--big--action-primary"
-  href="/search?query=<%= term %>&key=<%= SecureRandom.uuid %>">
+  href="/search?query=<%= term %>">
   <%= term %>
 </a>

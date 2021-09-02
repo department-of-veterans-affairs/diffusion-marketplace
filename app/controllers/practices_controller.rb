@@ -754,8 +754,8 @@ def set_initiating_fac_params(params)
   end
 end
 
-def store_chosen_categories(s_query, chosen_categories, s_key = "")
-  match_search_query_to_categories s_query, s_key unless s_query.blank?
+def store_chosen_categories(s_query, chosen_categories)
+  match_search_query_to_categories s_query
   if chosen_categories.present?
     cat_ids = get_chosen_category_ids(chosen_categories)
     cat_ids.each do |cat_id|
@@ -773,11 +773,12 @@ def get_chosen_category_ids(chosen_categories)
   cat_ids
 end
 
-def match_search_query_to_categories(s_query, s_key = "")
+def match_search_query_to_categories(s_query)
   s_query = s_query.downcase
   cats = []
   cat_ids = []
-  categories = Category.all.where(is_other: false)
+  debugger
+  categories = Category.not_other
   categories.each do |cat_rec|
     cats << cat_rec.name.downcase!
     cat_ids << cat_rec.id

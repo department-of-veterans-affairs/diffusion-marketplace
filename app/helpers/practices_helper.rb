@@ -151,7 +151,6 @@ module PracticesHelper
 
   def update_category_usages
     s_query = params["query"]
-    s_key = params["key"]
-    PracticesController.store_chosen_categories(s_query, nil, s_key) unless s_query.blank?
+    PracticesController.store_chosen_categories(s_query, nil) unless s_query.blank?
   end
 end
