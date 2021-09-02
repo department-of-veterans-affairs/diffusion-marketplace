@@ -9,7 +9,7 @@
   <% end %>
 <% end %>
 <%
-  if params["query"].present? && !key_exists(params["key"])
+  if params["query"].present?
     # key param prevents duplicate entries via turbolinks...
     update_category_usages
   end
