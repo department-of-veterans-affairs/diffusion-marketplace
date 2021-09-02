@@ -2,4 +2,111 @@
   <div class="dm-system-message">
     <%= render partial: "shared/messages", locals: {small_text: false} %>
   </div>
+
+  <section class="about-us-info-section grid-container margin-bottom-128" role="region" aria-label="About us info section">
+    <div class="grid-row grid-gap-3">
+      <div class="grid-col-7">
+        <h1 class="usa-prose-h1 margin-bottom-4 margin-top-0">About us</h1>
+        <p class="usa-prose-body">
+          The Diffusion Marketplace is a discovery and collaboration tool that curates promising clinical, operational, and strategic practices from VA. We are managed by the Diffusion of Excellence,
+          an organization within the VHA Innovation Ecosystem. Our goal is to represent the best of VA and to reflect the spirit of service and collaboration for Veterans and the communities we serve.
+        </p>
+      </div>
+      <div class="grid-col-1"></div>
+      <div class="grid-col-4">
+        <div class="about-us-image-container">
+          <img
+            class="display-block width-full"
+            src="<%= Practice.find_by(slug: 'caring-for-older-adults-and-caregivers-at-home-coach').main_display_image_s3_presigned_url(:thumb) %>"
+            alt=""/>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-us-faq-section grid-container margin-bottom-128" role="region" aria-label="Frequently asked questions section">
+    <h2 class="usa-prose-h2 margin-bottom-4 margin-top-0">Frequently asked questions</h2>
+    <div class="usa-accordion">
+      <%= render partial: 'faq_accordion', locals: {
+        item_number: '1',
+        question: 'What is a \'practice\'?',
+        answer: "
+                  <p class='margin-bottom-2'>A practice is an innovative program, process, or tool designed and implemented within VA to address a clinical, operational, or strategic problem.</p>
+                  <p>
+                    For example, a clinical practice could be a program like #{link_to('HAPPEN', practice_path(Practice.where(slug: 'project-happen').first), class: 'dm-primary-link')} that encourages
+                    nurses to brush patients' teeth one extra time per day, thereby reducing the problem of hospital-acquired pneumonia by 2%.
+                  </p>
+          "
+        }
+      %>
+      <%= render partial: 'faq_accordion', locals: {
+        item_number: '2',
+        question: 'What is a \'diffusion\'?',
+        answer: "Diffusion is the adoption of a practice. It includes the journey of a practice from its initial adoption and assessment to continued understanding of
+                its impact and replication across VA facilities."
+        }
+      %>
+      <%= render partial: 'faq_accordion', locals: {
+        item_number: '3',
+        question: 'How does diffusion work?',
+        answer: "
+                  <p class='margin-bottom-2'>Practices are grouped into three diffusion phases:</p>
+                  <p class='margin-bottom-2'>
+                    <span class='text-bold'>Emerging</span> practices are early in their adoption and are being assessed. #{link_to('View emerging practices', '/search?query=emerging', class: 'dm-primary-link')}
+                  </p>
+                  <p class='margin-bottom-2'>
+                    <span class='text-bold'>Replicating</span> practices are being adopted across multiple facilities as their impact continues to be validated.
+                    #{link_to('View replicating practices', '/search?query=replicating', class: 'dm-primary-link')}
+                  </p>
+                  <p>
+                    <span class='text-bold'>Scaling</span> practices are being adopted widely with the support of national stakeholders.
+                    #{link_to('View scaling practices', '/search?query=scaling', class: 'dm-primary-link')}
+                  </p>
+          "
+        }
+      %>
+      <%= render partial: 'faq_accordion', locals: {
+        item_number: '4',
+        question: 'How do I learn more about practices?',
+        answer: "VA and non-VA site visitors can email practice owners directly to ask questions or request more information. To send them a message, simply click the
+                <span class='text-bold'>\"Contact practice\" button</span> on any practice page."
+        }
+      %>
+      <%= render partial: 'faq_accordion', locals: {
+        item_number: '5',
+        question: 'How do I use the Diffusion Marketplace?',
+        answer: "Search by keyword, by category, or by browsing all Diffusion Marketplace practices. #{link_to('Start a search', search_path, class: 'dm-primary-link')}"
+        }
+      %>
+      <%= render partial: 'faq_accordion', locals: {
+        item_number: '6',
+        question: 'How do I adopt a practice at my VA facility?',
+        answer: "To adopt a practice, click the <span class='text-bold'>\"Contact practice\" button</span> on any practice page and send the practice owner a message about your interest in adopting their practice."
+        }
+      %>
+      <%= render partial: 'faq_accordion', locals: {
+        item_number: '7',
+        question: 'How do I adopt a practice at a non-VA facility?',
+        answer: "The ability of a practice team to collaborate with non-VA personnel varies. If you have questions, or want to learn more about a practice, you can reach out to the practice editor by
+                clicking the <span class='text-bold'>\"Contact practice\" button</span> on any practice page."
+        }
+      %>
+      <%= render partial: 'faq_accordion', locals: {
+        item_number: '8',
+        question: 'How are practices selected?',
+        answer: "Nominated practices will be reviewed by the Diffusion of Excellence team, relevant subject matter experts, as well as VISN and program office leaders. Current and past Shark Tank
+                winners have practice pages on the Diffusion Marketplace. VISNs, program offices, and VA initiatives including Moving Forward, select practices on the Diffusion Marketplace."
+        }
+      %>
+    </div>
+  </section>
+  <section class="about-us-contact-section grid-container margin-bottom-128" role="region" aria-label="Contact us section">
+    <%= form_tag about_path, method: 'post' do |f| %>
+      <label for="fname">First name:</label>
+      <input type="text" id="fname" name="fname"><br><br>
+      <label for="lname">Last name:</label>
+      <input type="text" id="lname" name="lname"><br><br>
+      <input type="submit" value="Submit">
+    <% end %>
+  </section>
 </div>
