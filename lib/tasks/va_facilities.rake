@@ -92,7 +92,7 @@ namespace :va_facilities do
                 sta3n: vaf["STA3N"],
                 station_number: vaf["Station_Number"],
                 official_station_name: vaf["Official_Station_Name"],
-                common_name: vaf["Station_Number"],  #Common_name not supplied in latest VAST file 08_31_2021
+                common_name: vaf["LocationDescriptiveName"],  #Common_name not supplied in latest VAST file 08_31_2021
                 classification: vaf["CoCClassification"],
                 classification_status: vaf["CoCClassificationAttribute"],
                 mobile: vaf["Mobile"],
@@ -154,7 +154,7 @@ namespace :va_facilities do
               facility.station_number = vaf["Station_Number"]
               facility.official_station_name = vaf["Official_Station_Name"]
               puts facility.official_station_name
-              #facility.common_name = vaf["Common_Name"]
+              facility.common_name = vaf["LocationDescriptiveName"]
               facility.classification = vaf["CoCClassification"]
               facility.classification_status = vaf["CoCClassificationAttribute"]
               facility.mobile = vaf["Mobile"]
