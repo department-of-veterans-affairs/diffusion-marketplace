@@ -3,7 +3,7 @@ class VaFacilitiesController < ApplicationController
   before_action :set_va_facility, only: [:show, :created_practices, :update_practices_adopted_at_facility]
 
   def index
-    @facilities = VaFacility.cached_va_facilities.select(:common_name, :id, :official_station_name).order(:official_station_name)
+    @facilities = VaFacility.cached_va_facilities.select(:common_name, :id, :official_station_name).where(hidden: false).order(:official_station_name)
     @visns = Visn.cached_visns.select(:name, :number)
     @types = VaFacility.cached_va_facilities.get_complexity
   end

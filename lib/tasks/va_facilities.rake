@@ -74,24 +74,25 @@ namespace :va_facilities do
 
 
   task :update_va_facilities => :environment do
-    debugger
     ctr = 0
     file = File.read("#{Rails.root}/lib/assets/va_facilities.json")
-    if valid_json?(file)
-      va_facilities = JSON.parse(file)
-    end
+    va_facilities = JSON.parse(file)
     visns = Visn.all
     visns.each do |visn|
       puts 'VISN: ' +  visn.number.to_s
       va_facilities.each do |vaf|
           if visn.number === vaf["VISN"].to_i && VaFacility.where(station_number: vaf["Station_Number"]).empty?
+            hidden = false
+            if (vaf["Official_Station_Name"].include? "Vet Center")
+              hidden = true
+            end
             puts 'Creating facility - ' + vaf["Official_Station_Name"]
             VaFacility.create!(
                 visn: visn,
                 sta3n: vaf["STA3N"],
                 station_number: vaf["Station_Number"],
                 official_station_name: vaf["Official_Station_Name"],
-                common_name: vaf["LocationDescriptiveName"],  #Common_name not supplied in latest VAST file 08_31_2021
+                common_name: vaf["LocationDescriptiveName"],
                 classification: vaf["CoCClassification"],
                 classification_status: vaf["CoCClassificationAttribute"],
                 mobile: vaf["Mobile"],
@@ -141,7 +142,8 @@ namespace :va_facilities do
                 friday: vaf["Friday"],
                 saturday: vaf["Saturday"],
                 sunday: vaf["Sunday"],
-                hours_note: vaf["HoursNote"]
+                hours_note: vaf["HoursNote"],
+                hidden: hidden
             )
           else
             # update record.....
@@ -206,7 +208,7 @@ namespace :va_facilities do
               facility.hours_note = vaf["HoursNote"]
               facility.save
               ctr += 1
-              puts 'Updated facility: ' + vaf["Official_Station_Name"] + ': ' + + ctr.to_s
+              puts 'Updated facility: ' + vaf["Official_Station_Name"] + ': ' + ctr.to_s
             end
           end
         end
