@@ -119,6 +119,11 @@ to confirm the class DOES NOT EXIST before adding a new class
   margin-bottom: 128px;
 }
 
+.margin-y-128 {
+  margin-bottom: 128px;
+  margin-top: 128px;
+}
+
 /* Margin Left */
 .margin-left-1 {
   @include u-margin-left(1, !important);
@@ -249,6 +254,10 @@ to confirm the class DOES NOT EXIST before adding a new class
 
 .message-icon-bg-position {
   background-position: 1.25rem 0.75rem !important;
+
+  &:before {
+    @include u-height('full')
+  }
 }
 
 /* Font Awesome icon */

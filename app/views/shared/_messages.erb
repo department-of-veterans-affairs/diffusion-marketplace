@@ -1,3 +1,7 @@
+<% provide :head_tags do %>
+  <%= javascript_include_tag '_alert_message_utilities', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
 <% if alert.present? %>
   <div class="usa-alert usa-alert--error margin-bottom-2">
     <div class="usa-alert__body">
@@ -15,7 +19,10 @@
     <% unless value.to_s.downcase.include?('session expired') || value.to_s.downcase == 'true' || (value == 'Invalid Email or password.' && key == 'alert') %>
       <div class="usa-alert usa-alert--<%= key %> margin-bottom-2 <%= small_text ? 'message-icon-bg-position' : '' %>">
         <div class="usa-alert__body grid-row flex-align-center">
-          <div class="usa-alert__heading <%= small_text ? 'font-sans-sm margin-bottom-0' : '' %>" role="alert"><%= value %></div>
+          <div class="usa-alert__heading <%= small_text ? 'font-sans-sm margin-bottom-0' : '' %>" role="alert">
+            <%= value %>
+            <i id="close-alert-message" class="fas fa-times position-absolute right-3 cursor-pointer"></i>
+          </div>
         </div>
       </div>
     <% end %>

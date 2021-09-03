@@ -13,4 +13,10 @@
   .usa-accordion__heading, .usa-accordion__content {
     @include u-maxw('full', !important);
   }
+
+  textarea {
+    resize: none;
+    height: 132px;
+    @include u-maxw('full', !important);
+  }
 }
