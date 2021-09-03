@@ -184,14 +184,6 @@ ActiveRecord::Schema.define(version: 2021_08_20_135643) do
     t.index ["practice_id"], name: "index_category_practices_on_practice_id"
   end
 
-  create_table "category_usages", force: :cascade do |t|
-    t.bigint "category_id"
-    t.string "key"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["category_id"], name: "index_category_usages_on_category_id"
-  end
-
   create_table "checklist_files", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -1333,7 +1325,6 @@ ActiveRecord::Schema.define(version: 2021_08_20_135643) do
   add_foreign_key "business_case_files", "practices"
   add_foreign_key "category_practices", "categories"
   add_foreign_key "category_practices", "practices"
-  add_foreign_key "category_usages", "categories"
   add_foreign_key "checklist_files", "practices"
   add_foreign_key "clinical_condition_practices", "clinical_conditions"
   add_foreign_key "clinical_condition_practices", "practices"
