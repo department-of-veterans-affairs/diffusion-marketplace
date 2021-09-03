@@ -174,7 +174,7 @@ module PracticesHelper
     match_search_query_to_categories s_query
     if chosen_categories.present?
       chosen_categories.each do |chosen_cat|
-        cat_rec = Category.where(:name => chosen_cat).first
+        cat_rec = Category.find_by(name: chosen_cat)
         ahoy.track('Category selected', {category_id: cat_rec.id }) unless cat_rec.blank?
       end
     end
