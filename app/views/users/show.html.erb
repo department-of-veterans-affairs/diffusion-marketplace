@@ -1,4 +1,4 @@
-<div class="margin-top-0 grid-container">
+<div class="margin-top-0 grid-container margin-bottom-10">
   <section class="usa-section padding-top-0 padding-bottom-0">
     <div class="<%= @created_practices.empty? && @favorite_practices.empty?  ? 'profile-min-height' : '' %>">
       <div class="grid-row margin-bottom-2px">
@@ -54,7 +54,7 @@
 
   <% if @favorite_practices.any? %>
     <section class="bg-white">
-      <div class="grid-row">
+      <div class="grid-row margin-bottom-3">
         <h2 class="profile-h2 font-sans-xl margin-top-0">Bookmarked practices</h2>
       </div>
       <div class="grid-row grid-gap-3 dm-favorited-practices">
@@ -69,7 +69,7 @@
 
   <% if current_user && @created_practices.any? %>
     <section class="bg-white">
-      <div class="grid-row">
+      <div class="grid-row margin-bottom-3">
         <h2 class="profile-h2 font-sans-xl margin-top-5">Created practices</h2>
       </div>
       <div class="grid-row grid-gap-3 dm-created-practices">

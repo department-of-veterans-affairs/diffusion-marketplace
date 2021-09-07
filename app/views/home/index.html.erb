@@ -59,7 +59,7 @@
   <% if @highlighted_pr.present? %>
     <section class="bg-base-lightest margin-bottom-5 padding-x-2 padding-y-5 tablet:padding-x-0 tablet:margin-y-15 dm-highlighted-practice">
       <div class="tablet:grid-container dm-highlighted-practice-content">
-        <div class="tablet:grid-col-5 desktop:grid-col-7 dm-highlighted-practice-text">
+        <div class="dm-highlighted-practice-text tablet:grid-col-6">
           <h2 class="margin-top-0 font-sans-xl line-height-37px">
             <%= @highlighted_pr.highlight_title.blank? ? 'Highlighted by the VA this month' : @highlighted_pr.highlight_title %>
           </h2>

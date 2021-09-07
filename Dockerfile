@@ -1,4 +1,7 @@
-FROM agilesix/ruby:2.6.3-centos7.6
+# Note: Uncomment this to run docker locally
+#FROM agilesix/ruby:2.6.3-centos7.6
+# Note: Comment out the next line to run docker locally
+FROM 124858472090.dkr.ecr.us-gov-west-1.amazonaws.com/diffusion-marketplace:ruby
 
 RUN useradd -rm -d /home/nginx -s /bin/bash -g root -G wheel -u 1443 nginx
 RUN groupadd -g 1443 nginx
