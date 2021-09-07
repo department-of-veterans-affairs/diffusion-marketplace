@@ -483,7 +483,7 @@ describe 'The admin dashboard', type: :feature do
     visit '/admin'
     click_link('Practices')
     expect(page).to have_content('Feature')
-    click_link('Unfeature', href: highlight_practice_admin_practice_path(@practice))
+    click_link('Feature', href: highlight_practice_admin_practice_path(@practice))
     expect(page).to have_content("\"#{@practice.name}\" is now the featured practice.")
     expect(find_all('.col-featured > span')[3].text).to eq 'YES'
     click_link('Feature', href: highlight_practice_admin_practice_path(pr_2))
