@@ -36,6 +36,11 @@
             <span>Diffusion map</span>
           </a>
         </li>
+        <li class="usa-nav__primary-item">
+          <a class="usa-nav__link <%= 'usa-current' if request.fullpath == '/about' %>" href="/about">
+            <span>About us</span>
+          </a>
+        </li>
       </ul>
       <div class="usa-nav__secondary<%= ' dm-signed-out-nav-secondary' if !user_signed_in? %>">
         <%= render 'shared/navbar_search' %>

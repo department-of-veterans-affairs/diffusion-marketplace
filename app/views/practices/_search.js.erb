@@ -283,6 +283,7 @@ function searchPracticesPage() {
 
     // Search practices and populate the page
     function search(query, categories, originatingFacility, adoptingFacility) {
+        var urlHash = window.location.hash.split('=');
         // Trim whitespace from the query (can cause matching problems)
         query = query.trim();
         isBlankSearch = !Boolean(query) && categories == undefined && originatingFacility == undefined && adoptingFacility == undefined ? true : false;
@@ -299,6 +300,10 @@ function searchPracticesPage() {
                 queryObj[practiceKey] = query;
                 return searchBarQueryArray.push(queryObj);
             });
+        } else {
+            if (urlHash[0] === '#filter_by') {
+                trackSearchByFilter(urlHash[1]);
+            }
         }
 
         if (categories) {
@@ -596,6 +601,12 @@ function searchPracticesPage() {
             improveResultScoreBasedOnAmountOfAdoptingFacilities(results);
         }
 
+        function searchByFilterTerm(searchKey, filterTerm) {
+            var searchFilter = {};
+            searchFilter[searchKey] = "=\"" + filterTerm + "\"";
+            results = fuse.search(searchFilter);
+        }
+
         // Run the search query and include filters(if any)
         if (query !== '' && categoryFilters && originatingFacility && adoptingFacility) {
             searchWithQueryAndAllFilters();
@@ -628,7 +639,12 @@ function searchPracticesPage() {
         } else if (query === '' && !categoryFilters && !originatingFacility && adoptingFacility) {
             searchWithOnlyAdoptingFacility();
         } else if (query === '' && !categoryFilters && !originatingFacility && !adoptingFacility) {
-            results = [];
+            var maturityLevels = ['emerging', 'replicating', 'scaling'];
+            if (urlHash[0] === '#filter_by' && maturityLevels.includes(urlHash[1])) {
+                searchByFilterTerm('maturity_level', urlHash[1])
+            } else {
+                results = [];
+            }
         }
 
         // Get the results and default to filtering based on score
@@ -866,6 +882,9 @@ function searchPracticesPage() {
         } else {
             searchField.value = '';
         }
+    } else if (window.location.hash.split('=')[0] === '#filter_by') {
+        hideResultsSectionElAndShowSpinner();
+        search('');
     }
 }
 
@@ -880,6 +899,18 @@ function trackSearchField(searchTerm) {
                 location: '/search?query=' + searchTerm
             });
         }
+    }
+}
+
+function trackSearchByFilter(filterTerm) {
+    ahoy.track('Practice search by filter', {filter_term: filterTerm});
+    if (typeof ga === 'function') {
+        ga('send', {
+            hitType: 'event',
+            eventCategory: 'search filter',
+            eventAction: 'search filter',
+            location: '/search#filter_by=' + filterTerm
+        });
     }
 }
 

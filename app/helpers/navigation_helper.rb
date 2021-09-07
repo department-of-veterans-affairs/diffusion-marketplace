@@ -325,5 +325,10 @@ module NavigationHelper
         session[:breadcrumbs] << { 'display': "#{params[:number]}", 'path': visn_path(visn_by_number) }
       end
     end
+
+    # remove breadcrumbs for 'About' page
+    if controller == 'about' && action == 'index'
+        empty_breadcrumbs
+    end
   end
 end

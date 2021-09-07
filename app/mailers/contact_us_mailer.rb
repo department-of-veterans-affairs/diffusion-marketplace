@@ -7,7 +7,7 @@ class ContactUsMailer < ApplicationMailer
 
     mail(
       from: email,
-      to: 'joshua.drumm@agile6.com',
+      to: 'marketplace@va.gov',
       subject: subject
     ) do |format|
       format.html { render 'contact_us_mailer/contact_us_email'.html_safe, locals: { subject: subject } }
