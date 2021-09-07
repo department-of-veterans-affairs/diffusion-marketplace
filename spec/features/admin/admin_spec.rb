@@ -602,9 +602,7 @@ describe 'The admin dashboard', type: :feature do
     # change the practice user back to the original user
     logout(@user2)
     login_as(@admin, :scope => :user, :run_callbacks => false)
-    visit '/admin/practices'
-    sleep 1
-    click_link('Edit', href: edit_admin_practice_path(@practice))
+    visit '/admin/practices/the-best-practice-ever/edit'
     fill_in('practice_user_id', with: @user.email)
     click_button('Update Practice')
 
