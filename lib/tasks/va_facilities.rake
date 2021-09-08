@@ -13,7 +13,7 @@ namespace :va_facilities do
             sta3n: vaf["STA3N"],
             station_number: vaf["Station_Number"],
             official_station_name: vaf["Official_Station_Name"],
-            common_name: vaf["Station_Number"],  #Common_name not supplied in latest VAST file 08_31_2021
+            common_name: vaf["Station_Number"],
             classification: vaf["CoCClassification"],
             classification_status: vaf["CoCClassificationAttribute"],
             mobile: vaf["Mobile"],
@@ -24,9 +24,6 @@ namespace :va_facilities do
             ownership_type: vaf["Ownership_Type"],
             delivery_mechanism: vaf["Delivery_Mechanism"],
             staffing_type: vaf["Staffing_Type"],
-            #va_secretary_10n_approved_date: vaf["VASecretary10NApprovedDate"],
-            #planned_activation_date: vaf["PlannedActivationDate"],
-            #station_number_suffix_reservation_effective_date: vaf["Station_NumberSuffixReservationEffectiveDate"],
             operational_date: vaf["Operational_Date"],
             date_of_first_workload: vaf["DateOfFirstWorkload"],
             points_of_service: vaf["Points_Of_Service"],
@@ -44,10 +41,6 @@ namespace :va_facilities do
             county_mailing_address: vaf["County_Mailing_Address"],
             station_phone_number: vaf["Station_Phone_Number"],
             station_main_fax_number: vaf["Station_Main_Fax_Number"],
-            #after_hours_phone_number: vaf["AfterHoursPhoneNumber"],
-            #pharmacy_phone_number: vaf["PharmacyPhoneNumber"],
-            #enrollment_coordinator_phone_number: vaf["EnrollmentCoordinatorPhoneNumber"],
-            #patient_advocate_phone_number: vaf["PatientAdvocatePhoneNumber"],
             latitude: vaf["Latitude"].to_f,
             longitude: vaf["Longitude"].to_f,
             congressional_district: vaf["Congressional_District"],
@@ -82,10 +75,8 @@ namespace :va_facilities do
       va_facilities.each do |vaf|
           if visn.number === vaf["VISN"].to_i && VaFacility.where(station_number: vaf["Station_Number"]).empty?
             puts 'Creating facility - ' + vaf["Official_Station_Name"]
-            hidden = false
             if (vaf["Official_Station_Name"].include? "Vet Center")
-              hidden = true
-              create_vet_center_facility visn, vaf, hidden
+              create_vet_center_facility(visn, vaf, true)
             else
               VaFacility.create!(
                   visn: visn,
@@ -150,7 +141,7 @@ namespace :va_facilities do
                   saturday: vaf["Saturday"],
                   sunday: vaf["Sunday"],
                   hours_note: vaf["HoursNote"],
-                  hidden: hidden
+                  hidden: false
               )
             end
           else
