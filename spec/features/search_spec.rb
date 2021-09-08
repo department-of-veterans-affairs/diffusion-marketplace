@@ -172,11 +172,11 @@ describe 'Search', type: :feature do
   describe 'initial page load' do
     it 'Should display certain text if the user navigates to the search page with no query' do
       visit_search_page
-      expect(page).to have_content('Enter a search term or use the filters to find matching practices')
+      expect(page).to have_content('Enter a search term or use the filters to find matching innovations')
 
       # Make sure the initial text is not present when there is a query
       visit '/search?query=text'
-      expect(page).to_not have_content('Enter a search term or use the filters to find matching practices')
+      expect(page).to_not have_content('Enter a search term or use the filters to find matching innovations')
     end
   end
 
@@ -184,7 +184,7 @@ describe 'Search', type: :feature do
     it 'should display empty query and filters message' do
       visit '/'
       find('#dm-navbar-search-button').click
-      expect(page).to have_content('Enter a search term or use the filters to find matching practices')
+      expect(page).to have_content('Enter a search term or use the filters to find matching innovations')
     end
     it 'should display certain text if no matches are found' do
       visit_search_page
