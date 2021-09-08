@@ -27,7 +27,7 @@ describe 'Practice editor', type: :feature, js: true do
 
           click_link 'Adoptions'
           page.has_css?('#adoptions')
-          expect(page).to have_content('Share which facilities have successfully adopted your practice. All adoptions roll up to the VAMC level. Aim to update this data quarterly.')
+          expect(page).to have_content('Share which facilities have successfully adopted your innovation. All adoptions roll up to the VAMC level. Aim to update this data quarterly.')
 
           click_link 'Editors'
           page.has_css?('#editors')
