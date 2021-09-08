@@ -213,7 +213,7 @@ namespace :va_facilities do
               facility.hours_note = vaf["HoursNote"]
               facility.save
               ctr += 1
-              puts 'Updated facility: ' + vaf["Official_Station_Name"] + ': ' + ctr.to_s
+              puts "Updated facility: #{vaf['Official_Station_Name']}, #{ctr.to_s}"
             end
           end
         end
