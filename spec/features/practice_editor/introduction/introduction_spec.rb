@@ -15,7 +15,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
     @practice = Practice.create!(name: 'A public maximum practice', tagline: 'A public tagline', short_name: 'LALA', slug: 'a-public-max-practice', approved: true, published: true, summary: 'Test summary', date_initiated: Date.new(2016, 8, 20), initiating_facility_type: 'facility', main_display_image: File.new(img_path), user: @admin)
     @pr_facility = PracticeOriginFacility.create!(practice: @practice, facility_type: 0, va_facility: facility_1)
     PracticeAward.create!(practice: @practice, name: 'QUERI Veterans Choice Act Award', created_at: Time.now)
-    PracticeAward.create!(practice: @practice, name: 'Diffusion of Excellence Promising Practice', created_at: Time.now)
+    PracticeAward.create!(practice: @practice, name: 'Diffusion of Excellence Promising Innovation', created_at: Time.now)
     @pr_partner_1 = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative helps to identify and disseminate clinical and administrative best practices through a learning environment that empowers its top performers to apply their innovative ideas throughout the system — further establishing VA as a leader in health care, while promoting positive outcomes for Veterans.', icon: 'fas fa-heart', color: '#E4A002')
     @pr_partner_2 = PracticePartner.create!(name: 'Office of Rural Health', short_name: 'ORH', description: 'Congress established the Veterans Health Administration Office of Rural Health in 2006 to conduct, coordinate, promote and disseminate research on issues that affect the nearly five million Veterans who reside in rural communities. Working through its three Veterans Rural Health Resource Centers, as well as partners from academia, state and local governments, private industry, and non-profit organizations, ORH strives to break down the barriers separating rural Veterans from quality care.', icon: 'fas fa-mountain', color: '#1CC2AE')
     PracticePartnerPractice.create!(practice: @practice, practice_partner: @pr_partner_1, created_at: Time.now)
@@ -44,27 +44,27 @@ describe 'Practice editor - introduction', type: :feature, js: true do
 
     it 'should display the content correctly' do
       expect(page).to have_content('Introduction')
-      expect(page).to have_content('Introduce your practice and provide a brief summary to people who may be unfamiliar with it.')
+      expect(page).to have_content('Introduce your innovation and provide a brief summary to people who may be unfamiliar with it.')
       expect(page).to have_content('Do not enter PII or PHI for any individual, Veteran, or patient. See our Privacy policy.')
       expect(page).to have_content('Name (required field)')
-      expect(page).to have_content('Type the official name of your practice.')
+      expect(page).to have_content('Type the official name of your innovation.')
       expect(page).to have_content('Acronym')
       expect(page).to have_content('Summary (required field)')
-      expect(page).to have_content('Type a short 1-3 sentence summary of your practice’s mission to engage the audience and provide initial context.')
+      expect(page).to have_content('Type a short 1-3 sentence summary of your innovation’s mission to engage the audience and provide initial context.')
       expect(page).to have_content('Date created (required field)')
       expect(page).to have_content('Select the month and year this innovation was created.')
-      expect(page).to have_content('Practice origin (required field)')
+      expect(page).to have_content('Innovation origin (required field)')
       expect(page).to have_content('Select the location where this innovation originated')
       expect(page).to have_content('Awards and recognition')
       expect(page).to have_content('Partners')
-      expect(page).to have_content('Select any of the following partners your practice is associated with.')
+      expect(page).to have_content('Select any of the following partners your innovation is associated with.')
       expect(page).to have_content('Diffusion phase')
-      expect(page).to have_content('Select the diffusion phase that applies to your practice.')
+      expect(page).to have_content('Select the diffusion phase that applies to your innovation.')
       expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/instructions")
       expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/adoptions")
       # categories
       expect(page).to have_content('Categories')
-      expect(page).to have_content('Select the categories most relevant to your practice (suggested: up to 10).')
+      expect(page).to have_content('Select the categories most relevant to your innovation (suggested: up to 10).')
       expect(page).to have_no_content('Hidden Cat')
       expect(page).to have_content('Clinical')
       expect(page).to have_content('Operational')
@@ -230,7 +230,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
     context 'awards and recognition' do
       it 'should allow changing awards' do
         expect(page).to have_checked_field('QUERI Veterans Choice Act Award')
-        expect(page).to have_checked_field('Diffusion of Excellence Promising Practice')
+        expect(page).to have_checked_field('Diffusion of Excellence Promising Innovation')
         expect(page).to have_unchecked_field('VHA Shark Tank Winner')
         expect(page).to have_no_content('Name of award or recognition')
         find('#practice_award_fed_health_it_award_label').click # selects FedHealth IT Award
@@ -242,7 +242,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         visit_practice_show
         expect(page).to have_no_content('VHA Shark Tank Winnder')
         expect(page).to have_content('QUERI Veterans Choice Act Award')
-        expect(page).to have_content('Diffusion of Excellence Promising Practice')
+        expect(page).to have_content('Diffusion of Excellence Promising Innovation')
       end
     end
 

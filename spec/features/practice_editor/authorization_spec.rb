@@ -34,7 +34,7 @@ describe 'Practice editor', type: :feature, js: true do
             visit practice_introduction_path(@practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).to have_content('Introduction')
-            expect(page).to have_content('Introduce your practice and provide a brief summary to people who may be unfamiliar with it.')
+            expect(page).to have_content('Introduce your innovation and provide a brief summary to people who may be unfamiliar with it.')
         end
 
         it 'should not allow the following user types to edit a practice: non-admins, non-practice owners, and non-practice editors' do

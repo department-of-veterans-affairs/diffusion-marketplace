@@ -127,7 +127,7 @@ describe 'Practice editor', type: :feature, js: true do
       expect(page).to have_no_content('Cannot publish yet')
       expect(page).to have_content("#{@practice2.name} has been successfully published to the Diffusion Marketplace")
       # Publish button should be gone if the practice has been published
-      expect(page).to_not have_link('Publish practice')
+      expect(page).to_not have_link('Publish innovation')
 
       visit practice_path(@practice2)
       expect(page).to have_content('practice summary')

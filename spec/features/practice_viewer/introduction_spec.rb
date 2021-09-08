@@ -65,7 +65,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
     PracticeOriginFacility.create!(practice: @pr_max, facility_type: 0, va_facility: facility_4)
     PracticeOriginFacility.create!(practice: @pr_max, facility_type: 0, va_facility: facility_5)
     PracticeAward.create!(practice: @pr_max, name: 'QUERI Veterans Choice Act Award', created_at: Time.now)
-    PracticeAward.create!(practice: @pr_max, name: 'Diffusion of Excellence Promising Practice', created_at: Time.now)
+    PracticeAward.create!(practice: @pr_max, name: 'Diffusion of Excellence Promising Innovation', created_at: Time.now)
     PracticeAward.create!(practice: @pr_max, name: 'VHA Shark Tank Winner', created_at: Time.now)
     PracticeAward.create!(practice: @pr_max, name: 'Other', created_at: Time.now)
     PracticeAward.create!(practice: @pr_max, name: 'An amazing award that the whole team is proud of', created_at: Time.now)
@@ -155,13 +155,13 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
 
     context 'awards and recognition section' do
       it 'should expand content on click' do
-        expect(page).to have_content('QUERI Veterans Choice Act Award, Diffusion of Excellence Promising Practice, VHA Shark Tank Winner, An amazing award that the whole team is proud of, Another great award that this ...')
+        expect(page).to have_content('QUERI Veterans Choice Act Award, Diffusion of Excellence Promising Innovation, VHA Shark Tank Winner, An amazing award that the whole team is proud of, Another great award that this ...')
         expect(page).to have_content('See more')
         find('#seeMore_award').click
-        expect(page).to have_content('QUERI Veterans Choice Act Award, Diffusion of Excellence Promising Practice, VHA Shark Tank Winner, An amazing award that the whole team is proud of, Another great award that this innovation can show off')
+        expect(page).to have_content('QUERI Veterans Choice Act Award, Diffusion of Excellence Promising Innovation, VHA Shark Tank Winner, An amazing award that the whole team is proud of, Another great award that this innovation can show off')
         expect(page).to have_content('See less')
         find('#seeMore_award').click
-        expect(page).to have_content('QUERI Veterans Choice Act Award, Diffusion of Excellence Promising Practice, VHA Shark Tank Winner, An amazing award that the whole team is proud of, Another great award that this ...')
+        expect(page).to have_content('QUERI Veterans Choice Act Award, Diffusion of Excellence Promising Innovation, VHA Shark Tank Winner, An amazing award that the whole team is proud of, Another great award that this ...')
         expect(page).to have_content('See more')
       end
     end

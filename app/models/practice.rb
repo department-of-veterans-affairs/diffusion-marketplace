@@ -154,7 +154,7 @@ class Practice < ApplicationRecord
 
   PRACTICE_EDITOR_AWARDS_AND_RECOGNITION =
       [
-        'Diffusion of Excellence Promising Practice',
+        'Diffusion of Excellence Promising Innovation',
         'FedHealth IT Award',
         'Gears of Government Winner',
         'Igniting Innovation Award',
@@ -164,7 +164,7 @@ class Practice < ApplicationRecord
         'QUERI Veterans Choice Act Award',
         'QUERI VISN Partnered Implementation Initiative',
         'QUERI Partnered Evaluation Initiative',
-        'Rural Promising Practice',
+        'Rural Promising Innovation',
         'VHA Shark Tank Winner',
         'Other'
       ]

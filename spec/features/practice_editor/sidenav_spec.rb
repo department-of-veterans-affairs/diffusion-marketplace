@@ -23,7 +23,7 @@ describe 'Practice editor', type: :feature, js: true do
           click_link 'Edit practice'
           click_link 'Edit: A public practice'
           page.has_css?('#introduction')
-          expect(page).to have_content('Introduce your practice and provide a brief summary to people who may be unfamiliar with it.')
+          expect(page).to have_content('Introduce your innovation and provide a brief summary to people who may be unfamiliar with it.')
 
           click_link 'Adoptions'
           page.has_css?('#adoptions')
