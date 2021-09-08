@@ -28,7 +28,7 @@
 
   <section class="about-us-faq-section margin-bottom-128" role="region" aria-label="Frequently asked questions section">
     <h2 class="usa-prose-h2 margin-bottom-4 margin-top-0">Frequently asked questions</h2>
-    <div class="usa-accordion">
+    <div class="usa-accordion" aria-multiselectable="true">
       <%= render partial: 'faq_accordion', locals: {
         item_number: '1',
         question: 'What is a \'practice\'?',
