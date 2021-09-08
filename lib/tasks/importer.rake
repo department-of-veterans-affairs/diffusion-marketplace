@@ -48,7 +48,7 @@ namespace :importer do
         unless practice.user.present?
           practice.user = @user
         end
-        puts "This practice already exists in the system.".white.on_blue
+        puts "This innovation already exists in the system.".white.on_blue
         # puts "Would you like to destroy and re-import this practice?. [Y/N]".white.on_blue
         # answer = STDIN.gets.chomp
         # case answer.downcase
@@ -196,7 +196,7 @@ def basic_answers
     @practice.send("#{value.to_sym}=", @answers[@questions.index(key.to_s)]) if value.present?
   end
   @practice.initiating_facility = @practice.initiating_facility&.split('_')[1]
-  @practice.date_initiated = DateTime.strptime(@answers[@questions.index('When was this practice initiated? If day is unknown, use the first of the month'.to_s)], "%m/%d/%Y") if @answers[@questions.index('When was this practice initiated? If day is unknown, use the first of the month'.to_s)].present?
+  @practice.date_initiated = DateTime.strptime(@answers[@questions.index('When was this innovation initiated? If day is unknown, use the first of the month'.to_s)], "%m/%d/%Y") if @answers[@questions.index('When was this practice initiated? If day is unknown, use the first of the month'.to_s)].present?
   @practice.phase_gate = @practice.phase_gate.split('.')[1].split('-')[0].squish
   @practice.save
 end
@@ -361,9 +361,9 @@ def categories
   puts "==> Importing Practice: #{@name} Categories".light_blue
   @practice.category_practices.each(&:destroy)
   question_fields = {
-      'What Primary care specialties does this Practice impact? Please mark all that apply.': 33,
-      'What medical sub-specialties does this Practice impact? Please select all all that apply.': 23,
-      'What surgical specialties does this Practice impact? Please select all all that apply.': 14,
+      'What Primary care specialties does this innovation impact? Please mark all that apply.': 33,
+      'What medical sub-specialties does this innovation impact? Please select all all that apply.': 23,
+      'What surgical specialties does this innovation impact? Please select all all that apply.': 14,
       'What are the whole health impacts of this practice? (Please select all that apply.)': 8,
       "This question will allow the user to find your Practice by a medical complaint, clinical condition, or system of the body.\u2028\u2028 We are going to divide complaints, conditions, and systems anatomically.": 36,
       'Please enter one condition per line': 5
@@ -460,7 +460,7 @@ def job_positions
   puts "==> Importing Practice: #{@name} Job Positions".light_blue
   @practice.job_position_practices.each(&:destroy)
   question_fields = {
-      "Which of the following job titles or positions does this practice impact? (Please select all that apply.)": 10
+      "Which of the following job titles or positions does this innovation impact? (Please select all that apply.)": 10
   }
 
   question_fields.each do |key, value|
@@ -488,7 +488,7 @@ def ancillary_services
   puts "==> Importing Practice: #{@name} Ancillary Services".light_blue
   @practice.ancillary_service_practices.each(&:destroy)
   question_fields = {
-      'Which of the following ancillary services does this practice impact? (Please select all that apply.)': 11
+      'Which of the following ancillary services does this innovation impact? (Please select all that apply.)': 11
   }
 
   question_fields.each do |key, value|
@@ -516,7 +516,7 @@ def clinical_locations
   puts "==> Importing Practice: #{@name} Clinical Locations".light_blue
   @practice.clinical_location_practices.each(&:destroy)
   question_fields = {
-      'Which of the following clinical locations does this practice impact? (Please select all that apply.)': 12
+      'Which of the following clinical locations does this innovation impact? (Please select all that apply.)': 12
   }
 
   question_fields.each do |key, value|
@@ -544,7 +544,7 @@ def departments
   puts "==> Importing Practice: #{@name} Departments".light_blue
   @practice.department_practices.each(&:destroy)
   question_fields = {
-      'Which departments or operational domains does this Practice impact?': 50,
+      'Which departments or operational domains does this innovation impact?': 50,
   }
 
   question_fields.each do |key, value|
@@ -572,7 +572,7 @@ def domains
   puts "==> Importing Practice: #{@name} Domains".light_blue
   @practice.domain_practices.each(&:destroy)
   question_fields = {
-      'How does this practice deliver value? Please select all that apply of the five value delivery domains below:': 5,
+      'How does this innovation deliver value? Please select all that apply of the five value delivery domains below:': 5,
   }
 
   question_fields.each do |key, value|

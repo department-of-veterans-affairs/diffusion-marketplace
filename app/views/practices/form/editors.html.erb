@@ -58,7 +58,7 @@
               <h2 class="line-height-37px font-sans-xl margin-bottom-3 margin-top-10">Add editors</h2>
               <%= f.fields_for :practice_editors, include_id: false, wrapper: false do |pe| %>
                 <div class="editor-input-container">
-                  <%= pe.label :email, 'E-mail the people who can help you edit this practice page. Only @va.gov emails are allowed.', class: 'usa-label editor-label margin-top-0' %>
+                  <%= pe.label :email, 'E-mail the people who can help you edit this innovation page. Only @va.gov emails are allowed.', class: 'usa-label editor-label margin-top-0' %>
                   <%= pe.text_field :email, class: 'usa-input editor-input', type: 'email', pattern: '.+@va.gov' %>
                 </div>
               <% end %>

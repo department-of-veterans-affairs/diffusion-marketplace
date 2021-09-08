@@ -51,11 +51,11 @@
       <% if comment.parent_id.present? && new_record %>
         <div class="usa-radio">
           <%= radio_button_tag 'user_practice_status', :verified_implementer, verified_practice_implementer ? true : false, class: 'usa-radio__input', id: "verified-implementer-#{comment.parent_id}" %>
-          <%= label_tag 'user_practice_status_verified_implementer', 'I am currently adopting this practice', class: 'usa-radio__label implementer-label margin-bottom-1', for: "verified-implementer-#{comment.parent_id}" %>
+          <%= label_tag 'user_practice_status_verified_implementer', 'I am currently adopting this innovation', class: 'usa-radio__label implementer-label margin-bottom-1', for: "verified-implementer-#{comment.parent_id}" %>
         </div>
         <div class="usa-radio">
           <%= radio_button_tag 'user_practice_status', :team_member, practice_team_member ? true : false, class: 'usa-radio__input', id: "team-member-#{comment.parent_id}" %>
-          <%= label_tag 'user_practice_status_team_member', 'I am a member of this practice team', class: 'usa-radio__label team-member-label', for: "team-member-#{comment.parent_id}" %>
+          <%= label_tag 'user_practice_status_team_member', 'I am a member of this innovation team', class: 'usa-radio__label team-member-label', for: "team-member-#{comment.parent_id}" %>
         </div>
         <div class="usa-radio">
           <%= radio_button_tag 'user_practice_status', :other, practice_other ? true : false, class: 'usa-radio__input', id: "practice-other-#{comment.parent_id}" %>
@@ -64,11 +64,11 @@
       <% elsif new_record %>
         <div class="usa-radio">
           <%= radio_button_tag 'user_practice_status', :verified_implementer, verified_practice_implementer ? true : false, class: 'usa-radio__input', id: 'verified-implementer' %>
-          <%= label_tag 'user_practice_status_verified_implementer', 'I am currently adopting this practice', class: 'usa-radio__label implementer-label margin-bottom-1', for: 'verified-implementer' %>
+          <%= label_tag 'user_practice_status_verified_implementer', 'I am currently adopting this innovation', class: 'usa-radio__label implementer-label margin-bottom-1', for: 'verified-implementer' %>
         </div>
         <div class="usa-radio">
           <%= radio_button_tag 'user_practice_status', :team_member, practice_team_member ? true : false, class: 'usa-radio__input', id: 'team-member' %>
-          <%= label_tag 'user_practice_status_team_member', 'I am a member of this practice team', class: 'usa-radio__label team-member-label', for: 'team-member' %>
+          <%= label_tag 'user_practice_status_team_member', 'I am a member of this innovation team', class: 'usa-radio__label team-member-label', for: 'team-member' %>
         </div>
         <div class="usa-radio">
           <%= radio_button_tag 'user_practice_status', :other, practice_other ? true : false, class: 'usa-radio__input', id: "practice-other" %>
@@ -78,11 +78,11 @@
       <% if !new_record %>
         <div class="usa-radio">
           <%= radio_button_tag 'user_practice_status', :verified_implementer, verified_practice_implementer ? true : false, class: 'usa-radio__input', id: "verified-implementer-#{comment.id}" %>
-          <%= label_tag 'user_practice_status_verified_implementer', 'I am currently adopting this practice', class: 'usa-radio__label implementer-label margin-bottom-1', for: "verified-implementer-#{comment.id}" %>
+          <%= label_tag 'user_practice_status_verified_implementer', 'I am currently adopting this innovation', class: 'usa-radio__label implementer-label margin-bottom-1', for: "verified-implementer-#{comment.id}" %>
         </div>
         <div class="usa-radio">
           <%= radio_button_tag 'user_practice_status', :team_member, practice_team_member ? true : false, class: 'usa-radio__input', id: "team-member-#{comment.id}" %>
-          <%= label_tag 'user_practice_status_team_member', 'I am a member of this practice team', class: 'usa-radio__label team-member-label', for: "team-member-#{comment.id}" %>
+          <%= label_tag 'user_practice_status_team_member', 'I am a member of this innovation team', class: 'usa-radio__label team-member-label', for: "team-member-#{comment.id}" %>
         </div>
         <div class="usa-radio">
           <%= radio_button_tag 'user_practice_status', :other, practice_other ? true : false, class: 'usa-radio__input', id: "practice-other-#{comment.parent_id}" %>

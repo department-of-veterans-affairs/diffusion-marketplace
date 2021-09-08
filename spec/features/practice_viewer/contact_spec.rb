@@ -89,9 +89,9 @@ describe 'Contact section', type: :feature, js: true do
       expect(page).to have_content('2 COMMENTS:')
     end
 
-    it 'Should display the verified implementer tag if the user selects the "I am currently adopting this practice" radio button' do
+    it 'Should display the verified implementer tag if the user selects the "I am currently adopting this innovation" radio button' do
       fill_in('comment[body]', with: 'Hello world')
-      find('label', text: 'I am currently adopting this practice').click
+      find('label', text: 'I am currently adopting this innovation').click
       click_button('commit')
       visit practice_path(@practice)
       expect(page).to have_selector('.comments-section', visible: true)

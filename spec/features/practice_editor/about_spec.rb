@@ -7,7 +7,7 @@ describe 'Practice editor', type: :feature do
             @practice = Practice.create!(name: 'An awesome practice', slug: 'an-awesome-practice', approved: true, published: true, tagline: 'Test tagline', date_initiated: Date.new(2011, 12, 31), user: @admin)
             @admin.add_role(User::USER_ROLES[0].to_sym)
             login_as(@admin, :scope => :user, :run_callbacks => false)
-            @origin_story = 'This practice was founded on the basis of being awesome.'
+            @origin_story = 'This innovation was founded on the basis of being awesome.'
             @creator_name = 'Grimmjow Jaegerjaquez'
             @creator_role = 'Sixth Espada'
             @creator_name_2 = 'Sosuke Aizen'

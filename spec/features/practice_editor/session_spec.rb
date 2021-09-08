@@ -15,7 +15,7 @@ describe 'Practice editor sessions', type: :feature do
     visit practice_introduction_path(@practice)
     logout(@user)
     login_as(@user_2, :scope => :user, :run_callbacks => false)
-    locked_msg = 'You cannot edit this practice since it is currently being edited by satoru.gojo@va.gov'
+    locked_msg = 'You cannot edit this innovation since it is currently being edited by satoru.gojo@va.gov'
     visit practice_introduction_path(@practice)
     expect(page).to have_content(locked_msg)
 
