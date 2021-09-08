@@ -16,13 +16,13 @@
         <%= @page.description %>
       </p>
     </div>
-    <div class="dm-page-content">
+    <div class="dm-page-content margin-bottom-5">
       <% @page.page_components.each do |pc| %>
         <% component = pc.component_type.constantize.find(pc.component_id) %>
 
         <%# Page Header and Paragraph %>
         <% if (pc.component_type == 'PageHeaderComponent' || pc.component_type == 'PageParagraphComponent') && component.text.present? %>
-          <div class="margin-bottom-4 <%= page_narrow_classes %>">
+          <div class="margin-bottom-4-important <%= page_narrow_classes %>">
             <%= component.text.html_safe %>
           </div>
         <% end %>
