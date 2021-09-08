@@ -147,7 +147,7 @@ namespace :va_facilities do
           else
             # update record.....
             facility = VaFacility.where(station_number: vaf["Station_Number"]).first
-            if !facility.blank? && visn.number === vaf["VISN"].to_i
+            if facility.present? && visn.number === vaf["VISN"].to_i
               puts 'facility not blank and visn # good'
               facility.visn = visn
               facility.sta3n = vaf["STA3N"]
