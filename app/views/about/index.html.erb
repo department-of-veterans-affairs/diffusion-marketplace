@@ -9,8 +9,8 @@
         <h1 class="usa-prose-h1 margin-bottom-4 margin-top-0">About us</h1>
         <p class="usa-prose-body">
           The Diffusion Marketplace is a discovery and collaboration tool that curates promising clinical, operational, and strategic practices from VA. We are managed by the
-          <a href="https://www.va.gov/INNOVATIONECOSYSTEM/views/who-we-are/diffusion-of-excellence.html" class="dm-primary-link" target="_blank">Diffusion of Excellence</a>, an organization within the VHA Innovation Ecosystem.
-          Our goal is to represent the best of VA and to reflect the spirit of service and collaboration for Veterans and the communities we serve.
+          <a href="https://www.va.gov/INNOVATIONECOSYSTEM/views/who-we-are/diffusion-of-excellence.html" class="dm-primary-link" target="_blank">Diffusion of Excellence</a>, an organization within
+          the VHA Innovation Ecosystem. Our goal is to represent the best of VA and to reflect the spirit of service and collaboration for Veterans and the communities we serve.
         </p>
       </div>
       <div class="grid-col-1"></div>
@@ -18,7 +18,8 @@
         <div class="about-us-image-container">
           <img
             class="display-block width-full"
-            src="<%= Practice.find_by(slug: 'caring-for-older-adults-and-caregivers-at-home-coach').main_display_image_s3_presigned_url(:thumb) %>"
+            <%# TODO: Add about page image source and alt text here %>
+            src=""
             alt=""/>
         </div>
       </div>
@@ -107,10 +108,13 @@
       <p class="usa-prose-body">Have a question for our team? Send a message to <a href="mailto:marketplace@va.gov" class="dm-primary-link">marketplace@va.gov</a>. and we’ll get back to you as soon as we can.</p>
       <%= form_tag about_path, method: 'post' do %>
         <label class="usa-label margin-bottom-2" for="email">Your email address</label>
-        <input class="usa-input" id="email" name="email" type="email"/>
+        <input class="usa-input" id="email" name="email" type="email" required/>
 
-        <label class="usa-label margin-bottom-2" for="subject">Your message</label>
-        <textarea class="usa-textarea margin-bottom-4" id="subject" name="subject"></textarea>
+        <label class="usa-label margin-bottom-2" for="subject">Subject line</label>
+        <input class="usa-input" id="subject" name="subject" type="text" required/>
+
+        <label class="usa-label margin-bottom-2" for="message">Your message</label>
+        <textarea class="usa-textarea margin-bottom-4" id="message" name="message" required></textarea>
 
         <div class="text-right">
           <input type="submit" value="Send message" class="usa-button margin-right-0">

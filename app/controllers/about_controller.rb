@@ -3,7 +3,7 @@ class AboutController < ApplicationController
   end
 
   def email
-    ContactUsMailer.contact_us_email(email: params[:email], subject: params[:subject]).deliver_now
+    ContactUsMailer.contact_us_email(email: params[:email], subject: params[:subject], message: params[:message]).deliver_now
     success = 'You successfully sent a message to the Diffusion Marketplace team.'
     flash[:success] = success
     respond_to do |format|
