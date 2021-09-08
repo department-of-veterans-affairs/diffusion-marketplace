@@ -162,7 +162,7 @@ module PracticesHelper
       ev_user_id = last_ahoy_event[0].user_id
       last_ev_cat_id = last_ahoy_event[0].properties["category_id"]
       same_cat_id = cat_id == last_ev_cat_id
-      same_visit = (DateTime.now.to_time.utc - event_tm) <= 2;
+      same_visit = (DateTime.now.to_time.utc - event_tm) <= 2
       same_user = current_user.id == ev_user_id
       if !same_cat_id || !same_visit || !same_user
         store_chosen_categories(s_query, nil) unless s_query.blank?
