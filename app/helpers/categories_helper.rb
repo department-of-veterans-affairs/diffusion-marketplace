@@ -12,8 +12,8 @@ module CategoriesHelper
   end
 
   def update_category_usages
-    s_query = params["query"]
-    cat_rec = Category.where("name ILIKE ?", s_query.downcase).first
+    s_query = ActiveRecord::Base.sanitize_sql_like(params["query"])
+    cat_rec = Category.where("name ILIKE ?", s_query.downcase).not_other.first
     return if cat_rec.blank?
     cat_id = cat_rec.id
     last_ahoy_event = AhoyEvent.where(name: 'Category selected').last(1)
@@ -25,8 +25,11 @@ module CategoriesHelper
       last_ev_cat_id = last_ahoy_event[0].properties["category_id"]
       same_cat_id = cat_id == last_ev_cat_id
       same_visit = (DateTime.now.to_time.utc - event_tm) <= 2
+      puts (DateTime.now.to_time.utc - event_tm).to_s
+      puts "Same visit: " + same_visit.to_s
       same_user = current_user.id == ev_user_id
-      if !same_cat_id || !same_visit || !same_user
+      if !(same_cat_id && same_visit && same_user)
+        debugger
         store_chosen_categories(s_query, nil) unless s_query.blank?
       end
     end
