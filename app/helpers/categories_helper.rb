@@ -12,6 +12,7 @@ module CategoriesHelper
   end
 
   def update_category_usages
+    return if current_user.blank?
     s_query = ActiveRecord::Base.sanitize_sql_like(params["query"])
     cat_rec = Category.where("name ILIKE ?", s_query.downcase).not_other.first
     return if cat_rec.blank?
