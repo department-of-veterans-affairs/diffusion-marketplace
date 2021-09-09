@@ -281,9 +281,10 @@ function searchPracticesPage() {
         }
     }
 
+    var searchLocation = window.location.search.split('=');
+
     // Search practices and populate the page
     function search(query, categories, originatingFacility, adoptingFacility) {
-        var urlHash = window.location.hash.split('=');
         // Trim whitespace from the query (can cause matching problems)
         query = query.trim();
         isBlankSearch = !Boolean(query) && categories == undefined && originatingFacility == undefined && adoptingFacility == undefined ? true : false;
@@ -301,8 +302,8 @@ function searchPracticesPage() {
                 return searchBarQueryArray.push(queryObj);
             });
         } else {
-            if (urlHash[0] === '#filter_by') {
-                trackSearchByFilter(urlHash[1]);
+            if (searchLocation[0] === '?filter_by') {
+                trackSearchByFilter(searchLocation[1]);
             }
         }
 
@@ -640,8 +641,8 @@ function searchPracticesPage() {
             searchWithOnlyAdoptingFacility();
         } else if (query === '' && !categoryFilters && !originatingFacility && !adoptingFacility) {
             var maturityLevels = ['emerging', 'replicate', 'scale'];
-            if (urlHash[0] === '#filter_by' && maturityLevels.includes(urlHash[1])) {
-                searchByFilterTerm('maturity_level', urlHash[1])
+            if (searchLocation[0] === '?filter_by' && maturityLevels.includes(searchLocation[1])) {
+                searchByFilterTerm('maturity_level', searchLocation[1])
             } else {
                 results = [];
             }
@@ -873,7 +874,7 @@ function searchPracticesPage() {
         $('.search-filters-accordion-button').text('Filters');
     })
 
-    if (window.location.pathname === '/search' && window.location.search !== '') {
+    if (window.location.pathname === '/search' && window.location.search !== '' && searchLocation[0] !== '?filter_by') {
         hideResultsSectionElAndShowSpinner();
         const query = window.location.search.split('=')[1];
         search(decodeURI(query));
@@ -882,7 +883,7 @@ function searchPracticesPage() {
         } else {
             searchField.value = '';
         }
-    } else if (window.location.hash.split('=')[0] === '#filter_by') {
+    } else if (searchLocation[0] === '?filter_by') {
         hideResultsSectionElAndShowSpinner();
         search('');
     }
@@ -909,7 +910,7 @@ function trackSearchByFilter(filterTerm) {
             hitType: 'event',
             eventCategory: 'search filter',
             eventAction: 'search filter',
-            location: '/search#filter_by=' + filterTerm
+            location: '/search?filter_by=' + filterTerm
         });
     }
 }
