@@ -1,7 +1,5 @@
 <div class="dm-about-page grid-container">
-  <div class="dm-system-message margin-top-2">
-    <%= render partial: "shared/messages", locals: { small_text: true } %>
-  </div>
+  <%= render partial: "shared/messages", locals: { small_text: true } %>
 
   <section class="about-us-info-section margin-y-128" role="region" aria-label="About us info section">
     <div class="grid-row grid-gap-3">
@@ -58,11 +56,11 @@
                   </p>
                   <p class='margin-bottom-2'>
                     <span class='text-bold'>Replicating</span> practices are being adopted across multiple facilities as their impact continues to be validated.
-                    #{link_to('View replicating practices', '/search#filter_by=replicating', class: 'dm-primary-link')}
+                    #{link_to('View replicating practices', '/search#filter_by=replicate', class: 'dm-primary-link')}
                   </p>
                   <p>
                     <span class='text-bold'>Scaling</span> practices are being adopted widely with the support of national stakeholders.
-                    #{link_to('View scaling practices', '/search#filter_by=scaling', class: 'dm-primary-link')}
+                    #{link_to('View scaling practices', '/search#filter_by=scale', class: 'dm-primary-link')}
                   </p>
           "
         }

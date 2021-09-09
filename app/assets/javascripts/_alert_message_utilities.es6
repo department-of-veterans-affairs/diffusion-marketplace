@@ -3,7 +3,7 @@
 
     function removeAlertMessage() {
         $('#close-alert-message').on('click', function() {
-            $(this).closest('.dm-system-message').remove();
+            $(this).closest('.usa-alert').remove();
         })
     }
 

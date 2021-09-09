@@ -3,7 +3,7 @@
 <% end %>
 
 <% if alert.present? %>
-  <div class="usa-alert usa-alert--error margin-bottom-2">
+  <div class="usa-alert usa-alert--error margin-y-2">
     <div class="usa-alert__body">
       <p><%= alert.humanize %></p>
     </div>
@@ -17,7 +17,7 @@
     <!-- session expired message shows two extra messages. not sure why. these conditionals: value.to_s.downcase.include?('session expired') || value.to_s.downcase == 'true' || -->
     <!-- invalid email also shows two messages. not sure why. that is this conditional: (value == 'Invalid Email or password.' && key == 'alert') -->
     <% unless value.to_s.downcase.include?('session expired') || value.to_s.downcase == 'true' || (value == 'Invalid Email or password.' && key == 'alert') %>
-      <div class="usa-alert usa-alert--<%= key %> margin-bottom-2 <%= small_text ? 'message-icon-bg-position' : '' %>">
+      <div class="usa-alert usa-alert--<%= key %> margin-y-2 <%= small_text ? 'message-icon-bg-position' : '' %>">
         <div class="usa-alert__body grid-row flex-align-center">
           <div class="usa-alert__heading <%= small_text ? 'font-sans-sm margin-bottom-0' : '' %>" role="alert">
             <%= value %>

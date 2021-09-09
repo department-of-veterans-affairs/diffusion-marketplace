@@ -3,12 +3,6 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .dm-homepage {
-  .dm-system-message {
-    .usa-alert {
-      margin-bottom: 0;
-    }
-  }
-
   .homepage-welcome-banner {
     // since the transform style from dm-gradient-banner flips the text along with the gradient colors, we need to flip the text inside of the grid-container to return it to its original state
     .grid-container {

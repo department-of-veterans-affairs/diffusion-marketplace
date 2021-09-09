@@ -639,7 +639,7 @@ function searchPracticesPage() {
         } else if (query === '' && !categoryFilters && !originatingFacility && adoptingFacility) {
             searchWithOnlyAdoptingFacility();
         } else if (query === '' && !categoryFilters && !originatingFacility && !adoptingFacility) {
-            var maturityLevels = ['emerging', 'replicating', 'scaling'];
+            var maturityLevels = ['emerging', 'replicate', 'scale'];
             if (urlHash[0] === '#filter_by' && maturityLevels.includes(urlHash[1])) {
                 searchByFilterTerm('maturity_level', urlHash[1])
             } else {
