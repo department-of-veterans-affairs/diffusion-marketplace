@@ -14,8 +14,6 @@
             type: 'patch',
             url: "/update_category_usage",
             data: jQuery.param({query: e.target.innerText, chosenCategories: null}),
-            success: function() {
-            }
         });
 
       if ($(e.target).hasClass("dm-tag--big--action-primary--selected")) {
