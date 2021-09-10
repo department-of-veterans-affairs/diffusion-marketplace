@@ -12,7 +12,6 @@ module CategoriesHelper
   end
 
   def update_category_usages
-    return if current_user.blank?
     s_query = ActiveRecord::Base.sanitize_sql_like(params["query"])
     cat_rec = Category.where("name ILIKE ?", s_query.downcase).not_other.first
     return if cat_rec.blank?
@@ -28,9 +27,9 @@ module CategoriesHelper
       same_visit = (DateTime.now.to_time.utc - event_tm) <= 2
       puts (DateTime.now.to_time.utc - event_tm).to_s
       puts "Same visit: " + same_visit.to_s
-      same_user = current_user.id == ev_user_id
+      same_user = current_user.present? ? current_user.id == ev_user_id : true
+      debugger
       if !(same_cat_id && same_visit && same_user)
-        debugger
         store_chosen_categories(s_query, nil) unless s_query.blank?
       end
     end
