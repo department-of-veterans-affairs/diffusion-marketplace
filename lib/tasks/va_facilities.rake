@@ -78,13 +78,15 @@ namespace :va_facilities do
             if (vaf["Official_Station_Name"].include? "Vet Center")
               create_vet_center_facility(visn, vaf, true)
             else
+              hidden = vaf["CoCClassification"].blank? ? true : false
+              classification = vaf["CoCClassification"].blank? ? "Unclassified" : vaf["CoCClassification"]
               VaFacility.create!(
                   visn: visn,
                   sta3n: vaf["STA3N"],
                   station_number: vaf["Station_Number"],
                   official_station_name: vaf["Official_Station_Name"],
                   common_name: vaf["LocationDescriptiveName"],
-                  classification: vaf["CoCClassification"],
+                  classification: classification,
                   classification_status: vaf["CoCClassificationAttribute"],
                   mobile: vaf["Mobile"],
                   parent_station_number: vaf["Parent_Station_Number"],
@@ -141,7 +143,7 @@ namespace :va_facilities do
                   saturday: vaf["Saturday"],
                   sunday: vaf["Sunday"],
                   hours_note: vaf["HoursNote"],
-                  hidden: false
+                  hidden: hidden
               )
             end
           else
