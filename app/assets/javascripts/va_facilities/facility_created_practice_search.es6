@@ -36,6 +36,9 @@ function loadMoreEventListener() {
 function filterCategoriesEventListener() {
   $(cp.categoriesInput).on("change", function(e) {
       var catId = e.target[e.target.selectedIndex].value;
+      if(catId.length == 0){
+          return;
+      }
       //update category usage/selected..
       updateSelectedCategoriesUsage({
           category_id: catId
@@ -63,6 +66,9 @@ function searchEventListener() {
   $(cp.searchBtn).on("click", function(e) {
     e.preventDefault();
     let searchTerm = $(cp.searchField).val();
+      if(searchTerm.length == 0){
+          return;
+      }
     updateSelectedCategoriesUsage({
         sQuery: searchTerm
     });

@@ -77,6 +77,9 @@ function attachSearchButtonClickListener() {
   $("#dm-adopted-practices-search-button").click (function(e) {
     e.preventDefault();
     let keyWord = $(ap.searchField).val();
+    if(keyWord.length == 0){
+        return;
+    }
     updateSelectedCategoriesUsage({
         sQuery: keyWord
     });
