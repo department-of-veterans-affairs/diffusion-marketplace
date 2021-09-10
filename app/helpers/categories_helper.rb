@@ -25,8 +25,6 @@ module CategoriesHelper
       last_ev_cat_id = last_ahoy_event[0].properties["category_id"]
       same_cat_id = cat_id == last_ev_cat_id
       same_visit = (DateTime.now.to_time.utc - event_tm) <= 2
-      puts (DateTime.now.to_time.utc - event_tm).to_s
-      puts "Same visit: " + same_visit.to_s
       same_user = current_user.present? ? current_user.id == ev_user_id : ev_user_id.blank?
       debugger
       if !(same_cat_id && same_visit && same_user)
