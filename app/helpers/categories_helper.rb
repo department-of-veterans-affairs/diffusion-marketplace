@@ -3,13 +3,21 @@ module CategoriesHelper
 
   def get_top_six_categories
     #get top 6 from ahoy.events table - name: 'Selected category'
-
-
-
-
-    # sql = "select cu.category_id, c.name, count(*) from category_usages cu join categories c on cu.category_id=c.id where cu.created_at >= (CURRENT_DATE - 90) group by cu.category_id, c.name order by count desc limit(6)"
-    # ActiveRecord::Base.connection.execute(sql)
+    recs = AhoyEvent.where(name: 'Category selected')
+    rec_array = []
+    popular_categories = []
+    recs.each do |rec|
+      rec_array << rec.properties["category_id"]
+    end
+    categories_count = Hash.new(0)
+    rec_array.each { |rec| categories_count[rec] +=1}
+    pop_cats = categories_count.sort_by { |rec,number| number}.last(6).reverse
+    pop_cats.each do |pop_cat|
+      popular_categories << Category.find_by_id(pop_cat[0]).name
+    end
+    popular_categories
   end
+
 
   def update_category_usages
     s_query = ActiveRecord::Base.sanitize_sql_like(params["query"])
