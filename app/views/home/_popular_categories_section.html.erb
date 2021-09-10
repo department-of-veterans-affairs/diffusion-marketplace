@@ -1,0 +1,14 @@
+<section class="featured-<%= section_name %> margin-bottom-8 grid-container" role="region" aria-label="Featured <%= section_name %> section">
+  <div class="grid-row desktop:grid-gap-3 featured-<%= section_name %>-content-container">
+    <div class="display-none desktop:display-block desktop:grid-col-1"></div>
+    <div class="grid-col-12 desktop:grid-col-6">
+      <p class="usa-prose-body margin-bottom-2">
+        <% @popular_categories.each do |pop_cat| %>
+          <a class="dm-tag--big--action-primary" href="/search?query=<%= pop_cat %>" %>
+            <%= pop_cat %>
+          </a>
+        <% end %>
+      </p>
+    </div>
+  </div>
+</section>

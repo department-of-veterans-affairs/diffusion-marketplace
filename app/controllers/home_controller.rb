@@ -8,7 +8,6 @@ class HomeController < ApplicationController
     @favorite_practices = current_user&.favorite_practices || []
     @highlighted_pr = Practice.where(highlight: true, published: true, enabled: true, approved: true).first
     @popular_categories = get_top_six_categories
-    debugger
   end
 
   def diffusion_map
