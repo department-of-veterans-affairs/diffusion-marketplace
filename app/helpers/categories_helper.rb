@@ -27,7 +27,7 @@ module CategoriesHelper
       same_visit = (DateTime.now.to_time.utc - event_tm) <= 2
       puts (DateTime.now.to_time.utc - event_tm).to_s
       puts "Same visit: " + same_visit.to_s
-      same_user = current_user.present? ? current_user.id == ev_user_id : true
+      same_user = current_user.present? ? current_user.id == ev_user_id : ev_user_id.blank?
       debugger
       if !(same_cat_id && same_visit && same_user)
         store_chosen_categories(s_query, nil) unless s_query.blank?
