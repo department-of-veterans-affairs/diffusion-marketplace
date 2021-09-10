@@ -1,4 +1,4 @@
-function updateSelectedCategoriesUsage(sQuery, chosenCategories, category_id){
+function updateSelectedCategoriesUsage({sQuery=null, chosenCategories=null, category_id=null}){
     Rails.ajax({
         type: 'patch',
         url: "/update_category_usage",

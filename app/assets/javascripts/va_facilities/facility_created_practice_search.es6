@@ -37,7 +37,9 @@ function filterCategoriesEventListener() {
   $(cp.categoriesInput).on("change", function(e) {
       var catId = e.target[e.target.selectedIndex].value;
       //update category usage/selected..
-      updateSelectedCategoriesUsage(null, null, catId);
+      updateSelectedCategoriesUsage({
+          category_id: catId
+      });
 
     setDataAndMakeRequest({ isNextPage: false });
   })
@@ -61,7 +63,9 @@ function searchEventListener() {
   $(cp.searchBtn).on("click", function(e) {
     e.preventDefault();
     let searchTerm = $(cp.searchField).val();
-    updateSelectedCategoriesUsage(searchTerm, null, null);
+    updateSelectedCategoriesUsage({
+        sQuery: searchTerm
+    });
     $(cp.searchField).data("search", searchTerm);
     trackSearch(searchTerm)
     setDataAndMakeRequest({ searchTerm: searchTerm });

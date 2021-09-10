@@ -300,7 +300,9 @@ function searchPracticesByVisn() {
         }
         if ( searchField.value.length > 0 && !is_combo_box_submitted){
             if (is_page_load > 0){
-                updateSelectedCategoriesUsage(searchField.value, null, null);
+                updateSelectedCategoriesUsage({
+                    sQuery: searchField.value
+                });
             }
             is_page_load = 1
         }
@@ -370,7 +372,9 @@ function submitFormOnComboBoxChange(comboBox) {
         if (!$(this).parent().hasClass('display-none') && $(this).val() !== previousVal) {
             var categoryComboBoxVal = $(CREATED_COMBO_BOX).val()
             if(categoryComboBoxVal){
-                updateSelectedCategoriesUsage(categoryComboBoxVal, null, null);
+                updateSelectedCategoriesUsage({
+                    sQuery: categoryComboBoxVal
+                });
                 is_combo_box_submitted = true;
             }
             setFieldsetAttr('true');
