@@ -34,16 +34,6 @@ module CategoriesHelper
   end
 
   def store_chosen_categories(s_query, chosen_categories)
-    match_search_query_to_categories s_query
-    if chosen_categories.present?
-      chosen_categories.each do |chosen_cat|
-        cat_rec = Category.find_by(name: chosen_cat)
-        ahoy.track('Category selected', {category_id: cat_rec.id }) unless cat_rec.blank?
-      end
-    end
-  end
-
-  def match_search_query_to_categories(s_query)
     s_query = s_query.downcase
     cats = []
     cat_ids = []
@@ -63,7 +53,11 @@ module CategoriesHelper
         id_ctr += 1
       end
     end
+    if chosen_categories.present?
+      chosen_categories.each do |chosen_cat|
+        cat_rec = Category.find_by(name: chosen_cat)
+        ahoy.track('Category selected', {category_id: cat_rec.id }) unless cat_rec.blank?
+      end
+    end
   end
-
-
 end
