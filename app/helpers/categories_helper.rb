@@ -3,7 +3,7 @@ module CategoriesHelper
 
   def get_top_six_categories
     #get top 6 from ahoy.events table - name: 'Selected category'
-    recs = AhoyEvent.where(name: 'Category selected')
+    recs = AhoyEvent.where(name: "Category selected")
     rec_array = []
     popular_categories = []
     recs.each do |rec|
