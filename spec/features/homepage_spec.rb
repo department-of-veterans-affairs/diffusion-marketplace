@@ -20,6 +20,7 @@ describe 'Homepage', type: :feature do
   it "it should allow the user to visit the 'About' page" do
     click_link('Learn more')
 
+    expect(page).to have_content('About us')
     expect(page).to have_current_path(about_path)
   end
 
