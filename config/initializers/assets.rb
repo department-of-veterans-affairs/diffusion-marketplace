@@ -47,6 +47,7 @@ Rails.application.config.assets.precompile += %w(
                                                   shared/_textarea_counter.js
                                                   _header_utilities.js
                                                   _terms_and_conditions.js
+                                                  _alert_message_utilities.js
                                               )
 
 # Precompile additional assets.

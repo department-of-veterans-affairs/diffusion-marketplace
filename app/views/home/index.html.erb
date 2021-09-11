@@ -1,7 +1,5 @@
 <div class="dm-homepage">
-  <div class="dm-system-message">
-    <%= render partial: "shared/messages", locals: {small_text: false} %>
-  </div>
+  <%= render partial: "shared/messages", locals: {small_text: false} %>
   <!-- "Welcome" section -->
   <section class="homepage-welcome-banner dm-gradient-banner-318" role="region" aria-label="Homepage welcome banner">
     <div class="grid-container height-full">
@@ -41,7 +39,7 @@
       </div>
     </form>
     <p class="usa-prose-body">
-      <%= link_to 'Browse all practices', search_path, class: 'dm-primary-link' %>
+      <%= link_to 'Browse all practices', search_path, class: 'usa-link' %>
     </p>
   </section>
   <%# TODO: Write conditional to only show this partial if there's a currently selected 'Featured' topic %>
