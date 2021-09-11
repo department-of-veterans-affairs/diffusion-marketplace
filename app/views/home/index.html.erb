@@ -44,10 +44,9 @@
       <%= link_to 'Browse all innovations', search_path, class: 'dm-primary-link' %>
     </p>
   </section>
-   <%= render partial: 'home/popular_categories_section', locals: {
-       section_name: 'popular categories'
-   } %>
-
+     <%= render partial: 'home/popular_categories_section', locals: {
+         section_name: 'popular categories'
+     } %>
   <%# TODO: Write conditional to only show this partial if there's a currently selected 'Featured' topic %>
   <%= render partial: 'home/featured_section', locals: {
       section_name: 'topic',

@@ -1,7 +1,5 @@
 <section class="margin-bottom-8 grid-container" role="region" aria-label="<%= section_name %> section">
-  <div class="grid-row desktop:grid-gap-3">
-    <div class="display-none desktop:display-block desktop:grid-col-1"></div>
-    <div class="grid-col-12 desktop:grid-col-6">
+  <div class="grid-row desktop:grid-gap-3 grid-col-6">
       <h2 class="usa-prose-h2 margin-top-0 margin-bottom-2">Explore popular categories</h2>
       <p class="usa-prose-body margin-bottom-2">
         <% @popular_categories.each do |pop_cat| %>
@@ -10,6 +8,5 @@
           </a>
         <% end %>
       </p>
-    </div>
   </div>
 </section>
