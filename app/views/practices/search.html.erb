@@ -11,7 +11,20 @@
 <%
   if params["query"].present?
     # key param prevents duplicate entries via turbolinks...
-    update_category_usages
+    prev_sess = request.referrer.to_s
+    if prev_sess[-1, 1] == "/"
+      prev_sess.chars.take(prev_sess.length - 1)
+    end
+    base_url = request.base_url.to_s
+
+    debugger
+    puts request.inspect
+
+    #//Don't update usage if referrer is home page.
+    debugger
+    if prev_sess != base_url
+      update_category_usages
+    end
   end
 %>
 <div id="search-page" class="margin-bottom-10">
