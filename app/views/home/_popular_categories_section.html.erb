@@ -3,7 +3,7 @@
       <h2 class="usa-prose-h2 margin-top-0 margin-bottom-2">Explore popular categories</h2>
       <p class="usa-prose-body margin-bottom-2">
         <% @popular_categories.each do |pop_cat| %>
-          <a class="dm-tag--big--action-primary" href="/search?query=<%= pop_cat %>" %>
+          <a class="dm-tag--big--action-primary" href="/search?query=<%= pop_cat %>&cat=" %>
             <%= pop_cat %>
           </a>
         <% end %>
