@@ -3,7 +3,8 @@ module CategoriesHelper
 
   def get_top_six_categories
     #get top 6 from ahoy.events table - name: 'Selected category'
-    recs = AhoyEvent.where(name: "Category selected")
+    recs_category_selected = AhoyEvent.where(name: "Category selected")
+    recs = recs_category_selected.where("time > ?", Time.now-90.days)
     rec_array = []
     popular_categories = []
     recs.each do |rec|
@@ -17,7 +18,6 @@ module CategoriesHelper
     end
     popular_categories
   end
-
 
   def update_category_usages
     s_query = ActiveRecord::Base.sanitize_sql_like(params["query"])

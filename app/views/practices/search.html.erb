@@ -10,7 +10,6 @@
 <% end %>
 <%
   if params["query"].present?
-    debugger
     if !params.has_key?(:cat)
       update_category_usages
     end
