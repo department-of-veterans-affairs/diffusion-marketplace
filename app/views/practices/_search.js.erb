@@ -214,7 +214,6 @@ function closeMobileFiltersModal() {
 
 function searchPracticesPage() {
     const searchField = document.querySelector('#dm-practice-search-field');
-
     // Skip if not the search page
     if (location.pathname !== '/search') return;
 
@@ -285,6 +284,7 @@ function searchPracticesPage() {
     function search(query, categories, originatingFacility, adoptingFacility) {
         // Trim whitespace from the query (can cause matching problems)
         query = query.trim();
+        debugger
         isBlankSearch = !Boolean(query) && categories == undefined && originatingFacility == undefined && adoptingFacility == undefined ? true : false;
         // Set variables
         var resultsSummary = document.querySelector('#results-summary');
@@ -866,7 +866,11 @@ function searchPracticesPage() {
 
     if (window.location.pathname === '/search' && window.location.search !== '') {
         hideResultsSectionElAndShowSpinner();
-        const query = window.location.search.split('=')[1];
+        var query = window.location.search.split('=')[1];
+        if (query.includes("&cat")){
+            query = query.split('&')[0];
+        }
+
         search(decodeURI(query));
         if (query !== undefined) {
             searchField.value = decodeURI(query.split('&')[0]);
