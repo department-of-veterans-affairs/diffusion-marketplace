@@ -1,7 +1,7 @@
 module CategoriesHelper
 
 
-  def get_top_six_categories
+  def get_most_popular_categories
     #get top 6 from ahoy.events table - name: 'Selected category'
     recs_category_selected = AhoyEvent.where(name: "Category selected")
     recs = recs_category_selected.where("time > ?", Time.now-90.days)
@@ -12,7 +12,7 @@ module CategoriesHelper
     end
     categories_count = Hash.new(0)
     rec_array.each { |rec| categories_count[rec] +=1}
-    pop_cats = categories_count.sort_by { |rec,number| number}.last(6).reverse
+    pop_cats = categories_count.sort_by { |rec,number| number}.last(15).reverse
     pop_cats.each do |pop_cat|
       popular_categories << Category.find_by_id(pop_cat[0]).name
     end
