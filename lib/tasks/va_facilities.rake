@@ -1,71 +1,7 @@
 namespace :va_facilities do
   desc 'Create new VA facility records based on the data from the vamc.json file'
 
-  task :create_va_facilities_and_transfer_data => :environment do
-    va_facilities = JSON.parse(File.read("#{Rails.root}/lib/assets/va_facilities.json"))
-    visns = Visn.all
-    visns.each do |visn|
-      puts visn.id
-      va_facilities.each do |vaf|
-        if visn.number === vaf["VISN"].to_i && VaFacility.where(station_number: vaf["Station_Number"]).empty?
-          VaFacility.create!(
-            visn: visn,
-            sta3n: vaf["STA3N"],
-            station_number: vaf["Station_Number"],
-            official_station_name: vaf["Official_Station_Name"],
-            common_name: vaf["Station_Number"],
-            classification: vaf["CoCClassification"],
-            classification_status: vaf["CoCClassificationAttribute"],
-            mobile: vaf["Mobile"],
-            parent_station_number: vaf["Parent_Station_Number"],
-            official_parent_station_name: vaf["Parent_Station_Name"],
-            fy17_parent_station_complexity_level: vaf["Parent_Station_Complexity_Level_2017"],
-            operational_status: vaf["Operational_Status_Active_A_Or_Planned_P_Or_Temporarily_Deactivated_T_Or_Permanently_Deactivated_D"],
-            ownership_type: vaf["Ownership_Type"],
-            delivery_mechanism: vaf["Delivery_Mechanism"],
-            staffing_type: vaf["Staffing_Type"],
-            operational_date: vaf["Operational_Date"],
-            date_of_first_workload: vaf["DateOfFirstWorkload"],
-            points_of_service: vaf["Points_Of_Service"],
-            street_address: vaf["Street_Address"],
-            street_address_city: vaf["Street_Address_City"],
-            street_address_state: vaf["Street_Address_State"],
-            street_address_zip_code: vaf["Street_Address_Zip_Code"],
-            street_address_zip_code_extension: vaf["Street_Address_Zip_Code_Extension"],
-            county_street_address: vaf["County_Street_Address"],
-            mailing_address: vaf["Mailing_Address"],
-            mailing_address_city: vaf["Mailing_Address_City"],
-            mailing_address_state: vaf["Mailing_Address_State"],
-            mailing_address_zip_code: vaf["Mailing_Address_Zip_Code"],
-            mailing_address_zip_code_extension: vaf["Mailing_Address_Zip_Code_Extension"],
-            county_mailing_address: vaf["County_Mailing_Address"],
-            station_phone_number: vaf["Station_Phone_Number"],
-            station_main_fax_number: vaf["Station_Main_Fax_Number"],
-            latitude: vaf["Latitude"].to_f,
-            longitude: vaf["Longitude"].to_f,
-            congressional_district: vaf["Congressional_District"],
-            market: vaf["MARKET"],
-            sub_market: vaf["SUBMARKET"],
-            sector: vaf["SECTOR"],
-            fips_code: vaf["FIPS_Code"],
-            rurality: vaf["Rurality_U_Urban_R_Rural_H_Highly_Rural"],
-            monday: vaf["Monday"],
-            tuesday: vaf["Tuesday"],
-            wednesday: vaf["Wednesday"],
-            thursday: vaf["Thursday"],
-            friday: vaf["Friday"],
-            saturday: vaf["Saturday"],
-            sunday: vaf["Sunday"],
-            hours_note: vaf["HoursNote"]
-          )
-        end
-      end
-    end
-    puts "All VA facilities have been created or updated in the DB!"
-  end
-
-
-  task :update_va_facilities => :environment do
+  task :create_or_update_va_facilities => :environment do
     ctr = 0
     file = File.read("#{Rails.root}/lib/assets/va_facilities.json")
     va_facilities = JSON.parse(file)
@@ -75,9 +11,6 @@ namespace :va_facilities do
       va_facilities.each do |vaf|
           if visn.number === vaf["VISN"].to_i && VaFacility.where(station_number: vaf["Station_Number"]).empty?
             puts 'Creating facility - ' + vaf["Official_Station_Name"]
-            if (vaf["Official_Station_Name"].include? "Vet Center")
-              create_vet_center_facility(visn, vaf, true)
-            else
               hidden = vaf["CoCClassification"].blank? ? true : false
               classification = vaf["CoCClassification"].blank? ? "Unclassified" : vaf["CoCClassification"]
               VaFacility.create!(
@@ -145,7 +78,6 @@ namespace :va_facilities do
                   hours_note: vaf["HoursNote"],
                   hidden: hidden
               )
-            end
           else
             # update record.....
             facility = VaFacility.where(station_number: vaf["Station_Number"]).first
@@ -195,8 +127,6 @@ namespace :va_facilities do
                 facility.planned_activation_date = vaf["Planned_Activation_Date"]
                 facility.station_number_suffix_reservation_effective_date = vaf["StationNumberSuffixReservationEffectiveDate"]
               end
-
-
               facility.latitude = vaf["Latitude"].to_f
               facility.longitude = vaf["Longitude"].to_f
               facility.congressional_district = vaf["Congressional_District"]
@@ -222,62 +152,6 @@ namespace :va_facilities do
       end
     puts "All VA facilities have been created or updated in the DB!"
   end
-
-  def create_vet_center_facility(visn, vaf, hidden)
-    VaFacility.create!(
-        visn: visn,
-        sta3n: vaf["STA3N"],
-        station_number: vaf["Station_Number"],
-        official_station_name: vaf["Official_Station_Name"],
-        common_name: vaf["LocationDescriptiveName"],
-        classification: vaf["CoCClassification"],
-        classification_status: vaf["CoCClassificationAttribute"],
-        mobile: vaf["Mobile"],
-        parent_station_number: vaf["Parent_Station_Number"],
-        official_parent_station_name: vaf["Parent_Station_Name"],
-        fy17_parent_station_complexity_level: vaf["Parent_Station_Complexity_Level_2017"],
-        operational_status: vaf["Operational_Status_Active_A_Or_Planned_P_Or_Temporarily_Deactivated_T_Or_Permanently_Deactivated_D"],
-        ownership_type: vaf["Ownership_Type"],
-        delivery_mechanism: vaf["Delivery_Mechanism"],
-        staffing_type: vaf["Staffing_Type"],
-        operational_date: vaf["Operational_Date"],
-        date_of_first_workload: vaf["DateOfFirstWorkload"],
-        points_of_service: vaf["Points_Of_Service"],
-        street_address: vaf["Street_Address"],
-        street_address_city: vaf["Street_Address_City"],
-        street_address_state: vaf["Street_Address_State"],
-        street_address_zip_code: vaf["Street_Address_Zip_Code"],
-        street_address_zip_code_extension: vaf["Street_Address_Zip_Code_Extension"],
-        county_street_address: vaf["County_Street_Address"],
-        mailing_address: vaf["Mailing_Address"],
-        mailing_address_city: vaf["Mailing_Address_City"],
-        mailing_address_state: vaf["Mailing_Address_State"],
-        mailing_address_zip_code: vaf["Mailing_Address_Zip_Code"],
-        mailing_address_zip_code_extension: vaf["Mailing_Address_Zip_Code_Extension"],
-        county_mailing_address: vaf["County_Mailing_Address"],
-        station_phone_number: vaf["Station_Phone_Number"],
-        station_main_fax_number: vaf["Station_Main_Fax_Number"],
-        latitude: vaf["Latitude"].to_f,
-        longitude: vaf["Longitude"].to_f,
-        congressional_district: vaf["Congressional_District"],
-        market: vaf["MARKET"],
-        sub_market: vaf["SUBMARKET"],
-        sector: vaf["SECTOR"],
-        fips_code: vaf["FIPS_Code"],
-        rurality: vaf["Rurality_U_Urban_R_Rural_H_Highly_Rural"],
-        monday: vaf["Monday"],
-        tuesday: vaf["Tuesday"],
-        wednesday: vaf["Wednesday"],
-        thursday: vaf["Thursday"],
-        friday: vaf["Friday"],
-        saturday: vaf["Saturday"],
-        sunday: vaf["Sunday"],
-        hours_note: vaf["HoursNote"],
-        hidden: hidden
-    )
-  end
-
-
 
   def valid_json?(json)
     JSON.parse(json)
