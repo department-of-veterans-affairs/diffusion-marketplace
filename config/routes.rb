@@ -102,6 +102,7 @@ Rails.application.routes.draw do
   get '/facilities/:id/created-practices', controller: 'va_facilities', action: 'created_practices'
   get '/facilities/:id/update_practices_adopted_at_facility', action: 'update_practices_adopted_at_facility', controller: 'va_facilities'
   get '/about', controller: 'about', action: 'index', as: 'about'
+  post '/about', controller: 'about', action: 'email'
 
 
   # Custom route for reporting a comment

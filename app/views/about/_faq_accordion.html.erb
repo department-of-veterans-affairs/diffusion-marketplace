@@ -1,0 +1,13 @@
+<!-- Use the accurate heading level to maintain the document outline -->
+<h4 class="usa-accordion__heading usa-prose-h4">
+  <button
+    class="usa-accordion__button"
+    aria-expanded="false"
+    aria-controls="faq-<%= item_number %>"
+  >
+    <%= question %>
+  </button>
+</h4>
+<div id="faq-<%= item_number %>" class="usa-accordion__content usa-prose-body padding-top-1 padding-bottom-8">
+  <div><%= sanitize(answer) %></div>
+</div>

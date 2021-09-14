@@ -10,6 +10,7 @@ describe 'Homepage', type: :feature do
 
     @user = User.create!(email: 'naofumi.iwatani@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @user.add_role(User::USER_ROLES[1].to_sym)
+    Practice.create!(name: 'Project HAPPEN', slug: 'project-happen', approved: true, published: true, tagline: "HAPPEN tagline", support_network_email: 'contact-happen@happen.com', user: @user)
     @practice = Practice.create!(name: 'The Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', published: true, approved: true, user: @user)
     PracticeOriginFacility.create!(practice: @practice, facility_type: 0, va_facility_id: 1)
     @featured_image = "#{Rails.root}/spec/assets/charmander.png"
@@ -19,6 +20,7 @@ describe 'Homepage', type: :feature do
   it "it should allow the user to visit the 'About' page" do
     click_link('Learn more')
 
+    expect(page).to have_content('About us')
     expect(page).to have_current_path(about_path)
   end
 

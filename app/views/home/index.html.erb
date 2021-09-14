@@ -1,7 +1,5 @@
 <div class="dm-homepage">
-  <div class="dm-system-message">
-    <%= render partial: "shared/messages", locals: {small_text: false} %>
-  </div>
+  <%= render partial: "shared/messages", locals: {small_text: false} %>
   <!-- "Welcome" section -->
   <section class="homepage-welcome-banner dm-gradient-banner-318" role="region" aria-label="Homepage welcome banner">
     <div class="grid-container height-full">
@@ -64,6 +62,22 @@
       featured_link_text: 'View topic page'
     }
   %>
+      <%= link_to 'Browse all practices', search_path, class: 'usa-link' %>
+    </p>
+  </section>
+
+  <% if @featured_topic.present? && @featured_topic.title.present? && @featured_topic.description.present? && @featured_topic.url.present? && @featured_topic.cta_text.present? && @featured_topic.attachment.exists?%>
+    <%= render partial: 'home/featured_section', locals: {
+        section_name: 'topic',
+        image_source: "#{@featured_topic.attachment_s3_presigned_url}",
+        image_alt_text: "#{@featured_topic.title} featured topic image",
+        featured_h2: "#{@featured_topic.title}",
+        featured_body_text: "#{@featured_topic.description}",
+        featured_topic_url: "#{@featured_topic.url}",
+        featured_link_text: "#{@featured_topic.cta_text}"
+      }
+    %>
+  <% end %>
 
   <% if @highlighted_pr.present? && @highlighted_pr.name.present? && @highlighted_pr.highlight_body.present? && @highlighted_pr.slug.present? && @highlighted_pr.highlight_attachment.exists? %>
     <%= render partial: 'home/featured_section', locals: {

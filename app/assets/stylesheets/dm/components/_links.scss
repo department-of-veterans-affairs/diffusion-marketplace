@@ -34,22 +34,8 @@
   }
 }
 
-.dm-primary-link {
-  @include u-text('primary-vivid');
-  @include u-text('bold', !important);
-
-  &:hover {
-    color: color($theme-link-hover-color) !important;
-  }
-
-  &:active {
-    color: color($theme-link-active-color) !important;
-  }
-}
-
 .dm-alt-link {
   &-gold {
-    @include u-text('bold', !important);
     color: color($theme-color-accent-warm) !important;
 
     &:hover {
@@ -62,7 +48,6 @@
   }
 
   &-light {
-    @include u-text('bold', !important);
     color: color($theme-color-primary-light) !important;
 
     &:hover {

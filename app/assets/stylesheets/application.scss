@@ -70,3 +70,8 @@
 #more_text, #more_text_award, #more_text_origin_story {
   display: none;
 }
+
+#close-alert-message {
+  top: 50%;
+  transform: translateY(-50%);
+}

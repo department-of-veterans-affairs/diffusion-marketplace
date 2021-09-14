@@ -1,0 +1,22 @@
+.dm-about-page {
+  .about-us-image-container {
+    img {
+      height: 209px;
+      object-fit: cover;
+
+      @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+        @include u-display('none', !important);
+      }
+    }
+  }
+
+  .usa-accordion__heading, .usa-accordion__content {
+    @include u-maxw('full', !important);
+  }
+
+  textarea {
+    resize: none;
+    height: 132px;
+    @include u-maxw('full', !important);
+  }
+}
