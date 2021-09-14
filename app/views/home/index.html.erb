@@ -45,26 +45,6 @@
      <%= render partial: 'home/popular_categories_section', locals: {
          section_name: 'popular categories'
      } %>
-  <%# TODO: Write conditional to only show this partial if there's a currently selected 'Featured' topic %>
-  <%= render partial: 'home/featured_section', locals: {
-      section_name: 'topic',
-      # TODO: Add topic image source
-      image_source: "",
-      # TODO: Interpolate topic name in front of 'featured topic image' for alt text
-      image_alt_text: 'Featured topic image',
-      # TODO: Add name of topic for h2
-      featured_h2: 'Featured topic name',
-      # TODO: Add topic text for body text
-      featured_body_text: 'Proin blandit felis tincidunt justo luctus, rutrum bibendum ante accumsan. Duis eros lorem, ullamcorper a semper nec, rhoncus eu sapien. Sed tortor nisi, consequat a neque sed,
-          posuere ornare felis. Maecenas rutrum quis orci sed porta. Proin posuere metus in lorem placerat semper. Aenean felis mi, auctor sed pretium fringilla, ornare quis ex.',
-      # TODO: Add topic URL here
-      featured_topic_url: '',
-      featured_link_text: 'View topic page'
-    }
-  %>
-      <%= link_to 'Browse all practices', search_path, class: 'usa-link' %>
-    </p>
-  </section>
 
   <% if @featured_topic.present? && @featured_topic.title.present? && @featured_topic.description.present? && @featured_topic.url.present? && @featured_topic.cta_text.present? && @featured_topic.attachment.exists?%>
     <%= render partial: 'home/featured_section', locals: {
