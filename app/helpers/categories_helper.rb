@@ -11,8 +11,8 @@ module CategoriesHelper
       rec_array << rec.properties["category_id"]
     end
     categories_count = Hash.new(0)
-    rec_array.each { |rec| categories_count[rec] +=1}
-    pop_cats = categories_count.sort_by { |rec,number| number}.last(15).reverse
+    rec_array.each { |rec| categories_count[rec] +=1 }
+    pop_cats = categories_count.sort_by { |rec,number| number}.last(20).reverse
     pop_cats.each do |pop_cat|
       popular_categories << Category.find_by_id(pop_cat[0]).name
     end
