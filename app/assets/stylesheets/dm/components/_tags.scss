@@ -12,7 +12,39 @@
   @include u-padding-y('05');
 }
 
+
+
 // CUSTOM TAGS
+.dm-tag--action-primary {
+  @extend .usa-tag;
+  @include u-bg('primary-vivid');
+  cursor: pointer;
+  height: 32px;
+  font-family: Public Sans;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 28px;
+  letter-spacing: 0.1em;
+  align-items: center !important;
+  text-align: center;
+  &:hover {
+    @include u-bg('primary-dark');
+  }
+
+  &:active {
+    @include u-bg('primary-darker');
+  }
+
+  &--selected {
+    @extend .usa-tag;
+    @include u-bg('base-lighter');
+    @include u-text('ink');
+    cursor: pointer;
+  }
+}
+
+
 .dm-tag--big--action-primary {
   @extend .usa-tag;
   @extend .usa-tag--big;
