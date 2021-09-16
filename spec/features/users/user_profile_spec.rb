@@ -75,21 +75,21 @@ describe 'The user index', type: :feature do
 
   it 'should have a favorited practice' do
     @practice1 = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user)
-    @practice2 = Practice.create!(name: 'The Best Practice Ever!', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user2)
+    @practice2 = Practice.create!(name: 'The Best Innovation Ever!', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user2)
     UserPractice.create!(user: @user, practice: @practice2, favorited: true)
 
     login_as(@user, scope: :user, run_callbacks: false)
     visit "/users/#{@user.id}"
 
     within(:css, '.dm-favorited-practices') do
-      expect(page).to have_content('The Best Practice Ever!')
+      expect(page).to have_content('The Best Innovation Ever!')
       expect(page).to_not have_content('A public practice')
     end
   end
 
     it 'should have created practices' do
     @practice1 = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user)
-    @practice2 = Practice.create!(name: 'The Best Practice Ever!', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user2)
+    @practice2 = Practice.create!(name: 'The Best Innovation Ever!', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user2)
     @user_pr1_editor = PracticeEditor.create!(practice: @practice1, user: @user, email: @user.email)
 
     login_as(@user, scope: :user, run_callbacks: false)
@@ -98,7 +98,7 @@ describe 'The user index', type: :feature do
     within(:css, '.dm-created-practices') do
       expect(page).to have_content('A public practice')
       expect(page).to have_selector('.dm-practice-card', count: 1)
-      expect(page).to_not have_content('The Best Practice Ever!')
+      expect(page).to_not have_content('The Best Innovation Ever!')
     end
 
     # make user owner of practice1
@@ -118,7 +118,7 @@ describe 'The user index', type: :feature do
     within(:css, '.dm-created-practices') do
       expect(page).to have_selector('.dm-practice-card', count: 2)
       expect(page).to have_content('A public practice')
-      expect(page).to have_content('The Best Practice Ever!')
+      expect(page).to have_content('The Best Innovation Ever!')
     end
   end
 end

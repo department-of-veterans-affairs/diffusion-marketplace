@@ -9,7 +9,7 @@ describe 'Practice editor', type: :feature, js: true do
         @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', user: @admin)
         @admin.add_role(User::USER_ROLES[0].to_sym)
         @approver.add_role(User::USER_ROLES[0].to_sym)
-        @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', initiating_facility_type: 'other', tagline: 'Test tagline')
+        @user_practice = Practice.create!(name: 'The Best Innovation Ever!', user: @user, initiating_facility: 'Test facility name', initiating_facility_type: 'other', tagline: 'Test tagline')
         @practice_editor = PracticeEditor.create!(practice: @practice, user: @user_2, email: @user_2.email)
     end
 

@@ -19,8 +19,8 @@ describe 'The admin dashboard', type: :feature do
     visn_8 = Visn.create!(id: 7, name: "VA Sunshine Healthcare Network", number: 8)
     @facility_1 = VaFacility.create!(visn: visn_8, station_number: "516", official_station_name: "C.W. Bill Young Department of Veterans Affairs Medical Center", common_name: "Bay Pines", street_address_state: "FL")
 
-    @practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true, retired: false)
-    @practice_2 = Practice.create!(name: 'The Second Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true, retired: false)
+    @practice = Practice.create!(name: 'The Best Innovation Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true, retired: false)
+    @practice_2 = Practice.create!(name: 'The Second Best Innovation Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true, retired: false)
     @categories = [
       Category.create!(name: 'COVID', description: 'COVID related practices', related_terms: ['COVID-19, Coronavirus']),
       Category.create!(name: 'Telehealth', description: 'Telelhealth related practices')
@@ -364,7 +364,7 @@ describe 'The admin dashboard', type: :feature do
     click_button('Update Practice')
 
     expect(page).to have_content('There was an error. Practice name already exists.')
-    expect(page).to have_selector("input[value='The Best Practice Ever!']")
+    expect(page).to have_selector("input[value='The Best Innovation Ever!']")
 
     # add extra whitespace to practice name
     fill_in('Practice name', with: '       Test Practice 1 ')
@@ -388,7 +388,7 @@ describe 'The admin dashboard', type: :feature do
     click_button('Update Practice')
 
     expect(page).to have_content('There was an error. Practice name cannot be blank.')
-    expect(page).to have_selector("input[value='The Best Practice Ever!']")
+    expect(page).to have_selector("input[value='The Best Innovation Ever!']")
 
     # check for blank email
     fill_in('Practice name', with: 'Test Practice')
@@ -417,7 +417,7 @@ describe 'The admin dashboard', type: :feature do
     expect { click_button('Update Practice') }.to change { ActionMailer::Base.deliveries.count }.by(1)
     expect(page).to have_content('Innovation was successfully updated.')
     # make sure the mailer subject is for a practice owner that is now also a practice editor
-    expect(ActionMailer::Base.deliveries.last.subject).to eq('You have been added to the list of practice editors for the The Best Practice Ever! Diffusion Marketplace Page!')
+    expect(ActionMailer::Base.deliveries.last.subject).to eq('You have been added to the list of practice editors for the The Best Innovation Ever! Diffusion Marketplace Page!')
 
     visit practice_editors_path(@practice)
     expect(page).to have_content('test@va.gov')
