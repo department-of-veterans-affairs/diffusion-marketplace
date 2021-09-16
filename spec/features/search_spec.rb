@@ -541,7 +541,7 @@ describe 'Search', type: :feature do
       add_search_to_cache
       expect(cache_keys).to include("searchable_practices")
       update_practice_introduction(@practice)
-      expect(page).to have_content("Practice was successfully updated.")
+      expect(page).to have_content("Innovation was successfully updated.")
       expect(page).to have_selector(".usa-alert__heading", visible: true)
       expect(cache_keys).not_to include("searchable_practices")
     end

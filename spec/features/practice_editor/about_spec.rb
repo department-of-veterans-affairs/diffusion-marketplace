@@ -89,7 +89,7 @@ describe 'Practice editor', type: :feature do
             first_creator_name_field_input.set(@creator_name)
             first_creator_role_field_input.set(@creator_role)
             save_button.click
-            expect(page).to have_content('Practice was successfully updated')
+            expect(page).to have_content('Innovation was successfully updated')
             expect(page).to have_field('practice[origin_story]', with: @origin_story)
             expect(page).to have_field(@creator_field_name, with: @creator_name)
             expect(page).to have_field(@creator_field_role, with: @creator_role)

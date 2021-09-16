@@ -26,7 +26,7 @@ describe 'Practice editor', type: :feature, js: true do
             @add_timeline_step_button.click
             fill_in_timeline_fields
             @save_button.click
-            expect(page).to have_content('Practice was successfully updated')
+            expect(page).to have_content('Innovation was successfully updated')
             expect(page).to have_field('Time frame', with: "3 Months")
         end
 
@@ -45,7 +45,7 @@ describe 'Practice editor', type: :feature, js: true do
           fill_in_timeline_fields
           @save_practice = find('#practice-editor-save-button')
           @save_practice.click
-          expect(page).to have_content('Practice was successfully updated')
+          expect(page).to have_content('Innovation was successfully updated')
         end
 
         it 'should allow the user to add another timeline entry' do
@@ -56,7 +56,7 @@ describe 'Practice editor', type: :feature, js: true do
           @save_practice.click
           @link_to_add = find('#link_to_add_link_timeline')
           @link_to_add.click
-          expect(page).to have_content('Practice was successfully updated')
+          expect(page).to have_content('Innovation was successfully updated')
           expect(page).to have_content('Delete entry')
           expect(page).to have_field('Time frame', with: nil)
         end

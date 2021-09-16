@@ -84,7 +84,7 @@ class PracticesController < ApplicationController
 
     respond_to do |format|
       if @practice.save
-        format.html { redirect_to @practice, notice: 'Practice was successfully created.' }
+        format.html { redirect_to @practice, notice: 'Innovation was successfully created.' }
         format.json { render :show, status: :created, location: @practice }
       else
         format.html { redirect_back fallback_location: root_path}
@@ -123,10 +123,10 @@ class PracticesController < ApplicationController
           end
           if params[:next]
             path = eval("practice_#{Practice::PRACTICE_EDITOR_SLUGS.key(current_endpoint)}_path(@practice)")
-            format.html { redirect_to path, notice: params[:practice].present? ? editor_notice + 'Practice was successfully updated.' : nil }
+            format.html { redirect_to path, notice: params[:practice].present? ? editor_notice + 'Innovation was successfully updated.' : nil }
             format.json { render :show, status: :ok, location: @practice }
           else
-            format.html { redirect_back fallback_location: root_path, notice: editor_notice + 'Practice was successfully updated.' }
+            format.html { redirect_back fallback_location: root_path, notice: editor_notice + 'Innovation was successfully updated.' }
             format.json { render json: @practice, status: :ok }
           end
           # Update last_edited field for the Practice Editor unless the current_user is the Practice Editor and their Practice Editor record was just created

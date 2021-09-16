@@ -15,7 +15,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
     @practice = Practice.create!(name: 'A public maximum practice', tagline: 'A public tagline', short_name: 'LALA', slug: 'a-public-max-practice', approved: true, published: true, summary: 'Test summary', date_initiated: Date.new(2016, 8, 20), initiating_facility_type: 'facility', main_display_image: File.new(img_path), user: @admin)
     @pr_facility = PracticeOriginFacility.create!(practice: @practice, facility_type: 0, va_facility: facility_1)
     PracticeAward.create!(practice: @practice, name: 'QUERI Veterans Choice Act Award', created_at: Time.now)
-    PracticeAward.create!(practice: @practice, name: 'Diffusion of Excellence Promising Innovation', created_at: Time.now)
+    PracticeAward.create!(practice: @practice, name: 'Diffusion of Excellence Promising Practice', created_at: Time.now)
     @pr_partner_1 = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative helps to identify and disseminate clinical and administrative best practices through a learning environment that empowers its top performers to apply their innovative ideas throughout the system — further establishing VA as a leader in health care, while promoting positive outcomes for Veterans.', icon: 'fas fa-heart', color: '#E4A002')
     @pr_partner_2 = PracticePartner.create!(name: 'Office of Rural Health', short_name: 'ORH', description: 'Congress established the Veterans Health Administration Office of Rural Health in 2006 to conduct, coordinate, promote and disseminate research on issues that affect the nearly five million Veterans who reside in rural communities. Working through its three Veterans Rural Health Resource Centers, as well as partners from academia, state and local governments, private industry, and non-profit organizations, ORH strives to break down the barriers separating rural Veterans from quality care.', icon: 'fas fa-mountain', color: '#1CC2AE')
     PracticePartnerPractice.create!(practice: @practice, practice_partner: @pr_partner_1, created_at: Time.now)
@@ -206,7 +206,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         # select the VISN radio option, but do not select a VISN
         click_origin_type('initiating_facility_type_visn')
         click_save
-        expect(page).to_not have_content('Practice was successfully updated.')
+        expect(page).to_not have_content('Innovation was successfully updated.')
         expect(page).to have_content('There was an error updating initiating facility. The practice was not saved.')
 
         # now change initiating_facility_type to VISN, save, and then choose the Office radio option without choosing a facility
@@ -222,7 +222,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         select('VBA', :from => 'editor_department_select')
         select('Alabama', :from => 'editor_office_state_select')
         click_save
-        expect(page).to_not have_content('Practice was successfully updated.')
+        expect(page).to_not have_content('Innovation was successfully updated.')
         expect(page).to have_content('There was an error updating initiating facility. The practice was not saved.')
       end
     end
@@ -230,7 +230,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
     context 'awards and recognition' do
       it 'should allow changing awards' do
         expect(page).to have_checked_field('QUERI Veterans Choice Act Award')
-        expect(page).to have_checked_field('Diffusion of Excellence Promising Innovation')
+        expect(page).to have_checked_field('Diffusion of Excellence Promising Practice')
         expect(page).to have_unchecked_field('VHA Shark Tank Winner')
         expect(page).to have_no_content('Name of award or recognition')
         find('#practice_award_fed_health_it_award_label').click # selects FedHealth IT Award
@@ -242,7 +242,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         visit_practice_show
         expect(page).to have_no_content('VHA Shark Tank Winnder')
         expect(page).to have_content('QUERI Veterans Choice Act Award')
-        expect(page).to have_content('Diffusion of Excellence Promising Innovation')
+        expect(page).to have_content('Diffusion of Excellence Promising Practice')
       end
     end
 

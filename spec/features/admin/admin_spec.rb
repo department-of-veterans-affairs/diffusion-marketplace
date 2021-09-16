@@ -370,7 +370,7 @@ describe 'The admin dashboard', type: :feature do
     fill_in('Practice name', with: '       Test Practice 1 ')
     click_button('Update Practice')
 
-    expect(page).to have_content('Practice was successfully updated.')
+    expect(page).to have_content('Innovation was successfully updated.')
     expect(page).to have_content('Test Practice 1')
     # make sure white space is trimmed from practice name
     click_link('Edit Practice')
@@ -415,7 +415,7 @@ describe 'The admin dashboard', type: :feature do
     fill_in('User email', with: 'test@va.gov')
     # make sure the mailer count increases by 1
     expect { click_button('Update Practice') }.to change { ActionMailer::Base.deliveries.count }.by(1)
-    expect(page).to have_content('Practice was successfully updated.')
+    expect(page).to have_content('Innovation was successfully updated.')
     # make sure the mailer subject is for a practice owner that is now also a practice editor
     expect(ActionMailer::Base.deliveries.last.subject).to eq('You have been added to the list of practice editors for the The Best Practice Ever! Diffusion Marketplace Page!')
 
