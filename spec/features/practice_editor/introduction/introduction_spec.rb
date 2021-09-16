@@ -207,7 +207,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         click_origin_type('initiating_facility_type_visn')
         click_save
         expect(page).to_not have_content('Innovation was successfully updated.')
-        expect(page).to have_content('There was an error updating initiating facility. The practice was not saved.')
+        expect(page).to have_content('There was an error updating initiating facility. The innovation was not saved.')
 
         # now change initiating_facility_type to VISN, save, and then choose the Office radio option without choosing a facility
         click_origin_type('initiating_facility_type_visn')
@@ -223,7 +223,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
         select('Alabama', :from => 'editor_office_state_select')
         click_save
         expect(page).to_not have_content('Innovation was successfully updated.')
-        expect(page).to have_content('There was an error updating initiating facility. The practice was not saved.')
+        expect(page).to have_content('There was an error updating initiating facility. The innovation was not saved.')
       end
     end
 

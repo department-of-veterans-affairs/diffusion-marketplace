@@ -15,7 +15,7 @@ describe 'Practice editor', type: :feature, js: true do
     def add_people_resource
       resources_input_1.set('Fred')
       save_progress
-      expect(page).to have_content('Practice was successfully updated')
+      expect(page).to have_content('Innovation was successfully updated')
     end
 
     def add_core_link
@@ -89,7 +89,7 @@ describe 'Practice editor', type: :feature, js: true do
 
       resources_input_1.set('A practice person')
       save_progress
-      expect(page).to have_content('Practice was successfully updated')
+      expect(page).to have_content('Innovation was successfully updated')
       expect(resources_input_1.value ).to eq('A practice person')
     end
 

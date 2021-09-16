@@ -107,7 +107,7 @@ class PracticesController < ApplicationController
         if updated.is_a?(StandardError)
           # Add back end validation error messages for Editors page just as a safety measure
           invalid_editor_email_field = updated.message.split(' ').slice(3..-1).join(' ')
-          flash[:error] = "There was an #{editor_params.present? && updated.message.include?('valid @va.gov') ? invalid_editor_email_field : updated.message}. The practice was not saved."
+          flash[:error] = "There was an #{editor_params.present? && updated.message.include?('valid @va.gov') ? invalid_editor_email_field : updated.message}. The innovation was not saved."
           format.html { redirect_back fallback_location: root_path }
           format.json { render json: updated, status: :unprocessable_entity }
         elsif !session_open && latest_session_user_is_current_user
@@ -140,7 +140,7 @@ class PracticesController < ApplicationController
           flash[:error] = "Your editing session for #{@practice.name} has ended. Your edits have not been saved and you have been returned to the Metrics page."
           format.html { redirect_to practice_metrics_path(@practice) }
         else
-          flash[:error] = "There was an #{@practice.errors.messages}. The practice was not saved."
+          flash[:error] = "There was an #{@practice.errors.messages}. The innovation was not saved."
           format.html { redirect_back fallback_location: root_path }
           format.json { render json: updated, status: :unprocessable_entity }
         end
@@ -413,7 +413,7 @@ class PracticesController < ApplicationController
       if can_publish
         # if there is an error with updating the practice, alert the user
         if updated.is_a?(StandardError)
-          flash[:error] = "There was an #{updated.message}. The practice was not saved or published."
+          flash[:error] = "There was an #{updated.message}. The innovation was not saved or published."
           format.js { redirect_to self.send("practice_#{current_endpoint}_path", @practice) }
         else
           @practice.update_attributes(published: true, date_published: DateTime.now)
@@ -513,7 +513,7 @@ class PracticesController < ApplicationController
     end
     if params[:any_blank_required_fields] === 'true' || params[:current_action] === 'adoptions' || params[:current_action] === 'editors'
       render :js => "window.location = '#{practice_metrics_path(@practice)}'"
-      flash[:error] = "The practice was not saved#{params[:any_blank_required_fields] === 'true' ? ' due to one or more required fields not being filled out' : ''}."
+      flash[:error] = "The innovation was not saved#{params[:any_blank_required_fields] === 'true' ? ' due to one or more required fields not being filled out' : ''}."
     end
   end
 

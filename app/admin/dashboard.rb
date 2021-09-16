@@ -440,7 +440,7 @@ ActiveAdmin.register_page "Dashboard" do
         end # panel
 
         panel 'Practice Engagement' do
-          h4("Bookmarked Counts", title: "Number of times a practice was bookmarked", class: "dm-tooltip")
+          h4("Bookmarked Counts", title: "Number of times an innovation was bookmarked", class: "dm-tooltip")
 
           table_for practices_favorited_stats, id: 'favorited_stats' do
             column("#{date_headers[:current]}") {|ps| ps[:favorited_this_month]}
@@ -448,7 +448,7 @@ ActiveAdmin.register_page "Dashboard" do
             column :total_favorited
           end
 
-          h4("Bookmarked Counts by Practice", title: "Number of times each practice has been bookmarked", class: "dm-tooltip")
+          h4("Bookmarked Counts by Practice", title: "Number of times each innovation has been bookmarked", class: "dm-tooltip")
 
           table_for practices do
             column(:name) {|pr| link_to(pr.name, admin_practice_path(pr))}
@@ -474,7 +474,7 @@ ActiveAdmin.register_page "Dashboard" do
             column("#{date_headers[:total]}") {|pr| pr.commontator_thread.comments.count}
           end
 
-          h4("Email Counts", title: "Number of times a practice was emailed via the practice page this month, last month, and overall", class: "dm-tooltip")
+          h4("Email Counts", title: "Number of times an innovation was emailed via the practice page this month, last month, and overall", class: "dm-tooltip")
           span("Note: Email counts tracking began in February 2021")
 
           table_for(practices_emailed, id: "dm-practices-emailed-total") do
@@ -483,7 +483,7 @@ ActiveAdmin.register_page "Dashboard" do
             column :total_emails
           end
 
-          h4("Email Counts by Practice", title: "Number of times a practice was emailed via the practice page for each practice", class: "dm-tooltip")
+          h4("Email Counts by Practice", title: "Number of times an innovation was emailed via the practice page for each practice", class: "dm-tooltip")
 
           table_for(practices, id: "dm-practices-emailed-by-practice") do
             column(:name) {|pr| link_to(pr.name, admin_practice_path(pr))}
