@@ -162,7 +162,7 @@ describe 'VISN pages', type: :feature do
       it 'should show metadata for each visn' do
         @visn_markers.last.click
         expect(page).to have_selector('#visn-2-marker-modal', visible: true)
-        expect_visn_metadata('#visn-2-marker-modal', '7 practices created here', '3 practices adopted here')
+        expect_visn_metadata('#visn-2-marker-modal', '7 innovations created here', '3 innovations adopted here')
       end
 
       it 'should have a link to a given visn\'s show page within that visn\'s marker modal' do
@@ -185,7 +185,7 @@ describe 'VISN pages', type: :feature do
       end
 
       it 'should show metadata for each visn' do
-        expect_visn_metadata('#visn-1-card-link', '1 practice created here', '0 practices adopted here')
+        expect_visn_metadata('#visn-1-card-link', '1 innovation created here', '0 innovations adopted here')
       end
 
       it 'should allow the user to visit a visn\'s show page via clicking on a visn card' do
@@ -249,8 +249,8 @@ describe 'VISN pages', type: :feature do
         expect(page).to have_selector('#visn-va-facility-1-marker-modal', visible: true)
         within(:css, '#visn-va-facility-1-marker-modal') do
           expect(find('.visn-va-facility-marker-modal-link').text).to eq('Test Name (Test Common Name)')
-          expect(find('.visn-va-facility-modal-practices-created-count').text).to eq('1 practice created here')
-          expect(find('.visn-va-facility-modal-practices-adopted-count').text).to eq('0 practices adopted here')
+          expect(find('.visn-va-facility-modal-practices-created-count').text).to eq('1 innovation created here')
+          expect(find('.visn-va-facility-modal-practices-adopted-count').text).to eq('0 innovations adopted here')
         end
       end
 
@@ -270,7 +270,7 @@ describe 'VISN pages', type: :feature do
     end
 
     describe 'visn search section' do
-      it 'should allow users to search for practices that were created or adopted within a given visn' do
+      it 'should allow users to search for innovations that were created or adopted within a given visn' do
         visit '/visns/2'
 
         # defaults to created practices

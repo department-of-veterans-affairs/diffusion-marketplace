@@ -224,7 +224,7 @@ describe 'VA facility pages', type: :feature, js: true do
         end
       end
 
-      it 'should allow search for practice origin facility and adopting facility' do
+      it 'should allow search for innovation origin facility and adopting facility' do
         within(:css, '#dm-facility-adopted-practice-search') do
           fill_in('dm-adopted-practices-search-field', with: ' d test name')
           find('#dm-adopted-practices-search-button').click
@@ -330,7 +330,7 @@ describe 'VA facility pages', type: :feature, js: true do
         end
       end
 
-      it 'should allow search for practice info' do
+      it 'should allow search for innovation info' do
         within(:css, '.dm-facility-created-practice-search') do
           fill_in('dm-created-practice-search-field', with: 'Cards')
           find('#dm-created-practice-search-button').click
@@ -363,7 +363,7 @@ describe 'VA facility pages', type: :feature, js: true do
         end
       end
 
-      it 'should allow search for practice origin facility and adopting facility' do
+      it 'should allow search for innovation origin facility and adopting facility' do
         within(:css, '.dm-facility-created-practice-search') do
           fill_in('dm-created-practice-search-field', with: 'd test name')
           find('#dm-created-practice-search-button').click

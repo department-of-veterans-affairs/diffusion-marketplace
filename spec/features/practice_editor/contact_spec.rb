@@ -19,7 +19,7 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_content('Contact')
             expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/implementation")
             expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/about")
-            expect(page).to have_content('This section helps people to reach out for support, ask questions, and connect about your practice.')
+            expect(page).to have_content('This section helps people to reach out for support, ask questions, and connect about your innovation.')
         end
 
         it 'should require the user to fill out the main email address field' do

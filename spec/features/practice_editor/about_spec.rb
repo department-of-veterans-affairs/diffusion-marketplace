@@ -22,7 +22,7 @@ describe 'Practice editor', type: :feature do
             visit practice_about_path(@practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).to have_content('About')
-            expect(page).to have_content('This section helps people understand how your practice started and introduces the original team.')
+            expect(page).to have_content('This section helps people understand how your innovation started and introduces the original team.')
             expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/contact")
         end
 

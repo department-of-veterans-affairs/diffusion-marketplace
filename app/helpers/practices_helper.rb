@@ -129,9 +129,9 @@ module PracticesHelper
   def get_process_resource_text(resource_type)
     content = {
       'core': 'Type a process (e.g., method, procedure, training) another facility would need to implement
-              your practice.',
+              your innovation.',
       'optional': 'Type a process (e.g., method, procedure) another facility can consider when implementing
-                  your practice.',
+                  your innovation.',
       'support': 'Type a process (e.g., method, procedure) your team would provide for another facility.'
     }
     content[resource_type.to_sym]
@@ -140,7 +140,7 @@ module PracticesHelper
   def get_tool_resource_text(resource_type)
     content = {
       'core': 'Type a tool (e.g., equipment, software, supply) another facility would need to implement your
-              practice.',
+              innovation.',
       'optional': 'Type a tool (e.g., equipment, software, supply) another facility can consider when
                   implementing your innovation.',
       'support': 'Type a tool (e.g., equipment, software, supply) your team would provide to another
