@@ -117,11 +117,24 @@ to confirm the class DOES NOT EXIST before adding a new class
 
 .margin-bottom-128 {
   margin-bottom: 128px;
+
+  &-desktop {
+    @media screen and (min-width: 1024px) {
+      margin-bottom: 128px;
+    }
+  }
 }
 
 .margin-y-128 {
   margin-bottom: 128px;
   margin-top: 128px;
+
+  &-desktop {
+    @media screen and (min-width: 1024px) {
+      margin-bottom: 128px;
+      margin-top: 128px;
+    }
+  }
 }
 
 /* Margin Left */
