@@ -30,15 +30,17 @@
     @include u-maxw('full', !important);
   }
 
-  textarea {
-    resize: none;
-    height: 132px;
-    @include u-maxw('full', !important);
-  }
+  form {
+    textarea {
+      resize: none;
+      height: 132px;
+      @include u-maxw('full', !important);
+    }
 
-  .contact-us-submit {
-    @media screen and (max-width: 1023px) {
-      width: 153px;
+    .usa-button {
+      @media screen and (max-width: 1023px) {
+        width: 153px;
+      }
     }
   }
 }
