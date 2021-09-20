@@ -21,4 +21,19 @@
       }
     }
   }
+
+  .dm-alert-message {
+    @media screen and (max-width: 639px) {
+      &:before {
+        -webkit-mask-position: center 14px !important;
+        mask-position: center 14px !important;
+      }
+    }
+
+    .close-alert-message {
+      @media screen and (max-width: 639px) {
+        top: 24px;
+      }
+    }
+  }
 }
