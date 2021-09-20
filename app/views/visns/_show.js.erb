@@ -15,7 +15,8 @@ var RADIO_OPTIONS = 'input[name=visns-show-radio-buttons]';
 var CREATED_COMBO_BOX = '#visn-search-created-categories';
 var ADOPTED_COMBO_BOX = '#visn-search-adopted-categories';
 var is_combo_box_submitted = false;
-var is_page_load = 0
+var is_page_load = 0;
+var is_radio_submit = false;
 
 // add a data attribute to the fieldset in order to trigger an ahoy tracking event only when the search field has been updated/populated
 function setFieldsetAttr(boolean) {
@@ -24,10 +25,8 @@ function setFieldsetAttr(boolean) {
 
 function searchPracticesByVisn() {
     const searchField = document.querySelector('#visn-search-field');
-
     function buildSearchResults(results, sortOption) {
         $(SPINNER).addClass('display-none');
-
         var resultsArray = [];
         var finalResults = '';
 
@@ -300,9 +299,12 @@ function searchPracticesByVisn() {
         }
         if ( searchField.value.length > 0 && !is_combo_box_submitted){
             if (is_page_load > 0){
-                updateSelectedCategoriesUsage({
-                    sQuery: searchField.value
-                });
+                if(!is_radio_submit) {
+                    updateSelectedCategoriesUsage({
+                        sQuery: searchField.value
+                    });
+                }
+                is_radio_submit = false;
             }
             is_page_load = 1
         }
@@ -377,6 +379,15 @@ function submitFormOnComboBoxChange(comboBox) {
                 });
                 is_combo_box_submitted = true;
             }
+            else{
+                var categoryComboBoxVal = $(ADOPTED_COMBO_BOX).val()
+                if(categoryComboBoxVal){
+                    updateSelectedCategoriesUsage({
+                        sQuery: categoryComboBoxVal
+                    });
+                    is_combo_box_submitted = true;
+                }
+            }
             setFieldsetAttr('true');
             $(this).closest('form').submit();
         }
@@ -386,6 +397,7 @@ function submitFormOnComboBoxChange(comboBox) {
 // submit the form when a radio input is clicked on
 function submitFormOnRadioInputClick() {
     $(document).on('click', RADIO_OPTIONS, function() {
+        is_radio_submit = true;
         // reset the combo box for the previously selected input
         var comboBoxCloseButton = 'usa-combo-box__clear-input';
 
