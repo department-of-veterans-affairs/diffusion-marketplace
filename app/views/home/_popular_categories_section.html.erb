@@ -4,8 +4,10 @@
       <% total_chars = 0 %>
       <% @popular_categories.each do |pop_cat| %>
         <% if total_chars < 130 %>
-            <a class="dm-tag--action-primary" href="/search?query=<%= pop_cat %>&cat=" %>
-              <%= pop_cat %>
+            <a class="dm-tag--big--action-primary height-4" href="/search?query=<%= pop_cat %>&cat=" %>
+              <span class="font-sans-sm text-bold line-height-sans-4">
+                <%= pop_cat %>
+              </span>
             </a>
           <% total_chars += pop_cat.length %>
         <% end %>
