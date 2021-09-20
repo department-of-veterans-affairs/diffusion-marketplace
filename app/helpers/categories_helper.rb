@@ -2,14 +2,8 @@ module CategoriesHelper
 
 
   def get_most_popular_categories
-    #get top 6 from ahoy.events table - name: 'Selected category'
-    recs_category_selected = AhoyEvent.where(name: "Category selected")
-    recs = recs_category_selected.where("time > ?", Time.now-90.days)
-    rec_array = []
     popular_categories = []
-    recs.each do |rec|
-      rec_array << rec.properties["category_id"]
-    end
+    rec_array = AhoyEvent.where(name: "Category selected").where("time > ?", Time.now-90.days).select("properties").map { |e| e.properties["category_id"] }
     categories_count = Hash.new(0)
     rec_array.each { |rec| categories_count[rec] +=1 }
     pop_cats = categories_count.sort_by { |rec,number| number}.last(20).reverse
@@ -34,7 +28,6 @@ module CategoriesHelper
       same_cat_id = cat_id == last_ev_cat_id
       same_visit = (DateTime.now.to_time.utc - event_tm) <= 2
       same_user = current_user.present? ? current_user.id == ev_user_id : ev_user_id.blank?
-      debugger
       if !(same_cat_id && same_visit && same_user)
         store_chosen_categories(s_query, nil) unless s_query.blank?
       end
