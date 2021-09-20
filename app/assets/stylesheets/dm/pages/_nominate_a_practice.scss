@@ -1,0 +1,18 @@
+#dm-nominate-a-practice-page {
+  form {
+    label:last-of-type {
+      @include u-maxw('full', !important);
+    }
+
+    span {
+      font-size: 14px;
+      color: color($theme-color-base-dark);
+    }
+
+    textarea {
+      resize: none;
+      height: 132px;
+      @include u-maxw('full', !important);
+    }
+  }
+}

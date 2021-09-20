@@ -55,7 +55,7 @@ describe 'About us page', type: :feature do
       expect { click_button('Send message') }.to change { ActionMailer::Base.deliveries.count }.by(1)
       # make sure the mailer content matches what the users sent
       expect(ActionMailer::Base.deliveries.last.from.first).to eq('test@test.com')
-      expect(ActionMailer::Base.deliveries.last.subject).to eq('Test subject')
+      expect(ActionMailer::Base.deliveries.last.subject).to eq('(About) Test subject')
       expect(page).to have_content('You successfully sent a message to the Diffusion Marketplace team.')
     end
   end

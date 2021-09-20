@@ -83,7 +83,8 @@ Rails.application.routes.draw do
     get '/go-fish', action: 'go_fish', as: 'go-fish'
   end
 
-  get '/nominate-a-practice', controller: 'nominate_practices', action: 'index', as: 'nominate_a_practice'
+  get '/nominate-an-innovation', controller: 'nominate_practices', action: 'index', as: 'nominate_a_practice'
+  post '/nominate-an-innovation', controller: 'nominate_practices', action: 'email'
   get '/diffusion-map', controller: 'home', action: 'diffusion_map', as: 'diffusion_map'
 
   namespace :system do
