@@ -1,7 +1,7 @@
 <div id="dm-nominate-a-practice-page" class="grid-container">
   <%= render partial: "shared/messages", locals: { small_text: true } %>
 
-  <section class="margin-top-8 margin-bottom-4 margin-top-128-desktop desktop:margin-bottom-8" role="region" aria-label="Nominate an innovation information">
+  <section class="margin-top-8 margin-bottom-0 margin-top-128-desktop desktop:margin-bottom-8" role="region" aria-label="Nominate an innovation information">
     <div class="grid-row grid-col-12 desktop:grid-col-8">
       <h1 class="usa-prose-h1 margin-top-0 margin-bottom-4">Nominate an innovation</h1>
       <p class="usa-prose-body">
@@ -11,7 +11,7 @@
   </section>
 
   <section class="margin-bottom-128 grid-row" role="region" aria-label="Nominate an innovation contact form">
-    <div class="grid-col-8">
+    <div class="grid-col-12 desktop:grid-col-8">
       <%= render partial: 'shared/email_form', locals: { path: nominate_a_practice_path, additional_label_text: 'Please include information about where your innovation is being implemented.' } %>
     </div>
   </section>

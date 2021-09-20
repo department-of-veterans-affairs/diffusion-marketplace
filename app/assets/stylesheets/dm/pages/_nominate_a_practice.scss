@@ -14,5 +14,11 @@
       height: 132px;
       @include u-maxw('full', !important);
     }
+
+    .usa-button {
+      @media screen and (max-width: 1023px) {
+        width: 153px;
+      }
+    }
   }
 }
