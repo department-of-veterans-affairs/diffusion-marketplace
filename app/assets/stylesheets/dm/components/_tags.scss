@@ -15,35 +15,6 @@
 
 
 // CUSTOM TAGS
-.dm-tag--action-primary {
-  @extend .usa-tag;
-  @include u-text("bold");
-  @include u-bg('primary-vivid');
-  font-size: x-small;
-  cursor: pointer;
-  height: 32px;
-  font-size: 16px;
-  line-height: 28px;
-  letter-spacing: 0.1em;
-  align-items: center !important;
-  text-align: center;
-  &:hover {
-    @include u-bg('primary-dark');
-  }
-
-  &:active {
-    @include u-bg('primary-darker');
-  }
-
-  &--selected {
-    @extend .usa-tag;
-    @include u-bg('base-lighter');
-    @include u-text('ink');
-    cursor: pointer;
-  }
-}
-
-
 .dm-tag--big--action-primary {
   @extend .usa-tag;
   @extend .usa-tag--big;

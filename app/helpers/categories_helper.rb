@@ -36,20 +36,13 @@ module CategoriesHelper
 
   def store_chosen_categories(s_query, chosen_categories)
     s_query = s_query.downcase
-    cats = []
-    cat_ids = []
-    categories = Category.not_other
-    categories.each do |cat_rec|
-      cats << cat_rec.name.downcase!
-      cat_ids << cat_rec.id
-    end
+    cat_names = Category.not_other.pluck(:name).map { |cat| cat.downcase }
+    cat_ids = Category.not_other.pluck(:id)
     id_ctr = 0
-    if cats.present?
-      cats.each do |internal_cat|
-        if internal_cat.present?
-          if s_query.include?(internal_cat)  || s_query == internal_cat
-            ahoy.track('Category selected', {category_id: cat_ids[id_ctr]})
-          end
+    if cat_names.present?
+      cat_names.each do |internal_cat|
+        if s_query.include?(internal_cat) || s_query == internal_cat
+          ahoy.track('Category selected', {category_id: cat_ids[id_ctr]})
         end
         id_ctr += 1
       end
