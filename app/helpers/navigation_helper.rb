@@ -1,4 +1,6 @@
 module NavigationHelper
+  RETURN_TO_TOP_PAGES = ['show', 'metrics', 'introduction', 'overview', 'implementation']
+
   def setup_breadcrumb_navigation
     session[:breadcrumbs] = session[:breadcrumbs] || []
     action = params[:action]

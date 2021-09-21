@@ -75,10 +75,7 @@
         <%= yield(:body_attributes) %>
         <% end %> class="<%= yield(:body_classes) %>">
     <%= render 'shared/header' %>
-    <% return_to_top_pages = ['show', 'metrics', 'introduction', 'overview', 'implementation'] %>
-    <main id="main-content"
-          class="<%= params[:controller] %><%= ' additional-main-content-padding' if (params[:controller] === 'va_facilities' && params[:action] === 'index') || (params[:controller] === 'practices' && return_to_top_pages.include?(params[:action])) %> <%= yield(:main_classes) %>"
-    >
+    <main id="main-content" class="<%= params[:controller] %> <%= params[:action] %> <%= yield(:main_classes) %>">
       <%= render 'shared/breadcrumbs' unless session[:breadcrumbs].empty? %>
       <%= yield %>
     </main>

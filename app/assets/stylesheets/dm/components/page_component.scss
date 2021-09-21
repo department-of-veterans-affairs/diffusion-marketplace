@@ -30,4 +30,8 @@
       }
     }
   }
+
+  .page-builder-component:last-of-type, p:last-of-type {
+    @include u-margin-bottom(0, !important);
+  }
 }
