@@ -305,7 +305,7 @@ module NavigationHelper
     ### NOMINATE PRACTICE BREADCRUMBS
     if action == 'index' && controller == 'nominate_practices'
       empty_breadcrumbs
-      session[:breadcrumbs] << { 'display': 'Nominate a practice', 'path': nominate_a_practice_path }
+      session[:breadcrumbs] << { 'display': 'Nominate an innovation', 'path': nominate_a_practice_path }
     end
 
     ### VISN BREADCRUMBS

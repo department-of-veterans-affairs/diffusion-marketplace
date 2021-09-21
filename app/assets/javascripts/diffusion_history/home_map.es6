@@ -129,7 +129,7 @@ function initialize() {
       });
     }
 
-    // practice status
+    // innovation status
     if (data.statuses && data.statuses.length) {
       const statuses = data.statuses.map(s => s.value);
       result = result.filter(function (d) {

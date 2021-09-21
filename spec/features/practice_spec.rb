@@ -70,7 +70,7 @@ describe 'Practices', type: :feature do
       expect(page).to have_content('COVID-19')
       expect(page).to have_content('The Diffusion Marketplace has practices that help VHA respond to COVID-19. We have assembled a group of practices for frontline staff and administrators responding to the changing medical landscape.')
       expect(page).to have_link(href: '/covid-19')
-      expect(page).to have_content('Nominate a practice')
+      expect(page).to have_content('Nominate an innovation')
       expect(page).to have_content('If you have a practice that has been adopted at two or more locations, has been endorsed by a senior executive stakeholder, and is an active practice, click the link below to submit it to the Marketplace.')
       expect(page).to have_link('Start nomination', href: nominate_a_practice_path )
     end

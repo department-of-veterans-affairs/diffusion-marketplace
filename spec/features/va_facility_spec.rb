@@ -195,7 +195,7 @@ describe 'VA facility pages', type: :feature, js: true do
       expect(page).to have_current_path(va_facility_path(@facility_1))
     end
 
-    context 'when searching for adopted practices' do
+    context 'when searching for adopted innovations' do
       it 'should display default content' do
         within(:css, '#dm-facility-adopted-practice-search') do
           expect(page).to have_content("Practices adopted at this facility")
@@ -253,7 +253,7 @@ describe 'VA facility pages', type: :feature, js: true do
           # should see 3 sort filters
           within(:css, "#dm-created-practices-sort-option") do
             expect(page).to have_content('Sort by A to Z')
-            expect(page).to have_content('Sort by most adopted practices')
+            expect(page).to have_content('Sort by most adopted innovations')
             expect(page).to have_content('Sort by most recently added')
           end
           expect(page).to have_css('.dm-load-more-created-practices-btn')
@@ -275,9 +275,9 @@ describe 'VA facility pages', type: :feature, js: true do
         end
       end
 
-      it 'should sort the content by most adopted practices' do
+      it 'should sort the content by most adopted innovations' do
         within(:css, '.dm-facility-created-practice-search') do
-          select('Sort by most adopted practices', from: 'created-practices-sort-option')
+          select('Sort by most adopted innovations', from: 'created-practices-sort-option')
           expect(page).to have_content('8 results')
           expect(page).to have_css('.dm-load-more-created-practices-btn')
           expect(find_all('.dm-practice-title')[0]).to have_text('Pink Gloves Program')

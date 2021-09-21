@@ -262,7 +262,7 @@ function searchPracticesByVisn() {
             window.history.pushState({ turbolinks: {} }, "", urlQuery);
         }
 
-        // Get the value for the created/adopted practices radio input
+        // Get the value for the created/adopted innovations radio input
         var createdOrAdoptedRadio = $('input[name=visns-show-radio-buttons]:checked').val();
 
         // hide one of the category combo boxes based on which radio input is chosen
@@ -392,7 +392,7 @@ function submitFormOnPageLoadWithCreatedPracticesAsDefault() {
     // set both combo box values to empty strings to avoid filtering practices on initial page load
     $(CREATED_COMBO_BOX).val('');
     $(ADOPTED_COMBO_BOX).val('');
-    // choose one of the radio inputs based on if the VISN has created practices or adopted practices
+    // choose one of the radio inputs based on if the VISN has created practices or adopted innovations
     if (created_practices.length > 0) {
         $(RADIO_OPTIONS).first().click();
     } else if (adopted_practices.length > 0) {
