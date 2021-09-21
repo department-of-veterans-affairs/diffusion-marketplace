@@ -595,12 +595,10 @@ describe 'The admin dashboard', type: :feature do
     visit practice_path(@practice)
     fill_in('comment[body]', with: 'This is a test comment')
     click_button('commit')
-
     # change the practice user back to the original user
     logout(@user2)
     login_as(@admin, :scope => :user, :run_callbacks => false)
     visit '/admin/practices/the-best-practice-ever/edit'
-    expect(page).to have_selector('#practice_user_id')
     fill_in('User email', with: @user.email)
     click_button('Update Practice')
 
