@@ -10,7 +10,7 @@ namespace :va_facilities do
       va_facilities.each do |vaf|
           if visn.number === vaf["VISN"].to_i && VaFacility.where(station_number: vaf["Station_Number"]).empty?
             puts 'Creating facility - ' + vaf["Official_Station_Name"]
-              hidden = vaf["CoCClassification"].blank? ? true : false
+              hidden = vaf["CoCClassification"].blank?
               classification = vaf["CoCClassification"].blank? ? "Unclassified" : vaf["CoCClassification"]
               VaFacility.create!(
                   visn: visn,
