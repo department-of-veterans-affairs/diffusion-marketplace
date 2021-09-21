@@ -6,13 +6,11 @@ require 'net/ldap'
 class User < ApplicationRecord
   has_paper_trail
   # Include default devise modules. Others available are:
-  # :lockable, :timeoutable, :trackable and :omniauthable
+  # :lockable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable, #:confirmable,
          :recoverable, :rememberable, :validatable,
-         :password_expirable, :password_archivable, :trackable
-  #:timeoutable
+         :password_expirable, :password_archivable, :trackable, :timeoutable
 
-  devise :timeoutable unless ENV['USE_NTLM'] == 'true'
   devise :confirmable unless ENV['USE_NTLM'] == 'true'
 
   rolify before_add: :remove_all_roles
@@ -29,7 +27,7 @@ class User < ApplicationRecord
 
   # This allows users to post comments with the use of the Commontator gem
   acts_as_commontator
-  
+
   acts_as_voter
 
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h

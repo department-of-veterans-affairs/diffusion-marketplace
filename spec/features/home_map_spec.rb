@@ -88,7 +88,7 @@ describe 'Map of Diffusion', type: :feature, js: true do
   end
 
   def click_first_map_marker
-    find('#map > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(3) > div:nth-child(1) > div:nth-child(3) > div:nth-child(1) > img', visible: true).click
+    find('#map > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > div:nth-child(3) > div:nth-child(1) > img', visible: true).click
   end
 
   it 'displays and filters the map' do
