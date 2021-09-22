@@ -81,13 +81,13 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_selector('#general-practice-search-terms-table', visible: false)
 
     within(:css, '.tabs.ui-tabs') do
-      click_link('Practice Leaderboards')
+      click_link('Innovation Leaderboards')
       expect(page).to have_selector('#users-information', visible: false)
       expect(page).to have_selector('#practice-leaderboards', visible: true)
       expect(page).to have_selector('#general-practice-search-terms-table', visible: false)
       expect(page).to have_css("input[value='Export as .xlsx']", visible: false)
 
-      click_link('Practice Search Terms')
+      click_link('Innovation Search Terms')
       expect(page).to have_selector('#users-information', visible: false)
       expect(page).to have_selector('#practice-leaderboards', visible: false)
       expect(page).to have_selector('#general-practice-search-terms-table', visible: true)
@@ -578,7 +578,7 @@ describe 'The admin dashboard', type: :feature do
     # trigger the create_or_update_practice method in the admin controller
     login_as(@admin, scope: :user, run_callbacks: false)
     visit '/admin/practices/the-best-practice-ever/edit'
-    click_button('Update Practice')
+    click_button('Update Innovation')
 
     expect(Practice.first.commontator_thread.subscribers.first).to eq(@user)
 
@@ -600,7 +600,6 @@ describe 'The admin dashboard', type: :feature do
     logout(@user2)
     login_as(@admin, :scope => :user, :run_callbacks => false)
     visit '/admin/practices/the-best-practice-ever/edit'
-    expect(page).to have_selector('#practice_user_id')
     fill_in('User email', with: @user.email)
     click_button('Update Practice')
 

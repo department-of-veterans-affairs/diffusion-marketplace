@@ -20,7 +20,7 @@ describe 'Practice editor', type: :feature, js: true do
 
         it 'should navigate the user around the editor when they click on the section names' do
           visit '/practices/a-public-practice'
-          click_link 'Edit practice'
+          click_link 'Edit innovation'
           click_link 'Edit: A public practice'
           page.has_css?('#introduction')
           expect(page).to have_content('Introduce your innovation and provide a brief summary to people who may be unfamiliar with it.')

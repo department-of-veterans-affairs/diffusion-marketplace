@@ -63,7 +63,7 @@ describe 'Practices', type: :feature do
       visit '/'
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@highlighted_practice.name)
-      expect(page).to have_content('Find the next important or life-saving practice to adopt at your VA facility.')
+      expect(page).to have_content('Find the next important or life-saving innovation to adopt at your VA facility.')
       expect(page).to have_link(href: '/explore')
       expect(page).to have_content('Recommended for you')
       expect(page).to have_content('Explore practices that are relevant to your location, role, and saved searches.')
@@ -90,7 +90,7 @@ describe 'Practices', type: :feature do
       # Visit a user's practice that is not approved or published
       visit practice_path(@user_practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_content('Find the next important or life-saving practice to adopt at your VA facility.')
+      expect(page).to have_content('Find the next important or life-saving innovation to adopt at your VA facility.')
       expect(page).to have_current_path('/')
     end
 

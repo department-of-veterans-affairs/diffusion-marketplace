@@ -209,11 +209,11 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
 
     it 'should display the content correctly' do
       expect(page).to have_content('This innovation is emerging and worth watching as it is being assessed in early implementations.')
-      expect(page).to have_link('See more emerging practices.')
+      expect(page).to have_link('See more emerging innovations.')
     end
 
     it 'should take the user to the search results page when the See more practices link is clicked' do
-      click_link('See more emerging practices')
+      click_link('See more emerging innovations')
       expect(page).to have_selector('#search-page', visible: true)
       expect(page).to have_content('1 result')
       expect(page).to have_content('A public maximum practice')
