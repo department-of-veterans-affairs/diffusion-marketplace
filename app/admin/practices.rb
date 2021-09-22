@@ -245,7 +245,7 @@ ActiveAdmin.register Practice do
     before_action :set_categories_view, only: :edit
     before_action :set_practice_adoption_values, only: [:show, :export_practice_adoptions]
     after_action :update_categories, only: [:create, :update]
-    after_action :update_highlight_attr, only: [:update]
+    #after_action :update_highlight_attr, only: [:update]
 
     def create_or_update_practice
       begin
@@ -366,10 +366,10 @@ ActiveAdmin.register Practice do
       end
     end
 
-    def update_highlight_attr
-      practice_slug = params[:id]
-      practice = Practice.find_by(slug: practice_slug)
-      practice.update(highlight_title: params[:practice][:highlight_title], highlight_body: params[:practice][:highlight_body])
-    end
+    # def update_highlight_attr
+    #   practice_slug = params[:id]
+    #   practice = Practice.find_by(slug: practice_slug)
+    #   practice.update(highlight_title: params[:practice][:highlight_title], highlight_body: params[:practice][:highlight_body])
+    # end
   end
 end

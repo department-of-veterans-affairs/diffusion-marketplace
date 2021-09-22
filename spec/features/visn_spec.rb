@@ -208,7 +208,7 @@ describe 'VISN pages', type: :feature do
       visit '/visns/2'
 
       expect(page).to have_content('This VISN has 3 facilities and serves Veterans in Florida and Georgia.')
-      expect(page).to have_content('Collectively, its facilities have created 7 practices and have adopted 3 practices.')
+      expect(page).to have_content('Collectively, its facilities have created 7 innovations and have adopted 3 innovations.')
       expect(page).to have_content('Toge Inumaki')
     end
 

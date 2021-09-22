@@ -66,7 +66,7 @@ describe 'Practices', type: :feature do
       expect(page).to have_content('Find the next important or life-saving innovation to adopt at your VA facility.')
       expect(page).to have_link(href: '/explore')
       expect(page).to have_content('Recommended for you')
-      expect(page).to have_content('Explore practices that are relevant to your location, role, and saved searches.')
+      expect(page).to have_content('Explore innovations that are relevant to your location, role, and saved searches.')
       expect(page).to have_content('COVID-19')
       expect(page).to have_content('The Diffusion Marketplace has practices that help VHA respond to COVID-19. We have assembled a group of practices for frontline staff and administrators responding to the changing medical landscape.')
       expect(page).to have_link(href: '/covid-19')
