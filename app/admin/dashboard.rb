@@ -206,7 +206,7 @@ ActiveAdmin.register_page "Dashboard" do
             end
             sheet.add_row [""], style: xlsx_divider
           end
-          sheet.add_row ["Practices"], style: xlsx_sub_header_1
+          sheet.add_row ["Innovations"], style: xlsx_sub_header_1
           @practices_added_stats.each { |key, value| sheet.add_row [key.to_s.tr!('_', ' ').titleize, value], style: xlsx_entry }
           sheet.add_row [""], style: xlsx_divider
 
