@@ -4,11 +4,11 @@
 %>
 
 <% unless editors_path %>
-  <%= link_to back_path, class: "dm-button--outline-secondary editor-back-to-link margin-right-1#{' margin-bottom-5' unless NavigationHelper::RETURN_TO_TOP_PAGES.include?(params[:action])} text-no-underline" do %>
+  <%= link_to back_path, class: "dm-button--outline-secondary editor-back-to-link margin-right-1 text-no-underline" do %>
     Back
   <% end %>
 <% end %>
 
-<%= link_to continue_path, class: "usa-button usa-button--secondary #{editors_path || adoptions_path ? '' : 'continue-and-save'} margin-right-1#{' margin-bottom-5' unless NavigationHelper::RETURN_TO_TOP_PAGES.include?(params[:action])}" do %>
+<%= link_to continue_path, class: "usa-button usa-button--secondary #{editors_path || adoptions_path ? '' : 'continue-and-save'} margin-right-1" do %>
   <%= editors_path || adoptions_path ? 'Continue' : 'Save and continue' %>
 <% end %>

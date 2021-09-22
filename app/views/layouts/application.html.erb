@@ -75,7 +75,10 @@
         <%= yield(:body_attributes) %>
         <% end %> class="<%= yield(:body_classes) %>">
     <%= render 'shared/header' %>
-    <main id="main-content" class="<%= params[:controller] %> <%= params[:action] %> <%= yield(:main_classes) %>">
+    <main
+      id="main-content"
+      class="<%= params[:controller] %> <%= params[:action] %> <%= yield(:main_classes) %><%= ' additional-return-to-top-padding' if params[:controller] === 'practices' && NavigationHelper::RETURN_TO_TOP_PAGES.include?(params[:action]) %>"
+    >
       <%= render 'shared/breadcrumbs' unless session[:breadcrumbs].empty? %>
       <%= yield %>
     </main>

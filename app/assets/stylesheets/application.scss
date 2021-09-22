@@ -40,14 +40,21 @@
 
   @media screen and (min-width: 1024px) {
     // Desktop footer height + 128px
-    padding-bottom: 337px;
+    padding-bottom: 267px;
   }
 
-  &.home, &.search {
+  &.additional-return-to-top-padding {
+    @media screen and (min-width: 1024px) {
+      // Desktop footer height + 'Return to top' element height + 128px
+      padding-bottom: 337px;
+    }
+  }
+
+  &.home.index, &.search {
     padding-bottom: 446px;
 
     @media screen and (min-width: 1024px) {
-      // Desktop footer height + 128px
+      // Desktop footer height
       padding-bottom: 139px !important;
     }
   }
