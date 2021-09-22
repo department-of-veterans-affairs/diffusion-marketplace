@@ -17,19 +17,22 @@
       </p>
     </div>
     <div class="dm-page-content">
-      <% @page.page_components.each do |pc| %>
-        <% component = pc.component_type.constantize.find(pc.component_id) %>
+      <% @page.page_components.each_with_index do |pc, index| %>
+        <%
+          component = pc.component_type.constantize.find(pc.component_id)
+          last_component = @page.page_components.size - 1
+        %>
 
         <%# Page Header and Paragraph %>
         <% if (pc.component_type == 'PageHeaderComponent' || pc.component_type == 'PageParagraphComponent') && component.text.present? %>
-          <div class="margin-bottom-4-important <%= page_narrow_classes %> page-builder-component">
+          <div class="margin-bottom-4-important <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
             <%= component.text.html_safe %>
           </div>
         <% end %>
 
         <%# Page Header 2 %>
         <% case pc.component_type when 'PageHeader2Component' %>
-          <div class="grid-row margin-bottom-3 page-builder-component">
+          <div class="grid-row margin-bottom-3<%= ' margin-bottom-0' if last_component === index %>">
             <h2 class="grid-col-12 desktop:grid-col-8 font-sans-xl <%= 'margin-x-auto' if @page.narrow? %>">
               <%= component.subtopic_title %>
             </h2>
@@ -42,7 +45,7 @@
 
           <%# Page Header 3 %>
         <% when 'PageHeader3Component' %>
-          <div class="<%= page_narrow_classes %> margin-bottom-3 page-builder-component">
+          <div class="<%= page_narrow_classes %> margin-bottom-3<%= ' margin-bottom-0' if last_component === index %>">
             <h3 class="font-sans-lg text-<%= component.alignment.downcase %>">
               <%= component.title %>
             </h3>
@@ -55,11 +58,11 @@
 
           <%# Page Horizontal Line %>
         <% when 'PageHrComponent' %>
-          <hr class="flex-fill border border-base-lighter bg-base-lightest dm-section-line margin-top-0 margin-bottom-3 <%= page_narrow_classes %> page-builder-component">
+          <hr class="flex-fill border border-base-lighter bg-base-lightest dm-section-line margin-top-0 margin-bottom-3 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
 
           <%# Accordion %>
         <% when 'PageAccordionComponent' %>
-          <div class="<%= page_narrow_classes %> margin-bottom-3 page-builder-component">
+          <div class="<%= page_narrow_classes %> margin-bottom-3<%= ' margin-bottom-0' if last_component === index %>">
             <div class="usa-accordion">
               <h2 class="usa-accordion__heading margin-bottom-2">
                 <button class="usa-accordion__button font-sans-sm"
@@ -78,7 +81,7 @@
 
           <%# CTA %>
         <% when 'PageCtaComponent' %>
-          <div class="grid-row margin-bottom-3 <%= page_narrow_classes %> page-builder-component">
+          <div class="grid-row margin-bottom-3 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
             <div class="font-sans-lg grid-col-12 margin-bottom-2">
               <span><%= component.cta_text %></span>
             </div>
@@ -91,7 +94,7 @@
 
           <%# Image %>
         <% when 'PageImageComponent' %>
-          <div class="grid-row margin-bottom-3 <%= get_grid_alignment_css_class(component.alignment.downcase) %> <%= page_narrow_classes %> page-builder-component">
+          <div class="grid-row margin-bottom-3 <%= get_grid_alignment_css_class(component.alignment.downcase) %> <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
             <% if component.url.present? %>
               <a href="<%= component.url %>" target="<%= component.url.chars.first === '/' ? '' : '_blank' %>" title="Go to <%= component.url %>">
                 <%= render partial: "page/page_image", locals: { component: component } %>
@@ -105,7 +108,7 @@
           <%# note: everything EXCEPT Practice List has the page_narrow_classes applied %>
         <% when 'PagePracticeListComponent' %>
           <% practices_ids = component.practices %> <%# array of id strings %>
-          <div class="grid-row grid-gap-3 margin-bottom-2 page-builder-component">
+          <div class="grid-row grid-gap-3 margin-bottom-2<%= ' margin-bottom-0' if last_component === index %>">
             <% practices_ids.each do |pr_id| %>
               <% pr = Practice.find(pr_id.to_i) %>
               <% if pr.present? %>
@@ -116,7 +119,7 @@
 
           <%# Subpage Hyperlink %>
         <% when 'PageSubpageHyperlinkComponent' %>
-          <div class="grid-row margin-bottom-5 grid-col-12 desktop:grid-col-8 <%= 'margin-x-auto' if @page.narrow? %> page-builder-component">
+          <div class="grid-row margin-bottom-5 grid-col-12 desktop:grid-col-8 <%= 'margin-x-auto' if @page.narrow? %><%= ' margin-bottom-0' if last_component === index %>">
             <a href="<%= component.url %>" class="width-full usa-link">
               <h2 class="font-sans-xl display-inline margin-top-0 text-underline"><%= component.title %></h2>
               <span class="margin-left-1 fas fa-chevron-right fa-icon-125 text-middle padding-bottom-2"></span>
@@ -130,7 +133,7 @@
 
           <%# YouTube Player %>
         <% when 'PageYouTubePlayerComponent' %>
-          <div class="grid-row margin-bottom-3 <%= page_narrow_classes %> page-builder-component">
+          <div class="grid-row margin-bottom-3 <%= page_narrow_classes %><%= ' margin-bottom-0' if last_component === index %>">
             <%= youtube_embed(component.url) %>
             <% if component.caption.present? %>
               <div class="font-sans-2xs line-height-135 margin-top-1 width-full line-height-15px">
@@ -146,7 +149,7 @@
             display_name = component.display_name
             next_component = @page.page_components.find_by(position: pc.position + 1)
           %>
-          <div class="grid-row <%= page_narrow_classes %> <%= next_component != nil && next_component.component_type == pc.component_type ? 'margin-bottom-1' : 'margin-bottom-3 ' %> font-sans-sm line-height-162 page-builder-component">
+          <div class="grid-row <%= page_narrow_classes %> <%= next_component != nil && next_component.component_type == pc.component_type ? 'margin-bottom-1' : 'margin-bottom-3 ' %> font-sans-sm line-height-162<%= ' margin-bottom-0' if last_component === index %>">
             <%= content_tag(:span, description, class: 'margin-right-1') if description != '' %>
             <%= link_to component.attachment_s3_presigned_url, class: 'usa-link usa-link--external', target: '_blank', download: display_name != '' ? display_name : component.attachment_file_name do %>
               <i class="far fa-file margin-right-1"></i><%= display_name != '' ? display_name : component.attachment_file_name %>
