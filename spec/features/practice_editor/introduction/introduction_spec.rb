@@ -93,7 +93,7 @@ describe 'Practice editor - introduction', type: :feature, js: true do
       expect(page).to have_selector(".usa-modal__content", visible: true)
       expect(page).to have_content('Innovations related to patient care.')
       expect(page).to have_content('Innovations related to VA administrative and logistical functions.')
-      expect(page).to have_content('Practices that support initiatives identified by VA leadership.')
+      expect(page).to have_content('Innovations that support initiatives identified by VA leadership.')
     end
   end
 
