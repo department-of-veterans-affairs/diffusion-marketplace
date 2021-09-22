@@ -553,7 +553,7 @@ describe 'Search', type: :feature do
       visit '/admin'
       click_link('Practices')
       click_link('New Practice')
-      fill_in('Practice name', with: 'The Newest Practice')
+      fill_in('Innovation name', with: 'The Newest Practice')
       fill_in('User email', with: 'practice_owner@va.gov')
       click_button('Create Practice')
       latest_practice = Practice.last

@@ -83,7 +83,7 @@ describe 'The admin dashboard', type: :feature do
     within(:css, '.tabs.ui-tabs') do
       click_link('Innovation Leaderboards')
       expect(page).to have_selector('#users-information', visible: false)
-      expect(page).to have_selector('#practice-leaderboards', visible: true)
+      expect(page).to have_selector('#innovation-leaderboards', visible: true)
       expect(page).to have_selector('#general-practice-search-terms-table', visible: false)
       expect(page).to have_css("input[value='Export as .xlsx']", visible: false)
 
@@ -313,7 +313,7 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_no_content('Highlighted Practice Body')
 
     # add extra whitespace to practice name
-    fill_in('Practice name', with: ' The Newest Practice   ')
+    fill_in('Innovation name', with: ' The Newest Practice   ')
     fill_in('User email', with: 'practice_owner@va.gov')
     click_button('Create Practice')
     # make sure white space is trimmed from practice name
@@ -332,7 +332,7 @@ describe 'The admin dashboard', type: :feature do
     click_link('Practices')
     click_link('New Practice')
 
-    fill_in('Practice name', with: 'The Newest Practice')
+    fill_in('Innovation name', with: 'The Newest Practice')
     click_button('Create Practice')
     # check for blank email
     expect(page).to have_content('There was an error. Email cannot be blank.')
@@ -360,7 +360,7 @@ describe 'The admin dashboard', type: :feature do
 
     click_link('Practices')
     click_link('Edit', href: edit_admin_practice_path(@practice))
-    fill_in('Practice name', with: @practice_2.name)
+    fill_in('Innovation name', with: @practice_2.name)
     click_button('Update Practice')
 
     expect(page).to have_content('There was an error. Practice name already exists.')
@@ -457,7 +457,7 @@ describe 'The admin dashboard', type: :feature do
     expect(find_field('practice_category_ids').find('option[selected]').text).to eq('Telehealth')
 
     # check if categories saves correctly with new practice name
-    fill_in('Practice name', with: 'renamed practiced')
+    fill_in('Innovation name', with: 'renamed practiced')
     find("option[value='#{@categories[0][:id]}']").click
     find("option[value='#{@categories[1][:id]}']").click
     click_button('Update Practice')
