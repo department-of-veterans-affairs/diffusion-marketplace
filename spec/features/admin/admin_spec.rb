@@ -600,7 +600,7 @@ describe 'The admin dashboard', type: :feature do
     login_as(@admin, :scope => :user, :run_callbacks => false)
     visit '/admin/practices/the-best-practice-ever/edit'
     sleep 0.5
-    fill_in('practice_user_id', with: @user.email)
+    fill_in('#practice_user_id', with: @user.email)
     click_button('Update Practice')
     expect(Practice.first.commontator_thread.subscribers).to include(@user, @user2)
   end
