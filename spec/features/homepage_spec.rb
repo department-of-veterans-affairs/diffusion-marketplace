@@ -37,7 +37,7 @@ describe 'Homepage', type: :feature do
 
       visit '/'
       # search for a practice by going to the search page
-      click_link('Browse all practices')
+      click_link('Browse all innovations')
       expect(page).to have_current_path(search_path)
       expect(page).to have_content('Enter a search term or use the filters to find matching practices')
     end

@@ -1,0 +1,3 @@
+class AhoyEvent < ApplicationRecord
+
+end

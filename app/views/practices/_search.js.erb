@@ -214,7 +214,6 @@ function closeMobileFiltersModal() {
 
 function searchPracticesPage() {
     const searchField = document.querySelector('#dm-practice-search-field');
-
     // Skip if not the search page
     if (location.pathname !== '/search') return;
 
@@ -756,7 +755,6 @@ function searchPracticesPage() {
 
     $(document).on('submit', '#update-search-results-form', function (e) {
         e.preventDefault();
-
         hideResultsSectionElAndShowSpinner();
 
         // Close search filter accordion if it's open
@@ -799,6 +797,14 @@ function searchPracticesPage() {
         if (chosenCategories.length == 0) {
             chosenCategories = null;
         }
+
+        // Update Category Usage....
+        Rails.ajax({
+            type: 'patch',
+            url: "/update_category_usage",
+            data: jQuery.param({query: searchField.value, chosenCategories: chosenCategories})
+        });
+
         // Run the search
         search(searchField.value, chosenCategories, originatingFacility, adoptingFacility);
 
@@ -876,10 +882,14 @@ function searchPracticesPage() {
 
     if (window.location.pathname === '/search' && window.location.search !== '' && searchLocation[0] !== '?filter_by') {
         hideResultsSectionElAndShowSpinner();
-        const query = window.location.search.split('=')[1];
+        var query = window.location.search.split('=')[1];
+        if (query.includes("&cat")){
+            query = query.split('&')[0];
+        }
+
         search(decodeURI(query));
         if (query !== undefined) {
-            searchField.value = decodeURI(query);
+            searchField.value = decodeURI(query.split('&')[0]);
         } else {
             searchField.value = '';
         }

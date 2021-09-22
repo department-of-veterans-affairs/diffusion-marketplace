@@ -8,7 +8,13 @@
     <%= render partial: 'search', formats: [:js] %>
   <% end %>
 <% end %>
-
+<%
+  if params["query"].present?
+    if !params.has_key?(:cat)
+      update_category_usages
+    end
+  end
+%>
 <div id="search-page" class="margin-bottom-10">
   <section class="grid-container margin-bottom-5">
     <%= render partial: "shared/messages", locals: {small_text: false} %>
