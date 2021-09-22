@@ -8,7 +8,7 @@ class VaFacility < ApplicationRecord
 
   attr_accessor :reset_cached_va_facilities
 
-  scope :get_by_visn, -> (visn) { cached_va_facilities.where(visn: visn, hidden: false) }
+  scope :get_by_visn, -> (visn) { cached_va_facilities.where(visn: visn) }
   scope :get_classification_counts, -> (facility_type) { where(classification: facility_type, hidden: false).size }
   scope :get_classifications, -> { pluck(:classification).uniq }
   scope :get_ids, -> { pluck(:id) }
