@@ -7,7 +7,7 @@
 
 <footer class="<%= yield(:footer_classes) %>">
   <%# only show return to top on mobile views, practice show page and long practice editor pages (per design 9/21/21) %>
-  <div class="grid-container usa-footer__return-to-top<%= ' display-none' if params[:controller] === 'home' && params[:action] === 'index' %><%= params[:controller] === 'practices' && NavigationHelper::RETURN_TO_TOP_PAGES.include?(params[:action]) ? ' desktop:display-block' : ' desktop:display-none' %>">
+  <div class="grid-container usa-footer__return-to-top<%= ' display-none' if params[:controller] === 'home' && params[:action] === 'index' %><%= params[:controller] === 'practices' && NavigationHelper::RETURN_TO_TOP_PAGES.include?(params[:action]) ? ' desktop:display-block' : ' tablet:display-none' %>">
     <button class="dm-button--unstyled-primary dm-return-to-top width-auto">Return to top</button>
   </div>
   <%# footer actions %>
