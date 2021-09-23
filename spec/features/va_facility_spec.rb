@@ -198,7 +198,7 @@ describe 'VA facility pages', type: :feature, js: true do
     context 'when searching for adopted innovations' do
       it 'should display default content' do
         within(:css, '#dm-facility-adopted-practice-search') do
-          expect(page).to have_content("Practices adopted at this facility")
+          expect(page).to have_content("Innovations adopted at this facility")
           find('#facility_category_select_adoptions').click
           within(:css, '#facility_category_select_adoptions--list') do
             expect(page).to have_content('COVID')
