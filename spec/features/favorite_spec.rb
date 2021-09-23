@@ -80,7 +80,7 @@ describe 'Favorites', type: :feature do
       end
 
       it 'should have a favorites section' do
-        expect(page).to have_content('Bookmarked practices')
+        expect(page).to have_content('Bookmarked innovations')
       end
 
       it 'should not show a favorite button' do
@@ -95,7 +95,7 @@ describe 'Favorites', type: :feature do
       end
 
       it 'should have a favorites section' do
-        expect(page).to have_content('Bookmarked practices')
+        expect(page).to have_content('Bookmarked innovations')
       end
 
       it 'should show a favorite button' do
