@@ -64,7 +64,7 @@ describe 'Practices', type: :feature do
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content('We’re a discovery and collaboration tool that curates VA’s promising practices, encourages their diffusion, and fosters engagement with greater healthcare communities.')
       expect(page).to have_link(href: '/about')
-      expect(page).to have_content('Browse all practices')
+      expect(page).to have_content('Browse all innovations')
       expect(page).to have_content(@highlighted_practice.name)
       expect(page).to have_content('Highlight body text')
       expect(page).to have_content('View practice')
