@@ -350,7 +350,7 @@ describe 'The admin dashboard', type: :feature do
     fill_in('User email', with: 'practice_owner@test.com')
     click_button('Create Practice')
 
-    expect(page).to have_content('There was an error. Practice name cannot be blank.')
+    expect(page).to have_content('There was an error. Innovation name cannot be blank.')
     expect(page).to_not have_selector("input[value='practice_owner@test.com']")
   end
 
@@ -363,7 +363,7 @@ describe 'The admin dashboard', type: :feature do
     fill_in('Innovation name', with: @practice_2.name)
     click_button('Update Practice')
 
-    expect(page).to have_content('There was an error. Practice name already exists.')
+    expect(page).to have_content('There was an error. Innovation name already exists.')
     expect(page).to have_selector("input[value='The Best Innovation Ever!']")
 
     # add extra whitespace to practice name
@@ -374,7 +374,7 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_content('Test Practice 1')
     # make sure white space is trimmed from practice name
     click_link('Edit Practice')
-    expect(page).to have_field('Practice name', with: 'Test Practice 1')
+    expect(page).to have_field('Innovation name', with: 'Test Practice 1')
   end
 
   it 'should not allow an admin to update an existing practice if they do not enter the required information' do
@@ -387,11 +387,11 @@ describe 'The admin dashboard', type: :feature do
     fill_in('Innovation name', with: '')
     click_button('Update Practice')
 
-    expect(page).to have_content('There was an error. Practice name cannot be blank.')
+    expect(page).to have_content('There was an error. Innovation name cannot be blank.')
     expect(page).to have_selector("input[value='The Best Innovation Ever!']")
 
     # check for blank email
-    fill_in('Practice name', with: 'Test Practice')
+    fill_in('Innovation name', with: 'Test Practice')
     fill_in('User email', with: '')
     click_button('Update Practice')
 

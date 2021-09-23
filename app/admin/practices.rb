@@ -203,7 +203,7 @@ ActiveAdmin.register Practice do
 
     attributes_table  do
       row :id
-      row(:name, label: 'Practice name')    { |practice| link_to(practice.name, practice_path(practice)) }
+      row(:name, label: 'Innovation name')    { |practice| link_to(practice.name, practice_path(practice)) }
       row :slug
       row('Edit URL') { |practice| link_to(practice_overview_path(practice), practice_overview_path(practice)) }
       row(:user) {|practice| link_to(practice.user&.email, admin_user_path(practice.user)) if practice.user.present?}
@@ -255,13 +255,13 @@ ActiveAdmin.register Practice do
         retired = params[:practice][:retired] == "1" ? true : false
         retired_reason = retired ? params[:practice][:retired_reason] : nil
         # raise an error if practice name is left blank
-        raise StandardError.new 'There was an error. Practice name cannot be blank.' if blank_practice_name
+        raise StandardError.new 'There was an error. Innovation name cannot be blank.' if blank_practice_name
 
         practice = Practice.find_by(slug: practice_slug)
 
         practice_by_name = Practice.find_by(name: practice_name)
         # raise an error if there's already a practice with a name that matches the user's input for the name field
-        raise StandardError.new 'There was an error. Practice name already exists.' if practice_by_name.present? && practice_by_name != practice
+        raise StandardError.new 'There was an error. Innovation name already exists.' if practice_by_name.present? && practice_by_name != practice
         practice ||= Practice.create(name: practice_name)
         practice.retired = retired
         practice.retired_reason = retired_reason

@@ -187,7 +187,7 @@ class Practice < ApplicationRecord
 
   validates_attachment_content_type :main_display_image, content_type: /\Aimage\/.*\z/
   validates_attachment_content_type :origin_picture, content_type: /\Aimage\/.*\z/
-  validates_uniqueness_of :name, {message: 'Practice name already exists'}
+  validates_uniqueness_of :name, {message: 'Innovation name already exists'}
   validates :user, presence: true, format: valid_va_email
   # validates :tagline, presence: { message: 'Practice tagline can\'t be blank'}
 
