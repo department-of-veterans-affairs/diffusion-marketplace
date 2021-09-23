@@ -89,7 +89,7 @@ describe 'The admin dashboard', type: :feature do
 
       click_link('Innovation Search Terms')
       expect(page).to have_selector('#users-information', visible: false)
-      expect(page).to have_selector('#practice-leaderboards', visible: false)
+      expect(page).to have_selector('#innovation-leaderboards', visible: false)
       expect(page).to have_selector('#general-practice-search-terms-table', visible: true)
       expect(page).to have_css("input[value='Export as .xlsx']", visible: false)
 
@@ -338,7 +338,7 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_content('There was an error. Email cannot be blank.')
     expect(page).to_not have_selector("input[value='The Newest Practice']")
     # check for invalid email
-    fill_in('Practice name', with: 'The Newest Practice')
+    fill_in('Innovation name', with: 'The Newest Practice')
     fill_in('User email', with: 'practice_owner@test.com')
     click_button('Create Practice')
 
@@ -367,7 +367,7 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_selector("input[value='The Best Innovation Ever!']")
 
     # add extra whitespace to practice name
-    fill_in('Practice name', with: '       Test Practice 1 ')
+    fill_in('Innovation name', with: '       Test Practice 1 ')
     click_button('Update Practice')
 
     expect(page).to have_content('Innovation was successfully updated.')
@@ -384,7 +384,7 @@ describe 'The admin dashboard', type: :feature do
     click_link('Practices')
     click_link('Edit', href: edit_admin_practice_path(@practice))
     # check for blank practice name
-    fill_in('Practice name', with: '')
+    fill_in('Innovation name', with: '')
     click_button('Update Practice')
 
     expect(page).to have_content('There was an error. Practice name cannot be blank.')
