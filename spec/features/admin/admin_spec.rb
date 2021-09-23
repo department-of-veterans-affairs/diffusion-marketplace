@@ -578,7 +578,7 @@ describe 'The admin dashboard', type: :feature do
     # trigger the create_or_update_practice method in the admin controller
     login_as(@admin, scope: :user, run_callbacks: false)
     visit '/admin/practices/the-best-practice-ever/edit'
-    click_button('Update Practice')
+    click_button('Update Innovation')
 
     expect(Practice.first.commontator_thread.subscribers.first).to eq(@user)
 
