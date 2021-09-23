@@ -75,7 +75,7 @@ describe 'Practice editor', type: :feature, js: true do
       expect(page).to have_content('You must include a tagline for your innovation')
       expect(page).to have_content('You must include the initiation date for your innovation')
       expect(page).to have_content('You must include the initiating facility for your innovation')
-      expect(page).to have_content('You must include a practice summary')
+      expect(page).to have_content('You must include an innovation summary')
       expect(page).to have_content('You must include at least one adoption')
       expect(page).to have_content('You must include a support network email')
       expect(page).to have_content('You must include a problem statement for your innovation')
