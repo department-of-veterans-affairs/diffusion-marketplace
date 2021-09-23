@@ -605,4 +605,5 @@ describe 'The admin dashboard', type: :feature do
 
     expect(Practice.first.commontator_thread.subscribers).to include(@user, @user2)
   end
+
 end
