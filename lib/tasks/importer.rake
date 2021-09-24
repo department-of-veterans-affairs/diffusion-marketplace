@@ -48,7 +48,7 @@ namespace :importer do
         unless practice.user.present?
           practice.user = @user
         end
-        puts "This innovation already exists in the system.".white.on_blue
+        puts "This practice already exists in the system.".white.on_blue
         # puts "Would you like to destroy and re-import this practice?. [Y/N]".white.on_blue
         # answer = STDIN.gets.chomp
         # case answer.downcase
@@ -168,14 +168,14 @@ def basic_answers
       "Please supply an email address for this practice's support network in order to direct interested parties. (e.g. HAPPEN@va.gov)": :support_network_email,
       "Please identify where your practice falls currently in VHA’s Phase Gate Model of Innovation.": :phase_gate,
       "Do you have a link to your practice's VA Pulse Group?": :va_pulse_link,
-      'How long does it usually take a group to implement your innovation? How long do you expect it to take?': :implementation_time_estimate,
+      'How long does it usually take a group to implement your practice? How long do you expect it to take?': :implementation_time_estimate,
       'Do you have anything else you would like to share regarding your practice?': :additional_notes,
       "On the Practice page, we often use a descriptive tagline as the functional title. For example: the FLOW3 Practice is not well described by the title, and we therefore use the tagline: \"Delivery of prosthetic limbs to Veterans in less than ½ the time\".Please provide a 5-10 word descriptive tagline for your Practice. This will be used as the functional title.": :tagline,
       "On the Practice page, under the tagline/functional title you just provided, we would like a longer descriptive tagline to further explain your practice. For example, for FLOW3: \"Enable 53% faster delivery of prosthetic limbs to Veterans. Automating the prosthetic limb procurement process to improve continuity of care for Veterans.\"Please provide a 1-2 line descriptive tagline for your Practice. This will be used below the functional title.": :description,
       'Please provide a 50-100 word descriptive paragraph for your Practice. ': :summary,
       # 'Please provide your best estimate rating of your Practice with regards to Cost Avoidance on a scale of 1 - 4.': :cost_savings_aggregate,
       # 'Please provide your best estimate rating of your Practice with regards to Impact on health/care experience on a scale of 1 - 4.': :veteran_satisfaction_aggregate,
-      'Please provide your best estimate of the Cost to Implement your innovation on a scale of 1 - 4': :cost_to_implement_aggregate,
+      'Please provide your best estimate of the Cost to Implement your Practice on a scale of 1 - 4': :cost_to_implement_aggregate,
       'Please provide your best estimate of the Complexity of Implementation of your Practice on a scale of 1 - 4 (Complexity of getting the practice started.)': :difficulty_aggregate,
       'Please provide your best estimate of the Complexity of Maintenance and Sustainability of your Practice on a scale of 1 - 4': :sustainability_aggregate,
       'Is Information Technology (IT) required to implement the practice?': :it_required,
@@ -196,7 +196,7 @@ def basic_answers
     @practice.send("#{value.to_sym}=", @answers[@questions.index(key.to_s)]) if value.present?
   end
   @practice.initiating_facility = @practice.initiating_facility&.split('_')[1]
-  @practice.date_initiated = DateTime.strptime(@answers[@questions.index('When was this innovation initiated? If day is unknown, use the first of the month'.to_s)], "%m/%d/%Y") if @answers[@questions.index('When was this practice initiated? If day is unknown, use the first of the month'.to_s)].present?
+  @practice.date_initiated = DateTime.strptime(@answers[@questions.index('When was this practice initiated? If day is unknown, use the first of the month'.to_s)], "%m/%d/%Y") if @answers[@questions.index('When was this practice initiated? If day is unknown, use the first of the month'.to_s)].present?
   @practice.phase_gate = @practice.phase_gate.split('.')[1].split('-')[0].squish
   @practice.save
 end
@@ -361,9 +361,9 @@ def categories
   puts "==> Importing Practice: #{@name} Categories".light_blue
   @practice.category_practices.each(&:destroy)
   question_fields = {
-      'What Primary care specialties does this innovation impact? Please mark all that apply.': 33,
-      'What medical sub-specialties does this innovation impact? Please select all all that apply.': 23,
-      'What surgical specialties does this innovation impact? Please select all all that apply.': 14,
+      'What Primary care specialties does this Practice impact? Please mark all that apply.': 33,
+      'What medical sub-specialties does this Practice impact? Please select all all that apply.': 23,
+      'What surgical specialties does this Practice impact? Please select all all that apply.': 14,
       'What are the whole health impacts of this practice? (Please select all that apply.)': 8,
       "This question will allow the user to find your Practice by a medical complaint, clinical condition, or system of the body.\u2028\u2028 We are going to divide complaints, conditions, and systems anatomically.": 36,
       'Please enter one condition per line': 5
@@ -460,7 +460,7 @@ def job_positions
   puts "==> Importing Practice: #{@name} Job Positions".light_blue
   @practice.job_position_practices.each(&:destroy)
   question_fields = {
-      "Which of the following job titles or positions does this innovation impact? (Please select all that apply.)": 10
+      "Which of the following job titles or positions does this practice impact? (Please select all that apply.)": 10
   }
 
   question_fields.each do |key, value|
@@ -488,7 +488,7 @@ def ancillary_services
   puts "==> Importing Practice: #{@name} Ancillary Services".light_blue
   @practice.ancillary_service_practices.each(&:destroy)
   question_fields = {
-      'Which of the following ancillary services does this innovation impact? (Please select all that apply.)': 11
+      'Which of the following ancillary services does this practice impact? (Please select all that apply.)': 11
   }
 
   question_fields.each do |key, value|
@@ -516,7 +516,7 @@ def clinical_locations
   puts "==> Importing Practice: #{@name} Clinical Locations".light_blue
   @practice.clinical_location_practices.each(&:destroy)
   question_fields = {
-      'Which of the following clinical locations does this innovation impact? (Please select all that apply.)': 12
+      'Which of the following clinical locations does this practice impact? (Please select all that apply.)': 12
   }
 
   question_fields.each do |key, value|
@@ -544,7 +544,7 @@ def departments
   puts "==> Importing Practice: #{@name} Departments".light_blue
   @practice.department_practices.each(&:destroy)
   question_fields = {
-      'Which departments or operational domains does this innovation impact?': 50,
+      'Which departments or operational domains does this Practice impact?': 50,
   }
 
   question_fields.each do |key, value|
@@ -572,7 +572,7 @@ def domains
   puts "==> Importing Practice: #{@name} Domains".light_blue
   @practice.domain_practices.each(&:destroy)
   question_fields = {
-      'How does this innovation deliver value? Please select all that apply of the five value delivery domains below:': 5,
+      'How does this practice deliver value? Please select all that apply of the five value delivery domains below:': 5,
   }
 
   question_fields.each do |key, value|
@@ -820,7 +820,7 @@ def additional_staff
   puts "==> Importing Practice: #{@name} Additional Staff".light_blue
   @practice.additional_staffs.each(&:destroy)
   question_fields = [
-      {'What job titles are required to implement this Innovation?': 5},
+      {'What job titles are required to implement this Practice?': 5},
       {'For the job titles listed, how many hours are required per week?': 5},
       {'For the job titles listed, what is the duration of the job? Please indicate the number of weeks or type in "Permanent"': 5}
   ]
