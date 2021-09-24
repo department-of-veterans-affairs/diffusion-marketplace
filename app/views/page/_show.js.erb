@@ -14,4 +14,15 @@ function browsePageBuilderPageHappy() {
     }
 }
 
-$(document).on('turbolinks:load', browsePageBuilderPageHappy);
+function removeBottomMarginFromLastAccordionHeading() {
+    var accordionHeading = '.usa-accordion__heading';
+    $(accordionHeading).last().removeClass('margin-bottom-2');
+    $(accordionHeading).last().addClass('margin-bottom-0');
+}
+
+function execPageBuilderFunctions() {
+    browsePageBuilderPageHappy();
+    removeBottomMarginFromLastAccordionHeading();
+}
+
+$(document).on('turbolinks:load', execPageBuilderFunctions);

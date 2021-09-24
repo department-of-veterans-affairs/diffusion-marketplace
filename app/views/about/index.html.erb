@@ -1,9 +1,9 @@
 <div class="dm-about-page grid-container">
   <%= render partial: "shared/messages", locals: { small_text: true } %>
 
-  <section class="about-us-info-section margin-y-128" role="region" aria-label="About us info section">
+  <section class="about-us-info-section margin-y-8 margin-y-128-desktop" role="region" aria-label="About us info">
     <div class="grid-row grid-gap-3">
-      <div class="grid-col-7">
+      <div class="grid-col-12 desktop:grid-col-7">
         <h1 class="usa-prose-h1 margin-bottom-4 margin-top-0">About us</h1>
         <p class="usa-prose-body">
           The Diffusion Marketplace is a discovery and collaboration tool that curates promising clinical, operational, and strategic practices from VA. We are managed by the
@@ -11,20 +11,21 @@
           the VHA Innovation Ecosystem. Our goal is to represent the best of VA and to reflect the spirit of service and collaboration for Veterans and the communities we serve.
         </p>
       </div>
-      <div class="grid-col-1"></div>
-      <div class="grid-col-4">
+      <div class="display-none desktop:display-block desktop:grid-col-1"></div>
+      <div class="grid-col-12 margin-top-3 desktop:margin-top-0 desktop:grid-col-4 about-us-image-col">
         <div class="about-us-image-container">
-          <img
-            class="display-block width-full"
-            <%# TODO: Add about page image source and alt text here %>
-            src=""
-            alt=""/>
+          <%= image_tag(
+                'about-page-image.png',
+                class: 'display-block width-full',
+                alt: 'Several dozen attendees of the Diffusion of Excellence’s Base Camp and VHA’s Diffusion Academy stand and smile on the steps of the Southeast Louisiana Veterans Health Care System in New Orleans in February 2020.'
+              )
+          %>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="about-us-faq-section margin-bottom-128" role="region" aria-label="Frequently asked questions section">
+  <section class="about-us-faq-section margin-bottom-8 margin-bottom-128-desktop" role="region" aria-label="Frequently asked questions">
     <h2 class="usa-prose-h2 margin-bottom-4 margin-top-0">Frequently asked questions</h2>
     <div class="usa-accordion" aria-multiselectable="true">
       <%= render partial: 'faq_accordion', locals: {
@@ -100,8 +101,8 @@
       %>
     </div>
   </section>
-  <section class="about-us-contact-section margin-bottom-128 grid-row" role="region" aria-label="Contact us section">
-    <div class="grid-col-8">
+  <section class="about-us-contact-section grid-row" role="region" aria-label="Contact us">
+    <div class="grid-col-12 desktop:grid-col-8">
       <h2 class="usa-prose-h2 margin-bottom-4 margin-top-0">Contact us</h2>
       <p class="usa-prose-body">Have a question for our team? Send a message to <a href="mailto:marketplace@va.gov" class="usa-link">marketplace@va.gov</a>. and we’ll get back to you as soon as we can.</p>
       <%= form_tag about_path, method: 'post' do %>

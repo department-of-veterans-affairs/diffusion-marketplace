@@ -3,4 +3,9 @@ footer {
   position: absolute;
   bottom: 0;
   width: 100%;
+
+  .usa-footer__return-to-top {
+    @include u-padding-top(0, !important);
+    padding-bottom: 51px !important;
+  }
 }

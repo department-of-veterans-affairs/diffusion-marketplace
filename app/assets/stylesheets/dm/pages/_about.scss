@@ -1,8 +1,32 @@
 .dm-about-page {
-  .about-us-image-container {
-    img {
-      height: 209px;
-      object-fit: cover;
+  .about-us-image-col {
+    @media screen and (max-width: 1023px) {
+      max-height: 409px;
+    }
+
+    .about-us-image-container {
+      position: relative;
+      padding-bottom: 56.25%; // 16:9 aspect ratio
+      max-width: 727.936px;
+
+      img {
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        max-height: 409px;
+      }
+
+      @media screen and (min-width: 1024px) {
+        padding-bottom: 0;
+
+        img {
+          height: 209px;
+          object-fit: cover;
+          position: unset;
+        }
+      }
 
       @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
         @include u-display('none', !important);
@@ -14,9 +38,17 @@
     @include u-maxw('full', !important);
   }
 
-  textarea {
-    resize: none;
-    height: 132px;
-    @include u-maxw('full', !important);
+  form {
+    textarea {
+      resize: none;
+      height: 132px;
+      @include u-maxw('full', !important);
+    }
+
+    .usa-button {
+      @media screen and (max-width: 1023px) {
+        width: 153px;
+      }
+    }
   }
 }

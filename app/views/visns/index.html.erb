@@ -10,7 +10,7 @@
     </div>
     <%= render partial: 'visns/maps/index_map' %>
   </section>
-  <section id="visn-cards-section" class="margin-bottom-5">
+  <section id="visn-cards-section">
     <div class="grid-row grid-gap-3">
       <% @visns.each do |visn| %>
           <%= render partial: 'visns/visn_card', locals: { visn: visn } %>
