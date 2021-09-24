@@ -601,7 +601,6 @@ describe 'The admin dashboard', type: :feature do
     sleep 2
     login_as(@admin, :scope => :user, run_callbacks: false)
     visit '/admin/practices/the-best-practice-ever/edit'
-    sleep 3
     expect(page).to have_content('USER EMAIL')
     fill_in('practice_user_id', with: @user.email)
     click_button('Update Practice')
