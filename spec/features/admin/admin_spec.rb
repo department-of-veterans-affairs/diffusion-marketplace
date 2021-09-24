@@ -603,8 +603,8 @@ describe 'The admin dashboard', type: :feature do
     logout(@user2)
     login_as(@admin, :scope => :user, :run_callbacks => false)
     visit '/admin/practices'
-    click_link('Edit', href: edit_admin_practice_path(@practice))
     sleep 3
+    click_link('Edit', href: edit_admin_practice_path(@practice))
     find('#practice_user_id').set(@user.email)
     click_button('Update Practice')
 
