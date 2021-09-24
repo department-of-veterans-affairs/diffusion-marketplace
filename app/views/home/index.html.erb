@@ -14,11 +14,12 @@
               <%= link_to 'Learn more', about_path, class: 'dm-alt-link-gold' %>
             </div>
             <div class="homepage-welcome-banner-image-container text-white grid-col-12 tablet:grid-col-6 desktop:grid-col-5 desktop:padding-left-105">
-              <img
-                class="display-block padding-left-0"
-                <%# TODO: Add homepage banner image source here %>
-                src=""
-                alt="Welcome banner image"/>
+              <%= image_tag(
+                    'homepage-image.png',
+                    class: 'display-block padding-left-0',
+                    alt: ''
+                  )
+              %>
             </div>
           </div>
         </div>
