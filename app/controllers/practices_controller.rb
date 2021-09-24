@@ -1,5 +1,6 @@
 class PracticesController < ApplicationController
   include CropperUtils, PracticesHelper, PracticeEditorUtils, EditorSessionUtils, PracticeEditorSessionsHelper, PracticeUtils, ThreeColumnDataHelper
+  prepend_before_action :skip_timeout, only: [:session_time_remaining]
   before_action :set_practice, only: [:show, :edit, :update, :destroy, :highlight, :un_highlight, :feature,
                                       :un_feature, :favorite, :instructions, :overview, :impact, :resources, :documentation,
                                       :departments, :timeline, :risk_and_mitigation, :contact, :checklist, :publication_validation, :adoptions,
@@ -518,6 +519,10 @@ class PracticesController < ApplicationController
   end
 
   private
+
+  def skip_timeout
+    request.env["devise.skip_trackable"] = true
+  end
 
   def is_enabled
     unless @practice.enabled
