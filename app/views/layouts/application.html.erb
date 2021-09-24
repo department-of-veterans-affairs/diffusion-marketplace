@@ -63,6 +63,9 @@
     <%= javascript_tag 'data-turbolinks-track': 'reload' do %>
       <%= render partial: 'layouts/ahoy_event_tracking', formats: [:js] %>
     <% end %>
+    <% if current_user.present? %>
+      <%= javascript_include_tag 'session_timeout_poller.js', 'data-turbolinks-track': 'reload' %>
+    <% end %>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <meta name="turbolinks-cache-control" content="no-preview">
     <%= yield(:head_tags) %>

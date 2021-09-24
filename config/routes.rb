@@ -5,6 +5,10 @@ Rails.application.routes.draw do
   get ':page_group_friendly_id/:page_slug' => 'page#show', constraints: PageGroupConstraint
   ActiveAdmin.routes(self)
   devise_for :users, controllers: { registrations: 'registrations' }
+  devise_scope :user do
+    get   "/check_session_timeout"    => "session_timeout#check_session_timeout"
+    get   "/session_timeout"          => "session_timeout#render_timeout"
+  end
   mount Ahoy::Engine => '/ahoy', as: :dm_ahoy
   mount Commontator::Engine => '/commontator' #, as: :dm_commontator
 

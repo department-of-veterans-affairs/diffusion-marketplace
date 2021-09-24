@@ -9,7 +9,7 @@ class VaFacility < ApplicationRecord
   attr_accessor :reset_cached_va_facilities
 
   scope :get_by_visn, -> (visn) { cached_va_facilities.where(visn: visn) }
-  scope :get_classification_counts, -> (facility_type) { where(classification: facility_type).size }
+  scope :get_classification_counts, -> (facility_type) { where(classification: facility_type, hidden: false).size }
   scope :get_classifications, -> { pluck(:classification).uniq }
   scope :get_ids, -> { pluck(:id) }
   scope :get_locations, -> { order(:street_address_state).pluck(:street_address_state).uniq }
@@ -44,7 +44,7 @@ class VaFacility < ApplicationRecord
 
   def self.cached_va_facilities
     Rails.cache.fetch('va_facilities') do
-      VaFacility.all
+      VaFacility.where(hidden: false).order('official_station_name')
     end
   end
 end
