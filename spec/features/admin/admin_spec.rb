@@ -603,8 +603,8 @@ describe 'The admin dashboard', type: :feature do
     logout(@user2)
     login_as(@admin, :scope => :user, :run_callbacks => false)
     visit '/admin/practices/the-best-practice-ever/edit'
-    sleep 4
-    find('#practice_user_id').set(@user.email)
+    sleep 2
+    fill_in('practice_user_id', with: @user2.email)
     click_button('Update Practice')
 
     expect(Practice.first.commontator_thread.subscribers).to include(@user, @user2)
