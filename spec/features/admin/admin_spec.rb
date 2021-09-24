@@ -603,6 +603,7 @@ describe 'The admin dashboard', type: :feature do
     logout(@user2)
     login_as(@admin, :scope => :user, :run_callbacks => false)
     visit '/admin/practices/the-best-practice-ever/edit'
+    sleep 3
     fill_in('User email', with: @user.email)
     click_button('Update Practice')
 
