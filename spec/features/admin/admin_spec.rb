@@ -602,7 +602,7 @@ describe 'The admin dashboard', type: :feature do
     visit '/admin/practices/the-best-practice-ever/edit'
     expect(page).to have_current_path(edit_admin_practice_path(@practice))
     sleep 3
-    fill_in('User email', with: @user.email)
+    fill_in('practice_user_id', with: @user.email)
     click_button('Update Practice')
 
     expect(Practice.first.commontator_thread.subscribers).to include(@user, @user2)
