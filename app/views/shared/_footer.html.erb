@@ -6,13 +6,10 @@
 <%= render partial: 'shared/terms_and_conditions_modal' %>
 
 <footer class="<%= yield(:footer_classes) %>">
-  <%# only show return to top on practice show page and long practice editor pages (per design 8/19/21) %>
-  <% return_to_top_pages = ['show', 'metrics', 'introduction', 'overview', 'implementation'] %>
-  <% if params[:controller] === 'practices' && return_to_top_pages.include?(params[:action]) %>
-    <div class="grid-container usa-footer__return-to-top">
-      <button class="dm-button--unstyled-primary dm-return-to-top width-auto">Return to top</button>
-    </div>
-  <% end %>
+  <%# only show return to top on mobile views, practice show page and long practice editor pages (per design 9/21/21) %>
+  <div class="grid-container usa-footer__return-to-top<%= ' display-none' if params[:controller] === 'home' && params[:action] === 'index' %><%= params[:controller] === 'practices' && NavigationHelper::RETURN_TO_TOP_PAGES.include?(params[:action]) ? ' desktop:display-block' : ' tablet:display-none' %>">
+    <button class="dm-button--unstyled-primary dm-return-to-top width-auto">Return to top</button>
+  </div>
   <%# footer actions %>
   <div class="bg-base-lightest">
     <div class="desktop:grid-container padding-x-0 desktop:padding-y-2">

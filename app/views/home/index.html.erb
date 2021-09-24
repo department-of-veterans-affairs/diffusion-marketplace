@@ -39,9 +39,12 @@
       </div>
     </form>
     <p class="usa-prose-body">
-      <%= link_to 'Browse all practices', search_path, class: 'usa-link' %>
+      <%= link_to 'Browse all innovations', search_path, class: 'usa-link' %>
     </p>
   </section>
+     <%= render partial: 'home/popular_categories_section', locals: {
+         section_name: 'popular categories'
+     } %>
 
   <% if @featured_topic.present? && @featured_topic.title.present? && @featured_topic.description.present? && @featured_topic.url.present? && @featured_topic.cta_text.present? && @featured_topic.attachment.exists?%>
     <%= render partial: 'home/featured_section', locals: {
