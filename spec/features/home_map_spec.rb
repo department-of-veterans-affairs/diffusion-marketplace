@@ -138,7 +138,7 @@ describe 'Map of Diffusion', type: :feature, js: true do
     update_results
     expect_marker_ct(3)
     expect(page).to have_content('3 facility matches (of 3)')
-    expect(page).to have_content('4 innovations matched (of 4)')
+    expect(page).to have_content('4 practices matched (of 4)')
     # successful adoptions
     find('.adoption-status-label[for="status_in-progress"]').click
     update_results

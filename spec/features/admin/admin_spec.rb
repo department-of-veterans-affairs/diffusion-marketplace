@@ -417,7 +417,7 @@ describe 'The admin dashboard', type: :feature do
     expect { click_button('Update Practice') }.to change { ActionMailer::Base.deliveries.count }.by(1)
     expect(page).to have_content('Innovation was successfully updated.')
     # make sure the mailer subject is for a practice owner that is now also a practice editor
-    expect(ActionMailer::Base.deliveries.last.subject).to eq('You have been added to the list of practice editors for the The Best Innovation Ever! Diffusion Marketplace Page!')
+    expect(ActionMailer::Base.deliveries.last.subject).to eq('You have been added to the list of practice editors for the The Best Practice Ever! Diffusion Marketplace Page!')
 
     visit practice_editors_path(@practice)
     expect(page).to have_content('test@va.gov')
