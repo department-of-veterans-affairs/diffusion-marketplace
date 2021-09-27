@@ -387,7 +387,7 @@ describe 'The admin dashboard', type: :feature do
     fill_in('Innovation name', with: '')
     click_button('Update Practice')
 
-    expect(page).to have_content('There was an error. Practice name cannot be blank.')
+    expect(page).to have_content('There was an error. Innovation name cannot be blank.')
     expect(page).to have_selector("input[value='The Best Practice Ever!']")
 
     # check for blank email
