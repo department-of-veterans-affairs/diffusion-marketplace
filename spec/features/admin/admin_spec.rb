@@ -471,55 +471,55 @@ describe 'The admin dashboard', type: :feature do
     expect(page).not_to have_selector('option[selected]')
   end
 
-  # it 'should be able to highlight Practices if one is not already highlighted' do
-  #   login_as(@admin, scope: :user, run_callbacks: false)
-  #   pr_2 = Practice.create!(name: 'Another Test Practice', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true)
-  #   pr_3 = Practice.create!(name: 'Another Test Practice 2', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline')
-  #
-  #   visit '/'
-  #   expect(page).to have_no_content('Highlighted by the VA this month')
-  #   # highlight practice
-  #   visit '/admin'
-  #   click_link('Practices')
-  #   expect(page).to have_content('Highlight')
-  #   click_link('Highlight', href: highlight_practice_admin_practice_path(@practice))
-  #   expect(page).to have_content("\"#{@practice.name}\" Practice highlighted")
-  #   expect(find_all('.col-highlight > span')[3].text).to eq 'YES'
-  #   click_link('Highlight', href: highlight_practice_admin_practice_path(pr_2))
-  #   expect(page).to have_content("Only one practice can be highlighted at a time.")
-  #   expect(find_all('.col-highlight > span')[1].text).to eq 'NO'
-  #   click_link('Highlight', href: highlight_practice_admin_practice_path(pr_3))
-  #   expect(page).to have_content("Practice must be published to be highlighted.")
-  #   expect(find_all('.col-highlight > span')[0].text).to eq 'NO'
-  #   visit '/'
-  #   expect(page).to have_content('Highlighted by the VA this month')
-  #   expect(page).to have_content(@practice.name)
-  #   # edit practice
-  #   visit '/admin'
-  #   click_link('Practices')
-  #   click_link('Edit', href: edit_admin_practice_path(@practice))
-  #   expect(page).to have_content('HIGHLIGHTED PRACTICE TITLE')
-  #   expect(page).to have_content('HIGHLIGHTED PRACTICE BODY')
-  #   fill_in('Highlighted Practice Title', with: 'VA Highlighted This Awesome Practice')
-  #   fill_in('Highlighted Practice Body', with: 'pretty cool practice')
-  #   click_button('Update Practice')
-  #   visit '/'
-  #   expect(page).to have_content('VA Highlighted This Awesome Practice')
-  #   expect(page).to have_content('pretty cool practice')
-  #   expect(page).to have_no_content('Highlighted by the VA this month')
-  #   # unhighlight practice
-  #   visit '/admin'
-  #   click_link('Practices')
-  #   expect(page).to have_content('Unhighlight')
-  #   click_link('Unhighlight', href: highlight_practice_admin_practice_path(@practice))
-  #   expect(find_all('.col-highlight > span').first.text).to eq 'NO'
-  #   expect(page).to have_content("\"#{@practice.name}\" Practice unhighlighted")
-  #   visit '/'
-  #   expect(page).to have_no_content('VA Highlighted This Awesome Practice')
-  #   expect(page).to have_no_content('pretty cool practice')
-  #   expect(page).to have_no_content('Highlighted by the VA this month')
-  #   expect(page).to have_no_content(@practice.name)
-  # end
+  it 'should be able to highlight Practices if one is not already highlighted' do
+    login_as(@admin, scope: :user, run_callbacks: false)
+    pr_2 = Practice.create!(name: 'Another Test Practice', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true)
+    pr_3 = Practice.create!(name: 'Another Test Practice 2', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline')
+
+    visit '/'
+    expect(page).to have_no_content('Highlighted by the VA this month')
+    # highlight practice
+    visit '/admin'
+    click_link('Practices')
+    expect(page).to have_content('Highlight')
+    click_link('Highlight', href: highlight_practice_admin_practice_path(@practice))
+    expect(page).to have_content("\"#{@practice.name}\" Practice highlighted")
+    expect(find_all('.col-highlight > span')[3].text).to eq 'YES'
+    click_link('Highlight', href: highlight_practice_admin_practice_path(pr_2))
+    expect(page).to have_content("Only one practice can be highlighted at a time.")
+    expect(find_all('.col-highlight > span')[1].text).to eq 'NO'
+    click_link('Highlight', href: highlight_practice_admin_practice_path(pr_3))
+    expect(page).to have_content("Practice must be published to be highlighted.")
+    expect(find_all('.col-highlight > span')[0].text).to eq 'NO'
+    visit '/'
+    expect(page).to have_content('Highlighted by the VA this month')
+    expect(page).to have_content(@practice.name)
+    # edit practice
+    visit '/admin'
+    click_link('Practices')
+    click_link('Edit', href: edit_admin_practice_path(@practice))
+    expect(page).to have_content('HIGHLIGHTED PRACTICE TITLE')
+    expect(page).to have_content('HIGHLIGHTED PRACTICE BODY')
+    fill_in('Highlighted Practice Title', with: 'VA Highlighted This Awesome Practice')
+    fill_in('Highlighted Practice Body', with: 'pretty cool practice')
+    click_button('Update Practice')
+    visit '/'
+    expect(page).to have_content('VA Highlighted This Awesome Practice')
+    expect(page).to have_content('pretty cool practice')
+    expect(page).to have_no_content('Highlighted by the VA this month')
+    # unhighlight practice
+    visit '/admin'
+    click_link('Practices')
+    expect(page).to have_content('Unhighlight')
+    click_link('Unhighlight', href: highlight_practice_admin_practice_path(@practice))
+    expect(find_all('.col-highlight > span').first.text).to eq 'NO'
+    expect(page).to have_content("\"#{@practice.name}\" Practice unhighlighted")
+    visit '/'
+    expect(page).to have_no_content('VA Highlighted This Awesome Practice')
+    expect(page).to have_no_content('pretty cool practice')
+    expect(page).to have_no_content('Highlighted by the VA this month')
+    expect(page).to have_no_content(@practice.name)
+  end
 
   it 'should be able to toggle between retired and active states from actions column' do
     login_as(@admin, scope: :user, run_callbacks: false)
