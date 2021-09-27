@@ -39,30 +39,30 @@ describe 'Search', type: :feature do
     @approver = User.create!(email: 'squidward.tentacles@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(User::USER_ROLES[1].to_sym)
     @approver.add_role(User::USER_ROLES[0].to_sym)
-    @practice = Practice.create!(name: 'The Best Innovation Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best innovation ever.', overview_problem: 'overview-problem', published: true, approved: true, user: @user2)
+    @practice = Practice.create!(name: 'The Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', published: true, approved: true, user: @user2)
     PracticeOriginFacility.create!(practice: @practice, facility_type: 0, va_facility: facility_14)
-    @practice2 = Practice.create!(name: 'Another Best Innovation', initiating_facility_type: 'facility', tagline: 'Test tagline 2', date_initiated: 'Sun, 24 Oct 2004 00:00:00 UTC +00:00', summary: 'This is another best innovation.', user: @user2)
+    @practice2 = Practice.create!(name: 'Another Best Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 2', date_initiated: 'Sun, 24 Oct 2004 00:00:00 UTC +00:00', summary: 'This is another best practice.', user: @user2)
     PracticeOriginFacility.create!(practice: @practice2, facility_type: 0, va_facility: facility_13)
-    @practice3 = Practice.create!(name: 'Some Cool Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 3', date_initiated: 'Mon, 08 Mar 1994 00:00:00 UTC +00:00', summary: 'This is the second best innovation ever.', overview_solution: 'overview-solution', published: true, approved: true, user: @user2)
+    @practice3 = Practice.create!(name: 'Some Cool Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 3', date_initiated: 'Mon, 08 Mar 1994 00:00:00 UTC +00:00', summary: 'This is the second best practice ever.', overview_solution: 'overview-solution', published: true, approved: true, user: @user2)
     PracticeOriginFacility.create!(practice: @practice3, facility_type: 0, va_facility: facility_1)
-    @practice4 = Practice.create!(name: 'A Fantastic Practice', initiating_facility_type: 'visn', initiating_facility: '1', tagline: 'Test tagline 4', date_initiated: 'Wed, 15 May 2008 00:00:00 UTC +00:00', summary: 'This is the third best innovation ever.', published: true, approved: true, user: @user2)
-    @practice5 = Practice.create!(name: 'Random Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 5', date_initiated: 'Fri, 27 Feb 1990 00:00:00 UTC +00:00', summary: 'This is the fourth best innovation ever.', overview_results: 'overview-results', published: true, approved: true, user: @user2)
+    @practice4 = Practice.create!(name: 'A Fantastic Practice', initiating_facility_type: 'visn', initiating_facility: '1', tagline: 'Test tagline 4', date_initiated: 'Wed, 15 May 2008 00:00:00 UTC +00:00', summary: 'This is the third best practice ever.', published: true, approved: true, user: @user2)
+    @practice5 = Practice.create!(name: 'Random Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 5', date_initiated: 'Fri, 27 Feb 1990 00:00:00 UTC +00:00', summary: 'This is the fourth best practice ever.', overview_results: 'overview-results', published: true, approved: true, user: @user2)
     PracticeOriginFacility.create!(practice: @practice5, facility_type: 0, va_facility: facility_1)
-    @practice6 = Practice.create!(name: 'One Practice to Rule Them All', initiating_facility_type: 'visn', initiating_facility: '1', tagline: 'Test tagline 6', date_initiated: 'Sun, 21 Oct 2001 00:00:00 UTC +00:00', summary: 'This is the fifth best innovation ever.', published: true, approved: true, user: @user2)
-    @practice7 = Practice.create!(name: 'Practice of the Ages', initiating_facility_type: 'facility', tagline: 'Test tagline 7', date_initiated: 'Mon, 26 Feb 1986 00:00:00 UTC +00:00', summary: 'This is the sixth best innovation ever.', published: true, approved: true, user: @user2)
+    @practice6 = Practice.create!(name: 'One Practice to Rule Them All', initiating_facility_type: 'visn', initiating_facility: '1', tagline: 'Test tagline 6', date_initiated: 'Sun, 21 Oct 2001 00:00:00 UTC +00:00', summary: 'This is the fifth best practice ever.', published: true, approved: true, user: @user2)
+    @practice7 = Practice.create!(name: 'Practice of the Ages', initiating_facility_type: 'facility', tagline: 'Test tagline 7', date_initiated: 'Mon, 26 Feb 1986 00:00:00 UTC +00:00', summary: 'This is the sixth best practice ever.', published: true, approved: true, user: @user2)
     PracticeOriginFacility.create!(practice: @practice7, facility_type: 0, va_facility: facility_7)
     PracticeOriginFacility.create!(practice: @practice7, facility_type: 0, va_facility: facility_8)
-    @practice8 = Practice.create!(name: 'An Unforgettable Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 8', date_initiated: 'Sat, 11 Jun 1997 00:00:00 UTC +00:00', summary: 'This is the seventh best innovation ever.', published: true, approved: true, user: @user2)
+    @practice8 = Practice.create!(name: 'An Unforgettable Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 8', date_initiated: 'Sat, 11 Jun 1997 00:00:00 UTC +00:00', summary: 'This is the seventh best practice ever.', published: true, approved: true, user: @user2)
     PracticeOriginFacility.create!(practice: @practice8, facility_type: 0, va_facility: facility_9)
-    @practice9 = Practice.create!(name: 'One Amazing Practice', initiating_facility_type: 'visn', initiating_facility: '3', tagline: 'Test tagline 9', date_initiated: 'Fri, 09 Feb 1996 00:00:00 UTC +00:00', summary: 'This is the eighth best innovation ever.', published: true, approved: true, user: @user2)
-    @practice10 = Practice.create!(name: 'The Most Efficient Practice', initiating_facility_type: 'visn', initiating_facility: '4', tagline: 'Test tagline 10', date_initiated: 'Wed, 21 Aug 2002 00:00:00 UTC +00:00', summary: 'This is the ninth best innovation ever.', published: true, approved: true, user: @user2)
-    @practice11 = Practice.create!(name: 'A Glorious Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 11', date_initiated: 'Sat, 06 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the tenth best innovation ever.', published: true, approved: true, user: @user2)
+    @practice9 = Practice.create!(name: 'One Amazing Practice', initiating_facility_type: 'visn', initiating_facility: '3', tagline: 'Test tagline 9', date_initiated: 'Fri, 09 Feb 1996 00:00:00 UTC +00:00', summary: 'This is the eighth best practice ever.', published: true, approved: true, user: @user2)
+    @practice10 = Practice.create!(name: 'The Most Efficient Practice', initiating_facility_type: 'visn', initiating_facility: '4', tagline: 'Test tagline 10', date_initiated: 'Wed, 21 Aug 2002 00:00:00 UTC +00:00', summary: 'This is the ninth best practice ever.', published: true, approved: true, user: @user2)
+    @practice11 = Practice.create!(name: 'A Glorious Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 11', date_initiated: 'Sat, 06 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the tenth best practice ever.', published: true, approved: true, user: @user2)
     PracticeOriginFacility.create!(practice: @practice11, facility_type: 0, va_facility: facility_10)
-    @practice12 = Practice.create!(name: 'The Most Magnificent Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 12', date_initiated: 'Sun, 27 Jan 2010 00:00:00 UTC +00:00', summary: 'This is the eleventh best innovation ever.', published: true, approved: true, user: @user2)
+    @practice12 = Practice.create!(name: 'The Most Magnificent Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 12', date_initiated: 'Sun, 27 Jan 2010 00:00:00 UTC +00:00', summary: 'This is the eleventh best practice ever.', published: true, approved: true, user: @user2)
     PracticeOriginFacility.create!(practice: @practice12, facility_type: 0, va_facility: facility_12)
-    @practice13 = Practice.create!(name: 'The Champion of Practices', initiating_facility_type: 'facility', tagline: 'Test tagline 13', date_initiated: 'Sun, 17 Nov 1991 00:00:00 UTC +00:00', summary: 'This is the twelfth best innovation ever.', published: true, approved: true, user: @user2)
+    @practice13 = Practice.create!(name: 'The Champion of Practices', initiating_facility_type: 'facility', tagline: 'Test tagline 13', date_initiated: 'Sun, 17 Nov 1991 00:00:00 UTC +00:00', summary: 'This is the twelfth best practice ever.', published: true, approved: true, user: @user2)
     PracticeOriginFacility.create!(practice: @practice13, facility_type: 0, va_facility: facility_2)
-    @practice14 = Practice.create!(name: 'The Most Important Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 14', date_initiated: 'Sun, 14 Nov 1999 00:00:00 UTC +00:00', summary: 'This is the thirteenth best innovation ever.', published: true, approved: true, user: @user2)
+    @practice14 = Practice.create!(name: 'The Most Important Practice', initiating_facility_type: 'facility', tagline: 'Test tagline 14', date_initiated: 'Sun, 14 Nov 1999 00:00:00 UTC +00:00', summary: 'This is the thirteenth best practice ever.', published: true, approved: true, user: @user2)
     PracticeOriginFacility.create!(practice: @practice14, facility_type: 0, va_facility: facility_3)
 
     parent_cat_1 = Category.create!(name: 'Strategic')
@@ -211,7 +211,7 @@ describe 'Search', type: :feature do
       fill_in('dm-practice-search-field', with: 'practice')
       find('#dm-practice-search-button').click
 
-      #expect(page).to have_content('13 results')
+      expect(page).to have_content('13 results')
       expect(page).to_not have_content(@practice2.name)
 
       # show practices that are approved/published
@@ -481,7 +481,7 @@ describe 'Search', type: :feature do
         fill_in('dm-practice-search-field', with: 'practice')
         search
 
-        #expect(page).to have_content('13 results')
+        expect(page).to have_content('13 results')
         expect(page).to have_selector('div.dm-practice-card', count: 12)
 
         # show the next set of 12 results
