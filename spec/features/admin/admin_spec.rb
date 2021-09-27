@@ -392,7 +392,7 @@ describe 'The admin dashboard', type: :feature do
 
     # check for blank email
     fill_in('Innovation name', with: 'Test Practice')
-    fill_in('User email', with: '')
+    fill_in('#practice_user_id', with: '')
     click_button('Update Practice')
 
     expect(page).to have_content('There was an error. Email cannot be blank.')
