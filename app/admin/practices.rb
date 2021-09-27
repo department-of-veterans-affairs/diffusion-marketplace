@@ -92,7 +92,6 @@ ActiveAdmin.register Practice do
       redirect_back fallback_location: root_path, :flash => { :error => message }
     else
       resource.highlight = to_highlight
-      resource.highlight_title = nil
       resource.highlight_body = nil
       message = "\"#{resource.name}\" Practice highlighted"
       unless resource.highlight
