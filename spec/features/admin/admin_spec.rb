@@ -499,7 +499,7 @@ describe 'The admin dashboard', type: :feature do
     click_link('Practices')
     click_link('Edit', href: edit_admin_practice_path(@practice))
     expect(page).to have_content('HIGHLIGHTED INNOVATION BODY')
-    fill_in('Highlighted Innovation Body', with: 'pretty cool practice')
+    fill_in('practice_highlight_body', with: 'pretty cool practice')
     click_button('Update Practice')
     visit '/'
     expect(page).to have_content('pretty cool practice')
