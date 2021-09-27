@@ -363,8 +363,8 @@ describe 'The admin dashboard', type: :feature do
     fill_in('Innovation name', with: @practice_2.name)
     click_button('Update Practice')
 
-    expect(page).to have_content('There was an error. Innovation name already exists.')
-    expect(page).to have_selector("input[value='The Best Innovation Ever!']")
+    expect(page).to have_content('There was an error. Practice name already exists.')
+    expect(page).to have_selector("input[value='The Best Practice Ever!']")
 
     # add extra whitespace to practice name
     fill_in('Innovation name', with: '       Test Practice 1 ')
