@@ -133,6 +133,9 @@ GEM
     aws-sdk-kms (1.24.0)
       aws-sdk-core (~> 3, >= 3.61.1)
       aws-sigv4 (~> 1.1)
+    aws-sdk-rds (1.68.0)
+      aws-sdk-core (~> 3, >= 3.61.1)
+      aws-sigv4 (~> 1.1)
     aws-sdk-s3 (1.46.0)
       aws-sdk-core (~> 3, >= 3.61.1)
       aws-sdk-kms (~> 1)
@@ -569,6 +572,7 @@ DEPENDENCIES
   acts_as_votable
   ahoy_matey
   autoprefixer-rails
+  aws-sdk-rds
   aws-sdk-s3
   axe-matchers
   babel-transpiler
