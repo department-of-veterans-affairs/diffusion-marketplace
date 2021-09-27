@@ -19,7 +19,7 @@ describe 'The admin dashboard', type: :feature do
     visn_8 = Visn.create!(id: 7, name: "VA Sunshine Healthcare Network", number: 8)
     @facility_1 = VaFacility.create!(visn: visn_8, station_number: "516", official_station_name: "C.W. Bill Young Department of Veterans Affairs Medical Center", common_name: "Bay Pines", street_address_state: "FL")
 
-    @practice = Practice.create!(name: 'The Best Innovation Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true, retired: false)
+    @practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true, retired: false)
     @practice_2 = Practice.create!(name: 'The Second Best Innovation Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true, retired: false)
     @categories = [
       Category.create!(name: 'COVID', description: 'COVID related practices', related_terms: ['COVID-19, Coronavirus']),
