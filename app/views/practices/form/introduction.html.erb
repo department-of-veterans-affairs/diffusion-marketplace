@@ -87,7 +87,7 @@
                     <%= f.label :tagline, class: 'usa-label text-bold display-block margin-top-0 margin-bottom-2' do %>
                       Tagline <span class="text-gray-50">(required field)</span>
                     <% end %>
-                    <span>Type a short sentence summarizing the key outcomes of your innovation.  This text will display on the practice card.</span>&nbsp&nbsp;
+                    <span>Type a short sentence summarizing the key outcomes of your innovation.  This text will display on the innovation card.</span>&nbsp&nbsp;
                     <%= render partial: 'shared/textarea_counter', locals: { counter_class: "practice-editor-tagline-character-counter", textarea_class: "practice-editor-tagline-textarea", max_char_count: 72 } %>
                     <%= f.text_area :tagline, class: "usa-textarea #{ @practice.errors[:tagline].any? ? 'usa-input--error' : '' } display-block practice-editor-tagline-textarea #{ @practice.published ? 'dm-required-field' : '' }", required: @practice.published %>
                     <p class="usa-error-message <%= @practice.errors[:tagline].any? ? 'fas fa-exclamation-circle' : 'display-none' %>">&nbsp;<span class="font-family-sans"><%= show_errors(@practice, :tagline) %></span></p>
