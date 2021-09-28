@@ -5,7 +5,7 @@
 <% if alert.present? && !flash.keys.include?('url') %>
   <div class="usa-alert usa-alert--error margin-y-2 dm-alert-message">
     <div class="usa-alert__body">
-      <p><%= alert.humanize %></p>
+      <p class="usa-prose-body"><%= alert.humanize %></p>
       <i class="fas fa-times position-absolute right-3 cursor-pointer close-alert-message"></i>
     </div>
   </div>
@@ -20,7 +20,7 @@
     <% unless value.to_s.downcase.include?('session expired') || value.to_s.downcase == 'true' || (value == 'Invalid Email or password.' && key == 'alert') %>
       <div class="usa-alert usa-alert--<%= key %> margin-y-2 <%= small_text ? 'message-icon-bg-position' : '' %> dm-alert-message">
         <div class="usa-alert__body grid-row flex-align-center">
-          <div class="usa-alert__heading <%= small_text ? 'font-sans-sm margin-bottom-0' : '' %>" role="alert">
+          <div class="usa-alert__heading usa-prose-body <%= small_text ? 'font-sans-sm margin-bottom-0' : '' %>" role="alert">
             <%= value %>
             <i class="fas fa-times position-absolute right-3 cursor-pointer close-alert-message"></i>
           </div>
