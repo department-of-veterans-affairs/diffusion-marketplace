@@ -55,4 +55,4 @@ EXPOSE 8080
 USER nginx
 STOPSIGNAL SIGTERM
 RUN nginx -V
-CMD ["nginx", "-e", "/home/nginx/log/error.log", "-g","daemon off;"]
+CMD ["nginx", "-e", "/home/nginx/log/error.log", "-g","daemon off", "--with-http_realip_module"]
