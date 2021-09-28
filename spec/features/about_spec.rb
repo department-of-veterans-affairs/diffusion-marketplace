@@ -49,6 +49,10 @@ describe 'About us page', type: :feature do
   describe 'Contact us section' do
     it 'should allow the user to send an email to the marketplace team' do
       fill_in('Your email', with: 'test@test.com')
+      # all fields should be required
+      click_button('Send message')
+      message = find('#subject').native.attribute('validationMessage')
+      expect(message).to eq('Please fill out this field.')
       fill_in('Subject line', with: 'Test subject')
       fill_in('Your message', with: 'This is a test message')
       # make sure the mailer count increases by 1

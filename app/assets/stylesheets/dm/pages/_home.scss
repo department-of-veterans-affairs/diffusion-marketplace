@@ -92,19 +92,18 @@
   }
 
   .newsletter-subscription-section {
+    form {
+      max-width: unset !important;
+    }
+
     .grid-row {
       @media screen and (min-width: 1024px) {
         @include u-height('full');
-        @include u-flex('align-center');
       }
     }
 
     .subscribe-button-container {
       @include u-text('left');
-
-      @media screen and (min-width: 1024px) {
-        @include u-text('right');
-      }
 
       button {
         width: 166px !important;

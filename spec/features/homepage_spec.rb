@@ -81,6 +81,14 @@ describe 'Homepage', type: :feature do
     click_link('Start nomination')
 
     expect(page).to have_content('Nominate an innovation')
-    expect(page).to have_content('VA staff and collaborators are welcome to nominate active innovations for consideration on the Diffusion Marketplace.')
+    expect(page).to have_content('VA staff and collaborators are welcome to nominate active innovations for consideration on the Diffusion Marketplace using the form below.')
+  end
+
+  it 'should allow the user to subscribe to the DM newsletter by taking them to the GovDelivery site' do
+    fill_in('Your email address', with: 'vladilena.milize@test.com')
+    new_window_1 = window_opened_by { click_button('Subscribe today') }
+    within_window new_window_1 do
+      expect(current_url).to eq('https://public.govdelivery.com/accounts/USVHA/subscribers/qualify')
+    end
   end
 end
