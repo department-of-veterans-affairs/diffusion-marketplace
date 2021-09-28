@@ -62,7 +62,7 @@ describe 'Practices', type: :feature do
       # Visit the Marketplace
       visit '/'
       expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_content('We’re a discovery and collaboration tool that curates VA’s promising practices, encourages their diffusion, and fosters engagement with greater healthcare communities.')
+      expect(page).to have_content('We’re a discovery and collaboration tool that curates VA’s promising innovations, encourages their diffusion, and fosters engagement with greater healthcare communities.')
       expect(page).to have_link(href: '/about')
       expect(page).to have_content('Browse all innovations')
       expect(page).to have_content(@highlighted_practice.name)
@@ -88,7 +88,7 @@ describe 'Practices', type: :feature do
       # Visit a user's practice that is not approved or published
       visit practice_path(@user_practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_content('We’re a discovery and collaboration tool that curates VA’s promising practices, encourages their diffusion, and fosters engagement with greater healthcare communities.')
+      expect(page).to have_content('We’re a discovery and collaboration tool that curates VA’s promising innovations, encourages their diffusion, and fosters engagement with greater healthcare communities.')
       expect(page).to have_current_path('/')
     end
 

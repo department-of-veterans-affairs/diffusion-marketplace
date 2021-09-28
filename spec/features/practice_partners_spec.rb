@@ -13,10 +13,7 @@ describe 'Practice partners pages', type: :feature do
   end
 
   it 'should navigate to strategic sponsors list page' do
-    visit '/'
-    within(:css, 'footer') do
-      find(:css, 'a', text: 'Partners').click
-    end
+    visit '/partners'
     # TODO: this is timing out in CI
     # expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(current_path).to eq('/partners')
