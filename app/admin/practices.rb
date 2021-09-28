@@ -92,6 +92,7 @@ ActiveAdmin.register Practice do
       redirect_back fallback_location: root_path, :flash => { :error => message }
     else
       resource.highlight = to_highlight
+      resource.highlight_title = nil
       resource.highlight_body = nil
       message = "\"#{resource.name}\" Practice highlighted"
       unless resource.highlight
@@ -184,6 +185,7 @@ ActiveAdmin.register Practice do
       f.input :user, label: 'User email', as: :string, input_html: {name: 'user_email'}
       f.input :categories, as: :select, multiple: true, collection: Category.all.order(name: :asc).map { |cat| ["#{cat.name.capitalize}", cat.id]}, input_html: { value: @practice_categories }
       if object.highlight
+        f.input :highlight_title, label: 'Highlighted Practice Title'
         f.input :highlight_body, label: 'Highlighted Innovation Body'
       end
       f.input :retired, label: 'Innovation retired?'
@@ -243,7 +245,7 @@ ActiveAdmin.register Practice do
     before_action :set_categories_view, only: :edit
     before_action :set_practice_adoption_values, only: [:show, :export_practice_adoptions]
     after_action :update_categories, only: [:create, :update]
-    #after_action :update_highlight_attr, only: [:update]
+    after_action :update_highlight_attr, only: [:update]
 
     def create_or_update_practice
       begin
@@ -251,6 +253,7 @@ ActiveAdmin.register Practice do
         blank_practice_name = params[:practice][:name].blank?
         practice_slug = params[:id]
         email = params[:user_email]
+        #highlight_body = params[:practice][:highlight_body]
         retired = params[:practice][:retired] == "1" ? true : false
         retired_reason = retired ? params[:practice][:retired_reason] : nil
         # raise an error if practice name is left blank
@@ -262,6 +265,7 @@ ActiveAdmin.register Practice do
         # raise an error if there's already a practice with a name that matches the user's input for the name field
         raise StandardError.new 'There was an error. Innovation name already exists.' if practice_by_name.present? && practice_by_name != practice
         practice ||= Practice.create(name: practice_name)
+        #practice.highlight_body = highlight_body
         practice.retired = retired
         practice.retired_reason = retired_reason
 
@@ -364,10 +368,10 @@ ActiveAdmin.register Practice do
       end
     end
 
-    # def update_highlight_attr
-    #   practice_slug = params[:id]
-    #   practice = Practice.find_by(slug: practice_slug)
-    #   practice.update(highlight_title: params[:practice][:highlight_title], highlight_body: params[:practice][:highlight_body])
-    # end
+    def update_highlight_attr
+      practice_slug = params[:id]
+      practice = Practice.find_by(slug: practice_slug)
+      practice.update(highlight_title: params[:practice][:highlight_title], highlight_body: params[:practice][:highlight_body])
+    end
   end
 end
