@@ -185,7 +185,7 @@ ActiveAdmin.register Practice do
       f.input :user, label: 'User email', as: :string, input_html: {name: 'user_email'}
       f.input :categories, as: :select, multiple: true, collection: Category.all.order(name: :asc).map { |cat| ["#{cat.name.capitalize}", cat.id]}, input_html: { value: @practice_categories }
       if object.highlight
-        f.input :highlight_title, label: 'Highlighted Practice Title'
+        f.input :highlight_title, label: 'Highlighted Innovation Title'
         f.input :highlight_body, label: 'Highlighted Innovation Body'
       end
       f.input :retired, label: 'Innovation retired?'

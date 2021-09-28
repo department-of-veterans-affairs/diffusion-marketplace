@@ -309,8 +309,8 @@ describe 'The admin dashboard', type: :feature do
     click_link('New Practice')
     expect(page).to have_current_path(new_admin_practice_path)
 
-    expect(page).to have_no_content('Highlighted Practice Title')
-    expect(page).to have_no_content('Highlighted Practice Body')
+    expect(page).to have_no_content('Highlighted Innovation Title')
+    expect(page).to have_no_content('Highlighted Innovation Body')
 
     # add extra whitespace to practice name
     fill_in('Innovation name', with: ' The Newest Practice   ')
@@ -498,10 +498,10 @@ describe 'The admin dashboard', type: :feature do
     visit '/admin'
     click_link('Practices')
     click_link('Edit', href: edit_admin_practice_path(@practice))
-    expect(page).to have_content('HIGHLIGHTED PRACTICE TITLE')
-    expect(page).to have_content('HIGHLIGHTED PRACTICE BODY')
-    fill_in('Highlighted Practice Title', with: 'VA Highlighted This Awesome Practice')
-    fill_in('Highlighted Practice Body', with: 'pretty cool practice')
+    expect(page).to have_content('HIGHLIGHTED INNOVATION TITLE')
+    expect(page).to have_content('HIGHLIGHTED INNOVATION BODY')
+    fill_in('Highlighted Innovation Title', with: 'VA Highlighted This Awesome Practice')
+    fill_in('Highlighted Innovation Body', with: 'pretty cool practice')
     click_button('Update Practice')
     visit '/'
     expect(page).to have_content('VA Highlighted This Awesome Practice')
