@@ -4,8 +4,8 @@
 
 <% if alert.present? && !flash.keys.include?('url') %>
   <div class="usa-alert usa-alert--error margin-y-2 dm-alert-message">
-    <div class="usa-alert__body">
-      <p class="usa-prose-body"><%= alert.humanize %></p>
+    <div class="usa-alert__body usa-prose-body">
+      <p><%= alert.humanize %></p>
       <i class="fas fa-times position-absolute right-3 cursor-pointer close-alert-message"></i>
     </div>
   </div>
