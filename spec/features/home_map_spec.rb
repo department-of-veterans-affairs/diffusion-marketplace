@@ -107,7 +107,7 @@ describe 'Map of Diffusion', type: :feature, js: true do
     expect(page).to have_no_css('#filterResultsTrigger')
     expect(page).to have_css('#filterClose')
     expect(page).to have_content('3 facility matches (of 3)')
-
+    expect(page).to have_content('4 innovations matched (of 4)')
     # open facility complexity modal
     modal_text = 'Facilities with high volume, high risk patients, most complex clinical programs, and large research and teaching programs'
     expect(page).to_not have_content(modal_text)
