@@ -122,7 +122,7 @@ describe 'Map of Diffusion', type: :feature, js: true do
     update_results
     expect_marker_ct(2)
     expect(page).to have_content('2 facility matches (of 3)')
-    expect(page).to have_content('3 practices matched (of 4)')
+    expect(page).to have_content('3 innovations matched (of 4)')
     reset_filters
 
     # filters by status
@@ -131,19 +131,19 @@ describe 'Map of Diffusion', type: :feature, js: true do
     update_results
     expect_marker_ct(2)
     expect(page).to have_content('2 facility matches (of 3)')
-    expect(page).to have_content('3 practices matched (of 4)')
+    expect(page).to have_content('3 innovations matched (of 4)')
     # in-progress & unsuccessful adoptions
     find('.adoption-status-label[for="status_unsuccessful"]').click
     update_results
     expect_marker_ct(3)
     expect(page).to have_content('3 facility matches (of 3)')
-    expect(page).to have_content('4 practices matched (of 4)')
+    expect(page).to have_content('4 innovations matched (of 4)')
     # successful adoptions
     find('.adoption-status-label[for="status_in-progress"]').click
     update_results
     expect_marker_ct(1)
     expect(page).to have_content('1 facility match (of 3)')
-    expect(page).to have_content('1 practice matched (of 4)')
+    expect(page).to have_content('1 innovation matched (of 4)')
     reset_filters
 
     # filters by visn
@@ -152,14 +152,14 @@ describe 'Map of Diffusion', type: :feature, js: true do
     update_results
     expect_marker_ct(1)
     expect(page).to have_content('1 facility match (of 3)')
-    expect(page).to have_content('3 practices matched (of 4)')
+    expect(page).to have_content('3 innovations matched (of 4)')
     # @visn_2
     find('.usa-checkbox__label[for="VISN_1"]').click
     find('.usa-checkbox__label[for="VISN_2"]').click
     update_results
     expect_marker_ct(2)
     expect(page).to have_content('2 facility matches (of 3)')
-    expect(page).to have_content('3 practices matched (of 4)')
+    expect(page).to have_content('3 innovations matched (of 4)')
     reset_filters
 
     # filters by facility
@@ -168,12 +168,12 @@ describe 'Map of Diffusion', type: :feature, js: true do
     update_results
     expect_marker_ct(1)
     expect(page).to have_content('1 facility match (of 3)')
-    expect(page).to have_content('3 practices matched (of 4)')
+    expect(page).to have_content('3 innovations matched (of 4)')
     find('.usa-combo-box__clear-input').click
     update_results
     expect_marker_ct(3)
     expect(page).to have_content('3 facility matches (of 3)')
-    expect(page).to have_content('4 practices matched (of 4)')
+    expect(page).to have_content('4 innovations matched (of 4)')
     reset_filters
 
     # filters by facilities
@@ -188,12 +188,12 @@ describe 'Map of Diffusion', type: :feature, js: true do
     update_results
     expect_marker_ct(1)
     expect(page).to have_content('1 facility match (of 3)')
-    expect(page).to have_content('1 practice matched (of 4)')
+    expect(page).to have_content('1 innovation matched (of 4)')
     find('.usa-checkbox__label[for="526GA"]').click
     update_results
     expect_marker_ct(2)
     expect(page).to have_content('2 facility matches (of 3)')
-    expect(page).to have_content('3 practices matched (of 4)')
+    expect(page).to have_content('3 innovations matched (of 4)')
     find('#facilityListTrigger').click
     expect(page).to have_content('View list of facilities')
     expect(page).to have_no_content('Hide list of facilities')
@@ -205,7 +205,7 @@ describe 'Map of Diffusion', type: :feature, js: true do
     update_results
     expect_marker_ct(1)
     expect(page).to have_content('1 facility match (of 3)')
-    expect(page).to have_content('1 practice matched (of 4)')
+    expect(page).to have_content('1 innovation matched (of 4)')
     reset_filters
 
     # filters by rurality
@@ -213,7 +213,7 @@ describe 'Map of Diffusion', type: :feature, js: true do
     update_results
     expect_marker_ct(2)
     expect(page).to have_content('2 facility matches (of 3)')
-    expect(page).to have_content('3 practices matched (of 4)')
+    expect(page).to have_content('3 innovations matched (of 4)')
     reset_filters
 
     #filters by multiple filters and resets
@@ -222,15 +222,15 @@ describe 'Map of Diffusion', type: :feature, js: true do
     update_results
     expect_marker_ct(1)
     expect(page).to have_content('1 facility match (of 3)')
-    expect(page).to have_content('2 practices matched (of 4)')
+    expect(page).to have_content('2 innovations matched (of 4)')
     find('.adoption-status-label[for="status_unsuccessful"]').click
     update_results
     expect(page).to have_content('0 facility matches (of 3)')
-    expect(page).to have_content('0 practices matched (of 4)')
+    expect(page).to have_content('0 innovations matched (of 4)')
     find("#allMarkersButton").click
     expect_marker_ct(3)
     expect(page).to have_content('3 facility matches (of 3)')
-    expect(page).to have_content('4 practices matched (of 4)')
+    expect(page).to have_content('4 innovations matched (of 4)')
 
     # map modal
     click_first_map_marker
