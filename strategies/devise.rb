@@ -4,7 +4,7 @@ Devise::Strategies::Authenticatable.class_eval do
   private
 
   def valid_password?
-    return true unless check_for_ntlm.first === 401
+    return true if env["REMOTE_USER"].present?
     Devise::Encryptor.compare(self.class, encrypted_password, password)
   end
 end

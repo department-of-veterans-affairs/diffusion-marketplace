@@ -10,9 +10,4 @@ module UserUtils
   def is_invalid_va_email(email)
     email.split('@').last != 'va.gov'
   end
-
-  def check_for_ntlm
-    ntlm_auth = NTLMAuthentication.new(main_app)
-    ntlm_auth.call(request.env)
-  end
 end

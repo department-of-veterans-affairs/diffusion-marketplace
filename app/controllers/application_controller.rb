@@ -11,7 +11,6 @@ class ApplicationController < ActionController::Base
   before_action :user_accepted_terms?
   before_action :set_visit_props
   before_action :set_visitor_props
-  before_action :check_for_ntlm
   before_action :set_user_param
 
   protect_from_forgery with: :exception, prepend: true
