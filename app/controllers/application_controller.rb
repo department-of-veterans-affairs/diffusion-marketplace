@@ -1,17 +1,16 @@
 class ApplicationController < ActionController::Base
   include NavigationHelper
   include Pagy::Backend
-  include UserUtils
 
   protect_from_forgery with: :exception
 
   before_action :setup_breadcrumb_navigation
   before_action :store_user_location!, if: :storable_location?
   before_action :set_paper_trail_whodunnit
+  before_action :log_in_va_user
   before_action :user_accepted_terms?
   before_action :set_visit_props
   before_action :set_visitor_props
-  before_action :set_user_param
 
   protect_from_forgery with: :exception, prepend: true
 
@@ -55,9 +54,8 @@ class ApplicationController < ActionController::Base
     store_location_for(:user, request.fullpath)
   end
 
-  def set_user_param
-    if current_user.blank?
-      # check to see if the user is using NTLM
+  def log_in_va_user
+    if current_user.blank? && request.env["REMOTE_USER"].present?
       user = User.authenticate_ldap(request.env["REMOTE_USER"])
       # if so, log them in and set the user_type to 'ntlm' in the session
       if user.present?
@@ -67,8 +65,6 @@ class ApplicationController < ActionController::Base
       else
         session[:user_type] = 'guest'
       end
-    elsif current_user.present?
-      session[:user_type] = 'public' if session[:user_type] === 'guest'
     end
   end
 
