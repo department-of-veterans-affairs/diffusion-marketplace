@@ -185,11 +185,10 @@ class User < ApplicationRecord
           user.save
         end
       end
+      get_ldap_response(ldap)
+      user
     # if the .bind method for ldap returns an error, return the user default value (nil)
     rescue
-      user
-    else
-      get_ldap_response(ldap)
       user
     end
   end
