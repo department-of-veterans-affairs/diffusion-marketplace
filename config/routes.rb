@@ -88,7 +88,10 @@ Rails.application.routes.draw do
     get '/go-fish', action: 'go_fish', as: 'go-fish'
   end
 
-  get '/nominate-a-practice', controller: 'nominate_practices', action: 'index', as: 'nominate_a_practice'
+  # redirect users to /nominate-an-innovation if they try to visit the old /nominate-a-practice URL
+  get '/nominate-a-practice', to: redirect('/nominate-an-innovation', status: 302)
+  get '/nominate-an-innovation', controller: 'nominate_practices', action: 'index', as: 'nominate_an_innovation'
+  post '/nominate-an-innovation', controller: 'nominate_practices', action: 'email'
   get '/diffusion-map', controller: 'home', action: 'diffusion_map', as: 'diffusion_map'
 
   namespace :system do

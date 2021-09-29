@@ -304,10 +304,9 @@ module NavigationHelper
       end
     end
 
-    ### NOMINATE PRACTICE BREADCRUMBS
-    if action == 'index' && controller == 'nominate_practices'
+    # remove breadcrumbs from 'Nominate a practice' page
+    if controller == 'nominate_practices' && action == 'index'
       empty_breadcrumbs
-      session[:breadcrumbs] << { 'display': 'Nominate a practice', 'path': nominate_a_practice_path }
     end
 
     ### VISN BREADCRUMBS
@@ -328,7 +327,7 @@ module NavigationHelper
       end
     end
 
-    # remove breadcrumbs for 'About' page
+    # remove breadcrumbs from 'About' page
     if controller == 'about' && action == 'index'
         empty_breadcrumbs
     end

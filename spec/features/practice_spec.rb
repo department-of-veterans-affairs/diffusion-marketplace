@@ -62,15 +62,15 @@ describe 'Practices', type: :feature do
       # Visit the Marketplace
       visit '/'
       expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_content('We’re a discovery and collaboration tool that curates VA’s promising practices, encourages their diffusion, and fosters engagement with greater healthcare communities.')
+      expect(page).to have_content('We’re a discovery and collaboration tool that curates VA’s promising innovations, encourages their diffusion, and fosters engagement with greater healthcare communities.')
       expect(page).to have_link(href: '/about')
       expect(page).to have_content('Browse all innovations')
       expect(page).to have_content(@highlighted_practice.name)
       expect(page).to have_content('Highlight body text')
       expect(page).to have_content('View practice')
-      expect(page).to have_content('Nominate a practice')
+      expect(page).to have_content('Nominate an innovation')
       expect(page).to have_content('Are you working on an innovative practice that’s making a difference at VA? Submit a nomination for the practice to be included on the Diffusion Marketplace.')
-      expect(page).to have_link('Start nomination', href: nominate_a_practice_path )
+      expect(page).to have_link('Start nomination', href: nominate_an_innovation_path )
     end
 
     it 'should let the practice owner interact with their practice if not approved or published' do
@@ -88,7 +88,7 @@ describe 'Practices', type: :feature do
       # Visit a user's practice that is not approved or published
       visit practice_path(@user_practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_content('We’re a discovery and collaboration tool that curates VA’s promising practices, encourages their diffusion, and fosters engagement with greater healthcare communities.')
+      expect(page).to have_content('We’re a discovery and collaboration tool that curates VA’s promising innovations, encourages their diffusion, and fosters engagement with greater healthcare communities.')
       expect(page).to have_current_path('/')
     end
 

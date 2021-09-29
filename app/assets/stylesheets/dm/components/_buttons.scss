@@ -87,6 +87,28 @@
   }
 }
 
+.dm-button--outline-white {
+  @extend .usa-button;
+  @extend .usa-button--outline;
+  @include u-text('white', !important);
+  box-shadow: inset 0 0 0 2px color($theme-color-dm-white);
+
+  &:hover {
+    @include u-text('white', !important);
+    box-shadow: inset 0 0 0 2px color($theme-color-dm-white);
+  }
+
+  &:active {
+    @include u-text('white', !important);
+    box-shadow: inset 0 0 0 2px color($theme-color-dm-white);
+  }
+
+  &:disabled {
+    @include u-text('disabled', !important);
+    box-shadow: inset 0 0 0 2px color($theme-color-disabled);
+  }
+}
+
 .dm-button--unstyled-primary {
   @extend .usa-button;
   @extend .usa-button--unstyled;

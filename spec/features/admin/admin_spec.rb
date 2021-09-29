@@ -601,10 +601,10 @@ describe 'The admin dashboard', type: :feature do
 
     # change the practice user back to the original user
     logout(@user2)
-    login_as(@admin, :scope => :user, :run_callbacks => false)
+    sleep 2
+    login_as(@admin, :scope => :user, run_callbacks: false)
     visit '/admin/practices/the-best-practice-ever/edit'
-    expect(page).to have_current_path(edit_admin_practice_path(@practice))
-    sleep 3
+    expect(page).to have_content('USER EMAIL')
     fill_in('practice_user_id', with: @user.email)
     click_button('Update Practice')
 
