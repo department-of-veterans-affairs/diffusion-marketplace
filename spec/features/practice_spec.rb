@@ -70,7 +70,7 @@ describe 'Practices', type: :feature do
       expect(page).to have_content('View practice')
       expect(page).to have_content('Nominate an innovation')
       expect(page).to have_content('Are you working on an innovative practice that’s making a difference at VA? Submit a nomination for the practice to be included on the Diffusion Marketplace.')
-      expect(page).to have_link('Start nomination', href: nominate_a_practice_path )
+      expect(page).to have_link('Start nomination', href: nominate_an_innovation_path )
     end
 
     it 'should let the practice owner interact with their practice if not approved or published' do

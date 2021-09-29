@@ -26,4 +26,9 @@ describe 'Nominate a practice page', type: :feature do
     expect(ActionMailer::Base.deliveries.last.subject).to eq('(Nominate) Test subject')
     expect(page).to have_content('Message sent. The Diffusion Marketplace team will review your nomination.')
   end
+
+  it 'should redirect the user to /nominate-an-innovation if they try to visit the old /nominate-a-practice URL' do
+    visit '/nominate-a-practice'
+    expect(page).to have_current_path(nominate_an_innovation_path)
+  end
 end
