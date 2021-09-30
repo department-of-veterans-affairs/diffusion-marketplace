@@ -29,6 +29,7 @@ describe 'Contact section', type: :feature, js: true do
     it 'Should allow users to add role for post comments' do
       # Login as an authenticated user, visit the practice page
       login_as(@user2, :scope => :user, :run_callbacks => false)
+      page.set_rack_session(:user_type => 'ntlm')
       visit practice_path(@practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@practice.name)
