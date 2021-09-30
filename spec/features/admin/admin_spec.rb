@@ -608,6 +608,7 @@ describe 'The admin dashboard', type: :feature do
     # create a comment with the current practice user
     logout(@admin)
     login_as(@user2, :scope => :user, :run_callbacks => false)
+    page.set_rack_session(:user_type => 'ntlm')
     visit practice_path(@practice)
     fill_in('comment[body]', with: 'This is a test comment')
     click_button('commit')
