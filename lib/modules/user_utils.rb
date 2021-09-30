@@ -4,7 +4,7 @@ module UserUtils
     user.skip_password_validation = true
     user.skip_va_validation = true
     # TODO: public site: do we want created users to confirm their accounts?
-    user.confirm unless ENV["USE_NTLM"] == true
+    user.confirm unless ENV['USE_NTLM'] == 'true'
     user.save
   end
 
