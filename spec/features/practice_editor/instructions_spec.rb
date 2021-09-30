@@ -10,7 +10,7 @@ describe 'Practice editor', type: :feature, js: true do
     describe 'Instructions page' do
         before do
             login_as(@admin, :scope => :user, :run_callbacks => false)
-            visit practice_instructions_path(@practice)
+            visit innovation_instructions_path(@practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508
         end
 
@@ -25,7 +25,7 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_link(href: pii_phi_information_path)
             expect(page).to have_link(href: Constants::FORM_3203_URL)
             expect(page).to have_link(href: Constants::FORM_5345_URL)
-            expect(page).to have_link(href: practice_path('project-happen'))
+            expect(page).to have_link(href: innovation_path('project-happen'))
         end
     end
 end

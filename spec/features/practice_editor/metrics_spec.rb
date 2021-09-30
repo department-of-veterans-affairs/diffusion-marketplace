@@ -49,7 +49,7 @@ describe 'Metrics section', type: :feature, js: true do
     dh_2 = DiffusionHistory.create!(practice_id: @practice.id, va_facility: facility_2, created_at: Time.now - 35.days)
     DiffusionHistoryStatus.create!(diffusion_history_id: dh_2.id, status: 'Completed', created_at: Time.now - 35.days)
     login_as(@admin, :scope => :user, :run_callbacks => false)
-    visit practice_metrics_path(@practice)
+    visit innovation_metrics_path(@practice)
   end
 
   describe 'Authorization' do
@@ -60,14 +60,14 @@ describe 'Metrics section', type: :feature, js: true do
     it 'Should allow authenticated users to view metrics' do
       # Login as an authenticated user and visit the practice page
       login_as(@user1, :scope => :user, :run_callbacks => false)
-      visit practice_path(@practice)
+      visit innovation_path(@practice)
       click_link('Edit innovation')
       expect(page).to have_content(@practice.name)
     end
 
     it 'should allow user to toggle between 30 days and All time views' do
       login_as(@user1, :scope => :user, :run_callbacks => false)
-      visit practice_metrics_path(@practice)
+      visit innovation_metrics_path(@practice)
 
       select 'all time', from: 'metrics_duration'
       expect(page).to have_select('metrics_duration', selected: 'all time')
@@ -91,7 +91,7 @@ describe 'Metrics section', type: :feature, js: true do
     it 'should display last time innovation was updated.' do
       login_as(@user1, :scope => :user, :run_callbacks => false)
       PracticeEditorSession.create(user_id: @user1.id, practice_id: @practice.id, session_start_time: DateTime.now, session_end_time: DateTime.now, created_at: DateTime.now, updated_at: DateTime.now)
-      visit practice_metrics_path(@practice)
+      visit innovation_metrics_path(@practice)
       expect(page).to have_content('Innovation last updated on')
       space = " "
       expect(page).to have_content("#{@user1.first_name}#{space}#{@user1.last_name}")
@@ -115,7 +115,7 @@ describe 'Metrics section', type: :feature, js: true do
         expect(bookmark_ct).to eq("2")
       end
 
-      visit practice_path(@practice)
+      visit innovation_path(@practice)
       click_link 'Bookmark'
       click_link 'Edit innovation'
 

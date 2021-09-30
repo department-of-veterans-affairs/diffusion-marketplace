@@ -17,7 +17,7 @@ describe 'Practice', type: :feature, js: true do
     end
 
     def visit_pr_edit
-      visit practice_implementation_path(@practice)
+      visit innovation_implementation_path(@practice)
     end
 
     def add_another

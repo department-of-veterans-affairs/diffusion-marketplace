@@ -35,7 +35,7 @@ describe 'Practice editor', type: :feature, js: true do
       street_address_state: "NY"
     )
     login_as(@admin, :scope => :user, :run_callbacks => false)
-    visit practice_adoptions_path(@practice)
+    visit innovation_adoptions_path(@practice)
     expect(page).to be_accessible.according_to :wcag2a, :section508
   end
 
@@ -65,8 +65,8 @@ describe 'Practice editor', type: :feature, js: true do
     it 'should interact with practice adoptions' do
       # it should be there
       expect(page).to have_content('Adoptions')
-      expect(page).to have_link(class: 'dm-button--outline-secondary', href: practice_introduction_path(@practice))
-      expect(page).to have_link(class: 'usa-button--secondary', href: practice_overview_path(@practice))
+      expect(page).to have_link(class: 'dm-button--outline-secondary', href: innovation_introduction_path(@practice))
+      expect(page).to have_link(class: 'usa-button--secondary', href: innovation_overview_path(@practice))
 
       # it should display certain parts of the form on status selection
       open_new_adoption_form
@@ -132,7 +132,7 @@ describe 'Practice editor', type: :feature, js: true do
       end
 
       # it should update the overview section and display the adoption
-      visit practice_path(@practice)
+      visit innovation_path(@practice)
       expect(page).to have_content("In-progress adoptions (2)")
       expect(page).to have_selector("#map", visible: true)
       within(:css, ".practice-viewer-adoptions-accordion") do
@@ -146,7 +146,7 @@ describe 'Practice editor', type: :feature, js: true do
       end
 
       # it shouldn't create the same facility twice for a practice
-      visit practice_adoptions_path(@practice)
+      visit innovation_adoptions_path(@practice)
       find('#add_adoption_button').click
       select_status('completed')
       select_facility_combo_box(0)
@@ -280,7 +280,7 @@ describe 'Practice editor', type: :feature, js: true do
       end
 
       # check the PV to make sure the adoption count is correct
-      visit practice_path(@practice)
+      visit innovation_path(@practice)
       within(:css, ".practice-viewer-adoptions-accordion") do
         expect(page).to have_content('Successful adoption (1)')
         expect(page).to have_content('In-progress adoptions (0)')

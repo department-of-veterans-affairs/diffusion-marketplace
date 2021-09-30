@@ -72,7 +72,7 @@ describe 'Adoption accordions', type: :feature, js: true do
     context 'desktop' do
       it 'should display a tooltip with a definition of the adoption status for each status accordion' do
         login_as(@user, :scope => :user, :run_callbacks => false)
-        visit practice_path(@practice)
+        visit innovation_path(@practice)
         expect(page).to have_content(@practice.name)
 
         # make sure the tooltip is shown for each status accordion
@@ -89,7 +89,7 @@ describe 'Adoption accordions', type: :feature, js: true do
 
       it 'should display a modal with a definition of the adoption status for each status accordion' do
         login_as(@user, :scope => :user, :run_callbacks => false)
-        visit practice_path(@practice)
+        visit innovation_path(@practice)
         expect(page).to have_content(@practice.name)
 
         # make sure the modal appears for each status accordion

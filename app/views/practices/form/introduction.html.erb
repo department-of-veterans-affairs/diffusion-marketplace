@@ -50,7 +50,7 @@
         <%= render 'pii_phi_alert' %>
         <%= nested_form_for(@practice, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
           <fieldset class="usa-fieldset grid-col-10">
-            <legend class="usa-sr-only">Practice Information</legend>
+            <legend class="usa-sr-only">Innovation Information</legend>
             <div class="height-05 width-8 border-top-05 border-primary-dark"></div>
             <div class="margin-bottom-5 margin-top-3">
               <div>
@@ -519,7 +519,7 @@
         <% end %>
 
         <div class="grid-row margin-bottom-8">
-          <%= render partial: 'practices/back_and_continue_buttons', locals: { back_path: practice_editors_path(@practice), continue_path: practice_adoptions_path(@practice) }%>
+          <%= render partial: 'practices/back_and_continue_buttons', locals: { back_path: innovation_editors_path(@practice), continue_path: innovation_adoptions_path(@practice) }%>
         </div>
       </section>
     </div>

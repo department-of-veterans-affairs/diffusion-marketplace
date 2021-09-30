@@ -116,7 +116,7 @@ describe 'Practice editor', type: :feature, js: true do
         add_resource
 
         save_practice
-        visit practice_path(@pr_no_resources)
+        visit innovation_path(@pr_no_resources)
         expect(page).to have_content("Files")
         expect(page).to have_content("new file")
         expect(page).to have_content("new practice #{area} file")
@@ -160,7 +160,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         save_practice
-        visit practice_path(@pr_no_resources)
+        visit innovation_path(@pr_no_resources)
         expect(page).to have_content("edited file")
         expect(page).to have_content("edited practice #{area} file")
       end
@@ -190,7 +190,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         save_practice
-        visit practice_path(@pr_with_resources)
+        visit innovation_path(@pr_with_resources)
         expect(page).to have_content('edited file')
         expect(page).to have_content("edited practice #{area} file")
         expect(page).to have_no_content("#{area} file description")
@@ -237,7 +237,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         save_practice
-        visit practice_overview_path(@pr_with_resources)
+        visit innovation_overview_path(@pr_with_resources)
         expect(page).to have_no_content("existing #{area} file")
         expect(page).to have_no_content("#{area} file description")
         expect(page).to have_no_content('new file')
@@ -283,14 +283,14 @@ describe 'Practice editor', type: :feature, js: true do
   end
 
   def no_resource_pr_test_setup
-    visit practice_path(@pr_no_resources)
+    visit innovation_path(@pr_no_resources)
     expect(page).to have_content('Overview')
     expect(page).to have_no_content("Files")
-    visit practice_overview_path(@pr_no_resources)
+    visit innovation_overview_path(@pr_no_resources)
   end
 
   def with_resource_pr_test_setup
-    visit practice_path(@pr_with_resources)
+    visit innovation_path(@pr_with_resources)
     expect(page).to have_content('Overview')
     expect(page).to have_content("Files")
     expect(has_link?("existing problem file")).to eq(true)
@@ -299,6 +299,6 @@ describe 'Practice editor', type: :feature, js: true do
     expect(page).to have_content("problem file description")
     expect(page).to have_content("solution file description")
     expect(page).to have_content("results file description")
-    visit practice_overview_path(@pr_with_resources)
+    visit innovation_overview_path(@pr_with_resources)
   end
 end

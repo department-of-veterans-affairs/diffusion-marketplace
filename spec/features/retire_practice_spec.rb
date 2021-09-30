@@ -9,7 +9,7 @@ describe 'retired practices', type: :feature do
   it 'Should display retirement blurbs and reason' do
     # Login as an authenticated user and visit the practice page
     login_as(@user, :scope => :user, :run_callbacks => false)
-    visit practice_path(@practice)
+    visit innovation_path(@practice)
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content('This innovation is no longer being updated.')
     expect(page).to have_content('Was not a good practice')

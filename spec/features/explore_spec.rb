@@ -215,7 +215,7 @@ describe 'Explore all practices page', type: :feature do
 
       login_as(admin, :scope => :user, :run_callbacks => false)
       # cache clears when adding a practice category
-      visit practice_introduction_path(pr)
+      visit innovation_introduction_path(pr)
       find('#practice-editor-save-button').click
       sleep 1
       expect(cache_keys).not_to include("searchable_practices_a_to_z")
@@ -225,7 +225,7 @@ describe 'Explore all practices page', type: :feature do
       expect(cache_keys).to include("searchable_practices_a_to_z")
 
       # cache clears when adding an adoption
-      visit practice_adoptions_path(pr)
+      visit innovation_adoptions_path(pr)
       find('#add_adoption_button').click
       find('label[for="status_in_progress"').click
       find('#editor_facility_select').click
@@ -237,7 +237,7 @@ describe 'Explore all practices page', type: :feature do
       expect(cache_keys).to include("searchable_practices_a_to_z")
 
       # cache clears when removing an adoption
-      visit practice_adoptions_path(pr)
+      visit innovation_adoptions_path(pr)
       find("button[aria-controls='in-progress_adoptions'").click
       find("button[aria-controls='diffusion_history_#{pr.diffusion_histories.first.id}']").click
       within(:css, "#diffusion_history_#{pr.diffusion_histories.first.id}") do

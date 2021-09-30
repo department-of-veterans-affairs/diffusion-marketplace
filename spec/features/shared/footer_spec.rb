@@ -8,7 +8,7 @@ describe 'Diffusion Marketplace footer', type: :feature, js: true do
     page_group = PageGroup.create(name: 'Open Calls', slug: 'open-calls', description: 'open calls page')
     Page.create(page_group: page_group, title: 'Vaccine Acceptance Open Calls', description: 'Vaccine Acceptance Open Calls page', slug: 'home', has_chrome_warning_banner: true, created_at: Time.now, published: Time.now)
     login_as(admin, :scope => :user, :run_callbacks => false)
-    visit practice_overview_path(@practice)
+    visit innovation_overview_path(@practice)
   end
 
   describe 'Return to top' do

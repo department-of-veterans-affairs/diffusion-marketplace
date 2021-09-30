@@ -87,13 +87,13 @@ describe 'Admin Dashboard Metrics Tab', type: :feature do
 
     visit_metrics_tab
     check_counts(0)
-    visit practice_path(@practice)
+    visit innovation_path(@practice)
     within(:css, '#dm-practice-nav') do
       find('.dm-email-practice').click
     end
     visit_metrics_tab
     check_counts(1)
-    visit practice_path(@practice)
+    visit innovation_path(@practice)
     within(:css, '.main-email-address-container') do
       find('.dm-email-practice').click
     end

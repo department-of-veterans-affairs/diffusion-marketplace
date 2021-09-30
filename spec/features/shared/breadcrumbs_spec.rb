@@ -40,7 +40,7 @@ describe 'Breadcrumbs', type: :feature do
       end
 
       find('.dm-practice-link').click
-      expect(page).to have_current_path(practice_path(@user_practice))
+      expect(page).to have_current_path(innovation_path(@user_practice))
 
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
@@ -54,7 +54,7 @@ describe 'Breadcrumbs', type: :feature do
   describe 'Practices flow' do
     it 'should show proper breadcrumbs when a user visits a practice\'s "next steps"' do
       @user_practice.update(published: true, approved: true)
-      visit practice_path(@user_practice)
+      visit innovation_path(@user_practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
 
       within(:css, '#breadcrumbs') do
@@ -64,7 +64,7 @@ describe 'Breadcrumbs', type: :feature do
     end
 
     it 'should only allow for one practice breadcrumb at a time in order to prevent having too many breadcrumbs at one time' do
-      visit practice_path(@user_practice)
+      visit innovation_path(@user_practice)
 
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
@@ -72,7 +72,7 @@ describe 'Breadcrumbs', type: :feature do
       end
 
       # Browse to a different practice's show page
-      visit practice_path(@user_practice2)
+      visit innovation_path(@user_practice2)
 
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
@@ -83,7 +83,7 @@ describe 'Breadcrumbs', type: :feature do
 
     it 'should show proper breadcrumbs in the practice editor' do
       login_as(@admin, :scope => :user, :run_callbacks => false)
-      visit practice_instructions_path(@user_practice)
+      visit innovation_instructions_path(@user_practice)
 
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')
@@ -160,7 +160,7 @@ describe 'Breadcrumbs', type: :feature do
       end
 
       # Visit a practice's page from the url bar
-      visit practice_path(@user_practice2)
+      visit innovation_path(@user_practice2)
 
       within(:css, '#breadcrumbs') do
         expect(page).to have_content('Home')

@@ -10,7 +10,7 @@ describe 'Practice editor', type: :feature, js: true do
 
   describe 'Implementation page' do
     it 'should be accessible' do
-      visit practice_implementation_path(@practice)
+      visit innovation_implementation_path(@practice)
       add_another_btns = find_all('.add_nested_fields')
       add_another_btns.each do |btn|
         btn.click
@@ -19,7 +19,7 @@ describe 'Practice editor', type: :feature, js: true do
     end
 
     it 'should have the correct continue and back links' do
-      visit practice_implementation_path(@practice)
+      visit innovation_implementation_path(@practice)
       within(:css, '.implementation') do
         expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/overview")
         expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/contact")

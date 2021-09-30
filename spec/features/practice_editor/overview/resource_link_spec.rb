@@ -100,7 +100,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         save_practice
-        visit practice_path(@pr_no_resources)
+        visit innovation_path(@pr_no_resources)
         expect(page).to have_content("Links")
         expect(page).to have_content("new link")
         expect(page).to have_content("new practice #{area} link")
@@ -144,7 +144,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         save_practice
-        visit practice_path(@pr_no_resources)
+        visit innovation_path(@pr_no_resources)
         expect(page).to have_no_link('new link', href: @link_url_2)
         expect(page).to have_link('edited link', href: @link_url_3)
         expect(page).to have_content("edited practice #{area} link")
@@ -176,7 +176,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         save_practice
-        visit practice_path(@pr_with_resources)
+        visit innovation_path(@pr_with_resources)
         expect(page).to have_no_link("existing #{area} link", href: @link_url_1)
         expect(page).to have_link('edited link', href: @link_url_3)
         expect(page).to have_content("edited practice #{area} link")
@@ -223,7 +223,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         save_practice
-        visit practice_overview_path(@pr_with_resources)
+        visit innovation_overview_path(@pr_with_resources)
         expect(page).to have_no_content("existing #{area} link")
         expect(page).to have_no_content("#{area} link description")
         expect(page).to have_no_content('new link')
@@ -269,14 +269,14 @@ describe 'Practice editor', type: :feature, js: true do
   end
 
   def no_resource_pr_test_setup
-    visit practice_path(@pr_no_resources)
+    visit innovation_path(@pr_no_resources)
     expect(page).to have_content('Overview')
     expect(page).to have_no_content("Links")
-    visit practice_overview_path(@pr_no_resources)
+    visit innovation_overview_path(@pr_no_resources)
   end
 
   def with_resource_pr_test_setup
-    visit practice_path(@pr_with_resources)
+    visit innovation_path(@pr_with_resources)
     expect(page).to have_content('Overview')
     expect(page).to have_content("Links")
     expect(page).to have_link('existing problem link', href: @link_url_1)
@@ -285,6 +285,6 @@ describe 'Practice editor', type: :feature, js: true do
     expect(page).to have_content("problem link description")
     expect(page).to have_content("solution link description")
     expect(page).to have_content("results link description")
-    visit practice_overview_path(@pr_with_resources)
+    visit innovation_overview_path(@pr_with_resources)
   end
 end

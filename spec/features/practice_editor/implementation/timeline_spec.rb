@@ -10,7 +10,7 @@ describe 'Practice editor', type: :feature, js: true do
     describe 'Timeline Page' do
         before do
             login_as(@admin, :scope => :user, :run_callbacks => false)
-            visit practice_implementation_path(@practice)
+            visit innovation_implementation_path(@practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508
             @time_frame = '3 Months'
             @milestone = 'Test milestone'

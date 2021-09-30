@@ -28,7 +28,7 @@ describe 'Practice editor', type: :feature, js: true do
 
     def login_and_visit_editors(user)
       login_as(user, :scope => :user, :run_callbacks => false)
-      visit practice_editors_path(@practice)
+      visit innovation_editors_path(@practice)
     end
 
     it 'should be there' do

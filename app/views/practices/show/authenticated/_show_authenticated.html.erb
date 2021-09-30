@@ -38,8 +38,7 @@
       main_email = @practice.support_network_email
       practice_emails = @practice.practice_emails
       cc_emails = practice_emails.map(&:address).join(', ')
-      instructions_path = practice_instructions_path(@practice)
-      metrics_path = practice_metrics_path(@practice)
+      instructions_path = innovation_instructions_path(@practice)
     %>
     <div class="text-center margin-bottom-1">
       <%= mail_to main_email, 'Email innovation', subject: "Question about #{@practice.name}", cc: cc_emails, class: 'usa-button  width-full display-flex flex-align-center flex-justify-center
@@ -47,7 +46,7 @@
     </div>
     <% if @practice.user_id == current_user.id || current_user.roles.any? || is_user_an_editor_for_practice(@practice, current_user) %>
       <div class="text-center">
-        <%= link_to practice_metrics_path(@practice), id: 'edit-link-in-nav', class: 'usa-button usa-button--secondary width-full' do %>
+        <%= link_to innovation_metrics_path(@practice), id: 'edit-link-in-nav', class: 'usa-button usa-button--secondary width-full' do %>
           <i class="fas fa-edit margin-right-1"></i>Edit innovation
         <% end %>
       </div>

@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   patch '/close_edit_session', action: 'close_edit_session', controller: 'practices', as: 'close_edit_session'
   post '/accept_terms', action: 'accept_terms', controller: 'users', as: 'accept_terms'
 
-  resources :practices, except: :index do
+  resources :practices, :path => 'innovations', as: 'innovations', except: :index do
     get '/edit/metrics', action: 'metrics', as: 'metrics'
     get '/edit/instructions', action: 'instructions', as: 'instructions'
     get '/edit/editors', action: 'editors', as: 'editors'
@@ -87,7 +87,7 @@ Rails.application.routes.draw do
     get '/go-fish', action: 'go_fish', as: 'go-fish'
   end
 
-  get '/nominate-a-practice', controller: 'nominate_practices', action: 'index', as: 'nominate_a_practice'
+  get '/nominate-an-innovation', controller: 'nominate_practices', action: 'index', as: 'nominate_a_practice'
   get '/diffusion-map', controller: 'home', action: 'diffusion_map', as: 'diffusion_map'
 
   namespace :system do

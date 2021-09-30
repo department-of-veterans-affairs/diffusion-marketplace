@@ -3,34 +3,34 @@
     <section>
       <ul class="usa-sidenav">
         <li class="usa-sidenav__item">
-          <%= link_to 'Metrics', practice_metrics_path(@practice), class: "#{'usa-current' if current_page?(practice_metrics_path(@practice))} width-full" %>
+          <%= link_to 'Metrics', innovation_metrics_path(@practice), class: "#{'usa-current' if current_page?(innovation_metrics_path(@practice))} width-full" %>
         </li>
         <li class="usa-sidenav__item">
-          <%= link_to 'Editing guide', practice_instructions_path(@practice), class: "#{'usa-current' if current_page?( practice_instructions_path(@practice))} width-full" %>
+          <%= link_to 'Editing guide', innovation_instructions_path(@practice), class: "#{'usa-current' if current_page?( innovation_instructions_path(@practice))} width-full" %>
         </li>
         <li class="usa-sidenav__item">
-          <%= link_to "Edit: #{@practice.name}", practice_introduction_path(@practice), class: "#{'usa-current' if !current_page?(practice_instructions_path(@practice)) && !current_page?(practice_metrics_path(@practice))}" %>
+          <%= link_to "Edit: #{@practice.name}", innovation_introduction_path(@practice), class: "#{'usa-current' if !current_page?(innovation_instructions_path(@practice)) && !current_page?(innovation_metrics_path(@practice))}" %>
           <ul class="usa-sidenav__sublist <%= params[:controller] == 'practices' && params[:action] == 'instructions' || params[:controller] == 'practices' && params[:action] == 'metrics' ? 'side-nav-hide' : '' %>">
             <li class="usa-sidenav__item">
-              <%= link_to 'Editors', practice_editors_path(@practice), class: "#{'usa-current' if current_page?(practice_editors_path(@practice))}" %>
+              <%= link_to 'Editors', innovation_editors_path(@practice), class: "#{'usa-current' if current_page?(innovation_editors_path(@practice))}" %>
             </li>
             <li class="usa-sidenav__item">
-              <%= link_to 'Introduction', practice_introduction_path(@practice), class: "#{'usa-current' if current_page?( practice_introduction_path(@practice))}" %>
+              <%= link_to 'Introduction', innovation_introduction_path(@practice), class: "#{'usa-current' if current_page?( innovation_introduction_path(@practice))}" %>
             </li>
             <li class="usa-sidenav__item">
-              <%= link_to 'Adoptions', practice_adoptions_path(@practice), class: "#{'usa-current' if current_page?( practice_adoptions_path(@practice))} width-full" %>
+              <%= link_to 'Adoptions', innovation_adoptions_path(@practice), class: "#{'usa-current' if current_page?( innovation_adoptions_path(@practice))} width-full" %>
             </li>
             <li class="usa-sidenav__item">
-              <%= link_to 'Overview', practice_overview_path(@practice), class: "#{'usa-current' if current_page?( practice_overview_path(@practice))} width-full" %>
+              <%= link_to 'Overview', innovation_overview_path(@practice), class: "#{'usa-current' if current_page?( innovation_overview_path(@practice))} width-full" %>
             </li>
             <li class="usa-sidenav__item">
-              <%= link_to 'Implementation', practice_implementation_path(@practice), class: "#{'usa-current' if current_page?( practice_implementation_path(@practice))} width-full" %>
+              <%= link_to 'Implementation', innovation_implementation_path(@practice), class: "#{'usa-current' if current_page?( innovation_implementation_path(@practice))} width-full" %>
             </li>
             <li class="usa-sidenav__item">
-              <%= link_to 'Contact', practice_contact_path(@practice), class: "#{'usa-current' if current_page?( practice_contact_path(@practice))} width-full" %>
+              <%= link_to 'Contact', innovation_contact_path(@practice), class: "#{'usa-current' if current_page?( innovation_contact_path(@practice))} width-full" %>
             </li>
             <li class="usa-sidenav__item">
-              <%= link_to 'About', practice_about_path(@practice), class: "#{'usa-current' if current_page?( practice_about_path(@practice))} width-full" %>
+              <%= link_to 'About', innovation_about_path(@practice), class: "#{'usa-current' if current_page?( innovation_about_path(@practice))} width-full" %>
             </li>
             <% if params[:action] != 'instructions' && params[:action] != 'adoptions' && params[:action] != 'metrics' %>
               <li>

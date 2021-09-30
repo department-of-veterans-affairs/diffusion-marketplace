@@ -28,7 +28,7 @@ describe 'Practice', type: :feature, js: true do
 
     it 'should allow the user to update the departments for the practice' do
       # no departments should be there
-      visit practice_path(@practice)
+      visit innovation_path(@practice)
       within(:css, '#implementation') do
         expect(page).to have_no_content('Departments')
         expect(page).to have_no_content('Admissions')
@@ -62,14 +62,14 @@ describe 'Practice', type: :feature, js: true do
       expect(find_all('.usa-combo-box__input').first.value).to eq 'Admissions'
 
       # check departments in practice view
-      visit practice_path(@practice)
+      visit innovation_path(@practice)
       expect(page).to have_content('Departments')
       expect(page).to have_content('Admissions')
       expect(page).to have_no_content('Anesthetics')
       expect(page).to have_no_content('Chaplaincy')
 
       # remove department
-      visit practice_implementation_path(@practice)
+      visit innovation_implementation_path(@practice)
       find('#link_to_add_link_department_practices').click
       set_combobox_val(1, 'Anesthetics')
       find('#link_to_add_link_department_practices').click
@@ -82,20 +82,20 @@ describe 'Practice', type: :feature, js: true do
       expect(find_all('.usa-combo-box__input')[1].value).to eq 'Chaplaincy'
 
       # check departments in practice view
-      visit practice_path(@practice)
+      visit innovation_path(@practice)
       expect(page).to have_content('Departments')
       expect(page).to have_no_content('Admissions')
       expect(page).to have_content('Anesthetics')
       expect(page).to have_content('Chaplaincy')
 
       # edit department
-      visit practice_implementation_path(@practice)
+      visit innovation_implementation_path(@practice)
       set_combobox_val(0, 'Admissions')
       expect(find_all('.usa-combo-box__input').first.value).to eq 'Admissions'
       find('#practice-editor-save-button').click
 
       # check departments in practice view
-      visit practice_path(@practice)
+      visit innovation_path(@practice)
       expect(page).to have_content('Departments')
       expect(page).to have_content('Admissions')
       expect(page).to have_content('Chaplaincy')

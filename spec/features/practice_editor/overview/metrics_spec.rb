@@ -51,7 +51,7 @@ describe 'Practice editor', type: :feature, js: true do
           end
 
           # go back and edit the metric
-          visit practice_overview_path(@practice)
+          visit innovation_overview_path(@practice)
           within(:css, '.practice-editor-metrics-ul') do
             fill_in(first_metric_field_input[:name], with: "Hello world update 1")
           end
@@ -68,7 +68,7 @@ describe 'Practice editor', type: :feature, js: true do
           end
 
           # create another metric and save
-          visit practice_overview_path(@practice)
+          visit innovation_overview_path(@practice)
           within(:css, '#practice-metrics-container') do
             click_link('Add another')
             fill_in(last_metric_field_input[:name], with: "This is the second metric")
@@ -88,7 +88,7 @@ describe 'Practice editor', type: :feature, js: true do
           end
 
           # delete first metric
-          visit practice_overview_path(@practice)
+          visit innovation_overview_path(@practice)
           input_field_id = first_metric_field_input[:id]
           within(:css, "##{first_metric_field[:id]}") do
             click_link('Delete entry')
@@ -108,7 +108,7 @@ describe 'Practice editor', type: :feature, js: true do
           end
 
           # delete "second" metric
-          visit practice_overview_path(@practice)
+          visit innovation_overview_path(@practice)
           expect(page).to have_field(first_metric_field_input[:name], with: 'This is the second metric')
           input_field_id = first_metric_field_input[:id]
           within(:css, '#practice-metrics-container') do
