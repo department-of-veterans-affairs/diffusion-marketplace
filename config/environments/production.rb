@@ -107,7 +107,7 @@ Rails.application.configure do
 
   mail_settings = {}
 
-  if ENV['USE_NTLM'] == 'true'
+  if ENV['VAEC_ENV'] == 'true'
     mail_settings = {
       address: 'smtp.va.gov',
       port: 25,

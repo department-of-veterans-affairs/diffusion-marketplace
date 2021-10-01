@@ -40,6 +40,6 @@ module DiffusionMarketplace
 
     config.active_job.queue_adapter = :sidekiq
 
-    config.middleware.use NTLMAuthentication if ENV['USE_NTLM'] == 'true'
+    config.middleware.use NTLMAuthentication if ENV['VAEC_ENV'] == 'true'
   end
 end
