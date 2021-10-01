@@ -85,7 +85,7 @@ function buildPracticeCard(result) {
     var favoriteButton = '';
     if (!result.item.retired) {
         favoriteButton =
-            '<a aria-label="Bookmark ' + practiceName + '" tabindex="-1" aria-hidden="true" class="dm-practice-bookmark-btn" id="dm-bookmark-button-' + result.item.id + '" data-remote="true" rel="nofollow" data-method="post" href="/practices/' + result.item.slug + '/favorite.js">' +
+            '<a aria-label="Bookmark ' + practiceName + '" tabindex="-1" aria-hidden="true" class="dm-practice-bookmark-btn" id="dm-bookmark-button-' + result.item.id + '" data-remote="true" rel="nofollow" data-method="post" href="/innovations/' + result.item.slug + '/favorite.js">' +
             '<i class="' + favoriteButtonIcon + ' fa-bookmark dm-favorite-icon-' + result.item.id + ' text-no-underline"></i>' +
             '</a>';
     }
@@ -115,7 +115,7 @@ function buildPracticeCard(result) {
         <% if current_user.present? %>
         favoriteButton +
         <% end %>
-        '<a href="/practices/' + result.item.slug + '" aria-label="Go to ' + result.item.name + '" tabindex="-1" aria-hidden="true" class="dm-practice-link' + practiceLinkClass + '">' +
+        '<a href="/innovations/' + result.item.slug + '" aria-label="Go to ' + result.item.name + '" tabindex="-1" aria-hidden="true" class="dm-practice-link' + practiceLinkClass + '">' +
         '<div class=" dm-practice-card-container">' +
         cardImage +
         '<div class="padding-105 height-card-mobile">' +
