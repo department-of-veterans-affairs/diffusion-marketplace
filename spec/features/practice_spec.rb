@@ -37,13 +37,13 @@ describe 'Practices', type: :feature do
   describe 'Authorization' do
     it 'should let unauthenticated users interact with practices' do
       # Visit an individual Practice
-      visit '/practices/the-best-practice-ever'
+      visit '/innovations/the-best-practice-ever'
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content('You are not authorized to view this content.')
 
       @user_practice.update(approved: true, published: true)
       # Visit an individual Practice
-      visit '/practices/the-best-practice-ever'
+      visit '/innovations/the-best-practice-ever'
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content('Login to see full practice')
       click_on('Login to see full practice')

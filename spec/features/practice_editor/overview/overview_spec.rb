@@ -40,8 +40,8 @@ describe 'Practice editor', type: :feature, js: true do
     it 'should have the correct continue and back links' do
       visit innovation_overview_path(@practice)
       within(:css, '.introduction') do
-        expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/adoptions")
-        expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/implementation")
+        expect(page).to have_link(href: "/innovations/#{@practice.slug}/edit/adoptions")
+        expect(page).to have_link(href: "/innovations/#{@practice.slug}/edit/implementation")
       end
     end
   end

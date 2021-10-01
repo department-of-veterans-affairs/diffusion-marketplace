@@ -26,7 +26,7 @@ describe 'Practice editor', type: :feature, js: true do
             @user_practice.update(approved: true, published: true)
             visit innovation_path(@user_practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508
-            expect(page).to have_link(href: "/practices/#{@user_practice.slug}/edit/metrics")
+            expect(page).to have_link(href: "/innovations/#{@user_practice.slug}/edit/metrics")
         end
 
         it 'should allow practice editors to edit a practice they\'re associated with' do
@@ -42,7 +42,7 @@ describe 'Practice editor', type: :feature, js: true do
             visit innovation_path(@practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).to have_content(@practice.name)
-            expect(page).to_not have_link(href: "/practices/#{@practice.slug}/edit/instructions")
+            expect(page).to_not have_link(href: "/innovations/#{@practice.slug}/edit/instructions")
         end
     end
 end
