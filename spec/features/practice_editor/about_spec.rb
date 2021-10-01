@@ -23,7 +23,7 @@ describe 'Practice editor', type: :feature do
             expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).to have_content('About')
             expect(page).to have_content('This section helps people understand how your innovation started and introduces the original team.')
-            expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/contact")
+            expect(page).to have_link(href: "/innovations/#{@practice.slug}/edit/contact")
         end
 
         def fill_in_origin_story_field
@@ -78,7 +78,7 @@ describe 'Practice editor', type: :feature do
 
 
             # check if the origin story with updated text shows up in the show view
-            visit '/practices/an-awesome-practice'
+            visit '/innovations/an-awesome-practice'
             expect(page).to have_content('This is an edited origin story.')
         end
 
@@ -95,7 +95,7 @@ describe 'Practice editor', type: :feature do
             expect(page).to have_field(@creator_field_role, with: @creator_role)
 
             # see if the team member shows up in the show view
-            visit '/practices/an-awesome-practice'
+            visit '/innovations/an-awesome-practice'
             expect(page).to have_content('Original team')
             expect(page).to have_content(@creator_name)
             expect(page).to have_content(@creator_role)
@@ -109,7 +109,7 @@ describe 'Practice editor', type: :feature do
             expect(page).to have_field(@creator_field_role, with: @creator_role_2)
 
             # see if the team member with updated data shows up in the show view
-            visit '/practices/an-awesome-practice'
+            visit '/innovations/an-awesome-practice'
             expect(page).to have_content(@creator_name_2)
             expect(page).to have_content(@creator_role_2)
 
@@ -130,7 +130,7 @@ describe 'Practice editor', type: :feature do
             end
 
             # see if both team members show up in the show view
-            visit '/practices/an-awesome-practice'
+            visit '/innovations/an-awesome-practice'
             expect(page).to have_content('Original team')
             expect(page).to have_content(@creator_name)
             expect(page).to have_content(@creator_role)
@@ -147,7 +147,7 @@ describe 'Practice editor', type: :feature do
             save_button.click
 
             # make sure the first team member does not show up in the show view
-            visit '/practices/an-awesome-practice'
+            visit '/innovations/an-awesome-practice'
             expect(page).to have_content('Original team')
             expect(page).to_not have_content(@creator_name_2)
             expect(page).to_not have_content(@creator_role_2)
@@ -172,7 +172,7 @@ describe 'Practice editor', type: :feature do
             end
 
             # make sure the "Original team" section was removed from the show view
-            visit '/practices/an-awesome-practice'
+            visit '/innovations/an-awesome-practice'
             expect(page).to_not have_content('Original team')
             expect(page).to_not have_content(@creator_name)
             expect(page).to_not have_content(@creator_role)

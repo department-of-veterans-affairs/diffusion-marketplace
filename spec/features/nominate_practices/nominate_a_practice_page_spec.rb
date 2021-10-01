@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'Nominate an innovation page', type: :feature do
   it 'should be there' do
-    visit '/nominate-a-practice'
+    visit '/nominate-an-innovation'
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content('Nominate an innovation')
     expect(page).to have_content('If you are interested in submitting an innovation to the Diffusion Marketplace, review the criteria below and apply through the link.')

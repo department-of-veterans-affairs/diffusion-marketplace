@@ -60,8 +60,8 @@ describe 'Practice editor - introduction', type: :feature, js: true do
       expect(page).to have_content('Select any of the following partners your innovation is associated with.')
       expect(page).to have_content('Diffusion phase')
       expect(page).to have_content('Select the diffusion phase that applies to your innovation.')
-      expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/instructions")
-      expect(page).to have_link(href: "/practices/#{@practice.slug}/edit/adoptions")
+      expect(page).to have_link(href: "/innovations/#{@practice.slug}/edit/instructions")
+      expect(page).to have_link(href: "/innovations/#{@practice.slug}/edit/adoptions")
       # categories
       expect(page).to have_content('Categories')
       expect(page).to have_content('Select the categories most relevant to your innovation (suggested: up to 10).')
