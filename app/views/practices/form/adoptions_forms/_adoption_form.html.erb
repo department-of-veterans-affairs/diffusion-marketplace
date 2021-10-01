@@ -10,7 +10,7 @@
   in_progress = DiffusionHistoryStatus::STATUSES[1]
   unsuccessful = DiffusionHistoryStatus::STATUSES[2]
 %>
-<%= form_with(url: "#{practice_create_or_update_diffusion_history_path(practice)}.js", local: false, html: {id: "adoption_form#{form_id}", class: 'adoption-form'}) do |f| %>
+<%= form_with(url: "#{innovation_create_or_update_diffusion_history_path(practice)}.js", local: false, html: {id: "adoption_form#{form_id}", class: 'adoption-form'}) do |f| %>
   <%= f.hidden_field('diffusion_history_id', value: form_id) if adoption %>
   <%= f.hidden_field('diffusion_history_status_id', value: adoption.id) if adoption %>
   <div class="margin-bottom-5 margin-top-1">
@@ -111,7 +111,7 @@
     <% end %>
     <button type="button" class="usa-button" id="adoption_form<%= form_id %>_submit" data-disable-with="<%= submit_button_text %>" data-form-id="adoption_form<%= form_id %>"><%= submit_button_text %></button>
     <% if adoption %>
-      <%= link_to 'Delete', practice_destroy_diffusion_history_path(adoption.diffusion_history.practice, adoption.diffusion_history), method: :delete, class: 'usa-button usa-button--secondary float-right', data: {confirm: 'Are you sure you want to delete this adoption entry?'} %>
+      <%= link_to 'Delete', innovation_destroy_diffusion_history_path(adoption.diffusion_history.practice, adoption.diffusion_history), method: :delete, class: 'usa-button usa-button--secondary float-right', data: {confirm: 'Are you sure you want to delete this adoption entry?'} %>
     <% end %>
   </div>
 <% end %>

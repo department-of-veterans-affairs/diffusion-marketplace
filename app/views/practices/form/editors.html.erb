@@ -51,7 +51,7 @@
             </div>
           </div>
         <% end %>
-        <%= nested_form_for(@practice, html: {style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
+        <%= nested_form_for(@practice, :url => innovation_path(params[:innovation_id]), html: {style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
           <fieldset class="usa-fieldset grid-col-12">
             <legend class="usa-sr-only">Practice Editors</legend>
             <div class="grid-col-12">

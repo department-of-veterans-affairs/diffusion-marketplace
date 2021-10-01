@@ -536,7 +536,7 @@ class PracticesController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_practice
-    id = params[:id] || params[:innovation_id]
+    id = params[:id] || params[:practice_id] || params[:innovation_id]
     @practice = Practice.friendly.find(id)
   end
 
