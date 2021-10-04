@@ -27,7 +27,7 @@ class PracticesController < ApplicationController
     redirect_to root_path
   end
 
-  # GET /practices/1
+  # GET /innovations/1
   # GET /practices/1.json
   def show
     # This allows comments thread to show up without the need to click a link
