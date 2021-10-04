@@ -13,7 +13,7 @@ describe 'retired practices', type: :feature do
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content('This practice is no longer being updated.')
     expect(page).to have_content('Was not a good practice')
-    expect(page).to have_content('Comments and replies are disabled for retired practices.')
+    expect(page).to have_content('Comments and replies are disabled for retired practices and public users.')
   end
 
 
