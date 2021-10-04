@@ -2,10 +2,9 @@ module VisnsHelper
   include StatesHelper
 
   def get_facility_locations_by_visn(visn)
-    sorted_facility_locations = VaFacility.get_by_visn(visn).get_locations
-
+    sorted_facility_locations = VaFacility.get_by_visn(visn).get_locations.sort
     location_list = ''
-
+    
     # Add other US territories to us_states helper method array
     va_facility_locations = us_states.concat(
       [

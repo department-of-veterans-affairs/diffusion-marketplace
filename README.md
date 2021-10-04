@@ -20,7 +20,7 @@
 | `rails importer:initial_featured` | sets up the "original" featured practices to show up on the landing page - depends on spreadsheet being imported |
 | `rails surveymonkey:download_response_files` (DEPRECATED) | Rake task to download files from our SurveyMonkey practice submission form. **Do not use this anymore. Ever.**  |
 | `rails visns:create_visns_and_transfer_data` | Creates new VISN records based on the data from the "practice_origin_lookup.json" file
-| `rails va_facilities:create_va_facilities_and_transfer_data` | Creates new VA facility records based on the data from the "vamc.json" file
+| `rails va_facilities:create_or_update_va_facilities` | Creates or updates VA facility records based on the data from the "va_facilities.json" file
 | `rails visns:create_visn_liaisons_and_transfer_data` | Creates new VISN liaison records based on the data from the "practice_origin_lookup.json" file
 | `rails diffusion_history:all`| Imports all of the diffusion history we have so far for practices - used to populate the geolocation feature (Practice <-> Facility mappings) |
 | `rails milestones:milestones_transfer` | Transfers all of the original timeline entry milestones to the new milestone model  |
@@ -160,7 +160,7 @@ This will run:
 2. `rails importer:import_answers` - imports the initial practice data the Diffusion Marketplace team collected via Survey Monkey, images and all~
 3. `rails importer:initial_featured` - sets the first three initial featured practices for the homepage
 4. `rails visns:create_visns_and_transfer_data` - Creates new VISN records based on the data from the "practice_origin_lookup.json" file
-5. `rails va_facilities:create_va_facilities_and_transfer_data` - Creates new VA facility records based on the data from the "vamc.json" file
+5. `rails va_facilities:create_or_update_va_facilities` - Creates or updates VA facility records based on the data from the "va_facilities.json" file
 6. `rails visns:create_visn_liaisons_and_transfer_data` - Creates new VISN liaison records based on the data from the "practice_origin_lookup.json" file
 7. `rails diffusion_history:all` - set up the initial diffusion history for the first five practices. Individual commands can be found here:  `lib/tasks/diffusion_history.rake`
 8. `rails go_fish_practices:assign_go_fish_badge` - assigns the Go Fish badge to all Go Fish practices

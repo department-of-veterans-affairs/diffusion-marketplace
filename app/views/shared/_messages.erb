@@ -1,11 +1,11 @@
-<% if alert.present? %>
+<% if alert.present? && !flash.keys.include?('url') %>
   <div class="usa-alert usa-alert--error margin-bottom-2">
     <div class="usa-alert__body">
       <p><%= alert.humanize %></p>
     </div>
   </div>
 <% end %>
-<% if flash.present? && alert.blank? %>
+<% if flash.present? && alert.blank? && !flash.keys.include?('url') %>
   <% flash.each do |key, value| %>
     <% if key == 'notice' then
          key = 'info'
@@ -20,4 +20,16 @@
       </div>
     <% end %>
   <% end %>
+<% end %>
+<% if flash.keys.present? && flash.keys.include?('url') %>
+  <div class="usa-alert usa-alert--error <%= small_text ? 'message-icon-bg-position' : '' %>">
+    <div class="usa-alert__body grid-row flex-align-center">
+      <div class="usa-alert__heading <%= small_text ? 'font-sans-sm margin-bottom-0' : '' %>" role="alert">
+        <%= flash[:alert] %>
+        <% if flash[:url_text].present? %>
+          <%= link_to flash[:url_text], flash[:url] %>
+        <% end %>
+      </div>
+    </div>
+  </div>
 <% end %>

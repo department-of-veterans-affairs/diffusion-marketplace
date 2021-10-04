@@ -16,7 +16,7 @@ namespace :dm do
     Rake::Task['importer:import_answers'].execute
     Rake::Task['importer:initial_featured'].execute
     Rake::Task['visns:create_visns_and_transfer_data'].execute
-    Rake::Task['va_facilities:create_va_facilities_and_transfer_data'].execute
+    Rake::Task['va_facilities:create_or_update_va_facilities'].execute
     Rake::Task['visns:create_visn_liaisons_and_transfer_data'].execute
     Rake::Task['diffusion_history:all'].execute
     Rake::Task['go_fish_practices:assign_go_fish_badge'].execute

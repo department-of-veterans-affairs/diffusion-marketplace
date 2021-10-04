@@ -1,4 +1,7 @@
-FROM agilesix/centos:7.6
+# Note: Uncomment this to run docker locally
+#FROM agilesix/centos:7.6
+# Note: Comment out the next line to run docker locally
+FROM 124858472090.dkr.ecr.us-gov-west-1.amazonaws.com/diffusion-marketplace:centos
 
 MAINTAINER Agile Six Applications, Inc. <contact@agile6.com>
 
