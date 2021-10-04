@@ -42,7 +42,7 @@ describe 'Practice editor sessions', type: :feature do
     login_as(@user, :scope => :user, :run_callbacks => false)
     visit practice_introduction_path(@practice_2)
     session_start_time = PracticeEditorSession.last.session_start_time
-    PracticeEditorSession.last.update_attributes(session_start_time: DateTime.current - 14.minutes)
+    PracticeEditorSession.last.update_attributes(session_start_time: DateTime.current - 19.minutes)
     visit practice_introduction_path(@practice_2)
     page.driver.browser.switch_to.alert.accept
     sleep 0.3
@@ -74,7 +74,7 @@ describe 'Practice editor sessions', type: :feature do
     it 'should not save and redirect to metrics when required fields for saving' do
       visit practice_introduction_path(@practice_2)
       session = PracticeEditorSession.last
-      session.update(session_start_time: DateTime.now - 14.minutes)
+      session.update(session_start_time: DateTime.now - 19.minutes)
       visit practice_introduction_path(@practice_2)
       page.driver.browser.switch_to.alert.dismiss
       expect(@practice_2.updated_at_changed?).to eq(false)
@@ -91,7 +91,7 @@ describe 'Practice editor sessions', type: :feature do
       PracticeResource.create!(practice: @practice_2, link_url:'www.google.com', name: "search stuff", resource_type: "core", media_type: "link")
       visit practice_implementation_path(@practice_2)
       session = PracticeEditorSession.last
-      session.update(session_start_time: DateTime.now - 14.minutes)
+      session.update(session_start_time: DateTime.now - 19.minutes)
       visit practice_implementation_path(@practice_2)
       page.driver.browser.switch_to.alert.dismiss
       expect(@practice_2.updated_at_changed?).to eq(false)
@@ -105,7 +105,7 @@ describe 'Practice editor sessions', type: :feature do
       login_as(@user, :scope => :user, :run_callbacks => false)
       visit practice_introduction_path(@practice_2)
       session = PracticeEditorSession.last
-      session.update(session_start_time: DateTime.now - 20.minutes)
+      session.update(session_start_time: DateTime.now - 21.minutes)
       logout(@user)
       login_as(@user_2, :scope => :user, :run_callbacks => false)
       visit practice_introduction_path(@practice_2)

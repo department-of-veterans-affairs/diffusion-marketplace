@@ -5,7 +5,7 @@ class PracticeEditorSession < ApplicationRecord
 
   def self.session_out_of_time(session)
     is_published = session.practice.published
-    is_published ? session_end = DateTime.now.utc - 15.minutes : session_end = DateTime.now.utc - 30.minutes
+    is_published ? session_end = DateTime.now.utc - 20.minutes : session_end = DateTime.now.utc - 30.minutes
     if session.session_start_time < session_end
       session.session_end_time = DateTime.now
       session.save
@@ -29,9 +29,9 @@ class PracticeEditorSession < ApplicationRecord
   end
 
   def self.get_minutes_remaining_in_session(session, is_published)
-    #TODO: change this back to 15......... set to 2...? only for testing..... bj_2_10_2021
+    #TODO: change this back to 20......... set to 2...? only for testing..... bj_2_10_2021
     if is_published
-      ret_val =  15 - minutes_in_session(session.session_start_time).to_i
+      ret_val =  20 - minutes_in_session(session.session_start_time).to_i
     else
       ret_val =  30 - minutes_in_session(session.session_start_time).to_i
     end
@@ -41,15 +41,5 @@ class PracticeEditorSession < ApplicationRecord
   def self.minutes_in_session(session_start_time)
     minutes = ((DateTime.now - session_start_time.to_datetime) * 24 * 60).to_i
     return minutes
-  end
-  def self.remove_expired_open_sessions(practice_id)
-    recs = PracticeEditorSession.where(practice_id: practice_id, session_end_time: nil).where.not(session_start_time: nil)
-    if recs.present?
-      recs.each do |rec|
-        if minutes_in_session(rec.session_start_time) > 19
-          rec.destroy!
-        end
-      end
-    end
   end
 end
