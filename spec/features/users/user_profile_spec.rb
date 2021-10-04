@@ -11,15 +11,17 @@ describe 'The user index', type: :feature do
                          password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
   end
 
-  it 'should not show edit profile button for a different users show page' do
+  it 'should not show the profile page of a different user and redirect them to the home page' do
     visit "/users/#{@user.id}"
 
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to_not have_content('Edit profile')
+    expect(page.current_path).to eq root_path
 
     login_as(@user2, scope: :user, run_callbacks: false)
     visit "/users/#{@user.id}"
     expect(page).to_not have_content('Edit profile')
+    expect(page.current_path).to eq root_path
   end
 
   it 'should have edit profile button for logged in user' do
@@ -41,7 +43,7 @@ describe 'The user index', type: :feature do
 
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content('Diffusion Marketplace')
-    expect(page.current_path).to eq user_session_path
+    expect(page.current_path).to eq root_path
   end
 
   it 'should show the current users email' do
