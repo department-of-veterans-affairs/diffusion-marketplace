@@ -77,7 +77,7 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_current_path(admin_root_path)
 
     expect(page).to have_selector('#users-information', visible: true)
-    expect(page).to have_selector('#innovation-leaderboards', visible: false)
+    expect(page).to have_selector('#practice-leaderboards', visible: false)
     expect(page).to have_selector('#general-practice-search-terms-table', visible: false)
 
     within(:css, '.tabs.ui-tabs') do
