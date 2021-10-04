@@ -54,10 +54,10 @@ describe 'Practices', type: :feature do
       login_as(@user, :scope => :user, :run_callbacks => false)
 
       # Visit an individual Practice that is approved and published
-      visit innovation_path(@practice)
+      visit practice_path(@practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@practice.name)
-      expect(page).to have_current_path(innovation_path(@practice))
+      expect(page).to have_current_path(practice_path(@practice))
 
       # Visit the Marketplace
       visit '/'
@@ -79,16 +79,16 @@ describe 'Practices', type: :feature do
       login_as(@user, :scope => :user, :run_callbacks => false)
 
       # Visit user's own practice that is not approved or published
-      visit innovation_path(@user_practice)
+      visit practice_path(@user_practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_current_path(innovation_path(@user_practice))
+      expect(page).to have_current_path(practice_path(@user_practice))
       expect(page).to have_content(@user_practice.name)
     end
 
     it 'should not let a user view the practice if the practice is not approved or published' do
       login_as(@user2, :scope => :user, :run_callbacks => false)
       # Visit a user's practice that is not approved or published
-      visit innovation_path(@user_practice)
+      visit practice_path(@user_practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content('Find the next important or life-saving innovation to adopt at your VA facility.')
       expect(page).to have_current_path('/')
@@ -98,26 +98,26 @@ describe 'Practices', type: :feature do
       login_as(@approver, :scope => :user, :run_callbacks => false)
 
       # Visit a user's practice that is not approved or published
-      visit innovation_path(@user_practice)
+      visit practice_path(@user_practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@user_practice.name)
-      expect(page).to have_current_path(innovation_path(@user_practice))
+      expect(page).to have_current_path(practice_path(@user_practice))
     end
 
     it 'should let an admin user view the practice if the practice is not approved or published' do
       login_as(@admin, :scope => :user, :run_callbacks => false)
 
       # Visit a user's practice that is not approved or published
-      visit innovation_path(@user_practice)
+      visit practice_path(@user_practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@user_practice.name)
-      expect(page).to have_current_path(innovation_path(@user_practice))
+      expect(page).to have_current_path(practice_path(@user_practice))
     end
 
     it 'should let a user view the practice if it is hidden but not search for it' do
       login_as(@user2, :scope => :user, :run_callbacks => false)
       hidden_practice = Practice.create!(name: 'A secret practice', approved: true, published: true, hidden: true, tagline: 'Test secret tagline', date_initiated: Time.now(), user: @user)
-      visit innovation_path(hidden_practice)
+      visit practice_path(hidden_practice)
       expect(page).to have_content(hidden_practice.name)
       expect(page).to have_content('Hidden practice')
       fill_in('search', with: 'A secret practice')
@@ -132,11 +132,11 @@ describe 'Practices', type: :feature do
       # Visit an individual Practice that is approved and published
       practice = Practice.create!(name: 'Another public practice', date_initiated: Time.now(), approved: true, published: true, initiating_facility_type: 'facility', tagline: 'Test tagline', user: @user2)
       PracticeOriginFacility.create!(practice: practice, facility_type: 0, va_facility: @facility_1)
-      visit innovation_path(practice)
+      visit practice_path(practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(practice.name)
       expect(page).to have_content('Yakima VA Clinic')
-      expect(page).to have_current_path(innovation_path(practice))
+      expect(page).to have_current_path(practice_path(practice))
     end
   end
 
@@ -144,11 +144,11 @@ describe 'Practices', type: :feature do
     it 'should display enabled practice in metrics' do
       login_as(@admin, :scope => :user, :run_callbacks => false)
       # Visit an individual Practice that is enabled
-      visit innovation_path(@enabled_practice)
+      visit practice_path(@enabled_practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@enabled_practice.name)
       expect(page).to have_content(@enabled_practice.initiating_facility)
-      expect(page).to have_current_path(innovation_path(@enabled_practice))
+      expect(page).to have_current_path(practice_path(@enabled_practice))
       click_on('Bookmark')
       visit admin_dashboard_path
       click_on('Metrics')
@@ -166,27 +166,27 @@ describe 'Practices', type: :feature do
       login_as(@user, :scope => :user, :run_callbacks => false)
       @user_practice.update(published: true, approved: true, initiating_facility: 'Page VA Clinic')
       # Visit an individual Practice that is approved and published
-      visit innovation_path(@user_practice)
+      visit practice_path(@user_practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@user_practice.name)
       expect(page).to have_content(@user_practice.initiating_facility)
-      expect(page).to have_current_path(innovation_path(@user_practice))
+      expect(page).to have_current_path(practice_path(@user_practice))
     end
 
     it 'should display the practice departments section' do
       login_as(@user, :scope => :user, :run_callbacks => false)
       @user_practice.update(published: true, approved: true, difficulty_aggregate: 1, sustainability_aggregate: 2, number_departments: 3, it_required: true, process: 'New approach', implementation_time_estimate: '6 months', training_provider: 'Practice champion', training_test: true, need_new_license: true, training_length: '1 month')
-      visit innovation_path(@user_practice)
+      visit practice_path(@user_practice)
 
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@user_practice.name)
       expect(page).to have_content(@user_practice.initiating_facility)
-      expect(page).to have_current_path(innovation_path(@user_practice))
+      expect(page).to have_current_path(practice_path(@user_practice))
     end
 
     it 'should NOT show the edit practice button if the user is not an admin/approver or creater of the practice' do
       login_as(@user, :scope => :user, :run_callbacks => false)
-      visit innovation_path(@practice)
+      visit practice_path(@practice)
       expect(page).to_not have_link('Edit practice')
     end
   end

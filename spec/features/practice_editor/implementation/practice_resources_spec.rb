@@ -9,7 +9,7 @@ describe 'Practice editor', type: :feature, js: true do
   describe 'Implementation Page' do
     before do
       login_as(@admin, :scope => :user, :run_callbacks => false)
-      visit innovation_implementation_path(@practice)
+      visit practice_implementation_path(@practice)
     end
 
     def add_people_resource
@@ -103,7 +103,7 @@ describe 'Practice editor', type: :feature, js: true do
         find_all('.practice-input').last.set('A practice tool')
       end
       save_progress
-      visit innovation_path(@practice)
+      visit practice_path(@practice)
       expect(page).to have_content('A practice tool')
     end
   end

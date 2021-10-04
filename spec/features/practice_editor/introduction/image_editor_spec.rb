@@ -18,7 +18,7 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
   describe 'Section content on load' do
     context 'for a practice without a thumbnail' do
       before do
-        visit innovation_introduction_path(@pr_without_thumbnail)
+        visit practice_introduction_path(@pr_without_thumbnail)
       end
 
       it 'should not display an image' do
@@ -39,7 +39,7 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
 
     context 'for a practice with a thumbnail' do
       before do
-        visit innovation_introduction_path(@pr_with_thumbnail)
+        visit practice_introduction_path(@pr_with_thumbnail)
       end
 
       it 'should display an image' do
@@ -62,7 +62,7 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
   describe 'Uploading an image' do
     context 'that is within the constraints' do
       before do
-        visit innovation_introduction_path(@pr_without_thumbnail)
+        visit practice_introduction_path(@pr_without_thumbnail)
         upload_img @acceptable_img_path
         click_save
       end
@@ -85,7 +85,7 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
 
     context 'that is over the specified file size' do
       before do
-        visit innovation_introduction_path(@pr_without_thumbnail)
+        visit practice_introduction_path(@pr_without_thumbnail)
         expect(page).to have_no_content('Sorry, you cannot upload an image larger than 32MB.')
         upload_img @unacceptable_img_size_path
       end
@@ -105,7 +105,7 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
 
     context 'that is under the specified file dimensions' do
       before do
-        visit innovation_introduction_path(@pr_with_thumbnail)
+        visit practice_introduction_path(@pr_with_thumbnail)
         expect(page).to have_no_content('Sorry, you cannot upload an image smaller than 768px wide by 432px high.')
         click_remove_img
         upload_img @unacceptable_img_dimension_path
@@ -129,7 +129,7 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
   describe 'Removing an image' do
     context 'that was already set' do
       before do
-        visit innovation_introduction_path(@pr_with_thumbnail)
+        visit practice_introduction_path(@pr_with_thumbnail)
         expect(page).to have_css('.dm-cropper-thumbnail-modified')
         click_remove_img
         click_save
@@ -154,7 +154,7 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
 
     context 'that was uploaded' do
       before do
-        visit innovation_introduction_path(@pr_without_thumbnail)
+        visit practice_introduction_path(@pr_without_thumbnail)
         upload_img @acceptable_img_path
         find(:css, '.dm-cropper-thumbnail-modified')
         expect(page).to have_css('.dm-cropper-thumbnail-modified')
@@ -180,7 +180,7 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
 
     context 'in crop mode' do
       before do
-        visit innovation_introduction_path(@pr_with_thumbnail)
+        visit practice_introduction_path(@pr_with_thumbnail)
         expect(page).to have_css('.dm-cropper-thumbnail-modified')
         click_edit_img
       end
@@ -233,7 +233,7 @@ describe 'Diffusion Marketplace image editor', type: :feature, js: true do
   describe 'Cropping an image' do
     context 'that was already set' do
       before do
-        visit innovation_introduction_path(@pr_with_thumbnail)
+        visit practice_introduction_path(@pr_with_thumbnail)
         click_edit_img
         expect(page).to have_css('.cropper-container')
       end

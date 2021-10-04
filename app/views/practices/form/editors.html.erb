@@ -40,7 +40,7 @@
               <% end %>
             </div>
             <div class="grid-col-1 display-flex flex-justify-center">
-              <%= link_to '', innovation_path(@practice,
+              <%= link_to '', practice_path(@practice,
                     practice: { practice_editors_attributes: { id: pe.id, _destroy: true } }),
                     data: { confirm: "Are you sure you want to remove #{user.email} from the editors list?" },
                     method: 'put',
@@ -51,7 +51,7 @@
             </div>
           </div>
         <% end %>
-        <%= nested_form_for(@practice, :url => innovation_path(params[:innovation_id]), html: {style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
+        <%= nested_form_for(@practice, html: {style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
           <fieldset class="usa-fieldset grid-col-12">
             <legend class="usa-sr-only">Practice Editors</legend>
             <div class="grid-col-12">
@@ -71,7 +71,7 @@
         <% end %>
 
         <div class="grid-row margin-top-10">
-          <%= render partial: 'practices/back_and_continue_buttons', locals: { back_path: innovation_instructions_path(@practice), continue_path: innovation_introduction_path(@practice) } %>
+          <%= render partial: 'practices/back_and_continue_buttons', locals: { back_path: practice_instructions_path(@practice), continue_path: practice_introduction_path(@practice) } %>
         </div>
       </section>
     </div>

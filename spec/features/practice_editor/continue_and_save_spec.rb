@@ -13,7 +13,7 @@ describe 'Practice editor', type: :feature, js: true do
     end
 
     it 'should save the users work and advance them to the next page in the editor when clicked' do
-      visit innovation_implementation_path(@practice)
+      visit practice_implementation_path(@practice)
       time_frame = '1'
       milestone = 'week to complete this milestone'
       core_people_resource = 'A practice person'
@@ -42,7 +42,7 @@ describe 'Practice editor', type: :feature, js: true do
     end
 
     it 'should not allow a user to move to the next page if there is a required field not filled out' do
-      visit innovation_overview_path(@practice)
+      visit practice_overview_path(@practice)
       find('.continue-and-save').click
       email_message = all('.practice-editor-overview-statement-input').first.native.attribute('validationMessage')
       expect(email_message).to eq('Please fill out this field.')

@@ -347,7 +347,7 @@ ActiveAdmin.register_page "Dashboard" do
         end # columns
       end # tab
 
-      tab :innovation_leaderboards do
+      tab :practice_leaderboards do
         columns do
           column do
             panel('Innovation Views Leaderboard', class: 'dm-panel-container', id: 'dm-practice-views-leaderboard') do

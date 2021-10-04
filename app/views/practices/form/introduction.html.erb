@@ -48,7 +48,7 @@
           Introduce your innovation and provide a brief summary to people who may be unfamiliar with it.
         </div>
         <%= render 'pii_phi_alert' %>
-        <%= nested_form_for(@practice, :url => innovation_path(params[:innovation_id]), html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
+        <%= nested_form_for(@practice, :url => practice_path(params[:practice_id]), html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
           <fieldset class="usa-fieldset grid-col-10">
             <legend class="usa-sr-only">Innovation Information</legend>
             <div class="height-05 width-8 border-top-05 border-primary-dark"></div>
@@ -519,7 +519,7 @@
         <% end %>
 
         <div class="grid-row margin-bottom-8">
-          <%= render partial: 'practices/back_and_continue_buttons', locals: { back_path: innovation_editors_path(@practice), continue_path: innovation_adoptions_path(@practice) }%>
+          <%= render partial: 'practices/back_and_continue_buttons', locals: { back_path: practice_editors_path(@practice), continue_path: practice_adoptions_path(@practice) }%>
         </div>
       </section>
     </div>

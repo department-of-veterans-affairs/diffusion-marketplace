@@ -11,23 +11,23 @@ describe 'Practice editor', type: :feature, js: true do
   describe 'Overview page' do
     describe 'view and editor' do
       it 'should be accessible' do
-        visit innovation_path(@practice)
+        visit practice_path(@practice)
         expect(page).to be_accessible.according_to :wcag2a, :section508
-        visit innovation_overview_path(@practice)
+        visit practice_overview_path(@practice)
         expect(page).to be_accessible.according_to :wcag2a, :section508
       end
 
       it 'should be able to change the problem, solution, results, statements' do
-        visit innovation_path(@practice)
+        visit practice_path(@practice)
         expect(page).to have_content('existing problem')
         expect(page).to have_content('existing solution')
         expect(page).to have_content('existing results')
-        visit innovation_overview_path(@practice)
+        visit practice_overview_path(@practice)
         problem_statement.set('revised problem')
         solution_statement.set('revised solution')
         results_statement.set('revised results')
         find('#practice-editor-save-button').click
-        visit innovation_path(@practice)
+        visit practice_path(@practice)
         expect(page).to have_no_content('existing problem')
         expect(page).to have_no_content('existing solution')
         expect(page).to have_no_content('existing results')
@@ -38,7 +38,7 @@ describe 'Practice editor', type: :feature, js: true do
     end
 
     it 'should have the correct continue and back links' do
-      visit innovation_overview_path(@practice)
+      visit practice_overview_path(@practice)
       within(:css, '.introduction') do
         expect(page).to have_link(href: "/innovations/#{@practice.slug}/edit/adoptions")
         expect(page).to have_link(href: "/innovations/#{@practice.slug}/edit/implementation")

@@ -17,7 +17,7 @@ describe 'Practice editor', type: :feature, js: true do
     describe 'complete form, edit, and remove files' do
       def complete_add_file_test(area)
         # add files
-        visit innovation_implementation_path(@practice)
+        visit practice_implementation_path(@practice)
 
         within(:css, ".dm-#{area}-attachment-form") do
           expect(page).to have_no_content('Upload a .pdf, .docx, .xlxs, .jpg, .jpeg, or .png file that is less than 32MB.')
@@ -79,7 +79,7 @@ describe 'Practice editor', type: :feature, js: true do
         save_practice
 
         # check files appear in view
-        visit innovation_path(@practice)
+        visit practice_path(@practice)
         within(:css, '#dm-implementation-show-resources') do
           expect(page).to have_content("first new #{area} file")
           expect(page).to have_content("second new #{area} file")
@@ -89,7 +89,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         # edit practice
-        visit innovation_implementation_path(@practice)
+        visit practice_implementation_path(@practice)
         within(:css, "#display_#{area}_attachment_file") do
           first_name_field.set("first edited #{area} file")
           first_description_field.set("first edited practice #{area} file")
@@ -97,7 +97,7 @@ describe 'Practice editor', type: :feature, js: true do
         save_practice
 
         # check edited file appears in view
-        visit innovation_path(@practice)
+        visit practice_path(@practice)
         within(:css, '#dm-implementation-show-resources') do
           expect(page).to have_content("first edited #{area} file")
           expect(page).to have_content("second new #{area} file")
@@ -109,14 +109,14 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         # delete link
-        visit innovation_implementation_path(@practice)
+        visit practice_implementation_path(@practice)
         within(:css, "#display_#{area}_attachment_file") do
           delete_entry(0)
         end
         save_practice
 
         # check the links do not show up on view
-        visit innovation_path(@practice)
+        visit practice_path(@practice)
         within(:css, '#dm-implementation-show-resources') do
           expect(page).to have_no_content("first edited #{area} file")
           expect(page).to have_content("second new #{area} file")
@@ -133,7 +133,7 @@ describe 'Practice editor', type: :feature, js: true do
 
       it 'should render file_attachment_name if name and description are blank' do
         PracticeResource.create(practice: @practice, resource: 'core person 99', resource_type: 'optional', media_type: 'file', position: 2, name: '', description: '', attachment_content_type: 'image/jpeg', attachment_file_name: 'file.jpg' )
-        visit innovation_path(@practice)
+        visit practice_path(@practice)
         expect(page).to have_content("file.jpg")
         PracticeResource.delete(2)
       end

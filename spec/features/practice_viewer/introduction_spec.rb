@@ -88,7 +88,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
 
   describe 'action buttons' do
     before do
-      visit innovation_path(@pr_min)
+      visit practice_path(@pr_min)
       expect(page).to be_accessible.according_to :wcag2a, :section508
     end
 
@@ -111,7 +111,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
 
   describe 'see more buttons' do
     before do
-      visit innovation_path(@pr_max)
+      visit practice_path(@pr_max)
       expect(page).to be_accessible.according_to :wcag2a, :section508
     end
 
@@ -139,11 +139,11 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
           expect(page).to have_content('Main number:')
         end
 
-        visit innovation_introduction_path(@pr_max)
+        visit practice_introduction_path(@pr_max)
         find('#initiating_facility_type_visn').sibling('label').click
         select('VISN-6', :from => 'editor_visn_select')
         find('#practice-editor-save-button').click
-        visit innovation_path(@pr_max)
+        visit practice_path(@pr_max)
 
         new_window = window_opened_by { click_link 'VISN-6' }
         within_window new_window do
@@ -169,7 +169,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
 
   describe 'partners section' do
     before do
-      visit innovation_path(@pr_max)
+      visit practice_path(@pr_max)
     end
 
     it 'should display the content correctly' do
@@ -182,7 +182,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
 
   describe 'categories section' do
     before do
-      visit innovation_path(@pr_max)
+      visit practice_path(@pr_max)
     end
 
     it 'should display the content correctly' do
@@ -204,7 +204,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
     before do
       # set maturity level
       @pr_max.update_attributes(maturity_level: 'emerging')
-      visit innovation_path(@pr_max)
+      visit practice_path(@pr_max)
     end
 
     it 'should display the content correctly' do
@@ -222,7 +222,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
 
   describe 'practice page with minimum content' do
     before do
-      visit innovation_path(@pr_min)
+      visit practice_path(@pr_min)
     end
 
     it 'should display the content correctly' do
@@ -239,7 +239,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
 
   describe 'practice page with maximum content' do
     before do
-      visit innovation_path(@pr_max)
+      visit practice_path(@pr_max)
     end
 
     it 'should display the content correctly' do

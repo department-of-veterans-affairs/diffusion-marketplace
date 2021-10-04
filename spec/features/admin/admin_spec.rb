@@ -320,9 +320,9 @@ describe 'The admin dashboard', type: :feature do
     expect(Practice.last.name).to eq('The Newest Practice')
     expect(page).to have_current_path(admin_practice_path(Practice.last))
     expect(page).to have_content(User.last.email)
-    click_link("#{innovation_overview_path(Practice.last)}")
+    click_link("#{practice_overview_path(Practice.last)}")
 
-    expect(page).to have_current_path(innovation_overview_path(Practice.last))
+    expect(page).to have_current_path(practice_overview_path(Practice.last))
   end
 
   it 'should not allow an admin to create a new practice if they do not enter the required information' do
@@ -419,7 +419,7 @@ describe 'The admin dashboard', type: :feature do
     # make sure the mailer subject is for a practice owner that is now also a practice editor
     expect(ActionMailer::Base.deliveries.last.subject).to eq('You have been added to the list of practice editors for the The Best Practice Ever! Diffusion Marketplace Page!')
 
-    visit innovation_editors_path(@practice)
+    visit practice_editors_path(@practice)
     expect(page).to have_content('test@va.gov')
 
     visit '/admin'
@@ -639,7 +639,7 @@ describe 'The admin dashboard', type: :feature do
     # create a comment with the current practice user
     logout(@admin)
     login_as(@user2, :scope => :user, :run_callbacks => false)
-    visit innovation_path(@practice)
+    visit practice_path(@practice)
     fill_in('comment[body]', with: 'This is a test comment')
     click_button('commit')
 

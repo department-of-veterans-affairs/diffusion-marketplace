@@ -10,7 +10,7 @@ describe 'Practice editor', type: :feature, js: true do
     describe 'Side navigation' do
         before do
             login_as(@admin, :scope => :user, :run_callbacks => false)
-            visit innovation_instructions_path(@practice)
+            visit practice_instructions_path(@practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508
         end
 

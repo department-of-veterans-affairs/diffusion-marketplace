@@ -22,7 +22,7 @@ describe 'Practice editor', type: :feature, js: true do
 
       def complete_add_link_test(area)
         # add links
-        visit innovation_implementation_path(@practice)
+        visit practice_implementation_path(@practice)
 
         within(:css, ".dm-#{area}-attachment-form") do
           expect(page).to have_no_content('Link (paste the full address)')
@@ -72,7 +72,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         # check links appear in view
-        visit innovation_path(@practice)
+        visit practice_path(@practice)
         within(:css, '#dm-implementation-show-resources') do
           expect(page).to have_content("first new #{area} link")
           expect(page).to have_content("second new #{area} link")
@@ -83,7 +83,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         # edit practice
-        visit innovation_implementation_path(@practice)
+        visit practice_implementation_path(@practice)
         within(:css, "#display_#{area}_attachment_link") do
           first_url_field.set(get_link_url(area, 2))
           first_title_field.set("first edited #{area} link")
@@ -92,7 +92,7 @@ describe 'Practice editor', type: :feature, js: true do
         save_practice
 
         # check edited link appears in view
-        visit innovation_path(@practice)
+        visit practice_path(@practice)
         within(:css, '#dm-implementation-show-resources') do
           expect(page).to have_content("first edited #{area} link")
           expect(page).to have_content("second new #{area} link")
@@ -106,14 +106,14 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         # delete link
-        visit innovation_implementation_path(@practice)
+        visit practice_implementation_path(@practice)
         within(:css, "#display_#{area}_attachment_link") do
           delete_entry(0)
         end
         save_practice
 
         # check the links do not show up on view
-        visit innovation_path(@practice)
+        visit practice_path(@practice)
         within(:css, '#dm-implementation-show-resources') do
           expect(page).to have_no_content("first edited #{area} link")
           expect(page).to have_content("second new #{area} link")

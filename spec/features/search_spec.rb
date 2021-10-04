@@ -122,7 +122,7 @@ describe 'Search', type: :feature do
 
   def update_practice_introduction(practice)
     login_as(@admin, :scope => :user, :run_callbacks => false)
-    visit innovation_introduction_path(practice)
+    visit practice_introduction_path(practice)
     find("#initiating_facility_type_department").sibling('label').click
     select('VBA', :from => 'editor_department_select')
     select('Alabama', :from => 'editor_office_state_select')
@@ -137,13 +137,13 @@ describe 'Search', type: :feature do
 
   def publish_practice(practice)
     update_practice_introduction(practice)
-    visit(innovation_adoptions_path(practice))
+    visit(practice_adoptions_path(practice))
     find('#add_adoption_button').click
     find("label[for*='status_completed']").click
     find('#editor_facility_select').click
     find("#editor_facility_select--list--option-0").click
     find('#adoption_form_submit').click
-    visit(innovation_contact_path(practice))
+    visit(practice_contact_path(practice))
     fill_in('practice_support_network_email', with: 'dm@va.gov')
     click_button('Publish')
   end
@@ -560,7 +560,7 @@ describe 'Search', type: :feature do
 
       visit '/search?=newest'
       expect(page).to_not have_content(latest_practice.name)
-      visit(innovation_overview_path(latest_practice))
+      visit(practice_overview_path(latest_practice))
       fill_in('practice_overview_problem', with: 'Practice overview problem statement')
       fill_in('practice_overview_solution', with: 'Practice overview solution statement')
       fill_in('practice_overview_results', with: 'Practice overview results statement')

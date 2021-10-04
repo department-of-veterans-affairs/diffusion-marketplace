@@ -27,7 +27,7 @@ describe 'Practice editor', type: :feature, js: true do
   describe 'Publish practice flow' do
     before do
       login_as(@admin, :scope => :user, :run_callbacks => false)
-      visit innovation_introduction_path(@practice)
+      visit practice_introduction_path(@practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       @save_button = find('#practice-editor-save-button')
       @publish_button = find('#publish-practice-button')
@@ -94,7 +94,7 @@ describe 'Practice editor', type: :feature, js: true do
       expect(page).to have_content('You must include at least one adoption')
       expect(page).to have_content('You must include a support network email')
 
-      visit innovation_adoptions_path(@practice)
+      visit practice_adoptions_path(@practice)
       set_adoption
       @publish_button.click
       page.has_css?('.publication-modal-body')
@@ -104,22 +104,22 @@ describe 'Practice editor', type: :feature, js: true do
 
     it 'Should save and publish the practice if all required fields are met' do
       # set contact email
-      visit innovation_contact_path(@practice2)
+      visit practice_contact_path(@practice2)
       email = 'test@email.com'
       fill_in('Main email address', with: email)
       @save_button.click
       expect(page).to have_field('Main email address', with: email)
 
       # set adoption
-      visit innovation_adoptions_path(@practice2)
+      visit practice_adoptions_path(@practice2)
       set_adoption
 
       # set required fields in introduction page
-      visit innovation_introduction_path(@practice2)
+      visit practice_introduction_path(@practice2)
       set_pr_required_fields
 
       #set required fields in overview section
-      visit innovation_overview_path(@practice2)
+      visit practice_overview_path(@practice2)
       set_overview_required_fields
 
 
@@ -129,7 +129,7 @@ describe 'Practice editor', type: :feature, js: true do
       # Publish button should be gone if the practice has been published
       expect(page).to_not have_link('Publish innovation')
 
-      visit innovation_path(@practice2)
+      visit practice_path(@practice2)
       expect(page).to have_content('practice summary')
       expect(page).to have_content('Another public practice')
     end

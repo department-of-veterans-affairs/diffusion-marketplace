@@ -17,7 +17,7 @@
         </div>
         <div class="practice-list">
           <% diffusion_histories.each_with_index do |dh, i| %>
-            <a href="<%= innovation_path(dh.practice) %>" target="_blank" class="display-block padding-y-105 padding-x-2 map-marker-practice margin-bottom-1">
+            <a href="<%= practice_path(dh.practice) %>" target="_blank" class="display-block padding-y-105 padding-x-2 map-marker-practice margin-bottom-1">
               <p class="margin-0 map-marker-practice-name margin-bottom-1"><%= dh.practice.name %></p>
 
               <%

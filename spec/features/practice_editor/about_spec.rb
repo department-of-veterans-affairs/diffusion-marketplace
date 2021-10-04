@@ -19,7 +19,7 @@ describe 'Practice editor', type: :feature do
         end
 
         it 'should be there' do
-            visit innovation_about_path(@practice)
+            visit practice_about_path(@practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).to have_content('About')
             expect(page).to have_content('This section helps people understand how your innovation started and introduces the original team.')
@@ -59,7 +59,7 @@ describe 'Practice editor', type: :feature do
         end
 
         it 'should allow the user to update the origin story' do
-            visit innovation_about_path(@practice)
+            visit practice_about_path(@practice)
             # create the origin story
             fill_in_origin_story_field
             save_button.click
@@ -71,7 +71,7 @@ describe 'Practice editor', type: :feature do
             end
 
             # Edit the origin story
-            visit innovation_about_path(@practice)
+            visit practice_about_path(@practice)
             fill_in('practice[origin_story]', with: 'This is an edited origin story.')
             save_button.click
             expect(page).to have_field('practice[origin_story]', with: "This is an edited origin story.")
@@ -83,7 +83,7 @@ describe 'Practice editor', type: :feature do
         end
 
         it 'should allow the user to update team members' do
-            visit innovation_about_path(@practice)
+            visit practice_about_path(@practice)
             # create one team member and save
             fill_in_origin_story_field
             first_creator_name_field_input.set(@creator_name)
@@ -101,7 +101,7 @@ describe 'Practice editor', type: :feature do
             expect(page).to have_content(@creator_role)
 
             # go back and edit the team member data
-            visit innovation_about_path(@practice)
+            visit practice_about_path(@practice)
             first_creator_name_field_input.set(@creator_name_2)
             first_creator_role_field_input.set(@creator_role_2)
             save_button.click
@@ -114,7 +114,7 @@ describe 'Practice editor', type: :feature do
             expect(page).to have_content(@creator_role_2)
 
             # create another team member and save
-            visit innovation_about_path(@practice)
+            visit practice_about_path(@practice)
             within(:css, '#about_container') do
                 click_link('Add another')
                 last_creator_name_field_input.set(@creator_name)
@@ -138,7 +138,7 @@ describe 'Practice editor', type: :feature do
             expect(page).to have_content(@creator_role_2)
 
             # delete first team member
-            visit innovation_about_path(@practice)
+            visit practice_about_path(@practice)
             input_field_id = first_creator_name_field_input[:id]
             within(first_creator_field) do
                 click_link('Delete entry')
@@ -155,7 +155,7 @@ describe 'Practice editor', type: :feature do
             expect(page).to have_content(@creator_role)
 
             # delete the "second" team member
-            visit innovation_about_path(@practice)
+            visit practice_about_path(@practice)
             expect(page).to have_field(@creator_field_name, with: @creator_name)
             expect(page).to have_field(@creator_field_role, with: @creator_role)
             input_field_id = first_creator_name_field_input[:id]

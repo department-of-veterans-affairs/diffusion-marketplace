@@ -32,7 +32,7 @@ describe 'Practice editor', type: :feature, js: true do
 
         it 'should allow the user to update the data on the page' do
           # no metrics should be there
-          visit '/innovations/a-public-practice/edit/overview'
+          visit '/practices/a-public-practice/edit/overview'
           expect(page).to have_content('Metrics')
           # create one metric and save
           save_button = find('#practice-editor-save-button')
@@ -44,14 +44,14 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_field(first_metric_field_input[:name], with: 'Hello world')
           end
           # see if the metric shows up in the show view
-          visit '/innovations/a-public-practice'
+          visit '/practices/a-public-practice'
           expect(page).to have_content('Metrics')
           within(:css, '#practice-metrics-ul') do
             expect(page).to have_content('Hello world')
           end
 
           # go back and edit the metric
-          visit innovation_overview_path(@practice)
+          visit practice_overview_path(@practice)
           within(:css, '.practice-editor-metrics-ul') do
             fill_in(first_metric_field_input[:name], with: "Hello world update 1")
           end
@@ -61,14 +61,14 @@ describe 'Practice editor', type: :feature, js: true do
           end
 
           # see if the metric with updated text shows up in the show view
-          visit '/innovations/a-public-practice'
+          visit '/practices/a-public-practice'
           expect(page).to have_content('Metrics')
           within(:css, '#practice-metrics-ul') do
             expect(page).to have_content('Hello world update 1')
           end
 
           # create another metric and save
-          visit innovation_overview_path(@practice)
+          visit practice_overview_path(@practice)
           within(:css, '#practice-metrics-container') do
             click_link('Add another')
             fill_in(last_metric_field_input[:name], with: "This is the second metric")
@@ -80,7 +80,7 @@ describe 'Practice editor', type: :feature, js: true do
           end
 
           # see if the metrics with updated text shows up in the show view
-          visit '/innovations/a-public-practice'
+          visit '/practices/a-public-practice'
           expect(page).to have_content('Metrics')
           within(:css, '#practice-metrics-ul') do
             expect(page).to have_content('Hello world update 1')
@@ -88,7 +88,7 @@ describe 'Practice editor', type: :feature, js: true do
           end
 
           # delete first metric
-          visit innovation_overview_path(@practice)
+          visit practice_overview_path(@practice)
           input_field_id = first_metric_field_input[:id]
           within(:css, "##{first_metric_field[:id]}") do
             click_link('Delete entry')
@@ -100,7 +100,7 @@ describe 'Practice editor', type: :feature, js: true do
           end
 
           # see if the metrics with deleted metric does not show up show view
-          visit '/innovations/a-public-practice'
+          visit '/practices/a-public-practice'
           expect(page).to have_content('Metrics')
           within(:css, '#practice-metrics-ul') do
             expect(page).to_not have_content('Hello world update 1')
@@ -108,7 +108,7 @@ describe 'Practice editor', type: :feature, js: true do
           end
 
           # delete "second" metric
-          visit innovation_overview_path(@practice)
+          visit practice_overview_path(@practice)
           expect(page).to have_field(first_metric_field_input[:name], with: 'This is the second metric')
           input_field_id = first_metric_field_input[:id]
           within(:css, '#practice-metrics-container') do
@@ -124,7 +124,7 @@ describe 'Practice editor', type: :feature, js: true do
           end
 
           # see if the metrics with deleted metric does not show up show view
-          visit '/innovations/a-public-practice'
+          visit '/practices/a-public-practice'
           expect(page).to_not have_content('Metrics')
           expect(page).to_not have_content('This is the second metric')
         end

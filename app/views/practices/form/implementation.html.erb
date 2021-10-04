@@ -25,7 +25,7 @@
       <div class="margin-top-3">
         <%= render 'pii_phi_alert' %>
       </div>
-      <%= nested_form_for(@practice, :url => innovation_path(params[:innovation_id]), html: { multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
+      <%= nested_form_for(@practice, html: { multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
         <div class="height-05 width-8 border-top-05 border-primary-dark margin-top-5"></div>
         <%= render partial: 'practices/implementation_forms/timeline', locals: {f: f} %>
 
@@ -202,7 +202,7 @@
         <% end %>
 
   <div class="grid-row">
-    <%= render partial: 'practices/back_and_continue_buttons', locals: { back_path: innovation_overview_path(@practice), continue_path: innovation_contact_path(@practice) }%>
+    <%= render partial: 'practices/back_and_continue_buttons', locals: { back_path: practice_overview_path(@practice), continue_path: practice_contact_path(@practice) }%>
   </div>
   </section>
     </div>

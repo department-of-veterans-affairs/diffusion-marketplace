@@ -204,9 +204,9 @@ ActiveAdmin.register Practice do
 
     attributes_table  do
       row :id
-      row(:name, label: 'Innovation name')    { |practice| link_to(practice.name, innovation_path(practice)) }
+      row(:name, label: 'Innovation name')    { |practice| link_to(practice.name, practice_path(practice)) }
       row :slug
-      row('Edit URL') { |practice| link_to(innovation_overview_path(practice), innovation_overview_path(practice)) }
+      row('Edit URL') { |practice| link_to(practice_overview_path(practice), practice_overview_path(practice)) }
       row(:user) {|practice| link_to(practice.user&.email, admin_user_path(practice.user)) if practice.user.present?}
       row :published
       row :approved

@@ -353,11 +353,11 @@ def click_save
 end
 
 def visit_practice_show
-  visit innovation_path(@practice)
+  visit practice_path(@practice)
 end
 
 def visit_practice_edit
-  visit innovation_introduction_path(@practice)
+  visit practice_introduction_path(@practice)
 end
 
 def click_origin_type(elem_id)

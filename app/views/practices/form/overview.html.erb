@@ -27,7 +27,7 @@
         <div class="margin-top-3">
           <%= render 'pii_phi_alert' %>
         </div>
-        <%= nested_form_for(@practice, :url => innovation_path(params[:innovation_id]), html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
+        <%= nested_form_for(@practice, :url => practice_path(params[:v]), html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
           <fieldset class="usa-fieldset grid-col-11">
             <legend class="usa-sr-only">Practice Overview</legend>
             <!-- PROBLEM section -->
@@ -453,7 +453,7 @@
           </fieldset>
         <% end %>
         <div class="grid-row">
-          <%= render partial: 'practices/back_and_continue_buttons', locals: { back_path: innovation_adoptions_path(@practice), continue_path: innovation_implementation_path(@practice) }%>
+          <%= render partial: 'practices/back_and_continue_buttons', locals: { back_path: practice_adoptions_path(@practice), continue_path: practice_implementation_path(@practice) }%>
         </div>
       </section>
     </div>

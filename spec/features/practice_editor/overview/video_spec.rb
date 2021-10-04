@@ -98,7 +98,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         save_practice
-        visit innovation_path(@pr_no_resources)
+        visit practice_path(@pr_no_resources)
         expect(page).to have_content("Videos")
         expect(page).to have_content("new practice #{area} video")
         within_frame(0) do
@@ -145,7 +145,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         save_practice
-        visit innovation_path(@pr_no_resources)
+        visit practice_path(@pr_no_resources)
         expect(page).to have_content("Videos")
         expect(page).to have_content("edited practice #{area} video")
         within_frame(0) do
@@ -185,7 +185,7 @@ describe 'Practice editor', type: :feature, js: true do
         end
 
         save_practice
-        visit innovation_path(@pr_with_resources)
+        visit practice_path(@pr_with_resources)
         within_frame(@frame_index[area.to_sym]) do
           expect(page).to have_no_link('Make the Difference', href: @video_url_1)
           expect(page).to have_link('Marca la Diferencia', href: @video_url_3)
@@ -243,7 +243,7 @@ describe 'Practice editor', type: :feature, js: true do
         delete_entries_test 'solution'
         delete_entries_test 'results'
         delete_entries_test 'multimedia'
-        visit innovation_overview_path(@pr_with_resources)
+        visit practice_overview_path(@pr_with_resources)
         expect(page).to have_no_content("existing problem video")
         expect(page).to have_no_content("existing solution video")
         expect(page).to have_no_content("existing results video")
@@ -282,14 +282,14 @@ describe 'Practice editor', type: :feature, js: true do
   end
 
   def no_resource_pr_test_setup
-    visit innovation_path(@pr_no_resources)
+    visit practice_path(@pr_no_resources)
     expect(page).to have_content('Overview')
     expect(page).to have_no_content("Videos")
-    visit innovation_overview_path(@pr_no_resources)
+    visit practice_overview_path(@pr_no_resources)
   end
 
   def with_resource_pr_test_setup
-    visit innovation_path(@pr_with_resources)
+    visit practice_path(@pr_with_resources)
     expect(page).to have_content('Overview')
     expect(page).to have_content("Videos")
     @frame_index.each do |f, i|
@@ -300,6 +300,6 @@ describe 'Practice editor', type: :feature, js: true do
     expect(page).to have_content("existing problem video")
     expect(page).to have_content("existing solution video")
     expect(page).to have_content("existing problem video")
-    visit innovation_overview_path(@pr_with_resources)
+    visit practice_overview_path(@pr_with_resources)
   end
 end

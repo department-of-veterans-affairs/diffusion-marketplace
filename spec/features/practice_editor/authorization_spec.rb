@@ -16,7 +16,7 @@ describe 'Practice editor', type: :feature, js: true do
     describe 'Authorization' do
         it 'should allow admin level users to edit a practice' do
             login_as(@admin, :scope => :user, :run_callbacks => false)
-            visit innovation_path(@practice)
+            visit practice_path(@practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).to have_content(@practice.name)
         end
@@ -24,14 +24,14 @@ describe 'Practice editor', type: :feature, js: true do
         it 'should let an editor user edit a practice' do
             login_as(@approver, :scope => :user, :run_callbacks => false)
             @user_practice.update(approved: true, published: true)
-            visit innovation_path(@user_practice)
+            visit practice_path(@user_practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).to have_link(href: "/innovations/#{@user_practice.slug}/edit/metrics")
         end
 
         it 'should allow practice editors to edit a practice they\'re associated with' do
             login_as(@user_2, :scope => :user, :run_callbacks => false)
-            visit innovation_introduction_path(@practice)
+            visit practice_introduction_path(@practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).to have_content('Introduction')
             expect(page).to have_content('Introduce your innovation and provide a brief summary to people who may be unfamiliar with it.')
@@ -39,7 +39,7 @@ describe 'Practice editor', type: :feature, js: true do
 
         it 'should not allow the following user types to edit a practice: non-admins, non-practice owners, and non-practice editors' do
             login_as(@user, :scope => :user, :run_callbacks => false)
-            visit innovation_path(@practice)
+            visit practice_path(@practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).to have_content(@practice.name)
             expect(page).to_not have_link(href: "/innovations/#{@practice.slug}/edit/instructions")

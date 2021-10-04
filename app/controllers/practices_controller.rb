@@ -113,7 +113,7 @@ class PracticesController < ApplicationController
           format.json { render json: updated, status: :unprocessable_entity }
         elsif !session_open && latest_session_user_is_current_user
           flash[:notice] = "Your editing session for #{@practice.name} has ended. Your edits have been saved and you have been returned to the Metrics page."
-          format.html { redirect_to innovation_metrics_path(@practice) }
+          format.html { redirect_to practice_metrics_path(@practice) }
         else
           # Add notice messages specific to the Editors page
           editor_notice = ''
@@ -139,7 +139,7 @@ class PracticesController < ApplicationController
       else
         if !session_open
           flash[:error] = "Your editing session for #{@practice.name} has ended. Your edits have not been saved and you have been returned to the Metrics page."
-          format.html { redirect_to innovation_metrics_path(@practice) }
+          format.html { redirect_to practice_metrics_path(@practice) }
         else
           flash[:error] = "There was an #{@practice.errors.messages}. The innovation was not saved."
           format.html { redirect_back fallback_location: root_path }
@@ -241,22 +241,22 @@ class PracticesController < ApplicationController
     old_highlight = Practice.find_by_highlight(true)
     old_highlight.update_attributes(highlight: false) if old_highlight.present?
     @practice.update_attributes highlight: true, featured: false
-    redirect_to edit_innovation_path(@practice)
+    redirect_to edit_practice_path(@practice)
   end
 
   def un_highlight
     @practice.update_attributes highlight: false
-    redirect_to edit_innovation_path(@practice)
+    redirect_to edit_practice_path(@practice)
   end
 
   def feature
     @practice.update_attributes featured: true
-    redirect_to edit_innovation_path(@practice)
+    redirect_to edit_practice_path(@practice)
   end
 
   def un_feature
     @practice.update_attributes featured: false
-    redirect_to edit_innovation_path(@practice)
+    redirect_to edit_practice_path(@practice)
   end
 
   # GET /practices/1/instructions
@@ -419,7 +419,7 @@ class PracticesController < ApplicationController
         else
           @practice.update_attributes(published: true, date_published: DateTime.now)
           flash[:notice] = "#{@practice.name} has been successfully published to the Diffusion Marketplace"
-          format.js { render js: "window.location='#{innovation_path(@practice)}'" }
+          format.js { render js: "window.location='#{practice_path(@practice)}'" }
         end
       else
         format.js
@@ -487,7 +487,7 @@ class PracticesController < ApplicationController
     dh = DiffusionHistory.find(params[:diffusion_history_id])
     dh.destroy
     respond_to do |format|
-      format.html { redirect_to innovation_adoptions_path(dh.practice), notice: 'Adoption was successfully deleted.' }
+      format.html { redirect_to practice_adoptions_path(dh.practice), notice: 'Adoption was successfully deleted.' }
       format.json { head :no_content }
     end
   end
@@ -497,7 +497,7 @@ class PracticesController < ApplicationController
       PracticeEditorSession.extend_current_session(@current_session)
     else
       msg = "You cannot edit this innovation since it is currently being edited by #{session_username(@current_session)}"
-      render :js => "window.location = '#{innovation_metrics_path(@practice)}'"
+      render :js => "window.location = '#{practice_metrics_path(@practice)}'"
       flash[:warning] = msg
     end
   end
@@ -513,7 +513,7 @@ class PracticesController < ApplicationController
       PracticeEditorSession.close_current_session(@current_session)
     end
     if params[:any_blank_required_fields] === 'true' || params[:current_action] === 'adoptions' || params[:current_action] === 'editors'
-      render :js => "window.location = '#{innovation_metrics_path(@practice)}'"
+      render :js => "window.location = '#{practice_metrics_path(@practice)}'"
       flash[:error] = "The innovation was not saved#{params[:any_blank_required_fields] === 'true' ? ' due to one or more required fields not being filled out' : ''}."
     end
   end
@@ -531,12 +531,12 @@ class PracticesController < ApplicationController
   end
 
   def redirect_to_instructions_path
-    redirect_to innovation_instructions_path(@practice)
+    redirect_to practice_instructions_path(@practice)
   end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_practice
-    id = params[:id] || params[:practice_id] || params[:innovation_id]
+    id = params[:id] || params[:practice_id] || params[:practice_id]
     @practice = Practice.friendly.find(id)
   end
 
@@ -555,7 +555,7 @@ class PracticesController < ApplicationController
         msg = "You cannot edit this innovation since it is currently being edited by #{session_username(@current_session)}"
         respond_to do |format|
           flash[:warning] = msg
-          format.html { redirect_to innovation_metrics_path(@practice), warning: msg }
+          format.html { redirect_to practice_metrics_path(@practice), warning: msg }
         end
        end
     end

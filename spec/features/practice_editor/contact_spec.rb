@@ -7,7 +7,7 @@ describe 'Practice editor', type: :feature, js: true do
             @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', user: @admin)
             @admin.add_role(User::USER_ROLES[0].to_sym)
             login_as(@admin, :scope => :user, :run_callbacks => false)
-            visit innovation_contact_path(@practice)
+            visit practice_contact_path(@practice)
             expect(page).to be_accessible.according_to :wcag2a, :section508
             @save_button = find('#practice-editor-save-button')
             @practice_main_email = 'test@mail.com'
@@ -61,7 +61,7 @@ describe 'Practice editor', type: :feature, js: true do
             end
 
             # Edit the main email
-            visit innovation_contact_path(@practice)
+            visit practice_contact_path(@practice)
             fill_in('Main email address', with: 'main_test@test.com')
             @save_button.click
             expect(page).to have_field('Main email address', with: "main_test@test.com")
@@ -72,7 +72,7 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_content('main_test@test.com')
 
             # create one cc email and save
-            visit innovation_contact_path(@practice)
+            visit practice_contact_path(@practice)
             first_cc_email_field_input.set('test2@test.com')
 
             @save_button.click
