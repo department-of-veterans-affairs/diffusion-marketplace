@@ -55,9 +55,16 @@ class ApplicationController < ActionController::Base
   end
 
   def log_in_va_user
-    if current_user.blank? && ENV['USE_NTLM'] == 'true'
-      user = User.authenticate_ldap(request.env["REMOTE_USER"])
-      sign_in(user) unless user.blank?
+    if current_user.blank?
+      user = User.authenticate_ldap(request.env["REMOTE_USER"]) if request.env["REMOTE_USER"].present?
+      # if a user is found, log them in and set the user_type to 'ntlm' in the session
+      if user.present?
+        session[:user_type] = 'ntlm'
+        sign_in(user)
+      # if not, set the user_type to 'guest' in the session
+      else
+        session[:user_type] = 'guest'
+      end
     end
   end
 

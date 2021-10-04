@@ -969,6 +969,7 @@ ActiveRecord::Schema.define(version: 2021_09_03_160740) do
     t.boolean "retired", default: false, null: false
     t.string "retired_reason"
     t.boolean "hidden", default: false, null: false
+    t.boolean "is_public", default: false
     t.index ["slug"], name: "index_practices_on_slug", unique: true
     t.index ["user_id"], name: "index_practices_on_user_id"
   end

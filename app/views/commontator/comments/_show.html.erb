@@ -4,13 +4,18 @@
   # comment
   # nested_children or page
   # show_all
+  comments_disabled = @practice.retired || session[:user_type] === 'guest'
   thread = comment.thread
   nested_children ||= begin
     children = thread.paginated_comments(page, comment.id, show_all)
     thread.nested_comments_for(user, children, show_all)
   end
   creator = comment.creator
-  name = Commontator.commontator_name(creator) || ''
+  if comments_disabled
+    name = "VA User"
+  else
+    name = Commontator.commontator_name(creator) || ''
+  end
   job_title = creator.job_title
   creator_practice = creator.user_practices.find_by(practice_id: comment.thread.commontable_id, user: creator)
   if creator_practice
@@ -25,7 +30,11 @@
   <div class="grid-col-fill comment-width-ie">
     <div id="commontator-comment-<%= comment.id %>-section-top" class="section top margin-bottom-1 line-height-26">
       <span id="commontator-comment-<%= comment.id %>-author" class="author line-height-26 text-middle">
-        <%= link_to "#{name} #{job_title ? '(' + job_title + ')' : ''}", "/users/#{creator.id}", class: "usa-link" %>
+        <% if !comments_disabled %>
+          <%= link_to "#{name} #{job_title ? '(' + job_title + ')' : ''}", "/users/#{creator.id}", class: "usa-link" %>
+        <% else %>
+          <span class="text-bold"><%= "#{name} #{job_title ? '(' + job_title + ')' : ''}" %></span>
+        <% end %>
       </span>
       <% if practice_team_member %>
         <span
@@ -66,7 +75,7 @@
       <% end %>
 
       <span id="commontator-comment-<%= comment.id %>-actions" class="actions text-middle">
-        <% if !@practice.retired %>
+        <% if !comments_disabled %>
           <%=
             link_to(
                 '',
@@ -76,14 +85,12 @@
                 remote: true
             ) if comment.can_be_edited_by?(user)
           %>
-         <% else %>
-          <a class="fas fa-edit fa-lg edit-comment-icon margin-left-1"></a>
         <% end %>
 
           <% if comment.can_be_deleted_by?(user) %>
             <% is_deleted = comment.is_deleted? %>
             <% del_string = is_deleted ? 'undelete' : 'delete' %>
-            <% if !@practice.retired %>
+            <% if !comments_disabled %>
                 <%= link_to  '',
                              is_deleted ? commontator.undelete_comment_path(comment) : commontator.delete_comment_path(comment),
                              data: is_deleted ? { confirm: "Are you sure you want to restore this #{comment.parent.nil? ? 'comment' : 'reply'}?"} : { confirm: "Are you sure you want to delete this #{comment.parent.nil? ? 'comment' : 'reply'}?" },
@@ -91,34 +98,33 @@
                              id: "commontator-comment-#{comment.id}-#{del_string}",
                              class: is_deleted ? "fas fa-trash-restore-alt fa-lg margin-left-1" : "fas fa-trash-alt fa-lg delete-comment-icon margin-left-1",
                              remote: true %>
-            <% else %>
-              <a class="<%= is_deleted ? 'fas fa-trash-restore-alt fa-lg margin-left-1' : 'fas fa-trash-alt fa-lg delete-comment-icon margin-left-1' %>"></a>
              <% end %>
           <% end %>
       </span>
-
-      <% if current_user != creator %>
-        <div class="report-comment fas fa-flag text-base padding-x-1 text-middle report-abuse-container" id="comment-<%= comment.id %>-report-abuse-container">
-          <div class="report-abuse-modal hidden font-family-sans" id="comment-<%= comment.id %>-report-abuse-modal">
-            <div class="bg-white radius-md report-abuse-modal-content width-tablet">
-              <div class="bg-primary-vivid text-white radius-top-md">
-                  <h2 class="margin-0 padding-3">Report a comment</h2>
-              </div>
-              <div class="padding-3">
-                <p class="font-sans-md text-normal text-black margin-bottom-2">I am reporting the following comment for being inappropriate:</p>
-                <div>
-                  <p class="text-normal text-base dm-word-break-break-word dm-hyphens-auto report-comment-body text-italic">
-                    "<%= comment.body %>"
-                  </p>
-                </div>
-                <div class="text-right">
-                  <button class="usa-button usa-button--outline margin-0 margin-top-5 margin-right-05 report-abuse-cancel">Cancel</button>
-                  <%= link_to 'Submit Report', "/practices/#{practice.id}/comments/#{comment.id}/report", class: 'usa-button  report-abuse-submit', data: {confirm: 'Are you sure you want to report this comment?'} %>
+      <% if !comments_disabled %>
+          <% if current_user != creator %>
+            <div class="report-comment fas fa-flag text-base padding-x-1 text-middle report-abuse-container" id="comment-<%= comment.id %>-report-abuse-container">
+              <div class="report-abuse-modal hidden font-family-sans" id="comment-<%= comment.id %>-report-abuse-modal">
+                <div class="bg-white radius-md report-abuse-modal-content width-tablet">
+                  <div class="bg-primary-vivid text-white radius-top-md">
+                      <h2 class="margin-0 padding-3">Report a comment</h2>
+                  </div>
+                  <div class="padding-3">
+                    <p class="font-sans-md text-normal text-black margin-bottom-2">I am reporting the following comment for being inappropriate:</p>
+                    <div>
+                      <p class="text-normal text-base dm-word-break-break-word dm-hyphens-auto report-comment-body text-italic">
+                        "<%= comment.body %>"
+                      </p>
+                    </div>
+                    <div class="text-right">
+                      <button class="usa-button usa-button--outline margin-0 margin-top-5 margin-right-05 report-abuse-cancel">Cancel</button>
+                      <%= link_to 'Submit Report', "/practices/#{practice.id}/comments/#{comment.id}/report", class: 'usa-button  report-abuse-submit', data: {confirm: 'Are you sure you want to report this comment?'} %>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          <% end %>
       <% end %>
     </div>
 
@@ -131,11 +137,11 @@
     <div id="commontator-comment-<%= comment.id %>-section-bottom" class="section bottom position-relative">
       <div class="display-inline-block">
         <span id="commontator-comment-<%= comment.id %>-votes" class="votes">
-          <%= render partial: 'commontator/comments/votes', locals: { comment: comment, user: user } %>
+          <%= render partial: 'commontator/comments/votes', locals: { comment: comment, user: user, comments_disabled: comments_disabled } %>
         </span>
         <% if !comment.parent_id? %>
           <% unless comment.is_deleted? %>
-          <% if !@practice.retired %>
+          <% if !comments_disabled %>
             <span id="commontator-comment-<%= comment.id %>-reply-link" class="reply display-inline-block">
               <%=
                 link_to(
@@ -145,10 +151,6 @@
                 ) if thread.config.comment_reply_style != :n && !thread.is_closed?
               %>
             </span>
-            <% else %>
-              <span>
-                <a class="dm-button--unstyled-primary reply-link" href="#" onclick="return false">Reply</a>
-              </span>
             <% end %>
           <% end %>
           <% end %>
@@ -163,8 +165,8 @@
 
       <!-- Replies -->
       <% if nested_children.count > 0 %>
-        <div class="show-hide-buttons-container display-inline-block text-bold position-absolute top-0 left-0" id="comment-<%= comment.id %>-button-container">
-          <button
+        <div class="<% if comments_disabled %>text-bold grid-row flex-align-left<% else %>show-hide-buttons-container display-inline-block text-bold position-absolute top-0 left-0<% end %>" id="comment-<%= comment.id %>-button-container">
+        <button
             id="comments-show-hide-button-<%= comment.id %>"
             data-number-replies="<%= nested_children.count %>"
             <%= 'disabled' if comment.is_deleted? %>
@@ -191,17 +193,3 @@
     </div>
   </div>
 </div>
-
-
-
-<%#<div id="commontator-comment-<%= comment.id %><%#-pagination" class="comments-pagination">
-  <div id="commontator-comment-<%= comment.id %><%#-will-paginate" class="will-paginate">
-    <%= will_paginate nested_children,
-                      renderer: Commontator::LinkRenderer,
-                      name: t('commontator.comment.status.reply_pages'),
-                      remote: true,
-                      params: { controller: 'commontator/comments',
-                                action: 'show',
-                                id: comment.id } %>
-<%#  </div>
-</div>%>

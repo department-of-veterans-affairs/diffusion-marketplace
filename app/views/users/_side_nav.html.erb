@@ -6,7 +6,7 @@
                     class: "#{'usa-current' if current_page?(edit_profile_path)}"
             ) %>
       </li>
-      <% unless ENV['USE_NTLM'] == 'true' %>
+      <% if session[:user_type] === 'guest' %>
         <li class="usa-sidenav__item">
           <%= link_to('Account', edit_user_registration_path, class: "#{'usa-current' if current_page?(edit_user_registration_path)}") %>
         </li>
