@@ -27,7 +27,7 @@
         <div class="margin-top-3">
           <%= render 'pii_phi_alert' %>
         </div>
-        <%= nested_form_for(@practice, :url => practice_path(params[:v]), html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
+        <%= nested_form_for(@practice, html: {multipart: true, style: 'max-width: 100%', class: 'usa-form', id: 'form'}) do |f| %>
           <fieldset class="usa-fieldset grid-col-11">
             <legend class="usa-sr-only">Practice Overview</legend>
             <!-- PROBLEM section -->
