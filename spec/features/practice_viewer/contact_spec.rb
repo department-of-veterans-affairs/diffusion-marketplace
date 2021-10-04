@@ -18,17 +18,17 @@ describe 'Contact section', type: :feature, js: true do
     it 'Should allow authenticated users to view comments' do
       # Login as an authenticated user and visit the practice page
       login_as(@user1, :scope => :user, :run_callbacks => false)
-      visit innovation_path(@practice)
+      visit practice_path(@practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@practice.name)
-      expect(page).to have_current_path(innovation_path(@practice))
+      expect(page).to have_current_path(practice_path(@practice))
       expect(page).to have_css('.commontator')
     end
 
     it 'Should allow authenticated users to post comments' do
       # Login as an authenticated user, visit the practice page, and create a comment
       login_as(@user2, :scope => :user, :run_callbacks => false)
-      visit innovation_path(@practice)
+      visit practice_path(@practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@practice.name)
       expect(page).to have_content("Other")
@@ -40,10 +40,10 @@ describe 'Contact section', type: :feature, js: true do
 
     it 'Should not allow unauthenticated users to view or post comments' do
       # Try to visit a practice page without being logged in
-      visit innovation_path(@practice)
+      visit practice_path(@practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@practice.name)
-      expect(page).to have_current_path(innovation_path(@practice))
+      expect(page).to have_current_path(practice_path(@practice))
       expect(page).to have_content('Login to see full practice')
     end
   end
@@ -52,7 +52,7 @@ describe 'Contact section', type: :feature, js: true do
     before do
       set_data
       login_as(@user2, :scope => :user, :run_callbacks => false)
-      visit innovation_path(@practice)
+      visit practice_path(@practice)
       expect(page).to have_selector('.comments-section', visible: true)
       expect(page).to have_content('A public practice')
       expect(page).to have_css('.commontator')
@@ -81,7 +81,7 @@ describe 'Contact section', type: :feature, js: true do
     it 'Should allow a user to reply to an existing comment' do
       fill_in('comment[body]', with: 'Hello world')
       click_button('commit')
-      visit innovation_path(@practice)
+      visit practice_path(@practice)
       click_link('Reply')
       fill_in('commontator-comment-1-reply', with: 'Hey, how are you?')
       click_button('reply')
@@ -93,7 +93,7 @@ describe 'Contact section', type: :feature, js: true do
       fill_in('comment[body]', with: 'Hello world')
       find('label', text: 'I am currently adopting this innovation').click
       click_button('commit')
-      visit innovation_path(@practice)
+      visit practice_path(@practice)
       expect(page).to have_selector('.comments-section', visible: true)
       expect(page).to have_content('PRACTICE ADOPTER')
     end
@@ -102,7 +102,7 @@ describe 'Contact section', type: :feature, js: true do
       fill_in('comment[body]', with: 'Hello world')
       find('label', text: 'Other').click
       click_button('commit')
-      visit innovation_path(@practice)
+      visit practice_path(@practice)
       expect(page).to have_selector('.comments-section', visible: true)
       expect(page).to_not have_content('PRACTICE ADOPTER')
     end
@@ -113,9 +113,9 @@ describe 'Contact section', type: :feature, js: true do
       click_button('commit')
       expect(page).to have_selector('.comments-section', visible: true)
       logout(@user2)
-      visit innovation_path(@practice)
+      visit practice_path(@practice)
       login_as(@user1, :scope => :user, :run_callbacks => false)
-      visit innovation_path(@practice)
+      visit practice_path(@practice)
       expect(page).to have_selector('.comments-section', visible: true)
       find(".like").click
       expect(page).to have_css('.comment-1-1-vote')
@@ -159,7 +159,7 @@ describe 'Contact section', type: :feature, js: true do
       it 'if a user exists with the an email address that matches the practice\'s support network email and that user is the comment creator, it should not send an email to the support network email address' do
         logout(@user2)
         login_as(@user3, :scope => :user, :run_callbacks => false)
-        visit innovation_path(@practice)
+        visit practice_path(@practice)
         expect { create_comment }.to change { ActionMailer::Base.deliveries.count }.by(1)
 
         expect(ActionMailer::Base.deliveries.last.bcc.count).to eq(1)
@@ -173,7 +173,7 @@ describe 'Contact section', type: :feature, js: true do
     before do
       set_data
       login_as(@user2, :scope => :user, :run_callbacks => false)
-      visit innovation_path(@practice)
+      visit practice_path(@practice)
       expect(page).to have_content(@practice.name)
       expect(page).to have_css('.commontator')
       fill_in('comment[body]', with: 'Hello world')
@@ -182,7 +182,7 @@ describe 'Contact section', type: :feature, js: true do
 
     it 'should display the report abuse modal if the user clicks on the flag icon' do
       login_as(@user1, :scope => :user, :run_callbacks => false)
-      visit innovation_path(@practice)
+      visit practice_path(@practice)
       find(".report-abuse-container").click
       expect(page).to have_content('Report a comment')
       expect(page).to have_css('.report-abuse-submit')
@@ -190,7 +190,7 @@ describe 'Contact section', type: :feature, js: true do
 
     it 'should hide the report abuse modal if the user clicks the cancel button' do
       login_as(@user1, :scope => :user, :run_callbacks => false)
-      visit innovation_path(@practice)
+      visit practice_path(@practice)
       find(".report-abuse-container").click
       expect(page).to have_content('Report a comment')
       expect(page).to have_css('.report-abuse-cancel')
@@ -202,7 +202,7 @@ describe 'Contact section', type: :feature, js: true do
 
     it 'should show a success banner after the user successfully reports a comment' do
       login_as(@user1, :scope => :user, :run_callbacks => false)
-      visit innovation_path(@practice)
+      visit practice_path(@practice)
       find(".report-abuse-container").click
       expect(page).to have_content('Report a comment')
       expect(page).to have_css('.report-abuse-cancel')
@@ -221,7 +221,7 @@ describe 'Contact section', type: :feature, js: true do
 
     it 'should send an email to the main email address and include any cc email addresses' do
       login_as(@user1, :scope => :user, :run_callbacks => false)
-      visit innovation_path(@practice)
+      visit practice_path(@practice)
       expect(page).to have_link(href: 'mailto:testp13423041@va.gov?cc=testp13423041%40va.gov')
     end
   end

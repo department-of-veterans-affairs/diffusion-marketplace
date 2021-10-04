@@ -47,7 +47,7 @@ module NavigationHelper
     end
 
     def add_practice_breadcrumb(practice)
-      session[:breadcrumbs] << { 'practice': 'true', 'display': practice.name, 'path': innovation_path(practice) }.stringify_keys
+      session[:breadcrumbs] << { 'practice': 'true', 'display': practice.name, 'path': practice_path(practice) }.stringify_keys
     end
 
     def remove_breadcrumb(crumb)

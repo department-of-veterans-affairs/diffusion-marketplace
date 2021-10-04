@@ -28,7 +28,7 @@
       <%# practice actions %>
       <div class="display-flex flex-wrap margin-bottom-2">
         <%# bookmark %>
-        <a href="<%= innovation_favorite_path(@practice, format: :js) %>" data-method="post" data-remote="true" rel="nofollow" aria-label="Bookmark <%= @practice.name %>" tabindex="-1" aria-hidden="true" class="dm-favorite-practice-link dm-icon-link text-no-underline font-sans-xs text-primary-vivid desktop:grid-col-3 grid-col-6 desktop:margin-bottom-0 margin-bottom-2">
+        <a href="<%= practice_favorite_path(@practice, format: :js) %>" data-method="post" data-remote="true" rel="nofollow" aria-label="Bookmark <%= @practice.name %>" tabindex="-1" aria-hidden="true" class="dm-favorite-practice-link dm-icon-link text-no-underline font-sans-xs text-primary-vivid desktop:grid-col-3 grid-col-6 desktop:margin-bottom-0 margin-bottom-2">
           <i class="<%= current_user.favorite_practice_ids.include?(@practice.id) ? 'fas' : 'far '%> fa-bookmark dm-favorite-icon-<%= @practice.id %>  margin-right-05"></i>
           <span class="dm-favorite-practice-link-text">
             <%= current_user.favorite_practice_ids.include?(@practice.id) ? 'Bookmarked' : 'Bookmark' %>

@@ -18,7 +18,8 @@ Rails.application.routes.draw do
   patch '/close_edit_session', action: 'close_edit_session', controller: 'practices', as: 'close_edit_session'
   post '/accept_terms', action: 'accept_terms', controller: 'users', as: 'accept_terms'
 
-  resources :practices, :path => 'innovations', as: 'innovations', except: :index do
+
+  resources :practices, path: 'innovations', except: :index do
     get '/edit/metrics', action: 'metrics', as: 'metrics'
     get '/edit/instructions', action: 'instructions', as: 'instructions'
     get '/edit/editors', action: 'editors', as: 'editors'
