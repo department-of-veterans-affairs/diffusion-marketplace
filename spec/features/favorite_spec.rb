@@ -79,10 +79,6 @@ describe 'Favorites', type: :feature do
         visit "/users/#{@user.id}"
       end
 
-
-      it 'should have a favorites section' do
-        expect(page).to have_content('Bookmarked innovations')
-      end
       it 'should redirect from the users page to the home page' do
         expect(current_path).to eq('/')
       end
