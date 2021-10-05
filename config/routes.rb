@@ -100,7 +100,6 @@ Rails.application.routes.draw do
   end
 
   get '/nominate-an-innovation', controller: 'nominate_practices', action: 'index', as: 'nominate_a_practice'
-  get '/nominate-a-practice', to: redirect('/nominate-an-innovation', status: 302)
   get '/diffusion-map', controller: 'home', action: 'diffusion_map', as: 'diffusion_map'
 
   namespace :system do
