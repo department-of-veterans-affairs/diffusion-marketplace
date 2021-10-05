@@ -57,7 +57,7 @@ describe 'Practice', type: :feature, js: true do
       save_pr
 
       # check risk and mitigation in practice view
-      visit '/practices/a-public-practice'
+      visit '/innovations/a-public-practice'
       within(:css, '#implementation') do
         expect(page).to have_content('Risks and mitigations')
         expect(page).to have_content('first risk')
@@ -72,7 +72,7 @@ describe 'Practice', type: :feature, js: true do
       save_pr
 
       # check risk and mitigation in practice view
-      visit '/practices/a-public-practice'
+      visit '/innovations/a-public-practice'
       within(:css, '#implementation') do
         expect(page).to have_content('first edited risk')
         expect(page).to have_content('first edited mitigation')
@@ -90,7 +90,7 @@ describe 'Practice', type: :feature, js: true do
       save_pr
 
       # check risk and mitigation in practice view
-      visit '/practices/a-public-practice'
+      visit '/innovations/a-public-practice'
       within(:css, '#implementation') do
         expect(page).to have_content('first edited risk')
         expect(page).to have_content('first edited mitigation')
@@ -106,7 +106,7 @@ describe 'Practice', type: :feature, js: true do
       save_pr
 
       # check risk and mitigation in practice view
-      visit '/practices/a-public-practice'
+      visit '/innovations/a-public-practice'
       within(:css, '#implementation') do
         expect(page).to have_content('first edited risk')
         expect(page).to have_content('first edited mitigation')

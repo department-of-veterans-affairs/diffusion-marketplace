@@ -172,22 +172,22 @@ class Practice < ApplicationRecord
   MATURITY_LEVEL_MAP = {
       emerging: {
           link_text: 'emerging',
-          description: 'This practice is <b>emerging</b> and worth watching as it is being assessed in early implementations.'.html_safe
+          description: 'This innovation is <b>emerging</b> and worth watching as it is being assessed in early implementations.'.html_safe
       },
       replicate: {
           link_text: 'replicating',
-          description: 'This practice is <b>replicating</b> across multiple facilities as its impact continues to be validated.'.html_safe
+          description: 'This innovation is <b>replicating</b> across multiple facilities as its impact continues to be validated.'.html_safe
       },
       scale: {
           link_text: 'scaling',
-          description: 'This practice is <b>scaling</b> widely with the support of national stakeholders.'.html_safe
+          description: 'This innovation is <b>scaling</b> widely with the support of national stakeholders.'.html_safe
       }
   }
 
 
   validates_attachment_content_type :main_display_image, content_type: /\Aimage\/.*\z/
   validates_attachment_content_type :origin_picture, content_type: /\Aimage\/.*\z/
-  validates_uniqueness_of :name, {message: 'Practice name already exists'}
+  validates_uniqueness_of :name, {message: 'Innovation name already exists'}
   validates :user, presence: true, format: valid_va_email
   # validates :tagline, presence: { message: 'Practice tagline can\'t be blank'}
 

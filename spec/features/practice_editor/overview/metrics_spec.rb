@@ -6,7 +6,7 @@ describe 'Practice editor', type: :feature, js: true do
         @practice = Practice.create!(name: 'A public practice', slug: 'a-public-practice', approved: true, published: true, tagline: 'Test tagline', number_adopted: 1, date_initiated: Date.new(2011, 12, 31), initiating_facility_type: 'facility', overview_problem: 'problem statement', overview_solution: 'solution statement', overview_results: 'results statement', user: @admin)
         @practice_partner = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative', icon: 'fas fa-heart', color: '#E4A002')
         @admin.add_role(User::USER_ROLES[0].to_sym)
-        @choose_image_text= 'Choose an image to represent this practice. Use a high-quality .jpg, .jpeg, or .png files less than 32MB. PII/PHI Waivers are required for photos featuring Veterans. Waivers must be filled out with the ‘External to VA’ check box selected.'
+        @choose_image_text= 'Choose an image to represent this innovation. Use a high-quality .jpg, .jpeg, or .png files less than 32MB. PII/PHI Waivers are required for photos featuring Veterans. Waivers must be filled out with the ‘External to VA’ check box selected.'
     end
 
     describe 'Overview page' do
@@ -32,7 +32,7 @@ describe 'Practice editor', type: :feature, js: true do
 
         it 'should allow the user to update the data on the page' do
           # no metrics should be there
-          visit '/practices/a-public-practice/edit/overview'
+          visit '/innovations/a-public-practice/edit/overview'
           expect(page).to have_content('Metrics')
           # create one metric and save
           save_button = find('#practice-editor-save-button')
@@ -44,7 +44,7 @@ describe 'Practice editor', type: :feature, js: true do
             expect(page).to have_field(first_metric_field_input[:name], with: 'Hello world')
           end
           # see if the metric shows up in the show view
-          visit '/practices/a-public-practice'
+          visit '/innovations/a-public-practice'
           expect(page).to have_content('Metrics')
           within(:css, '#practice-metrics-ul') do
             expect(page).to have_content('Hello world')
@@ -61,7 +61,7 @@ describe 'Practice editor', type: :feature, js: true do
           end
 
           # see if the metric with updated text shows up in the show view
-          visit '/practices/a-public-practice'
+          visit '/innovations/a-public-practice'
           expect(page).to have_content('Metrics')
           within(:css, '#practice-metrics-ul') do
             expect(page).to have_content('Hello world update 1')
@@ -80,7 +80,7 @@ describe 'Practice editor', type: :feature, js: true do
           end
 
           # see if the metrics with updated text shows up in the show view
-          visit '/practices/a-public-practice'
+          visit '/innovations/a-public-practice'
           expect(page).to have_content('Metrics')
           within(:css, '#practice-metrics-ul') do
             expect(page).to have_content('Hello world update 1')
@@ -100,7 +100,7 @@ describe 'Practice editor', type: :feature, js: true do
           end
 
           # see if the metrics with deleted metric does not show up show view
-          visit '/practices/a-public-practice'
+          visit '/innovations/a-public-practice'
           expect(page).to have_content('Metrics')
           within(:css, '#practice-metrics-ul') do
             expect(page).to_not have_content('Hello world update 1')
@@ -124,7 +124,7 @@ describe 'Practice editor', type: :feature, js: true do
           end
 
           # see if the metrics with deleted metric does not show up show view
-          visit '/practices/a-public-practice'
+          visit '/innovations/a-public-practice'
           expect(page).to_not have_content('Metrics')
           expect(page).to_not have_content('This is the second metric')
         end

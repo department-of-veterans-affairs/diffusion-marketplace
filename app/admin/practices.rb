@@ -181,14 +181,14 @@ ActiveAdmin.register Practice do
   form do |f|
     f.semantic_errors *f.object.errors.keys# shows errors on :base
     f.inputs  do
-      f.input :name, label: 'Practice name'
+      f.input :name, label: 'Innovation name'
       f.input :user, label: 'User email', as: :string, input_html: {name: 'user_email'}
       f.input :categories, as: :select, multiple: true, collection: Category.all.order(name: :asc).map { |cat| ["#{cat.name.capitalize}", cat.id]}, input_html: { value: @practice_categories }
       if object.highlight
-        f.input :highlight_title, label: 'Highlighted Practice Title'
-        f.input :highlight_body, label: 'Highlighted Practice Body'
+        f.input :highlight_title, label: 'Highlighted Innovation Title'
+        f.input :highlight_body, label: 'Highlighted Innovation Body'
       end
-      f.input :retired, label: 'Practice retired?'
+      f.input :retired, label: 'Innovation retired?'
       f.input :retired_reason, label: 'Retired reason', as: :quill_editor
     end        # builds an input field for every attribute
     f.actions         # adds the 'Submit' and 'Cancel' buttons
@@ -204,7 +204,7 @@ ActiveAdmin.register Practice do
 
     attributes_table  do
       row :id
-      row(:name, label: 'Practice name')    { |practice| link_to(practice.name, practice_path(practice)) }
+      row(:name, label: 'Innovation name')    { |practice| link_to(practice.name, practice_path(practice)) }
       row :slug
       row('Edit URL') { |practice| link_to(practice_overview_path(practice), practice_overview_path(practice)) }
       row(:user) {|practice| link_to(practice.user&.email, admin_user_path(practice.user)) if practice.user.present?}
@@ -253,17 +253,19 @@ ActiveAdmin.register Practice do
         blank_practice_name = params[:practice][:name].blank?
         practice_slug = params[:id]
         email = params[:user_email]
+        #highlight_body = params[:practice][:highlight_body]
         retired = params[:practice][:retired] == "1" ? true : false
         retired_reason = retired ? params[:practice][:retired_reason] : nil
         # raise an error if practice name is left blank
-        raise StandardError.new 'There was an error. Practice name cannot be blank.' if blank_practice_name
+        raise StandardError.new 'There was an error. Innovation name cannot be blank.' if blank_practice_name
 
         practice = Practice.find_by(slug: practice_slug)
 
         practice_by_name = Practice.find_by(name: practice_name)
         # raise an error if there's already a practice with a name that matches the user's input for the name field
-        raise StandardError.new 'There was an error. Practice name already exists.' if practice_by_name.present? && practice_by_name != practice
+        raise StandardError.new 'There was an error. Innovation name already exists.' if practice_by_name.present? && practice_by_name != practice
         practice ||= Practice.create(name: practice_name)
+        #practice.highlight_body = highlight_body
         practice.retired = retired
         practice.retired_reason = retired_reason
 
@@ -282,7 +284,7 @@ ActiveAdmin.register Practice do
           PracticeEditor.create_and_invite(practice, practice.user)
         end
         respond_to do |format|
-          format.html { redirect_to admin_practice_path(practice), notice: "Practice was successfully updated." }
+          format.html { redirect_to admin_practice_path(practice), notice: "Innovation was successfully updated." }
         end
       rescue => e
         respond_to do |format|

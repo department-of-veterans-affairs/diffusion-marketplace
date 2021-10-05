@@ -310,8 +310,8 @@ describe 'Practice editor', type: :feature, js: true do
         expect(page).to have_selector('.usa-tooltip__body', visible: false)
         find('.usa-tooltip').hover
         expect(page).to have_selector('.usa-tooltip__body', visible: true)
-        expect(page).to have_content('In-progress: Facilities that have started but not completed adopting the practice.')
-        expect(page).to have_content('Successful: Facilities that have met adoption goals and implemented the practice.')
+        expect(page).to have_content('In-progress: Facilities that have started but not completed adopting the innovation.')
+        expect(page).to have_content('Successful: Facilities that have met adoption goals and implemented the innovation.')
         expect(page).to have_content('Unsuccessful: Facilities that started but stopped working towards adoption.')
       end
 

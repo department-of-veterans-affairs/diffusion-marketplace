@@ -25,7 +25,7 @@
   <div class="grid-col-fill comment-width-ie">
     <div id="commontator-comment-<%= comment.id %>-section-top" class="section top margin-bottom-1 line-height-26">
       <span id="commontator-comment-<%= comment.id %>-author" class="author line-height-26 text-middle">
-        <%= link_to "#{name} #{job_title ? '(' + job_title + ')' : ''}", "/users/#{creator.id}", class: "usa-link" %>
+        <%= "#{name} #{job_title ? '(' + job_title + ')' : ''}" %>
       </span>
       <% if practice_team_member %>
         <span
@@ -113,7 +113,7 @@
                 </div>
                 <div class="text-right">
                   <button class="usa-button usa-button--outline margin-0 margin-top-5 margin-right-05 report-abuse-cancel">Cancel</button>
-                  <%= link_to 'Submit Report', "/practices/#{practice.id}/comments/#{comment.id}/report", class: 'usa-button  report-abuse-submit', data: {confirm: 'Are you sure you want to report this comment?'} %>
+                  <%= link_to 'Submit Report', "/innovations/#{practice.id}/comments/#{comment.id}/report", class: 'usa-button  report-abuse-submit', data: {confirm: 'Are you sure you want to report this comment?'} %>
                 </div>
               </div>
             </div>
