@@ -13,7 +13,7 @@
       </p>
       <p class="margin-0">
         <span id="practice-results-count">
-          <%= diffused_practices.size %> practice<%= 's' unless diffused_practices.size === 1 %>
+          <%= diffused_practices.size %> innovation<%= 's' unless diffused_practices.size === 1 %>
         </span>
         matched (of <%= diffused_practices.size %>)
       </p>
@@ -27,10 +27,10 @@
 
   <form id="mapFilters" name="mapFilters" class="padding-left-1">
     <div class="map-filters-content">
-      <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-105">Practices</h4>
+      <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-105">Innovations</h4>
       <div id="practice-list-container" class="margin-bottom-2">
         <fieldset>
-          <legend class="usa-sr-only">Practices</legend>
+          <legend class="usa-sr-only">Innovations</legend>
           <%= collection_check_boxes(:practice, :ids, diffused_practices, :id, :name) do |p| %>
             <%= p.check_box class: 'usa-checkbox__input' %> <%= p.label class: 'usa-checkbox__label' %>
           <% end %>
@@ -38,7 +38,7 @@
       </div>
 
       <div class="margin-bottom-2">
-        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0">Practice status</h4>
+        <h4 class="font-sans-md bold-height-2 margin-bottom-105 margin-top-0">Innovation status</h4>
         <fieldset>
           <legend class="usa-sr-only">Statuses</legend>
           <% DiffusionHistoryStatus::STATUSES.each do |i, v| %>

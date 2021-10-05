@@ -27,7 +27,7 @@ RSpec.describe InternalUrlValidator do
 
     context 'given a practice URL with non-existant practice' do
       it 'should add an error message' do
-        component = PageSubpageHyperlinkComponent.new(url: '/practices/a-private-practice')
+        component = PageSubpageHyperlinkComponent.new(url: '/innovations/a-private-practice')
         component.valid?
         expect(component.errors[:url][0]).to eq("not a valid URL")
       end
@@ -35,7 +35,7 @@ RSpec.describe InternalUrlValidator do
 
     context 'given a practice URL with an existing practice' do
       it 'should have no errors' do
-        component = PageSubpageHyperlinkComponent.new(url: '/practices/a-public-practice')
+        component = PageSubpageHyperlinkComponent.new(url: '/innovations/a-public-practice')
         component.valid?
         expect(component.errors[:url]).to eq([])
       end

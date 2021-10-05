@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   patch '/close_edit_session', action: 'close_edit_session', controller: 'practices', as: 'close_edit_session'
   post '/accept_terms', action: 'accept_terms', controller: 'users', as: 'accept_terms'
 
-  resources :practices, except: :index do
+  resources :practices, path: 'innovations', except: :index do
     get '/edit/metrics', action: 'metrics', as: 'metrics'
     get '/edit/instructions', action: 'instructions', as: 'instructions'
     get '/edit/editors', action: 'editors', as: 'editors'
@@ -54,6 +54,18 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  # old practice routes redirects
+  get '/practices/:id', to: redirect('/innovations/%{id}', status: 302)
+  get '/practices/:id/edit/metrics', to: redirect('/innovations/%{id}/edit/metrics', status: 302)
+  get '/practices/:id/edit/instructions', to: redirect('/innovations/%{id}/edit/instructions', status: 302)
+  get '/practices/:id/edit/editors', to: redirect('/innovations/%{id}/edit/editors', status: 302)
+  get '/practices/:id/edit/introduction', to: redirect('/innovations/%{id}/edit/introduction', status: 302)
+  get '/practices/:id/edit/adoptions', to: redirect('/innovations/%{id}/edit/adoptions', status: 302)
+  get '/practices/:id/edit/overview', to: redirect('/innovations/%{id}/edit/overview', status: 302)
+  get '/practices/:id/edit/implementation', to: redirect('/innovations/%{id}/edit/implementation', status: 302)
+  get '/practices/:id/edit/contact', to: redirect('/innovations/%{id}/edit/contact', status: 302)
+  get '/practices/:id/edit/about', to: redirect('/innovations/%{id}/edit/about', status: 302)
 
   resources :practice_partners, path: :partners
   resources :users, except: %i[show create new edit] do

@@ -84,7 +84,7 @@ describe 'Recommended for you page', type: :feature do
     it 'should display the bookmarked practices section if the user has any bookmarked practices' do
       login_and_visit_recommended_path(@user2)
 
-      expect(page).to have_content('Your bookmarked practices')
+      expect(page).to have_content('Your bookmarked innovations')
       expect(page).to have_content('A public practice')
       expect(page).to have_content('A second public practice')
     end
@@ -92,7 +92,7 @@ describe 'Recommended for you page', type: :feature do
     it 'should display the created practices section if the user has any created practices' do
       login_and_visit_recommended_path(@user2)
 
-      expect(page).to have_content('Your created practices')
+      expect(page).to have_content('Your created innovations')
       expect(page).to have_content('A public practice')
       expect(page).to have_content('A second public practice')
       expect(page).to have_content('A third public practice')
@@ -109,7 +109,7 @@ describe 'Recommended for you page', type: :feature do
     it 'should take the user to the search page with a query of their location if there are more than three practices that share their location and click the link' do
       login_and_visit_recommended_path(@user2)
 
-      click_link('See more practices')
+      click_link('See more innovations')
       expect(page).to have_selector('#search-page', visible: true)
       expect(page).to have_content('4 results')
     end
@@ -119,7 +119,7 @@ describe 'Recommended for you page', type: :feature do
     it 'should only show the first three bookmarked practices on initial page load' do
       login_and_visit_recommended_path(@user2)
 
-      expect(page).to have_content('Your bookmarked practices')
+      expect(page).to have_content('Your bookmarked innovations')
       within(:css, '.paginated-favorite-practices') do
         expect(page).to have_selector('.dm-practice-card', count: 3)
       end
@@ -150,7 +150,7 @@ describe 'Recommended for you page', type: :feature do
     it 'should only show the first three created practices on initial page load' do
       login_and_visit_recommended_path(@user2)
 
-      expect(page).to have_content('Your created practices')
+      expect(page).to have_content('Your created innovations')
       within(:css, '.paginated-created-practices') do
         expect(page).to have_selector('.dm-practice-card', count: 3)
       end

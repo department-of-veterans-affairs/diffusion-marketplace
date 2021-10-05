@@ -57,7 +57,7 @@ class VisnsController < ApplicationController
     visn_va_facilities_ids = @visn_va_facilities.get_ids
     @practices_created_by_visn = @visn.get_created_practices(visn_va_facilities_ids)
     @practices_created_json = practices_json(@practices_created_by_visn)
-    # get the unique categories for practices created in a VISN
+    # get the unique categories for innovations created in a VISN
     @practices_created_categories = []
     get_categories_by_practices(@practices_created_by_visn, @practices_created_categories)
 

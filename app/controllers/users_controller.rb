@@ -4,6 +4,7 @@
 class UsersController < ApplicationController
   require 'will_paginate/array'
   include CropperUtils
+  before_action :is_set_user, only: [:show]
   before_action :set_user, only: %i[show edit update destroy re_enable set_password]
   before_action :require_admin, only: %i[index update destroy re_enable]
   before_action :require_user_or_admin, only: %i[update]
@@ -14,18 +15,18 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
+    @user = current_user
     @favorite_practices = @user&.favorite_practices || []
     @created_practices = @user.created_practices
   end
 
   def edit_profile
-    redirect_to new_user_session_path unless current_user.present?
+    redirect_to root_path unless current_user.present?
     @user = current_user
   end
 
   def update_profile
-    redirect_to users_path unless current_user.present?
+    redirect_to root_path unless current_user.present?
     @user = current_user
     if @user.update(user_params)
       if params[:user][:delete_avatar].present? && params[:user][:delete_avatar] == 'true'
@@ -55,7 +56,6 @@ class UsersController < ApplicationController
   end
 
   def update
-    # @user = current_user
     if params[:user][:role].present?
       if params[:user][:role] == 'user'
         @user.remove_all_roles('user')
@@ -64,13 +64,7 @@ class UsersController < ApplicationController
         @user.add_role(params[:user][:role])
         flash[:success] = "Added \"#{params[:user][:role]}\" role to user \"#{@user.email}\""
       end
-      # redirect_to users_path # Add this here, but was originally not in this location
     end
-    # if @user.save
-    #   @user.update_attribute(:accepted_terms, true)
-
-    #   redirect_back(fallback_location: root_path)
-    # end
     redirect_to users_path
   end
 
@@ -93,9 +87,6 @@ class UsersController < ApplicationController
       flash[:error] = 'Something went wrong. Please contact us marketplace@va.gov for assistance.'
       redirect_to root_path
     end
-  end
-
-  def terms_and_conditions
   end
 
   def recommended_for_you
@@ -155,8 +146,12 @@ class UsersController < ApplicationController
 
   private
 
-  def require_user
-    unless current_user.present?
+  # We only want users to view their own profile and not see other users' profiles with the other users' user id
+  def is_set_user
+    user_from_params = User.find(params[:id] || params[:user_id])
+    if current_user.present? && user_from_params.present?
+      redirect_to root_path if current_user.id != user_from_params.id
+    else
       redirect_to root_path
     end
   end
@@ -167,7 +162,7 @@ class UsersController < ApplicationController
     end
   end
 
-  # This is to cover any sort of User self-editting in the future (such as profile infomation)
+  # This is to cover any sort of User self-editing in the future (such as profile infomation)
   def require_user_or_admin
     unless current_user.present? && (current_user == @user || current_user.has_role?(:admin))
       redirect_to users_path

@@ -38,9 +38,9 @@ describe 'Practice', type: :feature, js: true do
 
       # navigate to the PE Implementation form
       click_link('Edit')
-      visit '/practices/a-public-practice/edit/implementation'
+      visit '/innovations/a-public-practice/edit/implementation'
       expect(page).to have_content('Departments')
-      expect(page).to have_content('Which departments may be involved during implementation of your practice?')
+      expect(page).to have_content('Which departments may be involved during implementation of your innovation?')
       expect(page).to have_content('Select a department')
       expect(page).to have_content('Add another')
 

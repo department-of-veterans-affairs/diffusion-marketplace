@@ -31,7 +31,7 @@ describe 'Terms and conditions', type: :feature do
             expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).not_to have_content('Terms and conditions')
             expect(page).to have_content('Partners')
-            expect(page).to have_content('Best practices are always being developed, vetted, and promoted by offices within the VA.')
+            expect(page).to have_content('Best innovations are always being developed, vetted, and promoted by offices within the VA.')
             expect(page).to have_current_path('/partners')
             click_link 'Terms'
             expect(page).to have_content('Terms and conditions')
@@ -69,7 +69,7 @@ describe 'Terms and conditions', type: :feature do
             visit '/partners'
             expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).to have_content('Partners')
-            expect(page).to have_content('Best practices are always being developed, vetted, and promoted by offices within the VA.')
+            expect(page).to have_content('Best innovations are always being developed, vetted, and promoted by offices within the VA.')
             expect(page).not_to have_content('Terms and conditions')
         end
 

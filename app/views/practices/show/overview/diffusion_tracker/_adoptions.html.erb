@@ -15,11 +15,11 @@
   adoption_statuses_and_text = [
     {
       status: DiffusionHistoryStatus::STATUSES[0],
-      text: 'Facilities that have met adoption goals and implemented the practice.'
+      text: 'Facilities that have met adoption goals and implemented the innovation.'
     },
     {
       status: DiffusionHistoryStatus::STATUSES[1],
-      text: 'Facilities that have started but not completed adopting the practice.'
+      text: 'Facilities that have started but not completed adopting the innovation.'
     },
     {
       status: DiffusionHistoryStatus::STATUSES[2],
@@ -76,7 +76,7 @@
           <% end %>
         <% end %>
       <% else %>
-        <p>There are no <%= group_name.downcase %> adoptions for this practice.</p>
+        <p>There are no <%= group_name.downcase %> adoptions for this innovation.</p>
       <% end %>
     </div>
     <%# Calling the modal outside of the accordion button prevents any semantic issues %>

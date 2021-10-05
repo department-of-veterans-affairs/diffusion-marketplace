@@ -10,7 +10,7 @@ describe 'Favorites', type: :feature do
   describe 'Practice show page' do
     describe 'logged out' do
       it 'should not show a bookmark link' do
-        visit '/practices/a-public-practice'
+        visit '/innovations/a-public-practice'
         expect(page).not_to have_content('Bookmarked')
       end
     end
@@ -21,19 +21,19 @@ describe 'Favorites', type: :feature do
       end
 
       it 'should show a favorite link' do
-        visit '/practices/a-public-practice'
+        visit '/innovations/a-public-practice'
         expect(page).to have_selector('.dm-favorite-practice-link')
       end
 
       it 'should allow adding a favorite' do
-        visit '/practices/a-public-practice'
+        visit '/innovations/a-public-practice'
         favorite_link = find(:css, '.dm-favorite-practice-link')
         favorite_link.click
         expect(favorite_link).to have_content('Bookmark')
       end
 
       it 'should allow removing a favorite' do
-        visit '/practices/a-public-practice'
+        visit '/innovations/a-public-practice'
         favorite_link = find(:css, '.dm-favorite-practice-link')
         favorite_link.click
         expect(favorite_link).to have_content('Bookmarked')
@@ -47,8 +47,8 @@ describe 'Favorites', type: :feature do
         visit "/users/#{@user.id}"
       end
 
-      it 'should have a favorites section' do
-        expect(page).to have_content('Bookmarked practices')
+      it 'should redirect from the users page to the home page' do
+        expect(current_path).to eq('/')
       end
 
       it 'should not show a favorite button' do
@@ -63,7 +63,7 @@ describe 'Favorites', type: :feature do
       end
 
       it 'should have a favorites section' do
-        expect(page).to have_content('Bookmarked practices')
+        expect(page).to have_content('Bookmarked innovations')
       end
 
       it 'should show a favorite button' do

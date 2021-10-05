@@ -117,9 +117,9 @@ module PracticesHelper
   def get_person_resource_text(resource_type)
     content = {
       'core': 'Type a job title, department, and/or discipline another facility would need to involve in
-              implementing your practice. Provide dependencies for implementation (e.g., Clinical Application Coordinator required for 2-4  hours/week for 1-2 weeks).',
+              implementing your innovation. Provide dependencies for implementation (e.g., Clinical Application Coordinator required for 2-4  hours/week for 1-2 weeks).',
       'optional': 'Type a job title, department, and/or discipline another facility could involve in
-                  implementing your practice. Provide dependencies for implementation (e.g., Clinical Application Coordinator required for 2-4  hours/week for 1-2 weeks).',
+                  implementing your innovation. Provide dependencies for implementation (e.g., Clinical Application Coordinator required for 2-4  hours/week for 1-2 weeks).',
       'support': 'Type the job title of a role your team would provide to another facility, and describe the
                   support that will be provided.'
     }
@@ -129,9 +129,9 @@ module PracticesHelper
   def get_process_resource_text(resource_type)
     content = {
       'core': 'Type a process (e.g., method, procedure, training) another facility would need to implement
-              your practice.',
+              your innovation.',
       'optional': 'Type a process (e.g., method, procedure) another facility can consider when implementing
-                  your practice.',
+                  your innovation.',
       'support': 'Type a process (e.g., method, procedure) your team would provide for another facility.'
     }
     content[resource_type.to_sym]
@@ -140,9 +140,9 @@ module PracticesHelper
   def get_tool_resource_text(resource_type)
     content = {
       'core': 'Type a tool (e.g., equipment, software, supply) another facility would need to implement your
-              practice.',
+              innovation.',
       'optional': 'Type a tool (e.g., equipment, software, supply) another facility can consider when
-                  implementing your practice.',
+                  implementing your innovation.',
       'support': 'Type a tool (e.g., equipment, software, supply) your team would provide to another
                   facility.'
     }
