@@ -38,11 +38,14 @@
           </a>
         </li>
       </ul>
-      <div class="usa-nav__secondary<%= ' dm-signed-out-nav-secondary' if !user_signed_in? %>">
+      <%
+        user_type = session[:user_type]
+        vaec_environment = ENV['VAEC_ENV']
+      %>
+      <div class="usa-nav__secondary<%= if !user_signed_in? && vaec_environment.nil? then ' dm-signed-out-nav-secondary' elsif vaec_environment === 'true' && user_type === 'guest' then ' flex-column-important' end %>">
         <%= render 'shared/navbar_search' %>
-        <ul class="usa-nav__primary usa-accordion margin-top-0 dm-nav-header-profile <%= 'dm-nav-header-profile-sign-in' if !user_signed_in? %>">
+        <ul class="usa-nav__primary usa-accordion margin-top-0 dm-nav-header-profile<%= if !user_signed_in? && vaec_environment.nil? then ' dm-nav-header-profile-sign-in' elsif vaec_environment === 'true' && user_type === 'guest' then ' display-none-important' end %>">
           <% if user_signed_in? %>
-            <% user_type = session[:user_type] %>
             <% if user_type === 'ntlm' %>
               <li class="usa-nav__primary-item">
                 <a class="usa-nav__link <%= 'dm-current-link' if request.fullpath == user_path(current_user) %>" href="<%= user_path(current_user) %>">
@@ -73,9 +76,11 @@
               </li>
             <% end %>
           <% else %>
-            <li class="usa-nav__primary-item">
-              <%= link_to 'Sign in', new_user_session_path, class: 'usa-nav__link' %>
-            </li>
+            <% unless vaec_environment === 'true' %>
+              <li class="usa-nav__primary-item">
+                <%= link_to 'Sign in', new_user_session_path, class: 'usa-nav__link' %>
+              </li>
+            <% end %>
           <% end %>
         </ul>
       </div>

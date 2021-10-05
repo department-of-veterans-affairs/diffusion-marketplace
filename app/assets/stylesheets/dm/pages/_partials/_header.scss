@@ -12,6 +12,10 @@
     .usa-accordion__button.usa-nav__link {
       padding: 0.5rem 1rem;
     }
+
+    #dm-navbar-search-form {
+      @include u-margin-x(0, !important);
+    }
   }
 
   .usa-col {
@@ -86,7 +90,7 @@
     @media all and (min-width: 1024px) {
       position: absolute;
       top: -22px;
-      right: 24px;
+      right: 32px;
     }
   }
 
