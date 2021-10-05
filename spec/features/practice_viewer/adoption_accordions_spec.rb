@@ -54,7 +54,7 @@ describe 'Adoption accordions', type: :feature, js: true do
     mobile_unsuccessful_text = 'Unsuccessful: Facilities that started but stopped working towards adoption.'
 
     def desktop_tooltip_expectation_flow(text, index)
-      expect(page).to have_selector('.usa-tooltip__body', text: text, visible: true)
+      expect(page).to have_selector('.usa-tooltip__body', text: text, visible: false)
       all('.usa-tooltip')[index].hover
       expect(page).to have_selector('.usa-tooltip__body', text: text, visible: true)
     end
