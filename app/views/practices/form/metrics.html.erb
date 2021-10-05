@@ -234,14 +234,14 @@
           <table class="usa-table usa-table--borderless width-full margin-bottom-10 metrics-table">
             <thead>
               <tr>
-                <th scope="col" class="width-80">Practice</th>
+                <th scope="col" class="width-80">Innovation</th>
                 <th scope="col">Views</th>
               </tr>
             </thead>
             <%cur_rec = 1 %>
             <% @page_views_leader_board_30_days.each do |rec| %>
               <tr>
-                <td class="width-80"><%= cur_rec %>. <a class="usa-link" target="_blank" href="/practices/<%= rec[:practice_slug] %>/"><%= rec[:practice_name] %></a></td>
+                <td class="width-80"><%= cur_rec %>. <a class="usa-link" target="_blank" href="/innovations/<%= rec[:practice_slug] %>/"><%= rec[:practice_name] %></a></td>
                 <td><%= rec[:count] %></td>
               </tr>
               <% cur_rec += 1 %>
@@ -252,14 +252,14 @@
           <table class="usa-table usa-table--borderless width-full margin-bottom-10 metrics-table">
             <thead>
               <tr>
-                <th scope="col" class="width-80">Practice</th>
+                <th scope="col" class="width-80">Innovation</th>
                 <th scope="col">Views</th>
               </tr>
             </thead>
             <%cur_rec = 1 %>
             <% @page_views_leader_board_all_time.each do |rec| %>
               <tr>
-                <td class="width-80"><%= cur_rec %>. <a class="usa-link" target="_blank" href="/practices/<%= rec[:practice_slug] %>/"><%= rec[:practice_name] %></a></td>
+                <td class="width-80"><%= cur_rec %>. <a class="usa-link" target="_blank" href="/innovations/<%= rec[:practice_slug] %>/"><%= rec[:practice_name] %></a></td>
                 <td><%= rec[:count] %></td>
               </tr>
               <% cur_rec += 1 %>

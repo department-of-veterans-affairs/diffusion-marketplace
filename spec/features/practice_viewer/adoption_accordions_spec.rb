@@ -46,11 +46,11 @@ describe 'Adoption accordions', type: :feature, js: true do
   end
 
   describe 'adoption status tooltip' do
-    desktop_successful_text = 'Facilities that have met adoption goals and implemented the practice.'
-    desktop_in_progress_text = 'Facilities that have started but not completed adopting the practice.'
+    desktop_successful_text = 'Facilities that have met adoption goals and implemented the innovation.'
+    desktop_in_progress_text = 'Facilities that have started but not completed adopting the innovation.'
     desktop_unsuccessful_text = 'Facilities that started but stopped working towards adoption.'
-    mobile_successful_text = 'Successful: Facilities that have met adoption goals and implemented the practice.'
-    mobile_in_progress_text = 'In-progress: Facilities that have started but not completed adopting the practice.'
+    mobile_successful_text = 'Successful: Facilities that have met adoption goals and implemented the innovation.'
+    mobile_in_progress_text = 'In-progress: Facilities that have started but not completed adopting the innovation.'
     mobile_unsuccessful_text = 'Unsuccessful: Facilities that started but stopped working towards adoption.'
 
     def desktop_tooltip_expectation_flow(text, index)

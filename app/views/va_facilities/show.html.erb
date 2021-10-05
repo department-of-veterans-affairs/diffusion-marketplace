@@ -19,7 +19,7 @@
     </h1>
     <div class="grid-row grid-gap-3">
 
-      <div class="grid-col-6 line-height-26"> This facility has created <%= @created_pr_count %> practice<%= 's' unless @created_pr_count === 1 %> and has adopted <%= @adopted_pr_count %> practice<% if @adopted_pr_count != 1 %>s<% end %>.  It's a<% if @va_facility.rurality == "U" || @va_facility.rurality == "I" %>n<% end %>
+      <div class="grid-col-6 line-height-26"> This facility has created <%= @created_pr_count %> innovation<%= 's' unless @created_pr_count === 1 %> and has adopted <%= @adopted_pr_count %> innovation<% if @adopted_pr_count != 1 %>s<% end %>.  It's a<% if @va_facility.rurality == "U" || @va_facility.rurality == "I" %>n<% end %>
         <% case @va_facility.rurality %>
           <% when "R" %>
             rural

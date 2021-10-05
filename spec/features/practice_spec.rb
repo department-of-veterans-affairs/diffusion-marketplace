@@ -37,13 +37,13 @@ describe 'Practices', type: :feature do
   describe 'Authorization' do
     it 'should let unauthenticated users interact with practices' do
       # Visit an individual Practice
-      visit '/practices/the-best-practice-ever'
+      visit '/innovations/the-best-practice-ever'
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content('You are not authorized to view this content.')
 
       @user_practice.update(approved: true, published: true)
       # Visit an individual Practice
-      visit '/practices/the-best-practice-ever'
+      visit '/innovations/the-best-practice-ever'
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content('Login to see full practice')
       click_on('Login to see full practice')
@@ -63,15 +63,15 @@ describe 'Practices', type: :feature do
       visit '/'
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@highlighted_practice.name)
-      expect(page).to have_content('Find the next important or life-saving practice to adopt at your VA facility.')
+      expect(page).to have_content('Find the next important or life-saving innovation to adopt at your VA facility.')
       expect(page).to have_link(href: '/explore')
       expect(page).to have_content('Recommended for you')
-      expect(page).to have_content('Explore practices that are relevant to your location, role, and saved searches.')
+      expect(page).to have_content('Explore innovations that are relevant to your location, role, and saved searches.')
       expect(page).to have_content('COVID-19')
-      expect(page).to have_content('The Diffusion Marketplace has practices that help VHA respond to COVID-19. We have assembled a group of practices for frontline staff and administrators responding to the changing medical landscape.')
+      expect(page).to have_content('The Diffusion Marketplace has innovations that help VHA respond to COVID-19. We have assembled a group of innovations for frontline staff and administrators responding to the changing medical landscape.')
       expect(page).to have_link(href: '/covid-19')
-      expect(page).to have_content('Nominate a practice')
-      expect(page).to have_content('If you have a practice that has been adopted at two or more locations, has been endorsed by a senior executive stakeholder, and is an active practice, click the link below to submit it to the Marketplace.')
+      expect(page).to have_content('Nominate an innovation')
+      expect(page).to have_content('If you have an innovation that has been adopted at two or more locations, has been endorsed by a senior executive stakeholder, and is an active innovation, click the link below to submit it to the Marketplace.')
       expect(page).to have_link('Start nomination', href: nominate_a_practice_path )
     end
 
@@ -90,7 +90,7 @@ describe 'Practices', type: :feature do
       # Visit a user's practice that is not approved or published
       visit practice_path(@user_practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_content('Find the next important or life-saving practice to adopt at your VA facility.')
+      expect(page).to have_content('Find the next important or life-saving innovation to adopt at your VA facility.')
       expect(page).to have_current_path('/')
     end
 

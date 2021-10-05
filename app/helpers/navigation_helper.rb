@@ -63,7 +63,7 @@ module NavigationHelper
       if action == 'index'
         # empty the bread crumbs and start a new path
         empty_breadcrumbs
-        session[:breadcrumbs] << {'display': 'Practices', 'path': '/practices'}
+        session[:breadcrumbs] << {'display': 'Innovations', 'path': '/innovations'}
       end
 
       if action == 'explore'
@@ -305,7 +305,7 @@ module NavigationHelper
     ### NOMINATE PRACTICE BREADCRUMBS
     if action == 'index' && controller == 'nominate_practices'
       empty_breadcrumbs
-      session[:breadcrumbs] << { 'display': 'Nominate a practice', 'path': nominate_a_practice_path }
+      session[:breadcrumbs] << { 'display': 'Nominate an innovation', 'path': nominate_a_practice_path }
     end
 
     ### VISN BREADCRUMBS
