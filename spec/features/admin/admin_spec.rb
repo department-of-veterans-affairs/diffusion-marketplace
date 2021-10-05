@@ -574,6 +574,21 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_current_path(admin_practice_path(@practice))
   end
 
+  it 'should allow an admin to toggle the \'is_public\' attribute on or off for any given practice' do
+    login_as(@admin, scope: :user, run_callbacks: false)
+    visit '/admin/practices'
+
+    expect(first('.col-public .status_tag')).to have_content('NO')
+
+    first('.toggle-practice-privacy-link').click
+    expect(page).to have_content("\"#{@practice_2.name}\" is now a public-facing practice")
+    expect(first('.col-public .status_tag')).to have_content('YES')
+
+    first('.toggle-practice-privacy-link').click
+    expect(page).to have_content("\"#{@practice_2.name}\" is now a VAEC internal-facing practice")
+    expect(first('.col-public .status_tag')).to have_content('NO')
+  end
+
   it 'if the practice user is changed, it should remove the previous practice user from the comment thread subscribers list for that practice, unless they created at least one comment on the thread' do
     # trigger the create_or_update_practice method in the admin controller
     login_as(@admin, scope: :user, run_callbacks: false)
@@ -586,12 +601,14 @@ describe 'The admin dashboard', type: :feature do
     visit '/admin/practices/the-best-practice-ever/edit'
     fill_in('User email', with: @user2.email)
     click_button('Update Practice')
+
     expect(Practice.first.commontator_thread.subscribers.first).to_not eq(@user)
     expect(Practice.first.commontator_thread.subscribers.first).to eq(@user2)
 
     # create a comment with the current practice user
     logout(@admin)
     login_as(@user2, :scope => :user, :run_callbacks => false)
+    page.set_rack_session(:user_type => 'ntlm')
     visit practice_path(@practice)
     fill_in('comment[body]', with: 'This is a test comment')
     click_button('commit')

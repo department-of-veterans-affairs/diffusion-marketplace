@@ -368,6 +368,9 @@ GEM
       rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
+    rack_session_access (0.2.0)
+      builder (>= 2.0.0)
+      rack (>= 1.0.0)
     rails (5.2.6)
       actioncable (= 5.2.6)
       actionmailer (= 5.2.6)
@@ -620,6 +623,7 @@ DEPENDENCIES
   pg (= 1.1.4)
   pry (~> 0.12.2)
   puma (>= 4.3.5)
+  rack_session_access
   rails (>= 5.2.4.6)
   rails-assets-jquery.scrollTo!
   rails-assets-sticky!

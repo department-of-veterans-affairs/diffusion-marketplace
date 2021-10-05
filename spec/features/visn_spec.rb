@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'spec_helper'
 
 describe 'VISN pages', type: :feature do
   before do
@@ -96,7 +97,7 @@ describe 'VISN pages', type: :feature do
       station_phone_number: "912-322-5541"
     )
 
-    @user = User.create!(email: 'nobara.kugisaki@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now)
+    @user = User.create!(email: 'nobara.kugisaki@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: false, confirmed_at: Time.now, accepted_terms: true)
 
     @practice = Practice.create!(name: 'The Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
     PracticeOriginFacility.create!(practice: @practice, facility_type: 0, va_facility: facility_1)
@@ -205,6 +206,8 @@ describe 'VISN pages', type: :feature do
     end
 
     it 'should display a brief breakdown of the visn\'s metadata' do
+      login_as(@user, :scope => :user, :run_callbacks => false)
+      page.set_rack_session(:user_type => 'ntlm')
       visit '/visns/2'
       expect(page).to have_content('This VISN has 3 facilities and serves Veterans in Florida and Georgia.')
       expect(page).to have_content('Collectively, its facilities have created 7 practices and have adopted 3 practices.')
