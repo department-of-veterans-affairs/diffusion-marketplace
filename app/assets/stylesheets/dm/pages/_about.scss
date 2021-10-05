@@ -38,6 +38,10 @@
     @include u-maxw('full', !important);
   }
 
+  #faq-8 {
+    @include u-padding-bottom(0, !important);
+  }
+
   form {
     textarea {
       resize: none;

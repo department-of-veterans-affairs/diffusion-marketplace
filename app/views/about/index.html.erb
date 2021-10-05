@@ -6,7 +6,7 @@
       <div class="grid-col-12 desktop:grid-col-7">
         <h1 class="usa-prose-h1 margin-bottom-4 margin-top-0">About us</h1>
         <p class="usa-prose-body">
-          The Diffusion Marketplace is a discovery and collaboration tool that curates promising clinical, operational, and strategic practices from VA. We are managed by the
+          The Diffusion Marketplace is a discovery and collaboration tool that curates promising clinical, operational, and strategic innovations from VA. We are managed by the
           <a href="https://www.va.gov/INNOVATIONECOSYSTEM/views/who-we-are/diffusion-of-excellence.html" class="usa-link usa-link--external" target="_blank">Diffusion of Excellence</a>, an organization within
           the <a href="https://www.va.gov/INNOVATIONECOSYSTEM/views/who-we-are/diffusion-of-excellence.html" class="usa-link usa-link--external" target="_blank">VHA Innovation Ecosystem</a>. Our goal is to
           represent the best of VA and to reflect the spirit of service and collaboration for Veterans and the communities we serve.
@@ -97,9 +97,17 @@
       <%= render partial: 'faq_accordion', locals: {
         item_number: '8',
         question: 'How are innovations selected?',
-        answer: "You can self-nominate or nominate other innovations for consideration on the Diffusion Marketplace by using our #{link_to('Nominate an innovation', nominate_an_innovation_path, class: 'usa-link')} page.
-                 Innovations can also be nominated through competitions, such as the VHA Shark Tank Competition. Nominated innovations will be reviewed by the Diffusion of Excellence team, relevant subject matter
-                 experts, as well as Veterans Integrated Services Networks (VISNs) and program office leaders. Innovations will be selected in alignment with VA best practices and priorities."
+        answer: "
+                  <p class='margin-bottom-2'>
+                    You can self-nominate or nominate other innovations for consideration on the Diffusion Marketplace by using our #{link_to('Nominate an innovation', nominate_an_innovation_path, class: 'usa-link')}
+                    page. Innovations can also be nominated through competitions, such as the VHA Shark Tank Competition.
+                  </p>
+                  <p>
+                    Nominated innovations will be reviewed by the Diffusion of Excellence team, relevant subject matter experts, as well as Veterans Integrated Services Networks (VISNs) and program office
+                    leaders. Innovations will be selected in alignment with VA best practices and priorities.
+                  </p>
+                "
+
         }
       %>
     </div>
