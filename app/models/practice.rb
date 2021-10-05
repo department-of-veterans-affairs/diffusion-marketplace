@@ -209,6 +209,7 @@ class Practice < ApplicationRecord
   scope :load_associations, -> { includes(:categories, :diffusion_histories, :practice_origin_facilities) }
   scope :public_facing, -> { published_enabled_approved.where(is_public: true) }
   scope :get_with_diffusion_histories, -> { published_enabled_approved.sort_a_to_z.joins(:diffusion_histories).uniq }
+  scope :get_public_practices_only,  -> { where(is_public: true) }
 
   belongs_to :user, optional: true
 
