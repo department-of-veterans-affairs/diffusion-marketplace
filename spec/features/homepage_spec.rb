@@ -39,7 +39,7 @@ describe 'Homepage', type: :feature do
       # search for a practice by going to the search page
       click_link('Browse all innovations')
       expect(page).to have_current_path(search_path)
-      expect(page).to have_content('Enter a search term or use the filters to find matching practices')
+      expect(page).to have_content('Enter a search term or use the filters to find matching innovations')
     end
   end
 
@@ -58,7 +58,7 @@ describe 'Homepage', type: :feature do
       expect(page).to have_content('FEATURED INNOVATION BODY')
       expect(page).to have_content('FEATURED INNOVATION ATTACHMENT')
 
-      fill_in('Featured Practice Body', with: 'Highlighted body text')
+      fill_in('Featured Innovation Body', with: 'Highlighted body text')
       find('#practice_highlight_attachment').attach_file(@featured_image)
       click_button('Update Practice')
       visit '/'
