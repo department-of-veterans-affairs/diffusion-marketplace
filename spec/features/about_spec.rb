@@ -42,7 +42,7 @@ describe 'About us page', type: :feature do
       all('.usa-accordion__heading')[4].click
       click_link('Start a search')
       expect(page).to have_content('Search')
-      expect(page).to have_content('Enter a search term or use the filters to find matching practices')
+      expect(page).to have_content('Enter a search term or use the filters to find matching innovations')
     end
   end
 

@@ -55,8 +55,8 @@ describe 'Homepage', type: :feature do
       click_link('Feature', href: highlight_practice_admin_practice_path(@practice))
       click_link('Edit', href: edit_admin_practice_path(@practice))
 
-      expect(page).to have_content('FEATURED PRACTICE BODY')
-      expect(page).to have_content('FEATURED PRACTICE ATTACHMENT')
+      expect(page).to have_content('FEATURED INNOVATION BODY')
+      expect(page).to have_content('FEATURED INNOVATION ATTACHMENT')
 
       fill_in('Featured Practice Body', with: 'Highlighted body text')
       find('#practice_highlight_attachment').attach_file(@featured_image)

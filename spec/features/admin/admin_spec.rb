@@ -484,13 +484,13 @@ describe 'The admin dashboard', type: :feature do
     click_link('Practices')
     expect(page).to have_content('Feature')
     click_link('Feature', href: highlight_practice_admin_practice_path(@practice))
-    expect(page).to have_content("\"#{@practice.name}\" is now the featured practice.")
+    expect(page).to have_content("\"#{@practice.name}\" is now the featured innovation.")
     expect(find_all('.col-featured > span')[3].text).to eq 'YES'
     click_link('Feature', href: highlight_practice_admin_practice_path(pr_2))
-    expect(page).to have_content("Only one practice can be featured at a time.")
+    expect(page).to have_content("Only one innovation can be featured at a time.")
     expect(find_all('.col-featured > span')[1].text).to eq 'NO'
     click_link('Feature', href: highlight_practice_admin_practice_path(pr_3))
-    expect(page).to have_content("Practice must be published to be featured.")
+    expect(page).to have_content("Innovation must be published to be featured.")
     expect(find_all('.col-featured > span')[0].text).to eq 'NO'
     visit '/'
     # Should not show featured section unless featured fields have been completed
@@ -499,17 +499,17 @@ describe 'The admin dashboard', type: :feature do
     visit '/admin'
     click_link('Practices')
     click_link('Edit', href: edit_admin_practice_path(@practice))
-    expect(page).to have_content('FEATURED PRACTICE BODY')
-    expect(page).to have_content('FEATURED PRACTICE ATTACHMENT')
-    fill_in('Featured Practice Body', with: 'pretty cool practice')
+    expect(page).to have_content('FEATURED INNOVATION BODY')
+    expect(page).to have_content('FEATURED INNOVATION ATTACHMENT')
+    fill_in('Featured Innovation Body', with: 'pretty cool practice')
     # practice should not update unless both featured fields are completed
     click_button('Update Practice')
-    expect(page).to_not have_content('Practice was successfully updated.')
-    expect(page).to have_content('ERROR - The following required \'featured\' field was not completed: \'featured practice attachment\'')
-    fill_in('Featured Practice Body', with: 'pretty cool practice')
+    expect(page).to_not have_content('Innovation was successfully updated.')
+    expect(page).to have_content('ERROR - The following required \'featured\' field was not completed: \'featured innovation attachment\'')
+    fill_in('Featured Innovation Body', with: 'pretty cool practice')
     find('#practice_highlight_attachment').attach_file(@featured_image)
     click_button('Update Practice')
-    expect(page).to have_content('Practice was successfully updated.')
+    expect(page).to have_content('Innovation was successfully updated.')
     visit '/'
     expect(page).to have_content(@practice.name)
     expect(page).to have_content('pretty cool practice')
@@ -519,7 +519,7 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_content('Unfeature')
     click_link('Unfeature', href: highlight_practice_admin_practice_path(@practice))
     expect(find_all('.col-featured > span').first.text).to eq 'NO'
-    expect(page).to have_content("\"#{@practice.name}\" is no longer the featured practice.")
+    expect(page).to have_content("\"#{@practice.name}\" is no longer the featured innovation.")
     visit '/'
     expect(page).to have_no_content(@practice.name)
   end
