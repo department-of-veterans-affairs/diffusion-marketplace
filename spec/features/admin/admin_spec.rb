@@ -20,7 +20,7 @@ describe 'The admin dashboard', type: :feature do
     @facility_1 = VaFacility.create!(visn: visn_8, station_number: "516", official_station_name: "C.W. Bill Young Department of Veterans Affairs Medical Center", common_name: "Bay Pines", street_address_state: "FL")
 
     @practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true, retired: false)
-    @practice_2 = Practice.create!(name: 'The Second Best Practice Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true, retired: false)
+    @practice_2 = Practice.create!(name: 'The Second Best Innovation Ever!', user: @user, initiating_facility: 'Test facility name', tagline: 'Test tagline', published: true, approved: true, retired: false)
     @categories = [
       Category.create!(name: 'COVID', description: 'COVID related practices', related_terms: ['COVID-19, Coronavirus']),
       Category.create!(name: 'Telehealth', description: 'Telelhealth related practices')
@@ -78,31 +78,31 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_current_path(admin_root_path)
 
     expect(page).to have_selector('#users-information', visible: true)
-    expect(page).to have_selector('#practice-leaderboards', visible: false)
+    expect(page).to have_selector('#innovation-leaderboards', visible: false)
     expect(page).to have_selector('#general-practice-search-terms-table', visible: false)
 
     within(:css, '.tabs.ui-tabs') do
-      click_link('Practice Leaderboards')
+      click_link('Innovation Leaderboards')
       expect(page).to have_selector('#users-information', visible: false)
-      expect(page).to have_selector('#practice-leaderboards', visible: true)
+      expect(page).to have_selector('#innovation-leaderboards', visible: true)
       expect(page).to have_selector('#general-practice-search-terms-table', visible: false)
       expect(page).to have_css("input[value='Export as .xlsx']", visible: false)
 
-      click_link('Practice Search Terms')
+      click_link('Innovation Search Terms')
       expect(page).to have_selector('#users-information', visible: false)
-      expect(page).to have_selector('#practice-leaderboards', visible: false)
+      expect(page).to have_selector('#innovation-leaderboards', visible: false)
       expect(page).to have_selector('#general-practice-search-terms-table', visible: true)
       expect(page).to have_css("input[value='Export as .xlsx']", visible: false)
 
       click_link('Users Information')
       expect(page).to have_selector('#users-information', visible: true)
-      expect(page).to have_selector('#practice-leaderboards', visible: false)
+      expect(page).to have_selector('#innovation-leaderboards', visible: false)
       expect(page).to have_selector('#general-practice-search-terms-table', visible: false)
       expect(page).to have_css("input[value='Export as .xlsx']", visible: false)
 
       click_link('Metrics')
       expect(page).to have_selector('#users-information', visible: false)
-      expect(page).to have_selector('#practice-leaderboards', visible: false)
+      expect(page).to have_selector('#innovation-leaderboards', visible: false)
       expect(page).to have_selector('#general-practice-search-terms-table', visible: false)
       expect(page).to have_css("input[value='Export as .xlsx']", visible: true)
     end
@@ -310,11 +310,11 @@ describe 'The admin dashboard', type: :feature do
     click_link('New Practice')
     expect(page).to have_current_path(new_admin_practice_path)
 
-    expect(page).to have_no_content('Highlighted Practice Title')
-    expect(page).to have_no_content('Highlighted Practice Body')
+    expect(page).to have_no_content('Highlighted Innovation Title')
+    expect(page).to have_no_content('Highlighted Innovation Body')
 
     # add extra whitespace to practice name
-    fill_in('Practice name', with: ' The Newest Practice   ')
+    fill_in('Innovation name', with: ' The Newest Practice   ')
     fill_in('User email', with: 'practice_owner@va.gov')
     click_button('Create Practice')
     # make sure white space is trimmed from practice name
@@ -333,13 +333,13 @@ describe 'The admin dashboard', type: :feature do
     click_link('Practices')
     click_link('New Practice')
 
-    fill_in('Practice name', with: 'The Newest Practice')
+    fill_in('Innovation name', with: 'The Newest Practice')
     click_button('Create Practice')
     # check for blank email
     expect(page).to have_content('There was an error. Email cannot be blank.')
     expect(page).to_not have_selector("input[value='The Newest Practice']")
     # check for invalid email
-    fill_in('Practice name', with: 'The Newest Practice')
+    fill_in('Innovation name', with: 'The Newest Practice')
     fill_in('User email', with: 'practice_owner@test.com')
     click_button('Create Practice')
 
@@ -351,7 +351,7 @@ describe 'The admin dashboard', type: :feature do
     fill_in('User email', with: 'practice_owner@test.com')
     click_button('Create Practice')
 
-    expect(page).to have_content('There was an error. Practice name cannot be blank.')
+    expect(page).to have_content('There was an error. Innovation name cannot be blank.')
     expect(page).to_not have_selector("input[value='practice_owner@test.com']")
   end
 
@@ -361,21 +361,21 @@ describe 'The admin dashboard', type: :feature do
 
     click_link('Practices')
     click_link('Edit', href: edit_admin_practice_path(@practice))
-    fill_in('Practice name', with: @practice_2.name)
+    fill_in('Innovation name', with: @practice_2.name)
     click_button('Update Practice')
 
-    expect(page).to have_content('There was an error. Practice name already exists.')
+    expect(page).to have_content('There was an error. Innovation name already exists.')
     expect(page).to have_selector("input[value='The Best Practice Ever!']")
 
     # add extra whitespace to practice name
-    fill_in('Practice name', with: '       Test Practice 1 ')
+    fill_in('Innovation name', with: '       Test Practice 1 ')
     click_button('Update Practice')
 
-    expect(page).to have_content('Practice was successfully updated.')
+    expect(page).to have_content('Innovation was successfully updated.')
     expect(page).to have_content('Test Practice 1')
     # make sure white space is trimmed from practice name
     click_link('Edit Practice')
-    expect(page).to have_field('Practice name', with: 'Test Practice 1')
+    expect(page).to have_field('Innovation name', with: 'Test Practice 1')
   end
 
   it 'should not allow an admin to update an existing practice if they do not enter the required information' do
@@ -385,15 +385,15 @@ describe 'The admin dashboard', type: :feature do
     click_link('Practices')
     click_link('Edit', href: edit_admin_practice_path(@practice))
     # check for blank practice name
-    fill_in('Practice name', with: '')
+    fill_in('Innovation name', with: '')
     click_button('Update Practice')
 
-    expect(page).to have_content('There was an error. Practice name cannot be blank.')
+    expect(page).to have_content('There was an error. Innovation name cannot be blank.')
     expect(page).to have_selector("input[value='The Best Practice Ever!']")
 
     # check for blank email
-    fill_in('Practice name', with: 'Test Practice')
-    fill_in('User email', with: '')
+    fill_in('Innovation name', with: 'Test Practice')
+    fill_in('practice_user_id', with: '')
     click_button('Update Practice')
 
     expect(page).to have_content('There was an error. Email cannot be blank.')
@@ -416,7 +416,7 @@ describe 'The admin dashboard', type: :feature do
     fill_in('User email', with: 'test@va.gov')
     # make sure the mailer count increases by 1
     expect { click_button('Update Practice') }.to change { ActionMailer::Base.deliveries.count }.by(1)
-    expect(page).to have_content('Practice was successfully updated.')
+    expect(page).to have_content('Innovation was successfully updated.')
     # make sure the mailer subject is for a practice owner that is now also a practice editor
     expect(ActionMailer::Base.deliveries.last.subject).to eq('You have been added to the list of practice editors for the The Best Practice Ever! Diffusion Marketplace Page!')
 
@@ -458,7 +458,7 @@ describe 'The admin dashboard', type: :feature do
     expect(find_field('practice_category_ids').find('option[selected]').text).to eq('Telehealth')
 
     # check if categories saves correctly with new practice name
-    fill_in('Practice name', with: 'renamed practiced')
+    fill_in('Innovation name', with: 'renamed practiced')
     find("option[value='#{@categories[0][:id]}']").click
     find("option[value='#{@categories[1][:id]}']").click
     click_button('Update Practice')
@@ -484,13 +484,13 @@ describe 'The admin dashboard', type: :feature do
     click_link('Practices')
     expect(page).to have_content('Feature')
     click_link('Feature', href: highlight_practice_admin_practice_path(@practice))
-    expect(page).to have_content("\"#{@practice.name}\" is now the featured practice.")
+    expect(page).to have_content("\"#{@practice.name}\" is now the featured innovation.")
     expect(find_all('.col-featured > span')[3].text).to eq 'YES'
     click_link('Feature', href: highlight_practice_admin_practice_path(pr_2))
-    expect(page).to have_content("Only one practice can be featured at a time.")
+    expect(page).to have_content("Only one innovation can be featured at a time.")
     expect(find_all('.col-featured > span')[1].text).to eq 'NO'
     click_link('Feature', href: highlight_practice_admin_practice_path(pr_3))
-    expect(page).to have_content("Practice must be published to be featured.")
+    expect(page).to have_content("Innovation must be published to be featured.")
     expect(find_all('.col-featured > span')[0].text).to eq 'NO'
     visit '/'
     # Should not show featured section unless featured fields have been completed
@@ -499,17 +499,17 @@ describe 'The admin dashboard', type: :feature do
     visit '/admin'
     click_link('Practices')
     click_link('Edit', href: edit_admin_practice_path(@practice))
-    expect(page).to have_content('FEATURED PRACTICE BODY')
-    expect(page).to have_content('FEATURED PRACTICE ATTACHMENT')
-    fill_in('Featured Practice Body', with: 'pretty cool practice')
+    expect(page).to have_content('FEATURED INNOVATION BODY')
+    expect(page).to have_content('FEATURED INNOVATION ATTACHMENT')
+    fill_in('Featured Innovation Body', with: 'pretty cool practice')
     # practice should not update unless both featured fields are completed
     click_button('Update Practice')
-    expect(page).to_not have_content('Practice was successfully updated.')
-    expect(page).to have_content('ERROR - The following required \'featured\' field was not completed: \'featured practice attachment\'')
-    fill_in('Featured Practice Body', with: 'pretty cool practice')
+    expect(page).to_not have_content('Innovation was successfully updated.')
+    expect(page).to have_content('ERROR - The following required \'featured\' field was not completed: \'featured innovation attachment\'')
+    fill_in('Featured Innovation Body', with: 'pretty cool practice')
     find('#practice_highlight_attachment').attach_file(@featured_image)
     click_button('Update Practice')
-    expect(page).to have_content('Practice was successfully updated.')
+    expect(page).to have_content('Innovation was successfully updated.')
     visit '/'
     expect(page).to have_content(@practice.name)
     expect(page).to have_content('pretty cool practice')
@@ -519,7 +519,7 @@ describe 'The admin dashboard', type: :feature do
     expect(page).to have_content('Unfeature')
     click_link('Unfeature', href: highlight_practice_admin_practice_path(@practice))
     expect(find_all('.col-featured > span').first.text).to eq 'NO'
-    expect(page).to have_content("\"#{@practice.name}\" is no longer the featured practice.")
+    expect(page).to have_content("\"#{@practice.name}\" is no longer the featured innovation.")
     visit '/'
     expect(page).to have_no_content(@practice.name)
   end

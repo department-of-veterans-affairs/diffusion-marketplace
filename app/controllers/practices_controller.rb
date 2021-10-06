@@ -27,7 +27,7 @@ class PracticesController < ApplicationController
     redirect_to root_path
   end
 
-  # GET /practices/1
+  # GET /innovations/1
   # GET /practices/1.json
   def show
     # This allows comments thread to show up without the need to click a link
@@ -85,7 +85,7 @@ class PracticesController < ApplicationController
 
     respond_to do |format|
       if @practice.save
-        format.html { redirect_to @practice, notice: 'Practice was successfully created.' }
+        format.html { redirect_to @practice, notice: 'Innovation was successfully created.' }
         format.json { render :show, status: :created, location: @practice }
       else
         format.html { redirect_back fallback_location: root_path}
@@ -108,7 +108,7 @@ class PracticesController < ApplicationController
         if updated.is_a?(StandardError)
           # Add back end validation error messages for Editors page just as a safety measure
           invalid_editor_email_field = updated.message.split(' ').slice(3..-1).join(' ')
-          flash[:error] = "There was an #{editor_params.present? && updated.message.include?('valid @va.gov') ? invalid_editor_email_field : updated.message}. The practice was not saved."
+          flash[:error] = "There was an #{editor_params.present? && updated.message.include?('valid @va.gov') ? invalid_editor_email_field : updated.message}. The innovation was not saved."
           format.html { redirect_back fallback_location: root_path }
           format.json { render json: updated, status: :unprocessable_entity }
         elsif !session_open && latest_session_user_is_current_user
@@ -124,10 +124,10 @@ class PracticesController < ApplicationController
           end
           if params[:next]
             path = eval("practice_#{Practice::PRACTICE_EDITOR_SLUGS.key(current_endpoint)}_path(@practice)")
-            format.html { redirect_to path, notice: params[:practice].present? ? editor_notice + 'Practice was successfully updated.' : nil }
+            format.html { redirect_to path, notice: params[:practice].present? ? editor_notice + 'Innovation was successfully updated.' : nil }
             format.json { render :show, status: :ok, location: @practice }
           else
-            format.html { redirect_back fallback_location: root_path, notice: editor_notice + 'Practice was successfully updated.' }
+            format.html { redirect_back fallback_location: root_path, notice: editor_notice + 'Innovation was successfully updated.' }
             format.json { render json: @practice, status: :ok }
           end
           # Update last_edited field for the Practice Editor unless the current_user is the Practice Editor and their Practice Editor record was just created
@@ -141,7 +141,7 @@ class PracticesController < ApplicationController
           flash[:error] = "Your editing session for #{@practice.name} has ended. Your edits have not been saved and you have been returned to the Metrics page."
           format.html { redirect_to practice_metrics_path(@practice) }
         else
-          flash[:error] = "There was an #{@practice.errors.messages}. The practice was not saved."
+          flash[:error] = "There was an #{@practice.errors.messages}. The innovation was not saved."
           format.html { redirect_back fallback_location: root_path }
           format.json { render json: updated, status: :unprocessable_entity }
         end
@@ -414,7 +414,7 @@ class PracticesController < ApplicationController
       if can_publish
         # if there is an error with updating the practice, alert the user
         if updated.is_a?(StandardError)
-          flash[:error] = "There was an #{updated.message}. The practice was not saved or published."
+          flash[:error] = "There was an #{updated.message}. The innovation was not saved or published."
           format.js { redirect_to self.send("practice_#{current_endpoint}_path", @practice) }
         else
           @practice.update_attributes(published: true, date_published: DateTime.now)
@@ -496,7 +496,7 @@ class PracticesController < ApplicationController
     if @current_session.present? && @current_session.user === current_user
       PracticeEditorSession.extend_current_session(@current_session)
     else
-      msg = "You cannot edit this practice since it is currently being edited by #{session_username(@current_session)}"
+      msg = "You cannot edit this innovation since it is currently being edited by #{session_username(@current_session)}"
       render :js => "window.location = '#{practice_metrics_path(@practice)}'"
       flash[:warning] = msg
     end
@@ -514,7 +514,7 @@ class PracticesController < ApplicationController
     end
     if params[:any_blank_required_fields] === 'true' || params[:current_action] === 'adoptions' || params[:current_action] === 'editors'
       render :js => "window.location = '#{practice_metrics_path(@practice)}'"
-      flash[:error] = "The practice was not saved#{params[:any_blank_required_fields] === 'true' ? ' due to one or more required fields not being filled out' : ''}."
+      flash[:error] = "The innovation was not saved#{params[:any_blank_required_fields] === 'true' ? ' due to one or more required fields not being filled out' : ''}."
     end
   end
 
@@ -536,7 +536,7 @@ class PracticesController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_practice
-    id = params[:id] || params[:practice_id]
+    id = params[:id] || params[:practice_id] || params[:practice_id]
     @practice = Practice.friendly.find(id)
   end
 
@@ -552,7 +552,7 @@ class PracticesController < ApplicationController
       PracticeEditorSession.lock_practice_for_user(cur_user_id, @practice.id)
     else
       if @current_session.user != current_user
-        msg = "You cannot edit this practice since it is currently being edited by #{session_username(@current_session)}"
+        msg = "You cannot edit this innovation since it is currently being edited by #{session_username(@current_session)}"
         respond_to do |format|
           flash[:warning] = msg
           format.html { redirect_to practice_metrics_path(@practice), warning: msg }

@@ -206,13 +206,13 @@ ActiveAdmin.register_page "Dashboard" do
             end
             sheet.add_row [""], style: xlsx_divider
           end
-          sheet.add_row ["Practices"], style: xlsx_sub_header_1
+          sheet.add_row ["Innovations"], style: xlsx_sub_header_1
           @practices_added_stats.each { |key, value| sheet.add_row [key.to_s.tr!('_', ' ').titleize, value], style: xlsx_entry }
           sheet.add_row [""], style: xlsx_divider
 
-          sheet.add_row ["Practice Engagement"], style: xlsx_sub_header_1
-          sheet.add_row ['Practice Views per Month'], style: xlsx_sub_header_2
-          add_header_row_for_month_and_year(sheet, 'Practice name', @month_and_year_array, xlsx_sub_header_3)
+          sheet.add_row ["Innovation Engagement"], style: xlsx_sub_header_1
+          sheet.add_row ['Innovation Views per Month'], style: xlsx_sub_header_2
+          add_header_row_for_month_and_year(sheet, 'Innovation name', @month_and_year_array, xlsx_sub_header_3)
           @practice_views_by_month.in_groups_of(13) do |practice_views|
             sheet_row = ["#{practice_views[0][0]}"] + practice_views.reverse.map { |pv| pv[1]}
             sheet.add_row sheet_row, style: xlsx_entry
@@ -223,7 +223,7 @@ ActiveAdmin.register_page "Dashboard" do
           @practices_favorited_stats.each { |key, value| sheet.add_row [key.to_s.tr!('_', ' ').titleize, value], style: xlsx_entry }
           sheet.add_row [""], style: xlsx_divider
 
-          sheet.add_row ["Bookmarked Counts by Practice"], style: xlsx_sub_header_2
+          sheet.add_row ["Bookmarked Counts by Innovation"], style: xlsx_sub_header_2
           sheet.add_row @practices_headers, style: xlsx_sub_header_3
           @practices.each do |value|
             sheet.add_row [
@@ -239,7 +239,7 @@ ActiveAdmin.register_page "Dashboard" do
           @practices_comment_stats.each { |key, value| sheet.add_row [key.to_s.tr!('_', ' ').titleize, value], style: xlsx_entry }
           sheet.add_row [""], style: xlsx_divider
 
-          sheet.add_row ["Comment Counts by Practice"], style: xlsx_sub_header_2
+          sheet.add_row ["Comment Counts by Innovation"], style: xlsx_sub_header_2
           sheet.add_row @practices_headers, style: xlsx_sub_header_3
           @practices.each do |value|
             sheet.add_row [
@@ -254,7 +254,7 @@ ActiveAdmin.register_page "Dashboard" do
           @practices_emailed.each { |key, value| sheet.add_row [key.to_s.tr!('_', ' ').titleize, value], style: xlsx_entry }
           sheet.add_row [""], style: xlsx_divider
 
-          sheet.add_row ["Email Counts by Practice"], style: xlsx_sub_header_2
+          sheet.add_row ["Email Counts by Innovation"], style: xlsx_sub_header_2
           sheet.add_row @practices_headers, style: xlsx_sub_header_3
           @practices.each do |value|
             sheet.add_row [
@@ -293,7 +293,7 @@ ActiveAdmin.register_page "Dashboard" do
         ul do
           li do
             span('Adoptions:', class: 'dm-text-bold')
-            span 'Number of adoptions Practice Owner has added for Diffusion Map'
+            span 'Number of adoptions Innovation Owner has added for Diffusion Map'
           end
           li do
             span('Users:', class: 'dm-text-bold')
@@ -347,10 +347,10 @@ ActiveAdmin.register_page "Dashboard" do
         end # columns
       end # tab
 
-      tab :practice_leaderboards do
+      tab :innovation_leaderboards do
         columns do
           column do
-            panel('Practice Views Leaderboard', class: 'dm-panel-container', id: 'dm-practice-views-leaderboard') do
+            panel('Innovation Views Leaderboard', class: 'dm-panel-container', id: 'dm-practice-views-leaderboard') do
               table_for practices_views.each, id: 'practice-views-table' do
                 column(:name) {|practice| link_to(practice.name, admin_practice_path(practice))}
                 column("#{date_headers[:current]}") {|practice| practice.current_month_views}
@@ -376,9 +376,9 @@ ActiveAdmin.register_page "Dashboard" do
         end # columns
       end # tab
 
-      tab :'Practice search terms' do
+      tab :'Innovation search terms' do
         h2 do
-          "List of all practice search terms sorted by the current month's hits"
+          "List of all innovation search terms sorted by the current month's hits"
         end
 
         # create a table for search totals across all three search types
@@ -440,7 +440,7 @@ ActiveAdmin.register_page "Dashboard" do
         end # panel
 
         panel 'Practice Engagement' do
-          h4("Bookmarked Counts", title: "Number of times a practice was bookmarked", class: "dm-tooltip")
+          h4("Bookmarked Counts", title: "Number of times an innovation was bookmarked", class: "dm-tooltip")
 
           table_for practices_favorited_stats, id: 'favorited_stats' do
             column("#{date_headers[:current]}") {|ps| ps[:favorited_this_month]}
@@ -448,7 +448,7 @@ ActiveAdmin.register_page "Dashboard" do
             column :total_favorited
           end
 
-          h4("Bookmarked Counts by Practice", title: "Number of times each practice has been bookmarked", class: "dm-tooltip")
+          h4("Bookmarked Counts by Innovation", title: "Number of times each innovation has been bookmarked", class: "dm-tooltip")
 
           table_for practices do
             column(:name) {|pr| link_to(pr.name, admin_practice_path(pr))}
@@ -457,7 +457,7 @@ ActiveAdmin.register_page "Dashboard" do
             column("#{date_headers[:total]}") {|pr| pr.favorited_count}
           end
 
-          h4("Comment Counts", title: "Number of comments made this month, last month, and overall on any practice page", class: "dm-tooltip")
+          h4("Comment Counts", title: "Number of comments made this month, last month, and overall on any innovation page", class: "dm-tooltip")
 
           table_for practices_comment_stats do
             column("#{date_headers[:current]}") {|ps| ps[:comments_this_month]}
@@ -465,7 +465,7 @@ ActiveAdmin.register_page "Dashboard" do
             column :total_comments
           end
 
-          h4("Comment Counts by Practice", title: "Number of comments on each practice page", class: "dm-tooltip")
+          h4("Comment Counts by Innovation", title: "Number of comments on each innovation page", class: "dm-tooltip")
 
           table_for practices do
             column(:name) {|pr| link_to(pr.name, admin_practice_path(pr))}
@@ -474,7 +474,7 @@ ActiveAdmin.register_page "Dashboard" do
             column("#{date_headers[:total]}") {|pr| pr.commontator_thread.comments.count}
           end
 
-          h4("Email Counts", title: "Number of times a practice was emailed via the practice page this month, last month, and overall", class: "dm-tooltip")
+          h4("Email Counts", title: "Number of times an innovation was emailed via the innovation page this month, last month, and overall", class: "dm-tooltip")
           span("Note: Email counts tracking began in February 2021")
 
           table_for(practices_emailed, id: "dm-practices-emailed-total") do
@@ -483,7 +483,7 @@ ActiveAdmin.register_page "Dashboard" do
             column :total_emails
           end
 
-          h4("Email Counts by Practice", title: "Number of times a practice was emailed via the practice page for each practice", class: "dm-tooltip")
+          h4("Email Counts by Innovation", title: "Number of times an innovation was emailed via the innovation page for each innovation", class: "dm-tooltip")
 
           table_for(practices, id: "dm-practices-emailed-by-practice") do
             column(:name) {|pr| link_to(pr.name, admin_practice_path(pr))}

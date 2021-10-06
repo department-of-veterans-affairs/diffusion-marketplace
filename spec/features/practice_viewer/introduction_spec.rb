@@ -69,8 +69,8 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
     PracticeAward.create!(practice: @pr_max, name: 'VHA Shark Tank Winner', created_at: Time.now)
     PracticeAward.create!(practice: @pr_max, name: 'Other', created_at: Time.now)
     PracticeAward.create!(practice: @pr_max, name: 'An amazing award that the whole team is proud of', created_at: Time.now)
-    PracticeAward.create!(practice: @pr_max, name: 'Another great award that this practice can show off', created_at: Time.now)
-    @pr_partner_1 = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative helps to identify and disseminate clinical and administrative best practices through a learning environment that empowers its top performers to apply their innovative ideas throughout the system — further establishing VA as a leader in health care, while promoting positive outcomes for Veterans.', icon: 'fas fa-heart', color: '#E4A002')
+    PracticeAward.create!(practice: @pr_max, name: 'Another great award that this innovation can show off', created_at: Time.now)
+    @pr_partner_1 = PracticePartner.create!(name: 'Diffusion of Excellence', short_name: '', description: 'The Diffusion of Excellence Initiative helps to identify and disseminate clinical and administrative best innovations through a learning environment that empowers its top performers to apply their innovative ideas throughout the system — further establishing VA as a leader in health care, while promoting positive outcomes for Veterans.', icon: 'fas fa-heart', color: '#E4A002')
     @pr_partner_2 = PracticePartner.create!(name: 'Office of Rural Health', short_name: 'ORH', description: 'Congress established the Veterans Health Administration Office of Rural Health in 2006 to conduct, coordinate, promote and disseminate research on issues that affect the nearly five million Veterans who reside in rural communities. Working through its three Veterans Rural Health Resource Centers, as well as partners from academia, state and local governments, private industry, and non-profit organizations, ORH strives to break down the barriers separating rural Veterans from quality care.', icon: 'fas fa-mountain', color: '#1CC2AE')
     PracticePartnerPractice.create!(practice: @pr_max, practice_partner: @pr_partner_1, created_at: Time.now)
     PracticePartnerPractice.create!(practice: @pr_max, practice_partner: @pr_partner_2, created_at: Time.now)
@@ -104,7 +104,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
       expect(page).to have_content('Bookmarked')
       find('.dm-favorite-practice-link').click
       expect(page).to have_content('Bookmark')
-      expect(page).to have_selector(:css, "a[href='mailto:?subject=VA%20Diffusion%20Marketplace%20-%20A%20public%20minimum%20practice%20summary&body=Check out this practice, A public minimum practice: Test tagline, on the VA Diffusion Marketplace: %0D%0A%0D%0A#{ENV.fetch('HOSTNAME')}/practices/a-public-min-practice%0D%0A%0D%0AAbout A public minimum practice: %0D%0A%0D%0A%0D%0A%0D%0ATest summary%0D%0A%0D%0A']")
+      expect(page).to have_selector(:css, "a[href='mailto:?subject=VA%20Diffusion%20Marketplace%20-%20A%20public%20minimum%20practice%20summary&body=Check out this practice, A public minimum practice: Test tagline, on the VA Diffusion Marketplace: %0D%0A%0D%0A#{ENV.fetch('HOSTNAME')}/innovations/a-public-min-practice%0D%0A%0D%0AAbout A public minimum practice: %0D%0A%0D%0A%0D%0A%0D%0ATest summary%0D%0A%0D%0A']")
       # TODO: How to test print?
     end
   end
@@ -158,7 +158,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
         expect(page).to have_content('QUERI Veterans Choice Act Award, Diffusion of Excellence Promising Practice, VHA Shark Tank Winner, An amazing award that the whole team is proud of, Another great award that this ...')
         expect(page).to have_content('See more')
         find('#seeMore_award').click
-        expect(page).to have_content('QUERI Veterans Choice Act Award, Diffusion of Excellence Promising Practice, VHA Shark Tank Winner, An amazing award that the whole team is proud of, Another great award that this practice can show off')
+        expect(page).to have_content('QUERI Veterans Choice Act Award, Diffusion of Excellence Promising Practice, VHA Shark Tank Winner, An amazing award that the whole team is proud of, Another great award that this innovation can show off')
         expect(page).to have_content('See less')
         find('#seeMore_award').click
         expect(page).to have_content('QUERI Veterans Choice Act Award, Diffusion of Excellence Promising Practice, VHA Shark Tank Winner, An amazing award that the whole team is proud of, Another great award that this ...')
@@ -208,12 +208,12 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
     end
 
     it 'should display the content correctly' do
-      expect(page).to have_content('This practice is emerging and worth watching as it is being assessed in early implementations.')
-      expect(page).to have_link('See more emerging practices.')
+      expect(page).to have_content('This innovation is emerging and worth watching as it is being assessed in early implementations.')
+      expect(page).to have_link('See more emerging innovations.')
     end
 
     it 'should take the user to the search results page when the See more practices link is clicked' do
-      click_link('See more emerging practices')
+      click_link('See more emerging innovations')
       expect(page).to have_selector('#search-page', visible: true)
       expect(page).to have_content('1 result')
       expect(page).to have_content('A public maximum practice')
@@ -227,7 +227,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
 
     it 'should display the content correctly' do
       expect(page).to have_content(@pr_min.name)
-      expect(page).to have_current_path("/practices/#{@pr_min.slug}")
+      expect(page).to have_current_path("/innovations/#{@pr_min.slug}")
       expect(page).to have_content('Last updated') # TODO: How to test timeago?
       expect(page).to have_content(@pr_min.summary)
       expect(page).to have_content("ORIGIN: December 2011, #{@pr_min.initiating_facility}")
@@ -244,7 +244,7 @@ describe 'Practice viewer - introduction', type: :feature, js: true do
 
     it 'should display the content correctly' do
       expect(page).to have_content("#{@pr_max.name} (#{@pr_max.short_name})")
-      expect(page).to have_current_path("/practices/#{@pr_max.slug}")
+      expect(page).to have_current_path("/innovations/#{@pr_max.slug}")
       expect(page).to have_content('Last updated') # TODO: How to test timeago?
       expect(page).to have_content(@pr_max.summary)
       expect(page).to have_content("ORIGIN: August 2016")

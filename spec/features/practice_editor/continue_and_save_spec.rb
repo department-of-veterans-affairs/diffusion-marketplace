@@ -24,9 +24,9 @@ describe 'Practice editor', type: :feature, js: true do
       find('.continue-and-save').click
 
       @practice.reload
-      expect(page).to have_content('Practice was successfully updated')
+      expect(page).to have_content('Innovation was successfully updated')
       expect(page).to have_content('Contact')
-      expect(page).to have_content('This section helps people to reach out for support, ask questions, and connect about your practice.')
+      expect(page).to have_content('This section helps people to reach out for support, ask questions, and connect about your innovation.')
       expect(@practice.timelines.first.timeline).to eq(time_frame)
       expect(@practice.timelines.first.milestone).to eq(milestone)
 
@@ -36,7 +36,7 @@ describe 'Practice editor', type: :feature, js: true do
       find('.continue-and-save').click
 
       @practice.reload
-      expect(page).to have_content('Practice was successfully updated')
+      expect(page).to have_content('Innovation was successfully updated')
       expect(page).to have_content('About')
       expect(@practice.support_network_email).to eq(main_email)
     end

@@ -109,7 +109,7 @@ function initialize() {
     const practiceCount = _.chain(result.map(r => r.practices)).flatten().uniqBy('id').value().length;
 
     $('#facility-results-count').text(`${facilityCount} facility match${facilityCount === 1 ? '' : 'es'}`);
-    $('#practice-results-count').text(`${practiceCount} practice${practiceCount === 1 ? '' : 's'}`);
+    $('#practice-results-count').text(`${practiceCount} innovation${practiceCount === 1 ? '' : 's'}`);
   }
 
   Gmaps.filter = function (data) {
@@ -129,7 +129,7 @@ function initialize() {
       });
     }
 
-    // practice status
+    // innovation status
     if (data.statuses && data.statuses.length) {
       const statuses = data.statuses.map(s => s.value);
       result = result.filter(function (d) {
