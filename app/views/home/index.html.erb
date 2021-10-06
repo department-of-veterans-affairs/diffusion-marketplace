@@ -35,7 +35,7 @@
         Homepage search
       </label>
       <div class="dm-homepage-search-container width-full">
-        <input class="usa-input height-5" id="dm-homepage-search-field" type="search" name="search" title="Search for practices" placeholder="&quot;Search terms&quot;">
+        <input class="usa-input height-5" id="dm-homepage-search-field" type="search" name="search" title="Search for innovations" placeholder="&quot;Search terms&quot;">
         <button id="dm-homepage-search-button" class="usa-button height-5 margin-right-0" type="submit">
           <span class="usa-search__submit-text">Search</span>
         </button>
@@ -62,13 +62,13 @@
 
   <% if @highlighted_pr.present? && @highlighted_pr.name.present? && @highlighted_pr.highlight_body.present? && @highlighted_pr.slug.present? && @highlighted_pr.highlight_attachment.exists? %>
     <%= render partial: 'home/featured_section', locals: {
-        section_name: 'practice',
+        section_name: 'innovation',
         image_source: "#{@highlighted_pr.highlight_attachment_s3_presigned_url}",
-        image_alt_text: "#{@highlighted_pr.name} Featured practice image",
+        image_alt_text: "#{@highlighted_pr.name} Featured innovation image",
         featured_h2: "#{@highlighted_pr.name}",
         featured_body_text: "#{@highlighted_pr.highlight_body}",
-        featured_topic_url: "/practices/#{@highlighted_pr.slug}",
-        featured_link_text: 'View practice'
+        featured_topic_url: "/innovations/#{@highlighted_pr.slug}",
+        featured_link_text: 'View innovation'
       }
     %>
   <% end %>
@@ -80,7 +80,7 @@
         <div class="grid-col-12 desktop:grid-col-8">
           <h2 class="usa-prose-h2 font-sans-xl line-height-37px margin-bottom-2 margin-top-8 text-white desktop:margin-top-0">Nominate an innovation</h2>
           <p class="usa-prose-body margin-bottom-2 text-white">
-            Are you working on an innovative practice that’s making a difference at VA? Submit a nomination for the practice to be included on the Diffusion Marketplace.
+            Are you working on an innovation that’s making a difference at VA? Submit a nomination for the innovation to be included on the Diffusion Marketplace.
           </p>
           <a class="dm-alt-link-light display-inline-block margin-bottom-8 desktop:margin-bottom-0" href="<%= nominate_an_innovation_path %>">Start nomination</a>
         </div>

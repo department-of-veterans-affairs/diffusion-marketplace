@@ -31,7 +31,7 @@ describe 'About us page', type: :feature do
 
     it 'should take the user to the search page with ONLY results that match the maturity level the user clicks on under the \'How does diffusion work?\' question' do
       all('.usa-accordion__heading')[2].click
-      click_link('View emerging practices')
+      click_link('View emerging innovations')
       expect(page).to have_content('Search')
       expect(page).to have_content('2 results:')
       expect(page).to have_content('Project HAPPEN')

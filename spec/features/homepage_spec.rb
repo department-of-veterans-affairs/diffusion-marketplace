@@ -67,7 +67,7 @@ describe 'Homepage', type: :feature do
       expect(page).to have_content('Highlighted body text')
 
       # visit the practice's show page
-      click_link('View practice')
+      click_link('View innovation')
 
       expect(page).to have_content(@practice.name)
       expect(page).to have_content('Bookmark')

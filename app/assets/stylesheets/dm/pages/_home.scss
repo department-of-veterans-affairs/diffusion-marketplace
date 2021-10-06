@@ -29,7 +29,7 @@
     }
   }
 
-  .homepage-welcome-banner-image-container, .homepage-featured-topic-image-container, .homepage-featured-practice-image-container {
+  .homepage-welcome-banner-image-container, .homepage-featured-topic-image-container, .homepage-featured-innovation-image-container {
     max-width: 308px;
 
     img {
@@ -64,7 +64,7 @@
     }
   }
 
-  .featured-practice-content-container {
+  .featured-innovation-content-container {
     @media screen and (min-width: 1024px) {
       flex-direction: row-reverse;
       // needed for Firefox support
@@ -72,7 +72,7 @@
     }
   }
 
-  .featured-topic, .featured-practice {
+  .featured-topic, .featured-innovation {
     @media screen and (min-width: 1024px) {
       margin-bottom: 128px !important;
     }
