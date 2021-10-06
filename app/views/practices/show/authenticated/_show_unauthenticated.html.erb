@@ -1,3 +1,9 @@
+<%
+  debugger
+  if session[:user_type] == "guest" && !@practice.is_public
+    redirect_to root_path
+  end
+%>
 <section class="usa-section padding-top-4 padding-bottom-4">
   <div class="grid-container position-relative padding-x-9">
     <div class="grid-row padding-x-9">
