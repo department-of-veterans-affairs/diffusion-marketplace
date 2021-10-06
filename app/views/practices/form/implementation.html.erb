@@ -20,7 +20,7 @@
       <h1 class="margin-bottom-3">Implementation</h1>
       <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
       <h2 class="text-normal line-height-sans-6 font-sans-lg">
-        Compile requirements and considerations to help another facility successfully implement your practice.
+        Compile requirements and considerations to help another facility successfully implement your innovation.
       </h2>
       <div class="margin-top-3">
         <%= render 'pii_phi_alert' %>
@@ -38,7 +38,7 @@
           <div class="margin-bottom-5 margin-top-3 grid-col-12">
             <h2 class="font-sans-sm">Core resources list</h2>
             <h3 class="text-normal font-sans-sm line-height-sans-5 margin-top-1">
-              Provide a list of the resources another facility would need to implement your practice.
+              Provide a list of the resources another facility would need to implement your innovation.
             </h3>
             <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "core", resource_type_label: "people", media_type: 'resource'}%>
             <%= render partial: 'practices/implementation_forms/resources', locals: {f: f, resource_type: "core", resource_type_label: "processes", media_type: 'resource'}%>

@@ -18,7 +18,7 @@ describe 'Practice editor', type: :feature, js: true do
     end
 
     def fill_in_email_field(email)
-      fill_in('E-mail the people who can help you edit this practice page. Only @va.gov emails are allowed.', with: email)
+      fill_in('E-mail the people who can help you edit this innovation page. Only @va.gov emails are allowed.', with: email)
     end
 
     def delete_practice_editor(editor_id)
@@ -35,7 +35,7 @@ describe 'Practice editor', type: :feature, js: true do
       login_and_visit_editors(@admin)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content('Editors')
-      expect(page).to have_content('E-mail the people who can help you edit this practice page. Only @va.gov emails are allowed.')
+      expect(page).to have_content('E-mail the people who can help you edit this innovation page. Only @va.gov emails are allowed.')
     end
 
     describe 'Authorization' do

@@ -15,7 +15,7 @@ describe 'Practice editor sessions', type: :feature do
     visit practice_introduction_path(@practice)
     logout(@user)
     login_as(@user_2, :scope => :user, :run_callbacks => false)
-    locked_msg = 'You cannot edit this practice since it is currently being edited by satoru.gojo@va.gov'
+    locked_msg = 'You cannot edit this innovation since it is currently being edited by satoru.gojo@va.gov'
     visit practice_introduction_path(@practice)
     expect(page).to have_content(locked_msg)
 
@@ -79,14 +79,14 @@ describe 'Practice editor sessions', type: :feature do
       page.driver.browser.switch_to.alert.dismiss
       expect(@practice_2.updated_at_changed?).to eq(false)
       expect(page).to have_current_path(practice_metrics_path(@practice_2))
-      expect(page).to have_content('The practice was not saved due to one or more required fields not being filled out.')
+      expect(page).to have_content('The innovation was not saved due to one or more required fields not being filled out.')
     end
 
     it 'should not save and redirect to metrics with required nested inputs' do
       visit practice_implementation_path(@practice_2)
       find_all('.practice-input').first.set('Fred')
       find('#practice-editor-save-button').click
-      expect(page).to have_content('Practice was successfully updated')
+      expect(page).to have_content('Innovation was successfully updated')
       expect(page).to have_current_path(practice_implementation_path(@practice_2))
       PracticeResource.create!(practice: @practice_2, link_url:'www.google.com', name: "search stuff", resource_type: "core", media_type: "link")
       visit practice_implementation_path(@practice_2)
@@ -96,7 +96,7 @@ describe 'Practice editor sessions', type: :feature do
       page.driver.browser.switch_to.alert.dismiss
       expect(@practice_2.updated_at_changed?).to eq(false)
       expect(page).to have_current_path(practice_metrics_path(@practice_2))
-      expect(page).to have_content('The practice was not saved due to one or more required fields not being filled out.')
+      expect(page).to have_content('The innovation was not saved due to one or more required fields not being filled out.')
     end
   end
 

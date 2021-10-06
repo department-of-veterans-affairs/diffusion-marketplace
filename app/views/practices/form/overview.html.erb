@@ -21,7 +21,7 @@
         <h1>Overview</h1>
         <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
         <div class="usa-prose-intro">
-          Describe the journey of your practice from problem identification and the implementation of your solution
+          Describe the journey of your innovation from problem identification and the implementation of your solution
           through to measured results and outcomes.
         </div>
         <div class="margin-top-3">
@@ -35,13 +35,13 @@
               <div class="height-05 width-8 border-top-05 border-primary-dark"></div>
               <div class="margin-bottom-5 margin-top-3">
                 <%= label_tag 'practice_overview_problem', 'Problem statement', class: 'usa-label text-bold display-inline overview-problem-statement-label' %><span class="text-gray-50 text-bold line-height-18px"> (required field)</span>
-                <p class="line-height-26 margin-top-2">Type the main problem your practice attempted to address and include context and any initial goals.</p>
+                <p class="line-height-26 margin-top-2">Type the main problem your innovation attempted to address and include context and any initial goals.</p>
                 <%= f.text_area :overview_problem, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-overview-statement-input #{'dm-required-field' if @practice.published}", required: @practice.published %>
               </div>
               <div class="height-05 width-8 border-top-05 border-primary-dark margin-top-5"></div>
               <div class="margin-top-3">
                 <p class="line-height-18px margin-bottom-2 text-bold">Problem attachments</p>
-                <p class="line-height-26">Attach any additional images, videos, files or links related to the problem your practice addresses.</p>
+                <p class="line-height-26">Attach any additional images, videos, files or links related to the problem your innovation addresses.</p>
               </div>
               <div class="dm-file-form grid-row grid-gap margin-bottom-5">
                 <div class="usa-radio position-relative grid-col-12">
@@ -135,7 +135,7 @@
               <div class="margin-top-3">
                 <p class="line-height-18px margin-bottom-2 text-bold">Solution attachments</p>
                 <p class="line-height-26">
-                  Attach any additional images, videos, files or links related to the solution implemented for your practice.
+                  Attach any additional images, videos, files or links related to the solution implemented for your innovation.
                 </p>
               </div>
               <div class="dm-file-form grid-row grid-gap margin-bottom-5">
@@ -223,7 +223,7 @@
               <div class="height-05 width-8 border-top-05 border-primary-dark margin-top-5"></div>
               <div class="margin-bottom-5 margin-top-3">
                 <%= label_tag 'practice_overview_results', 'Results statement', class: 'usa-label margin-0 text-bold display-inline overview-results-statement-label' %><span class="text-gray-50 text-bold"> (required field)</span>
-                <p class="line-height-26 margin-top-2">Type information about the impact of the practice at the originating facility.</p>
+                <p class="line-height-26 margin-top-2">Type information about the impact of the innovation at the originating facility.</p>
                 <%= f.text_area :overview_results, required: @practice.published, class: "usa-input #{ @practice.errors[:name].any? ? 'usa-input--error' : '' } display-block practice-editor-overview-statement-input" %>
               </div>
               <div class="height-05 width-8 border-top-05 border-primary-dark margin-top-5"></div>
@@ -324,7 +324,7 @@
                   <% end %>
                   <span class="line-height-26">
                     Provide quantifiable measures and representative
-                    figures used to demonstrate the success of your practice
+                    figures used to demonstrate the success of your innovation
                     (e.g. costs avoided per month, number of Veteran lives improved each year,
                     number of staff hours saved per week).
                   </span>
@@ -404,7 +404,7 @@
               <div class="margin-top-3">
                 <p class="line-height-18px margin-bottom-2 text-bold">Multimedia</p>
                 <p class="line-height-26">
-                  Add any additional images, video, and audio to support your practice's overview.
+                  Add any additional images, video, and audio to support your innovation's overview.
                 </p>
               </div>
               <div class="dm-file-form grid-row grid-gap margin-bottom-5">

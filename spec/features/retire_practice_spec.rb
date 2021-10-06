@@ -11,7 +11,7 @@ describe 'retired practices', type: :feature do
     login_as(@user, :scope => :user, :run_callbacks => false)
     visit practice_path(@practice)
     expect(page).to be_accessible.according_to :wcag2a, :section508
-    expect(page).to have_content('This practice is no longer being updated.')
+    expect(page).to have_content('This innovation is no longer being updated.')
     expect(page).to have_content('Was not a good practice')
     expect(page).to have_content('Comments and replies are disabled for retired practices.')
   end

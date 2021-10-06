@@ -172,11 +172,11 @@ describe 'Search', type: :feature do
   describe 'initial page load' do
     it 'Should display certain text if the user navigates to the search page with no query' do
       visit_search_page
-      expect(page).to have_content('Enter a search term or use the filters to find matching practices')
+      expect(page).to have_content('Enter a search term or use the filters to find matching innovations')
 
       # Make sure the initial text is not present when there is a query
       visit '/search?query=text'
-      expect(page).to_not have_content('Enter a search term or use the filters to find matching practices')
+      expect(page).to_not have_content('Enter a search term or use the filters to find matching innovations')
     end
   end
 
@@ -184,7 +184,7 @@ describe 'Search', type: :feature do
     it 'should display empty query and filters message' do
       visit '/'
       find('#dm-navbar-search-button').click
-      expect(page).to have_content('Enter a search term or use the filters to find matching practices')
+      expect(page).to have_content('Enter a search term or use the filters to find matching innovations')
     end
     it 'should display certain text if no matches are found' do
       visit_search_page
@@ -458,7 +458,7 @@ describe 'Search', type: :feature do
         expect(all('h3.dm-practice-title')[5].text).to eq(@practice12.name)
 
         # choose 'most adoptions' option
-        select('Sort by most adopted practices', from: 'search_sort_option')
+        select('Sort by most adopted innovations', from: 'search_sort_option')
         expect(all('h3.dm-practice-title').first.text).to eq(@practice.name)
         expect(all('h3.dm-practice-title')[1].text).to eq(@practice3.name)
         expect(all('h3.dm-practice-title')[2].text).to eq(@practice6.name)
@@ -541,7 +541,7 @@ describe 'Search', type: :feature do
       add_search_to_cache
       expect(cache_keys).to include("searchable_practices")
       update_practice_introduction(@practice)
-      expect(page).to have_content("Practice was successfully updated.")
+      expect(page).to have_content("Innovation was successfully updated.")
       expect(page).to have_selector(".usa-alert__heading", visible: true)
       expect(cache_keys).not_to include("searchable_practices")
     end
@@ -553,7 +553,7 @@ describe 'Search', type: :feature do
       visit '/admin'
       click_link('Practices')
       click_link('New Practice')
-      fill_in('Practice name', with: 'The Newest Practice')
+      fill_in('Innovation name', with: 'The Newest Practice')
       fill_in('User email', with: 'practice_owner@va.gov')
       click_button('Create Practice')
       latest_practice = Practice.last

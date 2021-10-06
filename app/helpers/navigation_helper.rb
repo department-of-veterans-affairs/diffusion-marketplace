@@ -65,7 +65,7 @@ module NavigationHelper
       if action == 'index'
         # empty the bread crumbs and start a new path
         empty_breadcrumbs
-        session[:breadcrumbs] << {'display': 'Practices', 'path': '/practices'}
+        session[:breadcrumbs] << {'display': 'Innovations', 'path': '/innovations'}
       end
 
       if action == 'explore'
