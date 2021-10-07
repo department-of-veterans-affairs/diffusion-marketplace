@@ -40,6 +40,7 @@ module DiffusionMarketplace
 
     config.active_job.queue_adapter = :sidekiq
 
+    config.middleware.use HeadersFilter
     config.middleware.use NTLMAuthentication if ENV['USE_NTLM'] == 'true'
   end
 end
