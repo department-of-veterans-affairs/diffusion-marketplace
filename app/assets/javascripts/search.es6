@@ -1,8 +1,7 @@
-// search in navbar
-addEventListener('turbolinks:load', function () {
-    const $searchField = $('#dm-navbar-search-field');
+function executePracticeSearch(inputId, formId) {
+    const $searchField = $(inputId);
     $searchField.val(''); // clear form
-    $('#dm-navbar-search-form').submit(function(e) {
+    $(formId).submit(function(e) {
         e.preventDefault();
         var sUrl = `${location.protocol}//${location.host}/search`;
         if(Boolean($searchField.val())){
@@ -10,4 +9,13 @@ addEventListener('turbolinks:load', function () {
         }
         window.location = sUrl;
     });
+}
+
+// search in navbar
+addEventListener('turbolinks:load', function () {
+    // search in navbar
+    executePracticeSearch('#dm-navbar-search-field', '#dm-navbar-search-form');
+    // search on homepage
+    executePracticeSearch('#dm-homepage-search-field', '#dm-homepage-search-form');
 });
+

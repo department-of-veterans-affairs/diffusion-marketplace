@@ -81,8 +81,22 @@ to confirm the class DOES NOT EXIST before adding a new class
   @include u-margin-top(2, !important);
 }
 
-.margin-top-4 {
+.margin-top-4-important {
   @include u-margin-top(4, !important);
+}
+
+.margin-top-505 {
+  margin-top: 44px;
+}
+
+.margin-top-128 {
+  margin-top: 128px;
+
+  &-desktop {
+    @media screen and (min-width: 1024px) {
+      margin-top: 128px;
+    }
+  }
 }
 
 /* Margin Bottom */
@@ -102,13 +116,38 @@ to confirm the class DOES NOT EXIST before adding a new class
   margin-bottom: 1.75rem !important;
 }
 
-.margin-bottom-4 {
+.margin-bottom-4-important {
   @include u-margin-bottom(4, !important);
 }
 
-/* 68px */
-.x4-25-bottom {
-  margin-bottom: 4.25rem !important;
+.margin-bottom-5 {
+  @include u-margin-bottom(5, !important);
+}
+
+.margin-bottom-405 {
+  margin-bottom: 36px;
+}
+
+.margin-bottom-128 {
+  margin-bottom: 128px;
+
+  &-desktop {
+    @media screen and (min-width: 1024px) {
+      margin-bottom: 128px;
+    }
+  }
+}
+
+.margin-y-128 {
+  margin-bottom: 128px;
+  margin-top: 128px;
+
+  &-desktop {
+    @media screen and (min-width: 1024px) {
+      margin-bottom: 128px;
+      margin-top: 128px;
+    }
+  }
 }
 
 /* Margin Left */
@@ -181,6 +220,10 @@ to confirm the class DOES NOT EXIST before adding a new class
 }
 
 /* Height and width setters */
+.height-5 {
+  height: 40px !important;
+}
+
 .height-200px {
   height: 200px !important;
 }
@@ -222,33 +265,25 @@ to confirm the class DOES NOT EXIST before adding a new class
 
 #breadcrumbs {
   a {
-    color: color($theme-color-primary-vivid) !important;
+    color: color($theme-link-color) !important;
 
     &:hover {
-      color: color($theme-color-primary-dark) !important;
+      color: color($theme-link-hover-color) !important;
       text-decoration: underline;
     }
 
-    &:visited {
-      color: color($theme-color-primary) !important;
-    }
-
     &:active {
-      color: color($theme-color-primary-darker) !important;
+      color: color($theme-link-active-color) !important;
     }
   }
 }
 
-.margin-bottom-405 {
-  margin-bottom: 36px;
-}
-
-.margin-top-505 {
-  margin-top: 44px;
-}
-
 .message-icon-bg-position {
   background-position: 1.25rem 0.75rem !important;
+
+  &:before {
+    @include u-height('full')
+  }
 }
 
 /* Font Awesome icon */

@@ -1,16 +1,19 @@
-<section id="about" class="margin-bottom-5 grid-container nav-header">
+<%
+  origin_story = @practice.origin_story
+  team_members = @practice.va_employees
+%>
+
+<section id="about" class="grid-container nav-header">
   <div class="grid-row grid-gap">
     <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
     <div class="desktop:grid-col-9 grid-col-12 padding-top-10">
       <div class="practice-editor-long-rect-svg border-top-05 border-primary-dark"></div>
       <h1 class="font-sans-xl line-height-37px margin-top-2 margin-bottom-10">About</h1>
-      <%
-        origin_story = @practice.origin_story
-      %>
+
       <% if origin_story.present? %>
         <div class="height-05 width-8 border-top-05 border-primary-dark"></div>
         <h2 class="font-sans-lg text-bold margin-top-2 margin-bottom-1 line-height-25px">Origin story</h2>
-        <div class="practice-view-origin-story line-height-26 dm-hyphens-auto dm-word-break-break-word margin-bottom-5 desktop:grid-col-11 grid-col-12">
+        <div class="practice-view-origin-story line-height-26 dm-hyphens-auto dm-word-break-break-word desktop:grid-col-11 grid-col-12">
           <% if origin_story.length > 360 %>
             <span id="origin_story_truncated"><%= origin_story[0...360]%></span>
             <span id="dots_origin_story">...</span>
@@ -26,16 +29,13 @@
         </div>
       <% end %>
 
-      <%
-        team_members = @practice.va_employees
-      %>
       <% if team_members.any? %>
-        <div class="height-05 width-8 border-top-05 border-primary-dark"></div>
-        <h2 class="font-sans-lg text-bold margin-top-2 margin-bottom-3 line-height-25px">Original team</h2>
+        <div class="height-05 width-8 border-top-05 border-primary-dark margin-top-5"></div>
+        <h2 class="font-sans-lg text-bold margin-top-2 margin-bottom-1 line-height-25px">Original team</h2>
         <div class="desktop:grid-col-11 grid-col-12">
           <div class="grid-row grid-gap">
             <% team_members.each do |vae| %>
-              <div class="desktop:grid-col-6 grid-col-12 margin-bottom-2">
+              <div class="desktop:grid-col-6 grid-col-12 margin-top-2">
                 <p class="text-bold line-height-18px margin-bottom-1"><%= vae.name %></p>
                 <p class="line-height-26px"><%= vae.role %></p>
               </div>

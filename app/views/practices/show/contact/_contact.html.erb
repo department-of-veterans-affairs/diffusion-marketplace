@@ -1,4 +1,4 @@
-<section id="contact" class="margin-bottom-5 grid-container nav-header">
+<section id="contact" class="grid-container nav-header">
   <div class="grid-row grid-gap-2">
     <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
     <div class="desktop:grid-col-9 grid-col-12 padding-top-10">
@@ -34,7 +34,7 @@
       <% if main_email.present? %>
         <div class="height-05 width-8 border-top-05 border-primary-dark margin-top-5"></div>
         <h2 id="email" class="font-sans-lg text-bold margin-top-2 margin-bottom-1 line-height-25px">Email</h2>
-        <p class="line-height-26 margin-bottom-105 main-email-address-container">
+        <p class="line-height-26 margin-bottom-0 main-email-address-container">
           Email <%= mail_to main_email, main_email, cc: practice_emails.map(&:address).join(', '), class: 'usa-link usa-link--external dm-email-practice', 'aria-label': "Email #{main_email}", data: {practice_id: @practice.id} %> with questions about this innovation.
         </p>
       <% end %>

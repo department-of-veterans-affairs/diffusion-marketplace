@@ -1,0 +1,124 @@
+<div class="dm-about-page grid-container">
+  <%= render partial: "shared/messages", locals: { small_text: true } %>
+
+  <section class="about-us-info-section margin-y-8 margin-y-128-desktop" role="region" aria-label="About us info">
+    <div class="grid-row grid-gap-3">
+      <div class="grid-col-12 desktop:grid-col-7">
+        <h1 class="usa-prose-h1 margin-bottom-4 margin-top-0">About us</h1>
+        <p class="usa-prose-body">
+          The Diffusion Marketplace is a discovery and collaboration tool that curates promising clinical, operational, and strategic innovations from VA. We are managed by the
+          <a href="https://www.va.gov/INNOVATIONECOSYSTEM/views/who-we-are/diffusion-of-excellence.html" class="usa-link usa-link--external" target="_blank">Diffusion of Excellence</a>, an organization within
+          the <a href="https://www.va.gov/INNOVATIONECOSYSTEM/home.html" class="usa-link usa-link--external" target="_blank">VHA Innovation Ecosystem</a>. Our goal is to
+          represent the best of VA and to reflect the spirit of service and collaboration for Veterans and the communities we serve.
+        </p>
+      </div>
+      <div class="display-none desktop:display-block desktop:grid-col-1"></div>
+      <div class="grid-col-12 margin-top-3 desktop:margin-top-0 desktop:grid-col-4 about-us-image-col">
+        <div class="about-us-image-container">
+          <%= image_tag(
+                'about-page-image.png',
+                class: 'display-block width-full',
+                alt: 'Several dozen attendees of the Diffusion of Excellence’s Base Camp and VHA’s Diffusion Academy stand and smile on the steps of the Southeast Louisiana Veterans Health Care System in New Orleans in February 2020.'
+              )
+          %>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-us-faq-section margin-bottom-8 margin-bottom-128-desktop" role="region" aria-label="Frequently asked questions">
+    <h2 class="usa-prose-h2 margin-bottom-4 margin-top-0">Frequently asked questions</h2>
+    <div class="usa-accordion" aria-multiselectable="true">
+      <%= render partial: 'faq_accordion', locals: {
+        item_number: '1',
+        question: 'What is an \'innovation\'?',
+        answer: "
+                  <p class='margin-bottom-2'>An innovation is a program, process, or tool designed and implemented within VA that brings a unique value toward addressing a clinical, operational, or strategic problem.</p>
+                  <p>
+                    For example, a clinical innovation could be a program like #{link_to('HAPPEN', practice_path(Practice.where(slug: 'project-happen').first), class: 'usa-link')} that encourages
+                    nurses to brush patients' teeth one extra time per day, thereby reducing the problem of hospital-acquired pneumonia by 2%.
+                  </p>
+          "
+        }
+      %>
+      <%= render partial: 'faq_accordion', locals: {
+        item_number: '2',
+        question: 'What is \'diffusion\'?',
+        answer: "Diffusion is the dissemination of an innovation beyond its point of origin. On the Diffusion Marketplace, it includes the journey of an innovation from its initial adoption
+                 and assessment to continued understanding of its impact and replication across VA facilities."
+        }
+      %>
+      <%= render partial: 'faq_accordion', locals: {
+        item_number: '3',
+        question: 'How does diffusion work?',
+        answer: "
+                  <p class='margin-bottom-2'>Innovations are grouped into three diffusion phases:</p>
+                  <p class='margin-bottom-2'>
+                    <span class='text-bold'>Emerging</span> innovations are early in their adoption and are being assessed. #{link_to('View emerging innovations', '/search?filter_by=emerging', class: 'usa-link')}
+                  </p>
+                  <p class='margin-bottom-2'>
+                    <span class='text-bold'>Replicating</span> innovations are being adopted across multiple facilities as their impact continues to be validated.
+                    #{link_to('View replicating innovations', '/search?filter_by=replicate', class: 'usa-link')}
+                  </p>
+                  <p>
+                    <span class='text-bold'>Scaling</span> innovations are being adopted widely with the support of national stakeholders.
+                    #{link_to('View scaling innovations', '/search?filter_by=scale', class: 'usa-link')}
+                  </p>
+          "
+        }
+      %>
+      <%= render partial: 'faq_accordion', locals: {
+        item_number: '4',
+        question: 'How do I learn more about an innovation?',
+        answer: "VA and non-VA site visitors can email innovation owners directly to ask questions or request more information. To send them a message, simply click the
+                 <span class='text-bold'>\"Contact innovation\" button</span> on any innovation page."
+        }
+      %>
+      <%= render partial: 'faq_accordion', locals: {
+        item_number: '5',
+        question: 'How do I use the Diffusion Marketplace?',
+        answer: "Search by keyword, by category, or by browsing all Diffusion Marketplace innovations. #{link_to('Start a search', search_path, class: 'usa-link')}"
+        }
+      %>
+      <%= render partial: 'faq_accordion', locals: {
+        item_number: '6',
+        question: 'How do I adopt an innovation at my VA facility?',
+        answer: "To adopt an innovation, click the <span class='text-bold'>\"Contact innovation\" button</span> on any innovation page and send the innovation owner a message about your interest in adopting
+                 their innovation."
+        }
+      %>
+      <%= render partial: 'faq_accordion', locals: {
+        item_number: '7',
+        question: 'How do I adopt an innovation at a non-VA facility?',
+        answer: "The ability of an innovation team to collaborate with non-VA personnel varies. If you have questions, or want to learn more about an innovation, you can reach out to the innovation editor by clicking the
+                 <span class='text-bold'>\"Contact innovation\" button</span> on any innovation page."
+        }
+      %>
+      <%= render partial: 'faq_accordion', locals: {
+        item_number: '8',
+        question: 'How are innovations selected?',
+        answer: "
+                  <p class='margin-bottom-2'>
+                    You can self-nominate or nominate other innovations for consideration on the Diffusion Marketplace by using our #{link_to('Nominate an innovation', nominate_an_innovation_path, class: 'usa-link')}
+                    page. Innovations can also be nominated through competitions, such as the VHA Shark Tank Competition.
+                  </p>
+                  <p>
+                    Nominated innovations will be reviewed by the Diffusion of Excellence team, relevant subject matter experts, as well as Veterans Integrated Services Networks (VISNs) and program office
+                    leaders. Innovations will be selected in alignment with VA best practices and priorities.
+                  </p>
+                "
+
+        }
+      %>
+    </div>
+  </section>
+  <section class="about-us-contact-section grid-row" role="region" aria-label="Contact us">
+    <div class="grid-col-12 desktop:grid-col-8">
+      <h2 class="usa-prose-h2 margin-bottom-4 margin-top-0">Contact us</h2>
+      <p class="usa-prose-body">
+        Have a question for our team? Send a message to <a href="mailto:marketplace@va.gov?subject=(About) Diffusion Marketplace Inquiry" class="usa-link">marketplace@va.gov</a> and we’ll get back to you as soon as we can.
+      </p>
+      <%= render partial: 'shared/email_form', locals: { path: about_path, additional_label_text: nil } %>
+    </div>
+  </section>
+</div>

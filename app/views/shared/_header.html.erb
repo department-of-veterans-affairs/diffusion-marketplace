@@ -3,7 +3,6 @@
 <%= render 'shared/usa_banner' %>
 <%= render 'shared/veterans_crisis_line_modal' %>
 <!-- source: https://designsystem.digital.gov/components/header/#extended -->
-<div class="usa-overlay"></div>
 <header id="dm-nav-header" class="usa-header usa-header--extended bg-white">
   <div class="usa-navbar">
     <div class="usa-logo" id="extended-logo">
@@ -35,6 +34,11 @@
         <li class="usa-nav__primary-item">
           <a class="usa-nav__link <%= 'usa-current' if request.fullpath == '/diffusion-map' %>" href="/diffusion-map">
             <span>Diffusion map</span>
+          </a>
+        </li>
+        <li class="usa-nav__primary-item">
+          <a class="usa-nav__link <%= 'usa-current' if request.fullpath == '/about' %>" href="/about">
+            <span>About us</span>
           </a>
         </li>
       </ul>

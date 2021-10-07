@@ -6,8 +6,8 @@
 <%= render partial: 'shared/terms_and_conditions_modal' %>
 
 <footer class="<%= yield(:footer_classes) %>">
-  <%# return to top %>
-  <div class="grid-container usa-footer__return-to-top">
+  <%# only show return to top on mobile views, practice show page and long practice editor pages (per design 9/21/21) %>
+  <div class="grid-container usa-footer__return-to-top<%= params[:controller] === 'practices' && NavigationHelper::RETURN_TO_TOP_PAGES.include?(params[:action]) ? ' desktop:display-block' : ' tablet:display-none' %>">
     <button class="dm-button--unstyled-primary dm-return-to-top width-auto">Return to top</button>
   </div>
   <%# footer actions %>
@@ -17,8 +17,8 @@
         <a class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base-light desktop:margin-right-5 grid-col-12 padding-y-2 padding-x-2 text-bold dm-footer-link" href="/">
           Home
         </a>
-        <a class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base-light desktop:margin-right-5 grid-col-12  padding-y-2 padding-x-2 text-bold dm-footer-link" href="/partners">
-          Partners
+        <a class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base-light desktop:margin-right-5 grid-col-12 padding-y-2 padding-x-2 text-bold dm-footer-link" href="<%= nominate_an_innovation_path %>" >
+          Nominate an innovation
         </a>
         <a class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base-light desktop:margin-right-5 grid-col-12 padding-y-2 padding-x-2 text-bold dm-footer-link" href="/open-calls" >
           Open calls
