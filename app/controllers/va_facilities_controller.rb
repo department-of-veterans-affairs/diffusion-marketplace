@@ -62,8 +62,16 @@ class VaFacilitiesController < ApplicationController
     sort_option = params[:sort_option] || 'a_to_z'
     search_term = params[:search_term] ? params[:search_term].downcase : nil
     categories = params[:categories] || nil
+    created_practices = []
+    created_practices_tmp = Practice.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories)
+    if session[:user_type] == "guest"
+      created_practices_tmp.each do |cps|
+          created_practices << cps if cps.is_public
+      end
+    else
+      created_practices = created_practices_tmp
+    end
 
-    created_practices = Practice.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories)
     @pagy_created_practices = pagy_array(
       created_practices,
       items: 3,
@@ -76,7 +84,6 @@ class VaFacilitiesController < ApplicationController
       pr_html = render_to_string('shared/_practice_card', layout: false, locals: { practice: pr })
       practice_cards_html += pr_html
     end
-
     respond_to do |format|
       format.html
       format.json { render :json => { practice_cards_html: practice_cards_html, count: created_practices.size, next: @pagy_created_info.next } }
@@ -86,7 +93,15 @@ class VaFacilitiesController < ApplicationController
   def update_practices_adopted_at_facility
     selected_cat = params["selected_category"].present? ?  params["selected_category"] : nil
     key_word = params["key_word"].present? ? params["key_word"] : nil
+    facility_adoptions = []
     @adoptions_at_facility = Practice.get_facility_adopted_practices(@va_facility.id, key_word, selected_cat)
+    if session[:user_type] == "guest"
+      @adoptions_at_facility.each do |fas|
+          facility_adoptions << fas if fas.is_public
+      end
+      @adoptions_at_facility = facility_adoptions
+    end
+
     adopted_facility_results_html = ''
     @adoptions_at_facility.each do |pr|
       pr_html = render_to_string('va_facilities/_adopted_facility_table_row', layout: false, locals: { ad: pr })

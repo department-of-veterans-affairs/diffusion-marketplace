@@ -31,10 +31,10 @@ class PracticesController < ApplicationController
   # GET /practices/1.json
   def show
     if session[:user_type] == "guest" && !@practice.is_public
-      message = "This practice is not available for Non-VA users."
+      message = "This innovation is not available for Non-VA users."
       #redirect_back fallback_location: root_path, flash: { error: message }
-      flash[:notice] = message
-      redirect_to(root_path, notice: message)
+      #flash[:notice] = message
+      redirect_to(root_path, alert: message)
       return
     end
 
