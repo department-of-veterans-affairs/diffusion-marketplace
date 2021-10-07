@@ -38,13 +38,12 @@ describe 'Contact section', type: :feature, js: true do
       expect(page).to have_content('I am a member of this practice team')
     end
 
-    it 'Should not allow unauthenticated users to view or post comments' do
-      # Try to visit a practice page without being logged in
+    it 'Should not allow unauthenticated users to post comments' do
       visit practice_path(@practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@practice.name)
       expect(page).to have_current_path(practice_path(@practice))
-      expect(page).to have_content('Login to see full practice')
+      expect(page).to have_content('Comments and replies are disabled for retired practices and public users.')
     end
   end
 

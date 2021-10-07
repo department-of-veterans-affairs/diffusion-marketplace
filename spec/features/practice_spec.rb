@@ -36,24 +36,23 @@ describe 'Practices', type: :feature do
 
   describe 'Authorization' do
     it 'should let unauthenticated users interact with practices' do
-      # Visit an individual Practice
+      # Visit an unpublished, unapproved practice
       visit '/innovations/the-best-practice-ever'
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content('You are not authorized to view this content.')
 
       @user_practice.update(approved: true, published: true)
-      # Visit an individual Practice
+      # Visit a published, approved practice
       visit '/innovations/the-best-practice-ever'
       expect(page).to be_accessible.according_to :wcag2a, :section508
-      expect(page).to have_content('Login to see full practice')
-      click_on('Login to see full practice')
-      expect(page).to have_current_path('/users/sign_in')
+      expect(page).to have_content('The Best Practice Ever!')
+      expect(page).to have_content('Test Facility')
     end
 
     it 'should let authenticated users interact with the marketplace' do
       login_as(@user, :scope => :user, :run_callbacks => false)
 
-      # Visit an individual Practice that is approved and published
+      # Visit an individual practice that is approved and published
       visit practice_path(@practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@practice.name)
