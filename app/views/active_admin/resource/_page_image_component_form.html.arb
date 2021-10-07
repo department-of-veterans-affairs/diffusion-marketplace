@@ -45,7 +45,7 @@ html = Arbre::Context.new do
           input value: component&.url || nil, type: 'text',
                 id: "page_page_components_attributes_#{placeholder}_component_attributes_url",
                 name: "page[page_components_attributes][#{placeholder}][component_attributes][url]"
-          para 'Enter a URL suffix to any internal page of the marketplace (Ex: "/practices/vione", "/partners", "/covid-19/telehealth" or a complete external URL (Ex. https://www.va.gov/) that you would like the image to link to', class: 'inline-hints'
+          para 'Enter a URL suffix to any internal page of the marketplace (Ex: "/innovations/vione", "/partners", "/covid-19/telehealth" or a complete external URL (Ex. https://www.va.gov/) that you would like the image to link to', class: 'inline-hints'
         end
       end
     end

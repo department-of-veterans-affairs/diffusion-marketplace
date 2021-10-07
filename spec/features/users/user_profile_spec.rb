@@ -11,15 +11,17 @@ describe 'The user index', type: :feature do
                          password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
   end
 
-  it 'should not show edit profile button for a different users show page' do
+  it 'should not show the profile page of a different user and redirect them to the home page' do
     visit "/users/#{@user.id}"
 
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to_not have_content('Edit profile')
+    expect(page.current_path).to eq root_path
 
     login_as(@user2, scope: :user, run_callbacks: false)
     visit "/users/#{@user.id}"
     expect(page).to_not have_content('Edit profile')
+    expect(page.current_path).to eq root_path
   end
 
   it 'should have edit profile button for logged in user' do
@@ -41,7 +43,7 @@ describe 'The user index', type: :feature do
 
     expect(page).to be_accessible.according_to :wcag2a, :section508
     expect(page).to have_content('Diffusion Marketplace')
-    expect(page.current_path).to eq user_session_path
+    expect(page.current_path).to eq root_path
   end
 
   it 'should show the current users email' do
@@ -75,21 +77,21 @@ describe 'The user index', type: :feature do
 
   it 'should have a favorited practice' do
     @practice1 = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user)
-    @practice2 = Practice.create!(name: 'The Best Practice Ever!', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user2)
+    @practice2 = Practice.create!(name: 'The Best Innovation Ever!', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user2)
     UserPractice.create!(user: @user, practice: @practice2, favorited: true)
 
     login_as(@user, scope: :user, run_callbacks: false)
     visit "/users/#{@user.id}"
 
     within(:css, '.dm-favorited-practices') do
-      expect(page).to have_content('The Best Practice Ever!')
+      expect(page).to have_content('The Best Innovation Ever!')
       expect(page).to_not have_content('A public practice')
     end
   end
 
     it 'should have created practices' do
     @practice1 = Practice.create!(name: 'A public practice', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user)
-    @practice2 = Practice.create!(name: 'The Best Practice Ever!', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user2)
+    @practice2 = Practice.create!(name: 'The Best Innovation Ever!', approved: true, published: true, tagline: 'Test tagline', featured: true, user: @user2)
     @user_pr1_editor = PracticeEditor.create!(practice: @practice1, user: @user, email: @user.email)
 
     login_as(@user, scope: :user, run_callbacks: false)
@@ -98,7 +100,7 @@ describe 'The user index', type: :feature do
     within(:css, '.dm-created-practices') do
       expect(page).to have_content('A public practice')
       expect(page).to have_selector('.dm-practice-card', count: 1)
-      expect(page).to_not have_content('The Best Practice Ever!')
+      expect(page).to_not have_content('The Best Innovation Ever!')
     end
 
     # make user owner of practice1
@@ -118,7 +120,7 @@ describe 'The user index', type: :feature do
     within(:css, '.dm-created-practices') do
       expect(page).to have_selector('.dm-practice-card', count: 2)
       expect(page).to have_content('A public practice')
-      expect(page).to have_content('The Best Practice Ever!')
+      expect(page).to have_content('The Best Innovation Ever!')
     end
   end
 end

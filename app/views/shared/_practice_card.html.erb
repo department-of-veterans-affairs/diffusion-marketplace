@@ -7,7 +7,7 @@
       <i class="<% if current_user.favorite_practice_ids.include?(practice.id) %>fas fa-bookmark<% else %>far fa-bookmark<% end %> dm-favorite-icon-<%= practice.id %>"></i>
     <% end %>
   <% end %>
-  <%= link_to practice, 'aria-label': "Go to #{practice.name}", 'tabindex': '-1', 'aria-hidden': 'true', class: "dm-practice-link#{practice.main_display_image.present? ? '' : ' dm-alt-practice-link'}" do %>
+  <%= link_to practice_path(practice), 'aria-label': "Go to #{practice.name}", 'tabindex': '-1', 'aria-hidden': 'true', class: "dm-practice-link#{practice.main_display_image.present? ? '' : ' dm-alt-practice-link'}" do %>
     <div class=" dm-practice-card-container bg-white">
       <% if practice.main_display_image.present? %>
         <div class="dm-practice-card-img-container">

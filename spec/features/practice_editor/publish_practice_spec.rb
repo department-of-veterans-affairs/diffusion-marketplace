@@ -71,23 +71,23 @@ describe 'Practice editor', type: :feature, js: true do
       @publish_button.click
       expect(page).to have_selector(".publication-modal-body", visible: true)
       expect(page).to have_content('Cannot publish yet')
-      expect(page).to have_content('This is what you need to do before publishing your practice to the Diffusion Marketplace')
-      expect(page).to have_content('You must include a tagline for your practice')
-      expect(page).to have_content('You must include the initiation date for your practice')
-      expect(page).to have_content('You must include the initiating facility for your practice')
-      expect(page).to have_content('You must include a practice summary')
+      expect(page).to have_content('This is what you need to do before publishing your innovation to the Diffusion Marketplace')
+      expect(page).to have_content('You must include a tagline for your innovation')
+      expect(page).to have_content('You must include the initiation date for your innovation')
+      expect(page).to have_content('You must include the initiating facility for your innovation')
+      expect(page).to have_content('You must include an innovation summary')
       expect(page).to have_content('You must include at least one adoption')
       expect(page).to have_content('You must include a support network email')
-      expect(page).to have_content('You must include a problem statement for your practice')
-      expect(page).to have_content('You must include a solution statement for your practice')
-      expect(page).to have_content('You must include a results statement for your practice')
+      expect(page).to have_content('You must include a problem statement for your innovation')
+      expect(page).to have_content('You must include a solution statement for your innovation')
+      expect(page).to have_content('You must include a results statement for your innovation')
       find('.back-to-editor-button').click
       set_pr_required_fields
       set_initiating_fac
       @publish_button.click
       expect(page).to have_selector(".publication-modal-body", visible: true)
       expect(page).to have_content('Cannot publish yet')
-      expect(page).to have_content('This is what you need to do before publishing your practice to the Diffusion Marketplace')
+      expect(page).to have_content('This is what you need to do before publishing your innovation to the Diffusion Marketplace')
       expect(page).to have_no_content('You must include the initiation date for your practice')
       expect(page).to have_no_content('You must include the initiating facility for your practice')
       expect(page).to have_no_content('You must include a practice summary')
@@ -127,7 +127,7 @@ describe 'Practice editor', type: :feature, js: true do
       expect(page).to have_no_content('Cannot publish yet')
       expect(page).to have_content("#{@practice2.name} has been successfully published to the Diffusion Marketplace")
       # Publish button should be gone if the practice has been published
-      expect(page).to_not have_link('Publish practice')
+      expect(page).to_not have_link('Publish innovation')
 
       visit practice_path(@practice2)
       expect(page).to have_content('practice summary')

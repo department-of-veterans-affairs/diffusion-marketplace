@@ -5,7 +5,7 @@ describe 'Admin Adoptions Tab', type: :feature do
     @admin = User.create!(email: 'dokugamine.riruka@va.gov', password: 'Password123',
                           password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
     @admin.add_role(:admin)
-    @practice = Practice.create!(name: 'The Best Practice Ever!', user: @admin, initiating_facility_type: 'facility', initiating_facility: '678GC', tagline: 'Test tagline')
+    @practice = Practice.create!(name: 'The Best Innovation Ever!', user: @admin, initiating_facility_type: 'facility', initiating_facility: '678GC', tagline: 'Test tagline')
 
     visn_8 = Visn.create!(id: 7, name: "VA Sunshine Healthcare Network", number: 8)
     visn_22 = Visn.create!(id: 17, name: "Desert Pacific Healthcare Network", number: 22)
@@ -33,7 +33,7 @@ describe 'Admin Adoptions Tab', type: :feature do
     expect(page).to have_content('LAST MONTH')
     expect(page).to have_content('2 MONTHS AGO')
     expect(page).to have_content('CURRENT TOTAL')
-    expect(page).to have_content('The Best Practice Ever!')
+    expect(page).to have_content('The Best Innovation Ever!')
     expect(page).to have_content('Cabrillo VA Clinic')
     expect(page).to have_content('C.W. Bill Young Department of Veterans Affairs Medical Center (Bay Pines)')
   end

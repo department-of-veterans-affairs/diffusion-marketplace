@@ -7,7 +7,7 @@
 <% unless published && approved %>
   <div class="usa-alert usa-alert--warning">
     <div class="usa-alert__body">
-      <h3 class="usa-alert__heading">This practice will not be shown in the marketplace because it is:</h3>
+      <h3 class="usa-alert__heading">This innovation will not be shown in the marketplace because it is:</h3>
       <% unless published %>
         <div>
          Unpublished
@@ -26,7 +26,7 @@
     <div class="usa-alert__body">
       <h4 class="usa-alert__heading">Hidden practice</h4>
       <div class="usa-alert__text">
-        This practice can be viewed but is not included in any search results.
+        This innovation can be viewed but is not included in any search results.
       </div>
     </div>
   </div>
@@ -34,9 +34,9 @@
 <% if retired %>
   <div class="usa-alert usa-alert--info margin-bottom-3 margin-top-1">
     <div class="usa-alert__body">
-      <h4 class="usa-alert__heading">Retired practice</h4>
+      <h4 class="usa-alert__heading">Retired innovation</h4>
       <div class="usa-alert__text">
-        This practice is no longer being updated.
+        This innovation is no longer being updated.
         <% if practice.retired_reason.present? %>
           <p>
             <%

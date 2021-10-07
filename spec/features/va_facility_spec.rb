@@ -195,10 +195,10 @@ describe 'VA facility pages', type: :feature, js: true do
       expect(page).to have_current_path(va_facility_path(@facility_1))
     end
 
-    context 'when searching for adopted practices' do
+    context 'when searching for adopted innovations' do
       it 'should display default content' do
         within(:css, '#dm-facility-adopted-practice-search') do
-          expect(page).to have_content("Practices adopted at this facility")
+          expect(page).to have_content("Innovations adopted at this facility")
           find('#facility_category_select_adoptions').click
           within(:css, '#facility_category_select_adoptions--list') do
             expect(page).to have_content('COVID')
@@ -224,7 +224,7 @@ describe 'VA facility pages', type: :feature, js: true do
         end
       end
 
-      it 'should allow search for practice origin facility and adopting facility' do
+      it 'should allow search for innovation origin facility and adopting facility' do
         within(:css, '#dm-facility-adopted-practice-search') do
           fill_in('dm-adopted-practices-search-field', with: ' d test name')
           find('#dm-adopted-practices-search-button').click
@@ -253,7 +253,7 @@ describe 'VA facility pages', type: :feature, js: true do
           # should see 3 sort filters
           within(:css, "#dm-created-practices-sort-option") do
             expect(page).to have_content('Sort by A to Z')
-            expect(page).to have_content('Sort by most adopted practices')
+            expect(page).to have_content('Sort by most adopted innovations')
             expect(page).to have_content('Sort by most recently added')
           end
           expect(page).to have_css('.dm-load-more-created-practices-btn')
@@ -275,9 +275,9 @@ describe 'VA facility pages', type: :feature, js: true do
         end
       end
 
-      it 'should sort the content by most adopted practices' do
+      it 'should sort the content by most adopted innovations' do
         within(:css, '.dm-facility-created-practice-search') do
-          select('Sort by most adopted practices', from: 'created-practices-sort-option')
+          select('Sort by most adopted innovations', from: 'created-practices-sort-option')
           expect(page).to have_content('8 results')
           expect(page).to have_css('.dm-load-more-created-practices-btn')
           expect(find_all('.dm-practice-title')[0]).to have_text('Pink Gloves Program')
@@ -330,7 +330,7 @@ describe 'VA facility pages', type: :feature, js: true do
         end
       end
 
-      it 'should allow search for practice info' do
+      it 'should allow search for innovation info' do
         within(:css, '.dm-facility-created-practice-search') do
           fill_in('dm-created-practice-search-field', with: 'Cards')
           find('#dm-created-practice-search-button').click
@@ -363,7 +363,7 @@ describe 'VA facility pages', type: :feature, js: true do
         end
       end
 
-      it 'should allow search for practice origin facility and adopting facility' do
+      it 'should allow search for innovation origin facility and adopting facility' do
         within(:css, '.dm-facility-created-practice-search') do
           fill_in('dm-created-practice-search-field', with: 'd test name')
           find('#dm-created-practice-search-button').click
