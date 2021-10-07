@@ -77,7 +77,7 @@
                     remote: true %>
       <% end %>
     </span>
-    <% if session[:user_type] === 'ntlm' %>>
+    <% if session[:user_type] === 'ntlm' %>
       <span id="commontator-thread-<%= thread.id %>-status" class="status">
         <%= t "commontator.thread.status.#{thread.is_closed? ? 'closed' : 'open'}",
               closer_name: (thread.is_closed? ? Commontator.commontator_name(thread.closer) : '') %>
