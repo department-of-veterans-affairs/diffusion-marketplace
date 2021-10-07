@@ -30,6 +30,14 @@ class PracticesController < ApplicationController
   # GET /innovations/1
   # GET /practices/1.json
   def show
+    if session[:user_type] == "guest" && !@practice.is_public
+      message = "This practice is not available for Non-VA users."
+      #redirect_back fallback_location: root_path, flash: { error: message }
+      flash[:notice] = message
+      redirect_to(root_path, notice: message)
+      return
+    end
+
     # This allows comments thread to show up without the need to click a link
     commontator_thread_show(@practice)
 
@@ -150,7 +158,8 @@ class PracticesController < ApplicationController
   end
 
   def search
-    @practices = Practice.searchable_practices nil
+    debugger
+    @practices = Practice.searchable_practices nil, session[:user_type] == "guest"
     # due to some practices/search.js.erb functions being reused for other pages (VISNs/VA Facilities), set the @practices_json variable to nil unless it's being used for the practices/search page
     @practices_json = practices_json(@practices)
     @diffusion_histories = []
@@ -165,7 +174,7 @@ class PracticesController < ApplicationController
   # GET /explore
   def explore
     @categories = Category.with_practices
-    practices = Practice.searchable_practices 'a_to_z'
+    practices = Practice.searchable_practices 'a_to_z', session[:user_type] == "guest"
     @pagy_practices = pagy_array(
       practices,
       items: 12
@@ -187,7 +196,7 @@ class PracticesController < ApplicationController
 
     @sort_option = params[:sort_option] || 'a_to_z'
     @cat_filters = params[:categories] ? params[:categories].map { |cat| cat.to_i } : []
-    practices = Practice.searchable_practices @sort_option
+    practices = Practice.searchable_practices @sort_option, session[:user_type] == "guest"
     if @cat_filters.length > 0
       filtered_practices = practices.select { |pr| !(pr.category_ids & @cat_filters).empty? }
       practices = filtered_practices

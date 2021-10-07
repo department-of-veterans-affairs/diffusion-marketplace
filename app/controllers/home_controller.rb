@@ -2,7 +2,7 @@ class HomeController < ApplicationController
   before_action :fetch_va_facilities, only: [:index, :diffusion_map]
 
   def index
-    @practices = Practice.searchable_practices 'a_to_z'
+    @practices = Practice.searchable_practices 'a_to_z', session[:user_type] == "guest"
     @favorite_practices = current_user&.favorite_practices || []
     @highlighted_pr = Practice.where(highlight: true, published: true, enabled: true, approved: true).first
   end

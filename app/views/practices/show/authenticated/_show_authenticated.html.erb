@@ -1,11 +1,3 @@
-<%
-  debugger
-  if session[:user_type] == "guest" && !@practice.is_public
-    redirect_to(root_path)
-  end
-%>
-
-
 <% provide :head_tags do %>
   <%= javascript_include_tag 'practice_page', 'data-turbolinks-track': 'reload' %>
 <% end %>

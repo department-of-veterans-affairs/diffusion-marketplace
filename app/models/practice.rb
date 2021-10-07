@@ -61,22 +61,38 @@ class Practice < ApplicationRecord
     clear_searchable_cache if self.reset_searchable_cache
   end
 
-  def self.searchable_practices(sort = 'a_to_z')
+  def self.searchable_practices(sort = 'a_to_z', is_guest = true)
     if sort == 'a_to_z'
       Rails.cache.fetch('searchable_practices_a_to_z') do
-        Practice.sort_by_retired.sort_a_to_z.get_with_categories_and_adoptions_ct
+        if is_guest
+          Practice.public_facing.sort_by_retired.sort_a_to_z.get_with_categories_and_adoptions_ct
+        else
+          Practice.sort_by_retired.sort_a_to_z.get_with_categories_and_adoptions_ct
+        end
       end
     elsif sort == 'adoptions'
       Rails.cache.fetch('searchable_practices_adoptions') do
-        Practice.sort_by_retired.sort_adoptions_ct.get_with_categories_and_adoptions_ct
+        if is_guest
+          Practice.public_facing.sort_by_retired.sort_adoptions_ct.get_with_categories_and_adoptions_ct
+        else
+          Practice.sort_by_retired.sort_adoptions_ct.get_with_categories_and_adoptions_ct
+        end
       end
     elsif sort == 'added'
       Rails.cache.fetch('searchable_practices_added') do
-        Practice.sort_by_retired.sort_added.get_with_categories_and_adoptions_ct
+        if is_guest
+          Practice.public_facing.sort_by_retired.sort_added.get_with_categories_and_adoptions_ct
+        else
+          Practice.sort_by_retired.sort_added.get_with_categories_and_adoptions_ct
+        end
       end
     elsif sort == nil
       Rails.cache.fetch('searchable_practices') do
-        Practice.sort_by_retired.get_with_categories_and_adoptions_ct
+        if is_guest
+          Practice.public_facing.sort_by_retired.get_with_categories_and_adoptions_ct
+        else
+          Practice.sort_by_retired.get_with_categories_and_adoptions_ct
+        end
       end
     end
   end
@@ -209,7 +225,6 @@ class Practice < ApplicationRecord
   scope :load_associations, -> { includes(:categories, :diffusion_histories, :practice_origin_facilities) }
   scope :public_facing, -> { published_enabled_approved.where(is_public: true) }
   scope :get_with_diffusion_histories, -> { published_enabled_approved.sort_a_to_z.joins(:diffusion_histories).uniq }
-  scope :get_public_practices_only,  -> { where(is_public: true) }
 
   belongs_to :user, optional: true
 
