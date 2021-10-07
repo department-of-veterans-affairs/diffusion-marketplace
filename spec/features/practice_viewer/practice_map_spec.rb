@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'Practice Show Page Diffusion Map', type: :feature, js: true do
   before do
     @user = User.create!(email: 'spongebob.squarepants@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
-    @practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test Facility', initiating_facility_type: 'other', tagline: 'Test tagline')
+    @practice = Practice.create!(name: 'The Best Innovation Ever!', user: @user, initiating_facility: 'Test Facility', initiating_facility_type: 'other', tagline: 'Test tagline')
     visn_1 = Visn.create!(name: 'VISN 1', number: 2)
     @fac_1 = VaFacility.create!(
       visn: visn_1,

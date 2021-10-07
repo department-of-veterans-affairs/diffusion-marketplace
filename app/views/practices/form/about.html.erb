@@ -18,7 +18,7 @@
         <h1 class="font-sans-2xl line-height-46px margin-bottom-3">About</h1>
         <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
         <h2 class="text-normal line-height-36 font-sans-lg">
-          This section helps people understand how your practice started and introduces the original team.
+          This section helps people understand how your innovation started and introduces the original team.
         </h2>
         <div class="margin-top-3">
           <%= render 'pii_phi_alert' %>
@@ -31,14 +31,14 @@
               <div>
                 <%= f.label :origin_story, class: 'usa-label' do %>
                   <p class="text-bold margin-bottom-2 line-height-18px">Origin story</p>
-                  <p class="line-height-26">Type a short story describing how your practice started.</p>
+                  <p class="line-height-26">Type a short story describing how your innovation started.</p>
                 <% end %>
                 <%= f.text_area :origin_story, class: 'usa-input practice-input height-15 margin-bottom-5 origin-story-textarea' %>
               </div>
               <div class="height-05 width-8 border-top-05 border-primary-dark"></div>
               <div class="margin-top-3 margin-bottom-2">
                 <p class="text-bold margin-bottom-2 line-height-18px">Team members</p>
-                <p class="line-height-26">Add the names of people who are responsible for this practice.</p>
+                <p class="line-height-26">Add the names of people who are responsible for this innovation.</p>
               </div>
               <div class="grid-col-7">
                 <div id="about_container" class="position-relative">

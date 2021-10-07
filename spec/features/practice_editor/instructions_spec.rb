@@ -16,12 +16,12 @@ describe 'Practice editor', type: :feature, js: true do
 
         it 'should have content and links' do
             expect(page).to have_content('Instructions')
-            expect(page).to have_content('Please follow these instructions to build your practice page.')
+            expect(page).to have_content('Please follow these instructions to build your innovation page.')
             expect(page).to have_content("What you'll need")
             expect(page).to have_content('Privacy policy')
             expect(page).to have_content('Formatting and editing')
             expect(page).to have_no_content('Save')
-            expect(page).to have_no_content('Publish practice')
+            expect(page).to have_no_content('Publish innovation')
             expect(page).to have_link(href: pii_phi_information_path)
             expect(page).to have_link(href: Constants::FORM_3203_URL)
             expect(page).to have_link(href: Constants::FORM_5345_URL)

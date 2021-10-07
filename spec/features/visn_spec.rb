@@ -99,7 +99,7 @@ describe 'VISN pages', type: :feature do
 
     @user = User.create!(email: 'nobara.kugisaki@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: false, confirmed_at: Time.now, accepted_terms: true)
 
-    @practice = Practice.create!(name: 'The Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
+    @practice = Practice.create!(name: 'The Best Innovation Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best innovation ever.', overview_problem: 'overview-problem', published: true, enabled: true, approved: true, user: @user)
     PracticeOriginFacility.create!(practice: @practice, facility_type: 0, va_facility: facility_1)
     @practice_2 = Practice.create!(name: 'An Awesome Practice!', initiating_facility_type: 'visn', initiating_facility: '2', tagline: 'Test tagline 2', date_initiated: 'Sun, 24 Oct 2004 00:00:00 UTC +00:00', summary: 'This is an awesome practice.', published: true, enabled: true, approved: true, user: @user)
     PracticeOriginFacility.create!(practice: @practice_2, facility_type: 0, va_facility: facility_2)
@@ -163,7 +163,7 @@ describe 'VISN pages', type: :feature do
       it 'should show metadata for each visn' do
         @visn_markers.last.click
         expect(page).to have_selector('#visn-2-marker-modal', visible: true)
-        expect_visn_metadata('#visn-2-marker-modal', '7 practices created here', '3 practices adopted here')
+        expect_visn_metadata('#visn-2-marker-modal', '7 innovations created here', '3 innovations adopted here')
       end
 
       it 'should have a link to a given visn\'s show page within that visn\'s marker modal' do
@@ -186,7 +186,7 @@ describe 'VISN pages', type: :feature do
       end
 
       it 'should show metadata for each visn' do
-        expect_visn_metadata('#visn-1-card-link', '1 practice created here', '0 practices adopted here')
+        expect_visn_metadata('#visn-1-card-link', '1 innovation created here', '0 innovations adopted here')
       end
 
       it 'should allow the user to visit a visn\'s show page via clicking on a visn card' do
@@ -210,7 +210,7 @@ describe 'VISN pages', type: :feature do
       page.set_rack_session(:user_type => 'ntlm')
       visit '/visns/2'
       expect(page).to have_content('This VISN has 3 facilities and serves Veterans in Florida and Georgia.')
-      expect(page).to have_content('Collectively, its facilities have created 7 practices and have adopted 3 practices.')
+      expect(page).to have_content('Collectively, its facilities have created 7 innovations and have adopted 3 innovations.')
       expect(page).to have_content('Toge Inumaki')
     end
 
@@ -251,8 +251,8 @@ describe 'VISN pages', type: :feature do
         expect(page).to have_selector('#visn-va-facility-1-marker-modal', visible: true)
         within(:css, '#visn-va-facility-1-marker-modal') do
           expect(find('.visn-va-facility-marker-modal-link').text).to eq('Test Name (Test Common Name)')
-          expect(find('.visn-va-facility-modal-practices-created-count').text).to eq('1 practice created here')
-          expect(find('.visn-va-facility-modal-practices-adopted-count').text).to eq('0 practices adopted here')
+          expect(find('.visn-va-facility-modal-practices-created-count').text).to eq('1 innovation created here')
+          expect(find('.visn-va-facility-modal-practices-adopted-count').text).to eq('0 innovations adopted here')
         end
       end
 
@@ -272,7 +272,7 @@ describe 'VISN pages', type: :feature do
     end
 
     describe 'visn search section' do
-      it 'should allow users to search for practices that were created or adopted within a given visn' do
+      it 'should allow users to search for innovations that were created or adopted within a given visn' do
         visit '/visns/2'
 
         # defaults to created practices
