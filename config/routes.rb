@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 
   get '/dashboard/export', action: 'export_metrics', controller: 'admin/dashboard', as: 'export_metrics'
   get '/session_time_remaining', action: 'session_time_remaining', controller: 'practices', as: 'session_time_remaining'
+  patch '/update_category_usage', action: 'update_category_usage', controller: 'categories', as: 'update_category_usage'
   patch '/extend_editor_session_time', action: 'extend_editor_session_time', controller: 'practices', as: 'extend_editor_session_time'
   patch '/close_edit_session', action: 'close_edit_session', controller: 'practices', as: 'close_edit_session'
   post '/accept_terms', action: 'accept_terms', controller: 'users', as: 'accept_terms'
@@ -99,7 +100,10 @@ Rails.application.routes.draw do
     get '/go-fish', action: 'go_fish', as: 'go-fish'
   end
 
-  get '/nominate-an-innovation', controller: 'nominate_practices', action: 'index', as: 'nominate_a_practice'
+  # redirect users to /nominate-an-innovation if they try to visit the old /nominate-a-practice URL
+  get '/nominate-a-practice', to: redirect('/nominate-an-innovation', status: 302)
+  get '/nominate-an-innovation', controller: 'nominate_practices', action: 'index', as: 'nominate_an_innovation'
+  post '/nominate-an-innovation', controller: 'nominate_practices', action: 'email'
   get '/diffusion-map', controller: 'home', action: 'diffusion_map', as: 'diffusion_map'
 
   namespace :system do
@@ -116,6 +120,8 @@ Rails.application.routes.draw do
   end
   get '/facilities/:id/created-practices', controller: 'va_facilities', action: 'created_practices'
   get '/facilities/:id/update_practices_adopted_at_facility', action: 'update_practices_adopted_at_facility', controller: 'va_facilities'
+  get '/about', controller: 'about', action: 'index', as: 'about'
+  post '/about', controller: 'about', action: 'email'
 
 
   # Custom route for reporting a comment

@@ -36,12 +36,12 @@
 
 <%= render 'practice_editor_sidenav' %>
 <div class="grid-container position-relative">
-  <div class="grid-row grid-gap practice-editor-min-height">
+  <div class="grid-row grid-gap">
     <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
 
     <div id="introduction" class="desktop:grid-col-9 grid-col-12 padding-0">
       <%= render partial: "shared/messages", locals: {small_text: false} %>
-      <section class="usa-section padding-top-0 padding-bottom-4 introduction">
+      <section class="usa-section padding-y-0 introduction">
         <h1>Introduction</h1>
         <%= render partial: "practices/form/practice_last_updated", locals: {small_text: true} %>
         <div class="usa-prose-intro">
@@ -518,7 +518,7 @@
           </fieldset>
         <% end %>
 
-        <div class="grid-row margin-bottom-8">
+        <div class="grid-row">
           <%= render partial: 'practices/back_and_continue_buttons', locals: { back_path: practice_editors_path(@practice), continue_path: practice_adoptions_path(@practice) }%>
         </div>
       </section>

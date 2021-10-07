@@ -1,4 +1,6 @@
 module NavigationHelper
+  RETURN_TO_TOP_PAGES = ['show', 'metrics', 'introduction', 'overview', 'implementation']
+
   def setup_breadcrumb_navigation
     session[:breadcrumbs] = session[:breadcrumbs] || []
     action = params[:action]
@@ -302,10 +304,9 @@ module NavigationHelper
       end
     end
 
-    ### NOMINATE PRACTICE BREADCRUMBS
-    if action == 'index' && controller == 'nominate_practices'
+    # remove breadcrumbs from 'Nominate a practice' page
+    if controller == 'nominate_practices' && action == 'index'
       empty_breadcrumbs
-      session[:breadcrumbs] << { 'display': 'Nominate an innovation', 'path': nominate_a_practice_path }
     end
 
     ### VISN BREADCRUMBS
@@ -324,6 +325,11 @@ module NavigationHelper
         add_visn_index_breadcrumb
         session[:breadcrumbs] << { 'display': "#{params[:number]}", 'path': visn_path(visn_by_number) }
       end
+    end
+
+    # remove breadcrumbs from 'About' page
+    if controller == 'about' && action == 'index'
+        empty_breadcrumbs
     end
   end
 end

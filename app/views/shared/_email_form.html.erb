@@ -1,0 +1,20 @@
+<%= form_tag "#{path}", method: 'post' do %>
+  <label class="usa-label margin-top-4 margin-bottom-2" for="email">Your email address</label>
+  <input class="usa-input" id="email" name="email" type="email" required/>
+
+  <label class="usa-label margin-top-4 margin-bottom-2" for="subject">Subject line</label>
+  <input class="usa-input" id="subject" name="subject" type="text" required/>
+
+  <label class="usa-label margin-top-4 margin-bottom-2" for="message">
+    Your message
+    <% if additional_label_text.present? %>
+      <br />
+      <span><%= additional_label_text %></span>
+    <% end %>
+  </label>
+  <textarea class="usa-textarea margin-bottom-4" id="message" name="message" required></textarea>
+
+  <div class="text-right">
+    <input type="submit" value="Send message" class="usa-button margin-right-0">
+  </div>
+<% end %>
