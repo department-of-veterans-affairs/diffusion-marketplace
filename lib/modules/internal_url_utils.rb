@@ -40,8 +40,11 @@ module InternalUrlUtils
     # admin routes
     if route[:controller].include?('admin')
       model_str = route[:controller].split("/")[1]
-      model = get_model(model_str)
-      if route[:action].present? && is_admin_action(route[:action])
+      # admin dashboard
+      if model_str == 'dashboard' && route[:action] == 'index'
+        db_record = true
+      elsif route[:action].present? && is_admin_action(route[:action])
+        model = get_model(model_str)
         if model_str === 'practices'
           db_record = model.find_by(slug: route[:id])
         else

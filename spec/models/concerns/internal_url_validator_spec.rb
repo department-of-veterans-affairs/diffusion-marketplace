@@ -98,6 +98,22 @@ RSpec.describe InternalUrlValidator do
       end
     end
 
+    context 'given the admin route' do
+      it 'should have no errors' do
+        component = PageSubpageHyperlinkComponent.new(url: '/admin')
+        component.valid?
+        expect(component.errors[:url]).to eq([])
+      end
+    end
+
+    context 'given the admin dashboard route' do
+      it 'should have no errors' do
+        component = PageSubpageHyperlinkComponent.new(url: '/admin/dashboard')
+        component.valid?
+        expect(component.errors[:url]).to eq([])
+      end
+    end
+
     context 'given an admin practice show page that exists' do
       it 'should have no errors' do
         component = PageSubpageHyperlinkComponent.new(url: '/admin/practices/a-public-practice')
