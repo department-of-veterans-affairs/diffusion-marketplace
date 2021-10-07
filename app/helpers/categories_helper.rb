@@ -3,7 +3,7 @@ module CategoriesHelper
 
   def get_most_popular_categories
     popular_categories = []
-    rec_array = AhoyEvent.where(name: "Category selected").where("time > ?", Time.now-90.days).select("properties").map { |e| e.properties["category_id"] }
+    rec_array = Ahoy::Event.where(name: "Category selected").where("time > ?", Time.now-90.days).select("properties").map { |e| e.properties["category_id"] }
     categories_count = Hash.new(0)
     rec_array.each { |rec| categories_count[rec] +=1 }
     pop_cats = categories_count.sort_by { |rec,number| number}.last(20).reverse
@@ -18,7 +18,7 @@ module CategoriesHelper
     cat_rec = Category.where("name ILIKE ?", s_query.downcase).not_other.first
     return if cat_rec.blank?
     cat_id = cat_rec.id
-    last_ahoy_event = AhoyEvent.where(name: 'Category selected').last(1)
+    last_ahoy_event = Ahoy::Event.where(name: 'Category selected').last(1)
     if last_ahoy_event.blank?
       store_chosen_categories(s_query, nil) unless s_query.blank?
     else
