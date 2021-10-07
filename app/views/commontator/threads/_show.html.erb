@@ -14,7 +14,7 @@
 <% if @practice.present? && !@practice.retired && session[:user_type] === 'ntlm' %>
   <% if thread.config.comment_order != :e %>
     <%= render partial: 'commontator/threads/reply', locals: { thread: thread, user: user } %>
-    <h5 class="font-sans-3xs line-height-15px text-bold text-ls-1 text-uppercase">
+    <h5 class="font-sans-3xs line-height-15px text-bold text-ls-1 text-uppercase margin-bottom-0">
           <span id="practice-comment-count">
             <%= thread.comments.count  %>
           </span>

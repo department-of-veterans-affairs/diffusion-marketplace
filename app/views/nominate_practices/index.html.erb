@@ -1,26 +1,18 @@
-<section class=" grid-container">
-  <div class="grid-row grid-col-12 tablet:grid-col-10">
-    <div class="grid-col-12 display-inline-block">
-      <h1 class="font-sans-2xl margin-bottom-4">Nominate an innovation</h1>
-      <div class="font-sans-lg line-height-36">
-        <span>
-          If you are interested in submitting an innovation to the Diffusion Marketplace, review the criteria below and apply through the link.
-        </span>
-      </div>
-      <h2 class="font-sans-xl margin-bottom-405">Criteria</h2>
-      <div class="font-sans-sm">
-        <p class="margin-bottom-1">To qualify, your innovation must be:</p>
-        <ul class="padding-left-2 margin-top-0 line-height-sans-505">
-          <li>Adopted at two or more locations</li>
-          <li>Endorsed by a senior executive stakeholder</li>
-          <li>An active practice</li>
-        </ul>
-      </div>
-      <a target="_blank"
-         href="mailto:marketplace@va.gov?subject=<%= URI.encode('Nominate an Innovation')%>&body=<%= URI.encode("I am writing to nominate an innovation for the Diffusion Marketplace.\n\nName of innovation:\nOriginating facility:\nPoint of contact:\nSenior executive stakeholder (if known):\nAdoptions (if known):")%>"
-         class="usa-button padding-2 margin-top-2">
-        Start nomination
-      </a>
+<div id="dm-nominate-a-practice-page" class="grid-container">
+  <%= render partial: "shared/messages", locals: { small_text: true } %>
+
+  <section class="margin-top-8 margin-bottom-0 margin-top-128-desktop desktop:margin-bottom-8" role="region" aria-label="Nominate an innovation information">
+    <div class="grid-row grid-col-12 desktop:grid-col-8">
+      <h1 class="usa-prose-h1 margin-top-0 margin-bottom-4">Nominate an innovation</h1>
+      <p class="usa-prose-body">
+        VA staff and collaborators are welcome to nominate active innovations for consideration on the Diffusion Marketplace using the form below.
+      </p>
     </div>
-  </div>
-</section>
+  </section>
+
+  <section class="grid-row" role="region" aria-label="Nominate an innovation contact form">
+    <div class="grid-col-12 desktop:grid-col-8">
+      <%= render partial: 'shared/email_form', locals: { path: nominate_an_innovation_path, additional_label_text: 'Please include information about where your innovation is being implemented.' } %>
+    </div>
+  </section>
+</div>

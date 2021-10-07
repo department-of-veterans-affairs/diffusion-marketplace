@@ -221,13 +221,19 @@
       @include tooltip-icon();
     }
   }
-
-  #practice_retired_reason_input {
-    display: flex;
-    width: 100%;
-  }
 }
 
 .display-none {
   display: none !important;
+}
+
+.retired-reason-container {
+  label {
+    @include u-position('absolute');
+    left: 10px;
+  }
+
+  #practice_retired_reason {
+    margin-left: 20%;
+  }
 }
