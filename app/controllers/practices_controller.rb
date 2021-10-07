@@ -158,7 +158,6 @@ class PracticesController < ApplicationController
   end
 
   def search
-    debugger
     @practices = Practice.searchable_practices nil, session[:user_type] == "guest"
     # due to some practices/search.js.erb functions being reused for other pages (VISNs/VA Facilities), set the @practices_json variable to nil unless it's being used for the practices/search page
     @practices_json = practices_json(@practices)
