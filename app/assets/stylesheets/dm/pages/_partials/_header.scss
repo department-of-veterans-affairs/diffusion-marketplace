@@ -29,6 +29,10 @@
     border-bottom: 1px solid color($theme-color-base-light);
   }
 
+  .usa-menu-btn {
+    background-color: color($theme-color-base-ink) !important;
+  }
+
   // desktop
   @media screen and (min-width: 64rem) {
     #extended-logo {

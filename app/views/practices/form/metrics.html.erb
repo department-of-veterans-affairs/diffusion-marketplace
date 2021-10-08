@@ -11,14 +11,14 @@
 <% end %>
 <%= render 'practice_editor_sidenav' %>
 <div class="grid-container position-relative">
-  <div class="grid-row grid-gap practice-editor-min-height">
+  <div class="grid-row grid-gap">
     <div class="desktop:grid-col-3 grid-col-auto z-bottom">&nbsp;</div>
     <div id="metrics" class="desktop:grid-col-9 grid-col-12 padding-0">
       <div>
       <%= render partial: "shared/messages", locals: {small_text: true} %>
     </div>
       <section class="usa-section padding-top-0 padding-bottom-0" aria-label="Metrics">
-        <div class="grid-row flex-align-end margin-top-4">
+        <div class="grid-row flex-align-end margin-top--important">
           <h1 class="margin-bottom-3 margin-y-0 grid-col-3 font-sans-2xl">
             Metrics
           </h1>
@@ -231,7 +231,7 @@
           </ul>
         </div>
         <div id="leader_board_page_views_30_days">
-          <table class="usa-table usa-table--borderless width-full margin-bottom-10 metrics-table">
+          <table class="usa-table usa-table--borderless width-full margin-bottom-0 metrics-table">
             <thead>
               <tr>
                 <th scope="col" class="width-80">Innovation</th>
@@ -249,7 +249,7 @@
           </table>
         </div>
         <div class="display-none" id="leader_board_page_views_all_time">
-          <table class="usa-table usa-table--borderless width-full margin-bottom-10 metrics-table">
+          <table class="usa-table usa-table--borderless width-full margin-bottom-0 metrics-table">
             <thead>
               <tr>
                 <th scope="col" class="width-80">Innovation</th>

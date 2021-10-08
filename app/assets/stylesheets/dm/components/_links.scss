@@ -1,6 +1,8 @@
 // header nav links
 .usa-nav__primary-item {
   .usa-nav__link {
+    @include u-text(700, !important);
+
     &:hover {
       color: color($theme-color-primary-vivid) !important;
 
@@ -14,6 +16,7 @@
 .dm-footer-link {
   color: color($theme-color-base-ink);
   text-decoration: none;
+  @include u-text(700, !important);
 
   &:hover {
     color: color($theme-color-primary-vivid);
@@ -27,6 +30,32 @@
     &:hover {
       color: color($theme-color-primary-vivid);
       text-decoration: underline;
+    }
+  }
+}
+
+.dm-alt-link {
+  &-gold {
+    color: color($theme-color-accent-warm) !important;
+
+    &:hover {
+      color: color($theme-color-accent-warm-dark) !important;
+    }
+
+    &:active {
+      color: color($theme-color-accent-warm-darker) !important;
+    }
+  }
+
+  &-light {
+    color: color($theme-color-primary-light) !important;
+
+    &:hover {
+      color: color($theme-color-primary) !important;
+    }
+
+    &:active {
+      color: color($theme-link-color) !important;
     }
   }
 }

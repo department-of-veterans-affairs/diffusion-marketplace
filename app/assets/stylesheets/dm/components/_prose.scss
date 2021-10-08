@@ -14,10 +14,13 @@
 
 .usa-prose-h1 {
   @include u-font('sans', '2xl');
+  @include u-line-height('heading', 2);
+  @include u-text('bold');
 }
 
 .usa-prose-h2 {
   @include u-font('sans', 'xl');
+  @include u-line-height('heading', 2);
 }
 
 .usa-prose-h3 {

@@ -23,7 +23,7 @@ describe 'Diffusion Marketplace footer', type: :feature, js: true do
     it 'should exist' do
       within('footer') do
         expect(page).to have_link('Home')
-        expect(page).to have_link('Partners')
+        expect(page).to have_link('Nominate an innovation')
         expect(page).to have_link('Open calls')
         expect(page).to have_link('Report a bug')
         expect(page).to have_link('Send feedback')

@@ -157,6 +157,12 @@ class Practice < ApplicationRecord
     object_presigned_url(origin_picture, style)
   end
 
+  has_attached_file :highlight_attachment, styles: {thumb: '768x432>'} # TODO: modify thumb size
+
+  def highlight_attachment_s3_presigned_url(style = nil)
+    object_presigned_url(highlight_attachment, style)
+  end
+
   PRACTICE_EDITOR_SLUGS =
       {
           'editors': 'instructions',
@@ -205,6 +211,7 @@ class Practice < ApplicationRecord
   validates_attachment_content_type :origin_picture, content_type: /\Aimage\/.*\z/
   validates_uniqueness_of :name, {message: 'Innovation name already exists'}
   validates :user, presence: true, format: valid_va_email
+  validates_attachment_content_type :highlight_attachment, content_type: /\Aimage\/.*\z/
   # validates :tagline, presence: { message: 'Practice tagline can\'t be blank'}
 
   scope :published,   -> { where(published: true) }
