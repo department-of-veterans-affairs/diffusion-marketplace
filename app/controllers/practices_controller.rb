@@ -30,14 +30,6 @@ class PracticesController < ApplicationController
   # GET /innovations/1
   # GET /practices/1.json
   def show
-    if session[:user_type] == "guest" && !@practice.is_public
-      message = "This innovation is not available for Non-VA users."
-      #redirect_back fallback_location: root_path, flash: { error: message }
-      #flash[:notice] = message
-      redirect_to(root_path, alert: message)
-      return
-    end
-
     # This allows comments thread to show up without the need to click a link
     commontator_thread_show(@practice)
 
@@ -79,7 +71,15 @@ class PracticesController < ApplicationController
       marker.infowindow render_to_string(partial: 'maps/infowindow', locals: { diffusion_histories: dhg[1], facility: facility })
     end
 
-    render 'practices/show/show'
+    if session[:user_type] == "guest" && !@practice.is_public
+      respond_to do |format|
+        warning = 'This innovation is not available for Non-VA users.'
+        format.html { redirect_back fallback_location: root_path, flash: { error: warning } }
+        format.json { render warning: warning }
+      end
+    else
+      render 'practices/show/show'
+    end
   end
 
   # GET /practices/1/edit

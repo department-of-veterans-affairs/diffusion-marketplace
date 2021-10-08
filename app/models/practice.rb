@@ -64,11 +64,7 @@ class Practice < ApplicationRecord
   def self.searchable_practices(sort = 'a_to_z', is_guest = true)
     if sort == 'a_to_z'
       Rails.cache.fetch('searchable_practices_a_to_z') do
-        if is_guest
-          Practice.public_facing.sort_by_retired.sort_a_to_z.get_with_categories_and_adoptions_ct
-        else
-          Practice.sort_by_retired.sort_a_to_z.get_with_categories_and_adoptions_ct
-        end
+        is_guest ? Practice.public_facing.sort_by_retired.sort_a_to_z.get_with_categories_and_adoptions_ct : Practice.sort_by_retired.sort_a_to_z.get_with_categories_and_adoptions_ct
       end
     elsif sort == 'adoptions'
       Rails.cache.fetch('searchable_practices_adoptions') do

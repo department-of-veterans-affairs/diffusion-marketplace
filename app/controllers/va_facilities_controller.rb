@@ -33,7 +33,7 @@ class VaFacilitiesController < ApplicationController
 
   def show
     station_number = @va_facility.station_number
-    #google maps implementation
+    # google maps implementation
     @va_facility_marker = Gmaps4rails.build_markers(@va_facility) do |facility, marker|
       marker.lat facility.latitude
       marker.lng facility.longitude
@@ -62,15 +62,7 @@ class VaFacilitiesController < ApplicationController
     sort_option = params[:sort_option] || 'a_to_z'
     search_term = params[:search_term] ? params[:search_term].downcase : nil
     categories = params[:categories] || nil
-    created_practices = []
-    created_practices_tmp = Practice.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories)
-    if session[:user_type] == "guest"
-      created_practices_tmp.each do |cps|
-          created_practices << cps if cps.is_public
-      end
-    else
-      created_practices = created_practices_tmp
-    end
+    created_practices = session[:user_type] == "guest" ? Practice.public_facing.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories) : Practice.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories)
 
     @pagy_created_practices = pagy_array(
       created_practices,
