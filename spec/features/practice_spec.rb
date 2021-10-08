@@ -184,7 +184,7 @@ describe 'Practices', type: :feature do
     it 'should NOT show the edit practice button if the user is not an admin/approver or creater of the practice' do
       login_as(@user, :scope => :user, :run_callbacks => false)
       visit practice_path(@practice)
-      expect(page).to_not have_link('Edit practice')
+      expect(page).to_not have_link('Edit innovation')
     end
   end
 end
