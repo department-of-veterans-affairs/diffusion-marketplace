@@ -19,7 +19,7 @@ class HeadersFilter
 
   def call(env)
     @remove_headers.each { |header| env.delete(header) }
-    env["HTTP_HOST"] = ENV['RAILS_ENV'] == 'production' ? ENV.fetch('HOSTNAME').split('//')[1] : 'localhost:3200'
+    env["HTTP_HOST"] = ENV.fetch('HOSTNAME').split('//')[1]
     @app.call(env)
   end
 end
