@@ -17,7 +17,7 @@
         <% if @practice.retired || (user_type === 'guest' && vaec_environment === 'true') || (current_user.blank? && vaec_environment.nil?) %>
           <div class="usa-alert usa-alert--info margin-bottom-3">
             <div class="usa-alert__body">
-              <p class="usa-alert__text">Comments and replies are disabled for retired practices and public users.</p>
+              <p class="usa-alert__text">Comments and replies are disabled for retired innovations and public users.</p>
             </div>
           </div>
         <% end %>

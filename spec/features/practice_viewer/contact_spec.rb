@@ -34,8 +34,8 @@ describe 'Contact section', type: :feature, js: true do
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@practice.name)
       expect(page).to have_content("Other")
-      expect(page).to have_content('I am currently adopting this practice')
-      expect(page).to have_content('I am a member of this practice team')
+      expect(page).to have_content('I am currently adopting this innovation')
+      expect(page).to have_content('I am a member of this innovation team')
     end
 
     it 'Should not allow unauthenticated users to post comments' do
@@ -43,7 +43,8 @@ describe 'Contact section', type: :feature, js: true do
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@practice.name)
       expect(page).to have_current_path(practice_path(@practice))
-      expect(page).to have_content('Comments and replies are disabled for retired practices and public users.')
+      expect(page).to have_content('Comments and replies are disabled for retired innovations and public users.')
+      expect(page).to_not have_selector('.new-comment')
     end
   end
 
