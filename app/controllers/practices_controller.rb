@@ -73,9 +73,9 @@ class PracticesController < ApplicationController
 
     if session[:user_type] == "guest" && !@practice.is_public
       respond_to do |format|
-        warning = 'This innovation is not available for Non-VA users.'
-        format.html { redirect_back fallback_location: root_path, flash: { error: warning } }
-        format.json { render warning: warning }
+        s_error = 'This innovation is not available for Non-VA users.'
+        format.html { redirect_back fallback_location: root_path, flash: { error: s_error } }
+        format.json { render error: s_error }
       end
     else
       render 'practices/show/show'
