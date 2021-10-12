@@ -117,7 +117,7 @@
             <% practices_ids.each do |pr_id| %>
               <% pr = Practice.find(pr_id.to_i) %>
               <% if pr.present? %>
-                <% if (pr.is_public && user_type === 'guest' && vaec_environment === 'true') || user_type === 'ntlm' || (user_type === 'guest' && vaec_environment.nil?) %>
+                <% if (pr.is_public && user_type === 'guest' && vaec_environment === 'true') || user_type === 'ntlm' || (current_user.present? && vaec_environment.nil?) %>
                   <%= render partial: 'shared/practice_card', locals: { practice: pr } %>
                 <% end %>
               <% end %>
