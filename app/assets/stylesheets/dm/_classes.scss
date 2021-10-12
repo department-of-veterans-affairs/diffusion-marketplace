@@ -28,6 +28,14 @@ to confirm the class DOES NOT EXIST before adding a new class
   @include u-width('auto', !important);
 }
 
+.display-none-important {
+  @include u-display('none', !important);
+}
+
+.flex-column-important {
+  @include u-flex('column', !important);
+}
+
 /* Desktop */
 // Only show on mobile
 .desktop-hide {

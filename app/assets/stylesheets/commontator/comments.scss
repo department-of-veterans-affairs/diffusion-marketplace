@@ -171,6 +171,7 @@ body {
 .vote-disabled {
   color: color($theme-color-disabled);
   background-color: transparent;
+  cursor: not-allowed !important;
 
   &:hover {
     color: color($theme-color-disabled);

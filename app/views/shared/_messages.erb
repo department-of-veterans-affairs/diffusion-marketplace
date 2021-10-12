@@ -20,7 +20,7 @@
     <% unless value.to_s.downcase.include?('session expired') || value.to_s.downcase == 'true' || (value == 'Invalid Email or password.' && key == 'alert') %>
       <div class="usa-alert usa-alert--<%= key %> margin-y-2 <%= small_text ? 'message-icon-bg-position' : '' %> dm-alert-message">
         <div class="usa-alert__body grid-row flex-align-center">
-          <div class="usa-alert__heading usa-prose-body <%= small_text ? 'font-sans-sm margin-bottom-0' : '' %>" role="alert">
+          <div class="usa-alert__heading usa-prose-body margin-bottom-0 <%= small_text ? 'font-sans-sm' : '' %>" role="alert">
             <%= value %>
             <i class="fas fa-times position-absolute right-3 cursor-pointer close-alert-message"></i>
           </div>
