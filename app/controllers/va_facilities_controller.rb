@@ -85,14 +85,7 @@ class VaFacilitiesController < ApplicationController
   def update_practices_adopted_at_facility
     selected_cat = params["selected_category"].present? ?  params["selected_category"] : nil
     key_word = params["key_word"].present? ? params["key_word"] : nil
-    facility_adoptions = []
-    @adoptions_at_facility = Practice.get_facility_adopted_practices(@va_facility.id, key_word, selected_cat)
-    if session[:user_type] == "guest"
-      @adoptions_at_facility.each do |fas|
-          facility_adoptions << fas if fas.is_public
-      end
-      @adoptions_at_facility = facility_adoptions
-    end
+    @adoptions_at_facility = session[:user_type] == "guest" ? Practice.public_facing.get_facility_adopted_practices(@va_facility.id, key_word, selected_cat) : Practice.get_facility_adopted_practices(@va_facility.id, key_word, selected_cat)
 
     adopted_facility_results_html = ''
     @adoptions_at_facility.each do |pr|
