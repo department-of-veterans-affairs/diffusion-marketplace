@@ -91,7 +91,7 @@ en:
       status:
         created_at: Posted on %{created_at}.
         deleted_by: This comment has been deleted.
-        updated_at: Last modified by on %{updated_at}.
+        updated_at: Last modified on %{updated_at}.
         replying: Replying to %{creator_name}
         reply_pages: "Reply pages:"
     email:
