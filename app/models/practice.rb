@@ -52,7 +52,8 @@ class Practice < ApplicationRecord
         self.overview_results_changed?  ||
         self.retired_changed? ||
         self.retired_reason_changed? ||
-        self.hidden_changed?
+        self.hidden_changed? ||
+        self.is_public_changed?
       self.reset_searchable_cache = true
     end
   end

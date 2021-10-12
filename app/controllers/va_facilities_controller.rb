@@ -62,7 +62,7 @@ class VaFacilitiesController < ApplicationController
     sort_option = params[:sort_option] || 'a_to_z'
     search_term = params[:search_term] ? params[:search_term].downcase : nil
     categories = params[:categories] || nil
-    created_practices = session[:user_type] == "guest" ? Practice.public_facing.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories) : Practice.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories)
+    created_practices = session[:user_type] === 'guest' && ENV['VAEC_ENV'] === 'true' ? Practice.public_facing.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories) : Practice.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories)
 
     @pagy_created_practices = pagy_array(
       created_practices,
@@ -85,7 +85,7 @@ class VaFacilitiesController < ApplicationController
   def update_practices_adopted_at_facility
     selected_cat = params["selected_category"].present? ?  params["selected_category"] : nil
     key_word = params["key_word"].present? ? params["key_word"] : nil
-    @adoptions_at_facility = session[:user_type] == "guest" ? Practice.public_facing.get_facility_adopted_practices(@va_facility.id, key_word, selected_cat) : Practice.get_facility_adopted_practices(@va_facility.id, key_word, selected_cat)
+    @adoptions_at_facility = session[:user_type] === 'guest' && ENV['VAEC_ENV'] === 'true' ? Practice.public_facing.get_facility_adopted_practices(@va_facility.id, key_word, selected_cat) : Practice.get_facility_adopted_practices(@va_facility.id, key_word, selected_cat)
 
     adopted_facility_results_html = ''
     @adoptions_at_facility.each do |pr|

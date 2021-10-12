@@ -74,6 +74,7 @@ class PracticesController < ApplicationController
     if session[:user_type] == "guest" && !@practice.is_public
       respond_to do |format|
         s_error = 'This innovation is not available for Non-VA users.'
+        # Note: redirect_back does work when the request.referrer is nil (URL is manually entered/bookmarked URLs)
         format.html { redirect_back fallback_location: root_path, flash: { error: s_error } }
         format.json { render error: s_error }
       end
