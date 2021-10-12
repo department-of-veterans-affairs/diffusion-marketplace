@@ -1,11 +1,182 @@
-<!-- "Practice name" section -->
+<% provide :head_tags do %>
+  <%= javascript_include_tag 'practice_page', 'data-turbolinks-track': 'reload' %>
+<% end %>
+<section class="usa-section padding-y-0 margin-bottom-1">
+  <div class="grid-container position-relative">
+    <div class="grid-row grid-gap">
+      <div id="practice_show" class="grid-col-12 overview-section practice-section">
+        <%= render partial: "shared/messages", locals: {small_text: false} %>
+        <%= render partial: "practices/show/practice_status_banner", locals: { practice: @practice } %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- "Practice nav" section -->
+<!-- Overview Implementation Contact About -->
+
+<%= render partial: 'practices/show/introduction/introduction' %>
+
+<div class="grid-container position-relative z-top">
+  <div id="dm-practice-nav" class="z-top mobile-hide">
+    <ul class="usa-sidenav margin-bottom-1 show-page-sidenav">
+      <li class="usa-sidenav__item">
+        <a href="#overview" class="top-tab scroll-to sidebar-overview" data-target="#overview" data-turbolinks="false">Overview</a>
+      </li>
+      <li class="usa-sidenav__item">
+        <a href="#implementation" class="bottom-tab scroll-to sidebar-implementation" data-target="#implementation" data-turbolinks="false">Implementation</a>
+      </li>
+      <li class="usa-sidenav__item">
+        <a href="#contact" class="bottom-tab scroll-to sidebar-contact" data-target="#contact" data-turbolinks="false">Contact</a>
+      </li>
+      <% if @practice.origin_story.present? || @practice.va_employees.any? %>
+        <li class="usa-sidenav__item">
+          <a href="#about" class="bottom-tab scroll-to sidebar-about" data-target="#about" data-turbolinks="false">About</a>
+        </li>
+      <% end %>
+    </ul>
+    <%
+      main_email = @practice.support_network_email
+      practice_emails = @practice.practice_emails
+      cc_emails = practice_emails.map(&:address).join(', ')
+      instructions_path = practice_instructions_path(@practice)
+      metrics_path = practice_metrics_path(@practice)
+    %>
+    <div class="text-center margin-bottom-1">
+      <%= mail_to main_email, 'Email innovation', subject: "Question about #{@practice.name}", cc: cc_emails, class: 'usa-button  width-full display-flex flex-align-center flex-justify-center
+      dm-email-practice', 'aria-label': "side nav email #{main_email}", data: {practice_id: @practice.id} %>
+    </div>
+    <% if (current_user.present?) && (@practice.user_id == current_user.id || current_user.roles.any? || is_user_an_editor_for_practice(@practice, current_user)) %>
+      <div class="text-center">
+        <%= link_to practice_metrics_path(@practice), id: 'edit-link-in-nav', class: 'usa-button usa-button--secondary width-full' do %>
+          <i class="fas fa-edit margin-right-1"></i>Edit innovation
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="practice-mobile-nav padding-1 z-top desktop:display-none display-flex flex-justify-center">
+  <%= mail_to main_email, 'Email', cc: cc_emails, id: 'email-link-in-mobile-nav', class: 'width-full usa-button  display-flex flex-align-center flex-justify-center margin-right-2', 'aria-label': "Mobile nav email #{main_email}"  %>
+  <% if (current_user.present?) && (@practice.user_id == current_user.id || current_user.roles.any?) %>
+    <%= link_to 'Edit', instructions_path, id: 'edit-link-in-mobile-nav', class: 'width-full usa-button usa-button--secondary margin-right-0' %>
+  <% end %>
+</div>
+
+<!-- Overview-Problem-->
+<section id="overview" class="margin-bottom-5 grid-container nav-header">
+  <div class="grid-row grid-gap-2">
+    <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
+    <div class="desktop:grid-col-9 grid-col-12 padding-top-6">
+      <div class="practice-editor-long-rect-svg border-top-05 border-primary-dark"></div>
+      <h2 class="font-sans-xl line-height-37px margin-top-2 margin-bottom-10">Overview</h2>
+      <div class="metric-section practice-section">
+        <section id="overview_problem" class="margin-bottom-5">
+          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_problem_resources, statement: @practice.overview_problem, title: 'The problem', s_area: 'problem'} %>
+        </section>
+        <section id="overview_solution" class="margin-bottom-5">
+          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_solution_resources, statement: @practice.overview_solution, title: 'The solution', s_area: 'solution'} %>
+        </section>
+        <section id="overview_results">
+          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: @practice.practice_results_resources, statement: @practice.overview_results, title: 'The results', s_area: 'results'} %>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+
+<% if @practice.practice_metrics.any? %>
+  <section class="margin-bottom-5 grid-container">
+    <div class="grid-row grid-gap-2">
+      <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
+      <div class="desktop:grid-col-9 grid-col-12">
+        <div class="metric-section practice-section">
+          <%= render partial: 'practices/show/overview/metrics' %>
+        </div>
+      </div>
+    </div>
+  </section>
+<% end %>
+
+<!-- Diffusion Tracker -->
+<% if @practice.diffusion_histories.any? && ENV['GOOGLE_API_KEY'] %>
+  <section id="dm-pv-diffusion-tracker" class="margin-bottom-5 grid-container">
+    <div class="grid-row grid-gap-2">
+      <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
+      <div class="desktop:grid-col-9 grid-col-12">
+        <div class="metric-section practice-section">
+          <div class="height-05 width-8 border-top-05 border-primary-dark"></div>
+          <h3 class="margin-y-2 line-height-26 font-sans-lg">Diffusion tracker</h3>
+          <%= render partial: 'practices/show/overview/diffusion_tracker/diffusion_map' %>
+          <%= render partial: 'practices/show/overview/diffusion_tracker/adoptions' %>
+        </div>
+      </div>
+    </div>
+  </section>
+<% end %>
+
+<%
+  practice_multimedia = @practice.practice_multimedia
+%>
+
+<% if practice_multimedia.any? %>
+  <section class="margin-bottom-5 grid-container">
+    <div class="grid-row grid-gap-2">
+      <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
+      <div class="desktop:grid-col-9 grid-col-12">
+        <div class="multimedia-section practice-section">
+          <%= render partial: 'practices/show/overview/overview_sections', locals: {resources: practice_multimedia, statement: '', title: 'Multimedia', s_area: 'multimedia'} %>
+        </div>
+      </div>
+    </div>
+  </section>
+<% end %>
+
+<!-- Implementation section -->
+<section id="implementation" class="grid-container nav-header">
+  <div class="grid-row grid-gap-2">
+    <div class="desktop:grid-col-3 desktop:grid-col-auto desktop:z-bottom desktop:display-block display-none">&nbsp;</div>
+    <div class="desktop:grid-col-9 grid-col-12 padding-top-10">
+      <div class="practice-editor-long-rect-svg border-top-05 border-primary-dark"></div>
+      <h2 class="font-sans-xl line-height-37px margin-top-2 margin-bottom-10">Implementation</h2>
+      <div class="metric-section practice-section margin-bottom-5">
+        <% if @practice.timelines.any? %>
+          <section id="dm-implementation-timeline" class="margin-bottom-5">
+            <%= render partial: 'practices/show/implementation/timelines' %>
+          </section>
+        <% end %>
+        <% if @practice.department_practices.any? %>
+          <section id="dm-implementation-departments" class="margin-bottom-5">
+            <%= render partial: 'practices/show/implementation/departments' %>
+          </section>
+        <% end %>
+        <% if @practice.practice_resources.any? %>
+          <section id="dm-implementation-show-resources">
+            <%= render partial: 'practices/show/implementation/show_resources' %>
+          </section>
+        <% end %>
+        <% if @practice.risk_mitigations.any? %>
+          <section id="dm-implementation-risk-mitigations" class="margin-bottom-5">
+            <%= render partial: 'practices/show/implementation/risks_and_mitigations' %>
+          </section>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>
 
 
-<!-- Practice hero image section -->
+<!-- Contact Section-->
+<%= render partial: 'practices/show/contact/contact' %>
 
-<%= render partial: 'practices/show/authenticated/show_unauthenticated' unless current_user.present? %>
+<!-- About Section-->
+<% if @practice.origin_story.present? || @practice.va_employees.any? %>
+  <%= render partial: 'practices/show/about/about' %>
+<% end %>
 
-<%= render partial: 'practices/show/authenticated/show_authenticated' if current_user.present? %>
+<script type="text/javascript">
+  <%= render partial: 'practices/show/ahoy_event_tracking.js' if current_user.present? %>
+</script>
 
 <%# search terms(campaigns/categories/tags) for mobile  %>
 <% if @practice.categories.where.not(is_other: true, name: 'Other').any? %>
