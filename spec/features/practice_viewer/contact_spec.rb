@@ -96,7 +96,7 @@ describe 'Contact section', type: :feature, js: true do
       click_button('commit')
       visit practice_path(@practice)
       expect(page).to have_selector('.comments-section', visible: true)
-      expect(page).to have_content('PRACTICE ADOPTER')
+      expect(page).to have_content('INNOVATION ADOPTER')
     end
 
     it 'Should not display the verified implementer tag if the user selects the "Other" radio button' do
@@ -105,7 +105,7 @@ describe 'Contact section', type: :feature, js: true do
       click_button('commit')
       visit practice_path(@practice)
       expect(page).to have_selector('.comments-section', visible: true)
-      expect(page).to_not have_content('PRACTICE ADOPTER')
+      expect(page).to_not have_content('INNOVATION ADOPTER')
     end
 
 
