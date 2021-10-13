@@ -71,11 +71,11 @@ class PracticesController < ApplicationController
       marker.infowindow render_to_string(partial: 'maps/infowindow', locals: { diffusion_histories: dhg[1], facility: facility })
     end
 
-    if session[:user_type] == "guest" && !@practice.is_public
+    vaec_environment = ENV['VAEC_ENV']
+    if (session[:user_type] === 'guest' && vaec_environment === 'true') || (current_user.blank? && vaec_environment.nil?) && !@practice.is_public
       respond_to do |format|
         s_error = 'This innovation is not available for Non-VA users.'
-        # Note: redirect_back does work when the request.referrer is nil (URL is manually entered/bookmarked URLs)
-        format.html { redirect_back fallback_location: root_path, flash: { error: s_error } }
+        format.html { redirect_to root_path, flash: { error: s_error } }
         format.json { render error: s_error }
       end
     else
@@ -159,7 +159,8 @@ class PracticesController < ApplicationController
   end
 
   def search
-    @practices = Practice.searchable_practices nil, session[:user_type] == "guest"
+    vaec_environment = ENV['VAEC_ENV']
+    @practices = Practice.searchable_practices nil, (session[:user_type] == 'guest' && vaec_environment === 'true') || (current_user.blank? && vaec_environment.nil?)
     # due to some practices/search.js.erb functions being reused for other pages (VISNs/VA Facilities), set the @practices_json variable to nil unless it's being used for the practices/search page
     @practices_json = practices_json(@practices)
     @diffusion_histories = []

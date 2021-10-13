@@ -113,7 +113,7 @@ describe 'Contact section', type: :feature, js: true do
       fill_in('comment[body]', with: 'Hello world')
       click_button('commit')
       expect(page).to have_selector('.comments-section', visible: true)
-      logout(@user2)
+      logout
       visit practice_path(@practice)
       login_as(@user1, :scope => :user, :run_callbacks => false)
       page.set_rack_session(:user_type => 'ntlm')
@@ -150,7 +150,7 @@ describe 'Contact section', type: :feature, js: true do
       end
 
       it 'if a user exists with the an email address that matches the practice\'s support network email and that user is the comment creator, it should not send an email to the support network email address' do
-        logout(@user2)
+        logout
         login_as(@user3, :scope => :user, :run_callbacks => false)
         page.set_rack_session(:user_type => 'ntlm')
         visit practice_path(@practice)

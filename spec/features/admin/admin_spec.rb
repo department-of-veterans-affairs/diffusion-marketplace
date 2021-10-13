@@ -609,7 +609,7 @@ describe 'The admin dashboard', type: :feature do
     expect(Practice.first.commontator_thread.subscribers.first).to eq(@user2)
 
     # create a comment with the current practice user
-    logout(@admin)
+    logout
     login_as(@user2, :scope => :user, :run_callbacks => false)
     page.set_rack_session(:user_type => 'ntlm')
     visit practice_path(@practice)
@@ -617,7 +617,7 @@ describe 'The admin dashboard', type: :feature do
     click_button('commit')
 
     # change the practice user back to the original user
-    logout(@user2)
+    logout
     sleep 2
     login_as(@admin, :scope => :user, run_callbacks: false)
     visit '/admin/practices/the-best-practice-ever/edit'

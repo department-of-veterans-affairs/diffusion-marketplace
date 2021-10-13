@@ -366,8 +366,13 @@ class Practice < ApplicationRecord
     PracticeEditor.create_and_invite(self, self.user) unless is_user_an_editor_for_practice(self, self.user)
   end
 
-  def self.search_practices(search_term = nil, sort = 'a_to_z', categories = nil)
+  def self.search_practices(search_term = nil, sort = 'a_to_z', categories = nil, is_guest = true)
     query = with_categories_and_adoptions_ct.left_outer_joins(:practice_origin_facilities)
+
+    if is_guest
+      query = query.public_facing
+    end
+
     if search_term
       search = get_query_for_search_term(search_term)
       query = query.where(search[:query], search[:params])
@@ -388,15 +393,14 @@ class Practice < ApplicationRecord
     query.group("practices.id, categories.id, practice_origin_facilities.id").uniq
   end
 
-  def self.get_facility_created_practices(facility_id, search_term = nil, sort = 'a_to_z', categories = nil)
-    practices = search_practices(search_term, sort, categories)
-
-    practices.select { |pr| pr.practice_origin_facilities.pluck(:va_facility_id).include?(facility_id)}
+  def self.get_facility_created_practices(facility_id, search_term = nil, sort = 'a_to_z', categories = nil, is_guest = true)
+    practices = search_practices(search_term, sort, categories, is_guest)
+    practices.select { |pr| pr.practice_origin_facilities.pluck(:va_facility_id).include?(facility_id) }
   end
 
-  def self.get_facility_adopted_practices(facility_id, search_term = nil, categories = nil)
-    practices = search_practices(search_term, 'a_to_z', categories)
-    practices.select { |pr| pr.diffusion_histories.pluck(:va_facility_id).include?(facility_id)}
+  def self.get_facility_adopted_practices(facility_id, search_term = nil, categories = nil, is_guest = true)
+    practices = search_practices(search_term, 'a_to_z', categories, is_guest)
+    practices.select { |pr| pr.diffusion_histories.pluck(:va_facility_id).include?(facility_id) }
   end
 
   def self.get_query_for_search_term(search_term)

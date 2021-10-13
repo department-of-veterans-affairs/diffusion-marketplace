@@ -40,7 +40,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
 
     it "should not display 'Sign in' link for a guest user on a production env" do
       # logout and set the session[:user_type] to 'guest' and add the 'VAEC_ENV' env var to replicate a public guest user on dev/stg/prod
-      logout(@admin)
+      logout
       page.set_rack_session(:user_type => 'guest')
       ENV['VAEC_ENV'] = 'true'
       visit '/'
