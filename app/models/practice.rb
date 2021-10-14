@@ -62,22 +62,22 @@ class Practice < ApplicationRecord
     clear_searchable_cache if self.reset_searchable_cache
   end
 
-  def self.searchable_practices(sort = 'a_to_z', is_guest = true)
+  def self.searchable_practices(sort = 'a_to_z', is_user_guest = true)
     if sort == 'a_to_z'
       Rails.cache.fetch('searchable_practices_a_to_z') do
-        is_guest ? Practice.public_facing.sort_by_retired.sort_a_to_z.get_with_categories_and_adoptions_ct : Practice.sort_by_retired.sort_a_to_z.get_with_categories_and_adoptions_ct
+        is_user_guest ? Practice.public_facing.sort_by_retired.sort_a_to_z.get_with_categories_and_adoptions_ct : Practice.sort_by_retired.sort_a_to_z.get_with_categories_and_adoptions_ct
       end
     elsif sort == 'adoptions'
       Rails.cache.fetch('searchable_practices_adoptions') do
-        is_guest ? Practice.public_facing.sort_by_retired.sort_adoptions_ct.get_with_categories_and_adoptions_ct : Practice.sort_by_retired.sort_adoptions_ct.get_with_categories_and_adoptions_ct
+        is_user_guest ? Practice.public_facing.sort_by_retired.sort_adoptions_ct.get_with_categories_and_adoptions_ct : Practice.sort_by_retired.sort_adoptions_ct.get_with_categories_and_adoptions_ct
       end
     elsif sort == 'added'
       Rails.cache.fetch('searchable_practices_added') do
-        is_guest ? Practice.public_facing.sort_by_retired.sort_added.get_with_categories_and_adoptions_ct : Practice.sort_by_retired.sort_added.get_with_categories_and_adoptions_ct
+        is_user_guest ? Practice.public_facing.sort_by_retired.sort_added.get_with_categories_and_adoptions_ct : Practice.sort_by_retired.sort_added.get_with_categories_and_adoptions_ct
       end
     elsif sort == nil
       Rails.cache.fetch('searchable_practices') do
-        is_guest ? Practice.public_facing.sort_by_retired.get_with_categories_and_adoptions_ct : Practice.sort_by_retired.get_with_categories_and_adoptions_ct
+        is_user_guest ? Practice.public_facing.sort_by_retired.get_with_categories_and_adoptions_ct : Practice.sort_by_retired.get_with_categories_and_adoptions_ct
       end
     end
   end
@@ -366,10 +366,10 @@ class Practice < ApplicationRecord
     PracticeEditor.create_and_invite(self, self.user) unless is_user_an_editor_for_practice(self, self.user)
   end
 
-  def self.search_practices(search_term = nil, sort = 'a_to_z', categories = nil, is_guest = true)
+  def self.search_practices(search_term = nil, sort = 'a_to_z', categories = nil, is_user_guest = true)
     query = with_categories_and_adoptions_ct.left_outer_joins(:practice_origin_facilities)
 
-    if is_guest
+    if is_user_guest
       query = query.public_facing
     end
 
@@ -393,13 +393,13 @@ class Practice < ApplicationRecord
     query.group("practices.id, categories.id, practice_origin_facilities.id").uniq
   end
 
-  def self.get_facility_created_practices(facility_id, search_term = nil, sort = 'a_to_z', categories = nil, is_guest = true)
-    practices = search_practices(search_term, sort, categories, is_guest)
+  def self.get_facility_created_practices(facility_id, search_term = nil, sort = 'a_to_z', categories = nil, is_user_guest = true)
+    practices = search_practices(search_term, sort, categories, is_user_guest)
     practices.select { |pr| pr.practice_origin_facilities.pluck(:va_facility_id).include?(facility_id) }
   end
 
-  def self.get_facility_adopted_practices(facility_id, search_term = nil, categories = nil, is_guest = true)
-    practices = search_practices(search_term, 'a_to_z', categories, is_guest)
+  def self.get_facility_adopted_practices(facility_id, search_term = nil, categories = nil, is_user_guest = true)
+    practices = search_practices(search_term, 'a_to_z', categories, is_user_guest)
     practices.select { |pr| pr.diffusion_histories.pluck(:va_facility_id).include?(facility_id) }
   end
 
