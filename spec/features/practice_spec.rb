@@ -50,6 +50,7 @@ describe 'Practices', type: :feature do
     end
 
     it 'should not let unauthenticated users interact with internal-facing practices' do
+      @user_practice.update(approved: true, published: true)
       visit '/innovations/the-best-practice-ever'
 
       expect(page).to have_current_path(root_path)
