@@ -173,7 +173,7 @@ class PracticesController < ApplicationController
   # GET /explore
   def explore
     @categories = Category.with_practices
-    practices = Practice.searchable_practices 'a_to_z', session[:user_type] == "guest"
+    practices = helpers.is_user_a_guest? ? Practice.searchable_practices('a_to_z', true) : Practice.searchable_practices('a_to_z', false)
     @pagy_practices = pagy_array(
       practices,
       items: 12
@@ -195,7 +195,7 @@ class PracticesController < ApplicationController
 
     @sort_option = params[:sort_option] || 'a_to_z'
     @cat_filters = params[:categories] ? params[:categories].map { |cat| cat.to_i } : []
-    practices = Practice.searchable_practices @sort_option, session[:user_type] == "guest"
+    practices = helpers.is_user_a_guest? ? Practice.searchable_practices(@sort_option, true) : Practice.searchable_practices(@sort_option, false)
     if @cat_filters.length > 0
       filtered_practices = practices.select { |pr| !(pr.category_ids & @cat_filters).empty? }
       practices = filtered_practices

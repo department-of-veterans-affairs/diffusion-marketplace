@@ -14,6 +14,7 @@ describe 'Homepage', type: :feature do
     @practice = Practice.create!(name: 'The Best Practice Ever!', initiating_facility_type: 'facility', tagline: 'Test tagline', date_initiated: 'Sun, 05 Feb 1992 00:00:00 UTC +00:00', summary: 'This is the best practice ever.', overview_problem: 'overview-problem', published: true, approved: true, user: @user)
     PracticeOriginFacility.create!(practice: @practice, facility_type: 0, va_facility_id: 1)
     @featured_image = "#{Rails.root}/spec/assets/charmander.png"
+    login_as(@user, :scope => :user, :run_callbacks => false)
     visit '/'
   end
 
