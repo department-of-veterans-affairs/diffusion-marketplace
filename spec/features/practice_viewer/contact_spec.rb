@@ -39,6 +39,8 @@ describe 'Contact section', type: :feature, js: true do
     end
 
     it 'Should not allow unauthenticated users to post comments' do
+      # make the practice public, so the user is not redirected
+      @practice.update_attributes(is_public: true)
       visit practice_path(@practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@practice.name)

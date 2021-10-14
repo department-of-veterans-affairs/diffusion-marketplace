@@ -193,11 +193,11 @@ describe 'VA facility pages', type: :feature do
       visit va_facility_path(@facility_1)
     end
 
-    def check_search_results_as_guest_user(container_class)
+    def check_search_results_as_guest_user(container_selector)
       # Check the results for a VA-only practice as a guest user
       logout
       visit va_facility_path(@facility_1)
-      expect(page).to_not have_selector(container_class)
+      expect(page).to_not have_selector(container_selector)
 
       # login as an admin and set the 'is_public' flag for the same practice to true
       login_as(@admin, :scope => :user, :run_callbacks => false)
@@ -209,7 +209,7 @@ describe 'VA facility pages', type: :feature do
       logout
       visit va_facility_path(@facility_1)
 
-      within(:css, container_class) do
+      within(:css, container_selector) do
         expect(page).to have_content('1 result')
         expect(page).to have_content('Gerofit')
         expect(page).to_not have_content('There are currently no matches for your search on the Marketplace.')

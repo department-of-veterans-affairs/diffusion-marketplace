@@ -71,10 +71,9 @@ class PracticesController < ApplicationController
       marker.infowindow render_to_string(partial: 'maps/infowindow', locals: { diffusion_histories: dhg[1], facility: facility })
     end
 
-    vaec_environment = ENV['VAEC_ENV']
-    if (session[:user_type] === 'guest' && vaec_environment === 'true') || (current_user.blank? && vaec_environment.nil?) && !@practice.is_public
+    if helpers.is_user_a_guest? && !@practice.is_public
       respond_to do |format|
-        s_error = 'This innovation is not available for Non-VA users.'
+        s_error = 'This innovation is not available for non-VA users.'
         format.html { redirect_to root_path, flash: { error: s_error } }
         format.json { render error: s_error }
       end
@@ -159,8 +158,7 @@ class PracticesController < ApplicationController
   end
 
   def search
-    vaec_environment = ENV['VAEC_ENV']
-    @practices = Practice.searchable_practices nil, (session[:user_type] == 'guest' && vaec_environment === 'true') || (current_user.blank? && vaec_environment.nil?)
+    @practices = Practice.searchable_practices nil, helpers.is_user_a_guest?
     # due to some practices/search.js.erb functions being reused for other pages (VISNs/VA Facilities), set the @practices_json variable to nil unless it's being used for the practices/search page
     @practices_json = practices_json(@practices)
     @diffusion_histories = []

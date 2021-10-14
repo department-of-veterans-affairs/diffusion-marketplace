@@ -47,11 +47,11 @@ class VaFacilitiesController < ApplicationController
       marker.shadow nil
       marker.json({ id: facility.id })
     end
-    vaec_environment = ENV['VAEC_ENV']
-    adopted_practices = (session[:user_type] === 'guest' && vaec_environment === 'true') || (current_user.blank? && vaec_environment.nil?) ? Practice.get_facility_adopted_practices(@va_facility.id, nil, nil, true) : Practice.get_facility_adopted_practices(@va_facility.id, nil, nil, false)
+
+    adopted_practices = helpers.is_user_a_guest? ? Practice.get_facility_adopted_practices(@va_facility.id, nil, nil, true) : Practice.get_facility_adopted_practices(@va_facility.id, nil, nil, false)
     @adopted_pr_count = adopted_practices.size
     @adopted_practices_categories = get_categories_by_practices(adopted_practices, [])
-    created_practices = (session[:user_type] === 'guest' && vaec_environment === 'true') || (current_user.blank? && vaec_environment.nil?) ? Practice.get_facility_created_practices(@va_facility.id, nil, 'a_to_z', nil, true) : Practice.get_facility_created_practices(@va_facility.id, nil, 'a_to_z', nil, false)
+    created_practices = helpers.is_user_a_guest? ? Practice.get_facility_created_practices(@va_facility.id, nil, 'a_to_z', nil, true) : Practice.get_facility_created_practices(@va_facility.id, nil, 'a_to_z', nil, false)
     @created_pr_count = created_practices.size
     @created_practices_categories = get_categories_by_practices(created_practices, [])
   end
@@ -63,8 +63,7 @@ class VaFacilitiesController < ApplicationController
     sort_option = params[:sort_option] || 'a_to_z'
     search_term = params[:search_term] ? params[:search_term].downcase : nil
     categories = params[:categories] || nil
-    vaec_environment = ENV['VAEC_ENV']
-    created_practices = (session[:user_type] === 'guest' && vaec_environment === 'true') || (current_user.blank? && vaec_environment.nil?) ? Practice.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories, true) : Practice.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories, false)
+    created_practices = helpers.is_user_a_guest? ? Practice.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories, true) : Practice.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories, false)
 
     @pagy_created_practices = pagy_array(
       created_practices,
@@ -87,8 +86,7 @@ class VaFacilitiesController < ApplicationController
   def update_practices_adopted_at_facility
     selected_cat = params["selected_category"].present? ?  params["selected_category"] : nil
     key_word = params["key_word"].present? ? params["key_word"] : nil
-    vaec_environment = ENV['VAEC_ENV']
-    adoptions_at_facility = (session[:user_type] === 'guest' && vaec_environment === 'true') || (current_user.blank? && vaec_environment.nil?) ? Practice.get_facility_adopted_practices(@va_facility.id, key_word, selected_cat, true) : Practice.get_facility_adopted_practices(@va_facility.id, key_word, selected_cat, false)
+    adoptions_at_facility = helpers.is_user_a_guest? ? Practice.get_facility_adopted_practices(@va_facility.id, key_word, selected_cat, true) : Practice.get_facility_adopted_practices(@va_facility.id, key_word, selected_cat, false)
 
     adopted_facility_results_html = ''
     adoptions_at_facility.each do |pr|

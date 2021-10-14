@@ -55,13 +55,13 @@ class VisnsController < ApplicationController
     # set '@practices_json' to avoid js console error when utilizing the practices/search.js.erb file
     @practices_json = []
     visn_va_facilities_ids = @visn_va_facilities.get_ids
-    @practices_created_by_visn = @visn.get_created_practices(visn_va_facilities_ids)
+    @practices_created_by_visn = helpers.is_user_a_guest? ? @visn.get_created_practices(visn_va_facilities_ids, :is_guest => true) : @visn.get_created_practices(visn_va_facilities_ids, :is_guest => false)
     @practices_created_json = practices_json(@practices_created_by_visn)
     # get the unique categories for innovations created in a VISN
     @practices_created_categories = []
     get_categories_by_practices(@practices_created_by_visn, @practices_created_categories)
 
-    @practices_adopted_by_visn = @visn.get_adopted_practices(visn_va_facilities_ids)
+    @practices_adopted_by_visn = helpers.is_user_a_guest? ? @visn.get_adopted_practices(visn_va_facilities_ids, :is_guest => true) : @visn.get_adopted_practices(visn_va_facilities_ids, :is_guest => false)
     @practices_adopted_json = practices_json(@practices_adopted_by_visn)
     # get the unique categories for practices adopted in a VISN
     @practices_adopted_categories = []
@@ -90,8 +90,8 @@ class VisnsController < ApplicationController
     visn_counts = []
     @visns.each do |visn|
       va_facility_ids = VaFacility.get_by_visn(visn).get_ids
-      created = visn.get_created_practices(va_facility_ids).size
-      adopted = visn.get_adopted_practices(va_facility_ids).size
+      created = helpers.is_user_a_guest? ? visn.get_created_practices(va_facility_ids, :is_guest => true).size : visn.get_created_practices(va_facility_ids, :is_guest => false).size
+      adopted = helpers.is_user_a_guest? ? visn.get_adopted_practices(va_facility_ids, :is_guest => true).size : visn.get_adopted_practices(va_facility_ids, :is_guest => false).size
       visn_counts.push({number: visn[:number], created: created, adopted: adopted})
     end
     visn_counts
