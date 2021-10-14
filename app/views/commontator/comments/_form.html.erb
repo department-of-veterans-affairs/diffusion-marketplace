@@ -34,7 +34,7 @@
   <% end %>
 
   <div class="field <%= comment.parent.nil? && new_record ? 'comment-field' : 'reply-field' %>">
-    <% if session[:user_type] === 'ntlm' %>
+    <% if (current_user.present? && ENV['VAEC_ENV'].nil?) || session[:user_type] === 'ntlm' %>
         <%=
           form.text_area :body, rows: '7', aria: { label: 'comment text area' }, placeholder: "#{comment.parent.nil? && new_record ? 'Type your comment here...' : 'Type your reply here...' }",
             class: comment.parent.nil? && new_record ? 'usa-textarea comment-textarea line-height-26' : 'usa-textarea reply-textarea line-height-26', id: new_record ?
