@@ -90,4 +90,13 @@ describe 'Page Builder - Show', type: :feature do
   it 'Should display a warning banner on non-Chrome browsers', js: true do
     expect(page).to have_content('Some links or actions on this page are not supported or optimal on this browser.')
   end
+
+  it 'should allow any user to be able to visit published page-builder pages' do
+    logout
+    visit '/programming/ruby-rocks'
+
+    expect(page).to_not have_current_path(root_path)
+    expect(page).to have_content('ruby')
+    expect(page).to have_content('what a gem')
+  end
 end
