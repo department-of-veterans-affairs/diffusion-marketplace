@@ -47,10 +47,11 @@ class VaFacilitiesController < ApplicationController
       marker.shadow nil
       marker.json({ id: facility.id })
     end
-    adopted_practices = Practice.get_facility_adopted_practices(@va_facility.id)
+
+    adopted_practices = helpers.is_user_a_guest? ? Practice.get_facility_adopted_practices(@va_facility.id, nil, nil, true) : Practice.get_facility_adopted_practices(@va_facility.id, nil, nil, false)
     @adopted_pr_count = adopted_practices.size
     @adopted_practices_categories = get_categories_by_practices(adopted_practices, [])
-    created_practices = Practice.get_facility_created_practices(@va_facility.id, nil, 'a_to_z', nil)
+    created_practices = helpers.is_user_a_guest? ? Practice.get_facility_created_practices(@va_facility.id, nil, 'a_to_z', nil, true) : Practice.get_facility_created_practices(@va_facility.id, nil, 'a_to_z', nil, false)
     @created_pr_count = created_practices.size
     @created_practices_categories = get_categories_by_practices(created_practices, [])
   end
@@ -62,7 +63,7 @@ class VaFacilitiesController < ApplicationController
     sort_option = params[:sort_option] || 'a_to_z'
     search_term = params[:search_term] ? params[:search_term].downcase : nil
     categories = params[:categories] || nil
-    created_practices = session[:user_type] == "guest" ? Practice.public_facing.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories) : Practice.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories)
+    created_practices = helpers.is_user_a_guest? ? Practice.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories, true) : Practice.get_facility_created_practices(@va_facility.id, search_term, sort_option, categories, false)
 
     @pagy_created_practices = pagy_array(
       created_practices,
@@ -85,24 +86,17 @@ class VaFacilitiesController < ApplicationController
   def update_practices_adopted_at_facility
     selected_cat = params["selected_category"].present? ?  params["selected_category"] : nil
     key_word = params["key_word"].present? ? params["key_word"] : nil
-    facility_adoptions = []
-    @adoptions_at_facility = Practice.get_facility_adopted_practices(@va_facility.id, key_word, selected_cat)
-    if session[:user_type] == "guest"
-      @adoptions_at_facility.each do |fas|
-          facility_adoptions << fas if fas.is_public
-      end
-      @adoptions_at_facility = facility_adoptions
-    end
+    adoptions_at_facility = helpers.is_user_a_guest? ? Practice.get_facility_adopted_practices(@va_facility.id, key_word, selected_cat, true) : Practice.get_facility_adopted_practices(@va_facility.id, key_word, selected_cat, false)
 
     adopted_facility_results_html = ''
-    @adoptions_at_facility.each do |pr|
+    adoptions_at_facility.each do |pr|
       pr_html = render_to_string('va_facilities/_adopted_facility_table_row', layout: false, locals: { ad: pr })
       adopted_facility_results_html += pr_html
     end
 
     respond_to do |format|
       format.html
-      format.json { render :json => {adopted_facility_results_html: adopted_facility_results_html, count: @adoptions_at_facility.size } }
+      format.json { render :json => {adopted_facility_results_html: adopted_facility_results_html, count: adoptions_at_facility.size } }
     end
   end
 

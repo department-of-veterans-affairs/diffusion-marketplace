@@ -34,17 +34,19 @@ describe 'Contact section', type: :feature, js: true do
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@practice.name)
       expect(page).to have_content("Other")
-      expect(page).to have_content('I am currently adopting this practice')
-      expect(page).to have_content('I am a member of this practice team')
+      expect(page).to have_content('I am currently adopting this innovation')
+      expect(page).to have_content('I am a member of this innovation team')
     end
 
-    it 'Should not allow unauthenticated users to view or post comments' do
-      # Try to visit a practice page without being logged in
+    it 'Should not allow unauthenticated users to post comments' do
+      # make the practice public, so the user is not redirected
+      @practice.update_attributes(is_public: true)
       visit practice_path(@practice)
       expect(page).to be_accessible.according_to :wcag2a, :section508
       expect(page).to have_content(@practice.name)
       expect(page).to have_current_path(practice_path(@practice))
-      expect(page).to have_content('Login to see full practice')
+      expect(page).to have_content('Comments and replies are disabled for retired innovations and public users.')
+      expect(page).to_not have_selector('.new-comment')
     end
   end
 
@@ -96,7 +98,7 @@ describe 'Contact section', type: :feature, js: true do
       click_button('commit')
       visit practice_path(@practice)
       expect(page).to have_selector('.comments-section', visible: true)
-      expect(page).to have_content('PRACTICE ADOPTER')
+      expect(page).to have_content('INNOVATION ADOPTER')
     end
 
     it 'Should not display the verified implementer tag if the user selects the "Other" radio button' do
@@ -105,7 +107,7 @@ describe 'Contact section', type: :feature, js: true do
       click_button('commit')
       visit practice_path(@practice)
       expect(page).to have_selector('.comments-section', visible: true)
-      expect(page).to_not have_content('PRACTICE ADOPTER')
+      expect(page).to_not have_content('INNOVATION ADOPTER')
     end
 
 
@@ -113,7 +115,7 @@ describe 'Contact section', type: :feature, js: true do
       fill_in('comment[body]', with: 'Hello world')
       click_button('commit')
       expect(page).to have_selector('.comments-section', visible: true)
-      logout(@user2)
+      logout
       visit practice_path(@practice)
       login_as(@user1, :scope => :user, :run_callbacks => false)
       page.set_rack_session(:user_type => 'ntlm')
@@ -150,7 +152,7 @@ describe 'Contact section', type: :feature, js: true do
       end
 
       it 'if a user exists with the an email address that matches the practice\'s support network email and that user is the comment creator, it should not send an email to the support network email address' do
-        logout(@user2)
+        logout
         login_as(@user3, :scope => :user, :run_callbacks => false)
         page.set_rack_session(:user_type => 'ntlm')
         visit practice_path(@practice)

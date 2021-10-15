@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'spec_helper'
 
 describe 'Diffusion Marketplace header', type: :feature, js: true do
   before do
@@ -27,7 +28,7 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
   end
 
   describe 'header links' do
-    it 'should exist' do
+    it "should display 'Your profile' link for a logged in user" do
       within('header.usa-header') do
         expect(page).to have_content('Diffusion map')
         expect(page).to have_link(href: '/diffusion-map')
@@ -35,6 +36,24 @@ describe 'Diffusion Marketplace header', type: :feature, js: true do
         expect(page).to have_link(href: '/competitions/shark-tank')
         expect(page).to have_content('Your profile')
       end
+    end
+
+    it "should not display 'Sign in' link for a guest user on a production env" do
+      # logout and set the session[:user_type] to 'guest' and add the 'VAEC_ENV' env var to replicate a public guest user on dev/stg/prod
+      logout
+      page.set_rack_session(:user_type => 'guest')
+      ENV['VAEC_ENV'] = 'true'
+      visit '/'
+
+      within('header.usa-header') do
+        expect(page).to have_content('Diffusion map')
+        expect(page).to have_link(href: '/diffusion-map')
+        expect(page).to have_content('Shark Tank')
+        expect(page).to have_link(href: '/competitions/shark-tank')
+        expect(page).to_not have_content('Sign in')
+      end
+
+      ENV['VAEC_ENV'] = nil
     end
 
     context 'clicking on the diffusion map link' do

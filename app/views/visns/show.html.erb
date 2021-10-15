@@ -30,7 +30,8 @@
         </p>
         <%= link_to 'Jump to list of VA facilities', va_facilities_path, class: 'usa-link' %>
       </div>
-      <% if @primary_visn_liaison.present? && session[:user_type] === 'ntlm' %>
+      <% user_type = session[:user_type] %>
+      <% if @primary_visn_liaison.present? && ((ENV['VAEC_ENV'].nil? && user_type === 'guest') || user_type === 'ntlm') %>
         <div class="grid-col-6">
           <div class="visn-liaison-info padding-3 line-height-26 bg-base-lightest">
             <p class="text-bold margin-bottom-2">VISN Marketplace Liaison</p>

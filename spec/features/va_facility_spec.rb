@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'VA facility pages', type: :feature, js: true do
+describe 'VA facility pages', type: :feature do
   before do
     @visn = Visn.create!(name: 'Test VISN', number: 2)
     @visn_3 = Visn.create!(name: 'VISN 3', number: 3)
@@ -48,6 +48,9 @@ describe 'VA facility pages', type: :feature, js: true do
       official_parent_station_name: "Test station",
       fy17_parent_station_complexity_level: "1c-High Complexity",
     )
+
+    @admin = User.create!(email: 'sandy.cheeks@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+    @admin.add_role(User::USER_ROLES[1].to_sym)
   end
 
   describe 'index page' do
@@ -186,7 +189,31 @@ describe 'VA facility pages', type: :feature, js: true do
       dh_9 = DiffusionHistory.create!(practice_id: @practices[2].id, va_facility: @facility_1)
       DiffusionHistoryStatus.create!(diffusion_history_id: dh_9.id, status: 'Completed')
 
+      login_as(@admin, :scope => :user, :run_callbacks => false)
       visit va_facility_path(@facility_1)
+    end
+
+    def check_search_results_as_guest_user(container_selector)
+      # Check the results for a VA-only practice as a guest user
+      logout
+      visit va_facility_path(@facility_1)
+      expect(page).to_not have_selector(container_selector)
+
+      # login as an admin and set the 'is_public' flag for the same practice to true
+      login_as(@admin, :scope => :user, :run_callbacks => false)
+      visit '/admin/practices'
+      all('.toggle-practice-privacy-link')[5].click
+      expect(page).to have_content("\"Gerofit\" is now a public-facing innovation")
+
+      # logout and check the results again as a guest user
+      logout
+      visit va_facility_path(@facility_1)
+
+      within(:css, container_selector) do
+        expect(page).to have_content('1 result')
+        expect(page).to have_content('Gerofit')
+        expect(page).to_not have_content('There are currently no matches for your search on the Marketplace.')
+      end
     end
 
     it 'should be there if the VA facility common name (friendly id) or id exists in the DB' do
@@ -232,6 +259,10 @@ describe 'VA facility pages', type: :feature, js: true do
           expect(page).to have_text('Gerofit')
           expect(page).to have_text('Pink Gloves Program')
         end
+      end
+
+      it 'should only display search results for practices that are public-facing if the user is a guest' do
+        check_search_results_as_guest_user('#dm-facility-adopted-practice-search')
       end
     end
 
@@ -395,6 +426,10 @@ describe 'VA facility pages', type: :feature, js: true do
           expect(page).to have_content('REVAMP')
           expect(page).to have_css('.dm-load-more-created-practices-btn')
         end
+      end
+
+      it 'should only display search results for practices that are public-facing if the user is a guest' do
+        check_search_results_as_guest_user('.dm-facility-created-practice-search')
       end
     end
   end

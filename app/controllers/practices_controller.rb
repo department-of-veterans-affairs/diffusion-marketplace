@@ -71,11 +71,11 @@ class PracticesController < ApplicationController
       marker.infowindow render_to_string(partial: 'maps/infowindow', locals: { diffusion_histories: dhg[1], facility: facility })
     end
 
-    if session[:user_type] == "guest" && !@practice.is_public
+    if helpers.is_user_a_guest? && !@practice.is_public
       respond_to do |format|
-        warning = 'This innovation is not available for Non-VA users.'
-        format.html { redirect_back fallback_location: root_path, flash: { error: warning } }
-        format.json { render warning: warning }
+        s_error = 'This innovation is not available for non-VA users.'
+        format.html { redirect_to root_path, flash: { error: s_error } }
+        format.json { render error: s_error }
       end
     else
       render 'practices/show/show'
@@ -158,7 +158,7 @@ class PracticesController < ApplicationController
   end
 
   def search
-    @practices = Practice.searchable_practices nil, session[:user_type] == "guest"
+    @practices = Practice.searchable_practices nil, helpers.is_user_a_guest?
     # due to some practices/search.js.erb functions being reused for other pages (VISNs/VA Facilities), set the @practices_json variable to nil unless it's being used for the practices/search page
     @practices_json = practices_json(@practices)
     @diffusion_histories = []
@@ -173,7 +173,7 @@ class PracticesController < ApplicationController
   # GET /explore
   def explore
     @categories = Category.with_practices
-    practices = Practice.searchable_practices 'a_to_z', session[:user_type] == "guest"
+    practices = helpers.is_user_a_guest? ? Practice.searchable_practices('a_to_z', true) : Practice.searchable_practices('a_to_z', false)
     @pagy_practices = pagy_array(
       practices,
       items: 12
@@ -195,7 +195,7 @@ class PracticesController < ApplicationController
 
     @sort_option = params[:sort_option] || 'a_to_z'
     @cat_filters = params[:categories] ? params[:categories].map { |cat| cat.to_i } : []
-    practices = Practice.searchable_practices @sort_option, session[:user_type] == "guest"
+    practices = helpers.is_user_a_guest? ? Practice.searchable_practices(@sort_option, true) : Practice.searchable_practices(@sort_option, false)
     if @cat_filters.length > 0
       filtered_practices = practices.select { |pr| !(pr.category_ids & @cat_filters).empty? }
       practices = filtered_practices

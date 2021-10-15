@@ -61,6 +61,9 @@ describe 'Explore all practices page', type: :feature do
     DiffusionHistoryStatus.create!(diffusion_history: dh_3, status: 'Completed')
     dh_4 = DiffusionHistory.create!(practice: @practices[4], va_facility: @fac_1)
     DiffusionHistoryStatus.create!(diffusion_history: dh_4, status: 'Completed')
+
+    @user = User.create!(email: 'spongebob.squarepants@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+    login_as(@user, :scope => :user, :run_callbacks => false)
   end
 
   describe 'Page content' do
@@ -213,6 +216,7 @@ describe 'Explore all practices page', type: :feature do
       sleep 1
       expect(cache_keys).to include("searchable_practices_added")
 
+      logout
       login_as(admin, :scope => :user, :run_callbacks => false)
       # cache clears when adding a practice category
       visit practice_introduction_path(pr)
