@@ -12,8 +12,7 @@ class HomeController < ApplicationController
   end
 
   def diffusion_map
-    is_guest_user = session[:user_type] === 'guest' && ENV['VAEC_ENV'] === 'true'
-    @diffusion_history_practices = is_guest_user ? Practice.public_facing.select(:id, :name).get_with_diffusion_histories : Practice.select(:id, :name).get_with_diffusion_histories
+    @diffusion_history_practices = helpers.is_user_a_guest? ? Practice.public_facing.select(:id, :name).get_with_diffusion_histories : Practice.select(:id, :name).get_with_diffusion_histories
     @visns = Visn.cached_visns.select(:id, :number)
 
     def get_diffusion_histories(is_public_practice)
