@@ -19,7 +19,7 @@ class HomeController < ApplicationController
       DiffusionHistory.get_with_practices(is_public_practice).order(Arel.sql("lower(practices.name)"))
     end
 
-    @diffusion_histories = is_guest_user ? get_diffusion_histories(true) : get_diffusion_histories(false)
+    @diffusion_histories = helpers.is_user_a_guest? ? get_diffusion_histories(true) : get_diffusion_histories(false)
     @successful_ct = @diffusion_histories.get_by_successful_status.size
     @in_progress_ct = @diffusion_histories.get_by_in_progress_status.size
     @unsuccessful_ct = @diffusion_histories.get_by_unsuccessful_status.size
