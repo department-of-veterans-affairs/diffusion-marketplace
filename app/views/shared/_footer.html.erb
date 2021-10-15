@@ -12,40 +12,37 @@
   </div>
   <%# footer actions %>
   <div class="bg-base-lightest">
-    <div class="desktop:grid-container padding-x-0 desktop:padding-y-2">
-      <div class="grid-row desktop:margin-x-3">
-        <a class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base-light desktop:margin-right-5 grid-col-12 padding-y-2 padding-x-2 text-bold dm-footer-link" href="/">
+    <div class="desktop:padding-y-2">
+      <div class="grid-row desktop:margin-left-4">
+        <a class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base-light desktop:margin-right-8 grid-col-12 padding-y-2 padding-x-2 dm-footer-link" href="/">
           Home
         </a>
-        <a class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base-light desktop:margin-right-5 grid-col-12 padding-y-2 padding-x-2 text-bold dm-footer-link" href="<%= nominate_an_innovation_path %>" >
+        <a href="<%= about_path %>" class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base desktop:margin-right-8 grid-col-12 padding-y-2 padding-x-2 dm-footer-link" >
+          Contact us
+        </a>
+        <a class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base desktop:margin-right-8 grid-col-12 padding-y-2 padding-x-2 dm-footer-link" href="<%= nominate_a_practice_path %>" >
           Nominate an innovation
         </a>
-        <a class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base-light desktop:margin-right-5 grid-col-12 padding-y-2 padding-x-2 text-bold dm-footer-link" href="/open-calls" >
+        <a class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base desktop:margin-right-8 grid-col-12 padding-y-2 padding-x-2 dm-footer-link" href="/open-calls" >
           Open calls
         </a>
-        <a class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base-light desktop:margin-right-5 grid-col-12 padding-y-2 padding-x-2 text-bold dm-footer-link" target="_blank" href="mailto:dm@agile6.com?subject=<%= URI.encode('Bug report for Diffusion Marketplace') %>&body=<%= URI.encode('Please be sure to include a step-by-step list to reproduce the error, if applicable.') %>">
-          Report a bug
-        </a>
-        <a id="feedback-modal" class="feedback-survey-popup desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base-light desktop:margin-right-5 grid-col-12 padding-y-2 padding-x-2 text-bold dm-footer-link" href="#">
-          Send feedback
-        </a>
-        <a href="https://www.va.gov/privacy-policy" target="_blank" class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base-light desktop:margin-right-5 grid-col-12 padding-y-2 padding-x-2 text-bold dm-footer-link">
+        <a href="https://www.va.gov/privacy-policy" target="_blank" class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base desktop:margin-right-8 grid-col-12 padding-y-2 padding-x-2 dm-footer-link">
           Privacy policy
         </a>
-        <a href="#dm-terms-and-conditions-modal" class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base-light desktop:margin-right-5 grid-col-12 padding-y-2 padding-x-2 text-bold dm-footer-link" aria-controls="dm-terms-and-conditions-modal" data-open-modal>
-          Terms
+        <a href="#dm-terms-and-conditions-modal" class="desktop:display-inline-block desktop:grid-col-auto desktop:padding-0 desktop:border-top-0 border-top-1px border-base grid-col-12 padding-y-2 padding-x-2 dm-footer-link" aria-controls="dm-terms-and-conditions-modal" data-open-modal>
+          Terms and conditions
         </a>
       </div>
     </div>
   </div>
 
-  <div class="bg-base-lighter text-base-ink padding-y-4">
-    <div class="grid-container">
-      <div class="grid-row">
-        <p class="font-sans-lg margin-0 text-normal">
-          <span class="text-bold">VA</span> | Diffusion Marketplace
-        </p>
-      </div>
+  <div class="bg-ink padding-y-3 padding-left-2 desktop:padding-left-0">
+    <div class="grid-row desktop:margin-left-4">
+      <img class="display-block maxw-5" src="<%= asset_path( 'va-seal.png' ) %>" alt="Seal of the Department of Veterans Affairs"/>
+      <p class="margin-0 margin-left-1 text-white">
+        <span class="text-heavy font-sans-md">Diffusion Marketplace</span><br>
+        <span class="font-sans-2xs">Department of Veterans Affairs</span>
+      </p>
     </div>
   </div>
 </footer>

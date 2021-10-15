@@ -1,0 +1,52 @@
+$dm-mobile-footer-height: 396px;
+$dm-non-desktop-padding: 64px;
+$dm-desktop-footer-height: 138px;
+$dm-desktop-padding: 128px;
+$dm-return-to-top-height: 51px;
+
+// Mobile footer height + 'Return to top' 51px element height + 64px
+$dm-mobile-all-padding: calc(#{$dm-mobile-footer-height} + #{$dm-return-to-top-height} + #{$dm-non-desktop-padding});
+
+// Mobile footer height + 64px
+$dm-mobile-no-return-to-padding: calc(#{$dm-mobile-footer-height} + #{$dm-non-desktop-padding});
+
+// Desktop footer height + 'Return to top' element height + 128px
+$dm-desktop-all-padding: calc(#{$dm-desktop-footer-height} + #{$dm-return-to-top-height} + #{$dm-desktop-padding});
+
+// Desktop footer height + 128px
+$dm-desktop-no-return-to-padding: calc(#{$dm-desktop-footer-height} + #{$dm-desktop-padding});
+
+#main-content {
+  position: relative;
+  // Add padding equal to the height of the current footer plus 64px/128px for spacing between 'Return to top' button/top of footer and the last piece of page content based on Figma designs 9/21/21
+
+  padding-bottom: $dm-mobile-all-padding;
+
+  @media screen and (min-width: 640px) {
+    padding-bottom: $dm-mobile-no-return-to-padding;
+  }
+
+  @media screen and (min-width: 1024px) {
+    padding-bottom: $dm-desktop-no-return-to-padding;
+  }
+
+  &.additional-return-to-top-padding {
+    @media screen and (min-width: 640px) {
+      padding-bottom: $dm-mobile-all-padding !important;
+    }
+
+    @media screen and (min-width: 1024px) {
+      padding-bottom: $dm-desktop-all-padding !important;
+    }
+  }
+
+  &.home.index-main, &.search-main {
+    @media screen and (min-width: 640px) {
+      padding-bottom: $dm-mobile-footer-height;
+    }
+
+    @media screen and (min-width: 1024px) {
+      padding-bottom: $dm-desktop-footer-height;
+    }
+  }
+}
