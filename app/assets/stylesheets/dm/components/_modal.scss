@@ -80,6 +80,10 @@
 
 .publication-modal-content {
   width: 524px;
+
+  h2 {
+    background-color: color($theme-color-error-dark);
+  }
 }
 
 /* Add Animation */
