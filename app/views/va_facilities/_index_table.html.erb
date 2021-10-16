@@ -9,10 +9,11 @@
         <th data-sortable scope="col" role="columnheader">
           State
         </th>
-        <th data-sortable scope="col" role="columnheader">
+        <th class="padding-right-0 grid-col-2" data-sortable scope="col" role="columnheader">
           VISN
+          <%= render partial: "visns/visns_tooltip" %>
         </th>
-        <th class="padding-right-0" data-sortable scope="col" role="columnheader">
+        <th class="padding-right-0 grid-col-2" data-sortable scope="col" role="columnheader">
           Complexity
           <%= render partial: 'shared/facility_complexity_modal', locals: { hide_modal_on_initial_load: false } %>
         </th>
