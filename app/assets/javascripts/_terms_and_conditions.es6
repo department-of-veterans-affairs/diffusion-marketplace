@@ -2,13 +2,13 @@
   const $document = $(document);
 
   function loadTermsAndConditionsFn() {
-    window.addEventListener("load", () => {
+    $(document).arrive("footer", { existing: true }, () => {
       if (forceModal) {
+        let $termsModal = $("#dm-terms-and-conditions-modal");
         // display modal on page load if user is logged in and didn't accept terms
-        $("#dm-terms-and-conditions-modal").addClass("is-visible");
+        $termsModal.addClass("is-visible");
+        $termsModal.removeClass("is-hidden");
       }
-      // prevent modal from flickering before page is fully rendered
-      $("#dm-terms-and-conditions-modal > .usa-modal-overlay .usa-modal").removeClass("display-none");
     });
   }
 

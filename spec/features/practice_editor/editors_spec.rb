@@ -114,7 +114,7 @@ describe 'Practice editor', type: :feature, js: true do
           login_and_visit_editors(@admin)
           fill_in_email_field(@user.email)
           add_editor
-          logout(@admin)
+          logout
           visit '/'
           PracticeEditorSession.last.destroy!
           login_and_visit_editors(@user)
