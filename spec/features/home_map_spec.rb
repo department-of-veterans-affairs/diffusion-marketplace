@@ -279,7 +279,7 @@ describe 'Map of Diffusion', type: :feature do
   end
 
   it 'should only display markers for facilities that have adoptions for public-facing practices if the user is a guest' do
-    # interact with the map as a guest user
+    # view the map markers as a guest user
     logout
     visit '/diffusion-map'
     expect(page).to_not have_selector('div[style*="width: 31px"][title=""]', visible: true)
@@ -291,7 +291,7 @@ describe 'Map of Diffusion', type: :feature do
     all('.toggle-practice-privacy-link')[3].click
     expect(page).to have_content("\"Practice A\" is now a public-facing innovation")
 
-    # logout and search for the practice again as a guest user
+    # logout and view the map markers again as a guest user
     logout
     visit '/diffusion-map'
 
