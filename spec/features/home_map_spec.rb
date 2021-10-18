@@ -1,8 +1,10 @@
 require 'rails_helper'
 
-describe 'Map of Diffusion', type: :feature, js: true do
+describe 'Map of Diffusion', type: :feature do
   before do
     @user = User.create!(email: 'spongebob.squarepants@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+    @admin = User.create!(email: 'sandy.cheeks@bikinibottom.net', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now, accepted_terms: true)
+    @admin.add_role(User::USER_ROLES[1].to_sym)
     @user_practice = Practice.create!(name: 'The Best Practice Ever!', user: @user, initiating_facility: 'Test Facility', initiating_facility_type: 'other', tagline: 'Test tagline')
     @pr_1 = Practice.create!(name: 'Practice A', approved: true, summary: 'Test summary', published: true, tagline: 'Practice A Tagline', date_initiated: Time.now(), user: @user)
     @pr_2 = Practice.create!(name: 'Practice B', approved: true, summary: 'Test summary', published: true, tagline: 'Practice B Tagline', date_initiated: Time.now(), user: @user)
@@ -59,6 +61,7 @@ describe 'Map of Diffusion', type: :feature, js: true do
     dh_6 = DiffusionHistory.create!(practice: @pr_4, va_facility: @fac_3)
     DiffusionHistoryStatus.create!(diffusion_history: dh_6, status: 'Unsuccessful', unsuccessful_reasons: [0])
     ENV['GOOGLE_API_KEY'] = ENV['GOOGLE_TEST_API_KEY']
+    login_as(@user, :scope => :user, :run_callbacks => false)
     visit '/diffusion-map'
     expect(page).to have_selector(".diffusion-map-container", visible: true)
     expect(page).to have_selector("#filterResultsTrigger", visible: true)
@@ -92,7 +95,7 @@ describe 'Map of Diffusion', type: :feature, js: true do
   end
 
   it 'displays and filters the map' do
-    expect(page).to have_content('Explore how innovations are being adopted across the country. There are currently 2 completed adoptions, 3 in-progress adoptions, and 1 unsuccessful adoption.')
+    expect(page).to have_content('Explore how innovations are being adopted across the country. There are currently 2 successful adoptions, 3 in-progress adoptions, and 1 unsuccessful adoption.')
     expect_marker_ct(3)
 
     # filters button
@@ -249,7 +252,7 @@ describe 'Map of Diffusion', type: :feature, js: true do
     expect(page).to have_no_css('.modal-content')
   end
 
-  it 'should allow the user to visit each adoption\'s VA facility page' do
+  it 'should allow the user to visit each adoption\'s VA facility page', js: true do
     marker_div = 'div[style*="width: 31px"][title=""]'
     # click on the first generated marker
     all(marker_div).first.click
@@ -273,5 +276,26 @@ describe 'Map of Diffusion', type: :feature, js: true do
         expect(page).to have_content('Main number:')
       end
     end
+  end
+
+  it 'should only display markers for facilities that have adoptions for public-facing practices if the user is a guest' do
+    # interact with the map as a guest user
+    logout
+    visit '/diffusion-map'
+    expect(page).to_not have_selector('div[style*="width: 31px"][title=""]', visible: true)
+    expect(page).to have_content('There are currently 0 successful adoptions, 0 in-progress adoptions, and 0 unsuccessful adoptions.')
+
+    # login as an admin and set the 'is_public' flag for a practice to true
+    login_as(@admin, :scope => :user, :run_callbacks => false)
+    visit '/admin/practices'
+    all('.toggle-practice-privacy-link')[3].click
+    expect(page).to have_content("\"Practice A\" is now a public-facing innovation")
+
+    # logout and search for the practice again as a guest user
+    logout
+    visit '/diffusion-map'
+
+    expect(page).to have_content('Explore how innovations are being adopted across the country. There are currently 2 successful adoptions, 0 in-progress adoptions, and 0 unsuccessful adoptions.')
+    expect_marker_ct(2)
   end
 end
