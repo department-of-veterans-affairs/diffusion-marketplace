@@ -30,7 +30,6 @@
 //= require mark
 //= require ie
 //= require practices
-//= require _feedback_survey
 //= require _side_nav
 //= require commontator/application
 //= require jquery.timeago

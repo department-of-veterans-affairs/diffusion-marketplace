@@ -1,6 +1,5 @@
 #dm-navbar-search-form {
-  margin: 1.25rem 0.25rem;
-  order: 5; // make it the last option on mobile nav view
+  margin: 1.25rem 0 0.5rem;
 
   #dm-navbar-search-field {
     min-width: calc(100% - 3.0625rem) !important;
@@ -12,6 +11,8 @@
   }
 
   #dm-navbar-search-button {
+    @include u-bg('primary-vivid');
+    @include u-radius-right('md');
     height: 2rem;
     width: 3.0625rem;
     font-size: 1rem;
@@ -19,8 +20,8 @@
   }
 
   // desktop
-  @media screen and (min-width: 64rem) {
-    margin: 0 0.5rem;
+  @media screen and (min-width: 75rem) {
+    margin: 0 1rem;
     order: 0;
     max-width: 16.5rem;
 

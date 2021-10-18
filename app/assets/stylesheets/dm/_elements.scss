@@ -14,22 +14,27 @@ p {
 
 h1 {
   @extend .usa-prose-h1;
+  @include u-text('bold');
 }
 
 h2 {
   @extend .usa-prose-h2;
+  @include u-text('bold');
 }
 
 h3 {
   @extend .usa-prose-h3;
+  @include u-text('bold');
 }
 
 h4 {
   @extend .usa-prose-h4;
+  @include u-text('bold');
 }
 
 h5 {
   @extend .usa-prose-h5;
+  @include u-text('bold');
 }
 
 h6 {
