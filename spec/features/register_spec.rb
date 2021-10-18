@@ -5,6 +5,8 @@ describe 'Register', type: :feature, js: true do
 
     visit '/'
     expect(page).to have_content('Diffusion Marketplace')
+    # ensure header desktop view
+    page.driver.browser.manage.window.resize_to(1300, 1000)
 
     click_on('Sign in')
     click_on('Register')

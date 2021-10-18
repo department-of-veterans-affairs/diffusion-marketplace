@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe 'Terms and conditions', type: :feature do
     before do
-        @user = User.create!(email: 'shunsui.kyoraku@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now)
-        @admin = User.create!(email: 'yoruichi.shihouin@soulsociety.com', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now)
+        @user = User.create!(email: 'shunsui.kyoraku+test1232131@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now)
+        @admin = User.create!(email: 'yoruichi.shihouin+test1232131@va.gov', password: 'Password123', password_confirmation: 'Password123', skip_va_validation: true, confirmed_at: Time.now)
         @admin.add_role(User::USER_ROLES[1].to_sym)
     end
 
@@ -29,12 +29,11 @@ describe 'Terms and conditions', type: :feature do
             click_button('I acknowledge the terms')
             visit '/partners'
             expect(page).to be_accessible.according_to :wcag2a, :section508
-            expect(page).not_to have_content('Terms and conditions')
+            expect(page).not_to have_content('VA systems are intended to be used by authorized VA network users')
             expect(page).to have_content('Partners')
             expect(page).to have_content('Best innovations are always being developed, vetted, and promoted by offices within the VA.')
             expect(page).to have_current_path('/partners')
-            click_link 'Terms'
-            expect(page).to have_content('Terms and conditions')
+            click_link 'Terms and conditions'
             expect(page).to have_content('VA systems are intended to be used by authorized VA network users')
             expect(page).to have_no_content('I acknowledge the terms')
             expect(page).to have_content('Continue to access this website and agree to these terms')
@@ -58,7 +57,7 @@ describe 'Terms and conditions', type: :feature do
             expect_forced_terms_modal
             expect(page).to have_current_path('/')
             click_button('I acknowledge the terms')
-            expect(page).not_to have_content('Terms and conditions')
+            expect(page).not_to have_content('VA systems are intended to be used by authorized VA network users')
             visit '/admin'
             expect(page).to have_current_path('/admin')
         end
@@ -70,13 +69,13 @@ describe 'Terms and conditions', type: :feature do
             expect(page).to be_accessible.according_to :wcag2a, :section508
             expect(page).to have_content('Partners')
             expect(page).to have_content('Best innovations are always being developed, vetted, and promoted by offices within the VA.')
-            expect(page).not_to have_content('Terms and conditions')
+            expect(page).not_to have_content('VA systems are intended to be used by authorized VA network users')
         end
 
         it 'Should display the terms and conditions modal' do
             visit '/partners'
             expect(page).to be_accessible.according_to :wcag2a, :section508
-            click_link 'Terms'
+            click_link 'Terms and conditions'
             expect(page).to have_content('Terms and conditions')
             expect(page).to have_content('VA systems are intended to be used by authorized users')
             expect(page).to have_no_content('I acknowledge the terms')

@@ -73,7 +73,6 @@
     <%= yield(:styles) %>
   </head>
 
-
   <body <% if content_for?(:body_attributes) %>
         <%= yield(:body_attributes) %>
         <% end %> class="<%= yield(:body_classes) %>">
@@ -86,6 +85,5 @@
       <%= yield %>
     </main>
     <%= render 'shared/footer' %>
-    <%= render 'shared/feedback_survey' %>
   </body>
 </html>
